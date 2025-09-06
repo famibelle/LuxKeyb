@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Klavié Kreyòl Karukera • Potomitan™</string>
+    <string name="app_name">Klavié Kreyòl</string>
+    <string name="app_name_full">Klavié Kreyòl Karukera • Potomitan™</string>
     <string name="keyboard_name">Klavié Kreyòl Karukera 🇬🇵 • Potomitan™</string>
     <string name="keyboard_description">Clavier créole pour la Guadeloupe avec suggestions de mots et accents • Potomitan™</string>
     <string name="settings_title">Paramètres Klavié Kreyòl • Potomitan™</string>
