@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/xml_kreyol_keyboard.xml.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/xml/kreyol_keyboard.xml"
+    },
+    {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/drawable_key_background.xml.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/drawable/key_background.xml"
+    },
+    {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/layout_activity_main.xml.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/layout_keyboard.xml.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/layout/keyboard.xml"
+    },
+    {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/xml_method.xml.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/xml/method.xml"
+    }
+]
