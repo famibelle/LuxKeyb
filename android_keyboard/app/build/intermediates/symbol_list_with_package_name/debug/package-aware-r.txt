@@ -624,6 +624,7 @@ drawable ic_call_answer_video_low
 drawable ic_call_decline
 drawable ic_call_decline_low
 drawable key_background
+drawable logo_potomitan
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -907,7 +908,10 @@ string call_notification_hang_up_action
 string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
+string keyboard_description
+string keyboard_name
 string search_menu_title
+string settings_title
 string status_bar_notification_info_overflow
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light

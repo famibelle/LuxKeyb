@@ -4,6 +4,10 @@
         "source": "com.example.kreyolkeyboard.app-main-22:/xml/kreyol_keyboard.xml"
     },
     {
+        "merged": "com.example.kreyolkeyboard.app-merged_res-20:/drawable_logo_potomitan.png.flat",
+        "source": "com.example.kreyolkeyboard.app-main-22:/drawable/logo_potomitan.png"
+    },
+    {
         "merged": "com.example.kreyolkeyboard.app-merged_res-20:/drawable_key_background.xml.flat",
         "source": "com.example.kreyolkeyboard.app-main-22:/drawable/key_background.xml"
     },
