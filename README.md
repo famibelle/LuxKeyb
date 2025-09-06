@@ -1,6 +1,8 @@
-# Clavier Créole - POC
+# Clavier Créole - POC <img src="clavier_creole/assets/logoPotomitan.svg" alt="Logo de l'application" style="width: auto; height: 1em;">
 
 Ce projet est une preuve de concept (POC) pour un clavier virtuel en créole, développé avec Flutter. Il permet de saisir du texte en créole avec des caractères spéciaux et des suggestions basées sur un dictionnaire.
+
+<img src="Screenshots/Screenshot_1757148380.png" alt="Logo de l'application" style="width: 25%; height: auto;">
 
 ## Fonctionnalités
 
