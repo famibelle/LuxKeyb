@@ -40,6 +40,8 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private var dictionary: List<Pair<String, Int>> = emptyList()
+    private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
+    private var wordHistory = mutableListOf<String>() // Historique des mots pour N-grams
     private var currentWord = ""
     private var suggestionsView: LinearLayout? = null
     private var suggestionsViewId: Int = View.NO_ID
@@ -78,6 +80,7 @@ class KreyolInputMethodService : InputMethodService() {
             dictionary = emptyList()
             currentWord = "" // Reset du mot actuel
             loadDictionary() // Activer le chargement du dictionnaire
+            loadNgramModel() // Charger le modèle N-grams
             Log.d(TAG, "Variables initialisées et dictionnaire chargé")
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de l'initialisation", e)
@@ -120,13 +123,20 @@ class KreyolInputMethodService : InputMethodService() {
         
         try {
             val suggestions = if (input.isEmpty()) {
-                // Montrer les mots les plus fréquents quand pas d'input
-                dictionary.take(8).map { it.first }
+                // Quand pas d'input, utiliser les N-grams basés sur l'historique
+                getNgramSuggestions() + dictionary.take(5).map { it.first }
             } else {
-                // Filtrer le dictionnaire par l'input actuel
-                dictionary.filter { it.first.startsWith(input.lowercase(), ignoreCase = true) }
-                    .take(8)
-                    .map { it.first }
+                // Filtrer le dictionnaire par l'input actuel + N-grams
+                val dictionarySuggestions = dictionary.filter { 
+                    it.first.startsWith(input.lowercase(), ignoreCase = true) 
+                }.take(6).map { it.first }
+                
+                val ngramSuggestions = getNgramSuggestions().filter {
+                    it.startsWith(input.lowercase(), ignoreCase = true)
+                }.take(2)
+                
+                // Combiner les suggestions avec priorité aux N-grams
+                (ngramSuggestions + dictionarySuggestions).distinct().take(8)
             }
             
             Log.d(TAG, "Suggestions trouvées pour '$input': ${suggestions.joinToString(", ")}")
@@ -160,6 +170,7 @@ class KreyolInputMethodService : InputMethodService() {
                         }
                         // Insérer la suggestion complète
                         inputConnection?.commitText("$suggestion ", 1)
+                        addWordToHistory(suggestion) // Ajouter à l'historique N-grams
                         currentWord = ""
                         updateSuggestions("")
                     }
@@ -173,6 +184,39 @@ class KreyolInputMethodService : InputMethodService() {
             
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de la mise à jour des suggestions", e)
+        }
+    }
+    
+    private fun getNgramSuggestions(): List<String> {
+        // Obtenir les prédictions basées sur le dernier mot tapé
+        if (wordHistory.isEmpty()) {
+            return emptyList()
+        }
+        
+        val lastWord = wordHistory.lastOrNull()?.lowercase()
+        if (lastWord == null) {
+            return emptyList()
+        }
+        
+        val predictions = ngramModel[lastWord] ?: return emptyList()
+        
+        // Extraire les mots prédits et les trier par probabilité
+        val suggestedWords = predictions.map { prediction ->
+            prediction["word"] as String
+        }.take(3) // Limiter à 3 suggestions N-gram
+        
+        Log.d(TAG, "N-gram suggestions pour '$lastWord': ${suggestedWords.joinToString(", ")}")
+        return suggestedWords
+    }
+    
+    private fun addWordToHistory(word: String) {
+        if (word.isNotBlank() && word.length > 1) {
+            wordHistory.add(word.lowercase())
+            // Garder seulement les 5 derniers mots pour performance
+            if (wordHistory.size > 5) {
+                wordHistory.removeAt(0)
+            }
+            Log.d(TAG, "Historique des mots: ${wordHistory.joinToString(" → ")}")
         }
     }
 
@@ -199,6 +243,45 @@ class KreyolInputMethodService : InputMethodService() {
             Log.e(TAG, "Erreur lors du chargement du dictionnaire", e)
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors du parsing du dictionnaire", e)
+        }
+    }
+    
+    private fun loadNgramModel() {
+        Log.d(TAG, "Chargement du modèle N-grams...")
+        try {
+            val inputStream = assets.open("creole_ngrams.json")
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            inputStream.close()
+            
+            val jsonObject = org.json.JSONObject(jsonString)
+            val predictionsObject = jsonObject.getJSONObject("predictions")
+            
+            val tempMap = mutableMapOf<String, List<Map<String, Any>>>()
+            
+            val keys = predictionsObject.keys()
+            while (keys.hasNext()) {
+                val key = keys.next()
+                val predictionsArray = predictionsObject.getJSONArray(key)
+                val predictions = mutableListOf<Map<String, Any>>()
+                
+                for (i in 0 until predictionsArray.length()) {
+                    val predictionObj = predictionsArray.getJSONObject(i)
+                    val prediction = mapOf(
+                        "word" to predictionObj.getString("word"),
+                        "prob" to predictionObj.getDouble("prob")
+                    )
+                    predictions.add(prediction)
+                }
+                tempMap[key] = predictions
+            }
+            
+            ngramModel = tempMap
+            Log.d(TAG, "Modèle N-grams chargé: ${ngramModel.size} mots avec prédictions")
+            
+        } catch (e: IOException) {
+            Log.e(TAG, "Erreur lors du chargement du modèle N-grams", e)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors du parsing du modèle N-grams", e)
         }
     }
     
@@ -777,6 +860,9 @@ class KreyolInputMethodService : InputMethodService() {
                 }
                 "ESPACE" -> {
                     // Espace termine le mot actuel
+                    if (currentWord.isNotBlank()) {
+                        addWordToHistory(currentWord) // Ajouter le mot à l'historique N-grams
+                    }
                     inputConnection.commitText(" ", 1)
                     currentWord = ""
                     updateSuggestions("")
