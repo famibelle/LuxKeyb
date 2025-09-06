@@ -1,4 +1,4 @@
-# 🧠 Système de Prédiction N-grams
+# 🧠 Système de Prédiction N-grams - Potomitan™
 
 Ce document explique l'implémentation du système de **N-grams** pour améliorer les prédictions de mots dans le clavier créole guadeloupéen.
 

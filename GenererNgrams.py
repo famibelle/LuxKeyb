@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Générateur de N-grams pour le clavier créole
+Générateur de N-grams pour le clavier créole - Potomitan™
 Crée des bigrammes et trigrammes à partir des textes créoles
 """
 
@@ -130,6 +130,7 @@ def sauvegarder_modele_ngrams(bigrammes, trigrammes, mots_suivants):
     modele_android = {
         "version": "1.0",
         "type": "ngram_model",
+        "branding": "Potomitan™",
         "predictions": {},
         "top_bigrammes": top_bigrammes,
         "stats": {
@@ -171,7 +172,7 @@ def afficher_exemples_predictions(mots_suivants):
             print(f"   '{mot}' → {', '.join(predictions)}")
 
 def main():
-    print("=== Génération des N-grams pour le clavier créole ===")
+    print("=== Génération des N-grams pour le clavier créole - Potomitan™ ===")
     
     # 1. Charger les textes
     print("📚 Chargement des textes créoles...")

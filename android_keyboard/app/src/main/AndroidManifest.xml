@@ -27,7 +27,7 @@
         <!-- Activity de configuration -->
         <activity
             android:name=".SettingsActivity"
-            android:label="Paramètres Klavié Kreyòl"
+            android:label="Paramètres Klavié Kreyòl • Potomitan™"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

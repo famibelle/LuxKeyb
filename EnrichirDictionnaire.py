@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Script d'enrichissement du dictionnaire créole
+Script d'enrichissement du dictionnaire créole - Potomitan™
 Ajoute les mots du fichier Textes_kreyol.json au dictionnaire existant
 """
 
@@ -96,7 +96,7 @@ def main():
     chemin_dict_existant = "clavier_creole/assets/creole_dict.json" 
     chemin_dict_enrichi = "clavier_creole/assets/creole_dict_enrichi.json"
     
-    print("=== Enrichissement du dictionnaire créole ===")
+    print("=== Enrichissement du dictionnaire créole - Potomitan™ ===")
     
     # 1. Charger le dictionnaire existant
     print("Chargement du dictionnaire existant...")

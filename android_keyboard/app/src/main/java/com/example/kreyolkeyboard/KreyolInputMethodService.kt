@@ -18,10 +18,11 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.PopupWindow
 import android.view.LayoutInflater
+import android.widget.FrameLayout
 
 class KreyolInputMethodService : InputMethodService() {
     
-    private val TAG = "KreyolIME"
+    private val TAG = "KreyolIME-Potomitan™"
     
     // 🇬🇵 PALETTE COULEURS GUADELOUPE 🇬🇵
     companion object {
@@ -73,7 +74,7 @@ class KreyolInputMethodService : InputMethodService() {
     
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "=== KREYOL IME SERVICE onCreate() APPELÉ ! ===")
+        Log.d(TAG, "=== KREYOL IME SERVICE onCreate() APPELÉ - Potomitan™ ===")
         
         try {
             Log.d(TAG, "Initialisation du dictionnaire...")
@@ -136,11 +137,34 @@ class KreyolInputMethodService : InputMethodService() {
                 }.take(2)
                 
                 // Combiner les suggestions avec priorité aux N-grams
-                (ngramSuggestions + dictionarySuggestions).distinct().take(8)
+                (ngramSuggestions + dictionarySuggestions).distinct().take(7)
             }
             
             Log.d(TAG, "Suggestions trouvées pour '$input': ${suggestions.joinToString(", ")}")
             Log.d(TAG, "Nombre de suggestions: ${suggestions.size}")
+            
+            // Ajouter un indicateur Potomitan™ discret si pas de suggestions
+            if (suggestions.isEmpty() && input.isEmpty()) {
+                val brandButton = Button(this).apply {
+                    text = "Potomitan™"
+                    textSize = 10f
+                    alpha = 0.6f
+                    setBackgroundColor(Color.TRANSPARENT)
+                    setTextColor(Color.parseColor(BLEU_CARAIBE))
+                    setTypeface(null, android.graphics.Typeface.ITALIC)
+                    setPadding(12, 8, 12, 8)
+                    isClickable = false
+                    isFocusable = false
+                    
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        marginEnd = 16
+                    }
+                }
+                suggestionsView?.addView(brandButton)
+            }
             
             suggestions.forEach { suggestion ->
                 val button = Button(this).apply {
@@ -368,7 +392,8 @@ class KreyolInputMethodService : InputMethodService() {
     
     override fun onEvaluateInputViewShown(): Boolean {
         Log.d(TAG, "onEvaluateInputViewShown appelé")
-        return true // Force l'affichage du clavier
+        val shouldShow = super.onEvaluateInputViewShown()
+        return shouldShow || true // Force l'affichage du clavier ou utilise la logique parent
     }
 
     override fun onCreateInputView(): View? {
@@ -390,9 +415,9 @@ class KreyolInputMethodService : InputMethodService() {
             // Stocker la référence pour les changements de mode
             mainKeyboardLayout = mainLayout
             
-            // Titre du clavier - Style Guadeloupe
+            // Titre du clavier - Style Guadeloupe avec branding Potomitan™
             val titleView = TextView(this).apply {
-                text = "Klavié Kreyòl Karukera 🇬🇵"
+                text = "Klavié Kreyòl Karukera 🇬🇵 • Potomitan™"
                 textSize = 16f
                 setBackgroundColor(Color.parseColor(BLEU_CARAIBE))
                 setTextColor(Color.parseColor(BLANC_CORAL))
@@ -432,6 +457,32 @@ class KreyolInputMethodService : InputMethodService() {
             
             // Créer le clavier selon le mode
             createKeyboardLayout(mainLayout)
+            
+            // Ajouter un watermark Potomitan™ discret
+            val watermarkContainer = FrameLayout(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+            
+            val watermark = TextView(this).apply {
+                text = "Potomitan™"
+                textSize = 8f
+                alpha = 0.4f
+                setTextColor(Color.parseColor(BLANC_CORAL))
+                setTypeface(null, android.graphics.Typeface.ITALIC)
+                gravity = Gravity.END
+                setPadding(0, 4, 12, 4)
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM or Gravity.END
+                )
+            }
+            
+            watermarkContainer.addView(watermark)
+            mainLayout.addView(watermarkContainer)
             
             // Mettre à jour l'affichage initial du clavier
             updateKeyboardDisplay()
