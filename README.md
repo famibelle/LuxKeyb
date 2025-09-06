@@ -6,6 +6,12 @@ Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec 
 ![Version Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
+## 📱 Aperçu de l'Application
+
+![Clavier Kreyòl Karukera en Action](Screenshots/Screenshot_1757201468.png){width=25%}
+
+*Interface du clavier créole avec suggestions intelligentes et design Guadeloupéen*
+
 ## 🌟 Fonctionnalités
 
 ### ⌨️ **Layout AZERTY Adapté**
@@ -232,7 +238,7 @@ Distribué sous licence **MIT**. Voir `LICENSE` pour plus d'informations.
 ## 📞 Support
 
 ### Contact
-- **Email** : support@potomitan-kreyol.gp
+- **Email** : support@potomitan.io
 - **GitHub Issues** : [Ouvrir un ticket](https://github.com/famibelle/KreyolKeyb/issues)
 
 ### FAQ
