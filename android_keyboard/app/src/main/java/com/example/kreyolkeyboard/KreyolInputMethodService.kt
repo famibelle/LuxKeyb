@@ -89,12 +89,34 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "suggestionsView est null: ${suggestionsView == null}")
         Log.d(TAG, "isNumericMode: $isNumericMode")
         
-        suggestionsView?.removeAllViews()
-        
+        // Vérifier la validité de suggestionsView
         if (suggestionsView == null) {
-            Log.e(TAG, "suggestionsView est null ! Impossible de mettre à jour les suggestions")
+            Log.e(TAG, "suggestionsView est null ! Tentative de récupération...")
+            // Essayer de récupérer la vue depuis le layout principal
+            val currentView = mainKeyboardLayout
+            if (currentView != null && currentView.childCount > 1) {
+                val suggestionsContainer = currentView.getChildAt(1) as? HorizontalScrollView
+                suggestionsView = suggestionsContainer?.getChildAt(0) as? LinearLayout
+                if (suggestionsView != null) {
+                    suggestionsViewId = suggestionsView!!.id
+                    Log.d(TAG, "suggestionsView récupérée avec succès !")
+                }
+            }
+            
+            if (suggestionsView == null) {
+                Log.e(TAG, "Impossible de récupérer suggestionsView, abandon de la mise à jour")
+                return
+            }
+        }
+        
+        // En mode numérique, vider les suggestions
+        if (isNumericMode) {
+            suggestionsView?.removeAllViews()
+            Log.d(TAG, "Mode numérique - suggestions vidées")
             return
         }
+        
+        suggestionsView?.removeAllViews()
         
         try {
             val suggestions = if (input.isEmpty()) {
@@ -147,7 +169,7 @@ class KreyolInputMethodService : InputMethodService() {
                 Log.d(TAG, "Bouton de suggestion ajouté: $suggestion")
             }
             
-            Log.d(TAG, "=== updateSuggestions terminée ===")
+            Log.d(TAG, "=== updateSuggestions terminée avec succès ===")
             
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de la mise à jour des suggestions", e)
@@ -215,6 +237,40 @@ class KreyolInputMethodService : InputMethodService() {
         
         // Vérifier si on a une vue
         Log.d(TAG, "Vue d'entrée disponible, clavier devrait être visible")
+    }
+    
+    override fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int) {
+        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
+        
+        Log.d(TAG, "onUpdateSelection - oldSel: $oldSelStart-$oldSelEnd, newSel: $newSelStart-$newSelEnd")
+        
+        // Si la sélection a changé ou le texte a été modifié depuis l'extérieur
+        if (newSelStart != newSelEnd || oldSelStart != newSelStart) {
+            // Essayer de récupérer le mot actuel depuis le curseur
+            val inputConnection = currentInputConnection
+            if (inputConnection != null && !isNumericMode) {
+                try {
+                    // Récupérer le texte avant le curseur pour détecter le mot en cours
+                    val textBeforeCursor = inputConnection.getTextBeforeCursor(50, 0)?.toString() ?: ""
+                    val words = textBeforeCursor.split(Regex("\\s+"))
+                    val lastWord = if (words.isNotEmpty()) words.last() else ""
+                    
+                    // Mettre à jour currentWord seulement si différent et pas d'espace à la fin
+                    if (lastWord != currentWord && !textBeforeCursor.endsWith(" ")) {
+                        currentWord = lastWord
+                        Log.d(TAG, "Synchronisation currentWord: '$currentWord'")
+                        updateSuggestions(currentWord)
+                    } else if (textBeforeCursor.endsWith(" ")) {
+                        // Si l'utilisateur a ajouté un espace, vider currentWord
+                        currentWord = ""
+                        Log.d(TAG, "Espace détecté, currentWord vidé")
+                        updateSuggestions("")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Erreur lors de la synchronisation du mot actuel", e)
+                }
+            }
+        }
     }
     
     override fun onFinishInput() {
@@ -480,17 +536,31 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun createKeyboardLayout(mainLayout: LinearLayout) {
-        // Supprimer les rangées existantes (garder les suggestions)
+        // Sauvegarder la référence aux suggestions AVANT suppression
+        val savedSuggestionsView = suggestionsView
+        val savedSuggestionsViewId = suggestionsViewId
+        
+        // Supprimer les rangées existantes (garder titre et suggestions)
         val childCount = mainLayout.childCount
-        for (i in childCount - 1 downTo 1) { // Garder le premier enfant (suggestions)
+        for (i in childCount - 1 downTo 2) { // Garder les 2 premiers enfants (titre + suggestions)
             mainLayout.removeViewAt(i)
         }
         
-        // S'assurer que suggestionsView est toujours accessible
-        if (mainLayout.childCount > 0) {
-            val suggestionsContainer = mainLayout.getChildAt(0) as? HorizontalScrollView
-            suggestionsView = suggestionsContainer?.getChildAt(0) as? LinearLayout
+        // Restaurer la référence aux suggestions après suppression
+        if (savedSuggestionsView != null && savedSuggestionsViewId != View.NO_ID) {
+            suggestionsView = savedSuggestionsView
+            suggestionsViewId = savedSuggestionsViewId
             Log.d(TAG, "Référence suggestionsView restaurée: ${suggestionsView != null}")
+        } else {
+            // Fallback : chercher dans la hiérarchie
+            if (mainLayout.childCount > 1) {
+                val suggestionsContainer = mainLayout.getChildAt(1) as? HorizontalScrollView
+                suggestionsView = suggestionsContainer?.getChildAt(0) as? LinearLayout
+                if (suggestionsView != null) {
+                    suggestionsViewId = suggestionsView!!.id
+                }
+                Log.d(TAG, "Référence suggestionsView trouvée par fallback: ${suggestionsView != null}")
+            }
         }
         
         if (isNumericMode) {
@@ -535,7 +605,6 @@ class KreyolInputMethodService : InputMethodService() {
             isCapitalMode = false
             isCapsLock = false
             currentWord = "" // Réinitialiser le mot en cours
-            updateSuggestions("") // Vider les suggestions
         }
         
         // Recréer le clavier avec le nouveau mode
@@ -547,10 +616,15 @@ class KreyolInputMethodService : InputMethodService() {
             
             // Forcer la mise à jour des suggestions après reconstruction
             Handler(Looper.getMainLooper()).post {
+                Log.d(TAG, "Post-reconstruction: suggestionsView = ${suggestionsView != null}")
                 if (!isNumericMode) {
+                    // Mode alphabétique - restaurer les suggestions
                     updateSuggestions(currentWord)
+                    Log.d(TAG, "Suggestions restaurées pour mode alphabétique avec mot: '$currentWord'")
                 } else {
-                    updateSuggestions("") // Vider les suggestions en mode numérique
+                    // Mode numérique - vider les suggestions
+                    updateSuggestions("")
+                    Log.d(TAG, "Suggestions vidées pour mode numérique")
                 }
             }
         }
@@ -673,11 +747,16 @@ class KreyolInputMethodService : InputMethodService() {
             when (key) {
                 "⌫" -> {
                     // Gestion du backspace
+                    inputConnection.deleteSurroundingText(1, 0)
                     if (currentWord.isNotEmpty()) {
                         currentWord = currentWord.dropLast(1)
+                        Log.d(TAG, "Backspace - Mot après effacement: '$currentWord'")
                         updateSuggestions(currentWord)
+                    } else {
+                        // Si currentWord est déjà vide, réinitialiser avec suggestions par défaut
+                        Log.d(TAG, "Backspace - Mot vide, affichage suggestions par défaut")
+                        updateSuggestions("")
                     }
-                    inputConnection.deleteSurroundingText(1, 0)
                 }
                 "⏎" -> {
                     // Touche Entrée

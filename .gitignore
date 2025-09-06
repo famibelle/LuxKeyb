@@ -1,1 +1,30 @@
 .venv/
+
+# Fichiers de build Android
+android_keyboard/.gradle/
+android_keyboard/app/build/
+android_keyboard/build/
+android_keyboard/local.properties
+android_keyboard/.idea/
+android_keyboard/*.iml
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.log
+
+# Fichiers OS
+.DS_Store
+Thumbs.db
+
+# Fichiers d'IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers Flutter de build
+clavier_creole/build/
+clavier_creole/.dart_tool/
+clavier_creole/.flutter-plugins
+clavier_creole/.flutter-plugins-dependencies
