@@ -1,0 +1,10 @@
+R_DEF: Internal format may change without notice
+local
+drawable key_background
+id keyboard
+id test_input
+layout activity_main
+layout keyboard
+string app_name
+xml kreyol_keyboard
+xml method
