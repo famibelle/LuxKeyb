@@ -22,6 +22,23 @@ import android.view.LayoutInflater
 class KreyolInputMethodService : InputMethodService() {
     
     private val TAG = "KreyolIME"
+    
+    // 🇬🇵 PALETTE COULEURS GUADELOUPE 🇬🇵
+    companion object {
+        // Couleurs principales - Palette "Pur Guadeloupe"
+        const val BLEU_CARAIBE = "#0080FF"        // Bleu des eaux caribéennes
+        const val JAUNE_SOLEIL = "#FFD700"        // Jaune du soleil tropical
+        const val VERT_CANNE = "#228B22"          // Vert de la canne à sucre
+        const val NOIR_VOLCANIQUE = "#1C1C1C"    // Noir des racines volcaniques
+        const val BLANC_CORAL = "#F8F8FF"        // Blanc du corail
+        
+        // Couleurs secondaires pour nuances
+        const val BLEU_LAGON = "#87CEEB"          // Bleu plus clair du lagon
+        const val ORANGE_COUCHER = "#FF8C00"     // Orange du coucher de soleil
+        const val ROUGE_HIBISCUS = "#DC143C"     // Rouge de l'hibiscus
+        const val BEIGE_SABLE = "#F5F5DC"        // Beige du sable fin
+    }
+    
     private var dictionary: List<Pair<String, Int>> = emptyList()
     private var currentWord = ""
     private var suggestionsView: LinearLayout? = null
@@ -97,9 +114,12 @@ class KreyolInputMethodService : InputMethodService() {
                 val button = Button(this).apply {
                     text = suggestion
                     textSize = 14f
-                    setBackgroundColor(Color.LTGRAY)
-                    setTextColor(Color.BLACK)
-                    setPadding(16, 8, 16, 8)
+                    // 🇬🇵 Style Guadeloupe pour les suggestions
+                    setBackgroundColor(Color.parseColor(ORANGE_COUCHER))
+                    setTextColor(Color.parseColor(BLANC_CORAL))
+                    setTypeface(null, android.graphics.Typeface.BOLD)
+                    setPadding(20, 12, 20, 12)
+                    elevation = 2f
                     
                     layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -178,7 +198,7 @@ class KreyolInputMethodService : InputMethodService() {
         // Vérifier et initialiser suggestionsView si nécessaire
         if (suggestionsView == null) {
             Log.d(TAG, "suggestionsView est null, tentative de récupération depuis la vue existante")
-            val currentView = inputView
+            val currentView = mainKeyboardLayout
             if (currentView != null && suggestionsViewId != View.NO_ID) {
                 suggestionsView = currentView.findViewById<LinearLayout>(suggestionsViewId)
                 Log.d(TAG, "suggestionsView récupérée par ID: ${suggestionsView != null}")
@@ -221,34 +241,35 @@ class KreyolInputMethodService : InputMethodService() {
             // Réinitialiser la liste des boutons
             keyboardButtons.clear()
             
-            // Créer le layout principal
+            // Créer le layout principal avec fond volcanique
             val mainLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setBackgroundColor(Color.DKGRAY)
+                setBackgroundColor(Color.parseColor(NOIR_VOLCANIQUE))
                 setPadding(8, 8, 8, 8)
             }
             
             // Stocker la référence pour les changements de mode
             mainKeyboardLayout = mainLayout
             
-            // Titre du clavier
+            // Titre du clavier - Style Guadeloupe
             val titleView = TextView(this).apply {
-                text = "CLAVIER AZERTY - GUADELOUPE"
+                text = "Klavié Kreyòl Karukera 🇬🇵"
                 textSize = 16f
-                setBackgroundColor(Color.parseColor("#0055A4")) // Bleu français
-                setTextColor(Color.WHITE)
-                setPadding(16, 8, 16, 8)
+                setBackgroundColor(Color.parseColor(BLEU_CARAIBE))
+                setTextColor(Color.parseColor(BLANC_CORAL))
+                setPadding(16, 12, 16, 12)
                 gravity = Gravity.CENTER
+                setTypeface(null, android.graphics.Typeface.BOLD)
             }
             mainLayout.addView(titleView)
             
-            // Barre de suggestions
+            // Barre de suggestions - Style tropical
             val suggestionsContainer = HorizontalScrollView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                setBackgroundColor(Color.WHITE)
+                setBackgroundColor(Color.parseColor(BEIGE_SABLE))
                 setPadding(8, 8, 8, 8)
             }
             
@@ -285,6 +306,56 @@ class KreyolInputMethodService : InputMethodService() {
         }
     }
     
+    // 🇬🇵 FONCTION DE STYLE GUADELOUPE
+    private fun applyGuadeloupeStyle(button: Button, key: String) {
+        when {
+            // Touches de lettres - Blanc corail sur fond bleu caraïbe
+            key.length == 1 && key.matches(Regex("[a-zA-Z]")) -> {
+                button.setBackgroundColor(Color.parseColor(BLANC_CORAL))
+                button.setTextColor(Color.parseColor(BLEU_CARAIBE))
+                button.setTypeface(null, android.graphics.Typeface.BOLD)
+                button.textSize = 16f
+            }
+            
+            // Touches spéciales importantes - Jaune soleil
+            key in arrayOf("⌫", "⏎", "↑", "ABC", "123") -> {
+                button.setBackgroundColor(Color.parseColor(JAUNE_SOLEIL))
+                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
+                button.setTypeface(null, android.graphics.Typeface.BOLD)
+                button.textSize = 15f
+            }
+            
+            // Barre d'espace - Vert canne à sucre avec texte spécial
+            key == "ESPACE" -> {
+                button.setBackgroundColor(Color.parseColor(VERT_CANNE))
+                button.setTextColor(Color.parseColor(BLANC_CORAL))
+                button.setTypeface(null, android.graphics.Typeface.BOLD)
+                button.text = "🇬🇵 ESPACE • Potomitan™"
+                button.textSize = 12f
+            }
+            
+            // Touches numériques - Bleu lagon
+            key.matches(Regex("[0-9]")) -> {
+                button.setBackgroundColor(Color.parseColor(BLEU_LAGON))
+                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
+                button.setTypeface(null, android.graphics.Typeface.BOLD)
+                button.textSize = 16f
+            }
+            
+            // Autres touches de ponctuation - Beige sable
+            else -> {
+                button.setBackgroundColor(Color.parseColor(BEIGE_SABLE))
+                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
+                button.setTypeface(null, android.graphics.Typeface.NORMAL)
+                button.textSize = 15f
+            }
+        }
+        
+        // Bordure subtile et padding élégant pour toutes les touches
+        button.setPadding(12, 16, 12, 16)
+        button.elevation = 4f // Légère ombre pour l'effet 3D
+    }
+    
     private fun createKeyboardRow(keys: Array<String>): LinearLayout {
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -301,9 +372,8 @@ class KreyolInputMethodService : InputMethodService() {
                 tag = key // Stocker la valeur originale dans le tag
                 textSize = 14f
                 
-                // Couleur standard pour toutes les touches pour commencer
-                setBackgroundColor(Color.LTGRAY)
-                setTextColor(Color.BLACK)
+                // 🇬🇵 DESIGN GUADELOUPE : Appliquer les couleurs selon le type de touche
+                applyGuadeloupeStyle(this, key)
                 
                 // Gérer la taille des boutons
                 val params = LinearLayout.LayoutParams(
@@ -315,7 +385,7 @@ class KreyolInputMethodService : InputMethodService() {
                 } else {
                     params.weight = 1f
                 }
-                params.setMargins(2, 2, 2, 2)
+                params.setMargins(3, 3, 3, 3) // Légèrement plus d'espace
                 layoutParams = params
                 
                 // Gestion des événements tactiles pour l'appui long

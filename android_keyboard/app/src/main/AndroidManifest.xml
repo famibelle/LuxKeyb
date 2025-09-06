@@ -5,28 +5,14 @@
     <application
         android:allowBackup="true"
         android:icon="@android:drawable/ic_dialog_info"
-        android:label="Klavié Kreyòl"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
 
         <!-- Service du clavier IME -->
         <service
             android:name=".KreyolInputMethodService"
-            android:label="Klavié Kreyòl"
-            android:permission="android.permission.BIND_INPUT_METHOD"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data
-                android:name="android.view.im"
-                android:resource="@xml/method" />
-        </service>
-
-        <!-- Service de test IME -->
-        <service
-            android:name=".TestInputMethodService"
-            android:label="Test Kreyòl"
+            android:label="@string/keyboard_name"
             android:permission="android.permission.BIND_INPUT_METHOD"
             android:exported="true">
             <intent-filter>

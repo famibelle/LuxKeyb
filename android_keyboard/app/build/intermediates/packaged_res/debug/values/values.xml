@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Klavié Kreyòl</string>
+    <string name="app_name">Klavié Kreyòl Karukera</string>
+    <string name="keyboard_description">Clavier créole pour la Guadeloupe avec suggestions de mots et accents</string>
+    <string name="keyboard_name">Klavié Kreyòl Karukera 🇬🇵</string>
+    <string name="settings_title">Paramètres Klavié Kreyòl</string>
 </resources>
