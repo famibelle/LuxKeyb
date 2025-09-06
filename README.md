@@ -30,7 +30,7 @@ Ce projet est une preuve de concept (POC) pour un clavier virtuel en cr√©ole, d√
 
 1. **Cloner le projet** :
    ```bash
-   git clone -b poc_keyboard <URL_DU_REPO>
+   git clone -b poc_keyboard https://github.com/famibelle/KreyolKeyb.git
    cd KreyolKeyb
    ```
 
