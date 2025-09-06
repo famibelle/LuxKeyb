@@ -156,6 +156,15 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(16, 16, 16, 16)
             minHeight = 120
             setBackgroundColor(Color.WHITE)
+            setTextColor(Color.parseColor("#1C1C1C")) // Noir volcanique pour le texte
+            setHintTextColor(Color.parseColor("#999999")) // Gris pour le hint
+            // Ajouter une bordure subtile avec padding
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            layoutParams.setMargins(8, 8, 8, 8)
+            this.layoutParams = layoutParams
         }
         
         val switchButton = Button(this).apply {
