@@ -45,24 +45,21 @@ jobs:
         echo "JAVA_HOME: $JAVA_HOME"
         
     - name: Clean project
-      working-directory: android_keyboard
       run: |
-        ./gradlew clean
+        cd android_keyboard && ./gradlew clean
         
     - name: Build Debug APK
-      working-directory: android_keyboard
       run: |
-        ./gradlew assembleDebug
+        cd android_keyboard && ./gradlew assembleDebug
       
     - name: Build Release APK
-      working-directory: android_keyboard
       run: |
-        ./gradlew assembleRelease
+        cd android_keyboard && ./gradlew assembleRelease
         
     - name: 📦 Find APK files
       id: apk_files
-      working-directory: android_keyboard
       run: |
+        cd android_keyboard
         DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
         RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
         
@@ -73,8 +70,8 @@ jobs:
         echo "release_apk=$RELEASE_APK" >> $GITHUB_OUTPUT
         
     - name: 📊 APK Info
-      working-directory: android_keyboard
       run: |
+        cd android_keyboard
         echo "🔍 Debug APK:"
         ls -lh "${{ steps.apk_files.outputs.debug_apk }}"
         echo "🔍 Release APK:"
