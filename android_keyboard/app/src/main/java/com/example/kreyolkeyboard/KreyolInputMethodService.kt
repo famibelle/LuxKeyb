@@ -55,7 +55,7 @@ class KreyolInputMethodService : InputMethodService() {
     // Gestion des majuscules/minuscules
     private var isCapitalMode = false
     private var isCapsLock = false
-    private var keyboardButtons = mutableListOf<Button>()
+    private var keyboardButtons = mutableListOf<TextView>()
     private var isUpdatingKeyboard = false
     private var isNumericMode = false
     private var mainKeyboardLayout: LinearLayout? = null
@@ -147,10 +147,10 @@ class KreyolInputMethodService : InputMethodService() {
             if (suggestions.isEmpty() && input.isEmpty()) {
                 val brandButton = Button(this).apply {
                     text = "Potomitan™"
-                    textSize = 10f
+                    setBackgroundResource(android.R.color.transparent)
+                    setTextColor(getColor(R.color.bleu_caraibe))
+                    textSize = resources.getDimension(R.dimen.text_size_watermark) / resources.displayMetrics.density
                     alpha = 0.6f
-                    setBackgroundColor(Color.TRANSPARENT)
-                    setTextColor(Color.parseColor(BLEU_CARAIBE))
                     setTypeface(null, android.graphics.Typeface.ITALIC)
                     setPadding(12, 8, 12, 8)
                     isClickable = false
@@ -167,22 +167,30 @@ class KreyolInputMethodService : InputMethodService() {
             }
             
             suggestions.forEach { suggestion ->
-                val button = Button(this).apply {
+                val chipButton = Button(this).apply {
                     text = suggestion
-                    textSize = 14f
-                    // 🇬🇵 Style Guadeloupe pour les suggestions
-                    setBackgroundColor(Color.parseColor(ORANGE_COUCHER))
-                    setTextColor(Color.parseColor(BLANC_CORAL))
+                    
+                    // � Style "chips" moderne selon le brief
+                    setBackgroundResource(R.drawable.suggestion_chip_background)
+                    setTextColor(getColor(R.color.blanc_coral))
+                    textSize = resources.getDimension(R.dimen.text_size_suggestion) / resources.displayMetrics.density
                     setTypeface(null, android.graphics.Typeface.BOLD)
-                    setPadding(20, 12, 20, 12)
-                    elevation = 2f
+                    elevation = resources.getDimension(R.dimen.suggestion_elevation)
+                    
+                    // Padding optimisé pour les chips
+                    val chipPaddingH = resources.getDimensionPixelSize(R.dimen.suggestion_padding_horizontal)
+                    val chipPaddingV = resources.getDimensionPixelSize(R.dimen.suggestion_padding_vertical)
+                    setPadding(chipPaddingH, chipPaddingV, chipPaddingH, chipPaddingV)
                     
                     layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     ).apply {
-                        marginEnd = 8
+                        marginEnd = resources.getDimensionPixelSize(R.dimen.suggestion_margin)
                     }
+                    
+                    // Animation moderne pour les chips
+                    addTouchAnimation(this)
                     
                     setOnClickListener {
                         Log.d(TAG, "Suggestion sélectionnée: $suggestion")
@@ -200,8 +208,8 @@ class KreyolInputMethodService : InputMethodService() {
                     }
                 }
                 
-                suggestionsView?.addView(button)
-                Log.d(TAG, "Bouton de suggestion ajouté: $suggestion")
+                suggestionsView?.addView(chipButton)
+                Log.d(TAG, "Chip de suggestion ajouté: $suggestion")
             }
             
             Log.d(TAG, "=== updateSuggestions terminée avec succès ===")
@@ -405,36 +413,40 @@ class KreyolInputMethodService : InputMethodService() {
             // Réinitialiser la liste des boutons
             keyboardButtons.clear()
             
-            // Créer le layout principal avec fond volcanique
+            // Créer le layout principal avec design moderne
             val mainLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setBackgroundColor(Color.parseColor(NOIR_VOLCANIQUE))
-                setPadding(8, 8, 8, 8)
+                setBackgroundColor(Color.parseColor("#1C1C1C")) // Noir volcanique direct
+                // Padding augmenté pour un design plus aéré
+                setPadding(12, 12, 12, 12)
             }
             
             // Stocker la référence pour les changements de mode
             mainKeyboardLayout = mainLayout
             
-            // Titre du clavier - Style Guadeloupe avec branding Potomitan™
+            // Titre du clavier - Style moderne et épuré selon le brief
             val titleView = TextView(this).apply {
                 text = "Klavié Kreyòl Karukera 🇬🇵 • Potomitan™"
-                textSize = 16f
-                setBackgroundColor(Color.parseColor(BLEU_CARAIBE))
-                setTextColor(Color.parseColor(BLANC_CORAL))
+                textSize = resources.getDimension(R.dimen.text_size_title) / resources.displayMetrics.density
+                setBackgroundColor(Color.parseColor("#0080FF")) // Bleu caraïbe direct
+                setTextColor(Color.parseColor("#FFFFFF")) // Blanc coral direct
                 setPadding(16, 12, 16, 12)
                 gravity = Gravity.CENTER
                 setTypeface(null, android.graphics.Typeface.BOLD)
+                elevation = 2f
             }
             mainLayout.addView(titleView)
             
-            // Barre de suggestions - Style tropical
+            // Barre de suggestions - Style moderne avec fond épuré
             val suggestionsContainer = HorizontalScrollView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                setBackgroundColor(Color.parseColor(BEIGE_SABLE))
-                setPadding(8, 8, 8, 8)
+                setBackgroundColor(Color.parseColor("#F5F5DC")) // Beige sable direct
+                // Padding augmenté pour un meilleur espacement
+                setPadding(16, 16, 16, 16)
+                elevation = 1f
             }
             
             suggestionsView = LinearLayout(this).apply {
@@ -458,7 +470,7 @@ class KreyolInputMethodService : InputMethodService() {
             // Créer le clavier selon le mode
             createKeyboardLayout(mainLayout)
             
-            // Ajouter un watermark Potomitan™ discret
+            // Ajouter un watermark Potomitan™ discret et moderne
             val watermarkContainer = FrameLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -468,9 +480,9 @@ class KreyolInputMethodService : InputMethodService() {
             
             val watermark = TextView(this).apply {
                 text = "Potomitan™"
-                textSize = 8f
+                textSize = resources.getDimension(R.dimen.text_size_watermark) / resources.displayMetrics.density
                 alpha = 0.4f
-                setTextColor(Color.parseColor(BLANC_CORAL))
+                setTextColor(Color.parseColor("#FFFFFF")) // Blanc coral direct
                 setTypeface(null, android.graphics.Typeface.ITALIC)
                 gravity = Gravity.END
                 setPadding(0, 4, 12, 4)
@@ -484,8 +496,8 @@ class KreyolInputMethodService : InputMethodService() {
             watermarkContainer.addView(watermark)
             mainLayout.addView(watermarkContainer)
             
-            // Mettre à jour l'affichage initial du clavier
-            updateKeyboardDisplay()
+            // Mettre à jour l'affichage initial du clavier - DÉSACTIVÉ pour debug
+            // updateKeyboardDisplay()
             
             Log.d(TAG, "=== CLAVIER KREYÒL CRÉÉ AVEC SUCCÈS ! suggestionsView: ${suggestionsView != null} ===")
             return mainLayout
@@ -496,54 +508,105 @@ class KreyolInputMethodService : InputMethodService() {
         }
     }
     
-    // 🇬🇵 FONCTION DE STYLE GUADELOUPE
+    // 🇬🇵 FONCTION DE STYLE GUADELOUPE SIMPLE ET EFFICACE
     private fun applyGuadeloupeStyle(button: Button, key: String) {
+        // Configuration de base pour toutes les touches
+        button.setTypeface(null, android.graphics.Typeface.BOLD)
+        button.stateListAnimator = null // Désactiver l'animation par défaut
+        
+        // Padding selon les dimensions définies
+        val horizontalPadding = resources.getDimensionPixelSize(R.dimen.key_padding_horizontal)
+        val verticalPadding = resources.getDimensionPixelSize(R.dimen.key_padding_vertical)
+        
         when {
-            // Touches de lettres - Blanc corail sur fond bleu caraïbe
+            // 1. Touches de lettres - Priorité visuelle #1 - STYLE SIMPLE
             key.length == 1 && key.matches(Regex("[a-zA-Z]")) -> {
-                button.setBackgroundColor(Color.parseColor(BLANC_CORAL))
-                button.setTextColor(Color.parseColor(BLEU_CARAIBE))
+                button.setBackgroundColor(Color.parseColor("#FFFFFF")) // Blanc pur
+                button.setTextColor(Color.parseColor("#000000")) // Noir pur pour contraste max
                 button.setTypeface(null, android.graphics.Typeface.BOLD)
-                button.textSize = 16f
+                button.textSize = 18f // Taille fixe pour test
+                button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                button.elevation = 4f
             }
             
-            // Touches spéciales importantes - Jaune soleil
-            key in arrayOf("⌫", "⏎", "↑", "ABC", "123") -> {
-                button.setBackgroundColor(Color.parseColor(JAUNE_SOLEIL))
-                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
-                button.setTypeface(null, android.graphics.Typeface.BOLD)
-                button.textSize = 15f
-            }
-            
-            // Barre d'espace - Vert canne à sucre avec texte spécial
+            // 2. Barre d'espace - Priorité visuelle #2
             key == "ESPACE" -> {
-                button.setBackgroundColor(Color.parseColor(VERT_CANNE))
-                button.setTextColor(Color.parseColor(BLANC_CORAL))
+                button.setBackgroundColor(Color.parseColor("#228B22")) // Vert direct
+                button.setTextColor(Color.parseColor("#FFFFFF")) // Blanc direct
                 button.setTypeface(null, android.graphics.Typeface.BOLD)
-                button.text = "🇬🇵 ESPACE • Potomitan™"
-                button.textSize = 12f
+                button.text = "ESPACE"
+                button.textSize = 14f
+                button.setPadding(horizontalPadding * 2, verticalPadding, horizontalPadding * 2, verticalPadding)
+                button.elevation = 4f
             }
             
-            // Touches numériques - Bleu lagon
-            key.matches(Regex("[0-9]")) -> {
-                button.setBackgroundColor(Color.parseColor(BLEU_LAGON))
-                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
+            // 3. Touches d'action importantes - Priorité visuelle #3
+            key in arrayOf("⌫", "⏎", "⇧", "ABC", "123") -> {
+                button.setBackgroundColor(Color.parseColor("#FFD700")) // Jaune direct
+                button.setTextColor(Color.parseColor("#000000")) // Noir direct
                 button.setTypeface(null, android.graphics.Typeface.BOLD)
                 button.textSize = 16f
+                button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                button.elevation = 4f
             }
             
-            // Autres touches de ponctuation - Beige sable
+            // 4. Touches numériques - Style spécial
+            key.matches(Regex("[0-9]")) -> {
+                button.setBackgroundColor(Color.parseColor("#87CEEB")) // Bleu lagon direct
+                button.setTextColor(Color.parseColor("#000000")) // Noir direct
+                button.setTypeface(null, android.graphics.Typeface.BOLD)
+                button.textSize = 16f
+                button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                button.elevation = 4f
+            }
+            
+            // 5. Autres touches de ponctuation
             else -> {
-                button.setBackgroundColor(Color.parseColor(BEIGE_SABLE))
-                button.setTextColor(Color.parseColor(NOIR_VOLCANIQUE))
+                button.setBackgroundColor(Color.parseColor("#F5F5DC")) // Beige direct
+                button.setTextColor(Color.parseColor("#000000")) // Noir direct
                 button.setTypeface(null, android.graphics.Typeface.NORMAL)
-                button.textSize = 15f
+                button.textSize = 14f
+                button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                button.elevation = 4f
             }
         }
         
-        // Bordure subtile et padding élégant pour toutes les touches
-        button.setPadding(12, 16, 12, 16)
-        button.elevation = 4f // Légère ombre pour l'effet 3D
+        // Les animations sont maintenant gérées directement dans createKeyboardRow
+    }
+    
+    // ✨ ANIMATIONS TACTILES MODERNES (100-120ms comme demandé)
+    private fun addTouchAnimation(button: Button) {
+        button.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Animation d'appui (100ms)
+                    view.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .setDuration(100)
+                        .start()
+                    
+                    // Feedback haptique léger
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        view.performHapticFeedback(
+                            android.view.HapticFeedbackConstants.KEYBOARD_TAP,
+                            android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                        )
+                    }
+                    false // Laisser passer l'événement
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // Animation de relâchement (120ms)
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(120)
+                        .start()
+                    false // Laisser passer l'événement
+                }
+                else -> false
+            }
+        }
     }
     
     private fun createKeyboardRow(keys: Array<String>): LinearLayout {
@@ -553,61 +616,168 @@ class KreyolInputMethodService : InputMethodService() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            setPadding(4, 4, 4, 4)
+            // Espacement amélioré entre les rangées
+            setPadding(6, 6, 6, 6)
         }
         
         for (key in keys) {
-            val button = Button(this).apply {
-                text = key
-                tag = key // Stocker la valeur originale dans le tag
-                textSize = 14f
-                
-                // 🇬🇵 DESIGN GUADELOUPE : Appliquer les couleurs selon le type de touche
-                applyGuadeloupeStyle(this, key)
-                
-                // Gérer la taille des boutons
-                val params = LinearLayout.LayoutParams(
-                    if (key == "ESPACE") 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                if (key == "ESPACE") {
-                    params.weight = 3f // L'espace prend plus de place
-                } else {
-                    params.weight = 1f
+            // ESSAYONS AVEC TEXTVIEW AU LIEU DE BUTTON
+            val button = android.widget.TextView(this)
+            
+            // 1. CONFIGURATION DE BASE
+            button.text = key
+            button.tag = key
+            button.gravity = android.view.Gravity.CENTER
+            button.setTextColor(android.graphics.Color.BLACK)
+            button.textSize = 18f
+            button.setTypeface(null, android.graphics.Typeface.BOLD)
+            
+            // 2. STYLE GUADELOUPE MODERNE AVEC TOUCHES ARRONDIES 🇬🇵
+            when {
+                // Lettres - Jaune soleil tropical avec coins arrondis
+                key.matches(Regex("[a-zA-Z]")) -> {
+                    button.setBackgroundResource(R.drawable.key_rounded_letter)
+                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.textSize = 18f
+                    button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                params.setMargins(3, 3, 3, 3) // Légèrement plus d'espace
-                layoutParams = params
-                
-                // Gestion des événements tactiles pour l'appui long
-                setOnTouchListener { _, event ->
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            isLongPressTriggered = false
-                            // Vérifier si cette touche a des accents (uniquement pour les lettres)
-                            if (key.length == 1 && key.matches(Regex("[a-zA-Z]")) && accentMap.containsKey(key.uppercase())) {
-                                startLongPressTimer(key, this)
-                            }
-                            true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            cancelLongPress()
-                            if (!isLongPressTriggered) {
-                                // Appui court normal
-                                handleKeyPress(key)
-                            }
-                            true
-                        }
-                        MotionEvent.ACTION_CANCEL -> {
-                            cancelLongPress()
-                            true
-                        }
-                        else -> false
-                    }
+                // Touches d'action spéciales - Bleu caraïbe arrondi
+                key == "SUPPR" || key == "ENTER" || key == "SHIFT" -> {
+                    button.setBackgroundResource(R.drawable.key_rounded_action)
+                    button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                    button.textSize = 14f
+                    button.setTypeface(null, android.graphics.Typeface.BOLD)
+                }
+                // Espace - Vert canne moderne arrondi
+                key == "ESPACE" -> {
+                    button.setBackgroundResource(R.drawable.key_rounded_space)
+                    button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                    button.textSize = 16f
+                    button.setTypeface(null, android.graphics.Typeface.BOLD)
+                }
+                // Chiffres - Bleu lagon arrondi
+                key.matches(Regex("[0-9]")) -> {
+                    button.setBackgroundResource(R.drawable.key_rounded_number)
+                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.textSize = 16f
+                    button.setTypeface(null, android.graphics.Typeface.BOLD)
+                }
+                // Autres touches - Beige sable arrondi
+                else -> {
+                    button.setBackgroundResource(R.drawable.key_rounded_other)
+                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.textSize = 14f
+                    button.setTypeface(null, android.graphics.Typeface.NORMAL)
                 }
             }
             
-            // Ajouter le bouton à la liste pour la gestion des majuscules
+            // 3. PADDING ET DIMENSIONS selon le brief UX
+            val padding = when {
+                key == "ESPACE" -> 16
+                key.matches(Regex("[a-zA-Z]")) -> 12
+                else -> 10
+            }
+            button.setPadding(padding, padding, padding, padding)
+            button.minHeight = 120
+            button.minWidth = if (key == "ESPACE") 200 else 80
+            
+            // 4. DEBUG
+            Log.d(TAG, "=== TextView '$key' créé avec background arrondi ===")
+            Log.d(TAG, "  Text: '${button.text}'")
+            
+            // 5. Paramètres de layout
+            val params = LinearLayout.LayoutParams(
+                if (key == "ESPACE") 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            if (key == "ESPACE") {
+                params.weight = 3f
+            } else {
+                params.weight = 1f
+            }
+            params.setMargins(4, 4, 4, 4)
+            button.layoutParams = params
+            
+            // 6. GESTION TACTILE OPTIMISÉE - Stabilité améliorée
+            button.setOnTouchListener { view, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        isLongPressTriggered = false
+                        
+                        // Animation d'appui élégante
+                        view.animate()
+                            .scaleX(0.95f)
+                            .scaleY(0.95f)
+                            .setDuration(100)
+                            .start()
+                        
+                        // Feedback haptique léger pour éviter les conflits
+                        try {
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                view.performHapticFeedback(
+                                    android.view.HapticFeedbackConstants.KEYBOARD_TAP,
+                                    android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "Haptic feedback non disponible")
+                        }
+                        
+                        // Vérifier si cette touche a des accents (uniquement pour les lettres)
+                        if (key.length == 1 && key.matches(Regex("[a-zA-Z]")) && accentMap.containsKey(key.uppercase())) {
+                            startLongPressTimer(key, button)
+                        }
+                        
+                        false // Laisser d'autres gestionnaires traiter l'événement
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        cancelLongPress()
+                        
+                        // Animation de relâchement
+                        view.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(120)
+                            .start()
+                        
+                        // Si pas d'appui long, gérer comme clic normal
+                        if (!isLongPressTriggered) {
+                            // Laisser l'OnClickListener gérer l'action
+                            view.performClick()
+                        }
+                        
+                        false // Laisser d'autres gestionnaires traiter l'événement
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        cancelLongPress()
+                        
+                        // Animation de relâchement
+                        view.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(120)
+                            .start()
+                        
+                        false
+                    }
+                    else -> false
+                }
+            }
+            
+            // 7. CLICK ACTION - Séparé pour plus de stabilité
+            button.setOnClickListener {
+                // Ne traiter que si ce n'est pas un appui long
+                if (!isLongPressTriggered) {
+                    Log.d(TAG, "Clic sur: '$key'")
+                    handleKeyPress(key)
+                }
+            }
+            
+            // 8. AJOUTER à la liste pour gestion majuscules/minuscules
             keyboardButtons.add(button)
+            
+            // 9. FINAL - Ajouter à la vue
+            Log.d(TAG, "Avant ajout à la vue - Text: '${button.text}'")
             row.addView(button)
         }
         
@@ -615,6 +785,9 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun updateKeyboardDisplay() {
+        // Fonction réactivée pour supporter les majuscules
+        Log.d(TAG, "updateKeyboardDisplay() - Mode majuscule: $isCapitalMode, Caps Lock: $isCapsLock")
+        
         if (isUpdatingKeyboard) {
             Log.d(TAG, "Mise à jour du clavier déjà en cours, ignorée")
             return
@@ -645,18 +818,17 @@ class KreyolInputMethodService : InputMethodService() {
                     button.text = newText
                 }
                 
-                // Colorer la touche Shift selon son état
+                // Gérer l'état visuel de la touche Shift avec les états Android
                 if (originalText == "⇧") {
-                    val newColor = when {
-                        isCapsLock -> Color.BLUE
-                        isCapitalMode -> Color.CYAN
-                        else -> Color.LTGRAY
-                    }
+                    // Réinitialiser tous les états
+                    button.isActivated = false
+                    button.isSelected = false
                     
-                    // Mettre à jour seulement si la couleur a changé
-                    if (button.background !is android.graphics.drawable.ColorDrawable || 
-                        (button.background as? android.graphics.drawable.ColorDrawable)?.color != newColor) {
-                        button.setBackgroundColor(newColor)
+                    // Appliquer l'état approprié
+                    when {
+                        isCapsLock -> button.isSelected = true // Jaune pour caps lock
+                        isCapitalMode -> button.isActivated = true // Vert pour majuscule simple
+                        // Sinon état normal (bleu)
                     }
                 }
             }
@@ -766,7 +938,7 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "Mode basculé vers: ${if (isNumericMode) "Numérique" else "Alphabétique"}")
     }
     
-    private fun startLongPressTimer(key: String, button: Button) {
+    private fun startLongPressTimer(key: String, button: TextView) {
         longPressRunnable = Runnable {
             isLongPressTriggered = true
             showAccentPopup(key, button)
@@ -781,25 +953,30 @@ class KreyolInputMethodService : InputMethodService() {
         longPressRunnable = null
     }
     
-    private fun showAccentPopup(baseKey: String, anchorButton: Button) {
+    private fun showAccentPopup(baseKey: String, anchorButton: TextView) {
         val accents = accentMap[baseKey.uppercase()] ?: return
         
         Log.d(TAG, "Affichage popup accents pour $baseKey: ${accents.joinToString()}")
         
-        // Créer un layout horizontal pour les accents
+        // Créer un layout horizontal équilibré pour les accents
         val popupLayout = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
-            setBackgroundColor(Color.WHITE)
-            setPadding(8, 8, 8, 8)
+            setBackgroundColor(getColor(R.color.blanc_coral))
+            setPadding(6, 6, 6, 6) // Padding équilibré
+            elevation = resources.getDimension(R.dimen.popup_elevation)
         }
         
-        // Ajouter la lettre de base en premier
+        // Ajouter la lettre de base en premier - style équilibré
         val baseButton = Button(this).apply {
             text = baseKey.lowercase()
-            textSize = 18f
-            setBackgroundColor(Color.LTGRAY)
-            setTextColor(Color.BLACK)
-            setPadding(16, 12, 16, 12)
+            setBackgroundResource(R.drawable.key_letter_background)
+            setTextColor(getColor(R.color.bleu_caraibe))
+            textSize = 14f // Taille lisible
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setPadding(10, 8, 10, 8) // Padding équilibré
+            minHeight = 70 // Compact mais utilisable
+            minWidth = 60
+            addTouchAnimation(this)
             setOnClickListener {
                 handleKeyPress(baseKey)
                 dismissAccentPopup()
@@ -807,14 +984,18 @@ class KreyolInputMethodService : InputMethodService() {
         }
         popupLayout.addView(baseButton)
         
-        // Ajouter les accents
+        // Ajouter les accents avec style chips ÉQUILIBRÉS
         accents.forEach { accent ->
             val accentButton = Button(this).apply {
                 text = accent
-                textSize = 18f
-                setBackgroundColor(Color.parseColor("#E3F2FD")) // Bleu très clair
-                setTextColor(Color.parseColor("#1976D2")) // Bleu foncé
-                setPadding(16, 12, 16, 12)
+                setBackgroundResource(R.drawable.suggestion_chip_background)
+                setTextColor(getColor(R.color.blanc_coral))
+                textSize = 12f // Taille lisible mais pas trop grande
+                setTypeface(null, android.graphics.Typeface.NORMAL)
+                setPadding(8, 6, 8, 6) // Padding équilibré
+                minHeight = 65 // Compact mais utilisable
+                minWidth = 55 // Largeur adaptée
+                addTouchAnimation(this)
                 setOnClickListener {
                     handleAccentSelection(accent)
                     dismissAccentPopup()
@@ -823,23 +1004,34 @@ class KreyolInputMethodService : InputMethodService() {
             popupLayout.addView(accentButton)
         }
         
-        // Créer et afficher le popup
+        // Créer et afficher le popup avec position corrigée
         currentAccentPopup = PopupWindow(
             popupLayout,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
+            false // Non focusable pour éviter les conflits avec le clavier
         ).apply {
-            elevation = 8f
-            showAsDropDown(anchorButton, 0, -anchorButton.height - 20)
+            elevation = resources.getDimension(R.dimen.popup_elevation)
+            
+            // Position simple et fiable : directement au-dessus de la touche
+            showAsDropDown(anchorButton, 0, -(anchorButton.height + 120)) // Position au-dessus
         }
     }
     
     private var currentAccentPopup: PopupWindow? = null
     
     private fun dismissAccentPopup() {
-        currentAccentPopup?.dismiss()
-        currentAccentPopup = null
+        try {
+            currentAccentPopup?.let { popup ->
+                if (popup.isShowing) {
+                    popup.dismiss()
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Erreur fermeture popup: ${e.message}")
+        } finally {
+            currentAccentPopup = null
+        }
     }
     
     private fun handleAccentSelection(accent: String) {
