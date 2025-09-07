@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Background pour les touches de lettres - Style Guadeloupe avec meilleur contraste -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#4DA6FF">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#4DA6FF" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="#0080FF" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="#0080FF" />
+        </shape>
+    </item>
+</ripple>

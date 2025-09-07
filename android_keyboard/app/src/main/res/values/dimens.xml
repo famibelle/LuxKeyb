@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensions pour le clavier créole -->
+    
+    <!-- Radius pour les coins arrondis -->
+    <dimen name="key_corner_radius">12dp</dimen>
+    <dimen name="space_key_corner_radius">24dp</dimen>
+    <dimen name="suggestion_chip_radius">16dp</dimen>
+    
+    <!-- Tailles de police selon hiérarchie visuelle - OPTIMISÉES POUR MOBILE -->
+    <dimen name="text_size_letter_key">20sp</dimen>      <!-- Lettres - Priorité 1 (augmenté) -->
+    <dimen name="text_size_space_key">16sp</dimen>       <!-- Espace - Priorité 2 (augmenté) -->
+    <dimen name="text_size_action_key">18sp</dimen>      <!-- Actions - Priorité 3 (augmenté) -->
+    <dimen name="text_size_suggestion">16sp</dimen>      <!-- Suggestions - Priorité 4 (augmenté) -->
+    <dimen name="text_size_numeric">18sp</dimen>         <!-- Chiffres (augmenté) -->
+    <dimen name="text_size_title">20sp</dimen>           <!-- Titre du clavier (augmenté) -->
+    <dimen name="text_size_watermark">10sp</dimen>       <!-- Watermark -->
+    
+    <!-- Padding et marges - OPTIMISÉS POUR LE TACTILE -->
+    <dimen name="key_padding_horizontal">18dp</dimen>    <!-- Augmenté pour zone tactile -->
+    <dimen name="key_padding_vertical">16dp</dimen>      <!-- Augmenté pour zone tactile -->
+    <dimen name="key_margin">4dp</dimen>                 <!-- Augmenté pour l'aération -->
+    <dimen name="suggestion_padding_horizontal">24dp</dimen> <!-- Augmenté pour les chips -->
+    <dimen name="suggestion_padding_vertical">12dp</dimen>
+    <dimen name="suggestion_margin">10dp</dimen>         <!-- Plus d'espace entre suggestions -->
+    
+    <!-- Élévation pour effet 3D -->
+    <dimen name="key_elevation">6dp</dimen>              <!-- Augmenté pour plus de relief -->
+    <dimen name="suggestion_elevation">4dp</dimen>       <!-- Augmenté pour plus de relief -->
+    <dimen name="popup_elevation">10dp</dimen>           <!-- Augmenté pour plus de relief -->
+    
+    <!-- Hauteur minimale des touches - OPTIMISÉE POUR MOBILE -->
+    <dimen name="key_min_height">54dp</dimen>            <!-- Augmenté pour meilleur tactile -->
+    <dimen name="space_key_height">58dp</dimen>          <!-- Augmenté pour plus de visibilité -->
+</resources>
