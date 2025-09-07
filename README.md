@@ -214,7 +214,7 @@ cd KreyolKeyb/android_keyboard
 ## 🌍 Langue et Culture 🐚
 
 ### Kreyòl Guadeloupéen
-Le **Kreyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, développée à partir du français avec des influences africaines, caribéennes et amérindiennes.
+Le **Kreyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, qui prend sa source dans une culture africaines, caribéennes et amérindiennes.
 
 ### Respect Culturel �
 Ce projet est développé dans le respect de :

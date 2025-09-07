@@ -8,6 +8,15 @@ android_keyboard/local.properties
 android_keyboard/.idea/
 android_keyboard/*.iml
 
+# APK files (distribués via GitHub Releases)
+*.apk
+*.aab
+
+# Signing files (NEVER commit these!)
+*.jks
+*.keystore
+key.properties
+
 # Fichiers temporaires
 *.tmp
 *.temp

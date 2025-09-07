@@ -1,0 +1,96 @@
+name: 🇬🇵 Build and Release Potomitan Kreyol Keyboard
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: ☕ Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: 🐘 Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      
+    - name: 🔧 Make gradlew executable
+      run: chmod +x android_keyboard/gradlew
+      
+    - name: 🏗️ Build Debug APK
+      run: |
+        cd android_keyboard
+        ./gradlew assembleDebug
+        
+    - name: 🏗️ Build Release APK
+      run: |
+        cd android_keyboard
+        ./gradlew assembleRelease
+        
+    - name: 📦 Get APK names
+      id: apk_names
+      run: |
+        cd android_keyboard
+        DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
+        RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+        echo "debug_apk=$DEBUG_APK" >> $GITHUB_OUTPUT
+        echo "release_apk=$RELEASE_APK" >> $GITHUB_OUTPUT
+        
+    - name: 📊 APK Info
+      run: |
+        cd android_keyboard
+        echo "🔍 Debug APK:"
+        ls -lh "${{ steps.apk_names.outputs.debug_apk }}"
+        echo "🔍 Release APK:"
+        ls -lh "${{ steps.apk_names.outputs.release_apk }}"
+        
+    - name: 🚀 Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.event.inputs.version || github.ref_name }}
+        name: 🇬🇵 Klavié Kreyòl Karukera ${{ github.event.inputs.version || github.ref_name }}
+        body: |
+          ## 🇬🇵 Klavié Kreyòl Karukera • Potomitan™
+          
+          **Nouveau clavier créole pour la Guadeloupe !**
+          
+          ### ✨ Fonctionnalités :
+          - 🌈 Design moderne caribéen (bleu caraïbe, jaune soleil, vert canne)
+          - 📝 Suggestions intelligentes basées sur un vrai dictionnaire créole
+          - 🔤 Accents créoles (à, è, ò, etc.) avec long-press
+          - 📚 Dictionnaire de 5910 mots créoles authentiques
+          - 🎯 Sources littéraires intégrées (Telchid, Rupaire, Fontes, etc.)
+          
+          ### 📱 Installation :
+          1. Téléchargez le fichier **Release APK** (recommandé) ou Debug APK
+          2. Autorisez l'installation d'applications inconnues
+          3. Installez l'APK
+          4. Activez le clavier dans Paramètres → Langues et saisie
+          
+          ### 📊 Tailles des fichiers :
+          - **Release APK** : ~2.6 MB (optimisé)
+          - **Debug APK** : ~3.4 MB (avec infos de debug)
+          
+          ---
+          **Alé douvan épi klavié kreyòl-la !** ⌨️✨
+        files: |
+          android_keyboard/${{ steps.apk_names.outputs.debug_apk }}
+          android_keyboard/${{ steps.apk_names.outputs.release_apk }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
