@@ -26,10 +26,10 @@ jobs:
       env:
         ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
       run: |
-        mkdir -p android_keyboard/keystore
-        echo $ENCODED_STRING | base64 -d > android_keyboard/keystore/release.jks
-        echo "Keystore created at: android_keyboard/keystore/release.jks"
-        ls -la android_keyboard/keystore/
+        mkdir -p android_keyboard/app/keystore
+        echo $ENCODED_STRING | base64 -d > android_keyboard/app/keystore/release.jks
+        echo "Keystore created at: android_keyboard/app/keystore/release.jks"
+        ls -la android_keyboard/app/keystore/
         
     - name: Clean project
       run: |
@@ -45,6 +45,11 @@ jobs:
         cd android_keyboard
         echo "Using keystore: $STORE_FILE"
         echo "Key alias: $KEY_ALIAS"
+        echo "Working directory: $(pwd)"
+        echo "App directory contents:"
+        ls -la app/
+        echo "Keystore directory contents:"
+        ls -la app/keystore/ || echo "Keystore directory not found"
         gradle assembleRelease --no-daemon
         
     - name: 📦 Find APK files
