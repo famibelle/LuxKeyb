@@ -14,7 +14,7 @@ Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggesti
 
 🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kreyòl contemporain.
 
-🎨 Le design du clavier s’inspire des couleurs de la Caraïbe (noir, bleu, jaune, rouge, vert) et intègre le logo **Potomitan™**, symbole de l’héritage guadeloupéen.
+🎨 Le design du clavier s’inspire des couleurs de la Caraïbe (noir, bleu, jaune, rouge, vert).
 
 Il s’installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
 
