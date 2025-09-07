@@ -127,20 +127,37 @@ class KreyolInputMethodService : InputMethodService() {
         
         try {
             val suggestions = if (input.isEmpty()) {
-                // Quand pas d'input, utiliser les N-grams basés sur l'historique
-                getNgramSuggestions() + dictionary.take(5).map { it.first }
+                // Quand pas d'input, utiliser les N-grams basés sur l'historique + mots fréquents
+                getNgramSuggestions() + dictionary.take(6).map { it.first }
             } else {
-                // Filtrer le dictionnaire par l'input actuel + N-grams
+                // SYSTÈME PRÉDICTIF AMÉLIORÉ: Combiner toutes les sources intelligemment
+                
+                // 1. Dictionnaire principal (déjà trié par fréquence) - PRIORITÉ 1
                 val dictionarySuggestions = dictionary.filter { 
                     it.first.startsWith(input.lowercase(), ignoreCase = true) 
-                }.take(6).map { it.first }
+                }.take(4).map { it.first }
                 
+                // 2. Chercher dans TOUTES les clés du modèle N-grams qui commencent par le préfixe
+                val ngramKeysWithPrefix = ngramModel.keys.filter { 
+                    it.startsWith(input.lowercase(), ignoreCase = true)
+                }.take(3)
+                
+                // 3. N-grams contextuelles basées sur l'historique
                 val ngramSuggestions = getNgramSuggestions().filter {
                     it.startsWith(input.lowercase(), ignoreCase = true)
                 }.take(2)
                 
-                // Combiner les suggestions avec priorité aux N-grams
-                (ngramSuggestions + dictionarySuggestions).distinct().take(7)
+                // Combiner avec priorité : dictionnaire > mots N-grams > prédictions contextuelles
+                val combined = (dictionarySuggestions + ngramKeysWithPrefix + ngramSuggestions)
+                    .distinct()
+                    .take(8) // Plus de suggestions pour un meilleur choix
+                
+                Log.d(TAG, "Suggestions détaillées pour '$input':")
+                Log.d(TAG, "  - Dictionnaire: ${dictionarySuggestions.joinToString(", ")}")
+                Log.d(TAG, "  - N-grams clés: ${ngramKeysWithPrefix.joinToString(", ")}")
+                Log.d(TAG, "  - N-grams contexte: ${ngramSuggestions.joinToString(", ")}")
+                
+                combined
             }
             
             Log.d(TAG, "Suggestions trouvées pour '$input': ${suggestions.joinToString(", ")}")
