@@ -26,10 +26,10 @@ jobs:
       env:
         ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
       run: |
-        mkdir -p android_keyboard/app/keystore
-        echo $ENCODED_STRING | base64 -d > android_keyboard/app/keystore/release.jks
-        echo "Keystore created at: android_keyboard/app/keystore/release.jks"
-        ls -la android_keyboard/app/keystore/
+        mkdir -p android_keyboard/keystore
+        echo $ENCODED_STRING | base64 -d > android_keyboard/keystore/release.jks
+        echo "Keystore created at: android_keyboard/keystore/release.jks"
+        ls -la android_keyboard/keystore/
         
     - name: Clean project
       run: |
@@ -37,7 +37,7 @@ jobs:
         
     - name: Build Release APK (Signed)
       env:
-        STORE_FILE: app/keystore/release.jks
+        STORE_FILE: keystore/release.jks
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
