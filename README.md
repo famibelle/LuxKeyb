@@ -49,7 +49,46 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 - Interface moderne et élégante
 - Thème sombre/clair adaptatif
 
-## 📱 Installation
+## � Téléchargements
+
+### 🚀 **Dernière Version Stable**
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/KreyolKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases/latest)
+[![GitHub all releases](https://img.shields.io/github/downloads/famibelle/KreyolKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases)
+
+### 📱 **Installation Rapide**
+
+1. **Téléchargez l'APK** depuis la [dernière release](https://github.com/famibelle/KreyolKeyb/releases/latest)
+2. **Autorisez les sources inconnues** dans les paramètres Android
+3. **Installez l'APK** en touchant le fichier
+4. **Activez le clavier** dans Paramètres → Système → Langues et saisie
+
+### 📦 **Types d'APK Disponibles**
+
+| Type | Description | Taille | Usage |
+|------|-------------|--------|-------|
+| **Release APK** | Version optimisée pour la production | ~2.6 MB | ✅ **Recommandé** |
+| **Debug APK** | Version avec outils de débogage | ~3.4 MB | 🔧 Pour développeurs |
+
+### 🔄 **Mises à Jour Automatiques**
+
+Les nouvelles versions sont automatiquement publiées sur [GitHub Releases](https://github.com/famibelle/KreyolKeyb/releases) à chaque tag `v*.*.*`.
+
+### 🌐 **Installation Alternative**
+
+#### Depuis F-Droid (Bientôt)
+```bash
+# Installation depuis F-Droid (en développement)
+```
+
+#### Compilation depuis les Sources
+```bash
+git clone https://github.com/famibelle/KreyolKeyb.git
+cd KreyolKeyb/android_keyboard
+./gradlew assembleRelease
+```
+
+## �📱 Installation
 
 ### Prérequis
 - **Android 7.0** (API 24) ou supérieur
