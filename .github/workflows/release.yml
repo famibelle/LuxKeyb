@@ -25,27 +25,44 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: 🐘 Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: wrapper
-        
-    - name: 🔧 Make gradlew executable
+    - name: � Make gradlew executable
       run: chmod +x android_keyboard/gradlew
+      
+    - name: 🔍 Verify gradlew and environment
+      run: |
+        echo "Working directory: $(pwd)"
+        echo "List files in android_keyboard:"
+        ls -la android_keyboard/
+        echo "Check gradlew:"
+        ls -la android_keyboard/gradlew
+        cd android_keyboard
+        echo "After cd android_keyboard: $(pwd)"
+        echo "List current directory:"
+        ls -la ./
+        echo "Check gradlew from current dir:"
+        ls -la ./gradlew
+        echo "Java version:"
+        java -version
+        echo "JAVA_HOME: $JAVA_HOME"
       
     - name: 🧹 Clean project
       run: |
         cd android_keyboard
+        echo "Current directory: $(pwd)"
+        echo "Checking gradlew before clean:"
+        ls -la ./gradlew
         ./gradlew clean --stacktrace --info --no-daemon
         
     - name: 🏗️ Build Debug APK
       run: |
         cd android_keyboard
+        echo "Current directory: $(pwd)"
         ./gradlew assembleDebug --stacktrace --info --no-daemon
         
     - name: 🏗️ Build Release APK
       run: |
         cd android_keyboard
+        echo "Current directory: $(pwd)"
         ./gradlew assembleRelease --stacktrace --info --no-daemon
         
     - name: 📦 Find APK files
