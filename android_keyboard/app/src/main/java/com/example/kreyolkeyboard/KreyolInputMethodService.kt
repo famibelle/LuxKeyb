@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Button
 import android.view.ViewGroup
+import android.provider.UserDictionary
+import android.content.ContentValues
 import android.view.inputmethod.EditorInfo
 import android.widget.HorizontalScrollView
 import org.json.JSONArray
@@ -80,8 +82,9 @@ class KreyolInputMethodService : InputMethodService() {
             Log.d(TAG, "Initialisation du dictionnaire...")
             dictionary = emptyList()
             currentWord = "" // Reset du mot actuel
-            loadDictionary() // Activer le chargement du dictionnaire
+            loadDictionary() // Activer le chargement du dictionnaire (inclut populatePersonalDictionary)
             loadNgramModel() // Charger le modèle N-grams
+            
             Log.d(TAG, "Variables initialisées et dictionnaire chargé")
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de l'initialisation", e)
@@ -203,6 +206,19 @@ class KreyolInputMethodService : InputMethodService() {
                         // Insérer la suggestion complète
                         inputConnection?.commitText("$suggestion ", 1)
                         addWordToHistory(suggestion) // Ajouter à l'historique N-grams
+                        
+                        // Ajouter automatiquement au dictionnaire personnel pour éviter soulignement rouge
+                        try {
+                            UserDictionary.Words.addWord(
+                                this@KreyolInputMethodService,
+                                suggestion.lowercase(),
+                                255,
+                                UserDictionary.Words.LOCALE_TYPE_ALL
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Impossible d'ajouter '$suggestion' au dictionnaire: ${e.message}")
+                        }
+                        
                         currentWord = ""
                         updateSuggestions("")
                     }
@@ -271,6 +287,9 @@ class KreyolInputMethodService : InputMethodService() {
             dictionary = tempList.sortedByDescending { it.second } // Trier par fréquence
             Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
             
+            // Peupler le dictionnaire personnel Android avec les mots créoles
+            populatePersonalDictionary()
+            
         } catch (e: IOException) {
             Log.e(TAG, "Erreur lors du chargement du dictionnaire", e)
         } catch (e: Exception) {
@@ -326,6 +345,23 @@ class KreyolInputMethodService : InputMethodService() {
         super.onStartInput(info, restarting)
         Log.d(TAG, "=== KREYOL onStartInput appelé - restarting: $restarting ===")
         Log.d(TAG, "EditorInfo: $info")
+        
+        // SOLUTION RADICALE : Désactiver complètement le spell checking
+        info?.let { editorInfo ->
+            // Sauvegarder l'inputType original
+            val originalInputType = editorInfo.inputType
+            
+            // Forcer un inputType qui désactive le spell checking
+            editorInfo.inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
+                android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD // Empêche le spell checking
+                
+            // Alternative : utiliser TYPE_TEXT_VARIATION_FILTER
+            // editorInfo.inputType = android.text.InputType.TYPE_CLASS_TEXT or
+            //     android.text.InputType.TYPE_TEXT_VARIATION_FILTER
+            
+            Log.d(TAG, "InputType modifié de $originalInputType à ${editorInfo.inputType} pour désactiver spell checking")
+        }
     }
     
     override fun onStartInputView(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
@@ -354,38 +390,21 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "Vue d'entrée disponible, clavier devrait être visible")
     }
     
-    override fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int) {
-        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
-        
-        Log.d(TAG, "onUpdateSelection - oldSel: $oldSelStart-$oldSelEnd, newSel: $newSelStart-$newSelEnd")
-        
-        // Si la sélection a changé ou le texte a été modifié depuis l'extérieur
-        if (newSelStart != newSelEnd || oldSelStart != newSelStart) {
-            // Essayer de récupérer le mot actuel depuis le curseur
-            val inputConnection = currentInputConnection
-            if (inputConnection != null && !isNumericMode) {
-                try {
-                    // Récupérer le texte avant le curseur pour détecter le mot en cours
-                    val textBeforeCursor = inputConnection.getTextBeforeCursor(50, 0)?.toString() ?: ""
-                    val words = textBeforeCursor.split(Regex("\\s+"))
-                    val lastWord = if (words.isNotEmpty()) words.last() else ""
-                    
-                    // Mettre à jour currentWord seulement si différent et pas d'espace à la fin
-                    if (lastWord != currentWord && !textBeforeCursor.endsWith(" ")) {
-                        currentWord = lastWord
-                        Log.d(TAG, "Synchronisation currentWord: '$currentWord'")
-                        updateSuggestions(currentWord)
-                    } else if (textBeforeCursor.endsWith(" ")) {
-                        // Si l'utilisateur a ajouté un espace, vider currentWord
-                        currentWord = ""
-                        Log.d(TAG, "Espace détecté, currentWord vidé")
-                        updateSuggestions("")
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Erreur lors de la synchronisation du mot actuel", e)
-                }
-            }
-        }
+    // Désactiver complètement l'extraction de texte pour éviter le spell checking
+    override fun onUpdateExtractingViews(ei: android.view.inputmethod.EditorInfo?) {
+        // Ne pas appeler super pour désactiver l'extraction
+        Log.d(TAG, "onUpdateExtractingViews - désactivé pour éviter spell checking")
+    }
+    
+    override fun onUpdateExtractingVisibility(ei: android.view.inputmethod.EditorInfo?) {
+        // Forcer la vue d'extraction à être invisible
+        setExtractViewShown(false)
+        Log.d(TAG, "Vue d'extraction forcée invisible pour éviter spell checking")
+    }
+    
+    override fun isExtractViewShown(): Boolean {
+        // Toujours retourner false pour désactiver l'extraction
+        return false
     }
     
     override fun onFinishInput() {
@@ -1105,6 +1124,20 @@ class KreyolInputMethodService : InputMethodService() {
                     // Espace termine le mot actuel
                     if (currentWord.isNotBlank()) {
                         addWordToHistory(currentWord) // Ajouter le mot à l'historique N-grams
+                        
+                        // Ajouter automatiquement les mots créoles au dictionnaire personnel
+                        if (isCreoleWord(currentWord)) {
+                            try {
+                                UserDictionary.Words.addWord(
+                                    this@KreyolInputMethodService,
+                                    currentWord.lowercase(),
+                                    255,
+                                    UserDictionary.Words.LOCALE_TYPE_ALL
+                                )
+                            } catch (e: Exception) {
+                                Log.w(TAG, "Impossible d'ajouter '$currentWord' au dictionnaire: ${e.message}")
+                            }
+                        }
                     }
                     inputConnection.commitText(" ", 1)
                     currentWord = ""
@@ -1194,6 +1227,152 @@ class KreyolInputMethodService : InputMethodService() {
             // Post la mise à jour pour éviter les conflits
             Handler(Looper.getMainLooper()).post {
                 updateKeyboardDisplay()
+            }
+        }
+    }
+    
+    // GESTION DICTIONNAIRE PERSONNEL POUR ÉVITER SOULIGNEMENT ROUGE
+    private fun isCreoleWord(word: String): Boolean {
+        // Vérifier si le mot est dans notre dictionnaire créole
+        val lowercaseWord = word.toLowerCase()
+        
+        // 1. Vérifier dans le dictionnaire principal
+        if (dictionary.any { it.first.toLowerCase() == lowercaseWord }) {
+            return true
+        }
+        
+        // 2. Patterns typiques du créole guadeloupéen
+        val creolePatterns = listOf(
+            ".*òl$", ".*è$", ".*ò$", ".*é$", ".*à$", // Finales avec accents créoles
+            "^ki.*", "^ka.*", "^kè.*", "^ké.*", // Préfixes créoles
+            ".*yan$", ".*yon$", ".*an$", ".*on$", // Finales créoles courantes
+            ".*té$", ".*tè$", ".*pou$", ".*nou$" // Autres patterns créoles
+        )
+        
+        return creolePatterns.any { pattern ->
+            lowercaseWord.matches(Regex(pattern))
+        }
+    }
+    
+    private fun populatePersonalDictionary() {
+        Log.d(TAG, "Population du dictionnaire personnel avec mots créoles du fichier JSON...")
+        
+        try {
+            // Vérifier que nous avons les permissions nécessaires
+            val permission = checkSelfPermission("android.permission.WRITE_USER_DICTIONARY")
+            if (permission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                Log.w(TAG, "Permission WRITE_USER_DICTIONARY non accordée")
+                return
+            }
+            
+            // Utiliser le dictionnaire déjà chargé depuis creole_dict.json
+            if (dictionary.isNotEmpty()) {
+                Log.d(TAG, "Ajout de ${dictionary.size} mots créoles au dictionnaire personnel...")
+                
+                // Ajouter tous les mots du dictionnaire créole, en limitant aux plus fréquents
+                // pour éviter de surcharger le dictionnaire personnel
+                val wordsToAdd = dictionary.take(1000) // Augmentons à 1000 mots pour inclure plus de vocabulaire
+                
+                var addedCount = 0
+                wordsToAdd.forEach { (word, frequency) ->
+                    try {
+                        UserDictionary.Words.addWord(
+                            this,
+                            word.lowercase(),
+                            255, // Fréquence maximale pour prioriser les mots créoles
+                            UserDictionary.Words.LOCALE_TYPE_ALL
+                        )
+                        addedCount++
+                        
+                        // Log pour quelques mots clés pour déboguer
+                        if (word.lowercase() in listOf("mwen", "ou", "li", "nou", "yo", "bonjou", "mèsi")) {
+                            Log.d(TAG, "Mot créole clé ajouté: '$word'")
+                        }
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Impossible d'ajouter '$word': ${e.message}")
+                    }
+                }
+                
+                Log.d(TAG, "Dictionnaire personnel populé avec $addedCount/${wordsToAdd.size} mots créoles")
+            } else {
+                Log.w(TAG, "Dictionnaire créole pas encore chargé, ajout de mots de base...")
+                
+                // Fallback avec quelques mots de base si le dictionnaire n'est pas encore chargé
+                val fallbackWords = listOf(
+                    "an", "ka", "la", "on", "té", "pou", "nou", "sé", "yo", "ki",
+                    "mwen", "ou", "li", "bonjou", "bonswa", "mèsi", "kreyòl", "kay", "moun", "jou"
+                )
+                
+                fallbackWords.forEach { word ->
+                    try {
+                        UserDictionary.Words.addWord(
+                            this,
+                            word.lowercase(),
+                            255,
+                            UserDictionary.Words.LOCALE_TYPE_ALL
+                        )
+                        Log.d(TAG, "Mot de base ajouté: '$word'")
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Impossible d'ajouter '$word': ${e.message}")
+                    }
+                }
+                
+                Log.d(TAG, "Dictionnaire personnel populé avec ${fallbackWords.size} mots de base")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors de la population du dictionnaire personnel", e)
+        }
+    }
+    
+    // SURCHARGE SYSTÈME DE CORRECTION ORTHOGRAPHIQUE
+    override fun onDisplayCompletions(completions: Array<android.view.inputmethod.CompletionInfo>?) {
+        // Filtrer les suggestions pour éviter de marquer les mots créoles comme incorrects
+        if (completions != null) {
+            val filteredCompletions = completions.filter { completion ->
+                val text = completion.text.toString().lowercase()
+                // Garder la suggestion si ce n'est pas un mot créole OU si c'est une vraie suggestion
+                !isCreoleWord(text) || text in dictionary.map { it.first.lowercase() }
+            }.toTypedArray()
+            
+            super.onDisplayCompletions(filteredCompletions)
+        } else {
+            super.onDisplayCompletions(completions)
+        }
+    }
+    
+    // Surcharger la gestion des suggestions pour éviter le soulignement rouge
+    override fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int) {
+        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
+        
+        // Si on a un mot sélectionné, vérifier s'il s'agit d'un mot créole
+        if (candidatesStart >= 0 && candidatesEnd > candidatesStart) {
+            val inputConnection = currentInputConnection
+            if (inputConnection != null) {
+                try {
+                    val selectedText = inputConnection.getTextBeforeCursor(candidatesEnd, 0)?.toString()
+                    if (selectedText != null && selectedText.length >= candidatesEnd - candidatesStart) {
+                        val candidateWord = selectedText.substring(
+                            selectedText.length - (candidatesEnd - candidatesStart)
+                        ).lowercase()
+                        
+                        // Si c'est un mot créole reconnu, l'ajouter au dictionnaire personnel
+                        if (isCreoleWord(candidateWord)) {
+                            try {
+                                UserDictionary.Words.addWord(
+                                    this,
+                                    candidateWord,
+                                    255,
+                                    UserDictionary.Words.LOCALE_TYPE_ALL
+                                )
+                                Log.d(TAG, "Mot créole '$candidateWord' ajouté automatiquement au dictionnaire")
+                            } catch (e: Exception) {
+                                Log.w(TAG, "Erreur ajout automatique '$candidateWord': ${e.message}")
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "Erreur lors de la vérification du mot sélectionné: ${e.message}")
+                }
             }
         }
     }

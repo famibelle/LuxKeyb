@@ -3,7 +3,8 @@
     android:settingsActivity="com.example.kreyolkeyboard.SettingsActivity"
     android:supportsSwitchingToNextInputMethod="true">
     <subtype
-        android:label="Kreyòl"
-        android:imeSubtypeLocale="ht"
-        android:imeSubtypeMode="keyboard" />
+        android:label="Kreyòl Karukera 🇬🇵"
+        android:imeSubtypeLocale="fr_GP"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="TrySuggestionsForWordBeforeChecking,ShouldOfferSwitchingToNextInputMethod" />
 </input-method>
