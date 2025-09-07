@@ -28,11 +28,6 @@ jobs:
     - name: 🔧 Make gradlew executable
       run: chmod +x android_keyboard/gradlew
       
-    - name: 🎯 Setup Gradle wrapper
-      working-directory: android_keyboard
-      run: |
-        ./gradlew wrapper --gradle-version=8.4 --distribution-type=bin
-        
     - name: 💾 Check system resources
       run: |
         echo "=== DISK SPACE ==="
@@ -55,20 +50,26 @@ jobs:
         java -version
         echo "JAVA_HOME: $JAVA_HOME"
         
+    - name: 🏗️ Force Gradle wrapper setup
+      working-directory: android_keyboard
+      run: |
+        chmod +x gradlew
+        ./gradlew wrapper --gradle-version=8.4
+        
     - name: Clean project
       working-directory: android_keyboard
       run: |
-        ./gradlew clean
+        gradle clean
         
     - name: Build Debug APK
       working-directory: android_keyboard
       run: |
-        ./gradlew assembleDebug
+        gradle assembleDebug
       
     - name: Build Release APK
       working-directory: android_keyboard
       run: |
-        ./gradlew assembleRelease
+        gradle assembleRelease
         
     - name: 📦 Find APK files
       id: apk_files
