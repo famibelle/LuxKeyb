@@ -1,0 +1,96 @@
+name: Build and Release Signed APK
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    - name: Decode Keystore
+      env:
+        ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
+      run: |
+        mkdir -p android_keyboard/app/keystore
+        echo $ENCODED_STRING | base64 -di > android_keyboard/app/keystore/release.jks
+        
+    - name: Make gradlew executable
+      run: chmod +x android_keyboard/gradlew
+      
+    - name: Build Release APK
+      env:
+        STORE_FILE: app/keystore/release.jks
+        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        cd android_keyboard
+        ./gradlew assembleRelease
+        
+    - name: Get APK info
+      id: apk_info
+      run: |
+        cd android_keyboard/app/build/outputs/apk/release
+        APK_FILE=$(ls *.apk | head -1)
+        echo "apk_file=$APK_FILE" >> $GITHUB_OUTPUT
+        echo "apk_path=android_keyboard/app/build/outputs/apk/release/$APK_FILE" >> $GITHUB_OUTPUT
+        
+    - name: Upload APK as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: signed-apk
+        path: ${{ steps.apk_info.outputs.apk_path }}
+        
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.apk_info.outputs.apk_path }}
+        name: "Kreyol Keyboard ${{ github.ref_name }}"
+        body: |
+          🎹 **Clavier Créole Potomitan ${{ github.ref_name }}**
+          
+          ## 📱 Installation
+          1. Téléchargez le fichier APK ci-dessous
+          2. Activez "Sources inconnues" dans les paramètres Android
+          3. Installez l'APK
+          4. Activez le clavier dans Paramètres > Langues et saisie
+          
+          ## 🔧 Améliorations
+          - APK signée pour une installation sécurisée
+          - Optimisations de performance
+          - Corrections de bugs
+          
+          ## 📝 Notes
+          Compatible avec Android 5.0+ (API 21+)
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
