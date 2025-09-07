@@ -356,6 +356,12 @@ class KreyolInputMethodService : InputMethodService() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Service onDestroy() appelé !")
+    // Nettoyage basique
+    dismissAccentPopup()
+    longPressRunnable = null
+    keyboardButtons.clear()
+    suggestionsView = null
+    mainKeyboardLayout = null
     }
     
     override fun onStartInput(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
@@ -1279,7 +1285,7 @@ class KreyolInputMethodService : InputMethodService() {
     // GESTION DICTIONNAIRE PERSONNEL POUR ÉVITER SOULIGNEMENT ROUGE
     private fun isCreoleWord(word: String): Boolean {
         // Vérifier si le mot est dans notre dictionnaire créole
-        val lowercaseWord = word.toLowerCase()
+    val lowercaseWord = word.lowercase()
         
         // 1. Vérifier dans le dictionnaire principal
         if (dictionary.any { it.first.toLowerCase() == lowercaseWord }) {
@@ -1303,12 +1309,7 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "Population du dictionnaire personnel avec mots créoles du fichier JSON...")
         
         try {
-            // Vérifier que nous avons les permissions nécessaires
-            val permission = checkSelfPermission("android.permission.WRITE_USER_DICTIONARY")
-            if (permission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                Log.w(TAG, "Permission WRITE_USER_DICTIONARY non accordée")
-                return
-            }
+            // WRITE_USER_DICTIONARY est protégé pour apps système; nous essayons sans bloquer l'exécution.
             
             // Utiliser le dictionnaire déjà chargé depuis creole_dict.json
             if (dictionary.isNotEmpty()) {
