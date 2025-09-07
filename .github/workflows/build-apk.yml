@@ -27,7 +27,7 @@ jobs:
         ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
       run: |
         mkdir -p android_keyboard/app/keystore
-        echo $ENCODED_STRING | base64 -d > android_keyboard/app/keystore/app-release.jks
+        echo "$ENCODED_STRING" | base64 --decode > android_keyboard/app/keystore/app-release.jks
         echo "Keystore created at: android_keyboard/app/keystore/app-release.jks"
         ls -la android_keyboard/app/keystore/
         
