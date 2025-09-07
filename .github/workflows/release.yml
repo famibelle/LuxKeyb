@@ -36,17 +36,20 @@ jobs:
     - name: 🧹 Clean project
       run: |
         cd android_keyboard
-        ./gradlew clean --stacktrace --info
+        export GRADLE_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+        ./gradlew clean --stacktrace --info --no-daemon
         
     - name: 🏗️ Build Debug APK
       run: |
         cd android_keyboard
-        ./gradlew assembleDebug --stacktrace --info
+        export GRADLE_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+        ./gradlew assembleDebug --stacktrace --info --no-daemon
         
     - name: 🏗️ Build Release APK
       run: |
         cd android_keyboard
-        ./gradlew assembleRelease --stacktrace --info
+        export GRADLE_OPTS="-Xmx4g -Dfile.encoding=UTF-8"
+        ./gradlew assembleRelease --stacktrace --info --no-daemon
         
     - name: 📦 Find APK files
       id: apk_files
