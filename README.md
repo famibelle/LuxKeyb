@@ -8,8 +8,9 @@ Clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec sug
 
 ## 📱 Aperçu de l'Application
 
-![Clavier Kreyòl Karukera en Action](Screenshots/Screenshot_1757202571.png)
-![Clavier Kreyòl Karukera en home](Screenshots/Screenshot_1757242027.png)
+<img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera en Action" style="width: 25%; height: auto;">
+
+<img src="Screenshots/Screenshot_1757242027.png" alt="Clavier Kreyòl Karukera en home" style="width: 25%; height: auto;">
 
 *Interface du clavier créole avec suggestions intelligentes et design Guadeloupéen*
 
