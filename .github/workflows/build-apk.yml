@@ -28,6 +28,8 @@ jobs:
       run: |
         mkdir -p android_keyboard/app/keystore
         echo $ENCODED_STRING | base64 -d > android_keyboard/app/keystore/release.jks
+        echo "Keystore created at: android_keyboard/app/keystore/release.jks"
+        ls -la android_keyboard/app/keystore/
         
     - name: Clean project
       run: |
@@ -40,7 +42,10 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
-        cd android_keyboard && gradle assembleRelease --no-daemon
+        cd android_keyboard
+        echo "Using keystore: $STORE_FILE"
+        echo "Key alias: $KEY_ALIAS"
+        gradle assembleRelease --no-daemon
         
     - name: 📦 Find APK files
       id: apk_files
