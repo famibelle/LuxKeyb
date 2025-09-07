@@ -1,12 +1,36 @@
-# 🇬🇵 Klavié Kreyòl Karukera (Android) 🇬🇵
+# 🇬🇵 Klavyé Kreyòl Karukera 🇬🇵
 
-Clavier système Android natif (IME) optimisé pour l'écriture en **Kreyòl Guadeloupéen** :
+Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
+
+## 🇬🇵 Présentation – Klavié Kreyòl Karukera 🇬🇵
+
+**Klavié Kreyòl Karukera** est un clavier pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
+
+⚡ Grâce à des suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
+
+Ce projet s’appuie sur un **corpus littéraire créole** et les travaux de **grands défenseurs du kreyòl** — écrivains, chanteurs, linguistes — pour offrir une expérience de saisie fidèle à la richesse de la langue.
+
+Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggestions contextuelles** basé sur des textes d’auteurs emblématiques tels que :
+
+- 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale
+- ✍️ **Sonny Rupaire**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kreyòl ses lettres de noblesse
+- 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil**, **Silvyane Telchid** – linguistes et chercheurs qui ont structuré et valorisé la langue
+
+🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kreyòl contemporain.
+
+🎨 Le design du clavier s’inspire des couleurs de la Caraïbe (noir, bleu, jaune, rouge, vert) et intègre le logo **Potomitan™**, symbole de l’héritage guadeloupéen.
+
+Il s’installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
+
+---
+
+**Klavié Kreyòl Karukera**, c’est plus qu’un outil :  
+C’est un acte de transmission, un hommage à la langue, une technologie au service de l’identité créole.
 
 ![Langue](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
 ![Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-Ce dépôt a été simplifié: seuls les fichiers du module `android_keyboard/` sont conservés (suppression ancienne app Flutter & plugin). L'historique complet reste disponible via la branche `legacy-full` et le tag `before-slim`.
 
 ## 📱 Aperçu
 
@@ -16,16 +40,33 @@ Ce dépôt a été simplifié: seuls les fichiers du module `android_keyboard/` 
 
 *Clavier créole avec suggestions intelligentes et design Guadeloupéen*
 
-## 🌟 Fonctionnalités principales
+## 🌟 Fonctionnalités
 
-### 🎯 Prédiction & Suggestions
-- **~1 800+ mots** dans le dictionnaire embarqué
-- Suggestions par préfixe + modèle **N-grams** (bigrammes) pour le contexte
-- Ajout automatique des mots créoles tapés au dictionnaire utilisateur (limite le soulignement rouge)
-- Accentuation rapide (popup accents via appui long)
+### 🎯 **Suggestions Intelligentes**
+- **1 867 mots** créoles dans le dictionnaire
+- Suggestions contextuelles en temps réel
+- Prédiction de texte adaptée au kreyòl
+- **N-grams linguistiques** construits à partir de textes authentiques créoles
 
-#### 📚 Source linguistique
-Les N-grams proviennent d'un corpus textuel créole consolidé (œuvres & corpus Potomitan). Le modèle est généré via le script `GenererNgrams.py`.
+#### 📚 **Corpus Littéraire des Suggestions**
+Les suggestions de mots sont générées grâce à des **N-grams** (séquences de mots) extraits des œuvres d'éminents auteurs et contributeurs de la littérature créole guadeloupéenne :
+
+**Auteurs et Contributeurs** :
+- **Robert Fontes** - Linguiste et lexicographe créole
+- **Silvyane Telchid** - Romancière et dramaturge
+- **Sonny Rupaire** - Poète et militant culturel
+- **Max Rippon** - Écrivain et chroniqueur
+- **Alain Rutil** - Auteur et chercheur créolophone
+- **Germain William** - Conteur et écrivain traditionnel
+- **Alain Verin** - Linguiste spécialiste du créole
+- **Katel** - Artiste et poète contemporain
+- **Esnard Boisdur** - Écrivain et journaliste
+- **Pierre Edouard Decimus** - Auteur et intellectuel
+- **Jomimi** - Conteur et Joueur de Ka 🪘
+
+
+
+Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain.
 
 
 ### 🎨 Design
@@ -137,9 +178,17 @@ android_keyboard/
 ## 📚 Dictionnaire & Prédiction
 
 ### Sources du Dictionnaire
-Généré via:
-1. Extraction fréquence (script `Dictionnaire.py`) – top N mots.
-2. Génération N-grams (`GenererNgrams.py`) → `creole_ngrams.json` (structure: `{ predictions: { mot: [{word, prob}, …] } }`).
+Le dictionnaire contient **1 867 mots créoles** extraits de :
+
+1. **Dataset Potomitan** (Hugging Face)
+   - Corpus de traductions français-créole
+   - Validation linguistique professionnelle
+
+2. **Textes Littéraires Créoles** 🐚
+   - Œuvres de Gisèle Pineau
+   - Poésie de Sonny Rupaire
+   - Chansons traditionnelles guadeloupéennes �
+   - Littérature créole contemporaine
 
 ### Mots les Plus Fréquents
 ```
@@ -262,6 +311,6 @@ R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 
 **🇬🇵 Fierté Guadeloupéenne – Technologie au service de la langue 🇬🇵**
 
-*Développé avec ❤️ pour la communauté créolophone*
+*Développé avec ❤️ pour la communauté créolophone* 🐚�
 
 </div>
