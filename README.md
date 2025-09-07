@@ -1,10 +1,6 @@
-# 🇬🇵 Klavyé Kreyòl Karukera 🇬🇵
+# 🇬🇵 Klavyé Kreyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
 
-Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
-
-## 🇬🇵 Présentation – Klavié Kreyòl Karukera 🇬🇵
-
-**Klavié Kreyòl Karukera** est un clavier pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
+**Klavyé Kreyòl Karukera** est un clavier pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 ⚡ Grâce à des suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
 
@@ -24,7 +20,7 @@ Il s’installe facilement et fonctionne avec toutes les applications de message
 
 ---
 
-**Klavié Kreyòl Karukera**, c’est plus qu’un outil :  
+**Klavyé Kreyòl Karukera**, c’est plus qu’un outil :  
 C’est un acte de transmission, un hommage à la langue, une technologie au service de l’identité créole.
 
 ![Langue](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
