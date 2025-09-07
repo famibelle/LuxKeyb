@@ -46,15 +46,15 @@ jobs:
         
     - name: Clean project
       run: |
-        cd android_keyboard && ./gradlew clean
+        android_keyboard/gradlew clean
         
     - name: Build Debug APK
       run: |
-        cd android_keyboard && ./gradlew assembleDebug
+        android_keyboard/gradlew assembleDebug
       
     - name: Build Release APK
       run: |
-        cd android_keyboard && ./gradlew assembleRelease
+        android_keyboard/gradlew assembleRelease
         
     - name: 📦 Find APK files
       id: apk_files
