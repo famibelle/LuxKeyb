@@ -52,18 +52,24 @@ jobs:
         echo "Checking gradlew before clean:"
         ls -la ./gradlew
         ./gradlew clean --stacktrace --info --no-daemon
+      env:
+        GRADLE_OPTS: -Xmx2g -Dfile.encoding=UTF-8
         
     - name: 🏗️ Build Debug APK
       run: |
         cd android_keyboard
         echo "Current directory: $(pwd)"
         ./gradlew assembleDebug --stacktrace --info --no-daemon
+      env:
+        GRADLE_OPTS: -Xmx2g -Dfile.encoding=UTF-8
         
     - name: 🏗️ Build Release APK
       run: |
         cd android_keyboard
         echo "Current directory: $(pwd)"
         ./gradlew assembleRelease --stacktrace --info --no-daemon
+      env:
+        GRADLE_OPTS: -Xmx2g -Dfile.encoding=UTF-8
         
     - name: 📦 Find APK files
       id: apk_files
