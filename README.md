@@ -1,9 +1,6 @@
-# 🇬🇵 Clavier Créole Guadeloupéen 🐚
-- **Jomimi** - Conteur et Joueur de Ka 🪘
+# 🇬🇵 Clavier Créole Guadeloupéen 🇬🇵
 
-Cette approche garantit des suggestions **authentiques** et    - Chansons traditionnelles guadeloupéennes 🪘
-   - Littérature créole contemporai### Respect Culturel 🪘
-Ce projet est dévelop*Développé avec ❤️ pour la communauté créolophone* 🐚🪘é dans le respect de :culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain. clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec layout AZERTY, suggestions de mots et accents caribéens.
+Clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
 
 ![Clavier Créole](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
 ![Version Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
@@ -11,16 +8,12 @@ Ce projet est dévelop*Développé avec ❤️ pour la communauté créolophone*
 
 ## 📱 Aperçu de l'Application
 
-![Clavier Kreyòl Karukera en Action](Screenshots/Screenshot_1757201468.png)
+![Clavier Kreyòl Karukera en Action](Screenshots/Screenshot_1757202571.png)
 ![Clavier Kreyòl Karukera en home](Screenshots/Screenshot_1757242027.png)
 
 *Interface du clavier créole avec suggestions intelligentes et design Guadeloupéen*
 
 ## 🌟 Fonctionnalités
-
-### ⌨️ **Layout AZERTY Adapté**
-- Optimisé pour la saisie en créole guadeloupéen
-- Touches spéciales pour les caractères caribéens
 
 ### 🎯 **Suggestions Intelligentes**
 - **1 867 mots** créoles dans le dictionnaire
@@ -42,18 +35,11 @@ Les suggestions de mots sont générées grâce à des **N-grams** (séquences d
 - **Katel** - Artiste et poète contemporain
 - **Esnard Boisdur** - Écrivain et journaliste
 - **Pierre Edouard Decimus** - Auteur et intellectuel
-- **Jomimi** - Conteur et Joueur de Ka �
+- **Jomimi** - Conteur et Joueur de Ka 🪘
+
+
 
 Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain.
-
-### 📝 **Accents et Caractères Spéciaux**
-- **Appui long** sur les voyelles pour les accents :
-  - `a` → `à, á, â`
-  - `e` → `è, é, ê`
-  - `o` → `ò, ó, ô`
-  - `u` → `ù, ú, û`
-  - `i` → `ì, í, î`
-- Support complet des caractères créoles
 
 
 ### 🎨 **Design Guadeloupéen**
@@ -244,7 +230,7 @@ Distribué sous licence **MIT**. Voir `LICENSE` pour plus d'informations.
 
 ### Développement
 - **Medhi** - Développeur principal
-- **Potomitan™** - Partenaire culturel et linguistique
+- **Potomitan™** - [potomitan.io](https://potomitan.io/)
 
 ### Remerciements
 - Communauté créolophone guadeloupéenne
