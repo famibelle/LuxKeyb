@@ -46,32 +46,13 @@ jobs:
         echo "JAVA_HOME: $JAVA_HOME"
       
     - name: 🧹 Clean project
-      run: |
-        cd android_keyboard
-        echo "Current directory: $(pwd)"
-        echo "Checking gradlew before clean:"
-        ls -la ./gradlew
-        echo "Unsetting any existing GRADLE_OPTS..."
-        unset GRADLE_OPTS
-        echo "GRADLE_OPTS after unset: '$GRADLE_OPTS'"
-        echo "Running clean..."
-        ./gradlew clean --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew clean --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
         
     - name: 🏗️ Build Debug APK
-      run: |
-        cd android_keyboard
-        echo "Current directory: $(pwd)"
-        echo "Building Debug APK..."
-        unset GRADLE_OPTS
-        ./gradlew assembleDebug --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew assembleDebug --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
         
     - name: 🏗️ Build Release APK
-      run: |
-        cd android_keyboard
-        echo "Current directory: $(pwd)"
-        echo "Building Release APK..."
-        unset GRADLE_OPTS
-        ./gradlew assembleRelease --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew assembleRelease --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
         
     - name: 📦 Find APK files
       id: apk_files
