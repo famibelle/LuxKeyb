@@ -19,42 +19,22 @@ jobs:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
       
-    - name: 🔧 Make gradlew executable
-      run: chmod +x android_keyboard/gradlew
-      
-    - name: 💾 Check system resources
-      run: |
-        echo "=== DISK SPACE ==="
-        df -h
-        echo "=== MEMORY ==="
-        free -h
-        echo "=== CPU INFO ==="
-        nproc
-        echo "=== ENVIRONMENT VARIABLES ==="
-        env | grep -E "(GRADLE|JAVA|ANDROID)" || echo "No Gradle/Java/Android env vars"
-        
-    - name: 🔍 Verify gradlew and environment
-      run: |
-        echo "Working directory: $(pwd)"
-        echo "List files in android_keyboard:"
-        ls -la android_keyboard/
-        echo "Check gradlew:"
-        ls -la android_keyboard/gradlew
-        echo "Java version:"
-        java -version
-        echo "JAVA_HOME: $JAVA_HOME"
+    - name: 🔧 Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 8.4
         
     - name: Clean project
       run: |
-        gradle -p android_keyboard clean --no-daemon
+        cd android_keyboard && gradle clean --no-daemon
         
     - name: Build Debug APK
       run: |
-        gradle -p android_keyboard assembleDebug --no-daemon
+        cd android_keyboard && gradle assembleDebug --no-daemon
       
     - name: Build Release APK
       run: |
-        gradle -p android_keyboard assembleRelease --no-daemon
+        cd android_keyboard && gradle assembleRelease --no-daemon
         
     - name: 📦 Find APK files
       id: apk_files
