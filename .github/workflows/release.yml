@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (e.g., v1.0.0)'
+        description: 'Version number (e.g., v1.1.0)'
         required: true
-        default: 'v1.0.0'
+        default: 'v1.1.0'
 
 jobs:
   build-and-release:
@@ -27,26 +27,37 @@ jobs:
         
     - name: 🐘 Setup Gradle
       uses: gradle/gradle-build-action@v2
-      
+      with:
+        gradle-version: wrapper
+        
     - name: 🔧 Make gradlew executable
       run: chmod +x android_keyboard/gradlew
       
+    - name: 🧹 Clean project
+      run: |
+        cd android_keyboard
+        ./gradlew clean --stacktrace --info
+        
     - name: 🏗️ Build Debug APK
       run: |
         cd android_keyboard
-        ./gradlew assembleDebug
+        ./gradlew assembleDebug --stacktrace --info
         
     - name: 🏗️ Build Release APK
       run: |
         cd android_keyboard
-        ./gradlew assembleRelease
+        ./gradlew assembleRelease --stacktrace --info
         
-    - name: 📦 Get APK names
-      id: apk_names
+    - name: 📦 Find APK files
+      id: apk_files
       run: |
         cd android_keyboard
         DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
         RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+        
+        echo "Found Debug APK: $DEBUG_APK"
+        echo "Found Release APK: $RELEASE_APK"
+        
         echo "debug_apk=$DEBUG_APK" >> $GITHUB_OUTPUT
         echo "release_apk=$RELEASE_APK" >> $GITHUB_OUTPUT
         
@@ -54,9 +65,9 @@ jobs:
       run: |
         cd android_keyboard
         echo "🔍 Debug APK:"
-        ls -lh "${{ steps.apk_names.outputs.debug_apk }}"
+        ls -lh "${{ steps.apk_files.outputs.debug_apk }}"
         echo "🔍 Release APK:"
-        ls -lh "${{ steps.apk_names.outputs.release_apk }}"
+        ls -lh "${{ steps.apk_files.outputs.release_apk }}"
         
     - name: 🚀 Create Release
       uses: softprops/action-gh-release@v1
@@ -88,8 +99,8 @@ jobs:
           ---
           **Alé douvan épi klavié kreyòl-la !** ⌨️✨
         files: |
-          android_keyboard/${{ steps.apk_names.outputs.debug_apk }}
-          android_keyboard/${{ steps.apk_names.outputs.release_apk }}
+          android_keyboard/${{ steps.apk_files.outputs.debug_apk }}
+          android_keyboard/${{ steps.apk_files.outputs.release_apk }}
         draft: false
         prerelease: false
       env:
