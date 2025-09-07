@@ -1,48 +1,28 @@
 # 🇬🇵 Klavyé Kreyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
 
-**Klavyé Kreyòl Karukera**## 🏗️ Architecture
-
-### Structure du Projet
-```
-KreyolKeyb/
-├── android_keyboard/                     ← Application Android principale
-│   ├── app/src/main/
-│   │   ├── java/com/example/kreyolkeyboard/
-│   │   │   ├── KreyolInputMethodService.kt   ← IME principal (gestion touches / suggestions / accents)
-│   │   │   ├── SettingsActivity.kt           ← UI d'activation & onboarding
-│   │   │   └── KreyolSpellCheckerService.kt  ← Service de vérification orthographique
-│   │   ├── assets/
-│   │   │   ├── creole_dict.json              ← Dictionnaire créole [mot, fréquence]
-│   │   │   └── creole_ngrams.json            ← Modèle N-grams (prédictions)
-│   │   └── res/…                             ← Ressources UI (couleurs, dimens, drawables, styles)
-│   └── gradle/                               ← Wrapper Gradle
-├── Dictionnaire.py                       ← Script génération dictionnaire
-├── Screenshots/                          ← Captures d'écran
-└── .github/workflows/                    ← CI/CD automatisé
-    ├── build-apk.yml                     ← Build APK signés automatiques
-    └── release.yml                       ← Releases automatiques
-```pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
-
-⚡ Grâce à des suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
+**Klavié Kreyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 Ce projet s’appuie sur un **corpus littéraire créole** et les travaux de **grands défenseurs du kreyòl** — écrivains, chanteurs, linguistes — pour offrir une expérience de saisie fidèle à la richesse de la langue.
 
 Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggestions contextuelles** basé sur des textes d’auteurs emblématiques tels que :
 
-- 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale
-- ✍️ **Sonny Rupaire**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kreyòl ses lettres de noblesse
-- 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil**, **Silvyane Telchid** – linguistes et chercheurs qui ont structuré et valorisé la langue
+- 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale  
+- ✍️ **Sonny Rupaire**, **Silvyane Telchid**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kreyòl ses lettres de noblesse  
+- 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil** – linguistes et chercheurs qui ont structuré et valorisé la langue
 
 🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kreyòl contemporain.
 
-🎨 Le design du clavier s’inspire des couleurs de la Caraïbe (noir, bleu, jaune, rouge, vert).
+⚡ Grâce à ces suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
 
-Il s’installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
+🎨 Le design du clavier s’inspire des couleurs de la Caraïbe (bleu, jaune, rouge, vert) et intègre le logo **Potomitan™**, symbole de l’héritage guadeloupéen.
+
+📱 Compatible Android 7.0+, il s’installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
 
 ---
 
-**Klavyé Kreyòl Karukera**, c’est plus qu’un outil :  
+**Klavié Kreyòl Karukera**, c’est plus qu’un outil :  
 C’est un acte de transmission, un hommage à la langue, une technologie au service de l’identité créole.
+
 
 ![Langue](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
 ![Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
@@ -219,11 +199,8 @@ pou (154), nou (133), i (102), sé (100), yo (94)
 
 ### Mise à jour dictionnaire
 ```bash
-# Générer le dictionnaire depuis les sources
 python Dictionnaire.py            # (Hugging Face, nécessite connexion internet)
-
-# Si vous avez un script pour les N-grams (à implémenter)
-# python GenererNgrams.py         # produit assets N-grams
+python GenererNgrams.py           # produit assets N-grams
 ```
 
 ## 🎨 Design & UX
@@ -265,15 +242,9 @@ Tests informels sur: SMS, messageries, réseaux sociaux, champs web, saisie mail
 # Cloner le repo
 git clone https://github.com/famibelle/KreyolKeyb.git
 
-# Setup environnement Android
+# Setup environnement
 cd KreyolKeyb/android_keyboard
 ./gradlew build
-
-# Build APK de développement
-./gradlew assembleDebug
-
-# Build APK de production (signé)
-./gradlew assembleRelease
 
 # Tests
 ./gradlew test
