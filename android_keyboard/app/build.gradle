@@ -26,8 +26,8 @@ android {
     }
     
     // Configuration pour personnaliser le nom des fichiers APK
-    applicationVariants.all { variant ->
-        variant.outputs.all {
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
             def versionName = variant.versionName
             def buildType = variant.buildType.name
             def date = new Date().format('yyyy-MM-dd')
