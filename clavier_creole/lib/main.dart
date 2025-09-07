@@ -52,12 +52,29 @@ class _KeyboardDemoState extends State<KeyboardDemo> {
     _controller.addListener(updateSuggestions);
   }
 
+  @override
+  void dispose() {
+    _controller.removeListener(updateSuggestions);
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> loadDictionary() async {
-    final jsonStr = await rootBundle.loadString('assets/creole_dict.json');
-    final List<dynamic> data = json.decode(jsonStr);
-    setState(() {
-      dictionary = data.map((e) => e[0].toString()).toList();
-    });
+    try {
+      final jsonStr = await rootBundle.loadString('assets/creole_dict.json');
+      final List<dynamic> data = json.decode(jsonStr);
+      if (!mounted) return;
+      setState(() {
+        dictionary = data.map((e) => e[0].toString()).toList();
+      });
+    } catch (e) {
+      // En cas de problème d'asset ou de parsing, on ne bloque pas l'app
+      if (!mounted) return;
+      setState(() {
+        dictionary = const [];
+      });
+      debugPrint('Erreur chargement dictionnaire: $e');
+    }
   }
 
   void updateSuggestions() {
