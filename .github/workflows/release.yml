@@ -46,13 +46,13 @@ jobs:
         echo "JAVA_HOME: $JAVA_HOME"
       
     - name: 🧹 Clean project
-      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew clean --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
+      run: cd android_keyboard && ./gradlew clean --stacktrace --info --no-daemon --warning-mode all
         
     - name: 🏗️ Build Debug APK
-      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew assembleDebug --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
-        
+      run: cd android_keyboard && ./gradlew assembleDebug --stacktrace --info --no-daemon --warning-mode all
+      
     - name: 🏗️ Build Release APK
-      run: cd android_keyboard && unset GRADLE_OPTS && ./gradlew assembleRelease --stacktrace --info --no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8" --warning-mode all
+      run: cd android_keyboard && ./gradlew assembleRelease --stacktrace --info --no-daemon --warning-mode all
         
     - name: 📦 Find APK files
       id: apk_files
