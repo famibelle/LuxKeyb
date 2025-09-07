@@ -1091,16 +1091,44 @@ class KreyolInputMethodService : InputMethodService() {
         if (inputConnection != null) {
             when (key) {
                 "⌫" -> {
-                    // Gestion du backspace
+                    // Gestion du backspace améliorée
+                    Log.d(TAG, "Backspace pressé - currentWord avant: '$currentWord'")
+                    
+                    // Supprimer le caractère de l'écran
                     inputConnection.deleteSurroundingText(1, 0)
+                    
+                    // Mettre à jour currentWord
                     if (currentWord.isNotEmpty()) {
                         currentWord = currentWord.dropLast(1)
-                        Log.d(TAG, "Backspace - Mot après effacement: '$currentWord'")
-                        updateSuggestions(currentWord)
+                        Log.d(TAG, "Backspace - Mot après effacement: '$currentWord' (longueur: ${currentWord.length})")
+                        
+                        // Force la mise à jour des suggestions même si le mot est vide
+                        Handler(Looper.getMainLooper()).post {
+                            updateSuggestions(currentWord)
+                        }
                     } else {
-                        // Si currentWord est déjà vide, réinitialiser avec suggestions par défaut
-                        Log.d(TAG, "Backspace - Mot vide, affichage suggestions par défaut")
-                        updateSuggestions("")
+                        // Si currentWord est déjà vide, on essaie de récupérer le contexte actuel
+                        Log.d(TAG, "Backspace - currentWord était déjà vide")
+                        try {
+                            // Essayer de récupérer le texte autour du curseur pour resynchroniser
+                            val textBeforeCursor = inputConnection.getTextBeforeCursor(50, 0)?.toString() ?: ""
+                            val lastWordMatch = Regex("\\b(\\w+)$").find(textBeforeCursor)
+                            
+                            if (lastWordMatch != null) {
+                                currentWord = lastWordMatch.value
+                                Log.d(TAG, "Backspace - Resynchronisation: currentWord = '$currentWord'")
+                            } else {
+                                currentWord = ""
+                            }
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Erreur lors de la resynchronisation: ${e.message}")
+                            currentWord = ""
+                        }
+                        
+                        // Forcer la mise à jour des suggestions
+                        Handler(Looper.getMainLooper()).post {
+                            updateSuggestions(currentWord)
+                        }
                     }
                 }
                 "⏎" -> {
