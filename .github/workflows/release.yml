@@ -78,13 +78,19 @@ jobs:
           
           ### 📱 Installation :
           1. Téléchargez le fichier **Release APK** (recommandé) ou Debug APK
-          2. Autorisez l'installation d'applications inconnues
-          3. Installez l'APK
-          4. Activez le clavier dans Paramètres → Langues et saisie
+          2. Autorisez l'installation d'applications inconnues dans les paramètres Android
+          3. Installez l'APK en touchant le fichier téléchargé
+          4. Activez le clavier dans **Paramètres → Système → Langues et saisie → Claviers virtuels**
+          5. Sélectionnez **Potomitan Kreyol Keyboard**
           
           ### 📊 Tailles des fichiers :
-          - **Release APK** : ~2.6 MB (optimisé)
-          - **Debug APK** : ~3.4 MB (avec infos de debug)
+          - **Release APK** : ~2.6 MB (optimisé pour la production)
+          - **Debug APK** : ~3.4 MB (avec outils de débogage)
+          
+          ### 🔒 Sécurité :
+          - Code source ouvert et auditable
+          - Pas de trackers ou analytics
+          - Permissions minimales requises
           
           ---
           **Alé douvan épi klavié kreyòl-la !** ⌨️✨
@@ -93,5 +99,6 @@ jobs:
           android_keyboard/${{ steps.apk_files.outputs.release_apk }}
         draft: false
         prerelease: false
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
