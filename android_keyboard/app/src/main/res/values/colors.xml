@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 🇬🇵 PALETTE COULEURS GUADELOUPE - Potomitan™ 🇬🇵 -->
+    
+    <!-- Couleurs principales - Palette "Pur Guadeloupe" -->
+    <color name="bleu_caraibe">#0080FF</color>        <!-- Bleu des eaux caribéennes -->
+    <color name="jaune_soleil">#FFD700</color>        <!-- Jaune du soleil tropical -->
+    <color name="vert_canne">#228B22</color>          <!-- Vert de la canne à sucre -->
+    <color name="noir_volcanique">#1C1C1C</color>     <!-- Noir des racines volcaniques -->
+    <color name="blanc_coral">#FFFFFF</color>         <!-- Blanc du corail - Plus pur pour meilleur contraste -->
+    
+    <!-- Couleurs secondaires pour nuances -->
+    <color name="bleu_lagon">#87CEEB</color>          <!-- Bleu plus clair du lagon -->
+    <color name="orange_coucher">#FF8C00</color>      <!-- Orange du coucher de soleil -->
+    <color name="rouge_hibiscus">#DC143C</color>      <!-- Rouge de l'hibiscus -->
+    <color name="beige_sable">#F5F5DC</color>         <!-- Beige du sable fin -->
+    
+    <!-- Variantes claires pour effets et interactions -->
+    <color name="bleu_caraibe_light">#4DA6FF</color>  <!-- Version claire du bleu caraïbe -->
+    <color name="vert_canne_light">#32CD32</color>    <!-- Version claire du vert canne -->
+    <color name="orange_coucher_light">#FFB84D</color><!-- Version claire de l'orange -->
+    <color name="bleu_lagon_light">#B0E0E6</color>    <!-- Version claire du bleu lagon -->
+    <color name="noir_volcanique_light">#404040</color><!-- Version claire du noir volcanique -->
+    
+    <!-- Couleurs spécialisées -->
+    <color name="accent_primary">@color/orange_coucher</color>     <!-- Accent principal -->
+    <color name="accent_secondary">@color/bleu_caraibe</color>     <!-- Accent secondaire -->
+    <color name="text_primary">@color/noir_volcanique</color>      <!-- Texte principal -->
+    <color name="text_secondary">@color/blanc_coral</color>        <!-- Texte secondaire -->
+    <color name="background_primary">@color/noir_volcanique</color><!-- Fond principal -->
+    <color name="background_secondary">@color/beige_sable</color>  <!-- Fond secondaire -->
+    
+    <!-- Couleurs pour les états -->
+    <color name="key_pressed">#80FFFFFF</color>       <!-- Overlay appui transparent -->
+    <color name="ripple_color">#40FFFFFF</color>      <!-- Couleur ripple -->
+</resources>
