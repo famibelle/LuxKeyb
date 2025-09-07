@@ -1,4 +1,16 @@
-name: 🇬🇵 Build and Release Potomitan Kreyol Keyboard
+name: 🇬🇵 Build and Releas    - name: 🔧 Make gradlew executable
+      run: chmod +x android_keyboard/gradlew
+      
+    - name: 💾 Check system resources
+      run: |
+        echo "=== DISK SPACE ==="
+        df -h
+        echo "=== MEMORY ==="
+        free -h
+        echo "=== CPU INFO ==="
+        nproc
+        echo "=== ENVIRONMENT VARIABLES ==="
+        env | grep -E "(GRADLE|JAVA|ANDROID)" || echo "No Gradle/Java/Android env vars"Potomitan Kreyol Keyboard
 
 on:
   push:
@@ -44,15 +56,19 @@ jobs:
         echo "Java version:"
         java -version
         echo "JAVA_HOME: $JAVA_HOME"
+        echo "Gradle version:"
+        ./gradlew --version
+        echo "Available Gradle tasks:"
+        ./gradlew tasks --all
       
     - name: 🧹 Clean project
-      run: cd android_keyboard && ./gradlew clean --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && ./gradlew clean --debug --stacktrace --no-daemon --warning-mode all
         
     - name: 🏗️ Build Debug APK
-      run: cd android_keyboard && ./gradlew assembleDebug --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && ./gradlew assembleDebug --debug --stacktrace --no-daemon --warning-mode all
       
     - name: 🏗️ Build Release APK
-      run: cd android_keyboard && ./gradlew assembleRelease --stacktrace --info --no-daemon --warning-mode all
+      run: cd android_keyboard && ./gradlew assembleRelease --debug --stacktrace --no-daemon --warning-mode all
         
     - name: 📦 Find APK files
       id: apk_files
