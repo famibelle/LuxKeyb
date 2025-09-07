@@ -1,6 +1,27 @@
 # 🇬🇵 Klavyé Kreyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
 
-**Klavyé Kreyòl Karukera** est un clavier pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
+**Klavyé Kreyòl Karukera**## 🏗️ Architecture
+
+### Structure du Projet
+```
+KreyolKeyb/
+├── android_keyboard/                     ← Application Android principale
+│   ├── app/src/main/
+│   │   ├── java/com/example/kreyolkeyboard/
+│   │   │   ├── KreyolInputMethodService.kt   ← IME principal (gestion touches / suggestions / accents)
+│   │   │   ├── SettingsActivity.kt           ← UI d'activation & onboarding
+│   │   │   └── KreyolSpellCheckerService.kt  ← Service de vérification orthographique
+│   │   ├── assets/
+│   │   │   ├── creole_dict.json              ← Dictionnaire créole [mot, fréquence]
+│   │   │   └── creole_ngrams.json            ← Modèle N-grams (prédictions)
+│   │   └── res/…                             ← Ressources UI (couleurs, dimens, drawables, styles)
+│   └── gradle/                               ← Wrapper Gradle
+├── Dictionnaire.py                       ← Script génération dictionnaire
+├── Screenshots/                          ← Captures d'écran
+└── .github/workflows/                    ← CI/CD automatisé
+    ├── build-apk.yml                     ← Build APK signés automatiques
+    └── release.yml                       ← Releases automatiques
+```pour smartphone conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 ⚡ Grâce à des suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
 
@@ -93,7 +114,10 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 
 ### 🔄 **Mises à Jour Automatiques**
 
-Les nouvelles versions sont automatiquement publiées sur [GitHub Releases](https://github.com/famibelle/KreyolKeyb/releases) à chaque tag `v*.*.*`.
+Les nouvelles versions sont automatiquement construites et publiées grâce à **GitHub Actions** :
+- ✅ **Build automatique** à chaque push sur `main`
+- ✅ **APK signés** prêts pour l'installation
+- ✅ **Releases automatiques** sur [GitHub Releases](https://github.com/famibelle/KreyolKeyb/releases) à chaque tag `v*.*.*`
 
 ### 🔧 Compilation (sources)
 ```bash
@@ -167,9 +191,10 @@ android_keyboard/
 ### Technologies Utilisées
 - **Kotlin** - Langage principal
 - **Android InputMethodService** - Framework IME
-- **JSON** - Format du dictionnaire
+- **JSON** - Format du dictionnaire et N-grams
 - **Gradle** - Build system
 - **Material Design** - Guidelines UI/UX
+- **GitHub Actions** - CI/CD automatisé
 
 ## 📚 Dictionnaire & Prédiction
 
@@ -194,8 +219,11 @@ pou (154), nou (133), i (102), sé (100), yo (94)
 
 ### Mise à jour dictionnaire
 ```bash
+# Générer le dictionnaire depuis les sources
 python Dictionnaire.py            # (Hugging Face, nécessite connexion internet)
-python GenererNgrams.py           # produit assets N-grams
+
+# Si vous avez un script pour les N-grams (à implémenter)
+# python GenererNgrams.py         # produit assets N-grams
 ```
 
 ## 🎨 Design & UX
@@ -237,9 +265,15 @@ Tests informels sur: SMS, messageries, réseaux sociaux, champs web, saisie mail
 # Cloner le repo
 git clone https://github.com/famibelle/KreyolKeyb.git
 
-# Setup environnement
+# Setup environnement Android
 cd KreyolKeyb/android_keyboard
 ./gradlew build
+
+# Build APK de développement
+./gradlew assembleDebug
+
+# Build APK de production (signé)
+./gradlew assembleRelease
 
 # Tests
 ./gradlew test
