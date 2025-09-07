@@ -1,21 +1,23 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 
 android {
-    compileSdk 34
+    compileSdk = 34
     namespace 'com.example.kreyolkeyboard'
 
     defaultConfig {
         applicationId "com.example.kreyolkeyboard"
-        minSdk 21
-        targetSdk 34
-        versionCode 1
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
         versionName "1.0-Potomitan"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
