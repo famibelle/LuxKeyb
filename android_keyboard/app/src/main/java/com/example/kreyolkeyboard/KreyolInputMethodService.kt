@@ -740,11 +740,8 @@ class KreyolInputMethodService : InputMethodService() {
                             .setDuration(120)
                             .start()
                         
-                        // Si pas d'appui long, gérer comme clic normal
-                        if (!isLongPressTriggered) {
-                            // Laisser l'OnClickListener gérer l'action
-                            view.performClick()
-                        }
+                        // Si pas d'appui long, rien à faire ici
+                        // L'OnClickListener se chargera de l'input
                         
                         false // Laisser d'autres gestionnaires traiter l'événement
                     }
@@ -764,7 +761,7 @@ class KreyolInputMethodService : InputMethodService() {
                 }
             }
             
-            // 7. CLICK ACTION - Séparé pour plus de stabilité
+            // 7. CLICK ACTION - Gestionnaire unique pour l'input
             button.setOnClickListener {
                 // Ne traiter que si ce n'est pas un appui long
                 if (!isLongPressTriggered) {
@@ -954,6 +951,9 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun showAccentPopup(baseKey: String, anchorButton: TextView) {
+        // Fermer tout popup existant avant d'en créer un nouveau
+        dismissAccentPopup()
+        
         val accents = accentMap[baseKey.uppercase()] ?: return
         
         Log.d(TAG, "Affichage popup accents pour $baseKey: ${accents.joinToString()}")

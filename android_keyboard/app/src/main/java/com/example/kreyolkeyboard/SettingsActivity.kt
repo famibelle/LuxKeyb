@@ -73,8 +73,6 @@ class SettingsActivity : AppCompatActivity() {
         
         val missionText = TextView(this).apply {
             text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kreyòl Guadeloupéen (Karukera). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
-                    "🎯 Layout AZERTY adapté à nos habitudes\n" +
-                    "🔤 Accents créoles (appui long sur les voyelles)\n" +
                     "💡 Suggestions de mots en Kreyòl\n" +
                     "🔢 Mode numérique intégré\n" +
                     "🌈 Design aux couleurs de la Guadeloupe\n" +
@@ -86,6 +84,33 @@ class SettingsActivity : AppCompatActivity() {
         
         descriptionCard.addView(missionTitle)
         descriptionCard.addView(missionText)
+        
+        // Section Sources littéraires créoles
+        val sourcesCard = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 20, 20, 20)
+            setBackgroundColor(Color.parseColor("#F0F8E8")) // Vert très pâle
+        }
+        
+        val sourcesTitle = TextView(this).apply {
+            text = "📚 Sources littéraires créoles"
+            textSize = 18f
+            setTextColor(Color.parseColor("#228B22")) // Vert Canne
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        
+        val sourcesText = TextView(this).apply {
+            text = "Les suggestions de mots en kreyòl sont construites sur les travaux des défenseurs du kreyòl :\n\n" +
+                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus,\n\n" +
+                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
+            textSize = 14f
+            setTextColor(Color.parseColor("#2F5233")) // Vert foncé
+            setLineSpacing(0f, 1.3f)
+        }
+        
+        sourcesCard.addView(sourcesTitle)
+        sourcesCard.addView(sourcesText)
         
         // Instructions d'installation
         val installCard = LinearLayout(this).apply {
@@ -208,6 +233,7 @@ class SettingsActivity : AppCompatActivity() {
         
         mainLayout.addView(headerLayout)
         mainLayout.addView(descriptionCard)
+        mainLayout.addView(sourcesCard)
         mainLayout.addView(installCard)
         mainLayout.addView(buttonLayout)
         mainLayout.addView(footerCard)
