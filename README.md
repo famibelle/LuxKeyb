@@ -1,55 +1,39 @@
-# 🇬🇵 Clavier Créole Guadeloupéen 🇬🇵
+# 🇬🇵 Klavié Kreyòl Karukera (Android) 🇬🇵
 
-Clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
+Clavier système Android natif (IME) optimisé pour l'écriture en **Kreyòl Guadeloupéen** :
 
-![Clavier Créole](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
-![Version Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
+![Langue](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
+![Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-## 📱 Aperçu de l'Application
+Ce dépôt a été simplifié: seuls les fichiers du module `android_keyboard/` sont conservés (suppression ancienne app Flutter & plugin). L'historique complet reste disponible via la branche `legacy-full` et le tag `before-slim`.
+
+## 📱 Aperçu
 
 <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera en Action" style="width: 25%; height: auto;">
 
 <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier Kreyòl Karukera en home" style="width: 25%; height: auto;">
 
-*Interface du clavier créole avec suggestions intelligentes et design Guadeloupéen*
+*Clavier créole avec suggestions intelligentes et design Guadeloupéen*
 
-## 🌟 Fonctionnalités
+## 🌟 Fonctionnalités principales
 
-### 🎯 **Suggestions Intelligentes**
-- **1 867 mots** créoles dans le dictionnaire
-- Suggestions contextuelles en temps réel
-- Prédiction de texte adaptée au kreyòl
-- **N-grams linguistiques** construits à partir de textes authentiques créoles
+### 🎯 Prédiction & Suggestions
+- **~1 800+ mots** dans le dictionnaire embarqué
+- Suggestions par préfixe + modèle **N-grams** (bigrammes) pour le contexte
+- Ajout automatique des mots créoles tapés au dictionnaire utilisateur (limite le soulignement rouge)
+- Accentuation rapide (popup accents via appui long)
 
-#### 📚 **Corpus Littéraire des Suggestions**
-Les suggestions de mots sont générées grâce à des **N-grams** (séquences de mots) extraits des œuvres d'éminents auteurs et contributeurs de la littérature créole guadeloupéenne :
-
-**Auteurs et Contributeurs** :
-- **Robert Fontes** - Linguiste et lexicographe créole
-- **Silvyane Telchid** - Romancière et dramaturge
-- **Sonny Rupaire** - Poète et militant culturel
-- **Max Rippon** - Écrivain et chroniqueur
-- **Alain Rutil** - Auteur et chercheur créolophone
-- **Germain William** - Conteur et écrivain traditionnel
-- **Alain Verin** - Linguiste spécialiste du créole
-- **Katel** - Artiste et poète contemporain
-- **Esnard Boisdur** - Écrivain et journaliste
-- **Pierre Edouard Decimus** - Auteur et intellectuel
-- **Jomimi** - Conteur et Joueur de Ka 🪘
+#### 📚 Source linguistique
+Les N-grams proviennent d'un corpus textuel créole consolidé (œuvres & corpus Potomitan). Le modèle est généré via le script `GenererNgrams.py`.
 
 
+### 🎨 Design
+- Palette inspirée (Bleu Caraïbe / Jaune Soleil / Vert Canne / Rouge Hibiscus)
+- Touches arrondies, animations 100–120 ms, haptique légère
+- Watermark discret Potomitan™
 
-Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain.
-
-
-### 🎨 **Design Guadeloupéen**
-- **Palette de couleurs** inspirée du drapeau guadeloupéen
-- Logo **Potomitan™** intégré
-- Interface moderne et élégante
-- Thème sombre/clair adaptatif
-
-## � Téléchargements
+## 📦 Téléchargements
 
 ### 🚀 **Dernière Version Stable**
 
@@ -67,28 +51,21 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 
 | Type | Description | Taille | Usage |
 |------|-------------|--------|-------|
-| **Release APK** | Version optimisée pour la production | ~2.6 MB | ✅ **Recommandé** |
-| **Debug APK** | Version avec outils de débogage | ~3.4 MB | 🔧 Pour développeurs |
+| **Release APK** | Optimisée production | ~2–3 MB | ✅ Recommandé |
+| **Debug APK** | Avec logs verbeux | + ~1 MB | 🔧 Dev |
 
 ### 🔄 **Mises à Jour Automatiques**
 
 Les nouvelles versions sont automatiquement publiées sur [GitHub Releases](https://github.com/famibelle/KreyolKeyb/releases) à chaque tag `v*.*.*`.
 
-### 🌐 **Installation Alternative**
-
-#### Depuis F-Droid (Bientôt)
-```bash
-# Installation depuis F-Droid (en développement)
-```
-
-#### Compilation depuis les Sources
+### 🔧 Compilation (sources)
 ```bash
 git clone https://github.com/famibelle/KreyolKeyb.git
 cd KreyolKeyb/android_keyboard
 ./gradlew assembleRelease
 ```
 
-## �📱 Installation
+## �️ Installation depuis les sources
 
 ### Prérequis
 - **Android 7.0** (API 24) ou supérieur
@@ -125,31 +102,29 @@ cd KreyolKeyb/android_keyboard
 2. Appuyer longuement sur l'icône clavier (barre de navigation)
 3. Sélectionner **Clavier Créole Guadeloupéen**
 
-### Saisie des Accents
-- **Appui court** : lettre normale (`a`, `e`, `o`, etc.)
-- **Appui long** : menu des accents (`à`, `è`, `ò`, etc.)
-- Sélectionner l'accent désiré
+### Accents
+Appui long sur une lettre: affiche un popup (ex: a → à á â ä ã …). Relâcher après sélection.
 
 ### Suggestions de Mots
 - Commencer à taper un mot créole
 - Les suggestions apparaissent automatiquement
 - Toucher une suggestion pour l'insérer
 
-## 🏗️ Architecture Technique
+## 🏗️ Architecture
 
 ### Structure du Projet
 ```
 android_keyboard/
 ├── app/src/main/
-│   ├── java/com/potomitan/kreyolkeyboard/
-│   │   ├── KreyolInputMethodService.kt  # Service principal IME
-│   │   └── SettingsActivity.kt          # Activité de configuration
-│   ├── res/
-│   │   ├── layout/                      # Layouts XML
-│   │   ├── values/                      # Strings, colors, dimens
-│   │   └── drawable/                    # Assets graphiques
-│   └── assets/
-│       └── creole_dict.json            # Dictionnaire créole (1867 mots)
+│   ├── java/com/example/kreyolkeyboard/
+│   │   ├── KreyolInputMethodService.kt   ← IME principal (gestion touches / suggestions / accents)
+│   │   ├── SettingsActivity.kt           ← UI d’activation & onboarding
+│   │   └── KreyolSpellCheckerService.kt  ← (placeholder – à implémenter ou supprimer)
+│   ├── assets/
+│   │   ├── creole_dict.json              ← Liste [mot, fréquence]
+│   │   └── creole_ngrams.json            ← Modèle N-grams (predictions)
+│   └── res/…                             ← Ressources UI (couleurs, dimens, drawables, styles)
+└── gradle/                               ← Wrapper Gradle
 ```
 
 ### Technologies Utilisées
@@ -159,20 +134,12 @@ android_keyboard/
 - **Gradle** - Build system
 - **Material Design** - Guidelines UI/UX
 
-## 📚 Dictionnaire
+## 📚 Dictionnaire & Prédiction
 
 ### Sources du Dictionnaire
-Le dictionnaire contient **1 867 mots créoles** extraits de :
-
-1. **Dataset Potomitan** (Hugging Face)
-   - Corpus de traductions français-créole
-   - Validation linguistique professionnelle
-
-2. **Textes Littéraires Créoles** 🐚
-   - Œuvres de Gisèle Pineau
-   - Poésie de Sonny Rupaire
-   - Chansons traditionnelles guadeloupéennes �
-   - Littérature créole contemporaine
+Généré via:
+1. Extraction fréquence (script `Dictionnaire.py`) – top N mots.
+2. Génération N-grams (`GenererNgrams.py`) → `creole_ngrams.json` (structure: `{ predictions: { mot: [{word, prob}, …] } }`).
 
 ### Mots les Plus Fréquents
 ```
@@ -180,13 +147,13 @@ an (424), ka (324), la (219), on (208), té (188)
 pou (154), nou (133), i (102), sé (100), yo (94)
 ```
 
-### Enrichissement du Dictionnaire
-Un script Python permet d'enrichir le dictionnaire :
+### Mise à jour dictionnaire
 ```bash
-python EnrichirDictionnaire.py
+python Dictionnaire.py            # (Hugging Face, nécessite connexion internet)
+python GenererNgrams.py           # produit assets N-grams
 ```
 
-## 🎨 Design et Branding
+## 🎨 Design & UX
 
 ### Palette de Couleurs
 - **Bleu Caribbean** : `#1E88E5` (touches principales)
@@ -199,7 +166,7 @@ python EnrichirDictionnaire.py
 - Représentation de l'héritage culturel guadeloupéen
 - Design moderne et respectueux
 
-## 🧪 Tests et Validation
+## 🧪 Validation
 
 ### Tests Effectués
 - ✅ Saisie de texte en créole
@@ -209,11 +176,7 @@ python EnrichirDictionnaire.py
 - ✅ Compatibilité applications courantes
 - ✅ Performance et fluidité
 
-### Applications Testées
-- WhatsApp, Telegram, SMS
-- Gmail, Outlook
-- Facebook, Twitter
-- Notes, Documents
+Tests informels sur: SMS, messageries, réseaux sociaux, champs web, saisie mail.
 
 ## 🤝 Contribution
 
@@ -237,20 +200,19 @@ cd KreyolKeyb/android_keyboard
 ./gradlew test
 ```
 
-## 📖 Documentation Technique
+## 📖 Détails techniques clés
 
 ### API IME Android
 - `InputMethodService` - Service principal
 - `InputConnection` - Interface application
 - `KeyboardView` - Affichage clavier personnalisé
 
-### Gestion du Dictionnaire
-- Format JSON optimisé
-- Chargement asynchrone en mémoire
-- Algorithme de suggestion par préfixe
-- Cache intelligent pour performance
+### Suggestion
+- Combinaison: préfixe dictionnaire + N-grams contextuels + fallback mots fréquents.
+- Nettoyage historique limité (FIFO 5 derniers mots).
+- Ajout dynamique au UserDictionary (si disponible) pour réduire soulignement rouge.
 
-## 🌍 Langue et Culture 🐚
+## 🌍 Langue & Culture
 
 ### Kreyòl Guadeloupéen
 Le **Kreyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, qui prend sa source dans une culture africaines, caribéennes et amérindiennes.
@@ -266,7 +228,7 @@ Ce projet est développé dans le respect de :
 
 Distribué sous licence **MIT**. Voir `LICENSE` pour plus d'informations.
 
-## 👥 Équipe
+## 👥 Auteurs
 
 ### Développement
 - **Medhi** - Développeur principal
@@ -291,15 +253,15 @@ R: Aller dans Paramètres → Langues et saisie → Claviers virtuels
 **Q: Les suggestions ne fonctionnent pas ?**
 R: Vérifier que le clavier est bien activé et défini par défaut
 
-**Q: Comment ajouter des mots au dictionnaire ?**
-R: Utiliser le script `EnrichirDictionnaire.py` pour enrichir le corpus
+**Q: Comment régénérer les données linguistiques ?**
+R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 
 ---
 
 <div align="center">
 
-**🇬🇵 Fierté Guadeloupéenne - Technologie Moderne 🇬🇵**
+**🇬🇵 Fierté Guadeloupéenne – Technologie au service de la langue 🇬🇵**
 
-*Développé avec ❤️ pour la communauté créolophone* 🐚�
+*Développé avec ❤️ pour la communauté créolophone*
 
 </div>
