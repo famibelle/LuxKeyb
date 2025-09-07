@@ -1,6 +1,9 @@
-# 🇬🇵 Clavier Créole Guadeloupéen
+# 🇬🇵 Clavier Créole Guadeloupéen 🐚
+- **Jomimi** - Conteur et Joueur de Ka 🪘
 
-Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec layout AZERTY, suggestions de mots et accents caribéens.
+Cette approche garantit des suggestions **authentiques** et    - Chansons traditionnelles guadeloupéennes 🪘
+   - Littérature créole contemporai### Respect Culturel 🪘
+Ce projet est dévelop*Développé avec ❤️ pour la communauté créolophone* 🐚🪘é dans le respect de :culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain. clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec layout AZERTY, suggestions de mots et accents caribéens.
 
 ![Clavier Créole](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
 ![Version Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
@@ -8,16 +11,14 @@ Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec 
 
 ## 📱 Aperçu de l'Application
 
-<img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera" width="25%">
-<img src="Screenshots/Screenshot_1757201468.png" alt="Clavier Kreyòl Karukera" width="25%">
+![Clavier Kreyòl Karukera en Action](Screenshots/Screenshot_1757201468.png)
+![Clavier Kreyòl Karukera en home](Screenshots/Screenshot_1757242027.png)
 
 *Interface du clavier créole avec suggestions intelligentes et design Guadeloupéen*
-
 
 ## 🌟 Fonctionnalités
 
 ### ⌨️ **Layout AZERTY Adapté**
-- Layout clavier français AZERTY familier
 - Optimisé pour la saisie en créole guadeloupéen
 - Touches spéciales pour les caractères caribéens
 
@@ -25,7 +26,25 @@ Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec 
 - **1 867 mots** créoles dans le dictionnaire
 - Suggestions contextuelles en temps réel
 - Prédiction de texte adaptée au kreyòl
-- Base de données enrichie avec des textes littéraires créoles
+- **N-grams linguistiques** construits à partir de textes authentiques créoles
+
+#### 📚 **Corpus Littéraire des Suggestions**
+Les suggestions de mots sont générées grâce à des **N-grams** (séquences de mots) extraits des œuvres d'éminents auteurs et contributeurs de la littérature créole guadeloupéenne :
+
+**Auteurs et Contributeurs** :
+- **Robert Fontes** - Linguiste et lexicographe créole
+- **Silvyane Telchid** - Romancière et dramaturge
+- **Sonny Rupaire** - Poète et militant culturel
+- **Max Rippon** - Écrivain et chroniqueur
+- **Alain Rutil** - Auteur et chercheur créolophone
+- **Germain William** - Conteur et écrivain traditionnel
+- **Alain Verin** - Linguiste spécialiste du créole
+- **Katel** - Artiste et poète contemporain
+- **Esnard Boisdur** - Écrivain et journaliste
+- **Pierre Edouard Decimus** - Auteur et intellectuel
+- **Jomimi** - Conteur et Joueur de Ka �
+
+Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain.
 
 ### 📝 **Accents et Caractères Spéciaux**
 - **Appui long** sur les voyelles pour les accents :
@@ -36,10 +55,6 @@ Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec 
   - `i` → `ì, í, î`
 - Support complet des caractères créoles
 
-### 🔢 **Mode Numérique**
-- Basculement facile entre alphabétique et numérique
-- Accès rapide aux chiffres et symboles
-- Interface intuitive
 
 ### 🎨 **Design Guadeloupéen**
 - **Palette de couleurs** inspirée du drapeau guadeloupéen
@@ -127,10 +142,10 @@ Le dictionnaire contient **1 867 mots créoles** extraits de :
    - Corpus de traductions français-créole
    - Validation linguistique professionnelle
 
-2. **Textes Littéraires Créoles**
+2. **Textes Littéraires Créoles** 🐚
    - Œuvres de Gisèle Pineau
    - Poésie de Sonny Rupaire
-   - Chansons traditionnelles guadeloupéennes
+   - Chansons traditionnelles guadeloupéennes �
    - Littérature créole contemporaine
 
 ### Mots les Plus Fréquents
@@ -209,12 +224,12 @@ cd KreyolKeyb/android_keyboard
 - Algorithme de suggestion par préfixe
 - Cache intelligent pour performance
 
-## 🌍 Langue et Culture
+## 🌍 Langue et Culture 🐚
 
 ### Kreyòl Guadeloupéen
 Le **Kreyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, développée à partir du français avec des influences africaines, caribéennes et amérindiennes.
 
-### Respect Culturel
+### Respect Culturel �
 Ce projet est développé dans le respect de :
 - La richesse linguistique caribéenne
 - L'héritage culturel guadeloupéen
@@ -259,6 +274,6 @@ R: Utiliser le script `EnrichirDictionnaire.py` pour enrichir le corpus
 
 **🇬🇵 Fierté Guadeloupéenne - Technologie Moderne 🇬🇵**
 
-*Développé avec ❤️ pour la communauté créolophone*
+*Développé avec ❤️ pour la communauté créolophone* 🐚�
 
 </div>
