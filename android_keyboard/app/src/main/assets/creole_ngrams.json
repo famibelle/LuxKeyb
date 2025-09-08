@@ -3,35 +3,979 @@
   "type": "ngram_model",
   "branding": "Potomitan™",
   "predictions": {
+    "pa": [
+      {
+        "word": "ka",
+        "prob": 0.138
+      },
+      {
+        "word": "té",
+        "prob": 0.123
+      },
+      {
+        "word": "ni",
+        "prob": 0.108
+      },
+      {
+        "word": "tou",
+        "prob": 0.077
+      },
+      {
+        "word": "vo",
+        "prob": 0.077
+      }
+    ],
+    "tou": [
+      {
+        "word": "di",
+        "prob": 0.556
+      },
+      {
+        "word": "lé",
+        "prob": 0.111
+      },
+      {
+        "word": "souri",
+        "prob": 0.111
+      },
+      {
+        "word": "krakan",
+        "prob": 0.111
+      },
+      {
+        "word": "sa",
+        "prob": 0.111
+      }
+    ],
+    "di": [
+      {
+        "word": "mwen",
+        "prob": 0.081
+      },
+      {
+        "word": "manman-mwen",
+        "prob": 0.081
+      },
+      {
+        "word": "fi-la",
+        "prob": 0.081
+      },
+      {
+        "word": "sa",
+        "prob": 0.054
+      },
+      {
+        "word": "mé",
+        "prob": 0.054
+      }
+    ],
+    "répété": [
+      {
+        "word": "kon",
+        "prob": 0.5
+      },
+      {
+        "word": "ban",
+        "prob": 0.5
+      }
+    ],
+    "kon": [
+      {
+        "word": "nou",
+        "prob": 0.286
+      },
+      {
+        "word": "dlo",
+        "prob": 0.086
+      },
+      {
+        "word": "sann",
+        "prob": 0.057
+      },
+      {
+        "word": "léko",
+        "prob": 0.029
+      },
+      {
+        "word": "dé",
+        "prob": 0.029
+      }
+    ],
+    "léko": [
+      {
+        "word": "sa",
+        "prob": 1.0
+      }
+    ],
+    "sa": [
+      {
+        "word": "ki",
+        "prob": 0.148
+      },
+      {
+        "word": "té",
+        "prob": 0.148
+      },
+      {
+        "word": "yé",
+        "prob": 0.111
+      },
+      {
+        "word": "lapenn",
+        "prob": 0.037
+      },
+      {
+        "word": "anvi",
+        "prob": 0.037
+      }
+    ],
+    "ki": [
+      {
+        "word": "rann-nou",
+        "prob": 0.269
+      },
+      {
+        "word": "té",
+        "prob": 0.134
+      },
+      {
+        "word": "ka",
+        "prob": 0.06
+      },
+      {
+        "word": "yo",
+        "prob": 0.06
+      },
+      {
+        "word": "pasé",
+        "prob": 0.03
+      }
+    ],
+    "la": [
+      {
+        "word": "ka",
+        "prob": 0.176
+      },
+      {
+        "word": "ki",
+        "prob": 0.118
+      },
+      {
+        "word": "pou",
+        "prob": 0.059
+      },
+      {
+        "word": "kwè",
+        "prob": 0.059
+      },
+      {
+        "word": "kanno-la",
+        "prob": 0.059
+      }
+    ],
+    "pou": [
+      {
+        "word": "lé",
+        "prob": 0.098
+      },
+      {
+        "word": "pé",
+        "prob": 0.082
+      },
+      {
+        "word": "nou",
+        "prob": 0.066
+      },
+      {
+        "word": "mwen",
+        "prob": 0.049
+      },
+      {
+        "word": "sa",
+        "prob": 0.033
+      }
+    ],
+    "dlo": [
+      {
+        "word": "an",
+        "prob": 0.364
+      },
+      {
+        "word": "pa",
+        "prob": 0.091
+      },
+      {
+        "word": "ka",
+        "prob": 0.091
+      },
+      {
+        "word": "souplé",
+        "prob": 0.091
+      },
+      {
+        "word": "adan",
+        "prob": 0.091
+      }
+    ],
+    "chayé": [
+      {
+        "word": "lè",
+        "prob": 0.25
+      },
+      {
+        "word": "zyé",
+        "prob": 0.25
+      },
+      {
+        "word": "doulè",
+        "prob": 0.25
+      },
+      {
+        "word": "asi",
+        "prob": 0.25
+      }
+    ],
+    "lè": [
+      {
+        "word": "yo",
+        "prob": 0.152
+      },
+      {
+        "word": "ou",
+        "prob": 0.091
+      },
+      {
+        "word": "sé",
+        "prob": 0.061
+      },
+      {
+        "word": "ka",
+        "prob": 0.061
+      },
+      {
+        "word": "dyab",
+        "prob": 0.061
+      }
+    ],
     "sé": [
       {
         "word": "té",
-        "prob": 0.225
+        "prob": 0.188
       },
+      {
+        "word": "on",
+        "prob": 0.167
+      },
+      {
+        "word": "sa",
+        "prob": 0.042
+      },
+      {
+        "word": "adan",
+        "prob": 0.021
+      },
+      {
+        "word": "ki",
+        "prob": 0.021
+      }
+    ],
+    "adan": [
       {
         "word": "on",
         "prob": 0.2
       },
       {
-        "word": "sa",
-        "prob": 0.05
+        "word": "farin",
+        "prob": 0.08
       },
       {
-        "word": "mé",
-        "prob": 0.025
+        "word": "nou",
+        "prob": 0.08
       },
       {
-        "word": "takatak",
+        "word": "menm",
+        "prob": 0.04
+      },
+      {
+        "word": "lézòt",
+        "prob": 0.04
+      }
+    ],
+    "menm": [
+      {
+        "word": "lè",
+        "prob": 0.2
+      },
+      {
+        "word": "ravin-la",
+        "prob": 0.1
+      },
+      {
+        "word": "pou",
+        "prob": 0.1
+      },
+      {
+        "word": "péké",
+        "prob": 0.1
+      },
+      {
+        "word": "fi",
+        "prob": 0.1
+      }
+    ],
+    "ravin-la": [
+      {
+        "word": "swè",
+        "prob": 1.0
+      }
+    ],
+    "swè": [
+      {
+        "word": "ka",
+        "prob": 0.5
+      },
+      {
+        "word": "ki",
+        "prob": 0.5
+      }
+    ],
+    "ka": [
+      {
+        "word": "fè",
+        "prob": 0.08
+      },
+      {
+        "word": "vwè",
+        "prob": 0.048
+      },
+      {
+        "word": "di",
+        "prob": 0.027
+      },
+      {
+        "word": "rivé",
+        "prob": 0.027
+      },
+      {
+        "word": "fè-nou",
+        "prob": 0.027
+      }
+    ],
+    "dégouté": [
+      {
+        "word": "akontinyé",
+        "prob": 1.0
+      }
+    ],
+    "akontinyé": [
+      {
+        "word": "pou",
+        "prob": 1.0
+      }
+    ],
+    "lapenn": [
+      {
+        "word": "pa",
+        "prob": 0.625
+      },
+      {
+        "word": "vo",
+        "prob": 0.125
+      },
+      {
+        "word": "mizè",
+        "prob": 0.125
+      },
+      {
+        "word": "ka",
+        "prob": 0.125
+      }
+    ],
+    "vo": [
+      {
+        "word": "pa",
+        "prob": 0.8
+      },
+      {
+        "word": "ka",
+        "prob": 0.2
+      }
+    ],
+    "bougonné": [
+      {
+        "word": "anbafèy",
+        "prob": 1.0
+      }
+    ],
+    "anbafèy": [
+      {
+        "word": "koken",
+        "prob": 1.0
+      }
+    ],
+    "koken": [
+      {
+        "word": "pa",
+        "prob": 1.0
+      }
+    ],
+    "pwòspéré": [
+      {
+        "word": "lè",
+        "prob": 1.0
+      }
+    ],
+    "tout": [
+      {
+        "word": "biten",
+        "prob": 0.087
+      },
+      {
+        "word": "volè",
+        "prob": 0.043
+      },
+      {
+        "word": "foufou",
+        "prob": 0.043
+      },
+      {
+        "word": "ti",
+        "prob": 0.043
+      },
+      {
+        "word": "ko",
+        "prob": 0.043
+      }
+    ],
+    "volè": [
+      {
+        "word": "alèz-kon-blèz",
+        "prob": 1.0
+      }
+    ],
+    "alèz-kon-blèz": [
+      {
+        "word": "lè",
+        "prob": 1.0
+      }
+    ],
+    "zafè": [
+      {
+        "word": "yo",
+        "prob": 0.25
+      },
+      {
+        "word": "dyab",
+        "prob": 0.25
+      },
+      {
+        "word": "a'y",
+        "prob": 0.25
+      },
+      {
+        "word": "rèna",
+        "prob": 0.25
+      }
+    ],
+    "yo": [
+      {
+        "word": "ka",
+        "prob": 0.13
+      },
+      {
+        "word": "fè",
+        "prob": 0.056
+      },
+      {
+        "word": "rivé",
+        "prob": 0.056
+      },
+      {
+        "word": "di",
+        "prob": 0.056
+      },
+      {
+        "word": "fosé",
+        "prob": 0.037
+      }
+    ],
+    "fè": [
+      {
+        "word": "pé",
+        "prob": 0.051
+      },
+      {
+        "word": "lò",
+        "prob": 0.026
+      },
+      {
+        "word": "si",
+        "prob": 0.026
+      },
+      {
+        "word": "lapenn",
+        "prob": 0.026
+      },
+      {
+        "word": "anlè",
+        "prob": 0.026
+      }
+    ],
+    "lò": [
+      {
+        "word": "lè",
+        "prob": 0.5
+      },
+      {
+        "word": "a'y",
+        "prob": 0.5
+      }
+    ],
+    "òbò": [
+      {
+        "word": "lanmè-la",
+        "prob": 0.4
+      },
+      {
+        "word": "falèz",
+        "prob": 0.2
+      },
+      {
+        "word": "kaz-la",
+        "prob": 0.2
+      },
+      {
+        "word": "kanno-la",
+        "prob": 0.2
+      }
+    ],
+    "falèz": [
+      {
+        "word": "sé",
+        "prob": 1.0
+      }
+    ],
+    "vré": [
+      {
+        "word": "lapenn",
+        "prob": 1.0
+      }
+    ],
+    "wonchonné": [
+      {
+        "word": "an",
+        "prob": 1.0
+      }
+    ],
+    "an": [
+      {
+        "word": "mwen",
+        "prob": 0.15
+      },
+      {
+        "word": "nou",
+        "prob": 0.08
+      },
+      {
+        "word": "té",
+        "prob": 0.08
+      },
+      {
+        "word": "ka",
+        "prob": 0.07
+      },
+      {
+        "word": "ké",
         "prob": 0.025
       }
     ],
-    "mé": [
+    "bab": [
+      {
+        "word": "pli",
+        "prob": 1.0
+      }
+    ],
+    "pli": [
+      {
+        "word": "ta",
+        "prob": 0.143
+      },
+      {
+        "word": "tris",
+        "prob": 0.143
+      },
+      {
+        "word": "antòch",
+        "prob": 0.143
+      },
+      {
+        "word": "lèd",
+        "prob": 0.143
+      },
+      {
+        "word": "rèd",
+        "prob": 0.143
+      }
+    ],
+    "ta": [
+      {
+        "word": "pli",
+        "prob": 0.333
+      },
+      {
+        "word": "ka",
+        "prob": 0.333
+      },
+      {
+        "word": "on",
+        "prob": 0.333
+      }
+    ],
+    "tris": [
+      {
+        "word": "si",
+        "prob": 0.5
+      },
+      {
+        "word": "pou-w",
+        "prob": 0.5
+      }
+    ],
+    "si": [
+      {
+        "word": "ou",
+        "prob": 0.094
+      },
+      {
+        "word": "vou-menm",
+        "prob": 0.062
+      },
+      {
+        "word": "ni",
+        "prob": 0.062
+      },
+      {
+        "word": "latè",
+        "prob": 0.062
+      },
+      {
+        "word": "anmenmdètan",
+        "prob": 0.031
+      }
+    ],
+    "anmenmdètan": [
+      {
+        "word": "ou",
+        "prob": 1.0
+      }
+    ],
+    "ou": [
+      {
+        "word": "té",
+        "prob": 0.245
+      },
+      {
+        "word": "ka",
+        "prob": 0.163
+      },
+      {
+        "word": "pa",
+        "prob": 0.102
+      },
+      {
+        "word": "sé",
+        "prob": 0.102
+      },
+      {
+        "word": "tini",
+        "prob": 0.041
+      }
+    ],
+    "vlé": [
+      {
+        "word": "fè",
+        "prob": 0.286
+      },
+      {
+        "word": "vwè",
+        "prob": 0.143
+      },
+      {
+        "word": "dlo-la",
+        "prob": 0.143
+      },
+      {
+        "word": "fi-la",
+        "prob": 0.143
+      },
+      {
+        "word": "sav",
+        "prob": 0.143
+      }
+    ],
+    "vwè": [
+      {
+        "word": "pou",
+        "prob": 0.045
+      },
+      {
+        "word": "rété",
+        "prob": 0.045
+      },
+      {
+        "word": "kawòs-la",
+        "prob": 0.045
+      },
+      {
+        "word": "kalité",
+        "prob": 0.045
+      },
+      {
+        "word": "on",
+        "prob": 0.045
+      }
+    ],
+    "kilès": [
+      {
+        "word": "lavi-la",
+        "prob": 1.0
+      }
+    ],
+    "lavi-la": [
+      {
+        "word": "pli",
+        "prob": 1.0
+      }
+    ],
+    "antòch": [
+      {
+        "word": "jou",
+        "prob": 1.0
+      }
+    ],
+    "jou": [
+      {
+        "word": "dèrèpo",
+        "prob": 0.238
+      },
+      {
+        "word": "an",
+        "prob": 0.143
+      },
+      {
+        "word": "ki",
+        "prob": 0.095
+      },
+      {
+        "word": "siren",
+        "prob": 0.095
+      },
+      {
+        "word": "kwè",
+        "prob": 0.048
+      }
+    ],
+    "kwè": [
+      {
+        "word": "mwen",
+        "prob": 0.333
+      },
+      {
+        "word": "adan",
+        "prob": 0.333
+      },
+      {
+        "word": "pawòl",
+        "prob": 0.167
+      },
+      {
+        "word": "toujou",
+        "prob": 0.167
+      }
+    ],
+    "mwen": [
+      {
+        "word": "an",
+        "prob": 0.098
+      },
+      {
+        "word": "lapenn",
+        "prob": 0.049
+      },
+      {
+        "word": "pa",
+        "prob": 0.049
+      },
+      {
+        "word": "nou",
+        "prob": 0.049
+      },
+      {
+        "word": "li",
+        "prob": 0.049
+      }
+    ],
+    "chigné": [
+      {
+        "word": "dèyè",
+        "prob": 1.0
+      }
+    ],
+    "dèyè": [
+      {
+        "word": "pòt",
+        "prob": 0.5
+      },
+      {
+        "word": "ou",
+        "prob": 0.25
+      },
+      {
+        "word": "do",
+        "prob": 0.25
+      }
+    ],
+    "pòt": [
+      {
+        "word": "ka",
+        "prob": 0.5
+      },
+      {
+        "word": "an",
+        "prob": 0.5
+      }
+    ],
+    "vou-menm": [
+      {
+        "word": "pa",
+        "prob": 0.667
+      },
+      {
+        "word": "mé",
+        "prob": 0.333
+      }
+    ],
+    "sav": [
+      {
+        "word": "si",
+        "prob": 0.143
+      },
       {
         "word": "ka",
         "prob": 0.143
       },
       {
-        "word": "swasantsèt",
+        "word": "fi-la",
+        "prob": 0.143
+      },
+      {
+        "word": "la",
+        "prob": 0.143
+      },
+      {
+        "word": "ponmoun",
+        "prob": 0.143
+      }
+    ],
+    "anvi": [
+      {
+        "word": "fè",
+        "prob": 1.0
+      }
+    ],
+    "èspéré": [
+      {
+        "word": "bondyé",
+        "prob": 1.0
+      }
+    ],
+    "bondyé": [
+      {
+        "word": "bon",
+        "prob": 1.0
+      }
+    ],
+    "bon": [
+      {
+        "word": "dèmen",
+        "prob": 0.333
+      },
+      {
+        "word": "kou",
+        "prob": 0.333
+      },
+      {
+        "word": "matété",
+        "prob": 0.333
+      }
+    ],
+    "dèmen": [
+      {
+        "word": "ké",
+        "prob": 1.0
+      }
+    ],
+    "ké": [
+      {
+        "word": "ba'w",
+        "prob": 0.273
+      },
+      {
+        "word": "on",
+        "prob": 0.091
+      },
+      {
+        "word": "mayé",
+        "prob": 0.091
+      },
+      {
+        "word": "pé",
+        "prob": 0.091
+      },
+      {
+        "word": "fin",
+        "prob": 0.091
+      }
+    ],
+    "on": [
+      {
+        "word": "nonm",
+        "prob": 0.039
+      },
+      {
+        "word": "dègné",
+        "prob": 0.039
+      },
+      {
+        "word": "ti",
+        "prob": 0.026
+      },
+      {
+        "word": "jou",
+        "prob": 0.026
+      },
+      {
+        "word": "pèchè",
+        "prob": 0.026
+      }
+    ],
+    "dòt": [
+      {
+        "word": "jou",
+        "prob": 0.5
+      },
+      {
+        "word": "moun",
+        "prob": 0.5
+      }
+    ],
+    "apré": [
+      {
+        "word": "on",
+        "prob": 0.286
+      },
+      {
+        "word": "jòdila",
         "prob": 0.143
       },
       {
@@ -39,34 +983,684 @@
         "prob": 0.143
       },
       {
-        "word": "jou",
-        "prob": 0.048
+        "word": "yo",
+        "prob": 0.143
+      },
+      {
+        "word": "soufwans",
+        "prob": 0.143
+      }
+    ],
+    "jòdila": [
+      {
+        "word": "séké",
+        "prob": 0.5
+      },
+      {
+        "word": "pli",
+        "prob": 0.5
+      }
+    ],
+    "séké": [
+      {
+        "word": "jimo",
+        "prob": 1.0
+      }
+    ],
+    "jimo": [
+      {
+        "word": "jòdila",
+        "prob": 1.0
+      }
+    ],
+    "lèd": [
+      {
+        "word": "pli",
+        "prob": 1.0
+      }
+    ],
+    "rèd": [
+      {
+        "word": "osi",
+        "prob": 0.5
+      },
+      {
+        "word": "menm",
+        "prob": 0.5
+      }
+    ],
+    "osi": [
+      {
+        "word": "non",
+        "prob": 0.167
+      },
+      {
+        "word": "zòt",
+        "prob": 0.167
+      },
+      {
+        "word": "mwen",
+        "prob": 0.167
+      },
+      {
+        "word": "si",
+        "prob": 0.167
+      },
+      {
+        "word": "annou",
+        "prob": 0.167
+      }
+    ],
+    "non": [
+      {
+        "word": "non",
+        "prob": 0.25
+      },
+      {
+        "word": "lapenn",
+        "prob": 0.25
+      },
+      {
+        "word": "féyaj",
+        "prob": 0.25
+      },
+      {
+        "word": "fwi",
+        "prob": 0.25
+      }
+    ],
+    "pasé": [
+      {
+        "word": "ou",
+        "prob": 0.25
+      },
+      {
+        "word": "pa",
+        "prob": 0.25
+      },
+      {
+        "word": "mè",
+        "prob": 0.25
+      },
+      {
+        "word": "si",
+        "prob": 0.25
+      }
+    ],
+    "padavwa": [
+      {
+        "word": "ou",
+        "prob": 1.0
+      }
+    ],
+    "tini": [
+      {
+        "word": "on",
+        "prob": 0.25
+      },
+      {
+        "word": "onlo",
+        "prob": 0.125
+      },
+      {
+        "word": "bèl",
+        "prob": 0.125
+      },
+      {
+        "word": "mwayen",
+        "prob": 0.125
+      },
+      {
+        "word": "an",
+        "prob": 0.125
+      }
+    ],
+    "onlo": [
+      {
+        "word": "kè",
+        "prob": 0.333
+      },
+      {
+        "word": "pé",
+        "prob": 0.333
+      },
+      {
+        "word": "sé",
+        "prob": 0.333
+      }
+    ],
+    "kè": [
+      {
+        "word": "ou",
+        "prob": 0.125
+      },
+      {
+        "word": "menm",
+        "prob": 0.125
+      },
+      {
+        "word": "a-y",
+        "prob": 0.125
+      },
+      {
+        "word": "routyé",
+        "prob": 0.125
       },
       {
         "word": "té",
-        "prob": 0.048
+        "prob": 0.125
       }
     ],
-    "jou": [
+    "ni": [
       {
-        "word": "dèrèpo",
-        "prob": 0.278
+        "word": "on",
+        "prob": 0.259
+      },
+      {
+        "word": "asé",
+        "prob": 0.074
+      },
+      {
+        "word": "ou",
+        "prob": 0.037
+      },
+      {
+        "word": "kè",
+        "prob": 0.037
+      },
+      {
+        "word": "fyèl-é-kouraj",
+        "prob": 0.037
+      }
+    ],
+    "pé": [
+      {
+        "word": "sèvi-mwen",
+        "prob": 0.087
+      },
+      {
+        "word": "sa",
+        "prob": 0.087
+      },
+      {
+        "word": "sipòté",
+        "prob": 0.043
+      },
+      {
+        "word": "di",
+        "prob": 0.043
+      },
+      {
+        "word": "woté",
+        "prob": 0.043
+      }
+    ],
+    "sipòté": [
+      {
+        "word": "sa",
+        "prob": 1.0
+      }
+    ],
+    "men": [
+      {
+        "word": "lavalas",
+        "prob": 0.2
+      },
+      {
+        "word": "an",
+        "prob": 0.2
+      },
+      {
+        "word": "gra",
+        "prob": 0.2
+      },
+      {
+        "word": "an-mwen",
+        "prob": 0.2
+      },
+      {
+        "word": "ka",
+        "prob": 0.2
+      }
+    ],
+    "lavalas": [
+      {
+        "word": "ja",
+        "prob": 1.0
+      }
+    ],
+    "ja": [
+      {
+        "word": "ba",
+        "prob": 0.154
+      },
+      {
+        "word": "yé",
+        "prob": 0.154
+      },
+      {
+        "word": "rantré",
+        "prob": 0.077
+      },
+      {
+        "word": "mandé'y",
+        "prob": 0.077
+      },
+      {
+        "word": "réfizé",
+        "prob": 0.077
+      }
+    ],
+    "ba": [
+      {
+        "word": "twòp",
+        "prob": 0.25
+      },
+      {
+        "word": "mouch",
+        "prob": 0.25
+      },
+      {
+        "word": "movèzté",
+        "prob": 0.25
+      },
+      {
+        "word": "moun-dèwò",
+        "prob": 0.25
+      }
+    ],
+    "twòp": [
+      {
+        "word": "tòbòk",
+        "prob": 0.25
+      },
+      {
+        "word": "pou",
+        "prob": 0.25
+      },
+      {
+        "word": "lèstonmak",
+        "prob": 0.25
+      },
+      {
+        "word": "pwès",
+        "prob": 0.25
+      }
+    ],
+    "tòbòk": [
+      {
+        "word": "anlè",
+        "prob": 1.0
+      }
+    ],
+    "anlè": [
+      {
+        "word": "tèt",
+        "prob": 0.2
       },
       {
         "word": "ki",
-        "prob": 0.111
+        "prob": 0.2
+      },
+      {
+        "word": "lanmè-la",
+        "prob": 0.2
+      },
+      {
+        "word": "do",
+        "prob": 0.2
+      },
+      {
+        "word": "branch",
+        "prob": 0.2
+      }
+    ],
+    "tèt": [
+      {
+        "word": "an",
+        "prob": 0.429
+      },
+      {
+        "word": "zékobèl",
+        "prob": 0.143
+      },
+      {
+        "word": "sé",
+        "prob": 0.143
+      },
+      {
+        "word": "tiwèt",
+        "prob": 0.143
+      },
+      {
+        "word": "an-mwen",
+        "prob": 0.143
+      }
+    ],
+    "zékobèl": [
+      {
+        "word": "solèy",
+        "prob": 1.0
+      }
+    ],
+    "solèy": [
+      {
+        "word": "ja",
+        "prob": 0.5
+      },
+      {
+        "word": "ni",
+        "prob": 0.5
+      }
+    ],
+    "rantré": [
+      {
+        "word": "an",
+        "prob": 0.333
+      },
+      {
+        "word": "kaz",
+        "prob": 0.333
+      },
+      {
+        "word": "konba",
+        "prob": 0.333
+      }
+    ],
+    "chè": [
+      {
+        "word": "twòp",
+        "prob": 1.0
+      }
+    ],
+    "fyèl-é-kouraj": [
+      {
+        "word": "pa",
+        "prob": 1.0
+      }
+    ],
+    "davwa": [
+      {
+        "word": "sé",
+        "prob": 0.125
+      },
+      {
+        "word": "ni",
+        "prob": 0.125
+      },
+      {
+        "word": "tout",
+        "prob": 0.125
+      },
+      {
+        "word": "dyab-la",
+        "prob": 0.125
+      },
+      {
+        "word": "nou",
+        "prob": 0.125
+      }
+    ],
+    "sèvi": [
+      {
+        "word": "yo",
+        "prob": 0.2
+      },
+      {
+        "word": "èvè",
+        "prob": 0.2
+      },
+      {
+        "word": "lasan",
+        "prob": 0.2
+      },
+      {
+        "word": "san",
+        "prob": 0.2
+      },
+      {
+        "word": "épi'y",
+        "prob": 0.2
+      }
+    ],
+    "toujou": [
+      {
+        "word": "sèvi",
+        "prob": 0.5
+      },
+      {
+        "word": "fin",
+        "prob": 0.5
+      }
+    ],
+    "èvè": [
+      {
+        "word": "sé",
+        "prob": 0.167
+      },
+      {
+        "word": "kip",
+        "prob": 0.167
+      },
+      {
+        "word": "ti",
+        "prob": 0.167
+      },
+      {
+        "word": "onpakèt",
+        "prob": 0.167
+      },
+      {
+        "word": "tousa",
+        "prob": 0.167
+      }
+    ],
+    "lèstonmak": [
+      {
+        "word": "yo",
+        "prob": 0.5
+      },
+      {
+        "word": "an",
+        "prob": 0.5
+      }
+    ],
+    "onjan": [
+      {
+        "word": "bat",
+        "prob": 0.5
+      },
+      {
+        "word": "tafyaté",
+        "prob": 0.5
+      }
+    ],
+    "bat": [
+      {
+        "word": "bat",
+        "prob": 0.333
+      },
+      {
+        "word": "dèyè",
+        "prob": 0.167
+      },
+      {
+        "word": "lagè",
+        "prob": 0.167
+      },
+      {
+        "word": "kon",
+        "prob": 0.167
+      },
+      {
+        "word": "an",
+        "prob": 0.167
+      }
+    ],
+    "pèd": [
+      {
+        "word": "lafwa",
+        "prob": 0.143
+      },
+      {
+        "word": "fréchè",
+        "prob": 0.143
+      },
+      {
+        "word": "ta'w",
+        "prob": 0.143
+      },
+      {
+        "word": "timoun",
+        "prob": 0.143
+      },
+      {
+        "word": "souf",
+        "prob": 0.143
+      }
+    ],
+    "lafwa": [
+      {
+        "word": "adan",
+        "prob": 1.0
+      }
+    ],
+    "lézòt": [
+      {
+        "word": "an",
+        "prob": 1.0
+      }
+    ],
+    "mé": [
+      {
+        "word": "ka",
+        "prob": 0.136
+      },
+      {
+        "word": "swasantsèt",
+        "prob": 0.136
+      },
+      {
+        "word": "pa",
+        "prob": 0.136
+      },
+      {
+        "word": "kimafoutiésa",
+        "prob": 0.045
+      },
+      {
+        "word": "jou",
+        "prob": 0.045
+      }
+    ],
+    "kimafoutiésa": [
+      {
+        "word": "pou",
+        "prob": 1.0
+      }
+    ],
+    "pòk": [
+      {
+        "word": "ou",
+        "prob": 0.5
+      },
+      {
+        "word": "pon",
+        "prob": 0.5
+      }
+    ],
+    "pòkò": [
+      {
+        "word": "pòk",
+        "prob": 1.0
+      }
+    ],
+    "pon": [
+      {
+        "word": "moun",
+        "prob": 0.5
+      },
+      {
+        "word": "dòt",
+        "prob": 0.25
+      },
+      {
+        "word": "matlo",
+        "prob": 0.25
+      }
+    ],
+    "moun": [
+      {
+        "word": "ki",
+        "prob": 0.222
+      },
+      {
+        "word": "ka",
+        "prob": 0.167
+      },
+      {
+        "word": "pa",
+        "prob": 0.167
       },
       {
         "word": "an",
         "prob": 0.111
       },
       {
-        "word": "siren",
-        "prob": 0.111
+        "word": "nou",
+        "prob": 0.056
+      }
+    ],
+    "péké": [
+      {
+        "word": "pé",
+        "prob": 1.0
+      }
+    ],
+    "woté": [
+      {
+        "word": "pyé",
+        "prob": 1.0
+      }
+    ],
+    "pyé": [
+      {
+        "word": "adan",
+        "prob": 0.333
       },
       {
-        "word": "bal",
-        "prob": 0.056
+        "word": "flanboyan",
+        "prob": 0.333
+      },
+      {
+        "word": "an-mwen",
+        "prob": 0.333
+      }
+    ],
+    "pè": [
+      {
+        "word": "pépa-la",
+        "prob": 0.5
+      },
+      {
+        "word": "a-y",
+        "prob": 0.5
+      }
+    ],
+    "pépa-la": [
+      {
+        "word": "yo",
+        "prob": 1.0
+      }
+    ],
+    "pri": [
+      {
+        "word": "la",
+        "prob": 0.5
+      },
+      {
+        "word": "adan",
+        "prob": 0.5
       }
     ],
     "bal": [
@@ -93,28 +1687,6 @@
         "prob": 0.167
       }
     ],
-    "yo": [
-      {
-        "word": "ka",
-        "prob": 0.122
-      },
-      {
-        "word": "rivé",
-        "prob": 0.061
-      },
-      {
-        "word": "di",
-        "prob": 0.061
-      },
-      {
-        "word": "fosé",
-        "prob": 0.041
-      },
-      {
-        "word": "fè",
-        "prob": 0.041
-      }
-    ],
     "pozé": [
       {
         "word": "krankran",
@@ -133,28 +1705,6 @@
       {
         "word": "si",
         "prob": 1.0
-      }
-    ],
-    "si": [
-      {
-        "word": "ou",
-        "prob": 0.107
-      },
-      {
-        "word": "ni",
-        "prob": 0.071
-      },
-      {
-        "word": "latè",
-        "prob": 0.071
-      },
-      {
-        "word": "nou",
-        "prob": 0.036
-      },
-      {
-        "word": "lavil",
-        "prob": 0.036
       }
     ],
     "nou": [
@@ -177,28 +1727,6 @@
       {
         "word": "kalé",
         "prob": 0.043
-      }
-    ],
-    "pou": [
-      {
-        "word": "lé",
-        "prob": 0.109
-      },
-      {
-        "word": "pé",
-        "prob": 0.073
-      },
-      {
-        "word": "nou",
-        "prob": 0.073
-      },
-      {
-        "word": "mwen",
-        "prob": 0.055
-      },
-      {
-        "word": "fè",
-        "prob": 0.036
       }
     ],
     "liminé": [
@@ -245,50 +1773,6 @@
         "prob": 1.0
       }
     ],
-    "di": [
-      {
-        "word": "mwen",
-        "prob": 0.1
-      },
-      {
-        "word": "manman-mwen",
-        "prob": 0.1
-      },
-      {
-        "word": "fi-la",
-        "prob": 0.1
-      },
-      {
-        "word": "mé",
-        "prob": 0.067
-      },
-      {
-        "word": "sé",
-        "prob": 0.067
-      }
-    ],
-    "ka": [
-      {
-        "word": "fè",
-        "prob": 0.077
-      },
-      {
-        "word": "vwè",
-        "prob": 0.049
-      },
-      {
-        "word": "rivé",
-        "prob": 0.027
-      },
-      {
-        "word": "fè-nou",
-        "prob": 0.027
-      },
-      {
-        "word": "pran",
-        "prob": 0.022
-      }
-    ],
     "rivé": [
       {
         "word": "òbò",
@@ -315,50 +1799,6 @@
       {
         "word": "an",
         "prob": 1.0
-      }
-    ],
-    "an": [
-      {
-        "word": "mwen",
-        "prob": 0.153
-      },
-      {
-        "word": "nou",
-        "prob": 0.082
-      },
-      {
-        "word": "té",
-        "prob": 0.082
-      },
-      {
-        "word": "ka",
-        "prob": 0.071
-      },
-      {
-        "word": "ké",
-        "prob": 0.026
-      }
-    ],
-    "mwen": [
-      {
-        "word": "an",
-        "prob": 0.102
-      },
-      {
-        "word": "pa",
-        "prob": 0.051
-      },
-      {
-        "word": "nou",
-        "prob": 0.051
-      },
-      {
-        "word": "li",
-        "prob": 0.051
-      },
-      {
-        "word": "pran",
-        "prob": 0.034
       }
     ],
     "chak": [
@@ -395,28 +1835,6 @@
       {
         "word": "fè",
         "prob": 1.0
-      }
-    ],
-    "fè": [
-      {
-        "word": "pé",
-        "prob": 0.059
-      },
-      {
-        "word": "wach",
-        "prob": 0.029
-      },
-      {
-        "word": "rétif",
-        "prob": 0.029
-      },
-      {
-        "word": "dé",
-        "prob": 0.029
-      },
-      {
-        "word": "nou",
-        "prob": 0.029
       }
     ],
     "wach": [
@@ -515,28 +1933,6 @@
         "prob": 1.0
       }
     ],
-    "pa": [
-      {
-        "word": "ka",
-        "prob": 0.17
-      },
-      {
-        "word": "té",
-        "prob": 0.17
-      },
-      {
-        "word": "ni",
-        "prob": 0.106
-      },
-      {
-        "word": "fè",
-        "prob": 0.064
-      },
-      {
-        "word": "tini",
-        "prob": 0.064
-      }
-    ],
     "réisi": [
       {
         "word": "viré",
@@ -631,50 +2027,6 @@
         "prob": 0.5
       }
     ],
-    "sa": [
-      {
-        "word": "té",
-        "prob": 0.182
-      },
-      {
-        "word": "ki",
-        "prob": 0.136
-      },
-      {
-        "word": "yé",
-        "prob": 0.136
-      },
-      {
-        "word": "ka",
-        "prob": 0.045
-      },
-      {
-        "word": "ou",
-        "prob": 0.045
-      }
-    ],
-    "ki": [
-      {
-        "word": "rann-nou",
-        "prob": 0.29
-      },
-      {
-        "word": "té",
-        "prob": 0.145
-      },
-      {
-        "word": "ka",
-        "prob": 0.065
-      },
-      {
-        "word": "yo",
-        "prob": 0.065
-      },
-      {
-        "word": "an",
-        "prob": 0.032
-      }
-    ],
     "tonbé": [
       {
         "word": "an",
@@ -731,28 +2083,6 @@
         "prob": 0.5
       }
     ],
-    "ni": [
-      {
-        "word": "on",
-        "prob": 0.292
-      },
-      {
-        "word": "asé",
-        "prob": 0.083
-      },
-      {
-        "word": "sonné",
-        "prob": 0.042
-      },
-      {
-        "word": "pou",
-        "prob": 0.042
-      },
-      {
-        "word": "mak",
-        "prob": 0.042
-      }
-    ],
     "sonné": [
       {
         "word": "yo",
@@ -799,16 +2129,6 @@
       {
         "word": "lapenn",
         "prob": 1.0
-      }
-    ],
-    "lapenn": [
-      {
-        "word": "mizè",
-        "prob": 0.5
-      },
-      {
-        "word": "ka",
-        "prob": 0.5
       }
     ],
     "mizè": [
@@ -979,28 +2299,6 @@
         "prob": 1.0
       }
     ],
-    "osi": [
-      {
-        "word": "zòt",
-        "prob": 0.2
-      },
-      {
-        "word": "mwen",
-        "prob": 0.2
-      },
-      {
-        "word": "si",
-        "prob": 0.2
-      },
-      {
-        "word": "annou",
-        "prob": 0.2
-      },
-      {
-        "word": "an",
-        "prob": 0.2
-      }
-    ],
     "zòt": [
       {
         "word": "ki",
@@ -1035,28 +2333,6 @@
         "prob": 0.333
       }
     ],
-    "èvè": [
-      {
-        "word": "kip",
-        "prob": 0.2
-      },
-      {
-        "word": "ti",
-        "prob": 0.2
-      },
-      {
-        "word": "onpakèt",
-        "prob": 0.2
-      },
-      {
-        "word": "tousa",
-        "prob": 0.2
-      },
-      {
-        "word": "lokans",
-        "prob": 0.2
-      }
-    ],
     "kip": [
       {
         "word": "manfou",
@@ -1067,20 +2343,6 @@
       {
         "word": "ka",
         "prob": 1.0
-      }
-    ],
-    "sèvi": [
-      {
-        "word": "lasan",
-        "prob": 0.333
-      },
-      {
-        "word": "san",
-        "prob": 0.333
-      },
-      {
-        "word": "épi'y",
-        "prob": 0.333
       }
     ],
     "lasan": [
@@ -1161,28 +2423,6 @@
         "prob": 1.0
       }
     ],
-    "kon": [
-      {
-        "word": "nou",
-        "prob": 0.294
-      },
-      {
-        "word": "dlo",
-        "prob": 0.088
-      },
-      {
-        "word": "sann",
-        "prob": 0.059
-      },
-      {
-        "word": "dé",
-        "prob": 0.029
-      },
-      {
-        "word": "penn",
-        "prob": 0.029
-      }
-    ],
     "gwò": [
       {
         "word": "kéloyid",
@@ -1203,28 +2443,6 @@
       {
         "word": "an",
         "prob": 0.5
-      }
-    ],
-    "on": [
-      {
-        "word": "nonm",
-        "prob": 0.039
-      },
-      {
-        "word": "dègné",
-        "prob": 0.039
-      },
-      {
-        "word": "ti",
-        "prob": 0.026
-      },
-      {
-        "word": "jou",
-        "prob": 0.026
-      },
-      {
-        "word": "pèchè",
-        "prob": 0.026
       }
     ],
     "ti": [
@@ -1451,16 +2669,6 @@
         "prob": 0.333
       }
     ],
-    "pyé": [
-      {
-        "word": "flanboyan",
-        "prob": 0.5
-      },
-      {
-        "word": "an-mwen",
-        "prob": 0.5
-      }
-    ],
     "flanboyan": [
       {
         "word": "té",
@@ -1651,28 +2859,6 @@
         "prob": 1.0
       }
     ],
-    "pé": [
-      {
-        "word": "sèvi-mwen",
-        "prob": 0.1
-      },
-      {
-        "word": "sa",
-        "prob": 0.1
-      },
-      {
-        "word": "zyé",
-        "prob": 0.05
-      },
-      {
-        "word": "bouch",
-        "prob": 0.05
-      },
-      {
-        "word": "bwè",
-        "prob": 0.05
-      }
-    ],
     "sèk": [
       {
         "word": "nou",
@@ -1735,42 +2921,6 @@
         "prob": 0.333
       }
     ],
-    "dlo": [
-      {
-        "word": "an",
-        "prob": 0.4
-      },
-      {
-        "word": "ka",
-        "prob": 0.1
-      },
-      {
-        "word": "souplé",
-        "prob": 0.1
-      },
-      {
-        "word": "adan",
-        "prob": 0.1
-      },
-      {
-        "word": "pwòp",
-        "prob": 0.1
-      }
-    ],
-    "chayé": [
-      {
-        "word": "zyé",
-        "prob": 0.333
-      },
-      {
-        "word": "doulè",
-        "prob": 0.333
-      },
-      {
-        "word": "asi",
-        "prob": 0.333
-      }
-    ],
     "alé": [
       {
         "word": "moun",
@@ -1779,28 +2929,6 @@
       {
         "word": "fè",
         "prob": 0.5
-      }
-    ],
-    "moun": [
-      {
-        "word": "ka",
-        "prob": 0.176
-      },
-      {
-        "word": "ki",
-        "prob": 0.176
-      },
-      {
-        "word": "pa",
-        "prob": 0.176
-      },
-      {
-        "word": "an",
-        "prob": 0.118
-      },
-      {
-        "word": "nou",
-        "prob": 0.059
       }
     ],
     "trapé": [
@@ -2025,28 +3153,6 @@
       {
         "word": "an",
         "prob": 0.333
-      }
-    ],
-    "tout": [
-      {
-        "word": "biten",
-        "prob": 0.091
-      },
-      {
-        "word": "foufou",
-        "prob": 0.045
-      },
-      {
-        "word": "ti",
-        "prob": 0.045
-      },
-      {
-        "word": "ko",
-        "prob": 0.045
-      },
-      {
-        "word": "dòt",
-        "prob": 0.045
       }
     ],
     "foufou": [
@@ -2501,28 +3607,6 @@
         "prob": 0.333
       }
     ],
-    "adan": [
-      {
-        "word": "on",
-        "prob": 0.227
-      },
-      {
-        "word": "farin",
-        "prob": 0.091
-      },
-      {
-        "word": "nou",
-        "prob": 0.091
-      },
-      {
-        "word": "kawòs",
-        "prob": 0.045
-      },
-      {
-        "word": "lè",
-        "prob": 0.045
-      }
-    ],
     "fap-fap": [
       {
         "word": "bouch",
@@ -2633,20 +3717,6 @@
         "prob": 1.0
       }
     ],
-    "pasé": [
-      {
-        "word": "pa",
-        "prob": 0.333
-      },
-      {
-        "word": "mè",
-        "prob": 0.333
-      },
-      {
-        "word": "si",
-        "prob": 0.333
-      }
-    ],
     "may": [
       {
         "word": "konmen",
@@ -2695,16 +3765,6 @@
         "prob": 1.0
       }
     ],
-    "pon": [
-      {
-        "word": "moun",
-        "prob": 0.667
-      },
-      {
-        "word": "matlo",
-        "prob": 0.333
-      }
-    ],
     "matlo": [
       {
         "word": "ka",
@@ -2731,20 +3791,6 @@
       {
         "word": "a-y",
         "prob": 0.167
-      }
-    ],
-    "ba": [
-      {
-        "word": "mouch",
-        "prob": 0.333
-      },
-      {
-        "word": "movèzté",
-        "prob": 0.333
-      },
-      {
-        "word": "moun-dèwò",
-        "prob": 0.333
       }
     ],
     "mouch": [
@@ -2969,12 +4015,6 @@
         "prob": 1.0
       }
     ],
-    "lèstonmak": [
-      {
-        "word": "an",
-        "prob": 1.0
-      }
-    ],
     "lé": [
       {
         "word": "bouko",
@@ -3113,16 +4153,6 @@
         "prob": 1.0
       }
     ],
-    "dòt": [
-      {
-        "word": "jou",
-        "prob": 0.5
-      },
-      {
-        "word": "moun",
-        "prob": 0.5
-      }
-    ],
     "latè": [
       {
         "word": "pèd",
@@ -3135,50 +4165,6 @@
       {
         "word": "lè",
         "prob": 0.333
-      }
-    ],
-    "pèd": [
-      {
-        "word": "fréchè",
-        "prob": 0.167
-      },
-      {
-        "word": "ta'w",
-        "prob": 0.167
-      },
-      {
-        "word": "timoun",
-        "prob": 0.167
-      },
-      {
-        "word": "souf",
-        "prob": 0.167
-      },
-      {
-        "word": "fil",
-        "prob": 0.167
-      }
-    ],
-    "tini": [
-      {
-        "word": "on",
-        "prob": 0.286
-      },
-      {
-        "word": "bèl",
-        "prob": 0.143
-      },
-      {
-        "word": "mwayen",
-        "prob": 0.143
-      },
-      {
-        "word": "an",
-        "prob": 0.143
-      },
-      {
-        "word": "pou",
-        "prob": 0.143
       }
     ],
     "madanm": [
@@ -3391,28 +4377,6 @@
         "prob": 1.0
       }
     ],
-    "lè": [
-      {
-        "word": "yo",
-        "prob": 0.172
-      },
-      {
-        "word": "ou",
-        "prob": 0.103
-      },
-      {
-        "word": "ka",
-        "prob": 0.069
-      },
-      {
-        "word": "dyab",
-        "prob": 0.069
-      },
-      {
-        "word": "banmkouwi",
-        "prob": 0.069
-      }
-    ],
     "sòti": [
       {
         "word": "pou",
@@ -3438,12 +4402,6 @@
     "pwoché'y": [
       {
         "word": "twòp",
-        "prob": 1.0
-      }
-    ],
-    "twòp": [
-      {
-        "word": "pwès",
         "prob": 1.0
       }
     ],
@@ -3473,28 +4431,6 @@
       {
         "word": "ja",
         "prob": 1.0
-      }
-    ],
-    "ja": [
-      {
-        "word": "yé",
-        "prob": 0.182
-      },
-      {
-        "word": "mandé'y",
-        "prob": 0.091
-      },
-      {
-        "word": "réfizé",
-        "prob": 0.091
-      },
-      {
-        "word": "pwan",
-        "prob": 0.091
-      },
-      {
-        "word": "la",
-        "prob": 0.091
       }
     ],
     "mandé'y": [
@@ -3633,54 +4569,10 @@
         "prob": 1.0
       }
     ],
-    "ké": [
-      {
-        "word": "ba'w",
-        "prob": 0.3
-      },
-      {
-        "word": "mayé",
-        "prob": 0.1
-      },
-      {
-        "word": "pé",
-        "prob": 0.1
-      },
-      {
-        "word": "fin",
-        "prob": 0.1
-      },
-      {
-        "word": "kèkontan",
-        "prob": 0.1
-      }
-    ],
     "awa": [
       {
         "word": "ou",
         "prob": 1.0
-      }
-    ],
-    "ou": [
-      {
-        "word": "té",
-        "prob": 0.3
-      },
-      {
-        "word": "ka",
-        "prob": 0.2
-      },
-      {
-        "word": "sé",
-        "prob": 0.075
-      },
-      {
-        "word": "pa",
-        "prob": 0.05
-      },
-      {
-        "word": "pèd",
-        "prob": 0.025
       }
     ],
     "ta'w": [
@@ -3739,28 +4631,6 @@
         "prob": 0.04
       }
     ],
-    "vwè": [
-      {
-        "word": "rété",
-        "prob": 0.048
-      },
-      {
-        "word": "kawòs-la",
-        "prob": 0.048
-      },
-      {
-        "word": "kalité",
-        "prob": 0.048
-      },
-      {
-        "word": "on",
-        "prob": 0.048
-      },
-      {
-        "word": "sa",
-        "prob": 0.048
-      }
-    ],
     "goua": [
       {
         "word": "alòs",
@@ -3782,12 +4652,6 @@
     "pwens": [
       {
         "word": "mété",
-        "prob": 1.0
-      }
-    ],
-    "lò": [
-      {
-        "word": "a'y",
         "prob": 1.0
       }
     ],
@@ -3937,20 +4801,6 @@
         "prob": 0.5
       }
     ],
-    "òbò": [
-      {
-        "word": "lanmè-la",
-        "prob": 0.5
-      },
-      {
-        "word": "kaz-la",
-        "prob": 0.25
-      },
-      {
-        "word": "kanno-la",
-        "prob": 0.25
-      }
-    ],
     "kaz-la": [
       {
         "word": "désann",
@@ -4015,28 +4865,6 @@
       {
         "word": "ka",
         "prob": 0.5
-      }
-    ],
-    "vlé": [
-      {
-        "word": "dlo-la",
-        "prob": 0.2
-      },
-      {
-        "word": "fi-la",
-        "prob": 0.2
-      },
-      {
-        "word": "sav",
-        "prob": 0.2
-      },
-      {
-        "word": "fè",
-        "prob": 0.2
-      },
-      {
-        "word": "ban-nou",
-        "prob": 0.2
       }
     ],
     "dlo-la": [
@@ -4113,24 +4941,6 @@
         "prob": 1.0
       }
     ],
-    "tou": [
-      {
-        "word": "lé",
-        "prob": 0.25
-      },
-      {
-        "word": "souri",
-        "prob": 0.25
-      },
-      {
-        "word": "krakan",
-        "prob": 0.25
-      },
-      {
-        "word": "sa",
-        "prob": 0.25
-      }
-    ],
     "dimanch": [
       {
         "word": "jou",
@@ -4157,20 +4967,6 @@
       {
         "word": "fè",
         "prob": 1.0
-      }
-    ],
-    "zafè": [
-      {
-        "word": "dyab",
-        "prob": 0.333
-      },
-      {
-        "word": "a'y",
-        "prob": 0.333
-      },
-      {
-        "word": "rèna",
-        "prob": 0.333
       }
     ],
     "pwan": [
@@ -4359,28 +5155,6 @@
         "prob": 0.25
       }
     ],
-    "davwa": [
-      {
-        "word": "ni",
-        "prob": 0.143
-      },
-      {
-        "word": "tout",
-        "prob": 0.143
-      },
-      {
-        "word": "dyab-la",
-        "prob": 0.143
-      },
-      {
-        "word": "nou",
-        "prob": 0.143
-      },
-      {
-        "word": "an",
-        "prob": 0.143
-      }
-    ],
     "pou'w": [
       {
         "word": "pa",
@@ -4455,28 +5229,6 @@
         "prob": 1.0
       }
     ],
-    "sav": [
-      {
-        "word": "ka",
-        "prob": 0.167
-      },
-      {
-        "word": "fi-la",
-        "prob": 0.167
-      },
-      {
-        "word": "la",
-        "prob": 0.167
-      },
-      {
-        "word": "ponmoun",
-        "prob": 0.167
-      },
-      {
-        "word": "té",
-        "prob": 0.167
-      }
-    ],
     "cham-la": [
       {
         "word": "alòs",
@@ -4515,12 +5267,6 @@
       {
         "word": "vlen",
         "prob": 0.25
-      }
-    ],
-    "pri": [
-      {
-        "word": "adan",
-        "prob": 1.0
       }
     ],
     "zatrap": [
@@ -4629,20 +5375,6 @@
       {
         "word": "mé",
         "prob": 1.0
-      }
-    ],
-    "anlè": [
-      {
-        "word": "lanmè-la",
-        "prob": 0.333
-      },
-      {
-        "word": "do",
-        "prob": 0.333
-      },
-      {
-        "word": "branch",
-        "prob": 0.333
       }
     ],
     "pèché": [
@@ -4755,16 +5487,6 @@
         "prob": 1.0
       }
     ],
-    "dèyè": [
-      {
-        "word": "do",
-        "prob": 0.5
-      },
-      {
-        "word": "pòt",
-        "prob": 0.5
-      }
-    ],
     "lafimé": [
       {
         "word": "dyab",
@@ -4811,28 +5533,6 @@
       {
         "word": "té",
         "prob": 0.5
-      }
-    ],
-    "la": [
-      {
-        "word": "ka",
-        "prob": 0.2
-      },
-      {
-        "word": "ki",
-        "prob": 0.133
-      },
-      {
-        "word": "kanno-la",
-        "prob": 0.067
-      },
-      {
-        "word": "dyab",
-        "prob": 0.067
-      },
-      {
-        "word": "an",
-        "prob": 0.067
       }
     ],
     "yé": [
@@ -4997,28 +5697,6 @@
       {
         "word": "yo",
         "prob": 1.0
-      }
-    ],
-    "apré": [
-      {
-        "word": "on",
-        "prob": 0.333
-      },
-      {
-        "word": "pa",
-        "prob": 0.167
-      },
-      {
-        "word": "yo",
-        "prob": 0.167
-      },
-      {
-        "word": "soufwans",
-        "prob": 0.167
-      },
-      {
-        "word": "movétan",
-        "prob": 0.167
       }
     ],
     "nòs": [
@@ -5215,16 +5893,6 @@
         "prob": 1.0
       }
     ],
-    "rantré": [
-      {
-        "word": "kaz",
-        "prob": 0.5
-      },
-      {
-        "word": "konba",
-        "prob": 0.5
-      }
-    ],
     "bardé": [
       {
         "word": "labou",
@@ -5281,52 +5949,10 @@
         "prob": 1.0
       }
     ],
-    "swè": [
-      {
-        "word": "ki",
-        "prob": 1.0
-      }
-    ],
     "débòdé": [
       {
         "word": "an",
         "prob": 1.0
-      }
-    ],
-    "tèt": [
-      {
-        "word": "an",
-        "prob": 0.5
-      },
-      {
-        "word": "sé",
-        "prob": 0.167
-      },
-      {
-        "word": "tiwèt",
-        "prob": 0.167
-      },
-      {
-        "word": "an-mwen",
-        "prob": 0.167
-      }
-    ],
-    "men": [
-      {
-        "word": "an",
-        "prob": 0.25
-      },
-      {
-        "word": "gra",
-        "prob": 0.25
-      },
-      {
-        "word": "an-mwen",
-        "prob": 0.25
-      },
-      {
-        "word": "ka",
-        "prob": 0.25
       }
     ],
     "gra": [
@@ -5439,34 +6065,6 @@
       {
         "word": "kaz",
         "prob": 1.0
-      }
-    ],
-    "rèd": [
-      {
-        "word": "menm",
-        "prob": 1.0
-      }
-    ],
-    "menm": [
-      {
-        "word": "lè",
-        "prob": 0.286
-      },
-      {
-        "word": "fi",
-        "prob": 0.143
-      },
-      {
-        "word": "santi",
-        "prob": 0.143
-      },
-      {
-        "word": "si",
-        "prob": 0.143
-      },
-      {
-        "word": "pa",
-        "prob": 0.143
       }
     ],
     "janti": [
@@ -6071,12 +6669,6 @@
         "prob": 1.0
       }
     ],
-    "solèy": [
-      {
-        "word": "ni",
-        "prob": 1.0
-      }
-    ],
     "konprinnèt": [
       {
         "word": "an",
@@ -6329,12 +6921,6 @@
         "prob": 1.0
       }
     ],
-    "toujou": [
-      {
-        "word": "fin",
-        "prob": 1.0
-      }
-    ],
     "katèl": [
       {
         "word": "ka",
@@ -6399,12 +6985,6 @@
         "prob": 1.0
       }
     ],
-    "onjan": [
-      {
-        "word": "tafyaté",
-        "prob": 1.0
-      }
-    ],
     "mofwazé": [
       {
         "word": "ansiskatdé",
@@ -6446,12 +7026,6 @@
     "zorèy": [
       {
         "word": "ki",
-        "prob": 1.0
-      }
-    ],
-    "pòt": [
-      {
-        "word": "an",
         "prob": 1.0
       }
     ],
@@ -6691,16 +7265,6 @@
         "prob": 1.0
       }
     ],
-    "ta": [
-      {
-        "word": "ka",
-        "prob": 0.5
-      },
-      {
-        "word": "on",
-        "prob": 0.5
-      }
-    ],
     "rizé": [
       {
         "word": "fwèt",
@@ -6763,24 +7327,6 @@
         "prob": 1.0
       }
     ],
-    "bat": [
-      {
-        "word": "bat",
-        "prob": 0.4
-      },
-      {
-        "word": "lagè",
-        "prob": 0.2
-      },
-      {
-        "word": "kon",
-        "prob": 0.2
-      },
-      {
-        "word": "an",
-        "prob": 0.2
-      }
-    ],
     "lagè": [
       {
         "word": "an",
@@ -6839,20 +7385,6 @@
       {
         "word": "pa",
         "prob": 1.0
-      }
-    ],
-    "kwè": [
-      {
-        "word": "adan",
-        "prob": 0.5
-      },
-      {
-        "word": "pawòl",
-        "prob": 0.25
-      },
-      {
-        "word": "toujou",
-        "prob": 0.25
       }
     ],
     "bannélo": [
@@ -6975,12 +7507,6 @@
         "prob": 1.0
       }
     ],
-    "pè": [
-      {
-        "word": "a-y",
-        "prob": 1.0
-      }
-    ],
     "lasa": [
       {
         "word": "mé",
@@ -7003,28 +7529,6 @@
       {
         "word": "kè",
         "prob": 1.0
-      }
-    ],
-    "kè": [
-      {
-        "word": "a-y",
-        "prob": 0.167
-      },
-      {
-        "word": "routyé",
-        "prob": 0.167
-      },
-      {
-        "word": "té",
-        "prob": 0.167
-      },
-      {
-        "word": "jenn",
-        "prob": 0.167
-      },
-      {
-        "word": "an",
-        "prob": 0.167
       }
     ],
     "kòkma": [
@@ -7335,12 +7839,6 @@
         "prob": 1.0
       }
     ],
-    "répété": [
-      {
-        "word": "ban",
-        "prob": 1.0
-      }
-    ],
     "zozyo": [
       {
         "word": "aprésa",
@@ -7357,16 +7855,6 @@
       {
         "word": "non",
         "prob": 1.0
-      }
-    ],
-    "non": [
-      {
-        "word": "féyaj",
-        "prob": 0.5
-      },
-      {
-        "word": "fwi",
-        "prob": 0.5
       }
     ],
     "épisa": [
@@ -7498,12 +7986,6 @@
     "mézanmi": [
       {
         "word": "sa",
-        "prob": 1.0
-      }
-    ],
-    "tris": [
-      {
-        "word": "pou-w",
         "prob": 1.0
       }
     ],
@@ -8003,16 +8485,6 @@
         "prob": 1.0
       }
     ],
-    "onlo": [
-      {
-        "word": "pé",
-        "prob": 0.5
-      },
-      {
-        "word": "sé",
-        "prob": 0.5
-      }
-    ],
     "sèvi-mwen": [
       {
         "word": "témwen",
@@ -8023,16 +8495,6 @@
       {
         "word": "pé",
         "prob": 1.0
-      }
-    ],
-    "bon": [
-      {
-        "word": "kou",
-        "prob": 0.5
-      },
-      {
-        "word": "matété",
-        "prob": 0.5
       }
     ],
     "bontibwen": [
@@ -8273,16 +8735,6 @@
       {
         "word": "té",
         "prob": 1.0
-      }
-    ],
-    "pli": [
-      {
-        "word": "ni",
-        "prob": 0.5
-      },
-      {
-        "word": "travay",
-        "prob": 0.5
       }
     ],
     "travay": [
@@ -8808,13 +9260,14 @@
     "ki rann-nou": 18,
     "an nou": 16,
     "an té": 16,
+    "ka fè": 15,
     "an ka": 14,
-    "ka fè": 14,
     "ou té": 12,
     "rann-nou bandé": 10,
     "bandé kon": 10,
     "kon nou": 10,
     "nou yé": 10,
+    "pa ka": 9,
     "ki té": 9,
     "ka vwè": 9,
     "sé té": 9,
@@ -8823,26 +9276,33 @@
     "solid konsa": 9,
     "ziyanm mannyòk": 9,
     "yé wayayay": 9,
-    "pa ka": 8,
     "ou ka": 8,
     "ban mwen": 8,
     "pa té": 8,
     "sé on": 8,
+    "yo ka": 7,
+    "pa ni": 7,
     "ni on": 7,
     "nou ka": 6,
-    "yo ka": 6,
     "mwen an": 6,
     "banmkouwi banmkouwi": 6,
     "pou lé": 6,
     "lé bouko": 6,
     "konsa solid": 6,
+    "pa tou": 5,
+    "tou di": 5,
+    "lapenn pa": 5,
+    "pa vo": 5,
+    "ou pa": 5,
+    "ka di": 5,
+    "ou sé": 5,
+    "pou pé": 5,
     "ka rivé": 5,
     "adan on": 5,
     "té ni": 5,
     "an ké": 5,
     "lè yo": 5,
     "té pé": 5,
-    "pa ni": 5,
     "ka fè-nou": 5,
     "an fon": 5,
     "fon féran": 5,
@@ -8850,6 +9310,9 @@
     "jou dèrèpo": 5,
     "té ladévenn": 5,
     "ladévenn pou": 5,
+    "sa ki": 4,
+    "vo pa": 4,
+    "moun ki": 4,
     "bal fizi": 4,
     "ka pran": 4,
     "ka koulé": 4,
@@ -8861,24 +9324,23 @@
     "ki ka": 4,
     "ka vini": 4,
     "dlo an": 4,
-    "ka di": 4,
     "ka bat": 4,
     "ka kwè": 4,
-    "pou pé": 4,
     "an tan": 4,
     "nou té": 4,
     "pou nou": 4,
     "solid manman": 4,
     "ki yo": 4,
+    "jou an": 3,
+    "mwen lapenn": 3,
+    "yo fè": 3,
     "fizi yo": 3,
     "nou pou": 3,
     "mé ka": 3,
-    "sa ki": 3,
     "mwen pa": 3,
     "pa fè": 3,
     "sété an": 3,
     "moun ka": 3,
-    "moun ki": 3,
     "ban nou": 3,
     "mé swasantsèt": 3,
     "on nonm": 3,
@@ -8922,7 +9384,6 @@
     "ponmoun pa": 3,
     "koulé kon": 3,
     "kon dlo": 3,
-    "ou sé": 3,
     "on dègné": 3,
     "an kaz": 3,
     "kaz mò-la": 3,
@@ -8933,6 +9394,24 @@
     "wayayay bandé-bandé": 3,
     "bandé ho": 3,
     "ho wayayay": 3,
+    "lè sé": 2,
+    "pou sa": 2,
+    "pa vlé": 2,
+    "an jou": 2,
+    "kwè mwen": 2,
+    "dèyè pòt": 2,
+    "vlé fè": 2,
+    "si vou-menm": 2,
+    "vou-menm pa": 2,
+    "di sa": 2,
+    "dòt jou": 2,
+    "ka ki": 2,
+    "ki pasé": 2,
+    "ou tini": 2,
+    "ja ba": 2,
+    "pou yo": 2,
+    "ou pèd": 2,
+    "dòt moun": 2,
     "mwa di": 2,
     "di mé": 2,
     "mwen pran": 2,
@@ -8946,7 +9425,6 @@
     "figi an": 2,
     "té paré": 2,
     "an bwa": 2,
-    "yo fè": 2,
     "dé zyé": 2,
     "koulé san": 2,
     "san an": 2,
@@ -8988,7 +9466,6 @@
     "ka sousé": 2,
     "sousé san": 2,
     "yo an": 2,
-    "jou an": 2,
     "ka pati": 2,
     "pati an": 2,
     "tout biten": 2,
@@ -9071,7 +9548,6 @@
     "an kadans": 2,
     "pé sa": 2,
     "ha tanboudibrèz": 2,
-    "ou pa": 2,
     "tan maléré": 2,
     "menm lè": 2,
     "yonn adan": 2,
@@ -9110,6 +9586,176 @@
     "mòwnalyen mòwnalyen": 2,
     "bandé-bandé woy": 2,
     "konsa bandé": 2,
+    "di répété": 1,
+    "répété kon": 1,
+    "kon léko": 1,
+    "léko sa": 1,
+    "ki la": 1,
+    "la pou": 1,
+    "pou dlo": 1,
+    "dlo pa": 1,
+    "pa chayé": 1,
+    "chayé lè": 1,
+    "sé adan": 1,
+    "adan menm": 1,
+    "menm ravin-la": 1,
+    "ravin-la swè": 1,
+    "swè ka": 1,
+    "ka dégouté": 1,
+    "dégouté akontinyé": 1,
+    "akontinyé pou": 1,
+    "sa lapenn": 1,
+    "di bougonné": 1,
+    "bougonné anbafèy": 1,
+    "anbafèy koken": 1,
+    "koken pa": 1,
+    "pa pwòspéré": 1,
+    "pwòspéré lè": 1,
+    "lè tout": 1,
+    "tout volè": 1,
+    "volè alèz-kon-blèz": 1,
+    "alèz-kon-blèz lè": 1,
+    "lè zafè": 1,
+    "zafè yo": 1,
+    "fè lò": 1,
+    "lò lè": 1,
+    "sé ki": 1,
+    "ki òbò": 1,
+    "òbò falèz": 1,
+    "falèz sé": 1,
+    "sé vré": 1,
+    "vré lapenn": 1,
+    "di wonchonné": 1,
+    "wonchonné an": 1,
+    "an bab": 1,
+    "bab pli": 1,
+    "pli ta": 1,
+    "ta pli": 1,
+    "pli tris": 1,
+    "tris si": 1,
+    "si anmenmdètan": 1,
+    "anmenmdètan ou": 1,
+    "vlé vwè": 1,
+    "vwè pou": 1,
+    "pou kilès": 1,
+    "kilès lavi-la": 1,
+    "lavi-la pli": 1,
+    "pli antòch": 1,
+    "antòch jou": 1,
+    "jou kwè": 1,
+    "di chigné": 1,
+    "chigné dèyè": 1,
+    "pòt ka": 1,
+    "ka vlé": 1,
+    "fè si": 1,
+    "pa sav": 1,
+    "sav si": 1,
+    "sa anvi": 1,
+    "anvi fè": 1,
+    "fè lapenn": 1,
+    "di èspéré": 1,
+    "èspéré bondyé": 1,
+    "bondyé bon": 1,
+    "bon dèmen": 1,
+    "dèmen ké": 1,
+    "ké on": 1,
+    "on dòt": 1,
+    "jou si": 1,
+    "si apré": 1,
+    "apré jòdila": 1,
+    "jòdila séké": 1,
+    "séké jimo": 1,
+    "jimo jòdila": 1,
+    "jòdila pli": 1,
+    "pli lèd": 1,
+    "lèd pli": 1,
+    "pli rèd": 1,
+    "rèd osi": 1,
+    "osi non": 1,
+    "non non": 1,
+    "non lapenn": 1,
+    "vo ka": 1,
+    "pasé ou": 1,
+    "sé padavwa": 1,
+    "padavwa ou": 1,
+    "tini onlo": 1,
+    "onlo kè": 1,
+    "kè ou": 1,
+    "sé ni": 1,
+    "ni ou": 1,
+    "ni kè": 1,
+    "kè menm": 1,
+    "menm pou": 1,
+    "pé sipòté": 1,
+    "sipòté sa": 1,
+    "sa men": 1,
+    "men lavalas": 1,
+    "lavalas ja": 1,
+    "ba twòp": 1,
+    "twòp tòbòk": 1,
+    "tòbòk anlè": 1,
+    "anlè tèt": 1,
+    "tèt zékobèl": 1,
+    "zékobèl solèy": 1,
+    "solèy ja": 1,
+    "ja rantré": 1,
+    "rantré an": 1,
+    "an chè": 1,
+    "chè twòp": 1,
+    "twòp pou": 1,
+    "yo pé": 1,
+    "pé di": 1,
+    "di ou": 1,
+    "ni fyèl-é-kouraj": 1,
+    "fyèl-é-kouraj pa": 1,
+    "pa sa": 1,
+    "sa sé": 1,
+    "sé davwa": 1,
+    "davwa sé": 1,
+    "sé sèvi": 1,
+    "sèvi yo": 1,
+    "yo toujou": 1,
+    "toujou sèvi": 1,
+    "sèvi èvè": 1,
+    "èvè sé": 1,
+    "sé twòp": 1,
+    "twòp lèstonmak": 1,
+    "lèstonmak yo": 1,
+    "fè anlè": 1,
+    "anlè ki": 1,
+    "ki fè": 1,
+    "fè ou": 1,
+    "ou onjan": 1,
+    "onjan bat": 1,
+    "bat dèyè": 1,
+    "dèyè ou": 1,
+    "pèd lafwa": 1,
+    "lafwa adan": 1,
+    "adan lézòt": 1,
+    "lézòt an": 1,
+    "an vou-menm": 1,
+    "vou-menm mé": 1,
+    "mé kimafoutiésa": 1,
+    "kimafoutiésa pou": 1,
+    "pou pòk": 1,
+    "pòk ou": 1,
+    "ou pòkò": 1,
+    "pòkò pòk": 1,
+    "pòk pon": 1,
+    "pon dòt": 1,
+    "ki menm": 1,
+    "menm péké": 1,
+    "péké pé": 1,
+    "pé woté": 1,
+    "woté pyé": 1,
+    "pyé adan": 1,
+    "adan pè": 1,
+    "pè pépa-la": 1,
+    "pépa-la yo": 1,
+    "yo pri": 1,
+    "pri la": 1,
+    "la kwè": 1,
+    "lapenn vo": 1,
     "sé mé": 1,
     "mé jou": 1,
     "jou bal": 1,
@@ -9403,7 +10049,6 @@
     "rouj ban": 1,
     "nou lèstonbé": 1,
     "lèstonbé pou": 1,
-    "pou sa": 1,
     "ki tan": 1,
     "tan nou": 1,
     "nou prèmyé": 1,
@@ -9435,7 +10080,6 @@
     "bim-bo-po sé": 1,
     "sé pincemail": 1,
     "pincemail ki": 1,
-    "ki pasé": 1,
     "pasé pa": 1,
     "pa may": 1,
     "may konmen": 1,
@@ -9504,7 +10148,6 @@
     "palavré an": 1,
     "an mémwa": 1,
     "mémwa an": 1,
-    "mwen lapenn": 1,
     "lapenn ka": 1,
     "chayé doulè": 1,
     "doulè chouboulé": 1,
@@ -9574,7 +10217,6 @@
     "plis jou": 1,
     "ki tout": 1,
     "tout dòt": 1,
-    "dòt jou": 1,
     "jou ka": 1,
     "fè latè": 1,
     "latè pèd": 1,
@@ -9612,201 +10254,11 @@
     "réjyon-la ja": 1,
     "ja mandé'y": 1,
     "mayé pon": 1,
-    "ka gou": 1,
-    "gou a'y": 1,
-    "a'y té": 1,
-    "pèchè yo": 1,
-    "kriyé banmkoukwi": 1,
-    "banmkoukwi sa": 1,
-    "té mandé'y": 1,
-    "mayé té": 1,
-    "té réponn": 1,
-    "ka mayé": 1,
-    "mayé épi": 1,
-    "épi pèchè": 1,
-    "pèchè mwen": 1,
-    "mwen pèchè": 1,
-    "an jan-la": 1,
-    "jan-la sa": 1,
-    "sa ka": 1,
-    "pit frè": 1,
-    "frè an": 1,
-    "an ja": 1,
-    "ja réfizé": 1,
-    "réfizé dòt": 1,
-    "dòt moun": 1,
-    "ki pèchè": 1,
-    "pèchè sé": 1,
-    "sé èpi'w": 1,
-    "èpi'w an": 1,
-    "ké mayé": 1,
-    "mayé awa": 1,
-    "awa ou": 1,
-    "ou pèd": 1,
-    "pèd ta'w": 1,
-    "ta'w alòs": 1,
-    "alòs tan": 1,
-    "tan pasé": 1,
-    "pasé mè": 1,
-    "mè konpè": 1,
-    "konpè dyab": 1,
-    "dyab té": 1,
-    "vwè rété": 1,
-    "sa ou": 1,
-    "fè pon": 1,
-    "pa goua": 1,
-    "goua alòs": 1,
-    "alòs préparé'y": 1,
-    "préparé'y abiyé'y": 1,
-    "abiyé'y kon": 1,
-    "kon pwens": 1,
-    "pwens mété": 1,
-    "mété tout": 1,
-    "tout lò": 1,
-    "lò a'y": 1,
-    "a'y vini": 1,
-    "adan kawòs": 1,
-    "kawòs a'y": 1,
-    "fi-la ki": 1,
-    "té asi": 1,
-    "asi balkon": 1,
-    "balkon a'y": 1,
-    "a'y vwè": 1,
-    "vwè kawòs-la": 1,
-    "kawòs-la ka": 1,
-    "ka prézanté": 1,
-    "prézanté lè'y": 1,
-    "lè'y vwè": 1,
-    "vwè kalité": 1,
-    "kalité moso": 1,
-    "moso nonm-la": 1,
-    "nonm-la ki": 1,
-    "té adan'y": 1,
-    "adan'y di": 1,
-    "di manman": 1,
-    "manman an": 1,
-    "vwè on": 1,
-    "nonm ki": 1,
-    "bèl kawòs": 1,
-    "kawòs si": 1,
-    "si mandé": 1,
-    "mandé ban": 1,
-    "mwen di'y": 1,
-    "di'y mwen": 1,
-    "an cham": 1,
-    "cham an": 1,
-    "lè misyé": 1,
-    "misyé rivé": 1,
-    "òbò kaz-la": 1,
-    "kaz-la désann": 1,
-    "désann antré": 1,
-    "antré anba": 1,
-    "anba galri": 1,
-    "galri di": 1,
-    "di manman-la": 1,
-    "manman-la ban": 1,
-    "mwen ti": 1,
-    "ti tak": 1,
-    "tak dlo": 1,
-    "dlo souplé": 1,
-    "souplé fi-la": 1,
-    "bèl tenba": 1,
-    "tenba an": 1,
-    "an awjan": 1,
-    "awjan dyab": 1,
-    "vwè'y di": 1,
-    "sé adan'y": 1,
-    "adan'y vlé": 1,
-    "vlé dlo-la": 1,
-    "dlo-la alòs": 1,
-    "alòs manman": 1,
-    "manman fi-la": 1,
-    "fi-la menné": 1,
-    "menné dyab": 1,
-    "dyab mandé": 1,
-    "mandé fi-la": 1,
-    "fi-la pou'y": 1,
-    "pou'y pé": 1,
-    "pé bwè": 1,
-    "bwè dlo": 1,
-    "dlo adan": 1,
-    "adan lè": 1,
-    "dyab rivé": 1,
-    "rivé koté": 1,
-    "koté fi-la": 1,
-    "fi-la kozé": 1,
-    "kozé épi'y": 1,
-    "épi'y mandé'y": 1,
-    "mayé fi-la": 1,
-    "fi-la asépté": 1,
-    "asépté alòs": 1,
-    "alòs tou": 1,
-    "tou lé": 1,
-    "lé dimanch": 1,
-    "dimanch pou": 1,
-    "pou té": 1,
-    "vini nwè": 1,
-    "nwè fyanséz": 1,
-    "fyanséz a'y": 1,
-    "mayé opa": 1,
-    "opa fè": 1,
-    "fè gran": 1,
-    "gran zafè": 1,
-    "zafè dyab": 1,
-    "dyab pwan": 1,
-    "pwan madanm": 1,
-    "madanm a'y": 1,
-    "a'y yo": 1,
-    "yo pati": 1,
-    "pati mé": 1,
-    "mé pou": 1,
-    "pou rivé": 1,
-    "rivé kaz": 1,
-    "kaz dyab": 1,
-    "dyab yo": 1,
-    "yo ni": 1,
-    "on lanmè": 1,
-    "lanmè pou": 1,
-    "pou yo": 1,
-    "yo traversé": 1,
-    "traversé dyab": 1,
-    "ka enki": 1,
-    "enki fè": 1,
-    "fè dètwoya": 1,
-    "dètwoya jès": 1,
-    "jès lanmè-la": 1,
-    "ka woupwan": 1,
-    "woupwan plas": 1,
-    "plas a'y": 1,
-    "a'y mé": 1,
-    "tini mwayen": 1,
-    "mwayen fi-la": 1,
-    "fi-la wouvrin": 1,
-    "wouvrin aka": 1,
-    "aka fanmi": 1,
-    "fanmi a'y": 1,
-    "a'y ankò": 1,
-    "ankò lè": 1,
-    "rivé dyab": 1,
-    "dyab ba'y": 1,
-    "ba'y tout": 1,
-    "tout klé": 1,
-    "klé kaz-la": 1,
-    "kaz-la pou": 1,
-    "pou tout": 1,
-    "tout cham": 1,
-    "cham di'y": 1,
-    "di'y konsa": 1,
-    "konsa adan": 1,
-    "adan pakèt": 1,
-    "pakèt klé-la": 1,
-    "klé-la ni": 1,
-    "ni yonn": 1,
-    "yonn pou": 1
+    "ka gou": 1
   },
   "stats": {
-    "total_bigrammes": 2557,
-    "total_trigrammes": 2711,
-    "mots_avec_predictions": 989
+    "total_bigrammes": 2736,
+    "total_trigrammes": 2922,
+    "mots_avec_predictions": 1033
   }
 }
