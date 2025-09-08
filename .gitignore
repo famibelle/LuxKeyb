@@ -39,3 +39,4 @@ clavier_creole/.flutter-plugins
 clavier_creole/.flutter-plugins-dependencies
 ConvertToJson.py
 android_keyboard/gradle.properties
+.env
