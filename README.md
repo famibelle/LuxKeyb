@@ -38,10 +38,8 @@ C’est un acte de transmission, un hommage à la langue, une technologie au ser
 
 ## 📱 Aperçu
 
-<div style="display: flex; justify-content: center; gap: 10px;">
-   <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera" style="width: 25%; height: auto;">
-   <img src="Screenshots/KlavyéKreyol_x2.gif" alt="Clavier Kreyòl Karukera en Action" style="width: 25%; height: auto;">
-   <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier Kreyòl Karukera en home" style="width: 25%; height: auto;">
+<div align="center">
+   <img src="Screenshots/KlavyéKreyol_x2.gif" alt="Clavier Kreyòl Karukera en Action" width="25%">
 </div>
 
 *Clavier créole avec suggestions basés sur les textes littéraires fondateurs du kréyol*
@@ -314,6 +312,11 @@ R: Vérifier que le clavier est bien activé et défini par défaut
 
 **Q: Comment régénérer les données linguistiques ?**
 R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
+
+<div align="center">
+   <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera" width="25%">
+   <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier Kreyòl Karukera en home" width="25%">
+</div>
 
 ---
 
