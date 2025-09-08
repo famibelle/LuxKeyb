@@ -3,29 +3,69 @@
 """
 Générateur de N-grams pour le clavier créole - Potomitan™
 Crée des bigrammes et trigrammes à partir des textes créoles
+
+Usage:
+    1. Créer un fichier .env avec: HF_TOKEN=hf_xxxxxxxxxxxxxxxxx
+    2. Exécuter: python GenererNgrams.py
+    
+    Le script chargera automatiquement le token depuis .env
 """
 
 import json
 import re
 from collections import Counter, defaultdict
 import itertools
+from datasets import load_dataset
+from dotenv import load_dotenv
+import os
 
-def charger_textes_kreyol():
-    """Charge tous les textes créoles disponibles"""
+def charger_textes_kreyol(hf_token=None):
+    """
+    Charge tous les textes créoles disponibles
+    
+    Args:
+        hf_token (str, optional): Token Hugging Face pour l'authentification
+    """
     textes = []
     
-    # 1. Charger Textes_kreyol.json
+    # 1. Essayer de charger le dataset depuis Hugging Face
+    try:
+        print("🔄 Téléchargement du dataset depuis Hugging Face...")
+        if hf_token:
+            print("🔑 Utilisation du token Hugging Face fourni")
+            ds = load_dataset("POTOMITAN/PawolKreyol-gfc", token=hf_token)
+        else:
+            print("📂 Accès public au dataset")
+            ds = load_dataset("POTOMITAN/PawolKreyol-gfc")
+        
+        for item in ds['train']:
+            if item.get('Texte') and item['Texte'].strip():
+                textes.append(item['Texte'].strip())
+        
+        print(f"✅ Chargé {len(textes)} textes depuis Hugging Face Dataset")
+        return textes
+        
+    except Exception as e:
+        print(f"⚠️ Erreur lors du téléchargement depuis Hugging Face: {e}")
+        if not hf_token:
+            print("💡 Conseil: Essayez avec un token HF si le dataset est privé")
+        print("🔄 Tentative de chargement depuis le fichier local...")
+    
+    # 2. Fallback : charger depuis le fichier local
     try:
         with open("PawolKreyol/Textes_kreyol.json", 'r', encoding='utf-8') as f:
             data = json.load(f)
             for item in data:
                 if item.get('Texte') and item['Texte'].strip():
                     textes.append(item['Texte'].strip())
-        print(f"✅ Chargé {len([t for t in textes])} textes depuis Textes_kreyol.json")
+        
+        print(f"✅ Chargé {len(textes)} textes depuis Textes_kreyol.json (fallback)")
+        return textes
+        
     except Exception as e:
-        print(f"❌ Erreur lors du chargement de Textes_kreyol.json: {e}")
-    
-    return textes
+        print(f"❌ Erreur lors du chargement du fichier local: {e}")
+        print("❌ Aucune source de données disponible!")
+        return []
 
 def nettoyer_et_tokeniser(texte):
     """Nettoie le texte et le tokenise en mots"""
@@ -174,22 +214,34 @@ def afficher_exemples_predictions(mots_suivants):
 def main():
     print("=== Génération des N-grams pour le clavier créole - Potomitan™ ===")
     
-    # 1. Charger les textes
+    # 1. Charger les variables d'environnement depuis .env
+    load_dotenv()
+    
+    # 2. Récupérer le token Hugging Face
+    hf_token = os.getenv('HF_TOKEN')
+    
+    if hf_token:
+        print(f"🔑 Token Hugging Face trouvé dans .env")
+    else:
+        print("ℹ️ Aucun token trouvé dans .env - tentative d'accès public")
+        print("💡 Pour utiliser un token: ajoutez HF_TOKEN=<votre_token> dans le fichier .env")
+    
+    # 3. Charger les textes
     print("📚 Chargement des textes créoles...")
-    textes = charger_textes_kreyol()
+    textes = charger_textes_kreyol(hf_token)
     print(f"Textes chargés: {len(textes)}")
     
     if not textes:
         print("❌ Aucun texte trouvé ! Vérifiez les chemins de fichiers.")
         return
     
-    # 2. Créer le modèle N-grams
+    # 4. Créer le modèle N-grams
     bigrammes, trigrammes, mots_suivants = creer_modele_ngrams(textes)
     
-    # 3. Afficher des exemples
+    # 5. Afficher des exemples
     afficher_exemples_predictions(mots_suivants)
     
-    # 4. Sauvegarder le modèle
+    # 6. Sauvegarder le modèle
     nb_predictions = sauvegarder_modele_ngrams(bigrammes, trigrammes, mots_suivants)
     
     print(f"\n🎉 Modèle N-grams créé avec succès !")
