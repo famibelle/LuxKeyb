@@ -1,123 +1,143 @@
-name: Build and Release Signed APK
+name: 🏗️ Build Potomitan Kreyol Keyboard APK
 
 on:
   push:
     branches: [ main ]
-    tags: [ 'v*' ]
+    paths:
+      - 'android_keyboard/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'android_keyboard/**'
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   build:
+    name: 📱 Build Samsung-Compatible APK
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     
     steps:
-    - name: 📥 Checkout code
+    - name: 📥 Checkout Repository
       uses: actions/checkout@v4
       
-    - name: 🔧 Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+    - name: ☕ Setup JDK 17
+      uses: actions/setup-java@v4
       with:
-        gradle-version: 8.4
+        java-version: '17'
+        distribution: 'temurin'
         
-    - name: 🧹 Clean project
-      run: |
-        cd android_keyboard && gradle clean --no-daemon
+    - name: 🐘 Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: wrapper
         
-    - name: 🔑 Decode and Setup Keystore
-      env:
-        ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
-      run: |
-        mkdir -p android_keyboard/app
-        echo "$ENCODED_STRING" | base64 --decode > android_keyboard/app/app-release.jks
-        echo "✅ Keystore created at: android_keyboard/app/app-release.jks"
-        echo "📊 Keystore file info:"
-        ls -la android_keyboard/app/app-release.jks
-        echo "📂 App directory contents:"
-        ls -la android_keyboard/app/
-        echo "🔒 Setting secure permissions..."
-        chmod 600 android_keyboard/app/app-release.jks
-        
-    - name: 🚀 Build Release APK (Signed)
-      env:
-        STORE_FILE: app-release.jks
-        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    - name: 📄 Make Gradlew Executable
+      run: chmod +x android_keyboard/gradlew
+      
+    - name: 🧹 Clean Project
       run: |
         cd android_keyboard
-        echo "🔐 Configuration de signature:"
-        echo "  - Keystore file: $STORE_FILE"
-        echo "  - Key alias: $KEY_ALIAS"
-        echo "  - Working directory: $(pwd)"
-        echo "🔍 Vérification finale du keystore:"
-        ls -la app/app-release.jks || echo "❌ Keystore not found!"
-        echo "📂 App directory contents:"
-        ls -la app/
-        echo "🚀 Starting Gradle build with debug output..."
-        gradle assembleRelease --no-daemon --stacktrace --info
+        ./gradlew clean
         
-    - name: 📦 Find APK files
-      id: apk_files
+    - name: 🔨 Build Debug APK (Samsung Compatible)
       run: |
         cd android_keyboard
-        RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+        ./gradlew assembleDebug
         
-        echo "Found Release APK: $RELEASE_APK"
-        echo "release_apk=$RELEASE_APK" >> $GITHUB_OUTPUT
+    - name: 🔨 Build Release APK (Samsung Compatible)
+      run: |
+        cd android_keyboard
+        ./gradlew assembleRelease
+        
+    - name: 📁 List Built APKs
+      run: |
+        echo "🎯 APK Files Built:"
+        find android_keyboard/app/build/outputs/apk -name "*.apk" -exec ls -la {} \;
+        
+    - name: 📤 Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: 📱 Potomitan-Kreyol-Keyboard-DEBUG-Samsung
+        path: android_keyboard/app/build/outputs/apk/debug/*.apk
+        retention-days: 30
+        
+    - name: 📤 Upload Release APK  
+      uses: actions/upload-artifact@v4
+      with:
+        name: 📱 Potomitan-Kreyol-Keyboard-RELEASE-Samsung
+        path: android_keyboard/app/build/outputs/apk/release/*.apk
+        retention-days: 90
         
     - name: 📊 APK Info
       run: |
-        cd android_keyboard
-        echo "🔍 Signed Release APK:"
-        ls -lh "${{ steps.apk_files.outputs.release_apk }}"
+        echo "🎉 Build completed successfully!"
+        echo ""
+        echo "📱 Debug APK (Easy Installation):"
+        ls -la android_keyboard/app/build/outputs/apk/debug/*.apk
+        echo ""
+        echo "📱 Release APK (Production):"
+        ls -la android_keyboard/app/build/outputs/apk/release/*.apk
+        echo ""
+        echo "🔗 Download APKs from GitHub Actions Artifacts section"
+        echo "💡 For Samsung tablets: Try DEBUG version first (easier to install)"
         
-    - name: Upload APK as artifact
-      uses: actions/upload-artifact@v4
+  # Job pour créer une release automatique sur les tags
+  release:
+    name: 🚀 Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 📥 Download Debug APK
+      uses: actions/download-artifact@v4
       with:
-        name: signed-apk
-        path: android_keyboard/${{ steps.apk_files.outputs.release_apk }}
+        name: 📱 Potomitan-Kreyol-Keyboard-DEBUG-Samsung
+        path: ./apk-debug/
         
-    - name: 🚀 Create Release
-      if: startsWith(github.ref, 'refs/tags/v')
+    - name: 📥 Download Release APK
+      uses: actions/download-artifact@v4
+      with:
+        name: 📱 Potomitan-Kreyol-Keyboard-RELEASE-Samsung
+        path: ./apk-release/
+        
+    - name: 🚀 Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref_name }}
-        name: 🇬🇵 Klavié Kreyòl Karukera ${{ github.ref_name }} (Signed)
-        body: |
-          ## �🇵 Klavié Kreyòl Karukera • Potomitan™ (SIGNED RELEASE)
-          
-          **Nouveau clavier créole pour la Guadeloupe - Version signée !**
-          
-          ### ✨ Fonctionnalités :
-          - 🌈 Design moderne caribéen (bleu caraïbe, jaune soleil, vert canne)
-          - 📝 Suggestions intelligentes basées sur un vrai dictionnaire créole
-          - 🔤 Accents créoles (à, è, ò, etc.) avec long-press
-          - 📚 Dictionnaire de 5910 mots créoles authentiques
-          - 🎯 Sources littéraires intégrées (Telchid, Rupaire, Fontes, etc.)
-          - 🔒 **APK signée pour installation sécurisée**
-          
-          ### 📱 Installation :
-          1. Téléchargez le fichier **APK signée** ci-dessous
-          2. Autorisez l'installation d'applications inconnues dans les paramètres Android
-          3. Installez l'APK en touchant le fichier téléchargé
-          4. Activez le clavier dans **Paramètres → Système → Langues et saisie → Claviers virtuels**
-          5. Sélectionnez **Potomitan Kreyol Keyboard**
-          
-          ### � Sécurité :
-          - APK signée avec certificat de production
-          - Code source ouvert et auditable
-          - Pas de trackers ou analytics
-          - Permissions minimales requises
-          
-          ---
-          **Alé douvan épi klavié kreyòl-la !** ⌨️✨
         files: |
-          android_keyboard/${{ steps.apk_files.outputs.release_apk }}
+          ./apk-debug/*.apk
+          ./apk-release/*.apk
+        name: Potomitan Kreyol Keyboard ${{ github.ref_name }}
+        body: |
+          ## 📱 Potomitan Kreyol Keyboard ${{ github.ref_name }}
+          
+          ### 🔥 Highlights
+          - ✅ Samsung Ultra-Compatible APKs
+          - ✅ Enhanced multi-source suggestions ("sou" → "soudé")
+          - ✅ Real-time contextual predictions
+          - ✅ Full Creole dictionary + N-grams support
+          
+          ### 📋 Installation Instructions
+          
+          **🎯 For Samsung Tablets (Recommended)**:
+          1. Download **DEBUG APK** (easier to install)
+          2. Enable "Unknown Sources" in Settings → Security
+          3. Install APK through "My Files" app
+          
+          **📱 APK Variants**:
+          - **DEBUG**: `Potomitan_Kreyol_Keyboard_v1.2-Samsung_debug_*.apk` (Recommended for Samsung)
+          - **RELEASE**: `Potomitan_Kreyol_Keyboard_v1.2-Samsung_release_*.apk` (Production)
+          
+          ### 🛠️ Technical Details
+          - **ApplicationId**: `com.potomitan.kreyolkeyboard`
+          - **Target SDK**: 33 (Samsung optimized)  
+          - **Architectures**: arm64-v8a, armeabi-v7a
+          - **Samsung Compatibility**: Ultra-optimized
         draft: false
         prerelease: false
-        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
