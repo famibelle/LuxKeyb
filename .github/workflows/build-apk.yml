@@ -22,7 +22,11 @@ jobs:
       with:
         gradle-version: 8.4
         
-    - name: Decode Keystore
+    - name: 🧹 Clean project
+      run: |
+        cd android_keyboard && gradle clean --no-daemon
+        
+    - name: 🔑 Decode and Setup Keystore
       env:
         ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
       run: |
@@ -33,12 +37,10 @@ jobs:
         ls -la android_keyboard/app/app-release.jks
         echo "📂 App directory contents:"
         ls -la android_keyboard/app/
+        echo "🔒 Setting secure permissions..."
+        chmod 600 android_keyboard/app/app-release.jks
         
-    - name: Clean project
-      run: |
-        cd android_keyboard && gradle clean --no-daemon
-        
-    - name: Build Release APK (Signed)
+    - name: 🚀 Build Release APK (Signed)
       env:
         STORE_FILE: app-release.jks
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -50,12 +52,12 @@ jobs:
         echo "  - Keystore file: $STORE_FILE"
         echo "  - Key alias: $KEY_ALIAS"
         echo "  - Working directory: $(pwd)"
-        echo "🔍 Vérification du keystore:"
+        echo "🔍 Vérification finale du keystore:"
         ls -la app/app-release.jks || echo "❌ Keystore not found!"
         echo "📂 App directory contents:"
         ls -la app/
-        echo "🚀 Starting Gradle build..."
-        gradle assembleRelease --no-daemon --stacktrace
+        echo "🚀 Starting Gradle build with debug output..."
+        gradle assembleRelease --no-daemon --stacktrace --info
         
     - name: 📦 Find APK files
       id: apk_files

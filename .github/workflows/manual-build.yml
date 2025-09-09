@@ -37,6 +37,10 @@ jobs:
       with:
         gradle-version: 8.4
         
+    - name: 🧹 Clean project
+      run: |
+        cd android_keyboard && gradle clean --no-daemon
+        
     - name: 🔑 Decode Keystore (Release uniquement)
       if: ${{ inputs.build_type == 'release' || inputs.build_type == 'both' }}
       env:
@@ -49,10 +53,8 @@ jobs:
         ls -la android_keyboard/app/app-release.jks
         echo "📂 App directory contents:"
         ls -la android_keyboard/app/
-        
-    - name: 🧹 Clean project
-      run: |
-        cd android_keyboard && gradle clean --no-daemon
+        echo "🔒 Setting secure permissions..."
+        chmod 600 android_keyboard/app/app-release.jks
         
     - name: 🔨 Build Debug APK
       if: ${{ inputs.build_type == 'debug' || inputs.build_type == 'both' }}
