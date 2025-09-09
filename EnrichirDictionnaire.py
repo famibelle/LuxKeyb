@@ -119,8 +119,20 @@ def fusionner_dictionnaires(dict_existant, nouveaux_mots):
         for mot, freq in dict_existant.items():
             compteur_existant[mot] = freq
     
-    # Fusionner les compteurs
-    compteur_fusionne = compteur_existant + nouveaux_mots
+    # Fusionner les compteurs en évitant les doublons
+    # Si le mot existe déjà, on garde la fréquence la plus élevée
+    compteur_fusionne = compteur_existant.copy()
+    
+    mots_ajoutes = 0
+    for mot, freq in nouveaux_mots.items():
+        if mot not in compteur_fusionne:
+            compteur_fusionne[mot] = freq
+            mots_ajoutes += 1
+        else:
+            # Optionnel: garder la fréquence la plus élevée
+            compteur_fusionne[mot] = max(compteur_fusionne[mot], freq)
+    
+    print(f"📈 Nouveaux mots ajoutés (évitant doublons): {mots_ajoutes}")
     
     return compteur_fusionne
 
@@ -155,13 +167,12 @@ def main():
         print("ℹ️ Aucun token trouvé dans .env - tentative d'accès public")
         print("💡 Pour utiliser un token: ajoutez HF_TOKEN=<votre_token> dans le fichier .env")
     
-    # Chemins des fichiers (mis à jour pour la structure simplifiée)
-    chemin_dict_existant = "android_keyboard/app/src/main/assets/creole_dict.json" 
-    chemin_dict_enrichi = "android_keyboard/app/src/main/assets/creole_dict_enrichi.json"
+    # Chemin du fichier unique
+    chemin_dict = "android_keyboard/app/src/main/assets/creole_dict.json"
+    print("📚 Utilisation du dictionnaire unique creole_dict.json...")
     
     # 3. Charger le dictionnaire existant
-    print("📚 Chargement du dictionnaire existant...")
-    dict_existant = charger_dictionnaire_existant(chemin_dict_existant)
+    dict_existant = charger_dictionnaire_existant(chemin_dict)
     print(f"Dictionnaire existant: {len(dict_existant)} mots")
     
     # 4. Charger les textes créoles
@@ -178,9 +189,41 @@ def main():
     nouveaux_mots = tokeniser_et_compter(textes)
     print(f"Nouveaux mots uniques trouvés: {len(nouveaux_mots)}")
     
+    # Statistiques de distribution des fréquences
+    if nouveaux_mots:
+        freqs = list(nouveaux_mots.values())
+        print(f"📊 Statistiques des fréquences:")
+        print(f"   - Fréquence minimale: {min(freqs)}")
+        print(f"   - Fréquence maximale: {max(freqs)}")
+        print(f"   - Fréquence moyenne: {sum(freqs)/len(freqs):.1f}")
+        
+        # Comptage par niveau de fréquence
+        freq_1 = sum(1 for f in freqs if f == 1)
+        freq_2_5 = sum(1 for f in freqs if 2 <= f <= 5)
+        freq_6_10 = sum(1 for f in freqs if 6 <= f <= 10)
+        freq_plus_10 = sum(1 for f in freqs if f > 10)
+        
+        print(f"   - Mots fréquence = 1: {freq_1}")
+        print(f"   - Mots fréquence 2-5: {freq_2_5}")
+        print(f"   - Mots fréquence 6-10: {freq_6_10}")
+        print(f"   - Mots fréquence > 10: {freq_plus_10}")
+    
     # 6. Afficher quelques statistiques
     print("\n=== Nouveaux mots les plus fréquents ===")
     for mot, freq in nouveaux_mots.most_common(20):
+        print(f"{mot}: {freq}")
+    
+    print("\n=== Nouveaux mots les moins fréquents (échantillon) ===")
+    # Prendre les 20 mots les moins fréquents
+    mots_rares = nouveaux_mots.most_common()[-20:]
+    for mot, freq in reversed(mots_rares):  # Inverser pour afficher du moins au plus fréquent
+        print(f"{mot}: {freq}")
+    
+    print("\n=== Nouveaux mots de fréquence intermédiaire (5-15 occurrences) ===")
+    # Filtrer les mots avec fréquence entre 5 et 15
+    mots_intermediaires = [(mot, freq) for mot, freq in nouveaux_mots.items() if 5 <= freq <= 15]
+    mots_intermediaires.sort(key=lambda x: x[1], reverse=True)  # Trier par fréquence décroissante
+    for mot, freq in mots_intermediaires[:15]:  # Afficher les 15 premiers
         print(f"{mot}: {freq}")
     
     # 7. Fusionner avec le dictionnaire existant
@@ -191,12 +234,12 @@ def main():
     # 8. Sauvegarder le dictionnaire enrichi
     nb_mots_sauves = sauvegarder_dictionnaire_enrichi(
         compteur_fusionne, 
-        chemin_dict_enrichi, 
-        nb_mots=3000
+        chemin_dict, 
+        nb_mots=30000
     )
     
     print(f"\n✅ Dictionnaire enrichi sauvegardé: {nb_mots_sauves} mots")
-    print(f"📁 Fichier: {chemin_dict_enrichi}")
+    print(f"📁 Fichier: {chemin_dict}")
     
     # 9. Statistiques finales
     mots_ajoutes = len(compteur_fusionne) - len(dict_existant) if dict_existant else len(compteur_fusionne)
