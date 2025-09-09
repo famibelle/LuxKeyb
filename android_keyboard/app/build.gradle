@@ -9,10 +9,22 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv("STORE_FILE") ?: project.property("STORE_FILE"))
-            storePassword System.getenv("STORE_PASSWORD") ?: project.property("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS") ?: project.property("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD") ?: project.property("KEY_PASSWORD")
+            // Configuration pour GitHub Actions et builds locaux
+            def keystoreFile = System.getenv("STORE_FILE") ?: project.findProperty("STORE_FILE")
+            if (keystoreFile) {
+                // Si le chemin est relatif (comme dans GitHub Actions), le résoudre par rapport au dossier app
+                if (!keystoreFile.startsWith("/") && !keystoreFile.contains(":")) {
+                    storeFile file(keystoreFile)
+                } else {
+                    storeFile file(keystoreFile)
+                }
+            } else {
+                // Fallback pour les builds locaux
+                storeFile file("app-release.jks")
+            }
+            storePassword System.getenv("STORE_PASSWORD") ?: project.findProperty("STORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS") ?: project.findProperty("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD") ?: project.findProperty("KEY_PASSWORD")
         }
     }
 
