@@ -28,8 +28,11 @@ jobs:
       run: |
         mkdir -p android_keyboard/app
         echo "$ENCODED_STRING" | base64 --decode > android_keyboard/app/app-release.jks
-        echo "Keystore created at: android_keyboard/app/app-release.jks"
+        echo "✅ Keystore created at: android_keyboard/app/app-release.jks"
+        echo "📊 Keystore file info:"
         ls -la android_keyboard/app/app-release.jks
+        echo "📂 App directory contents:"
+        ls -la android_keyboard/app/
         
     - name: Clean project
       run: |
@@ -43,14 +46,16 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
         cd android_keyboard
-        echo "Using keystore: $STORE_FILE"
-        echo "Key alias: $KEY_ALIAS"
-        echo "Working directory: $(pwd)"
-        echo "App directory contents:"
+        echo "🔐 Configuration de signature:"
+        echo "  - Keystore file: $STORE_FILE"
+        echo "  - Key alias: $KEY_ALIAS"
+        echo "  - Working directory: $(pwd)"
+        echo "🔍 Vérification du keystore:"
+        ls -la app/app-release.jks || echo "❌ Keystore not found!"
+        echo "📂 App directory contents:"
         ls -la app/
-        echo "Looking for keystore at app/app-release.jks:"
-        ls -la app/app-release.jks || echo "Keystore not found"
-        gradle assembleRelease --no-daemon
+        echo "🚀 Starting Gradle build..."
+        gradle assembleRelease --no-daemon --stacktrace
         
     - name: 📦 Find APK files
       id: apk_files
