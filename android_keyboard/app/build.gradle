@@ -9,22 +9,45 @@ android {
 
     signingConfigs {
         release {
-            // Configuration pour GitHub Actions et builds locaux
-            def keystoreFile = System.getenv("STORE_FILE") ?: project.findProperty("STORE_FILE")
-            if (keystoreFile) {
-                // Si le chemin est relatif (comme dans GitHub Actions), le résoudre par rapport au dossier app
-                if (!keystoreFile.startsWith("/") && !keystoreFile.contains(":")) {
-                    storeFile file(keystoreFile)
-                } else {
-                    storeFile file(keystoreFile)
+            // Priorité : Variables d'environnement (GitHub Actions) puis gradle.properties (local)
+            def keystoreFile = System.getenv("STORE_FILE") ?: project.findProperty("STORE_FILE") ?: "app-release.jks"
+            def storePass = System.getenv("STORE_PASSWORD") ?: project.findProperty("STORE_PASSWORD")
+            def keyAl = System.getenv("KEY_ALIAS") ?: project.findProperty("KEY_ALIAS")
+            def keyPass = System.getenv("KEY_PASSWORD") ?: project.findProperty("KEY_PASSWORD")
+            
+            println "🔐 Signing Config Debug:"
+            println "  - STORE_FILE env: ${System.getenv('STORE_FILE')}"
+            println "  - STORE_FILE prop: ${project.findProperty('STORE_FILE')}"
+            println "  - keystoreFile resolved: ${keystoreFile}"
+            println "  - Working directory: ${System.getProperty('user.dir')}"
+            println "  - Project dir: ${project.projectDir}"
+            println "  - KEY_ALIAS: ${keyAl}"
+            println "  - Passwords configured: ${storePass != null && keyPass != null}"
+            
+            // Vérification que le fichier existe
+            def keyFile = file(keystoreFile)
+            println "  - Keystore file object: ${keyFile}"
+            println "  - Keystore absolute path: ${keyFile.absolutePath}"
+            println "  - Keystore exists: ${keyFile.exists()}"
+            
+            if (!keyFile.exists()) {
+                println "❌ Keystore file not found!"
+                println "📂 Listing parent directory contents:"
+                keyFile.parentFile?.listFiles()?.each { f ->
+                    println "    - ${f.name}${f.isDirectory() ? '/' : ' (' + f.length() + ' bytes)'}"
+                }
+                println "📂 Listing project root contents:"
+                project.projectDir.listFiles()?.each { f ->
+                    println "    - ${f.name}${f.isDirectory() ? '/' : ''}"
                 }
             } else {
-                // Fallback pour les builds locaux
-                storeFile file("app-release.jks")
+                println "✅ Keystore file found!"
             }
-            storePassword System.getenv("STORE_PASSWORD") ?: project.findProperty("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS") ?: project.findProperty("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD") ?: project.findProperty("KEY_PASSWORD")
+            
+            storeFile file(keystoreFile)
+            storePassword storePass
+            keyAlias keyAl
+            keyPassword keyPass
         }
     }
 
