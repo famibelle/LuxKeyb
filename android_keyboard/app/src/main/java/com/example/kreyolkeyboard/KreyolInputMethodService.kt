@@ -287,8 +287,8 @@ class KreyolInputMethodService : InputMethodService() {
 
     private fun loadDictionary() {
         try {
-            Log.d(TAG, "Chargement du dictionnaire créole enrichi...")
-            val inputStream = assets.open("creole_dict_enrichi.json")
+            Log.d(TAG, "Chargement du dictionnaire créole...")
+            val inputStream = assets.open("creole_dict.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             
             val jsonArray = JSONArray(jsonString)
