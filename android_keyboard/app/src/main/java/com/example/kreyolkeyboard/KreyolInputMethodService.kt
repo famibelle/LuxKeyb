@@ -21,6 +21,9 @@ import android.os.Looper
 import android.widget.PopupWindow
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.*
 
 class KreyolInputMethodService : InputMethodService() {
     
