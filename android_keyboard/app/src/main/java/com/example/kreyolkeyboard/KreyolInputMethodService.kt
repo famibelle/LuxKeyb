@@ -571,15 +571,16 @@ class KreyolInputMethodService : InputMethodService() {
                 button.elevation = 4f
             }
             
-            // 2. Barre d'espace - Priorité visuelle #2
+            // 2. Barre d'espace - Priorité visuelle #2 avec branding discret
             key == "ESPACE" -> {
                 button.setBackgroundColor(Color.parseColor("#228B22")) // Vert direct
-                button.setTextColor(Color.parseColor("#FFFFFF")) // Blanc direct
-                button.setTypeface(null, android.graphics.Typeface.BOLD)
-                button.text = "ESPACE"
-                button.textSize = 14f
+                button.setTextColor(Color.parseColor("#32A852")) // Vert clair pour effet dégradé discret
+                button.setTypeface(null, android.graphics.Typeface.ITALIC) // Style italique pour marque
+                button.text = "Potomitan™"
+                button.textSize = 11f // Taille réduite pour discrétion
                 button.setPadding(horizontalPadding * 2, verticalPadding, horizontalPadding * 2, verticalPadding)
                 button.elevation = 4f
+                button.alpha = 0.7f // Transparence pour effet très discret
             }
             
             // 3. Touches d'action importantes - Priorité visuelle #3
@@ -690,12 +691,15 @@ class KreyolInputMethodService : InputMethodService() {
                     button.textSize = 14f
                     button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                // Espace - Vert canne moderne arrondi
+                // Espace - Vert canne moderne arrondi avec branding discret
                 key == "ESPACE" -> {
                     button.setBackgroundResource(R.drawable.key_rounded_space)
-                    button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
-                    button.textSize = 16f
-                    button.setTypeface(null, android.graphics.Typeface.BOLD)
+                    // Couleur dégradée discrète : vert plus clair que le fond pour effet subtil
+                    button.setTextColor(android.graphics.Color.parseColor("#32A852")) // Vert clair pour effet dégradé discret
+                    button.text = "Potomitan™" // Remplacer "ESPACE" par "Potomitan™"
+                    button.textSize = 12f // Taille réduite pour plus de discrétion
+                    button.setTypeface(null, android.graphics.Typeface.ITALIC) // Style italique pour marque
+                    button.alpha = 0.7f // Transparence pour effet très discret
                 }
                 // Chiffres - Bleu lagon arrondi
                 key.matches(Regex("[0-9]")) -> {
@@ -922,17 +926,21 @@ class KreyolInputMethodService : InputMethodService() {
             val row4 = createKeyboardRow(arrayOf("ABC", ",", "ESPACE", ".", "⏎"))
             mainLayout.addView(row4)
         } else {
-            // Mode alphabétique AZERTY
+            // Mode alphabétique AZERTY avec disposition Kréyol optimisée
+            // Rangée 1: a z e r t y u i o p 
             val row1 = createKeyboardRow(arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p"))
             mainLayout.addView(row1)
             
-            val row2 = createKeyboardRow(arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m"))
+            // Rangée 2: q s d f g h j k l é ← é en position premium ⭐
+            val row2 = createKeyboardRow(arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "é"))
             mainLayout.addView(row2)
             
-            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫"))
+            // Rangée 3: w x c v b n m è ò à ← diacritiques communs en Zone créole regroupée 🎯
+            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "m", "è", "ò", "à", "⌫"))
             mainLayout.addView(row3)
             
-            val row4 = createKeyboardRow(arrayOf("123", "ESPACE", "⏎"))
+            // Rangée 4: , ESPACE . ← Ponctuation encadrant l'espace
+            val row4 = createKeyboardRow(arrayOf("123", ",", "ESPACE", ".", "⏎"))
             mainLayout.addView(row4)
         }
         
