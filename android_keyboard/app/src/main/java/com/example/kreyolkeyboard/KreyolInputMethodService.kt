@@ -561,10 +561,20 @@ class KreyolInputMethodService : InputMethodService() {
         val verticalPadding = resources.getDimensionPixelSize(R.dimen.key_padding_vertical)
         
         when {
-            // 1. Touches de lettres - Priorité visuelle #1 - STYLE SIMPLE
+            // 1.1. Touches avec accents spécifiques - Variation légère du jaune
+            key in arrayOf("é", "ò", "à", "è") -> {
+                button.setBackgroundColor(Color.parseColor("#FFDD33")) // Jaune légèrement plus clair et lumineux
+                button.setTextColor(Color.parseColor("#000000")) // Noir pour contraste
+                button.setTypeface(null, android.graphics.Typeface.BOLD) // Même style que les autres lettres
+                button.textSize = 18f // Même taille que les autres lettres
+                button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
+                button.elevation = 4f
+            }
+            
+            // 1.2. Touches de lettres normales - Jaune soleil de base
             key.length == 1 && key.matches(Regex("[a-zA-Z]")) -> {
-                button.setBackgroundColor(Color.parseColor("#FFFFFF")) // Blanc pur
-                button.setTextColor(Color.parseColor("#000000")) // Noir pur pour contraste max
+                button.setBackgroundColor(Color.parseColor("#FFD700")) // Jaune soleil tropical
+                button.setTextColor(Color.parseColor("#000000")) // Noir pour contraste max
                 button.setTypeface(null, android.graphics.Typeface.BOLD)
                 button.textSize = 18f // Taille fixe pour test
                 button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
