@@ -353,15 +353,111 @@ class KreyolInputMethodService : InputMethodService() {
         }
     }
     
+    /**
+     * 🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie proprement un TextView
+     * Supprime tous les listeners pour éviter les références circulaires
+     */
+    private fun cleanupTextView(textView: TextView) {
+        try {
+            textView.setOnClickListener(null)
+            textView.setOnTouchListener(null)
+            textView.setOnLongClickListener(null)
+            // Supprimer les animations en cours pour éviter les références
+            textView.clearAnimation()
+            textView.animate().cancel()
+        } catch (e: Exception) {
+            Log.w(TAG, "Erreur lors du nettoyage TextView: ${e.message}")
+        }
+    }
+    
+    /**
+     * 🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie récursivement un ViewGroup
+     * Parcourt tous les enfants et nettoie les listeners
+     */
+    private fun cleanupLayoutRecursively(viewGroup: ViewGroup) {
+        try {
+            for (i in 0 until viewGroup.childCount) {
+                val child = viewGroup.getChildAt(i)
+                when (child) {
+                    is TextView -> cleanupTextView(child)
+                    is ViewGroup -> cleanupLayoutRecursively(child) // Récursion pour les sous-layouts
+                    else -> {
+                        // Nettoyer les listeners génériques
+                        child.setOnClickListener(null)
+                        child.setOnTouchListener(null)
+                        child.clearAnimation()
+                        child.animate().cancel()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Erreur lors du nettoyage récursif: ${e.message}")
+        }
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "Service onDestroy() appelé !")
-    // Nettoyage basique
-    dismissAccentPopup()
-    longPressRunnable = null
-    keyboardButtons.clear()
-    suggestionsView = null
-    mainKeyboardLayout = null
+        Log.d(TAG, "=== Service onDestroy() appelé - Nettoyage complet ===")
+        
+        try {
+            // 🚨 CORRECTION FUITE MÉMOIRE #1: Nettoyer complètement le Handler
+            longPressHandler.removeCallbacksAndMessages(null) // Supprime TOUS les callbacks et messages
+            longPressRunnable?.let { runnable ->
+                longPressHandler.removeCallbacks(runnable)
+            }
+            longPressRunnable = null
+            
+            // 🚨 CORRECTION FUITE MÉMOIRE #2: Fermer et libérer le PopupWindow
+            dismissAccentPopup() // Ferme le popup s'il est ouvert
+            currentAccentPopup = null // Libère la référence
+            
+            // 🚨 CORRECTION FUITE MÉMOIRE #3: Nettoyer toutes les références de vues
+            keyboardButtons.forEach { textView ->
+                cleanupTextView(textView) // Utilise la fonction utilitaire pour un nettoyage complet
+            }
+            keyboardButtons.clear()
+            keyboardButtons = mutableListOf() // Nouvelle instance pour être sûr
+            
+            // 🚨 CORRECTION FUITE MÉMOIRE #4: Nettoyer les vues principales
+            suggestionsView?.let { layout ->
+                // Nettoyer tous les boutons de suggestions
+                for (i in 0 until layout.childCount) {
+                    val child = layout.getChildAt(i)
+                    if (child is TextView) {
+                        cleanupTextView(child)
+                    }
+                }
+                layout.removeAllViews()
+            }
+            suggestionsView = null
+            
+            mainKeyboardLayout?.let { layout ->
+                // Nettoyer récursivement tous les enfants
+                cleanupLayoutRecursively(layout)
+                layout.removeAllViews()
+            }
+            mainKeyboardLayout = null
+            
+            // 🚨 CORRECTION FUITE MÉMOIRE #5: Nettoyer les données en mémoire
+            dictionary = emptyList()
+            ngramModel = emptyMap()
+            wordHistory.clear()
+            wordHistory = mutableListOf() // Nouvelle instance
+            currentWord = ""
+            
+            // 🚨 CORRECTION FUITE MÉMOIRE #6: Reset des flags
+            isLongPressTriggered = false
+            isCapitalMode = false
+            isCapsLock = false
+            isUpdatingKeyboard = false
+            isNumericMode = false
+            suggestionsViewId = View.NO_ID
+            
+            Log.d(TAG, "✅ Nettoyage mémoire complet terminé avec succès")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erreur lors du nettoyage mémoire", e)
+        }
     }
     
     override fun onStartInput(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
