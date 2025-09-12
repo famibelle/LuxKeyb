@@ -38,11 +38,9 @@ jobs:
       run: chmod +x android_keyboard/gradlew
       
     - name: Build Debug APK
-      run: |
-        cd android_keyboard
-        ./gradlew assembleDebug
+      working-directory: android_keyboard
+      run: ./gradlew assembleDebug
         
     - name: Build Release APK
-      run: |
-        cd android_keyboard
-        ./gradlew assembleRelease
+      working-directory: android_keyboard
+      run: ./gradlew assembleRelease
