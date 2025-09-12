@@ -6,6 +6,8 @@ on:
     paths:
       - 'android_keyboard/**'
       - '.github/workflows/**'
+    tags:
+      - 'v*'  # Se déclenche sur tous les tags v*
   pull_request:
     branches: [ main ]
     paths:
