@@ -7,12 +7,12 @@ on:
       - 'android_keyboard/**'
       - '.github/workflows/**'
     tags:
-      - 'v*'  # Se déclenche sur tous les tags v*
+      - 'v*'
   pull_request:
     branches: [ main ]
     paths:
       - 'android_keyboard/**'
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -84,7 +84,6 @@ jobs:
         echo "🔗 Download APKs from GitHub Actions Artifacts section"
         echo "💡 For Samsung tablets: Try DEBUG version first (easier to install)"
         
-  # Job pour créer une release automatique sur les tags
   release:
     name: 🚀 Create GitHub Release
     runs-on: ubuntu-latest
