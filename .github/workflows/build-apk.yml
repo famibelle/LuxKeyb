@@ -37,12 +37,10 @@ jobs:
     - name: 📄 Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
       
-    - name: ✅ Test single line
-      run: echo ./gradlew clean
-
     - name: 🧹 Clean Project
-      working-directory: android_keyboard
-      run: ./gradlew clean
+      run: |
+        cd android_keyboard
+        ./gradlew clean
 
     - name: 🔨 Build Debug APK (Samsung Compatible)
       run: |
