@@ -39,8 +39,10 @@ jobs:
       
     - name: Build Debug APK
       working-directory: android_keyboard
-      run: ./gradlew assembleDebug
+      run: |
+        gradle assembleDebug
         
     - name: Build Release APK
       working-directory: android_keyboard
-      run: ./gradlew assembleRelease
+      run: |
+        gradle assembleRelease
