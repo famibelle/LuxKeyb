@@ -40,7 +40,13 @@ jobs:
     - name: 🧹 Clean Project
       run: |
         cd android_keyboard
-        ./gradlew clean
+        ls -la  # Pour vérifier les fichiers présents
+        if [ -f "./gradlew" ]; then
+          chmod +x ./gradlew
+          ./gradlew clean
+        else
+          echo "gradlew not found!"
+        fi
         
     - name: 🔨 Build Debug APK (Samsung Compatible)
       run: |
