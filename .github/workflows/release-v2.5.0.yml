@@ -1,4 +1,4 @@
-name: 🚀 Release Potomitan Kreyol Keyboard v2.5.0
+name: ðŸš€ Release Potomitan Kreyol Keyboard v2.5.0
 
 on:
   push:
@@ -18,75 +18,75 @@ env:
 
 jobs:
   build-and-release-v2-5-0:
-    name: 🏗️ Build & Release v2.5.0
+    name: ðŸ—ï¸ Build & Release v2.5.0
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: read
     
     steps:
-    - name: 📥 Checkout Repository
+    - name: ðŸ“¥ Checkout Repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Récupère tout l'historique pour les release notes
+        fetch-depth: 0  # RÃ©cupÃ¨re tout l'historique pour les release notes
         
-    - name: 🛡️ Validate Release Trigger
+    - name: ðŸ›¡ï¸ Validate Release Trigger
       run: |
         if [[ "${{ github.ref }}" == "refs/tags/v2.5.0" ]]; then
-          echo "✅ Triggered by v2.5.0 tag"
+          echo "âœ… Triggered by v2.5.0 tag"
         elif [[ "${{ github.event.inputs.force_release }}" == "true" ]]; then
-          echo "✅ Manual release forced for v2.5.0"
+          echo "âœ… Manual release forced for v2.5.0"
         else
-          echo "❌ This workflow only runs for v2.5.0 tag or manual force"
+          echo "âŒ This workflow only runs for v2.5.0 tag or manual force"
           exit 1
         fi
         
-    - name: ☕ Setup JDK 17
+    - name: â˜• Setup JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
         
-    - name: 🐘 Setup Gradle
+    - name: ðŸ˜ Setup Gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: wrapper
         cache-read-only: false
         
-    - name: 📄 Make Gradlew Executable
+    - name: ðŸ“„ Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
       
-    - name: 🔍 Verify Version in build.gradle
+    - name: ðŸ” Verify Version in build.gradle
       working-directory: android_keyboard
       run: |
         VERSION_FROM_GRADLE=$(grep -E '^\s*versionName\s+".*"' app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
         echo "Version in build.gradle: $VERSION_FROM_GRADLE"
         if [[ "$VERSION_FROM_GRADLE" != "2.5.0" ]]; then
-          echo "❌ Version mismatch! Expected 2.5.0, got $VERSION_FROM_GRADLE"
+          echo "âŒ Version mismatch! Expected 2.5.0, got $VERSION_FROM_GRADLE"
           echo "Please update versionName in app/build.gradle to '2.5.0'"
           exit 1
         fi
-        echo "✅ Version check passed: $VERSION_FROM_GRADLE"
+        echo "âœ… Version check passed: $VERSION_FROM_GRADLE"
         
-    - name: 🧹 Clean Project
+    - name: ðŸ§¹ Clean Project
       working-directory: android_keyboard
       run: |
         ./gradlew clean
         
-    - name: 🔧 Build Debug APK
+    - name: ðŸ”§ Build Debug APK
       working-directory: android_keyboard
       run: |
-        echo "🔨 Building Debug APK for v2.5.0..."
+        echo "ðŸ”¨ Building Debug APK for v2.5.0..."
         ./gradlew assembleDebug
         
-    - name: 🔧 Build Release APK
+    - name: ðŸ”§ Build Release APK
       working-directory: android_keyboard
       run: |
-        echo "🔨 Building Release APK for v2.5.0..."
+        echo "ðŸ”¨ Building Release APK for v2.5.0..."
         ./gradlew assembleRelease
         
-    - name: 📁 Locate APK Files
+    - name: ðŸ“ Locate APK Files
       id: locate_apks
       working-directory: android_keyboard
       run: |
@@ -95,19 +95,19 @@ jobs:
         RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" -type f | head -1)
         
         if [[ -z "$DEBUG_APK" ]]; then
-          echo "❌ Debug APK not found!"
+          echo "âŒ Debug APK not found!"
           exit 1
         fi
         
         if [[ -z "$RELEASE_APK" ]]; then
-          echo "❌ Release APK not found!"
+          echo "âŒ Release APK not found!"
           exit 1
         fi
         
-        echo "✅ Debug APK: $DEBUG_APK"
-        echo "✅ Release APK: $RELEASE_APK"
+        echo "âœ… Debug APK: $DEBUG_APK"
+        echo "âœ… Release APK: $RELEASE_APK"
         
-        # Créer noms plus descriptifs pour la release
+        # CrÃ©er noms plus descriptifs pour la release
         DEBUG_NAME="Potomitan_Kreyol_Keyboard_v2.5.0_DEBUG_$(date +%Y-%m-%d).apk"
         RELEASE_NAME="Potomitan_Kreyol_Keyboard_v2.5.0_RELEASE_$(date +%Y-%m-%d).apk"
         
@@ -120,87 +120,87 @@ jobs:
         echo "debug_path=$(pwd)/$DEBUG_NAME" >> $GITHUB_OUTPUT
         echo "release_path=$(pwd)/$RELEASE_NAME" >> $GITHUB_OUTPUT
         
-    - name: 📊 APK Information
+    - name: ðŸ“Š APK Information
       working-directory: android_keyboard
       run: |
-        echo "📱 APK Build Information for v2.5.0:"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "ðŸ“± APK Build Information for v2.5.0:"
+        echo "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
         echo ""
-        echo "🔍 Debug APK:"
+        echo "ðŸ” Debug APK:"
         ls -lh "${{ steps.locate_apks.outputs.debug_apk }}"
         echo ""
-        echo "🔍 Release APK:"
+        echo "ðŸ” Release APK:"
         ls -lh "${{ steps.locate_apks.outputs.release_apk }}"
         echo ""
-        echo "📏 File sizes:"
+        echo "ðŸ“ File sizes:"
         DEBUG_SIZE=$(du -h "${{ steps.locate_apks.outputs.debug_apk }}" | cut -f1)
         RELEASE_SIZE=$(du -h "${{ steps.locate_apks.outputs.release_apk }}" | cut -f1)
-        echo "  • Debug: $DEBUG_SIZE"
-        echo "  • Release: $RELEASE_SIZE"
+        echo "  â€¢ Debug: $DEBUG_SIZE"
+        echo "  â€¢ Release: $RELEASE_SIZE"
         
-    - name: 🚀 Create GitHub Release v2.5.0
+    - name: ðŸš€ Create GitHub Release v2.5.0
       uses: softprops/action-gh-release@v1
       with:
         tag_name: "v2.5.0"
-        name: "🇬🇵 Klavié Kreyòl Karukera v2.5.0 • Potomitan™"
+        name: "ðŸ‡¬ðŸ‡µ KlaviÃ© KreyÃ²l Karukera v2.5.0 â€¢ Potomitanâ„¢"
         body: |
-          ## 🇬🇵 Klavié Kreyòl Karukera v2.5.0 • Potomitan™
+          ## ðŸ‡¬ðŸ‡µ KlaviÃ© KreyÃ²l Karukera v2.5.0 â€¢ Potomitanâ„¢
           
-          **Nouvelle version stable du clavier créole guadeloupéen !**
+          **Nouvelle version stable du clavier crÃ©ole guadeloupÃ©en !**
           
-          ### 🎯 Nouveautés v2.5.0
-          - 🔧 **Amélioration majeure du système Shift** : Diagnostics complets pour résoudre le problème d'affichage des majuscules
-          - 🐛 **Correction barre espace** : Résolution complète du problème "espace" vs caractère espace
-          - 📊 **Logs de débogage étendus** : Système de diagnostic complet pour identifier les problèmes
-          - 🔄 **Optimisation mode clavier** : Amélioration de la détection du mode alphabétique/numérique
-          - 🎨 **Stabilité interface** : Corrections diverses pour une expérience utilisateur plus fluide
+          ### ðŸŽ¯ NouveautÃ©s v2.5.0
+          - ðŸ”§ **AmÃ©lioration majeure du systÃ¨me Shift** : Diagnostics complets pour rÃ©soudre le problÃ¨me d'affichage des majuscules
+          - ðŸ› **Correction barre espace** : RÃ©solution complÃ¨te du problÃ¨me "espace" vs caractÃ¨re espace
+          - ðŸ“Š **Logs de dÃ©bogage Ã©tendus** : SystÃ¨me de diagnostic complet pour identifier les problÃ¨mes
+          - ðŸ”„ **Optimisation mode clavier** : AmÃ©lioration de la dÃ©tection du mode alphabÃ©tique/numÃ©rique
+          - ðŸŽ¨ **StabilitÃ© interface** : Corrections diverses pour une expÃ©rience utilisateur plus fluide
           
-          ### ✨ Fonctionnalités principales
-          - 🌈 **Design moderne caribéen** : Couleurs authentiques (bleu caraïbe, jaune soleil, vert canne)
-          - 📝 **Suggestions intelligentes** : Basées sur un dictionnaire créole de 5910 mots authentiques
-          - 🔤 **Accents créoles natifs** : à, è, ò, etc. accessibles par appui long
-          - 📚 **Sources littéraires intégrées** : Telchid, Rupaire, Fontes et autres auteurs référents
-          - 🎯 **Optimisation Samsung** : Compatible avec tablets Samsung Ultra
+          ### âœ¨ FonctionnalitÃ©s principales
+          - ðŸŒˆ **Design moderne caribÃ©en** : Couleurs authentiques (bleu caraÃ¯be, jaune soleil, vert canne)
+          - ðŸ“ **Suggestions intelligentes** : BasÃ©es sur un dictionnaire crÃ©ole de 5910 mots authentiques
+          - ðŸ”¤ **Accents crÃ©oles natifs** : Ã , Ã¨, Ã², etc. accessibles par appui long
+          - ðŸ“š **Sources littÃ©raires intÃ©grÃ©es** : Telchid, Rupaire, Fontes et autres auteurs rÃ©fÃ©rents
+          - ðŸŽ¯ **Optimisation Samsung** : Compatible avec tablets Samsung Ultra
           
-          ### 📱 Installation
+          ### ðŸ“± Installation
           
-          **🎯 Pour tablettes Samsung (Recommandé)** :
-          1. Téléchargez **DEBUG APK** (plus facile à installer)
-          2. Activez "Sources inconnues" dans Paramètres → Sécurité
+          **ðŸŽ¯ Pour tablettes Samsung (RecommandÃ©)** :
+          1. TÃ©lÃ©chargez **DEBUG APK** (plus facile Ã  installer)
+          2. Activez "Sources inconnues" dans ParamÃ¨tres â†’ SÃ©curitÃ©
           3. Installez l'APK via l'application "Mes fichiers"
-          4. Activez dans **Paramètres → Système → Langues et saisie → Claviers virtuels**
-          5. Sélectionnez **Potomitan Kreyol Keyboard**
+          4. Activez dans **ParamÃ¨tres â†’ SystÃ¨me â†’ Langues et saisie â†’ Claviers virtuels**
+          5. SÃ©lectionnez **Potomitan Kreyol Keyboard**
           
-          **📦 Variantes disponibles** :
-          - **DEBUG APK** : `Potomitan_Kreyol_Keyboard_v2.5.0_DEBUG_*.apk` (Recommandé, ~3.4 MB)
+          **ðŸ“¦ Variantes disponibles** :
+          - **DEBUG APK** : `Potomitan_Kreyol_Keyboard_v2.5.0_DEBUG_*.apk` (RecommandÃ©, ~3.4 MB)
           - **RELEASE APK** : `Potomitan_Kreyol_Keyboard_v2.5.0_RELEASE_*.apk` (Production, ~2.6 MB)
           
-          ### 🛠️ Détails techniques
+          ### ðŸ› ï¸ DÃ©tails techniques
           - **ApplicationId** : `com.potomitan.kreyolkeyboard`
           - **Version Code** : 6
           - **Target SDK** : 33 (Android 13)
           - **Architectures** : arm64-v8a, armeabi-v7a
           - **Permissions** : Minimales (pas de trackers)
           
-          ### 🔒 Sécurité & Confidentialité
-          - ✅ **Code source ouvert** et auditable
-          - ✅ **Aucun tracker** ou analytics
-          - ✅ **Permissions minimales** requises
-          - ✅ **Fonctionnement offline** complet
+          ### ðŸ”’ SÃ©curitÃ© & ConfidentialitÃ©
+          - âœ… **Code source ouvert** et auditable
+          - âœ… **Aucun tracker** ou analytics
+          - âœ… **Permissions minimales** requises
+          - âœ… **Fonctionnement offline** complet
           
-          ### 🐛 Corrections de bugs
-          - Résolution problème barre espace (insertion "espace" au lieu du caractère)
-          - Amélioration système Shift (majuscules/minuscules)
+          ### ðŸ› Corrections de bugs
+          - RÃ©solution problÃ¨me barre espace (insertion "espace" au lieu du caractÃ¨re)
+          - AmÃ©lioration systÃ¨me Shift (majuscules/minuscules)
           - Optimisation initialisation mode clavier
-          - Corrections diverses stabilité
+          - Corrections diverses stabilitÃ©
           
-          ### 🔄 Migration depuis v3.0.0
-          Si vous aviez installé une version de développement 3.0.0, désinstallez-la avant d'installer v2.5.0 pour éviter les conflits.
+          ### ðŸ”„ Migration depuis v3.0.0
+          Si vous aviez installÃ© une version de dÃ©veloppement 3.0.0, dÃ©sinstallez-la avant d'installer v2.5.0 pour Ã©viter les conflits.
           
           ---
-          **Alé douvan épi klavié kreyòl-la !** ⌨️✨
+          **AlÃ© douvan Ã©pi klaviÃ© kreyÃ²l-la !** âŒ¨ï¸âœ¨
           
-          *Kontwibisyon : [@famibelle](https://github.com/famibelle) • Potomitan™ • 🇬🇵 Karukera*
+          *Kontwibisyon : [@famibelle](https://github.com/famibelle) â€¢ Potomitanâ„¢ â€¢ ðŸ‡¬ðŸ‡µ Karukera*
         files: |
           android_keyboard/${{ steps.locate_apks.outputs.debug_apk }}
           android_keyboard/${{ steps.locate_apks.outputs.release_apk }}
@@ -210,29 +210,29 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: 📤 Upload Debug APK as Artifact
+    - name: ðŸ“¤ Upload Debug APK as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: 📱 Potomitan-Kreyol-v2.5.0-DEBUG
+        name: ðŸ“± Potomitan-Kreyol-v2.5.0-DEBUG
         path: android_keyboard/${{ steps.locate_apks.outputs.debug_apk }}
         retention-days: 90
         
-    - name: 📤 Upload Release APK as Artifact
+    - name: ðŸ“¤ Upload Release APK as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: 📱 Potomitan-Kreyol-v2.5.0-RELEASE
+        name: ðŸ“± Potomitan-Kreyol-v2.5.0-RELEASE
         path: android_keyboard/${{ steps.locate_apks.outputs.release_apk }}
         retention-days: 365
         
-    - name: 🎉 Success Summary
+    - name: ðŸŽ‰ Success Summary
       run: |
-        echo "🎉 Release v2.5.0 created successfully!"
+        echo "ðŸŽ‰ Release v2.5.0 created successfully!"
         echo ""
-        echo "📱 APK Files:"
-        echo "  • Debug: ${{ steps.locate_apks.outputs.debug_apk }}"
-        echo "  • Release: ${{ steps.locate_apks.outputs.release_apk }}"
+        echo "ðŸ“± APK Files:"
+        echo "  â€¢ Debug: ${{ steps.locate_apks.outputs.debug_apk }}"
+        echo "  â€¢ Release: ${{ steps.locate_apks.outputs.release_apk }}"
         echo ""
-        echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/v2.5.0"
-        echo "📦 Artifacts available for 90+ days"
+        echo "ðŸ”— Release URL: https://github.com/${{ github.repository }}/releases/tag/v2.5.0"
+        echo "ðŸ“¦ Artifacts available for 90+ days"
         echo ""
-        echo "✅ Potomitan Kreyol Keyboard v2.5.0 is ready for distribution!"
+        echo "âœ… Potomitan Kreyol Keyboard v2.5.0 is ready for distribution!"

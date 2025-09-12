@@ -39,16 +39,19 @@ jobs:
       run: chmod +x android_keyboard/gradlew
         
     - name: Clean Project
-      working-directory: android_keyboard
-      run: ./gradlew clean
+      run: |
+        cd android_keyboard
+        ./gradlew clean
         
     - name: Build Debug APK
-      working-directory: android_keyboard
-      run: ./gradlew assembleDebug
+      run: |
+        cd android_keyboard
+        ./gradlew assembleDebug
         
     - name: Build Release APK
-      working-directory: android_keyboard
-      run: ./gradlew assembleRelease
+      run: |
+        cd android_keyboard
+        ./gradlew assembleRelease
         
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
