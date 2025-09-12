@@ -58,8 +58,8 @@ jobs:
       run: chmod +x android_keyboard/gradlew
       
     - name: 🔍 Verify Version in build.gradle
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         VERSION_FROM_GRADLE=$(grep "versionName" app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
         echo "Version in build.gradle: $VERSION_FROM_GRADLE"
         if [[ "$VERSION_FROM_GRADLE" != "2.5.0" ]]; then
@@ -70,27 +70,25 @@ jobs:
         echo "✅ Version check passed: $VERSION_FROM_GRADLE"
         
     - name: 🧹 Clean Project
-      run: |
-        cd android_keyboard
-        ./gradlew clean --no-daemon --stacktrace
+      working-directory: android_keyboard
+      run: ./gradlew clean
         
     - name: 🔧 Build Debug APK
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "🔨 Building Debug APK for v2.5.0..."
-        ./gradlew assembleDebug --no-daemon --stacktrace
+        ./gradlew assembleDebug
         
     - name: 🔧 Build Release APK
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "🔨 Building Release APK for v2.5.0..."
-        ./gradlew assembleRelease --no-daemon --stacktrace
+        ./gradlew assembleRelease
         
     - name: 📁 Locate APK Files
       id: locate_apks
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
-        
         # Trouver les APK construits
         DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" -type f | head -1)
         RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" -type f | head -1)
@@ -122,8 +120,8 @@ jobs:
         echo "release_path=$(pwd)/$RELEASE_NAME" >> $GITHUB_OUTPUT
         
     - name: 📊 APK Information
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "📱 APK Build Information for v2.5.0:"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
@@ -208,7 +206,6 @@ jobs:
         draft: false
         prerelease: false
         generate_release_notes: true
-        make_latest: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
