@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*.*.*"
+      - "!v2.5.0"  # Exclude v2.5.0 (handled by release-v2.5.0.yml)
   workflow_dispatch:
     inputs:
       version:
@@ -24,7 +25,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.4
+        gradle-version: 8.7
         
     - name: Clean project
       run: |
