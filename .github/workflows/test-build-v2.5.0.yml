@@ -39,8 +39,8 @@ jobs:
     - name: 🔍 Verify Version
       working-directory: android_keyboard
       run: |
-        VERSION_FROM_GRADLE=$(grep "versionName" app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
-        VERSION_CODE=$(grep "versionCode" app/build.gradle | sed 's/.*= \(.*\)/\1/')
+        VERSION_FROM_GRADLE=$(grep -E '^\s*versionName\s+".*"' app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
+        VERSION_CODE=$(grep -E '^\s*versionCode\s*=' app/build.gradle | sed 's/.*= \(.*\)/\1/')
         echo "🏷️ Version Name: $VERSION_FROM_GRADLE"
         echo "🔢 Version Code: $VERSION_CODE"
         
