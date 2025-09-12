@@ -37,8 +37,8 @@ jobs:
       run: chmod +x android_keyboard/gradlew
       
     - name: 🔍 Verify Version
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         VERSION_FROM_GRADLE=$(grep "versionName" app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
         VERSION_CODE=$(grep "versionCode" app/build.gradle | sed 's/.*= \(.*\)/\1/')
         echo "🏷️ Version Name: $VERSION_FROM_GRADLE"
@@ -51,25 +51,24 @@ jobs:
         fi
         
     - name: 🧹 Clean Project
-      run: |
-        cd android_keyboard
-        ./gradlew clean --no-daemon
+      working-directory: android_keyboard
+      run: ./gradlew clean
         
     - name: 🔨 Test Debug Build
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "🔨 Testing Debug build..."
-        ./gradlew assembleDebug --no-daemon --stacktrace
+        ./gradlew assembleDebug
         
     - name: 🔨 Test Release Build
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "🔨 Testing Release build..."
-        ./gradlew assembleRelease --no-daemon --stacktrace
+        ./gradlew assembleRelease
         
     - name: 📊 Build Results
+      working-directory: android_keyboard
       run: |
-        cd android_keyboard
         echo "🎯 Build Test Results for v2.5.0:"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         
