@@ -71,7 +71,8 @@ jobs:
         
     - name: 🧹 Clean Project
       working-directory: android_keyboard
-      run: ./gradlew clean
+      run: |
+        ./gradlew clean
         
     - name: 🔧 Build Debug APK
       working-directory: android_keyboard
