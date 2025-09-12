@@ -71,7 +71,7 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "é")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "m", "è", "ò", "à", "⌫")
+    val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "m", "è", "ò", "à", "⌫")
         val row4 = arrayOf("123", ",", " ", ".", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
@@ -309,14 +309,14 @@ class KeyboardLayoutManager(private val context: Context) {
     
     // Méthodes utilitaires privées
     
-    private fun getDisplayText(key: String): String {
+    private fun getDisplayText(key: String, forceCapitalMode: Boolean = false, forceCapsLock: Boolean = false): String {
         return when (key) {
-            " " -> "espace"
+            " " -> "espace"  // Afficher "espace" pour la barre d'espace
             "⇧" -> "⇧"
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
-            else -> if (isCapitalMode) key.uppercase() else key.lowercase()
+            else -> if (forceCapitalMode || forceCapsLock) key.uppercase() else key.lowercase() // Utiliser les paramètres passés
         }
     }
     
@@ -334,8 +334,12 @@ class KeyboardLayoutManager(private val context: Context) {
     
     private fun getKeyFromButton(button: TextView): String {
         // Logique pour retrouver la clé d'origine depuis le bouton
-        // (à implémenter selon les besoins)
-        return button.text.toString().lowercase()
+        val text = button.text.toString()
+        return if (text == "espace") {
+            " " // Retourner un espace simple pour la barre d'espace
+        } else {
+            text.lowercase()
+        }
     }
     
     private fun dpToPx(dp: Int): Int {
