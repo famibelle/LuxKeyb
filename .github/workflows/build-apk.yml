@@ -40,7 +40,7 @@ jobs:
     - name: Clean Project
       run: |
         cd android_keyboard
-        ./gradlew app:clean
+        ./gradlew clean
 
     - name: Build Debug APK
       run: |
