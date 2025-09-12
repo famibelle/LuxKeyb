@@ -37,23 +37,9 @@ jobs:
     - name: 📄 Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
       
-    - name: 🔍 Debug Gradle files
-      working-directory: android_keyboard
-      run: |
-        echo "=== Content of build.gradle ==="
-        cat build.gradle
-        echo ""
-        echo "=== Content of settings.gradle ==="
-        cat settings.gradle
-        echo ""
-        echo "=== Available tasks ==="
-        ./gradlew tasks --all
-
-
     - name: 🧹 Clean Project
-      run: |
-        cd android_keyboard
-        ./gradlew clean
+      working-directory: android_keyboard
+      run: ./gradlew clean
 
     - name: 🔨 Build Debug APK (Samsung Compatible)
       run: |
