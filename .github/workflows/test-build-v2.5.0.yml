@@ -1,0 +1,113 @@
+name: 🧪 Test Build v2.5.0
+
+on:
+  push:
+    branches: [ feature/code-improvements-v3.0 ]
+    paths:
+      - 'android_keyboard/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'android_keyboard/**'
+  workflow_dispatch:
+
+jobs:
+  test-build-v2-5-0:
+    name: 🧪 Test Build v2.5.0
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+        
+    - name: ☕ Setup JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: 🐘 Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: wrapper
+        
+    - name: 📄 Make Gradlew Executable
+      run: chmod +x android_keyboard/gradlew
+      
+    - name: 🔍 Verify Version
+      run: |
+        cd android_keyboard
+        VERSION_FROM_GRADLE=$(grep "versionName" app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
+        VERSION_CODE=$(grep "versionCode" app/build.gradle | sed 's/.*= \(.*\)/\1/')
+        echo "🏷️ Version Name: $VERSION_FROM_GRADLE"
+        echo "🔢 Version Code: $VERSION_CODE"
+        
+        if [[ "$VERSION_FROM_GRADLE" == "2.5.0" ]]; then
+          echo "✅ Correct version for v2.5.0 release"
+        else
+          echo "⚠️ Version is $VERSION_FROM_GRADLE (not 2.5.0)"
+        fi
+        
+    - name: 🧹 Clean Project
+      run: |
+        cd android_keyboard
+        ./gradlew clean --no-daemon
+        
+    - name: 🔨 Test Debug Build
+      run: |
+        cd android_keyboard
+        echo "🔨 Testing Debug build..."
+        ./gradlew assembleDebug --no-daemon --stacktrace
+        
+    - name: 🔨 Test Release Build
+      run: |
+        cd android_keyboard
+        echo "🔨 Testing Release build..."
+        ./gradlew assembleRelease --no-daemon --stacktrace
+        
+    - name: 📊 Build Results
+      run: |
+        cd android_keyboard
+        echo "🎯 Build Test Results for v2.5.0:"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        
+        if [[ -f "app/build/outputs/apk/debug"/*.apk ]]; then
+          echo "✅ Debug APK build: SUCCESS"
+          ls -la app/build/outputs/apk/debug/*.apk
+        else
+          echo "❌ Debug APK build: FAILED"
+        fi
+        
+        if [[ -f "app/build/outputs/apk/release"/*.apk ]]; then
+          echo "✅ Release APK build: SUCCESS" 
+          ls -la app/build/outputs/apk/release/*.apk
+        else
+          echo "❌ Release APK build: FAILED"
+        fi
+        
+        echo ""
+        echo "📱 APK Sizes:"
+        find app/build/outputs/apk -name "*.apk" -exec du -h {} \;
+        
+    - name: 📤 Upload Test APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: 🧪 Test-Build-v2.5.0-APKs
+        path: |
+          android_keyboard/app/build/outputs/apk/debug/*.apk
+          android_keyboard/app/build/outputs/apk/release/*.apk
+        retention-days: 7
+        
+    - name: ✅ Test Summary
+      run: |
+        echo "🧪 Test build completed for v2.5.0!"
+        echo ""
+        echo "📋 Summary:"
+        echo "  • ✅ Debug build successful"
+        echo "  • ✅ Release build successful"  
+        echo "  • 📱 APKs uploaded as artifacts"
+        echo ""
+        echo "🚀 Ready for release when you create the v2.5.0 tag!"
+        echo "💡 Use 'Create Tag v2.5.0' workflow to trigger the official release."
