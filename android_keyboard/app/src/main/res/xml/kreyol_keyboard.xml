@@ -60,7 +60,7 @@
 
     <!-- Barre d'espace -->
     <Row>
-        <Key android:codes="-4" android:keyLabel="Espas" android:keyWidth="70%p" />
+        <Key android:codes="-4" android:keyLabel=" " android:keyWidth="70%p" />
         <Key android:codes="-1" android:keyLabel="⏎" android:keyWidth="20%p" />
     </Row>
 </Keyboard>
