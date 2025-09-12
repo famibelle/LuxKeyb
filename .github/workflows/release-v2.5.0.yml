@@ -60,7 +60,7 @@ jobs:
     - name: 🔍 Verify Version in build.gradle
       working-directory: android_keyboard
       run: |
-        VERSION_FROM_GRADLE=$(grep "versionName" app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
+        VERSION_FROM_GRADLE=$(grep -E '^\s*versionName\s+".*"' app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
         echo "Version in build.gradle: $VERSION_FROM_GRADLE"
         if [[ "$VERSION_FROM_GRADLE" != "2.5.0" ]]; then
           echo "❌ Version mismatch! Expected 2.5.0, got $VERSION_FROM_GRADLE"
