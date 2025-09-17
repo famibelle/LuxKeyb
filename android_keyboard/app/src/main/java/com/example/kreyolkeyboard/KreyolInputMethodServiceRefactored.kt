@@ -88,6 +88,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             setBackgroundColor(Color.parseColor("#F5F5F5"))
         }
         
+        // IMPORTANT: Forcer le mode alphabétique au démarrage
+        keyboardLayoutManager.switchKeyboardModeToAlphabetic()
+        Log.d(TAG, "🔤 FORCE MODE ALPHABÉTIQUE AU DÉMARRAGE")
+        
         // Créer la zone de suggestions
         createSuggestionsArea(mainLayout)
         
