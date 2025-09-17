@@ -30,20 +30,24 @@ jobs:
     - name: 📱 Grant Execute Permission for Gradlew
       run: chmod +x android_keyboard/gradlew
       
-    - name: 🔍 Lint Check
+    - name: 🔍 Verify Project Structure
       run: |
-        cd android_keyboard
-        ./gradlew lintDebug
+        echo "📂 Project structure verification:"
+        ls -la android_keyboard/
+        echo "📱 Gradle wrapper check:"
+        ls -la android_keyboard/gradlew*
+        
+    - name: 🔍 Lint Check
+      working-directory: android_keyboard
+      run: ./gradlew lintDebug
         
     - name: 🧪 Run Unit Tests
-      run: |
-        cd android_keyboard
-        ./gradlew testDebugUnitTest
+      working-directory: android_keyboard
+      run: ./gradlew testDebugUnitTest
         
     - name: 🔨 Build Debug APK
-      run: |
-        cd android_keyboard
-        ./gradlew assembleDebug
+      working-directory: android_keyboard
+      run: ./gradlew assembleDebug
         
     - name: 📦 Upload Debug APK
       uses: actions/upload-artifact@v4
@@ -54,9 +58,8 @@ jobs:
         
     - name: 🔨 Build Release APK (if main branch)
       if: github.ref == 'refs/heads/main'
-      run: |
-        cd android_keyboard
-        ./gradlew assembleRelease
+      working-directory: android_keyboard
+      run: ./gradlew assembleRelease
         
     - name: 📦 Upload Release APK
       if: github.ref == 'refs/heads/main'
@@ -84,14 +87,12 @@ jobs:
       run: chmod +x android_keyboard/gradlew
       
     - name: 🔍 Kotlin Lint
-      run: |
-        cd android_keyboard
-        ./gradlew ktlintCheck || true
+      working-directory: android_keyboard
+      run: ./gradlew ktlintCheck || true
         
     - name: 📊 Generate Code Coverage
-      run: |
-        cd android_keyboard
-        ./gradlew jacocoTestReport || true
+      working-directory: android_keyboard
+      run: ./gradlew jacocoTestReport || true
         
     - name: 📈 Upload Coverage Reports
       uses: actions/upload-artifact@v4
