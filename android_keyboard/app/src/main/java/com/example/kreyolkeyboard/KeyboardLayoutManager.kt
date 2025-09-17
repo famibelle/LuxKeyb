@@ -78,10 +78,10 @@ class KeyboardLayoutManager(private val context: Context) {
      * Crée le layout alphabétique (AZERTY créole)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
-        val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "'", "⌫")
-        val row4 = arrayOf("123", ",", " ", ".", "⏎")
+        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "à", "é")
+        val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "ò")
+        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "è", "⌫")
+        val row4 = arrayOf("123", ",", " ", ".", "'", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
@@ -187,6 +187,14 @@ class KeyboardLayoutManager(private val context: Context) {
                     ))
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
+                "à", "è", "ò", "é", "ù", "ì", "ç" -> {
+                    // Touches créoles avec gradient spécial
+                    setColors(intArrayOf(
+                        Color.parseColor("#43A047"), // Vert tropical
+                        Color.parseColor("#2E7D32")
+                    ))
+                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
+                }
                 " " -> {
                     // Barre d'espace avec gradient subtil
                     setColors(intArrayOf(
@@ -215,6 +223,7 @@ class KeyboardLayoutManager(private val context: Context) {
         button.setTextColor(when (key) {
             "⇧" -> if (isCapsLock || isCapitalMode) Color.WHITE else Color.parseColor("#333333")
             "⌫", "⏎", "123", "ABC" -> Color.WHITE
+            "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.WHITE // Texte blanc sur fond vert
             else -> Color.parseColor("#333333")
         })
         
@@ -347,6 +356,8 @@ class KeyboardLayoutManager(private val context: Context) {
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
+            // Caractères accentués créoles - toujours affichés comme ils sont
+            "à", "è", "ò", "é", "ù", "ì", "ç" -> key
             else -> if (isCapitalMode) key.uppercase() else key.lowercase()
         }
     }
