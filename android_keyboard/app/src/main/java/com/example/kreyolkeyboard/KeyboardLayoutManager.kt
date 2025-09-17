@@ -29,7 +29,7 @@ class KeyboardLayoutManager(private val context: Context) {
     // État du clavier
     private var isCapitalMode = false
     private var isCapsLock = false
-    private var isNumericMode = false
+    private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private val keyboardButtons = mutableListOf<TextView>()
     
     // Callbacks pour l'interaction avec les touches
@@ -49,6 +49,8 @@ class KeyboardLayoutManager(private val context: Context) {
      * Crée le layout principal du clavier avec toutes les rangées
      */
     fun createKeyboardLayout(): LinearLayout {
+        Log.d("KeyboardLayoutManager", "🎯 createKeyboardLayout - isNumericMode: $isNumericMode")
+        
         val mainLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
@@ -59,8 +61,14 @@ class KeyboardLayoutManager(private val context: Context) {
         
         // Créer les différentes rangées selon le mode
         when {
-            isNumericMode -> createNumericLayout(mainLayout)
-            else -> createAlphabeticLayout(mainLayout)
+            isNumericMode -> {
+                Log.d("KeyboardLayoutManager", "🔢 Création du layout NUMÉRIQUE")
+                createNumericLayout(mainLayout)
+            }
+            else -> {
+                Log.d("KeyboardLayoutManager", "🔤 Création du layout ALPHABÉTIQUE")
+                createAlphabeticLayout(mainLayout)
+            }
         }
         
         return mainLayout
@@ -309,6 +317,14 @@ class KeyboardLayoutManager(private val context: Context) {
     fun switchKeyboardMode(): Boolean {
         isNumericMode = !isNumericMode
         return isNumericMode
+    }
+    
+    /**
+     * Force le mode alphabétique (pour l'initialisation)
+     */
+    fun switchKeyboardModeToAlphabetic() {
+        isNumericMode = false
+        Log.d("KeyboardLayoutManager", "🔤 MODE FORCÉ À ALPHABÉTIQUE")
     }
     
     /**
