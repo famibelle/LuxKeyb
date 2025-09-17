@@ -161,24 +161,29 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Majuscule
      */
     private fun handleShift(): Boolean {
+        Log.e("SHIFT_REAL_DEBUG", "🚨🚨🚨 HANDLESHIFT CALLED IN INPUTPROCESSOR! 🚨🚨🚨")
         when {
             !isCapitalMode && !isCapsLock -> {
                 // Première pression - majuscule simple
                 isCapitalMode = true
                 isCapsLock = false
+                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: CAPITAL SIMPLE")
             }
             isCapitalMode && !isCapsLock -> {
                 // Deuxième pression - verrouillage majuscule
                 isCapitalMode = true
                 isCapsLock = true
+                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: CAPS LOCK")
             }
             else -> {
                 // Troisième pression - retour normal
                 isCapitalMode = false
                 isCapsLock = false
+                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: NORMAL")
             }
         }
         
+        Log.e("SHIFT_REAL_DEBUG", "🚨 Calling processorListener?.onModeChanged()")
         processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
         Log.d(TAG, "Shift traité - Capital: $isCapitalMode, CapsLock: $isCapsLock")
         return true
