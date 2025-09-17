@@ -225,6 +225,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onModeChanged(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+        // SYNC les états dans KeyboardLayoutManager AVANT de mettre à jour l'affichage
+        keyboardLayoutManager.updateKeyboardStates(isNumeric, isCapital, isCapsLock)
+        
         // Mettre à jour l'affichage du clavier
         keyboardLayoutManager.updateKeyboardDisplay()
         

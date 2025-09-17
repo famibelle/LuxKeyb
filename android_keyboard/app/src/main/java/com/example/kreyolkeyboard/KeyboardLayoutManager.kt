@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -161,11 +162,11 @@ class KeyboardLayoutManager(private val context: Context) {
             
             when (key) {
                 "⇧" -> {
-                    // Touche Shift avec gradient bleu/blanc
+                    // Touche Shift avec couleurs ULTRA-VISIBLES pour test
                     val colors = when {
-                        isCapsLock -> intArrayOf(Color.parseColor("#0066CC"), Color.parseColor("#004499"))
-                        isCapitalMode -> intArrayOf(Color.parseColor("#E3F2FD"), Color.parseColor("#BBDEFB"))
-                        else -> intArrayOf(Color.parseColor("#F5F5F5"), Color.parseColor("#E0E0E0"))
+                        isCapsLock -> intArrayOf(Color.parseColor("#FFD700"), Color.parseColor("#FFA500")) // JAUNE BRILLANT
+                        isCapitalMode -> intArrayOf(Color.parseColor("#FF0000"), Color.parseColor("#CC0000")) // ROUGE VIF  
+                        else -> intArrayOf(Color.parseColor("#00FF00"), Color.parseColor("#00CC00")) // VERT VIF
                     }
                     setColors(colors)
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
@@ -254,14 +255,28 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Met à jour l'affichage du clavier selon l'état actuel
      */
+    
+    /**
+     * Met à jour les états internes du clavier
+     */
+    fun updateKeyboardStates(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+        Log.e("SHIFT_REAL_DEBUG", "🚨 UPDATING KEYBOARD STATES! isCapital=$isCapital, isCapsLock=$isCapsLock")
+        this.isNumericMode = isNumeric
+        this.isCapitalMode = isCapital
+        this.isCapsLock = isCapsLock
+    }
+
     fun updateKeyboardDisplay() {
+        Log.e("SHIFT_REAL_DEBUG", "🚨🚨🚨 updateKeyboardDisplay() CALLED! 🚨🚨🚨")
         keyboardButtons.forEach { button ->
             val key = getKeyFromButton(button)
             button.text = getDisplayText(key)
             
             // Mise à jour du style pour la touche Shift
             if (key == "⇧") {
+                Log.e("SHIFT_REAL_DEBUG", "🚨 UPDATING SHIFT BUTTON! isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
                 applyGuadeloupeStyle(button as Button, key)
+                Log.e("SHIFT_REAL_DEBUG", "🚨 SHIFT STYLE APPLIED!")
             }
         }
     }
