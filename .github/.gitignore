@@ -1,0 +1,22 @@
+# Fichiers et dossiers temporaires à ignorer dans GitHub Actions
+build/
+*.tmp
+*.log
+
+# Artifacts de build Android
+*.apk
+*.aab
+!release/*.apk
+
+# Rapports de tests et coverage
+reports/
+coverage/
+*.html
+
+# Fichiers de configuration locale
+local.properties
+secrets.properties
+
+# Cache Gradle
+.gradle/
+gradle-wrapper.jar
