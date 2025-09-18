@@ -33,20 +33,21 @@ jobs:
         
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: 8.7
+        
+    - name: Make gradlew executable
+      run: chmod +x android_keyboard/gradlew
         
     - name: 🧹 Clean project
       run: |
-        cd android_keyboard && gradle clean --no-daemon
+        cd android_keyboard && ./gradlew clean --no-daemon
         
     - name: 📱 Build Debug APK
       run: |
-        cd android_keyboard && gradle assembleDebug --no-daemon
+        cd android_keyboard && ./gradlew assembleDebug --no-daemon
         
     - name: 📱 Build Release APK
       run: |
-        cd android_keyboard && gradle assembleRelease --no-daemon
+        cd android_keyboard && ./gradlew assembleRelease --no-daemon
         
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
