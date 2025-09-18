@@ -1,4 +1,4 @@
-name: �🇵 Build Potomitan Kreyol Keyboard APK
+﻿name:  Build Potomitan Kreyol Keyboard APK
 
 on:
   push:
@@ -12,225 +12,83 @@ on:
     paths:
       - 'android_keyboard/**'
       - 'Dictionnaries/**'
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   validate-dictionaries:
-    name: 📚 Validate Créole Dictionaries
+    name:  Validate Créole Dictionaries
     runs-on: ubuntu-latest
     
     steps:
-    - name: 📥 Checkout Repository
+    - name:  Checkout Repository
       uses: actions/checkout@v4
       
-    - name: 🐍 Setup Python
+    - name:  Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-        
-    - name: ✅ Validate Dictionary JSON
-      run: |
-        python -c "
-        import json
-        import sys
-        
-        try:
-            # Validation du dictionnaire créole
-            with open('clavier_creole/assets/creole_dict.json', 'r', encoding='utf-8') as f:
-                dict_data = json.load(f)
-            
-            print(f'✅ Dictionnaire valide: {len(dict_data)} mots créoles')
-            
-            # Vérification de la structure
-            if isinstance(dict_data, list) and len(dict_data) > 0:
-                if isinstance(dict_data[0], list) and len(dict_data[0]) == 2:
-                    print('✅ Structure [mot, fréquence] respectée')
-                else:
-                    print('❌ Structure incorrecte')
-                    sys.exit(1)
-            else:
-                print('❌ Format de dictionnaire invalide')
-                sys.exit(1)
-                
-        except Exception as e:
-            print(f'❌ Erreur validation dictionnaire: {e}')
-            sys.exit(1)
-        "
-        
-    - name: ✅ Validate N-grams JSON
-      run: |
-        python -c "
-        import json
-        import sys
-        
-        try:
-            # Validation des N-grams créoles
-            with open('android_keyboard/app/src/main/assets/creole_ngrams.json', 'r', encoding='utf-8') as f:
-                ngram_data = json.load(f)
-            
-            predictions = ngram_data.get('predictions', {})
-            print(f'✅ N-grams valides: {len(predictions)} entrées de prédiction')
-            
-            # Vérifier la structure
-            if 'version' in ngram_data and 'branding' in ngram_data:
-                print(f'✅ Version: {ngram_data[\"version\"]}, Branding: {ngram_data[\"branding\"]}')
-            else:
-                print('❌ Métadonnées manquantes')
-                sys.exit(1)
-                
-        except Exception as e:
-            print(f'❌ Erreur validation N-grams: {e}')
-            sys.exit(1)
-        "
 
   build:
-    name: 📱 Build Samsung-Compatible APK
+    name:  Build Samsung-Compatible APK
     runs-on: ubuntu-latest
     needs: validate-dictionaries
     
     steps:
-    - name: 📥 Checkout Repository
+    - name:  Checkout Repository
       uses: actions/checkout@v4
       
-    - name: ☕ Setup JDK 17
+    - name:  Setup JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: 🐘 Setup Gradle
+    - name:  Setup Gradle
       uses: gradle/gradle-build-action@v2
       with:
-        gradle-version: wrapper
+        gradle-version: 8.7
         
-    - name: � Verify Project Structure
+    - name:  Clear Gradle Cache
       run: |
-        echo "📂 Project structure verification:"
+        rm -rf ~/.gradle/caches/
+        rm -rf ~/.gradle/wrapper/
+        
+    - name:  Verify Project Structure
+      run: |
+        echo " Project structure verification:"
         ls -la android_keyboard/
-        echo "📱 Gradle wrapper check:"
+        echo " Gradle wrapper check:"
         ls -la android_keyboard/gradlew*
-        echo "📚 Assets check:"
+        echo " Gradle wrapper properties:"
+        cat android_keyboard/gradle/wrapper/gradle-wrapper.properties
+        echo " Assets check:"
         ls -la android_keyboard/app/src/main/assets/
         
-    - name: �📄 Make Gradlew Executable
+    - name:  Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
       
-    - name: 🧹 Clean Project
+    - name:  Clean Project
       working-directory: android_keyboard
       run: ./gradlew clean
         
-    - name: 🔨 Build Debug APK (Samsung Compatible)
+    - name:  Build Debug APK
       working-directory: android_keyboard
       run: ./gradlew assembleDebug
         
-    - name: 🔨 Build Release APK (Samsung Compatible)
+    - name:  Build Release APK
       working-directory: android_keyboard
       run: ./gradlew assembleRelease
         
-    - name: 📁 List Built APKs
-      run: |
-        echo "🎯 APK Files Built:"
-        find android_keyboard/app/build/outputs/apk -name "*.apk" -exec ls -la {} \;
-        
-    - name: 📤 Upload Debug APK
+    - name:  Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: 📱 Potomitan-Kreyol-Keyboard-DEBUG-Samsung
+        name:  Potomitan-Kreyol-Keyboard-DEBUG
         path: android_keyboard/app/build/outputs/apk/debug/*.apk
         retention-days: 30
         
-    - name: 📤 Upload Release APK  
+    - name:  Upload Release APK  
       uses: actions/upload-artifact@v4
       with:
-        name: 📱 Potomitan-Kreyol-Keyboard-RELEASE-Samsung
+        name:  Potomitan-Kreyol-Keyboard-RELEASE
         path: android_keyboard/app/build/outputs/apk/release/*.apk
         retention-days: 90
-        
-    - name: 📊 APK Info
-      run: |
-        echo "🎉 Build completed successfully!"
-        echo ""
-        echo "📱 Debug APK (Easy Installation):"
-        ls -la android_keyboard/app/build/outputs/apk/debug/*.apk
-        echo ""
-        echo "📱 Release APK (Production):"
-        ls -la android_keyboard/app/build/outputs/apk/release/*.apk
-        echo ""
-        echo "🔗 Download APKs from GitHub Actions Artifacts section"
-        echo "💡 For Samsung tablets: Try DEBUG version first (easier to install)"
-        
-  # Job pour créer une release automatique sur les tags
-  release:
-    name: 🚀 Create GitHub Release
-    runs-on: ubuntu-latest
-    needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
-    
-    steps:
-    - name: 📥 Checkout Repository
-      uses: actions/checkout@v4
-      
-    - name: 📥 Download Debug APK
-      uses: actions/download-artifact@v4
-      with:
-        name: 📱 Potomitan-Kreyol-Keyboard-DEBUG-Samsung
-        path: ./apk-debug/
-        
-    - name: 📥 Download Release APK
-      uses: actions/download-artifact@v4
-      with:
-        name: 📱 Potomitan-Kreyol-Keyboard-RELEASE-Samsung
-        path: ./apk-release/
-        
-    - name: 🚀 Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          ./apk-debug/*.apk
-          ./apk-release/*.apk
-        name: Potomitan Kreyol Keyboard ${{ github.ref_name }}
-        body: |
-          ## 🇬🇵 Potomitan Kreyol Keyboard ${{ github.ref_name }}
-          
-          ### 🌟 Nouveautés
-          - ✅ **Layout AZERTY Créole** optimisé : `azertyuiopàé` / `qsdfghjklmò` / `wxcvbnè`
-          - ✅ **Accents créoles intégrés** directement dans le clavier
-          - ✅ **Dictionnaire enrichi** : 1867 mots créoles avec fréquences
-          - ✅ **N-grams intelligents** : prédictions contextuelles en temps réel
-          - ✅ **Samsung Ultra-Compatible** APKs
-          
-          ### 🎯 Fonctionnalités Principales
-          - **Suggestions intelligentes** : Combinaison dictionnaire + N-grams
-          - **Prédictions contextuelles** : "yo" → "ka", "té", "di"
-          - **Accès direct aux accents** : à, è, ò, é visibles sur le clavier
-          - **Mode numérique** avec basculement fluide
-          - **Design Guadeloupéen** avec couleurs tropicales
-          
-          ### � Installation (Samsung Optimisé)
-          
-          **🎯 Pour Samsung Tablets (Recommandé)**:
-          1. Télécharger **DEBUG APK** (plus facile à installer)
-          2. Activer "Sources inconnues" dans Paramètres → Sécurité
-          3. Installer l'APK via l'app "Mes fichiers"
-          4. Activer le clavier dans Paramètres → Langues et saisie
-          
-          **📱 Variantes APK**:
-          - **DEBUG**: `Potomitan_Kreyol_Keyboard_v*_debug_*.apk` (Recommandé Samsung)
-          - **RELEASE**: `Potomitan_Kreyol_Keyboard_v*_release_*.apk` (Production)
-          
-          ### � Détails Techniques
-          - **ApplicationId**: `com.potomitan.kreyolkeyboard`
-          - **Target SDK**: 33 (Optimisé Samsung)  
-          - **Architectures**: arm64-v8a, armeabi-v7a
-          - **Dictionnaire**: 1867 mots créoles
-          - **N-grams**: 15601+ entrées de prédiction
-          - **Compatibilité Samsung**: Ultra-optimisé
-          
-          ### 🏝️ À propos
-          **Potomitan™** - Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen**
-          
-          Développé avec ❤️ pour préserver et promouvoir la langue créole guadeloupéenne.
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
