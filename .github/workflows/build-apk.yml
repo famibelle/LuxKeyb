@@ -1,5 +1,9 @@
 name: 🇬🇵 Build Potomitan Kreyol Keyboard APK
 
+permissions:
+  contents: write
+  packages: write
+
 on:
   push:
     branches: [ main ]
