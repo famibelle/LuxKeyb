@@ -67,6 +67,12 @@ jobs:
     - name: Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
 
+    - name: Gradle Version
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: version
+        build-root-directory: android_keyboard
+
     - name: Diagnostic complet corruption
       run: |
         cd android_keyboard
