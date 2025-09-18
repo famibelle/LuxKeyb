@@ -29,25 +29,22 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
+    - name: 🔧 Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 8.4
         
-    - name: Make Gradlew Executable
-      run: chmod +x android_keyboard/gradlew
+    - name: 🧹 Clean project
+      run: |
+        cd android_keyboard && gradle clean --no-daemon
         
-    - name: Build Debug APK
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: assembleDebug
-        build-root-directory: android_keyboard
+    - name: 📱 Build Debug APK
+      run: |
+        cd android_keyboard && gradle assembleDebug --no-daemon
         
-    - name: Build Release APK
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: assembleRelease
-        build-root-directory: android_keyboard
+    - name: 📱 Build Release APK
+      run: |
+        cd android_keyboard && gradle assembleRelease --no-daemon
         
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
