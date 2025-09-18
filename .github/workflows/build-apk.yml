@@ -1,4 +1,4 @@
-﻿name: 🇬🇵 Build Potomitan Kreyol Keyboard APK
+name: 🇬🇵 Build Potomitan Kreyol Keyboard APK
 
 on:
   push:
@@ -15,23 +15,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate-dictionaries:
-    name: ✅ Validate Créole Dictionaries
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
   build:
-    name: 📱 Build APK
+    name: 📱 Build Samsung-Compatible APK
     runs-on: ubuntu-latest
-    needs: validate-dictionaries
     
     steps:
     - name: Checkout Repository
@@ -48,87 +34,8 @@ jobs:
       with:
         gradle-version: 8.7
         
-    - name: Clear Gradle Cache
-      run: |
-        rm -rf ~/.gradle/caches/
-        rm -rf ~/.gradle/wrapper/
-        
-    - name: Verify Project Structure
-      run: |
-        echo "📁 Project structure verification:"
-        ls -la android_keyboard/
-        echo "⚙️ Gradle wrapper check:"
-        ls -la android_keyboard/gradlew*
-        echo "📄 Gradle wrapper properties:"
-        cat android_keyboard/gradle/wrapper/gradle-wrapper.properties
-        echo "📦 Assets check:"
-        ls -la android_keyboard/app/src/main/assets/
-        
     - name: Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
-
-
-    - name: Diagnostic hexadécimal
-      run: |
-        cd android_keyboard
-        echo "=== Vérification build.gradle (hex) ==="
-        hexdump -C build.gradle
-        echo "=== Vérification settings.gradle (hex) ==="
-        hexdump -C settings.gradle
-        echo "=== Vérification gradle.properties (hex) ==="
-        hexdump -C gradle.properties
-
-    - name: Test Gradle Tasks
-      working-directory: android_keyboard
-      run: ./gradlew tasks
-
-    - name: Gradle Version
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: version
-        build-root-directory: android_keyboard
-
-    - name: Diagnostic complet corruption
-      run: |
-        cd android_keyboard
-        echo "=== Test gradlew version ==="
-        ./gradlew --version
-        echo "=== Contenu gradle.properties ==="
-        cat gradle.properties | od -c
-        echo "=== Variables d'environnement Gradle ==="
-        env | grep GRADLE
-        echo "=== Test avec commande basique ==="
-        ./gradlew help
-
-    - name: Diagnostic android_keyboard
-      run: |
-        echo "=== build.gradle android_keyboard ==="
-        cat android_keyboard/build.gradle
-        echo "=== settings.gradle android_keyboard ==="
-        cat android_keyboard/settings.gradle
-        echo "=== app/build.gradle ==="
-        cat android_keyboard/app/build.gradle
-        echo "=== Tasks disponibles ==="
-        cd android_keyboard && ./gradlew tasks
-
-    - name: Diagnostic complet
-      run: |
-        echo "=== Structure complète ==="
-        find . -name "*.gradle*" -type f
-        echo "=== Contenu android_keyboard/ ==="
-        ls -la android_keyboard/
-        echo "=== build.gradle racine ==="
-        cat ./build.gradle
-        if [ -f "android_keyboard/build.gradle" ]; then
-          echo "=== build.gradle android_keyboard ==="
-          cat android_keyboard/build.gradle
-        fi
-        if [ -f "android_keyboard/settings.gradle" ]; then
-          echo "=== settings.gradle android_keyboard ==="
-          cat android_keyboard/settings.gradle
-        fi
-        echo "=== Tasks disponibles ==="
-        cd android_keyboard && ./gradlew tasks
         
     - name: Build Debug APK
       working-directory: android_keyboard
