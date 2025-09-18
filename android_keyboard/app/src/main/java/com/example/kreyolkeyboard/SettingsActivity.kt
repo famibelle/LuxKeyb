@@ -16,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        Log.d("SettingsActivity", "Création de l'activité principale Kreyòl Karikera")
+        Log.d("SettingsActivity", "Création de l'activité principale Kreyòl Karukera")
         
         // Créer un ScrollView pour éviter les problèmes d'affichage
         val scrollView = ScrollView(this)
@@ -44,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val appTitle = TextView(this).apply {
-            text = "Klavyé Kreyòl Karikera 🇬🇵"
+            text = "Klavié Kreyòl Karukera 🇬🇵"
             textSize = 28f
             setTextColor(Color.parseColor("#F8F8FF")) // Blanc Coral
             setTypeface(null, Typeface.BOLD)
@@ -72,8 +72,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kréyòl Guadeloupéen (Karikera). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
-                    "💡 Suggestions de mots en Kréyòl\n" +
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kreyòl Guadeloupéen (Karukera). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
+                    "💡 Suggestions de mots en Kreyòl\n" +
                     "🔢 Mode numérique intégré\n" +
                     "🌈 Design aux couleurs de la Guadeloupe\n" +
                     "🇬🇵 Identité guadeloupéenne forte"
@@ -102,7 +102,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val sourcesText = TextView(this).apply {
             text = "Les suggestions de mots en kreyòl sont construites sur les travaux des défenseurs du kreyòl :\n\n" +
-                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus, Benjamin Moïse (dit Benzo)\n\n" +
+                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus,\n\n" +
                     "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233")) // Vert foncé
@@ -129,7 +129,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val installSteps = TextView(this).apply {
             text = "1️⃣ Appuyez sur 'Activer le clavier' ci-dessous\n" +
-                    "2️⃣ Dans les paramètres, activez 'Klavyé Kreyòl Karikera'\n" +
+                    "2️⃣ Dans les paramètres, activez 'Klavié Kreyòl Karukera'\n" +
                     "3️⃣ Revenez ici et testez le clavier\n" +
                     "4️⃣ Changez de clavier en appuyant sur l'icône clavier dans la barre de notifications"
             textSize = 15f
@@ -193,7 +193,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val switchButton = Button(this).apply {
-            text = "🔄 Basculer vers Klavyé Kreyòl"
+            text = "🔄 Basculer vers Klavié Kreyòl"
             textSize = 14f
             setBackgroundColor(Color.parseColor("#228B22")) // Vert Canne
             setTextColor(Color.parseColor("#F8F8FF")) // Blanc Coral
@@ -214,7 +214,7 @@ class SettingsActivity : AppCompatActivity() {
         val footerText = TextView(this).apply {
             text = "🏝️ Fait avec ❤️ pour la Guadeloupe\n" +
                     "Préservons notre langue créole pour les générations futures !\n\n" +
-                    "© Potomitan™ - Clavier Kréyòl Karikera\n" +
+                    "© Potomitan™ - Clavier Kreyòl Karukera\n" +
                     "Design aux couleurs authentiques de nos îles"
             textSize = 12f
             setTextColor(Color.parseColor("#666666"))
@@ -241,6 +241,6 @@ class SettingsActivity : AppCompatActivity() {
         scrollView.addView(mainLayout)
         setContentView(scrollView)
         
-        Log.d("SettingsActivity", "Interface Kréyòl Karikera créée avec succès")
+        Log.d("SettingsActivity", "Interface Kreyòl Karukera créée avec succès")
     }
 }
