@@ -80,9 +80,7 @@ jobs:
 
     - name: Test Gradle Tasks
       working-directory: android_keyboard
-      run: |
-        echo "Testing gradlew commands..."
-        ./gradlew tasks --all
+      run: ./gradlew tasks
 
     - name: Gradle Version
       uses: gradle/gradle-build-action@v2
