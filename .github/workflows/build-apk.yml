@@ -80,7 +80,8 @@ jobs:
 
     - name: Clean Project
       working-directory: android_keyboard
-      run: ./gradlew clean
+      run: |
+        ./gradlew clean
 
     - name: Gradle Version
       uses: gradle/gradle-build-action@v2
