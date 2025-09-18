@@ -15,7 +15,7 @@ Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggesti
 
 - 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale  
 - ✍️ **Sonny Rupaire**, **Silvyane Telchid**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kreyòl ses lettres de noblesse  
-- 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil** – linguistes et chercheurs qui ont structuré et valorisé la langue
+- 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil**, **Benjamin_Moïse** – linguistes et chercheurs qui ont structuré et valorisé la langue
 
 🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kreyòl contemporain.
 
