@@ -68,8 +68,7 @@ jobs:
       run: chmod +x android_keyboard/gradlew
 
     - name: Clean Project
-      working-directory: android_keyboard
-      run: ./gradlew clean
+      run: ./gradlew clean -p android_keyboard
         
     - name: Build Debug APK
       working-directory: android_keyboard
