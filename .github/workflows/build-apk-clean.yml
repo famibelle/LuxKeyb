@@ -1,0 +1,60 @@
+name: 🇬🇵 Build Potomitan Kreyol Keyboard APK
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'android_keyboard/**'
+      - '.github/workflows/**'
+      - 'Dictionnaries/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'android_keyboard/**'
+      - 'Dictionnaries/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 📱 Build Samsung-Compatible APK
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.7
+        
+    - name: Make Gradlew Executable
+      run: chmod +x android_keyboard/gradlew
+        
+    - name: Build Debug APK
+      working-directory: android_keyboard
+      run: ./gradlew assembleDebug
+        
+    - name: Build Release APK
+      working-directory: android_keyboard
+      run: ./gradlew assembleRelease
+        
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Potomitan-Kreyol-Keyboard-DEBUG
+        path: android_keyboard/app/build/outputs/apk/debug/*.apk
+        retention-days: 30
+        
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Potomitan-Kreyol-Keyboard-RELEASE
+        path: android_keyboard/app/build/outputs/apk/release/*.apk
+        retention-days: 90
