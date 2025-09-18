@@ -38,16 +38,13 @@ jobs:
       run: chmod +x android_keyboard/gradlew
         
     - name: 🧹 Clean project
-      run: |
-        cd android_keyboard && ./gradlew clean --no-daemon
+      run: cd android_keyboard && ./gradlew clean --no-daemon
         
     - name: 📱 Build Debug APK
-      run: |
-        cd android_keyboard && ./gradlew assembleDebug --no-daemon
+      run: cd android_keyboard && ./gradlew assembleDebug --no-daemon
         
     - name: 📱 Build Release APK
-      run: |
-        cd android_keyboard && ./gradlew assembleRelease --no-daemon
+      run: cd android_keyboard && ./gradlew assembleRelease --no-daemon
         
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
