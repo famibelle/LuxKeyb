@@ -4,6 +4,13 @@
 
     <!-- Permission pour ajouter des mots au dictionnaire personnel -->
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
+    
+    <!-- Permissions requises pour Android 14+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    
+    <!-- Déclarer que l'app fonctionne avec l'état d'écriture externe granulaire -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +22,10 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:extractNativeLibs="true"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        tools:targetApi="34">
 
         <!-- Service du clavier IME -->
         <service
