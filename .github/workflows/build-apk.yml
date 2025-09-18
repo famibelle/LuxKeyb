@@ -67,6 +67,18 @@ jobs:
     - name: Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
 
+    - name: Diagnostic complet corruption
+      run: |
+        cd android_keyboard
+        echo "=== Test gradlew version ==="
+        ./gradlew --version
+        echo "=== Contenu gradle.properties ==="
+        cat gradle.properties | od -c
+        echo "=== Variables d'environnement Gradle ==="
+        env | grep GRADLE
+        echo "=== Test avec commande basique ==="
+        ./gradlew help
+
     - name: Diagnostic android_keyboard
       run: |
         echo "=== build.gradle android_keyboard ==="
