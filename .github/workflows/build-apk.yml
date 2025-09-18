@@ -67,6 +67,11 @@ jobs:
     - name: Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
 
+    - name: Clean avec bash explicite
+      run: |
+        cd android_keyboard
+        bash -c './gradlew clean'
+
     - name: Gradle Version
       uses: gradle/gradle-build-action@v2
       with:
