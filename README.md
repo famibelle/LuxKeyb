@@ -1,4 +1,4 @@
-# 🇬🇵 Klavyé Kreyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
+# 🇬🇵 Klavyé Kréyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
 
 **Klavié Kreyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kreyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
@@ -327,3 +327,4 @@ R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 *Développé avec ❤️ pour la communauté créolophone* 🐚�
 
 </div>
+
