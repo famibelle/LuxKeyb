@@ -86,6 +86,17 @@ jobs:
         echo "=== Tasks disponibles ==="
         cd android_keyboard && ./gradlew tasks
 
+    - name: Diagnostic android_keyboard
+      run: |
+        echo "=== build.gradle android_keyboard ==="
+        cat android_keyboard/build.gradle
+        echo "=== settings.gradle android_keyboard ==="
+        cat android_keyboard/settings.gradle
+        echo "=== app/build.gradle ==="
+        cat android_keyboard/app/build.gradle
+        echo "=== Tasks disponibles ==="
+        cd android_keyboard && ./gradlew tasks
+
     - name: Clean Project
       run: cd android_keyboard && ./gradlew clean
         
