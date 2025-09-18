@@ -67,6 +67,17 @@ jobs:
     - name: Make Gradlew Executable
       run: chmod +x android_keyboard/gradlew
 
+
+    - name: Diagnostic hexadécimal
+      run: |
+        cd android_keyboard
+        echo "=== Vérification build.gradle (hex) ==="
+        hexdump -C build.gradle
+        echo "=== Vérification settings.gradle (hex) ==="
+        hexdump -C settings.gradle
+        echo "=== Vérification gradle.properties (hex) ==="
+        hexdump -C gradle.properties
+
     - name: Clean avec bash explicite
       run: |
         cd android_keyboard
