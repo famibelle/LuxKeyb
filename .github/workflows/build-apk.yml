@@ -78,10 +78,11 @@ jobs:
         echo "=== Vérification gradle.properties (hex) ==="
         hexdump -C gradle.properties
 
-    - name: Clean Project
+    - name: Test Gradle Tasks
       working-directory: android_keyboard
       run: |
-        ./gradlew clean
+        echo "Testing gradlew commands..."
+        ./gradlew tasks --all
 
     - name: Gradle Version
       uses: gradle/gradle-build-action@v2
