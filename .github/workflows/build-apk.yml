@@ -38,12 +38,16 @@ jobs:
       run: chmod +x android_keyboard/gradlew
         
     - name: Build Debug APK
-      working-directory: android_keyboard
-      run: ./gradlew assembleDebug
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: assembleDebug
+        build-root-directory: android_keyboard
         
     - name: Build Release APK
-      working-directory: android_keyboard
-      run: ./gradlew assembleRelease
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: assembleRelease
+        build-root-directory: android_keyboard
         
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
