@@ -11,8 +11,8 @@ android {
         applicationId "com.potomitan.kreyolkeyboard"
         minSdk = 21
         targetSdk = 34
-        versionCode = 6
-        versionName "2.5.0"
+        versionCode = 7
+        versionName "3.0.0"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true
@@ -24,14 +24,31 @@ android {
         }
     }
 
+    // Configuration pour Android App Bundle (AAB)
+    bundle {
+        language {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled = false
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug // Utilise la signature debug pour test
+            signingConfig signingConfigs.debug // TODO: Changer pour production
             zipAlignEnabled = true
             debuggable = false
-            shrinkResources = false
+            
+            // Optimisations supplémentaires
+            multiDexEnabled = true
+            crunchPngs = true
             
             // Samsung compatibility flags
             manifestPlaceholders = [
@@ -42,10 +59,12 @@ android {
         debug {
             // Configuration pour le build de debug
             debuggable = true
+            minifyEnabled = false
+            shrinkResources = false
         }
     }
     
-    // Configuration pour personnaliser le nom des fichiers APK
+    // Configuration pour personnaliser le nom des fichiers APK et AAB
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach {
             def versionName = variant.versionName
