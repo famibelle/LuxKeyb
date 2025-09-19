@@ -67,21 +67,26 @@ jobs:
         pip install datasets huggingface_hub
         python KreyolComplet.py
         
-        # Vérifier que les fichiers ont été générés
-        if [ -f "creole_dict.json" ] && [ -f "creole_ngrams.json" ]; then
+        # Vérifier que les fichiers ont été générés dans clavier_creole/assets/
+        if [ -f "../clavier_creole/assets/creole_dict.json" ] && [ -f "../clavier_creole/assets/creole_ngrams.json" ]; then
           echo "✅ Dictionary files generated successfully"
-          cp creole_dict.json ../android_keyboard/app/src/main/assets/
-          cp creole_ngrams.json ../android_keyboard/app/src/main/assets/
+          
+          # Copier depuis Flutter assets vers Android assets
+          cp ../clavier_creole/assets/creole_dict.json ../android_keyboard/app/src/main/assets/
+          cp ../clavier_creole/assets/creole_ngrams.json ../android_keyboard/app/src/main/assets/
           
           # Informations sur le dictionnaire
-          DICT_SIZE=$(jq length creole_dict.json)
-          NGRAM_SIZE=$(jq '.predictions | length' creole_ngrams.json)
+          DICT_SIZE=$(jq length ../clavier_creole/assets/creole_dict.json)
+          NGRAM_SIZE=$(jq '.predictions | length' ../clavier_creole/assets/creole_ngrams.json)
           echo "📊 Dictionary: $DICT_SIZE words, $NGRAM_SIZE N-grams"
           
           echo "DICT_SIZE=$DICT_SIZE" >> $GITHUB_ENV
           echo "NGRAM_SIZE=$NGRAM_SIZE" >> $GITHUB_ENV
         else
-          echo "❌ Dictionary generation failed"
+          echo "❌ Dictionary generation failed - files not found in clavier_creole/assets/"
+          echo "🔍 Checking what was generated..."
+          ls -la ../clavier_creole/assets/ || echo "Directory not found"
+          ls -la ./ || echo "Current directory listing failed"
           exit 1
         fi
 
