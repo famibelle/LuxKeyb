@@ -224,18 +224,46 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
             inputConnection.deleteSurroundingText(currentWord.length, 0)
         }
         
+        // 🔥 CORRECTION BUG CASSE : Préserver la casse intentionnelle
+        val finalSuggestion = applyCaseToSuggestion(suggestion, currentWord)
+        Log.d(TAG, "Casse préservée dans InputProcessor: '$currentWord' -> '$finalSuggestion'")
+        
         // Insérer la suggestion avec un espace automatique
-        inputConnection.commitText("$suggestion ", 1)
+        inputConnection.commitText("$finalSuggestion ", 1)
         
         // Finaliser le mot
-        currentWord = suggestion
+        currentWord = finalSuggestion
         finalizeCurrentWord()
         
         // Gérer la capitalisation automatique après l'espace
         handleAutoCapitalization()
         
-        Log.d(TAG, "Suggestion sélectionnée: '$suggestion' (avec espace automatique)")
+        Log.d(TAG, "Suggestion sélectionnée: '$finalSuggestion' (avec espace automatique)")
         return true
+    }
+    
+    /**
+     * 🔥 CORRECTION BUG CASSE : Applique la casse intentionnelle de l'utilisateur à la suggestion
+     * Préserve la majuscule intentionnelle (Shift/Caps) lors de l'application des suggestions
+     */
+    private fun applyCaseToSuggestion(suggestion: String, currentInput: String): String {
+        if (suggestion.isEmpty() || currentInput.isEmpty()) {
+            return suggestion
+        }
+        
+        // Analyser la casse du premier caractère tapé par l'utilisateur
+        val firstInputChar = currentInput.first()
+        val isIntentionalCapital = firstInputChar.isUpperCase()
+        
+        Log.d(TAG, "🔍 Analyse casse InputProcessor: input='$currentInput', premier char='$firstInputChar', majuscule intentionnelle=$isIntentionalCapital")
+        
+        return if (isIntentionalCapital) {
+            // L'utilisateur a volontairement commencé en majuscule → capitaliser la suggestion
+            suggestion.lowercase().replaceFirstChar { it.uppercase() }
+        } else {
+            // L'utilisateur a tapé en minuscule → garder la suggestion en minuscule
+            suggestion.lowercase()
+        }
     }
     
     /**
