@@ -8,14 +8,13 @@ android {
     namespace 'com.example.kreyolkeyboard'
 
     signingConfigs {
-        release {
-            storeFile file('potomitan-keystore.jks')
-            storePassword 'potomitan2024!'
-            keyAlias 'potomitan-release-key'
-            keyPassword 'potomitan2024!'
-            v1SigningEnabled true
-            v2SigningEnabled true
+        debug {
+            // Configuration debug par défaut (automatique)
         }
+        
+        // Configuration release UNIQUEMENT pour build local
+        // JAMAIS de mots de passe en clair dans le repository !
+        // En CI, on utilise toujours debug signing
     }
 
     defaultConfig {
@@ -53,7 +52,7 @@ android {
             minifyEnabled = true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release // Signature de production
+            signingConfig signingConfigs.debug // TOUJOURS debug en CI pour sécurité
             zipAlignEnabled = true
             debuggable = false
             
