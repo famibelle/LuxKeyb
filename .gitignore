@@ -50,3 +50,5 @@ setup_github_pages.ps1
 android_keyboard\*.ps1
 .gitignore
 .env.example
+
+Dictionnaries/
