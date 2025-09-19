@@ -120,9 +120,25 @@ jobs:
         VERSION="${{ steps.version.outputs.VERSION }}"
         VERSION_CODE="${{ steps.version.outputs.VERSION_CODE }}"
         
-        # Mettre à jour le versionCode et versionName
-        sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/" app/build.gradle
+        # Mettre à jour le versionCode et versionName avec patterns corrects
+        sed -i "s/versionCode = [0-9]*/versionCode = $VERSION_CODE/" app/build.gradle
         sed -i "s/versionName \"[^\"]*\"/versionName \"$VERSION\"/" app/build.gradle
+        
+        echo "✅ Version updated in build.gradle: $VERSION (Code: $VERSION_CODE)"
+        
+        # Vérifier les changements et la syntaxe
+        echo "🔍 Checking updated build.gradle..."
+        grep -n "versionCode\|versionName" app/build.gradle
+        
+        # Test de syntaxe gradle basique
+        if grep -q "versionCode = $VERSION_CODE" app/build.gradle && grep -q "versionName \"$VERSION\"" app/build.gradle; then
+          echo "✅ build.gradle syntax validation passed"
+        else
+          echo "❌ build.gradle syntax validation failed"
+          echo "Contents around version lines:"
+          grep -A2 -B2 "versionCode\|versionName" app/build.gradle
+          exit 1
+        fi
         
         echo "✅ Version updated in build.gradle: $VERSION (Code: $VERSION_CODE)"
         
