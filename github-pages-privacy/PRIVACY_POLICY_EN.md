@@ -11,7 +11,7 @@
 **Potomitan** is an organization dedicated to the preservation and promotion of Creole culture. Our mission is to develop technological tools that facilitate the use and learning of Creole languages, particularly Guadeloupean Creole (Kreyòl Karukera).
 
 ### Contact
-- **Developer:** Médhi Famibelle
+- **Developer:** [Médhi Famibelle](https://www.linkedin.com/in/famibelle/)
 - **Email:** medhi@potomitan.io
 - **Website:** [potomitan.io](https://potomitan.io)
 
