@@ -16,6 +16,7 @@ android_keyboard/*.iml
 *.jks
 *.keystore
 key.properties
+local-release.properties
 
 # Fichiers temporaires
 *.tmp
@@ -52,3 +53,11 @@ android_keyboard\*.ps1
 .env.example
 
 Dictionnaries/
+android_keyboard/bundletool.jar
+android_keyboard/app-debug.apks
+BUG_FIX_SUMMARY.md
+AAB_TEST_RESULTS.md
+RELEASE_GUIDE.md
+release.ps1
+RELEASE_SYSTEM_READY.md
+android_keyboard/app/local-release.properties.example
