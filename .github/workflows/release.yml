@@ -1,4 +1,4 @@
-name:  Build and Release Potomitan Kreyol Keyboard
+name: 🚀 Release Kreyòl Keyboard v2.0
 
 on:
   push:
@@ -10,6 +10,13 @@ on:
         description: "Version number (e.g., v1.1.0)"
         required: true
         default: "v1.1.0"
+      include_aab:
+        description: "Generate AAB for Play Store"
+        type: boolean
+        default: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 jobs:
   build-and-release:
@@ -20,85 +27,282 @@ jobs:
     steps:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Pour obtenir l'historique Git complet
       
+    - name: ☕ Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: � Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📋 Cache Gradle
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.4
-        
-    - name: Clean project
+        gradle-version: 8.7
+
+    - name: 📦 Generate Fresh Kreyòl Dictionary
       run: |
-        cd android_keyboard && gradle clean --no-daemon
+        echo "🔄 Generating fresh Kreyòl dictionary from Hugging Face..."
+        cd Dictionnaires
+        python -m pip install --upgrade pip
+        pip install datasets huggingface_hub
+        python KreyolComplet.py
         
-    - name: Build Debug APK
+        # Vérifier que les fichiers ont été générés
+        if [ -f "creole_dict.json" ] && [ -f "creole_ngrams.json" ]; then
+          echo "✅ Dictionary files generated successfully"
+          cp creole_dict.json ../android_keyboard/app/src/main/assets/
+          cp creole_ngrams.json ../android_keyboard/app/src/main/assets/
+          
+          # Informations sur le dictionnaire
+          DICT_SIZE=$(jq length creole_dict.json)
+          NGRAM_SIZE=$(jq '.predictions | length' creole_ngrams.json)
+          echo "📊 Dictionary: $DICT_SIZE words, $NGRAM_SIZE N-grams"
+          
+          echo "DICT_SIZE=$DICT_SIZE" >> $GITHUB_ENV
+          echo "NGRAM_SIZE=$NGRAM_SIZE" >> $GITHUB_ENV
+        else
+          echo "❌ Dictionary generation failed"
+          exit 1
+        fi
+
+    - name: 🔍 Extract Version Info
+      id: version
       run: |
-        cd android_keyboard && gradle assembleDebug --no-daemon
-      
-    - name: Build Release APK
-      run: |
-        cd android_keyboard && gradle assembleRelease --no-daemon
+        VERSION="${{ github.event.inputs.version || github.ref_name }}"
+        # Nettoyer la version (enlever le 'v' si présent)
+        CLEAN_VERSION=${VERSION#v}
         
-    - name: 📦 Find APK files
-      id: apk_files
+        # Extraire les composants de version
+        IFS='.' read -ra VERSION_PARTS <<< "$CLEAN_VERSION"
+        MAJOR=${VERSION_PARTS[0]:-1}
+        MINOR=${VERSION_PARTS[1]:-0}
+        PATCH=${VERSION_PARTS[2]:-0}
+        
+        # Calculer le versionCode (format: MAJOR * 10000 + MINOR * 100 + PATCH)
+        VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+        
+        echo "VERSION=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+        echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+        echo "MAJOR=$MAJOR" >> $GITHUB_OUTPUT
+        echo "MINOR=$MINOR" >> $GITHUB_OUTPUT
+        echo "PATCH=$PATCH" >> $GITHUB_OUTPUT
+        
+        echo "🔢 Version: $CLEAN_VERSION (Code: $VERSION_CODE)"
+
+    - name: 📝 Update Version in build.gradle
       run: |
         cd android_keyboard
+        VERSION="${{ steps.version.outputs.VERSION }}"
+        VERSION_CODE="${{ steps.version.outputs.VERSION_CODE }}"
+        
+        # Mettre à jour le versionCode et versionName
+        sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/" app/build.gradle
+        sed -i "s/versionName \"[^\"]*\"/versionName \"$VERSION\"/" app/build.gradle
+        
+        echo "✅ Version updated in build.gradle: $VERSION (Code: $VERSION_CODE)"
+        
+        # Vérifier les changements
+        grep -n "versionCode\|versionName" app/build.gradle
+        
+    - name: 🧹 Clean Project
+      run: |
+        cd android_keyboard
+        gradle clean --no-daemon
+
+    - name: 🔨 Build Debug APK
+      run: |
+        cd android_keyboard
+        gradle assembleDebug --no-daemon
+      
+    - name: 🏗️ Build Release APK
+      run: |
+        cd android_keyboard
+        gradle assembleRelease --no-daemon
+
+    - name: 📦 Build Release AAB (Play Store)
+      if: github.event.inputs.include_aab != 'false'
+      run: |
+        cd android_keyboard
+        gradle bundleRelease --no-daemon
+        
+    - name: � Find Build Artifacts
+      id: artifacts
+      run: |
+        cd android_keyboard
+        
+        # Trouver les fichiers APK
         DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -1)
         RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
-        
-        echo "Found Debug APK: $DEBUG_APK"
-        echo "Found Release APK: $RELEASE_APK"
         
         echo "debug_apk=$DEBUG_APK" >> $GITHUB_OUTPUT
         echo "release_apk=$RELEASE_APK" >> $GITHUB_OUTPUT
         
-    - name: 📊 APK Info
+        # Trouver le fichier AAB si généré
+        if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then
+          RELEASE_AAB="app/build/outputs/bundle/release/app-release.aab"
+          echo "release_aab=$RELEASE_AAB" >> $GITHUB_OUTPUT
+          echo "✅ AAB found: $RELEASE_AAB"
+        else
+          echo "⚠️ No AAB found"
+        fi
+        
+        echo "✅ Debug APK: $DEBUG_APK"
+        echo "✅ Release APK: $RELEASE_APK"
+
+    - name: 📏 Get File Sizes
+      id: sizes
       run: |
         cd android_keyboard
-        echo "🔍 Debug APK:"
-        ls -lh "${{ steps.apk_files.outputs.debug_apk }}"
-        echo "🔍 Release APK:"
-        ls -lh "${{ steps.apk_files.outputs.release_apk }}"
         
-    - name: 🚀 Create Release
+        DEBUG_SIZE=$(du -h "${{ steps.artifacts.outputs.debug_apk }}" | cut -f1)
+        RELEASE_SIZE=$(du -h "${{ steps.artifacts.outputs.release_apk }}" | cut -f1)
+        
+        echo "debug_size=$DEBUG_SIZE" >> $GITHUB_OUTPUT
+        echo "release_size=$RELEASE_SIZE" >> $GITHUB_OUTPUT
+        
+        if [ -n "${{ steps.artifacts.outputs.release_aab }}" ]; then
+          AAB_SIZE=$(du -h "${{ steps.artifacts.outputs.release_aab }}" | cut -f1)
+          echo "aab_size=$AAB_SIZE" >> $GITHUB_OUTPUT
+          echo "📦 AAB Size: $AAB_SIZE"
+        fi
+        
+        echo "📊 Debug APK: $DEBUG_SIZE"
+        echo "📊 Release APK: $RELEASE_SIZE"
+
+    - name: � APK Analysis
+      run: |
+        cd android_keyboard
+        echo "🔍 Debug APK Details:"
+        ls -lh "${{ steps.artifacts.outputs.debug_apk }}"
+        echo ""
+        echo "🔍 Release APK Details:"
+        ls -lh "${{ steps.artifacts.outputs.release_apk }}"
+        
+        if [ -n "${{ steps.artifacts.outputs.release_aab }}" ]; then
+          echo ""
+          echo "🔍 Release AAB Details:"
+          ls -lh "${{ steps.artifacts.outputs.release_aab }}"
+        fi
+
+    - name: 📝 Generate Changelog
+      id: changelog
+      run: |
+        # Générer un changelog basé sur les commits récents
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+        
+        if [ -n "$LAST_TAG" ]; then
+          echo "📋 Changes since $LAST_TAG:"
+          COMMITS=$(git log --pretty=format:"- %s" "$LAST_TAG"..HEAD | head -10)
+        else
+          echo "📋 Recent changes:"
+          COMMITS=$(git log --pretty=format:"- %s" --since="1 week ago" | head -10)
+        fi
+        
+        # Préparer les informations de build
+        BUILD_INFO="## 📱 Build Information
+        - **Version**: ${{ steps.version.outputs.VERSION }} (Code: ${{ steps.version.outputs.VERSION_CODE }})
+        - **Target SDK**: 34 (Android 14)
+        - **Min SDK**: 21 (Android 5.0)
+        - **Dictionary**: ${DICT_SIZE:-0} words, ${NGRAM_SIZE:-0} N-grams
+        - **Release APK**: ${{ steps.sizes.outputs.release_size }}
+        - **Debug APK**: ${{ steps.sizes.outputs.debug_size }}"
+        
+        if [ -n "${{ steps.artifacts.outputs.release_aab }}" ]; then
+          BUILD_INFO="$BUILD_INFO
+        - **Release AAB**: ${{ steps.sizes.outputs.aab_size }} (Google Play Store)"
+        fi
+        
+        # Créer le changelog complet
+        CHANGELOG="# 🇬🇵 Klavié Kreyòl Karukera v${{ steps.version.outputs.VERSION }}
+
+        **Nouveau clavier créole pour la Guadeloupe avec corrections importantes !**
+
+        ## ✨ Nouveautés et Corrections
+        $COMMITS
+
+        ## 🔥 Corrections Majeures
+        - ✅ **Bug de casse corrigé** : P + suggestion → Paris (majuscule préservée)
+        - ✅ **Préservation Shift/Caps** : Respect de l'intention utilisateur
+        - ✅ **Dictionnaire mis à jour** : ${DICT_SIZE:-0} mots créoles authentiques
+        - ✅ **N-grams optimisés** : ${NGRAM_SIZE:-0} prédictions contextuelles
+
+        $BUILD_INFO
+
+        ## 🌈 Fonctionnalités Clés
+        - 🎨 **Design caribéen** moderne (bleu caraïbe, jaune soleil, vert canne)
+        - 📝 **Suggestions intelligentes** avec dictionnaire créole authentique
+        - 🔤 **Accents créoles** (à, è, ò, etc.) via appui long
+        - 📚 **Sources littéraires** intégrées (Telchid, Rupaire, Fontes)
+        - 🎯 **Prédictions contextuelles** avec modèle N-grams
+
+        ## 📱 Installation
+        1. **Play Store** : Utilisez le fichier AAB (recommandé)
+        2. **Installation directe** : Téléchargez Release APK
+        3. **Développement** : Utilisez Debug APK
+
+        ## 🔒 Sécurité & Confidentialité
+        - 🌐 **Code source ouvert** : Entièrement auditable
+        - 🚫 **Zéro tracker** : Aucune collecte de données
+        - 🔐 **Permissions minimales** : Seulement le nécessaire
+        - 📋 **Politique de confidentialité** : https://famibelle.github.io/KreyolKeyb/privacy/
+
+        ---
+        **Alé douvan épi klavié kreyòl-la !** ⌨️✨  
+        **Potomitan™ - Teknoloji pou tout moun** 🇬🇵"
+        
+        # Échapper le changelog pour GitHub Actions
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    - name: 🚀 Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.event.inputs.version || github.ref_name }}
-        name: 🇬🇵 Klavié Kreyòl Karukera ${{ github.event.inputs.version || github.ref_name }}
-        body: |
-          ## 🇬🇵 Klavié Kreyòl Karukera • Potomitan™
-          
-          **Nouveau clavier créole pour la Guadeloupe !**
-          
-          ### ✨ Fonctionnalités :
-          - 🌈 Design moderne caribéen (bleu caraïbe, jaune soleil, vert canne)
-          - 📝 Suggestions intelligentes basées sur un vrai dictionnaire créole
-          - 🔤 Accents créoles (à, è, ò, etc.) avec long-press
-          - 📚 Dictionnaire de 5910 mots créoles authentiques
-          - 🎯 Sources littéraires intégrées (Telchid, Rupaire, Fontes, etc.)
-          
-          ### 📱 Installation :
-          1. Téléchargez le fichier **Release APK** (recommandé) ou Debug APK
-          2. Autorisez l'installation d'applications inconnues dans les paramètres Android
-          3. Installez l'APK en touchant le fichier téléchargé
-          4. Activez le clavier dans **Paramètres → Système → Langues et saisie → Claviers virtuels**
-          5. Sélectionnez **Potomitan Kreyol Keyboard**
-          
-          ### 📊 Tailles des fichiers :
-          - **Release APK** : ~2.6 MB (optimisé pour la production)
-          - **Debug APK** : ~3.4 MB (avec outils de débogage)
-          
-          ### 🔒 Sécurité :
-          - Code source ouvert et auditable
-          - Pas de trackers ou analytics
-          - Permissions minimales requises
-          
-          ---
-          **Alé douvan épi klavié kreyòl-la !** ⌨️✨
+        name: 🇬🇵 Klavié Kreyòl Karukera v${{ steps.version.outputs.VERSION }}
+        body: ${{ steps.changelog.outputs.CHANGELOG }}
         files: |
-          android_keyboard/${{ steps.apk_files.outputs.debug_apk }}
-          android_keyboard/${{ steps.apk_files.outputs.release_apk }}
+          android_keyboard/${{ steps.artifacts.outputs.debug_apk }}
+          android_keyboard/${{ steps.artifacts.outputs.release_apk }}
+          ${{ steps.artifacts.outputs.release_aab && format('android_keyboard/{0}', steps.artifacts.outputs.release_aab) || '' }}
+          Dictionnaires/creole_dict.json
+          Dictionnaires/creole_ngrams.json
         draft: false
         prerelease: false
-        generate_release_notes: true
+        generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 📊 Release Summary
+      run: |
+        echo "## 🎉 Release v${{ steps.version.outputs.VERSION }} Created Successfully!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| 📋 Item | 📊 Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|---------|----------|" >> $GITHUB_STEP_SUMMARY
+        echo "| **Version** | ${{ steps.version.outputs.VERSION }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| **Version Code** | ${{ steps.version.outputs.VERSION_CODE }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| **Debug APK** | ${{ steps.sizes.outputs.debug_size }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| **Release APK** | ${{ steps.sizes.outputs.release_size }} |" >> $GITHUB_STEP_SUMMARY
+        if [ -n "${{ steps.artifacts.outputs.release_aab }}" ]; then
+          echo "| **Release AAB** | ${{ steps.sizes.outputs.aab_size }} |" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "| **Dictionary** | ${DICT_SIZE:-0} words |" >> $GITHUB_STEP_SUMMARY
+        echo "| **N-grams** | ${NGRAM_SIZE:-0} predictions |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🇬🇵 **Kreyòl Keyboard Ready for Distribution!**" >> $GITHUB_STEP_SUMMARY
