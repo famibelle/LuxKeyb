@@ -305,8 +305,8 @@ jobs:
           android_keyboard/${{ steps.artifacts.outputs.debug_apk }}
           android_keyboard/${{ steps.artifacts.outputs.release_apk }}
           ${{ steps.artifacts.outputs.release_aab && format('android_keyboard/{0}', steps.artifacts.outputs.release_aab) || '' }}
-          Dictionnaires/creole_dict.json
-          Dictionnaires/creole_ngrams.json
+          clavier_creole/assets/creole_dict.json
+          clavier_creole/assets/creole_ngrams.json
         draft: false
         prerelease: false
         generate_release_notes: false
