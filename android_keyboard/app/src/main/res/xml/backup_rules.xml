@@ -7,14 +7,10 @@
    See https://developer.android.com/about/versions/12/backup-restore
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
     <!-- Inclure les préférences du clavier -->
     <include domain="sharedpref" path="kreyol_keyboard_prefs.xml"/>
+    <include domain="sharedpref" path="."/>
     
-    <!-- Exclure les fichiers temporaires -->
-    <exclude domain="file" path="temp/"/>
-    <exclude domain="cache" path="."/>
+    <!-- Exclure les données sensibles -->
+    <exclude domain="sharedpref" path="device.xml"/>
 </full-backup-content>
