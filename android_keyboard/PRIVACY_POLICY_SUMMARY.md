@@ -9,7 +9,7 @@
 - **Site web :** potomitan.io
 
 ### 📱 **Application**
-- **Nom :** Klavié Kreyòl Karukera • Potomitan™
+- **Nom :** Klavyé Kréyòl Karukera • Potomitan™
 - **Type :** Clavier virtuel Android
 - **Langue :** Créole guadeloupéen (Kreyòl Karukera)
 

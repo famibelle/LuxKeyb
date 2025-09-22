@@ -81,9 +81,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.event.inputs.version || github.ref_name }}
-        name: 🇬🇵 Klavié Kreyòl Karukera ${{ github.event.inputs.version || github.ref_name }}
+        name: 🇬🇵 Klavyé Kréyòl Karukera ${{ github.event.inputs.version || github.ref_name }}
         body: |
-          ## 🇬🇵 Klavié Kreyòl Karukera • Potomitan™
+          ## 🇬🇵 Klavyé Kréyòl Karukera • Potomitan™
           
           **Nouveau clavier créole pour la Guadeloupe !**
           
