@@ -40,6 +40,13 @@ jobs:
       with:
         gradle-version: 8.7
         
+    - name: 🔐 Setup Keystore
+      run: |
+        cd android_keyboard
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > potomitan-keystore.jks
+        echo "Keystore créé avec succès"
+        ls -la potomitan-keystore.jks
+        
     - name: 🧹 Clean project
       run: cd android_keyboard && gradle clean --no-daemon
         
@@ -48,6 +55,17 @@ jobs:
         
     - name: 📱 Build Release APK
       run: cd android_keyboard && gradle assembleRelease --no-daemon
+      env:
+        KEYSTORE_FILE: potomitan-keystore.jks
+        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        
+    - name: 🧹 Cleanup Keystore
+      run: |
+        cd android_keyboard
+        rm -f potomitan-keystore.jks
+        echo "Keystore nettoyé pour sécurité"
         
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
