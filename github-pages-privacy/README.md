@@ -1,6 +1,6 @@
-# Klavié Kreyòl Karukera • Potomitan™ - Privacy Policy
+# Klavyé Kréyòl Karukera • Potomitan™ - Privacy Policy
 
-This repository contains the privacy policy for the **Klavié Kreyòl Karukera • Potomitan™** Android keyboard application.
+This repository contains the privacy policy for the **Klavyé Kréyòl Karukera • Potomitan™** Android keyboard application.
 
 ## 🌐 Live Privacy Policy
 
@@ -9,7 +9,7 @@ This repository contains the privacy policy for the **Klavié Kreyòl Karukera �
 
 ## 📱 About the Application
 
-**Klavié Kreyòl Karukera • Potomitan™** is a virtual keyboard for Android devices that enables typing in Guadeloupean Creole (Kreyòl Karukera) with intelligent suggestions and automatic corrections.
+**Klavyé Kréyòl Karukera • Potomitan™** is a virtual keyboard for Android devices that enables typing in Guadeloupean Creole (Kreyòl Karukera) with intelligent suggestions and automatic corrections.
 
 ## 🔒 Privacy Commitment
 
