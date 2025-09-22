@@ -9,10 +9,11 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('potomitan-keystore.jks')
-            storePassword 'REDACTED_PASSWORD'
-            keyAlias 'potomitan-release-key'
-            keyPassword 'REDACTED_PASSWORD'
+            // Configuration sécurisée avec variables d'environnement
+            storeFile file(findProperty('KEYSTORE_FILE') ?: 'potomitan-keystore.jks')
+            storePassword findProperty('STORE_PASSWORD') ?: 'REDACTED_PASSWORD'
+            keyAlias findProperty('KEY_ALIAS') ?: 'potomitan-release-key'
+            keyPassword findProperty('KEY_PASSWORD') ?: 'REDACTED_PASSWORD'
             v1SigningEnabled true
             v2SigningEnabled true
         }
