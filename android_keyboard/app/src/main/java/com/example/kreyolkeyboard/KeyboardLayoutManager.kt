@@ -85,7 +85,7 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "ò", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "è", "⌫")
+        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
         val row4 = arrayOf("123", ",", "é", " ", "è", ".", "'", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
