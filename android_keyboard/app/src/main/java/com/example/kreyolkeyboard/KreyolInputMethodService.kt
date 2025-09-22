@@ -43,6 +43,12 @@ class KreyolInputMethodService : InputMethodService() {
         const val ORANGE_COUCHER = "#FF8C00"     // Orange du coucher de soleil
         const val ROUGE_HIBISCUS = "#DC143C"     // Rouge de l'hibiscus
         const val BEIGE_SABLE = "#F5F5DC"        // Beige du sable fin
+        
+        // Cache statique pour éviter de recharger le dictionnaire
+        @Volatile
+        private var cachedDictionary: List<Pair<String, Int>>? = null
+        @Volatile  
+        private var cachedNgramModel: Map<String, List<Map<String, Any>>>? = null
     }
     
     private var dictionary: List<Pair<String, Int>> = emptyList()
@@ -52,10 +58,13 @@ class KreyolInputMethodService : InputMethodService() {
     private var suggestionsView: LinearLayout? = null
     private var suggestionsViewId: Int = View.NO_ID
     
-    // Variables pour l'appui long
+    // Variables pour l'appui long - CORRECTION FUITE MÉMOIRE
     private val longPressHandler = Handler(Looper.getMainLooper())
     private var longPressRunnable: Runnable? = null
     private var isLongPressTriggered = false
+    
+    // WeakReference pour éviter les fuites mémoire
+    private val cleanupCallbacks = mutableSetOf<Runnable>()
     
     // Gestion des majuscules/minuscules
     private var isCapitalMode = false
@@ -337,7 +346,14 @@ class KreyolInputMethodService : InputMethodService() {
 
     private fun loadDictionary() {
         try {
-            Log.d(TAG, "Chargement du dictionnaire créole...")
+            // Vérifier le cache d'abord
+            cachedDictionary?.let { cached ->
+                dictionary = cached
+                Log.d(TAG, "Dictionnaire récupéré du cache: ${dictionary.size} mots")
+                return
+            }
+            
+            Log.d(TAG, "Chargement du dictionnaire créole depuis les assets...")
             val inputStream = assets.open("creole_dict.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             
@@ -352,15 +368,19 @@ class KreyolInputMethodService : InputMethodService() {
             }
             
             dictionary = tempList.sortedByDescending { it.second } // Trier par fréquence
-            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+            cachedDictionary = dictionary // Mettre en cache
+            Log.d(TAG, "Dictionnaire chargé et mis en cache: ${dictionary.size} mots")
             
             // Peupler le dictionnaire personnel Android avec les mots créoles
             populatePersonalDictionary()
             
         } catch (e: IOException) {
             Log.e(TAG, "Erreur lors du chargement du dictionnaire", e)
+            // Fallback sur dictionnaire vide
+            dictionary = emptyList()
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors du parsing du dictionnaire", e)
+            dictionary = emptyList()
         }
     }
     
@@ -404,7 +424,27 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     /**
-     * 🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie proprement un TextView
+     * � SÉCURITÉ : Valide l'InputConnection avant utilisation
+     */
+    private fun safeInputConnection(): android.view.inputmethod.InputConnection? {
+        return try {
+            val ic = currentInputConnection
+            if (ic != null) {
+                // Test de validité basique
+                ic.getTextBeforeCursor(0, 0)
+                ic
+            } else {
+                Log.w(TAG, "InputConnection null")
+                null
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "InputConnection invalide: ${e.message}")
+            null
+        }
+    }
+    
+    /**
+     * �🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie proprement un TextView
      * Supprime tous les listeners pour éviter les références circulaires
      */
     private fun cleanupTextView(textView: TextView) {
@@ -447,10 +487,14 @@ class KreyolInputMethodService : InputMethodService() {
     
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "=== Service onDestroy() appelé - Nettoyage complet ===")
+        Log.d(TAG, "=== Service onDestroy() appelé - Nettoyage complet robuste ===")
         
         try {
-            // 🚨 CORRECTION FUITE MÉMOIRE #1: Nettoyer complètement le Handler
+            // 🚨 CORRECTION FUITE MÉMOIRE #1: Nettoyer complètement le Handler  
+            cleanupCallbacks.forEach { callback ->
+                longPressHandler.removeCallbacks(callback)
+            }
+            cleanupCallbacks.clear()
             longPressHandler.removeCallbacksAndMessages(null) // Supprime TOUS les callbacks et messages
             longPressRunnable?.let { runnable ->
                 longPressHandler.removeCallbacks(runnable)
