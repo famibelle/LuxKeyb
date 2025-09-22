@@ -3,11 +3,11 @@ package com.example.kreyolkeyboard
 import android.inputmethodservice.InputMethodService
 import android.view.View
 import android.widget.TextView
+import android.widget.Button
 import android.graphics.Color
 import android.view.Gravity
 import android.util.Log
 import android.widget.LinearLayout
-import android.widget.Button
 import android.view.ViewGroup
 import android.provider.UserDictionary
 import android.content.ContentValues
@@ -21,9 +21,6 @@ import android.os.Looper
 import android.widget.PopupWindow
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.*
 
 class KreyolInputMethodService : InputMethodService() {
     
@@ -60,7 +57,7 @@ class KreyolInputMethodService : InputMethodService() {
     // Gestion des majuscules/minuscules
     private var isCapitalMode = false
     private var isCapsLock = false
-    private var keyboardButtons = mutableListOf<TextView>()
+    private var keyboardButtons = mutableListOf<Button>() // Changé en Button
     private var isUpdatingKeyboard = false
     private var isNumericMode = false
     private var mainKeyboardLayout: LinearLayout? = null
@@ -91,30 +88,6 @@ class KreyolInputMethodService : InputMethodService() {
             Log.d(TAG, "Variables initialisées et dictionnaire chargé")
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de l'initialisation", e)
-        }
-    }
-    
-    /**
-     * 🔥 CORRECTION BUG CASSE : Applique la casse intentionnelle de l'utilisateur à la suggestion
-     * Préserve la majuscule intentionnelle (Shift/Caps) lors de l'application des suggestions
-     */
-    private fun applyCaseToSuggestion(suggestion: String, currentInput: String): String {
-        if (suggestion.isEmpty() || currentInput.isEmpty()) {
-            return suggestion
-        }
-        
-        // Analyser la casse du premier caractère tapé par l'utilisateur
-        val firstInputChar = currentInput.first()
-        val isIntentionalCapital = firstInputChar.isUpperCase()
-        
-        Log.d(TAG, "🔍 Analyse casse: input='$currentInput', premier char='$firstInputChar', majuscule intentionnelle=$isIntentionalCapital")
-        
-        return if (isIntentionalCapital) {
-            // L'utilisateur a volontairement commencé en majuscule → capitaliser la suggestion
-            suggestion.lowercase().replaceFirstChar { it.uppercase() }
-        } else {
-            // L'utilisateur a tapé en minuscule → garder la suggestion en minuscule
-            suggestion.lowercase()
         }
     }
     
@@ -241,20 +214,15 @@ class KreyolInputMethodService : InputMethodService() {
                     
                     setOnClickListener {
                         Log.d(TAG, "Suggestion sélectionnée: $suggestion")
-                        // Remplacer le mot actuel par la suggestion EN PRÉSERVANT LA CASSE
+                        // Remplacer le mot actuel par la suggestion
                         val inputConnection = currentInputConnection
                         if (inputConnection != null && currentWord.isNotEmpty()) {
                             // Supprimer le mot partiel
                             inputConnection.deleteSurroundingText(currentWord.length, 0)
                         }
-                        
-                        // 🔥 CORRECTION DU BUG : Préserver la casse intentionnelle
-                        val finalSuggestion = applyCaseToSuggestion(suggestion, currentWord)
-                        Log.d(TAG, "Casse préservée: '$currentWord' -> '$finalSuggestion' (au lieu de '$suggestion')")
-                        
-                        // Insérer la suggestion avec la bonne casse
-                        inputConnection?.commitText("$finalSuggestion ", 1)
-                        addWordToHistory(finalSuggestion) // Ajouter à l'historique N-grams
+                        // Insérer la suggestion complète
+                        inputConnection?.commitText("$suggestion ", 1)
+                        addWordToHistory(suggestion) // Ajouter à l'historique N-grams
                         
                         // Ajouter automatiquement au dictionnaire personnel pour éviter soulignement rouge
                         try {
@@ -386,19 +354,19 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     /**
-     * 🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie proprement un TextView
+     * 🚨 PRÉVENTION FUITE MÉMOIRE : Nettoie proprement un Button
      * Supprime tous les listeners pour éviter les références circulaires
      */
-    private fun cleanupTextView(textView: TextView) {
+    private fun cleanupButton(button: Button) {
         try {
-            textView.setOnClickListener(null)
-            textView.setOnTouchListener(null)
-            textView.setOnLongClickListener(null)
+            button.setOnClickListener(null)
+            button.setOnTouchListener(null)
+            button.setOnLongClickListener(null)
             // Supprimer les animations en cours pour éviter les références
-            textView.clearAnimation()
-            textView.animate().cancel()
+            button.clearAnimation()
+            button.animate().cancel()
         } catch (e: Exception) {
-            Log.w(TAG, "Erreur lors du nettoyage TextView: ${e.message}")
+            Log.w(TAG, "Erreur lors du nettoyage Button: ${e.message}")
         }
     }
     
@@ -411,7 +379,14 @@ class KreyolInputMethodService : InputMethodService() {
             for (i in 0 until viewGroup.childCount) {
                 val child = viewGroup.getChildAt(i)
                 when (child) {
-                    is TextView -> cleanupTextView(child)
+                    is Button -> cleanupButton(child)
+                    is TextView -> {
+                        // Nettoyer TextView comme Button
+                        child.setOnClickListener(null)
+                        child.setOnTouchListener(null)
+                        child.clearAnimation()
+                        child.animate().cancel()
+                    }
                     is ViewGroup -> cleanupLayoutRecursively(child) // Récursion pour les sous-layouts
                     else -> {
                         // Nettoyer les listeners génériques
@@ -444,8 +419,8 @@ class KreyolInputMethodService : InputMethodService() {
             currentAccentPopup = null // Libère la référence
             
             // 🚨 CORRECTION FUITE MÉMOIRE #3: Nettoyer toutes les références de vues
-            keyboardButtons.forEach { textView ->
-                cleanupTextView(textView) // Utilise la fonction utilitaire pour un nettoyage complet
+            keyboardButtons.forEach { button ->
+                cleanupButton(button) // Utilise la fonction utilitaire pour un nettoyage complet
             }
             keyboardButtons.clear()
             keyboardButtons = mutableListOf() // Nouvelle instance pour être sûr
@@ -455,8 +430,8 @@ class KreyolInputMethodService : InputMethodService() {
                 // Nettoyer tous les boutons de suggestions
                 for (i in 0 until layout.childCount) {
                     val child = layout.getChildAt(i)
-                    if (child is TextView) {
-                        cleanupTextView(child)
+                    if (child is Button) {
+                        // Pas besoin de cleanup pour Button
                     }
                 }
                 layout.removeAllViews()
@@ -518,7 +493,6 @@ class KreyolInputMethodService : InputMethodService() {
     override fun onStartInputView(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "=== KREYOL onStartInputView appelé - restarting: $restarting ===")
-        Log.d(TAG, "🔍 INPUTTYPE: ${info?.inputType}, isNumericMode = $isNumericMode")
         
         // Vérifier et initialiser suggestionsView si nécessaire
         if (suggestionsView == null) {
@@ -577,7 +551,6 @@ class KreyolInputMethodService : InputMethodService() {
 
     override fun onCreateInputView(): View? {
         Log.d(TAG, "=== KREYOL onCreateInputView appelé ! ===")
-        Log.d(TAG, "🔍 MODE INITIAL: isNumericMode = $isNumericMode")
         
         try {
             Log.d(TAG, "Création du clavier AZERTY avec support majuscules/minuscules...")
@@ -711,14 +684,16 @@ class KreyolInputMethodService : InputMethodService() {
                 button.elevation = 4f
             }
             
-            // 2. Barre d'espace - Vert moderne arrondi avec branding Potomitan™
-            key == " " -> {
-                button.setBackgroundColor(Color.parseColor("#32A852")) // Vert moderne
-                button.setTextColor(Color.parseColor("#FFFFFF"))
-                button.setTypeface(null, android.graphics.Typeface.BOLD)
-                button.textSize = 16f
+            // 2. Barre d'espace - Priorité visuelle #2 avec branding discret
+            key == "ESPACE" -> {
+                button.setBackgroundColor(Color.parseColor("#228B22")) // Vert direct
+                button.setTextColor(Color.parseColor("#32A852")) // Vert clair pour effet dégradé discret
+                button.setTypeface(null, android.graphics.Typeface.ITALIC) // Style italique pour marque
+                button.text = "Potomitan™"
+                button.textSize = 11f // Taille réduite pour discrétion
                 button.setPadding(horizontalPadding * 2, verticalPadding, horizontalPadding * 2, verticalPadding)
                 button.elevation = 4f
+                button.alpha = 0.7f // Transparence pour effet très discret
             }
             
             // 3. Touches d'action importantes - Priorité visuelle #3
@@ -802,80 +777,86 @@ class KreyolInputMethodService : InputMethodService() {
         }
         
         for (key in keys) {
-            // ESSAYONS AVEC TEXTVIEW AU LIEU DE BUTTON
-            val button = android.widget.TextView(this)
+            // UTILISER BUTTON AU LIEU DE TEXTVIEW
+            val button = android.widget.Button(this)
             
             // 1. CONFIGURATION DE BASE
-            val displayText = when (key) {
-                " " -> "espace"
+            val displayText = when {
+                // Appliquer l'état majuscule/minuscule dès la création
+                key.length == 1 && key.matches(Regex("[a-zA-Z]")) && (isCapitalMode || isCapsLock) -> key.uppercase()
+                key.length == 1 && key.matches(Regex("[àéèòç]")) && (isCapitalMode || isCapsLock) -> {
+                    when (key) {
+                        "à" -> "À"
+                        "é" -> "É"
+                        "è" -> "È"
+                        "ò" -> "Ò"
+                        "ç" -> "Ç"
+                        else -> key.uppercase()
+                    }
+                }
                 else -> key
             }
-            button.text = displayText
-            button.tag = key
-            button.gravity = android.view.Gravity.CENTER
-            button.setTextColor(android.graphics.Color.BLACK)
-            button.textSize = 18f
-            button.setTypeface(null, android.graphics.Typeface.BOLD)
             
-            // 2. STYLE GUADELOUPE MODERNE AVEC TOUCHES ARRONDIES 🇬🇵
+            button.text = displayText
+            // Normaliser le tag pour la touche Shift
+            val normalizedTag = if (key.startsWith("⇧") || key in arrayOf("⇧●", "⇧○", "⇧⇧")) "⇧" else key
+            button.tag = normalizedTag // IMPORTANT: Stocker la valeur normalisée dans le tag
+            Log.d(TAG, "🏷️ Button créé: text='$displayText', tag='$normalizedTag'")
+            
+            // 2. STYLE SIMPLIFIÉ POUR TEST - COULEURS DIRECTES (PAS DE DRAWABLES XML)
             when {
-                // Lettres - Jaune soleil tropical avec coins arrondis
+                // Lettres - Couleur jaune directe
                 key.matches(Regex("[a-zA-Z]")) -> {
-                    button.setBackgroundResource(R.drawable.key_rounded_letter)
-                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#FFD700")) // Jaune direct
+                    button.setTextColor(android.graphics.Color.parseColor("#000000"))
                     button.textSize = 18f
                     button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                // Touches d'action spéciales - Bleu caraïbe arrondi
-                key == "SUPPR" || key == "ENTER" || key == "SHIFT" -> {
-                    button.setBackgroundResource(R.drawable.key_rounded_action)
+                // Touches d'action spéciales - Couleur bleue directe
+                key == "SUPPR" || key == "ENTER" || key == "SHIFT" || key == "⇧" -> {
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#0080FF")) // Bleu direct
                     button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
                     button.textSize = 14f
                     button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                // Espace - Vert canne moderne arrondi avec branding Potomitan™
-                key == " " -> {
-                    button.setBackgroundResource(R.drawable.key_rounded_space)
+                // Espace - Couleur verte directe
+                key == "ESPACE" -> {
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#228B22")) // Vert direct
                     button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
-                    button.textSize = 16f
+                    button.text = "ESPACE" // Texte simple pour test
+                    button.textSize = 12f
                     button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                // Chiffres - Bleu lagon arrondi
+                // Chiffres - Couleur bleu clair directe
                 key.matches(Regex("[0-9]")) -> {
-                    button.setBackgroundResource(R.drawable.key_rounded_number)
-                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#87CEEB")) // Bleu clair direct
+                    button.setTextColor(android.graphics.Color.parseColor("#000000"))
                     button.textSize = 16f
                     button.setTypeface(null, android.graphics.Typeface.BOLD)
                 }
-                // Autres touches - Beige sable arrondi
+                // Autres touches - Couleur grise directe
                 else -> {
-                    button.setBackgroundResource(R.drawable.key_rounded_other)
-                    button.setTextColor(android.graphics.Color.parseColor(NOIR_VOLCANIQUE))
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#CCCCCC")) // Gris direct
+                    button.setTextColor(android.graphics.Color.parseColor("#000000"))
                     button.textSize = 14f
                     button.setTypeface(null, android.graphics.Typeface.NORMAL)
                 }
             }
             
-            // 3. PADDING ET DIMENSIONS selon le brief UX
-            val padding = when {
-                key == " " -> 16
-                key.matches(Regex("[a-zA-Z]")) -> 12
-                else -> 10
-            }
-            button.setPadding(padding, padding, padding, padding)
+            // 3. PADDING ET DIMENSIONS
+            button.setPadding(12, 12, 12, 12)
             button.minHeight = 120
-            button.minWidth = if (key == " ") 200 else 80
+            button.minWidth = if (key == "ESPACE") 200 else 80
             
             // 4. DEBUG
-            Log.d(TAG, "=== TextView '$key' créé avec background arrondi ===")
-            Log.d(TAG, "  Text: '${button.text}'")
+            Log.d(TAG, "=== Button '$key' créé ===")
             
             // 5. Paramètres de layout
             val params = LinearLayout.LayoutParams(
-                if (key == " ") 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
+                if (key == "ESPACE") 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            if (key == " ") {
+            if (key == "ESPACE") {
                 params.weight = 3f
             } else {
                 params.weight = 1f
@@ -883,100 +864,28 @@ class KreyolInputMethodService : InputMethodService() {
             params.setMargins(4, 4, 4, 4)
             button.layoutParams = params
             
-            // 6. GESTION TACTILE OPTIMISÉE - Stabilité améliorée
-            button.setOnTouchListener { view, event ->
-                Log.d(TAG, "👆 onTouchListener - Action: ${event.action}, Key: '$key'")
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        Log.d(TAG, "⬇️ ACTION_DOWN pour key: '$key'")
-                        isLongPressTriggered = false
-                        
-                        // Animation d'appui élégante
-                        view.animate()
-                            .scaleX(0.95f)
-                            .scaleY(0.95f)
-                            .setDuration(100)
-                            .start()
-                        
-                        // Feedback haptique léger pour éviter les conflits
-                        try {
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                view.performHapticFeedback(
-                                    android.view.HapticFeedbackConstants.KEYBOARD_TAP,
-                                    android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                                )
-                            }
-                        } catch (e: Exception) {
-                            Log.d(TAG, "Haptic feedback non disponible")
-                        }
-                        
-                        // Vérifier si cette touche a des accents (uniquement pour les lettres)
-                        if (key.length == 1 && key.matches(Regex("[a-zA-Z]")) && accentMap.containsKey(key.uppercase())) {
-                            startLongPressTimer(key, button)
-                        }
-                        
-                        false // Laisser d'autres gestionnaires traiter l'événement
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        Log.d(TAG, "⬆️ ACTION_UP pour key: '$key'")
-                        cancelLongPress()
-                        
-                        // Animation de relâchement
-                        view.animate()
-                            .scaleX(1.0f)
-                            .scaleY(1.0f)
-                            .setDuration(120)
-                            .start()
-                        
-                        // Si pas d'appui long, rien à faire ici
-                        // L'OnClickListener se chargera de l'input
-                        Log.d(TAG, "✅ ACTION_UP terminé - OnClickListener va prendre le relais")
-                        
-                        false // Laisser d'autres gestionnaires traiter l'événement
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        cancelLongPress()
-                        
-                        // Animation de relâchement
-                        view.animate()
-                            .scaleX(1.0f)
-                            .scaleY(1.0f)
-                            .setDuration(120)
-                            .start()
-                        
-                        false
-                    }
-                    else -> false
-                }
-            }
-            
-            // 7. CLICK ACTION - Gestionnaire unique pour l'input
+            // 6. CLICK ACTION ULTRA-SIMPLIFIÉ POUR TEST
             button.setOnClickListener {
-                Log.d(TAG, "🎯 setOnClickListener DÉCLENCHÉ!")
-                // Ne traiter que si ce n'est pas un appui long
-                if (!isLongPressTriggered) {
-                    Log.d(TAG, "✅ Pas d'appui long - traitement du clic")
-                    // Utiliser directement la clé logique (tag du bouton)
-                    val logicalKey = button.tag as? String ?: key
-                    val buttonText = button.text.toString()
-                    Log.d(TAG, "🔍 DIAGNOSTIC - Clic bouton")
-                    Log.d(TAG, "  ➤ Paramètre key: '$key'")
-                    Log.d(TAG, "  ➤ Button.tag: '${button.tag}'")
-                    Log.d(TAG, "  ➤ Button.text: '$buttonText'")
-                    Log.d(TAG, "  ➤ Clé logique utilisée: '$logicalKey'")
-                    Log.d(TAG, "🚀 Appel handleKeyPress avec: '$logicalKey'")
-                    handleKeyPress(logicalKey)
-                    Log.d(TAG, "✅ handleKeyPress terminé")
+                Log.e("CLICK_DEBUG", "🔥🔥🔥 CLIC DÉTECTÉ sur: '$key' (tag: '${button.tag}') 🔥🔥🔥")
+                Log.d(TAG, "🔥🔥🔥 CLIC DÉTECTÉ sur: '$key' (tag: '${button.tag}') 🔥🔥🔥")
+                
+                // Test spécial pour Shift
+                if (key == "⇧" || (button.tag as? String) == "⇧") {
+                    Log.d(TAG, "🎯 SHIFT DÉTECTÉ ! Changement de couleur...")
+                    // Test direct sans logique complexe
+                    button.setBackgroundColor(android.graphics.Color.parseColor("#FF0000")) // Rouge vif
+                    button.text = "SHIFT!"
+                    button.invalidate()
+                    Log.d(TAG, "🎯 SHIFT modifié en rouge avec texte 'SHIFT!'")
                 } else {
-                    Log.d(TAG, "❌ Appui long détecté - clic ignoré")
+                    handleKeyPress(key)
                 }
             }
             
-            // 8. AJOUTER à la liste pour gestion majuscules/minuscules
+            // 7. AJOUTER à la liste pour gestion majuscules/minuscules
             keyboardButtons.add(button)
             
-            // 9. FINAL - Ajouter à la vue
-            Log.d(TAG, "Avant ajout à la vue - Text: '${button.text}'")
+            // 8. FINAL - Ajouter à la vue
             row.addView(button)
         }
         
@@ -985,8 +894,8 @@ class KreyolInputMethodService : InputMethodService() {
     
     private fun updateKeyboardDisplay() {
         // Fonction réactivée pour supporter les majuscules
-        Log.d(TAG, "🔄 updateKeyboardDisplay() DÉMARRÉ - Mode majuscule: $isCapitalMode, Caps Lock: $isCapsLock")
-        Log.d(TAG, "🔄 Nombre de boutons dans keyboardButtons: ${keyboardButtons.size}")
+        Log.d(TAG, "🔄 updateKeyboardDisplay() - Mode majuscule: $isCapitalMode, Caps Lock: $isCapsLock")
+        Log.d(TAG, "🔄 Nombre de boutons à mettre à jour: ${keyboardButtons.size}")
         
         if (isUpdatingKeyboard) {
             Log.d(TAG, "⚠️ Mise à jour du clavier déjà en cours, ignorée")
@@ -996,67 +905,87 @@ class KreyolInputMethodService : InputMethodService() {
         isUpdatingKeyboard = true
         
         try {
-            keyboardButtons.forEach { button ->
+            var buttonUpdated = 0
+            keyboardButtons.forEachIndexed { index, button ->
                 val originalText = button.tag as? String ?: button.text.toString().lowercase()
-                val displayText = true // FORCE MAJUSCULES POUR TEST
-                val actualDisplayText = if (displayText) {
-                    originalText.uppercase()
-                } else {
-                    originalText.lowercase()
-                }
+                Log.d(TAG, "🔍 Bouton $index: tag='$originalText', text actuel='${button.text}'")
                 
-                // DEBUG LOG pour voir ce qui se passe
-                if (originalText.matches(Regex("[a-zA-Z]"))) {
-                    Log.d(TAG, "🔤 Bouton '$originalText': actualDisplayText='$actualDisplayText', isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
-                }
-                
-                // Mettre à jour l'affichage du bouton seulement si nécessaire
-                val newText = when (originalText) {
-                    "⇧" -> "⇧" // Toujours le même symbole
-                    "⌫", "⏎", "123", "ABC" -> originalText
-                    " " -> "espace" // Afficher "espace" mais garder tag espace
-                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" -> originalText // Chiffres
-                    "@", "#", "$", "%", "&", "-", "+", "(", ")", "/", "*", "\"", "'", ":", ";", "!", "?", ",", "." -> originalText // Symboles
-                    else -> if (isNumericMode) originalText else actualDisplayText // En mode numérique, pas de changement de casse
+                // Mettre à jour l'affichage du bouton seulement pour les lettres
+                val newText = when {
+                    originalText.startsWith("⇧") -> originalText // Garder le symbole Shift tel quel
+                    originalText in arrayOf("⌫", "⏎", "ESPACE", "123", "ABC") -> originalText
+                    originalText.matches(Regex("[0-9@#$%&+()/*\"':;!?,.-]")) -> originalText // Chiffres et symboles
+                    originalText.length == 1 && originalText.matches(Regex("[a-zA-Z]")) -> {
+                        // Pour les lettres, appliquer la casse
+                        if (isCapitalMode || isCapsLock) {
+                            originalText.uppercase()
+                        } else {
+                            originalText.lowercase()
+                        }
+                    }
+                    originalText.length == 1 && originalText.matches(Regex("[àéèòç]")) -> {
+                        // Pour les caractères accentués, appliquer la casse
+                        if (isCapitalMode || isCapsLock) {
+                            when (originalText) {
+                                "à" -> "À"
+                                "é" -> "É"
+                                "è" -> "È"
+                                "ò" -> "Ò"
+                                "ç" -> "Ç"
+                                else -> originalText.uppercase()
+                            }
+                        } else {
+                            originalText.lowercase()
+                        }
+                    }
+                    else -> originalText // Autres cas
                 }
                 
                 // Mettre à jour seulement si le texte a changé
                 if (button.text.toString() != newText) {
-                    Log.d(TAG, "✏️ Mise à jour bouton '$originalText': '${button.text}' -> '$newText'")
+                    Log.d(TAG, "✏️ Mise à jour bouton: '$originalText' -> '$newText'")
                     button.text = newText
-                    // Vérification critique pour la barre d'espace
-                    if (originalText == " ") {
-                        Log.d(TAG, "🔍 UPDATEKEYBOARD - ESPACE: text='${button.text}', tag='${button.tag}'")
-                    }
+                    // Forcer le rafraîchissement de la vue
+                    button.invalidate()
+                    button.requestLayout()
+                    buttonUpdated++
+                } else {
+                    Log.d(TAG, "➡️ Bouton inchangé: '$originalText' = '$newText'")
                 }
                 
-                // Gérer l'état visuel de la touche Shift avec les états Android
-                if (originalText == "⇧") {
-                    // Réinitialiser tous les états
-                    button.isActivated = false
-                    button.isSelected = false
-                    
-                    // Appliquer l'état approprié
+                // Gérer l'état visuel de la touche Shift
+                if (originalText.startsWith("⇧")) {
+                    Log.d(TAG, "🎨 Mise à jour style touche Shift")
+                    // Changer la couleur de fond selon l'état
                     when {
-                        isCapsLock -> button.isSelected = true // Jaune pour caps lock
-                        isCapitalMode -> button.isActivated = true // Vert pour majuscule simple
-                        // Sinon état normal (bleu)
+                        isCapsLock -> {
+                            button.setBackgroundColor(android.graphics.Color.parseColor("#FFD700")) // Jaune pour caps lock
+                            button.setTextColor(android.graphics.Color.parseColor("#000000"))
+                            Log.d(TAG, "🟡 Shift en mode Caps Lock (jaune)")
+                        }
+                        isCapitalMode -> {
+                            button.setBackgroundColor(android.graphics.Color.parseColor("#228B22")) // Vert pour majuscule simple
+                            button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                            Log.d(TAG, "🟢 Shift en mode majuscule (vert)")
+                        }
+                        else -> {
+                            button.setBackgroundColor(android.graphics.Color.parseColor("#0080FF")) // Bleu pour état normal
+                            button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                            Log.d(TAG, "🔵 Shift en mode normal (bleu)")
+                        }
                     }
                 }
             }
             
-            Log.d(TAG, "Clavier mis à jour - Mode majuscule: $isCapitalMode, Caps Lock: $isCapsLock")
-            Log.d(TAG, "updateKeyboardDisplay TERMINÉE - Traitement ${keyboardButtons.size} boutons")
+            Log.d(TAG, "✅ Clavier mis à jour - $buttonUpdated boutons modifiés sur ${keyboardButtons.size}")
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors de la mise à jour du clavier", e)
+            Log.e(TAG, "❌ Erreur lors de la mise à jour du clavier", e)
         } finally {
             isUpdatingKeyboard = false
         }
     }
     
     private fun createKeyboardLayout(mainLayout: LinearLayout) {
-        Log.d(TAG, "🔍 createKeyboardLayout: isNumericMode = $isNumericMode")
-        
         // Sauvegarder la référence aux suggestions AVANT suppression
         val savedSuggestionsView = suggestionsView
         val savedSuggestionsViewId = suggestionsViewId
@@ -1118,13 +1047,15 @@ class KreyolInputMethodService : InputMethodService() {
         
         // Rafraîchir les suggestions après reconstruction
         Log.d(TAG, "Reconstruction du clavier terminée, suggestionsView: ${suggestionsView != null}")
+        
+        // Mettre à jour l'affichage du clavier après création
+        updateKeyboardDisplay()
     }
     
     private fun switchKeyboardMode() {
         Log.d(TAG, "Basculement de mode - Actuel: ${if (isNumericMode) "Numérique" else "Alphabétique"}")
         
         isNumericMode = !isNumericMode
-        Log.d(TAG, "🔄 MODE CHANGÉ: isNumericMode = $isNumericMode")
         
         // Réinitialiser le mode majuscule en passant au mode numérique
         if (isNumericMode) {
@@ -1289,25 +1220,8 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun handleKeyPress(key: String) {
-        Log.d(TAG, "🔥 handleKeyPress appelé avec key: '$key'")
-        
-        // ⚠️ SOLUTION RADICALE POUR BARRE D'ESPACE
-        // Si la clé contient "espace" ou est "ESPACE", forcer un espace
-        if (key.lowercase().contains("espace") || key == "ESPACE" || key == " ") {
-            Log.d(TAG, "🚀 SOLUTION RADICALE: Détection barre d'espace - key='$key'")
-            val inputConnection = currentInputConnection
-            if (inputConnection != null) {
-                // Terminer le mot actuel si nécessaire
-                if (currentWord.isNotBlank()) {
-                    addWordToHistory(currentWord)
-                    currentWord = ""
-                }
-                Log.d(TAG, "💥 INSERTION FORCÉE D'UN ESPACE")
-                inputConnection.commitText(" ", 1)
-                updateSuggestions("")
-                return // Sortir immédiatement
-            }
-        }
+        Log.e("SHIFT_DEBUG", "🚨🚨🚨 handleKeyPress CALLED with key='$key' 🚨🚨🚨")
+        Log.d(TAG, "Touche pressée: $key")
         
         val inputConnection = currentInputConnection
         if (inputConnection != null) {
@@ -1370,9 +1284,7 @@ class KreyolInputMethodService : InputMethodService() {
                     currentWord = ""
                     updateSuggestions("")
                 }
-                " " -> {
-                    // Debug log pour la touche espace
-                    Log.d(TAG, "🎯 handleKeyPress: Touche ESPACE détectée")
+                "ESPACE" -> {
                     // Espace termine le mot actuel
                     if (currentWord.isNotBlank()) {
                         addWordToHistory(currentWord) // Ajouter le mot à l'historique N-grams
@@ -1391,11 +1303,9 @@ class KreyolInputMethodService : InputMethodService() {
                             }
                         }
                     }
-                    Log.d(TAG, "🚀 Insertion d'un caractère espace...")
                     inputConnection.commitText(" ", 1)
                     currentWord = ""
                     updateSuggestions("")
-                    Log.d(TAG, "✅ Espace inséré avec succès")
                 }
                 "123" -> {
                     // Basculer vers le mode numérique
@@ -1405,42 +1315,30 @@ class KreyolInputMethodService : InputMethodService() {
                     // Basculer vers le mode alphabétique
                     switchKeyboardMode()
                 }
-                "⇧" -> {
+                "⇧", "⇧●", "⇧○", "⇧⇧" -> {
+                    Log.e("SHIFT_DEBUG", "🚨🚨🚨 SHIFT BUTTON CLICKED! isNumericMode=$isNumericMode 🚨🚨🚨")
                     // Gestion de la touche Shift (seulement en mode alphabétique)
                     if (!isNumericMode) {
+                        Log.e("SHIFT_DEBUG", "🚨 Calling handleShiftPress()...")
                         handleShiftPress()
+                    } else {
+                        Log.e("SHIFT_DEBUG", "🚨 BLOCKED: isNumericMode=$isNumericMode")
                     }
                 }
                 else -> {
-                    Log.d(TAG, "⚠️ handleKeyPress: Touche '$key' dans le case 'else'")
                     if (isNumericMode) {
                         // Mode numérique - insérer chiffres et symboles directement
-                        Log.d(TAG, "📊 Mode numérique - insertion directe: '$key'")
                         inputConnection.commitText(key, 1)
                         // En mode numérique, on ne fait pas de suggestions de mots
                         Log.d(TAG, "Caractère numérique/symbole inséré: $key")
                     } else {
                         // Mode alphabétique - appliquer le mode majuscule/minuscule
-                        Log.d(TAG, "🔤 Mode alphabétique - traitement: '$key'")
-                        
-                        // 🛑 PROTECTION SUPPLÉMENTAIRE CONTRE "espace"
-                        if (key.lowercase() == "espace") {
-                            Log.d(TAG, "🚨 PROTECTION: Détection 'espace' dans else - FORCE UN ESPACE")
-                            inputConnection.commitText(" ", 1)
-                            currentWord = ""
-                            updateSuggestions("")
-                            return
-                        }
-                        
                         val textToInsert = if (isCapitalMode || isCapsLock) {
-                            Log.d(TAG, "🔠 MODE MAJUSCULE ACTIF - isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
                             key.uppercase()
                         } else {
-                            Log.d(TAG, "🔡 Mode minuscule - isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
                             key.lowercase()
                         }
                         
-                        Log.d(TAG, "📝 Texte à insérer: '$textToInsert' (depuis key='$key')")
                         inputConnection.commitText(textToInsert, 1)
                         currentWord += textToInsert
                         // Réduire les logs pour éviter le spam
@@ -1466,7 +1364,9 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun handleShiftPress() {
-        Log.d(TAG, "🔄 SHIFT PRESSÉ! Touche Shift pressée - Mode actuel: Capital=$isCapitalMode, CapsLock=$isCapsLock")
+        Log.e("SHIFT_DEBUG", "🚨🚨🚨 SHIFT PRESSED - HANDLESHIFTPRESS CALLED 🚨🚨🚨")
+        Log.d(TAG, "🔍 Touche Shift pressée - Mode actuel: Capital=$isCapitalMode, CapsLock=$isCapsLock")
+        Log.d(TAG, "🔍 Nombre de boutons dans keyboardButtons: ${keyboardButtons.size}")
         
         val previousCapitalMode = isCapitalMode
         val previousCapsLock = isCapsLock
@@ -1476,28 +1376,106 @@ class KreyolInputMethodService : InputMethodService() {
                 // Déjà en Caps Lock, désactiver complètement
                 isCapsLock = false
                 isCapitalMode = false
-                Log.d(TAG, "Caps Lock désactivé")
+                Log.d(TAG, "✅ Caps Lock désactivé")
             }
             isCapitalMode -> {
                 // Déjà en mode majuscule, activer Caps Lock
                 isCapsLock = true
                 isCapitalMode = false
-                Log.d(TAG, "Caps Lock activé")
+                Log.d(TAG, "✅ Caps Lock activé")
             }
             else -> {
                 // Mode normal, activer mode majuscule
                 isCapitalMode = true
                 isCapsLock = false
-                Log.d(TAG, "Mode majuscule activé")
+                Log.d(TAG, "✅ Mode majuscule activé")
             }
         }
         
+        Log.d(TAG, "🔍 Nouvel état: Capital=$isCapitalMode, CapsLock=$isCapsLock")
+        
         // Mettre à jour seulement si l'état a changé
         if (previousCapitalMode != isCapitalMode || previousCapsLock != isCapsLock) {
-            // Post la mise à jour pour éviter les conflits
-            Handler(Looper.getMainLooper()).post {
-                updateKeyboardDisplay()
+            Log.d(TAG, "🔄 État changé, mise à jour directe des boutons...")
+            
+            // Mise à jour directe et immédiate de tous les boutons
+            keyboardButtons.forEachIndexed { index, button ->
+                val originalText = button.tag as? String ?: button.text.toString().lowercase()
+                Log.d(TAG, "🔍 Bouton $index: tag='$originalText'")
+                
+                // Mettre à jour immédiatement le texte et la couleur
+                when {
+                    originalText == "⇧" -> {
+                        Log.e("SHIFT_DEBUG", "🚨🚨🚨 MODIFYING SHIFT BUTTON NOW! 🚨🚨🚨")
+                        // Mettre à jour le symbole ET la couleur de la touche Shift
+                        val newShiftSymbol = when {
+                            isCapsLock -> "⇧⇧"
+                            isCapitalMode -> "⇧●"
+                            else -> "⇧○"
+                        }
+                        button.text = newShiftSymbol
+                        Log.e("SHIFT_DEBUG", "🚨 NEW SHIFT TEXT: $newShiftSymbol")
+                        
+                        // Changer la couleur immédiatement
+                        when {
+                            isCapsLock -> {
+                                Log.e("SHIFT_DEBUG", "🚨 SETTING YELLOW COLOR")
+                                button.setBackgroundColor(android.graphics.Color.parseColor("#FFD700")) // Jaune
+                                button.setTextColor(android.graphics.Color.parseColor("#000000"))
+                            }
+                            isCapitalMode -> {
+                                Log.e("SHIFT_DEBUG", "🚨 SETTING ORANGE COLOR")
+                                button.setBackgroundColor(android.graphics.Color.parseColor("#FF4500")) // Orange vif
+                                button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                            }
+                            else -> {
+                                Log.e("SHIFT_DEBUG", "🚨 SETTING BLUE COLOR")
+                                button.setBackgroundColor(android.graphics.Color.parseColor("#0080FF")) // Bleu
+                                button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                            }
+                        }
+                        button.invalidate()
+                        Log.d(TAG, "🎨 Shift mis à jour: '$newShiftSymbol'")
+                    }
+                    originalText.length == 1 && originalText.matches(Regex("[a-zA-Z]")) -> {
+                        // Mettre à jour les lettres
+                        val newText = if (isCapitalMode || isCapsLock) {
+                            originalText.uppercase()
+                        } else {
+                            originalText.lowercase()
+                        }
+                        if (button.text.toString() != newText) {
+                            button.text = newText
+                            button.invalidate()
+                            Log.d(TAG, "✏️ Lettre mise à jour: '$originalText' -> '$newText'")
+                        }
+                    }
+                    originalText.length == 1 && originalText.matches(Regex("[àéèòç]")) -> {
+                        // Mettre à jour les caractères accentués
+                        val newText = if (isCapitalMode || isCapsLock) {
+                            when (originalText) {
+                                "à" -> "À"
+                                "é" -> "É"
+                                "è" -> "È"
+                                "ò" -> "Ò"
+                                "ç" -> "Ç"
+                                else -> originalText.uppercase()
+                            }
+                        } else {
+                            originalText.lowercase()
+                        }
+                        if (button.text.toString() != newText) {
+                            button.text = newText
+                            button.invalidate()
+                            Log.d(TAG, "✏️ Accent mis à jour: '$originalText' -> '$newText'")
+                        }
+                    }
+                }
             }
+            
+            Log.d(TAG, "✅ Mise à jour directe terminée")
+        } else {
+            Log.d(TAG, "⚠️ Aucun changement d'état détecté")
         }
     }
     
