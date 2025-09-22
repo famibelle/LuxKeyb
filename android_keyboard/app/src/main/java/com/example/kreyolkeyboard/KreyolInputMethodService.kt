@@ -497,6 +497,12 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "=== KREYOL onStartInput appelé - restarting: $restarting ===")
         Log.d(TAG, "EditorInfo: $info")
         
+        // 🚀 FORCER LE MODE ALPHABÉTIQUE À CHAQUE NOUVELLE SAISIE
+        isNumericMode = false
+        isCapitalMode = false
+        isCapsLock = false
+        Log.d(TAG, "🔤 MODE ALPHABÉTIQUE forcé dans onStartInput")
+        
         // SOLUTION RADICALE : Désactiver complètement le spell checking
         info?.let { editorInfo ->
             // Sauvegarder l'inputType original
@@ -577,6 +583,12 @@ class KreyolInputMethodService : InputMethodService() {
 
     override fun onCreateInputView(): View? {
         Log.d(TAG, "=== KREYOL onCreateInputView appelé ! ===")
+        
+        // 🚀 GARANTIR LE MODE ALPHABÉTIQUE AU DÉMARRAGE
+        isNumericMode = false
+        isCapitalMode = false
+        isCapsLock = false
+        Log.d(TAG, "🔤 MODE FORCÉ À ALPHABÉTIQUE au démarrage")
         Log.d(TAG, "🔍 MODE INITIAL: isNumericMode = $isNumericMode")
         
         try {
@@ -1095,24 +1107,24 @@ class KreyolInputMethodService : InputMethodService() {
             val row3 = createKeyboardRow(arrayOf("*", "\"", "'", ":", ";", "!", "?", "⌫"))
             mainLayout.addView(row3)
             
-            val row4 = createKeyboardRow(arrayOf("ABC", ",", "ESPACE", ".", "⏎"))
+            val row4 = createKeyboardRow(arrayOf("ABC", ",", " ", ".", "⏎"))
             mainLayout.addView(row4)
         } else {
             // Mode alphabétique AZERTY avec disposition Kréyol optimisée
-            // Rangée 1: a z e r t y u i o p 
-            val row1 = createKeyboardRow(arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p"))
+            // Rangée 1: a z e r t y u i o ò p ← ò intégré en position naturelle
+            val row1 = createKeyboardRow(arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "ò", "p"))
             mainLayout.addView(row1)
             
-            // Rangée 2: q s d f g h j k l é ← é en position premium ⭐
-            val row2 = createKeyboardRow(arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "é"))
+            // Rangée 2: q s d f g h j k l m ← disposition AZERTY standard
+            val row2 = createKeyboardRow(arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m"))
             mainLayout.addView(row2)
             
-            // Rangée 3: w x c v b n m è ò à ← diacritiques communs en Zone créole regroupée 🎯
-            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "m", "è", "ò", "à", "⌫"))
+            // Rangée 3: ⇧ w x c v b n è ⌫ ← è intégré, layout compact
+            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "è", "⌫"))
             mainLayout.addView(row3)
             
-            // Rangée 4: , ESPACE . ← Ponctuation encadrant l'espace
-            val row4 = createKeyboardRow(arrayOf("123", ",", "ESPACE", ".", "⏎"))
+            // Rangée 4: 123 , é ESPACE è . ' ⏎ ← accents créoles accessibles
+            val row4 = createKeyboardRow(arrayOf("123", ",", "é", " ", "è", ".", "'", "⏎"))
             mainLayout.addView(row4)
         }
         
