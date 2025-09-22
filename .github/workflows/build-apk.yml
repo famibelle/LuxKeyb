@@ -57,9 +57,7 @@ jobs:
       run: cd android_keyboard && gradle assembleRelease --no-daemon
       env:
         KEYSTORE_FILE: app/potomitan-keystore.jks
-        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        # Test avec valeurs par défaut - pas de variables de mot de passe
         
     - name: 🧹 Cleanup Keystore
       run: |
