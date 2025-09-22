@@ -117,9 +117,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ inputs.version_tag || 'v2.2.0-manual' }}
-        name: 🇬🇵 Klavié Kreyòl v2.2.0 - Dictionnaire Enrichi (Build Manuel)
+        name: 🇬🇵 Klavyé Kréyòl v2.2.0 - Dictionnaire Enrichi (Build Manuel)
         body: |
-          ## 🇬🇵 Klavié Kreyòl Karukera • Potomitan™ v2.2.0
+          ## 🇬🇵 Klavyé Kréyòl Karukera • Potomitan™ v2.2.0
           
           **🚀 VERSION ENRICHIE - Build manuel avec dictionnaire amélioré !**
           
