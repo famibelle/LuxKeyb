@@ -160,6 +160,9 @@ class KeyboardLayoutManager(private val context: Context) {
         // Application du style Guadeloupe
         applyGuadeloupeStyle(button, key)
         
+        // Ajouter le bouton à la liste de suivi
+        keyboardButtons.add(button)
+        
         // Configuration des événements tactiles
         setupButtonInteractions(button, key)
         
@@ -398,8 +401,7 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     private fun getKeyFromButton(button: TextView): String {
-        // Logique pour retrouver la clé d'origine depuis le bouton
-        // (à implémenter selon les besoins)
+        // Version simple : récupérer depuis le texte affiché
         return button.text.toString().lowercase()
     }
     
