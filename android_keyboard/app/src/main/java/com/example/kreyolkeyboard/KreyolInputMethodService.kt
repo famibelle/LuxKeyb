@@ -81,6 +81,9 @@ class KreyolInputMethodService : InputMethodService() {
         super.onCreate()
         Log.d(TAG, "=== KREYOL IME SERVICE onCreate() APPELÉ - Potomitan™ ===")
         
+        // 🚀 INITIALISATION FORCÉE DU MODE ALPHABÉTIQUE
+        initializeAlphabeticMode()
+        
         try {
             Log.d(TAG, "Initialisation du dictionnaire...")
             dictionary = emptyList()
@@ -95,7 +98,22 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     /**
-     * 🔥 CORRECTION BUG CASSE : Applique la casse intentionnelle de l'utilisateur à la suggestion
+     * � Initialise forcément le clavier en mode alphabétique
+     * Garantit que le clavier démarre toujours avec le layout créole AZERTY
+     */
+    private fun initializeAlphabeticMode() {
+        isNumericMode = false
+        isCapitalMode = false
+        isCapsLock = false
+        isUpdatingKeyboard = false
+        currentWord = ""
+        
+        Log.d(TAG, "🔤 INITIALISATION FORCÉE : Mode alphabétique activé")
+        Log.d(TAG, "📊 État initial : isNumericMode=$isNumericMode, isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
+    }
+    
+    /**
+     * �🔥 CORRECTION BUG CASSE : Applique la casse intentionnelle de l'utilisateur à la suggestion
      * Préserve la majuscule intentionnelle (Shift/Caps) lors de l'application des suggestions
      */
     private fun applyCaseToSuggestion(suggestion: String, currentInput: String): String {
@@ -524,6 +542,10 @@ class KreyolInputMethodService : InputMethodService() {
     override fun onStartInputView(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "=== KREYOL onStartInputView appelé - restarting: $restarting ===")
+        
+        // 🚀 GARANTIR LE MODE ALPHABÉTIQUE LORS DU DÉMARRAGE DE LA VUE
+        initializeAlphabeticMode()
+        
         Log.d(TAG, "🔍 INPUTTYPE: ${info?.inputType}, isNumericMode = $isNumericMode")
         
         // Vérifier et initialiser suggestionsView si nécessaire
@@ -585,10 +607,12 @@ class KreyolInputMethodService : InputMethodService() {
         Log.d(TAG, "=== KREYOL onCreateInputView appelé ! ===")
         
         // 🚀 GARANTIR LE MODE ALPHABÉTIQUE AU DÉMARRAGE
+        Log.e(TAG, "🔍 AVANT initializeAlphabeticMode: isNumericMode = $isNumericMode")
         isNumericMode = false
         isCapitalMode = false
         isCapsLock = false
-        Log.d(TAG, "🔤 MODE FORCÉ À ALPHABÉTIQUE au démarrage")
+        Log.e(TAG, "🔤 MODE FORCÉ À ALPHABÉTIQUE au démarrage")
+        Log.e(TAG, "🔍 APRÈS force manuelle: isNumericMode = $isNumericMode")
         Log.d(TAG, "🔍 MODE INITIAL: isNumericMode = $isNumericMode")
         
         try {
@@ -652,6 +676,7 @@ class KreyolInputMethodService : InputMethodService() {
             updateSuggestions("")
             
             // Créer le clavier selon le mode
+            Log.e(TAG, "🚨 JUSTE AVANT createKeyboardLayout: isNumericMode = $isNumericMode")
             createKeyboardLayout(mainLayout)
             
             // Ajouter un watermark Potomitan™ discret et moderne
@@ -1068,6 +1093,19 @@ class KreyolInputMethodService : InputMethodService() {
     
     private fun createKeyboardLayout(mainLayout: LinearLayout) {
         Log.d(TAG, "🔍 createKeyboardLayout: isNumericMode = $isNumericMode")
+        Log.e(TAG, "🚨🚨🚨 DIAGNOSTIC CLAVIER - isNumericMode = $isNumericMode 🚨🚨🚨")
+        Log.e(TAG, "🔍 États: isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
+        
+        // 🚀 SOLUTION RADICALE : FORCER LE MODE ALPHABÉTIQUE ICI AUSSI
+        Log.e(TAG, "🚨 AVANT FORCE RADICALE: isNumericMode = $isNumericMode")
+        isNumericMode = false
+        Log.e(TAG, "🚨 APRÈS FORCE RADICALE: isNumericMode = $isNumericMode")
+        
+        if (isNumericMode) {
+            Log.e(TAG, "❌ PROBLÈME DÉTECTÉ : Mode numérique activé alors qu'il devrait être alphabétique !")
+        } else {
+            Log.e(TAG, "✅ Mode alphabétique correct détecté")
+        }
         
         // Sauvegarder la référence aux suggestions AVANT suppression
         val savedSuggestionsView = suggestionsView
@@ -1120,7 +1158,7 @@ class KreyolInputMethodService : InputMethodService() {
             mainLayout.addView(row2)
             
             // Rangée 3: ⇧ w x c v b n è ⌫ ← è intégré, layout compact
-            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "è", "⌫"))
+            val row3 = createKeyboardRow(arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫"))
             mainLayout.addView(row3)
             
             // Rangée 4: 123 , é ESPACE è . ' ⏎ ← accents créoles accessibles
@@ -1134,9 +1172,11 @@ class KreyolInputMethodService : InputMethodService() {
     
     private fun switchKeyboardMode() {
         Log.d(TAG, "Basculement de mode - Actuel: ${if (isNumericMode) "Numérique" else "Alphabétique"}")
+        Log.e(TAG, "🚨🚨🚨 SWITCHKEYBOARDMODE APPELÉ ! AVANT: isNumericMode=$isNumericMode 🚨🚨🚨")
         
         isNumericMode = !isNumericMode
-        Log.d(TAG, "🔄 MODE CHANGÉ: isNumericMode = $isNumericMode")
+        Log.e(TAG, "🔄 MODE CHANGÉ: isNumericMode = $isNumericMode")
+        Log.e(TAG, "🚨 NOUVEAU MODE: ${if (isNumericMode) "NUMÉRIQUE" else "ALPHABÉTIQUE"}")
         
         // Réinitialiser le mode majuscule en passant au mode numérique
         if (isNumericMode) {
