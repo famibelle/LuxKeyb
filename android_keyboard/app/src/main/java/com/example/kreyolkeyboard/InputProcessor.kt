@@ -387,6 +387,15 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * Met à jour le mot courant SANS déclencher onWordChanged() 
+     * Utilisé pour éviter les cascades d'événements (ex: onAccentSelected)
+     */
+    fun updateCurrentWordSilently(word: String) {
+        currentWord = word
+        Log.d(TAG, "updateCurrentWordSilently: '$word' (pas de callback)")
+    }
+    
+    /**
      * Obtient le mot courant
      */
     fun getCurrentWord(): String = currentWord

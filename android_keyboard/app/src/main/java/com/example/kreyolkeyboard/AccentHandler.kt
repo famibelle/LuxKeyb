@@ -125,11 +125,15 @@ class AccentHandler(private val context: Context) {
                 popupLayout,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
+                false  // ✅ CORRECTION: focusable=false pour éviter fermeture IME
             ).apply {
                 // Style de la popup
                 setBackgroundDrawable(createPopupBackground())
                 elevation = dpToPx(POPUP_ELEVATION_DP).toFloat()
+                
+                // Configuration pour IME
+                isTouchable = true  // ✅ Permet interaction avec popup
+                isOutsideTouchable = true  // ✅ Ferme popup si clic extérieur
                 
                 // Animation d'entrée/sortie
                 animationStyle = android.R.style.Animation_Dialog
