@@ -86,6 +86,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     override fun onCreateInputView(): View? {
         Log.d(TAG, "onCreateInputView() appelée")
         
+        // 🅰️ FORCER LE MODE ALPHABÉTIQUE AU DÉMARRAGE
+        keyboardLayoutManager.forceAlphabeticMode()
+        Log.d(TAG, "✅ Mode alphabétique forcé lors de la création du clavier")
+        
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#F5F5F5"))
@@ -341,8 +345,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
         
+        // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
+            keyboardLayoutManager.forceAlphabeticMode()
             keyboardLayoutManager.updateKeyboardDisplay()
+            Log.d(TAG, "✅ Mode alphabétique garanti lors du démarrage de la saisie")
         }
     }
     

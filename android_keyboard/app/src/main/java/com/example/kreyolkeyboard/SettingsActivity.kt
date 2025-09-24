@@ -85,33 +85,6 @@ class SettingsActivity : AppCompatActivity() {
         descriptionCard.addView(missionTitle)
         descriptionCard.addView(missionText)
         
-        // Section Sources littéraires créoles
-        val sourcesCard = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-            setBackgroundColor(Color.parseColor("#F0F8E8")) // Vert très pâle
-        }
-        
-        val sourcesTitle = TextView(this).apply {
-            text = "📚 Sources littéraires créoles"
-            textSize = 18f
-            setTextColor(Color.parseColor("#228B22")) // Vert Canne
-            setTypeface(null, Typeface.BOLD)
-            setPadding(0, 0, 0, 12)
-        }
-        
-        val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots en Kréyòl sont construites sur les travaux des défenseurs du Kréyòl :\n\n" +
-                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus,\n\n" +
-                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
-            textSize = 14f
-            setTextColor(Color.parseColor("#2F5233")) // Vert foncé
-            setLineSpacing(0f, 1.3f)
-        }
-        
-        sourcesCard.addView(sourcesTitle)
-        sourcesCard.addView(sourcesText)
-        
         // Instructions d'installation
         val installCard = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -204,6 +177,33 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         
+        // Section Sources littéraires créoles
+        val sourcesCard = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 20, 20, 20)
+            setBackgroundColor(Color.parseColor("#F0F8E8")) // Vert très pâle
+        }
+        
+        val sourcesTitle = TextView(this).apply {
+            text = "📚 Sources littéraires créoles"
+            textSize = 18f
+            setTextColor(Color.parseColor("#228B22")) // Vert Canne
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        
+        val sourcesText = TextView(this).apply {
+            text = "Les suggestions de mots en Kréyòl sont construites sur les travaux des défenseurs du Kréyòl :\n\n" +
+                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus,\n\n" +
+                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
+            textSize = 14f
+            setTextColor(Color.parseColor("#2F5233")) // Vert foncé
+            setLineSpacing(0f, 1.3f)
+        }
+        
+        sourcesCard.addView(sourcesTitle)
+        sourcesCard.addView(sourcesText)
+        
         // Footer avec informations patrimoniales
         val footerCard = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -233,9 +233,9 @@ class SettingsActivity : AppCompatActivity() {
         
         mainLayout.addView(headerLayout)
         mainLayout.addView(descriptionCard)
-        mainLayout.addView(sourcesCard)
         mainLayout.addView(installCard)
         mainLayout.addView(buttonLayout)
+        mainLayout.addView(sourcesCard)
         mainLayout.addView(footerCard)
         
         scrollView.addView(mainLayout)
