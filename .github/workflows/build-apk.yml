@@ -27,7 +27,7 @@ jobs:
     
     # 🔐 Variables d'environnement globales pour tout le job
     env:
-      KEYSTORE_FILE: app/potomitan-keystore.jks
+      KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
