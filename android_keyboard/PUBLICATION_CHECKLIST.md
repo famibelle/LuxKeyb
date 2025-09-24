@@ -1,5 +1,5 @@
 # CHECKLIST COMPLÈTE - PUBLICATION GOOGLE PLAY STORE
-# Application: Klavié Kreyòl Karukera • Potomitan™
+# Application: Klavyé Kréyòl Karukera • Potomitan™
 
 ## ✅ TERMINÉ
 - [x] Target SDK 34 (Android 14)
@@ -12,7 +12,7 @@
 ## 🔄 ÉTAPES RESTANTES
 
 ### 1. STORE LISTING (OBLIGATOIRE)
-- [ ] **App Title**: "Klavié Kreyòl Karukera • Potomitan™" (max 50 chars)
+- [ ] **App Title**: "Klavyé Kréyòl Karukera • Potomitan™" (max 50 chars)
 - [ ] **Short Description**: Description courte (max 80 chars)
 - [ ] **Full Description**: Description complète (max 4000 chars) 
 - [ ] **Developer Name**: "Potomitan"

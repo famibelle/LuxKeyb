@@ -32,6 +32,11 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private val keyboardButtons = mutableListOf<TextView>()
     
+    init {
+        // Garantir que le clavier démarre toujours en mode alphabétique
+        ensureAlphabeticMode()
+    }
+    
     // Callbacks pour l'interaction avec les touches
     interface KeyboardInteractionListener {
         fun onKeyPress(key: String)
@@ -78,10 +83,10 @@ class KeyboardLayoutManager(private val context: Context) {
      * Crée le layout alphabétique (AZERTY créole)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "à", "é")
-        val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "ò")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "è", "⌫")
-        val row4 = arrayOf("123", ",", " ", ".", "'", "⏎")
+        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "ò", "p")
+        val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
+        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
+        val row4 = arrayOf("123", ",", "é", " ", "è", ".", "'", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
@@ -154,6 +159,9 @@ class KeyboardLayoutManager(private val context: Context) {
         
         // Application du style Guadeloupe
         applyGuadeloupeStyle(button, key)
+        
+        // Ajouter le bouton à la liste de suivi
+        keyboardButtons.add(button)
         
         // Configuration des événements tactiles
         setupButtonInteractions(button, key)
@@ -337,6 +345,24 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
+     * Garantit que le clavier démarre en mode alphabétique
+     */
+    private fun ensureAlphabeticMode() {
+        isNumericMode = false
+        isCapitalMode = false
+        isCapsLock = false
+        Log.d("KeyboardLayoutManager", "🚀 INITIALISATION : Mode alphabétique garanti")
+    }
+    
+    /**
+     * Force publiquement le retour au mode alphabétique
+     */
+    fun forceAlphabeticMode() {
+        ensureAlphabeticMode()
+        Log.d("KeyboardLayoutManager", "🔄 FORCE : Retour au mode alphabétique")
+    }
+    
+    /**
      * Nettoie les ressources
      */
     fun cleanup() {
@@ -375,8 +401,7 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     private fun getKeyFromButton(button: TextView): String {
-        // Logique pour retrouver la clé d'origine depuis le bouton
-        // (à implémenter selon les besoins)
+        // Version simple : récupérer depuis le texte affiché
         return button.text.toString().lowercase()
     }
     
