@@ -225,6 +225,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onModeChanged(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+        Log.e("SHIFT_REAL_DEBUG", "🚨 onModeChanged CALLED! isCapital=$isCapital, isCapsLock=$isCapsLock")
+        
+        // ✅ CORRECTION: Mettre à jour les états AVANT l'affichage
+        keyboardLayoutManager.updateKeyboardStates(isNumeric, isCapital, isCapsLock)
+        
         // Mettre à jour l'affichage du clavier
         keyboardLayoutManager.updateKeyboardDisplay()
         
