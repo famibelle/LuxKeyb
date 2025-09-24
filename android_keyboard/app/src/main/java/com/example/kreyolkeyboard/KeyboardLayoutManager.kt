@@ -293,6 +293,11 @@ class KeyboardLayoutManager(private val context: Context) {
 
     fun updateKeyboardDisplay() {
         Log.e("SHIFT_REAL_DEBUG", "🚨🚨🚨 updateKeyboardDisplay() CALLED! 🚨🚨🚨")
+        
+        val shiftButtons = keyboardButtons.filter { getKeyFromButton(it) == "⇧" }
+        Log.e("SHIFT_REAL_DEBUG", "🔢 NOMBRE DE BOUTONS SHIFT TROUVÉS: ${shiftButtons.size}")
+        Log.e("SHIFT_REAL_DEBUG", "📊 ÉTAT ACTUEL: isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
+        
         keyboardButtons.forEach { button ->
             val key = getKeyFromButton(button)
             button.text = getDisplayText(key)
@@ -324,7 +329,8 @@ class KeyboardLayoutManager(private val context: Context) {
                 isCapsLock = false
             }
         }
-        updateKeyboardDisplay()
+        // ❌ SUPPRIMÉ: updateKeyboardDisplay() - déjà appelé par InputProcessor
+        Log.e("SHIFT_REAL_DEBUG", "🚨 toggleCapsMode: isCapital=$isCapitalMode, isCapsLock=$isCapsLock")
         return isCapitalMode
     }
     

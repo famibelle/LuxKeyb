@@ -641,8 +641,8 @@ class KreyolInputMethodService : InputMethodService() {
             watermarkContainer.addView(watermark)
             mainLayout.addView(watermarkContainer)
             
-            // Mettre à jour l'affichage initial du clavier
-            updateKeyboardDisplay()
+            // ❌ SUPPRIMÉ: Mise à jour gérée par InputProcessor
+            // keyboardLayoutManager.updateKeyboardDisplay()
             
             Log.d(TAG, "=== CLAVIER KREYÒL CRÉÉ AVEC SUCCÈS ! suggestionsView: ${suggestionsView != null} ===")
             return mainLayout
@@ -892,98 +892,7 @@ class KreyolInputMethodService : InputMethodService() {
         return row
     }
     
-    private fun updateKeyboardDisplay() {
-        // Fonction réactivée pour supporter les majuscules
-        Log.d(TAG, "🔄 updateKeyboardDisplay() - Mode majuscule: $isCapitalMode, Caps Lock: $isCapsLock")
-        Log.d(TAG, "🔄 Nombre de boutons à mettre à jour: ${keyboardButtons.size}")
-        
-        if (isUpdatingKeyboard) {
-            Log.d(TAG, "⚠️ Mise à jour du clavier déjà en cours, ignorée")
-            return
-        }
-        
-        isUpdatingKeyboard = true
-        
-        try {
-            var buttonUpdated = 0
-            keyboardButtons.forEachIndexed { index, button ->
-                val originalText = button.tag as? String ?: button.text.toString().lowercase()
-                Log.d(TAG, "🔍 Bouton $index: tag='$originalText', text actuel='${button.text}'")
-                
-                // Mettre à jour l'affichage du bouton seulement pour les lettres
-                val newText = when {
-                    originalText.startsWith("⇧") -> originalText // Garder le symbole Shift tel quel
-                    originalText in arrayOf("⌫", "⏎", "ESPACE", "123", "ABC") -> originalText
-                    originalText.matches(Regex("[0-9@#$%&+()/*\"':;!?,.-]")) -> originalText // Chiffres et symboles
-                    originalText.length == 1 && originalText.matches(Regex("[a-zA-Z]")) -> {
-                        // Pour les lettres, appliquer la casse
-                        if (isCapitalMode || isCapsLock) {
-                            originalText.uppercase()
-                        } else {
-                            originalText.lowercase()
-                        }
-                    }
-                    originalText.length == 1 && originalText.matches(Regex("[àéèòç]")) -> {
-                        // Pour les caractères accentués, appliquer la casse
-                        if (isCapitalMode || isCapsLock) {
-                            when (originalText) {
-                                "à" -> "À"
-                                "é" -> "É"
-                                "è" -> "È"
-                                "ò" -> "Ò"
-                                "ç" -> "Ç"
-                                else -> originalText.uppercase()
-                            }
-                        } else {
-                            originalText.lowercase()
-                        }
-                    }
-                    else -> originalText // Autres cas
-                }
-                
-                // Mettre à jour seulement si le texte a changé
-                if (button.text.toString() != newText) {
-                    Log.d(TAG, "✏️ Mise à jour bouton: '$originalText' -> '$newText'")
-                    button.text = newText
-                    // Forcer le rafraîchissement de la vue
-                    button.invalidate()
-                    button.requestLayout()
-                    buttonUpdated++
-                } else {
-                    Log.d(TAG, "➡️ Bouton inchangé: '$originalText' = '$newText'")
-                }
-                
-                // Gérer l'état visuel de la touche Shift
-                if (originalText.startsWith("⇧")) {
-                    Log.d(TAG, "🎨 Mise à jour style touche Shift")
-                    // Changer la couleur de fond selon l'état
-                    when {
-                        isCapsLock -> {
-                            button.setBackgroundColor(android.graphics.Color.parseColor("#FFD700")) // Jaune pour caps lock
-                            button.setTextColor(android.graphics.Color.parseColor("#000000"))
-                            Log.d(TAG, "🟡 Shift en mode Caps Lock (jaune)")
-                        }
-                        isCapitalMode -> {
-                            button.setBackgroundColor(android.graphics.Color.parseColor("#228B22")) // Vert pour majuscule simple
-                            button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
-                            Log.d(TAG, "🟢 Shift en mode majuscule (vert)")
-                        }
-                        else -> {
-                            button.setBackgroundColor(android.graphics.Color.parseColor("#0080FF")) // Bleu pour état normal
-                            button.setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
-                            Log.d(TAG, "🔵 Shift en mode normal (bleu)")
-                        }
-                    }
-                }
-            }
-            
-            Log.d(TAG, "✅ Clavier mis à jour - $buttonUpdated boutons modifiés sur ${keyboardButtons.size}")
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur lors de la mise à jour du clavier", e)
-        } finally {
-            isUpdatingKeyboard = false
-        }
-    }
+    // ❌ FONCTION SUPPRIMÉE - updateKeyboardDisplay() maintenant gérée par KeyboardLayoutManager uniquement
     
     private fun createKeyboardLayout(mainLayout: LinearLayout) {
         // Sauvegarder la référence aux suggestions AVANT suppression
@@ -1048,8 +957,8 @@ class KreyolInputMethodService : InputMethodService() {
         // Rafraîchir les suggestions après reconstruction
         Log.d(TAG, "Reconstruction du clavier terminée, suggestionsView: ${suggestionsView != null}")
         
-        // Mettre à jour l'affichage du clavier après création
-        updateKeyboardDisplay()
+        // ❌ SUPPRIMÉ: Mise à jour gérée par InputProcessor
+        // keyboardLayoutManager.updateKeyboardDisplay()
     }
     
     private fun switchKeyboardMode() {
@@ -1069,7 +978,8 @@ class KreyolInputMethodService : InputMethodService() {
         if (currentView != null) {
             keyboardButtons.clear() // Nettoyer la liste des boutons
             createKeyboardLayout(currentView)
-            updateKeyboardDisplay()
+            // ❌ SUPPRIMÉ: Mise à jour gérée par InputProcessor
+            // keyboardLayoutManager.updateKeyboardDisplay()
             
             // Forcer la mise à jour des suggestions après reconstruction
             Handler(Looper.getMainLooper()).post {
@@ -1209,10 +1119,10 @@ class KreyolInputMethodService : InputMethodService() {
             // Désactiver le mode majuscule après un accent (sauf si Caps Lock)
             if (isCapitalMode && !isCapsLock) {
                 isCapitalMode = false
-                // Post la mise à jour pour éviter les conflits
-                Handler(Looper.getMainLooper()).post {
-                    updateKeyboardDisplay()
-                }
+                // ❌ SUPPRIMÉ: Mise à jour gérée par InputProcessor
+                // Handler(Looper.getMainLooper()).post {
+                //     keyboardLayoutManager.updateKeyboardDisplay()
+                // }
             }
         } else {
             Log.w(TAG, "InputConnection est null lors de la sélection d'accent !")
@@ -1350,10 +1260,10 @@ class KreyolInputMethodService : InputMethodService() {
                         // Désactiver le mode majuscule après une lettre (sauf si Caps Lock)
                         if (isCapitalMode && !isCapsLock) {
                             isCapitalMode = false
-                            // Post la mise à jour pour éviter les conflits
-                            Handler(Looper.getMainLooper()).post {
-                                updateKeyboardDisplay()
-                            }
+                            // ❌ SUPPRIMÉ: Mise à jour gérée par InputProcessor
+                            // Handler(Looper.getMainLooper()).post {
+                            //     keyboardLayoutManager.updateKeyboardDisplay()
+                            // }
                         }
                     }
                 }
