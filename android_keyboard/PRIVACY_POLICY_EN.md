@@ -1,8 +1,8 @@
-# Privacy Policy - Klavié Kreyòl Karukera • Potomitan™
+# Privacy Policy - Klavyé Kréyòl Karukera • Potomitan™
 
 **Effective Date:** September 19, 2025  
 **Version:** 1.0  
-**Application:** Klavié Kreyòl Karukera • Potomitan™
+**Application:** Klavyé Kréyòl Karukera • Potomitan™
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 📱 About the Application
 
-**Klavié Kreyòl Karukera • Potomitan™** is a virtual keyboard for Android devices that allows typing text in Guadeloupean Creole with intelligent suggestions and automatic corrections.
+**Klavyé Kréyòl Karukera • Potomitan™** is a virtual keyboard for Android devices that allows typing text in Guadeloupean Creole with intelligent suggestions and automatic corrections.
 
 ### Main features:
 - Virtual keyboard optimized for Guadeloupean Creole
@@ -146,7 +146,7 @@ Contact us at: **medhi@potomitan.io**
 You can uninstall the application at any time from Android settings.
 
 ### Permissions:
-You can revoke permissions in Settings > Apps > Klavié Kreyòl Karukera.
+You can revoke permissions in Settings > Apps > Klavyé Kréyòl Karukera.
 
 ### Personal dictionary:
 Words added to the Android personal dictionary can be managed in Settings > Language & input > Personal dictionary.
@@ -169,11 +169,11 @@ Words added to the Android personal dictionary can be managed in Settings > Lang
 
 ### For any questions regarding this policy:
 - **Email:** medhi@potomitan.io
-- **Subject:** "Privacy Policy - Klavié Kreyòl"
+- **Subject:** "Privacy Policy - Klavyé Kréyòl"
 
 ### Technical support:
 - **Email:** medhi@potomitan.io
-- **Subject:** "Support - Klavié Kreyòl"
+- **Subject:** "Support - Klavyé Kréyòl"
 
 ### Report a problem:
 - Describe the problem encountered
@@ -223,7 +223,7 @@ French courts have jurisdiction for any dispute relating to this policy.
 
 ## 🎯 Executive Summary
 
-**In brief:** Klavié Kreyòl Karukera • Potomitan™ is a keyboard application that works entirely locally on your device. We do not collect, store, or share ANY of your personal data. Your privacy is totally preserved.
+**In brief:** Klavyé Kréyòl Karukera • Potomitan™ is a keyboard application that works entirely locally on your device. We do not collect, store, or share ANY of your personal data. Your privacy is totally preserved.
 
 ### Key points:
 - ✅ 100% local operation
@@ -234,7 +234,7 @@ French courts have jurisdiction for any dispute relating to this policy.
 
 ---
 
-**Thank you for using Klavié Kreyòl Karukera • Potomitan™ to preserve and promote our beautiful Creole language!** 🇬🇵
+**Thank you for using Klavyé Kréyòl Karukera • Potomitan™ to preserve and promote our beautiful Creole language!** 🇬🇵
 
 ---
 
