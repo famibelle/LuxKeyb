@@ -1,8 +1,8 @@
-# Politique de Confidentialité - Klavié Kreyòl Karukera • Potomitan™
+# Politique de Confidentialité - Klavyé Kréyòl Karukera • Potomitan™
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
 **Version :** 1.0  
-**Application :** Klavié Kreyòl Karukera • Potomitan™
+**Application :** Klavyé Kréyòl Karukera • Potomitan™
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 📱 À propos de l'Application
 
-**Klavié Kreyòl Karukera • Potomitan™** est un clavier virtuel pour appareils Android qui permet de saisir du texte en créole guadeloupéen avec des suggestions intelligentes et des corrections automatiques.
+**Klavyé Kréyòl Karukera • Potomitan™** est un clavier virtuel pour appareils Android qui permet de saisir du texte en créole guadeloupéen avec des suggestions intelligentes et des corrections automatiques.
 
 ### Fonctionnalités principales :
 - Clavier virtuel optimisé pour le créole guadeloupéen
@@ -146,7 +146,7 @@ Contactez-nous à : **medhi@potomitan.io**
 Vous pouvez désinstaller l'application à tout moment depuis les paramètres Android.
 
 ### Permissions :
-Vous pouvez révoquer les permissions dans Paramètres > Applications > Klavié Kreyòl Karukera.
+Vous pouvez révoquer les permissions dans Paramètres > Applications > Klavyé Kréyòl Karukera.
 
 ### Dictionnaire personnel :
 Les mots ajoutés au dictionnaire personnel Android peuvent être gérés dans Paramètres > Langue et saisie > Dictionnaire personnel.
@@ -169,11 +169,11 @@ Les mots ajoutés au dictionnaire personnel Android peuvent être gérés dans P
 
 ### Pour toute question concernant cette politique :
 - **Email :** medhi@potomitan.io
-- **Objet :** "Politique de Confidentialité - Klavié Kreyòl"
+- **Objet :** "Politique de Confidentialité - Klavyé Kréyòl"
 
 ### Support technique :
 - **Email :** medhi@potomitan.io
-- **Objet :** "Support - Klavié Kreyòl"
+- **Objet :** "Support - Klavyé Kréyòl"
 
 ### Signaler un problème :
 - Décrivez le problème rencontré
@@ -223,7 +223,7 @@ Les tribunaux français sont compétents pour tout litige relatif à cette polit
 
 ## 🎯 Résumé Exécutif
 
-**En bref :** Klavié Kreyòl Karukera • Potomitan™ est une application de clavier qui fonctionne entièrement en local sur votre appareil. Nous ne collectons, ne stockons et ne partageons AUCUNE de vos données personnelles. Votre vie privée est totalement préservée.
+**En bref :** Klavyé Kréyòl Karukera • Potomitan™ est une application de clavier qui fonctionne entièrement en local sur votre appareil. Nous ne collectons, ne stockons et ne partageons AUCUNE de vos données personnelles. Votre vie privée est totalement préservée.
 
 ### Points clés :
 - ✅ Fonctionnement 100% local
@@ -234,7 +234,7 @@ Les tribunaux français sont compétents pour tout litige relatif à cette polit
 
 ---
 
-**Merci d'utiliser Klavié Kreyòl Karukera • Potomitan™ pour préserver et promouvoir notre belle langue créole !** 🇬🇵
+**Merci d'utiliser Klavyé Kréyòl Karukera • Potomitan™ pour préserver et promouvoir notre belle langue créole !** 🇬🇵
 
 ---
 

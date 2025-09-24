@@ -1,8 +1,8 @@
-# Klavié Kreyòl Karukera • Potomitan™
+# Klavyé Kréyòl Karukera • Potomitan™
 
 ## 📱 Android Keyboard for Guadeloupean Creole
 
-Welcome to the official repository of **Klavié Kreyòl Karukera • Potomitan™**, an Android virtual keyboard optimized for typing in Guadeloupean Creole (Kreyòl Karukera).
+Welcome to the official repository of **Klavyé Kréyòl Karukera • Potomitan™**, an Android virtual keyboard optimized for typing in Guadeloupean Creole (Kreyòl Karukera).
 
 ### 🌟 Features
 
