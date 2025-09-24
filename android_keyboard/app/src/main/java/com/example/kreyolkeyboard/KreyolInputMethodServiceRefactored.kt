@@ -174,19 +174,26 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // ===== IMPLÉMENTATION AccentSelectionListener =====
     
     override fun onAccentSelected(accent: String) {
+        Log.d(TAG, "🎯 onAccentSelected appelé avec accent: '$accent'")
+        
         // Supprimer le caractère de base et insérer l'accent
         val inputConnection = currentInputConnection
         if (inputConnection != null) {
             inputConnection.deleteSurroundingText(1, 0)
             inputConnection.commitText(accent, 1)
             
-            // Mettre à jour le processeur d'entrée
+            // ✅ CORRECTION: Mettre à jour le mot courant SANS déclencher onWordChanged()
+            // pour éviter la cascade d'événements qui provoque 60+ updateKeyboardDisplay()
             val currentWord = inputProcessor.getCurrentWord()
             if (currentWord.isNotEmpty()) {
                 val updatedWord = currentWord.dropLast(1) + accent
-                inputProcessor.setCurrentWord(updatedWord)
+                // Mise à jour directe du mot sans déclencher les callbacks
+                inputProcessor.updateCurrentWordSilently(updatedWord)
+                Log.d(TAG, "✅ Mot mis à jour silencieusement: '$currentWord' → '$updatedWord'")
             }
         }
+        
+        Log.d(TAG, "✅ onAccentSelected terminé sans cascade d'événements")
     }
     
     override fun onLongPressStarted(baseKey: String) {
