@@ -25,6 +25,13 @@ jobs:
     name: 📱 Build APK
     runs-on: ubuntu-latest
     
+    # 🔐 Variables d'environnement globales pour tout le job
+    env:
+      KEYSTORE_FILE: app/potomitan-keystore.jks
+      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -55,11 +62,6 @@ jobs:
         
     - name: 📱 Build Release APK
       run: cd android_keyboard && gradle assembleRelease --no-daemon
-      env:
-        KEYSTORE_FILE: app/potomitan-keystore.jks
-        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         
     - name: 🧹 Cleanup Keystore
       run: |
