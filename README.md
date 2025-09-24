@@ -1,4 +1,4 @@
-# 🇬🇵 Klavyé Kréyòl Karukera : Clavier intelligent pour la saisie en **Kreyòl Guadeloupéen** avec suggestions de mots.
+# 🇬🇵 Klavyé Kréyòl Karukera : Clavier intelligent pour la saisie en **kréyòl Guadeloupéen** avec suggestions de mots.
 
 **Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
@@ -9,17 +9,17 @@
 - ➡️ Klavyé Kréyòl Karukera est fait pour toi !
 
 
-Ce projet s’appuie sur un **corpus littéraire créole** et les travaux de **grands défenseurs du kreyòl** — écrivains, chanteurs, linguistes — pour offrir une expérience de saisie fidèle à la richesse de la langue.
+Ce projet s’appuie sur un **corpus littéraire créole** et les travaux de **grands défenseurs du kréyòl** — écrivains, chanteurs, linguistes — pour offrir une expérience de saisie fidèle à la richesse de la langue.
 
 Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggestions contextuelles** basé sur des textes d’auteurs emblématiques tels que :
 
 - 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale  
-- ✍️ **Sonny Rupaire**, **Silvyane Telchid**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kreyòl ses lettres de noblesse  
+- ✍️ **Sonny Rupaire**, **Silvyane Telchid**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kréyòl ses lettres de noblesse  
 - 📚 **Robert Fontes**, **Alain Verin**, **Alain Rutil**, **Benjamin_Moïse** – linguistes et chercheurs qui ont structuré et valorisé la langue
 
-🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kreyòl contemporain.
+🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté créolophone**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du kréyòl contemporain.
 
-⚡ Grâce à ces suggestions basées sur les plus grands textes en kreyòl, les utilisateurs peuvent **écrire très rapidement dans un kreyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
+⚡ Grâce à ces suggestions basées sur les plus grands textes en kréyòl, les utilisateurs peuvent **écrire très rapidement dans un kréyòl fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
 
 📱 Compatible Android 7.0+, il s’installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
 
@@ -29,7 +29,7 @@ Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggesti
 C’est un acte de transmission, un hommage à la langue, une technologie au service de l’identité créole.
 
 
-![Langue](https://img.shields.io/badge/Langue-Kreyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
+![Langue](https://img.shields.io/badge/Langue-kréyòl%20Guadeloupéen-blue?style=for-the-badge&logo=android)
 ![Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
@@ -37,17 +37,17 @@ C’est un acte de transmission, un hommage à la langue, une technologie au ser
 ## 📱 Aperçu
 
 <div align="center">
-   <img src="Screenshots/KlavyéKreyol_x2.gif" alt="Clavier Kreyòl Karukera en Action" width="25%">
+   <img src="Screenshots/KlavyéKreyol_x2.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
-*Clavier créole avec suggestions basés sur les textes littéraires fondateurs du kréyol*
+*Clavier créole avec suggestions basés sur les textes littéraires fondateurs du kréyòl*
 
 ## 🌟 Fonctionnalités
 
 ### 🎯 **Suggestions Intelligentes**
 - **1 867 mots** créoles dans le dictionnaire
 - Suggestions contextuelles en temps réel
-- Prédiction de texte adaptée au kreyòl
+- Prédiction de texte adaptée au kréyòl
 - **N-grams linguistiques** construits à partir de textes authentiques créoles
 
 #### 📚 **Corpus Littéraire des Suggestions**
@@ -68,7 +68,7 @@ Les suggestions de mots sont générées grâce à des **N-grams** (séquences d
 
 
 
-Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **Kreyòl Guadeloupéen** contemporain.
+Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **kréyòl Guadeloupéen** contemporain.
 
 
 ### 🎨 Design
@@ -269,8 +269,8 @@ cd KreyolKeyb/android_keyboard
 
 ## 🌍 Langue & Culture
 
-### Kreyòl Guadeloupéen
-Le **Kreyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, qui prend sa source dans une culture africaines, caribéennes et amérindiennes.
+### kréyòl Guadeloupéen
+Le **kréyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, qui prend sa source dans une culture africaines, caribéennes et amérindiennes.
 
 ### Respect Culturel �
 Ce projet est développé dans le respect de :
@@ -312,8 +312,8 @@ R: Vérifier que le clavier est bien activé et défini par défaut
 R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 
 <div align="center">
-   <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier Kreyòl Karukera" width="25%">
-   <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier Kreyòl Karukera en home" width="25%">
+   <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier kréyòl Karukera" width="25%">
+   <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier kréyòl Karukera en home" width="25%">
 </div>
 
 ---
