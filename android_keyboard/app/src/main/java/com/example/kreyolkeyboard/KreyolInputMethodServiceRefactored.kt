@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.inputmethodservice.InputMethodService
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -10,6 +11,8 @@ import android.widget.Button
 import android.graphics.Color
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.view.KeyEvent
 import kotlinx.coroutines.*
 
 /**
@@ -128,6 +131,23 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onKeyPress(key: String) {
         Log.d(TAG, "=== TOUCHE PRESSÉE: '$key' ===")
+        
+        // 🌐 BOUTON GLOBE - TEMPORAIREMENT DÉSACTIVÉ (bug système Android)
+        // TODO: Réactiver quand le problème système sera résolu
+        /*
+        if (key == "🌐") {
+            Log.d(TAG, "🌐 BOUTON GLOBE DÉTECTÉ - INTERCEPTION DIRECTE!")
+            try {
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showInputMethodPicker()
+                Log.d(TAG, "✅ Globe intercepté avec succès: InputMethod Picker affiché")
+                return // Arrêter ici pour éviter le traitement normal qui cause le crash
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erreur lors de l'interception du bouton Globe: ${e.message}", e)
+                return // Même en cas d'erreur, ne pas continuer pour éviter le crash
+            }
+        }
+        */
         
         if (accentHandler.isLongPressActive()) {
             Log.d(TAG, "Appui long actif - ignorer l'appui court")
@@ -333,6 +353,73 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         accentHandler.dismissAccentPopup()
         inputProcessor.resetState()
     }
+    
+    /**
+     * MÉTHODE TEMPORAIREMENT DÉSACTIVÉE - Gère le changement vers le prochain clavier IME (bouton Globe 🌐)
+     * TODO: Réactiver quand le problème système Android sera résolu
+     */
+    /*
+    override fun switchInputMethod(imeSubtypeToken: String?) {
+        Log.d(TAG, "🌐 switchInputMethod appelé avec token: $imeSubtypeToken")
+        try {
+            // Méthode 1: Utiliser la méthode standard du système
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val token = window.window?.attributes?.token
+            
+            if (token != null) {
+                // Utiliser switchToNextInputMethod avec le bon token de fenêtre
+                val switched = inputMethodManager.switchToNextInputMethod(token, false)
+                Log.d(TAG, "✅ switchToNextInputMethod réussi: $switched")
+                if (!switched) {
+                    // Fallback: afficher le sélecteur
+                    inputMethodManager.showInputMethodPicker()
+                    Log.d(TAG, "✅ Fallback: InputMethod Picker affiché")
+                }
+            } else {
+                // Si pas de token, utiliser le sélecteur directement
+                inputMethodManager.showInputMethodPicker()
+                Log.d(TAG, "✅ Token null: InputMethod Picker affiché")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erreur lors du changement de clavier: ${e.message}", e)
+            // Dernier recours: super.switchInputMethod()
+            try {
+                super.switchInputMethod(imeSubtypeToken)
+                Log.d(TAG, "✅ Super.switchInputMethod réussi")
+            } catch (superException: Exception) {
+                Log.e(TAG, "❌ Super.switchInputMethod également échoué: ${superException.message}", superException)
+            }
+        }
+    }
+    */
+    
+    /**
+     * MÉTHODE TEMPORAIREMENT DÉSACTIVÉE - Interception directe des touches système, notamment le bouton Globe
+     * TODO: Réactiver quand le problème système Android sera résolu
+     */
+    /*
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        Log.d(TAG, "🔧 onKeyDown appelé avec keyCode: $keyCode (Globe = ${KeyEvent.KEYCODE_LANGUAGE_SWITCH})")
+        
+        // Intercepter spécifiquement le bouton Globe
+        if (keyCode == KeyEvent.KEYCODE_LANGUAGE_SWITCH) {
+            Log.d(TAG, "🌐 INTERCEPTION DIRECTE du bouton Globe!")
+            try {
+                // Utiliser directement InputMethodManager sans passer par switchInputMethod()
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showInputMethodPicker()
+                Log.d(TAG, "✅ Globe intercepté: InputMethod Picker affiché avec succès")
+                return true // Consommer l'événement pour éviter le traitement par défaut
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erreur lors de l'interception Globe: ${e.message}", e)
+                return false // Laisser le système traiter en cas d'erreur
+            }
+        }
+        
+        // Pour toutes les autres touches, utiliser le comportement par défaut
+        return super.onKeyDown(keyCode, event)
+    }
+    */
     
     override fun onDestroy() {
         Log.d(TAG, "=== DESTRUCTION DU SERVICE ===")
