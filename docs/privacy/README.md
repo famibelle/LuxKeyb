@@ -1,4 +1,4 @@
-# Privacy Policy - Klavié Kreyòl Karukera • Potomitan™
+# Privacy Policy - Klavyé Kréyòl Karukera • Potomitan™
 
 ## 🌐 Live Policy
 
