@@ -140,7 +140,8 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createKeyButton(key: String, totalWeight: Float): Button {
         val button = Button(context).apply {
             text = getDisplayText(key)
-            textSize = TEXT_SIZE_SP
+            // Taille de police personnalisée pour Potomitan™ branding discret
+            textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
             setTypeface(typeface, Typeface.BOLD)
             
             // Calcul du poids selon le type de touche
@@ -178,36 +179,52 @@ class KeyboardLayoutManager(private val context: Context) {
             
             when (key) {
                 "⇧" -> {
-                    // Touche Shift avec couleurs ULTRA-VISIBLES pour test
+                    // Touche Shift avec vert tropical guadeloupéen
                     val colors = when {
-                        isCapsLock -> intArrayOf(Color.parseColor("#FFD700"), Color.parseColor("#FFA500")) // JAUNE BRILLANT
-                        isCapitalMode -> intArrayOf(Color.parseColor("#FF0000"), Color.parseColor("#CC0000")) // ROUGE VIF  
-                        else -> intArrayOf(Color.parseColor("#00FF00"), Color.parseColor("#00CC00")) // VERT VIF
+                        isCapsLock -> intArrayOf(Color.parseColor("#d9e6dfff"), Color.parseColor("#2E8B57")) // VERT TROPICAL ACTIVÉ
+                        isCapitalMode -> intArrayOf(Color.parseColor("#3BAF77"), Color.parseColor("#228B22")) // VERT TROPICAL ACTIF
+                        else -> intArrayOf(Color.parseColor("#3BAF77"), Color.parseColor("#32CD32")) // VERT TROPICAL
                     }
                     setColors(colors)
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
-                "⌫", "⏎", "123", "ABC" -> {
-                    // Touches de fonction avec couleurs des Antilles
+                "⌫" -> {
+                    // Touche Supprimer avec corail
                     setColors(intArrayOf(
-                        Color.parseColor("#FF6B35"), // Orange chaleureux
-                        Color.parseColor("#E55A2B")
+                        Color.parseColor("#FF7F50"), // Corail
+                        Color.parseColor("#FF6347")  // Tomate pour dégradé
+                    ))
+                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
+                }
+                "⏎" -> {
+                    // Touche Entrée avec jaune soleil
+                    setColors(intArrayOf(
+                        Color.parseColor("#FFD700"), // Jaune soleil
+                        Color.parseColor("#FFA500")  // Orange pour dégradé
+                    ))
+                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
+                }
+                "123", "ABC" -> {
+                    // Touches de mode avec vert tropical
+                    setColors(intArrayOf(
+                        Color.parseColor("#3BAF77"), // Vert tropical
+                        Color.parseColor("#2E8B57")  // Vert forêt pour dégradé
                     ))
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
                 "à", "è", "ò", "é", "ù", "ì", "ç" -> {
-                    // Touches créoles avec gradient spécial
+                    // Touches créoles avec vert tropical guadeloupéen
                     setColors(intArrayOf(
-                        Color.parseColor("#43A047"), // Vert tropical
-                        Color.parseColor("#2E7D32")
+                        Color.parseColor("#3BAF77"), // Vert tropical
+                        Color.parseColor("#2E8B57")  // Vert forêt pour dégradé
                     ))
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
                 " " -> {
-                    // Barre d'espace avec gradient subtil
+                    // Barre d'espace avec bleu caraïbe
                     setColors(intArrayOf(
-                        Color.parseColor("#FFFFFF"),
-                        Color.parseColor("#F0F0F0")
+                        Color.parseColor("#1E90FF"), // Bleu caraïbe
+                        Color.parseColor("#0000FF")  // Bleu pour dégradé
                     ))
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
@@ -232,6 +249,7 @@ class KeyboardLayoutManager(private val context: Context) {
             "⇧" -> if (isCapsLock || isCapitalMode) Color.WHITE else Color.parseColor("#333333")
             "⌫", "⏎", "123", "ABC" -> Color.WHITE
             "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.WHITE // Texte blanc sur fond vert
+            " " -> Color.parseColor("#CCFFFFFF") // Blanc semi-transparent pour Potomitan™ - discret mais lisible
             else -> Color.parseColor("#333333")
         })
         
@@ -383,7 +401,7 @@ class KeyboardLayoutManager(private val context: Context) {
     
     private fun getDisplayText(key: String): String {
         return when (key) {
-            " " -> "espace"
+            " " -> "Potomitan™"
             "⇧" -> "⇧"
             "⌫" -> "⌫"
             "⏎" -> "⏎"
