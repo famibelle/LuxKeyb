@@ -126,13 +126,13 @@ jobs:
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/potomitan-keystore.jks
 
     - name: 🧹 Clean project
-      run: cd android_keyboard && ./gradlew clean --no-daemon
+      run: cd android_keyboard && gradle clean --no-daemon
 
     - name: 📱 Build Debug APK
-      run: cd android_keyboard && ./gradlew assembleDebug --no-daemon
+      run: cd android_keyboard && gradle assembleDebug --no-daemon
 
     - name: 📦 Build Debug AAB
-      run: cd android_keyboard && ./gradlew bundleDebug --no-daemon
+      run: cd android_keyboard && gradle bundleDebug --no-daemon
 
     - name: 🧹 Cleanup Keystore
       run: rm -f android_keyboard/app/potomitan-keystore.jks
@@ -197,13 +197,13 @@ jobs:
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/potomitan-keystore.jks
 
     - name: 🧹 Clean project
-      run: cd android_keyboard && ./gradlew clean --no-daemon
+      run: cd android_keyboard && gradle clean --no-daemon
 
     - name: 📱 Build Release APK
-      run: cd android_keyboard && ./gradlew assembleRelease --no-daemon
+      run: cd android_keyboard && gradle assembleRelease --no-daemon
 
     - name: 📦 Build Release AAB
-      run: cd android_keyboard && ./gradlew bundleRelease --no-daemon
+      run: cd android_keyboard && gradle bundleRelease --no-daemon
 
     - name: 🧹 Cleanup Keystore
       run: rm -f android_keyboard/app/potomitan-keystore.jks
