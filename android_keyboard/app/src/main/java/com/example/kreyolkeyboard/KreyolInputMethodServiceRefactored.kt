@@ -14,6 +14,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.KeyEvent
 import kotlinx.coroutines.*
+import android.os.Handler
+import android.os.Looper
+import java.util.Timer
+import java.util.TimerTask
 
 /**
  * Service principal du clavier créole refactorisé
@@ -42,6 +46,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // État du service
     private var isInitialized = false
+    
+    // Gestion suppression par mots (appui long Delete)
+    private var deleteTimer: Timer? = null
+    private var deleteHandler = Handler(Looper.getMainLooper())
+    private var isDeleteLongPressActive = false
     
     override fun onCreate() {
         super.onCreate()
@@ -165,14 +174,28 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onLongPress(key: String, button: TextView) {
-        Log.d(TAG, "Appui long sur: $key")
+        Log.d(TAG, "🔗 Appui long sur: $key")
         
-        if (accentHandler.hasAccents(key)) {
-            accentHandler.startLongPressTimer(key, button)
+        when (key) {
+            "⌫" -> {
+                // Suppression par mots avec appui long sur Delete
+                Log.d(TAG, "🗑️ Démarrage suppression par mots (Delete)")
+                startWordDeletion()
+            }
+            else -> {
+                // Gestion des accents pour les autres touches
+                if (accentHandler.hasAccents(key)) {
+                    accentHandler.startLongPressTimer(key, button)
+                }
+            }
         }
     }
     
     override fun onKeyRelease() {
+        // Arrêter la suppression par mots si active
+        stopWordDeletion()
+        
+        // Arrêter les accents
         accentHandler.cancelLongPress()
     }
     
@@ -432,6 +455,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "=== DESTRUCTION DU SERVICE ===")
         
         try {
+            // Arrêter la suppression par mots si active
+            stopWordDeletion()
+            
             // Nettoyage des composants dans l'ordre inverse de création
             accentHandler.cleanup()
             // inputProcessor.setInputProcessorListener(null) // À commenter pour éviter l'erreur
@@ -452,6 +478,91 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
     }
     
+    // ===== SUPPRESSION PAR MOTS (APPUI LONG DELETE) =====
+    
+    /**
+     * Démarre la suppression continue par mots avec appui long
+     */
+    private fun startWordDeletion() {
+        if (isDeleteLongPressActive) return
+        
+        isDeleteLongPressActive = true
+        Log.d(TAG, "🔥 Début suppression par mots avec appui long")
+        
+        // Première suppression immédiate d'un mot
+        deleteWordBeforeCursor()
+        
+        // Puis suppression continue toutes les 300ms
+        deleteTimer = Timer()
+        deleteTimer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                deleteHandler.post {
+                    if (isDeleteLongPressActive) {
+                        deleteWordBeforeCursor()
+                    }
+                }
+            }
+        }, 500, 300) // Délai initial 500ms, puis toutes les 300ms
+    }
+    
+    /**
+     * Arrête la suppression continue par mots
+     */
+    private fun stopWordDeletion() {
+        if (!isDeleteLongPressActive) return
+        
+        isDeleteLongPressActive = false
+        deleteTimer?.cancel()
+        deleteTimer = null
+        Log.d(TAG, "🛑 Arrêt suppression par mots")
+    }
+    
+    /**
+     * Supprime le mot précédent en utilisant les espaces comme délimiteurs
+     */
+    private fun deleteWordBeforeCursor() {
+        val inputConnection = currentInputConnection ?: return
+        
+        try {
+            // Récupérer le texte avant le curseur (jusqu'à 100 caractères)
+            val textBeforeCursor = inputConnection.getTextBeforeCursor(100, 0)?.toString() ?: ""
+            
+            if (textBeforeCursor.isEmpty()) {
+                Log.d(TAG, "Aucun texte avant le curseur")
+                return
+            }
+            
+            // Trouver le dernier mot (délimité par des espaces)
+            var deleteCount = 0
+            var i = textBeforeCursor.length - 1
+            
+            // Ignorer les espaces en fin
+            while (i >= 0 && textBeforeCursor[i].isWhitespace()) {
+                deleteCount++
+                i--
+            }
+            
+            // Compter les caractères du mot
+            while (i >= 0 && !textBeforeCursor[i].isWhitespace()) {
+                deleteCount++
+                i--
+            }
+            
+            if (deleteCount > 0) {
+                inputConnection.deleteSurroundingText(deleteCount, 0)
+                Log.d(TAG, "🗑️ Supprimé $deleteCount caractères (mot complet)")
+                
+                // Optionnel: Le processeur d'entrée se mettra à jour automatiquement
+                // via les prochaines interactions utilisateur
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur lors de la suppression par mots: ${e.message}")
+            // Fallback: suppression caractère par caractère
+            inputConnection.deleteSurroundingText(1, 0)
+        }
+    }
+
     // ===== MÉTHODES D'ÉVALUATION =====
     
     override fun onEvaluateFullscreenMode(): Boolean {
