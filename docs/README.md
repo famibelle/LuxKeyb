@@ -11,7 +11,7 @@
 ## 📱 Aperçu
 
 <div align="center">
-   <img src="../Screenshots/KlavyéKreyol_x2.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
+   <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
 
