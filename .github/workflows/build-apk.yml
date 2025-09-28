@@ -120,16 +120,16 @@ jobs:
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
         echo "📊 Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
 
-    - name: � Configure Build Scan (Debug)
+    - name: Configure Build Scan (Debug)
       run: |
         mkdir -p ~/.gradle
         echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
         echo "org.gradle.caching=true" >> ~/.gradle/gradle.properties  
         echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
         echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties
-        echo "� Build Scan® configuré via plugin explicite - publication automatique"
+        echo "Build Scan® configuré via plugin explicite - publication automatique"
 
-    - name: �🔐 Setup Debug Keystore
+    - name:  Setup Debug Keystore
       run: |
         cd android_keyboard
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/potomitan-keystore.jks
