@@ -22,7 +22,7 @@ on:
 
 jobs:
   generate-dictionary:
-    name: � Generate Kreyòl Dictionary
+    name: Generate Kreyòl Dictionary
     runs-on: ubuntu-latest
     
     env:
@@ -189,7 +189,7 @@ jobs:
         mkdir -p android_keyboard/app/src/main/assets/
         cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
-        echo "� Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
+        echo "Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
 
     - name: 🔐 Setup Release Keystore
       run: |
