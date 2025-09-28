@@ -76,7 +76,7 @@ jobs:
           
           # Informations sur le dictionnaire
           DICT_SIZE=$(jq length ../clavier_creole/assets/creole_dict.json)
-          NGRAM_SIZE=$(jq '.predictions | length' ../clavier_creole/assets/creole_ngrams.json)
+          NGRAM_SIZE=$(jq 'keys | length' ../clavier_creole/assets/creole_ngrams.json)
           echo "📊 Dictionary: $DICT_SIZE words, $NGRAM_SIZE N-grams"
           
           echo "DICT_SIZE=$DICT_SIZE" >> $GITHUB_ENV
