@@ -1,4 +1,4 @@
-name: 🇸🇷 Build Potomitan Kreyol Keyboard APK
+name: 🇸🇷 Build Potomitan Kreyol Keyboard APK & AAB
 
 permissions:
   contents: write
@@ -22,7 +22,7 @@ on:
 
 jobs:
   build:
-    name: 📱 Build APK
+    name: 📱 Build APK & AAB
     runs-on: ubuntu-latest
     
     # 🔐 Variables d'environnement globales pour tout le job
@@ -105,6 +105,12 @@ jobs:
     - name: 📱 Build Release APK
       run: cd android_keyboard && gradle assembleRelease --no-daemon
         
+    - name: 📦 Build Debug AAB (Android App Bundle)
+      run: cd android_keyboard && gradle bundleDebug --no-daemon
+        
+    - name: 📦 Build Release AAB (Android App Bundle)
+      run: cd android_keyboard && gradle bundleRelease --no-daemon
+        
     - name: 🧹 Cleanup Keystore
       run: |
         cd android_keyboard
@@ -124,6 +130,20 @@ jobs:
         name: Potomitan-Kreyol-Keyboard-RELEASE
         path: android_keyboard/app/build/outputs/apk/release/*.apk
         retention-days: 90
+        
+    - name: Upload Debug AAB
+      uses: actions/upload-artifact@v4
+      with:
+        name: Potomitan-Kreyol-Keyboard-AAB-DEBUG
+        path: android_keyboard/app/build/outputs/bundle/debug/*.aab
+        retention-days: 30
+        
+    - name: Upload Release AAB
+      uses: actions/upload-artifact@v4
+      with:
+        name: Potomitan-Kreyol-Keyboard-AAB-RELEASE
+        path: android_keyboard/app/build/outputs/bundle/release/*.aab
+        retention-days: 90
 
   release:
     name: 🚀 Create Release
@@ -141,10 +161,18 @@ jobs:
         name: Potomitan-Kreyol-Keyboard-RELEASE
         path: ./release-apk
         
+    - name: Download Release AAB
+      uses: actions/download-artifact@v4
+      with:
+        name: Potomitan-Kreyol-Keyboard-AAB-RELEASE
+        path: ./release-aab
+        
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: ./release-apk/*.apk
+        files: |
+          ./release-apk/*.apk
+          ./release-aab/*.aab
         generate_release_notes: true
         draft: false
         prerelease: false
