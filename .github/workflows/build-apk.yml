@@ -74,13 +74,8 @@ jobs:
           cp ../clavier_creole/assets/creole_dict.json ../android_keyboard/app/src/main/assets/
           cp ../clavier_creole/assets/creole_ngrams.json ../android_keyboard/app/src/main/assets/
           
-          # Informations sur le dictionnaire
-          DICT_SIZE=$(jq length ../clavier_creole/assets/creole_dict.json)
-          NGRAM_SIZE=$(jq 'keys | length' ../clavier_creole/assets/creole_ngrams.json)
-          echo "📊 Dictionary: $DICT_SIZE words, $NGRAM_SIZE N-grams"
-          
-          echo "DICT_SIZE=$DICT_SIZE" >> $GITHUB_ENV
-          echo "NGRAM_SIZE=$NGRAM_SIZE" >> $GITHUB_ENV
+          # Les statistiques sont affichées directement par le script Python
+          echo "📊 Statistiques affichées par le script KreyolComplet.py ci-dessus"
         else
           echo "❌ Dictionary generation failed - files not found in clavier_creole/assets/"
           echo "🔍 Checking what was generated..."
