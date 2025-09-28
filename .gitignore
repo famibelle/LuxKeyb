@@ -64,3 +64,5 @@ android_keyboard/app/local-release.properties.example
 
 
 KreyolKeybPlayStore\graphics\screenshots-phone\KlavyéAnAktion2.webm
+.github\workflows\release_aab.yml
+Dictionnaires/backups/
