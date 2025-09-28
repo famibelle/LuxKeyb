@@ -1,39 +1,27 @@
 # Klavyé Kréyòl Karukera • Potomitan™
 
-## 📱 Android Keyboard for Guadeloupean Creole
+**📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
 
-Welcome to the official repository of **Klavyé Kréyòl Karukera • Potomitan™**, an Android virtual keyboard optimized for typing in Guadeloupean Creole (Kreyòl Karukera).
 
-### 🌟 Features
+- 🛠️ Si ton créole est très rouillé...
+- 😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots
+- 🤔 Que tu doutes de l’orthographe à chaque message ...
+- ➡️ Klavyé Kréyòl Karukera est fait pour toi !
 
-- ✅ **Smart suggestions** based on Creole dictionary
-- ✅ **Automatic corrections** for common typos
-- ✅ **Special characters** support for Creole accents
-- ✅ **100% local operation** - No data collection
-- ✅ **Offline functionality** - No internet required
+## 📱 Aperçu
 
-### 📥 Download
+<div align="center">
+   <img src="../Screenshots/KlavyéKreyol_x2.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
+</div>
 
-**Google Play Store:** [Coming Soon]
 
-### 🛡️ Privacy
+### 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
-**We respect your privacy completely:**
-- 🔒 **Privacy Policy:** [View Policy](./privacy/)
-- ✅ No personal data collection
-- ✅ 100% local processing
-- ✅ GDPR compliant
+**Google Play Store :** [Bientôt disponible]
+
 
 ### 📧 Contact
 
-**Developer:** Médhi Famibelle  
-**Email:** medhi@potomitan.io  
-**Organization:** Potomitan
-
-### 🏛️ About Potomitan
-
-Potomitan is dedicated to preserving and promoting Creole culture through innovative technological tools.
-
----
-
-*Preserving our beautiful Creole language through technology* 🇸🇷
+**Développeur :** Médhi Famibelle  
+**Email :** medhi@potomitan.io  
+**Organisation :** Potomitan
