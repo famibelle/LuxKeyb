@@ -44,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val appTitle = TextView(this).apply {
-            text = "Klavyé Kréyòl Karukera 🇬🇵"
+            text = "Klavyé Kréyòl Karukera 🇸🇷"
             textSize = 28f
             setTextColor(Color.parseColor("#F8F8FF")) // Blanc Coral
             setTypeface(null, Typeface.BOLD)
@@ -76,7 +76,7 @@ class SettingsActivity : AppCompatActivity() {
                     "💡 Suggestions de mots en Kréyòl\n" +
                     "🔢 Mode numérique intégré\n" +
                     "🌈 Design aux couleurs de la Guadeloupe\n" +
-                    "🇬🇵 Identité guadeloupéenne forte"
+                    "🇸🇷 Identité guadeloupéenne forte"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.2f)
