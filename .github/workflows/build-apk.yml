@@ -47,6 +47,47 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: 8.7
+
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Generate Fresh Kreyòl Dictionary
+      run: |
+        echo "🔄 Generating fresh Kreyòl dictionary from Hugging Face..."
+        echo "🔑 Token configuré: $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
+        
+        # Install jq for JSON processing
+        sudo apt-get update && sudo apt-get install -y jq
+        
+        cd Dictionnaires
+        python -m pip install --upgrade pip
+        pip install datasets huggingface_hub
+        python KreyolComplet.py
+        
+        # Vérifier que les fichiers ont été générés dans clavier_creole/assets/
+        if [ -f "../clavier_creole/assets/creole_dict.json" ] && [ -f "../clavier_creole/assets/creole_ngrams.json" ]; then
+          echo "✅ Dictionary files generated successfully"
+          
+          # Copier depuis Flutter assets vers Android assets
+          cp ../clavier_creole/assets/creole_dict.json ../android_keyboard/app/src/main/assets/
+          cp ../clavier_creole/assets/creole_ngrams.json ../android_keyboard/app/src/main/assets/
+          
+          # Informations sur le dictionnaire
+          DICT_SIZE=$(jq length ../clavier_creole/assets/creole_dict.json)
+          NGRAM_SIZE=$(jq '.predictions | length' ../clavier_creole/assets/creole_ngrams.json)
+          echo "📊 Dictionary: $DICT_SIZE words, $NGRAM_SIZE N-grams"
+          
+          echo "DICT_SIZE=$DICT_SIZE" >> $GITHUB_ENV
+          echo "NGRAM_SIZE=$NGRAM_SIZE" >> $GITHUB_ENV
+        else
+          echo "❌ Dictionary generation failed - files not found in clavier_creole/assets/"
+          echo "🔍 Checking what was generated..."
+          ls -la ../clavier_creole/assets/ || echo "Directory not found"
+          ls -la ./ || echo "Current directory listing failed"
+          exit 1
+        fi
         
     - name: 🔐 Setup Keystore
       run: |
