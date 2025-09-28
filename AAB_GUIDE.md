@@ -57,7 +57,7 @@ Store Listing:
 
 ### **📝 Description Play Store recommandée** :
 ```
-🇬🇵 KLAVIÉ KREYÒL KARUKERA - POTOMITAN™
+🇸🇷 KLAVIÉ KREYÒL KARUKERA - POTOMITAN™
 
 Le seul clavier créole authentique pour la Guadeloupe !
 
@@ -78,7 +78,7 @@ Le seul clavier créole authentique pour la Guadeloupe !
 • Aucune collecte de données personnelles
 • Fonctionne entièrement hors ligne
 
-🇬🇵 Alé douvan épi klavié kreyòl-la !
+🇸🇷 Alé douvan épi klavié kreyòl-la !
 ```
 
 ## 🔧 **AVANTAGES TECHNIQUES AAB**
@@ -145,6 +145,6 @@ Avec l'AAB, ton clavier créole sera :
 - 🏪 **Disponible sur Play Store** officiellement
 - 📱 **Optimisé automatiquement** pour chaque device
 - 🔄 **Mis à jour facilement** via releases automatiques
-- 🇬🇵 **Accessible à tous** les Guadeloupéens !
+- 🇸🇷 **Accessible à tous** les Guadeloupéens !
 
 **L'AAB est automatiquement généré à chaque release GitHub !** 🚀

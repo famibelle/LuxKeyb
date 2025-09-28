@@ -1,4 +1,4 @@
-# 🇬🇵 KREYÒL POTOMITAN™ - PIPELINE UNIQUE
+# 🇸🇷 KREYÒL POTOMITAN™ - PIPELINE UNIQUE
 
 ## Vue d'ensemble
 
@@ -82,4 +82,4 @@ Dictionnaires/
 ---
 
 *Fait avec ❤️ pour préserver le Kreyòl Guadeloupéen*
-*🇬🇵 Kreyòl Gwadloup ka viv! 🇬🇵*
+*🇸🇷 Kreyòl Gwadloup ka viv! 🇸🇷*

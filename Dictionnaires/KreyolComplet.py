@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-🇬🇵 KREYÒL POTOMITAN™ - PIPELINE UNIQUE ET AUTOMATIQUE 🇬🇵
+🇸🇷 KREYÒL POTOMITAN™ - PIPELINE UNIQUE ET AUTOMATIQUE 🇸🇷
 ===========================================================
 
 Le pipeline ultime pour le clavier créole intelligent.
@@ -77,7 +77,7 @@ class KreyolPipelineUnique:
     
     def _afficher_entete(self):
         """Affiche l'en-tête du pipeline"""
-        print("🇬🇵 KREYÒL POTOMITAN™ - PIPELINE UNIQUE ET AUTOMATIQUE 🇬🇵")
+        print("🇸🇷 KREYÒL POTOMITAN™ - PIPELINE UNIQUE ET AUTOMATIQUE 🇸🇷")
         print("=" * 70)
         print(f"Version: {self.version}")
         print(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -666,7 +666,7 @@ def main():
             print("🎉 PIPELINE KREYÒL POTOMITAN™ TERMINÉ AVEC SUCCÈS!")
             print("=" * 60)
             print("📱 Fichiers prêts pour l'intégration Android")
-            print("🇬🇵 Kreyòl Gwadloup ka viv! 🇬🇵")
+            print("🇸🇷 Kreyòl Gwadloup ka viv! 🇸🇷")
             sys.exit(0)
         else:
             print("⚠️ PIPELINE TERMINÉ AVEC DES AVERTISSEMENTS")
