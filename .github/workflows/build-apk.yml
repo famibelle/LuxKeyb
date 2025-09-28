@@ -148,9 +148,13 @@ jobs:
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
 
     - name: 🧹 Clean Project
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle clean --no-daemon --scan
 
     - name: 🔨 Build Debug APK
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle assembleDebug --no-daemon --scan
 
     - name: 📤 Upload Debug APK
@@ -201,6 +205,8 @@ jobs:
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
 
     - name: 📦 Build Debug AAB
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle bundleDebug --no-daemon --scan
 
     - name: 📤 Upload Debug AAB
@@ -257,9 +263,13 @@ jobs:
         keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
 
     - name: 🧹 Clean Project  
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle clean --no-daemon --scan
 
     - name: 🚀 Build Release APK
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle assembleRelease --no-daemon --scan
 
     - name: 📤 Upload Release APK
@@ -316,6 +326,8 @@ jobs:
         keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
 
     - name: 🎯 Build Release AAB
+      env:
+        GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle bundleRelease --no-daemon --scan
 
     - name: 📤 Upload Release AAB
