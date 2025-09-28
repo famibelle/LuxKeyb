@@ -48,16 +48,45 @@ jobs:
         echo "🔑 Token configuré: $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
         
         cd Dictionnaires
+        echo "📁 Contenu avant génération:"
+        ls -la
+        
         python -m pip install --upgrade pip
         pip install datasets huggingface_hub
+        
+        echo "🚀 Lancement du script Python..."
         python KreyolComplet.py
+        
+        echo "📁 Contenu après génération:"
+        ls -la
+        
+        echo "🔍 Vérification fichiers JSON:"
+        ls -la *.json || echo "❌ Aucun fichier JSON trouvé"
 
     - name: 📊 Copy Assets to Flutter Project
       run: |
         echo "📂 Copying generated assets..."
+        
+        # Vérifier l'existence des fichiers avant copie
+        if [ ! -f "Dictionnaires/creole_dict.json" ]; then
+          echo "❌ ERREUR: creole_dict.json manquant!"
+          echo "📁 Contenu du dossier Dictionnaires:"
+          ls -la Dictionnaires/
+          exit 1
+        fi
+        
+        if [ ! -f "Dictionnaires/creole_ngrams.json" ]; then
+          echo "❌ ERREUR: creole_ngrams.json manquant!"
+          echo "📁 Contenu du dossier Dictionnaires:"
+          ls -la Dictionnaires/
+          exit 1
+        fi
+        
         mkdir -p clavier_creole/assets/
         cp Dictionnaires/creole_dict.json clavier_creole/assets/
         cp Dictionnaires/creole_ngrams.json clavier_creole/assets/
+        
+        echo "✅ Fichiers copiés avec succès!"
 
     - name: 📈 Dictionary Statistics
       id: stats
