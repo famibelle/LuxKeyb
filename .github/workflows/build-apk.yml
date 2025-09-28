@@ -364,6 +364,7 @@ jobs:
         path: ./release-artifacts
 
     - name: 🎉 Create GitHub Release
+      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -371,9 +372,15 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: 🇸🇷 Kreyòl Keyboard ${{ github.ref }}
         body: |
-          🎯 **Clavier Kreyòl Potomitan Release**
+          🎯 **Clavier Kreyòl Potomitan Release v5.1.1**
           
-          📱 **Android APK & AAB disponibles**
+          � **CORRECTIFS SAMSUNG A21S**
+          - ✅ Fix memory leaks et coroutines zombies  
+          - ✅ Fix crashes OutOfMemoryError
+          - ✅ Optimisations pour processeurs Exynos 850
+          - ✅ Monitoring mémoire temps réel
+          
+          �📱 **Android APK & AAB disponibles**
           - APK Release pour installation directe
           - AAB Bundle pour Google Play Store
           
@@ -383,7 +390,7 @@ jobs:
           
           📊 **Build Scans disponibles** pour diagnostic complet
           
-          Compatible Samsung A21s et autres appareils Android 🚀
+          🎯 **Spécialement optimisé pour Samsung Galaxy A21s** 🚀
         draft: false
         prerelease: false
 
