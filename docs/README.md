@@ -36,4 +36,4 @@ Potomitan is dedicated to preserving and promoting Creole culture through innova
 
 ---
 
-*Preserving our beautiful Creole language through technology* 🇬🇵
+*Preserving our beautiful Creole language through technology* 🇸🇷
