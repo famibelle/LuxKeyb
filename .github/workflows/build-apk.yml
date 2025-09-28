@@ -120,19 +120,35 @@ jobs:
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
         echo "📊 Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
 
-    - name: 🔐 Setup Debug Keystore
+    - name: � Configure Build Scan (Debug)
+      run: |
+        mkdir -p ~/.gradle
+        echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+        echo "org.gradle.caching=true" >> ~/.gradle/gradle.properties  
+        echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
+        echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties
+        echo "🔍 Build Scan will be generated for Debug builds"
+
+    - name: �🔐 Setup Debug Keystore
       run: |
         cd android_keyboard
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/potomitan-keystore.jks
 
     - name: 🧹 Clean project
-      run: cd android_keyboard && gradle clean --no-daemon
+      run: cd android_keyboard && gradle clean --no-daemon --scan
 
     - name: 📱 Build Debug APK
-      run: cd android_keyboard && gradle assembleDebug --no-daemon
+      run: cd android_keyboard && gradle assembleDebug --no-daemon --scan
 
     - name: 📦 Build Debug AAB
-      run: cd android_keyboard && gradle bundleDebug --no-daemon
+      run: cd android_keyboard && gradle bundleDebug --no-daemon --scan
+
+    - name: 📊 Display Build Scan URLs (Debug)
+      run: |
+        echo "🔍 Build Scan URLs pour les builds Debug:"
+        echo "- Les URLs des Build Scans apparaissent dans les logs ci-dessus"
+        echo "- Recherchez les lignes contenant 'https://gradle.com/s/'"
+        echo "- Ou 'https://scans.gradle.com/s/'"
 
     - name: 🧹 Cleanup Keystore
       run: rm -f android_keyboard/app/potomitan-keystore.jks
@@ -189,7 +205,16 @@ jobs:
         mkdir -p android_keyboard/app/src/main/assets/
         cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
         cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
-        echo "Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
+        echo "📊 Dictionary: ${{ needs.generate-dictionary.outputs.dict-count }} words, ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams"
+
+    - name: 📊 Configure Build Scan (Release)
+      run: |
+        mkdir -p ~/.gradle
+        echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+        echo "org.gradle.caching=true" >> ~/.gradle/gradle.properties  
+        echo "org.gradle.parallel=true" >> ~/.gradle/gradle.properties
+        echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties
+        echo "🔍 Build Scan will be generated for Release builds"
 
     - name: 🔐 Setup Release Keystore
       run: |
@@ -197,13 +222,20 @@ jobs:
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/potomitan-keystore.jks
 
     - name: 🧹 Clean project
-      run: cd android_keyboard && gradle clean --no-daemon
+      run: cd android_keyboard && gradle clean --no-daemon --scan
 
     - name: 📱 Build Release APK
-      run: cd android_keyboard && gradle assembleRelease --no-daemon
+      run: cd android_keyboard && gradle assembleRelease --no-daemon --scan
 
     - name: 📦 Build Release AAB
-      run: cd android_keyboard && gradle bundleRelease --no-daemon
+      run: cd android_keyboard && gradle bundleRelease --no-daemon --scan
+
+    - name: 📊 Display Build Scan URLs (Release)
+      run: |
+        echo "🔍 Build Scan URLs pour les builds Release:"
+        echo "- Les URLs des Build Scans apparaissent dans les logs ci-dessus"
+        echo "- Recherchez les lignes contenant 'https://gradle.com/s/'"
+        echo "- Ou 'https://scans.gradle.com/s/'"
 
     - name: 🧹 Cleanup Keystore
       run: rm -f android_keyboard/app/potomitan-keystore.jks
