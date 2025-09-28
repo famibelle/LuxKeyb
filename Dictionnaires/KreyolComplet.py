@@ -661,12 +661,18 @@ def main():
         pipeline = KreyolPipelineUnique()
         succes = pipeline.executer_pipeline()
         
+        # Afficher les statistiques finales
+        dict_count = len(pipeline.nouveau_dictionnaire) if pipeline.nouveau_dictionnaire else 0
+        ngrams_count = len(pipeline.nouveaux_ngrams) if pipeline.nouveaux_ngrams else 0
+        
         print("\n" + "=" * 60)
         if succes:
             print("🎉 PIPELINE KREYÒL POTOMITAN™ TERMINÉ AVEC SUCCÈS!")
             print("=" * 60)
             print("📱 Fichiers prêts pour l'intégration Android")
             print("🇸🇷 Kreyòl Gwadloup ka viv! 🇸🇷")
+            print("✅ Dictionary files generated successfully")
+            print(f"📊 Dictionary: {dict_count} words, {ngrams_count} N-grams")
             sys.exit(0)
         else:
             print("⚠️ PIPELINE TERMINÉ AVEC DES AVERTISSEMENTS")
