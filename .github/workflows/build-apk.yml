@@ -31,7 +31,8 @@ jobs:
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
       KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-    
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
