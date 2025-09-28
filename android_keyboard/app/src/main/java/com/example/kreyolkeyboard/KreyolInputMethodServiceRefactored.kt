@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard
 
 import android.inputmethodservice.InputMethodService
 import android.content.Context
+import android.app.ActivityManager
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -32,6 +33,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     companion object {
         private const val TAG = "KreyolIME-Potomitan™"
         private const val MAX_SUGGESTIONS = 3
+        
+        // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
+        private fun isLowEndDevice(context: Context): Boolean {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+            return activityManager.isLowRamDevice || 
+                   activityManager.memoryClass <= 256 // 256MB ou moins = low-end
+        }
     }
     
     // Composants modulaires
@@ -47,6 +55,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // État du service
     private var isInitialized = false
     
+    // 🔧 FIX SAMSUNG A21S: Gestion coroutines liées au cycle de vie
+    private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    
+    // 🔍 MONITORING MÉMOIRE A21S
+    private var memoryMonitoringJob: Job? = null
+    private var lastMemoryWarning = 0L
+    
     // Gestion suppression par mots (appui long Delete)
     private var deleteTimer: Timer? = null
     private var deleteHandler = Handler(Looper.getMainLooper())
@@ -56,18 +71,89 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onCreate()
         Log.d(TAG, "=== KREYOL IME SERVICE REFACTORISÉ onCreate() ===")
         
+        // 🔍 DIAGNOSTIC SAMSUNG A21S: Informations système détaillées
+        logSystemInfo()
+        
         try {
             initializeComponents()
-            Log.d(TAG, "Service initialisé avec succès")
+            Log.d(TAG, "✅ Service initialisé avec succès")
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors de l'initialisation: ${e.message}", e)
+            Log.e(TAG, "❌ ERREUR CRITIQUE lors de l'initialisation: ${e.message}", e)
+            // Log stack trace complète pour A21s debugging
+            Log.e(TAG, "Stack trace complète:", e)
+        }
+    }
+    
+    /**
+     * 🔍 DIAGNOSTIC A21S: Log des informations système pour debugging
+     */
+    private fun logSystemInfo() {
+        try {
+            val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val memInfo = ActivityManager.MemoryInfo()
+            activityManager.getMemoryInfo(memInfo)
+            
+            Log.d(TAG, "📊 DIAGNOSTIC SYSTÈME A21S:")
+            Log.d(TAG, "  • RAM totale: ${memInfo.totalMem / (1024 * 1024)}MB")
+            Log.d(TAG, "  • RAM disponible: ${memInfo.availMem / (1024 * 1024)}MB")
+            Log.d(TAG, "  • Seuil low memory: ${memInfo.threshold / (1024 * 1024)}MB")
+            Log.d(TAG, "  • Low RAM device: ${activityManager.isLowRamDevice}")
+            Log.d(TAG, "  • Memory class: ${activityManager.memoryClass}MB")
+            Log.d(TAG, "  • Large memory class: ${activityManager.largeMemoryClass}MB")
+            
+            // Informations Android
+            Log.d(TAG, "  • Android SDK: ${android.os.Build.VERSION.SDK_INT}")
+            Log.d(TAG, "  • Model: ${android.os.Build.MODEL}")
+            Log.d(TAG, "  • Manufacturer: ${android.os.Build.MANUFACTURER}")
+            Log.d(TAG, "  • Device: ${android.os.Build.DEVICE}")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erreur diagnostic système: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * 🔍 MONITORING MÉMOIRE A21S: Surveillance continue pour détecter les fuites
+     */
+    private fun startMemoryMonitoring() {
+        memoryMonitoringJob = serviceScope.launch {
+            while (isActive) {
+                try {
+                    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                    val memInfo = ActivityManager.MemoryInfo()
+                    activityManager.getMemoryInfo(memInfo)
+                    
+                    val availableMB = memInfo.availMem / (1024 * 1024)
+                    val lowMemThresholdMB = memInfo.threshold / (1024 * 1024)
+                    
+                    // Alerter si mémoire critique (seulement toutes les 30 secondes)
+                    val now = System.currentTimeMillis()
+                    if (availableMB < lowMemThresholdMB && (now - lastMemoryWarning) > 30000) {
+                        Log.w(TAG, "⚠️ A21S MÉMOIRE CRITIQUE: ${availableMB}MB disponible (seuil: ${lowMemThresholdMB}MB)")
+                        lastMemoryWarning = now
+                        
+                        // Suggestion de nettoyage sur A21s
+                        System.gc()
+                        Log.d(TAG, "🔧 Garbage collection forcé pour A21s")
+                    }
+                    
+                    delay(10000) // Vérifier toutes les 10 secondes
+                } catch (e: Exception) {
+                    Log.e(TAG, "Erreur monitoring mémoire A21s: ${e.message}", e)
+                    delay(30000) // En cas d'erreur, attendre plus longtemps
+                }
+            }
         }
     }
     
     /**
      * Initialise tous les composants modulaires
+     * 🔧 FIX SAMSUNG A21S: Initialisation adaptative selon les capacités de l'appareil
      */
     private fun initializeComponents() {
+        val isLowEnd = isLowEndDevice(this)
+        Log.d(TAG, if (isLowEnd) "🔧 Appareil détecté: Low-end (A21s compatible)" else "🚀 Appareil détecté: Standard")
+        
         // Créer les gestionnaires
         keyboardLayoutManager = KeyboardLayoutManager(this).apply {
             setInteractionListener(this@KreyolInputMethodServiceRefactored)
@@ -85,10 +171,41 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             setInputProcessorListener(this@KreyolInputMethodServiceRefactored)
         }
         
-        // Initialiser le moteur de suggestions de façon asynchrone
-        GlobalScope.launch {
-            suggestionEngine.initialize()
-            isInitialized = true
+        // 🔧 FIX SAMSUNG A21S: Initialisation adaptative selon les capacités
+        serviceScope.launch {
+            try {
+                if (isLowEnd) {
+                    // Sur A21s: Initialisation graduelle pour éviter les pics de mémoire
+                    Log.d(TAG, "🔧 Initialisation optimisée A21s - Chargement graduel")
+                    delay(500) // Laisser le service se stabiliser
+                    suggestionEngine.initialize()
+                    delay(200) // Pause entre les étapes
+                } else {
+                    // Appareils standard: Initialisation normale
+                    suggestionEngine.initialize()
+                }
+                isInitialized = true
+                Log.d(TAG, "✅ Moteur de suggestions initialisé (mode: ${if (isLowEnd) "A21s optimisé" else "standard"})")
+                
+                // Démarrer monitoring mémoire sur A21s
+                if (isLowEnd) {
+                    startMemoryMonitoring()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erreur initialisation suggestions: ${e.message}", e)
+                // Sur A21s, réessayer avec un mode plus conservateur
+                if (isLowEnd && !isInitialized) {
+                    Log.d(TAG, "🔧 Tentative de récupération pour A21s...")
+                    delay(1000)
+                    try {
+                        suggestionEngine.initialize()
+                        isInitialized = true
+                        Log.d(TAG, "✅ Récupération A21s réussie")
+                    } catch (e2: Exception) {
+                        Log.e(TAG, "❌ Échec récupération A21s: ${e2.message}", e2)
+                    }
+                }
+            }
         }
     }
     
@@ -269,9 +386,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "Mot complété: '$word' - Ajout à l'historique")
         suggestionEngine.addWordToHistory(word)
         
-        // Générer les suggestions contextuelles pour le prochain mot
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(200) // Pause optimale pour une transition fluide
+        // 🔧 FIX SAMSUNG A21S: Utiliser serviceScope et réduire le délai
+        serviceScope.launch {
+            delay(100) // Délai réduit pour A21s (performance limitée)
             Log.d(TAG, "Génération suggestions contextuelles après '$word'")
             suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
             suggestionEngine.generateContextualSuggestions()
@@ -325,9 +442,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     setOnClickListener {
                         inputProcessor.processSuggestionSelection(suggestion)
                         
-                        // Déclencher les suggestions contextuelles après la sélection
-                        CoroutineScope(Dispatchers.Main).launch {
-                            delay(300) // Petite pause pour que l'espace soit traité
+                        // 🔧 FIX SAMSUNG A21S: Réduire délai et utiliser serviceScope
+                        serviceScope.launch {
+                            delay(150) // Délai réduit pour performance A21s
                             suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
                             suggestionEngine.generateContextualSuggestions()
                         }
@@ -455,6 +572,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "=== DESTRUCTION DU SERVICE ===")
         
         try {
+            // 🔧 FIX SAMSUNG A21S: Arrêter monitoring et annuler coroutines
+            memoryMonitoringJob?.cancel()
+            serviceScope.cancel()
+            Log.d(TAG, "✅ Monitoring mémoire et coroutines annulés pour A21s")
+            
             // Arrêter la suppression par mots si active
             stopWordDeletion()
             
@@ -469,7 +591,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             suggestionsView = null
             mainKeyboardView = null
             
-            Log.d(TAG, "Nettoyage terminé avec succès")
+            Log.d(TAG, "Nettoyage terminé avec succès - Compatible A21s")
             
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors du nettoyage: ${e.message}", e)
