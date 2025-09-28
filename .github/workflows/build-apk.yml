@@ -60,8 +60,8 @@ jobs:
         echo "📁 Contenu après génération:"
         ls -la
         
-        echo "🔍 Vérification fichiers JSON:"
-        ls -la *.json || echo "❌ Aucun fichier JSON trouvé"
+        echo "🔍 Vérification fichiers JSON générés dans clavier_creole/assets/:"
+        ls -la ../clavier_creole/assets/creole_*.json || echo "❌ Aucun fichier JSON trouvé dans clavier_creole/assets/"
 
     - name: 📊 Verify Generated Assets
       run: |
