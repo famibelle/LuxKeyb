@@ -387,40 +387,56 @@ jobs:
         echo "📁 Structure des dossiers artifacts:"
         ls -la ./all-artifacts/
         
-        # 📱 APK RELEASE
-        if [ -f "./all-artifacts/kreyol-keyboard-release-apk/app-release.apk" ]; then
-          cp "./all-artifacts/kreyol-keyboard-release-apk/app-release.apk" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.apk"
-          echo "✅ APK Release: KreyolKeyboard-Release-${{ github.ref_name }}.apk"
+        # 📱 APK RELEASE - Detection automatique
+        RELEASE_APK=$(find ./all-artifacts/kreyol-keyboard-release-apk -name "*.apk" | head -1)
+        if [ -n "$RELEASE_APK" ] && [ -f "$RELEASE_APK" ]; then
+          cp "$RELEASE_APK" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.apk"
+          echo "✅ APK Release: KreyolKeyboard-Release-${{ github.ref_name }}.apk (source: $(basename $RELEASE_APK))"
         else
           echo "❌ APK release non trouvé"
+          echo "📁 Contenu dossier release APK:"
           ls -la ./all-artifacts/kreyol-keyboard-release-apk/ || echo "Dossier APK release inexistant"
+          echo "🔍 Recherche de fichiers APK:"
+          find ./all-artifacts/kreyol-keyboard-release-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
         fi
         
-        # 🔧 APK DEBUG
-        if [ -f "./all-artifacts/kreyol-keyboard-debug-apk/app-debug.apk" ]; then
-          cp "./all-artifacts/kreyol-keyboard-debug-apk/app-debug.apk" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
-          echo "✅ APK Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
+        # 🔧 APK DEBUG - Detection automatique  
+        DEBUG_APK=$(find ./all-artifacts/kreyol-keyboard-debug-apk -name "*.apk" | head -1)
+        if [ -n "$DEBUG_APK" ] && [ -f "$DEBUG_APK" ]; then
+          cp "$DEBUG_APK" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
+          echo "✅ APK Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.apk (source: $(basename $DEBUG_APK))"
         else
           echo "❌ APK debug non trouvé"
+          echo "📁 Contenu dossier debug APK:"
           ls -la ./all-artifacts/kreyol-keyboard-debug-apk/ || echo "Dossier APK debug inexistant"
+          echo "🔍 Recherche de fichiers APK:"
+          find ./all-artifacts/kreyol-keyboard-debug-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
         fi
         
-        # 📦 AAB RELEASE
-        if [ -f "./all-artifacts/kreyol-keyboard-release-aab/app-release.aab" ]; then
-          cp "./all-artifacts/kreyol-keyboard-release-aab/app-release.aab" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.aab"
-          echo "✅ AAB Release: KreyolKeyboard-Release-${{ github.ref_name }}.aab"
+        # 📦 AAB RELEASE - Detection automatique
+        RELEASE_AAB=$(find ./all-artifacts/kreyol-keyboard-release-aab -name "*.aab" | head -1)
+        if [ -n "$RELEASE_AAB" ] && [ -f "$RELEASE_AAB" ]; then
+          cp "$RELEASE_AAB" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.aab"
+          echo "✅ AAB Release: KreyolKeyboard-Release-${{ github.ref_name }}.aab (source: $(basename $RELEASE_AAB))"
         else
           echo "❌ AAB release non trouvé"
+          echo "📁 Contenu dossier release AAB:"
           ls -la ./all-artifacts/kreyol-keyboard-release-aab/ || echo "Dossier AAB release inexistant"
+          echo "🔍 Recherche de fichiers AAB:"
+          find ./all-artifacts/kreyol-keyboard-release-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
         fi
         
-        # 🔧 AAB DEBUG  
-        if [ -f "./all-artifacts/kreyol-keyboard-debug-aab/app-debug.aab" ]; then
-          cp "./all-artifacts/kreyol-keyboard-debug-aab/app-debug.aab" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
-          echo "✅ AAB Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
+        # 🔧 AAB DEBUG - Detection automatique
+        DEBUG_AAB=$(find ./all-artifacts/kreyol-keyboard-debug-aab -name "*.aab" | head -1)
+        if [ -n "$DEBUG_AAB" ] && [ -f "$DEBUG_AAB" ]; then
+          cp "$DEBUG_AAB" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
+          echo "✅ AAB Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.aab (source: $(basename $DEBUG_AAB))"
         else
           echo "❌ AAB debug non trouvé"
+          echo "📁 Contenu dossier debug AAB:"
           ls -la ./all-artifacts/kreyol-keyboard-debug-aab/ || echo "Dossier AAB debug inexistant"
+          echo "🔍 Recherche de fichiers AAB:"
+          find ./all-artifacts/kreyol-keyboard-debug-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
         fi
         
         echo ""
