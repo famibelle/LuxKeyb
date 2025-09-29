@@ -24,6 +24,7 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val CORNER_RADIUS_DP = 8f
         private const val TEXT_SIZE_SP = 16f
         private const val SHADOW_RADIUS = 4f
+        private const val TAG = "KeyboardLayoutManager"
     }
     
     // État du clavier
@@ -275,23 +276,56 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Ajoute une animation tactile au bouton
+     * Ajoute une animation tactile et feedback haptique au bouton
      */
     private fun addTouchAnimation(button: Button) {
         button.setOnTouchListener { view, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
-                    view.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                    // Animation d'appui (100ms comme l'original)
+                    view.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .setDuration(100)
+                        .start()
+                    
+                    // 📳 FEEDBACK HAPTIQUE MODERNE
+                    performHapticFeedback(view)
+                    
                     false
                 }
                 android.view.MotionEvent.ACTION_UP, 
                 android.view.MotionEvent.ACTION_CANCEL -> {
-                    view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    // Animation de relâchement (120ms comme l'original)
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(120)
+                        .start()
+                    
                     interactionListener?.onKeyRelease()
                     false
                 }
                 else -> false
             }
+        }
+    }
+    
+    /**
+     * Exécute le feedback haptique classique (comme dans la version originale)
+     */
+    private fun performHapticFeedback(view: android.view.View) {
+        try {
+            // Feedback haptique léger (identique à la version originale)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                view.performHapticFeedback(
+                    android.view.HapticFeedbackConstants.KEYBOARD_TAP,
+                    android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                )
+            }
+        } catch (e: Exception) {
+            // Silencieusement ignorer si feedback haptique non supporté
+            Log.d(TAG, "Feedback haptique non disponible: ${e.message}")
         }
     }
     
