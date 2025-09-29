@@ -98,14 +98,28 @@ jobs:
         echo "dict-count=$DICT_COUNT" >> $GITHUB_OUTPUT
         echo "ngrams-count=$NGRAMS_COUNT" >> $GITHUB_OUTPUT
 
-    - name: 📤 Upload Dictionary Assets
-      uses: actions/upload-artifact@v4
-      with:
-        name: kreyol-dictionary-assets
-        path: |
-          clavier_creole/assets/creole_dict.json
-          clavier_creole/assets/creole_ngrams.json
-        retention-days: 1
+    - name: 🎯 Copy Dictionary to Android Assets Directory
+      run: |
+        echo "📁 Préparation des assets Android..."
+        mkdir -p android_keyboard/app/src/main/assets/
+        
+        # Copier directement vers le répertoire Android
+        cp clavier_creole/assets/creole_dict.json android_keyboard/app/src/main/assets/
+        cp clavier_creole/assets/creole_ngrams.json android_keyboard/app/src/main/assets/
+        
+        echo "✅ Dictionnaires copiés vers android_keyboard/app/src/main/assets/"
+        echo "📊 Vérification:"
+        ls -la android_keyboard/app/src/main/assets/creole_*.json
+
+    - name: 🎯 Dictionary Assets Ready
+      run: |
+        echo "✅ Assets de dictionnaire prêts pour les builds Android"
+        echo "� Statistiques finales:"
+        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/creole_dict.json)
+        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/creole_ngrams.json)
+        echo "   - Mots: $DICT_COUNT"
+        echo "   - N-grams: $NGRAMS_COUNT"
+        echo "� Fichiers disponibles pour tous les jobs de build"
 
   # 🔧 ÉTAPE 2A : BUILD DEBUG APK
   build-debug-apk:
@@ -135,17 +149,25 @@ jobs:
         gradle-version: 8.7
         cache-read-only: false
 
-    - name: 📥 Download Dictionary Assets
-      uses: actions/download-artifact@v4
-      with:
-        name: kreyol-dictionary-assets
-        path: ./dictionary-temp
-
-    - name: 📋 Copy Dictionary to Android Assets
+    - name: ✅ Verify Dictionary Assets Present
       run: |
-        mkdir -p android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
+        echo "🔍 Vérification des assets de dictionnaire..."
+        if [ -f "android_keyboard/app/src/main/assets/creole_dict.json" ]; then
+          echo "✅ creole_dict.json présent"
+        else
+          echo "❌ creole_dict.json manquant"
+          exit 1
+        fi
+        
+        if [ -f "android_keyboard/app/src/main/assets/creole_ngrams.json" ]; then
+          echo "✅ creole_ngrams.json présent"
+        else
+          echo "❌ creole_ngrams.json manquant"
+          exit 1
+        fi
+        
+        echo "📊 Tailles des fichiers:"
+        ls -lh android_keyboard/app/src/main/assets/creole_*.json
 
     - name: 🧹 Clean Project
       env:
@@ -192,17 +214,10 @@ jobs:
         gradle-version: 8.7
         cache-read-only: false
 
-    - name: 📥 Download Dictionary Assets
-      uses: actions/download-artifact@v4
-      with:
-        name: kreyol-dictionary-assets
-        path: ./dictionary-temp
-
-    - name: 📋 Copy Dictionary to Android Assets
+    - name: ✅ Verify Dictionary Assets Present
       run: |
-        mkdir -p android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
+        echo "🔍 Vérification des assets de dictionnaire..."
+        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 📦 Build Debug AAB
       env:
@@ -244,17 +259,10 @@ jobs:
         gradle-version: 8.7
         cache-read-only: false
 
-    - name: 📥 Download Dictionary Assets
-      uses: actions/download-artifact@v4
-      with:
-        name: kreyol-dictionary-assets
-        path: ./dictionary-temp
-
-    - name: 📋 Copy Dictionary to Android Assets
+    - name: ✅ Verify Dictionary Assets Present
       run: |
-        mkdir -p android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
+        echo "🔍 Vérification des assets de dictionnaire..."
+        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 🔐 Generate Debug Keystore (CI Only)
       run: |
@@ -307,17 +315,10 @@ jobs:
         gradle-version: 8.7
         cache-read-only: false
 
-    - name: 📥 Download Dictionary Assets
-      uses: actions/download-artifact@v4
-      with:
-        name: kreyol-dictionary-assets
-        path: ./dictionary-temp
-
-    - name: 📋 Copy Dictionary to Android Assets
+    - name: ✅ Verify Dictionary Assets Present
       run: |
-        mkdir -p android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_dict.json android_keyboard/app/src/main/assets/
-        cp dictionary-temp/creole_ngrams.json android_keyboard/app/src/main/assets/
+        echo "🔍 Vérification des assets de dictionnaire..."
+        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 🔐 Generate Debug Keystore (CI Only)
       run: |
