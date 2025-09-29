@@ -370,40 +370,68 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     
     steps:
-    - name: 📥 Download Release Artifacts
+    - name: 📥 Download All Build Artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: kreyol-keyboard-release-*
-        path: ./release-artifacts
+        pattern: kreyol-keyboard-*
+        path: ./all-artifacts
 
-    - name: 📎 Prepare Release Assets with Custom Names
+    - name: 📎 Prepare All Release Assets with Custom Names
       run: |
-        echo "📁 Préparation des assets pour release..."
+        echo "📁 Préparation de tous les assets pour release..."
         mkdir -p ./final-release-assets
         
-        echo "🔍 Contenu des artifacts téléchargés:"
-        find ./release-artifacts -type f -name "*.apk" -o -name "*.aab" | head -10
+        echo "🔍 Contenu complet des artifacts téléchargés:"
+        find ./all-artifacts -type f -name "*.apk" -o -name "*.aab"
         
-        # Renommer APK avec version du tag
-        if [ -f "./release-artifacts/kreyol-keyboard-release-apk/app-release.apk" ]; then
-          cp "./release-artifacts/kreyol-keyboard-release-apk/app-release.apk" "./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.apk"
-          echo "✅ APK préparé: KreyolKeyboard-${{ github.ref_name }}.apk"
+        echo "📁 Structure des dossiers artifacts:"
+        ls -la ./all-artifacts/
+        
+        # 📱 APK RELEASE
+        if [ -f "./all-artifacts/kreyol-keyboard-release-apk/app-release.apk" ]; then
+          cp "./all-artifacts/kreyol-keyboard-release-apk/app-release.apk" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.apk"
+          echo "✅ APK Release: KreyolKeyboard-Release-${{ github.ref_name }}.apk"
         else
-          echo "❌ APK release non trouvé dans artifacts"
-          ls -la ./release-artifacts/kreyol-keyboard-release-apk/ || echo "Dossier APK inexistant"
+          echo "❌ APK release non trouvé"
+          ls -la ./all-artifacts/kreyol-keyboard-release-apk/ || echo "Dossier APK release inexistant"
         fi
         
-        # Renommer AAB avec version du tag  
-        if [ -f "./release-artifacts/kreyol-keyboard-release-aab/app-release.aab" ]; then
-          cp "./release-artifacts/kreyol-keyboard-release-aab/app-release.aab" "./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.aab"
-          echo "✅ AAB préparé: KreyolKeyboard-${{ github.ref_name }}.aab"
+        # 🔧 APK DEBUG
+        if [ -f "./all-artifacts/kreyol-keyboard-debug-apk/app-debug.apk" ]; then
+          cp "./all-artifacts/kreyol-keyboard-debug-apk/app-debug.apk" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
+          echo "✅ APK Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
         else
-          echo "❌ AAB release non trouvé dans artifacts"
-          ls -la ./release-artifacts/kreyol-keyboard-release-aab/ || echo "Dossier AAB inexistant"
+          echo "❌ APK debug non trouvé"
+          ls -la ./all-artifacts/kreyol-keyboard-debug-apk/ || echo "Dossier APK debug inexistant"
         fi
         
-        echo "📊 Assets finaux préparés:"
+        # 📦 AAB RELEASE
+        if [ -f "./all-artifacts/kreyol-keyboard-release-aab/app-release.aab" ]; then
+          cp "./all-artifacts/kreyol-keyboard-release-aab/app-release.aab" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.aab"
+          echo "✅ AAB Release: KreyolKeyboard-Release-${{ github.ref_name }}.aab"
+        else
+          echo "❌ AAB release non trouvé"
+          ls -la ./all-artifacts/kreyol-keyboard-release-aab/ || echo "Dossier AAB release inexistant"
+        fi
+        
+        # 🔧 AAB DEBUG  
+        if [ -f "./all-artifacts/kreyol-keyboard-debug-aab/app-debug.aab" ]; then
+          cp "./all-artifacts/kreyol-keyboard-debug-aab/app-debug.aab" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
+          echo "✅ AAB Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
+        else
+          echo "❌ AAB debug non trouvé"
+          ls -la ./all-artifacts/kreyol-keyboard-debug-aab/ || echo "Dossier AAB debug inexistant"
+        fi
+        
+        echo ""
+        echo "📊 ASSETS FINAUX PRÉPARÉS:"
         ls -la ./final-release-assets/
+        echo ""
+        echo "📝 RÉSUMÉ:"
+        find ./final-release-assets -name "*.apk" -o -name "*.aab" | while read file; do
+          size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo "0")
+          echo "  📱 $(basename "$file"): ${size} bytes"
+        done
 
     - name: 🎉 Create GitHub Release with Assets
       id: create_release
@@ -424,8 +452,10 @@ jobs:
           - ✅ Detection low-end devices automatique
           
           📱 **FICHIERS ANDROID DISPONIBLES**
-          - 🟢 APK Release pour installation directe
-          - 🟡 AAB Bundle pour Google Play Store
+          - � **APK Release** - Installation directe (recommandé pour utilisateurs)
+          - � **APK Debug** - Version de développement avec logs
+          - 🏪 **AAB Release** - Bundle Google Play Store (distribution officielle)  
+          - 🛠️ **AAB Debug** - Bundle de développement
           - 📊 Build Scan Reports pour analyse détaillée
           
           🔤 **DICTIONNAIRE KREYÒL ENRICHI** 
@@ -441,6 +471,4 @@ jobs:
         draft: false
         prerelease: false
         make_latest: true
-        files: |
-          ./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.apk
-          ./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.aab
+        files: ./final-release-assets/*
