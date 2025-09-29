@@ -375,53 +375,62 @@ jobs:
         pattern: kreyol-keyboard-release-*
         path: ./release-artifacts
 
-    - name: 🎉 Create GitHub Release
+    - name: 🎉 Create or Update GitHub Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: 🇸🇷 Kreyòl Keyboard ${{ github.ref }}
+        tag_name: ${{ github.ref_name }}
+        name: 🇸🇷 Kreyòl Keyboard ${{ github.ref_name }}
         body: |
-          🎯 **Clavier Kreyòl Potomitan Release v5.1.1**
+          🎯 **Clavier Kreyòl Potomitan Release ${{ github.ref_name }}**
           
-          � **CORRECTIFS SAMSUNG A21S**
-          - ✅ Fix memory leaks et coroutines zombies  
-          - ✅ Fix crashes OutOfMemoryError
+          🔧 **AMÉLIORATIONS TECHNIQUES**
+          - ✅ Build Scan® integration avec monitoring avancé
+          - ✅ Pipeline subdivisionné en 6 jobs parallèles  
+          - ✅ Fix memory leaks Samsung A21s (serviceScope)
           - ✅ Optimisations pour processeurs Exynos 850
-          - ✅ Monitoring mémoire temps réel
+          - ✅ Detection low-end devices automatique
           
-          �📱 **Android APK & AAB disponibles**
-          - APK Release pour installation directe
-          - AAB Bundle pour Google Play Store
+          📱 **FICHIERS ANDROID DISPONIBLES**
+          - 🟢 APK Release pour installation directe
+          - 🟡 AAB Bundle pour Google Play Store
+          - 📊 Build Scan Reports pour analyse détaillée
           
-          🔤 **Dictionnaire enrichi**
-          - Mots créoles actualisés via Hugging Face
-          - N-grammes optimisés pour prédiction
+          🔤 **DICTIONNAIRE KREYÒL ENRICHI** 
+          - ✅ ${{ needs.generate-dictionary.outputs.dict-count }} mots créoles
+          - 🧠 ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams prédictifs
+          - 📡 Synchronisation automatique Hugging Face
+          - 🔄 Pipeline de génération optimisé
           
-          📊 **Build Scans disponibles** pour diagnostic complet
+          🇸🇷 **Kreyòl Gwadloup ka viv!** 🇸🇷
           
-          🎯 **Spécialement optimisé pour Samsung Galaxy A21s** 🚀
+          ---
+          🔗 **Build Details**: Consulter les Build Scan Reports pour analyse complète des performances
         draft: false
         prerelease: false
+        make_latest: true
+        files: |
+          ./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.apk
+          ./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.aab
 
-    - name: 📎 Upload Release APK
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release-artifacts/kreyol-keyboard-release-apk/app-release.apk
-        asset_name: KreyolKeyboard-${{ github.ref_name }}.apk
-        asset_content_type: application/vnd.android.package-archive
-
-    - name: 📎 Upload Release AAB
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release-artifacts/kreyol-keyboard-release-aab/app-release.aab
-        asset_name: KreyolKeyboard-${{ github.ref_name }}.aab
-        asset_content_type: application/octet-stream
+    - name: 📎 Prepare Release Assets with Custom Names
+      run: |
+        echo "📁 Préparation des assets pour release..."
+        mkdir -p ./final-release-assets
+        
+        # Renommer APK avec version du tag
+        if [ -f "./release-artifacts/kreyol-keyboard-release-apk/app-release.apk" ]; then
+          cp "./release-artifacts/kreyol-keyboard-release-apk/app-release.apk" "./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.apk"
+          echo "✅ APK préparé: KreyolKeyboard-${{ github.ref_name }}.apk"
+        fi
+        
+        # Renommer AAB avec version du tag  
+        if [ -f "./release-artifacts/kreyol-keyboard-release-aab/app-release.aab" ]; then
+          cp "./release-artifacts/kreyol-keyboard-release-aab/app-release.aab" "./final-release-assets/KreyolKeyboard-${{ github.ref_name }}.aab"
+          echo "✅ AAB préparé: KreyolKeyboard-${{ github.ref_name }}.aab"
+        fi
+        
+        echo "📊 Assets finaux:"
+        ls -la ./final-release-assets/
