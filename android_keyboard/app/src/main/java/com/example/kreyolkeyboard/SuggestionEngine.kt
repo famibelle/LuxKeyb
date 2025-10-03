@@ -11,6 +11,8 @@ import java.io.IOException
  * Moteur de suggestions bilingue pour le clavier créole
  * Gère le dictionnaire kreyòl, les N-grams et le support français
  * 🎯 PRIORITÉ KREYÒL: Français activé seulement à partir de 3 lettres
+ * 
+ * À la mémoire de mon père, Saint-Ange Corneille Famibelle
  */
 class SuggestionEngine(private val context: Context) {
     
@@ -19,6 +21,8 @@ class SuggestionEngine(private val context: Context) {
         private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 kreyòl + 2 français)
         private const val MAX_WORD_HISTORY = 5
         private const val MIN_WORD_LENGTH = 2
+        
+
     }
     
     // Données du moteur kreyòl (existant)
@@ -136,6 +140,8 @@ class SuggestionEngine(private val context: Context) {
         
         suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
+
+                
                 val dictionarySuggestions = getDictionarySuggestions(input)
                 val ngramSuggestions = getNgramSuggestions()
                 
@@ -146,6 +152,8 @@ class SuggestionEngine(private val context: Context) {
             suggestionListener?.onSuggestionsReady(suggestions)
         }
     }
+    
+
     
     /**
      * 🎯 Active le support bilingue Kreyòl + Français
@@ -182,9 +190,12 @@ class SuggestionEngine(private val context: Context) {
     
     /**
      * Crée les suggestions bilingues selon la stratégie Kreyòl-First
+     * 💙 PRIORITÉ ABSOLUE: Détection séquences mémoire pour papa Saint-Ange
      */
     private fun createBilingualSuggestions(input: String): List<BilingualSuggestion> {
         val suggestions = mutableListOf<BilingualSuggestion>()
+        
+
         
         // 1. 🟢 TOUJOURS obtenir suggestions kreyòl (priorité absolue)
         val kreyolSuggestions = getKreyolSuggestions(input)
