@@ -19,6 +19,8 @@ import android.os.Handler
 import android.os.Looper
 import java.util.Timer
 import java.util.TimerTask
+import com.example.kreyolkeyboard.BilingualSuggestion
+import com.example.kreyolkeyboard.SuggestionLanguage
 
 /**
  * Service principal du clavier créole refactorisé
@@ -32,7 +34,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     companion object {
         private const val TAG = "KreyolIME-Potomitan™"
-        private const val MAX_SUGGESTIONS = 3
+        private const val MAX_SUGGESTIONS = 3  // 🔧 Retour à 3 suggestions (couleurs d'origine)
         
         // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
         private fun isLowEndDevice(context: Context): Boolean {
@@ -187,6 +189,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 isInitialized = true
                 Log.d(TAG, "✅ Moteur de suggestions initialisé (mode: ${if (isLowEnd) "A21s optimisé" else "standard"})")
                 
+                // 🎯 DÉSACTIVÉ TEMPORAIREMENT: Support bilingue (retour couleurs d'origine)
+                // suggestionEngine.enableBilingualSupport()
+                Log.d(TAG, "� Mode suggestions simples (couleurs d'origine)")
+                
                 // Démarrer monitoring mémoire sur A21s
                 if (isLowEnd) {
                     startMemoryMonitoring()
@@ -200,7 +206,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     try {
                         suggestionEngine.initialize()
                         isInitialized = true
-                        Log.d(TAG, "✅ Récupération A21s réussie")
+                        suggestionEngine.enableBilingualSupport()
+                        Log.d(TAG, "✅ Récupération A21s réussie + support bilingue activé")
                     } catch (e2: Exception) {
                         Log.e(TAG, "❌ Échec récupération A21s: ${e2.message}", e2)
                     }
@@ -319,15 +326,26 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // ===== IMPLÉMENTATION SuggestionListener =====
     
     override fun onSuggestionsReady(suggestions: List<String>) {
+        // 📝 RETOUR AUX SUGGESTIONS SIMPLES - Couleurs d'origine
+        Log.d(TAG, "📝 Affichage suggestions simples: ${suggestions.joinToString(", ")}")
         displaySuggestions(suggestions)
     }
     
+    override fun onBilingualSuggestionsReady(suggestions: List<BilingualSuggestion>) {
+        // 🔄 DÉSACTIVÉ: Mode bilingue temporairement désactivé (retour couleurs d'origine)
+        Log.d(TAG, "🔄 Mode bilingue désactivé - utilisation suggestions simples")
+    }
+    
     override fun onDictionaryLoaded(wordCount: Int) {
-        Log.d(TAG, "Dictionnaire chargé: $wordCount mots")
+        Log.d(TAG, "🟢 Dictionnaire kreyòl chargé: $wordCount mots")
+    }
+    
+    override fun onFrenchDictionaryLoaded(wordCount: Int) {
+        Log.d(TAG, "🔵 Dictionnaire français chargé: $wordCount mots")
     }
     
     override fun onNgramModelLoaded() {
-        Log.d(TAG, "Modèle N-gram chargé")
+        Log.d(TAG, "🟢 Modèle N-gram kreyòl chargé")
     }
     
     override fun onModeChanged(newMode: SuggestionEngine.SuggestionMode) {
@@ -373,9 +391,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     override fun onWordChanged(word: String) {
         Log.d(TAG, "onWordChanged appelé avec: '$word'")
         if (word.isNotEmpty() && isInitialized) {
-            Log.d(TAG, "Génération suggestions dictionnaire pour: '$word'")
+            Log.d(TAG, "� Génération suggestions SIMPLES pour: '$word'")
             suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.DICTIONARY)
-            suggestionEngine.generateDictionarySuggestions(word)
+            suggestionEngine.generateDictionarySuggestions(word)  // Retour méthode simple
         } else {
             Log.d(TAG, "Affichage de suggestions vides (mot vide ou non initialisé)")
             displaySuggestions(emptyList())
@@ -428,8 +446,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 val suggestionButton = Button(this).apply {
                     text = suggestion
                     textSize = 14f
-                    setTextColor(Color.parseColor("#333333"))
-                    setBackgroundColor(Color.parseColor("#E3F2FD"))
+                    setTextColor(Color.parseColor("#333333"))  // Couleur d'origine
+                    setBackgroundColor(Color.parseColor("#E3F2FD"))  // Fond d'origine
                     setPadding(dpToPx(12), dpToPx(6), dpToPx(12), dpToPx(6))
                     
                     layoutParams = LinearLayout.LayoutParams(
@@ -456,6 +474,61 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
     }
     
+    /**
+     * 🎯 Affiche les suggestions bilingues avec couleurs (Vert Kreyòl / Bleu Français)
+     */
+    private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {
+        Log.d(TAG, "displayBilingualSuggestions appelé avec ${suggestions.size} suggestions bilingues")
+        suggestionsView?.let { container ->
+            container.removeAllViews()
+            
+            suggestions.take(MAX_SUGGESTIONS).forEach { bilingualSuggestion ->
+                val suggestionButton = Button(this).apply {
+                    text = bilingualSuggestion.word
+                    textSize = 14f
+                    
+                    // 🎨 Couleur selon la langue
+                    val textColor = bilingualSuggestion.getColor()
+                    setTextColor(textColor)
+                    
+                    // Debug: Vérifier la couleur appliquée
+                    val colorHex = String.format("#%06X", 0xFFFFFF and textColor)
+                    val languageName = when(bilingualSuggestion.language) {
+                        SuggestionLanguage.KREYOL -> "KREYOL"
+                        SuggestionLanguage.FRENCH -> "FRENCH"
+                    }
+                    Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': $languageName → couleur $colorHex")
+                    
+                    // Fond plus subtil pour mettre en valeur la couleur du texte
+                    setBackgroundColor(Color.parseColor("#F8F9FA"))
+                    setPadding(dpToPx(12), dpToPx(6), dpToPx(12), dpToPx(6))
+                    
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        setMargins(dpToPx(4), 0, dpToPx(4), 0)
+                    }
+                    
+                    setOnClickListener {
+                        inputProcessor.processSuggestionSelection(bilingualSuggestion.word)
+                        
+                        // 🔧 FIX SAMSUNG A21S: Performance optimisée
+                        serviceScope.launch {
+                            delay(150)
+                            suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
+                            suggestionEngine.generateContextualSuggestions()
+                        }
+                    }
+                }
+                
+                container.addView(suggestionButton)
+            }
+            
+            Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées avec couleurs")
+        }
+    }
+
     /**
      * Actualise le layout du clavier
      */

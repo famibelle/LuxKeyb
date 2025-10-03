@@ -8,22 +8,28 @@ import org.json.JSONObject
 import java.io.IOException
 
 /**
- * Moteur de suggestions pour le clavier créole
- * Gère le dictionnaire, les N-grams et la génération de suggestions intelligentes
+ * Moteur de suggestions bilingue pour le clavier créole
+ * Gère le dictionnaire kreyòl, les N-grams et le support français
+ * 🎯 PRIORITÉ KREYÒL: Français activé seulement à partir de 3 lettres
  */
 class SuggestionEngine(private val context: Context) {
     
     companion object {
         private const val TAG = "SuggestionEngine"
-        private const val MAX_SUGGESTIONS = 3
+        private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 kreyòl + 2 français)
         private const val MAX_WORD_HISTORY = 5
         private const val MIN_WORD_LENGTH = 2
     }
     
-    // Données du moteur
+    // Données du moteur kreyòl (existant)
     private var dictionary: List<Pair<String, Int>> = emptyList()
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
+    
+    // 🇫🇷 Support français (nouveau)
+    private lateinit var frenchDictionary: FrenchDictionary
+    private var bilingualConfig = BilingualConfig()
+    private var isBilingualEnabled = false
     
     // Coroutines pour les opérations asynchrones
     private val suggestionScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -37,11 +43,13 @@ class SuggestionEngine(private val context: Context) {
     
     private var currentMode = SuggestionMode.MIXED
     
-    // Callbacks
+    // Callbacks (étendus pour support bilingue)
     interface SuggestionListener {
-        fun onSuggestionsReady(suggestions: List<String>)
+        fun onSuggestionsReady(suggestions: List<String>)  // Compatibilité existante
+        fun onBilingualSuggestionsReady(suggestions: List<BilingualSuggestion>) // Nouveau bilingue
         fun onDictionaryLoaded(wordCount: Int)
         fun onNgramModelLoaded()
+        fun onFrenchDictionaryLoaded(wordCount: Int)  // Nouveau
         fun onModeChanged(newMode: SuggestionMode)
     }
     
@@ -76,23 +84,37 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Initialise le moteur de suggestions
+     * Initialise le moteur de suggestions (kreyòl + français)
      */
     suspend fun initialize() = withContext(Dispatchers.IO) {
         try {
-            Log.d(TAG, "Initialisation du moteur de suggestions...")
+            Log.d(TAG, "🚀 Initialisation du moteur bilingue...")
             
-            // Chargement en parallèle du dictionnaire et des N-grams
-            val dictionaryDeferred = async { loadDictionary() }
+            // 1. Initialiser dictionnaire français d'abord
+            frenchDictionary = FrenchDictionary(context)
+            
+            // 2. Chargement en parallèle de tous les dictionnaires
+            val kreyolDictDeferred = async { loadDictionary() }
             val ngramDeferred = async { loadNgramModel() }
+            val frenchDictDeferred = async { frenchDictionary.initialize() }
             
-            dictionaryDeferred.await()
-            ngramDeferred.await()
+            // 3. Attendre que tout soit chargé
+            kreyolDictDeferred.await()
+            ngramDeferred.await() 
+            frenchDictDeferred.await()
             
-            Log.d(TAG, "Moteur initialisé avec ${dictionary.size} mots et ${ngramModel.size} N-grams")
+            Log.d(TAG, "✅ Moteur bilingue initialisé:")
+            Log.d(TAG, "   🟢 Kreyòl: ${dictionary.size} mots + ${ngramModel.size} N-grams")
+            Log.d(TAG, "   🔵 Français: ${frenchDictionary.getStats()["word_count"]} mots")
+            
+            // Notifier le chargement du dictionnaire français
+            withContext(Dispatchers.Main) {
+                val frenchWordCount = frenchDictionary.getStats()["word_count"] as Int
+                suggestionListener?.onFrenchDictionaryLoaded(frenchWordCount)
+            }
             
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors de l'initialisation: ${e.message}", e)
+            Log.e(TAG, "❌ Erreur lors de l'initialisation bilingue: ${e.message}", e)
         }
     }
     
@@ -100,6 +122,13 @@ class SuggestionEngine(private val context: Context) {
      * Génère des suggestions pour un texte d'entrée (méthode générale - conservée pour compatibilité)
      */
     fun generateSuggestions(input: String) {
+        // 🎯 REDIRECTION: Si mode bilingue activé, utiliser la logique bilingue
+        if (isBilingualEnabled) {
+            generateBilingualSuggestions(input)
+            return
+        }
+        
+        // Logique originale pour rétrocompatibilité
         if (input.length < MIN_WORD_LENGTH) {
             suggestionListener?.onSuggestionsReady(emptyList())
             return
@@ -119,10 +148,166 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
+     * 🎯 Active le support bilingue Kreyòl + Français
+     */
+    fun enableBilingualSupport() {
+        isBilingualEnabled = true
+        Log.d(TAG, "🟢🔵 Support bilingue activé - Dictionnaire français: ${frenchDictionary.getLoadedWordCount()} mots")
+    }
+
+    /**
+     * 🎯 NOUVELLE MÉTHODE PRINCIPALE: Génère des suggestions bilingues intelligentes
+     * Logique: Kreyòl prioritaire, Français à partir de 3 lettres
+     */
+    fun generateBilingualSuggestions(input: String) {
+        if (input.length < MIN_WORD_LENGTH) {
+            suggestionListener?.onSuggestionsReady(emptyList())
+            suggestionListener?.onBilingualSuggestionsReady(emptyList())
+            return
+        }
+        
+        suggestionScope.launch {
+            val suggestions = withContext(Dispatchers.Default) {
+                createBilingualSuggestions(input)
+            }
+            
+            // Notifier avec les deux formats pour compatibilité
+            val simpleWords = suggestions.map { it.word }
+            suggestionListener?.onSuggestionsReady(simpleWords)
+            suggestionListener?.onBilingualSuggestionsReady(suggestions)
+            
+            Log.d(TAG, "🎯 Suggestions bilingues pour '$input': ${simpleWords}")
+        }
+    }
+    
+    /**
+     * Crée les suggestions bilingues selon la stratégie Kreyòl-First
+     */
+    private fun createBilingualSuggestions(input: String): List<BilingualSuggestion> {
+        val suggestions = mutableListOf<BilingualSuggestion>()
+        
+        // 1. 🟢 TOUJOURS obtenir suggestions kreyòl (priorité absolue)
+        val kreyolSuggestions = getKreyolSuggestions(input)
+        
+        // 2. 🔵 Obtenir suggestions françaises SEULEMENT si 3+ lettres
+        val frenchSuggestions = if (bilingualConfig.shouldActivateFrench(input)) {
+            getFrenchSuggestions(input)
+        } else {
+            Log.d(TAG, "Français désactivé pour '$input' (${input.length} < ${bilingualConfig.frenchActivationThreshold} lettres)")
+            emptyList()
+        }
+        
+        // 3. 🎯 Fusion avec priorité kreyòl stricte
+        return mergeSuggestionsKreyolFirst(kreyolSuggestions, frenchSuggestions)
+    }
+    
+    /**
+     * Obtient les suggestions kreyòl (existant + adapté)
+     */
+    private fun getKreyolSuggestions(input: String): List<BilingualSuggestion> {
+        val dictionaryMatches = getDictionarySuggestions(input)
+        val ngramMatches = if (wordHistory.isNotEmpty()) getNgramSuggestions() else emptyList()
+        
+        // Fusionner dictionnaire + n-grams kreyòl
+        val allKreyol = mutableMapOf<String, Float>()
+        
+        // Ajouter suggestions dictionnaire
+        dictionaryMatches.forEach { (word, frequency) ->
+            val score = calculateDictionaryScore(word, input, frequency)
+            allKreyol[word] = score.toFloat()
+        }
+        
+        // Ajouter suggestions n-gram avec bonus
+        ngramMatches.forEach { word ->
+            val currentScore = allKreyol[word] ?: 0f
+            allKreyol[word] = currentScore + 50f  // Bonus contextuel
+        }
+        
+        // Convertir en BilingualSuggestion et appliquer boost kreyòl
+        return allKreyol.entries
+            .map { (word, score) ->
+                val adjustedScore = bilingualConfig.adjustScoreByLanguage(score, SuggestionLanguage.KREYOL)
+                BilingualSuggestion(word, adjustedScore, SuggestionLanguage.KREYOL, SuggestionSource.HYBRID)
+            }
+            .sortedByDescending { it.score }
+            .take(bilingualConfig.maxKreyolSuggestions)
+    }
+    
+    /**
+     * Obtient les suggestions françaises (nouveau)
+     */
+    private fun getFrenchSuggestions(input: String): List<BilingualSuggestion> {
+        if (!::frenchDictionary.isInitialized) {
+            Log.w(TAG, "Dictionnaire français non initialisé")
+            return emptyList()
+        }
+        
+        val frenchWords = frenchDictionary.getSuggestions(input)
+        
+        return frenchWords.map { word ->
+            val frequency = frenchDictionary.getWordFrequency(word)
+            val baseScore = calculateDictionaryScore(word, input, frequency)
+            val adjustedScore = bilingualConfig.adjustScoreByLanguage(baseScore.toFloat(), SuggestionLanguage.FRENCH)
+            
+            BilingualSuggestion(word, adjustedScore, SuggestionLanguage.FRENCH, SuggestionSource.DICTIONARY)
+        }.sortedByDescending { it.score }
+    }
+    
+    /**
+     * 🎯 FUSION KREYÒL-FIRST: Positions 1-3 réservées kreyòl, 4-5 français optionnel
+     */
+    private fun mergeSuggestionsKreyolFirst(
+        kreyolSuggs: List<BilingualSuggestion>,
+        frenchSuggs: List<BilingualSuggestion>
+    ): List<BilingualSuggestion> {
+        
+        val result = mutableListOf<BilingualSuggestion>()
+        val usedWords = mutableSetOf<String>()
+        
+        // 1. 🟢 POSITIONS 1-3: Toujours kreyòl d'abord
+        kreyolSuggs.take(3).forEach { suggestion ->
+            if (!usedWords.contains(suggestion.word.lowercase())) {
+                result.add(suggestion)
+                usedWords.add(suggestion.word.lowercase())
+            }
+        }
+        
+        // 2. 🔵 POSITIONS 4-5: Français si disponible et pertinent
+        frenchSuggs.take(2).forEach { suggestion ->
+            if (result.size < MAX_SUGGESTIONS && 
+                !usedWords.contains(suggestion.word.lowercase())) {
+                result.add(suggestion)
+                usedWords.add(suggestion.word.lowercase())
+            }
+        }
+        
+        // 3. 🟢 COMPLÉTER avec plus de kreyòl si pas assez de français
+        kreyolSuggs.drop(3).forEach { suggestion ->
+            if (result.size < MAX_SUGGESTIONS && 
+                !usedWords.contains(suggestion.word.lowercase())) {
+                result.add(suggestion)
+                usedWords.add(suggestion.word.lowercase())
+            }
+        }
+        
+        Log.d(TAG, "🎯 Fusion finale: ${result.size} suggestions (Kreyòl: ${result.count { it.language == SuggestionLanguage.KREYOL }}, Français: ${result.count { it.language == SuggestionLanguage.FRENCH }})")
+        
+        return result
+    }
+
+    /**
      * Génère des suggestions basées uniquement sur le dictionnaire (mode frappe)
      * Optimisé pour la saisie en temps réel pendant que l'utilisateur tape
+     * ⚠️  DEPRECATED: Utiliser generateBilingualSuggestions() à la place
      */
     fun generateDictionarySuggestions(input: String) {
+        // 🎯 REDIRECTION: Si mode bilingue activé, utiliser la logique bilingue
+        if (isBilingualEnabled) {
+            generateBilingualSuggestions(input)
+            return
+        }
+        
+        // Logique originale pour rétrocompatibilité
         if (input.length < MIN_WORD_LENGTH) {
             suggestionListener?.onSuggestionsReady(emptyList())
             return
@@ -427,13 +612,77 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Nettoie les ressources
+     * 🔧 Configuration du mode bilingue
+     */
+    fun setBilingualConfig(config: BilingualConfig) {
+        bilingualConfig = config
+        Log.d(TAG, "Configuration bilingue mise à jour: français activé=${config.enableFrenchSupport}, seuil=${config.frenchActivationThreshold}")
+    }
+    
+    fun getBilingualConfig(): BilingualConfig = bilingualConfig
+    
+    /**
+     * Active/désactive le support français
+     */
+    fun setFrenchSupport(enabled: Boolean) {
+        bilingualConfig = bilingualConfig.copy(enableFrenchSupport = enabled)
+        Log.d(TAG, "Support français: $enabled")
+    }
+    
+    /**
+     * Active/désactive le mode Kreyòl uniquement
+     */
+    fun setKreyolOnlyMode(kreyolOnly: Boolean) {
+        bilingualConfig = bilingualConfig.copy(kreyolOnlyMode = kreyolOnly)
+        Log.d(TAG, "Mode Kreyòl seul: $kreyolOnly")
+    }
+    
+    /**
+     * Définit le seuil d'activation du français (nombre de lettres)
+     */
+    fun setFrenchActivationThreshold(threshold: Int) {
+        bilingualConfig = bilingualConfig.copy(frenchActivationThreshold = threshold)
+        Log.d(TAG, "Seuil activation français: $threshold lettres")
+    }
+    
+    /**
+     * Obtient les statistiques du moteur bilingue
+     */
+    fun getBilingualStats(): Map<String, Any> {
+        val frenchStats = if (::frenchDictionary.isInitialized) {
+            frenchDictionary.getStats()
+        } else {
+            mapOf("loaded" to false, "word_count" to 0)
+        }
+        
+        return mapOf(
+            "kreyol_words" to dictionary.size,
+            "kreyol_ngrams" to ngramModel.size,
+            "french_loaded" to (frenchStats["loaded"] as Boolean),
+            "french_words" to (frenchStats["word_count"] as Int),
+            "config" to mapOf(
+                "french_support" to bilingualConfig.enableFrenchSupport,
+                "activation_threshold" to bilingualConfig.frenchActivationThreshold,
+                "kreyol_only" to bilingualConfig.kreyolOnlyMode
+            )
+        )
+    }
+
+    /**
+     * Nettoie les ressources (kreyòl + français)
      */
     fun cleanup() {
         suggestionScope.cancel()
         dictionary = emptyList()
         ngramModel = emptyMap()
         wordHistory.clear()
+        
+        // Nettoyer ressources françaises
+        if (::frenchDictionary.isInitialized) {
+            frenchDictionary.cleanup()
+        }
+        
         suggestionListener = null
+        Log.d(TAG, "Moteur bilingue nettoyé")
     }
 }
