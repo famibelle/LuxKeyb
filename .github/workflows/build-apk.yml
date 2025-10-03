@@ -264,11 +264,22 @@ jobs:
         echo "🔍 Vérification des assets de dictionnaire..."
         ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
 
-    - name: 🔐 Generate Debug Keystore (CI Only)
+    - name: 🔐 Setup Production Keystore for Release APK
       run: |
         cd android_keyboard
-        echo "🔑 Generating debug keystore for CI build..."
-        keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+        
+        if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+          echo "🔑 Creating production keystore for Play Store release APK..."
+          keytool -genkey -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -keyalg RSA -keysize 2048 -validity 25000 \
+            -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -dname "CN=Potomitan Kreyol Keyboard,OU=Potomitan,O=Famibelle,L=Guadeloupe,ST=Guadeloupe,C=GP"
+          echo "✅ Production keystore created: $KEYSTORE_FILE"
+          echo "🔐 Release APK will be signed with production key"
+        else
+          echo "⚠️ Production secrets not available, generating debug keystore..."
+          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+        fi
 
     - name: 🧹 Clean Project  
       env:
@@ -320,11 +331,22 @@ jobs:
         echo "🔍 Vérification des assets de dictionnaire..."
         ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
 
-    - name: 🔐 Generate Debug Keystore (CI Only)
+    - name: 🔐 Setup Production Keystore for Release AAB  
       run: |
         cd android_keyboard
-        echo "🔑 Generating debug keystore for CI build..."
-        keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+        
+        if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+          echo "🔑 Creating production keystore for Play Store release AAB..."
+          keytool -genkey -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -keyalg RSA -keysize 2048 -validity 25000 \
+            -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -dname "CN=Potomitan Kreyol Keyboard,OU=Potomitan,O=Famibelle,L=Guadeloupe,ST=Guadeloupe,C=GP"
+          echo "✅ Production keystore created for AAB: $KEYSTORE_FILE"
+          echo "🏪 Release AAB will be signed for Google Play Store"
+        else
+          echo "⚠️ Production secrets not available, generating debug keystore..."
+          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+        fi
 
     - name: 🎯 Build Release AAB
       env:
