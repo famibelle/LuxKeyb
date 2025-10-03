@@ -15,16 +15,16 @@ android {
         release {
             // Configuration release avec secrets GitHub Actions
             def keystoreFile = System.getenv("KEYSTORE_FILE")
-            def storePassword = System.getenv("STORE_PASSWORD")
-            def keyAlias = System.getenv("KEY_ALIAS") 
-            def keyPassword = System.getenv("KEY_PASSWORD")
+            def storePass = System.getenv("STORE_PASSWORD")
+            def keyAliasEnv = System.getenv("KEY_ALIAS")
+            def keyPass = System.getenv("KEY_PASSWORD")
             
-            if (keystoreFile && storePassword && keyAlias && keyPassword) {
+            if (keystoreFile && storePass && keyAliasEnv && keyPass) {
                 // Signature de production via GitHub Actions
                 storeFile file(keystoreFile)
-                storePassword storePassword
-                keyAlias keyAlias
-                keyPassword keyPassword
+                storePassword storePass
+                keyAlias keyAliasEnv
+                keyPassword keyPass
                 v1SigningEnabled true
                 v2SigningEnabled true
             } else {
