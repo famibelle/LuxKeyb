@@ -1,5 +1,9 @@
 package com.example.kreyolkeyboard
 
+/**
+ * À la mémoire de mon père, Saint-Ange Corneille Famibelle
+ */
+
 import android.inputmethodservice.InputMethodService
 import android.content.Context
 import android.app.ActivityManager
