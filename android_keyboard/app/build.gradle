@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     namespace 'com.example.kreyolkeyboard'
 
     signingConfigs {
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         applicationId "com.potomitan.kreyolkeyboard"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 50203
         versionName "5.2.3"
         
