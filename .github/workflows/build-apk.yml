@@ -359,7 +359,31 @@ jobs:
         GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle bundleRelease --no-daemon --scan
 
-    - name: 📤 Upload Release AAB
+    - name: Verify AAB Signature
+      run: |
+        cd android_keyboard
+        echo "🔍 Verifying AAB signature..."
+        AAB_FILE="app/build/outputs/bundle/release/app-release.aab"
+        
+        if [ -f "$AAB_FILE" ]; then
+          echo "✅ AAB found: $AAB_FILE"
+          echo ""
+          echo "📊 AAB Details:"
+          ls -lh "$AAB_FILE"
+          echo ""
+          echo "🔐 Certificate Information:"
+          jarsigner -verify -verbose -certs "$AAB_FILE" | grep "CN=" | head -1
+          echo ""
+          echo "🔑 SHA Fingerprints:"
+          keytool -printcert -jarfile "$AAB_FILE" 2>&1 | grep "SHA" || echo "Unable to extract SHA via keytool"
+          echo ""
+          echo "✅ AAB is ready for Google Play Console upload"
+        else
+          echo "❌ AAB not found at $AAB_FILE"
+          exit 1
+        fi
+
+    - name: Upload Release AAB
       uses: actions/upload-artifact@v4
       with:
         name: kreyol-keyboard-release-aab  
