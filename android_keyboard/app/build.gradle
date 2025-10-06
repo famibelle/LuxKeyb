@@ -13,14 +13,15 @@ android {
         }
         
         release {
-            // Configuration release avec secrets GitHub Actions
-            def keystoreFile = System.getenv("KEYSTORE_FILE")
-            def storePass = System.getenv("STORE_PASSWORD")
-            def keyAliasEnv = System.getenv("KEY_ALIAS")
-            def keyPass = System.getenv("KEY_PASSWORD")
+            // Priorité : gradle.properties (local) > System.getenv (GitHub Actions)
+            def keystoreFile = project.findProperty('KEYSTORE_FILE') ?: System.getenv("KEYSTORE_FILE")
+            def storePass = project.findProperty('STORE_PASSWORD') ?: System.getenv("STORE_PASSWORD")
+            def keyAliasEnv = project.findProperty('KEY_ALIAS') ?: System.getenv("KEY_ALIAS")
+            def keyPass = project.findProperty('KEY_PASSWORD') ?: System.getenv("KEY_PASSWORD")
             
-            if (keystoreFile && storePass && keyAliasEnv && keyPass) {
-                // Signature de production via GitHub Actions
+            if (keystoreFile && file(keystoreFile).exists() && storePass && keyAliasEnv && keyPass) {
+                // Signature de production (local ou GitHub Actions)
+                println "✅ Production signing enabled with keystore: ${keystoreFile}"
                 storeFile file(keystoreFile)
                 storePassword storePass
                 keyAlias keyAliasEnv
@@ -28,8 +29,14 @@ android {
                 v1SigningEnabled true
                 v2SigningEnabled true
             } else {
-                // Fallback vers debug si secrets manquants (build local)
-                println "⚠️ Production signing unavailable, using debug signing"
+                // Fallback vers debug si secrets manquants
+                println "⚠️ Production signing unavailable:"
+                println "   - Keystore path: ${keystoreFile}"
+                println "   - Keystore exists: ${keystoreFile ? file(keystoreFile).exists() : 'N/A'}"
+                println "   - Store password: ${storePass ? '***' : 'MISSING'}"
+                println "   - Key alias: ${keyAliasEnv ?: 'MISSING'}"
+                println "   - Key password: ${keyPass ? '***' : 'MISSING'}"
+                println "   → Using debug signing"
                 storeFile signingConfigs.debug.storeFile
                 storePassword "android"
                 keyAlias "androiddebugkey"
