@@ -63,6 +63,10 @@ class SuggestionEngine(private val context: Context) {
         this.suggestionListener = listener
     }
     
+    fun getSuggestionListener(): SuggestionListener? {
+        return suggestionListener
+    }
+    
     /**
      * Change le mode de suggestion
      */
@@ -485,14 +489,22 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Obtient les suggestions depuis le dictionnaire
+     * Obtient les suggestions depuis le dictionnaire avec support AccentTolerantMatcher
+     * 🎯 NOUVELLE FONCTIONNALITÉ: Recherche insensible aux accents
      */
     private fun getDictionarySuggestions(input: String): List<Pair<String, Int>> {
-        val inputLower = input.lowercase()
+        if (input.length < MIN_WORD_LENGTH) return emptyList()
         
-        return dictionary
-            .filter { it.first.startsWith(inputLower) }
-            .take(MAX_SUGGESTIONS * 2) // Prendre plus pour avoir des options après fusion
+        // 🎯 Utiliser AccentTolerantMatcher pour recherche insensible aux accents
+        val accentTolerantMatches = AccentTolerantMatcher.findAccentTolerantSuggestions(
+            input, 
+            dictionary, 
+            MAX_SUGGESTIONS * 2
+        )
+        
+        Log.d(TAG, "🔍 Recherche '$input': ${accentTolerantMatches.size} suggestions trouvées")
+        
+        return accentTolerantMatches
     }
     
     /**
