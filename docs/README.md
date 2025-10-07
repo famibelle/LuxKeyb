@@ -17,6 +17,10 @@
 
 ### 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
+<div align="center">
+   <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="150">
+</div>
+
 **Google Play Store :** [Bientôt disponible]
 
 
