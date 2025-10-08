@@ -362,27 +362,31 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // ===== IMPLÉMENTATION AccentSelectionListener =====
     
-    override fun onAccentSelected(accent: String) {
-        Log.d(TAG, "🎯 onAccentSelected appelé avec accent: '$accent'")
+    override fun onAccentSelected(accent: String, baseCharacter: String) {
+        Log.d(TAG, "🎯 onAccentSelected appelé - accent: '$accent', base: '$baseCharacter'")
         
-        // Supprimer le caractère de base et insérer l'accent
         val inputConnection = currentInputConnection
         if (inputConnection != null) {
-            inputConnection.deleteSurroundingText(1, 0)
-            inputConnection.commitText(accent, 1)
+            val textBefore = inputConnection.getTextBeforeCursor(10, 0)?.toString() ?: ""
+            Log.d(TAG, "📝 Texte avant accent: '$textBefore'")
             
-            // ✅ CORRECTION: Mettre à jour le mot courant SANS déclencher onWordChanged()
-            // pour éviter la cascade d'événements qui provoque 60+ updateKeyboardDisplay()
+            // ✅ BUG FIX CORRECT: Ajouter l'accent directement 
+            // Le caractère de base n'a pas été ajouté à cause de l'appui long
+            inputConnection.commitText(accent, 1)
+            Log.d(TAG, "✅ Accent '$accent' ajouté (remplace '$baseCharacter' conceptuel)")
+            
+            // Mettre à jour le mot courant en ajoutant l'accent
             val currentWord = inputProcessor.getCurrentWord()
-            if (currentWord.isNotEmpty()) {
-                val updatedWord = currentWord.dropLast(1) + accent
-                // Mise à jour directe du mot sans déclencher les callbacks
-                inputProcessor.updateCurrentWordSilently(updatedWord)
-                Log.d(TAG, "✅ Mot mis à jour silencieusement: '$currentWord' → '$updatedWord'")
-            }
+            val updatedWord = currentWord + accent
+            inputProcessor.updateCurrentWordSilently(updatedWord)
+            Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
+            
+            // 🔍 DIAGNOSTIC: Vérifier l'état final
+            val textAfter = inputConnection.getTextBeforeCursor(10, 0)?.toString() ?: ""
+            Log.d(TAG, "📝 Texte après accent: '$textAfter'")
         }
         
-        Log.d(TAG, "✅ onAccentSelected terminé sans cascade d'événements")
+        Log.d(TAG, "✅ onAccentSelected terminé - BUG FIX v2 appliqué")
     }
     
     override fun onLongPressStarted(baseKey: String) {

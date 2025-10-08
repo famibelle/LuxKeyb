@@ -47,10 +47,11 @@ class AccentHandler(private val context: Context) {
     private val longPressHandler = Handler(Looper.getMainLooper())
     private var longPressRunnable: Runnable? = null
     private var isLongPressTriggered = false
+    private var currentBaseCharacter: String? = null
     
     // Callbacks
     interface AccentSelectionListener {
-        fun onAccentSelected(accent: String)
+        fun onAccentSelected(accent: String, baseCharacter: String)
         fun onLongPressStarted(baseKey: String)
         fun onLongPressCancelled()
     }
@@ -75,6 +76,7 @@ class AccentHandler(private val context: Context) {
         if (!hasAccents(key)) return
         
         cancelLongPress()
+        currentBaseCharacter = key  // Stocker le caractère de base
         
         longPressRunnable = Runnable {
             isLongPressTriggered = true
@@ -243,10 +245,12 @@ class AccentHandler(private val context: Context) {
      * Gère la sélection d'un accent
      */
     private fun handleAccentSelection(accent: String) {
-        accentListener?.onAccentSelected(accent)
+        val baseChar = currentBaseCharacter ?: ""
+        accentListener?.onAccentSelected(accent, baseChar)
         dismissAccentPopup()
+        currentBaseCharacter = null  // Nettoyer après usage
         
-        Log.d(TAG, "Accent sélectionné: '$accent'")
+        Log.d(TAG, "Accent sélectionné: '$accent' pour base: '$baseChar'")
     }
     
     /**
