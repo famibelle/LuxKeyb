@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
+import com.example.kreyolkeyboard.gamification.WordCommitListener
 
 /**
  * Processeur d'entrées pour le clavier créole
@@ -32,9 +33,17 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     private var processorListener: InputProcessorListener? = null
+    private var wordCommitListener: WordCommitListener? = null  // 🎮 Gamification: Tracking des mots
     
     fun setInputProcessorListener(listener: InputProcessorListener) {
         this.processorListener = listener
+    }
+    
+    /**
+     * 🎮 Gamification: Définit le listener pour le tracking des mots committés
+     */
+    fun setWordCommitListener(listener: WordCommitListener) {
+        this.wordCommitListener = listener
     }
     
     /**
@@ -231,6 +240,10 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         // Insérer la suggestion avec un espace automatique
         inputConnection.commitText("$finalSuggestion ", 1)
         
+        // 🎮 Gamification: Tracker la suggestion sélectionnée
+        wordCommitListener?.onWordCommitted(finalSuggestion)
+        Log.d(TAG, "🎮 Suggestion committée pour tracking: '$finalSuggestion'")
+        
         // Finaliser le mot
         currentWord = finalSuggestion
         finalizeCurrentWord()
@@ -272,6 +285,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     private fun finalizeCurrentWord() {
         if (currentWord.isNotEmpty()) {
             processorListener?.onWordCompleted(currentWord)
+            
+            // 🎮 Gamification: Notifier le tracking du mot committé
+            wordCommitListener?.onWordCommitted(currentWord)
+            Log.d(TAG, "🎮 Mot committé pour tracking: '$currentWord'")
+            
             currentWord = ""
             processorListener?.onWordChanged("")
         }
