@@ -61,6 +61,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     /**
      * Migre le dictionnaire original en ajoutant les compteurs user_count
+     * Le dictionnaire original est un array: [["mot", frequency], ...]
      */
     private fun migrateDictionary(): JSONObject {
         val migratedDict = JSONObject()
@@ -70,14 +71,14 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             val json = context.assets.open(ORIGINAL_DICT)
                 .bufferedReader()
                 .use { it.readText() }
-            val originalDict = JSONObject(json)
+            val originalArray = org.json.JSONArray(json)
             
-            // Transformer chaque entrée
-            val keys = originalDict.keys()
+            // Transformer chaque entrée du array en objet
             var count = 0
-            while (keys.hasNext()) {
-                val word = keys.next()
-                val frequency = originalDict.getInt(word)
+            for (i in 0 until originalArray.length()) {
+                val entry = originalArray.getJSONArray(i)
+                val word = entry.getString(0)
+                val frequency = entry.getInt(1)
                 
                 // Créer la nouvelle structure avec user_count à 0
                 val wordData = JSONObject().apply {
@@ -91,7 +92,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             
             // Sauvegarder le dictionnaire migré
             saveDictionaryToFile(migratedDict)
-            Log.d(TAG, "✅ Migration réussie : $count mots transformés")
+            Log.d(TAG, "✅ Migration réussie : $count mots transformés depuis array")
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erreur lors de la migration du dictionnaire", e)
