@@ -25,6 +25,8 @@ import java.util.Timer
 import java.util.TimerTask
 import com.example.kreyolkeyboard.BilingualSuggestion
 import com.example.kreyolkeyboard.SuggestionLanguage
+import com.example.kreyolkeyboard.gamification.CreoleDictionaryWithUsage
+import com.example.kreyolkeyboard.gamification.WordCommitListener
 
 /**
  * Service principal du clavier créole refactorisé
@@ -53,6 +55,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private lateinit var suggestionEngine: SuggestionEngine
     private lateinit var accentHandler: AccentHandler
     private lateinit var inputProcessor: InputProcessor
+    
+    // 🎮 Gamification: Tracking d'utilisation du vocabulaire
+    private lateinit var dictionaryWithUsage: CreoleDictionaryWithUsage
     
     // Vues principales
     private var suggestionsView: LinearLayout? = null
@@ -176,6 +181,26 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         inputProcessor = InputProcessor(this).apply {
             setInputProcessorListener(this@KreyolInputMethodServiceRefactored)
         }
+        
+        // 🎮 Gamification: Initialiser le tracking d'utilisation du vocabulaire
+        dictionaryWithUsage = CreoleDictionaryWithUsage(this)
+        
+        // Connecter le listener de tracking au InputProcessor
+        inputProcessor.setWordCommitListener(object : WordCommitListener {
+            override fun onWordCommitted(word: String) {
+                // Tracker le mot dans le dictionnaire (seulement si présent)
+                val tracked = dictionaryWithUsage.incrementWordUsage(word)
+                if (tracked) {
+                    Log.d(TAG, "🎮 Gamification: Mot tracké '$word'")
+                    
+                    // Log des stats pour debug
+                    val stats = dictionaryWithUsage.getVocabularyStats()
+                    Log.d(TAG, "📊 Coverage: ${String.format("%.1f", stats.coveragePercentage)}% (${stats.wordsDiscovered}/${stats.totalWords} mots)")
+                }
+            }
+        })
+        
+        Log.d(TAG, "✅ Gamification initialisée avec tracking du vocabulaire")
         
         // 🔧 FIX SAMSUNG A21S: Initialisation adaptative selon les capacités
         serviceScope.launch {
@@ -656,6 +681,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "=== DESTRUCTION DU SERVICE ===")
         
         try {
+            // 🎮 Gamification: Sauvegarder les changements non sauvegardés
+            if (::dictionaryWithUsage.isInitialized) {
+                dictionaryWithUsage.onDestroy()
+                Log.d(TAG, "✅ Gamification: Sauvegarde finale effectuée")
+            }
+            
             // 🔧 FIX SAMSUNG A21S: Arrêter monitoring et annuler coroutines
             memoryMonitoringJob?.cancel()
             serviceScope.cancel()
