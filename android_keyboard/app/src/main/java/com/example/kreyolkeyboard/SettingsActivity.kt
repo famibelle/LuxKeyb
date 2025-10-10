@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import com.example.kreyolkeyboard.gamification.VocabularyStatsActivity
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,6 +132,24 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         
+        val statsButton = Button(this).apply {
+            text = "📊 Statistiques Vocabulaire"
+            textSize = 16f
+            setBackgroundColor(Color.parseColor("#FF8C00")) // Orange soleil
+            setTextColor(Color.parseColor("#FFFFFF"))
+            setPadding(20, 16, 20, 16)
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            layoutParams.setMargins(0, 16, 0, 0)
+            this.layoutParams = layoutParams
+            setOnClickListener {
+                val intent = Intent(this@SettingsActivity, VocabularyStatsActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        
         val testTitle = TextView(this).apply {
             text = "✍️ Zone de test du clavier"
             textSize = 18f
@@ -226,6 +245,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Assembler tous les éléments
         buttonLayout.addView(activateButton)
+        buttonLayout.addView(statsButton)
         buttonLayout.addView(testTitle)
         buttonLayout.addView(testDescription)
         buttonLayout.addView(testEditText)
