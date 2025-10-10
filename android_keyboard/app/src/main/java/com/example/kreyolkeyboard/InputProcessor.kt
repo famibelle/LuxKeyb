@@ -134,35 +134,54 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Entrée
      */
     private fun handleEnter(inputConnection: InputConnection): Boolean {
+        Log.d(TAG, "🔵 === DEBUT handleEnter() ===")
         finalizeCurrentWord()
+        Log.d(TAG, "🔵 Mot finalisé")
         
         // Déterminer le type d'action selon le contexte
         val editorInfo = inputMethodService.currentInputEditorInfo
         val imeAction = editorInfo?.imeOptions?.and(EditorInfo.IME_MASK_ACTION)
         
+        Log.d(TAG, "🔵 EditorInfo: $editorInfo")
+        Log.d(TAG, "🔵 IME Action détectée: $imeAction")
+        
         when (imeAction) {
             EditorInfo.IME_ACTION_SEND -> {
+                Log.d(TAG, "🔵 → Action SEND - Envoi du message")
                 inputConnection.performEditorAction(EditorInfo.IME_ACTION_SEND)
+                Log.d(TAG, "🔵 → performEditorAction(SEND) exécuté")
             }
             EditorInfo.IME_ACTION_SEARCH -> {
+                Log.d(TAG, "🔵 → Action SEARCH - Recherche")
                 inputConnection.performEditorAction(EditorInfo.IME_ACTION_SEARCH)
+                Log.d(TAG, "🔵 → performEditorAction(SEARCH) exécuté")
             }
             EditorInfo.IME_ACTION_GO -> {
+                Log.d(TAG, "🔵 → Action GO")
                 inputConnection.performEditorAction(EditorInfo.IME_ACTION_GO)
+                Log.d(TAG, "🔵 → performEditorAction(GO) exécuté")
             }
             EditorInfo.IME_ACTION_NEXT -> {
+                Log.d(TAG, "🔵 → Action NEXT - Champ suivant")
                 inputConnection.performEditorAction(EditorInfo.IME_ACTION_NEXT)
+                Log.d(TAG, "🔵 → performEditorAction(NEXT) exécuté")
             }
             EditorInfo.IME_ACTION_DONE -> {
+                Log.d(TAG, "🔵 → Action DONE - Terminé")
                 inputConnection.performEditorAction(EditorInfo.IME_ACTION_DONE)
+                Log.d(TAG, "🔵 → performEditorAction(DONE) exécuté")
             }
             else -> {
+                Log.d(TAG, "🔵 → Action PAR DÉFAUT - Nouvelle ligne")
                 // Action par défaut - nouvelle ligne
                 inputConnection.commitText("\n", 1)
+                Log.d(TAG, "🔵 → Nouvelle ligne insérée")
             }
         }
         
+        Log.d(TAG, "🔵 Notification listener touche spéciale")
         processorListener?.onSpecialKeyPressed("⏎")
+        Log.d(TAG, "🔵 === FIN handleEnter() ===")
         return true
     }
     

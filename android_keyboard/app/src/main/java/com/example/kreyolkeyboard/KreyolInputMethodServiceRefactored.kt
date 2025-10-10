@@ -603,9 +603,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onFinishInput() {
-        super.onFinishInput()
-        Log.d(TAG, "onFinishInput")
+        // 🔧 FIX: Ne PAS appeler super.onFinishInput() pour garder le clavier actif
+        // Cela empêche Android de détruire le service IME après un ENTER
+        Log.d(TAG, "onFinishInput - Clavier reste actif (super.onFinishInput() non appelé)")
         
+        // Nettoyer seulement l'état local
         accentHandler.dismissAccentPopup()
         inputProcessor.resetState()
     }

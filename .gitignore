@@ -118,3 +118,6 @@ AAB_GUIDE.md
 OPTIMISATION_MEMOIRE_A21S.md
 TEST_CASE_PRESERVATION.md
 test-gamification.ps1
+test-enter-diagnostic.ps1
+.gitignore
+logs_enter_diagnostic.txt
