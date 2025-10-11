@@ -259,11 +259,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         // Insérer la suggestion avec un espace automatique
         inputConnection.commitText("$finalSuggestion ", 1)
         
-        // 🎮 Gamification: Tracker la suggestion sélectionnée
-        wordCommitListener?.onWordCommitted(finalSuggestion)
-        Log.d(TAG, "🎮 Suggestion committée pour tracking: '$finalSuggestion'")
-        
-        // Finaliser le mot
+        // Finaliser le mot (le tracking se fera dans finalizeCurrentWord)
         currentWord = finalSuggestion
         finalizeCurrentWord()
         

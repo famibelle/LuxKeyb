@@ -30,7 +30,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         private const val DICT_FILE = "creole_dict_with_usage.json"
         private const val ORIGINAL_DICT = "creole_dict.json"
         private const val MIN_WORD_LENGTH = 3  // Ignorer les mots < 3 lettres
-        private const val SAVE_BATCH_SIZE = 10  // Sauvegarder toutes les 10 utilisations
+        private const val SAVE_BATCH_SIZE = 1  // Sauvegarder après chaque utilisation pour tests
     }
     
     private var dictionary: JSONObject = JSONObject()
@@ -41,19 +41,67 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     }
     
     /**
+     * Méthode utilitaire pour accéder aux données d'un mot avec migration automatique
+     * Gère les deux formats : entier direct ou objet JSON complet
+     */
+    private fun getWordDataSafe(word: String): JSONObject? {
+        if (!dictionary.has(word)) return null
+        
+        return try {
+            val rawValue = dictionary.get(word)
+            when (rawValue) {
+                is Int -> {
+                    // Format simplifié: "mot": 1 -> migrer vers objet JSON
+                    val newData = JSONObject().apply {
+                        put("frequency", 0)
+                        put("user_count", rawValue)
+                    }
+                    dictionary.put(word, newData)
+                    Log.d(TAG, "🔄 Migration auto '$word': $rawValue -> objet JSON")
+                    newData
+                }
+                is JSONObject -> {
+                    // Format standard: "mot": {"frequency": X, "user_count": Y}
+                    rawValue
+                }
+                else -> {
+                    Log.e(TAG, "❌ Format invalide pour '$word': ${rawValue::class.java}")
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erreur lors de l'accès à '$word'", e)
+            null
+        }
+    }
+    
+    /**
      * Charge le dictionnaire (avec migration automatique si nécessaire)
      */
     private fun loadDictionary() {
         val file = File(context.filesDir, DICT_FILE)
         
-        dictionary = if (file.exists()) {
-            // Charger le dictionnaire existant avec compteurs
-            Log.d(TAG, "📖 Chargement du dictionnaire existant avec compteurs...")
-            JSONObject(file.readText())
+        Log.d(TAG, "📂 Fichier dictionnaire existe: ${file.exists()}")
+        Log.d(TAG, "📂 Chemin: ${file.absolutePath}")
+        
+        if (file.exists()) {
+            val content = file.readText()
+            Log.d(TAG, "📄 Taille fichier: ${content.length} chars")
+            Log.d(TAG, "📄 Aperçu contenu: ${content.take(200)}...")
+            
+            dictionary = if (content.trim().isEmpty() || content.trim() == "{}") {
+                // Fichier vide ou reset - forcer la migration
+                Log.d(TAG, "🔄 Fichier vide détecté - Force migration...")
+                migrateDictionary()
+            } else {
+                // Charger le dictionnaire existant avec compteurs
+                Log.d(TAG, "📖 Chargement du dictionnaire existant avec compteurs...")
+                JSONObject(content)
+            }
         } else {
             // Première utilisation : migrer le dictionnaire original
             Log.d(TAG, "🔄 Première utilisation - Migration du dictionnaire...")
-            migrateDictionary()
+            dictionary = migrateDictionary()
         }
         
         Log.d(TAG, "✅ Dictionnaire chargé : ${dictionary.length()} mots")
@@ -108,8 +156,12 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      * @return true si le mot a été tracké, false sinon (mot ignoré)
      */
     fun incrementWordUsage(word: String): Boolean {
+        Log.d(TAG, "📥 incrementWordUsage appelé avec: '$word'")
+        Log.d(TAG, "📂 CreoleDictionary contexte: ${context.filesDir.absolutePath}")
+        
         // Normalisation basique (lowercase + trim)
         val normalized = word.lowercase().trim()
+        Log.d(TAG, "🔄 Mot normalisé: '$word' -> '$normalized'")
         
         // Filtres de sécurité et vie privée
         if (!isValidForTracking(normalized)) {
@@ -119,20 +171,48 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         
         // Vérifier que le mot existe dans le dictionnaire créole
         return if (dictionary.has(normalized)) {
-            val wordData = dictionary.getJSONObject(normalized)
-            val currentCount = wordData.getInt("user_count")
-            wordData.put("user_count", currentCount + 1)
-            
-            unsavedChanges++
-            Log.d(TAG, "✅ '$normalized' utilisé ${currentCount + 1} fois")
-            
-            // Sauvegarde par batch pour performance
-            if (unsavedChanges >= SAVE_BATCH_SIZE) {
-                saveDictionary()
-                unsavedChanges = 0
+            try {
+                // Gérer les deux formats possibles : entier direct ou objet JSON
+                val rawValue = dictionary.get(normalized)
+                val wordData = when (rawValue) {
+                    is Int -> {
+                        // Format simplifié du système optimisé: "mot": 1
+                        // Migrer vers format complet
+                        val newData = JSONObject().apply {
+                            put("frequency", 0)  // Pas de données de fréquence originale disponibles
+                            put("user_count", rawValue)
+                        }
+                        dictionary.put(normalized, newData)
+                        Log.d(TAG, "🔄 Migration auto de '$normalized': $rawValue -> objet JSON")
+                        newData
+                    }
+                    is JSONObject -> {
+                        // Format standard: "mot": {"frequency": X, "user_count": Y}
+                        rawValue
+                    }
+                    else -> {
+                        Log.e(TAG, "❌ Format invalide pour '$normalized': ${rawValue::class.java}")
+                        return false
+                    }
+                }
+                
+                val currentCount = wordData.getInt("user_count")
+                wordData.put("user_count", currentCount + 1)
+                
+                unsavedChanges++
+                Log.d(TAG, "✅ '$normalized' utilisé ${currentCount + 1} fois")
+                
+                // Sauvegarde par batch pour performance
+                if (unsavedChanges >= SAVE_BATCH_SIZE) {
+                    saveDictionary()
+                    unsavedChanges = 0
+                }
+                
+                true
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erreur lors du tracking de '$normalized'", e)
+                false
             }
-            
-            true
         } else {
             Log.d(TAG, "🔒 '$normalized' ignoré (pas dans le dictionnaire créole)")
             false
@@ -171,11 +251,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      */
     fun getWordUsageCount(word: String): Int {
         val normalized = word.lowercase().trim()
-        return if (dictionary.has(normalized)) {
-            dictionary.getJSONObject(normalized).getInt("user_count")
-        } else {
-            0
-        }
+        val wordData = getWordDataSafe(normalized)
+        return wordData?.getInt("user_count") ?: 0
     }
     
     /**
@@ -183,11 +260,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      */
     fun getWordFrequency(word: String): Int {
         val normalized = word.lowercase().trim()
-        return if (dictionary.has(normalized)) {
-            dictionary.getJSONObject(normalized).getInt("frequency")
-        } else {
-            0
-        }
+        val wordData = getWordDataSafe(normalized)
+        return wordData?.getInt("frequency") ?: 0
     }
     
     /**
@@ -200,8 +274,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            if (wordData.getInt("user_count") > 0) {
+            val wordData = getWordDataSafe(word)
+            if (wordData != null && wordData.getInt("user_count") > 0) {
                 wordsUsed++
             }
         }
@@ -221,8 +295,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            if (wordData.getInt("user_count") > 0) {
+            val wordData = getWordDataSafe(word)
+            if (wordData != null && wordData.getInt("user_count") > 0) {
                 count++
             }
         }
@@ -237,8 +311,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            total += wordData.getInt("user_count")
+            val wordData = getWordDataSafe(word)
+            if (wordData != null) {
+                total += wordData.getInt("user_count")
+            }
         }
         return total
     }
@@ -252,17 +328,19 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            val userCount = wordData.getInt("user_count")
+            val wordData = getWordDataSafe(word)
             
-            if (userCount > 0) {
-                wordStats.add(
-                    WordUsageStats(
-                        word = word,
-                        userCount = userCount,
-                        frequency = wordData.getInt("frequency")
+            if (wordData != null) {
+                val userCount = wordData.getInt("user_count")
+                if (userCount > 0) {
+                    wordStats.add(
+                        WordUsageStats(
+                            word = word,
+                            userCount = userCount,
+                            frequency = wordData.getInt("frequency")
+                        )
                     )
-                )
+                }
             }
         }
         
@@ -280,11 +358,13 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            val userCount = wordData.getInt("user_count")
+            val wordData = getWordDataSafe(word)
             
-            if (userCount in 1..3) {
-                recentWords.add(word)
+            if (wordData != null) {
+                val userCount = wordData.getInt("user_count")
+                if (userCount in 1..3) {
+                    recentWords.add(word)
+                }
             }
         }
         
@@ -299,8 +379,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            if (wordData.getInt("user_count") >= 10) {
+            val wordData = getWordDataSafe(word)
+            if (wordData != null && wordData.getInt("user_count") >= 10) {
                 count++
             }
         }
@@ -333,6 +413,21 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             Log.e(TAG, "❌ Erreur lors de la sauvegarde", e)
         }
     }
+
+    /**
+     * Force la sauvegarde immédiate en contournant le système de batch
+     */
+    fun forceSave() {
+        synchronized(this) {
+            try {
+                saveDictionary()
+                unsavedChanges = 0
+                Log.d(TAG, "🔥 Sauvegarde immédiate forcée - ${dictionary.length()} mots")
+            } catch (e: Exception) {
+                Log.e(TAG, "❌ Erreur lors de la sauvegarde forcée", e)
+            }
+        }
+    }
     
     /**
      * Sauvegarde un objet JSON dans le fichier du dictionnaire
@@ -349,8 +444,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         val keys = dictionary.keys()
         while (keys.hasNext()) {
             val word = keys.next()
-            val wordData = dictionary.getJSONObject(word)
-            wordData.put("user_count", 0)
+            val wordData = getWordDataSafe(word)
+            if (wordData != null) {
+                wordData.put("user_count", 0)
+            }
         }
         saveDictionary()
         unsavedChanges = 0
