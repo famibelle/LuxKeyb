@@ -188,8 +188,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Connecter le listener de tracking au InputProcessor
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
+                Log.d(TAG, "🔍 onWordCommitted appelé avec: '$word'")
+                
                 // Tracker le mot dans le dictionnaire (seulement si présent)
                 val tracked = dictionaryWithUsage.incrementWordUsage(word)
+                Log.d(TAG, "🎯 Résultat tracking '$word': $tracked")
+                
                 if (tracked) {
                     Log.d(TAG, "🎮 Gamification: Mot tracké '$word'")
                     

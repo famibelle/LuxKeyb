@@ -11,17 +11,181 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import android.util.Log
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.*
 import kotlin.random.Random
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = "home"
-    private lateinit var contentContainer: FrameLayout
+    private var currentTab = 0 // 0 = home, 1 = stats
+    private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
+    
+    companion object {
+        // Système de cache ultra-léger pour les modifications
+        private val pendingUpdates = ConcurrentHashMap<String, Int>(16, 0.75f, 1)
+        private var lastSaveTime = 0L
+        private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
+        private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
+        
+        private var saveExecutor: ScheduledExecutorService? = null
+        
+        // Fonction statique pour mettre à jour l'usage d'un mot (appelée depuis le clavier)
+        @JvmStatic
+        fun updateWordUsage(context: Context, word: String) {
+            // Filtrer les mots trop courts ou invalides
+            if (word.length < 2 || word.isBlank()) return
+            
+            // Incrémenter dans le cache (thread-safe)
+            pendingUpdates.merge(word.lowercase().trim(), 1) { old, new -> old + new }
+            
+            // Si trop d'updates en attente, forcer une sauvegarde
+            if (pendingUpdates.size >= MAX_PENDING_UPDATES) {
+                flushPendingUpdates(context)
+            }
+            
+            // Programmer une sauvegarde différée si pas déjà programmée
+            scheduleDelayedSave(context)
+        }
+        
+        // Sauvegarde différée pour optimiser les I/O
+        private fun scheduleDelayedSave(context: Context) {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastSaveTime < SAVE_INTERVAL_MS) return
+            
+            if (saveExecutor == null) {
+                saveExecutor = Executors.newSingleThreadScheduledExecutor()
+            }
+            
+            saveExecutor?.schedule({
+                flushPendingUpdates(context)
+            }, SAVE_INTERVAL_MS, TimeUnit.MILLISECONDS)
+        }
+        
+        // Vider le cache en mémoire vers le fichier
+        @JvmStatic
+        fun flushPendingUpdates(context: Context) {
+            if (pendingUpdates.isEmpty()) return
+            
+            // Copie atomique du cache pour libérer rapidement la mémoire
+            val updatesToSave = HashMap<String, Int>(pendingUpdates)
+            pendingUpdates.clear()
+            lastSaveTime = System.currentTimeMillis()
+            
+            // Sauvegarde asynchrone pour ne pas bloquer l'UI
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    saveUpdatesToFile(context, updatesToSave)
+                } catch (e: Exception) {
+                    Log.e("SettingsActivity", "Erreur sauvegarde: ${e.message}")
+                    // En cas d'erreur, remettre les updates dans le cache
+                    updatesToSave.forEach { (word, count) ->
+                        pendingUpdates.merge(word, count) { old, new -> old + new }
+                    }
+                }
+            }
+        }
+        
+        // Sauvegarde optimisée par lecture partielle
+        private suspend fun saveUpdatesToFile(context: Context, updates: Map<String, Int>) {
+            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            
+            if (!usageFile.exists()) {
+                // Créer le fichier s'il n'existe pas
+                createInitialUsageFile(context)
+            }
+            
+            // Lecture streaming pour économiser la mémoire
+            val existingData = try {
+                usageFile.bufferedReader().use { reader ->
+                    val sb = StringBuilder(8192) // Buffer fixe
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        sb.append(line)
+                    }
+                    JSONObject(sb.toString())
+                }
+            } catch (e: Exception) {
+                Log.w("SettingsActivity", "Fichier corrompu, recréation")
+                createInitialUsageFile(context)
+                JSONObject()
+            }
+            
+            // Appliquer seulement les modifications nécessaires
+            var hasChanges = false
+            updates.forEach { (word, incrementCount) ->
+                if (existingData.has(word)) {
+                    val currentCount = existingData.optInt(word, 0)
+                    existingData.put(word, currentCount + incrementCount)
+                    hasChanges = true
+                } else {
+                    // Nouveau mot, l'ajouter seulement s'il est dans le dictionnaire
+                    if (isWordInDictionary(context, word)) {
+                        existingData.put(word, incrementCount)
+                        hasChanges = true
+                    }
+                }
+            }
+            
+            // Sauvegarder seulement si des changements ont été faits
+            if (hasChanges) {
+                // Écriture atomique pour éviter la corruption
+                val tempFile = File(context.filesDir, "creole_dict_with_usage.json.tmp")
+                tempFile.bufferedWriter().use { writer ->
+                    writer.write(existingData.toString())
+                }
+                tempFile.renameTo(usageFile)
+                
+                val motsSauvegardes = updates.map { "${it.key}(+${it.value})" }.joinToString(", ")
+                Log.d("SettingsActivity", "Sauvegardé ${updates.size} mots: $motsSauvegardes")
+            }
+        }
+        
+        // Vérification rapide si un mot existe dans le dictionnaire
+        private fun isWordInDictionary(context: Context, word: String): Boolean {
+            return try {
+                context.assets.open("creole_dict.json").bufferedReader().use { reader ->
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        if (line!!.contains("\"$word\"", ignoreCase = true)) {
+                            return true
+                        }
+                    }
+                }
+                false
+            } catch (e: Exception) {
+                false
+            }
+        }
+        
+        // Création optimisée du fichier initial
+        private fun createInitialUsageFile(context: Context) {
+            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            
+            // Créer un fichier complètement vide sans aucune donnée de démonstration
+            val emptyUsageObject = JSONObject()
+            usageFile.writeText(emptyUsageObject.toString())
+        }
+        
+        // Nettoyage des ressources
+        @JvmStatic
+        fun cleanup() {
+            saveExecutor?.shutdown()
+            saveExecutor = null
+            pendingUpdates.clear()
+        }
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,95 +195,160 @@ class SettingsActivity : AppCompatActivity() {
         
         Log.d("SettingsActivity", "Création de l'activité principale Kréyòl Karukera")
         
-        // Layout principal horizontal : contenu à gauche, tabs à droite
+        // Layout principal vertical : Titre, Tabs en haut, puis ViewPager
         val mainLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
+            orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#F5F5F5"))
         }
         
-        // Container pour le contenu (Accueil ou Statistiques)
-        contentContainer = FrameLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1f
-            )
+        // En-tête principal avec le titre de l'app
+        val appHeader = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding(16, 20, 16, 16)
+            setBackgroundColor(Color.parseColor("#0080FF"))
         }
         
-        // Créer la barre d'onglets verticale à droite
+        val appTitle = TextView(this).apply {
+            text = "Klavyé Kréyòl"
+            textSize = 22f
+            setTextColor(Color.parseColor("#F8F8FF"))
+            setTypeface(null, Typeface.BOLD)
+            gravity = Gravity.CENTER
+        }
+        
+        appHeader.addView(appTitle)
+        
+        // Créer la barre d'onglets horizontale
         tabBar = createTabBar()
         
-        mainLayout.addView(contentContainer)
+        // ViewPager2 pour le contenu avec navigation swipe
+        viewPager = ViewPager2(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+            adapter = SettingsPagerAdapter(this@SettingsActivity)
+            
+            // Callback pour synchroniser avec la barre d'onglets
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    currentTab = position
+                    updateTabBar()
+                }
+            })
+        }
+        
+        mainLayout.addView(appHeader)
         mainLayout.addView(tabBar)
+        mainLayout.addView(viewPager)
         
         setContentView(mainLayout)
         
-        // Afficher l'accueil par défaut
-        showHomeTab()
-        
-        Log.d("SettingsActivity", "Interface avec tabs créée avec succès")
+        Log.d("SettingsActivity", "Interface avec tabs en haut créée avec succès")
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Sauvegarder les modifications en attente avant fermeture
+        flushPendingUpdates(this)
     }
     
     private fun createTabBar(): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(90, LinearLayout.LayoutParams.MATCH_PARENT)
-            setBackgroundColor(Color.WHITE)
-            gravity = Gravity.CENTER_VERTICAL
-            
-            // Spacer du haut pour centrer verticalement
-            addView(View(this@SettingsActivity).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1f
-                )
-            })
-            
-            // Tab Accueil
-            addView(createTab("home", "🏠"))
-            
-            // Tab Statistiques
-            addView(createTab("stats", "📊"))
-            
-            // Spacer du bas pour centrer verticalement
-            addView(View(this@SettingsActivity).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1f
-                )
-            })
-        }
-    }
-    
-    private fun createTab(tabName: String, emoji: String): LinearLayout {
-        return LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setPadding(0, 20, 0, 20)
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.MATCH_PARENT, 
+                80 // Hauteur fixe pour la barre d'onglets
             )
+            setBackgroundColor(Color.WHITE)
+            elevation = 4f // Ombre légère pour séparer du contenu
             
-            // Emoji du tab
-            val label = TextView(this@SettingsActivity).apply {
-                text = emoji
-                textSize = 32f
+            // Container pour les onglets
+            val tabContainer = LinearLayout(this@SettingsActivity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    1f // Prend le reste de la hauteur
+                )
                 gravity = Gravity.CENTER
             }
             
-            addView(label)
+            // Tab Accueil
+            val homeTab = createTab(0, "🏠", "Accueil")
+            tabContainer.addView(homeTab)
+            Log.d("SettingsActivity", "Onglet Accueil créé et ajouté")
             
-            // Indicateur orange si tab actif
-            if (tabName == currentTab) {
+            // Tab Statistiques  
+            val statsTab = createTab(1, "📊", "Kréyòl an mwen")
+            tabContainer.addView(statsTab)
+            Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
+            
+            // Ligne de séparation en bas (fine)
+            val separator = View(this@SettingsActivity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    2
+                )
+                setBackgroundColor(Color.parseColor("#E0E0E0"))
+            }
+            
+            addView(tabContainer)
+            addView(separator)
+        }
+    }
+    
+    private fun createTab(tabIndex: Int, emoji: String, label: String): LinearLayout {
+        Log.d("SettingsActivity", "Création onglet $tabIndex: $emoji $label")
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding(24, 8, 24, 8)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1f
+            )
+            setBackgroundColor(Color.WHITE) // Utilisation de constante au lieu de parseColor
+            
+            // Emoji du tab
+            val emojiView = TextView(this@SettingsActivity).apply {
+                text = emoji
+                textSize = 24f
+                gravity = Gravity.CENTER
+                setPadding(0, 4, 0, 2)
+                setTextColor(Color.BLACK) // Couleur simple
+            }
+            
+            // Label du tab
+            val labelView = TextView(this@SettingsActivity).apply {
+                text = label
+                textSize = 11f
+                gravity = Gravity.CENTER
+                setPadding(0, 2, 0, 4)
+                setTextColor(
+                    if (tabIndex == currentTab) 
+                        Color.parseColor("#FF8C00") 
+                    else 
+                        Color.GRAY
+                )
+                setTypeface(null, if (tabIndex == currentTab) Typeface.BOLD else Typeface.NORMAL)
+            }
+            
+            addView(emojiView)
+            addView(labelView)
+            
+            // Indicateur orange en bas si tab actif
+            if (tabIndex == currentTab) {
                 val indicator = View(this@SettingsActivity).apply {
                     layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        6
+                        60,
+                        4
                     ).apply {
-                        topMargin = 8
+                        topMargin = 6
                     }
                     setBackgroundColor(Color.parseColor("#FF8C00"))
                 }
@@ -127,10 +356,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             setOnClickListener {
-                when (tabName) {
-                    "home" -> showHomeTab()
-                    "stats" -> showStatsTab()
-                }
+                viewPager.currentItem = tabIndex
             }
         }
     }
@@ -138,85 +364,58 @@ class SettingsActivity : AppCompatActivity() {
     private fun updateTabBar() {
         tabBar.removeAllViews()
         
-        // Spacer du haut
-        tabBar.addView(View(this).apply {
+        // Container pour les onglets
+        val tabContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
-                1f
+                1f // Prend le reste de la hauteur
             )
-        })
+            gravity = Gravity.CENTER
+        }
         
         // Tabs
-        tabBar.addView(createTab("home", "🏠"))
-        tabBar.addView(createTab("stats", "📊"))
+        tabContainer.addView(createTab(0, "🏠", "Accueil"))
+        tabContainer.addView(createTab(1, "📊", "Mon Kreyòl"))
         
-        // Spacer du bas
-        tabBar.addView(View(this).apply {
+        // Ligne de séparation en bas
+        val separator = View(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                1f
+                2
             )
-        })
-    }
-    
-    private fun showHomeTab() {
-        currentTab = "home"
-        updateTabBar()
-        
-        contentContainer.removeAllViews()
-        val scrollView = ScrollView(this)
-        scrollView.addView(createHomeContent())
-        contentContainer.addView(scrollView)
-    }
-    
-    private fun showStatsTab() {
-        currentTab = "stats"
-        updateTabBar()
-        
-        contentContainer.removeAllViews()
-        val scrollView = ScrollView(this).apply {
-            setBackgroundColor(Color.WHITE)
-            isFillViewport = true  // Utilise tout l'espace disponible
+            setBackgroundColor(Color.parseColor("#E0E0E0"))
         }
-        scrollView.addView(createStatsContent())
-        contentContainer.addView(scrollView)
+        
+        tabBar.addView(tabContainer)
+        tabBar.addView(separator)
     }
     
-    private fun createHomeContent(): LinearLayout {
+
+    
+    fun createHomeContent(): LinearLayout {
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(24, 32, 24, 32)
             setBackgroundColor(Color.parseColor("#F5F5F5"))
         }
         
-        // En-tête avec design Guadeloupe
+        // En-tête compact avec logo uniquement
         val headerLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            setPadding(16, 16, 16, 32)
+            setPadding(16, 24, 16, 24)
             setBackgroundColor(Color.parseColor("#0080FF"))
         }
         
         val logoImage = ImageView(this).apply {
             setImageResource(R.drawable.logo_potomitan)
-            layoutParams = LinearLayout.LayoutParams(200, 80)
+            layoutParams = LinearLayout.LayoutParams(180, 60)
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setPadding(0, 0, 0, 8)
-        }
-        
-        val appTitle = TextView(this).apply {
-            text = "Klavyé Kréyòl Karukera 🇸🇷"
-            textSize = 28f
-            setTextColor(Color.parseColor("#F8F8FF"))
-            setTypeface(null, Typeface.BOLD)
-            gravity = Gravity.CENTER
-            setPadding(0, 8, 0, 0)
         }
         
         headerLayout.addView(logoImage)
-        headerLayout.addView(appTitle)
         
         // Description principale
         val descriptionCard = LinearLayout(this).apply {
@@ -403,7 +602,8 @@ class SettingsActivity : AppCompatActivity() {
         return mainLayout
     }
     
-    private fun createStatsContent(): LinearLayout {
+    fun createStatsContent(): LinearLayout {
+        Log.d("SettingsActivity", "Création du contenu des statistiques")
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(0, 0, 0, 0)
@@ -411,6 +611,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val stats = loadVocabularyStats()
+        Log.d("SettingsActivity", "Stats chargées: ${stats.wordsDiscovered} mots découverts, ${stats.totalUsages} utilisations")
         
         // En-tête minimaliste
         val header = LinearLayout(this).apply {
@@ -420,7 +621,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val headerTitle = TextView(this).apply {
-            text = "Mon Kreyòl"
+            text = "Kréyòl an mwen"
             textSize = 20f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.NORMAL)
@@ -610,51 +811,74 @@ class SettingsActivity : AppCompatActivity() {
         
         statsGridContainer.addView(statsGridTitle)
         
-        // Ligne 1: Découverts | Total utilizations
-        val row1 = LinearLayout(this).apply {
+        // Ligne unique: Découverts | Utilisations | Dictionnaire
+        val statsRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, 0, 0, 32)
         }
         
-        row1.addView(createStatBlock("${stats.wordsDiscovered}", "Mots découverts"))
-        row1.addView(createStatBlock("${stats.totalUsages}", "Utilisations"))
+        statsRow.addView(createStatBlock("${stats.wordsDiscovered}", "Mots découverts"))
+        statsRow.addView(createStatBlock("${stats.totalUsages}", "Utilisations"))
+        statsRow.addView(createStatBlock("${stats.totalWords}", "Dictionnaire"))
         
-        // Ligne 2: Maîtrisés | Dictionnaire
-        val row2 = LinearLayout(this).apply {
+        statsGridContainer.addView(statsRow)
+        
+        // === Boutons de contrôle ===
+        val buttonsContainer = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            setPadding(0, 32, 0, 0)
         }
         
-        row2.addView(createStatBlock("${stats.masteredWords}", "Mots maîtrisés"))
-        row2.addView(createStatBlock("${stats.totalWords}", "Dictionnaire"))
-        
-        statsGridContainer.addView(row1)
-        statsGridContainer.addView(row2)
-        
-        // === Bouton rafraîchir ===
         val refreshButton = Button(this).apply {
             text = "⟳ Actualiser"
             textSize = 14f
             setBackgroundColor(Color.WHITE)
             setTextColor(Color.parseColor("#1C1C1C"))
-            setPadding(32, 16, 32, 16)
-            val params = LinearLayout.LayoutParams(
+            setPadding(24, 16, 24, 16)
+            layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            params.gravity = Gravity.CENTER
-            params.topMargin = 32
-            layoutParams = params
             setOnClickListener {
-                showStatsTab()
+                Log.d("SettingsActivity", "🔄 Bouton actualiser pressé")
+                
+                // Laisser un délai pour que les sauvegardes différées se terminent
+                // CreoleDictionaryWithUsage sauvegarde automatiquement après 30 secondes d'inactivité
+                Toast.makeText(this@SettingsActivity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
+                
+                // Attendre un peu puis recharger l'activité
+                postDelayed({
+                    Log.d("SettingsActivity", "🔄 Rechargement de l'activité après délai")
+                    recreate() // Redémarre complètement l'activité
+                }, 1000) // Attendre 1 seconde
             }
         }
+        
+        buttonsContainer.addView(refreshButton)
+        
+        // === Mots Découverts ===
+        val discoveredWordsContainer = createWordListSection(
+            "🔍 Mots Découverts (${stats.discoveredWordsList.size})",
+            stats.discoveredWordsList,
+            "#4CAF50"
+        )
+        
+        // === Mots à Découvrir ===
+        val wordsToDiscoverContainer = createWordListSection(
+            "🌟 Mots à Découvrir (${stats.wordsToDiscover.size})",
+            stats.wordsToDiscover,
+            "#2196F3"
+        )
         
         // Assembler
         statsContainer.addView(levelContainer)
         statsContainer.addView(wordContainer)
         statsContainer.addView(top5Container)
         statsContainer.addView(statsGridContainer)
-        statsContainer.addView(refreshButton)
+        statsContainer.addView(discoveredWordsContainer)
+        statsContainer.addView(wordsToDiscoverContainer)
+        statsContainer.addView(buttonsContainer)
         
         mainLayout.addView(header)
         mainLayout.addView(statsContainer)
@@ -693,100 +917,258 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    private fun createWordListSection(title: String, words: List<String>, accentColor: String): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, 24, 0, 0)
+            
+            // Titre de la section
+            val sectionTitle = TextView(this@SettingsActivity).apply {
+                text = title
+                textSize = 16f
+                setTextColor(Color.parseColor("#1C1C1C"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 0, 0, 16)
+            }
+            addView(sectionTitle)
+            
+            if (words.isEmpty()) {
+                // Message si aucun mot
+                val emptyMessage = TextView(this@SettingsActivity).apply {
+                    text = "Aucun mot dans cette catégorie pour le moment"
+                    textSize = 14f
+                    setTextColor(Color.parseColor("#999999"))
+                    setTypeface(null, Typeface.ITALIC)
+                    setPadding(16, 12, 16, 12)
+                    setBackgroundColor(Color.parseColor("#F5F5F5"))
+                }
+                addView(emptyMessage)
+            } else {
+                // Conteneur pour les mots avec scroll
+                val scrollView = ScrollView(this@SettingsActivity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        300 // Hauteur maximale
+                    )
+                }
+                
+                val wordsContainer = LinearLayout(this@SettingsActivity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(12, 12, 12, 12)
+                    setBackgroundColor(Color.parseColor("#FAFAFA"))
+                }
+                
+                // Ajouter les mots par groupes de 5 par ligne
+                val chunkedWords = words.chunked(5)
+                chunkedWords.forEach { chunk ->
+                    val rowContainer = LinearLayout(this@SettingsActivity).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.START
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            bottomMargin = 8
+                        }
+                    }
+                    
+                    chunk.forEach { word ->
+                        val wordChip = TextView(this@SettingsActivity).apply {
+                            text = word
+                            textSize = 16f
+                            setTextColor(Color.parseColor(accentColor))
+                            setPadding(8, 4, 8, 4)
+                            setBackgroundColor(Color.parseColor("${accentColor}20")) // 20% opacity
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                rightMargin = 6
+                            }
+                        }
+                        rowContainer.addView(wordChip)
+                    }
+                    
+                    wordsContainer.addView(rowContainer)
+                }
+                
+                scrollView.addView(wordsContainer)
+                addView(scrollView)
+            }
+        }
+    }
+    
     // === Fonctions de chargement de données ===
     
     data class VocabularyStats(
         val totalWords: Int,
         val wordsDiscovered: Int,
         val totalUsages: Int,
-        val masteredWords: Int,
         val topWords: List<Pair<String, Int>>,
-        val coveragePercentage: Float
+        val coveragePercentage: Float,
+        val discoveredWordsList: List<String>,
+        val wordsToDiscover: List<String>
     )
     
     private fun loadVocabularyStats(): VocabularyStats {
+        Log.d("SettingsActivity", "🔍 Chargement des statistiques du vocabulaire")
         return try {
             // D'abord essayer le fichier avec usage
             val usageFile = File(filesDir, "creole_dict_with_usage.json")
+            Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
+            Log.d("SettingsActivity", "📂 Chemin fichier: ${usageFile.absolutePath}")
             
             if (usageFile.exists()) {
                 val jsonString = usageFile.readText()
+                Log.d("SettingsActivity", "📄 Contenu fichier (${jsonString.length} chars): ${jsonString.take(200)}...")
                 val jsonObject = JSONObject(jsonString)
+                Log.d("SettingsActivity", "🔑 Clés JSON trouvées: ${jsonObject.keys().asSequence().toList().size}")
                 
                 var totalWords = 0
                 var wordsDiscovered = 0
                 var totalUsages = 0
-                var masteredWords = 0
                 val wordUsages = mutableListOf<Pair<String, Int>>()
+                val discoveredWords = mutableListOf<String>()
                 
+                val motsTrouves = mutableListOf<String>()
                 jsonObject.keys().forEach { word ->
                     totalWords++
-                    // Lire l'objet avec frequency et user_count
-                    val wordData = jsonObject.getJSONObject(word)
-                    val userCount = wordData.optInt("user_count", 0)
+                    
+                    // Gérer les deux formats possibles
+                    val userCount = try {
+                        val rawValue = jsonObject.get(word)
+                        when (rawValue) {
+                            is Int -> {
+                                // Format simplifié: "mot": 1
+                                rawValue
+                            }
+                            is JSONObject -> {
+                                // Format complet: "mot": {"frequency": X, "user_count": Y}
+                                rawValue.optInt("user_count", 0)
+                            }
+                            else -> 0
+                        }
+                    } catch (e: Exception) {
+                        Log.e("SettingsActivity", "Erreur lecture '$word': ${e.message}")
+                        0
+                    }
                     
                     if (userCount > 0) {
-                        wordsDiscovered++
                         totalUsages += userCount
                         wordUsages.add(Pair(word, userCount))
-                        if (userCount >= 10) {
-                            masteredWords++
+                        motsTrouves.add("$word($userCount)")
+                        
+                        // Compter comme "découvert" seulement si utilisé exactement 1 fois
+                        if (userCount == 1) {
+                            wordsDiscovered++
+                            // Ne garder que les mots de 3 lettres ou plus pour l'affichage
+                            if (word.length >= 3) {
+                                discoveredWords.add(word)
+                            }
                         }
                     }
                 }
                 
-                val topWords = wordUsages.sortedByDescending { it.second }.take(5)
+                Log.d("SettingsActivity", "Mots avec usage > 0: ${motsTrouves.joinToString(", ")}")
+                Log.d("SettingsActivity", "Total: $totalWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
+                
+                val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
                 val coverage = if (totalWords > 0) (wordsDiscovered.toFloat() / totalWords * 100) else 0f
+                
+                // Générer les mots à découvrir (utilisations <= 2 et longueur >= 3)
+                val wordsToDiscoverCandidates = jsonObject.keys().asSequence().toList().filter { word ->
+                    val count = jsonObject.optInt(word, 0)
+                    count <= 2 && word.length >= 3
+                }
+                val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
                 
                 return VocabularyStats(
                     totalWords,
                     wordsDiscovered,
                     totalUsages,
-                    masteredWords,
                     topWords,
-                    coverage
+                    coverage,
+                    discoveredWords.sorted(),
+                    wordsToDiscoverList
                 )
             }
             
-            // Sinon charger depuis les assets et créer le fichier avec usage
-            val jsonString = assets.open("creole_dict.json").bufferedReader().use { it.readText() }
-            val jsonArray = org.json.JSONArray(jsonString)
+            // Sinon créer un fichier vide pour la première installation
+            val emptyUsageObject = JSONObject()
+            usageFile.writeText(emptyUsageObject.toString())
             
-            var totalWords = jsonArray.length()
-            
-            // Créer un fichier avec usage à 0 pour tous les mots
-            val usageObject = JSONObject()
-            for (i in 0 until jsonArray.length()) {
-                val word = jsonArray.getString(i)
-                usageObject.put(word, 0)
-            }
-            
-            // Sauvegarder le fichier pour usage futur
-            usageFile.writeText(usageObject.toString())
-            
-            VocabularyStats(
-                totalWords = totalWords,
+            // Retourner des statistiques complètement vides pour une vraie installation propre
+            return VocabularyStats(
+                totalWords = 0,
                 wordsDiscovered = 0,
                 totalUsages = 0,
-                masteredWords = 0,
                 topWords = emptyList(),
-                coveragePercentage = 0f
+                coveragePercentage = 0f,
+                discoveredWordsList = emptyList(),
+                wordsToDiscover = emptyList()
             )
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur chargement stats: ${e.message}")
-            VocabularyStats(0, 0, 0, 0, emptyList(), 0f)
+            VocabularyStats(0, 0, 0, emptyList(), 0f, emptyList(), emptyList())
         }
     }
     
     private fun getCurrentLevel(wordsDiscovered: Int): String {
         return when {
-            wordsDiscovered >= 500 -> "👑 LÉGENDE"
-            wordsDiscovered >= 300 -> "🌟 EXPERT"
-            wordsDiscovered >= 150 -> "⭐ AVANCÉ"
-            wordsDiscovered >= 75 -> "💎 INTERMÉDIAIRE"
-            wordsDiscovered >= 30 -> "🔥 PROGRESSANT"
-            wordsDiscovered >= 10 -> "🌱 APPRENTI"
-            else -> "🌍 DÉBUTANT"
+            wordsDiscovered >= 500 -> "👑 Potomitan"
+            wordsDiscovered >= 300 -> "🌟 Kompè Zamba"
+            wordsDiscovered >= 150 -> "⭐ Kompè Lapen"
+            wordsDiscovered >= 75 -> "💎 An mitan"
+            wordsDiscovered >= 30 -> "🔥 Débrouya"
+            wordsDiscovered >= 10 -> "🌱 Ti moun"
+            else -> "🌍 Pipirit"
+        }
+    }
+    
+    // Adapter pour ViewPager2
+    private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
+        override fun getItemCount(): Int = 2
+        
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> HomeFragment()
+                1 -> StatsFragment()
+                else -> HomeFragment()
+            }
+        }
+    }
+    
+    // Fragment pour l'accueil
+    class HomeFragment : Fragment() {
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            val scrollView = ScrollView(activity)
+            scrollView.addView(activity.createHomeContent())
+            return scrollView
+        }
+    }
+    
+    // Fragment pour les statistiques
+    class StatsFragment : Fragment() {
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            Log.d("SettingsActivity", "Création de la vue StatsFragment")
+            val activity = requireActivity() as SettingsActivity
+            val scrollView = ScrollView(activity).apply {
+                setBackgroundColor(Color.WHITE)
+                isFillViewport = true
+            }
+            val statsContent = activity.createStatsContent()
+            scrollView.addView(statsContent)
+            Log.d("SettingsActivity", "StatsFragment créé avec succès")
+            return scrollView
         }
     }
     
@@ -816,19 +1198,21 @@ class SettingsActivity : AppCompatActivity() {
                 val random = Random(seed)
                 
                 val selectedWord = allWords[random.nextInt(allWords.size)]
-                // Lire le user_count depuis l'objet JSON
-                val wordData = jsonObject.getJSONObject(selectedWord)
-                usageCount = wordData.optInt("user_count", 0)
+                // Lire directement l'entier
+                usageCount = jsonObject.optInt(selectedWord, 0)
                 
                 return Pair(selectedWord, usageCount)
             } else {
+                Log.d("SettingsActivity", "Fichier usage n'existe pas, création depuis assets")
                 // Charger depuis les assets
                 val jsonString = assets.open("creole_dict.json").bufferedReader().use { it.readText() }
                 val jsonArray = org.json.JSONArray(jsonString)
+                Log.d("SettingsActivity", "Dictionnaire chargé: ${jsonArray.length()} mots")
                 
                 allWords = mutableListOf<String>().apply {
                     for (i in 0 until jsonArray.length()) {
-                        add(jsonArray.getString(i))
+                        val wordArray = jsonArray.getJSONArray(i)
+                        add(wordArray.getString(0))  // Premier élément = le mot
                     }
                 }
                 
