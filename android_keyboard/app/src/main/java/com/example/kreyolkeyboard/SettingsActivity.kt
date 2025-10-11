@@ -613,34 +613,6 @@ class SettingsActivity : AppCompatActivity() {
         val stats = loadVocabularyStats()
         Log.d("SettingsActivity", "Stats chargées: ${stats.wordsDiscovered} mots découverts, ${stats.totalUsages} utilisations")
         
-        // En-tête minimaliste
-        val header = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(24, 40, 24, 24)
-            setBackgroundColor(Color.WHITE)
-        }
-        
-        val headerTitle = TextView(this).apply {
-            text = "Kréyòl an mwen"
-            textSize = 20f
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setTypeface(null, Typeface.NORMAL)
-            gravity = Gravity.CENTER
-        }
-        
-        val separator = View(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1
-            ).apply {
-                topMargin = 24
-            }
-            setBackgroundColor(Color.parseColor("#E0E0E0"))
-        }
-        
-        header.addView(headerTitle)
-        header.addView(separator)
-        
         // Container principal
         val statsContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -683,7 +655,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val percentageText = TextView(this).apply {
             text = "${String.format("%.1f", stats.coveragePercentage)}%"
-            textSize = 64f
+            textSize = 32f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
             gravity = Gravity.CENTER
@@ -691,7 +663,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val percentageLabel = TextView(this).apply {
-            text = "du dictionnaire exploré"
+            text = "des ${stats.totalWords} mots du dictionnaire explorés"
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
@@ -811,7 +783,7 @@ class SettingsActivity : AppCompatActivity() {
         
         statsGridContainer.addView(statsGridTitle)
         
-        // Ligne unique: Découverts | Utilisations | Dictionnaire
+        // Ligne unique: Découverts | Utilisations
         val statsRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, 0, 0, 32)
@@ -819,7 +791,6 @@ class SettingsActivity : AppCompatActivity() {
         
         statsRow.addView(createStatBlock("${stats.wordsDiscovered}", "Mots découverts"))
         statsRow.addView(createStatBlock("${stats.totalUsages}", "Utilisations"))
-        statsRow.addView(createStatBlock("${stats.totalWords}", "Dictionnaire"))
         
         statsGridContainer.addView(statsRow)
         
@@ -880,7 +851,6 @@ class SettingsActivity : AppCompatActivity() {
         statsContainer.addView(wordsToDiscoverContainer)
         statsContainer.addView(buttonsContainer)
         
-        mainLayout.addView(header)
         mainLayout.addView(statsContainer)
         
         return mainLayout
