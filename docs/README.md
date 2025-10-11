@@ -15,7 +15,8 @@
    <img src="Screenshots/Screenshot_1760213606.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
-## 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
+## Télécharger
+📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
 <div align="center">
    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="150">
