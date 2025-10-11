@@ -15,7 +15,7 @@
    <img src="Screenshots/Screenshot_1760213606.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
-### 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
+## 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
 <div align="center">
    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="150">
@@ -24,8 +24,8 @@
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
 
 
-### 📧 Contact
+## 📧 Contact
 
 **Développeur :** Médhi Famibelle  
 **Email :** medhi@potomitan.io  
-**Organisation :** Potomitan
+**Organisation :** Potomitan(TM)
