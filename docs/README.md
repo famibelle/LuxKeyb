@@ -10,10 +10,10 @@
 
 ## 📱 Aperçu
 
-<div align="center">
+<div align="center" style="display: flex; justify-content: center; gap: 10px;">
    <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
+   <img src="Screenshots/Screenshot_1760193743.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
-
 
 ### 📥 [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
