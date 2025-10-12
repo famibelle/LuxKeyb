@@ -157,14 +157,20 @@ class AccentHandler(private val context: Context) {
     
     /**
      * Ferme la popup d'accents actuelle
+     * 🔧 FIX CRITIQUE: Ajout délai pour éviter "Consumer closed input channel"
      */
     fun dismissAccentPopup() {
         currentAccentPopup?.let { popup ->
             try {
                 if (popup.isShowing) {
-                    popup.dismiss()
-                } else {
-                    // Popup déjà fermé
+                    // 🔧 FIX: Délai de 50ms pour traiter les événements tactiles en cours
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        try {
+                            popup.dismiss()
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Erreur lors de dismiss différé: ${e.message}")
+                        }
+                    }, 50)
                 }
             } catch (e: Exception) {
                 Log.w(TAG, "Erreur lors de la fermeture de la popup: ${e.message}")
