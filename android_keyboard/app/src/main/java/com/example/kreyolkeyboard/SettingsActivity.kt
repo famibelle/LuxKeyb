@@ -32,6 +32,9 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     
+    // 🔧 FIX CRITIQUE: Scope lié au lifecycle de l'activité
+    private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    
     companion object {
         // Système de cache ultra-léger pour les modifications
         private val pendingUpdates = ConcurrentHashMap<String, Int>(16, 0.75f, 1)
@@ -75,7 +78,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Vider le cache en mémoire vers le fichier
         @JvmStatic
-        fun flushPendingUpdates(context: Context) {
+        fun flushPendingUpdates(context: Context, scope: CoroutineScope? = null) {
             if (pendingUpdates.isEmpty()) return
             
             // Copie atomique du cache pour libérer rapidement la mémoire
@@ -83,12 +86,24 @@ class SettingsActivity : AppCompatActivity() {
             pendingUpdates.clear()
             lastSaveTime = System.currentTimeMillis()
             
-            // Sauvegarde asynchrone pour ne pas bloquer l'UI
-            CoroutineScope(Dispatchers.IO).launch {
+            // 🔧 FIX CRITIQUE: Utiliser le scope fourni ou créer un scope avec SupervisorJob
+            // Cela évite les JobCancellationException et fuites mémoire
+            val executionScope = scope ?: CoroutineScope(Dispatchers.IO + SupervisorJob())
+            
+            executionScope.launch {
                 try {
-                    saveUpdatesToFile(context, updatesToSave)
+                    withContext(Dispatchers.IO) {
+                        saveUpdatesToFile(context, updatesToSave)
+                    }
+                } catch (e: CancellationException) {
+                    Log.d("SettingsActivity", "💾 Sauvegarde annulée, rollback des updates")
+                    // En cas d'annulation, remettre les updates dans le cache
+                    updatesToSave.forEach { (word, count) ->
+                        pendingUpdates.merge(word, count) { old, new -> old + new }
+                    }
+                    throw e // Important: re-throw CancellationException
                 } catch (e: Exception) {
-                    Log.e("SettingsActivity", "Erreur sauvegarde: ${e.message}")
+                    Log.e("SettingsActivity", "❌ Erreur sauvegarde: ${e.message}")
                     // En cas d'erreur, remettre les updates dans le cache
                     updatesToSave.forEach { (word, count) ->
                         pendingUpdates.merge(word, count) { old, new -> old + new }
@@ -251,9 +266,14 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onDestroy() {
+        // 🔧 FIX CRITIQUE: Sauvegarder avec le scope de l'activité avant annulation
+        flushPendingUpdates(this, activityScope)
+        
+        // 🔧 FIX CRITIQUE: Annuler toutes les coroutines de l'activité
+        activityScope.cancel()
+        Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
+        
         super.onDestroy()
-        // Sauvegarder les modifications en attente avant fermeture
-        flushPendingUpdates(this)
     }
     
     private fun createTabBar(): LinearLayout {
