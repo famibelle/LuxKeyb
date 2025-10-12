@@ -242,6 +242,19 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * 🌐 Traite l'appui long sur la barre d'espace
+     * Utilisé pour changer de clavier IME
+     * 
+     * @return true pour indiquer qu'il faut changer de clavier
+     */
+    fun processSpaceLongPress(): Boolean {
+        Log.d(TAG, "🌐 Appui long sur barre d'espace détecté")
+        // Ne pas finaliser le mot courant (contrairement à l'espace court)
+        // L'utilisateur veut juste changer de clavier, pas terminer sa saisie
+        return true
+    }
+    
+    /**
      * Traite la sélection d'une suggestion
      */
     fun processSuggestionSelection(suggestion: String): Boolean {
