@@ -294,7 +294,7 @@ class SettingsActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 
-                80 // Hauteur fixe pour la barre d'onglets
+                140 // Hauteur augmentée pour afficher les emojis complets sans coupure
             )
             setBackgroundColor(Color.WHITE)
             elevation = 4f // Ombre légère pour séparer du contenu
@@ -339,29 +339,43 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            setPadding(24, 8, 24, 8)
+            setPadding(24, 12, 24, 12) // Padding vertical augmenté
             layoutParams = LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 1f
             )
-            setBackgroundColor(Color.WHITE) // Utilisation de constante au lieu de parseColor
+            // Background légèrement coloré si onglet actif
+            setBackgroundColor(
+                if (tabIndex == currentTab) 
+                    Color.parseColor("#FFF5E6") // Beige clair orangé
+                else 
+                    Color.WHITE
+            )
             
             // Emoji du tab
             val emojiView = TextView(this@SettingsActivity).apply {
                 text = emoji
-                textSize = 24f
+                textSize = 32f // Augmenté encore plus
                 gravity = Gravity.CENTER
                 setPadding(0, 4, 0, 2)
-                setTextColor(Color.BLACK) // Couleur simple
+                // Emoji légèrement teinté si actif pour plus de cohérence visuelle
+                alpha = if (tabIndex == currentTab) 1.0f else 0.6f
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                // Conversion pixels en DP pour meilleur affichage
+                val density = resources.displayMetrics.density
+                minHeight = (60 * density).toInt() // 60dp en pixels
             }
             
             // Label du tab
             val labelView = TextView(this@SettingsActivity).apply {
                 text = label
-                textSize = 11f
+                textSize = 10f
                 gravity = Gravity.CENTER
-                setPadding(0, 2, 0, 4)
+                setPadding(0, 0, 0, 2)
                 setTextColor(
                     if (tabIndex == currentTab) 
                         Color.parseColor("#FF8C00") 
@@ -955,44 +969,73 @@ class SettingsActivity : AppCompatActivity() {
                     )
                 }
                 
+                // Container avec retour à la ligne automatique (FlowLayout simulé)
                 val wordsContainer = LinearLayout(this@SettingsActivity).apply {
                     orientation = LinearLayout.VERTICAL
                     setPadding(12, 12, 12, 12)
                     setBackgroundColor(Color.parseColor("#FAFAFA"))
                 }
                 
-                // Ajouter les mots par groupes de 5 par ligne
-                val chunkedWords = words.chunked(5)
-                chunkedWords.forEach { chunk ->
-                    val rowContainer = LinearLayout(this@SettingsActivity).apply {
-                        orientation = LinearLayout.HORIZONTAL
-                        gravity = Gravity.START
+                // Créer des lignes dynamiques qui s'adaptent à la largeur
+                var currentRow = LinearLayout(this@SettingsActivity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        bottomMargin = 6
+                    }
+                }
+                wordsContainer.addView(currentRow)
+                
+                var currentRowWidth = 0
+                // Calculer la largeur disponible: largeur écran - padding container (24) - padding statsContainer (48) - marges (24)
+                val screenWidth = resources.displayMetrics.widthPixels - 96
+                
+                words.forEach { word ->
+                    // Créer le chip du mot
+                    val wordChip = TextView(this@SettingsActivity).apply {
+                        text = word
+                        textSize = 13f
+                        setTextColor(Color.parseColor(accentColor))
+                        setPadding(10, 5, 10, 5)
+                        setBackgroundColor(Color.parseColor("${accentColor}20"))
+                        setSingleLine(true)
                         layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply {
-                            bottomMargin = 8
+                            rightMargin = 5
+                            bottomMargin = 5
                         }
                     }
                     
-                    chunk.forEach { word ->
-                        val wordChip = TextView(this@SettingsActivity).apply {
-                            text = word
-                            textSize = 16f
-                            setTextColor(Color.parseColor(accentColor))
-                            setPadding(8, 4, 8, 4)
-                            setBackgroundColor(Color.parseColor("${accentColor}20")) // 20% opacity
+                    // Mesurer la largeur du mot avant de l'ajouter
+                    wordChip.measure(
+                        View.MeasureSpec.UNSPECIFIED,
+                        View.MeasureSpec.UNSPECIFIED
+                    )
+                    val wordWidth = wordChip.measuredWidth + 10 // +marge droite + espace sécurité
+                    
+                    // Si le mot ne rentre pas dans la ligne actuelle, créer une nouvelle ligne
+                    if (currentRowWidth + wordWidth > screenWidth && currentRowWidth > 0) {
+                        currentRow = LinearLayout(this@SettingsActivity).apply {
+                            orientation = LinearLayout.HORIZONTAL
+                            gravity = Gravity.START or Gravity.CENTER_VERTICAL
                             layoutParams = LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply {
-                                rightMargin = 6
+                                bottomMargin = 6
                             }
                         }
-                        rowContainer.addView(wordChip)
+                        wordsContainer.addView(currentRow)
+                        currentRowWidth = 0
                     }
                     
-                    wordsContainer.addView(rowContainer)
+                    currentRow.addView(wordChip)
+                    currentRowWidth += wordWidth
                 }
                 
                 scrollView.addView(wordsContainer)
