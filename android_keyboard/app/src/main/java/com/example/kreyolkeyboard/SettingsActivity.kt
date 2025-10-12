@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -274,6 +276,17 @@ class SettingsActivity : AppCompatActivity() {
         Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
         
         super.onDestroy()
+    }
+    
+    /**
+     * 🔧 FIX CRITIQUE: Ajouter délai avant fermeture pour éviter "Consumer closed input channel"
+     * Laisse le temps aux derniers événements tactiles d'être traités
+     */
+    override fun onBackPressed() {
+        // Délai de 100ms pour traiter les événements en cours
+        Handler(Looper.getMainLooper()).postDelayed({
+            super.onBackPressed()
+        }, 100)
     }
     
     private fun createTabBar(): LinearLayout {
