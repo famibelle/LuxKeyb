@@ -663,7 +663,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val percentageLabel = TextView(this).apply {
-            text = "des ${stats.totalWords} mots du dictionnaire explorés"
+            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire Kréyòl"
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
