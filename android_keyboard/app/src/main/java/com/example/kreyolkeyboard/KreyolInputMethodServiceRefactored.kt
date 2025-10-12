@@ -342,7 +342,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 Log.d(TAG, "🗑️ Démarrage suppression par mots (Delete)")
                 startWordDeletion()
             }
-            "ESPACE" -> {
+            " " -> {
                 // 🌐 NOUVELLE FEATURE: Changement de clavier avec appui long sur barre d'espace
                 Log.d(TAG, "🌐 Appui long sur barre d'espace - Changement de clavier")
                 
@@ -821,45 +821,29 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * 🌐 Change vers le prochain clavier IME disponible
      * Utilisé lors de l'appui long sur la barre d'espace (pattern UX standard Android)
      * 
-     * Stratégie triple fallback:
-     * 1. switchToNextInputMethod() - Change directement vers le prochain clavier
-     * 2. showInputMethodPicker() - Affiche le sélecteur si méthode 1 échoue
-     * 3. Dernier recours - Réessayer le picker en cas d'exception
+     * Méthode directe : switchToNextInputMethod avec le token de la fenêtre
      */
     private fun switchToNextKeyboard() {
         try {
-            Log.d(TAG, "🌐 Tentative changement vers prochain clavier...")
+            Log.d(TAG, "🌐 Changement vers prochain clavier...")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             
-            // Méthode 1: Essayer switchToNextInputMethod (Android 3.0+)
+            // Essayer d'abord switchToNextInputMethod
             val token = window.window?.attributes?.token
             if (token != null) {
                 val switched = inputMethodManager.switchToNextInputMethod(token, false)
-                if (switched) {
-                    Log.d(TAG, "✅ Changement vers prochain clavier réussi (switchToNextInputMethod)")
-                    return
-                } else {
-                    Log.d(TAG, "⚠️ switchToNextInputMethod a retourné false, utilisation du fallback")
+                Log.d(TAG, if (switched) "✅ Changement réussi" else "⚠️ Changement échoué, fallback picker")
+                
+                if (!switched) {
+                    // Fallback: afficher le sélecteur
+                    inputMethodManager.showInputMethodPicker()
                 }
             } else {
-                Log.d(TAG, "⚠️ Token null, impossible d'utiliser switchToNextInputMethod")
+                Log.d(TAG, "⚠️ Token null, utilisation picker")
+                inputMethodManager.showInputMethodPicker()
             }
-            
-            // Méthode 2: Fallback - Afficher le sélecteur de clavier
-            inputMethodManager.showInputMethodPicker()
-            Log.d(TAG, "✅ Sélecteur de clavier affiché (fallback)")
-            
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur changement de clavier: ${e.message}", e)
-            
-            // Méthode 3: Dernier recours - Afficher au moins le picker
-            try {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showInputMethodPicker()
-                Log.d(TAG, "✅ Sélecteur affiché (dernier recours)")
-            } catch (finalException: Exception) {
-                Log.e(TAG, "❌ Impossible d'afficher le sélecteur: ${finalException.message}", finalException)
-            }
+            Log.e(TAG, "❌ Erreur changement clavier: ${e.message}", e)
         }
     }
 
