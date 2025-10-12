@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,9 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val TEXT_SIZE_SP = 16f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
+        
+        // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
+        private const val SPACE_LONG_PRESS_DELAY = 1000L
     }
     
     // État du clavier
@@ -32,6 +37,11 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isCapsLock = false
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private val keyboardButtons = mutableListOf<TextView>()
+    
+    // 🌐 Handler pour l'appui long personnalisé de la barre d'espace
+    private val spaceLongPressHandler = Handler(Looper.getMainLooper())
+    private var spaceLongPressRunnable: Runnable? = null
+    private var isSpaceLongPressTriggered = false
     
     init {
         // Garantir que le clavier démarre toujours en mode alphabétique
@@ -266,13 +276,86 @@ class KeyboardLayoutManager(private val context: Context) {
             interactionListener?.onKeyPress(key)
         }
         
-        button.setOnLongClickListener { 
-            interactionListener?.onLongPress(key, button)
-            true
+        // 🌐 Appui long personnalisé pour la barre d'espace (1 seconde)
+        if (key == " ") {
+            button.setOnLongClickListener(null) // Désactiver le listener par défaut
+            setupSpaceLongPress(button, key)
+        } else {
+            button.setOnLongClickListener { 
+                interactionListener?.onLongPress(key, button)
+                true
+            }
+            // Animation tactile pour les touches autres que la barre d'espace
+            addTouchAnimation(button)
         }
-        
-        // Animation tactile
-        addTouchAnimation(button)
+    }
+    
+    /**
+     * 🌐 Configure l'appui long personnalisé de 1 seconde pour la barre d'espace
+     */
+    private fun setupSpaceLongPress(button: Button, key: String) {
+        button.setOnTouchListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    isSpaceLongPressTriggered = false
+                    
+                    // Animation d'appui (100ms)
+                    view.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .setDuration(100)
+                        .start()
+                    
+                    // Feedback haptique
+                    performHapticFeedback(view)
+                    
+                    // Démarrer le timer de 1 seconde pour l'appui long
+                    spaceLongPressRunnable = Runnable {
+                        isSpaceLongPressTriggered = true
+                        Log.d(TAG, "⏱️ Appui long 1s détecté sur barre d'espace")
+                        interactionListener?.onLongPress(key, button)
+                    }
+                    spaceLongPressHandler.postDelayed(spaceLongPressRunnable!!, SPACE_LONG_PRESS_DELAY)
+                    
+                    false
+                }
+                android.view.MotionEvent.ACTION_UP -> {
+                    // Annuler le timer si relâché avant 1 seconde
+                    spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
+                    
+                    // Animation de relâchement (120ms)
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(120)
+                        .start()
+                    
+                    interactionListener?.onKeyRelease()
+                    
+                    // Si relâché rapidement (pas d'appui long), c'est un clic normal
+                    if (!isSpaceLongPressTriggered) {
+                        interactionListener?.onKeyPress(key)
+                    }
+                    
+                    false
+                }
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    // Annuler le timer en cas d'annulation
+                    spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
+                    
+                    // Animation de relâchement (120ms)
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(120)
+                        .start()
+                    
+                    interactionListener?.onKeyRelease()
+                    false
+                }
+                else -> false
+            }
+        }
     }
     
     /**
