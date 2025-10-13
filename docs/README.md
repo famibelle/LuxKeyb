@@ -12,7 +12,8 @@
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
    <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
-   <img src="Screenshots/Screenshot_1760213606.png" alt="Clavier kréyòl Karukera en Action" width="25%">
+   <img src="Screenshots/Screenshot_1760389184.png" alt="Clavier kréyòl Karukera en Action" width="25%">
+   <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
 ## Télécharger
