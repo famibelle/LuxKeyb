@@ -672,11 +672,30 @@ class SettingsActivity : AppCompatActivity() {
         val levelEmoji = levelParts[0]
         val levelName = if (levelParts.size > 1) levelParts.drop(1).joinToString(" ") else ""
         
+        // Calcul des mots restants pour le niveau suivant
+        val (nextLevelName, wordsRemaining) = getNextLevelInfo(stats.wordsDiscovered)
+        
         val levelContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
             setPadding(24, 24, 24, 40)
         }
+        
+        // Message de progression vers le niveau suivant
+        val progressMessage = TextView(this).apply {
+            text = if (wordsRemaining > 0) {
+                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant ($nextLevelName)"
+            } else {
+                "Vous avez atteint le niveau maximum : $levelName ! 👑"
+            }
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            gravity = Gravity.CENTER
+            setPadding(16, 0, 16, 24)
+            setLineSpacing(6f, 1f)
+        }
+        
+        levelContainer.addView(progressMessage)
         
         val levelBadge = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -686,13 +705,13 @@ class SettingsActivity : AppCompatActivity() {
         
         val levelEmojiText = TextView(this).apply {
             text = levelEmoji
-            textSize = 32f
-            setPadding(0, 0, 12, 0)
+            textSize = 48f
+            setPadding(0, 0, 16, 0)
         }
         
         val levelNameText = TextView(this).apply {
             text = levelName
-            textSize = 18f
+            textSize = 28f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
         }
@@ -1161,13 +1180,25 @@ class SettingsActivity : AppCompatActivity() {
     
     private fun getCurrentLevel(wordsDiscovered: Int): String {
         return when {
-            wordsDiscovered >= 500 -> "👑 Potomitan"
-            wordsDiscovered >= 300 -> "🌟 Kompè Zamba"
-            wordsDiscovered >= 150 -> "⭐ Kompè Lapen"
-            wordsDiscovered >= 75 -> "💎 An mitan"
-            wordsDiscovered >= 30 -> "🔥 Débrouya"
+            wordsDiscovered >= 2830 -> "👑 Potomitan"
+            wordsDiscovered >= 1000 -> "🌟 Kompè Zamba"
+            wordsDiscovered >= 500 -> "⭐ Kompè Lapen"
+            wordsDiscovered >= 200 -> "💎 An mitan"
+            wordsDiscovered >= 100 -> "🔥 Débrouya"
             wordsDiscovered >= 10 -> "🌱 Ti moun"
             else -> "🌍 Pipirit"
+        }
+    }
+    
+    private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
+        return when {
+            wordsDiscovered >= 1600 -> Pair("Potomitan", 0) // Niveau max atteint
+            wordsDiscovered >= 800 -> Pair("Potomitan", 1600 - wordsDiscovered)
+            wordsDiscovered >= 400 -> Pair("Kompè Zamba", 800 - wordsDiscovered)
+            wordsDiscovered >= 200 -> Pair("Kompè Lapen", 400 - wordsDiscovered)
+            wordsDiscovered >= 100 -> Pair("An mitan", 200 - wordsDiscovered)
+            wordsDiscovered >= 10 -> Pair("Débrouya", 100 - wordsDiscovered)
+            else -> Pair("Ti moun", 10 - wordsDiscovered)
         }
     }
     
