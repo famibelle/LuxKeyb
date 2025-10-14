@@ -19,11 +19,8 @@
 ## Google Play Store
 
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
-<div align="center">
-   <a href="https://play.google.com/apps/internaltest/4700942182389411435">
-      <img src="Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png" alt="Disponible sur Google Play" width="200">
-   </a>
-</div>
+
+[![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/internaltest/4700942182389411435)
 
 
 ## Télécharger
