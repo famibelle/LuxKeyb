@@ -19,8 +19,14 @@
 ---
 
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
+<div align="center">
+   <a href="https://play.google.com/apps/internaltest/4700942182389411435">
+      <img src="Screenshots/google-play-logo.png" alt="Disponible sur Google Play" width="200">
+   </a>
+</div>
 
 ---
+
 > ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
 
 ## Télécharger
