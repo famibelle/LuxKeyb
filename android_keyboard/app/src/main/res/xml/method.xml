@@ -4,8 +4,9 @@
     android:supportsSwitchingToNextInputMethod="true">
     <subtype
         android:label="@string/subtype_kreyol"
-        android:imeSubtypeLocale="fr"
+        android:languageTag="fr-GP"
         android:imeSubtypeMode="keyboard"
         android:isAuxiliary="false"
+        android:overridesImplicitlyEnabledSubtype="true"
         android:imeSubtypeExtraValue="TrySuggestionsForWordBeforeChecking,ShouldOfferSwitchingToNextInputMethod" />
 </input-method>
