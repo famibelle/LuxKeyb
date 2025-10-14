@@ -16,24 +16,23 @@
    <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
----
+## Google Play Store
 
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
 <div align="center">
    <a href="https://play.google.com/apps/internaltest/4700942182389411435">
-      <img src="Screenshots/google-play-logo.png" alt="Disponible sur Google Play" width="200">
+      <img src="Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png" alt="Disponible sur Google Play" width="200">
    </a>
 </div>
 
----
-
-> ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
 
 ## Télécharger
 📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
+> ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
+
 <div align="center">
-   <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="150">
+   <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="300">
 </div>
 
 
@@ -101,7 +100,6 @@ L'application s'ouvre automatiquement et vous guide :
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
----
 
 ## 🔒 Déclaration de confidentialité
 
