@@ -16,13 +16,13 @@
    <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
+---
 
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
 
 ---
 > ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
 
----
 ## Télécharger
 📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
@@ -35,7 +35,7 @@
 
 ### Étape 1️⃣ : Télécharger l'application
 
-1. **Cliquez sur le lien** ci-dessus "Télécharger directement" ou scannez le QR code
+1. **Cliquez sur le lien** [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases) ou scannez le QR code
 2. **Choisissez la dernière version** (la première dans la liste)
 3. **Téléchargez le fichier APK** (son nom ressemble à `Potomitan_Kreyol_Keyboard_vX.X.X_release.apk`)
 4. Le fichier se télécharge automatiquement dans votre dossier **"Téléchargements"**
@@ -94,15 +94,6 @@ L'application s'ouvre automatiquement et vous guide :
 6. C'est parti ! Vous pouvez maintenant écrire en kréyòl ! 🎉
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
-
----
-
-### 🆘 Besoin d'aide ?
-
-Si vous rencontrez des difficultés lors de l'installation :
-
-📧 **Contactez-nous :** [medhi@potomitan.io](mailto:medhi@potomitan.io)  
-📹 **Vidéo tutoriel :** [Voir le tutoriel complet](https://github.com/famibelle/KreyolKeyb) *(bientôt disponible)*
 
 ---
 
