@@ -137,3 +137,13 @@ android_keyboard\keystore-config.txt
 test-gamification-simple.ps1
 Tests_scenarios/
 tests/
+screenshot_settings_fixed.png
+android_keyboard/screenshot_active_tab.png
+android_keyboard/screenshot_current_issue.png
+android_keyboard/screenshot_fix_final.png
+android_keyboard/screenshot_stats_words.png
+android_keyboard/screenshot_tabs_final.png
+android_keyboard/screenshot_tabs_fixed.png
+android_keyboard/screenshot_tabs_v3.png
+screenshot_keyboard_name.png
+screenshot_final.png

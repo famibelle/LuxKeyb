@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.util.Log
 import org.json.JSONObject
 import java.io.File
@@ -207,6 +208,9 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Restaurer l'onglet actif si l'activité a été recréée
+        currentTab = savedInstanceState?.getInt("currentTab", 0) ?: 0
+        
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
         
@@ -264,7 +268,17 @@ class SettingsActivity : AppCompatActivity() {
         
         setContentView(mainLayout)
         
+        // Restaurer l'onglet précédent après la création de l'interface
+        viewPager.setCurrentItem(currentTab, false)
+        
         Log.d("SettingsActivity", "Interface avec tabs en haut créée avec succès")
+    }
+    
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Sauvegarder l'onglet actif avant que l'activité soit recréée
+        outState.putInt("currentTab", currentTab)
+        Log.d("SettingsActivity", "💾 Sauvegarde de l'onglet actif: $currentTab")
     }
     
     override fun onDestroy() {
@@ -867,6 +881,8 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 32, 0, 0)
         }
         
+        // Bouton "Actualiser" masqué mais code conservé pour réactivation future si nécessaire
+        /*
         val refreshButton = Button(this).apply {
             text = "⟳ Actualiser"
             textSize = 14f
@@ -893,6 +909,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         buttonsContainer.addView(refreshButton)
+        */
         
         // === Mots Découverts ===
         val discoveredWordsContainer = createWordListSection(
@@ -1238,14 +1255,46 @@ class SettingsActivity : AppCompatActivity() {
         ): View {
             Log.d("SettingsActivity", "Création de la vue StatsFragment")
             val activity = requireActivity() as SettingsActivity
+            
+            // Créer le SwipeRefreshLayout pour le Pull-to-Refresh
+            val swipeRefreshLayout = androidx.swiperefreshlayout.widget.SwipeRefreshLayout(activity).apply {
+                setColorSchemeColors(
+                    Color.parseColor("#0080FF"), // Bleu principal
+                    Color.parseColor("#4CAF50"), // Vert
+                    Color.parseColor("#FF9800")  // Orange
+                )
+                setProgressBackgroundColorSchemeColor(Color.WHITE)
+                
+                // Configurer l'action de rafraîchissement
+                setOnRefreshListener {
+                    Log.d("SettingsActivity", "🔄 Pull-to-Refresh déclenché")
+                    
+                    // Afficher un message
+                    Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
+                    
+                    // Forcer la sauvegarde des données en attente
+                    flushPendingUpdates(activity, activity.activityScope)
+                    
+                    // Attendre un peu puis recréer l'activité
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        Log.d("SettingsActivity", "🔄 Rechargement de l'activité après pull-to-refresh")
+                        activity.recreate() // Redémarre complètement l'activité
+                    }, 500) // Attendre 500ms
+                }
+            }
+            
             val scrollView = ScrollView(activity).apply {
                 setBackgroundColor(Color.WHITE)
                 isFillViewport = true
             }
             val statsContent = activity.createStatsContent()
             scrollView.addView(statsContent)
-            Log.d("SettingsActivity", "StatsFragment créé avec succès")
-            return scrollView
+            
+            // Ajouter le ScrollView dans le SwipeRefreshLayout
+            swipeRefreshLayout.addView(scrollView)
+            
+            Log.d("SettingsActivity", "StatsFragment créé avec Pull-to-Refresh")
+            return swipeRefreshLayout
         }
     }
     
