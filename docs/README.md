@@ -26,8 +26,12 @@
 **Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
 
 
+## 🔒 Déclaration de confidentialité
+
+Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
+
 ## 📧 Contact
 
 **Développeur :** Médhi Famibelle  
 **Email :** medhi@potomitan.io  
-**Organisation :** Potomitan(TM)
+**Organisation :** Potomitan™
