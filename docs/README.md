@@ -40,7 +40,7 @@ Progressez à travers 7 niveaux qui suivent une distribution gaussienne (la plup
 | 4 | 💎 | **An mitan** | Tu es au milieu du chemin |
 | 5 | 🐇 | **Kompè Lapen** | Tu as de bonnes connaissances |
 | 6 | 🐘 | **Kompè Zamba** | Tu maîtrises le kréyòl ! |
-| 7 | 👑 | **Potomitan** | 2200 - 2833 | Expert - Tu es un pilier du kréyòl ! |
+| 7 | 👑 | **Potomitan** | Expert - Tu es un pilier du kréyòl !|
 
 ### 💡 Visualisez votre apprentissage
 
