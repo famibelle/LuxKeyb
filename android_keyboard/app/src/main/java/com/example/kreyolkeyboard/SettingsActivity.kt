@@ -1197,25 +1197,27 @@ class SettingsActivity : AppCompatActivity() {
     
     private fun getCurrentLevel(wordsDiscovered: Int): String {
         return when {
-            wordsDiscovered >= 2830 -> "👑 Potomitan"
-            wordsDiscovered >= 1000 -> "🌟 Kompè Zamba"
-            wordsDiscovered >= 500 -> "⭐ Kompè Lapen"
-            wordsDiscovered >= 200 -> "💎 An mitan"
-            wordsDiscovered >= 100 -> "🔥 Débrouya"
-            wordsDiscovered >= 10 -> "🌱 Ti moun"
-            else -> "🌍 Pipirit"
+            wordsDiscovered >= 2830 -> "🧙🏿‍♀️ Benzo"          // 2830-2833 (niveau secret - tous les mots!)
+            wordsDiscovered >= 2200 -> "👑 Potomitan"          // 2200-2829 (22% supérieur - expert)
+            wordsDiscovered >= 1650 -> "🐘 Kompè Zamba"        // 1650-2199 (19% supérieur)
+            wordsDiscovered >= 1100 -> "🐇 Kompè Lapen"        // 1100-1649 (19% centre haut)
+            wordsDiscovered >= 650 -> "💎 An mitan"            // 650-1099 (16% centre - pic gaussien)
+            wordsDiscovered >= 300 -> "🔥 Débrouya"            // 300-649 (12% centre bas)
+            wordsDiscovered >= 50 -> "🌱 Ti moun"              // 50-299 (9% inférieur)
+            else -> "🌍 Pipirit"                                // 0-49 (3% débutant absolu)
         }
     }
     
     private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
         return when {
-            wordsDiscovered >= 1600 -> Pair("Potomitan", 0) // Niveau max atteint
-            wordsDiscovered >= 800 -> Pair("Potomitan", 1600 - wordsDiscovered)
-            wordsDiscovered >= 400 -> Pair("Kompè Zamba", 800 - wordsDiscovered)
-            wordsDiscovered >= 200 -> Pair("Kompè Lapen", 400 - wordsDiscovered)
-            wordsDiscovered >= 100 -> Pair("An mitan", 200 - wordsDiscovered)
-            wordsDiscovered >= 10 -> Pair("Débrouya", 100 - wordsDiscovered)
-            else -> Pair("Ti moun", 10 - wordsDiscovered)
+            wordsDiscovered >= 2830 -> Pair("Benzo", 0) // Niveau maximum absolu atteint!
+            wordsDiscovered >= 2200 -> Pair("Benzo", 2830 - wordsDiscovered)
+            wordsDiscovered >= 1650 -> Pair("Potomitan", 2200 - wordsDiscovered)
+            wordsDiscovered >= 1100 -> Pair("Kompè Zamba", 1650 - wordsDiscovered)
+            wordsDiscovered >= 650 -> Pair("Kompè Lapen", 1100 - wordsDiscovered)
+            wordsDiscovered >= 300 -> Pair("An mitan", 650 - wordsDiscovered)
+            wordsDiscovered >= 50 -> Pair("Débrouya", 300 - wordsDiscovered)
+            else -> Pair("Ti moun", 50 - wordsDiscovered)
         }
     }
     
