@@ -102,17 +102,17 @@ L'application s'ouvre automatiquement et vous guide :
 
 ## ✊🏽 Rejoindre le groupe des testeurs
 
-Si ou vlé testé **Klavyé Kréyòl Karukera** avan tout moun,  
-mété adrès é-mail a’w isi. Nou ké voye lenk la pou ou lè nouvèl vèsyon a sòti !  
+Si ou vlé testé **Klavyé Kréyòl Karukera** avan tout moun,
+mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
 
-<form action="https://formspree.io/f/XXXXX" method="POST">
+<form action="https://formspree.io/f/meorvlnq" method="POST">
   <label for="email">Adrès é-mail :</label><br>
   <input type="email" id="email" name="email" placeholder="votrenom@email.com" required
          style="padding:0.5em; width:100%; max-width:400px; border:1px solid #ccc; border-radius:4px;"><br><br>
 
   <label>
     <input type="checkbox" required>
-    Mwen dakò pou itilizé adrès é-mail mwen pou pati-sipé an test bèta a.
+    Mwen dakò pou itilizé adrès é-mail mwen pou pati-sipé an test bèta la.
   </label><br><br>
 
   <button type="submit"
