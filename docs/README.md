@@ -16,12 +16,6 @@
    <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
 
-## Google Play Store
-
-**Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
-
-[![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/internaltest/4700942182389411435)
-
 
 ## Télécharger
 📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
@@ -93,6 +87,11 @@ L'application s'ouvre automatiquement et vous guide :
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
+## Google Play Store
+
+**Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
+
+[![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/internaltest/4700942182389411435)
 
 ## ✊🏽 Rejoindre le groupe des testeurs
 
