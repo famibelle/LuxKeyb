@@ -98,6 +98,32 @@ L'application s'ouvre automatiquement et vous guide :
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
 
+---
+
+## ✊🏽 Rejoindre le groupe des testeurs
+
+Si ou vlé testé **Klavyé Kréyòl Karukera** avan tout moun,  
+mété adrès é-mail a’w isi. Nou ké voye lenk la pou ou lè nouvèl vèsyon a sòti !  
+
+<form action="https://formspree.io/f/XXXXX" method="POST">
+  <label for="email">Adrès é-mail :</label><br>
+  <input type="email" id="email" name="email" placeholder="votrenom@email.com" required
+         style="padding:0.5em; width:100%; max-width:400px; border:1px solid #ccc; border-radius:4px;"><br><br>
+
+  <label>
+    <input type="checkbox" required>
+    Mwen dakò pou itilizé adrès é-mail mwen pou pati-sipé an test bèta a.
+  </label><br><br>
+
+  <button type="submit"
+          style="background-color:#c0392b; color:white; border:none; padding:0.6em 1em; border-radius:5px; cursor:pointer;">
+    Envoyé ✉️
+  </button>
+</form>
+
+<small>© Potomitan™ • Klavyé Kréyòl Karukera</small>
+
+
 ## 🔒 Déclaration de confidentialité
 
 Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
