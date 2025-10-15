@@ -93,7 +93,7 @@ L'application s'ouvre automatiquement et vous guide :
 
 [![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/internaltest/4700942182389411435)
 
-## ✊🏽 Rejoindre le groupe des testeurs
+### ✊🏽 Rejoindre le groupe des beta testeurs en avant première
 
 Si ou vlé testé **Klavyé Kréyòl Karukera** avan tout moun,
 mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
