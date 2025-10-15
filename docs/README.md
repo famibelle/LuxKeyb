@@ -28,18 +28,19 @@
 - 📈 **Calcule votre niveau** - Du débutant "Ti moun 🌱" au maître "Potomitan 👑"
 - 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
 
-### 🏆 6 niveaux de maîtrise du kréyòl
+### 🏆 7 niveaux de maîtrise du kréyòl
 
-Progressez à travers 6 niveaux qui reflètent votre vocabulaire kréyòl :
+Progressez à travers 7 niveaux qui suivent une distribution gaussienne (la plupart des utilisateurs se situent dans les niveaux intermédiaires) :
 
-| Niveau | Badge | Nom | Mots découverts | Signification |
-|--------|-------|-----|-----------------|---------------|
-| 1 | 🌱 | **Ti moun** | 0 - 199 | Débutant - Tu commences ton apprentissage |
-| 2 | 🌿 | **Débrouya** | 200 - 499 | Tu te débrouilles bien ! |
-| 3 | 🌳 | **An mitan** | 500 - 999 | Tu es au milieu du chemin |
-| 4 | 🎋 | **Ni konesans** | 1000 - 1399 | Tu as de bonnes connaissances |
-| 5 | 🌴 | **Mèt kréyòl** | 1400 - 1649 | Tu maîtrises le kréyòl ! |
-| 6 | 👑 | **Potomitan** | 1650+ | Expert - Tu es un pilier du kréyòl ! |
+| Niveau | Badge | Nom | Signification |
+|--------|-------|-----|---------------|
+| 1 | 🌍 | **Pipirit** | Débutant absolu - Premiers pas |
+| 2 | 🌱 | **Ti moun** | Débutant - Tu commences ton apprentissage |
+| 3 | 🔥 | **Débrouya** | Tu te débrouilles bien ! |
+| 4 | 💎 | **An mitan** | Tu es au milieu du chemin |
+| 5 | 🐇 | **Kompè Lapen** | Tu as de bonnes connaissances |
+| 6 | 🐘 | **Kompè Zamba** | Tu maîtrises le kréyòl ! |
+| 7 | 👑 | **Potomitan** | 2200 - 2833 | Expert - Tu es un pilier du kréyòl ! |
 
 ### 💡 Visualisez votre apprentissage
 
