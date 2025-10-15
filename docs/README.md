@@ -1,6 +1,6 @@
 # Klavyé Kréyòl Karukera • Potomitan™
 
-**📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Guadeloupéen** sur leur smartphone, avec fluidité, authenticité et fierté.
+**📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Gwaloup** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 
 - 🛠️ Si ton créole est très rouillé...
@@ -15,6 +15,43 @@
    <img src="Screenshots/Screenshot_1760389184.png" alt="Clavier kréyòl Karukera en Action" width="25%">
    <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
 </div>
+
+
+## 🎮 Système de progression et de gamification
+
+**Klavyé Kréyòl Karukera** ne se contente pas de fluidifier l'écriture du Kréyòl : il **suit votre progression** et vous accompagne dans votre maîtrise du kréyòl !
+
+### 📊 Suivez vos progrès en temps réel
+
+À chaque mot que vous écrivez en kréyòl, l'application :
+- ✅ **Compte les mots découverts** - Votre vocabulaire s'enrichit automatiquement
+- 📈 **Calcule votre niveau** - Du débutant "Ti moun 🌱" au maître "Potomitan 👑"
+- 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
+
+### 🏆 6 niveaux de maîtrise du kréyòl
+
+Progressez à travers 6 niveaux qui reflètent votre vocabulaire kréyòl :
+
+| Niveau | Badge | Nom | Mots découverts | Signification |
+|--------|-------|-----|-----------------|---------------|
+| 1 | 🌱 | **Ti moun** | 0 - 199 | Débutant - Tu commences ton apprentissage |
+| 2 | 🌿 | **Débrouya** | 200 - 499 | Tu te débrouilles bien ! |
+| 3 | 🌳 | **An mitan** | 500 - 999 | Tu es au milieu du chemin |
+| 4 | 🎋 | **Ni konesans** | 1000 - 1399 | Tu as de bonnes connaissances |
+| 5 | 🌴 | **Mèt kréyòl** | 1400 - 1649 | Tu maîtrises le kréyòl ! |
+| 6 | 👑 | **Potomitan** | 1650+ | Expert - Tu es un pilier du kréyòl ! |
+
+### 💡 Visualisez votre apprentissage
+
+Dans l'onglet **"Kréyòl an mwen"** 📊, vous pouvez :
+- 🔍 **Voir tous les mots découverts** - Avec leur orthographe correcte en vert
+- 🌟 **Découvrir les mots à apprendre** - Les mots du dictionnaire que vous n'avez pas encore utilisés
+- 📈 **Suivre votre progression** - Un message vous indique combien de mots il reste pour passer au niveau suivant
+- 🎯 **Vous motiver** - "Votre niveau actuel est Débrouya, plus que 125 mots restants à découvrir pour passer au niveau suivant (An mitan)"
+
+### 🔄 Actualisation en temps réel
+
+Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statistiques pour mettre à jour vos progrès instantanément !
 
 
 ## Télécharger
