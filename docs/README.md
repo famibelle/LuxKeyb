@@ -44,8 +44,6 @@
 
 > 💡 **Astuce :** Vous verrez peut-être un message "Ce type de fichier peut endommager votre appareil". C'est normal ! Cliquez sur **"Télécharger quand même"** ou **"OK"**.
 
----
-
 ### Étape 2️⃣ : Autoriser l'installation
 
 Avant d'installer l'application, votre téléphone doit vous autoriser à installer des applications venant de l'extérieur du Play Store.
@@ -65,8 +63,6 @@ Avant d'installer l'application, votre téléphone doit vous autoriser à instal
 > - **OnePlus / Oppo :** Paramètres → Sécurité → Installation d'applis → Autoriser l'installation d'applis  
 > - **Google Pixel / Android standard :** Le téléphone vous guidera automatiquement lors de l'installation  
 > - **Autres marques :** Cherchez dans Paramètres → Sécurité ou Confidentialité → Sources inconnues ou Installation d'applis
-
----
 
 ### Étape 3️⃣ : Installer et activer le clavier
 
@@ -98,8 +94,6 @@ L'application s'ouvre automatiquement et vous guide :
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
 
----
-
 ## ✊🏽 Rejoindre le groupe des testeurs
 
 Si ou vlé testé **Klavyé Kréyòl Karukera** avan tout moun,
@@ -120,8 +114,6 @@ mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
     Envoyé ✉️
   </button>
 </form>
-
-<small>© Potomitan™ • Klavyé Kréyòl Karukera</small>
 
 
 ## 🔒 Déclaration de confidentialité
