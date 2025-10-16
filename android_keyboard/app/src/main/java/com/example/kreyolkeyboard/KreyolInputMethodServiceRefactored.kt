@@ -267,10 +267,20 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Créer la zone de suggestions
         createSuggestionsArea(mainLayout)
         
+        // 📱 PADDING ADAPTATIF SELON MODE DE NAVIGATION
+        // Créer un conteneur avec padding pour éviter que la navigation bar masque le clavier
+        val keyboardContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            val adaptivePadding = getAdaptiveNavigationPadding()
+            setPadding(0, 0, 0, adaptivePadding)
+            Log.d(TAG, "✅ Padding adaptatif appliqué: ${adaptivePadding}px")
+        }
+        
         // Créer le clavier principal
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
-        mainLayout.addView(keyboardLayout)
-        mainKeyboardView = keyboardLayout
+        keyboardContainer.addView(keyboardLayout)
+        mainLayout.addView(keyboardContainer)
+        mainKeyboardView = keyboardContainer
         
         return mainLayout
     }
@@ -579,16 +589,24 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
-     * Actualise le layout du clavier
+     * Actualise le layout du clavier en préservant le conteneur avec padding
      */
     private fun refreshKeyboardLayout() {
-        mainKeyboardView?.let { oldView ->
-            val parent = oldView.parent as? ViewGroup
-            parent?.removeView(oldView)
-            
-            val newLayout = keyboardLayoutManager.createKeyboardLayout()
-            parent?.addView(newLayout)
-            mainKeyboardView = newLayout
+        mainKeyboardView?.let { containerView ->
+            // mainKeyboardView est le conteneur avec padding, pas le clavier directement
+            if (containerView is LinearLayout && containerView.childCount > 0) {
+                // Retirer l'ancien clavier du conteneur
+                val oldKeyboard = containerView.getChildAt(0)
+                containerView.removeView(oldKeyboard)
+                
+                // Créer et ajouter le nouveau clavier dans le même conteneur
+                val newKeyboard = keyboardLayoutManager.createKeyboardLayout()
+                containerView.addView(newKeyboard)
+                
+                Log.d(TAG, "🔄 Clavier actualisé (padding préservé: ${containerView.paddingBottom}px)")
+            } else {
+                Log.w(TAG, "⚠️ mainKeyboardView n'est pas un conteneur LinearLayout valide")
+            }
         }
     }
     
@@ -865,6 +883,87 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
+    }
+    
+    /**
+     * 📱 Détecte le mode de navigation système actif
+     * @return Code du mode: 0=3-button, 1=2-button, 2=Gesture, -1=Unknown
+     */
+    private fun detectNavigationMode(): Int {
+        return try {
+            val navigationMode = android.provider.Settings.Secure.getInt(
+                contentResolver,
+                "navigation_mode",
+                0  // 0 par défaut (3-button)
+            )
+            
+            val modeName = when (navigationMode) {
+                0 -> "3-button navigation"
+                1 -> "2-button navigation"
+                2 -> "Gesture navigation"
+                else -> "Unknown navigation mode"
+            }
+            
+            Log.d(TAG, "📱 Mode de navigation détecté: $modeName (valeur: $navigationMode)")
+            return navigationMode
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Erreur détection mode navigation: ${e.message}")
+            return -1  // Unknown
+        }
+    }
+    
+    /**
+     * 📏 Calcule le padding bottom adapté selon le mode de navigation
+     * Utilise la hauteur réelle de la navigation bar système + marge adaptée
+     * @return Padding en pixels
+     */
+    private fun getAdaptiveNavigationPadding(): Int {
+        val navigationMode = detectNavigationMode()
+        
+        // Obtenir la hauteur système de la navigation bar
+        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        val systemNavBarHeight = if (resourceId > 0) {
+            resources.getDimensionPixelSize(resourceId)
+        } else {
+            (48 * resources.displayMetrics.density).toInt() // Fallback 48dp
+        }
+        
+        val padding = when (navigationMode) {
+            0 -> {
+                // 3-button navigation: hauteur système + marge sécurité 12dp
+                val marginDp = 12
+                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
+                val paddingPx = systemNavBarHeight + marginPx
+                Log.d(TAG, "🔘 3-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
+                paddingPx
+            }
+            1 -> {
+                // 2-button navigation: hauteur système + marge sécurité 8dp
+                val marginDp = 8
+                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
+                val paddingPx = systemNavBarHeight + marginPx
+                Log.d(TAG, "🔘 2-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
+                paddingPx
+            }
+            2 -> {
+                // Gesture navigation: padding minimal 20dp (juste la barre indicateur)
+                val paddingDp = 20
+                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
+                Log.d(TAG, "👆 Gesture: Padding minimal ${paddingDp}dp = ${paddingPx}px")
+                paddingPx
+            }
+            else -> {
+                // Mode inconnu: padding de sécurité
+                val paddingDp = 48
+                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
+                Log.d(TAG, "⚠️ Mode inconnu: Padding sécurité ${paddingDp}dp = ${paddingPx}px")
+                paddingPx
+            }
+        }
+        
+        Log.d(TAG, "✅ Padding adaptatif calculé: ${padding}px")
+        return padding
     }
     
     /**
