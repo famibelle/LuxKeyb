@@ -156,6 +156,7 @@ mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
 ## 🔒 Déclaration de confidentialité
 
 Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
+
 TL;DR zero data collectée
 
 ## 📧 Contact
