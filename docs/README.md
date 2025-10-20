@@ -56,6 +56,15 @@ Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statis
 
 
 ## Télécharger
+
+### 🚀 **Dernière Version Stable**
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/KreyolKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases/latest)
+[![GitHub all releases](https://img.shields.io/github/downloads/famibelle/KreyolKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases)
+
+### 📱 **Installation Rapide**
+
+
 📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
 > ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
