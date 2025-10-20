@@ -140,10 +140,38 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         
         // Déterminer le type d'action selon le contexte
         val editorInfo = inputMethodService.currentInputEditorInfo
-        val imeAction = editorInfo?.imeOptions?.and(EditorInfo.IME_MASK_ACTION)
+        val imeOptions = editorInfo?.imeOptions ?: 0
+        val imeAction = imeOptions and EditorInfo.IME_MASK_ACTION
         
         Log.d(TAG, "🔵 EditorInfo: $editorInfo")
+        Log.d(TAG, "🔵 IME Options: $imeOptions")
         Log.d(TAG, "🔵 IME Action détectée: $imeAction")
+        
+        // 🔧 QUICK FIX: Vérifier si l'action ENTER est explicitement désactivée
+        val noEnterAction = (imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
+        
+        if (noEnterAction) {
+            Log.d(TAG, "🔵 ⚠️ Flag IME_FLAG_NO_ENTER_ACTION détecté - Action ENTER désactivée")
+            Log.d(TAG, "🔵 → Insertion nouvelle ligne au lieu d'exécuter l'action")
+            inputConnection.commitText("\n", 1)
+            processorListener?.onSpecialKeyPressed("⏎")
+            Log.d(TAG, "🔵 === FIN handleEnter() (action désactivée) ===")
+            return true
+        }
+        
+        // 🔧 AMÉLIORATION: Détecter les champs multilignes
+        val inputType = editorInfo?.inputType ?: 0
+        val isMultiline = (inputType and InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0
+        
+        if (isMultiline && imeAction == EditorInfo.IME_ACTION_UNSPECIFIED) {
+            Log.d(TAG, "🔵 📝 Champ multiligne détecté - Insertion nouvelle ligne")
+            inputConnection.commitText("\n", 1)
+            processorListener?.onSpecialKeyPressed("⏎")
+            Log.d(TAG, "🔵 === FIN handleEnter() (multiligne) ===")
+            return true
+        }
+        
+        Log.d(TAG, "🔵 🎯 Exécution de l'action IME selon le contexte")
         
         when (imeAction) {
             EditorInfo.IME_ACTION_SEND -> {
