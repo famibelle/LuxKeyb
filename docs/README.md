@@ -1,4 +1,4 @@
-# Klavyé Kréyòl Karukera • Potomitan™
+i# Klavyé Kréyòl Karukera • Potomitan™
 
 **📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Gwaloup** sur leur smartphone, avec fluidité, authenticité et fierté.
 
@@ -56,6 +56,15 @@ Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statis
 
 
 ## Télécharger
+
+### 🚀 **Dernière Version Stable**
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/KreyolKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases/latest)
+[![GitHub all releases](https://img.shields.io/github/downloads/famibelle/KreyolKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases)
+
+### 📱 **Installation Rapide**
+
+
 📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
 
 > ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
@@ -156,6 +165,8 @@ mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
 ## 🔒 Déclaration de confidentialité
 
 Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
+
+TL;DR zero data collectée
 
 ## 📧 Contact
 
