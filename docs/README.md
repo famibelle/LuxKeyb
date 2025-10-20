@@ -136,9 +136,9 @@ L'application s'ouvre automatiquement et vous guide :
 
 ## Google Play Store
 
-**Google Play Store :** [Bientôt disponible](https://play.google.com/apps/internaltest/4700942182389411435)
+**Google Play Store :** [Bientôt disponible](https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard)
 
-[![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/internaltest/4700942182389411435)
+[![Google Play Store](Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png)](https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard)
 
 ### ✊🏽 Rejoindre le groupe des beta testeurs en avant première
 
