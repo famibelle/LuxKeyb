@@ -1,6 +1,6 @@
-# Klavyé Kréyòl Karukera • Potomitan™ - Privacy Policy
+# Luxembourgish Clavier • Potomitan™ - Privacy Policy
 
-This repository contains the privacy policy for the **Klavyé Kréyòl Karukera • Potomitan™** Android keyboard application.
+This repository contains the privacy policy for the **Luxembourgish Clavier • Potomitan™** Android keyboard application.
 
 ## 🌐 Live Privacy Policy
 
@@ -9,7 +9,7 @@ This repository contains the privacy policy for the **Klavyé Kréyòl Karukera 
 
 ## 📱 About the Application
 
-**Klavyé Kréyòl Karukera • Potomitan™** is a virtual keyboard for Android devices that enables typing in Guadeloupean Creole (Kreyòl Karukera) with intelligent suggestions and automatic corrections.
+**Luxembourgish Clavier • Potomitan™** is a virtual keyboard for Android devices that enables typing in Luxembourgish with intelligent suggestions and automatic corrections.
 
 ## 🔒 Privacy Commitment
 
