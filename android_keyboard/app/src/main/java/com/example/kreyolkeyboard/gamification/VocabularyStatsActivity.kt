@@ -66,7 +66,7 @@ class VocabularyStatsActivity : AppCompatActivity() {
         // IMPORTANT: Activity et Service IME ne partagent PAS le même filesDir
         // On doit utiliser le chemin complet de l'app
         val appDataDir = applicationContext.dataDir
-        val dictFile = File(appDataDir, "files/creole_dict_with_usage.json")
+        val dictFile = File(appDataDir, "files/luxemburgish_dict_with_usage.json")
         
         Log.d(TAG, "Tentative de chargement depuis: ${dictFile.absolutePath}")
         

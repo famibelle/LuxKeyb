@@ -37,7 +37,6 @@ C'est un acte de transmission, un hommage à la langue, une technologie au servi
 ## 🌟 Fonctionnalités
 
 ### 🎯 **Suggestions Intelligentes**
-- **1 867 mots** luxembourgeois dans le dictionnaire
 - Suggestions contextuelles en temps réel
 - Prédiction de texte adaptée au luxembourgeois
 - **N-grams linguistiques** construits à partir de textes authentiques luxembourgeois

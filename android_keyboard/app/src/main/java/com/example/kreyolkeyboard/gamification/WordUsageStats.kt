@@ -6,7 +6,7 @@ package com.example.kreyolkeyboard.gamification
 data class WordUsageStats(
     val word: String,           // Le mot du dictionnaire
     val userCount: Int,         // Nombre de fois que l'utilisateur a tapé ce mot
-    val frequency: Int          // Fréquence du mot dans le corpus créole (depuis creole_dict.json)
+    val frequency: Int          // Fréquence du mot dans le corpus créole (depuis         private const val ORIGINAL_DICT = "luxemburgish_dict.json")
 ) {
     /**
      * Le mot est considéré comme "maîtrisé" s'il a été utilisé au moins 10 fois

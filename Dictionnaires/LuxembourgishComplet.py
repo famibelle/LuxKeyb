@@ -58,8 +58,8 @@ class LuxembourgishPipelineUnique:
     def __init__(self):
         """Initialisation du pipeline"""
         self.version = "1.0 - Pipeline Luxembourgeois"
-        self.chemin_dict = "../clavier_creole/assets/luxemburgish_dict.json"
-        self.chemin_ngrams = "../clavier_creole/assets/luxemburgish_ngrams.json"
+        self.chemin_dict = "../android_keyboard/app/src/main/assets/luxemburgish_dict.json"
+        self.chemin_ngrams = "../android_keyboard/app/src/main/assets/luxemburgish_ngrams.json"
         self.hf_token = None
         self.textes_luxembourgeois = []
         self.dictionnaire_actuel = {}

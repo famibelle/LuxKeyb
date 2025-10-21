@@ -416,16 +416,16 @@ class SuggestionEngine(private val context: Context) {
      */
     private suspend fun loadDictionary() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("creole_dict.json").bufferedReader().use { it.readText() }
-            val wordsArray = JSONArray(jsonString)
+            val jsonString = context.assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
+            val jsonObject = JSONObject(jsonString)
             
             val loadedDictionary = mutableListOf<Pair<String, Int>>()
             
-            for (i in 0 until wordsArray.length()) {
-                val wordArray = wordsArray.getJSONArray(i)
-                val word = wordArray.getString(0).lowercase()
-                val frequency = wordArray.optInt(1, 1)
-                loadedDictionary.add(Pair(word, frequency))
+            val keys = jsonObject.keys()
+            while (keys.hasNext()) {
+                val word = keys.next()
+                val frequency = jsonObject.optInt(word, 1)
+                loadedDictionary.add(Pair(word.lowercase(), frequency))
             }
             
             // Trier par fréquence décroissante
@@ -435,7 +435,7 @@ class SuggestionEngine(private val context: Context) {
                 suggestionListener?.onDictionaryLoaded(dictionary.size)
             }
             
-            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+            Log.d(TAG, "Dictionnaire luxembourgeois chargé: ${dictionary.size} mots")
             
         } catch (e: IOException) {
             Log.e(TAG, "Erreur lors du chargement du dictionnaire: ${e.message}", e)
@@ -446,45 +446,53 @@ class SuggestionEngine(private val context: Context) {
      * Charge le modèle N-gram depuis les assets
      */
     private suspend fun loadNgramModel() = withContext(Dispatchers.IO) {
-        Log.d(TAG, "Chargement du modèle N-grams...")
+        Log.d(TAG, "Chargement du modèle N-grams luxembourgeois...")
         try {
-            val inputStream = context.assets.open("creole_ngrams.json")
+            val inputStream = context.assets.open("luxemburgish_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
 
             val jsonObject = JSONObject(jsonString)
-            val predictionsObject = jsonObject.getJSONObject("predictions")
-            
             val tempMap = mutableMapOf<String, List<Map<String, Any>>>()
             
-            val keys = predictionsObject.keys()
+            // Parcourir toutes les entrées du fichier luxembourgeois
+            val keys = jsonObject.keys()
             while (keys.hasNext()) {
-                val key = keys.next()
-                val predictionsArray = predictionsObject.getJSONArray(key)
-                val predictions = mutableListOf<Map<String, Any>>()
+                val phrase = keys.next()
+                val count = jsonObject.getInt(phrase)
                 
-                for (i in 0 until predictionsArray.length()) {
-                    val predictionObj = predictionsArray.getJSONObject(i)
+                // Séparer la phrase en mots pour créer des prédictions
+                val words = phrase.split(" ")
+                if (words.size >= 2) {
+                    // Utiliser tous les mots sauf le dernier comme clé
+                    val key = words.dropLast(1).joinToString(" ")
+                    val nextWord = words.last()
+                    
+                    // Créer ou mettre à jour la liste de prédictions pour cette clé
+                    val existingPredictions = tempMap[key]?.toMutableList() ?: mutableListOf()
+                    
                     val prediction = mapOf(
-                        "word" to predictionObj.getString("word"),
-                        "prob" to predictionObj.getDouble("prob")
+                        "word" to nextWord,
+                        "prob" to count.toDouble() / 1000.0 // Normaliser la probabilité
                     )
-                    predictions.add(prediction)
+                    
+                    existingPredictions.add(prediction)
+                    tempMap[key] = existingPredictions.sortedByDescending { 
+                        (it["prob"] as Double) 
+                    }.take(5) // Garder seulement les 5 meilleures prédictions
                 }
-                
-                tempMap[key] = predictions
             }
             
             ngramModel = tempMap.toMap()
             
-            Log.d(TAG, "Modèle N-grams chargé avec ${ngramModel.size} entrées")
+            Log.d(TAG, "Modèle N-grams luxembourgeois chargé avec ${ngramModel.size} entrées")
             
             withContext(Dispatchers.Main) {
                 suggestionListener?.onNgramModelLoaded()
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors du chargement des N-grams", e)
+            Log.e(TAG, "Erreur lors du chargement des N-grams luxembourgeois", e)
         }
     }
     
