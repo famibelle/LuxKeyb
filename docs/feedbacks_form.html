@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Klavyé Kréyòl</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+            padding-right: 100px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #f0f0f0;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 15px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: #e0e0e0;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 150px;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="lang-switch">
+                <button type="button" class="lang-btn active" id="btnFr">FR</button>
+                <button type="button" class="lang-btn" id="btnGcf">GCF</button>
+            </div>
+            <h1 id="title">⌨️ Klavyé Kréyòl</h1>
+            <p id="subtitle">Partagez votre avis avec nous (anonyme)</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <span id="successText">Merci beaucoup ! Votre feedback a été envoyé avec succès. 🎉</span>
+        </div>
+
+        <form id="feedbackForm" action="https://formspree.io/f/mvgwnlky" method="POST">
+            <textarea 
+                id="feedbackArea"
+                name="feedback" 
+                placeholder="Dites-nous ce que vous pensez de Klavyé Kréyòl..." 
+                required
+            ></textarea>
+            <button type="submit" class="submit-btn" id="submitBtn">Envoyer</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('feedbackForm');
+        const successMessage = document.getElementById('successMessage');
+        const btnFr = document.getElementById('btnFr');
+        const btnGcf = document.getElementById('btnGcf');
+
+        // Textes en fonction de la langue
+        const translations = {
+            gcf: {
+                title: '⌨️ Klavyé Kréyòl',
+                subtitle: 'Patajé opinyon\'w épi nou (anonim)',
+                placeholder: 'Rakonté nou sa\'w ka pansé asi Klavyé Kréyòl...',
+                submit: 'Voyé',
+                success: 'Mèsi anpil! Feedback\'w té voyé èvè siksè. 🎉',
+                error: 'Té ni an pwoblèm. Tanpri éséyé ankò.'
+            },
+            fr: {
+                title: '⌨️ Klavyé Kréyòl',
+                subtitle: 'Partagez votre avis avec nous (anonyme)',
+                placeholder: 'Dites-nous ce que vous pensez de Klavyé Kréyòl...',
+                submit: 'Envoyer',
+                success: 'Merci beaucoup ! Votre feedback a été envoyé avec succès. 🎉',
+                error: 'Une erreur est survenue. Veuillez réessayer.'
+            }
+        };
+
+        let currentLang = 'fr';
+        let currentError = translations.fr.error;
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            currentError = translations[lang].error;
+            
+            document.getElementById('title').textContent = translations[lang].title;
+            document.getElementById('subtitle').textContent = translations[lang].subtitle;
+            document.getElementById('feedbackArea').placeholder = translations[lang].placeholder;
+            document.getElementById('submitBtn').textContent = translations[lang].submit;
+            document.getElementById('successText').textContent = translations[lang].success;
+
+            btnFr.classList.toggle('active', lang === 'fr');
+            btnGcf.classList.toggle('active', lang === 'gcf');
+        }
+
+        btnFr.addEventListener('click', () => switchLanguage('fr'));
+        btnGcf.addEventListener('click', () => switchLanguage('gcf'));
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    successMessage.classList.add('show');
+                    form.reset();
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 5000);
+                } else {
+                    alert(currentError);
+                }
+            })
+            .catch(error => {
+                alert(currentError);
+            });
+        });
+    </script>
+</body>
+</html>
