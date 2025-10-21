@@ -5,6 +5,28 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.7] - 2025-10-20
+
+### 🐛 Corrigé
+- **Touche ENTRÉE** : Résolution du problème critique où la touche ENTRÉE fermait le clavier et provoquait une perte de focus
+  - Respect du flag `IME_FLAG_NO_ENTER_ACTION` : Le clavier détecte maintenant quand une application souhaite que ENTRÉE insère une nouvelle ligne plutôt que d'exécuter une action
+  - Détection des champs multilignes : Amélioration de la détection des champs de texte multiligne pour insérer correctement les nouvelles lignes
+  - Fix validé sur l'application Potomitan et autres applications utilisant des champs multilignes
+  - Plus de fermeture intempestive du clavier
+  - Plus de perte de focus sur le champ de texte
+  - Plus de redirection vers d'autres applications
+
+### 📝 Technique
+- Modification de `handleEnter()` dans `InputProcessor.kt` :
+  - Vérification du flag `IME_FLAG_NO_ENTER_ACTION` avant d'exécuter les actions IME
+  - Détection du flag `TYPE_TEXT_FLAG_MULTI_LINE` pour les champs multilignes
+  - Logs détaillés pour faciliter le diagnostic futur
+- Documentation complète :
+  - `DIAGNOSTIC_TOUCHE_ENTREE.md` : Analyse des causes racines
+  - `QUICK_FIX_ENTREE.md` : Documentation de l'implémentation
+  - `tests/diagnostic-enter-key.ps1` : Script de diagnostic
+  - `tests/reports/quick-fix-enter-test-report.md` : Rapport de validation
+
 ## [1.2.0] - 2025-09-07
 
 ### 🎉 Ajouté
