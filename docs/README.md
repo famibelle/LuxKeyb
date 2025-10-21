@@ -1,5 +1,3 @@
-i# Klavyé Kréyòl Karukera • Potomitan™
-
 **📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Gwaloup** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 
