@@ -1122,14 +1122,29 @@ class SettingsActivity : AppCompatActivity() {
             Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
             Log.d("SettingsActivity", "📄 Dictionnaire luxembourgeois: ${jsonObject.length()} mots")
             
+            if (usageFile.exists()) {
+                val usageContent = usageFile.readText()
+                Log.d("SettingsActivity", "📄 Contenu fichier usage (${usageContent.length} chars): ${usageContent.take(500)}...")
+            }
+            
             // Parcourir tous les mots du dictionnaire luxembourgeois
             val keys = jsonObject.keys()
             while (keys.hasNext()) {
                 val word = keys.next()
                 totalWords++
                 
-                // Vérifier l'usage utilisateur
-                val userCount = usageData.optInt(word, 0)
+                // Vérifier l'usage utilisateur (format CreoleDictionaryWithUsage)
+                val userCount = if (usageData.has(word)) {
+                    try {
+                        val wordData = usageData.getJSONObject(word)
+                        wordData.optInt("user_count", 0)
+                    } catch (e: Exception) {
+                        // Fallback en cas de format simple
+                        usageData.optInt(word, 0)
+                    }
+                } else {
+                    0
+                }
                 
                 if (userCount > 0) {
                     totalUsages += userCount
@@ -1153,7 +1168,16 @@ class SettingsActivity : AppCompatActivity() {
             val dictKeys = jsonObject.keys()
             while (dictKeys.hasNext()) {
                 val word = dictKeys.next()
-                val userCount = usageData.optInt(word, 0)
+                val userCount = if (usageData.has(word)) {
+                    try {
+                        val wordData = usageData.getJSONObject(word)
+                        wordData.optInt("user_count", 0)
+                    } catch (e: Exception) {
+                        usageData.optInt(word, 0)
+                    }
+                } else {
+                    0
+                }
                 if (userCount == 0 && word.length >= 3) {
                     wordsToDiscoverCandidates.add(word)
                 }
