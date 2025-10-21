@@ -1,12 +1,12 @@
-# 🇱🇺 Klavyé Lëtzebuergesch : Clavier intelligent pour la saisie en **luxembourgeois** avec suggestions de mots.
+# 🇱🇺 Clavier Lëtzebuergesch : Clavier intelligent pour la saisie en **luxembourgeois** avec suggestions de mots.
 
-**Klavyé Lëtzebuergesch** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **luxembourgeois** sur leur smartphone, avec fluidité, authenticité et fierté.
+**Clavier Lëtzebuergesch** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **luxembourgeois** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 
 - 🛠️ Si ton luxembourgeois est très rouillé...
 - 😤 Que tu galères à écrire en lëtzebuergesch parce que ton téléphone refuse tous les mots
 - 🤔 Que tu doutes de l'orthographe à chaque message ...
-- ➡️ Klavyé Lëtzebuergesch est fait pour toi !
+- ➡️ Clavier Lëtzebuergesch est fait pour toi !
 
 
 🧠 Le dictionnaire est en **évolution permanente**, enrichi régulièrement grâce aux **suggestions de la communauté luxembourgeoise**. Chaque contribution aide à affiner les prédictions et à refléter les usages réels du luxembourgeois contemporain.
@@ -17,7 +17,7 @@
 
 ---
 
-**Klavyé Lëtzebuergesch**, c'est plus qu'un outil :  
+**Clavier Lëtzebuergesch**, c'est plus qu'un outil :  
 C'est un acte de transmission, un hommage à la langue, une technologie au service de l'identité luxembourgeoise.
 
 
@@ -29,7 +29,7 @@ C'est un acte de transmission, un hommage à la langue, une technologie au servi
 ## 📱 Aperçu
 
 <div align="center">
-   <img src="Screenshots/KlavyéLux_x2.gif" alt="Clavier luxembourgeois en Action" width="25%">
+   <img src="Screenshots/ClavierLux_x2.gif" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
 
 *Clavier luxembourgeois avec suggestions basées sur les textes littéraires fondateurs du lëtzebuergesch*
