@@ -109,24 +109,24 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     /**
      * Migre le dictionnaire original en ajoutant les compteurs user_count
-     * Le dictionnaire original est un array: [["mot", frequency], ...]
+     * Le dictionnaire luxembourgeois est un object: {"mot": frequency, ...}
      */
     private fun migrateDictionary(): JSONObject {
         val migratedDict = JSONObject()
         
         try {
-            // Charger le dictionnaire original depuis les assets
+            // Charger le dictionnaire luxembourgeois depuis les assets
             val json = context.assets.open(ORIGINAL_DICT)
                 .bufferedReader()
                 .use { it.readText() }
-            val originalArray = org.json.JSONArray(json)
+            val originalObject = JSONObject(json)
             
-            // Transformer chaque entrée du array en objet
+            // Transformer chaque entrée de l'objet
             var count = 0
-            for (i in 0 until originalArray.length()) {
-                val entry = originalArray.getJSONArray(i)
-                val word = entry.getString(0)
-                val frequency = entry.getInt(1)
+            val keys = originalObject.keys()
+            while (keys.hasNext()) {
+                val word = keys.next()
+                val frequency = originalObject.getInt(word)
                 
                 // Créer la nouvelle structure avec user_count à 0
                 val wordData = JSONObject().apply {
@@ -140,10 +140,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             
             // Sauvegarder le dictionnaire migré
             saveDictionaryToFile(migratedDict)
-            Log.d(TAG, "✅ Migration réussie : $count mots transformés depuis array")
+            Log.d(TAG, "✅ Migration luxembourgeoise réussie : $count mots transformés depuis object")
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur lors de la migration du dictionnaire", e)
+            Log.e(TAG, "❌ Erreur lors de la migration du dictionnaire luxembourgeois", e)
         }
         
         return migratedDict

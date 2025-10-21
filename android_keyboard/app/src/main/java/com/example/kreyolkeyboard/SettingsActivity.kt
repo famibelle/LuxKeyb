@@ -1314,16 +1314,13 @@ class SettingsActivity : AppCompatActivity() {
                 return Pair(selectedWord, usageCount)
             } else {
                 Log.d("SettingsActivity", "Fichier usage n'existe pas, création depuis assets")
-                // Charger depuis les assets
+                // Charger depuis les assets (format JSONObject)
                 val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
-                val jsonArray = org.json.JSONArray(jsonString)
-                Log.d("SettingsActivity", "Dictionnaire chargé: ${jsonArray.length()} mots")
+                val jsonObject = JSONObject(jsonString)
+                Log.d("SettingsActivity", "Dictionnaire luxembourgeois chargé: ${jsonObject.length()} mots")
                 
                 allWords = mutableListOf<String>().apply {
-                    for (i in 0 until jsonArray.length()) {
-                        val wordArray = jsonArray.getJSONArray(i)
-                        add(wordArray.getString(0))  // Premier élément = le mot
-                    }
+                    jsonObject.keys().forEach { word -> add(word) }
                 }
                 
                 if (allWords.isEmpty()) {
