@@ -27,8 +27,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     companion object {
         private const val TAG = "CreoleDictUsage"
-        private const val DICT_FILE = "creole_dict_with_usage.json"
-        private const val ORIGINAL_DICT = "creole_dict.json"
+        private const val DICT_FILE = "luxemburgish_dict_with_usage.json"
+        private const val ORIGINAL_DICT = "luxemburgish_dict.json"
         private const val MIN_WORD_LENGTH = 3  // Ignorer les mots < 3 lettres
         private const val SAVE_BATCH_SIZE = 1  // Sauvegarder après chaque utilisation pour tests
     }

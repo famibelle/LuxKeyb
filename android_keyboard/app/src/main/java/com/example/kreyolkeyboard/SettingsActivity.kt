@@ -117,7 +117,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Sauvegarde optimisée par lecture partielle
         private suspend fun saveUpdatesToFile(context: Context, updates: Map<String, Int>) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
             
             if (!usageFile.exists()) {
                 // Créer le fichier s'il n'existe pas
@@ -159,7 +159,7 @@ class SettingsActivity : AppCompatActivity() {
             // Sauvegarder seulement si des changements ont été faits
             if (hasChanges) {
                 // Écriture atomique pour éviter la corruption
-                val tempFile = File(context.filesDir, "creole_dict_with_usage.json.tmp")
+                val tempFile = File(context.filesDir, "luxemburgish_dict_with_usage.json.tmp")
                 tempFile.bufferedWriter().use { writer ->
                     writer.write(existingData.toString())
                 }
@@ -173,7 +173,7 @@ class SettingsActivity : AppCompatActivity() {
         // Vérification rapide si un mot existe dans le dictionnaire
         private fun isWordInDictionary(context: Context, word: String): Boolean {
             return try {
-                context.assets.open("creole_dict.json").bufferedReader().use { reader ->
+                context.assets.open("luxemburgish_dict.json").bufferedReader().use { reader ->
                     var line: String?
                     while (reader.readLine().also { line = it } != null) {
                         if (line!!.contains("\"$word\"", ignoreCase = true)) {
@@ -189,7 +189,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Création optimisée du fichier initial
         private fun createInitialUsageFile(context: Context) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
             
             // Créer un fichier complètement vide sans aucune donnée de démonstration
             val emptyUsageObject = JSONObject()
@@ -1093,104 +1093,86 @@ class SettingsActivity : AppCompatActivity() {
     )
     
     private fun loadVocabularyStats(): VocabularyStats {
-        Log.d("SettingsActivity", "🔍 Chargement des statistiques du vocabulaire")
+        Log.d("SettingsActivity", "🔍 Chargement des statistiques du vocabulaire luxembourgeois")
         return try {
-            // D'abord essayer le fichier avec usage
-            val usageFile = File(filesDir, "creole_dict_with_usage.json")
-            Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
-            Log.d("SettingsActivity", "📂 Chemin fichier: ${usageFile.absolutePath}")
+            // Charger le dictionnaire luxembourgeois depuis les assets
+            val inputStream = assets.open("luxemburgish_dict.json")
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val jsonObject = JSONObject(jsonString)
             
-            if (usageFile.exists()) {
-                val jsonString = usageFile.readText()
-                Log.d("SettingsActivity", "📄 Contenu fichier (${jsonString.length} chars): ${jsonString.take(200)}...")
-                val jsonObject = JSONObject(jsonString)
-                Log.d("SettingsActivity", "🔑 Clés JSON trouvées: ${jsonObject.keys().asSequence().toList().size}")
-                
-                var totalWords = 0
-                var wordsDiscovered = 0
-                var totalUsages = 0
-                val wordUsages = mutableListOf<Pair<String, Int>>()
-                val discoveredWords = mutableListOf<String>()
-                
-                val motsTrouves = mutableListOf<String>()
-                jsonObject.keys().forEach { word ->
-                    totalWords++
-                    
-                    // Gérer les deux formats possibles
-                    val userCount = try {
-                        val rawValue = jsonObject.get(word)
-                        when (rawValue) {
-                            is Int -> {
-                                // Format simplifié: "mot": 1
-                                rawValue
-                            }
-                            is JSONObject -> {
-                                // Format complet: "mot": {"frequency": X, "user_count": Y}
-                                rawValue.optInt("user_count", 0)
-                            }
-                            else -> 0
-                        }
-                    } catch (e: Exception) {
-                        Log.e("SettingsActivity", "Erreur lecture '$word': ${e.message}")
-                        0
-                    }
-                    
-                    if (userCount > 0) {
-                        totalUsages += userCount
-                        wordUsages.add(Pair(word, userCount))
-                        motsTrouves.add("$word($userCount)")
-                        
-                        // Compter comme "découvert" seulement si utilisé exactement 1 fois
-                        if (userCount == 1) {
-                            wordsDiscovered++
-                            // Ne garder que les mots de 3 lettres ou plus pour l'affichage
-                            if (word.length >= 3) {
-                                discoveredWords.add(word)
-                            }
-                        }
-                    }
+            var totalWords = 0
+            var wordsDiscovered = 0
+            var totalUsages = 0
+            val wordUsages = mutableListOf<Pair<String, Int>>()
+            val discoveredWords = mutableListOf<String>()
+            
+            // Fichier d'usage utilisateur (optionnel)
+            val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
+            val usageData = if (usageFile.exists()) {
+                try {
+                    JSONObject(usageFile.readText())
+                } catch (e: Exception) {
+                    Log.w("SettingsActivity", "Erreur lecture usage file: ${e.message}")
+                    JSONObject()
                 }
-                
-                Log.d("SettingsActivity", "Mots avec usage > 0: ${motsTrouves.joinToString(", ")}")
-                Log.d("SettingsActivity", "Total: $totalWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
-                
-                val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
-                val coverage = if (totalWords > 0) (wordsDiscovered.toFloat() / totalWords * 100) else 0f
-                
-                // Générer les mots à découvrir (utilisations <= 2 et longueur >= 3)
-                val wordsToDiscoverCandidates = jsonObject.keys().asSequence().toList().filter { word ->
-                    val count = jsonObject.optInt(word, 0)
-                    count <= 2 && word.length >= 3
-                }
-                val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
-                
-                return VocabularyStats(
-                    totalWords,
-                    wordsDiscovered,
-                    totalUsages,
-                    topWords,
-                    coverage,
-                    discoveredWords.sorted(),
-                    wordsToDiscoverList
-                )
+            } else {
+                JSONObject()
             }
             
-            // Sinon créer un fichier vide pour la première installation
-            val emptyUsageObject = JSONObject()
-            usageFile.writeText(emptyUsageObject.toString())
+            Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
+            Log.d("SettingsActivity", "📄 Dictionnaire luxembourgeois: ${jsonObject.length()} mots")
             
-            // Retourner des statistiques complètement vides pour une vraie installation propre
-            return VocabularyStats(
-                totalWords = 0,
-                wordsDiscovered = 0,
-                totalUsages = 0,
-                topWords = emptyList(),
-                coveragePercentage = 0f,
-                discoveredWordsList = emptyList(),
-                wordsToDiscover = emptyList()
+            // Parcourir tous les mots du dictionnaire luxembourgeois
+            val keys = jsonObject.keys()
+            while (keys.hasNext()) {
+                val word = keys.next()
+                totalWords++
+                
+                // Vérifier l'usage utilisateur
+                val userCount = usageData.optInt(word, 0)
+                
+                if (userCount > 0) {
+                    totalUsages += userCount
+                    wordUsages.add(Pair(word, userCount))
+                    
+                    // Compter comme "découvert" si utilisé au moins une fois
+                    wordsDiscovered++
+                    if (word.length >= 3) {
+                        discoveredWords.add(word)
+                    }
+                }
+            }
+            
+            Log.d("SettingsActivity", "Stats luxembourgeoises: $totalWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
+            
+            val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
+            val coverage = if (totalWords > 0) (wordsDiscovered.toFloat() / totalWords * 100) else 0f
+            
+            // Générer les mots à découvrir (mots non utilisés avec longueur >= 3)
+            val wordsToDiscoverCandidates = mutableListOf<String>()
+            val dictKeys = jsonObject.keys()
+            while (dictKeys.hasNext()) {
+                val word = dictKeys.next()
+                val userCount = usageData.optInt(word, 0)
+                if (userCount == 0 && word.length >= 3) {
+                    wordsToDiscoverCandidates.add(word)
+                }
+            }
+            
+            val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(10)
+            
+            VocabularyStats(
+                totalWords,
+                wordsDiscovered,
+                totalUsages,
+                topWords,
+                coverage,
+                discoveredWords.sorted(),
+                wordsToDiscoverList
             )
+            
         } catch (e: Exception) {
-            Log.e("SettingsActivity", "Erreur chargement stats: ${e.message}")
+            Log.e("SettingsActivity", "Erreur chargement stats luxembourgeoises: ${e.message}", e)
             VocabularyStats(0, 0, 0, emptyList(), 0f, emptyList(), emptyList())
         }
     }
@@ -1302,7 +1284,7 @@ class SettingsActivity : AppCompatActivity() {
     
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
-            val usageFile = File(filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
             
             val allWords: List<String>
             val usageCount: Int
@@ -1333,7 +1315,7 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 Log.d("SettingsActivity", "Fichier usage n'existe pas, création depuis assets")
                 // Charger depuis les assets
-                val jsonString = assets.open("creole_dict.json").bufferedReader().use { it.readText() }
+                val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
                 val jsonArray = org.json.JSONArray(jsonString)
                 Log.d("SettingsActivity", "Dictionnaire chargé: ${jsonArray.length()} mots")
                 

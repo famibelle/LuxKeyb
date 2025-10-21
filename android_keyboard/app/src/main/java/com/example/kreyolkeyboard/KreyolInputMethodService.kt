@@ -287,24 +287,24 @@ class KreyolInputMethodService : InputMethodService() {
 
     private fun loadDictionary() {
         try {
-            Log.d(TAG, "Chargement du dictionnaire créole...")
-            val inputStream = assets.open("creole_dict.json")
+            Log.d(TAG, "Chargement du dictionnaire luxembourgeois...")
+            val inputStream = assets.open("luxemburgish_dict.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             
-            val jsonArray = JSONArray(jsonString)
+            val jsonObject = org.json.JSONObject(jsonString)
             val tempList = mutableListOf<Pair<String, Int>>()
             
-            for (i in 0 until jsonArray.length()) {
-                val entry = jsonArray.getJSONArray(i)
-                val word = entry.getString(0)
-                val frequency = entry.getInt(1)
+            val keys = jsonObject.keys()
+            while (keys.hasNext()) {
+                val word = keys.next()
+                val frequency = jsonObject.getInt(word)
                 tempList.add(Pair(word, frequency))
             }
             
             dictionary = tempList.sortedByDescending { it.second } // Trier par fréquence
-            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+            Log.d(TAG, "Dictionnaire luxembourgeois chargé: ${dictionary.size} mots")
             
-            // Peupler le dictionnaire personnel Android avec les mots créoles
+            // Peupler le dictionnaire personnel Android avec les mots luxembourgeois
             populatePersonalDictionary()
             
         } catch (e: IOException) {
@@ -315,36 +315,45 @@ class KreyolInputMethodService : InputMethodService() {
     }
     
     private fun loadNgramModel() {
-        Log.d(TAG, "Chargement du modèle N-grams...")
+        Log.d(TAG, "Chargement du modèle N-grams luxembourgeois...")
         try {
-            val inputStream = assets.open("creole_ngrams.json")
+            val inputStream = assets.open("luxemburgish_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
             
             val jsonObject = org.json.JSONObject(jsonString)
-            val predictionsObject = jsonObject.getJSONObject("predictions")
-            
             val tempMap = mutableMapOf<String, List<Map<String, Any>>>()
             
-            val keys = predictionsObject.keys()
+            // Parcourir toutes les entrées du fichier luxembourgeois
+            val keys = jsonObject.keys()
             while (keys.hasNext()) {
-                val key = keys.next()
-                val predictionsArray = predictionsObject.getJSONArray(key)
-                val predictions = mutableListOf<Map<String, Any>>()
+                val phrase = keys.next()
+                val count = jsonObject.getInt(phrase)
                 
-                for (i in 0 until predictionsArray.length()) {
-                    val predictionObj = predictionsArray.getJSONObject(i)
+                // Séparer la phrase en mots pour créer des prédictions
+                val words = phrase.split(" ")
+                if (words.size >= 2) {
+                    // Utiliser tous les mots sauf le dernier comme clé
+                    val key = words.dropLast(1).joinToString(" ")
+                    val nextWord = words.last()
+                    
+                    // Créer ou mettre à jour la liste de prédictions pour cette clé
+                    val existingPredictions = tempMap[key]?.toMutableList() ?: mutableListOf()
+                    
                     val prediction = mapOf(
-                        "word" to predictionObj.getString("word"),
-                        "prob" to predictionObj.getDouble("prob")
+                        "word" to nextWord,
+                        "prob" to count.toDouble() / 1000.0 // Normaliser la probabilité
                     )
-                    predictions.add(prediction)
+                    
+                    existingPredictions.add(prediction)
+                    tempMap[key] = existingPredictions.sortedByDescending { 
+                        (it["prob"] as Double) 
+                    }.take(5) // Garder seulement les 5 meilleures prédictions
                 }
-                tempMap[key] = predictions
             }
             
-            ngramModel = tempMap
-            Log.d(TAG, "Modèle N-grams chargé: ${ngramModel.size} mots avec prédictions")
+            ngramModel = tempMap.toMap()
+            Log.d(TAG, "Modèle N-grams luxembourgeois chargé: ${ngramModel.size} clés avec prédictions")
             
         } catch (e: IOException) {
             Log.e(TAG, "Erreur lors du chargement du modèle N-grams", e)
@@ -1418,7 +1427,7 @@ class KreyolInputMethodService : InputMethodService() {
         try {
             // WRITE_USER_DICTIONARY est protégé pour apps système; nous essayons sans bloquer l'exécution.
             
-            // Utiliser le dictionnaire déjà chargé depuis creole_dict.json
+            // Utiliser le dictionnaire déjà chargé depuis luxemburgish_dict.json
             if (dictionary.isNotEmpty()) {
                 Log.d(TAG, "Ajout de ${dictionary.size} mots créoles au dictionnaire personnel...")
                 
