@@ -162,6 +162,53 @@ mété adrès é-mail a’w isi. Nou ké voyé lyanaj la !
 </form>
 
 
+## Vos retours sont précieux !
+<form action="https://formspree.io/f/meorvlnq" method="POST" style="max-width:500px; margin:2em auto; padding:2em; border:2px solid #667eea; border-radius:12px; background:#f9f9f9;">
+  
+  <div style="text-align:center; margin-bottom:1.5em;">
+    <h2 style="color:#667eea; margin-bottom:0.5em;">⌨️ Klavyé Kréyòl - Feedback</h2>
+    <p style="color:#666;">Partagez votre avis avec nous (anonyme)</p>
+    <div style="display:inline-flex; gap:5px; background:#f0f0f0; border-radius:20px; padding:5px; margin-top:1em;">
+      <button type="button" onclick="switchLang('fr')" id="btnFr" style="padding:8px 16px; border:none; border-radius:15px; background:#667eea; color:white; font-weight:600; cursor:pointer;">FR</button>
+      <button type="button" onclick="switchLang('gcf')" id="btnGcf" style="padding:8px 16px; border:none; border-radius:15px; background:transparent; color:#666; font-weight:600; cursor:pointer;">GCF</button>
+    </div>
+  </div>
+
+  <textarea id="feedbackArea" name="feedback" placeholder="Dites-nous ce que vous pensez de Klavyé Kréyòl..." required
+            style="width:100%; padding:15px; border:2px solid #e0e0e0; border-radius:12px; min-height:150px; font-family:inherit; font-size:15px; resize:vertical;"></textarea>
+  
+  <button type="submit" id="submitBtn"
+          style="width:100%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; border:none; padding:15px; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; margin-top:1em;">
+    Envoyer
+  </button>
+</form>
+
+<script>
+const translations = {
+  fr: {
+    title: '⌨️ Klavyé Kréyòl - Feedback',
+    subtitle: 'Partagez votre avis avec nous (anonyme)',
+    placeholder: 'Dites-nous ce que vous pensez de Klavyé Kréyòl...',
+    submit: 'Envoyer'
+  },
+  gcf: {
+    title: '⌨️ Klavyé Kréyòl - Feedback',
+    subtitle: 'Patajé opinyon\'w épi nou (anonim)',
+    placeholder: 'Rakonté nou sa\'w ka pansé asi Klavyé Kréyòl...',
+    submit: 'Voyé'
+  }
+};
+
+function switchLang(lang) {
+  document.getElementById('feedbackArea').placeholder = translations[lang].placeholder;
+  document.getElementById('submitBtn').textContent = translations[lang].submit;
+  document.getElementById('btnFr').style.background = lang === 'fr' ? '#667eea' : 'transparent';
+  document.getElementById('btnFr').style.color = lang === 'fr' ? 'white' : '#666';
+  document.getElementById('btnGcf').style.background = lang === 'gcf' ? '#667eea' : 'transparent';
+  document.getElementById('btnGcf').style.color = lang === 'gcf' ? 'white' : '#666';
+}
+</script>
+
 ## 🔒 Déclaration de confidentialité
 
 Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
