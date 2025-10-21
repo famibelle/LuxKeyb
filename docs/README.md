@@ -1,84 +1,79 @@
-**📱Klavyé Kréyòl Karukera** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en **Kréyòl Gwaloup** sur leur smartphone, avec fluidité, authenticité et fierté.
+**📱Klaviatur Lëtzebuergesch** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **Lëtzebuergesch** sur leur smartphone, avec fluidité, authenticité et fierté.
 
-
-- 🛠️ Si ton créole est très rouillé...
-- 😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots
-- 🤔 Que tu doutes de l’orthographe à chaque message ...
-- ➡️ Klavyé Kréyòl Karukera est fait pour toi !
+- 🛠️ Si votre luxembourgeois est très rouillé...
+- 😤 Que vous galériez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
+- 🤔 Que vous doutez de l'orthographe à chaque message...
+- ➡️ Klaviatur Lëtzebuergesch est fait pour vous !
 
 ## 📱 Aperçu
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
-   <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier kréyòl Karukera en Action" width="25%">
-   <img src="Screenshots/Screenshot_1760389184.png" alt="Clavier kréyòl Karukera en Action" width="25%">
-   <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier kréyòl Karukera en Action" width="25%">
+  <img src="Screenshots/KlaviaturAnAktion.gif" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1760389184.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
-
 
 ## 🎮 Système de progression et de gamification
 
-**Klavyé Kréyòl Karukera** ne se contente pas de fluidifier l'écriture du Kréyòl : il **suit votre progression** et vous accompagne dans votre maîtrise du kréyòl !
+**Klaviatur Lëtzebuergesch** ne se contente pas de fluidifier l'écriture du Lëtzebuergesch : il **suit votre progression** et vous accompagne dans votre maîtrise du luxembourgeois !
 
 ### 📊 Suivez vos progrès en temps réel
 
-À chaque mot que vous écrivez en kréyòl, l'application :
+À chaque mot que vous écrivez en lëtzebuergesch, l'application :
 - ✅ **Compte les mots découverts** - Votre vocabulaire s'enrichit automatiquement
-- 📈 **Calcule votre niveau** - Du débutant "Ti moun 🌱" au maître "Potomitan 👑"
+- 📈 **Calcule votre niveau** - Du débutant "Klengen 🌱" au maître "Sproochenmeeschter 👑"
 - 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
 
-### 🏆 7 niveaux de maîtrise du kréyòl
+### 🏆 7 niveaux de maîtrise du luxembourgeois
 
 Progressez à travers 7 niveaux qui suivent une distribution gaussienne (la plupart des utilisateurs se situent dans les niveaux intermédiaires) :
 
 | Niveau | Badge | Nom | Signification |
 |--------|-------|-----|---------------|
-| 1 | 🌍 | **Pipirit** | Débutant absolu - Premiers pas |
-| 2 | 🌱 | **Ti moun** | Débutant - Tu commences ton apprentissage |
-| 3 | 🔥 | **Débrouya** | Tu te débrouilles bien ! |
-| 4 | 💎 | **An mitan** | Tu es au milieu du chemin |
-| 5 | 🐇 | **Kompè Lapen** | Tu as de bonnes connaissances |
-| 6 | 🐘 | **Kompè Zamba** | Tu maîtrises le kréyòl ! |
-| 7 | 👑 | **Potomitan** | Expert - Tu es un pilier du kréyòl !|
+| 1 | 🌍 | **Ufänker** | Débutant absolu - Premiers pas |
+| 2 | 🌱 | **Klengen** | Débutant - Vous commencez votre apprentissage |
+| 3 | 🔥 | **Fléisseg** | Vous vous débrouillez bien ! |
+| 4 | 💎 | **Mëttel** | Vous êtes au milieu du chemin |
+| 5 | 🐇 | **Geschéit** | Vous avez de bonnes connaissances |
+| 6 | 🐘 | **Sproochenkënner** | Vous maîtrisez le luxembourgeois ! |
+| 7 | 👑 | **Sproochenmeeschter** | Expert - Vous êtes un maître du luxembourgeois ! |
 
 ### 💡 Visualisez votre apprentissage
 
-Dans l'onglet **"Kréyòl an mwen"** 📊, vous pouvez :
+Dans l'onglet **"Mäin Lëtzebuergesch"** 📊, vous pouvez :
 - 🔍 **Voir tous les mots découverts** - Avec leur orthographe correcte en vert
 - 🌟 **Découvrir les mots à apprendre** - Les mots du dictionnaire que vous n'avez pas encore utilisés
 - 📈 **Suivre votre progression** - Un message vous indique combien de mots il reste pour passer au niveau suivant
-- 🎯 **Vous motiver** - "Votre niveau actuel est Débrouya, plus que 125 mots restants à découvrir pour passer au niveau suivant (An mitan)"
+- 🎯 **Vous motiver** - "Votre niveau actuel est Fléisseg, plus que 125 mots restants à découvrir pour passer au niveau suivant (Mëttel)"
 
 ### 🔄 Actualisation en temps réel
 
 Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statistiques pour mettre à jour vos progrès instantanément !
 
-
 ## Télécharger
 
 ### 🚀 **Dernière Version Stable**
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/KreyolKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases/latest)
-[![GitHub all releases](https://img.shields.io/github/downloads/famibelle/KreyolKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/KreyolKeyb/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/LuxKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases/latest)
+[![GitHub all releases](https://img.shields.io/github/downloads/famibelle/LuxKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases)
 
 ### 📱 **Installation Rapide**
 
-
-📥[Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases)
+📥[Télécharger directement](https://github.com/famibelle/LuxKeyb/releases)
 
 > ⚠️ **Note :** Ce lien de téléchargement direct vous permet d'accéder aux toutes dernières fonctionnalités développées, avant même leur publication officielle sur le Google Play Store.
 
 <div align="center">
-   <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://github.com/famibelle/KreyolKeyb/releases" alt="QR Code pour télécharger KreyolKeyb" width="300">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://github.com/famibelle/LuxKeyb/releases" alt="QR Code pour télécharger LuxKeyb" width="300">
 </div>
-
 
 ## 📲 Comment installer l'application
 
 ### Étape 1️⃣ : Télécharger l'application
 
-1. **Cliquez sur le lien** [Télécharger directement](https://github.com/famibelle/KreyolKeyb/releases) ou scannez le QR code
+1. **Cliquez sur le lien** [Télécharger directement](https://github.com/famibelle/LuxKeyb/releases) ou scannez le QR code
 2. **Choisissez la dernière version** (la première dans la liste)
-3. **Téléchargez le fichier APK** (son nom ressemble à `Potomitan_Kreyol_Keyboard_vX.X.X_release.apk`)
+3. **Téléchargez le fichier APK** (son nom ressemble à `Luxembourgish_Keyboard_vX.X.X_release.apk`)
 4. Le fichier se télécharge automatiquement dans votre dossier **"Téléchargements"**
 
 > 💡 **Astuce :** Vous verrez peut-être un message "Ce type de fichier peut endommager votre appareil". C'est normal ! Cliquez sur **"Télécharger quand même"** ou **"OK"**.
@@ -111,13 +106,13 @@ Avant d'installer l'application, votre téléphone doit vous autoriser à instal
 2. Attendez quelques secondes (une barre de progression apparaît)
 3. Quand c'est terminé, appuyez sur **"Ouvrir"**
 
-#### ⚙️ **Activer le clavier Kréyòl**
+#### ⚙️ **Activer le clavier Luxembourgeois**
 
 L'application s'ouvre automatiquement et vous guide :
 
 1. **Appuyez sur le bouton** *"🔧 Activer le clavier dans les paramètres"*
 2. Une nouvelle page s'ouvre avec la liste des claviers
-3. **Trouvez "Klavyé Kréyòl Karukera"** dans la liste
+3. **Trouvez "Klaviatur Lëtzebuergesch"** dans la liste
 4. **Activez le bouton** à côté (il devient bleu ou vert)
 5. Un message de sécurité apparaît → Lisez-le et appuyez sur **"OK"**
 
