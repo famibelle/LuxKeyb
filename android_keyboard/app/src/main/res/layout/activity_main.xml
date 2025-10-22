@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Klavyé Kréyòl"
+        android:text="Lëtzebuergesch Clavier"
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -25,14 +25,14 @@
         android:id="@+id/test_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tapez ici pour tester le clavier Kreyòl..."
+        android:hint="Tapez ici pour tester le clavier Luxembourgeois..."
         android:inputType="text"
         android:layout_marginBottom="16dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Instructions :\n1. Allez dans Paramètres > Langue et saisie\n2. Sélectionnez Klavyé Kréyòl\n3. Activez-le comme méthode de saisie"
+        android:text="Instructions :\n1. Allez dans Paramètres > Langue et saisie\n2. Sélectionnez Lëtzebuergesch Clavier\n3. Activez-le comme méthode de saisie"
         android:textSize="14sp" />
 
 </LinearLayout>

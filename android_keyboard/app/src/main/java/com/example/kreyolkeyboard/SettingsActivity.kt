@@ -214,7 +214,7 @@ class SettingsActivity : AppCompatActivity() {
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
         
-        Log.d("SettingsActivity", "Création de l'activité principale Kréyòl Karukera")
+        Log.d("SettingsActivity", "Création de l'activité principale Lëtzebuergesch")
         
         // Layout principal vertical : Titre, Tabs en haut, puis ViewPager
         val mainLayout = LinearLayout(this).apply {
@@ -231,7 +231,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val appTitle = TextView(this).apply {
-            text = "Klavyé Kréyòl"
+            text = "Lëtzebuergesch Clavier"
             textSize = 22f
             setTextColor(Color.parseColor("#F8F8FF"))
             setTypeface(null, Typeface.BOLD)
@@ -330,7 +330,7 @@ class SettingsActivity : AppCompatActivity() {
             Log.d("SettingsActivity", "Onglet Accueil créé et ajouté")
             
             // Tab Statistiques  
-            val statsTab = createTab(1, "📊", "Kréyòl an mwen")
+            val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
@@ -438,7 +438,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Tabs
         tabContainer.addView(createTab(0, "🏠", "Accueil"))
-        tabContainer.addView(createTab(1, "📊", "Mon Kreyòl"))
+        tabContainer.addView(createTab(1, "📊", "Mäi Lëtzebuergesch"))
         
         // Ligne de séparation en bas
         val separator = View(this).apply {
@@ -495,11 +495,11 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kréyòl Guadeloupéen (Karukera). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
-                    "💡 Suggestions de mots en Kréyòl\n" +
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Lëtzebuergesch (Luxembourg). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
+                    "💡 Suggestions de mots en Lëtzebuergesch\n" +
                     "🔢 Mode numérique intégré\n" +
-                    "🌈 Design aux couleurs de la Guadeloupe\n" +
-                    "🪘Identité guadeloupéenne forte"
+                    "🌈 Design aux couleurs du Luxembourg\n" +
+                    "🪘Identité luxembourgeoise forte"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.2f)
@@ -525,7 +525,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val installSteps = TextView(this).apply {
             text = "1️⃣ Appuyez sur 'Activer le clavier' ci-dessous\n" +
-                    "2️⃣ Dans les paramètres, activez 'Klavyé Kréyòl Karukera'\n" +
+                    "2️⃣ Dans les paramètres, activez 'Lëtzebuergesch Clavier'\n" +
                     "3️⃣ Revenez ici et testez le clavier\n" +
                     "4️⃣ Changez de clavier en appuyant sur l'icône clavier dans la barre de notifications"
             textSize = 15f
@@ -564,7 +564,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val testDescription = TextView(this).apply {
-            text = "Tapez dans le champ ci-dessous pour tester le clavier Kréyòl :"
+            text = "Tapez dans le champ ci-dessous pour tester le clavier Lëtzebuergesch :"
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             gravity = Gravity.CENTER
@@ -572,7 +572,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val testEditText = EditText(this).apply {
-            hint = "Ékri an Kréyòl la... (Écrivez en créole...)"
+            hint = "Schreift op Lëtzebuergesch... (Écrivez en luxembourgeois...)"
             textSize = 16f
             setPadding(16, 16, 16, 16)
             minHeight = 120
@@ -588,7 +588,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val switchButton = Button(this).apply {
-            text = "🔄 Basculer vers Klavyé Kréyòl"
+            text = "🔄 Basculer vers Lëtzebuergesch Clavier"
             textSize = 14f
             setBackgroundColor(Color.parseColor("#228B22"))
             setTextColor(Color.parseColor("#F8F8FF"))
@@ -607,7 +607,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val sourcesTitle = TextView(this).apply {
-            text = "📚 Sources littéraires créoles"
+            text = "📚 Sources littéraires luxembourgeoises"
             textSize = 18f
             setTextColor(Color.parseColor("#228B22"))
             setTypeface(null, Typeface.BOLD)
@@ -615,9 +615,9 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots en Kréyòl sont construites sur les travaux des défenseurs du Kréyòl :\n\n" +
-                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, Esnard Boisdur, Pierre Édouard Décimus,\n\n" +
-                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
+            text = "Les suggestions de mots en Lëtzebuergesch sont construites sur les travaux des défenseurs du Luxembourgeois :\n\n" +
+                    "✍️ Auteurs et linguistes luxembourgeois de référence,\n\n" +
+                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre langue luxembourgeoise."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -634,10 +634,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val footerText = TextView(this).apply {
-            text = "🏝️ Fait avec ❤️ pour la Guadeloupe\n" +
-                    "Préservons notre langue créole pour les générations futures !\n\n" +
-                    "© Potomitan™ - Clavier Kréyòl Karukera\n" +
-                    "Design aux couleurs authentiques de nos îles"
+            text = "�🇺 Fait avec ❤️ pour le Luxembourg\n" +
+                    "Préservons notre langue luxembourgeoise pour les générations futures !\n\n" +
+                    "© LuxKeyb™ - Clavier Lëtzebuergesch\n" +
+                    "Design aux couleurs du Luxembourg"
             textSize = 12f
             setTextColor(Color.parseColor("#666666"))
             gravity = Gravity.CENTER
@@ -743,7 +743,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val percentageLabel = TextView(this).apply {
-            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire Kréyòl"
+            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire Lëtzebuergesch"
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
@@ -1203,27 +1203,27 @@ class SettingsActivity : AppCompatActivity() {
     
     private fun getCurrentLevel(wordsDiscovered: Int): String {
         return when {
-            wordsDiscovered >= 2830 -> "🧙🏿‍♀️ Benzo"          // 2830-2833 (niveau secret - tous les mots!)
-            wordsDiscovered >= 2200 -> "👑 Potomitan"          // 2200-2829 (22% supérieur - expert)
-            wordsDiscovered >= 1650 -> "🐘 Kompè Zamba"        // 1650-2199 (19% supérieur)
-            wordsDiscovered >= 1100 -> "🐇 Kompè Lapen"        // 1100-1649 (19% centre haut)
-            wordsDiscovered >= 650 -> "💎 An mitan"            // 650-1099 (16% centre - pic gaussien)
-            wordsDiscovered >= 300 -> "🔥 Débrouya"            // 300-649 (12% centre bas)
-            wordsDiscovered >= 50 -> "🌱 Ti moun"              // 50-299 (9% inférieur)
-            else -> "🌍 Pipirit"                                // 0-49 (3% débutant absolu)
+            wordsDiscovered >= 2830 -> "🧙‍♀️ Meeschter"         // 2830-2833 (niveau secret - tous les mots!)
+            wordsDiscovered >= 2200 -> "👑 Expert"              // 2200-2829 (22% supérieur - expert)
+            wordsDiscovered >= 1650 -> "🦅 Aquila"              // 1650-2199 (19% supérieur)
+            wordsDiscovered >= 1100 -> "🦌 Hirsch"              // 1100-1649 (19% centre haut)
+            wordsDiscovered >= 650 -> "💎 Mëttel"               // 650-1099 (16% centre - pic gaussien)
+            wordsDiscovered >= 300 -> "🔥 Fortgeschratt"        // 300-649 (12% centre bas)
+            wordsDiscovered >= 50 -> "🌱 Ufänker"               // 50-299 (9% inférieur)
+            else -> "🌍 Novice"                                  // 0-49 (3% débutant absolu)
         }
     }
     
     private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
         return when {
-            wordsDiscovered >= 2830 -> Pair("Benzo", 0) // Niveau maximum absolu atteint!
-            wordsDiscovered >= 2200 -> Pair("Benzo", 2830 - wordsDiscovered)
-            wordsDiscovered >= 1650 -> Pair("Potomitan", 2200 - wordsDiscovered)
-            wordsDiscovered >= 1100 -> Pair("Kompè Zamba", 1650 - wordsDiscovered)
-            wordsDiscovered >= 650 -> Pair("Kompè Lapen", 1100 - wordsDiscovered)
-            wordsDiscovered >= 300 -> Pair("An mitan", 650 - wordsDiscovered)
-            wordsDiscovered >= 50 -> Pair("Débrouya", 300 - wordsDiscovered)
-            else -> Pair("Ti moun", 50 - wordsDiscovered)
+            wordsDiscovered >= 2830 -> Pair("Meeschter", 0) // Niveau maximum absolu atteint!
+            wordsDiscovered >= 2200 -> Pair("Meeschter", 2830 - wordsDiscovered)
+            wordsDiscovered >= 1650 -> Pair("Expert", 2200 - wordsDiscovered)
+            wordsDiscovered >= 1100 -> Pair("Aquila", 1650 - wordsDiscovered)
+            wordsDiscovered >= 650 -> Pair("Hirsch", 1100 - wordsDiscovered)
+            wordsDiscovered >= 300 -> Pair("Mëttel", 650 - wordsDiscovered)
+            wordsDiscovered >= 50 -> Pair("Fortgeschratt", 300 - wordsDiscovered)
+            else -> Pair("Ufänker", 50 - wordsDiscovered)
         }
     }
     

@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.potomitan.kreyolkeyboard"
+        applicationId "com.example.kreyolkeyboard"
         minSdk = 21
         targetSdk = 35
         versionCode = 60108
@@ -108,7 +108,7 @@ android {
             def versionName = variant.versionName
             def buildType = variant.buildType.name
             def date = new Date().format('yyyy-MM-dd')
-            outputFileName = "Potomitan_Kreyol_Keyboard_v${versionName}_${buildType}_${date}.apk"
+            outputFileName = "Letzebuergesch_Clavier_v${versionName}_${buildType}_${date}.apk"
         }
     }
 

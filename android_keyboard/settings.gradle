@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Kreyol Keyboard"
+rootProject.name = "Letzebuergesch Clavier"
 include ':app'
