@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Klavyé Kréyòl</string>
-    <string name="app_name_full">Klavyé Kréyòl Karukera • Potomitan™</string>
-    <string name="keyboard_name">Klavyé Kréyòl Karukera Potomitan™</string>
-    <string name="keyboard_description">Clavier créole pour la Guadeloupe avec suggestions de mots et accents • Potomitan™</string>
-    <string name="settings_title">Paramètres Klavyé Kréyòl • Potomitan™</string>
-    <string name="spell_checker_name">Correcteur Kreyòl Karukera</string>
-    <string name="spellchecker_name">Correcteur Kreyòl Karukera • Potomitan™</string>
-    <string name="subtype_kreyol">Klavyé Kréyòl Karukera Potomitan™</string>
-    <string name="subtype_kreyol_description">Kréyòl Gwadloup</string>
+    <string name="app_name">Lëtzebuergesch Clavier</string>
+    <string name="app_name_full">Lëtzebuergesch Clavier • Luxembourg</string>
+    <string name="keyboard_name">Lëtzebuergesch Clavier Luxembourg</string>
+    <string name="keyboard_description">Clavier luxembourgeois avec suggestions de mots et accents</string>
+    <string name="settings_title">Paramètres Lëtzebuergesch Clavier</string>
+    <string name="spell_checker_name">Correcteur Lëtzebuergesch</string>
+    <string name="spellchecker_name">Correcteur Lëtzebuergesch • Luxembourg</string>
+    <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxembourg</string>
+    <string name="subtype_kreyol_description">Lëtzebuergesch</string>
 </resources>
