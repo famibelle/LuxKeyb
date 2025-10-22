@@ -39,7 +39,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     InputProcessor.InputProcessorListener {
     
     companion object {
-        private const val TAG = "KreyolIME-Potomitan™"
+        private const val TAG = "LuxemburgIME"
         private const val MAX_SUGGESTIONS = 3  // 🔧 Retour à 3 suggestions (couleurs d'origine)
         
         // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
