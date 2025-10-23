@@ -495,9 +495,9 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Lëtzebuergesch (Luxembourg). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le "Lëtzebuergesch". Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
                     "💡 Suggestions de mots en Lëtzebuergesch\n" +
-                    "🔢 Mode numérique intégré\n" +
+                    "🔡 Diacritiques intégrés dans le clavier\n" +
                     "🇱🇺 Design aux couleurs du Luxembourg\n"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
@@ -616,7 +616,7 @@ class SettingsActivity : AppCompatActivity() {
         val sourcesText = TextView(this).apply {
             text = "Les suggestions de mots en Lëtzebuergesch sont construites sur les travaux des défenseurs du Luxembourgeois :\n\n" +
                     "✍️ Auteurs et linguistes luxembourgeois de référence,\n\n" +
-                    "Grâce à leur riche contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre langue luxembourgeoise."
+                    "Les transcriptions des conférences de presse du sip.gouvernement.lu"
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
