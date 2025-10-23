@@ -438,7 +438,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Tabs
         tabContainer.addView(createTab(0, "🏠", "Accueil"))
-        tabContainer.addView(createTab(1, "📊", "Mäi Lëtzebuergesch"))
+        tabContainer.addView(createTab(1, "🇱🇺", "Mäi Lëtzebuergesch"))
         
         // Ligne de séparation en bas
         val separator = View(this).apply {
@@ -498,8 +498,7 @@ class SettingsActivity : AppCompatActivity() {
             text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Lëtzebuergesch (Luxembourg). Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
                     "💡 Suggestions de mots en Lëtzebuergesch\n" +
                     "🔢 Mode numérique intégré\n" +
-                    "🌈 Design aux couleurs du Luxembourg\n" +
-                    "🪘Identité luxembourgeoise forte"
+                    "🇱🇺 Design aux couleurs du Luxembourg\n"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.2f)
@@ -634,7 +633,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val footerText = TextView(this).apply {
-            text = "�🇺 Fait avec ❤️ pour le Luxembourg\n" +
+            text = "Fait au Luxembourg avec au ❤️\n" +
                     "Préservons notre langue luxembourgeoise pour les générations futures !\n\n" +
                     "© LuxKeyb™ - Clavier Lëtzebuergesch\n" +
                     "Design aux couleurs du Luxembourg"
@@ -698,7 +697,7 @@ class SettingsActivity : AppCompatActivity() {
         // Message de progression vers le niveau suivant
         val progressMessage = TextView(this).apply {
             text = if (wordsRemaining > 0) {
-                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant ($nextLevelName)"
+                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant $nextLevelName"
             } else {
                 "Vous avez atteint le niveau maximum : $levelName ! 👑"
             }
@@ -920,7 +919,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // === Mots à Découvrir ===
         val wordsToDiscoverContainer = createWordListSection(
-            "🌟 Mots à Découvrir (${stats.wordsToDiscover.size})",
+            "🌟 Mots à découvrir",
             stats.wordsToDiscover,
             "#2196F3"
         )
@@ -1201,31 +1200,86 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    // Classe pour stocker les seuils calculés dynamiquement
+    data class GaussianLevels(
+        val level1: Int, // Novice
+        val level2: Int, // Ufänker
+        val level3: Int, // Fortgeschratt
+        val level4: Int, // Mëttel
+        val level5: Int, // Hirsch
+        val level6: Int, // Aquila
+        val level7: Int, // Expert
+        val levelMax: Int // Meeschter (tous les mots)
+    )
+    
+    // Calcul dynamique des seuils basés sur une distribution gaussienne adaptée
+    // Plus de niveaux dans la partie basse pour une progression motivante pour les débutants
+    private fun calculateGaussianLevels(): GaussianLevels {
+        return try {
+            // Charger le dictionnaire pour compter le nombre de mots
+            val inputStream = assets.open("luxemburgish_dict.json")
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val jsonObject = JSONObject(jsonString)
+            val totalWords = jsonObject.length()
+            
+            // Calculs gaussiens
+            val mean = totalWords / 2.0  // Moyenne μ
+            val sigma = totalWords / 6.0  // Écart-type σ (pour couvrir ±3σ = 99.7%)
+            
+            // Distribution gaussienne adaptée pour une progression plus motivante
+            // Les niveaux bas ont des paliers plus rapprochés pour encourager les débutants
+            val level1 = 50  // Noviz: 0-50 mots (~1.5% - vraiment débutant)
+            val level2 = (mean - 2.5 * sigma).toInt().coerceAtLeast(level1)  // Ufänker: ~270 mots (~8%)
+            val level3 = (mean - 1.5 * sigma).toInt().coerceAtLeast(level2)  // Fortgeschratt: ~810 mots (~17%)
+            val level4 = (mean - 0.7 * sigma).toInt().coerceAtLeast(level3)  // Mëttel bas: ~1240 mots (~13%)
+            val level5 = (mean + 1.3 * sigma).toInt().coerceAtMost(totalWords)  // Hirsch: ~2320 mots (~33% - pic central élargi)
+            val level6 = (mean + 2.5 * sigma).toInt().coerceAtMost(totalWords)  // Aquila: ~2970 mots (~17%)
+            val level7 = (totalWords - 1).coerceAtMost(totalWords)  // Expert: 3238 mots (~8%)
+            val levelMax = totalWords  // Meeschter: 3239 mots (perfection absolue!)
+            
+            Log.d("SettingsActivity", "📊 Calcul gaussien adapté: Total=$totalWords, μ=$mean, σ=$sigma")
+            Log.d("SettingsActivity", "📊 Seuils motivants: L1=$level1, L2=$level2, L3=$level3, L4=$level4, L5=$level5, L6=$level6, L7=$level7, Max=$levelMax")
+            
+            GaussianLevels(level1, level2, level3, level4, level5, level6, level7, levelMax)
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur calcul gaussien: ${e.message}", e)
+            // Valeurs par défaut en cas d'erreur (distribution motivante)
+            GaussianLevels(50, 270, 810, 1240, 2320, 2970, 3238, 3239)
+        }
+    }
+    
     private fun getCurrentLevel(wordsDiscovered: Int): String {
+        val levels = calculateGaussianLevels()
+        
         return when {
-            wordsDiscovered >= 2830 -> "🧙‍♀️ Meeschter"         // 2830-2833 (niveau secret - tous les mots!)
-            wordsDiscovered >= 2200 -> "👑 Expert"              // 2200-2829 (22% supérieur - expert)
-            wordsDiscovered >= 1650 -> "🦅 Aquila"              // 1650-2199 (19% supérieur)
-            wordsDiscovered >= 1100 -> "🦌 Hirsch"              // 1100-1649 (19% centre haut)
-            wordsDiscovered >= 650 -> "💎 Mëttel"               // 650-1099 (16% centre - pic gaussien)
-            wordsDiscovered >= 300 -> "🔥 Fortgeschratt"        // 300-649 (12% centre bas)
-            wordsDiscovered >= 50 -> "🌱 Ufänker"               // 50-299 (9% inférieur)
-            else -> "🌍 Novice"                                  // 0-49 (3% débutant absolu)
+            wordsDiscovered >= levels.levelMax -> "🧙‍♀️ Meeschter"  // Tous les mots!
+            wordsDiscovered >= levels.level7 -> "👑 Expert"          // ~0.13% - très rare
+            wordsDiscovered >= levels.level6 -> "🦅 Aquila"          // ~2.14%
+            wordsDiscovered >= levels.level5 -> "🦌 Hirsch"          // ~13.59%
+            wordsDiscovered >= levels.level4 -> "💎 Mëttel"          // ~34.13% - pic central
+            wordsDiscovered >= levels.level3 -> "🔥 Fortgeschratt"   // ~34.13%
+            wordsDiscovered >= levels.level2 -> "🌱 Ufänker"         // ~13.59%
+            wordsDiscovered >= levels.level1 -> "🐣 Noviz"          // ~2.14%
+            else -> "🐣 Noviz"                                       // débutant absolu
         }
     }
     
     private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
+        val levels = calculateGaussianLevels()
+        
         return when {
-            wordsDiscovered >= 2830 -> Pair("Meeschter", 0) // Niveau maximum absolu atteint!
-            wordsDiscovered >= 2200 -> Pair("Meeschter", 2830 - wordsDiscovered)
-            wordsDiscovered >= 1650 -> Pair("Expert", 2200 - wordsDiscovered)
-            wordsDiscovered >= 1100 -> Pair("Aquila", 1650 - wordsDiscovered)
-            wordsDiscovered >= 650 -> Pair("Hirsch", 1100 - wordsDiscovered)
-            wordsDiscovered >= 300 -> Pair("Mëttel", 650 - wordsDiscovered)
-            wordsDiscovered >= 50 -> Pair("Fortgeschratt", 300 - wordsDiscovered)
-            else -> Pair("Ufänker", 50 - wordsDiscovered)
+            wordsDiscovered >= levels.levelMax -> Pair("Meeschter", 0) // Niveau maximum atteint!
+            wordsDiscovered >= levels.level7 -> Pair("Meeschter", levels.levelMax - wordsDiscovered)
+            wordsDiscovered >= levels.level6 -> Pair("Expert", levels.level7 - wordsDiscovered)
+            wordsDiscovered >= levels.level5 -> Pair("Aquila", levels.level6 - wordsDiscovered)
+            wordsDiscovered >= levels.level4 -> Pair("Hirsch", levels.level5 - wordsDiscovered)
+            wordsDiscovered >= levels.level3 -> Pair("Mëttel", levels.level4 - wordsDiscovered)
+            wordsDiscovered >= levels.level2 -> Pair("Fortgeschratt", levels.level3 - wordsDiscovered)
+            wordsDiscovered >= levels.level1 -> Pair("Ufänker", levels.level2 - wordsDiscovered)
+            else -> Pair("Ufänker", levels.level1 - wordsDiscovered)  // FIX: Si < level1, le prochain niveau est Ufänker!
         }
     }
+
     
     // Adapter pour ViewPager2
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
