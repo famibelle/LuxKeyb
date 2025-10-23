@@ -162,3 +162,6 @@ convert_logo.py
 Dictionnaires/analyse_diacritiques.py
 android_keyboard/KEYSTORE_GUIDE.md
 android_keyboard/GITHUB_SECRETS_SETUP.md
+android_keyboard/CREDENTIALS_SETUP.md
+android_keyboard/gradle.properties
+android_keyboard/gradle.properties
