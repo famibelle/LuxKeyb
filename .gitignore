@@ -17,6 +17,8 @@ android_keyboard/*.iml
 *.keystore
 key.properties
 local-release.properties
+gradle.properties.local
+keystore-base64.txt
 
 # Fichiers temporaires
 *.tmp
@@ -147,3 +149,22 @@ android_keyboard/screenshot_tabs_fixed.png
 android_keyboard/screenshot_tabs_v3.png
 screenshot_keyboard_name.png
 screenshot_final.png
+Dictionnaires/cache_hf/
+RAPPORT_INTEGRATION_LUXEMBOURG.md
+android_keyboard/app/src/main/java/com/example/kreyolkeyboard/AccentTolerantMatchingTest.kt.old
+android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KreyolInputMethodService.kt.old
+android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KreyolInputMethodServiceRefactored.kt.old
+android_keyboard/app/src/main/java/com/example/kreyolkeyboard/SuggestionEngine.kt.old
+Dictionnaires/create_luxemburgish_fallback.py
+Dictionnaires/diagnostic_dataset.py
+Dictionnaires/README_Luxemburgish.md
+android_keyboard/app/src/main/assets/README_LUXEMBOURG.md
+resize_logo.py
+convert_logo.py
+Dictionnaires/analyse_diacritiques.py
+android_keyboard/KEYSTORE_GUIDE.md
+android_keyboard/gradle.properties
+android_keyboard/gradle.properties
+android_keyboard/gradle.properties
+android_keyboard/GITHUB_SECRETS_SETUP.md
+android_keyboard/gradle.properties
