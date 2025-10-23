@@ -54,7 +54,7 @@ class KeyboardLayoutManager(private val context: Context) {
     // Callbacks pour l'interaction avec les touches
     interface KeyboardInteractionListener {
         fun onKeyPress(key: String)
-        fun onLongPress(key: String, button: TextView, isCapitalMode: Boolean)
+        fun onLongPress(key: String, button: View, isCapitalMode: Boolean)
         fun onKeyRelease()
     }
     
@@ -316,7 +316,7 @@ class KeyboardLayoutManager(private val context: Context) {
             setupSpaceLongPress(view, key)
         } else {
             view.setOnLongClickListener { 
-                interactionListener?.onLongPress(key, view as TextView, isCapitalMode)
+                interactionListener?.onLongPress(key, view, isCapitalMode)
                 true
             }
             // Animation tactile pour les touches autres que la barre d'espace
@@ -347,7 +347,7 @@ class KeyboardLayoutManager(private val context: Context) {
                     spaceLongPressRunnable = Runnable {
                         isSpaceLongPressTriggered = true
                         Log.d(TAG, "⏱️ Appui long 1s détecté sur barre d'espace")
-                        interactionListener?.onLongPress(key, view as TextView, isCapitalMode)
+                        interactionListener?.onLongPress(key, view, isCapitalMode)
                     }
                     spaceLongPressHandler.postDelayed(spaceLongPressRunnable!!, SPACE_LONG_PRESS_DELAY)
                     

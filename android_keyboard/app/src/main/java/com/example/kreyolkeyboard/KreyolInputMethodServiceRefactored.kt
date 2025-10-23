@@ -343,7 +343,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "=== FIN TRAITEMENT TOUCHE ===")
     }
     
-    override fun onLongPress(key: String, button: TextView, isCapitalMode: Boolean) {
+    override fun onLongPress(key: String, button: View, isCapitalMode: Boolean) {
         Log.d(TAG, "🔗 Appui long sur: $key (capitalMode: $isCapitalMode)")
         
         when (key) {
@@ -363,7 +363,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             }
             else -> {
                 // Gestion des accents pour les autres touches
-                if (accentHandler.hasAccents(key)) {
+                if (accentHandler.hasAccents(key) && button is TextView) {
                     accentHandler.startLongPressTimer(key, button, isCapitalMode)
                 }
             }

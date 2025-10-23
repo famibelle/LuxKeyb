@@ -495,7 +495,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le "Lëtzebuergesch". Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Lëtzebuergesch. Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
                     "💡 Suggestions de mots en Lëtzebuergesch\n" +
                     "🔡 Diacritiques intégrés dans le clavier\n" +
                     "🇱🇺 Design aux couleurs du Luxembourg\n"
