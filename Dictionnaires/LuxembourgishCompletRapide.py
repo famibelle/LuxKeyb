@@ -26,7 +26,6 @@ import re
 import time
 from datetime import datetime
 from collections import Counter, defaultdict
-from dotenv import load_dotenv
 
 # Gestion des dépendances optionnelles
 try:
@@ -36,6 +35,14 @@ try:
 except ImportError:
     HAS_DATASETS = False
     print("❌ Bibliothèque 'datasets' non disponible - mode fallback uniquement")
+
+try:
+    from dotenv import load_dotenv
+    HAS_DOTENV = True
+except ImportError:
+    HAS_DOTENV = False
+    def load_dotenv():
+        pass
 
 class LuxembourgishKeyboardPipelineRapide:
     """
@@ -135,29 +142,44 @@ class LuxembourgishKeyboardPipelineRapide:
             print("\n🔄 FALLBACK LOCAL RAPIDE")
             print("-" * 40)
             
-            # Données d'exemple luxembourgeoises pour garantir un fonctionnement
-            transcriptions_fallback = [
-                "D'Regierung huet elo eng wichteg Decisioun geholl fir d'Zukunft vum Land.",
-                "Mir wëllen all Efforte maachen fir de Lëtzebuerger Bierger ze hëllefen.",
-                "D'Educatioun ass eng vun eisen Prioritéiten fir déi nächst Joeren.",
-                "D'Wirtschaft muss sech adaptéieren un déi nei Realitéiten.",
-                "Mir sinn houfreg op eist Land an op eis Sprooch.",
-                "D'Digitalisatioun spillt eng ëmmer méi wichteg Roll an eisem Liewen.",
-                "D'Gesondheetsversuergung muss fir jiddereen zougänglech sinn.",
-                "D'Ëmwelt ze schützen ass eng gemeinsam Verantwortung.",
-                "D'Junioun tëschent de verschiddenen Culturen ass eist Stärkten.",
-                "D'Zukunft vum Lëtzebuerg läit an den Hänn vun eis aller."
-            ]
+            # Charger l'hymne luxembourgeois "Ons Heemecht" comme fallback principal
+            hymne_path = "Ons_Heemecht.txt"
+            transcriptions_fallback = []
             
+            try:
+                if os.path.exists(hymne_path):
+                    print(f"🇱🇺 Chargement de l'hymne national: {hymne_path}")
+                    with open(hymne_path, 'r', encoding='utf-8') as f:
+                        hymne_content = f.read().strip()
+                    
+                    # Diviser l'hymne en lignes pour créer des transcriptions
+                    lignes = [ligne.strip() for ligne in hymne_content.split('\n') if ligne.strip() and not ligne.strip() == "Ons Heemecht"]
+                    
+                    for i, ligne in enumerate(lignes):
+                        if len(ligne) > 10:  # Ignorer les lignes trop courtes
+                            transcriptions_fallback.append(ligne)
+                    
+                    print(f"✅ Hymne chargé: {len(transcriptions_fallback)} lignes extraites")
+                    print("🎵 Échantillon de l'hymne:")
+                    for i, ligne in enumerate(transcriptions_fallback[:3]):
+                        print(f"   {i+1}: '{ligne}'")
+                else:
+                    print(f"⚠️ Fichier hymne non trouvé: {hymne_path}")
+            except Exception as e:
+                print(f"❌ Erreur lecture hymne: {e}")
+            
+           
             self.textes_luxembourgeois = []
             for i, transcription in enumerate(transcriptions_fallback):
+                source = "Ons Heemecht (Hymne national)"
                 self.textes_luxembourgeois.append({
                     "Texte": transcription,
-                    "Source": "Fallback local luxembourgeois",
+                    "Source": source,
                     "index": i
                 })
             
             print(f"✅ Fallback activé: {len(self.textes_luxembourgeois)} transcriptions")
+            print(f"   🇱🇺 Hymne national: {len(transcriptions_fallback)} lignes")
             textes_charges = True
         
         if textes_charges:
@@ -339,7 +361,11 @@ def main():
     """Fonction principale d'exécution."""
     
     # Configuration de l'environnement
-    load_dotenv()
+    if HAS_DOTENV:
+        load_dotenv()
+        print("🔧 Configuration dotenv chargée")
+    else:
+        print("⚠️ Module dotenv non disponible - configuration simple")
     
     print("🔧 INITIALISATION")
     print("-" * 30)
