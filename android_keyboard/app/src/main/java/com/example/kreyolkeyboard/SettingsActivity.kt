@@ -462,22 +462,6 @@ class SettingsActivity : AppCompatActivity() {
             setBackgroundColor(Color.parseColor("#F5F5F5"))
         }
         
-        // En-tête compact avec logo uniquement
-        val headerLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setPadding(16, 24, 16, 24)
-            setBackgroundColor(Color.parseColor("#0080FF"))
-        }
-        
-        val logoImage = ImageView(this).apply {
-            setImageResource(R.drawable.logo_potomitan)
-            layoutParams = LinearLayout.LayoutParams(180, 60)
-            scaleType = ImageView.ScaleType.FIT_CENTER
-        }
-        
-        headerLayout.addView(logoImage)
-        
         // Description principale
         val descriptionCard = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -652,7 +636,6 @@ class SettingsActivity : AppCompatActivity() {
         buttonLayout.addView(testEditText)
         buttonLayout.addView(switchButton)
         
-        mainLayout.addView(headerLayout)
         mainLayout.addView(descriptionCard)
         mainLayout.addView(installCard)
         mainLayout.addView(buttonLayout)
