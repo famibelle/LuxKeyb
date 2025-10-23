@@ -625,6 +625,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
         
+        // 🧹 NETTOYAGE: Vider les suggestions au démarrage pour éviter l'affichage de suggestions fantômes
+        displaySuggestions(emptyList())
+        inputProcessor.resetState()
+        
         // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
             keyboardLayoutManager.forceAlphabeticMode()
