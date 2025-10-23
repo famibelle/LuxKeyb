@@ -21,13 +21,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 📊 ÉTAPE 1 : GÉNÉRATION DICTIONNAIRE
+  # 📊 ÉTAPE 1 : VÉRIFICATION DICTIONNAIRE
   generate-dictionary:
-    name: 🔤 Generate Kreyòl Dictionary
+    name: � Verify Luxemburgish Dictionary
     runs-on: ubuntu-latest
-    
-    env:
-      HF_TOKEN: ${{ secrets.HF_TOKEN }}
       
     outputs:
       dict-count: ${{ steps.stats.outputs.dict-count }}
@@ -37,63 +34,56 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: 🐍 Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    - name: 📦 Generate Fresh Kreyòl Dictionary
+    - name: ✅ Verify Luxemburgish Dictionary Assets
       run: |
-        echo "🔄 Generating fresh Kreyòl dictionary from Hugging Face..."
-        echo "🔑 Token configuré: $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
+        echo "� Vérification des dictionnaires luxembourgeois..."
         
-        cd Dictionnaires
-        echo "📁 Contenu avant génération:"
-        ls -la
+        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
+          echo "✅ luxemburgish_dict.json présent"
+        else
+          echo "❌ luxemburgish_dict.json manquant!"
+          exit 1
+        fi
         
-        python -m pip install --upgrade pip
-        pip install datasets huggingface_hub
+        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_ngrams.json" ]; then
+          echo "✅ luxemburgish_ngrams.json présent"
+        else
+          echo "❌ luxemburgish_ngrams.json manquant!"
+          exit 1
+        fi
         
-        echo "🚀 Lancement du script Python..."
-        python KreyolComplet.py
-        
-        echo "📁 Contenu après génération:"
-        ls -la
-        
-        echo "🔍 Vérification fichiers JSON générés dans clavier_creole/assets/:"
-        ls -la ../clavier_creole/assets/creole_*.json || echo "❌ Aucun fichier JSON trouvé dans clavier_creole/assets/"
+        echo "� Tailles des fichiers:"
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json
 
     - name: 📊 Verify Generated Assets
       run: |
-        echo "� Vérification des fichiers générés..."
+        echo "📊 Vérification des fichiers générés..."
         
-        # Le script Python génère directement dans clavier_creole/assets/
-        if [ ! -f "clavier_creole/assets/creole_dict.json" ]; then
-          echo "❌ ERREUR: creole_dict.json manquant dans clavier_creole/assets/!"
-          echo "📁 Contenu du dossier clavier_creole/assets/:"
-          ls -la clavier_creole/assets/ || echo "Dossier inexistant"
-          echo "📁 Contenu du dossier Dictionnaires:"
-          ls -la Dictionnaires/
+        # Les dictionnaires luxembourgeois sont déjà dans le repo
+        if [ ! -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
+          echo "❌ ERREUR: luxemburgish_dict.json manquant!"
+          echo "📁 Contenu du dossier assets:"
+          ls -la android_keyboard/app/src/main/assets/ || echo "Dossier inexistant"
           exit 1
         fi
         
-        if [ ! -f "clavier_creole/assets/creole_ngrams.json" ]; then
-          echo "❌ ERREUR: creole_ngrams.json manquant dans clavier_creole/assets/!"
-          echo "📁 Contenu du dossier clavier_creole/assets/:"
-          ls -la clavier_creole/assets/ || echo "Dossier inexistant"
+        if [ ! -f "android_keyboard/app/src/main/assets/luxemburgish_ngrams.json" ]; then
+          echo "❌ ERREUR: luxemburgish_ngrams.json manquant!"
+          echo "📁 Contenu du dossier assets:"
+          ls -la android_keyboard/app/src/main/assets/ || echo "Dossier inexistant"
           exit 1
         fi
         
-        echo "✅ Fichiers générés avec succès dans clavier_creole/assets/!"
+        echo "✅ Dictionnaires luxembourgeois présents!"
         echo "📊 Tailles des fichiers:"
-        ls -lh clavier_creole/assets/creole_*.json
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json
 
     - name: 📈 Dictionary Statistics
       id: stats
       run: |
-        # Statistiques directement depuis clavier_creole/assets/ où le script génère
-        DICT_COUNT=$(jq 'length' clavier_creole/assets/creole_dict.json)
-        NGRAMS_COUNT=$(jq 'length' clavier_creole/assets/creole_ngrams.json)
+        # Statistiques des dictionnaires luxembourgeois
+        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_dict.json)
+        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_ngrams.json)
         echo "📊 Dictionary: $DICT_COUNT words, $NGRAMS_COUNT N-grams"
         echo "dict-count=$DICT_COUNT" >> $GITHUB_OUTPUT
         echo "ngrams-count=$NGRAMS_COUNT" >> $GITHUB_OUTPUT
@@ -103,23 +93,25 @@ jobs:
         echo "📁 Préparation des assets Android..."
         mkdir -p android_keyboard/app/src/main/assets/
         
-        # Copier directement vers le répertoire Android
-        cp clavier_creole/assets/creole_dict.json android_keyboard/app/src/main/assets/
-        cp clavier_creole/assets/creole_ngrams.json android_keyboard/app/src/main/assets/
+        # Copier les dictionnaires luxembourgeois
+        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
+          echo "✅ Dictionnaires luxembourgeois déjà présents"
+        else
+          echo "ℹ️ Dictionnaires luxembourgeois déjà dans le repo"
+        fi
         
-        echo "✅ Dictionnaires copiés vers android_keyboard/app/src/main/assets/"
         echo "📊 Vérification:"
-        ls -la android_keyboard/app/src/main/assets/creole_*.json
+        ls -la android_keyboard/app/src/main/assets/luxemburgish_*.json
 
     - name: 🎯 Dictionary Assets Ready
       run: |
         echo "✅ Assets de dictionnaire prêts pour les builds Android"
-        echo "� Statistiques finales:"
-        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/creole_dict.json)
-        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/creole_ngrams.json)
+        echo "📊 Statistiques finales:"
+        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_dict.json)
+        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_ngrams.json)
         echo "   - Mots: $DICT_COUNT"
         echo "   - N-grams: $NGRAMS_COUNT"
-        echo "� Fichiers disponibles pour tous les jobs de build"
+        echo "📦 Fichiers disponibles pour tous les jobs de build"
 
   # 🔧 ÉTAPE 2A : BUILD DEBUG APK
   build-debug-apk:
@@ -152,22 +144,22 @@ jobs:
     - name: ✅ Verify Dictionary Assets Present
       run: |
         echo "🔍 Vérification des assets de dictionnaire..."
-        if [ -f "android_keyboard/app/src/main/assets/creole_dict.json" ]; then
-          echo "✅ creole_dict.json présent"
+        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
+          echo "✅ luxemburgish_dict.json présent"
         else
-          echo "❌ creole_dict.json manquant"
+          echo "❌ luxemburgish_dict.json manquant"
           exit 1
         fi
         
-        if [ -f "android_keyboard/app/src/main/assets/creole_ngrams.json" ]; then
-          echo "✅ creole_ngrams.json présent"
+        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_ngrams.json" ]; then
+          echo "✅ luxemburgish_ngrams.json présent"
         else
-          echo "❌ creole_ngrams.json manquant"
+          echo "❌ luxemburgish_ngrams.json manquant"
           exit 1
         fi
         
         echo "📊 Tailles des fichiers:"
-        ls -lh android_keyboard/app/src/main/assets/creole_*.json
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json
 
     - name: 🧹 Clean Project
       env:
@@ -217,7 +209,7 @@ jobs:
     - name: ✅ Verify Dictionary Assets Present
       run: |
         echo "🔍 Vérification des assets de dictionnaire..."
-        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 📦 Build Debug AAB
       env:
@@ -262,7 +254,7 @@ jobs:
     - name: ✅ Verify Dictionary Assets Present
       run: |
         echo "🔍 Vérification des assets de dictionnaire..."
-        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 🔐 Setup Production Keystore for Release APK
       env:
@@ -272,15 +264,15 @@ jobs:
         
         if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ] && [ -n "$KEYSTORE_BASE64" ]; then
           echo "🔑 Decoding production keystore from GitHub Secrets..."
-          echo "$KEYSTORE_BASE64" | base64 -d > app/$KEYSTORE_FILE
+          echo "$KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
           echo "✅ Production keystore decoded: $KEYSTORE_FILE"
           echo "🔐 Release APK will be signed with production key"
           
           # Vérification du keystore
-          keytool -list -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
+          keytool -list -v -keystore $KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
         else
           echo "⚠️ Production secrets not available, generating debug keystore..."
-          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
         fi
 
@@ -332,7 +324,7 @@ jobs:
     - name: ✅ Verify Dictionary Assets Present
       run: |
         echo "🔍 Vérification des assets de dictionnaire..."
-        ls -lh android_keyboard/app/src/main/assets/creole_*.json || echo "❌ Fichiers dictionnaire manquants"
+        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json || echo "❌ Fichiers dictionnaire manquants"
 
     - name: 🔐 Setup Production Keystore for Release AAB
       env:
@@ -342,15 +334,15 @@ jobs:
         
         if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ] && [ -n "$KEYSTORE_BASE64" ]; then
           echo "🔑 Decoding production keystore from GitHub Secrets..."
-          echo "$KEYSTORE_BASE64" | base64 -d > app/$KEYSTORE_FILE
+          echo "$KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
           echo "✅ Production keystore decoded: $KEYSTORE_FILE"
           echo "🏪 Release AAB will be signed for Google Play Store"
           
           # Vérification du keystore
-          keytool -list -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
+          keytool -list -v -keystore $KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
         else
           echo "⚠️ Production secrets not available, generating debug keystore..."
-          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
         fi
 
