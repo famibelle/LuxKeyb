@@ -9,8 +9,8 @@
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
   <img src="Screenshots/KlaviaturAnAktion.gif" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots/Screenshot_1760389184.png" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots/Screenshot_1760389193.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots\Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots\Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
 
 ## 🎮 Système de progression et de gamification
