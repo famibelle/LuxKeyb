@@ -1,0 +1,135 @@
+{
+  "diacritics_frequency": {
+    "é": {
+      "occurrences": 5835,
+      "unique_words": 431,
+      "example_words": [
+        "méi",
+        "déi",
+        "wéi",
+        "fréi",
+        "éier",
+        "ewéi",
+        "telé",
+        "géif",
+        "café",
+        "méint"
+      ]
+    },
+    "ë": {
+      "occurrences": 2692,
+      "unique_words": 188,
+      "example_words": [
+        "ëm",
+        "dës",
+        "gëtt",
+        "hëlt",
+        "aidë",
+        "dëse",
+        "sënn",
+        "mëtt",
+        "erëm",
+        "dëst"
+      ]
+    },
+    "ä": {
+      "occurrences": 1938,
+      "unique_words": 201,
+      "example_words": [
+        "mä",
+        "är",
+        "wär",
+        "äre",
+        "mäi",
+        "bäi",
+        "där",
+        "gär",
+        "här",
+        "säi"
+      ]
+    },
+    "ü": {
+      "occurrences": 79,
+      "unique_words": 12,
+      "example_words": [
+        "etüd",
+        "etüde",
+        "müller",
+        "etüden",
+        "gülteg",
+        "attitüd",
+        "schüler",
+        "schützen",
+        "geschützt",
+        "verfügung"
+      ]
+    },
+    "è": {
+      "occurrences": 70,
+      "unique_words": 18,
+      "example_words": [
+        "dès",
+        "après",
+        "pièce",
+        "accès",
+        "décès",
+        "règles",
+        "barème",
+        "succès",
+        "hygiène",
+        "crèchen"
+      ]
+    },
+    "ô": {
+      "occurrences": 28,
+      "unique_words": 2,
+      "example_words": [
+        "impôt",
+        "chômage"
+      ]
+    },
+    "à": {
+      "occurrences": 19,
+      "unique_words": 1,
+      "example_words": [
+        "voilà"
+      ]
+    },
+    "ê": {
+      "occurrences": 17,
+      "unique_words": 2,
+      "example_words": [
+        "interêt",
+        "intérêt"
+      ]
+    },
+    "ö": {
+      "occurrences": 9,
+      "unique_words": 1,
+      "example_words": [
+        "seriö"
+      ]
+    },
+    "û": {
+      "occurrences": 6,
+      "unique_words": 1,
+      "example_words": [
+        "coûts"
+      ]
+    },
+    "ç": {
+      "occurrences": 3,
+      "unique_words": 1,
+      "example_words": [
+        "séquençage"
+      ]
+    },
+    "â": {
+      "occurrences": 2,
+      "unique_words": 1,
+      "example_words": [
+        "âge"
+      ]
+    }
+  }
+}
