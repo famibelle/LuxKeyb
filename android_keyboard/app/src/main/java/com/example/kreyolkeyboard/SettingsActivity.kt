@@ -634,9 +634,9 @@ class SettingsActivity : AppCompatActivity() {
         
         val footerText = TextView(this).apply {
             text = "Fait au Luxembourg avec au ❤️\n" +
-                    "Préservons notre langue luxembourgeoise pour les générations futures !\n\n" +
-                    "© LuxKeyb™ - Clavier Lëtzebuergesch\n" +
-                    "Design aux couleurs du Luxembourg"
+                    "Préservons le luxembourgeoise pour les générations futures !\n\n" +
+                    "© LuxKeyb™ - Lëtzebuergesch Clavier\n"
+
             textSize = 12f
             setTextColor(Color.parseColor("#666666"))
             gravity = Gravity.CENTER
