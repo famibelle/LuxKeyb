@@ -41,7 +41,6 @@ clavier_creole/.dart_tool/
 clavier_creole/.flutter-plugins
 clavier_creole/.flutter-plugins-dependencies
 ConvertToJson.py
-android_keyboard/gradle.properties
 .env
 Dictionnaries/__pycache__/
 Dictionnaries/.env.template
@@ -104,7 +103,6 @@ COMMIT_SUMMARY.md
 test-keyboard-simple.ps1
 test-keyboard-suggestions.ps1
 android_keyboard/keystore-base64.txt
-android_keyboard/gradle.properties
 test-accent-tolerant.ps1
 GUIDE_TEST_ACCENT_TOLERANT.md
 test-accent-pid.ps1
@@ -163,8 +161,4 @@ resize_logo.py
 convert_logo.py
 Dictionnaires/analyse_diacritiques.py
 android_keyboard/KEYSTORE_GUIDE.md
-android_keyboard/gradle.properties
-android_keyboard/gradle.properties
-android_keyboard/gradle.properties
 android_keyboard/GITHUB_SECRETS_SETUP.md
-android_keyboard/gradle.properties
