@@ -8,7 +8,7 @@
 ## 📱 Aperçu
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
-  <img src="Screenshots/KlaviaturAnAktion.gif" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots\Screenshot_1761490896.png" alt="Clavier luxembourgeois en Action" width="25%">
   <img src="Screenshots\Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
   <img src="Screenshots\Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
