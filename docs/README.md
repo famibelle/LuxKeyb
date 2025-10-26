@@ -1,4 +1,4 @@
-**📱Klaviatur Lëtzebuergesch** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **Lëtzebuergesch** sur leur smartphone, avec fluidité, authenticité et fierté.
+**📱Lëtzebuergesch Clavier** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **Lëtzebuergesch** sur leur smartphone, avec fluidité, authenticité et fierté.
 
 - 🛠️ Si votre luxembourgeois est très rouillé...
 - 😤 Que vous galériez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
@@ -15,7 +15,7 @@
 
 ## 🎮 Système de progression et de gamification
 
-**Klaviatur Lëtzebuergesch** ne se contente pas de fluidifier l'écriture du Lëtzebuergesch : il **suit votre progression** et vous accompagne dans votre maîtrise du luxembourgeois !
+**Lëtzebuergesch Clavier** ne se contente pas de fluidifier l'écriture du Lëtzebuergesch : il **suit votre progression** et vous accompagne dans votre maîtrise du luxembourgeois !
 
 ### 📊 Suivez vos progrès en temps réel
 
