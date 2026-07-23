@@ -304,8 +304,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * Crée la zone des suggestions : deux rangées empilées (Kreyòl puis Français) pour
      * que le français reste toujours entièrement visible, sans scroll ni troncature,
      * même quand les suggestions kreyòl sont longues ("Bonmaten-la"). La rangée
-     * française se réduit à hauteur nulle (GONE) quand elle est vide, pour ne pas
-     * gaspiller de place quand le français n'est pas encore activé (< 3 lettres).
+     * française reste toujours réservée en hauteur (INVISIBLE, jamais GONE) même
+     * quand elle est vide : un GONE/VISIBLE dynamique décale toutes les rangées du
+     * clavier en dessous pendant la frappe (ex. au franchissement du seuil de 3
+     * lettres qui active le fallback français), ce qui fait atterrir un tap en cours
+     * sur la touche de la rangée voisine — bug constaté et corrigé le 23/07/2026.
      */
     private fun createSuggestionsArea(parentLayout: LinearLayout) {
         val suggestionsContainer = LinearLayout(this).apply {
@@ -339,7 +342,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 dpToPx(44)
             )
             setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
-            visibility = View.GONE
+            visibility = View.INVISIBLE
         }
         frenchRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -557,9 +560,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      */
     private fun displaySuggestions(suggestions: List<String>) {
         Log.d(TAG, "displaySuggestions appelé avec ${suggestions.size} suggestions: ${suggestions.joinToString(", ")}")
-        // Mode simple : pas de français, la 2e rangée reste masquée
+        // Mode simple : pas de français, la 2e rangée reste masquée (mais réservée en hauteur)
         frenchRow?.removeAllViews()
-        frenchRowScroll?.visibility = View.GONE
+        frenchRowScroll?.visibility = View.INVISIBLE
         suggestionsView?.let { container ->
             Log.d(TAG, "Container de suggestions trouvé, vidage des vues existantes")
             container.removeAllViews()
@@ -596,7 +599,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             addLanguageLabel(frenchContainer, frenchSuggestions.first().getShortLabel())
             frenchSuggestions.forEach { addSuggestionChip(frenchContainer, it) }
         }
-        frenchRowScroll?.visibility = if (frenchSuggestions.isNotEmpty()) View.VISIBLE else View.GONE
+        // INVISIBLE (jamais GONE) : garder la hauteur de la rangée réservée en permanence
+        // évite que l'apparition/disparition des suggestions françaises ne décale les
+        // rangées du clavier en dessous pendant la frappe (cf. bug du 23/07/2026).
+        frenchRowScroll?.visibility = if (frenchSuggestions.isNotEmpty()) View.VISIBLE else View.INVISIBLE
 
         Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées (${kreyolSuggestions.size} Kreyòl / ${frenchSuggestions.size} Français)")
     }

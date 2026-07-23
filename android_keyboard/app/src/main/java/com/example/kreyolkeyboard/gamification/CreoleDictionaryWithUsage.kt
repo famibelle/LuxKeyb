@@ -29,7 +29,12 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         private const val TAG = "CreoleDictUsage"
         private const val DICT_FILE = "creole_dict_with_usage.json"
         private const val ORIGINAL_DICT = "creole_dict.json"
-        private const val MIN_WORD_LENGTH = 3  // Ignorer les mots < 3 lettres
+        // 2 : le dictionnaire créole contient des mots réels et très fréquents de 2 lettres
+        // (ka, ou, on, an, sa, wi...) qui ne comptaient jamais dans wordsDiscovered avant ce
+        // correctif (23/07/2026). Le vrai filtre de vie privée reste dictionary.has(normalized)
+        // plus bas : un mot hors dictionnaire n'est de toute façon jamais tracké, quelle que
+        // soit sa longueur.
+        private const val MIN_WORD_LENGTH = 2
         private const val SAVE_BATCH_SIZE = 1  // Sauvegarder après chaque utilisation pour tests
     }
     
