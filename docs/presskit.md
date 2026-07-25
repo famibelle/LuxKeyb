@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="ambassade.html">📣 Vin Anbasadè</a> ·
+  <a href="triptyque.html">📖 Triptyque</a> ·
   <strong>📰 Presse</strong> ·
   <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k">📲 Télécharger</a> ·
   <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·

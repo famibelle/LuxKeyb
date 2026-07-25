@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triptyque à imprimer · Klavyé Kréyòl Karukera</title>
+<meta name="description" content="Flyer triptyque A4 paysage (recto-verso) prêt à imprimer pour faire connaître le clavier créole guadeloupéen : présentation, installation, fonctionnalités, QR code Google Play.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 60px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+.wrap{max-width:900px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 20px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-bottom:28px;
+}
+.print-modes{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px;}
+
+/* --- Aperçu à l'écran --- */
+.preview-shell{
+  overflow-x:auto;
+  padding:20px 0 40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:26px;
+}
+.face-label{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-soft); margin:0;
+}
+.page{
+  width:297mm; height:210mm; flex:0 0 auto;
+  position:relative; overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
+  background:#FFFFFF;
+  display:flex; flex-direction:row;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+.panel{
+  width:33.3334%; height:100%; position:relative;
+  display:flex; flex-direction:column;
+  padding:9mm 8mm; overflow:hidden;
+}
+
+/* ---------- Couverture ---------- */
+.cover{ padding:0; background:var(--gradient); color:#fff; justify-content:flex-start; }
+.cover .top{ padding:9mm 8mm 3mm; text-align:center; }
+.cover .logo-circle{
+  width:20mm; height:20mm; border-radius:50%; background:#fff; margin:0 auto 3mm;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.cover .logo-circle img{ width:78%; height:78%; object-fit:contain; }
+.cover h1.h{
+  font-family:"Fredoka",sans-serif; font-weight:800;
+  font-size:23px; line-height:1.12; margin:2mm 0 2mm; text-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.cover .sub{ font-size:12px; color:#fff; opacity:.92; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
+.cover .hero-card{
+  flex:1; margin:3mm 8mm 0; border-radius:10px; overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.28); position:relative;
+  display:flex; align-items:center; background:linear-gradient(90deg,#6273cf 0%,#01be64 100%);
+}
+.cover .hero-card img{ width:100%; height:auto; display:block; }
+.cover .cta{
+  margin:3mm 8mm 8mm; background:#fff; color:var(--hibiscus); border-radius:12px;
+  padding:4mm 5mm; display:flex; align-items:center; justify-content:center; gap:4mm;
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+}
+.cover .cta img{ width:18mm; height:18mm; border-radius:5px; }
+.cover .cta .txt{ text-align:left; font-size:11px; line-height:1.3; font-weight:600; }
+.cover .cta .txt b{
+  display:block; font-family:"Fredoka",sans-serif; font-size:13.5px; font-weight:700; text-transform:uppercase;
+}
+
+/* ---------- Dos ---------- */
+.back-cover{ background:var(--ink); color:#EDEAE1; justify-content:space-between; }
+.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--sun); }
+.back-cover .quote{
+  font-size:16px; font-style:italic; font-weight:700; line-height:1.4; color:#fff;
+  border-left:4px solid var(--sun); padding-left:10px; margin:8mm 0 5mm;
+}
+.back-cover .mission{ font-size:11px; line-height:1.6; color:#C9CFCB; margin:0 0 6mm; }
+.back-cover .contact{ font-size:11px; line-height:2; }
+.back-cover .contact div span{ color:var(--sun); display:inline-block; width:56px; }
+.back-cover .legal{ font-size:9px; color:#9AA39D; line-height:1.5; margin-top:5mm; }
+
+/* ---------- panneaux clairs ---------- */
+.light{ background:var(--paper); }
+.light h2{
+  font-size:16px; font-weight:800; color:var(--ink); margin:0 0 3mm;
+  padding-bottom:2mm; border-bottom:3px solid var(--sun);
+}
+.light p{ font-size:11px; line-height:1.55; color:var(--ink-soft); margin:0 0 3mm; }
+.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:var(--sea); text-transform:uppercase; margin-bottom:1mm; }
+
+.bullets{ list-style:none; margin:0; padding:0; font-size:11px; color:var(--ink-soft); }
+.bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
+.bullets li .ic{ flex:0 0 auto; font-size:14px; }
+.bullets li b{ color:var(--ink); }
+
+.stat-row{ display:flex; gap:5mm; margin:3mm 0; }
+.stat{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:3.5mm; text-align:center; }
+.stat b{ display:block; font-size:17px; color:var(--sea); }
+.stat span{ font-size:9px; color:var(--ink-soft); }
+
+.steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
+.steps li{
+  counter-increment:step; position:relative; padding-left:26px; margin-bottom:5mm;
+  font-size:11px; line-height:1.45; color:var(--ink-soft);
+}
+.steps li::before{
+  content:counter(step); position:absolute; left:0; top:0;
+  width:19px; height:19px; border-radius:50%; background:var(--sea); color:#fff;
+  font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
+}
+.steps li b{ display:block; color:var(--ink); font-size:12px; }
+
+.shot{ text-align:center; margin-top:auto; }
+.shot img{
+  max-width:100%; max-height:76mm; border-radius:9px;
+  box-shadow:0 4px 16px rgba(0,0,0,.25); border:4px solid #FFFFFF;
+  outline:1px solid var(--line);
+}
+.shot.tall img{ max-height:94mm; }
+
+.callout{
+  margin-top:auto; background:var(--sun-soft); border:1px solid color-mix(in srgb, var(--sun) 35%, transparent);
+  border-radius:8px; padding:3mm 4mm; font-size:10px; color:var(--ink); font-weight:600; text-align:center;
+}
+
+.tag-pill{
+  display:inline-block; background:var(--sea-soft); color:var(--ink); font-size:8.5px; font-weight:700;
+  padding:2px 7px; border-radius:20px; margin:1px 3px 1px 0;
+}
+.tag-pill.top{ background:var(--sun); color:#3a2e00; }
+
+@page{ size:297mm 210mm landscape; margin:0; }
+
+@media print{
+  .noprint{display:none !important;}
+  body{padding:0;margin:0;background:#fff;}
+  .wrap{max-width:none;}
+  .preview-shell{padding:0;overflow:visible;gap:0;}
+  .face-label{display:none;}
+  .page{box-shadow:none;page-break-after:always;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+}
+body[data-print-mode="recto"] #face-verso{ display:none; }
+body[data-print-mode="verso"] #face-recto{ display:none; }
+</style>
+</head>
+<body>
+<div class="wrap noprint">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
+  <a href="tract.html">🪧 Tract</a> ·
+  <a href="affiche.html">🖨️ Affiche</a> ·
+  <strong>📖 Triptyque</strong> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header style="padding:20px 0 10px;">
+  <p class="eyebrow">Klavyé Kréyòl Karukera · kit ambassadeur</p>
+  <h1>Un flyer triptyque à imprimer 📖</h1>
+  <p class="lead">Un dépliant complet en 3 volets, recto-verso, format A4 paysage : présentation du clavier, installation en 3 étapes, fonctionnalités et suivi de progression. Idéal pour un stand, un salon, une médiathèque ou un comptoir associatif.</p>
+
+  <div class="actions">
+    <a class="btn primary" href="assets/triptyque-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF (2 pages A4 paysage)</a>
+    <a class="btn" href="ambassade.html">← Retour au kit ambassadeur</a>
+  </div>
+
+  <div class="print-modes">
+    <button class="btn primary" onclick="printMode('both')">🖨️ Imprimer les 2 faces</button>
+    <button class="btn" onclick="printMode('recto')">Imprimer le recto seul</button>
+    <button class="btn" onclick="printMode('verso')">Imprimer le verso seul</button>
+  </div>
+
+  <div class="note">
+    Réglages à vérifier dans la boîte de dialogue d'impression : papier <strong>A4, orientation Paysage</strong>, marges <strong>Aucune</strong>, échelle <strong>100&nbsp;%</strong>, et cocher <strong>« Graphismes d'arrière-plan »</strong>. Pour l'imprimeur : impression recto-verso, retournement bord court.
+  </div>
+</header>
+
+</div>
+
+<div class="preview-shell">
+  <p class="face-label noprint">Recto — panneaux 1 · 2 · 3 (le 3 est la couverture)</p>
+  <div class="page" id="face-recto">
+
+    <!-- P1 : dos -->
+    <div class="panel back-cover">
+      <div>
+        <div class="wordmark">POTOMITAN™</div>
+        <div class="quote">&laquo;&nbsp;An kréyòl nou ka palé, an kréyòl nou ka rivé&nbsp;!&nbsp;&raquo;</div>
+        <p class="mission">Ce clavier s'appuie sur les textes des plus grands défenseurs du kréyòl : écrivains, linguistes et artistes qui ont structuré et transmis la langue.</p>
+      </div>
+      <div>
+        <div class="contact">
+          <div><span>Web</span> potomitan.io</div>
+          <div><span>GitHub</span> github.com/famibelle/KreyolKeyb</div>
+          <div><span>Kontak</span> contact@potomitan.io</div>
+        </div>
+        <div class="legal">Klavyé Kréyòl Karukera est un projet citoyen, gratuit et open source (licence MIT), publié par Potomitan™. Zéro collecte de données personnelles : fonctionnement 100&nbsp;% local.</div>
+      </div>
+    </div>
+
+    <!-- P2 : pourquoi -->
+    <div class="panel light">
+      <div class="kicker">Pouki sa</div>
+      <h2>Poukisa yon klavyé kréyòl ?</h2>
+      <p>Les claviers standards ne connaissent pas le créole guadeloupéen : ils soulignent chaque mot en rouge et « corrigent » le kréyòl vers le français. Résultat, la langue recule dans les usages numériques du quotidien : SMS, WhatsApp, réseaux sociaux.</p>
+      <p><b>Klavyé Kréyòl Karukera</b> fait l'inverse : il travaille pour le kréyòl, à partir d'un corpus littéraire créole authentique (écrivains, linguistes, artistes).</p>
+      <div class="stat-row">
+        <div class="stat"><b>1,6&nbsp;M</b><span>locuteurs du créole en France</span></div>
+        <div class="stat"><b>1800+</b><span>mots kréyòl référencés</span></div>
+      </div>
+      <ul class="bullets">
+        <li><span class="ic">🔒</span><span>Zéro collecte de données, tout reste sur le téléphone</span></li>
+        <li><span class="ic">📖</span><span>Code source ouvert et auditable (MIT)</span></li>
+        <li><span class="ic">🆓</span><span>Gratuit, sans publicité, sans achat intégré</span></li>
+      </ul>
+    </div>
+
+    <!-- P3 : couverture -->
+    <div class="panel cover">
+      <div class="top">
+        <div class="logo-circle"><img src="assets/potomitan-logo.png" alt="Potomitan"></div>
+        <h1 class="h">Klavyé Kréyòl<br>Karukera</h1>
+        <p class="sub">Le premier clavier intelligent pour écrire en créole guadeloupéen</p>
+      </div>
+      <div class="hero-card"><img src="assets/triptyque-hero.jpg" alt="Ekri an kréyòl Gwadloup"></div>
+      <div class="cta">
+        <img src="assets/qr-google-play.png" alt="QR code Google Play">
+        <div class="txt"><b>Scanne pou telechajé</b>Disponible gratuitement sur Google Play</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="face-label noprint">Verso — panneaux 4 · 5 · 6 (lecture intérieure de gauche à droite)</p>
+  <div class="page" id="face-verso">
+
+    <!-- P4 : installation -->
+    <div class="panel light">
+      <div class="kicker">An n alé</div>
+      <h2>Enstalasyon an 3 étap</h2>
+      <ol class="steps">
+        <li><b>Essaie sans rien installer</b>Ouvre l'app : un clavier d'essai t'attend sur l'écran d'accueil. Tape « bonjou », touche une suggestion.</li>
+        <li><b>Active le clavier</b>Un bouton t'amène directement au bon écran de réglages Android.</li>
+        <li><b>Choisis-le et écris</b>Le sélecteur de clavier s'ouvre tout seul à ton retour : tape ton premier mot en kréyòl.</li>
+      </ol>
+      <div class="shot"><img src="assets/triptyque-essai.jpg" alt="Suggestions bonjou / bonjour"></div>
+    </div>
+
+    <!-- P5 : fonctionnalités -->
+    <div class="panel light">
+      <div class="kicker">Karaktéristik</div>
+      <h2>Sa i ka fè pou ou</h2>
+      <ul class="bullets">
+        <li><span class="ic">💬</span><span><b>Suggestions bilingues</b> : le kréyòl d'abord, le français prend le relais dès qu'aucun mot créole ne correspond</span></li>
+        <li><span class="ic">✒️</span><span><b>Accents créoles</b> (é, è, à, ò...) par simple appui long</span></li>
+        <li><span class="ic">🔤</span><span><b>Correction tolérante</b> aux fautes de frappe et aux variations d'accents</span></li>
+        <li><span class="ic">🧩</span><span><b>Jeux de vocabulaire</b> intégrés : mots mêlés, mots mélangés</span></li>
+        <li><span class="ic">🏆</span><span><b>Progression gamifiée</b> en 8 niveaux culturels, de Pipirit à Benzo</span></li>
+      </ul>
+      <div class="callout">Le dictionnaire grandit avec la communauté créolophone : chaque mot tapé enrichit les suggestions pour tous.</div>
+    </div>
+
+    <!-- P6 : progression -->
+    <div class="panel light">
+      <div class="kicker">Motivasyon</div>
+      <h2>Gadé pwogrè ou</h2>
+      <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Benzo</b>, le sommet des 8 niveaux de maîtrise.</p>
+      <div style="margin-bottom:4mm;">
+        <span class="tag-pill">Pipirit</span><span class="tag-pill">Ti moun</span><span class="tag-pill">Débrouya</span><span class="tag-pill">An mitan</span><span class="tag-pill">Kompè Lapen</span><span class="tag-pill">Kompè Zamba</span><span class="tag-pill">Potomitan</span><span class="tag-pill top">Benzo</span>
+      </div>
+      <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function printMode(mode){
+    document.body.setAttribute('data-print-mode', mode);
+    window.print();
+  }
+  window.addEventListener('afterprint', function(){
+    document.body.removeAttribute('data-print-mode');
+  });
+</script>
+
+</body>
+</html>
