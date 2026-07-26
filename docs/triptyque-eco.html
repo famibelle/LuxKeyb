@@ -76,7 +76,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-family:"Fredoka",sans-serif; font-weight:800;
   font-size:23px; line-height:1.12; margin:2mm 0 2mm; color:var(--hibiscus);
 }
-.cover .sub{ font-size:12px; color:var(--ink); margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
+.cover .sub{ font-size:12px; color:#000; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
 .cover .hero-card{
   flex:1; margin:3mm 8mm 0; border-radius:10px; overflow:hidden;
   border:1.5px solid rgba(28,38,36,.4); position:relative;
@@ -102,14 +102,14 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--hibiscus); }
 .back-cover .quote{
-  font-size:16px; font-style:italic; font-weight:700; line-height:1.4; color:var(--ink);
+  font-size:16px; font-style:italic; font-weight:700; line-height:1.4; color:#000;
   border-left:4px solid var(--hibiscus); padding-left:10px; margin:8mm 0 5mm;
 }
-.back-cover .mission{ font-size:11px; line-height:1.6; color:var(--ink); margin:0 0 6mm; }
-.back-cover .contact{ font-size:11px; line-height:2; }
-.back-cover .contact div{ color:var(--ink); }
+.back-cover .mission{ font-size:11px; font-weight:500; line-height:1.6; color:#000; margin:0 0 6mm; }
+.back-cover .contact{ font-size:11px; font-weight:500; line-height:2; }
+.back-cover .contact div{ color:#000; }
 .back-cover .contact div span{ color:var(--sea); font-weight:700; display:inline-block; width:56px; }
-.back-cover .legal{ font-size:9.5px; font-weight:500; color:var(--ink); opacity:.75; line-height:1.5; margin-top:5mm; }
+.back-cover .legal{ font-size:9.5px; font-weight:500; color:#000; line-height:1.5; margin-top:5mm; }
 
 /* ---------- panneaux clairs (identiques à la version couleur) ---------- */
 .light{ background:#FFFFFF; }
@@ -117,30 +117,30 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-size:16px; font-weight:800; color:var(--ink); margin:0 0 3mm;
   padding-bottom:2mm; border-bottom:3px solid var(--hibiscus);
 }
-.light p{ font-size:11px; line-height:1.55; color:var(--ink); margin:0 0 3mm; }
+.light p{ font-size:11px; font-weight:500; line-height:1.55; color:#000; margin:0 0 3mm; }
 .kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:var(--sea); text-transform:uppercase; margin-bottom:1mm; }
 
-.bullets{ list-style:none; margin:0; padding:0; font-size:11px; color:var(--ink); }
+.bullets{ list-style:none; margin:0; padding:0; font-size:11px; font-weight:500; color:#000; }
 .bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
 .bullets li .ic{ flex:0 0 auto; font-size:14px; }
-.bullets li b{ color:var(--ink); }
+.bullets li b{ color:#000; }
 
 .stat-row{ display:flex; gap:5mm; margin:3mm 0; }
 .stat{ flex:1; background:var(--sea-soft); border:1.5px solid var(--sea); border-radius:8px; padding:3.5mm; text-align:center; }
 .stat b{ display:block; font-size:17px; color:var(--sea); }
-.stat span{ font-size:9px; font-weight:600; color:var(--ink); }
+.stat span{ font-size:9px; font-weight:600; color:#000; }
 
 .steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
 .steps li{
   counter-increment:step; position:relative; padding-left:26px; margin-bottom:5mm;
-  font-size:11px; line-height:1.45; color:var(--ink);
+  font-size:11px; font-weight:500; line-height:1.45; color:#000;
 }
 .steps li::before{
   content:counter(step); position:absolute; left:0; top:0;
   width:19px; height:19px; border-radius:50%; background:#fff; color:var(--sea); border:1.5px solid var(--sea);
   font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
 }
-.steps li b{ display:block; color:var(--ink); font-size:12px; }
+.steps li b{ display:block; color:#000; font-size:12px; }
 
 .mini-shots{ position:relative; width:72mm; height:60mm; margin:2mm auto 0; flex:0 0 auto; }
 .mini-shots img{
@@ -159,11 +159,11 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 
 .callout{
   margin-top:auto; background:var(--sun-soft); border:1.5px solid var(--sun);
-  border-radius:8px; padding:3mm 4mm; font-size:10px; color:var(--ink); font-weight:600; text-align:center;
+  border-radius:8px; padding:3mm 4mm; font-size:10px; color:#000; font-weight:600; text-align:center;
 }
 
 .tag-pill{
-  display:inline-block; background:var(--sea-soft); color:var(--ink); font-size:8.5px; font-weight:700;
+  display:inline-block; background:var(--sea-soft); color:#000; font-size:8.5px; font-weight:700;
   padding:2px 7px; border-radius:20px; margin:1px 3px 1px 0; border:1px solid var(--sea);
 }
 .tag-pill.top{ background:var(--sun); color:#3a2e00; border-color:var(--sun); }
