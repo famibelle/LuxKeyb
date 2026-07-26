@@ -74,7 +74,7 @@ Un clavier qui **travaille pour le kréyòl au lieu de le combattre** :
 - **Accents du kréyòl** (é, è, à, ò...) par simple appui long
 - **Bilingue** : le français prend le relais quand aucun mot créole ne correspond
 - **Jeux de vocabulaire** intégrés (Mots Mêlés, Mots Mélangés) et
-  **progression gamifiée** en 8 niveaux culturels, de « Pipirit » à « Benzo »
+  **progression gamifiée** en 7 niveaux culturels, de « Pipirit » à « Potomitan »
 - **100 % local, zéro collecte de données**, code source public (licence MIT)
 
 ## Le corpus : un hommage aux défenseurs du kréyòl
