@@ -50,7 +50,7 @@ Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
 | 🔤 **Accents faciles** | Appui long sur une lettre pour é, è, à, ò et tous les caractères du kréyòl |
 | 🇫🇷 **Bilingue** | Le français prend le relais quand aucun mot créole ne correspond |
 | 🎮 **Jeux de vocabulaire** | Mots Mêlés et Mots Mélangés pour apprendre en s'amusant |
-| 🏆 **Progression culturelle** | 8 niveaux, de Pipirit à Benzo, au fil de tes mots tapés |
+| 🏆 **Progression culturelle** | 7 niveaux, de Pipirit à Potomitan, au fil de tes mots tapés |
 | 🔒 **Zéro collecte de données** | Fonctionnement 100 % local : rien ne quitte ton téléphone ([politique de confidentialité](privacy/privacy-policy.html)) |
 | 🚫 **Zéro pub** | Aucune publicité, aucun tracker : le clavier reste concentré sur l'essentiel |
 | 🆓 **Gratuit et open source** | Code public sur [GitHub](https://github.com/famibelle/KreyolKeyb), licence MIT |
