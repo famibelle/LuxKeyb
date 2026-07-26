@@ -206,6 +206,15 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border-radius:8px; padding:3mm 4mm; font-size:10px; color:#000; font-weight:600; text-align:center;
 }
 
+.panel-cta{
+  margin-top:4mm; background:var(--sea-soft); border:1.5px solid var(--sea); border-radius:10px;
+  padding:3mm 4mm; display:flex; align-items:center; gap:4mm;
+}
+.panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
+.panel-cta .txt{ font-size:10.5px; font-weight:600; color:#000; line-height:1.3; }
+.panel-cta .txt b{ display:block; font-size:12.5px; color:var(--sea); text-transform:uppercase; }
+.panel-cta .txt .free{ display:block; color:var(--hibiscus); font-weight:800; margin-top:1mm; }
+
 .tag-pill{
   display:inline-block; background:var(--sea-soft); color:#000; font-size:8.5px; font-weight:700;
   padding:2px 7px; border-radius:20px; margin:1px 3px 1px 0; border:1px solid var(--sea);
@@ -388,6 +397,10 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <span class="tag-pill">Pipirit</span><span class="tag-pill">Ti moun</span><span class="tag-pill">Débrouya</span><span class="tag-pill">An mitan</span><span class="tag-pill">Kompè Lapen</span><span class="tag-pill">Kompè Zamba</span><span class="tag-pill top">Potomitan</span>
       </div>
       <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
+      <div class="panel-cta">
+        <img src="assets/qr-triptyque.png" alt="QR code Google Play">
+        <div class="txt"><b>Télécharge maintenant</b>Rejoins la communauté créolophone<span class="free">100% gratuit</span></div>
+      </div>
     </div>
   </div>
 </div>
