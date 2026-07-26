@@ -174,7 +174,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 3. **Progression de Gamification :**
    - Nombre de mots appris (combien de mots du dictionnaire vous avez tapés)
-   - Niveau actuel (Pipirit, Ti moun, Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan ou Benzo)
+   - Niveau actuel (Pipirit, Ti moun, Débrouya, An mitan, Kompè Lapen, Kompè Zamba ou Potomitan)
    - Récompenses débloquées (ex: "100 premiers mots tapés")
    - Stockés localement dans la base de données de l'app
    - Non synchronisés avec le cloud ou d'autres appareils
@@ -510,7 +510,7 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 
 ### Comment Fonctionne la Gamification :
 
-- **8 Niveaux :** Pipirit → Ti moun → Débrouya → An mitan → Kompè Lapen → Kompè Zamba → Potomitan → Benzo
+- **7 Niveaux :** Pipirit → Ti moun → Débrouya → An mitan → Kompè Lapen → Kompè Zamba → Potomitan
 - **Suivi de Progression :** Compte combien de mots créoles uniques vous avez tapés
 - **Récompenses :** Débloque des badges pour des jalons (ex: "100 premiers mots")
 
