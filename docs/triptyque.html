@@ -204,8 +204,13 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 
 .callout{
   margin-top:auto; background:var(--sun-soft); border:1px solid color-mix(in srgb, var(--sun) 35%, transparent);
-  border-radius:8px; padding:3mm 4mm; font-size:10px; color:#000; font-weight:600; text-align:center;
+  border-radius:8px; padding:3mm 4mm; font-size:11.5px; color:#000; font-weight:600; text-align:center;
 }
+.back-cover .help-title{
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:11px;
+  letter-spacing:.04em; text-transform:uppercase; color:var(--sun); margin:0 0 2.5mm;
+}
+.back-cover .help-list{ list-style:none; margin:0; padding:0; font-size:11.5px; line-height:2; }
 
 .panel-cta{
   margin-top:4mm; background:var(--sea-soft); border-radius:10px;
@@ -291,7 +296,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div>
         <div class="wordmark">POTOMITAN™</div>
         <div class="quote">&laquo;&nbsp;An kréyòl nou ka palé, an kréyòl nou ka maké&nbsp;!&nbsp;&raquo;</div>
-        <p class="mission">Ce clavier s'appuie sur les textes des plus grands défenseurs du kréyòl : écrivains, linguistes et artistes qui ont structuré et transmis la langue.</p>
+        <p class="mission">Ce clavier s'appuie sur les textes de Sonny Rupaire, Sylviane Telchid, Max Rippon, Gisèle Pineau et d'autres grands défenseurs du kréyòl guadeloupéen : écrivains, linguistes et artistes qui ont structuré et transmis la langue.</p>
       </div>
       <div class="promo-row">
         <div class="qr-box">
@@ -302,6 +307,14 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <span class="big">100%<br>gratuit</span>
           <span class="small">zéro pub</span>
         </div>
+      </div>
+      <div>
+        <div class="help-title">Comment nous aider</div>
+        <ul class="help-list">
+          <li>⭐ Note l'app sur Google Play</li>
+          <li>📣 Parle-en autour de toi</li>
+          <li>🐛 Signale un mot manquant</li>
+        </ul>
       </div>
       <div>
         <div class="contact">
@@ -332,6 +345,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span class="ic">📖</span><span>Code source ouvert, vérifiable par tous</span></li>
         <li><span class="ic">🆓</span><span>Gratuit, sans publicité, sans achat intégré</span></li>
       </ul>
+      <div class="callout">🎮 Et à l'intérieur : jeux de vocabulaire, accents créoles par appui long, progression en 7 niveaux. Retourne le dépliant pour tout découvrir&nbsp;!</div>
     </div>
 
     <!-- P3 : couverture -->
