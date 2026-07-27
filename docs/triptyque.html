@@ -147,10 +147,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-size:16px; font-weight:800; color:var(--ink); margin:0 0 3mm;
   padding-bottom:2mm; border-bottom:3px solid var(--sun);
 }
-.light p{ font-size:11px; font-weight:500; line-height:1.55; color:#000; margin:0 0 3mm; }
+.light p{ font-size:12px; font-weight:500; line-height:1.55; color:#000; margin:0 0 3mm; }
 .kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:var(--sea); text-transform:uppercase; margin-bottom:1mm; }
 
-.bullets{ list-style:none; margin:0; padding:0; font-size:11px; font-weight:500; color:#000; }
+.bullets{ list-style:none; margin:0; padding:0; font-size:12px; font-weight:500; color:#000; }
 .bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
 .bullets li .ic{ flex:0 0 auto; font-size:14px; }
 .bullets li b{ color:#000; }
@@ -163,14 +163,14 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
 .steps li{
   counter-increment:step; position:relative; padding-left:26px; margin-bottom:5mm;
-  font-size:11px; font-weight:500; line-height:1.45; color:#000;
+  font-size:12px; font-weight:500; line-height:1.45; color:#000;
 }
 .steps li::before{
   content:counter(step); position:absolute; left:0; top:0;
   width:19px; height:19px; border-radius:50%; background:var(--sea); color:#fff;
   font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
 }
-.steps li b{ display:block; color:#000; font-size:12px; }
+.steps li b{ display:block; color:#000; font-size:12.5px; }
 .dl-row{
   display:flex; align-items:center; gap:3mm; background:var(--sea-soft);
   border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
@@ -291,7 +291,6 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div>
         <div class="contact">
           <div><span>Web</span> potomitan.io</div>
-          <div><span>GitHub</span> github.com/famibelle/KreyolKeyb</div>
           <div><span>Kontak</span> contact@potomitan.io</div>
         </div>
         <div class="legal">Klavyé Kréyòl Karukera est un projet citoyen, gratuit et open source (licence MIT), publié par Potomitan™. Zéro collecte de données personnelles : fonctionnement 100&nbsp;% local.</div>
@@ -311,11 +310,11 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </ul>
       <div class="stat-row">
         <div class="stat"><b>1,6&nbsp;M</b><span>locuteurs du créole en France</span></div>
-        <div class="stat"><b>1800+</b><span>mots kréyòl référencés</span></div>
+        <div class="stat"><b>1800+</b><span>mots kréyòl reconnus</span></div>
       </div>
       <ul class="bullets">
         <li><span class="ic">🔒</span><span>Zéro collecte de données, tout reste sur le téléphone</span></li>
-        <li><span class="ic">📖</span><span>Code source ouvert et auditable (MIT)</span></li>
+        <li><span class="ic">📖</span><span>Code source ouvert, vérifiable par tous</span></li>
         <li><span class="ic">🆓</span><span>Gratuit, sans publicité, sans achat intégré</span></li>
       </ul>
     </div>
@@ -353,11 +352,11 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <b>Télécharge l'app, c'est gratuit</b>
           <div class="dl-row">
             <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-            <span class="dl-txt"><b>Scanne ce code</b>ou cherche « Klavyé Kréyòl » sur Google Play</span>
+            <span class="dl-txt"><b>Scanne ce code</b>Vise-le avec l'appareil photo, ou cherche « Klavyé Kréyòl » sur Google Play</span>
           </div>
         </li>
         <li><b>Teste le clavier de démo</b>Ouvre l'app : un clavier d'essai intégré à l'écran d'accueil te permet de taper « bonjou » et de voir les suggestions, sans rien activer.</li>
-        <li><b>Active le clavier dans les réglages</b>Un bouton dans l'app t'amène directement au bon écran des paramètres Android.</li>
+        <li><b>Active le clavier dans les réglages</b>Un bouton dans l'app t'amène directement au bon écran des paramètres Android. (Le message d'avertissement qui peut s'afficher est standard pour tous les claviers : pas d'inquiétude.)</li>
         <li><b>Choisis-le et écris</b>De retour dans l'app, le sélecteur de clavier s'ouvre automatiquement : sélectionne Klavyé Kréyòl et tape ton premier mot.</li>
       </ol>
       <div class="shot"><img src="assets/triptyque-conversation.jpg" alt="Le clavier en action : suggestions Bonjou (kréyòl) et Bonjour (français) dans une vraie conversation"></div>
@@ -370,15 +369,15 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <ul class="bullets">
         <li><span class="ic">💬</span><span><b>Suggestions bilingues</b> : le kréyòl d'abord, le français prend le relais dès qu'aucun mot créole ne correspond</span></li>
         <li><span class="ic">✒️</span><span><b>Accents créoles</b> (é, è, à, ò...) par simple appui long</span></li>
-        <li><span class="ic">🔤</span><span><b>Correction tolérante</b> aux fautes de frappe et aux variations d'accents</span></li>
+        <li><span class="ic">🔤</span><span>Il comprend même si <b>tu te trompes</b> d'accent ou de lettre</span></li>
         <li><span class="ic">🧩</span><span><b>Jeux de vocabulaire</b> intégrés : mots mêlés, mots mélangés</span></li>
-        <li><span class="ic">🏆</span><span><b>Progression gamifiée</b> en 7 niveaux culturels, de Pipirit à Potomitan</span></li>
+        <li><span class="ic">🏆</span><span><b>Progression en 7 niveaux</b>, comme un jeu, de Pipirit à Potomitan</span></li>
       </ul>
       <div class="mini-shots">
         <img class="s1" src="assets/tract-visuel-1.png" alt="Klavyé Kréyòl Karukera : maké an bel kréyòl">
         <img class="s2" src="assets/tract-visuel-2.png" alt="Conversation SMS écrite en créole avec le clavier">
       </div>
-      <div class="callout">Le dictionnaire grandit avec la communauté créolophone : chaque mot tapé enrichit les suggestions pour tous.</div>
+      <div class="callout">Le dictionnaire s'enrichit à chaque mise à jour, construit à partir des textes des grands défenseurs du kréyòl.</div>
     </div>
 
     <!-- P6 : progression -->
