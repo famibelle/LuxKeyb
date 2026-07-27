@@ -3159,6 +3159,8 @@ class SettingsActivity : AppCompatActivity() {
 
     // Fragment pour les statistiques
     class StatsFragment : Fragment() {
+        private var scrollView: ScrollView? = null
+
         override fun onCreateView(
             inflater: android.view.LayoutInflater,
             container: android.view.ViewGroup?,
@@ -3166,7 +3168,7 @@ class SettingsActivity : AppCompatActivity() {
         ): View {
             Log.d("SettingsActivity", "Création de la vue StatsFragment")
             val activity = requireActivity() as SettingsActivity
-            
+
             // Créer le SwipeRefreshLayout pour le Pull-to-Refresh
             val swipeRefreshLayout = androidx.swiperefreshlayout.widget.SwipeRefreshLayout(activity).apply {
                 setColorSchemeColors(
@@ -3175,17 +3177,17 @@ class SettingsActivity : AppCompatActivity() {
                     Color.parseColor("#FF9800")  // Orange
                 )
                 setProgressBackgroundColorSchemeColor(Color.WHITE)
-                
+
                 // Configurer l'action de rafraîchissement
                 setOnRefreshListener {
                     Log.d("SettingsActivity", "🔄 Pull-to-Refresh déclenché")
-                    
+
                     // Afficher un message
                     Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
-                    
+
                     // Forcer la sauvegarde des données en attente
                     flushPendingUpdates(activity, activity.activityScope)
-                    
+
                     // Attendre un peu puis recréer l'activité
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                         Log.d("SettingsActivity", "🔄 Rechargement de l'activité après pull-to-refresh")
@@ -3193,19 +3195,36 @@ class SettingsActivity : AppCompatActivity() {
                     }, 500) // Attendre 500ms
                 }
             }
-            
+
             val scrollView = ScrollView(activity).apply {
                 setBackgroundColor(Color.WHITE)
                 isFillViewport = true
             }
+            this.scrollView = scrollView
             val statsContent = activity.createStatsContent()
             scrollView.addView(statsContent)
-            
+
             // Ajouter le ScrollView dans le SwipeRefreshLayout
             swipeRefreshLayout.addView(scrollView)
             
             Log.d("SettingsActivity", "StatsFragment créé avec Pull-to-Refresh")
             return swipeRefreshLayout
+        }
+
+        override fun onResume() {
+            super.onResume()
+            // Recharge les stats à chaque retour au premier plan (ex. après une session de
+            // frappe) : sans ce rafraîchissement, l'onglet réaffiche les chiffres capturés à
+            // sa création jusqu'à un pull-to-refresh manuel ou un redémarrage de l'activité.
+            val activity = requireActivity() as? SettingsActivity ?: return
+            val container = scrollView ?: return
+            container.removeAllViews()
+            container.addView(activity.createStatsContent())
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            scrollView = null
         }
     }
     
