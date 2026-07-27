@@ -117,10 +117,11 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .back-cover .qr-box{
   background:#fff; border-radius:10px; padding:2mm; flex:0 0 auto;
   box-shadow:0 4px 14px rgba(0,0,0,.25);
+  display:flex; flex-direction:column; align-items:center;
 }
 .back-cover .qr-box img{ display:block; width:20mm; height:20mm; }
 .back-cover .qr-label{
-  font-size:9.5px; font-weight:700; color:var(--sun); text-transform:uppercase;
+  font-size:9.5px; font-weight:700; color:var(--hibiscus); text-transform:uppercase;
   text-align:center; margin-top:1.5mm; letter-spacing:.03em;
 }
 .back-cover .stamp{
@@ -162,10 +163,11 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .bullets li .ic{ flex:0 0 auto; font-size:14px; }
 .bullets li b{ color:#000; }
 
-.stat-row{ display:flex; gap:5mm; margin:3mm 0; }
-.stat{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:3.5mm; text-align:center; }
-.stat b{ display:block; font-size:17px; color:var(--sea); }
-.stat span{ font-size:9px; font-weight:600; color:#000; }
+.convo-extract{ margin:3mm 0; }
+.convo-extract img{
+  display:block; width:100%; border-radius:8px;
+  border:3px solid #FFFFFF; box-shadow:0 4px 14px rgba(0,0,0,.22);
+}
 
 .steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
 .steps li{
@@ -221,19 +223,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .panel-cta .txt b{ display:block; font-size:12.5px; color:var(--sea); text-transform:uppercase; }
 .panel-cta .txt .free{ display:block; color:var(--hibiscus); font-weight:800; margin-top:1mm; }
 
-.levels{ display:flex; flex-wrap:wrap; align-items:flex-end; gap:1mm 1mm; margin-bottom:4mm; }
-.tag-pill{
-  display:inline-block; background:var(--sea-soft); color:#000; font-weight:700;
-  border-radius:20px; white-space:nowrap;
+.levels{ display:flex; align-items:flex-end; gap:2.5mm; margin-bottom:4mm; }
+.level-step{
+  flex:1; display:flex; align-items:flex-start; justify-content:center;
+  background:var(--sea-soft); border-radius:6px 6px 0 0; padding-top:2mm;
 }
-.levels .tag-pill:nth-child(1){ font-size:7.5px; padding:1.5px 5px; }
-.levels .tag-pill:nth-child(2){ font-size:8px; padding:1.5px 5px; }
-.levels .tag-pill:nth-child(3){ font-size:8.5px; padding:2px 5.5px; }
-.levels .tag-pill:nth-child(4){ font-size:9px; padding:2px 5.5px; }
-.levels .tag-pill:nth-child(5){ font-size:9.5px; padding:2.5px 6px; }
-.levels .tag-pill:nth-child(6){ font-size:10px; padding:2.5px 6px; }
-.levels .tag-pill:nth-child(7){ font-size:11.5px; padding:3px 7px; }
-.tag-pill.top{ background:var(--sun); color:#3a2e00; }
+.level-step span{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:10px; color:#000; text-align:center; }
+.level-step.s1{ height:9mm; }
+.level-step.s2{ height:15mm; }
+.level-step.s3{ height:22mm; background:var(--sun); }
+.level-step.s3 span{ font-size:13px; color:#3a2e00; }
 
 @page{ size:297mm 210mm landscape; margin:0; }
 
@@ -336,9 +335,8 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span class="ic">🤔</span><span>Que tu doutes de l'orthographe à chaque message…</span></li>
         <li><span class="ic">➡️</span><span><b>Klavyé Kréyòl Karukera est fait pour toi&nbsp;!</b></span></li>
       </ul>
-      <div class="stat-row">
-        <div class="stat"><b>1,6&nbsp;M</b><span>locuteurs du créole en France</span></div>
-        <div class="stat"><b>1800+</b><span>mots kréyòl reconnus</span></div>
+      <div class="convo-extract">
+        <img src="assets/triptyque-p2-extrait.jpg" alt="Extrait d'une conversation écrite avec le clavier : « Bèl bonjou. »">
       </div>
       <ul class="bullets">
         <li><span class="ic">🔒</span><span>Zéro collecte de données, tout reste sur le téléphone</span></li>
@@ -423,7 +421,9 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <h2>Suis ta progression</h2>
       <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
       <div class="levels">
-        <span class="tag-pill">Pipirit</span><span class="tag-pill">Ti moun</span><span class="tag-pill">Débrouya</span><span class="tag-pill">An mitan</span><span class="tag-pill">Kompè Lapen</span><span class="tag-pill">Kompè Zamba</span><span class="tag-pill top">Potomitan</span>
+        <div class="level-step s1"><span>Pipirit</span></div>
+        <div class="level-step s2"><span>An mitan</span></div>
+        <div class="level-step s3"><span>Potomitan</span></div>
       </div>
       <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
       <div class="panel-cta">
