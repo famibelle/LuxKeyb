@@ -17,7 +17,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 14 juillet 2026*
+*Dernière mise à jour : 30 juillet 2026*
 
 ## En une phrase
 
@@ -25,6 +25,18 @@ lang: fr
 créole guadeloupéen** : il suggère les mots en kréyòl pendant la frappe, à
 partir d'un corpus littéraire créole authentique. Gratuit, open source, et
 sans aucune collecte de données.
+
+## Ils en parlent déjà
+
+Fin juillet 2026, deux chaînes de télévision guadeloupéennes ont consacré un
+sujet au clavier :
+
+- **Canal 10** — sujet Tech « Une application intuitive pour écrire en
+  créole » : présentation et démonstration du clavier à l'antenne.
+  [Voir l'extrait](Medias/TV_Canal10.mov)
+- **Guadeloupe la 1ère** (France Télévisions) — journal *Guadeloupe Soir*
+  (19h36), sujet « Karukéra : on jan pou maké kréyòl-la », avec le
+  témoignage d'un utilisateur du clavier. [Voir l'extrait](Medias/TV_Guadeloupe1ère.mov)
 
 ## Le contexte d'actualité : une langue fragilisée par l'institution
 
@@ -97,6 +109,7 @@ Les suggestions s'appuient sur les œuvres de :
 | Éditeur | [Potomitan™](https://potomitan.io) |
 | Écosystème | Développe aussi [POTOMITAN](https://potomitan.io), traducteur d'urgence français ↔ créole |
 | Téléchargement | [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k) |
+| Couverture presse | Canal 10 et Guadeloupe la 1ère (TV, juillet 2026) |
 
 ## Angles possibles
 
@@ -128,6 +141,7 @@ Les suggestions s'appuient sur les œuvres de :
 
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
 - [Captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux)
+- [Reportage Canal 10](Medias/TV_Canal10.mov) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mov) (extraits vidéo)
 - [Motion du CESECEM sur la suspension de l'agrégation de créole](https://www.youtube.com/watch?v=mNfkT2xpxR4) (vidéo)
 - Logo Potomitan disponible sur demande
 
