@@ -1025,11 +1025,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // Obtenir la hauteur système de la navigation bar
         val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        val systemNavBarHeight = if (resourceId > 0) {
+        val rawNavBarHeight = if (resourceId > 0) {
             resources.getDimensionPixelSize(resourceId)
         } else {
             (48 * resources.displayMetrics.density).toInt() // Fallback 48dp
         }
+        // Certaines ROM OEM (constaté sur un téléphone bas de gamme non identifié,
+        // "P300", en portrait uniquement) renvoient une valeur aberrante pour ce
+        // dimen système, ce qui pousse tout le clavier hors de l'écran visible.
+        // Une vraie navigation bar Android ne dépasse jamais ~64dp : on plafonne
+        // pour ignorer les valeurs corrompues plutôt que de leur faire confiance.
+        val maxNavBarHeightPx = (64 * resources.displayMetrics.density).toInt()
+        val systemNavBarHeight = rawNavBarHeight.coerceIn(0, maxNavBarHeightPx)
         
         val padding = when (navigationMode) {
             0 -> {
