@@ -31,14 +31,30 @@ sans aucune collecte de données.
 Fin juillet 2026, deux chaînes de télévision guadeloupéennes ont consacré un
 sujet au clavier :
 
-- **Canal 10** — sujet Tech « Une application intuitive pour écrire en
-  créole » : présentation et démonstration du clavier à l'antenne.
-  [Voir l'extrait](Medias/TV_Canal10.mov)
-- **Guadeloupe la 1ère** (France Télévisions) — journal *Guadeloupe Soir
-  19h30* du mardi 28 juillet 2026, sujet « Karukéra : on jan pou maké
-  kréyòl-la », avec le témoignage d'un utilisateur du clavier.
-  [Voir l'extrait](Medias/TV_Guadeloupe1ère.mov) ·
-  [Replay complet sur la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html)
+<div align="center" style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 1.5em 0;">
+  <div style="max-width: 420px; flex: 1 1 320px;">
+    <video controls preload="metadata" poster="Medias/TV_Canal10_poster.jpg" style="width: 100%; border-radius: 8px;">
+      <source src="Medias/TV_Canal10.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture vidéo intégrée.
+      <a href="Medias/TV_Canal10.mp4">Télécharger l'extrait Canal 10</a>.
+    </video>
+    <p><strong>Canal 10</strong> — sujet Tech « Une application intuitive
+    pour écrire en créole » : présentation et démonstration du clavier à
+    l'antenne.</p>
+  </div>
+  <div style="max-width: 420px; flex: 1 1 320px;">
+    <video controls preload="metadata" poster="Medias/TV_Guadeloupe1ère_poster.jpg" style="width: 100%; border-radius: 8px;">
+      <source src="Medias/TV_Guadeloupe1ère.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture vidéo intégrée.
+      <a href="Medias/TV_Guadeloupe1ère.mp4">Télécharger l'extrait Guadeloupe la 1ère</a>.
+    </video>
+    <p><strong>Guadeloupe la 1ère</strong> (France Télévisions) — journal
+    <em>Guadeloupe Soir 19h30</em> du mardi 28 juillet 2026, sujet « Karukéra
+    : on jan pou maké kréyòl-la », avec le témoignage d'un utilisateur du
+    clavier.
+    <a href="https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html">Replay complet sur la1ere.franceinfo.fr</a>.</p>
+  </div>
+</div>
 
 ## Le contexte d'actualité : une langue fragilisée par l'institution
 
@@ -143,7 +159,7 @@ Les suggestions s'appuient sur les œuvres de :
 
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
 - [Captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux)
-- [Reportage Canal 10](Medias/TV_Canal10.mov) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mov) (extraits vidéo)
+- [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
 - [Motion du CESECEM sur la suspension de l'agrégation de créole](https://www.youtube.com/watch?v=mNfkT2xpxR4) (vidéo)
 - Logo Potomitan disponible sur demande
 
