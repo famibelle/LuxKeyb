@@ -34,9 +34,11 @@ sujet au clavier :
 - **Canal 10** — sujet Tech « Une application intuitive pour écrire en
   créole » : présentation et démonstration du clavier à l'antenne.
   [Voir l'extrait](Medias/TV_Canal10.mov)
-- **Guadeloupe la 1ère** (France Télévisions) — journal *Guadeloupe Soir*
-  (19h36), sujet « Karukéra : on jan pou maké kréyòl-la », avec le
-  témoignage d'un utilisateur du clavier. [Voir l'extrait](Medias/TV_Guadeloupe1ère.mov)
+- **Guadeloupe la 1ère** (France Télévisions) — journal *Guadeloupe Soir
+  19h30* du mardi 28 juillet 2026, sujet « Karukéra : on jan pou maké
+  kréyòl-la », avec le témoignage d'un utilisateur du clavier.
+  [Voir l'extrait](Medias/TV_Guadeloupe1ère.mov) ·
+  [Replay complet sur la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html)
 
 ## Le contexte d'actualité : une langue fragilisée par l'institution
 
