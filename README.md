@@ -44,8 +44,28 @@ C’est un acte de transmission, un hommage à la langue, une technologie au ser
 Fin juillet 2026, **Canal 10** et **Guadeloupe la 1ère** (France Télévisions)
 ont chacune consacré un sujet au clavier :
 
-- **Canal 10** — sujet Tech « Une application intuitive pour écrire en créole » ([extrait vidéo](docs/Medias/TV_Canal10.mov))
-- **Guadeloupe la 1ère** — journal *Guadeloupe Soir 19h30* du mardi 28 juillet 2026, sujet « Karukéra : on jan pou maké kréyòl-la », avec le témoignage d'un utilisateur ([extrait vidéo](docs/Medias/TV_Guadeloupe1ère.mov) · [replay](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html))
+<table>
+<tr>
+<td width="50%" align="center">
+
+<video src="docs/Medias/TV_Canal10.mp4" controls poster="docs/Medias/TV_Canal10_poster.jpg" width="100%"></video>
+
+**Canal 10** — « Une application intuitive pour écrire en créole »
+
+</td>
+<td width="50%" align="center">
+
+<video src="docs/Medias/TV_Guadeloupe1ère.mp4" controls poster="docs/Medias/TV_Guadeloupe1ère_poster.jpg" width="100%"></video>
+
+**Guadeloupe la 1ère** — *Guadeloupe Soir 19h30*, 28/07/2026 · « Karukéra : on jan pou maké kréyòl-la »
+
+</td>
+</tr>
+</table>
+
+*Si la vidéo ne s'affiche pas ci-dessus : [extrait Canal 10](docs/Medias/TV_Canal10.mp4) ·
+[extrait Guadeloupe la 1ère](docs/Medias/TV_Guadeloupe1ère.mp4) ·
+[replay complet sur la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html)*
 
 📰 [Dossier de presse complet](https://famibelle.github.io/KreyolKeyb/presskit.html)
 
