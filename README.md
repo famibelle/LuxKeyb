@@ -16,7 +16,7 @@
 
 Ce projet s’appuie sur un **corpus littéraire créole** et les travaux de **grands défenseurs du kréyòl** — écrivains, chanteurs, linguistes — pour offrir une expérience de saisie fidèle à la richesse de la langue.
 
-Grâce à un dictionnaire de plus de **1 800 mots** et un système de **suggestions contextuelles** basé sur des textes d’auteurs emblématiques tels que :
+Grâce à un dictionnaire de plus de **5 200 mots** et un système de **suggestions contextuelles** basé sur des textes d’auteurs emblématiques tels que :
 
 - 🎤 **Esnard Boisdur**, **Jomimi**, **Pierre Edouard Decimus** – artistes et conteurs qui ont fait vibrer le créole à travers la musique et la tradition orale  
 - ✍️ **Sonny Rupaire**, **Silvyane Telchid**, **Max Rippon**, **Gisèle Pineau**, **Katel** – écrivains et poètes qui ont donné au kréyòl ses lettres de noblesse  
@@ -77,13 +77,22 @@ Replay complet du journal : [la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/
 
 *Clavier créole avec suggestions basés sur les textes littéraires fondateurs du kréyòl*
 
+<div align="center">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_clavier_suggestions_kreyol.png" alt="Suggestions Kréyòl et Français en temps réel" width="23%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_accueil.png" alt="Écran d'onboarding : activation du clavier" width="23%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_stats_mon_kreyol.png" alt="Tableau de bord Mon Kréyòl : niveaux et mots découverts" width="23%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_mots_melanges.png" alt="Mini-jeu Mots Mélangés" width="23%">
+</div>
+
+*Suggestions bilingues, onboarding guidé, suivi de progression (gamification) et mini-jeux de vocabulaire*
+
 ## 🌟 Fonctionnalités
 
 ### 🎯 **Suggestions Intelligentes**
-- **1 867 mots** créoles dans le dictionnaire
+- **5 284 mots** créoles dans le dictionnaire (+ 662 mots français en fallback)
 - Suggestions contextuelles en temps réel
 - Prédiction de texte adaptée au kréyòl
-- **N-grams linguistiques** construits à partir de textes authentiques créoles
+- **N-grams linguistiques** : 4 601 mots-pivots construits à partir de textes authentiques créoles
 
 #### 📚 **Corpus Littéraire des Suggestions**
 Les suggestions de mots sont générées grâce à des **N-grams** (séquences de mots) extraits des œuvres d'éminents auteurs et contributeurs de la littérature créole guadeloupéenne :
@@ -146,7 +155,7 @@ cd KreyolKeyb/android_keyboard
 ./gradlew assembleRelease
 ```
 
-## �️ Installation depuis les sources
+## 🛠️ Installation depuis les sources
 
 ### Prérequis
 - **Android 7.0** (API 24) ou supérieur
@@ -219,7 +228,7 @@ android_keyboard/
 ## 📚 Dictionnaire & Prédiction
 
 ### Sources du Dictionnaire
-Le dictionnaire contient **1 867 mots créoles** extraits de :
+Le dictionnaire contient **5 284 mots créoles** extraits de :
 
 1. **Dataset Potomitan** (Hugging Face)
    - Corpus de traductions français-créole
@@ -228,13 +237,21 @@ Le dictionnaire contient **1 867 mots créoles** extraits de :
 2. **Textes Littéraires Créoles** 🐚
    - Œuvres de Gisèle Pineau
    - Poésie de Sonny Rupaire
-   - Chansons traditionnelles guadeloupéennes �
+   - Chansons traditionnelles guadeloupéennes
    - Littérature créole contemporaine
+
+### Données embarquées (assets)
+
+| Fichier | Contenu | Taille |
+|---------|---------|--------|
+| `creole_dict.json` | 5 284 mots kréyòl + fréquences | ~160 Ko |
+| `creole_ngrams.json` | 4 601 mots-pivots (contexte n-grams) | ~640 Ko |
+| `french_simple_dict.json` | 662 mots français (fallback) | ~16 Ko |
 
 ### Mots les Plus Fréquents
 ```
-an (424), ka (324), la (219), on (208), té (188)
-pou (154), nou (133), i (102), sé (100), yo (94)
+ka (20 006), an (13 982), sé (9 383), on (8 942), té (8 692)
+yo (7 692), pou (7 608), nou (7 298), pa (7 005), ki (5 931)
 ```
 
 ### Mise à jour dictionnaire
@@ -307,7 +324,7 @@ cd KreyolKeyb/android_keyboard
 ### kréyòl Guadeloupéen
 Le **kréyòl Guadeloupéen** est une langue créole parlée en Guadeloupe, qui prend sa source dans une culture africaines, caribéennes et amérindiennes.
 
-### Respect Culturel �
+### Respect Culturel
 Ce projet est développé dans le respect de :
 - La richesse linguistique caribéenne
 - L'héritage culturel guadeloupéen
@@ -347,8 +364,8 @@ R: Vérifier que le clavier est bien activé et défini par défaut
 R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 
 <div align="center">
-   <img src="Screenshots/Screenshot_1757202571.png" alt="Clavier kréyòl Karukera" width="25%">
-   <img src="Screenshots/Screenshot_1757242027.png" alt="Clavier kréyòl Karukera en home" width="25%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_a_propos.png" alt="Écran À propos du clavier" width="25%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_guide_utilisateur.png" alt="Guide utilisateur intégré" width="25%">
 </div>
 
 ---
@@ -357,7 +374,7 @@ R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
 
 ** Fierté Guadeloupéenne – Technologie au service de la langue **
 
-*Développé avec ❤️ pour la communauté créolophone* 🐚�
+*Développé avec ❤️ pour la communauté créolophone* 🐚
 
 </div>
 
