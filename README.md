@@ -39,6 +39,16 @@ C’est un acte de transmission, un hommage à la langue, une technologie au ser
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 
+## 📺 Dans les médias
+
+Fin juillet 2026, **Canal 10** et **Guadeloupe la 1ère** (France Télévisions)
+ont chacune consacré un sujet au clavier :
+
+- **Canal 10** — sujet Tech « Une application intuitive pour écrire en créole » ([extrait vidéo](docs/Medias/TV_Canal10.mov))
+- **Guadeloupe la 1ère** — journal *Guadeloupe Soir*, sujet « Karukéra : on jan pou maké kréyòl-la », avec le témoignage d'un utilisateur ([extrait vidéo](docs/Medias/TV_Guadeloupe1ère.mov))
+
+📰 [Dossier de presse complet](https://famibelle.github.io/KreyolKeyb/presskit.html)
+
 ## 📱 Aperçu
 
 <div align="center">
