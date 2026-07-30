@@ -6,6 +6,7 @@ lang: fr
 
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
+  <a href="guide.html">📘 Guide</a> ·
   <a href="ambassade.html">📣 Vin Anbasadè</a> ·
   <a href="triptyque.html">📖 Triptyque</a> ·
   <a href="presskit.html">📰 Presse</a> ·
