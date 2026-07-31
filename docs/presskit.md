@@ -17,7 +17,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 30 juillet 2026*
+*Dernière mise à jour : 31 juillet 2026*
 
 ## En une phrase
 
@@ -99,9 +99,10 @@ SMS, WhatsApp, réseaux sociaux.
 
 Un clavier qui **travaille pour le kréyòl au lieu de le combattre** :
 
-- **Suggestions intelligentes** à partir d'un dictionnaire de 1 800+ mots et
-  d'un modèle de prédiction (n-grams) construit sur des textes littéraires
-  créoles authentiques
+- **Suggestions intelligentes** à partir d'un dictionnaire de plus de
+  **5 200 mots** kréyòl et d'un modèle de prédiction contextuelle (n-grams,
+  4 600 mots-pivots) construit sur des textes littéraires créoles
+  authentiques
 - **Accents du kréyòl** (é, è, à, ò...) par simple appui long
 - **Bilingue** : le français prend le relais quand aucun mot créole ne correspond
 - **Jeux de vocabulaire** intégrés (Mots Mêlés, Mots Mélangés) et
@@ -128,6 +129,8 @@ Les suggestions s'appuient sur les œuvres de :
 | Écosystème | Développe aussi [POTOMITAN](https://potomitan.io), traducteur d'urgence français ↔ créole |
 | Téléchargement | [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k) |
 | Couverture presse | Canal 10 et Guadeloupe la 1ère (TV, juillet 2026) |
+| Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
+| Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
 
 ## Angles possibles
 
@@ -157,8 +160,14 @@ Les suggestions s'appuient sur les œuvres de :
 
 ## Visuels
 
+<div align="center" style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 1.5em 0;">
+  <img src="Screenshots/Screenshot_v8.8_clavier_suggestions_kreyol.png" alt="Suggestions bilingues Kréyòl et Français en temps réel" width="23%">
+  <img src="Screenshots/Screenshot_v8.8_stats_mon_kreyol.png" alt="Tableau de bord de progression : niveaux et mots découverts" width="23%">
+  <img src="Screenshots/Screenshot_v8.8_mots_melanges.png" alt="Mini-jeu de vocabulaire Mots Mélangés" width="23%">
+</div>
+
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
-- [Captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux)
+- [Toutes les captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux, gamification)
 - [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
 - [Motion du CESECEM sur la suspension de l'agrégation de créole](https://www.youtube.com/watch?v=mNfkT2xpxR4) (vidéo)
 - Logo Potomitan disponible sur demande
