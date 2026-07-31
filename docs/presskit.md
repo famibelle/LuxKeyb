@@ -191,6 +191,10 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
     <img src="Screenshots/app_apropos.png" alt="Écran À propos : mission du projet et sources littéraires" style="width: 100%; border-radius: 8px;">
     <p><small>À propos / mission</small></p>
   </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_selecteur_clavier.png" alt="Sélecteur de clavier Android : Klavyé Kréyòl Karukera aux côtés de Gboard" style="width: 100%; border-radius: 8px;">
+    <p><small>Sélecteur de clavier système</small></p>
+  </div>
 </div>
 
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
