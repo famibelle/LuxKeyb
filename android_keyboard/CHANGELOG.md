@@ -5,6 +5,12 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.8.4] - 2026-07-31
+
+### ✏️ « Ékri » remplacé par « Maké » dans l'interface
+
+- **Changé** : les textes d'invite du champ de test clavier (onboarding et démo) et le message de partage utilisent désormais « Maké » plutôt que « Ékri »
+
 ## [8.8.0] - 2026-07-23
 
 ### 🎯 Cible Android 16 (API 36) pour rester conforme Google Play
