@@ -930,7 +930,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val testEditText = EditText(this).apply {
             tag = "onboarding_test_field"
-            hint = if (isStep3Locked) "🔒 Verrouillé" else "Ékri an Kréyòl la..."
+            hint = if (isStep3Locked) "🔒 Verrouillé" else "Maké an Kréyòl la..."
             textSize = 16f
             setPadding(16, 16, 16, 16)
             minHeight = 100
@@ -1516,7 +1516,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val demoField = EditText(this).apply {
-            hint = "Ékri isi..."
+            hint = "Maké isi..."
             // Ne jamais ouvrir le clavier système (Gboard) sur ce champ :
             // c'est le clavier d'essai ci-dessous qui écrit dedans
             showSoftInputOnFocus = false
@@ -2151,7 +2151,7 @@ class SettingsActivity : AppCompatActivity() {
 
     // Fonction pour partager l'application (bouche-à-oreille)
     private fun shareApp() {
-        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukera pou ékri kréyòl asi téléfòn an mwen ! 🏝️\n" +
+        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukera pou maké kréyòl asi téléfòn an mwen ! 🏝️\n" +
                 "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
