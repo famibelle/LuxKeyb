@@ -121,7 +121,7 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createNumericLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         val row2 = arrayOf("-", "/", ":", ";", "(", ")", "€", "&", "@", "\"")
-        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "_", "⌫")
+        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "⌫")
         val row4 = arrayOf("ABC", " ", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
