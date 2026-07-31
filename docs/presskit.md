@@ -195,13 +195,17 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
     <img src="Screenshots/app_selecteur_clavier.png" alt="Sélecteur de clavier Android : Klavyé Kréyòl Karukera aux côtés de Gboard" style="width: 100%; border-radius: 8px;">
     <p><small>Sélecteur de clavier système</small></p>
   </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="assets/potomitan-logo.png" alt="Logo Potomitan™" style="width: 100%; border-radius: 8px;">
+    <p><small>Logo Potomitan™</small></p>
+  </div>
 </div>
 
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
 - [Toutes les captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux, gamification)
 - [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
 - [Motion du CESECEM sur la suspension de l'agrégation de créole](https://www.youtube.com/watch?v=mNfkT2xpxR4) (vidéo)
-- Logo Potomitan disponible sur demande
+- [Logo Potomitan™ en haute résolution](assets/potomitan-logo.png)
 
 ## Sources
 
