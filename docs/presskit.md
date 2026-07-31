@@ -160,10 +160,37 @@ Les suggestions s'appuient sur les œuvres de :
 
 ## Visuels
 
+Captures d'écran de chaque section de l'application (juillet 2026) :
+
 <div align="center" style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 1.5em 0;">
-  <img src="Screenshots/Screenshot_v8.8_clavier_suggestions_kreyol.png" alt="Suggestions bilingues Kréyòl et Français en temps réel" width="23%">
-  <img src="Screenshots/Screenshot_v8.8_stats_mon_kreyol.png" alt="Tableau de bord de progression : niveaux et mots découverts" width="23%">
-  <img src="Screenshots/Screenshot_v8.8_mots_melanges.png" alt="Mini-jeu de vocabulaire Mots Mélangés" width="23%">
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_clavier_suggestions.png" alt="Suggestions bilingues Kréyòl et Français en temps réel, dans une conversation SMS" style="width: 100%; border-radius: 8px;">
+    <p><small>Suggestions en conditions réelles</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_accueil.png" alt="Écran d'accueil : configuration et activation guidée du clavier" style="width: 100%; border-radius: 8px;">
+    <p><small>Accueil / configuration</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_stats.png" alt="Tableau de bord Mon Kréyòl : niveau, mot du jour, mots découverts" style="width: 100%; border-radius: 8px;">
+    <p><small>Progression gamifiée</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_guide.png" alt="Guide de l'utilisateur avec démonstration du popup d'accents" style="width: 100%; border-radius: 8px;">
+    <p><small>Guide + popup accents</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_jeu_mots_meles.png" alt="Mini-jeu Mots Mêlés (grille de lettres à trouver)" style="width: 100%; border-radius: 8px;">
+    <p><small>Jeu Mots Mêlés</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_jeu_mots_melanges.png" alt="Mini-jeu Mots Mélangés (lettres à remettre dans l'ordre)" style="width: 100%; border-radius: 8px;">
+    <p><small>Jeu Mots Mélangés</small></p>
+  </div>
+  <div style="width: 22%; min-width: 140px;">
+    <img src="Screenshots/app_apropos.png" alt="Écran À propos : mission du projet et sources littéraires" style="width: 100%; border-radius: 8px;">
+    <p><small>À propos / mission</small></p>
+  </div>
 </div>
 
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
