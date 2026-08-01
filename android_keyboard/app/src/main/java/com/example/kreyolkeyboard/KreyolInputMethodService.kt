@@ -1395,7 +1395,7 @@ class KreyolInputMethodService : InputMethodService() {
     val lowercaseWord = word.lowercase()
         
         // 1. Vérifier dans le dictionnaire principal
-        if (dictionary.any { it.first.toLowerCase() == lowercaseWord }) {
+        if (dictionary.any { it.first.lowercase() == lowercaseWord }) {
             return true
         }
         
