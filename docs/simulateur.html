@@ -10,11 +10,21 @@
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
+<script>(function(){if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed-mode');})();</script>
 <style>
   * { box-sizing: border-box; }
   body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
 
   main { max-width: 640px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ---- mode embed (?embed=1), pour intégration en <iframe> ---- */
+  html.embed-mode nav.site,
+  html.embed-mode header.hero,
+  html.embed-mode .cta-row,
+  html.embed-mode footer.note,
+  html.embed-mode .embed-section { display: none; }
+  html.embed-mode main { max-width: 420px; padding: 8px; }
+  html.embed-mode .phone-shell { margin: 4px auto; }
 
   header.hero { text-align: center; padding: 28px 0 8px; }
   .eyebrow { color: var(--sea); font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
@@ -222,6 +232,43 @@
     font-size: 13px;
     margin-top: 24px;
   }
+
+  .embed-section {
+    margin: 32px 0 0;
+    padding: 18px;
+    text-align: center;
+  }
+  .embed-section h2 {
+    font-size: 16px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .embed-section p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  .embed-snippet {
+    display: block;
+    width: 100%;
+    resize: vertical;
+    min-height: 64px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .embed-copy-btn { font-size: 13px; padding: 8px 16px; }
+  .embed-copy-feedback {
+    font-size: 12.5px;
+    color: var(--sea);
+    margin-left: 8px;
+    font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -250,6 +297,7 @@
     <p class="lede">
       Tape un mot, touche une suggestion pour l'insérer, ou reste appuyé
       sur une voyelle (a, e, i, o, u...) pour voir apparaître les accents.
+      Le clavier de ton ordinateur fonctionne aussi directement.
     </p>
   </header>
 
@@ -276,6 +324,14 @@
   <div class="cta-row">
     <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dsimulateur%26utm_campaign%3Dlaunch10k" class="btn primary">📲 Installer sur Android</a>
     <a href="guide.html" class="btn">📘 Voir le guide</a>
+  </div>
+
+  <div class="card embed-section">
+    <h2>🔗 Intégrer ce simulateur ailleurs</h2>
+    <p>Copie ce code pour l'afficher dans une autre page, en dehors de ce site.</p>
+    <textarea class="embed-snippet" id="embed-snippet" readonly rows="3" onclick="this.select()">&lt;iframe src="https://famibelle.github.io/KreyolKeyb/simulateur.html?embed=1" width="380" height="760" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"&gt;&lt;/iframe&gt;</textarea>
+    <button type="button" class="btn embed-copy-btn" id="embed-copy-btn">📋 Copier</button>
+    <span class="embed-copy-feedback" id="embed-copy-feedback"></span>
   </div>
 
   <footer class="note">
@@ -336,6 +392,20 @@
   }
 
   init();
+
+  const copyBtn = document.getElementById('embed-copy-btn');
+  const copyFeedback = document.getElementById('embed-copy-feedback');
+  const snippetEl = document.getElementById('embed-snippet');
+  copyBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(snippetEl.value);
+    } catch (err) {
+      snippetEl.select();
+      document.execCommand('copy');
+    }
+    copyFeedback.textContent = 'Copié !';
+    setTimeout(() => { copyFeedback.textContent = ''; }, 2000);
+  });
 })();
 </script>
 
