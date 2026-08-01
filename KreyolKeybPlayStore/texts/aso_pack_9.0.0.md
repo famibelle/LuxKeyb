@@ -44,10 +44,14 @@ Ba kréyòl la lanmou'w : télécharge, note, partage !
 - Nombre d'installations actuel, pour recalibrer l'objectif 10k du
   [[project-growth-plan-2026-07]] (départ 100+ installs le 2026-07-12).
 
-## Capture d'écran presse (optionnel, fort impact)
+## Capture d'écran presse (fait le 2026-08-01)
 
-Aucune capture d'écran actuelle ne mentionne la couverture TV. Une capture
-« badge presse » (logos Canal 10 / France Télévisions + une phrase courte)
-en 2ᵉ ou 3ᵉ position dans la galerie de captures augmenterait la crédibilité
-dès le scroll, avant même la lecture de la description. Nécessite un asset
-graphique, pas seulement du texte : à faire si l'utilisateur le souhaite.
+Asset créé : `graphics/screenshots-phone/Screenshot_presse_vu_a_la_tele.png`
+(1080×2340, même format que les autres captures). Bandeau bleu « Vu à la
+télé » avec mentions textuelles Canal 10 / Guadeloupe la 1ère (pas de
+logos officiels, pour éviter tout problème de droits de marque) au-dessus
+d'une vraie capture du clavier en action (suggestions KR/FR). Committé en
+`0cfd751`.
+
+Reste à faire manuellement (accès Play Console uniquement) : importer ce
+fichier en 2ᵉ ou 3ᵉ position dans la galerie de captures de la fiche.
