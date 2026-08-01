@@ -51,11 +51,16 @@ Asset créé : `graphics/screenshots-phone/Screenshot_presse_vu_a_la_tele.png`
 télé » avec mentions textuelles Canal 10 / Guadeloupe la 1ère (pas de
 logos officiels, pour éviter tout problème de droits de marque) au-dessus
 d'une capture du clavier en action (suggestions KR/FR) — le même contenu
-que `Screenshot_v8.8_clavier_suggestions_kreyol.png`, déjà présente dans
-la galerie. Committé en `0cfd751`.
+que l'ex-`Screenshot_v8.8_clavier_suggestions_kreyol.png`, déjà présente
+dans la galerie Play Store. Committé en `0cfd751`.
+
+L'ancien fichier a été supprimé du dossier (doublon avec le nouvel asset)
+et remplacé, pour l'usage README, par un simple recadrage propre de la
+même capture réelle : `Screenshot_clavier_suggestions_kreyol.png` (sans
+le message de test qui s'affichait en haut de l'ancienne version).
 
 Reste à faire manuellement (accès Play Console uniquement) : **remplacer**
-`Screenshot_v8.8_clavier_suggestions_kreyol.png` par
+l'ancienne capture « suggestions kréyòl » par
 `Screenshot_presse_vu_a_la_tele.png` à la même position dans la galerie
-(pas d'ajout, pour éviter le doublon visuel des deux captures montrant la
-même démo clavier).
+de la fiche (pas d'ajout, pour éviter le doublon visuel des deux captures
+montrant la même démo clavier).
