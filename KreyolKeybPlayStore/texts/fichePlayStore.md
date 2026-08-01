@@ -12,9 +12,9 @@ Fiche Play Store principale). Remplace `description.md` et
 Klavyé Kréyòl Guadeloupe
 ```
 
-Proposition ASO de 2026-07 (remplace « Klavyé Kréyòl Guadeloupe » pour capter
-la recherche « clavier créole », le terme le plus tapé). Statut d'application
-en Play Console non confirmé, à vérifier.
+Titre live confirmé au 2026-08-01. La proposition ASO de 2026-07
+(« Klavyé Kréyòl – Clavier Créole », pour capter la recherche « clavier
+créole ») n'a pas été appliquée en Play Console.
 
 ## Brève description
 
@@ -24,7 +24,7 @@ en Play Console non confirmé, à vérifier.
 Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké an bèl Kréyòl
 ```
 
-## Description complèan 
+## Description complète
 
 *4000 caractères max.*
 
@@ -35,11 +35,11 @@ Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
 
 🛠️ Si ton kréyòl est très rouillé…
 😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots
-🤔 Que tu doutes de l’orthographe à chaque message …
+🤔 Que tu doutes de l'orthographe à chaque message …
 
 ➡️ Klavyé Kréyòl Karukera est fait pour toi !
 
-📱Klavyé Kréyòl Karukera est un clavier intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en Kréyòl de Gwaloup sur leur smartphone, avec fluidité, authenticité et fierté.
+📱 Klavyé Kréyòl Karukera est un clavier intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d'écrire facilement en Kréyòl Gwaloup sur leur smartphone, avec fluidité, authenticité et fierté.
 
 📚 CORPUS LITTÉRAIRE CRÉOLE AUTHENTIQUE
 
@@ -49,13 +49,13 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Esnard Boisdur, Jomimi, Pierre Edouard Decimus et les voix qui ont fait vibrer le créole dans la musique et l'oralité
 
 ✍️ ÉCRIVAINS & POÈTES  
-• Sonny Rupaire, Silvyane Telchid, Max Rippon
+• Sonny Rupaire, Silvyane Telchid, Max Rippon, Gisèle Pineau, Katel
 
 📚 LINGUISTES & CHERCHEURS
 • Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse, Corinne Famibelle
-• Ceux qui ont structuré et valorisé notre langue
 
 🧠 INTELLIGENCE CRÉOLE
+
 ⚡ Suggestions ultra-rapides basées sur les plus grands textes kréyòl
 🎯 Prédictions contextuelles qui comprennent ta pensée
 📖 Dictionnaire évolutif enrichi par la communauté créolophone  
@@ -88,15 +88,13 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Un guide pas-à-pas fait ensuite tout le travail : un bouton t'amène au bon écran de réglages, le sélecteur de clavier s'ouvre tout seul à ton retour, et tu tapes ton premier vrai mot dans la foulée
 • Android affichera un ou deux avertissements standard, montrés pour tout clavier tiers : normal, et sans rapport avec une quelconque collecte de données ici (rien ne quitte ton téléphone)
 
-🌍 IMPACT CULTUREL
-
-Ce n'est pas juste un clavier, c'est un acte de résistance culturelle ! Chaque message en kréyòl contribue à :
+Ce n'est pas juste un clavier, chaque message en kréyòl contribue à :
 
 🌱 Préserver notre patrimoine linguistique
 👨‍👩‍👧‍👦 Transmettre la langue aux nouvelles générations  
 🌟 Valoriser l'identité guadeloupéenne
 📚 Enrichir la production littéraire créole numérique
-🤝 Renforcer les liens communautaires
+🤝 Renforcer le Lyannaj
 
 📈 ÉVOLUTION PERMANENTE
 
@@ -106,15 +104,14 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 
 • Créolophones qui veulent écrire naturellement
 • Jeunes qui redécouvrent la langue de leurs aïeux
-• Familles preservant l'héritage culturel  
+• Familles préservant l'héritage culturel  
 • Étudiants et passionnés de culture antillaise
 • Tous ceux qui refusent de voir le kréyòl disparaître
+• Chaque téléchargement est un vote pour la survie de notre belle langue
 
 🔥 TÉLÉCHARGE MAINTENANT !
 
-Participe à la révolution numérique du kréyòl ! Chaque téléchargement est un vote pour la survie de notre belle langue.
-
-Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère numérique !
+Participe à la révolution numérique du kréyòl ! Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère numérique !
 
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
