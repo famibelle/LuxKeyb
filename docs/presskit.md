@@ -57,6 +57,11 @@ sujet au clavier :
   </div>
 </div>
 
+Guadeloupe la 1ère a également publié un article dédié : [« Klavyé Kréyòl
+Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en
+créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html)
+(Nadine Fadel, Rudy Rilcy · la1ere.franceinfo.fr, 30/07/2026).
+
 ## Le contexte d'actualité : une langue fragilisée par l'institution
 
 Le créole avait pourtant été inscrit au programme 2026 de l'**agrégation des
