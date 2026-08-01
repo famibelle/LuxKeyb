@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
   <a href="ambassade.html">📣 Vin Anbasadè</a> ·
   <a href="triptyque.html">📖 Triptyque</a> ·
   <a href="presskit.html">📰 Presse</a> ·
@@ -35,6 +36,10 @@ Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
    <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier créole guadeloupéen en action avec suggestions kréyòl" width="25%">
    <img src="Screenshots/Screenshot_1761763560.png" alt="Suggestions de mots en créole guadeloupéen" width="25%">
    <img src="Screenshots/Screenshot_1761763491.png" alt="Clavier kréyòl avec accents" width="25%">
+</div>
+
+<div align="center" style="margin: 18px 0;">
+  <a href="simulateur.html" class="btn primary" style="padding:12px 28px;">🧪 Essayer le clavier dans le navigateur</a>
 </div>
 
 ## Pourquoi ce clavier ?
