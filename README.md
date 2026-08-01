@@ -79,7 +79,7 @@ Replay complet du journal : [la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/
 *Clavier créole avec suggestions basés sur les textes littéraires fondateurs du kréyòl*
 
 <div align="center">
-   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_clavier_suggestions_kreyol.png" alt="Suggestions Kréyòl et Français en temps réel" width="23%">
+   <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_clavier_suggestions_kreyol.png" alt="Suggestions Kréyòl et Français en temps réel" width="23%">
    <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_accueil.png" alt="Écran d'onboarding : activation du clavier" width="23%">
    <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_stats_mon_kreyol.png" alt="Tableau de bord Mon Kréyòl : niveaux et mots découverts" width="23%">
    <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_mots_melanges.png" alt="Mini-jeu Mots Mélangés" width="23%">
