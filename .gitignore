@@ -18,6 +18,10 @@ android_keyboard/*.iml
 key.properties
 local-release.properties
 *keystore*base64*.txt
+*.key
+*.certSigningRequest
+/ios/*.key
+/ios/*.certSigningRequest
 
 # Fichiers temporaires
 *.tmp
