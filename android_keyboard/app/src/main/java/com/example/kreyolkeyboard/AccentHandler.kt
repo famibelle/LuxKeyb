@@ -71,9 +71,13 @@ class AccentHandler(private val context: Context) {
         "d" to listOf("dj"),
         "g" to listOf("gn", "gy"),
         "t" to listOf("tj"),
-        "," to listOf(";", ":"),
-        "." to listOf("!", "?", "…"),
-        "'" to listOf("\"", "«", "»")
+        // v9.1.0 : "'" n'est plus une touche visible dédiée (0 occurrence dans
+        // creole_dict.json) ; rejoint l'appui long sur "," pour libérer une
+        // place en rangée 4 pour la touche emoji. Les guillemets/quote qui
+        // vivaient sous l'appui long de "'" disparaissent avec elle (aucun
+        // usage relevé dans les dictionnaires non plus).
+        "," to listOf(";", ":", "'"),
+        "." to listOf("!", "?", "…")
     )
 
     // Ordre d'affichage des aperçus en coin, quand il doit différer de l'ordre

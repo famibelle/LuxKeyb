@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0] - 2026-08-01
+
+### 😀 Panneau emoji intégré au clavier
+
+- **Constat** : aucun moyen natif d'insérer un emoji, seul recours l'aller-retour vers un autre clavier système via le sélecteur d'IME
+- **Ajouté** : nouveau layout emoji (`KeyboardLayoutManager.createEmojiLayout`), sélection curée de 80 emojis (visages, gestes/réactions, cœurs, nature/animaux, quotidien, activités, météo/divers) défilable verticalement dans un `ScrollView` (3 rangées visibles à la fois, le reste accessible en swipe) + rangée de contrôle fixe (`abc`, `⌫`, espace, `⏎`) ; accessible en un tap direct depuis la rangée 4 du clavier alphabétique (à l'emplacement libéré par l'apostrophe, voir ci-dessous) ainsi que depuis le mode 123
+- **Représentativité** : les emojis gestuels (👍 👎 🙏 💪 ✌️ 👏 🤝 🤞 👋, natation, cyclisme) utilisent par défaut le ton de peau foncé, plus représentatif pour le public créole guadeloupéen
+- **Bug corrigé en cours de route** : `InputProcessor.handleBackspace()` ne supprimait qu'une unité UTF-16, corrompant tout emoji hors plan de base (paire de surrogates) en un glyphe cassé (❓) ; étendu pour gérer aussi les séquences à deux points de code (emoji + modificateur de ton de peau, ex. 💪🏿) en une seule pression
+- **Rangée 4 réorganisée** : l'apostrophe `'` (0 occurrence dans `creole_dict.json`, contre 1088 mots pour le tiret `-`) retirée de sa touche dédiée au profit de la touche emoji ; reste accessible en appui long sur `,` (aux côtés de `;` et `:`)
+- **Vérifié sur émulateur** (Android 16, `honor_x9c_test`) : ouverture du panneau depuis les deux points d'entrée, défilement vertical jusqu'aux dernières rangées, insertion et chaînage d'emojis sans espace forcé (y compris après scroll), suppression propre au backspace (y compris tons de peau), retour à `abc`, apostrophe en appui long fonctionnelle
+
 ## [9.0.0] - 2026-08-01
 
 ### 🏗️ Migration vers AGP 9.3.1 / Gradle 9.6.1 (Kotlin natif)
