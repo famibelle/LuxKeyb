@@ -57,7 +57,7 @@ Enfin écrire en kréyòl sans galérer !
 
 ➡️ Klavyé Kréyòl Karukera est fait pour toi !
 
-📱 Klavyé Kréyòl Karukera est un clavier intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d'écrire facilement en Kréyòl Gwaloup sur leur smartphone, avec fluidité, authenticité et fierté.
+📱 Klavyé Kréyòl Karukera est un clavier créole intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d'écrire facilement en Kréyòl Gwaloup sur leur smartphone, avec fluidité, authenticité et fierté.
 
 🗣️ ILS EN PARLENT
 
