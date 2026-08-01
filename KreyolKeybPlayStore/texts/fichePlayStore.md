@@ -1,3 +1,34 @@
+# Fiche Play Store
+
+Textes à coller tels quels dans la Play Console (Présence sur le Store →
+Fiche Play Store principale). Remplace `description.md` et
+`short-description.md`, fusionnés ici.
+
+## Nom de l'application
+
+*Le nom de votre appli apparaîtra tel quel sur Google Play (30 caractères max).*
+
+```
+Klavyé Kréyòl – Clavier Créole
+```
+
+Proposition ASO de 2026-07 (remplace « Klavyé Kréyòl Guadeloupe » pour capter
+la recherche « clavier créole », le terme le plus tapé). Statut d'application
+en Play Console non confirmé, à vérifier.
+
+## Brève description
+
+*80 caractères max.*
+
+```
+Clavier kréyòl Gwadloup : essai immédiat, suggestions bilingues, zéro collecte
+```
+
+## Description complète
+
+*4000 caractères max.*
+
+```
  KLAVYÉ KRÉYÒL KARUKERA - Enfin écrire en kréyòl sans galérer !
 
 📺 Vu sur Canal 10 et au JT de Guadeloupe la 1ère (France Télévisions) en juillet 2026 !
@@ -92,3 +123,4 @@ Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère nu
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
  "An kreyòl nou ka palé, an kreyòl nou ka rivé !"
+```
