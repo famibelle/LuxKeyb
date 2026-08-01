@@ -5,6 +5,15 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.1] - 2026-08-02
+
+### 🐛 Onglets du panneau emoji tronqués en "…" sur Galaxy A21s
+
+- **Constat** : sur Galaxy A21s (écran plus étroit/moins dense que les appareils de test), les icônes des onglets de catégorie du panneau emoji s'affichaient tronquées en "…" au lieu du glyphe emoji
+- **Cause** : les onglets et les cellules de la grille utilisaient `Button`, dont le style Material/AppCompat par défaut impose une largeur minimale et un ellipsize sur une ligne ; avec 9 onglets à largeur égale (`écran / 9`), un écran étroit passe sous ce minimum et l'icône se fait tronquer — invisible sur l'émulateur de test (écran plus large, plus dense)
+- **Corrigé** : `EmojiPickerView` utilise désormais `TextView` (sans les minimums de style imposés par `Button`) pour les onglets et les cellules de la grille, avec `minWidth`/`minHeight` à 0 et l'ellipsize explicitement désactivé
+- **Vérifié sur émulateur** : aucune régression (onglets, surbrillance, swipe, grille, sélection toujours fonctionnels) ; correctif basé sur le diagnostic du style `Button`, non confirmé directement sur l'appareil A21s à l'origine du rapport
+
 ## [10.1.0] - 2026-08-01
 
 ### 😀 Panneau emoji : jeu exhaustif, catégories par onglets, swipe latéral
