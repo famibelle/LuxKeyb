@@ -21,10 +21,10 @@ en Play Console non confirmé, à vérifier.
 *80 caractères max.*
 
 ```
-Osez le Kréyòl Guadeloupe ! Klavyé Kréyòl qui aide à maké en Kréyòl
+Osez le Kréyòl Guadeloupe ! Klavyé Kréyòl qui aide à maké an bèl Kréyòl
 ```
 
-## Description complète
+## Description complèan 
 
 *4000 caractères max.*
 
