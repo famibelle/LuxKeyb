@@ -31,7 +31,7 @@ Clavier kréyòl Gwadloup : essai immédiat, suggestions bilingues, zéro collec
 ```
  KLAVYÉ KRÉYÒL KARUKERA - Enfin écrire en kréyòl sans galérer !
 
-📺 Vu sur Canal 10 et au JT de Guadeloupe la 1ère (France Télévisions) en juillet 2026 !
+📺 Vu sur **Canal 10** et au JT de **Guadeloupe la 1ère (France Télévisions)** en juillet 2026 !
 
 Tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots ? Tu doutes de l'orthographe à chaque message ? Klavyé Kréyòl Karukera est fait pour toi !
 
@@ -55,7 +55,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Gisèle Pineau, Katel - lettres de noblesse du kréyòl
 
 📚 LINGUISTES & CHERCHEURS
-• Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse
+• Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse, Corinne Famibelle
 • Ceux qui ont structuré et valorisé notre langue
 
 🧠 INTELLIGENCE CRÉOLE
@@ -122,5 +122,5 @@ Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère nu
 
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
- "An kreyòl nou ka palé, an kreyòl nou ka rivé !"
+ "An kréyòl nou ka palé, an kreyòl nou ka maké !"
 ```
