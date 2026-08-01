@@ -47,7 +47,7 @@ la plus visible avant troncature sur les petits écrans. 75 caractères.
 ```
 Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké an bèl Kréyòl
 
-Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
+Enfin écrire en kréyòl sans galérer !
 
 📺 Vu sur Canal 10 et au JT de Guadeloupe la 1ère (France Télévisions) en juillet 2026 !
 
