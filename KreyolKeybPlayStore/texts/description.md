@@ -24,7 +24,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Gisèle Pineau, Katel - lettres de noblesse du kréyòl
 
 📚 LINGUISTES & CHERCHEURS
-• Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse
+• Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse, Corinne Famibelle
 • Ceux qui ont structuré et valorisé notre langue
 
 🧠 INTELLIGENCE CRÉOLE
