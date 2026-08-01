@@ -9,7 +9,7 @@ Fiche Play Store principale). Remplace `description.md` et
 *Le nom de votre appli apparaîtra tel quel sur Google Play (30 caractères max).*
 
 ```
-Klavyé Kréyòl – Clavier Créole
+Klavyé Kréyòl Guadeloupe
 ```
 
 Proposition ASO de 2026-07 (remplace « Klavyé Kréyòl Guadeloupe » pour capter
@@ -21,7 +21,7 @@ en Play Console non confirmé, à vérifier.
 *80 caractères max.*
 
 ```
-Clavier kréyòl Gwadloup : essai immédiat, suggestions bilingues, zéro collecte
+Osez le Kréyòl Guadeloupe ! Klavyé Kréyòl qui aide à maké en Kréyòl
 ```
 
 ## Description complète
@@ -29,37 +29,33 @@ Clavier kréyòl Gwadloup : essai immédiat, suggestions bilingues, zéro collec
 *4000 caractères max.*
 
 ```
- KLAVYÉ KRÉYÒL KARUKERA - Enfin écrire en kréyòl sans galérer !
+Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
 
 📺 Vu sur **Canal 10** et au JT de **Guadeloupe la 1ère (France Télévisions)** en juillet 2026 !
 
-Tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots ? Tu doutes de l'orthographe à chaque message ? Klavyé Kréyòl Karukera est fait pour toi !
+🛠️ Si ton kréyòl est très rouillé…
+😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots
+🤔 Que tu doutes de l’orthographe à chaque message …
 
-🛠️ FINI LA GALÈRE !
+➡️ Klavyé Kréyòl Karukera est fait pour toi !
 
-😤 Ton créole est rouillé ? Pas de problème !
-🤔 Tu hésites sur l'orthographe ? On t'aide !
-📱 Ton téléphone rejette les mots créoles ? Plus jamais !
-➡️ Écris en kréyòl avec fierté et fluidité !
+📱Klavyé Kréyòl Karukera est un clavier intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d’écrire facilement en Kréyòl de Gwaloup sur leur smartphone, avec fluidité, authenticité et fierté.
 
 📚 CORPUS LITTÉRAIRE CRÉOLE AUTHENTIQUE
 
 Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 
 🎤 ARTISTES & CONTEURS
-• Esnard Boisdur, Jomimi, Pierre Edouard Decimus
-• Voix qui ont fait vibrer le créole dans la musique et l'oralité
+• Esnard Boisdur, Jomimi, Pierre Edouard Decimus et les voix qui ont fait vibrer le créole dans la musique et l'oralité
 
 ✍️ ÉCRIVAINS & POÈTES  
 • Sonny Rupaire, Silvyane Telchid, Max Rippon
-• Gisèle Pineau, Katel - lettres de noblesse du kréyòl
 
 📚 LINGUISTES & CHERCHEURS
 • Robert Fontes, Alain Verin, Alain Rutil, Benjamin Moïse, Corinne Famibelle
 • Ceux qui ont structuré et valorisé notre langue
 
 🧠 INTELLIGENCE CRÉOLE
-
 ⚡ Suggestions ultra-rapides basées sur les plus grands textes kréyòl
 🎯 Prédictions contextuelles qui comprennent ta pensée
 📖 Dictionnaire évolutif enrichi par la communauté créolophone  
@@ -122,5 +118,5 @@ Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère nu
 
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
- "An kréyòl nou ka palé, an kreyòl nou ka maké !"
+ "An kréyòl nou ka palé, an kréyòl nou ka maké !"
 ```
