@@ -2,14 +2,13 @@ package com.example.kreyolkeyboard
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,10 +17,12 @@ import androidx.viewpager2.widget.ViewPager2
  * Panneau emoji exhaustif (v10.1.0) : onglets de catégories en haut, pages
  * défilables latéralement (ViewPager2) en dessous, chaque page étant une
  * grille verticale virtualisée (RecyclerView) pour rester fluide même avec
- * ~1900 emojis chargés au total — sans virtualisation, ~1900 Button créés
+ * ~1900 emojis chargés au total — sans virtualisation, ~1900 vues créées
  * d'un coup aurait un vrai coût mémoire/jank sur les téléphones bas de
  * gamme visés par ce projet (cf. commentaires Samsung ULTRA ailleurs dans
- * le code).
+ * le code). Les cellules sont des TextView, pas des Button : le style
+ * Button par défaut impose un minWidth/ellipsize qui tronque les glyphes
+ * sur écran étroit (constaté sur Galaxy A21s).
  *
  * Le swipe horizontal change de catégorie (ViewPager2) ; le swipe vertical
  * défile dans la catégorie courante (comportement par défaut d'un
@@ -44,7 +45,7 @@ class EmojiPickerView(
     var onEmojiSelected: ((String) -> Unit)? = null
 
     private val emojiData = EmojiData.load(context)
-    private val tabViews = mutableListOf<Button>()
+    private val tabViews = mutableListOf<TextView>()
     private lateinit var viewPager: ViewPager2
 
     init {
@@ -60,14 +61,25 @@ class EmojiPickerView(
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(TAB_HEIGHT_DP))
 
             emojiData.categories.forEachIndexed { index, category ->
-                val tab = Button(context).apply {
+                // TextView plutôt que Button : le style Button par défaut
+                // (Material/AppCompat, hérité même après remise à zéro du
+                // fond) impose un minWidth et un ellipsize sur une seule
+                // ligne. Sur un écran étroit (constaté sur Galaxy A21s), 9
+                // onglets à largeur égale passent sous ce minimum et
+                // l'icône emoji se fait tronquer en "…". TextView n'a
+                // aucun de ces minimums par défaut.
+                val tab = TextView(context).apply {
                     text = category.icon
-                    isAllCaps = false
                     textSize = 16f
-                    elevation = 0f
-                    stateListAnimator = null
-                    background = null
+                    gravity = Gravity.CENTER
+                    minWidth = 0
+                    minHeight = 0
+                    isSingleLine = true
+                    ellipsize = null
+                    setPadding(0, 0, 0, 0)
                     layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
+                    isClickable = true
+                    isFocusable = true
                     setOnClickListener { viewPager.setCurrentItem(index, true) }
                 }
                 tabViews.add(tab)
@@ -133,44 +145,48 @@ class EmojiPickerView(
         private val emojis: List<String>
     ) : RecyclerView.Adapter<EmojiGridAdapter.EmojiHolder>() {
 
-        inner class EmojiHolder(val button: Button) : RecyclerView.ViewHolder(button)
+        inner class EmojiHolder(val label: TextView) : RecyclerView.ViewHolder(label)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmojiHolder {
-            val button = Button(parent.context).apply {
+            // TextView plutôt que Button : voir le commentaire équivalent
+            // dans createTabRow (minWidth/ellipsize par défaut de Button
+            // tronquant les glyphes sur écran étroit, constaté sur A21s).
+            val label = TextView(parent.context).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     dpToPx(CELL_HEIGHT_DP)
                 )
-                isAllCaps = false
                 textSize = EMOJI_TEXT_SIZE_SP
                 gravity = Gravity.CENTER
-                setTypeface(typeface, Typeface.NORMAL)
-                background = null
-                elevation = 0f
-                stateListAnimator = null
+                minWidth = 0
+                minHeight = 0
+                isSingleLine = true
+                ellipsize = null
                 setPadding(0, 0, 0, 0)
+                isClickable = true
+                isFocusable = true
             }
-            return EmojiHolder(button)
+            return EmojiHolder(label)
         }
 
         override fun onBindViewHolder(holder: EmojiHolder, position: Int) {
             val emoji = emojis[position]
-            holder.button.text = emoji
+            holder.label.text = emoji
 
-            holder.button.setOnClickListener {
+            holder.label.setOnClickListener {
                 onEmojiSelected?.invoke(emoji)
             }
 
             // Même double-délai (timeout natif Android + LONG_PRESS_DELAY
             // d'AccentHandler) que les autres touches à appui long du
             // clavier : cohérence de timing avec le reste de l'app.
-            holder.button.setOnLongClickListener {
+            holder.label.setOnLongClickListener {
                 if (accentHandler?.hasAccents(emoji) == true) {
-                    accentHandler.startLongPressTimer(emoji, holder.button)
+                    accentHandler.startLongPressTimer(emoji, holder.label)
                 }
                 true
             }
-            holder.button.setOnTouchListener { _, event ->
+            holder.label.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
                     accentHandler?.cancelLongPress()
                 }
