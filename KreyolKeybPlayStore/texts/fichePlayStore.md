@@ -68,6 +68,11 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 "Mwen ka alé laplaj" → Accents automatiques
 "Gadé bèl solèy-la !" → Fluidité parfaite
 
+⚙️ ESSAIE-LE AVANT MÊME DE L'INSTALLER
+• Ouvre l'app : un clavier d'essai complet t'attend sur l'écran d'accueil. Tape « bonjou », regarde les suggestions kréyòl et français t'aider, touche une suggestion : tu sais tout de suite ce que tu vas gagner, sans rien activer
+• Un guide pas-à-pas fait ensuite tout le travail : un bouton t'amène au bon écran de réglages, le sélecteur de clavier s'ouvre tout seul à ton retour, et tu tapes ton premier vrai mot dans la foulée
+• Android affichera un ou deux avertissements standard, montrés pour tout clavier tiers : normal, et sans rapport avec une quelconque collecte de données ici (rien ne quitte ton téléphone)
+
 🚀 FONCTIONNALITÉS AVANCÉES
 
 📱 COMPATIBILITÉ TOTALE
@@ -82,11 +87,6 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Fonctionnement 100% local
 • Permissions minimales requises
 • Politique de confidentialité complète : https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html
-
-⚙️ ESSAIE-LE AVANT MÊME DE L'INSTALLER
-• Ouvre l'app : un clavier d'essai complet t'attend sur l'écran d'accueil. Tape « bonjou », regarde les suggestions kréyòl et français t'aider, touche une suggestion : tu sais tout de suite ce que tu vas gagner, sans rien activer
-• Un guide pas-à-pas fait ensuite tout le travail : un bouton t'amène au bon écran de réglages, le sélecteur de clavier s'ouvre tout seul à ton retour, et tu tapes ton premier vrai mot dans la foulée
-• Android affichera un ou deux avertissements standard, montrés pour tout clavier tiers : normal, et sans rapport avec une quelconque collecte de données ici (rien ne quitte ton téléphone)
 
 Ce n'est pas juste un clavier, chaque message en kréyòl contribue à :
 
