@@ -31,7 +31,7 @@ sauvegarde ou refusé — coller cette version corrigée pour être sûr.
 *80 caractères max.*
 
 ```
-Clavier créole guadeloupéen : suggestions kréyòl, accents, 100 % hors ligne
+Clavier créole guadeloupéen : suggestions mots kréyòl, accents, 100% hors ligne
 ```
 
 Mise à jour le 2026-08-01 (proposition ASO de 2026-07, jamais appliquée
