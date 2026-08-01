@@ -133,7 +133,7 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 • Chaque téléchargement est un vote pour la survie de notre belle langue
 • Communauté de la diaspora guadeloupéenne
 
-🔥 INSTALLE KLAVYÉ KRÉYÒl MAINTENANT !
+🔥 INSTALLE KLAVYÉ KRÉYÒL MAINTENANT !
 
 Fais vivre le kréyòl dans l'ère numérique !
 
