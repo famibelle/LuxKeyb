@@ -108,6 +108,7 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 • Étudiants et passionnés de culture antillaise
 • Tous ceux qui refusent de voir le kréyòl disparaître
 • Chaque téléchargement est un vote pour la survie de notre belle langue
+• Communauté de la diaspora guadeloupéenne
 
 🔥 INSTALLE KLAVYÉ KRÉYÒl MAINTENANT !
 
