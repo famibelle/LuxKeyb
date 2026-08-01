@@ -146,7 +146,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -211,7 +211,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -256,7 +256,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -326,7 +326,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
