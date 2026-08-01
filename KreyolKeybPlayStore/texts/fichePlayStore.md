@@ -109,9 +109,9 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 • Tous ceux qui refusent de voir le kréyòl disparaître
 • Chaque téléchargement est un vote pour la survie de notre belle langue
 
-🔥 TÉLÉCHARGE MAINTENANT !
+🔥 INSTALLE KLAVYÉ KRÉYÒl MAINTENANT !
 
-Participe à la révolution numérique du kréyòl ! Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère numérique !
+Fais vivre le kréyòl dans l'ère numérique !
 
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
