@@ -1,6 +1,6 @@
  KLAVYÉ KRÉYÒL KARUKERA - Enfin écrire en kréyòl sans galérer !
 
-📺 Vu sur *Canal 10* et au JT de *Guadeloupe la 1ère (France Télévisions)* en juillet 2026 !
+📺 Vu sur **Canal 10** et au JT de **Guadeloupe la 1ère (France Télévisions)** en juillet 2026 !
 
 Tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots ? Tu doutes de l'orthographe à chaque message ? Klavyé Kréyòl Karukera est fait pour toi !
 
