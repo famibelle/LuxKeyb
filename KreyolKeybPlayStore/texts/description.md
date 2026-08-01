@@ -91,4 +91,4 @@ Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère nu
 
 ---
 🗣️ Potomitan™ - Teknoloji pou tout moun  
- "An kreyòl nou ka palé, an kreyòl nou ka maké !"
+ "An kréyòl nou ka palé, an kreyòl nou ka maké !"
