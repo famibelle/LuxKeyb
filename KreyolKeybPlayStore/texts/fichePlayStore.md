@@ -71,7 +71,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 🎤 ARTISTES & CONTEURS
 • Esnard Boisdur, Jomimi, Pierre Edouard Decimus et les voix qui ont fait vibrer le créole dans la musique et l'oralité
 
-✍️ ÉCRIVAINS & POÈTES  
+✍️ ÉCRIVAINS & POÈTES
 • Sonny Rupaire, Silvyane Telchid, Max Rippon, Gisèle Pineau, Katel
 
 📚 LINGUISTES & CHERCHEURS
@@ -81,7 +81,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 
 ⚡ Suggestions ultra-rapides basées sur les plus grands textes kréyòl
 🎯 Prédictions contextuelles qui comprennent ta pensée
-📖 Dictionnaire évolutif enrichi par la communauté créolophone  
+📖 Dictionnaire évolutif enrichi par la communauté créolophone
 ✅ Orthographe GEREC respectée avec variations naturelles
 🔄 Corrections intelligentes qui préservent ton intention
 
@@ -104,7 +104,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 • Installation guidée en 1 minute, clavier d'essai intégré
 • Mode alphabétique par défaut
 
-🔐 SÉCURITÉ & CONFIDENTIALITÉ  
+🔐 SÉCURITÉ & CONFIDENTIALITÉ
 • ZÉRO collecte de données personnelles
 • Code source ouvert et auditable
 • Fonctionnement 100% local
@@ -114,7 +114,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 Ce n'est pas juste un clavier, chaque message en kréyòl contribue à :
 
 🌱 Préserver notre patrimoine linguistique
-👨‍👩‍👧‍👦 Transmettre la langue aux nouvelles générations  
+👨‍👩‍👧‍👦 Transmettre la langue aux nouvelles générations
 🌟 Valoriser l'identité guadeloupéenne
 📚 Enrichir la production littéraire créole numérique
 🤝 Renforcer le Lyannaj
@@ -127,10 +127,9 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 
 • Créolophones qui veulent écrire naturellement
 • Jeunes qui redécouvrent la langue de leurs aïeux
-• Familles préservant l'héritage culturel  
+• Familles préservant l'héritage culturel
 • Étudiants et passionnés de culture antillaise
 • Tous ceux qui refusent de voir le kréyòl disparaître
-• Chaque téléchargement est un vote pour la survie de notre belle langue
 • Communauté de la diaspora guadeloupéenne
 
 🔥 INSTALLE KLAVYÉ KRÉYÒL MAINTENANT !
@@ -138,11 +137,10 @@ Le dictionnaire grandit avec vous ! Vos suggestions enrichissent les prédiction
 Fais vivre le kréyòl dans l'ère numérique !
 
 ---
-🗣️ Potomitan™ - Teknoloji pou tout moun  
+🗣️ Potomitan™ - Teknoloji pou tout moun
  "An kréyòl nou ka palé, an kréyòl nou ka maké !"
 ```
 
 Correction 2026-08-01 : les `**...**` autour de « Canal 10 » et « Guadeloupe
-la 1ère » ont été retirés. La fiche Play Store n'interprète pas le markdown
-— les astérisques s'affichaient tels quels au lieu de mettre le texte en
-gras.
+la 1ère » ont été retirés. La fiche Play Store n'interprète pas le markdown,
+les astérisques s'affichaient tels quels au lieu de mettre le texte en gras.
