@@ -30,15 +30,23 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val HINT_TEXT_SIZE_SP = 8f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
-        
+
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
+
+        // Nombre de rangées d'emojis visibles à la fois dans le ScrollView du
+        // panneau emoji (même hauteur que les 3 rangées de contenu des autres
+        // modes) ; le reste du jeu curé est atteint par swipe.
+        private const val EMOJI_VISIBLE_ROWS = 3
+
+        private val EMOJI_CONTROL_KEYS = setOf("ABC", "⌫", "⏎", " ")
     }
     
     // État du clavier
     private var isCapitalMode = false
     private var isCapsLock = false
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
+    private var isEmojiMode = false
     private val keyboardButtons = mutableListOf<View>() // Changé de TextView à View pour supporter ImageButton
 
     // Référence optionnelle pour prévisualiser les options d'appui long dans
@@ -85,6 +93,10 @@ class KeyboardLayoutManager(private val context: Context) {
         
         // Créer les différentes rangées selon le mode
         when {
+            isEmojiMode -> {
+                Log.d("KeyboardLayoutManager", "😀 Création du layout EMOJI")
+                createEmojiLayout(mainLayout)
+            }
             isNumericMode -> {
                 Log.d("KeyboardLayoutManager", "🔢 Création du layout NUMÉRIQUE")
                 createNumericLayout(mainLayout)
@@ -107,7 +119,10 @@ class KeyboardLayoutManager(private val context: Context) {
         val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
         // v8.6.0 : "-" ajouté en touche dédiée (21,7% des mots créoles en
         // contiennent un, fréquence cumulée supérieure à celle de "ò")
-        val row4 = arrayOf("123", ",", "é", "-", " ", "è", ".", "'", "⏎")
+        // v9.1.0 : "'" retiré (0 occurrence dans creole_dict.json, contre 1088
+        // mots pour "-") au profit d'une touche emoji dédiée ; l'apostrophe
+        // reste accessible en appui long sur "," (AccentHandler).
+        val row4 = arrayOf("123", ",", "é", "-", " ", "è", ".", "EMOJI", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
@@ -122,12 +137,50 @@ class KeyboardLayoutManager(private val context: Context) {
         val row1 = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         val row2 = arrayOf("-", "/", ":", ";", "(", ")", "€", "&", "@", "\"")
         val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "⌫")
-        val row4 = arrayOf("ABC", " ", "⏎")
-        
+        val row4 = arrayOf("ABC", "EMOJI", " ", "⏎")
+
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
         mainLayout.addView(createKeyboardRow(row3))
         mainLayout.addView(createKeyboardRow(row4))
+    }
+
+    /**
+     * Crée le layout emoji : sélection curée, plus large qu'un seul écran, dans
+     * un ScrollView vertical (3 rangées visibles à la fois, le reste accessible
+     * en swipe) accessible depuis le clavier alphabétique et depuis le mode 123.
+     * "EMOJI" est une clé sentinelle interne distincte de tout emoji affiché dans
+     * la grille (getDisplayText l'affiche sous forme de 😀) pour qu'aucune pression
+     * sur un emoji de la grille ne puisse jamais être confondue avec la touche d'accès.
+     */
+    private fun createEmojiLayout(mainLayout: LinearLayout) {
+        val emojiRows = listOf(
+            arrayOf("😀", "😂", "🥰", "😍", "😎", "🤔", "😢", "😭", "😡", "🥳"),
+            arrayOf("😴", "😱", "🤗", "😅", "🙄", "😇", "🤩", "😜", "🥺", "😤"),
+            arrayOf("❤️", "👍🏿", "👎🏿", "🙏🏿", "💪🏿", "✌🏿", "👏🏿", "🤝🏿", "🤞🏿", "👋🏿"),
+            arrayOf("💯", "🔥", "🎉", "✨", "💤", "💔", "💛", "💚", "💙", "💜"),
+            arrayOf("🐐", "🐕", "🐈", "🐦", "🦋", "🐟", "🐢", "🐝", "🌺", "🍃"),
+            arrayOf("🎵", "📱", "💻", "⏰", "☕", "🍽️", "🚗", "🏠", "🎮", "📚"),
+            arrayOf("⚽", "🏀", "🎣", "🏊🏿", "🚴🏿", "🎤", "🎨", "📷", "✈️", "⛽"),
+            arrayOf("☀️", "🌧️", "🌊", "⭐", "🌙", "⚡", "🌈", "🥭", "🍹", "🎂")
+        )
+        val controlRow = arrayOf("ABC", "⌫", " ", "⏎")
+
+        val scrollContent = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        emojiRows.forEach { row -> scrollContent.addView(createKeyboardRow(row)) }
+
+        val scrollView = android.widget.ScrollView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(EMOJI_VISIBLE_ROWS * (BUTTON_HEIGHT_DP + BUTTON_MARGIN_DP * 2))
+            )
+            addView(scrollContent)
+        }
+
+        mainLayout.addView(scrollView)
+        mainLayout.addView(createKeyboardRow(controlRow))
     }
     
     /**
@@ -230,8 +283,14 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police personnalisée pour Potomitan™ branding discret
-                textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
+                // Taille de police : Potomitan™ discret sur l'espace, emojis
+                // agrandis pour la lisibilité (ce sont le contenu principal
+                // du layout emoji, pas des touches de contrôle)
+                textSize = when {
+                    key == " " -> TEXT_SIZE_SP * 0.75f
+                    isEmojiMode && key !in EMOJI_CONTROL_KEYS -> TEXT_SIZE_SP * 1.4f
+                    else -> TEXT_SIZE_SP
+                }
                 setTypeface(typeface, Typeface.BOLD)
                 
                 // Calcul du poids selon le type de touche
@@ -358,7 +417,7 @@ class KeyboardLayoutManager(private val context: Context) {
                     ))
                     orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 }
-                "123", "ABC" -> {
+                "123", "ABC", "EMOJI" -> {
                     // Touches de mode avec vert tropical
                     setColors(intArrayOf(
                         Color.parseColor("#00C853"), // Vert tropical vif
@@ -403,7 +462,7 @@ class KeyboardLayoutManager(private val context: Context) {
             view.setTextColor(when (key) {
                 "⇧" -> if (isCapsLock || isCapitalMode) Color.parseColor("#666666") else Color.parseColor("#333333")
                 ",", ".", "'", "-" -> Color.WHITE // Texte blanc sur fond orange caraïbe
-                "⏎", "123", "ABC" -> Color.WHITE // Texte blanc sur fond vert tropical
+                "⏎", "123", "ABC", "EMOJI" -> Color.WHITE // Texte blanc sur fond vert tropical
                 "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.parseColor("#333333") // Texte gris foncé sur fond blanc
                 " " -> Color.parseColor("#CCFFFFFF") // Blanc semi-transparent pour Potomitan™ - discret mais lisible
                 else -> Color.parseColor("#333333")
@@ -589,9 +648,10 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Met à jour les états internes du clavier
      */
-    fun updateKeyboardStates(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+    fun updateKeyboardStates(isNumeric: Boolean, isEmoji: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
         Log.e("SHIFT_REAL_DEBUG", "🚨 UPDATING KEYBOARD STATES! isCapital=$isCapital, isCapsLock=$isCapsLock")
         this.isNumericMode = isNumeric
+        this.isEmojiMode = isEmoji
         this.isCapitalMode = isCapital
         this.isCapsLock = isCapsLock
     }
@@ -655,10 +715,17 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Commute entre mode alphabétique et numérique
+     * Commute entre mode alphabétique et numérique. Depuis le layout emoji, la
+     * touche "ABC" partage ce même point d'entrée : dans ce cas on revient à
+     * l'alphabétique (pas un toggle numérique, qui rouvrirait le mode 123).
      */
     fun switchKeyboardMode(): Boolean {
-        isNumericMode = !isNumericMode
+        if (isEmojiMode) {
+            isEmojiMode = false
+            isNumericMode = false
+        } else {
+            isNumericMode = !isNumericMode
+        }
         return isNumericMode
     }
     
@@ -668,20 +735,38 @@ class KeyboardLayoutManager(private val context: Context) {
     fun isNumericMode(): Boolean {
         return isNumericMode
     }
-    
+
+    /**
+     * Retourne l'état actuel du mode emoji sans le modifier
+     */
+    fun isEmojiMode(): Boolean {
+        return isEmojiMode
+    }
+
+    /**
+     * Active le layout emoji (accessible depuis le mode 123)
+     */
+    fun switchToEmojiMode() {
+        isEmojiMode = true
+        isNumericMode = false
+        Log.d("KeyboardLayoutManager", "😀 MODE EMOJI ACTIVÉ")
+    }
+
     /**
      * Force le mode alphabétique (pour l'initialisation)
      */
     fun switchKeyboardModeToAlphabetic() {
         isNumericMode = false
+        isEmojiMode = false
         Log.d("KeyboardLayoutManager", "🔤 MODE FORCÉ À ALPHABÉTIQUE")
     }
-    
+
     /**
      * Garantit que le clavier démarre en mode alphabétique
      */
     private fun ensureAlphabeticMode() {
         isNumericMode = false
+        isEmojiMode = false
         isCapitalMode = false
         isCapsLock = false
         Log.d("KeyboardLayoutManager", "🚀 INITIALISATION : Mode alphabétique garanti")
@@ -715,6 +800,7 @@ class KeyboardLayoutManager(private val context: Context) {
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
+            "EMOJI" -> "😀"
             // Caractères accentués créoles - respecter le mode majuscule/minuscule
             "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
             else -> if (isCapitalMode) key.uppercase() else key.lowercase()

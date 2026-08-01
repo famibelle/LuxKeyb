@@ -1669,7 +1669,7 @@ class SettingsActivity : AppCompatActivity() {
                             demoCapital && !demoCapsLock -> demoCapsLock = true
                             else -> { demoCapital = false; demoCapsLock = false }
                         }
-                        manager.updateKeyboardStates(manager.isNumericMode(), demoCapital, demoCapsLock)
+                        manager.updateKeyboardStates(manager.isNumericMode(), manager.isEmojiMode(), demoCapital, demoCapsLock)
                         manager.updateKeyboardDisplay()
                     }
                     "123", "ABC" -> {
@@ -1677,11 +1677,16 @@ class SettingsActivity : AppCompatActivity() {
                         keyboardContainer.removeAllViews()
                         keyboardContainer.addView(manager.createKeyboardLayout())
                     }
+                    "EMOJI" -> {
+                        manager.switchToEmojiMode()
+                        keyboardContainer.removeAllViews()
+                        keyboardContainer.addView(manager.createKeyboardLayout())
+                    }
                     else -> {
                         insertText(if (demoCapital || demoCapsLock) key.uppercase() else key)
                         if (demoCapital && !demoCapsLock) {
                             demoCapital = false
-                            manager.updateKeyboardStates(manager.isNumericMode(), false, false)
+                            manager.updateKeyboardStates(manager.isNumericMode(), manager.isEmojiMode(), false, false)
                             manager.updateKeyboardDisplay()
                         }
                         revealInstallCta()
