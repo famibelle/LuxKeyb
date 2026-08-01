@@ -9,7 +9,7 @@ Fiche Play Store principale). Remplace `description.md` et
 *Le nom de votre appli apparaîtra tel quel sur Google Play (30 caractères max).*
 
 ```
-Klavyé Kréyòl Guadeloupe
+Klavyé Kréyòl – Clavier Créole Guadeloupe
 ```
 
 Titre live confirmé au 2026-08-01. La proposition ASO de 2026-07
