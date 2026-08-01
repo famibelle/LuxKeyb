@@ -1871,7 +1871,7 @@ En revanche, une partie du vocabulaire des phrases de sécurité est bien détec
 
 **⚠️ Nouveau problème détecté** : des noms de personnages fictifs issus de dialogues pédagogiques (`wilyàm`, `ana`, `kévin`) sont désormais dans le dictionnaire et apparaissent en concurrence avec du vocabulaire réel dans les suggestions (ex. « mwen la wi » propose désormais `wi, wilyàm, wilyam, wifi`). À filtrer avant un prochain cycle d'enrichissement à partir de contenu dialogué.
 
-Rapport complet avec tableau des 11 phrases modifiées et détails méthodologiques : [`rapport_test_dataset_enrichi_2026-07-10.md`](https://github.com/famibelle/KreyolKeyb/blob/main/rapport_test_dataset_enrichi_2026-07-10.md#addendum--second-cycle-denrichissement-ciblé-2383-textes-10-juillet-2026-1633-cest).
+Rapport complet avec tableau des 11 phrases modifiées et détails méthodologiques : [`rapport_test_dataset_enrichi_2026-07-10.md`](https://github.com/famibelle/KreyolKeyb/blob/main/reports/tests/rapport_test_dataset_enrichi_2026-07-10.md#addendum--second-cycle-denrichissement-ciblé-2383-textes-10-juillet-2026-1633-cest).
 
 ---
 
