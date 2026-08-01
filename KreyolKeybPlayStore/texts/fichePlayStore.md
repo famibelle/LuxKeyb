@@ -31,8 +31,14 @@ sauvegarde ou refusé — coller cette version corrigée pour être sûr.
 *80 caractères max.*
 
 ```
-Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké an bèl Kréyòl
+Clavier créole guadeloupéen : suggestions kréyòl, accents, 100 % hors ligne
 ```
+
+Mise à jour le 2026-08-01 (proposition ASO de 2026-07, jamais appliquée
+jusqu'ici). Remplace « design tropical », que personne ne recherche, par
+« hors ligne » : argument de confidentialité et mot-clé recherché à la
+fois. Garde « clavier créole guadeloupéen » en tête de phrase, la partie
+la plus visible avant troncature sur les petits écrans. 75 caractères.
 
 ## Description complète
 
