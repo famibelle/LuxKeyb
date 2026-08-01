@@ -49,7 +49,7 @@ Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké an bèl K
 
 Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
 
-📺 Vu sur **Canal 10** et au JT de **Guadeloupe la 1ère (France Télévisions)** en juillet 2026 !
+📺 Vu sur Canal 10 et au JT de Guadeloupe la 1ère (France Télévisions) en juillet 2026 !
 
 🛠️ Si ton kréyòl est très rouillé…
 😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots
@@ -136,3 +136,8 @@ Fais vivre le kréyòl dans l'ère numérique !
 🗣️ Potomitan™ - Teknoloji pou tout moun  
  "An kréyòl nou ka palé, an kréyòl nou ka maké !"
 ```
+
+Correction 2026-08-01 : les `**...**` autour de « Canal 10 » et « Guadeloupe
+la 1ère » ont été retirés. La fiche Play Store n'interprète pas le markdown
+— les astérisques s'affichaient tels quels au lieu de mettre le texte en
+gras.
