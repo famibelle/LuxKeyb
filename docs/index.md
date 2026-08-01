@@ -30,6 +30,16 @@ Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
   </a>
 </div>
 
+## Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
+
+Essaie-le tout de suite, directement dans ton navigateur, sans rien installer :
+tape un mot, regarde les suggestions kréyòl et français apparaître, découvre
+les accents par appui long.
+
+<div align="center">
+  <iframe src="simulateur.html?embed=1" width="380" height="760" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"></iframe>
+</div>
+
 ## Le clavier en action
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
