@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essayer Klavyé Kréyòl Karukera en ligne</title>
+<meta name="description" content="Simulateur du clavier Klavyé Kréyòl Karukera dans le navigateur : suggestions bilingues kréyòl/français et accents par appui long, sans rien installer.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
+
+  main { max-width: 640px; margin: 0 auto; padding: 0 16px 60px; }
+
+  header.hero { text-align: center; padding: 28px 0 8px; }
+  .eyebrow { color: var(--sea); font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
+  h1 { font-size: 26px; margin: 0 0 12px; color: var(--ink); }
+  .lede { color: var(--ink-soft); font-size: 15.5px; line-height: 1.55; margin: 0 auto 6px; max-width: 520px; }
+  .lede + .lede { margin-top: 10px; }
+
+  /* ---- téléphone ---- */
+  .phone-shell { max-width: 380px; margin: 24px auto 8px; }
+  .phone {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    padding: 12px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.22);
+  }
+  .phone-notch { width: 70px; height: 5px; border-radius: 999px; background: var(--line); margin: 2px auto 10px; }
+
+  .phone-screen {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    min-height: 130px;
+    max-height: 190px;
+    overflow-y: auto;
+    padding: 14px;
+  }
+  .phone-screen-text {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    min-height: 1.5em;
+  }
+  .phone-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    background: var(--sea);
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: caret-blink 1s step-end infinite;
+  }
+  @keyframes caret-blink { 50% { opacity: 0; } }
+  .phone-placeholder {
+    position: absolute;
+    top: 14px; left: 14px; right: 14px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .reset-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .reset-btn:hover { background: var(--stripe); color: var(--ink); }
+
+  /* ---- barre de suggestions ---- */
+  .sugg-bar {
+    margin-top: 8px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 4px 6px;
+  }
+  .sugg-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 3px 2px;
+    overflow-x: auto;
+  }
+  .sugg-label {
+    flex: none;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    padding: 0 4px;
+  }
+  .chip {
+    flex: none;
+    border: none;
+    border-radius: 16px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+  .chip-kreyol { background: #2E9E5B; }
+  .chip-french { background: #3B6FC4; }
+  .chip:active { filter: brightness(0.92); }
+
+  /* ---- clavier ---- */
+  .keyboard {
+    margin-top: 10px;
+    background: #E4E7EB;
+    border-radius: 16px;
+    padding: 8px 6px;
+  }
+  @media (prefers-color-scheme: dark) { .keyboard { background: #2A2E33; } }
+  :root[data-theme="dark"] .keyboard { background: #2A2E33; }
+  :root[data-theme="light"] .keyboard { background: #E4E7EB; }
+  .kb-row { display: flex; margin: 3px 0; }
+  .kb-key-wrap { position: relative; margin: 0 2px; display: flex; }
+  .kb-key {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 42px;
+    border: 1px solid #D0D0D0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(#FFFFFF, #F5F5F5);
+    color: #333;
+    box-shadow: 0 1px 0 rgba(0,0,0,.12);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .kb-key:active, .kb-key.kb-key-active { transform: scale(0.95); }
+  .kb-key.kb-punct { background: linear-gradient(#FF8C00, #FF7000); color: #fff; border-color: #E67600; }
+  .kb-key.kb-mode, .kb-key.kb-enter { background: linear-gradient(#00C853, #00A843); color: #fff; border-color: #009640; }
+  .kb-key.kb-backspace { background: linear-gradient(rgba(255,255,255,.8), rgba(240,240,240,.75)); color: #333; }
+  .kb-key.kb-shift { background: linear-gradient(#FFFFFF, #F8F8F8); color: #333; }
+  .kb-key.kb-shift-on { background: linear-gradient(#F0F0F0, #E0E0E0); color: #666; }
+  .kb-key.kb-shift-caps { background: linear-gradient(#E8E8E8, #D0D0D0); color: #666; }
+  .kb-key.kb-space-key {
+    background: linear-gradient(#1E90FF, #0000FF);
+    color: rgba(255,255,255,.85);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .kb-hint {
+    position: absolute;
+    font-size: 8px;
+    color: rgba(51,51,51,.65);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .kb-hint-top { top: 3px; }
+  .kb-hint-bottom { bottom: 3px; }
+  .kb-hint-end { right: 4px; }
+  .kb-hint-start { left: 4px; }
+
+  .accent-popup {
+    position: fixed;
+    display: flex;
+    gap: 4px;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    z-index: 1000;
+  }
+  .accent-btn {
+    width: 42px; height: 42px;
+    border-radius: 8px;
+    border: 1px solid #C0C0C0;
+    background: linear-gradient(#FFFFFF, #F0F0F0);
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+  }
+  .accent-btn.accent-base { background: linear-gradient(#F5F5F5, #E8E8E8); color: #666; }
+  .accent-btn:active { filter: brightness(0.94); }
+
+  .status-line {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+  .status-line.error { color: var(--hibiscus); }
+
+  .cta-row {
+    text-align: center;
+    margin: 28px 0 12px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  footer.note {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <strong>🧪 Essayer</strong> ·
+  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
+  <a href="triptyque.html">📖 Triptyque</a> ·
+  <a href="presskit.html">📰 Presse</a> ·
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dsimulateur%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
+  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">Démo interactive</p>
+    <h1>Essaie le clavier créole dans ton navigateur</h1>
+    <p class="lede">
+      Ce simulateur exécute le vrai moteur de suggestions du clavier Android
+      (dictionnaire, n-grammes, accents) directement dans la page : aucune
+      donnée ne quitte ton navigateur.
+    </p>
+    <p class="lede">
+      Tape un mot, touche une suggestion pour l'insérer, ou reste appuyé
+      sur une voyelle (a, e, i, o, u...) pour voir apparaître les accents.
+    </p>
+  </header>
+
+  <div class="phone-shell">
+    <div class="phone">
+      <div class="phone-notch"></div>
+
+      <div class="phone-screen" id="phone-screen">
+        <button type="button" class="reset-btn" id="reset-btn">↺ Effacer</button>
+        <p class="phone-screen-text" id="screen-text"></p>
+        <p class="phone-placeholder" id="screen-placeholder">Commence à écrire ici…</p>
+      </div>
+
+      <div class="sugg-bar">
+        <div class="sugg-row" id="row-kreyol"></div>
+        <div class="sugg-row" id="row-french"></div>
+      </div>
+
+      <div class="keyboard" id="keyboard"></div>
+    </div>
+    <p class="status-line" id="status-line">Chargement du dictionnaire…</p>
+  </div>
+
+  <div class="cta-row">
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dsimulateur%26utm_campaign%3Dlaunch10k" class="btn primary">📲 Installer sur Android</a>
+    <a href="guide.html" class="btn">📘 Voir le guide</a>
+  </div>
+
+  <footer class="note">
+    Code source du clavier et de ce simulateur :
+    <a href="https://github.com/famibelle/KreyolKeyb">GitHub</a>.
+  </footer>
+</main>
+
+<script src="assets/simulateur-engine.js"></script>
+<script src="assets/simulateur-ui.js"></script>
+<script>
+(function () {
+  const statusEl = document.getElementById('status-line');
+  const placeholderEl = document.getElementById('screen-placeholder');
+
+  const els = {
+    screen: document.getElementById('phone-screen'),
+    screenText: document.getElementById('screen-text'),
+    placeholder: placeholderEl,
+    resetBtn: document.getElementById('reset-btn'),
+    rowKreyol: document.getElementById('row-kreyol'),
+    rowFrench: document.getElementById('row-french'),
+    keyboard: document.getElementById('keyboard')
+  };
+
+  async function fetchJson(path) {
+    const res = await fetch(path, { cache: 'force-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' sur ' + path);
+    return res.json();
+  }
+
+  async function init() {
+    try {
+      const [dict, ngrams, french] = await Promise.all([
+        fetchJson('assets/creole_dict.json'),
+        fetchJson('assets/creole_ngrams.json'),
+        fetchJson('assets/french_simple_dict.json')
+      ]);
+
+      const engine = new window.KreyolSimulatorEngine.SuggestionEngine();
+      engine.loadDictionary(dict);
+      engine.loadNgramModel(ngrams);
+      engine.loadFrenchDictionary(french);
+
+      new window.KreyolKeyboardSimulator(engine, els);
+
+      const fmt = (n) => n.toLocaleString('fr-FR');
+      statusEl.textContent =
+        fmt(dict.length) + ' mots kréyòl · ' +
+        fmt(french.words.length) + ' mots français · ' +
+        fmt(Object.keys(ngrams).length) + ' contextes n-grammes';
+    } catch (err) {
+      statusEl.textContent = "Impossible de charger le dictionnaire (page servie hors ligne ?).";
+      statusEl.classList.add('error');
+      placeholderEl.textContent = 'Simulateur indisponible pour le moment.';
+      console.error(err);
+    }
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>
