@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -49,8 +48,8 @@ android {
         applicationId "com.potomitan.kreyolkeyboard"
         minSdk = 21
         targetSdk = 36
-        versionCode = 80805
-        versionName "8.8.5"
+        versionCode = 90000
+        versionName "9.0.0"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true
@@ -102,24 +101,12 @@ android {
         }
     }
     
-    // Configuration pour personnaliser le nom des fichiers APK et AAB
-    applicationVariants.configureEach { variant ->
-        variant.outputs.configureEach {
-            def versionName = variant.versionName
-            def buildType = variant.buildType.name
-            def date = new Date().format('yyyy-MM-dd')
-            outputFileName = "Potomitan_Kreyol_Keyboard_v${versionName}_${buildType}_${date}.apk"
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    
-    kotlinOptions {
-        jvmTarget = '17'
-    }
+    // Kotlin built-in (AGP 9+) reprend automatiquement jvmTarget depuis
+    // compileOptions.targetCompatibility ci-dessus, plus besoin de kotlinOptions.
 
     testOptions {
         // Les tests JVM appellent du code qui loggue via android.util.Log :
@@ -129,6 +116,18 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+}
+
+// Personnalise le nom des fichiers APK/AAB (remplace l'ancienne API
+// applicationVariants.configureEach, retirée avec la nouvelle DSL AGP 9+).
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.each { output ->
+            def date = new Date().format('yyyy-MM-dd')
+            def versionName = output.versionName.getOrElse(variant.name)
+            output.outputFileName.set("Potomitan_Kreyol_Keyboard_v${versionName}_${variant.buildType}_${date}.apk")
+        }
     }
 }
 
