@@ -33,13 +33,6 @@ class KeyboardLayoutManager(private val context: Context) {
 
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
-
-        // Nombre de rangées d'emojis visibles à la fois dans le ScrollView du
-        // panneau emoji (même hauteur que les 3 rangées de contenu des autres
-        // modes) ; le reste du jeu curé est atteint par swipe.
-        private const val EMOJI_VISIBLE_ROWS = 3
-
-        private val EMOJI_CONTROL_KEYS = setOf("ABC", "⌫", "⏎", " ")
     }
     
     // État du clavier
@@ -146,40 +139,20 @@ class KeyboardLayoutManager(private val context: Context) {
     }
 
     /**
-     * Crée le layout emoji : sélection curée, plus large qu'un seul écran, dans
-     * un ScrollView vertical (3 rangées visibles à la fois, le reste accessible
-     * en swipe) accessible depuis le clavier alphabétique et depuis le mode 123.
-     * "EMOJI" est une clé sentinelle interne distincte de tout emoji affiché dans
-     * la grille (getDisplayText l'affiche sous forme de 😀) pour qu'aucune pression
-     * sur un emoji de la grille ne puisse jamais être confondue avec la touche d'accès.
+     * Crée le layout emoji : jeu exhaustif (~1900 emojis de base, Unicode
+     * 16.0, tons de peau en appui long) organisé en catégories avec onglets,
+     * chaque catégorie défilant verticalement, le swipe latéral changeant de
+     * catégorie (EmojiPickerView, RecyclerView/ViewPager2 virtualisés).
+     * Accessible depuis le clavier alphabétique et depuis le mode 123.
      */
     private fun createEmojiLayout(mainLayout: LinearLayout) {
-        val emojiRows = listOf(
-            arrayOf("😀", "😂", "🥰", "😍", "😎", "🤔", "😢", "😭", "😡", "🥳"),
-            arrayOf("😴", "😱", "🤗", "😅", "🙄", "😇", "🤩", "😜", "🥺", "😤"),
-            arrayOf("❤️", "👍🏿", "👎🏿", "🙏🏿", "💪🏿", "✌🏿", "👏🏿", "🤝🏿", "🤞🏿", "👋🏿"),
-            arrayOf("💯", "🔥", "🎉", "✨", "💤", "💔", "💛", "💚", "💙", "💜"),
-            arrayOf("🐐", "🐕", "🐈", "🐦", "🦋", "🐟", "🐢", "🐝", "🌺", "🍃"),
-            arrayOf("🎵", "📱", "💻", "⏰", "☕", "🍽️", "🚗", "🏠", "🎮", "📚"),
-            arrayOf("⚽", "🏀", "🎣", "🏊🏿", "🚴🏿", "🎤", "🎨", "📷", "✈️", "⛽"),
-            arrayOf("☀️", "🌧️", "🌊", "⭐", "🌙", "⚡", "🌈", "🥭", "🍹", "🎂")
-        )
         val controlRow = arrayOf("ABC", "⌫", " ", "⏎")
 
-        val scrollContent = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-        }
-        emojiRows.forEach { row -> scrollContent.addView(createKeyboardRow(row)) }
-
-        val scrollView = android.widget.ScrollView(context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(EMOJI_VISIBLE_ROWS * (BUTTON_HEIGHT_DP + BUTTON_MARGIN_DP * 2))
-            )
-            addView(scrollContent)
+        val picker = EmojiPickerView(context, accentHandler).apply {
+            onEmojiSelected = { emoji -> interactionListener?.onKeyPress(emoji) }
         }
 
-        mainLayout.addView(scrollView)
+        mainLayout.addView(picker)
         mainLayout.addView(createKeyboardRow(controlRow))
     }
     
@@ -283,14 +256,8 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police : Potomitan™ discret sur l'espace, emojis
-                // agrandis pour la lisibilité (ce sont le contenu principal
-                // du layout emoji, pas des touches de contrôle)
-                textSize = when {
-                    key == " " -> TEXT_SIZE_SP * 0.75f
-                    isEmojiMode && key !in EMOJI_CONTROL_KEYS -> TEXT_SIZE_SP * 1.4f
-                    else -> TEXT_SIZE_SP
-                }
+                // Taille de police personnalisée pour Potomitan™ branding discret
+                textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
                 setTypeface(typeface, Typeface.BOLD)
                 
                 // Calcul du poids selon le type de touche

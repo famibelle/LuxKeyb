@@ -92,6 +92,19 @@ class AccentHandler(private val context: Context) {
     // (toute touche absente de cet ensemble garde le coin droit par défaut)
     private val cornerHintOnStartSide = setOf("o")
 
+    // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
+    // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =
+    // emoji au ton foncé par défaut affiché dans la grille, valeur = les 4
+    // autres tons + la version neutre/jaune, dans cet ordre. Contrairement à
+    // accentMap (fixe, connu à la compilation), c'est une donnée chargée à
+    // l'exécution, d'où un champ mutable séparé plutôt qu'une entrée de plus
+    // dans accentMap.
+    private var emojiSkinTones: Map<String, List<String>> = emptyMap()
+
+    fun loadEmojiSkinTones(skinTones: Map<String, List<String>>) {
+        emojiSkinTones = skinTones
+    }
+
     // ├ëtat actuel
     private var currentAccentPopup: PopupWindow? = null
     private val longPressHandler = Handler(Looper.getMainLooper())
@@ -116,7 +129,7 @@ class AccentHandler(private val context: Context) {
      * V├®rifie si une touche a des accents disponibles
      */
     fun hasAccents(key: String): Boolean {
-        return accentMap.containsKey(key.lowercase())
+        return accentMap.containsKey(key.lowercase()) || emojiSkinTones.containsKey(key)
     }
     
     /**
@@ -163,7 +176,7 @@ class AccentHandler(private val context: Context) {
      * Affiche la popup d'accents pour une touche de base
      */
     fun showAccentPopup(baseKey: String, anchorButton: View) {
-        val accents = accentMap[baseKey.lowercase()] ?: return
+        val accents = accentMap[baseKey.lowercase()] ?: emojiSkinTones[baseKey] ?: return
         
         // Fermer la popup existante si elle existe
         dismissAccentPopup()
@@ -375,7 +388,7 @@ class AccentHandler(private val context: Context) {
      * Obtient tous les accents disponibles pour une touche
      */
     fun getAccentsForKey(key: String): List<String> {
-        return accentMap[key.lowercase()] ?: emptyList()
+        return accentMap[key.lowercase()] ?: emojiSkinTones[key] ?: emptyList()
     }
 
     /**
