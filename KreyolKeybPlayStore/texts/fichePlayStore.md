@@ -9,12 +9,22 @@ Fiche Play Store principale). Remplace `description.md` et
 *Le nom de votre appli apparaîtra tel quel sur Google Play (30 caractères max).*
 
 ```
-Klavyé Kréyòl – Clavier Créole Guadeloupe
+Klavyé Kréyòl – Clavier Créole
 ```
 
-Titre live confirmé au 2026-08-01. La proposition ASO de 2026-07
-(« Klavyé Kréyòl – Clavier Créole », pour capter la recherche « clavier
-créole ») n'a pas été appliquée en Play Console.
+Titre corrigé le 2026-08-01 (voir note ci-dessous) : le titre noté
+comme « live » ce même jour, « Klavyé Kréyòl – Clavier Créole
+Guadeloupe », fait 41 caractères — 11 de trop par rapport à la limite
+Play Store de 30 caractères. Retour à la proposition ASO de 2026-07,
+qui tient exactement dans la limite (30 caractères pile) et garde le
+mot-clé recherché « clavier créole ». L'identité guadeloupéenne reste
+très présente ailleurs sur la fiche (icône, description longue,
+captures d'écran, badge presse Canal 10 / Guadeloupe la 1ère) donc pas
+nécessaire de la répéter dans le titre au prix de le faire déborder.
+
+⚠️ À vérifier en Play Console : si « ... Guadeloupe » a été enregistré
+tel quel, il a probablement été tronqué automatiquement à la
+sauvegarde ou refusé — coller cette version corrigée pour être sûr.
 
 ## Brève description
 
