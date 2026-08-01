@@ -5,6 +5,27 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.0.0] - 2026-08-01
+
+### 🏗️ Migration vers AGP 9.3.1 / Gradle 9.6.1 (Kotlin natif)
+
+- **Constat** : Google Play signalait que la configuration R8 pouvait entraîner une utilisation mémoire plus élevée et des performances plus faibles, recommandant de passer au plug-in Android Gradle (AGP) version 9.0 ou ultérieure
+- **AGP 8.6.0 → 9.3.1** et **Gradle 8.8 → 9.6.1** (exigence minimale d'AGP 9.3.1)
+- **Kotlin natif** : suppression du plugin `org.jetbrains.kotlin.android`, incompatible avec la nouvelle DSL AGP 9+ ; Kotlin est désormais compilé nativement par AGP (jvmTarget hérité de `compileOptions`)
+- **API de nommage des APK modernisée** : remplacement de l'API dépréciée `applicationVariants.configureEach` par `androidComponents.onVariants`
+- **CI alignée** : `build-apk.yml` mis à jour sur Gradle 9.6.1 (4 occurrences)
+- **Bug latent corrigé** : `AccentHandler.kt` était encodé en UTF-16 (au lieu d'UTF-8), toléré par l'ancien compilateur Kotlin mais faisant échouer la compilation avec le nouveau compilateur intégré à AGP 9
+- **`.toLowerCase()` → `.lowercase()`** dans `KreyolInputMethodService.kt` : la dépréciation Kotlin est désormais bloquante avec le compilateur plus récent
+- **Vérifié** : `assembleDebug`, tests unitaires, `assembleRelease` (R8/minification) réussis en local ; build CI GitHub Actions vert sur tous les jobs (Debug/Release APK et AAB), release publiée avec succès
+
+## [8.8.5] - 2026-08-01
+
+### ⌨️ La touche « * » remplace le tiret bas orphelin sur le clavier numérique
+
+- **Constat** : la touche « * », pourtant courante (calculs, mots de passe, mise en forme), était absente du clavier ; la rangée numérique avait un « _ » redondant avec le trait d'union déjà présent sur le clavier alphabétique
+- **Corrigé** : `_` remplacé par `*` dans la rangée `= . , ? ! ' + * ⌫` du clavier numérique (`KeyboardLayoutManager.kt`)
+- **Vérifié sur émulateur** : la touche s'affiche et s'insère correctement (Android 16 et Android 34)
+
 ## [8.8.4] - 2026-07-31
 
 ### ✏️ « Ékri » remplacé par « Maké » dans l'interface
