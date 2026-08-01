@@ -47,12 +47,12 @@ Ba kréyòl la lanmou'w : télécharge, note, partage !
 ## Capture d'écran presse (fait le 2026-08-01)
 
 Asset créé : `graphics/screenshots-phone/Screenshot_presse_vu_a_la_tele.png`
-(1080×2340, même format que les autres captures). Bandeau bleu « Vu à la
-télé » avec mentions textuelles Canal 10 / Guadeloupe la 1ère (pas de
-logos officiels, pour éviter tout problème de droits de marque) au-dessus
-d'une capture du clavier en action (suggestions KR/FR) — le même contenu
-que l'ex-`Screenshot_v8.8_clavier_suggestions_kreyol.png`, déjà présente
-dans la galerie Play Store. Committé en `0cfd751`.
+(1080×2340, même format que les autres captures). Version 2 (2026-08-01,
+sur demande utilisateur) : plein cadre bleu, sans capture d'écran du
+téléphone, avec « Canal 10 » et « Guadeloupe la 1ère » en très grand
+(~128px) comme éléments dominants — pas de logos officiels, pour éviter
+tout problème de droits de marque, uniquement du texte. Committé en
+`0cfd751` (v1 avec capture clavier) puis mis à jour.
 
 L'ancien fichier a été supprimé du dossier (doublon avec le nouvel asset)
 et remplacé, pour l'usage README, par un simple recadrage propre de la
