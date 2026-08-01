@@ -123,11 +123,11 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 - Touches arrondies, animations 100–120 ms, haptique légère
 - Watermark discret Potomitan™
 
-## 🆕 Quoi de neuf — v9.0.0
+## 🆕 Quoi de neuf — v10.0.0
 
-- 🏗️ **Migration vers Android Gradle Plugin 9.3.1 / Gradle 9.6.1** (Kotlin compilé nativement) : corrige l'avertissement Google Play sur l'optimisation R8 (mémoire/performances)
-- 🧹 Modernisation de la configuration de build (API de variantes AGP à jour)
-- ⌨️ *(v8.8.5)* Ajout de la touche **`*`** sur le clavier numérique
+- 😀 **Panneau emoji intégré** : sélection curée de 80 emojis, défilable en swipe, accessible en un tap direct depuis le clavier alphabétique ou le mode 123 — tons de peau foncés par défaut sur les emojis gestuels
+- ⌨️ Rangée 4 réorganisée : l'apostrophe (quasi jamais utilisée en kréyòl) passe en appui long sur `,`, libérant la place pour la touche emoji
+- 🏗️ *(v9.0.0)* Migration vers Android Gradle Plugin 9.3.1 / Gradle 9.6.1 (Kotlin compilé nativement)
 
 📖 Détails complets dans le [CHANGELOG](android_keyboard/CHANGELOG.md)
 

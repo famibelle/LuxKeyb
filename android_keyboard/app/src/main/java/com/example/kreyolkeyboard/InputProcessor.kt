@@ -23,12 +23,13 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     private var isCapitalMode = false
     private var isCapsLock = false
     private var isNumericMode = false
-    
+    private var isEmojiMode = false
+
     // Callbacks
     interface InputProcessorListener {
         fun onWordChanged(word: String)
         fun onWordCompleted(word: String)
-        fun onModeChanged(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean)
+        fun onModeChanged(isNumeric: Boolean, isEmoji: Boolean, isCapital: Boolean, isCapsLock: Boolean)
         fun onSpecialKeyPressed(key: String)
     }
     
@@ -69,6 +70,10 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
             "123", "ABC" -> {
                 Log.d(TAG, "Handling mode switch")
                 handleModeSwitch()
+            }
+            "EMOJI" -> {
+                Log.d(TAG, "Handling emoji panel switch")
+                handleEmojiSwitch()
             }
             " " -> {
                 Log.d(TAG, "Handling space")
@@ -117,8 +122,17 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Retour arrière
      */
     private fun handleBackspace(inputConnection: InputConnection): Boolean {
-        // Supprimer le caractère précédent dans l'éditeur
-        val deleted = inputConnection.deleteSurroundingText(1, 0)
+        // Supprimer le(s) caractère(s) précédent(s) dans l'éditeur. La plupart des
+        // emojis (panneau emoji, mais aussi ceux tapés via un autre clavier avant de
+        // basculer sur Kréyòl) sont hors du plan de base Unicode et occupent une
+        // paire de surrogates UTF-16 : supprimer une seule unité laissait un
+        // demi-caractère orphelin qui s'affiche comme un glyphe cassé (❓). Les
+        // emojis à ton de peau (ex. 💪🏿) vont plus loin : ce sont deux points de
+        // code distincts (emoji de base + modificateur de ton), donc 4 unités
+        // UTF-16 à supprimer ensemble pour ne pas laisser le modificateur seul.
+        val textBeforeCursor = inputConnection.getTextBeforeCursor(4, 0)?.toString() ?: ""
+        val deleteLength = calculateBackspaceLength(textBeforeCursor)
+        val deleted = inputConnection.deleteSurroundingText(deleteLength, 0)
         
         // Mettre à jour le mot courant
         if (currentWord.isNotEmpty()) {
@@ -129,7 +143,28 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         Log.d(TAG, "Backspace traité, mot courant: '$currentWord'")
         return true
     }
-    
+
+    /**
+     * Détermine combien d'unités UTF-16 supprimer avant le curseur pour retirer
+     * proprement un seul glyphe : un caractère normal, un emoji hors plan de base
+     * (paire de surrogates), ou un emoji + modificateur de ton de peau (deux
+     * points de code consécutifs, ex. 💪🏿 = U+1F4AA U+1F3FF).
+     */
+    private fun calculateBackspaceLength(textBeforeCursor: String): Int {
+        if (textBeforeCursor.isEmpty()) return 1
+        val end = textBeforeCursor.length
+        val lastCodePoint = textBeforeCursor.codePointBefore(end)
+        val lastCodePointLength = Character.charCount(lastCodePoint)
+        val isSkinToneModifier = lastCodePoint in 0x1F3FB..0x1F3FF
+
+        val precedingEnd = end - lastCodePointLength
+        if (isSkinToneModifier && precedingEnd > 0) {
+            val precedingCodePoint = textBeforeCursor.codePointBefore(precedingEnd)
+            return lastCodePointLength + Character.charCount(precedingCodePoint)
+        }
+        return lastCodePointLength
+    }
+
     /**
      * Traite la touche Entrée
      */
@@ -235,19 +270,38 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
             }
         }
 
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         Log.d(TAG, "Shift traité - Capital: $isCapitalMode, CapsLock: $isCapsLock")
         return true
     }
-    
+
     /**
-     * Traite le changement de mode (123/ABC)
+     * Traite le changement de mode (123/ABC). Depuis le panneau emoji, "ABC"
+     * remonte ce même chemin : on revient à l'alphabétique plutôt que de
+     * togglerNumericMode, ce qui rouvrirait le mode 123 au lieu des lettres.
      */
     private fun handleModeSwitch(): Boolean {
-        isNumericMode = !isNumericMode
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
-        
-        Log.d(TAG, "Mode changé - Numérique: $isNumericMode")
+        if (isEmojiMode) {
+            isEmojiMode = false
+            isNumericMode = false
+        } else {
+            isNumericMode = !isNumericMode
+        }
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
+
+        Log.d(TAG, "Mode changé - Numérique: $isNumericMode, Emoji: $isEmojiMode")
+        return true
+    }
+
+    /**
+     * Traite l'ouverture du panneau emoji (touche EMOJI du mode 123)
+     */
+    private fun handleEmojiSwitch(): Boolean {
+        isEmojiMode = true
+        isNumericMode = false
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
+
+        Log.d(TAG, "Mode changé - Emoji activé")
         return true
     }
     
@@ -380,11 +434,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     private fun handleAutoCapitalization() {
         if (shouldAutoCapitalize()) {
             isCapitalMode = true
-            processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+            processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         } else if (isCapitalMode && !isCapsLock) {
             // Désactiver la majuscule simple après utilisation
             isCapitalMode = false
-            processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+            processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         }
     }
     
@@ -417,9 +471,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         isCapitalMode = false
         isCapsLock = false
         // Ne pas réinitialiser isNumericMode pour conserver le mode choisi
-        
+        // Le panneau emoji, lui, ne doit pas persister sur un nouveau champ
+        isEmojiMode = false
+
         processorListener?.onWordChanged("")
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
     }
     
     /**
@@ -452,10 +508,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
             isCapitalMode = isCapitalMode,
             isCapsLock = isCapsLock,
             isNumericMode = isNumericMode,
+            isEmojiMode = isEmojiMode,
             currentWord = currentWord
         )
     }
-    
+
     /**
      * Définit l'état des modes
      */
@@ -463,12 +520,13 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         isCapitalMode = state.isCapitalMode
         isCapsLock = state.isCapsLock
         isNumericMode = state.isNumericMode
+        isEmojiMode = state.isEmojiMode
         currentWord = state.currentWord
-        
+
         processorListener?.onWordChanged(currentWord)
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
     }
-    
+
     /**
      * Classe de données pour l'état du processeur
      */
@@ -476,6 +534,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         val isCapitalMode: Boolean = false,
         val isCapsLock: Boolean = false,
         val isNumericMode: Boolean = false,
+        val isEmojiMode: Boolean = false,
         val currentWord: String = ""
     )
 }
