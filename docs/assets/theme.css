@@ -91,6 +91,10 @@ body,
 .markdown-body code,
 .markdown-body pre { background-color: var(--sea-soft); color: var(--ink); }
 .markdown-body h1 a { color: inherit; }
+/* Le thème par défaut de GitHub Pages fixe `background-color:#fff` sur
+   TOUTES les images : sans cette règle, les coins transparents des SVG
+   (ex. badge Google Play) restent blancs en dark mode. */
+.markdown-body img { background-color: transparent; }
 
 /* Nav partagée (index.md, presskit.md, ambassade.html) */
 nav.site {
