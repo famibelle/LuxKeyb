@@ -65,6 +65,60 @@
       this.updateSuggestions([], false);
 
       this.els.resetBtn?.addEventListener('click', () => this.reset());
+      this.bindPhysicalKeyboard();
+    }
+
+    // ---- clavier physique (confort desktop, en plus du clavier tactile) ----
+
+    bindPhysicalKeyboard() {
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey || e.altKey) return; // laisser les raccourcis navigateur
+
+        const target = e.target;
+        if (target && (target.tagName === 'A' || target.tagName === 'BUTTON' || target.isContentEditable)) {
+          return; // laisser Tab+Entrée/Espace activer nativement liens, boutons, touches virtuelles
+        }
+
+        if (e.key === 'Backspace') {
+          e.preventDefault(); // sinon navigation arrière du navigateur hors champ éditable
+          this.processKey('⌫');
+          return;
+        }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.processKey('⏎');
+          return;
+        }
+        if (e.key === ' ') {
+          e.preventDefault(); // sinon défilement de la page
+          this.processKey(' ');
+          return;
+        }
+        if (e.key === 'Escape') {
+          this.dismissAccentPopup();
+          return;
+        }
+        if (e.key.length === 1) {
+          e.preventDefault();
+          this.insertPhysicalChar(e.key);
+        }
+      });
+    }
+
+    // Comme handleCharacter(), mais sans reforcer la casse : le clavier
+    // physique (Maj/Verr.Maj/touches mortes gérées par l'OS) fournit déjà
+    // le bon caractère dans e.key.
+    insertPhysicalChar(character) {
+      if (LETTER_RE.test(character)) {
+        this.currentWord += character;
+        this.onWordChanged();
+      } else {
+        this.finalizeCurrentWord();
+      }
+      this.screenText += character;
+      this.renderScreen();
+      this.handleAutoCapitalization();
+      this.renderKeyboard();
     }
 
     // ---- helpers de touche ----
