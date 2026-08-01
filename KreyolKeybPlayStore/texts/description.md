@@ -1,5 +1,7 @@
  KLAVYÉ KRÉYÒL KARUKERA - Enfin écrire en kréyòl sans galérer !
 
+📺 Vu sur Canal 10 et au JT de Guadeloupe la 1ère (France Télévisions) en juillet 2026 !
+
 Tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots ? Tu doutes de l'orthographe à chaque message ? Klavyé Kréyòl Karukera est fait pour toi !
 
 🛠️ FINI LA GALÈRE !
@@ -63,7 +65,7 @@ Ce clavier s'appuie sur les travaux des plus grands défenseurs du kréyòl :
 
 Ce n'est pas juste un clavier, c'est un acte de résistance culturelle ! Chaque message en kréyòl contribue à :
 
-🏝️ Préserver notre patrimoine linguistique
+🌱 Préserver notre patrimoine linguistique
 👨‍👩‍👧‍👦 Transmettre la langue aux nouvelles générations  
 🌟 Valoriser l'identité guadeloupéenne
 📚 Enrichir la production littéraire créole numérique
@@ -88,5 +90,5 @@ Participe à la révolution numérique du kréyòl ! Chaque téléchargement est
 Fais partie du mouvement qui refuse de laisser mourir le kréyòl dans l'ère numérique !
 
 ---
-🏝️ Potomitan™ - Teknoloji pou tout moun  
+🗣️ Potomitan™ - Teknoloji pou tout moun  
  "An kreyòl nou ka palé, an kreyòl nou ka rivé !"
