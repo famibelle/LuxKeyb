@@ -120,6 +120,14 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 - Touches arrondies, animations 100–120 ms, haptique légère
 - Watermark discret Potomitan™
 
+## 🆕 Quoi de neuf — v9.0.0
+
+- 🏗️ **Migration vers Android Gradle Plugin 9.3.1 / Gradle 9.6.1** (Kotlin compilé nativement) : corrige l'avertissement Google Play sur l'optimisation R8 (mémoire/performances)
+- 🧹 Modernisation de la configuration de build (API de variantes AGP à jour)
+- ⌨️ *(v8.8.5)* Ajout de la touche **`*`** sur le clavier numérique
+
+📖 Détails complets dans le [CHANGELOG](android_keyboard/CHANGELOG.md)
+
 ## 📦 Téléchargements
 
 ### 🚀 **Dernière Version Stable**
