@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0] - 2026-08-01
+
+### 😀 Panneau emoji : jeu exhaustif, catégories par onglets, swipe latéral
+
+- **Constat** : le panneau curé de 80 emojis (v10.0.0) restait limité ; besoin d'un vrai jeu exhaustif avec navigation par catégorie, comme les claviers Android standards
+- **Remplacé** : le `ScrollView` vertical de 80 emojis cède la place à `EmojiPickerView`, un widget dédié combinant onglets de catégories et pages défilables latéralement (`ViewPager2`), chaque page étant une grille virtualisée (`RecyclerView`/`GridLayoutManager`) — indispensable pour rester fluide avec ~1900 emojis chargés sur les téléphones bas de gamme visés par ce projet (construire ~1900 `Button` d'un coup, sans virtualisation, aurait un vrai coût mémoire/jank)
+- **Jeu de données** : `assets/emoji_data.json` (48 Ko), généré depuis le fichier officiel `emoji-test.txt` d'Unicode 16.0 — 1906 emojis de base (entrées *fully-qualified*, groupe "Component" exclu), répartis sur les 9 catégories CLDR (Smileys & Emotion, People & Body, Animals & Nature, Food & Drink, Travel & Places, Activities, Objects, Symbols, Flags)
+- **Tons de peau systématisés** : les 316 emojis concernés (gestes, personnes) s'affichent par défaut au ton foncé (cohérent avec le choix fait en v10.0.0) ; l'appui long ouvre désormais un vrai sélecteur (les 4 autres tons + le jaune neutre), au lieu d'être figés — réutilise le popup d'accents existant (`AccentHandler`), étendu avec une table de tons chargée dynamiquement (`loadEmojiSkinTones`)
+- **Nouvelles dépendances** : `androidx.recyclerview:1.3.2`, `androidx.viewpager2:1.1.0`
+- **Bug corrigé en cours de route** : `onAccentSelected` (popup d'accents/tons) ajoutait systématiquement le caractère choisi au mot en cours de frappe (utilisé pour les suggestions dictionnaire) ; correct pour une lettre accentuée, faux pour un emoji ou une ponctuation — désormais restreint aux vraies lettres (`accent.all { it.isLetter() }`)
+- **Vérifié sur émulateur** (Android 16, `honor_x9c_test`) : swipe latéral change de catégorie (onglet mis à jour), défilement vertical dans une catégorie, sélection de ton via appui long (les 6 options), insertion et suppression propres (y compris après un ton neutre choisi), tap direct sur les onglets
+
 ## [10.0.0] - 2026-08-01
 
 ### 😀 Panneau emoji intégré au clavier
