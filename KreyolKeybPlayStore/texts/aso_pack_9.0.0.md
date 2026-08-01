@@ -50,8 +50,12 @@ Asset créé : `graphics/screenshots-phone/Screenshot_presse_vu_a_la_tele.png`
 (1080×2340, même format que les autres captures). Bandeau bleu « Vu à la
 télé » avec mentions textuelles Canal 10 / Guadeloupe la 1ère (pas de
 logos officiels, pour éviter tout problème de droits de marque) au-dessus
-d'une vraie capture du clavier en action (suggestions KR/FR). Committé en
-`0cfd751`.
+d'une capture du clavier en action (suggestions KR/FR) — le même contenu
+que `Screenshot_v8.8_clavier_suggestions_kreyol.png`, déjà présente dans
+la galerie. Committé en `0cfd751`.
 
-Reste à faire manuellement (accès Play Console uniquement) : importer ce
-fichier en 2ᵉ ou 3ᵉ position dans la galerie de captures de la fiche.
+Reste à faire manuellement (accès Play Console uniquement) : **remplacer**
+`Screenshot_v8.8_clavier_suggestions_kreyol.png` par
+`Screenshot_presse_vu_a_la_tele.png` à la même position dans la galerie
+(pas d'ajout, pour éviter le doublon visuel des deux captures montrant la
+même démo clavier).
