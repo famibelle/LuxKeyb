@@ -68,6 +68,8 @@ ont chacune consacré un sujet au clavier :
 
 Replay complet du journal : [la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html)
 
+Article dédié : [« Klavyé Kréyòl Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html) · la1ere.franceinfo.fr, 30/07/2026
+
 📰 [Dossier de presse complet](https://famibelle.github.io/KreyolKeyb/presskit.html)
 
 ## 📱 Aperçu
