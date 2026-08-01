@@ -477,12 +477,22 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // Le caractère de base n'a pas été ajouté à cause de l'appui long
             inputConnection.commitText(accent, 1)
             Log.d(TAG, "✅ Accent '$accent' ajouté (remplace '$baseCharacter' conceptuel)")
-            
-            // Mettre à jour le mot courant en ajoutant l'accent
-            val currentWord = inputProcessor.getCurrentWord()
-            val updatedWord = currentWord + accent
-            inputProcessor.updateCurrentWordSilently(updatedWord)
-            Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
+
+            // Mettre à jour le mot courant en ajoutant l'accent — uniquement
+            // pour un vrai caractère de mot (lettre accentuée, digraphe...).
+            // Depuis l'ajout du panneau emoji (v10.1.0), cette même popup sert
+            // aussi à choisir un ton de peau ; un emoji n'est pas une lettre et
+            // ne doit pas polluer le suivi du mot en cours utilisé par les
+            // suggestions (sinon prochaine recherche dictionnaire faite avec
+            // un préfixe du genre "🥭ka").
+            if (accent.all { it.isLetter() }) {
+                val currentWord = inputProcessor.getCurrentWord()
+                val updatedWord = currentWord + accent
+                inputProcessor.updateCurrentWordSilently(updatedWord)
+                Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
+            } else {
+                inputProcessor.finalizeCurrentWordFromEmoji()
+            }
             
             // 🔍 DIAGNOSTIC: Vérifier l'état final
             val textAfter = inputConnection.getTextBeforeCursor(10, 0)?.toString() ?: ""

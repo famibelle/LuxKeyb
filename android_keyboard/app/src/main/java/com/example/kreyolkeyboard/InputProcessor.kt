@@ -360,6 +360,16 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * Finalise le mot courant suite à la sélection d'un emoji via la popup
+     * d'appui long (choix d'un ton de peau) : cette popup est partagée avec
+     * les accents de lettres, qui eux finalisent différemment (l'accent
+     * rejoint le mot en cours au lieu de le clore).
+     */
+    fun finalizeCurrentWordFromEmoji() {
+        finalizeCurrentWord()
+    }
+
+    /**
      * Finalise le mot courant
      */
     private fun finalizeCurrentWord() {
