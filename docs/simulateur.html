@@ -108,7 +108,10 @@
     min-height: 34px;
     padding: 3px 2px;
     overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* vieux Edge */
   }
+  .sugg-row::-webkit-scrollbar { display: none; } /* Chrome/Safari */
   .sugg-label {
     flex: none;
     font-size: 10px;
