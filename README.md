@@ -298,6 +298,8 @@ python GenererNgrams.py           # produit assets N-grams
 
 Tests informels sur: SMS, messageries, réseaux sociaux, champs web, saisie mail.
 
+📄 [Rapport de tests visuels multi-appareils (v10.1.1, 02/08/2026)](reports/tests/rapport_test_multi_appareils_2026-08-02.md) — 10 profils réels (Samsung, Xiaomi, OnePlus, Motorola), clavier/emoji/suggestions validés sans crash.
+
 ## 🤝 Contribution
 
 ### Comment Contribuer
