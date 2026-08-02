@@ -45,6 +45,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
+        private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
+        private const val SHARE_INVITE_MESSAGE = "An maké mésaj la sa épi Klavyé Kréyòl, " +
+            "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share"
 
         // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
         private fun isLowEndDevice(context: Context): Boolean {
@@ -739,14 +742,67 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (targetPackage == packageName) return // écran de test intégré à l'app, pas un vrai usage
 
         val prefs = getSharedPreferences(ONBOARDING_PREFS, Context.MODE_PRIVATE)
-        if (prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) return
 
-        Toast.makeText(
-            this,
-            "Kréyòl a klavyé a ! Apiyé lontan asi on lèt pou wè aksan yo (é, è, à, ò...)",
-            Toast.LENGTH_LONG
-        ).show()
-        prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
+        if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
+            Toast.makeText(
+                this,
+                "Kréyòl a klavyé a ! Apiyé lontan asi on lèt pou wè aksan yo (é, è, à, ò...)",
+                Toast.LENGTH_LONG
+            ).show()
+            prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
+        }
+
+        // Puce de partage : état séparé de l'astuce accents ci-dessus, retentée
+        // à chaque champ tant qu'elle n'a pas pu s'afficher sur un vrai champ
+        // de composition (action clavier "Envoyer") — sinon un premier focus
+        // sur un champ destinataire/recherche de contact (action "Suivant"/
+        // "Rechercher", qui réinterprète le texte collé comme une requête de
+        // contact et le tronque — repro sur l'écran "Nouvelle conversation" de
+        // Messages, testé le 02/08/2026) consommerait l'occasion pour toujours.
+        if (!prefs.getBoolean(PREF_SHARE_CHIP_SHOWN, false) &&
+            info.imeOptions and EditorInfo.IME_MASK_ACTION == EditorInfo.IME_ACTION_SEND
+        ) {
+            showShareInviteChip()
+            prefs.edit().putBoolean(PREF_SHARE_CHIP_SHOWN, true).apply()
+        }
+    }
+
+    /**
+     * Puce unique invitant à partager le clavier, affichée dans la barre de
+     * suggestions au moment du tout premier usage réel (avant même que
+     * l'utilisateur ait tapé une lettre de son propre message). Un tap
+     * insère directement le message prêt-à-envoyer dans le champ en cours
+     * (SMS, WhatsApp...) via commitText : contrairement à une suggestion
+     * normale, ce n'est pas un mot à finaliser, donc on n'appelle pas
+     * inputProcessor.processSuggestionSelection() ici. Dès que l'utilisateur
+     * tape son propre texte, displaySuggestions()/displayBilingualSuggestions()
+     * vide le conteneur et la puce disparaît naturellement.
+     */
+    private fun showShareInviteChip() {
+        val container = kreyolRow ?: return
+        lateinit var chip: Button
+        chip = Button(this).apply {
+            text = "📤 Envoyer un mot à un ami"
+            textSize = 14f
+            setTextColor(KeyboardColors.CHIP_TEXT)
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = dpToPx(16).toFloat()
+                setColor(Color.parseColor("#FF8A00"))
+            }
+            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+            }
+            setOnClickListener {
+                currentInputConnection?.commitText(SHARE_INVITE_MESSAGE, 1)
+                container.removeView(chip)
+            }
+        }
+        container.addView(chip, 0)
     }
     
     override fun onFinishInput() {
