@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
 import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
+import com.google.android.material.snackbar.Snackbar
 import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
 import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
@@ -3595,11 +3596,21 @@ class SettingsActivity : AppCompatActivity() {
             updateScore(points)
             
             // Vérifier si tous les mots sont trouvés
-            if (wordsFound == currentPuzzle?.words?.size) {
-                Toast.makeText(requireContext(), "🎉 Félicitations ! Tous les mots trouvés !", Toast.LENGTH_LONG).show()
+            // Toast.setGravity() est ignoré par le système depuis Android 11 : on utilise
+            // une Snackbar (vue applicative, pas une fenêtre système) pour l'ancrer en haut
+            // et éviter qu'elle ne recouvre le mot qui vient de passer en vert dans la liste.
+            val message = if (wordsFound == currentPuzzle?.words?.size) {
+                "🎉 Félicitations ! Tous les mots trouvés !"
             } else {
-                Toast.makeText(requireContext(), "✅ Mot trouvé : $word (+$points pts)", Toast.LENGTH_SHORT).show()
+                "✅ Mot trouvé : $word (+$points pts)"
             }
+            val duration = if (wordsFound == currentPuzzle?.words?.size) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
+            Snackbar.make(requireView(), message, duration).apply {
+                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
+                    it.gravity = Gravity.TOP
+                    view.layoutParams = it
+                }
+            }.show()
         }
         
         private fun updateScore(points: Int) {
