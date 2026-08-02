@@ -786,14 +786,13 @@ class SettingsActivity : AppCompatActivity() {
         // réglages : remplace la carte d'information (déjà lue) par le
         // diagnostic de l'échec le plus probable et l'invitation à réessayer
         if (showIncompleteNudge) {
+            recordFunnelStep("funnel_settings_return_no_enable")
             val nudgeCard = createCard("#FFF3E0")
 
             val nudgeText = TextView(this).apply {
-                text = "💡 Presque ! Le clavier n'est pas encore activé.\n\n" +
-                        "Sur l'écran des réglages, Android demande de valider deux " +
-                        "avertissements l'un après l'autre : s'arrêter au premier " +
-                        "annule l'activation. Rouvrez les paramètres et validez-les tous."
-                textSize = 14f
+                text = "💡 Presque ! Validez bien les 2 avertissements Android l'un après " +
+                        "l'autre : s'arrêter au premier annule l'activation."
+                textSize = 16f
                 setTextColor(Color.parseColor("#BF360C"))
                 setLineSpacing(0f, 1.3f)
             }
@@ -807,10 +806,9 @@ class SettingsActivity : AppCompatActivity() {
             val privacyNoticeCard = createCard("#FFF8E1")
 
             val privacyNoticeText = TextView(this).apply {
-                text = "ℹ️ En activant le clavier, Android affichera un ou deux avertissements " +
-                        "de sécurité, montrés pour tous les claviers tiers : validez-les tous pour " +
-                        "terminer. Klavyé Kréyòl ne collecte aucune donnée : tout reste sur votre téléphone."
-                textSize = 13f
+                text = "ℹ️ Android va afficher un avertissement de sécurité standard, " +
+                        "montré pour tous les claviers tiers. Klavyé Kréyòl ne collecte aucune donnée."
+                textSize = 16f
                 setTextColor(Color.parseColor("#5D4037"))
                 setLineSpacing(0f, 1.2f)
             }
@@ -841,7 +839,7 @@ class SettingsActivity : AppCompatActivity() {
             buttonText = if (isEnabled) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isEnabled,
             buttonAction = {
-                openKeyboardSettings()
+                showPreSettingsWarningDialog()
             }
         )
         mainLayout.addView(step1Card)
@@ -1269,7 +1267,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val descText = TextView(this).apply {
             text = description
-            textSize = 14f
+            textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 16)
             setLineSpacing(0f, 1.3f)
@@ -1561,7 +1559,7 @@ class SettingsActivity : AppCompatActivity() {
             // réglages système en pleine frappe)
             visibility = View.INVISIBLE
             alpha = 0f
-            setOnClickListener { openKeyboardSettings() }
+            setOnClickListener { showPreSettingsWarningDialog() }
         }
 
         fun revealInstallCta() {
@@ -1754,6 +1752,7 @@ class SettingsActivity : AppCompatActivity() {
                 else "Première ouverture : ${dateFormat.format(Date(firstOpen))}",
                 funnelLine("Premier essai (clavier de démo)", "funnel_demo_first_key"),
                 funnelLine("Clavier activé", "funnel_keyboard_enabled"),
+                funnelLine("Retour sans avoir activé", "funnel_settings_return_no_enable"),
                 funnelLine("Clavier sélectionné", "funnel_keyboard_selected"),
                 funnelLine("Premier mot tapé", "funnel_first_word")
             ).joinToString("\n")
@@ -2104,6 +2103,63 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    // Interstitiel montrant l'avertissement Android réel (capturé sur
+    // l'émulateur) avant d'y envoyer l'utilisateur : le voir à l'avance,
+    // annoté, le désamorce mieux qu'une description abstraite dans une
+    // carte qu'il a pu ne pas lire. Un seul bouton d'action ; pas de bouton
+    // d'annulation explicite, le retour matériel suffit à fermer sans
+    // naviguer ailleurs.
+    private fun showPreSettingsWarningDialog() {
+        val dialogLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 24, 48, 8)
+        }
+
+        val warningImage = ImageView(this).apply {
+            setImageResource(R.drawable.onboarding_ime_warning_preview)
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
+        }
+
+        val annotationText = TextView(this).apply {
+            text = "👆 Appuyez sur OK : c'est normal pour tous les claviers tiers"
+            textSize = 16f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#333333"))
+            setPadding(0, 24, 0, 12)
+            setLineSpacing(0f, 1.2f)
+        }
+
+        val reassuranceText = TextView(this).apply {
+            text = "Klavyé Kréyòl n'a pas accès à Internet : rien ne quitte votre téléphone."
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 0, 0, 12)
+            setLineSpacing(0f, 1.2f)
+        }
+
+        val returnHintText = TextView(this).apply {
+            text = "◀ Ensuite, appuyez sur Retour : vous revenez ici automatiquement"
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.2f)
+        }
+
+        dialogLayout.addView(warningImage)
+        dialogLayout.addView(annotationText)
+        dialogLayout.addView(reassuranceText)
+        dialogLayout.addView(returnHintText)
+
+        val scrollView = ScrollView(this).apply { addView(dialogLayout) }
+
+        AlertDialog.Builder(this)
+            .setTitle("Avant de continuer")
+            .setView(scrollView)
+            .setCancelable(true)
+            .setPositiveButton("J'ai compris, on y va") { _, _ -> openKeyboardSettings() }
+            .show()
+    }
+
     // Ouvre les paramètres de clavier système. Pas de Toast d'instruction :
     // la carte de l'étape 1 dit déjà quoi faire, avant le saut vers les
     // réglages (le Toast s'affichait par-dessus l'écran système, en bas,
@@ -2118,6 +2174,13 @@ class SettingsActivity : AppCompatActivity() {
                 .putLong("settings_visit_at", System.currentTimeMillis()).apply()
             val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            // Tentative de surlignage de la ligne IME dans l'écran système :
+            // extra non documenté, respecté par les Settings AOSP/Pixel,
+            // ignoré silencieusement ailleurs (pas d'effet de bord).
+            intent.putExtra(
+                ":settings:fragment_args_key",
+                "$packageName/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+            )
             startActivity(intent)
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture paramètres clavier: ${e.message}")
