@@ -5,6 +5,15 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.2] - 2026-08-02
+
+### 🐛 Notification "mot trouvé" recouvrait le mot dans la liste (jeu de recherche de mots cachés)
+
+- **Constat** : dans le jeu de recherche de mots cachés, la notification de succès ("✅ Mot trouvé : ...") s'affichait environ aux deux tiers de la hauteur de l'écran, pile sur la liste "Mots à trouver", masquant le mot qui venait de passer en vert
+- **Premier essai infructueux** : `Toast.setGravity(Gravity.TOP, ...)` n'a aucun effet, le système ignore le positionnement personnalisé des toasts depuis Android 11+ (confirmé par test sur émulateur Android 14)
+- **Corrigé** : remplacement des deux `Toast` de `WordSearchFragment.onWordFound()` par une `Snackbar` (vue applicative, non soumise à cette restriction) ancrée en haut de l'écran via `FrameLayout.LayoutParams.gravity`
+- **Vérifié sur émulateur** (`kreyol_test`, Android 14) : la notification s'affiche désormais sous la barre de titre, la liste des mots reste entièrement visible au moment où un mot est trouvé
+
 ## [10.1.1] - 2026-08-02
 
 ### 🐛 Onglets du panneau emoji tronqués en "…" sur Galaxy A21s
