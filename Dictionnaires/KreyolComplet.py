@@ -144,7 +144,8 @@ class KreyolPipelineUnique:
         print("-" * 40)
         
         textes_charges = False
-        
+        source_chargement = "Inconnu"
+
         # Essayer Hugging Face d'abord
         if HAS_DATASETS:
             try:
@@ -220,6 +221,7 @@ class KreyolPipelineUnique:
                     print(f"   ✅ {len(self.textes_kreyol)} textes récupérés")
                     print(f"   📊 Source: Dataset POTOMITAN/PawolKreyol-gfc")
                     textes_charges = True
+                    source_chargement = "Hugging Face"
                 else:
                     print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
                     print("   ⚠️ Dataset vide - aucun texte trouvé")
@@ -261,6 +263,7 @@ class KreyolPipelineUnique:
                         print(f"✅ FALLBACK RÉUSSI !")
                         print(f"   📊 {len(self.textes_kreyol)} textes chargés depuis {chemin}")
                         textes_charges = True
+                        source_chargement = "Local"
                         break
                         
                     except Exception as e:
@@ -275,14 +278,8 @@ class KreyolPipelineUnique:
             return False
         
         print(f"\n📋 RÉSUMÉ CHARGEMENT:")
-        # Détection de source plus précise
-        if textes_charges and self.textes_kreyol:
-            source_hf = any(t.get("Source", "").find("Hugging") != -1 for t in self.textes_kreyol[:5])
-            source = "Hugging Face" if source_hf else "Local"
-        else:
-            source = "Inconnu"
         print(f"   📊 {len(self.textes_kreyol)} textes chargés")
-        print(f"   🌐 Source: {source}")
+        print(f"   🌐 Source: {source_chargement}")
         print(f"   ✅ Prêt pour traitement")
         
         return True
