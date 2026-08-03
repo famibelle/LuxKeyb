@@ -5,6 +5,40 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.3] - 2026-08-03
+
+### 🎉 Carte de succès partageable à la fin de l'activation
+
+- **Constat** : l'onboarding se terminait sans aucun retour positif après un parcours d'activation (interstitiel d'avertissement Android + réglages système) identifié comme un point de friction pour les utilisateurs peu technophiles
+- **Ajouté** : une carte de félicitation "🎉 Klavyé Kréyòl aktivé !" à la fin de l'onboarding, avec un bouton de partage natif Android (sélecteur système)
+- **Confidentialité** : le message proposé au partage est entièrement fixe et pré-rédigé, écrit avant que l'utilisateur ait tapé quoi que ce soit avec le clavier ; aucun contenu personnel n'est lu ni réutilisé
+- Affichée une seule fois (flag dédié dans les préférences d'onboarding)
+
+### 🐛 Le pipeline dictionnaire ignorait le token Hugging Face en CI
+
+- **Constat** : chaque build CI se connectait en anonyme à Hugging Face, échouait, et basculait silencieusement sur un corpus local de secours (504 textes) sans jamais régénérer le dictionnaire depuis les données fraîches
+- **Cause** : la lecture de `HF_TOKEN` dans `Dictionnaires/KreyolComplet.py` était imbriquée dans un bloc conditionné à la présence d'un fichier `.env` local, jamais vrai en CI où le secret est injecté directement comme variable d'environnement
+- **Corrigé** : la lecture du token s'exécute désormais dans tous les cas
+- **Effet de bord découvert en vérifiant** : le dataset `POTOMITAN/PawolKreyol-gfc` contenait lui-même une virgule JSON manquante le rendant illisible, corrigée directement sur Hugging Face ; le pipeline régénère maintenant le dictionnaire depuis des données réelles (vérifié par relance manuelle du workflow)
+
+### 🧹 Nettoyage
+
+- Retrait de l'emoji 🏝️ (cliché touristique) des textes utilisateur : écran "À propos", message de partage de l'application, image et message de partage de niveau
+
+## [10.2.1] - 2026-08-02
+
+### 🎯 Interstitiel d'avertissement avant l'activation du clavier
+
+- **Constat** : suite à l'analyse du funnel Play Console (1,91k acquisitions pour seulement 54 premières ouvertures), l'étape d'activation dans les réglages système Android était identifiée comme un point d'abandon majeur
+- **Ajouté** : un interstitiel montrant la vraie capture de l'avertissement Android avant d'envoyer l'utilisateur dans les réglages système, pour désamorcer la surprise à l'avance plutôt que de la décrire dans une carte qu'il pourrait ne pas lire
+- Textes d'onboarding agrandis (13/14sp → 16sp) pour la lisibilité
+- Ajout d'un jalon funnel local (SharedPreferences, rien ne quitte le téléphone) pour mesurer l'abandon à cette étape
+
+### 📤 Puce de partage à la première utilisation réelle du clavier
+
+- **Ajouté** : une puce ponctuelle "Envoyer un mot à un ami" dans la barre de suggestions, affichée la première fois que le clavier sert réellement hors de l'app ; un tap insère un message prêt-à-envoyer avec le lien Play Store
+- **Piège évité** : la puce n'apparaît que sur un champ dont l'action clavier est "Envoyer" ; le champ destinataire de Google Messages tronque le texte inséré en le réinterprétant comme une recherche de contact (reproduit en test)
+
 ## [10.1.2] - 2026-08-02
 
 ### 🐛 Notification "mot trouvé" recouvrait le mot dans la liste (jeu de recherche de mots cachés)
