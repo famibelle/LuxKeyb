@@ -151,6 +151,17 @@ Les suggestions s'appuient sur les œuvres de :
   CAPES créole) et leurs élèves
 - **Open source citoyen** : un projet indépendant, auditable, sans modèle
   publicitaire
+- **Souveraineté et préservation numériques** : les outils qui décident
+  quelles langues sont prises en charge par l'écriture au quotidien
+  (claviers, correcteurs, dictionnaires intégrés) restent conçus par une
+  poignée d'acteurs (Google, Samsung, Apple). Klavyé Kréyòl est développé en
+  dehors de ces circuits : dictionnaire, modèle de prédiction et code
+  publics, construits à partir d'un corpus d'auteurs créolophones, sans
+  dépendance à une plateforme propriétaire ni collecte de données. Une
+  langue absente des usages numériques s'expose à disparaître à court
+  terme : en favorisant la présence quotidienne du kréyòl dans les SMS et
+  les réseaux sociaux, le clavier agit aussi comme un outil de préservation
+  linguistique
 - **Les racines du kréyòl** : en février 2026, des chercheurs créolistes
   (dont Tony Mango sur Radyo Tanbou) annoncent explorer les origines
   africaines réelles de la langue mère du côté des langues congolaises, un
