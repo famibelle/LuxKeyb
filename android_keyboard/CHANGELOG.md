@@ -5,6 +5,14 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.9] - 2026-08-04
+
+### ✨ Nouvelle section « Installation et activation » dans le Guide
+
+- L'onglet Guide ne couvrait jusqu'ici que l'usage du clavier une fois actif (accents, suggestions, chiffres) — rien sur l'activation elle-même, alors que c'est le point de friction le plus élevé du parcours (deux avertissements système consécutifs)
+- Ajout de 4 captures d'écran réelles (émulateur `kreyol_test`, Android 14, état pristine reproduit par désinstallation/réinstallation) illustrant pas à pas : l'écran système « Clavier à l'écran », le premier avertissement Android (collecte de données), le sélecteur système de mode de saisie, et l'écran final « Configuration terminée »
+- Texte organisé en 4 étapes numérotées, en complément du tunnel interactif déjà présent dans l'onglet Démarrage — utile pour s'y référer après coup (réinstallation, changement de téléphone) sans repasser par tout le flux
+
 ## [10.2.8] - 2026-08-03
 
 ### 🐛 Les suggestions de mots n'apparaissaient plus sur les APK/AAB publiés

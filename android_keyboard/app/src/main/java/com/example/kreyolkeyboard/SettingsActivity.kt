@@ -1890,6 +1890,46 @@ class SettingsActivity : AppCompatActivity() {
         mainLayout.addView(createSpacing(8))
 
         addGuideSection(
+            mainLayout, "#E3F2FD", "📲 Installation et activation",
+            "Le clavier doit être activé puis sélectionné avant de pouvoir l'utiliser, comme " +
+                    "n'importe quel clavier tiers sur Android. Ces étapes interactives sont aussi " +
+                    "disponibles dans l'onglet « Démarrage » ; voici à quoi elles ressemblent."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
+            "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
+                    "l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukera » apparaît " +
+                    "à côté des autres claviers installés, interrupteur éteint."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
+
+        addGuideSection(
+            mainLayout, "#FFF8E1", "2️⃣ Valider les avertissements Android",
+            "En activant l'interrupteur, Android affiche un avertissement générique montré pour " +
+                    "tous les claviers tiers, suivi d'une seconde note sur le redémarrage du téléphone. " +
+                    "Klavyé Kréyòl ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, " +
+                    "puis revenez à l'application avec le bouton retour."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, "Avertissement système affiché pour tout clavier tiers")
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
+            "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
+                    "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
+                    "touchez « Klavyé Kréyòl Karukera » pour en faire le clavier utilisé."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", "✅ Configuration terminée",
+            "Les deux étapes cochées, le clavier Kréyòl s'affiche partout où vous tapez, y compris " +
+                    "dans le champ d'essai de l'onglet Démarrage. Un appui long sur la barre d'espace " +
+                    "permet de rebasculer vers un autre clavier à tout moment."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, "Les trois étapes cochées, clavier actif dans le champ d'essai")
+
+        addGuideSection(
             mainLayout, "#FFFFFF", "✍️ Écrire en Kréyòl",
             "Le clavier démarre en mode alphabétique. La première lettre de chaque " +
                     "message prend automatiquement une majuscule, comme sur un clavier classique."
