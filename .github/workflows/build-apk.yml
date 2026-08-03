@@ -111,6 +111,17 @@ jobs:
         echo "📊 Vérification des assets Android déjà générés par le script:"
         ls -la android_keyboard/app/src/main/assets/creole_*.json
 
+        # Garde-fou anti-régression : creole_dict.json DOIT être un tableau
+        # [[mot, fréquence], ...], jamais un objet {mot: fréquence}. Un objet
+        # se parse en JSONException au runtime (non catchée avant le fix de
+        # SuggestionEngine.kt) et désactive silencieusement toutes les
+        # suggestions sur l'APK publié — exactement le bug de la v10.2.6.
+        if ! jq -e 'type == "array"' android_keyboard/app/src/main/assets/creole_dict.json > /dev/null; then
+          echo "::error::creole_dict.json n'est PAS un tableau [[mot, fréquence], ...] — c'est le bug qui a cassé les suggestions en v10.2.6. Build arrêté avant de publier un APK cassé."
+          exit 1
+        fi
+        echo "✅ Format de creole_dict.json vérifié : tableau de paires [mot, fréquence]"
+
     - name: 🎯 Dictionary Assets Ready
       run: |
         echo "✅ Assets de dictionnaire prêts pour les builds Android"
