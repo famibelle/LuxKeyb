@@ -104,15 +104,18 @@ class KreyolPipelineUnique:
                     print(f"✅ Configuration .env trouvée: {env_path}")
                     break
         
-        if env_found:
-            token = os.getenv('HF_TOKEN') or os.getenv('HF_TOKEN_read_write')
-            if token:
-                self.hf_token = token
-                print("🔑 Token Hugging Face configuré")
-            else:
-                print("⚠️ Token Hugging Face non trouvé dans .env")
-        else:
+        if not env_found:
             print("⚠️ Configuration .env non trouvée (optionnel)")
+
+        # Le token peut venir d'un .env local (dev) ou être déjà présent dans
+        # l'environnement (secret HF_TOKEN injecté par GitHub Actions, sans
+        # fichier .env) : cette lecture doit donc s'exécuter dans tous les cas
+        token = os.getenv('HF_TOKEN') or os.getenv('HF_TOKEN_read_write')
+        if token:
+            self.hf_token = token
+            print("🔑 Token Hugging Face configuré")
+        else:
+            print("⚠️ Token Hugging Face non trouvé")
     
     def _charger_donnees_existantes(self):
         """Charge les données existantes si disponibles"""

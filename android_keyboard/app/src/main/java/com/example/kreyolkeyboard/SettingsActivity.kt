@@ -348,6 +348,47 @@ class SettingsActivity : AppCompatActivity() {
         demoKeyboardManager = null
         demoEngine = null
         demoEngineReady = false
+
+        maybeShowActivationSuccessCard()
+    }
+
+    // Récompense l'utilisateur juste après un parcours d'activation identifié
+    // comme un point de friction (interstitiel + réglages système) : un seul
+    // affichage, jamais reposé même si l'onboarding se rejoue. Le message
+    // proposé au partage est fixe, écrit avant que l'utilisateur ait tapé
+    // quoi que ce soit avec le clavier — aucun contenu personnel n'est lu.
+    private fun maybeShowActivationSuccessCard() {
+        val prefs = onboardingPrefs()
+        if (prefs.getBoolean("activation_success_card_shown", false)) return
+        prefs.edit().putBoolean("activation_success_card_shown", true).apply()
+
+        AlertDialog.Builder(this)
+            .setTitle("🎉 Klavyé Kréyòl aktivé !")
+            .setMessage("Bravo, ou fè'y ! Klavyé a paré pou maké an kréyòl asi tout aplikasyon'w yo.")
+            .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
+            .setNegativeButton("Plus tard", null)
+            .setCancelable(true)
+            .show()
+    }
+
+    // Partage natif (chooser Android), message pré-rédigé et fixe : célèbre
+    // l'activation, pas un contenu écrit par l'utilisateur
+    private fun shareActivationSuccess() {
+        val message = "Mwen viré ka maké an kréyòl ! Mwen aktivé Klavyé Kréyòl Karukera 🎉\n" +
+            "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
+            "Télécharge-le gratuitement :\n" +
+            "https://play.google.com/store/apps/details?id=$packageName" +
+            "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success"
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukera"))
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur partage activation: ${e.message}")
+            Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -1434,7 +1475,7 @@ class SettingsActivity : AppCompatActivity() {
         val versionText = TextView(this).apply {
             text = "Version : ${BuildConfig.VERSION_NAME}\n" +
                     "© Potomitan™ - Clavier Kréyòl Karukera\n\n" +
-                    "🏝️ Fait avec ❤️ pour la Guadeloupe\n" +
+                    "Fait avec ❤️ pour la Guadeloupe\n" +
                     "Préservons notre langue créole pour les générations futures !"
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
@@ -2220,7 +2261,7 @@ class SettingsActivity : AppCompatActivity() {
 
     // Fonction pour partager l'application (bouche-à-oreille)
     private fun shareApp() {
-        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukera pou maké kréyòl asi téléfòn an mwen ! 🏝️\n" +
+        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukera pou maké kréyòl asi téléfòn an mwen !\n" +
                 "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
@@ -2920,7 +2961,7 @@ class SettingsActivity : AppCompatActivity() {
             textSize = 42f
             textAlign = Paint.Align.CENTER
         }
-        canvas.drawText("Klavyé gratui asi Google Play 🏝️", cx, 1195f, footerPaint)
+        canvas.drawText("Klavyé gratui asi Google Play", cx, 1195f, footerPaint)
 
         return bitmap
     }
@@ -2938,7 +2979,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukera ! 🏝️ É wou, ki nivo a'w ?\n" +
+            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukera ! É wou, ki nivo a'w ?\n" +
                     "Télécharge le clavier gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
                     "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k"
