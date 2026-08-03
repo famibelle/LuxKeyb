@@ -62,6 +62,45 @@ Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en
 créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html)
 (Nadine Fadel, Rudy Rilcy · la1ere.franceinfo.fr, 30/07/2026).
 
+## Angles possibles
+
+- **Souveraineté et préservation numériques** : en Guadeloupe, un
+  développeur vient de lancer Klavyé Kréyòl Karukera, un clavier pour
+  smartphone qui permet d'écrire facilement le créole guadeloupéen en
+  respectant son orthographe. Au-delà de l'aspect pratique, le sujet
+  raconte quelque chose de plus profond : à l'heure où l'IA apprend à
+  partir de ce qui existe en ligne, une langue qui n'est pas présente dans
+  les usages numériques risque peu à peu de devenir invisible pour les
+  modèles. Ce clavier est aussi un outil de souveraineté numérique et de
+  préservation linguistique : il favorise la production de contenus en
+  créole, qui pourront demain nourrir les corpus, les moteurs de recherche
+  et les intelligences artificielles. C'est une histoire qui pose une
+  question assez universelle : comment les langues minoritaires peuvent-elles
+  continuer d'exister à l'ère de l'IA ?
+- **L'affaire de l'agrégation** : pendant que le créole est retiré des
+  concours, la société civile construit gratuitement les outils numériques
+  qui le font vivre : le contre-exemple positif de la polémique
+- **Patrimoine × tech** : quand l'intelligence des claviers se met au service
+  d'une langue régionale
+- **Jounen Entènasyonal Kréyòl (28 octobre)** : un outil concret pour écrire
+  en créole toute l'année
+- **Éducation** : un support moderne pour les professeurs de créole (LVR,
+  CAPES créole) et leurs élèves
+- **Open source citoyen** : un projet indépendant, auditable, sans modèle
+  publicitaire
+- **Les racines du kréyòl** : en février 2026, des chercheurs créolistes
+  (dont Tony Mango sur Radyo Tanbou) annoncent explorer les origines
+  africaines réelles de la langue mère du côté des langues congolaises, un
+  écho direct au corpus littéraire créole sur lequel s'appuie le clavier
+- **Un écosystème, pas un produit isolé** : Klavyé Kréyòl s'inscrit dans
+  l'écosystème Potomitan™, qui développe aussi
+  [POTOMITAN](https://potomitan.io), un traducteur d'urgence
+  français ↔ créole soutenu par la Préfecture de Guadeloupe (Lab'An Nou) et
+  présenté par Orange Antilles-Guyane, déjà couvert par France-Antilles
+  (« POTOMITAN, l'IA qui parle créole »). Écrire le kréyòl (le clavier) et
+  le traduire (POTOMITAN) : deux réponses complémentaires au même vide
+  numérique
+
 ## Le contexte d'actualité : une langue fragilisée par l'institution
 
 Le créole avait pourtant été inscrit au programme 2026 de l'**agrégation des
@@ -137,45 +176,6 @@ Les suggestions s'appuient sur les œuvres de :
 | Couverture presse | Canal 10 et Guadeloupe la 1ère (TV, juillet 2026) |
 | Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
 | Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
-
-## Angles possibles
-
-- **Souveraineté et préservation numériques** : en Guadeloupe, un
-  développeur vient de lancer Klavyé Kréyòl Karukera, un clavier pour
-  smartphone qui permet d'écrire facilement le créole guadeloupéen en
-  respectant son orthographe. Au-delà de l'aspect pratique, le sujet
-  raconte quelque chose de plus profond : à l'heure où l'IA apprend à
-  partir de ce qui existe en ligne, une langue qui n'est pas présente dans
-  les usages numériques risque peu à peu de devenir invisible pour les
-  modèles. Ce clavier est aussi un outil de souveraineté numérique et de
-  préservation linguistique : il favorise la production de contenus en
-  créole, qui pourront demain nourrir les corpus, les moteurs de recherche
-  et les intelligences artificielles. C'est une histoire qui pose une
-  question assez universelle : comment les langues minoritaires peuvent-elles
-  continuer d'exister à l'ère de l'IA ?
-- **L'affaire de l'agrégation** : pendant que le créole est retiré des
-  concours, la société civile construit gratuitement les outils numériques
-  qui le font vivre : le contre-exemple positif de la polémique
-- **Patrimoine × tech** : quand l'intelligence des claviers se met au service
-  d'une langue régionale
-- **Jounen Entènasyonal Kréyòl (28 octobre)** : un outil concret pour écrire
-  en créole toute l'année
-- **Éducation** : un support moderne pour les professeurs de créole (LVR,
-  CAPES créole) et leurs élèves
-- **Open source citoyen** : un projet indépendant, auditable, sans modèle
-  publicitaire
-- **Les racines du kréyòl** : en février 2026, des chercheurs créolistes
-  (dont Tony Mango sur Radyo Tanbou) annoncent explorer les origines
-  africaines réelles de la langue mère du côté des langues congolaises, un
-  écho direct au corpus littéraire créole sur lequel s'appuie le clavier
-- **Un écosystème, pas un produit isolé** : Klavyé Kréyòl s'inscrit dans
-  l'écosystème Potomitan™, qui développe aussi
-  [POTOMITAN](https://potomitan.io), un traducteur d'urgence
-  français ↔ créole soutenu par la Préfecture de Guadeloupe (Lab'An Nou) et
-  présenté par Orange Antilles-Guyane, déjà couvert par France-Antilles
-  (« POTOMITAN, l'IA qui parle créole »). Écrire le kréyòl (le clavier) et
-  le traduire (POTOMITAN) : deux réponses complémentaires au même vide
-  numérique
 
 ## Visuels
 
