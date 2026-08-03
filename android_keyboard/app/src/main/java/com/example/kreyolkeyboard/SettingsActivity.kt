@@ -60,6 +60,7 @@ class SettingsActivity : AppCompatActivity() {
     private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = guide, 5 = à propos
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
+    private lateinit var bottomInstallBanner: LinearLayout
     
     // 🔧 FIX CRITIQUE: Scope lié au lifecycle de l'activité
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -284,7 +285,22 @@ class SettingsActivity : AppCompatActivity() {
         mainLayout.addView(tabBar)
         mainLayout.addView(viewPager)
 
-        setContentView(mainLayout)
+        // FrameLayout racine : mainLayout en plein écran + bandeau d'installation
+        // superposé, ancré en bas, visible dès l'onboarding (indépendant du scroll
+        // du contenu en dessous)
+        bottomInstallBanner = createBottomInstallBanner()
+        val rootLayout = FrameLayout(this).apply {
+            addView(mainLayout, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ))
+            addView(bottomInstallBanner, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply { gravity = Gravity.BOTTOM })
+        }
+
+        setContentView(rootLayout)
 
         recordFunnelStep("funnel_first_open")
         applyFirstRunMode()
@@ -325,6 +341,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         tabBar.visibility = View.GONE
         viewPager.isUserInputEnabled = false
+        bottomInstallBanner.visibility = View.VISIBLE
     }
 
     // Appelé par l'onboarding quand la configuration vient d'aboutir :
@@ -339,6 +356,11 @@ class SettingsActivity : AppCompatActivity() {
             tabBar.visibility = View.VISIBLE
             tabBar.alpha = 0f
             tabBar.animate().alpha(1f).setDuration(400).start()
+        }
+        if (bottomInstallBanner.visibility == View.VISIBLE) {
+            bottomInstallBanner.animate().alpha(0f).setDuration(300)
+                .withEndAction { bottomInstallBanner.visibility = View.GONE }
+                .start()
         }
         // Le clavier d'essai (dictionnaires + moteur de suggestions chargés
         // dans le processus de l'app) n'a plus de raison d'exister une fois
@@ -453,6 +475,37 @@ class SettingsActivity : AppCompatActivity() {
         }, 100)
     }
     
+    // Bandeau d'installation ancré en bas, superposé au contenu de l'onboarding
+    // (indépendant du scroll) : rappel visuel permanent tant que le clavier
+    // n'est ni activé ni sélectionné. S'ajoute au CTA déjà présent dans la
+    // carte de démo (createDemoKeyboardCard) sans le remplacer — même style
+    // et même action pour rester cohérent.
+    private fun createBottomInstallBanner(): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            visibility = View.GONE
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            elevation = 12f
+            setPadding(32, 28, 32, 28)
+            setOnClickListener { showPreSettingsWarningDialog() }
+
+            val label = TextView(this@SettingsActivity).apply {
+                text = "Ça vous plaît ? Installez-le →"
+                textSize = 15f
+                setTextColor(Color.WHITE)
+                setTypeface(null, Typeface.BOLD)
+                gravity = Gravity.CENTER
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            addView(label)
+        }
+    }
+
     private fun createTabBar(): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
