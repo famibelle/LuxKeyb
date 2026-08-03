@@ -1,4 +1,482 @@
 {
+  "krik": [
+    {
+      "word": "krak",
+      "probability": 0.5
+    },
+    {
+      "word": "yé",
+      "probability": 0.5
+    }
+  ],
+  "krak": [
+    {
+      "word": "yé",
+      "probability": 0.667
+    },
+    {
+      "word": "kra",
+      "probability": 0.333
+    }
+  ],
+  "yé": [
+    {
+      "word": "wayayay",
+      "probability": 0.111
+    },
+    {
+      "word": "an",
+      "probability": 0.025
+    },
+    {
+      "word": "nou",
+      "probability": 0.025
+    },
+    {
+      "word": "fò",
+      "probability": 0.025
+    },
+    {
+      "word": "krik",
+      "probability": 0.012
+    }
+  ],
+  "mistikrik": [
+    {
+      "word": "yé",
+      "probability": 1.0
+    }
+  ],
+  "sentanj": [
+    {
+      "word": "potomitan",
+      "probability": 1.0
+    }
+  ],
+  "potomitan": [
+    {
+      "word": "an",
+      "probability": 0.5
+    },
+    {
+      "word": "vivasyon",
+      "probability": 0.5
+    }
+  ],
+  "an": [
+    {
+      "word": "ka",
+      "probability": 0.102
+    },
+    {
+      "word": "mwen",
+      "probability": 0.076
+    },
+    {
+      "word": "té",
+      "probability": 0.071
+    },
+    {
+      "word": "nou",
+      "probability": 0.059
+    },
+    {
+      "word": "pa",
+      "probability": 0.027
+    }
+  ],
+  "nou": [
+    {
+      "word": "ka",
+      "probability": 0.115
+    },
+    {
+      "word": "ké",
+      "probability": 0.06
+    },
+    {
+      "word": "té",
+      "probability": 0.054
+    },
+    {
+      "word": "pa",
+      "probability": 0.049
+    },
+    {
+      "word": "pé",
+      "probability": 0.038
+    }
+  ],
+  "ou": [
+    {
+      "word": "ka",
+      "probability": 0.237
+    },
+    {
+      "word": "pé",
+      "probability": 0.088
+    },
+    {
+      "word": "pa",
+      "probability": 0.087
+    },
+    {
+      "word": "té",
+      "probability": 0.083
+    },
+    {
+      "word": "ké",
+      "probability": 0.044
+    }
+  ],
+  "ké": [
+    {
+      "word": "pé",
+      "probability": 0.107
+    },
+    {
+      "word": "vlé",
+      "probability": 0.08
+    },
+    {
+      "word": "enmé",
+      "probability": 0.051
+    },
+    {
+      "word": "fè",
+      "probability": 0.045
+    },
+    {
+      "word": "ni",
+      "probability": 0.039
+    }
+  ],
+  "toujou": [
+    {
+      "word": "ka",
+      "probability": 0.125
+    },
+    {
+      "word": "ni",
+      "probability": 0.071
+    },
+    {
+      "word": "té",
+      "probability": 0.071
+    },
+    {
+      "word": "sé",
+      "probability": 0.054
+    },
+    {
+      "word": "sèpan",
+      "probability": 0.054
+    }
+  ],
+  "tchè": [
+    {
+      "word": "an",
+      "probability": 1.0
+    }
+  ],
+  "pran": [
+    {
+      "word": "kou",
+      "probability": 0.079
+    },
+    {
+      "word": "fè",
+      "probability": 0.066
+    },
+    {
+      "word": "on",
+      "probability": 0.039
+    },
+    {
+      "word": "tan",
+      "probability": 0.039
+    },
+    {
+      "word": "bwa",
+      "probability": 0.026
+    }
+  ],
+  "klavyé": [
+    {
+      "word": "kréyòl",
+      "probability": 1.0
+    }
+  ],
+  "kréyòl": [
+    {
+      "word": "sé",
+      "probability": 0.133
+    },
+    {
+      "word": "ki",
+      "probability": 0.089
+    },
+    {
+      "word": "gwadloup",
+      "probability": 0.067
+    },
+    {
+      "word": "an",
+      "probability": 0.044
+    },
+    {
+      "word": "ka",
+      "probability": 0.044
+    }
+  ],
+  "karukera": [
+    {
+      "word": "pou",
+      "probability": 1.0
+    }
+  ],
+  "pou": [
+    {
+      "word": "nou",
+      "probability": 0.067
+    },
+    {
+      "word": "yo",
+      "probability": 0.054
+    },
+    {
+      "word": "sa",
+      "probability": 0.047
+    },
+    {
+      "word": "fè",
+      "probability": 0.026
+    },
+    {
+      "word": "mwen",
+      "probability": 0.023
+    }
+  ],
+  "pé": [
+    {
+      "word": "ké",
+      "probability": 0.119
+    },
+    {
+      "word": "pa",
+      "probability": 0.086
+    },
+    {
+      "word": "fè",
+      "probability": 0.07
+    },
+    {
+      "word": "di",
+      "probability": 0.049
+    },
+    {
+      "word": "vwè",
+      "probability": 0.033
+    }
+  ],
+  "maké": [
+    {
+      "word": "an",
+      "probability": 0.176
+    },
+    {
+      "word": "kon",
+      "probability": 0.118
+    },
+    {
+      "word": "asi-y",
+      "probability": 0.059
+    },
+    {
+      "word": "asi",
+      "probability": 0.059
+    },
+    {
+      "word": "èvè",
+      "probability": 0.059
+    }
+  ],
+  "bèl": [
+    {
+      "word": "ti",
+      "probability": 0.068
+    },
+    {
+      "word": "mangwòv",
+      "probability": 0.045
+    },
+    {
+      "word": "fwi",
+      "probability": 0.045
+    },
+    {
+      "word": "menm",
+      "probability": 0.045
+    },
+    {
+      "word": "pawòl",
+      "probability": 0.045
+    }
+  ],
+  "dé": [
+    {
+      "word": "moun",
+      "probability": 0.063
+    },
+    {
+      "word": "ti",
+      "probability": 0.063
+    },
+    {
+      "word": "men",
+      "probability": 0.063
+    },
+    {
+      "word": "jou",
+      "probability": 0.054
+    },
+    {
+      "word": "motè",
+      "probability": 0.045
+    }
+  ],
+  "mòn": [
+    {
+      "word": "pou",
+      "probability": 0.222
+    },
+    {
+      "word": "oben",
+      "probability": 0.222
+    },
+    {
+      "word": "pa",
+      "probability": 0.111
+    },
+    {
+      "word": "falèz",
+      "probability": 0.111
+    },
+    {
+      "word": "nou",
+      "probability": 0.111
+    }
+  ],
+  "pa": [
+    {
+      "word": "ka",
+      "probability": 0.131
+    },
+    {
+      "word": "té",
+      "probability": 0.102
+    },
+    {
+      "word": "ni",
+      "probability": 0.095
+    },
+    {
+      "word": "sav",
+      "probability": 0.02
+    },
+    {
+      "word": "janmen",
+      "probability": 0.018
+    }
+  ],
+  "ka": [
+    {
+      "word": "fè",
+      "probability": 0.089
+    },
+    {
+      "word": "di",
+      "probability": 0.037
+    },
+    {
+      "word": "pran",
+      "probability": 0.033
+    },
+    {
+      "word": "vwè",
+      "probability": 0.033
+    },
+    {
+      "word": "palé",
+      "probability": 0.018
+    }
+  ],
+  "jwenn": [
+    {
+      "word": "épi",
+      "probability": 0.182
+    },
+    {
+      "word": "dòt",
+      "probability": 0.182
+    },
+    {
+      "word": "mé",
+      "probability": 0.091
+    },
+    {
+      "word": "belmè",
+      "probability": 0.091
+    },
+    {
+      "word": "aprédèmen",
+      "probability": 0.091
+    }
+  ],
+  "mé": [
+    {
+      "word": "sé",
+      "probability": 0.086
+    },
+    {
+      "word": "pa",
+      "probability": 0.064
+    },
+    {
+      "word": "ka",
+      "probability": 0.048
+    },
+    {
+      "word": "an",
+      "probability": 0.043
+    },
+    {
+      "word": "yo",
+      "probability": 0.037
+    }
+  ],
+  "moun": [
+    {
+      "word": "ka",
+      "probability": 0.187
+    },
+    {
+      "word": "ki",
+      "probability": 0.097
+    },
+    {
+      "word": "té",
+      "probability": 0.041
+    },
+    {
+      "word": "di",
+      "probability": 0.037
+    },
+    {
+      "word": "pa",
+      "probability": 0.034
+    }
+  ],
   "mi": [
     {
       "word": "sé",
@@ -41,28 +519,6 @@
     {
       "word": "pa",
       "probability": 0.035
-    }
-  ],
-  "an": [
-    {
-      "word": "ka",
-      "probability": 0.103
-    },
-    {
-      "word": "mwen",
-      "probability": 0.077
-    },
-    {
-      "word": "té",
-      "probability": 0.071
-    },
-    {
-      "word": "nou",
-      "probability": 0.057
-    },
-    {
-      "word": "pa",
-      "probability": 0.027
     }
   ],
   "sé": [
@@ -241,28 +697,6 @@
     {
       "word": "ka",
       "probability": 1.0
-    }
-  ],
-  "ka": [
-    {
-      "word": "fè",
-      "probability": 0.09
-    },
-    {
-      "word": "di",
-      "probability": 0.037
-    },
-    {
-      "word": "pran",
-      "probability": 0.033
-    },
-    {
-      "word": "vwè",
-      "probability": 0.033
-    },
-    {
-      "word": "palé",
-      "probability": 0.018
     }
   ],
   "bout": [
@@ -1243,28 +1677,6 @@
       "probability": 0.25
     }
   ],
-  "toujou": [
-    {
-      "word": "ka",
-      "probability": 0.111
-    },
-    {
-      "word": "ni",
-      "probability": 0.074
-    },
-    {
-      "word": "té",
-      "probability": 0.074
-    },
-    {
-      "word": "sé",
-      "probability": 0.056
-    },
-    {
-      "word": "sèpan",
-      "probability": 0.056
-    }
-  ],
   "labou": [
     {
       "word": "pilo",
@@ -1373,58 +1785,14 @@
       "probability": 0.125
     }
   ],
-  "pé": [
-    {
-      "word": "ké",
-      "probability": 0.119
-    },
-    {
-      "word": "pa",
-      "probability": 0.086
-    },
-    {
-      "word": "fè",
-      "probability": 0.07
-    },
-    {
-      "word": "di",
-      "probability": 0.049
-    },
-    {
-      "word": "vwè",
-      "probability": 0.033
-    }
-  ],
-  "pran": [
-    {
-      "word": "kou",
-      "probability": 0.079
-    },
-    {
-      "word": "fè",
-      "probability": 0.066
-    },
-    {
-      "word": "on",
-      "probability": 0.04
-    },
-    {
-      "word": "tan",
-      "probability": 0.04
-    },
-    {
-      "word": "bwa",
-      "probability": 0.026
-    }
-  ],
   "ti": [
     {
       "word": "krab",
-      "probability": 0.053
+      "probability": 0.054
     },
     {
       "word": "bo",
-      "probability": 0.053
+      "probability": 0.054
     },
     {
       "word": "gason",
@@ -1584,19 +1952,19 @@
   "gran": [
     {
       "word": "chimen",
-      "probability": 0.067
+      "probability": 0.068
     },
     {
       "word": "pyébwa",
-      "probability": 0.053
+      "probability": 0.054
     },
     {
       "word": "vè",
-      "probability": 0.04
+      "probability": 0.041
     },
     {
       "word": "kaz",
-      "probability": 0.04
+      "probability": 0.041
     },
     {
       "word": "la",
@@ -1673,50 +2041,6 @@
     {
       "word": "tan",
       "probability": 0.143
-    }
-  ],
-  "moun": [
-    {
-      "word": "ka",
-      "probability": 0.188
-    },
-    {
-      "word": "ki",
-      "probability": 0.098
-    },
-    {
-      "word": "té",
-      "probability": 0.041
-    },
-    {
-      "word": "di",
-      "probability": 0.038
-    },
-    {
-      "word": "pa",
-      "probability": 0.034
-    }
-  ],
-  "pa": [
-    {
-      "word": "ka",
-      "probability": 0.13
-    },
-    {
-      "word": "té",
-      "probability": 0.103
-    },
-    {
-      "word": "ni",
-      "probability": 0.095
-    },
-    {
-      "word": "sav",
-      "probability": 0.02
-    },
-    {
-      "word": "janmen",
-      "probability": 0.018
     }
   ],
   "enmé": [
@@ -1939,28 +2263,6 @@
       "probability": 1.0
     }
   ],
-  "pou": [
-    {
-      "word": "nou",
-      "probability": 0.067
-    },
-    {
-      "word": "yo",
-      "probability": 0.054
-    },
-    {
-      "word": "sa",
-      "probability": 0.047
-    },
-    {
-      "word": "fè",
-      "probability": 0.026
-    },
-    {
-      "word": "mwen",
-      "probability": 0.023
-    }
-  ],
   "jenn": [
     {
       "word": "ti",
@@ -2169,28 +2471,6 @@
     {
       "word": "ou",
       "probability": 0.037
-    }
-  ],
-  "mé": [
-    {
-      "word": "sé",
-      "probability": 0.086
-    },
-    {
-      "word": "pa",
-      "probability": 0.065
-    },
-    {
-      "word": "ka",
-      "probability": 0.048
-    },
-    {
-      "word": "an",
-      "probability": 0.043
-    },
-    {
-      "word": "yo",
-      "probability": 0.038
     }
   ],
   "gadé": [
@@ -2489,28 +2769,6 @@
     {
       "word": "on",
       "probability": 0.091
-    }
-  ],
-  "ou": [
-    {
-      "word": "ka",
-      "probability": 0.238
-    },
-    {
-      "word": "pé",
-      "probability": 0.087
-    },
-    {
-      "word": "pa",
-      "probability": 0.087
-    },
-    {
-      "word": "té",
-      "probability": 0.084
-    },
-    {
-      "word": "ni",
-      "probability": 0.044
     }
   ],
   "rézon": [
@@ -2917,50 +3175,6 @@
     {
       "word": "fout",
       "probability": 0.5
-    }
-  ],
-  "nou": [
-    {
-      "word": "ka",
-      "probability": 0.116
-    },
-    {
-      "word": "ké",
-      "probability": 0.06
-    },
-    {
-      "word": "té",
-      "probability": 0.054
-    },
-    {
-      "word": "pa",
-      "probability": 0.049
-    },
-    {
-      "word": "pé",
-      "probability": 0.038
-    }
-  ],
-  "dé": [
-    {
-      "word": "ti",
-      "probability": 0.064
-    },
-    {
-      "word": "men",
-      "probability": 0.064
-    },
-    {
-      "word": "jou",
-      "probability": 0.055
-    },
-    {
-      "word": "moun",
-      "probability": 0.055
-    },
-    {
-      "word": "motè",
-      "probability": 0.046
     }
   ],
   "madanm": [
@@ -3381,28 +3595,6 @@
     {
       "word": "an",
       "probability": 1.0
-    }
-  ],
-  "ké": [
-    {
-      "word": "pé",
-      "probability": 0.107
-    },
-    {
-      "word": "vlé",
-      "probability": 0.081
-    },
-    {
-      "word": "enmé",
-      "probability": 0.051
-    },
-    {
-      "word": "fè",
-      "probability": 0.045
-    },
-    {
-      "word": "ni",
-      "probability": 0.039
     }
   ],
   "aprann": [
@@ -3860,15 +4052,15 @@
   "kou": [
     {
       "word": "kou",
-      "probability": 0.214
+      "probability": 0.216
     },
     {
       "word": "pou",
-      "probability": 0.111
+      "probability": 0.112
     },
     {
       "word": "ba-yo",
-      "probability": 0.063
+      "probability": 0.064
     },
     {
       "word": "anba",
@@ -4149,28 +4341,6 @@
     {
       "word": "silvyàn",
       "probability": 0.111
-    }
-  ],
-  "bèl": [
-    {
-      "word": "ti",
-      "probability": 0.069
-    },
-    {
-      "word": "mangwòv",
-      "probability": 0.046
-    },
-    {
-      "word": "fwi",
-      "probability": 0.046
-    },
-    {
-      "word": "menm",
-      "probability": 0.046
-    },
-    {
-      "word": "pawòl",
-      "probability": 0.046
     }
   ],
   "fle": [
@@ -5227,28 +5397,6 @@
     {
       "word": "ki",
       "probability": 0.055
-    }
-  ],
-  "yé": [
-    {
-      "word": "wayayay",
-      "probability": 0.117
-    },
-    {
-      "word": "an",
-      "probability": 0.026
-    },
-    {
-      "word": "nou",
-      "probability": 0.026
-    },
-    {
-      "word": "fò",
-      "probability": 0.026
-    },
-    {
-      "word": "yo",
-      "probability": 0.013
     }
   ],
   "ja": [
@@ -8085,28 +8233,6 @@
       "probability": 1.0
     }
   ],
-  "kréyòl": [
-    {
-      "word": "sé",
-      "probability": 0.14
-    },
-    {
-      "word": "ki",
-      "probability": 0.093
-    },
-    {
-      "word": "gwadloup",
-      "probability": 0.07
-    },
-    {
-      "word": "ka",
-      "probability": 0.047
-    },
-    {
-      "word": "yo",
-      "probability": 0.047
-    }
-  ],
   "ajouté": [
     {
       "word": "grenm",
@@ -10029,12 +10155,6 @@
     {
       "word": "kabrit",
       "probability": 0.038
-    }
-  ],
-  "krak": [
-    {
-      "word": "kra",
-      "probability": 1.0
     }
   ],
   "kra": [
@@ -15019,34 +15139,6 @@
       "probability": 0.071
     }
   ],
-  "cette": [
-    {
-      "word": "fille",
-      "probability": 1.0
-    }
-  ],
-  "fille": [
-    {
-      "word": "me",
-      "probability": 1.0
-    }
-  ],
-  "me": [
-    {
-      "word": "plaît",
-      "probability": 0.5
-    },
-    {
-      "word": "t-le",
-      "probability": 0.5
-    }
-  ],
-  "plaît": [
-    {
-      "word": "vraiment",
-      "probability": 1.0
-    }
-  ],
   "film": [
     {
       "word": "kyòlòlò",
@@ -16027,28 +16119,6 @@
       "probability": 0.091
     }
   ],
-  "maké": [
-    {
-      "word": "kon",
-      "probability": 0.125
-    },
-    {
-      "word": "an",
-      "probability": 0.125
-    },
-    {
-      "word": "asi-y",
-      "probability": 0.062
-    },
-    {
-      "word": "asi",
-      "probability": 0.062
-    },
-    {
-      "word": "èvè",
-      "probability": 0.062
-    }
-  ],
   "fòw": [
     {
       "word": "dèlgrès",
@@ -17007,6 +17077,12 @@
     {
       "word": "senn",
       "probability": 0.2
+    }
+  ],
+  "me": [
+    {
+      "word": "t-le",
+      "probability": 1.0
     }
   ],
   "t-le": [
@@ -24471,28 +24547,6 @@
       "probability": 1.0
     }
   ],
-  "jwenn": [
-    {
-      "word": "épi",
-      "probability": 0.222
-    },
-    {
-      "word": "dòt",
-      "probability": 0.222
-    },
-    {
-      "word": "belmè",
-      "probability": 0.111
-    },
-    {
-      "word": "aprédèmen",
-      "probability": 0.111
-    },
-    {
-      "word": "akò",
-      "probability": 0.111
-    }
-  ],
   "violans-lan": [
     {
       "word": "fonmi",
@@ -25220,33 +25274,25 @@
   "parad": [
     {
       "word": "piti",
-      "probability": 0.5
-    },
-    {
-      "word": "ti",
-      "probability": 0.5
+      "probability": 1.0
     }
   ],
   "baton": [
     {
       "word": "wouj-a-lèv",
-      "probability": 0.167
-    },
-    {
-      "word": "edisyon",
-      "probability": 0.167
+      "probability": 0.2
     },
     {
       "word": "vyéyès",
-      "probability": 0.167
+      "probability": 0.2
     },
     {
       "word": "maréchal",
-      "probability": 0.167
+      "probability": 0.2
     },
     {
       "word": "pran",
-      "probability": 0.167
+      "probability": 0.2
     }
   ],
   "nan": [
@@ -26515,28 +26561,6 @@
     {
       "word": "douvan",
       "probability": 0.1
-    }
-  ],
-  "mòn": [
-    {
-      "word": "pou",
-      "probability": 0.25
-    },
-    {
-      "word": "oben",
-      "probability": 0.25
-    },
-    {
-      "word": "falèz",
-      "probability": 0.125
-    },
-    {
-      "word": "nou",
-      "probability": 0.125
-    },
-    {
-      "word": "bòsko",
-      "probability": 0.125
     }
   ],
   "pikan": [
@@ -30075,24 +30099,20 @@
   ],
   "pyès": [
     {
-      "word": "téyat",
-      "probability": 0.286
-    },
-    {
       "word": "kaz",
-      "probability": 0.286
+      "probability": 0.4
     },
     {
       "word": "rapòté",
-      "probability": 0.143
+      "probability": 0.2
     },
     {
       "word": "pòyò-la",
-      "probability": 0.143
+      "probability": 0.2
     },
     {
       "word": "akoté",
-      "probability": 0.143
+      "probability": 0.2
     }
   ],
   "rapòté": [
@@ -32631,12 +32651,6 @@
       "probability": 0.333
     }
   ],
-  "potomitan": [
-    {
-      "word": "vivasyon",
-      "probability": 1.0
-    }
-  ],
   "vivasyon": [
     {
       "word": "moun-la",
@@ -34564,23 +34578,19 @@
   "lak": [
     {
       "word": "senn",
-      "probability": 0.286
+      "probability": 0.4
     },
     {
       "word": "pen",
-      "probability": 0.143
-    },
-    {
-      "word": "gran",
-      "probability": 0.143
-    },
-    {
-      "word": "démokatpawòl",
-      "probability": 0.143
+      "probability": 0.2
     },
     {
       "word": "pou",
-      "probability": 0.143
+      "probability": 0.2
+    },
+    {
+      "word": "tini",
+      "probability": 0.2
     }
   ],
   "fil": [
@@ -34761,86 +34771,32 @@
       "probability": 1.0
     }
   ],
-  "soni": [
-    {
-      "word": "rupaire",
-      "probability": 1.0
-    }
-  ],
-  "rupaire": [
-    {
-      "word": "somanbil",
-      "probability": 0.5
-    },
-    {
-      "word": "sanblé",
-      "probability": 0.25
-    },
-    {
-      "word": "lè",
-      "probability": 0.25
-    }
-  ],
-  "somanbil": [
-    {
-      "word": "pyès",
-      "probability": 0.143
-    },
-    {
-      "word": "rido-la",
-      "probability": 0.143
-    },
-    {
-      "word": "tètè",
-      "probability": 0.143
-    },
-    {
-      "word": "on",
-      "probability": 0.071
-    },
-    {
-      "word": "mwen",
-      "probability": 0.071
-    }
-  ],
-  "téyat": [
-    {
-      "word": "lak",
-      "probability": 0.143
-    },
-    {
-      "word": "an",
-      "probability": 0.143
-    },
-    {
-      "word": "sé",
-      "probability": 0.143
-    },
-    {
-      "word": "lavi",
-      "probability": 0.143
-    },
-    {
-      "word": "on",
-      "probability": 0.143
-    }
-  ],
-  "edisyon": [
-    {
-      "word": "parabole",
-      "probability": 1.0
-    }
-  ],
-  "parabole": [
-    {
-      "word": "soni",
-      "probability": 1.0
-    }
-  ],
   "démokatpawòl": [
     {
       "word": "téyat",
       "probability": 1.0
+    }
+  ],
+  "téyat": [
+    {
+      "word": "sé",
+      "probability": 0.2
+    },
+    {
+      "word": "lavi",
+      "probability": 0.2
+    },
+    {
+      "word": "on",
+      "probability": 0.2
+    },
+    {
+      "word": "fini",
+      "probability": 0.2
+    },
+    {
+      "word": "an-nou",
+      "probability": 0.2
     }
   ],
   "pyès-lasa": [
@@ -35040,6 +34996,28 @@
     },
     {
       "word": "viktò",
+      "probability": 0.083
+    }
+  ],
+  "somanbil": [
+    {
+      "word": "rido-la",
+      "probability": 0.167
+    },
+    {
+      "word": "tètè",
+      "probability": 0.167
+    },
+    {
+      "word": "on",
+      "probability": 0.083
+    },
+    {
+      "word": "mwen",
+      "probability": 0.083
+    },
+    {
+      "word": "alò",
       "probability": 0.083
     }
   ],
@@ -38419,10 +38397,6 @@
     {
       "word": "manman",
       "probability": 0.25
-    },
-    {
-      "word": "ooo",
-      "probability": 0.125
     },
     {
       "word": "moun-la",
@@ -43499,6 +43473,16 @@
     {
       "word": "rupaire",
       "probability": 1.0
+    }
+  ],
+  "rupaire": [
+    {
+      "word": "sanblé",
+      "probability": 0.5
+    },
+    {
+      "word": "lè",
+      "probability": 0.5
     }
   ],
   "ripaj": [
