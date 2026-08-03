@@ -121,12 +121,26 @@ jobs:
         echo "   - N-grams: $NGRAMS_COUNT"
         echo "� Fichiers disponibles pour tous les jobs de build"
 
+    # 🔧 FIX CRITIQUE : sans cet upload, chaque job de build ci-dessous fait son
+    # propre "actions/checkout" et récupère donc la version du dictionnaire
+    # committée dans git (figée au dernier commit), jamais celle régénérée
+    # ci-dessus depuis Hugging Face. Le "needs: generate-dictionary" garantit
+    # seulement l'ordre d'exécution, pas le partage de fichiers entre jobs.
+    - name: 📤 Upload Fresh Dictionary Assets
+      uses: actions/upload-artifact@v4
+      with:
+        name: kreyol-dictionary-assets
+        path: |
+          android_keyboard/app/src/main/assets/creole_dict.json
+          android_keyboard/app/src/main/assets/creole_ngrams.json
+        retention-days: 1
+
   # 🔧 ÉTAPE 2A : BUILD DEBUG APK
   build-debug-apk:
     name: 🔧 Build Debug APK
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -136,7 +150,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: kreyol-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -191,7 +211,7 @@ jobs:
     name: 📦 Build Debug AAB
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -201,7 +221,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: kreyol-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -236,7 +262,7 @@ jobs:
     name: 🚀 Build Release APK
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -246,7 +272,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: kreyol-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -303,10 +335,10 @@ jobs:
 
   # 🎯 ÉTAPE 3B : BUILD RELEASE AAB
   build-release-aab:
-    name: 🎯 Build Release AAB  
+    name: 🎯 Build Release AAB
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -316,7 +348,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: kreyol-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
