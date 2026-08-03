@@ -5,7 +5,6 @@ import android.util.Log
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.IOException
 
 /**
  * Moteur de suggestions bilingue pour le clavier créole
@@ -581,8 +580,12 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
-            
-        } catch (e: IOException) {
+
+        } catch (e: Exception) {
+            // Pas seulement IOException : un format inattendu (ex. objet {mot: fréquence}
+            // au lieu du tableau [[mot, fréquence], ...] attendu) lève une JSONException,
+            // qui n'est pas une IOException et passait donc au travers, laissant le
+            // dictionnaire vide sans aucune suggestion ni erreur visible (v10.2.6).
             Log.e(TAG, "Erreur lors du chargement du dictionnaire: ${e.message}", e)
         }
     }
