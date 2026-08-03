@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.5] - 2026-08-03
+
+### 📌 Bandeau d'installation ancré en bas pendant l'onboarding
+
+- **Constat** : le seul rappel "Ça vous plaît ? Installez-le →" était un bouton intégré dans la carte de démo du clavier, invisible dès que l'utilisateur scrollait ailleurs dans l'onboarding
+- **Ajouté** : un bandeau bleu superposé, ancré en bas de tout l'écran (`FrameLayout` racine), visible dès l'arrivée sur l'onboarding tant que le clavier n'est ni activé ni sélectionné, indépendant du scroll ; en complément du bouton existant dans la carte de démo, pas en remplacement
+- Même style et même action que le bouton existant (fond bleu, texte blanc, clic → interstitiel d'avertissement avant activation)
+- Disparaît en fondu (300 ms) dès que l'onboarding se termine, en même temps que la barre d'onglets réapparaît
+- **Vérifié sur émulateur** (`kreyol_test`, Android 14, headless puis fenêtré) : bandeau visible dès le premier lancement, clic fonctionnel, disparition confirmée une fois le clavier activé + sélectionné
+
 ## [10.2.4] - 2026-08-03
 
 ### 🐛 Log de diagnostic trompeur dans le pipeline dictionnaire
