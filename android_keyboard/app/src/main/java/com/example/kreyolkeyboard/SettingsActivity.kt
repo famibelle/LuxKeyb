@@ -1609,7 +1609,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val demoField = EditText(this).apply {
-            hint = "Maké isi..."
+            hint = "Éséyé maké kréyòl isit ..."
             // Ne jamais ouvrir le clavier système (Gboard) sur ce champ :
             // c'est le clavier d'essai ci-dessous qui écrit dedans
             showSoftInputOnFocus = false
