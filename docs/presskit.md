@@ -140,6 +140,19 @@ Les suggestions s'appuient sur les œuvres de :
 
 ## Angles possibles
 
+- **Souveraineté et préservation numériques** : en Guadeloupe, un
+  développeur vient de lancer Klavyé Kréyòl Karukera, un clavier pour
+  smartphone qui permet d'écrire facilement le créole guadeloupéen en
+  respectant son orthographe. Au-delà de l'aspect pratique, le sujet
+  raconte quelque chose de plus profond : à l'heure où l'IA apprend à
+  partir de ce qui existe en ligne, une langue qui n'est pas présente dans
+  les usages numériques risque peu à peu de devenir invisible pour les
+  modèles. Ce clavier est aussi un outil de souveraineté numérique et de
+  préservation linguistique : il favorise la production de contenus en
+  créole, qui pourront demain nourrir les corpus, les moteurs de recherche
+  et les intelligences artificielles. C'est une histoire qui pose une
+  question assez universelle : comment les langues minoritaires peuvent-elles
+  continuer d'exister à l'ère de l'IA ?
 - **L'affaire de l'agrégation** : pendant que le créole est retiré des
   concours, la société civile construit gratuitement les outils numériques
   qui le font vivre : le contre-exemple positif de la polémique
@@ -151,17 +164,6 @@ Les suggestions s'appuient sur les œuvres de :
   CAPES créole) et leurs élèves
 - **Open source citoyen** : un projet indépendant, auditable, sans modèle
   publicitaire
-- **Souveraineté et préservation numériques** : les outils qui décident
-  quelles langues sont prises en charge par l'écriture au quotidien
-  (claviers, correcteurs, dictionnaires intégrés) restent conçus par une
-  poignée d'acteurs (Google, Samsung, Apple). Klavyé Kréyòl est développé en
-  dehors de ces circuits : dictionnaire, modèle de prédiction et code
-  publics, construits à partir d'un corpus d'auteurs créolophones, sans
-  dépendance à une plateforme propriétaire ni collecte de données. Une
-  langue absente des usages numériques s'expose à disparaître à court
-  terme : en favorisant la présence quotidienne du kréyòl dans les SMS et
-  les réseaux sociaux, le clavier agit aussi comme un outil de préservation
-  linguistique
 - **Les racines du kréyòl** : en février 2026, des chercheurs créolistes
   (dont Tony Mango sur Radyo Tanbou) annoncent explorer les origines
   africaines réelles de la langue mère du côté des langues congolaises, un
