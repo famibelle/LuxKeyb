@@ -746,7 +746,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
             Toast.makeText(
                 this,
-                "Kréyòl a klavyé a ! Apiyé lontan asi on lèt pou wè aksan yo (é, è, à, ò...)",
+                "Apiyé lontan asi on lèt pou wè aksan la (é, è, ò...)",
                 Toast.LENGTH_LONG
             ).show()
             prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
