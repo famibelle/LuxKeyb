@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.6] - 2026-08-03
+
+### 🐛 Les nouveaux mots du corpus Hugging Face n'atteignaient jamais l'APK construit
+
+- **Constat** : des mots récemment ajoutés au dataset `POTOMITAN/PawolKreyol-gfc` (ex. `fwiyapen`, `krik`, `mistikrik`, `mistikrak`, `karukera`, `klavyé`, `sentanj`, `tchè`) n'apparaissaient dans aucune suggestion, alors que les logs du job `generate-dictionary` de `build-apk.yml` montraient bien leur détection et leur ajout
+- **Cause** : ce job régénère le dictionnaire dans son propre espace de travail éphémère, mais chacun des 4 jobs de build (`build-debug-apk`, `build-debug-aab`, `build-release-apk`, `build-release-aab`) effectue son propre `actions/checkout` indépendant. Le `needs: generate-dictionary` garantit uniquement l'ordre d'exécution, pas le partage de fichiers entre jobs : les builds réutilisaient donc systématiquement `creole_dict.json`/`creole_ngrams.json` tels que committés dans git, jamais la version fraîchement régénérée depuis Hugging Face
+- **Vérifié** : téléchargement de l'APK release publié sur la GitHub Release `v10.2.5` et inspection de `assets/creole_dict.json` embarqué : taille et nombre de mots strictement identiques au fichier committé (aucune trace des 8 nouveaux mots), confirmant que la régénération CI était bien silencieusement ignorée depuis la mise en place du pipeline
+- **Corrigé** : ajout d'un `actions/upload-artifact` en sortie de `generate-dictionary` et d'un `actions/download-artifact` en tête de chacun des 4 jobs de build, pour écraser la version committée par la version fraîchement régénérée avant compilation
+- **Effet de bord corrigé au passage** : régénération locale du dictionnaire/n-grams committés dans le dépôt (`android_keyboard/app/src/main/assets/`, `clavier_creole/assets/`), qui étaient eux aussi figés depuis le 30/07 malgré l'ajout de ces mots sur Hugging Face entre-temps
+
 ## [10.2.5] - 2026-08-03
 
 ### 📌 Bandeau d'installation ancré en bas pendant l'onboarding
