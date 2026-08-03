@@ -98,17 +98,17 @@ jobs:
         echo "dict-count=$DICT_COUNT" >> $GITHUB_OUTPUT
         echo "ngrams-count=$NGRAMS_COUNT" >> $GITHUB_OUTPUT
 
-    - name: 🎯 Copy Dictionary to Android Assets Directory
+    - name: 🎯 Verify Android Assets Written by the Script
       run: |
-        echo "📁 Préparation des assets Android..."
-        mkdir -p android_keyboard/app/src/main/assets/
-        
-        # Copier directement vers le répertoire Android
-        cp clavier_creole/assets/creole_dict.json android_keyboard/app/src/main/assets/
-        cp clavier_creole/assets/creole_ngrams.json android_keyboard/app/src/main/assets/
-        
-        echo "✅ Dictionnaires copiés vers android_keyboard/app/src/main/assets/"
-        echo "📊 Vérification:"
+        # KreyolComplet.py écrit déjà directement les deux formats corrects :
+        # clavier_creole/assets/creole_dict.json en objet {mot: fréquence} (Flutter),
+        # android_keyboard/app/src/main/assets/creole_dict.json en tableau [[mot, fréquence], ...]
+        # (format attendu par JSONArray(...) dans SuggestionEngine.kt). Un `cp` du premier
+        # vers le second écrasait ici le format Android correct par le format objet Flutter :
+        # JSONArray(...) plantait silencieusement au chargement (JSONException non catchée),
+        # désactivant toutes les suggestions sur les APK/AAB publiés (constaté sur la
+        # release v10.2.6). Ne plus copier depuis clavier_creole/ : seulement vérifier.
+        echo "📊 Vérification des assets Android déjà générés par le script:"
         ls -la android_keyboard/app/src/main/assets/creole_*.json
 
     - name: 🎯 Dictionary Assets Ready
