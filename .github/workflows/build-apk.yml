@@ -429,7 +429,21 @@ jobs:
       id: changelog
       run: |
         echo "📖 Extraction des notes de release depuis android_keyboard/CHANGELOG.md..."
-        
+
+        # Garde-fou : la section en tête du CHANGELOG doit correspondre au tag
+        # poussé, sinon ce sont les notes d'une version précédente qui seraient
+        # publiées en silence (vécu sur v10.2.1 et v10.2.3, jamais détecté)
+        TAG_VERSION="${GITHUB_REF_NAME#v}"
+        CHANGELOG_VERSION=$(sed -n 's/^## \[\(.*\)\].*/\1/p' android_keyboard/CHANGELOG.md | head -1)
+
+        echo "🏷️  Tag poussé: $GITHUB_REF_NAME (version $TAG_VERSION)"
+        echo "📄 Version en tête du CHANGELOG: $CHANGELOG_VERSION"
+
+        if [ "$TAG_VERSION" != "$CHANGELOG_VERSION" ]; then
+          echo "::error::La section en tête de android_keyboard/CHANGELOG.md ([$CHANGELOG_VERSION]) ne correspond pas au tag poussé ($GITHUB_REF_NAME). Ajoutez une entrée '## [$TAG_VERSION]' dans le CHANGELOG avant de tagger."
+          exit 1
+        fi
+
         # Extraire la section de la version actuelle du CHANGELOG
         # On prend tout depuis le premier ## jusqu'au prochain ## ou fin de fichier
         RELEASE_NOTES=$(awk '/^## / {if (found) exit; found=1; next} found' android_keyboard/CHANGELOG.md | sed '/^## /q' | sed '$d')
