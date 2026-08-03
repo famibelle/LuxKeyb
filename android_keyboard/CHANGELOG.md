@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.4] - 2026-08-03
+
+### 🐛 Log de diagnostic trompeur dans le pipeline dictionnaire
+
+- **Constat** : le résumé de chargement du corpus affichait toujours "🌐 Source: Local", y compris après un téléchargement Hugging Face réussi
+- **Cause** : la détection de source devinait "Hugging Face" en cherchant ce mot dans le champ `Source` des textes eux-mêmes (métadonnée d'auteur, jamais égale à ça)
+- **Corrigé** : suivi explicite de la branche empruntée (Hugging Face vs fallback local) pendant le chargement, au lieu de deviner après coup
+
+### 🛡️ Garde-fou CI : la release échoue si le CHANGELOG n'est pas à jour
+
+- **Constat** : les notes de release des tags `v10.2.1` et `v10.2.3` avaient publié en silence le contenu de `10.1.2` : le job de release prenait toujours la première section du CHANGELOG sans vérifier qu'elle correspondait au tag poussé
+- **Corrigé** : `build-apk.yml` compare désormais la version du tag à celle en tête de `CHANGELOG.md` et fait échouer explicitement le job en cas de décalage, au lieu de publier des notes périmées
+
 ## [10.2.3] - 2026-08-03
 
 ### 🎉 Carte de succès partageable à la fin de l'activation
