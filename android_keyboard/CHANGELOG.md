@@ -5,6 +5,19 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.8] - 2026-08-03
+
+### 🐛 Les suggestions de mots n'apparaissaient plus sur les APK/AAB publiés
+
+- **Constat** : sur un Samsung A21s en v10.2.6, les propositions de mots avaient disparu — aucune suggestion, aucun plantage visible
+- **Cause** : `KreyolComplet.py` écrit correctement deux formats pour `creole_dict.json` : un objet `{mot: fréquence}` pour l'ancien prototype Flutter, et un tableau `[[mot, fréquence], ...]` directement dans `android_keyboard/app/src/main/assets/`, format attendu par `JSONArray(...)` dans `SuggestionEngine.kt`. L'étape « Copy Dictionary to Android Assets Directory » de `build-apk.yml` écrasait ensuite ce second fichier avec le premier (objet Flutter) — un `cp` redondant resté en place depuis avant même le fix du 10.2.6. `JSONArray(...)` levait alors une `JSONException` que `catch (e: IOException)` ne pouvait pas intercepter, laissant le dictionnaire vide sans le moindre signal d'erreur
+- **Vérifié** : téléchargement de la release GitHub `v10.2.6` publiée et inspection de `assets/creole_dict.json` embarqué : bien au format objet, pas tableau — confirmé sur l'APK réellement distribué, pas seulement en théorie
+- **Corrigé** : suppression du `cp` fautif dans `build-apk.yml` (le script écrit déjà le bon format au bon endroit) ; élargissement de `catch (e: IOException)` à `catch (e: Exception)` dans `SuggestionEngine.loadDictionary()` pour qu'un futur format inattendu échoue de façon journalisée plutôt que silencieuse
+
+### ✨ Indice visuel pour changer de clavier
+
+- Un petit 🌐 semi-transparent apparaît maintenant dans le coin de la barre d'espace : l'appui long (1s) pour ouvrir le sélecteur de clavier système existait déjà mais restait indécouvrable, sans ajouter de touche dédiée à une rangée du bas déjà dense (9 touches)
+
 ## [10.2.6] - 2026-08-03
 
 ### 🐛 Les nouveaux mots du corpus Hugging Face n'atteignaient jamais l'APK construit
