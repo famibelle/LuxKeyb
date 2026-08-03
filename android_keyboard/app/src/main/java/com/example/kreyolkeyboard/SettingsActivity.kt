@@ -364,7 +364,7 @@ class SettingsActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
             .setTitle("🎉 Klavyé Kréyòl aktivé !")
-            .setMessage("Bravo, ou fè'y ! Klavyé a paré pou maké an kréyòl asi tout aplikasyon'w yo.")
+            .setMessage("Bravo, ou fè'y ! Klavyé Kréyòl paré pou maké an kréyòl asi tout aplikasyon aw.")
             .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
             .setNegativeButton("Plus tard", null)
             .setCancelable(true)
@@ -970,7 +970,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val testEditText = EditText(this).apply {
             tag = "onboarding_test_field"
-            hint = if (isStep3Locked) "🔒 Verrouillé" else "Maké an Kréyòl la..."
+            hint = if (isStep3Locked) "🔒 Verrouillé" else "Koumansé maké an bèl kréyòl isit..."
             textSize = 16f
             setPadding(16, 16, 16, 16)
             minHeight = 100
@@ -2873,7 +2873,7 @@ class SettingsActivity : AppCompatActivity() {
 
             AlertDialog.Builder(this)
                 .setTitle("🎉 Bravo ! Ou vansé !")
-                .setMessage("Ou rivé nivo $levelName ! Partage ta carte pour montrer ton kréyòl.")
+                .setMessage("Ou rivé nivo $levelName ! Partage ta carte pour montrer ton niveau en kréyòl.")
                 .setView(preview)
                 .setPositiveButton("Partager 📤") { _, _ -> shareLevelCard(cardBitmap, levelName) }
                 .setNegativeButton("Plus tard", null)
@@ -2979,7 +2979,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukera ! É wou, ki nivo a'w ?\n" +
+            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukera ! É vou menm, ki nivo a'w ?\n" +
                     "Télécharge le clavier gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
                     "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k"
