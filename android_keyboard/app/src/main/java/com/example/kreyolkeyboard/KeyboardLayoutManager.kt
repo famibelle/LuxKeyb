@@ -286,11 +286,51 @@ class KeyboardLayoutManager(private val context: Context) {
 
         // Aperçu des options d'appui long dans les coins de la touche (v8.3.0)
         val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
-        return if (!hints.isNullOrEmpty()) {
+        if (!hints.isNullOrEmpty()) {
             val onStartSide = accentHandler?.isCornerHintOnStartSide(key) == true
-            wrapWithLongPressHints(button, hints, onStartSide)
-        } else {
-            button
+            return wrapWithLongPressHints(button, hints, onStartSide)
+        }
+
+        // 🌐 Indice visuel : l'appui long sur la barre d'espace change de clavier
+        // système (voir setupSpaceLongPress). Seulement sur l'IME réel
+        // (accentHandler non nul) : le clavier de démo des Réglages n'a pas de
+        // fenêtre système pour ouvrir le sélecteur de claviers.
+        if (key == " " && accentHandler != null) {
+            return wrapWithSpaceGlobeHint(button)
+        }
+
+        return button
+    }
+
+    /**
+     * Superpose un petit indice 🌐 dans le coin de la barre d'espace, pour rendre
+     * découvrable l'appui long sans ajouter de touche dédiée qui réduirait la
+     * largeur des touches déjà denses de la rangée du bas.
+     */
+    private fun wrapWithSpaceGlobeHint(inner: View): FrameLayout {
+        val outerParams = inner.layoutParams
+        inner.layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        val hint = TextView(context).apply {
+            text = "🌐"
+            textSize = HINT_TEXT_SIZE_SP + 2f
+            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte Potomitan™
+            isClickable = false
+            isFocusable = false
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP or Gravity.END
+            ).apply {
+                setMargins(0, dpToPx(2), dpToPx(4), 0)
+            }
+        }
+        return FrameLayout(context).apply {
+            layoutParams = outerParams
+            addView(inner)
+            addView(hint)
         }
     }
 
