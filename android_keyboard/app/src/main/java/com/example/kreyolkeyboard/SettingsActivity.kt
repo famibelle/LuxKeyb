@@ -44,6 +44,10 @@ import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
 import com.example.kreyolkeyboard.wordsearch.WordSearchThemes
 import com.example.kreyolkeyboard.wordsearch.WordSearchGridAdapter
+import com.example.kreyolkeyboard.mokarenaj.MoKarenajData
+import com.example.kreyolkeyboard.mokarenaj.MoKarenajRow
+import com.example.kreyolkeyboard.mokarenaj.LetterState
+import com.example.kreyolkeyboard.mokarenaj.color
 import com.google.android.play.core.review.ReviewManagerFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -57,7 +61,7 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = guide, 5 = à propos
+    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = guide, 6 = à propos
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
@@ -567,14 +571,19 @@ class SettingsActivity : AppCompatActivity() {
             val wordScrambleTab = createTab(3, "🔤", "Mots Mélangés")
             tabContainer.addView(wordScrambleTab)
             Log.d("SettingsActivity", "Onglet Mots Mélangés créé et ajouté")
-            
+
+            // Tab Mo an Karénaj
+            val moKarenajTab = createTab(4, "🟩", "Mo an Karénaj")
+            tabContainer.addView(moKarenajTab)
+            Log.d("SettingsActivity", "Onglet Mo an Karénaj créé et ajouté")
+
             // Tab Guide
-            val guideTab = createTab(4, "📖", "Guide")
+            val guideTab = createTab(5, "📖", "Guide")
             tabContainer.addView(guideTab)
             Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
 
             // Tab À Propos
-            val aboutTab = createTab(5, "ℹ️", "À Propos")
+            val aboutTab = createTab(6, "ℹ️", "À Propos")
             tabContainer.addView(aboutTab)
             Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
 
@@ -718,13 +727,14 @@ class SettingsActivity : AppCompatActivity() {
             gravity = Gravity.CENTER
         }
         
-        // Tabs avec les 6 onglets
+        // Tabs avec les 7 onglets
         tabContainer.addView(createTab(0, "🚀", "Démarrage"))
         tabContainer.addView(createTab(1, "📊", "Kréyòl an mwen"))
         tabContainer.addView(createTab(2, "🎲", "Mots Mêlés"))
         tabContainer.addView(createTab(3, "🔤", "Mots Mélangés"))
-        tabContainer.addView(createTab(4, "📖", "Guide"))
-        tabContainer.addView(createTab(5, "ℹ️", "À Propos"))
+        tabContainer.addView(createTab(4, "🟩", "Mo an Karénaj"))
+        tabContainer.addView(createTab(5, "📖", "Guide"))
+        tabContainer.addView(createTab(6, "ℹ️", "À Propos"))
         
         // Ligne de séparation en bas
         val separator = View(this).apply {
@@ -3177,23 +3187,24 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 6 // Nombre réel d'onglets (ajout du guide utilisateur)
+            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Mo an Karénaj)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
-        
+
         override fun getItemCount(): Int = VIRTUAL_COUNT
-        
+
         override fun createFragment(position: Int): Fragment {
-            // Utiliser le modulo pour revenir aux 5 vraies pages
+            // Utiliser le modulo pour revenir aux vraies pages
             val realPosition = position % REAL_COUNT
             return when (realPosition) {
                 0 -> OnboardingFragment()
                 1 -> StatsFragment()
                 2 -> WordSearchFragment()
                 3 -> WordScrambleFragment()
-                4 -> GuideFragment()
-                5 -> AboutFragment()
+                4 -> MoKarenajFragment()
+                5 -> GuideFragment()
+                6 -> AboutFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -4273,6 +4284,414 @@ class SettingsActivity : AppCompatActivity() {
                 .show()
         }
         
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rootView = null
+        }
+    }
+
+    // Fragment pour le Mo an Karénaj : deviner un mot kréyòl de 5 lettres en 6 essais
+    class MoKarenajFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var gridBoard: LinearLayout
+        private lateinit var editGuess: EditText
+        private lateinit var btnSubmit: Button
+        private lateinit var tvAttempts: TextView
+        private lateinit var legendContainer: LinearLayout
+
+        private var targetWord: String = ""
+        private var currentAttempt = 0
+        private var gameOver = false
+        private val rows = mutableListOf<MoKarenajRow>()
+        private val letterBestState = mutableMapOf<Char, LetterState>()
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    // Titre + compteur d'essais sur la même ligne (gain de place vertical)
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 12
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            text = "🟩 Mo an Karénaj"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#1976D2"))
+                        }
+                        addView(title)
+
+                        tvAttempts = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            text = "Essai 1/${MoKarenajData.MAX_ATTEMPTS}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvAttempts)
+                    }
+                    addView(headerRow)
+
+                    // Grille de la partie (6 essais x 5 lettres) : un simple LinearLayout,
+                    // pas une GridView — une GridView (AbsListView) vole le geste de scroll
+                    // vertical à la ScrollView parente même quand elle est en lecture seule.
+                    gridBoard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(gridBoard)
+
+                    // Légende des lettres essayées : sur une seule ligne avec son label,
+                    // juste sous la grille, pour rester visible au-dessus du clavier virtuel.
+                    val legendRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
+
+                        val legendTitle = TextView(activity).apply {
+                            text = "Lèt ou ja maké :"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                            setPadding(0, 0, 12, 0)
+                        }
+                        addView(legendTitle)
+
+                        legendContainer = LinearLayout(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            orientation = LinearLayout.HORIZONTAL
+                        }
+                        val legendScroll = HorizontalScrollView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            addView(legendContainer)
+                        }
+                        addView(legendScroll)
+                    }
+                    addView(legendRow)
+
+                    // Saisie de la proposition (le champ porte directement son propre libellé en hint)
+                    val inputRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
+
+                        editGuess = EditText(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(0, 0, 16, 0) }
+                            hint = "Maké mo la isit en ${MoKarenajData.WORD_LENGTH} lèt"
+                            setHintTextColor(Color.parseColor("#9E9E9E"))
+                            textSize = 18f
+                            setTextColor(Color.parseColor("#212121"))
+                            setTypeface(null, Typeface.BOLD)
+                            gravity = Gravity.CENTER
+                            letterSpacing = 0.08f
+                            setPadding(16, 24, 16, 24)
+                            background = android.graphics.drawable.GradientDrawable().apply {
+                                cornerRadius = 12f
+                                setColor(Color.WHITE)
+                                setStroke(4, Color.parseColor("#2196F3"))
+                            }
+                            filters = arrayOf(android.text.InputFilter.LengthFilter(MoKarenajData.WORD_LENGTH))
+                            setSingleLine(true)
+                            isAllCaps = true // après setSingleLine() : sinon la transformation majuscules est écrasée
+                            imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+                            setOnEditorActionListener { _, actionId, _ ->
+                                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                                    submitGuess()
+                                    true
+                                } else false
+                            }
+                        }
+                        addView(editGuess)
+
+                        btnSubmit = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT
+                            )
+                            text = "✅ Valider"
+                            setBackgroundColor(Color.parseColor("#4CAF50"))
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { submitGuess() }
+                        }
+                        addView(btnSubmit)
+                    }
+                    addView(inputRow)
+
+                    // Bouton nouvelle partie
+                    val btnNewGame = Button(activity).apply {
+                        text = "🔄 Fè on dòt pati"
+                        textSize = 14f
+                        setTextColor(Color.WHITE)
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setPadding(24, 10, 24, 10)
+                        setTypeface(null, Typeface.BOLD)
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        setOnClickListener { startNewGame() }
+                    }
+                    addView(btnNewGame)
+
+                    // Règles du jeu, sous la zone de jeu
+                    val rulesCard = LinearLayout(activity).apply {
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        background = android.graphics.drawable.GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        val rulesTitle = TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#1976D2"))
+                            setPadding(0, 0, 0, 12)
+                        }
+                        addView(rulesTitle)
+
+                        val rulesText = TextView(activity).apply {
+                            text = "Devine le mot kréyòl de ${MoKarenajData.WORD_LENGTH} lettres en ${MoKarenajData.MAX_ATTEMPTS} essais maximum.\n\n" +
+                                "Après chaque essai, la couleur des lettres t'indique :\n" +
+                                "🟩 Vert : bonne lettre, bonne position\n" +
+                                "🟨 Orange : la lettre est dans le mot, mais mal placée\n" +
+                                "⬜ Gris : la lettre n'est pas dans le mot\n\n" +
+                                "Le mot proposé doit exister dans le dictionnaire Kréyòl."
+                            textSize = 14f
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(rulesText)
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : si l'utilisateur a déjà
+                    // changé d'onglet, le fragment n'est plus attaché.
+                    if (isAdded) {
+                        startNewGame()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun renderBoard() {
+            val activity = requireActivity()
+            gridBoard.removeAllViews()
+            rows.forEach { row ->
+                val rowLayout = LinearLayout(activity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 6 }
+                }
+                row.letters.forEachIndexed { index, letter ->
+                    val state = row.states[index]
+                    val cell = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(0, 88, 1f).apply {
+                            if (index > 0) marginStart = 6
+                        }
+                        gravity = Gravity.CENTER
+                        text = letter?.toString()?.uppercase() ?: ""
+                        textSize = 18f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(if (state == LetterState.EMPTY) Color.parseColor("#333333") else Color.WHITE)
+                        setBackgroundColor(state.color())
+                    }
+                    rowLayout.addView(cell)
+                }
+                gridBoard.addView(rowLayout)
+            }
+        }
+
+        private fun startNewGame() {
+            val activity = requireActivity()
+            targetWord = MoKarenajData.pickRandomWord(activity)
+            currentAttempt = 0
+            gameOver = false
+            letterBestState.clear()
+            rows.clear()
+            repeat(MoKarenajData.MAX_ATTEMPTS) {
+                rows.add(
+                    MoKarenajRow(
+                        letters = List(MoKarenajData.WORD_LENGTH) { null },
+                        states = List(MoKarenajData.WORD_LENGTH) { LetterState.EMPTY }
+                    )
+                )
+            }
+            renderBoard()
+            editGuess.setText("")
+            editGuess.isEnabled = true
+            btnSubmit.isEnabled = true
+            tvAttempts.text = "Essai ${currentAttempt + 1}/${MoKarenajData.MAX_ATTEMPTS}"
+            legendContainer.removeAllViews()
+        }
+
+        private fun submitGuess() {
+            if (gameOver) return
+            val activity = requireActivity()
+            val guess = editGuess.text.toString().trim().lowercase()
+
+            if (guess.length != MoKarenajData.WORD_LENGTH) {
+                showTopMessage("Mo la dwèt ni ${MoKarenajData.WORD_LENGTH} lèt")
+                return
+            }
+            if (!MoKarenajData.isValidWord(activity, guess)) {
+                showTopMessage("❌ Mo la sa pa adan diktyonè kréyòl")
+                return
+            }
+
+            val states = MoKarenajData.evaluateGuess(targetWord, guess)
+            rows[currentAttempt] = MoKarenajRow(guess.toList(), states)
+            renderBoard()
+            updateLegend(guess, states)
+
+            val won = states.all { it == LetterState.CORRECT }
+            currentAttempt++
+
+            when {
+                won -> {
+                    gameOver = true
+                    endGame(true)
+                }
+                currentAttempt >= MoKarenajData.MAX_ATTEMPTS -> {
+                    gameOver = true
+                    endGame(false)
+                }
+                else -> {
+                    editGuess.setText("")
+                    tvAttempts.text = "Essai ${currentAttempt + 1}/${MoKarenajData.MAX_ATTEMPTS}"
+                }
+            }
+        }
+
+        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut via Snackbar
+        // pour ne pas se faire masquer par le clavier virtuel (même piste que WordSearchFragment).
+        private fun showTopMessage(message: String) {
+            Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).apply {
+                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
+                    it.gravity = Gravity.TOP
+                    view.layoutParams = it
+                }
+            }.show()
+        }
+
+        private fun updateLegend(guess: String, states: List<LetterState>) {
+            val activity = requireActivity()
+            guess.forEachIndexed { index, letter ->
+                val newState = states[index]
+                val existing = letterBestState[letter]
+                if (existing == null || statePriority(newState) > statePriority(existing)) {
+                    letterBestState[letter] = newState
+                }
+            }
+
+            legendContainer.removeAllViews()
+            letterBestState.entries.sortedBy { it.key }.forEach { (letter, state) ->
+                val chip = TextView(activity).apply {
+                    text = letter.toString().uppercase()
+                    textSize = 16f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.WHITE)
+                    setBackgroundColor(state.color())
+                    setPadding(24, 16, 24, 16)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { setMargins(0, 0, 8, 0) }
+                }
+                legendContainer.addView(chip)
+            }
+        }
+
+        private fun statePriority(state: LetterState): Int = when (state) {
+            LetterState.CORRECT -> 3
+            LetterState.PRESENT -> 2
+            LetterState.ABSENT -> 1
+            LetterState.EMPTY -> 0
+        }
+
+        private fun endGame(won: Boolean) {
+            editGuess.isEnabled = false
+            btnSubmit.isEnabled = false
+
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (won) "🎉 Bravo !" else "😔 Domaj !")
+                .setMessage(
+                    if (won) "Ou touvé mo-a an $currentAttempt èsèy : ${targetWord.uppercase()}"
+                    else "Mo la té : ${targetWord.uppercase()}"
+                )
+                .setPositiveButton("Rejouer") { _, _ -> startNewGame() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
         override fun onDestroyView() {
             super.onDestroyView()
             rootView = null

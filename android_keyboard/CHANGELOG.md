@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.3.0] - 2026-08-04
+
+### ✨ Nouveau jeu : Mo an Karénaj (Wordle créole)
+
+- Ajout d'un cinquième jeu dans l'onglet de démarrage : deviner un mot kréyòl de 5 lettres en 6 essais, sur le principe du Wordle, avec retour couleur (vert = bien placé, orange = présent ailleurs, gris = absent)
+- Les mots à deviner et la validation des propositions s'appuient directement sur `creole_dict.json`, comme les autres jeux (Mots Mêlés, Mots Mélangés) — aucune source de données séparée
+- Grille de résultat construite en `LinearLayout` plutôt qu'en `GridView` : une `GridView` imbriquée dans le `ScrollView` de l'onglet interceptait systématiquement le geste de défilement vertical (conflit connu entre `AbsListView` et `ScrollView` sous Android), rendant la page injouable une fois le clavier ouvert
+- Message d'erreur (mot trop court / hors dictionnaire) ancré en haut de l'écran via `Snackbar` plutôt qu'un `Toast` standard, pour ne pas être masqué par le clavier virtuel
+- Règles du jeu affichées sous la zone de jeu
+
 ## [10.2.9] - 2026-08-04
 
 ### ✨ Nouvelle section « Installation et activation » dans le Guide
