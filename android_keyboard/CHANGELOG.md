@@ -5,6 +5,13 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.3.1] - 2026-08-05
+
+### 🐛 Le scroll se bloquait quand le clavier apparaissait
+
+- Sur l'onglet Réglages (hébergeant tous les jeux et le Guide), le clavier virtuel déclenchait un mode `adjustPan` : la fenêtre entière était translatée pour garder le champ de saisie visible, au lieu d'être redimensionnée — ce qui neutralisait le scroll de la `ScrollView` pendant la saisie, en particulier sur l'onglet Mo an Karénaj
+- Corrigé : passage de `SettingsActivity` en `adjustResize|stateHidden` dans `AndroidManifest.xml`, vérifié sur émulateur (le contenu défile de nouveau normalement, clavier ouvert)
+
 ## [10.3.0] - 2026-08-04
 
 ### ✨ Nouveau jeu : Mo an Karénaj (Wordle créole)
