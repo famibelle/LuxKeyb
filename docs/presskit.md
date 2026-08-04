@@ -18,7 +18,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 31 juillet 2026*
+*Dernière mise à jour : 4 août 2026*
 
 ## En une phrase
 
@@ -61,6 +61,14 @@ Guadeloupe la 1ère a également publié un article dédié : [« Klavyé Kréy�
 Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en
 créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html)
 (Nadine Fadel, Rudy Rilcy · la1ere.franceinfo.fr, 30/07/2026).
+
+Le 4 août 2026, France-Antilles Guadeloupe a publié [« Si le créole
+guadeloupéen n'existe pas, petit à petit, on s'efface »](https://www.guadeloupe.franceantilles.fr/actualite/economie/si-le-creole-guadeloupeen-nexiste-pas-petit-a-petit-on-sefface-1088477.php)
+(Stéphanie Vélin · guadeloupe.franceantilles.fr), qui retrace la genèse du
+projet à travers un entretien avec Medhi Famibelle : « Tout est parti d'une
+frustration personnelle », y explique-t-il, décrivant comment ses propres
+messages en créole étaient systématiquement corrigés en français par les
+claviers standards.
 
 ## Angles possibles
 
@@ -173,7 +181,7 @@ Les suggestions s'appuient sur les œuvres de :
 | Éditeur | [Potomitan™](https://potomitan.io) |
 | Écosystème | Développe aussi [POTOMITAN](https://potomitan.io), traducteur d'urgence français ↔ créole |
 | Téléchargement | [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k) |
-| Couverture presse | Canal 10 et Guadeloupe la 1ère (TV, juillet 2026) |
+| Couverture presse | Canal 10, Guadeloupe la 1ère (TV, juillet 2026), France-Antilles Guadeloupe (04/08/2026) |
 | Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
 | Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
 
