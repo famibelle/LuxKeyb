@@ -70,6 +70,8 @@ Replay complet du journal : [la1ere.franceinfo.fr](https://la1ere.franceinfo.fr/
 
 Article dédié : [« Klavyé Kréyòl Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html) · la1ere.franceinfo.fr, 30/07/2026
 
+Article dédié : [« Si le créole guadeloupéen n'existe pas, petit à petit, on s'efface »](https://www.guadeloupe.franceantilles.fr/actualite/economie/si-le-creole-guadeloupeen-nexiste-pas-petit-a-petit-on-sefface-1088477.php) · Stéphanie Vélin, guadeloupe.franceantilles.fr, 04/08/2026
+
 📰 [Dossier de presse complet](https://famibelle.github.io/KreyolKeyb/presskit.html)
 
 ## 📱 Aperçu
