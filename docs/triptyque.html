@@ -98,9 +98,9 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .cover .hero-card{
   flex:1; margin:3mm 8mm 0; border-radius:10px; overflow:hidden;
   box-shadow:0 6px 20px rgba(0,0,0,.28); position:relative;
-  display:flex; align-items:center; background:linear-gradient(90deg,#6273cf 0%,#01be64 100%);
+  display:flex; align-items:center; justify-content:center; background:linear-gradient(90deg,#6273cf 0%,#01be64 100%);
 }
-.cover .hero-card img:not(.phone-medallion){ width:100%; height:auto; display:block; }
+.cover .hero-card img:not(.phone-medallion){ height:96%; width:auto; max-width:100%; object-fit:contain; display:block; margin:0 auto; }
 .cover .phone-medallion{
   position:absolute; right:4mm; bottom:4mm; z-index:3;
   width:32mm; height:auto; border-radius:6px;
@@ -362,7 +362,6 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <span class="brand-badge">KLAVYÉ KRÉYÒL KARUKERA</span>
         </div>
         <h1 class="h">Enfin écrire en kréyòl<br>sans galérer&nbsp;!</h1>
-        <p class="sub">Suggestions kréyòl + français pendant que tu écris, sur ton clavier Android</p>
         <div class="press-cards">
           <div class="press-card"><span class="src">📺 Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
           <div class="press-card"><span class="src">📺 Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
@@ -370,9 +369,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         </div>
       </div>
       <div class="hero-card">
-        <div class="hero-caption">Maké an kréyòl Gwadloup&nbsp;!</div>
-        <img src="assets/triptyque-hero.jpg" alt="Maké an kréyòl Gwadloup">
-        <img class="phone-medallion" src="assets/triptyque-cover-phone.jpg" alt="Le clavier propose « Bonjou » en kréyòl et « Bonjour » en français pendant la frappe">
+        <img src="assets/triptyque-cover-screenshot.png" alt="Conversation SMS écrite en créole avec le clavier Klavyé Kréyòl">
       </div>
       <div class="cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
