@@ -112,10 +112,12 @@ faire vivre le kréyòl dans le numérique, à l'écrit comme à l'oral.
 <script>
 fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
   var fmt = function(n){ return n.toLocaleString('fr-FR'); };
-  var base = Math.floor(s.current / 100) * 100;
-  var next = Math.min(base + 100, s.goal);
-  if (next <= s.current) { next = Math.min(s.current + 100, s.goal); base = next - 100; }
-  var pct = Math.max(2, Math.min(100, ((s.current - base) / (next - base)) * 100));
+  var tiers = [100, 500, 1000, 5000, 10000];
+  var next = s.goal;
+  for (var i = 0; i < tiers.length; i++) {
+    if (tiers[i] > s.current) { next = tiers[i]; break; }
+  }
+  var pct = Math.max(2, Math.min(100, (s.current / s.goal) * 100));
   document.getElementById('g-current').textContent = fmt(s.current);
   document.getElementById('g-next').textContent = fmt(next);
   document.getElementById('g-daily').textContent = fmt(s.daily_target);
