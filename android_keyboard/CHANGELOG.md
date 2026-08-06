@@ -5,6 +5,39 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.4.0] - 2026-08-07
+
+### 🎯 Les suggestions suivent enfin le curseur
+
+- **Constat** : revenir éditer un mot déjà écrit ne produisait plus aucune suggestion. Effacer l'espace après un mot, taper au milieu d'un mot, ou simplement déplacer le curseur puis continuer à écrire : dans tous ces cas la barre restait vide, ou proposait des mots pour le préfixe précédent
+- **Cause** : `onUpdateSelection()` n'existait que dans l'ancien service `KreyolInputMethodService`. Le service actif ne le surchargeait pas, donc le mot suivi par `InputProcessor` n'était alimenté que par les frappes et divergeait silencieusement du texte réel dès que le curseur bougeait autrement
+- **Corrigé** : le mot est relu depuis l'`InputConnection` à chaque déplacement signalé. Quand la valeur relue est celle attendue (le cas de très loin le plus fréquent, nos propres modifications de texte déclenchant aussi ce rappel), rien n'est touché : la frappe normale reste inchangée, ce qui a été vérifié compteur en main
+- Choisir une suggestion en plein milieu d'un mot retire aussi la fin du mot, au lieu d'insérer la suggestion devant le reliquat
+- **Au passage** : une majuscule accentuée (« É » en début de phrase, fréquent en kréyòl) était traitée comme un séparateur et coupait le mot en cours
+
+### 📊 Le clavier apprend votre vocabulaire
+
+- Les compteurs d'utilisation alimentés par les statistiques de vocabulaire ne servaient qu'à l'affichage. Ils entrent désormais dans le classement des suggestions : le mot que vous employez réellement remonte, même s'il est moins courant dans la littérature créole
+- Tout reste sur l'appareil, rien n'est envoyé nulle part, et seuls les mots déjà présents au dictionnaire sont comptés
+- Il faut une quinzaine d'emplois pour qu'un mot dépasse un concurrent nettement plus fréquent, et le bonus est plafonné : une correction orthographique reste toujours prioritaire, et les mots les plus courants du kréyòl ne sont jamais délogés
+
+### 🧠 Prédictions contextuelles sur deux mots
+
+- Le modèle ne prédisait la suite qu'à partir du dernier mot saisi, alors que le pipeline calculait déjà les trigrammes avant de les jeter
+- Le contexte porte maintenant sur les deux derniers mots, avec repli sur un seul quand la paire est inconnue. Après « an ka », le clavier propose kwè, vwè, travay, là où « ka » seul donnait fè, di, pran
+- 4251 contextes à deux mots ajoutés, pour 62 Ko compressés dans l'APK
+
+### 🐛 Fréquences du dictionnaire faussées par le pipeline
+
+- **Constat** : `creer_dictionnaire()` ajoutait le comptage du corpus à la fréquence déjà stockée, laquelle provenait déjà d'un passage sur ce même corpus. Chaque exécution gonflait donc le dictionnaire d'un corpus supplémentaire, et les fréquences mesuraient le nombre de lancements du script plutôt que le kréyòl écrit. Le facteur d'inflation mesuré était d'environ douze
+- La CI lançant le pipeline à chaque build sans committer le résultat, la version publiée et le dépôt divergeaient d'un cran à chaque fois
+- **Corrigé** : le comptage remplace la valeur stockée, et deux exécutions de suite donnent le même dictionnaire. Les mots absents du corpus restent conservés, leur fréquence ramenée à l'échelle courante
+
+### 📖 Corpus rafraîchi
+
+- `Textes_kreyol.json` datait du 30 avril et ne contenait plus que 504 lignes pour 20 251 caractères, contre 2519 textes et 191 732 caractères dans le dataset Hugging Face. Le repli local du pipeline aurait reconstruit le dictionnaire sur un corpus neuf fois plus petit en cas d'échec du téléchargement
+- Les textes présents en local et absents du dataset sont conservés
+
 ## [10.3.2] - 2026-08-06
 
 ### 🐛 Clavier partiellement vierge signalé sur Honor 200 (Android 16)
