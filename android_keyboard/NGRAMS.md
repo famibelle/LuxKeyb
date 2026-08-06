@@ -29,30 +29,33 @@ Avec N-grams: Suggestions contextuelles → "fè", "di", "bat" (basées sur "an 
 - **Corpus Potomitan** : Textes validés linguistiquement
 
 #### Algorithme de Génération
-1. **Tokenisation** : `[a-zA-ZòéèùàâêîôûçÀÉÈÙÒ]+` (mots créoles avec accents)
-2. **Bigrammes** : Séquences de 2 mots consécutifs
-3. **Probabilités** : `P(mot2|mot1) = count(mot1,mot2) / count(mot1)`
-4. **Filtrage** : Top 5 prédictions par mot précédent
+1. **Tokenisation** : `[a-zA-ZòéèùàâêîôûçÀÉÈÙÒ\-]{2,}` (mots créoles avec accents)
+2. **Bigrammes et trigrammes** : séquences de 2 et 3 mots consécutifs
+3. **Probabilités** : `P(suite|contexte) = count(contexte, suite) / count(contexte)`
+4. **Filtrage** : probabilité > 0,01, et top 5 suites par contexte
+5. **Contextes à deux mots** : écartés s'ils n'apparaissent qu'une fois dans le
+   corpus. Une occurrence unique donne une probabilité de 1,0 à son unique suite,
+   ce qui n'est pas une prédiction mais la citation d'un passage.
 
 ### 2. Modèle de Données (`creole_ngrams.json`)
 
+Objet plat, sans enrobage : chaque clé est un contexte, chaque valeur la liste
+des suites probables. Deux familles de clés cohabitent.
+
 ```json
 {
-  "version": "1.0",
-  "type": "ngram_model",
-  "predictions": {
-    "ka": [
-      {"word": "fè-nou", "prob": 0.217},
-      {"word": "di", "prob": 0.174},
-      {"word": "bat", "prob": 0.174}
-    ]
-  },
-  "stats": {
-    "total_bigrammes": 1033,
-    "mots_avec_predictions": 480
-  }
+  "ka":    [{"word": "fè", "probability": 0.048}, {"word": "di", "probability": 0.032}],
+  "an ka": [{"word": "kwè", "probability": 0.037}, {"word": "vwè", "probability": 0.031}]
 }
 ```
+
+- **Clé à un mot** (`"ka"`) : issue des bigrammes, prédit la suite du dernier mot.
+- **Clé à deux mots** (`"an ka"`, séparateur espace) : issue des trigrammes,
+  nettement plus précise. Aucune collision possible entre les deux familles, la
+  tokenisation excluant les espaces.
+
+Le clavier interroge d'abord la clé à deux mots et retombe sur celle à un mot
+quand la paire est absente, ce qui garde le modèle rétrocompatible.
 
 ### 3. Intégration Android (`KreyolInputMethodService.kt`)
 
@@ -70,7 +73,8 @@ private var wordHistory = mutableListOf<String>() // Historique des 5 derniers m
 - Optimisé pour la performance mobile
 
 ##### `getNgramSuggestions()`
-- Utilise le dernier mot de l'historique
+- Compose le contexte avec les deux derniers mots de l'historique, et se replie
+  sur le dernier mot seul si la paire est absente du modèle
 - Retourne les 3 meilleures prédictions
 - Logs détaillés pour debugging
 
