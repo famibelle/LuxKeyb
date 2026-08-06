@@ -49,6 +49,12 @@ ConvertToJson.py
 Dictionnaries/__pycache__/
 Dictionnaries/.env.template
 Dictionnaries/archives/scripts/
+# Le dossier réel s'appelle Dictionnaires : les trois lignes ci-dessus, mal
+# orthographiées, ne couvrent rien (même faute que le filtre de chemins de
+# build-apk.yml)
+Dictionnaires/__pycache__/
+Dictionnaires/.env.template
+Dictionnaires/archives/scripts/
 Dictionnaries/backups/
 
 setup_github_pages.ps1

@@ -150,6 +150,22 @@ class SuggestionEngine(private val context: Context) {
         }
 
         /**
+         * Choisit la clé à interroger dans le modèle N-gram : le contexte à deux mots
+         * ("an ka") s'il est présent, sinon le dernier mot seul ("ka").
+         * `internal` (et non private) pour être testable en JVM sans Context.
+         *
+         * @param hasKey test de présence dans le modèle chargé
+         */
+        internal fun resolveNgramContext(
+            previousWord: String?,
+            lastWord: String,
+            hasKey: (String) -> Boolean
+        ): String {
+            val twoWordContext = previousWord?.let { "$it $lastWord" }
+            return twoWordContext?.takeIf(hasKey) ?: lastWord
+        }
+
+        /**
          * Correspondance EXACTE (insensible aux accents) d'un mot dans une liste de formes
          * déjà normalisées. `internal` (et non private) pour être testable en JVM sans
          * Context — cœur logique de `isKnownWord()`.
@@ -765,12 +781,25 @@ class SuggestionEngine(private val context: Context) {
     
     /**
      * Obtient les suggestions depuis le modèle N-gram (optimisé pour mode contextuel)
-     * Le modèle ne contient que des clés unigrammes (un mot → mots suivants probables) :
-     * la prédiction se base donc sur le dernier mot saisi uniquement
+     *
+     * Le modèle porte deux familles de clés : un mot ("ka") et deux mots séparés par
+     * une espace ("an ka"). Le contexte à deux mots est essayé en premier car il est
+     * nettement plus précis, avec repli sur un seul mot quand la paire est absente.
+     * Aucune collision n'est possible entre les deux familles, la tokenisation du
+     * pipeline excluant les espaces.
+     *
+     * L'historique retenait déjà cinq mots (MAX_WORD_HISTORY) alors que seul le
+     * dernier servait ; le modèle n'exportait par ailleurs que des bigrammes, les
+     * trigrammes étant calculés puis jetés côté pipeline.
      */
     private fun getNgramSuggestions(): List<String> {
         val lastWord = wordHistory.lastOrNull() ?: return emptyList()
-        val ngramList = ngramModel[lastWord] ?: return emptyList()
+        val previousWord = wordHistory.getOrNull(wordHistory.size - 2)
+
+        val context = resolveNgramContext(previousWord, lastWord) { ngramModel.containsKey(it) }
+        val ngramList = ngramModel[context] ?: return emptyList()
+
+        Log.d(TAG, "N-gram contexte retenu: '$context'")
 
         val suggestions = mutableListOf<Pair<String, Double>>()
         ngramList.forEach { ngramEntry ->
