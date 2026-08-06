@@ -680,11 +680,16 @@ Contact : contact@potomitan.io</div>
 (function(){
   fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
     var fmt = function(n){ return n.toLocaleString('fr-FR'); };
-    // Jauge par palier de 100 : toujours presque pleine, franchie souvent
-    var base = Math.floor(s.current / 100) * 100;
-    var next = Math.min(base + 100, s.goal);
-    if (next <= s.current) { next = Math.min(s.current + 100, s.goal); base = next - 100; }
-    var pct = Math.max(2, Math.min(100, ((s.current - base) / (next - base)) * 100));
+    // La donnée source (badge public Play Store) ne remonte que des paliers arrondis
+    // (100+, 500+, 1 000+, 5 000+...). "current" tombe donc toujours pile sur un palier :
+    // une jauge découpée par blocs de 100 retomberait quasi à chaque fois à son minimum.
+    // On affiche plutôt la vraie progression vers l'objectif final.
+    var playTiers = [100, 500, 1000, 5000, 10000];
+    var next = s.goal;
+    for (var i = 0; i < playTiers.length; i++) {
+      if (playTiers[i] > s.current) { next = playTiers[i]; break; }
+    }
+    var pct = Math.max(2, Math.min(100, (s.current / s.goal) * 100));
     document.getElementById('g-current').textContent = fmt(s.current);
     document.getElementById('g-next').textContent = fmt(next);
     document.getElementById('g-asof').textContent = 'MAJ ' + s.as_of;
