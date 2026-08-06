@@ -344,10 +344,19 @@ class KreyolPipelineUnique:
         
         print("🔄 Génération des N-grams...")
         
+        # Seuil de pertinence d'une suite, et nombre de suites gardées par contexte
+        SEUIL_PROBABILITE = 0.01
+        MAX_CANDIDATS = 5
+        # Occurrences minimales d'un contexte à deux mots pour qu'il soit retenu
+        MIN_OCCURRENCES_CONTEXTE = 2
+
         unigrammes = Counter()
         bigrammes = Counter()
         trigrammes = Counter()
-        
+        # Suites observées par contexte : {contexte: Counter(mot_suivant)}
+        suivants_unigramme = defaultdict(Counter)
+        suivants_bigramme = defaultdict(Counter)
+
         pattern_mot = re.compile(r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑ\-]{2,}\b')
         
         for texte in self.textes_kreyol:
@@ -364,42 +373,61 @@ class KreyolPipelineUnique:
             # Unigrammes
             for mot in mots:
                 unigrammes[mot] += 1
-            
+
             # Bigrammes
             for i in range(len(mots) - 1):
                 bigramme = (mots[i], mots[i + 1])
                 bigrammes[bigramme] += 1
-            
+                suivants_unigramme[mots[i]][mots[i + 1]] += 1
+
             # Trigrammes
             for i in range(len(mots) - 2):
                 trigramme = (mots[i], mots[i + 1], mots[i + 2])
                 trigrammes[trigramme] += 1
-        
+                suivants_bigramme[(mots[i], mots[i + 1])][mots[i + 2]] += 1
+
         # Créer le modèle de prédictions
         predictions = {}
         total_unigrammes = sum(unigrammes.values())
-        
-        for mot in unigrammes:
-            candidats = []
-            
-            # Chercher les mots qui suivent souvent ce mot
-            for (premier, suivant), freq in bigrammes.items():
-                if premier == mot:
-                    probabilite = freq / unigrammes[premier]
-                    if probabilite > 0.01:  # Seuil de pertinence
-                        candidats.append({
-                            "word": suivant,
-                            "probability": round(probabilite, 3)
-                        })
-            
-            # Trier par probabilité décroissante
+
+        def meilleurs_candidats(compteur_suivants, total_contexte):
+            """Candidats d'un contexte, triés et filtrés par probabilité"""
+            candidats = [
+                {"word": suivant, "probability": round(freq / total_contexte, 3)}
+                for suivant, freq in compteur_suivants.items()
+                if freq / total_contexte > SEUIL_PROBABILITE
+            ]
             candidats.sort(key=lambda x: x["probability"], reverse=True)
-            
-            # Garder les 5 meilleurs
+            return candidats[:MAX_CANDIDATS]
+
+        # Contextes à un mot : clé = le mot précédent.
+        # Parcours par mot plutôt que balayage complet des bigrammes pour chaque
+        # unigramme : l'ancienne double boucle était en O(unigrammes × bigrammes),
+        # soit des centaines de millions d'itérations sur le corpus actuel.
+        for mot, compteur_suivants in suivants_unigramme.items():
+            candidats = meilleurs_candidats(compteur_suivants, unigrammes[mot])
             if candidats:
-                predictions[mot] = candidats[:5]
-        
+                predictions[mot] = candidats
+
+        # Contextes à deux mots : clé = "mot1 mot2", séparés par une espace.
+        # Aucune collision possible avec les clés à un mot, le motif de tokenisation
+        # excluant les espaces. Le clavier essaie d'abord la clé à deux mots et
+        # retombe sur celle à un mot, ce qui garde le modèle rétrocompatible.
+        contextes_ignores = 0
+        for (mot1, mot2), compteur_suivants in suivants_bigramme.items():
+            occurrences_contexte = bigrammes[(mot1, mot2)]
+            # Un contexte vu une seule fois donne une probabilité de 1.0 à son
+            # unique suite : ce n'est pas une prédiction, c'est la citation d'un
+            # passage du corpus. On l'écarte.
+            if occurrences_contexte < MIN_OCCURRENCES_CONTEXTE:
+                contextes_ignores += 1
+                continue
+            candidats = meilleurs_candidats(compteur_suivants, occurrences_contexte)
+            if candidats:
+                predictions[f"{mot1} {mot2}"] = candidats
+
         self.nouveaux_ngrams = predictions
+        self.stats_corpus['contextes_bigrammes_ignores'] = contextes_ignores
         
         # Stocker pour le rapport
         self.stats_corpus['unigrammes'] = unigrammes
@@ -407,11 +435,14 @@ class KreyolPipelineUnique:
         self.stats_corpus['trigrammes'] = trigrammes
         self.stats_corpus['total_tokens'] = total_unigrammes
         
+        cles_contexte_2 = sum(1 for cle in predictions if ' ' in cle)
         print(f"✅ N-grams créés:")
         print(f"   - Unigrammes: {len(unigrammes)}")
         print(f"   - Bigrammes: {len(bigrammes)}")
         print(f"   - Trigrammes: {len(trigrammes)}")
         print(f"   - Prédictions: {len(predictions)}")
+        print(f"      · contexte 1 mot : {len(predictions) - cles_contexte_2}")
+        print(f"      · contexte 2 mots: {cles_contexte_2} ({contextes_ignores} contextes vus une seule fois écartés)")
         
         return True
     
