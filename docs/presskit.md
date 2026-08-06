@@ -8,6 +8,7 @@ lang: fr
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <a href="simulateur.html">🧪 Essayer en ligne</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="ambassade.html">📣 Vin Anbasadè</a> ·
   <a href="triptyque.html">📖 Triptyque</a> ·
   <strong>📰 Presse</strong> ·
