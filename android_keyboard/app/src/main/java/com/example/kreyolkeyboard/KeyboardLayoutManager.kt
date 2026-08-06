@@ -476,6 +476,10 @@ class KeyboardLayoutManager(private val context: Context) {
             })
             
             // Ombre portée pour l'effet de profondeur
+            // setShadowLayer() sous rendu accéléré matériellement est une source connue
+            // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
+            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
+            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
             view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
         }
         
