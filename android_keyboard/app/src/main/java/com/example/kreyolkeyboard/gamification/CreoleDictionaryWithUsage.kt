@@ -160,7 +160,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      * @param word Le mot tapé par l'utilisateur
      * @return true si le mot a été tracké, false sinon (mot ignoré)
      */
-    fun incrementWordUsage(word: String): Boolean {
+    fun incrementWordUsage(word: String): Boolean = synchronized(this) {
         Log.d(TAG, "📥 incrementWordUsage appelé avec: '$word'")
         Log.d(TAG, "📂 CreoleDictionary contexte: ${context.filesDir.absolutePath}")
         
@@ -253,8 +253,15 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     /**
      * Obtient le nombre d'utilisations d'un mot
+     *
+     * `synchronized` avec incrementWordUsage() : depuis que le moteur de
+     * suggestions se sert de ce compteur pour classer les propositions, la lecture
+     * se fait sur un thread de fond pendant la frappe, en concurrence avec
+     * l'écriture faite sur le thread principal à chaque mot validé. JSONObject
+     * n'est pas thread-safe, et getWordDataSafe() écrit lui-même dans la map quand
+     * il migre une entrée à l'ancien format.
      */
-    fun getWordUsageCount(word: String): Int {
+    fun getWordUsageCount(word: String): Int = synchronized(this) {
         val normalized = word.lowercase().trim()
         val wordData = getWordDataSafe(normalized)
         return wordData?.getInt("user_count") ?: 0

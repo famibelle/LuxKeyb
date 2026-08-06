@@ -197,7 +197,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // 🎮 Gamification: Initialiser le tracking d'utilisation du vocabulaire
         dictionaryWithUsage = CreoleDictionaryWithUsage(this)
-        
+
+        // Les compteurs d'utilisation ne servaient qu'aux écrans de statistiques :
+        // le moteur classait les suggestions sur la seule fréquence du corpus, donc
+        // sur ce que le kréyòl écrit emploie en général plutôt que sur ce que cet
+        // utilisateur-ci écrit. Les rebrancher sur le scoring fait remonter son
+        // vocabulaire propre, sans rien envoyer hors de l'appareil.
+        suggestionEngine.setUsageCountProvider { word ->
+            dictionaryWithUsage.getWordUsageCount(word)
+        }
+
         // Connecter le listener de tracking au InputProcessor
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
