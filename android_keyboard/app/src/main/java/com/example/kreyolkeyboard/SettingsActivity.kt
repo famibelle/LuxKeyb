@@ -4432,7 +4432,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(0, 0, 16, 0) }
-                            hint = "Maké mo la isit en ${MoKarenajData.WORD_LENGTH} lèt"
+                            hint = "Maké mo la isit, an ${MoKarenajData.WORD_LENGTH} lèt"
                             setHintTextColor(Color.parseColor("#9E9E9E"))
                             textSize = 18f
                             setTextColor(Color.parseColor("#212121"))
