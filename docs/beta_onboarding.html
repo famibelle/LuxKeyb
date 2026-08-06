@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="ht">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beta Testeurs - Klavyé Kréyòl</title>
+    <title>Rejoindre les bêta-testeurs : Klavyé Kréyòl Karukera</title>
+    <meta name="description" content="Testez les nouvelles fonctionnalités de Klavyé Kréyòl Karukera avant leur arrivée sur le Play Store, via le programme bêta officiel.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="assets/theme.css">
     <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
     <script defer src="assets/theme.js"></script>
@@ -96,34 +98,6 @@
             height: auto;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .level-table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-            font-size: 15px;
-        }
-
-        .level-table th,
-        .level-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .level-table th {
-            background: var(--stripe);
-            color: var(--ink);
-            font-weight: 600;
-        }
-
-        .level-table tbody tr:hover {
-            background: var(--stripe);
-        }
-
-        .badge {
-            font-size: 24px;
         }
 
         .benefit-list {
@@ -299,7 +273,37 @@
             }
         }
 
+        .back-link {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--card);
+            color: var(--ink);
+            border: 1.5px solid var(--line);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+        .back-link:hover { border-color: var(--hibiscus); color: var(--hibiscus); }
+
+        .benefit-note {
+            font-size: 13px;
+            color: var(--ink-soft);
+            margin-top: 10px;
+        }
+        .benefit-note a { color: var(--hibiscus); font-weight: 600; text-decoration: none; }
+        .benefit-note a:hover { text-decoration: underline; }
+
         @media (max-width: 600px) {
+            .back-link .lbl { display: none; }
+
             .container {
                 padding: 25px;
             }
@@ -324,35 +328,29 @@
                 max-width: 100%;
                 margin-bottom: 15px;
             }
-
-            .level-table {
-                font-size: 13px;
-            }
-
-            .level-table th,
-            .level-table td {
-                padding: 8px;
-            }
         }
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-link">← <span class="lbl">Klavyé Kréyòl Karukera</span></a>
     <button type="button" class="theme-toggle fixed" aria-label="Changer de thème">🌙</button>
     <div class="main-container">
         <!-- Section de présentation -->
         <div class="container">
             <div class="header">
-                <h1>📱 Klavyé Kréyòl Karukera</h1>
-                <p><strong>Klavyé Kréyòl Karukera</strong> est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Guadeloupéens d'écrire facilement en <strong>Kréyòl Gwaloup</strong> sur leur smartphone, avec fluidité, authenticité et fierté.</p>
-                
-                <ul>
-                    <li>🛠️ Si ton créole est très rouillé...</li>
-                    <li>😤 Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots</li>
-                    <li>🤔 Que tu doutes de l'orthographe à chaque message ...</li>
-                    <li>➡️ Klavyé Kréyòl Karukera est fait pour toi !</li>
-                </ul>
+                <h1 id="title">✊🏽 Rejoindre les bêta-testeurs</h1>
+                <p id="subtitle">Testez les nouveautés de <strong>Klavyé Kréyòl Karukera</strong> avant leur arrivée sur le Play Store. Indiquez votre e-mail, nous vous ajoutons au programme bêta officiel.</p>
 
-                <h2>📱 Aperçu</h2>
+                <div class="benefit-list">
+                    <ul>
+                        <li>Les nouvelles fonctionnalités en premier (<a href="nouveautes.html" style="color: var(--hibiscus); font-weight: 600; text-decoration: none;">voir ce qui vous attend</a>)</li>
+                        <li>Installation via le Play Store officiel, pas besoin de sideload d'APK</li>
+                        <li>Vos retours orientent directement les prochaines versions</li>
+                        <li>Vous quittez le programme bêta quand vous voulez, sans perdre vos données</li>
+                    </ul>
+                </div>
+
+                <h2 style="margin-top: 30px;">📱 Aperçu</h2>
                 <div class="screenshots">
                     <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier kréyòl Karukera en Action">
                     <img src="Screenshots/Screenshot_1761763560.png" alt="Interface du clavier">
@@ -361,21 +359,11 @@
             </div>
         </div>
 
-
-
         <!-- Section formulaire d'inscription -->
         <div class="container">
-            <div class="header">
-                <h1 id="title">✊🏽 Rejoindre le groupe des bêta-testeurs en avant-première</h1>
-                <p id="subtitle">Si vous voulez tester <strong>Klavyé Kréyòl Karukera</strong> avant tout le monde, indiquez votre adresse e-mail ici. Nous vous enverrons le lien !</p>
-            </div>
-
             <div class="success-message" id="successMessage">
                 <h3 id="successTitle">🎉 Merci beaucoup !</h3>
-                <p id="successText">Vous êtes bien sur la liste, et vous pourrez installer 
-                    <a href="https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard" target="_blank" style="color: #ffffff; text-decoration: underline;">Klavyé Kréyòl</a> sur 
-                    <a href="https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard" target="_blank" style="color: #ffffff; text-decoration: underline;">Google Play Store</a>
-                </p>
+                <p id="successText">Vous êtes bien sur la liste. Nous vous enverrons un e-mail avec le lien d'inscription au programme bêta du Play Store dès que possible.</p>
             </div>
 
             <form id="betaForm" action="https://formspree.io/f/meorvlnq" method="POST">
@@ -406,19 +394,14 @@
             </div>
         </div>
 
-        <!-- Section Google Play Store -->
+        <!-- Section alternative : version stable -->
         <div class="container">
             <div class="header">
-                <h1>📱 <a href="https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard" target="_blank" style="color: var(--hibiscus); text-decoration: none;">Google Play Store</a></h1>
-                <p>Aidez-nous à faire progresser <strong>Klavyé Kréyòl Karukera</strong> en rejoignant le <a href="#title" style="color: var(--hibiscus); text-decoration: none; font-weight: 600;">programme de bêta-test</a></p>
-                
-                <div style="text-align: center; margin: 30px 0;">
-                    <a href="#title">
-                        <img src="Screenshots/PreRegisterOnGooglePlay_Badge_Web_color_french.png" alt="Pré-inscription sur Google Play Store" style="max-width: 250px; height: auto;">
-                    </a>
-                    <br>
-                    <a href="https://play.google.com/apps/testing/com.potomitan.kreyolkeyboard" target="_blank">
-                        <img src="Screenshots/google_download_soon.png" alt="Disponible sur Google Play Store" style="max-width: 250px; height: auto; margin-bottom: 15px;">
+                <h2>Pas envie d'attendre le programme bêta ?</h2>
+                <p class="benefit-note" style="font-size: 15px; margin-top: 6px;">La version stable est déjà disponible sur le Play Store, avec la majorité des fonctionnalités. Seules les toutes dernières nouveautés (<a href="nouveautes.html">liste ici</a>) sont encore réservées à la bêta.</p>
+                <div style="text-align: center; margin: 24px 0 6px;">
+                    <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dbeta_onboarding%26utm_campaign%3Dlaunch10k" target="_blank">
+                        <img src="Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg" alt="Télécharger Klavyé Kréyòl Karukera sur Google Play" style="max-width: 250px; height: auto;">
                     </a>
                 </div>
             </div>
@@ -446,14 +429,14 @@
                 error: 'Té ni an pwoblèm. Tanpri éséyé ankò.'
             },
             fr: {
-                title: '✊🏽 Rejoindre le groupe des bêta-testeurs en avant-première',
-                subtitle: 'Si vous voulez tester <strong>Klavyé Kréyòl Karukera</strong> avant tout le monde, indiquez votre adresse e-mail ici. Nous vous enverrons le lien !',
+                title: '✊🏽 Rejoindre les bêta-testeurs',
+                subtitle: 'Testez les nouveautés de <strong>Klavyé Kréyòl Karukera</strong> avant leur arrivée sur le Play Store. Indiquez votre e-mail, nous vous ajoutons au programme bêta officiel.',
                 labelEmail: 'Adresse e-mail :',
                 placeholder: 'votrenom@email.com',
                 labelConsent: 'J\'accepte d\'utiliser mon adresse e-mail pour participer au test bêta.',
                 submit: 'Envoyer',
                 successTitle: '🎉 Merci beaucoup !',
-                successText: 'Vous êtes bien sur la liste. Nous vous enverrons un e-mail très bientôt.',
+                successText: 'Vous êtes bien sur la liste. Nous vous enverrons un e-mail avec le lien d\'inscription au programme bêta du Play Store dès que possible.',
                 error: 'Une erreur est survenue. Veuillez réessayer.'
             }
         };
