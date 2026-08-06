@@ -9,9 +9,17 @@ lang: fr
   <strong>📘 Guide</strong> ·
   <a href="simulateur.html">🧪 Essayer en ligne</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
   <a href="ambassade.html">📣 Vin Anbasadè</a> ·
+  <a href="tract.html">🪧 Tract</a> ·
+  <a href="tract-eco.html">💧 Tract éco encre</a> ·
+  <a href="affiche.html">🖨️ Affiche</a> ·
+  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
+  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
   <a href="triptyque.html">📖 Triptyque</a> ·
+  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
   <a href="presskit.html">📰 Presse</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dguide%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
   <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
