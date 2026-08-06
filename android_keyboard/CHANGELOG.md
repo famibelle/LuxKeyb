@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.3.2] - 2026-08-06
+
+### 🐛 Clavier partiellement vierge signalé sur Honor 200 (Android 16)
+
+- **Constat** : un utilisateur sur Honor HONOR 200 (SDK 36) a signalé un clavier cassé à l'activation : les 2 premières rangées de lettres sans texte, la 3ème rangée correcte, et toutes les touches colorées (fonction) sans aucun affichage
+- **Non reproduit** sur l'émulateur `honor_x9c_test` (même profil Honor 200, Android 16) malgré des tests systématiques : rendu par défaut, mode sombre forcé, police système à 1.3x et densité d'affichage à 560dpi affichent tous le clavier correctement (seul un défaut cosmétique préexistant et sans rapport, le label « 123 » tronqué en « 12 » à très forte densité, a été observé)
+- **Cause probable** : `KeyboardLayoutManager.applyGuadeloupeStyleToView()` applique un `Paint.setShadowLayer()` (ombre décorative) à chacune des ~38 touches du clavier simultanément. Cette combinaison (rendu accéléré matériellement + `setShadowLayer()` sur de nombreuses vues) est une source connue de texte/icônes invisibles selon le driver GPU du SoC, un phénomène propre à certains modèles/OEM et impossible à reproduire sur un émulateur en rendu logiciel (swiftshader) comme celui utilisé ici
+- **Corrigé** : `view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)` forcé sur chaque touche juste avant l'application de l'ombre, pour écarter cette classe de bug sans changer le rendu visuel (identique en émulateur avant/après). Coût de performance négligeable : ces vues ne se redessinent qu'au changement d'état (appui, bascule majuscule, changement de mode), jamais en boucle
+- **Vérifié sur émulateur** (`honor_x9c_test`, Android 16) : rendu du clavier strictement identique au correctif près (ombre, couleurs, icônes), saisie fonctionnelle. Correctif préventif non confirmé sur un Honor 200 physique, faute d'accès à l'appareil du rapporteur
+
 ## [10.3.1] - 2026-08-05
 
 ### 🐛 Le scroll se bloquait quand le clavier apparaissait
