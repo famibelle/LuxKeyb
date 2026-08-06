@@ -716,6 +716,34 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         displaySuggestions(emptyList())
     }
     
+    /**
+     * Le framework signale ici tout déplacement du curseur : tap dans le texte,
+     * sélection, effacement remontant dans un mot déjà validé, ou modification
+     * faite par l'application elle-même. C'est le seul point où l'on apprend que
+     * le texte a bougé sans passer par nos touches.
+     *
+     * Absent de ce service jusqu'ici (il n'existait que dans le service legacy
+     * KreyolInputMethodService), ce qui laissait le mot suivi par InputProcessor
+     * dériver du texte réel : revenir éditer un mot existant ne produisait alors
+     * plus aucune suggestion, et taper après un déplacement de curseur en
+     * produisait pour le mot précédent.
+     */
+    override fun onUpdateSelection(
+        oldSelStart: Int,
+        oldSelEnd: Int,
+        newSelStart: Int,
+        newSelEnd: Int,
+        candidatesStart: Int,
+        candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(
+            oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd
+        )
+
+        if (!::inputProcessor.isInitialized) return
+        inputProcessor.syncWordWithCursor(newSelStart, newSelEnd)
+    }
+
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
