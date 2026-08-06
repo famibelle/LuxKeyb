@@ -23,17 +23,21 @@ class SuggestionEngine(private val context: Context) {
 
         // Poids d'une utilisation personnelle dans le score d'une suggestion.
         // Calibré sur la distribution réelle du dictionnaire : entre candidats
-        // partageant un préfixe, l'écart de fréquence corpus est typiquement de
-        // quelques centaines ("bon" 951 contre "bonjou" 164). À 50 points par
-        // utilisation, une dizaine de frappes suffit à faire remonter le mot que
-        // l'utilisateur emploie réellement.
-        private const val USAGE_WEIGHT = 50.0
+        // partageant un préfixe, l'écart de fréquence corpus se compte en dizaines
+        // ("bon" 97 contre "bonjou" 17). À 5 points par utilisation, il faut une
+        // quinzaine de frappes pour faire remonter le mot réellement employé.
+        //
+        // La valeur a été divisée par dix en même temps que les fréquences du
+        // dictionnaire, ramenées à leur vraie échelle par la correction du cumul
+        // dans creer_dictionnaire() : elles étaient jusque-là gonflées d'un facteur
+        // douze par les exécutions successives du pipeline.
+        private const val USAGE_WEIGHT = 5.0
 
         // Plafond du bonus d'usage, exprimé en nombre d'utilisations comptées.
-        // Deux garanties : le bonus maximal (1000) reste très en dessous du poids
+        // Deux garanties : le bonus maximal (100) reste très en dessous du poids
         // d'une correction orthographique (100 000), donc une correction gagne
-        // toujours ; et il ne dépasse pas le 99e centile des fréquences corpus,
-        // donc les mots hyper-fréquents (ka, an, sé) ne sont pas délogés par un
+        // toujours ; et il ne dépasse pas le 99e centile des fréquences corpus (88),
+        // donc les mots hyper-fréquents (ka 1800, pa 664) ne sont pas délogés par un
         // mot personnel rarement pertinent.
         private const val MAX_COUNTED_USAGES = 20
 

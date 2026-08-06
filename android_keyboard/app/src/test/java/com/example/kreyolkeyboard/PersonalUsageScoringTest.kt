@@ -19,18 +19,18 @@ class PersonalUsageScoringTest {
     fun `un mot jamais utilise garde exactement son ancien score`() {
         // Garantit qu'activer la fonctionnalité ne déplace rien pour un nouvel
         // utilisateur, dont tous les compteurs sont à zéro
-        val sansUsage = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0)
-        val avecUsageNul = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 0)
+        val sansUsage = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0)
+        val avecUsageNul = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 0)
 
         assertEquals(sansUsage, avecUsageNul, 0.0)
     }
 
     @Test
     fun `l'usage personnel fait remonter un mot moins frequent dans le corpus`() {
-        // "bon" (951) devance largement "bonjou" (164) dans le corpus ; un
+        // "bon" (97) devance largement "bonjou" (17) dans le corpus ; un
         // utilisateur qui écrit constamment "bonjou" doit le voir passer devant
-        val bon = SuggestionEngine.calculateDictionaryScore("bon", "bon", 951, 0, 0)
-        val bonjouUtilise = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 20)
+        val bon = SuggestionEngine.calculateDictionaryScore("bon", "bon", 97, 0, 0)
+        val bonjouUtilise = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 20)
 
         assertTrue(
             "bonjou utilisé 20 fois devrait passer devant bon : $bonjouUtilise vs $bon",
@@ -42,16 +42,16 @@ class PersonalUsageScoringTest {
     fun `quelques utilisations ne suffisent pas a bouleverser le classement`() {
         // Deux ou trois frappes ne doivent pas suffire à déloger un mot bien plus
         // fréquent : le signal personnel doit se confirmer avant de peser
-        val bon = SuggestionEngine.calculateDictionaryScore("bon", "bon", 951, 0, 0)
-        val bonjouPeuUtilise = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 3)
+        val bon = SuggestionEngine.calculateDictionaryScore("bon", "bon", 97, 0, 0)
+        val bonjouPeuUtilise = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 3)
 
         assertTrue(bonjouPeuUtilise < bon)
     }
 
     @Test
     fun `a frequence egale le mot le plus utilise passe devant`() {
-        val jamais = SuggestionEngine.calculateDictionaryScore("mandé", "man", 578, 0, 0)
-        val souvent = SuggestionEngine.calculateDictionaryScore("manjé", "man", 578, 0, 8)
+        val jamais = SuggestionEngine.calculateDictionaryScore("mandé", "man", 48, 0, 0)
+        val souvent = SuggestionEngine.calculateDictionaryScore("manjé", "man", 48, 0, 8)
 
         assertTrue(souvent > jamais)
     }
@@ -60,8 +60,8 @@ class PersonalUsageScoringTest {
     fun `le bonus d'usage ne peut jamais devancer une correction orthographique`() {
         // Le poids d'une correction (100 000) doit rester hors d'atteinte : sinon un
         // mot très utilisé mais sans rapport supplanterait la correction attendue
-        val correction = SuggestionEngine.calculateDictionaryScore("mèsi", "mesli", 650, 1, 0)
-        val motTresUtilise = SuggestionEngine.calculateDictionaryScore("mésyé", "mesli", 15_000, 2, 10_000)
+        val correction = SuggestionEngine.calculateDictionaryScore("mèsi", "mesli", 54, 1, 0)
+        val motTresUtilise = SuggestionEngine.calculateDictionaryScore("mésyé", "mesli", 1_250, 2, 10_000)
 
         assertTrue(
             "la correction à 1 édition doit rester devant : $correction vs $motTresUtilise",
@@ -71,10 +71,10 @@ class PersonalUsageScoringTest {
 
     @Test
     fun `le bonus est plafonne pour ne pas deloger les mots hyper frequents`() {
-        // "ka" (21806) est le mot le plus fréquent du kréyòl : aucun mot personnel
+        // "ka" (1800) est le mot le plus fréquent du kréyòl : aucun mot personnel
         // en "ka..." ne doit le faire descendre, quel que soit le nombre de frappes
-        val ka = SuggestionEngine.calculateDictionaryScore("ka", "ka", 21_806, 0, 0)
-        val kabritMartele = SuggestionEngine.calculateDictionaryScore("kabrit", "ka", 200, 0, 5_000)
+        val ka = SuggestionEngine.calculateDictionaryScore("ka", "ka", 1_800, 0, 0)
+        val kabritMartele = SuggestionEngine.calculateDictionaryScore("kabrit", "ka", 17, 0, 5_000)
 
         assertTrue(
             "ka doit rester devant malgré 5000 utilisations de kabrit : $ka vs $kabritMartele",
@@ -84,17 +84,17 @@ class PersonalUsageScoringTest {
 
     @Test
     fun `le bonus cesse de croitre au dela du plafond`() {
-        val auPlafond = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 20)
-        val bienAuDela = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 900)
+        val auPlafond = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 20)
+        val bienAuDela = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 900)
 
         assertEquals(auPlafond, bienAuDela, 0.0)
     }
 
     @Test
     fun `le bonus croit avec le nombre d'utilisations sous le plafond`() {
-        val peu = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 2)
-        val moyen = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 10)
-        val beaucoup = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 164, 0, 18)
+        val peu = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 2)
+        val moyen = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 10)
+        val beaucoup = SuggestionEngine.calculateDictionaryScore("bonjou", "bon", 17, 0, 18)
 
         assertTrue(peu < moyen)
         assertTrue(moyen < beaucoup)
