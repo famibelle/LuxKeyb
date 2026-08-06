@@ -16,6 +16,44 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     
     companion object {
         private const val TAG = "InputProcessor"
+
+        // Nombre de caractères lus de part et d'autre du curseur pour reconstituer
+        // le mot en cours. Large devant le plus long mot du dictionnaire créole.
+        private const val WORD_LOOKAROUND = 64
+
+        /**
+         * Définit ce qui appartient à un mot, pour la frappe comme pour la
+         * reconstitution du mot autour du curseur : les deux doivent partager la
+         * même définition, sinon `currentWord` divergerait du texte réel à chaque
+         * resynchronisation.
+         *
+         * `isLetter()` plutôt qu'une classe de caractères explicite : l'ancienne
+         * regex ne listait que les minuscules accentuées, si bien qu'une majuscule
+         * accentuée (« É » en début de phrase, fréquent en kréyòl) était traitée
+         * comme un séparateur et coupait le mot en cours.
+         */
+        internal fun isWordCharacter(character: Char): Boolean = character.isLetter()
+
+        /**
+         * Mot en cours de frappe déduit du texte précédant le curseur.
+         * `internal` (et non private) pour être testable en JVM sans InputConnection.
+         *
+         * Une sélection active ne correspond à aucun mot en cours : la remplacer
+         * par une suggestion effacerait un texte que l'utilisateur a désigné
+         * explicitement, ce qui n'est pas ce que la barre de suggestions promet.
+         */
+        internal fun resolveCurrentWord(textBeforeCursor: String, hasSelection: Boolean): String {
+            if (hasSelection) return ""
+            return textBeforeCursor.takeLastWhile { isWordCharacter(it) }
+        }
+
+        /**
+         * Nombre de caractères de mot situés juste après le curseur, c'est-à-dire
+         * la fin du mot que l'utilisateur est en train d'éditer par le milieu.
+         * `internal` pour la même raison que ci-dessus.
+         */
+        internal fun trailingWordLength(textAfterCursor: String): Int =
+            textAfterCursor.takeWhile { isWordCharacter(it) }.length
     }
     
     // État du processeur
@@ -97,7 +135,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         }
         
         // Ajouter le caractère au mot courant
-        if (character.matches(Regex("[a-zA-Zàáâãäåèéêëìíîïòóôõöøùúûüýÿñçĉĝĥĵŝŭ]"))) {
+        if (character.isNotEmpty() && character.all { isWordCharacter(it) }) {
             currentWord += character
             Log.d(TAG, "Caractère '$character' ajouté, mot courant: '$currentWord'")
             processorListener?.onWordChanged(currentWord)
@@ -332,16 +370,58 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * Resynchronise le mot courant avec le texte réellement présent avant le
+     * curseur, appelé à chaque déplacement signalé par onUpdateSelection().
+     *
+     * `currentWord` n'est alimenté que par les frappes : sans cette remise à
+     * niveau il divergeait silencieusement du texte dès que le curseur bougeait
+     * autrement qu'en tapant (tap dans le texte, retour arrière remontant dans un
+     * mot déjà validé, modification par l'application elle-même), et le moteur de
+     * suggestions travaillait alors sur un préfixe périmé ou vide.
+     *
+     * Le mot est relu depuis l'InputConnection plutôt que déduit des positions
+     * rapportées : celles-ci peuvent être en retard sur une frappe rapide, alors
+     * que le texte lu est toujours l'état courant. Quand la valeur relue est déjà
+     * celle attendue, cas de très loin le plus fréquent puisque nos propres
+     * commitText/deleteSurroundingText déclenchent aussi ce rappel, on ne touche
+     * à rien : le trajet de frappe normal reste intact.
+     */
+    fun syncWordWithCursor(selectionStart: Int, selectionEnd: Int) {
+        val inputConnection = inputMethodService.currentInputConnection ?: return
+
+        val hasSelection = selectionStart != selectionEnd
+        val textBefore = if (hasSelection) {
+            ""
+        } else {
+            inputConnection.getTextBeforeCursor(WORD_LOOKAROUND, 0)?.toString() ?: ""
+        }
+        val wordBeforeCursor = resolveCurrentWord(textBefore, hasSelection)
+
+        if (wordBeforeCursor == currentWord) return
+
+        Log.d(TAG, "Resynchronisation curseur: '$currentWord' -> '$wordBeforeCursor'")
+        // setCurrentWord() et non updateCurrentWordSilently() : le rappel est
+        // justement ce qui régénère les suggestions pour le nouveau préfixe, ou
+        // les vide quand le curseur quitte un mot
+        setCurrentWord(wordBeforeCursor)
+    }
+
+    /**
      * Traite la sélection d'une suggestion
      */
     fun processSuggestionSelection(suggestion: String): Boolean {
         val inputConnection = inputMethodService.currentInputConnection ?: return false
-        
+
         // Supprimer le mot partiel actuel
         if (currentWord.isNotEmpty()) {
-            inputConnection.deleteSurroundingText(currentWord.length, 0)
+            // Le curseur peut se trouver au milieu d'un mot, l'utilisateur ayant
+            // tapé dedans pour le corriger : la fin du mot doit partir avec le
+            // début, sinon la suggestion s'insère devant le reliquat
+            // ("bon|jou" + suggestion "bonjou" donnerait "bonjoujou").
+            val textAfter = inputConnection.getTextAfterCursor(WORD_LOOKAROUND, 0)?.toString() ?: ""
+            inputConnection.deleteSurroundingText(currentWord.length, trailingWordLength(textAfter))
         }
-        
+
         // ✅ La suggestion arrive déjà avec la bonne casse depuis SuggestionEngine
         Log.d(TAG, "Suggestion avec casse préservée: '$currentWord' -> '$suggestion'")
         
