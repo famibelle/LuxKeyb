@@ -313,24 +313,43 @@ class KreyolPipelineUnique:
                 if len(mot) >= 2:
                     compteur_mots[mot] += 1
         
-        # Fusionner avec le dictionnaire existant
-        for mot, freq_nouvelle in compteur_mots.items():
-            freq_existante = self.dictionnaire_actuel.get(mot, 0)
-            compteur_mots[mot] = freq_existante + freq_nouvelle
-        
-        # Ajouter les mots existants non trouvés
+        # Le comptage du corpus REMPLACE la fréquence stockée, il ne s'y ajoute
+        # pas. L'ancienne fusion faisait `stockée + nouvelle` alors que la valeur
+        # stockée provenait déjà d'un passage sur ce même corpus : chaque exécution
+        # gonflait donc le dictionnaire d'un corpus supplémentaire. Le rapport
+        # mesuré entre valeurs stockées et comptage frais était uniforme, autour de
+        # 12, soit une douzaine d'exécutions accumulées. Les fréquences ne
+        # mesuraient plus le kréyòl écrit mais le nombre de fois qu'on avait lancé
+        # le script. Avec ce remplacement, deux exécutions de suite donnent
+        # exactement le même dictionnaire.
+        # Facteur d'échelle entre fréquences stockées et comptage frais, estimé sur
+        # les mots présents des deux côtés. Il vaut 1 en régime établi (le stock
+        # est déjà à la bonne échelle) et corrige la transition depuis un stock
+        # gonflé par les cumuls passés.
+        stock_commun = sum(f for m, f in self.dictionnaire_actuel.items() if m in compteur_mots)
+        frais_commun = sum(compteur_mots[m] for m in self.dictionnaire_actuel if m in compteur_mots)
+        echelle = (frais_commun / stock_commun) if stock_commun else 1.0
+
+        mots_conserves = 0
         for mot, freq in self.dictionnaire_actuel.items():
             if mot not in compteur_mots:
-                compteur_mots[mot] = freq
-        
+                # Mot absent du corpus : ajout curé à la main, ou reliquat d'un
+                # corpus antérieur. Sa fréquence stockée est la seule dont on
+                # dispose, mais la garder telle quelle le propulserait en tête dès
+                # que l'échelle générale change : on la ramène à l'échelle du
+                # comptage frais, sans jamais descendre sous 1.
+                compteur_mots[mot] = max(1, round(freq * echelle))
+                mots_conserves += 1
+
         self.nouveau_dictionnaire = dict(compteur_mots.most_common())
-        
-        nouveaux_mots = len(self.nouveau_dictionnaire) - len(self.dictionnaire_actuel)
+
+        nouveaux_mots = len(set(compteur_mots) - set(self.dictionnaire_actuel))
         print(f"✅ Dictionnaire créé:")
         print(f"   - Total mots: {len(self.nouveau_dictionnaire)}")
         print(f"   - Nouveaux mots: {nouveaux_mots}")
         print(f"   - Mots existants: {len(self.dictionnaire_actuel)}")
-        
+        print(f"   - Mots hors corpus conservés: {mots_conserves}")
+
         return True
     
     def creer_ngrams(self):
