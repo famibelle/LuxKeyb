@@ -20,6 +20,28 @@ class SuggestionEngine(private val context: Context) {
         private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 kreyòl + 2 français)
         private const val MAX_WORD_HISTORY = 5
         private const val MIN_WORD_LENGTH = 1  // Le kréyòl a des mots très fréquents dès 1-2 lettres (ka, an, sé)
+
+        // Poids d'une utilisation personnelle dans le score d'une suggestion.
+        // Calibré sur la distribution réelle du dictionnaire : entre candidats
+        // partageant un préfixe, l'écart de fréquence corpus est typiquement de
+        // quelques centaines ("bon" 951 contre "bonjou" 164). À 50 points par
+        // utilisation, une dizaine de frappes suffit à faire remonter le mot que
+        // l'utilisateur emploie réellement.
+        private const val USAGE_WEIGHT = 50.0
+
+        // Plafond du bonus d'usage, exprimé en nombre d'utilisations comptées.
+        // Deux garanties : le bonus maximal (1000) reste très en dessous du poids
+        // d'une correction orthographique (100 000), donc une correction gagne
+        // toujours ; et il ne dépasse pas le 99e centile des fréquences corpus,
+        // donc les mots hyper-fréquents (ka, an, sé) ne sont pas délogés par un
+        // mot personnel rarement pertinent.
+        private const val MAX_COUNTED_USAGES = 20
+
+        // Nombre de correspondances par préfixe retenues avant scoring. Le
+        // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
+        // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
+        // l'utilisateur avant même que son bonus d'usage puisse jouer.
+        private const val CANDIDATE_POOL_SIZE = 40
         
         /**
          * Applique le pattern de casse (majuscules/minuscules) de l'input à un mot suggéré
@@ -75,14 +97,24 @@ class SuggestionEngine(private val context: Context) {
          *
          * @param levenshteinDistance 0 pour une correspondance par préfixe ;
          *        > 0 pour une correction orthographique (distance d'édition)
+         * @param usageCount nombre de fois que l'utilisateur a déjà validé ce mot,
+         *        0 quand l'usage personnel n'est pas connu (mots français, tests)
          */
         internal fun calculateDictionaryScore(
             word: String,
             input: String,
             frequency: Int,
-            levenshteinDistance: Int = 0
+            levenshteinDistance: Int = 0,
+            usageCount: Int = 0
         ): Double {
             var score = frequency.toDouble()
+
+            // Usage personnel : la fréquence corpus dit ce que le kréyòl écrit
+            // emploie en général, pas ce que cet utilisateur-ci écrit. Le compteur
+            // alimenté par la gamification (CreoleDictionaryWithUsage) corrige ce
+            // décalage. Tout reste sur l'appareil : aucune donnée ne sort, et seuls
+            // les mots déjà présents au dictionnaire sont comptés.
+            score += minOf(usageCount, MAX_COUNTED_USAGES) * USAGE_WEIGHT
 
             // Corrections orthographiques : la distance prime sur tout le reste.
             // Le poids (100 000) dépasse toute fréquence du dictionnaire (~15 500 max) :
@@ -135,6 +167,23 @@ class SuggestionEngine(private val context: Context) {
     private var normalizedWords: List<String> = emptyList()
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
+
+    // Compteur d'utilisations personnelles, fourni par le service IME plutôt
+    // qu'instancié ici : le moteur n'a pas à dépendre du paquet gamification, et
+    // reste ainsi testable sans Context. Absent (null) tant qu'il n'est pas
+    // branché, auquel cas le score se réduit à son ancienne formule.
+    private var usageCountProvider: ((String) -> Int)? = null
+
+    /**
+     * Branche la source des compteurs d'utilisation personnelle
+     * (CreoleDictionaryWithUsage côté service).
+     */
+    fun setUsageCountProvider(provider: (String) -> Int) {
+        usageCountProvider = provider
+        Log.d(TAG, "📊 Compteurs d'usage personnel branchés sur le scoring")
+    }
+
+    private fun usageCountOf(word: String): Int = usageCountProvider?.invoke(word) ?: 0
     
     // 🇫🇷 Support français (nouveau)
     private lateinit var frenchDictionary: FrenchDictionary
@@ -338,7 +387,7 @@ class SuggestionEngine(private val context: Context) {
         
         // Ajouter suggestions dictionnaire
         dictionaryMatches.forEach { (word, frequency, distance) ->
-            val score = calculateDictionaryScore(word, input, frequency, distance)
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
             allKreyol[word] = score.toFloat()
         }
         
@@ -454,7 +503,7 @@ class SuggestionEngine(private val context: Context) {
                 // Trier uniquement par score de dictionnaire (fréquence + proximité + distance)
                 dictionaryMatches
                     .map { (word, frequency, distance) ->
-                        Pair(word, calculateDictionaryScore(word, input, frequency, distance))
+                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word)))
                     }
                     .sortedByDescending { it.second }
                     .take(MAX_SUGGESTIONS)
@@ -645,15 +694,18 @@ class SuggestionEngine(private val context: Context) {
         if (input.length < MIN_WORD_LENGTH) return emptyList()
 
         // Recherche préfixe sur les formes normalisées précalculées.
-        // `dictionary` est trié par fréquence décroissante : les premiers matches
-        // sont les meilleurs, on peut s'arrêter dès qu'on en a assez.
+        // `dictionary` est trié par fréquence décroissante, mais on ne peut plus
+        // s'arrêter aux tout premiers matches depuis que l'usage personnel entre
+        // dans le score : un mot rare dans le corpus et pourtant très employé par
+        // l'utilisateur se trouve loin dans ce classement, et une fenêtre étroite
+        // l'écarterait avant même que son bonus puisse jouer.
         // Distance 0 = correspondance par préfixe (pas une correction).
         val normalizedInput = AccentTolerantMatcher.normalize(input)
         val matches = mutableListOf<Triple<String, Int, Int>>()
         for (i in dictionary.indices) {
             if (normalizedWords[i].startsWith(normalizedInput)) {
                 matches.add(Triple(dictionary[i].first, dictionary[i].second, 0))
-                if (matches.size >= MAX_SUGGESTIONS * 2) break
+                if (matches.size >= CANDIDATE_POOL_SIZE) break
             }
         }
 
@@ -750,7 +802,7 @@ class SuggestionEngine(private val context: Context) {
         // Ajouter les suggestions du dictionnaire avec score basé sur la fréquence et la position
         dictionarySuggestions.forEach { (word, frequency, distance) ->
             val casedWord = applyCasingPattern(input, word)
-            val score = calculateDictionaryScore(word, input, frequency, distance)
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
             allSuggestions[casedWord] = score
         }
         
