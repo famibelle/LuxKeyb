@@ -93,6 +93,46 @@ administratives (soutenu par la Préfecture de Guadeloupe via Lab'An Nou,
 présenté par Orange Antilles-Guyane). Deux outils, une même mission :
 faire vivre le kréyòl dans le numérique, à l'écrit comme à l'oral.
 
+## À découvrir en exclusivité 🎁
+
+**Le clavier évolue chaque semaine.** Les nouveautés ci-dessous sont déjà
+dans la dernière version publiée sur GitHub, en attendant leur arrivée sur
+le Play Store, où la mise à jour est en cours de préparation.
+
+<div id="exclusive-features" class="card" style="margin:16px 0;">
+  <div id="ef-list" style="display:flex;flex-direction:column;gap:14px;">
+    <p style="color:var(--ink-soft);">Chargement des nouveautés…</p>
+  </div>
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:14px;padding-top:14px;border-top:1px solid var(--line);">
+    <span>Version actuelle sur le Play Store : <strong id="ef-prod">…</strong> · Dernière version : <strong id="ef-latest">…</strong></span>
+    <span id="ef-asof"></span>
+  </div>
+</div>
+
+<div align="center" style="margin: 8px 0 16px;">
+  <a href="https://github.com/famibelle/KreyolKeyb/releases" class="btn" style="padding:10px 22px;">🚀 Essayer la dernière version (APK direct)</a>
+</div>
+
+<script>
+fetch('stats/exclusive_features.json').then(function(r){ return r.json(); }).then(function(d){
+  var list = document.getElementById('ef-list');
+  if (!d.features || !d.features.length) {
+    list.innerHTML = '<p style="color:var(--ink-soft);">Rien de nouveau à signaler pour le moment : le Play Store est à jour !</p>';
+  } else {
+    list.innerHTML = d.features.map(function(f){
+      return '<div style="display:flex;gap:12px;align-items:flex-start;">' +
+        '<span style="font-size:22px;line-height:1.3;">' + f.emoji + '</span>' +
+        '<div><strong>' + f.title + '</strong><br>' +
+        '<span style="color:var(--ink-soft);font-size:14.5px;">' + f.description + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+  document.getElementById('ef-prod').textContent = 'v' + d.production_version;
+  document.getElementById('ef-latest').textContent = 'v' + d.latest_version;
+  document.getElementById('ef-asof').textContent = 'MAJ ' + d.as_of;
+}).catch(function(){});
+</script>
+
 ## La jauge des 10 000 📲
 
 <div id="dl-gauge" class="card" style="margin:16px 0;">
