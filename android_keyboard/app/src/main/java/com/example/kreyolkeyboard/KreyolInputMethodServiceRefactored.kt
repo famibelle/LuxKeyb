@@ -51,8 +51,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share"
 
         /**
-         * Saisie dont le contenu ne doit jamais être conservé, ni en statistiques
-         * de vocabulaire ni au dictionnaire personnel.
+         * Saisie dont le contenu ne doit jamais être conservé, statistiques de
+         * vocabulaire comprises.
          * `internal` (et non private) pour être testable en JVM sans EditorInfo.
          *
          * Couvre les mots de passe sous toutes leurs déclarations (texte masqué,
@@ -242,16 +242,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
                 if (isSensitiveField()) {
                     // Champ de mot de passe ou saisie explicitement non
-                    // mémorisable : ni statistiques ni apprentissage. Sortie
-                    // avant toute écriture, y compris l'horodatage du tunnel.
+                    // mémorisable : aucun comptage. Sortie avant toute écriture,
+                    // y compris l'horodatage du tunnel.
                     Log.d(TAG, "🔒 Champ sensible: mot ignoré")
                     return
                 }
-
-                // Apprentissage des mots absents du corpus (prénoms, toponymes) :
-                // le dictionnaire personnel applique lui-même son seuil d'emplois
-                // et ses filtres de vie privée
-                suggestionEngine.offerWordToPersonalDictionary(word)
 
                 // Tunnel d'activation local : horodater le tout premier mot
                 // commité (diagnostic affiché dans À Propos, rien ne sort du
@@ -758,8 +753,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // ===== MÉTHODES DE CYCLE DE VIE =====
     
     /**
-     * Champ dont le contenu ne doit jamais être conservé, ni en statistiques ni
-     * au dictionnaire personnel : mots de passe (visibles ou masqués, texte ou
+     * Champ dont le contenu ne doit jamais être conservé, statistiques de
+     * vocabulaire comprises : mots de passe (visibles ou masqués, texte ou
      * numériques), et champs que l'application déclare non mémorisables via
      * IME_FLAG_NO_PERSONALIZED_LEARNING.
      */
