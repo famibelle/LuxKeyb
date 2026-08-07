@@ -10,14 +10,14 @@ on:
     paths:
       - 'android_keyboard/**'
       - '.github/workflows/**'
-      - 'Dictionnaries/**'
+      - 'Dictionnaires/**'
     tags:
       - 'v*'
   pull_request:
     branches: [ main ]
     paths:
       - 'android_keyboard/**'
-      - 'Dictionnaries/**'
+      - 'Dictionnaires/**'
   workflow_dispatch:
 
 jobs:

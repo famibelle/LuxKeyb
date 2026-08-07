@@ -93,7 +93,7 @@ cd KreyolKeyb/android_keyboard
 android_keyboard/
 ├── app/src/main/
 │   ├── java/com/potomitan/kreyolkeyboard/
-│   │   ├── KreyolInputMethodService.kt  # Service principal IME
+│   │   ├── KreyolInputMethodServiceRefactored.kt  # Service IME (unique)
 │   │   └── SettingsActivity.kt          # Activité de configuration
 │   ├── res/
 │   │   ├── layout/                      # Layouts XML
