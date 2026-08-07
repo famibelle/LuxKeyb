@@ -1083,7 +1083,20 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = false,
             icon = "🔤",
             title = "Corriger l'orthographe partout",
-            description = "Pour ne plus voir vos mots créoles (et français) soulignés en rouge dans Messages, Notes et ailleurs : dans l'écran qui s'ouvre, choisissez 'Correcteur Kréyòl Karukera'",
+            // Le texte détaille chaque étape de l'écran système, parce que le
+            // bouton n'y mène que : la sélection s'y fait dans un sous-menu
+            // (« Correcteur par défaut ») que rien ne signale, et Android
+            // intercale un avertissement sur l'accès au texte saisi. Sans
+            // préparation, l'utilisateur s'arrête à l'un ou l'autre.
+            description = "Pour ne plus voir vos mots kréyòl soulignés en rouge dans Messages, " +
+                "Notes et ailleurs.\n\n" +
+                "Dans l'écran qui s'ouvre :\n" +
+                "1. touchez « Correcteur par défaut »\n" +
+                "2. choisissez « Correcteur Kréyòl Karukera »\n" +
+                "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
+                "puis demande de confirmer\n\n" +
+                "Le nôtre compare vos mots au dictionnaire kréyòl de l'application. " +
+                "Il n'en conserve aucun et n'envoie rien.",
             buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isSpellCheckerOn,
             buttonAction = {
