@@ -40,16 +40,16 @@ DIAGNOSTIC_PREFIXES = (
 # l'extraction automatique. Complétez cette liste au fil des prochaines
 # versions pour garder une formulation orientée utilisateur.
 CURATED: dict[str, list[dict[str, str]]] = {
-    "10.5.0": [
+    "10.6.0": [
         {
-            "emoji": "📔",
-            "title": "Le clavier retient vos mots",
+            "emoji": "🔒",
+            "title": "Le clavier ne retient aucun de vos mots",
             "description": (
-                "Les prénoms, noms de famille et noms de lieux absents des "
-                "textes créoles restaient soulignés en rouge et n'étaient "
-                "jamais proposés. Ils sont maintenant retenus après deux "
-                "emplois, puis suggérés comme les autres. Rien n'est retenu "
-                "d'un champ de mot de passe, et rien ne quitte le téléphone."
+                "La 10.5.0 apprenait les mots absents des textes créoles pour "
+                "les proposer ensuite. Cette fonction est retirée : un clavier "
+                "qui conserve ce qu'on écrit n'est pas ce qu'on attend d'un "
+                "clavier. Ce qui avait été enregistré est effacé au premier "
+                "démarrage."
             ),
         }
     ],

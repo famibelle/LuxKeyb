@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.6.0] - 2026-08-07
+
+### 🗑️ Retrait de « le clavier retient vos mots »
+
+- La fonction introduite en 10.5.0 apprenait les mots absents du corpus pour les suggérer. Elle est **retirée** : un clavier qui conserve des mots tapés par l'utilisateur, si encadré soit-il, reste un clavier qui conserve ce qu'on écrit. Ce n'est pas ce qu'on attend d'un clavier, et le doute que cela installe coûte plus que le service rendu
+- **Ce qui avait été écrit est effacé** : les appareils passés par la 10.5.0 voient leur fichier de mots retenus supprimé au premier démarrage du clavier. Retirer le code ne suffisait pas
+- Le clavier ne conserve donc plus aucun mot qui ne soit déjà dans le dictionnaire kréyòl livré avec l'application
+
+### 🔒 Ce qui est conservé de la 10.5.0
+
+- Le garde-fou sur les champs sensibles reste en place, et protège désormais les statistiques de vocabulaire : rien de ce qui est tapé dans un champ de mot de passe (masqué, affiché en clair, formulaire web, code numérique) ou dans un champ déclaré non mémorisable n'est compté. Ces champs n'étaient auparavant pas distingués des autres
+
 ## [10.5.0] - 2026-08-07
 
 ### 📔 Le clavier retient vos mots
