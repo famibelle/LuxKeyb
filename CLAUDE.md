@@ -26,14 +26,14 @@ CI is unaffected (it installs Gradle 8.7 directly).
 
 Release signing reads from `android_keyboard/gradle.properties` (local) or environment variables (`KEYSTORE_FILE`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`). Falls back to debug signing if secrets are missing. See `gradle.properties.example` for the format.
 
-**versionCode** format: `60501` = version `6.5.1` (major × 10000 + minor × 100 + patch). minSdk 21, targetSdk 35.
+**versionCode** format: `60501` = version `6.5.1` (major × 10000 + minor × 100 + patch). minSdk 21, targetSdk 36.
 
 ## Dictionary / Data Pipeline
 
 The JSON assets in `android_keyboard/app/src/main/assets/` are the **source of truth** used by both Android and iOS:
-- `creole_dict.json` — `[word, frequency]` list (~1867 words)
-- `creole_ngrams.json` — n-gram context model
-- `french_simple_dict.json` — French fallback dictionary
+- `creole_dict.json` — `[word, frequency]` list (~5300 words)
+- `creole_ngrams.json` — n-gram context model, ~8850 keys. Two key families in one flat object: one word (`"ka"`, from bigrams) and two words separated by a space (`"an ka"`, from trigrams). See `android_keyboard/NGRAMS.md`
+- `french_simple_dict.json` — French fallback dictionary, only ~660 words. This thinness constrains both the bilingual suggestions and the spell checker (see below)
 
 To regenerate from the Hugging Face dataset `POTOMITAN/PawolKreyol-gfc` (requires `HF_TOKEN`):
 ```bash
@@ -42,11 +42,15 @@ pip install datasets huggingface_hub
 python KreyolComplet.py          # Fetches HF data, rebuilds dict + n-grams, backs up old files
 ```
 
+**Never run this without a working `HF_TOKEN`.** On download failure the script silently falls back to `PawolKreyol/Textes_kreyol.json`, a local snapshot that may lag far behind the dataset, and rebuilds the dictionary from it.
+
+Corpus word counts **replace** stored frequencies rather than adding to them, so two consecutive runs produce the same dictionary. Words absent from the corpus (hand-curated additions) are preserved, their frequency rescaled to the current corpus scale.
+
 ## Android Architecture
 
 ### IME Entry Point
 
-`KreyolInputMethodServiceRefactored.kt` is the **active** IME service. `KreyolInputMethodService.kt` is the legacy monolithic version — do not add features there.
+`KreyolInputMethodServiceRefactored.kt` is the **only** IME service. The legacy monolithic `KreyolInputMethodService.kt` and the unused `TestInputMethodService.kt` were deleted in 10.4.2: neither was declared in the manifest, so both were dead code that still shipped in the APK and made features look implemented when they were not (`onUpdateSelection()` lived only there while the active service lacked it). Recover them from git history if ever needed.
 
 The refactored IME coordinates four components via listener interfaces:
 
@@ -60,7 +64,7 @@ The refactored IME coordinates four components via listener interfaces:
 ### Suggestion Pipeline (`SuggestionEngine.kt`)
 
 1. **Prefix match** against `creole_dict.json` (Kreyòl prioritized)
-2. **N-gram context** from the last 5 committed words
+2. **N-gram context** from the last two committed words, falling back to the last one when the pair is unknown
 3. **Levenshtein fuzzy match** (`LevenshteinDistance.kt`) for typo tolerance
 4. **Accent-tolerant match** (`AccentTolerantMatcher.kt`) — matches `e` against `é`, etc.
 5. **French fallback** — only kicks in at ≥ 3 characters typed
@@ -68,16 +72,29 @@ The refactored IME coordinates four components via listener interfaces:
 
 Max 3 suggestions displayed (5 internally scored: 3 Kreyòl + 2 French slots).
 
+### Spell Checker (`KreyolSpellCheckerService.kt`)
+
+A system `SpellCheckerService`, separate from the IME: any app's text field can query it, which is what stops Creole words from being underlined as typos. It reuses `SuggestionEngine` (`isKnownWord()` + `getSpellingSuggestions()`) rather than loading its own dictionaries.
+
+Two things are easy to break here, both of which silently disable the service with no error anywhere:
+
+- **Locale subtypes** (`res/xml/kreyol_spellchecker.xml`). Android picks a spell checker by matching a subtype against the *text field's* locale. Declaring only Creole locales means no match and no session is ever created. `fr` must stay declared. Diagnose with `adb shell dumpsys textservices`: empty `Spell Checker Bind Groups` means the service is selected but never instantiated.
+- **`setCookieAndSequence()`** on every returned `SuggestionsInfo`. Without it the client cannot map a verdict back to the word it analysed, so nothing is ever underlined even though the service runs and logs correctly.
+
+Because `fr` is declared, this service replaces the system one for **all** French text, on a ~660-word French dictionary. It therefore only flags a word when a plausible correction exists; widening `french_simple_dict.json` is what would let that restriction be lifted.
+
+Android allows a single spell checker system-wide and no app can select itself. The user must pick it in Settings › System › Languages › Spell checker, so the app cannot rely on it being active.
+
 ### Gamification (`gamification/` package)
 
-- `CreoleDictionaryWithUsage` (Kotlin `actor`) — tracks per-word usage counts, thread-safe
+- `CreoleDictionaryWithUsage` — plain class over a `JSONObject` persisted to `filesDir`, tracks per-word usage counts. `getWordUsageCount()`/`incrementWordUsage()` are `synchronized`: the suggestion engine reads them from a background thread while the IME writes on the main thread
 - `WordUsageStats` — per-word stats with 7 mastery levels: Pipirit → Potomitan
 - `VocabularyStatsActivity` — displays dashboard with progress per level
 - `WordCommitListener` interface — `KreyolInputMethodServiceRefactored` implements this to log each committed word
 
-### Games (`wordscramble/`, `wordsearch/` packages)
+### Games (`wordscramble/`, `wordsearch/`, `mokarenaj/` packages)
 
-Two vocabulary mini-games accessible from `SettingsActivity`. They pull words directly from the loaded dictionary. No separate data source.
+Three vocabulary mini-games accessible from `SettingsActivity` (`mokarenaj` is a Creole Wordle). They pull words directly from the loaded dictionary. No separate data source.
 
 ## iOS Port (lives on the `ios/port` branch)
 
@@ -98,12 +115,12 @@ The structure mirrors Android: `Core/SuggestionEngine.swift`, `Core/LevenshteinD
 
 ## CI/CD
 
-- **`build-apk.yml`** — triggers on push/PR to `main` when `android_keyboard/**` or `.github/workflows/**` change, or on `v*` tags. Runs the Python dictionary pipeline first (needs `HF_TOKEN` secret), then builds and signs the APK. Creates a GitHub Release on tags. ⚠️ Its paths filter says `Dictionnaries/**` (misspelled) — changes to the real `Dictionnaires/` folder do **not** trigger a build.
+- **`build-apk.yml`** — triggers on push/PR to `main` when `android_keyboard/**` or `.github/workflows/**` change, or on `v*` tags. Runs the Python dictionary pipeline first (needs `HF_TOKEN` secret), then builds and signs the APK. Creates a GitHub Release on tags. Its paths filter also covers `Dictionnaires/**`; note the workflow regenerates the dictionary on every build **without committing it back**, so the shipped APK is built from a freshly regenerated dictionary rather than the committed one.
 - **`ios-build.yml`** (on `ios/port` branch only) — triggers on push to `ios/port` when `ios/` changes. Runs on `macos-14` (Xcode 15, Apple Silicon). Requires secrets: `DIST_CERT_BASE64`, `DIST_CERT_PASSWORD`, `PROVISIONING_PROFILE_BASE64`, `DEVELOPMENT_TEAM`, `APPLE_ID`, `APP_SPECIFIC_PASSWORD`.
 
 ## Legacy / Auxiliary Directories
 
-- `clavier_creole/` — abandoned Flutter prototype (`lib/main.dart` + old dict copies). Do not develop here.
+- `clavier_creole/` — abandoned Flutter prototype (`lib/main.dart`). Do not develop here, **but do not assume its `assets/` are dead either**: `KreyolComplet.py` reads its previous dictionary from `clavier_creole/assets/` and writes the regenerated files to both there and `android_keyboard/`. The two copies must stay in sync.
 - `PawolKreyol/` — raw Creole corpus texts (`Textes_kreyol.json`/`.xlsx`) feeding the HF dataset.
 - `docs/` — GitHub Pages site (privacy policy, beta onboarding, feedback form).
 - `KreyolKeybPlayStore/`, `Screenshots/`, `Logos/` — store listing and branding assets.

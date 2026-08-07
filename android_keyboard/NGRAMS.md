@@ -57,7 +57,7 @@ des suites probables. Deux familles de clés cohabitent.
 Le clavier interroge d'abord la clé à deux mots et retombe sur celle à un mot
 quand la paire est absente, ce qui garde le modèle rétrocompatible.
 
-### 3. Intégration Android (`KreyolInputMethodService.kt`)
+### 3. Intégration Android (`SuggestionEngine.kt`)
 
 #### Variables Clés
 ```kotlin
@@ -181,7 +181,7 @@ cd android_keyboard
 
 ### Debugging N-grams
 ```kotlin
-// Logs disponibles dans KreyolInputMethodService
+// Logs disponibles dans SuggestionEngine (tag "SuggestionEngine")
 Log.d(TAG, "N-gram suggestions pour '$lastWord': ...")
 Log.d(TAG, "Historique des mots: ${wordHistory.joinToString(" → ")}")
 ```
