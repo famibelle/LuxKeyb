@@ -125,7 +125,7 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 - Touches arrondies, animations 100–120 ms, haptique légère
 - Watermark discret Potomitan™
 
-## 🆕 Quoi de neuf — v10.1.2
+## 🆕 Quoi de neuf — v10.4.1
 
 - 😀 **Panneau emoji exhaustif** : ~1900 emojis (Unicode 16.0) répartis en 9 catégories, onglets + swipe latéral pour naviguer, défilement vertical dans chaque catégorie — accessible en un tap direct depuis le clavier alphabétique ou le mode 123
 - 🎨 Tons de peau : les emojis gestuels s'affichent par défaut au ton foncé, avec un vrai sélecteur (4 autres tons + neutre) en appui long
@@ -223,9 +223,9 @@ Appui long sur une lettre: affiche un popup (ex: a → à á â ä ã …). Rel�
 android_keyboard/
 ├── app/src/main/
 │   ├── java/com/example/kreyolkeyboard/
-│   │   ├── KreyolInputMethodService.kt   ← IME principal (gestion touches / suggestions / accents)
+│   │   ├── KreyolInputMethodServiceRefactored.kt ← IME (coordonne clavier / suggestions / accents)
 │   │   ├── SettingsActivity.kt           ← UI d’activation & onboarding
-│   │   └── KreyolSpellCheckerService.kt  ← (placeholder – à implémenter ou supprimer)
+│   │   └── KreyolSpellCheckerService.kt  ← Correcteur orthographique système (kréyòl)
 │   ├── assets/
 │   │   ├── creole_dict.json              ← Liste [mot, fréquence]
 │   │   └── creole_ngrams.json            ← Modèle N-grams (predictions)
@@ -244,7 +244,7 @@ android_keyboard/
 ## 📚 Dictionnaire & Prédiction
 
 ### Sources du Dictionnaire
-Le dictionnaire contient **5 284 mots créoles** extraits de :
+Le dictionnaire contient **5 296 mots créoles** extraits de :
 
 1. **Dataset Potomitan** (Hugging Face)
    - Corpus de traductions français-créole
@@ -260,20 +260,20 @@ Le dictionnaire contient **5 284 mots créoles** extraits de :
 
 | Fichier | Contenu | Taille |
 |---------|---------|--------|
-| `creole_dict.json` | 5 284 mots kréyòl + fréquences | ~160 Ko |
-| `creole_ngrams.json` | 4 601 mots-pivots (contexte n-grams) | ~640 Ko |
+| `creole_dict.json` | 5 296 mots kréyòl + fréquences | ~160 Ko |
+| `creole_ngrams.json` | 8 852 contextes (4 601 à un mot, 4 251 à deux mots) | ~1,3 Mo |
 | `french_simple_dict.json` | 662 mots français (fallback) | ~16 Ko |
 
 ### Mots les Plus Fréquents
 ```
-ka (20 006), an (13 982), sé (9 383), on (8 942), té (8 692)
-yo (7 692), pou (7 608), nou (7 298), pa (7 005), ki (5 931)
+ka (1 800), an (1 388), sé (885), on (833), pou (727)
+té (726), pa (664), yo (638), nou (633), ou (611)
 ```
 
 ### Mise à jour dictionnaire
 ```bash
-python Dictionnaire.py            # (Hugging Face, nécessite connexion internet)
-python GenererNgrams.py           # produit assets N-grams
+cd Dictionnaires
+python KreyolComplet.py           # Hugging Face (HF_TOKEN requis) : dictionnaire + n-grams
 ```
 
 ## 🎨 Design & UX
@@ -379,7 +379,7 @@ R: Aller dans Paramètres → Langues et saisie → Claviers virtuels
 R: Vérifier que le clavier est bien activé et défini par défaut
 
 **Q: Comment régénérer les données linguistiques ?**
-R: Exécuter `Dictionnaire.py` puis `GenererNgrams.py`.
+R: Exécuter `Dictionnaires/KreyolComplet.py` (nécessite `HF_TOKEN`).
 
 <div align="center">
    <img src="KreyolKeybPlayStore/graphics/screenshots-phone/Screenshot_v8.8_a_propos.png" alt="Écran À propos du clavier" width="25%">

@@ -349,6 +349,9 @@
 **Date :** 3 juillet 2026
 **Périmètre :** pipeline de suggestions Android (`SuggestionEngine.kt`, `InputProcessor.kt`, `LevenshteinDistance.kt`, `AccentTolerantMatcher.kt`, `FrenchDictionary.kt`, `KreyolInputMethodServiceRefactored.kt`, `BilingualSuggestion.kt`) et assets JSON associés.
 
+> ✅ **Statut :** Les deux points « A » de la feuille de route ont été traités les 06-07/08/2026. Le modèle n-grams porte désormais des clés à deux mots issues des trigrammes (v10.4.0), et le filtre de chemins mal orthographié `Dictionnaries/**` de `build-apk.yml` a été corrigé en `Dictionnaires/**`. Le suivi du curseur (`onUpdateSelection()`, absent du service actif) a également été corrigé en v10.4.0.
+
+
 ---
 
 ## 1. Résumé exécutif
