@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.4.1] - 2026-08-07
+
+### 🐛 Les mots kréyòl étaient soulignés en rouge partout
+
+- **Constat** : dans toutes les applications, le correcteur du système marquait les mots kréyòl comme des fautes, alors que `KreyolSpellCheckerService` existe depuis longtemps et sait les reconnaître
+- **Deux causes indépendantes**, chacune suffisante à neutraliser le service à elle seule :
+  - Le service ne déclarait qu'un sous-type de locale `ht` (créole haïtien), que ne porte jamais un téléphone en Guadeloupe. Android choisit un correcteur en cherchant un sous-type correspondant à la locale du champ : faute de correspondance, la session n'était jamais créée. Le service était bien sélectionnable dans les réglages, mais jamais appelé. `fr` et `gcf` (code ISO du kréyòl guadeloupéen) sont désormais déclarés
+  - Les réponses ne reportaient pas le couple (cookie, séquence) de la demande, sans lequel l'application ne peut pas rattacher un verdict au mot analysé. Une fois la session créée, les fautes étaient bien détectées mais rien n'était souligné
+- **Réserve volontaire** : déclarer `fr` substitue notre correcteur à celui du système sur tout le texte français, alors que notre couverture du français est mince (662 mots contre 5296 en kréyòl). Un mot inconnu n'est donc signalé que si une correction plausible existe. Un mot français absent de notre dictionnaire n'a aucun voisin kréyòl proche et passe sans être marqué, tandis qu'une faute de frappe kréyòl reste détectée et corrigée
+- **Vérifié sur émulateur** en locale `fr-FR` : « Bonjou », « an » et « ka » ne sont plus soulignés, « bonjuo » l'est et propose « bonjou »
+- **À noter** : Android n'autorise qu'un seul correcteur orthographique et aucune application ne peut se l'attribuer. Il reste à sélectionner Klavyé Kréyòl dans Réglages › Système › Langues › Correcteur orthographique
+
 ## [10.4.0] - 2026-08-07
 
 ### 🎯 Les suggestions suivent enfin le curseur
