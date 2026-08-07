@@ -1,7 +1,11 @@
 package com.example.kreyolkeyboard
 
+import android.Manifest
 import android.content.ClipData
 import android.content.Context
+import android.os.Build
+import com.example.kreyolkeyboard.gamification.CreoleLevels
+import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import android.content.Intent
 import android.database.ContentObserver
 import android.graphics.Color
@@ -76,6 +80,13 @@ class SettingsActivity : AppCompatActivity() {
         private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
         private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html"
+
+        /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
+        const val EXTRA_OPEN_TAB = "open_tab"
+        const val TAB_STATS = 1
+
+        /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
+        private const val REQUEST_NOTIFICATIONS = 4201
 
         // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
         // une fonctionnalité réellement présente dans l'application : ne rien y
@@ -288,8 +299,17 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Restaurer l'onglet actif si l'activité a été recréée
-        currentTab = savedInstanceState?.getInt("currentTab", 0) ?: 0
+        // Restaurer l'onglet actif si l'activité a été recréée, ou honorer
+        // l'onglet demandé par l'intent (puce de niveau tapée depuis le clavier).
+        //
+        // Gardé dans une variable locale en plus de currentTab : la mise en page
+        // du ViewPager déclenche onPageSelected(), qui réécrit currentTab à 0
+        // avant que le post{} plus bas ne le lise. Sans cette copie, l'onglet
+        // demandé est systématiquement perdu entre les deux.
+        val requestedTab = savedInstanceState?.getInt("currentTab", 0)
+            ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 0)
+            ?: 0
+        currentTab = requestedTab
         
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
@@ -329,7 +349,7 @@ class SettingsActivity : AppCompatActivity() {
             
             // 🔄 Démarrer au milieu de la plage virtuelle pour permettre le swipe dans les deux sens
             post {
-                val startPosition = SettingsPagerAdapter.START_POSITION - (SettingsPagerAdapter.START_POSITION % SettingsPagerAdapter.REAL_COUNT) + currentTab
+                val startPosition = SettingsPagerAdapter.START_POSITION - (SettingsPagerAdapter.START_POSITION % SettingsPagerAdapter.REAL_COUNT) + requestedTab
                 setCurrentItem(startPosition, false)
             }
         }
@@ -360,6 +380,34 @@ class SettingsActivity : AppCompatActivity() {
         Log.d("SettingsActivity", "Interface avec tabs en haut et swipe cyclique créée avec succès")
 
         maybeAskForReview()
+        maybeAskForNotificationPermission()
+    }
+
+    /**
+     * Demande la permission de notification, une seule fois, et seulement une
+     * fois le clavier réellement configuré : avant cela l'utilisateur est en
+     * pleine installation, et une demande de plus dans ce tunnel déjà long ne
+     * serait qu'une occasion supplémentaire d'abandonner.
+     *
+     * Cette permission ne sert qu'à la pastille de passage de niveau. Refusée,
+     * le clavier fonctionne exactement comme avant : voir [LevelUpNotifier],
+     * qui ne publie rien sans elle. La demande vient de l'activité parce qu'un
+     * service de saisie ne peut pas afficher de dialogue de permission.
+     */
+    private fun maybeAskForNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (!isKeyboardEnabled() || !isKeyboardSelected()) return
+        if (LevelUpNotifier.canNotify(this)) {
+            LevelUpNotifier.ensureChannel(this)
+            return
+        }
+
+        val prefs = getSharedPreferences("kreyol_onboarding_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("notification_permission_asked", false)) return
+        prefs.edit().putBoolean("notification_permission_asked", true).apply()
+
+        LevelUpNotifier.ensureChannel(this)
+        requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATIONS)
     }
 
     // Mode « première ouverture » : tant que le clavier n'a jamais été
@@ -2979,44 +3027,22 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    private fun getCurrentLevel(wordsDiscovered: Int): String {
-        val thresholds = calculateGaussianThresholds()
-        return when {
-            wordsDiscovered >= thresholds[7] -> "🧙🏿‍♀️ Benzo"          // +3σ (0.15% - ~4 mots)
-            wordsDiscovered >= thresholds[6] -> "👑 Potomitan"          // +2σ à +3σ (2% - ~57 mots)
-            wordsDiscovered >= thresholds[5] -> "🐘 Kompè Zamba"        // +1σ à +2σ (14% - ~396 mots)
-            wordsDiscovered >= thresholds[4] -> "🐇 Kompè Lapen"        // 0 à +1σ (34% - ~963 mots)
-            wordsDiscovered >= thresholds[3] -> "💎 An mitan"            // -1σ à 0 (34% - ~963 mots)
-            wordsDiscovered >= thresholds[2] -> "🔥 Débrouya"            // -2σ à -1σ (14% - ~396 mots)
-            wordsDiscovered >= thresholds[1] -> "🌱 Ti moun"              // -3σ à -2σ (2% - ~57 mots)
-            else -> "🌍 Pipirit"                                          // < -3σ (0.15% - ~4 mots)
-        }
-    }
-    
-    private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
-        val thresholds = calculateGaussianThresholds()
-        return when {
-            wordsDiscovered >= thresholds[7] -> Pair("Benzo", 0) // Niveau maximum atteint!
-            wordsDiscovered >= thresholds[6] -> Pair("Benzo", thresholds[7] - wordsDiscovered)
-            wordsDiscovered >= thresholds[5] -> Pair("Potomitan", thresholds[6] - wordsDiscovered)
-            wordsDiscovered >= thresholds[4] -> Pair("Kompè Zamba", thresholds[5] - wordsDiscovered)
-            wordsDiscovered >= thresholds[3] -> Pair("Kompè Lapen", thresholds[4] - wordsDiscovered)
-            wordsDiscovered >= thresholds[2] -> Pair("An mitan", thresholds[3] - wordsDiscovered)
-            wordsDiscovered >= thresholds[1] -> Pair("Débrouya", thresholds[2] - wordsDiscovered)
-            else -> Pair("Ti moun", thresholds[1] - wordsDiscovered)
-        }
-    }
-    
+    // Niveaux : la logique vit désormais dans gamification/CreoleLevels.kt, pour
+    // que le service de saisie puisse détecter un passage de niveau au moment
+    // où l'utilisateur tape. Les méthodes ci-dessous restent des raccourcis
+    // locaux qui fournissent la taille du dictionnaire.
+
+    private fun getCurrentLevel(wordsDiscovered: Int): String =
+        CreoleLevels.labelFor(wordsDiscovered, getTotalDictionaryWords())
+
+    private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> =
+        CreoleLevels.nextLevelInfo(wordsDiscovered, getTotalDictionaryWords())
+
     /**
      * Index du niveau actuel (0 = Pipirit ... 7 = Benzo), même logique que getCurrentLevel()
      */
-    private fun getCurrentLevelIndex(wordsDiscovered: Int): Int {
-        val thresholds = calculateGaussianThresholds()
-        for (i in 7 downTo 1) {
-            if (wordsDiscovered >= thresholds[i]) return i
-        }
-        return 0
-    }
+    private fun getCurrentLevelIndex(wordsDiscovered: Int): Int =
+        CreoleLevels.indexFor(wordsDiscovered, getTotalDictionaryWords())
 
     /**
      * Affiche la célébration de passage de niveau avec carte partageable.
@@ -3205,30 +3231,8 @@ class SettingsActivity : AppCompatActivity() {
      * 
      * @return IntArray avec 8 seuils calculés dynamiquement
      */
-    private fun calculateGaussianThresholds(): IntArray {
-        val totalWords = getTotalDictionaryWords()
-        
-        // Pourcentages progressifs pour chaque niveau
-        val percentages = doubleArrayOf(
-            0.0,    // 0: Pipirit (démarrage)
-            0.015,  // 1: Ti moun (1.5% - premiers pas encourageants)
-            0.05,   // 2: Débrouya (5% - débrouillard)
-            0.12,   // 3: An mitan (12% - au milieu)
-            0.25,   // 4: Kompè Lapen (25% - quart du chemin)
-            0.45,   // 5: Kompè Zamba (45% - presque la moitié)
-            0.70,   // 6: Potomitan (70% - expert confirmé)
-            1.0     // 7: Benzo (100% - tous les mots!)
-        )
-        
-        // Convertir les pourcentages en nombres de mots
-        return IntArray(8) { index ->
-            if (index == 7) {
-                totalWords  // Dernier niveau = tous les mots exactement
-            } else {
-                (totalWords * percentages[index]).toInt()
-            }
-        }
-    }
+    private fun calculateGaussianThresholds(): IntArray =
+        CreoleLevels.thresholds(getTotalDictionaryWords())
     
     /**
      * Récupère le nombre total de mots dans le dictionnaire

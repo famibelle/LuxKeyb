@@ -6,6 +6,7 @@ package com.example.kreyolkeyboard
 
 import android.inputmethodservice.InputMethodService
 import android.content.Context
+import android.content.Intent
 import android.app.ActivityManager
 import android.util.Log
 import android.view.View
@@ -29,6 +30,8 @@ import java.util.TimerTask
 import com.example.kreyolkeyboard.BilingualSuggestion
 import com.example.kreyolkeyboard.SuggestionLanguage
 import com.example.kreyolkeyboard.gamification.CreoleDictionaryWithUsage
+import com.example.kreyolkeyboard.gamification.CreoleLevels
+import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import com.example.kreyolkeyboard.gamification.WordCommitListener
 
 /**
@@ -49,6 +52,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
         private const val SHARE_INVITE_MESSAGE = "An maké mésaj la sa épi Klavyé Kréyòl, " +
             "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share"
+
+        // Passage de niveau. Clé distincte de « last_celebrated_level_index »,
+        // qu'utilise SettingsActivity pour sa carte partageable : les deux
+        // suivis sont volontairement indépendants, pour que la notification ne
+        // consomme pas le franchissement et que l'utilisateur retrouve quand
+        // même sa carte en ouvrant l'application.
+        private const val GAMIFICATION_PREFS = "kreyol_gamification_prefs"
+        private const val PREF_LAST_NOTIFIED_LEVEL = "last_notified_level_index"
 
         /**
          * Saisie dont le contenu ne doit jamais être conservé, statistiques de
@@ -257,15 +268,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
 
                 // Tracker le mot dans le dictionnaire (seulement si présent)
-                val tracked = dictionaryWithUsage.incrementWordUsage(word)
-                Log.d(TAG, "🎯 Résultat tracking '$word': $tracked")
-                
-                if (tracked) {
+                val result = dictionaryWithUsage.trackWordUsage(word)
+                Log.d(TAG, "🎯 Résultat tracking '$word': ${result.tracked}")
+
+                if (result.tracked) {
                     Log.d(TAG, "🎮 Gamification: Mot tracké '$word'")
-                    
-                    // Log des stats pour debug
-                    val stats = dictionaryWithUsage.getVocabularyStats()
-                    Log.d(TAG, "📊 Coverage: ${String.format("%.1f", stats.coveragePercentage)}% (${stats.wordsDiscovered}/${stats.totalWords} mots)")
+                }
+
+                // Un passage de niveau ne peut survenir que si le mot vient
+                // d'être découvert : inutile de refaire le calcul à chaque mot
+                // validé, ce qui se verrait à la frappe.
+                if (result.newlyDiscovered) {
+                    maybeNotifyLevelUp()
                 }
             }
         })
@@ -812,6 +826,43 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
 
         maybeShowFirstRealUseTip(info)
+    }
+
+    /**
+     * Publie la pastille d'icône si l'utilisateur vient de franchir un palier.
+     *
+     * Rien n'est affiché par-dessus l'application en cours : la notification
+     * est silencieuse et sans bandeau (voir [LevelUpNotifier]), l'utilisateur
+     * découvre la pastille sur son écran d'accueil quand il y revient.
+     *
+     * Au tout premier appel, le niveau courant est mémorisé sans rien publier :
+     * un utilisateur qui installe cette version avec déjà des centaines de mots
+     * à son actif ne doit pas être notifié rétroactivement. Même règle que la
+     * célébration existante dans SettingsActivity.
+     */
+    private fun maybeNotifyLevelUp() {
+        try {
+            val totalWords = dictionaryWithUsage.getTotalWords()
+            if (totalWords <= 0) return
+
+            val discovered = dictionaryWithUsage.getDiscoveredWordsCount()
+            val currentIndex = CreoleLevels.indexFor(discovered, totalWords)
+
+            val prefs = getSharedPreferences(GAMIFICATION_PREFS, Context.MODE_PRIVATE)
+            val lastNotified = prefs.getInt(PREF_LAST_NOTIFIED_LEVEL, -1)
+
+            if (lastNotified == -1) {
+                prefs.edit().putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex).apply()
+                return
+            }
+            if (currentIndex <= lastNotified) return
+
+            prefs.edit().putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex).apply()
+            LevelUpNotifier.notifyLevelUp(this, CreoleLevels.LEVELS[currentIndex].label)
+        } catch (e: Exception) {
+            // Un échec de notification ne doit jamais perturber la frappe
+            Log.e(TAG, "Erreur lors de la notification de niveau", e)
+        }
     }
 
     /**
