@@ -1,8 +1,48 @@
 {
   "production_version": "10.1.1",
-  "latest_version": "10.3.2",
-  "as_of": "2026-08-06",
+  "latest_version": "10.5.0",
+  "as_of": "2026-08-07",
   "features": [
+    {
+      "version": "10.5.0",
+      "emoji": "📔",
+      "title": "Le clavier retient vos mots",
+      "description": "Les prénoms, noms de famille et noms de lieux absents des textes créoles restaient soulignés en rouge et n'étaient jamais proposés. Ils sont maintenant retenus après deux emplois, puis suggérés comme les autres. Rien n'est retenu d'un champ de mot de passe, et rien ne quitte le téléphone.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.5.0",
+      "curated": true
+    },
+    {
+      "version": "10.4.1",
+      "emoji": "✅",
+      "title": "Vos mots kréyòl ne sont plus soulignés en rouge",
+      "description": "Le correcteur orthographique kréyòl existait mais n'était jamais sollicité par Android : tous vos mots créoles passaient donc pour des fautes. Il fonctionne désormais, à sélectionner une fois dans Réglages › Système › Langues › Correcteur orthographique.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.4.1",
+      "curated": true
+    },
+    {
+      "version": "10.4.0",
+      "emoji": "🎯",
+      "title": "Les suggestions suivent enfin le curseur",
+      "description": "Revenir corriger un mot déjà écrit, effacer l'espace qui le suit ou taper en plein milieu ne donnait plus aucune suggestion. C'est corrigé : le clavier sait de nouveau où vous en êtes dans votre texte.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.4.0",
+      "curated": true
+    },
+    {
+      "version": "10.4.0",
+      "emoji": "📊",
+      "title": "Le clavier apprend votre vocabulaire",
+      "description": "Les mots que vous employez vraiment remontent dans les suggestions, même s'ils sont moins courants dans la littérature créole. Tout reste sur votre téléphone.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.4.0",
+      "curated": true
+    },
+    {
+      "version": "10.4.0",
+      "emoji": "🧠",
+      "title": "Des prédictions plus justes",
+      "description": "Le clavier tient compte des deux derniers mots écrits au lieu d'un seul. Après « an ka », il propose kwè, vwè, travay, là où « ka » seul donnait fè, di, pran.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.4.0",
+      "curated": true
+    },
     {
       "version": "10.3.0",
       "emoji": "🎮",
