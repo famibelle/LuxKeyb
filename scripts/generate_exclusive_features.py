@@ -96,6 +96,18 @@ CURATED: dict[str, list[dict[str, str]]] = {
             ),
         },
     ],
+    "10.1.0": [
+        {
+            "emoji": "😀",
+            "title": "Tous les emojis, rangés par catégories",
+            "description": (
+                "Le panneau emoji ne se limite plus à une courte liste : "
+                "l'ensemble des emojis est là, classé par catégories avec "
+                "des onglets, et on passe de l'une à l'autre d'un glissement "
+                "du doigt."
+            ),
+        }
+    ],
     "10.3.0": [
         {
             "emoji": "🎮",

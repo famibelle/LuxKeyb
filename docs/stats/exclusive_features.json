@@ -1,5 +1,5 @@
 {
-  "production_version": "10.1.1",
+  "production_version": "10.0.1",
   "latest_version": "10.5.0",
   "as_of": "2026-08-07",
   "features": [
@@ -81,6 +81,14 @@
       "title": "Envoyer un mot à un ami",
       "description": "Une puce apparaît dans la barre de suggestions dès la première utilisation réelle du clavier, pour partager l'app en un tap.",
       "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.2.1",
+      "curated": true
+    },
+    {
+      "version": "10.1.0",
+      "emoji": "😀",
+      "title": "Tous les emojis, rangés par catégories",
+      "description": "Le panneau emoji ne se limite plus à une courte liste : l'ensemble des emojis est là, classé par catégories avec des onglets, et on passe de l'une à l'autre d'un glissement du doigt.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.1.0",
       "curated": true
     }
   ]
