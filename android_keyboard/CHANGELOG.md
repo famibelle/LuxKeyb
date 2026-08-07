@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.6.1] - 2026-08-07
+
+### 🔤 Activer le correcteur devient suivable jusqu'au bout
+
+L'étape « Corriger l'orthographe partout » de l'onglet Démarrage ouvrait déjà le bon écran système, mais s'arrêtait à son seuil. Trois obstacles y attendaient l'utilisateur, chacun suffisant pour le faire abandonner :
+
+- La sélection se fait dans un sous-menu, « Correcteur par défaut », que rien ne signale à l'arrivée. Le texte demandait de choisir « Correcteur Kréyòl Karukera », un libellé qui n'apparaît pas d'emblée à l'écran
+- Android intercale un avertissement indiquant qu'un correcteur peut recueillir l'ensemble du texte saisi, mots de passe et numéros de carte compris. Surgissant sans prévenir, il fait annuler
+- Rien ne répondait à l'inquiétude que cet avertissement soulève
+
+Les trois étapes sont maintenant énumérées dans l'ordre où elles se présentent, l'avertissement est annoncé à l'avance comme une étape normale, et une phrase précise ce que fait notre correcteur : il compare les mots au dictionnaire kréyòl livré avec l'application, n'en conserve aucun et n'envoie rien.
+
+L'étape reste optionnelle.
+
+*Rappel du chemin, corrigé au passage dans toute la documentation : Réglages › Système › **Clavier** › Correcteur orthographique. Il ne se trouve pas sous « Langues ».*
+
 ## [10.6.0] - 2026-08-07
 
 ### 🗑️ Retrait de « le clavier retient vos mots »
