@@ -15,7 +15,7 @@
       "version": "10.4.1",
       "emoji": "✅",
       "title": "Vos mots kréyòl ne sont plus soulignés en rouge",
-      "description": "Le correcteur orthographique kréyòl existait mais n'était jamais sollicité par Android : tous vos mots créoles passaient donc pour des fautes. Il fonctionne désormais, à sélectionner une fois dans Réglages › Système › Langues › Correcteur orthographique.",
+      "description": "Le correcteur orthographique kréyòl existait mais n'était jamais sollicité par Android : tous vos mots créoles passaient donc pour des fautes. Il fonctionne désormais, à sélectionner une fois dans Réglages › Système › Clavier › Correcteur orthographique.",
       "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.4.1",
       "curated": true
     },

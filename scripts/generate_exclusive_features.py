@@ -61,7 +61,7 @@ CURATED: dict[str, list[dict[str, str]]] = {
                 "Le correcteur orthographique kréyòl existait mais n'était "
                 "jamais sollicité par Android : tous vos mots créoles "
                 "passaient donc pour des fautes. Il fonctionne désormais, à "
-                "sélectionner une fois dans Réglages › Système › Langues › "
+                "sélectionner une fois dans Réglages › Système › Clavier › "
                 "Correcteur orthographique."
             ),
         }

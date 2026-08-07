@@ -57,7 +57,7 @@ Aucun changement visible à l'usage : nettoyage interne et remise en accord de l
   - Les réponses ne reportaient pas le couple (cookie, séquence) de la demande, sans lequel l'application ne peut pas rattacher un verdict au mot analysé. Une fois la session créée, les fautes étaient bien détectées mais rien n'était souligné
 - **Réserve volontaire** : déclarer `fr` substitue notre correcteur à celui du système sur tout le texte français, alors que notre couverture du français est mince (662 mots contre 5296 en kréyòl). Un mot inconnu n'est donc signalé que si une correction plausible existe. Un mot français absent de notre dictionnaire n'a aucun voisin kréyòl proche et passe sans être marqué, tandis qu'une faute de frappe kréyòl reste détectée et corrigée
 - **Vérifié sur émulateur** en locale `fr-FR` : « Bonjou », « an » et « ka » ne sont plus soulignés, « bonjuo » l'est et propose « bonjou »
-- **À noter** : Android n'autorise qu'un seul correcteur orthographique et aucune application ne peut se l'attribuer. Il reste à sélectionner Klavyé Kréyòl dans Réglages › Système › Langues › Correcteur orthographique
+- **À noter** : Android n'autorise qu'un seul correcteur orthographique et aucune application ne peut se l'attribuer. Il reste à sélectionner Klavyé Kréyòl dans Réglages › Système › Clavier › Correcteur orthographique
 
 ## [10.4.0] - 2026-08-07
 
