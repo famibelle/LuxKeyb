@@ -83,7 +83,11 @@ Two things are easy to break here, both of which silently disable the service wi
 
 Because `fr` is declared, this service replaces the system one for **all** French text, on a ~660-word French dictionary. It therefore only flags a word when a plausible correction exists; widening `french_simple_dict.json` is what would let that restriction be lifted.
 
-Android allows a single spell checker system-wide and no app can select itself. The user must pick it in Settings › System › Languages › Spell checker, so the app cannot rely on it being active.
+Android allows a single spell checker system-wide and no app can select itself. The user must pick it in **Settings › System › Keyboard › Spell checker** (under *Keyboard*, not *Languages*), so the app cannot rely on it being active. Three things verified on an emulator by walking the real UI:
+
+- Android shows a deterrent confirmation dialog first, warning that the spell checker "can collect all the text you type, including personal data like passwords and credit card numbers". Any onboarding that guides users here has to prepare them for it.
+- A master switch, *Use spell checker*, sits above the picker. When it is off, nothing is checked at all and the chosen service is never called, with no other symptom.
+- **Reinstalling the app leaves the system binding stale** (`dumpsys textservices` shows the bind group with `mSpellChecker=null`), and the service stays silent until a reboot. Worth re-testing after a Play Store update before concluding the checker is broken.
 
 ### Gamification (`gamification/` package)
 
