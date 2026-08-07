@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.7.0] - 2026-08-07
+
+### 💡 L'astuce du jour devient l'astuce de la semaine
+
+La carte d'astuce de l'onglet Démarrage affichait la même phrase depuis toujours : l'appui long pour les accents. Utile une fois, elle occupait ensuite la place sans plus rien apprendre à personne.
+
+Elle change désormais chaque lundi et puise dans **36 astuces** couvrant tout ce que le clavier sait faire sans le dire :
+
+- **Saisie** : les trois états de la touche majuscule, les digraphes du kréyòl cachés sous ch, dj, tj, ng et ny, les accents annoncés dans le coin des touches, la touche emoji et ses tons de peau, la touche Entrée qui s'adapte au champ
+- **Suggestions** : taper sans accent fonctionne, une lettre oubliée n'empêche rien, le clavier propose la suite d'après les deux mots précédents, et les mots que vous employez le plus remontent d'eux-mêmes
+- **Progression et jeux** : le mot du jour, la part du dictionnaire déjà employée, les règles de Mo an Karénaj, le partage de la carte de niveau
+- **Correcteur** : où le choisir dans les réglages Android, et pourquoi il peut rester muet jusqu'au redémarrage après une mise à jour
+
+Les astuces se suivent dans l'ordre plutôt qu'au hasard : aucune ne se répète avant que les 35 autres soient passées.
+
+*Chaque astuce décrit une fonctionnalité réellement présente dans l'application. La liste et la source de chacune sont documentées dans `ASTUCES.md`.*
+
 ## [10.6.1] - 2026-08-07
 
 ### 🔤 Activer le correcteur devient suivable jusqu'au bout
