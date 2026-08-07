@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.5.0] - 2026-08-07
+
+### 📔 Le clavier retient vos mots
+
+- **Constat** : un mot absent du corpus littéraire (prénom, toponyme, nom de famille, néologisme) n'était jamais suggéré et restait souligné comme faute, quel que soit le nombre de fois qu'on le tapait. La fonction prévue pour cela existait dans le moteur mais n'était appelée nulle part, et ne conservait rien puisque le dictionnaire ne vit qu'en mémoire
+- **Un mot est retenu après deux emplois** : une faute de frappe se répète rarement à l'identique, alors qu'un prénom revient vite. Une fois retenu, il est suggéré immédiatement et cesse d'être souligné, sans attendre le redémarrage du clavier
+- Sa fréquence reste plafonnée bien en dessous du vocabulaire courant du kréyòl : c'est l'usage réel qui le fait remonter, grâce au classement personnel introduit en 10.4.0
+
+### 🔒 Ce que le clavier n'apprend jamais
+
+Un dictionnaire qui apprend tout seul ne doit jamais voir passer un mot de passe. Les garde-fous, dans l'esprit de ceux qui protégeaient déjà les statistiques de vocabulaire :
+
+- **Rien n'est retenu d'un champ sensible** : mots de passe sous toutes leurs formes (texte masqué, texte affiché en clair, formulaire web, code numérique) et champs que l'application déclare non mémorisables. La vérification a lieu avant toute écriture
+- **Rien contenant un chiffre**, aucune adresse e-mail, aucune URL, aucun mot de moins de trois lettres
+- **Les mots en attente du seuil ne sont comptés qu'en mémoire** : une chaîne tapée une seule fois n'est jamais écrite sur le disque
+- Tout reste dans l'espace privé de l'application, invisible aux autres applications, et rien ne quitte l'appareil
+
+*Note : l'effacement des mots retenus est implémenté mais pas encore accessible depuis l'interface. Il le sera avec l'écran de réglages du clavier.*
+
 ## [10.4.2] - 2026-08-07
 
 ### 🧹 Dette technique
