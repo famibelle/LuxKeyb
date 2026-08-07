@@ -5,6 +5,21 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.7.1] - 2026-08-07
+
+### 🔤 Karukéra reprend son accent
+
+Le nom caraïbe de la Guadeloupe s'écrit **Karukéra**, avec un accent aigu. L'application l'écrivait sans, partout où elle se nommait elle-même.
+
+La graphie est corrigée dans les textes que l'utilisateur lit :
+
+- Les libellés affichés par Android, donc le nom du clavier dans la liste des claviers, le sous-type de saisie et le correcteur orthographique
+- Les onglets et l'onboarding de l'application, l'aide du correcteur, l'écran À propos, la mention de copyright, les messages de partage et le pied de page de la carte de niveau
+
+Les deux allaient de pair : les étapes d'activation demandent de repérer le clavier sous le nom exact qu'Android affiche.
+
+*Le site, la fiche Play Store et les supports imprimés seront repris séparément.*
+
 ## [10.7.0] - 2026-08-07
 
 ### 💡 L'astuce du jour devient l'astuce de la semaine
