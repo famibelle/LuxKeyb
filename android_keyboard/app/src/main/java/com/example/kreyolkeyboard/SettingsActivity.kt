@@ -448,7 +448,7 @@ class SettingsActivity : AppCompatActivity() {
     // Partage natif (chooser Android), message pré-rédigé et fixe : célèbre
     // l'activation, pas un contenu écrit par l'utilisateur
     private fun shareActivationSuccess() {
-        val message = "Mwen viré ka maké an kréyòl ! Mwen aktivé Klavyé Kréyòl Karukera 🎉\n" +
+        val message = "Mwen viré ka maké an kréyòl ! Mwen aktivé Klavyé Kréyòl Karukéra 🎉\n" +
             "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
             "Télécharge-le gratuitement :\n" +
             "https://play.google.com/store/apps/details?id=$packageName" +
@@ -458,7 +458,7 @@ class SettingsActivity : AppCompatActivity() {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukera"))
+            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukéra"))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage activation: ${e.message}")
             Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
@@ -987,7 +987,7 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = false,
             icon = "⚙️",
             title = "Activer le clavier",
-            description = "Trouvez 'Klavyé Kréyòl Karukera' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
+            description = "Trouvez 'Klavyé Kréyòl Karukéra' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
             buttonText = if (isEnabled) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isEnabled,
             buttonAction = {
@@ -1004,7 +1004,7 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = !isEnabled,
             icon = "🔄",
             title = "Sélectionner le clavier",
-            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Klavyé Kréyòl Karukera' dans la liste des claviers",
+            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Klavyé Kréyòl Karukéra' dans la liste des claviers",
             buttonText = when {
                 !isEnabled -> "🔒 Verrouillé"
                 isSelected -> "✓ Sélectionné"
@@ -1140,7 +1140,7 @@ class SettingsActivity : AppCompatActivity() {
                 "Notes et ailleurs.\n\n" +
                 "Dans l'écran qui s'ouvre :\n" +
                 "1. touchez « Correcteur par défaut »\n" +
-                "2. choisissez « Correcteur Kréyòl Karukera »\n" +
+                "2. choisissez « Correcteur Kréyòl Karukéra »\n" +
                 "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
                 "puis demande de confirmer\n\n" +
                 "Le nôtre compare vos mots au dictionnaire kréyòl de l'application. " +
@@ -1497,7 +1497,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kréyòl Guadeloupéen (Karukera). " +
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kréyòl Guadeloupéen (Karukéra). " +
                     "Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
                     "💡 Suggestions de mots en Kréyòl\n" +
                     "🌈 Design aux couleurs de la Guadeloupe\n" +
@@ -1598,7 +1598,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val versionText = TextView(this).apply {
             text = "Version : ${BuildConfig.VERSION_NAME}\n" +
-                    "© Potomitan™ - Clavier Kréyòl Karukera\n\n" +
+                    "© Potomitan™ - Clavier Kréyòl Karukéra\n\n" +
                     "Fait avec ❤️ pour la Guadeloupe\n" +
                     "Préservons notre langue créole pour les générations futures !"
             textSize = 14f
@@ -1970,7 +1970,7 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
             "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
-                    "l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukera » apparaît " +
+                    "l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukéra » apparaît " +
                     "à côté des autres claviers installés, interrupteur éteint."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
@@ -1988,7 +1988,7 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
             "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
                     "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
-                    "touchez « Klavyé Kréyòl Karukera » pour en faire le clavier utilisé."
+                    "touchez « Klavyé Kréyòl Karukéra » pour en faire le clavier utilisé."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
 
@@ -2295,7 +2295,7 @@ class SettingsActivity : AppCompatActivity() {
                 // repli n'est pas celui attendu, la carte de l'étape 4 ne
                 // décrit donc pas ce que l'utilisateur a sous les yeux
                 Toast.makeText(this,
-                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Kréyòl Karukera'",
+                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Kréyòl Karukéra'",
                     Toast.LENGTH_LONG
                 ).show()
             } catch (ex: Exception) {
@@ -2425,7 +2425,7 @@ class SettingsActivity : AppCompatActivity() {
 
     // Fonction pour partager l'application (bouche-à-oreille)
     private fun shareApp() {
-        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukera pou maké kréyòl asi téléfòn an mwen !\n" +
+        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukéra pou maké kréyòl asi téléfòn an mwen !\n" +
                 "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
@@ -2435,7 +2435,7 @@ class SettingsActivity : AppCompatActivity() {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukera"))
+            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukéra"))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage application: ${e.message}")
             Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
@@ -3118,7 +3118,7 @@ class SettingsActivity : AppCompatActivity() {
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
-        canvas.drawText("Klavyé Kréyòl Karukera", cx, 1120f, footerBoldPaint)
+        canvas.drawText("Klavyé Kréyòl Karukéra", cx, 1120f, footerBoldPaint)
 
         val footerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.parseColor("#A9D4D6")
@@ -3143,7 +3143,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukera ! É vou menm, ki nivo a'w ?\n" +
+            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukéra ! É vou menm, ki nivo a'w ?\n" +
                     "Télécharge le clavier gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
                     "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k"
