@@ -77,6 +77,54 @@ class SettingsActivity : AppCompatActivity() {
         private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html"
 
+        // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
+        // une fonctionnalité réellement présente dans l'application : ne rien y
+        // ajouter qui ne soit pas vérifiable dans le clavier ou les onglets.
+        // ASTUCES.md donne, pour chacune, le code qui la justifie ; toute
+        // astuce ajoutée ici doit y être sourcée, et toute astuce dont la
+        // source disparaît doit être retirée des deux côtés.
+        // Les thèmes (saisie, suggestions, jeux, progression, correcteur) sont
+        // volontairement entrelacés : l'index avance d'un cran par semaine,
+        // donc deux astuces voisines dans la liste se suivent à l'écran.
+        private val WEEKLY_TIPS = listOf(
+            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (é, è, à, ò, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
+            "Touchez un mot de la barre de suggestions pour le compléter d'un coup : l'espace est ajouté automatiquement.",
+            "Appui long d'une seconde sur la barre d'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.",
+            "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Kréyòl an mwen ».",
+            "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
+            "Tapez sans vous soucier des accents : « kreyol » vous propose quand même « kréyòl ».",
+            "« é » et « è » ont leur propre touche en bas du clavier, et « ò » la sienne en haut, entre « o » et « p ».",
+            "Mo an Karénaj : un mot kréyòl de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
+            "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
+            "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
+            "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
+            "Activez le correcteur kréyòl (onglet Démarrage, étape 4) pour que vos mots créoles ne soient plus soulignés en rouge dans Messages ou Notes.",
+            "Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.",
+            "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
+            "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
+            "Plus vous employez un mot, plus il remonte dans vos suggestions : le clavier s'ajuste à votre façon d'écrire.",
+            "« Mots Mélangés » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
+            "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
+            "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
+            "L'onglet « Kréyòl an mwen » vous dit quelle part du dictionnaire kréyòl vous avez déjà employée.",
+            "Les digraphes du kréyòl sont en appui long : « ch » sous le c, « dj » sous le d, « tj » sous le t, « ng » et « ny » sous le n.",
+            "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
+            "« Mots Mêlés » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
+            "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
+            "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Kréyòl an mwen ».",
+            "Les mots kréyòl passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot créole ne correspond.",
+            "La touche Entrée s'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.",
+            "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Kréyòl an mwen ».",
+            "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
+            "Sept niveaux jalonnent votre parcours, de Pipirit à Potomitan. Un huitième existe : à vous de le découvrir.",
+            "Les suggestions s'appuient sur les textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres voix du kréyòl, à retrouver dans l'onglet « À Propos ».",
+            "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
+            "Depuis « Kréyòl an mwen », partagez votre carte de niveau avec votre famille et vos amis.",
+            "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
+            "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
+            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
+        )
+
         private var saveExecutor: ScheduledExecutorService? = null
         
         // Fonction statique pour mettre à jour l'usage d'un mot (appelée depuis le clavier)
@@ -1123,7 +1171,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val tipTitle = TextView(this).apply {
-                text = "Astuce du jour"
+                text = "Astuce de la semaine"
                 textSize = 16f
                 setTextColor(Color.parseColor("#F57C00"))
                 setTypeface(null, Typeface.BOLD)
@@ -1133,7 +1181,7 @@ class SettingsActivity : AppCompatActivity() {
             tipHeader.addView(tipTitle)
             
             val tipText = TextView(this).apply {
-                text = "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (é, è, à, ò, etc.)"
+                text = getTipOfTheWeek()
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.3f)
@@ -3455,6 +3503,25 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    /**
+     * Astuce de la semaine : l'index suit le numéro de semaine plutôt qu'un
+     * tirage aléatoire seedé sur la date (comme [getWordOfTheDay]), pour que la
+     * liste soit parcourue en entier et que deux semaines de suite ne retombent
+     * jamais sur la même astuce. Le décalage de fuseau est ajouté pour que le
+     * changement se fasse à minuit local et non à minuit UTC.
+     *
+     * Le +3 cale la bascule sur le lundi : le jour 0 de l'ère Unix étant un
+     * jeudi, sans lui l'astuce changerait en plein milieu de semaine.
+     */
+    private fun getTipOfTheWeek(): String {
+        val calendar = Calendar.getInstance()
+        val localMillis = calendar.timeInMillis +
+                calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)
+        val dayIndex = TimeUnit.MILLISECONDS.toDays(localMillis)
+        val weekIndex = (dayIndex + 3) / 7
+        return WEEKLY_TIPS[(weekIndex % WEEKLY_TIPS.size).toInt()]
+    }
+
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
             val usageFile = File(filesDir, "creole_dict_with_usage.json")
