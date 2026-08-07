@@ -182,6 +182,11 @@ class SuggestionEngine(private val context: Context) {
     
     // Données du moteur kreyòl (existant)
     private var dictionary: List<Pair<String, Int>> = emptyList()
+    // Dictionnaire des assets seul, sans les mots personnels : sert de base propre
+    // pour reconstruire `dictionary` à chaque évolution du dictionnaire personnel
+    private var baseDictionary: List<Pair<String, Int>> = emptyList()
+    // Mots appris de l'utilisateur. Null tant que initialize() n'a pas eu lieu.
+    private var personalDictionary: PersonalDictionary? = null
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
@@ -283,9 +288,15 @@ class SuggestionEngine(private val context: Context) {
             
             // 3. Attendre que tout soit chargé
             kreyolDictDeferred.await()
-            ngramDeferred.await() 
+            ngramDeferred.await()
             frenchDictDeferred.await()
-            
+
+            // Après le dictionnaire des assets : les mots appris s'y ajoutent, et
+            // sont ainsi suggérés dès la première frappe suivant le démarrage
+            personalDictionary = PersonalDictionary(context)
+            mergePersonalEntries()
+            Log.d(TAG, "   📔 Personnel: ${personalDictionary?.size() ?: 0} mots appris")
+
             Log.d(TAG, "✅ Moteur bilingue initialisé:")
             Log.d(TAG, "   🟢 Kreyòl: ${dictionary.size} mots + ${ngramModel.size} N-grams")
             Log.d(TAG, "   🔵 Français: ${frenchDictionary.getStats()["word_count"]} mots")
@@ -580,25 +591,37 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Ajoute un mot au dictionnaire personnel
+     * Soumet un mot validé par l'utilisateur au dictionnaire personnel.
+     *
+     * Appelée à chaque mot commité. Le dictionnaire personnel décide seul s'il
+     * le retient (voir PersonalDictionary : seuil d'emplois, filtres de vie
+     * privée) ; le moteur se contente d'intégrer le résultat à ses données de
+     * travail pour que le mot soit immédiatement suggéré, sans attendre le
+     * prochain démarrage du clavier.
      */
-    suspend fun addWordToDictionary(word: String, frequency: Int = 1) = withContext(Dispatchers.IO) {
-        try {
-            // Vérifier si le mot existe déjà
-            val existingWord = dictionary.find { it.first.equals(word, ignoreCase = true) }
-            
-            if (existingWord == null) {
-                val newWord = Pair(word.lowercase(), frequency)
-                dictionary = (dictionary + newWord).sortedByDescending { it.second }
-                normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+    fun offerWordToPersonalDictionary(word: String) {
+        val personal = personalDictionary ?: return
+        val learnedWord = personal.offer(word, isAlreadyKnown = isKnownWord(word)) ?: return
+        mergePersonalEntries()
+        Log.d(TAG, "📔 Dictionnaire personnel: '$learnedWord' pris en compte (${personal.size()} mots)")
+    }
 
-                Log.d(TAG, "Mot ajouté au dictionnaire: $word")
-            } else {
-                Log.d(TAG, "Mot déjà présent: $word")
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors de l'ajout du mot: ${e.message}", e)
-        }
+    /**
+     * Réintègre les mots personnels aux données de travail du moteur.
+     *
+     * `dictionary` est reconstruit depuis la base issue des assets plutôt que
+     * complété en place : sinon un mot réemployé y figurerait deux fois, avec son
+     * ancienne et sa nouvelle fréquence.
+     */
+    private fun mergePersonalEntries() {
+        val personal = personalDictionary ?: return
+        val personalWords = personal.entries()
+        if (personalWords.isEmpty()) return
+
+        val personalKeys = personalWords.map { it.first }.toSet()
+        dictionary = (baseDictionary.filterNot { it.first in personalKeys } + personalWords)
+            .sortedByDescending { it.second }
+        normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
     }
 
     /**
@@ -641,7 +664,8 @@ class SuggestionEngine(private val context: Context) {
             }
             
             // Trier par fréquence décroissante
-            dictionary = loadedDictionary.sortedByDescending { it.second }
+            baseDictionary = loadedDictionary.sortedByDescending { it.second }
+            dictionary = baseDictionary
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
 
             withContext(Dispatchers.Main) {
@@ -918,9 +942,11 @@ class SuggestionEngine(private val context: Context) {
     fun cleanup() {
         suggestionScope.cancel()
         dictionary = emptyList()
+        baseDictionary = emptyList()
         normalizedWords = emptyList()
         ngramModel = emptyMap()
         wordHistory.clear()
+        personalDictionary = null
         
         // Nettoyer ressources françaises
         if (::frenchDictionary.isInitialized) {
