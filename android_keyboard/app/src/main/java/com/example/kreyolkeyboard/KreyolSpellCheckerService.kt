@@ -20,6 +20,23 @@ class KreyolSpellCheckerService : SpellCheckerService() {
     companion object {
         private const val TAG = "KreyolSpellChecker"
         private const val DEFAULT_SUGGESTIONS_LIMIT = 5
+
+        /**
+         * Décide si un mot doit être souligné comme faute.
+         * `internal` (et non private) pour être testable en JVM sans Context.
+         *
+         * Un mot inconnu n'est signalé que si une correction plausible existe,
+         * c'est-à-dire un mot du dictionnaire à deux éditions ou moins. Sans cette
+         * réserve, le service soulignerait tout ce qu'il ignore, ce qui serait pire
+         * que l'absence de correcteur : il est déclaré pour la locale française, où
+         * il se substitue donc au correcteur du système, alors que sa couverture du
+         * français est mince (quelques centaines de mots contre plusieurs milliers
+         * en kréyòl). Un mot français courant absent de notre dictionnaire n'a
+         * aucun voisin kréyòl proche, il passe donc sans être marqué, tandis
+         * qu'une vraie faute de frappe kréyòl reste détectée et corrigée.
+         */
+        internal fun shouldFlagAsTypo(isKnown: Boolean, corrections: List<String>): Boolean =
+            !isKnown && corrections.isNotEmpty()
     }
 
     override fun createSession(): Session = KreyolSpellCheckerSession()
@@ -59,15 +76,44 @@ class KreyolSpellCheckerService : SpellCheckerService() {
             val word = textInfo?.text?.trim().orEmpty()
 
             if (word.isEmpty() || word.none { it.isLetter() }) {
-                return SuggestionsInfo(SuggestionsInfo.RESULT_ATTR_IN_THE_DICTIONARY, emptyArray())
-            }
-            if (suggestionEngine.isKnownWord(word)) {
-                return SuggestionsInfo(SuggestionsInfo.RESULT_ATTR_IN_THE_DICTIONARY, emptyArray())
+                return inDictionary(textInfo)
             }
 
+            val isKnown = suggestionEngine.isKnownWord(word)
             val limit = if (suggestionsLimit > 0) suggestionsLimit else DEFAULT_SUGGESTIONS_LIMIT
-            val suggestions = suggestionEngine.getSpellingSuggestions(word, limit)
-            return SuggestionsInfo(SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_TYPO, suggestions.toTypedArray())
+            val corrections = if (isKnown) {
+                emptyList()
+            } else {
+                suggestionEngine.getSpellingSuggestions(word, limit)
+            }
+
+            if (!shouldFlagAsTypo(isKnown, corrections)) {
+                return inDictionary(textInfo)
+            }
+
+            Log.d(TAG, "Faute signalée: '$word' -> $corrections")
+            return SuggestionsInfo(
+                SuggestionsInfo.RESULT_ATTR_LOOKS_LIKE_TYPO,
+                corrections.toTypedArray()
+            ).withOriginOf(textInfo)
+        }
+
+        private fun inDictionary(textInfo: TextInfo?): SuggestionsInfo =
+            SuggestionsInfo(SuggestionsInfo.RESULT_ATTR_IN_THE_DICTIONARY, emptyArray())
+                .withOriginOf(textInfo)
+
+        /**
+         * Reporte sur la réponse le couple (cookie, séquence) porté par la demande.
+         *
+         * C'est ce couple qui permet au client de rattacher un résultat à la requête
+         * qui l'a produit. Sans lui, TextView reçoit bien nos verdicts mais ne peut
+         * pas les associer aux mots analysés : les fautes détectées n'étaient jamais
+         * soulignées, alors même que le service tournait et les signalait.
+         */
+        private fun SuggestionsInfo.withOriginOf(textInfo: TextInfo?): SuggestionsInfo = apply {
+            if (textInfo != null) {
+                setCookieAndSequence(textInfo.cookie, textInfo.sequence)
+            }
         }
     }
 }
