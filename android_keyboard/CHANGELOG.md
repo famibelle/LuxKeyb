@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.7.2] - 2026-08-07
+
+### 🗣️ Un proverbe pour refermer l'appel au partage
+
+La carte « Ba kréyòl la lanmou'w ! » de l'onglet Informations invite à faire connaître le clavier autour de soi, puis s'arrêtait sur ses deux boutons.
+
+Un proverbe la conclut désormais, en italique sous « Noter l'application » :
+
+> *« Dé mòn pa ka jwenn, mé dé moun toujou ka jwenn »*
+
+Deux mornes ne se rencontrent pas, deux personnes toujours. Il dit en une ligne, et en kréyòl, ce que le paragraphe au-dessus explique.
+
 ## [10.7.1] - 2026-08-07
 
 ### 🔤 Karukéra reprend son accent
