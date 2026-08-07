@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.8.0] - 2026-08-08
+
+### 🌱 Le passage de niveau se signale enfin
+
+Franchir un palier de vocabulaire ne se voyait que dans l'onglet « Kréyòl an mwen ». Autrement dit, il fallait déjà revenir dans l'application pour apprendre qu'on avait progressé, et celui qui écrit en kréyòl tous les jours sans jamais rouvrir l'application ne l'apprenait jamais.
+
+Le franchissement est désormais repéré au moment où les mots sont tapés, et annoncé par une **pastille sur l'icône de l'application**.
+
+Rien ne vient déranger la frappe. La notification est silencieuse, sans son, sans vibration et sans bandeau par-dessus la conversation en cours : Android la range parmi les notifications discrètes. On la découvre en revenant à son écran d'accueil, au moment qu'on choisit. Un appui ouvre directement « Kréyòl an mwen », où la carte de niveau à partager attend.
+
+*Si la permission de notification est refusée, le clavier se comporte exactement comme avant.*
+
+### 🐛 L'onglet demandé s'ouvrait toujours sur Démarrage
+
+Un défaut plus ancien, trouvé en chemin : l'onglet actif n'était jamais restauré. Après une rotation de l'écran ou une recréation de l'application, on retombait systématiquement sur Démarrage, quel que soit l'onglet quitté.
+
 ## [10.7.2] - 2026-08-07
 
 ### 🗣️ Un proverbe pour refermer l'appel au partage
