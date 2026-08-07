@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.4.2] - 2026-08-07
+
+### 🧹 Dette technique
+
+Aucun changement visible à l'usage : nettoyage interne et remise en accord de la documentation avec le code.
+
+- **1577 lignes de code mort supprimées** : `KreyolInputMethodService.kt` (l'ancien service monolithique) et `TestInputMethodService.kt`. Ni l'un ni l'autre n'était déclaré au manifeste, donc ni l'un ni l'autre ne pouvait être instancié, mais tous deux étaient compilés dans l'APK. Ils laissaient surtout croire que des fonctionnalités existaient alors qu'elles étaient inertes : `onUpdateSelection()` n'était présent que dans le service legacy pendant que le service actif en manquait, ce qui a retardé le diagnostic du correctif de la 10.4.0
+- **Filtre CI corrigé** : `build-apk.yml` filtrait sur `Dictionnaries/**`, dossier qui n'existe pas. Une modification du pipeline dictionnaire ou du corpus ne déclenchait donc aucun build
+- **Documentation** : `CLAUDE.md` annonçait 1867 mots pour 5296 et `targetSdk` 35 pour 36, décrivait `CreoleDictionaryWithUsage` comme un « Kotlin actor » alors que c'est une classe ordinaire, et présentait `clavier_creole/` comme inerte alors que le pipeline y lit et y écrit. `README.md` présentait le correcteur orthographique comme un « placeholder à implémenter » alors qu'il fonctionne depuis la 10.4.1, et renvoyait à deux scripts inexistants. `BRANDING.md`, `NGRAMS.md` et `android_keyboard/README.md` désignaient tous le fichier supprimé comme le service principal
+- Documentation ajoutée sur les deux pièges qui désactivent silencieusement le correcteur orthographique, et sur le repli local silencieux du pipeline dictionnaire en l'absence de `HF_TOKEN`
+
 ## [10.4.1] - 2026-08-07
 
 ### 🐛 Les mots kréyòl étaient soulignés en rouge partout
