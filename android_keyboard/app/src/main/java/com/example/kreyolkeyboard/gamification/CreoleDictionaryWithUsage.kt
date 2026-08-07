@@ -40,7 +40,20 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     private var dictionary: JSONObject = JSONObject()
     private var unsavedChanges = 0  // Compteur pour sauvegarde par batch
-    
+
+    /**
+     * Nombre de mots distincts déjà employés au moins une fois, tenu à jour de
+     * façon incrémentale.
+     *
+     * Le comptage complet parcourt les ~5300 entrées du dictionnaire : c'est
+     * acceptable à l'ouverture d'un écran de statistiques, pas à chaque mot
+     * validé. Or le service de saisie doit désormais vérifier un éventuel
+     * passage de niveau sur le thread principal, à chaque mot — d'où ce cache,
+     * initialisé une fois au chargement puis incrémenté à chaque découverte.
+     * -1 tant qu'il n'a pas été calculé.
+     */
+    private var cachedDiscoveredCount = -1
+
     init {
         loadDictionary()
     }
@@ -155,12 +168,26 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     }
     
     /**
+     * Résultat d'un comptage : le mot a-t-il été tracké, et venait-il d'être
+     * employé pour la première fois. `newlyDiscovered` est ce qui permet au
+     * service de saisie de ne tester un passage de niveau que sur une vraie
+     * découverte, au lieu de le faire à chaque mot validé.
+     */
+    data class TrackResult(val tracked: Boolean, val newlyDiscovered: Boolean)
+
+    /**
      * Incrémente le compteur d'utilisation d'un mot
-     * 
+     *
      * @param word Le mot tapé par l'utilisateur
      * @return true si le mot a été tracké, false sinon (mot ignoré)
      */
-    fun incrementWordUsage(word: String): Boolean = synchronized(this) {
+    fun incrementWordUsage(word: String): Boolean = trackWordUsage(word).tracked
+
+    /**
+     * Variante de [incrementWordUsage] qui signale en plus les premières
+     * découvertes. Même verrou, même comportement par ailleurs.
+     */
+    fun trackWordUsage(word: String): TrackResult = synchronized(this) {
         Log.d(TAG, "📥 incrementWordUsage appelé avec: '$word'")
         Log.d(TAG, "📂 CreoleDictionary contexte: ${context.filesDir.absolutePath}")
         
@@ -171,7 +198,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         // Filtres de sécurité et vie privée
         if (!isValidForTracking(normalized)) {
             Log.d(TAG, "🔒 Mot ignoré (filtres de sécurité): '$normalized'")
-            return false
+            return TrackResult(tracked = false, newlyDiscovered = false)
         }
         
         // Vérifier que le mot existe dans le dictionnaire créole
@@ -197,13 +224,27 @@ class CreoleDictionaryWithUsage(private val context: Context) {
                     }
                     else -> {
                         Log.e(TAG, "❌ Format invalide pour '$normalized': ${rawValue::class.java}")
-                        return false
+                        return TrackResult(tracked = false, newlyDiscovered = false)
                     }
                 }
                 
                 val currentCount = wordData.getInt("user_count")
                 wordData.put("user_count", currentCount + 1)
-                
+
+                // Première apparition de ce mot : le cache de mots découverts
+                // suit le mouvement sans reparcourir tout le dictionnaire. Si
+                // le cache n'a jamais été calculé, on le calcule maintenant —
+                // l'écriture ci-dessus étant déjà faite, le total obtenu inclut
+                // ce mot et ne doit donc pas être incrémenté en plus.
+                val newlyDiscovered = currentCount == 0
+                if (newlyDiscovered) {
+                    if (cachedDiscoveredCount < 0) {
+                        cachedDiscoveredCount = computeDiscoveredWordsCount()
+                    } else {
+                        cachedDiscoveredCount++
+                    }
+                }
+
                 unsavedChanges++
                 Log.d(TAG, "✅ '$normalized' utilisé ${currentCount + 1} fois")
                 
@@ -212,15 +253,15 @@ class CreoleDictionaryWithUsage(private val context: Context) {
                     saveDictionary()
                     unsavedChanges = 0
                 }
-                
-                true
+
+                TrackResult(tracked = true, newlyDiscovered = newlyDiscovered)
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erreur lors du tracking de '$normalized'", e)
-                false
+                TrackResult(tracked = false, newlyDiscovered = false)
             }
         } else {
             Log.d(TAG, "🔒 '$normalized' ignoré (pas dans le dictionnaire créole)")
-            false
+            TrackResult(tracked = false, newlyDiscovered = false)
         }
     }
     
@@ -302,7 +343,18 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     /**
      * Obtient le nombre de mots découverts (utilisés au moins 1 fois)
      */
-    fun getDiscoveredWordsCount(): Int {
+    /** Taille du dictionnaire chargé, base de calcul des seuils de niveau. */
+    fun getTotalWords(): Int = dictionary.length()
+
+    fun getDiscoveredWordsCount(): Int = synchronized(this) {
+        if (cachedDiscoveredCount < 0) {
+            cachedDiscoveredCount = computeDiscoveredWordsCount()
+        }
+        cachedDiscoveredCount
+    }
+
+    /** Comptage complet, en O(taille du dictionnaire). Réservé à l'amorçage du cache. */
+    private fun computeDiscoveredWordsCount(): Int {
         var count = 0
         val keys = dictionary.keys()
         while (keys.hasNext()) {
