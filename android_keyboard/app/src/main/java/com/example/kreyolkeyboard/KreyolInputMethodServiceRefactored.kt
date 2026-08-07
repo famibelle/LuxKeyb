@@ -17,6 +17,7 @@ import android.widget.Toast
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.ViewGroup
+import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.KeyEvent
@@ -48,6 +49,33 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
         private const val SHARE_INVITE_MESSAGE = "An maké mésaj la sa épi Klavyé Kréyòl, " +
             "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share"
+
+        /**
+         * Saisie dont le contenu ne doit jamais être conservé, ni en statistiques
+         * de vocabulaire ni au dictionnaire personnel.
+         * `internal` (et non private) pour être testable en JVM sans EditorInfo.
+         *
+         * Couvre les mots de passe sous toutes leurs déclarations (texte masqué,
+         * texte visible, formulaire web, code numérique) ainsi que les champs que
+         * l'application déclare non mémorisables via IME_FLAG_NO_PERSONALIZED_LEARNING.
+         * Le mode « mot de passe visible » compte autant que les autres : c'est
+         * bien un mot de passe, seul son affichage diffère.
+         */
+        internal fun isSensitiveInput(inputType: Int, imeOptions: Int): Boolean {
+            val variation = inputType and InputType.TYPE_MASK_VARIATION
+            val inputClass = inputType and InputType.TYPE_MASK_CLASS
+
+            val isPasswordText = inputClass == InputType.TYPE_CLASS_TEXT && variation in setOf(
+                InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+            )
+            val isPasswordNumber = inputClass == InputType.TYPE_CLASS_NUMBER &&
+                variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            val noLearning = (imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING) != 0
+
+            return isPasswordText || isPasswordNumber || noLearning
+        }
 
         // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
         private fun isLowEndDevice(context: Context): Boolean {
@@ -211,6 +239,19 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
                 Log.d(TAG, "🔍 onWordCommitted appelé avec: '$word'")
+
+                if (isSensitiveField()) {
+                    // Champ de mot de passe ou saisie explicitement non
+                    // mémorisable : ni statistiques ni apprentissage. Sortie
+                    // avant toute écriture, y compris l'horodatage du tunnel.
+                    Log.d(TAG, "🔒 Champ sensible: mot ignoré")
+                    return
+                }
+
+                // Apprentissage des mots absents du corpus (prénoms, toponymes) :
+                // le dictionnaire personnel applique lui-même son seuil d'emplois
+                // et ses filtres de vie privée
+                suggestionEngine.offerWordToPersonalDictionary(word)
 
                 // Tunnel d'activation local : horodater le tout premier mot
                 // commité (diagnostic affiché dans À Propos, rien ne sort du
@@ -716,6 +757,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // ===== MÉTHODES DE CYCLE DE VIE =====
     
+    /**
+     * Champ dont le contenu ne doit jamais être conservé, ni en statistiques ni
+     * au dictionnaire personnel : mots de passe (visibles ou masqués, texte ou
+     * numériques), et champs que l'application déclare non mémorisables via
+     * IME_FLAG_NO_PERSONALIZED_LEARNING.
+     */
+    private fun isSensitiveField(): Boolean {
+        val editorInfo = currentInputEditorInfo ?: return true
+        return isSensitiveInput(editorInfo.inputType, editorInfo.imeOptions)
+    }
+
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
         Log.d(TAG, "onStartInput - restarting: $restarting")
