@@ -2,6 +2,27 @@
 <spell-checker xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/spellchecker_name"
     android:settingsActivity="com.example.kreyolkeyboard.SettingsActivity">
+    <!--
+        Le système choisit un correcteur en cherchant un sous-type dont la locale
+        correspond à celle du champ de saisie. Avec le seul sous-type "ht", aucune
+        correspondance n'était possible : le service était bien sélectionnable dans
+        les réglages, mais sa session n'était jamais créée et il n'était jamais
+        appelé (dumpsys textservices montrait des "Bind Groups" vides).
+
+        "fr" est la locale réelle des téléphones en Guadeloupe, et donc celle qu'il
+        faut déclarer pour être sollicité. "gcf" est le code ISO du kréyòl
+        guadeloupéen, "ht" celui du créole haïtien : ni l'un ni l'autre n'est
+        habituellement la locale d'un appareil, mais ils restent déclarés pour les
+        configurations qui les emploient.
+    -->
+    <subtype
+        android:label="@string/subtype_kreyol"
+        android:subtypeLocale="fr"
+        android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
+    <subtype
+        android:label="@string/subtype_kreyol"
+        android:subtypeLocale="gcf"
+        android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
     <subtype
         android:label="@string/subtype_kreyol"
         android:subtypeLocale="ht"
