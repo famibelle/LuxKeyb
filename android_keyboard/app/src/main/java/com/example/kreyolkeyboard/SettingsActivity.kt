@@ -1551,11 +1551,22 @@ class SettingsActivity : AppCompatActivity() {
             setOnClickListener { openPlayStoreListing() }
         }
 
+        val shareProverb = TextView(this).apply {
+            text = "« Dé mòn pa ka jwenn, mé dé moun toujou ka jwenn »"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.ITALIC)
+            gravity = Gravity.CENTER
+            setLineSpacing(0f, 1.3f)
+        }
+
         shareCard.addView(shareTitle)
         shareCard.addView(shareText)
         shareCard.addView(shareButton)
         shareCard.addView(createSpacing(12))
         shareCard.addView(rateButton)
+        shareCard.addView(createSpacing(16))
+        shareCard.addView(shareProverb)
         mainLayout.addView(shareCard)
         mainLayout.addView(createSpacing(16))
 
