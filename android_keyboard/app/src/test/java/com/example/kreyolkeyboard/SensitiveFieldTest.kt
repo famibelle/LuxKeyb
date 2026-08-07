@@ -10,10 +10,9 @@ import org.junit.Test
  * Tests du garde-fou qui empêche le clavier de retenir quoi que ce soit d'une
  * saisie sensible.
  *
- * C'est la condition de confiance du dictionnaire personnel : celui-ci apprend
- * automatiquement les mots employés, il ne doit donc jamais voir passer un mot
- * de passe. La vérification a lieu avant toute écriture, statistiques de
- * vocabulaire comprises.
+ * Les statistiques de vocabulaire comptent les mots validés : elles ne doivent
+ * jamais voir passer un mot de passe. La vérification a lieu avant toute
+ * écriture.
  */
 class SensitiveFieldTest {
 
@@ -75,8 +74,8 @@ class SensitiveFieldTest {
 
     @Test
     fun `un champ e-mail ou nom de personne n'est pas protege`() {
-        // Ce sont justement les champs où un prénom mérite d'être appris ; les
-        // adresses e-mail elles-mêmes sont écartées plus loin, par PersonalDictionary
+        // Rien de sensible ici : seuls les mots déjà présents au dictionnaire
+        // kréyòl sont comptés, et l'adresse elle-même n'en fait pas partie
         assertFalse(sensitive(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PERSON_NAME))
         assertFalse(sensitive(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS))
     }
