@@ -234,16 +234,25 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .panel-cta .txt b{ display:block; font-size:12.5px; color:#0E6E76; text-transform:uppercase; }
 .panel-cta .txt .free{ display:block; color:#C94A3B; font-weight:800; margin-top:1mm; }
 
-.levels{ display:flex; align-items:flex-end; gap:2.5mm; margin-bottom:4mm; }
+.levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
   flex:1; display:flex; align-items:flex-start; justify-content:center;
-  background:#DDEEEE; border-radius:6px 6px 0 0; padding-top:2mm;
+  background:#DDEEEE; border-radius:4px 4px 0 0; padding-top:1.3mm;
 }
-.level-step span{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:10px; color:#1C2624; text-align:center; }
-.level-step.s1{ height:9mm; }
-.level-step.s2{ height:15mm; }
-.level-step.s3{ height:22mm; background:#C97F1E; }
-.level-step.s3 span{ font-size:13px; color:#3a2e00; }
+.level-step span{ font-size:12px; text-align:center; }
+.level-step.h1{ height:5mm; }
+.level-step.h2{ height:8mm; }
+.level-step.h3{ height:11mm; }
+.level-step.h4{ height:14mm; }
+.level-step.h5{ height:17mm; }
+.level-step.h6{ height:20mm; }
+.level-step.h7{ height:23mm; background:#C97F1E; }
+.level-step.h7 span{ font-size:14px; }
+.levels-caption{
+  display:flex; justify-content:space-between; margin:0 0 4mm;
+  font-family:var(--mono); font-size:8.5px; font-weight:700; color:#1C2624;
+  text-transform:uppercase; letter-spacing:.03em;
+}
 
 @page{ size:297mm 210mm; margin:0; }
 
@@ -441,10 +450,15 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <h2>Suis ta progression</h2>
       <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
       <div class="levels">
-        <div class="level-step s1"><span>Pipirit</span></div>
-        <div class="level-step s2"><span>An mitan</span></div>
-        <div class="level-step s3"><span>Potomitan</span></div>
+        <div class="level-step h1"><span>🌍</span></div>
+        <div class="level-step h2"><span>🌱</span></div>
+        <div class="level-step h3"><span>🔥</span></div>
+        <div class="level-step h4"><span>💎</span></div>
+        <div class="level-step h5"><span>🐇</span></div>
+        <div class="level-step h6"><span>🐘</span></div>
+        <div class="level-step h7"><span>👑</span></div>
       </div>
+      <div class="levels-caption"><span>Pipirit</span><span>Potomitan</span></div>
       <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
       <div class="panel-cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
