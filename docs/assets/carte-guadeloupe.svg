@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Carte stylisée de la Guadeloupe">
+  <title>Guadeloupe</title>
+  <g fill="none" stroke="#F5F2EA" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M 82,78
+             C 54,74 30,94 24,124
+             C 18,154 30,182 58,194
+             C 82,204 108,192 116,166
+             C 122,146 114,128 100,112
+             C 110,100 110,86 98,77
+             C 93,73 87,74 82,78 Z"/>
+    <path d="M 103,93
+             C 96,78 100,58 118,45
+             C 140,29 172,26 190,42
+             C 202,53 200,70 184,78
+             C 172,84 176,68 160,64
+             C 146,61 130,68 116,88
+             C 111,96 107,100 103,93 Z"/>
+  </g>
+</svg>
