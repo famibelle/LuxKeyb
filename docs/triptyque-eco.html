@@ -58,30 +58,54 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   width:100.5mm; height:100%; position:relative;
   display:flex; flex-direction:column;
   padding:9mm 8mm; overflow:hidden;
-  border-right:1.5px dashed rgba(28,38,36,.4);
   background:#FFFFFF;
 }
 .panel:first-child{ width:96mm; } /* volet qui se replie en premier (à confirmer avec l'imprimeur) */
-.panel:last-child{ border-right:none; }
+/* Repères de pliage en marge, et non plus un pointillé sur toute la hauteur.
+   Un filet imprimé exactement sur la rainure est soit enterré dans le pli,
+   soit décalé du millimètre de tolérance du plieur, ce qui se lit comme un
+   défaut d'impression ; et un pointillé plein cadre se lit comme un trait de
+   découpe, donc comme une épreuve non finie. L'usage est de poser des repères
+   courts en tête et en pied, c'est ce que font ces deux pseudo-éléments. */
+.panel:not(:last-child)::before,
+.panel:not(:last-child)::after{
+  content:""; position:absolute; right:0; width:0; height:4mm;
+  border-right:1px solid rgba(28,38,36,.55);
+}
+.panel:not(:last-child)::before{ top:0; }
+.panel:not(:last-child)::after{ bottom:0; }
 
-/* ---------- Couverture (éco : fond blanc, accents en couleur) ---------- */
-.cover{ justify-content:flex-start; }
+/* ---------- Couverture (éco : lavis léger, accents en couleur) ---------- */
+/* Palette figée volontairement, comme dans triptyque.html : cette page simule
+   un imprimé, son rendu ne doit dépendre ni du thème du site ni des
+   préférences système. Elle appelait auparavant var(--hibiscus), var(--sea)
+   et consorts sur des fonds codés en dur en blanc : en thème sombre les
+   titres tombaient à 1,2:1 et les encadrés se remplissaient de teal foncé
+   sous du texte noir, à 1,58:1. Le défaut atteignait le PDF produit par les
+   boutons d'impression de la page, par les deux chemins possibles,
+   prefers-color-scheme et le bouton de thème du site. */
+/* Les deux faces qui restent visibles une fois le dépliant fermé, couverture
+   et dos, partagent le même lavis à 5 % ; les trois volets intérieurs restent
+   en blanc pur. Le lavis n'est ainsi plus une exception accordée au dos, et
+   le dépliant fermé cesse d'être une feuille blanche. Coût en encre
+   négligeable au regard des 14 % du recto. */
+.cover{ justify-content:flex-start; background:color-mix(in srgb, #0E6E76 5%, white); }
 .cover .top{ padding:4mm 8mm 3mm; text-align:center; }
 .cover .logo-row{ display:flex; align-items:center; justify-content:center; gap:2.5mm; margin-bottom:2.5mm; }
 .cover .logo-circle{
   width:12mm; height:12mm; border-radius:50%; background:#fff; flex:0 0 auto;
   display:flex; align-items:center; justify-content:center; overflow:hidden;
-  border:2px solid var(--hibiscus);
+  border:2px solid #C94A3B;
 }
 .cover .logo-circle img{ width:78%; height:78%; object-fit:contain; }
 .cover .brand-badge{
-  display:inline-block; background:#fff; color:var(--hibiscus); font-family:"Fredoka",sans-serif;
+  display:inline-block; background:#fff; color:#C94A3B; font-family:"Fredoka",sans-serif;
   font-weight:700; font-size:10.5px; letter-spacing:.03em; padding:1.6mm 4mm; border-radius:999px;
-  border:1.5px solid var(--hibiscus); white-space:nowrap;
+  border:1.5px solid #C94A3B; white-space:nowrap;
 }
 .cover h1.h{
   font-family:"Fredoka",sans-serif; font-weight:800;
-  font-size:22px; line-height:1.14; margin:0 0 2mm; color:var(--hibiscus);
+  font-size:22px; line-height:1.14; margin:0 0 2mm; color:#C94A3B;
 }
 .cover .sub{ font-size:11px; color:#000; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
 .cover .press-cards{
@@ -93,8 +117,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .cover .press-card .src{
   float:left; margin:0 1.5mm 1mm 0; font-family:"Fredoka",sans-serif; font-weight:700; font-size:8px;
-  text-transform:uppercase; letter-spacing:.02em; color:var(--hibiscus);
-  border:1.1px solid var(--hibiscus); background:#fff;
+  text-transform:uppercase; letter-spacing:.02em; color:#C94A3B;
+  border:1.1px solid #C94A3B; background:#fff;
   padding:.4mm 2mm; border-radius:999px; white-space:nowrap;
 }
 .cover .press-card .txt{ font-style:italic; color:#3A4440; }
@@ -115,68 +139,71 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   text-shadow:0 2px 10px rgba(0,0,0,.35);
 }
 .cover .cta{
-  margin:3mm 8mm 8mm; background:color-mix(in srgb, var(--hibiscus) 8%, white); color:var(--hibiscus); border-radius:12px;
+  margin:3mm 8mm 8mm; background:color-mix(in srgb, #C94A3B 8%, white); color:#C94A3B; border-radius:12px;
   padding:4mm 5mm; display:flex; align-items:center; justify-content:center; gap:4mm;
-  border:2px solid var(--hibiscus);
+  border:2px solid #C94A3B;
 }
 .cover .cta img{ width:26mm; height:26mm; border-radius:5px; border:1px solid rgba(28,38,36,.2); flex:0 0 auto; }
 .cover .cta .txt{ text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
 .cover .cta .txt b{
   display:block; font-family:"Fredoka",sans-serif; font-size:15px; font-weight:700; text-transform:uppercase;
 }
-.cover .cta .txt .free{ display:block; color:var(--sea); font-weight:800; margin-top:1mm; }
+.cover .cta .txt .free{ display:block; color:#0E6E76; font-weight:800; margin-top:1mm; }
 
 /* ---------- Dos : QR + tampon gratuit ---------- */
 .back-cover .promo-row{
   display:flex; align-items:center; justify-content:center; gap:5mm; margin:4mm 0;
 }
 .back-cover .qr-box{
-  background:#fff; border:1.5px solid var(--hibiscus); border-radius:10px; padding:2mm; flex:0 0 auto;
+  background:#fff; border:1.5px solid #C94A3B; border-radius:10px; padding:2mm; flex:0 0 auto;
   display:flex; flex-direction:column; align-items:center;
 }
 .back-cover .qr-box img{ display:block; width:20mm; height:20mm; }
 .back-cover .qr-label{
-  font-size:9.5px; font-weight:700; color:var(--hibiscus); text-transform:uppercase;
+  font-size:9.5px; font-weight:700; color:#C94A3B; text-transform:uppercase;
   text-align:center; margin-top:1.5mm; letter-spacing:.03em;
 }
 .back-cover .stamp{
   width:24mm; height:24mm; border-radius:50%; flex:0 0 auto;
-  border:2px dashed var(--hibiscus); display:flex; flex-direction:column;
+  border:2px dashed #C94A3B; display:flex; flex-direction:column;
   align-items:center; justify-content:center; transform:rotate(-8deg);
 }
 .back-cover .stamp span{
-  font-family:"Fredoka",sans-serif; font-weight:800; color:var(--hibiscus);
+  font-family:"Fredoka",sans-serif; font-weight:800; color:#C94A3B;
   text-transform:uppercase; line-height:1.15; text-align:center;
 }
 .back-cover .stamp .big{ font-size:11px; }
 .back-cover .stamp .small{ font-size:7px; margin-top:.6mm; }
 
-/* ---------- Dos (éco : léger lavis pour ne pas finir sur du blanc pur) ---------- */
+/* ---------- Dos (éco : même lavis que la couverture) ---------- */
+/* Le filet terre cuite qui longeait le bord gauche a été retiré : il tombait
+   à 0,8 mm du bord de feuille, donc sous le massicot faute de fond perdu, et
+   dans la marge non imprimable d'une imprimante familiale. Le volet garde son
+   accent, le filet vertical de la citation, qui lui est bien à l'intérieur. */
 .back-cover{
   color:#1C2624; justify-content:flex-start;
   background:color-mix(in srgb, #0E6E76 5%, white);
-  border-left:3px solid #C94A3B;
 }
 .back-cover > div:last-child{ margin-top:auto; }
-.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--hibiscus); }
+.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:#C94A3B; }
 .back-cover .quote{
   font-size:22px; font-style:italic; font-weight:700; line-height:1.35; color:#000;
-  border-left:4px solid var(--hibiscus); padding-left:12px; margin:8mm 0 5mm;
+  border-left:4px solid #C94A3B; padding-left:12px; margin:8mm 0 5mm;
 }
 .back-cover .mission{ font-size:11px; font-weight:500; line-height:1.6; color:#000; margin:0 0 6mm; }
 .back-cover .contact{ font-size:12px; font-weight:500; line-height:2; }
 .back-cover .contact div{ color:#000; }
-.back-cover .contact div span{ color:var(--sea); font-weight:700; display:inline-block; width:56px; }
+.back-cover .contact div span{ color:#0E6E76; font-weight:700; display:inline-block; width:56px; }
 .back-cover .legal{ font-size:10px; font-weight:500; color:#000; line-height:1.5; margin-top:5mm; text-align:left; }
 
 /* ---------- panneaux clairs (identiques à la version couleur) ---------- */
 .light{ background:#FFFFFF; }
 .light h2{
-  font-size:16px; font-weight:800; color:var(--ink); margin:0 0 3mm;
-  padding-bottom:2mm; border-bottom:3px solid var(--hibiscus);
+  font-size:16px; font-weight:800; color:#1C2624; margin:0 0 3mm;
+  padding-bottom:2mm; border-bottom:3px solid #C94A3B;
 }
 .light p{ font-size:13px; font-weight:500; line-height:1.55; color:#000; margin:0 0 3mm; }
-.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:var(--sea); text-transform:uppercase; margin-bottom:1mm; }
+.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:#0E6E76; text-transform:uppercase; margin-bottom:1mm; }
 
 .bullets{ list-style:none; margin:0; padding:0; font-size:13px; font-weight:500; color:#000; }
 .bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
@@ -190,17 +217,17 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .steps li::before{
   content:counter(step); position:absolute; left:0; top:0;
-  width:19px; height:19px; border-radius:50%; background:#fff; color:var(--sea); border:1.5px solid var(--sea);
+  width:19px; height:19px; border-radius:50%; background:#fff; color:#0E6E76; border:1.5px solid #0E6E76;
   font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
 }
 .steps li b{ display:block; color:#000; font-size:13.5px; }
 .dl-row{
-  display:flex; align-items:center; gap:3mm; background:var(--sea-soft);
-  border:1px solid var(--sea); border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
+  display:flex; align-items:center; gap:3mm; background:#DDEEEE;
+  border:1px solid #0E6E76; border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
 }
 .dl-row img{ width:16mm; height:16mm; flex:0 0 auto; border-radius:3px; background:#fff; padding:1px; }
 .dl-row .dl-txt{ font-size:10.5px; font-weight:500; color:#000; line-height:1.3; }
-.dl-row .dl-txt b{ display:block; font-size:12px; color:var(--sea); }
+.dl-row .dl-txt b{ display:block; font-size:12px; color:#0E6E76; }
 
 .mini-shots{ position:relative; width:72mm; height:60mm; margin:2mm auto 0; flex:0 0 auto; }
 .mini-shots img{
@@ -220,28 +247,32 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .shot.tall img{ max-height:94mm; }
 
 .callout{
-  margin-top:auto; background:var(--sun-soft); border:1.5px solid var(--sun);
+  margin-top:auto; background:#F6E9D2; border:1.5px solid #C97F1E;
   border-radius:8px; padding:3mm 4mm; font-size:11.5px; color:#000; font-weight:600; text-align:center;
 }
 .back-cover .help-title{
   font-family:"Fredoka",sans-serif; font-weight:700; font-size:11px;
-  letter-spacing:.04em; text-transform:uppercase; color:var(--hibiscus); margin:0 0 2.5mm;
+  letter-spacing:.04em; text-transform:uppercase; color:#C94A3B; margin:0 0 2.5mm;
 }
 .back-cover .help-list{ list-style:none; margin:0; padding:0; font-size:11.5px; line-height:2; }
 
 .panel-cta{
-  margin-top:4mm; background:var(--sea-soft); border:1.5px solid var(--sea); border-radius:10px;
+  margin-top:4mm; background:#DDEEEE; border:1.5px solid #0E6E76; border-radius:10px;
   padding:3mm 4mm; display:flex; align-items:center; gap:4mm;
 }
 .panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
 .panel-cta .txt{ font-size:10.5px; font-weight:600; color:#000; line-height:1.3; }
-.panel-cta .txt b{ display:block; font-size:12.5px; color:var(--sea); text-transform:uppercase; }
-.panel-cta .txt .free{ display:block; color:var(--hibiscus); font-weight:800; margin-top:1mm; }
+.panel-cta .txt b{ display:block; font-size:12.5px; color:#0E6E76; text-transform:uppercase; }
+/* Même correction que dans triptyque.html : sur le #DDEEEE de la pastille, le
+   #C94A3B de la charte ne tient que 3,87:1, sous le seuil de 4,5:1, alors que
+   « 100 % gratuit » est l'argument le plus vendeur du dépliant. Même teinte,
+   même saturation, cinq points de clarté en moins, 4,64:1. */
+.panel-cta .txt .free{ display:block; color:#BA3C30; font-weight:800; margin-top:1mm; }
 
 .levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
   flex:1; display:flex; align-items:flex-start; justify-content:center;
-  background:var(--sea-soft); border:1.5px solid var(--sea); border-bottom:none;
+  background:#DDEEEE; border:1.5px solid #0E6E76; border-bottom:none;
   border-radius:4px 4px 0 0; padding-top:1.3mm;
 }
 .level-step span{ font-size:12px; text-align:center; }
@@ -251,7 +282,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .level-step.h4{ height:14mm; }
 .level-step.h5{ height:17mm; }
 .level-step.h6{ height:20mm; }
-.level-step.h7{ height:23mm; background:var(--sun); border-color:var(--sun); }
+.level-step.h7{ height:23mm; background:#C97F1E; border-color:#C97F1E; }
 .level-step.h7 span{ font-size:14px; }
 .levels-caption{
   display:flex; justify-content:space-between; margin:0 0 4mm;
