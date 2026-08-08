@@ -65,7 +65,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 /* Palette figée volontairement (pas de var(--...)) : cette page simule
    un support imprimé, son rendu ne doit pas changer avec le thème du
    site (clair/sombre) ni avec les préférences système du visiteur. */
-.cover{ padding:0; background:linear-gradient(135deg, #0E6E76, #C94A3B); color:#fff; justify-content:flex-start; }
+/* Dégradé quasi vertical, et non plus à 135° : sur un volet de 100 × 210 mm,
+   une diagonale consomme un tiers de sa course en largeur, si bien que les
+   deux coins du haut se retrouvaient à des stades très différents du dégradé
+   (teal franc à gauche, gris-vert à droite). Le titre et les citations presse
+   étaient posés à cheval sur cette décoloration. À 170° les bandes sont
+   presque horizontales et le teal est tenu jusqu'à 38 %, soit toute la hauteur
+   du bloc de texte blanc. Le teal et la terre cuite étant quasi
+   complémentaires, leur interpolation traverse forcément l'axe neutre : cette
+   zone désaturée est désormais reléguée derrière la capture du téléphone. */
+.cover{ padding:0; background:linear-gradient(170deg, #0E6E76 0%, #0E6E76 38%, #C94A3B 100%); color:#fff; justify-content:flex-start; }
 .cover .top{ padding:4mm 8mm 3mm; text-align:center; }
 .cover .logo-row{ display:flex; align-items:center; justify-content:center; gap:2.5mm; margin-bottom:2.5mm; }
 .cover .logo-circle{
@@ -209,6 +218,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .mini-shots img{
   position:absolute; top:0; width:33mm; height:auto; border-radius:8px;
   border:3px solid #FFFFFF; box-shadow:0 4px 14px rgba(0,0,0,.22);
+  /* Même filet que .shot img : la bordure blanche sur le crème du volet ne
+     fait que 1,13:1 de contraste, le cadre ne tenait donc que par son ombre
+     portée, qui s'aplatit à l'impression. */
+  outline:1px solid rgba(28,38,36,.13);
 }
 .mini-shots img.s1{ left:50%; transform:translateX(-82%) rotate(-8deg); z-index:1; }
 .mini-shots img.s2{ left:50%; transform:translateX(-16%) rotate(6deg); z-index:2; }
@@ -319,7 +332,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   </div>
 
   <div class="note">
-    Réglages à vérifier dans la boîte de dialogue d'impression : papier <strong>A4, orientation Paysage</strong>, marges <strong>Aucune</strong>, échelle <strong>100&nbsp;%</strong>, et cocher <strong>« Graphismes d'arrière-plan »</strong>. Pour l'imprimeur : impression recto-verso, retournement bord court.
+    Réglages à vérifier dans la boîte de dialogue d'impression : papier <strong>A4, orientation Paysage</strong>, marges <strong>Aucune</strong>, échelle <strong>100&nbsp;%</strong>, et cocher <strong>« Graphismes d'arrière-plan »</strong>. Pour l'imprimeur : impression recto-verso, retournement bord court, papier <strong>170&nbsp;g/m² minimum</strong> (le dos en aplat sombre transparaît par l'arrière sur un grammage plus léger, et le verso est presque entièrement clair).
   </div>
 </header>
 
