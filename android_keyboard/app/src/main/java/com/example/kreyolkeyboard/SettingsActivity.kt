@@ -105,6 +105,17 @@ class SettingsActivity : AppCompatActivity() {
          */
         const val PREF_LEVEL_BADGE_PENDING = "level_badge_pending"
 
+        /**
+         * Mot-dièse commun à tous les partages sortants, pour que les messages
+         * envoyés depuis l'application se retrouvent entre eux sur les réseaux.
+         *
+         * Toujours placé en dernier, après une ligne vide : collé juste derrière
+         * le lien Play Store, certains clients l'aspireraient dans l'URL.
+         * Le message inséré par la puce du clavier fait exception, il tient sur
+         * une seule ligne au milieu de ce que l'utilisateur écrit.
+         */
+        const val SHARE_HASHTAG = "#KlavyéKréyòl"
+
         // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
         // une fonctionnalité réellement présente dans l'application : ne rien y
         // ajouter qui ne soit pas vérifiable dans le clavier ou les onglets.
@@ -517,7 +528,8 @@ class SettingsActivity : AppCompatActivity() {
             "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
             "Télécharge-le gratuitement :\n" +
             "https://play.google.com/store/apps/details?id=$packageName" +
-            "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success"
+            "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success\n\n" +
+            SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
@@ -2557,7 +2569,8 @@ class SettingsActivity : AppCompatActivity() {
                 "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
-                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch10k"
+                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch10k\n\n" +
+                SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
@@ -3301,7 +3314,8 @@ class SettingsActivity : AppCompatActivity() {
             val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukéra ! É vou menm, ki nivo a'w ?\n" +
                     "Télécharge le clavier gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
-                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k"
+                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k\n\n" +
+                    SHARE_HASHTAG
 
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "image/png"
