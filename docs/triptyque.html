@@ -175,11 +175,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 
 /* ---------- panneaux clairs ---------- */
 .light{ background:#F5F2EA; }
-/* Le fond crème varie très légèrement d'un volet à l'autre : au verso, la
-   lecture va du plus chaud (volet 4, côté terre cuite de la couverture) au
-   plus froid (volet 6, côté lagon). L'écart reste sous le seuil du « bloc de
-   couleur » : à plat le dépliant garde son unité, mais les plis se devinent
-   et chaque volet se distingue une fois replié. */
+/* Le fond crème varie très légèrement d'un volet à l'autre, à clarté
+   constante : c'est en réalité une rampe de saturation, C* passant de 2,3 à
+   7,9. L'écart reste sous le seuil du « bloc de couleur » (ΔE 3 par pli) : à
+   plat le dépliant garde son unité, mais les plis se devinent et chaque volet
+   se distingue une fois replié.
+   Au verso la rampe suit le sens de lecture, du plus froid (volet 4,
+   installation) au plus chaud (volet 6, progression), pour finir sur la
+   couronne et le sommet Potomitan. Elle a d'abord été posée dans l'autre sens,
+   par cohérence avec le recto imprimé au dos de chaque volet : mauvais
+   critère, personne ne voit l'autre face d'une feuille, alors que tout le
+   monde lit de gauche à droite. Effet secondaire recherché : les pastilles
+   #DDEEEE se détachent à ΔE 11,2 sur le crème chaud contre 5,7 sur le froid,
+   et le volet 6 en contient huit contre deux au volet 4. */
 .light.tint-warm{ background:#F8F3E4; }
 .light.tint-mid { background:#F4F1E9; }
 .light.tint-cool{ background:#EFF2EE; }
@@ -253,7 +261,11 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
 .panel-cta .txt{ font-size:10.5px; font-weight:600; color:#1C2624; line-height:1.3; }
 .panel-cta .txt b{ display:block; font-size:12.5px; color:#0E6E76; text-transform:uppercase; }
-.panel-cta .txt .free{ display:block; color:#C94A3B; font-weight:800; margin-top:1mm; }
+/* Terre cuite assombrie de 5 points de clarté pour cette pastille seulement :
+   sur le #DDEEEE du bloc, le #C94A3B de la charte ne tenait que 3,87:1, sous
+   le seuil de 4,5:1, alors que « 100 % gratuit » est l'argument le plus
+   vendeur du dépliant. Même teinte, même saturation, 4,64:1. */
+.panel-cta .txt .free{ display:block; color:#BA3C30; font-weight:800; margin-top:1mm; }
 
 .levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
@@ -261,12 +273,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   background:#DDEEEE; border-radius:4px 4px 0 0; padding-top:1.3mm;
 }
 .level-step span{ font-size:12px; text-align:center; }
+/* Les marches s'assombrissent avec la hauteur : le volet raconte une
+   progression, sa seule ponctuation chromatique était jusqu'ici la marche
+   finale. La rampe reste dans la famille teal (clarté de 93 à 52, saturation
+   de 6 à 30) plutôt que de rejoindre l'ocre directement : le trajet direct
+   passe par un vert olive absent de la charte. Le sommet garde donc son ocre,
+   et sa rupture de couleur dit ce qu'elle doit dire, Potomitan est d'une
+   autre nature que les six paliers qui y mènent. */
 .level-step.h1{ height:5mm; }
-.level-step.h2{ height:8mm; }
-.level-step.h3{ height:11mm; }
-.level-step.h4{ height:14mm; }
-.level-step.h5{ height:17mm; }
-.level-step.h6{ height:20mm; }
+.level-step.h2{ height:8mm;  background:#BBDAD9; }
+.level-step.h3{ height:11mm; background:#98C5C5; }
+.level-step.h4{ height:14mm; background:#75B1B1; }
+.level-step.h5{ height:17mm; background:#4F9D9D; }
+.level-step.h6{ height:20mm; background:#1B8A89; }
 .level-step.h7{ height:23mm; background:#C97F1E; }
 .level-step.h7 span{ font-size:14px; }
 .levels-caption{
@@ -422,7 +441,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   <div class="page" id="face-verso">
 
     <!-- P4 : installation -->
-    <div class="panel light tint-warm">
+    <div class="panel light tint-cool">
       <div class="kicker">C'est parti</div>
       <h2>Installation en 4 étapes</h2>
       <ol class="steps">
@@ -466,7 +485,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     </div>
 
     <!-- P6 : progression -->
-    <div class="panel light tint-cool">
+    <div class="panel light tint-warm">
       <div class="kicker">Motivation</div>
       <h2>Suis ta progression</h2>
       <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
