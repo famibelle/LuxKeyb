@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.0] - 2026-08-08
+
+### 📤 « Plus tard » ne fait plus perdre sa carte
+
+La carte de niveau à partager n'était atteignable que par le bouton de la boîte de félicitations. Répondre « Plus tard » la fermait définitivement : le palier était déjà enregistré comme vu, la boîte ne revenait jamais, et plus rien dans l'application ne permettait de retrouver sa carte.
+
+Un bouton **« 📤 Partager ma carte de niveau »** est désormais posé en permanence dans l'onglet « Kréyòl an mwen ». La carte du niveau en cours se reconstruit à la demande, autant de fois qu'on veut. « Plus tard » redevient un report.
+
+*Une des astuces de l'onglet Démarrage promettait déjà de pouvoir partager sa carte depuis cet onglet. Elle dit maintenant vrai.*
+
+### 🔔 L'onglet signale un niveau non vu
+
+Les félicitations ne se déclenchent qu'en affichant l'onglet « Kréyòl an mwen ». Qui ouvrait l'application et restait sur Démarrage n'apprenait donc rien de sa progression.
+
+Une **pastille orange** se pose sur l'onglet tant qu'un palier franchi n'a pas été consulté, et s'éteint dès qu'on y est passé. Elle apparaît même si les notifications ont été refusées : c'est alors le seul signal restant.
+
 ## [10.8.0] - 2026-08-08
 
 ### 🌱 Le passage de niveau se signale enfin
