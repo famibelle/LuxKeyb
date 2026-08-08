@@ -50,8 +50,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
+        // Mot-dièse séparé du lien par une espace : ce message s'insère au fil
+        // du texte de l'utilisateur, il ne peut pas se permettre de saut de ligne.
         private const val SHARE_INVITE_MESSAGE = "An maké mésaj la sa épi Klavyé Kréyòl, " +
-            "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share"
+            "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&pcampaignid=web_share" +
+            " ${SettingsActivity.SHARE_HASHTAG}"
 
         // Passage de niveau. Clé distincte de « last_celebrated_level_index »,
         // qu'utilise SettingsActivity pour sa carte partageable : les deux
