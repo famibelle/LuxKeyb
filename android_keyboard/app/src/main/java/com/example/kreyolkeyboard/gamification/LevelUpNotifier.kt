@@ -59,6 +59,22 @@ object LevelUpNotifier {
             ?.createNotificationChannel(channel)
     }
 
+    /**
+     * Retire la notification de niveau, et avec elle la pastille de l'icône :
+     * la pastille étant dérivée de la notification active, il n'y a pas d'autre
+     * façon de l'éteindre. À appeler dès que l'utilisateur a vu sa progression,
+     * quel que soit le chemin par lequel il y est arrivé.
+     *
+     * Sans effet si aucune notification n'est affichée.
+     */
+    fun clear(context: Context) {
+        try {
+            NotificationManagerCompat.from(context).cancel(NOTIFICATION_ID)
+        } catch (e: Exception) {
+            Log.w(TAG, "Impossible de retirer la notification de niveau", e)
+        }
+    }
+
     /** L'utilisateur a-t-il accordé la permission de notifier (Android 13+) ? */
     fun canNotify(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true

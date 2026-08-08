@@ -6,6 +6,8 @@ import com.example.kreyolkeyboard.gamification.WordUsageStats
 import com.example.kreyolkeyboard.gamification.VocabularyStats
 import org.json.JSONObject
 import java.io.File
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Gestionnaire du dictionnaire créole avec tracking d'utilisation utilisateur
@@ -35,11 +37,29 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         // plus bas : un mot hors dictionnaire n'est de toute façon jamais tracké, quelle que
         // soit sa longueur.
         private const val MIN_WORD_LENGTH = 2
-        private const val SAVE_BATCH_SIZE = 1  // Sauvegarder après chaque utilisation pour tests
     }
-    
+
     private var dictionary: JSONObject = JSONObject()
-    private var unsavedChanges = 0  // Compteur pour sauvegarde par batch
+    private var unsavedChanges = 0  // Changements non encore écrits sur le disque
+
+    /**
+     * Écriture du dictionnaire hors du thread appelant.
+     *
+     * Mesuré le 08/08/2026 sur émulateur : sauvegarder à chaque mot validé,
+     * de façon synchrone, coûtait 116 à 500 ms sur le thread principal du
+     * service de saisie — assez pour faire sauter des images en pleine frappe.
+     * Le coût venait du couple sérialisation + écriture des 5296 entrées, et il
+     * était payé à chaque espace tapé.
+     *
+     * Un exécuteur à un seul thread suffit : les écritures ne peuvent pas se
+     * chevaucher, et [savePending] les fusionne quand plusieurs mots arrivent
+     * pendant qu'une écriture est en cours. Le thread est daemon pour ne jamais
+     * retenir le processus.
+     */
+    private val saveExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "KreyolDictSave").apply { isDaemon = true }
+    }
+    private val savePending = AtomicBoolean(false)
 
     /**
      * Nombre de mots distincts déjà employés au moins une fois, tenu à jour de
@@ -247,12 +267,11 @@ class CreoleDictionaryWithUsage(private val context: Context) {
 
                 unsavedChanges++
                 Log.d(TAG, "✅ '$normalized' utilisé ${currentCount + 1} fois")
-                
-                // Sauvegarde par batch pour performance
-                if (unsavedChanges >= SAVE_BATCH_SIZE) {
-                    saveDictionary()
-                    unsavedChanges = 0
-                }
+
+                // Sauvegarde après chaque mot, mais hors du thread appelant :
+                // rien n'est différé ni regroupé, donc rien ne peut être perdu
+                // si le service est tué, et la frappe ne paie plus l'écriture.
+                scheduleSave()
 
                 TrackResult(tracked = true, newlyDiscovered = newlyDiscovered)
             } catch (e: Exception) {
@@ -467,7 +486,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     }
     
     /**
-     * Sauvegarde le dictionnaire sur le disque
+     * Sauvegarde le dictionnaire sur le disque, sur le thread appelant.
+     *
+     * À réserver aux points de sortie ([forceSave], [onDestroy]) : en pleine
+     * frappe, passer par [scheduleSave].
      */
     fun saveDictionary() {
         try {
@@ -475,6 +497,44 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             Log.d(TAG, "💾 Dictionnaire sauvegardé (${unsavedChanges} changements)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erreur lors de la sauvegarde", e)
+        }
+    }
+
+    /**
+     * Demande une écriture du dictionnaire sur le thread de sauvegarde.
+     *
+     * Les demandes qui arrivent pendant qu'une écriture est déjà programmée
+     * sont fusionnées : le drapeau est baissé à l'entrée de la tâche, si bien
+     * qu'un mot validé entre-temps en reprogramme une et n'est jamais perdu.
+     * La sérialisation prend le verrou de l'objet, l'écriture disque non.
+     */
+    private fun scheduleSave() {
+        if (!savePending.compareAndSet(false, true)) return
+
+        try {
+            saveExecutor.execute {
+                savePending.set(false)
+                val (snapshot, changes) = synchronized(this) {
+                    val json = dictionary.toString()
+                    val pending = unsavedChanges
+                    unsavedChanges = 0
+                    json to pending
+                }
+                try {
+                    File(context.filesDir, DICT_FILE).writeText(snapshot)
+                    Log.d(TAG, "💾 Dictionnaire sauvegardé en tâche de fond ($changes changements)")
+                } catch (e: Exception) {
+                    // Le compteur repart de zéro quoi qu'il arrive : le prochain
+                    // mot validé reprogrammera une écriture complète.
+                    Log.e(TAG, "❌ Erreur lors de la sauvegarde en tâche de fond", e)
+                }
+            }
+        } catch (e: Exception) {
+            // Exécuteur déjà arrêté (service détruit) : repli synchrone.
+            savePending.set(false)
+            Log.w(TAG, "Sauvegarde de fond indisponible, repli synchrone", e)
+            saveDictionary()
+            unsavedChanges = 0
         }
     }
 
@@ -498,7 +558,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      */
     private fun saveDictionaryToFile(dict: JSONObject) {
         val file = File(context.filesDir, DICT_FILE)
-        file.writeText(dict.toString(2))  // Indent de 2 pour lisibilité
+        // Sans indentation : le fichier n'est pas destiné à être lu à l'œil, et
+        // l'indentation de 2 le faisait passer de 244 à 318 Ko, soit autant de
+        // sérialisation et d'écriture payées à chaque mot validé.
+        file.writeText(dict.toString())
     }
     
     /**
@@ -522,9 +585,22 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      * Appelé quand l'app se termine pour sauvegarder les changements non sauvegardés
      */
     fun onDestroy() {
-        if (unsavedChanges > 0) {
-            saveDictionary()
-            Log.d(TAG, "💾 Sauvegarde finale (${unsavedChanges} changements non sauvegardés)")
+        // L'exécuteur est arrêté d'abord : plus aucune écriture de fond ne peut
+        // démarrer, et celle éventuellement en cours a le temps de finir avant
+        // la sauvegarde finale, qui écrirait sinon par-dessus.
+        saveExecutor.shutdown()
+        try {
+            saveExecutor.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+
+        synchronized(this) {
+            if (unsavedChanges > 0) {
+                saveDictionary()
+                Log.d(TAG, "💾 Sauvegarde finale (${unsavedChanges} changements non sauvegardés)")
+                unsavedChanges = 0
+            }
         }
     }
 }
