@@ -3,6 +3,7 @@ package com.example.kreyolkeyboard
 import android.Manifest
 import android.content.ClipData
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import com.example.kreyolkeyboard.gamification.CreoleLevels
 import com.example.kreyolkeyboard.gamification.LevelUpNotifier
@@ -87,6 +88,13 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
         private const val REQUEST_NOTIFICATIONS = 4201
+
+        /**
+         * Posé par le service de saisie au franchissement d'un palier, effacé
+         * quand l'utilisateur affiche enfin ses statistiques. Sert la pastille
+         * de la barre d'onglets. Écrit aussi dans KreyolInputMethodServiceRefactored.
+         */
+        const val PREF_LEVEL_BADGE_PENDING = "level_badge_pending"
 
         // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
         // une fonctionnalité réellement présente dans l'application : ne rien y
@@ -698,6 +706,14 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    /** Préférences partagées avec le service de saisie pour la progression. */
+    private fun gamificationPrefs() =
+        getSharedPreferences("kreyol_gamification_prefs", Context.MODE_PRIVATE)
+
+    /** Un palier a-t-il été franchi sans que l'utilisateur ait rouvert ses statistiques ? */
+    private fun hasPendingLevelBadge(): Boolean =
+        gamificationPrefs().getBoolean(PREF_LEVEL_BADGE_PENDING, false)
+
     private fun createTab(tabIndex: Int, emoji: String, label: String): LinearLayout {
         Log.d("SettingsActivity", "Création onglet $tabIndex: $emoji $label")
         return LinearLayout(this).apply {
@@ -749,9 +765,34 @@ class SettingsActivity : AppCompatActivity() {
                 setTypeface(null, if (tabIndex == currentTab) Typeface.BOLD else Typeface.NORMAL)
             }
             
-            addView(emojiView)
+            // Pastille de niveau non vu : le franchissement d'un palier n'est
+            // célébré qu'au dessin du contenu de l'onglet statistiques. Sans ce
+            // repère, quelqu'un qui ouvre l'application et reste sur Démarrage
+            // ne saurait jamais qu'il a quelque chose à y voir.
+            if (tabIndex == TAB_STATS && hasPendingLevelBadge()) {
+                addView(FrameLayout(this@SettingsActivity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    addView(emojiView)
+                    addView(View(this@SettingsActivity).apply {
+                        val d = resources.displayMetrics.density
+                        layoutParams = FrameLayout.LayoutParams(
+                            (10 * d).toInt(), (10 * d).toInt()
+                        ).apply { gravity = Gravity.TOP or Gravity.END }
+                        background = GradientDrawable().apply {
+                            shape = GradientDrawable.OVAL
+                            setColor(Color.parseColor("#FF8C00"))
+                            setStroke((2 * d).toInt(), Color.WHITE)
+                        }
+                    })
+                })
+            } else {
+                addView(emojiView)
+            }
             addView(labelView)
-            
+
             // Indicateur orange en bas si tab actif
             if (tabIndex == currentTab) {
                 val indicator = View(this@SettingsActivity).apply {
@@ -2549,9 +2590,16 @@ class SettingsActivity : AppCompatActivity() {
         // Calcul des mots restants pour le niveau suivant
         val (nextLevelName, wordsRemaining) = getNextLevelInfo(stats.wordsDiscovered)
 
+        // L'utilisateur consulte enfin sa progression : la pastille de l'onglet
+        // a rempli son office, on l'éteint et on redessine la barre.
+        if (hasPendingLevelBadge()) {
+            gamificationPrefs().edit().putBoolean(PREF_LEVEL_BADGE_PENDING, false).apply()
+            if (::tabBar.isInitialized) tabBar.post { updateTabBar() }
+        }
+
         // Célébration + carte partageable si un niveau vient d'être franchi
         maybeCelebrateLevelUp(stats.wordsDiscovered, levelEmoji, levelName)
-        
+
         // 🔍 DEBUG: Log pour vérifier les calculs
         val thresholdsDebug = calculateGaussianThresholds()
         Log.d("SettingsActivity", "📊 DEBUG Niveau: wordsDiscovered=${stats.wordsDiscovered}, " +
@@ -2581,7 +2629,42 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         levelContainer.addView(progressMessage)
-        
+
+        // Partage permanent de la carte de niveau. Jusqu'ici, shareLevelCard()
+        // n'était atteignable que par le bouton de la boîte de célébration :
+        // répondre « Plus tard » perdait la carte définitivement, puisque le
+        // palier était déjà marqué comme célébré et que la boîte ne
+        // réapparaissait jamais. L'astuce qui promet de partager sa carte
+        // « depuis Kréyòl an mwen » décrit désormais quelque chose qui existe.
+        val shareLevelButton = Button(this).apply {
+            text = "📤 Partager ma carte de niveau"
+            textSize = 15f
+            isAllCaps = false
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.parseColor("#0E6E76"))
+            setPadding(24, 16, 24, 16)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = 24 }
+            setOnClickListener {
+                try {
+                    shareLevelCard(
+                        buildLevelCardBitmap(levelEmoji, levelName, stats.wordsDiscovered),
+                        levelName
+                    )
+                } catch (e: Exception) {
+                    Log.e("SettingsActivity", "Erreur partage carte de niveau: ${e.message}")
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Impossible de partager pour le moment",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        levelContainer.addView(shareLevelButton)
+
         val levelBadge = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER

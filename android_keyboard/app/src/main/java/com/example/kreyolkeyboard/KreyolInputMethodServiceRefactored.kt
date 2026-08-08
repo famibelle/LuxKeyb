@@ -857,7 +857,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             }
             if (currentIndex <= lastNotified) return
 
-            prefs.edit().putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex).apply()
+            // La pastille de la barre d'onglets est posée quoi qu'il arrive :
+            // elle ne dépend pas de la permission de notification, et reste donc
+            // le signal de repli quand celle-ci a été refusée.
+            prefs.edit()
+                .putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex)
+                .putBoolean(SettingsActivity.PREF_LEVEL_BADGE_PENDING, true)
+                .apply()
             LevelUpNotifier.notifyLevelUp(this, CreoleLevels.LEVELS[currentIndex].label)
         } catch (e: Exception) {
             // Un échec de notification ne doit jamais perturber la frappe
