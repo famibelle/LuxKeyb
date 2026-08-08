@@ -1,8 +1,24 @@
 {
   "production_version": "10.0.1",
-  "latest_version": "10.6.1",
-  "as_of": "2026-08-07",
+  "latest_version": "10.9.0",
+  "as_of": "2026-08-08",
   "features": [
+    {
+      "version": "10.9.0",
+      "emoji": "📤",
+      "title": "Votre carte de niveau se partage quand vous voulez",
+      "description": "Elle n'était proposée qu'une fois, au moment des félicitations : répondre « Plus tard » la faisait perdre pour de bon. Un bouton posé en permanence dans l'onglet « Kréyòl an mwen » la reconstruit à la demande, autant de fois que vous le souhaitez.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.9.0",
+      "curated": true
+    },
+    {
+      "version": "10.8.0",
+      "emoji": "🌱",
+      "title": "Vos passages de niveau se signalent enfin",
+      "description": "Franchir un palier de vocabulaire ne se voyait qu'en ouvrant vos statistiques. Une pastille se pose désormais sur l'icône de l'application, sans son ni bandeau : rien ne vient vous déranger pendant que vous écrivez, et vous la découvrez en revenant à votre écran d'accueil.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.8.0",
+      "curated": true
+    },
     {
       "version": "10.6.0",
       "emoji": "🔒",
