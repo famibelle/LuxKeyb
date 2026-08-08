@@ -70,6 +70,15 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
+
+    /**
+     * Présence de la pastille de niveau dans la barre d'onglets telle qu'elle
+     * est actuellement dessinée, à distinguer de l'état enregistré dans les
+     * préférences. Le service de saisie pose la pastille pendant que
+     * l'application est en arrière-plan : sans ce repère, [onResume] ne saurait
+     * pas si la barre affichée est à jour.
+     */
+    private var levelBadgeDrawn = false
     
     // 🔧 FIX CRITIQUE: Scope lié au lifecycle de l'activité
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -554,6 +563,23 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    /**
+     * La pastille de l'onglet statistiques n'était lue qu'au moment de
+     * construire la barre d'onglets, donc uniquement au démarrage à froid.
+     * Un palier franchi pendant que l'application dormait dans la pile des
+     * tâches restait invisible au retour (constaté sur émulateur le
+     * 08/08/2026) — et quand la permission de notification a été refusée,
+     * cette pastille est le seul signal qui existe.
+     */
+    override fun onResume() {
+        super.onResume()
+
+        if (::tabBar.isInitialized && hasPendingLevelBadge() != levelBadgeDrawn) {
+            Log.d("SettingsActivity", "🔄 Pastille de niveau à rafraîchir au retour au premier plan")
+            updateTabBar()
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
@@ -770,6 +796,7 @@ class SettingsActivity : AppCompatActivity() {
             // repère, quelqu'un qui ouvre l'application et reste sur Démarrage
             // ne saurait jamais qu'il a quelque chose à y voir.
             if (tabIndex == TAB_STATS && hasPendingLevelBadge()) {
+                levelBadgeDrawn = true
                 addView(FrameLayout(this@SettingsActivity).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -789,6 +816,7 @@ class SettingsActivity : AppCompatActivity() {
                     })
                 })
             } else {
+                if (tabIndex == TAB_STATS) levelBadgeDrawn = false
                 addView(emojiView)
             }
             addView(labelView)
@@ -2596,6 +2624,13 @@ class SettingsActivity : AppCompatActivity() {
             gamificationPrefs().edit().putBoolean(PREF_LEVEL_BADGE_PENDING, false).apply()
             if (::tabBar.isInitialized) tabBar.post { updateTabBar() }
         }
+
+        // La notification et la pastille d'icône disent « il y a quelque chose à
+        // voir ici » : cet écran est précisément ce quelque chose. setAutoCancel
+        // ne les efface qu'au tap sur la notification, si bien que l'utilisateur
+        // arrivé par le lanceur gardait une pastille sur son écran d'accueil
+        // après avoir déjà tout vu.
+        LevelUpNotifier.clear(this)
 
         // Célébration + carte partageable si un niveau vient d'être franchi
         maybeCelebrateLevelUp(stats.wordsDiscovered, levelEmoji, levelName)
