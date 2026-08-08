@@ -40,6 +40,32 @@ DIAGNOSTIC_PREFIXES = (
 # l'extraction automatique. Complétez cette liste au fil des prochaines
 # versions pour garder une formulation orientée utilisateur.
 CURATED: dict[str, list[dict[str, str]]] = {
+    "10.9.0": [
+        {
+            "emoji": "📤",
+            "title": "Votre carte de niveau se partage quand vous voulez",
+            "description": (
+                "Elle n'était proposée qu'une fois, au moment des "
+                "félicitations : répondre « Plus tard » la faisait perdre "
+                "pour de bon. Un bouton posé en permanence dans l'onglet "
+                "« Kréyòl an mwen » la reconstruit à la demande, autant de "
+                "fois que vous le souhaitez."
+            ),
+        }
+    ],
+    "10.8.0": [
+        {
+            "emoji": "🌱",
+            "title": "Vos passages de niveau se signalent enfin",
+            "description": (
+                "Franchir un palier de vocabulaire ne se voyait qu'en "
+                "ouvrant vos statistiques. Une pastille se pose désormais "
+                "sur l'icône de l'application, sans son ni bandeau : rien ne "
+                "vient vous déranger pendant que vous écrivez, et vous la "
+                "découvrez en revenant à votre écran d'accueil."
+            ),
+        }
+    ],
     "10.6.0": [
         {
             "emoji": "🔒",
