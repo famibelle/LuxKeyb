@@ -5,6 +5,24 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.1] - 2026-08-08
+
+### ⚡ La frappe ne paie plus l'écriture du dictionnaire
+
+Chaque mot validé déclenchait l'enregistrement complet du dictionnaire d'usage, de façon synchrone, sur le thread qui dessine le clavier. Mesuré sur émulateur : **116 à 500 ms de blocage à chaque espace tapé**, de quoi faire sauter des images en pleine phrase. Le verrou pris pendant ce temps bloquait en plus les lectures du moteur de suggestions.
+
+L'écriture passe sur un thread dédié. Les demandes qui arrivent pendant qu'une écriture est en cours sont fusionnées, si bien que rien n'est différé ni perdu : un mot tapé juste avant que le clavier soit tué se retrouve bien enregistré. Le fichier n'est plus indenté non plus, ce qui le fait passer de 318 à 218 Ko.
+
+Après correctif, les mêmes huit mots coûtent **0 à 16 ms**.
+
+### 🐛 La pastille d'onglet ne s'affichait qu'au démarrage à froid
+
+Un palier franchi pendant que l'application dormait dans la pile des tâches ne se voyait pas au retour : la pastille orange n'était lue qu'à la construction de la barre d'onglets. Il fallait fermer puis rouvrir l'application pour la découvrir. Quand les notifications sont refusées, cette pastille est le seul signal existant, et le franchissement passait donc totalement inaperçu.
+
+### 🐛 La pastille d'icône restait après avoir été vue
+
+Ouvrir l'application depuis l'écran d'accueil, voir ses félicitations et sa carte n'effaçait pas la notification : la pastille restait sur l'icône jusqu'à ce qu'on pense à balayer la notification. Elle s'éteint désormais dès que la progression a été consultée, quel que soit le chemin emprunté pour y arriver.
+
 ## [10.9.0] - 2026-08-08
 
 ### 📤 « Plus tard » ne fait plus perdre sa carte
