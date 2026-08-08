@@ -59,7 +59,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   display:flex; flex-direction:column;
   padding:9mm 8mm; overflow:hidden;
 }
-.panel:first-child{ width:96mm; } /* volet qui se replie en premier (à confirmer avec l'imprimeur) */
+/* Le volet étroit, celui qui se replie en premier, est un bandeau physique
+   unique traversant la feuille : il doit se retrouver au même endroit sur les
+   deux faces. Le retournement bord court d'une feuille paysage inverse la
+   gauche et la droite, donc les rainures situées à 96 et 196,5 mm du bord
+   gauche au recto se retrouvent à 100,5 et 201 mm du bord gauche au verso.
+   D'où :first-child d'un côté et :last-child de l'autre. Les deux faces le
+   déclaraient auparavant en tête, ce qui décalait les deux rainures de
+   4,5 mm entre le recto et le verso. */
+#face-recto .panel:first-child{ width:96mm; }
+#face-verso .panel:last-child { width:96mm; }
 
 /* ---------- Couverture ---------- */
 /* Palette figée volontairement (pas de var(--...)) : cette page simule
