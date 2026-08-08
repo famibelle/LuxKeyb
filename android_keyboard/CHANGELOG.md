@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.2] - 2026-08-08
+
+### 🔖 Un mot-dièse commun à tous les partages
+
+Les messages envoyés depuis l'application partaient chacun de leur côté, sans rien qui permette de les retrouver entre eux sur les réseaux. Ils se terminent désormais tous par **#KlavyéKréyòl** : la carte de niveau, la carte d'activation, le partage de l'application depuis l'onglet Informations, et la puce « Envoyer un mot à un ami » du clavier.
+
+Le mot-dièse est posé en dernier, après une ligne vide. Collé juste derrière le lien Play Store, certaines applications l'aspireraient dans l'adresse.
+
+Le texte à partager de la page Ambassade du site le porte aussi.
+
 ## [10.9.1] - 2026-08-08
 
 ### ⚡ La frappe ne paie plus l'écriture du dictionnaire
