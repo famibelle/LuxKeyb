@@ -81,10 +81,14 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(circle at 18% 8%, rgba(255,255,255,.20), transparent 46%);
 }
+/* Silhouette de la Guadeloupe : seuls les formats qui gardent une zone vide
+   la montrent. Ailleurs elle passait derrière le téléphone et ne se lisait plus
+   comme une carte, seulement comme une tache. */
 .ad .carte{
   position:absolute;z-index:0;pointer-events:none;
-  right:4cqw;bottom:3cqh;width:46cqw;opacity:.10;
+  right:4cqw;bottom:3cqh;width:42cqw;opacity:.14;
 }
+.L-block .carte,.L-wide .carte,.L-sky .carte{display:none;}
 .ad .inner{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;width:100%;}
 
 /* --- Bloc marque --- */
@@ -160,10 +164,11 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-block .brand .name b{font-size:3.4cqw;}
 .L-block .brand .name span{font-size:2.3cqw;}
 .L-block .head{font-size:7.6cqw;}
-.L-block .kicker{font-size:4cqw;margin-top:3cqh;}
+.L-block .kicker{font-size:4cqw;}
 .L-block .sub{font-size:3.4cqw;margin-top:1.6cqh;}
 .L-block .shot{max-height:62cqh;}
-.L-block .tail{margin-top:auto;padding-top:2.5cqh;display:flex;flex-direction:column;align-items:flex-start;gap:1.6cqh;}
+.L-block .body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;}
+.L-block .tail{margin-top:4cqh;display:flex;flex-direction:column;align-items:flex-start;gap:1.6cqh;}
 .L-block .cta{font-size:3.8cqw;padding:2cqh 5cqw;}
 .L-block .store-row{display:flex;flex-direction:column;align-items:flex-start;gap:1.2cqh;}
 .L-block .store{height:6cqh;}
@@ -190,7 +195,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-wide .cta{font-size:2.9cqw;padding:2.6cqh 4cqw;}
 .L-wide .store{height:9cqh;}
 .L-wide .foot{font-size:2.2cqw;}
-.L-wide .carte{width:46cqw;right:-8cqw;bottom:-14cqh;}
+
 
 /* Pavés display : 300x250, 336x280 */
 .L-rect .inner{padding:7% 7%;}
@@ -201,7 +206,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-rect .head{font-size:11cqw;margin-top:6%;}
 .L-rect .sub{font-size:4.4cqw;margin-top:3%;}
 .L-rect .btn{margin-top:auto;font-size:5cqw;padding:2.6cqw 5cqw;align-self:flex-start;}
-.L-rect .carte{width:40cqw;right:5cqw;bottom:6cqh;opacity:.13;}
+.L-rect .carte{width:38cqw;right:5cqw;bottom:6cqh;opacity:.16;}
 
 /* Grands verticaux : 300x600, 160x600 */
 .L-sky .inner{padding:5cqh 8cqw;align-items:center;text-align:center;}
@@ -212,23 +217,33 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-sky .brand .name span{font-size:5.4cqw;letter-spacing:.08em;}
 .L-sky .head{font-size:16cqw;margin-top:auto;}
 .L-sky .sub{font-size:7cqw;margin-top:2.4cqh;}
-.L-sky .chipstack{margin-top:auto;display:flex;flex-direction:column;gap:1.6cqh;width:100%;}
+.L-sky .chipstack{margin-top:auto;display:flex;flex-direction:column;gap:1.4cqh;width:100%;}
+/* Ces deux étiquettes citent la barre de suggestions, elles n'appellent aucune
+   action : contour et fond translucide, pour que le seul aplat plein de la
+   colonne reste le bouton d'installation. */
 .L-sky .chip{
-  border-radius:99px;padding:1.8cqh 0;text-align:center;color:#FFFFFF;
-  font-size:8cqw;font-weight:600;box-shadow:0 .6cqh 1.4cqh rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:2.5cqw;
+  border-radius:99px;padding:1.3cqh 4cqw;text-align:left;color:#FFFFFF;
+  font-size:6.4cqw;font-weight:600;
+  background:rgba(255,255,255,.12);border:.5cqh solid rgba(255,255,255,.30);
 }
-.L-sky .chip.kr{background:#2E9E5B;}
-.L-sky .chip.fr{background:#3B6FC4;}
+.L-sky .chip::before{
+  content:attr(data-lang);flex:0 0 auto;
+  font-size:4.2cqw;font-weight:700;letter-spacing:.06em;opacity:.85;
+}
+.L-sky .chip.kr::before{color:#7BE0A6;}
+.L-sky .chip.fr::before{color:#A8C6FF;}
 .L-sky .btn{margin-top:2.4cqh;width:100%;font-size:8cqw;padding:2cqh 0;}
 .L-sky .foot{font-size:5.4cqw;margin-top:1.6cqh;text-align:center;}
-.L-sky .carte{width:64cqw;right:18cqw;bottom:38cqh;opacity:.10;}
+
 .L-sky.wide300 .head{font-size:12cqw;}
 .L-sky.wide300 .sub{font-size:5cqw;}
 .L-sky.wide300 .brand .mark{width:18cqw;height:18cqw;}
 .L-sky.wide300 .brand .name{font-size:5cqw;}
 .L-sky.wide300 .brand .name b{font-size:5.8cqw;}
 .L-sky.wide300 .brand .name span{font-size:3.6cqw;}
-.L-sky.wide300 .chip{font-size:5.4cqw;}
+.L-sky.wide300 .chip{font-size:4.6cqw;}
+.L-sky.wide300 .chip::before{font-size:3.2cqw;}
 .L-sky.wide300 .btn{font-size:5.6cqw;}
 .L-sky.wide300 .foot{font-size:3.6cqw;}
 
@@ -391,13 +406,15 @@ const LAYOUTS = {
   block: c => `
     <div class="left">
       ${brand()}
-      ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : '<div style="height:5cqh"></div>'}
-      <h2 class="head">${c.head}</h2>
-      <div class="rule"></div>
-      <p class="sub">${c.sub}</p>
-      <div class="tail">
-        ${cta(c)}
-        <div class="store-row">${store()}<p class="foot">${c.foot}</p></div>
+      <div class="body">
+        ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : ''}
+        <h2 class="head">${c.head}</h2>
+        <div class="rule"></div>
+        <p class="sub">${c.sub}</p>
+        <div class="tail">
+          ${cta(c)}
+          <div class="store-row">${store()}<p class="foot">${c.foot}</p></div>
+        </div>
       </div>
     </div>
     <div class="right">${shot()}</div>`,
@@ -425,8 +442,8 @@ const LAYOUTS = {
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
     <div class="chipstack">
-      <span class="chip kr">Bonjou</span>
-      <span class="chip fr">Bonjour</span>
+      <span class="chip kr" data-lang="KR">Bonjou</span>
+      <span class="chip fr" data-lang="FR">Bonjour</span>
       <span class="btn">${spec.w >= 300 ? c.cta : c.btn}</span>
       <p class="foot">${c.foot}</p>
     </div>`,
