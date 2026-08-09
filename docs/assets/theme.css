@@ -112,6 +112,77 @@ nav.site {
 nav.site a { color: var(--sea); text-decoration: none; font-weight: 600; }
 nav.site a:hover { text-decoration: underline; }
 nav.site strong { color: var(--ink); }
+nav.site [aria-current="page"] { color: var(--ink); cursor: default; }
+nav.site [aria-current="page"]:hover { text-decoration: none; }
+
+/* Deux groupes repliés — supports à imprimer, façons de participer — pour que
+   la barre tienne sur une ligne au lieu d'aligner quinze liens de même poids.
+   <details> suffit : pas de JavaScript, et le clavier y accède nativement. */
+nav.site details.menu { position: relative; }
+nav.site details.menu > summary {
+  cursor: pointer;
+  color: var(--sea);
+  font-weight: 600;
+  list-style: none;
+}
+nav.site details.menu > summary::-webkit-details-marker { display: none; }
+nav.site details.menu > summary::after { content: " ▾"; font-size: 11px; }
+nav.site details.menu[open] > summary::after { content: " ▴"; }
+nav.site .menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+  padding: 8px;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+nav.site .menu-panel a {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 7px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+nav.site .menu-panel a:hover { background: var(--stripe); text-decoration: none; }
+
+/* Appel à l'action : le seul lien de la barre qui porte un fond. */
+nav.site .nav-cta {
+  background: var(--sea);
+  color: var(--paper);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+nav.site .nav-cta:hover { filter: brightness(1.1); text-decoration: none; }
+
+/* Sur mobile, un panneau flottant déborderait : les groupes se déplient
+   dans le flux. */
+@media (max-width: 640px) {
+  /* Le groupe prend toute la largeur, sans quoi son contenu déplié impose une
+     largeur minimale plus grande que l'écran et fait déborder toute la page. */
+  nav.site details.menu { width: 100%; }
+  nav.site .menu-panel {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    margin-top: 6px;
+    background: var(--stripe);
+    box-shadow: none;
+  }
+  nav.site .menu-panel a { white-space: normal; }
+}
 
 /* Boutons et cartes partagés */
 .btn {

@@ -39,6 +39,21 @@
       localStorage.setItem(STORAGE_KEY, next);
       applyTheme(next);
     });
+
+    // Les menus de la barre de navigation sont des <details> : ils s'ouvrent et
+    // se ferment tout seuls, mais rien ne les referme quand on clique ailleurs.
+    document.addEventListener("click", function (event) {
+      var menus = document.querySelectorAll("nav.site details.menu[open]");
+      for (var i = 0; i < menus.length; i++) {
+        if (!menus[i].contains(event.target)) menus[i].removeAttribute("open");
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      var menus = document.querySelectorAll("nav.site details.menu[open]");
+      for (var i = 0; i < menus.length; i++) menus[i].removeAttribute("open");
+    });
   });
 
   media.addEventListener("change", function () {
