@@ -99,14 +99,9 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
   box-shadow:0 .4cqw 1.4cqw rgba(0,0,0,.25);
 }
 .brand .mark img{width:84%;height:84%;object-fit:contain;}
-/* Sous une soixantaine de pixels, le potomitan n'est plus qu'une tache : les
-   petits formats portent un monogramme à la place. Le logo lui-même n'est
-   jamais retouché, il est simplement remplacé quand il devient illisible. */
-.brand .mark.mono{
-  font-family:"Fredoka",sans-serif;font-weight:700;color:#0A5259;
-  line-height:1;letter-spacing:-0.03em;
-}
-.t-hibiscus .brand .mark.mono{color:#8E2F1E;}
+/* Le logo est le seul signe de marque, à toutes les tailles. Les petits
+   formats lui donnent une pastille proportionnellement plus large pour lui
+   laisser le maximum de place. */
 .brand .name{font-size:3.4cqw;font-weight:600;line-height:1.12;letter-spacing:.005em;}
 .brand .name b{display:block;font-weight:700;font-size:4cqw;}
 .brand .name span{display:block;opacity:.72;font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;}
@@ -210,8 +205,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 
 /* Pavés display : 300x250, 336x280 */
 .L-rect .inner{padding:7% 7%;}
-.L-rect .brand .mark{width:17%;height:auto;aspect-ratio:1;}
-.L-rect .brand .mark.mono{font-size:10cqw;}
+.L-rect .brand .mark{width:18%;height:auto;aspect-ratio:1;}
 .L-rect .brand .name{font-size:4.6%;}
 .L-rect .brand .name b{font-size:5.4%;}
 .L-rect .brand .name span{font-size:3.6%;}
@@ -223,8 +217,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 /* Grands verticaux : 300x600, 160x600 */
 .L-sky .inner{padding:5cqh 8cqw;align-items:center;text-align:center;}
 .L-sky .brand{flex-direction:column;gap:1.6cqh;}
-.L-sky .brand .mark{width:26cqw;height:26cqw;}
-.L-sky .brand .mark.mono{font-size:15cqw;}
+.L-sky .brand .mark{width:30cqw;height:30cqw;}
 .L-sky .brand .name{font-size:7cqw;text-align:center;}
 .L-sky .brand .name b{font-size:8cqw;}
 .L-sky .brand .name span{font-size:5.4cqw;letter-spacing:.08em;}
@@ -251,8 +244,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 
 .L-sky.wide300 .head{font-size:12cqw;}
 .L-sky.wide300 .sub{font-size:5cqw;}
-.L-sky.wide300 .brand .mark{width:18cqw;height:18cqw;}
-.L-sky.wide300 .brand .mark.mono{font-size:10.5cqw;}
+.L-sky.wide300 .brand .mark{width:21cqw;height:21cqw;}
 .L-sky.wide300 .brand .name{font-size:5cqw;}
 .L-sky.wide300 .brand .name b{font-size:5.8cqw;}
 .L-sky.wide300 .brand .name span{font-size:3.6cqw;}
@@ -264,8 +256,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 /* Bannières horizontales : 728x90, 320x100, 320x50 */
 .L-bar .inner{flex-direction:row;align-items:center;gap:3cqw;padding:0 3.5cqw;}
 .L-bar .brand{flex:0 0 auto;}
-.L-bar .brand .mark{width:auto;height:52cqh;aspect-ratio:1;}
-.L-bar .brand .mark.mono{font-size:30cqh;}
+.L-bar .brand .mark{width:auto;height:64cqh;aspect-ratio:1;}
 .L-bar .brand .name{font-size:14cqh;}
 .L-bar .brand .name b{font-size:17cqh;}
 .L-bar .brand .name span{font-size:11cqh;}
@@ -394,9 +385,7 @@ const SHOT  = 'assets/ads/phone-conversation.png';
 /* --- Fragments réutilisables --- */
 const brand = (spec, markOnly) => `
   <div class="brand${markOnly ? ' mark-only' : ''}">
-    ${spec && spec.w < 800
-      ? '<span class="mark mono" aria-label="Klavyé Kréyòl Karukera">K</span>'
-      : `<span class="mark"><img src="${LOGO}" alt=""></span>`}
+    <span class="mark"><img src="${LOGO}" alt=""></span>
     <span class="name"><b>Klavyé Kréyòl</b><span>Karukera</span></span>
   </div>`;
 
@@ -466,7 +455,7 @@ const LAYOUTS = {
     </div>`,
 
   bar: (c, spec) => `
-    ${brand(spec)}
+    ${brand(spec, spec.w >= 700)}
     <h2 class="head">${c.headBar}</h2>
     <span class="btn">${spec.w >= 700 ? c.cta : c.btn}</span>`,
 
