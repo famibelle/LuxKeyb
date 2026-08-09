@@ -184,9 +184,11 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-wide .brand .name b{font-size:3cqw;}
 .L-wide .brand .name span{font-size:2cqw;}
 .L-wide .shot{max-width:100%;max-height:88cqh;}
-.L-wide .tail{margin-top:auto;padding-top:3cqh;display:flex;align-items:center;gap:3cqw;}
+.L-wide .tail{margin-top:auto;padding-top:3cqh;display:flex;flex-direction:column;
+  align-items:flex-start;gap:2.4cqh;}
+.L-wide .store-row{display:flex;align-items:center;gap:3cqw;}
 .L-wide .cta{font-size:2.9cqw;padding:2.6cqh 4cqw;}
-.L-wide .store{height:11cqh;}
+.L-wide .store{height:9cqh;}
 .L-wide .foot{font-size:2.2cqw;}
 .L-wide .carte{width:46cqw;right:-8cqw;bottom:-14cqh;}
 
@@ -405,7 +407,10 @@ const LAYOUTS = {
       ${brand()}
       <h2 class="head" style="margin-top:3cqh">${c.headShort}</h2>
       <p class="sub">${c.sub}</p>
-      <div class="tail">${cta(c)}${store()}<p class="foot">${c.foot}</p></div>
+      <div class="tail">
+        ${cta(c)}
+        <div class="store-row">${store()}<p class="foot">${c.foot}</p></div>
+      </div>
     </div>
     <div class="right">${shot()}</div>`,
 
