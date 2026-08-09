@@ -110,6 +110,9 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .brand .name{font-size:3.4cqw;font-weight:600;line-height:1.12;letter-spacing:.005em;}
 .brand .name b{display:block;font-weight:700;font-size:4cqw;}
 .brand .name span{display:block;opacity:.72;font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;}
+/* Le nom écrit disparaît là où le surtitre ou le bouton le porte déjà : sinon
+   « Klavyé Kréyòl » se lit jusqu'à trois fois dans le même visuel. */
+.brand.mark-only .name{display:none;}
 
 /* --- Titres --- */
 .kicker{font-size:4.4cqw;font-weight:500;opacity:.9;margin:0 0 1.2cqh;line-height:1.2;}
@@ -207,8 +210,8 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 
 /* Pavés display : 300x250, 336x280 */
 .L-rect .inner{padding:7% 7%;}
-.L-rect .brand .mark{width:13%;height:auto;aspect-ratio:1;}
-.L-rect .brand .mark.mono{font-size:6.5cqw;}
+.L-rect .brand .mark{width:17%;height:auto;aspect-ratio:1;}
+.L-rect .brand .mark.mono{font-size:8.5cqw;}
 .L-rect .brand .name{font-size:4.6%;}
 .L-rect .brand .name b{font-size:5.4%;}
 .L-rect .brand .name span{font-size:3.6%;}
@@ -389,8 +392,8 @@ const STORE = 'Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg';
 const SHOT  = 'assets/ads/phone-conversation.png';
 
 /* --- Fragments réutilisables --- */
-const brand = (spec) => `
-  <div class="brand">
+const brand = (spec, markOnly) => `
+  <div class="brand${markOnly ? ' mark-only' : ''}">
     ${spec && spec.w < 800
       ? '<span class="mark mono" aria-label="Klavyé Kréyòl Karukera">KK</span>'
       : `<span class="mark"><img src="${LOGO}" alt=""></span>`}
@@ -409,7 +412,7 @@ const LAYOUTS = {
   /* Pas de badge magasin ici : TikTok, Snapchat et les Stories posent déjà leur
      propre bouton d'installation en bas. Le nôtre reste au-dessus de leur zone. */
   tall: (c, spec) => `
-    ${brand(spec)}
+    ${brand(spec, !!c.kicker)}
     ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : '<div style="height:5cqh"></div>'}
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
@@ -419,7 +422,7 @@ const LAYOUTS = {
 
   block: (c, spec) => `
     <div class="left">
-      ${brand(spec)}
+      ${brand(spec, !!c.kicker)}
       <div class="body">
         ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : ''}
         <h2 class="head">${c.head}</h2>
@@ -446,7 +449,7 @@ const LAYOUTS = {
     <div class="right">${shot()}</div>`,
 
   rect: (c, spec) => `
-    ${brand(spec)}
+    ${brand(spec, true)}
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
     <span class="btn">${c.cta}</span>`,
