@@ -211,7 +211,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 /* Pavés display : 300x250, 336x280 */
 .L-rect .inner{padding:7% 7%;}
 .L-rect .brand .mark{width:17%;height:auto;aspect-ratio:1;}
-.L-rect .brand .mark.mono{font-size:8.5cqw;}
+.L-rect .brand .mark.mono{font-size:10cqw;}
 .L-rect .brand .name{font-size:4.6%;}
 .L-rect .brand .name b{font-size:5.4%;}
 .L-rect .brand .name span{font-size:3.6%;}
@@ -224,7 +224,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-sky .inner{padding:5cqh 8cqw;align-items:center;text-align:center;}
 .L-sky .brand{flex-direction:column;gap:1.6cqh;}
 .L-sky .brand .mark{width:26cqw;height:26cqw;}
-.L-sky .brand .mark.mono{font-size:13cqw;}
+.L-sky .brand .mark.mono{font-size:15cqw;}
 .L-sky .brand .name{font-size:7cqw;text-align:center;}
 .L-sky .brand .name b{font-size:8cqw;}
 .L-sky .brand .name span{font-size:5.4cqw;letter-spacing:.08em;}
@@ -252,7 +252,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-sky.wide300 .head{font-size:12cqw;}
 .L-sky.wide300 .sub{font-size:5cqw;}
 .L-sky.wide300 .brand .mark{width:18cqw;height:18cqw;}
-.L-sky.wide300 .brand .mark.mono{font-size:9cqw;}
+.L-sky.wide300 .brand .mark.mono{font-size:10.5cqw;}
 .L-sky.wide300 .brand .name{font-size:5cqw;}
 .L-sky.wide300 .brand .name b{font-size:5.8cqw;}
 .L-sky.wide300 .brand .name span{font-size:3.6cqw;}
@@ -265,7 +265,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-bar .inner{flex-direction:row;align-items:center;gap:3cqw;padding:0 3.5cqw;}
 .L-bar .brand{flex:0 0 auto;}
 .L-bar .brand .mark{width:auto;height:52cqh;aspect-ratio:1;}
-.L-bar .brand .mark.mono{font-size:26cqh;}
+.L-bar .brand .mark.mono{font-size:30cqh;}
 .L-bar .brand .name{font-size:14cqh;}
 .L-bar .brand .name b{font-size:17cqh;}
 .L-bar .brand .name span{font-size:11cqh;}
@@ -395,7 +395,7 @@ const SHOT  = 'assets/ads/phone-conversation.png';
 const brand = (spec, markOnly) => `
   <div class="brand${markOnly ? ' mark-only' : ''}">
     ${spec && spec.w < 800
-      ? '<span class="mark mono" aria-label="Klavyé Kréyòl Karukera">KK</span>'
+      ? '<span class="mark mono" aria-label="Klavyé Kréyòl Karukera">K</span>'
       : `<span class="mark"><img src="${LOGO}" alt=""></span>`}
     <span class="name"><b>Klavyé Kréyòl</b><span>Karukera</span></span>
   </div>`;
