@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visuels paid media · Klavyé Kréyòl Karukera</title>
+<meta name="description" content="Kit de visuels publicitaires prêts à charger dans TikTok Ads, Meta Ads (Facebook / Instagram), Google Ads et Snapchat Ads : tous les formats, deux axes créatifs.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+/* ==========================================================================
+   Page d'atelier (dépend du thème du site)
+   ========================================================================== */
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 60px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+}
+.wrap{max-width:1080px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;}
+h2{font-size:22px;margin:38px 0 6px;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:62ch;margin:0 0 22px;}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin:0 0 26px;
+}
+.note code{font-family:var(--mono);font-size:12.5px;}
+code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1px 4px;border-radius:4px;word-break:break-all;}
+.copy{border-collapse:collapse;width:100%;font-size:14px;margin-bottom:10px;}
+.copy th,.copy td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
+.copy th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--sea);}
+.copy td:first-child{color:var(--ink-soft);white-space:nowrap;}
+.copy td:last-child{font-family:var(--mono);color:var(--ink-soft);text-align:right;}
+.gallery{display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start;margin-bottom:10px;}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px;}
+.card figcaption{font-size:12.5px;color:var(--ink-soft);margin-top:9px;max-width:260px;}
+.card .fmt{font-family:var(--mono);font-size:12px;color:var(--sea);display:block;}
+.stage{position:relative;overflow:hidden;background:var(--stripe);border-radius:6px;}
+.stage .ad{position:absolute;top:0;left:0;transform-origin:top left;}
+/* Repère d'atelier, jamais exporté : la zone que l'interface de TikTok,
+   Snapchat et des Stories ne recouvre pas. */
+.safe{position:absolute;inset:0;pointer-events:none;}
+.safe::before{
+  content:'';position:absolute;left:2%;right:2%;top:6%;bottom:20%;
+  border:1px dashed rgba(255,255,255,.6);border-radius:4px;
+}
+.safe::after{
+  content:'zone sûre';position:absolute;bottom:20.5%;left:3%;
+  font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.75);
+}
+
+/* ==========================================================================
+   Les visuels publicitaires
+   Couleurs en dur : un visuel ne doit JAMAIS suivre le thème du site,
+   il est exporté en PNG et vit en dehors de cette page.
+   ========================================================================== */
+.ad{
+  container-type:size;
+  position:relative;
+  overflow:hidden;
+  font-family:"Fredoka",-apple-system,"Segoe UI",sans-serif;
+  font-weight:600;
+  color:#FFFFFF;
+  isolation:isolate;
+  -webkit-font-smoothing:antialiased;
+}
+.ad *{box-sizing:border-box;}
+
+/* --- Fonds par axe créatif --- */
+.ad.t-lagon{background:linear-gradient(157deg,#12848E 0%,#0A5259 52%,#053035 100%);}
+.ad.t-hibiscus{background:linear-gradient(157deg,#D95B42 0%,#B03A2B 52%,#78200F 100%);}
+.ad.t-papier{background:#F5F2EA;color:#10312F;}
+.ad .glow{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(circle at 18% 8%, rgba(255,255,255,.20), transparent 46%);
+}
+.ad .carte{
+  position:absolute;z-index:0;pointer-events:none;
+  right:4cqw;bottom:3cqh;width:46cqw;opacity:.10;
+}
+.ad .inner{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;width:100%;}
+
+/* --- Bloc marque --- */
+.brand{display:flex;align-items:center;gap:2.6cqw;flex:0 0 auto;}
+.brand .mark{
+  width:9cqw;height:9cqw;border-radius:50%;background:#FFFFFF;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  box-shadow:0 .4cqw 1.4cqw rgba(0,0,0,.25);
+}
+.brand .mark img{width:84%;height:84%;object-fit:contain;}
+.brand .name{font-size:3.4cqw;font-weight:600;line-height:1.12;letter-spacing:.005em;}
+.brand .name b{display:block;font-weight:700;font-size:4cqw;}
+.brand .name span{display:block;opacity:.72;font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;}
+
+/* --- Titres --- */
+.kicker{font-size:4.4cqw;font-weight:500;opacity:.9;margin:0 0 1.2cqh;line-height:1.2;}
+.head{font-family:"Fredoka",sans-serif;font-weight:700;letter-spacing:-0.015em;line-height:1.02;margin:0;text-wrap:balance;}
+.head em{font-style:normal;color:#FFC978;}
+.t-hibiscus .head em{color:#FFD9A6;}
+.sub{font-weight:500;opacity:.92;margin:0;line-height:1.32;}
+.rule{height:.7cqh;min-height:4px;width:16cqw;border-radius:99px;background:#FFC978;margin:2.4cqh 0;flex:0 0 auto;}
+.t-hibiscus .rule{background:#FFD9A6;}
+
+/* --- La preuve : capture réelle du clavier en situation.
+   Coins déjà arrondis dans le PNG, donc l'ombre se pose au drop-shadow et
+   les contraintes max-* suffisent à préserver le ratio. --- */
+.shot{
+  display:block;
+  /* Absorbe le débordement : quand une accroche prend une ligne de plus,
+     c'est la capture qui rétrécit, jamais le bloc magasin qui se fait pousser
+     hors du cadre. object-fit garde le ratio, les marges restent transparentes. */
+  flex:0 1 auto;min-height:0;object-fit:contain;
+  filter:drop-shadow(0 2cqw 4.5cqw rgba(0,0,0,.42));
+}
+
+/* --- Pied de visuel : magasin + mentions --- */
+.store{display:block;height:8.2cqh;width:auto;max-width:52cqw;flex:0 0 auto;}
+.foot{font-size:3cqw;font-weight:500;opacity:.85;letter-spacing:.01em;margin:0;}
+.btn{
+  display:inline-block;background:#FFC978;color:#0A3B36;border-radius:99px;
+  font-weight:700;text-align:center;white-space:nowrap;
+}
+.t-hibiscus .btn{background:#FFE6C4;color:#6E1B0C;}
+
+/* ==========================================================================
+   Layouts par famille de format
+   ========================================================================== */
+
+/* 9:16 — TikTok, Reels, Stories, Snapchat.
+   Le bas est laissé vide : l'interface des applis recouvre ~20 % de la hauteur. */
+.L-tall .inner{padding:6cqh 8cqw 15cqh;}
+.L-tall .head{font-size:11cqw;}
+.L-tall .kicker{font-size:4.8cqw;margin-top:3cqh;}
+.L-tall .foot{font-size:3.4cqw;margin-top:2.5cqh;text-align:center;}
+/* Un téléphone entier et l'accroche complète ne tiennent pas ensemble
+   au-dessus de la zone masquée par l'interface des applis : le 9:16 garde
+   l'accroche courte, sans sous-titre. */
+.L-tall .shot{max-height:56cqh;margin:auto auto 0;}
+
+/* 4:5 et 1:1 — fil Facebook / Instagram, PMax carré.
+   Deux colonnes : le téléphone est trop élancé pour tenir sous le texte. */
+.L-block .inner{flex-direction:row;align-items:center;gap:4cqw;padding:6cqh 7cqw;}
+.L-block .left{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;height:100%;}
+.L-block .right{flex:0 0 auto;display:flex;align-items:center;justify-content:center;height:100%;}
+.L-block .brand .mark{width:7.5cqw;height:7.5cqw;}
+.L-block .brand .name{font-size:2.9cqw;}
+.L-block .brand .name b{font-size:3.4cqw;}
+.L-block .brand .name span{font-size:2.3cqw;}
+.L-block .head{font-size:7.6cqw;}
+.L-block .kicker{font-size:4cqw;margin-top:3cqh;}
+.L-block .sub{font-size:3.4cqw;margin-top:1.6cqh;}
+.L-block .shot{max-height:62cqh;}
+.L-block .tail{margin-top:auto;padding-top:2.5cqh;display:flex;flex-direction:column;align-items:flex-start;gap:1.6cqh;}
+.L-block .store{height:7cqh;max-width:100%;}
+.L-block .foot{font-size:2.7cqw;}
+.L-block.sq .head{font-size:7cqw;}
+.L-block.sq .shot{max-height:68cqh;}
+
+/* 1.91:1 — Google Ads paysage, encarts liens Meta */
+.L-wide .inner{flex-direction:row;align-items:center;gap:4cqw;padding:9cqh 6cqw;}
+.L-wide .left{display:flex;flex-direction:column;flex:1 1 58%;min-width:0;}
+.L-wide .right{flex:0 0 36%;display:flex;justify-content:center;}
+.L-wide .head{font-size:7.4cqw;}
+.L-wide .kicker{font-size:3.4cqw;margin-top:3cqh;}
+.L-wide .sub{font-size:2.9cqw;margin-top:2cqh;}
+.L-wide .brand .mark{width:6.4cqw;height:6.4cqw;}
+.L-wide .brand .name{font-size:2.5cqw;}
+.L-wide .brand .name b{font-size:3cqw;}
+.L-wide .brand .name span{font-size:2cqw;}
+.L-wide .shot{max-width:100%;max-height:88cqh;}
+.L-wide .tail{margin-top:auto;padding-top:3cqh;display:flex;align-items:center;gap:3cqw;}
+.L-wide .store{height:11cqh;}
+.L-wide .foot{font-size:2.2cqw;}
+.L-wide .carte{width:46cqw;right:-8cqw;bottom:-14cqh;}
+
+/* Pavés display : 300x250, 336x280 */
+.L-rect .inner{padding:7% 7%;}
+.L-rect .brand .mark{width:13%;height:auto;aspect-ratio:1;}
+.L-rect .brand .name{font-size:4.6%;}
+.L-rect .brand .name b{font-size:5.4%;}
+.L-rect .brand .name span{font-size:3.6%;}
+.L-rect .head{font-size:11cqw;margin-top:6%;}
+.L-rect .sub{font-size:4.4cqw;margin-top:3%;}
+.L-rect .btn{margin-top:auto;font-size:5cqw;padding:2.6cqw 5cqw;align-self:flex-start;}
+.L-rect .carte{width:40cqw;right:5cqw;bottom:6cqh;opacity:.13;}
+
+/* Grands verticaux : 300x600, 160x600 */
+.L-sky .inner{padding:5cqh 8cqw;align-items:center;text-align:center;}
+.L-sky .brand{flex-direction:column;gap:1.6cqh;}
+.L-sky .brand .mark{width:26cqw;height:26cqw;}
+.L-sky .brand .name{font-size:7cqw;text-align:center;}
+.L-sky .brand .name b{font-size:8cqw;}
+.L-sky .brand .name span{font-size:5.4cqw;letter-spacing:.08em;}
+.L-sky .head{font-size:16cqw;margin-top:auto;}
+.L-sky .sub{font-size:7cqw;margin-top:2.4cqh;}
+.L-sky .chipstack{margin-top:auto;display:flex;flex-direction:column;gap:1.6cqh;width:100%;}
+.L-sky .chip{
+  border-radius:99px;padding:1.8cqh 0;text-align:center;color:#FFFFFF;
+  font-size:8cqw;font-weight:600;box-shadow:0 .6cqh 1.4cqh rgba(0,0,0,.2);
+}
+.L-sky .chip.kr{background:#2E9E5B;}
+.L-sky .chip.fr{background:#3B6FC4;}
+.L-sky .btn{margin-top:2.4cqh;width:100%;font-size:8cqw;padding:2cqh 0;}
+.L-sky .foot{font-size:5.4cqw;margin-top:1.6cqh;text-align:center;}
+.L-sky .carte{width:64cqw;right:18cqw;bottom:38cqh;opacity:.10;}
+.L-sky.wide300 .head{font-size:12cqw;}
+.L-sky.wide300 .sub{font-size:5cqw;}
+.L-sky.wide300 .brand .mark{width:18cqw;height:18cqw;}
+.L-sky.wide300 .brand .name{font-size:5cqw;}
+.L-sky.wide300 .brand .name b{font-size:5.8cqw;}
+.L-sky.wide300 .brand .name span{font-size:3.6cqw;}
+.L-sky.wide300 .chip{font-size:5.4cqw;}
+.L-sky.wide300 .btn{font-size:5.6cqw;}
+.L-sky.wide300 .foot{font-size:3.6cqw;}
+
+/* Bannières horizontales : 728x90, 320x100, 320x50 */
+.L-bar .inner{flex-direction:row;align-items:center;gap:3cqw;padding:0 3.5cqw;}
+.L-bar .brand{flex:0 0 auto;}
+.L-bar .brand .mark{width:auto;height:52cqh;aspect-ratio:1;}
+.L-bar .brand .name{font-size:14cqh;}
+.L-bar .brand .name b{font-size:17cqh;}
+.L-bar .brand .name span{font-size:11cqh;}
+.L-bar .head{font-size:34cqh;flex:1 1 auto;line-height:1.06;}
+.L-bar .sub{font-size:15cqh;}
+.L-bar .btn{flex:0 0 auto;font-size:22cqh;padding:9cqh 4cqw;}
+.L-bar .carte{display:none;}
+.L-bar.thin .head{font-size:40cqh;}
+.L-bar.thin .btn{font-size:26cqh;padding:11cqh 4cqw;}
+.L-bar.thin .brand .name{display:none;}
+/* 320 x 100 : trop étroit pour le nom de marque, l'accroche passe sur deux lignes. */
+.L-bar.mid .brand .name{display:none;}
+.L-bar.mid .head{font-size:26cqh;}
+.L-bar.mid .btn{font-size:17cqh;padding:8cqh 3.5cqw;}
+
+/* L'axe « An kréyòl nou ka palé » compte quatre fois plus de signes que
+   « Osez le Kréyòl » : il lui faut ses propres tailles, sinon il déborde. */
+.L-tall.crea-b .head{font-size:8cqw;}
+
+.L-block.crea-b .head{font-size:6.4cqw;}
+.L-block.sq.crea-b .head{font-size:5.8cqw;}
+
+.L-wide.crea-b .head{font-size:4.8cqw;}
+.L-rect.crea-b .head{font-size:7.6cqw;}
+.L-rect.crea-b .sub{display:none;}
+.L-bar.crea-b .head{font-size:24cqh;}
+
+/* Logotypes exigés par Google Ads (Performance Max) */
+.L-logo .inner{align-items:center;justify-content:center;gap:3cqh;padding:6%;}
+.L-logo .mark{
+  width:44cqh;height:44cqh;border-radius:50%;background:#FFFFFF;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  box-shadow:0 1cqh 3cqh rgba(16,49,47,.16);
+}
+.L-logo .mark img{width:86%;height:86%;object-fit:contain;}
+.L-logo .name{font-size:10cqh;font-weight:700;text-align:center;line-height:1.12;}
+.L-logo .name span{display:block;font-size:6cqh;font-weight:500;letter-spacing:.14em;text-transform:uppercase;opacity:.7;}
+.L-logo.bar .inner{flex-direction:row;gap:4%;}
+.L-logo.bar .mark{width:62cqh;height:62cqh;}
+.L-logo.bar .name{font-size:26cqh;text-align:left;}
+.L-logo.bar .name span{font-size:14cqh;}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="page">
+  <p class="eyebrow">Klavyé Kréyòl Karukera · kit média payant</p>
+  <h1>Visuels pour les campagnes payantes</h1>
+  <p class="lead">
+    Deux axes créatifs déclinés dans tous les formats attendus par TikTok Ads, Meta Ads
+    (Facebook et Instagram), Google Ads et Snapchat Ads. Chaque visuel est exporté en PNG
+    à sa taille de diffusion exacte, sans redimensionnement.
+  </p>
+  <div class="note">
+    Les PNG se régénèrent depuis cette page&nbsp;:
+    <code>python3 docs/assets/ads/generate.py</code> (Chrome en mode headless).
+    Modifier un slogan&nbsp;: le tableau <code>CREA</code> en bas de ce fichier.
+    Les exports se trouvent dans <code>docs/assets/ads/export/</code>.
+  </div>
+  <div id="gallery"></div>
+
+  <h2>Textes à saisir dans les régies</h2>
+  <p class="lead">
+    Les visuels ne portent pas tout le message : chaque régie demande ses propres
+    champs texte. Voici les versions calibrées sur leurs limites de caractères.
+  </p>
+  <table class="copy">
+    <tr><th>Champ</th><th>Texte</th><th>Signes</th></tr>
+    <tr><td>Titre court (Google, 30&nbsp;max)</td><td>Osez le Kréyòl.</td><td>15</td></tr>
+    <tr><td>Titre court (Google, 30&nbsp;max)</td><td>Clavier kréyòl gratuit</td><td>22</td></tr>
+    <tr><td>Titre court (Google, 30&nbsp;max)</td><td>An kréyòl nou ka maké.</td><td>22</td></tr>
+    <tr><td>Titre long (Google, 90&nbsp;max)</td><td>An kréyòl nou ka palé, An kréyòl nou ka maké.</td><td>44</td></tr>
+    <tr><td>Description (Google, 90&nbsp;max)</td><td>Le clavier Android qui écrit ton kréyòl au lieu de le corriger en français.</td><td>74</td></tr>
+    <tr><td>Description (Google, 90&nbsp;max)</td><td>Suggestions en kréyòl et en français pendant que tu écris. Gratuit, sans pub.</td><td>76</td></tr>
+    <tr><td>Texte principal (Meta)</td><td>Ton téléphone corrige ton kréyòl en français&nbsp;? Klavyé Kréyòl Karukera te propose les mots en kréyòl et en français pendant que tu écris, sur toutes tes applis. Gratuit, sans publicité, 100&nbsp;% hors ligne.</td><td>212</td></tr>
+    <tr><td>Titre (Meta, 40&nbsp;max)</td><td>Osez le Kréyòl.</td><td>15</td></tr>
+    <tr><td>Accroche TikTok / Snapchat</td><td>An kréyòl nou ka palé, An kréyòl nou ka maké.</td><td>44</td></tr>
+    <tr><td>Bouton</td><td>Installer</td><td>9</td></tr>
+  </table>
+  <p class="lead" style="margin-top:18px">
+    Lien de destination avec suivi&nbsp;:
+    <code>https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3D<b>tiktok</b>%26utm_campaign%3Dpaid</code>
+    (remplacer <code>tiktok</code> par la régie&nbsp;: <code>meta</code>, <code>google</code>, <code>snapchat</code>).
+  </p>
+</div>
+
+<script>
+/* ==========================================================================
+   Axes créatifs. Un seul endroit à modifier pour changer une accroche.
+   ========================================================================== */
+const CREA = {
+  a: {
+    theme: 't-lagon',
+    kicker: 'Avec Klavyé Kréyòl,',
+    head: 'Osez le<br>Kréyòl.',
+    headShort: 'Osez le <em>Kréyòl.</em>',
+    headBar: 'Osez le <em>Kréyòl.</em>',
+    sub: 'Le clavier Android qui écrit ton kréyòl au lieu de le corriger en français.',
+    subShort: 'Clavier kréyòl gratuit pour Android.',
+    btn: 'Installer',
+    foot: 'Gratuit · Sans pub<br>100&nbsp;% hors ligne',
+    footLine: 'Gratuit · Sans pub · 100&nbsp;% hors ligne'
+  },
+  b: {
+    theme: 't-hibiscus',
+    kicker: '',
+    /* Coupures voulues : les deux moitiés du slogan se répondent ligne à ligne. */
+    head: 'An kréyòl<br>nou ka palé,<br>An kréyòl<br>nou ka <em>maké.</em>',
+    headShort: 'An kréyòl nou ka palé,<br>An kréyòl nou ka <em>maké.</em>',
+    headBar: 'An kréyòl nou ka palé, An kréyòl nou ka <em>maké.</em>',
+    sub: 'Suggestions en kréyòl et en français pendant que tu écris, sur toutes tes applis.',
+    subShort: 'Clavier kréyòl gratuit pour Android.',
+    btn: 'Installer',
+    foot: 'Gratuit · Sans pub<br>100&nbsp;% hors ligne',
+    footLine: 'Gratuit · Sans pub · 100&nbsp;% hors ligne'
+  }
+};
+
+const CARTE = 'assets/carte-guadeloupe.svg';
+const LOGO  = 'assets/potomitan-logo.png';
+const STORE = 'Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg';
+const SHOT  = 'assets/ads/phone-conversation.png';
+
+/* --- Fragments réutilisables --- */
+const brand = () => `
+  <div class="brand">
+    <span class="mark"><img src="${LOGO}" alt=""></span>
+    <span class="name"><b>Klavyé Kréyòl</b><span>Karukera</span></span>
+  </div>`;
+
+const shot = () => `<img class="shot" src="${SHOT}" alt="Un téléphone où le clavier propose des mots kréyòl et français pendant la frappe d\'un SMS">`;
+const store = () => `<img class="store" src="${STORE}" alt="Disponible sur Google Play">`;
+const carte = () => `<img class="carte" src="${CARTE}" alt="">`;
+
+/* --- Layouts --- */
+const LAYOUTS = {
+  /* Pas de badge magasin ici : TikTok, Snapchat et les Stories posent leur
+     propre bouton d'installation par-dessus le bas du visuel. */
+  tall: c => `
+    ${brand()}
+    ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : '<div style="height:6cqh"></div>'}
+    <h2 class="head">${c.headShort}</h2>
+    <div class="rule"></div>
+    ${shot()}
+    <p class="foot">${c.footLine}</p>`,
+
+  block: c => `
+    <div class="left">
+      ${brand()}
+      ${c.kicker ? `<p class="kicker">${c.kicker}</p>` : '<div style="height:5cqh"></div>'}
+      <h2 class="head">${c.head}</h2>
+      <div class="rule"></div>
+      <p class="sub">${c.sub}</p>
+      <div class="tail">${store()}<p class="foot">${c.foot}</p></div>
+    </div>
+    <div class="right">${shot()}</div>`,
+
+  wide: c => `
+    <div class="left">
+      ${brand()}
+      <h2 class="head" style="margin-top:3cqh">${c.headShort}</h2>
+      <p class="sub">${c.sub}</p>
+      <div class="tail">${store()}<p class="foot">${c.foot}</p></div>
+    </div>
+    <div class="right">${shot()}</div>`,
+
+  rect: c => `
+    ${brand()}
+    <h2 class="head">${c.headShort}</h2>
+    <p class="sub">${c.subShort}</p>
+    <span class="btn">${c.btn}</span>`,
+
+  sky: c => `
+    ${brand()}
+    <h2 class="head">${c.headShort}</h2>
+    <p class="sub">${c.subShort}</p>
+    <div class="chipstack">
+      <span class="chip kr">Bonjou</span>
+      <span class="chip fr">Bonjour</span>
+      <span class="btn">${c.btn}</span>
+      <p class="foot">${c.foot}</p>
+    </div>`,
+
+  bar: c => `
+    ${brand()}
+    <h2 class="head">${c.headBar}</h2>
+    <span class="btn">${c.btn}</span>`,
+
+  logo: () => `
+    <span class="mark"><img src="${LOGO}" alt=""></span>
+    <span class="name">Klavyé Kréyòl<span>Karukera</span></span>`
+};
+
+/* ==========================================================================
+   Le catalogue : un objet = un PNG exporté.
+   ========================================================================== */
+const SPECS = [
+  {id:'tiktok-story-A',    w:1080, h:1920, layout:'tall',  crea:'a', cls:'L-tall',
+   use:'TikTok · Reels · Stories IG/FB · Snapchat (9:16)'},
+  {id:'tiktok-story-B',    w:1080, h:1920, layout:'tall',  crea:'b', cls:'L-tall',
+   use:'TikTok · Reels · Stories IG/FB · Snapchat (9:16)'},
+  {id:'meta-portrait-A',   w:1080, h:1350, layout:'block', crea:'a', cls:'L-block',
+   use:'Fil Facebook et Instagram (4:5)'},
+  {id:'meta-portrait-B',   w:1080, h:1350, layout:'block', crea:'b', cls:'L-block',
+   use:'Fil Facebook et Instagram (4:5)'},
+  {id:'meta-carre-A',      w:1080, h:1080, layout:'block', crea:'a', cls:'L-block sq',
+   use:'Fil Facebook et Instagram, carrousel (1:1)'},
+  {id:'meta-carre-B',      w:1080, h:1080, layout:'block', crea:'b', cls:'L-block sq',
+   use:'Fil Facebook et Instagram, carrousel (1:1)'},
+  {id:'google-paysage-A',  w:1200, h:628,  layout:'wide',  crea:'a', cls:'L-wide',
+   use:'Google Ads et Meta, format paysage (1.91:1)'},
+  {id:'google-paysage-B',  w:1200, h:628,  layout:'wide',  crea:'b', cls:'L-wide',
+   use:'Google Ads et Meta, format paysage (1.91:1)'},
+  {id:'google-pmax-carre', w:1200, h:1200, layout:'block', crea:'a', cls:'L-block sq',
+   use:'Google Performance Max, image carrée obligatoire'},
+  {id:'google-pmax-4x5',   w:960,  h:1200, layout:'block', crea:'b', cls:'L-block',
+   use:'Google Performance Max, image portrait (4:5)'},
+  {id:'display-300x250-A', w:300,  h:250,  layout:'rect',  crea:'a', cls:'L-rect',
+   use:'Display : pavé médian, le format le plus diffusé'},
+  {id:'display-300x250-B', w:300,  h:250,  layout:'rect',  crea:'b', cls:'L-rect',
+   use:'Display : pavé médian, variante à tester'},
+  {id:'display-336x280',   w:336,  h:280,  layout:'rect',  crea:'a', cls:'L-rect',
+   use:'Display : grand pavé'},
+  {id:'display-300x600',   w:300,  h:600,  layout:'sky',   crea:'a', cls:'L-sky wide300',
+   use:'Display : demi-page'},
+  {id:'display-160x600',   w:160,  h:600,  layout:'sky',   crea:'a', cls:'L-sky',
+   use:'Display : gratte-ciel large'},
+  {id:'display-728x90',    w:728,  h:90,   layout:'bar',   crea:'a', cls:'L-bar',
+   use:'Display : bannière ordinateur'},
+  {id:'display-320x100',   w:320,  h:100,  layout:'bar',   crea:'a', cls:'L-bar mid',
+   use:'Display : grande bannière mobile'},
+  {id:'display-320x50',    w:320,  h:50,   layout:'bar',   crea:'a', cls:'L-bar thin',
+   use:'Display : bannière mobile'},
+  {id:'logo-carre',        w:1200, h:1200, layout:'logo',  crea:'a', cls:'L-logo', theme:'t-papier',
+   use:'Google Ads : logo carré (1:1), obligatoire en Performance Max'},
+  {id:'logo-paysage',      w:1200, h:300,  layout:'logo',  crea:'a', cls:'L-logo bar', theme:'t-papier',
+   use:'Google Ads : logo paysage (4:1)'}
+];
+
+/* --- Construction d'un visuel --- */
+function buildAd(spec){
+  const c = CREA[spec.crea];
+  const el = document.createElement('div');
+  el.className = `ad ${spec.theme || c.theme} ${spec.cls} crea-${spec.crea}`;
+  el.style.width = spec.w + 'px';
+  el.style.height = spec.h + 'px';
+  el.id = 'ad-' + spec.id;
+  const decor = spec.layout === 'logo' ? '' : `<div class="glow"></div>${carte()}`;
+  el.innerHTML = `${decor}<div class="inner">${LAYOUTS[spec.layout](c, spec)}</div>`;
+  return el;
+}
+
+/* --- Mode export : un seul visuel, collé en haut à gauche --- */
+const params = new URLSearchParams(location.search);
+const target = params.get('render');
+
+if (target) {
+  const spec = SPECS.find(s => s.id === target);
+  document.body.innerHTML = '';
+  document.body.style.cssText = 'margin:0;padding:0;background:#FFF;overflow:hidden;';
+  if (spec) document.body.appendChild(buildAd(spec));
+} else {
+  /* --- Mode atelier : la planche de contact --- */
+  const groups = [
+    ['Réseaux sociaux · TikTok, Instagram, Facebook, Snapchat',
+     s => s.w >= 960 && s.layout !== 'wide' && s.layout !== 'logo'],
+    ['Google Ads · images de campagne', s => s.layout === 'wide'],
+    ['Google Ads · display', s => s.w < 960],
+    ['Google Ads · logos', s => s.layout === 'logo']
+  ];
+  const host = document.getElementById('gallery');
+  const seen = new Set();
+  groups.forEach(([title, test]) => {
+    const list = SPECS.filter(s => test(s) && !seen.has(s.id));
+    if (!list.length) return;
+    list.forEach(s => seen.add(s.id));
+    const h = document.createElement('h2');
+    h.textContent = title;
+    host.appendChild(h);
+    const row = document.createElement('div');
+    row.className = 'gallery';
+    list.forEach(spec => {
+      const scale = Math.min(1, 260 / spec.w, 460 / spec.h);
+      const fig = document.createElement('figure');
+      fig.className = 'card';
+      fig.style.margin = '0';
+      const stage = document.createElement('div');
+      stage.className = 'stage';
+      stage.style.width = Math.round(spec.w * scale) + 'px';
+      stage.style.height = Math.round(spec.h * scale) + 'px';
+      const ad = buildAd(spec);
+      ad.style.transform = `scale(${scale})`;
+      stage.appendChild(ad);
+      if (spec.layout === 'tall') stage.insertAdjacentHTML('beforeend', '<div class="safe"></div>');
+      fig.appendChild(stage);
+      const cap = document.createElement('figcaption');
+      cap.innerHTML = `<span class="fmt">${spec.w}&nbsp;×&nbsp;${spec.h} · ${spec.id}.png</span>${spec.use}`;
+      fig.appendChild(cap);
+      row.appendChild(fig);
+    });
+    host.appendChild(row);
+  });
+}
+</script>
+</body>
+</html>
