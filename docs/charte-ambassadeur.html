@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Charte de l'ambassadeur Klavyé Kréyòl</title>
-<meta name="description" content="Les valeurs et les engagements du réseau des ambassadeurs de Klavyé Kréyòl : respect, solidarité, partage, engagement et confiance autour de la langue créole dans le monde numérique.">
+<meta name="description" content="Le rôle, les valeurs, les engagements et le cadre bénévole du réseau des ambassadeurs de Klavyé Kréyòl : respect, solidarité, partage, engagement et confiance autour de la langue créole dans le monde numérique.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -38,6 +38,14 @@ p{margin:0 0 12px;}
 .valeur .fr{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--sea);margin:2px 0 8px;}
 .valeur p{margin:0;font-size:14.5px;color:var(--ink-soft);}
 
+/* Le rôle en trois gestes, posé avant les valeurs : c'est le résumé que l'on
+   retient si l'on ne lit rien d'autre de la page. */
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0 14px;}
+.role{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+.role .ico{display:block;font-size:22px;line-height:1;margin-bottom:8px;}
+.role strong{display:block;font-size:16.5px;letter-spacing:-0.01em;margin-bottom:4px;}
+.role p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+
 /* Engagements : une case à cocher décorative, la charte se lit comme une
    liste de choses que l'on prend sur soi. */
 .engagements{list-style:none;margin:18px 0 0;padding:0;}
@@ -52,6 +60,21 @@ p{margin:0 0 12px;}
 }
 .engagements strong{display:block;margin-bottom:2px;}
 .engagements span{color:var(--ink-soft);font-size:15px;}
+
+/* Même colonne de puces pour les trois listes, mais un glyphe et une teinte
+   par nature d'énoncé : ce que l'on promet, comment on se conduit, ce que
+   l'on reçoit en retour. */
+.engagements.principes li::before{content:"◆";background:var(--sun-soft);color:var(--sun);}
+.engagements.apports li::before{content:"★";background:var(--hibiscus-soft);color:var(--hibiscus);}
+
+/* Les deux sections juridiques : encadrées et plus sobres que le reste, pour
+   qu'on voie tout de suite qu'on change de registre. */
+.cadre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:14px;}
+.cadre p:last-child{margin-bottom:0;}
+.cadre dl{margin:0;}
+.cadre dt{font-weight:700;margin-bottom:2px;}
+.cadre dd{margin:0 0 14px;color:var(--ink-soft);font-size:15px;}
+.cadre dd:last-child{margin-bottom:0;}
 
 .devise{
   margin-top:44px;padding:26px 20px;border-radius:14px;text-align:center;
@@ -115,6 +138,29 @@ p{margin:0 0 12px;}
 </header>
 
 <section>
+  <h2>Votre rôle</h2>
+  <p>En devenant ambassadeur bénévole de Klavyé Kréyòl, vous rejoignez une communauté passionnée dont l'objectif est de faire connaître l'application et d'accompagner son développement. Votre rôle principal consiste à :</p>
+  <div class="roles">
+    <div class="role">
+      <span class="ico">📣</span>
+      <strong>Promouvoir</strong>
+      <p>Faire connaître l'application auprès de votre entourage, sur vos réseaux sociaux ou lors d'événements.</p>
+    </div>
+    <div class="role">
+      <span class="ico">💬</span>
+      <strong>Faire remonter</strong>
+      <p>Partager vos retours d'expérience et transmettre les suggestions ou les bugs pour améliorer l'application.</p>
+    </div>
+    <div class="role">
+      <span class="ico">🤝</span>
+      <strong>Accueillir</strong>
+      <p>Accueillir et guider les nouveaux utilisateurs au sein de la communauté.</p>
+    </div>
+  </div>
+  <p class="muted">Les engagements détaillés plus bas précisent ce que cela recouvre au quotidien.</p>
+</section>
+
+<section>
   <h2>Nos valeurs</h2>
   <div class="valeurs">
     <div class="valeur">
@@ -172,10 +218,77 @@ p{margin:0 0 12px;}
       <span>Favoriser les échanges, les rencontres et le partage d'expériences entre ambassadeurs, afin de créer une dynamique collective, de renforcer la cohésion du réseau et de faire émerger de nouvelles initiatives.</span>
     </li>
     <li>
+      <strong>Accueillir les nouveaux utilisateurs</strong>
+      <span>Accueillir et guider celles et ceux qui découvrent Klavyé Kréyòl, en les aidant à installer le clavier, à le prendre en main et à trouver leur place dans la communauté.</span>
+    </li>
+    <li>
       <strong>Participer librement</strong>
       <span>Participer librement à la vie du réseau des ambassadeurs : chacun contribue selon ses disponibilités, ses compétences, ses envies et ses possibilités. La participation aux rencontres, événements ou actions proposées demeure libre.</span>
     </li>
   </ul>
+</section>
+
+<section>
+  <h2>Principes de conduite</h2>
+  <p class="muted">En tant qu'ambassadeur, vous représentez l'image et l'esprit de Klavyé Kréyòl. À ce titre, vous vous engagez à respecter trois principes :</p>
+  <ul class="engagements principes">
+    <li>
+      <strong>Bienveillance et respect</strong>
+      <span>Faire preuve de courtoisie et d'entraide dans vos échanges avec la communauté comme sur internet.</span>
+    </li>
+    <li>
+      <strong>Authenticité</strong>
+      <span>Partager un avis sincère sur l'application, sans recourir à des pratiques trompeuses : spam, faux avis, fausses recommandations.</span>
+    </li>
+    <li>
+      <strong>Inclusivité</strong>
+      <span>Adopter un comportement respectueux, exempt de tout propos discriminatoire, diffamatoire ou haineux.</span>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ce que nous vous apportons</h2>
+  <p class="muted">En contrepartie de votre investissement, l'équipe de Klavyé Kréyòl s'engage à vous offrir :</p>
+  <ul class="engagements apports">
+    <li>
+      <strong>Un accès en avant-première</strong>
+      <span>Découvrir et essayer les nouvelles fonctionnalités avant leur publication.</span>
+    </li>
+    <li>
+      <strong>Des kits de communication</strong>
+      <span>Visuels, textes explicatifs et logos prêts à l'emploi, à relayer tels quels.</span>
+    </li>
+    <li>
+      <strong>Un canal de discussion réservé</strong>
+      <span>Un espace entre ambassadeurs, pour échanger directement avec l'équipe fondatrice.</span>
+    </li>
+    <li>
+      <strong>La valorisation de votre contribution</strong>
+      <span>Mention sur nos réseaux, badge spécial au sein de la communauté.</span>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Statut de bénévolat</h2>
+  <div class="cadre">
+    <dl>
+      <dt>Absence de lien de subordination</dt>
+      <dd>Votre engagement est totalement libre, volontaire et non rémunéré. Vous organisez votre temps et vos actions selon vos disponibilités.</dd>
+      <dt>Non-représentation légale</dt>
+      <dd>Le statut d'ambassadeur ne vous autorise pas à signer des contrats, à engager des dépenses ni à prendre des décisions juridiques ou commerciales au nom de Klavyé Kréyòl.</dd>
+      <dt>Propriété intellectuelle</dt>
+      <dd>Les logos, visuels et éléments de marque mis à votre disposition restent la propriété exclusive de Klavyé Kréyòl. Ils doivent être utilisés conformément aux recommandations fournies.</dd>
+    </dl>
+  </div>
+</section>
+
+<section>
+  <h2>Confidentialité</h2>
+  <div class="cadre">
+    <p>Dans le cadre de vos missions, vous pourrez avoir accès à des informations confidentielles : futures fonctionnalités, feuille de route de l'application, visuels non encore publiés. Vous vous engagez à ne pas les révéler avant leur publication officielle.</p>
+  </div>
 </section>
 
 <section>
