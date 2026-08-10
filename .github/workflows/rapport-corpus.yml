@@ -18,6 +18,9 @@ on:
     branches: [ main ]
     paths:
       - 'docs/**'
+      # Le fichier que ce workflow écrit lui-même : sans cette exclusion, son
+      # propre commit le relancerait en boucle.
+      - '!docs/assets/corpus_stats.json'
   workflow_dispatch:
     inputs:
       forcer:
@@ -121,8 +124,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Dictionnaires/RAPPORT_LINGUISTIQUE.md docs/assets/corpus_stats.json
-          # [skip ci] est indispensable ici : sans lui ce commit relancerait ce
-          # workflow (il touche docs/**) et le build APK (il touche
-          # Dictionnaires/**).
+          # Aucun build APK ni AAB ne doit partir d'ici. Trois garanties se
+          # superposent : build-apk.yml exclut RAPPORT_LINGUISTIQUE.md de son
+          # filtre de chemins, ce workflow exclut corpus_stats.json du sien, et
+          # le marqueur d'évitement CI ci-dessous coupe court quoi qu'il arrive.
+          # Le déploiement GitHub Pages, lui, n'est pas concerné par ce
+          # marqueur : la page corpus.html reçoit bien ses nouveaux chiffres.
           git commit -m "chore: MAJ rapport linguistique et chiffres du corpus [skip ci]"
           git push
