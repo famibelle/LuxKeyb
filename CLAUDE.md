@@ -44,6 +44,10 @@ python KreyolComplet.py          # Fetches HF data, rebuilds dict + n-grams, bac
 
 **Never run this without a working `HF_TOKEN`.** On download failure the script silently falls back to `PawolKreyol/Textes_kreyol.json`, a local snapshot that may lag far behind the dataset, and rebuilds the dictionary from it.
 
+`python KreyolComplet.py --rapport-seul` replays the same computation but writes **only** `RAPPORT_LINGUISTIQUE.md`: `sauvegarder_donnees()` is skipped, so the dictionaries shipped in the APK are untouched. Unlike the full pipeline this mode *refuses* the local-snapshot fallback (it checks `source_chargement`), because a report regenerated from stale data would still be stamped with today's date.
+
+`docs/scripts/generate_corpus_stats.py` computes the figures behind the `docs/corpus.html` page into `docs/assets/corpus_stats.json`. It reads the public parquet export through the HF datasets-server (no `HF_TOKEN`, no `datasets` library) and deliberately mirrors `KreyolComplet.py`'s regex and n-gram thresholds, so its totals stay comparable to the shipped assets. It also stores the dataset's commit SHAs, which is what `rapport-corpus.yml` diffs to decide whether anything needs rebuilding.
+
 Corpus word counts **replace** stored frequencies rather than adding to them, so two consecutive runs produce the same dictionary. Words absent from the corpus (hand-curated additions) are preserved, their frequency rescaled to the current corpus scale.
 
 ## Android Architecture
@@ -120,6 +124,7 @@ The structure mirrors Android: `Core/SuggestionEngine.swift`, `Core/LevenshteinD
 ## CI/CD
 
 - **`build-apk.yml`** — triggers on push/PR to `main` when `android_keyboard/**` or `.github/workflows/**` change, or on `v*` tags. Runs the Python dictionary pipeline first (needs `HF_TOKEN` secret), then builds and signs the APK. Creates a GitHub Release on tags. Its paths filter also covers `Dictionnaires/**`; note the workflow regenerates the dictionary on every build **without committing it back**, so the shipped APK is built from a freshly regenerated dictionary rather than the committed one.
+- **`rapport-corpus.yml`** — triggers on push to `main` touching `docs/**` (plus manual dispatch with a `forcer` input). It first compares the dataset's `main` and `refs/convert/parquet` commit SHAs against the ones stored in `docs/assets/corpus_stats.json`; if neither moved, the job stops there and writes nothing. When the corpus did move it runs `KreyolComplet.py --rapport-seul` and `docs/scripts/generate_corpus_stats.py`, then commits `RAPPORT_LINGUISTIQUE.md` + `corpus_stats.json` with `[skip ci]`. That marker is load-bearing: without it the commit would retrigger this workflow (`docs/**`) and the APK build (`Dictionnaires/**`).
 - **`ios-build.yml`** (on `ios/port` branch only) — triggers on push to `ios/port` when `ios/` changes. Runs on `macos-14` (Xcode 15, Apple Silicon). Requires secrets: `DIST_CERT_BASE64`, `DIST_CERT_PASSWORD`, `PROVISIONING_PROFILE_BASE64`, `DEVELOPMENT_TEAM`, `APPLE_ID`, `APP_SPECIFIC_PASSWORD`.
 
 ## Legacy / Auxiliary Directories

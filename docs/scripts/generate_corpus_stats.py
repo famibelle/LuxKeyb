@@ -40,6 +40,11 @@ URL_PARQUET = (
     "refs%2Fconvert%2Fparquet/default/train/0000.parquet"
 )
 URL_TAILLE = "https://datasets-server.huggingface.co/size?dataset=POTOMITAN%2FPawolKreyol-gfc"
+URL_REVISION = "https://huggingface.co/api/datasets/POTOMITAN/PawolKreyol-gfc"
+URL_REVISION_PARQUET = (
+    "https://huggingface.co/api/datasets/POTOMITAN/PawolKreyol-gfc/"
+    "revision/refs%2Fconvert%2Fparquet"
+)
 
 # Motif identique à celui du pipeline dictionnaire : au moins deux caractères,
 # lettres latines accentuées et trait d'union admis.
@@ -78,6 +83,27 @@ def taille_publiee():
         return donnees["size"]["dataset"]["num_bytes_parquet_files"]
     except Exception:
         return None
+
+
+def revisions_publiees():
+    """Empreintes du dataset : commit de `main` et commit de l'export parquet.
+
+    Les deux sont suivis parce qu'ils ne bougent pas ensemble : Hugging Face
+    reconvertit l'export en parquet quelques minutes après un commit sur `main`.
+    Ne surveiller que `main` reviendrait à enregistrer une révision dont les
+    chiffres de cette page ne proviennent pas encore.
+    """
+    empreintes = {}
+    for cle, url in (("dataset", URL_REVISION), ("parquet", URL_REVISION_PARQUET)):
+        try:
+            with urllib.request.urlopen(url, timeout=30) as reponse:
+                donnees = json.load(reponse)
+            empreintes[cle] = donnees.get("sha")
+            if cle == "dataset":
+                empreintes["derniere_modification"] = donnees.get("lastModified")
+        except Exception:
+            empreintes[cle] = None
+    return empreintes
 
 
 def tokeniser(texte):
@@ -406,6 +432,12 @@ def main():
     octets = taille_publiee()
     if octets:
         stats["parquet_octets"] = octets
+
+    # Empreintes servant au workflow à décider si le dataset a bougé
+    empreintes = revisions_publiees()
+    stats["dataset_revision"] = empreintes.get("dataset")
+    stats["dataset_revision_parquet"] = empreintes.get("parquet")
+    stats["dataset_derniere_modification"] = empreintes.get("derniere_modification")
 
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     with open(SORTIE, "w", encoding="utf-8") as f:

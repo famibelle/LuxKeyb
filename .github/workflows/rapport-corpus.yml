@@ -1,0 +1,128 @@
+name: 📄 Rapport linguistique
+
+# Régénère Dictionnaires/RAPPORT_LINGUISTIQUE.md et les chiffres de la page
+# docs/corpus.html, mais seulement quand le corpus a réellement bougé.
+#
+# Déclenchement : chaque publication du site (push touchant docs/**), plus un
+# lancement manuel. Le travail lui-même est conditionné à l'évolution du dataset
+# Hugging Face : sans nouveau commit côté POTOMITAN/PawolKreyol-gfc, le job
+# s'arrête après la comparaison des empreintes et ne réécrit rien. Un rapport
+# redaté sans que le corpus ait changé n'apprendrait rien à personne et
+# encombrerait l'historique.
+#
+# Les empreintes de référence sont celles stockées dans
+# docs/assets/corpus_stats.json, écrites par le dernier passage réussi.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+    inputs:
+      forcer:
+        description: "Régénérer même si le dataset n'a pas bougé"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Deux publications rapprochées ne doivent pas régénérer le rapport en parallèle
+# puis se marcher dessus au push.
+concurrency:
+  group: rapport-corpus
+  cancel-in-progress: false
+
+jobs:
+  rapport:
+    name: Régénérer si le corpus a évolué
+    runs-on: ubuntu-latest
+
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      API: https://huggingface.co/api/datasets/POTOMITAN/PawolKreyol-gfc
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Le dataset a-t-il évolué ?
+        id: verif
+        run: |
+          set -euo pipefail
+
+          STATS=docs/assets/corpus_stats.json
+          LOCALE=$(jq -r '.dataset_revision // ""' "$STATS")
+          LOCALE_PARQUET=$(jq -r '.dataset_revision_parquet // ""' "$STATS")
+
+          # Une API injoignable n'est pas une évolution : on passe son tour
+          # plutôt que de faire échouer une publication du site.
+          DISTANTE=$(curl -sfL --max-time 30 "$API" | jq -r '.sha // ""' || echo "")
+          DISTANTE_PARQUET=$(curl -sfL --max-time 30 "$API/revision/refs%2Fconvert%2Fparquet" | jq -r '.sha // ""' || echo "")
+
+          echo "Révision locale   : ${LOCALE:-(aucune)} / parquet ${LOCALE_PARQUET:-(aucune)}"
+          echo "Révision distante : ${DISTANTE:-(injoignable)} / parquet ${DISTANTE_PARQUET:-(injoignable)}"
+
+          CHANGE=false
+          if [ "${{ inputs.forcer }}" = "true" ]; then
+            echo "→ Régénération forcée par le lancement manuel"
+            CHANGE=true
+          elif [ -z "$DISTANTE" ] && [ -z "$DISTANTE_PARQUET" ]; then
+            echo "→ Hugging Face injoignable, rien à faire"
+          elif [ -n "$DISTANTE" ] && [ "$DISTANTE" != "$LOCALE" ]; then
+            echo "→ Nouveau commit sur le dataset"
+            CHANGE=true
+          elif [ -n "$DISTANTE_PARQUET" ] && [ "$DISTANTE_PARQUET" != "$LOCALE_PARQUET" ]; then
+            echo "→ Nouvel export parquet du dataset"
+            CHANGE=true
+          else
+            echo "→ Corpus inchangé, rapport laissé tel quel"
+          fi
+
+          echo "change=$CHANGE" >> "$GITHUB_OUTPUT"
+
+      - name: 🐍 Setup Python
+        if: steps.verif.outputs.change == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Dépendances
+        if: steps.verif.outputs.change == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install datasets huggingface_hub pandas pyarrow
+
+      - name: 📄 Régénérer le rapport linguistique
+        if: steps.verif.outputs.change == 'true'
+        working-directory: Dictionnaires
+        run: |
+          # --rapport-seul recalcule tout en mémoire et n'écrit que le rapport :
+          # les dictionnaires embarqués dans l'APK ne sont pas touchés, et le
+          # script refuse de produire un rapport à partir de l'instantané local
+          # si le téléchargement Hugging Face échoue.
+          python KreyolComplet.py --rapport-seul
+
+      - name: 📊 Recalculer les chiffres de la page corpus
+        if: steps.verif.outputs.change == 'true'
+        run: python docs/scripts/generate_corpus_stats.py
+
+      - name: 💾 Commit si changement
+        if: steps.verif.outputs.change == 'true'
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet Dictionnaires/RAPPORT_LINGUISTIQUE.md docs/assets/corpus_stats.json; then
+            echo "Aucun changement à committer"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Dictionnaires/RAPPORT_LINGUISTIQUE.md docs/assets/corpus_stats.json
+          # [skip ci] est indispensable ici : sans lui ce commit relancerait ce
+          # workflow (il touche docs/**) et le build APK (il touche
+          # Dictionnaires/**).
+          git commit -m "chore: MAJ rapport linguistique et chiffres du corpus [skip ci]"
+          git push

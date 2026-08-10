@@ -1136,5 +1136,8 @@
  "dataset": "POTOMITAN/PawolKreyol-gfc",
  "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
  "source_donnees": "huggingface",
- "parquet_octets": 139462
+ "parquet_octets": 139462,
+ "dataset_revision": "b449ae26523ed71ef99de42cf5cb7dbc8ec2d438",
+ "dataset_revision_parquet": "7a7a12184dbec34224d575ebe9525c244cdb4b47",
+ "dataset_derniere_modification": "2026-08-07T10:53:44.000Z"
 }

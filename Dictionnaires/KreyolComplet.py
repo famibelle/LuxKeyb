@@ -20,6 +20,12 @@ Pipeline automatique intégré:
 
 Usage simple: python KreyolComplet.py
 
+Usage restreint: python KreyolComplet.py --rapport-seul
+    Recalcule tout en mémoire mais n'écrit que RAPPORT_LINGUISTIQUE.md. Les
+    dictionnaires embarqués dans le clavier ne sont pas touchés : c'est le mode
+    utilisé par le workflow qui rafraîchit le rapport quand le dataset bouge,
+    sans rien changer à ce qui part dans l'APK.
+
 Fait avec ❤️ pour préserver le Kreyòl Guadeloupéen
 """
 
@@ -277,6 +283,11 @@ class KreyolPipelineUnique:
             print("   🚨 Le pipeline ne peut pas continuer sans données")
             return False
         
+        # Mémorisé pour que les appelants puissent distinguer un vrai
+        # téléchargement d'un repli sur l'instantané local, les deux se
+        # ressemblant beaucoup une fois le pipeline terminé.
+        self.source_chargement = source_chargement
+
         print(f"\n📋 RÉSUMÉ CHARGEMENT:")
         print(f"   📊 {len(self.textes_kreyol)} textes chargés")
         print(f"   🌐 Source: {source_chargement}")
@@ -1125,12 +1136,71 @@ class KreyolPipelineUnique:
         
         return succes_total
 
+    def executer_rapport_seul(self):
+        """Régénère le seul rapport linguistique, sans rien sauvegarder d'autre.
+
+        Les mêmes étapes de calcul que le pipeline complet sont rejouées, mais
+        `sauvegarder_donnees` est écarté : le dictionnaire et les n-grams sont
+        reconstruits en mémoire pour alimenter le rapport et sont jetés ensuite.
+        Les fichiers livrés dans le clavier restent donc ceux du dernier build,
+        et une simple mise à jour du rapport ne peut pas changer les suggestions
+        des utilisateurs.
+        """
+        print("\n📄 RAPPORT LINGUISTIQUE SEUL")
+        print("=" * 40)
+        print("ℹ️  Les dictionnaires ne seront pas réécrits")
+
+        def charger_depuis_huggingface():
+            """Chargement qui refuse le repli local.
+
+            Un rapport régénéré sur l'instantané local serait daté d'aujourd'hui
+            tout en décrivant un corpus périmé. Mieux vaut ne rien produire.
+            """
+            if not self.charger_textes_kreyol():
+                return False
+            if getattr(self, "source_chargement", None) != "Hugging Face":
+                print("❌ Corpus chargé localement, pas depuis Hugging Face")
+                print("   🚫 Rapport non régénéré : il annoncerait un corpus qu'il ne décrit pas")
+                self.textes_kreyol = []
+                return False
+            return True
+
+        etapes = [
+            ("Chargement textes", charger_depuis_huggingface),
+            ("Création dictionnaire", self.creer_dictionnaire),
+            ("Génération N-grams", self.creer_ngrams),
+            ("Analyse statistiques", self.analyser_statistiques),
+            ("Analyse delta", self.analyser_delta),
+            ("Rapport linguistique", self.generer_rapport_linguistique),
+        ]
+
+        succes_total = True
+
+        for i, (nom, fonction) in enumerate(etapes, 1):
+            print(f"\n⏳ Étape {i}/{len(etapes)}: {nom}")
+            try:
+                if fonction():
+                    print(f"✅ {nom} - Terminé")
+                else:
+                    print(f"⚠️ {nom} - Avec avertissements")
+                    succes_total = False
+            except Exception as e:
+                print(f"❌ {nom} - Erreur: {e}")
+                succes_total = False
+
+        return succes_total
+
 def main():
     """Fonction principale - Pipeline unique automatique"""
+    rapport_seul = "--rapport-seul" in sys.argv[1:]
+
     try:
         # Créer et exécuter le pipeline
         pipeline = KreyolPipelineUnique()
-        succes = pipeline.executer_pipeline()
+        if rapport_seul:
+            succes = pipeline.executer_rapport_seul()
+        else:
+            succes = pipeline.executer_pipeline()
         
         # Afficher les statistiques finales
         dict_count = len(pipeline.nouveau_dictionnaire) if pipeline.nouveau_dictionnaire else 0

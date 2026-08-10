@@ -521,6 +521,14 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
   function rendu(d) {
     var e = d.longueur_entree;
 
+    if (d.dataset_derniere_modification) {
+      var jour = new Date(d.dataset_derniere_modification);
+      if (!isNaN(jour)) {
+        texte($('maj'), 'Chiffres recalculés depuis le jeu de données publié. Dernière évolution du corpus : '
+          + new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(jour) + '.');
+      }
+    }
+
     tuiles('tiles-taille', [
       { n: nf.format(d.lignes_total), k: 'fragments de kréyòl', sub: nf.format(d.lignes_utiles) + ' avec du texte' },
       { n: nf.format(d.sources_total), k: 'sources référencées' },

@@ -2,11 +2,11 @@
 
 ## Métadonnées du Corpus
 
-- **Date de génération** : 07 August 2026 à 00:25
+- **Date de génération** : 10 August 2026 à 11:19
 - **Version du pipeline** : 3.0 - Pipeline Unique
 - **Source des données** : Dataset POTOMITAN/PawolKreyol-gfc (Hugging Face)
 - **Nombre de textes** : 2519
-- **Tokens totaux** : 36,486
+- **Tokens totaux** : 36,480
 - **Types lexicaux** : 5,296
 
 ---
@@ -15,7 +15,7 @@
 
 ### 1.1 Taille et Couverture
 
-- **Total des tokens** : 36,502
+- **Total des tokens** : 36,500
 - **Types lexicaux uniques** : 5,296
 - **Type-Token Ratio (TTR)** : 0.1451
 - **Richesse lexicale** : Élevée
@@ -120,33 +120,33 @@
 |  9 | **nou** | 633 | 22.72% |
 | 10 | **ou** | 611 | 24.40% |
 | 11 | **ki** | 548 | 25.90% |
-| 12 | **la** | 481 | 27.21% |
+| 12 | **la** | 481 | 27.22% |
 | 13 | **ni** | 408 | 28.33% |
 | 14 | **fè** | 404 | 29.44% |
 | 15 | **sa** | 401 | 30.54% |
-| 16 | **mwen** | 400 | 31.63% |
+| 16 | **mwen** | 400 | 31.64% |
 | 17 | **ké** | 337 | 32.56% |
 | 18 | **moun** | 267 | 33.29% |
 | 19 | **di** | 251 | 33.98% |
-| 20 | **pé** | 244 | 34.64% |
+| 20 | **pé** | 244 | 34.65% |
 | 21 | **si** | 218 | 35.24% |
 | 22 | **kon** | 214 | 35.83% |
 | 23 | **lè** | 211 | 36.41% |
 | 24 | **tout** | 206 | 36.97% |
-| 25 | **adan** | 202 | 37.52% |
+| 25 | **adan** | 202 | 37.53% |
 | 26 | **mé** | 187 | 38.04% |
 | 27 | **vwè** | 165 | 38.49% |
-| 28 | **pran** | 152 | 38.90% |
+| 28 | **pran** | 152 | 38.91% |
 | 29 | **zòt** | 145 | 39.30% |
 | 30 | **menm** | 144 | 39.70% |
 | 31 | **ti** | 130 | 40.05% |
 | 32 | **a-y** | 130 | 40.41% |
 | 33 | **krab** | 129 | 40.76% |
-| 34 | **kou** | 125 | 41.10% |
-| 35 | **ay** | 113 | 41.41% |
+| 34 | **kou** | 125 | 41.11% |
+| 35 | **ay** | 113 | 41.42% |
 | 36 | **dé** | 111 | 41.72% |
 | 37 | **èvè** | 111 | 42.02% |
-| 38 | **ès** | 110 | 42.32% |
+| 38 | **ès** | 110 | 42.33% |
 | 39 | **asi** | 109 | 42.62% |
 | 40 | **jan** | 98 | 42.89% |
 | 41 | **épi** | 97 | 43.16% |
@@ -154,7 +154,7 @@
 | 43 | **ja** | 97 | 43.69% |
 | 44 | **rivé** | 95 | 43.95% |
 | 45 | **viktò** | 95 | 44.21% |
-| 46 | **ba** | 92 | 44.46% |
+| 46 | **ba** | 91 | 44.46% |
 | 47 | **tini** | 91 | 44.71% |
 | 48 | **dlo** | 90 | 44.96% |
 | 49 | **byen** | 90 | 45.20% |
@@ -262,13 +262,9 @@
 
 ## 7. Évolution Diachronique du Lexique
 
-- **Mots conservés** : 5,292 (100.0% de l'ancien dictionnaire)
-- **Mots ajoutés** : 4
+- **Mots conservés** : 5,296 (100.0% de l'ancien dictionnaire)
+- **Mots ajoutés** : 0
 - **Mots supprimés** : 0
-
-### 7.1 Nouveaux Mots Ajoutés (échantillon)
-
-`karukéra, liksanbou, taks, taksi`
 
 ## 8. Qualité et Validation Linguistique
 
@@ -289,7 +285,7 @@
 ### 10.1 Forces du Corpus
 
 - Couverture lexicale importante (5,296 types)
-- Richesse des bigrammes (20,308 patterns)
+- Richesse des bigrammes (20,302 patterns)
 - Présence des marqueurs TMA caractéristiques du créole
 
 ### 10.2 Axes d'Amélioration
