@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le corpus PawolKreyol-gfc en chiffres : Klavyé Kréyòl Karukera</title>
+<meta name="description" content="Synthèse du corpus créole guadeloupéen POTOMITAN/PawolKreyol-gfc : taille, sources, mots les plus fréquents, n-grammes, mots les plus longs, et ce qui en arrive dans le clavier.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:760px;margin:0 auto;}
+nav.site{text-align:center;padding:10px 0;margin-top:6px;border-bottom:1px solid var(--line);font-size:14.5px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;}
+nav.site a{color:var(--sea);text-decoration:none;font-weight:600;}
+nav.site a:hover{text-decoration:underline;}
+nav.site strong{color:var(--ink);}
+header{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:62ch;margin:0 0 10px;}
+section{margin-top:44px;}
+h2{font-size:21px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+h3{font-size:15px;font-weight:700;margin:0 0 10px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+
+/* Tuiles de chiffres */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 0;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.tile .n{display:block;font-size:clamp(24px,5vw,30px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px;}
+.tile .sub{display:block;font-size:12px;color:var(--ink-soft);margin-top:6px;}
+
+/* Graphiques en barres, une seule teinte : la longueur porte la grandeur */
+.chart{margin:6px 0 0;}
+.chart .row{display:grid;grid-template-columns:minmax(84px,auto) 1fr auto;align-items:center;gap:10px;padding:3px 0;}
+.chart.wide-label .row{grid-template-columns:minmax(160px,42%) 1fr auto;}
+.chart .lbl{font-size:13.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chart .lbl .mono{font-family:var(--mono);}
+.chart .track{background:var(--stripe);border-radius:4px;height:14px;position:relative;}
+.chart .bar{display:block;height:100%;background:var(--sea);border-radius:0 4px 4px 0;min-width:2px;transition:filter .12s ease;}
+.chart .row:hover .bar{filter:brightness(1.15);}
+.chart .row:hover .lbl{text-decoration:underline;text-decoration-color:var(--line);}
+.chart .val{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:52px;text-align:right;}
+.chart-note{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;}
+
+/* Colonnes verticales pour les distributions.
+   Les étiquettes d'axe ne se compriment pas indéfiniment : sous une certaine
+   largeur le graphique défile horizontalement dans son cadre plutôt que de
+   pousser la page entière. */
+.scrollx{overflow-x:auto;}
+.cols{display:flex;align-items:flex-end;gap:4px;height:140px;margin:14px 0 0;min-width:330px;}
+.cols .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;}
+.cols .stem{width:100%;background:var(--sea);border-radius:4px 4px 0 0;min-height:2px;}
+.cols .tick{font-size:11px;color:var(--ink-soft);margin-top:6px;font-variant-numeric:tabular-nums;}
+.cols .cnt{font-size:11px;color:var(--ink-soft);margin-bottom:4px;font-variant-numeric:tabular-nums;}
+
+/* Tableaux */
+.table-scroll{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);}
+tbody tr:hover{background:var(--stripe);}
+.kreyol{font-family:var(--mono);font-size:13.5px;}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;}
+.pill{border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:14px;background:var(--card);}
+.pill b{font-variant-numeric:tabular-nums;}
+
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
+.note p:last-child{margin-bottom:0;}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-top:14px;}
+.flow .step{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;}
+.flow .step .n{font-family:var(--mono);font-size:12px;color:var(--sea);letter-spacing:.08em;}
+.flow .step h3{margin:6px 0 4px;font-size:15px;}
+.flow .step p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+a{color:var(--sea);}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;font-family:inherit;}
+.theme-toggle:hover{border-color:var(--sea);}
+.loading{color:var(--ink-soft);font-size:14px;font-style:italic;}
+
+@media (max-width:520px){
+  body{padding:0 12px 60px;}
+  .card{padding:14px;}
+  .tiles{grid-template-columns:repeat(auto-fit,minmax(136px,1fr));}
+  .tile{padding:12px 13px;}
+  .chart .row{grid-template-columns:minmax(64px,auto) 1fr auto;gap:8px;}
+  .chart.wide-label .row{grid-template-columns:minmax(96px,44%) 1fr auto;}
+  .chart .lbl{font-size:12.5px;}
+  .chart .val{min-width:42px;font-size:12px;}
+  th,td{padding:6px 7px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- nav:start -->
+<nav class="site">
+  <a href="./">🏠 Accueil</a>
+  <a href="guide.html">📘 Guide</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <a href="corpus.html" aria-current="page">📚 Corpus</a>
+  <details class="menu" name="navmenu">
+    <summary>🪧 Supports</summary>
+    <div class="menu-panel">
+      <a href="tract.html">Tract</a>
+      <a href="tract-eco.html">Tract éco encre</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="affiche-eco.html">Affiche éco encre</a>
+      <a href="affiche-classique.html">Affiche classique</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="triptyque-eco.html">Triptyque éco encre</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+  </details>
+  <details class="menu" name="navmenu">
+    <summary>🤝 Participer</summary>
+    <div class="menu-panel">
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="beta_onboarding.html">Bêta-testeurs</a>
+      <a href="feedbacks_form.html">Retours</a>
+    </div>
+  </details>
+  <a href="presskit.html">📰 Presse</a>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">📲 Installer</a>
+  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- nav:end -->
+
+<header>
+  <p class="eyebrow">Sous le capot</p>
+  <h1>Le corpus PawolKreyol&#8209;gfc en chiffres</h1>
+  <p class="lead">
+    Les suggestions du clavier ne sortent pas d'une intelligence artificielle
+    entraînée ailleurs : elles viennent d'un corpus de kréyòl guadeloupéen écrit,
+    publié en accès libre sur Hugging Face sous le nom
+    <a href="https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc"><strong>POTOMITAN/PawolKreyol&#8209;gfc</strong></a>.
+    Voici ce qu'il contient, mesuré ligne par ligne.
+  </p>
+  <p class="muted" id="maj">Chiffres recalculés directement depuis le jeu de données publié.</p>
+</header>
+
+<section id="taille">
+  <h2>La taille du corpus</h2>
+  <p class="muted">
+    Une ligne du jeu de données, c'est un fragment de kréyòl : un proverbe, une
+    réplique de théâtre, un vers, une phrase de conte, parfois un texte entier.
+  </p>
+  <div class="tiles" id="tiles-taille"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Longueur des fragments</h3>
+    <div class="scrollx"><div class="cols" id="chart-longueur-entree"></div></div>
+    <p class="chart-note" id="note-longueur"></p>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>D'où vient ce kréyòl</h2>
+  <p class="muted">
+    Chaque ligne est rattachée à sa source : un livre, une pièce, une chanson, une
+    collecte de proverbes. Le corpus n'est pas un aspirateur à pages web, c'est une
+    bibliothèque référencée, dominée par les grands auteurs du kréyòl guadeloupéen.
+  </p>
+  <div class="card">
+    <h3>Les 15 sources les plus fournies, en nombre de mots</h3>
+    <div class="chart wide-label" id="chart-sources"></div>
+    <p class="chart-note" id="note-sources"></p>
+  </div>
+</section>
+
+<section id="mots">
+  <h2>Les mots</h2>
+  <p class="muted">
+    Le découpage en mots est exactement celui du script qui fabrique le
+    dictionnaire embarqué : lettres accentuées et traits d'union compris, deux
+    caractères minimum.
+  </p>
+  <div class="tiles" id="tiles-mots"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les 25 mots les plus fréquents</h3>
+    <div class="chart" id="chart-mots"></div>
+    <p class="chart-note" id="note-mots"></p>
+  </div>
+  <div class="card">
+    <h3>Combien de mots différents faut-il pour lire le corpus</h3>
+    <div class="chart wide-label" id="chart-couverture"></div>
+    <p class="chart-note">
+      Un très petit noyau de mots outils porte la moitié du texte, puis la courbe
+      s'aplatit : c'est la longue traîne du vocabulaire, et c'est elle qui rend un
+      dictionnaire complet indispensable.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Longueur des mots, en nombre de mots différents</h3>
+    <div class="scrollx"><div class="cols" id="chart-longueur-mots"></div></div>
+    <p class="chart-note" id="note-longueur-mots"></p>
+  </div>
+</section>
+
+<section id="longs">
+  <h2>Mots longs et complexité morphologique</h2>
+  <p class="muted">
+    Le kréyòl fabrique beaucoup de mots en en collant d'autres, souvent avec un
+    trait d'union : le déterminant, le possessif ou le pronom viennent se souder au
+    mot qui précède. C'est ce qui produit les mots les plus longs du corpus, et
+    c'est aussi ce qui fait gagner le plus de frappes quand le clavier les propose.
+  </p>
+  <div class="tiles" id="tiles-morpho"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les composés les plus courants</h3>
+    <div class="chart" id="chart-composes"></div>
+    <p class="chart-note" id="note-composes"></p>
+  </div>
+  <div class="card">
+    <h3>Nombre d'éléments soudés dans un mot composé</h3>
+    <div class="chart wide-label" id="chart-segments"></div>
+    <p class="chart-note">
+      En nombre de mots différents. La composition à deux éléments domine largement,
+      mais le corpus contient des chaînes de trois et quatre éléments.
+    </p>
+  </div>
+  <div class="card table-scroll">
+    <h3>Les 20 mots les plus longs</h3>
+    <table>
+      <thead><tr><th>Mot</th><th class="num">Lettres</th><th class="num">Occurrences</th></tr></thead>
+      <tbody id="table-longs"></tbody>
+    </table>
+    <p class="chart-note" id="note-longs"></p>
+  </div>
+</section>
+
+<section id="accents">
+  <h2>Les accents</h2>
+  <p class="muted">
+    L'orthographe GEREC&#8209;F repose sur trois voyelles accentuées. Leur poids réel
+    dans le corpus explique pourquoi le clavier les met à portée d'appui long
+    plutôt que de les enterrer dans un clavier secondaire.
+  </p>
+  <div class="pills" id="pills-accents"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les 12 lettres les plus employées</h3>
+    <div class="chart" id="chart-lettres"></div>
+    <p class="chart-note" id="note-lettres"></p>
+  </div>
+</section>
+
+<section id="tma">
+  <h2>Marqueurs de temps, mode et aspect</h2>
+  <p class="muted">
+    Le kréyòl ne conjugue pas le verbe : il place devant lui de petits mots
+    invariables qui portent le temps, le mode et l'aspect. Ces marqueurs sont peu
+    nombreux, mais ils reviennent sans arrêt, et ils se combinent entre eux. Pour un
+    clavier, ce sont les mots les plus rentables à prédire.
+  </p>
+  <div class="card table-scroll">
+    <h3>Les marqueurs, leur fonction et ce qui les suit</h3>
+    <table>
+      <thead><tr><th>Marqueur</th><th>Fonction</th><th class="num">Occurrences</th><th>Suit le plus souvent</th></tr></thead>
+      <tbody id="table-tma"></tbody>
+    </table>
+    <p class="chart-note" id="note-tma"></p>
+  </div>
+  <div class="card">
+    <h3>Les combinaisons de marqueurs les plus fréquentes</h3>
+    <div class="chart wide-label" id="chart-tma-combi"></div>
+    <p class="chart-note">
+      C'est ici que se joue la conjugaison : deux marqueurs enchaînés forment un
+      temps composé. Le modèle du clavier retient ces enchaînements et propose
+      directement le verbe attendu derrière.
+    </p>
+  </div>
+  <p class="muted">
+    Nomenclature et fonctions reprises de l'analyse lexicographique du dépôt,
+    <a href="https://github.com/famibelle/KreyolKeyb/blob/main/Dictionnaires/RAPPORT_LINGUISTIQUE.md">RAPPORT_LINGUISTIQUE.md</a>,
+    les comptages étant recalculés sur la version courante du corpus.
+  </p>
+</section>
+
+<section id="ngrams">
+  <h2>Les n&#8209;grammes, ou comment le clavier devine la suite</h2>
+  <p class="muted">
+    Un n&#8209;gramme, c'est une suite de mots observée dans les textes. En comptant
+    ces suites, on obtient un modèle qui répond à une question simple : après ces
+    mots-là, qu'est-ce qui vient d'habitude ?
+  </p>
+  <div class="tiles" id="tiles-ngrams"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Bigrammes les plus fréquents : les 20 suites de deux mots</h3>
+    <div class="chart wide-label" id="chart-bigrammes"></div>
+    <p class="chart-note" id="note-bigrammes"></p>
+  </div>
+  <div class="card">
+    <h3>Trigrammes les plus fréquents : les 20 suites de trois mots</h3>
+    <div class="chart wide-label" id="chart-trigrammes"></div>
+    <p class="chart-note" id="note-trigrammes"></p>
+  </div>
+  <div class="card table-scroll">
+    <h3>Ce que le modèle propose après les contextes les plus courants</h3>
+    <table>
+      <thead><tr><th>Contexte</th><th>Suite la plus probable</th><th class="num">Probabilité</th><th class="num">Contexte vu</th></tr></thead>
+      <tbody id="table-contextes"></tbody>
+    </table>
+    <p class="chart-note" id="note-modele"></p>
+  </div>
+</section>
+
+<section id="clavier">
+  <h2>Du corpus au clavier</h2>
+  <p class="muted">
+    Le corpus n'est pas embarqué tel quel dans l'application. Un script le
+    transforme en deux fichiers compacts, les seuls que le clavier lit, et qui
+    tiennent dans l'APK pour fonctionner sans aucune connexion.
+  </p>
+  <div class="flow">
+    <div class="step">
+      <span class="n">01</span>
+      <h3>Lecture des textes</h3>
+      <p>Les lignes du jeu de données sont découpées en mots, accents et traits d'union conservés.</p>
+    </div>
+    <div class="step">
+      <span class="n">02</span>
+      <h3>Comptage</h3>
+      <p>Chaque mot reçoit sa fréquence, chaque suite de deux ou trois mots la sienne.</p>
+    </div>
+    <div class="step">
+      <span class="n">03</span>
+      <h3>Filtrage</h3>
+      <p>Les suites vues une seule fois sont écartées : citer un passage n'est pas prédire.</p>
+    </div>
+    <div class="step">
+      <span class="n">04</span>
+      <h3>Embarquement</h3>
+      <p>Deux fichiers JSON partent dans l'APK, lus hors ligne à chaque frappe.</p>
+    </div>
+  </div>
+  <div class="tiles" id="tiles-clavier"></div>
+  <p class="chart-note" id="note-clavier"></p>
+  <p class="muted" style="margin-top:14px;">
+    Envie de voir le résultat sans rien installer ?
+    <a href="simulateur.html">Le simulateur</a> fait tourner ce même dictionnaire et
+    ce même modèle directement dans le navigateur.
+  </p>
+</section>
+
+<section id="methode">
+  <h2>Méthode et limites</h2>
+  <div class="note">
+    <p>
+      Les chiffres de cette page sont recalculés depuis l'export du jeu de données
+      publié, avec la même expression régulière de découpage et les mêmes seuils
+      que <code>Dictionnaires/KreyolComplet.py</code>, le script qui produit les
+      fichiers du clavier. Les totaux sont donc comparables terme à terme.
+    </p>
+    <p id="note-limites"></p>
+    <p>
+      Le corpus reste modeste au regard de ce qui existe pour le français ou
+      l'anglais, et il penche du côté de la littérature écrite plutôt que de la
+      langue parlée du quotidien. Il grandit au fil des contributions : le
+      dictionnaire du clavier grandit avec lui.
+    </p>
+  </div>
+  <p class="muted" style="margin-top:14px;">
+    Jeu de données :
+    <a href="https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc">POTOMITAN/PawolKreyol&#8209;gfc</a>
+    · Script de calcul :
+    <a href="https://github.com/famibelle/KreyolKeyb/blob/main/docs/scripts/generate_corpus_stats.py">generate_corpus_stats.py</a>
+    · Données brutes de cette page :
+    <a href="assets/corpus_stats.json">corpus_stats.json</a>
+  </p>
+</section>
+
+<footer>
+  Klavyé Kréyòl Karukera · Potomitan ·
+  <a href="https://github.com/famibelle/KreyolKeyb">Code source</a> ·
+  <a href="./">Accueil</a>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var nf = new Intl.NumberFormat('fr-FR');
+  var $ = function (id) { return document.getElementById(id); };
+
+  function texte(el, valeur) { if (el) el.textContent = valeur; }
+
+  function tuiles(cible, items) {
+    var el = $(cible);
+    if (!el) return;
+    el.innerHTML = '';
+    items.forEach(function (item) {
+      var div = document.createElement('div');
+      div.className = 'tile';
+      var n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = item.n;
+      var k = document.createElement('span');
+      k.className = 'k';
+      k.textContent = item.k;
+      div.appendChild(n);
+      div.appendChild(k);
+      if (item.sub) {
+        var s = document.createElement('span');
+        s.className = 'sub';
+        s.textContent = item.sub;
+        div.appendChild(s);
+      }
+      el.appendChild(div);
+    });
+  }
+
+  // Barres horizontales, teinte unique : seule la longueur encode la grandeur.
+  function barres(cible, lignes, options) {
+    var el = $(cible);
+    if (!el) return;
+    options = options || {};
+    var max = lignes.reduce(function (m, l) { return Math.max(m, l.valeur); }, 0) || 1;
+    el.innerHTML = '';
+    lignes.forEach(function (ligne) {
+      var row = document.createElement('div');
+      row.className = 'row';
+      if (ligne.titre) row.title = ligne.titre;
+
+      var lbl = document.createElement('span');
+      lbl.className = 'lbl';
+      if (options.mono) {
+        var m = document.createElement('span');
+        m.className = 'mono';
+        m.textContent = ligne.label;
+        lbl.appendChild(m);
+      } else {
+        lbl.textContent = ligne.label;
+      }
+
+      var track = document.createElement('span');
+      track.className = 'track';
+      var bar = document.createElement('span');
+      bar.className = 'bar';
+      bar.style.width = Math.max(1, (100 * ligne.valeur) / max) + '%';
+      track.appendChild(bar);
+
+      var val = document.createElement('span');
+      val.className = 'val';
+      val.textContent = ligne.affichage || nf.format(ligne.valeur);
+
+      row.appendChild(lbl);
+      row.appendChild(track);
+      row.appendChild(val);
+      el.appendChild(row);
+    });
+  }
+
+  // Colonnes verticales pour les distributions ordonnées
+  function colonnes(cible, lignes) {
+    var el = $(cible);
+    if (!el) return;
+    var max = lignes.reduce(function (m, l) { return Math.max(m, l.valeur); }, 0) || 1;
+    el.innerHTML = '';
+    lignes.forEach(function (ligne) {
+      var col = document.createElement('div');
+      col.className = 'col';
+      col.title = ligne.titre || (ligne.label + ' : ' + nf.format(ligne.valeur));
+
+      var cnt = document.createElement('span');
+      cnt.className = 'cnt';
+      cnt.textContent = ligne.valeur ? nf.format(ligne.valeur) : '';
+
+      var stem = document.createElement('span');
+      stem.className = 'stem';
+      stem.style.height = Math.max(1, (100 * ligne.valeur) / max) + '%';
+
+      var tick = document.createElement('span');
+      tick.className = 'tick';
+      tick.textContent = ligne.label;
+
+      col.appendChild(cnt);
+      col.appendChild(stem);
+      col.appendChild(tick);
+      el.appendChild(col);
+    });
+  }
+
+  function lignesTable(cible, lignes) {
+    var el = $(cible);
+    if (!el) return;
+    el.innerHTML = '';
+    lignes.forEach(function (cellules) {
+      var tr = document.createElement('tr');
+      cellules.forEach(function (cellule) {
+        var td = document.createElement('td');
+        if (cellule.classe) td.className = cellule.classe;
+        td.textContent = cellule.texte;
+        tr.appendChild(td);
+      });
+      el.appendChild(tr);
+    });
+  }
+
+  function ko(octets) { return Math.round(octets / 1024) + " ko"; }
+
+  // Virgule décimale : les nombres du JSON arrivent avec un point
+  function dec(valeur) { return String(valeur).replace('.', ','); }
+
+  function rendu(d) {
+    var e = d.longueur_entree;
+
+    tuiles('tiles-taille', [
+      { n: nf.format(d.lignes_total), k: 'fragments de kréyòl', sub: nf.format(d.lignes_utiles) + ' avec du texte' },
+      { n: nf.format(d.sources_total), k: 'sources référencées' },
+      { n: nf.format(d.caracteres), k: 'caractères de kréyòl', sub: ko(d.octets_utf8) + ' de texte brut' },
+      { n: d.parquet_octets ? ko(d.parquet_octets) : ko(d.octets_utf8), k: 'poids du jeu de données', sub: 'export compressé' }
+    ]);
+
+    colonnes('chart-longueur-entree', d.tranches_longueur_entree.map(function (t) {
+      var label = t.max === null ? '500+' : (t.min + '–' + t.max);
+      return {
+        label: label,
+        valeur: t.n,
+        titre: nf.format(t.n) + ' fragments de ' + label + ' caractères'
+      };
+    }));
+    texte($('note-longueur'),
+      'En caractères. Fragment médian : ' + nf.format(e.mediane) + ' caractères, '
+      + 'soit une phrase courte. Moyenne : ' + nf.format(e.moyenne) + ', tirée vers le haut par '
+      + 'les textes longs, le plus gros atteignant ' + nf.format(e.max) + ' caractères.');
+
+    barres('chart-sources', d.top_sources.map(function (s) {
+      return { label: s.court, valeur: s.mots, titre: s.source + '\n' + nf.format(s.mots) + ' mots · ' + nf.format(s.lignes) + ' fragments' };
+    }));
+    texte($('note-sources'),
+      'En nombre de mots. Les 10 premières sources fournissent ' + dec(d.part_top10_sources)
+      + ' % du corpus, réparti sur ' + nf.format(d.sources_total) + ' sources au total. '
+      + 'Survolez une barre pour la référence complète.');
+
+    tuiles('tiles-mots', [
+      { n: nf.format(d.mots_total), k: 'mots au total' },
+      { n: nf.format(d.mots_uniques), k: 'mots différents', sub: 'le vocabulaire du corpus' },
+      { n: nf.format(d.hapax), k: 'mots vus une seule fois', sub: dec(d.hapax_pourcent) + ' % du vocabulaire' },
+      { n: dec(d.longueur_mot_moyenne), k: 'lettres par mot en moyenne' }
+    ]);
+
+    barres('chart-mots', d.top_mots.map(function (m) {
+      return {
+        label: m.mot,
+        valeur: m.n,
+        affichage: nf.format(m.n),
+        titre: m.mot + ' : ' + nf.format(m.n) + ' occurrences, ' + dec(m.pourcent) + ' % du corpus'
+      };
+    }), { mono: true });
+    texte($('note-mots'),
+      'En occurrences. « ' + d.top_mots[0].mot + ' » à lui seul représente '
+      + dec(d.top_mots[0].pourcent) + ' % de tous les mots du corpus.');
+
+    var seuils = ['50', '75', '90', '95', '99'];
+    barres('chart-couverture', seuils.map(function (s) {
+      return {
+        label: s + ' % du texte',
+        valeur: d.couverture[s],
+        affichage: nf.format(d.couverture[s]) + ' mots',
+        titre: 'Les ' + nf.format(d.couverture[s]) + ' mots les plus fréquents couvrent ' + s + ' % des occurrences'
+      };
+    }));
+
+    colonnes('chart-longueur-mots', d.longueur_mots.filter(function (l) { return l.lettres <= 14; }).map(function (l) {
+      return {
+        label: String(l.lettres),
+        valeur: l.mots,
+        titre: nf.format(l.mots) + ' mots différents de ' + l.lettres + ' lettres'
+      };
+    }));
+    var pic = d.longueur_mots.reduce(function (a, b) { return b.mots > a.mots ? b : a; });
+    texte($('note-longueur-mots'),
+      'En nombre de lettres, mots de 15 lettres et plus exclus de l\'affichage. '
+      + 'Le vocabulaire culmine à ' + pic.lettres + ' lettres.');
+
+    var c = d.composes;
+    var l10 = d.mots_10_lettres;
+    tuiles('tiles-morpho', [
+      { n: nf.format(c.mots), k: 'mots composés différents', sub: dec(c.pourcent) + ' % du vocabulaire' },
+      { n: nf.format(c.occurrences), k: 'fois qu\'un composé est écrit', sub: dec(c.occurrences_pourcent) + ' % du corpus' },
+      { n: nf.format(l10.mots), k: 'mots de 10 lettres ou plus', sub: nf.format(l10.avec_trait_union) + ' sont des composés' },
+      { n: nf.format(d.mots_longs[0].lettres) + ' lettres', k: 'le mot le plus long', sub: d.mots_longs[0].mot }
+    ]);
+
+    barres('chart-composes', c.exemples.map(function (x) {
+      return { label: x.mot, valeur: x.n, titre: x.mot + ' : ' + nf.format(x.n) + ' occurrences' };
+    }), { mono: true });
+    texte($('note-composes'),
+      'En occurrences. Ce sont presque tous des soudures grammaticales : le pronom, '
+      + 'le possessif ou le déterminant collé au mot qui précède.');
+
+    barres('chart-segments', c.segments.map(function (s) {
+      return {
+        label: s.segments + ' éléments soudés',
+        valeur: s.mots,
+        affichage: nf.format(s.mots) + ' mots',
+        titre: nf.format(s.mots) + ' mots différents formés de ' + s.segments + ' éléments'
+      };
+    }));
+
+    texte($('note-longs'),
+      'Sur les ' + nf.format(l10.mots) + ' mots de 10 lettres ou plus, '
+      + nf.format(l10.hapax) + ' n\'apparaissent qu\'une seule fois dans le corpus : '
+      + 'la composition produit des mots uniques, forgés pour un passage précis.');
+
+    lignesTable('table-tma', d.tma.map(function (t) {
+      return [
+        { texte: t.marqueur, classe: 'kreyol' },
+        { texte: t.fonction },
+        { texte: nf.format(t.n), classe: 'num' },
+        { texte: t.collocations.map(function (x) { return x.mot; }).join(', ') , classe: 'kreyol' }
+      ];
+    }));
+    texte($('note-tma'),
+      'À eux seuls, ces ' + d.tma.length + ' marqueurs représentent ' + dec(d.tma_part)
+      + ' % de tous les mots du corpus. La colonne de droite donne les trois mots qui '
+      + 'suivent le plus souvent chaque marqueur.');
+
+    barres('chart-tma-combi', d.tma_combinaisons.map(function (t) {
+      return { label: t.suite, valeur: t.n, titre: '« ' + t.suite + ' » : ' + nf.format(t.n) + ' occurrences' };
+    }), { mono: true });
+
+    var pills = $('pills-accents');
+    if (pills) {
+      pills.innerHTML = '';
+      d.accents.filter(function (a) { return a.n >= 10; }).forEach(function (a) {
+        var span = document.createElement('span');
+        span.className = 'pill';
+        span.innerHTML = '<b class="kreyol">' + a.lettre + '</b> · ' + nf.format(a.n) + ' fois';
+        pills.appendChild(span);
+      });
+      var total = document.createElement('span');
+      total.className = 'pill';
+      total.innerHTML = '<b>' + dec(d.accents_pourcent) + ' %</b> des lettres sont accentuées';
+      pills.appendChild(total);
+    }
+
+    barres('chart-lettres', d.top_lettres.map(function (l) {
+      return {
+        label: l.lettre,
+        valeur: l.n,
+        affichage: dec(l.pourcent) + ' %',
+        titre: l.lettre + ' : ' + nf.format(l.n) + ' occurrences'
+      };
+    }), { mono: true });
+    texte($('note-lettres'), 'En part de toutes les lettres du corpus.');
+
+    tuiles('tiles-ngrams', [
+      { n: nf.format(d.bigrammes_uniques), k: 'suites de deux mots' },
+      { n: nf.format(d.trigrammes_uniques), k: 'suites de trois mots' },
+      { n: nf.format(d.modele.cles), k: 'contextes retenus', sub: nf.format(d.modele.cles_1mot) + ' à un mot, ' + nf.format(d.modele.cles_2mots) + ' à deux mots' },
+      { n: dec(d.modele.candidats_moyen), k: 'suggestions par contexte', sub: 'en moyenne, 5 au maximum' }
+    ]);
+
+    barres('chart-bigrammes', d.top_bigrammes.map(function (b) {
+      return { label: b.suite, valeur: b.n, titre: '« ' + b.suite + ' » : ' + nf.format(b.n) + ' occurrences' };
+    }), { mono: true });
+    texte($('note-bigrammes'),
+      'En occurrences, sur ' + nf.format(d.bigrammes_uniques) + ' suites de deux mots différentes. '
+      + 'Le haut du classement est occupé par les marqueurs de temps et d\'aspect.');
+
+    barres('chart-trigrammes', d.top_trigrammes.map(function (t) {
+      return { label: t.suite, valeur: t.n, titre: '« ' + t.suite + ' » : ' + nf.format(t.n) + ' occurrences' };
+    }), { mono: true });
+    texte($('note-trigrammes'),
+      'En occurrences, sur ' + nf.format(d.trigrammes_uniques) + ' suites de trois mots différentes. '
+      + 'Ce sont ces suites qui alimentent les ' + nf.format(d.modele.cles_2mots)
+      + ' contextes à deux mots du clavier.');
+
+    lignesTable('table-longs', d.mots_longs.map(function (m) {
+      return [
+        { texte: m.mot, classe: 'kreyol' },
+        { texte: nf.format(m.lettres), classe: 'num' },
+        { texte: nf.format(m.n), classe: 'num' }
+      ];
+    }));
+
+    lignesTable('table-contextes', d.contextes_frequents.map(function (c) {
+      return [
+        { texte: c.contexte, classe: 'kreyol' },
+        { texte: c.suite, classe: 'kreyol' },
+        { texte: Math.round(c.probabilite * 100) + ' %', classe: 'num' },
+        { texte: nf.format(c.occurrences) + ' fois', classe: 'num' }
+      ];
+    }));
+    texte($('note-modele'),
+      nf.format(d.modele.contextes_ecartes) + ' contextes de deux mots ont été écartés du modèle : '
+      + 'vus une seule fois, ils donnaient une certitude de 100 % à leur unique suite, '
+      + 'ce qui revient à réciter le corpus plutôt qu\'à prédire.');
+
+    if (d.clavier) {
+      tuiles('tiles-clavier', [
+        { n: nf.format(d.clavier.dictionnaire_mots), k: 'mots kréyòl embarqués', sub: 'creole_dict.json' },
+        { n: nf.format(d.clavier.ngrams_cles), k: 'contextes de prédiction', sub: 'creole_ngrams.json' },
+        { n: nf.format(d.clavier.francais_mots), k: 'mots français de secours', sub: 'french_simple_dict.json' }
+      ]);
+      var ecart = d.clavier.dictionnaire_mots - d.mots_uniques;
+      texte($('note-clavier'),
+        'Le dictionnaire livré compte ' + nf.format(Math.abs(ecart)) + ' mots '
+        + (ecart >= 0 ? 'de plus' : 'de moins') + ' que le corpus : ce sont des ajouts '
+        + 'entrés à la main, conservés d\'une régénération à l\'autre.');
+    }
+
+    texte($('note-limites'),
+      nf.format(d.lignes_vides) + ' lignes du jeu de données sur ' + nf.format(d.lignes_total)
+      + ' n\'ont pas de texte et sont ignorées ici. Les ' + dec(d.part_top10_sources)
+      + ' % de mots venant des dix premières sources signifient aussi que le corpus '
+      + 'porte la voix de quelques auteurs plus fort que celle des autres.');
+
+    if (d.source_donnees && d.source_donnees !== 'huggingface') {
+      texte($('maj'), 'Chiffres calculés depuis l\'instantané local du corpus, le jeu de données publié n\'ayant pas pu être lu.');
+    }
+  }
+
+  fetch('assets/corpus_stats.json')
+    .then(function (r) { return r.json(); })
+    .then(rendu)
+    .catch(function () {
+      var el = $('maj');
+      if (el) {
+        el.textContent = 'Les chiffres n\'ont pas pu être chargés. Le jeu de données reste consultable sur Hugging Face.';
+      }
+    });
+})();
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ lang: fr
   <a href="guide.html" aria-current="page">📘 Guide</a>
   <a href="simulateur.html">🧪 Essayer</a>
   <a href="nouveautes.html">🎁 Nouveautés</a>
+  <a href="corpus.html">📚 Corpus</a>
   <details class="menu" name="navmenu">
     <summary>🪧 Supports</summary>
     <div class="menu-panel">

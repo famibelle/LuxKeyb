@@ -1,0 +1,1140 @@
+{
+ "lignes_total": 2620,
+ "lignes_vides": 122,
+ "lignes_utiles": 2498,
+ "sources_total": 85,
+ "caracteres": 191672,
+ "octets_utf8": 208918,
+ "longueur_entree": {
+  "min": 1,
+  "max": 42906,
+  "moyenne": 76.7,
+  "mediane": 20,
+  "p90": 87
+ },
+ "tranches_longueur_entree": [
+  {
+   "min": 0,
+   "max": 10,
+   "n": 604
+  },
+  {
+   "min": 10,
+   "max": 25,
+   "n": 817
+  },
+  {
+   "min": 25,
+   "max": 50,
+   "n": 627
+  },
+  {
+   "min": 50,
+   "max": 100,
+   "n": 246
+  },
+  {
+   "min": 100,
+   "max": 200,
+   "n": 120
+  },
+  {
+   "min": 200,
+   "max": 500,
+   "n": 41
+  },
+  {
+   "min": 500,
+   "max": null,
+   "n": 43
+  }
+ ],
+ "mots_total": 36480,
+ "mots_uniques": 5282,
+ "richesse_lexicale": 0.1448,
+ "mots_par_entree": 14.6,
+ "bigrammes_uniques": 20302,
+ "trigrammes_uniques": 26955,
+ "hapax": 2949,
+ "hapax_pourcent": 55.8,
+ "longueur_mot_moyenne": 3.91,
+ "top_mots": [
+  {
+   "mot": "ka",
+   "n": 1800,
+   "pourcent": 4.93
+  },
+  {
+   "mot": "an",
+   "n": 1388,
+   "pourcent": 3.8
+  },
+  {
+   "mot": "sé",
+   "n": 885,
+   "pourcent": 2.43
+  },
+  {
+   "mot": "on",
+   "n": 833,
+   "pourcent": 2.28
+  },
+  {
+   "mot": "pou",
+   "n": 727,
+   "pourcent": 1.99
+  },
+  {
+   "mot": "té",
+   "n": 726,
+   "pourcent": 1.99
+  },
+  {
+   "mot": "pa",
+   "n": 664,
+   "pourcent": 1.82
+  },
+  {
+   "mot": "yo",
+   "n": 638,
+   "pourcent": 1.75
+  },
+  {
+   "mot": "nou",
+   "n": 633,
+   "pourcent": 1.74
+  },
+  {
+   "mot": "ou",
+   "n": 611,
+   "pourcent": 1.67
+  },
+  {
+   "mot": "ki",
+   "n": 548,
+   "pourcent": 1.5
+  },
+  {
+   "mot": "la",
+   "n": 481,
+   "pourcent": 1.32
+  },
+  {
+   "mot": "ni",
+   "n": 408,
+   "pourcent": 1.12
+  },
+  {
+   "mot": "fè",
+   "n": 404,
+   "pourcent": 1.11
+  },
+  {
+   "mot": "sa",
+   "n": 401,
+   "pourcent": 1.1
+  },
+  {
+   "mot": "mwen",
+   "n": 400,
+   "pourcent": 1.1
+  },
+  {
+   "mot": "ké",
+   "n": 337,
+   "pourcent": 0.92
+  },
+  {
+   "mot": "moun",
+   "n": 267,
+   "pourcent": 0.73
+  },
+  {
+   "mot": "di",
+   "n": 251,
+   "pourcent": 0.69
+  },
+  {
+   "mot": "pé",
+   "n": 244,
+   "pourcent": 0.67
+  },
+  {
+   "mot": "si",
+   "n": 218,
+   "pourcent": 0.6
+  },
+  {
+   "mot": "kon",
+   "n": 214,
+   "pourcent": 0.59
+  },
+  {
+   "mot": "lè",
+   "n": 211,
+   "pourcent": 0.58
+  },
+  {
+   "mot": "tout",
+   "n": 206,
+   "pourcent": 0.56
+  },
+  {
+   "mot": "adan",
+   "n": 202,
+   "pourcent": 0.55
+  }
+ ],
+ "top_bigrammes": [
+  {
+   "suite": "té ka",
+   "n": 184
+  },
+  {
+   "suite": "ka fè",
+   "n": 161
+  },
+  {
+   "suite": "ou ka",
+   "n": 145
+  },
+  {
+   "suite": "an ka",
+   "n": 142
+  },
+  {
+   "suite": "yo ka",
+   "n": 116
+  },
+  {
+   "suite": "té ké",
+   "n": 111
+  },
+  {
+   "suite": "an mwen",
+   "n": 106
+  },
+  {
+   "suite": "an té",
+   "n": 99
+  },
+  {
+   "suite": "ni on",
+   "n": 91
+  },
+  {
+   "suite": "pa ka",
+   "n": 87
+  },
+  {
+   "suite": "an nou",
+   "n": 82
+  },
+  {
+   "suite": "sé on",
+   "n": 81
+  },
+  {
+   "suite": "nou ka",
+   "n": 73
+  },
+  {
+   "suite": "pa té",
+   "n": 68
+  },
+  {
+   "suite": "ka di",
+   "n": 66
+  },
+  {
+   "suite": "pa ni",
+   "n": 63
+  },
+  {
+   "suite": "ki té",
+   "n": 60
+  },
+  {
+   "suite": "ka pran",
+   "n": 59
+  },
+  {
+   "suite": "ka vwè",
+   "n": 59
+  },
+  {
+   "suite": "pè pyè",
+   "n": 59
+  }
+ ],
+ "top_trigrammes": [
+  {
+   "suite": "an té ké",
+   "n": 49
+  },
+  {
+   "suite": "ou ka fè",
+   "n": 29
+  },
+  {
+   "suite": "té ké vlé",
+   "n": 26
+  },
+  {
+   "suite": "ki té ka",
+   "n": 25
+  },
+  {
+   "suite": "ka fè pou",
+   "n": 25
+  },
+  {
+   "suite": "té ké pé",
+   "n": 21
+  },
+  {
+   "suite": "sa ou ka",
+   "n": 19
+  },
+  {
+   "suite": "ou té ké",
+   "n": 19
+  },
+  {
+   "suite": "yo ka fè",
+   "n": 17
+  },
+  {
+   "suite": "té ké enmé",
+   "n": 17
+  },
+  {
+   "suite": "mèsi pou sa",
+   "n": 16
+  },
+  {
+   "suite": "pou sa ou",
+   "n": 16
+  },
+  {
+   "suite": "an sé moun",
+   "n": 16
+  },
+  {
+   "suite": "té ni on",
+   "n": 15
+  },
+  {
+   "suite": "an-mwen ka fè-mwen",
+   "n": 15
+  },
+  {
+   "suite": "ka fè-mwen mal",
+   "n": 15
+  },
+  {
+   "suite": "yo té ka",
+   "n": 14
+  },
+  {
+   "suite": "kou pou kou",
+   "n": 14
+  },
+  {
+   "suite": "té ka fè",
+   "n": 13
+  },
+  {
+   "suite": "pa té ka",
+   "n": 13
+  }
+ ],
+ "couverture": {
+  "50": 72,
+  "75": 522,
+  "90": 1984,
+  "95": 3458,
+  "99": 4918
+ },
+ "mots_longs": [
+  {
+   "mot": "diz-nèf-san-swasannsèt",
+   "lettres": 22,
+   "n": 1
+  },
+  {
+   "mot": "sèvis-ladministrasyon",
+   "lettres": 21,
+   "n": 1
+  },
+  {
+   "mot": "rèsponsabilité-lasa",
+   "lettres": 19,
+   "n": 1
+  },
+  {
+   "mot": "lagyè-lendépandans",
+   "lettres": 18,
+   "n": 1
+  },
+  {
+   "mot": "katrè-d-laprémidi",
+   "lettres": 17,
+   "n": 1
+  },
+  {
+   "mot": "konkou-agrégasyon",
+   "lettres": 17,
+   "n": 1
+  },
+  {
+   "mot": "propriyétè-fonsyé",
+   "lettres": 17,
+   "n": 1
+  },
+  {
+   "mot": "twazè-d-laprémidi",
+   "lettres": 17,
+   "n": 1
+  },
+  {
+   "mot": "bazil-lanmòsibit",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "fanm-laplenn-lin",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "konsititisyon-la",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "lawa-a-gran-tété",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "pawòl-senk-é-kat",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "toutmoun-bouliki",
+   "lettres": 16,
+   "n": 1
+  },
+  {
+   "mot": "kréyòl-gwadloup",
+   "lettres": 15,
+   "n": 4
+  },
+  {
+   "mot": "véridik-véritab",
+   "lettres": 15,
+   "n": 2
+  },
+  {
+   "mot": "charlottesville",
+   "lettres": 15,
+   "n": 1
+  },
+  {
+   "mot": "dèmen-spéra-dyé",
+   "lettres": 15,
+   "n": 1
+  },
+  {
+   "mot": "jiwomon-malanga",
+   "lettres": 15,
+   "n": 1
+  },
+  {
+   "mot": "konstitisyon-la",
+   "lettres": 15,
+   "n": 1
+  }
+ ],
+ "longueur_mots": [
+  {
+   "lettres": 2,
+   "mots": 102
+  },
+  {
+   "lettres": 3,
+   "mots": 417
+  },
+  {
+   "lettres": 4,
+   "mots": 725
+  },
+  {
+   "lettres": 5,
+   "mots": 920
+  },
+  {
+   "lettres": 6,
+   "mots": 930
+  },
+  {
+   "lettres": 7,
+   "mots": 719
+  },
+  {
+   "lettres": 8,
+   "mots": 526
+  },
+  {
+   "lettres": 9,
+   "mots": 371
+  },
+  {
+   "lettres": 10,
+   "mots": 232
+  },
+  {
+   "lettres": 11,
+   "mots": 129
+  },
+  {
+   "lettres": 12,
+   "mots": 89
+  },
+  {
+   "lettres": 13,
+   "mots": 72
+  },
+  {
+   "lettres": 14,
+   "mots": 23
+  },
+  {
+   "lettres": 15,
+   "mots": 13
+  },
+  {
+   "lettres": 16,
+   "mots": 6
+  },
+  {
+   "lettres": 17,
+   "mots": 4
+  },
+  {
+   "lettres": 18,
+   "mots": 1
+  },
+  {
+   "lettres": 19,
+   "mots": 1
+  },
+  {
+   "lettres": 21,
+   "mots": 1
+  },
+  {
+   "lettres": 22,
+   "mots": 1
+  }
+ ],
+ "composes": {
+  "mots": 1088,
+  "pourcent": 20.6,
+  "occurrences": 2320,
+  "occurrences_pourcent": 6.4,
+  "exemples": [
+   {
+    "mot": "a-y",
+    "n": 130
+   },
+   {
+    "mot": "an-mwen",
+    "n": 88
+   },
+   {
+    "mot": "a-w",
+    "n": 58
+   },
+   {
+    "mot": "an-nou",
+    "n": 34
+   },
+   {
+    "mot": "a-yo",
+    "n": 34
+   },
+   {
+    "mot": "ba-w",
+    "n": 26
+   },
+   {
+    "mot": "fi-la",
+    "n": 26
+   },
+   {
+    "mot": "ban-mwen",
+    "n": 25
+   },
+   {
+    "mot": "fè-mwen",
+    "n": 21
+   },
+   {
+    "mot": "kaz-la",
+    "n": 20
+   },
+   {
+    "mot": "rann-nou",
+    "n": 19
+   },
+   {
+    "mot": "di-mwen",
+    "n": 18
+   }
+  ],
+  "segments": [
+   {
+    "segments": 2,
+    "mots": 1029
+   },
+   {
+    "segments": 3,
+    "mots": 53
+   },
+   {
+    "segments": 4,
+    "mots": 6
+   }
+  ]
+ },
+ "mots_10_lettres": {
+  "mots": 572,
+  "pourcent": 10.8,
+  "avec_trait_union": 392,
+  "hapax": 443
+ },
+ "tma": [
+  {
+   "marqueur": "ka",
+   "fonction": "Aspect progressif ou habituel",
+   "n": 1800,
+   "pourcent": 4.93,
+   "collocations": [
+    {
+     "mot": "fè",
+     "n": 161
+    },
+    {
+     "mot": "di",
+     "n": 66
+    },
+    {
+     "mot": "pran",
+     "n": 59
+    }
+   ]
+  },
+  {
+   "marqueur": "té",
+   "fonction": "Passé",
+   "n": 726,
+   "pourcent": 1.99,
+   "collocations": [
+    {
+     "mot": "ka",
+     "n": 184
+    },
+    {
+     "mot": "ké",
+     "n": 111
+    },
+    {
+     "mot": "ni",
+     "n": 47
+    }
+   ]
+  },
+  {
+   "marqueur": "ké",
+   "fonction": "Futur",
+   "n": 337,
+   "pourcent": 0.92,
+   "collocations": [
+    {
+     "mot": "pé",
+     "n": 36
+    },
+    {
+     "mot": "vlé",
+     "n": 27
+    },
+    {
+     "mot": "enmé",
+     "n": 17
+    }
+   ]
+  },
+  {
+   "marqueur": "kay",
+   "fonction": "Futur proche",
+   "n": 31,
+   "pourcent": 0.08,
+   "collocations": [
+    {
+     "mot": "òwganizé",
+     "n": 4
+    },
+    {
+     "mot": "bengné",
+     "n": 3
+    },
+    {
+     "mot": "palé",
+     "n": 2
+    }
+   ]
+  },
+  {
+   "marqueur": "pé",
+   "fonction": "Possibilité",
+   "n": 244,
+   "pourcent": 0.67,
+   "collocations": [
+    {
+     "mot": "ké",
+     "n": 29
+    },
+    {
+     "mot": "pa",
+     "n": 21
+    },
+    {
+     "mot": "fè",
+     "n": 17
+    }
+   ]
+  },
+  {
+   "marqueur": "ja",
+   "fonction": "Accompli",
+   "n": 97,
+   "pourcent": 0.27,
+   "collocations": [
+    {
+     "mot": "ka",
+     "n": 15
+    },
+    {
+     "mot": "ni",
+     "n": 5
+    },
+    {
+     "mot": "byen",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "marqueur": "pa",
+   "fonction": "Négation",
+   "n": 664,
+   "pourcent": 1.82,
+   "collocations": [
+    {
+     "mot": "ka",
+     "n": 87
+    },
+    {
+     "mot": "té",
+     "n": 68
+    },
+    {
+     "mot": "ni",
+     "n": 63
+    }
+   ]
+  }
+ ],
+ "tma_combinaisons": [
+  {
+   "suite": "té ka",
+   "n": 184
+  },
+  {
+   "suite": "té ké",
+   "n": 111
+  },
+  {
+   "suite": "pa ka",
+   "n": 87
+  },
+  {
+   "suite": "pa té",
+   "n": 68
+  },
+  {
+   "suite": "ké pé",
+   "n": 36
+  },
+  {
+   "suite": "pé ké",
+   "n": 29
+  },
+  {
+   "suite": "pé pa",
+   "n": 21
+  },
+  {
+   "suite": "té ja",
+   "n": 18
+  },
+  {
+   "suite": "té pé",
+   "n": 16
+  },
+  {
+   "suite": "ja ka",
+   "n": 15
+  }
+ ],
+ "tma_part": 10.7,
+ "top_sources": [
+  {
+   "source": "Soni RUPAIRE SOMANBIL, Pyès téyat, 3 LAK, « gran parad … ti kou baton », Edisyon PARABOLE, 1971",
+   "court": "Soni RUPAIRE SOMANBIL, Pyès téyat, 3 LAK, «…",
+   "mots": 7958,
+   "lignes": 1,
+   "caracteres": 42906
+  },
+  {
+   "source": "POTOMITAN/potomitan-gcf-fr-translation (cours Assimil, traduction FR)",
+   "court": "POTOMITAN/potomitan-gcf-fr-translation…",
+   "mots": 5587,
+   "lignes": 1605,
+   "caracteres": 28532
+  },
+  {
+   "source": "Bel poveb kréyol, potomitan.info (collecte Jid)",
+   "court": "Bel poveb kréyol, potomitan.info (collecte…",
+   "mots": 2637,
+   "lignes": 156,
+   "caracteres": 12580
+  },
+  {
+   "source": "Dialogue entre Léontin, Dèdèt, René, Ejèni, et Man Azoé",
+   "court": "Dialogue entre Léontin, Dèdèt, René, Ejèni…",
+   "mots": 2531,
+   "lignes": 47,
+   "caracteres": 12620
+  },
+  {
+   "source": "Marga ANZALA, Zyé a Mangrov'la",
+   "court": "Marga ANZALA, Zyé a Mangrov'la",
+   "mots": 973,
+   "lignes": 51,
+   "caracteres": 4868
+  },
+  {
+   "source": "Alain Rutil, Les belles paroles d'Albert Gaspard, 1987, Les Éditions Caribéennes, pp 59-61",
+   "court": "Alain Rutil, Les belles paroles d'Albert…",
+   "mots": 643,
+   "lignes": 2,
+   "caracteres": 3544
+  },
+  {
+   "source": "Textes en créole de Romy Geneviève",
+   "court": "Textes en créole de Romy Geneviève",
+   "mots": 622,
+   "lignes": 2,
+   "caracteres": 3178
+  },
+  {
+   "source": "Mé 67, Mové Doukou, Max Rippon, 31/12/2007",
+   "court": "Mé 67, Mové Doukou, Max Rippon, 31/12/2007",
+   "mots": 586,
+   "lignes": 3,
+   "caracteres": 2994
+  },
+  {
+   "source": "Sonny Rupaire, Cette igname brisée qu'est ma terre natale, Editions Caribéennes, 1982.",
+   "court": "Sonny Rupaire, Cette igname brisée qu'est…",
+   "mots": 548,
+   "lignes": 219,
+   "caracteres": 2767
+  },
+  {
+   "source": "Kon andidan papay …",
+   "court": "Kon andidan papay …",
+   "mots": 546,
+   "lignes": 1,
+   "caracteres": 2796
+  },
+  {
+   "source": "Max Rippon, Pègmèl, 2013",
+   "court": "Max Rippon, Pègmèl, 2013",
+   "mots": 539,
+   "lignes": 1,
+   "caracteres": 2948
+  },
+  {
+   "source": "La Jamaïque est mon Afrique, Gerty DAMBURY, Les Editions du Manguier, 2015",
+   "court": "La Jamaïque est mon Afrique, Gerty DAMBURY…",
+   "mots": 538,
+   "lignes": 1,
+   "caracteres": 2979
+  },
+  {
+   "source": "Sa nou yé, Fleurs d'insomnies, Alain Verin, 2020",
+   "court": "Sa nou yé, Fleurs d'insomnies, Alain Verin…",
+   "mots": 528,
+   "lignes": 1,
+   "caracteres": 2721
+  },
+  {
+   "source": "Contes créoles, Jean Juraver, 1985",
+   "court": "Contes créoles, Jean Juraver, 1985",
+   "mots": 503,
+   "lignes": 1,
+   "caracteres": 2832
+  },
+  {
+   "source": "Marga ANZALA, plodari pou mangwòvla",
+   "court": "Marga ANZALA, plodari pou mangwòvla",
+   "mots": 489,
+   "lignes": 22,
+   "caracteres": 2373
+  }
+ ],
+ "part_top10_sources": 62.0,
+ "top_lettres": [
+  {
+   "lettre": "a",
+   "n": 19538,
+   "pourcent": 13.65
+  },
+  {
+   "lettre": "n",
+   "n": 15281,
+   "pourcent": 10.68
+  },
+  {
+   "lettre": "o",
+   "n": 11254,
+   "pourcent": 7.86
+  },
+  {
+   "lettre": "é",
+   "n": 9964,
+   "pourcent": 6.96
+  },
+  {
+   "lettre": "i",
+   "n": 8458,
+   "pourcent": 5.91
+  },
+  {
+   "lettre": "t",
+   "n": 7134,
+   "pourcent": 4.99
+  },
+  {
+   "lettre": "k",
+   "n": 6731,
+   "pourcent": 4.7
+  },
+  {
+   "lettre": "l",
+   "n": 6628,
+   "pourcent": 4.63
+  },
+  {
+   "lettre": "s",
+   "n": 5734,
+   "pourcent": 4.01
+  },
+  {
+   "lettre": "u",
+   "n": 5519,
+   "pourcent": 3.86
+  },
+  {
+   "lettre": "p",
+   "n": 5337,
+   "pourcent": 3.73
+  },
+  {
+   "lettre": "m",
+   "n": 5119,
+   "pourcent": 3.58
+  }
+ ],
+ "accents": [
+  {
+   "lettre": "é",
+   "n": 9964
+  },
+  {
+   "lettre": "è",
+   "n": 4884
+  },
+  {
+   "lettre": "ò",
+   "n": 1752
+  },
+  {
+   "lettre": "à",
+   "n": 23
+  },
+  {
+   "lettre": "ô",
+   "n": 4
+  },
+  {
+   "lettre": "ó",
+   "n": 3
+  },
+  {
+   "lettre": "â",
+   "n": 1
+  },
+  {
+   "lettre": "ê",
+   "n": 1
+  },
+  {
+   "lettre": "í",
+   "n": 1
+  },
+  {
+   "lettre": "á",
+   "n": 1
+  }
+ ],
+ "accents_pourcent": 11.62,
+ "modele": {
+  "cles": 8847,
+  "cles_1mot": 4597,
+  "cles_2mots": 4250,
+  "contextes_ecartes": 14910,
+  "candidats_moyen": 2.11
+ },
+ "contextes_frequents": [
+  {
+   "contexte": "ka",
+   "suite": "fè",
+   "probabilite": 0.089,
+   "occurrences": 1800,
+   "candidats": 5
+  },
+  {
+   "contexte": "an",
+   "suite": "ka",
+   "probabilite": 0.102,
+   "occurrences": 1388,
+   "candidats": 5
+  },
+  {
+   "contexte": "sé",
+   "suite": "on",
+   "probabilite": 0.092,
+   "occurrences": 885,
+   "candidats": 5
+  },
+  {
+   "contexte": "on",
+   "suite": "ti",
+   "probabilite": 0.035,
+   "occurrences": 833,
+   "candidats": 5
+  },
+  {
+   "contexte": "pou",
+   "suite": "nou",
+   "probabilite": 0.067,
+   "occurrences": 727,
+   "candidats": 5
+  },
+  {
+   "contexte": "té",
+   "suite": "ka",
+   "probabilite": 0.253,
+   "occurrences": 726,
+   "candidats": 5
+  },
+  {
+   "contexte": "pa",
+   "suite": "ka",
+   "probabilite": 0.131,
+   "occurrences": 664,
+   "candidats": 5
+  },
+  {
+   "contexte": "yo",
+   "suite": "ka",
+   "probabilite": 0.182,
+   "occurrences": 638,
+   "candidats": 5
+  },
+  {
+   "contexte": "nou",
+   "suite": "ka",
+   "probabilite": 0.115,
+   "occurrences": 633,
+   "candidats": 5
+  },
+  {
+   "contexte": "ou",
+   "suite": "ka",
+   "probabilite": 0.237,
+   "occurrences": 611,
+   "candidats": 5
+  },
+  {
+   "contexte": "ki",
+   "suite": "té",
+   "probabilite": 0.109,
+   "occurrences": 548,
+   "candidats": 5
+  },
+  {
+   "contexte": "la",
+   "suite": "ka",
+   "probabilite": 0.108,
+   "occurrences": 481,
+   "candidats": 5
+  },
+  {
+   "contexte": "ni",
+   "suite": "on",
+   "probabilite": 0.223,
+   "occurrences": 408,
+   "candidats": 5
+  },
+  {
+   "contexte": "fè",
+   "suite": "pou",
+   "probabilite": 0.082,
+   "occurrences": 404,
+   "candidats": 5
+  },
+  {
+   "contexte": "sa",
+   "suite": "ki",
+   "probabilite": 0.097,
+   "occurrences": 401,
+   "candidats": 5
+  }
+ ],
+ "clavier": {
+  "dictionnaire_mots": 5296,
+  "ngrams_cles": 8852,
+  "francais_mots": 662
+ },
+ "dataset": "POTOMITAN/PawolKreyol-gfc",
+ "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
+ "source_donnees": "huggingface",
+ "parquet_octets": 139462
+}
