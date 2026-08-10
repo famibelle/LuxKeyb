@@ -131,10 +131,54 @@ Le bouton **« 123 »** en bas à gauche du clavier bascule vers les chiffres
 et symboles usuels. La ponctuation de base (virgule, point, apostrophe)
 reste accessible directement sur le clavier alphabétique.
 
-### Changer de clavier à tout moment
+## Passer d'un clavier à l'autre
 
-Un appui long sur la barre d'espace permet de repasser à un autre clavier
-(Gboard, etc.) ponctuellement, sans avoir à tout reconfigurer.
+Klavyé Kréyòl Karukera ne remplace pas vos autres claviers : il s'ajoute à
+la liste, et vous basculez de l'un à l'autre en deux secondes, aussi souvent
+que vous voulez. Aucun réglage à refaire, aucune donnée perdue.
+
+### Quitter Klavyé Kréyòl pour un autre clavier
+
+Pendant que le clavier créole est affiché, **appuyez une seconde sur la
+barre d'espace** (le petit 🌐 dans son coin est là pour vous le rappeler).
+Le sélecteur de claviers d'Android s'ouvre et liste tous vos claviers
+installés : touchez « Gboard », « Samsung Keyboard » ou celui que vous
+voulez, et il prend la main immédiatement.
+
+Le clavier créole vous propose toujours la liste plutôt que de basculer tout
+seul vers le clavier suivant : c'est vous qui choisissez sur quoi vous
+atterrissez.
+
+### Revenir à Klavyé Kréyòl Karukera
+
+Exactement le même geste, depuis l'autre clavier : **appui long sur la barre
+d'espace** (sur Gboard, c'est aussi la touche 🌐 ou le globe à côté de la
+barre d'espace, selon les versions), puis choisissez **« Klavyé Kréyòl
+Karukera »**.
+
+Deux autres chemins si l'appui long ne donne rien sur votre téléphone :
+
+- **la barre de notifications** : pendant que vous écrivez, Android y
+  affiche souvent une ligne « Choisir la méthode de saisie » ou une petite
+  icône de clavier. Déroulez la barre et touchez-la ;
+- **l'application Klavyé Kréyòl Karukera** : ouvrez-la et touchez le bouton
+  de l'étape 2 (« Sélectionner le clavier ») ; il ouvre directement le même
+  sélecteur.
+
+### Ce qu'il faut savoir
+
+- Le choix est **global**, pas par application : le clavier sélectionné vaut
+  pour Messages, WhatsApp, le navigateur et tout le reste, jusqu'à ce que
+  vous en changiez.
+- Le choix est **mémorisé** : le téléphone rouvre le dernier clavier choisi,
+  même après un redémarrage.
+- Un clavier n'apparaît dans le sélecteur que s'il a été **activé** au
+  préalable dans les paramètres Android (étape 1). Si Klavyé Kréyòl Karukera
+  manque à l'appel, c'est presque toujours cela.
+- Écrire en français avec le clavier créole reste possible : les suggestions
+  françaises prennent le relais à partir de 3 lettres. Changer de clavier
+  n'est utile que si vous avez besoin d'une autre langue ou d'une
+  disposition particulière.
 
 ## Jeux de vocabulaire et progression
 
@@ -160,8 +204,13 @@ l'étape 2, ou faites un appui long sur la barre d'espace pour changer de
 clavier à tout moment.
 
 **Comment revenir à un autre clavier ponctuellement ?**
-Appui long sur la barre d'espace, puis choisissez un autre clavier dans la
-liste.
+Appui long d'une seconde sur la barre d'espace, puis choisissez un autre
+clavier dans la liste. Le même geste vous ramène ensuite au clavier créole :
+voir [Passer d'un clavier à l'autre](#passer-dun-clavier-à-lautre).
+
+**Installer Klavyé Kréyòl va-t-il supprimer mon clavier habituel ?**
+Non. Il s'ajoute à la liste des claviers du téléphone, sans toucher aux
+autres, et vous basculez entre eux quand vous voulez.
 
 **Mes données sont-elles envoyées quelque part ?**
 Non. Le clavier fonctionne entièrement en local, sans connexion internet.
