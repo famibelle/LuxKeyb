@@ -140,10 +140,20 @@ que vous voulez. Aucun réglage à refaire, aucune donnée perdue.
 ### Quitter Klavyé Kréyòl pour un autre clavier
 
 Pendant que le clavier créole est affiché, **appuyez une seconde sur la
-barre d'espace** (le petit 🌐 dans son coin est là pour vous le rappeler).
+barre d'espace**. Le petit 🌐 dans son coin est là pour vous le rappeler :
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_barre_espace_globe.png" alt="Gros plan sur la barre d'espace bleue du clavier créole, avec le petit globe 🌐 dans son coin supérieur droit" width="60%">
+</div>
+
 Le sélecteur de claviers d'Android s'ouvre et liste tous vos claviers
-installés : touchez « Gboard », « Samsung Keyboard » ou celui que vous
-voulez, et il prend la main immédiatement.
+installés. Touchez « Gboard », « Samsung Keyboard » ou celui que vous
+voulez : il prend la main immédiatement, dans le champ où vous étiez.
+
+<div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
+  <img src="Screenshots/app_changer_clavier_1_selecteur.png" alt="Sélecteur Android « Sélectionnez le mode de saisie » ouvert par-dessus le clavier créole, Klavyé Kréyòl Karukéra coché parmi les claviers installés" width="30%">
+  <img src="Screenshots/app_changer_clavier_2_gboard.png" alt="Le même champ de message, désormais avec Gboard affiché à la place du clavier créole" width="30%">
+</div>
 
 Le clavier créole vous propose toujours la liste plutôt que de basculer tout
 seul vers le clavier suivant : c'est vous qui choisissez sur quoi vous
@@ -151,19 +161,24 @@ atterrissez.
 
 ### Revenir à Klavyé Kréyòl Karukera
 
-Exactement le même geste, depuis l'autre clavier : **appui long sur la barre
-d'espace** (sur Gboard, c'est aussi la touche 🌐 ou le globe à côté de la
-barre d'espace, selon les versions), puis choisissez **« Klavyé Kréyòl
-Karukera »**.
+Attention, le geste n'est pas symétrique : sur la plupart des autres
+claviers, l'appui long sur la barre d'espace ou la touche 🌐 change
+seulement **leur** langue interne (Gboard propose ainsi français, anglais...)
+et ne ramène pas au clavier créole.
 
-Deux autres chemins si l'appui long ne donne rien sur votre téléphone :
+Le chemin qui marche partout est l'**icône de clavier en bas de l'écran**,
+dans la barre de navigation, affichée tant qu'un clavier est ouvert.
+Touchez-la : le sélecteur Android réapparaît, et « Klavyé Kréyòl Karukera »
+y attend.
 
-- **la barre de notifications** : pendant que vous écrivez, Android y
-  affiche souvent une ligne « Choisir la méthode de saisie » ou une petite
-  icône de clavier. Déroulez la barre et touchez-la ;
-- **l'application Klavyé Kréyòl Karukera** : ouvrez-la et touchez le bouton
-  de l'étape 2 (« Sélectionner le clavier ») ; il ouvre directement le même
-  sélecteur.
+<div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
+  <img src="Screenshots/app_changer_clavier_3_retour_selecteur.png" alt="Sélecteur Android rouvert depuis Gboard, montrant Klavyé Kréyòl Karukéra dans la liste des claviers disponibles" width="30%">
+  <img src="Screenshots/app_changer_clavier_4_retour_kreyol.png" alt="Le clavier créole de retour dans le champ de message, avec ses touches accentuées" width="30%">
+</div>
+
+Si votre téléphone n'affiche pas cette icône, ouvrez l'**application Klavyé
+Kréyòl Karukera** et touchez le bouton de l'étape 2, « Sélectionner le
+clavier » : il ouvre exactement le même sélecteur.
 
 ### Ce qu'il faut savoir
 
@@ -200,13 +215,14 @@ culturels** jalonnent le parcours, de « Pipirit » à « Potomitan ».
 
 **Le clavier créole n'apparaît pas quand je tape ?**
 Vérifiez qu'il est bien *sélectionné* (pas seulement activé) : reprenez
-l'étape 2, ou faites un appui long sur la barre d'espace pour changer de
-clavier à tout moment.
+l'étape 2, ou touchez l'icône de clavier en bas de l'écran pendant que vous
+écrivez pour rouvrir le sélecteur.
 
 **Comment revenir à un autre clavier ponctuellement ?**
-Appui long d'une seconde sur la barre d'espace, puis choisissez un autre
-clavier dans la liste. Le même geste vous ramène ensuite au clavier créole :
-voir [Passer d'un clavier à l'autre](#passer-dun-clavier-à-lautre).
+Appui long d'une seconde sur la barre d'espace du clavier créole, puis
+choisissez un autre clavier dans la liste. Pour revenir au créole ensuite,
+le geste est différent : voir
+[Passer d'un clavier à l'autre](#passer-dun-clavier-à-lautre).
 
 **Installer Klavyé Kréyòl va-t-il supprimer mon clavier habituel ?**
 Non. Il s'ajoute à la liste des claviers du téléphone, sans toucher aux
