@@ -76,6 +76,35 @@ p{margin:0 0 12px;}
 .cadre dd{margin:0 0 14px;color:var(--ink-soft);font-size:15px;}
 .cadre dd:last-child{margin-bottom:0;}
 
+/* Candidature : le formulaire clôt la page, on signe après avoir lu.
+   theme.css ne porte aucun style de champ, tout est défini ici. */
+.candidature{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-top:18px;}
+.champ{margin-bottom:16px;}
+.champ label{display:block;font-weight:700;font-size:15px;margin-bottom:5px;}
+.champ .aide{display:block;font-weight:400;color:var(--ink-soft);font-size:13.5px;margin-top:2px;}
+.champ input[type=text],.champ input[type=email],.champ textarea{
+  width:100%;padding:11px 13px;border-radius:10px;
+  border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  font-family:inherit;font-size:16px;line-height:1.45;
+}
+.champ textarea{min-height:120px;resize:vertical;}
+.champ input:focus,.champ textarea:focus{outline:2px solid var(--sea);outline-offset:1px;border-color:transparent;}
+.consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0 6px;}
+.consent input{margin-top:3px;width:18px;height:18px;flex:0 0 auto;accent-color:var(--sea);}
+.consent label{font-size:14.5px;color:var(--ink-soft);}
+.candidature button{
+  width:100%;padding:14px 18px;border:0;border-radius:10px;cursor:pointer;
+  background:var(--sea);color:var(--paper);font-family:inherit;font-size:16px;font-weight:700;
+}
+.candidature button:disabled{opacity:.6;cursor:progress;}
+.rgpd{font-size:13px;color:var(--ink-soft);margin:14px 0 0;}
+/* Le pot de miel piège les robots : invisible, mais jamais display:none, que
+   certains remplisseurs automatiques savent ignorer. */
+.pot-de-miel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+.reponse{display:none;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:15px;}
+.reponse.ok{display:block;background:var(--sea-soft);border:1px solid var(--sea);}
+.reponse.ko{display:block;background:var(--hibiscus-soft);border:1px solid var(--hibiscus);}
+
 .devise{
   margin-top:44px;padding:26px 20px;border-radius:14px;text-align:center;
   background:var(--sea-soft);border:1px solid var(--line);
@@ -296,14 +325,112 @@ p{margin:0 0 12px;}
   <p>Être ambassadeur de Klavyé Kréyòl, c'est avant tout rejoindre une communauté de personnes qui souhaitent contribuer, chacune à leur manière, à la présence, à la transmission et au rayonnement de la langue créole dans le monde numérique.</p>
 </section>
 
+<section id="candidature">
+  <h2>Devenir ambassadeur</h2>
+  <p>Vous vous reconnaissez dans cette charte ? Laissez-nous votre adresse et quelques mots : nous vous répondons et nous vous ajoutons au canal des ambassadeurs.</p>
+
+  <div class="candidature">
+    <div class="reponse" id="reponse" role="status" aria-live="polite"></div>
+
+    <form id="formCandidature" action="https://formspree.io/f/xkjwrwlg" method="POST">
+      <input type="hidden" name="_subject" value="Candidature ambassadeur Klavyé Kréyòl">
+      <!-- Pot de miel : un robot remplit tous les champs, un humain ne voit
+           pas celui-ci. Formspree écarte la soumission si _gotcha est rempli. -->
+      <div class="pot-de-miel" aria-hidden="true">
+        <label for="_gotcha">Ne remplissez pas ce champ</label>
+        <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="champ">
+        <label for="nom">Nom ou prénom</label>
+        <input type="text" id="nom" name="nom" autocomplete="name" placeholder="Comment vous appeler ?" required>
+      </div>
+
+      <div class="champ">
+        <label for="email">Adresse e-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="votrenom@email.com" required>
+      </div>
+
+      <div class="champ">
+        <label for="lieu">Où êtes-vous ?
+          <span class="aide">Commune, région ou pays. Facultatif, cela nous aide à relier les ambassadeurs entre eux.</span>
+        </label>
+        <input type="text" id="lieu" name="lieu" placeholder="Pointe-à-Pitre, Paris, Montréal...">
+      </div>
+
+      <div class="champ">
+        <label for="message">Votre message
+          <span class="aide">Dites-nous en quelques mots ce qui vous motive et comment vous imaginez faire connaître le clavier.</span>
+        </label>
+        <textarea id="message" name="message" placeholder="Bonjour, je souhaite devenir ambassadeur parce que..." required></textarea>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="charte_acceptee" value="oui" required>
+        <label for="consent">J'ai lu la charte et j'en accepte les valeurs, les principes de conduite et le cadre bénévole.</label>
+      </div>
+
+      <button type="submit" id="boutonEnvoyer">✉️ Envoyer ma candidature</button>
+    </form>
+
+    <p class="rgpd">Votre adresse ne sert qu'à vous répondre et à animer le réseau des ambassadeurs. Elle n'est ni revendue ni utilisée à d'autres fins, et vous pouvez demander son effacement à tout moment en écrivant à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>. Voir la <a href="privacy/privacy-policy.html">politique de confidentialité</a>.</p>
+  </div>
+</section>
+
 <div class="devise">
   <p class="mots">Respé • Solidarité • Pataj • Angajman • Konfyans</p>
   <p class="signature">Klavyé Kréyòl · An nou fè kréyòl viv adan mond dijital-la.</p>
   <div class="cta-row">
-    <a class="btn primary" href="ambassade.html">🤝 Rejoindre les ambassadeurs</a>
+    <a class="btn primary" href="#candidature">🤝 Devenir ambassadeur</a>
+    <a class="btn" href="ambassade.html">📣 Les missions à faire</a>
     <a class="btn" href="tract.html">🖨️ Imprimer le tract</a>
   </div>
 </div>
+
+<script>
+(function(){
+  var form = document.getElementById('formCandidature');
+  var bouton = document.getElementById('boutonEnvoyer');
+  var reponse = document.getElementById('reponse');
+  var texteBouton = bouton.textContent;
+
+  function afficher(classe, html){
+    reponse.className = 'reponse ' + classe;
+    reponse.innerHTML = html;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    bouton.disabled = true;
+    bouton.textContent = 'Envoi en cours...';
+    reponse.className = 'reponse';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(r){
+      if (r.ok) {
+        form.style.display = 'none';
+        afficher('ok', '🎉 <strong>Mèsi anpil !</strong> Votre candidature est partie. Nous vous répondons par e-mail pour vous accueillir dans le réseau.');
+      } else {
+        // L'échec vient presque toujours de l'endpoint (quota atteint,
+        // formulaire non confirmé) : on donne tout de suite la voie de secours
+        // plutôt que de laisser la personne réessayer dans le vide.
+        throw new Error('envoi refusé');
+      }
+    })
+    .catch(function(){
+      afficher('ko', 'L\'envoi n\'a pas abouti. Écrivez-nous directement à <a href="mailto:contact@potomitan.io?subject=Candidature%20ambassadeur%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l">contact@potomitan.io</a>, votre candidature sera traitée de la même façon.');
+    })
+    .then(function(){
+      bouton.disabled = false;
+      bouton.textContent = texteBouton;
+    });
+  });
+})();
+</script>
 
 <!-- footer:start -->
 <footer class="site">
