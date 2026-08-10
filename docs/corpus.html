@@ -11,20 +11,16 @@
 <script defer src="assets/theme.js"></script>
 <style>
 *{box-sizing:border-box;}
-html{overflow-x:hidden;}
+html{overflow-x:clip;}
 body{
   margin:0; padding:0 18px 70px;
   background:var(--paper); color:var(--ink);
   font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
   line-height:1.55;
-  overflow-x:hidden;
+  overflow-x:clip;
   overflow-wrap:break-word;
 }
 .wrap{max-width:760px;margin:0 auto;}
-nav.site{text-align:center;padding:10px 0;margin-top:6px;border-bottom:1px solid var(--line);font-size:14.5px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;}
-nav.site a{color:var(--sea);text-decoration:none;font-weight:600;}
-nav.site a:hover{text-decoration:underline;}
-nav.site strong{color:var(--ink);}
 header{padding:22px 0 4px;}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
 h1{font-size:clamp(27px,6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
@@ -89,8 +85,6 @@ tbody tr:hover{background:var(--stripe);}
 .flow .step p{margin:0;font-size:13.5px;color:var(--ink-soft);}
 a{color:var(--sea);}
 footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
-.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;font-family:inherit;}
-.theme-toggle:hover{border-color:var(--sea);}
 .loading{color:var(--ink-soft);font-size:14px;font-style:italic;}
 
 @media (max-width:520px){
@@ -111,37 +105,43 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
 
 <!-- nav:start -->
 <nav class="site">
-  <a href="./">🏠 Accueil</a>
-  <a href="guide.html">📘 Guide</a>
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
   <a href="simulateur.html">🧪 Essayer</a>
   <a href="nouveautes.html">🎁 Nouveautés</a>
-  <a href="corpus.html" aria-current="page">📚 Corpus</a>
   <details class="menu" name="navmenu">
-    <summary>🪧 Supports</summary>
+    <summary class="in-section">ℹ️ Le projet</summary>
     <div class="menu-panel">
-      <a href="tract.html">Tract</a>
-      <a href="tract-eco.html">Tract éco encre</a>
-      <a href="affiche.html">Affiche</a>
-      <a href="affiche-eco.html">Affiche éco encre</a>
-      <a href="affiche-classique.html">Affiche classique</a>
-      <a href="triptyque.html">Triptyque</a>
-      <a href="triptyque-eco.html">Triptyque éco encre</a>
+      <a href="corpus.html" aria-current="page">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <strong class="menu-label">Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
       <a href="publicites.html">Visuels publicitaires</a>
     </div>
   </details>
-  <details class="menu" name="navmenu">
-    <summary>🤝 Participer</summary>
-    <div class="menu-panel">
-      <a href="ambassade.html">Vin Anbasadè</a>
-      <a href="beta_onboarding.html">Bêta-testeurs</a>
-      <a href="feedbacks_form.html">Retours</a>
-    </div>
-  </details>
-  <a href="presskit.html">📰 Presse</a>
-  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">📲 Installer</a>
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a>
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
 <!-- nav:end -->
 
 <header>
@@ -748,5 +748,49 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-si
     });
 })();
 </script>
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html" aria-current="page">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
 </body>
 </html>

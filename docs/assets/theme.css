@@ -103,7 +103,10 @@ body,
 html { overflow-x: clip; }
 nav.site {
   text-align: center;
-  padding: 10px 18px;
+  /* Le fond traverse la page, mais les liens restent dans une bande centrée :
+     alignés au bord de l'écran, la marque d'un côté et le sélecteur de thème
+     de l'autre flottaient loin de la colonne de texte. */
+  padding: 10px max(18px, calc(50vw - 440px));
   margin-bottom: 18px;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -111,11 +114,36 @@ nav.site {
   font-size: 14.5px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  /* Collante : le bouton d'installation doit rester atteignable à n'importe
+     quelle profondeur de défilement, y compris sur les pages longues (corpus,
+     ambassade). D'où aussi le fond opaque, sans lequel le texte de la page
+     défilerait visiblement au travers. */
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--paper);
 }
 nav.site a { color: var(--sea); text-decoration: none; font-weight: 600; }
+/* La marque ramène à l'accueil sans concurrencer l'appel à l'action : elle
+   porte le poids d'un titre, pas celui d'un lien de navigation. */
+nav.site .nav-brand { color: var(--ink); font-weight: 700; margin-right: 6px; }
+/* Pousse l'appel à l'action, le menu « Déjà installé ? » et le sélecteur de
+   thème à droite : à gauche du bouton, seuls les liens qui donnent envie de
+   l'installer (essayer, nouveautés, le projet). */
+nav.site .nav-cta { margin-left: auto; }
+nav.site .nav-after > summary { color: var(--ink-soft); font-weight: 500; }
+nav.site .menu-panel .menu-label {
+  display: block;
+  padding: 8px 10px 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
 nav.site a:hover { text-decoration: underline; }
 nav.site strong { color: var(--ink); }
 /* Page courante, et groupe qui la contient : une couleur seule se remarquait
@@ -184,9 +212,11 @@ nav.site .nav-cta:hover { filter: brightness(1.1); text-decoration: none; }
 /* Sur mobile, un panneau flottant déborderait : les groupes se déplient
    dans le flux. */
 @media (max-width: 640px) {
-  /* Le groupe prend toute la largeur, sans quoi son contenu déplié impose une
-     largeur minimale plus grande que l'écran et fait déborder toute la page. */
-  nav.site details.menu { width: 100%; }
+  /* Déplié, le groupe prend toute la largeur, sans quoi son contenu impose une
+     largeur minimale plus grande que l'écran et fait déborder toute la page.
+     Replié, il reste en ligne : la barre est collante, une ligne par menu la
+     ferait manger le haut de l'écran à chaque défilement. */
+  nav.site details.menu[open] { width: 100%; }
   nav.site .menu-panel {
     position: static;
     transform: none;
@@ -200,6 +230,127 @@ nav.site .nav-cta:hover { filter: brightness(1.1); text-decoration: none; }
     box-shadow: none;
   }
   nav.site .menu-panel a { white-space: normal; }
+  /* Le libellé de section doit couper la ligne, sinon il s'aligne comme un
+     lien de plus au milieu du panneau et ne regroupe plus rien. */
+  nav.site .menu-panel .menu-label { width: 100%; text-align: center; padding-top: 4px; }
+  /* Le bouton de la barre laisse la place à la barre d'installation fixée en
+     bas : le garder ici le ferait sortir de l'écran au premier défilement. */
+  nav.site .nav-cta { display: none; }
+  nav.site { gap: 8px; justify-content: center; }
+  nav.site .nav-brand { margin-right: 0; width: 100%; }
+  /* Hauteur de la barre basse, pour que le dernier paragraphe ne finisse pas
+     dessous. */
+  body { padding-bottom: 92px; }
+}
+
+/* Barre d'installation mobile : l'action principale dans la zone du pouce,
+   présente à toute profondeur de défilement. Masquée sur desktop, où le
+   bouton de la barre de navigation collante joue déjà ce rôle. */
+.install-bar { display: none; }
+@media (max-width: 640px) {
+  .install-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
+  }
+  .install-bar-cta {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    padding: 13px 18px;
+    border-radius: 999px;
+    background: var(--sea);
+    color: var(--paper);
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+  }
+  .install-bar-alt {
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .install-bar-alt:hover { text-decoration: underline; }
+}
+
+/* Pied de page partagé : il recueille tout ce que la barre ne porte plus. */
+footer.site {
+  margin-top: 40px;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 28px max(18px, calc(50vw - 340px));
+  border-top: 1px solid var(--line);
+  background: var(--stripe);
+  font-size: 14px;
+}
+footer.site .footer-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 26px;
+  text-align: center;
+}
+footer.site .footer-baseline {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+footer.site .footer-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+}
+footer.site .footer-cols strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+footer.site .footer-cols a {
+  display: block;
+  padding: 3px 0;
+  color: var(--sea);
+  text-decoration: none;
+}
+footer.site .footer-cols a:hover { text-decoration: underline; }
+footer.site .footer-cols [aria-current="page"] { color: var(--ink); font-weight: 600; }
+footer.site .footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  text-align: center;
+}
+footer.site .footer-legal a { color: var(--ink-soft); }
+
+/* À l'impression, la barre, le pied et l'appel à l'action mobile n'ont aucun
+   sens : ces pages existent pour sortir un tract ou une affiche sur papier. */
+@media print {
+  nav.site,
+  footer.site,
+  .install-bar { display: none !important; }
+  body { padding-bottom: 0; }
 }
 
 /* Boutons et cartes partagés */

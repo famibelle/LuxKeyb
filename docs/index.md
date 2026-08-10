@@ -6,37 +6,43 @@ lang: fr
 
 <!-- nav:start -->
 <nav class="site">
-  <a href="./" aria-current="page">🏠 Accueil</a>
-  <a href="guide.html">📘 Guide</a>
+  <a class="nav-brand" href="./" aria-current="page">⌨️ Klavyé Kréyòl</a>
   <a href="simulateur.html">🧪 Essayer</a>
   <a href="nouveautes.html">🎁 Nouveautés</a>
-  <a href="corpus.html">📚 Corpus</a>
   <details class="menu" name="navmenu">
-    <summary>🪧 Supports</summary>
+    <summary>ℹ️ Le projet</summary>
     <div class="menu-panel">
-      <a href="tract.html">Tract</a>
-      <a href="tract-eco.html">Tract éco encre</a>
-      <a href="affiche.html">Affiche</a>
-      <a href="affiche-eco.html">Affiche éco encre</a>
-      <a href="affiche-classique.html">Affiche classique</a>
-      <a href="triptyque.html">Triptyque</a>
-      <a href="triptyque-eco.html">Triptyque éco encre</a>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <strong class="menu-label">Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
       <a href="publicites.html">Visuels publicitaires</a>
     </div>
   </details>
-  <details class="menu" name="navmenu">
-    <summary>🤝 Participer</summary>
-    <div class="menu-panel">
-      <a href="ambassade.html">Vin Anbasadè</a>
-      <a href="beta_onboarding.html">Bêta-testeurs</a>
-      <a href="feedbacks_form.html">Retours</a>
-    </div>
-  </details>
-  <a href="presskit.html">📰 Presse</a>
-  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">📲 Installer</a>
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a>
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
 <!-- nav:end -->
 
 # Klavyé Kréyòl Karukera, le clavier créole guadeloupéen pour Android
@@ -48,7 +54,7 @@ les textes des grands défenseurs du kréyòl : Sylviane Telchid, Sonny Rupaire,
 Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
 
 <div align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dhero">
     <img src="Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg" alt="Télécharger Klavyé Kréyòl Karukera sur Google Play" width="60%">
   </a>
 </div>
@@ -72,7 +78,7 @@ les accents par appui long.
 </div>
 
 <div align="center" style="margin: 18px 0;">
-  <a href="simulateur.html" class="btn primary" style="padding:12px 28px;">🧪 Essayer le clavier dans le navigateur</a>
+  <a href="simulateur.html" class="btn" style="padding:12px 28px;">🧪 Essayer le clavier dans le navigateur</a>
 </div>
 
 ## Pourquoi ce clavier ?
@@ -123,7 +129,7 @@ régulièrement, en avance sur le Play Store.
 
 <div class="card" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">
   <span id="ef-teaser" style="color:var(--ink-soft);">Chargement…</span>
-  <a href="nouveautes.html" class="btn primary" style="padding:10px 22px;white-space:nowrap;">🎁 Voir les nouveautés</a>
+  <a href="nouveautes.html" class="btn" style="padding:10px 22px;white-space:nowrap;">🎁 Voir les nouveautés</a>
 </div>
 
 <script>
@@ -177,7 +183,7 @@ clic, quoi dire si vous appelez une radio, et un tract à imprimer pour
 le laisser chez le boulanger, le pharmacien ou la boutique du coin.
 
 <div align="center" style="margin: 16px 0; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-  <a href="ambassade.html" class="btn primary" style="padding:12px 28px;">🏝️ Devenir ambassadeur du Klavyé Kréyòl</a>
+  <a href="ambassade.html" class="btn" style="padding:12px 28px;">🤝 Devenir ambassadeur du Klavyé Kréyòl</a>
   <a href="tract.html" class="btn" style="padding:12px 28px;">🖨️ Imprimer le tract</a>
 </div>
 
@@ -193,5 +199,49 @@ Le code source est ouvert et public sur
 
 ---
 
-🏝️ *Potomitan™, Teknoloji pou tout moun.
-« An kréyòl nou ka palé, an kréyòl nou ka maké ! »*
+*« An kréyòl nou ka palé, an kréyòl nou ka maké ! »*
+
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./" aria-current="page">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->

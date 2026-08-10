@@ -1,35 +1,50 @@
-<!-- Source unique de la barre de navigation.
-     Ne pas modifier les copies présentes dans les pages : elles sont générées.
-     Après édition de ce fichier : python3 docs/scripts/sync_nav.py -->
+<!-- Source unique de la barre de navigation et de la barre d'installation
+     mobile. Ne pas modifier les copies présentes dans les pages : elles sont
+     générées. Après édition de ce fichier : python3 docs/scripts/sync_nav.py
+
+     La barre est organisée autour d'un seul objectif, installer l'application.
+     Trois zones, dans l'ordre de lecture :
+       1. l'identité, qui ramène à l'accueil sans concurrencer le bouton ;
+       2. la preuve (essayer, nouveautés, le projet), avant le bouton ;
+       3. l'action, puis « Déjà installé ? » qui range hors du chemin tout ce
+          qui ne s'adresse qu'aux personnes ayant déjà le clavier.
+     Tout le reste (presse, code source, confidentialité, supports) vit dans le
+     pied de page, cf. _includes/footer.html. -->
 <nav class="site">
-  <a href="./">🏠 Accueil</a>
-  <a href="guide.html">📘 Guide</a>
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
   <a href="simulateur.html">🧪 Essayer</a>
   <a href="nouveautes.html">🎁 Nouveautés</a>
-  <a href="corpus.html">📚 Corpus</a>
   <details class="menu" name="navmenu">
-    <summary>🪧 Supports</summary>
+    <summary>ℹ️ Le projet</summary>
     <div class="menu-panel">
-      <a href="tract.html">Tract</a>
-      <a href="tract-eco.html">Tract éco encre</a>
-      <a href="affiche.html">Affiche</a>
-      <a href="affiche-eco.html">Affiche éco encre</a>
-      <a href="affiche-classique.html">Affiche classique</a>
-      <a href="triptyque.html">Triptyque</a>
-      <a href="triptyque-eco.html">Triptyque éco encre</a>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <strong class="menu-label">Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
       <a href="publicites.html">Visuels publicitaires</a>
     </div>
   </details>
-  <details class="menu" name="navmenu">
-    <summary>🤝 Participer</summary>
-    <div class="menu-panel">
-      <a href="ambassade.html">Vin Anbasadè</a>
-      <a href="beta_onboarding.html">Bêta-testeurs</a>
-      <a href="feedbacks_form.html">Retours</a>
-    </div>
-  </details>
-  <a href="presskit.html">📰 Presse</a>
-  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">📲 Installer</a>
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a>
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
