@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charte de l'ambassadeur Klavyé Kréyòl</title>
+<meta name="description" content="Les valeurs et les engagements du réseau des ambassadeurs de Klavyé Kréyòl : respect, solidarité, partage, engagement et confiance autour de la langue créole dans le monde numérique.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:720px;margin:0 auto;}
+header{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:62ch;margin:0 0 10px;}
+section{margin-top:44px;}
+h2{font-size:21px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+
+/* Les cinq valeurs : le mot kréyòl porte l'intitulé, sa traduction française
+   le suit, parce que la liste de clôture de la charte est en kréyòl. */
+.valeurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px;}
+.valeur{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+.valeur .kr{display:block;font-size:19px;font-weight:800;letter-spacing:-0.01em;}
+.valeur .fr{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--sea);margin:2px 0 8px;}
+.valeur p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+
+/* Engagements : une case à cocher décorative, la charte se lit comme une
+   liste de choses que l'on prend sur soi. */
+.engagements{list-style:none;margin:18px 0 0;padding:0;}
+.engagements li{position:relative;padding:0 0 0 34px;margin:0 0 16px;}
+.engagements li::before{
+  content:"✓";
+  position:absolute;left:0;top:1px;
+  display:flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;
+  background:var(--sea-soft);color:var(--sea);
+  font-size:13px;font-weight:700;
+}
+.engagements strong{display:block;margin-bottom:2px;}
+.engagements span{color:var(--ink-soft);font-size:15px;}
+
+.devise{
+  margin-top:44px;padding:26px 20px;border-radius:14px;text-align:center;
+  background:var(--sea-soft);border:1px solid var(--line);
+}
+.devise .mots{font-size:clamp(17px,3.6vw,21px);font-weight:800;letter-spacing:-0.01em;margin:0 0 8px;}
+.devise .signature{margin:0;color:var(--ink-soft);font-size:15px;}
+.cta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:26px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- nav:start -->
+<nav class="site">
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <details class="menu" name="navmenu">
+    <summary>ℹ️ Le projet</summary>
+    <div class="menu-panel">
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary class="in-section">Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <strong class="menu-label">Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html" aria-current="page">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+  </details>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
+<!-- nav:end -->
+
+<header>
+  <p class="eyebrow">Réseau des ambassadeurs</p>
+  <h1>Charte de l'ambassadeur Klavyé Kréyòl</h1>
+  <p class="lead">Être ambassadeur de Klavyé Kréyòl, c'est adhérer à des valeurs communes qui guident les relations entre les ambassadeurs, les utilisateurs, les partenaires et l'équipe du projet.</p>
+</header>
+
+<section>
+  <h2>Nos valeurs</h2>
+  <div class="valeurs">
+    <div class="valeur">
+      <span class="kr">Respé</span>
+      <span class="fr">Respect</span>
+      <p>Respecter chacun, ses idées, ses différences, ses usages et son rapport à la langue créole.</p>
+    </div>
+    <div class="valeur">
+      <span class="kr">Solidarité</span>
+      <!-- Pas de traduction sous ce mot : il s'écrit pareil dans les deux
+           langues, la répéter donnerait l'air d'une coquille. -->
+      <span class="fr">&nbsp;</span>
+      <p>Contribuer à une dynamique collective fondée sur l'entraide et la volonté de faire vivre et rayonner la langue créole.</p>
+    </div>
+    <div class="valeur">
+      <span class="kr">Pataj</span>
+      <span class="fr">Partage</span>
+      <p>Transmettre, faire connaître et partager les initiatives, les connaissances et les expériences autour de Klavyé Kréyòl.</p>
+    </div>
+    <div class="valeur">
+      <span class="kr">Angajman</span>
+      <span class="fr">Engagement</span>
+      <p>Participer, selon ses possibilités et ses disponibilités, au rayonnement de Klavyé Kréyòl et à la valorisation du créole dans l'univers numérique.</p>
+    </div>
+    <div class="valeur">
+      <span class="kr">Konfyans</span>
+      <span class="fr">Confiance</span>
+      <p>Développer des relations fondées sur la confiance, la bienveillance, la transparence et le respect des engagements de chacun.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Nos engagements</h2>
+  <p class="muted">En tant qu'ambassadeur de Klavyé Kréyòl, je m'engage à :</p>
+  <ul class="engagements">
+    <li>
+      <strong>Faire connaître l'application</strong>
+      <span>Encourager l'innovation et contribuer à la diffusion de Klavyé Kréyòl, notamment en faisant connaître l'application auprès de mon réseau personnel, professionnel ou associatif et en relayant ses actualités sur les réseaux sociaux : Facebook, Instagram, LinkedIn, TikTok, YouTube, WhatsApp, ainsi que sur tout autre espace numérique pertinent.</span>
+    </li>
+    <li>
+      <strong>Nouer des partenariats</strong>
+      <span>Développer et favoriser des partenariats permettant de promouvoir Klavyé Kréyòl à l'occasion d'événements en lien avec la langue créole, la culture, l'éducation, le patrimoine, l'innovation et le numérique : festivals et manifestations culturelles, salons, conférences, colloques, séminaires, forums, journées du créole, événements associatifs, rencontres éducatives, ateliers numériques, événements consacrés à l'innovation ou aux nouvelles technologies.</span>
+    </li>
+    <li>
+      <strong>Être force de proposition</strong>
+      <span>Contribuer au développement et à l'amélioration continue de l'application en étant force de proposition, notamment à partir des retours et besoins exprimés par les utilisateurs, des usages observés et de nouvelles idées susceptibles d'enrichir Klavyé Kréyòl.</span>
+    </li>
+    <li>
+      <strong>Faire remonter la voix des utilisateurs</strong>
+      <span>Faire remonter les observations et suggestions des utilisateurs afin de contribuer à l'évolution de l'application et à son adaptation aux différents usages de la langue créole.</span>
+    </li>
+    <li>
+      <strong>Faire vivre le réseau</strong>
+      <span>Favoriser les échanges, les rencontres et le partage d'expériences entre ambassadeurs, afin de créer une dynamique collective, de renforcer la cohésion du réseau et de faire émerger de nouvelles initiatives.</span>
+    </li>
+    <li>
+      <strong>Participer librement</strong>
+      <span>Participer librement à la vie du réseau des ambassadeurs : chacun contribue selon ses disponibilités, ses compétences, ses envies et ses possibilités. La participation aux rencontres, événements ou actions proposées demeure libre.</span>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Un réseau fondé sur l'envie d'agir ensemble</h2>
+  <p>Être ambassadeur de Klavyé Kréyòl, c'est avant tout rejoindre une communauté de personnes qui souhaitent contribuer, chacune à leur manière, à la présence, à la transmission et au rayonnement de la langue créole dans le monde numérique.</p>
+</section>
+
+<div class="devise">
+  <p class="mots">Respé • Solidarité • Pataj • Angajman • Konfyans</p>
+  <p class="signature">Klavyé Kréyòl · An nou fè kréyòl viv adan mond dijital-la.</p>
+  <div class="cta-row">
+    <a class="btn primary" href="ambassade.html">🤝 Rejoindre les ambassadeurs</a>
+    <a class="btn" href="tract.html">🖨️ Imprimer le tract</a>
+  </div>
+</div>
+
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html" aria-current="page">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
+
+</div>
+
+</body>
+</html>

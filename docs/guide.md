@@ -28,6 +28,7 @@ lang: fr
       <a href="beta_onboarding.html">Devenir bêta-testeur</a>
       <strong class="menu-label">Faire connaître</strong>
       <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract à imprimer</a>
       <a href="affiche.html">Affiche à imprimer</a>
       <a href="triptyque.html">Triptyque à imprimer</a>
@@ -211,6 +212,7 @@ Une question qui n'est pas couverte ici ? Écrivez à
     <div>
       <strong>Faire connaître</strong>
       <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract</a>
       <a href="affiche.html">Affiche</a>
       <a href="triptyque.html">Triptyque</a>
