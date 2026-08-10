@@ -239,6 +239,17 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 }
 .L-sky .chip.kr::before{color:#7BE0A6;}
 .L-sky .chip.fr::before{color:#A8C6FF;}
+/* Le mot en cours de frappe, au-dessus de ce que le clavier propose. */
+.L-sky .typed{
+  display:flex;align-items:center;
+  border-radius:99px;padding:1.3cqh 4cqw;
+  font-size:6.4cqw;font-weight:600;color:#FFFFFF;
+  background:rgba(255,255,255,.07);border:.5cqh dashed rgba(255,255,255,.28);
+}
+.L-sky .typed .caret{
+  display:inline-block;width:.6cqw;min-width:2px;height:6.4cqw;
+  margin-left:.8cqw;background:#7BE0A6;
+}
 .L-sky .btn{margin-top:2.4cqh;width:100%;font-size:8cqw;padding:2cqh 0;}
 .L-sky .foot{font-size:5.4cqw;margin-top:1.6cqh;text-align:center;}
 
@@ -248,7 +259,8 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-sky.wide300 .brand .name{font-size:5cqw;}
 .L-sky.wide300 .brand .name b{font-size:5.8cqw;}
 .L-sky.wide300 .brand .name span{font-size:3.6cqw;}
-.L-sky.wide300 .chip{font-size:4.6cqw;}
+.L-sky.wide300 .chip,.L-sky.wide300 .typed{font-size:4.6cqw;}
+.L-sky.wide300 .typed .caret{height:4.6cqw;}
 .L-sky.wide300 .chip::before{font-size:3.2cqw;}
 .L-sky.wide300 .btn{font-size:5.6cqw;}
 .L-sky.wide300 .foot{font-size:3.6cqw;}
@@ -482,8 +494,8 @@ const LAYOUTS = {
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
     <div class="chipstack">
-      <span class="chip kr" data-lang="KR">Bonjou</span>
-      <span class="chip fr" data-lang="FR">Bonjour</span>
+      <div class="typed">pada<i class="caret"></i></div>
+      <span class="chip kr" data-lang="KR">padavwa</span>
       <span class="btn">${spec.w >= 300 ? c.cta : c.btn}</span>
       <p class="foot">${c.foot}</p>
     </div>`,
