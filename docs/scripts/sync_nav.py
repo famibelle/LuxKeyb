@@ -26,14 +26,30 @@ BLOCK_RE = re.compile(re.escape(START) + r".*?" + re.escape(END), re.S)
 LEGACY_RE = re.compile(r'<nav class="site">.*?</nav>', re.S)
 
 
+GROUP_RE = re.compile(r"<details\b.*?</details>", re.S)
+
+
 def nav_for(page: Path, template: str) -> str:
-    """Rend la barre pour une page donnée, en signalant la page courante."""
+    """Rend la barre pour une page donnée, en signalant la page courante.
+
+    Quand cette page est rangée dans un groupe replié, le résumé du groupe est
+    marqué lui aussi : sinon la barre n'indique rien du tout sur, par exemple,
+    la page du tract.
+    """
     name = page.name.replace(".md", ".html")
     marked = template
     if name == "index.html":
         marked = marked.replace('<a href="./">', '<a href="./" aria-current="page">', 1)
     else:
         marked = marked.replace(f'<a href="{name}">', f'<a href="{name}" aria-current="page">', 1)
+
+        def mark_group(match):
+            block = match.group(0)
+            if f'href="{name}"' not in block:
+                return block
+            return block.replace("<summary>", '<summary class="in-section">', 1)
+
+        marked = GROUP_RE.sub(mark_group, marked)
     return f"{START}\n{marked.strip()}\n{END}"
 
 
