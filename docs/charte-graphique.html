@@ -554,6 +554,7 @@ td code{white-space:nowrap;}
     <span class="rule-bar"></span>
   </div>
   <p class="muted" style="margin-top:10px;">Le bouton d'action est toujours une capsule (<code>border-radius:99px</code>), toujours plein, et il n'y en a qu'un par écran. Sur le site il est en lagon sur papier ; sur les visuels, en accent chaud sur le dégradé. Le filet accent, hauteur 6&nbsp;px, sépare l'accroche du reste.</p>
+  <p class="muted">Un QR code n'est pas un bouton. Il peut voisiner avec la capsule, jamais la remplacer : c'est l'instrument du geste, la capsule est ce qui dit lequel.</p>
   <p class="muted">Cartes et encadrés : rayon 12&nbsp;px, bordure d'un pixel en <code>--line</code>, fond <code>--card</code>. Les panneaux flottants portent une ombre <code>0 10px 28px rgba(0,0,0,.16)</code>, rien d'autre n'en porte.</p>
 
   <h3>Les pastilles de suggestion</h3>
@@ -627,13 +628,39 @@ td code{white-space:nowrap;}
     </figure>
   </div>
 
+  <h3>Combien d'actions par support</h3>
+  <p>La règle d'une seule action a été écrite pour un visuel d'une seule surface, où deux boutons ne créent que de l'hésitation. Un imprimé qui se plie ne se lit pas ainsi : le lecteur découvre un volet à la fois, et le renvoyer chercher l'unique code à l'autre bout de la feuille, c'est le perdre. Sur un tel support, la redondance sert au lieu de nuire.</p>
+  <div class="yesno">
+    <div class="oui">
+      <div class="t">Support d'une seule surface</div>
+      <ul>
+        <li>Tract, affiche, visuel publicitaire, page web : <b>une action, une capsule</b>.</li>
+        <li>Tout le reste du support conduit à elle.</li>
+      </ul>
+    </div>
+    <div class="oui">
+      <div class="t">Support à plusieurs volets</div>
+      <ul>
+        <li><b>Une action par volet au maximum</b>, jamais deux sur le même.</li>
+        <li>La capsule est réservée aux <b>volets de décision</b> : celui qu'on voit avant d'avoir lu, celui qu'on lit en dernier.</li>
+        <li>Les autres codes restent des vignettes légendées ou des illustrations de procédure, et ne prennent jamais la forme d'un bouton.</li>
+        <li>Deux capsules dans un même support ne portent pas le même libellé : elles ne s'adressent pas au même lecteur, l'un n'a rien lu, l'autre vient de tout lire.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Le triptyque applique cette règle : quatre codes sur six volets, deux capsules, celle de la couverture et celle du dernier volet.</p>
+
+  <h3>Les QR codes et leur traçage</h3>
+  <p>Chaque code porte l'<code>utm_source</code> de son support, et chaque emplacement d'un même support son <code>utm_content</code>. Sans cela, quatre codes remontent dans la console Play comme une seule ligne et rien ne dit lequel convertit : la question de savoir combien de codes placer se tranche alors par un avis au lieu d'un chiffre.</p>
+  <p class="muted">Les cibles sont déclarées en clair dans <code>scripts/generate_qr.py</code>, qui régénère les images. Un QR est sinon un binaire opaque dont personne ne peut lire la destination sans le décoder.</p>
+
   <h3>Règles d'application</h3>
   <div class="yesno">
     <div class="oui">
       <div class="t">Constantes</div>
       <ul>
         <li>Le logo en haut, l'action en bas, la preuve au milieu.</li>
-        <li>Une seule action visible par support, dans une capsule pleine.</li>
+        <li>Une seule action visible par surface, dans une capsule pleine.</li>
         <li>Les quatre promesses en pied : gratuit, open source, zéro pub, hors ligne.</li>
         <li>Sur les formats verticaux des réseaux, les 20&nbsp;% du bas restent vides : l'interface de l'application les recouvre.</li>
       </ul>
@@ -662,6 +689,7 @@ td code{white-space:nowrap;}
     <tr><td>Palette produit</td><td><code>android_keyboard/app/src/main/res/values/colors.xml</code></td></tr>
     <tr><td>Palette publicitaire</td><td><code>docs/publicites.html</code></td></tr>
     <tr><td>Valeurs dérivées : crème des volets, marches de progression, hibiscus assombri</td><td><code>docs/triptyque.html</code></td></tr>
+    <tr><td>QR codes et leurs cibles</td><td><code>python3 scripts/generate_qr.py</code>, vérification avec <code>--check</code></td></tr>
     <tr><td>Fredoka embarquée</td><td><code>docs/assets/fredoka-embed.css</code></td></tr>
     <tr><td>Silhouette de la Guadeloupe</td><td><code>docs/assets/carte-guadeloupe.svg</code> et <code>-sombre</code>, variantes <code>-compacte</code> et <code>-compacte-sombre</code>, regénérées par <code>scripts/generate_carte_guadeloupe.py</code></td></tr>
     <tr><td>Barre et pied de page partagés</td><td><code>docs/_includes/nav.html</code>, <code>footer.html</code>, propagés par <code>docs/scripts/sync_nav.py</code></td></tr>
