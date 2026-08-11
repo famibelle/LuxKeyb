@@ -38,11 +38,16 @@ CAMPAGNE = "launch10k"
 # deja imprime et distribue.
 #   source    : utm_source, le support
 #   content   : utm_content, l'emplacement dans ce support
-#   campagne  : False pour les cibles anterieures a la campagne, qui n'en
-#               portent pas ; les reecrire en ajouterait une a leur insu
+#   campagne  : False pour une cible qui doit rester hors campagne ; toutes
+#               en portent une aujourd'hui
 #   cote      : cote de l'image en pixels
+#
+# qr-google-play.png sert aussi les deux tracts et la page ambassadeur, qui
+# remontent donc sous utm_source=affiche. Le separer par support demanderait
+# de nouveaux fichiers et de nouvelles cibles imprimees : c'est une decision
+# a part, pas un effet de bord de la campagne.
 CIBLES = {
-    "qr-google-play.png": dict(source="affiche", campagne=False, cote=2280),
+    "qr-google-play.png": dict(source="affiche", cote=2280),
     "qr-triptyque-couverture.png": dict(source="triptyque", content="couverture"),
     "qr-triptyque-dos.png": dict(source="triptyque", content="dos"),
     "qr-triptyque-installation.png": dict(source="triptyque", content="installation"),
