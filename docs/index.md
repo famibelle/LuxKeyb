@@ -29,7 +29,7 @@ lang: fr
     </div>
   </details>
   <details class="menu nav-after" name="navmenu">
-    <summary>📣 Faire connaître</summary>
+    <summary>📣 Ambassadeurs</summary>
     <div class="menu-panel">
       <a href="ambassade.html">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
