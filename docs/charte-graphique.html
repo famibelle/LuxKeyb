@@ -434,19 +434,21 @@ td code{white-space:nowrap;}
 
   <h3>Les valeurs dérivées</h3>
   <p>Deux séries de tons n'appartiennent à aucune des trois palettes et sont pourtant légitimes : elles n'ajoutent pas de couleur, elles interpolent celles qui existent déjà. Toutes deux naissent d'un besoin que des couleurs isolées ne savent pas satisfaire, celui de faire sentir un ordre. Elles vivent dans <code>triptyque.html</code>, qui en reste la source, avec une troisième valeur dérivée décrite plus bas.</p>
-  <p class="muted"><b>Une rampe ne s'invente pas au coup par coup.</b> Avant d'en dériver une nouvelle, vérifiez que le besoin est bien celui d'un ordre à lire, et non d'une simple envie de varier : deux fonds différents sans raison ne se lisent pas comme une progression, seulement comme une incohérence.</p>
+  <p class="muted"><b>Une rampe ne s'invente pas au coup par coup.</b> Avant d'en dériver une nouvelle, vérifiez que le besoin est bien celui d'un ordre à lire, et non d'une simple envie de varier : deux fonds différents sans raison ne se lisent pas comme une progression, seulement comme une incohérence. Deux mesures conditionnent le reste : <b>une marche sous ΔE 3</b> se confond avec la tolérance d'impression d'un aplat et se lira comme un défaut de tirage ; <b>l'ordre des marches suit l'ordre de lecture</b>, pas l'ordre des pages ou des faces.</p>
 
   <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Le crème des volets</h4>
-  <p>Le fond des volets clairs varie très légèrement de l'un à l'autre, à clarté constante : c'est une rampe de saturation, C* passant de 2,3 à 7,9. L'écart reste sous le seuil du bloc de couleur, ΔE 3 par pli. À plat le dépliant garde son unité ; replié, chaque volet se distingue et les plis se devinent.</p>
+  <p>Les quatre volets clairs se réchauffent dans l'ordre où ils sont lus. Le premier est le papier de la charte ; les suivants s'en éloignent sur le seul axe chaud/froid, à clarté constante (L* 95,5) : c'est une rampe de saturation, C* de 4,2 à 16,1.</p>
   <div class="ramp-shell">
     <div class="ramp">
-      <div class="step"><i style="background:#EFF2EE;"></i><b>Froid</b><span>#EFF2EE</span></div>
-      <div class="step"><i style="background:#F5F2EA;"></i><b>Papier</b><span>#F5F2EA</span></div>
-      <div class="step"><i style="background:#F4F1E9;"></i><b>Médian</b><span>#F4F1E9</span></div>
-      <div class="step"><i style="background:#F8F3E4;"></i><b>Chaud</b><span>#F8F3E4</span></div>
+      <div class="step"><i style="background:#F5F2EA;"></i><b>1<sup>er</sup> lu · papier</b><span>#F5F2EA</span></div>
+      <div class="step"><i style="background:#F8F2E2;"></i><b>2<sup>e</sup> lu</b><span>#F8F2E2</span></div>
+      <div class="step"><i style="background:#FBF1DB;"></i><b>3<sup>e</sup> lu</b><span>#FBF1DB</span></div>
+      <div class="step"><i style="background:#FEF1D3;"></i><b>4<sup>e</sup> lu</b><span>#FEF1D3</span></div>
     </div>
   </div>
-  <p class="muted" style="margin-top:12px;">Elle suit le sens de lecture, du plus froid au plus chaud, et non l'ordre d'impression des faces : personne ne voit l'autre côté d'une feuille, tout le monde lit de gauche à droite. Effet recherché : les pastilles <code>#DDEEEE</code> se détachent à ΔE 11,2 sur le crème chaud contre 5,7 sur le froid, et c'est le dernier volet qui en porte le plus.</p>
+  <p class="muted" style="margin-top:12px;">Marches de ΔE 4,2, 3,4 et 4,3 : c'est le point d'équilibre. En dessous de ΔE 3 la progression disparaît dans la tolérance d'impression ; au-delà de ΔE 5 le dernier volet quitte la famille du crème et vire au jaune. Effet recherché : les pastilles <code>#DDEEEE</code> se détachent d'autant mieux que le volet est chaud, de ΔE 8,5 à 18,9, et ce sont les derniers volets qui en portent le plus.</p>
+  <p class="muted"><b>Le rang est celui de la lecture, pas celui de la feuille.</b> La première version de cette rampe ne croissait qu'au verso, alors que le premier volet clair lu est au recto : l'ordre réel des tons y était médian, froid, médian, chaud, une rampe qui recule puis se répète avant d'avancer. Sur un imprimé qui se plie, numérotez les surfaces dans l'ordre où le lecteur les découvre avant de leur attribuer un ton.</p>
+  <p class="muted">La version éco encre n'a pas de rampe : ses volets clairs restent tous sur le papier. Couvrir quatre surfaces d'aplats teintés contredirait sa raison d'être, et l'uniformité y est cohérente faute d'ordre à faire lire.</p>
 
   <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Les marches de la progression</h4>
   <p>Sept marches pour les sept niveaux de maîtrise, de Pipirit à Potomitan. Elles s'assombrissent avec la hauteur : le volet raconte une progression, et sa hauteur seule ne suffisait pas à la dire. La rampe reste dans la famille du lagon, clarté de 93 à 52 et saturation de 6 à 30, plutôt que de rejoindre l'ocre directement : le trajet direct passerait par un vert olive absent de la charte.</p>
