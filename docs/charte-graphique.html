@@ -108,6 +108,18 @@ th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;verti
 th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--sea);}
 td code{white-space:nowrap;}
 
+/* Rampes dérivées. Les pastilles des palettes montrent des couleurs qu'on
+   emploie une par une ; ici ce qui compte est la marche entre deux tons
+   voisins, d'où la bande continue. Les étiquettes se posent sous la couleur
+   et non dessus : la rampe des niveaux va du presque blanc au teal soutenu,
+   aucune couleur de texte ne tiendrait le contraste sur toute sa longueur. */
+.ramp-shell{overflow-x:auto;margin:14px 0 0;}
+.ramp{display:flex;min-width:430px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--card);}
+.ramp .step{flex:1 1 0;min-width:0;text-align:center;}
+.ramp .step i{display:block;height:52px;}
+.ramp .step b{display:block;font-size:11.5px;font-weight:700;padding:8px 3px 0;}
+.ramp .step span{display:block;font-family:var(--mono);font-size:10px;color:var(--ink-soft);padding:2px 3px 10px;}
+
 /* Les deux dégradés publicitaires, en vrai. */
 .grads{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;}
 .grad{border-radius:12px;padding:20px;min-height:130px;display:flex;flex-direction:column;justify-content:flex-end;color:#FFF;}
@@ -419,6 +431,51 @@ td code{white-space:nowrap;}
     <div class="grad papier"><b>Axe papier</b><span>#F5F2EA, texte #10312F</span></div>
   </div>
   <p class="muted" style="margin-top:12px;">Accent d'action : <code>#FFC978</code> sur l'axe lagon, <code>#FFD9A6</code> sur l'axe hibiscus. Il porte le bouton, le filet et les mots mis en avant dans l'accroche. Il ne sert à rien d'autre : c'est ce qui garantit que la tache la plus claire du visuel est toujours l'action.</p>
+
+  <h3>Les valeurs dérivées</h3>
+  <p>Deux séries de tons n'appartiennent à aucune des trois palettes et sont pourtant légitimes : elles n'ajoutent pas de couleur, elles interpolent celles qui existent déjà. Toutes deux naissent d'un besoin que des couleurs isolées ne savent pas satisfaire, celui de faire sentir un ordre. Elles vivent dans <code>triptyque.html</code>, qui en reste la source, avec une troisième valeur dérivée décrite plus bas.</p>
+  <p class="muted"><b>Une rampe ne s'invente pas au coup par coup.</b> Avant d'en dériver une nouvelle, vérifiez que le besoin est bien celui d'un ordre à lire, et non d'une simple envie de varier : deux fonds différents sans raison ne se lisent pas comme une progression, seulement comme une incohérence.</p>
+
+  <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Le crème des volets</h4>
+  <p>Le fond des volets clairs varie très légèrement de l'un à l'autre, à clarté constante : c'est une rampe de saturation, C* passant de 2,3 à 7,9. L'écart reste sous le seuil du bloc de couleur, ΔE 3 par pli. À plat le dépliant garde son unité ; replié, chaque volet se distingue et les plis se devinent.</p>
+  <div class="ramp-shell">
+    <div class="ramp">
+      <div class="step"><i style="background:#EFF2EE;"></i><b>Froid</b><span>#EFF2EE</span></div>
+      <div class="step"><i style="background:#F5F2EA;"></i><b>Papier</b><span>#F5F2EA</span></div>
+      <div class="step"><i style="background:#F4F1E9;"></i><b>Médian</b><span>#F4F1E9</span></div>
+      <div class="step"><i style="background:#F8F3E4;"></i><b>Chaud</b><span>#F8F3E4</span></div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Elle suit le sens de lecture, du plus froid au plus chaud, et non l'ordre d'impression des faces : personne ne voit l'autre côté d'une feuille, tout le monde lit de gauche à droite. Effet recherché : les pastilles <code>#DDEEEE</code> se détachent à ΔE 11,2 sur le crème chaud contre 5,7 sur le froid, et c'est le dernier volet qui en porte le plus.</p>
+
+  <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Les marches de la progression</h4>
+  <p>Sept marches pour les sept niveaux de maîtrise, de Pipirit à Potomitan. Elles s'assombrissent avec la hauteur : le volet raconte une progression, et sa hauteur seule ne suffisait pas à la dire. La rampe reste dans la famille du lagon, clarté de 93 à 52 et saturation de 6 à 30, plutôt que de rejoindre l'ocre directement : le trajet direct passerait par un vert olive absent de la charte.</p>
+  <div class="ramp-shell">
+    <div class="ramp">
+      <div class="step"><i style="background:#DDEEEE;"></i><b>1</b><span>#DDEEEE</span></div>
+      <div class="step"><i style="background:#BBDAD9;"></i><b>2</b><span>#BBDAD9</span></div>
+      <div class="step"><i style="background:#98C5C5;"></i><b>3</b><span>#98C5C5</span></div>
+      <div class="step"><i style="background:#75B1B1;"></i><b>4</b><span>#75B1B1</span></div>
+      <div class="step"><i style="background:#4F9D9D;"></i><b>5</b><span>#4F9D9D</span></div>
+      <div class="step"><i style="background:#1B8A89;"></i><b>6</b><span>#1B8A89</span></div>
+      <div class="step"><i style="background:#C97F1E;"></i><b>Sommet</b><span>#C97F1E</span></div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Le premier palier est <code>--sea-soft</code>, le sommet est le soleil : la rampe part et arrive sur des couleurs de la charte. La rupture du dernier ton est voulue et porte le sens, Potomitan étant d'une autre nature que les six paliers qui y mènent. C'est le seul emploi du soleil en aplat de fond.</p>
+
+  <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">L'hibiscus assombri, sur fond lagon pâle</h4>
+  <p>Sur un fond <code>--sea-soft</code>, l'hibiscus de la charte ne tient que <b>3,87:1</b>, sous le seuil de 4,5:1 du texte courant. <code>#BA3C30</code> est le même hibiscus, même teinte et même saturation, assombri de cinq points de clarté : il atteint <b>4,64:1</b> sur ce fond.</p>
+  <div class="ramp-shell">
+    <div class="ramp">
+      <div class="step"><i style="background:#DDEEEE;"></i><b>Le fond</b><span>#DDEEEE</span></div>
+      <div class="step"><i style="background:#C94A3B;"></i><b>Hibiscus · 3,87:1</b><span>#C94A3B</span></div>
+      <div class="step"><i style="background:#BA3C30;"></i><b>Assombri · 4,64:1</b><span>#BA3C30</span></div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Il ne s'emploie que là, et jamais comme substitut général de l'hibiscus. Sur papier ou sur blanc, c'est <code>#C94A3B</code> qui reste la couleur.</p>
+  <div class="note">
+    <b>Une dérivation se mesure, elle ne s'estime pas.</b> Ces trois valeurs existent parce qu'un chiffre les rendait nécessaires : un contraste sous le seuil, un écart de couleur trop faible pour distinguer deux volets. Une couleur ajoutée sans mesure à l'appui n'est pas une dérivation, c'est une quatrième palette.
+  </div>
 </section>
 
 <!-- ====================================================================== -->
@@ -604,6 +661,7 @@ td code{white-space:nowrap;}
     <tr><td>Palette de communication</td><td><code>docs/assets/theme.css</code></td></tr>
     <tr><td>Palette produit</td><td><code>android_keyboard/app/src/main/res/values/colors.xml</code></td></tr>
     <tr><td>Palette publicitaire</td><td><code>docs/publicites.html</code></td></tr>
+    <tr><td>Valeurs dérivées : crème des volets, marches de progression, hibiscus assombri</td><td><code>docs/triptyque.html</code></td></tr>
     <tr><td>Fredoka embarquée</td><td><code>docs/assets/fredoka-embed.css</code></td></tr>
     <tr><td>Silhouette de la Guadeloupe</td><td><code>docs/assets/carte-guadeloupe.svg</code> et <code>-sombre</code>, variantes <code>-compacte</code> et <code>-compacte-sombre</code>, regénérées par <code>scripts/generate_carte_guadeloupe.py</code></td></tr>
     <tr><td>Barre et pied de page partagés</td><td><code>docs/_includes/nav.html</code>, <code>footer.html</code>, propagés par <code>docs/scripts/sync_nav.py</code></td></tr>

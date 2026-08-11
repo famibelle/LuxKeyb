@@ -157,9 +157,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border:2px solid #C94A3B;
 }
 .cover .cta img{ width:26mm; height:26mm; border-radius:5px; border:1px solid rgba(28,38,36,.2); flex:0 0 auto; }
-.cover .cta .txt{ text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
+.cover .cta .txt{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
+/* L'appel à l'action est une capsule pleine, comme sur tout le reste des
+   supports : c'est la seule forme que la charte reconnaisse comme un bouton.
+   Elle vit dans la carte du QR plutôt qu'à côté, parce que le code a besoin
+   de sa zone blanche de silence et que séparer les deux ferait deux objets
+   là où le lecteur n'a qu'un geste à faire. Le libellé est court : dans une
+   capsule, à côté d'un QR de 26 mm sur un volet de 100 mm, une phrase entière
+   déborde. */
 .cover .cta .txt b{
-  display:block; font-family:"Fredoka",sans-serif; font-size:15px; font-weight:700; text-transform:uppercase;
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:12px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#0E6E76; color:#F5F2EA; border-radius:999px;
+  padding:2.2mm 5mm; margin-bottom:1.8mm;
 }
 .cover .cta .txt .free{ display:block; color:#0E6E76; font-weight:700; margin-top:1mm; }
 
@@ -286,13 +296,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   padding:3mm 4mm; display:flex; align-items:center; gap:4mm;
 }
 .panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
-.panel-cta .txt{ font-size:10.5px; font-weight:600; color:#000; line-height:1.3; }
-.panel-cta .txt b{ display:block; font-size:12.5px; color:#0E6E76; text-transform:uppercase; }
+.panel-cta .txt{ display:flex; flex-direction:column; align-items:flex-start; font-size:10.5px; font-weight:600; color:#000; line-height:1.3; }
+.panel-cta .txt b{
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#0E6E76; color:#F5F2EA; border-radius:999px;
+  padding:1.8mm 4mm; margin-bottom:1.4mm;
+}
 /* Même correction que dans triptyque.html : sur le #DDEEEE de la pastille, le
    #C94A3B de la charte ne tient que 3,87:1, sous le seuil de 4,5:1, alors que
    « 100 % gratuit » est l'argument le plus vendeur du dépliant. Même teinte,
    même saturation, cinq points de clarté en moins, 4,64:1. */
-.panel-cta .txt .free{ display:block; color:#C94A3B; font-weight:700; margin-top:1mm; }
+.panel-cta .txt .free{ display:block; color:#BA3C30; font-weight:700; margin-top:1mm; }
 
 .levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
@@ -481,7 +496,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </div>
       <div class="cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Flashez le code, c'est gratuit</b>Disponible sur Google Play<span class="free">100&nbsp;% gratuit</span></div>
+        <div class="txt"><b>Flashez le code</b>Disponible sur Google Play<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -551,7 +566,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
       <div class="panel-cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Flashez le code, c'est gratuit</b>Rejoignez la communauté créolophone<span class="free">100&nbsp;% gratuit</span></div>
+        <div class="txt"><b>Flashez le code</b>Rejoignez la communauté créolophone<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
