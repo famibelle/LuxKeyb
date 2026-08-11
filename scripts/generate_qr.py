@@ -42,12 +42,18 @@ CAMPAGNE = "launch10k"
 #               en portent une aujourd'hui
 #   cote      : cote de l'image en pixels
 #
-# qr-google-play.png sert aussi les deux tracts et la page ambassadeur, qui
-# remontent donc sous utm_source=affiche. Le separer par support demanderait
-# de nouveaux fichiers et de nouvelles cibles imprimees : c'est une decision
-# a part, pas un effet de bord de la campagne.
+# Un fichier par support : un seul code partage entre plusieurs supports les
+# fait remonter sous une source unique dans la console Play, et on ne sait
+# plus lequel travaille. qr-affiche.png s'appelait qr-google-play.png et
+# servait aussi les tracts et le kit ambassadeur, tous comptes sous "affiche".
 CIBLES = {
-    "qr-google-play.png": dict(source="affiche", cote=2280),
+    "qr-affiche.png": dict(source="affiche", cote=2280),
+    "qr-tract.png": dict(source="tract"),
+    # Le FlashCode que l'ambassadeur telecharge pour ses propres supports :
+    # story, sticker, signature d'email. La source est donc la personne qui
+    # le diffuse, pas la page ou il a ete pris. Haute resolution, il sera
+    # reemploye a des tailles qu'on ne maitrise pas.
+    "qr-ambassadeur.png": dict(source="ambassadeur", cote=2280),
     "qr-triptyque-couverture.png": dict(source="triptyque", content="couverture"),
     "qr-triptyque-dos.png": dict(source="triptyque", content="dos"),
     "qr-triptyque-installation.png": dict(source="triptyque", content="installation"),
