@@ -53,6 +53,11 @@ section{margin-top:40px;}
   padding:13px 15px;font-size:14px;white-space:pre-wrap;margin:0 0 12px;
 }
 .kreyol{color:var(--sea);font-weight:600;}
+/* Les arguments se lisent en diagonale avant un rendez-vous : une liste, pas
+   des paragraphes, et le mot-clé de chaque ligne en gras au début. */
+.facts{margin:0;padding-left:19px;font-size:14.5px;}
+.facts li{margin-bottom:9px;}
+.facts li:last-child{margin-bottom:0;}
 .note{
   background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
   border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;
@@ -94,6 +99,7 @@ section{scroll-margin-top:16px;}
   <a href="#flashcode"><span class="ico">📱</span><span class="lbl">FlashCode</span></a>
   <a href="#tract"><span class="ico">🪧</span><span class="lbl">Tract</span></a>
   <a href="#education"><span class="ico">🎓</span><span class="lbl">Éducation</span></a>
+  <a href="#argumentaire"><span class="ico">💼</span><span class="lbl">Arguments</span></a>
   <a href="#medias"><span class="ico">✉️</span><span class="lbl">Médias</span></a>
   <a href="#radio"><span class="ico">📞</span><span class="lbl">Radio</span></a>
 </nav>
@@ -116,12 +122,16 @@ section{scroll-margin-top:16px;}
   </details>
   <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
   <details class="menu nav-after" name="navmenu">
-    <summary class="in-section">Déjà installé ?</summary>
+    <summary>Déjà installé ?</summary>
     <div class="menu-panel">
       <a href="guide.html">Guide d'installation</a>
       <a href="feedbacks_form.html">Donner son avis</a>
       <a href="beta_onboarding.html">Devenir bêta-testeur</a>
-      <strong class="menu-label">Faire connaître</strong>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary class="in-section">📣 Faire connaître</summary>
+    <div class="menu-panel">
       <a href="ambassade.html" aria-current="page">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract à imprimer</a>
@@ -358,6 +368,101 @@ Contact : contact@potomitan.io</div>
     <div class="actions">
       <button class="btn primary" data-copy="txt-edu">📋 Copier le message</button>
     </div>
+  </div>
+</section>
+
+<!-- Éléments de langage. Les chiffres marqués data-stat sont réécrits par le
+     script de bas de page à partir de stats/downloads.json, y compris dans les
+     textes à copier : sans cela, un ambassadeur collerait dans un email une
+     traction périmée. Le contenu écrit ici sert de repli si le fetch échoue. -->
+<section id="argumentaire">
+  <span class="time orange">⏱ 10 minit</span>
+  <h2>Parler aux institutions et aux financeurs</h2>
+  <p class="section-sub">Les mêmes faits, dits autrement selon l'interlocuteur : une collectivité veut savoir ce que ça change pour ses administrés, un financeur veut des chiffres et un cap. Prenez ce qui vous sert et reformulez avec vos mots.</p>
+
+  <div class="card">
+    <h3>Les chiffres à citer</h3>
+    <p class="meta">Tous vérifiables publiquement · mis à jour le <span data-stat="asof">11 août 2026</span></p>
+    <ul class="facts">
+      <li><strong data-stat="installs">3 000</strong> installations au compteur, pour un objectif affiché de 10 000 (<a href="jauge.html">la jauge est publique</a>).</li>
+      <li><strong>5 296 mots</strong> kréyòl et <strong>8 852</strong> clés de contexte embarqués dans l'application, hors ligne (<a href="corpus.html">le corpus en chiffres</a>).</li>
+      <li><strong>85 sources</strong> littéraires créoles dépouillées, 36 480 mots de corpus, publiés en jeu de données ouvert.</li>
+      <li><strong>Trois rédactions</strong> ont consacré un sujet au clavier entre le 28 juillet et le 4 août 2026 : Canal 10, Guadeloupe la 1ère, France-Antilles Guadeloupe.</li>
+      <li><strong>1,6 million</strong> de créolophones en France.</li>
+      <li><strong>0 €</strong> de budget publicitaire, <strong>0</strong> donnée personnelle collectée, licence libre MIT.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🏛️ Face à une institution</h3>
+    <p class="meta">Collectivité, service culture ou langue, élu, opérateur public</p>
+    <ul class="facts">
+      <li><strong>Ce que c'est :</strong> un clavier qui suggère les mots en kréyòl pendant la frappe, en orthographe GEREC. Ni un cours, ni un traducteur, ni une IA en ligne : l'outil d'écriture quotidien de gens qui parlent déjà la langue.</li>
+      <li><strong>Ce que ça change :</strong> aujourd'hui, écrire un SMS en créole revient à lutter contre un clavier qui corrige chaque mot vers le français. Le clavier créole enlève ce frottement, et le créole reste écrit.</li>
+      <li><strong>Pourquoi c'est un sujet public :</strong> une langue peu écrite dans le numérique est une langue absente des corpus qui alimentent moteurs de recherche et modèles de langue. Ce qui s'écrit aujourd'hui décide de ce qui existera demain.</li>
+      <li><strong>Ce que ça coûte :</strong> rien. Pas de licence, pas de marché à passer. L'application ne collecte aucune donnée et fonctionne hors ligne : rien à instruire non plus côté protection des données.</li>
+      <li><strong>Ce que vous demandez :</strong> un relais, pas une subvention. Une mention dans une lettre d'information, un lien sur un site, une affiche à un accueil, une place dans un événement autour de la langue (Jounen Entènasyonal Kréyòl, 28 octobre).</li>
+    </ul>
+    <div class="actions" style="margin-top:14px;">
+      <button class="btn primary" data-copy="txt-institution">📋 Copier le courrier</button>
+      <a class="btn" href="presskit.html">📰 Dossier de presse</a>
+    </div>
+    <div class="script" id="txt-institution" style="margin-top:12px;">Bonjour,
+
+Je me permets de vous présenter Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : il suggère les mots en kréyòl pendant la frappe, en orthographe GEREC, à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...).
+
+Il a déjà été installé <span data-stat="installs">3 000</span> fois sans aucun budget publicitaire, et trois rédactions lui ont consacré un sujet en juillet et août 2026 : Canal 10, Guadeloupe la 1ère et France-Antilles Guadeloupe.
+
+L'application est gratuite, ne collecte aucune donnée et fonctionne hors ligne : la relayer n'implique pour votre structure ni dépense, ni marché, ni traitement de données.
+
+Ce que je viens vous proposer est simple : un relais. Une mention dans votre lettre d'information ou sur votre site, une affiche à votre accueil, ou une place dans un événement consacré à la langue et à la culture créoles.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Le corpus en chiffres : https://famibelle.github.io/KreyolKeyb/corpus.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>📈 Face à un investisseur ou un mécène</h3>
+    <p class="meta">Fonds, fondation, mécénat d'entreprise, dispositif de soutien à l'innovation</p>
+    <ul class="facts">
+      <li><strong>La traction :</strong> <span data-stat="installs">3 000</span> installations au <span data-stat="asof">11 août 2026</span>, sans un euro de publicité, par bouche-à-oreille et retombées presse. Le coût d'acquisition est nul à ce jour.</li>
+      <li><strong>Le besoin :</strong> 1,6 million de créolophones en France écrivent tous les jours dans une langue que leur clavier ne connaît pas. Le manque est quotidien, pas symbolique.</li>
+      <li><strong>Ce qui a de la valeur :</strong> pas seulement l'application. Le dictionnaire, le corpus et le modèle de contexte sont des ressources linguistiques rares, réutilisables par toute la chaîne numérique du créole.</li>
+      <li><strong>L'écosystème :</strong> l'éditeur Potomitan développe aussi un traducteur d'urgence français ↔ créole, soutenu par la Préfecture de Guadeloupe (Lab'An Nou) et présenté par Orange Antilles-Guyane. Écrire et traduire : deux briques du même vide numérique.</li>
+      <li><strong>Ce qu'un soutien financerait :</strong> le portage iOS, à mi-chemin aujourd'hui, qui ouvrirait le clavier aux iPhone ; l'élargissement des dictionnaires et du corpus ; la diffusion sur le terrain (impressions, ateliers, événements).</li>
+      <li><strong>Ce qu'il ne financerait pas :</strong> ni publicité dans l'application, ni revente de données. Gratuit, sans pub et hors ligne, c'est une condition du projet, pas une étape à dépasser.</li>
+    </ul>
+    <div class="actions" style="margin-top:14px;">
+      <button class="btn primary" data-copy="txt-investisseur">📋 Copier le message</button>
+      <a class="btn" href="corpus.html">📊 Le corpus en chiffres</a>
+    </div>
+    <div class="script" id="txt-investisseur" style="margin-top:12px;">Bonjour,
+
+Klavyé Kréyòl Karukera est un clavier Android pour le créole guadeloupéen : il suggère les mots en kréyòl pendant la frappe, à partir d'un corpus littéraire créole. Gratuit, open source, hors ligne, sans aucune collecte de données.
+
+Traction au <span data-stat="asof">11 août 2026</span> : <span data-stat="installs">3 000</span> installations, sans un euro de publicité, uniquement par bouche-à-oreille et par les retombées presse (Canal 10, Guadeloupe la 1ère, France-Antilles Guadeloupe). Objectif affiché : 10 000.
+
+Derrière l'application, il y a un dictionnaire de 5 296 mots kréyòl et un modèle de contexte de 8 852 entrées, bâtis sur 85 sources littéraires et publiés en jeu de données ouvert. Ces ressources manquent aujourd'hui à toute la chaîne numérique d'une langue parlée par 1,6 million de personnes en France.
+
+L'éditeur, Potomitan, développe également un traducteur d'urgence français ↔ créole, soutenu par la Préfecture de Guadeloupe (Lab'An Nou) et présenté par Orange Antilles-Guyane.
+
+Un soutien servirait à trois choses : le portage iOS, l'élargissement des dictionnaires et du corpus, et la diffusion sur le terrain. Le clavier, lui, reste gratuit, sans publicité et sans collecte de données.
+
+Je reste disponible pour en échanger, et vous mets en relation avec l'équipe si le sujet vous intéresse.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Le corpus en chiffres : https://famibelle.github.io/KreyolKeyb/corpus.html
+Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="note">
+    <strong>Une limite à garder en tête :</strong> vous ouvrez la porte, vous ne signez pas. Partenariat, convention, financement, usage du nom ou du logo : tout cela se discute avec l'équipe, à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>. Mieux vaut promettre une mise en relation que de s'engager sur des chiffres ou un calendrier.
   </div>
 </section>
 
@@ -705,10 +810,10 @@ Contact : contact@potomitan.io</div>
 (function(){
   fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
     var fmt = function(n){ return n.toLocaleString('fr-FR'); };
-    // La donnée source (badge public Play Store) ne remonte que des paliers arrondis
-    // (100+, 500+, 1 000+, 5 000+...). "current" tombe donc toujours pile sur un palier :
-    // une jauge découpée par blocs de 100 retomberait quasi à chaque fois à son minimum.
-    // On affiche plutôt la vraie progression vers l'objectif final.
+    // Les paliers repris ici sont ceux que le badge public du Play Store affiche
+    // (100+, 500+, 1 000+, 5 000+...). Ils ne servent qu'à annoncer la marche
+    // suivante : une jauge découpée par blocs de 100 retomberait quasi à chaque
+    // fois à son minimum. On affiche la vraie progression vers l'objectif final.
     var playTiers = [100, 500, 1000, 5000, 10000];
     var next = s.goal;
     for (var i = 0; i < playTiers.length; i++) {
@@ -721,6 +826,20 @@ Contact : contact@potomitan.io</div>
     document.getElementById('g-remaining').innerHTML =
       'Ka rété ' + fmt(next - s.current) + ' pou pwochen palyé-la ! <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe">';
     document.getElementById('g-fill').style.width = pct + '%';
+
+    // Les éléments de langage citent la traction, y compris dans les textes que
+    // l'ambassadeur copie-colle dans un email. Ces chiffres viennent donc du
+    // même fichier que la jauge, sinon ils vieilliraient chacun de leur côté.
+    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
+                'août','septembre','octobre','novembre','décembre'];
+    var p = s.as_of.split('-');
+    var asOf = parseInt(p[2], 10) + ' ' + mois[parseInt(p[1], 10) - 1] + ' ' + p[0];
+    document.querySelectorAll('[data-stat="installs"]').forEach(function(el){
+      el.textContent = fmt(s.current);
+    });
+    document.querySelectorAll('[data-stat="asof"]').forEach(function(el){
+      el.textContent = asOf;
+    });
   }).catch(function(){});
 
   var waText ="Mwen ka sèvi épi Klavyé Kréyòl Karukera pou ékri kréyòl asi téléfòn an mwen ! Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup. Télécharge-le gratuitement : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dwhatsapp%26utm_campaign%3Dlaunch10k #KlavyéKréyòl";
