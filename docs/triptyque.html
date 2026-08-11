@@ -7,9 +7,11 @@
 <meta name="description" content="Flyer triptyque A4 paysage (recto-verso) prêt à imprimer pour faire connaître le clavier créole guadeloupéen : présentation, installation, fonctionnalités, QR code Google Play.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<!-- Fredoka embarquée en base64 plutôt que servie par Google Fonts : le PDF
+     de ce dépliant s'exporte en impression locale, parfois hors ligne, et une
+     police absente au moment du rendu recomposerait les six volets. Atkinson
+     Hyperlegible était demandée sans être employée nulle part dans la page. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -98,7 +100,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   box-shadow:0 3px 10px rgba(0,0,0,.15); white-space:nowrap;
 }
 .cover h1.h{
-  font-family:"Fredoka",sans-serif; font-weight:800;
+  font-family:"Fredoka",sans-serif; font-weight:700;
   font-size:22px; line-height:1.14; margin:0 0 2mm; text-shadow:0 2px 10px rgba(0,0,0,.2);
 }
 .cover .sub{ font-size:11px; color:#fff; opacity:.92; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
@@ -128,7 +130,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .cover .hero-caption{
   position:absolute; top:5mm; left:6mm; right:6mm; z-index:2; text-align:center;
-  font-family:"Fredoka",sans-serif; font-weight:800; font-size:16px; color:#fff;
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:16px; color:#fff;
   text-shadow:0 2px 10px rgba(0,0,0,.35);
 }
 .cover .cta{
@@ -141,7 +143,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .cover .cta .txt b{
   display:block; font-family:"Fredoka",sans-serif; font-size:15px; font-weight:700; text-transform:uppercase;
 }
-.cover .cta .txt .free{ display:block; color:#0E6E76; font-weight:800; margin-top:1mm; }
+.cover .cta .txt .free{ display:block; color:#0E6E76; font-weight:700; margin-top:1mm; }
 
 /* ---------- Dos : QR + tampon gratuit ---------- */
 .back-cover .promo-row{
@@ -163,7 +165,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   align-items:center; justify-content:center; transform:rotate(-8deg);
 }
 .back-cover .stamp span{
-  font-family:"Fredoka",sans-serif; font-weight:800; color:#C97F1E;
+  font-family:"Fredoka",sans-serif; font-weight:700; color:#C97F1E;
   text-transform:uppercase; line-height:1.15; text-align:center;
 }
 .back-cover .stamp .big{ font-size:11px; }
@@ -180,7 +182,12 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .back-cover .mission{ font-size:11px; line-height:1.6; color:#C9CFCB; margin:0 0 6mm; }
 .back-cover .contact{ font-size:12px; line-height:2; }
 .back-cover .contact div span{ color:#C97F1E; display:inline-block; width:56px; }
-.back-cover .legal{ font-size:10px; color:#9AA39D; line-height:1.5; margin-top:5mm; text-align:left; }
+.back-cover .legal{ font-size:10px; color:#9AA39D; line-height:1.5; margin-top:3mm; text-align:left; }
+/* Les quatre promesses, en pied du dépliant : le dos en est le pied. */
+.back-cover .promises{
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:10.5px;
+  letter-spacing:.02em; color:#C97F1E; margin-top:5mm; text-align:left;
+}
 
 /* ---------- panneaux clairs ---------- */
 .light{ background:#F5F2EA; }
@@ -201,7 +208,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .light.tint-mid { background:#F4F1E9; }
 .light.tint-cool{ background:#EFF2EE; }
 .light h2{
-  font-size:16px; font-weight:800; color:#1C2624; margin:0 0 3mm;
+  font-size:16px; font-weight:700; color:#1C2624; margin:0 0 3mm;
   padding-bottom:2mm; border-bottom:3px solid #C97F1E;
 }
 .light p{ font-size:13px; font-weight:500; line-height:1.55; color:#1C2624; margin:0 0 3mm; }
@@ -209,7 +216,14 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 
 .bullets{ list-style:none; margin:0; padding:0; font-size:13px; font-weight:500; color:#1C2624; }
 .bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
-.bullets li .ic{ flex:0 0 auto; font-size:14px; }
+/* Puce en soleil plutôt qu'un emoji : la charte ne reconnaît que six emoji,
+   tous des repères de navigation, et le soleil est justement la couleur du
+   décor. Les sept emoji de la frise des niveaux, eux, restent : ils viennent
+   de CreoleLevels.kt et montrent le produit tel qu'il est. */
+.bullets li::before{
+  content:""; flex:0 0 auto; align-self:flex-start;
+  width:2mm; height:2mm; margin-top:1.7mm; border-radius:50%; background:#C97F1E;
+}
 .bullets li b{ color:#1C2624; }
 
 .steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
@@ -220,7 +234,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .steps li::before{
   content:counter(step); position:absolute; left:0; top:0;
   width:19px; height:19px; border-radius:50%; background:#0E6E76; color:#fff;
-  font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
 }
 .steps li b{ display:block; color:#1C2624; font-size:13.5px; }
 .dl-row{
@@ -274,7 +288,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
    sur le #DDEEEE du bloc, le #C94A3B de la charte ne tenait que 3,87:1, sous
    le seuil de 4,5:1, alors que « 100 % gratuit » est l'argument le plus
    vendeur du dépliant. Même teinte, même saturation, 4,64:1. */
-.panel-cta .txt .free{ display:block; color:#BA3C30; font-weight:800; margin-top:1mm; }
+.panel-cta .txt .free{ display:block; color:#C94A3B; font-weight:700; margin-top:1mm; }
 
 .levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
@@ -406,19 +420,19 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="promo-row">
         <div class="qr-box">
           <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-          <div class="qr-label">Scanne · Télécharge</div>
+          <div class="qr-label">Flashez le code</div>
         </div>
         <div class="stamp">
-          <span class="big">100%<br>gratuit</span>
+          <span class="big">100&nbsp;%<br>gratuit</span>
           <span class="small">zéro pub</span>
         </div>
       </div>
       <div>
         <div class="help-title">Comment nous aider</div>
         <ul class="help-list">
-          <li>⭐ Note l'app sur Google Play</li>
-          <li>📣 Parle-en autour de toi</li>
-          <li>🐛 Signale un mot manquant</li>
+          <li>Notez l'app sur Google Play</li>
+          <li>Parlez-en autour de vous</li>
+          <li>Signalez un mot manquant</li>
         </ul>
       </div>
       <div>
@@ -426,8 +440,9 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <div><span>Web</span> potomitan.io</div>
           <div><span>Kontak</span> contact@potomitan.io</div>
         </div>
-        <div class="legal">Klavyé Kréyòl Karukera est un projet citoyen, gratuit et open source (licence MIT), publié par Potomitan™. Zéro collecte de données personnelles : fonctionnement 100&nbsp;% local.</div>
-        <div class="legal" style="margin-top:2mm;">Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/carte-guadeloupe-compacte.svg" alt="Carte de la Guadeloupe" style="height:3.6mm;vertical-align:-0.4mm;"> · https://potomitan.io/</div>
+        <div class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</div>
+        <div class="legal">Klavyé Kréyòl Karukera est un projet citoyen publié par Potomitan™. Zéro collecte de données personnelles : le clavier fonctionne entièrement sur l'appareil.</div>
+        <div class="legal" style="margin-top:2mm;">Maké an bèl Kréyòl asi téléfòn a-w. · Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/carte-guadeloupe-compacte.svg" alt="Carte de la Guadeloupe" style="height:3.6mm;vertical-align:-0.4mm;"> · https://potomitan.io/</div>
       </div>
     </div>
 
@@ -436,30 +451,30 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="kicker">Pourquoi</div>
       <h2>Pourquoi un clavier créole ?</h2>
       <ul class="bullets" style="margin:0 0 3mm;">
-        <li><span class="ic">🛠️</span><span>Si ton kréyòl est très rouillé…</span></li>
-        <li><span class="ic">😤</span><span>Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots</span></li>
-        <li><span class="ic">🤔</span><span>Que tu doutes de l'orthographe à chaque message…</span></li>
-        <li><span class="ic">➡️</span><span><b>Klavyé Kréyòl Karukera est fait pour toi&nbsp;!</b></span></li>
+        <li><span>Votre kréyòl écrit est un peu rouillé.</span></li>
+        <li><span>Votre téléphone refuse les mots créoles quand vous écrivez en kréyòl.</span></li>
+        <li><span>Vous hésitez sur l'orthographe à chaque message.</span></li>
+        <li><span><b>Ce clavier est fait pour vous.</b></span></li>
       </ul>
       <div class="mini-shots large">
         <img class="s1" src="assets/triptyque-p2-sms1.jpg" alt="Échange de SMS écrit en kréyòl avec le clavier">
         <img class="s2" src="assets/triptyque-p2-sms2.jpg" alt="Le clavier en action : suggestions de mots pendant la frappe">
       </div>
-      <div class="callout">🎮 Et à l'intérieur : jeux de vocabulaire, accents créoles par appui long, progression en 7 niveaux. Retourne le dépliant pour tout découvrir&nbsp;!</div>
+      <div class="callout">Et à l'intérieur : jeux de vocabulaire, accents créoles par appui long, progression en 7 niveaux. Retournez le dépliant pour tout découvrir.</div>
     </div>
 
     <!-- P3 : couverture -->
     <div class="panel cover">
       <div class="top">
         <div class="logo-row">
-          <div class="logo-circle"><img src="assets/potomitan-logo.png" alt="Potomitan™"></div>
+          <div class="logo-circle"><img src="assets/potomitan-logo.svg" alt="Potomitan™"></div>
           <span class="brand-badge">KLAVYÉ KRÉYÒL KARUKERA</span>
         </div>
         <h1 class="h">Enfin écrire en kréyòl<br>sans galérer&nbsp;!</h1>
         <div class="press-cards">
-          <div class="press-card"><span class="src">📺 Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
-          <div class="press-card"><span class="src">📺 Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
-          <div class="press-card"><span class="src">📰 France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
+          <div class="press-card"><span class="src">Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
+          <div class="press-card"><span class="src">Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
+          <div class="press-card"><span class="src">France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
         </div>
       </div>
       <div class="hero-card">
@@ -467,7 +482,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </div>
       <div class="cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Scanne pour télécharger</b>Disponible sur Google Play<span class="free">100% gratuit</span></div>
+        <div class="txt"><b>Flashez le code, c'est gratuit</b>Disponible sur Google Play<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -481,22 +496,22 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <h2>Installation en 4 étapes</h2>
       <ol class="steps">
         <li>
-          <b>Télécharge l'app, c'est gratuit</b>
+          <b>Téléchargez l'app, c'est gratuit</b>
           <div class="dl-row">
             <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-            <span class="dl-txt"><b>Scanne ce code</b>Vise-le avec l'appareil photo, ou cherche « Klavyé Kréyòl » sur Google Play</span>
+            <span class="dl-txt"><b>Flashez ce code</b>Visez-le avec l'appareil photo, ou cherchez « Klavyé Kréyòl » sur Google Play</span>
           </div>
         </li>
-        <li><b>Teste le clavier de démo</b>Ouvre l'app : un clavier d'essai te permet de taper « bonjou » et de voir les suggestions, sans rien activer.</li>
+        <li><b>Testez le clavier de démo</b>Ouvrez l'app : un clavier d'essai permet de taper « bonjou » et de voir les suggestions, sans rien activer.</li>
         <li>
-          <b>Active le clavier dans les réglages</b>
-          Un bouton dans l'app t'amène directement au bon écran des paramètres Android.
+          <b>Activez le clavier dans les réglages</b>
+          Un bouton dans l'app mène directement au bon écran des paramètres Android.
           <div class="dl-row">
-            <img src="assets/triptyque-avertissement-android.png" alt="Message système Android : « ce clavier peut collecter le texte que tu tapes »" style="object-fit:cover;">
+            <img src="assets/triptyque-avertissement-android.png" alt="Message système Android : « ce clavier peut collecter le texte que vous tapez »" style="object-fit:cover;">
             <span class="dl-txt"><b>Ce message est normal</b>Android l'affiche pour tous les claviers, pas seulement celui-ci</span>
           </div>
         </li>
-        <li><b>Choisis-le et écris</b>De retour dans l'app, le sélecteur de clavier s'ouvre : choisis Klavyé Kréyòl et tape ton premier mot.</li>
+        <li><b>Choisissez-le et écrivez</b>De retour dans l'app, le sélecteur de clavier s'ouvre : choisissez Klavyé Kréyòl et tapez votre premier mot.</li>
       </ol>
       <div class="shot"><img src="assets/triptyque-conversation.jpg" alt="Le clavier en action : conversation en kréyòl avec des suggestions de mots pendant la frappe"></div>
     </div>
@@ -504,13 +519,13 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     <!-- P5 : fonctionnalités -->
     <div class="panel light tint-mid">
       <div class="kicker">Fonctionnalités</div>
-      <h2>Ce qu'il fait pour toi</h2>
+      <h2>Ce qu'il fait pour vous</h2>
       <ul class="bullets">
-        <li><span class="ic">💬</span><span><b>Suggestions bilingues</b> : le kréyòl d'abord, le français prend le relais si besoin</span></li>
-        <li><span class="ic">✒️</span><span><b>Accents créoles</b> (é, è, à, ò...) par simple appui long</span></li>
-        <li><span class="ic">🔤</span><span>Il comprend même si <b>tu te trompes</b> d'accent ou de lettre</span></li>
-        <li><span class="ic">🧩</span><span><b>Jeux de vocabulaire</b> intégrés : mots mêlés, mots mélangés</span></li>
-        <li><span class="ic">🏆</span><span><b>Progression en 7 niveaux</b>, comme un jeu, de Pipirit à Potomitan</span></li>
+        <li><span><b>Suggestions bilingues</b> : le kréyòl d'abord, le français prend le relais si besoin</span></li>
+        <li><span><b>Accents créoles</b> (é, è, à, ò...) par simple appui long</span></li>
+        <li><span>Il comprend même en cas <b>d'erreur</b> d'accent ou de lettre</span></li>
+        <li><span><b>Jeux de vocabulaire</b> intégrés : mots mêlés, mots mélangés</span></li>
+        <li><span><b>Progression en 7 niveaux</b>, comme un jeu, de Pipirit à Potomitan</span></li>
       </ul>
       <div class="mini-shots">
         <img class="s1" src="assets/tract-visuel-1.png" alt="Klavyé Kréyòl Karukera : maké an bel kréyòl">
@@ -522,8 +537,8 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     <!-- P6 : progression -->
     <div class="panel light tint-warm">
       <div class="kicker">Motivation</div>
-      <h2>Suis ta progression</h2>
-      <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
+      <h2>Suivez votre progression</h2>
+      <p>Un tableau de bord suit les mots créoles que vous utilisez et votre progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
       <div class="levels">
         <div class="level-step h1"><span>🌍</span></div>
         <div class="level-step h2"><span>🌱</span></div>
@@ -537,7 +552,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
       <div class="panel-cta">
         <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Scanne pour télécharger</b>Rejoins la communauté créolophone<span class="free">100% gratuit</span></div>
+        <div class="txt"><b>Flashez le code, c'est gratuit</b>Rejoignez la communauté créolophone<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>

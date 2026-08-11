@@ -7,9 +7,10 @@
 <meta name="description" content="Affiche prête à imprimer pour faire connaître le clavier créole guadeloupéen : QR code vers Google Play, à afficher chez les commerçants.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+<!-- Fredoka embarquée en base64 plutôt que servie par Google Fonts : le PDF
+     de cette affiche s'exporte en impression locale, parfois hors ligne, et
+     une police absente au moment du rendu recomposerait toute la page. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -56,9 +57,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   overflow:hidden;
   box-shadow:0 8px 40px rgba(0,0,0,.25);
   font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  /* Palette de communication (assets/theme.css), écrite en dur : cette page
+     simule une feuille imprimée, son rendu ne doit suivre ni le thème du site
+     ni les préférences système du visiteur.
+     Le fond était une rampe teal vers vert reprenant les couleurs du drapeau ;
+     c'est désormais le dégradé de marque, du lagon à l'hibiscus, le lagon tenu
+     jusqu'à 62 % pour que le titre, le slogan et le bloc de contenu restent
+     sur du 5,98:1 en blanc. */
   background:
-    radial-gradient(circle at 85% 8%, rgba(255,255,255,.14), transparent 40%),
-    linear-gradient(150deg,#0B5E66 0%,#0E6E76 22%,#146B54 48%,#1F7A47 68%,#2E8B3D 100%);
+    radial-gradient(circle at 85% 8%, rgba(255,255,255,.12), transparent 40%),
+    linear-gradient(160deg,#0E6E76 0%,#0E6E76 62%,#C94A3B 100%);
 }
 
 /* header */
@@ -69,21 +77,27 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   padding:11mm 12mm 0;
 }
 .hd-left{max-width:130mm;}
+/* Graisse 700 partout : c'est le plafond de la charte pour Fredoka, et c'est
+   aussi la graisse la plus lourde embarquée dans fredoka-embed.css. Demander
+   800 ne donnait donc pas un titre plus gras, mais un gras synthétique
+   fabriqué par le moteur de rendu.
+   L'ombre portée dure qui doublait le titre en rouge brique a disparu avec
+   cette couleur : reste l'ombre douce, qui décolle le blanc du dégradé. */
 .title{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
+  font-weight:700;
   font-size:64px;
   line-height:.92;
   letter-spacing:-0.01em;
   color:#FFFFFF;
-  text-shadow:3px 3px 0 #8B1E14, 0 6px 18px rgba(0,0,0,.25);
+  text-shadow:0 6px 18px rgba(0,0,0,.28);
   margin:0 0 5mm;
   text-transform:uppercase;
 }
 .badge{
   display:inline-block;
-  background:#8B1E14;
-  color:#FFFFFF;
+  background:#F5F2EA;
+  color:#0E6E76;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:13.5px;
@@ -98,7 +112,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-weight:700;
   font-style:italic;
   font-size:15.5px;
-  color:#FFE24B;
+  color:#FFFFFF;
   text-transform:uppercase;
   text-shadow:0 2px 6px rgba(0,0,0,.25);
   max-width:120mm;
@@ -117,13 +131,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   flex:0 0 auto;
 }
 .logo-badge img{width:88%;height:88%;object-fit:contain;}
-.geo-flag{
+/* La silhouette de l'archipel remplace le drapeau, comme sur tous les
+   supports. Variante à remplissage papier, celle des fonds sombres. */
+.geo-map{
   position:absolute;
   top:40mm;
   right:16mm;
   width:46mm;
   height:auto;
-  filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
+  opacity:.9;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.28));
   z-index:1;
 }
 
@@ -138,10 +155,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .subtitle{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
+  font-weight:700;
   font-size:24px;
   line-height:1.15;
-  color:#8B1E14;
+  color:#0E6E76;
   text-transform:uppercase;
   margin:0 0 7mm;
   text-wrap:balance;
@@ -173,33 +190,29 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   transform:translateX(-10%) rotate(7deg);
   z-index:2;
 }
-.pills{
-  display:flex;
-  justify-content:center;
-  gap:5mm;
-  flex-wrap:wrap;
-  margin-bottom:2mm;
-}
-.pill{
+/* Deux capsules pleines, bleue et verte, tenaient ici la place de simples
+   mentions : pleines et colorées, elles se lisaient comme des boutons alors
+   que l'affiche n'a qu'une action, le QR code. Elles laissent la place aux
+   quatre promesses, que la charte demande en pied de support. */
+.promises{
+  margin:1mm 0 0;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:13px;
-  letter-spacing:.02em;
-  color:#FFFFFF;
-  padding:3mm 7mm;
-  border-radius:999px;
+  letter-spacing:.03em;
+  line-height:1.5;
   text-transform:uppercase;
+  color:#0E6E76;
 }
-.pill.blue{background:#1E6FD9;}
-.pill.green{background:#1E8449;}
+.promises .sep{color:#C97F1E;margin:0 1.5mm;}
 
 .stamp{
   width:42mm;
   height:42mm;
   flex:0 0 auto;
   border-radius:50%;
-  background:#FFE24B;
-  border:3px dashed #8B1E14;
+  background:#F5F2EA;
+  border:3px dashed #C97F1E;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -207,10 +220,12 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   transform:rotate(-9deg);
   box-shadow:0 8px 20px rgba(0,0,0,.22);
 }
+/* Anneau en soleil, texte en encre : le soleil ne passe aucun seuil de
+   lisibilité sur fond papier (2,9:1), il tient le trait, pas les mots. */
 .stamp span{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
-  color:#8B1E14;
+  font-weight:700;
+  color:#1C2624;
   text-transform:uppercase;
   line-height:1.15;
   text-align:center;
@@ -218,16 +233,31 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .stamp .big{font-size:15.5px;}
 .stamp .small{font-size:9.5px;margin-top:1mm;}
 
-/* CTA band + QR, directly under the panel */
+/* L'action, sous le bloc de contenu. Une capsule pleine, la seule du support,
+   et la tache la plus claire de l'affiche. */
 .cta-band{
-  background:#FFFFFF;
-  margin:6mm 12mm 0;
-  padding:4.5mm 8mm;
-  border-radius:16px;
+  display:block;
+  width:max-content;
+  max-width:186mm;
+  background:#F5F2EA;
+  margin:6mm auto 0;
+  padding:4.5mm 12mm;
+  border-radius:999px;
   box-shadow:0 8px 22px rgba(0,0,0,.2);
   text-align:center;
 }
 .cta-band .subtitle{margin:0;}
+/* Signature produit : elle ferme les supports imprimés comme elle ouvre le
+   pied de page du site. */
+.signature{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:#FFFFFF;
+  text-align:center;
+  text-shadow:0 2px 8px rgba(0,0,0,.28);
+  margin:6mm 12mm 0;
+}
 .qr-center{
   display:flex;
   align-items:center;
@@ -238,7 +268,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .qr-wrap{
   display:inline-block;
   background:#FFFFFF;
-  border:4px solid #8B1E14;
+  border:4px solid #0E6E76;
   border-radius:16px;
   padding:4mm;
   box-shadow:0 10px 26px rgba(0,0,0,.24);
@@ -345,31 +375,28 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
         <p class="slogan">An kréyòl nou ka palé, an kréyòl nou ka maké !</p>
       </div>
       <div class="logo-badge">
-        <img src="assets/potomitan-logo.png" alt="Potomitan™">
+        <img src="assets/potomitan-logo.svg" alt="Potomitan™">
       </div>
     </div>
 
-    <img class="geo-flag" src="assets/guadeloupe-silhouette-drapeau.png" alt="Silhouette de la Guadeloupe aux couleurs du drapeau">
+    <img class="geo-map" src="assets/carte-guadeloupe.svg" alt="Silhouette de la Guadeloupe">
 
     <div class="panel">
-      <p class="subtitle">Ton clavier kréyòl 100% gratuit</p>
+      <p class="subtitle">Votre clavier kréyòl, 100&nbsp;% gratuit</p>
       <div class="shots">
-        <img class="s1" src="assets/affiche-screenshot1.png" alt="Klavyé Kréyòl Karukera : écris un beau kréyòl">
+        <img class="s1" src="assets/affiche-screenshot1.png" alt="Klavyé Kréyòl Karukera : maké an bèl kréyòl">
         <img class="s2" src="assets/affiche-screenshot2.png" alt="Suggestions de mots en créole pendant la frappe d'un SMS">
       </div>
-      <div class="pills">
-        <span class="pill blue">✅ Disponible maintenant</span>
-        <span class="pill green">📲 Google Play</span>
-      </div>
+      <p class="promises">Gratuit<span class="sep">·</span>Open source (MIT)<span class="sep">·</span>Zéro publicité<span class="sep">·</span>100&nbsp;% hors ligne</p>
     </div>
 
     <div class="cta-band">
-      <p class="subtitle">📲 Flash le code pour installer Klavyé Kréyòl</p>
+      <p class="subtitle">📲 Flashez le code, c'est gratuit</p>
     </div>
 
     <div class="qr-center">
       <div class="stamp">
-        <span class="big">100%<br>gratuit</span>
+        <span class="big">100&nbsp;%<br>gratuit</span>
         <span class="small">zéro pub</span>
       </div>
       <div class="qr-wrap">
@@ -377,7 +404,9 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
       </div>
     </div>
 
-    <div class="credit">Potomitan™ · famibelle.github.io/KreyolKeyb/ · Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe"> · contact@potomitan.io</div>
+    <p class="signature">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+
+    <div class="credit">Potomitan™ · https://potomitan.io/ · Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/carte-guadeloupe-compacte.svg" alt="Silhouette de la Guadeloupe"> · contact@potomitan.io</div>
   </div>
 </div>
 
