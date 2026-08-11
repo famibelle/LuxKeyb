@@ -437,17 +437,25 @@ td code{white-space:nowrap;}
   <p class="muted"><b>Une rampe ne s'invente pas au coup par coup.</b> Avant d'en dériver une nouvelle, vérifiez que le besoin est bien celui d'un ordre à lire, et non d'une simple envie de varier : deux fonds différents sans raison ne se lisent pas comme une progression, seulement comme une incohérence. Deux mesures conditionnent le reste : <b>une marche sous ΔE 3</b> se confond avec la tolérance d'impression d'un aplat et se lira comme un défaut de tirage ; <b>l'ordre des marches suit l'ordre de lecture</b>, pas l'ordre des pages ou des faces.</p>
 
   <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Le crème des volets</h4>
-  <p>Les quatre volets clairs se réchauffent dans l'ordre où ils sont lus. Le premier est le papier de la charte ; les suivants s'en éloignent sur le seul axe chaud/froid, à clarté constante (L* 95,5) : c'est une rampe de saturation, C* de 4,2 à 16,1.</p>
+  <p>Les quatre volets clairs s'assombrissent et se réchauffent dans l'ordre où ils sont lus. <b>C'est la clarté qui porte la progression</b>, de L* 96,1 à 85,5 ; la saturation ne fait que l'accompagner, C* de 1,0 à 9,9, pour rester dans la famille du papier plutôt que de virer au gris.</p>
   <div class="ramp-shell">
     <div class="ramp">
-      <div class="step"><i style="background:#F5F2EA;"></i><b>1<sup>er</sup> lu · papier</b><span>#F5F2EA</span></div>
-      <div class="step"><i style="background:#F8F2E2;"></i><b>2<sup>e</sup> lu</b><span>#F8F2E2</span></div>
-      <div class="step"><i style="background:#FBF1DB;"></i><b>3<sup>e</sup> lu</b><span>#FBF1DB</span></div>
-      <div class="step"><i style="background:#FEF1D3;"></i><b>4<sup>e</sup> lu</b><span>#FEF1D3</span></div>
+      <div class="step"><i style="background:#F4F4F2;"></i><b>1<sup>er</sup> lu</b><span>#F4F4F2</span></div>
+      <div class="step"><i style="background:#ECE9E2;"></i><b>2<sup>e</sup> lu</b><span>#ECE9E2</span></div>
+      <div class="step"><i style="background:#E5DFD2;"></i><b>3<sup>e</sup> lu</b><span>#E5DFD2</span></div>
+      <div class="step"><i style="background:#DDD5C3;"></i><b>4<sup>e</sup> lu</b><span>#DDD5C3</span></div>
     </div>
   </div>
-  <p class="muted" style="margin-top:12px;">Marches de ΔE 4,2, 3,4 et 4,3 : c'est le point d'équilibre. En dessous de ΔE 3 la progression disparaît dans la tolérance d'impression ; au-delà de ΔE 5 le dernier volet quitte la famille du crème et vire au jaune. Effet recherché : les pastilles <code>#DDEEEE</code> se détachent d'autant mieux que le volet est chaud, de ΔE 8,5 à 18,9, et ce sont les derniers volets qui en portent le plus.</p>
-  <p class="muted"><b>Le rang est celui de la lecture, pas celui de la feuille.</b> La première version de cette rampe ne croissait qu'au verso, alors que le premier volet clair lu est au recto : l'ordre réel des tons y était médian, froid, médian, chaud, une rampe qui recule puis se répète avant d'avancer. Sur un imprimé qui se plie, numérotez les surfaces dans l'ordre où le lecteur les découvre avant de leur attribuer un ton.</p>
+  <p class="muted" style="margin-top:12px;">Marches de ΔE 4,7, 4,8 et 4,5. Les valeurs ne sont pas libres : deux encadrés en <code>--sun-soft</code> se posent sur les volets de rang 1 et 3, deux blocs en <code>--sea-soft</code> sur ceux de rang 2 et 4, et une rampe crème traverse forcément le sun-soft, qui est lui-même un crème chaud. Ce jeu est le seul qui tienne des marches d'au moins ΔE 4,5 en gardant chaque bloc lisible sur son fond : sun-soft à ΔE 12,3 et 6,9, sea-soft à 7,8 et 14,9. L'encre reste au-dessus de 10,6:1 sur le volet le plus foncé.</p>
+  <div class="yesno">
+    <div class="non" style="grid-column:1/-1;">
+      <div class="t">Deux erreurs commises sur cette rampe</div>
+      <ul>
+        <li><b>Le rang est celui de la lecture, pas celui de la feuille.</b> La première version ne croissait qu'au verso, alors que le premier volet clair lu est au recto : l'ordre réel des tons y était médian, froid, médian, chaud. Sur un imprimé qui se plie, numérotez les surfaces dans l'ordre où le lecteur les découvre avant de leur attribuer un ton.</li>
+        <li><b>La saturation seule ne se voit pas au-dessus de L* 95.</b> La deuxième version gardait une clarté constante et ne faisait varier que la saturation : à cette clarté l'œil compresse ces écarts, et des marches de ΔE 4 restaient invisibles à l'écran comme sur le papier. Une rampe de fonds clairs se construit sur la clarté ; la saturation ne fait que l'accompagner.</li>
+      </ul>
+    </div>
+  </div>
   <p class="muted">La version éco encre n'a pas de rampe : ses volets clairs restent tous sur le papier. Couvrir quatre surfaces d'aplats teintés contredirait sa raison d'être, et l'uniformité y est cohérente faute d'ordre à faire lire.</p>
 
   <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Les marches de la progression</h4>

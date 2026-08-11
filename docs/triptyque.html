@@ -202,27 +202,29 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 
 /* ---------- panneaux clairs ---------- */
-.light{ background:#F5F2EA; }
-/* Les quatre volets clairs se réchauffent dans l'ordre où ils sont lus :
-   pourquoi, installation, fonctionnalités, progression. Le premier est le
-   papier de la charte, les suivants s'en éloignent sur le seul axe chaud/froid,
-   à clarté constante (L* 95,5) : c'est une rampe de saturation, C* de 4,2 à
-   16,1.
-   Le suffixe de la classe est le rang de lecture et non la position sur la
-   feuille. C'est ce qui manquait à la version précédente : sa rampe ne
-   croissait qu'au verso, alors que le premier volet clair lu est au recto.
-   L'ordre réel des tons y était donc médian, froid, médian, chaud, une rampe
-   qui recule puis se répète avant d'avancer.
-   Les marches valent ΔE 4,2, 3,4 et 4,3, contre 2,9 et 3,7 auparavant. C'est
-   le point d'équilibre : sous ΔE 3 la progression se confond avec la tolérance
-   d'impression d'un aplat et se lit comme un défaut de tirage plutôt que comme
-   une intention ; au-delà de ΔE 5 le dernier volet quitte la famille du crème
-   et vire au jaune. Effet conservé : les pastilles #DDEEEE se détachent
-   d'autant mieux que le volet est chaud, de ΔE 8,5 à 18,9, et ce sont les
-   derniers volets qui en portent le plus. */
-.light.rang-2{ background:#F8F2E2; }
-.light.rang-3{ background:#FBF1DB; }
-.light.rang-4{ background:#FEF1D3; }
+/* Les quatre volets clairs s'assombrissent et se réchauffent dans l'ordre où
+   ils sont lus. Le suffixe de la classe est le rang de lecture et non la
+   position sur la feuille : la première version de cette rampe ne croissait
+   qu'au verso, alors que le premier volet clair lu est au recto, si bien que
+   l'ordre réel des tons y était médian, froid, médian, chaud.
+   La deuxième version ne faisait varier que la saturation, à clarté constante
+   (L* 95,5) : invisible. À cette clarté l'œil compresse les écarts de
+   saturation, et ΔE 4 sur ce seul axe ne se lit pas. La clarté porte donc la
+   progression, de L* 96,1 à 85,5, la saturation ne fait que l'accompagner
+   (C* 1,0 à 9,9) pour rester dans la famille du papier plutôt que de virer au
+   gris.
+   Les valeurs ne sont pas libres : deux encadrés sun-soft #F6E9D2 se posent
+   sur les volets de rang 1 et 3, deux blocs sea-soft #DDEEEE sur ceux de rang
+   2 et 4, et une rampe crème traverse forcément le sun-soft, qui est
+   lui-même un crème chaud (L* 92,8, C* 12,8). Ce jeu-là est le seul qui tienne
+   ΔE 4,5 minimum entre volets voisins tout en gardant chaque bloc lisible sur
+   son fond : sun-soft à ΔE 12,3 et 6,9, sea-soft à 7,8 et 14,9. L'encre reste
+   au-dessus de 10,6:1 sur le volet le plus foncé, l'encre douce au-dessus de
+   5,2:1. */
+.light{ background:#F4F4F2; }
+.light.rang-2{ background:#ECE9E2; }
+.light.rang-3{ background:#E5DFD2; }
+.light.rang-4{ background:#DDD5C3; }
 .light h2{
   font-size:16px; font-weight:700; color:#1C2624; margin:0 0 3mm;
   padding-bottom:2mm; border-bottom:3px solid #C97F1E;
