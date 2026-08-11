@@ -130,20 +130,11 @@ nav.site a { color: var(--sea); text-decoration: none; font-weight: 600; }
 /* La marque ramène à l'accueil sans concurrencer l'appel à l'action : elle
    porte le poids d'un titre, pas celui d'un lien de navigation. */
 nav.site .nav-brand { color: var(--ink); font-weight: 700; margin-right: 6px; }
-/* Pousse l'appel à l'action, le menu « Déjà installé ? » et le sélecteur de
-   thème à droite : à gauche du bouton, seuls les liens qui donnent envie de
+/* Pousse l'appel à l'action, les menus « Déjà installé ? » et « Faire
+   connaître », puis le sélecteur de thème à droite : à gauche du bouton, seuls les liens qui donnent envie de
    l'installer (essayer, nouveautés, le projet). */
 nav.site .nav-cta { margin-left: auto; }
 nav.site .nav-after > summary { color: var(--ink-soft); font-weight: 500; }
-nav.site .menu-panel .menu-label {
-  display: block;
-  padding: 8px 10px 3px;
-  font-size: 11.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
-}
 nav.site a:hover { text-decoration: underline; }
 nav.site strong { color: var(--ink); }
 /* Page courante, et groupe qui la contient : une couleur seule se remarquait
@@ -230,9 +221,6 @@ nav.site .nav-cta:hover { filter: brightness(1.1); text-decoration: none; }
     box-shadow: none;
   }
   nav.site .menu-panel a { white-space: normal; }
-  /* Le libellé de section doit couper la ligne, sinon il s'aligne comme un
-     lien de plus au milieu du panneau et ne regroupe plus rien. */
-  nav.site .menu-panel .menu-label { width: 100%; text-align: center; padding-top: 4px; }
   /* Le bouton de la barre laisse la place à la barre d'installation fixée en
      bas : le garder ici le ferait sortir de l'écran au premier défilement. */
   nav.site .nav-cta { display: none; }

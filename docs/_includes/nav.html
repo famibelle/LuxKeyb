@@ -6,10 +6,14 @@
      Trois zones, dans l'ordre de lecture :
        1. l'identité, qui ramène à l'accueil sans concurrencer le bouton ;
        2. la preuve (essayer, nouveautés, le projet), avant le bouton ;
-       3. l'action, puis « Déjà installé ? » qui range hors du chemin tout ce
-          qui ne s'adresse qu'aux personnes ayant déjà le clavier.
-     Tout le reste (presse, code source, confidentialité, supports) vit dans le
-     pied de page, cf. _includes/footer.html. -->
+       3. l'action, puis deux menus qui rangent hors du chemin tout ce qui ne
+          s'adresse qu'aux personnes ayant déjà le clavier : « Déjà installé ? »
+          pour s'en servir, « Faire connaître » pour le diffuser. Ce second
+          menu est bâti comme « Le projet » (résumé emojisé, panneau replié)
+          plutôt qu'en sous-liste : six liens sous une étiquette allongeaient
+          « Déjà installé ? » au point de noyer le guide d'installation.
+     Le reste (presse, code source, confidentialité) vit dans le pied de page,
+     cf. _includes/footer.html. -->
 <nav class="site">
   <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
   <a href="simulateur.html">🧪 Essayer</a>
@@ -31,7 +35,11 @@
       <a href="guide.html">Guide d'installation</a>
       <a href="feedbacks_form.html">Donner son avis</a>
       <a href="beta_onboarding.html">Devenir bêta-testeur</a>
-      <strong class="menu-label">Faire connaître</strong>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary>📣 Faire connaître</summary>
+    <div class="menu-panel">
       <a href="ambassade.html">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract à imprimer</a>
