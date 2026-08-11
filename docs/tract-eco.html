@@ -7,9 +7,10 @@
 <meta name="description" content="Version éco encre (fond blanc) du tract A5 pour faire connaître le clavier créole guadeloupéen : 2 tracts par feuille A4, QR code vers Google Play.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+<!-- Fredoka embarquée en base64 plutôt que servie par Google Fonts : le PDF
+     de ce tract s'exporte en impression locale, parfois hors ligne, et une
+     police absente au moment du rendu recomposerait toute la page. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -59,7 +60,14 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
 }
 
-/* --- Un tract A5 paysage, version éco encre --- */
+/* --- Un tract A5 paysage, version éco encre ---
+   Palette de communication (assets/theme.css), écrite en dur : ce bloc simule
+   une feuille imprimée, son rendu ne doit suivre ni le thème du site ni les
+   préférences système du visiteur.
+   Une seule libertée assumée avec la charte : le fond reste le blanc du papier
+   et non le papier crème #F5F2EA. Cette version existe pour ne pas couvrir un
+   A5 d'aplat, et un fond crème imposerait en plus une impression sans marge
+   pour ne pas se trahir par un liseré blanc au bord de la feuille. */
 .tract{
   position:relative;
   width:210mm;
@@ -93,8 +101,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .badge{
   display:inline-block;
   background:#FFFFFF;
-  color:#E01E5F;
-  border:2px solid #E01E5F;
+  color:#0E6E76;
+  border:2px solid #0E6E76;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:12.5px;
@@ -103,32 +111,35 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border-radius:999px;
   white-space:nowrap;
 }
+/* Sur fond clair le logo se pose directement : la pastille blanche cerclée
+   n'existe que pour le sauver d'un fond coloré, et ici elle ne ferait
+   qu'ajouter un trait à imprimer. */
 .logo-badge{
   width:13mm;
   height:13mm;
-  border-radius:50%;
-  background:#FFFFFF;
-  border:2px solid rgba(28,38,36,.4);
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
   flex:0 0 auto;
 }
-.logo-badge img{width:86%;height:86%;object-fit:contain;}
+.logo-badge img{width:100%;height:100%;object-fit:contain;}
+/* Graisse 700 partout : c'est le plafond de la charte pour Fredoka, et c'est
+   aussi la graisse la plus lourde embarquée dans fredoka-embed.css. Demander
+   800 ne donnait donc pas un titre plus gras, mais un gras synthétique
+   fabriqué par le moteur de rendu. */
 .headline{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
+  font-weight:700;
   font-size:27px;
   line-height:1.05;
   letter-spacing:-0.01em;
-  color:#E01E5F;
+  color:#0E6E76;
   margin:0 0 3.5mm;
   white-space:nowrap;
 }
 .probs{
   list-style:none;
-  margin:0 0 2mm;
+  margin:0;
   padding:0;
   display:flex;
   flex-direction:column;
@@ -142,12 +153,35 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   line-height:1.38;
   font-weight:600;
 }
-.probs .emo{flex:0 0 auto;font-size:20px;line-height:1.2;}
-.probs .fanm{
+/* Puce en soleil plutôt qu'un emoji : la charte ne reconnaît que six emoji,
+   tous des repères de navigation, et le soleil est justement la couleur du
+   décor. */
+.probs li::before{
+  content:"";
+  flex:0 0 auto;
+  width:2.2mm;
+  height:2.2mm;
+  margin-top:2.1mm;
+  border-radius:50%;
+  background:#C97F1E;
+}
+.answer{
+  position:relative;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:17.5px;
-  color:#E01E5F;
+  line-height:1.25;
+  color:#0E6E76;
+  margin:3mm 0 0;
+  padding-left:4.5mm;
+}
+.answer::before{
+  content:"";
+  position:absolute;
+  left:0; top:.6mm; bottom:.6mm;
+  width:1.4mm;
+  border-radius:999px;
+  background:#C97F1E;
 }
 .press-cards{
   display:flex;
@@ -170,8 +204,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-size:9.5px;
   text-transform:uppercase;
   letter-spacing:.02em;
-  color:#E01E5F;
-  border:1.3px solid #E01E5F;
+  color:#0E6E76;
+  border:1.3px solid #0E6E76;
   padding:.5mm 2mm;
   border-radius:999px;
   white-space:nowrap;
@@ -180,25 +214,51 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-style:italic;
   color:#4B5750;
 }
-.cta{
+/* La seule action du tract, donc la seule capsule pleine. Même en version
+   éco, elle reste pleine : c'est le seul aplat que la charte impose, et un
+   contour ne se lit pas comme un bouton à trois mètres du comptoir. */
+.cta-block{
   flex:1 1 auto;
+  min-width:0;
   display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:4mm;
-  background:#FFFFFF;
-  color:#E01E5F;
-  border:2.5px solid #E01E5F;
-  font-family:"Fredoka",sans-serif;
-  font-weight:800;
-  font-size:16.5px;
-  line-height:1.2;
-  text-transform:uppercase;
-  border-radius:14px;
-  padding:4mm 5mm;
-  text-align:center;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2.4mm;
 }
-.cta .cta-ico{font-size:30px;line-height:1;}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  gap:3mm;
+  background:#0E6E76;
+  color:#F5F2EA;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:15px;
+  line-height:1.15;
+  border-radius:999px;
+  padding:3.6mm 7mm;
+  white-space:nowrap;
+}
+.cta .cta-ico{font-size:21px;line-height:1;}
+/* Signature produit : elle ferme les supports imprimés comme elle ouvre le
+   pied de page du site. */
+.signature{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:12.5px;
+  line-height:1.2;
+  color:#1C2624;
+  margin:0;
+}
+.promises{
+  margin:0;
+  font-size:9.5px;
+  font-weight:600;
+  line-height:1.3;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:#4B5750;
+}
 .col-right{
   flex:0 0 auto;
   display:flex;
@@ -216,7 +276,9 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   width:41mm;
   height:auto;
   border-radius:9px;
-  border:3px solid #FFFFFF;
+  /* Un liseré de ligne, pas de blanc : sur fond blanc, un cadre blanc ne
+     détache pas les deux captures l'une de l'autre. */
+  border:1px solid rgba(28,38,36,.13);
   box-shadow:0 6px 16px rgba(28,38,36,.25);
 }
 .shots img.s1{
@@ -237,22 +299,24 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   min-height:0;
 }
 .stamp{
-  width:31mm;
-  height:31mm;
+  width:30mm;
+  height:30mm;
   flex:0 0 auto;
   border-radius:50%;
   background:#FFFFFF;
-  border:2.5px dashed #E01E5F;
+  border:2.5px dashed #C97F1E;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   transform:rotate(-9deg);
 }
+/* Anneau en soleil, texte en encre : le soleil ne passe aucun seuil de
+   lisibilité sur fond clair (2,9:1), il tient le trait, pas les mots. */
 .stamp span{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
-  color:#E01E5F;
+  font-weight:700;
+  color:#1C2624;
   text-transform:uppercase;
   line-height:1.15;
   text-align:center;
@@ -261,7 +325,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .stamp .small{font-size:7.5px;margin-top:.8mm;}
 .qr-wrap{
   background:#FFFFFF;
-  border:2px solid rgba(28,38,36,.4);
+  border:1px solid rgba(28,38,36,.13);
   border-radius:12px;
   padding:2.6mm;
 }
@@ -269,25 +333,41 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .qr-label{
   font-family:"Fredoka",sans-serif;
   font-weight:700;
-  font-size:9.5px;
-  color:#E01E5F;
+  font-size:10px;
+  color:#0E6E76;
   text-transform:uppercase;
   letter-spacing:.04em;
   text-align:center;
   margin-top:2.5mm;
 }
+/* Hibiscus n'atteint que 4,2:1 sur fond clair : la charte le réserve aux
+   tailles supérieures, ce que ces 22 px gras respectent. */
 .slogan-band{
+  position:relative;
   flex:0 0 auto;
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
+  font-weight:700;
   font-style:italic;
-  font-size:23px;
-  color:#E01E5F;
+  font-size:22px;
+  color:#C94A3B;
   text-transform:uppercase;
   text-align:center;
   letter-spacing:.02em;
   line-height:1.25;
-  margin:1mm 0 0;
+  margin:0;
+  padding-bottom:3.5mm;
+}
+/* Le filet accent de la charte, 6 px de haut, qui sépare l'accroche du reste. */
+.slogan-band::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:28mm;
+  height:1.6mm;
+  border-radius:999px;
+  background:#C97F1E;
 }
 .credit{
   position:absolute;
@@ -301,8 +381,6 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   height:3.6mm;
   width:auto;
   vertical-align:-0.4mm;
-  border-radius:1px;
-  border:0.3mm solid rgba(28,38,36,.3);
 }
 
 /* ligne de découpe entre les deux tracts */
@@ -392,7 +470,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   <div class="actions">
     <a class="btn primary" href="assets/tract-eco-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF (A4, 2 tracts A5)</a>
     <button class="btn" onclick="window.print()">🖨️ Imprimer directement</button>
-    <a class="btn" href="tract.html">🪧 Version couleur (fond rose)</a>
+    <a class="btn" href="tract.html">🪧 Version couleur (dégradé lagon)</a>
   </div>
 
   <div class="note">
@@ -409,19 +487,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
       <div class="top">
         <div class="col-left">
           <div class="badge-row">
-            <div class="logo-badge"><img src="assets/potomitan-logo.png" alt="Potomitan™"></div>
+            <div class="logo-badge"><img src="assets/potomitan-logo.svg" alt="Potomitan™"></div>
             <span class="badge">KLAVYÉ KRÉYÒL KARUKERA</span>
           </div>
           <p class="headline">Pourquoi ce clavier ?</p>
           <ul class="probs">
-            <li><span class="emo">😤</span><span>Ton téléphone refuse tous les mots créoles et «&nbsp;corrige&nbsp;» ton kréyòl en français&nbsp;?</span></li>
-            <li><span class="emo">🤔</span><span>Tu doutes de l'orthographe à chaque message&nbsp;?</span></li>
-            <li><span class="emo">➡️</span><span class="fanm">Klavyé Kréyòl Karukera est fait pour&nbsp;toi.</span></li>
+            <li><span>Votre téléphone refuse les mots créoles et «&nbsp;corrige&nbsp;» votre kréyòl en français&nbsp;?</span></li>
+            <li><span>Vous hésitez sur l'orthographe à chaque message&nbsp;?</span></li>
           </ul>
+          <p class="answer">Ce clavier est fait pour vous.</p>
           <div class="press-cards">
-            <div class="press-card"><span class="src">📺 Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
-            <div class="press-card"><span class="src">📺 Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
-            <div class="press-card"><span class="src">📰 France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
+            <div class="press-card"><span class="src">Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
+            <div class="press-card"><span class="src">Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
+            <div class="press-card"><span class="src">France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
           </div>
         </div>
         <div class="col-right">
@@ -434,9 +512,13 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
       </div>
       <p class="slogan-band">«&nbsp;An kréyòl nou ka palé, an kréyòl nou ka maké&nbsp;!&nbsp;»</p>
       <div class="bottom-row">
-        <div class="cta"><span class="cta-ico">📲</span><span>Flash le code,<br>installe Klavyé Kréyòl</span></div>
+        <div class="cta-block">
+          <span class="cta"><span class="cta-ico">📲</span><span>Flashez le code, c'est gratuit</span></span>
+          <p class="signature">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+          <p class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</p>
+        </div>
         <div class="stamp">
-          <span class="big">100%<br>gratuit</span>
+          <span class="big">100&nbsp;%<br>gratuit</span>
           <span class="small">zéro pub</span>
         </div>
         <div class="qr-wrap">
@@ -452,19 +534,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
       <div class="top">
         <div class="col-left">
           <div class="badge-row">
-            <div class="logo-badge"><img src="assets/potomitan-logo.png" alt="Potomitan™"></div>
+            <div class="logo-badge"><img src="assets/potomitan-logo.svg" alt="Potomitan™"></div>
             <span class="badge">KLAVYÉ KRÉYÒL KARUKERA</span>
           </div>
           <p class="headline">Pourquoi ce clavier ?</p>
           <ul class="probs">
-            <li><span class="emo">😤</span><span>Ton téléphone refuse tous les mots créoles et «&nbsp;corrige&nbsp;» ton kréyòl en français&nbsp;?</span></li>
-            <li><span class="emo">🤔</span><span>Tu doutes de l'orthographe à chaque message&nbsp;?</span></li>
-            <li><span class="emo">➡️</span><span class="fanm">Klavyé Kréyòl Karukera est fait pour&nbsp;toi.</span></li>
+            <li><span>Votre téléphone refuse les mots créoles et «&nbsp;corrige&nbsp;» votre kréyòl en français&nbsp;?</span></li>
+            <li><span>Vous hésitez sur l'orthographe à chaque message&nbsp;?</span></li>
           </ul>
+          <p class="answer">Ce clavier est fait pour vous.</p>
           <div class="press-cards">
-            <div class="press-card"><span class="src">📺 Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
-            <div class="press-card"><span class="src">📺 Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
-            <div class="press-card"><span class="src">📰 France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
+            <div class="press-card"><span class="src">Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
+            <div class="press-card"><span class="src">Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
+            <div class="press-card"><span class="src">France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
           </div>
         </div>
         <div class="col-right">
@@ -477,9 +559,13 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
       </div>
       <p class="slogan-band">«&nbsp;An kréyòl nou ka palé, an kréyòl nou ka maké&nbsp;!&nbsp;»</p>
       <div class="bottom-row">
-        <div class="cta"><span class="cta-ico">📲</span><span>Flash le code,<br>installe Klavyé Kréyòl</span></div>
+        <div class="cta-block">
+          <span class="cta"><span class="cta-ico">📲</span><span>Flashez le code, c'est gratuit</span></span>
+          <p class="signature">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+          <p class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</p>
+        </div>
         <div class="stamp">
-          <span class="big">100%<br>gratuit</span>
+          <span class="big">100&nbsp;%<br>gratuit</span>
           <span class="small">zéro pub</span>
         </div>
         <div class="qr-wrap">
