@@ -128,6 +128,13 @@ def main() -> int:
             print(f"  {ad_id:<22} ECHEC")
 
     print(f"\n{len(todo) - len(failures)}/{len(todo)} visuels exportes dans {OUT}", flush=True)
+
+    # Chrome sort des PNG nus : sans cet appel, les visuels partiraient chez les
+    # regies sans nom d'auteur ni copyright, et rien ne dirait plus d'ou ils
+    # viennent une fois telecharges d'une page.
+    tagueur = DOCS.parent / "scripts" / "tag_assets.py"
+    subprocess.run([sys.executable, str(tagueur), str(OUT)], check=False)
+
     if viewer:
         print("Fenetre d'apercu laissee ouverte (la fermer a la main).", flush=True)
     return 1 if failures else 0

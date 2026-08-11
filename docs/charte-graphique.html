@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charte graphique · Klavyé Kréyòl Karukera</title>
+<meta name="description" content="Charte graphique de Klavyé Kréyòl Karukera : logo Potomitan, palettes de couleurs, typographie, éléments graphiques, règles d'écriture et fichiers sources.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:840px;margin:0 auto;}
+header{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:62ch;margin:0 0 10px;}
+section{margin-top:52px;scroll-margin-top:70px;}
+h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+h3{font-size:15px;font-weight:700;margin:26px 0 8px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1px 5px;border-radius:4px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+
+/* Sommaire : la charte se consulte par entrée, rarement en continu. */
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0;list-style:none;}
+.toc a{
+  display:block;padding:6px 12px;border-radius:99px;font-size:13.5px;font-weight:600;
+  color:var(--sea);text-decoration:none;border:1px solid var(--line);background:var(--card);
+}
+.toc a:hover{border-color:var(--sea);}
+
+/* Nuancier. Chaque pastille porte son hexadécimal et son contraste mesuré :
+   sans le chiffre, la règle « réservé au décor » n'a l'air que d'un avis. */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:14px 0 0;}
+.sw{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--card);}
+.sw .chip{height:76px;display:flex;align-items:flex-end;padding:8px 10px;font-size:12px;font-weight:700;}
+.sw .meta{padding:9px 11px 11px;}
+.sw .name{display:block;font-size:13px;font-weight:700;}
+.sw .hex{display:block;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:2px;}
+.sw .use{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+.ratio{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:99px;margin-top:6px;}
+.ratio.ok{background:var(--sea-soft);color:var(--ink);}
+.ratio.no{background:var(--hibiscus-soft);color:var(--ink);}
+
+/* Le logo, présenté sur les trois fonds qu'il rencontre réellement. */
+.logo-row{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch;margin-top:14px;}
+.logo-box{
+  flex:1 1 210px;border:1px solid var(--line);border-radius:12px;padding:22px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;
+}
+.logo-box img{width:110px;height:110px;}
+.logo-box .cap{font-size:12.5px;color:var(--ink-soft);}
+.logo-box.clair{background:#F5F2EA;}
+.logo-box.clair .cap{color:#4B5750;}
+.logo-box.fonce{background:linear-gradient(157deg,#12848E 0%,#0A5259 52%,#053035 100%);}
+.logo-box.fonce .cap{color:rgba(255,255,255,.8);}
+.logo-box.photo{background:#B03A2B;}
+.logo-box.photo .cap{color:rgba(255,255,255,.85);}
+/* La pastille blanche : seule façon de poser le logo sur un fond coloré ou une
+   photo, parce que son tracé est fait de traits fins de cinq couleurs. */
+.pastille{
+  width:110px;height:110px;border-radius:50%;background:#FFFFFF;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+.pastille img{width:84%;height:84%;}
+
+/* Tailles minimales : à montrer, pas à décrire. */
+.sizes{display:flex;flex-wrap:wrap;align-items:flex-end;gap:26px;margin-top:14px;}
+.sizes figure{margin:0;text-align:center;}
+.sizes figcaption{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:8px;}
+
+/* Zone de protection : le carré pointillé vaut mieux qu'un paragraphe. */
+.clearspace{position:relative;display:inline-block;padding:28px;border:1px dashed var(--sea);border-radius:8px;margin:14px 0 26px;}
+.clearspace img{display:block;width:112px;height:112px;}
+/* La légende se pose sous le cadre, pas dedans : à l'intérieur elle passait
+   sur le bas du logo, précisément dans la zone qu'elle décrit comme vide. */
+.clearspace::after{
+  content:'x = 1/4 du diamètre';position:absolute;left:0;right:0;top:calc(100% + 7px);
+  text-align:center;white-space:nowrap;
+  font-family:var(--mono);font-size:10.5px;color:var(--sea);
+}
+
+/* Échantillons typographiques, rendus dans la police décrite. */
+.type-sample{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--card);margin-top:12px;}
+.type-sample .tag{font-family:var(--mono);font-size:11.5px;color:var(--sea);letter-spacing:.06em;text-transform:uppercase;}
+.fredoka{font-family:"Fredoka",-apple-system,"Segoe UI",sans-serif;}
+.t-display{font-size:clamp(28px,6vw,40px);font-weight:700;letter-spacing:-0.015em;line-height:1.02;margin:8px 0 0;}
+.t-kicker{font-size:19px;font-weight:500;margin:10px 0 0;color:var(--ink-soft);}
+.t-body{font-size:16.5px;margin:8px 0 0;}
+.t-mono{font-family:var(--mono);font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:8px 0 0;}
+
+/* Tableaux : échelle typographique, fichiers sources. */
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:12px;}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--sea);}
+td code{white-space:nowrap;}
+
+/* Les deux dégradés publicitaires, en vrai. */
+.grads{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;}
+.grad{border-radius:12px;padding:20px;min-height:130px;display:flex;flex-direction:column;justify-content:flex-end;color:#FFF;}
+.grad b{font-family:"Fredoka",sans-serif;font-size:19px;}
+.grad span{font-family:var(--mono);font-size:11.5px;opacity:.85;margin-top:4px;}
+.grad.lagon{background:linear-gradient(157deg,#12848E 0%,#0A5259 52%,#053035 100%);}
+.grad.hibiscus{background:linear-gradient(157deg,#D95B42 0%,#B03A2B 52%,#78200F 100%);}
+.grad.papier{background:#F5F2EA;color:#10312F;}
+.grad.papier span{opacity:.7;}
+
+/* Composants repris tels quels d'un support à l'autre. */
+.demo{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px;}
+.pill-cta{display:inline-block;background:#FFC978;color:#0A3B36;border-radius:99px;padding:11px 22px;font-weight:700;font-family:"Fredoka",sans-serif;}
+.sugg{display:flex;gap:10px;flex-wrap:wrap;}
+.sugg .chip2{
+  display:flex;align-items:center;gap:9px;border-radius:99px;padding:8px 16px;
+  font-weight:600;color:#FFF;background:#0A5259;border:1.5px solid rgba(255,255,255,.3);
+}
+.sugg .chip2::before{content:attr(data-lang);font-size:11px;font-weight:700;letter-spacing:.06em;}
+.sugg .chip2.kr::before{color:#7BE0A6;}
+.sugg .chip2.fr::before{color:#A8C6FF;}
+.rule-bar{height:6px;width:110px;border-radius:99px;background:#FFC978;}
+
+/* Cartes de la Guadeloupe : les deux variantes sur leur fond respectif. */
+.maps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px;}
+.map-box{border-radius:12px;padding:20px;text-align:center;border:1px solid var(--line);}
+.map-box img{width:100%;max-width:190px;height:auto;}
+.map-box .cap{font-family:var(--mono);font-size:11.5px;margin-top:10px;display:block;}
+.map-box.sur-clair{background:#F5F2EA;}
+.map-box.sur-clair .cap{color:#4B5750;}
+.map-box.sur-fonce{background:#0A5259;}
+.map-box.sur-fonce .cap{color:rgba(255,255,255,.8);}
+
+/* Oui / non : deux colonnes, la même largeur, pour que l'interdit ne pèse pas
+   plus lourd que la règle. */
+.yesno{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px;}
+.yesno ul{margin:8px 0 0;padding-left:20px;}
+.yesno li{margin-bottom:7px;font-size:14.5px;}
+.yesno .t{font-weight:800;font-size:14px;letter-spacing:.02em;}
+.yesno .oui{border:1px solid var(--line);border-left:4px solid var(--sea);border-radius:10px;padding:14px 16px;background:var(--card);}
+.yesno .non{border:1px solid var(--line);border-left:4px solid var(--hibiscus);border-radius:10px;padding:14px 16px;background:var(--card);}
+.yesno .oui .t{color:var(--sea);}
+.yesno .non .t{color:var(--hibiscus);}
+
+/* Emoji du jeu de marque. */
+.emoji-set{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+.emoji-set span{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);
+  border-radius:99px;padding:6px 14px;background:var(--card);font-size:14px;
+}
+.emoji-set b{font-size:18px;font-weight:400;}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:14px;}
+.gallery figure{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
+.gallery img{display:block;width:100%;height:auto;}
+.gallery figcaption{padding:10px 12px;font-size:12.5px;color:var(--ink-soft);}
+
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14.5px;margin-top:14px;
+}
+</style>
+</head>
+<body>
+<!-- nav:start -->
+<nav class="site">
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <details class="menu" name="navmenu">
+    <summary>ℹ️ Le projet</summary>
+    <div class="menu-panel">
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary>📣 Ambassadeurs</summary>
+    <div class="menu-panel">
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+    </div>
+  </details>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
+<!-- nav:end -->
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Potomitan™ · Référence de marque</p>
+  <h1>Charte graphique</h1>
+  <p class="lead">Tout ce qu'il faut pour fabriquer un support Klavyé Kréyòl Karukera sans repartir de zéro : le logo et ses limites, les trois palettes et leur territoire, la typographie, les composants réutilisables et la façon d'écrire.</p>
+  <p class="muted">Cette page est la référence. Les valeurs qu'elle affiche viennent des fichiers du dépôt : <code>assets/theme.css</code> pour le site, <code>res/values/colors.xml</code> pour l'application, <code>publicites.html</code> pour les visuels payants.</p>
+
+  <ul class="toc">
+    <li><a href="#marque">La marque</a></li>
+    <li><a href="#logo">Le logo</a></li>
+    <li><a href="#couleurs">Les couleurs</a></li>
+    <li><a href="#typo">La typographie</a></li>
+    <li><a href="#elements">Les éléments graphiques</a></li>
+    <li><a href="#ecriture">L'écriture</a></li>
+    <li><a href="#applications">Les applications</a></li>
+    <li><a href="#fichiers">Les fichiers sources</a></li>
+  </ul>
+</header>
+
+<!-- ====================================================================== -->
+<section id="marque">
+  <h2>1. La marque</h2>
+  <p>Un clavier créole pour les personnes qui parlent déjà kréyòl. Pas une méthode d'apprentissage, pas un assistant. Toute la communication part de là.</p>
+
+  <h3>Les noms, et quand les employer</h3>
+  <table>
+    <tr><th>Forme</th><th>Où</th></tr>
+    <tr><td><b>Klavyé Kréyòl</b></td><td>Nom court, par défaut : icône de l'application, barre de navigation, corps de texte, publicités.</td></tr>
+    <tr><td><b>Klavyé Kréyòl Karukera</b></td><td>Nom complet : titres de pages, dossier de presse, premières mentions dans un document institutionnel.</td></tr>
+    <tr><td><b>Potomitan™</b></td><td>L'éditeur, jamais le produit. Signature de pied de page, mentions légales, page magasin.</td></tr>
+  </table>
+  <p class="muted">Accents obligatoires dans les trois cas, y compris en capitales. Jamais « Klavye Kreyol », jamais « KreyolKeyb » en public : c'est le nom du dépôt de code, pas celui du produit.</p>
+
+  <h3>Les deux signatures</h3>
+  <div class="card">
+    <p style="font-size:19px;font-weight:700;margin:0;">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <p class="muted" style="margin:6px 0 16px;">Signature produit. Elle ouvre le pied de page du site et ferme les supports imprimés.</p>
+    <p style="font-size:19px;font-weight:700;margin:0;">Teknoloji pou tout moun.</p>
+    <p class="muted" style="margin:6px 0 0;">Signature de l'éditeur. Elle accompagne Potomitan™, pas le clavier.</p>
+  </div>
+
+  <h3>Le signe ™ et la mention d'éditeur</h3>
+  <p>Le nom de l'éditeur s'écrit <b>Potomitan™</b>, avec le signe, partout où il apparaît : sur les visuels, dans les crédits imprimés, dans les métadonnées des fichiers. Un visuel finit toujours par circuler seul, téléchargé d'une page ou réexporté par une régie, et cette mention est parfois la seule chose qui dise encore d'où il vient.</p>
+  <table>
+    <tr><th>Support</th><th>Où se lit Potomitan™</th></tr>
+    <tr><td>Visuels publicitaires</td><td>Sous le nom du produit, dans le bloc de marque, en petites capitales</td></tr>
+    <tr><td>Tract, affiche</td><td>En tête de la ligne de crédits, en bas de la page imprimée</td></tr>
+    <tr><td>Triptyque</td><td>En signature de couverture et dans les mentions légales</td></tr>
+    <tr><td>Site</td><td>Dans le pied de page : « Potomitan™, Teknoloji pou tout moun. »</td></tr>
+    <tr><td>Tous les fichiers</td><td>Métadonnées : auteur, copyright, éditeur (voir §8)</td></tr>
+  </table>
+  <p class="muted">Une seule exception, mesurée : la bannière display 320×50. Cinquante pixels de haut, l'accroche et le bouton prennent toute la place, et une mention y serait illisible plutôt que discrète. Le logo y porte seul la marque, et les métadonnées du fichier prennent le relais.</p>
+
+  <h3>Les quatre promesses</h3>
+  <p>Elles reviennent partout, dans cet ordre, et se vérifient : <b>gratuit</b>, <b>open source (MIT)</b>, <b>zéro publicité</b>, <b>100&nbsp;% hors ligne</b>.</p>
+</section>
+
+<!-- ====================================================================== -->
+<section id="logo">
+  <h2>2. Le logo</h2>
+  <p>Le poteau-mitan : le pilier central de la case créole, celui autour duquel tout tient. Un poteau sombre, deux hélices qui s'y enroulent, un cercle d'unité, le nom en vert. C'est le seul signe de marque, à toutes les tailles.</p>
+
+  <div class="logo-row">
+    <div class="logo-box clair">
+      <img src="assets/potomitan-logo.svg" alt="Logo Potomitan sur fond clair">
+      <span class="cap">Fond clair, logo posé directement</span>
+    </div>
+    <div class="logo-box fonce">
+      <div class="pastille"><img src="assets/potomitan-logo.svg" alt="Logo Potomitan dans sa pastille blanche"></div>
+      <span class="cap">Fond coloré, pastille blanche obligatoire</span>
+    </div>
+    <div class="logo-box photo">
+      <div class="pastille"><img src="assets/potomitan-logo.svg" alt="Logo Potomitan dans sa pastille, sur aplat hibiscus"></div>
+      <span class="cap">Photo ou aplat vif, même pastille</span>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Le tracé est fait de traits de 4&nbsp;px dans cinq couleurs. Posé tel quel sur un fond sombre ou une photo, il perd le poteau et le nom. La pastille blanche circulaire n'est donc pas une variante décorative : c'est la façon normale de l'employer hors fond clair, avec une ombre portée douce quand le fond est chargé.</p>
+
+  <h3>Zone de protection</h3>
+  <p>Aucun texte, aucun bord, aucune autre marque dans un anneau égal au quart du diamètre du cercle.</p>
+  <div class="clearspace"><img src="assets/potomitan-logo.svg" alt="Logo entouré de sa zone de protection"></div>
+
+  <h3>Tailles minimales</h3>
+  <div class="sizes">
+    <figure><img src="assets/potomitan-logo.svg" width="96" height="96" alt="Logo à 96 pixels"><figcaption>96 px · confortable</figcaption></figure>
+    <figure><img src="assets/potomitan-logo.svg" width="48" height="48" alt="Logo à 48 pixels"><figcaption>48 px · minimum écran</figcaption></figure>
+    <figure><img src="assets/potomitan-logo.svg" width="32" height="32" alt="Logo à 32 pixels"><figcaption>32 px · le nom ne se lit plus</figcaption></figure>
+  </div>
+  <p class="muted" style="margin-top:12px;">Sous 48&nbsp;px à l'écran et sous 12&nbsp;mm à l'impression, « POTOMITAN » devient une tache verte. En dessous de cette taille, le logo ne doit plus porter seul l'identification : le nom écrit à côté prend le relais.</p>
+
+  <div class="yesno">
+    <div class="oui">
+      <div class="t">À faire</div>
+      <ul>
+        <li>Employer le SVG, jamais une capture d'écran ou un PNG redimensionné à la hausse.</li>
+        <li>Le placer en haut à gauche des visuels, ou centré sur les formats verticaux étroits.</li>
+        <li>Le laisser seul quand le nom « Klavyé Kréyòl » est déjà écrit ailleurs dans le visuel.</li>
+      </ul>
+    </div>
+    <div class="non">
+      <div class="t">À ne jamais faire</div>
+      <ul>
+        <li><b>Le retoucher.</b> Ni recolorer, ni redessiner, ni simplifier, ni « moderniser ». Il se reprend tel quel.</li>
+        <li>Le déformer, le faire pivoter, l'incliner, lui ajouter une ombre portée interne ou un contour.</li>
+        <li>Le poser sur un fond sombre ou une photo sans sa pastille blanche.</li>
+        <li>Le fondre dans une composition où il touche un autre logo sans sa zone de protection.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<section id="couleurs">
+  <h2>3. Les couleurs</h2>
+  <p>Trois palettes coexistent, et c'est voulu : elles ne s'adressent pas au même œil. Celle de la communication est sourde et lisible sur un long texte ; celle du produit est vive parce qu'un clavier se regarde au dixième de seconde ; celle des publicités est faite de dégradés qui survivent à la compression des réseaux. <b>On ne les mélange pas dans un même support.</b></p>
+
+  <h3>Palette de communication : le site, les imprimés, les documents</h3>
+  <p class="muted">Source : <code>assets/theme.css</code>. Deux jeux, clair et sombre, sélectionnés par le thème du lecteur. Les contrastes indiqués sont mesurés sur le fond papier du mode clair.</p>
+  <div class="swatches">
+    <div class="sw">
+      <div class="chip" style="background:#F5F2EA;color:#1C2624;">papier</div>
+      <div class="meta"><span class="name">Papier</span><span class="hex">#F5F2EA · sombre #101817</span>
+      <span class="use">Le fond, partout. Un blanc cassé chaud, pas un blanc pur.</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#1C2624;color:#F5F2EA;">encre</div>
+      <div class="meta"><span class="name">Encre</span><span class="hex">#1C2624 · sombre #EDEAE1</span>
+      <span class="use">Texte courant et titres.</span><span class="ratio ok">13,9:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#4B5750;color:#F5F2EA;">encre douce</div>
+      <div class="meta"><span class="name">Encre douce</span><span class="hex">#4B5750 · sombre #A7B3AC</span>
+      <span class="use">Chapôs, légendes, mentions secondaires.</span><span class="ratio ok">6,8:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#0E6E76;color:#F5F2EA;">lagon</div>
+      <div class="meta"><span class="name">Lagon</span><span class="hex">#0E6E76 · sombre #5FC7CE</span>
+      <span class="use">Couleur d'action : liens, boutons pleins, surtitres. La seule qui porte un appel à l'action.</span><span class="ratio ok">5,4:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#C94A3B;color:#FFFFFF;">hibiscus</div>
+      <div class="meta"><span class="name">Hibiscus</span><span class="hex">#C94A3B · sombre #F0897C</span>
+      <span class="use">Accent chaud, survol, mises en garde. Texte de 18&nbsp;px et plus seulement.</span><span class="ratio no">4,2:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#C97F1E;color:#FFFFFF;">soleil</div>
+      <div class="meta"><span class="name">Soleil</span><span class="hex">#C97F1E · sombre #E3AE5E</span>
+      <span class="use">Décor uniquement : soulignement de la page courante, filets, bordures d'encadrés. Jamais du texte.</span><span class="ratio no">2,9:1</span></div>
+    </div>
+  </div>
+  <div class="note">
+    <b>Deux règles qui découlent des mesures ci-dessus.</b> Soleil ne passe aucun seuil de lisibilité sur papier (2,9:1) : il colore des traits, pas des mots. Hibiscus atteint 4,2:1, sous le seuil de 4,5:1 du texte courant : réservez-le aux tailles supérieures ou aux fonds <code>--hibiscus-soft</code>. En mode sombre les six couleurs dépassent 7:1, la contrainte ne concerne que le mode clair.
+  </div>
+  <p class="muted">Chaque couleur vive a son fond assorti pour les encadrés : <code>--sea-soft</code>, <code>--hibiscus-soft</code>, <code>--sun-soft</code>. Le dégradé de marque, <code>--gradient</code>, va du lagon à l'hibiscus à 135°.</p>
+
+  <h3>Palette produit : le clavier lui-même</h3>
+  <p class="muted">Source : <code>android_keyboard/app/src/main/res/values/colors.xml</code>. Elle n'a pas à sortir de l'application : sur un support de communication, elle jure avec la palette ci-dessus.</p>
+  <div class="swatches">
+    <div class="sw">
+      <div class="chip" style="background:#FFD700;color:#1C1C1C;">touches</div>
+      <div class="meta"><span class="name">Jaune soleil</span><span class="hex">#FFD700</span>
+      <span class="use">Fond des touches de lettres. Texte noir volcanique dessus.</span><span class="ratio ok">12,2:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#0080FF;color:#FFFFFF;">actions</div>
+      <div class="meta"><span class="name">Bleu caraïbe</span><span class="hex">#0080FF</span>
+      <span class="use">Touches d'action : entrée, effacement, bascule numérique.</span><span class="ratio no">3,8:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#228B22;color:#FFFFFF;">majuscule</div>
+      <div class="meta"><span class="name">Vert canne</span><span class="hex">#228B22 · actif #32CD32</span>
+      <span class="use">État de la touche majuscule.</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#FF8C00;color:#1C1C1C;">suggestions</div>
+      <div class="meta"><span class="name">Orange coucher</span><span class="hex">#FF8C00 · appui #FFB84D</span>
+      <span class="use">Pastilles de la barre de suggestions.</span><span class="ratio ok">7,3:1</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#1C1C1C;color:#FFFFFF;">fond</div>
+      <div class="meta"><span class="name">Noir volcanique</span><span class="hex">#1C1C1C</span>
+      <span class="use">Fond du clavier et texte sur les touches claires.</span></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#DC143C;color:#FFFFFF;">hibiscus</div>
+      <div class="meta"><span class="name">Rouge hibiscus</span><span class="hex">#DC143C</span>
+      <span class="use">Contour des pastilles de suggestion à l'appui.</span></div>
+    </div>
+  </div>
+  <p class="muted">Le blanc sur bleu caraïbe tombe à 3,8:1 : acceptable pour un glyphe de touche large et gras, pas pour une ligne de texte. Rayon des touches : 12&nbsp;dp. Rayon des pastilles de suggestion : 16&nbsp;dp.</p>
+
+  <h3>Palette publicitaire : les visuels payants</h3>
+  <p class="muted">Source : <code>publicites.html</code>. Deux axes créatifs et un fond papier, avec un seul accent chaud commun. Les couleurs y sont écrites en dur : un visuel exporté vit hors du site et ne doit jamais suivre le thème du lecteur.</p>
+  <div class="grads">
+    <div class="grad lagon"><b>Axe lagon</b><span>157° · #12848E → #0A5259 → #053035</span></div>
+    <div class="grad hibiscus"><b>Axe hibiscus</b><span>157° · #D95B42 → #B03A2B → #78200F</span></div>
+    <div class="grad papier"><b>Axe papier</b><span>#F5F2EA, texte #10312F</span></div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Accent d'action : <code>#FFC978</code> sur l'axe lagon, <code>#FFD9A6</code> sur l'axe hibiscus. Il porte le bouton, le filet et les mots mis en avant dans l'accroche. Il ne sert à rien d'autre : c'est ce qui garantit que la tache la plus claire du visuel est toujours l'action.</p>
+</section>
+
+<!-- ====================================================================== -->
+<section id="typo">
+  <h2>4. La typographie</h2>
+  <p>Deux familles, chacune sur son terrain. Aucune troisième police n'entre dans un support.</p>
+
+  <div class="type-sample">
+    <span class="tag">Fredoka · visuels et accroches</span>
+    <p class="fredoka t-display">Maké an bèl Kréyòl</p>
+    <p class="fredoka t-kicker">Ronde, chaleureuse, lisible en petit. Graisses employées : 500 pour les sous-titres, 600 pour la marque, 700 pour les accroches.</p>
+  </div>
+  <p class="muted" style="margin-top:10px;">Licence SIL Open Font 1.1, embarquée en base64 dans <code>assets/fredoka-embed.css</code> pour que les exports soient reproductibles hors ligne. Elle est réservée aux titres et aux accroches : sur un paragraphe entier, elle fatigue.</p>
+
+  <div class="type-sample">
+    <span class="tag">Pile système · site et documents</span>
+    <p class="t-body" style="font-weight:800;font-size:24px;">Un clavier créole qui comprend ce que vous écrivez</p>
+    <p class="t-body">Corps de texte en pile système : <code>-apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif</code>. Rien à télécharger, rendu natif sur chaque appareil, aucune police de secours qui décale la mise en page.</p>
+  </div>
+
+  <div class="type-sample">
+    <span class="tag">Monospace · surtitres et chiffres</span>
+    <p class="t-mono">Potomitan™ · Référence de marque</p>
+    <p class="muted" style="margin:10px 0 0;">La variable <code>--mono</code> sert aux surtitres en capitales espacées, aux formats techniques et aux chiffres alignés dans les tableaux.</p>
+  </div>
+
+  <h3>Échelle</h3>
+  <table>
+    <tr><th>Niveau</th><th>Taille</th><th>Graisse</th><th>Emploi</th></tr>
+    <tr><td>Surtitre</td><td>12 px, interlettrage 0,09 em, capitales</td><td>normal, mono</td><td>Nature de la page, en lagon</td></tr>
+    <tr><td>Titre 1</td><td><code>clamp(27px, 6vw, 38px)</code></td><td>800</td><td>Un seul par page, interlignage 1,1</td></tr>
+    <tr><td>Titre 2</td><td>21 à 22 px</td><td>800</td><td>Sections</td></tr>
+    <tr><td>Titre 3</td><td>15 px</td><td>700</td><td>Sous-sections</td></tr>
+    <tr><td>Chapô</td><td>16,5 px, 62 caractères max</td><td>normal</td><td>En encre douce, sous le titre 1</td></tr>
+    <tr><td>Courant</td><td>15 à 16,5 px, interligne 1,55</td><td>normal</td><td>Paragraphes</td></tr>
+    <tr><td>Légende</td><td>12,5 à 14,5 px</td><td>normal</td><td>En encre douce</td></tr>
+  </table>
+  <p class="muted">Les titres portent un interlettrage négatif de 0,01 à 0,02 em, et <code>text-wrap:balance</code> pour ne pas laisser un mot seul sur la dernière ligne.</p>
+</section>
+
+<!-- ====================================================================== -->
+<section id="elements">
+  <h2>5. Les éléments graphiques</h2>
+
+  <h3>La silhouette de la Guadeloupe</h3>
+  <p>Elle remplace le drapeau sur les supports. Deux fichiers, un par type de fond, à choisir selon le fond et non selon le nom :</p>
+  <div class="maps">
+    <div class="map-box sur-clair">
+      <img src="assets/carte-guadeloupe-sombre.svg" alt="Silhouette de la Guadeloupe en lagon, sur fond papier">
+      <span class="cap">carte-guadeloupe-sombre.svg · remplissage #0E6E76, pour fond clair</span>
+    </div>
+    <div class="map-box sur-fonce">
+      <img src="assets/carte-guadeloupe.svg" alt="Silhouette de la Guadeloupe en papier, sur fond lagon">
+      <span class="cap">carte-guadeloupe.svg · remplissage #F5F2EA, pour fond sombre</span>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">En filigrane sur un visuel, opacité de 14 à 16&nbsp;%, dans un angle laissé vide. Derrière un objet, elle cesse de se lire comme une carte et ne fait plus qu'une tache : sur les formats denses, on la retire plutôt que de la réduire.</p>
+
+  <h3>Formes récurrentes</h3>
+  <div class="demo">
+    <span class="pill-cta">📲 Installer, c'est gratuit</span>
+    <span class="rule-bar"></span>
+  </div>
+  <p class="muted" style="margin-top:10px;">Le bouton d'action est toujours une capsule (<code>border-radius:99px</code>), toujours plein, et il n'y en a qu'un par écran. Sur le site il est en lagon sur papier ; sur les visuels, en accent chaud sur le dégradé. Le filet accent, hauteur 6&nbsp;px, sépare l'accroche du reste.</p>
+  <p class="muted">Cartes et encadrés : rayon 12&nbsp;px, bordure d'un pixel en <code>--line</code>, fond <code>--card</code>. Les panneaux flottants portent une ombre <code>0 10px 28px rgba(0,0,0,.16)</code>, rien d'autre n'en porte.</p>
+
+  <h3>Les pastilles de suggestion</h3>
+  <p>C'est la signature visuelle du produit : le clavier propose le mot créole et le mot français côte à côte. Reprise telle quelle dans les visuels, avec le repère de langue coloré.</p>
+  <div class="sugg">
+    <span class="chip2 kr" data-lang="KR">kréyòl</span>
+    <span class="chip2 fr" data-lang="FR">créole</span>
+  </div>
+  <p class="muted" style="margin-top:12px;">Repère kréyòl <code>#7BE0A6</code>, repère français <code>#A8C6FF</code>. Ces pastilles citent l'interface, elles n'appellent aucune action : fond translucide et contour, jamais d'aplat plein qui les ferait confondre avec le bouton.</p>
+
+  <h3>Emoji</h3>
+  <p>Ils servent de repères de navigation, un par entrée, jamais deux à la suite dans une phrase.</p>
+  <div class="emoji-set">
+    <span><b>⌨️</b> la marque</span>
+    <span><b>🧪</b> essayer</span>
+    <span><b>🎁</b> nouveautés</span>
+    <span><b>ℹ️</b> le projet</span>
+    <span><b>📲</b> installer</span>
+    <span><b>📣</b> ambassadeurs</span>
+  </div>
+  <div class="yesno">
+    <div class="non" style="grid-column:1/-1;">
+      <div class="t">Deux symboles proscrits</div>
+      <ul>
+        <li><b>Le cocotier 🏝️ et l'imagerie de carte postale.</b> Le clavier s'adresse à des habitants, pas à des touristes.</li>
+        <li><b>Le drapeau à fleur de lys.</b> Symbole lié à l'esclavage, jamais employé pour représenter la Guadeloupe. La silhouette de l'île le remplace partout.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<section id="ecriture">
+  <h2>6. L'écriture</h2>
+
+  <h3>Le kréyòl</h3>
+  <p>Le kréyòl employé dans les supports vient toujours du corpus du projet ou de textes déjà validés dans le dépôt. On ne rédige pas de kréyòl pour l'occasion : une phrase inventée est repérée immédiatement par les locuteurs, et elle décrédibilise un clavier qui promet justement de bien écrire.</p>
+
+  <h3>Le français</h3>
+  <ul>
+    <li>Vouvoiement, phrases courtes, verbes concrets.</li>
+    <li>Pas de tiret cadratin. Deux-points, virgule, point médian, ou couper la phrase.</li>
+    <li>Espace insécable avant les signes doubles et dans « 100&nbsp;% », « 10&nbsp;000 ».</li>
+    <li>Chiffres en toutes lettres jusqu'à dix, en chiffres au-delà, sauf dans une donnée.</li>
+  </ul>
+
+  <h3>Face à la presse et aux institutions</h3>
+  <p>Des faits et du contexte, jamais la conclusion à la place du journaliste. Quand l'intelligence artificielle est évoquée, l'angle est celui de la souveraineté numérique : une langue qui dispose de ses propres outils. Aucune comparaison avec les assistants du marché.</p>
+
+  <h3>Ce que le clavier n'est pas</h3>
+  <p>Ni une méthode d'apprentissage, ni un traducteur, ni un assistant conversationnel. Les suggestions viennent d'un dictionnaire et d'un modèle de n-grammes construits sur des textes créoles, entièrement sur l'appareil. Un support qui laisse entendre autre chose est à reprendre.</p>
+</section>
+
+<!-- ====================================================================== -->
+<section id="applications">
+  <h2>7. Les applications</h2>
+  <p>Les supports existants montrent la charte appliquée. Ils sont le meilleur point de départ pour en produire un nouveau.</p>
+
+  <div class="gallery">
+    <figure>
+      <img src="assets/ads/export/google-pmax-carre.png" alt="Visuel publicitaire carré, axe lagon">
+      <figcaption><b>Publicités</b> · axe lagon, capture réelle du clavier, bouton en accent chaud. <a href="publicites.html">Le kit complet</a></figcaption>
+    </figure>
+    <figure>
+      <img src="assets/triptyque-cover-screenshot.png" alt="Couverture du triptyque à imprimer">
+      <figcaption><b>Imprimés</b> · tract, affiche, triptyque, en palette de communication. <a href="tract.html">Tract</a>, <a href="affiche.html">affiche</a>, <a href="triptyque.html">triptyque</a></figcaption>
+    </figure>
+    <figure>
+      <img src="assets/klavye-kreyol-conversation-live.jpg" alt="Le clavier en situation dans une conversation">
+      <figcaption><b>Preuve produit</b> · une capture réelle en situation, jamais une maquette reconstituée.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Règles d'application</h3>
+  <div class="yesno">
+    <div class="oui">
+      <div class="t">Constantes</div>
+      <ul>
+        <li>Le logo en haut, l'action en bas, la preuve au milieu.</li>
+        <li>Une seule action visible par support, dans une capsule pleine.</li>
+        <li>Les quatre promesses en pied : gratuit, open source, zéro pub, hors ligne.</li>
+        <li>Sur les formats verticaux des réseaux, les 20&nbsp;% du bas restent vides : l'interface de l'application les recouvre.</li>
+      </ul>
+    </div>
+    <div class="non">
+      <div class="t">Écueils</div>
+      <ul>
+        <li>Écrire « Klavyé Kréyòl » trois fois dans le même visuel : logo, accroche et bouton le portent déjà.</li>
+        <li>Mélanger la palette du clavier et celle de la communication dans un même support.</li>
+        <li>Retoucher une capture d'écran du clavier pour l'embellir : c'est la preuve, elle doit rester vraie.</li>
+        <li>Ajouter une police, une icône ou une couleur qui ne figure pas dans cette page.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<section id="fichiers">
+  <h2>8. Les fichiers sources</h2>
+  <table>
+    <tr><th>Élément</th><th>Fichier</th></tr>
+    <tr><td>Logo, vectoriel de référence</td><td><code>Logos/potomitanlogo.svg</code>, copie publiée dans <code>docs/assets/potomitan-logo.svg</code></td></tr>
+    <tr><td>Logo, rastérisé 512 px</td><td><code>docs/assets/potomitan-logo.png</code></td></tr>
+    <tr><td>Icône de l'application</td><td><code>android_keyboard/app/src/main/res/mipmap-*/ic_launcher.png</code></td></tr>
+    <tr><td>Palette de communication</td><td><code>docs/assets/theme.css</code></td></tr>
+    <tr><td>Palette produit</td><td><code>android_keyboard/app/src/main/res/values/colors.xml</code></td></tr>
+    <tr><td>Palette publicitaire</td><td><code>docs/publicites.html</code></td></tr>
+    <tr><td>Fredoka embarquée</td><td><code>docs/assets/fredoka-embed.css</code></td></tr>
+    <tr><td>Silhouette de la Guadeloupe</td><td><code>docs/assets/carte-guadeloupe.svg</code>, <code>carte-guadeloupe-sombre.svg</code></td></tr>
+    <tr><td>Barre et pied de page partagés</td><td><code>docs/_includes/nav.html</code>, <code>footer.html</code>, propagés par <code>docs/scripts/sync_nav.py</code></td></tr>
+    <tr><td>Export des visuels publicitaires</td><td><code>python3 docs/assets/ads/generate.py</code></td></tr>
+    <tr><td>Métadonnées de marque</td><td><code>python3 scripts/tag_assets.py</code>, vérification avec <code>--check</code></td></tr>
+  </table>
+
+  <h3>Les métadonnées de marque</h3>
+  <p><code>scripts/tag_assets.py</code> inscrit l'auteur, le copyright et le nom du produit dans chaque visuel du dépôt, aux trois emplacements que les outils savent lire : chunks iTXt et XMP pour les PNG, segments Exif, XMP et commentaire pour les JPEG, balises <code>&lt;title&gt;</code>, <code>&lt;desc&gt;</code> et <code>&lt;metadata&gt;</code> pour les SVG, dictionnaire d'information et XMP pour les PDF.</p>
+  <ul>
+    <li>Rien n'est réencodé : les octets d'image sont laissés intacts, repasser le script ne dégrade pas un JPEG.</li>
+    <li>Il est idempotent, et <code>--check</code> signale les fichiers qui ont perdu leurs métadonnées.</li>
+    <li><code>generate.py</code> l'appelle en fin d'export : un visuel publicitaire neuf n'est jamais nu.</li>
+    <li>Les visuels de tiers en sont écartés, badge Google Play en tête : y apposer notre copyright serait faux.</li>
+  </ul>
+  <p class="muted">À relancer après avoir ajouté un visuel au dépôt, et après tout export qui produit des fichiers neufs.</p>
+  <div class="note">
+    <b>Une seule source par valeur.</b> Une couleur, une police ou un texte de marque se change dans le fichier ci-dessus, jamais dans une copie. Cette page décrit ce que contiennent ces fichiers : quand ils changent, elle se met à jour.
+  </div>
+  <p class="muted" style="margin-top:18px;">Une question sur un usage particulier, un partenariat, une déclinaison : <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.</p>
+</section>
+
+</div>
+
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html" aria-current="page">Charte graphique</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
+</body>
+</html>

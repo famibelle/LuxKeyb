@@ -1,5 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 175" role="img" aria-label="Carte stylisée de la Guadeloupe">
+  <desc>Visuel de Klavyé Kréyòl Karukera, le clavier kréyòl guadeloupéen publié par Potomitan™.</desc>
   <title>Guadeloupe</title>
+  <metadata>
+    <!-- potomitan:tag_assets -->
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:cc="http://creativecommons.org/ns#">
+      <cc:Work rdf:about="">
+        <dc:title>Klavyé Kréyòl Karukera · carte-guadeloupe-sombre</dc:title>
+        <dc:creator><cc:Agent><dc:title>Potomitan™</dc:title></cc:Agent></dc:creator>
+        <dc:publisher><cc:Agent><dc:title>Potomitan™</dc:title></cc:Agent></dc:publisher>
+        <dc:rights><cc:Agent><dc:title>© 2026 Potomitan™ · Klavyé Kréyòl Karukera</dc:title></cc:Agent></dc:rights>
+        <dc:description>Visuel de Klavyé Kréyòl Karukera, le clavier kréyòl guadeloupéen publié par Potomitan™.</dc:description>
+        <dc:source>https://potomitan.io/</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <path fill="#0E6E76"
     d="M 121,8
        C 128,8 133,15 133,25

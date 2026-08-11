@@ -317,6 +317,7 @@ Une question, une proposition, un partenariat ? Écrivez à
       <a href="affiche.html">Affiche</a>
       <a href="triptyque.html">Triptyque</a>
       <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
     </div>
     <div>
       <strong>Participer</strong>

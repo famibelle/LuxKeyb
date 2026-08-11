@@ -131,6 +131,14 @@ The structure mirrors Android: `Core/SuggestionEngine.swift`, `Core/LevenshteinD
 Never write the literal skip-CI marker into a hand-written commit message, even when describing this mechanism: GitHub scans the whole message and will silently skip every workflow for that push.
 - **`ios-build.yml`** (on `ios/port` branch only) — triggers on push to `ios/port` when `ios/` changes. Runs on `macos-14` (Xcode 15, Apple Silicon). Requires secrets: `DIST_CERT_BASE64`, `DIST_CERT_PASSWORD`, `PROVISIONING_PROFILE_BASE64`, `DEVELOPMENT_TEAM`, `APPLE_ID`, `APP_SPECIFIC_PASSWORD`.
 
+## Brand Assets
+
+`docs/charte-graphique.html` is the brand reference page: logo rules, the three palettes and what each is for, typography, reusable components, editorial rules. It *describes* the values that live in `docs/assets/theme.css`, `res/values/colors.xml` and `docs/publicites.html` rather than redefining them, so those files stay the single source and the page follows when they change.
+
+Note the three palettes are deliberately distinct and must not be mixed inside one support: communication (theme.css, muted, made for long text), product (colors.xml, vivid, a keyboard is read in a tenth of a second), advertising (publicites.html, hardcoded gradients that survive network compression).
+
+`scripts/tag_assets.py` writes the Potomitan™ authorship and copyright into every visual's metadata (PNG iTXt + XMP, JPEG Exif/XMP/COM, SVG tags, PDF docinfo + XMP). It works at the chunk/segment level, so **nothing is re-encoded** and repeated runs never degrade a JPEG; it is idempotent, and `--check` reports files that lost their metadata. `docs/assets/ads/generate.py` calls it after every export, because Chrome writes bare PNGs. Third-party visuals (Google Play badge, stock imagery) are skipped by name: stamping our copyright on them would be false. PDF support needs `pikepdf`; without it the PDFs are skipped and the run says so.
+
 ## Legacy / Auxiliary Directories
 
 - `clavier_creole/` — abandoned Flutter prototype (`lib/main.dart`). Do not develop here, **but do not assume its `assets/` are dead either**: `KreyolComplet.py` reads its previous dictionary from `clavier_creole/assets/` and writes the regenerated files to both there and `android_keyboard/`. The two copies must stay in sync.
