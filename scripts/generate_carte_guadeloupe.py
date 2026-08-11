@@ -39,10 +39,16 @@ SOURCE = ("https://raw.githubusercontent.com/nvkelso/natural-earth-vector/"
 
 LARGEUR, HAUTEUR, MARGE = 220, 175, 2
 
-SORTIES = [
-    ("carte-guadeloupe.svg", "#F5F2EA", "pour fond sombre"),
-    ("carte-guadeloupe-sombre.svg", "#0E6E76", "pour fond clair"),
-]
+# Les deux remplissages de la charte : la carte se pose sur les deux sortes de
+# fond, et un SVG appelé en <img> ne peut pas hériter de la couleur du texte.
+TEINTES = [("", "#F5F2EA", "pour fond sombre"), ("-sombre", "#0E6E76", "pour fond clair")]
+
+# Sous 4 mm de haut, dans une ligne de crédits, l'archipel entier ne se lit
+# plus : Marie-Galante, les Saintes et la Désirade deviennent des poussières,
+# et les deux îles principales, réduites pour leur laisser la place, une tache.
+# La variante compacte ne garde que Basse-Terre et Grande-Terre, cadrées au
+# plus près, ce qui laisse toute la hauteur disponible au papillon.
+COMPACTE_LARGEUR, COMPACTE_MARGE, COMPACTE_TERRES = 100, 1, 2
 
 
 def geometrie():
@@ -57,11 +63,12 @@ def geometrie():
     sys.exit("Guadeloupe introuvable dans le jeu de données : le champ SUBUNIT a-t-il changé ?")
 
 
-def projeter(parties):
+def projeter(parties, largeur, hauteur, marge):
     """Équirectangulaire, longitudes resserrées par le cosinus de la latitude.
 
     À l'échelle d'un archipel, cette projection ne se distingue pas d'une
-    projection conforme, et elle tient en trois lignes.
+    projection conforme, et elle tient en trois lignes. Le tracé est ensuite
+    ajusté au viewBox demandé, et centré dedans.
     """
     points = [c for poly in parties for anneau in poly for c in anneau]
     lat_moyenne = sum(p[1] for p in points) / len(points)
@@ -71,9 +78,9 @@ def projeter(parties):
     ys = [p[1] for p in points]
     x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
 
-    echelle = min((LARGEUR - 2 * MARGE) / (x1 - x0), (HAUTEUR - 2 * MARGE) / (y1 - y0))
-    dx = (LARGEUR - (x1 - x0) * echelle) / 2
-    dy = (HAUTEUR - (y1 - y0) * echelle) / 2
+    echelle = min((largeur - 2 * marge) / (x1 - x0), (hauteur - 2 * marge) / (y1 - y0))
+    dx = (largeur - (x1 - x0) * echelle) / 2
+    dy = (hauteur - (y1 - y0) * echelle) / 2
 
     def point(c):
         # L'axe des ordonnées d'un SVG descend, celui des latitudes monte.
@@ -81,6 +88,14 @@ def projeter(parties):
                 round((y1 - c[1]) * echelle + dy, 2))
 
     return [[[point(c) for c in anneau] for anneau in poly] for poly in parties]
+
+
+def etendue(poly) -> float:
+    """Aire du rectangle englobant d'une terre, de quoi classer les six."""
+    anneau = poly[0]
+    xs = [c[0] for c in anneau]
+    ys = [c[1] for c in anneau]
+    return (max(xs) - min(xs)) * (max(ys) - min(ys))
 
 
 def chemin(parties) -> str:
@@ -94,31 +109,55 @@ def chemin(parties) -> str:
     return " ".join(morceaux)
 
 
-def svg(d: str, remplissage: str, usage: str) -> str:
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {LARGEUR} {HAUTEUR}" role="img" aria-label="Carte de la Guadeloupe">
+def svg(d: str, largeur: int, hauteur: int, remplissage: str, usage: str, note: str) -> str:
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {largeur} {hauteur}" role="img" aria-label="Carte de la Guadeloupe">
   <title>Guadeloupe</title>
   <!-- Tracé dérivé de Natural Earth 1:10m (domaine public), voir
-       scripts/generate_carte_guadeloupe.py. Remplissage {remplissage} : {usage}. -->
+       scripts/generate_carte_guadeloupe.py. Remplissage {remplissage} : {usage}.
+       {note} -->
   <path fill="{remplissage}"
     d="{d}" />
 </svg>
 """
 
 
-def main() -> int:
-    parties = projeter(geometrie())
+def ecrire(base: str, parties, largeur: int, hauteur: int, note: str):
     d = chemin(parties)
-    for nom, remplissage, usage in SORTIES:
-        (ASSETS / nom).write_text(svg(d, remplissage, usage), encoding="utf-8")
-        print(f"  {nom:32} {remplissage}  {usage}")
+    for suffixe, remplissage, usage in TEINTES:
+        nom = f"{base}{suffixe}.svg"
+        (ASSETS / nom).write_text(
+            svg(d, largeur, hauteur, remplissage, usage, note), encoding="utf-8")
+        print(f"  {nom:34} {remplissage}  {usage}")
+    return d
 
-    print(f"\n{len(parties)} terres, {len(d)} caractères de tracé.")
+
+def main() -> int:
+    brut = geometrie()
+
+    complete = projeter(brut, LARGEUR, HAUTEUR, MARGE)
+    d = ecrire("carte-guadeloupe", complete, LARGEUR, HAUTEUR,
+               f"Archipel complet, {len(brut)} terres.")
+
+    # Les deux plus grandes terres, cadrées au plus près : leur proportion
+    # décide de la hauteur du viewBox, pour qu'il ne reste aucun vide autour.
+    principales = sorted(brut, key=etendue, reverse=True)[:COMPACTE_TERRES]
+    points = [c for poly in principales for anneau in poly for c in anneau]
+    k = math.cos(math.radians(sum(p[1] for p in points) / len(points)))
+    largeur_deg = (max(p[0] for p in points) - min(p[0] for p in points)) * k
+    hauteur_deg = max(p[1] for p in points) - min(p[1] for p in points)
+    compacte_hauteur = round(COMPACTE_LARGEUR * hauteur_deg / largeur_deg)
+
+    compacte = projeter(principales, COMPACTE_LARGEUR, compacte_hauteur, COMPACTE_MARGE)
+    ecrire("carte-guadeloupe-compacte", compacte, COMPACTE_LARGEUR, compacte_hauteur,
+           "Variante des petites tailles : Basse-Terre et Grande-Terre seules.")
+
+    print(f"\n{len(brut)} terres, {len(d)} caractères de tracé.")
     print("Penser à relancer scripts/tag_assets.py : les fichiers neufs sortent sans métadonnées.")
 
     if "--voir" in sys.argv:
         apercu = Path("/tmp") / "apercu-carte-guadeloupe.png"
         subprocess.run(["convert", "-background", "#0A5259", "-density", "300",
-                        str(ASSETS / SORTIES[0][0]), str(apercu)], check=False)
+                        str(ASSETS / "carte-guadeloupe.svg"), str(apercu)], check=False)
         subprocess.run(["display", str(apercu)], check=False)
     return 0
 

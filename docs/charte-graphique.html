@@ -197,7 +197,7 @@ td code{white-space:nowrap;}
     </div>
   </details>
   <details class="menu nav-after" name="navmenu">
-    <summary>📣 Ambassadeurs</summary>
+    <summary class="in-section">📣 Ambassadeurs</summary>
     <div class="menu-panel">
       <a href="ambassade.html">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
@@ -205,6 +205,7 @@ td code{white-space:nowrap;}
       <a href="affiche.html">Affiche à imprimer</a>
       <a href="triptyque.html">Triptyque à imprimer</a>
       <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html" aria-current="page">Charte graphique</a>
     </div>
   </details>
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
@@ -476,6 +477,20 @@ td code{white-space:nowrap;}
   </div>
   <p class="muted" style="margin-top:12px;">En filigrane sur un visuel, opacité de 14 à 16&nbsp;%, dans un angle laissé vide. Derrière un objet, elle cesse de se lire comme une carte et ne fait plus qu'une tache : sur les formats denses, on la retire plutôt que de la réduire.</p>
 
+  <h4 style="font-size:14px;font-weight:700;margin:22px 0 8px;">Sous 4 mm : la variante compacte</h4>
+  <p>Dans une ligne de crédits, à la hauteur du texte, l'archipel entier ne se lit plus : les petites îles deviennent des poussières, et les deux grandes, réduites pour leur laisser la place, une tache. <code>carte-guadeloupe-compacte.svg</code> ne garde que Basse-Terre et Grande-Terre, cadrées au plus près, ce qui laisse toute la hauteur disponible au papillon.</p>
+  <div class="maps">
+    <div class="map-box sur-clair">
+      <img src="assets/carte-guadeloupe-compacte-sombre.svg" alt="Variante compacte de la carte, en lagon sur fond papier" style="max-width:120px;">
+      <span class="cap">carte-guadeloupe-compacte-sombre.svg</span>
+    </div>
+    <div class="map-box sur-fonce">
+      <img src="assets/carte-guadeloupe-compacte.svg" alt="Variante compacte de la carte, en papier sur fond lagon" style="max-width:120px;">
+      <span class="cap">carte-guadeloupe-compacte.svg</span>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:12px;">Elle s'emploie à partir de 3&nbsp;mm, pas en dessous, et jamais en grand : l'archipel complet reste la forme de référence partout où il y a la place.</p>
+
   <h3>Formes récurrentes</h3>
   <div class="demo">
     <span class="pill-cta">📲 Installer, c'est gratuit</span>
@@ -590,7 +605,7 @@ td code{white-space:nowrap;}
     <tr><td>Palette produit</td><td><code>android_keyboard/app/src/main/res/values/colors.xml</code></td></tr>
     <tr><td>Palette publicitaire</td><td><code>docs/publicites.html</code></td></tr>
     <tr><td>Fredoka embarquée</td><td><code>docs/assets/fredoka-embed.css</code></td></tr>
-    <tr><td>Silhouette de la Guadeloupe</td><td><code>docs/assets/carte-guadeloupe.svg</code>, <code>carte-guadeloupe-sombre.svg</code>, regénérées par <code>scripts/generate_carte_guadeloupe.py</code></td></tr>
+    <tr><td>Silhouette de la Guadeloupe</td><td><code>docs/assets/carte-guadeloupe.svg</code> et <code>-sombre</code>, variantes <code>-compacte</code> et <code>-compacte-sombre</code>, regénérées par <code>scripts/generate_carte_guadeloupe.py</code></td></tr>
     <tr><td>Barre et pied de page partagés</td><td><code>docs/_includes/nav.html</code>, <code>footer.html</code>, propagés par <code>docs/scripts/sync_nav.py</code></td></tr>
     <tr><td>Export des visuels publicitaires</td><td><code>python3 docs/assets/ads/generate.py</code></td></tr>
     <tr><td>Métadonnées de marque</td><td><code>python3 scripts/tag_assets.py</code>, vérification avec <code>--check</code></td></tr>

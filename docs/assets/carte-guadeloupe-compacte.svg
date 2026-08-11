@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 93" role="img" aria-label="Carte de la Guadeloupe">
+  <desc>Visuel de Klavyé Kréyòl Karukera, le clavier kréyòl guadeloupéen publié par Potomitan™.</desc>
+  <title>Guadeloupe</title>
+  <metadata>
+    <!-- potomitan:tag_assets -->
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:cc="http://creativecommons.org/ns#">
+      <cc:Work rdf:about="">
+        <dc:title>Klavyé Kréyòl Karukera · carte-guadeloupe-compacte</dc:title>
+        <dc:creator><cc:Agent><dc:title>Potomitan™</dc:title></cc:Agent></dc:creator>
+        <dc:publisher><cc:Agent><dc:title>Potomitan™</dc:title></cc:Agent></dc:publisher>
+        <dc:rights><cc:Agent><dc:title>© 2026 Potomitan™ · Klavyé Kréyòl Karukera</dc:title></cc:Agent></dc:rights>
+        <dc:description>Visuel de Klavyé Kréyòl Karukera, le clavier kréyòl guadeloupéen publié par Potomitan™.</dc:description>
+        <dc:source>https://potomitan.io/</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!-- Tracé dérivé de Natural Earth 1:10m (domaine public), voir
+       scripts/generate_carte_guadeloupe.py. Remplissage #F5F2EA : pour fond sombre.
+       Variante des petites tailles : Basse-Terre et Grande-Terre seules. -->
+  <path fill="#F5F2EA"
+    d="M 40.19 37.77 L 40.21 37.75 L 40.21 37.74 L 42.74 29.32 L 44.22 27.54 L 47.07 26.85 L 47.47 26.28 L 47.71 24.93 L 47.76 23.43 L 47.6 22.35 L 46.96 21.63 L 45.89 20.95 L 44.61 20.44 L 43.37 20.16 L 42.51 14.41 L 41.79 12.97 L 41.72 11.39 L 43.06 9.29 L 45.49 6.38 L 46.11 5.32 L 47.6 4.23 L 52.38 1.64 L 52.81 1.12 L 53.31 1.33 L 58.32 4.96 L 61.01 7.65 L 62.84 10.97 L 63.52 15.22 L 63.14 19.44 L 63.37 21.03 L 64.56 23.55 L 66.08 25.83 L 67.77 27.56 L 69.71 28.93 L 71.94 30.15 L 73.01 28.95 L 74.59 29.8 L 76.09 29.91 L 77.66 29.85 L 79.44 30.15 L 80.92 31.06 L 84.27 33.93 L 85.18 34.54 L 86.79 35.36 L 95.16 41.24 L 98.13 42.06 L 99.0 42.98 L 97.26 44.43 L 95.97 44.41 L 91.63 43.35 L 90.46 42.78 L 88.05 42.13 L 60.81 48.38 L 55.6 50.69 L 52.87 51.13 L 49.53 50.56 L 46.49 49.37 L 43.86 47.81 L 41.79 46.14 L 40.21 44.16 L 39.55 42.17 L 39.61 40.07 Z M 39.04 37.74 L 39.42 38.54 L 38.46 42.13 L 39.61 45.32 L 38.58 45.63 L 35.79 46.27 L 34.74 47.92 L 35.07 55.38 L 37.04 61.02 L 38.1 69.81 L 36.82 78.31 L 31.96 84.23 L 24.86 88.47 L 16.9 91.88 L 16.65 90.94 L 15.75 88.59 L 16.9 87.49 L 15.81 85.33 L 14.45 84.12 L 12.86 83.08 L 11.05 81.45 L 9.93 79.54 L 9.37 77.7 L 8.73 76.18 L 7.4 75.3 L 5.51 69.6 L 5.39 56.9 L 3.09 51.13 L 3.84 48.74 L 3.14 46.79 L 1.92 45.06 L 1.08 43.33 L 1.0 40.58 L 1.62 35.57 L 1.08 33.45 L 2.58 32.15 L 5.17 27.56 L 7.4 25.65 L 10.27 24.9 L 11.7 25.82 L 12.71 27.22 L 14.26 27.95 L 18.13 28.7 L 23.82 30.69 L 29.12 33.51 L 31.76 36.75 L 29.57 37.74 L 30.85 38.26 L 31.08 38.44 L 31.1 38.28 L 31.76 37.74 L 32.25 38.37 L 33.87 40.03 L 34.62 38.29 L 36.12 37.07 L 38.06 36.75 Z" />
+</svg>
