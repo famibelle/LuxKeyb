@@ -9,8 +9,10 @@
 <link rel="stylesheet" href="assets/theme.css">
 <!-- Fredoka embarquée en base64 plutôt que servie par Google Fonts : le PDF
      de ce dépliant s'exporte en impression locale, parfois hors ligne, et une
-     police absente au moment du rendu recomposerait les six volets. Atkinson
-     Hyperlegible était demandée sans être employée nulle part dans la page. -->
+     police absente au moment du rendu recomposerait les six volets.
+     Atkinson Hyperlegible, qui composait ici tout le corps de texte, est
+     retirée : la charte n'admet que deux familles, Fredoka pour les accroches
+     et la pile système pour le texte courant, et aucune troisième. -->
 <link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
@@ -20,7 +22,7 @@ html{overflow-x:hidden;}
 body{
   margin:0; padding:0 18px 60px;
   background:var(--paper); color:var(--ink);
-  font-family:"Atkinson Hyperlegible",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
   line-height:1.55;
   overflow-x:hidden;
 }
@@ -54,7 +56,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   box-shadow:0 8px 40px rgba(0,0,0,.18);
   background:#FFFFFF;
   display:flex; flex-direction:row;
-  font-family:"Atkinson Hyperlegible",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
 }
 .panel{
   width:100.5mm; height:100%; position:relative;
