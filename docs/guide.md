@@ -31,6 +31,7 @@ lang: fr
   <details class="menu nav-after" name="navmenu">
     <summary>📣 Ambassadeurs</summary>
     <div class="menu-panel">
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
       <a href="ambassade.html">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract à imprimer</a>
