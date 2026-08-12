@@ -58,6 +58,7 @@ place (pas de compte réseaux sociaux, pas d'accès e-mail).
 | Guadeloupe la 1ère | Formulaire : la1ere.franceinfo.fr/guadeloupe/contact.html · standard 0590 60 96 96 | TV + radio publiques, Baie-Mahault |
 | Le Courrier de Guadeloupe | lecourrierdeguadeloupe.com/nous-rejoindre | Presse écrite indépendante |
 | Canal 10 (télévision locale) | `canal10redaction@gmail.com` · 0590 26 73 03 | Chaîne TV locale, Baie-Mahault. Angle image pour un sujet culturel |
+| **Julien Sartre**, journaliste France-Antilles (Paris) | Via redaction@franceantilles.fr, à son attention | Il suit les sujets créoles : le clavier est la suite naturelle de son article |
 | Trace FM Guadeloupe | `antenne@trace.fm` · 0590 25 18 94 | Radio jeune public, mêmes locaux que France-Antilles (Baie-Mahault) |
 | Zouk Radio | `contact@zoukradio.fm` · 0590 93 09 58 | Radio musicale grand public, Pointe-à-Pitre |
 | NRJ Guadeloupe / NRJ Antilles | Formulaire : nrjantilles.com/contact · 0590 83 96 96 | Studio Grand Camp, Les Abymes |
@@ -69,38 +70,15 @@ place (pas de compte réseaux sociaux, pas d'accès e-mail).
 | Université des Antilles · Licence/Master Études créoles | `lsh-creole-pedagogie@univ-antilles.fr` | Responsable pédagogique créole |
 | CRILLASH (labo de recherche lettres/langues) | `mirella.pelage@univ-antilles.fr` · 0596 72 75 00 | Secrétariat, campus Schoelcher |
 | Académie de Guadeloupe · LVR Créole | pedagogie.ac-guadeloupe.fr (page Langues Vivantes Régionales) | Prescripteurs : profs de créole (CAPES créole) |
-| Rectorat de l'académie de la Guadeloupe | `ce.rectorat@ac-guadeloupe.fr` · 0590 47 81 00 | Autorité académique de tutelle. Lien direct avec l'actualité de l'agrégation créole |
+| Rectorat de l'académie de la Guadeloupe | `ce.rectorat@ac-guadeloupe.fr` · 0590 47 81 00 | Autorité académique de tutelle |
 | Région Guadeloupe | regionguadeloupe.fr | Leur site a une version créole → sensibilité avérée au sujet |
+| **Olivier Serva**, député de la Guadeloupe | Formulaire assemblee-nationale.fr + permanence en Guadeloupe | Il porte publiquement la cause du créole : un projet citoyen concret est un atout pour son plaidoyer |
 
 ### Associations créolophones
 
 | Association | Localisation | Note |
 |---|---|---|
 | Lang Kréyol Gwadloup an Bannzil | Allée de la Distillerie, Baie-Mahault | Promotion du créole : événements, concours, projets média |
-
-### L'angle d'actualité : l'affaire de l'agrégation (ajout du 12/07/2026)
-
-En octobre 2025, le ministère de l'Éducation nationale a **retiré le créole
-de l'agrégation des langues de France** (session 2026) : basque, catalan et
-occitan maintenus. Le député guadeloupéen **Olivier Serva** a dénoncé « une
-injustice criante… j'aurais pu dire raciste aussi » ; enseignants et élus se
-sont mobilisés (« la contre-attaque s'organise », France-Antilles,
-27/10/2025). Le ministère a promis une réouverture pour la **session 2027**, promesse qui sera vérifiée **à la rentrée 2026**, pile pendant nos
-phases 2-3 : les médias re-couvriront le sujet à ce moment-là.
-
-Le pitch qui en découle : *« 1,6 million de locuteurs, mais une langue qu'on
-retire des concours. Pendant ce temps, la société civile construit
-gratuitement les outils numériques qui la font vivre. »* Le clavier est le
-contre-exemple positif de la polémique : les journalistes adorent.
-
-Deux cibles supplémentaires :
-
-| Cible | Contact | Pourquoi |
-|---|---|---|
-| **Olivier Serva**, député de la Guadeloupe | Formulaire assemblee-nationale.fr + permanence en Guadeloupe | Il porte publiquement le combat du créole : un projet citoyen concret est un atout pour son plaidoyer |
-| **Julien Sartre**, journaliste France-Antilles (Paris) | Via redaction@franceantilles.fr, à son attention | Il suit le dossier créole/agrégation : le clavier est la suite naturelle de son article |
-
-Sources : [franceinfo, 27/10/2025](https://www.franceinfo.fr/france/langues-regionale/le-creole-retire-de-la-liste-de-l-agregation-des-langues-de-france-une-injustice-raciste-denonce-le-depute-guadeloupeen-olivier-serva_7578493.html) · [France-Antilles, 27/10/2025](https://www.guadeloupe.franceantilles.fr/actualite/culture/retrait-du-creole-de-lagregation-la-contre-attaque-sorganise-1055478.php)
 
 ### L'atout maître : le calendrier
 
@@ -166,10 +144,8 @@ champ `current` (chiffre lu dans la Play Console).
 > partir des textes de [Sylviane Telchid, Max Rippon, Sonny Rupaire...].
 > Zéro collecte de données, fonctionnement 100 % local.
 >
-> Alors que la place du créole dans les concours nationaux fait débat
-> (retrait de l'agrégation en octobre 2025, réouverture promise pour 2027),
-> ce projet citoyen montre l'autre voie : équiper la langue : 1,6 million
-> de locuteurs en France : pour le numérique où elle se joue chaque jour.
+> Ce projet citoyen équipe pour le numérique une langue parlée par
+> 1,6 million de locuteurs en France, là où elle se joue chaque jour.
 >
 > Disponible sur Google Play : [lien]
 > Code source : [lien GitHub]

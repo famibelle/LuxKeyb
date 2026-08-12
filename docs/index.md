@@ -109,10 +109,7 @@ les accents par appui long.
 
 ## Un projet de préservation linguistique
 
-Le créole est parlé par **1,6 million de locuteurs en France**. Et pourtant
-sa place institutionnelle reste fragile : en octobre 2025, il a même été
-retiré de l'agrégation des langues de France, déclenchant une mobilisation
-des enseignants et des élus.
+Le créole est parlé par **1,6 million de locuteurs en France**.
 
 Ce n'est donc pas juste un clavier : **chaque message écrit en kréyòl aide
 notre langue à exister** dans le numérique, là où elle se joue désormais
