@@ -104,6 +104,10 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 
 /* Tableaux : échelle typographique, fichiers sources. */
 table{border-collapse:collapse;width:100%;font-size:14px;margin-top:12px;}
+/* Le thème ne colore que la navigation et les pages Markdown : sans cette
+   règle, un fichier à télécharger sortirait en bleu de navigateur. */
+td a{color:var(--sea);text-decoration:underline;text-underline-offset:2px;}
+td a:hover{color:var(--hibiscus);}
 th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--sea);}
 td code{white-space:nowrap;}
@@ -402,8 +406,9 @@ td code{white-space:nowrap;}
   <h3>Quel signe sur quel support</h3>
   <table>
     <tr><th>Support</th><th>Signe</th></tr>
-    <tr><td>Avatar d'un groupe, photo de profil, icône de discussion</td><td>Marque produit, <code>klavye-logo-640.png</code></td></tr>
-    <tr><td>Image d'invitation à un groupe, badge d'ambassadeur</td><td>Marque produit</td></tr>
+    <tr><td>Avatar d'un groupe, photo de profil, icône de discussion</td><td>Marque produit : <a href="assets/logo/klavye-logo-640.png" download><code>klavye-logo-640.png</code></a></td></tr>
+    <tr><td>Image d'invitation à un groupe</td><td>Marque produit : <a href="assets/logo/invitation.png" download><code>invitation.png</code></a></td></tr>
+    <tr><td>Badge d'ambassadeur</td><td>Marque produit, détourée ou en pastille selon le fond</td></tr>
     <tr><td>Icône de l'application, page du magasin</td><td>Logo Potomitan, inchangé</td></tr>
     <tr><td>Visuels publicitaires, tract, affiche, triptyque</td><td>Logo Potomitan</td></tr>
     <tr><td>Site, barre de navigation, pied de page, favicon</td><td>Logo Potomitan</td></tr>
