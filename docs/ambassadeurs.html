@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espace ambassadeurs · Klavyé Kréyòl Karukera</title>
+<meta name="description" content="Tout le kit ambassadeur du clavier créole guadeloupéen en une seule page à partager : missions, charte, tract, affiche, triptyque, visuels publicitaires, FlashCode et charte graphique.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Espace ambassadeurs · Klavyé Kréyòl Karukera">
+<meta property="og:description" content="Tout ce qu'il faut pour faire connaître le clavier créole guadeloupéen : missions prêtes à l'emploi, supports à imprimer, visuels à publier.">
+<meta property="og:url" content="https://famibelle.github.io/KreyolKeyb/ambassadeurs.html">
+<meta property="og:image" content="https://famibelle.github.io/KreyolKeyb/assets/qr-ambassadeur.png">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:680px;margin:0 auto;}
+header{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 4px;}
+section{margin-top:40px;}
+.section-sub{font-size:14.5px;color:var(--ink-soft);margin:4px 0 18px;max-width:58ch;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin:0 0 4px;font-size:16px;}
+.card .meta{font-size:13px;color:var(--ink-soft);margin:0 0 12px;}
+.card p{font-size:14.5px;color:var(--ink-soft);margin:0 0 12px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{
+  display:inline-block;text-decoration:none;text-align:center;cursor:pointer;
+  font-size:14px;font-weight:700;border-radius:9px;padding:11px 16px;
+  border:1.5px solid var(--sea);color:var(--sea);background:transparent;
+  font-family:inherit;
+}
+.btn:hover{background:var(--sea-soft);}
+.btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+.btn.primary{background:var(--sea);color:var(--paper);border-color:var(--sea);}
+.btn.primary:hover{filter:brightness(1.08);}
+.btn.copied{background:var(--sun);border-color:var(--sun);color:var(--paper);}
+/* Le lien de la page, en évidence : c'est l'objet même de cette page, elle est
+   faite pour être envoyée telle quelle dans un groupe WhatsApp. */
+.share-card{background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);border-radius:12px;padding:18px;margin-top:22px;}
+.share-card h2{margin-bottom:8px;}
+.url{
+  display:block;background:var(--card);border:1px dashed var(--line);border-radius:9px;
+  padding:12px 14px;font-family:var(--mono);font-size:13.5px;color:var(--ink);
+  margin:0 0 12px;word-break:break-all;
+}
+.qr{width:112px;height:112px;border-radius:8px;border:1px solid var(--line);flex:0 0 auto;background:#fff;}
+.split{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.split > div{flex:1 1 220px;}
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
+.note a{color:var(--sea);font-weight:600;}
+.gauge-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:22px;}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.gauge-num{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+.gauge-num small{font-size:14px;font-weight:400;color:var(--ink-soft);}
+.gauge-bar{height:16px;border-radius:999px;background:color-mix(in srgb, var(--sea) 12%, transparent);overflow:hidden;}
+.gauge-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sea),var(--sun));min-width:8px;transition:width .8s ease;}
+.gauge-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+.gauge-target{font-weight:700;color:var(--hibiscus);}
+/* La silhouette de l'archipel, comme sur les autres supports : deux fichiers,
+   un par type de fond, le choix suit le thème dans ses trois états. */
+:root{ --carte:url(assets/carte-guadeloupe-compacte-sombre.svg); }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --carte:url(assets/carte-guadeloupe-compacte.svg); }
+}
+:root[data-theme="dark"]{ --carte:url(assets/carte-guadeloupe-compacte.svg); }
+:root[data-theme="light"]{ --carte:url(assets/carte-guadeloupe-compacte-sombre.svg); }
+.carte{
+  display:inline-block; width:1.08em; height:1em; vertical-align:-0.1em;
+  background:var(--carte) center/contain no-repeat;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- nav:start -->
+<nav class="site">
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <details class="menu" name="navmenu">
+    <summary>ℹ️ Le projet</summary>
+    <div class="menu-panel">
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary>📣 Ambassadeurs</summary>
+    <div class="menu-panel">
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+  </details>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
+<!-- nav:end -->
+
+<header>
+  <p class="eyebrow">Klavyé Kréyòl Karukera · kit ambassadeur</p>
+  <h1>Espace ambassadeurs <span class="carte" role="img" aria-label="Silhouette de la Guadeloupe"></span></h1>
+  <p class="lead">Une seule adresse à envoyer, et tout le kit est là : les missions prêtes à l'emploi, la charte du réseau, les supports à imprimer et les visuels à publier. Rien à installer, rien à demander : servez-vous.</p>
+
+  <div class="gauge-card">
+    <div class="gauge-head">
+      <span class="gauge-num"><span id="g-current">…</span> <small>téléchargements · prochain palier : <span id="g-next">…</span></small></span>
+      <span class="gauge-target">Objectif final : 10 000 📲</span>
+    </div>
+    <div class="gauge-bar"><div class="gauge-fill" id="g-fill" style="width:1%"></div></div>
+    <div class="gauge-meta">
+      <span><span id="g-remaining">An nou ay ! Chaque partage compte</span> <span class="carte" role="img" aria-label="Silhouette de la Guadeloupe"></span></span>
+      <span id="g-asof"></span>
+    </div>
+  </div>
+
+  <div class="share-card">
+    <h2>📎 Le lien à faire circuler</h2>
+    <p class="meta">Copiez-le, envoyez-le dans un groupe WhatsApp, une liste de diffusion, un compte-rendu d'association : la personne qui l'ouvre trouve tout le kit.</p>
+    <code class="url" id="page-url">https://famibelle.github.io/KreyolKeyb/ambassadeurs.html</code>
+    <div class="actions">
+      <button class="btn primary" data-copy="page-url">📋 Copier le lien</button>
+      <a class="btn" id="wa-share" href="#">💬 Envoyer sur WhatsApp</a>
+      <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fambassadeurs.html" target="_blank" rel="noopener">📘 Partager sur Facebook</a>
+    </div>
+  </div>
+</header>
+
+<section id="commencer">
+  <h2>1. Commencer</h2>
+  <p class="section-sub">Deux pages suffisent pour savoir quoi faire et dans quel cadre le faire.</p>
+
+  <div class="card">
+    <h3>📣 Vin Anbasadè : les missions</h3>
+    <p class="meta">De 30 secondes à 10 minutes · textes prêts à envoyer</p>
+    <p>Le cœur du kit : partager à ses proches, écrire au rectorat ou au CLEMI, contacter les médias locaux, appeler une radio. Chaque mission a son message déjà rédigé, il n'y a qu'à copier.</p>
+    <div class="actions">
+      <a class="btn primary" href="ambassade.html">Voir les missions</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 La charte de l'ambassadeur</h3>
+    <p class="meta">Le rôle, les valeurs, le cadre bénévole</p>
+    <p>Ce à quoi le réseau s'engage et ce qu'il attend : respect, solidarité, partage, engagement, confiance. C'est aussi là qu'on rejoint officiellement le réseau.</p>
+    <div class="actions">
+      <a class="btn primary" href="charte-ambassadeur.html">Lire la charte</a>
+      <a class="btn" href="charte-ambassadeur.html#candidature">Rejoindre le réseau</a>
+    </div>
+  </div>
+</section>
+
+<section id="imprimer">
+  <h2>2. Imprimer et distribuer</h2>
+  <p class="section-sub">Trois supports, tous avec un QR code vers Google Play, tous en version couleur ou éco encre pour ménager les cartouches.</p>
+
+  <div class="card">
+    <h3>🪧 Tract A5</h3>
+    <p class="meta">2 tracts par feuille A4 à découper · boulangerie, pharmacie, boutique du coin</p>
+    <div class="actions">
+      <a class="btn primary" href="tract.html">Voir et imprimer</a>
+      <a class="btn" href="assets/tract-kreyolkeyboard-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="tract-eco.html">💧 Version éco encre</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 Affiche A4</h3>
+    <p class="meta">À afficher chez les commerçants, au marché, dans un hall d'association</p>
+    <div class="actions">
+      <a class="btn primary" href="affiche.html">Voir et imprimer</a>
+      <a class="btn" href="assets/affiche-kreyolkeyboard-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="affiche-eco.html">💧 Version éco encre</a>
+      <a class="btn" href="affiche-classique.html">🖼️ Version classique</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 Triptyque A4 paysage</h3>
+    <p class="meta">3 volets recto-verso · pour un stand ou un comptoir : présentation, installation, fonctionnalités</p>
+    <div class="actions">
+      <a class="btn primary" href="triptyque.html">Voir et imprimer</a>
+      <a class="btn" href="assets/triptyque-kreyolkeyboard-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="triptyque-eco.html">💧 Version éco encre</a>
+    </div>
+  </div>
+</section>
+
+<section id="publier">
+  <h2>3. Publier en ligne</h2>
+  <p class="section-sub">Pour une story, une page d'association, une campagne payante ou vos propres supports.</p>
+
+  <div class="card">
+    <div class="split">
+      <img class="qr" src="assets/qr-ambassadeur.png" alt="FlashCode vers Klavyé Kréyòl Karukera sur Google Play">
+      <div>
+        <h3>📱 Le FlashCode seul</h3>
+        <p class="meta">PNG haute résolution · renvoie directement vers Google Play</p>
+        <p>À coller sur une story Instagram, un sticker, une signature d'email, une affichette maison.</p>
+        <div class="actions">
+          <a class="btn primary" href="assets/qr-ambassadeur.png" download>📥 Télécharger le PNG</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📺 Visuels publicitaires</h3>
+    <p class="meta">Tous les formats TikTok, Meta, Google et Snapchat Ads · deux axes créatifs</p>
+    <p>Le kit paid media, également utilisable tel quel pour une publication organique.</p>
+    <div class="actions">
+      <a class="btn primary" href="publicites.html">Voir les visuels</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🖌️ Charte graphique</h3>
+    <p class="meta">Logo, palettes, typographie, règles d'écriture, fichiers sources</p>
+    <p>Si vous fabriquez votre propre support, cette page dit comment rester dans les clous de la marque.</p>
+    <div class="actions">
+      <a class="btn primary" href="charte-graphique.html">Consulter la charte</a>
+    </div>
+  </div>
+
+  <div class="note">
+    Un doute sur un chiffre ou une formulation avant de parler à un journaliste ? Le <a href="presskit.html">dossier de presse</a> réunit les faits vérifiés, et <a href="corpus.html">le corpus en chiffres</a> détaille d'où viennent les suggestions du clavier.
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+  // La jauge lit le même fichier que la page des missions, et reprend sa
+  // logique de paliers (ceux qu'affiche le badge public du Play Store) pour
+  // que les deux pages n'annoncent jamais deux marches différentes.
+  fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
+    var fmt = function(n){ return n.toLocaleString('fr-FR'); };
+    var playTiers = [100, 500, 1000, 5000, 10000];
+    var next = s.goal;
+    for (var i = 0; i < playTiers.length; i++) {
+      if (playTiers[i] > s.current) { next = playTiers[i]; break; }
+    }
+    var pct = Math.max(2, Math.min(100, (s.current / s.goal) * 100));
+    document.getElementById('g-current').textContent = fmt(s.current);
+    document.getElementById('g-next').textContent = fmt(next);
+    document.getElementById('g-asof').textContent = 'MAJ ' + s.as_of;
+    document.getElementById('g-remaining').textContent =
+      'Ka rété ' + fmt(next - s.current) + ' pou pwochen palyé-la !';
+    document.getElementById('g-fill').style.width = pct + '%';
+  }).catch(function(){});
+
+  var pageUrl = "https://famibelle.github.io/KreyolKeyb/ambassadeurs.html";
+  var waText = "Voici tout le kit pour faire connaître Klavyé Kréyòl Karukera, le clavier créole guadeloupéen : messages prêts à envoyer, tract, affiche, visuels publicitaires. Tout est là, servez-vous : " + pageUrl;
+  document.getElementById('wa-share').href = "https://wa.me/?text=" + encodeURIComponent(waText);
+
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      navigator.clipboard.writeText(el.innerText).then(function(){
+        var t = btn.textContent;
+        btn.textContent = "✅ Copié !";
+        btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent = t; btn.classList.remove('copied'); }, 1600);
+      });
+    });
+  });
+})();
+</script>
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassadeurs.html" aria-current="page">Espace ambassadeurs</a>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
+</body>
+</html>

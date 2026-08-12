@@ -304,6 +304,7 @@ Une question, une proposition, un partenariat ? Écrivez à
     </div>
     <div>
       <strong>Faire connaître</strong>
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
       <a href="ambassade.html">Vin Anbasadè</a>
       <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
       <a href="tract.html">Tract</a>
