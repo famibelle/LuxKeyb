@@ -53,7 +53,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 4 août 2026*
+*Dernière mise à jour : 12 août 2026*
 
 ## En une phrase
 
@@ -120,9 +120,10 @@ claviers standards.
   et les intelligences artificielles. C'est une histoire qui pose une
   question assez universelle : comment les langues minoritaires peuvent-elles
   continuer d'exister à l'ère de l'IA ?
-- **L'affaire de l'agrégation** : pendant que le créole est retiré des
-  concours, la société civile construit gratuitement les outils numériques
-  qui le font vivre : le contre-exemple positif de la polémique
+- **Langue et institutions** : le créole a été retiré de l'agrégation 2026,
+  avec une réouverture évoquée pour 2027 ; dans le même temps, des
+  initiatives citoyennes gratuites l'outillent pour le numérique. Deux
+  mouvements à mettre en regard
 - **Patrimoine × tech** : quand l'intelligence des claviers se met au service
   d'une langue régionale
 - **Jounen Entènasyonal Kréyòl (28 octobre)** : un outil concret pour écrire
@@ -144,36 +145,27 @@ claviers standards.
   le traduire (POTOMITAN) : deux réponses complémentaires au même vide
   numérique
 
-## Le contexte d'actualité : une langue fragilisée par l'institution
+## Le contexte, en chiffres
 
-Le créole avait pourtant été inscrit au programme 2026 de l'**agrégation des
-langues de France le 13 juin 2025**, avant d'en être écarté début octobre,
-alors que le breton, le corse et l'occitan y restent. Le ministère justifie
-ce retrait par une programmation pluriannuelle limitant à trois le nombre de
-concours de langues régionales ouverts par session. Le CAPES créole, lui,
-reste ouvert en 2026.
+Le créole est parlé par **1,6 million de locuteurs en France**. Dans les
+chiffres de l'Éducation nationale, les effectifs en créole **au primaire ont
+augmenté de 92 % entre 2021 et 2023** (4 643 à 8 896 écoliers), pendant que
+ceux du lycée reculaient de 43,7 % sur la même période.
 
-La décision a provoqué une mobilisation forte : lettre ouverte du SPEG
-(Syndicat des Personnels de l'Éducation en Guadeloupe), dénonciation du
-député guadeloupéen Olivier Serva et du SE-Unsa Martinique, qui y voit « un
-recul grave pour la reconnaissance institutionnelle du créole gagnée de
-haute lutte », deux questions déposées à l'Assemblée nationale, et une
-[motion du CESECEM (Conseil Économique, Social, Environnemental et de la
-Culture de Martinique)](https://www.youtube.com/watch?v=mNfkT2xpxR4) votée
-en réaction à la suspension. Le créole est pourtant parlé par **1,6 million
-de locuteurs en France**.
+Côté concours, le créole avait été inscrit au programme 2026 de
+l'**agrégation des langues de France le 13 juin 2025**, avant d'en être
+écarté début octobre, alors que le breton, le corse et l'occitan y restent.
+Le ministère justifie ce retrait par une programmation pluriannuelle
+limitant à trois le nombre de concours de langues régionales ouverts par
+session ; une réouverture est évoquée pour 2027. Le CAPES créole, lui, reste
+ouvert en 2026. La décision a suscité des réactions d'élus, de syndicats
+enseignants et d'instances consultatives : les principales sont référencées
+en fin de dossier.
 
-Le paradoxe est saisissant dans les chiffres de l'Éducation nationale
-elle-même : les effectifs en créole **au primaire ont bondi de 92 % entre
-2021 et 2023** (4 643 à 8 896 écoliers), portés par la demande des familles,
-pendant que ceux du lycée chutaient de 43,7 %, la faute à la réforme du bac
-plus qu'à un désamour de la langue.
-
-**Klavyé Kréyòl Karukera est la réponse de la société civile** : pendant que
-la place institutionnelle du créole recule, un projet citoyen, gratuit et
-open source équipe la langue pour le numérique, là où elle se joue
-désormais chaque jour, dans les SMS et les réseaux sociaux de centaines de
-milliers de créolophones.
+Klavyé Kréyòl Karukera se situe sur un autre terrain, celui de l'usage
+quotidien : un projet citoyen, gratuit et open source, qui équipe la langue
+pour le numérique, là où elle s'écrit désormais chaque jour, dans les SMS et
+les réseaux sociaux de centaines de milliers de créolophones.
 
 ## Le problème
 
@@ -266,7 +258,6 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
 - [Toutes les captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux, gamification)
 - [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
-- [Motion du CESECEM sur la suspension de l'agrégation de créole](https://www.youtube.com/watch?v=mNfkT2xpxR4) (vidéo)
 - [Logo Potomitan™ en haute résolution](assets/potomitan-logo.png)
 
 ## Sources
@@ -276,6 +267,7 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
 - [Concours de l'agrégation 2026 : Le SPEG et le député Serva dénoncent l'absence du créole, contrairement au breton, au corse et à l'occitan](https://la1ere.franceinfo.fr/guadeloupe/concours-de-l-agregation-le-speg-et-le-depute-serva-denoncent-l-absence-du-creole-contrairement-au-breton-au-corse-et-a-l-occitan-1632029.html) · la1ère Guadeloupe
 - [Suspension de l'agrégation de créole : une « décision inadmissible »](https://www.franceguyane.fr/actualite/education-sante-environnement/suspension-de-lagregation-de-creole-une-decision-inadmissible-1054425.php) · France-Guyane
 - [Créole à l'école : l'élan brisé](https://lecourrierdeguadeloupe.com/creole-a-lecole-lelan-brise/) · Le Courrier de Guadeloupe
+- [Motion du CESECEM (Conseil Économique, Social, Environnemental et de la Culture de Martinique) sur la suspension de l'agrégation](https://www.youtube.com/watch?v=mNfkT2xpxR4) · vidéo
 - [A la découverte des langues régionales : le créole (Guadeloupe et Martinique)](https://www.vousnousils.fr/2026/02/19/a-la-decouverte-des-langues-regionales-le-creole-guadeloupe-et-martinique-700875) · VousNousIls, février 2026
 - [Guadeloupe. Lang Kréyol : vers un changement de paradigme ?](https://caraibcreolenews.com/guadeloupe-lang-kreyol-vers-un-changement-de-paradigme/) · Caraib Creole News
 
