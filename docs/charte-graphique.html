@@ -242,6 +242,7 @@ td code{white-space:nowrap;}
   <ul class="toc">
     <li><a href="#marque">La marque</a></li>
     <li><a href="#logo">Le logo</a></li>
+    <li><a href="#marque-produit">La marque produit</a></li>
     <li><a href="#couleurs">Les couleurs</a></li>
     <li><a href="#typo">La typographie</a></li>
     <li><a href="#elements">Les éléments graphiques</a></li>
@@ -281,7 +282,7 @@ td code{white-space:nowrap;}
     <tr><td>Tract, affiche</td><td>En tête de la ligne de crédits, en bas de la page imprimée</td></tr>
     <tr><td>Triptyque</td><td>En signature de couverture et dans les mentions légales</td></tr>
     <tr><td>Site</td><td>Dans le pied de page : « Potomitan™, Teknoloji pou tout moun. »</td></tr>
-    <tr><td>Tous les fichiers</td><td>Métadonnées : auteur, copyright, éditeur (voir §8)</td></tr>
+    <tr><td>Tous les fichiers</td><td>Métadonnées : auteur, copyright, éditeur (voir §9)</td></tr>
   </table>
   <p class="muted">Une seule exception, mesurée : la bannière display 320×50. Cinquante pixels de haut, l'accroche et le bouton prennent toute la place, et une mention y serait illisible plutôt que discrète. Le logo y porte seul la marque, et les métadonnées du fichier prennent le relais.</p>
 
@@ -292,7 +293,7 @@ td code{white-space:nowrap;}
 <!-- ====================================================================== -->
 <section id="logo">
   <h2>2. Le logo</h2>
-  <p>Le poteau-mitan : le pilier central de la case créole, celui autour duquel tout tient. Un poteau sombre, deux hélices qui s'y enroulent, un cercle d'unité, le nom en vert. C'est le seul signe de marque, à toutes les tailles.</p>
+  <p>Le poteau-mitan : le pilier central de la case créole, celui autour duquel tout tient. Un poteau sombre, deux hélices qui s'y enroulent, un cercle d'unité, le nom en vert. C'est le signe de l'éditeur, et celui que portent les supports. Le produit a le sien, dessiné pour les tailles où celui-ci ne tient plus (§3).</p>
 
   <div class="logo-row">
     <div class="logo-box clair">
@@ -344,8 +345,96 @@ td code{white-space:nowrap;}
 </section>
 
 <!-- ====================================================================== -->
+<section id="marque-produit">
+  <h2>3. La marque produit</h2>
+  <p>Un K blanc, ses deux bras partant du même point du fût, posé sur la silhouette de la Guadeloupe en filigrane. K comme Klavyé, Kréyòl, Karukera. Le jaune et le rouge des bras sont ceux des hélices du logo de l'éditeur : c'est ce qui rattache les deux signes sans les confondre.</p>
+
+  <div class="note">
+    <b>Elle ne remplace pas le logo Potomitan.</b> Celui-ci reste la marque de l'éditeur, sur l'icône de l'application, les visuels publicitaires et le site. La marque produit sert là où le logo ne peut pas aller : un avatar rogné en cercle, une icône de groupe, un badge, tout ce qui se lit à 48&nbsp;px.
+  </div>
+
+  <h3>Pourquoi un second signe</h3>
+  <p>Sous 48&nbsp;px le logo de l'éditeur perd son nom et ses hélices, la section précédente le dit. Or c'est exactement la taille d'un avatar dans une liste de discussions, et il n'y a là aucune place pour écrire le nom à côté. La marque produit est dessinée pour cette taille : trois traits épais, aucun texte, un fond plein qui lui évite la pastille blanche.</p>
+
+  <h3>Les versions</h3>
+  <div class="logo-row">
+    <div class="logo-box clair">
+      <img src="assets/logo/klavye-logo.svg" alt="Marque produit Klavyé Kréyòl, version de référence">
+      <span class="cap">Référence, pastille pleine.<br>Par défaut, partout.</span>
+    </div>
+    <div class="logo-box fonce">
+      <img src="assets/logo/klavye-logo.svg" alt="Marque produit sur un fond sombre">
+      <span class="cap">Le même fichier sur fond sombre.<br>Aucune pastille à ajouter.</span>
+    </div>
+    <div class="logo-box clair">
+      <img src="assets/logo/klavye-logo-clair.svg" alt="Marque produit détourée pour fond clair">
+      <span class="cap">Détourée, sans pastille.<br>En-tête, document, papier.</span>
+    </div>
+    <div class="logo-box clair">
+      <img src="assets/logo/klavye-logo-mono.svg" alt="Marque produit en une seule couleur">
+      <span class="cap">Une seule encre.<br>Tampon, sérigraphie, gravure.</span>
+    </div>
+  </div>
+
+  <h3>Zone de protection</h3>
+  <p>Aucun autre signe, aucun texte, aucun bord à moins d'un huitième du côté de la pastille. Sur un avatar rond, la règle devient géométrique : l'image envoyée est carrée, l'application la rogne en cercle, et rien d'utile ne doit toucher les 12&nbsp;% de bord.</p>
+
+  <h3>Tailles minimales</h3>
+  <div class="sizes">
+    <figure><img src="assets/logo/klavye-logo.svg" width="96" height="96" alt="Marque à 96 pixels"><figcaption>96 px · confortable</figcaption></figure>
+    <figure><img src="assets/logo/klavye-logo.svg" width="48" height="48" alt="Marque à 48 pixels"><figcaption>48 px · avatar</figcaption></figure>
+    <figure><img src="assets/logo/klavye-logo.svg" width="32" height="32" alt="Marque à 32 pixels"><figcaption>32 px · favicon</figcaption></figure>
+    <figure><img src="assets/logo/klavye-logo.svg" width="16" height="16" alt="Marque à 16 pixels"><figcaption>16 px · plancher</figcaption></figure>
+  </div>
+  <p class="muted" style="margin-top:12px;">La carte disparaît la première, vers 40&nbsp;px, et c'est le comportement voulu : elle est un fond, pas une information. Sous 16&nbsp;px il ne reste que trois traits sur un carré bleu, ce qui suffit encore à reconnaître le signe.</p>
+
+  <h3>Les couleurs du signe</h3>
+  <p>Elles appartiennent au logo, pas aux trois palettes : un signe garde ses couleurs quand il change de support, sinon il cesse d'être reconnaissable. Elles se changent dans <code>docs/assets/logo/build_svg.py</code> et nulle part ailleurs.</p>
+  <table>
+    <tr><th>Élément</th><th>Version de référence</th><th>Version détourée</th></tr>
+    <tr><td>Fond</td><td><code>#12848E → #0A5259 → #053035</code>, dégradé à 157°</td><td>aucun</td></tr>
+    <tr><td>Fût du K</td><td><code>#F5F2EA</code></td><td><code>#0E6E76</code></td></tr>
+    <tr><td>Bras haut</td><td><code>#E8B14A</code></td><td><code>#C97F1E</code></td></tr>
+    <tr><td>Jambe</td><td><code>#E0705F</code></td><td><code>#C94A3B</code></td></tr>
+    <tr><td>Archipel en filigrane</td><td><code>#FFFFFF</code> à 20 %</td><td><code>#0E6E76</code> à 16 %</td></tr>
+  </table>
+
+  <h3>Quel signe sur quel support</h3>
+  <table>
+    <tr><th>Support</th><th>Signe</th></tr>
+    <tr><td>Avatar d'un groupe, photo de profil, icône de discussion</td><td>Marque produit, <code>klavye-logo-640.png</code></td></tr>
+    <tr><td>Image d'invitation à un groupe, badge d'ambassadeur</td><td>Marque produit</td></tr>
+    <tr><td>Icône de l'application, page du magasin</td><td>Logo Potomitan, inchangé</td></tr>
+    <tr><td>Visuels publicitaires, tract, affiche, triptyque</td><td>Logo Potomitan</td></tr>
+    <tr><td>Site, barre de navigation, pied de page, favicon</td><td>Logo Potomitan</td></tr>
+  </table>
+  <p class="muted">Un support ne porte pas les deux à la fois. Quand la marque produit est seule sur un visuel, la mention Potomitan™ passe par les métadonnées du fichier, comme pour la bannière 320×50 (§1).</p>
+
+  <div class="yesno">
+    <div class="oui">
+      <div class="t">À faire</div>
+      <ul>
+        <li>Employer le SVG. Les PNG du dossier sont des rendus figés, pour les endroits qui n'acceptent pas de vectoriel.</li>
+        <li>Pour un avatar, envoyer le carré 640&nbsp;px et laisser le recadrage proposé tel quel.</li>
+        <li>La laisser seule : le nom s'écrit à côté, jamais dedans.</li>
+        <li>Relancer <code>build_svg.py</code> puis <code>generate.py</code> si la silhouette de la Guadeloupe est un jour reprise.</li>
+      </ul>
+    </div>
+    <div class="non">
+      <div class="t">À ne jamais faire</div>
+      <ul>
+        <li><b>La recolorer</b> pour l'accorder à un support, ni changer le fond, ni intervertir les deux bras.</li>
+        <li>Renforcer la carte pour la rendre plus lisible, ou poser un texte dessus : elle est un fond, pas une illustration.</li>
+        <li>L'employer comme icône de l'application ou en signature d'éditeur : ce n'est pas son rôle.</li>
+        <li>La poser à côté du logo Potomitan sans la zone de protection de chacun.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
 <section id="couleurs">
-  <h2>3. Les couleurs</h2>
+  <h2>4. Les couleurs</h2>
   <p>Trois palettes coexistent, et c'est voulu : elles ne s'adressent pas au même œil. Celle de la communication est sourde et lisible sur un long texte ; celle du produit est vive parce qu'un clavier se regarde au dixième de seconde ; celle des publicités est faite de dégradés qui survivent à la compression des réseaux. <b>On ne les mélange pas dans un même support.</b></p>
 
   <h3>Palette de communication : le site, les imprimés, les documents</h3>
@@ -490,7 +579,7 @@ td code{white-space:nowrap;}
 
 <!-- ====================================================================== -->
 <section id="typo">
-  <h2>4. La typographie</h2>
+  <h2>5. La typographie</h2>
   <p>Deux familles, chacune sur son terrain. Aucune troisième police n'entre dans un support.</p>
 
   <div class="type-sample">
@@ -528,7 +617,7 @@ td code{white-space:nowrap;}
 
 <!-- ====================================================================== -->
 <section id="elements">
-  <h2>5. Les éléments graphiques</h2>
+  <h2>6. Les éléments graphiques</h2>
 
   <h3>La silhouette de la Guadeloupe</h3>
   <p>Elle remplace le drapeau sur les supports. Le tracé est dérivé de Natural Earth au 1:10 000 000, placé dans le domaine public par ses auteurs : l'archipel entier y est, Basse-Terre et Grande-Terre mais aussi Marie-Galante, les Saintes et la Désirade. Il se régénère avec <code>python3 scripts/generate_carte_guadeloupe.py</code>. Deux fichiers, un par type de fond, à choisir selon le fond et non selon le nom :</p>
@@ -598,7 +687,7 @@ td code{white-space:nowrap;}
 
 <!-- ====================================================================== -->
 <section id="ecriture">
-  <h2>6. L'écriture</h2>
+  <h2>7. L'écriture</h2>
 
   <h3>Le kréyòl</h3>
   <p>Le kréyòl employé dans les supports vient toujours du corpus du projet ou de textes déjà validés dans le dépôt. On ne rédige pas de kréyòl pour l'occasion : une phrase inventée est repérée immédiatement par les locuteurs, et elle décrédibilise un clavier qui promet justement de bien écrire.</p>
@@ -620,7 +709,7 @@ td code{white-space:nowrap;}
 
 <!-- ====================================================================== -->
 <section id="applications">
-  <h2>7. Les applications</h2>
+  <h2>8. Les applications</h2>
   <p>Les supports existants montrent la charte appliquée. Ils sont le meilleur point de départ pour en produire un nouveau.</p>
 
   <div class="gallery">
@@ -689,11 +778,13 @@ td code{white-space:nowrap;}
 
 <!-- ====================================================================== -->
 <section id="fichiers">
-  <h2>8. Les fichiers sources</h2>
+  <h2>9. Les fichiers sources</h2>
   <table>
     <tr><th>Élément</th><th>Fichier</th></tr>
     <tr><td>Logo, vectoriel de référence</td><td><code>Logos/potomitanlogo.svg</code>, copie publiée dans <code>docs/assets/potomitan-logo.svg</code></td></tr>
     <tr><td>Logo, rastérisé 512 px</td><td><code>docs/assets/potomitan-logo.png</code></td></tr>
+    <tr><td>Marque produit, vectoriels</td><td><code>docs/assets/logo/klavye-logo.svg</code>, <code>-clair</code> et <code>-mono</code>, réécrits par <code>python3 docs/assets/logo/build_svg.py</code> qui relit la silhouette de la Guadeloupe</td></tr>
+    <tr><td>Marque produit, PNG et image d'invitation</td><td><code>python3 docs/assets/logo/generate.py</code>, texte de l'invitation dans <code>docs/assets/logo/invitation.html</code></td></tr>
     <tr><td>Icône de l'application</td><td><code>android_keyboard/app/src/main/res/mipmap-*/ic_launcher.png</code></td></tr>
     <tr><td>Palette de communication</td><td><code>docs/assets/theme.css</code></td></tr>
     <tr><td>Palette produit</td><td><code>android_keyboard/app/src/main/res/values/colors.xml</code></td></tr>
