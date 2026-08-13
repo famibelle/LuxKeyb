@@ -47,6 +47,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     companion object {
         private const val TAG = "KreyolIME-Potomitan™"
         private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
+        // Hauteur d'une des deux rangées de suggestions (Kreyòl puis Français) et
+        // padding vertical du bloc de touches : ce que le clavier consomme en
+        // hauteur en dehors des rangées de touches elles-mêmes
+        private const val SUGGESTION_ROW_HEIGHT_DP = 44
+        private const val KEYBOARD_VERTICAL_PADDING_DP = 8
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -349,14 +354,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // 📱 PADDING ADAPTATIF SELON MODE DE NAVIGATION
         // Créer un conteneur avec padding pour éviter que la navigation bar masque le clavier
+        val adaptivePadding = getAdaptiveNavigationPadding()
         val keyboardContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            val adaptivePadding = getAdaptiveNavigationPadding()
             setPadding(0, 0, 0, adaptivePadding)
             Log.d(TAG, "✅ Padding adaptatif appliqué: ${adaptivePadding}px")
         }
-        
-        // Créer le clavier principal
+
+        // Créer le clavier principal, dimensionné pour la place que la fenêtre
+        // IME accordera réellement (voir availableRowsHeightPx)
+        keyboardLayoutManager.setAvailableRowsHeight(computeAvailableRowsHeight(adaptivePadding))
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
@@ -388,7 +395,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val kreyolScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
+                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
             )
             setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
         }
@@ -404,7 +411,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val frScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
+                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
             )
             setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
             visibility = View.INVISIBLE
@@ -1198,6 +1205,40 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         return (dp * resources.displayMetrics.density).toInt()
     }
     
+    /**
+     * 📏 Hauteur restant aux quatre rangées de touches une fois retiré tout ce que
+     * le clavier consomme par ailleurs.
+     *
+     * `screenHeightDp` donne la hauteur d'écran barre de navigation déduite, mais
+     * pas la barre d'état, sous laquelle la fenêtre IME commence : il faut la
+     * retirer aussi, sans quoi le compte est trop généreux d'exactement sa hauteur
+     * et la rangée du bas reste rognée (mesuré sur l'émulateur, 72 px de trop).
+     * En portrait la place dépasse largement le besoin et la hauteur nominale des
+     * touches est conservée ; en paysage (288 dp sur un 1080x2400 en 480 dpi) elle
+     * est inférieure aux 332 dp de la mise en page nominale, et sans ce calcul la
+     * rangée du bas est coupée en deux au lieu d'être simplement plus basse.
+     */
+    private fun computeAvailableRowsHeight(navigationPaddingPx: Int): Int {
+        val statusBarId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        val statusBarPx = if (statusBarId > 0) {
+            resources.getDimensionPixelSize(statusBarId)
+        } else {
+            dpToPx(24)
+        }
+        val windowHeightPx = dpToPx(resources.configuration.screenHeightDp) - statusBarPx
+        val suggestionsPx = dpToPx(SUGGESTION_ROW_HEIGHT_DP) * 2
+        val keyboardPaddingPx = dpToPx(KEYBOARD_VERTICAL_PADDING_DP) * 2
+        // Marge d'arrondi : le calcul tombe sinon au pixel près sur le bas de la
+        // fenêtre, où la moindre différence de mesure ronge à nouveau la dernière rangée
+        val safetyPx = dpToPx(4)
+        val available = windowHeightPx - suggestionsPx - keyboardPaddingPx -
+            navigationPaddingPx - safetyPx
+        Log.d(TAG, "📏 Hauteur fenêtre ${windowHeightPx}px (barre d'état ${statusBarPx}px déduite), " +
+            "dont suggestions ${suggestionsPx}px, padding clavier ${keyboardPaddingPx}px, " +
+            "navigation ${navigationPaddingPx}px → ${available}px pour les rangées")
+        return available
+    }
+
     /**
      * 📱 Détecte le mode de navigation système actif
      * @return Code du mode: 0=3-button, 1=2-button, 2=Gesture, -1=Unknown

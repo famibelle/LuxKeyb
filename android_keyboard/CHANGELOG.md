@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.3] - 2026-08-13
+
+### 🐛 La rangée du bas était coupée en deux en paysage
+
+Le clavier réclamait 332 dp de hauteur là où la fenêtre de saisie n'en accorde que 288 en paysage sur un écran 1080x2400 : la rangée des touches 123, virgule, é, tiret, espace, è, point, emoji et entrée était tranchée à mi-hauteur, et ces touches devenaient inatteignables. La hauteur des touches se calcule désormais à partir de la place réellement disponible, plafonnée à sa valeur habituelle de 48 dp. Le portrait ne change donc pas d'un pixel ; en paysage les touches passent à 35 dp et le clavier tient entier.
+
+Le calcul retranche aussi la barre d'état, sous laquelle la fenêtre de saisie commence, ce que la hauteur d'écran annoncée par le système ne fait pas.
+
+### 🐛 Les jambages des lettres étaient rognés sur les touches basses
+
+Sur une touche réduite, les lettres q, g, j, p et y perdaient leur jambage. Les touches héritaient de 30 px de marge intérieure sur chaque bord, venue du style de bouton d'origine, ce qui ne laissait que 45 px à une ligne de texte qui en fait 57. Cette marge n'a aucun rôle ici, l'apparence des touches venant entièrement du dégradé dessiné par l'application.
+
+### 🐛 La touche « 123 » n'affichait que « 12 »
+
+Le même héritage, horizontalement cette fois, tronquait le libellé de la touche de mode en portrait. Il s'affiche à nouveau en entier, sur une seule ligne, à la taille déjà utilisée pour la barre d'espace.
+
 ## [10.9.2] - 2026-08-08
 
 ### 🔖 Un mot-dièse commun à tous les partages

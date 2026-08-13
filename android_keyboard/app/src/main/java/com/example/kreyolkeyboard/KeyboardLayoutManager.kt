@@ -24,6 +24,10 @@ class KeyboardLayoutManager(private val context: Context) {
     
     companion object {
         private const val BUTTON_HEIGHT_DP = 48
+        // Sous cette hauteur les touches deviennent difficiles à viser : mieux vaut
+        // alors rogner ailleurs que continuer à réduire.
+        private const val BUTTON_MIN_HEIGHT_DP = 32
+        private const val KEYBOARD_ROW_COUNT = 4
         private const val BUTTON_MARGIN_DP = 2
         private const val CORNER_RADIUS_DP = 8f
         private const val TEXT_SIZE_SP = 16f
@@ -41,6 +45,15 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private var isEmojiMode = false
     private val keyboardButtons = mutableListOf<View>() // Changé de TextView à View pour supporter ImageButton
+
+    // Hauteur que la fenêtre IME peut réellement accorder aux quatre rangées de
+    // touches, renseignée par le service avant chaque création de layout. En
+    // paysage cette fenêtre se limite à l'espace entre barre d'état et barre de
+    // navigation (288 dp sur un 1080x2400 en 480 dpi) alors que la mise en page
+    // nominale en réclame 332 : la rangée du bas (123, espace, entrée…) était
+    // coupée en deux, bug signalé le 13/08/2026. Laissé à 0 par le clavier de
+    // démonstration des Réglages, qui garde la hauteur nominale.
+    private var availableRowsHeightPx = 0
 
     // Référence optionnelle pour prévisualiser les options d'appui long dans
     // les coins des touches (v8.3.0). Laissé à null par le clavier de démo
@@ -68,6 +81,26 @@ class KeyboardLayoutManager(private val context: Context) {
     
     fun setInteractionListener(listener: KeyboardInteractionListener) {
         this.interactionListener = listener
+    }
+
+    /**
+     * Déclare la hauteur disponible pour les rangées de touches, marges comprises.
+     * À appeler avant createKeyboardLayout() : la hauteur des touches en découle.
+     */
+    fun setAvailableRowsHeight(heightPx: Int) {
+        availableRowsHeightPx = heightPx.coerceAtLeast(0)
+    }
+
+    /**
+     * Hauteur d'une touche : la hauteur nominale tant qu'elle tient, sinon la part
+     * de place restante, sans jamais descendre sous le seuil de visée.
+     */
+    private fun keyHeightPx(): Int {
+        val nominal = dpToPx(BUTTON_HEIGHT_DP)
+        if (availableRowsHeightPx <= 0) return nominal
+        val verticalMargins = dpToPx(BUTTON_MARGIN_DP) * 2
+        val fitted = availableRowsHeightPx / KEYBOARD_ROW_COUNT - verticalMargins
+        return fitted.coerceIn(dpToPx(BUTTON_MIN_HEIGHT_DP), nominal)
     }
     
     /**
@@ -232,7 +265,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
-                    dpToPx(BUTTON_HEIGHT_DP),
+                    keyHeightPx(),
                     weight
                 ).apply {
                     setMargins(
@@ -245,6 +278,10 @@ class KeyboardLayoutManager(private val context: Context) {
             // Créer un Button classique pour les autres touches
             Button(context).apply {
                 text = getDisplayText(key)
+                // « 123 » et « ABC » ne tiennent pas en pleine taille dans la
+                // largeur d'une touche en portrait : le libellé se renvoyait à la
+                // ligne et sa seconde ligne débordait sous le bas de la touche
+                maxLines = 1
                 // Le thème AppCompat d'une activité impose textAllCaps=true
                 // aux Button : les touches doivent refléter exactement l'état
                 // shift, quel que soit le contexte (IME ou clavier d'essai)
@@ -256,15 +293,32 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police personnalisée pour Potomitan™ branding discret
-                textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
+                // Taille de police personnalisée pour Potomitan™ branding discret,
+                // et repli sur la même taille pour les libellés de mode ("123",
+                // "ABC"), qui doivent tenir sur une seule ligne dans une touche
+                // étroite
+                textSize = if (key == " " || key == "123" || key == "ABC") {
+                    TEXT_SIZE_SP * 0.75f
+                } else {
+                    TEXT_SIZE_SP
+                }
                 setTypeface(typeface, Typeface.BOLD)
+                // Le style Button par défaut apporte 30 px de padding sur chaque
+                // bord, hérités de son fond d'origine. L'apparence des touches
+                // vient entièrement du GradientDrawable posé plus bas, et ce
+                // padding ne fait que rogner le texte : sur une touche réduite en
+                // paysage il ne restait que 45 px pour une ligne de 57, coupant
+                // les jambages (q, g, j, p, y) ; en portrait c'est lui qui
+                // tronquait le libellé « 123 » en « 12 ».
+                setPadding(0, 0, 0, 0)
+                minHeight = 0
+                minWidth = 0
                 
                 // Calcul du poids selon le type de touche
                 val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
-                    dpToPx(BUTTON_HEIGHT_DP),
+                    keyHeightPx(),
                     weight
                 ).apply {
                     setMargins(

@@ -48,8 +48,8 @@ android {
         applicationId "com.potomitan.kreyolkeyboard"
         minSdk = 21
         targetSdk = 36
-        versionCode = 100902
-        versionName "10.9.2"
+        versionCode = 100903
+        versionName "10.9.3"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true
