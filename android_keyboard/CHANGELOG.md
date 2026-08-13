@@ -5,6 +5,14 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.4] - 2026-08-13
+
+### 🐛 Une bande vide séparait le clavier du bas de l'écran
+
+Le clavier réservait lui-même la hauteur de la barre de navigation, alors que le système la déduit déjà de la fenêtre de saisie. La place était donc payée deux fois et laissait une bande vide sous la dernière rangée, très visible en paysage. Cette réserve est maintenant mesurée : le clavier compare sa position réelle à celle de la barre et ne se décale que de ce qui est effectivement recouvert, c'est-à-dire rien dans le cas courant.
+
+Cette mesure remplace une estimation tirée du mode de navigation et de la hauteur système déclarée, qu'il fallait déjà plafonner parce que certaines ROM annoncent une valeur aberrante et poussaient le clavier hors de l'écran. Les touches y gagnent 5 dp en paysage, la place rendue leur revenant.
+
 ## [10.9.3] - 2026-08-13
 
 ### 🐛 La rangée du bas était coupée en deux en paysage
