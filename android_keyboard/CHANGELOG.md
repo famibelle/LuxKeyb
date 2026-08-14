@@ -1,11 +1,55 @@
-﻿# Changelog
+# Changelog
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [10.9.2] - 2026-08-08
+> Ce clavier partage sa base de code avec le Klavyé Kréyòl Karukéra, dont il
+> est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
+> l'évolution de cette base commune, côté créole.
+
+## [10.9.2] - 2026-08-14
+
+Reprise de la base commune, restée au point de divergence 6.1.8 depuis le
+passage au luxembourgeois. Le clavier gagne d'un coup tout ce qui avait été
+construit côté créole entre-temps, transposé à la langue plutôt que traduit.
+
+### ✨ Ajouté
+- Correction des fautes de frappe par distance de Levenshtein : une lettre
+  oubliée, en trop ou tapée à côté n'empêche plus les suggestions d'arriver.
+- Prédiction contextuelle à deux mots, avec repli sur le mot précédent seul.
+- Panneau emoji complet (près de 1 900 emojis, tons de peau en appui long) et
+  suppression arrière consciente des emojis.
+- Correcteur orthographique système, déclaré sur les locales `lb` et `fr`.
+- Trois jeux de vocabulaire : Wuertsich, Wuertmix et Wuertriet.
+- Huit niveaux de progression, d'Ufänker à Sproochenmeeschter, avec carte de
+  niveau partageable et notification de passage de palier.
+- Parcours d'installation guidé, guide illustré et astuce hebdomadaire.
+- Suite de 120 tests unitaires, exécutée en intégration continue.
+
+### 🔤 Modifié
+- Dictionnaire porté de 3 239 à 6 342 mots : la sortie du pipeline complet
+  remplace celle du script rapide, restée orpheline jusqu'ici.
+- Disposition revue sur des comptages réels : é, ä et ë ont chacune leur touche
+  dédiée, les diacritiques rares passent en appui long.
+- Le clavier s'annonce enfin à Android en `lb-LU` ; il se déclarait jusqu'ici
+  clavier français de Guadeloupe.
+- Niveaux, jeux et textes de l'interface transposés en luxembourgeois.
+
+### 🔧 Technique
+- Chaîne de build portée à AGP 9.3.1 et Gradle 9.6.1, compileSdk 36.
+- `applicationId` passé à `com.potomitan.luxkeyboard` : le préfixe
+  `com.example.*`, adopté par erreur après la divergence, est refusé par
+  Google Play.
+- Suppression de code mort : le monolithe `KreyolInputMethodService.kt`
+  (1 541 lignes), `TestInputMethodService.kt` et `Constants.kt`, aucun n'étant
+  déclaré ni référencé mais tous embarqués dans l'APK.
+- La CI régénère le dictionnaire et refuse de publier s'il n'est pas au bon
+  format, s'il est anormalement petit, ou s'il n'expose aucun contexte à deux
+  mots.
+
+## [10.9.2 — base amont KreyolKeyb] - 2026-08-08
 
 ### 🔖 Un mot-dièse commun à tous les partages
 
