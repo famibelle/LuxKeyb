@@ -9,6 +9,27 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.9.5] - 2026-08-15
+
+Aucun changement visible dans le clavier : cette version durcit la chaîne de
+build et de publication.
+
+### 🔧 Technique
+
+- **Le refus de signer avec la clé debug ne casse plus les builds debug.** Un
+  `throw` posé dans le bloc `signingConfigs` s'exécutait à chaque invocation de
+  Gradle, pas seulement pour les tâches de release : `assembleDebug`,
+  `testDebugUnitTest` et la synchro Android Studio devenaient impossibles sur
+  toute machine sans les secrets de keystore. Le refus est conservé, mais porté
+  par les tâches qui produisent réellement l'artefact.
+- **La vérification de signature en CI vérifie enfin quelque chose.** L'étape
+  de l'AAB terminait par un pipeline dont le code de sortie était toujours nul,
+  et `jarsigner -verify` sort en 0 sur une archive non signée : rien ne pouvait
+  la faire échouer. Le job de l'APK, lui, n'avait aucune vérification. Les deux
+  exigent maintenant une signature valide et refusent un certificat
+  `CN=Android Debug`.
+- `docs/index.md` est mis à jour automatiquement avec la version publiée.
+
 ## [10.9.4] - 2026-08-14
 
 ### 🔤 Modifié
