@@ -48,115 +48,121 @@ class LevenshteinDictionaryTest {
     }
 
     private fun getSampleDictionary(): List<Pair<String, Int>> {
-        // Échantillon du dictionnaire réel pour les tests en environnement limité
+        // Échantillon du dictionnaire réel pour les tests en environnement limité.
+        // Mots et fréquences relevés tels quels dans luxemburgish_dict.json : les
+        // 24 plus fréquents, plus ceux que les cas de test ci-dessous citent
+        // nommément.
         return listOf(
-            Pair("ka", 15519),
-            Pair("an", 10729),
-            Pair("sé", 7177),
-            Pair("on", 6933),
-            Pair("té", 6834),
-            Pair("yo", 6063),
-            Pair("pou", 5812),
-            Pair("nou", 5712),
-            Pair("pa", 5244),
-            Pair("ki", 4569),
-            Pair("mwen", 4082),
-            Pair("ou", 3709),
-            Pair("sa", 3348),
-            Pair("fè", 3274),
-            Pair("la", 2531),
-            Pair("moun", 1836),
-            Pair("tout", 1802),
-            Pair("bonjou", 850),
-            Pair("bonswa", 420),
-            Pair("mèsi", 650),
-            Pair("souplé", 380),
-            Pair("lanmou", 290),
-            Pair("zanmi", 340),
-            Pair("kréyòl", 520),
-            Pair("ayiti", 410),
-            Pair("manman", 280),
-            Pair("papa", 260),
-            Pair("timoun", 310),
-            Pair("pitit", 270),
-            Pair("lakay", 240),
-            Pair("lapli", 180),
-            Pair("solèy", 170),
-            Pair("dlo", 220),
-            Pair("manje", 300),
-            Pair("bwè", 210),
-            Pair("dòmi", 190),
-            Pair("reveye", 160),
-            Pair("travay", 350),
-            Pair("lekòl", 320),
-            Pair("liv", 230)
+            Pair("an", 2090),
+            Pair("déi", 1992),
+            Pair("och", 1943),
+            Pair("ass", 1840),
+            Pair("dat", 1619),
+            Pair("mir", 1459),
+            Pair("de", 1206),
+            Pair("et", 1202),
+            Pair("eng", 1019),
+            Pair("fir", 965),
+            Pair("hunn", 898),
+            Pair("dass", 879),
+            Pair("net", 870),
+            Pair("sinn", 850),
+            Pair("vun", 798),
+            Pair("der", 758),
+            Pair("do", 745),
+            Pair("ech", 721),
+            Pair("ze", 719),
+            Pair("mer", 712),
+            Pair("am", 675),
+            Pair("den", 655),
+            Pair("nach", 622),
+            Pair("ginn", 577),
+            Pair("leit", 563),
+            Pair("dann", 383),
+            Pair("ganz", 370),
+            Pair("kéier", 204),
+            Pair("ëmmer", 181),
+            Pair("wäert", 163),
+            Pair("gesot", 160),
+            Pair("regierung", 66),
+            Pair("kanner", 41),
+            Pair("merci", 32),
+            Pair("moien", 24),
+            Pair("sécher", 24),
+            Pair("aarbecht", 22),
+            Pair("zesummen", 21),
+            Pair("haus", 9),
+            Pair("frënn", 3),
+            Pair("lëtzebuergesch", 2)
         )
     }
 
     @Test
     fun testCommonTypo_MissingLetter() {
-        // Test: "bonjo" → "bonjou" (lettre 'u' manquante)
+        // Test: "moin" → "moien" (lettre 'e' manquante)
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "bonjo",
+            input = "moin",
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'bonjou'", matches.any { it.first == "bonjou" })
-        
-        // "bonjou" devrait être en premier (distance 1)
-        if (matches.isNotEmpty() && dictionary.any { it.first == "bonjou" }) {
-            assertEquals("bonjou", matches.first().first)
+        assertTrue("Devrait trouver 'moien'", matches.any { it.first == "moien" })
+
+        // "moien" devrait être en premier (distance 1)
+        if (matches.isNotEmpty() && dictionary.any { it.first == "moien" }) {
+            assertEquals("moien", matches.first().first)
         }
     }
 
     @Test
     fun testCommonTypo_ExtraLetter() {
-        // Test: "mesli" → "mèsi" (lettre 'l' en trop)
+        // Test: "mersci" → "merci" (lettre 's' en trop)
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "mesli",
+            input = "mersci",
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'mèsi'", matches.any { it.first == "mèsi" })
+        assertTrue("Devrait trouver 'merci'", matches.any { it.first == "merci" })
     }
 
     @Test
     fun testCommonTypo_WrongLetter() {
-        // Test: "zanbi" → "zanmi" (lettre 'b' au lieu de 'm')
+        // Test: "gesat" → "gesot" (lettre 'a' au lieu de 'o')
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "zanbi",
+            input = "gesat",
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'zanmi'", matches.any { it.first == "zanmi" })
+        assertTrue("Devrait trouver 'gesot'", matches.any { it.first == "gesot" })
     }
 
     @Test
     fun testAccentMissing_WithNormalization() {
-        // Test: "kreyol" → "kréyòl" (accents manquants)
+        // Test: "letzebuergesch" → "lëtzebuergesch" (diacritique manquante)
         val normalizer = { s: String ->
             s.replace("é", "e")
+             .replace("ë", "e")
              .replace("è", "e")
-             .replace("ò", "o")
-             .replace("à", "a")
+             .replace("ä", "a")
+             .replace("ü", "u")
+             .replace("ö", "o")
         }
-        
+
         val matches = LevenshteinDistance.findClosestMatchesNormalized(
-            input = "kreyol",
+            input = "letzebuergesch",
             dictionary = dictionary,
             normalizer = normalizer,
             maxDistance = 1,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'kréyòl' avec normalisation", 
-                   matches.any { it.first == "kréyòl" || it.first.contains("kreyol") })
+        assertTrue("Devrait trouver 'lëtzebuergesch' avec normalisation",
+                   matches.any { it.first == "lëtzebuergesch" })
     }
 
     @Test
@@ -203,58 +209,58 @@ class LevenshteinDictionaryTest {
     fun testShortWord_ExactMatch() {
         // Test avec des mots très courts du dictionnaire
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "ka",
+            input = "an",
             dictionary = dictionary,
             maxDistance = 1,
             maxResults = 5
         )
-        
-        assertTrue("Devrait trouver 'ka' (mot le plus fréquent)", 
-                   matches.any { it.first == "ka" })
-        
-        if (dictionary.any { it.first == "ka" }) {
-            assertEquals("'ka' devrait être le premier résultat", "ka", matches.first().first)
+
+        assertTrue("Devrait trouver 'an' (mot le plus fréquent)",
+                   matches.any { it.first == "an" })
+
+        if (dictionary.any { it.first == "an" }) {
+            assertEquals("'an' devrait être le premier résultat", "an", matches.first().first)
         }
     }
 
     @Test
     fun testShortWord_OneLetterOff() {
-        // Test: "ki" avec des fautes
+        // Test: "mir" avec des fautes
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "ki",
+            input = "mir",
             dictionary = dictionary,
             maxDistance = 1,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'ki'", matches.any { it.first == "ki" })
+        assertTrue("Devrait trouver 'mir'", matches.any { it.first == "mir" })
     }
 
     @Test
-    fun testMediumWord_CommonKreyolWord() {
-        // Test: "manma" → "manman"
+    fun testMediumWord_CommonLuxWord() {
+        // Test: "regierun" → "regierung"
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "manma",
+            input = "regierun",
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = 5
         )
         
-        assertTrue("Devrait trouver 'manman'", matches.any { it.first == "manman" })
+        assertTrue("Devrait trouver 'regierung'", matches.any { it.first == "regierung" })
     }
 
     @Test
     fun testLongWord_ComplexTypo() {
         // Test avec un mot plus long
-        if (dictionary.any { it.first == "timoun" }) {
+        if (dictionary.any { it.first == "zesummen" }) {
             val matches = LevenshteinDistance.findClosestMatches(
-                input = "timun",  // 'o' manquant
+                input = "zesumen",  // 'm' manquant
                 dictionary = dictionary,
                 maxDistance = 2,
                 maxResults = 5
             )
-            
-            assertTrue("Devrait trouver 'timoun'", matches.any { it.first == "timoun" })
+
+            assertTrue("Devrait trouver 'zesummen'", matches.any { it.first == "zesummen" })
         }
     }
 
@@ -262,10 +268,10 @@ class LevenshteinDictionaryTest {
     fun testGreetings_TypicalErrors() {
         // Test des salutations courantes avec fautes
         val testCases = mapOf(
-            "bonjo" to "bonjou",
-            "bonswá" to "bonswa",
-            "meesi" to "mèsi",
-            "souple" to "souplé"
+            "moin" to "moien",
+            "mersci" to "merci",
+            "gesat" to "gesot",
+            "kanne" to "kanner"
         )
         
         testCases.forEach { (input, expected) ->
@@ -289,7 +295,7 @@ class LevenshteinDictionaryTest {
         val startTime = System.currentTimeMillis()
         
         val matches = LevenshteinDistance.findClosestMatches(
-            input = "bonjou",
+            input = "moien",
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = 10
