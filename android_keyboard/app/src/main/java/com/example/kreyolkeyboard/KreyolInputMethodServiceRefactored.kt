@@ -52,7 +52,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
         // Mot-dièse séparé du lien par une espace : ce message s'insère au fil
         // du texte de l'utilisateur, il ne peut pas se permettre de saut de ligne.
-        private const val SHARE_INVITE_MESSAGE = "An maké mésaj la sa épi Lëtzebuergesch Clavier, " +
+        private const val SHARE_INVITE_MESSAGE = "Geschriwwe mam Lëtzebuergesch Clavier, " +
             "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&pcampaignid=web_share" +
             " ${SettingsActivity.SHARE_HASHTAG}"
 

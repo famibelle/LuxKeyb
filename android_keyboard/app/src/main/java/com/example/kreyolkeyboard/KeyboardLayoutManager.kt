@@ -279,8 +279,8 @@ class KeyboardLayoutManager(private val context: Context) {
             }
         }
         
-        // Application du style Guadeloupe
-        applyGuadeloupeStyleToView(button, key)
+        // Application du style des touches
+        applyKeyStyleToView(button, key)
         
         // Ajouter le bouton à la liste de suivi
         keyboardButtons.add(button)
@@ -387,123 +387,58 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Applique le style visuel spécifique à la Guadeloupe (supporte Button et ImageButton)
+     * Applique le style visuel des touches (supporte Button et ImageButton)
      */
-    private fun applyGuadeloupeStyleToView(view: View, key: String) {
+    private fun applyKeyStyleToView(view: View, key: String) {
         val drawable = GradientDrawable().apply {
             cornerRadius = dpToPx(CORNER_RADIUS_DP.toInt()).toFloat()
-            
+
+            // Toutes les touches partagent le même fond blanc ; seule la touche
+            // majuscule s'assombrit quand elle est active. Cette uniformité est
+            // un choix propre au clavier luxembourgeois : la version amont peint
+            // les touches spéciales en vert tropical, orange et bleu caraïbe,
+            // une palette qui n'a pas de sens ici.
             when (key) {
-                "⇧" -> {
-                    // Touche Shift avec nuance de blanc/gris
-                    val colors = when {
-                        isCapsLock -> intArrayOf(Color.parseColor("#E8E8E8"), Color.parseColor("#D0D0D0")) // Gris moyen activé
-                        isCapitalMode -> intArrayOf(Color.parseColor("#F0F0F0"), Color.parseColor("#E0E0E0")) // Gris clair actif
-                        else -> intArrayOf(Color.parseColor("#FFFFFF"), Color.parseColor("#F8F8F8")) // Blanc neutre
-                    }
-                    setColors(colors)
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "⌫" -> {
-                    // Touche Supprimer avec couleur semi-transparente
-                    setColors(intArrayOf(
-                        Color.parseColor("#CCFFFFFF"), // Blanc semi-transparent
-                        Color.parseColor("#C0F0F0F0")  // Gris très clair semi-transparent
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "⏎" -> {
-                    // Touche Entrée avec vert tropical
-                    setColors(intArrayOf(
-                        Color.parseColor("#00C853"), // Vert tropical vif
-                        Color.parseColor("#00A843")  // Vert tropical foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                ",", ".", "'", "-" -> {
-                    // Touches virgule, point, apostrophe et trait d'union avec orange caraïbe
-                    setColors(intArrayOf(
-                        Color.parseColor("#FF8C00"), // Orange caraïbe vif
-                        Color.parseColor("#FF7000")  // Orange caraïbe foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "123", "ABC", "EMOJI" -> {
-                    // Touches de mode avec vert tropical
-                    setColors(intArrayOf(
-                        Color.parseColor("#00C853"), // Vert tropical vif
-                        Color.parseColor("#00A843")  // Vert tropical foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "à", "è", "ò", "é", "ù", "ì", "ç" -> {
-                    // Touches créoles avec nuance de blanc/gris
-                    setColors(intArrayOf(
-                        Color.parseColor("#FFFFFF"), // Blanc
-                        Color.parseColor("#F8F8F8")  // Blanc cassé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                " " -> {
-                    // Barre d'espace avec bleu caraïbe
-                    setColors(intArrayOf(
-                        Color.parseColor("#1E90FF"), // Bleu caraïbe
-                        Color.parseColor("#0000FF")  // Bleu pour dégradé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                else -> {
-                    // Touches normales avec gradient blanc/gris
-                    setColors(intArrayOf(
-                        Color.parseColor("#FFFFFF"),
-                        Color.parseColor("#F5F5F5")
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
+                "⇧" -> setColor(
+                    if (isCapsLock || isCapitalMode) Color.parseColor("#E0E0E0")
+                    else Color.parseColor("#FFFFFF")
+                )
+                else -> setColor(Color.parseColor("#FFFFFF"))
             }
-            
-            // Bordure subtile
+
             setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))
         }
-        
+
         view.background = drawable
-        
-        // Couleur du texte (seulement pour Button, pas ImageButton)
+
+        // Texte et icônes en gris foncé uniforme, sur fond blanc uniforme.
         if (view is Button) {
-            view.setTextColor(when (key) {
-                "⇧" -> if (isCapsLock || isCapitalMode) Color.parseColor("#666666") else Color.parseColor("#333333")
-                ",", ".", "'", "-" -> Color.WHITE // Texte blanc sur fond orange caraïbe
-                "⏎", "123", "ABC", "EMOJI" -> Color.WHITE // Texte blanc sur fond vert tropical
-                "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.parseColor("#333333") // Texte gris foncé sur fond blanc
-                " " -> Color.parseColor("#CCFFFFFF") // Blanc semi-transparent pour Potomitan™ - discret mais lisible
-                else -> Color.parseColor("#333333")
-            })
-            
-            // Ombre portée pour l'effet de profondeur
+            view.setTextColor(
+                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
+                else Color.parseColor("#333333")
+            )
+
+            // Ombre portée pour l'effet de profondeur.
             // setShadowLayer() sous rendu accéléré matériellement est une source connue
             // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
             // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
             view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
         }
-        
-        // Teinte de l'icône pour ImageButton
+
         if (view is android.widget.ImageButton) {
-            // Couleur des icônes selon le type de touche
-            when (key) {
-                "⇧" -> view.setColorFilter(if (isCapsLock || isCapitalMode) Color.parseColor("#666666") else Color.parseColor("#333333"))
-                "⌫" -> view.setColorFilter(Color.parseColor("#333333")) // Icône gris foncé sur fond blanc
-                "⏎" -> view.setColorFilter(Color.WHITE) // Icône blanche sur fond vert tropical
-                else -> view.setColorFilter(Color.WHITE)
-            }
+            view.setColorFilter(
+                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
+                else Color.parseColor("#333333")
+            )
         }
     }
-    
+
     /**
-     * Applique le style visuel spécifique à la Guadeloupe (compatibilité avec ancien code)
+     * Surcharge de compatibilité pour les appels qui passent encore un Button.
      */
-    private fun applyGuadeloupeStyle(button: Button, key: String) {
-        applyGuadeloupeStyleToView(button, key)
+    private fun applyKeyStyle(button: Button, key: String) {
+        applyKeyStyleToView(button, key)
     }
     
     /**
@@ -695,7 +630,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 } else if (button is Button) {
                     // Si c'est un Button classique, mettre à jour le texte
                     button.text = getDisplayText(key)
-                    applyGuadeloupeStyle(button, key)
+                    applyKeyStyle(button, key)
                 }
                 
                 Log.e("SHIFT_REAL_DEBUG", "🚨 SHIFT STYLE APPLIED!")

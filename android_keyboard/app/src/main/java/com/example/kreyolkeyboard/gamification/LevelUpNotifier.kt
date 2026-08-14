@@ -109,7 +109,8 @@ object LevelUpNotifier {
         )
 
         // Formulation reprise telle quelle de la célébration existante dans
-        // SettingsActivity : ne pas rédiger de kréyòl nouveau ici.
+        // SettingsActivity, pour que la notification et l'écran de stats disent
+        // la même chose.
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             // Silhouette monochrome : Android ne garde que l'alpha de cette
             // icône, une image en couleurs y apparaîtrait comme un carré plein.
@@ -118,8 +119,8 @@ object LevelUpNotifier {
             // pastille d'icône elle-même : sans couleur explicite, celle-ci est
             // dérivée de l'icône de l'app, presque blanche, donc invisible.
             .setColor(ACCENT_COLOR)
-            .setContentTitle("Ou vansé !")
-            .setContentText("Ou rivé nivo $levelLabel")
+            .setContentTitle("Dir sidd virugaangen !")
+            .setContentText("Neien Niveau : $levelLabel")
             .setPriority(NotificationCompat.PRIORITY_LOW)  // équivalent pré-Android 8
             .setSilent(true)
             .setAutoCancel(true)
