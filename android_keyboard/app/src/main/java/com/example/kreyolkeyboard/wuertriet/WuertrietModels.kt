@@ -1,4 +1,4 @@
-package com.example.kreyolkeyboard.mokarenaj
+package com.example.kreyolkeyboard.wuertriet
 
 import android.content.Context
 import android.graphics.Color
@@ -7,7 +7,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 /**
- * Modèles de données pour le jeu "Mo an Karénaj"
+ * Modèles de données pour le jeu "Wuertriet"
  */
 
 enum class LetterState {
@@ -21,12 +21,12 @@ fun LetterState.color(): Int = when (this) {
     LetterState.EMPTY -> Color.parseColor("#E0E0E0")
 }
 
-data class MoKarenajRow(
+data class WuertrietRow(
     val letters: List<Char?>,
     val states: List<LetterState>
 )
 
-object MoKarenajData {
+object WuertrietData {
 
     const val WORD_LENGTH = 5
     const val MAX_ATTEMPTS = 6
@@ -73,7 +73,7 @@ object MoKarenajData {
     }
 
     /**
-     * Évalue une proposition par rapport au mot cible, à la façon du jeu Mo an Karénaj :
+     * Évalue une proposition par rapport au mot cible, à la façon du jeu Wuertriet :
      * deux passes pour gérer correctement les lettres répétées.
      */
     fun evaluateGuess(target: String, guess: String): List<LetterState> {

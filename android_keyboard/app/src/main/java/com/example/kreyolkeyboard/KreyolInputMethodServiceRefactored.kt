@@ -30,7 +30,7 @@ import java.util.TimerTask
 import com.example.kreyolkeyboard.BilingualSuggestion
 import com.example.kreyolkeyboard.SuggestionLanguage
 import com.example.kreyolkeyboard.gamification.CreoleDictionaryWithUsage
-import com.example.kreyolkeyboard.gamification.CreoleLevels
+import com.example.kreyolkeyboard.gamification.LuxLevels
 import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import com.example.kreyolkeyboard.gamification.WordCommitListener
 
@@ -849,7 +849,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             if (totalWords <= 0) return
 
             val discovered = dictionaryWithUsage.getDiscoveredWordsCount()
-            val currentIndex = CreoleLevels.indexFor(discovered, totalWords)
+            val currentIndex = LuxLevels.indexFor(discovered, totalWords)
 
             val prefs = getSharedPreferences(GAMIFICATION_PREFS, Context.MODE_PRIVATE)
             val lastNotified = prefs.getInt(PREF_LAST_NOTIFIED_LEVEL, -1)
@@ -867,7 +867,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 .putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex)
                 .putBoolean(SettingsActivity.PREF_LEVEL_BADGE_PENDING, true)
                 .apply()
-            LevelUpNotifier.notifyLevelUp(this, CreoleLevels.LEVELS[currentIndex].label)
+            LevelUpNotifier.notifyLevelUp(this, LuxLevels.LEVELS[currentIndex].label)
         } catch (e: Exception) {
             // Un échec de notification ne doit jamais perturber la frappe
             Log.e(TAG, "Erreur lors de la notification de niveau", e)
