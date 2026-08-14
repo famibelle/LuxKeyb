@@ -8,8 +8,8 @@ Le pipeline ultime pour le clavier luxembourgeois intelligent.
 EXÉCUTION AUTOMATIQUE COMPLÈTE - Aucune interaction requise !
 
 Pipeline automatique intégré:
-• Récupération données Hugging Face (Akabi/Luxemburgish_Press_Conferences_Gov)
-• Extraction depuis la colonne "transcription"
+• Récupération données Hugging Face (POTOMITAN/luxembourgish-corpus)
+• Extraction depuis la colonne "Texte"
 • Création/enrichissement dictionnaire  
 • Génération N-grams intelligents
 • Analyse comparative (delta)
@@ -61,6 +61,9 @@ class LuxembourgishPipelineUnique:
         self.chemin_dict = "../android_keyboard/app/src/main/assets/luxemburgish_dict.json"
         self.chemin_ngrams = "../android_keyboard/app/src/main/assets/luxemburgish_ngrams.json"
         self.hf_token = None
+        # En mode strict, le repli sur le corpus local est refusé : mieux vaut
+        # un build rouge qu'un dictionnaire reconstruit sur quinze phrases.
+        self.strict = "--strict" in sys.argv
         self.textes_luxembourgeois = []
         self.dictionnaire_actuel = {}
         self.ngrams_actuels = {}
@@ -116,7 +119,15 @@ class LuxembourgishPipelineUnique:
         if os.path.exists(self.chemin_dict):
             try:
                 with open(self.chemin_dict, 'r', encoding='utf-8') as f:
-                    self.dictionnaire_actuel = json.load(f)
+                    donnees = json.load(f)
+                # Le format Android est une liste de paires [["wuert", 123], ...].
+                # On accepte aussi l'ancien format objet {"wuert": 123} pour pouvoir
+                # relire un dictionnaire produit avant la migration 10.9.2.
+                if isinstance(donnees, list):
+                    self.dictionnaire_actuel = {paire[0]: paire[1] for paire in donnees
+                                                if isinstance(paire, list) and len(paire) >= 2}
+                else:
+                    self.dictionnaire_actuel = donnees
                 print(f"📚 Dictionnaire existant: {len(self.dictionnaire_actuel)} mots")
             except Exception as e:
                 print(f"⚠️ Erreur lecture dictionnaire: {e}")
@@ -139,61 +150,62 @@ class LuxembourgishPipelineUnique:
         textes_charges = False
         
         # Essayer Hugging Face d'abord
+        dataset = None  # Initialisation pour éviter l'erreur de variable non définie
         if HAS_DATASETS:
             try:
                 print("🔄 Téléchargement depuis Hugging Face...")
-                print(f"   📡 Connexion au dataset Akabi/Luxemburgish_Press_Conferences_Gov...")
-                print("   🎵 Dataset audio détecté - Mode optimisé transcriptions uniquement")
+                print(f"   📡 Connexion au dataset POTOMITAN/luxembourgish-corpus...")
+                print("   📝 Dataset texte détecté - Mode optimisé pour corpus textuel")
                 
-                # Chargement optimisé sans audio - utilisation du streaming pour éviter le chargement de l'audio
+                # Chargement optimisé - utilisation du streaming pour traiter les données par lots
                 try:
-                    print("   🚀 Méthode streaming (rapide, sans audio)...")
-                    ds = load_dataset("Akabi/Luxemburgish_Press_Conferences_Gov", streaming=True)
+                    print("   🚀 Méthode streaming (rapide)...")
+                    ds = load_dataset("POTOMITAN/luxembourgish-corpus", streaming=True)
                     
                     print("   ✅ Streaming activé")
-                    print("   📝 Extraction des transcriptions en mode streaming...")
+                    print("   📝 Extraction des textes en mode streaming...")
                     
                     self.textes_luxembourgeois = []
                     textes_vides = 0
-                    textes_avec_transcription = 0
+                    textes_avec_texte = 0
                     
-                    # Traitement en streaming - plus rapide, pas d'audio chargé
+                    # Traitement en streaming - plus rapide
                     for i, item in enumerate(ds["train"]):
                         # Limiter pour éviter trop de données en streaming
                         if i >= 500:  # Limite raisonnable pour le clavier
                             break
                             
-                        if "transcription" in item and item["transcription"]:
+                        if "Texte" in item and item["Texte"]:
                             self.textes_luxembourgeois.append({
-                                "Texte": item["transcription"],
-                                "Source": "Akabi/Luxemburgish_Press_Conferences_Gov (streaming)",
-                                "metadata": {k: v for k, v in item.items() if k not in ["transcription", "audio"]}
+                                "Texte": item["Texte"],
+                                "Source": "POTOMITAN/luxembourgish-corpus (streaming)",
+                                "metadata": {k: v for k, v in item.items() if k not in ["Texte", "Source"]}
                             })
-                            textes_avec_transcription += 1
+                            textes_avec_texte += 1
                         else:
                             textes_vides += 1
                             
                         # Affichage de progression
                         if (i + 1) % 50 == 0:
-                            print(f"      📊 Traité {i + 1} transcriptions...")
+                            print(f"      📊 Traité {i + 1} textes...")
                     
                     print(f"   📈 Statistiques d'extraction (streaming):")
-                    print(f"      - Transcriptions traitées: {textes_avec_transcription + textes_vides}")
-                    print(f"      - Avec transcription valide: {textes_avec_transcription}")
+                    print(f"      - Textes traités: {textes_avec_texte + textes_vides}")
+                    print(f"      - Avec texte valide: {textes_avec_texte}")
                     print(f"      - Vides ou invalides: {textes_vides}")
-                    print(f"      - Transcriptions extraites: {len(self.textes_luxembourgeois)}")
+                    print(f"      - Textes extraits: {len(self.textes_luxembourgeois)}")
                     
-                    # Échantillon des premières transcriptions
+                    # Échantillon des premiers textes
                     if self.textes_luxembourgeois:
-                        print("   🔬 Échantillon des transcriptions:")
+                        print("   🔬 Échantillon des textes:")
                         for i, texte in enumerate(self.textes_luxembourgeois[:3]):
                             preview = texte["Texte"][:50] + "..." if len(texte["Texte"]) > 50 else texte["Texte"]
-                            print(f"      Transcription {i+1}: '{preview}'")
+                            print(f"      Texte {i+1}: '{preview}'")
                     
                     if self.textes_luxembourgeois:
                         print(f"🎉 TÉLÉCHARGEMENT HUGGING FACE RÉUSSI (STREAMING) !")
-                        print(f"   ✅ {len(self.textes_luxembourgeois)} transcriptions récupérées")
-                        print(f"   📊 Source: Dataset Akabi (mode streaming - sans audio)")
+                        print(f"   ✅ {len(self.textes_luxembourgeois)} textes récupérés")
+                        print(f"   📊 Source: Dataset POTOMITAN (mode streaming)")
                         textes_charges = True
                     else:
                         print("⚠️ STREAMING INCOMPLET - Tentative méthode standard...")
@@ -201,77 +213,76 @@ class LuxembourgishPipelineUnique:
                         
                 except Exception as e_stream:
                     print(f"   ⚠️ Streaming échoué: {e_stream}")
-                    print("   🔄 Tentative méthode standard (avec gestion audio)...")
+                    print("   🔄 Tentative méthode standard...")
                     textes_charges = False
                 
                 # Fallback: méthode standard si streaming échoue
                 if not textes_charges:
-                    # Utilisation du code simplifié fourni avec gestion optimisée de l'audio
-                    ds = load_dataset("Akabi/Luxemburgish_Press_Conferences_Gov")
+                    # Utilisation du code simplifié avec chargement complet
+                    ds = load_dataset("POTOMITAN/luxembourgish-corpus")
                     dataset = ds
-                
-                print("   ✅ Dataset récupéré avec succès")
-                
-                # Vérifier la structure du dataset
-                print(f"   � Structure du dataset: {list(dataset.keys())}")
-                
-                # Déterminer quelle clé utiliser
-                data_split = None
-                if 'train' in dataset:
-                    data_split = dataset['train']
-                    split_name = 'train'
-                elif 'test' in dataset:
-                    data_split = dataset['test']
-                    split_name = 'test'
-                else:
-                    # Prendre la première clé disponible
-                    split_name = list(dataset.keys())[0]
-                    data_split = dataset[split_name]
-                
-                print(f"   📊 Utilisation du split: '{split_name}'")
-                print(f"   📊 Nombre total de rows: {len(data_split)}")
-                print("   🔍 Extraction des transcriptions...")
-                
-                # Échantillon des premières rows pour debug
-                print("   🔬 Échantillon des premières rows:")
-                for i in range(min(3, len(data_split))):
-                    item = data_split[i]
-                    print(f"      Row {i+1}: {list(item.keys())}")
-                    if 'transcription' in item:
-                        preview = str(item['transcription'])[:50] + "..." if len(str(item['transcription'])) > 50 else str(item['transcription'])
-                        print(f"         Transcription: '{preview}'")
-                
-                self.textes_luxembourgeois = []
-                textes_vides = 0
-                textes_avec_transcription = 0
-                
-                for i, item in enumerate(data_split):
-                    if "transcription" in item and item["transcription"]:
-                        self.textes_luxembourgeois.append({
-                            "Texte": item["transcription"],
-                            "Source": "Akabi/Luxemburgish_Press_Conferences_Gov",
-                            "metadata": {k: v for k, v in item.items() if k != "transcription"}
-                        })
-                        textes_avec_transcription += 1
+                    print("   ✅ Dataset récupéré avec succès")
+                    
+                    # Vérifier la structure du dataset
+                    print(f"   📁 Structure du dataset: {list(dataset.keys())}")
+                    
+                    # Déterminer quelle clé utiliser
+                    data_split = None
+                    if 'train' in dataset:
+                        data_split = dataset['train']
+                        split_name = 'train'
+                    elif 'test' in dataset:
+                        data_split = dataset['test']
+                        split_name = 'test'
                     else:
-                        textes_vides += 1
-                        if textes_vides <= 3:  # Afficher seulement les 3 premiers exemples
-                            print(f"   ⚠️ Row {i+1} sans transcription valide: {list(item.keys())}")
+                        # Prendre la première clé disponible
+                        split_name = list(dataset.keys())[0]
+                        data_split = dataset[split_name]
+                    
+                    print(f"   📊 Utilisation du split: '{split_name}'")
+                    print(f"   📊 Nombre total de rows: {len(data_split)}")
+                    print("   🔍 Extraction des textes...")
                 
-                print(f"   📈 Statistiques d'extraction:")
-                print(f"      - Rows totales: {len(data_split)}")
-                print(f"      - Avec champ 'transcription': {textes_avec_transcription}")
-                print(f"      - Vides ou invalides: {textes_vides}")
-                print(f"      - Transcriptions extraites: {len(self.textes_luxembourgeois)}")
-                
-                if self.textes_luxembourgeois:
-                    print(f"🎉 TÉLÉCHARGEMENT HUGGING FACE RÉUSSI !")
-                    print(f"   ✅ {len(self.textes_luxembourgeois)} transcriptions récupérées")
-                    print(f"   📊 Source: Dataset Akabi/Luxemburgish_Press_Conferences_Gov")
-                    textes_charges = True
-                else:
-                    print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
-                    print("   ⚠️ Dataset vide - aucune transcription trouvée")
+                    # Échantillon des premières rows pour debug
+                    print("   🔬 Échantillon des premières rows:")
+                    for i in range(min(3, len(data_split))):
+                        item = data_split[i]
+                        print(f"      Row {i+1}: {list(item.keys())}")
+                        if 'Texte' in item:
+                            preview = str(item['Texte'])[:50] + "..." if len(str(item['Texte'])) > 50 else str(item['Texte'])
+                            print(f"         Texte: '{preview}'")
+                    
+                    self.textes_luxembourgeois = []
+                    textes_vides = 0
+                    textes_avec_texte = 0
+                    
+                    for i, item in enumerate(data_split):
+                        if "Texte" in item and item["Texte"]:
+                            self.textes_luxembourgeois.append({
+                                "Texte": item["Texte"],
+                                "Source": "POTOMITAN/luxembourgish-corpus",
+                                "metadata": {k: v for k, v in item.items() if k != "Texte"}
+                            })
+                            textes_avec_texte += 1
+                        else:
+                            textes_vides += 1
+                            if textes_vides <= 3:  # Afficher seulement les 3 premiers exemples
+                                print(f"   ⚠️ Row {i+1} sans texte valide: {list(item.keys())}")
+                    
+                    print(f"   📈 Statistiques d'extraction:")
+                    print(f"      - Rows totales: {len(data_split)}")
+                    print(f"      - Avec champ 'Texte': {textes_avec_texte}")
+                    print(f"      - Vides ou invalides: {textes_vides}")
+                    print(f"      - Textes extraits: {len(self.textes_luxembourgeois)}")
+                    
+                    if self.textes_luxembourgeois:
+                        print(f"🎉 TÉLÉCHARGEMENT HUGGING FACE RÉUSSI !")
+                        print(f"   ✅ {len(self.textes_luxembourgeois)} textes récupérés")
+                        print(f"   📊 Source: Dataset POTOMITAN/luxembourgish-corpus")
+                        textes_charges = True
+                    else:
+                        print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
+                        print("   ⚠️ Dataset vide - aucun texte trouvé")
                     
             except Exception as e:
                 print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
@@ -283,12 +294,21 @@ class LuxembourgishPipelineUnique:
             print("   🔄 Passage au mode fallback local...")
         
         # Fallback local si Hugging Face échoue
+        if not textes_charges and self.strict:
+            print("\n❌ MODE STRICT : téléchargement Hugging Face échoué.")
+            print("   Le corpus local de secours ne compte que quelques phrases :")
+            print("   s'en servir reconstruirait les n-grammes sur presque rien,")
+            print("   en conservant l'ancien dictionnaire — une dégradation")
+            print("   invisible pour les contrôles de format et de volumétrie.")
+            print("   Vérifiez HF_TOKEN, puis relancez.")
+            return False
+
         if not textes_charges:
             print("\n🔄 FALLBACK: Recherche de fichiers locaux...")
             chemins_locaux = [
-                "luxemburgish_data/transcriptions.json",
-                "../luxemburgish_data/transcriptions.json",
-                "transcriptions_luxembourgeoises.json"
+                "luxemburgish_data/textes.json",
+                "../luxemburgish_data/textes.json",
+                "textes_luxembourgeois.json"
             ]
             
             for chemin in chemins_locaux:
@@ -301,14 +321,14 @@ class LuxembourgishPipelineUnique:
                         
                         if isinstance(data, list):
                             self.textes_luxembourgeois = data
-                        elif isinstance(data, dict) and "transcriptions" in data:
-                            self.textes_luxembourgeois = data["transcriptions"]
+                        elif isinstance(data, dict) and "textes" in data:
+                            self.textes_luxembourgeois = data["textes"]
                         else:
                             print(f"   ⚠️ Format inattendu dans {chemin}")
                             continue
                         
                         print(f"✅ FALLBACK RÉUSSI !")
-                        print(f"   📊 {len(self.textes_luxembourgeois)} transcriptions chargées depuis {chemin}")
+                        print(f"   📊 {len(self.textes_luxembourgeois)} textes chargés depuis {chemin}")
                         textes_charges = True
                         break
                         
@@ -319,33 +339,33 @@ class LuxembourgishPipelineUnique:
         
         if not textes_charges:
             print("\n❌ ÉCHEC TOTAL !")
-            print("   💥 Aucune transcription luxembourgeoise trouvée (ni Hugging Face, ni local)")
+            print("   💥 Aucun texte luxembourgeois trouvé (ni Hugging Face, ni local)")
             print("   🚨 Le pipeline ne peut pas continuer sans données")
             return False
         
         print(f"\n📋 RÉSUMÉ CHARGEMENT:")
         # Détection de source plus précise
         if textes_charges and self.textes_luxembourgeois:
-            source_hf = any(t.get("Source", "").find("Akabi") != -1 for t in self.textes_luxembourgeois[:5])
-            source = "Hugging Face (Akabi)" if source_hf else "Local"
+            source_hf = any(t.get("Source", "").find("POTOMITAN") != -1 for t in self.textes_luxembourgeois[:5])
+            source = "Hugging Face (POTOMITAN)" if source_hf else "Local"
         else:
             source = "Inconnu"
-        print(f"   📊 {len(self.textes_luxembourgeois)} transcriptions chargées")
+        print(f"   📊 {len(self.textes_luxembourgeois)} textes chargés")
         print(f"   🌐 Source: {source}")
         print(f"   ✅ Prêt pour traitement")
         
         return True
     
     def creer_dictionnaire(self):
-        """Crée un dictionnaire enrichi à partir des transcriptions luxembourgeoises"""
+        """Crée un dictionnaire enrichi à partir des textes luxembourgeois"""
         print("\n📚 CRÉATION DU DICTIONNAIRE LUXEMBOURGEOIS")
         print("-" * 45)
         
         if not self.textes_luxembourgeois:
-            print("❌ Aucune transcription disponible")
+            print("❌ Aucun texte disponible")
             return False
         
-        print(f"🔍 Analyse de {len(self.textes_luxembourgeois)} transcriptions...")
+        print(f"🔍 Analyse de {len(self.textes_luxembourgeois)} textes...")
         
         compteur_mots = Counter()
         # Pattern adapté pour le luxembourgeois (incluant les caractères spéciaux)
@@ -392,7 +412,7 @@ class LuxembourgishPipelineUnique:
         print("-" * 40)
         
         if not self.textes_luxembourgeois:
-            print("❌ Aucune transcription disponible")
+            print("❌ Aucun texte disponible")
             return False
         
         print("🔄 Génération des N-grams...")
@@ -429,38 +449,59 @@ class LuxembourgishPipelineUnique:
                 trigramme = (mots[i], mots[i + 1], mots[i + 2])
                 trigrammes[trigramme] += 1
         
-        # Créer le modèle de prédictions
+        # Créer le modèle de prédictions.
+        #
+        # Le moteur (SuggestionEngine.resolveNgramContext) interroge d'abord une
+        # clé à deux mots — le contexte précédent complet, « an der » — puis se
+        # rabat sur le dernier mot seul, « der ». Les deux familles de clés
+        # cohabitent donc dans le même objet plat, et n'émettre que la seconde
+        # rendrait le contexte trigramme inopérant.
         predictions = {}
-        total_unigrammes = sum(unigrammes.values())
-        
-        for mot in unigrammes:
-            candidats = []
-            
-            # Chercher les mots qui suivent souvent ce mot
-            for (premier, suivant), freq in bigrammes.items():
-                if premier == mot:
-                    probabilite = freq / unigrammes[premier]
-                    if probabilite > 0.01:  # Seuil de pertinence
-                        candidats.append({
-                            "word": suivant,
-                            "probability": round(probabilite, 3)
-                        })
-            
-            # Trier par probabilité décroissante
-            candidats.sort(key=lambda x: x["probability"], reverse=True)
-            
-            # Garder les 5 meilleurs
-            if candidats:
-                predictions[mot] = candidats[:5]
-        
+
+        def _classer(candidats_par_cle, contextes):
+            """Transforme {contexte: Counter(suivants)} en prédictions triées."""
+            for contexte, suivants in candidats_par_cle.items():
+                total = contextes[contexte]
+                if not total:
+                    continue
+                candidats = [
+                    {"word": suivant, "probability": round(freq / total, 3)}
+                    for suivant, freq in suivants.items()
+                    if freq / total > SEUIL_PERTINENCE
+                ]
+                if candidats:
+                    candidats.sort(key=lambda c: c["probability"], reverse=True)
+                    predictions[contexte] = candidats[:MAX_PREDICTIONS]
+
+        SEUIL_PERTINENCE = 0.01
+        MAX_PREDICTIONS = 5
+
+        # Clés à un mot, depuis les bigrammes. Le regroupement préalable évite
+        # le balayage de tous les bigrammes pour chaque unigramme (quadratique).
+        suivants_par_mot = defaultdict(Counter)
+        for (premier, suivant), freq in bigrammes.items():
+            suivants_par_mot[premier][suivant] += freq
+        _classer(suivants_par_mot, unigrammes)
+
+        # Clés à deux mots, depuis les trigrammes.
+        suivants_par_paire = defaultdict(Counter)
+        for (premier, deuxieme, suivant), freq in trigrammes.items():
+            suivants_par_paire[f"{premier} {deuxieme}"][suivant] += freq
+        contextes_paires = Counter()
+        for (premier, deuxieme), freq in bigrammes.items():
+            contextes_paires[f"{premier} {deuxieme}"] += freq
+        _classer(suivants_par_paire, contextes_paires)
+
         self.nouveaux_ngrams = predictions
-        
+
+        cles_deux_mots = sum(1 for cle in predictions if " " in cle)
         print(f"✅ N-grams luxembourgeois créés:")
         print(f"   - Unigrammes: {len(unigrammes)}")
         print(f"   - Bigrammes: {len(bigrammes)}")
         print(f"   - Trigrammes: {len(trigrammes)}")
-        print(f"   - Prédictions: {len(predictions)}")
-        
+        print(f"   - Prédictions: {len(predictions)} "
+              f"({len(predictions) - cles_deux_mots} à un mot, {cles_deux_mots} à deux mots)")
+
         return True
     
     def analyser_statistiques(self):
@@ -587,12 +628,21 @@ class LuxembourgishPipelineUnique:
             shutil.copy2(self.chemin_ngrams, backup_ngrams)
             print(f"📁 Backup N-grams luxembourgeois: {backup_ngrams}")
         
-        # Sauvegarder le nouveau dictionnaire
+        # Sauvegarder le nouveau dictionnaire.
+        #
+        # Le moteur attend une liste de paires [["wuert", 123], ...] triée par
+        # fréquence décroissante, pas un objet. Livrer un objet ici passerait
+        # toutes les vérifications de la CI (le fichier est un JSON valide et
+        # non vide) tout en désactivant silencieusement les suggestions — c'est
+        # exactement ce qui est arrivé en amont sur la v10.2.6.
         if self.nouveau_dictionnaire:
             os.makedirs(os.path.dirname(self.chemin_dict), exist_ok=True)
+            paires = sorted(self.nouveau_dictionnaire.items(),
+                            key=lambda item: (-item[1], item[0]))
             with open(self.chemin_dict, 'w', encoding='utf-8') as f:
-                json.dump(self.nouveau_dictionnaire, f, ensure_ascii=False, indent=2)
-            print(f"✅ Dictionnaire luxembourgeois sauvegardé: {len(self.nouveau_dictionnaire)} mots")
+                json.dump([[mot, freq] for mot, freq in paires], f,
+                          ensure_ascii=False, indent=2)
+            print(f"✅ Dictionnaire luxembourgeois sauvegardé: {len(paires)} mots")
         
         # Sauvegarder les nouveaux N-grams
         if self.nouveaux_ngrams:
@@ -703,7 +753,7 @@ class LuxembourgishPipelineUnique:
         print("=" * 50)
         
         etapes = [
-            ("Chargement transcriptions", self.charger_textes_luxembourgeois),
+            ("Chargement textes", self.charger_textes_luxembourgeois),
             ("Création dictionnaire", self.creer_dictionnaire),
             ("Génération N-grams", self.creer_ngrams),
             ("Analyse statistiques", self.analyser_statistiques),
@@ -713,7 +763,7 @@ class LuxembourgishPipelineUnique:
         ]
         
         succes_total = True
-        
+
         for i, (nom, fonction) in enumerate(etapes, 1):
             print(f"\n⏳ Étape {i}/{len(etapes)}: {nom}")
             try:
@@ -723,6 +773,15 @@ class LuxembourgishPipelineUnique:
                 else:
                     print(f"⚠️ {nom} - Avec avertissements")
                     succes_total = False
+                    # Sans corpus, les étapes suivantes travailleraient sur du
+                    # vide ; en mode strict on s'arrête là pour que l'appelant
+                    # voie un échec franc plutôt qu'un « terminé avec
+                    # avertissements » suivi d'un code de sortie 0.
+                    # `fonction is self.charger_...` ne marcherait pas : chaque
+                    # accès à une méthode liée crée un nouvel objet.
+                    if self.strict and nom == "Chargement textes":
+                        print("\n🛑 Mode strict : pipeline interrompu, aucun fichier réécrit.")
+                        return False
             except Exception as e:
                 print(f"❌ {nom} - Erreur: {e}")
                 succes_total = False

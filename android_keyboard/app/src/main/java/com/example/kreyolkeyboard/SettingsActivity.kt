@@ -1,17 +1,30 @@
 package com.example.kreyolkeyboard
 
+import android.Manifest
+import android.content.ClipData
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
+import com.example.kreyolkeyboard.gamification.LuxLevels
+import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import android.content.Intent
+import android.database.ContentObserver
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -29,11 +42,43 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
+import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
+import com.google.android.material.snackbar.Snackbar
+import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
+import com.example.kreyolkeyboard.wordsearch.WordSearchWord
+import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
+import com.example.kreyolkeyboard.wordsearch.WordSearchThemes
+import com.example.kreyolkeyboard.wordsearch.WordSearchGridAdapter
+import com.example.kreyolkeyboard.wuertriet.WuertrietData
+import com.example.kreyolkeyboard.wuertriet.WuertrietRow
+import com.example.kreyolkeyboard.wuertriet.LetterState
+import com.example.kreyolkeyboard.wuertriet.color
+import com.google.android.play.core.review.ReviewManagerFactory
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Shader
+import androidx.core.content.FileProvider
+import java.io.FileOutputStream
+import android.widget.Toast
+import android.widget.GridView
+import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = home, 1 = stats
+    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = guide, 6 = à propos
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
+    private lateinit var bottomInstallBanner: LinearLayout
+
+    /**
+     * Présence de la pastille de niveau dans la barre d'onglets telle qu'elle
+     * est actuellement dessinée, à distinguer de l'état enregistré dans les
+     * préférences. Le service de saisie pose la pastille pendant que
+     * l'application est en arrière-plan : sans ce repère, [onResume] ne saurait
+     * pas si la barre affichée est à jour.
+     */
+    private var levelBadgeDrawn = false
     
     // 🔧 FIX CRITIQUE: Scope lié au lifecycle de l'activité
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -44,7 +89,81 @@ class SettingsActivity : AppCompatActivity() {
         private var lastSaveTime = 0L
         private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
         private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
-        
+        const val PRIVACY_POLICY_URL = "https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html"
+
+        /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
+        const val EXTRA_OPEN_TAB = "open_tab"
+        const val TAB_STATS = 1
+
+        /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
+        private const val REQUEST_NOTIFICATIONS = 4201
+
+        /**
+         * Posé par le service de saisie au franchissement d'un palier, effacé
+         * quand l'utilisateur affiche enfin ses statistiques. Sert la pastille
+         * de la barre d'onglets. Écrit aussi dans KreyolInputMethodServiceRefactored.
+         */
+        const val PREF_LEVEL_BADGE_PENDING = "level_badge_pending"
+
+        /**
+         * Mot-dièse commun à tous les partages sortants, pour que les messages
+         * envoyés depuis l'application se retrouvent entre eux sur les réseaux.
+         *
+         * Toujours placé en dernier, après une ligne vide : collé juste derrière
+         * le lien Play Store, certains clients l'aspireraient dans l'URL.
+         * Le message inséré par la puce du clavier fait exception, il tient sur
+         * une seule ligne au milieu de ce que l'utilisateur écrit.
+         */
+        const val SHARE_HASHTAG = "#LëtzebuergeschClavier"
+
+        // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
+        // une fonctionnalité réellement présente dans l'application : ne rien y
+        // ajouter qui ne soit pas vérifiable dans le clavier ou les onglets.
+        // ASTUCES.md donne, pour chacune, le code qui la justifie ; toute
+        // astuce ajoutée ici doit y être sourcée, et toute astuce dont la
+        // source disparaît doit être retirée des deux côtés.
+        // Les thèmes (saisie, suggestions, jeux, progression, correcteur) sont
+        // volontairement entrelacés : l'index avance d'un cran par semaine,
+        // donc deux astuces voisines dans la liste se suivent à l'écran.
+        private val WEEKLY_TIPS = listOf(
+            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (ë, ä, é, ü, ö, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
+            "Touchez un mot de la barre de suggestions pour le compléter d'un coup : l'espace est ajouté automatiquement.",
+            "Appui long d'une seconde sur la barre d'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.",
+            "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Mäi Lëtzebuergesch ».",
+            "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
+            "Tapez sans vous soucier des accents : « letzebuergesch » vous propose quand même « lëtzebuergesch ».",
+            "« é », « ä » et « ë » ont chacune leur propre touche en bas du clavier : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.",
+            "Wuertriet : un mot luxembourgeois de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
+            "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
+            "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
+            "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
+            "Activez le correcteur luxembourgeois (onglet Démarrage, étape 4) pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.",
+            "Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.",
+            "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
+            "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
+            "Plus vous employez un mot, plus il remonte dans vos suggestions : le clavier s'ajuste à votre façon d'écrire.",
+            "« Wuertmix » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
+            "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
+            "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
+            "L'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.",
+            "Les diacritiques les plus rares sont en appui long : « ü » et « û » sous le u, « ö » et « ô » sous le o, « à » et « â » sous le a.",
+            "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
+            "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
+            "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
+            "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Mäi Lëtzebuergesch ».",
+            "Les mots luxembourgeois passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot luxembourgeois ne correspond.",
+            "La touche Entrée s'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.",
+            "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
+            "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
+            "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
+            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, notamment les transcriptions des conférences de presse du gouvernement, détaillé dans l'onglet « À Propos ».",
+            "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
+            "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
+            "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
+            "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
+            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
+        )
+
         private var saveExecutor: ScheduledExecutorService? = null
         
         // Fonction statique pour mettre à jour l'usage d'un mot (appelée depuis le clavier)
@@ -208,37 +327,28 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Restaurer l'onglet actif si l'activité a été recréée
-        currentTab = savedInstanceState?.getInt("currentTab", 0) ?: 0
+        // Restaurer l'onglet actif si l'activité a été recréée, ou honorer
+        // l'onglet demandé par l'intent (puce de niveau tapée depuis le clavier).
+        //
+        // Gardé dans une variable locale en plus de currentTab : la mise en page
+        // du ViewPager déclenche onPageSelected(), qui réécrit currentTab à 0
+        // avant que le post{} plus bas ne le lise. Sans cette copie, l'onglet
+        // demandé est systématiquement perdu entre les deux.
+        val requestedTab = savedInstanceState?.getInt("currentTab", 0)
+            ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 0)
+            ?: 0
+        currentTab = requestedTab
         
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
         
-        Log.d("SettingsActivity", "Création de l'activité principale Lëtzebuergesch")
+        Log.d("SettingsActivity", "Création de l'activité principale Lëtzebuergesch Clavier")
         
-        // Layout principal vertical : Titre, Tabs en haut, puis ViewPager
+        // Layout principal vertical : Tabs en haut, puis ViewPager
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#F5F5F5"))
         }
-        
-        // En-tête principal avec le titre de l'app
-        val appHeader = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setPadding(16, 20, 16, 16)
-            setBackgroundColor(Color.parseColor("#0080FF"))
-        }
-        
-        val appTitle = TextView(this).apply {
-            text = "Lëtzebuergesch Clavier"
-            textSize = 22f
-            setTextColor(Color.parseColor("#F8F8FF"))
-            setTypeface(null, Typeface.BOLD)
-            gravity = Gravity.CENTER
-        }
-        
-        appHeader.addView(appTitle)
         
         // Créer la barre d'onglets horizontale
         tabBar = createTabBar()
@@ -252,28 +362,236 @@ class SettingsActivity : AppCompatActivity() {
             )
             adapter = SettingsPagerAdapter(this@SettingsActivity)
             
+            // 🎨 Effet de swipe style Tinder
+            setPageTransformer(TinderSwipeTransformer())
+            
             // Callback pour synchroniser avec la barre d'onglets
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    currentTab = position
+                    // Calculer la position réelle (0, 1 ou 2) avec modulo
+                    currentTab = position % SettingsPagerAdapter.REAL_COUNT
                     updateTabBar()
                 }
             })
+            
+            // 🔄 Démarrer au milieu de la plage virtuelle pour permettre le swipe dans les deux sens
+            post {
+                val startPosition = SettingsPagerAdapter.START_POSITION - (SettingsPagerAdapter.START_POSITION % SettingsPagerAdapter.REAL_COUNT) + requestedTab
+                setCurrentItem(startPosition, false)
+            }
         }
         
-        mainLayout.addView(appHeader)
         mainLayout.addView(tabBar)
         mainLayout.addView(viewPager)
-        
-        setContentView(mainLayout)
-        
-        // Restaurer l'onglet précédent après la création de l'interface
-        viewPager.setCurrentItem(currentTab, false)
-        
-        Log.d("SettingsActivity", "Interface avec tabs en haut créée avec succès")
+
+        // FrameLayout racine : mainLayout en plein écran + bandeau d'installation
+        // superposé, ancré en bas, visible dès l'onboarding (indépendant du scroll
+        // du contenu en dessous)
+        bottomInstallBanner = createBottomInstallBanner()
+        val rootLayout = FrameLayout(this).apply {
+            addView(mainLayout, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ))
+            addView(bottomInstallBanner, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply { gravity = Gravity.BOTTOM })
+        }
+
+        setContentView(rootLayout)
+
+        recordFunnelStep("funnel_first_open")
+        applyFirstRunMode()
+
+        Log.d("SettingsActivity", "Interface avec tabs en haut et swipe cyclique créée avec succès")
+
+        maybeAskForReview()
+        maybeAskForNotificationPermission()
+    }
+
+    /**
+     * Demande la permission de notification, une seule fois, et seulement une
+     * fois le clavier réellement configuré : avant cela l'utilisateur est en
+     * pleine installation, et une demande de plus dans ce tunnel déjà long ne
+     * serait qu'une occasion supplémentaire d'abandonner.
+     *
+     * Cette permission ne sert qu'à la pastille de passage de niveau. Refusée,
+     * le clavier fonctionne exactement comme avant : voir [LevelUpNotifier],
+     * qui ne publie rien sans elle. La demande vient de l'activité parce qu'un
+     * service de saisie ne peut pas afficher de dialogue de permission.
+     */
+    private fun maybeAskForNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (!isKeyboardEnabled() || !isKeyboardSelected()) return
+        if (LevelUpNotifier.canNotify(this)) {
+            LevelUpNotifier.ensureChannel(this)
+            return
+        }
+
+        val prefs = getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("notification_permission_asked", false)) return
+        prefs.edit().putBoolean("notification_permission_asked", true).apply()
+
+        LevelUpNotifier.ensureChannel(this)
+        requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATIONS)
+    }
+
+    // Mode « première ouverture » : tant que le clavier n'a jamais été
+    // entièrement configuré, la barre d'onglets et le swipe sont masqués pour
+    // concentrer l'utilisateur sur la configuration (jeux, stats et guide
+    // n'ont pas de valeur avant l'activation). Le flag ne se pose qu'une
+    // fois : un utilisateur configuré qui désélectionne plus tard le clavier
+    // garde l'accès à tous les onglets.
+    private fun onboardingPrefs() =
+        getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
+
+    // Tunnel d'activation local : horodate chaque jalon du parcours
+    // (première ouverture, activation, sélection, premier mot) une seule
+    // fois, en SharedPreferences — diagnostic consultable dans À Propos,
+    // rien ne quitte le téléphone, cohérent avec la politique « aucune
+    // collecte » de l'app
+    private fun recordFunnelStep(key: String) {
+        val prefs = onboardingPrefs()
+        if (!prefs.contains(key)) {
+            prefs.edit().putLong(key, System.currentTimeMillis()).apply()
+        }
+    }
+
+    private fun applyFirstRunMode() {
+        if (onboardingPrefs().getBoolean("onboarding_completed", false)) return
+        if (isKeyboardEnabled() && isKeyboardSelected()) {
+            // Utilisateur déjà configuré (ex. mise à jour de l'app) :
+            // poser le flag sans jamais montrer le mode restreint
+            onboardingPrefs().edit().putBoolean("onboarding_completed", true).apply()
+            return
+        }
+        tabBar.visibility = View.GONE
+        viewPager.isUserInputEnabled = false
+        bottomInstallBanner.visibility = View.VISIBLE
+    }
+
+    // Appelé par l'onboarding quand la configuration vient d'aboutir :
+    // pose le flag et révèle la navigation avec un léger fondu
+    fun onOnboardingCompleted() {
+        val prefs = onboardingPrefs()
+        if (!prefs.getBoolean("onboarding_completed", false)) {
+            prefs.edit().putBoolean("onboarding_completed", true).apply()
+        }
+        viewPager.isUserInputEnabled = true
+        if (tabBar.visibility != View.VISIBLE) {
+            tabBar.visibility = View.VISIBLE
+            tabBar.alpha = 0f
+            tabBar.animate().alpha(1f).setDuration(400).start()
+        }
+        if (bottomInstallBanner.visibility == View.VISIBLE) {
+            bottomInstallBanner.animate().alpha(0f).setDuration(300)
+                .withEndAction { bottomInstallBanner.visibility = View.GONE }
+                .start()
+        }
+        // Le clavier d'essai (dictionnaires + moteur de suggestions chargés
+        // dans le processus de l'app) n'a plus de raison d'exister une fois
+        // la configuration terminée : la carte qui l'hébergeait disparaît
+        // du wizard, mais l'objet restait sinon référencé indéfiniment
+        demoKeyboardManager?.cleanup()
+        demoKeyboardManager = null
+        demoEngine = null
+        demoEngineReady = false
+
+        maybeShowActivationSuccessCard()
+    }
+
+    // Récompense l'utilisateur juste après un parcours d'activation identifié
+    // comme un point de friction (interstitiel + réglages système) : un seul
+    // affichage, jamais reposé même si l'onboarding se rejoue. Le message
+    // proposé au partage est fixe, écrit avant que l'utilisateur ait tapé
+    // quoi que ce soit avec le clavier — aucun contenu personnel n'est lu.
+    private fun maybeShowActivationSuccessCard() {
+        val prefs = onboardingPrefs()
+        if (prefs.getBoolean("activation_success_card_shown", false)) return
+        prefs.edit().putBoolean("activation_success_card_shown", true).apply()
+
+        AlertDialog.Builder(this)
+            .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
+            .setMessage("Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications.")
+            .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
+            .setNegativeButton("Plus tard", null)
+            .setCancelable(true)
+            .show()
+    }
+
+    // Partage natif (chooser Android), message pré-rédigé et fixe : célèbre
+    // l'activation, pas un contenu écrit par l'utilisateur
+    private fun shareActivationSuccess() {
+        val message = "Ech schreiwen elo op Lëtzebuergesch ! J'ai activé le Lëtzebuergesch Clavier 🎉\n" +
+            "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
+            "Télécharge-le gratuitement :\n" +
+            "https://play.google.com/store/apps/details?id=$packageName" +
+            "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success\n\n" +
+            SHARE_HASHTAG
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur partage activation: ${e.message}")
+            Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Demande d'avis Google Play (In-App Review), déclenchée seulement après
+     * un vrai usage du clavier (flag posé par le service IME) et à partir de
+     * la 2ᵉ ouverture de l'app — le moment où l'utilisateur revient de lui-même.
+     * L'API Play limite elle-même la fréquence d'affichage ; on ne tente
+     * qu'une fois pour ne pas consommer le quota inutilement.
+     */
+    private fun maybeAskForReview() {
+        // Mêmes clés que dans KreyolInputMethodServiceRefactored
+        val prefs = getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("first_real_use_tip_shown", false)) return
+        if (prefs.getBoolean("review_flow_requested", false)) return
+
+        val openCount = prefs.getInt("settings_open_count_after_use", 0) + 1
+        prefs.edit().putInt("settings_open_count_after_use", openCount).apply()
+        if (openCount < 2) return
+
+        try {
+            val manager = ReviewManagerFactory.create(this)
+            manager.requestReviewFlow().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    prefs.edit().putBoolean("review_flow_requested", true).apply()
+                    manager.launchReviewFlow(this, task.result)
+                    Log.d("SettingsActivity", "Flux d'avis Google Play lancé")
+                } else {
+                    Log.d("SettingsActivity", "Flux d'avis indisponible: ${task.exception?.message}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur demande d'avis: ${e.message}")
+        }
     }
     
+    /**
+     * La pastille de l'onglet statistiques n'était lue qu'au moment de
+     * construire la barre d'onglets, donc uniquement au démarrage à froid.
+     * Un palier franchi pendant que l'application dormait dans la pile des
+     * tâches restait invisible au retour (constaté sur émulateur le
+     * 08/08/2026) — et quand la permission de notification a été refusée,
+     * cette pastille est le seul signal qui existe.
+     */
+    override fun onResume() {
+        super.onResume()
+
+        if (::tabBar.isInitialized && hasPendingLevelBadge() != levelBadgeDrawn) {
+            Log.d("SettingsActivity", "🔄 Pastille de niveau à rafraîchir au retour au premier plan")
+            updateTabBar()
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
@@ -303,37 +621,114 @@ class SettingsActivity : AppCompatActivity() {
         }, 100)
     }
     
+    // Bandeau d'installation ancré en bas, superposé au contenu de l'onboarding
+    // (indépendant du scroll) : rappel visuel permanent tant que le clavier
+    // n'est ni activé ni sélectionné. S'ajoute au CTA déjà présent dans la
+    // carte de démo (createDemoKeyboardCard) sans le remplacer — même style
+    // et même action pour rester cohérent.
+    private fun createBottomInstallBanner(): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            visibility = View.GONE
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            elevation = 12f
+            setPadding(32, 28, 32, 28)
+            setOnClickListener { showPreSettingsWarningDialog() }
+
+            val label = TextView(this@SettingsActivity).apply {
+                text = "Ça vous plaît ? Installez-le →"
+                textSize = 15f
+                setTextColor(Color.WHITE)
+                setTypeface(null, Typeface.BOLD)
+                gravity = Gravity.CENTER
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            addView(label)
+        }
+    }
+
     private fun createTabBar(): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 
-                140 // Hauteur augmentée pour afficher les emojis complets sans coupure
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
             setBackgroundColor(Color.WHITE)
             elevation = 4f // Ombre légère pour séparer du contenu
+            
+            // Bandeau bleu en haut
+            val appHeader = LinearLayout(this@SettingsActivity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                setBackgroundColor(Color.parseColor("#0080FF"))
+                gravity = Gravity.CENTER
+                setPadding(16, 16, 16, 16)
+            }
+            
+            val appTitle = TextView(this@SettingsActivity).apply {
+                text = "Lëtzebuergesch Clavier"
+                textSize = 22f
+                setTextColor(Color.WHITE)
+                setTypeface(null, Typeface.BOLD)
+                gravity = Gravity.CENTER
+            }
+            
+            appHeader.addView(appTitle)
             
             // Container pour les onglets
             val tabContainer = LinearLayout(this@SettingsActivity).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1f // Prend le reste de la hauteur
+                    140
                 )
                 gravity = Gravity.CENTER
             }
             
-            // Tab Accueil
-            val homeTab = createTab(0, "🏠", "Accueil")
-            tabContainer.addView(homeTab)
-            Log.d("SettingsActivity", "Onglet Accueil créé et ajouté")
+            // Tab Démarrage
+            val startTab = createTab(0, "🚀", "Démarrage")
+            tabContainer.addView(startTab)
+            Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
             
             // Tab Statistiques  
             val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
+            // Tab Wuertsich
+            val wordSearchTab = createTab(2, "🎲", "Wuertsich")
+            tabContainer.addView(wordSearchTab)
+            Log.d("SettingsActivity", "Onglet Wuertsich créé et ajouté")
+            
+            // Tab Wuertmix
+            val wordScrambleTab = createTab(3, "🔤", "Wuertmix")
+            tabContainer.addView(wordScrambleTab)
+            Log.d("SettingsActivity", "Onglet Wuertmix créé et ajouté")
+
+            // Tab Wuertriet
+            val wuertrietTab = createTab(4, "🟩", "Wuertriet")
+            tabContainer.addView(wuertrietTab)
+            Log.d("SettingsActivity", "Onglet Wuertriet créé et ajouté")
+
+            // Tab Guide
+            val guideTab = createTab(5, "📖", "Guide")
+            tabContainer.addView(guideTab)
+            Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
+
+            // Tab À Propos
+            val aboutTab = createTab(6, "ℹ️", "À Propos")
+            tabContainer.addView(aboutTab)
+            Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
+
             // Ligne de séparation en bas (fine)
             val separator = View(this@SettingsActivity).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -343,11 +738,20 @@ class SettingsActivity : AppCompatActivity() {
                 setBackgroundColor(Color.parseColor("#E0E0E0"))
             }
             
+            addView(appHeader)
             addView(tabContainer)
             addView(separator)
         }
     }
     
+    /** Préférences partagées avec le service de saisie pour la progression. */
+    private fun gamificationPrefs() =
+        getSharedPreferences("lux_gamification_prefs", Context.MODE_PRIVATE)
+
+    /** Un palier a-t-il été franchi sans que l'utilisateur ait rouvert ses statistiques ? */
+    private fun hasPendingLevelBadge(): Boolean =
+        gamificationPrefs().getBoolean(PREF_LEVEL_BADGE_PENDING, false)
+
     private fun createTab(tabIndex: Int, emoji: String, label: String): LinearLayout {
         Log.d("SettingsActivity", "Création onglet $tabIndex: $emoji $label")
         return LinearLayout(this).apply {
@@ -399,9 +803,36 @@ class SettingsActivity : AppCompatActivity() {
                 setTypeface(null, if (tabIndex == currentTab) Typeface.BOLD else Typeface.NORMAL)
             }
             
-            addView(emojiView)
+            // Pastille de niveau non vu : le franchissement d'un palier n'est
+            // célébré qu'au dessin du contenu de l'onglet statistiques. Sans ce
+            // repère, quelqu'un qui ouvre l'application et reste sur Démarrage
+            // ne saurait jamais qu'il a quelque chose à y voir.
+            if (tabIndex == TAB_STATS && hasPendingLevelBadge()) {
+                levelBadgeDrawn = true
+                addView(FrameLayout(this@SettingsActivity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    addView(emojiView)
+                    addView(View(this@SettingsActivity).apply {
+                        val d = resources.displayMetrics.density
+                        layoutParams = FrameLayout.LayoutParams(
+                            (10 * d).toInt(), (10 * d).toInt()
+                        ).apply { gravity = Gravity.TOP or Gravity.END }
+                        background = GradientDrawable().apply {
+                            shape = GradientDrawable.OVAL
+                            setColor(Color.parseColor("#FF8C00"))
+                            setStroke((2 * d).toInt(), Color.WHITE)
+                        }
+                    })
+                })
+            } else {
+                if (tabIndex == TAB_STATS) levelBadgeDrawn = false
+                addView(emojiView)
+            }
             addView(labelView)
-            
+
             // Indicateur orange en bas si tab actif
             if (tabIndex == currentTab) {
                 val indicator = View(this@SettingsActivity).apply {
@@ -417,7 +848,23 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             setOnClickListener {
-                viewPager.currentItem = tabIndex
+                // Calculer la position virtuelle la plus proche pour le tabIndex demandé
+                val currentPosition = viewPager.currentItem
+                val currentRealTab = currentPosition % SettingsPagerAdapter.REAL_COUNT
+                val targetRealTab = tabIndex
+                
+                // Calculer la distance la plus courte en tenant compte du cycle
+                val forwardDistance = (targetRealTab - currentRealTab + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+                val backwardDistance = (currentRealTab - targetRealTab + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+                
+                // Choisir la direction la plus courte
+                val targetPosition = if (forwardDistance <= backwardDistance) {
+                    currentPosition + forwardDistance
+                } else {
+                    currentPosition - backwardDistance
+                }
+                
+                viewPager.setCurrentItem(targetPosition, true)
             }
         }
     }
@@ -425,20 +872,46 @@ class SettingsActivity : AppCompatActivity() {
     private fun updateTabBar() {
         tabBar.removeAllViews()
         
+        // Bandeau bleu en haut
+        val appHeader = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            gravity = Gravity.CENTER
+            setPadding(16, 16, 16, 16)
+        }
+        
+        val appTitle = TextView(this).apply {
+            text = "Lëtzebuergesch Clavier"
+            textSize = 22f
+            setTextColor(Color.WHITE)
+            setTypeface(null, Typeface.BOLD)
+            gravity = Gravity.CENTER
+        }
+        
+        appHeader.addView(appTitle)
+        
         // Container pour les onglets
         val tabContainer = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                1f // Prend le reste de la hauteur
+                140
             )
             gravity = Gravity.CENTER
         }
         
-        // Tabs
-        tabContainer.addView(createTab(0, "🏠", "Accueil"))
-        tabContainer.addView(createTab(1, "🇱🇺", "Mäi Lëtzebuergesch"))
+        // Tabs avec les 7 onglets
+        tabContainer.addView(createTab(0, "🚀", "Démarrage"))
+        tabContainer.addView(createTab(1, "📊", "Mäi Lëtzebuergesch"))
+        tabContainer.addView(createTab(2, "🎲", "Wuertsich"))
+        tabContainer.addView(createTab(3, "🔤", "Wuertmix"))
+        tabContainer.addView(createTab(4, "🟩", "Wuertriet"))
+        tabContainer.addView(createTab(5, "📖", "Guide"))
+        tabContainer.addView(createTab(6, "ℹ️", "À Propos"))
         
         // Ligne de séparation en bas
         val separator = View(this).apply {
@@ -449,25 +922,699 @@ class SettingsActivity : AppCompatActivity() {
             setBackgroundColor(Color.parseColor("#E0E0E0"))
         }
         
+        tabBar.addView(appHeader)
         tabBar.addView(tabContainer)
         tabBar.addView(separator)
     }
     
-
-    
-    fun createHomeContent(): LinearLayout {
+    // Onglet 1 : Démarrage / Onboarding
+    fun createOnboardingContent(): LinearLayout {
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(24, 32, 24, 32)
             setBackgroundColor(Color.parseColor("#F5F5F5"))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
         }
         
-        // Description principale
-        val descriptionCard = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-            setBackgroundColor(Color.WHITE)
+        val isEnabled = isKeyboardEnabled()
+        val isSelected = isKeyboardSelected()
+        // Distingue le tout premier setup d'un retour après désélection
+        // (mise à jour système, changement de clavier...) : le ton et
+        // l'habillage diffèrent, mais les étapes restent les mêmes
+        val hasCompletedBefore = onboardingPrefs().getBoolean("onboarding_completed", false)
+
+        // 🔍 Log pour déboguer l'état du clavier
+        Log.d("SettingsActivity", "📋 État du clavier: isEnabled=$isEnabled, isSelected=$isSelected")
+
+        // Jalons du tunnel d'activation (horodatés une seule fois)
+        if (isEnabled) recordFunnelStep("funnel_keyboard_enabled")
+        if (isSelected) recordFunnelStep("funnel_keyboard_selected")
+
+        // Nudge « activation inachevée » : l'utilisateur est allé dans les
+        // réglages mais le clavier n'est toujours pas activé — le cas le
+        // plus fréquent est l'abandon au second des deux avertissements
+        // système (qui annule silencieusement l'activation)
+        val settingsVisitAt = onboardingPrefs().getLong("settings_visit_at", 0L)
+        if (isEnabled && settingsVisitAt != 0L) {
+            onboardingPrefs().edit().remove("settings_visit_at").apply()
         }
+        val showIncompleteNudge = !isEnabled && settingsVisitAt != 0L
+        
+        // Hero Section - Bienvenue avec progression (carte compacte)
+        val heroCard = createCard("#FFFFFF")
+        
+        // Layout horizontal pour icône + texte
+        val headerLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, 12)
+        }
+        
+        val welcomeIcon = TextView(this).apply {
+            text = when {
+                isEnabled && isSelected -> "✅"
+                hasCompletedBefore -> "🔔"
+                isEnabled -> "🎯"
+                else -> "🚀"
+            }
+            textSize = 32f
+            setPadding(0, 0, 16, 0)
+        }
+        
+        val textContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+        
+        val welcomeTitle = TextView(this).apply {
+            text = when {
+                isEnabled && isSelected -> "Tout est prêt !"
+                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné"
+                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif"
+                isEnabled -> "Vous y êtes presque !"
+                else -> "Bienvenue sur Lëtzebuergesch Clavier !"
+            }
+            textSize = 18f
+            setTextColor(when {
+                isEnabled && isSelected -> Color.parseColor("#4CAF50")
+                isEnabled -> Color.parseColor("#FF9800")
+                else -> Color.parseColor("#0080FF")
+            })
+            setTypeface(null, Typeface.BOLD)
+        }
+
+        val welcomeSubtitle = TextView(this).apply {
+            text = when {
+                isEnabled && isSelected -> "Vous pouvez taper en lëtzebuergesch partout !"
+                hasCompletedBefore && isEnabled -> "Sans doute après une mise à jour ou un changement de réglages : rouvrez le sélecteur pour le remettre"
+                hasCompletedBefore -> "Sans doute après une mise à jour ou un changement de réglages : une minute suffit pour le réactiver"
+                isEnabled -> "Sélectionnez le clavier pour l'utiliser"
+                else -> "Configurez votre clavier en 3 étapes ⏱️"
+            }
+            textSize = 13f
+            setTextColor(Color.parseColor("#666666"))
+        }
+        
+        textContainer.addView(welcomeTitle)
+        textContainer.addView(welcomeSubtitle)
+        
+        headerLayout.addView(welcomeIcon)
+        headerLayout.addView(textContainer)
+        
+        heroCard.addView(headerLayout)
+        
+        // Barre de progression compacte
+        val progressBar = createProgressBar(isEnabled, isSelected)
+        heroCard.addView(progressBar)
+        
+        mainLayout.addView(heroCard)
+        mainLayout.addView(createSpacing(16))
+
+        // Essai du clavier avant l'effort : un vrai clavier interactif avec
+        // suggestions bilingues, AVANT de demander d'aller accepter des
+        // avertissements dans les réglages système — la motivation précède
+        // la mécanique. Inutile pour un utilisateur qui revient après une
+        // désélection : il connaît déjà
+        if ((!isEnabled || !isSelected) && !hasCompletedBefore) {
+            mainLayout.addView(createDemoKeyboardCard())
+            mainLayout.addView(createSpacing(16))
+        }
+
+        // Section "En 3 étapes"
+        val stepsTitle = TextView(this).apply {
+            text = "📍 Configuration"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        mainLayout.addView(stepsTitle)
+
+        // Carte d'explication avant l'avertissement système Android, affichée
+        // uniquement tant que le clavier n'est pas encore activé : le
+        // dialogue "ce clavier peut collecter tout ce que vous tapez..." est
+        // affiché par Android pour tout clavier tiers, sans que l'app ne
+        // puisse le personnaliser — on prépare l'utilisateur avant qu'il
+        // n'apparaisse plutôt que de le laisser le découvrir sans contexte.
+        // Carte d'encouragement après un aller-retour infructueux dans les
+        // réglages : remplace la carte d'information (déjà lue) par le
+        // diagnostic de l'échec le plus probable et l'invitation à réessayer
+        if (showIncompleteNudge) {
+            recordFunnelStep("funnel_settings_return_no_enable")
+            val nudgeCard = createCard("#FFF3E0")
+
+            val nudgeText = TextView(this).apply {
+                text = "💡 Presque ! Validez bien les 2 avertissements Android l'un après " +
+                        "l'autre : s'arrêter au premier annule l'activation."
+                textSize = 16f
+                setTextColor(Color.parseColor("#BF360C"))
+                setLineSpacing(0f, 1.3f)
+            }
+
+            nudgeCard.addView(nudgeText)
+            mainLayout.addView(nudgeCard)
+            mainLayout.addView(createSpacing(12))
+        }
+
+        if (!isEnabled && !showIncompleteNudge) {
+            val privacyNoticeCard = createCard("#FFF8E1")
+
+            val privacyNoticeText = TextView(this).apply {
+                text = "ℹ️ Android va afficher un avertissement de sécurité standard, " +
+                        "montré pour tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée."
+                textSize = 16f
+                setTextColor(Color.parseColor("#5D4037"))
+                setLineSpacing(0f, 1.2f)
+            }
+
+            val privacyNoticeLink = TextView(this).apply {
+                text = "Lire la politique de confidentialité"
+                textSize = 13f
+                setTextColor(Color.parseColor("#0080FF"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 12, 0, 0)
+                setOnClickListener { openPrivacyPolicy() }
+            }
+
+            privacyNoticeCard.addView(privacyNoticeText)
+            privacyNoticeCard.addView(privacyNoticeLink)
+            mainLayout.addView(privacyNoticeCard)
+            mainLayout.addView(createSpacing(12))
+        }
+
+        // ÉTAPE 1 : Activer le clavier
+        val step1Card = createStepCard(
+            badge = "1",
+            isCompleted = isEnabled,
+            isLocked = false,
+            icon = "⚙️",
+            title = "Activer le clavier",
+            description = "Trouvez 'Lëtzebuergesch Clavier' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
+            buttonText = if (isEnabled) "✓ Activé" else "Ouvrir les paramètres",
+            buttonEnabled = !isEnabled,
+            buttonAction = {
+                showPreSettingsWarningDialog()
+            }
+        )
+        mainLayout.addView(step1Card)
+        mainLayout.addView(createSpacing(12))
+        
+        // ÉTAPE 2 : Sélectionner le clavier
+        val step2Card = createStepCard(
+            badge = "2",
+            isCompleted = isSelected,
+            isLocked = !isEnabled,
+            icon = "🔄",
+            title = "Sélectionner le clavier",
+            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Lëtzebuergesch Clavier' dans la liste des claviers",
+            buttonText = when {
+                !isEnabled -> "🔒 Verrouillé"
+                isSelected -> "✓ Sélectionné"
+                else -> "Ouvrir le sélecteur"
+            },
+            buttonEnabled = isEnabled && !isSelected,
+            buttonAction = {
+                openInputMethodPicker()
+            }
+        )
+        mainLayout.addView(step2Card)
+        mainLayout.addView(createSpacing(12))
+        
+        // ÉTAPE 3 : Tester le clavier
+        val step3Card = createCard("#FFFFFF")
+        
+        val isStep3Locked = !isEnabled || !isSelected
+        
+        val step3Header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, 12)
+        }
+        
+        val step3Badge = TextView(this).apply {
+            text = if (isStep3Locked) "🔒" else "3"
+            textSize = 20f
+            setTextColor(
+                when {
+                    isStep3Locked -> Color.parseColor("#999999")
+                    else -> Color.parseColor("#0080FF")
+                }
+            )
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 8, 12, 8)
+            setBackgroundColor(
+                when {
+                    isStep3Locked -> Color.parseColor("#F5F5F5")
+                    else -> Color.parseColor("#E3F2FD")
+                }
+            )
+        }
+        
+        val step3Icon = TextView(this).apply {
+            text = "✍️"
+            textSize = 24f
+            setPadding(16, 0, 12, 0)
+            alpha = if (isStep3Locked) 0.5f else 1.0f
+        }
+        
+        val step3TitleText = TextView(this).apply {
+            text = "Tester le clavier"
+            textSize = 18f
+            setTextColor(if (isStep3Locked) Color.parseColor("#999999") else Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+        
+        step3Header.addView(step3Badge)
+        step3Header.addView(step3Icon)
+        step3Header.addView(step3TitleText)
+        
+        val step3Desc = TextView(this).apply {
+            text = if (isStep3Locked) "Complétez les étapes 1 et 2 pour débloquer" else "Essayez d'écrire « Moien alleguer » et regardez les suggestions vous aider"
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 0, 0, 12)
+            setLineSpacing(0f, 1.3f)
+        }
+        
+        val testEditText = EditText(this).apply {
+            tag = "onboarding_test_field"
+            hint = if (isStep3Locked) "🔒 Verrouillé" else "Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)"
+            textSize = 16f
+            setPadding(16, 16, 16, 16)
+            minHeight = 100
+            setBackgroundColor(if (isStep3Locked) Color.parseColor("#EEEEEE") else Color.parseColor("#F9F9F9"))
+            setTextColor(Color.parseColor("#1C1C1C"))
+            setHintTextColor(Color.parseColor("#999999"))
+            this.isEnabled = !isStep3Locked
+            alpha = if (isStep3Locked) 0.5f else 1.0f
+            
+            // Force le scroll vers ce champ quand il obtient le focus
+            if (!isStep3Locked) {
+                setOnFocusChangeListener { view, hasFocus ->
+                    if (hasFocus) {
+                        // Post avec délai pour laisser le clavier s'ouvrir
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            view.parent?.requestChildFocus(view, view)
+                        }, 300)
+                    }
+                }
+            }
+        }
+        
+        step3Card.addView(step3Header)
+        step3Card.addView(step3Desc)
+        step3Card.addView(testEditText)
+        
+        mainLayout.addView(step3Card)
+        mainLayout.addView(createSpacing(24))
+
+        // Correcteur orthographique : fonctionnalité indépendante des 3 étapes
+        // critiques (fonctionne même sans avoir activé le clavier Kréyòl),
+        // sortie du parcours numéroté pour ne pas laisser croire à une
+        // "étape 4" alors que la barre de progression annonce 3 étapes
+        val extrasTitle = TextView(this).apply {
+            text = "🚀 Pour aller plus loin (optionnel)"
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        mainLayout.addView(extrasTitle)
+
+        val isSpellCheckerOn = isSpellCheckerSelected()
+        val step4Card = createStepCard(
+            badge = "✚",
+            isCompleted = isSpellCheckerOn,
+            isLocked = false,
+            icon = "🔤",
+            title = "Corriger l'orthographe partout",
+            // Le texte détaille chaque étape de l'écran système, parce que le
+            // bouton n'y mène que : la sélection s'y fait dans un sous-menu
+            // (« Correcteur par défaut ») que rien ne signale, et Android
+            // intercale un avertissement sur l'accès au texte saisi. Sans
+            // préparation, l'utilisateur s'arrête à l'un ou l'autre.
+            description = "Pour ne plus voir vos mots luxembourgeois soulignés en rouge dans Messages, " +
+                "Notes et ailleurs.\n\n" +
+                "Dans l'écran qui s'ouvre :\n" +
+                "1. touchez « Correcteur par défaut »\n" +
+                "2. choisissez « Correcteur Lëtzebuergesch »\n" +
+                "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
+                "puis demande de confirmer\n\n" +
+                "Le nôtre compare vos mots au dictionnaire luxembourgeois de l'application. " +
+                "Il n'en conserve aucun et n'envoie rien.",
+            buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
+            buttonEnabled = !isSpellCheckerOn,
+            buttonAction = {
+                openSpellCheckerSettings()
+            }
+        )
+        mainLayout.addView(step4Card)
+        mainLayout.addView(createSpacing(24))
+
+        // Section "Astuce" si tout est configuré
+        if (isEnabled && isSelected) {
+            val tipCard = createCard("#FFF9E6")
+            
+            val tipHeader = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(0, 0, 0, 8)
+            }
+            
+            val tipIcon = TextView(this).apply {
+                text = "💡"
+                textSize = 24f
+                setPadding(0, 0, 12, 0)
+            }
+            
+            val tipTitle = TextView(this).apply {
+                text = "Astuce de la semaine"
+                textSize = 16f
+                setTextColor(Color.parseColor("#F57C00"))
+                setTypeface(null, Typeface.BOLD)
+            }
+            
+            tipHeader.addView(tipIcon)
+            tipHeader.addView(tipTitle)
+            
+            val tipText = TextView(this).apply {
+                text = getTipOfTheWeek()
+                textSize = 14f
+                setTextColor(Color.parseColor("#666666"))
+                setLineSpacing(0f, 1.3f)
+            }
+            
+            tipCard.addView(tipHeader)
+            tipCard.addView(tipText)
+            
+            mainLayout.addView(tipCard)
+            mainLayout.addView(createSpacing(16))
+            
+            // Lien vers statistiques
+            val statsLinkCard = createCard("#E8F5E9")
+            
+            val statsLinkLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+            }
+            
+            val statsIcon = TextView(this).apply {
+                text = "📊"
+                textSize = 32f
+                setPadding(0, 0, 16, 0)
+            }
+            
+            val statsTextContainer = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+            }
+            
+            val statsTitle = TextView(this).apply {
+                text = "Découvrez vos statistiques"
+                textSize = 16f
+                setTextColor(Color.parseColor("#2E7D32"))
+                setTypeface(null, Typeface.BOLD)
+            }
+            
+            val statsDesc = TextView(this).apply {
+                text = "Suivez votre progression et montez en niveau !"
+                textSize = 13f
+                setTextColor(Color.parseColor("#558B2F"))
+            }
+            
+            statsTextContainer.addView(statsTitle)
+            statsTextContainer.addView(statsDesc)
+            
+            val statsArrow = TextView(this).apply {
+                text = "→"
+                textSize = 24f
+                setTextColor(Color.parseColor("#2E7D32"))
+            }
+            
+            statsLinkLayout.addView(statsIcon)
+            statsLinkLayout.addView(statsTextContainer)
+            statsLinkLayout.addView(statsArrow)
+            
+            statsLinkCard.addView(statsLinkLayout)
+            statsLinkCard.setOnClickListener {
+                viewPager.currentItem = 1 // Naviguer vers l'onglet Stats
+            }
+            
+            mainLayout.addView(statsLinkCard)
+        }
+        
+        // Message si clavier non activé
+        if (!isEnabled) {
+            mainLayout.addView(createSpacing(16))
+            
+            val helpCard = createCard("#FFF3E0")
+            
+            val helpText = TextView(this).apply {
+                text = "❓ Besoin d'aide ? Suivez les étapes ci-dessus dans l'ordre pour configurer votre clavier."
+                textSize = 14f
+                setTextColor(Color.parseColor("#E65100"))
+                gravity = Gravity.CENTER
+                setLineSpacing(0f, 1.3f)
+            }
+            
+            helpCard.addView(helpText)
+            mainLayout.addView(helpCard)
+        }
+        
+        return mainLayout
+    }
+    
+    // Fonction pour créer la barre de progression
+    private fun createProgressBar(isEnabled: Boolean, isSelected: Boolean): LinearLayout {
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, 8, 0, 0)
+        }
+        
+        val progressText = TextView(this).apply {
+            text = when {
+                isEnabled && isSelected -> "Configuration terminée ✓"
+                isEnabled -> "Étape 2 sur 3"
+                else -> "Étape 1 sur 3"
+            }
+            textSize = 12f
+            setTextColor(Color.parseColor("#999999"))
+            setPadding(0, 0, 0, 6)
+        }
+        
+        val progressBarContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                8
+            )
+            setBackgroundColor(Color.parseColor("#E0E0E0"))
+        }
+        
+        val filledPart = View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                when {
+                    isEnabled && isSelected -> 3f
+                    isEnabled -> 2f
+                    else -> 1f
+                }
+            )
+            setBackgroundColor(when {
+                isEnabled && isSelected -> Color.parseColor("#4CAF50")
+                isEnabled -> Color.parseColor("#FF9800")
+                else -> Color.parseColor("#0080FF")
+            })
+        }
+        
+        val emptyPart = View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                when {
+                    isEnabled && isSelected -> 0f
+                    isEnabled -> 1f
+                    else -> 2f
+                }
+            )
+            setBackgroundColor(Color.TRANSPARENT)
+        }
+        
+        progressBarContainer.addView(filledPart)
+        if (emptyPart.layoutParams.width != 0) {
+            progressBarContainer.addView(emptyPart)
+        }
+        
+        container.addView(progressText)
+        container.addView(progressBarContainer)
+        
+        return container
+    }
+    
+    // Fonction pour créer une card d'étape
+    private fun createStepCard(
+        badge: String,
+        isCompleted: Boolean,
+        isLocked: Boolean,
+        icon: String,
+        title: String,
+        description: String,
+        buttonText: String,
+        buttonEnabled: Boolean,
+        buttonAction: () -> Unit
+    ): LinearLayout {
+        val card = createCard("#FFFFFF")
+        
+        // Appliquer une opacité si verrouillé
+        if (isLocked) {
+            card.alpha = 0.6f
+        }
+        
+        // Header avec numéro et icône
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, 12)
+        }
+        
+        val badgeView = TextView(this).apply {
+            text = badge
+            textSize = 20f
+            setTextColor(
+                when {
+                    isLocked -> Color.parseColor("#999999")
+                    isCompleted -> Color.parseColor("#4CAF50")
+                    else -> Color.parseColor("#0080FF")
+                }
+            )
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 8, 12, 8)
+            setBackgroundColor(
+                when {
+                    isLocked -> Color.parseColor("#F5F5F5")
+                    isCompleted -> Color.parseColor("#E8F5E9")
+                    else -> Color.parseColor("#E3F2FD")
+                }
+            )
+        }
+        
+        val iconText = TextView(this).apply {
+            text = icon
+            textSize = 24f
+            setPadding(16, 0, 12, 0)
+        }
+        
+        val titleText = TextView(this).apply {
+            text = title
+            textSize = 18f
+            setTextColor(if (isLocked) Color.parseColor("#999999") else Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+        
+        if (isCompleted) {
+            val checkIcon = TextView(this).apply {
+                text = "✓"
+                textSize = 24f
+                setTextColor(Color.parseColor("#4CAF50"))
+                setTypeface(null, Typeface.BOLD)
+            }
+            header.addView(badgeView)
+            header.addView(iconText)
+            header.addView(titleText)
+            header.addView(checkIcon)
+        } else if (isLocked) {
+            val lockIcon = TextView(this).apply {
+                text = "🔒"
+                textSize = 20f
+            }
+            header.addView(badgeView)
+            header.addView(iconText)
+            header.addView(titleText)
+            header.addView(lockIcon)
+        } else {
+            header.addView(badgeView)
+            header.addView(iconText)
+            header.addView(titleText)
+        }
+        
+        val descText = TextView(this).apply {
+            text = description
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 0, 0, 16)
+            setLineSpacing(0f, 1.3f)
+        }
+        
+        val button = Button(this).apply {
+            text = buttonText
+            textSize = 15f
+            setBackgroundColor(
+                when {
+                    isLocked -> Color.parseColor("#EEEEEE")
+                    isCompleted -> Color.parseColor("#E0E0E0")
+                    buttonEnabled -> Color.parseColor("#0080FF")
+                    else -> Color.parseColor("#BDBDBD")
+                }
+            )
+            setTextColor(
+                when {
+                    isLocked -> Color.parseColor("#999999")
+                    isCompleted -> Color.parseColor("#757575")
+                    else -> Color.WHITE
+                }
+            )
+            setPadding(24, 16, 24, 16)
+            this.isEnabled = buttonEnabled && !isCompleted && !isLocked
+            setOnClickListener {
+                if (!isCompleted && !isLocked) {
+                    buttonAction()
+                }
+            }
+        }
+        
+        card.addView(header)
+        card.addView(descText)
+        card.addView(button)
+        
+        return card
+    }
+    
+    // Onglet 3 : À Propos
+    fun createAboutContent(): LinearLayout {
+        val mainLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(24, 32, 24, 32)
+            setBackgroundColor(Color.parseColor("#F5F5F5"))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        
+        // Mission
+        val missionCard = createCard("#FFFFFF")
         
         val missionTitle = TextView(this).apply {
             text = "🌟 Notre Mission"
@@ -479,118 +1626,84 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Lëtzebuergesch. Il met à disposition de tous un outil moderne pour écrire dans notre belle langue luxembourgeoise avec :\n\n" +
-                    "💡 Suggestions de mots en Lëtzebuergesch\n" +
-                    "🔡 Diacritiques intégrés dans le clavier\n" +
-                    "🇱🇺 Design aux couleurs du Luxembourg\n"
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le lëtzebuergesch. " +
+                    "Il met à disposition de tous un outil moderne pour écrire au quotidien dans la langue du pays :\n\n" +
+                    "💡 Suggestions de mots en lëtzebuergesch\n" +
+                    "🔡 Diacritiques ë, ä et é directement au clavier\n" +
+                    "🇱🇺 Design aux couleurs du Luxembourg"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
-            setLineSpacing(0f, 1.2f)
-        }
-        
-        descriptionCard.addView(missionTitle)
-        descriptionCard.addView(missionText)
-        
-        // Instructions d'installation
-        val installCard = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-            setBackgroundColor(Color.parseColor("#E8F4FD"))
-        }
-        
-        val installTitle = TextView(this).apply {
-            text = "📱 Comment activer le clavier ?"
-            textSize = 18f
-            setTextColor(Color.parseColor("#0080FF"))
-            setTypeface(null, Typeface.BOLD)
-            setPadding(0, 0, 0, 12)
-        }
-        
-        val installSteps = TextView(this).apply {
-            text = "1️⃣ Appuyez sur 'Activer le clavier' ci-dessous\n" +
-                    "2️⃣ Dans les paramètres, activez 'Lëtzebuergesch Clavier'\n" +
-                    "3️⃣ Revenez ici et testez le clavier\n" +
-                    "4️⃣ Changez de clavier en appuyant sur l'icône clavier dans la barre de notifications"
-            textSize = 15f
-            setTextColor(Color.parseColor("#444444"))
             setLineSpacing(0f, 1.3f)
         }
         
-        installCard.addView(installTitle)
-        installCard.addView(installSteps)
-        
-        // Boutons d'action
-        val buttonLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(0, 16, 0, 16)
-        }
-        
-        val activateButton = Button(this).apply {
-            text = "🔧 Activer le clavier dans les paramètres"
-            textSize = 16f
-            setBackgroundColor(Color.parseColor("#0080FF"))
-            setTextColor(Color.parseColor("#F8F8FF"))
-            setPadding(20, 16, 20, 16)
-            setOnClickListener {
-                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-                startActivity(intent)
-            }
-        }
-        
-        val testTitle = TextView(this).apply {
-            text = "✍️ Zone de test du clavier"
+        missionCard.addView(missionTitle)
+        missionCard.addView(missionText)
+        mainLayout.addView(missionCard)
+        mainLayout.addView(createSpacing(16))
+
+        // Partage
+        val shareCard = createCard("#E8F5FF")
+
+        val shareTitle = TextView(this).apply {
+            text = "📣 Maacht Reklamm fir d'Sprooch !"
             textSize = 18f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
-            gravity = Gravity.CENTER
-            setPadding(0, 24, 0, 12)
-        }
-        
-        val testDescription = TextView(this).apply {
-            text = "Tapez dans le champ ci-dessous pour tester le clavier Lëtzebuergesch :"
-            textSize = 14f
-            setTextColor(Color.parseColor("#666666"))
-            gravity = Gravity.CENTER
             setPadding(0, 0, 0, 12)
         }
-        
-        val testEditText = EditText(this).apply {
-            hint = "Schreift op Lëtzebuergesch... (Écrivez en luxembourgeois...)"
-            textSize = 16f
-            setPadding(16, 16, 16, 16)
-            minHeight = 120
-            setBackgroundColor(Color.WHITE)
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setHintTextColor(Color.parseColor("#999999"))
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            layoutParams.setMargins(8, 8, 8, 8)
-            this.layoutParams = layoutParams
-        }
-        
-        val switchButton = Button(this).apply {
-            text = "🔄 Basculer vers Lëtzebuergesch Clavier"
+
+        val shareText = TextView(this).apply {
+            text = "Ce clavier grandit grâce au bouche-à-oreille. Partage-le avec ta famille " +
+                    "et tes amis créolophones : chaque partage aide notre langue à exister davantage " +
+                    "sur les téléphones."
             textSize = 14f
-            setBackgroundColor(Color.parseColor("#228B22"))
-            setTextColor(Color.parseColor("#F8F8FF"))
-            setPadding(16, 12, 16, 12)
-            setOnClickListener {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showInputMethodPicker()
-            }
+            setTextColor(Color.parseColor("#333333"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, 16)
         }
-        
-        // Section Sources littéraires
-        val sourcesCard = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-            setBackgroundColor(Color.parseColor("#F0F8E8"))
+
+        val shareButton = Button(this).apply {
+            text = "📤 Partager l'application"
+            textSize = 15f
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            setTextColor(Color.WHITE)
+            setPadding(24, 24, 24, 24)
+            setOnClickListener { shareApp() }
         }
+
+        val rateButton = Button(this).apply {
+            text = "⭐ Noter l'application"
+            textSize = 15f
+            setBackgroundColor(Color.parseColor("#FFB300"))
+            setTextColor(Color.parseColor("#333333"))
+            setPadding(24, 24, 24, 24)
+            setOnClickListener { openPlayStoreListing() }
+        }
+
+        val shareProverb = TextView(this).apply {
+            text = "« Mir wëlle bleiwe wat mir sinn »"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.ITALIC)
+            gravity = Gravity.CENTER
+            setLineSpacing(0f, 1.3f)
+        }
+
+        shareCard.addView(shareTitle)
+        shareCard.addView(shareText)
+        shareCard.addView(shareButton)
+        shareCard.addView(createSpacing(12))
+        shareCard.addView(rateButton)
+        shareCard.addView(createSpacing(16))
+        shareCard.addView(shareProverb)
+        mainLayout.addView(shareCard)
+        mainLayout.addView(createSpacing(16))
+
+        // Sources littéraires
+        val sourcesCard = createCard("#F0F8E8")
         
         val sourcesTitle = TextView(this).apply {
-            text = "📚 Sources littéraires luxembourgeoises"
+            text = "📚 Sources littéraires"
             textSize = 18f
             setTextColor(Color.parseColor("#228B22"))
             setTypeface(null, Typeface.BOLD)
@@ -598,9 +1711,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots en Lëtzebuergesch sont construites sur les travaux des défenseurs du Luxembourgeois :\n\n" +
-                    "✍️ Auteurs et linguistes luxembourgeois de référence,\n\n" +
-                    "Les transcriptions des conférences de presse du sip.gouvernement.lu"
+            text = "Les suggestions de mots sont construites sur un corpus de luxembourgeois contemporain :\n\n" +
+                    "✍️ les transcriptions des conférences de presse du gouvernement luxembourgeois " +
+                    "(sip.gouvernement.lu), publiées comme jeu de données ouvert\n\n" +
+                    "Le dictionnaire s'enrichit au fil des mises à jour, pour coller à l'usage réel du lëtzebuergesch d'aujourd'hui."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -608,41 +1722,883 @@ class SettingsActivity : AppCompatActivity() {
         
         sourcesCard.addView(sourcesTitle)
         sourcesCard.addView(sourcesText)
+        mainLayout.addView(sourcesCard)
+        mainLayout.addView(createSpacing(16))
         
-        // Footer
-        val footerCard = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(20, 20, 20, 20)
-            setBackgroundColor(Color.parseColor("#F8F9FA"))
+        // Informations app
+        val infoCard = createCard("#F8F9FA")
+        
+        val infoTitle = TextView(this).apply {
+            text = "ℹ️ Informations"
+            textSize = 18f
+            setTypeface(typeface, Typeface.BOLD)
+            setTextColor(Color.parseColor("#333333"))
+            setPadding(0, 0, 0, 24)
+        }
+
+        val versionText = TextView(this).apply {
+            text = "Version : ${BuildConfig.VERSION_NAME}\n" +
+                    "© Potomitan™ - Lëtzebuergesch Clavier\n\n" +
+                    "Fait au Luxembourg avec ❤️\n" +
+                    "Préservons le lëtzebuergesch pour les générations futures !"
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.3f)
+            gravity = Gravity.CENTER
         }
         
-        val footerText = TextView(this).apply {
-            text = "Fait au Luxembourg avec au ❤️\n" +
-                    "Préservons le luxembourgeoise pour les générations futures !\n\n" +
-                    "© LuxKeyb™ - Lëtzebuergesch Clavier\n"
+        infoCard.addView(infoTitle)
+        infoCard.addView(versionText)
+        mainLayout.addView(infoCard)
+        mainLayout.addView(createSpacing(16))
 
-            textSize = 12f
+        // Confidentialité
+        val privacyCard = createCard("#FFF8E1")
+
+        val privacyTitle = TextView(this).apply {
+            text = "🔒 Confidentialité"
+            textSize = 18f
+            setTextColor(Color.parseColor("#5D4037"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+
+        val privacyText = TextView(this).apply {
+            text = "Zéro collecte de données personnelles : ce clavier fonctionne entièrement " +
+                    "en local, rien de ce que vous tapez ne quitte votre téléphone."
+            textSize = 14f
+            setTextColor(Color.parseColor("#5D4037"))
+            setLineSpacing(0f, 1.3f)
+        }
+
+        val privacyLink = TextView(this).apply {
+            text = "Lire la politique de confidentialité"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 12, 0, 0)
+            setOnClickListener { openPrivacyPolicy() }
+        }
+
+        privacyCard.addView(privacyTitle)
+        privacyCard.addView(privacyText)
+        privacyCard.addView(privacyLink)
+        mainLayout.addView(privacyCard)
+        mainLayout.addView(createSpacing(16))
+
+        // Tunnel d'activation : diagnostic local du parcours de configuration
+        mainLayout.addView(createFunnelCard())
+
+        return mainLayout
+    }
+
+    // ═══ Clavier d'essai du wizard ═══
+    // Un vrai clavier Kréyòl interactif (les mêmes composants que l'IME :
+    // KeyboardLayoutManager + SuggestionEngine) branché sur un champ de
+    // démonstration : l'utilisateur essaie les suggestions bilingues AVANT
+    // d'accepter les avertissements système. Aucune activation requise,
+    // tout tourne dans l'activité.
+    private var demoEngine: SuggestionEngine? = null
+    private var demoEngineReady = false
+    private var demoKeyboardManager: KeyboardLayoutManager? = null
+
+    private fun createDemoKeyboardCard(): LinearLayout {
+        val card = createCard("#FFFFFF")
+
+        val title = TextView(this).apply {
+            text = "🎹 Essayez-le tout de suite !"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 4)
+        }
+        val caption = TextView(this).apply {
+            text = "Tapez « moien » et touchez une suggestion : rien à installer pour essayer"
+            textSize = 13f
             setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 0, 0, 12)
+        }
+
+        val demoField = EditText(this).apply {
+            hint = "Probéiert et hei... (essayez ici)"
+            // Ne jamais ouvrir le clavier système (Gboard) sur ce champ :
+            // c'est le clavier d'essai ci-dessous qui écrit dedans
+            showSoftInputOnFocus = false
+            // Sans correcteur système : il soulignerait les mots créoles en
+            // rouge, à rebours de ce que la démo veut montrer
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                    android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            textSize = 16f
+            setPadding(16, 16, 16, 16)
+            minHeight = 90
+            setBackgroundColor(Color.parseColor("#F9F9F9"))
+            setTextColor(Color.parseColor("#1C1C1C"))
+            setHintTextColor(Color.parseColor("#999999"))
+        }
+
+        val suggestionsRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, 12, 0, 4)
+            minimumHeight = 110
+        }
+
+        // Pont entre le « aha » et l'action : la démo crée la motivation
+        // mais ne la convertissait pas encore — l'utilisateur devait
+        // comprendre seul qu'il fallait redescendre vers l'étape 1. Ce
+        // bouton apparaît au premier signe d'engagement (première touche
+        // pressée) et enchaîne directement vers l'activation système
+        var installCtaShown = false
+        val installCta = Button(this).apply {
+            text = "Ça vous plaît ? Installez-le →"
+            textSize = 15f
+            isAllCaps = false
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            setTextColor(Color.WHITE)
+            setPadding(24, 20, 24, 20)
+            // INVISIBLE (pas GONE) dès la création : réserve sa place tout de
+            // suite pour que son apparition ne décale jamais le clavier situé
+            // juste en dessous. Un décalage au premier caractère tapé ferait
+            // rater les touches suivantes, frappées de mémoire par l'utilisateur
+            // (repro confirmée en test automatisé : les taps suivants
+            // atterrissaient sur ce bouton une fois révélé, ouvrant les
+            // réglages système en pleine frappe)
+            visibility = View.INVISIBLE
+            alpha = 0f
+            setOnClickListener { showPreSettingsWarningDialog() }
+        }
+
+        fun revealInstallCta() {
+            recordFunnelStep("funnel_demo_first_key")
+            if (!installCtaShown) {
+                installCtaShown = true
+                installCta.visibility = View.VISIBLE
+                installCta.animate().alpha(1f).setDuration(300).start()
+            }
+        }
+
+        val keyboardContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.parseColor("#ECEFF1"))
+        }
+
+        // Moteur partagé entre les refreshs du wizard : dictionnaires
+        // chargés une seule fois
+        val engine = demoEngine ?: SuggestionEngine(this).also { created ->
+            demoEngine = created
+            activityScope.launch {
+                created.initialize()
+                created.enableBilingualSupport()
+                demoEngineReady = true
+            }
+        }
+
+        fun cursor(): Int =
+            demoField.selectionStart.let { if (it >= 0) it else demoField.text.length }
+
+        fun currentWord(): String =
+            demoField.text.toString().substring(0, cursor())
+                .takeLastWhile { it.isLetter() || it == '\'' || it == '-' }
+
+        fun clearChips() = suggestionsRow.removeAllViews()
+
+        fun refreshSuggestions() {
+            val word = currentWord()
+            if (word.isNotEmpty() && demoEngineReady) {
+                engine.generateBilingualSuggestions(word)
+            } else {
+                clearChips()
+            }
+        }
+
+        engine.setSuggestionListener(object : SuggestionEngine.SuggestionListener {
+            override fun onSuggestionsReady(suggestions: List<String>) {}
+            override fun onBilingualSuggestionsReady(suggestions: List<BilingualSuggestion>) {
+                clearChips()
+                suggestions.take(3).forEach { suggestion ->
+                    val chip = TextView(this@SettingsActivity).apply {
+                        text = suggestion.word
+                        textSize = 15f
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        setPadding(28, 14, 28, 14)
+                        background = android.graphics.drawable.GradientDrawable().apply {
+                            cornerRadius = 40f
+                            setColor(suggestion.getColor())
+                        }
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { rightMargin = 12 }
+                        setOnClickListener {
+                            val pos = cursor()
+                            val word = currentWord()
+                            val start = (pos - word.length).coerceAtLeast(0)
+                            demoField.text.replace(start, pos, suggestion.word + " ")
+                            clearChips()
+                            revealInstallCta()
+                        }
+                    }
+                    suggestionsRow.addView(chip)
+                }
+            }
+            override fun onDictionaryLoaded(wordCount: Int) {}
+            override fun onNgramModelLoaded() {}
+            override fun onFrenchDictionaryLoaded(wordCount: Int) {}
+            override fun onModeChanged(newMode: SuggestionEngine.SuggestionMode) {}
+        })
+
+        demoKeyboardManager?.cleanup()
+        val manager = KeyboardLayoutManager(this)
+        demoKeyboardManager = manager
+        // Mirroir local de l'état shift (le manager n'expose pas de getter) :
+        // cycle minuscules → majuscule ponctuelle → verrouillage → minuscules
+        var demoCapital = false
+        var demoCapsLock = false
+
+        fun insertText(t: String) {
+            demoField.text.insert(cursor(), t)
+        }
+
+        manager.setInteractionListener(object : KeyboardLayoutManager.KeyboardInteractionListener {
+            override fun onKeyPress(key: String) {
+                when (key) {
+                    "⌫" -> {
+                        val pos = cursor()
+                        if (pos > 0) demoField.text.delete(pos - 1, pos)
+                    }
+                    "⏎" -> insertText("\n")
+                    "⇧" -> {
+                        when {
+                            !demoCapital && !demoCapsLock -> demoCapital = true
+                            demoCapital && !demoCapsLock -> demoCapsLock = true
+                            else -> { demoCapital = false; demoCapsLock = false }
+                        }
+                        manager.updateKeyboardStates(manager.isNumericMode(), manager.isEmojiMode(), demoCapital, demoCapsLock)
+                        manager.updateKeyboardDisplay()
+                    }
+                    "123", "ABC" -> {
+                        manager.switchKeyboardMode()
+                        keyboardContainer.removeAllViews()
+                        keyboardContainer.addView(manager.createKeyboardLayout())
+                    }
+                    "EMOJI" -> {
+                        manager.switchToEmojiMode()
+                        keyboardContainer.removeAllViews()
+                        keyboardContainer.addView(manager.createKeyboardLayout())
+                    }
+                    else -> {
+                        insertText(if (demoCapital || demoCapsLock) key.uppercase() else key)
+                        if (demoCapital && !demoCapsLock) {
+                            demoCapital = false
+                            manager.updateKeyboardStates(manager.isNumericMode(), manager.isEmojiMode(), false, false)
+                            manager.updateKeyboardDisplay()
+                        }
+                        revealInstallCta()
+                    }
+                }
+                refreshSuggestions()
+            }
+            // Pas de popup d'accents en démo : é, è et ò sont déjà des touches directes
+            override fun onLongPress(key: String, button: View) {}
+            override fun onKeyRelease() {}
+        })
+        keyboardContainer.addView(manager.createKeyboardLayout())
+
+        card.addView(title)
+        card.addView(caption)
+        card.addView(demoField)
+        card.addView(suggestionsRow)
+        card.addView(installCta)
+        card.addView(createSpacing(8))
+        card.addView(keyboardContainer)
+        return card
+    }
+
+    // Carte diagnostic du tunnel d'activation : quand chaque jalon a été
+    // franchi (données 100 % locales). Sert à comprendre où le parcours
+    // accroche quand un utilisateur montre son téléphone, sans télémétrie
+    private fun createFunnelCard(): LinearLayout {
+        val card = createCard("#F8F9FA")
+
+        val title = TextView(this).apply {
+            text = "🔎 Diagnostic d'activation"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        card.addView(title)
+
+        val prefs = onboardingPrefs()
+        val firstOpen = prefs.getLong("funnel_first_open", 0L)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.FRANCE)
+
+        fun funnelLine(label: String, key: String): String {
+            val ts = prefs.getLong(key, 0L)
+            return when {
+                ts == 0L -> "$label : pas encore"
+                firstOpen == 0L || ts <= firstOpen -> "$label : ${dateFormat.format(Date(ts))}"
+                else -> {
+                    val minutes = (ts - firstOpen) / 60000
+                    val delta = when {
+                        minutes < 1 -> "moins d'une minute après l'ouverture"
+                        minutes < 60 -> "$minutes min après l'ouverture"
+                        minutes < 1440 -> "${minutes / 60} h après l'ouverture"
+                        else -> "${minutes / 1440} j après l'ouverture"
+                    }
+                    "$label : $delta"
+                }
+            }
+        }
+
+        val lines = TextView(this).apply {
+            text = listOf(
+                if (firstOpen == 0L) "Première ouverture : pas encore"
+                else "Première ouverture : ${dateFormat.format(Date(firstOpen))}",
+                funnelLine("Premier essai (clavier de démo)", "funnel_demo_first_key"),
+                funnelLine("Clavier activé", "funnel_keyboard_enabled"),
+                funnelLine("Retour sans avoir activé", "funnel_settings_return_no_enable"),
+                funnelLine("Clavier sélectionné", "funnel_keyboard_selected"),
+                funnelLine("Premier mot tapé", "funnel_first_word")
+            ).joinToString("\n")
+            textSize = 14f
+            setTextColor(Color.parseColor("#333333"))
+            setLineSpacing(0f, 1.5f)
+        }
+        card.addView(lines)
+
+        val note = TextView(this).apply {
+            text = "Ces horodatages restent sur votre téléphone."
+            textSize = 12f
+            setTextColor(Color.parseColor("#888888"))
+            setPadding(0, 8, 0, 0)
+        }
+        card.addView(note)
+
+        return card
+    }
+
+    fun createGuideContent(): LinearLayout {
+        val mainLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(24, 32, 24, 32)
+            setBackgroundColor(Color.parseColor("#F5F5F5"))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        val guideTitle = TextView(this).apply {
+            text = "📖 Guide de l'utilisateur"
+            textSize = 20f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
             gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 16)
+        }
+        mainLayout.addView(guideTitle)
+        mainLayout.addView(createSpacing(8))
+
+        addGuideSection(
+            mainLayout, "#E3F2FD", "📲 Installation et activation",
+            "Le clavier doit être activé puis sélectionné avant de pouvoir l'utiliser, comme " +
+                    "n'importe quel clavier tiers sur Android. Ces étapes interactives sont aussi " +
+                    "disponibles dans l'onglet « Démarrage » ; voici à quoi elles ressemblent."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
+            "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
+                    "l'écran système « Clavier à l'écran », où « Lëtzebuergesch Clavier » apparaît " +
+                    "à côté des autres claviers installés, interrupteur éteint."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
+
+        addGuideSection(
+            mainLayout, "#FFF8E1", "2️⃣ Valider les avertissements Android",
+            "En activant l'interrupteur, Android affiche un avertissement générique montré pour " +
+                    "tous les claviers tiers, suivi d'une seconde note sur le redémarrage du téléphone. " +
+                    "Lëtzebuergesch Clavier ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, " +
+                    "puis revenez à l'application avec le bouton retour."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, "Avertissement système affiché pour tout clavier tiers")
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
+            "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
+                    "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
+                    "touchez « Lëtzebuergesch Clavier » pour en faire le clavier utilisé."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", "✅ Configuration terminée",
+            "Les deux étapes cochées, le clavier luxembourgeois s'affiche partout où vous tapez, y compris " +
+                    "dans le champ d'essai de l'onglet Démarrage. Un appui long sur la barre d'espace " +
+                    "permet de rebasculer vers un autre clavier à tout moment."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, "Les trois étapes cochées, clavier actif dans le champ d'essai")
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "✍️ Écrire en lëtzebuergesch",
+            "Le clavier démarre en mode alphabétique. La première lettre de chaque " +
+                    "message prend automatiquement une majuscule, comme sur un clavier classique."
+        )
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", "🔤 Accents et caractères spéciaux",
+            "Appuyez longuement sur une lettre pour faire apparaître ses variantes accentuées " +
+                    "(ë, ä, é, ü, ö...) propres au luxembourgeois. Glissez le doigt vers l'accent voulu " +
+                    "puis relâchez."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, "Popup d'accents sur la lettre e")
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "💡 Suggestions et autocomplétion",
+            "Une barre de suggestions apparaît au-dessus du clavier dès que vous tapez. " +
+                    "Les mots luxembourgeois sont prioritaires ; le français prend le relais à partir de " +
+                    "3 lettres si aucun mot luxembourgeois ne correspond. Touchez un mot suggéré pour le compléter " +
+                    "instantanément, espace inclus."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_suggestions, "Barre de suggestions active")
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", "✅ Correction orthographique partout",
+            "Activez le correcteur luxembourgeois dans les paramètres système (onglet Démarrage, étape 4) " +
+                    "pour que vos mots luxembourgeois et français ne soient plus soulignés en rouge dans Messages, " +
+                    "Notes et les autres applications."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🔢 Chiffres et symboles",
+            "Le bouton « 123 » en bas à gauche du clavier bascule vers les chiffres et symboles usuels. " +
+                    "La ponctuation de base (virgule, point, apostrophe) reste accessible directement " +
+                    "sur le clavier alphabétique."
+        )
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_numeric, "Mode chiffres et symboles")
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
+            "Deux jeux (onglets « Wuertsich » et « Wuertmix ») aident à mémoriser du vocabulaire " +
+                    "luxembourgeois en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🏆 Progression",
+            "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
+                    "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
+                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
+        )
+
+        val faqCard = createCard("#FFF8E1")
+        val faqTitle = TextView(this).apply {
+            text = "❓ Questions fréquentes"
+            textSize = 18f
+            setTextColor(Color.parseColor("#5D4037"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        val faqText = TextView(this).apply {
+            text = "Le clavier luxembourgeois n'apparaît pas quand je tape ?\n" +
+                    "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Démarrage, " +
+                    "étape 2, ou appui long sur la barre d'espace pour changer de clavier à tout moment.\n\n" +
+                    "Comment revenir à un autre clavier ponctuellement ?\n" +
+                    "→ Appui long sur la barre d'espace, puis choisissez un autre clavier dans la liste.\n\n" +
+                    "Mes données sont-elles envoyées quelque part ?\n" +
+                    "→ Non : le clavier fonctionne entièrement en local."
+            textSize = 14f
+            setTextColor(Color.parseColor("#5D4037"))
+            setLineSpacing(0f, 1.3f)
+        }
+        val faqPrivacyLink = TextView(this).apply {
+            text = "Lire la politique de confidentialité"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 12, 0, 0)
+            setOnClickListener { openPrivacyPolicy() }
+        }
+        faqCard.addView(faqTitle)
+        faqCard.addView(faqText)
+        faqCard.addView(faqPrivacyLink)
+        mainLayout.addView(faqCard)
+
+        return mainLayout
+    }
+
+    private fun addGuideSection(parent: LinearLayout, backgroundColor: String, title: String, body: String) {
+        val card = createCard(backgroundColor)
+        val titleView = TextView(this).apply {
+            text = title
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 12)
+        }
+        val bodyView = TextView(this).apply {
+            text = body
+            textSize = 14f
+            setTextColor(Color.parseColor("#333333"))
+            setLineSpacing(0f, 1.3f)
+        }
+        card.addView(titleView)
+        card.addView(bodyView)
+        parent.addView(card)
+        parent.addView(createSpacing(16))
+    }
+
+    private fun addGuideImage(parent: LinearLayout, drawableResId: Int, description: String) {
+        val card = createCard("#FFFFFF")
+        val image = ImageView(this).apply {
+            setImageResource(drawableResId)
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            contentDescription = description
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        val caption = TextView(this).apply {
+            text = description
+            textSize = 12f
+            setTextColor(Color.parseColor("#888888"))
+            gravity = Gravity.CENTER
+            setPadding(0, 8, 0, 0)
+        }
+        card.addView(image)
+        card.addView(caption)
+        parent.addView(card)
+        parent.addView(createSpacing(16))
+    }
+
+    // Helpers pour créer les éléments UI
+    private fun createCard(backgroundColor: String): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 20, 20, 20)
+            setBackgroundColor(Color.parseColor(backgroundColor))
+        }
+    }
+    
+    private fun createSpacing(heightDp: Int): View {
+        return View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (heightDp * resources.displayMetrics.density).toInt()
+            )
+        }
+    }
+    
+    private fun createChecklistItem(isChecked: Boolean, title: String, description: String): LinearLayout {
+        val item = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.TOP
+        }
+        
+        val checkbox = TextView(this).apply {
+            text = if (isChecked) "✅" else "⚠️"
+            textSize = 24f
+            setPadding(0, 0, 16, 0)
+        }
+        
+        val textContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+        
+        val titleText = TextView(this).apply {
+            text = title
+            textSize = 16f
+            setTextColor(if (isChecked) Color.parseColor("#228B22") else Color.parseColor("#FF6B35"))
+            setTypeface(null, Typeface.BOLD)
+        }
+        
+        val descText = TextView(this).apply {
+            text = description
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
             setLineSpacing(0f, 1.2f)
         }
         
-        footerCard.addView(footerText)
+        textContainer.addView(titleText)
+        textContainer.addView(descText)
         
-        // Assembler
-        buttonLayout.addView(activateButton)
-        buttonLayout.addView(testTitle)
-        buttonLayout.addView(testDescription)
-        buttonLayout.addView(testEditText)
-        buttonLayout.addView(switchButton)
+        item.addView(checkbox)
+        item.addView(textContainer)
         
-        mainLayout.addView(descriptionCard)
-        mainLayout.addView(installCard)
-        mainLayout.addView(buttonLayout)
-        mainLayout.addView(sourcesCard)
-        mainLayout.addView(footerCard)
+        return item
+    }
+    
+    private fun createGuideCard(icon: String, title: String, description: String): LinearLayout {
+        val card = createCard("#FFFFFF")
         
-        return mainLayout
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        
+        val iconText = TextView(this).apply {
+            text = icon
+            textSize = 28f
+            setPadding(0, 0, 16, 0)
+        }
+        
+        val titleText = TextView(this).apply {
+            text = title
+            textSize = 16f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+        
+        header.addView(iconText)
+        header.addView(titleText)
+        
+        val descText = TextView(this).apply {
+            text = description
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 8, 0, 0)
+        }
+        
+        card.addView(header)
+        card.addView(descText)
+        
+        return card
+    }
+    
+
+    // Fonction pour vérifier si le clavier est activé
+    fun isKeyboardEnabled(): Boolean {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val enabledIMEs = imm.enabledInputMethodList
+        val myPackageName = packageName
+        
+        return enabledIMEs.any { it.packageName == myPackageName }
+    }
+    
+    // Fonction pour vérifier si le clavier est sélectionné comme clavier actif
+    fun isKeyboardSelected(): Boolean {
+        try {
+            val currentIme = Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.DEFAULT_INPUT_METHOD
+            )
+            return currentIme?.contains(packageName) == true
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur vérification clavier sélectionné: ${e.message}")
+            return false
+        }
+    }
+    
+    // Fonction pour vérifier si notre correcteur orthographique est sélectionné
+    fun isSpellCheckerSelected(): Boolean {
+        return try {
+            val current = Settings.Secure.getString(contentResolver, "selected_spell_checker")
+            current?.contains(packageName) == true
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur vérification correcteur sélectionné: ${e.message}")
+            false
+        }
+    }
+
+    // Fonction pour ouvrir les paramètres où choisir le correcteur orthographique
+    private fun openSpellCheckerSettings() {
+        // ACTION_INPUT_METHOD_SETTINGS ouvre la liste des CLAVIERS, pas le
+        // sélecteur de correcteur orthographique. Le seul point d'entrée public
+        // vers cet écran est ce composant Settings (standard AOSP depuis
+        // Android 4.2), avec repli sur l'écran clavier si absent sur certains ROM.
+        try {
+            val intent = Intent().apply {
+                setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur ouverture écran correcteur, repli sur les paramètres clavier: ${e.message}")
+            try {
+                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                // Seul cas où un Toast d'instruction reste utile : l'écran de
+                // repli n'est pas celui attendu, la carte de l'étape 4 ne
+                // décrit donc pas ce que l'utilisateur a sous les yeux
+                Toast.makeText(this,
+                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Lëtzebuergesch'",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (ex: Exception) {
+                try {
+                    startActivity(Intent(Settings.ACTION_SETTINGS))
+                } catch (ex2: Exception) {
+                    Toast.makeText(this, "Impossible d'ouvrir les paramètres", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    // Interstitiel montrant l'avertissement Android réel (capturé sur
+    // l'émulateur) avant d'y envoyer l'utilisateur : le voir à l'avance,
+    // annoté, le désamorce mieux qu'une description abstraite dans une
+    // carte qu'il a pu ne pas lire. Un seul bouton d'action ; pas de bouton
+    // d'annulation explicite, le retour matériel suffit à fermer sans
+    // naviguer ailleurs.
+    private fun showPreSettingsWarningDialog() {
+        val dialogLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 24, 48, 8)
+        }
+
+        val warningImage = ImageView(this).apply {
+            setImageResource(R.drawable.onboarding_ime_warning_preview)
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
+        }
+
+        val annotationText = TextView(this).apply {
+            text = "👆 Appuyez sur OK : c'est normal pour tous les claviers tiers"
+            textSize = 16f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#333333"))
+            setPadding(0, 24, 0, 12)
+            setLineSpacing(0f, 1.2f)
+        }
+
+        val reassuranceText = TextView(this).apply {
+            text = "Lëtzebuergesch Clavier n'a pas accès à Internet : rien ne quitte votre téléphone."
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 0, 0, 12)
+            setLineSpacing(0f, 1.2f)
+        }
+
+        val returnHintText = TextView(this).apply {
+            text = "◀ Ensuite, appuyez sur Retour : vous revenez ici automatiquement"
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.2f)
+        }
+
+        dialogLayout.addView(warningImage)
+        dialogLayout.addView(annotationText)
+        dialogLayout.addView(reassuranceText)
+        dialogLayout.addView(returnHintText)
+
+        val scrollView = ScrollView(this).apply { addView(dialogLayout) }
+
+        AlertDialog.Builder(this)
+            .setTitle("Avant de continuer")
+            .setView(scrollView)
+            .setCancelable(true)
+            .setPositiveButton("J'ai compris, on y va") { _, _ -> openKeyboardSettings() }
+            .show()
+    }
+
+    // Ouvre les paramètres de clavier système. Pas de Toast d'instruction :
+    // la carte de l'étape 1 dit déjà quoi faire, avant le saut vers les
+    // réglages (le Toast s'affichait par-dessus l'écran système, en bas,
+    // sans garantie de position ni de durée suffisante)
+    private fun openKeyboardSettings() {
+        try {
+            // Horodater le départ vers les réglages : si l'utilisateur
+            // revient sans avoir activé le clavier (abandon au premier des
+            // deux avertissements, ligne pas trouvée...), l'onboarding
+            // affiche une carte d'encouragement ciblée
+            onboardingPrefs().edit()
+                .putLong("settings_visit_at", System.currentTimeMillis()).apply()
+            val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            // Tentative de surlignage de la ligne IME dans l'écran système :
+            // extra non documenté, respecté par les Settings AOSP/Pixel,
+            // ignoré silencieusement ailleurs (pas d'effet de bord).
+            intent.putExtra(
+                ":settings:fragment_args_key",
+                "$packageName/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+            )
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur ouverture paramètres clavier: ${e.message}")
+            // Fallback vers paramètres généraux
+            try {
+                val intent = Intent(Settings.ACTION_SETTINGS)
+                startActivity(intent)
+            } catch (ex: Exception) {
+                Toast.makeText(this, "Impossible d'ouvrir les paramètres", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    
+    private fun openPrivacyPolicy() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_URL)))
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur ouverture politique de confidentialité: ${e.message}")
+            Toast.makeText(this, "Impossible d'ouvrir la politique de confidentialité", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Ouvre la fiche Play Store pour noter l'app (complément de l'In-App Review, soumis à quota)
+    private fun openPlayStoreListing() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: Exception) {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+            } catch (ex: Exception) {
+                Log.e("SettingsActivity", "Erreur ouverture fiche Play Store: ${ex.message}")
+                Toast.makeText(this, "Play Store indisponible", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Fonction pour partager l'application (bouche-à-oreille)
+    private fun shareApp() {
+        val message = "Ech schreiwen op Lëtzebuergesch op mengem Telefon !\n" +
+                "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
+                "Télécharge-le gratuitement :\n" +
+                "https://play.google.com/store/apps/details?id=$packageName" +
+                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch10k\n\n" +
+                SHARE_HASHTAG
+        try {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur partage application: ${e.message}")
+            Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Ouvre le sélecteur de clavier système, immédiatement. Ne pas ajouter de
+    // Toast d'instruction ici : sa gravité est ignorée depuis API 30, il
+    // s'affiche en bas par-dessus le sélecteur et masque l'entrée à choisir ;
+    // l'instruction est déjà portée par la carte de l'étape 2, visible
+    // derrière le dialogue.
+    private fun openInputMethodPicker() {
+        try {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur ouverture sélecteur clavier: ${e.message}")
+            Toast.makeText(this, 
+                "Impossible d'ouvrir le sélecteur. Utilisez la barre de notification pour changer de clavier.", 
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
     
     fun createStatsContent(): LinearLayout {
@@ -651,6 +2607,10 @@ class SettingsActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             setPadding(0, 0, 0, 0)
             setBackgroundColor(Color.WHITE)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
         }
         
         val stats = loadVocabularyStats()
@@ -670,6 +2630,29 @@ class SettingsActivity : AppCompatActivity() {
         
         // Calcul des mots restants pour le niveau suivant
         val (nextLevelName, wordsRemaining) = getNextLevelInfo(stats.wordsDiscovered)
+
+        // L'utilisateur consulte enfin sa progression : la pastille de l'onglet
+        // a rempli son office, on l'éteint et on redessine la barre.
+        if (hasPendingLevelBadge()) {
+            gamificationPrefs().edit().putBoolean(PREF_LEVEL_BADGE_PENDING, false).apply()
+            if (::tabBar.isInitialized) tabBar.post { updateTabBar() }
+        }
+
+        // La notification et la pastille d'icône disent « il y a quelque chose à
+        // voir ici » : cet écran est précisément ce quelque chose. setAutoCancel
+        // ne les efface qu'au tap sur la notification, si bien que l'utilisateur
+        // arrivé par le lanceur gardait une pastille sur son écran d'accueil
+        // après avoir déjà tout vu.
+        LevelUpNotifier.clear(this)
+
+        // Célébration + carte partageable si un niveau vient d'être franchi
+        maybeCelebrateLevelUp(stats.wordsDiscovered, levelEmoji, levelName)
+
+        // 🔍 DEBUG: Log pour vérifier les calculs
+        val thresholdsDebug = calculateGaussianThresholds()
+        Log.d("SettingsActivity", "📊 DEBUG Niveau: wordsDiscovered=${stats.wordsDiscovered}, " +
+                "levelName=$levelName, nextLevelName=$nextLevelName, wordsRemaining=$wordsRemaining")
+        Log.d("SettingsActivity", "📊 DEBUG Seuils: ${thresholdsDebug.joinToString(", ")}")
         
         val levelContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -680,9 +2663,11 @@ class SettingsActivity : AppCompatActivity() {
         // Message de progression vers le niveau suivant
         val progressMessage = TextView(this).apply {
             text = if (wordsRemaining > 0) {
-                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant $nextLevelName"
-            } else {
+                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant ($nextLevelName)"
+            } else if (levelName == "Benzo") {
                 "Vous avez atteint le niveau maximum : $levelName ! 👑"
+            } else {
+                "Votre niveau actuel est $levelName"
             }
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
@@ -692,7 +2677,42 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         levelContainer.addView(progressMessage)
-        
+
+        // Partage permanent de la carte de niveau. Jusqu'ici, shareLevelCard()
+        // n'était atteignable que par le bouton de la boîte de célébration :
+        // répondre « Plus tard » perdait la carte définitivement, puisque le
+        // palier était déjà marqué comme célébré et que la boîte ne
+        // réapparaissait jamais. L'astuce qui promet de partager sa carte
+        // « depuis Mäi Lëtzebuergesch » décrit désormais quelque chose qui existe.
+        val shareLevelButton = Button(this).apply {
+            text = "📤 Partager ma carte de niveau"
+            textSize = 15f
+            isAllCaps = false
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.parseColor("#0E6E76"))
+            setPadding(24, 16, 24, 16)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = 24 }
+            setOnClickListener {
+                try {
+                    shareLevelCard(
+                        buildLevelCardBitmap(levelEmoji, levelName, stats.wordsDiscovered),
+                        levelName
+                    )
+                } catch (e: Exception) {
+                    Log.e("SettingsActivity", "Erreur partage carte de niveau: ${e.message}")
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Impossible de partager pour le moment",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        levelContainer.addView(shareLevelButton)
+
         val levelBadge = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
@@ -725,7 +2745,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val percentageLabel = TextView(this).apply {
-            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire Lëtzebuergesch"
+            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire luxembourgeois"
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
@@ -778,7 +2798,7 @@ class SettingsActivity : AppCompatActivity() {
         // === Top 5 - Liste simple ===
         val top5Container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(24, 40, 24, 40)
+            setPadding(24, 0, 24, 40)
         }
         
         val top5Title = TextView(this).apply {
@@ -799,7 +2819,7 @@ class SettingsActivity : AppCompatActivity() {
             
             val rank = TextView(this).apply {
                 text = "${index + 1}."
-                textSize = 16f
+                textSize = 20f
                 setTextColor(Color.parseColor("#FF8C00"))
                 setTypeface(null, Typeface.BOLD)
                 setPadding(0, 0, 16, 0)
@@ -807,7 +2827,7 @@ class SettingsActivity : AppCompatActivity() {
             
             val wordName = TextView(this).apply {
                 text = word.first
-                textSize = 16f
+                textSize = 20f
                 setTextColor(Color.parseColor("#1C1C1C"))
                 layoutParams = LinearLayout.LayoutParams(
                     0,
@@ -818,7 +2838,7 @@ class SettingsActivity : AppCompatActivity() {
             
             val wordCount = TextView(this).apply {
                 text = "${word.second}"
-                textSize = 16f
+                textSize = 20f
                 setTextColor(Color.parseColor("#999999"))
                 gravity = Gravity.END
             }
@@ -856,42 +2876,12 @@ class SettingsActivity : AppCompatActivity() {
         
         statsGridContainer.addView(statsRow)
         
-        // === Boutons de contrôle ===
-        val buttonsContainer = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER
-            setPadding(0, 32, 0, 0)
-        }
-        
-        // Bouton "Actualiser" masqué mais code conservé pour réactivation future si nécessaire
-        /*
-        val refreshButton = Button(this).apply {
-            text = "⟳ Actualiser"
-            textSize = 14f
-            setBackgroundColor(Color.WHITE)
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setPadding(24, 16, 24, 16)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setOnClickListener {
-                Log.d("SettingsActivity", "🔄 Bouton actualiser pressé")
-                
-                // Laisser un délai pour que les sauvegardes différées se terminent
-                // CreoleDictionaryWithUsage sauvegarde automatiquement après 30 secondes d'inactivité
-                Toast.makeText(this@SettingsActivity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
-                
-                // Attendre un peu puis recharger l'activité
-                postDelayed({
-                    Log.d("SettingsActivity", "🔄 Rechargement de l'activité après délai")
-                    recreate() // Redémarre complètement l'activité
-                }, 1000) // Attendre 1 seconde
-            }
-        }
-        
-        buttonsContainer.addView(refreshButton)
-        */
+        // === Mots à Découvrir ===
+        val wordsToDiscoverContainer = createWordListSection(
+            "🌟 Mots à Découvrir",
+            stats.wordsToDiscover,
+            "#2196F3"
+        )
         
         // === Mots Découverts ===
         val discoveredWordsContainer = createWordListSection(
@@ -900,21 +2890,13 @@ class SettingsActivity : AppCompatActivity() {
             "#4CAF50"
         )
         
-        // === Mots à Découvrir ===
-        val wordsToDiscoverContainer = createWordListSection(
-            "🌟 Mots à découvrir",
-            stats.wordsToDiscover,
-            "#2196F3"
-        )
-        
         // Assembler
         statsContainer.addView(levelContainer)
         statsContainer.addView(wordContainer)
+        statsContainer.addView(wordsToDiscoverContainer)
         statsContainer.addView(top5Container)
         statsContainer.addView(statsGridContainer)
         statsContainer.addView(discoveredWordsContainer)
-        statsContainer.addView(wordsToDiscoverContainer)
-        statsContainer.addView(buttonsContainer)
         
         mainLayout.addView(statsContainer)
         
@@ -955,12 +2937,12 @@ class SettingsActivity : AppCompatActivity() {
     private fun createWordListSection(title: String, words: List<String>, accentColor: String): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, 24, 0, 0)
+            setPadding(0, 0, 0, 0)
             
             // Titre de la section
             val sectionTitle = TextView(this@SettingsActivity).apply {
                 text = title
-                textSize = 16f
+                textSize = 24f  // Augmenté de 1.5x (16f * 1.5)
                 setTextColor(Color.parseColor("#1C1C1C"))
                 setTypeface(null, Typeface.BOLD)
                 setPadding(0, 0, 0, 16)
@@ -971,7 +2953,7 @@ class SettingsActivity : AppCompatActivity() {
                 // Message si aucun mot
                 val emptyMessage = TextView(this@SettingsActivity).apply {
                     text = "Aucun mot dans cette catégorie pour le moment"
-                    textSize = 14f
+                    textSize = 21f  // Augmenté de 1.5x (14f * 1.5)
                     setTextColor(Color.parseColor("#999999"))
                     setTypeface(null, Typeface.ITALIC)
                     setPadding(16, 12, 16, 12)
@@ -983,7 +2965,7 @@ class SettingsActivity : AppCompatActivity() {
                 val scrollView = ScrollView(this@SettingsActivity).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        300 // Hauteur maximale
+                        450 // Hauteur maximale augmentée de 1.5x (300 * 1.5)
                     )
                 }
                 
@@ -1015,9 +2997,9 @@ class SettingsActivity : AppCompatActivity() {
                     // Créer le chip du mot
                     val wordChip = TextView(this@SettingsActivity).apply {
                         text = word
-                        textSize = 13f
+                        textSize = 19.5f  // Augmenté de 1.5x (13f * 1.5)
                         setTextColor(Color.parseColor(accentColor))
-                        setPadding(10, 5, 10, 5)
+                        setPadding(15, 7, 15, 7)  // Augmenté de 1.5x (10, 5, 10, 5)
                         setBackgroundColor(Color.parseColor("${accentColor}20"))
                         setSingleLine(true)
                         layoutParams = LinearLayout.LayoutParams(
@@ -1075,210 +3057,502 @@ class SettingsActivity : AppCompatActivity() {
     )
     
     private fun loadVocabularyStats(): VocabularyStats {
-        Log.d("SettingsActivity", "🔍 Chargement des statistiques du vocabulaire luxembourgeois")
+        Log.d("SettingsActivity", "🔍 Chargement des statistiques du vocabulaire")
         return try {
-            // Charger le dictionnaire luxembourgeois depuis les assets
-            val inputStream = assets.open("luxemburgish_dict.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val jsonObject = JSONObject(jsonString)
+            // Toujours charger le total depuis le dictionnaire source
+            val totalDictWords = getTotalDictionaryWords()
             
-            var totalWords = 0
-            var wordsDiscovered = 0
-            var totalUsages = 0
-            val wordUsages = mutableListOf<Pair<String, Int>>()
-            val discoveredWords = mutableListOf<String>()
-            
-            // Fichier d'usage utilisateur (optionnel)
+            // Essayer le fichier avec usage
             val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
-            val usageData = if (usageFile.exists()) {
-                try {
-                    JSONObject(usageFile.readText())
-                } catch (e: Exception) {
-                    Log.w("SettingsActivity", "Erreur lecture usage file: ${e.message}")
-                    JSONObject()
-                }
-            } else {
-                JSONObject()
-            }
-            
             Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
-            Log.d("SettingsActivity", "📄 Dictionnaire luxembourgeois: ${jsonObject.length()} mots")
+            Log.d("SettingsActivity", "📂 Chemin fichier: ${usageFile.absolutePath}")
             
             if (usageFile.exists()) {
-                val usageContent = usageFile.readText()
-                Log.d("SettingsActivity", "📄 Contenu fichier usage (${usageContent.length} chars): ${usageContent.take(500)}...")
-            }
-            
-            // Parcourir tous les mots du dictionnaire luxembourgeois
-            val keys = jsonObject.keys()
-            while (keys.hasNext()) {
-                val word = keys.next()
-                totalWords++
+                val jsonString = usageFile.readText()
+                Log.d("SettingsActivity", "📄 Contenu fichier (${jsonString.length} chars): ${jsonString.take(200)}...")
+                val jsonObject = JSONObject(jsonString)
+                Log.d("SettingsActivity", "🔑 Clés JSON trouvées: ${jsonObject.keys().asSequence().toList().size}")
                 
-                // Vérifier l'usage utilisateur (format CreoleDictionaryWithUsage)
-                val userCount = if (usageData.has(word)) {
-                    try {
-                        val wordData = usageData.getJSONObject(word)
-                        wordData.optInt("user_count", 0)
+                var wordsDiscovered = 0
+                var totalUsages = 0
+                val wordUsages = mutableListOf<Pair<String, Int>>()
+                val discoveredWords = mutableListOf<String>()
+                
+                val motsTrouves = mutableListOf<String>()
+                jsonObject.keys().forEach { word ->
+                    // Gérer les deux formats possibles
+                    val userCount = try {
+                        val rawValue = jsonObject.get(word)
+                        when (rawValue) {
+                            is Int -> {
+                                // Format simplifié: "mot": 1
+                                rawValue
+                            }
+                            is JSONObject -> {
+                                // Format complet: "mot": {"frequency": X, "user_count": Y}
+                                rawValue.optInt("user_count", 0)
+                            }
+                            else -> 0
+                        }
                     } catch (e: Exception) {
-                        // Fallback en cas de format simple
-                        usageData.optInt(word, 0)
+                        Log.e("SettingsActivity", "Erreur lecture '$word': ${e.message}")
+                        0
                     }
-                } else {
-                    0
-                }
-                
-                if (userCount > 0) {
-                    totalUsages += userCount
-                    wordUsages.add(Pair(word, userCount))
                     
-                    // Compter comme "découvert" si utilisé au moins une fois
-                    wordsDiscovered++
-                    if (word.length >= 3) {
-                        discoveredWords.add(word)
+                    if (userCount > 0) {
+                        totalUsages += userCount
+                        wordUsages.add(Pair(word, userCount))
+                        motsTrouves.add("$word($userCount)")
+
+                        // Un mot est "découvert" dès qu'il a été utilisé au moins une fois
+                        // (même définition que CreoleDictionaryWithUsage.getDiscoveredWordsCount())
+                        wordsDiscovered++
+                        // Ne garder que les mots de 3 lettres ou plus pour l'affichage
+                        if (word.length >= 3) {
+                            discoveredWords.add(word)
+                        }
                     }
                 }
+                
+                Log.d("SettingsActivity", "Mots avec usage > 0: ${motsTrouves.joinToString(", ")}")
+                Log.d("SettingsActivity", "Total: $totalDictWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
+                
+                val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
+                val coverage = if (totalDictWords > 0) (wordsDiscovered.toFloat() / totalDictWords * 100) else 0f
+                
+                // Générer les mots à découvrir (utilisations <= 2 et longueur >= 3)
+                val wordsToDiscoverCandidates = jsonObject.keys().asSequence().toList().filter { word ->
+                    val count = jsonObject.optInt(word, 0)
+                    count <= 2 && word.length >= 3
+                }
+                val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
+                
+                return VocabularyStats(
+                    totalDictWords,
+                    wordsDiscovered,
+                    totalUsages,
+                    topWords,
+                    coverage,
+                    discoveredWords.sorted(),
+                    wordsToDiscoverList
+                )
             }
             
-            Log.d("SettingsActivity", "Stats luxembourgeoises: $totalWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
+            // Sinon créer un fichier vide pour la première installation
+            val emptyUsageObject = JSONObject()
+            usageFile.writeText(emptyUsageObject.toString())
             
-            val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
-            val coverage = if (totalWords > 0) (wordsDiscovered.toFloat() / totalWords * 100) else 0f
-            
-            // Générer les mots à découvrir (mots non utilisés avec longueur >= 3)
-            val wordsToDiscoverCandidates = mutableListOf<String>()
-            val dictKeys = jsonObject.keys()
-            while (dictKeys.hasNext()) {
-                val word = dictKeys.next()
-                val userCount = if (usageData.has(word)) {
-                    try {
-                        val wordData = usageData.getJSONObject(word)
-                        wordData.optInt("user_count", 0)
-                    } catch (e: Exception) {
-                        usageData.optInt(word, 0)
-                    }
-                } else {
-                    0
-                }
-                if (userCount == 0 && word.length >= 3) {
-                    wordsToDiscoverCandidates.add(word)
-                }
-            }
-            
-            val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(10)
-            
-            VocabularyStats(
-                totalWords,
-                wordsDiscovered,
-                totalUsages,
-                topWords,
-                coverage,
-                discoveredWords.sorted(),
-                wordsToDiscoverList
+            // Retourner des statistiques avec le vrai total de mots du dictionnaire
+            return VocabularyStats(
+                totalWords = totalDictWords,
+                wordsDiscovered = 0,
+                totalUsages = 0,
+                topWords = emptyList(),
+                coveragePercentage = 0f,
+                discoveredWordsList = emptyList(),
+                wordsToDiscover = emptyList()
             )
-            
         } catch (e: Exception) {
-            Log.e("SettingsActivity", "Erreur chargement stats luxembourgeoises: ${e.message}", e)
+            Log.e("SettingsActivity", "Erreur chargement stats: ${e.message}")
             VocabularyStats(0, 0, 0, emptyList(), 0f, emptyList(), emptyList())
         }
     }
     
-    // Classe pour stocker les seuils calculés dynamiquement
-    data class GaussianLevels(
-        val level1: Int, // Novice
-        val level2: Int, // Ufänker
-        val level3: Int, // Fortgeschratt
-        val level4: Int, // Mëttel
-        val level5: Int, // Hirsch
-        val level6: Int, // Aquila
-        val level7: Int, // Expert
-        val levelMax: Int // Meeschter (tous les mots)
-    )
-    
-    // Calcul dynamique des seuils basés sur une distribution gaussienne adaptée
-    // Plus de niveaux dans la partie basse pour une progression motivante pour les débutants
-    private fun calculateGaussianLevels(): GaussianLevels {
-        return try {
-            // Charger le dictionnaire pour compter le nombre de mots
-            val inputStream = assets.open("luxemburgish_dict.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val jsonObject = JSONObject(jsonString)
-            val totalWords = jsonObject.length()
-            
-            // Calculs gaussiens
-            val mean = totalWords / 2.0  // Moyenne μ
-            val sigma = totalWords / 6.0  // Écart-type σ (pour couvrir ±3σ = 99.7%)
-            
-            // Distribution gaussienne adaptée pour une progression plus motivante
-            // Les niveaux bas ont des paliers plus rapprochés pour encourager les débutants
-            val level1 = 50  // Noviz: 0-50 mots (~1.5% - vraiment débutant)
-            val level2 = (mean - 2.5 * sigma).toInt().coerceAtLeast(level1)  // Ufänker: ~270 mots (~8%)
-            val level3 = (mean - 1.5 * sigma).toInt().coerceAtLeast(level2)  // Fortgeschratt: ~810 mots (~17%)
-            val level4 = (mean - 0.7 * sigma).toInt().coerceAtLeast(level3)  // Mëttel bas: ~1240 mots (~13%)
-            val level5 = (mean + 1.3 * sigma).toInt().coerceAtMost(totalWords)  // Hirsch: ~2320 mots (~33% - pic central élargi)
-            val level6 = (mean + 2.5 * sigma).toInt().coerceAtMost(totalWords)  // Aquila: ~2970 mots (~17%)
-            val level7 = (totalWords - 1).coerceAtMost(totalWords)  // Expert: 3238 mots (~8%)
-            val levelMax = totalWords  // Meeschter: 3239 mots (perfection absolue!)
-            
-            Log.d("SettingsActivity", "📊 Calcul gaussien adapté: Total=$totalWords, μ=$mean, σ=$sigma")
-            Log.d("SettingsActivity", "📊 Seuils motivants: L1=$level1, L2=$level2, L3=$level3, L4=$level4, L5=$level5, L6=$level6, L7=$level7, Max=$levelMax")
-            
-            GaussianLevels(level1, level2, level3, level4, level5, level6, level7, levelMax)
+    // Niveaux : la logique vit désormais dans gamification/LuxLevels.kt, pour
+    // que le service de saisie puisse détecter un passage de niveau au moment
+    // où l'utilisateur tape. Les méthodes ci-dessous restent des raccourcis
+    // locaux qui fournissent la taille du dictionnaire.
+
+    private fun getCurrentLevel(wordsDiscovered: Int): String =
+        LuxLevels.labelFor(wordsDiscovered, getTotalDictionaryWords())
+
+    private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> =
+        LuxLevels.nextLevelInfo(wordsDiscovered, getTotalDictionaryWords())
+
+    /**
+     * Index du niveau actuel (0 = Pipirit ... 7 = Benzo), même logique que getCurrentLevel()
+     */
+    private fun getCurrentLevelIndex(wordsDiscovered: Int): Int =
+        LuxLevels.indexFor(wordsDiscovered, getTotalDictionaryWords())
+
+    /**
+     * Affiche la célébration de passage de niveau avec carte partageable.
+     * Ne se déclenche que sur une progression réelle : au premier passage,
+     * le niveau courant est mémorisé silencieusement (pas de célébration
+     * rétroactive pour un utilisateur existant).
+     */
+    private fun maybeCelebrateLevelUp(wordsDiscovered: Int, levelEmoji: String, levelName: String) {
+        try {
+            val prefs = getSharedPreferences("lux_gamification_prefs", Context.MODE_PRIVATE)
+            val currentIndex = getCurrentLevelIndex(wordsDiscovered)
+            val lastCelebrated = prefs.getInt("last_celebrated_level_index", -1)
+
+            if (lastCelebrated == -1) {
+                prefs.edit().putInt("last_celebrated_level_index", currentIndex).apply()
+                return
+            }
+            if (currentIndex <= lastCelebrated) return
+
+            prefs.edit().putInt("last_celebrated_level_index", currentIndex).apply()
+
+            val cardBitmap = buildLevelCardBitmap(levelEmoji, levelName, wordsDiscovered)
+
+            val preview = ImageView(this).apply {
+                setImageBitmap(cardBitmap)
+                adjustViewBounds = true
+                setPadding(32, 24, 32, 8)
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("🎉 Bravo ! Dir sidd virugaangen !")
+                .setMessage("Dir hutt den Niveau $levelName erreecht ! Partagez votre carte pour montrer où vous en êtes.")
+                .setView(preview)
+                .setPositiveButton("Partager 📤") { _, _ -> shareLevelCard(cardBitmap, levelName) }
+                .setNegativeButton("Plus tard", null)
+                .show()
         } catch (e: Exception) {
-            Log.e("SettingsActivity", "Erreur calcul gaussien: ${e.message}", e)
-            // Valeurs par défaut en cas d'erreur (distribution motivante)
-            GaussianLevels(50, 270, 810, 1240, 2320, 2970, 3238, 3239)
-        }
-    }
-    
-    private fun getCurrentLevel(wordsDiscovered: Int): String {
-        val levels = calculateGaussianLevels()
-        
-        return when {
-            wordsDiscovered >= levels.levelMax -> "🧙‍♀️ Meeschter"  // Tous les mots!
-            wordsDiscovered >= levels.level7 -> "👑 Expert"          // ~0.13% - très rare
-            wordsDiscovered >= levels.level6 -> "🦅 Aquila"          // ~2.14%
-            wordsDiscovered >= levels.level5 -> "🦌 Hirsch"          // ~13.59%
-            wordsDiscovered >= levels.level4 -> "💎 Mëttel"          // ~34.13% - pic central
-            wordsDiscovered >= levels.level3 -> "🔥 Fortgeschratt"   // ~34.13%
-            wordsDiscovered >= levels.level2 -> "🌱 Ufänker"         // ~13.59%
-            wordsDiscovered >= levels.level1 -> "🐣 Noviz"          // ~2.14%
-            else -> "🐣 Noviz"                                       // débutant absolu
-        }
-    }
-    
-    private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> {
-        val levels = calculateGaussianLevels()
-        
-        return when {
-            wordsDiscovered >= levels.levelMax -> Pair("Meeschter", 0) // Niveau maximum atteint!
-            wordsDiscovered >= levels.level7 -> Pair("Meeschter", levels.levelMax - wordsDiscovered)
-            wordsDiscovered >= levels.level6 -> Pair("Expert", levels.level7 - wordsDiscovered)
-            wordsDiscovered >= levels.level5 -> Pair("Aquila", levels.level6 - wordsDiscovered)
-            wordsDiscovered >= levels.level4 -> Pair("Hirsch", levels.level5 - wordsDiscovered)
-            wordsDiscovered >= levels.level3 -> Pair("Mëttel", levels.level4 - wordsDiscovered)
-            wordsDiscovered >= levels.level2 -> Pair("Fortgeschratt", levels.level3 - wordsDiscovered)
-            wordsDiscovered >= levels.level1 -> Pair("Ufänker", levels.level2 - wordsDiscovered)
-            else -> Pair("Ufänker", levels.level1 - wordsDiscovered)  // FIX: Si < level1, le prochain niveau est Ufänker!
+            Log.e("SettingsActivity", "Erreur célébration de niveau: ${e.message}")
         }
     }
 
+    /**
+     * Dessine la carte de niveau partageable (1080×1350, format portrait réseaux sociaux)
+     */
+    private fun buildLevelCardBitmap(levelEmoji: String, levelName: String, wordsDiscovered: Int): Bitmap {
+        val width = 1080
+        val height = 1350
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val cx = width / 2f
+
+        // Fond dégradé mer des Caraïbes
+        val bgPaint = Paint().apply {
+            shader = LinearGradient(
+                0f, 0f, 0f, height.toFloat(),
+                Color.parseColor("#0E6E76"), Color.parseColor("#052E33"),
+                Shader.TileMode.CLAMP
+            )
+        }
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), bgPaint)
+
+        // Soleil décoratif en haut à droite
+        val sunPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.parseColor("#33F6E9D2")
+        }
+        canvas.drawCircle(width - 120f, 130f, 190f, sunPaint)
+
+        // Eyebrow
+        val eyebrowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.parseColor("#E3AE5E")
+            textSize = 42f
+            textAlign = Paint.Align.CENTER
+            letterSpacing = 0.18f
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        }
+        canvas.drawText("MÄI NIVEAU OP LËTZEBUERGESCH", cx, 240f, eyebrowPaint)
+
+        // Emoji du niveau
+        val emojiPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = 280f
+            textAlign = Paint.Align.CENTER
+        }
+        canvas.drawText(levelEmoji, cx, 620f, emojiPaint)
+
+        // Nom du niveau
+        val namePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = 116f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        }
+        canvas.drawText(levelName, cx, 790f, namePaint)
+
+        // Compteur de mots
+        val statsPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.parseColor("#DDEEEE")
+            textSize = 54f
+            textAlign = Paint.Align.CENTER
+        }
+        canvas.drawText("$wordsDiscovered mots luxembourgeois découverts !", cx, 900f, statsPaint)
+
+        // Séparateur
+        val linePaint = Paint().apply { color = Color.parseColor("#33FFFFFF"); strokeWidth = 3f }
+        canvas.drawLine(cx - 220f, 1010f, cx + 220f, 1010f, linePaint)
+
+        // Pied de carte
+        val footerBoldPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = 56f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        }
+        canvas.drawText("Lëtzebuergesch Clavier", cx, 1120f, footerBoldPaint)
+
+        val footerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.parseColor("#A9D4D6")
+            textSize = 42f
+            textAlign = Paint.Align.CENTER
+        }
+        canvas.drawText("Klavyé gratui asi Google Play", cx, 1195f, footerPaint)
+
+        return bitmap
+    }
+
+    /**
+     * Enregistre la carte dans le cache et ouvre le sélecteur de partage
+     * (image + texte avec lien tracké utm_source=level_share)
+     */
+    private fun shareLevelCard(bitmap: Bitmap, levelName: String) {
+        try {
+            val imagesDir = File(cacheDir, "images").apply { mkdirs() }
+            val imageFile = File(imagesDir, "niveau_lux.png")
+            FileOutputStream(imageFile).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+            val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
+
+            val message = "An rivé nivo $levelName asi Lëtzebuergesch Clavier ! É vou menm, ki nivo a'w ?\n" +
+                    "Télécharge le clavier gratuitement :\n" +
+                    "https://play.google.com/store/apps/details?id=$packageName" +
+                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k\n\n" +
+                    SHARE_HASHTAG
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_TEXT, message)
+                // Le flag FLAG_GRANT_READ_URI_PERMISSION ne s'applique qu'à l'URI
+                // porté par setData()/ClipData, pas à EXTRA_STREAM seul. Sans ClipData,
+                // sous Android 14 l'aperçu du sélecteur ET l'app cible (ex. Messages)
+                // reçoivent un SecurityException et l'image ne s'attache pas (le partage
+                // retombe en SMS texte). On expose donc l'URI via ClipData pour que la
+                // permission de lecture soit bien propagée.
+                clipData = ClipData.newUri(contentResolver, "niveau_lux.png", uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, "Partager ma carte de niveau"))
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur partage carte de niveau: ${e.message}")
+            Toast.makeText(this, "Impossible de partager la carte", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Calcule les seuils de niveau de façon dynamique selon la taille du dictionnaire
+     *
+     * Progression motivante basée sur des pourcentages du dictionnaire total:
+     * - Pipirit (début): 0% - démarrage
+     * - Ti moun: 1.5% - premiers pas (rapide à atteindre!)
+     * - Débrouya: 5% - débrouillard
+     * - An mitan: 12% - au milieu du chemin
+     * - Kompè Lapen: 25% - bon niveau
+     * - Kompè Zamba: 45% - niveau avancé
+     * - Potomitan: 70% - expert
+     * - Benzo: 100% - maître absolu (tous les mots!)
+     * 
+     * Avantages:
+     * - S'adapte automatiquement à la croissance du dictionnaire
+     * - Progression douce au début (1.5% pour Ti moun)
+     * - Écarts progressifs entre niveaux (motivant!)
+     * - Benzo reste l'objectif ultime (100%)
+     * 
+     * Exemples pour 3680 mots:
+     * - Ti moun: 55 mots, Débrouya: 184 mots, An mitan: 442 mots
+     * - Kompè Lapen: 920 mots, Kompè Zamba: 1656 mots
+     * - Potomitan: 2576 mots, Benzo: 3680 mots
+     * 
+     * @return IntArray avec 8 seuils calculés dynamiquement
+     */
+    private fun calculateGaussianThresholds(): IntArray =
+        LuxLevels.thresholds(getTotalDictionaryWords())
     
-    // Adapter pour ViewPager2
-    private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
-        override fun getItemCount(): Int = 2
+    /**
+     * Récupère le nombre total de mots dans le dictionnaire
+     * Utilise un cache pour éviter de relire le fichier à chaque fois
+     */
+    private var cachedTotalWords: Int? = null
+    
+    private fun getTotalDictionaryWords(): Int {
+        // Retourner depuis le cache si disponible
+        cachedTotalWords?.let { return it }
         
+        return try {
+            // Toujours charger le dictionnaire source depuis assets
+            // car luxemburgish_dict_with_usage.json peut être vide (nouveau install)
+            val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
+            val jsonArray = org.json.JSONArray(jsonString)
+            val count = jsonArray.length()
+            
+            cachedTotalWords = count
+            Log.d("SettingsActivity", "📊 Total mots dictionnaire: $count")
+            count
+        } catch (e: Exception) {
+            Log.e("SettingsActivity", "Erreur comptage mots: ${e.message}")
+            14722 // Fallback sur la valeur connue du dictionnaire complet
+        }
+    }
+    
+    // Adapter pour ViewPager2 avec swipe cyclique
+    private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
+        companion object {
+            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Wuertriet)
+            const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
+            const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
+        }
+
+        override fun getItemCount(): Int = VIRTUAL_COUNT
+
         override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> HomeFragment()
+            // Utiliser le modulo pour revenir aux vraies pages
+            val realPosition = position % REAL_COUNT
+            return when (realPosition) {
+                0 -> OnboardingFragment()
                 1 -> StatsFragment()
-                else -> HomeFragment()
+                2 -> WordSearchFragment()
+                3 -> WordScrambleFragment()
+                4 -> WuertrietFragment()
+                5 -> GuideFragment()
+                6 -> AboutFragment()
+                else -> OnboardingFragment()
             }
         }
     }
     
-    // Fragment pour l'accueil
-    class HomeFragment : Fragment() {
+    // Fragment pour le démarrage / onboarding
+    class OnboardingFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        // Observe les réglages système du clavier au lieu de les sonder
+        // toutes les 2 secondes : réaction immédiate quand l'utilisateur
+        // active ou sélectionne le clavier (notamment pendant que le
+        // sélecteur système est affiché par-dessus l'activité, qui reste
+        // resumed), et plus de Handler périodique qui tourne à vide.
+        private val settingsObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+            override fun onChange(selfChange: Boolean) {
+                val activity = activity as? SettingsActivity ?: return
+                val wasEnabled = lastKnownEnabled
+                val wasSelected = lastKnownSelected
+                val changed = shouldRefresh(
+                    activity.isKeyboardEnabled(),
+                    activity.isKeyboardSelected(),
+                    activity.isSpellCheckerSelected()
+                )
+                if (changed) {
+                    refreshContent()
+                    chainNextStep(wasEnabled, wasSelected)
+                }
+            }
+        }
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            rootView = ScrollView(activity).apply {
+                isFillViewport = true
+                isVerticalScrollBarEnabled = true
+            }
+            refreshContent()
+            return rootView!!
+        }
+        
+        override fun onResume() {
+            super.onResume()
+            // Rafraîchir pour rattraper les changements survenus pendant que
+            // le fragment était masqué (ex. activation dans les réglages
+            // système), puis observer les réglages en continu
+            val wasEnabled = lastKnownEnabled
+            val wasSelected = lastKnownSelected
+            refreshContent()
+            chainNextStep(wasEnabled, wasSelected)
+
+            val resolver = requireContext().contentResolver
+            resolver.registerContentObserver(
+                Settings.Secure.getUriFor(Settings.Secure.DEFAULT_INPUT_METHOD), false, settingsObserver)
+            resolver.registerContentObserver(
+                Settings.Secure.getUriFor(Settings.Secure.ENABLED_INPUT_METHODS), false, settingsObserver)
+            resolver.registerContentObserver(
+                Settings.Secure.getUriFor("selected_spell_checker"), false, settingsObserver)
+        }
+
+        override fun onPause() {
+            super.onPause()
+            requireContext().contentResolver.unregisterContentObserver(settingsObserver)
+        }
+
+        private var lastKnownEnabled = false
+        private var lastKnownSelected = false
+        private var lastKnownSpellCheckerOn = false
+
+        private fun shouldRefresh(currentEnabled: Boolean, currentSelected: Boolean, currentSpellCheckerOn: Boolean): Boolean {
+            val hasChanged = currentEnabled != lastKnownEnabled || currentSelected != lastKnownSelected || currentSpellCheckerOn != lastKnownSpellCheckerOn
+            lastKnownEnabled = currentEnabled
+            lastKnownSelected = currentSelected
+            lastKnownSpellCheckerOn = currentSpellCheckerOn
+            return hasChanged
+        }
+
+        private fun refreshContent() {
+            val activity = requireActivity() as SettingsActivity
+            lastKnownEnabled = activity.isKeyboardEnabled()
+            lastKnownSelected = activity.isKeyboardSelected()
+            lastKnownSpellCheckerOn = activity.isSpellCheckerSelected()
+            rootView?.removeAllViews()
+            rootView?.addView(activity.createOnboardingContent())
+            if (lastKnownEnabled && lastKnownSelected) {
+                // Configuration aboutie : révéler la navigation (idempotent)
+                activity.onOnboardingCompleted()
+            }
+            Log.d("SettingsActivity", "🔄 Contenu de l'onboarding rafraîchi (enabled=$lastKnownEnabled, selected=$lastKnownSelected, spellChecker=$lastKnownSpellCheckerOn)")
+        }
+
+        // Enchaîne automatiquement l'étape suivante quand une action système
+        // vient d'aboutir, pour économiser des taps de navigation : clavier
+        // sélectionné → focus sur le champ de test (le clavier Kréyòl
+        // apparaît aussitôt) ; clavier activé (retour des réglages système)
+        // → ouverture directe du sélecteur. À appeler après refreshContent(),
+        // qui met à jour lastKnownEnabled/lastKnownSelected. Le délai initial
+        // laisse l'utilisateur voir l'étape passer au vert avant la suite.
+        private fun chainNextStep(wasEnabled: Boolean, wasSelected: Boolean) {
+            when {
+                !wasSelected && lastKnownSelected -> rootView?.postDelayed({
+                    runWhenWindowFocused { focusTestField() }
+                }, 400)
+                !wasEnabled && lastKnownEnabled -> rootView?.postDelayed({
+                    runWhenWindowFocused {
+                        (activity as? SettingsActivity)?.openInputMethodPicker()
+                    }
+                }, 400)
+            }
+        }
+
+        // showInputMethodPicker() et showSoftInput() sont ignorés par le
+        // système tant que la fenêtre n'a pas repris le focus après le retour
+        // des réglages (InputMethodManagerService rejette les clients non
+        // courants, vu dans logcat : « Ignoring showInputMethodPickerFromClient »).
+        // On attend donc le focus fenêtre, plus une courte marge pour que le
+        // système réenregistre l'activité comme client de saisie courant.
+        private fun runWhenWindowFocused(attemptsLeft: Int = 10, action: () -> Unit) {
+            if (!isAdded) return
+            if (requireActivity().hasWindowFocus()) {
+                rootView?.postDelayed({ if (isAdded) action() }, 150)
+            } else if (attemptsLeft > 0) {
+                rootView?.postDelayed({ runWhenWindowFocused(attemptsLeft - 1, action) }, 200)
+            }
+        }
+
+        private fun focusTestField() {
+            val field = rootView?.findViewWithTag<EditText>("onboarding_test_field") ?: return
+            field.requestFocus()
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(field, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+    
+    // Fragment pour l'à propos
+    class AboutFragment : Fragment() {
         override fun onCreateView(
             inflater: android.view.LayoutInflater,
             container: android.view.ViewGroup?,
@@ -1286,13 +3560,29 @@ class SettingsActivity : AppCompatActivity() {
         ): View {
             val activity = requireActivity() as SettingsActivity
             val scrollView = ScrollView(activity)
-            scrollView.addView(activity.createHomeContent())
+            scrollView.addView(activity.createAboutContent())
             return scrollView
         }
     }
-    
+
+    // Fragment pour le guide de l'utilisateur
+    class GuideFragment : Fragment() {
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            val scrollView = ScrollView(activity)
+            scrollView.addView(activity.createGuideContent())
+            return scrollView
+        }
+    }
+
     // Fragment pour les statistiques
     class StatsFragment : Fragment() {
+        private var scrollView: ScrollView? = null
+
         override fun onCreateView(
             inflater: android.view.LayoutInflater,
             container: android.view.ViewGroup?,
@@ -1300,7 +3590,7 @@ class SettingsActivity : AppCompatActivity() {
         ): View {
             Log.d("SettingsActivity", "Création de la vue StatsFragment")
             val activity = requireActivity() as SettingsActivity
-            
+
             // Créer le SwipeRefreshLayout pour le Pull-to-Refresh
             val swipeRefreshLayout = androidx.swiperefreshlayout.widget.SwipeRefreshLayout(activity).apply {
                 setColorSchemeColors(
@@ -1309,17 +3599,17 @@ class SettingsActivity : AppCompatActivity() {
                     Color.parseColor("#FF9800")  // Orange
                 )
                 setProgressBackgroundColorSchemeColor(Color.WHITE)
-                
+
                 // Configurer l'action de rafraîchissement
                 setOnRefreshListener {
                     Log.d("SettingsActivity", "🔄 Pull-to-Refresh déclenché")
-                    
+
                     // Afficher un message
                     Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
-                    
+
                     // Forcer la sauvegarde des données en attente
                     flushPendingUpdates(activity, activity.activityScope)
-                    
+
                     // Attendre un peu puis recréer l'activité
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                         Log.d("SettingsActivity", "🔄 Rechargement de l'activité après pull-to-refresh")
@@ -1327,22 +3617,58 @@ class SettingsActivity : AppCompatActivity() {
                     }, 500) // Attendre 500ms
                 }
             }
-            
+
             val scrollView = ScrollView(activity).apply {
                 setBackgroundColor(Color.WHITE)
                 isFillViewport = true
             }
+            this.scrollView = scrollView
             val statsContent = activity.createStatsContent()
             scrollView.addView(statsContent)
-            
+
             // Ajouter le ScrollView dans le SwipeRefreshLayout
             swipeRefreshLayout.addView(scrollView)
             
             Log.d("SettingsActivity", "StatsFragment créé avec Pull-to-Refresh")
             return swipeRefreshLayout
         }
+
+        override fun onResume() {
+            super.onResume()
+            // Recharge les stats à chaque retour au premier plan (ex. après une session de
+            // frappe) : sans ce rafraîchissement, l'onglet réaffiche les chiffres capturés à
+            // sa création jusqu'à un pull-to-refresh manuel ou un redémarrage de l'activité.
+            val activity = requireActivity() as? SettingsActivity ?: return
+            val container = scrollView ?: return
+            container.removeAllViews()
+            container.addView(activity.createStatsContent())
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            scrollView = null
+        }
     }
     
+    /**
+     * Astuce de la semaine : l'index suit le numéro de semaine plutôt qu'un
+     * tirage aléatoire seedé sur la date (comme [getWordOfTheDay]), pour que la
+     * liste soit parcourue en entier et que deux semaines de suite ne retombent
+     * jamais sur la même astuce. Le décalage de fuseau est ajouté pour que le
+     * changement se fasse à minuit local et non à minuit UTC.
+     *
+     * Le +3 cale la bascule sur le lundi : le jour 0 de l'ère Unix étant un
+     * jeudi, sans lui l'astuce changerait en plein milieu de semaine.
+     */
+    private fun getTipOfTheWeek(): String {
+        val calendar = Calendar.getInstance()
+        val localMillis = calendar.timeInMillis +
+                calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)
+        val dayIndex = TimeUnit.MILLISECONDS.toDays(localMillis)
+        val weekIndex = (dayIndex + 3) / 7
+        return WEEKLY_TIPS[(weekIndex % WEEKLY_TIPS.size).toInt()]
+    }
+
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
             val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
@@ -1359,7 +3685,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 
                 if (allWords.isEmpty()) {
-                    return Pair("Bonjou", 0)
+                    return Pair("Moien", 0)
                 }
                 
                 // Utiliser la date comme seed pour avoir le même mot toute la journée
@@ -1375,17 +3701,20 @@ class SettingsActivity : AppCompatActivity() {
                 return Pair(selectedWord, usageCount)
             } else {
                 Log.d("SettingsActivity", "Fichier usage n'existe pas, création depuis assets")
-                // Charger depuis les assets (format JSONObject)
+                // Charger depuis les assets
                 val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
-                val jsonObject = JSONObject(jsonString)
-                Log.d("SettingsActivity", "Dictionnaire luxembourgeois chargé: ${jsonObject.length()} mots")
+                val jsonArray = org.json.JSONArray(jsonString)
+                Log.d("SettingsActivity", "Dictionnaire chargé: ${jsonArray.length()} mots")
                 
                 allWords = mutableListOf<String>().apply {
-                    jsonObject.keys().forEach { word -> add(word) }
+                    for (i in 0 until jsonArray.length()) {
+                        val wordArray = jsonArray.getJSONArray(i)
+                        add(wordArray.getString(0))  // Premier élément = le mot
+                    }
                 }
                 
                 if (allWords.isEmpty()) {
-                    return Pair("Bonjou", 0)
+                    return Pair("Moien", 0)
                 }
                 
                 // Utiliser la date comme seed
@@ -1400,7 +3729,1199 @@ class SettingsActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur mot du jour: ${e.message}")
-            Pair("Bonjou", 0)
+            Pair("Moien", 0)
+        }
+    }
+    
+    /**
+     * 🎨 Transformateur personnalisé pour effet Tinder Swipe
+     * 
+     * Caractéristiques :
+     * - Rotation de -15° à +15° selon la direction du swipe
+     * - Translation verticale : la carte se soulève légèrement
+     * - Scale : la carte rétrécit un peu en s'éloignant
+     * - Fade out progressif
+     * - Élévation : la page courante est au-dessus
+     */
+    private class TinderSwipeTransformer : ViewPager2.PageTransformer {
+        override fun transformPage(page: View, position: Float) {
+            page.apply {
+                when {
+                    position < -1 -> { // [-Infinity,-1)
+                        // Page complètement à gauche, hors écran
+                        alpha = 0f
+                        translationX = 0f
+                        translationY = 0f
+                        rotation = 0f
+                        scaleX = 1f
+                        scaleY = 1f
+                    }
+                    position <= 1 -> { // [-1,1]
+                        // Page visible ou en transition
+                        
+                        // 🎯 Effet Tinder : rotation + translation + scale
+                        val absPosition = Math.abs(position)
+                        
+                        // Rotation de -15° à +15° selon la direction du swipe
+                        rotation = -15f * position
+                        
+                        // Translation verticale : la carte se soulève légèrement
+                        translationY = -Math.abs(position) * 50f
+                        
+                        // Translation horizontale pour accentuer le mouvement
+                        translationX = position * width * 0.3f
+                        
+                        // Scale : la carte rétrécit un peu en s'éloignant
+                        val scale = 1f - absPosition * 0.2f
+                        scaleX = scale
+                        scaleY = scale
+                        
+                        // Alpha : fade out progressif
+                        alpha = 1f - absPosition * 0.5f
+                        
+                        // Élévation : la page courante est au-dessus
+                        elevation = (1f - absPosition) * 10f
+                    }
+                    else -> { // (1,+Infinity]
+                        // Page complètement à droite, hors écran
+                        alpha = 0f
+                        translationX = 0f
+                        translationY = 0f
+                        rotation = 0f
+                        scaleX = 1f
+                        scaleY = 1f
+                    }
+                }
+            }
+        }
+    }
+    
+    // Fragment pour les mots mêlés
+    class WordSearchFragment : Fragment() {
+        
+        private var currentPuzzle: WordSearchPuzzle? = null
+        private var startTime: Long = 0
+        private var wordsFound = 0
+        private lateinit var gridView: GridView
+        private lateinit var wordsListContainer: LinearLayout
+        private lateinit var tvTheme: TextView
+        private lateinit var tvScore: TextView
+        
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            
+            // ScrollView pour permettre le défilement si nécessaire
+            return ScrollView(activity).apply {
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                
+                val mainLayout = LinearLayout(activity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(8, 8, 8, 8) // Réduction du padding de 16 à 8
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    
+                    // En-tête avec thème et score
+                    val headerLayout = LinearLayout(activity).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        setPadding(8, 4, 8, 8) // Réduction du padding
+                        gravity = Gravity.CENTER_VERTICAL
+                        
+                        tvTheme = TextView(activity).apply {
+                            text = "⏳ Chargement..."
+                            textSize = 16f
+                            setTextColor(Color.parseColor("#9C27B0"))
+                            setTypeface(null, Typeface.BOLD)
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                        }
+                        addView(tvTheme)
+                        
+                        tvScore = TextView(activity).apply {
+                            text = "⭐ 0"
+                            textSize = 16f
+                            setTextColor(Color.parseColor("#FF9800"))
+                            setTypeface(null, Typeface.BOLD)
+                            gravity = Gravity.END
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerLayout)
+                    
+                    // Grille de mots mêlés
+                    gridView = GridView(activity).apply {
+                        // Calculer la taille disponible pour la grille
+                        val screenWidth = resources.displayMetrics.widthPixels
+                        val availableWidth = screenWidth - 48
+                        
+                        // La grille est toujours 8x8
+                        val gridSize = 8
+                        // Calculer la taille d'une cellule en fonction de la largeur
+                        val cellSize = availableWidth / gridSize
+                        // Hauteur de la grille = 8 cellules + espacements + padding
+                        val gridHeight = (cellSize * gridSize) + (4 * (gridSize - 1)) + 24
+                        
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            gridHeight
+                        )
+                        setPadding(12, 12, 12, 12)
+                        stretchMode = GridView.STRETCH_COLUMN_WIDTH
+                        setBackgroundColor(Color.parseColor("#F5F5F5")) // Fond gris très clair
+                        verticalSpacing = 4 // Espacement vertical entre les lignes
+                        horizontalSpacing = 4 // Espacement horizontal entre les colonnes
+                        
+                        // 🔧 FIX: Gérer les touches au niveau de la GridView pour permettre le swipe entre cellules
+                        setOnTouchListener { view, event ->
+                            // Demander au parent de ne pas intercepter les événements
+                            parent?.requestDisallowInterceptTouchEvent(true)
+                            
+                            // Calculer quelle cellule est touchée
+                            val position = pointToPosition(event.x.toInt(), event.y.toInt())
+                            
+                            if (position != android.widget.AdapterView.INVALID_POSITION) {
+                                val adapter = adapter as? WordSearchGridAdapter
+                                adapter?.handleTouchEvent(position, event)
+                            }
+                            
+                            // Réactiver l'interception après ACTION_UP ou ACTION_CANCEL
+                            if (event.action == android.view.MotionEvent.ACTION_UP ||
+                                event.action == android.view.MotionEvent.ACTION_CANCEL) {
+                                parent?.requestDisallowInterceptTouchEvent(false)
+                            }
+                            
+                            true // Consommer l'événement
+                        }
+                    }
+                    addView(gridView)
+                    
+                    // Bouton nouvelle grille
+                    val btnNewGame = Button(activity).apply {
+                        text = "🔄 Nouvelle Grille"
+                        textSize = 14f
+                        setTextColor(Color.WHITE)
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setPadding(24, 10, 24, 10) // Réduction du padding vertical
+                        setTypeface(null, Typeface.BOLD)
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(0, 8, 0, 8) // Réduction des marges de 16 à 8
+                        }
+                        setOnClickListener {
+                            generateNewPuzzle()
+                        }
+                    }
+                    addView(btnNewGame)
+                    
+                    // Liste des mots à trouver
+                    val wordsTitle = TextView(activity).apply {
+                        text = "📝 Mots à trouver :"
+                        textSize = 14f // Réduction de 16 à 14
+                        setTextColor(Color.parseColor("#333333"))
+                        setTypeface(null, Typeface.BOLD)
+                        setPadding(8, 4, 8, 4) // Réduction du padding
+                    }
+                    addView(wordsTitle)
+                    
+                    wordsListContainer = LinearLayout(activity).apply {
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(8, 4, 8, 8) // Réduction du padding
+                        setBackgroundColor(Color.parseColor("#FFFFFF"))
+                    }
+                    addView(wordsListContainer)
+                }
+                
+                addView(mainLayout)
+                
+                // Générer la première grille après que la vue soit créée
+                post {
+                    // Le post() s'exécute au prochain passage de la boucle de messages :
+                    // si l'utilisateur a déjà changé d'onglet entre-temps, le fragment
+                    // n'est plus attaché et requireActivity()/requireContext() planterait.
+                    if (isAdded) {
+                        generateNewPuzzle()
+                    }
+                }
+            }
+        }
+
+        private fun generateNewPuzzle() {
+            try {
+                val activity = requireActivity() as SettingsActivity
+
+                // Générer une nouvelle grille 8x8 avec des mots aléatoires du dictionnaire
+                currentPuzzle = WordSearchGenerator.generatePuzzle(
+                    context = activity,
+                    theme = "lux", // Thème unique
+                    gridSize = 8,
+                    difficulty = WordSearchDifficulty.NORMAL
+                )
+
+                // Afficher la grille
+                displayPuzzle(currentPuzzle!!)
+
+                // Réinitialiser
+                startTime = System.currentTimeMillis()
+                wordsFound = 0
+                updateScore(0)
+
+                Log.d("WordSearchFragment", "Nouvelle grille générée: ${currentPuzzle?.words?.size} mots")
+
+            } catch (e: Exception) {
+                Log.e("WordSearchFragment", "Erreur génération: ${e.message}", e)
+                // context (nullable) au lieu de requireContext() : si le fragment vient
+                // justement d'être détaché, ce bloc catch ne doit pas planter à son tour.
+                context?.let { Toast.makeText(it, "Erreur lors de la génération", Toast.LENGTH_SHORT).show() }
+            }
+        }
+        
+        private fun displayPuzzle(puzzle: WordSearchPuzzle) {
+            val activity = requireActivity() as SettingsActivity
+            
+            // Configurer l'adaptateur de la grille
+            val adapter = WordSearchGridAdapter(activity, puzzle)
+            adapter.setOnWordFoundListener { word ->
+                onWordFound(word)
+            }
+            gridView.adapter = adapter
+            gridView.numColumns = puzzle.gridSize
+            
+            // Afficher le titre simple sans thème
+            tvTheme.text = "🎯 Mots luxembourgeois"
+            
+            // Afficher la liste des mots
+            displayWordsList(puzzle.words)
+        }
+        
+        private fun displayWordsList(words: List<WordSearchWord>) {
+            wordsListContainer.removeAllViews()
+            val activity = requireActivity() as SettingsActivity
+            
+            words.forEach { word ->
+                val wordView = TextView(activity).apply {
+                    text = if (word.isFound) "✅ ${word.word.uppercase()}" else "📝 ${word.word.uppercase()}"
+                    textSize = 14f
+                    setPadding(12, 8, 12, 8)
+                    setTextColor(if (word.isFound) Color.parseColor("#4CAF50") else Color.parseColor("#333333"))
+                    setTypeface(null, if (word.isFound) Typeface.BOLD else Typeface.NORMAL)
+                }
+                wordsListContainer.addView(wordView)
+            }
+        }
+        
+        private fun onWordFound(word: String) {
+            wordsFound++
+            
+            // Mettre à jour la liste
+            currentPuzzle?.words?.find { it.word.equals(word, ignoreCase = true) }?.isFound = true
+            displayWordsList(currentPuzzle?.words ?: emptyList())
+            
+            // Calculer les points
+            val points = word.length * 10
+            updateScore(points)
+            
+            // Vérifier si tous les mots sont trouvés
+            // Toast.setGravity() est ignoré par le système depuis Android 11 : on utilise
+            // une Snackbar (vue applicative, pas une fenêtre système) pour l'ancrer en haut
+            // et éviter qu'elle ne recouvre le mot qui vient de passer en vert dans la liste.
+            val message = if (wordsFound == currentPuzzle?.words?.size) {
+                "🎉 Félicitations ! Tous les mots trouvés !"
+            } else {
+                "✅ Mot trouvé : $word (+$points pts)"
+            }
+            val duration = if (wordsFound == currentPuzzle?.words?.size) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
+            Snackbar.make(requireView(), message, duration).apply {
+                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
+                    it.gravity = Gravity.TOP
+                    view.layoutParams = it
+                }
+            }.show()
+        }
+        
+        private fun updateScore(points: Int) {
+            val currentScore = tvScore.text.toString().replace("[^0-9]".toRegex(), "").toIntOrNull() ?: 0
+            val newScore = currentScore + points
+            tvScore.text = "⭐ $newScore"
+        }
+    }
+    
+    // Fragment pour le jeu de mots mélangés
+    class WordScrambleFragment : Fragment() {
+        private var rootView: ScrollView? = null
+        
+        private lateinit var tvScore: TextView
+        private lateinit var tvWordNumber: TextView
+        private lateinit var gridScrambled: GridView
+        private lateinit var gridAnswer: GridView
+        private lateinit var btnValidate: Button
+        private lateinit var btnSkip: Button
+        private lateinit var btnHint: Button
+        private lateinit var btnClear: Button
+        private lateinit var progressBar: ProgressBar
+        
+        private var scrambledAdapter: com.example.kreyolkeyboard.wordscramble.ScrambledLettersAdapter? = null
+        private var answerAdapter: com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter? = null
+        
+        private var currentWord: String = ""
+        private var scrambledLetters: List<Char> = listOf()
+        private val currentAnswer = mutableListOf<Char?>()
+        private val selectedPositions = mutableListOf<Int>()
+        
+        private var gameWords: List<String> = listOf()
+        private var currentWordIndex = 0
+        private var wordsCorrect = 0
+        private var score = 0
+        private var difficulty = com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty.NORMAL
+        
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                isFillViewport = true
+                
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+                    
+                    // En-tête avec score
+                    val headerLayout = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                        setBackgroundColor(Color.WHITE)
+                        setPadding(24, 24, 24, 24)
+                        elevation = 8f
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
+                        
+                        tvScore = TextView(activity).apply {
+                            text = "Score: 0"
+                            textSize = 24f
+                            setTypeface(null, Typeface.BOLD)
+                            gravity = Gravity.CENTER
+                            setTextColor(Color.parseColor("#4CAF50"))
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerLayout)
+                    
+                    // Numéro du mot et progression
+                    val progressLayout = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
+                        
+                        tvWordNumber = TextView(activity).apply {
+                            text = "Mot 1/10"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                            setPadding(0, 0, 0, 16)
+                        }
+                        addView(tvWordNumber)
+                        
+                        progressBar = ProgressBar(activity, null, android.R.attr.progressBarStyleHorizontal).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                16
+                            )
+                            max = 10
+                            progress = 0
+                        }
+                        addView(progressBar)
+                    }
+                    addView(progressLayout)
+                    
+                    // Titre
+                    val title = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        text = "🔤 Remets les lettres dans l'ordre !"
+                        textSize = 18f
+                        setTypeface(null, Typeface.BOLD)
+                        gravity = Gravity.CENTER
+                        setTextColor(Color.parseColor("#1976D2"))
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
+                    }
+                    addView(title)
+                    
+                    // Label lettres disponibles
+                    val labelScrambled = TextView(activity).apply {
+                        text = "Lettres disponibles :"
+                        textSize = 14f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.parseColor("#333333"))
+                        setPadding(0, 0, 0, 16)
+                    }
+                    addView(labelScrambled)
+                    
+                    // Grille des lettres mélangées
+                    gridScrambled = GridView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        numColumns = 5
+                        verticalSpacing = 16
+                        horizontalSpacing = 16
+                        stretchMode = GridView.STRETCH_COLUMN_WIDTH
+                        gravity = Gravity.CENTER
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 48
+                        
+                        setOnItemClickListener { _, _, position, _ ->
+                            if (!selectedPositions.contains(position)) {
+                                addLetterToAnswer(position)
+                            }
+                        }
+                    }
+                    addView(gridScrambled)
+                    
+                    // Label réponse
+                    val labelAnswer = TextView(activity).apply {
+                        text = "Ta réponse :"
+                        textSize = 14f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.parseColor("#333333"))
+                        setPadding(0, 0, 0, 16)
+                    }
+                    addView(labelAnswer)
+                    
+                    // Grille de la réponse
+                    gridAnswer = GridView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        numColumns = 5
+                        verticalSpacing = 16
+                        horizontalSpacing = 16
+                        stretchMode = GridView.STRETCH_COLUMN_WIDTH
+                        gravity = Gravity.CENTER
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 48
+                        
+                        setOnItemClickListener { _, _, position, _ ->
+                            removeLetterFromAnswer(position)
+                        }
+                    }
+                    addView(gridAnswer)
+                    
+                    // Boutons d'action ligne 1
+                    val buttonRow1 = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 24
+                        
+                        btnClear = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(8, 0, 8, 0) }
+                            text = "🔄 Effacer"
+                            setBackgroundColor(Color.parseColor("#FF9800"))
+                            setTextColor(Color.WHITE)
+                            setOnClickListener { clearAnswer() }
+                        }
+                        addView(btnClear)
+                        
+                        btnHint = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(8, 0, 8, 0) }
+                            text = "💡 Indice"
+                            setBackgroundColor(Color.parseColor("#FFC107"))
+                            setTextColor(Color.WHITE)
+                            setOnClickListener { showHint() }
+                        }
+                        addView(btnHint)
+                    }
+                    addView(buttonRow1)
+                    
+                    // Boutons d'action ligne 2
+                    val buttonRow2 = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                        
+                        btnValidate = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(8, 0, 8, 0) }
+                            text = "✅ Valider"
+                            setBackgroundColor(Color.parseColor("#4CAF50"))
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            isEnabled = false
+                            setOnClickListener { validateAnswer() }
+                        }
+                        addView(btnValidate)
+                        
+                        btnSkip = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(8, 0, 8, 0) }
+                            text = "⏭️ Passer"
+                            setBackgroundColor(Color.parseColor("#9E9E9E"))
+                            setTextColor(Color.WHITE)
+                            setOnClickListener { skipWord() }
+                        }
+                        addView(btnSkip)
+                    }
+                    addView(buttonRow2)
+                }
+                
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que WordSearchFragment.generateNewPuzzle() :
+                    // ce post() peut s'exécuter après que l'utilisateur a changé
+                    // d'onglet, auquel cas le fragment n'est plus attaché.
+                    if (isAdded) {
+                        startNewGame()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+        
+        private fun startNewGame() {
+            score = 0
+            currentWordIndex = 0
+            wordsCorrect = 0
+            
+            gameWords = com.example.kreyolkeyboard.wordscramble.WordScrambleData.loadWords(requireContext(), difficulty)
+            
+            if (gameWords.isEmpty()) {
+                Toast.makeText(requireContext(), "Erreur de chargement", Toast.LENGTH_SHORT).show()
+                return
+            }
+            
+            progressBar.max = gameWords.size
+            loadNextWord()
+        }
+        
+        private fun loadNextWord() {
+            if (currentWordIndex >= gameWords.size) {
+                endGame()
+                return
+            }
+            
+            currentWord = gameWords[currentWordIndex]
+            var allScrambledLetters = com.example.kreyolkeyboard.wordscramble.WordScrambleData.scrambleWord(currentWord)
+            
+            currentAnswer.clear()
+            selectedPositions.clear()
+            repeat(currentWord.length) { currentAnswer.add(null) }
+            
+            // Pré-remplir la première et la dernière lettre
+            if (currentWord.isNotEmpty()) {
+                currentAnswer[0] = currentWord[0]
+                if (currentWord.length > 1) {
+                    currentAnswer[currentWord.length - 1] = currentWord[currentWord.length - 1]
+                }
+                
+                // Retirer la première et dernière lettre des lettres mélangées
+                val lettersToRemove = mutableListOf<Char>()
+                lettersToRemove.add(currentWord[0])
+                if (currentWord.length > 1) {
+                    lettersToRemove.add(currentWord[currentWord.length - 1])
+                }
+                
+                scrambledLetters = allScrambledLetters.toMutableList().apply {
+                    lettersToRemove.forEach { letter ->
+                        remove(letter)
+                    }
+                }
+            } else {
+                scrambledLetters = allScrambledLetters
+            }
+            
+            scrambledAdapter = com.example.kreyolkeyboard.wordscramble.ScrambledLettersAdapter(requireContext(), scrambledLetters)
+            answerAdapter = com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter(requireContext(), currentAnswer)
+            
+            gridScrambled.adapter = scrambledAdapter
+            gridAnswer.adapter = answerAdapter
+            
+            gridScrambled.numColumns = minOf(scrambledLetters.size, 5)
+            gridAnswer.numColumns = minOf(currentWord.length, 5)
+            
+            // Ajuster la hauteur des grilles
+            val numRowsScrambled = (scrambledLetters.size + 4) / 5
+            val numRowsAnswer = (currentWord.length + 4) / 5
+            gridScrambled.layoutParams.height = numRowsScrambled * 136 // 120 + 16 spacing
+            gridAnswer.layoutParams.height = numRowsAnswer * 136
+            
+            tvWordNumber.text = "Mot ${currentWordIndex + 1}/${gameWords.size}"
+            tvScore.text = "Score: $score"
+            progressBar.progress = currentWordIndex
+        }
+
+        
+        private fun addLetterToAnswer(position: Int) {
+            val emptyIndex = currentAnswer.indexOfFirst { it == null }
+            if (emptyIndex != -1) {
+                currentAnswer[emptyIndex] = scrambledLetters[position]
+                selectedPositions.add(position)
+                
+                scrambledAdapter?.markAsSelected(position)
+                answerAdapter?.updateLetters(currentAnswer)
+                
+                if (currentAnswer.all { it != null }) {
+                    btnValidate.isEnabled = true
+                }
+            }
+        }
+        
+        private fun removeLetterFromAnswer(position: Int) {
+            if (position < currentAnswer.size && currentAnswer[position] != null) {
+                currentAnswer[position] = null
+                
+                if (position < selectedPositions.size) {
+                    selectedPositions.removeAt(position)
+                }
+                
+                val nonNullLetters = currentAnswer.filterNotNull().toMutableList()
+                currentAnswer.clear()
+                currentAnswer.addAll(nonNullLetters)
+                repeat(currentWord.length - nonNullLetters.size) { currentAnswer.add(null) }
+                
+                scrambledAdapter?.clearSelections()
+                selectedPositions.forEachIndexed { index, pos ->
+                    if (index < selectedPositions.size) {
+                        scrambledAdapter?.markAsSelected(pos)
+                    }
+                }
+                
+                answerAdapter?.updateLetters(currentAnswer)
+                btnValidate.isEnabled = false
+            }
+        }
+        
+        private fun validateAnswer() {
+            val answer = currentAnswer.filterNotNull().joinToString("")
+            
+            if (answer.equals(currentWord, ignoreCase = true)) {
+                score += 100
+                
+                Toast.makeText(requireContext(), "✅ Correct! +100 pts", Toast.LENGTH_SHORT).show()
+
+                wordsCorrect++
+                currentWordIndex++
+                loadNextWord()
+            } else {
+                Toast.makeText(requireContext(), "❌ Essaie encore!", Toast.LENGTH_SHORT).show()
+                clearAnswer()
+            }
+        }
+        
+        private fun skipWord() {
+            Toast.makeText(requireContext(), "Le mot était: $currentWord", Toast.LENGTH_SHORT).show()
+            currentWordIndex++
+            loadNextWord()
+        }
+        
+        private fun showHint() {
+            val firstEmpty = currentAnswer.indexOfFirst { it == null }
+            if (firstEmpty != -1) {
+                val correctLetter = currentWord[firstEmpty]
+                
+                val posInScrambled = scrambledLetters.indexOfFirst { 
+                    it == correctLetter && !selectedPositions.contains(scrambledLetters.indexOf(it))
+                }
+                
+                if (posInScrambled != -1) {
+                    addLetterToAnswer(posInScrambled)
+                    score -= 20
+                    tvScore.text = "Score: $score"
+                    Toast.makeText(requireContext(), "Indice (-20 pts)", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        
+        private fun clearAnswer() {
+            currentAnswer.clear()
+            selectedPositions.clear()
+            repeat(currentWord.length) { currentAnswer.add(null) }
+            
+            // Re-pré-remplir la première et dernière lettre
+            if (currentWord.isNotEmpty()) {
+                currentAnswer[0] = currentWord[0]
+                if (currentWord.length > 1) {
+                    currentAnswer[currentWord.length - 1] = currentWord[currentWord.length - 1]
+                }
+            }
+            
+            scrambledAdapter?.clearSelections()
+            answerAdapter?.updateLetters(currentAnswer)
+            btnValidate.isEnabled = false
+        }
+        
+        private fun endGame() {
+            AlertDialog.Builder(requireContext())
+                .setTitle("🎉 Partie terminée!")
+                .setMessage("Score final: $score\nMots réussis: $wordsCorrect/${gameWords.size}")
+                .setPositiveButton("Rejouer") { _, _ ->
+                    startNewGame()
+                }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+        
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rootView = null
+        }
+    }
+
+    // Fragment pour le Wuertriet : deviner un mot kréyòl de 5 lettres en 6 essais
+    class WuertrietFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var gridBoard: LinearLayout
+        private lateinit var editGuess: EditText
+        private lateinit var btnSubmit: Button
+        private lateinit var tvAttempts: TextView
+        private lateinit var legendContainer: LinearLayout
+
+        private var targetWord: String = ""
+        private var currentAttempt = 0
+        private var gameOver = false
+        private val rows = mutableListOf<WuertrietRow>()
+        private val letterBestState = mutableMapOf<Char, LetterState>()
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    // Titre + compteur d'essais sur la même ligne (gain de place vertical)
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 12
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            text = "🟩 Wuertriet"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#1976D2"))
+                        }
+                        addView(title)
+
+                        tvAttempts = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            text = "Essai 1/${WuertrietData.MAX_ATTEMPTS}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvAttempts)
+                    }
+                    addView(headerRow)
+
+                    // Grille de la partie (6 essais x 5 lettres) : un simple LinearLayout,
+                    // pas une GridView — une GridView (AbsListView) vole le geste de scroll
+                    // vertical à la ScrollView parente même quand elle est en lecture seule.
+                    gridBoard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(gridBoard)
+
+                    // Légende des lettres essayées : sur une seule ligne avec son label,
+                    // juste sous la grille, pour rester visible au-dessus du clavier virtuel.
+                    val legendRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
+
+                        val legendTitle = TextView(activity).apply {
+                            text = "Lettres déjà jouées :"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                            setPadding(0, 0, 12, 0)
+                        }
+                        addView(legendTitle)
+
+                        legendContainer = LinearLayout(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            orientation = LinearLayout.HORIZONTAL
+                        }
+                        val legendScroll = HorizontalScrollView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            addView(legendContainer)
+                        }
+                        addView(legendScroll)
+                    }
+                    addView(legendRow)
+
+                    // Saisie de la proposition (le champ porte directement son propre libellé en hint)
+                    val inputRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
+
+                        editGuess = EditText(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply { setMargins(0, 0, 16, 0) }
+                            hint = "Votre mot de ${WuertrietData.WORD_LENGTH} lettres"
+                            setHintTextColor(Color.parseColor("#9E9E9E"))
+                            textSize = 18f
+                            setTextColor(Color.parseColor("#212121"))
+                            setTypeface(null, Typeface.BOLD)
+                            gravity = Gravity.CENTER
+                            letterSpacing = 0.08f
+                            setPadding(16, 24, 16, 24)
+                            background = android.graphics.drawable.GradientDrawable().apply {
+                                cornerRadius = 12f
+                                setColor(Color.WHITE)
+                                setStroke(4, Color.parseColor("#2196F3"))
+                            }
+                            filters = arrayOf(android.text.InputFilter.LengthFilter(WuertrietData.WORD_LENGTH))
+                            setSingleLine(true)
+                            isAllCaps = true // après setSingleLine() : sinon la transformation majuscules est écrasée
+                            imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_DONE
+                            setOnEditorActionListener { _, actionId, _ ->
+                                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                                    submitGuess()
+                                    true
+                                } else false
+                            }
+                        }
+                        addView(editGuess)
+
+                        btnSubmit = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT
+                            )
+                            text = "✅ Valider"
+                            setBackgroundColor(Color.parseColor("#4CAF50"))
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { submitGuess() }
+                        }
+                        addView(btnSubmit)
+                    }
+                    addView(inputRow)
+
+                    // Bouton nouvelle partie
+                    val btnNewGame = Button(activity).apply {
+                        text = "🔄 Fè on dòt pati"
+                        textSize = 14f
+                        setTextColor(Color.WHITE)
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setPadding(24, 10, 24, 10)
+                        setTypeface(null, Typeface.BOLD)
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        setOnClickListener { startNewGame() }
+                    }
+                    addView(btnNewGame)
+
+                    // Règles du jeu, sous la zone de jeu
+                    val rulesCard = LinearLayout(activity).apply {
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        background = android.graphics.drawable.GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        val rulesTitle = TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#1976D2"))
+                            setPadding(0, 0, 0, 12)
+                        }
+                        addView(rulesTitle)
+
+                        val rulesText = TextView(activity).apply {
+                            text = "Devine le mot luxembourgeois de ${WuertrietData.WORD_LENGTH} lettres en ${WuertrietData.MAX_ATTEMPTS} essais maximum.\n\n" +
+                                "Après chaque essai, la couleur des lettres t'indique :\n" +
+                                "🟩 Vert : bonne lettre, bonne position\n" +
+                                "🟨 Orange : la lettre est dans le mot, mais mal placée\n" +
+                                "⬜ Gris : la lettre n'est pas dans le mot\n\n" +
+                                "Le mot proposé doit exister dans le dictionnaire luxembourgeois."
+                            textSize = 14f
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(rulesText)
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : si l'utilisateur a déjà
+                    // changé d'onglet, le fragment n'est plus attaché.
+                    if (isAdded) {
+                        startNewGame()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun renderBoard() {
+            val activity = requireActivity()
+            gridBoard.removeAllViews()
+            rows.forEach { row ->
+                val rowLayout = LinearLayout(activity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 6 }
+                }
+                row.letters.forEachIndexed { index, letter ->
+                    val state = row.states[index]
+                    val cell = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(0, 88, 1f).apply {
+                            if (index > 0) marginStart = 6
+                        }
+                        gravity = Gravity.CENTER
+                        text = letter?.toString()?.uppercase() ?: ""
+                        textSize = 18f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(if (state == LetterState.EMPTY) Color.parseColor("#333333") else Color.WHITE)
+                        setBackgroundColor(state.color())
+                    }
+                    rowLayout.addView(cell)
+                }
+                gridBoard.addView(rowLayout)
+            }
+        }
+
+        private fun startNewGame() {
+            val activity = requireActivity()
+            targetWord = WuertrietData.pickRandomWord(activity)
+            currentAttempt = 0
+            gameOver = false
+            letterBestState.clear()
+            rows.clear()
+            repeat(WuertrietData.MAX_ATTEMPTS) {
+                rows.add(
+                    WuertrietRow(
+                        letters = List(WuertrietData.WORD_LENGTH) { null },
+                        states = List(WuertrietData.WORD_LENGTH) { LetterState.EMPTY }
+                    )
+                )
+            }
+            renderBoard()
+            editGuess.setText("")
+            editGuess.isEnabled = true
+            btnSubmit.isEnabled = true
+            tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
+            legendContainer.removeAllViews()
+        }
+
+        private fun submitGuess() {
+            if (gameOver) return
+            val activity = requireActivity()
+            val guess = editGuess.text.toString().trim().lowercase()
+
+            if (guess.length != WuertrietData.WORD_LENGTH) {
+                showTopMessage("Mo la dwèt ni ${WuertrietData.WORD_LENGTH} lèt")
+                return
+            }
+            if (!WuertrietData.isValidWord(activity, guess)) {
+                showTopMessage("❌ Dëst Wuert ass net am Wierderbuch")
+                return
+            }
+
+            val states = WuertrietData.evaluateGuess(targetWord, guess)
+            rows[currentAttempt] = WuertrietRow(guess.toList(), states)
+            renderBoard()
+            updateLegend(guess, states)
+
+            val won = states.all { it == LetterState.CORRECT }
+            currentAttempt++
+
+            when {
+                won -> {
+                    gameOver = true
+                    endGame(true)
+                }
+                currentAttempt >= WuertrietData.MAX_ATTEMPTS -> {
+                    gameOver = true
+                    endGame(false)
+                }
+                else -> {
+                    editGuess.setText("")
+                    tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
+                }
+            }
+        }
+
+        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut via Snackbar
+        // pour ne pas se faire masquer par le clavier virtuel (même piste que WordSearchFragment).
+        private fun showTopMessage(message: String) {
+            Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).apply {
+                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
+                    it.gravity = Gravity.TOP
+                    view.layoutParams = it
+                }
+            }.show()
+        }
+
+        private fun updateLegend(guess: String, states: List<LetterState>) {
+            val activity = requireActivity()
+            guess.forEachIndexed { index, letter ->
+                val newState = states[index]
+                val existing = letterBestState[letter]
+                if (existing == null || statePriority(newState) > statePriority(existing)) {
+                    letterBestState[letter] = newState
+                }
+            }
+
+            legendContainer.removeAllViews()
+            letterBestState.entries.sortedBy { it.key }.forEach { (letter, state) ->
+                val chip = TextView(activity).apply {
+                    text = letter.toString().uppercase()
+                    textSize = 16f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.WHITE)
+                    setBackgroundColor(state.color())
+                    setPadding(24, 16, 24, 16)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { setMargins(0, 0, 8, 0) }
+                }
+                legendContainer.addView(chip)
+            }
+        }
+
+        private fun statePriority(state: LetterState): Int = when (state) {
+            LetterState.CORRECT -> 3
+            LetterState.PRESENT -> 2
+            LetterState.ABSENT -> 1
+            LetterState.EMPTY -> 0
+        }
+
+        private fun endGame(won: Boolean) {
+            editGuess.isEnabled = false
+            btnSubmit.isEnabled = false
+
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (won) "🎉 Bravo !" else "😔 Domaj !")
+                .setMessage(
+                    if (won) "Ou touvé mo-a an $currentAttempt èsèy : ${targetWord.uppercase()}"
+                    else "Mo la té : ${targetWord.uppercase()}"
+                )
+                .setPositiveButton("Rejouer") { _, _ -> startNewGame() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rootView = null
         }
     }
 }

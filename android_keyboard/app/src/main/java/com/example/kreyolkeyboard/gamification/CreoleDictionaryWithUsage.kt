@@ -6,6 +6,8 @@ import com.example.kreyolkeyboard.gamification.WordUsageStats
 import com.example.kreyolkeyboard.gamification.VocabularyStats
 import org.json.JSONObject
 import java.io.File
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Gestionnaire du dictionnaire créole avec tracking d'utilisation utilisateur
@@ -29,13 +31,49 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         private const val TAG = "CreoleDictUsage"
         private const val DICT_FILE = "luxemburgish_dict_with_usage.json"
         private const val ORIGINAL_DICT = "luxemburgish_dict.json"
-        private const val MIN_WORD_LENGTH = 3  // Ignorer les mots < 3 lettres
-        private const val SAVE_BATCH_SIZE = 1  // Sauvegarder après chaque utilisation pour tests
+        // 2 : le dictionnaire créole contient des mots réels et très fréquents de 2 lettres
+        // (ka, ou, on, an, sa, wi...) qui ne comptaient jamais dans wordsDiscovered avant ce
+        // correctif (23/07/2026). Le vrai filtre de vie privée reste dictionary.has(normalized)
+        // plus bas : un mot hors dictionnaire n'est de toute façon jamais tracké, quelle que
+        // soit sa longueur.
+        private const val MIN_WORD_LENGTH = 2
     }
-    
+
     private var dictionary: JSONObject = JSONObject()
-    private var unsavedChanges = 0  // Compteur pour sauvegarde par batch
-    
+    private var unsavedChanges = 0  // Changements non encore écrits sur le disque
+
+    /**
+     * Écriture du dictionnaire hors du thread appelant.
+     *
+     * Mesuré le 08/08/2026 sur émulateur : sauvegarder à chaque mot validé,
+     * de façon synchrone, coûtait 116 à 500 ms sur le thread principal du
+     * service de saisie — assez pour faire sauter des images en pleine frappe.
+     * Le coût venait du couple sérialisation + écriture des 5296 entrées, et il
+     * était payé à chaque espace tapé.
+     *
+     * Un exécuteur à un seul thread suffit : les écritures ne peuvent pas se
+     * chevaucher, et [savePending] les fusionne quand plusieurs mots arrivent
+     * pendant qu'une écriture est en cours. Le thread est daemon pour ne jamais
+     * retenir le processus.
+     */
+    private val saveExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "KreyolDictSave").apply { isDaemon = true }
+    }
+    private val savePending = AtomicBoolean(false)
+
+    /**
+     * Nombre de mots distincts déjà employés au moins une fois, tenu à jour de
+     * façon incrémentale.
+     *
+     * Le comptage complet parcourt les ~5300 entrées du dictionnaire : c'est
+     * acceptable à l'ouverture d'un écran de statistiques, pas à chaque mot
+     * validé. Or le service de saisie doit désormais vérifier un éventuel
+     * passage de niveau sur le thread principal, à chaque mot — d'où ce cache,
+     * initialisé une fois au chargement puis incrémenté à chaque découverte.
+     * -1 tant qu'il n'a pas été calculé.
+     */
+    private var cachedDiscoveredCount = -1
+
     init {
         loadDictionary()
     }
@@ -109,24 +147,24 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     /**
      * Migre le dictionnaire original en ajoutant les compteurs user_count
-     * Le dictionnaire luxembourgeois est un object: {"mot": frequency, ...}
+     * Le dictionnaire original est un array: [["mot", frequency], ...]
      */
     private fun migrateDictionary(): JSONObject {
         val migratedDict = JSONObject()
         
         try {
-            // Charger le dictionnaire luxembourgeois depuis les assets
+            // Charger le dictionnaire original depuis les assets
             val json = context.assets.open(ORIGINAL_DICT)
                 .bufferedReader()
                 .use { it.readText() }
-            val originalObject = JSONObject(json)
+            val originalArray = org.json.JSONArray(json)
             
-            // Transformer chaque entrée de l'objet
+            // Transformer chaque entrée du array en objet
             var count = 0
-            val keys = originalObject.keys()
-            while (keys.hasNext()) {
-                val word = keys.next()
-                val frequency = originalObject.getInt(word)
+            for (i in 0 until originalArray.length()) {
+                val entry = originalArray.getJSONArray(i)
+                val word = entry.getString(0)
+                val frequency = entry.getInt(1)
                 
                 // Créer la nouvelle structure avec user_count à 0
                 val wordData = JSONObject().apply {
@@ -140,22 +178,36 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             
             // Sauvegarder le dictionnaire migré
             saveDictionaryToFile(migratedDict)
-            Log.d(TAG, "✅ Migration luxembourgeoise réussie : $count mots transformés depuis object")
+            Log.d(TAG, "✅ Migration réussie : $count mots transformés depuis array")
             
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur lors de la migration du dictionnaire luxembourgeois", e)
+            Log.e(TAG, "❌ Erreur lors de la migration du dictionnaire", e)
         }
         
         return migratedDict
     }
     
     /**
+     * Résultat d'un comptage : le mot a-t-il été tracké, et venait-il d'être
+     * employé pour la première fois. `newlyDiscovered` est ce qui permet au
+     * service de saisie de ne tester un passage de niveau que sur une vraie
+     * découverte, au lieu de le faire à chaque mot validé.
+     */
+    data class TrackResult(val tracked: Boolean, val newlyDiscovered: Boolean)
+
+    /**
      * Incrémente le compteur d'utilisation d'un mot
-     * 
+     *
      * @param word Le mot tapé par l'utilisateur
      * @return true si le mot a été tracké, false sinon (mot ignoré)
      */
-    fun incrementWordUsage(word: String): Boolean {
+    fun incrementWordUsage(word: String): Boolean = trackWordUsage(word).tracked
+
+    /**
+     * Variante de [incrementWordUsage] qui signale en plus les premières
+     * découvertes. Même verrou, même comportement par ailleurs.
+     */
+    fun trackWordUsage(word: String): TrackResult = synchronized(this) {
         Log.d(TAG, "📥 incrementWordUsage appelé avec: '$word'")
         Log.d(TAG, "📂 CreoleDictionary contexte: ${context.filesDir.absolutePath}")
         
@@ -166,7 +218,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
         // Filtres de sécurité et vie privée
         if (!isValidForTracking(normalized)) {
             Log.d(TAG, "🔒 Mot ignoré (filtres de sécurité): '$normalized'")
-            return false
+            return TrackResult(tracked = false, newlyDiscovered = false)
         }
         
         // Vérifier que le mot existe dans le dictionnaire créole
@@ -192,30 +244,43 @@ class CreoleDictionaryWithUsage(private val context: Context) {
                     }
                     else -> {
                         Log.e(TAG, "❌ Format invalide pour '$normalized': ${rawValue::class.java}")
-                        return false
+                        return TrackResult(tracked = false, newlyDiscovered = false)
                     }
                 }
                 
                 val currentCount = wordData.getInt("user_count")
                 wordData.put("user_count", currentCount + 1)
-                
+
+                // Première apparition de ce mot : le cache de mots découverts
+                // suit le mouvement sans reparcourir tout le dictionnaire. Si
+                // le cache n'a jamais été calculé, on le calcule maintenant —
+                // l'écriture ci-dessus étant déjà faite, le total obtenu inclut
+                // ce mot et ne doit donc pas être incrémenté en plus.
+                val newlyDiscovered = currentCount == 0
+                if (newlyDiscovered) {
+                    if (cachedDiscoveredCount < 0) {
+                        cachedDiscoveredCount = computeDiscoveredWordsCount()
+                    } else {
+                        cachedDiscoveredCount++
+                    }
+                }
+
                 unsavedChanges++
                 Log.d(TAG, "✅ '$normalized' utilisé ${currentCount + 1} fois")
-                
-                // Sauvegarde par batch pour performance
-                if (unsavedChanges >= SAVE_BATCH_SIZE) {
-                    saveDictionary()
-                    unsavedChanges = 0
-                }
-                
-                true
+
+                // Sauvegarde après chaque mot, mais hors du thread appelant :
+                // rien n'est différé ni regroupé, donc rien ne peut être perdu
+                // si le service est tué, et la frappe ne paie plus l'écriture.
+                scheduleSave()
+
+                TrackResult(tracked = true, newlyDiscovered = newlyDiscovered)
             } catch (e: Exception) {
                 Log.e(TAG, "❌ Erreur lors du tracking de '$normalized'", e)
-                false
+                TrackResult(tracked = false, newlyDiscovered = false)
             }
         } else {
             Log.d(TAG, "🔒 '$normalized' ignoré (pas dans le dictionnaire créole)")
-            false
+            TrackResult(tracked = false, newlyDiscovered = false)
         }
     }
     
@@ -248,8 +313,15 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     /**
      * Obtient le nombre d'utilisations d'un mot
+     *
+     * `synchronized` avec incrementWordUsage() : depuis que le moteur de
+     * suggestions se sert de ce compteur pour classer les propositions, la lecture
+     * se fait sur un thread de fond pendant la frappe, en concurrence avec
+     * l'écriture faite sur le thread principal à chaque mot validé. JSONObject
+     * n'est pas thread-safe, et getWordDataSafe() écrit lui-même dans la map quand
+     * il migre une entrée à l'ancien format.
      */
-    fun getWordUsageCount(word: String): Int {
+    fun getWordUsageCount(word: String): Int = synchronized(this) {
         val normalized = word.lowercase().trim()
         val wordData = getWordDataSafe(normalized)
         return wordData?.getInt("user_count") ?: 0
@@ -290,7 +362,18 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     /**
      * Obtient le nombre de mots découverts (utilisés au moins 1 fois)
      */
-    fun getDiscoveredWordsCount(): Int {
+    /** Taille du dictionnaire chargé, base de calcul des seuils de niveau. */
+    fun getTotalWords(): Int = dictionary.length()
+
+    fun getDiscoveredWordsCount(): Int = synchronized(this) {
+        if (cachedDiscoveredCount < 0) {
+            cachedDiscoveredCount = computeDiscoveredWordsCount()
+        }
+        cachedDiscoveredCount
+    }
+
+    /** Comptage complet, en O(taille du dictionnaire). Réservé à l'amorçage du cache. */
+    private fun computeDiscoveredWordsCount(): Int {
         var count = 0
         val keys = dictionary.keys()
         while (keys.hasNext()) {
@@ -403,7 +486,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     }
     
     /**
-     * Sauvegarde le dictionnaire sur le disque
+     * Sauvegarde le dictionnaire sur le disque, sur le thread appelant.
+     *
+     * À réserver aux points de sortie ([forceSave], [onDestroy]) : en pleine
+     * frappe, passer par [scheduleSave].
      */
     fun saveDictionary() {
         try {
@@ -411,6 +497,44 @@ class CreoleDictionaryWithUsage(private val context: Context) {
             Log.d(TAG, "💾 Dictionnaire sauvegardé (${unsavedChanges} changements)")
         } catch (e: Exception) {
             Log.e(TAG, "❌ Erreur lors de la sauvegarde", e)
+        }
+    }
+
+    /**
+     * Demande une écriture du dictionnaire sur le thread de sauvegarde.
+     *
+     * Les demandes qui arrivent pendant qu'une écriture est déjà programmée
+     * sont fusionnées : le drapeau est baissé à l'entrée de la tâche, si bien
+     * qu'un mot validé entre-temps en reprogramme une et n'est jamais perdu.
+     * La sérialisation prend le verrou de l'objet, l'écriture disque non.
+     */
+    private fun scheduleSave() {
+        if (!savePending.compareAndSet(false, true)) return
+
+        try {
+            saveExecutor.execute {
+                savePending.set(false)
+                val (snapshot, changes) = synchronized(this) {
+                    val json = dictionary.toString()
+                    val pending = unsavedChanges
+                    unsavedChanges = 0
+                    json to pending
+                }
+                try {
+                    File(context.filesDir, DICT_FILE).writeText(snapshot)
+                    Log.d(TAG, "💾 Dictionnaire sauvegardé en tâche de fond ($changes changements)")
+                } catch (e: Exception) {
+                    // Le compteur repart de zéro quoi qu'il arrive : le prochain
+                    // mot validé reprogrammera une écriture complète.
+                    Log.e(TAG, "❌ Erreur lors de la sauvegarde en tâche de fond", e)
+                }
+            }
+        } catch (e: Exception) {
+            // Exécuteur déjà arrêté (service détruit) : repli synchrone.
+            savePending.set(false)
+            Log.w(TAG, "Sauvegarde de fond indisponible, repli synchrone", e)
+            saveDictionary()
+            unsavedChanges = 0
         }
     }
 
@@ -434,7 +558,10 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      */
     private fun saveDictionaryToFile(dict: JSONObject) {
         val file = File(context.filesDir, DICT_FILE)
-        file.writeText(dict.toString(2))  // Indent de 2 pour lisibilité
+        // Sans indentation : le fichier n'est pas destiné à être lu à l'œil, et
+        // l'indentation de 2 le faisait passer de 244 à 318 Ko, soit autant de
+        // sérialisation et d'écriture payées à chaque mot validé.
+        file.writeText(dict.toString())
     }
     
     /**
@@ -458,9 +585,22 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      * Appelé quand l'app se termine pour sauvegarder les changements non sauvegardés
      */
     fun onDestroy() {
-        if (unsavedChanges > 0) {
-            saveDictionary()
-            Log.d(TAG, "💾 Sauvegarde finale (${unsavedChanges} changements non sauvegardés)")
+        // L'exécuteur est arrêté d'abord : plus aucune écriture de fond ne peut
+        // démarrer, et celle éventuellement en cours a le temps de finir avant
+        // la sauvegarde finale, qui écrirait sinon par-dessus.
+        saveExecutor.shutdown()
+        try {
+            saveExecutor.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+
+        synchronized(this) {
+            if (unsavedChanges > 0) {
+                saveDictionary()
+                Log.d(TAG, "💾 Sauvegarde finale (${unsavedChanges} changements non sauvegardés)")
+                unsavedChanges = 0
+            }
         }
     }
 }

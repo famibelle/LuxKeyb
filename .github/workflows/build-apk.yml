@@ -1,4 +1,4 @@
-name: 🇸🇷 Build Potomitan Kreyol Keyboard - Detailed Steps
+name: 🇱🇺 Build Lëtzebuergesch Clavier - Detailed Steps
 
 permissions:
   contents: write
@@ -10,22 +10,25 @@ on:
     paths:
       - 'android_keyboard/**'
       - '.github/workflows/**'
-      - 'Dictionnaries/**'
+      - 'Dictionnaires/**'
     tags:
       - 'v*'
   pull_request:
     branches: [ main ]
     paths:
       - 'android_keyboard/**'
-      - 'Dictionnaries/**'
+      - 'Dictionnaires/**'
   workflow_dispatch:
 
 jobs:
-  # 📊 ÉTAPE 1 : VÉRIFICATION DICTIONNAIRE
+  # 📊 ÉTAPE 1 : GÉNÉRATION DICTIONNAIRE
   generate-dictionary:
-    name: � Verify Luxemburgish Dictionary
+    name: 🔤 Generate Lëtzebuergesch Dictionary
     runs-on: ubuntu-latest
-      
+
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
     outputs:
       dict-count: ${{ steps.stats.outputs.dict-count }}
       ngrams-count: ${{ steps.stats.outputs.ngrams-count }}
@@ -34,91 +37,157 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: ✅ Verify Luxemburgish Dictionary Assets
-      run: |
-        echo "� Vérification des dictionnaires luxembourgeois..."
-        
-        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
-          echo "✅ luxemburgish_dict.json présent"
-        else
-          echo "❌ luxemburgish_dict.json manquant!"
-          exit 1
-        fi
-        
-        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_ngrams.json" ]; then
-          echo "✅ luxemburgish_ngrams.json présent"
-        else
-          echo "❌ luxemburgish_ngrams.json manquant!"
-          exit 1
-        fi
-        
-        echo "� Tailles des fichiers:"
-        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-    - name: 📊 Verify Generated Assets
+    - name: 📦 Generate Fresh Lëtzebuergesch Dictionary
       run: |
-        echo "📊 Vérification des fichiers générés..."
-        
-        # Les dictionnaires luxembourgeois sont déjà dans le repo
-        if [ ! -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
-          echo "❌ ERREUR: luxemburgish_dict.json manquant!"
-          echo "📁 Contenu du dossier assets:"
-          ls -la android_keyboard/app/src/main/assets/ || echo "Dossier inexistant"
+        echo "🔄 Régénération du dictionnaire luxembourgeois depuis Hugging Face..."
+        echo "🔑 Token configuré: $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
+
+        cd Dictionnaires
+        python -m pip install --upgrade pip
+        pip install datasets huggingface_hub
+
+        # LuxembourgishComplet.py écrit directement dans les assets Android,
+        # au seul format que le moteur sait lire.
+        # --strict : refuser le corpus local de secours plutôt que de
+        # reconstruire les n-grammes sur quinze phrases.
+        python LuxembourgishComplet.py --strict
+
+        echo "🔍 Fichiers produits:"
+        ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
+
+    - name: 🎯 Verify Generated Assets
+      run: |
+        A=android_keyboard/app/src/main/assets
+
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json; do
+          if [ ! -f "$A/$f" ]; then
+            echo "::error::$f n'a pas été produit par le pipeline."
+            ls -la "$A/" || echo "Dossier inexistant"
+            exit 1
+          fi
+        done
+
+        # Garde-fou de format : le dictionnaire DOIT être un tableau
+        # [[mot, fréquence], ...], jamais un objet {mot: fréquence}. Un objet se
+        # parse en JSONException au chargement et désactive silencieusement
+        # toutes les suggestions — un JSON valide et non vide passerait sinon
+        # toutes les autres vérifications. C'est le bug qui a cassé la v10.2.6
+        # en amont.
+        if ! jq -e 'type == "array"' "$A/luxemburgish_dict.json" > /dev/null; then
+          echo "::error::luxemburgish_dict.json n'est PAS un tableau [[mot, fréquence], ...]. Build arrêté avant de publier un APK aux suggestions muettes."
           exit 1
         fi
-        
-        if [ ! -f "android_keyboard/app/src/main/assets/luxemburgish_ngrams.json" ]; then
-          echo "❌ ERREUR: luxemburgish_ngrams.json manquant!"
-          echo "📁 Contenu du dossier assets:"
-          ls -la android_keyboard/app/src/main/assets/ || echo "Dossier inexistant"
+
+        # Garde-fou de repli silencieux : sans HF_TOKEN valide, le script
+        # bascule sans broncher sur un corpus local de secours de quelques
+        # dizaines de lignes. Le fichier serait bien formé, mais l'APK
+        # livrerait un dictionnaire vide de sens.
+        DICT_COUNT=$(jq 'length' "$A/luxemburgish_dict.json")
+        if [ "$DICT_COUNT" -lt 3000 ]; then
+          echo "::error::Dictionnaire anormalement petit ($DICT_COUNT mots, moins de 3000). Le pipeline est probablement retombé sur le corpus local faute de HF_TOKEN valide."
           exit 1
         fi
-        
-        echo "✅ Dictionnaires luxembourgeois présents!"
-        echo "📊 Tailles des fichiers:"
-        ls -lh android_keyboard/app/src/main/assets/luxemburgish_*.json
+
+        # Garde-fou de contexte : le moteur interroge d'abord une clé à deux
+        # mots (« an der ») avant de se rabattre sur le dernier mot seul. Sans
+        # cette famille de clés, la prédiction contextuelle ne sert à rien.
+        TWO_WORD=$(jq '[keys[] | select(test(" "))] | length' "$A/luxemburgish_ngrams.json")
+        if [ "$TWO_WORD" -eq 0 ]; then
+          echo "::error::Le modèle n-grammes ne contient aucune clé à deux mots : les trigrammes ne sont pas exportés, le contexte est inopérant."
+          exit 1
+        fi
+
+        # Garde-fou de volumétrie des n-grammes. Le seuil sur le dictionnaire ne
+        # suffit pas : le pipeline enrichit la liste de mots existante mais
+        # reconstruit les n-grammes à zéro. Un repli sur le corpus de secours
+        # laisse donc les 6 000 mots en place et fait fondre les contextes de
+        # 6 000 à 262, sans qu'aucune autre vérification s'en aperçoive.
+        NGRAMS_COUNT=$(jq 'length' "$A/luxemburgish_ngrams.json")
+        if [ "$NGRAMS_COUNT" -lt 3000 ]; then
+          echo "::error::Modèle n-grammes anormalement petit ($NGRAMS_COUNT contextes, moins de 3000). Le corpus source est probablement incomplet."
+          exit 1
+        fi
+
+        echo "✅ Format, volumétrie et familles de clés vérifiés"
 
     - name: 📈 Dictionary Statistics
       id: stats
       run: |
-        # Statistiques des dictionnaires luxembourgeois
-        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_dict.json)
-        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_ngrams.json)
-        echo "📊 Dictionary: $DICT_COUNT words, $NGRAMS_COUNT N-grams"
+        A=android_keyboard/app/src/main/assets
+        DICT_COUNT=$(jq 'length' "$A/luxemburgish_dict.json")
+        NGRAMS_COUNT=$(jq 'length' "$A/luxemburgish_ngrams.json")
+        TWO_WORD=$(jq '[keys[] | select(test(" "))] | length' "$A/luxemburgish_ngrams.json")
+        echo "📊 $DICT_COUNT mots, $NGRAMS_COUNT contextes (dont $TWO_WORD à deux mots)"
         echo "dict-count=$DICT_COUNT" >> $GITHUB_OUTPUT
         echo "ngrams-count=$NGRAMS_COUNT" >> $GITHUB_OUTPUT
 
-    - name: 🎯 Copy Dictionary to Android Assets Directory
-      run: |
-        echo "📁 Préparation des assets Android..."
-        mkdir -p android_keyboard/app/src/main/assets/
-        
-        # Copier les dictionnaires luxembourgeois
-        if [ -f "android_keyboard/app/src/main/assets/luxemburgish_dict.json" ]; then
-          echo "✅ Dictionnaires luxembourgeois déjà présents"
-        else
-          echo "ℹ️ Dictionnaires luxembourgeois déjà dans le repo"
-        fi
-        
-        echo "📊 Vérification:"
-        ls -la android_keyboard/app/src/main/assets/luxemburgish_*.json
+    # 🔧 FIX CRITIQUE : sans cet upload, chaque job de build ci-dessous fait son
+    # propre "actions/checkout" et récupère donc la version du dictionnaire
+    # committée dans git (figée au dernier commit), jamais celle régénérée
+    # ci-dessus depuis Hugging Face. Le "needs: generate-dictionary" garantit
+    # seulement l'ordre d'exécution, pas le partage de fichiers entre jobs.
+    - name: 📤 Upload Fresh Dictionary Assets
+      uses: actions/upload-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: |
+          android_keyboard/app/src/main/assets/luxemburgish_dict.json
+          android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
+        retention-days: 1
 
-    - name: 🎯 Dictionary Assets Ready
-      run: |
-        echo "✅ Assets de dictionnaire prêts pour les builds Android"
-        echo "📊 Statistiques finales:"
-        DICT_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_dict.json)
-        NGRAMS_COUNT=$(jq 'length' android_keyboard/app/src/main/assets/luxemburgish_ngrams.json)
-        echo "   - Mots: $DICT_COUNT"
-        echo "   - N-grams: $NGRAMS_COUNT"
-        echo "📦 Fichiers disponibles pour tous les jobs de build"
+  # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES
+  # Absents du pipeline amont : `./gradlew test` n'y était qu'une étape locale et
+  # manuelle. Les faire tourner ici est ce qui donne leur valeur aux garde-fous
+  # ci-dessus, qui vérifient le format des données mais pas le comportement du
+  # moteur qui les lit.
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    needs: generate-dictionary
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: ☕ Setup JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: 🔧 Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: 9.6.1
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
+    - name: 🧪 Run Unit Tests
+      run: cd android_keyboard && gradle testDebugUnitTest --no-daemon
+
+    - name: 📤 Upload Test Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: unit-test-report
+        path: android_keyboard/app/build/reports/tests/testDebugUnitTest/
+        retention-days: 7
 
   # 🔧 ÉTAPE 2A : BUILD DEBUG APK
   build-debug-apk:
     name: 🔧 Build Debug APK
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -128,7 +197,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -138,7 +213,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -174,7 +249,7 @@ jobs:
     - name: 📤 Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: kreyol-keyboard-debug-apk
+        name: lux-keyboard-debug-apk
         path: android_keyboard/app/build/outputs/apk/debug/*.apk
         retention-days: 7
 
@@ -183,7 +258,7 @@ jobs:
     name: 📦 Build Debug AAB
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -193,7 +268,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -203,7 +284,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -219,7 +300,7 @@ jobs:
     - name: 📤 Upload Debug AAB
       uses: actions/upload-artifact@v4
       with:
-        name: kreyol-keyboard-debug-aab
+        name: lux-keyboard-debug-aab
         path: android_keyboard/app/build/outputs/bundle/debug/*.aab
         retention-days: 7
 
@@ -228,7 +309,7 @@ jobs:
     name: 🚀 Build Release APK
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -238,7 +319,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -248,7 +335,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -289,16 +376,16 @@ jobs:
     - name: 📤 Upload Release APK
       uses: actions/upload-artifact@v4
       with:
-        name: kreyol-keyboard-release-apk
+        name: lux-keyboard-release-apk
         path: android_keyboard/app/build/outputs/apk/release/*.apk
         retention-days: 30
 
   # 🎯 ÉTAPE 3B : BUILD RELEASE AAB
   build-release-aab:
-    name: 🎯 Build Release AAB  
+    name: 🎯 Build Release AAB
     runs-on: ubuntu-latest
     needs: generate-dictionary
-    
+
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -308,7 +395,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
+    - name: 📥 Download Fresh Dictionary Assets
+      uses: actions/download-artifact@v4
+      with:
+        name: lux-dictionary-assets
+        path: android_keyboard/app/src/main/assets/
+
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v4
       with:
@@ -318,7 +411,7 @@ jobs:
     - name: 🔧 Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.7
+        gradle-version: 9.6.1
         cache-read-only: false
 
     - name: ✅ Verify Dictionary Assets Present
@@ -378,7 +471,7 @@ jobs:
     - name: Upload Release AAB
       uses: actions/upload-artifact@v4
       with:
-        name: kreyol-keyboard-release-aab  
+        name: lux-keyboard-release-aab  
         path: android_keyboard/app/build/outputs/bundle/release/*.aab
         retention-days: 30
 
@@ -386,7 +479,9 @@ jobs:
   validate-builds:
     name: 🔍 Validate Builds
     runs-on: ubuntu-latest
-    needs: [build-debug-apk, build-debug-aab, build-release-apk, build-release-aab]
+    # unit-tests est inclus pour qu'un test rouge bloque la release, et pas
+    # seulement un build cassé.
+    needs: [unit-tests, build-debug-apk, build-debug-aab, build-release-apk, build-release-aab]
     
     steps:
     - name: 📥 Download All Artifacts
@@ -414,10 +509,50 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 📝 Extract Release Notes from CHANGELOG
+      id: changelog
+      run: |
+        echo "📖 Extraction des notes de release depuis android_keyboard/CHANGELOG.md..."
+
+        # Garde-fou : la section en tête du CHANGELOG doit correspondre au tag
+        # poussé, sinon ce sont les notes d'une version précédente qui seraient
+        # publiées en silence (vécu sur v10.2.1 et v10.2.3, jamais détecté)
+        TAG_VERSION="${GITHUB_REF_NAME#v}"
+        CHANGELOG_VERSION=$(sed -n 's/^## \[\(.*\)\].*/\1/p' android_keyboard/CHANGELOG.md | head -1)
+
+        echo "🏷️  Tag poussé: $GITHUB_REF_NAME (version $TAG_VERSION)"
+        echo "📄 Version en tête du CHANGELOG: $CHANGELOG_VERSION"
+
+        if [ "$TAG_VERSION" != "$CHANGELOG_VERSION" ]; then
+          echo "::error::La section en tête de android_keyboard/CHANGELOG.md ([$CHANGELOG_VERSION]) ne correspond pas au tag poussé ($GITHUB_REF_NAME). Ajoutez une entrée '## [$TAG_VERSION]' dans le CHANGELOG avant de tagger."
+          exit 1
+        fi
+
+        # Extraire la section de la version actuelle du CHANGELOG
+        # On prend tout depuis le premier ## jusqu'au prochain ## ou fin de fichier
+        RELEASE_NOTES=$(awk '/^## / {if (found) exit; found=1; next} found' android_keyboard/CHANGELOG.md | sed '/^## /q' | sed '$d')
+        
+        # Si le CHANGELOG n'a pas de contenu, utiliser un message par défaut
+        if [ -z "$RELEASE_NOTES" ]; then
+          RELEASE_NOTES="🎯 Nouvelle version du Lëtzebuergesch Clavier
+          
+          Consultez le CHANGELOG.md complet pour tous les détails des améliorations."
+        fi
+        
+        # Sauvegarder dans un fichier pour utilisation ultérieure
+        echo "$RELEASE_NOTES" > /tmp/release-notes.md
+        
+        echo "✅ Notes de release extraites avec succès"
+        echo "📄 Aperçu des notes:"
+        head -20 /tmp/release-notes.md
+    
     - name: 📥 Download All Build Artifacts
       uses: actions/download-artifact@v4
       with:
-        pattern: kreyol-keyboard-*
+        pattern: lux-keyboard-*
         path: ./all-artifacts
 
     - name: 📎 Prepare All Release Assets with Custom Names
@@ -432,55 +567,55 @@ jobs:
         ls -la ./all-artifacts/
         
         # 📱 APK RELEASE - Detection automatique
-        RELEASE_APK=$(find ./all-artifacts/kreyol-keyboard-release-apk -name "*.apk" | head -1)
+        RELEASE_APK=$(find ./all-artifacts/lux-keyboard-release-apk -name "*.apk" | head -1)
         if [ -n "$RELEASE_APK" ] && [ -f "$RELEASE_APK" ]; then
-          cp "$RELEASE_APK" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.apk"
-          echo "✅ APK Release: KreyolKeyboard-Release-${{ github.ref_name }}.apk (source: $(basename $RELEASE_APK))"
+          cp "$RELEASE_APK" "./final-release-assets/LetzebuergeschClavier-Release-${{ github.ref_name }}.apk"
+          echo "✅ APK Release: LetzebuergeschClavier-Release-${{ github.ref_name }}.apk (source: $(basename $RELEASE_APK))"
         else
           echo "❌ APK release non trouvé"
           echo "📁 Contenu dossier release APK:"
-          ls -la ./all-artifacts/kreyol-keyboard-release-apk/ || echo "Dossier APK release inexistant"
+          ls -la ./all-artifacts/lux-keyboard-release-apk/ || echo "Dossier APK release inexistant"
           echo "🔍 Recherche de fichiers APK:"
-          find ./all-artifacts/kreyol-keyboard-release-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
+          find ./all-artifacts/lux-keyboard-release-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
         fi
         
         # 🔧 APK DEBUG - Detection automatique  
-        DEBUG_APK=$(find ./all-artifacts/kreyol-keyboard-debug-apk -name "*.apk" | head -1)
+        DEBUG_APK=$(find ./all-artifacts/lux-keyboard-debug-apk -name "*.apk" | head -1)
         if [ -n "$DEBUG_APK" ] && [ -f "$DEBUG_APK" ]; then
-          cp "$DEBUG_APK" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.apk"
-          echo "✅ APK Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.apk (source: $(basename $DEBUG_APK))"
+          cp "$DEBUG_APK" "./final-release-assets/LetzebuergeschClavier-Debug-${{ github.ref_name }}.apk"
+          echo "✅ APK Debug: LetzebuergeschClavier-Debug-${{ github.ref_name }}.apk (source: $(basename $DEBUG_APK))"
         else
           echo "❌ APK debug non trouvé"
           echo "📁 Contenu dossier debug APK:"
-          ls -la ./all-artifacts/kreyol-keyboard-debug-apk/ || echo "Dossier APK debug inexistant"
+          ls -la ./all-artifacts/lux-keyboard-debug-apk/ || echo "Dossier APK debug inexistant"
           echo "🔍 Recherche de fichiers APK:"
-          find ./all-artifacts/kreyol-keyboard-debug-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
+          find ./all-artifacts/lux-keyboard-debug-apk -name "*.apk" || echo "Aucun fichier APK trouvé"
         fi
         
         # 📦 AAB RELEASE - Detection automatique
-        RELEASE_AAB=$(find ./all-artifacts/kreyol-keyboard-release-aab -name "*.aab" | head -1)
+        RELEASE_AAB=$(find ./all-artifacts/lux-keyboard-release-aab -name "*.aab" | head -1)
         if [ -n "$RELEASE_AAB" ] && [ -f "$RELEASE_AAB" ]; then
-          cp "$RELEASE_AAB" "./final-release-assets/KreyolKeyboard-Release-${{ github.ref_name }}.aab"
-          echo "✅ AAB Release: KreyolKeyboard-Release-${{ github.ref_name }}.aab (source: $(basename $RELEASE_AAB))"
+          cp "$RELEASE_AAB" "./final-release-assets/LetzebuergeschClavier-Release-${{ github.ref_name }}.aab"
+          echo "✅ AAB Release: LetzebuergeschClavier-Release-${{ github.ref_name }}.aab (source: $(basename $RELEASE_AAB))"
         else
           echo "❌ AAB release non trouvé"
           echo "📁 Contenu dossier release AAB:"
-          ls -la ./all-artifacts/kreyol-keyboard-release-aab/ || echo "Dossier AAB release inexistant"
+          ls -la ./all-artifacts/lux-keyboard-release-aab/ || echo "Dossier AAB release inexistant"
           echo "🔍 Recherche de fichiers AAB:"
-          find ./all-artifacts/kreyol-keyboard-release-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
+          find ./all-artifacts/lux-keyboard-release-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
         fi
         
         # 🔧 AAB DEBUG - Detection automatique
-        DEBUG_AAB=$(find ./all-artifacts/kreyol-keyboard-debug-aab -name "*.aab" | head -1)
+        DEBUG_AAB=$(find ./all-artifacts/lux-keyboard-debug-aab -name "*.aab" | head -1)
         if [ -n "$DEBUG_AAB" ] && [ -f "$DEBUG_AAB" ]; then
-          cp "$DEBUG_AAB" "./final-release-assets/KreyolKeyboard-Debug-${{ github.ref_name }}.aab"
-          echo "✅ AAB Debug: KreyolKeyboard-Debug-${{ github.ref_name }}.aab (source: $(basename $DEBUG_AAB))"
+          cp "$DEBUG_AAB" "./final-release-assets/LetzebuergeschClavier-Debug-${{ github.ref_name }}.aab"
+          echo "✅ AAB Debug: LetzebuergeschClavier-Debug-${{ github.ref_name }}.aab (source: $(basename $DEBUG_AAB))"
         else
           echo "❌ AAB debug non trouvé"
           echo "📁 Contenu dossier debug AAB:"
-          ls -la ./all-artifacts/kreyol-keyboard-debug-aab/ || echo "Dossier AAB debug inexistant"
+          ls -la ./all-artifacts/lux-keyboard-debug-aab/ || echo "Dossier AAB debug inexistant"
           echo "🔍 Recherche de fichiers AAB:"
-          find ./all-artifacts/kreyol-keyboard-debug-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
+          find ./all-artifacts/lux-keyboard-debug-aab -name "*.aab" || echo "Aucun fichier AAB trouvé"
         fi
         
         echo ""
@@ -500,35 +635,43 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref_name }}
-        name: 🇸🇷 Kreyòl Keyboard ${{ github.ref_name }}
-        body: |
-          🎯 **Clavier Kreyòl Potomitan Release ${{ github.ref_name }}**
-          
-          🔧 **AMÉLIORATIONS TECHNIQUES**
-          - ✅ Build Scan® integration avec monitoring avancé
-          - ✅ Pipeline subdivisionné en 6 jobs parallèles  
-          - ✅ Fix memory leaks Samsung A21s (serviceScope)
-          - ✅ Optimisations pour processeurs Exynos 850
-          - ✅ Detection low-end devices automatique
-          
-          📱 **FICHIERS ANDROID DISPONIBLES**
-          - � **APK Release** - Installation directe (recommandé pour utilisateurs)
-          - � **APK Debug** - Version de développement avec logs
-          - 🏪 **AAB Release** - Bundle Google Play Store (distribution officielle)  
-          - 🛠️ **AAB Debug** - Bundle de développement
-          - 📊 Build Scan Reports pour analyse détaillée
-          
-          🔤 **DICTIONNAIRE KREYÒL ENRICHI** 
-          - ✅ ${{ needs.generate-dictionary.outputs.dict-count }} mots créoles
-          - 🧠 ${{ needs.generate-dictionary.outputs.ngrams-count }} N-grams prédictifs
-          - 📡 Synchronisation automatique Hugging Face
-          - 🔄 Pipeline de génération optimisé
-          
-          🇸🇷 **Kreyòl Gwadloup ka viv!** 🇸🇷
-          
-          ---
-          🔗 **Build Details**: Consulter les Build Scan Reports pour analyse complète des performances
+        name: 🇱🇺 Lëtzebuergesch Clavier ${{ github.ref_name }}
+        body_path: /tmp/release-notes.md
         draft: false
         prerelease: false
         make_latest: true
         files: ./final-release-assets/*
+        
+    - name: 📊 Add Build Statistics to Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "📊 Ajout des statistiques de build à la release..."
+        
+        # Créer un commentaire avec les statistiques techniques
+        STATS_COMMENT="
+        
+        ---
+        
+        ## 📊 Statistiques de Build
+        
+        🔤 **DICTIONNAIRE LËTZEBUERGESCH**
+        - ✅ **${{ needs.generate-dictionary.outputs.dict-count }}** mots luxembourgeois
+        - 🧠 **${{ needs.generate-dictionary.outputs.ngrams-count }}** N-grams prédictifs
+        - 📡 Synchronisation automatique Hugging Face
+        
+        📱 **FICHIERS DISPONIBLES**
+        - 📱 **APK Release** - Installation directe (recommandé pour utilisateurs finaux)
+        - 🔧 **APK Debug** - Version de développement avec logs détaillés
+        - 🏪 **AAB Release** - Bundle Google Play Store (distribution officielle)
+        - 🛠️ **AAB Debug** - Bundle de développement pour tests
+        
+        � **Build Scan Reports** - Consultez les rapports détaillés dans les logs GitHub Actions
+        
+        ---
+        
+         **Lëtzebuergesch lieft!** 
+        "
+        
+        # Ajouter le commentaire à la release existante
+        gh release edit "${{ github.ref_name }}" --notes-file /tmp/release-notes.md --notes "$STATS_COMMENT" || echo "⚠️ Impossible d'ajouter les statistiques (release peut-être déjà complète)"

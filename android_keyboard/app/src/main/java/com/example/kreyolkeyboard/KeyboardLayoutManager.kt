@@ -2,17 +2,16 @@ package com.example.kreyolkeyboard
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -28,9 +27,10 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val BUTTON_MARGIN_DP = 2
         private const val CORNER_RADIUS_DP = 8f
         private const val TEXT_SIZE_SP = 16f
+        private const val HINT_TEXT_SIZE_SP = 8f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
-        
+
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
     }
@@ -39,7 +39,13 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isCapitalMode = false
     private var isCapsLock = false
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
-    private val keyboardButtons = mutableListOf<View>()
+    private var isEmojiMode = false
+    private val keyboardButtons = mutableListOf<View>() // Changé de TextView à View pour supporter ImageButton
+
+    // Référence optionnelle pour prévisualiser les options d'appui long dans
+    // les coins des touches (v8.3.0). Laissé à null par le clavier de démo
+    // (SettingsActivity), qui n'a pas d'AccentHandler et n'affiche donc aucun indice.
+    var accentHandler: AccentHandler? = null
     
     // 🌐 Handler pour l'appui long personnalisé de la barre d'espace
     private val spaceLongPressHandler = Handler(Looper.getMainLooper())
@@ -54,7 +60,7 @@ class KeyboardLayoutManager(private val context: Context) {
     // Callbacks pour l'interaction avec les touches
     interface KeyboardInteractionListener {
         fun onKeyPress(key: String)
-        fun onLongPress(key: String, button: View, isCapitalMode: Boolean)
+        fun onLongPress(key: String, button: View) // Changé de TextView à View
         fun onKeyRelease()
     }
     
@@ -80,6 +86,10 @@ class KeyboardLayoutManager(private val context: Context) {
         
         // Créer les différentes rangées selon le mode
         when {
+            isEmojiMode -> {
+                Log.d("KeyboardLayoutManager", "😀 Création du layout EMOJI")
+                createEmojiLayout(mainLayout)
+            }
             isNumericMode -> {
                 Log.d("KeyboardLayoutManager", "🔢 Création du layout NUMÉRIQUE")
                 createNumericLayout(mainLayout)
@@ -94,13 +104,22 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Crée le layout alphabétique (AZERTY créole)
+     * Crée le layout alphabétique (AZERTY luxembourgeois)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
         val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
-        val row4 = arrayOf("123", ",", "é", " ", "ë", ".", "'", "⏎")
+        // Les trois diacritiques qui portent réellement le luxembourgeois ont
+        // chacune leur touche : é (6347 occurrences, 933 mots), ë (2877, 355)
+        // et ä (2129, 403) — comptage sur luxemburgish_dict.json.
+        //
+        // ä prend la place que l'amont donnait au trait d'union : celui-ci ne
+        // figure que dans 2,8 % des mots luxembourgeois (fréquence cumulée 377)
+        // contre 21,7 % en créole, et redescend donc en appui long sur "."
+        // (AccentHandler). L'apostrophe, absente du corpus, reste en appui long
+        // sur ",". La touche "ò" de la rangée 1 disparaît : zéro occurrence.
+        val row4 = arrayOf("123", ",", "é", "ä", " ", "ë", ".", "EMOJI", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
@@ -114,13 +133,31 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createNumericLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         val row2 = arrayOf("-", "/", ":", ";", "(", ")", "€", "&", "@", "\"")
-        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "\"", "_", "⌫")
-        val row4 = arrayOf("ABC", " ", "⏎")
-        
+        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "⌫")
+        val row4 = arrayOf("ABC", "EMOJI", " ", "⏎")
+
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
         mainLayout.addView(createKeyboardRow(row3))
         mainLayout.addView(createKeyboardRow(row4))
+    }
+
+    /**
+     * Crée le layout emoji : jeu exhaustif (~1900 emojis de base, Unicode
+     * 16.0, tons de peau en appui long) organisé en catégories avec onglets,
+     * chaque catégorie défilant verticalement, le swipe latéral changeant de
+     * catégorie (EmojiPickerView, RecyclerView/ViewPager2 virtualisés).
+     * Accessible depuis le clavier alphabétique et depuis le mode 123.
+     */
+    private fun createEmojiLayout(mainLayout: LinearLayout) {
+        val controlRow = arrayOf("ABC", "⌫", " ", "⏎")
+
+        val picker = EmojiPickerView(context, accentHandler).apply {
+            onEmojiSelected = { emoji -> interactionListener?.onKeyPress(emoji) }
+        }
+
+        mainLayout.addView(picker)
+        mainLayout.addView(createKeyboardRow(controlRow))
     }
     
     /**
@@ -140,214 +177,319 @@ class KeyboardLayoutManager(private val context: Context) {
         val totalWeight = calculateRowWeight(keys)
         
         for (key in keys) {
+            // createKeyButton() alimente déjà keyboardButtons avec la touche
+            // interactive brute (avant l'éventuel enrobage des indices de coin) ;
+            // un second ajout ici dupliquait chaque touche dans la liste.
             val button = createKeyButton(key, totalWeight)
             rowLayout.addView(button)
-            keyboardButtons.add(button)
         }
         
         return rowLayout
     }
     
     /**
-     * 🎨 Mappe chaque touche spéciale à son icône Material Design
-     */
-    private fun getIconForKey(key: String): Int? {
-        return when(key) {
-            "⇧" -> R.drawable.ic_keyboard_arrow_up    // Majuscule/Shift
-            "⌫" -> R.drawable.ic_backspace             // Supprimer
-            "⏎" -> R.drawable.ic_keyboard_return       // Entrée
-            "123" -> R.drawable.ic_dialpad             // Mode numérique
-            "ABC" -> R.drawable.ic_keyboard            // Mode alphabétique
-            " " -> R.drawable.ic_space_bar             // Barre d'espace
-            else -> null // Touches normales = texte
-        }
-    }
-    
-    /**
-     * Crée un bouton de touche individuel (texte ou icône)
+     * Crée un bouton de touche individuel (Button ou ImageButton selon le type)
      */
     private fun createKeyButton(key: String, totalWeight: Float): View {
-        val iconRes = getIconForKey(key)
+        // Déterminer si on utilise une icône Material Design
+        val useIcon = key in listOf("⌫", "⏎", "⇧")
         
-        return if (iconRes != null) {
-            // Touche avec icône → ImageButton
-            createImageKeyButton(key, iconRes, totalWeight)
+        val button: View = if (useIcon) {
+            // Créer un ImageButton pour les touches avec icônes
+            android.widget.ImageButton(context).apply {
+                // Définir l'icône selon la touche
+                setImageResource(when (key) {
+                    "⌫" -> R.drawable.ic_backspace
+                    "⏎" -> R.drawable.ic_keyboard_return
+                    "⇧" -> if (isCapsLock) R.drawable.ic_shift_caps
+                           else if (isCapitalMode) R.drawable.ic_shift_on
+                           else R.drawable.ic_shift_off
+                    else -> R.drawable.ic_backspace // Fallback
+                })
+                
+                // Teinter l'icône en blanc pour visibilité sur fond coloré
+                setColorFilter(Color.WHITE)
+                
+                // Configurer la taille et le padding de l'icône (différent selon la touche)
+                val iconPadding = when (key) {
+                    "⏎" -> dpToPx(8)  // Moins de padding pour l'icône Enter (plus grande)
+                    "⌫" -> dpToPx(10) // Padding moyen pour Backspace
+                    "⇧" -> dpToPx(12) // Padding normal pour Shift
+                    else -> dpToPx(12)
+                }
+                setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
+                scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                adjustViewBounds = true
+                
+                // Description pour accessibilité
+                contentDescription = when (key) {
+                    "⌫" -> "Supprimer"
+                    "⏎" -> "Entrée"
+                    "⇧" -> "Majuscule"
+                    else -> key
+                }
+                
+                // Stocker la clé dans le tag pour identification
+                tag = key
+                
+                // Calcul du poids selon le type de touche
+                val weight = getKeyWeight(key)
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    dpToPx(BUTTON_HEIGHT_DP),
+                    weight
+                ).apply {
+                    setMargins(
+                        dpToPx(BUTTON_MARGIN_DP), 0, 
+                        dpToPx(BUTTON_MARGIN_DP), 0
+                    )
+                }
+            }
         } else {
-            // Touche avec texte → Button standard
-            createTextKeyButton(key, totalWeight)
-        }
-    }
-    
-    /**
-     * 🖼️ Crée un bouton avec icône Material Design
-     */
-    private fun createImageKeyButton(key: String, iconRes: Int, totalWeight: Float): ImageButton {
-        val button = ImageButton(context).apply {
-            setImageResource(iconRes)
-            scaleType = ImageView.ScaleType.CENTER_INSIDE
-            setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8))
-            contentDescription = when(key) {
-                "⇧" -> "Majuscule"
-                "⌫" -> "Supprimer"
-                "⏎" -> "Entrée"
-                "123" -> "Mode numérique"
-                "ABC" -> "Mode alphabétique"
-                " " -> "Espace"
-                else -> key
-            }
-            
-            // Calcul du poids selon le type de touche
-            val weight = getKeyWeight(key)
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                dpToPx(BUTTON_HEIGHT_DP),
-                weight
-            ).apply {
-                setMargins(
-                    dpToPx(BUTTON_MARGIN_DP), 0, 
-                    dpToPx(BUTTON_MARGIN_DP), 0
-                )
+            // Créer un Button classique pour les autres touches
+            Button(context).apply {
+                text = getDisplayText(key)
+                // Le thème AppCompat d'une activité impose textAllCaps=true
+                // aux Button : les touches doivent refléter exactement l'état
+                // shift, quel que soit le contexte (IME ou clavier d'essai)
+                isAllCaps = false
+                // Button a une élévation/StateListAnimator implicite qui le
+                // fait dessiner par-dessus ses voisins ajoutés après lui dans
+                // un FrameLayout, quel que soit l'ordre d'ajout (constaté en
+                // testant les indices d'appui long v8.3.0 : un enfant ajouté
+                // après restait invisible tant que ceci n'était pas neutralisé).
+                elevation = 0f
+                stateListAnimator = null
+                // Taille de police personnalisée pour Potomitan™ branding discret
+                textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
+                setTypeface(typeface, Typeface.BOLD)
+                
+                // Calcul du poids selon le type de touche
+                val weight = getKeyWeight(key)
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    dpToPx(BUTTON_HEIGHT_DP),
+                    weight
+                ).apply {
+                    setMargins(
+                        dpToPx(BUTTON_MARGIN_DP), 0, 
+                        dpToPx(BUTTON_MARGIN_DP), 0
+                    )
+                }
             }
         }
         
-        // Application du style Guadeloupe
-        applyGuadeloupeStyle(button, key)
+        // Application du style des touches
+        applyKeyStyleToView(button, key)
         
         // Ajouter le bouton à la liste de suivi
         keyboardButtons.add(button)
         
         // Configuration des événements tactiles
         setupButtonInteractions(button, key)
-        
+
+        // Aperçu des options d'appui long dans les coins de la touche (v8.3.0)
+        val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
+        if (!hints.isNullOrEmpty()) {
+            val onStartSide = accentHandler?.isCornerHintOnStartSide(key) == true
+            return wrapWithLongPressHints(button, hints, onStartSide)
+        }
+
+        // 🌐 Indice visuel : l'appui long sur la barre d'espace change de clavier
+        // système (voir setupSpaceLongPress). Seulement sur l'IME réel
+        // (accentHandler non nul) : le clavier de démo des Réglages n'a pas de
+        // fenêtre système pour ouvrir le sélecteur de claviers.
+        if (key == " " && accentHandler != null) {
+            return wrapWithSpaceGlobeHint(button)
+        }
+
         return button
     }
-    
+
     /**
-     * 📝 Crée un bouton avec texte (touches alphabétiques)
+     * Superpose un petit indice 🌐 dans le coin de la barre d'espace, pour rendre
+     * découvrable l'appui long sans ajouter de touche dédiée qui réduirait la
+     * largeur des touches déjà denses de la rangée du bas.
      */
-    private fun createTextKeyButton(key: String, totalWeight: Float): Button {
-        val button = Button(context).apply {
-            text = getDisplayText(key)
-            // Taille de police personnalisée pour Potomitan™ branding discret
-            textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
-            setTypeface(typeface, Typeface.BOLD)
-            
-            // Calcul du poids selon le type de touche
-            val weight = getKeyWeight(key)
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                dpToPx(BUTTON_HEIGHT_DP),
-                weight
+    private fun wrapWithSpaceGlobeHint(inner: View): FrameLayout {
+        val outerParams = inner.layoutParams
+        inner.layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        val hint = TextView(context).apply {
+            text = "🌐"
+            textSize = HINT_TEXT_SIZE_SP + 2f
+            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte Potomitan™
+            isClickable = false
+            isFocusable = false
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP or Gravity.END
             ).apply {
-                setMargins(
-                    dpToPx(BUTTON_MARGIN_DP), 0, 
-                    dpToPx(BUTTON_MARGIN_DP), 0
-                )
+                setMargins(0, dpToPx(2), dpToPx(4), 0)
             }
         }
-        
-        // Application du style Guadeloupe
-        applyGuadeloupeStyle(button, key)
-        
-        // Ajouter le bouton à la liste de suivi
-        keyboardButtons.add(button)
-        
-        // Configuration des événements tactiles
-        setupButtonInteractions(button, key)
-        
-        return button
+        return FrameLayout(context).apply {
+            layoutParams = outerParams
+            addView(inner)
+            addView(hint)
+        }
+    }
+
+    /**
+     * Enveloppe une touche dans un FrameLayout pour superposer, en haut et en
+     * bas d'un même côté (droit par défaut, gauche si onStartSide), un aperçu
+     * des deux premières options d'appui long. La touche d'origine garde
+     * exactement sa zone tactile, son style et son ancrage pour la popup
+     * d'accents (le FrameLayout se contente de prendre sa place dans la
+     * rangée) ; keyboardButtons ne référence jamais ce FrameLayout, seulement la
+     * touche brute qu'il contient.
+     */
+    private fun wrapWithLongPressHints(inner: View, hints: List<String>, onStartSide: Boolean): FrameLayout {
+        val outerParams = inner.layoutParams
+        inner.layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        val horizontalGravity = if (onStartSide) Gravity.START else Gravity.END
+
+        return FrameLayout(context).apply {
+            layoutParams = outerParams
+            addView(inner)
+            addView(createHintLabel(hints[0], Gravity.TOP or horizontalGravity, onStartSide))
+            if (hints.size > 1) {
+                addView(createHintLabel(hints[1], Gravity.BOTTOM or horizontalGravity, onStartSide))
+            }
+        }
+    }
+
+    private fun createHintLabel(hintText: String, gravity: Int, onStartSide: Boolean): TextView {
+        return TextView(context).apply {
+            text = hintText
+            textSize = HINT_TEXT_SIZE_SP
+            setTextColor(Color.parseColor("#99333333"))
+            isClickable = false
+            isFocusable = false
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                gravity
+            ).apply {
+                if (onStartSide) {
+                    setMargins(dpToPx(3), dpToPx(2), 0, dpToPx(2))
+                } else {
+                    setMargins(0, dpToPx(2), dpToPx(3), dpToPx(2))
+                }
+            }
+        }
     }
     
     /**
-     * Applique le style visuel minimaliste moderne (support Button et ImageButton)
+     * Applique le style visuel des touches (supporte Button et ImageButton)
      */
-    private fun applyGuadeloupeStyle(view: View, key: String) {
+    private fun applyKeyStyleToView(view: View, key: String) {
         val drawable = GradientDrawable().apply {
             cornerRadius = dpToPx(CORNER_RADIUS_DP.toInt()).toFloat()
-            
-            // Design minimaliste uniforme : fond blanc avec légère variation pour Shift actif
+
+            // Toutes les touches partagent le même fond blanc ; seule la touche
+            // majuscule s'assombrit quand elle est active. Cette uniformité est
+            // un choix propre au clavier luxembourgeois : la version amont peint
+            // les touches spéciales en vert tropical, orange et bleu caraïbe,
+            // une palette qui n'a pas de sens ici.
             when (key) {
-                "⇧" -> {
-                    if (isCapsLock || isCapitalMode) {
-                        // Shift actif : fond gris clair
-                        setColor(Color.parseColor("#E0E0E0"))
-                    } else {
-                        // Shift inactif : blanc
-                        setColor(Color.parseColor("#FFFFFF"))
-                    }
-                }
-                else -> {
-                    // Toutes les touches : fond blanc uniforme
-                    setColor(Color.parseColor("#FFFFFF"))
-                }
+                "⇧" -> setColor(
+                    if (isCapsLock || isCapitalMode) Color.parseColor("#E0E0E0")
+                    else Color.parseColor("#FFFFFF")
+                )
+                else -> setColor(Color.parseColor("#FFFFFF"))
             }
-            
-            // Bordure subtile gris clair
+
             setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))
         }
-        
+
         view.background = drawable
-        
-        // 🎨 Couleur du texte/icône : noir/gris foncé uniforme
-        when (view) {
-            is Button -> {
-                view.setTextColor(Color.parseColor("#333333"))
-                // Ombre portée légère pour l'effet de profondeur
-                view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
-            }
-            is ImageButton -> {
-                // Icônes en gris foncé uniforme
-                view.setColorFilter(Color.parseColor("#333333"), PorterDuff.Mode.SRC_IN)
-            }
+
+        // Texte et icônes en gris foncé uniforme, sur fond blanc uniforme.
+        if (view is Button) {
+            view.setTextColor(
+                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
+                else Color.parseColor("#333333")
+            )
+
+            // Ombre portée pour l'effet de profondeur.
+            // setShadowLayer() sous rendu accéléré matériellement est une source connue
+            // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
+            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
+            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
         }
+
+        if (view is android.widget.ImageButton) {
+            view.setColorFilter(
+                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
+                else Color.parseColor("#333333")
+            )
+        }
+    }
+
+    /**
+     * Surcharge de compatibilité pour les appels qui passent encore un Button.
+     */
+    private fun applyKeyStyle(button: Button, key: String) {
+        applyKeyStyleToView(button, key)
     }
     
     /**
      * Configure les interactions tactiles pour un bouton
      */
-    private fun setupButtonInteractions(view: View, key: String) {
-        view.setOnClickListener {
-            interactionListener?.onKeyPress(key)
-        }
-        
+    private fun setupButtonInteractions(button: View, key: String) {
         // 🌐 Appui long personnalisé pour la barre d'espace (1 seconde)
         if (key == " ") {
-            view.setOnLongClickListener(null) // Désactiver le listener par défaut
-            setupSpaceLongPress(view, key)
+            // Pas de setOnClickListener ici : setupSpaceLongPress() gère déjà le clic
+            // court via son OnTouchListener. Les deux coexistant provoquaient un double
+            // appel à onKeyPress() (l'OnTouchListener ne consomme jamais l'événement, donc
+            // le clic natif se déclenchait aussi) → double espace inséré à chaque frappe.
+            button.setOnLongClickListener(null) // Désactiver le listener par défaut
+            setupSpaceLongPress(button, key)
         } else {
-            view.setOnLongClickListener { 
-                interactionListener?.onLongPress(key, view, isCapitalMode)
+            button.setOnClickListener {
+                interactionListener?.onKeyPress(key)
+            }
+            button.setOnLongClickListener {
+                interactionListener?.onLongPress(key, button)
                 true
             }
             // Animation tactile pour les touches autres que la barre d'espace
-            addTouchAnimation(view)
+            addTouchAnimation(button)
         }
     }
     
     /**
      * 🌐 Configure l'appui long personnalisé de 1 seconde pour la barre d'espace
      */
-    private fun setupSpaceLongPress(view: View, key: String) {
-        view.setOnTouchListener { v, event ->
+    private fun setupSpaceLongPress(button: View, key: String) {
+        button.setOnTouchListener { view, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
                     isSpaceLongPressTriggered = false
                     
                     // Animation d'appui (100ms)
-                    v.animate()
+                    view.animate()
                         .scaleX(0.95f)
                         .scaleY(0.95f)
                         .setDuration(100)
                         .start()
                     
                     // Feedback haptique
-                    performHapticFeedback(v)
+                    performHapticFeedback(view)
                     
                     // Démarrer le timer de 1 seconde pour l'appui long
                     spaceLongPressRunnable = Runnable {
                         isSpaceLongPressTriggered = true
                         Log.d(TAG, "⏱️ Appui long 1s détecté sur barre d'espace")
-                        interactionListener?.onLongPress(key, view, isCapitalMode)
+                        interactionListener?.onLongPress(key, button)
                     }
                     spaceLongPressHandler.postDelayed(spaceLongPressRunnable!!, SPACE_LONG_PRESS_DELAY)
                     
@@ -358,7 +500,7 @@ class KeyboardLayoutManager(private val context: Context) {
                     spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
                     
                     // Animation de relâchement (120ms)
-                    v.animate()
+                    view.animate()
                         .scaleX(1.0f)
                         .scaleY(1.0f)
                         .setDuration(120)
@@ -392,6 +534,9 @@ class KeyboardLayoutManager(private val context: Context) {
         }
     }
     
+    /**
+     * Ajoute une animation tactile et feedback haptique au bouton
+     */
     /**
      * Ajoute une animation tactile et feedback haptique au bouton
      */
@@ -453,9 +598,10 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Met à jour les états internes du clavier
      */
-    fun updateKeyboardStates(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+    fun updateKeyboardStates(isNumeric: Boolean, isEmoji: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
         Log.e("SHIFT_REAL_DEBUG", "🚨 UPDATING KEYBOARD STATES! isCapital=$isCapital, isCapsLock=$isCapsLock")
         this.isNumericMode = isNumeric
+        this.isEmojiMode = isEmoji
         this.isCapitalMode = isCapital
         this.isCapsLock = isCapsLock
     }
@@ -467,19 +613,30 @@ class KeyboardLayoutManager(private val context: Context) {
         Log.e("SHIFT_REAL_DEBUG", "🔢 NOMBRE DE BOUTONS SHIFT TROUVÉS: ${shiftButtons.size}")
         Log.e("SHIFT_REAL_DEBUG", "📊 ÉTAT ACTUEL: isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
         
-        keyboardButtons.forEach { view ->
-            val key = getKeyFromButton(view)
-            
-            // Mise à jour du texte pour les Button uniquement
-            if (view is Button) {
-                view.text = getDisplayText(key)
-            }
+        keyboardButtons.forEach { button ->
+            val key = getKeyFromButton(button)
             
             // Mise à jour du style pour la touche Shift
             if (key == "⇧") {
                 Log.e("SHIFT_REAL_DEBUG", "🚨 UPDATING SHIFT BUTTON! isCapitalMode=$isCapitalMode, isCapsLock=$isCapsLock")
-                applyGuadeloupeStyle(view, key)
+                
+                // Si c'est un ImageButton, mettre à jour l'icône
+                if (button is android.widget.ImageButton) {
+                    val newIcon = if (isCapsLock) R.drawable.ic_shift_caps
+                                  else if (isCapitalMode) R.drawable.ic_shift_on
+                                  else R.drawable.ic_shift_off
+                    button.setImageResource(newIcon)
+                    Log.e("SHIFT_REAL_DEBUG", "🎨 ICON UPDATED TO: ${if (isCapsLock) "CAPS" else if (isCapitalMode) "ON" else "OFF"}")
+                } else if (button is Button) {
+                    // Si c'est un Button classique, mettre à jour le texte
+                    button.text = getDisplayText(key)
+                    applyKeyStyle(button, key)
+                }
+                
                 Log.e("SHIFT_REAL_DEBUG", "🚨 SHIFT STYLE APPLIED!")
+            } else if (button is Button) {
+                // Pour les autres touches, mettre à jour le texte normalement
+                button.text = getDisplayText(key)
             }
         }
     }
@@ -508,26 +665,58 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Commute entre mode alphabétique et numérique
+     * Commute entre mode alphabétique et numérique. Depuis le layout emoji, la
+     * touche "ABC" partage ce même point d'entrée : dans ce cas on revient à
+     * l'alphabétique (pas un toggle numérique, qui rouvrirait le mode 123).
      */
     fun switchKeyboardMode(): Boolean {
-        isNumericMode = !isNumericMode
+        if (isEmojiMode) {
+            isEmojiMode = false
+            isNumericMode = false
+        } else {
+            isNumericMode = !isNumericMode
+        }
         return isNumericMode
     }
     
+    /**
+     * Retourne l'état actuel du mode numérique sans le modifier
+     */
+    fun isNumericMode(): Boolean {
+        return isNumericMode
+    }
+
+    /**
+     * Retourne l'état actuel du mode emoji sans le modifier
+     */
+    fun isEmojiMode(): Boolean {
+        return isEmojiMode
+    }
+
+    /**
+     * Active le layout emoji (accessible depuis le mode 123)
+     */
+    fun switchToEmojiMode() {
+        isEmojiMode = true
+        isNumericMode = false
+        Log.d("KeyboardLayoutManager", "😀 MODE EMOJI ACTIVÉ")
+    }
+
     /**
      * Force le mode alphabétique (pour l'initialisation)
      */
     fun switchKeyboardModeToAlphabetic() {
         isNumericMode = false
+        isEmojiMode = false
         Log.d("KeyboardLayoutManager", "🔤 MODE FORCÉ À ALPHABÉTIQUE")
     }
-    
+
     /**
      * Garantit que le clavier démarre en mode alphabétique
      */
     private fun ensureAlphabeticMode() {
         isNumericMode = false
+        isEmojiMode = false
         isCapitalMode = false
         isCapsLock = false
         Log.d("KeyboardLayoutManager", "🚀 INITIALISATION : Mode alphabétique garanti")
@@ -545,8 +734,8 @@ class KeyboardLayoutManager(private val context: Context) {
      * Nettoie les ressources
      */
     fun cleanup() {
-        keyboardButtons.forEach { view ->
-            cleanupView(view)
+        keyboardButtons.forEach { button ->
+            cleanupView(button)
         }
         keyboardButtons.clear()
         interactionListener = null
@@ -556,12 +745,14 @@ class KeyboardLayoutManager(private val context: Context) {
     
     private fun getDisplayText(key: String): String {
         return when (key) {
-            " " -> "🇱🇺Potomitan™"
+            " " -> "Potomitan™"
             "⇧" -> "⇧"
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
-            // Tous les autres caractères (y compris les accentués) suivent la capitalisation
+            "EMOJI" -> "😀"
+            // Caractères accentués créoles - respecter le mode majuscule/minuscule
+            "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
             else -> if (isCapitalMode) key.uppercase() else key.lowercase()
         }
     }
@@ -578,24 +769,13 @@ class KeyboardLayoutManager(private val context: Context) {
         return keys.sumOf { getKeyWeight(it).toDouble() }.toFloat()
     }
     
-    private fun getKeyFromButton(view: View): String {
-        // Pour ImageButton, utiliser contentDescription
-        if (view is ImageButton) {
-            return when(view.contentDescription) {
-                "Majuscule" -> "⇧"
-                "Supprimer" -> "⌫"
-                "Entrée" -> "⏎"
-                "Mode numérique" -> "123"
-                "Mode alphabétique" -> "ABC"
-                "Espace" -> " "
-                else -> ""
-            }
+    private fun getKeyFromButton(button: View): String {
+        // Version simple : récupérer depuis le texte affiché ou le tag
+        return when (button) {
+            is Button -> button.text.toString().lowercase()
+            is android.widget.ImageButton -> (button.tag as? String)?.lowercase() ?: ""
+            else -> ""
         }
-        // Pour Button avec texte, utiliser le texte affiché
-        if (view is Button) {
-            return view.text.toString().lowercase()
-        }
-        return ""
     }
     
     private fun dpToPx(dp: Int): Int {

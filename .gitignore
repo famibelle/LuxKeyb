@@ -19,6 +19,11 @@ key.properties
 local-release.properties
 gradle.properties.local
 keystore-base64.txt
+*keystore*base64*.txt
+*.key
+*.certSigningRequest
+/ios/*.key
+/ios/*.certSigningRequest
 
 # Fichiers temporaires
 *.tmp
@@ -41,10 +46,17 @@ clavier_creole/.dart_tool/
 clavier_creole/.flutter-plugins
 clavier_creole/.flutter-plugins-dependencies
 ConvertToJson.py
+
 .env
 Dictionnaries/__pycache__/
 Dictionnaries/.env.template
 Dictionnaries/archives/scripts/
+# Le dossier réel s'appelle Dictionnaires : les trois lignes ci-dessus, mal
+# orthographiées, ne couvrent rien (même faute que le filtre de chemins de
+# build-apk.yml)
+Dictionnaires/__pycache__/
+Dictionnaires/.env.template
+Dictionnaires/archives/scripts/
 Dictionnaries/backups/
 
 setup_github_pages.ps1
@@ -67,6 +79,8 @@ android_keyboard/app/local-release.properties.example
 KreyolKeybPlayStore\graphics\screenshots-phone\KlavyéAnAktion2.webm
 .github\workflows\release_aab.yml
 Dictionnaires/backups/
+# Extrait local d'un dataset HF privé/gated - usage interne uniquement, ne pas publier
+Dictionnaires/extraits_potomitan-gcf-fr-translation.json
 monitor_performance.sh
 performance_monitoring.md
 Monitor-Performance.ps1
@@ -103,6 +117,7 @@ COMMIT_SUMMARY.md
 test-keyboard-simple.ps1
 test-keyboard-suggestions.ps1
 android_keyboard/keystore-base64.txt
+
 test-accent-tolerant.ps1
 GUIDE_TEST_ACCENT_TOLERANT.md
 test-accent-pid.ps1
@@ -133,7 +148,7 @@ gamification_test_*
 gamification_test_20251009_233837.png
 AMELIORATIONS_ERGONOMIE.md
 
-android_keyboard\keystore-config.txt
+android_keyboard/keystore-config.txt
 test-gamification-simple.ps1
 Tests_scenarios/
 tests/
@@ -163,5 +178,36 @@ Dictionnaires/analyse_diacritiques.py
 android_keyboard/KEYSTORE_GUIDE.md
 android_keyboard/GITHUB_SECRETS_SETUP.md
 android_keyboard/CREDENTIALS_SETUP.md
-android_keyboard/gradle.properties
-android_keyboard/gradle.properties
+# NB: android_keyboard/gradle.properties est volontairement suivi (version
+# assainie, sans secrets, nécessaire à la CI). Les secrets vont dans
+# gradle.properties.local, ignoré ci-dessus.
+
+QUICK_FIX_ENTREE.md
+DIAGNOSTIC_TOUCHE_ENTREE.md
+android_keyboard/CHANGELOG.md
+COMMIT_V6.1.7_SUMMARY.md
+android_keyboard/CHANGELOG.md
+AUDIT_COROUTINES.md
+INSTALLATION_V6.0.0.md
+OPTIMISATION_MEMOIRE_A21S.md
+PLAN_CORRECTION_CRITIQUES.md
+RAPPORT_CORRECTIONS_CRITIQUES.md
+
+android_keyboard\GAMIFICATION_README.md
+android_keyboard\GUIDE_TEST_BILINGUE.md
+INSTALLATION_V6.0.0.md
+
+OPTIMISATION_MEMOIRE_A21S.md
+
+.github\workflows\build-apk-old.yml.disabled
+docs/FIX_AUTO_REFRESH_STATE.md
+docs/FIX_INPUT_METHOD_PICKER.md
+docs/FIX_SETTINGS_REFRESH.md
+RELEASE_NOTES_6.2.4.md
+SYNTHESE_6.1.6_to_6.2.4.md
+Corpus/La Jamaïque est mon Afrique Gerty DAMBURY.txt
+Corpus/LaJamaïqueestmonAfriqueGertyDAMBURY.txt
+Utilitaire/AdapationPourHuggingFace.py
+Corpus/
+NETTOYAGE_SYSTEMES_NIVEAUX.md
+CLAUDE.md

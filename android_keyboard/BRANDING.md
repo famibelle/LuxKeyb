@@ -8,7 +8,7 @@ Le branding **Potomitan™** est intégré de façon subtile et professionnelle 
 
 ### 1. Titre Principal du Clavier
 ```
-📱 "Klavyé Kréyòl Karukera 🇸🇷 • Potomitan™"
+📱 "Klavyé Kréyòl Karukera  • Potomitan™"
 ```
 - Affiché dans la barre de titre du clavier
 - Style: Fond bleu caraïbe avec texte blanc corail
@@ -44,7 +44,7 @@ Le branding **Potomitan™** est intégré de façon subtile et professionnelle 
 ### Interface Utilisateur
 | Composant | Texte | Style |
 |-----------|--------|-------|
-| Titre du clavier | "Klavyé Kréyòl Karukera 🇸🇷 • Potomitan™" | Gras, bleu caraïbe |
+| Titre du clavier | "Klavyé Kréyòl Karukera  • Potomitan™" | Gras, bleu caraïbe |
 | Suggestions vides | "Potomitan™" | Italique, transparent |
 | Watermark | "Potomitan™" | Italique, coin droit |
 
@@ -58,7 +58,7 @@ Le branding **Potomitan™** est intégré de façon subtile et professionnelle 
 ### Code Source
 | Fichier | Élément | Description |
 |---------|---------|-------------|
-| `KreyolInputMethodService.kt` | TAG = "KreyolIME-Potomitan™" | Logs de débogage |
+| `KreyolInputMethodServiceRefactored.kt` | TAG = "KreyolIME-Potomitan™" | Logs de débogage |
 | `creole_ngrams.json` | "branding": "Potomitan™" | Modèle N-grams |
 | `GenererNgrams.py` | Header et métadonnées | Script de génération |
 | `EnrichirDictionnaire.py` | Header et logs | Script d'enrichissement |
@@ -97,7 +97,7 @@ $potomitan-discret: 0.6;       // Niveau de transparence suggestions
 
 Pour modifier ou étendre le branding Potomitan™ :
 
-1. **Interface**: Modifier `KreyolInputMethodService.kt`
+1. **Interface**: Modifier `KeyboardLayoutManager.kt`
 2. **Métadonnées**: Mettre à jour `strings.xml`
 3. **Version**: Changer `build.gradle`
 4. **Documentation**: Mettre à jour ce fichier

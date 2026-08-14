@@ -36,7 +36,7 @@ C'est tout ! Le pipeline fait **TOUT** automatiquement :
 - **"sèvis-ladministrasyon"** (21 caractères, mot le plus long)
 
 ### 🇱🇺 Dictionnaire Luxembourgeois
-- Génération automatique depuis **Akabi/Luxemburgish_Press_Conferences_Gov**
+- Génération automatique depuis **POTOMITAN/luxembourgish-corpus**
 - Support natif des caractères luxembourgeois
 - Mots courants : "den", "ech", "dat", "mir", "an", "op"
 - Prédictions optimisées pour le contexte gouvernemental
@@ -72,8 +72,8 @@ Les fichiers générés sont **directement prêts** pour l'app Android :
 
 ### Pipeline Luxembourgeois
 - Token Hugging Face (depuis `.env`)
-- Dataset `Akabi/Luxemburgish_Press_Conferences_Gov`
-- Colonne "transcription" pour extraction
+- Dataset `POTOMITAN/luxembourgish-corpus`
+- Colonne "Texte" pour extraction
 - Fallback sur fichiers locaux si nécessaire
 
 ## 📁 Structure

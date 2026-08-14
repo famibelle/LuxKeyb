@@ -26,8 +26,18 @@ data class BilingualSuggestion(
      */
     fun getLanguageName(): String {
         return when (language) {
-            SuggestionLanguage.KREYOL -> "Kreyòl"
+            SuggestionLanguage.KREYOL -> "Lëtzebuergesch"
             SuggestionLanguage.FRENCH -> "Français"
+        }
+    }
+
+    /**
+     * Micro-label affiché avant le mot dans la puce de suggestion (KR/FR)
+     */
+    fun getShortLabel(): String {
+        return when (language) {
+            SuggestionLanguage.KREYOL -> "LB"
+            SuggestionLanguage.FRENCH -> "FR"
         }
     }
 }
@@ -54,17 +64,18 @@ enum class SuggestionSource {
  * Couleurs du clavier
  */
 object KeyboardColors {
-    // 🟢 Vert pour Guadeloupéen/Kreyòl (authenticité tropicale)
-    val KREYOL_GREEN = Color.parseColor("#50C878")  // Vert émeraude
-    
-    // 🔵 Bleu pour Français (couleur officielle France)
-    val FRENCH_BLUE = Color.parseColor("#4A90E2")   // Bleu France
-    
+    // 🟢 Vert pour Guadeloupéen/Kreyòl (fond plein, texte blanc — contraste renforcé)
+    val KREYOL_GREEN = Color.parseColor("#2E9E5B")
+
+    // 🔵 Bleu pour Français (fond plein, texte blanc — contraste renforcé)
+    val FRENCH_BLUE = Color.parseColor("#3B6FC4")
+
     // Couleurs d'interface
     val BACKGROUND_NEUTRAL = Color.parseColor("#F8F9FA")  // Fond neutre
     val BORDER_LIGHT = Color.parseColor("#E9ECEF")        // Bordures subtiles
     val TEXT_PRIMARY = Color.parseColor("#212529")        // Texte principal
     val TEXT_SECONDARY = Color.parseColor("#6C757D")      // Texte secondaire
+    val CHIP_TEXT = Color.parseColor("#FFFFFF")           // Texte des puces (fond plein)
 }
 
 /**

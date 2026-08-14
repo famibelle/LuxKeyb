@@ -6,6 +6,7 @@ package com.example.kreyolkeyboard
 
 import android.inputmethodservice.InputMethodService
 import android.content.Context
+import android.content.Intent
 import android.app.ActivityManager
 import android.util.Log
 import android.view.View
@@ -13,8 +14,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.HorizontalScrollView
 import android.widget.Button
+import android.widget.Toast
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.ViewGroup
+import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.KeyEvent
@@ -26,6 +30,8 @@ import java.util.TimerTask
 import com.example.kreyolkeyboard.BilingualSuggestion
 import com.example.kreyolkeyboard.SuggestionLanguage
 import com.example.kreyolkeyboard.gamification.CreoleDictionaryWithUsage
+import com.example.kreyolkeyboard.gamification.LuxLevels
+import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import com.example.kreyolkeyboard.gamification.WordCommitListener
 
 /**
@@ -39,9 +45,52 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     InputProcessor.InputProcessorListener {
     
     companion object {
-        private const val TAG = "LuxemburgIME"
-        private const val MAX_SUGGESTIONS = 3  // 🔧 Retour à 3 suggestions (couleurs d'origine)
-        
+        private const val TAG = "LuxIME-Potomitan™"
+        private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
+        private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
+        private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
+        private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
+        // Mot-dièse séparé du lien par une espace : ce message s'insère au fil
+        // du texte de l'utilisateur, il ne peut pas se permettre de saut de ligne.
+        private const val SHARE_INVITE_MESSAGE = "Geschriwwe mam Lëtzebuergesch Clavier, " +
+            "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&pcampaignid=web_share" +
+            " ${SettingsActivity.SHARE_HASHTAG}"
+
+        // Passage de niveau. Clé distincte de « last_celebrated_level_index »,
+        // qu'utilise SettingsActivity pour sa carte partageable : les deux
+        // suivis sont volontairement indépendants, pour que la notification ne
+        // consomme pas le franchissement et que l'utilisateur retrouve quand
+        // même sa carte en ouvrant l'application.
+        private const val GAMIFICATION_PREFS = "lux_gamification_prefs"
+        private const val PREF_LAST_NOTIFIED_LEVEL = "last_notified_level_index"
+
+        /**
+         * Saisie dont le contenu ne doit jamais être conservé, statistiques de
+         * vocabulaire comprises.
+         * `internal` (et non private) pour être testable en JVM sans EditorInfo.
+         *
+         * Couvre les mots de passe sous toutes leurs déclarations (texte masqué,
+         * texte visible, formulaire web, code numérique) ainsi que les champs que
+         * l'application déclare non mémorisables via IME_FLAG_NO_PERSONALIZED_LEARNING.
+         * Le mode « mot de passe visible » compte autant que les autres : c'est
+         * bien un mot de passe, seul son affichage diffère.
+         */
+        internal fun isSensitiveInput(inputType: Int, imeOptions: Int): Boolean {
+            val variation = inputType and InputType.TYPE_MASK_VARIATION
+            val inputClass = inputType and InputType.TYPE_MASK_CLASS
+
+            val isPasswordText = inputClass == InputType.TYPE_CLASS_TEXT && variation in setOf(
+                InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+            )
+            val isPasswordNumber = inputClass == InputType.TYPE_CLASS_NUMBER &&
+                variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            val noLearning = (imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING) != 0
+
+            return isPasswordText || isPasswordNumber || noLearning
+        }
+
         // 🔧 FIX SAMSUNG A21S: Détection appareils low-end
         private fun isLowEndDevice(context: Context): Boolean {
             val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
@@ -61,6 +110,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // Vues principales
     private var suggestionsView: LinearLayout? = null
+    private var kreyolRow: LinearLayout? = null
+    private var frenchRow: LinearLayout? = null
+    private var frenchRowScroll: HorizontalScrollView? = null
     private var mainKeyboardView: View? = null
     
     // État du service
@@ -177,6 +229,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         accentHandler = AccentHandler(this).apply {
             setAccentSelectionListener(this@KreyolInputMethodServiceRefactored)
         }
+        // Permet à KeyboardLayoutManager d'afficher un aperçu des options
+        // d'appui long dans les coins des touches (v8.3.0)
+        keyboardLayoutManager.accentHandler = accentHandler
         
         inputProcessor = InputProcessor(this).apply {
             setInputProcessorListener(this@KreyolInputMethodServiceRefactored)
@@ -184,22 +239,50 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // 🎮 Gamification: Initialiser le tracking d'utilisation du vocabulaire
         dictionaryWithUsage = CreoleDictionaryWithUsage(this)
-        
+
+        // Les compteurs d'utilisation ne servaient qu'aux écrans de statistiques :
+        // le moteur classait les suggestions sur la seule fréquence du corpus, donc
+        // sur ce que le kréyòl écrit emploie en général plutôt que sur ce que cet
+        // utilisateur-ci écrit. Les rebrancher sur le scoring fait remonter son
+        // vocabulaire propre, sans rien envoyer hors de l'appareil.
+        suggestionEngine.setUsageCountProvider { word ->
+            dictionaryWithUsage.getWordUsageCount(word)
+        }
+
         // Connecter le listener de tracking au InputProcessor
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
                 Log.d(TAG, "🔍 onWordCommitted appelé avec: '$word'")
-                
+
+                if (isSensitiveField()) {
+                    // Champ de mot de passe ou saisie explicitement non
+                    // mémorisable : aucun comptage. Sortie avant toute écriture,
+                    // y compris l'horodatage du tunnel.
+                    Log.d(TAG, "🔒 Champ sensible: mot ignoré")
+                    return
+                }
+
+                // Tunnel d'activation local : horodater le tout premier mot
+                // commité (diagnostic affiché dans À Propos, rien ne sort du
+                // téléphone)
+                val funnelPrefs = getSharedPreferences(ONBOARDING_PREFS, Context.MODE_PRIVATE)
+                if (!funnelPrefs.contains("funnel_first_word")) {
+                    funnelPrefs.edit().putLong("funnel_first_word", System.currentTimeMillis()).apply()
+                }
+
                 // Tracker le mot dans le dictionnaire (seulement si présent)
-                val tracked = dictionaryWithUsage.incrementWordUsage(word)
-                Log.d(TAG, "🎯 Résultat tracking '$word': $tracked")
-                
-                if (tracked) {
+                val result = dictionaryWithUsage.trackWordUsage(word)
+                Log.d(TAG, "🎯 Résultat tracking '$word': ${result.tracked}")
+
+                if (result.tracked) {
                     Log.d(TAG, "🎮 Gamification: Mot tracké '$word'")
-                    
-                    // Log des stats pour debug
-                    val stats = dictionaryWithUsage.getVocabularyStats()
-                    Log.d(TAG, "📊 Coverage: ${String.format("%.1f", stats.coveragePercentage)}% (${stats.wordsDiscovered}/${stats.totalWords} mots)")
+                }
+
+                // Un passage de niveau ne peut survenir que si le mot vient
+                // d'être découvert : inutile de refaire le calcul à chaque mot
+                // validé, ce qui se verrait à la frappe.
+                if (result.newlyDiscovered) {
+                    maybeNotifyLevelUp()
                 }
             }
         })
@@ -221,13 +304,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
                 isInitialized = true
                 Log.d(TAG, "✅ Moteur de suggestions initialisé (mode: ${if (isLowEnd) "A21s optimisé" else "standard"})")
-                
-                // 🎯 NOUVEAU: Tests AccentTolerantMatching
-                runAccentTolerantTests()
-                
-                // 🎯 DÉSACTIVÉ TEMPORAIREMENT: Support bilingue (retour couleurs d'origine)
-                // suggestionEngine.enableBilingualSupport()
-                Log.d(TAG, "🎯 Mode suggestions avec AccentTolerantMatching activé")
+
+                // 🟢🔵 Support bilingue Kreyòl + Français (Kreyòl-first, Français dès 3 lettres)
+                suggestionEngine.enableBilingualSupport()
+                Log.d(TAG, "🎯 Mode suggestions bilingue avec AccentTolerantMatching activé")
                 
                 // Démarrer monitoring mémoire sur A21s
                 if (isLowEnd) {
@@ -281,32 +361,70 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
         mainKeyboardView = keyboardContainer
-        
+
         return mainLayout
     }
     
     /**
-     * Crée la zone des suggestions
+     * Crée la zone des suggestions : deux rangées empilées (Kreyòl puis Français) pour
+     * que le français reste toujours entièrement visible, sans scroll ni troncature,
+     * même quand les suggestions kreyòl sont longues ("Bonmaten-la"). La rangée
+     * française reste toujours réservée en hauteur (INVISIBLE, jamais GONE) même
+     * quand elle est vide : un GONE/VISIBLE dynamique décale toutes les rangées du
+     * clavier en dessous pendant la frappe (ex. au franchissement du seuil de 3
+     * lettres qui active le fallback français), ce qui fait atterrir un tap en cours
+     * sur la touche de la rangée voisine — bug constaté et corrigé le 23/07/2026.
      */
     private fun createSuggestionsArea(parentLayout: LinearLayout) {
-        val suggestionsContainer = HorizontalScrollView(this).apply {
+        val suggestionsContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(48)
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
             setBackgroundColor(Color.parseColor("#FFFFFF"))
-            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(4))
         }
-        
-        suggestionsView = LinearLayout(this).apply {
+
+        val kreyolScroll = HorizontalScrollView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(44)
+            )
+            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
+        }
+        kreyolRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
-        
-        suggestionsContainer.addView(suggestionsView)
+        kreyolScroll.addView(kreyolRow)
+
+        val frScroll = HorizontalScrollView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(44)
+            )
+            setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
+            visibility = View.INVISIBLE
+        }
+        frenchRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+        frScroll.addView(frenchRow)
+        frenchRowScroll = frScroll
+
+        suggestionsContainer.addView(kreyolScroll)
+        suggestionsContainer.addView(frScroll)
+        // Alias historique : les modes non-bilingues (prédictions contextuelles) affichent
+        // dans la rangée du haut, la rangée française reste masquée dans ce cas.
+        suggestionsView = kreyolRow
+
         parentLayout.addView(suggestionsContainer)
     }
     
@@ -343,8 +461,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         Log.d(TAG, "=== FIN TRAITEMENT TOUCHE ===")
     }
     
-    override fun onLongPress(key: String, button: View, isCapitalMode: Boolean) {
-        Log.d(TAG, "🔗 Appui long sur: $key (capitalMode: $isCapitalMode)")
+    override fun onLongPress(key: String, button: View) {
+        Log.d(TAG, "🔗 Appui long sur: $key")
         
         when (key) {
             "⌫" -> {
@@ -353,18 +471,20 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 startWordDeletion()
             }
             " " -> {
-                // 🌐 NOUVELLE FEATURE: Changement de clavier avec appui long sur barre d'espace
-                Log.d(TAG, "🌐 Appui long sur barre d'espace - Changement de clavier")
-                
+                // 🌐 Appui long sur barre d'espace : afficher le sélecteur de claviers
+                // (plutôt que de basculer silencieusement vers le "prochain" clavier,
+                // ce qui surprenait l'utilisateur en changeant d'IME sans prévenir)
+                Log.d(TAG, "🌐 Appui long sur barre d'espace - Affichage du sélecteur de claviers")
+
                 val shouldSwitch = inputProcessor.processSpaceLongPress()
                 if (shouldSwitch) {
-                    switchToNextKeyboard()
+                    showKeyboardPicker()
                 }
             }
             else -> {
                 // Gestion des accents pour les autres touches
-                if (accentHandler.hasAccents(key) && button is TextView) {
-                    accentHandler.startLongPressTimer(key, button, isCapitalMode)
+                if (accentHandler.hasAccents(key)) {
+                    accentHandler.startLongPressTimer(key, button)
                 }
             }
         }
@@ -387,8 +507,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onBilingualSuggestionsReady(suggestions: List<BilingualSuggestion>) {
-        // 🔄 DÉSACTIVÉ: Mode bilingue temporairement désactivé (retour couleurs d'origine)
-        Log.d(TAG, "🔄 Mode bilingue désactivé - utilisation suggestions simples")
+        Log.d(TAG, "🎯 Affichage suggestions bilingues: ${suggestions.joinToString(", ") { "${it.word}(${it.language})" }}")
+        displayBilingualSuggestions(suggestions)
     }
     
     override fun onDictionaryLoaded(wordCount: Int) {
@@ -422,12 +542,22 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // Le caractère de base n'a pas été ajouté à cause de l'appui long
             inputConnection.commitText(accent, 1)
             Log.d(TAG, "✅ Accent '$accent' ajouté (remplace '$baseCharacter' conceptuel)")
-            
-            // Mettre à jour le mot courant en ajoutant l'accent
-            val currentWord = inputProcessor.getCurrentWord()
-            val updatedWord = currentWord + accent
-            inputProcessor.updateCurrentWordSilently(updatedWord)
-            Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
+
+            // Mettre à jour le mot courant en ajoutant l'accent — uniquement
+            // pour un vrai caractère de mot (lettre accentuée, digraphe...).
+            // Depuis l'ajout du panneau emoji (v10.1.0), cette même popup sert
+            // aussi à choisir un ton de peau ; un emoji n'est pas une lettre et
+            // ne doit pas polluer le suivi du mot en cours utilisé par les
+            // suggestions (sinon prochaine recherche dictionnaire faite avec
+            // un préfixe du genre "🥭ka").
+            if (accent.all { it.isLetter() }) {
+                val currentWord = inputProcessor.getCurrentWord()
+                val updatedWord = currentWord + accent
+                inputProcessor.updateCurrentWordSilently(updatedWord)
+                Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
+            } else {
+                inputProcessor.finalizeCurrentWordFromEmoji()
+            }
             
             // 🔍 DIAGNOSTIC: Vérifier l'état final
             val textAfter = inputConnection.getTextBeforeCursor(10, 0)?.toString() ?: ""
@@ -472,17 +602,23 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
     }
     
-    override fun onModeChanged(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
-        Log.e("SHIFT_REAL_DEBUG", "🚨 onModeChanged CALLED! isCapital=$isCapital, isCapsLock=$isCapsLock")
-        
+    override fun onModeChanged(isNumeric: Boolean, isEmoji: Boolean, isCapital: Boolean, isCapsLock: Boolean) {
+        // ✅ Vérifier si le mode numérique ou emoji a changé (avant de mettre à jour les états)
+        val currentNumericMode = keyboardLayoutManager.isNumericMode()
+        val currentEmojiMode = keyboardLayoutManager.isEmojiMode()
+        val needsLayoutRefresh = currentNumericMode != isNumeric || currentEmojiMode != isEmoji
+
         // ✅ CORRECTION: Mettre à jour les états AVANT l'affichage
-        keyboardLayoutManager.updateKeyboardStates(isNumeric, isCapital, isCapsLock)
+        keyboardLayoutManager.updateKeyboardStates(isNumeric, isEmoji, isCapital, isCapsLock)
+        
+        // Mettre à jour l'état du mode majuscule dans AccentHandler
+        accentHandler.isCapitalMode = isCapital || isCapsLock
         
         // Mettre à jour l'affichage du clavier
         keyboardLayoutManager.updateKeyboardDisplay()
         
         // Si on change vers le mode numérique, recréer le layout
-        if (keyboardLayoutManager.switchKeyboardMode() != isNumeric) {
+        if (needsLayoutRefresh) {
             refreshKeyboardLayout()
         }
     }
@@ -493,99 +629,120 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     /**
-     * Affiche les suggestions dans la barre de suggestions
+     * Affiche les suggestions dans la barre de suggestions (mode simple : dictionnaire
+     * hors bilingue, ou prédictions contextuelles n-gram — toutes deux Kreyòl uniquement).
+     * Réutilise le même style de puce pleine arrondie que le mode bilingue, pour éviter
+     * qu'un second look (l'ancien rectangle bleu pastel) ne cohabite avec le premier.
      */
     private fun displaySuggestions(suggestions: List<String>) {
         Log.d(TAG, "displaySuggestions appelé avec ${suggestions.size} suggestions: ${suggestions.joinToString(", ")}")
+        // Mode simple : pas de français, la 2e rangée reste masquée (mais réservée en hauteur)
+        frenchRow?.removeAllViews()
+        frenchRowScroll?.visibility = View.INVISIBLE
         suggestionsView?.let { container ->
             Log.d(TAG, "Container de suggestions trouvé, vidage des vues existantes")
             container.removeAllViews()
-            
+
             suggestions.take(MAX_SUGGESTIONS).forEach { suggestion ->
-                val suggestionButton = Button(this).apply {
-                    text = suggestion
-                    textSize = 14f
-                    setTextColor(Color.parseColor("#333333"))  // Couleur d'origine
-                    setBackgroundColor(Color.parseColor("#E3F2FD"))  // Fond d'origine
-                    setPadding(dpToPx(12), dpToPx(6), dpToPx(12), dpToPx(6))
-                    
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    ).apply {
-                        setMargins(dpToPx(4), 0, dpToPx(4), 0)
-                    }
-                    
-                    setOnClickListener {
-                        inputProcessor.processSuggestionSelection(suggestion)
-                        
-                        // 🔧 FIX SAMSUNG A21S: Réduire délai et utiliser serviceScope
-                        serviceScope.launch {
-                            delay(150) // Délai réduit pour performance A21s
-                            suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
-                            suggestionEngine.generateContextualSuggestions()
-                        }
-                    }
-                }
-                
-                container.addView(suggestionButton)
+                addSuggestionChip(container, BilingualSuggestion(suggestion, 0f, SuggestionLanguage.KREYOL))
             }
         }
     }
     
     /**
-     * 🎯 Affiche les suggestions bilingues avec couleurs (Vert Kreyòl / Bleu Français)
+     * 🎯 Affiche les suggestions bilingues sur deux rangées empilées (Kreyòl en haut,
+     * Français en bas) : le français reste toujours entièrement visible, sans scroll
+     * ni troncature, même quand une suggestion kreyòl est longue ("Bonmaten-la"). La
+     * rangée française se masque (hauteur nulle) quand elle est vide.
      */
     private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {
         Log.d(TAG, "displayBilingualSuggestions appelé avec ${suggestions.size} suggestions bilingues")
-        suggestionsView?.let { container ->
-            container.removeAllViews()
-            
-            suggestions.take(MAX_SUGGESTIONS).forEach { bilingualSuggestion ->
-                val suggestionButton = Button(this).apply {
-                    text = bilingualSuggestion.word
-                    textSize = 14f
-                    
-                    // 🎨 Couleur selon la langue
-                    val textColor = bilingualSuggestion.getColor()
-                    setTextColor(textColor)
-                    
-                    // Debug: Vérifier la couleur appliquée
-                    val colorHex = String.format("#%06X", 0xFFFFFF and textColor)
-                    val languageName = when(bilingualSuggestion.language) {
-                        SuggestionLanguage.KREYOL -> "KREYOL"
-                        SuggestionLanguage.FRENCH -> "FRENCH"
-                    }
-                    Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': $languageName → couleur $colorHex")
-                    
-                    // Fond plus subtil pour mettre en valeur la couleur du texte
-                    setBackgroundColor(Color.parseColor("#F8F9FA"))
-                    setPadding(dpToPx(12), dpToPx(6), dpToPx(12), dpToPx(6))
-                    
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    ).apply {
-                        setMargins(dpToPx(4), 0, dpToPx(4), 0)
-                    }
-                    
-                    setOnClickListener {
-                        inputProcessor.processSuggestionSelection(bilingualSuggestion.word)
-                        
-                        // 🔧 FIX SAMSUNG A21S: Performance optimisée
-                        serviceScope.launch {
-                            delay(150)
-                            suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
-                            suggestionEngine.generateContextualSuggestions()
-                        }
-                    }
-                }
-                
-                container.addView(suggestionButton)
-            }
-            
-            Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées avec couleurs")
+        val kreyolContainer = kreyolRow ?: return
+        val frenchContainer = frenchRow ?: return
+
+        kreyolContainer.removeAllViews()
+        frenchContainer.removeAllViews()
+
+        val kreyolSuggestions = suggestions.filter { it.language == SuggestionLanguage.KREYOL }
+        val frenchSuggestions = suggestions.filter { it.language == SuggestionLanguage.FRENCH }
+
+        if (kreyolSuggestions.isNotEmpty()) {
+            addLanguageLabel(kreyolContainer, kreyolSuggestions.first().getShortLabel())
+            kreyolSuggestions.forEach { addSuggestionChip(kreyolContainer, it) }
         }
+
+        if (frenchSuggestions.isNotEmpty()) {
+            addLanguageLabel(frenchContainer, frenchSuggestions.first().getShortLabel())
+            frenchSuggestions.forEach { addSuggestionChip(frenchContainer, it) }
+        }
+        // INVISIBLE (jamais GONE) : garder la hauteur de la rangée réservée en permanence
+        // évite que l'apparition/disparition des suggestions françaises ne décale les
+        // rangées du clavier en dessous pendant la frappe (cf. bug du 23/07/2026).
+        frenchRowScroll?.visibility = if (frenchSuggestions.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+
+        Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées (${kreyolSuggestions.size} Kreyòl / ${frenchSuggestions.size} Français)")
+    }
+
+    /**
+     * Ajoute le micro-label (KR/FR) en tête d'une rangée de suggestions
+     */
+    private fun addLanguageLabel(container: LinearLayout, label: String) {
+        val groupLabel = TextView(this).apply {
+            text = label
+            textSize = 10f
+            setTextColor(KeyboardColors.TEXT_SECONDARY)
+            setPadding(dpToPx(4), 0, dpToPx(2), 0)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                gravity = android.view.Gravity.CENTER_VERTICAL
+            }
+        }
+        container.addView(groupLabel)
+    }
+
+    /**
+     * Ajoute une puce de suggestion arrondie (fond plein, texte blanc) dans une rangée
+     */
+    private fun addSuggestionChip(container: LinearLayout, bilingualSuggestion: BilingualSuggestion) {
+        val suggestionButton = Button(this).apply {
+            text = bilingualSuggestion.word
+            textSize = 14f
+            setTextColor(KeyboardColors.CHIP_TEXT)
+
+            val bgColor = bilingualSuggestion.getColor()
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = dpToPx(16).toFloat()
+                setColor(bgColor)
+            }
+
+            val colorHex = String.format("#%06X", 0xFFFFFF and bgColor)
+            Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': ${bilingualSuggestion.getLanguageName()} → fond $colorHex")
+
+            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+            }
+
+            setOnClickListener {
+                inputProcessor.processSuggestionSelection(bilingualSuggestion.word)
+
+                // 🔧 FIX SAMSUNG A21S: Performance optimisée
+                serviceScope.launch {
+                    delay(150)
+                    suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.CONTEXTUAL)
+                    suggestionEngine.generateContextualSuggestions()
+                }
+            }
+        }
+
+        container.addView(suggestionButton)
     }
 
     /**
@@ -612,6 +769,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // ===== MÉTHODES DE CYCLE DE VIE =====
     
+    /**
+     * Champ dont le contenu ne doit jamais être conservé, statistiques de
+     * vocabulaire comprises : mots de passe (visibles ou masqués, texte ou
+     * numériques), et champs que l'application déclare non mémorisables via
+     * IME_FLAG_NO_PERSONALIZED_LEARNING.
+     */
+    private fun isSensitiveField(): Boolean {
+        val editorInfo = currentInputEditorInfo ?: return true
+        return isSensitiveInput(editorInfo.inputType, editorInfo.imeOptions)
+    }
+
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
         Log.d(TAG, "onStartInput - restarting: $restarting")
@@ -621,13 +789,37 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         displaySuggestions(emptyList())
     }
     
+    /**
+     * Le framework signale ici tout déplacement du curseur : tap dans le texte,
+     * sélection, effacement remontant dans un mot déjà validé, ou modification
+     * faite par l'application elle-même. C'est le seul point où l'on apprend que
+     * le texte a bougé sans passer par nos touches.
+     *
+     * Absent de ce service jusqu'ici (il n'existait que dans le service legacy
+     * KreyolInputMethodService), ce qui laissait le mot suivi par InputProcessor
+     * dériver du texte réel : revenir éditer un mot existant ne produisait alors
+     * plus aucune suggestion, et taper après un déplacement de curseur en
+     * produisait pour le mot précédent.
+     */
+    override fun onUpdateSelection(
+        oldSelStart: Int,
+        oldSelEnd: Int,
+        newSelStart: Int,
+        newSelEnd: Int,
+        candidatesStart: Int,
+        candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(
+            oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd
+        )
+
+        if (!::inputProcessor.isInitialized) return
+        inputProcessor.syncWordWithCursor(newSelStart, newSelEnd)
+    }
+
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
-        
-        // 🧹 NETTOYAGE: Vider les suggestions au démarrage pour éviter l'affichage de suggestions fantômes
-        displaySuggestions(emptyList())
-        inputProcessor.resetState()
         
         // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
@@ -635,14 +827,137 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             keyboardLayoutManager.updateKeyboardDisplay()
             Log.d(TAG, "✅ Mode alphabétique garanti lors du démarrage de la saisie")
         }
+
+        maybeShowFirstRealUseTip(info)
+    }
+
+    /**
+     * Publie la pastille d'icône si l'utilisateur vient de franchir un palier.
+     *
+     * Rien n'est affiché par-dessus l'application en cours : la notification
+     * est silencieuse et sans bandeau (voir [LevelUpNotifier]), l'utilisateur
+     * découvre la pastille sur son écran d'accueil quand il y revient.
+     *
+     * Au tout premier appel, le niveau courant est mémorisé sans rien publier :
+     * un utilisateur qui installe cette version avec déjà des centaines de mots
+     * à son actif ne doit pas être notifié rétroactivement. Même règle que la
+     * célébration existante dans SettingsActivity.
+     */
+    private fun maybeNotifyLevelUp() {
+        try {
+            val totalWords = dictionaryWithUsage.getTotalWords()
+            if (totalWords <= 0) return
+
+            val discovered = dictionaryWithUsage.getDiscoveredWordsCount()
+            val currentIndex = LuxLevels.indexFor(discovered, totalWords)
+
+            val prefs = getSharedPreferences(GAMIFICATION_PREFS, Context.MODE_PRIVATE)
+            val lastNotified = prefs.getInt(PREF_LAST_NOTIFIED_LEVEL, -1)
+
+            if (lastNotified == -1) {
+                prefs.edit().putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex).apply()
+                return
+            }
+            if (currentIndex <= lastNotified) return
+
+            // La pastille de la barre d'onglets est posée quoi qu'il arrive :
+            // elle ne dépend pas de la permission de notification, et reste donc
+            // le signal de repli quand celle-ci a été refusée.
+            prefs.edit()
+                .putInt(PREF_LAST_NOTIFIED_LEVEL, currentIndex)
+                .putBoolean(SettingsActivity.PREF_LEVEL_BADGE_PENDING, true)
+                .apply()
+            LevelUpNotifier.notifyLevelUp(this, LuxLevels.LEVELS[currentIndex].label)
+        } catch (e: Exception) {
+            // Un échec de notification ne doit jamais perturber la frappe
+            Log.e(TAG, "Erreur lors de la notification de niveau", e)
+        }
+    }
+
+    /**
+     * Confirmation de succès + astuce accents, affichée une seule fois, la
+     * première fois que le clavier est réellement utilisé en dehors de
+     * l'écran de test intégré à l'app (Lëtzebuergesch Clavier elle-même) — un
+     * utilisateur qui bascule directement vers Messages après avoir
+     * sélectionné le clavier ne voyait jusqu'ici aucun signal de succès.
+     */
+    private fun maybeShowFirstRealUseTip(info: EditorInfo?) {
+        val targetPackage = info?.packageName ?: return
+        if (targetPackage == packageName) return // écran de test intégré à l'app, pas un vrai usage
+
+        val prefs = getSharedPreferences(ONBOARDING_PREFS, Context.MODE_PRIVATE)
+
+        if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
+            Toast.makeText(
+                this,
+                "Apiyé lontan asi on lèt pou wè aksan la (é, è, ò...)",
+                Toast.LENGTH_LONG
+            ).show()
+            prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
+        }
+
+        // Puce de partage : état séparé de l'astuce accents ci-dessus, retentée
+        // à chaque champ tant qu'elle n'a pas pu s'afficher sur un vrai champ
+        // de composition (action clavier "Envoyer") — sinon un premier focus
+        // sur un champ destinataire/recherche de contact (action "Suivant"/
+        // "Rechercher", qui réinterprète le texte collé comme une requête de
+        // contact et le tronque — repro sur l'écran "Nouvelle conversation" de
+        // Messages, testé le 02/08/2026) consommerait l'occasion pour toujours.
+        if (!prefs.getBoolean(PREF_SHARE_CHIP_SHOWN, false) &&
+            info.imeOptions and EditorInfo.IME_MASK_ACTION == EditorInfo.IME_ACTION_SEND
+        ) {
+            showShareInviteChip()
+            prefs.edit().putBoolean(PREF_SHARE_CHIP_SHOWN, true).apply()
+        }
+    }
+
+    /**
+     * Puce unique invitant à partager le clavier, affichée dans la barre de
+     * suggestions au moment du tout premier usage réel (avant même que
+     * l'utilisateur ait tapé une lettre de son propre message). Un tap
+     * insère directement le message prêt-à-envoyer dans le champ en cours
+     * (SMS, WhatsApp...) via commitText : contrairement à une suggestion
+     * normale, ce n'est pas un mot à finaliser, donc on n'appelle pas
+     * inputProcessor.processSuggestionSelection() ici. Dès que l'utilisateur
+     * tape son propre texte, displaySuggestions()/displayBilingualSuggestions()
+     * vide le conteneur et la puce disparaît naturellement.
+     */
+    private fun showShareInviteChip() {
+        val container = kreyolRow ?: return
+        lateinit var chip: Button
+        chip = Button(this).apply {
+            text = "📤 Envoyer un mot à un ami"
+            textSize = 14f
+            setTextColor(KeyboardColors.CHIP_TEXT)
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = dpToPx(16).toFloat()
+                setColor(Color.parseColor("#FF8A00"))
+            }
+            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+            }
+            setOnClickListener {
+                currentInputConnection?.commitText(SHARE_INVITE_MESSAGE, 1)
+                container.removeView(chip)
+            }
+        }
+        container.addView(chip, 0)
     }
     
     override fun onFinishInput() {
-        // 🔧 FIX: Ne PAS appeler super.onFinishInput() pour garder le clavier actif
-        // Cela empêche Android de détruire le service IME après un ENTER
-        Log.d(TAG, "onFinishInput - Clavier reste actif (super.onFinishInput() non appelé)")
-        
-        // Nettoyer seulement l'état local
+        // Sauter super.onFinishInput() cassait le cycle de vie interne du service :
+        // après un changement d'app (et retour), le framework ne rappelait plus
+        // jamais onStartInput()/onStartInputView(), laissant le clavier invisible
+        // indéfiniment. onEvaluateInputViewShown() (plus bas) retourne déjà
+        // toujours true, ce qui est la bonne façon de garder le clavier affiché.
+        super.onFinishInput()
+        Log.d(TAG, "onFinishInput")
+
         accentHandler.dismissAccentPopup()
         inputProcessor.resetState()
     }
@@ -741,6 +1056,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // Nettoyage des vues
             suggestionsView?.removeAllViews()
             suggestionsView = null
+            frenchRow?.removeAllViews()
+            frenchRow = null
+            kreyolRow = null
+            frenchRowScroll = null
             mainKeyboardView = null
             
             Log.d(TAG, "Nettoyage terminé avec succès - Compatible A21s")
@@ -840,32 +1159,22 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // ===== CHANGEMENT DE CLAVIER (APPUI LONG BARRE D'ESPACE) =====
     
     /**
-     * 🌐 Change vers le prochain clavier IME disponible
-     * Utilisé lors de l'appui long sur la barre d'espace (pattern UX standard Android)
-     * 
-     * Méthode directe : switchToNextInputMethod avec le token de la fenêtre
+     * 🌐 Affiche le sélecteur système de clavier (liste des IME installés)
+     * Utilisé lors de l'appui long sur la barre d'espace.
+     *
+     * On affiche toujours le sélecteur plutôt que de basculer directement vers le
+     * "prochain" clavier : un changement silencieux d'IME (ex. bascule vers Gboard sans
+     * confirmation) après un simple appui d'1 seconde surprend l'utilisateur, qui peut
+     * se retrouver sur un autre clavier sans comprendre pourquoi. Le sélecteur laisse
+     * le choix explicitement, comme le globe des claviers Android standards.
      */
-    private fun switchToNextKeyboard() {
+    private fun showKeyboardPicker() {
         try {
-            Log.d(TAG, "🌐 Changement vers prochain clavier...")
+            Log.d(TAG, "🌐 Affichage du sélecteur de claviers")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            
-            // Essayer d'abord switchToNextInputMethod
-            val token = window.window?.attributes?.token
-            if (token != null) {
-                val switched = inputMethodManager.switchToNextInputMethod(token, false)
-                Log.d(TAG, if (switched) "✅ Changement réussi" else "⚠️ Changement échoué, fallback picker")
-                
-                if (!switched) {
-                    // Fallback: afficher le sélecteur
-                    inputMethodManager.showInputMethodPicker()
-                }
-            } else {
-                Log.d(TAG, "⚠️ Token null, utilisation picker")
-                inputMethodManager.showInputMethodPicker()
-            }
+            inputMethodManager.showInputMethodPicker()
         } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur changement clavier: ${e.message}", e)
+            Log.e(TAG, "❌ Erreur affichage sélecteur de claviers: ${e.message}", e)
         }
     }
 
@@ -927,11 +1236,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // Obtenir la hauteur système de la navigation bar
         val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        val systemNavBarHeight = if (resourceId > 0) {
+        val rawNavBarHeight = if (resourceId > 0) {
             resources.getDimensionPixelSize(resourceId)
         } else {
             (48 * resources.displayMetrics.density).toInt() // Fallback 48dp
         }
+        // Certaines ROM OEM (constaté sur un téléphone bas de gamme non identifié,
+        // "P300", en portrait uniquement) renvoient une valeur aberrante pour ce
+        // dimen système, ce qui pousse tout le clavier hors de l'écran visible.
+        // Une vraie navigation bar Android ne dépasse jamais ~64dp : on plafonne
+        // pour ignorer les valeurs corrompues plutôt que de leur faire confiance.
+        val maxNavBarHeightPx = (64 * resources.displayMetrics.density).toInt()
+        val systemNavBarHeight = rawNavBarHeight.coerceIn(0, maxNavBarHeightPx)
         
         val padding = when (navigationMode) {
             0 -> {
@@ -970,94 +1286,4 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         return padding
     }
     
-    /**
-     * 🧪 Tests AccentTolerantMatching au démarrage du clavier
-     */
-    private fun runAccentTolerantTests() {
-        serviceScope.launch {
-            try {
-                Log.i(TAG, "🧪 Lancement des tests AccentTolerantMatching...")
-                
-                val testRunner = AccentTolerantMatchingTest(this@KreyolInputMethodServiceRefactored)
-                val testsSuccess = testRunner.runAllTests()
-                
-                if (testsSuccess) {
-                    Log.i(TAG, "✅ Tous les tests AccentTolerantMatching réussis!")
-                    
-                    // Test de performance
-                    val perfTime = testRunner.testPerformance()
-                    Log.i(TAG, "⏱️ Performance OK: ${perfTime}ms pour 100 recherches")
-                    
-                } else {
-                    Log.w(TAG, "⚠️ Certains tests AccentTolerantMatching ont échoué - fonctionnalité disponible mais non optimale")
-                }
-                
-                // Tests spécifiques aux cas d'usage créoles
-                testCreoleSpecificCases()
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "❌ Erreur lors des tests AccentTolerantMatching: ${e.message}", e)
-            }
-        }
-    }
-    
-    /**
-     * Tests spécifiques pour les mots créoles fréquents
-     */
-    private suspend fun testCreoleSpecificCases() {
-        try {
-            Log.d(TAG, "🔍 Test des cas créoles spécifiques...")
-            
-            val testCases = mapOf(
-                "kre" to "kréyòl",
-                "fe" to "fè", 
-                "te" to "té",
-                "bon" to "bon",
-                "epi" to "épi",
-                "ou" to "où"
-            )
-            
-            for ((input, expectedWord) in testCases) {
-                // Simuler une recherche de suggestion
-                val suggestions = mutableListOf<String>()
-                
-                // Utiliser un callback temporaire pour capturer les suggestions
-                val originalListener = suggestionEngine.getSuggestionListener()
-                suggestionEngine.setSuggestionListener(object : SuggestionEngine.SuggestionListener {
-                    override fun onSuggestionsReady(newSuggestions: List<String>) {
-                        suggestions.addAll(newSuggestions)
-                    }
-                    override fun onBilingualSuggestionsReady(suggestions: List<BilingualSuggestion>) {}
-                    override fun onDictionaryLoaded(wordCount: Int) {}
-                    override fun onNgramModelLoaded() {}
-                    override fun onFrenchDictionaryLoaded(wordCount: Int) {}
-                    override fun onModeChanged(newMode: SuggestionEngine.SuggestionMode) {}
-                })
-                
-                // Générer les suggestions
-                suggestionEngine.generateSuggestions(input)
-                
-                // Attendre un peu pour les suggestions asynchrones
-                delay(100)
-                
-                // Vérifier si le mot attendu est trouvé (directement ou via normalisation)
-                val found = suggestions.any { suggestion ->
-                    AccentTolerantMatcher.matches(suggestion, expectedWord) || 
-                    suggestion.equals(expectedWord, ignoreCase = true)
-                }
-                
-                if (found) {
-                    Log.d(TAG, "✅ '$input' → Trouvé '$expectedWord' dans $suggestions")
-                } else {
-                    Log.w(TAG, "⚠️ '$input' → '$expectedWord' NON trouvé dans $suggestions")
-                }
-                
-                // Restaurer l'ancien listener
-                originalListener?.let { suggestionEngine.setSuggestionListener(it) }
-            }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors des tests créoles spécifiques: ${e.message}", e)
-        }
-    }
 }
