@@ -83,8 +83,8 @@ class AccentHandler(private val context: Context) {
 
     // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
     // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =
-    // emoji au ton foncé par défaut affiché dans la grille, valeur = les 4
-    // autres tons + la version neutre/jaune, dans cet ordre. Contrairement à
+    // emoji neutre/jaune affiché dans la grille, valeur = les 5 tons de peau
+    // du plus clair au plus foncé, dans cet ordre. Contrairement à
     // accentMap (fixe, connu à la compilation), c'est une donnée chargée à
     // l'exécution, d'où un champ mutable séparé plutôt qu'une entrée de plus
     // dans accentMap.

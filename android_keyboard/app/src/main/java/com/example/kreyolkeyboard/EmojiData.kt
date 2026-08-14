@@ -19,10 +19,9 @@ data class EmojiCategory(
  * d'Unicode 16.0, entrées fully-qualified, groupe "Component" exclu).
  *
  * Les emojis à ton de peau (ex. "👍") n'apparaissent qu'une fois par
- * concept dans [categories], sous leur variante à ton foncé par défaut
- * (plus représentative pour le public créole guadeloupéen) ; les 4
- * autres tons + la version neutre/jaune restent accessibles via
- * [skinTones], consommé par appui long (voir AccentHandler).
+ * concept dans [categories], sous leur variante neutre/jaune par défaut ;
+ * les 5 tons de peau restent accessibles via [skinTones], consommé par
+ * appui long (voir AccentHandler).
  */
 class EmojiData private constructor(
     val categories: List<EmojiCategory>,
