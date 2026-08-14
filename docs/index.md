@@ -1,183 +1,126 @@
 ---
-title: "Clavier Créole Guadeloupéen pour Android : Klavyé Kréyòl Karukera"
-description: "Le clavier Android intelligent pour écrire en kréyòl guadeloupéen : suggestions bilingues créole/français, accents par appui long, 100 % hors ligne et gratuit."
+title: "Lëtzebuergesch Clavier : le clavier luxembourgeois pour Android"
+description: "Clavier Android gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité."
 lang: fr
 ---
 
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
-  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
-  <a href="nouveautes.html">🎁 Nouveautés</a> ·
-  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
-  <a href="tract.html">🪧 Tract</a> ·
-  <a href="tract-eco.html">💧 Tract éco encre</a> ·
-  <a href="affiche.html">🖨️ Affiche</a> ·
-  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
-  <a href="triptyque.html">📖 Triptyque</a> ·
-  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
-  <a href="presskit.html">📰 Presse</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
-# Klavyé Kréyòl Karukera, le clavier créole guadeloupéen pour Android
+# Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android
 
-**Écrire en kréyòl sur son téléphone, sans galérer.** Klavyé Kréyòl Karukera
-est un clavier Android **gratuit, open source, zéro pub et 100 % hors ligne** qui
-propose des suggestions de mots en **créole guadeloupéen**, construites sur
-les textes des grands défenseurs du kréyòl : Sylviane Telchid, Sonny Rupaire,
-Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
+**Écrire en lëtzebuergesch sur son téléphone, sans se battre contre le clavier.**
+Lëtzebuergesch Clavier est un clavier Android **gratuit, open source, sans
+publicité et entièrement hors ligne**, qui propose des suggestions de mots en
+luxembourgeois pendant la frappe.
 
-<div align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k">
-    <img src="Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg" alt="Télécharger Klavyé Kréyòl Karukera sur Google Play" width="60%">
+Plus besoin de chercher un `ë` dans un menu d'accents : les trois diacritiques
+qui portent la langue — **é**, **ä** et **ë** — ont chacune leur touche.
+
+<div align="center" style="margin: 24px 0;">
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest"
+     style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
+            border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
+    📲 Télécharger l'APK (version 10.9.2)
   </a>
 </div>
 
-## Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
-
-Essaie-le tout de suite, directement dans ton navigateur, sans rien installer :
-tape un mot, regarde les suggestions kréyòl et français apparaître, découvre
-les accents par appui long.
-
-<div align="center">
-  <iframe src="simulateur.html?embed=1" width="380" height="760" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"></iframe>
-</div>
+<p align="center"><em>Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau</em></p>
 
 ## Le clavier en action
 
-<div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-   <img src="Screenshots/KlavyéAnAktion.gif" alt="Clavier créole guadeloupéen en action avec suggestions kréyòl" width="25%">
-   <img src="Screenshots/Screenshot_1761763560.png" alt="Suggestions de mots en créole guadeloupéen" width="25%">
-   <img src="Screenshots/Screenshot_1761763491.png" alt="Clavier kréyòl avec accents" width="25%">
+<div align="center" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+   <img src="Screenshots/lux_suggestions.png" alt="Suggestions de mots en luxembourgeois et en français pendant la frappe" width="24%">
+   <img src="Screenshots/lux_accents.png" alt="Appui long sur la touche e affichant é, ë, è et ê" width="24%">
+   <img src="Screenshots/lux_numerique.png" alt="Mode chiffres et symboles du clavier" width="24%">
+   <img src="Screenshots/lux_onboarding.png" alt="Parcours d'installation guidé de l'application" width="24%">
 </div>
 
-<div align="center" style="margin: 18px 0;">
-  <a href="simulateur.html" class="btn primary" style="padding:12px 28px;">🧪 Essayer le clavier dans le navigateur</a>
-</div>
+Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
+rouge pour ce qui agit — Entrée, changement de mode — et le bleu ciel pour la
+barre d'espace et la ponctuation.
 
-## Pourquoi ce clavier ?
+## Ce qu'il sait faire
 
-- 🤔 Ton téléphone **refuse tous les mots créoles** et « corrige » ton kréyòl en français ?
-- 😤 Tu **doutes de l'orthographe** à chaque message ?
-- ➡️ Klavyé Kréyòl Karukera est fait pour toi.
+### Il vous souffle les mots
 
-## Fonctionnalités
+Le dictionnaire compte **8 792 mots** et **23 169 contextes** de prédiction.
+Après un espace, le clavier propose la suite probable de votre phrase d'après
+les deux mots que vous venez d'écrire, pas seulement le dernier.
 
-| | |
-|---|---|
-| 💡 **Suggestions intelligentes** | Dictionnaire de 1 800+ mots créoles et modèle de prédiction construit sur un corpus littéraire créole authentique |
-| 🔤 **Accents faciles** | Appui long sur une lettre pour é, è, à, ò et tous les caractères du kréyòl |
-| 🇫🇷 **Bilingue** | Le français prend le relais quand aucun mot créole ne correspond |
-| 🎮 **Jeux de vocabulaire** | Mots Mêlés et Mots Mélangés pour apprendre en s'amusant |
-| 🏆 **Progression culturelle** | 7 niveaux, de Pipirit à Potomitan, au fil de tes mots tapés |
-| 🔒 **Zéro collecte de données** | Fonctionnement 100 % local : rien ne quitte ton téléphone ([politique de confidentialité](privacy/privacy-policy.html)) |
-| 🚫 **Zéro pub** | Aucune publicité, aucun tracker : le clavier reste concentré sur l'essentiel |
-| 🆓 **Gratuit et open source** | Code public sur [GitHub](https://github.com/famibelle/KreyolKeyb), licence MIT |
+Les suggestions luxembourgeoises passent en premier ; le français prend le
+relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
 
-## Un projet de préservation linguistique
+### Il pardonne les fautes de frappe
 
-Le créole est parlé par **1,6 million de locuteurs en France**. Et pourtant
-sa place institutionnelle reste fragile : en octobre 2025, il a même été
-retiré de l'agrégation des langues de France, déclenchant une mobilisation
-des enseignants et des élus.
+Une lettre oubliée, une lettre en trop, une touche voisine : les suggestions
+arrivent quand même. Et vous pouvez écrire sans diacritiques — tapez
+« letzebuergesch », le clavier vous propose « lëtzebuergesch ».
 
-Ce n'est donc pas juste un clavier : **chaque message écrit en kréyòl aide
-notre langue à exister** dans le numérique, là où elle se joue désormais
-chaque jour. Le dictionnaire et les suggestions s'appuient sur les œuvres
-d'écrivains, de linguistes et d'artistes qui ont donné au créole
-guadeloupéen ses lettres de noblesse.
+La casse est respectée, et les mots que vous employez souvent remontent d'eux-mêmes.
 
-## Un écosystème créole plus large
+### Il corrige partout, pas seulement dans le clavier
 
-Klavyé Kréyòl Karukera fait partie de l'écosystème **Potomitan™**, qui
-développe aussi [POTOMITAN](https://potomitan.io), un traducteur
-français ↔ créole guadeloupéen pensé pour les urgences et les démarches
-administratives (soutenu par la Préfecture de Guadeloupe via Lab'An Nou,
-présenté par Orange Antilles-Guyane). Deux outils, une même mission :
-faire vivre le kréyòl dans le numérique, à l'écrit comme à l'oral.
+Un correcteur orthographique système est fourni : une fois activé, vos mots
+luxembourgeois cessent d'être soulignés en rouge dans Messages, Notes ou votre
+messagerie.
 
-## À découvrir en exclusivité 🎁
+### Il vous fait progresser
 
-**Le clavier évolue chaque semaine.** De nouvelles fonctionnalités arrivent
-régulièrement, en avance sur le Play Store.
+Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
+**Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
+utilisée. Trois jeux de vocabulaire complètent le parcours : **Wuertsich**
+(mots mêlés), **Wuertmix** (mots mélangés) et **Wuertriet**, où il faut deviner
+un mot de cinq lettres en six essais.
 
-<div class="card" style="margin:16px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">
-  <span id="ef-teaser" style="color:var(--ink-soft);">Chargement…</span>
-  <a href="nouveautes.html" class="btn primary" style="padding:10px 22px;white-space:nowrap;">🎁 Voir les nouveautés</a>
-</div>
+### Il ne sait rien de vous
 
-<script>
-fetch('stats/exclusive_features.json').then(function(r){ return r.json(); }).then(function(d){
-  var n = d.features ? d.features.length : 0;
-  document.getElementById('ef-teaser').textContent = n
-    ? n + ' fonctionnalité' + (n > 1 ? 's' : '') + ' déjà disponible' + (n > 1 ? 's' : '') + ', pas encore sur le Play Store.'
-    : 'Le Play Store est à jour : rien en exclusivité pour le moment.';
-}).catch(function(){});
-</script>
+Le clavier **n'a aucun accès à Internet**. Rien de ce que vous tapez ne quitte
+votre téléphone.
 
-## La jauge des 10 000 📲
+Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
+progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et ne
+sont donc jamais enregistrés. Le clavier se désactive de lui-même dans les
+champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-policy.html).
 
-<div id="dl-gauge" class="card" style="margin:16px 0;">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
-    <span style="font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);"><span id="g-current">…</span> <small style="font-size:14px;font-weight:400;color:var(--ink-soft);">téléchargements · prochain palier : <span id="g-next">…</span></small></span>
-    <span style="font-weight:700;color:var(--hibiscus);">Objectif du jour : <span id="g-daily">60</span> 📲</span>
-  </div>
-  <div style="height:16px;border-radius:999px;background:var(--sea-soft);overflow:hidden;">
-    <div id="g-fill" style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sea),var(--sun));min-width:8px;width:1%;transition:width .8s ease;"></div>
-  </div>
-  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:8px;">
-    <span id="g-remaining">An nou ay ! Chaque téléchargement fait vivre le kréyòl 🏝️</span>
-    <span>Objectif final : 10 000 · <span id="g-asof"></span></span>
-  </div>
-</div>
+## D'où viennent les suggestions
 
-<script>
-fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
-  var fmt = function(n){ return n.toLocaleString('fr-FR'); };
-  var tiers = [100, 500, 1000, 5000, 10000];
-  var next = s.goal;
-  for (var i = 0; i < tiers.length; i++) {
-    if (tiers[i] > s.current) { next = tiers[i]; break; }
-  }
-  var pct = Math.max(2, Math.min(100, (s.current / s.goal) * 100));
-  document.getElementById('g-current').textContent = fmt(s.current);
-  document.getElementById('g-next').textContent = fmt(next);
-  document.getElementById('g-daily').textContent = fmt(s.daily_target);
-  document.getElementById('g-asof').textContent = 'MAJ ' + s.as_of;
-  document.getElementById('g-remaining').textContent = 'Ka rété ' + fmt(next - s.current) + ' pou pwochen palyé-la ! 🏝️';
-  document.getElementById('g-fill').style.width = pct + '%';
-}).catch(function(){});
-</script>
+Le dictionnaire et les n-grammes sont générés à partir d'un corpus de
+luxembourgeois contemporain, publié en jeu de données ouvert :
+[POTOMITAN/luxembourgish-corpus](https://huggingface.co/datasets/POTOMITAN/luxembourgish-corpus).
 
-## Vin Anbasadè ! 📣
+Le pipeline est relancé à chaque publication, ce qui fait évoluer les
+suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
 
-**Vous voulez aider le kréyòl à rayonner ?** Notre page ambassadeurs vous
-donne tout : les contacts des médias locaux, les emails pré-remplis en un
-clic, quoi dire si vous appelez une radio, et un tract à imprimer pour
-le laisser chez le boulanger, le pharmacien ou la boutique du coin.
+## Installer
 
-<div align="center" style="margin: 16px 0; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-  <a href="ambassade.html" class="btn primary" style="padding:12px 28px;">🏝️ Devenir ambassadeur du Klavyé Kréyòl</a>
-  <a href="tract.html" class="btn" style="padding:12px 28px;">🖨️ Imprimer le tract</a>
-</div>
+1. Téléchargez l'APK depuis la [dernière version](https://github.com/famibelle/LuxKeyb/releases/latest)
+   (fichier `LetzebuergeschClavier-Release-v10.9.2.apk`).
+2. Autorisez l'installation depuis cette source, si Android le demande.
+3. Ouvrez l'application : elle vous guide en trois étapes pour activer le
+   clavier, le sélectionner, puis l'essayer.
 
-**Pou laprès :** [dossier de presse / press kit](presskit.html)
+Android affiche au passage un avertissement générique, montré pour **tout**
+clavier tiers, sur la capture éventuelle de ce que vous tapez. Il est normal, et
+l'onglet Guide de l'application explique pourquoi ce clavier-ci ne peut rien
+envoyer nulle part.
 
-## Contacts
+## Contribuer
 
-Une question, une proposition, un partenariat ? Écrivez à
-**[contact@potomitan.io](mailto:contact@potomitan.io)**.
+Le code est sur [GitHub](https://github.com/famibelle/LuxKeyb) sous licence MIT.
 
-Le code source est ouvert et public sur
-[GitHub](https://github.com/famibelle/KreyolKeyb).
+Un mot manque, une suggestion tombe à côté, une touche vous gêne ? Ouvrez une
+[issue](https://github.com/famibelle/LuxKeyb/issues) ou passez par le
+[formulaire de retours](feedbacks_form.html). Le dictionnaire progresse surtout
+grâce à ces signalements.
 
 ---
 
-🏝️ *Potomitan™, Teknoloji pou tout moun.
-« An kréyòl nou ka palé, an kréyòl nou ka maké ! »*
+<p align="center"><em>Fait au Luxembourg avec ❤️ — « Mir wëlle bleiwe wat mir sinn »</em></p>

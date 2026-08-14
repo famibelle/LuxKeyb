@@ -1,168 +1,184 @@
 ---
-title: "Guide d'installation et d'utilisation : Klavyé Kréyòl Karukera"
-description: "Comment installer, activer et utiliser Klavyé Kréyòl Karukera : configuration en 3 étapes, accents, suggestions, jeux de vocabulaire et FAQ."
+title: "Guide d'installation et d'utilisation : Lëtzebuergesch Clavier"
+description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : configuration en 3 étapes, diacritiques, suggestions, jeux de vocabulaire et FAQ."
 lang: fr
 ---
 
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <strong>📘 Guide</strong> ·
-  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
-  <a href="nouveautes.html">🎁 Nouveautés</a> ·
-  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
-  <a href="tract.html">🪧 Tract</a> ·
-  <a href="tract-eco.html">💧 Tract éco encre</a> ·
-  <a href="affiche.html">🖨️ Affiche</a> ·
-  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
-  <a href="triptyque.html">📖 Triptyque</a> ·
-  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
-  <a href="presskit.html">📰 Presse</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dguide%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
 # Guide d'installation et d'utilisation
 
-*Tout ce qu'il faut savoir pour activer Klavyé Kréyòl Karukera et en tirer le
-meilleur, en 5 minutes.*
+*Tout ce qu'il faut savoir pour activer le Lëtzebuergesch Clavier et en tirer le
+meilleur, en cinq minutes.*
 
 ## Installation en 3 étapes
 
-Une fois l'application installée depuis Google Play, elle doit être activée
-comme clavier système avant de pouvoir l'utiliser dans vos applications.
+Téléchargez d'abord l'APK depuis la
+[dernière version](https://github.com/famibelle/LuxKeyb/releases/latest), puis
+ouvrez-la. Android demande une autorisation pour installer depuis cette source :
+c'est le régime normal des applications distribuées hors du Play Store.
 
-### Étape 1 : Activer le clavier
+Une fois installée, l'application doit être activée comme clavier système avant
+de pouvoir servir dans vos autres applications. Elle vous guide, et coche les
+étapes au fur et à mesure.
 
-Ouvrez l'application Klavyé Kréyòl Karukera et touchez **« Activer le
-clavier »**. Vous arrivez dans les paramètres Android, section « Clavier
-virtuel » (ou « Langues et saisie » selon les téléphones). Activez
-l'interrupteur en face de **« Klavyé Kréyòl Karukera »**.
+### Étape 1 : activer le clavier
 
-<div align="center" style="margin: 16px 0;">
-  <img src="rapport_onboarding_activation_2026-07-11_screenshots/02_parametres_systeme.png" alt="Écran des paramètres Android listant les claviers disponibles, avec l'interrupteur à activer pour Klavyé Kréyòl Karukera" width="32%">
-</div>
-
-Android affiche un avertissement standard rappelant qu'un clavier peut lire
-le texte saisi : c'est le même message pour tous les claviers, y compris
-Gboard. Klavyé Kréyòl Karukera fonctionne **100 % hors ligne** et ne
-collecte aucune donnée (voir notre [politique de confidentialité](privacy/privacy-policy.html)).
-
-### Étape 2 : Sélectionner le clavier
-
-Activer le clavier ne suffit pas : il faut ensuite le **choisir** comme
-clavier actif. Revenez dans une application où vous pouvez écrire (Messages,
-Notes...), touchez un champ de texte, puis :
-
-- soit appuyez longuement sur la barre d'espace de votre clavier actuel et
-  choisissez « Klavyé Kréyòl Karukera » dans la liste ;
-- soit touchez l'icône clavier dans la barre de notifications, si elle est
-  affichée.
-
-### Étape 3 : Essayer le clavier
-
-Écrivez « Bonjou tout moun » dans un champ de texte et observez les
-suggestions apparaître au-dessus du clavier. Si des mots créoles vous sont
-proposés, tout fonctionne.
+Ouvrez l'application et touchez **« Activer le clavier »**. Vous arrivez dans
+les paramètres Android, section « Clavier à l'écran » (ou « Langues et saisie »
+selon les téléphones). Activez l'interrupteur en face de
+**« Lëtzebuergesch Clavier »**.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1761763491.png" alt="Écran de configuration dans l'application, avec les 3 étapes cochées et un champ de test du clavier" width="32%">
+  <img src="Screenshots/lux_onboarding.png" alt="Parcours d'installation de l'application, avec les étapes cochées et le champ d'essai" width="32%">
 </div>
 
-### Étape 4 (optionnelle) : le correcteur orthographique
+Android affiche alors un avertissement standard, rappelant qu'un clavier peut
+lire le texte saisi. C'est le **même message pour tous les claviers**, Gboard
+compris. Celui-ci fonctionne entièrement hors ligne et n'a aucun accès réseau —
+voir la [politique de confidentialité](privacy/privacy-policy.html).
 
-Pour que vos mots créoles ne soient plus soulignés en rouge **dans toutes
-les applications** (pas seulement au clavier), activez aussi le correcteur
-orthographique Kréyòl : Paramètres Android → Système → Langues et saisie →
-Correction orthographique, puis activez « Klavyé Kréyòl Karukera ».
+Un second message prévient qu'après un redémarrage, le clavier ne sera
+disponible qu'une fois le téléphone déverrouillé. C'est également normal.
+
+### Étape 2 : sélectionner le clavier
+
+Activer ne suffit pas : il faut ensuite le **choisir** comme clavier actif.
+Depuis l'application, touchez **« Ouvrir le sélecteur »** et choisissez
+« Lëtzebuergesch Clavier » dans la liste.
+
+À tout moment ensuite, un appui long d'une seconde sur la barre d'espace ouvre
+ce même sélecteur — le petit 🌐 affiché sur la barre le rappelle.
+
+### Étape 3 : essayer
+
+Écrivez « Moien alleguer » dans le champ d'essai et regardez les suggestions
+apparaître. Si des mots luxembourgeois vous sont proposés, tout fonctionne.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/lux_suggestions.png" alt="Barre de suggestions affichant des mots luxembourgeois en rouge et français en bleu" width="32%">
+</div>
+
+### Étape 4 (facultative) : le correcteur orthographique
+
+Pour que vos mots luxembourgeois cessent d'être soulignés en rouge **dans
+toutes les applications**, et pas seulement au clavier, activez aussi le
+correcteur fourni : Paramètres Android → Système → **Clavier** → Correcteur
+orthographique, puis choisissez « Correcteur Lëtzebuergesch ».
+
+Attention : ce réglage se trouve sous **Clavier**, et non sous « Langues ». Un
+interrupteur général « Utiliser le correcteur orthographique » le surplombe ;
+s'il est éteint, rien n'est vérifié et le correcteur choisi n'est jamais appelé.
 
 ## Utilisation au quotidien
 
+### Les diacritiques du luxembourgeois
+
+Les trois plus fréquentes — **é**, **ä** et **ë** — ont chacune leur touche en
+bas du clavier. Aucun appui long n'est nécessaire.
+
+Les plus rares s'obtiennent en appuyant **longuement** sur la lettre de base :
+`ü` et `û` sous le `u`, `ö` et `ô` sous le `o`, `à` et `â` sous le `a`, `è` et
+`ê` sous le `e`. Glissez le doigt vers celle que vous voulez, puis relâchez.
+
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1758752019.png" alt="Clavier Klavyé Kréyòl Karukera affiché avec la barre de suggestions bengné, bel, ben au-dessus des touches" width="32%">
+  <img src="Screenshots/lux_accents.png" alt="Appui long sur la touche e affichant é, ë, è et ê" width="32%">
 </div>
 
-### Écrire en kréyòl
+Les petits caractères affichés dans le coin d'une touche annoncent ce que cache
+son appui long : inutile de deviner.
 
-Le clavier démarre en mode alphabétique classique. La première lettre de
-chaque message prend automatiquement une majuscule, comme sur n'importe quel
-clavier.
+### Suggestions
 
-### Accents et caractères spéciaux
+La barre de suggestions apparaît dès les premières lettres. Les mots
+luxembourgeois passent en premier, en rouge ; le français prend le relais à
+partir de trois lettres, en bleu, si aucun mot luxembourgeois ne correspond.
+Touchez une suggestion pour la compléter d'un coup, espace inclus.
 
-Appuyez **longuement** sur une lettre pour faire apparaître ses variantes
-accentuées (é, è, à, ò...) et les caractères spéciaux du kréyòl. Glissez le
-doigt vers l'accent voulu puis relâchez pour le sélectionner.
+Vous pouvez taper sans diacritiques : « letzebuergesch » propose bien
+« lëtzebuergesch ». Une lettre oubliée, en trop ou tapée à côté n'empêche pas
+non plus les suggestions d'arriver.
 
-### Suggestions et autocomplétion
+Après un espace, le clavier propose la suite probable de votre phrase d'après
+les **deux** mots précédents, pas seulement le dernier.
 
-Une barre de suggestions apparaît dès que vous commencez à taper. Les mots
-en kréyòl sont prioritaires ; le français prend le relais à partir de 3
-lettres si aucun mot créole ne correspond. Touchez un mot suggéré pour le
-compléter instantanément, espace inclus.
+### Chiffres, symboles et emojis
 
-### Chiffres et symboles
+Le bouton **« 123 »** bascule vers les chiffres et symboles, euro compris ; le
+bouton **« ABC »** ramène aux lettres. La touche emoji, en bas à droite, ouvre
+un panneau de près de 1 900 emojis classés par catégories — appui long sur un
+personnage pour choisir sa couleur de peau.
 
-Le bouton **« 123 »** en bas à gauche du clavier bascule vers les chiffres
-et symboles usuels. La ponctuation de base (virgule, point, apostrophe)
-reste accessible directement sur le clavier alphabétique.
-
-### Changer de clavier à tout moment
-
-Un appui long sur la barre d'espace permet de repasser à un autre clavier
-(Gboard, etc.) ponctuellement, sans avoir à tout reconfigurer.
-
-## Jeux de vocabulaire et progression
-
-En dehors du clavier, l'application propose deux jeux pour enrichir son
-vocabulaire créole à partir du dictionnaire intégré : **Mots Mêlés**
-(retrouver des mots cachés dans une grille de lettres) et **Mots Mélangés**
-(reconstituer un mot à partir de lettres dans le désordre).
-
-<div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1762982783_grid.png" alt="Jeu Mots Mêlés : grille de lettres avec les mots créoles déjà trouvés" width="30%">
-  <img src="Screenshots/Screenshot_1760389184.png" alt="Tableau de progression : niveau Ti moun, mot du jour et statistiques de mots découverts" width="30%">
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/lux_numerique.png" alt="Mode chiffres et symboles du clavier" width="32%">
 </div>
 
-Chaque mot tapé au clavier ou découvert dans les jeux fait progresser votre
-maîtrise du kréyòl, visible dans l'onglet des statistiques. **7 niveaux
-culturels** jalonnent le parcours, de « Pipirit » à « Potomitan ».
+### Majuscules et effacement
+
+La touche majuscule a trois états : un appui pour une seule majuscule, deux pour
+le verrouillage, trois pour revenir au normal. Un appui long sur le retour
+arrière efface le mot entier plutôt que lettre à lettre.
+
+## Progression et jeux
+
+Chaque mot que vous employez fait progresser votre maîtrise du lëtzebuergesch,
+visible dans l'onglet **« Mäi Lëtzebuergesch »**. Huit niveaux jalonnent le
+parcours, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire
+que vous avez déjà utilisée. Vous pouvez partager votre carte de niveau.
+
+Trois jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
+**Wuertmix** (remettre des lettres dans l'ordre contre la montre) et
+**Wuertriet** (deviner un mot de cinq lettres en six essais).
 
 ## Questions fréquentes
 
-**Le clavier créole n'apparaît pas quand je tape ?**
-Vérifiez qu'il est bien *sélectionné* (pas seulement activé) : reprenez
-l'étape 2, ou faites un appui long sur la barre d'espace pour changer de
-clavier à tout moment.
+**Le clavier n'apparaît pas quand je tape.**
+Vérifiez qu'il est bien *sélectionné*, et pas seulement activé : reprenez
+l'étape 2, ou faites un appui long sur la barre d'espace.
 
-**Comment revenir à un autre clavier ponctuellement ?**
-Appui long sur la barre d'espace, puis choisissez un autre clavier dans la
-liste.
+**Comment revenir ponctuellement à un autre clavier ?**
+Appui long d'une seconde sur la barre d'espace, puis choisissez-en un autre dans
+la liste.
 
-**Mes données sont-elles envoyées quelque part ?**
-Non. Le clavier fonctionne entièrement en local, sans connexion internet.
-Voir la [politique de confidentialité](privacy/privacy-policy.html) complète.
+**Mes données partent-elles quelque part ?**
+Non. Le clavier n'a aucun accès à Internet. Seuls les mots déjà présents dans le
+dictionnaire sont comptés pour la progression : un mot de passe ou un nom propre
+n'y figure pas et n'est donc jamais enregistré. Le clavier se désactive de
+lui-même dans les champs de mot de passe. Voir la
+[politique de confidentialité](privacy/privacy-policy.html).
 
-**Le clavier ne propose pas un mot créole que je connais ?**
-Le dictionnaire s'enrichit au fil du temps à partir d'un corpus littéraire
-créole. Vous pouvez signaler un mot manquant via le
-[formulaire de retours](feedbacks_form.html).
+**Le correcteur reste muet après une mise à jour.**
+Android garde parfois l'ancienne liaison jusqu'au redémarrage du téléphone.
+Cela vient du système, pas du clavier.
+
+**Un mot que je connais n'est pas proposé.**
+Le dictionnaire est reconstruit à chaque publication à partir d'un corpus de
+luxembourgeois contemporain. Signalez le mot manquant via le
+[formulaire de retours](feedbacks_form.html) ou une
+[issue GitHub](https://github.com/famibelle/LuxKeyb/issues).
 
 **Le clavier est-il gratuit ?**
-Oui, entièrement gratuit, sans publicité et open source
-([code source sur GitHub](https://github.com/famibelle/KreyolKeyb)).
+Oui, entièrement, sans publicité et open source
+([code source sur GitHub](https://github.com/famibelle/LuxKeyb)).
 
 ## Besoin d'aide ?
 
-Une question qui n'est pas couverte ici ? Écrivez à
-**[contact@potomitan.io](mailto:contact@potomitan.io)** ou passez par le
-[formulaire de retours](feedbacks_form.html).
+Une question qui n'est pas couverte ici ? Passez par le
+[formulaire de retours](feedbacks_form.html) ou ouvrez une
+[issue](https://github.com/famibelle/LuxKeyb/issues).
 
 <div align="center" style="margin: 24px 0;">
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dguide%26utm_campaign%3Dlaunch10k">
-    <img src="Screenshots/GetItOnGooglePlay_Badge_Web_color_French.svg" alt="Télécharger Klavyé Kréyòl Karukera sur Google Play" width="45%">
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest"
+     style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
+            border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
+    📲 Télécharger l'APK
   </a>
 </div>
