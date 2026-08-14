@@ -50,7 +50,7 @@ qui portent la langue — **é**, **ä** et **ë** — ont chacune leur touche.
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_clavier_demo.gif" style="width:100%;border-radius:8px;"
-         alt="Animation : saisie de « Moien wéi geet et » — les suggestions luxembourgeoises apparaissent pendant la frappe, un appui long sur la touche e ouvre le choix é ë è ê, et le clavier propose le mot suivant après chaque mot validé">
+         alt="Animation : saisie de « Moien wéi geet et ». Un cercle marque chaque appui du doigt — sur les touches, sur la touche e maintenue pour ouvrir le choix é ë è ê, et sur les suggestions choisies dans la barre">
     <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
       « Moien wéi geet et » : suggestions pendant la frappe, accents par appui
       long, puis prédiction du mot suivant
