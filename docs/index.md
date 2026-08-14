@@ -47,11 +47,22 @@ qui portent la langue — **é**, **ä** et **ë** — ont chacune leur touche.
 
 ## Le clavier en action
 
-<div align="center" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-   <img src="Screenshots/lux_suggestions.png" alt="Suggestions de mots en luxembourgeois et en français pendant la frappe" width="24%">
-   <img src="Screenshots/lux_accents.png" alt="Appui long sur la touche e affichant é, ë, è et ê" width="24%">
-   <img src="Screenshots/lux_numerique.png" alt="Mode chiffres et symboles du clavier" width="24%">
-   <img src="Screenshots/lux_onboarding.png" alt="Parcours d'installation guidé de l'application" width="24%">
+<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
+    <img src="Screenshots/lux_suggestions.png" style="width:100%;border-radius:6px;"
+         alt="Barre de suggestions : trois mots luxembourgeois en rouge, deux mots français en bleu, pendant la frappe de « Moi »">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Suggestions bilingues</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
+    <img src="Screenshots/lux_accents.png" style="width:100%;border-radius:6px;"
+         alt="Appui long sur la touche e affichant le choix é, ë, è et ê">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Accents par appui long</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
+    <img src="Screenshots/lux_numerique.png" style="width:100%;border-radius:6px;"
+         alt="Mode chiffres et symboles du clavier">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Chiffres et symboles</figcaption>
+  </figure>
 </div>
 
 Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
@@ -91,6 +102,29 @@ utilisée. Trois jeux de vocabulaire complètent le parcours : **Wuertsich**
 (mots mêlés), **Wuertmix** (mots mélangés) et **Wuertriet**, où il faut deviner
 un mot de cinq lettres en six essais.
 
+<div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
+    <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
+         alt="Écran de progression : niveau Ufänker, 0,4 % du dictionnaire découvert, mot du jour et mots à découvrir">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Progression et mot du jour</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
+    <img src="Screenshots/lux_wuertsich.png" style="width:100%;border-radius:6px;"
+         alt="Wuertsich : grille de mots mêlés en luxembourgeois avec les lettres accentuées Ä, Ë, É, Ö, Ü">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertsich · mots mêlés</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
+    <img src="Screenshots/lux_wuertmix.png" style="width:100%;border-radius:6px;"
+         alt="Wuertmix : lettres à remettre dans l'ordre pour reconstituer un mot luxembourgeois">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertmix · mots mélangés</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
+    <img src="Screenshots/lux_wuertriet.png" style="width:100%;border-radius:6px;"
+         alt="Wuertriet : grille de six essais, lettres en vert, orange et gris selon leur position">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertriet · mot en six essais</figcaption>
+  </figure>
+</div>
+
 ### Il ne sait rien de vous
 
 Le clavier **n'a aucun accès à Internet**. Rien de ce que vous tapez ne quitte
@@ -119,6 +153,14 @@ suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
 2. Autorisez l'installation depuis cette source, si Android le demande.
 3. Ouvrez l'application : elle vous guide en trois étapes pour activer le
    clavier, le sélectionner, puis l'essayer.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:220px;text-align:center;">
+    <img src="Screenshots/lux_onboarding.png" style="width:100%;border-radius:6px;"
+         alt="Parcours d'installation de l'application : étapes cochées et champ d'essai du clavier">
+    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Les trois étapes guidées, dans l'application</figcaption>
+  </figure>
+</div>
 
 Android affiche au passage un avertissement générique, montré pour **tout**
 clavier tiers, sur la capture éventuelle de ce que vous tapez. Il est normal, et
