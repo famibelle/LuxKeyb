@@ -5,7 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
-import com.example.kreyolkeyboard.gamification.CreoleLevels
+import com.example.kreyolkeyboard.gamification.LuxLevels
 import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import android.content.Intent
 import android.database.ContentObserver
@@ -49,10 +49,10 @@ import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
 import com.example.kreyolkeyboard.wordsearch.WordSearchThemes
 import com.example.kreyolkeyboard.wordsearch.WordSearchGridAdapter
-import com.example.kreyolkeyboard.mokarenaj.MoKarenajData
-import com.example.kreyolkeyboard.mokarenaj.MoKarenajRow
-import com.example.kreyolkeyboard.mokarenaj.LetterState
-import com.example.kreyolkeyboard.mokarenaj.color
+import com.example.kreyolkeyboard.wuertriet.WuertrietData
+import com.example.kreyolkeyboard.wuertriet.WuertrietRow
+import com.example.kreyolkeyboard.wuertriet.LetterState
+import com.example.kreyolkeyboard.wuertriet.color
 import com.google.android.play.core.review.ReviewManagerFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -133,7 +133,7 @@ class SettingsActivity : AppCompatActivity() {
             "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
             "Tapez sans vous soucier des accents : « kreyol » vous propose quand même « kréyòl ».",
             "« é » et « è » ont leur propre touche en bas du clavier, et « ò » la sienne en haut, entre « o » et « p ».",
-            "Mo an Karénaj : un mot kréyòl de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
+            "Wuertriet : un mot kréyòl de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
             "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
             "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
             "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
@@ -142,13 +142,13 @@ class SettingsActivity : AppCompatActivity() {
             "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
             "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
             "Plus vous employez un mot, plus il remonte dans vos suggestions : le clavier s'ajuste à votre façon d'écrire.",
-            "« Mots Mélangés » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
+            "« Wuertmix » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
             "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
             "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
             "L'onglet « Kréyòl an mwen » vous dit quelle part du dictionnaire kréyòl vous avez déjà employée.",
             "Les digraphes du kréyòl sont en appui long : « ch » sous le c, « dj » sous le d, « tj » sous le t, « ng » et « ny » sous le n.",
             "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
-            "« Mots Mêlés » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
+            "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
             "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
             "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Kréyòl an mwen ».",
             "Les mots kréyòl passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot créole ne correspond.",
@@ -704,20 +704,20 @@ class SettingsActivity : AppCompatActivity() {
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
-            // Tab Mots Mêlés
-            val wordSearchTab = createTab(2, "🎲", "Mots Mêlés")
+            // Tab Wuertsich
+            val wordSearchTab = createTab(2, "🎲", "Wuertsich")
             tabContainer.addView(wordSearchTab)
-            Log.d("SettingsActivity", "Onglet Mots Mêlés créé et ajouté")
+            Log.d("SettingsActivity", "Onglet Wuertsich créé et ajouté")
             
-            // Tab Mots Mélangés
-            val wordScrambleTab = createTab(3, "🔤", "Mots Mélangés")
+            // Tab Wuertmix
+            val wordScrambleTab = createTab(3, "🔤", "Wuertmix")
             tabContainer.addView(wordScrambleTab)
-            Log.d("SettingsActivity", "Onglet Mots Mélangés créé et ajouté")
+            Log.d("SettingsActivity", "Onglet Wuertmix créé et ajouté")
 
-            // Tab Mo an Karénaj
-            val moKarenajTab = createTab(4, "🟩", "Mo an Karénaj")
-            tabContainer.addView(moKarenajTab)
-            Log.d("SettingsActivity", "Onglet Mo an Karénaj créé et ajouté")
+            // Tab Wuertriet
+            val wuertrietTab = createTab(4, "🟩", "Wuertriet")
+            tabContainer.addView(wuertrietTab)
+            Log.d("SettingsActivity", "Onglet Wuertriet créé et ajouté")
 
             // Tab Guide
             val guideTab = createTab(5, "📖", "Guide")
@@ -907,9 +907,9 @@ class SettingsActivity : AppCompatActivity() {
         // Tabs avec les 7 onglets
         tabContainer.addView(createTab(0, "🚀", "Démarrage"))
         tabContainer.addView(createTab(1, "📊", "Kréyòl an mwen"))
-        tabContainer.addView(createTab(2, "🎲", "Mots Mêlés"))
-        tabContainer.addView(createTab(3, "🔤", "Mots Mélangés"))
-        tabContainer.addView(createTab(4, "🟩", "Mo an Karénaj"))
+        tabContainer.addView(createTab(2, "🎲", "Wuertsich"))
+        tabContainer.addView(createTab(3, "🔤", "Wuertmix"))
+        tabContainer.addView(createTab(4, "🟩", "Wuertriet"))
         tabContainer.addView(createTab(5, "📖", "Guide"))
         tabContainer.addView(createTab(6, "ℹ️", "À Propos"))
         
@@ -2180,7 +2180,7 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Deux jeux (onglets « Mots Mêlés » et « Mots Mélangés ») aident à mémoriser du vocabulaire " +
+            "Deux jeux (onglets « Wuertsich » et « Wuertmix ») aident à mémoriser du vocabulaire " +
                     "créole en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
         )
 
@@ -3158,22 +3158,22 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    // Niveaux : la logique vit désormais dans gamification/CreoleLevels.kt, pour
+    // Niveaux : la logique vit désormais dans gamification/LuxLevels.kt, pour
     // que le service de saisie puisse détecter un passage de niveau au moment
     // où l'utilisateur tape. Les méthodes ci-dessous restent des raccourcis
     // locaux qui fournissent la taille du dictionnaire.
 
     private fun getCurrentLevel(wordsDiscovered: Int): String =
-        CreoleLevels.labelFor(wordsDiscovered, getTotalDictionaryWords())
+        LuxLevels.labelFor(wordsDiscovered, getTotalDictionaryWords())
 
     private fun getNextLevelInfo(wordsDiscovered: Int): Pair<String, Int> =
-        CreoleLevels.nextLevelInfo(wordsDiscovered, getTotalDictionaryWords())
+        LuxLevels.nextLevelInfo(wordsDiscovered, getTotalDictionaryWords())
 
     /**
      * Index du niveau actuel (0 = Pipirit ... 7 = Benzo), même logique que getCurrentLevel()
      */
     private fun getCurrentLevelIndex(wordsDiscovered: Int): Int =
-        CreoleLevels.indexFor(wordsDiscovered, getTotalDictionaryWords())
+        LuxLevels.indexFor(wordsDiscovered, getTotalDictionaryWords())
 
     /**
      * Affiche la célébration de passage de niveau avec carte partageable.
@@ -3364,7 +3364,7 @@ class SettingsActivity : AppCompatActivity() {
      * @return IntArray avec 8 seuils calculés dynamiquement
      */
     private fun calculateGaussianThresholds(): IntArray =
-        CreoleLevels.thresholds(getTotalDictionaryWords())
+        LuxLevels.thresholds(getTotalDictionaryWords())
     
     /**
      * Récupère le nombre total de mots dans le dictionnaire
@@ -3395,7 +3395,7 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Mo an Karénaj)
+            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Wuertriet)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
@@ -3410,7 +3410,7 @@ class SettingsActivity : AppCompatActivity() {
                 1 -> StatsFragment()
                 2 -> WordSearchFragment()
                 3 -> WordScrambleFragment()
-                4 -> MoKarenajFragment()
+                4 -> WuertrietFragment()
                 5 -> GuideFragment()
                 6 -> AboutFragment()
                 else -> OnboardingFragment()
@@ -4517,8 +4517,8 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    // Fragment pour le Mo an Karénaj : deviner un mot kréyòl de 5 lettres en 6 essais
-    class MoKarenajFragment : Fragment() {
+    // Fragment pour le Wuertriet : deviner un mot kréyòl de 5 lettres en 6 essais
+    class WuertrietFragment : Fragment() {
         private var rootView: ScrollView? = null
 
         private lateinit var gridBoard: LinearLayout
@@ -4530,7 +4530,7 @@ class SettingsActivity : AppCompatActivity() {
         private var targetWord: String = ""
         private var currentAttempt = 0
         private var gameOver = false
-        private val rows = mutableListOf<MoKarenajRow>()
+        private val rows = mutableListOf<WuertrietRow>()
         private val letterBestState = mutableMapOf<Char, LetterState>()
 
         override fun onCreateView(
@@ -4571,7 +4571,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             )
-                            text = "🟩 Mo an Karénaj"
+                            text = "🟩 Wuertriet"
                             textSize = 18f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#1976D2"))
@@ -4583,7 +4583,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             )
-                            text = "Essai 1/${MoKarenajData.MAX_ATTEMPTS}"
+                            text = "Essai 1/${WuertrietData.MAX_ATTEMPTS}"
                             textSize = 14f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#333333"))
@@ -4659,7 +4659,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(0, 0, 16, 0) }
-                            hint = "Maké mo la isit, an ${MoKarenajData.WORD_LENGTH} lèt"
+                            hint = "Maké mo la isit, an ${WuertrietData.WORD_LENGTH} lèt"
                             setHintTextColor(Color.parseColor("#9E9E9E"))
                             textSize = 18f
                             setTextColor(Color.parseColor("#212121"))
@@ -4672,7 +4672,7 @@ class SettingsActivity : AppCompatActivity() {
                                 setColor(Color.WHITE)
                                 setStroke(4, Color.parseColor("#2196F3"))
                             }
-                            filters = arrayOf(android.text.InputFilter.LengthFilter(MoKarenajData.WORD_LENGTH))
+                            filters = arrayOf(android.text.InputFilter.LengthFilter(WuertrietData.WORD_LENGTH))
                             setSingleLine(true)
                             isAllCaps = true // après setSingleLine() : sinon la transformation majuscules est écrasée
                             imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_DONE
@@ -4739,7 +4739,7 @@ class SettingsActivity : AppCompatActivity() {
                         addView(rulesTitle)
 
                         val rulesText = TextView(activity).apply {
-                            text = "Devine le mot kréyòl de ${MoKarenajData.WORD_LENGTH} lettres en ${MoKarenajData.MAX_ATTEMPTS} essais maximum.\n\n" +
+                            text = "Devine le mot kréyòl de ${WuertrietData.WORD_LENGTH} lettres en ${WuertrietData.MAX_ATTEMPTS} essais maximum.\n\n" +
                                 "Après chaque essai, la couleur des lettres t'indique :\n" +
                                 "🟩 Vert : bonne lettre, bonne position\n" +
                                 "🟨 Orange : la lettre est dans le mot, mais mal placée\n" +
@@ -4799,16 +4799,16 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun startNewGame() {
             val activity = requireActivity()
-            targetWord = MoKarenajData.pickRandomWord(activity)
+            targetWord = WuertrietData.pickRandomWord(activity)
             currentAttempt = 0
             gameOver = false
             letterBestState.clear()
             rows.clear()
-            repeat(MoKarenajData.MAX_ATTEMPTS) {
+            repeat(WuertrietData.MAX_ATTEMPTS) {
                 rows.add(
-                    MoKarenajRow(
-                        letters = List(MoKarenajData.WORD_LENGTH) { null },
-                        states = List(MoKarenajData.WORD_LENGTH) { LetterState.EMPTY }
+                    WuertrietRow(
+                        letters = List(WuertrietData.WORD_LENGTH) { null },
+                        states = List(WuertrietData.WORD_LENGTH) { LetterState.EMPTY }
                     )
                 )
             }
@@ -4816,7 +4816,7 @@ class SettingsActivity : AppCompatActivity() {
             editGuess.setText("")
             editGuess.isEnabled = true
             btnSubmit.isEnabled = true
-            tvAttempts.text = "Essai ${currentAttempt + 1}/${MoKarenajData.MAX_ATTEMPTS}"
+            tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
             legendContainer.removeAllViews()
         }
 
@@ -4825,17 +4825,17 @@ class SettingsActivity : AppCompatActivity() {
             val activity = requireActivity()
             val guess = editGuess.text.toString().trim().lowercase()
 
-            if (guess.length != MoKarenajData.WORD_LENGTH) {
-                showTopMessage("Mo la dwèt ni ${MoKarenajData.WORD_LENGTH} lèt")
+            if (guess.length != WuertrietData.WORD_LENGTH) {
+                showTopMessage("Mo la dwèt ni ${WuertrietData.WORD_LENGTH} lèt")
                 return
             }
-            if (!MoKarenajData.isValidWord(activity, guess)) {
+            if (!WuertrietData.isValidWord(activity, guess)) {
                 showTopMessage("❌ Mo la sa pa adan diktyonè kréyòl")
                 return
             }
 
-            val states = MoKarenajData.evaluateGuess(targetWord, guess)
-            rows[currentAttempt] = MoKarenajRow(guess.toList(), states)
+            val states = WuertrietData.evaluateGuess(targetWord, guess)
+            rows[currentAttempt] = WuertrietRow(guess.toList(), states)
             renderBoard()
             updateLegend(guess, states)
 
@@ -4847,13 +4847,13 @@ class SettingsActivity : AppCompatActivity() {
                     gameOver = true
                     endGame(true)
                 }
-                currentAttempt >= MoKarenajData.MAX_ATTEMPTS -> {
+                currentAttempt >= WuertrietData.MAX_ATTEMPTS -> {
                     gameOver = true
                     endGame(false)
                 }
                 else -> {
                     editGuess.setText("")
-                    tvAttempts.text = "Essai ${currentAttempt + 1}/${MoKarenajData.MAX_ATTEMPTS}"
+                    tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
                 }
             }
         }
