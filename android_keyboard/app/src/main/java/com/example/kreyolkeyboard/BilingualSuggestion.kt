@@ -26,7 +26,7 @@ data class BilingualSuggestion(
      */
     fun getLanguageName(): String {
         return when (language) {
-            SuggestionLanguage.KREYOL -> "Kreyòl"
+            SuggestionLanguage.KREYOL -> "Lëtzebuergesch"
             SuggestionLanguage.FRENCH -> "Français"
         }
     }
@@ -36,7 +36,7 @@ data class BilingualSuggestion(
      */
     fun getShortLabel(): String {
         return when (language) {
-            SuggestionLanguage.KREYOL -> "KR"
+            SuggestionLanguage.KREYOL -> "LB"
             SuggestionLanguage.FRENCH -> "FR"
         }
     }

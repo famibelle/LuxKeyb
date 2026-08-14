@@ -32,7 +32,7 @@ import com.example.kreyolkeyboard.SettingsActivity
 object LevelUpNotifier {
 
     private const val TAG = "LevelUpNotifier"
-    private const val CHANNEL_ID = "kreyol_niveaux"
+    private const val CHANNEL_ID = "lux_niveaux"
     private const val NOTIFICATION_ID = 4201
 
     /** Teal de la carte de niveau partageable, pour rester cohérent d'un support à l'autre. */
@@ -47,7 +47,7 @@ object LevelUpNotifier {
 
         val channel = NotificationChannel(
             CHANNEL_ID,
-            "Nivo an kréyòl",
+            "Niveau op Lëtzebuergesch",
             NotificationManager.IMPORTANCE_LOW  // silencieux, sans bandeau
         ).apply {
             description = "Vous prévient quand vous atteignez un nouveau niveau de vocabulaire."
