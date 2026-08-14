@@ -4702,7 +4702,7 @@ class SettingsActivity : AppCompatActivity() {
 
                     // Bouton nouvelle partie
                     val btnNewGame = Button(activity).apply {
-                        text = "🔄 Fè on dòt pati"
+                        text = "🔄 Nouvelle partie"
                         textSize = 14f
                         setTextColor(Color.WHITE)
                         setBackgroundColor(Color.parseColor("#9C27B0"))
