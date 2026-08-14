@@ -1,3 +1,10 @@
+# ⏸️ DÉSACTIVÉ le 2026-08-14 : ce workflow alimente une jauge publique de
+# téléchargements à partir de la fiche Google Play, or le Lëtzebuergesch
+# Clavier n'y est pas encore publié (l'applicationId vient tout juste de
+# passer à com.potomitan.luxkeyboard). Laissé tel quel, il tournait chaque
+# jour pour publier soit une erreur, soit les chiffres du clavier créole.
+# Retirer le suffixe .disabled une fois l'application en ligne.
+
 name: 📊 Update download stats
 
 # Met à jour la jauge publique de téléchargements (docs/stats/) :
@@ -39,7 +46,7 @@ jobs:
             NEW=$MANUAL_CURRENT
             SOURCE="Play Console (exact)"
           else
-            PAGE=$(curl -sL "https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&hl=en_US" || true)
+            PAGE=$(curl -sL "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&hl=en_US" || true)
             TIER=$(echo "$PAGE" | grep -oE '[0-9][0-9,.]*[KM]?\+.{0,300}Downloads' | head -1 | grep -oE '^[0-9][0-9,.]*[KM]?' || true)
             case "$TIER" in
               *K) FLOOR=$(echo "$TIER" | sed 's/K//' | awk '{print int($1*1000)}');;

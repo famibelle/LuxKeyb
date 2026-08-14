@@ -1,3 +1,10 @@
+# ⏸️ DÉSACTIVÉ le 2026-08-14 : ce workflow alimente une jauge publique de
+# téléchargements à partir de la fiche Google Play, or le Lëtzebuergesch
+# Clavier n'y est pas encore publié (l'applicationId vient tout juste de
+# passer à com.potomitan.luxkeyboard). Laissé tel quel, il tournait chaque
+# jour pour publier soit une erreur, soit les chiffres du clavier créole.
+# Retirer le suffixe .disabled une fois l'application en ligne.
+
 name: 🎁 Update exclusive features
 
 # Met à jour docs/stats/exclusive_features.json (section "À découvrir en
