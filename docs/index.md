@@ -120,18 +120,18 @@ un mot de cinq lettres en six essais.
     <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Progression et mot du jour</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
-    <img src="Screenshots/lux_wuertsich.png" style="width:100%;border-radius:6px;"
-         alt="Wuertsich : grille de mots mêlés en luxembourgeois avec les lettres accentuées Ä, Ë, É, Ö, Ü">
+    <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
+         alt="Animation Wuertsich : le doigt trace EINIGE, GEWËNN puis BEWISEN dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
     <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertsich · mots mêlés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
-    <img src="Screenshots/lux_wuertmix.png" style="width:100%;border-radius:6px;"
-         alt="Wuertmix : lettres à remettre dans l'ordre pour reconstituer un mot luxembourgeois">
+    <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
+         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « bestoen », dont la première et la dernière lettre sont données">
     <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertmix · mots mélangés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
-    <img src="Screenshots/lux_wuertriet.png" style="width:100%;border-radius:6px;"
-         alt="Wuertriet : grille de six essais, lettres en vert, orange et gris selon leur position">
+    <img src="Screenshots/lux_wuertriet.gif" style="width:100%;border-radius:6px;"
+         alt="Animation Wuertriet : deux mots tapés au clavier luxembourgeois puis validés ; les lettres se colorent en vert, orange ou gris selon leur position">
     <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertriet · mot en six essais</figcaption>
   </figure>
 </div>
