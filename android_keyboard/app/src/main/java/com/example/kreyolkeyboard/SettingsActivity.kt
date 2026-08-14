@@ -89,7 +89,7 @@ class SettingsActivity : AppCompatActivity() {
         private var lastSaveTime = 0L
         private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
         private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
-        const val PRIVACY_POLICY_URL = "https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html"
+        const val PRIVACY_POLICY_URL = "https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html"
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
@@ -114,7 +114,7 @@ class SettingsActivity : AppCompatActivity() {
          * Le message inséré par la puce du clavier fait exception, il tient sur
          * une seule ligne au milieu de ce que l'utilisateur écrit.
          */
-        const val SHARE_HASHTAG = "#KlavyéKréyòl"
+        const val SHARE_HASHTAG = "#LëtzebuergeschClavier"
 
         // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
         // une fonctionnalité réellement présente dans l'application : ne rien y
@@ -126,18 +126,18 @@ class SettingsActivity : AppCompatActivity() {
         // volontairement entrelacés : l'index avance d'un cran par semaine,
         // donc deux astuces voisines dans la liste se suivent à l'écran.
         private val WEEKLY_TIPS = listOf(
-            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (é, è, à, ò, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
+            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (ë, ä, é, ü, ö, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
             "Touchez un mot de la barre de suggestions pour le compléter d'un coup : l'espace est ajouté automatiquement.",
             "Appui long d'une seconde sur la barre d'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.",
-            "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Kréyòl an mwen ».",
+            "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Mäi Lëtzebuergesch ».",
             "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
-            "Tapez sans vous soucier des accents : « kreyol » vous propose quand même « kréyòl ».",
-            "« é » et « è » ont leur propre touche en bas du clavier, et « ò » la sienne en haut, entre « o » et « p ».",
-            "Wuertriet : un mot kréyòl de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
+            "Tapez sans vous soucier des accents : « letzebuergesch » vous propose quand même « lëtzebuergesch ».",
+            "« é », « ä » et « ë » ont chacune leur propre touche en bas du clavier : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.",
+            "Wuertriet : un mot luxembourgeois de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
             "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
             "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
             "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
-            "Activez le correcteur kréyòl (onglet Démarrage, étape 4) pour que vos mots créoles ne soient plus soulignés en rouge dans Messages ou Notes.",
+            "Activez le correcteur luxembourgeois (onglet Démarrage, étape 4) pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.",
             "Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.",
             "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
             "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
@@ -145,20 +145,20 @@ class SettingsActivity : AppCompatActivity() {
             "« Wuertmix » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
             "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
             "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
-            "L'onglet « Kréyòl an mwen » vous dit quelle part du dictionnaire kréyòl vous avez déjà employée.",
-            "Les digraphes du kréyòl sont en appui long : « ch » sous le c, « dj » sous le d, « tj » sous le t, « ng » et « ny » sous le n.",
+            "L'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.",
+            "Les diacritiques les plus rares sont en appui long : « ü » et « û » sous le u, « ö » et « ô » sous le o, « à » et « â » sous le a.",
             "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
             "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
             "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
-            "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Kréyòl an mwen ».",
-            "Les mots kréyòl passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot créole ne correspond.",
+            "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Mäi Lëtzebuergesch ».",
+            "Les mots luxembourgeois passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot luxembourgeois ne correspond.",
             "La touche Entrée s'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.",
-            "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Kréyòl an mwen ».",
+            "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
             "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
-            "Sept niveaux jalonnent votre parcours, de Pipirit à Potomitan. Un huitième existe : à vous de le découvrir.",
-            "Les suggestions s'appuient sur les textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres voix du kréyòl, à retrouver dans l'onglet « À Propos ».",
+            "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
+            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, notamment les transcriptions des conférences de presse du gouvernement, détaillé dans l'onglet « À Propos ».",
             "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
-            "Depuis « Kréyòl an mwen », partagez votre carte de niveau avec votre famille et vos amis.",
+            "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
             "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
@@ -342,7 +342,7 @@ class SettingsActivity : AppCompatActivity() {
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
         
-        Log.d("SettingsActivity", "Création de l'activité principale Kréyòl Karukera")
+        Log.d("SettingsActivity", "Création de l'activité principale Lëtzebuergesch Clavier")
         
         // Layout principal vertical : Tabs en haut, puis ViewPager
         val mainLayout = LinearLayout(this).apply {
@@ -430,7 +430,7 @@ class SettingsActivity : AppCompatActivity() {
             return
         }
 
-        val prefs = getSharedPreferences("kreyol_onboarding_prefs", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("notification_permission_asked", false)) return
         prefs.edit().putBoolean("notification_permission_asked", true).apply()
 
@@ -445,7 +445,7 @@ class SettingsActivity : AppCompatActivity() {
     // fois : un utilisateur configuré qui désélectionne plus tard le clavier
     // garde l'accès à tous les onglets.
     private fun onboardingPrefs() =
-        getSharedPreferences("kreyol_onboarding_prefs", Context.MODE_PRIVATE)
+        getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
 
     // Tunnel d'activation local : horodate chaque jalon du parcours
     // (première ouverture, activation, sélection, premier mot) une seule
@@ -513,8 +513,8 @@ class SettingsActivity : AppCompatActivity() {
         prefs.edit().putBoolean("activation_success_card_shown", true).apply()
 
         AlertDialog.Builder(this)
-            .setTitle("🎉 Klavyé Kréyòl aktivé !")
-            .setMessage("Bravo, ou fè'y ! Klavyé Kréyòl paré pou maké an kréyòl asi tout aplikasyon aw.")
+            .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
+            .setMessage("Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications.")
             .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
             .setNegativeButton("Plus tard", null)
             .setCancelable(true)
@@ -524,8 +524,8 @@ class SettingsActivity : AppCompatActivity() {
     // Partage natif (chooser Android), message pré-rédigé et fixe : célèbre
     // l'activation, pas un contenu écrit par l'utilisateur
     private fun shareActivationSuccess() {
-        val message = "Mwen viré ka maké an kréyòl ! Mwen aktivé Klavyé Kréyòl Karukéra 🎉\n" +
-            "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
+        val message = "Ech schreiwen elo op Lëtzebuergesch ! J'ai activé le Lëtzebuergesch Clavier 🎉\n" +
+            "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
             "Télécharge-le gratuitement :\n" +
             "https://play.google.com/store/apps/details?id=$packageName" +
             "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success\n\n" +
@@ -535,7 +535,7 @@ class SettingsActivity : AppCompatActivity() {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukéra"))
+            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage activation: ${e.message}")
             Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
@@ -551,7 +551,7 @@ class SettingsActivity : AppCompatActivity() {
      */
     private fun maybeAskForReview() {
         // Mêmes clés que dans KreyolInputMethodServiceRefactored
-        val prefs = getSharedPreferences("kreyol_onboarding_prefs", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("first_real_use_tip_shown", false)) return
         if (prefs.getBoolean("review_flow_requested", false)) return
 
@@ -675,7 +675,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val appTitle = TextView(this@SettingsActivity).apply {
-                text = "Klavyé Kréyòl"
+                text = "Lëtzebuergesch Clavier"
                 textSize = 22f
                 setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
@@ -700,7 +700,7 @@ class SettingsActivity : AppCompatActivity() {
             Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
             
             // Tab Statistiques  
-            val statsTab = createTab(1, "📊", "Kréyòl an mwen")
+            val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
@@ -746,7 +746,7 @@ class SettingsActivity : AppCompatActivity() {
     
     /** Préférences partagées avec le service de saisie pour la progression. */
     private fun gamificationPrefs() =
-        getSharedPreferences("kreyol_gamification_prefs", Context.MODE_PRIVATE)
+        getSharedPreferences("lux_gamification_prefs", Context.MODE_PRIVATE)
 
     /** Un palier a-t-il été franchi sans que l'utilisateur ait rouvert ses statistiques ? */
     private fun hasPendingLevelBadge(): Boolean =
@@ -885,7 +885,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val appTitle = TextView(this).apply {
-            text = "Klavyé Kréyòl"
+            text = "Lëtzebuergesch Clavier"
             textSize = 22f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
@@ -906,7 +906,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Tabs avec les 7 onglets
         tabContainer.addView(createTab(0, "🚀", "Démarrage"))
-        tabContainer.addView(createTab(1, "📊", "Kréyòl an mwen"))
+        tabContainer.addView(createTab(1, "📊", "Mäi Lëtzebuergesch"))
         tabContainer.addView(createTab(2, "🎲", "Wuertsich"))
         tabContainer.addView(createTab(3, "🔤", "Wuertmix"))
         tabContainer.addView(createTab(4, "🟩", "Wuertriet"))
@@ -996,10 +996,10 @@ class SettingsActivity : AppCompatActivity() {
         val welcomeTitle = TextView(this).apply {
             text = when {
                 isEnabled && isSelected -> "Tout est prêt !"
-                hasCompletedBefore && isEnabled -> "Le clavier Kréyòl n'est plus sélectionné"
-                hasCompletedBefore -> "Le clavier Kréyòl n'est plus actif"
+                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné"
+                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif"
                 isEnabled -> "Vous y êtes presque !"
-                else -> "Bienvenue sur Klavyé Kréyòl !"
+                else -> "Bienvenue sur Lëtzebuergesch Clavier !"
             }
             textSize = 18f
             setTextColor(when {
@@ -1012,7 +1012,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val welcomeSubtitle = TextView(this).apply {
             text = when {
-                isEnabled && isSelected -> "Vous pouvez taper en Kréyòl partout !"
+                isEnabled && isSelected -> "Vous pouvez taper en lëtzebuergesch partout !"
                 hasCompletedBefore && isEnabled -> "Sans doute après une mise à jour ou un changement de réglages : rouvrez le sélecteur pour le remettre"
                 hasCompletedBefore -> "Sans doute après une mise à jour ou un changement de réglages : une minute suffit pour le réactiver"
                 isEnabled -> "Sélectionnez le clavier pour l'utiliser"
@@ -1088,7 +1088,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val privacyNoticeText = TextView(this).apply {
                 text = "ℹ️ Android va afficher un avertissement de sécurité standard, " +
-                        "montré pour tous les claviers tiers. Klavyé Kréyòl ne collecte aucune donnée."
+                        "montré pour tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée."
                 textSize = 16f
                 setTextColor(Color.parseColor("#5D4037"))
                 setLineSpacing(0f, 1.2f)
@@ -1116,7 +1116,7 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = false,
             icon = "⚙️",
             title = "Activer le clavier",
-            description = "Trouvez 'Klavyé Kréyòl Karukéra' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
+            description = "Trouvez 'Lëtzebuergesch Clavier' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
             buttonText = if (isEnabled) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isEnabled,
             buttonAction = {
@@ -1133,7 +1133,7 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = !isEnabled,
             icon = "🔄",
             title = "Sélectionner le clavier",
-            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Klavyé Kréyòl Karukéra' dans la liste des claviers",
+            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Lëtzebuergesch Clavier' dans la liste des claviers",
             buttonText = when {
                 !isEnabled -> "🔒 Verrouillé"
                 isSelected -> "✓ Sélectionné"
@@ -1210,7 +1210,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val testEditText = EditText(this).apply {
             tag = "onboarding_test_field"
-            hint = if (isStep3Locked) "🔒 Verrouillé" else "Koumansé maké an bèl kréyòl isit..."
+            hint = if (isStep3Locked) "🔒 Verrouillé" else "Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)"
             textSize = 16f
             setPadding(16, 16, 16, 16)
             minHeight = 100
@@ -1265,14 +1265,14 @@ class SettingsActivity : AppCompatActivity() {
             // (« Correcteur par défaut ») que rien ne signale, et Android
             // intercale un avertissement sur l'accès au texte saisi. Sans
             // préparation, l'utilisateur s'arrête à l'un ou l'autre.
-            description = "Pour ne plus voir vos mots kréyòl soulignés en rouge dans Messages, " +
+            description = "Pour ne plus voir vos mots luxembourgeois soulignés en rouge dans Messages, " +
                 "Notes et ailleurs.\n\n" +
                 "Dans l'écran qui s'ouvre :\n" +
                 "1. touchez « Correcteur par défaut »\n" +
-                "2. choisissez « Correcteur Kréyòl Karukéra »\n" +
+                "2. choisissez « Correcteur Lëtzebuergesch »\n" +
                 "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
                 "puis demande de confirmer\n\n" +
-                "Le nôtre compare vos mots au dictionnaire kréyòl de l'application. " +
+                "Le nôtre compare vos mots au dictionnaire luxembourgeois de l'application. " +
                 "Il n'en conserve aucun et n'envoie rien.",
             buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isSpellCheckerOn,
@@ -1626,11 +1626,11 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le Kréyòl Guadeloupéen (Karukéra). " +
-                    "Il met à disposition de tous un outil moderne pour écrire dans notre belle langue créole avec :\n\n" +
-                    "💡 Suggestions de mots en Kréyòl\n" +
-                    "🌈 Design aux couleurs de la Guadeloupe\n" +
-                    "🪘 Identité guadeloupéenne forte"
+            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le lëtzebuergesch. " +
+                    "Il met à disposition de tous un outil moderne pour écrire au quotidien dans la langue du pays :\n\n" +
+                    "💡 Suggestions de mots en lëtzebuergesch\n" +
+                    "🔡 Diacritiques ë, ä et é directement au clavier\n" +
+                    "🇱🇺 Design aux couleurs du Luxembourg"
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.3f)
@@ -1645,7 +1645,7 @@ class SettingsActivity : AppCompatActivity() {
         val shareCard = createCard("#E8F5FF")
 
         val shareTitle = TextView(this).apply {
-            text = "📣 Ba kréyòl la lanmou'w !"
+            text = "📣 Maacht Reklamm fir d'Sprooch !"
             textSize = 18f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -1711,10 +1711,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots en Kréyòl sont construites sur les travaux des défenseurs du Kréyòl :\n\n" +
-                    "✍️ Sylviane Telchid, Sonny Rupaire, Robert Fontes, Max Rippon, Alain Rutil, Alain Vérin, Katel, " +
-                    "Esnard Boisdur, Pierre Édouard Décimus, Corinne Famibelle\n\n" +
-                    "Grâce à leurs riches contributions, ce clavier vous propose des suggestions authentiques et fidèles à notre créole guadeloupéen."
+            text = "Les suggestions de mots sont construites sur un corpus de luxembourgeois contemporain :\n\n" +
+                    "✍️ les transcriptions des conférences de presse du gouvernement luxembourgeois " +
+                    "(sip.gouvernement.lu), publiées comme jeu de données ouvert\n\n" +
+                    "Le dictionnaire s'enrichit au fil des mises à jour, pour coller à l'usage réel du lëtzebuergesch d'aujourd'hui."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -1738,9 +1738,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val versionText = TextView(this).apply {
             text = "Version : ${BuildConfig.VERSION_NAME}\n" +
-                    "© Potomitan™ - Clavier Kréyòl Karukéra\n\n" +
-                    "Fait avec ❤️ pour la Guadeloupe\n" +
-                    "Préservons notre langue créole pour les générations futures !"
+                    "© Potomitan™ - Lëtzebuergesch Clavier\n\n" +
+                    "Fait au Luxembourg avec ❤️\n" +
+                    "Préservons le lëtzebuergesch pour les générations futures !"
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             setLineSpacing(0f, 1.3f)
@@ -1820,7 +1820,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val demoField = EditText(this).apply {
-            hint = "Éséyé maké kréyòl isit ..."
+            hint = "Probéiert et hei... (essayez ici)"
             // Ne jamais ouvrir le clavier système (Gboard) sur ce champ :
             // c'est le clavier d'essai ci-dessous qui écrit dedans
             showSoftInputOnFocus = false
@@ -2110,7 +2110,7 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
             "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
-                    "l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukéra » apparaît " +
+                    "l'écran système « Clavier à l'écran », où « Lëtzebuergesch Clavier » apparaît " +
                     "à côté des autres claviers installés, interrupteur éteint."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
@@ -2119,7 +2119,7 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout, "#FFF8E1", "2️⃣ Valider les avertissements Android",
             "En activant l'interrupteur, Android affiche un avertissement générique montré pour " +
                     "tous les claviers tiers, suivi d'une seconde note sur le redémarrage du téléphone. " +
-                    "Klavyé Kréyòl ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, " +
+                    "Lëtzebuergesch Clavier ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, " +
                     "puis revenez à l'application avec le bouton retour."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, "Avertissement système affiché pour tout clavier tiers")
@@ -2128,20 +2128,20 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
             "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
                     "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
-                    "touchez « Klavyé Kréyòl Karukéra » pour en faire le clavier utilisé."
+                    "touchez « Lëtzebuergesch Clavier » pour en faire le clavier utilisé."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
 
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Configuration terminée",
-            "Les deux étapes cochées, le clavier Kréyòl s'affiche partout où vous tapez, y compris " +
+            "Les deux étapes cochées, le clavier luxembourgeois s'affiche partout où vous tapez, y compris " +
                     "dans le champ d'essai de l'onglet Démarrage. Un appui long sur la barre d'espace " +
                     "permet de rebasculer vers un autre clavier à tout moment."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, "Les trois étapes cochées, clavier actif dans le champ d'essai")
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "✍️ Écrire en Kréyòl",
+            mainLayout, "#FFFFFF", "✍️ Écrire en lëtzebuergesch",
             "Le clavier démarre en mode alphabétique. La première lettre de chaque " +
                     "message prend automatiquement une majuscule, comme sur un clavier classique."
         )
@@ -2149,7 +2149,7 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#F0F8E8", "🔤 Accents et caractères spéciaux",
             "Appuyez longuement sur une lettre pour faire apparaître ses variantes accentuées " +
-                    "(é, è, à, ò...) et caractères spéciaux du kréyòl. Glissez le doigt vers l'accent voulu " +
+                    "(ë, ä, é, ü, ö...) propres au luxembourgeois. Glissez le doigt vers l'accent voulu " +
                     "puis relâchez."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, "Popup d'accents sur la lettre e")
@@ -2157,16 +2157,16 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "💡 Suggestions et autocomplétion",
             "Une barre de suggestions apparaît au-dessus du clavier dès que vous tapez. " +
-                    "Les mots en Kréyòl sont prioritaires ; le français prend le relais à partir de " +
-                    "3 lettres si aucun mot créole ne correspond. Touchez un mot suggéré pour le compléter " +
+                    "Les mots luxembourgeois sont prioritaires ; le français prend le relais à partir de " +
+                    "3 lettres si aucun mot luxembourgeois ne correspond. Touchez un mot suggéré pour le compléter " +
                     "instantanément, espace inclus."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_suggestions, "Barre de suggestions active")
 
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Correction orthographique partout",
-            "Activez le correcteur Kréyòl dans les paramètres système (onglet Démarrage, étape 4) " +
-                    "pour que vos mots créoles et français ne soient plus soulignés en rouge dans Messages, " +
+            "Activez le correcteur luxembourgeois dans les paramètres système (onglet Démarrage, étape 4) " +
+                    "pour que vos mots luxembourgeois et français ne soient plus soulignés en rouge dans Messages, " +
                     "Notes et les autres applications."
         )
 
@@ -2181,13 +2181,13 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
             "Deux jeux (onglets « Wuertsich » et « Wuertmix ») aident à mémoriser du vocabulaire " +
-                    "créole en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
+                    "luxembourgeois en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
         )
 
         addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
-            "Chaque mot que vous tapez fait progresser votre maîtrise du kréyòl, visible dans l'onglet " +
-                    "« Kréyòl an mwen ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
+            "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
+                    "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
                     "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
         )
 
@@ -2200,7 +2200,7 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 12)
         }
         val faqText = TextView(this).apply {
-            text = "Le clavier créole n'apparaît pas quand je tape ?\n" +
+            text = "Le clavier luxembourgeois n'apparaît pas quand je tape ?\n" +
                     "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Démarrage, " +
                     "étape 2, ou appui long sur la barre d'espace pour changer de clavier à tout moment.\n\n" +
                     "Comment revenir à un autre clavier ponctuellement ?\n" +
@@ -2435,7 +2435,7 @@ class SettingsActivity : AppCompatActivity() {
                 // repli n'est pas celui attendu, la carte de l'étape 4 ne
                 // décrit donc pas ce que l'utilisateur a sous les yeux
                 Toast.makeText(this,
-                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Kréyòl Karukéra'",
+                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Lëtzebuergesch'",
                     Toast.LENGTH_LONG
                 ).show()
             } catch (ex: Exception) {
@@ -2476,7 +2476,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val reassuranceText = TextView(this).apply {
-            text = "Klavyé Kréyòl n'a pas accès à Internet : rien ne quitte votre téléphone."
+            text = "Lëtzebuergesch Clavier n'a pas accès à Internet : rien ne quitte votre téléphone."
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)
@@ -2565,8 +2565,8 @@ class SettingsActivity : AppCompatActivity() {
 
     // Fonction pour partager l'application (bouche-à-oreille)
     private fun shareApp() {
-        val message = "Mwen ka sèvi épi Klavyé Kréyòl Karukéra pou maké kréyòl asi téléfòn an mwen !\n" +
-                "Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup.\n\n" +
+        val message = "Ech schreiwen op Lëtzebuergesch op mengem Telefon !\n" +
+                "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
                 "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch10k\n\n" +
@@ -2576,7 +2576,7 @@ class SettingsActivity : AppCompatActivity() {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager Klavyé Kréyòl Karukéra"))
+            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage application: ${e.message}")
             Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
@@ -2683,7 +2683,7 @@ class SettingsActivity : AppCompatActivity() {
         // répondre « Plus tard » perdait la carte définitivement, puisque le
         // palier était déjà marqué comme célébré et que la boîte ne
         // réapparaissait jamais. L'astuce qui promet de partager sa carte
-        // « depuis Kréyòl an mwen » décrit désormais quelque chose qui existe.
+        // « depuis Mäi Lëtzebuergesch » décrit désormais quelque chose qui existe.
         val shareLevelButton = Button(this).apply {
             text = "📤 Partager ma carte de niveau"
             textSize = 15f
@@ -2745,7 +2745,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val percentageLabel = TextView(this).apply {
-            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire Kréyòl"
+            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire luxembourgeois"
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
@@ -3183,7 +3183,7 @@ class SettingsActivity : AppCompatActivity() {
      */
     private fun maybeCelebrateLevelUp(wordsDiscovered: Int, levelEmoji: String, levelName: String) {
         try {
-            val prefs = getSharedPreferences("kreyol_gamification_prefs", Context.MODE_PRIVATE)
+            val prefs = getSharedPreferences("lux_gamification_prefs", Context.MODE_PRIVATE)
             val currentIndex = getCurrentLevelIndex(wordsDiscovered)
             val lastCelebrated = prefs.getInt("last_celebrated_level_index", -1)
 
@@ -3205,7 +3205,7 @@ class SettingsActivity : AppCompatActivity() {
 
             AlertDialog.Builder(this)
                 .setTitle("🎉 Bravo ! Ou vansé !")
-                .setMessage("Ou rivé nivo $levelName ! Partage ta carte pour montrer ton niveau en kréyòl.")
+                .setMessage("Dir hutt den Niveau $levelName erreecht ! Partagez votre carte pour montrer où vous en êtes.")
                 .setView(preview)
                 .setPositiveButton("Partager 📤") { _, _ -> shareLevelCard(cardBitmap, levelName) }
                 .setNegativeButton("Plus tard", null)
@@ -3249,7 +3249,7 @@ class SettingsActivity : AppCompatActivity() {
             letterSpacing = 0.18f
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
-        canvas.drawText("NIVO AN MWEN AN KRÉYÒL", cx, 240f, eyebrowPaint)
+        canvas.drawText("MÄI NIVEAU OP LËTZEBUERGESCH", cx, 240f, eyebrowPaint)
 
         // Emoji du niveau
         val emojiPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -3273,7 +3273,7 @@ class SettingsActivity : AppCompatActivity() {
             textSize = 54f
             textAlign = Paint.Align.CENTER
         }
-        canvas.drawText("$wordsDiscovered mo kréyòl découvert !", cx, 900f, statsPaint)
+        canvas.drawText("$wordsDiscovered mots luxembourgeois découverts !", cx, 900f, statsPaint)
 
         // Séparateur
         val linePaint = Paint().apply { color = Color.parseColor("#33FFFFFF"); strokeWidth = 3f }
@@ -3286,7 +3286,7 @@ class SettingsActivity : AppCompatActivity() {
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
-        canvas.drawText("Klavyé Kréyòl Karukéra", cx, 1120f, footerBoldPaint)
+        canvas.drawText("Lëtzebuergesch Clavier", cx, 1120f, footerBoldPaint)
 
         val footerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.parseColor("#A9D4D6")
@@ -3305,13 +3305,13 @@ class SettingsActivity : AppCompatActivity() {
     private fun shareLevelCard(bitmap: Bitmap, levelName: String) {
         try {
             val imagesDir = File(cacheDir, "images").apply { mkdirs() }
-            val imageFile = File(imagesDir, "nivo_kreyol.png")
+            val imageFile = File(imagesDir, "niveau_lux.png")
             FileOutputStream(imageFile).use { out ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "An rivé nivo $levelName asi Klavyé Kréyòl Karukéra ! É vou menm, ki nivo a'w ?\n" +
+            val message = "An rivé nivo $levelName asi Lëtzebuergesch Clavier ! É vou menm, ki nivo a'w ?\n" +
                     "Télécharge le clavier gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
                     "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k\n\n" +
@@ -3327,7 +3327,7 @@ class SettingsActivity : AppCompatActivity() {
                 // reçoivent un SecurityException et l'image ne s'attache pas (le partage
                 // retombe en SMS texte). On expose donc l'URI via ClipData pour que la
                 // permission de lecture soit bien propagée.
-                clipData = ClipData.newUri(contentResolver, "nivo_kreyol.png", uri)
+                clipData = ClipData.newUri(contentResolver, "niveau_lux.png", uri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             startActivity(Intent.createChooser(intent, "Partager ma carte de niveau"))
@@ -3962,7 +3962,7 @@ class SettingsActivity : AppCompatActivity() {
                 // Générer une nouvelle grille 8x8 avec des mots aléatoires du dictionnaire
                 currentPuzzle = WordSearchGenerator.generatePuzzle(
                     context = activity,
-                    theme = "kreyol", // Thème unique
+                    theme = "lux", // Thème unique
                     gridSize = 8,
                     difficulty = WordSearchDifficulty.NORMAL
                 )
@@ -3997,7 +3997,7 @@ class SettingsActivity : AppCompatActivity() {
             gridView.numColumns = puzzle.gridSize
             
             // Afficher le titre simple sans thème
-            tvTheme.text = "🎯 Mots Créoles"
+            tvTheme.text = "🎯 Mots luxembourgeois"
             
             // Afficher la liste des mots
             displayWordsList(puzzle.words)
@@ -4739,12 +4739,12 @@ class SettingsActivity : AppCompatActivity() {
                         addView(rulesTitle)
 
                         val rulesText = TextView(activity).apply {
-                            text = "Devine le mot kréyòl de ${WuertrietData.WORD_LENGTH} lettres en ${WuertrietData.MAX_ATTEMPTS} essais maximum.\n\n" +
+                            text = "Devine le mot luxembourgeois de ${WuertrietData.WORD_LENGTH} lettres en ${WuertrietData.MAX_ATTEMPTS} essais maximum.\n\n" +
                                 "Après chaque essai, la couleur des lettres t'indique :\n" +
                                 "🟩 Vert : bonne lettre, bonne position\n" +
                                 "🟨 Orange : la lettre est dans le mot, mais mal placée\n" +
                                 "⬜ Gris : la lettre n'est pas dans le mot\n\n" +
-                                "Le mot proposé doit exister dans le dictionnaire Kréyòl."
+                                "Le mot proposé doit exister dans le dictionnaire luxembourgeois."
                             textSize = 14f
                             setTextColor(Color.parseColor("#333333"))
                         }
@@ -4830,7 +4830,7 @@ class SettingsActivity : AppCompatActivity() {
                 return
             }
             if (!WuertrietData.isValidWord(activity, guess)) {
-                showTopMessage("❌ Mo la sa pa adan diktyonè kréyòl")
+                showTopMessage("❌ Dëst Wuert ass net am Wierderbuch")
                 return
             }
 
