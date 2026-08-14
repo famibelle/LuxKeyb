@@ -133,7 +133,7 @@ gamification_test_*
 gamification_test_20251009_233837.png
 AMELIORATIONS_ERGONOMIE.md
 
-android_keyboard\keystore-config.txt
+android_keyboard/keystore-config.txt
 test-gamification-simple.ps1
 Tests_scenarios/
 tests/
@@ -163,5 +163,6 @@ Dictionnaires/analyse_diacritiques.py
 android_keyboard/KEYSTORE_GUIDE.md
 android_keyboard/GITHUB_SECRETS_SETUP.md
 android_keyboard/CREDENTIALS_SETUP.md
-android_keyboard/gradle.properties
-android_keyboard/gradle.properties
+# NB: android_keyboard/gradle.properties est volontairement suivi (version
+# assainie, sans secrets, nécessaire à la CI). Les secrets vont dans
+# gradle.properties.local, ignoré ci-dessus.
