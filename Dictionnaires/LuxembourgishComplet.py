@@ -61,6 +61,9 @@ class LuxembourgishPipelineUnique:
         self.chemin_dict = "../android_keyboard/app/src/main/assets/luxemburgish_dict.json"
         self.chemin_ngrams = "../android_keyboard/app/src/main/assets/luxemburgish_ngrams.json"
         self.hf_token = None
+        # En mode strict, le repli sur le corpus local est refusé : mieux vaut
+        # un build rouge qu'un dictionnaire reconstruit sur quinze phrases.
+        self.strict = "--strict" in sys.argv
         self.textes_luxembourgeois = []
         self.dictionnaire_actuel = {}
         self.ngrams_actuels = {}
@@ -291,6 +294,15 @@ class LuxembourgishPipelineUnique:
             print("   🔄 Passage au mode fallback local...")
         
         # Fallback local si Hugging Face échoue
+        if not textes_charges and self.strict:
+            print("\n❌ MODE STRICT : téléchargement Hugging Face échoué.")
+            print("   Le corpus local de secours ne compte que quelques phrases :")
+            print("   s'en servir reconstruirait les n-grammes sur presque rien,")
+            print("   en conservant l'ancien dictionnaire — une dégradation")
+            print("   invisible pour les contrôles de format et de volumétrie.")
+            print("   Vérifiez HF_TOKEN, puis relancez.")
+            return False
+
         if not textes_charges:
             print("\n🔄 FALLBACK: Recherche de fichiers locaux...")
             chemins_locaux = [
@@ -751,7 +763,7 @@ class LuxembourgishPipelineUnique:
         ]
         
         succes_total = True
-        
+
         for i, (nom, fonction) in enumerate(etapes, 1):
             print(f"\n⏳ Étape {i}/{len(etapes)}: {nom}")
             try:
@@ -761,6 +773,15 @@ class LuxembourgishPipelineUnique:
                 else:
                     print(f"⚠️ {nom} - Avec avertissements")
                     succes_total = False
+                    # Sans corpus, les étapes suivantes travailleraient sur du
+                    # vide ; en mode strict on s'arrête là pour que l'appelant
+                    # voie un échec franc plutôt qu'un « terminé avec
+                    # avertissements » suivi d'un code de sortie 0.
+                    # `fonction is self.charger_...` ne marcherait pas : chaque
+                    # accès à une méthode liée crée un nouvel objet.
+                    if self.strict and nom == "Chargement transcriptions":
+                        print("\n🛑 Mode strict : pipeline interrompu, aucun fichier réécrit.")
+                        return False
             except Exception as e:
                 print(f"❌ {nom} - Erreur: {e}")
                 succes_total = False
