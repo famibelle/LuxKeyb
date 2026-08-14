@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.9.3] - 2026-08-14
+
+### 🔤 Amélioration du dictionnaire
+
+- Le pipeline de génération utilise désormais les **3 splits** (train, validation, test)
+  du dataset Hugging Face `POTOMITAN/luxembourgish-corpus`, soit **158 textes**
+  au lieu de 126 (+26 % de couverture).
+
 ## [10.9.2] - 2026-08-14
 
 Reprise de la base commune, restée au point de divergence 6.1.8 depuis le
