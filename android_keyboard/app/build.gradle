@@ -31,19 +31,18 @@ android {
                 v1SigningEnabled true
                 v2SigningEnabled true
             } else {
-                // Fallback vers debug si secrets manquants
-                println "⚠️ Production signing unavailable:"
+                // ❌ FAIRE ÉCHOUER si on ne peut pas signer en production
+                println "❌ PRODUCTION SIGNING FAILED:"
                 println "   - Keystore path: ${keystoreFile}"
                 println "   - Keystore resolved: ${keystorePath?.absolutePath ?: 'N/A'}"
                 println "   - Keystore exists: ${keystorePath?.exists() ?: false}"
                 println "   - Store password: ${storePass ? '***' : 'MISSING'}"
                 println "   - Key alias: ${keyAliasEnv ?: 'MISSING'}"
                 println "   - Key password: ${keyPass ? '***' : 'MISSING'}"
-                println "   → Using debug signing"
-                storeFile signingConfigs.debug.storeFile
-                storePassword "android"
-                keyAlias "androiddebugkey"
-                keyPassword "android"
+                println ""
+                println "❌ Cannot sign with debug key for release build!"
+                println "❌ Configure KEYSTORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD"
+                throw new GradleException("Release signing configuration is incomplete. Debug keystore cannot be used for Play Store.")
             }
         }
     }
