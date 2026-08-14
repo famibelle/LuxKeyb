@@ -571,6 +571,10 @@ jobs:
         if [ -n "$RELEASE_APK" ] && [ -f "$RELEASE_APK" ]; then
           cp "$RELEASE_APK" "./final-release-assets/LetzebuergeschClavier-Release-${{ github.ref_name }}.apk"
           echo "✅ APK Release: LetzebuergeschClavier-Release-${{ github.ref_name }}.apk (source: $(basename $RELEASE_APK))"
+          # Copie au nom fixe : cible du lien permanent /releases/latest/download/
+          # utilisé par le site et le QR code (docs/index.md). Ne pas renommer.
+          cp "$RELEASE_APK" "./final-release-assets/LetzebuergeschClavier-latest.apk"
+          echo "✅ APK Release (alias permanent): LetzebuergeschClavier-latest.apk"
         else
           echo "❌ APK release non trouvé"
           echo "📁 Contenu dossier release APK:"

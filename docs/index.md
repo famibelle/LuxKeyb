@@ -24,12 +24,23 @@ luxembourgeois pendant la frappe.
 Plus besoin de chercher un `ë` dans un menu d'accents : les trois diacritiques
 qui portent la langue — **é**, **ä** et **ë** — ont chacune leur touche.
 
-<div align="center" style="margin: 24px 0;">
-  <a href="https://github.com/famibelle/LuxKeyb/releases/latest"
+<div style="display:flex;justify-content:center;align-items:center;gap:32px;
+            flex-wrap:wrap;margin:24px 0;">
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
      style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
             border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
     📲 Télécharger l'APK (version 10.9.2)
   </a>
+  <figure style="margin:0;text-align:center;">
+    <img src="assets/qr-luxkeyb-apk.png"
+         alt="QR code téléchargeant directement l'APK de la dernière version de Lëtzebuergesch Clavier"
+         width="160" height="160"
+         style="display:block;width:160px;height:160px;background:#fff;
+                border-radius:8px;padding:6px;box-sizing:border-box;">
+    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
+      Scannez : le téléchargement démarre
+    </figcaption>
+  </figure>
 </div>
 
 <p align="center"><em>Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau</em></p>
@@ -101,8 +112,10 @@ suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
 
 ## Installer
 
-1. Téléchargez l'APK depuis la [dernière version](https://github.com/famibelle/LuxKeyb/releases/latest)
-   (fichier `LetzebuergeschClavier-Release-v10.9.2.apk`).
+1. [Téléchargez l'APK](https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk),
+   ou scannez le QR code en haut de page depuis votre téléphone : dans les deux
+   cas le téléchargement démarre directement. Toutes les versions restent
+   listées sur la [page des releases](https://github.com/famibelle/LuxKeyb/releases).
 2. Autorisez l'installation depuis cette source, si Android le demande.
 3. Ouvrez l'application : elle vous guide en trois étapes pour activer le
    clavier, le sélectionner, puis l'essayer.
