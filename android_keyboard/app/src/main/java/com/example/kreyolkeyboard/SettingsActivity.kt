@@ -1201,7 +1201,7 @@ class SettingsActivity : AppCompatActivity() {
         step3Header.addView(step3TitleText)
         
         val step3Desc = TextView(this).apply {
-            text = if (isStep3Locked) "Complétez les étapes 1 et 2 pour débloquer" else "Essayez d'écrire « Bonjou tout moun » et regardez les suggestions vous aider"
+            text = if (isStep3Locked) "Complétez les étapes 1 et 2 pour débloquer" else "Essayez d'écrire « Moien alleguer » et regardez les suggestions vous aider"
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)
@@ -1245,7 +1245,7 @@ class SettingsActivity : AppCompatActivity() {
         // sortie du parcours numéroté pour ne pas laisser croire à une
         // "étape 4" alors que la barre de progression annonce 3 étapes
         val extrasTitle = TextView(this).apply {
-            text = "🚀 Pou ay pli lwen (optionnel)"
+            text = "🚀 Pour aller plus loin (optionnel)"
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setTypeface(null, Typeface.BOLD)
@@ -1681,7 +1681,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val shareProverb = TextView(this).apply {
-            text = "« Dé mòn pa ka jwenn, mé dé moun toujou ka jwenn »"
+            text = "« Mir wëlle bleiwe wat mir sinn »"
             textSize = 14f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.ITALIC)
@@ -1813,7 +1813,7 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 4)
         }
         val caption = TextView(this).apply {
-            text = "Tapez « bonjou » et touchez une suggestion : rien à installer pour essayer"
+            text = "Tapez « moien » et touchez une suggestion : rien à installer pour essayer"
             textSize = 13f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)
@@ -3204,7 +3204,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             AlertDialog.Builder(this)
-                .setTitle("🎉 Bravo ! Ou vansé !")
+                .setTitle("🎉 Bravo ! Dir sidd virugaangen !")
                 .setMessage("Dir hutt den Niveau $levelName erreecht ! Partagez votre carte pour montrer où vous en êtes.")
                 .setView(preview)
                 .setPositiveButton("Partager 📤") { _, _ -> shareLevelCard(cardBitmap, levelName) }
@@ -3685,7 +3685,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 
                 if (allWords.isEmpty()) {
-                    return Pair("Bonjou", 0)
+                    return Pair("Moien", 0)
                 }
                 
                 // Utiliser la date comme seed pour avoir le même mot toute la journée
@@ -3714,7 +3714,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 
                 if (allWords.isEmpty()) {
-                    return Pair("Bonjou", 0)
+                    return Pair("Moien", 0)
                 }
                 
                 // Utiliser la date comme seed
@@ -3729,7 +3729,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur mot du jour: ${e.message}")
-            Pair("Bonjou", 0)
+            Pair("Moien", 0)
         }
     }
     
@@ -4616,7 +4616,7 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
 
                         val legendTitle = TextView(activity).apply {
-                            text = "Lèt ou ja maké :"
+                            text = "Lettres déjà jouées :"
                             textSize = 14f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#333333"))
@@ -4659,7 +4659,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(0, 0, 16, 0) }
-                            hint = "Maké mo la isit, an ${WuertrietData.WORD_LENGTH} lèt"
+                            hint = "Votre mot de ${WuertrietData.WORD_LENGTH} lettres"
                             setHintTextColor(Color.parseColor("#9E9E9E"))
                             textSize = 18f
                             setTextColor(Color.parseColor("#212121"))

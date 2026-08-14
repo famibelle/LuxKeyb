@@ -2,8 +2,11 @@
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
     android:settingsActivity="com.example.kreyolkeyboard.SettingsActivity"
     android:supportsSwitchingToNextInputMethod="true">
+    <!-- Le libellé du sous-type s'affiche sous le nom de l'application dans
+         « Clavier à l'écran » : y remettre le nom complet le répétait deux
+         fois de suite. C'est la place de la langue proposée. -->
     <subtype
-        android:label="@string/subtype_kreyol"
+        android:label="@string/subtype_kreyol_description"
         android:languageTag="lb-LU"
         android:imeSubtypeMode="keyboard"
         android:isAuxiliary="false"
