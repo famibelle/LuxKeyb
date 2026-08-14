@@ -116,7 +116,15 @@ class LuxembourgishPipelineUnique:
         if os.path.exists(self.chemin_dict):
             try:
                 with open(self.chemin_dict, 'r', encoding='utf-8') as f:
-                    self.dictionnaire_actuel = json.load(f)
+                    donnees = json.load(f)
+                # Le format Android est une liste de paires [["wuert", 123], ...].
+                # On accepte aussi l'ancien format objet {"wuert": 123} pour pouvoir
+                # relire un dictionnaire produit avant la migration 10.9.2.
+                if isinstance(donnees, list):
+                    self.dictionnaire_actuel = {paire[0]: paire[1] for paire in donnees
+                                                if isinstance(paire, list) and len(paire) >= 2}
+                else:
+                    self.dictionnaire_actuel = donnees
                 print(f"📚 Dictionnaire existant: {len(self.dictionnaire_actuel)} mots")
             except Exception as e:
                 print(f"⚠️ Erreur lecture dictionnaire: {e}")
@@ -429,38 +437,59 @@ class LuxembourgishPipelineUnique:
                 trigramme = (mots[i], mots[i + 1], mots[i + 2])
                 trigrammes[trigramme] += 1
         
-        # Créer le modèle de prédictions
+        # Créer le modèle de prédictions.
+        #
+        # Le moteur (SuggestionEngine.resolveNgramContext) interroge d'abord une
+        # clé à deux mots — le contexte précédent complet, « an der » — puis se
+        # rabat sur le dernier mot seul, « der ». Les deux familles de clés
+        # cohabitent donc dans le même objet plat, et n'émettre que la seconde
+        # rendrait le contexte trigramme inopérant.
         predictions = {}
-        total_unigrammes = sum(unigrammes.values())
-        
-        for mot in unigrammes:
-            candidats = []
-            
-            # Chercher les mots qui suivent souvent ce mot
-            for (premier, suivant), freq in bigrammes.items():
-                if premier == mot:
-                    probabilite = freq / unigrammes[premier]
-                    if probabilite > 0.01:  # Seuil de pertinence
-                        candidats.append({
-                            "word": suivant,
-                            "probability": round(probabilite, 3)
-                        })
-            
-            # Trier par probabilité décroissante
-            candidats.sort(key=lambda x: x["probability"], reverse=True)
-            
-            # Garder les 5 meilleurs
-            if candidats:
-                predictions[mot] = candidats[:5]
-        
+
+        def _classer(candidats_par_cle, contextes):
+            """Transforme {contexte: Counter(suivants)} en prédictions triées."""
+            for contexte, suivants in candidats_par_cle.items():
+                total = contextes[contexte]
+                if not total:
+                    continue
+                candidats = [
+                    {"word": suivant, "probability": round(freq / total, 3)}
+                    for suivant, freq in suivants.items()
+                    if freq / total > SEUIL_PERTINENCE
+                ]
+                if candidats:
+                    candidats.sort(key=lambda c: c["probability"], reverse=True)
+                    predictions[contexte] = candidats[:MAX_PREDICTIONS]
+
+        SEUIL_PERTINENCE = 0.01
+        MAX_PREDICTIONS = 5
+
+        # Clés à un mot, depuis les bigrammes. Le regroupement préalable évite
+        # le balayage de tous les bigrammes pour chaque unigramme (quadratique).
+        suivants_par_mot = defaultdict(Counter)
+        for (premier, suivant), freq in bigrammes.items():
+            suivants_par_mot[premier][suivant] += freq
+        _classer(suivants_par_mot, unigrammes)
+
+        # Clés à deux mots, depuis les trigrammes.
+        suivants_par_paire = defaultdict(Counter)
+        for (premier, deuxieme, suivant), freq in trigrammes.items():
+            suivants_par_paire[f"{premier} {deuxieme}"][suivant] += freq
+        contextes_paires = Counter()
+        for (premier, deuxieme), freq in bigrammes.items():
+            contextes_paires[f"{premier} {deuxieme}"] += freq
+        _classer(suivants_par_paire, contextes_paires)
+
         self.nouveaux_ngrams = predictions
-        
+
+        cles_deux_mots = sum(1 for cle in predictions if " " in cle)
         print(f"✅ N-grams luxembourgeois créés:")
         print(f"   - Unigrammes: {len(unigrammes)}")
         print(f"   - Bigrammes: {len(bigrammes)}")
         print(f"   - Trigrammes: {len(trigrammes)}")
-        print(f"   - Prédictions: {len(predictions)}")
-        
+        print(f"   - Prédictions: {len(predictions)} "
+              f"({len(predictions) - cles_deux_mots} à un mot, {cles_deux_mots} à deux mots)")
+
         return True
     
     def analyser_statistiques(self):
@@ -587,12 +616,21 @@ class LuxembourgishPipelineUnique:
             shutil.copy2(self.chemin_ngrams, backup_ngrams)
             print(f"📁 Backup N-grams luxembourgeois: {backup_ngrams}")
         
-        # Sauvegarder le nouveau dictionnaire
+        # Sauvegarder le nouveau dictionnaire.
+        #
+        # Le moteur attend une liste de paires [["wuert", 123], ...] triée par
+        # fréquence décroissante, pas un objet. Livrer un objet ici passerait
+        # toutes les vérifications de la CI (le fichier est un JSON valide et
+        # non vide) tout en désactivant silencieusement les suggestions — c'est
+        # exactement ce qui est arrivé en amont sur la v10.2.6.
         if self.nouveau_dictionnaire:
             os.makedirs(os.path.dirname(self.chemin_dict), exist_ok=True)
+            paires = sorted(self.nouveau_dictionnaire.items(),
+                            key=lambda item: (-item[1], item[0]))
             with open(self.chemin_dict, 'w', encoding='utf-8') as f:
-                json.dump(self.nouveau_dictionnaire, f, ensure_ascii=False, indent=2)
-            print(f"✅ Dictionnaire luxembourgeois sauvegardé: {len(self.nouveau_dictionnaire)} mots")
+                json.dump([[mot, freq] for mot, freq in paires], f,
+                          ensure_ascii=False, indent=2)
+            print(f"✅ Dictionnaire luxembourgeois sauvegardé: {len(paires)} mots")
         
         # Sauvegarder les nouveaux N-grams
         if self.nouveaux_ngrams:

@@ -628,7 +628,7 @@ class SuggestionEngine(private val context: Context) {
      */
     private suspend fun loadDictionary() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("creole_dict.json").bufferedReader().use { it.readText() }
+            val jsonString = context.assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
             val wordsArray = JSONArray(jsonString)
             
             val loadedDictionary = mutableListOf<Pair<String, Int>>()
@@ -665,7 +665,7 @@ class SuggestionEngine(private val context: Context) {
     private suspend fun loadNgramModel() = withContext(Dispatchers.IO) {
         Log.d(TAG, "Chargement du modèle N-grams...")
         try {
-            val inputStream = context.assets.open("creole_ngrams.json")
+            val inputStream = context.assets.open("luxemburgish_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
 

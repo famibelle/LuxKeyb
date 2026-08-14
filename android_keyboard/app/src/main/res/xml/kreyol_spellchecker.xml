@@ -4,27 +4,28 @@
     android:settingsActivity="com.example.kreyolkeyboard.SettingsActivity">
     <!--
         Le système choisit un correcteur en cherchant un sous-type dont la locale
-        correspond à celle du champ de saisie. Avec le seul sous-type "ht", aucune
-        correspondance n'était possible : le service était bien sélectionnable dans
-        les réglages, mais sa session n'était jamais créée et il n'était jamais
-        appelé (dumpsys textservices montrait des "Bind Groups" vides).
+        correspond à celle du champ de saisie. Ne déclarer que "lb" ne suffirait
+        pas : très peu de champs annoncent réellement cette locale, la session ne
+        serait jamais créée et le service jamais appelé (dumpsys textservices
+        montrerait des "Bind Groups" vides).
 
-        "fr" est la locale réelle des téléphones en Guadeloupe, et donc celle qu'il
-        faut déclarer pour être sollicité. "gcf" est le code ISO du kréyòl
-        guadeloupéen, "ht" celui du créole haïtien : ni l'un ni l'autre n'est
-        habituellement la locale d'un appareil, mais ils restent déclarés pour les
-        configurations qui les emploient.
+        "fr" est donc déclaré en plus : c'est une des langues courantes des
+        téléphones au Luxembourg, et celle qui déclenchera le service en pratique.
+        Conséquence à ne pas perdre de vue : cela remplace le correcteur système
+        français par un dictionnaire luxembourgeois. C'est précisément pourquoi
+        shouldFlagAsTypo() ne souligne un mot inconnu que si une correction
+        plausible existe — sans quoi tout le français passerait pour fautif.
+
+        "de" n'est volontairement pas déclaré : l'allemand est très présent au
+        Luxembourg, et le remplacement du correcteur système y coûterait plus
+        qu'il ne rapporterait.
     -->
     <subtype
         android:label="@string/subtype_kreyol"
+        android:subtypeLocale="lb"
+        android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
+    <subtype
+        android:label="@string/subtype_kreyol"
         android:subtypeLocale="fr"
-        android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
-    <subtype
-        android:label="@string/subtype_kreyol"
-        android:subtypeLocale="gcf"
-        android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
-    <subtype
-        android:label="@string/subtype_kreyol"
-        android:subtypeLocale="ht"
         android:subtypeExtraValue="TrySuppressingImeSwitcher,AsciiCapable,SupportTouchPositionCorrection" />
 </spell-checker>

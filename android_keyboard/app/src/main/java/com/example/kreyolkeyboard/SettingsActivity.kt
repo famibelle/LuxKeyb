@@ -236,7 +236,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Sauvegarde optimisée par lecture partielle
         private suspend fun saveUpdatesToFile(context: Context, updates: Map<String, Int>) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
             
             if (!usageFile.exists()) {
                 // Créer le fichier s'il n'existe pas
@@ -278,7 +278,7 @@ class SettingsActivity : AppCompatActivity() {
             // Sauvegarder seulement si des changements ont été faits
             if (hasChanges) {
                 // Écriture atomique pour éviter la corruption
-                val tempFile = File(context.filesDir, "creole_dict_with_usage.json.tmp")
+                val tempFile = File(context.filesDir, "luxemburgish_dict_with_usage.json.tmp")
                 tempFile.bufferedWriter().use { writer ->
                     writer.write(existingData.toString())
                 }
@@ -292,7 +292,7 @@ class SettingsActivity : AppCompatActivity() {
         // Vérification rapide si un mot existe dans le dictionnaire
         private fun isWordInDictionary(context: Context, word: String): Boolean {
             return try {
-                context.assets.open("creole_dict.json").bufferedReader().use { reader ->
+                context.assets.open("luxemburgish_dict.json").bufferedReader().use { reader ->
                     var line: String?
                     while (reader.readLine().also { line = it } != null) {
                         if (line!!.contains("\"$word\"", ignoreCase = true)) {
@@ -308,7 +308,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // Création optimisée du fichier initial
         private fun createInitialUsageFile(context: Context) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
             
             // Créer un fichier complètement vide sans aucune donnée de démonstration
             val emptyUsageObject = JSONObject()
@@ -3063,7 +3063,7 @@ class SettingsActivity : AppCompatActivity() {
             val totalDictWords = getTotalDictionaryWords()
             
             // Essayer le fichier avec usage
-            val usageFile = File(filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
             Log.d("SettingsActivity", "📂 Fichier usage existe: ${usageFile.exists()}")
             Log.d("SettingsActivity", "📂 Chemin fichier: ${usageFile.absolutePath}")
             
@@ -3378,8 +3378,8 @@ class SettingsActivity : AppCompatActivity() {
         
         return try {
             // Toujours charger le dictionnaire source depuis assets
-            // car creole_dict_with_usage.json peut être vide (nouveau install)
-            val jsonString = assets.open("creole_dict.json").bufferedReader().use { it.readText() }
+            // car luxemburgish_dict_with_usage.json peut être vide (nouveau install)
+            val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
             val jsonArray = org.json.JSONArray(jsonString)
             val count = jsonArray.length()
             
@@ -3671,7 +3671,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
-            val usageFile = File(filesDir, "creole_dict_with_usage.json")
+            val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
             
             val allWords: List<String>
             val usageCount: Int
@@ -3702,7 +3702,7 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 Log.d("SettingsActivity", "Fichier usage n'existe pas, création depuis assets")
                 // Charger depuis les assets
-                val jsonString = assets.open("creole_dict.json").bufferedReader().use { it.readText() }
+                val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
                 val jsonArray = org.json.JSONArray(jsonString)
                 Log.d("SettingsActivity", "Dictionnaire chargé: ${jsonArray.length()} mots")
                 

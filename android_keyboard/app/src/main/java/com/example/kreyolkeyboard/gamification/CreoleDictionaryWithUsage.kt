@@ -29,8 +29,8 @@ class CreoleDictionaryWithUsage(private val context: Context) {
     
     companion object {
         private const val TAG = "CreoleDictUsage"
-        private const val DICT_FILE = "creole_dict_with_usage.json"
-        private const val ORIGINAL_DICT = "creole_dict.json"
+        private const val DICT_FILE = "luxemburgish_dict_with_usage.json"
+        private const val ORIGINAL_DICT = "luxemburgish_dict.json"
         // 2 : le dictionnaire créole contient des mots réels et très fréquents de 2 lettres
         // (ka, ou, on, an, sa, wi...) qui ne comptaient jamais dans wordsDiscovered avant ce
         // correctif (23/07/2026). Le vrai filtre de vie privée reste dictionary.has(normalized)

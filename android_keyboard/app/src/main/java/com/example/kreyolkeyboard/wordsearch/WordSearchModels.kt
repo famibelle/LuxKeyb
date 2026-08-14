@@ -85,7 +85,7 @@ object WordSearchThemes {
         val words = mutableListOf<String>()
         
         try {
-            val inputStream = context.assets.open("creole_dict.json")
+            val inputStream = context.assets.open("luxemburgish_dict.json")
             val reader = BufferedReader(InputStreamReader(inputStream))
             val jsonContent = reader.readText()
             reader.close()
@@ -108,7 +108,7 @@ object WordSearchThemes {
         } catch (e: Exception) {
             e.printStackTrace()
             // En cas d'erreur, retourner quelques mots par défaut
-            return listOf("mwen", "nou", "yo", "kay", "lakou", "soley", "lapli", "van")
+            return listOf("mir", "eng", "haus", "leit", "kéier", "ëmmer", "wäert", "sech")
         }
         
         return words.shuffled()

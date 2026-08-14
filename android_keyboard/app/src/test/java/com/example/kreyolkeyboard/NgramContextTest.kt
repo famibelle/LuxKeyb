@@ -39,7 +39,7 @@ class NgramContextTest {
     // ===== Format du modèle livré =====
 
     private fun loadModel(): JSONObject? {
-        val file = File("src/main/assets/creole_ngrams.json")
+        val file = File("src/main/assets/luxemburgish_ngrams.json")
         return if (file.exists()) JSONObject(file.readText()) else null
     }
 
