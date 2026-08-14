@@ -21,30 +21,31 @@
 
 À chaque mot que vous écrivez en lëtzebuergesch, l'application :
 - ✅ **Compte les mots découverts** - Votre vocabulaire s'enrichit automatiquement
-- 📈 **Calcule votre niveau** - Du débutant "Klengen 🌱" au maître "Sproochenmeeschter 👑"
+- 📈 **Calcule votre niveau** - Du débutant "Ufänker 🌍" au maître "Sproochenmeeschter 🧙"
 - 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
 
-### 🏆 7 niveaux de maîtrise du luxembourgeois
+### 🏆 8 niveaux de maîtrise du luxembourgeois
 
-Progressez à travers 7 niveaux qui suivent une distribution gaussienne (la plupart des utilisateurs se situent dans les niveaux intermédiaires) :
+Chaque niveau correspond à une part du dictionnaire déjà employée, avec des paliers resserrés en bas pour que les premiers restent atteignables :
 
-| Niveau | Badge | Nom | Signification |
-|--------|-------|-----|---------------|
-| 1 | 🌍 | **Ufänker** | Débutant absolu - Premiers pas |
-| 2 | 🌱 | **Klengen** | Débutant - Vous commencez votre apprentissage |
-| 3 | 🔥 | **Fléisseg** | Vous vous débrouillez bien ! |
-| 4 | 💎 | **Mëttel** | Vous êtes au milieu du chemin |
-| 5 | 🐇 | **Geschéit** | Vous avez de bonnes connaissances |
-| 6 | 🐘 | **Sproochenkënner** | Vous maîtrisez le luxembourgeois ! |
-| 7 | 👑 | **Sproochenmeeschter** | Expert - Vous êtes un maître du luxembourgeois ! |
+| Niveau | Badge | Nom | Part du dictionnaire | Signification |
+|--------|-------|-----|----------------------|---------------|
+| 1 | 🌍 | **Ufänker** | départ | Débutant absolu - Premiers pas |
+| 2 | 🌱 | **Klengen** | 1,5 % | Vous commencez votre apprentissage |
+| 3 | 🔥 | **Fléisseg** | 5 % | Vous vous débrouillez bien ! |
+| 4 | 💎 | **Geschéit** | 12 % | Vous avez de bonnes connaissances |
+| 5 | 🦊 | **Renert** | 25 % | Rusé comme le renard de Rodange |
+| 6 | 🦁 | **Roude Léiw** | 45 % | Le lion des armoiries |
+| 7 | 👑 | **Sproochenkënner** | 70 % | Vous maîtrisez le luxembourgeois ! |
+| 8 | 🧙 | **Sproochenmeeschter** | 100 % | Tous les mots du dictionnaire découverts |
 
 ### 💡 Visualisez votre apprentissage
 
-Dans l'onglet **"Mäin Lëtzebuergesch"** 📊, vous pouvez :
+Dans l'onglet **"Mäi Lëtzebuergesch"** 📊, vous pouvez :
 - 🔍 **Voir tous les mots découverts** - Avec leur orthographe correcte en vert
 - 🌟 **Découvrir les mots à apprendre** - Les mots du dictionnaire que vous n'avez pas encore utilisés
 - 📈 **Suivre votre progression** - Un message vous indique combien de mots il reste pour passer au niveau suivant
-- 🎯 **Vous motiver** - "Votre niveau actuel est Fléisseg, plus que 125 mots restants à découvrir pour passer au niveau suivant (Mëttel)"
+- 🎯 **Vous motiver** - "Votre niveau actuel est Fléisseg, plus que 125 mots restants à découvrir pour passer au niveau suivant (Geschéit)"
 
 ### 🔄 Actualisation en temps réel
 

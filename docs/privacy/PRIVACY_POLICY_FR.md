@@ -1,10 +1,10 @@
-# Politique de Confidentialité - Klavyé Kréyòl Karukera • Potomitan™
+# Politique de Confidentialité - Lëtzebuergesch Clavier • Potomitan™
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 10 novembre 2025  
+**Dernière mise à jour :** 14 août 2026  
 **Version :** 2.0  
-**Application :** Klavyé Kréyòl Karukera • Potomitan™  
-**Nom du package :** com.potomitan.kreyolkeyboard
+**Application :** Lëtzebuergesch Clavier • Potomitan™  
+**Nom du package :** com.potomitan.luxkeyboard
 
 ---
 
@@ -14,26 +14,26 @@
 **Adresse :** Guadeloupe, Antilles françaises  
 **Email de contact :** contact@potomitan.io  
 **Site web :** https://potomitan.io  
-**URL de la politique de confidentialité :** https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html
+**URL de la politique de confidentialité :** https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html
 
-**Potomitan** est une organisation dédiée à la préservation et à la promotion de la culture créole. Notre mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues créoles, en particulier le créole guadeloupéen (Kreyòl Karukera).
+**Potomitan** est une organisation dédiée à la préservation et à la promotion de la langue luxembourgeoise. Notre mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues régionales et minoritaires, en particulier le luxembourgeois (lëtzebuergesch).
 
 ---
 
 ## 📱 À propos de l'Application
 
-**Klavyé Kréyòl Karukera • Potomitan™** est un clavier virtuel pour appareils Android qui permet de saisir du texte en créole guadeloupéen avec des suggestions intelligentes et des corrections automatiques.
+**Lëtzebuergesch Clavier • Potomitan™** est un clavier virtuel pour appareils Android qui permet de saisir du texte en luxembourgeois avec des suggestions intelligentes et des corrections automatiques.
 
 ### Fonctionnalités principales :
-- Clavier virtuel optimisé pour le créole guadeloupéen
-- Suggestions de mots basées sur un dictionnaire créole (3680+ mots)
+- Clavier virtuel optimisé pour le luxembourgeois
+- Suggestions de mots basées sur un dictionnaire luxembourgeois (6 342 mots)
 - Corrections orthographiques automatiques
-- Support des caractères spéciaux créoles
-- Interface en français et créole
+- Support des diacritiques luxembourgeoises (ë, ä, é, ü, ö)
+- Interface en français et luxembourgeois
 - Système de gamification avec 8 niveaux pour encourager l'apprentissage
 - **100% gratuit :** Aucune fonctionnalité premium, aucun achat intégré
 - **Open Source :** Code source disponible sur GitHub
-- **Éducatif :** Promotion de la langue et culture créole
+- **Éducatif :** Promotion de la langue luxembourgeoise
 - **Respect de la vie privée :** Aucune collecte de données, fonctionnement 100% hors ligne
 
 ---
@@ -113,7 +113,7 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 ## 🎯 Notre Engagement de Confidentialité
 
-**Klavyé Kréyòl Karukera • Potomitan™** respecte absolument votre vie privée. Nous croyons que :
+**Lëtzebuergesch Clavier • Potomitan™** respecte absolument votre vie privée. Nous croyons que :
 
 1. **Vos données vous appartiennent :** Ce que vous tapez vous appartient et reste sur votre appareil
 2. **Aucune surveillance :** Nous ne suivons, ne surveillons ni n'analysons votre comportement de frappe
@@ -158,7 +158,7 @@ Nous voulons être parfaitement clairs sur ce que nous **ne collectons pas** :
 Les données suivantes existent **uniquement sur votre appareil** et ne sont **jamais transmises à nous ou à quiconque** :
 
 1. **Ajouts au Dictionnaire Utilisateur :**
-   - Mots que vous ajoutez manuellement à votre dictionnaire personnel (ex: noms, termes créoles personnalisés)
+   - Mots que vous ajoutez manuellement à votre dictionnaire personnel (ex: noms, termes luxembourgeois personnalisés)
    - Stockés dans le **dictionnaire système Android**, pas dans notre app
    - Nous ne pouvons pas accéder à ces données - c'est géré par Android
    - Peut être consulté/modifié/supprimé via : Paramètres > Système > Langues et saisie > Dictionnaire personnel
@@ -219,7 +219,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
    - Aucune permission personnalisée au-delà des exigences standard des claviers
 
 5. **Transparence Open Source :**
-   - Code source disponible sur GitHub : https://github.com/Famibelle/KreyolKeyb
+   - Code source disponible sur GitHub : https://github.com/famibelle/LuxKeyb
    - N'importe qui peut vérifier nos affirmations de confidentialité en examinant le code
    - La communauté peut auditer pour des vulnérabilités de sécurité
    - Pas de code de suivi caché
@@ -258,7 +258,7 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 ### 2️⃣ WRITE_USER_DICTIONARY (Optionnel)
 
 **Ce qu'elle fait :** Permet d'ajouter des mots au dictionnaire personnel de votre appareil  
-**Pourquoi nous en avons besoin :** Pour que vous puissiez enregistrer des mots créoles personnalisés que vous utilisez fréquemment, permettant une meilleure autocorrection  
+**Pourquoi nous en avons besoin :** Pour que vous puissiez enregistrer des mots luxembourgeois personnalisés que vous utilisez fréquemment, permettant une meilleure autocorrection  
 **Impact sur la vie privée :** Aucun - les mots sont stockés dans le dictionnaire système Android (non accessible par nous)  
 **Ce qu'elle NE PEUT PAS faire :** Ne peut pas accéder aux mots du dictionnaire existants d'autres apps  
 **Contrôle utilisateur :** Peut être révoquée dans Infos app > Autorisations ; peut supprimer les mots via Paramètres Android > Système > Langues et saisie > Dictionnaire personnel  
@@ -323,7 +323,7 @@ Nous notifierions les utilisateurs si nous changions un jour cette architecture 
 
 ## 👶 Vie Privée des Enfants (Conformité COPPA)
 
-**Klavyé Kréyòl Karukera • Potomitan™** est sûr pour les utilisateurs de tous âges, y compris les enfants de moins de 13 ans.
+**Lëtzebuergesch Clavier • Potomitan™** est sûr pour les utilisateurs de tous âges, y compris les enfants de moins de 13 ans.
 
 ### Pourquoi c'est sûr pour les enfants :
 
@@ -343,7 +343,7 @@ Nous notifierions les utilisateurs si nous changions un jour cette architecture 
 Les parents et éducateurs peuvent en toute confiance permettre aux enfants d'utiliser ce clavier sans aucune préoccupation de vie privée. Nous recommandons :
 - Examiner les fonctionnalités de gamification avec les enfants
 - Utiliser les contrôles parentaux sur l'appareil pour la sécurité Internet générale
-- Expliquer que le clavier est pour apprendre le créole
+- Expliquer que le clavier est pour apprendre le luxembourgeois
 
 **Aucun consentement parental requis** car nous ne collectons aucune donnée des enfants (ou de quiconque).
 
@@ -354,7 +354,8 @@ Les parents et éducateurs peuvent en toute confiance permettre aux enfants d'ut
 **Non applicable :** Puisque nous ne collectons aucune donnée, il n'y a pas de transferts internationaux de données.
 
 Pour la transparence légale :
-- **Localisation du développeur :** Guadeloupe (territoire français d'outre-mer, lois de confidentialité de l'UE s'appliquent)
+- **Localisation du développeur :** Guadeloupe (territoire français d'outre-mer, lois de confidentialité de l'UE s'appliquent)  
+- **Public visé :** Luxembourg (Union européenne)
 - **App distribuée via :** Google Play Store (distribution mondiale)
 - **Localisation des données utilisateur :** Uniquement sur l'appareil de l'utilisateur (pas transférées nulle part)
 - **Conformité RGPD :** Entièrement conforme au Règlement Général sur la Protection des Données de l'UE
@@ -391,20 +392,20 @@ Les données suivantes persistent sur votre appareil tant que l'app est install�
 **Option 1 : Supprimer des Entrées Spécifiques du Dictionnaire Utilisateur**
 1. Allez dans : Paramètres Android
 2. Sélectionnez : Système > Langues et saisie > Dictionnaire personnel
-3. Choisissez la langue (Créole ou Français)
+3. Choisissez la langue (Luxembourgeois ou Français)
 4. Supprimez des mots individuels ou appuyez sur menu > Tout supprimer
 
 **Option 2 : Effacer les Préférences de l'App (Garder l'App Installée)**
 1. Allez dans : Paramètres Android > Apps
-2. Sélectionnez : Klavyé Kréyòl Karukera
+2. Sélectionnez : Lëtzebuergesch Clavier
 3. Appuyez sur : Stockage > Effacer les données
 4. Confirmez la suppression
 5. Ceci réinitialise tous les paramètres et la progression de gamification
 
 **Option 3 : Suppression Complète (Désinstaller l'App)**
-1. Allez dans : Paramètres Android > Apps > Klavyé Kréyòl Karukera
+1. Allez dans : Paramètres Android > Apps > Lëtzebuergesch Clavier
 2. Appuyez sur : Désinstaller
-3. Ou : Google Play Store > Installé > Klavyé Kréyòl > Désinstaller
+3. Ou : Google Play Store > Installé > Lëtzebuergesch Clavier > Désinstaller
 4. Toutes les données de l'app sont immédiatement supprimées de votre appareil
 
 **Option 4 : Réinitialisation d'Usine de l'Appareil**
@@ -427,7 +428,7 @@ Même si nous ne collectons aucune donnée, nous respectons tous les droits à l
 
 ### Selon le RGPD (Règlement Général sur la Protection des Données de l'UE) :
 
-**Applicable à :** Résidents de l'UE et utilisateurs dans les territoires de l'UE (incluant la Guadeloupe)
+**Applicable à :** Résidents de l'UE et utilisateurs dans les territoires de l'UE (dont le Luxembourg)
 
 1. **Droit d'Accès (Article 15) :** 
    - Vous pouvez demander l'accès à vos données personnelles
@@ -496,7 +497,7 @@ Nous nous conformons aux réglementations de confidentialité dans le monde, inc
 ### Comment Exercer Vos Droits :
 
 **Contactez-nous à :** contact@potomitan.io  
-**Objet :** "Demande de Droits à la Vie Privée - Klavyé Kréyòl"  
+**Objet :** "Demande de Droits à la Vie Privée - Lëtzebuergesch Clavier"  
 **Inclure :** Votre type de demande (accès, suppression, etc.) et tous détails pertinents  
 **Temps de réponse :** Dans les 30 jours (exigence RGPD) ou 45 jours (exigence CCPA)  
 
@@ -506,12 +507,12 @@ Nous nous conformons aux réglementations de confidentialité dans le monde, inc
 
 ## 🎮 Gamification et Fonctionnalités d'Apprentissage
 
-Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l'apprentissage du créole amusant et motivant :
+Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l'apprentissage du luxembourgeois amusant et motivant :
 
 ### Comment Fonctionne la Gamification :
 
 - **7 Niveaux :** Pipirit → Ti moun → Débrouya → An mitan → Kompè Lapen → Kompè Zamba → Potomitan
-- **Suivi de Progression :** Compte combien de mots créoles uniques vous avez tapés
+- **Suivi de Progression :** Compte combien de mots luxembourgeois uniques vous avez tapés
 - **Récompenses :** Débloque des badges pour des jalons (ex: "100 premiers mots")
 
 ### Quelles Données Sont Utilisées :
@@ -555,7 +556,7 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 
 **Contact Principal :**  
 **Email :** contact@potomitan.io  
-**Objet :** "Question Vie Privée - Klavyé Kréyòl"  
+**Objet :** "Question Vie Privée - Lëtzebuergesch Clavier"  
 
 
 **Délégué à la Protection des Données (DPO) :**  
@@ -566,19 +567,19 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 ### Pour le Support Général :
 
 **Email :** contact@potomitan.io  
-**GitHub Issues :** https://github.com/Famibelle/KreyolKeyb/issues  
-**Documentation :** https://github.com/Famibelle/KreyolKeyb/blob/main/README.md
+**GitHub Issues :** https://github.com/famibelle/LuxKeyb/issues  
+**Documentation :** https://github.com/famibelle/LuxKeyb/blob/main/README.md
 
 ### Pour les Demandes de Fonctionnalités :
 
-**GitHub Discussions :** https://github.com/Famibelle/KreyolKeyb/discussions  
+**GitHub Discussions :** https://github.com/famibelle/LuxKeyb/discussions  
 **Email :** contact@potomitan.io avec objet "Demande de Fonctionnalité"
 
 ### Support Linguistique :
 
 Nous répondons aux demandes en :
 - **Français**
-- **Kreyòl** (Créole)
+- **Lëtzebuergesch** (Luxembourgeois)
 - **English** (Anglais)
 
 ### Procédure de Plainte :
@@ -648,7 +649,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 ### S'Abonner aux Mises à Jour :
 
 **Option : GitHub Watch**
-- Visitez : https://github.com/Famibelle/KreyolKeyb
+- Visitez : https://github.com/famibelle/LuxKeyb
 - Cliquez : Watch > Custom > Releases
 - Soyez notifié de toutes les mises à jour
 
@@ -759,7 +760,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 - 🔒 **Zéro collecte de données :** Nous ne collectons, ne stockons ni ne partageons AUCUNE donnée personnelle
 - 📱 **100% hors ligne :** L'app fonctionne sans Internet, aucune transmission de données
 - 🚫 **Aucun suivi :** Pas d'analytics, pas de pubs, pas de SDK tiers
-- 🎓 **App éducative :** Construite pour promouvoir l'apprentissage de la langue créole
+- 🎓 **App éducative :** Construite pour promouvoir l'apprentissage du luxembourgeois
 - 🆓 **Complètement gratuite :** Pas d'achats intégrés, pas de fonctionnalités premium
 
 ### Ce Qui Arrive à Vos Données :
@@ -781,7 +782,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 ### Contact :
 - 📧 **Email :** contact@potomitan.io
 - 🌐 **Site web :** potomitan.io
-- 💻 **GitHub :** github.com/Famibelle/KreyolKeyb
+- 💻 **GitHub :** github.com/famibelle/LuxKeyb
 
 **En résumé :** C'est le clavier le plus respectueux de la vie privée que vous pouvez utiliser. Nous l'avons construit ainsi intentionnellement.
 
@@ -792,9 +793,9 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 ### En Savoir Plus :
 
 - **Politique de Confidentialité Complète :** Vous la lisez !
-- **Code Source de l'App :** https://github.com/Famibelle/KreyolKeyb
-- **Guide Utilisateur :** https://github.com/Famibelle/KreyolKeyb/blob/main/README.md
-- **FAQ :** https://github.com/Famibelle/KreyolKeyb/wiki/FAQ
+- **Code Source de l'App :** https://github.com/famibelle/LuxKeyb
+- **Guide Utilisateur :** https://github.com/famibelle/LuxKeyb/blob/main/README.md
+- **FAQ :** https://github.com/famibelle/LuxKeyb/wiki/FAQ
 
 ### Éducation à la Vie Privée :
 
@@ -816,7 +817,7 @@ Si vous découvrez une vulnérabilité de sécurité :
 
 ## ✅ Reconnaissance de l'Utilisateur
 
-En installant et utilisant **Klavyé Kréyòl Karukera • Potomitan™**, vous reconnaissez que :
+En installant et utilisant **Lëtzebuergesch Clavier • Potomitan™**, vous reconnaissez que :
 
 1. Vous avez lu et compris cette Politique de Confidentialité
 2. Vous consentez aux pratiques décrites ici (qui sont essentiellement : nous ne faisons rien avec vos données)
@@ -830,7 +831,7 @@ En installant et utilisant **Klavyé Kréyòl Karukera • Potomitan™**, vous 
 
 ## 🎯 Notre Promesse
 
-Chez Potomitan, nous avons construit **Klavyé Kréyòl Karukera** parce que nous aimons notre langue et notre culture - pas pour gagner de l'argent avec vos données.
+Chez Potomitan, nous avons construit **Lëtzebuergesch Clavier** parce que nous aimons notre langue et notre culture - pas pour gagner de l'argent avec vos données.
 
 **Notre engagement :**
 - Nous ne collecterons **JAMAIS** vos données personnelles
@@ -842,13 +843,13 @@ Chez Potomitan, nous avons construit **Klavyé Kréyòl Karukera** parce que nou
 
 **Ce n'est pas qu'une politique - c'est notre mission.**
 
-La langue est profondément personnelle et culturelle. Vous devriez pouvoir taper en créole sans vous soucier de la surveillance, du suivi ou de l'exploitation des données.
+La langue est profondément personnelle et culturelle. Vous devriez pouvoir taper en luxembourgeois sans vous soucier de la surveillance, du suivi ou de l'exploitation des données.
 
 C'est pourquoi nous avons construit ce clavier de la bonne manière : **La confidentialité d'abord, toujours.**
 
 ---
 
-**Merci de soutenir la préservation de la langue créole avec Klavyé Kréyòl Karukera • Potomitan™** 🇬🇵
+**Merci de soutenir la préservation du lëtzebuergesch avec Lëtzebuergesch Clavier • Potomitan™** 🇱🇺
 
 ---
 
