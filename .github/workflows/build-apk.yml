@@ -53,7 +53,9 @@ jobs:
 
         # LuxembourgishComplet.py écrit directement dans les assets Android,
         # au seul format que le moteur sait lire.
-        python LuxembourgishComplet.py
+        # --strict : refuser le corpus local de secours plutôt que de
+        # reconstruire les n-grammes sur quinze phrases.
+        python LuxembourgishComplet.py --strict
 
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
@@ -97,6 +99,17 @@ jobs:
         TWO_WORD=$(jq '[keys[] | select(test(" "))] | length' "$A/luxemburgish_ngrams.json")
         if [ "$TWO_WORD" -eq 0 ]; then
           echo "::error::Le modèle n-grammes ne contient aucune clé à deux mots : les trigrammes ne sont pas exportés, le contexte est inopérant."
+          exit 1
+        fi
+
+        # Garde-fou de volumétrie des n-grammes. Le seuil sur le dictionnaire ne
+        # suffit pas : le pipeline enrichit la liste de mots existante mais
+        # reconstruit les n-grammes à zéro. Un repli sur le corpus de secours
+        # laisse donc les 6 000 mots en place et fait fondre les contextes de
+        # 6 000 à 262, sans qu'aucune autre vérification s'en aperçoive.
+        NGRAMS_COUNT=$(jq 'length' "$A/luxemburgish_ngrams.json")
+        if [ "$NGRAMS_COUNT" -lt 3000 ]; then
+          echo "::error::Modèle n-grammes anormalement petit ($NGRAMS_COUNT contextes, moins de 3000). Le corpus source est probablement incomplet."
           exit 1
         fi
 
@@ -338,15 +351,15 @@ jobs:
         
         if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ] && [ -n "$KEYSTORE_BASE64" ]; then
           echo "🔑 Decoding production keystore from GitHub Secrets..."
-          echo "$KEYSTORE_BASE64" | base64 -d > app/$KEYSTORE_FILE
+          echo "$KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
           echo "✅ Production keystore decoded: $KEYSTORE_FILE"
           echo "🔐 Release APK will be signed with production key"
           
           # Vérification du keystore
-          keytool -list -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
+          keytool -list -v -keystore $KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
         else
           echo "⚠️ Production secrets not available, generating debug keystore..."
-          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
         fi
 
@@ -414,15 +427,15 @@ jobs:
         
         if [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ] && [ -n "$KEYSTORE_BASE64" ]; then
           echo "🔑 Decoding production keystore from GitHub Secrets..."
-          echo "$KEYSTORE_BASE64" | base64 -d > app/$KEYSTORE_FILE
+          echo "$KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
           echo "✅ Production keystore decoded: $KEYSTORE_FILE"
           echo "🏪 Release AAB will be signed for Google Play Store"
           
           # Vérification du keystore
-          keytool -list -v -keystore app/$KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
+          keytool -list -v -keystore $KEYSTORE_FILE -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" | grep "SHA1:" || echo "⚠️ SHA1 verification"
         else
           echo "⚠️ Production secrets not available, generating debug keystore..."
-          keytool -genkey -v -keystore app/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
         fi
 
