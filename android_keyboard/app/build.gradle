@@ -17,10 +17,10 @@ android {
             def storePass = project.findProperty('STORE_PASSWORD') ?: System.getenv("STORE_PASSWORD")
             def keyAliasEnv = project.findProperty('KEY_ALIAS') ?: System.getenv("KEY_ALIAS")
             def keyPass = project.findProperty('KEY_PASSWORD') ?: System.getenv("KEY_PASSWORD")
-            
+
             // Résoudre le chemin relatif depuis le dossier racine du projet (android_keyboard)
             def keystorePath = keystoreFile ? rootProject.file(keystoreFile) : null
-            
+
             if (keystoreFile && keystorePath && keystorePath.exists() && storePass && keyAliasEnv && keyPass) {
                 // Signature de production (local ou GitHub Actions)
                 println "✅ Production signing enabled with keystore: ${keystorePath.absolutePath}"
@@ -30,19 +30,24 @@ android {
                 keyPassword keyPass
                 v1SigningEnabled true
                 v2SigningEnabled true
+                project.ext.releaseSigningReady = true
             } else {
-                // ❌ FAIRE ÉCHOUER si on ne peut pas signer en production
-                println "❌ PRODUCTION SIGNING FAILED:"
+                // Aucun repli vers la clé debug : un AAB signé debug est refusé par
+                // Play, et le fallback silencieux ne se voyait qu'au moment du rejet.
+                //
+                // L'échec ne peut pas être levé ici : ce bloc est évalué à CHAQUE
+                // invocation de Gradle (assembleDebug, tests, synchro IDE), pas
+                // seulement pour les tâches de release. On se contente de noter
+                // l'état ; le refus est prononcé plus bas, sur les tâches qui
+                // produisent réellement l'artefact de release.
+                println "⚠️ Release signing non configuré (les builds debug restent possibles) :"
                 println "   - Keystore path: ${keystoreFile}"
                 println "   - Keystore resolved: ${keystorePath?.absolutePath ?: 'N/A'}"
                 println "   - Keystore exists: ${keystorePath?.exists() ?: false}"
                 println "   - Store password: ${storePass ? '***' : 'MISSING'}"
                 println "   - Key alias: ${keyAliasEnv ?: 'MISSING'}"
                 println "   - Key password: ${keyPass ? '***' : 'MISSING'}"
-                println ""
-                println "❌ Cannot sign with debug key for release build!"
-                println "❌ Configure KEYSTORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD"
-                throw new GradleException("Release signing configuration is incomplete. Debug keystore cannot be used for Play Store.")
+                project.ext.releaseSigningReady = false
             }
         }
     }
@@ -133,6 +138,29 @@ androidComponents {
             def date = new Date().format('yyyy-MM-dd')
             def versionName = output.versionName.getOrElse(variant.name)
             output.outputFileName.set("Letzebuergesch_Clavier_v${versionName}_${variant.buildType}_${date}.apk")
+        }
+    }
+}
+
+// Refus explicite de produire une release qu'on ne peut pas signer en
+// production. La vérification est accrochée aux tâches qui valident, signent et
+// empaquettent l'artefact, et non à assembleRelease/bundleRelease : un doFirst
+// sur ces tâches agrégées s'exécuterait après leurs dépendances, donc trop tard.
+// AGP finit par échouer de lui-même sur validateSigningRelease, mais avec un
+// message qui ne dit pas quoi configurer. Liste explicite plutôt qu'un motif :
+// packageReleaseResources, qui fusionne des ressources et ne signe rien, se
+// ferait attraper au passage.
+tasks.matching {
+    it.name in ['validateSigningRelease', 'packageRelease', 'signReleaseBundle', 'packageReleaseBundle']
+}.configureEach {
+    doFirst {
+        if (!project.ext.releaseSigningReady) {
+            throw new GradleException(
+                "Release signing configuration is incomplete. " +
+                "Configure KEYSTORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD " +
+                "(gradle.properties ou variables d'environnement) : la clé debug " +
+                "est refusée par le Play Store."
+            )
         }
     }
 }

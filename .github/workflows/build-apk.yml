@@ -373,6 +373,26 @@ jobs:
         GRADLE_OPTS: "-Dorg.gradle.buildscan.termsOfServiceUrl=https://gradle.com/terms-of-service -Dorg.gradle.buildscan.termsOfServiceAgree=yes"
       run: cd android_keyboard && gradle assembleRelease --no-daemon --scan
 
+    - name: 🔐 Verify Release APK Signature
+      run: |
+        set -euo pipefail
+        cd android_keyboard
+        APK_FILE=$(ls app/build/outputs/apk/release/*.apk | head -1)
+        echo "📦 $APK_FILE"
+
+        # apksigner comprend les signatures v2/v3, contrairement à jarsigner qui
+        # ne voit que le schéma v1.
+        APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+        "$APKSIGNER" verify --print-certs "$APK_FILE" > /tmp/apk-verify.txt
+        grep -E "Signer #1 certificate DN|Signer #1 certificate SHA-256" /tmp/apk-verify.txt || true
+
+        if grep -q "CN=Android Debug" /tmp/apk-verify.txt; then
+          echo "❌ APK signé avec la clé debug : ce n'est pas un artefact publiable"
+          exit 1
+        fi
+
+        echo "✅ APK signé en production"
+
     - name: 📤 Upload Release APK
       uses: actions/upload-artifact@v4
       with:
@@ -446,27 +466,45 @@ jobs:
 
     - name: Verify AAB Signature
       run: |
+        # pipefail : sans lui, le code de sortie d'un pipeline est celui du
+        # dernier maillon, et un jarsigner en échec passait inaperçu.
+        set -euo pipefail
         cd android_keyboard
         echo "🔍 Verifying AAB signature..."
         AAB_FILE="app/build/outputs/bundle/release/app-release.aab"
-        
-        if [ -f "$AAB_FILE" ]; then
-          echo "✅ AAB found: $AAB_FILE"
-          echo ""
-          echo "📊 AAB Details:"
-          ls -lh "$AAB_FILE"
-          echo ""
-          echo "🔐 Certificate Information:"
-          jarsigner -verify -verbose -certs "$AAB_FILE" | grep "CN=" | head -1
-          echo ""
-          echo "🔑 SHA Fingerprints:"
-          keytool -printcert -jarfile "$AAB_FILE" 2>&1 | grep "SHA" || echo "Unable to extract SHA via keytool"
-          echo ""
-          echo "✅ AAB is ready for Google Play Console upload"
-        else
+
+        if [ ! -f "$AAB_FILE" ]; then
           echo "❌ AAB not found at $AAB_FILE"
           exit 1
         fi
+
+        echo "📊 AAB Details:"
+        ls -lh "$AAB_FILE"
+
+        echo ""
+        echo "🔐 Certificate Information:"
+        # Pas de -strict : une clé auto-signée (la nôtre) y déclencherait un
+        # avertissement de chaîne non validée, donc un code de sortie non nul.
+        jarsigner -verify -verbose -certs "$AAB_FILE" > /tmp/aab-verify.txt
+        grep "CN=" /tmp/aab-verify.txt | head -1
+
+        # jarsigner n'échoue pas toujours sur une archive non signée : on exige
+        # la mention explicite de vérification.
+        if ! grep -q "jar verified" /tmp/aab-verify.txt; then
+          echo "❌ AAB non signé ou signature invalide"
+          exit 1
+        fi
+
+        if grep -q "CN=Android Debug" /tmp/aab-verify.txt; then
+          echo "❌ AAB signé avec la clé debug : refusé par le Play Store"
+          exit 1
+        fi
+
+        echo ""
+        echo "🔑 SHA Fingerprints:"
+        keytool -printcert -jarfile "$AAB_FILE" 2>&1 | grep "SHA" || echo "Unable to extract SHA via keytool"
+        echo ""
+        echo "✅ AAB signé en production, prêt pour la Play Console"
 
     - name: Upload Release AAB
       uses: actions/upload-artifact@v4
