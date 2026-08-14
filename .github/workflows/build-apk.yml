@@ -549,6 +549,9 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
       
     - name: 📝 Extract Release Notes from CHANGELOG
       id: changelog
@@ -717,3 +720,46 @@ jobs:
         
         # Ajouter le commentaire à la release existante
         gh release edit "${{ github.ref_name }}" --notes-file /tmp/release-notes.md --notes "$STATS_COMMENT" || echo "⚠️ Impossible d'ajouter les statistiques (release peut-être déjà complète)"
+
+    - name: 📝 Update docs/index.md with New Version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "📝 Mise à jour de docs/index.md avec la nouvelle version..."
+        
+        # Extraire la version du tag (sans le 'v' prefix)
+        TAG_VERSION="${GITHUB_REF_NAME#v}"
+        echo "🏷️  Version: $TAG_VERSION"
+        
+        # Vérifier que le fichier docs/index.md existe
+        if [ ! -f "docs/index.md" ]; then
+          echo "❌ docs/index.md non trouvé"
+          exit 1
+        fi
+        
+        # Mettre à jour la version dans le fichier (ligne avec "version X.Y.Z")
+        sed -i "s/📲 Télécharger l'APK (version [0-9]*\.[0-9]*\.[0-9]*)/📲 Télécharger l'APK (version $TAG_VERSION)/g" docs/index.md
+        
+        # Vérifier que le remplacement a fonctionné
+        if grep -q "📲 Télécharger l'APK (version $TAG_VERSION)" docs/index.md; then
+          echo "✅ Version mise à jour dans docs/index.md"
+        else
+          echo "❌ Échec de la mise à jour de la version dans docs/index.md"
+          echo "Contenu actuel :"
+          grep "Télécharger l'APK" docs/index.md || echo "Ligne non trouvée"
+          exit 1
+        fi
+        
+        # Configurer git
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Commit et push des modifications
+        git add docs/index.md
+        git commit -m "docs: mise à jour version APK vers $TAG_VERSION [skip ci]"
+        
+        # Utiliser le token GitHub pour l'authentification
+        git remote set-url origin "https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+        git push origin main
+        
+        echo "✅ Commit et push effectués avec succès"
