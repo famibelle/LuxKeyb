@@ -163,31 +163,44 @@ class LuxembourgishPipelineUnique:
                     ds = load_dataset("POTOMITAN/luxembourgish-corpus", streaming=True)
                     
                     print("   ✅ Streaming activé")
-                    print("   📝 Extraction des textes en mode streaming...")
+                    # Afficher les splits disponibles
+                    available_splits = list(ds.keys())
+                    print(f"   📁 Splits disponibles: {available_splits}")
+                    print("   📝 Extraction des textes en mode streaming depuis TOUS les splits...")
                     
                     self.textes_luxembourgeois = []
                     textes_vides = 0
                     textes_avec_texte = 0
+                    total_processed = 0
                     
-                    # Traitement en streaming - plus rapide
-                    for i, item in enumerate(ds["train"]):
-                        # Limiter pour éviter trop de données en streaming
-                        if i >= 500:  # Limite raisonnable pour le clavier
+                    # Traitement en streaming - plus rapide, pour tous les splits
+                    for split_name in available_splits:
+                        print(f"   🔹 Traitement du split '{split_name}'...")
+                        split_data = ds[split_name]
+                        
+                        for i, item in enumerate(split_data):
+                            # Limiter pour éviter trop de données en streaming
+                            if total_processed >= 500:  # Limite raisonnable pour le clavier
+                                break
+                                
+                            if "Texte" in item and item["Texte"]:
+                                self.textes_luxembourgeois.append({
+                                    "Texte": item["Texte"],
+                                    "Source": f"POTOMITAN/luxembourgish-corpus ({split_name}, streaming)",
+                                    "metadata": {k: v for k, v in item.items() if k not in ["Texte", "Source"]}
+                                })
+                                textes_avec_texte += 1
+                            else:
+                                textes_vides += 1
+                            
+                            total_processed += 1
+                            
+                            # Affichage de progression
+                            if total_processed % 50 == 0:
+                                print(f"      📊 Traité {total_processed} textes...")
+                        
+                        if total_processed >= 500:
                             break
-                            
-                        if "Texte" in item and item["Texte"]:
-                            self.textes_luxembourgeois.append({
-                                "Texte": item["Texte"],
-                                "Source": "POTOMITAN/luxembourgish-corpus (streaming)",
-                                "metadata": {k: v for k, v in item.items() if k not in ["Texte", "Source"]}
-                            })
-                            textes_avec_texte += 1
-                        else:
-                            textes_vides += 1
-                            
-                        # Affichage de progression
-                        if (i + 1) % 50 == 0:
-                            print(f"      📊 Traité {i + 1} textes...")
                     
                     print(f"   📈 Statistiques d'extraction (streaming):")
                     print(f"      - Textes traités: {textes_avec_texte + textes_vides}")
@@ -226,27 +239,23 @@ class LuxembourgishPipelineUnique:
                     # Vérifier la structure du dataset
                     print(f"   📁 Structure du dataset: {list(dataset.keys())}")
                     
-                    # Déterminer quelle clé utiliser
-                    data_split = None
-                    if 'train' in dataset:
-                        data_split = dataset['train']
-                        split_name = 'train'
-                    elif 'test' in dataset:
-                        data_split = dataset['test']
-                        split_name = 'test'
-                    else:
-                        # Prendre la première clé disponible
-                        split_name = list(dataset.keys())[0]
-                        data_split = dataset[split_name]
+                    # Combiner TOUS les splits disponibles
+                    print("   📝 Combinaison de TOUS les splits...")
+                    all_items = []
+                    total_rows = 0
+                    for split_name in dataset.keys():
+                        split_data = dataset[split_name]
+                        all_items.extend(split_data)
+                        total_rows += len(split_data)
+                        print(f"      - Split '{split_name}': {len(split_data)} rows")
                     
-                    print(f"   📊 Utilisation du split: '{split_name}'")
-                    print(f"   📊 Nombre total de rows: {len(data_split)}")
+                    print(f"   📊 Nombre total de rows (tous splits): {total_rows}")
                     print("   🔍 Extraction des textes...")
                 
                     # Échantillon des premières rows pour debug
                     print("   🔬 Échantillon des premières rows:")
-                    for i in range(min(3, len(data_split))):
-                        item = data_split[i]
+                    for i in range(min(3, len(all_items))):
+                        item = all_items[i]
                         print(f"      Row {i+1}: {list(item.keys())}")
                         if 'Texte' in item:
                             preview = str(item['Texte'])[:50] + "..." if len(str(item['Texte'])) > 50 else str(item['Texte'])
@@ -256,11 +265,13 @@ class LuxembourgishPipelineUnique:
                     textes_vides = 0
                     textes_avec_texte = 0
                     
-                    for i, item in enumerate(data_split):
+                    for i, item in enumerate(all_items):
                         if "Texte" in item and item["Texte"]:
+                            # Déterminer le split d'origine si possible
+                            split_source = "POTOMITAN/luxembourgish-corpus"
                             self.textes_luxembourgeois.append({
                                 "Texte": item["Texte"],
-                                "Source": "POTOMITAN/luxembourgish-corpus",
+                                "Source": split_source,
                                 "metadata": {k: v for k, v in item.items() if k != "Texte"}
                             })
                             textes_avec_texte += 1
@@ -270,7 +281,7 @@ class LuxembourgishPipelineUnique:
                                 print(f"   ⚠️ Row {i+1} sans texte valide: {list(item.keys())}")
                     
                     print(f"   📈 Statistiques d'extraction:")
-                    print(f"      - Rows totales: {len(data_split)}")
+                    print(f"      - Rows totales: {total_rows}")
                     print(f"      - Avec champ 'Texte': {textes_avec_texte}")
                     print(f"      - Vides ou invalides: {textes_vides}")
                     print(f"      - Textes extraits: {len(self.textes_luxembourgeois)}")
