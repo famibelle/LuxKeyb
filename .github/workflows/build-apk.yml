@@ -383,8 +383,15 @@ jobs:
         # apksigner comprend les signatures v2/v3, contrairement à jarsigner qui
         # ne voit que le schéma v1.
         APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
-        "$APKSIGNER" verify --print-certs "$APK_FILE" > /tmp/apk-verify.txt
-        grep -E "Signer #1 certificate DN|Signer #1 certificate SHA-256" /tmp/apk-verify.txt || true
+        echo "🔧 $APKSIGNER"
+        "$APKSIGNER" verify --verbose --print-certs "$APK_FILE" 2>&1 | tee /tmp/apk-verify.txt
+
+        # Sans cette assertion, un fichier de sortie vide ferait passer le
+        # garde-fou suivant sans rien avoir vérifié du tout.
+        if ! grep -q "certificate DN" /tmp/apk-verify.txt; then
+          echo "❌ apksigner n'a produit aucune information de certificat"
+          exit 1
+        fi
 
         if grep -q "CN=Android Debug" /tmp/apk-verify.txt; then
           echo "❌ APK signé avec la clé debug : ce n'est pas un artefact publiable"
