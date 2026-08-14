@@ -140,6 +140,16 @@ nav.site strong { color: var(--ink); }
   padding: 18px;
 }
 
+/* Tableaux larges (comparatif de l'accueil) : ils défilent dans leur propre
+   cadre, sinon c'est la page entière qui part de travers sur téléphone. */
+.table-scroll {
+  overflow-x: auto;
+  margin: 18px 0;
+}
+.table-scroll table { display: table; width: 100%; }
+.table-scroll th:first-child,
+.table-scroll td:first-child { min-width: 190px; }
+
 /* Bouton de bascule clair/sombre : lien de nav ou position fixe selon la page */
 .theme-toggle {
   display: inline-flex;

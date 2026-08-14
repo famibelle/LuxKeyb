@@ -146,6 +146,40 @@ progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et n
 sont donc jamais enregistrés. Le clavier se désactive de lui-même dans les
 champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-policy.html).
 
+## Face aux autres claviers
+
+Le luxembourgeois n'est absent d'aucun grand clavier : Gboard comme SwiftKey le
+proposent. Mais aucun n'est **construit** pour lui, et les claviers libres qui
+acceptent un dictionnaire luxembourgeois s'appuient sur une liste de mots figée
+depuis 2013, sans prédiction du mot suivant.
+
+<div class="table-scroll" markdown="1">
+
+| | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
+|---|---|---|---|---|---|
+| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
+| Dictionnaire luxembourgeois | **8 792 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 23 169 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
+| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
+| Écriture sans diacritiques | **Oui** | — | — | — | — |
+| Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
+| Aucun accès à Internet | **Oui** | Non | Non | Oui | Oui |
+| Code ouvert | **Oui**, MIT | Non | Non | Oui | Oui |
+| Jeux et progression | **Oui**, 3 jeux, 8 niveaux | Non | Non | Non | Non |
+| Saisie glissée | Non | Oui | Oui | Bibliothèque à ajouter | Gestes |
+| Dictée vocale | Non | Oui | Oui | Non | Non |
+| Thème sombre | Non | Oui | Oui | Oui | Oui |
+
+</div>
+
+<p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Chiffres relevés en
+août 2026 ; le dictionnaire luxembourgeois des claviers libres provient du
+<a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.</p>
+
+**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, pas de
+thème sombre, et pas de dictionnaire allemand à côté du français. Ces manques
+sont réels et connus ; ils sont en tête de la liste des choses à faire.
+
 ## D'où viennent les suggestions
 
 Le dictionnaire et les n-grammes sont générés à partir d'un corpus de
