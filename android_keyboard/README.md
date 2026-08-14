@@ -1,4 +1,4 @@
-# 🇸🇷 Clavier Créole Guadeloupéen - Potomitan™
+#  Clavier Créole Guadeloupéen - Potomitan™
 
 Un clavier Android intelligent pour la saisie en **Kreyòl Guadeloupéen** avec layout AZERTY, suggestions de mots et accents caribéens.
 
@@ -93,7 +93,7 @@ cd KreyolKeyb/android_keyboard
 android_keyboard/
 ├── app/src/main/
 │   ├── java/com/potomitan/kreyolkeyboard/
-│   │   ├── KreyolInputMethodService.kt  # Service principal IME
+│   │   ├── KreyolInputMethodServiceRefactored.kt  # Service IME (unique)
 │   │   └── SettingsActivity.kt          # Activité de configuration
 │   ├── res/
 │   │   ├── layout/                      # Layouts XML
@@ -249,7 +249,7 @@ R: Utiliser le script `EnrichirDictionnaire.py` pour enrichir le corpus
 
 <div align="center">
 
-**🇸🇷 Fierté Guadeloupéenne - Technologie Moderne 🇸🇷**
+** Fierté Guadeloupéenne - Technologie Moderne **
 
 *Développé avec ❤️ pour la communauté créolophone*
 

@@ -1,0 +1,49 @@
+name: 🎁 Update exclusive features
+
+# Met à jour docs/stats/exclusive_features.json (section "À découvrir en
+# exclusivité" de la page d'accueil) :
+# - chaque jour : régénère la liste depuis android_keyboard/CHANGELOG.md,
+#   à partir de la version actuellement en production sur le Play Store
+# - manuellement : lancer le workflow avec le champ "production_version"
+#   pour signaler qu'une nouvelle version a été publiée sur le Play Store
+#   (Actions → Update exclusive features → Run workflow)
+
+on:
+  schedule:
+    - cron: '41 6 * * *'
+  workflow_dispatch:
+    inputs:
+      production_version:
+        description: 'Version désormais en production sur le Play Store (ex: 10.2.1)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate exclusive_features.json
+        env:
+          PRODUCTION_VERSION: ${{ github.event.inputs.production_version }}
+        run: |
+          if [ -n "$PRODUCTION_VERSION" ]; then
+            python3 scripts/generate_exclusive_features.py --set-production-version "$PRODUCTION_VERSION"
+          else
+            python3 scripts/generate_exclusive_features.py
+          fi
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet docs/stats/exclusive_features.json; then
+            echo "Aucun changement"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/stats/exclusive_features.json
+          git commit -m "chore: MAJ des fonctionnalités en exclusivité [skip ci]"
+          git push

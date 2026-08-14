@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
@@ -14,8 +15,8 @@ import android.widget.PopupWindow
 import android.widget.TextView
 
 /**
- * Gestionnaire des accents et caract├¿res sp├®ciaux pour le clavier cr├®ole
- * G├¿re les popups d'accents et la s├®lection de caract├¿res diacritiques
+ * Gestionnaire des accents et caractères spéciaux pour le clavier créole
+ * Gère les popups d'accents et la sélection de caractères diacritiques
  */
 class AccentHandler(private val context: Context) {
     
@@ -27,21 +28,83 @@ class AccentHandler(private val context: Context) {
         private const val ACCENT_BUTTON_MARGIN_DP = 4
     }
     
-    // Configuration des accents pour chaque touche de base
-    private val accentMap = mapOf(
-        "a" to listOf("à", "á", "â", "ä", "ã", "å"),
-        "e" to listOf("é", "è", "ê", "ë"),
-        "i" to listOf("í", "ì", "î", "ï", "ĩ"),
-        "o" to listOf("ó", "ò", "ô", "ö", "õ", "ø"),
-        "u" to listOf("ú", "ù", "û", "ü", "ũ"),
-        "n" to listOf("ñ"),
-        "c" to listOf("ç", "ć", "č"),
-        "s" to listOf("š", "ś", "ş"),
-        "z" to listOf("ž", "ź", "ż"),
-        "l" to listOf("ł"),
-        "y" to listOf("ý", "ÿ")
-    )
+    // État du mode majuscule
+    var isCapitalMode: Boolean = false
     
+    // Configuration des accents pour chaque touche de base
+    // Révisé pour le duo kréyòl/français réellement supporté (v8.2.0) :
+    // é/è/ò sont déjà des touches dédiées du clavier, donc retirées d'ici.
+    // ch/dj/ng sont des digraphes fréquents en graphie créole GEREC.
+    // v8.3.0 : ponctuation ajoutée sur les touches , . ' déjà visibles en mode
+    // alphabétique, pour éviter l'aller-retour vers le mode 123.
+    // v8.4.0 : ë et ü retirés (0 occurrence dans creole_dict.json comme dans
+    // french_simple_dict.json) ; œ ajouté (« œil », « cœur » dans le dico
+    // français, absent du clavier jusqu'ici), sur la base d'un comptage des
+    // diacritiques réellement présents dans les deux dictionnaires.
+    // v8.5.0 : trait d'union remonté en tête de l'appui long sur '.' (donc
+    // affiché dans l'indice de coin). 21,7% des mots créoles en contiennent
+    // un (marqueur d'élision : "a-y", "ba-w", "an-nou"...), fréquence cumulée
+    // 26 623, supérieure à celle de la touche dédiée "ò" (18 699).
+    // v8.6.0 : "-" devient touche dédiée (KeyboardLayoutManager, rangée 4),
+    // retiré d'ici comme é/è/ò l'avaient été en v8.2.0.
+    // v8.7.0 : é et è rejoignent l'appui long sur "e" (déjà des touches dédiées
+    // par ailleurs), classés par fréquence décroissante dans creole_dict.json :
+    // é (86 743, 1603 mots) > è (45 490, 992 mots) > ê (15, 1 mot).
+    // v8.7.0 (suite) : ò rejoint l'appui long sur "o" (déjà touche dédiée par
+    // ailleurs, même logique que é/è sur "e") ; ordre choisi ò, ô, ó, œ.
+    // v8.7.3 : trois digraphes GEREC manquants ajoutés, sur la base d'un
+    // comptage des occurrences cumulées (creole_dict.json + french_simple_dict.json) :
+    // "n" gagne "ny" (/ɲ/, 1353 occurrences, 47 mots) en plus de "ng", déjà
+    // plus fréquent que "dj" (74) présent depuis v8.2.0. "g" gagne "gn" (2915,
+    // digraphe français : montagne, campagne) et "gy" (221, variante créole
+    // rare), touche qui n'avait jusqu'ici aucun appui long. "t" gagne "tj"
+    // (/tʃ/, 184) qui complète la série des occlusives palatalisées GEREC
+    // ch/dj/tj/ng aux côtés des touches c/d/n déjà couvertes.
+    private val accentMap = mapOf(
+        "a" to listOf("à", "â"),
+        "e" to listOf("é", "è", "ê"),
+        "i" to listOf("î", "ï"),
+        "o" to listOf("ò", "ô", "ó", "œ"),
+        "u" to listOf("ù", "û"),
+        "n" to listOf("ng", "ny"),
+        "c" to listOf("ç", "ch"),
+        "d" to listOf("dj"),
+        "g" to listOf("gn", "gy"),
+        "t" to listOf("tj"),
+        // v9.1.0 : "'" n'est plus une touche visible dédiée (0 occurrence dans
+        // creole_dict.json) ; rejoint l'appui long sur "," pour libérer une
+        // place en rangée 4 pour la touche emoji. Les guillemets/quote qui
+        // vivaient sous l'appui long de "'" disparaissent avec elle (aucun
+        // usage relevé dans les dictionnaires non plus).
+        "," to listOf(";", ":", "'"),
+        "." to listOf("!", "?", "…")
+    )
+
+    // Ordre d'affichage des aperçus en coin, quand il doit différer de l'ordre
+    // du popup d'appui long (v8.7.0) : "e" affiche "è" en haut-droit et "é" en
+    // bas-droit, alors que le popup liste é avant è (fréquence décroissante).
+    private val cornerHintOverrides = mapOf(
+        "e" to listOf("è", "é"),
+        "o" to listOf("ò", "ó")
+    )
+
+    // Touches dont les aperçus en coin s'affichent à gauche plutôt qu'à droite
+    // (toute touche absente de cet ensemble garde le coin droit par défaut)
+    private val cornerHintOnStartSide = setOf("o")
+
+    // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
+    // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =
+    // emoji au ton foncé par défaut affiché dans la grille, valeur = les 4
+    // autres tons + la version neutre/jaune, dans cet ordre. Contrairement à
+    // accentMap (fixe, connu à la compilation), c'est une donnée chargée à
+    // l'exécution, d'où un champ mutable séparé plutôt qu'une entrée de plus
+    // dans accentMap.
+    private var emojiSkinTones: Map<String, List<String>> = emptyMap()
+
+    fun loadEmojiSkinTones(skinTones: Map<String, List<String>>) {
+        emojiSkinTones = skinTones
+    }
+
     // ├ëtat actuel
     private var currentAccentPopup: PopupWindow? = null
     private val longPressHandler = Handler(Looper.getMainLooper())
@@ -66,13 +129,13 @@ class AccentHandler(private val context: Context) {
      * V├®rifie si une touche a des accents disponibles
      */
     fun hasAccents(key: String): Boolean {
-        return accentMap.containsKey(key.lowercase())
+        return accentMap.containsKey(key.lowercase()) || emojiSkinTones.containsKey(key)
     }
     
     /**
      * Démarre le timer de pression longue pour une touche
      */
-    fun startLongPressTimer(key: String, anchorButton: TextView, isCapitalMode: Boolean = false) {
+    fun startLongPressTimer(key: String, anchorButton: View) {
         if (!hasAccents(key)) return
         
         cancelLongPress()
@@ -80,7 +143,7 @@ class AccentHandler(private val context: Context) {
         
         longPressRunnable = Runnable {
             isLongPressTriggered = true
-            showAccentPopup(key, anchorButton, isCapitalMode)
+            showAccentPopup(key, anchorButton)
             accentListener?.onLongPressStarted(key)
         }
         
@@ -112,42 +175,32 @@ class AccentHandler(private val context: Context) {
     /**
      * Affiche la popup d'accents pour une touche de base
      */
-    fun showAccentPopup(baseKey: String, anchorButton: TextView, isCapitalMode: Boolean = false) {
-        val accents = accentMap[baseKey.lowercase()] ?: return
-        
-        // 🔠 Appliquer la capitalisation si nécessaire
-        val displayAccents = if (isCapitalMode) {
-            accents.map { it.uppercase() }
-        } else {
-            accents
-        }
-        
-        // Déterminer le caractère de base à afficher
-        val displayBaseKey = if (isCapitalMode) baseKey.uppercase() else baseKey.lowercase()
+    fun showAccentPopup(baseKey: String, anchorButton: View) {
+        val accents = accentMap[baseKey.lowercase()] ?: emojiSkinTones[baseKey] ?: return
         
         // Fermer la popup existante si elle existe
         dismissAccentPopup()
         
         try {
             // Créer le layout de la popup
-            val popupLayout = createAccentPopupLayout(displayAccents, displayBaseKey)
+            val popupLayout = createAccentPopupLayout(accents, baseKey)
             
-            // Cr├®er la popup window
+            // Créer la popup window
             currentAccentPopup = PopupWindow(
                 popupLayout,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                false  // Ô£à CORRECTION: focusable=false pour ├®viter fermeture IME
+                false  // ✅ CORRECTION: focusable=false pour éviter fermeture IME
             ).apply {
                 // Style de la popup
                 setBackgroundDrawable(createPopupBackground())
                 elevation = dpToPx(POPUP_ELEVATION_DP).toFloat()
                 
                 // Configuration pour IME
-                isTouchable = true  // Ô£à Permet interaction avec popup
-                isOutsideTouchable = true  // Ô£à Ferme popup si clic ext├®rieur
+                isTouchable = true  // ✅ Permet interaction avec popup
+                isOutsideTouchable = true  // ✅ Ferme popup si clic extérieur
                 
-                // Animation d'entr├®e/sortie
+                // Animation d'entrée/sortie
                 animationStyle = android.R.style.Animation_Dialog
                 
                 // Affichage au-dessus de la touche
@@ -158,7 +211,7 @@ class AccentHandler(private val context: Context) {
                 )
             }
             
-            Log.d(TAG, "Popup d'accents affich├®e pour '$baseKey' avec ${accents.size} options")
+            Log.d(TAG, "Popup d'accents affichée pour '$baseKey' avec ${accents.size} options")
             
         } catch (e: Exception) {
             Log.e(TAG, "Erreur lors de l'affichage de la popup: ${e.message}", e)
@@ -206,11 +259,12 @@ class AccentHandler(private val context: Context) {
     }
     
     /**
-     * Cr├®e un bouton d'accent individuel
+     * Crée un bouton d'accent individuel
      */
     private fun createAccentButton(accent: String, isBase: Boolean): Button {
         return Button(context).apply {
-            text = accent
+            // Appliquer la majuscule si le mode est actif
+            text = if (isCapitalMode) accent.uppercase() else accent
             textSize = 18f
             setTextColor(if (isBase) Color.parseColor("#666666") else Color.parseColor("#333333"))
             
@@ -256,11 +310,13 @@ class AccentHandler(private val context: Context) {
      */
     private fun handleAccentSelection(accent: String) {
         val baseChar = currentBaseCharacter ?: ""
-        accentListener?.onAccentSelected(accent, baseChar)
+        // Appliquer la majuscule si le mode est actif
+        val finalAccent = if (isCapitalMode) accent.uppercase() else accent
+        accentListener?.onAccentSelected(finalAccent, baseChar)
         dismissAccentPopup()
-        currentBaseCharacter = null  // Nettoyer apr├¿s usage
+        currentBaseCharacter = null  // Nettoyer après usage
         
-        Log.d(TAG, "Accent s├®lectionn├®: '$accent' pour base: '$baseChar'")
+        Log.d(TAG, "Accent sélectionné: '$finalAccent' pour base: '$baseChar'")
     }
     
     /**
@@ -306,12 +362,19 @@ class AccentHandler(private val context: Context) {
     }
     
     /**
-     * Calcule la position X de la popup pour qu'elle soit centr├®e
+     * Calcule la position X de la popup pour qu'elle soit centrée
      */
-    private fun calculatePopupX(anchorButton: TextView, popupLayout: LinearLayout): Int {
+    private fun calculatePopupX(anchorButton: View, popupLayout: LinearLayout): Int {
         // Mesurer la largeur approximative de la popup
         val buttonWidth = dpToPx(ACCENT_BUTTON_SIZE_DP + ACCENT_BUTTON_MARGIN_DP * 2)
-        val baseKey = anchorButton.text.toString().lowercase()
+        
+        // Récupérer la clé de base depuis le tag (ImageButton) ou le texte (Button)
+        val baseKey = when (anchorButton) {
+            is Button -> anchorButton.text.toString().lowercase()
+            is android.widget.ImageButton -> (anchorButton.tag as? String)?.lowercase() ?: ""
+            else -> ""
+        }
+        
         val accentCount = accentMap[baseKey]?.size ?: 0
         val totalButtons = accentCount + 1 // +1 pour la touche de base
         val popupWidth = totalButtons * buttonWidth + dpToPx(16) // +padding
@@ -325,9 +388,26 @@ class AccentHandler(private val context: Context) {
      * Obtient tous les accents disponibles pour une touche
      */
     fun getAccentsForKey(key: String): List<String> {
-        return accentMap[key.lowercase()] ?: emptyList()
+        return accentMap[key.lowercase()] ?: emojiSkinTones[key] ?: emptyList()
     }
-    
+
+    /**
+     * Obtient les accents à afficher en aperçu dans les coins de la touche,
+     * dans l'ordre haut-droit puis bas-droit (peut différer de l'ordre du
+     * popup d'appui long, voir cornerHintOverrides)
+     */
+    fun getCornerHintsForKey(key: String): List<String> {
+        return cornerHintOverrides[key.lowercase()] ?: getAccentsForKey(key)
+    }
+
+    /**
+     * Indique si les aperçus en coin de cette touche doivent s'afficher côté
+     * gauche (haut-gauche/bas-gauche) plutôt que côté droit (par défaut)
+     */
+    fun isCornerHintOnStartSide(key: String): Boolean {
+        return key.lowercase() in cornerHintOnStartSide
+    }
+
     /**
      * Ajoute un nouvel accent ├á une touche existante
      */
