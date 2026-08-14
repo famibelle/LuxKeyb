@@ -486,7 +486,10 @@ jobs:
         # Pas de -strict : une clé auto-signée (la nôtre) y déclencherait un
         # avertissement de chaîne non validée, donc un code de sortie non nul.
         jarsigner -verify -verbose -certs "$AAB_FILE" > /tmp/aab-verify.txt
-        grep "CN=" /tmp/aab-verify.txt | head -1
+        # grep -m1 plutôt que « grep | head -1 » : head ferme le tube dès la
+        # première ligne, grep meurt en erreur d'écriture, et pipefail fait
+        # échouer l'étape sur un AAB pourtant valide.
+        grep -m1 "CN=" /tmp/aab-verify.txt
 
         # jarsigner n'échoue pas toujours sur une archive non signée : on exige
         # la mention explicite de vérification.
