@@ -31,6 +31,18 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
 
+        // Couleurs du drapeau luxembourgeois : rouge Pantone 032, blanc, et le
+        // bleu ciel Pantone 299 — le bleu clair qui distingue ce drapeau de
+        // celui des Pays-Bas.
+        private const val ROUGE = "#ED2939"
+        private const val BLANC = "#FFFFFF"
+        private const val BLEU = "#00A1DE"
+
+        private const val BLANC_ACTIF = "#E0E0E0"   // majuscule enclenchée
+        private const val BORDURE = "#D0D0D0"
+        private const val ENCRE = "#1A1A1A"
+        private const val ENCRE_ATTENUEE = "#666666"
+
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
     }
@@ -292,7 +304,7 @@ class KeyboardLayoutManager(private val context: Context) {
         val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
         if (!hints.isNullOrEmpty()) {
             val onStartSide = accentHandler?.isCornerHintOnStartSide(key) == true
-            return wrapWithLongPressHints(button, hints, onStartSide)
+            return wrapWithLongPressHints(button, hints, onStartSide, key)
         }
 
         // 🌐 Indice visuel : l'appui long sur la barre d'espace change de clavier
@@ -347,7 +359,12 @@ class KeyboardLayoutManager(private val context: Context) {
      * rangée) ; keyboardButtons ne référence jamais ce FrameLayout, seulement la
      * touche brute qu'il contient.
      */
-    private fun wrapWithLongPressHints(inner: View, hints: List<String>, onStartSide: Boolean): FrameLayout {
+    private fun wrapWithLongPressHints(
+        inner: View,
+        hints: List<String>,
+        onStartSide: Boolean,
+        key: String
+    ): FrameLayout {
         val outerParams = inner.layoutParams
         inner.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -358,18 +375,25 @@ class KeyboardLayoutManager(private val context: Context) {
         return FrameLayout(context).apply {
             layoutParams = outerParams
             addView(inner)
-            addView(createHintLabel(hints[0], Gravity.TOP or horizontalGravity, onStartSide))
+            addView(createHintLabel(hints[0], Gravity.TOP or horizontalGravity, onStartSide, key))
             if (hints.size > 1) {
-                addView(createHintLabel(hints[1], Gravity.BOTTOM or horizontalGravity, onStartSide))
+                addView(createHintLabel(hints[1], Gravity.BOTTOM or horizontalGravity, onStartSide, key))
             }
         }
     }
 
-    private fun createHintLabel(hintText: String, gravity: Int, onStartSide: Boolean): TextView {
+    private fun createHintLabel(
+        hintText: String,
+        gravity: Int,
+        onStartSide: Boolean,
+        key: String
+    ): TextView {
         return TextView(context).apply {
             text = hintText
             textSize = HINT_TEXT_SIZE_SP
-            setTextColor(Color.parseColor("#99333333"))
+            // L'aperçu s'efface volontairement derrière le glyphe principal,
+            // mais il doit rester lisible sur les touches colorées.
+            setTextColor(Color.parseColor(hintInk(key)))
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -392,47 +416,66 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun applyKeyStyleToView(view: View, key: String) {
         val drawable = GradientDrawable().apply {
             cornerRadius = dpToPx(CORNER_RADIUS_DP.toInt()).toFloat()
-
-            // Toutes les touches partagent le même fond blanc ; seule la touche
-            // majuscule s'assombrit quand elle est active. Cette uniformité est
-            // un choix propre au clavier luxembourgeois : la version amont peint
-            // les touches spéciales en vert tropical, orange et bleu caraïbe,
-            // une palette qui n'a pas de sens ici.
-            when (key) {
-                "⇧" -> setColor(
-                    if (isCapsLock || isCapitalMode) Color.parseColor("#E0E0E0")
-                    else Color.parseColor("#FFFFFF")
-                )
-                else -> setColor(Color.parseColor("#FFFFFF"))
-            }
-
-            setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))
+            setColor(Color.parseColor(keyBackground(key)))
+            // Le blanc du drapeau étant aussi celui des touches de lettres, il
+            // leur faut un contour pour rester distinctes du fond du clavier.
+            setStroke(dpToPx(1), Color.parseColor(BORDURE))
         }
 
         view.background = drawable
 
-        // Texte et icônes en gris foncé uniforme, sur fond blanc uniforme.
+        val encre = Color.parseColor(keyForeground(key))
+
         if (view is Button) {
-            view.setTextColor(
-                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
-                else Color.parseColor("#333333")
-            )
+            view.setTextColor(encre)
 
             // Ombre portée pour l'effet de profondeur.
             // setShadowLayer() sous rendu accéléré matériellement est une source connue
             // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
             // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
+            // Ombre claire sur les touches colorées, sombre sur les blanches :
+            // une ombre noire sous du texte blanc le rend sale.
+            val ombre = if (keyBackground(key) == ROUGE) "#40FFFFFF" else "#40000000"
+            view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor(ombre))
         }
 
         if (view is android.widget.ImageButton) {
-            view.setColorFilter(
-                if (key == "⇧" && (isCapsLock || isCapitalMode)) Color.parseColor("#666666")
-                else Color.parseColor("#333333")
-            )
+            view.setColorFilter(encre)
         }
     }
+
+    /**
+     * Fond d'une touche, aux trois couleurs du drapeau luxembourgeois.
+     *
+     * Les lettres occupent le blanc, majoritaire comme la bande centrale.
+     * Le rouge marque ce qui agit : Entrée et les changements de mode. Le bleu
+     * ciel revient à la barre d'espace et à la ponctuation, qui accompagnent la
+     * frappe sans l'interrompre.
+     */
+    private fun keyBackground(key: String): String = when (key) {
+        "⏎", "123", "ABC", "EMOJI" -> ROUGE
+        " ", ",", "." -> BLEU
+        "⇧" -> if (isCapsLock || isCapitalMode) BLANC_ACTIF else BLANC
+        else -> BLANC
+    }
+
+    /**
+     * Encre d'une touche, choisie sur le contraste réellement mesuré.
+     *
+     * Blanc sur le rouge du drapeau donne 4,2:1, suffisant pour les glyphes
+     * larges et gras des touches. Blanc sur le bleu ciel ne donnerait que
+     * 2,9:1 — illisible ; ce bleu porte donc une encre sombre (5,9:1).
+     */
+    private fun keyForeground(key: String): String = when (keyBackground(key)) {
+        ROUGE -> BLANC
+        BLANC_ACTIF -> ENCRE_ATTENUEE
+        else -> ENCRE
+    }
+
+    /** Encre des aperçus de coin : même famille que le glyphe, en plus discret. */
+    private fun hintInk(key: String): String =
+        if (keyBackground(key) == ROUGE) "#CCFFFFFF" else "#99333333"
 
     /**
      * Surcharge de compatibilité pour les appels qui passent encore un Button.

@@ -16,8 +16,20 @@ data class BilingualSuggestion(
      */
     fun getColor(): Int {
         return when (language) {
-            SuggestionLanguage.KREYOL -> KeyboardColors.KREYOL_GREEN
-            SuggestionLanguage.FRENCH -> KeyboardColors.FRENCH_BLUE
+            SuggestionLanguage.KREYOL -> KeyboardColors.LUX_RED
+            SuggestionLanguage.FRENCH -> KeyboardColors.LUX_BLUE
+        }
+    }
+
+    /**
+     * Couleur du texte de la puce, choisie sur le contraste réellement mesuré :
+     * blanc sur le rouge du drapeau donne 4,2:1, mais seulement 2,9:1 sur son
+     * bleu ciel, qui demande donc une encre sombre (5,9:1).
+     */
+    fun getTextColor(): Int {
+        return when (language) {
+            SuggestionLanguage.KREYOL -> KeyboardColors.CHIP_TEXT_ON_RED
+            SuggestionLanguage.FRENCH -> KeyboardColors.CHIP_TEXT_ON_BLUE
         }
     }
     
@@ -64,18 +76,18 @@ enum class SuggestionSource {
  * Couleurs du clavier
  */
 object KeyboardColors {
-    // 🟢 Vert pour Guadeloupéen/Kreyòl (fond plein, texte blanc — contraste renforcé)
-    val KREYOL_GREEN = Color.parseColor("#2E9E5B")
-
-    // 🔵 Bleu pour Français (fond plein, texte blanc — contraste renforcé)
-    val FRENCH_BLUE = Color.parseColor("#3B6FC4")
+    // Couleurs du drapeau luxembourgeois, comme les touches : le luxembourgeois
+    // prend le rouge, le français le bleu ciel.
+    val LUX_RED = Color.parseColor("#ED2939")
+    val LUX_BLUE = Color.parseColor("#00A1DE")
 
     // Couleurs d'interface
     val BACKGROUND_NEUTRAL = Color.parseColor("#F8F9FA")  // Fond neutre
     val BORDER_LIGHT = Color.parseColor("#E9ECEF")        // Bordures subtiles
     val TEXT_PRIMARY = Color.parseColor("#212529")        // Texte principal
     val TEXT_SECONDARY = Color.parseColor("#6C757D")      // Texte secondaire
-    val CHIP_TEXT = Color.parseColor("#FFFFFF")           // Texte des puces (fond plein)
+    val CHIP_TEXT_ON_RED = Color.parseColor("#FFFFFF")    // 4,2:1 sur le rouge
+    val CHIP_TEXT_ON_BLUE = Color.parseColor("#1A1A1A")   // 5,9:1 sur le bleu ciel
 }
 
 /**

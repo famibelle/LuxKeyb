@@ -703,13 +703,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
-     * Ajoute une puce de suggestion arrondie (fond plein, texte blanc) dans une rangée
+     * Ajoute une puce de suggestion arrondie (fond plein) dans une rangée.
+     * L'encre suit la couleur de fond, voir BilingualSuggestion.getTextColor().
      */
     private fun addSuggestionChip(container: LinearLayout, bilingualSuggestion: BilingualSuggestion) {
         val suggestionButton = Button(this).apply {
             text = bilingualSuggestion.word
             textSize = 14f
-            setTextColor(KeyboardColors.CHIP_TEXT)
+            setTextColor(bilingualSuggestion.getTextColor())
 
             val bgColor = bilingualSuggestion.getColor()
             background = GradientDrawable().apply {
@@ -928,7 +929,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         chip = Button(this).apply {
             text = "📤 Envoyer un mot à un ami"
             textSize = 14f
-            setTextColor(KeyboardColors.CHIP_TEXT)
+            setTextColor(KeyboardColors.CHIP_TEXT_ON_RED)
             background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = dpToPx(16).toFloat()
