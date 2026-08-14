@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vin Anbasadè ! Aidez Klavyé Kréyòl à se faire connaître</title>
+<meta name="description" content="Chaque personne peut aider le clavier créole guadeloupéen à se faire connaître : contacts des médias locaux, textes prêts à envoyer, messages à partager en un clic.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:680px;margin:0 auto;}
+header{padding:20px 0 10px;}
+nav.site{
+  text-align:center;padding:10px 0;margin-top:6px;
+  border-bottom:1px solid var(--line);font-size:14.5px;
+}
+nav.site a{color:var(--sea);text-decoration:none;font-weight:600;}
+nav.site a:hover{text-decoration:underline;}
+nav.site strong{color:var(--ink);}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+h1 img,.gauge-meta img{height:1em;width:auto;vertical-align:-0.1em;border-radius:1px;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 4px;}
+.time{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--paper);background:var(--sea);border-radius:999px;padding:4px 12px;margin-bottom:10px;}
+.time.orange{background:var(--sun);}
+.time.red{background:var(--hibiscus);}
+section{margin-top:40px;}
+.section-sub{font-size:14.5px;color:var(--ink-soft);margin:4px 0 18px;max-width:58ch;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin:0 0 4px;font-size:16px;}
+.card .meta{font-size:13px;color:var(--ink-soft);margin:0 0 12px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{
+  display:inline-block;text-decoration:none;text-align:center;cursor:pointer;
+  font-size:14px;font-weight:700;border-radius:9px;padding:11px 16px;
+  border:1.5px solid var(--sea);color:var(--sea);background:transparent;
+  font-family:inherit;
+}
+.btn:hover{background:var(--sea-soft);}
+.btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+.btn.primary{background:var(--sea);color:var(--paper);}
+.btn.primary:hover{filter:brightness(1.08);}
+.btn.copied{background:var(--sun);border-color:var(--sun);color:var(--paper);}
+.script{
+  background:color-mix(in srgb, var(--sea) 5%, transparent);
+  border:1px dashed var(--line);border-radius:9px;
+  padding:13px 15px;font-size:14px;white-space:pre-wrap;margin:0 0 12px;
+}
+.kreyol{color:var(--sea);font-weight:600;}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;
+}
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);}
+footer a{color:var(--sea);}
+.gauge-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:22px;}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.gauge-num{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+.gauge-num small{font-size:14px;font-weight:400;color:var(--ink-soft);}
+.gauge-bar{height:16px;border-radius:999px;background:color-mix(in srgb, var(--sea) 12%, transparent);overflow:hidden;}
+.gauge-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sea),var(--sun));min-width:8px;transition:width .8s ease;}
+.gauge-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+.gauge-target{font-weight:700;color:var(--hibiscus);}
+section{scroll-margin-top:16px;}
+.side-nav{
+  position:fixed;top:50%;left:24px;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:2px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:10px;z-index:20;
+}
+.side-nav a{
+  display:flex;align-items:center;gap:8px;color:var(--ink-soft);text-decoration:none;
+  font-size:13px;font-weight:600;padding:7px 10px;border-radius:8px;
+  white-space:nowrap;
+}
+.side-nav a:hover{background:var(--sea-soft);color:var(--sea);}
+.side-nav a.active{background:var(--sea-soft);color:var(--sea);}
+@media (max-width: 1239px){
+  .side-nav a{padding:9px;}
+  .side-nav .lbl{display:none;}
+}
+@media (max-width: 959px){ .side-nav{display:none;} }
+</style>
+</head>
+<body>
+<nav class="side-nav" aria-label="Navigation rapide">
+  <a href="#partage"><span class="ico">📣</span><span class="lbl">Partager</span></a>
+  <a href="#flashcode"><span class="ico">📱</span><span class="lbl">FlashCode</span></a>
+  <a href="#tract"><span class="ico">🪧</span><span class="lbl">Tract</span></a>
+  <a href="#education"><span class="ico">🎓</span><span class="lbl">Éducation</span></a>
+  <a href="#medias"><span class="ico">✉️</span><span class="lbl">Médias</span></a>
+  <a href="#radio"><span class="ico">📞</span><span class="lbl">Radio</span></a>
+</nav>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
+  <strong>📣 Vin Anbasadè</strong> ·
+  <a href="tract.html">🪧 Tract</a> ·
+  <a href="tract-eco.html">💧 Tract éco encre</a> ·
+  <a href="affiche.html">🖨️ Affiche</a> ·
+  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
+  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
+  <a href="triptyque.html">📖 Triptyque</a> ·
+  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
+  <a href="presskit.html">📰 Presse</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dambassade%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
+  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header>
+  <p class="eyebrow">Klavyé Kréyòl Karukera · plan de médiatisation contributif</p>
+  <h1>Vin Anbasadè a kréyòl la ! <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe"></h1>
+  <p class="lead">Le clavier créole n'a ni budget publicitaire ni service de com'. Il a mieux : <strong>vous</strong>. Chaque message, chaque email, chaque appel à une radio aide notre langue à exister dans le numérique. Choisissez votre mission : tout est prêt, il n'y a qu'à cliquer.</p>
+
+  <div class="gauge-card">
+    <div class="gauge-head">
+      <span class="gauge-num"><span id="g-current">…</span> <small>téléchargements · prochain palier : <span id="g-next">…</span></small></span>
+      <span class="gauge-target">Objectif du jour : <span id="g-daily">10</span> 📲</span>
+    </div>
+    <div class="gauge-bar"><div class="gauge-fill" id="g-fill" style="width:1%"></div></div>
+    <div class="gauge-meta">
+      <span id="g-remaining">An nou ay ! Chaque partage compte <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe"></span>
+      <span>Objectif final : 10 000 · <span id="g-asof"></span></span>
+    </div>
+  </div>
+</header>
+
+<section id="partage">
+  <span class="time">⏱ 30 segonn</span>
+  <h2>Partagez à vos proches</h2>
+  <p class="section-sub">Le geste le plus simple et le plus efficace : le bouche-à-oreille.</p>
+  <div class="card">
+    <div class="script" id="txt-wa">Mwen ka sèvi épi Klavyé Kréyòl Karukera pou ékri kréyòl asi téléfòn an mwen ! Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup. Télécharge-le gratuitement : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dwhatsapp%26utm_campaign%3Dlaunch10k #KlavyéKréyòl</div>
+    <div class="actions">
+      <a class="btn primary" id="wa-share" href="#">💬 Envoyer sur WhatsApp</a>
+      <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F" target="_blank" rel="noopener">📘 Partager sur Facebook</a>
+      <button class="btn" data-copy="txt-wa">📋 Copier le texte</button>
+    </div>
+  </div>
+</section>
+
+<section id="flashcode">
+  <span class="time">⏱ 10 segonn</span>
+  <h2>Téléchargez le FlashCode</h2>
+  <p class="section-sub">Le QR code seul, en haute résolution, à coller sur vos propres supports : story Instagram, sticker, signature d'email, affichette maison...</p>
+  <div class="card" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+    <img src="assets/qr-google-play.png" alt="FlashCode vers Klavyé Kréyòl Karukera sur Google Play" style="width:120px;height:120px;border-radius:8px;border:1px solid var(--line);flex:0 0 auto;">
+    <div style="flex:1 1 220px;">
+      <p class="meta" style="margin:0 0 12px;">PNG haute résolution (2280×2280) · renvoie directement vers Google Play</p>
+      <div class="actions">
+        <a class="btn primary" href="assets/qr-google-play.png" download>📥 Télécharger le FlashCode (PNG)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tract">
+  <span class="time orange">⏱ 5 minit</span>
+  <h2>Distribuez dans votre quartier</h2>
+  <p class="section-sub">Un tract au format A5, prêt à imprimer et à laisser chez le boulanger, le pharmacien ou à la boutique du coin. Le QR code renvoie directement vers Google Play.</p>
+  <div class="card">
+    <h3>Tract à distribuer</h3>
+    <p class="meta">Format A5 · 2 tracts par feuille A4 à découper · QR code inclus</p>
+    <div class="actions">
+      <a class="btn primary" href="tract.html">🪧 Voir et imprimer le tract</a>
+      <a class="btn" href="assets/tract-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF</a>
+      <a class="btn" href="tract-eco.html">💧 Version éco encre (fond blanc)</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3>Flyer triptyque pour un stand ou un comptoir</h3>
+    <p class="meta">Format A4 paysage · 3 volets recto-verso · présentation, installation, fonctionnalités, QR code</p>
+    <div class="actions">
+      <a class="btn primary" href="triptyque.html">📖 Voir et imprimer le triptyque</a>
+      <a class="btn" href="assets/triptyque-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF</a>
+      <a class="btn" href="triptyque-eco.html">💧 Version éco encre (fond blanc)</a>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <span class="time orange">⏱ Pou lékòl é asosiyasyon</span>
+  <h2>Enseignants, associations, animateurs</h2>
+  <p class="section-sub">Vous enseignez le créole ou animez une association culturelle ? Parlez-en autour de vous : le clavier suggère l'orthographe GEREC pendant la frappe, là où les claviers standards la combattent.</p>
+
+  <div class="card">
+    <h3>Rectorat de l'académie de la Guadeloupe</h3>
+    <p class="meta">ce.rectorat@ac-guadeloupe.fr · 0590 47 81 00</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.rectorat@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20pour%20l%27enseignement%20du%20cr%C3%A9ole&body=Bonjour%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20suggestions%20de%20mots%20construites%20sur%20un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20orthographe%20GEREC%2C%20jeux%20de%20vocabulaire%20int%C3%A9gr%C3%A9s%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0ADans%20le%20contexte%20du%20retrait%20du%20cr%C3%A9ole%20de%20l%27agr%C3%A9gation%20%28session%202026%29%20et%20de%20la%20r%C3%A9ouverture%20promise%20pour%202027%2C%20cet%20outil%20citoyen%20peut%20%C3%AAtre%20une%20ressource%20concr%C3%A8te%20pour%20les%20enseignants%20et%20les%20%C3%A9l%C3%A8ves%20de%20langue%20cr%C3%A9ole.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire au rectorat</a>
+      <button class="btn" data-copy="txt-rectorat">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-rectorat" style="margin-top:12px;">Bonjour,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : suggestions de mots construites sur un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), orthographe GEREC, jeux de vocabulaire intégrés, zéro collecte de données.
+
+Dans le contexte du retrait du créole de l'agrégation (session 2026) et de la réouverture promise pour 2027, cet outil citoyen peut être une ressource concrète pour les enseignants et les élèves de langue créole.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>CLEMI Guadeloupe</h3>
+    <p class="meta">Éducation aux médias et à l'information · ce.clemi@ac-guadeloupe.fr</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.clemi@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20pour%20un%20atelier%20d%27%C3%A9ducation%20aux%20m%C3%A9dias%20et%20%C3%A0%20l%27information&body=Bonjour%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20d%27un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20orthographe%20GEREC%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0AC%27est%20un%20cas%20concret%20pour%20aborder%20avec%20des%20%C3%A9l%C3%A8ves%20une%20question%20d%27%C3%A9ducation%20aux%20m%C3%A9dias%20et%20%C3%A0%20l%27information%20%3A%20qui%20d%C3%A9cide%2C%20dans%20les%20claviers%20et%20correcteurs%20du%20quotidien%2C%20quelles%20langues%20sont%20prises%20en%20charge.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire au CLEMI Guadeloupe</a>
+      <button class="btn" data-copy="txt-clemi">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-clemi" style="margin-top:12px;">Bonjour,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : il suggère les mots en kréyòl pendant la frappe, à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), orthographe GEREC, zéro collecte de données.
+
+C'est un cas concret pour aborder avec des élèves une question d'éducation aux médias et à l'information : qui décide, dans les claviers et correcteurs du quotidien, quelles langues sont prises en charge.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>DRANE Guadeloupe</h3>
+    <p class="meta">Délégation régionale académique au numérique éducatif · ce.dane@ac-guadeloupe.fr · 0590 47 81 11</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.dane@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20%C3%A9ducative%20gratuite%20pour%20%C3%A9crire%20en%20cr%C3%A9ole&body=Bonjour%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20suggestions%20de%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%20%C3%A0%20partir%20d%27un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20orthographe%20GEREC%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0AC%27est%20un%20outil%20num%C3%A9rique%20gratuit%20et%20sans%20pr%C3%A9requis%20technique%20particulier%2C%20qui%20pourrait%20avoir%20sa%20place%20parmi%20les%20ressources%20num%C3%A9riques%20recens%C3%A9es%20pour%20les%20%C3%A9tablissements.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la DRANE</a>
+      <button class="btn" data-copy="txt-drane">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-drane" style="margin-top:12px;">Bonjour,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), orthographe GEREC, zéro collecte de données.
+
+C'est un outil numérique gratuit et sans prérequis technique particulier, qui pourrait avoir sa place parmi les ressources numériques recensées pour les établissements.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>Semaine académique du créole</h3>
+    <p class="meta">Secrétariat des inspections pédagogiques (LVR créole) · ce.ia-ipr@ac-guadeloupe.fr</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.ia-ipr@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20pour%20la%20semaine%20acad%C3%A9mique%20du%20cr%C3%A9ole&body=Bonjour%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20suggestions%20de%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%20%C3%A0%20partir%20d%27un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20orthographe%20GEREC%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0ACe%20pourrait%20%C3%AAtre%20une%20ressource%20%C3%A0%20relayer%20aupr%C3%A8s%20des%20%C3%A9tablissements%20participant%20%C3%A0%20la%20semaine%20acad%C3%A9mique%20du%20cr%C3%A9ole.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Proposer la ressource pour la semaine du créole</a>
+      <button class="btn" data-copy="txt-sac">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-sac" style="margin-top:12px;">Bonjour,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), orthographe GEREC, zéro collecte de données.
+
+Ce pourrait être une ressource à relayer auprès des établissements participant à la semaine académique du créole.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>IA-IPR · Langue Vivante Régionale créole</h3>
+    <p class="meta">ce.ia-ipr@ac-guadeloupe.fr · 0590 47 81 37</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.ia-ipr@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20pour%20l%27enseignement%20de%20la%20Langue%20Vivante%20R%C3%A9gionale%20cr%C3%A9ole&body=Bonjour%2C%0A%0A%C3%80%20l%27attention%20de%20la%20charg%C3%A9e%20de%20mission%20Langue%20Vivante%20R%C3%A9gionale%20cr%C3%A9ole%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20suggestions%20de%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%20%C3%A0%20partir%20d%27un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20en%20orthographe%20GEREC%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0ADans%20le%20contexte%20du%20retrait%20du%20cr%C3%A9ole%20de%20l%27agr%C3%A9gation%20%28session%202026%29%20et%20de%20la%20r%C3%A9ouverture%20promise%20pour%202027%2C%20cet%20outil%20citoyen%20peut%20%C3%AAtre%20une%20ressource%20concr%C3%A8te%20pour%20les%20enseignants%20et%20les%20%C3%A9l%C3%A8ves%20de%20cr%C3%A9ole.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à l'IA-IPR créole</a>
+      <button class="btn" data-copy="txt-iaipr">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-iaipr" style="margin-top:12px;">Bonjour,
+
+À l'attention de la chargée de mission Langue Vivante Régionale créole,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), en orthographe GEREC, zéro collecte de données.
+
+Dans le contexte du retrait du créole de l'agrégation (session 2026) et de la réouverture promise pour 2027, cet outil citoyen peut être une ressource concrète pour les enseignants et les élèves de créole.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>Doyens des IA-IPR</h3>
+    <p class="meta">Coordination du corps d'inspection · ce.ia-ipr@ac-guadeloupe.fr · 0590 47 81 37</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:ce.ia-ipr@ac-guadeloupe.fr?subject=Ressource%20num%C3%A9rique%20cr%C3%A9ole%20%C3%A0%20relayer%20aupr%C3%A8s%20du%20corps%20d%27inspection&body=Bonjour%2C%0A%0A%C3%80%20l%27attention%20du%20doyen%20des%20IA-IPR%2C%0A%0AJe%20me%20permets%20de%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20pour%20%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20suggestions%20de%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%20%C3%A0%20partir%20d%27un%20corpus%20litt%C3%A9raire%20cr%C3%A9ole%20%28Telchid%2C%20Rupaire%2C%20Fontes%2C%20Rippon...%29%2C%20orthographe%20GEREC%2C%20z%C3%A9ro%20collecte%20de%20donn%C3%A9es.%0A%0AAu-del%C3%A0%20du%20seul%20enseignement%20du%20cr%C3%A9ole%2C%20cet%20outil%20peut%20concerner%20plusieurs%20disciplines%20%28lettres%2C%20langues%2C%20histoire-g%C3%A9ographie...%29%20o%C3%B9%20la%20question%20de%20l%27%C3%A9criture%20du%20cr%C3%A9ole%20se%20pose.%20Je%20vous%20serais%20reconnaissant%28e%29%20de%20bien%20vouloir%20le%20relayer%20aupr%C3%A8s%20des%20inspecteurs%20concern%C3%A9s%20si%20vous%20le%20jugez%20utile.%0A%0APr%C3%A9sentation%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2F%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire au doyen des IA-IPR</a>
+      <button class="btn" data-copy="txt-doyen">📋 Copier le texte</button>
+    </div>
+    <div class="script" id="txt-doyen" style="margin-top:12px;">Bonjour,
+
+À l'attention du doyen des IA-IPR,
+
+Je me permets de vous signaler Klavyé Kréyòl Karukera, un clavier Android gratuit et open source pour écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe à partir d'un corpus littéraire créole (Telchid, Rupaire, Fontes, Rippon...), orthographe GEREC, zéro collecte de données.
+
+Au-delà du seul enseignement du créole, cet outil peut concerner plusieurs disciplines (lettres, langues, histoire-géographie...) où la question de l'écriture du créole se pose. Je vous serais reconnaissant(e) de bien vouloir le relayer auprès des inspecteurs concernés si vous le jugez utile.
+
+Présentation : https://famibelle.github.io/KreyolKeyb/
+Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard
+Contact : contact@potomitan.io
+
+Bien cordialement</div>
+  </div>
+
+  <div class="card">
+    <h3>Autres acteurs de l'Éducation nationale</h3>
+    <p class="meta">Enseignants, CPD, référents numériques, associations culturelles...</p>
+    <div class="script" id="txt-edu">Bonjour, je partage une ressource utile pour écrire le créole guadeloupéen : Klavyé Kréyòl Karukera, un clavier Android gratuit et open source, avec suggestions de mots construites sur un corpus littéraire créole (Telchid, Rupaire, Fontes...) et jeux de vocabulaire intégrés. Zéro collecte de données. Présentation : https://famibelle.github.io/KreyolKeyb/
+Google Play : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Deducation%26utm_campaign%3Dlaunch10k
+Contact : contact@potomitan.io</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="txt-edu">📋 Copier le message</button>
+    </div>
+  </div>
+</section>
+
+<section id="medias">
+  <span class="time orange">⏱ 2 minit</span>
+  <h2>Écrivez aux médias locaux</h2>
+  <p class="section-sub">Les rédactions cherchent des sujets qui parlent à leurs lecteurs : un outil <strong>créé par un Guadeloupéen pour les Guadeloupéens</strong> en fait partie. Un email de lecteur pèse plus qu'un communiqué. Cliquez : l'email est pré-rempli, ajoutez un mot personnel et envoyez.</p>
+  <div class="note" style="margin:0 0 16px;">
+    🎉 <strong>Mèsi anpil, konminoté-la !</strong> Grâce à vos messages, Canal 10, Guadeloupe la 1ère et France-Antilles Guadeloupe ont déjà consacré un sujet au clavier créole : la preuve que chaque email compte. Continuez avec les rédactions ci-dessous, il reste du chemin à faire !
+  </div>
+  <div class="note" style="margin:0 0 16px;">
+    <strong>L'argument qui porte en ce moment :</strong> le créole (1,6 million de locuteurs en France) a été retiré de l'agrégation en octobre 2025, et la promesse de réouverture pour 2027 se joue à cette rentrée. Pendant que sa place institutionnelle vacille, un outil citoyen gratuit le fait vivre dans le numérique : c'est ça, l'histoire à raconter aux journalistes.
+  </div>
+
+  <div class="card">
+    <h3>France-Antilles Guadeloupe ✅</h3>
+    <p class="meta">Sujet déjà couvert, mèsi anpil !</p>
+    <p>France-Antilles Guadeloupe a publié le 4 août 2026 un article retraçant la genèse du projet, avec un entretien de son créateur.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://www.guadeloupe.franceantilles.fr/actualite/economie/si-le-creole-guadeloupeen-nexiste-pas-petit-a-petit-on-sefface-1088477.php" target="_blank" rel="noopener">📰 Lire l'article</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>RCI Guadeloupe</h3>
+    <p class="meta">rcigua@yahoo.fr · standard 0590 83 96 96</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:rcigua@yahoo.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20en%20tant%20qu%27auditeur%28trice%29%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AKontak%20%3A%20contact%40potomitan.io%0A%0AM%C3%A8si%20on%20pil%20%21">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Guadeloupe la 1ère ✅</h3>
+    <p class="meta">Sujet déjà couvert, mèsi anpil !</p>
+    <p>Guadeloupe la 1ère a consacré un sujet au clavier dans <em>Guadeloupe Soir 19h30</em> (28 juillet 2026), avec le témoignage d'un utilisateur, puis publié un article dédié.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html" target="_blank" rel="noopener">📰 Lire l'article</a>
+      <a class="btn" href="https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html" target="_blank" rel="noopener">📺 Revoir le reportage</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>ETV Guadeloupe</h3>
+    <p class="meta">Formulaire de contact en ligne · 0590 58 06 22</p>
+    <div class="actions">
+      <a class="btn primary" href="https://www.etv.gp/contact/" target="_blank" rel="noopener">📝 Ouvrir le formulaire</a>
+      <button class="btn" data-copy="txt-etv">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-etv" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet, pourquoi pas en images ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Canal 10 ✅</h3>
+    <p class="meta">Sujet déjà couvert, mèsi anpil !</p>
+    <p>Canal 10 a présenté et démontré le clavier à l'antenne dans son sujet Tech « Une application intuitive pour écrire en créole ».</p>
+    <div class="actions">
+      <a class="btn primary" href="Medias/TV_Canal10.mp4" target="_blank" rel="noopener">📺 Voir l'extrait</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Trace FM Guadeloupe</h3>
+    <p class="meta">antenne@trace.fm · 0590 25 18 94</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:antenne@trace.fm?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Peut-%C3%AAtre%20un%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Zouk Radio</h3>
+    <p class="meta">contact@zoukradio.fm · 0590 93 09 58</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@zoukradio.fm?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjou%2C%0A%0AMwen%20ka%20%C3%A9kri%20pou%20signal%C3%A9%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20on%20klavy%C3%A9%20Android%20gratui%20%C3%A9%20k%C3%B2d%20ouv%C3%A8%20ki%20ka%20p%C3%A8wm%C3%A8t%20%C3%A9kri%20an%20kr%C3%A9y%C3%B2l%20Gwadloup%20%3A%20i%20ka%20bay%20sigjesyon%20mo%20an%20kr%C3%A9y%C3%B2l%20pannan%20ou%20ka%20tap%C3%A9%2C%20tir%C3%A9%20asi%20t%C3%A8ks%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20%C3%A9%20l%C3%B2t%20gran%20d%C3%A9fans%C3%A8%20kr%C3%A9y%C3%B2l%20la.%0A%0APwoj%C3%A9%20sa%20f%C3%A8t%20pa%20on%20Gwadloup%C3%A9yen%20pou%20Gwadloup%C3%A9yen%2C%20gratui%2C%20san%20kolekt%20donn%C3%A9es%20%3A%20i%20ka%20%C3%A9d%C3%A9%20nou%20%C3%A9kri%20kr%C3%A9y%C3%B2l%20pli%20fasil%20chak%20jou.%20Sa%20k%C3%A9%20on%20b%C3%A8l%20sij%C3%A8%20pou%20lakou%20zouk%20la%2C%20pa%20vr%C3%A9%20%3F%0A%0ADosy%C3%A9%20lapw%C3%A8s%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AKontak%20%3A%20contact%40potomitan.io%0A%0AM%C3%A8si%20davans">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>NRJ Guadeloupe</h3>
+    <p class="meta">Formulaire de contact en ligne · 0590 83 96 96</p>
+    <div class="actions">
+      <a class="btn primary" href="https://nrjantilles.com/contact/" target="_blank" rel="noopener">📝 Ouvrir le formulaire</a>
+      <button class="btn" data-copy="txt-nrj">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-nrj" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <p class="section-sub" style="margin-top:24px;">📻 Grille des radios locales de Guadeloupe : mêmes outils, un clic pour écrire à l'antenne.</p>
+
+  <div class="card">
+    <h3>Nostalgie Guadeloupe</h3>
+    <p class="meta">auldrigue@nostalgiedom.fr</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:auldrigue@nostalgiedom.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Chérie FM Guadeloupe</h3>
+    <p class="meta">contact@caribavenue.com</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@caribavenue.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Fun Radio Antilles</h3>
+    <p class="meta">contact.antenne@funradio.fr</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact.antenne@funradio.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>RFM Guadeloupe</h3>
+    <p class="meta">direction@imediasgroup.fr · 0590 32 01 32</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:direction@imediasgroup.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Mega FM</h3>
+    <p class="meta">megafm.direction@gmail.com · 0590 23 17 11</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:megafm.direction@gmail.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>MFM - Madras FM</h3>
+    <p class="meta">mfmradio@wanadoo.fr · 0590 23 46 43</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:mfmradio@wanadoo.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Bel'Radio</h3>
+    <p class="meta">contact@belradio.fr · 0590 83 39 84</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@belradio.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Karata (RLK)</h3>
+    <p class="meta">contact@radiokarata.com · 0590 81 64 66</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@radiokarata.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>RBI - Radio Basses Internationale</h3>
+    <p class="meta">rbi.fm@live.fr · 0590 97 70 88</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:rbi.fm@live.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Climax</h3>
+    <p class="meta">radioclimax@wanadoo.fr · 0590 92 08 36</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:radioclimax@wanadoo.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Calypso</h3>
+    <p class="meta">calypsopub@powerantilles.com · 0590 52 22 26</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:calypsopub@powerantilles.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Transat</h3>
+    <p class="meta">contact@radiotransat.fm · 0690 50 35 03</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@radiotransat.fm?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>RHT - Radio Haute Tension</h3>
+    <p class="meta">contact@rhtguadeloupe.fr · 0590 38 28 85</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@rhtguadeloupe.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Vie Meilleure</h3>
+    <p class="meta">rvm93.3@gmail.com · 0590 82 19 19</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:rvm93.3@gmail.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Massabielle</h3>
+    <p class="meta">massabielle.fm@gmail.com · 0590 83 25 21</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:massabielle.fm@gmail.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Souffle de Vie</h3>
+    <p class="meta">acem27@wanadoo.fr · 0590 91 31 98</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:acem27@wanadoo.fr?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Sofaïa Altitude</h3>
+    <p class="meta">secretariat@radio-sofaia-altitude.com · 0590 28 05 57</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:secretariat@radio-sofaia-altitude.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radyo Tanbou</h3>
+    <p class="meta">kontak@radyotanbou.com · 0590 21 66 48</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:kontak@radyotanbou.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Saphir FM</h3>
+    <p class="meta">radiosaphirfm89.4@gmail.com · 0590 69 68 06</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:radiosaphirfm89.4@gmail.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Jobs & Musik</h3>
+    <p class="meta">contact@jobsetmusik.com</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:contact@jobsetmusik.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Steevy FM Guadeloupe</h3>
+    <p class="meta">edris1505@yahoo.com</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:edris1505@yahoo.com?subject=Id%C3%A9e%20de%20sujet%20%3A%20un%20clavier%20pour%20%C3%A9crire%20en%20kr%C3%A9y%C3%B2l&body=Bonjour%2C%0A%0AJe%20vous%20%C3%A9cris%20pour%20vous%20signaler%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera%2C%20un%20clavier%20Android%20gratuit%20et%20open%20source%20qui%20permet%20d%27%C3%A9crire%20en%20cr%C3%A9ole%20guadeloup%C3%A9en%20%3A%20il%20sugg%C3%A8re%20les%20mots%20en%20kr%C3%A9y%C3%B2l%20pendant%20la%20frappe%2C%20%C3%A0%20partir%20des%20textes%20de%20Sylviane%20Telchid%2C%20Sonny%20Rupaire%2C%20Max%20Rippon%20et%20d%27autres%20d%C3%A9fenseurs%20du%20kr%C3%A9y%C3%B2l.%0A%0AProjet%20cr%C3%A9%C3%A9%20par%20un%20Guadeloup%C3%A9en%20pour%20les%20Guadeloup%C3%A9ens%2C%20gratuit%2C%20sans%20collecte%20de%20donn%C3%A9es%20%3A%20il%20aide%20%C3%A0%20%C3%A9crire%20plus%20facilement%20le%20cr%C3%A9ole%20au%20quotidien.%20Un%20beau%20sujet%20pour%20vos%20auditeurs%20%3F%0A%0ADossier%20de%20presse%20%3A%20https%3A%2F%2Ffamibelle.github.io%2FKreyolKeyb%2Fpresskit.html%0AGoogle%20Play%20%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.potomitan.kreyolkeyboard%0AContact%20%3A%20contact%40potomitan.io%0A%0ABien%20cordialement">✉️ Écrire à la rédaction</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Gaïac</h3>
+    <p class="meta">Formulaire de contact en ligne · 0590 22 66 81</p>
+    <div class="actions">
+      <a class="btn primary" href="https://radio-gayak.com/nous_contacter" target="_blank" rel="noopener">📝 Ouvrir le formulaire</a>
+      <button class="btn" data-copy="txt-gaiac">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-gaiac" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Casilindo</h3>
+    <p class="meta">Site officiel</p>
+    <div class="actions">
+      <a class="btn primary" href="http://radio.casilindo.com/" target="_blank" rel="noopener">🌐 Ouvrir le site</a>
+      <button class="btn" data-copy="txt-casilindo">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-casilindo" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Inter s'cool</h3>
+    <p class="meta">Site officiel · 0590 80 38 87</p>
+    <div class="actions">
+      <a class="btn primary" href="http://www.radiointerscool.net/" target="_blank" rel="noopener">🌐 Ouvrir le site</a>
+      <button class="btn" data-copy="txt-interscool">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-interscool" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Contact</h3>
+    <p class="meta">Page Facebook</p>
+    <div class="actions">
+      <a class="btn primary" href="https://m.facebook.com/p/Radio-Contact-Guadeloupe-100064014790683/" target="_blank" rel="noopener">📘 Ouvrir Facebook</a>
+      <button class="btn" data-copy="txt-radiocontact">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-radiocontact" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Radio Cosmique One (RCO)</h3>
+    <p class="meta">Page Facebook</p>
+    <div class="actions">
+      <a class="btn primary" href="https://facebook.com/p/RCO-100067091631029" target="_blank" rel="noopener">📘 Ouvrir Facebook</a>
+      <button class="btn" data-copy="txt-rco">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-rco" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+
+  <div class="card">
+    <h3>Antilles Infos Sports (AIS Radio)</h3>
+    <p class="meta">Page Facebook</p>
+    <div class="actions">
+      <a class="btn primary" href="https://facebook.com/RadioAIS" target="_blank" rel="noopener">📘 Ouvrir Facebook</a>
+      <button class="btn" data-copy="txt-ais">📋 Copier le texte à coller</button>
+    </div>
+    <div class="script" id="txt-ais" style="margin-top:12px;">Bonjour, je vous signale Klavyé Kréyòl Karukera, un clavier Android gratuit et open source qui permet d'écrire en créole guadeloupéen : suggestions de mots en kréyòl pendant la frappe, à partir des textes de Sylviane Telchid, Sonny Rupaire, Max Rippon et d'autres. Projet créé par un Guadeloupéen pour les Guadeloupéens, gratuit, sans collecte de données : il aide à écrire plus facilement le créole au quotidien. Un beau sujet pour vos auditeurs ? Dossier de presse : https://famibelle.github.io/KreyolKeyb/presskit.html Contact : contact@potomitan.io</div>
+  </div>
+</section>
+
+<section id="radio">
+  <span class="time red">⏱ 5 minit</span>
+  <h2>Appelez une radio</h2>
+  <p class="section-sub">Les radios locales adorent les auditeurs qui appellent avec un bon sujet. Voici quoi dire, en créole ou en français, comme vous voulez.</p>
+  <div class="card">
+    <h3>RCI Guadeloupe · ligne info</h3>
+    <p class="meta">La ligne des auditeurs pour signaler une info</p>
+    <div class="script"><span class="kreyol">An kréyòl :</span> « Bonjou ! Mwen ka rélé pou signalé on bèl biten : ni on aplikasyon gratui ki ka rilé Klavyé Kréyòl Karukera, é ki ka pèwmèt ékri kréyòl asi téléfòn : i ka bay sigjesyon mo an kréyòl Gwadloup pannan ou ka tapé. Sé on pwojé lokal, gratui, san piblisité. I asi Google Play ! »
+
+<span class="kreyol">En français :</span> « Bonjour ! Je voulais vous signaler une application guadeloupéenne gratuite : Klavyé Kréyòl Karukera, un clavier qui permet d'écrire en créole sur son téléphone, avec des suggestions de mots tirées des grands textes créoles. C'est un outil créé par un Guadeloupéen pour les Guadeloupéens, qui aide à écrire plus facilement le créole au quotidien : ça vaut le coup d'en parler ! C'est sur Google Play. »</div>
+    <div class="actions">
+      <a class="btn primary" href="tel:+590590894444">📞 Appeler le 0590 89 44 44</a>
+    </div>
+  </div>
+</section>
+
+<div class="note">
+  <strong>Un conseil qui change tout :</strong> personnalisez d'une phrase (« j'écris à ma grand-mère en kréyòl », « mes élèves l'utilisent »...). Un message personnel touche cent fois plus qu'un copier-coller identique. É sonjé : <strong>an kréyòl nou ka palé, an kréyòl nou ka maké !</strong>
+</div>
+
+<footer>
+  <p>📲 <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dambassade%26utm_campaign%3Dlaunch10k">Télécharger Klavyé Kréyòl Karukera sur Google Play</a><br>
+  📰 <a href="presskit.html">Dossier de presse</a> · 🏠 <a href="index.html">Site du projet</a> · 💻 <a href="https://github.com/famibelle/KreyolKeyb">Code source (GitHub)</a></p>
+  <p>Klavyé Kréyòl Karukera est gratuit, open source, sans publicité et ne collecte aucune donnée. Les contacts ci-dessus sont les coordonnées publiques des rédactions.</p>
+</footer>
+
+</div>
+<script>
+(function(){
+  fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
+    var fmt = function(n){ return n.toLocaleString('fr-FR'); };
+    // La donnée source (badge public Play Store) ne remonte que des paliers arrondis
+    // (100+, 500+, 1 000+, 5 000+...). "current" tombe donc toujours pile sur un palier :
+    // une jauge découpée par blocs de 100 retomberait quasi à chaque fois à son minimum.
+    // On affiche plutôt la vraie progression vers l'objectif final.
+    var playTiers = [100, 500, 1000, 5000, 10000];
+    var next = s.goal;
+    for (var i = 0; i < playTiers.length; i++) {
+      if (playTiers[i] > s.current) { next = playTiers[i]; break; }
+    }
+    var pct = Math.max(2, Math.min(100, (s.current / s.goal) * 100));
+    document.getElementById('g-current').textContent = fmt(s.current);
+    document.getElementById('g-next').textContent = fmt(next);
+    document.getElementById('g-asof').textContent = 'MAJ ' + s.as_of;
+    document.getElementById('g-remaining').innerHTML =
+      'Ka rété ' + fmt(next - s.current) + ' pou pwochen palyé-la ! <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe">';
+    document.getElementById('g-fill').style.width = pct + '%';
+  }).catch(function(){});
+
+  var waText ="Mwen ka sèvi épi Klavyé Kréyòl Karukera pou ékri kréyòl asi téléfòn an mwen ! Sé on klavyé Android gratui ki ba'w sigjesyon mo an kréyòl Gwadloup. Télécharge-le gratuitement : https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dwhatsapp%26utm_campaign%3Dlaunch10k #KlavyéKréyòl";
+  document.getElementById('wa-share').href = "https://wa.me/?text=" + encodeURIComponent(waText);
+
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      navigator.clipboard.writeText(el.innerText).then(function(){
+        var t = btn.textContent;
+        btn.textContent = "✅ Copié !";
+        btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent = t; btn.classList.remove('copied'); }, 1600);
+      });
+    });
+  });
+
+  var sideLinks = document.querySelectorAll('.side-nav a');
+  if (sideLinks.length && 'IntersectionObserver' in window){
+    var sections = Array.prototype.map.call(sideLinks, function(a){
+      return document.querySelector(a.getAttribute('href'));
+    });
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = document.querySelector('.side-nav a[href="#' + entry.target.id + '"]');
+        if (entry.isIntersecting) link.classList.add('active');
+        else link.classList.remove('active');
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function(s){ if (s) obs.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

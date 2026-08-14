@@ -5,7 +5,6 @@ import android.util.Log
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.IOException
 
 /**
  * Moteur de suggestions bilingue pour le clavier créole
@@ -20,15 +19,191 @@ class SuggestionEngine(private val context: Context) {
         private const val TAG = "SuggestionEngine"
         private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 kreyòl + 2 français)
         private const val MAX_WORD_HISTORY = 5
-        private const val MIN_WORD_LENGTH = 2
-        
+        private const val MIN_WORD_LENGTH = 1  // Le kréyòl a des mots très fréquents dès 1-2 lettres (ka, an, sé)
 
+        // Poids d'une utilisation personnelle dans le score d'une suggestion.
+        // Calibré sur la distribution réelle du dictionnaire : entre candidats
+        // partageant un préfixe, l'écart de fréquence corpus se compte en dizaines
+        // ("bon" 97 contre "bonjou" 17). À 5 points par utilisation, il faut une
+        // quinzaine de frappes pour faire remonter le mot réellement employé.
+        //
+        // La valeur a été divisée par dix en même temps que les fréquences du
+        // dictionnaire, ramenées à leur vraie échelle par la correction du cumul
+        // dans creer_dictionnaire() : elles étaient jusque-là gonflées d'un facteur
+        // douze par les exécutions successives du pipeline.
+        private const val USAGE_WEIGHT = 5.0
+
+        // Plafond du bonus d'usage, exprimé en nombre d'utilisations comptées.
+        // Deux garanties : le bonus maximal (100) reste très en dessous du poids
+        // d'une correction orthographique (100 000), donc une correction gagne
+        // toujours ; et il ne dépasse pas le 99e centile des fréquences corpus (88),
+        // donc les mots hyper-fréquents (ka 1800, pa 664) ne sont pas délogés par un
+        // mot personnel rarement pertinent.
+        private const val MAX_COUNTED_USAGES = 20
+
+        // Nombre de correspondances par préfixe retenues avant scoring. Le
+        // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
+        // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
+        // l'utilisateur avant même que son bonus d'usage puisse jouer.
+        private const val CANDIDATE_POOL_SIZE = 40
+        
+        /**
+         * Applique le pattern de casse (majuscules/minuscules) de l'input à un mot suggéré
+         * Exemples:
+         * - input="kaBr", suggestion="kabrit" → "kaBrit"
+         * - input="BONJ", suggestion="bonjou" → "BONJOU"
+         * - input="Bon", suggestion="bonjou" → "Bonjou"
+         */
+        internal fun applyCasingPattern(input: String, suggestion: String): String {
+            if (input.isEmpty() || suggestion.isEmpty()) return suggestion
+
+            val result = StringBuilder()
+
+            // Cas 1: Tout en majuscules — au moins 2 lettres, sinon une seule
+            // majuscule initiale (shift automatique) mettrait toute la
+            // suggestion en capitales ("B" → "BÈL" au lieu de "Bèl")
+            val letters = input.filter { it.isLetter() }
+            if (letters.length >= 2 && letters.all { it.isUpperCase() }) {
+                return suggestion.uppercase()
+            }
+            
+            // Cas 2: Première lettre majuscule seulement
+            if (input.length >= 1 && input[0].isUpperCase() && 
+                input.drop(1).all { it.isLowerCase() || !it.isLetter() }) {
+                return suggestion.replaceFirstChar { it.uppercase() }
+            }
+            
+            // Cas 3: Pattern mixte - appliquer caractère par caractère
+            for (i in suggestion.indices) {
+                if (i < input.length) {
+                    val inputChar = input[i]
+                    val suggestionChar = suggestion[i]
+                    
+                    result.append(
+                        when {
+                            inputChar.isUpperCase() -> suggestionChar.uppercase()
+                            inputChar.isLowerCase() -> suggestionChar.lowercase()
+                            else -> suggestionChar
+                        }
+                    )
+                } else {
+                    // Au-delà de la longueur de l'input, garder la casse originale
+                    result.append(suggestion[i])
+                }
+            }
+            
+            return result.toString()
+        }
+
+        /**
+         * Calcule un score de pertinence pour une suggestion du dictionnaire
+         * `internal` (et non private) pour être testable en JVM sans Context
+         *
+         * @param levenshteinDistance 0 pour une correspondance par préfixe ;
+         *        > 0 pour une correction orthographique (distance d'édition)
+         * @param usageCount nombre de fois que l'utilisateur a déjà validé ce mot,
+         *        0 quand l'usage personnel n'est pas connu (mots français, tests)
+         */
+        internal fun calculateDictionaryScore(
+            word: String,
+            input: String,
+            frequency: Int,
+            levenshteinDistance: Int = 0,
+            usageCount: Int = 0
+        ): Double {
+            var score = frequency.toDouble()
+
+            // Usage personnel : la fréquence corpus dit ce que le kréyòl écrit
+            // emploie en général, pas ce que cet utilisateur-ci écrit. Le compteur
+            // alimenté par la gamification (CreoleDictionaryWithUsage) corrige ce
+            // décalage. Tout reste sur l'appareil : aucune donnée ne sort, et seuls
+            // les mots déjà présents au dictionnaire sont comptés.
+            score += minOf(usageCount, MAX_COUNTED_USAGES) * USAGE_WEIGHT
+
+            // Corrections orthographiques : la distance prime sur tout le reste.
+            // Le poids (100 000) dépasse toute fréquence du dictionnaire (~15 500 max) :
+            // une correction à 1 édition bat toujours une correction à 2 éditions,
+            // quelle que soit leur fréquence ("mesli" → "mèsi" avant "mésyé")
+            if (levenshteinDistance > 0) {
+                score += (3 - levenshteinDistance) * 100_000.0
+            }
+
+            // Bonus si le mot commence par l'input, comparaison insensible aux accents :
+            // taper "fe" doit favoriser "fè" autant que "fenmen", sinon les graphies
+            // créoles correctes sont systématiquement déclassées
+            if (AccentTolerantMatcher.startsWith(input, word)) {
+                score += 50.0  // Augmenté pour favoriser les correspondances par préfixe
+            }
+
+            // Bonus pour les mots courts (plus faciles à taper)
+            if (word.length <= 6) {
+                score += 10.0
+            }
+
+            // Malus pour les mots très longs
+            if (word.length > 12) {
+                score -= 10.0
+            }
+
+            // Bonus pour les mots avec accents (encourage l'apprentissage de l'orthographe correcte)
+            if (AccentTolerantMatcher.hasAccents(word)) {
+                score += 5.0
+            }
+
+            return score
+        }
+
+        /**
+         * Choisit la clé à interroger dans le modèle N-gram : le contexte à deux mots
+         * ("an ka") s'il est présent, sinon le dernier mot seul ("ka").
+         * `internal` (et non private) pour être testable en JVM sans Context.
+         *
+         * @param hasKey test de présence dans le modèle chargé
+         */
+        internal fun resolveNgramContext(
+            previousWord: String?,
+            lastWord: String,
+            hasKey: (String) -> Boolean
+        ): String {
+            val twoWordContext = previousWord?.let { "$it $lastWord" }
+            return twoWordContext?.takeIf(hasKey) ?: lastWord
+        }
+
+        /**
+         * Correspondance EXACTE (insensible aux accents) d'un mot dans une liste de formes
+         * déjà normalisées. `internal` (et non private) pour être testable en JVM sans
+         * Context — cœur logique de `isKnownWord()`.
+         */
+        internal fun isWordKnown(word: String, normalizedWords: List<String>): Boolean {
+            if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
+            return normalizedWords.contains(AccentTolerantMatcher.normalize(word))
+        }
     }
     
     // Données du moteur kreyòl (existant)
     private var dictionary: List<Pair<String, Int>> = emptyList()
+    // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
+    // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
+    private var normalizedWords: List<String> = emptyList()
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
+
+    // Compteur d'utilisations personnelles, fourni par le service IME plutôt
+    // qu'instancié ici : le moteur n'a pas à dépendre du paquet gamification, et
+    // reste ainsi testable sans Context. Absent (null) tant qu'il n'est pas
+    // branché, auquel cas le score se réduit à son ancienne formule.
+    private var usageCountProvider: ((String) -> Int)? = null
+
+    /**
+     * Branche la source des compteurs d'utilisation personnelle
+     * (CreoleDictionaryWithUsage côté service).
+     */
+    fun setUsageCountProvider(provider: (String) -> Int) {
+        usageCountProvider = provider
+        Log.d(TAG, "📊 Compteurs d'usage personnel branchés sur le scoring")
+    }
+
+    private fun usageCountOf(word: String): Int = usageCountProvider?.invoke(word) ?: 0
     
     // 🇫🇷 Support français (nouveau)
     private lateinit var frenchDictionary: FrenchDictionary
@@ -37,6 +212,10 @@ class SuggestionEngine(private val context: Context) {
     
     // Coroutines pour les opérations asynchrones
     private val suggestionScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    // Job de la génération en cours : annulé à chaque nouvelle frappe pour
+    // qu'un calcul lent (ex: Levenshtein) ne puisse pas écraser un résultat plus récent
+    private var suggestionJob: Job? = null
     
     // Modes de suggestion
     enum class SuggestionMode {
@@ -61,10 +240,6 @@ class SuggestionEngine(private val context: Context) {
     
     fun setSuggestionListener(listener: SuggestionListener) {
         this.suggestionListener = listener
-    }
-    
-    fun getSuggestionListener(): SuggestionListener? {
-        return suggestionListener
     }
     
     /**
@@ -108,9 +283,11 @@ class SuggestionEngine(private val context: Context) {
             
             // 3. Attendre que tout soit chargé
             kreyolDictDeferred.await()
-            ngramDeferred.await() 
+            ngramDeferred.await()
             frenchDictDeferred.await()
-            
+
+            removeLegacyPersonalDictionary()
+
             Log.d(TAG, "✅ Moteur bilingue initialisé:")
             Log.d(TAG, "   🟢 Kreyòl: ${dictionary.size} mots + ${ngramModel.size} N-grams")
             Log.d(TAG, "   🔵 Français: ${frenchDictionary.getStats()["word_count"]} mots")
@@ -142,18 +319,20 @@ class SuggestionEngine(private val context: Context) {
             return
         }
         
-        suggestionScope.launch {
+        suggestionJob?.cancel()
+        suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
-
-                
                 val dictionarySuggestions = getDictionarySuggestions(input)
                 val ngramSuggestions = getNgramSuggestions()
-                
+
                 // Fusion et déduplication des suggestions
                 mergeAndRankSuggestions(dictionarySuggestions, ngramSuggestions, input)
             }
             
-            suggestionListener?.onSuggestionsReady(suggestions)
+            // Appliquer la casse de l'input aux suggestions
+            val casedSuggestions = suggestions.map { applyCasingPattern(input, it) }
+            
+            suggestionListener?.onSuggestionsReady(casedSuggestions)
         }
     }
     
@@ -178,15 +357,21 @@ class SuggestionEngine(private val context: Context) {
             return
         }
         
-        suggestionScope.launch {
+        suggestionJob?.cancel()
+        suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
                 createBilingualSuggestions(input)
             }
             
+            // Appliquer la casse de l'input aux suggestions
+            val casedSuggestions = suggestions.map { suggestion ->
+                suggestion.copy(word = applyCasingPattern(input, suggestion.word))
+            }
+            
             // Notifier avec les deux formats pour compatibilité
-            val simpleWords = suggestions.map { it.word }
+            val simpleWords = casedSuggestions.map { it.word }
             suggestionListener?.onSuggestionsReady(simpleWords)
-            suggestionListener?.onBilingualSuggestionsReady(suggestions)
+            suggestionListener?.onBilingualSuggestionsReady(casedSuggestions)
             
             Log.d(TAG, "🎯 Suggestions bilingues pour '$input': ${simpleWords}")
         }
@@ -197,10 +382,6 @@ class SuggestionEngine(private val context: Context) {
      * 💙 PRIORITÉ ABSOLUE: Détection séquences mémoire pour papa Saint-Ange
      */
     private fun createBilingualSuggestions(input: String): List<BilingualSuggestion> {
-        val suggestions = mutableListOf<BilingualSuggestion>()
-        
-
-        
         // 1. 🟢 TOUJOURS obtenir suggestions kreyòl (priorité absolue)
         val kreyolSuggestions = getKreyolSuggestions(input)
         
@@ -227,22 +408,29 @@ class SuggestionEngine(private val context: Context) {
         val allKreyol = mutableMapOf<String, Float>()
         
         // Ajouter suggestions dictionnaire
-        dictionaryMatches.forEach { (word, frequency) ->
-            val score = calculateDictionaryScore(word, input, frequency)
+        dictionaryMatches.forEach { (word, frequency, distance) ->
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
             allKreyol[word] = score.toFloat()
         }
         
-        // Ajouter suggestions n-gram avec bonus
-        ngramMatches.forEach { word ->
-            val currentScore = allKreyol[word] ?: 0f
-            allKreyol[word] = currentScore + 50f  // Bonus contextuel
-        }
+        // Ajouter suggestions n-gram avec bonus (uniquement si le mot correspond
+        // au préfixe tapé : le n-gramme prédit le mot suivant probable d'après le
+        // contexte, ce qui n'a aucun rapport avec ce que l'utilisateur est en train
+        // de taper — sans ce filtre, un mot sans aucune correspondance kréyòl
+        // (ex. "Ordinateur") affichait quand même 3 mots kréyòl sans rapport)
+        ngramMatches
+            .filter { it.startsWith(input, ignoreCase = true) }
+            .forEach { word ->
+                val currentScore = allKreyol[word] ?: 0f
+                allKreyol[word] = currentScore + 50f  // Bonus contextuel
+            }
         
-        // Convertir en BilingualSuggestion et appliquer boost kreyòl
+        // Convertir en BilingualSuggestion et appliquer boost kreyòl + casse
         return allKreyol.entries
             .map { (word, score) ->
+                val casedWord = applyCasingPattern(input, word)
                 val adjustedScore = bilingualConfig.adjustScoreByLanguage(score, SuggestionLanguage.KREYOL)
-                BilingualSuggestion(word, adjustedScore, SuggestionLanguage.KREYOL, SuggestionSource.HYBRID)
+                BilingualSuggestion(casedWord, adjustedScore, SuggestionLanguage.KREYOL, SuggestionSource.HYBRID)
             }
             .sortedByDescending { it.score }
             .take(bilingualConfig.maxKreyolSuggestions)
@@ -260,11 +448,12 @@ class SuggestionEngine(private val context: Context) {
         val frenchWords = frenchDictionary.getSuggestions(input)
         
         return frenchWords.map { word ->
+            val casedWord = applyCasingPattern(input, word)
             val frequency = frenchDictionary.getWordFrequency(word)
             val baseScore = calculateDictionaryScore(word, input, frequency)
             val adjustedScore = bilingualConfig.adjustScoreByLanguage(baseScore.toFloat(), SuggestionLanguage.FRENCH)
             
-            BilingualSuggestion(word, adjustedScore, SuggestionLanguage.FRENCH, SuggestionSource.DICTIONARY)
+            BilingualSuggestion(casedWord, adjustedScore, SuggestionLanguage.FRENCH, SuggestionSource.DICTIONARY)
         }.sortedByDescending { it.score }
     }
     
@@ -328,18 +517,19 @@ class SuggestionEngine(private val context: Context) {
             return
         }
         
-        suggestionScope.launch {
+        suggestionJob?.cancel()
+        suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
                 val dictionaryMatches = getDictionarySuggestions(input)
                 
-                // Trier uniquement par score de dictionnaire (fréquence + proximité)
+                // Trier uniquement par score de dictionnaire (fréquence + proximité + distance)
                 dictionaryMatches
-                    .map { (word, frequency) -> 
-                        Pair(word, calculateDictionaryScore(word, input, frequency))
+                    .map { (word, frequency, distance) ->
+                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word)))
                     }
                     .sortedByDescending { it.second }
                     .take(MAX_SUGGESTIONS)
-                    .map { it.first }
+                    .map { applyCasingPattern(input, it.first) }
             }
             
             Log.d(TAG, "Suggestions dictionnaire: $suggestions")
@@ -352,7 +542,8 @@ class SuggestionEngine(private val context: Context) {
      * Utilisé après qu'un mot soit complété pour prédire le mot suivant
      */
     fun generateContextualSuggestions() {
-        suggestionScope.launch {
+        suggestionJob?.cancel()
+        suggestionJob = suggestionScope.launch {
             val predictions = withContext(Dispatchers.Default) {
                 if (wordHistory.isEmpty() || ngramModel.isEmpty()) {
                     emptyList()
@@ -391,53 +582,79 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Ajoute un mot au dictionnaire personnel
+     * Efface le dictionnaire personnel laissé par la 10.5.0.
+     *
+     * Cette version apprenait les mots absents du corpus pour les suggérer. La
+     * fonction a été retirée en 10.6.0 : un clavier qui conserve des mots tapés
+     * par l'utilisateur, si encadré soit-il, reste un clavier qui conserve ce
+     * qu'on écrit. Retirer le code ne suffit pas, il faut aussi effacer ce qui a
+     * déjà été écrit sur les appareils l'ayant installée.
      */
-    suspend fun addWordToDictionary(word: String, frequency: Int = 1) = withContext(Dispatchers.IO) {
+    private fun removeLegacyPersonalDictionary() {
         try {
-            // Vérifier si le mot existe déjà
-            val existingWord = dictionary.find { it.first.equals(word, ignoreCase = true) }
-            
-            if (existingWord == null) {
-                val newWord = Pair(word.lowercase(), frequency)
-                dictionary = (dictionary + newWord).sortedByDescending { it.second }
-                
-                Log.d(TAG, "Mot ajouté au dictionnaire: $word")
-            } else {
-                Log.d(TAG, "Mot déjà présent: $word")
+            val legacyFile = java.io.File(context.filesDir, "personal_dict.json")
+            if (legacyFile.exists() && legacyFile.delete()) {
+                Log.d(TAG, "🧹 Dictionnaire personnel de la 10.5.0 effacé")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors de l'ajout du mot: ${e.message}", e)
+            Log.e(TAG, "Effacement du dictionnaire personnel impossible: ${e.message}", e)
         }
     }
-    
+
+    /**
+     * Correspondance EXACTE (insensible aux accents) dans le dictionnaire créole OU
+     * français — contrairement à getDictionarySuggestions() qui fait une recherche par
+     * préfixe. Utilisé par KreyolSpellCheckerService pour décider si un mot doit être
+     * souligné comme faute par le correcteur orthographique système.
+     */
+    fun isKnownWord(word: String): Boolean {
+        if (isWordKnown(word, normalizedWords)) return true
+        return ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
+    }
+
+    /**
+     * Suggestions de correction pour un mot absent des deux dictionnaires, en réutilisant
+     * telle quelle la logique Levenshtein + scoring existante (chantier G) — la casse de
+     * `word` est reportée sur chaque suggestion, comme pour la frappe normale.
+     */
+    fun getSpellingSuggestions(word: String, maxResults: Int = MAX_SUGGESTIONS): List<String> {
+        return getSpellCorrectionSuggestions(word)
+            .take(maxResults)
+            .map { applyCasingPattern(word, it.first) }
+    }
+
     /**
      * Charge le dictionnaire depuis les assets
      */
     private suspend fun loadDictionary() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
-            val jsonObject = JSONObject(jsonString)
+            val jsonString = context.assets.open("creole_dict.json").bufferedReader().use { it.readText() }
+            val wordsArray = JSONArray(jsonString)
             
             val loadedDictionary = mutableListOf<Pair<String, Int>>()
             
-            val keys = jsonObject.keys()
-            while (keys.hasNext()) {
-                val word = keys.next()
-                val frequency = jsonObject.optInt(word, 1)
-                loadedDictionary.add(Pair(word.lowercase(), frequency))
+            for (i in 0 until wordsArray.length()) {
+                val wordArray = wordsArray.getJSONArray(i)
+                val word = wordArray.getString(0).lowercase()
+                val frequency = wordArray.optInt(1, 1)
+                loadedDictionary.add(Pair(word, frequency))
             }
             
             // Trier par fréquence décroissante
             dictionary = loadedDictionary.sortedByDescending { it.second }
-            
+            normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+
             withContext(Dispatchers.Main) {
                 suggestionListener?.onDictionaryLoaded(dictionary.size)
             }
             
-            Log.d(TAG, "Dictionnaire luxembourgeois chargé: ${dictionary.size} mots")
-            
-        } catch (e: IOException) {
+            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+
+        } catch (e: Exception) {
+            // Pas seulement IOException : un format inattendu (ex. objet {mot: fréquence}
+            // au lieu du tableau [[mot, fréquence], ...] attendu) lève une JSONException,
+            // qui n'est pas une IOException et passait donc au travers, laissant le
+            // dictionnaire vide sans aucune suggestion ni erreur visible (v10.2.6).
             Log.e(TAG, "Erreur lors du chargement du dictionnaire: ${e.message}", e)
         }
     }
@@ -446,140 +663,158 @@ class SuggestionEngine(private val context: Context) {
      * Charge le modèle N-gram depuis les assets
      */
     private suspend fun loadNgramModel() = withContext(Dispatchers.IO) {
-        Log.d(TAG, "Chargement du modèle N-grams luxembourgeois...")
+        Log.d(TAG, "Chargement du modèle N-grams...")
         try {
-            val inputStream = context.assets.open("luxemburgish_ngrams.json")
+            val inputStream = context.assets.open("creole_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
 
             val jsonObject = JSONObject(jsonString)
+            
+            // Le fichier JSON est directement {mot: [{word, probability}]}
+            // Pas besoin de wrapper "predictions"
             val tempMap = mutableMapOf<String, List<Map<String, Any>>>()
             
-            // Parcourir toutes les entrées du fichier luxembourgeois
             val keys = jsonObject.keys()
             while (keys.hasNext()) {
-                val phrase = keys.next()
-                val count = jsonObject.getInt(phrase)
+                val key = keys.next()
+                val predictionsArray = jsonObject.getJSONArray(key)
+                val predictions = mutableListOf<Map<String, Any>>()
                 
-                // Séparer la phrase en mots pour créer des prédictions
-                val words = phrase.split(" ")
-                if (words.size >= 2) {
-                    // Utiliser tous les mots sauf le dernier comme clé
-                    val key = words.dropLast(1).joinToString(" ")
-                    val nextWord = words.last()
-                    
-                    // Créer ou mettre à jour la liste de prédictions pour cette clé
-                    val existingPredictions = tempMap[key]?.toMutableList() ?: mutableListOf()
-                    
+                for (i in 0 until predictionsArray.length()) {
+                    val predictionObj = predictionsArray.getJSONObject(i)
                     val prediction = mapOf(
-                        "word" to nextWord,
-                        "prob" to count.toDouble() / 1000.0 // Normaliser la probabilité
+                        "word" to predictionObj.getString("word"),
+                        "probability" to predictionObj.getDouble("probability")
                     )
-                    
-                    existingPredictions.add(prediction)
-                    tempMap[key] = existingPredictions.sortedByDescending { 
-                        (it["prob"] as Double) 
-                    }.take(5) // Garder seulement les 5 meilleures prédictions
+                    predictions.add(prediction)
                 }
+                
+                tempMap[key] = predictions
             }
             
             ngramModel = tempMap.toMap()
             
-            Log.d(TAG, "Modèle N-grams luxembourgeois chargé avec ${ngramModel.size} entrées")
+            Log.d(TAG, "Modèle N-grams chargé avec ${ngramModel.size} entrées")
             
             withContext(Dispatchers.Main) {
                 suggestionListener?.onNgramModelLoaded()
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "Erreur lors du chargement des N-grams luxembourgeois", e)
+            Log.e(TAG, "Erreur lors du chargement des N-grams", e)
         }
     }
     
     /**
-     * Obtient les suggestions depuis le dictionnaire avec support AccentTolerantMatcher
-     * 🎯 NOUVELLE FONCTIONNALITÉ: Recherche insensible aux accents
+     * Obtient les suggestions depuis le dictionnaire (recherche par préfixe insensible aux accents)
+     * avec correction orthographique en secours
      */
-    private fun getDictionarySuggestions(input: String): List<Pair<String, Int>> {
+    private fun getDictionarySuggestions(input: String): List<Triple<String, Int, Int>> {
         if (input.length < MIN_WORD_LENGTH) return emptyList()
+
+        // Recherche préfixe sur les formes normalisées précalculées.
+        // `dictionary` est trié par fréquence décroissante, mais on ne peut plus
+        // s'arrêter aux tout premiers matches depuis que l'usage personnel entre
+        // dans le score : un mot rare dans le corpus et pourtant très employé par
+        // l'utilisateur se trouve loin dans ce classement, et une fenêtre étroite
+        // l'écarterait avant même que son bonus puisse jouer.
+        // Distance 0 = correspondance par préfixe (pas une correction).
+        val normalizedInput = AccentTolerantMatcher.normalize(input)
+        val matches = mutableListOf<Triple<String, Int, Int>>()
+        for (i in dictionary.indices) {
+            if (normalizedWords[i].startsWith(normalizedInput)) {
+                matches.add(Triple(dictionary[i].first, dictionary[i].second, 0))
+                if (matches.size >= CANDIDATE_POOL_SIZE) break
+            }
+        }
+
+        // ✨ Si aucune correspondance par préfixe, essayer la correction orthographique
+        if (matches.isEmpty() && input.length >= 3) {
+            return getSpellCorrectionSuggestions(input)
+        }
+
+        return matches
+    }
+    
+    /**
+     * Obtient les suggestions de correction orthographique en utilisant la distance de Levenshtein
+     * 🔧 CORRECTION ORTHOGRAPHIQUE: Trouve les mots les plus proches même avec des fautes
+     * 
+     * Utilisé comme solution de secours lorsque la recherche par préfixe ne retourne rien.
+     * Détecte et corrige:
+     * - Les lettres mélangées: "bonjo" → "bonjou"
+     * - Les fautes d'orthographe: "mesli" → "mèsi"
+     * - Les lettres manquantes/en trop: "kreyol" → "kréyòl"
+     * 
+     * @param input Le mot saisi par l'utilisateur (potentiellement mal orthographié)
+     * @return Liste de (mot, fréquence, distance) triée par pertinence (distance + fréquence)
+     */
+    private fun getSpellCorrectionSuggestions(input: String): List<Triple<String, Int, Int>> {
+        if (input.length < 3) return emptyList()
         
-        // 🎯 Utiliser AccentTolerantMatcher pour recherche insensible aux accents
-        val accentTolerantMatches = AccentTolerantMatcher.findAccentTolerantSuggestions(
-            input, 
-            dictionary, 
-            MAX_SUGGESTIONS * 2
+        // Essayer d'abord avec la normalisation des accents (combinaison puissante)
+        val normalizedMatches = LevenshteinDistance.findClosestMatchesNormalized(
+            input = input,
+            dictionary = dictionary,
+            normalizer = { str -> AccentTolerantMatcher.normalize(str) },
+            maxDistance = 2,
+            maxResults = MAX_SUGGESTIONS
         )
         
-        Log.d(TAG, "🔍 Recherche '$input': ${accentTolerantMatches.size} suggestions trouvées")
+        // Si on trouve des correspondances normalisées, les retourner
+        if (normalizedMatches.isNotEmpty()) {
+            Log.d(TAG, "✓ Correction orthographique (normalisée) pour '$input': ${normalizedMatches.take(3).map { it.first }}")
+            return normalizedMatches
+        }
         
-        return accentTolerantMatches
+        // Sinon, essayer sans normalisation (peut détecter d'autres types d'erreurs)
+        val directMatches = LevenshteinDistance.findClosestMatches(
+            input = input,
+            dictionary = dictionary,
+            maxDistance = 2,
+            maxResults = MAX_SUGGESTIONS
+        )
+        
+        if (directMatches.isNotEmpty()) {
+            Log.d(TAG, "✓ Correction orthographique (directe) pour '$input': ${directMatches.take(3).map { it.first }}")
+        }
+        
+        return directMatches
     }
     
     /**
      * Obtient les suggestions depuis le modèle N-gram (optimisé pour mode contextuel)
+     *
+     * Le modèle porte deux familles de clés : un mot ("ka") et deux mots séparés par
+     * une espace ("an ka"). Le contexte à deux mots est essayé en premier car il est
+     * nettement plus précis, avec repli sur un seul mot quand la paire est absente.
+     * Aucune collision n'est possible entre les deux familles, la tokenisation du
+     * pipeline excluant les espaces.
+     *
+     * L'historique retenait déjà cinq mots (MAX_WORD_HISTORY) alors que seul le
+     * dernier servait ; le modèle n'exportait par ailleurs que des bigrammes, les
+     * trigrammes étant calculés puis jetés côté pipeline.
      */
     private fun getNgramSuggestions(): List<String> {
-        if (wordHistory.isEmpty() || ngramModel.isEmpty()) {
-            Log.d(TAG, "Pas de suggestions N-gram: historique vide ou modèle non chargé")
-            return emptyList()
-        }
-        
+        val lastWord = wordHistory.lastOrNull() ?: return emptyList()
+        val previousWord = wordHistory.getOrNull(wordHistory.size - 2)
+
+        val context = resolveNgramContext(previousWord, lastWord) { ngramModel.containsKey(it) }
+        val ngramList = ngramModel[context] ?: return emptyList()
+
+        Log.d(TAG, "N-gram contexte retenu: '$context'")
+
         val suggestions = mutableListOf<Pair<String, Double>>()
-        
-        try {
-            // Stratégie 1: Essayer avec les 2 derniers mots (bigram) - plus précis
-            if (wordHistory.size >= 2) {
-                val bigram = "${wordHistory[wordHistory.size - 2]} ${wordHistory.last()}"
-                
-                if (ngramModel.containsKey(bigram)) {
-                    val ngramList = ngramModel[bigram] ?: emptyList()
-                    ngramList.forEach { ngramEntry ->
-                        val word = ngramEntry["word"] as? String
-                        val prob = (ngramEntry["prob"] as? Number)?.toDouble() ?: 0.0
-                        
-                        if (word != null && suggestions.none { it.first == word }) {
-                            suggestions.add(Pair(word, prob + 0.2)) // Bonus pour bigram
-                        }
-                    }
-                }
+        ngramList.forEach { ngramEntry ->
+            val word = ngramEntry["word"] as? String
+            val prob = (ngramEntry["probability"] as? Number)?.toDouble() ?: 0.0
+
+            if (word != null && suggestions.none { it.first == word }) {
+                suggestions.add(Pair(word, prob))
             }
-            
-            // Stratégie 2: Essayer avec le dernier mot seulement (unigram)
-            val lastWord = wordHistory.lastOrNull()
-            if (lastWord != null && ngramModel.containsKey(lastWord)) {
-                
-                val ngramList = ngramModel[lastWord] ?: emptyList()
-                ngramList.forEach { ngramEntry ->
-                    val word = ngramEntry["word"] as? String
-                    val prob = (ngramEntry["prob"] as? Number)?.toDouble() ?: 0.0
-                    
-                    if (word != null && suggestions.none { it.first == word }) {
-                        suggestions.add(Pair(word, prob))
-                    }
-                }
-            }
-            
-            // Stratégie 3: Si on a 3+ mots, essayer trigram
-            if (wordHistory.size >= 3 && suggestions.size < MAX_SUGGESTIONS) {
-                val trigram = "${wordHistory[wordHistory.size - 3]} ${wordHistory[wordHistory.size - 2]} ${wordHistory.last()}"
-                
-                if (ngramModel.containsKey(trigram)) {
-                    val ngramList = ngramModel[trigram] ?: emptyList()
-                    ngramList.forEach { ngramEntry ->
-                        val word = ngramEntry["word"] as? String
-                        val prob = (ngramEntry["prob"] as? Number)?.toDouble() ?: 0.0
-                        
-                        if (word != null && suggestions.none { it.first == word }) {
-                            suggestions.add(Pair(word, prob + 0.4)) // Bonus maximal pour trigram
-                        }
-                    }
-                }
-            }
-            
-        } catch (e: Exception) {
-            Log.w(TAG, "Erreur lors de la génération des suggestions N-gram: ${e.message}")
         }
-        
+
         // Trier par probabilité décroissante et retourner les meilleures
         return suggestions
             .sortedByDescending { it.second }
@@ -591,23 +826,25 @@ class SuggestionEngine(private val context: Context) {
      * Fusionne et classe les suggestions par pertinence
      */
     private fun mergeAndRankSuggestions(
-        dictionarySuggestions: List<Pair<String, Int>>,
+        dictionarySuggestions: List<Triple<String, Int, Int>>,
         ngramSuggestions: List<String>,
         input: String
     ): List<String> {
         val allSuggestions = mutableMapOf<String, Double>()
-        
+
         // Ajouter les suggestions du dictionnaire avec score basé sur la fréquence et la position
-        dictionarySuggestions.forEach { (word, frequency) ->
-            val score = calculateDictionaryScore(word, input, frequency)
-            allSuggestions[word] = score
+        dictionarySuggestions.forEach { (word, frequency, distance) ->
+            val casedWord = applyCasingPattern(input, word)
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
+            allSuggestions[casedWord] = score
         }
         
         // Ajouter les suggestions N-gram avec un bonus de contexte
         ngramSuggestions.forEach { word ->
-            val currentScore = allSuggestions[word] ?: 0.0
+            val casedWord = applyCasingPattern(input, word)
+            val currentScore = allSuggestions[casedWord] ?: 0.0
             val ngramBonus = 50.0 // Bonus pour les suggestions contextuelles
-            allSuggestions[word] = currentScore + ngramBonus
+            allSuggestions[casedWord] = currentScore + ngramBonus
         }
         
         // Trier par score et retourner les meilleures
@@ -616,30 +853,6 @@ class SuggestionEngine(private val context: Context) {
             .sortedByDescending { it.value }
             .take(MAX_SUGGESTIONS)
             .map { it.key }
-    }
-    
-    /**
-     * Calcule un score de pertinence pour une suggestion du dictionnaire
-     */
-    private fun calculateDictionaryScore(word: String, input: String, frequency: Int): Double {
-        var score = frequency.toDouble()
-        
-        // Bonus si le mot commence exactement par l'input
-        if (word.startsWith(input, ignoreCase = true)) {
-            score += 20.0
-        }
-        
-        // Bonus pour les mots courts (plus faciles à taper)
-        if (word.length <= 6) {
-            score += 5.0
-        }
-        
-        // Malus pour les mots très longs
-        if (word.length > 12) {
-            score -= 10.0
-        }
-        
-        return score
     }
     
     /**
@@ -705,6 +918,7 @@ class SuggestionEngine(private val context: Context) {
     fun cleanup() {
         suggestionScope.cancel()
         dictionary = emptyList()
+        normalizedWords = emptyList()
         ngramModel = emptyMap()
         wordHistory.clear()
         

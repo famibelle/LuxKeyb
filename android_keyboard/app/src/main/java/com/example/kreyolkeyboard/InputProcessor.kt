@@ -16,6 +16,44 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     
     companion object {
         private const val TAG = "InputProcessor"
+
+        // Nombre de caractères lus de part et d'autre du curseur pour reconstituer
+        // le mot en cours. Large devant le plus long mot du dictionnaire créole.
+        private const val WORD_LOOKAROUND = 64
+
+        /**
+         * Définit ce qui appartient à un mot, pour la frappe comme pour la
+         * reconstitution du mot autour du curseur : les deux doivent partager la
+         * même définition, sinon `currentWord` divergerait du texte réel à chaque
+         * resynchronisation.
+         *
+         * `isLetter()` plutôt qu'une classe de caractères explicite : l'ancienne
+         * regex ne listait que les minuscules accentuées, si bien qu'une majuscule
+         * accentuée (« É » en début de phrase, fréquent en kréyòl) était traitée
+         * comme un séparateur et coupait le mot en cours.
+         */
+        internal fun isWordCharacter(character: Char): Boolean = character.isLetter()
+
+        /**
+         * Mot en cours de frappe déduit du texte précédant le curseur.
+         * `internal` (et non private) pour être testable en JVM sans InputConnection.
+         *
+         * Une sélection active ne correspond à aucun mot en cours : la remplacer
+         * par une suggestion effacerait un texte que l'utilisateur a désigné
+         * explicitement, ce qui n'est pas ce que la barre de suggestions promet.
+         */
+        internal fun resolveCurrentWord(textBeforeCursor: String, hasSelection: Boolean): String {
+            if (hasSelection) return ""
+            return textBeforeCursor.takeLastWhile { isWordCharacter(it) }
+        }
+
+        /**
+         * Nombre de caractères de mot situés juste après le curseur, c'est-à-dire
+         * la fin du mot que l'utilisateur est en train d'éditer par le milieu.
+         * `internal` pour la même raison que ci-dessus.
+         */
+        internal fun trailingWordLength(textAfterCursor: String): Int =
+            textAfterCursor.takeWhile { isWordCharacter(it) }.length
     }
     
     // État du processeur
@@ -23,12 +61,13 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     private var isCapitalMode = false
     private var isCapsLock = false
     private var isNumericMode = false
-    
+    private var isEmojiMode = false
+
     // Callbacks
     interface InputProcessorListener {
         fun onWordChanged(word: String)
         fun onWordCompleted(word: String)
-        fun onModeChanged(isNumeric: Boolean, isCapital: Boolean, isCapsLock: Boolean)
+        fun onModeChanged(isNumeric: Boolean, isEmoji: Boolean, isCapital: Boolean, isCapsLock: Boolean)
         fun onSpecialKeyPressed(key: String)
     }
     
@@ -70,6 +109,10 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
                 Log.d(TAG, "Handling mode switch")
                 handleModeSwitch()
             }
+            "EMOJI" -> {
+                Log.d(TAG, "Handling emoji panel switch")
+                handleEmojiSwitch()
+            }
             " " -> {
                 Log.d(TAG, "Handling space")
                 handleSpace(inputConnection)
@@ -92,7 +135,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         }
         
         // Ajouter le caractère au mot courant
-        if (character.matches(Regex("[a-zA-Zàáâãäåèéêëìíîïòóôõöøùúûüýÿñçĉĝĥĵŝŭ]"))) {
+        if (character.isNotEmpty() && character.all { isWordCharacter(it) }) {
             currentWord += character
             Log.d(TAG, "Caractère '$character' ajouté, mot courant: '$currentWord'")
             processorListener?.onWordChanged(currentWord)
@@ -117,8 +160,17 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Retour arrière
      */
     private fun handleBackspace(inputConnection: InputConnection): Boolean {
-        // Supprimer le caractère précédent dans l'éditeur
-        val deleted = inputConnection.deleteSurroundingText(1, 0)
+        // Supprimer le(s) caractère(s) précédent(s) dans l'éditeur. La plupart des
+        // emojis (panneau emoji, mais aussi ceux tapés via un autre clavier avant de
+        // basculer sur Kréyòl) sont hors du plan de base Unicode et occupent une
+        // paire de surrogates UTF-16 : supprimer une seule unité laissait un
+        // demi-caractère orphelin qui s'affiche comme un glyphe cassé (❓). Les
+        // emojis à ton de peau (ex. 💪🏿) vont plus loin : ce sont deux points de
+        // code distincts (emoji de base + modificateur de ton), donc 4 unités
+        // UTF-16 à supprimer ensemble pour ne pas laisser le modificateur seul.
+        val textBeforeCursor = inputConnection.getTextBeforeCursor(4, 0)?.toString() ?: ""
+        val deleteLength = calculateBackspaceLength(textBeforeCursor)
+        val deleted = inputConnection.deleteSurroundingText(deleteLength, 0)
         
         // Mettre à jour le mot courant
         if (currentWord.isNotEmpty()) {
@@ -129,7 +181,28 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         Log.d(TAG, "Backspace traité, mot courant: '$currentWord'")
         return true
     }
-    
+
+    /**
+     * Détermine combien d'unités UTF-16 supprimer avant le curseur pour retirer
+     * proprement un seul glyphe : un caractère normal, un emoji hors plan de base
+     * (paire de surrogates), ou un emoji + modificateur de ton de peau (deux
+     * points de code consécutifs, ex. 💪🏿 = U+1F4AA U+1F3FF).
+     */
+    private fun calculateBackspaceLength(textBeforeCursor: String): Int {
+        if (textBeforeCursor.isEmpty()) return 1
+        val end = textBeforeCursor.length
+        val lastCodePoint = textBeforeCursor.codePointBefore(end)
+        val lastCodePointLength = Character.charCount(lastCodePoint)
+        val isSkinToneModifier = lastCodePoint in 0x1F3FB..0x1F3FF
+
+        val precedingEnd = end - lastCodePointLength
+        if (isSkinToneModifier && precedingEnd > 0) {
+            val precedingCodePoint = textBeforeCursor.codePointBefore(precedingEnd)
+            return lastCodePointLength + Character.charCount(precedingCodePoint)
+        }
+        return lastCodePointLength
+    }
+
     /**
      * Traite la touche Entrée
      */
@@ -217,42 +290,56 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Majuscule
      */
     private fun handleShift(): Boolean {
-        Log.e("SHIFT_REAL_DEBUG", "🚨🚨🚨 HANDLESHIFT CALLED IN INPUTPROCESSOR! 🚨🚨🚨")
         when {
             !isCapitalMode && !isCapsLock -> {
                 // Première pression - majuscule simple
                 isCapitalMode = true
                 isCapsLock = false
-                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: CAPITAL SIMPLE")
             }
             isCapitalMode && !isCapsLock -> {
                 // Deuxième pression - verrouillage majuscule
                 isCapitalMode = true
                 isCapsLock = true
-                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: CAPS LOCK")
             }
             else -> {
                 // Troisième pression - retour normal
                 isCapitalMode = false
                 isCapsLock = false
-                Log.e("SHIFT_REAL_DEBUG", "🚨 MODE: NORMAL")
             }
         }
-        
-        Log.e("SHIFT_REAL_DEBUG", "🚨 Calling processorListener?.onModeChanged()")
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         Log.d(TAG, "Shift traité - Capital: $isCapitalMode, CapsLock: $isCapsLock")
         return true
     }
-    
+
     /**
-     * Traite le changement de mode (123/ABC)
+     * Traite le changement de mode (123/ABC). Depuis le panneau emoji, "ABC"
+     * remonte ce même chemin : on revient à l'alphabétique plutôt que de
+     * togglerNumericMode, ce qui rouvrirait le mode 123 au lieu des lettres.
      */
     private fun handleModeSwitch(): Boolean {
-        isNumericMode = !isNumericMode
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
-        
-        Log.d(TAG, "Mode changé - Numérique: $isNumericMode")
+        if (isEmojiMode) {
+            isEmojiMode = false
+            isNumericMode = false
+        } else {
+            isNumericMode = !isNumericMode
+        }
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
+
+        Log.d(TAG, "Mode changé - Numérique: $isNumericMode, Emoji: $isEmojiMode")
+        return true
+    }
+
+    /**
+     * Traite l'ouverture du panneau emoji (touche EMOJI du mode 123)
+     */
+    private fun handleEmojiSwitch(): Boolean {
+        isEmojiMode = true
+        isNumericMode = false
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
+
+        Log.d(TAG, "Mode changé - Emoji activé")
         return true
     }
     
@@ -283,58 +370,85 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * Resynchronise le mot courant avec le texte réellement présent avant le
+     * curseur, appelé à chaque déplacement signalé par onUpdateSelection().
+     *
+     * `currentWord` n'est alimenté que par les frappes : sans cette remise à
+     * niveau il divergeait silencieusement du texte dès que le curseur bougeait
+     * autrement qu'en tapant (tap dans le texte, retour arrière remontant dans un
+     * mot déjà validé, modification par l'application elle-même), et le moteur de
+     * suggestions travaillait alors sur un préfixe périmé ou vide.
+     *
+     * Le mot est relu depuis l'InputConnection plutôt que déduit des positions
+     * rapportées : celles-ci peuvent être en retard sur une frappe rapide, alors
+     * que le texte lu est toujours l'état courant. Quand la valeur relue est déjà
+     * celle attendue, cas de très loin le plus fréquent puisque nos propres
+     * commitText/deleteSurroundingText déclenchent aussi ce rappel, on ne touche
+     * à rien : le trajet de frappe normal reste intact.
+     */
+    fun syncWordWithCursor(selectionStart: Int, selectionEnd: Int) {
+        val inputConnection = inputMethodService.currentInputConnection ?: return
+
+        val hasSelection = selectionStart != selectionEnd
+        val textBefore = if (hasSelection) {
+            ""
+        } else {
+            inputConnection.getTextBeforeCursor(WORD_LOOKAROUND, 0)?.toString() ?: ""
+        }
+        val wordBeforeCursor = resolveCurrentWord(textBefore, hasSelection)
+
+        if (wordBeforeCursor == currentWord) return
+
+        Log.d(TAG, "Resynchronisation curseur: '$currentWord' -> '$wordBeforeCursor'")
+        // setCurrentWord() et non updateCurrentWordSilently() : le rappel est
+        // justement ce qui régénère les suggestions pour le nouveau préfixe, ou
+        // les vide quand le curseur quitte un mot
+        setCurrentWord(wordBeforeCursor)
+    }
+
+    /**
      * Traite la sélection d'une suggestion
      */
     fun processSuggestionSelection(suggestion: String): Boolean {
         val inputConnection = inputMethodService.currentInputConnection ?: return false
-        
+
         // Supprimer le mot partiel actuel
         if (currentWord.isNotEmpty()) {
-            inputConnection.deleteSurroundingText(currentWord.length, 0)
+            // Le curseur peut se trouver au milieu d'un mot, l'utilisateur ayant
+            // tapé dedans pour le corriger : la fin du mot doit partir avec le
+            // début, sinon la suggestion s'insère devant le reliquat
+            // ("bon|jou" + suggestion "bonjou" donnerait "bonjoujou").
+            val textAfter = inputConnection.getTextAfterCursor(WORD_LOOKAROUND, 0)?.toString() ?: ""
+            inputConnection.deleteSurroundingText(currentWord.length, trailingWordLength(textAfter))
         }
-        
-        // 🔥 CORRECTION BUG CASSE : Préserver la casse intentionnelle
-        val finalSuggestion = applyCaseToSuggestion(suggestion, currentWord)
-        Log.d(TAG, "Casse préservée dans InputProcessor: '$currentWord' -> '$finalSuggestion'")
+
+        // ✅ La suggestion arrive déjà avec la bonne casse depuis SuggestionEngine
+        Log.d(TAG, "Suggestion avec casse préservée: '$currentWord' -> '$suggestion'")
         
         // Insérer la suggestion avec un espace automatique
-        inputConnection.commitText("$finalSuggestion ", 1)
+        inputConnection.commitText("$suggestion ", 1)
         
         // Finaliser le mot (le tracking se fera dans finalizeCurrentWord)
-        currentWord = finalSuggestion
+        currentWord = suggestion
         finalizeCurrentWord()
         
         // Gérer la capitalisation automatique après l'espace
         handleAutoCapitalization()
         
-        Log.d(TAG, "Suggestion sélectionnée: '$finalSuggestion' (avec espace automatique)")
+        Log.d(TAG, "Suggestion sélectionnée: '$suggestion' (avec espace automatique)")
         return true
     }
     
     /**
-     * 🔥 CORRECTION BUG CASSE : Applique la casse intentionnelle de l'utilisateur à la suggestion
-     * Préserve la majuscule intentionnelle (Shift/Caps) lors de l'application des suggestions
+     * Finalise le mot courant suite à la sélection d'un emoji via la popup
+     * d'appui long (choix d'un ton de peau) : cette popup est partagée avec
+     * les accents de lettres, qui eux finalisent différemment (l'accent
+     * rejoint le mot en cours au lieu de le clore).
      */
-    private fun applyCaseToSuggestion(suggestion: String, currentInput: String): String {
-        if (suggestion.isEmpty() || currentInput.isEmpty()) {
-            return suggestion
-        }
-        
-        // Analyser la casse du premier caractère tapé par l'utilisateur
-        val firstInputChar = currentInput.first()
-        val isIntentionalCapital = firstInputChar.isUpperCase()
-        
-        Log.d(TAG, "🔍 Analyse casse InputProcessor: input='$currentInput', premier char='$firstInputChar', majuscule intentionnelle=$isIntentionalCapital")
-        
-        return if (isIntentionalCapital) {
-            // L'utilisateur a volontairement commencé en majuscule → capitaliser la suggestion
-            suggestion.lowercase().replaceFirstChar { it.uppercase() }
-        } else {
-            // L'utilisateur a tapé en minuscule → garder la suggestion en minuscule
-            suggestion.lowercase()
-        }
+    fun finalizeCurrentWordFromEmoji() {
+        finalizeCurrentWord()
     }
-    
+
     /**
      * Finalise le mot courant
      */
@@ -410,11 +524,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     private fun handleAutoCapitalization() {
         if (shouldAutoCapitalize()) {
             isCapitalMode = true
-            processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+            processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         } else if (isCapitalMode && !isCapsLock) {
             // Désactiver la majuscule simple après utilisation
             isCapitalMode = false
-            processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+            processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
         }
     }
     
@@ -447,9 +561,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         isCapitalMode = false
         isCapsLock = false
         // Ne pas réinitialiser isNumericMode pour conserver le mode choisi
-        
+        // Le panneau emoji, lui, ne doit pas persister sur un nouveau champ
+        isEmojiMode = false
+
         processorListener?.onWordChanged("")
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
     }
     
     /**
@@ -482,10 +598,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
             isCapitalMode = isCapitalMode,
             isCapsLock = isCapsLock,
             isNumericMode = isNumericMode,
+            isEmojiMode = isEmojiMode,
             currentWord = currentWord
         )
     }
-    
+
     /**
      * Définit l'état des modes
      */
@@ -493,12 +610,13 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         isCapitalMode = state.isCapitalMode
         isCapsLock = state.isCapsLock
         isNumericMode = state.isNumericMode
+        isEmojiMode = state.isEmojiMode
         currentWord = state.currentWord
-        
+
         processorListener?.onWordChanged(currentWord)
-        processorListener?.onModeChanged(isNumericMode, isCapitalMode, isCapsLock)
+        processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
     }
-    
+
     /**
      * Classe de données pour l'état du processeur
      */
@@ -506,6 +624,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         val isCapitalMode: Boolean = false,
         val isCapsLock: Boolean = false,
         val isNumericMode: Boolean = false,
+        val isEmojiMode: Boolean = false,
         val currentWord: String = ""
     )
 }
