@@ -90,6 +90,10 @@ les deux mots que vous venez d'écrire, pas seulement le dernier.
 
 Les suggestions luxembourgeoises passent en premier ; le français prend le
 relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
+Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
+luxembourgeoise — « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
+Le côté français se limite volontairement aux mots les plus courants : il est là
+pour les emprunts, pas pour rédiger en français.
 
 ### Il pardonne les fautes de frappe
 
@@ -160,6 +164,7 @@ depuis 2013, sans prédiction du mot suivant.
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
 | Dictionnaire luxembourgeois | **8 792 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 23 169 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
+| Deux langues sans rien régler | **Oui**, lb et fr mélangés d'emblée | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — |
 | Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
