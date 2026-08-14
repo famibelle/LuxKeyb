@@ -9,7 +9,11 @@ import kotlin.random.Random
 object WordSearchGenerator {
     
     private val random = Random.Default
-    private val ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    // Les mots sont posés en majuscules dans la grille : les diacritiques
+    // luxembourgeoises doivent donc figurer aussi dans les lettres de
+    // remplissage, sinon un Ä ou un Ë isolé désignerait à coup sûr un mot à
+    // trouver.
+    private val ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄËÉÖÜ"
     
     fun generatePuzzle(
         context: Context,

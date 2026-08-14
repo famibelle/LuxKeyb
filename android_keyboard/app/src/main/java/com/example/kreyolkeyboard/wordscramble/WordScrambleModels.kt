@@ -48,7 +48,7 @@ object WordScrambleData {
         val words = mutableListOf<String>()
         
         try {
-            val inputStream = context.assets.open("creole_dict.json")
+            val inputStream = context.assets.open("luxemburgish_dict.json")
             val reader = BufferedReader(InputStreamReader(inputStream))
             val jsonContent = reader.readText()
             reader.close()
@@ -70,7 +70,7 @@ object WordScrambleData {
         } catch (e: Exception) {
             e.printStackTrace()
             // Mots par défaut en cas d'erreur
-            return listOf("lakou", "soley", "lapli", "lanmè", "zwazo", "chat", "chen", "tab")
+            return listOf("leit", "sech", "wann", "kéier", "ëmmer", "wäert", "gesot", "haus")
         }
         
         return filterByDifficulty(words, difficulty).shuffled().take(10)

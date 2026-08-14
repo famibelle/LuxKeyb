@@ -31,66 +31,55 @@ class AccentHandler(private val context: Context) {
     // État du mode majuscule
     var isCapitalMode: Boolean = false
     
-    // Configuration des accents pour chaque touche de base
-    // Révisé pour le duo kréyòl/français réellement supporté (v8.2.0) :
-    // é/è/ò sont déjà des touches dédiées du clavier, donc retirées d'ici.
-    // ch/dj/ng sont des digraphes fréquents en graphie créole GEREC.
-    // v8.3.0 : ponctuation ajoutée sur les touches , . ' déjà visibles en mode
-    // alphabétique, pour éviter l'aller-retour vers le mode 123.
-    // v8.4.0 : ë et ü retirés (0 occurrence dans creole_dict.json comme dans
-    // french_simple_dict.json) ; œ ajouté (« œil », « cœur » dans le dico
-    // français, absent du clavier jusqu'ici), sur la base d'un comptage des
-    // diacritiques réellement présents dans les deux dictionnaires.
-    // v8.5.0 : trait d'union remonté en tête de l'appui long sur '.' (donc
-    // affiché dans l'indice de coin). 21,7% des mots créoles en contiennent
-    // un (marqueur d'élision : "a-y", "ba-w", "an-nou"...), fréquence cumulée
-    // 26 623, supérieure à celle de la touche dédiée "ò" (18 699).
-    // v8.6.0 : "-" devient touche dédiée (KeyboardLayoutManager, rangée 4),
-    // retiré d'ici comme é/è/ò l'avaient été en v8.2.0.
-    // v8.7.0 : é et è rejoignent l'appui long sur "e" (déjà des touches dédiées
-    // par ailleurs), classés par fréquence décroissante dans creole_dict.json :
-    // é (86 743, 1603 mots) > è (45 490, 992 mots) > ê (15, 1 mot).
-    // v8.7.0 (suite) : ò rejoint l'appui long sur "o" (déjà touche dédiée par
-    // ailleurs, même logique que é/è sur "e") ; ordre choisi ò, ô, ó, œ.
-    // v8.7.3 : trois digraphes GEREC manquants ajoutés, sur la base d'un
-    // comptage des occurrences cumulées (creole_dict.json + french_simple_dict.json) :
-    // "n" gagne "ny" (/ɲ/, 1353 occurrences, 47 mots) en plus de "ng", déjà
-    // plus fréquent que "dj" (74) présent depuis v8.2.0. "g" gagne "gn" (2915,
-    // digraphe français : montagne, campagne) et "gy" (221, variante créole
-    // rare), touche qui n'avait jusqu'ici aucun appui long. "t" gagne "tj"
-    // (/tʃ/, 184) qui complète la série des occlusives palatalisées GEREC
-    // ch/dj/tj/ng aux côtés des touches c/d/n déjà couvertes.
+    // Configuration des accents pour chaque touche de base.
+    //
+    // Reconstruite pour le luxembourgeois à partir d'un comptage des
+    // diacritiques réellement présents dans luxemburgish_dict.json (6 342 mots),
+    // en occurrences cumulées / nombre de mots porteurs :
+    //   é 6347/933 · ë 2877/355 · ä 2129/403 · ü 97/25 · è 97/47 · à 37/3
+    //   ô 29/3 · ê 22/7 · ö 12/4 · û 8/3 · ç 3/1 · â 2/1 · ï 1/1
+    //
+    // Chaque liste est classée par fréquence décroissante. é, ë et ä sont par
+    // ailleurs des touches dédiées de la rangée 4, mais restent listées ici :
+    // c'est la convention amont (v8.7.0), l'appui long servant de second chemin.
+    //
+    // Les digraphes créoles GEREC (ch, dj, ng, ny, gn, gy, tj) sont retirés :
+    // ils notaient des phonèmes du kréyòl. Le luxembourgeois n'a pas d'équivalent
+    // qui justifierait une touche — « ch » et « sch » s'y écrivent avec des
+    // lettres toutes déjà présentes au clavier.
+    //
+    // Le trait d'union rejoint l'appui long sur "." : il n'apparaît que dans
+    // 2,8 % des mots luxembourgeois (fréquence cumulée 377), très loin des
+    // 21,7 % du créole qui lui valaient une touche dédiée en amont.
     private val accentMap = mapOf(
-        "a" to listOf("à", "â"),
-        "e" to listOf("é", "è", "ê"),
-        "i" to listOf("î", "ï"),
-        "o" to listOf("ò", "ô", "ó", "œ"),
-        "u" to listOf("ù", "û"),
-        "n" to listOf("ng", "ny"),
-        "c" to listOf("ç", "ch"),
-        "d" to listOf("dj"),
-        "g" to listOf("gn", "gy"),
-        "t" to listOf("tj"),
-        // v9.1.0 : "'" n'est plus une touche visible dédiée (0 occurrence dans
-        // creole_dict.json) ; rejoint l'appui long sur "," pour libérer une
-        // place en rangée 4 pour la touche emoji. Les guillemets/quote qui
-        // vivaient sous l'appui long de "'" disparaissent avec elle (aucun
-        // usage relevé dans les dictionnaires non plus).
+        "a" to listOf("ä", "à", "â"),
+        "e" to listOf("é", "ë", "è", "ê"),
+        "u" to listOf("ü", "û", "ù"),
+        "o" to listOf("ô", "ö"),
+        "i" to listOf("ï", "î"),
+        "c" to listOf("ç"),
+        // La ponctuation reste accessible sans aller-retour vers le mode 123
+        // (convention amont v8.3.0). L'apostrophe vit sous "," faute de touche
+        // dédiée depuis que la rangée 4 accueille la touche emoji.
         "," to listOf(";", ":", "'"),
-        "." to listOf("!", "?", "…")
+        "." to listOf("-", "!", "?", "…")
     )
 
-    // Ordre d'affichage des aperçus en coin, quand il doit différer de l'ordre
-    // du popup d'appui long (v8.7.0) : "e" affiche "è" en haut-droit et "é" en
-    // bas-droit, alors que le popup liste é avant è (fréquence décroissante).
+    // Ordre d'affichage des aperçus en coin, quand il doit différer du popup.
+    // "a" et "e" ont leur diacritique le plus fréquent (ä, é) déjà visible en
+    // rangée 4 : l'aperçu met donc en avant ceux qui n'ont aucune autre porte
+    // d'entrée, plutôt que de répéter une touche que l'utilisateur voit déjà.
     private val cornerHintOverrides = mapOf(
-        "e" to listOf("è", "é"),
-        "o" to listOf("ò", "ó")
+        "a" to listOf("à", "â"),
+        "e" to listOf("è", "ê")
     )
 
     // Touches dont les aperçus en coin s'affichent à gauche plutôt qu'à droite
-    // (toute touche absente de cet ensemble garde le coin droit par défaut)
-    private val cornerHintOnStartSide = setOf("o")
+    // (toute touche absente de cet ensemble garde le coin droit par défaut).
+    // Vide en luxembourgeois : l'exception amont visait le "o" de la rangée 1,
+    // que la touche dédiée "ò" jouxtait en créole. La rangée 1 luxembourgeoise
+    // n'a pas de touche accentuée, plus rien ne se chevauche.
+    private val cornerHintOnStartSide = emptySet<String>()
 
     // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
     // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =

@@ -42,7 +42,7 @@ object MoKarenajData {
 
         val words = mutableListOf<String>()
         try {
-            val inputStream = context.assets.open("creole_dict.json")
+            val inputStream = context.assets.open("luxemburgish_dict.json")
             val reader = BufferedReader(InputStreamReader(inputStream))
             val jsonContent = reader.readText()
             reader.close()
@@ -56,7 +56,7 @@ object MoKarenajData {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return listOf("lakou", "manjé", "solèy", "lapli", "kaptè")
+            return listOf("kéier", "ëmmer", "wäert", "gesot", "kënne")
         }
 
         cachedWords = words

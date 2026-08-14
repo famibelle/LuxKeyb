@@ -104,18 +104,22 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Crée le layout alphabétique (AZERTY créole)
+     * Crée le layout alphabétique (AZERTY luxembourgeois)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "ò", "p")
+        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
         val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
-        // v8.6.0 : "-" ajouté en touche dédiée (21,7% des mots créoles en
-        // contiennent un, fréquence cumulée supérieure à celle de "ò")
-        // v9.1.0 : "'" retiré (0 occurrence dans creole_dict.json, contre 1088
-        // mots pour "-") au profit d'une touche emoji dédiée ; l'apostrophe
-        // reste accessible en appui long sur "," (AccentHandler).
-        val row4 = arrayOf("123", ",", "é", "-", " ", "è", ".", "EMOJI", "⏎")
+        // Les trois diacritiques qui portent réellement le luxembourgeois ont
+        // chacune leur touche : é (6347 occurrences, 933 mots), ë (2877, 355)
+        // et ä (2129, 403) — comptage sur luxemburgish_dict.json.
+        //
+        // ä prend la place que l'amont donnait au trait d'union : celui-ci ne
+        // figure que dans 2,8 % des mots luxembourgeois (fréquence cumulée 377)
+        // contre 21,7 % en créole, et redescend donc en appui long sur "."
+        // (AccentHandler). L'apostrophe, absente du corpus, reste en appui long
+        // sur ",". La touche "ò" de la rangée 1 disparaît : zéro occurrence.
+        val row4 = arrayOf("123", ",", "é", "ä", " ", "ë", ".", "EMOJI", "⏎")
         
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))

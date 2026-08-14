@@ -19,7 +19,7 @@ class LevenshteinDictionaryTest {
     fun loadDictionary() {
         // Charger le dictionnaire créole depuis le fichier JSON
         try {
-            val dictionaryFile = File("src/main/assets/creole_dict.json")
+            val dictionaryFile = File("src/main/assets/luxemburgish_dict.json")
             if (!dictionaryFile.exists()) {
                 // Fallback pour CI ou environnements différents
                 println("⚠️ Dictionary file not found, using sample data")
