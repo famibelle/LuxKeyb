@@ -13,7 +13,7 @@
 
 ⚡ Grâce à ces suggestions basées sur les plus grands textes en luxembourgeois, les utilisateurs peuvent **écrire très rapidement dans un luxembourgeois fluide, riche et parfaitement maîtrisé**, sans effort ni approximation.
 
-📱 Compatible Android 7.0+, il s'installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
+📱 Compatible Android 5.0+, il s'installe facilement et fonctionne avec toutes les applications de messagerie, réseaux sociaux ou saisie web.
 
 ---
 
@@ -22,30 +22,47 @@ C'est un acte de transmission, un hommage à la langue, une technologie au servi
 
 
 ![Langue](https://img.shields.io/badge/Langue-lëtzebuergesch-blue?style=for-the-badge&logo=android)
-![Android](https://img.shields.io/badge/Android-7.0+-green?style=for-the-badge&logo=android)
+![Android](https://img.shields.io/badge/Android-5.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 
 ## 📱 Aperçu
 
 <div align="center">
-   <img src="Screenshots/ClavierLux_x2.gif" alt="Clavier luxembourgeois en Action" width="25%">
+   <img src="docs/Screenshots/Screenshot_1761490896.png" alt="Le clavier luxembourgeois en action" width="25%">
 </div>
 
-*Clavier luxembourgeois avec suggestions basées sur les textes littéraires fondateurs du lëtzebuergesch*
+*Suggestions luxembourgeoises en cours de frappe — ici les premiers vers de « Ons Heemecht »*
+
+<!-- Capture antérieure à la 10.9.2 : la rangée du bas n'y montre pas encore la
+     touche « ä » ni la touche emoji. À refaire sur émulateur. -->
+
 
 ## 🌟 Fonctionnalités
 
 ### 🎯 **Suggestions Intelligentes**
-- Suggestions contextuelles en temps réel
-- Prédiction de texte adaptée au luxembourgeois
-- **N-grams linguistiques** construits à partir de textes authentiques luxembourgeois
+- Suggestions contextuelles en temps réel, sur un dictionnaire de **6 342 mots**
+- **N-grammes** : après un espace, le clavier propose la suite probable de la phrase d'après les deux mots précédents
+- **Tolérance aux fautes de frappe** : une lettre oubliée, en trop ou tapée à côté n'empêche pas la suggestion d'arriver
+- **Tolérance aux diacritiques** : taper « letzebuergesch » propose « lëtzebuergesch »
+- La casse est respectée, et les mots que vous employez souvent remontent d'eux-mêmes
 
-#### 📚 **Corpus Littéraire des Suggestions**
-Les suggestions de mots sont générées grâce à des **N-grams** (séquences de mots) extraits des œuvres d'éminents auteurs et contributeurs de la littérature luxembourgeoise :
+### ⌨️ **Écrire en lëtzebuergesch**
+- **é, ä et ë** ont chacune leur touche dédiée — les trois diacritiques les plus fréquentes de la langue
+- Les plus rares (ü, ö, à, â…) sont en appui long, avec un aperçu dans le coin de la touche
+- Panneau **emoji** complet, tons de peau compris
+- **Correcteur orthographique système** : vos mots luxembourgeois ne sont plus soulignés en rouge dans Messages ou Notes
 
+### 🏆 **Progression et jeux**
+- Huit niveaux, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire que vous avez employée
+- Carte de niveau partageable
+- Trois jeux de vocabulaire : **Wuertsich** (mots mêlés), **Wuertmix** (mots mélangés) et **Wuertriet** (devinez le mot en six essais)
 
-Cette approche garantit des suggestions **authentiques** et **culturellement appropriées**, respectant les nuances et la richesse du **luxembourgeois** contemporain.
+### 🔒 **Vie privée**
+Le clavier fonctionne **entièrement hors ligne** : il n'a aucun accès à Internet. Seuls les mots déjà présents dans le dictionnaire sont comptés pour la progression — mots de passe et termes personnels ne sont jamais enregistrés, et rien ne quitte l'appareil.
+
+#### 📚 **Corpus des suggestions**
+Le dictionnaire et les n-grammes sont générés à partir d'un corpus de luxembourgeois contemporain : les transcriptions des conférences de presse du gouvernement luxembourgeois, publiées comme jeu de données ouvert. Le pipeline est relancé à chaque build, ce qui fait évoluer les suggestions avec l'usage réel de la langue.
 
 
 ## 📦 Téléchargements
@@ -66,8 +83,8 @@ Cette approche garantit des suggestions **authentiques** et **culturellement app
 
 | Type | Description | Taille | Usage |
 |------|-------------|--------|-------|
-| **Release APK** | Optimisée production | ~2–3 MB | ✅ Recommandé |
-| **Debug APK** | Avec logs verbeux | + ~1 MB | 🔧 Dev |
+| **Release APK** | Optimisée production | ~5 MB | ✅ Recommandé |
+| **Debug APK** | Avec logs verbeux | ~7 MB | 🔧 Dev |
 
 ### 🔄 **Mises à Jour Automatiques**
 
@@ -86,8 +103,9 @@ cd LuxKeyb/android_keyboard
 ## ⚙️ Installation depuis les sources
 
 ### Prérequis
-- **Android 7.0** (API 24) ou supérieur
-- **10 MB** d'espace libre
+- **Android 5.0** (API 21) ou supérieur
+- **JDK 17** et le SDK Android 36 pour compiler
+- **20 MB** d'espace libre
 
 ### Installation depuis les sources
 
@@ -121,7 +139,9 @@ cd LuxKeyb/android_keyboard
 3. Sélectionner **Clavier Luxembourgeois**
 
 ### Accents
-Appui long sur une lettre: affiche un popup (ex: a → à á â ä ã …). Relâcher après sélection.
+Appui long sur une lettre : affiche un popup (a → ä à â, e → é ë è ê, u → ü û ù, o → ô ö). Glissez le doigt vers l'accent voulu, puis relâchez.
+
+Les trois diacritiques les plus fréquentes — **é**, **ä** et **ë** — ont leur propre touche en bas du clavier, sans appui long.
 
 ### Suggestions de Mots
 - Commencer à taper un mot luxembourgeois
@@ -132,10 +152,21 @@ Appui long sur une lettre: affiche un popup (ex: a → à á â ä ã …). Rel�
 
 
 
+Le service `KreyolInputMethodServiceRefactored` coordonne quatre composants par
+interfaces de rappel : `KeyboardLayoutManager` (construction des touches),
+`SuggestionEngine` (dictionnaire, n-grammes, Levenshtein), `AccentHandler`
+(appui long) et `InputProcessor` (traitement des touches). Le détail est dans
+[CLAUDE.md](CLAUDE.md).
+
+> Les noms de classes et le package `com.example.kreyolkeyboard` viennent du
+> clavier créole dont ce projet est issu et avec lequel il partage sa base de
+> code. Ce sont des alias historiques, pas une trace de créole dans le produit.
+
 ### Technologies Utilisées
-- **Kotlin** - Langage principal
-- **Android InputMethodService** - Framework IME
-- **JSON** - Format du dictionnaire et N-grams
-- **Gradle** - Build system
-- **Material Design** - Guidelines UI/UX
-- **GitHub Actions** - CI/CD automatisé
+- **Kotlin** — langage principal, compilé nativement par AGP 9
+- **Android InputMethodService** — framework IME
+- **JSON** — format du dictionnaire et des n-grammes
+- **Gradle 9.6** / **AGP 9.3** — build system
+- **JUnit 4** — 120 tests unitaires exécutés en CI
+- **Python / Hugging Face** — pipeline de génération du corpus
+- **GitHub Actions** — CI/CD automatisé
