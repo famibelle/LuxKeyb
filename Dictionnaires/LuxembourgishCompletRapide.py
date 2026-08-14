@@ -14,8 +14,8 @@ pour l'intégration dans le clavier Android, en ignorant complètement les donn�
 OPTIMISATIONS:
 - Chargement direct sans streaming
 - Ignore complètement l'audio
-- Traitement rapide des transcriptions uniquement
-- Limite à 500 transcriptions pour la performance
+- Traitement rapide des textes uniquement
+- Limite à 500 textes pour la performance
 ======================================================================
 """
 
@@ -70,10 +70,10 @@ class LuxembourgishKeyboardPipelineRapide:
         
     def charger_textes_luxembourgeois(self):
         """
-        Charge les transcriptions luxembourgeoises en mode ultra-rapide.
+        Charge les textes luxembourgeois en mode ultra-rapide.
         Ignore complètement l'audio pour optimiser la vitesse.
         """
-        print("\n📖 CHARGEMENT RAPIDE DES TRANSCRIPTIONS LUXEMBOURGEOISES")
+        print("\n📖 CHARGEMENT RAPIDE DES TEXTES LUXEMBOURGEOIS")
         print("-" * 60)
         
         textes_charges = False
@@ -81,30 +81,29 @@ class LuxembourgishKeyboardPipelineRapide:
         # Tentative Hugging Face optimisée
         if HAS_DATASETS:
             try:
-                print("🚀 Mode ultra-rapide: Hugging Face sans audio...")
-                print("   📡 Connexion dataset Akabi/Luxemburgish_Press_Conferences_Gov")
+                print("🚀 Mode ultra-rapide: Hugging Face...")
+                print("   📡 Connexion dataset POTOMITAN/luxembourgish-corpus")
                 
                 # Chargement direct avec limite pour la performance
-                print("   ⚡ Chargement optimisé (limite 500 transcriptions)...")
-                ds = load_dataset("Akabi/Luxemburgish_Press_Conferences_Gov", split="train[:500]")
+                print("   ⚡ Chargement optimisé (limite 500 textes)...")
+                ds = load_dataset("POTOMITAN/luxembourgish-corpus", split="train[:500]")
                 
                 print(f"   ✅ Dataset chargé: {len(ds)} entrées")
-                print("   📝 Extraction transcriptions uniquement...")
+                print("   📝 Extraction textes uniquement...")
                 
                 self.textes_luxembourgeois = []
-                transcriptions_valides = 0
+                textes_valides = 0
                 
                 for i, item in enumerate(ds):
-                    if "transcription" in item and item["transcription"] and item["transcription"].strip():
-                        # Ne jamais accéder au champ audio
-                        transcription = item["transcription"].strip()
-                        if len(transcription) > 10:  # Filtrer les transcriptions trop courtes
+                    if "Texte" in item and item["Texte"] and item["Texte"].strip():
+                        texte = item["Texte"].strip()
+                        if len(texte) > 10:  # Filtrer les textes trop courts
                             self.textes_luxembourgeois.append({
-                                "Texte": transcription,
-                                "Source": "Akabi/Luxemburgish_Press_Conferences_Gov (optimisé)",
+                                "Texte": texte,
+                                "Source": "POTOMITAN/luxembourgish-corpus (optimisé)",
                                 "index": i
                             })
-                            transcriptions_valides += 1
+                            textes_valides += 1
                     
                     # Affichage de progression
                     if (i + 1) % 100 == 0:
@@ -112,20 +111,20 @@ class LuxembourgishKeyboardPipelineRapide:
                 
                 print(f"   📈 Résultats:")
                 print(f"      - Entrées traitées: {len(ds)}")
-                print(f"      - Transcriptions valides: {transcriptions_valides}")
-                print(f"      - Transcriptions retenues: {len(self.textes_luxembourgeois)}")
+                print(f"      - Textes valides: {textes_valides}")
+                print(f"      - Textes retenus: {len(self.textes_luxembourgeois)}")
                 
                 # Échantillon
                 if self.textes_luxembourgeois:
-                    print("   🔬 Échantillon des transcriptions:")
+                    print("   🔬 Échantillon des textes:")
                     for i, texte in enumerate(self.textes_luxembourgeois[:3]):
                         preview = texte["Texte"][:60] + "..." if len(texte["Texte"]) > 60 else texte["Texte"]
                         print(f"      {i+1}: '{preview}'")
                 
                 if len(self.textes_luxembourgeois) >= 50:  # Seuil minimum
                     print(f"🎉 CHARGEMENT RAPIDE RÉUSSI !")
-                    print(f"   ✅ {len(self.textes_luxembourgeois)} transcriptions récupérées")
-                    print("   ⚡ Mode ultra-rapide - audio ignoré")
+                    print(f"   ✅ {len(self.textes_luxembourgeois)} textes récupérés")
+                    print("   ⚡ Mode ultra-rapide")
                     textes_charges = True
                 else:
                     print("⚠️ DONNÉES INSUFFISANTES - Fallback local...")
@@ -144,7 +143,7 @@ class LuxembourgishKeyboardPipelineRapide:
             
             # Charger l'hymne luxembourgeois "Ons Heemecht" comme fallback principal
             hymne_path = "Ons_Heemecht.txt"
-            transcriptions_fallback = []
+            textes_fallback = []
             
             try:
                 if os.path.exists(hymne_path):
@@ -152,16 +151,16 @@ class LuxembourgishKeyboardPipelineRapide:
                     with open(hymne_path, 'r', encoding='utf-8') as f:
                         hymne_content = f.read().strip()
                     
-                    # Diviser l'hymne en lignes pour créer des transcriptions
+                    # Diviser l'hymne en lignes pour créer des textes
                     lignes = [ligne.strip() for ligne in hymne_content.split('\n') if ligne.strip() and not ligne.strip() == "Ons Heemecht"]
                     
                     for i, ligne in enumerate(lignes):
                         if len(ligne) > 10:  # Ignorer les lignes trop courtes
-                            transcriptions_fallback.append(ligne)
+                            textes_fallback.append(ligne)
                     
-                    print(f"✅ Hymne chargé: {len(transcriptions_fallback)} lignes extraites")
+                    print(f"✅ Hymne chargé: {len(textes_fallback)} lignes extraites")
                     print("🎵 Échantillon de l'hymne:")
-                    for i, ligne in enumerate(transcriptions_fallback[:3]):
+                    for i, ligne in enumerate(textes_fallback[:3]):
                         print(f"   {i+1}: '{ligne}'")
                 else:
                     print(f"⚠️ Fichier hymne non trouvé: {hymne_path}")
@@ -170,33 +169,33 @@ class LuxembourgishKeyboardPipelineRapide:
             
            
             self.textes_luxembourgeois = []
-            for i, transcription in enumerate(transcriptions_fallback):
+            for i, texte in enumerate(textes_fallback):
                 source = "Ons Heemecht (Hymne national)"
                 self.textes_luxembourgeois.append({
-                    "Texte": transcription,
+                    "Texte": texte,
                     "Source": source,
                     "index": i
                 })
             
-            print(f"✅ Fallback activé: {len(self.textes_luxembourgeois)} transcriptions")
-            print(f"   🇱🇺 Hymne national: {len(transcriptions_fallback)} lignes")
+            print(f"✅ Fallback activé: {len(self.textes_luxembourgeois)} textes")
+            print(f"   🇱🇺 Hymne national: {len(textes_fallback)} lignes")
             textes_charges = True
         
         if textes_charges:
             print(f"\n🎯 CHARGEMENT TERMINÉ")
-            print(f"   📊 Total transcriptions: {len(self.textes_luxembourgeois)}")
+            print(f"   📊 Total textes: {len(self.textes_luxembourgeois)}")
             return True
         else:
             print("❌ ÉCHEC COMPLET DU CHARGEMENT")
             return False
     
     def extraire_mots_luxembourgeois(self):
-        """Extrait et nettoie les mots luxembourgeois des transcriptions."""
+        """Extrait et nettoie les mots luxembourgeois des textes."""
         print("\n🔤 EXTRACTION DES MOTS LUXEMBOURGEOIS")
         print("-" * 45)
         
         if not self.textes_luxembourgeois:
-            print("❌ Aucune transcription disponible")
+            print("❌ Aucun texte disponible")
             return False
         
         mots_bruts = []
@@ -242,7 +241,7 @@ class LuxembourgishKeyboardPipelineRapide:
         print("-" * 47)
         
         if not self.textes_luxembourgeois:
-            print("❌ Aucune transcription disponible")
+            print("❌ Aucun texte disponible")
             return False
         
         # Génération de bigrammes et trigrammes
@@ -337,7 +336,7 @@ class LuxembourgishKeyboardPipelineRapide:
         print("=" * 50)
         
         etapes = [
-            ("Chargement transcriptions", self.charger_textes_luxembourgeois),
+            ("Chargement textes", self.charger_textes_luxembourgeois),
             ("Extraction mots", self.extraire_mots_luxembourgeois),
             ("Génération n-grammes", self.generer_ngrams_luxembourgeois),
             ("Sauvegarde", self.sauvegarder_donnees)
