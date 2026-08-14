@@ -62,7 +62,7 @@ pip install datasets huggingface_hub
 python LuxembourgishComplet.py     # needs HF_TOKEN
 ```
 
-Pulls `Akabi/Luxemburgish_Press_Conferences_Gov` and writes **directly into the Android assets**, with timestamped backups in `Dictionnaires/backups/`.
+Pulls `POTOMITAN/luxembourgish-corpus` (from the `Texte` column) and writes **directly into the Android assets**, with timestamped backups in `Dictionnaires/backups/`.
 
 **Never run this without a valid `HF_TOKEN`.** On failure the script silently falls back to a local corpus of a few dozen lines and rebuilds the dictionary from it. CI guards against this with a minimum word count; locally, check the printed count.
 
