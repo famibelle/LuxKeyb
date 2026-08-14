@@ -9,7 +9,32 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.9.4] - 2026-08-14
+
+### 🔤 Modifié
+
+- **Emojis au ton de peau neutre par défaut.** Les 316 emojis concernés
+  (gestes, personnes) s'affichaient au ton foncé, choix hérité du clavier
+  créole guadeloupéen et sans raison d'être ici : la grille montre désormais la
+  variante neutre/jaune. L'appui long propose les 5 tons de peau, du plus clair
+  au plus foncé — la version neutre n'y figure plus, puisqu'elle est devenue la
+  touche elle-même.
+
+### 🔧 Technique
+
+- `versionCode`/`versionName` remis en phase avec le CHANGELOG et les tags : la
+  10.9.3 avait été publiée alors que `build.gradle` annonçait encore 10.9.2,
+  donc avec un `versionCode` identique à la version précédente.
+
 ## [10.9.3] - 2026-08-14
+
+### 🎨 Modifié
+
+- Le clavier reprend les **trois couleurs du drapeau luxembourgeois** : blanc
+  pour les lettres, rouge pour ce qui agit (Entrée, changements de mode), bleu
+  ciel pour l'espace et la ponctuation. Les puces de suggestion suivent — rouge
+  pour le luxembourgeois, bleu pour le français. Encres choisies sur le
+  contraste mesuré.
 
 ### 🔤 Amélioration du dictionnaire
 
