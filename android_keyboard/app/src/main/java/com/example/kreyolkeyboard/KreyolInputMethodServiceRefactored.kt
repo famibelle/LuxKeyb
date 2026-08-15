@@ -423,6 +423,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // décalage des rangées de touches que la réserve permanente évitait ne peut
         // pas se produire ici, puisque la mise en page est figée pour l'orientation :
         // rien n'apparaît ni ne disparaît pendant la frappe.
+        // Le service survit aux rotations : sans cette remise à null, ces champs
+        // gardent la rangée française construite lors d'une mise en page portrait
+        // précédente, vue détachée de la hiérarchie affichée. Les suggestions
+        // françaises y étaient bien ajoutées, mais dans le vide, et disparaissaient
+        // de l'écran dès la première rotation.
+        frenchRow = null
+        frenchRowScroll = null
+
         if (!isLandscape()) {
             val frScroll = HorizontalScrollView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
