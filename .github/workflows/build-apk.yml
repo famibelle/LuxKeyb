@@ -44,10 +44,10 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 🐍 Setup Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: '3.11'
 
@@ -147,7 +147,7 @@ jobs:
     # ci-dessus depuis Hugging Face. Le "needs: generate-dictionary" garantit
     # seulement l'ordre d'exécution, pas le partage de fichiers entre jobs.
     - name: 📤 Upload Fresh Dictionary Assets
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: kreyol-dictionary-assets
         path: |
@@ -169,22 +169,22 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 📥 Download Fresh Dictionary Assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: kreyol-dictionary-assets
         path: android_keyboard/app/src/main/assets/
 
     - name: ☕ Setup JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
         distribution: 'temurin'
         
     - name: 🔧 Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: 9.6.1
         cache-read-only: false
@@ -220,7 +220,7 @@ jobs:
       run: cd android_keyboard && gradle assembleDebug --no-daemon --scan
 
     - name: 📤 Upload Debug APK
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: kreyol-keyboard-debug-apk
         path: android_keyboard/app/build/outputs/apk/debug/*.apk
@@ -240,22 +240,22 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 📥 Download Fresh Dictionary Assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: kreyol-dictionary-assets
         path: android_keyboard/app/src/main/assets/
 
     - name: ☕ Setup JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
         distribution: 'temurin'
         
     - name: 🔧 Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: 9.6.1
         cache-read-only: false
@@ -271,7 +271,7 @@ jobs:
       run: cd android_keyboard && gradle bundleDebug --no-daemon --scan
 
     - name: 📤 Upload Debug AAB
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: kreyol-keyboard-debug-aab
         path: android_keyboard/app/build/outputs/bundle/debug/*.aab
@@ -291,22 +291,22 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 📥 Download Fresh Dictionary Assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: kreyol-dictionary-assets
         path: android_keyboard/app/src/main/assets/
 
     - name: ☕ Setup JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
         distribution: 'temurin'
         
     - name: 🔧 Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: 9.6.1
         cache-read-only: false
@@ -347,7 +347,7 @@ jobs:
       run: cd android_keyboard && gradle assembleRelease --no-daemon --scan
 
     - name: 📤 Upload Release APK
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: kreyol-keyboard-release-apk
         path: android_keyboard/app/build/outputs/apk/release/*.apk
@@ -367,22 +367,22 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: 📥 Download Fresh Dictionary Assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: kreyol-dictionary-assets
         path: android_keyboard/app/src/main/assets/
 
     - name: ☕ Setup JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
         distribution: 'temurin'
         
     - name: 🔧 Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v5
       with:
         gradle-version: 9.6.1
         cache-read-only: false
@@ -442,7 +442,7 @@ jobs:
         fi
 
     - name: Upload Release AAB
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: kreyol-keyboard-release-aab  
         path: android_keyboard/app/build/outputs/bundle/release/*.aab
@@ -456,7 +456,7 @@ jobs:
     
     steps:
     - name: 📥 Download All Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         path: ./all-builds
 
@@ -481,7 +481,7 @@ jobs:
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 📝 Extract Release Notes from CHANGELOG
       id: changelog
@@ -521,7 +521,7 @@ jobs:
         head -20 /tmp/release-notes.md
     
     - name: 📥 Download All Build Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         pattern: kreyol-keyboard-*
         path: ./all-artifacts
@@ -601,7 +601,7 @@ jobs:
 
     - name: 🎉 Create GitHub Release with Assets
       id: create_release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
