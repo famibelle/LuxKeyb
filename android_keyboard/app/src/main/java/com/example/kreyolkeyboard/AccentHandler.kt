@@ -59,16 +59,28 @@ class AccentHandler(private val context: Context) {
         "i" to listOf("ï", "î"),
         "c" to listOf("ç"),
         // La ponctuation reste accessible sans aller-retour vers le mode 123
-        // (convention amont v8.3.0). L'apostrophe vit sous "," faute de touche
-        // dédiée depuis que la rangée 4 accueille la touche emoji.
-        "," to listOf(";", ":", "'"),
-        "." to listOf("-", "!", "?", "…")
+        // (convention amont v8.3.0). Les ordres suivent le comptage des
+        // caractères non alphabétiques du corpus POTOMITAN/luxembourgish-corpus
+        // (204 366 caractères) et non l'habitude française :
+        //   ":" 122 ≫ ";" 6   ·   "?" 133 ≫ "!" 1
+        // L'apostrophe quitte cette liste : elle a sa propre touche en rangée 4.
+        "," to listOf(":", ";"),
+        "." to listOf("-", "?", "!", "…"),
+        // Appui long sur la touche apostrophe. Le corpus écrit l'élision avec
+        // l'apostrophe typographique ’ (469 occurrences) bien plus qu'avec
+        // l'ASCII ' (180) — mais c'est ' qui reste sur la touche, seule forme
+        // sûre en adresse, identifiant ou mot de passe ; ’ est donc en tête du
+        // popup. Suivent les guillemets courbes “ ” (41 et 38 occurrences), qui
+        // dominent nettement les allemands „ (12) et n'étaient atteignables
+        // nulle part ailleurs sur le clavier.
+        "'" to listOf("’", "“", "”", "\"")
     )
 
     // Ordre d'affichage des aperçus en coin, quand il doit différer du popup.
-    // "a" et "e" ont leur diacritique le plus fréquent (ä, é) déjà visible en
-    // rangée 4 : l'aperçu met donc en avant ceux qui n'ont aucune autre porte
-    // d'entrée, plutôt que de répéter une touche que l'utilisateur voit déjà.
+    // "a" et "e" ont leurs diacritiques les plus fréquentes déjà visibles
+    // ailleurs sur le clavier (ä et ë en rangée 4, é en fin de rangée
+    // d'accueil) : l'aperçu met donc en avant celles qui n'ont aucune autre
+    // porte d'entrée, plutôt que de répéter une touche déjà sous les yeux.
     private val cornerHintOverrides = mapOf(
         "a" to listOf("à", "â"),
         "e" to listOf("è", "ê")
@@ -77,8 +89,10 @@ class AccentHandler(private val context: Context) {
     // Touches dont les aperçus en coin s'affichent à gauche plutôt qu'à droite
     // (toute touche absente de cet ensemble garde le coin droit par défaut).
     // Vide en luxembourgeois : l'exception amont visait le "o" de la rangée 1,
-    // que la touche dédiée "ò" jouxtait en créole. La rangée 1 luxembourgeoise
-    // n'a pas de touche accentuée, plus rien ne se chevauche.
+    // que la touche dédiée "ò" jouxtait en créole. En QWERTZ, aucune touche
+    // portant des aperçus ne touche le bord droit du clavier — "é" ferme bien
+    // la rangée d'accueil mais n'a pas d'entrée dans accentMap, donc pas
+    // d'aperçu à décaler.
     private val cornerHintOnStartSide = emptySet<String>()
 
     // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis

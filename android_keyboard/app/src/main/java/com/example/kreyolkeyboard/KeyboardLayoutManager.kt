@@ -116,23 +116,41 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Crée le layout alphabétique (AZERTY luxembourgeois)
+     * Crée le layout alphabétique (QWERTZ luxembourgeois)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
-        val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
-        // Les trois diacritiques qui portent réellement le luxembourgeois ont
-        // chacune leur touche : é (6347 occurrences, 933 mots), ë (2877, 355)
-        // et ä (2129, 403) — comptage sur luxemburgish_dict.json.
+        // QWERTZ et non AZERTY : c'est la disposition des claviers physiques au
+        // Luxembourg (suisse-français) et celle que partagent l'allemand et le
+        // luxembourgeois écrit. L'AZERTY était un héritage créole, pas un choix
+        // luxembourgeois — remplacé sans repli, l'application n'étant pas encore
+        // publiée.
+        val row1 = arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p")
+        // "é" occupe la case immédiatement à droite du "l", exactement là où le
+        // QWERTZ suisse-français la place : c'est la diacritique n°1 du
+        // luxembourgeois et cette position complète la rangée d'accueil à 10
+        // touches, alignée sur les rangées 1 et 3.
+        val row2 = arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "é")
+        val row3 = arrayOf("⇧", "y", "x", "c", "v", "b", "n", "m", "⌫")
+        // Les deux autres diacritiques porteuses gardent leur touche dédiée.
+        // Comptages sur le corpus brut POTOMITAN/luxembourgish-corpus (158
+        // documents, 204 366 caractères) et non sur luxemburgish_dict.json,
+        // dont les fréquences sont cumulées d'une régénération à l'autre :
+        //   é 2596 · ë 1251 · ä 1004 | ü 155 · à 55 · ö 48 · ê 48 · è 33
+        // Le décrochage après ä (4× moins fréquent que ü) est ce qui justifie
+        // trois touches dédiées et pas quatre ; ü et les suivantes restent en
+        // appui long sur "u", "a", "o" et "e".
         //
-        // ä prend la place que l'amont donnait au trait d'union : celui-ci ne
-        // figure que dans 2,8 % des mots luxembourgeois (fréquence cumulée 377)
-        // contre 21,7 % en créole, et redescend donc en appui long sur "."
-        // (AccentHandler). L'apostrophe, absente du corpus, reste en appui long
-        // sur ",". La touche "ò" de la rangée 1 disparaît : zéro occurrence.
-        val row4 = arrayOf("123", ",", "é", "ä", " ", "ë", ".", "EMOJI", "⏎")
-        
+        // L'apostrophe gagne la touche dédiée que réclamaient les retours
+        // utilisateurs, et le corpus le confirme : 649 occurrences (469 en ’
+        // typographique, 180 en ' ASCII), soit plus que ü et 4,5× le trait
+        // d'union (143). L'élision est structurelle en luxembourgeois — d'Land,
+        // s'Kanner, hunn's. Attention, luxemburgish_dict.json l'affiche à zéro
+        // et ce zéro ne veut rien dire : le tokenizer de LuxembourgishComplet.py
+        // coupe les mots dessus. Le trait d'union reste donc en appui long sur
+        // "." — 143 occurrences ici contre 21,7 % des mots en créole, où il
+        // avait une touche à lui.
+        val row4 = arrayOf("123", ",", "ä", " ", "ë", "'", ".", "EMOJI", "⏎")
+
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
         mainLayout.addView(createKeyboardRow(row3))
@@ -261,6 +279,12 @@ class KeyboardLayoutManager(private val context: Context) {
             // Créer un Button classique pour les autres touches
             Button(context).apply {
                 text = getDisplayText(key)
+                // La touche brute est mémorisée ici, comme sur les ImageButton :
+                // getKeyFromButton() la relisait depuis le libellé affiché, ce
+                // qui ne survit pas aux touches dont le libellé diffère de la
+                // touche (" " → "LuxKeyb™", "EMOJI" → "😀", "ABC"). Voir le
+                // commentaire de getKeyFromButton().
+                tag = key
                 // Le thème AppCompat d'une activité impose textAllCaps=true
                 // aux Button : les touches doivent refléter exactement l'état
                 // shift, quel que soit le contexte (IME ou clavier d'essai)
@@ -272,7 +296,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police personnalisée pour Potomitan™ branding discret
+                // Taille de police personnalisée pour le branding LuxKeyb™ discret
                 textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
                 setTypeface(typeface, Typeface.BOLD)
                 
@@ -332,7 +356,7 @@ class KeyboardLayoutManager(private val context: Context) {
         val hint = TextView(context).apply {
             text = "🌐"
             textSize = HINT_TEXT_SIZE_SP + 2f
-            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte Potomitan™
+            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte LuxKeyb™
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -455,7 +479,7 @@ class KeyboardLayoutManager(private val context: Context) {
      */
     private fun keyBackground(key: String): String = when (key) {
         "⏎", "123", "ABC", "EMOJI" -> ROUGE
-        " ", ",", "." -> BLEU
+        " ", ",", ".", "'" -> BLEU
         "⇧" -> if (isCapsLock || isCapitalMode) BLANC_ACTIF else BLANC
         else -> BLANC
     }
@@ -669,6 +693,13 @@ class KeyboardLayoutManager(private val context: Context) {
                                   else if (isCapitalMode) R.drawable.ic_shift_on
                                   else R.drawable.ic_shift_off
                     button.setImageResource(newIcon)
+                    // Le fond doit suivre l'état au même titre que l'icône :
+                    // keyBackground() prévoit BLANC_ACTIF pour la majuscule
+                    // enclenchée, mais seule la branche Button ci-dessous
+                    // restylait la touche — shift étant une ImageButton, ce gris
+                    // n'était jamais rendu et le fond restait blanc dans les
+                    // trois états.
+                    applyKeyStyleToView(button, key)
                     Log.e("SHIFT_REAL_DEBUG", "🎨 ICON UPDATED TO: ${if (isCapsLock) "CAPS" else if (isCapitalMode) "ON" else "OFF"}")
                 } else if (button is Button) {
                     // Si c'est un Button classique, mettre à jour le texte
@@ -788,11 +819,16 @@ class KeyboardLayoutManager(private val context: Context) {
     
     private fun getDisplayText(key: String): String {
         return when (key) {
-            " " -> "Potomitan™"
+            " " -> "LuxKeyb™"
             "⇧" -> "⇧"
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
+            // Les rangées des modes 123 et EMOJI déclarent littéralement "ABC"
+            // pour le retour à l'alphabétique ; sans cette branche elle tombait
+            // dans le `else` et s'affichait "abc", en basculant en "ABC" au
+            // gré du shift, un état qui ne la concerne pas.
+            "ABC" -> "ABC"
             "EMOJI" -> "😀"
             // Caractères accentués créoles - respecter le mode majuscule/minuscule
             "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
@@ -812,11 +848,19 @@ class KeyboardLayoutManager(private val context: Context) {
         return keys.sumOf { getKeyWeight(it).toDouble() }.toFloat()
     }
     
+    /**
+     * Retrouve la touche brute d'un bouton. Le tag fait foi : le libellé
+     * affiché ne suffit pas, parce que getDisplayText() en réécrit plusieurs
+     * (" " → "LuxKeyb™", "EMOJI" → "😀", "123" → "ABC" en mode numérique).
+     * Relire le libellé faisait alors passer la touche par le `else` de
+     * getDisplayText(), qui la repassait en minuscules — la barre d'espace
+     * s'affichait "luxkeyb™" dès le premier updateKeyboardDisplay().
+     * Le repli sur le texte ne sert plus qu'aux boutons construits ailleurs.
+     */
     private fun getKeyFromButton(button: View): String {
-        // Version simple : récupérer depuis le texte affiché ou le tag
+        (button.tag as? String)?.let { return it }
         return when (button) {
             is Button -> button.text.toString().lowercase()
-            is android.widget.ImageButton -> (button.tag as? String)?.lowercase() ?: ""
             else -> ""
         }
     }
