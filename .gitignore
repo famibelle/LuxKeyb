@@ -15,9 +15,17 @@ android_keyboard/*.iml
 # Signing files (NEVER commit these!)
 *.jks
 *.keystore
+# .p12 / .pfx / .pem : le keystore fuité en 2025 était release-keystore.p12,
+# une extension que ces règles ne couvraient pas — comblé le 2026-08-15.
+*.p12
+*.pfx
+*.pem
 key.properties
 local-release.properties
 gradle.properties.local
+keystore-config.txt
+*keystore*config*.txt
+generate_keystore*.ps1
 keystore-base64.txt
 *keystore*base64*.txt
 *.key
