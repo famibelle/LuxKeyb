@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [10.9.4] - 2026-08-15
+## [10.11.1] - 2026-08-15
 
 ### 📐 Le clavier prenait tout l'écran en paysage
 
