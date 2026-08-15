@@ -4,7 +4,19 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="?attr/colorControlNormal">
+    <!--
+      Flèche shift creuse. Les trois états partagent cette silhouette et ne
+      diffèrent que par le remplissage (creux → plein → plein + barre), pour
+      que la touche ne change pas de forme d'un état à l'autre.
+
+      L'icône était auparavant keyboard_arrow_down : un chevron vers le bas,
+      qui est l'affordance système « masquer le clavier », visible au même
+      moment dans la barre de navigation.
+
+      Deux contours imbriqués + evenOdd donnent un contour de 2 dp.
+    -->
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6 -6,-6 1.41,-1.41z"/>
+        android:fillType="evenOdd"
+        android:pathData="M12,3L3,12h5v6h8v-6h5L12,3zM12,5.83L16.17,10H14v6h-4v-6H7.83L12,5.83z"/>
 </vector>

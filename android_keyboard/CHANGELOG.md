@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.3] - 2026-08-15
+
+### ⇧ La touche majuscule montre enfin où elle en est
+
+Les trois états de la touche ⇧ (minuscules, majuscule pour une lettre, verrouillage) étaient prévus mais ne se voyaient pas. Le fond gris destiné à signaler la majuscule enclenchée n'était appliqué qu'aux touches de texte : la touche ⇧ portant une icône, elle n'y passait jamais et restait blanche dans les trois cas.
+
+Le fond suit désormais l'état, et les icônes ont été refaites autour d'une silhouette unique qui ne change plus de forme d'un état à l'autre : flèche creuse au repos, pleine pour une majuscule, pleine avec une barre de verrouillage pour le mode verrouillé. L'état repos empruntait jusqu'ici le chevron vers le bas, le même dessin que le bouton système « masquer le clavier » affiché au même instant dans la barre de navigation.
+
+### 🐛 La barre d'espace passait en majuscules avec le reste du clavier
+
+Activer la majuscule transformait le libellé de la barre d'espace en « POTOMITAN™ », et la touche de retour à l'alphabétique en « abc » puis « ABC » au gré du shift. Le clavier retrouvait la touche derrière chaque bouton en relisant son libellé affiché, ce qui ne fonctionne que pour les touches dont le libellé est la touche elle-même. Chaque bouton porte maintenant sa touche d'origine, et ces libellés restent stables.
+
 ## [10.9.2] - 2026-08-08
 
 ### 🔖 Un mot-dièse commun à tous les partages

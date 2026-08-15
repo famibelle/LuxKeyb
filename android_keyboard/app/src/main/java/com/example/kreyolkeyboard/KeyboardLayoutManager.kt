@@ -245,6 +245,12 @@ class KeyboardLayoutManager(private val context: Context) {
             // Créer un Button classique pour les autres touches
             Button(context).apply {
                 text = getDisplayText(key)
+                // La touche brute est mémorisée ici, comme sur les ImageButton :
+                // getKeyFromButton() la relisait depuis le libellé affiché, ce
+                // qui ne survit pas aux touches dont le libellé diffère de la
+                // touche (" " → "Potomitan™", "EMOJI" → "😀", "ABC"). Voir le
+                // commentaire de getKeyFromButton().
+                tag = key
                 // Le thème AppCompat d'une activité impose textAllCaps=true
                 // aux Button : les touches doivent refléter exactement l'état
                 // shift, quel que soit le contexte (IME ou clavier d'essai)
@@ -687,6 +693,13 @@ class KeyboardLayoutManager(private val context: Context) {
                                   else if (isCapitalMode) R.drawable.ic_shift_on
                                   else R.drawable.ic_shift_off
                     button.setImageResource(newIcon)
+                    // Le fond doit suivre l'état au même titre que l'icône :
+                    // applyGuadeloupeStyleToView() prévoit un dégradé gris pour
+                    // la majuscule enclenchée, mais seule la branche Button
+                    // ci-dessous restylait la touche : shift étant une
+                    // ImageButton, ce gris n'était jamais rendu et le fond
+                    // restait blanc dans les trois états.
+                    applyGuadeloupeStyleToView(button, key)
                     Log.e("SHIFT_REAL_DEBUG", "🎨 ICON UPDATED TO: ${if (isCapsLock) "CAPS" else if (isCapitalMode) "ON" else "OFF"}")
                 } else if (button is Button) {
                     // Si c'est un Button classique, mettre à jour le texte
@@ -811,6 +824,11 @@ class KeyboardLayoutManager(private val context: Context) {
             "⌫" -> "⌫"
             "⏎" -> "⏎"
             "123" -> if (isNumericMode) "ABC" else "123"
+            // Les rangées des modes 123 et EMOJI déclarent littéralement "ABC"
+            // pour le retour à l'alphabétique ; sans cette branche elle tombait
+            // dans le `else` et s'affichait "abc", en basculant en "ABC" au
+            // gré du shift, un état qui ne la concerne pas.
+            "ABC" -> "ABC"
             "EMOJI" -> "😀"
             // Caractères accentués créoles - respecter le mode majuscule/minuscule
             "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
@@ -830,11 +848,18 @@ class KeyboardLayoutManager(private val context: Context) {
         return keys.sumOf { getKeyWeight(it).toDouble() }.toFloat()
     }
     
+    /**
+     * Touche brute portée par une vue. Le tag fait foi : le libellé affiché ne
+     * permet pas de la retrouver dès qu'il en diffère (" " → "Potomitan™",
+     * "EMOJI" → "😀", "123" → "ABC" en mode numérique). Relire le libellé
+     * renvoyait alors une fausse touche à getDisplayText(), qui la traitait
+     * comme une lettre et la passait en majuscules au gré du shift.
+     * Le repli sur le texte reste pour les vues créées hors createKeyButton().
+     */
     private fun getKeyFromButton(button: View): String {
-        // Version simple : récupérer depuis le texte affiché ou le tag
+        (button.tag as? String)?.let { return it }
         return when (button) {
             is Button -> button.text.toString().lowercase()
-            is android.widget.ImageButton -> (button.tag as? String)?.lowercase() ?: ""
             else -> ""
         }
     }

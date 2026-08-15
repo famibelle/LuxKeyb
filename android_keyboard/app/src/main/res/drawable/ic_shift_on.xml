@@ -4,7 +4,11 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="?attr/colorControlNormal">
+    <!--
+      Shift actif : exactement la silhouette de ic_shift_off, pleine. Le
+      remplissage porte seul l'information, la forme ne bouge pas.
+    -->
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M7.41,15.41L12,10.83l4.59,4.58L18,14l-6,-6 -6,6z"/>
+        android:pathData="M12,3L3,12h5v6h8v-6h5L12,3z"/>
 </vector>
