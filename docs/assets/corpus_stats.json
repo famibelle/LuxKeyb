@@ -50,10 +50,10 @@
   }
  ],
  "mots_total": 36480,
- "mots_uniques": 5282,
+ "mots_uniques": 5281,
  "richesse_lexicale": 0.1448,
  "mots_par_entree": 14.6,
- "bigrammes_uniques": 20302,
+ "bigrammes_uniques": 20300,
  "trigrammes_uniques": 26955,
  "hapax": 2949,
  "hapax_pourcent": 55.8,
@@ -351,10 +351,10 @@
  ],
  "couverture": {
   "50": 72,
-  "75": 522,
-  "90": 1984,
-  "95": 3458,
-  "99": 4918
+  "75": 521,
+  "90": 1983,
+  "95": 3457,
+  "99": 4917
  },
  "mots_longs": [
   {
@@ -473,7 +473,7 @@
   },
   {
    "lettres": 5,
-   "mots": 920
+   "mots": 919
   },
   {
    "lettres": 6,
@@ -932,8 +932,8 @@
   },
   {
    "lettre": "i",
-   "n": 8458,
-   "pourcent": 5.91
+   "n": 8445,
+   "pourcent": 5.9
   },
   {
    "lettre": "t",
@@ -1015,10 +1015,10 @@
  ],
  "accents_pourcent": 11.62,
  "modele": {
-  "cles": 8847,
-  "cles_1mot": 4597,
+  "cles": 8846,
+  "cles_1mot": 4596,
   "cles_2mots": 4250,
-  "contextes_ecartes": 14910,
+  "contextes_ecartes": 14908,
   "candidats_moyen": 2.11
  },
  "contextes_frequents": [
@@ -1136,8 +1136,7 @@
  "dataset": "POTOMITAN/PawolKreyol-gfc",
  "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
  "source_donnees": "huggingface",
- "parquet_octets": 139462,
- "dataset_revision": "b449ae26523ed71ef99de42cf5cb7dbc8ec2d438",
- "dataset_revision_parquet": "7a7a12184dbec34224d575ebe9525c244cdb4b47",
- "dataset_derniere_modification": "2026-08-07T10:53:44.000Z"
+ "dataset_revision": "4e49decedd23232a028db23e5354ee02c958c4d9",
+ "dataset_revision_parquet": "b66d1029c163432188508f9ce27819ef14beaf6a",
+ "dataset_derniere_modification": "2026-08-15T14:45:08.000Z"
 }
