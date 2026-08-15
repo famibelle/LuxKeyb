@@ -80,10 +80,22 @@ s'il est éteint, rien n'est vérifié et le correcteur choisi n'est jamais appe
 
 ## Utilisation au quotidien
 
+### La disposition des touches
+
+Les lettres sont en **QWERTZ**, la disposition des claviers physiques au
+Luxembourg, celle que le luxembourgeois partage avec l'allemand : le `z` est en
+haut, à côté du `t`, et le `y` en bas à gauche.
+
+L'apostrophe, structurelle en luxembourgeois — *d'Land*, *s'Kanner* —, a sa
+propre touche à droite de la barre d'espace. Elle porte l'apostrophe droite
+`'`, sûre dans une adresse ou un mot de passe ; un appui long donne
+l'apostrophe typographique `’` et les guillemets `“ ” "`.
+
 ### Les diacritiques du luxembourgeois
 
-Les trois plus fréquentes — **é**, **ä** et **ë** — ont chacune leur touche en
-bas du clavier. Aucun appui long n'est nécessaire.
+Les trois plus fréquentes ont chacune leur touche, sans aucun appui long :
+**é** ferme la rangée du milieu, juste à droite du `l` ; **ä** et **ë**
+encadrent la barre d'espace, sur la rangée du bas.
 
 Les plus rares s'obtiennent en appuyant **longuement** sur la lettre de base :
 `ü` et `û` sous le `u`, `ö` et `ô` sous le `o`, `à` et `â` sous le `a`, `è` et

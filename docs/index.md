@@ -21,8 +21,10 @@ Lëtzebuergesch Clavier est un clavier Android **gratuit, open source, sans
 publicité et entièrement hors ligne**, qui propose des suggestions de mots en
 luxembourgeois pendant la frappe.
 
-Plus besoin de chercher un `ë` dans un menu d'accents : les trois diacritiques
-qui portent la langue — **é**, **ä** et **ë** — ont chacune leur touche.
+Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
+Luxembourg. Plus besoin de chercher un `ë` dans un menu d'accents : les trois
+diacritiques qui portent la langue — **é**, **ä** et **ë** — ont chacune leur
+touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
 
 <div style="display:flex;justify-content:center;align-items:center;gap:32px;
             flex-wrap:wrap;margin:24px 0;">
