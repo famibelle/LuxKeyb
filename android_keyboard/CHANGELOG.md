@@ -9,6 +9,67 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.10.0] - 2026-08-15
+
+Le clavier passe en QWERTZ et gagne une touche apostrophe, à la demande d'un
+utilisateur. Les choix de disposition sont arbitrés sur des comptages du corpus
+brut `POTOMITAN/luxembourgish-corpus` (158 documents, 204 366 caractères).
+
+### ⌨️ La disposition passe en QWERTZ
+
+- **Rangées 1 à 3 en QWERTZ** — `q w e r t z u i o p` / `a s d f g h j k l é` /
+  `⇧ y x c v b n m ⌫`. C'est la disposition des claviers physiques au Luxembourg
+  (suisse-français) et celle que le luxembourgeois partage avec l'allemand ;
+  l'AZERTY était un héritage créole. Les trois rangées de lettres font désormais
+  exactement 10 unités de largeur, donc les touches s'alignent verticalement, ce
+  que l'AZERTY (10 / 10 / 9) ne faisait pas.
+- **`é` ferme la rangée d'accueil**, à droite du `l`, là où le QWERTZ suisse la
+  place. C'est la diacritique n°1 du luxembourgeois (2596 occurrences, 14 % des
+  mots) : elle prend ainsi la touche la plus large disponible, 36 dp contre 30
+  en rangée 4. `ä` et `ë` gardent leur touche dédiée.
+
+### ✨ Une touche apostrophe
+
+- **L'apostrophe a sa propre touche**, avec `’ “ ” "` en appui long. L'élision
+  est structurelle en luxembourgeois — `d'Land`, `s'Kanner`, `hunn's` — et le
+  corpus la donne à 649 occurrences, plus que `ü` et 4,5 fois le trait d'union.
+  Elle était auparavant reléguée en appui long sur `,`, et l'apostrophe
+  typographique `’`, pourtant la forme la plus fréquente du corpus (469 contre
+  180), n'était atteignable nulle part.
+- **Les appuis longs suivent les fréquences réelles** et non l'habitude
+  française : `?` (133) passe devant `!` (1) sous la touche `.`, et `:` (122)
+  devant `;` (6) sous la touche `,`.
+
+### 🎨 La touche shift se lit enfin
+
+- **Les trois états ont des icônes distinctes** : flèche creuse au repos, pleine
+  quand la majuscule est armée, pleine avec barre de verrouillage en caps lock.
+  L'état repos affichait jusqu'ici un chevron vers le bas — l'affordance système
+  « masquer le clavier », visible au même moment dans la barre de navigation — et
+  les états actif et verrouillé ne se distinguaient que par une rotation.
+- **Le fond gris de la majuscule armée s'affiche enfin.** `keyBackground()` le
+  prévoyait depuis toujours, mais `updateKeyboardDisplay()` ne restylait que les
+  `Button` : la touche shift étant une `ImageButton`, son fond restait blanc
+  dans les trois états.
+
+### 🐛 Corrigé
+
+- **Les libellés de touches ne se détruisent plus eux-mêmes.**
+  `getKeyFromButton()` réidentifiait chaque touche depuis son libellé affiché,
+  en minuscules. Les touches dont le libellé diffère de la touche s'en trouvaient
+  dégradées à la première mise à jour d'affichage : la barre d'espace passait de
+  `Potomitan™` à `potomitan™`, et la touche de retour à l'alphabétique affichait
+  `abc`, en basculant en `ABC` au gré du shift — un état sans rapport avec elle.
+  Les boutons portent maintenant leur touche en `tag`, comme le faisaient déjà
+  les `ImageButton`.
+- **L'apostrophe est bleue** comme le reste de la ponctuation, `keyBackground()
+  ` énumérant les touches une à une.
+
+### 🔤 Modifié
+
+- **La barre d'espace affiche `LuxKeyb™`** au lieu de `Potomitan™`. La mention de
+  copyright de l'écran À Propos, elle, garde le nom de l'éditeur.
+
 ## [10.9.5] - 2026-08-15
 
 Aucun changement visible dans le clavier : cette version durcit la chaîne de
