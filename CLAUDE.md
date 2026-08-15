@@ -24,7 +24,9 @@ $JAVA_HOME/bin/java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrap
 ```
 CI is unaffected (it installs Gradle 8.7 directly).
 
-Release signing reads from `android_keyboard/gradle.properties` (local) or environment variables (`KEYSTORE_FILE`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`). Falls back to debug signing if secrets are missing. See `gradle.properties.example` for the format.
+Release signing reads `KEYSTORE_FILE`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD` in that order of precedence: `android_keyboard/keystore.properties` (local, gitignored), then Gradle properties, then environment variables (what CI uses). Falls back to debug signing if any of the four is missing. See `keystore.properties.example` for the format.
+
+**Never put signing credentials in `gradle.properties`** — that file is tracked. Doing so leaked the release passwords publicly between 2025-10-08 and 2025-10-23 (`22001c93` → `563e31aa`); the branches still carrying them were deleted from `origin` on 2026-08-15, with local backups under `refs/backup/2026-08-15-fuite-secret/`. `keystore.properties` exists so there is no tracked file where a credential can plausibly be written.
 
 **versionCode** format: `60501` = version `6.5.1` (major × 10000 + minor × 100 + patch). minSdk 21, targetSdk 36.
 

@@ -15,6 +15,7 @@ android_keyboard/*.iml
 # Signing files (NEVER commit these!)
 *.jks
 *.keystore
+keystore.properties
 key.properties
 local-release.properties
 *keystore*base64*.txt
