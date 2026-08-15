@@ -47,6 +47,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     companion object {
         private const val TAG = "KreyolIME-Potomitan™"
         private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
+        // Hauteur d'une des deux rangées de suggestions (Kreyòl puis Français) et
+        // padding vertical du bloc de touches : ce que le clavier consomme en
+        // hauteur en dehors des rangées de touches elles-mêmes
+        private const val SUGGESTION_ROW_HEIGHT_DP = 44
+        private const val KEYBOARD_VERTICAL_PADDING_DP = 8
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -347,16 +352,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Créer la zone de suggestions
         createSuggestionsArea(mainLayout)
         
-        // 📱 PADDING ADAPTATIF SELON MODE DE NAVIGATION
-        // Créer un conteneur avec padding pour éviter que la navigation bar masque le clavier
+        // 📱 Conteneur dont le bas se décale de ce que la barre de navigation
+        // masque réellement du clavier, mesuré après la mise en page (voir
+        // adjustForNavigationBarOverlap). Zéro tant que rien ne prouve un
+        // recouvrement : le système place déjà la fenêtre de saisie au-dessus de
+        // la barre, et réserver la place une seconde fois laissait une bande
+        // vide entre la dernière rangée et le bas de l'écran.
         val keyboardContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            val adaptivePadding = getAdaptiveNavigationPadding()
-            setPadding(0, 0, 0, adaptivePadding)
-            Log.d(TAG, "✅ Padding adaptatif appliqué: ${adaptivePadding}px")
+            setPadding(0, 0, 0, 0)
         }
-        
-        // Créer le clavier principal
+        mainLayout.post { adjustForNavigationBarOverlap(mainLayout, keyboardContainer) }
+
+        // Créer le clavier principal, dimensionné pour la place que la fenêtre
+        // IME accordera réellement (voir availableRowsHeightPx)
+        keyboardLayoutManager.setAvailableRowsHeight(computeAvailableRowsHeight())
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
@@ -388,7 +398,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val kreyolScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
+                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
             )
             setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
         }
@@ -404,7 +414,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val frScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
+                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
             )
             setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
             visibility = View.INVISIBLE
@@ -1199,91 +1209,86 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     /**
-     * 📱 Détecte le mode de navigation système actif
-     * @return Code du mode: 0=3-button, 1=2-button, 2=Gesture, -1=Unknown
+     * 📏 Hauteur restant aux quatre rangées de touches une fois retiré tout ce que
+     * le clavier consomme par ailleurs.
+     *
+     * `screenHeightDp` donne la hauteur d'écran barre de navigation déduite, mais
+     * pas la barre d'état, sous laquelle la fenêtre IME commence : il faut la
+     * retirer aussi, sans quoi le compte est trop généreux d'exactement sa hauteur
+     * et la rangée du bas reste rognée (mesuré sur l'émulateur, 72 px de trop).
+     * En portrait la place dépasse largement le besoin et la hauteur nominale des
+     * touches est conservée ; en paysage (288 dp sur un 1080x2400 en 480 dpi) elle
+     * est inférieure aux 332 dp de la mise en page nominale, et sans ce calcul la
+     * rangée du bas est coupée en deux au lieu d'être simplement plus basse.
+     *
+     * Rien n'est réservé ici pour la barre de navigation : le système la déduit
+     * déjà de la fenêtre de saisie, et le cas contraire est rattrapé après coup
+     * par adjustForNavigationBarOverlap(), qui dispose alors d'autant de hauteur
+     * supplémentaire puisque la fenêtre descend jusqu'au bas de l'écran.
      */
-    private fun detectNavigationMode(): Int {
-        return try {
-            val navigationMode = android.provider.Settings.Secure.getInt(
-                contentResolver,
-                "navigation_mode",
-                0  // 0 par défaut (3-button)
-            )
-            
-            val modeName = when (navigationMode) {
-                0 -> "3-button navigation"
-                1 -> "2-button navigation"
-                2 -> "Gesture navigation"
-                else -> "Unknown navigation mode"
-            }
-            
-            Log.d(TAG, "📱 Mode de navigation détecté: $modeName (valeur: $navigationMode)")
-            return navigationMode
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur détection mode navigation: ${e.message}")
-            return -1  // Unknown
-        }
-    }
-    
-    /**
-     * 📏 Calcule le padding bottom adapté selon le mode de navigation
-     * Utilise la hauteur réelle de la navigation bar système + marge adaptée
-     * @return Padding en pixels
-     */
-    private fun getAdaptiveNavigationPadding(): Int {
-        val navigationMode = detectNavigationMode()
-        
-        // Obtenir la hauteur système de la navigation bar
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        val rawNavBarHeight = if (resourceId > 0) {
-            resources.getDimensionPixelSize(resourceId)
+    private fun computeAvailableRowsHeight(): Int {
+        val statusBarId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        val statusBarPx = if (statusBarId > 0) {
+            resources.getDimensionPixelSize(statusBarId)
         } else {
-            (48 * resources.displayMetrics.density).toInt() // Fallback 48dp
+            dpToPx(24)
         }
-        // Certaines ROM OEM (constaté sur un téléphone bas de gamme non identifié,
-        // "P300", en portrait uniquement) renvoient une valeur aberrante pour ce
-        // dimen système, ce qui pousse tout le clavier hors de l'écran visible.
-        // Une vraie navigation bar Android ne dépasse jamais ~64dp : on plafonne
-        // pour ignorer les valeurs corrompues plutôt que de leur faire confiance.
-        val maxNavBarHeightPx = (64 * resources.displayMetrics.density).toInt()
-        val systemNavBarHeight = rawNavBarHeight.coerceIn(0, maxNavBarHeightPx)
-        
-        val padding = when (navigationMode) {
-            0 -> {
-                // 3-button navigation: hauteur système + marge sécurité 12dp
-                val marginDp = 12
-                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
-                val paddingPx = systemNavBarHeight + marginPx
-                Log.d(TAG, "🔘 3-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
-                paddingPx
-            }
-            1 -> {
-                // 2-button navigation: hauteur système + marge sécurité 8dp
-                val marginDp = 8
-                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
-                val paddingPx = systemNavBarHeight + marginPx
-                Log.d(TAG, "🔘 2-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
-                paddingPx
-            }
-            2 -> {
-                // Gesture navigation: padding minimal 20dp (juste la barre indicateur)
-                val paddingDp = 20
-                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
-                Log.d(TAG, "👆 Gesture: Padding minimal ${paddingDp}dp = ${paddingPx}px")
-                paddingPx
-            }
-            else -> {
-                // Mode inconnu: padding de sécurité
-                val paddingDp = 48
-                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
-                Log.d(TAG, "⚠️ Mode inconnu: Padding sécurité ${paddingDp}dp = ${paddingPx}px")
-                paddingPx
-            }
-        }
-        
-        Log.d(TAG, "✅ Padding adaptatif calculé: ${padding}px")
-        return padding
+        val windowHeightPx = dpToPx(resources.configuration.screenHeightDp) - statusBarPx
+        val suggestionsPx = dpToPx(SUGGESTION_ROW_HEIGHT_DP) * 2
+        val keyboardPaddingPx = dpToPx(KEYBOARD_VERTICAL_PADDING_DP) * 2
+        // Marge d'arrondi : le calcul tombe sinon au pixel près sur le bas de la
+        // fenêtre, où la moindre différence de mesure ronge à nouveau la dernière rangée
+        val safetyPx = dpToPx(4)
+        val available = windowHeightPx - suggestionsPx - keyboardPaddingPx - safetyPx
+        Log.d(TAG, "📏 Hauteur fenêtre ${windowHeightPx}px (barre d'état ${statusBarPx}px déduite), " +
+            "dont suggestions ${suggestionsPx}px, padding clavier ${keyboardPaddingPx}px " +
+            "→ ${available}px pour les rangées")
+        return available
     }
-    
+
+    /**
+     * 📏 Décale le bas du clavier de ce que la barre de navigation lui masque
+     * réellement, mesuré une fois la mise en page faite.
+     *
+     * L'ancienne version estimait ce décalage à partir du mode de navigation et
+     * du dimen système `navigation_bar_height`, sans vérifier qu'il servait à
+     * quelque chose. Or le système place déjà la fenêtre de saisie au-dessus de
+     * la barre : la réserve était payée deux fois et laissait une bande vide
+     * sous la dernière rangée (constaté en paysage sur émulateur Android 13).
+     * Elle exposait aussi le clavier aux ROM qui renvoient une valeur aberrante
+     * pour ce dimen (signalé sur un "P300", clavier poussé hors de l'écran).
+     *
+     * Comparer la position réelle du clavier à celle de la barre traite les deux
+     * cas sans rien supposer : zéro quand le système a déjà fait le travail, le
+     * recouvrement exact quand il ne l'a pas fait.
+     */
+    private fun adjustForNavigationBarOverlap(root: View, container: View) {
+        val insets = window?.window?.decorView?.rootWindowInsets ?: return
+        val navBarPx = if (android.os.Build.VERSION.SDK_INT >= 30) {
+            insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+        } else {
+            @Suppress("DEPRECATION")
+            insets.systemWindowInsetBottom
+        }
+
+        val displayHeightPx = if (android.os.Build.VERSION.SDK_INT >= 30) {
+            (getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager)
+                .maximumWindowMetrics.bounds.height()
+        } else {
+            resources.displayMetrics.heightPixels
+        }
+
+        val position = IntArray(2)
+        root.getLocationOnScreen(position)
+        val keyboardBottomPx = position[1] + root.height
+        val overlapPx = keyboardBottomPx - (displayHeightPx - navBarPx)
+
+        val paddingPx = if (overlapPx > 0) overlapPx else 0
+        Log.d(TAG, "📏 Bas du clavier ${keyboardBottomPx}px, barre de navigation à " +
+            "${displayHeightPx - navBarPx}px → recouvrement ${overlapPx}px, padding ${paddingPx}px")
+        if (container.paddingBottom != paddingPx) {
+            container.setPadding(0, 0, 0, paddingPx)
+        }
+    }
+
 }

@@ -5,6 +5,28 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.4] - 2026-08-15
+
+### 🐛 Une bande vide séparait le clavier du bas de l'écran
+
+Le clavier réservait lui-même la hauteur de la barre de navigation, alors que le système la déduit déjà de la fenêtre de saisie. La place était donc payée deux fois et laissait une bande vide sous la dernière rangée, très visible en paysage. Cette réserve est maintenant mesurée : le clavier compare sa position réelle à celle de la barre et ne se décale que de ce qui est effectivement recouvert, c'est-à-dire rien dans le cas courant.
+
+Cette mesure remplace une estimation tirée du mode de navigation et de la hauteur système déclarée, qu'il fallait déjà plafonner parce que certaines ROM annoncent une valeur aberrante et poussaient le clavier hors de l'écran. Les touches y gagnent 5 dp en paysage, la place rendue leur revenant.
+
+### 🐛 La rangée du bas était coupée en deux en paysage
+
+Le clavier réclamait 332 dp de hauteur là où la fenêtre de saisie n'en accorde que 288 en paysage sur un écran 1080x2400 : la rangée des touches 123, virgule, é, tiret, espace, è, point, emoji et entrée était tranchée à mi-hauteur, et ces touches devenaient inatteignables. La hauteur des touches se calcule désormais à partir de la place réellement disponible, plafonnée à sa valeur habituelle de 48 dp. Le portrait ne change donc pas d'un pixel ; en paysage les touches passent à 35 dp et le clavier tient entier.
+
+Le calcul retranche aussi la barre d'état, sous laquelle la fenêtre de saisie commence, ce que la hauteur d'écran annoncée par le système ne fait pas.
+
+### 🐛 Les jambages des lettres étaient rognés sur les touches basses
+
+Sur une touche réduite, les lettres q, g, j, p et y perdaient leur jambage. Les touches héritaient de 30 px de marge intérieure sur chaque bord, venue du style de bouton d'origine, ce qui ne laissait que 45 px à une ligne de texte qui en fait 57. Cette marge n'a aucun rôle ici, l'apparence des touches venant entièrement du dégradé dessiné par l'application.
+
+### 🐛 La touche « 123 » n'affichait que « 12 »
+
+Le même héritage, horizontalement cette fois, tronquait le libellé de la touche de mode en portrait. Il s'affiche à nouveau en entier, sur une seule ligne, à la taille déjà utilisée pour la barre d'espace.
+
 ## [10.9.3] - 2026-08-15
 
 ### ⇧ La touche majuscule montre enfin où elle en est
