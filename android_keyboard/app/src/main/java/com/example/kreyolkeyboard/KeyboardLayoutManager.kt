@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -24,10 +25,21 @@ class KeyboardLayoutManager(private val context: Context) {
     
     companion object {
         private const val BUTTON_HEIGHT_DP = 48
+        // En paysage la fenêtre IME ne reçoit qu'environ 359 dp de haut, contre 891
+        // en portrait sur le même écran : garder 48 dp par touche y faisait occuper
+        // au clavier 87 % de l'écran, ne laissant que 51 dp à l'application. La
+        // largeur ne manquant pas dans cette orientation, les touches restent
+        // faciles à viser en étant plus basses.
+        private const val BUTTON_HEIGHT_LANDSCAPE_DP = 36
         // Sous cette hauteur les touches deviennent difficiles à viser : mieux vaut
         // alors rogner ailleurs que continuer à réduire.
         private const val BUTTON_MIN_HEIGHT_DP = 32
         private const val KEYBOARD_ROW_COUNT = 4
+        // Padding vertical du bloc de touches, resserré en paysage pour la même
+        // raison. Le service s'en sert pour calculer la place laissée aux rangées,
+        // d'où l'exposition ici plutôt qu'une valeur écrite des deux côtés.
+        private const val VERTICAL_PADDING_DP = 8
+        private const val VERTICAL_PADDING_LANDSCAPE_DP = 4
         private const val BUTTON_MARGIN_DP = 2
         private const val CORNER_RADIUS_DP = 8f
         private const val TEXT_SIZE_SP = 16f
@@ -37,6 +49,12 @@ class KeyboardLayoutManager(private val context: Context) {
 
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
+
+        fun isLandscape(context: Context): Boolean =
+            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        fun verticalPaddingDp(context: Context): Int =
+            if (isLandscape(context)) VERTICAL_PADDING_LANDSCAPE_DP else VERTICAL_PADDING_DP
     }
     
     // État du clavier
@@ -96,7 +114,9 @@ class KeyboardLayoutManager(private val context: Context) {
      * de place restante, sans jamais descendre sous le seuil de visée.
      */
     private fun keyHeightPx(): Int {
-        val nominal = dpToPx(BUTTON_HEIGHT_DP)
+        val nominal = dpToPx(
+            if (isLandscape(context)) BUTTON_HEIGHT_LANDSCAPE_DP else BUTTON_HEIGHT_DP
+        )
         if (availableRowsHeightPx <= 0) return nominal
         val verticalMargins = dpToPx(BUTTON_MARGIN_DP) * 2
         val fitted = availableRowsHeightPx / KEYBOARD_ROW_COUNT - verticalMargins
@@ -109,11 +129,12 @@ class KeyboardLayoutManager(private val context: Context) {
     fun createKeyboardLayout(): LinearLayout {
         Log.d("KeyboardLayoutManager", "🎯 createKeyboardLayout - isNumericMode: $isNumericMode")
         
+        val verticalPaddingPx = dpToPx(verticalPaddingDp(context))
         val mainLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
-                dpToPx(8), dpToPx(8), 
-                dpToPx(8), dpToPx(8)
+                dpToPx(8), verticalPaddingPx,
+                dpToPx(8), verticalPaddingPx
             )
         }
         
@@ -239,13 +260,18 @@ class KeyboardLayoutManager(private val context: Context) {
                 // Teinter l'icône en blanc pour visibilité sur fond coloré
                 setColorFilter(Color.WHITE)
                 
-                // Configurer la taille et le padding de l'icône (différent selon la touche)
-                val iconPadding = when (key) {
-                    "⏎" -> dpToPx(8)  // Moins de padding pour l'icône Enter (plus grande)
-                    "⌫" -> dpToPx(10) // Padding moyen pour Backspace
-                    "⇧" -> dpToPx(12) // Padding normal pour Shift
-                    else -> dpToPx(12)
+                // Padding de l'icône, différent selon la touche et proportionnel à la
+                // hauteur de touche : écrit en dur, il mangeait la même hauteur sur une
+                // touche réduite, et l'icône y devenait deux fois plus petite qu'en
+                // portrait (constaté en paysage, 12 dp de flèche dans une touche de 36).
+                // Les rapports reprennent les valeurs d'origine, rapportées aux 48 dp
+                // de la hauteur nominale.
+                val iconPaddingRatio = when (key) {
+                    "⏎" -> 8f / BUTTON_HEIGHT_DP  // Moins de padding pour l'icône Enter (plus grande)
+                    "⌫" -> 10f / BUTTON_HEIGHT_DP // Padding moyen pour Backspace
+                    else -> 12f / BUTTON_HEIGHT_DP // Padding normal pour Shift
                 }
+                val iconPadding = (keyHeightPx() * iconPaddingRatio).toInt()
                 setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
                 scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                 adjustViewBounds = true

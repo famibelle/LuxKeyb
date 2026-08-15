@@ -7,6 +7,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [10.9.4] - 2026-08-15
 
+### 📐 Le clavier prenait tout l'écran en paysage
+
+Écran couché, le clavier occupait 87 % de la hauteur et ne laissait que la moitié du champ de saisie visible, sans jamais se resserrer : il gardait la mise en page du portrait, où la même hauteur ne représente que 40 % de l'écran.
+
+Trois choses changent, en paysage seulement : les touches passent de 48 à 36 dp, la marge du bloc de touches de 8 à 4 dp, et les suggestions tiennent sur une seule rangée au lieu de deux. Les suggestions françaises rejoignent alors la rangée kreyòl, où l'étiquette de langue et la couleur des puces les distinguent déjà, la rangée défilant si les mots sont nombreux. Le clavier retombe à 62 % de l'écran, l'application récupère près de trois fois plus de place, et le portrait ne bouge pas d'un pixel.
+
+Les icônes des touches majuscule, retour et entrée suivent maintenant la hauteur de leur touche : leur marge intérieure était écrite en dur, ce qui les rapetissait de moitié dès que la touche se réduisait.
+
 ### 🐛 Une bande vide séparait le clavier du bas de l'écran
 
 Le clavier réservait lui-même la hauteur de la barre de navigation, alors que le système la déduit déjà de la fenêtre de saisie. La place était donc payée deux fois et laissait une bande vide sous la dernière rangée, très visible en paysage. Cette réserve est maintenant mesurée : le clavier compare sa position réelle à celle de la barre et ne se décale que de ce qui est effectivement recouvert, c'est-à-dire rien dans le cas courant.

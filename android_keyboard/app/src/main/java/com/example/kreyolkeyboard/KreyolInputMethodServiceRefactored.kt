@@ -47,11 +47,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     companion object {
         private const val TAG = "KreyolIME-Potomitan™"
         private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
-        // Hauteur d'une des deux rangées de suggestions (Kreyòl puis Français) et
-        // padding vertical du bloc de touches : ce que le clavier consomme en
-        // hauteur en dehors des rangées de touches elles-mêmes
+        // Hauteur d'une rangée de suggestions : ce que le clavier consomme en
+        // hauteur en dehors des rangées de touches elles-mêmes. Le padding
+        // vertical du bloc de touches vit dans KeyboardLayoutManager, qui le pose.
         private const val SUGGESTION_ROW_HEIGHT_DP = 44
-        private const val KEYBOARD_VERTICAL_PADDING_DP = 8
+        // En paysage les suggestions tiennent sur une seule rangée un peu plus
+        // basse : les deux rangées empilées coûtaient 88 dp sur les 359 dp que la
+        // fenêtre IME reçoit dans cette orientation (contre 891 dp en portrait).
+        private const val SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP = 38
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -386,6 +389,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * sur la touche de la rangée voisine — bug constaté et corrigé le 23/07/2026.
      */
     private fun createSuggestionsArea(parentLayout: LinearLayout) {
+        val rowHeightPx = dpToPx(suggestionRowHeightDp())
+
         val suggestionsContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -398,7 +403,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val kreyolScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
+                rowHeightPx
             )
             setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
         }
@@ -410,33 +415,50 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             )
         }
         kreyolScroll.addView(kreyolRow)
-
-        val frScroll = HorizontalScrollView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(SUGGESTION_ROW_HEIGHT_DP)
-            )
-            setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
-            visibility = View.INVISIBLE
-        }
-        frenchRow = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-        frScroll.addView(frenchRow)
-        frenchRowScroll = frScroll
-
         suggestionsContainer.addView(kreyolScroll)
-        suggestionsContainer.addView(frScroll)
+
+        // En paysage la seconde rangée n'est pas construite du tout : les suggestions
+        // françaises rejoignent la rangée kreyòl, qui défile horizontalement et où
+        // l'étiquette de langue et la couleur des puces les distinguent déjà. Le
+        // décalage des rangées de touches que la réserve permanente évitait ne peut
+        // pas se produire ici, puisque la mise en page est figée pour l'orientation :
+        // rien n'apparaît ni ne disparaît pendant la frappe.
+        if (!isLandscape()) {
+            val frScroll = HorizontalScrollView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    rowHeightPx
+                )
+                setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
+                visibility = View.INVISIBLE
+            }
+            frenchRow = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+            frScroll.addView(frenchRow)
+            frenchRowScroll = frScroll
+            suggestionsContainer.addView(frScroll)
+        }
+
         // Alias historique : les modes non-bilingues (prédictions contextuelles) affichent
         // dans la rangée du haut, la rangée française reste masquée dans ce cas.
         suggestionsView = kreyolRow
 
         parentLayout.addView(suggestionsContainer)
     }
+
+    /** Hauteur d'une rangée de suggestions, réduite en paysage. */
+    private fun suggestionRowHeightDp(): Int =
+        if (isLandscape()) SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP else SUGGESTION_ROW_HEIGHT_DP
+
+    /** Nombre de rangées de suggestions réellement empilées : une seule en paysage. */
+    private fun suggestionRowCount(): Int = if (isLandscape()) 1 else 2
+
+    private fun isLandscape(): Boolean = KeyboardLayoutManager.isLandscape(this)
     
     // ===== IMPLÉMENTATION KeyboardInteractionListener =====
     
@@ -668,7 +690,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {
         Log.d(TAG, "displayBilingualSuggestions appelé avec ${suggestions.size} suggestions bilingues")
         val kreyolContainer = kreyolRow ?: return
-        val frenchContainer = frenchRow ?: return
+        // En paysage il n'y a qu'une rangée : les deux langues la partagent.
+        val frenchContainer = frenchRow ?: kreyolContainer
 
         kreyolContainer.removeAllViews()
         frenchContainer.removeAllViews()
@@ -1234,8 +1257,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             dpToPx(24)
         }
         val windowHeightPx = dpToPx(resources.configuration.screenHeightDp) - statusBarPx
-        val suggestionsPx = dpToPx(SUGGESTION_ROW_HEIGHT_DP) * 2
-        val keyboardPaddingPx = dpToPx(KEYBOARD_VERTICAL_PADDING_DP) * 2
+        val suggestionsPx = dpToPx(suggestionRowHeightDp()) * suggestionRowCount()
+        val keyboardPaddingPx = dpToPx(KeyboardLayoutManager.verticalPaddingDp(this)) * 2
         // Marge d'arrondi : le calcul tombe sinon au pixel près sur le bas de la
         // fenêtre, où la moindre différence de mesure ronge à nouveau la dernière rangée
         val safetyPx = dpToPx(4)
