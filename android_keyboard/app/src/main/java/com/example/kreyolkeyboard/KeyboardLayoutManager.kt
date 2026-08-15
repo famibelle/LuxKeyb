@@ -25,15 +25,16 @@ class KeyboardLayoutManager(private val context: Context) {
     
     companion object {
         private const val BUTTON_HEIGHT_DP = 48
-        // En paysage la fenêtre IME ne reçoit qu'environ 359 dp de haut, contre 891
-        // en portrait sur le même écran : garder 48 dp par touche y faisait occuper
-        // au clavier 87 % de l'écran, ne laissant que 51 dp à l'application. La
-        // largeur ne manquant pas dans cette orientation, les touches restent
-        // faciles à viser en étant plus basses.
-        private const val BUTTON_HEIGHT_LANDSCAPE_DP = 36
         // Sous cette hauteur les touches deviennent difficiles à viser : mieux vaut
         // alors rogner ailleurs que continuer à réduire.
         private const val BUTTON_MIN_HEIGHT_DP = 32
+        // En paysage la fenêtre IME ne reçoit qu'environ 359 dp de haut, contre 891
+        // en portrait sur le même écran : garder 48 dp par touche y faisait occuper
+        // au clavier 87 % de l'écran, ne laissant que 51 dp à l'application. Les
+        // touches s'y posent donc directement sur le plancher de visée, la hauteur
+        // étant la seule ressource qui manque dans cette orientation, où la largeur
+        // laisse au contraire chaque touche deux fois plus large qu'en portrait.
+        private const val BUTTON_HEIGHT_LANDSCAPE_DP = BUTTON_MIN_HEIGHT_DP
         private const val KEYBOARD_ROW_COUNT = 4
         // Padding vertical du bloc de touches, resserré en paysage pour la même
         // raison. Le service s'en sert pour calculer la place laissée aux rangées,

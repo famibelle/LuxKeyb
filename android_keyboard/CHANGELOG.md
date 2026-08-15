@@ -11,7 +11,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 Écran couché, le clavier occupait 87 % de la hauteur et ne laissait que la moitié du champ de saisie visible, sans jamais se resserrer : il gardait la mise en page du portrait, où la même hauteur ne représente que 40 % de l'écran.
 
-Trois choses changent, en paysage seulement : les touches passent de 48 à 36 dp, la marge du bloc de touches de 8 à 4 dp, et les suggestions tiennent sur une seule rangée au lieu de deux. Les suggestions françaises rejoignent alors la rangée kreyòl, où l'étiquette de langue et la couleur des puces les distinguent déjà, la rangée défilant si les mots sont nombreux. Le clavier retombe à 62 % de l'écran, l'application récupère près de trois fois plus de place, et le portrait ne bouge pas d'un pixel.
+Trois choses changent, en paysage seulement : les touches passent de 48 à 32 dp, la marge du bloc de touches de 8 à 4 dp, et les suggestions tiennent sur une seule rangée au lieu de deux. Les suggestions françaises rejoignent alors la rangée kreyòl, où l'étiquette de langue et la couleur des puces les distinguent déjà, la rangée défilant si les mots sont nombreux. Le clavier retombe à 58 % de l'écran, l'application récupère plus de trois fois la place qu'elle avait, et le portrait ne bouge pas d'un pixel.
+
+Les 32 dp sont le seuil de visée en dessous duquel le clavier refuse déjà de descendre quand il manque de place : couché, chaque touche est deux fois plus large qu'en portrait, ce qui compense sa hauteur réduite, et les lettres comme les indices d'appui long tiennent encore entièrement.
 
 Les icônes des touches majuscule, retour et entrée suivent maintenant la hauteur de leur touche : leur marge intérieure était écrite en dur, ce qui les rapetissait de moitié dès que la touche se réduisait.
 
