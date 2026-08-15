@@ -1,8 +1,16 @@
 {
   "production_version": "10.6.0",
-  "latest_version": "10.9.2",
-  "as_of": "2026-08-13",
+  "latest_version": "10.9.3",
+  "as_of": "2026-08-15",
   "features": [
+    {
+      "version": "10.9.3",
+      "emoji": "⬆️",
+      "title": "On voit enfin si la majuscule est active",
+      "description": "La touche ⇧ gardait le même fond blanc que l'on soit en minuscules, en majuscule pour une lettre ou en verrouillage. Son fond suit maintenant l'état, et les trois flèches se distinguent au premier coup d'œil : creuse au repos, pleine pour une majuscule, barrée pour le verrouillage. Au passage, la barre d'espace ne se met plus à crier en majuscules avec le reste du clavier.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.9.3",
+      "curated": true
+    },
     {
       "version": "10.9.2",
       "emoji": "🔖",
