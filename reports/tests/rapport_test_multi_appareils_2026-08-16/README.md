@@ -129,3 +129,297 @@ python3 analyse.py                   # tableau comparatif
 ```
 
 L'APK est cherché automatiquement dans `android_keyboard/app/build/outputs/apk/debug/`, le plus récent étant retenu ; une variable d'environnement `APK=` permet d'en imposer un autre. Construire d'abord avec `./gradlew assembleDebug`, en tenant compte des pièges Java 17 et `gradlew` documentés dans [`CLAUDE.md`](../../../CLAUDE.md). Les sorties d'un nouveau passage vont dans `scripts/results/`, qui est ignoré par git : les résultats publiés de cette campagne restent dans `captures/` et `donnees/`.
+
+## Captures d'écran
+
+Six captures par appareil : le clavier à l'ouverture, la bande de suggestions à mi-mot (après « nou ka palé kré ») et le champ une fois la phrase complète saisie, dans chaque orientation. Classées par densité croissante, comme le tableau des résultats.
+
+> Cette section charge les 108 images, soit 16 Mo. Les fichiers sont aussi accessibles un par un dans [`captures/`](captures).
+
+### Samsung Galaxy A05 (720×1600, 262 dpi)
+
+Touche 47,0 × 36,6 dp en portrait, 31,1 × 80,3 dp en paysage. Le clavier occupe 41,1 % de la surface applicative en portrait et 56,5 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A05 portrait](captures/kreyol_a05_portrait_clavier.png) | ![Suggestions Samsung Galaxy A05 portrait](captures/kreyol_a05_portrait_suggestions.png) | ![Après frappe Samsung Galaxy A05 portrait](captures/kreyol_a05_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A05 paysage](captures/kreyol_a05_paysage_clavier.png) | ![Suggestions Samsung Galaxy A05 paysage](captures/kreyol_a05_paysage_suggestions.png) | ![Après frappe Samsung Galaxy A05 paysage](captures/kreyol_a05_paysage_apres_frappe.png) |
+
+### Petit écran (720×1280, 320 dpi)
+
+Touche 46,5 × 27,8 dp en portrait, 30,5 × 54,8 dp en paysage. Le clavier occupe 58,4 % de la surface applicative en portrait et 70,8 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Petit écran 720x1280 (360 dp) portrait](captures/kreyol_smallphone_portrait_clavier.png) | ![Suggestions Petit écran 720x1280 (360 dp) portrait](captures/kreyol_smallphone_portrait_suggestions.png) | ![Après frappe Petit écran 720x1280 (360 dp) portrait](captures/kreyol_smallphone_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Petit écran 720x1280 (360 dp) paysage](captures/kreyol_smallphone_paysage_clavier.png) | ![Suggestions Petit écran 720x1280 (360 dp) paysage](captures/kreyol_smallphone_paysage_suggestions.png) | ![Après frappe Petit écran 720x1280 (360 dp) paysage](captures/kreyol_smallphone_paysage_apres_frappe.png) |
+
+### Samsung Galaxy A15 (1080×2340, 385 dpi)
+
+Touche 46,5 × 37,2 dp en portrait, 30,8 × 82,3 dp en paysage. Le clavier occupe 39,9 % de la surface applicative en portrait et 55,3 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A15 portrait](captures/kreyol_a15_portrait_clavier.png) | ![Suggestions Samsung Galaxy A15 portrait](captures/kreyol_a15_portrait_suggestions.png) | ![Après frappe Samsung Galaxy A15 portrait](captures/kreyol_a15_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A15 paysage](captures/kreyol_a15_paysage_clavier.png) | ![Suggestions Samsung Galaxy A15 paysage](captures/kreyol_a15_paysage_suggestions.png) | ![Après frappe Samsung Galaxy A15 paysage](captures/kreyol_a15_paysage_apres_frappe.png) |
+
+### Samsung Galaxy A34 (1080×2312, 390 dpi)
+
+Touche 46,8 × 36,7 dp en portrait, 30,8 × 80,1 dp en paysage. Le clavier occupe 41,0 % de la surface applicative en portrait et 55,9 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A34 portrait](captures/kreyol_a34_portrait_clavier.png) | ![Suggestions Samsung Galaxy A34 portrait](captures/kreyol_a34_portrait_suggestions.png) | ![Après frappe Samsung Galaxy A34 portrait](captures/kreyol_a34_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A34 paysage](captures/kreyol_a34_paysage_clavier.png) | ![Suggestions Samsung Galaxy A34 paysage](captures/kreyol_a34_paysage_suggestions.png) | ![Après frappe Samsung Galaxy A34 paysage](captures/kreyol_a34_paysage_apres_frappe.png) |
+
+### OnePlus Nord CE4 (1080×2412, 394 dpi)
+
+Touche 46,7 × 36,3 dp en portrait, 30,5 × 83,1 dp en paysage. Le clavier occupe 39,5 % de la surface applicative en portrait et 56,1 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier OnePlus Nord CE4 portrait](captures/kreyol_nordce4_portrait_clavier.png) | ![Suggestions OnePlus Nord CE4 portrait](captures/kreyol_nordce4_portrait_suggestions.png) | ![Après frappe OnePlus Nord CE4 portrait](captures/kreyol_nordce4_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier OnePlus Nord CE4 paysage](captures/kreyol_nordce4_paysage_clavier.png) | ![Suggestions OnePlus Nord CE4 paysage](captures/kreyol_nordce4_paysage_suggestions.png) | ![Après frappe OnePlus Nord CE4 paysage](captures/kreyol_nordce4_paysage_apres_frappe.png) |
+
+### Xiaomi Redmi Note 13 (1080×2400, 395 dpi)
+
+Touche 46,6 × 36,3 dp en portrait, 30,8 × 82,5 dp en paysage. Le clavier occupe 39,8 % de la surface applicative en portrait et 56,6 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Xiaomi Redmi Note 13 portrait](captures/kreyol_rednote13_portrait_clavier.png) | ![Suggestions Xiaomi Redmi Note 13 portrait](captures/kreyol_rednote13_portrait_suggestions.png) | ![Après frappe Xiaomi Redmi Note 13 portrait](captures/kreyol_rednote13_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Xiaomi Redmi Note 13 paysage](captures/kreyol_rednote13_paysage_clavier.png) | ![Suggestions Xiaomi Redmi Note 13 paysage](captures/kreyol_rednote13_paysage_suggestions.png) | ![Après frappe Xiaomi Redmi Note 13 paysage](captures/kreyol_rednote13_paysage_apres_frappe.png) |
+
+### Samsung Galaxy A54 (1080×2340, 403 dpi)
+
+Touche 46,5 × 34,8 dp en portrait, 30,6 × 77,7 dp en paysage. Le clavier occupe 42,0 % de la surface applicative en portrait et 58,4 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A54 portrait](captures/kreyol_a54_portrait_clavier.png) | ![Suggestions Samsung Galaxy A54 portrait](captures/kreyol_a54_portrait_suggestions.png) | ![Après frappe Samsung Galaxy A54 portrait](captures/kreyol_a54_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy A54 paysage](captures/kreyol_a54_paysage_clavier.png) | ![Suggestions Samsung Galaxy A54 paysage](captures/kreyol_a54_paysage_suggestions.png) | ![Après frappe Samsung Galaxy A54 paysage](captures/kreyol_a54_paysage_apres_frappe.png) |
+
+### Motorola Moto G54 (1080×2400, 405 dpi)
+
+Touche 46,6 × 34,7 dp en portrait, 30,8 × 79,7 dp en paysage. Le clavier occupe 41,2 % de la surface applicative en portrait et 59,1 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Motorola Moto G54 portrait](captures/kreyol_motog54_portrait_clavier.png) | ![Suggestions Motorola Moto G54 portrait](captures/kreyol_motog54_portrait_suggestions.png) | ![Après frappe Motorola Moto G54 portrait](captures/kreyol_motog54_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Motorola Moto G54 paysage](captures/kreyol_motog54_paysage_clavier.png) | ![Suggestions Motorola Moto G54 paysage](captures/kreyol_motog54_paysage_suggestions.png) | ![Après frappe Motorola Moto G54 paysage](captures/kreyol_motog54_paysage_apres_frappe.png) |
+
+### Samsung Galaxy S25 (1080×2340, 416 dpi)
+
+Touche 46,5 × 33,8 dp en portrait, 30,8 × 75,3 dp en paysage. Le clavier occupe 43,4 % de la surface applicative en portrait et 60,4 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy S25 portrait](captures/kreyol_s25_portrait_clavier.png) | ![Suggestions Samsung Galaxy S25 portrait](captures/kreyol_s25_portrait_suggestions.png) | ![Après frappe Samsung Galaxy S25 portrait](captures/kreyol_s25_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy S25 paysage](captures/kreyol_s25_paysage_clavier.png) | ![Suggestions Samsung Galaxy S25 paysage](captures/kreyol_s25_paysage_suggestions.png) | ![Après frappe Samsung Galaxy S25 paysage](captures/kreyol_s25_paysage_apres_frappe.png) |
+
+### Sony Xperia XZ2 (1080×2160, 424 dpi)
+
+Touche 46,8 × 33,0 dp en portrait, 30,6 × 67,4 dp en paysage. Le clavier occupe 48,4 % de la surface applicative en portrait et 61,3 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Sony Xperia XZ2 portrait](captures/kreyol_xperiaxz2_portrait_clavier.png) | ![Suggestions Sony Xperia XZ2 portrait](captures/kreyol_xperiaxz2_portrait_suggestions.png) | ![Après frappe Sony Xperia XZ2 portrait](captures/kreyol_xperiaxz2_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Sony Xperia XZ2 paysage](captures/kreyol_xperiaxz2_paysage_clavier.png) | ![Suggestions Sony Xperia XZ2 paysage](captures/kreyol_xperiaxz2_paysage_suggestions.png) | ![Après frappe Sony Xperia XZ2 paysage](captures/kreyol_xperiaxz2_paysage_apres_frappe.png) |
+
+### Samsung Galaxy S23 (1080×2340, 425 dpi)
+
+Touche 46,7 × 32,9 dp en portrait, 30,9 × 73,7 dp en paysage. Le clavier occupe 44,4 % de la surface applicative en portrait et 61,8 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy S23 portrait](captures/kreyol_s23_portrait_clavier.png) | ![Suggestions Samsung Galaxy S23 portrait](captures/kreyol_s23_portrait_suggestions.png) | ![Après frappe Samsung Galaxy S23 portrait](captures/kreyol_s23_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Samsung Galaxy S23 paysage](captures/kreyol_s23_paysage_clavier.png) | ![Suggestions Samsung Galaxy S23 paysage](captures/kreyol_s23_paysage_suggestions.png) | ![Après frappe Samsung Galaxy S23 paysage](captures/kreyol_s23_paysage_apres_frappe.png) |
+
+### Honor X9c, Android 16 (1080×2340, 440 dpi)
+
+Touche 46,9 × 31,7 dp en portrait, 30,9 × 71,2 dp en paysage. Le clavier occupe 39,3 % de la surface applicative en portrait et 54,1 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor X9c (Android 16 / API 36) portrait](captures/honor_x9c_test_portrait_clavier.png) | ![Suggestions Honor X9c (Android 16 / API 36) portrait](captures/honor_x9c_test_portrait_suggestions.png) | ![Après frappe Honor X9c (Android 16 / API 36) portrait](captures/honor_x9c_test_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor X9c (Android 16 / API 36) paysage](captures/honor_x9c_test_paysage_clavier.png) | ![Suggestions Honor X9c (Android 16 / API 36) paysage](captures/honor_x9c_test_paysage_suggestions.png) | ![Après frappe Honor X9c (Android 16 / API 36) paysage](captures/honor_x9c_test_paysage_apres_frappe.png) |
+
+### Pixel 5 (image Play Store) (1080×2340, 440 dpi)
+
+Touche 46,9 × 31,7 dp en portrait, 30,9 × 71,2 dp en paysage. Le clavier occupe 46,1 % de la surface applicative en portrait et 64,1 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Pixel 5 (image Play Store) portrait](captures/kreyol_playstore_portrait_clavier.png) | ![Suggestions Pixel 5 (image Play Store) portrait](captures/kreyol_playstore_portrait_suggestions.png) | ![Après frappe Pixel 5 (image Play Store) portrait](captures/kreyol_playstore_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Pixel 5 (image Play Store) paysage](captures/kreyol_playstore_paysage_clavier.png) | ![Suggestions Pixel 5 (image Play Store) paysage](captures/kreyol_playstore_paysage_suggestions.png) | ![Après frappe Pixel 5 (image Play Store) paysage](captures/kreyol_playstore_paysage_apres_frappe.png) |
+
+### Pixel 5 (référence) (1080×2340, 440 dpi)
+
+Touche 46,9 × 31,7 dp en portrait, 30,9 × 71,2 dp en paysage. Le clavier occupe 46,1 % de la surface applicative en portrait et 64,1 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Pixel 5 (référence 393 dp) portrait](captures/kreyol_test_portrait_clavier.png) | ![Suggestions Pixel 5 (référence 393 dp) portrait](captures/kreyol_test_portrait_suggestions.png) | ![Après frappe Pixel 5 (référence 393 dp) portrait](captures/kreyol_test_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Pixel 5 (référence 393 dp) paysage](captures/kreyol_test_paysage_clavier.png) | ![Suggestions Pixel 5 (référence 393 dp) paysage](captures/kreyol_test_paysage_suggestions.png) | ![Après frappe Pixel 5 (référence 393 dp) paysage](captures/kreyol_test_paysage_apres_frappe.png) |
+
+### Xiaomi Redmi Note 15 Pro (1280×2772, 447 dpi)
+
+Touche 46,9 × 38,1 dp en portrait, 30,8 × 84,9 dp en paysage. Le clavier occupe 38,8 % de la surface applicative en portrait et 54,2 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Xiaomi Redmi Note 15 Pro portrait](captures/kreyol_rednote15pro_portrait_clavier.png) | ![Suggestions Xiaomi Redmi Note 15 Pro portrait](captures/kreyol_rednote15pro_portrait_suggestions.png) | ![Après frappe Xiaomi Redmi Note 15 Pro portrait](captures/kreyol_rednote15pro_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Xiaomi Redmi Note 15 Pro paysage](captures/kreyol_rednote15pro_paysage_clavier.png) | ![Suggestions Xiaomi Redmi Note 15 Pro paysage](captures/kreyol_rednote15pro_paysage_suggestions.png) | ![Après frappe Xiaomi Redmi Note 15 Pro paysage](captures/kreyol_rednote15pro_paysage_apres_frappe.png) |
+
+### Honor Magic5 Lite (API 34) (1080×2400, 480 dpi)
+
+Touche 46,3 × 27,8 dp en portrait, 30,3 × 65,7 dp en paysage. Le clavier occupe 49,3 % de la surface applicative en portrait et 70,8 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor Magic5 Lite (API 34) portrait](captures/kreyol_magic5lite_portrait_clavier.png) | ![Suggestions Honor Magic5 Lite (API 34) portrait](captures/kreyol_magic5lite_portrait_suggestions.png) | ![Après frappe Honor Magic5 Lite (API 34) portrait](captures/kreyol_magic5lite_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor Magic5 Lite (API 34) paysage](captures/kreyol_magic5lite_paysage_clavier.png) | ![Suggestions Honor Magic5 Lite (API 34) paysage](captures/kreyol_magic5lite_paysage_suggestions.png) | ![Après frappe Honor Magic5 Lite (API 34) paysage](captures/kreyol_magic5lite_paysage_apres_frappe.png) |
+
+### Honor Magic5 Lite (API 33) (1080×2400, 480 dpi)
+
+Touche 46,3 × 27,8 dp en portrait, 30,3 × 65,7 dp en paysage. Le clavier occupe 49,3 % de la surface applicative en portrait et 70,8 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor Magic5 Lite (API 33) portrait](captures/kreyol_magic5lite33_portrait_clavier.png) | ![Suggestions Honor Magic5 Lite (API 33) portrait](captures/kreyol_magic5lite33_portrait_suggestions.png) | ![Après frappe Honor Magic5 Lite (API 33) portrait](captures/kreyol_magic5lite33_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Honor Magic5 Lite (API 33) paysage](captures/kreyol_magic5lite33_paysage_clavier.png) | ![Suggestions Honor Magic5 Lite (API 33) paysage](captures/kreyol_magic5lite33_paysage_suggestions.png) | ![Après frappe Honor Magic5 Lite (API 33) paysage](captures/kreyol_magic5lite33_paysage_apres_frappe.png) |
+
+### Google Pixel 7 Pro (1440×3120, 560 dpi)
+
+Touche 46,6 × 32,9 dp en portrait, 30,6 × 75,2 dp en paysage. Le clavier occupe 43,6 % de la surface applicative en portrait et 61,4 % en paysage.
+
+**Portrait**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Google Pixel 7 Pro portrait](captures/kreyol_pixel7pro_portrait_clavier.png) | ![Suggestions Google Pixel 7 Pro portrait](captures/kreyol_pixel7pro_portrait_suggestions.png) | ![Après frappe Google Pixel 7 Pro portrait](captures/kreyol_pixel7pro_portrait_apres_frappe.png) |
+
+**Paysage**
+
+| Clavier | Suggestions (« kré ») | Après frappe |
+|---|---|---|
+| ![Clavier Google Pixel 7 Pro paysage](captures/kreyol_pixel7pro_paysage_clavier.png) | ![Suggestions Google Pixel 7 Pro paysage](captures/kreyol_pixel7pro_paysage_suggestions.png) | ![Après frappe Google Pixel 7 Pro paysage](captures/kreyol_pixel7pro_paysage_apres_frappe.png) |
