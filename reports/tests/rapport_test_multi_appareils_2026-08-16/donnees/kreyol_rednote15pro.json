@@ -1,0 +1,183 @@
+{
+ "avd": "kreyol_rednote15pro",
+ "label": "Xiaomi Redmi Note 15 Pro",
+ "orientations": [
+  {
+   "orientation": "portrait",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 0,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    1280,
+    2772
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 2046,
+     "bot": 2177,
+     "h": 131,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 2190,
+     "bot": 2321,
+     "h": 131,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 2334,
+     "bot": 2465,
+     "h": 131,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 2478,
+     "bot": 2609,
+     "h": 131,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     1774,
+     1280,
+     2772
+    ],
+    "app_bounds": [
+     0,
+     136,
+     1280,
+     2705
+    ]
+   },
+   "ime_height_px": 998,
+   "ime_height_dp": 357.2,
+   "ime_share_screen_pct": 36.0,
+   "app_area_px": 2569,
+   "app_left_px": 1638,
+   "app_left_dp": 586.3,
+   "ime_share_app_pct": 38.8,
+   "key_height_px": 131,
+   "key_height_dp": 46.9,
+   "key_width_dp": 38.1,
+   "last_row_bottom_px": 2609,
+   "px_below_last_row": 163,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 2788): Container de suggestions trouvé, vidage des vues existantes",
+    "D/KreyolIME-Potomitan™( 2788): 🎯 Affichage suggestions bilingues: kréyòl(KREYOL), kréyol(KREYOL), krèyòl(KREYOL)",
+    "D/KreyolIME-Potomitan™( 2788): displayBilingualSuggestions appelé avec 3 suggestions bilingues",
+    "D/KreyolIME-Potomitan™( 2788): ✅ 3 suggestions bilingues affichées (3 Kreyòl / 0 Français)",
+    "D/SuggestionEngine( 2788): 🎯 Suggestions bilingues pour 'kréyòl': [kréyòl, kréyol, krèyòl]",
+    "E/SettingsToPropertiesMapper(  566): key=persist.device_config.configuration.AdbWritableFlags__adb_writable_flags_list value=adservices/disable_sdk_sandbox,adservices/enforce_broadcast_receiver_restrictions,adservices/fledge_ad_selection_enforce_foreground_status_custom_audience,adservices/fledge_custom_audience_max_count,adservices/fledge_custom_audience_max_num_ads,adservices/fledge_custom_audience_max_owner_count,adservices/fledge_custom_audience_per_app_max_count,adservices/fledge_js_isolate_enforce_max_heap_size,adservices/fledge_js_isolate_max_heap_size_bytes,adservices/sdk_request_permits_per_second,adservices/sdksandbox_customized_sdk_context_enabled,configuration/namespace_to_package_mapping,constrain_display_apis/always_constrain_display_apis,constrain_display_apis/never_constrain_display_apis,constrain_display_apis/never_constrain_display_apis_all_packages,device_policy_manager/disable_resources_updatability,flipendo/default_savings_mode_launch,flipendo/essential_apps,flipendo/flipendo_enabled_launch,flipendo/grayscale_enabled_launch,flipendo/lever_ble_scanning_enabled_launch,flipendo/lever_hotspot_enabled_launch,flipendo/lever_work_profile_enabled_launch,flipendo/resuspend_delay_minutes,namespace/key,namespace1/key1,namespace1/key2,namespace2/key1,namespace2/key2,package_manager_service/incfs_default_timeouts,package_manager_service/known_digesters_list,privacy/location_access_check_periodic_interval_millis,rollback/enable_rollback_timeout,rollback/watchdog_explicit_health_check_enabled,rollback/watchdog_request_timeout_millis,rollback/watchdog_trigger_failure_count,rollback/watchdog_trigger_failure_duration_millis,rollback_boot/rollback_lifetime_in_millis,systemui/nas_generate_actions,systemui/nas_generate_replies,systemui/nas_max_messages_to_extract,systemui/nas_max_suggestions,testspace/another,testspace/flagname,textclassifier/config_updater_model_enabled,textclassifier/key,textclassifier/key2,textclassifier/manifest_url_annotator_en,textclassifier/manifest_url_annotator_ru,textclassifier/model_download_backoff_delay_in_millis,textclassifier/model_download_manager_enabled,textclassifier/multi_language_support_enabled,textclassifier/testing_locale_list_override,textclassifier/textclassifier_service_package_override,window_manager/enable_default_rescind_bal_privileges_from_pending_intent_sender,wrong/nas_generate_replies, exceeds system property max length."
+   ],
+   "height_log": [],
+   "errors": []
+  },
+  {
+   "orientation": "paysage",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 270,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    2772,
+    1280
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 745,
+     "bot": 831,
+     "h": 86,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 844,
+     "bot": 930,
+     "h": 86,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 943,
+     "bot": 1029,
+     "h": 86,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 1042,
+     "bot": 1128,
+     "h": 86,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     622,
+     2636,
+     1280
+    ],
+    "app_bounds": [
+     0,
+     0,
+     2636,
+     1213
+    ]
+   },
+   "ime_height_px": 658,
+   "ime_height_dp": 235.5,
+   "ime_share_screen_pct": 51.4,
+   "app_area_px": 1213,
+   "app_left_px": 622,
+   "app_left_dp": 222.6,
+   "ime_share_app_pct": 54.2,
+   "key_height_px": 86,
+   "key_height_dp": 30.8,
+   "key_width_dp": 84.9,
+   "last_row_bottom_px": 1128,
+   "px_below_last_row": 152,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 2788): displaySuggestions appelé avec 3 suggestions: kréyòl, kréyol, krèyòl",
+    "D/KreyolIME-Potomitan™( 2788): Container de suggestions trouvé, vidage des vues existantes",
+    "D/KreyolIME-Potomitan™( 2788): 🎯 Affichage suggestions bilingues: kréyòl(KREYOL), kréyol(KREYOL), krèyòl(KREYOL)",
+    "D/KreyolIME-Potomitan™( 2788): displayBilingualSuggestions appelé avec 3 suggestions bilingues",
+    "D/KreyolIME-Potomitan™( 2788): ✅ 3 suggestions bilingues affichées (3 Kreyòl / 0 Français)",
+    "D/SuggestionEngine( 2788): 🎯 Suggestions bilingues pour 'kréyòl': [kréyòl, kréyol, krèyòl]"
+   ],
+   "height_log": [],
+   "errors": []
+  }
+ ],
+ "density": 447,
+ "api": "system-images/android-34/google_apis/x86_64/",
+ "geometry": "1280x2772",
+ "boot_seconds": 60,
+ "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+}

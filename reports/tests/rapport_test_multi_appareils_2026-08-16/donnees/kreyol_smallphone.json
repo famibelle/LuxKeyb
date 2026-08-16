@@ -1,0 +1,183 @@
+{
+ "avd": "kreyol_smallphone",
+ "label": "Petit écran 720x1280 (360 dp)",
+ "orientations": [
+  {
+   "orientation": "portrait",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 0,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    720,
+    1280
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 757,
+     "bot": 850,
+     "h": 93,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 861,
+     "bot": 954,
+     "h": 93,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 965,
+     "bot": 1058,
+     "h": 93,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 1069,
+     "bot": 1162,
+     "h": 93,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     560,
+     720,
+     1280
+    ],
+    "app_bounds": [
+     0,
+     0,
+     720,
+     1232
+    ]
+   },
+   "ime_height_px": 720,
+   "ime_height_dp": 360.0,
+   "ime_share_screen_pct": 56.2,
+   "app_area_px": 1232,
+   "app_left_px": 560,
+   "app_left_dp": 280.0,
+   "ime_share_app_pct": 58.4,
+   "key_height_px": 93,
+   "key_height_dp": 46.5,
+   "key_width_dp": 27.8,
+   "last_row_bottom_px": 1162,
+   "px_below_last_row": 118,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/cevx    ( 4047): Starting download: https://www.gstatic.com/messages/smarts/birthday_suggestion/CuratedBirthdaySuggestionList.pb_1644248717638",
+    "V/cevx    ( 4047): Is http uri, downloading (uri: https://www.gstatic.com/messages/smarts/birthday_suggestion/CuratedBirthdaySuggestionList.pb_1644248717638)",
+    "D/cevx    ( 4047): Starting download: https://www.gstatic.com/messages/smarts/birthday_suggestion/BirthdaySuggestionsConfig.pb_1644437564314",
+    "V/cevx    ( 4047): Is http uri, downloading (uri: https://www.gstatic.com/messages/smarts/birthday_suggestion/BirthdaySuggestionsConfig.pb_1644437564314)",
+    "D/PhFileGroupPop( 4047): Added file groups smart_suggestion_reranker_models",
+    "D/PhFileGroupPop( 4047): Added file groups birthday_suggestion"
+   ],
+   "height_log": [],
+   "errors": []
+  },
+  {
+   "orientation": "paysage",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 270,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    1280,
+    720
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 333,
+     "bot": 394,
+     "h": 61,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 405,
+     "bot": 466,
+     "h": 61,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 477,
+     "bot": 538,
+     "h": 61,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 549,
+     "bot": 610,
+     "h": 61,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     244,
+     1280,
+     720
+    ],
+    "app_bounds": [
+     0,
+     0,
+     1280,
+     672
+    ]
+   },
+   "ime_height_px": 476,
+   "ime_height_dp": 238.0,
+   "ime_share_screen_pct": 66.1,
+   "app_area_px": 672,
+   "app_left_px": 244,
+   "app_left_dp": 122.0,
+   "ime_share_app_pct": 70.8,
+   "key_height_px": 61,
+   "key_height_dp": 30.5,
+   "key_width_dp": 54.8,
+   "last_row_bottom_px": 610,
+   "px_below_last_row": 110,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 3178): displaySuggestions appelé avec 3 suggestions: kréyòl, kréyol, krèyòl",
+    "D/KreyolIME-Potomitan™( 3178): Container de suggestions trouvé, vidage des vues existantes",
+    "D/KreyolIME-Potomitan™( 3178): 🎯 Affichage suggestions bilingues: kréyòl(KREYOL), kréyol(KREYOL), krèyòl(KREYOL)",
+    "D/KreyolIME-Potomitan™( 3178): displayBilingualSuggestions appelé avec 3 suggestions bilingues",
+    "D/KreyolIME-Potomitan™( 3178): ✅ 3 suggestions bilingues affichées (3 Kreyòl / 0 Français)",
+    "D/SuggestionEngine( 3178): 🎯 Suggestions bilingues pour 'kréyòl': [kréyòl, kréyol, krèyòl]"
+   ],
+   "height_log": [],
+   "errors": []
+  }
+ ],
+ "density": 320,
+ "api": "system-images/android-34/google_apis/x86_64/",
+ "geometry": "720x1280",
+ "boot_seconds": 63,
+ "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+}

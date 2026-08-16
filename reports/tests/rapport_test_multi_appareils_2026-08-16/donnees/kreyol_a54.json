@@ -1,0 +1,183 @@
+{
+ "avd": "kreyol_a54",
+ "label": "Samsung Galaxy A54",
+ "orientations": [
+  {
+   "orientation": "portrait",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 0,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    1080,
+    2340
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 1685,
+     "bot": 1802,
+     "h": 117,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 1815,
+     "bot": 1932,
+     "h": 117,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 1945,
+     "bot": 2062,
+     "h": 117,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 2075,
+     "bot": 2192,
+     "h": 117,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     1439,
+     1080,
+     2340
+    ],
+    "app_bounds": [
+     0,
+     136,
+     1080,
+     2280
+    ]
+   },
+   "ime_height_px": 901,
+   "ime_height_dp": 357.7,
+   "ime_share_screen_pct": 38.5,
+   "app_area_px": 2144,
+   "app_left_px": 1303,
+   "app_left_dp": 517.3,
+   "ime_share_app_pct": 42.0,
+   "key_height_px": 117,
+   "key_height_dp": 46.5,
+   "key_width_dp": 34.8,
+   "last_row_bottom_px": 2192,
+   "px_below_last_row": 148,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 2804): displaySuggestions appelé avec 3 suggestions: kréyòl, kréyol, krèyòl",
+    "D/KreyolIME-Potomitan™( 2804): Container de suggestions trouvé, vidage des vues existantes",
+    "D/KreyolIME-Potomitan™( 2804): 🎯 Affichage suggestions bilingues: kréyòl(KREYOL), kréyol(KREYOL), krèyòl(KREYOL)",
+    "D/KreyolIME-Potomitan™( 2804): displayBilingualSuggestions appelé avec 3 suggestions bilingues",
+    "D/KreyolIME-Potomitan™( 2804): ✅ 3 suggestions bilingues affichées (3 Kreyòl / 0 Français)",
+    "D/SuggestionEngine( 2804): 🎯 Suggestions bilingues pour 'kréyòl': [kréyòl, kréyol, krèyòl]"
+   ],
+   "height_log": [],
+   "errors": []
+  },
+  {
+   "orientation": "paysage",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 270,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    2340,
+    1080
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 595,
+     "bot": 672,
+     "h": 77,
+     "keys": 11,
+     "expected": 11
+    },
+    {
+     "top": 685,
+     "bot": 762,
+     "h": 77,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 775,
+     "bot": 852,
+     "h": 77,
+     "keys": 8,
+     "expected": 8
+    },
+    {
+     "top": 865,
+     "bot": 942,
+     "h": 77,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     484,
+     2204,
+     1080
+    ],
+    "app_bounds": [
+     0,
+     0,
+     2204,
+     1020
+    ]
+   },
+   "ime_height_px": 596,
+   "ime_height_dp": 236.6,
+   "ime_share_screen_pct": 55.2,
+   "app_area_px": 1020,
+   "app_left_px": 484,
+   "app_left_dp": 192.2,
+   "ime_share_app_pct": 58.4,
+   "key_height_px": 77,
+   "key_height_dp": 30.6,
+   "key_width_dp": 77.7,
+   "last_row_bottom_px": 942,
+   "px_below_last_row": 138,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé kréyòl",
+   "typed_attempts": [
+    "Nou ka palé kréyòl"
+   ],
+   "typed_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 2804): displaySuggestions appelé avec 3 suggestions: kréyòl, kréyol, krèyòl",
+    "D/KreyolIME-Potomitan™( 2804): Container de suggestions trouvé, vidage des vues existantes",
+    "D/KreyolIME-Potomitan™( 2804): 🎯 Affichage suggestions bilingues: kréyòl(KREYOL), kréyol(KREYOL), krèyòl(KREYOL)",
+    "D/KreyolIME-Potomitan™( 2804): displayBilingualSuggestions appelé avec 3 suggestions bilingues",
+    "D/KreyolIME-Potomitan™( 2804): ✅ 3 suggestions bilingues affichées (3 Kreyòl / 0 Français)",
+    "D/SuggestionEngine( 2804): 🎯 Suggestions bilingues pour 'kréyòl': [kréyòl, kréyol, krèyòl]"
+   ],
+   "height_log": [],
+   "errors": []
+  }
+ ],
+ "density": 403,
+ "api": "system-images/android-34/google_apis/x86_64/",
+ "geometry": "1080x2340",
+ "boot_seconds": 53,
+ "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+}
