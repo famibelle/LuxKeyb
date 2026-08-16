@@ -1,0 +1,18 @@
+kreyol_test|Pixel 5 (référence 393 dp)
+kreyol_playstore|Pixel 5 (image Play Store)
+honor_x9c_test|Honor X9c (Android 16 / API 36)
+kreyol_a05|Samsung Galaxy A05
+kreyol_a15|Samsung Galaxy A15
+kreyol_a34|Samsung Galaxy A34
+kreyol_a54|Samsung Galaxy A54
+kreyol_s23|Samsung Galaxy S23
+kreyol_s25|Samsung Galaxy S25
+kreyol_magic5lite|Honor Magic5 Lite (API 34)
+kreyol_magic5lite33|Honor Magic5 Lite (API 33)
+kreyol_motog54|Motorola Moto G54
+kreyol_nordce4|OnePlus Nord CE4
+kreyol_pixel7pro|Google Pixel 7 Pro
+kreyol_rednote13|Xiaomi Redmi Note 13
+kreyol_rednote15pro|Xiaomi Redmi Note 15 Pro
+kreyol_smallphone|Petit écran 720x1280 (360 dp)
+kreyol_xperiaxz2|Sony Xperia XZ2
