@@ -270,8 +270,11 @@ tr:nth-child(even) td{background:var(--stripe);}
     </li>
     <li>
       <strong>Une proposition touchée par erreur peut être annulée.</strong> Poser
-      le doigt sur la mauvaise proposition, puis glisser en dehors avant de
-      relâcher, annule la sélection.
+      le doigt sur la mauvaise proposition, puis glisser à côté avant de relâcher,
+      annule la sélection : sur une proposition voisine, dans l'espace qui les
+      sépare, ou vers les touches. Une réserve mesurée : glisser vers le
+      <em>haut</em>, hors du clavier, n'annule pas, le doigt quittant alors la zone
+      que le clavier surveille.
     </li>
     <li>
       <strong>Maintenir la touche de suppression n'efface qu'un caractère.</strong>
@@ -282,6 +285,16 @@ tr:nth-child(even) td{background:var(--stripe);}
       <strong>Les rangées ne se décalent jamais pendant la frappe.</strong> Une
       cible visée reste au même endroit le temps que le geste aboutisse, même
       quand la liste des propositions change.
+    </li>
+    <li>
+      <strong>Chaque écriture se sent et s'entend, depuis la version
+      10.11.6.</strong> Une brève vibration et un son de frappe confirment que le
+      texte est parti, sur les touches comme sur les propositions, les accents et
+      les emojis. Sur une proposition, la confirmation ne se produit que si le mot
+      est réellement écrit : un geste abandonné reste muet. La personne n'a donc pas
+      besoin de vérifier l'écran pour savoir que son mot est passé. Les deux retours
+      suivent les réglages du téléphone, retour tactile et sons tactiles, donc ils
+      disparaissent si elle les a désactivés.
     </li>
     <li>
       <strong>Il n'y a aucune correction automatique.</strong> Le texte affiché est
@@ -322,10 +335,13 @@ tr:nth-child(even) td{background:var(--stripe);}
       paysage est à éviter avec ce profil.
     </li>
     <li>
-      <strong>La vibration ne peut pas être coupée.</strong> Le clavier vibre à
-      chaque appui, même lorsque les vibrations sont désactivées dans les réglages
-      du téléphone. À signaler en cas d'hypersensibilité ou si la vibration gêne
-      le geste.
+      <strong>La vibration ne pouvait pas être coupée : corrigé en version
+      10.11.5.</strong> Le clavier vibrait à chaque appui même lorsque le retour
+      tactile était désactivé dans les réglages du téléphone, et rien ne permettait
+      de l'éteindre. Il suit maintenant ce réglage, comme n'importe quelle autre
+      application : la vibration se coupe dans les réglages Android, à la rubrique
+      des sons et des vibrations. À vérifier sur le téléphone de la personne en cas
+      d'hypersensibilité, la mise à jour du Play Store demandant une validation.
     </li>
     <li>
       <strong>Le délai de l'appui long est fixe</strong> (une demi-seconde), donc

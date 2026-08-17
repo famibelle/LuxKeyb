@@ -5,6 +5,24 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.6] - 2026-08-17
+
+### 📳 Le clavier se sent et s'entend comme les autres claviers
+
+Le retour de frappe était incomplet et incohérent. Les touches vibraient, la barre d'espace aussi, mais les propositions et les emojis non. Côté son, personne n'en avait jamais écrit une ligne : le clavier laissait Android jouer son clic de bouton générique, celui d'une case à cocher ou d'un menu, et la barre d'espace restait carrément muette. La touche la plus frappée du clavier ne faisait aucun bruit.
+
+Tout ce qui écrit du texte donne maintenant les deux retours, vibration et son : les lettres, la ponctuation, la barre d'espace, la suppression, l'entrée, les propositions de mots, les caractères accentués de la fenêtre d'appui long, les emojis, et la puce de partage.
+
+Le son est celui du clavier et non celui d'un bouton. Android en embarque quatre, et le clavier choisit désormais le bon : un son de frappe pour les lettres, un autre pour la barre d'espace, un autre pour la suppression, un autre pour la touche entrée. C'est ce que fait n'importe quel clavier soigné, et c'est ce qui rend la frappe reconnaissable à l'oreille sans regarder l'écran.
+
+Un détail de synchronisation : sur les touches, vibration et son partent à l'instant où le doigt se pose, comme partout ailleurs. Sur les propositions, ils partent au moment où le mot est réellement écrit. La différence est voulue : une proposition touchée par erreur puis abandonnée en glissant à côté n'écrit rien, et ne doit donc rien confirmer.
+
+Vibration et son suivent chacun le réglage correspondant du téléphone, retour tactile d'un côté, sons tactiles de l'autre. Qui n'en veut pas les coupe une fois, dans les réglages Android, pour toutes les applications.
+
+### 📝 Une correction dans la fiche destinée aux ergothérapeutes
+
+La page du site affirmait que glisser en dehors d'une proposition avant de relâcher annule toujours la sélection. La mesure montre que c'est vrai en restant sur le clavier, vers une proposition voisine, vers l'espace qui les sépare ou vers les touches, mais faux vers le haut hors du clavier, où le doigt quitte la zone surveillée et la sélection part quand même. La page le dit maintenant précisément, et signale aussi que la vibration peut être coupée depuis la 10.11.5, ce qu'elle donnait encore comme une limite du clavier.
+
 ## [10.11.5] - 2026-08-17
 
 ### ♿ La vibration du clavier obéit enfin au téléphone

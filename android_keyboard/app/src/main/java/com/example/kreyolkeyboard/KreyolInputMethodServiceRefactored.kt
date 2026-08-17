@@ -801,6 +801,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': ${bilingualSuggestion.getLanguageName()} → fond $colorHex")
 
             setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            // Le son de frappe est joué par KeyFeedback : sans cette ligne,
+            // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
+            isSoundEffectsEnabled = false
 
             minWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
             minimumWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
@@ -815,7 +818,27 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
 
-            setOnClickListener {
+            setOnClickListener { chip ->
+                // v10.11.6 : la vibration manquait ici. Les touches en donnaient une,
+                // pas les puces, alors que valider une proposition est l'action
+                // principale de qui écrit à un ou deux appuis par mot : le geste le
+                // plus important était le seul sans confirmation tactile.
+                //
+                // Au clic et non au toucher, contrairement aux touches : glisser hors
+                // d'une puce avant de relâcher annule la sélection, et cette sortie de
+                // secours ne doit pas vibrer comme si le mot avait été écrit. La
+                // vibration signifie ici « le mot est écrit », et rien d'autre.
+                // Vérifié sur émulateur en comptant les vibrations enregistrées par
+                // dumpsys vibrator_manager : un geste annulé n'en produit aucune.
+                //
+                // Nuance mesurée le même jour : l'annulation fonctionne pour tout
+                // glissement qui reste dans la fenêtre du clavier (puce voisine,
+                // intervalle entre deux puces, rangées de touches), mais **pas** vers
+                // le haut hors du clavier. Le doigt quitte alors la fenêtre, qui ne
+                // reçoit plus d'événements de déplacement, donc la vue ne se sait
+                // jamais quittée et le clic part au relâchement.
+                KeyFeedback.onKeyPress(chip)
+
                 inputProcessor.processSuggestionSelection(bilingualSuggestion.word)
 
                 // 🔧 FIX SAMSUNG A21S: Performance optimisée
@@ -1020,6 +1043,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 setColor(Color.parseColor("#FF8A00"))
             }
             setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            // Le son de frappe est joué par KeyFeedback : sans cette ligne,
+            // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
+            isSoundEffectsEnabled = false
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -1029,6 +1055,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
             setOnClickListener {
+                // Même règle que les puces de suggestion : ce qui écrit du texte se
+                // sent, et se sent au moment où le texte part.
+                KeyFeedback.onKeyPress(chip)
                 currentInputConnection?.commitText(SHARE_INVITE_MESSAGE, 1)
                 container.removeView(chip)
             }

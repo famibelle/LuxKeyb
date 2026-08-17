@@ -283,7 +283,15 @@ class AccentHandler(private val context: Context) {
             background = createAccentButtonBackground(isBase)
             
             // ├ëv├®nement de clic
-            setOnClickListener {
+            // Le son de frappe vient de KeyFeedback, avec l'effet du clavier et non le
+            // clic d'interface que performClick() ajouterait sinon par-dessus.
+            isSoundEffectsEnabled = false
+
+            setOnClickListener { bouton ->
+                // v10.11.6 : ces touches écrivent un caractère, elles doivent se sentir
+                // et s'entendre comme celles du clavier. Elles sonnaient déjà, par le
+                // clic générique du framework, mais ne vibraient pas.
+                KeyFeedback.onKeyPress(bouton)
                 handleAccentSelection(accent)
             }
             

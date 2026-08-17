@@ -628,6 +628,11 @@ class KeyboardLayoutManager(private val context: Context) {
      * Configure les interactions tactiles pour un bouton
      */
     private fun setupButtonInteractions(button: View, key: String) {
+        // Le son de frappe est joué explicitement par KeyFeedback, avec l'effet propre
+        // à la touche. Sans cette ligne, performClick() y ajouterait son clic
+        // d'interface générique et chaque touche sonnerait deux fois.
+        button.isSoundEffectsEnabled = false
+
         // 🌐 Appui long personnalisé pour la barre d'espace (1 seconde)
         if (key == " ") {
             // Pas de setOnClickListener ici : setupSpaceLongPress() gère déjà le clic
@@ -645,7 +650,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 true
             }
             // Animation tactile pour les touches autres que la barre d'espace
-            addTouchAnimation(button)
+            addTouchAnimation(button, key)
         }
     }
     
@@ -665,8 +670,7 @@ class KeyboardLayoutManager(private val context: Context) {
                         .setDuration(100)
                         .start()
                     
-                    // Feedback haptique
-                    performHapticFeedback(view)
+                    KeyFeedback.onKeyPress(view, key)
                     
                     // Démarrer le timer de 1 seconde pour l'appui long
                     spaceLongPressRunnable = Runnable {
@@ -718,12 +722,14 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Ajoute une animation tactile et feedback haptique au bouton
+     * Animation d'appui, vibration et son de frappe sur un bouton de touche.
+     *
+     * Le retour part sur ACTION_DOWN, à l'instant où le doigt se pose, comme sur
+     * tous les claviers : la frappe se sent et s'entend avant le relâchement. La
+     * touche est passée pour que le son soit celui de sa nature (espace,
+     * suppression, entrée ou frappe standard).
      */
-    /**
-     * Ajoute une animation tactile et feedback haptique au bouton
-     */
-    private fun addTouchAnimation(view: View) {
+    private fun addTouchAnimation(view: View, key: String) {
         view.setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
@@ -734,8 +740,7 @@ class KeyboardLayoutManager(private val context: Context) {
                         .setDuration(100)
                         .start()
                     
-                    // 📳 FEEDBACK HAPTIQUE MODERNE
-                    performHapticFeedback(v)
+                    KeyFeedback.onKeyPress(v, key)
                     
                     false
                 }
@@ -753,32 +758,6 @@ class KeyboardLayoutManager(private val context: Context) {
                 }
                 else -> false
             }
-        }
-    }
-    
-    /**
-     * Vibration à la frappe, sous le contrôle du réglage de retour tactile du
-     * téléphone.
-     *
-     * v10.11.5 : `FLAG_IGNORE_GLOBAL_SETTING` a été retiré. Il faisait vibrer le
-     * clavier même quand le retour tactile était désactivé dans les réglages du
-     * téléphone, et l'application n'offrait aucun moyen de l'éteindre : c'était un
-     * blocage sans échappatoire pour une hypersensibilité sensorielle ou quand la
-     * vibration perturbe le geste (cf. ACCESSIBILITE.md, point 2).
-     *
-     * Aucun réglage n'est ajouté dans l'application, volontairement : le téléphone en
-     * a déjà un, il couvre les deux sens, et un clavier n'a pas à dupliquer
-     * l'interrupteur du système. Qui ne veut pas de vibration la coupe une fois pour
-     * toutes les applications.
-     */
-    private fun performHapticFeedback(view: android.view.View) {
-        try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                view.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
-            }
-        } catch (e: Exception) {
-            // Silencieusement ignorer si feedback haptique non supporté
-            Log.d(TAG, "Feedback haptique non disponible: ${e.message}")
         }
     }
     

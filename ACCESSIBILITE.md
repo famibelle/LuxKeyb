@@ -39,7 +39,7 @@ détruire en croyant améliorer le clavier.
 | La suppression n'efface qu'un glyphe, sans répétition automatique | `InputProcessor.handleBackspace()` | Un doigt qui ne se relève pas n'efface pas la phrase. Ajouter une répétition sur appui long serait une régression pour ce profil : si elle est ajoutée un jour, elle doit être désactivable. |
 | Les rangées ne se décalent pas pendant la frappe | `frenchRowScroll` passe en `INVISIBLE`, jamais en `GONE` (correctif du 23/07/2026) | Une cible visée reste au même endroit le temps que le geste aboutisse. |
 | La lettre sans accent figure en premier dans la popup d'accents | `AccentHandler.createAccentButton(..., isBase = true)` | Un appui long involontaire (relâchement lent) reste récupérable en un appui, sans caractère faux. |
-| Les puces de suggestion réagissent au clic, pas à `ACTION_DOWN` | `addSuggestionChip()`, `setOnClickListener` | Poser le doigt sur la mauvaise puce puis glisser en dehors annule. Passer la sélection sur `ACTION_DOWN` supprimerait la seule sortie de secours. |
+| Les puces de suggestion réagissent au clic, pas à `ACTION_DOWN` | `addSuggestionChip()`, `setOnClickListener` | Poser le doigt sur la mauvaise puce puis glisser en dehors annule, **à condition de rester dans la fenêtre du clavier** : vérifié le 2026-08-17, l'annulation marche vers une puce voisine, vers l'intervalle entre deux puces et vers les touches, mais pas vers le haut hors du clavier, où le doigt quitte la fenêtre qui ne reçoit alors plus d'événements de déplacement. Passer la sélection sur `ACTION_DOWN` supprimerait cette sortie de secours, et ferait vibrer un geste annulé. |
 | Aucune correction automatique | `InputProcessor.handleSpace()` finalise sans réécrire | Le texte affiché est le texte saisi, ce qui compte quand la relecture est difficile. |
 | Aucun signal intrusif pendant la frappe | pas de pastille ni d'animation dans la barre de suggestions | Décision déjà prise pour d'autres raisons, mais c'est aussi un acquis d'accessibilité. |
 
@@ -293,10 +293,12 @@ d'accessibilité existent et ne sont pas couverts ici :
 - **basse vision et cécité** : les touches d'icônes portent bien un
   `contentDescription` (`Supprimer`, `Entrée`, `Majuscule`) et les rangées de
   propositions un libellé textuel KR/FR, donc la langue n'est pas signalée par la
-  couleur seule ; mais aucun test réel sous TalkBack n'a été fait, il n'y a aucun
-  retour sonore de frappe (pas de `playSoundEffect`), et les hauteurs fixes en dp
-  face à des tailles de texte en sp n'ont pas été vérifiées à 200 % de police
-  système ;
+  couleur seule ; le retour sonore de frappe existe depuis la 10.11.6, avec le son
+  propre à chaque nature de touche (`KeyFeedback`), là où le clavier se contentait
+  auparavant du clic d'interface que `performClick()` jouait de lui-même, et laissait
+  la barre d'espace muette ; mais aucun test réel sous TalkBack n'a été fait, et les
+  hauteurs fixes en dp face à des tailles de texte en sp n'ont pas été vérifiées à
+  200 % de police système ;
 - **troubles cognitifs et attentionnels** : l'absence de signal intrusif et la
   stabilité du layout jouent déjà en leur faveur, rien n'a été étudié au delà ;
 - **aphasie et troubles du langage** : c'est un autre public, servi par les mêmes
