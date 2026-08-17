@@ -13,8 +13,14 @@
     // appui long sur « o », où l'indice de coin l'affiche. Cf. KeyboardLayoutManager.
     ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
     ['q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm'],
-    ['⇧', 'w', 'x', 'c', 'v', 'b', 'n', '⌫'],
-    ['123', ',', 'é', '-', ' ', 'è', '.', "'", '⏎']
+    // v10.11.4 : l'apostrophe rejoint cette rangée, financée par ⇧ et ⌫ dont le
+    // poids passe de 1,5 à 1,25 comme dans KeyboardLayoutManager.
+    ['⇧', 'w', 'x', 'c', 'v', 'b', 'n', "'", '⌫'],
+    // L'apostrophe a quitté cette rangée en v9.1.0, où l'application a désormais une
+    // touche emoji. Le simulateur n'implémente pas de panneau emoji, donc cette
+    // place reste vide plutôt que de porter une apostrophe en double : divergence
+    // assumée et visible, préférable à une disposition fausse à deux endroits.
+    ['123', ',', 'é', '-', ' ', 'è', '.', '⏎']
   ];
 
   const NUMERIC_ROWS = [
@@ -36,9 +42,13 @@
     d: ['dj'],
     g: ['gn', 'gy'],
     t: ['tj'],
-    ',': [';', ':'],
-    '.': ['!', '?', '…'],
-    "'": ['"', '«', '»']
+    // L'apostrophe reste sous la virgule même depuis qu'elle a retrouvé une touche
+    // dédiée (v10.11.4), comme é et è restent sous « e ».
+    ',': [';', ':', "'"],
+    '.': ['!', '?', '…']
+    // Pas d'entrée pour « ' » : les guillemets qui vivaient sous son appui long ont
+    // disparu avec elle en v9.1.0 (aucun usage relevé dans les dictionnaires) et
+    // n'ont pas été rétablis côté application. Cf. AccentHandler.accentMap.
   };
   const CORNER_HINTS = { e: ['è', 'é'], o: ['ò', 'ó'] };
   const CORNER_LEFT = new Set(['o']);
@@ -162,7 +172,8 @@
 
     keyWeight(key) {
       if (key === ' ') return 4;
-      if (key === '⇧' || key === '⌫') return 1.5;
+      // v10.11.4 : 1,5 → 1,25, cf. KeyboardLayoutManager.getKeyWeight()
+      if (key === '⇧' || key === '⌫') return 1.25;
       return 1;
     }
 

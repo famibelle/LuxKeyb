@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.4] - 2026-08-17
+
+### ✍️ L'apostrophe retrouve une touche
+
+Écrire `l'`, `d'`, `j'` ou `qu'` demandait un appui long sur la virgule, et il fallait le savoir : l'apostrophe était en troisième position de cette liste, alors que seuls les deux premiers caractères s'affichent en indice de coin. Rien ne l'annonçait donc sur le clavier.
+
+Elle redevient une touche visible, en troisième rangée, juste après le `n`. C'est la rangée qui pouvait le mieux l'accueillir : ses touches sont les plus larges du clavier et elle ne porte que 17,5 % de la frappe. La place est prise sur les touches majuscule et suppression, dont la largeur passe de 8,9 à 7,2 mm. Elles restent les plus larges de leur rangée, ce qui compte puisqu'elles sont aux deux extrémités, là où la visée est la plus mauvaise. Les lettres de la rangée ne perdent qu'un tiers de millimètre, la barre d'espace et les autres rangées ne bougent pas, et l'apostrophe hérite d'une cible de 5,7 mm, contre 4,6 mm si elle avait rejoint la rangée du bas.
+
+La version 9.1.0 avait retiré cette touche au motif qu'aucun mot de `creole_dict.json` ne contient d'apostrophe. Le constat était exact, mais il ne mesurait pas le bon corpus : l'orthographe GEREC écrit l'élision avec un trait d'union, `ba-w`, `an-nou`, donc un dictionnaire de mots créoles ne peut pas en contenir. En français, que ce clavier écrit aussi et pour lequel il propose des suggestions, l'apostrophe vaut 5,5 caractères pour mille, soit autant que la virgule et le point, qui ont tous deux une touche dédiée.
+
+Elle reste accessible sous l'appui long de la virgule, comme `é` et `è` restent sous celui de `e` malgré leur touche dédiée.
+
+### 🧪 Le simulateur du site rattrape trois écarts
+
+Il montrait encore l'apostrophe dans la rangée du bas, là où l'application a une touche emoji depuis la version 9.1.0, et lui gardait un appui long vers les guillemets que l'application n'a plus. Sa disposition, ses poids de touches et ses appuis longs suivent maintenant ceux du clavier livré. Le panneau emoji reste la seule chose qu'il n'imite pas.
+
 ## [10.11.3] - 2026-08-17
 
 ### ⌨️ Les lettres les plus tapées avaient les touches les plus étroites

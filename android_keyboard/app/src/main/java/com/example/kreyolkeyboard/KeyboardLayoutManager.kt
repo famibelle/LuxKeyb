@@ -179,7 +179,27 @@ class KeyboardLayoutManager(private val context: Context) {
         // ne coûtent aucune largeur aux lettres.
         val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
-        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
+        // v10.11.4 : l'apostrophe redevient une touche visible, ici et non en
+        // rangée 4. Cette rangée est celle qui peut le mieux se le permettre : ses
+        // touches sont les plus larges du clavier (37,0 dp mesurés, contre 32,4 en
+        // rangées 1 et 2 et 28,7 en rangée 4) et elle ne porte que 17,5 % de la
+        // frappe. Le financement vient du poids de ⇧ et ⌫, ramené de 1,5 à 1,25
+        // (getKeyWeight) : lettres et apostrophe à 34,7 dp, ⇧ et ⌫ à 43,4 dp, donc
+        // tout reste plus large que les lettres des deux rangées du dessus, et la
+        // barre d'espace n'est pas touchée.
+        //
+        // La v9.1.0 avait retiré cette touche au motif de « 0 occurrence dans
+        // creole_dict.json ». Le constat est exact mais ne mesurait pas le bon
+        // corpus : l'orthographe GEREC écrit l'élision avec un trait d'union
+        // ("ba-w", "an-nou"), donc un dictionnaire de mots créoles ne peut pas
+        // contenir d'apostrophe. En français, que ce clavier écrit aussi et pour
+        // lequel il propose des suggestions, elle vaut 5,5 caractères pour mille
+        // (prose du dépôt, 152 000 caractères), soit autant que la virgule (6,5) et
+        // le point (7,1), qui ont tous deux une touche dédiée.
+        //
+        // Elle reste sous l'appui long de "," (AccentHandler), comme é et è restent
+        // sous celui de "e" malgré leur touche dédiée.
+        val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "'", "⌫")
         // v8.6.0 : "-" ajouté en touche dédiée (21,7% des mots créoles en
         // contiennent un, fréquence cumulée supérieure à celle de "ò")
         // v9.1.0 : "'" retiré (0 occurrence dans creole_dict.json, contre 1088
@@ -935,7 +955,11 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun getKeyWeight(key: String): Float {
         return when (key) {
             " " -> 4.0f      // Barre d'espace plus large
-            "⇧", "⌫" -> 1.5f // Touches de fonction plus larges
+            // v10.11.4 : 1,5 → 1,25 pour financer l'apostrophe ajoutée en rangée 3
+            // sans rétrécir les lettres sous la largeur des rangées 1 et 2. Ces deux
+            // touches restent les plus larges de leur rangée, ce qui compte : elles
+            // sont aux deux extrémités, là où la visée du pouce est la plus mauvaise.
+            "⇧", "⌫" -> 1.25f
             else -> 1.0f     // Touches normales
         }
     }
