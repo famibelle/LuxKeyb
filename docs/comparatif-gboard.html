@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klavyé Kréyòl face à Gboard : ce qui a été mesuré</title>
+<meta name="description" content="Comparaison chiffrée entre Klavyé Kréyòl Karukera et Gboard : temps d'affichage, coût par frappe, mémoire, et inventaire des fonctions élémentaires de clavier. Protocole de mesure détaillé et reproductible.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:820px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(26px,5.6vw,36px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 10px;}
+section{margin-top:44px;}
+h2{font-size:21px;font-weight:800;margin:0 0 8px;letter-spacing:-0.01em;}
+h3{font-size:15px;font-weight:700;margin:24px 0 6px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:0 0 14px;}
+.card h2{font-size:16px;margin-bottom:6px;}
+.note{border-left:4px solid var(--sun);background:var(--sun-soft);}
+a{color:var(--sea);}
+
+/* Chiffres clés : la comparaison tient dans ces quatre tuiles. */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px;margin:18px 0 6px;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.tile .n{display:block;font-size:clamp(22px,4.4vw,28px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tile .vs{display:block;font-size:13.5px;color:var(--ink-soft);margin-top:2px;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13px;color:var(--ink-soft);margin-top:6px;border-top:1px solid var(--line);padding-top:6px;}
+
+/* Tableaux comparatifs : deux colonnes de verdict, défilables sur petit écran. */
+.t-wrap{overflow-x:auto;margin:0 0 14px;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px;}
+caption{text-align:left;font-size:15px;font-weight:700;padding:14px 0 8px;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;}
+tr:nth-child(even) td{background:var(--stripe);}
+td.v,th.v{width:26%;font-variant-numeric:tabular-nums;}
+.yes{color:var(--sea);font-weight:700;}
+.no{color:var(--ink-soft);}
+.win{font-weight:700;}
+
+ul.plain{list-style:none;padding:0;margin:0 0 12px;}
+ul.plain li{position:relative;padding-left:20px;margin-bottom:9px;}
+ul.plain li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--sea);}
+ul.plain.caution li::before{background:var(--sun);}
+
+pre{background:var(--sea-soft);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.5;margin:0 0 12px;}
+code{font-family:var(--mono);font-size:.93em;}
+
+@media print{
+  nav.site,.install-bar,footer.site,.theme-toggle{display:none !important;}
+  body{background:#fff;color:#000;padding:0;font-size:11pt;}
+  .card,.tile{border-color:#bbb;background:#fff;}
+  section{margin-top:22px;page-break-inside:avoid;}
+  table{min-width:0;}
+}
+</style>
+</head>
+<body>
+<!-- nav:start -->
+<nav class="site">
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <details class="menu" name="navmenu">
+    <summary>ℹ️ Le projet</summary>
+    <div class="menu-panel">
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary>📣 Ambassadeurs</summary>
+    <div class="menu-panel">
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+  </details>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
+<!-- nav:end -->
+
+<div class="wrap">
+
+<header class="page">
+  <p class="eyebrow">Comparatif mesuré</p>
+  <h1>Klavyé Kréyòl face à Gboard</h1>
+  <p class="lead">
+    Gboard est le clavier de référence sur Android, et c'est celui que remplace
+    Klavyé Kréyòl Karukera. La question mérite donc une réponse chiffrée plutôt
+    qu'une impression : est-ce que le clavier créole est aussi rapide, et que
+    sait-il faire de moins ?
+  </p>
+  <p class="lead">
+    Cette page rassemble deux comparaisons. La première a été mesurée sur un
+    appareil Android, avec un protocole décrit et reproductible. La seconde est
+    un inventaire des fonctions élémentaires de clavier, vérifiées une par une
+    dans le code source du projet, qui est public.
+  </p>
+</header>
+
+<div class="card note">
+  <h2>Conditions de mesure</h2>
+  <p class="muted">
+    Émulateur Android 14 (1080 × 2340, 440 dpi, 2 Go de mémoire, rendu
+    logiciel), Klavyé Kréyòl 10.11.4 en version de production face à Gboard
+    12.4.05 en disposition AZERTY française, même champ de saisie et même texte
+    tapé des deux côtés, réseau coupé pour que les synchronisations en ligne ne
+    faussent pas les relevés. Cinq essais par mesure, médiane retenue.
+    Mesures du 17 août 2026.
+  </p>
+</div>
+
+<section>
+  <h2>Rapidité</h2>
+  <p>
+    Quatre chiffres résument la comparaison. À gauche Klavyé Kréyòl, à droite
+    Gboard.
+  </p>
+
+  <div class="tiles">
+    <div class="tile">
+      <span class="n">1,2 s</span>
+      <span class="vs">Gboard : 2,1 s</span>
+      <span class="k">Réapparition du clavier après que le système l'a déchargé de la mémoire</span>
+    </div>
+    <div class="tile">
+      <span class="n">38 ms</span>
+      <span class="vs">Gboard : 100 ms</span>
+      <span class="k">Temps de calcul consommé par frappe</span>
+    </div>
+    <div class="tile">
+      <span class="n">52 Mo</span>
+      <span class="vs">Gboard : 153 Mo</span>
+      <span class="k">Mémoire occupée pendant la saisie</span>
+    </div>
+    <div class="tile">
+      <span class="n">21 / 21</span>
+      <span class="vs">Gboard : 21 / 21</span>
+      <span class="k">Frappes reçues sans perte en saisie rapide</span>
+    </div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <caption>Relevés détaillés</caption>
+      <thead>
+        <tr>
+          <th>Mesure</th>
+          <th class="v">Klavyé Kréyòl 10.11.4</th>
+          <th class="v">Gboard 12.4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Affichage après déchargement mémoire, médiane</td>
+          <td class="v win">1 220 ms</td>
+          <td class="v">2 119 ms, plus un essai jamais abouti</td>
+        </tr>
+        <tr>
+          <td>Affichage quand le clavier est déjà en mémoire, médiane</td>
+          <td class="v">139 ms</td>
+          <td class="v">119 ms</td>
+        </tr>
+        <tr>
+          <td>Calcul par frappe, saisie rapide</td>
+          <td class="v win">38,0 ms</td>
+          <td class="v">100,4 ms</td>
+        </tr>
+        <tr>
+          <td>Calcul par frappe, saisie posée (une touche toutes les 0,6 s)</td>
+          <td class="v win">59,5 ms</td>
+          <td class="v">114,2 ms</td>
+        </tr>
+        <tr>
+          <td>Temps de dessin d'une image, médiane et 9<sup>e</sup> décile</td>
+          <td class="v win">65 / 129 ms</td>
+          <td class="v">105 / 150 ms</td>
+        </tr>
+        <tr>
+          <td>Images dessinées pour 21 frappes</td>
+          <td class="v">27</td>
+          <td class="v">37</td>
+        </tr>
+        <tr>
+          <td>Mémoire occupée pendant la saisie</td>
+          <td class="v win">52 Mo</td>
+          <td class="v">153 Mo</td>
+        </tr>
+        <tr>
+          <td>Caractères réellement reçus sur 21 frappes rapides</td>
+          <td class="v">21</td>
+          <td class="v">21</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Ce que ces chiffres disent</h3>
+  <p>
+    L'écart le plus net est le retour du clavier après un déchargement mémoire :
+    1,2 s contre 2,1 s. Ce cas n'a rien d'exceptionnel, c'est même le quotidien
+    d'un téléphone d'entrée de gamme, où le système libère de la mémoire dès
+    qu'on change d'application. Gboard a même échoué une fois sur cinq à
+    réapparaître dans les six secondes du test.
+  </p>
+  <p>
+    En usage courant, clavier déjà en mémoire, les deux se valent : 139 ms
+    contre 119 ms, un écart plus petit que la variation entre deux essais du
+    même clavier.
+  </p>
+  <p>
+    Le coût de calcul par frappe est environ deux fois moindre, et la mémoire
+    occupée trois fois moindre. Il faut lire ce résultat honnêtement : Gboard
+    fait à chaque frappe des choses que le clavier créole ne fait pas du tout,
+    comme la saisie par glissement, la correction automatique et l'apprentissage
+    d'un dictionnaire personnel. Il dessine d'ailleurs deux fois plus d'images
+    par frappe. La bonne lecture n'est donc pas que son code serait mal écrit,
+    mais qu'un clavier plus simple coûte moins cher à faire tourner. C'est
+    précisément ce qui se ressent sur un téléphone modeste.
+  </p>
+
+  <div class="card">
+    <h2>Deux réserves</h2>
+    <p class="muted">
+      Les mesures viennent d'un émulateur qui dessine sans accélération
+      graphique : les valeurs absolues de temps de dessin y sont pessimistes
+      pour les deux claviers, et seuls les écarts entre eux sont exploitables.
+      Par ailleurs 59 ms de calcul par frappe reste beaucoup dans l'absolu pour
+      un clavier qui ne fait ni glissement ni correction automatique. Deux
+      pistes d'optimisation sont identifiées dans le code et restent à traiter.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Les fonctions élémentaires</h2>
+  <p>
+    Un clavier ne se juge pas seulement à sa vitesse. Voici, domaine par
+    domaine, ce que chacun sait faire. Chaque ligne du côté créole a été
+    vérifiée dans le code source du projet.
+  </p>
+
+  <div class="t-wrap">
+    <table>
+      <caption>Saisie</caption>
+      <thead>
+        <tr><th>Fonction</th><th class="v">Klavyé Kréyòl</th><th class="v">Gboard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Majuscule simple et verrouillage</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Caractères accentués en appui long</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Touches dédiées aux lettres du créole (ò, é, è, tiret)</td><td class="v yes">oui</td><td class="v no">non</td></tr>
+        <tr><td>Aperçu de la lettre au-dessus du doigt</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Effacement continu en maintenant la touche</td><td class="v">par mots</td><td class="v">par lettres puis par mots</td></tr>
+        <tr><td>Saisie par glissement du doigt</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Dictée vocale, écriture manuscrite</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Panneau emoji</td><td class="v">1 900 emoji par catégories, teintes de peau</td><td class="v">avec recherche et récents</td></tr>
+        <tr><td>Effacement propre des emoji composés</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <caption>Correction et propositions</caption>
+      <thead>
+        <tr><th>Fonction</th><th class="v">Klavyé Kréyòl</th><th class="v">Gboard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Propositions dès la première lettre</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Propositions en créole et en français ensemble</td><td class="v yes">oui</td><td class="v no">non</td></tr>
+        <tr><td>Prédiction du mot suivant en créole</td><td class="v yes">oui</td><td class="v no">non</td></tr>
+        <tr><td>Tolérance aux accents oubliés et aux fautes de frappe</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Correcteur orthographique créole dans les autres applications</td><td class="v yes">oui</td><td class="v no">non</td></tr>
+        <tr><td>Correction automatique du mot validé</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Apprentissage des mots nouveaux que vous tapez</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <caption>Édition, ponctuation, majuscules</caption>
+      <thead>
+        <tr><th>Fonction</th><th class="v">Klavyé Kréyòl</th><th class="v">Gboard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Reprise d'un mot déjà écrit, curseur au milieu</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Déplacement du curseur en glissant sur la barre d'espace</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Presse-papiers avec historique</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Majuscule automatique en début de phrase</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Respect du type de champ demandé par l'application</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Double espace qui pose un point</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Espace retiré devant une ponctuation</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <caption>Réglages et confort</caption>
+      <thead>
+        <tr><th>Fonction</th><th class="v">Klavyé Kréyòl</th><th class="v">Gboard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Thème sombre</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Hauteur du clavier réglable</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Son de touche</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Vibration réglable</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Mode une main, clavier flottant</td><td class="v no">non</td><td class="v yes">oui</td></tr>
+        <tr><td>Adaptation automatique au format paysage</td><td class="v yes">oui</td><td class="v yes">oui</td></tr>
+        <tr><td>Aucune permission d'accès à Internet</td><td class="v yes">oui</td><td class="v no">non</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que Gboard ne peut pas faire</h2>
+  <p>
+    Quatre choses ne dépendent pas de la puissance de calcul mais de la langue
+    elle-même, et aucun clavier généraliste ne les propose pour le créole
+    guadeloupéen.
+  </p>
+  <ul class="plain">
+    <li><strong>Proposer le mot suivant en créole.</strong> Le clavier embarque un modèle construit sur un corpus de textes créoles, avec 8 852 contextes de deux mots.</li>
+    <li><strong>Cesser de souligner le créole comme une faute.</strong> Le correcteur orthographique fourni s'applique dans toutes les applications du téléphone, pas seulement dans le clavier.</li>
+    <li><strong>Écrire les accents du créole sans détour</strong>, le ò, le é et le è étant directement sur la disposition plutôt qu'en appui long.</li>
+    <li><strong>Rester entièrement hors ligne.</strong> Le dictionnaire est embarqué dans l'application, qui ne demande aucune permission d'accès à Internet : rien de ce que vous écrivez ne peut techniquement quitter le téléphone.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ce qui manque encore</h2>
+  <p>
+    Le tableau ci-dessus se lit dans les deux sens. Les manques les plus
+    demandés sont connus et assumés comme chantiers :
+  </p>
+  <ul class="plain caution">
+    <li>Le thème sombre, absent alors que la moitié des messages s'écrivent le soir.</li>
+    <li>L'apprentissage des mots nouveaux : prénoms, lieux, mots de famille ne sont pas mémorisés.</li>
+    <li>La saisie par glissement et la dictée vocale, qui demandent l'une et l'autre un travail important.</li>
+    <li>Les réglages de confort : hauteur du clavier, vibration, son des touches.</li>
+  </ul>
+  <p class="muted">
+    Le projet est ouvert et son code est public. Les remarques d'usage sont la
+    principale source de cette liste : la <a href="feedbacks_form.html">page
+    d'avis</a> est faite pour ça.
+  </p>
+</section>
+
+<section>
+  <h2>Refaire les mesures</h2>
+  <p>
+    Rien ici ne demande d'outil particulier au-delà des outils Android
+    standards. Le principe : un même champ de saisie, un même texte tapé aux
+    coordonnées des touches de chaque clavier, et trois relevés.
+  </p>
+  <pre># Temps de réapparition après déchargement mémoire
+adb shell "kill -9 $(pidof &lt;paquet&gt;); input tap X Y;
+  T0=$(cut -d' ' -f1 /proc/uptime);
+  while ! dumpsys input_method | grep -q 'mInputShown=true'; do :; done;
+  cut -d' ' -f1 /proc/uptime"
+
+# Calcul consommé par frappe : lire utime+stime avant et après la saisie
+adb shell "awk '{print $14+$15}' /proc/&lt;pid&gt;/stat"
+
+# Dessin et mémoire
+adb shell dumpsys gfxinfo &lt;paquet&gt; reset
+adb shell dumpsys gfxinfo &lt;paquet&gt;
+adb shell dumpsys meminfo &lt;paquet&gt;</pre>
+  <p class="muted">
+    Trois pièges à connaître : <code>am force-stop</code> sur un clavier fait
+    basculer Android sur un autre, et l'on croit alors mesurer le premier ;
+    l'horloge temps réel de l'émulateur se resynchronise en cours de route, d'où
+    le recours à <code>/proc/uptime</code> ; et il faut vérifier la version
+    réellement installée avant et après chaque série, une version de
+    développement n'étant pas comparable à une version de production.
+  </p>
+</section>
+
+<section>
+  <h2>En résumé</h2>
+  <p>
+    Klavyé Kréyòl est plus rapide à revenir à l'écran, consomme deux fois moins
+    de calcul par frappe et trois fois moins de mémoire. Il est à égalité sur la
+    réactivité au quotidien. Il sait faire pour le créole ce qu'aucun clavier
+    généraliste ne fait, et il lui manque encore plusieurs conforts que Gboard
+    offre depuis longtemps.
+  </p>
+  <p class="muted">
+    Mesures du 17 août 2026, Klavyé Kréyòl Karukera 10.11.4 face à Gboard
+    12.4.05 sur Android 14.
+  </p>
+</section>
+
+</div>
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="ergotherapie.html">Fiche ergothérapie</a>
+      <a href="comparatif-gboard.html" aria-current="page">Comparatif avec Gboard</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
+</body>
+</html>

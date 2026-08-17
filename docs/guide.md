@@ -279,6 +279,7 @@ Une question qui n'est pas couverte ici ? Écrivez à
       <a href="presskit.html">Dossier de presse</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="ergotherapie.html">Fiche ergothérapie</a>
+      <a href="comparatif-gboard.html">Comparatif avec Gboard</a>
       <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
     </div>
     <div>

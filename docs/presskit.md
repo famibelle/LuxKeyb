@@ -277,6 +277,7 @@ Une question, une proposition, un partenariat ? Écrivez à
       <a href="presskit.html" aria-current="page">Dossier de presse</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="ergotherapie.html">Fiche ergothérapie</a>
+      <a href="comparatif-gboard.html">Comparatif avec Gboard</a>
       <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
     </div>
     <div>
