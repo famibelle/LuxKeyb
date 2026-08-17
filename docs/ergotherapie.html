@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Écrire en créole avec peu de gestes : fiche ergothérapie</title>
+<meta name="description" content="Fiche à destination des ergothérapeutes : comment Klavyé Kréyòl Karukera réduit le nombre d'appuis nécessaires pour écrire en créole guadeloupéen, ce qu'il ne fait pas, et comment le vérifier en séance sans rien installer.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:760px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(26px,5.6vw,36px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 10px;}
+section{margin-top:42px;}
+h2{font-size:21px;font-weight:800;margin:0 0 8px;letter-spacing:-0.01em;}
+h3{font-size:15px;font-weight:700;margin:18px 0 6px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:0 0 14px;}
+
+/* Encadré d'avertissement : la mention la plus importante de la page. */
+.warn{border-left:4px solid var(--hibiscus);background:var(--hibiscus-soft);}
+.warn h2{font-size:16px;margin-bottom:6px;}
+.warn p{margin-bottom:0;font-size:15px;}
+
+/* Tuiles de chiffres, reprises de la page corpus. */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:10px;margin:18px 0 0;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.tile .n{display:block;font-size:clamp(23px,4.6vw,29px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px;}
+
+/* Listes : une puce carrée couleur lagon, plus lisible qu'un rond. */
+ul.plain{list-style:none;padding:0;margin:0 0 12px;}
+ul.plain li{position:relative;padding-left:20px;margin-bottom:9px;}
+ul.plain li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--sea);}
+ul.plain.caution li::before{background:var(--sun);}
+ol.steps{margin:0 0 12px;padding-left:22px;}
+ol.steps li{margin-bottom:8px;}
+
+/* Comparaison du nombre d'appuis. */
+.count{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:16px 0 4px;}
+.count .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:center;}
+.count .box b{display:block;font-size:26px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;}
+.count .box span{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px;}
+.count .arrow{font-size:20px;color:var(--ink-soft);}
+@media (max-width:520px){
+  .count{grid-template-columns:1fr;}
+  .count .arrow{transform:rotate(90deg);text-align:center;}
+}
+
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0;}
+a{color:var(--sea);}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:0 0 12px;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;}
+tr:nth-child(even) td{background:var(--stripe);}
+
+/* Impression : la fiche doit tenir dans un dossier papier. Barre de
+   navigation, barre d'installation mobile et pied de page n'ont aucun sens
+   sur une feuille, et le fond crème mange de l'encre pour rien. */
+@media print{
+  nav.site,.install-bar,footer.site,.theme-toggle,.cta-row{display:none !important;}
+  body{background:#fff;color:#000;padding:0;font-size:11pt;}
+  .card,.tile,.count .box{border-color:#bbb;background:#fff;}
+  .warn{background:#fff;border-left:3px solid #000;}
+  section{margin-top:22px;page-break-inside:avoid;}
+  h1{font-size:20pt;}
+  h2{font-size:13pt;}
+  a{color:#000;text-decoration:none;}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555;}
+}
+</style>
+</head>
+<body>
+<!-- nav:start -->
+<nav class="site">
+  <a class="nav-brand" href="./">⌨️ Klavyé Kréyòl</a>
+  <a href="simulateur.html">🧪 Essayer</a>
+  <a href="nouveautes.html">🎁 Nouveautés</a>
+  <details class="menu" name="navmenu">
+    <summary>ℹ️ Le projet</summary>
+    <div class="menu-panel">
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+      <a href="privacy/privacy-policy.html">Confidentialité</a>
+    </div>
+  </details>
+  <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
+  <details class="menu nav-after" name="navmenu">
+    <summary>Déjà installé ?</summary>
+    <div class="menu-panel">
+      <a href="guide.html">Guide d'installation</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+    </div>
+  </details>
+  <details class="menu nav-after" name="navmenu">
+    <summary>📣 Ambassadeurs</summary>
+    <div class="menu-panel">
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract à imprimer</a>
+      <a href="affiche.html">Affiche à imprimer</a>
+      <a href="triptyque.html">Triptyque à imprimer</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+  </details>
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+<!-- Sur mobile, le bouton de la barre est masqué et remplacé par celle-ci,
+     fixée en bas dans la zone du pouce, donc atteignable à toute profondeur
+     de défilement. -->
+<div class="install-bar">
+  <a class="install-bar-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dbarre-mobile">📲 Installer, c'est gratuit</a>
+  <a class="install-bar-alt" href="simulateur.html">Essayer d'abord dans le navigateur</a>
+</div>
+<!-- nav:end -->
+
+<div class="wrap">
+
+<header class="page">
+  <p class="eyebrow">Fiche professionnelle</p>
+  <h1>Écrire en créole avec peu de gestes</h1>
+  <p class="lead">
+    Klavyé Kréyòl Karukera est un clavier pour le créole guadeloupéen. Il n'a pas
+    été conçu comme une aide technique, mais ses fonctions réduisent nettement le
+    nombre d'appuis nécessaires pour écrire un mot. Cette fiche s'adresse aux
+    ergothérapeutes qui accompagnent des personnes gênées dans le geste de la main :
+    hémiplégie après un AVC, spasticité, tremblement, faiblesse, douleur articulaire.
+  </p>
+  <p class="lead">
+    Elle décrit ce que le clavier fait réellement, ce qu'il ne fait pas, et comment
+    le vérifier en quelques minutes sans rien installer.
+  </p>
+</header>
+
+<div class="card warn">
+  <h2>Ce n'est pas un dispositif médical</h2>
+  <p>
+    Aucun effet thérapeutique ou rééducatif n'est revendiqué, aucune évaluation
+    n'est proposée, aucune donnée n'est transmise. Il s'agit d'une application
+    grand public, gratuite et hors ligne. La décision de la proposer à une
+    personne accompagnée relève entièrement de votre jugement professionnel.
+  </p>
+</div>
+
+<section>
+  <h2>Le principe : les lettres ne sont plus la saisie</h2>
+  <p>
+    Sur un clavier ordinaire, écrire un mot demande un appui par lettre, plus un
+    pour l'espace. Ici, la barre de propositions devient le moyen de saisie
+    principal, et les lettres ne servent plus qu'à réduire la liste. Deux
+    comportements le permettent :
+  </p>
+  <ul class="plain">
+    <li>Les propositions créoles apparaissent <strong>dès la première lettre tapée</strong>, sans attendre trois caractères.</li>
+    <li>Toucher une proposition écrit <strong>le mot entier, plus l'espace</strong>, et replace la majuscule si la phrase en demande une. Un seul geste pour les trois.</li>
+  </ul>
+  <p>
+    Le mot <em>timoun</em> suivi d'un espace demande sept appuis lettre par lettre.
+    S'il figure dans les propositions après la deuxième lettre, il en demande trois.
+  </p>
+
+  <div class="count">
+    <div class="box"><b>7</b><span>appuis lettre par lettre</span></div>
+    <div class="arrow">→</div>
+    <div class="box"><b>3</b><span>appuis par les propositions</span></div>
+  </div>
+  <p class="muted">
+    Exemple arithmétique et non mesure moyenne : le gain réel dépend entièrement
+    des mots que la personne emploie. Le protocole ci-dessous permet de le compter
+    sur ses propres phrases.
+  </p>
+
+  <h3>Combien de fois le mot est-il déjà là ?</h3>
+  <p>
+    Le dictionnaire livré contient 5&nbsp;296 mots créoles classés par fréquence
+    d'usage dans un corpus de textes guadeloupéens. Sur cette base :
+  </p>
+  <ul class="plain">
+    <li>dès la <strong>première</strong> lettre, 41 des 50 mots les plus fréquents figurent parmi les trois propositions ;</li>
+    <li>dès la <strong>deuxième</strong> lettre, c'est le cas de 128 des 160 mots de plus de deux lettres parmi les 200 plus fréquents, soit environ quatre sur cinq.</li>
+  </ul>
+  <p class="muted">
+    Chiffres calculés par préfixe et par fréquence sur le dictionnaire livré. Le
+    classement réel du clavier ajoute d'autres critères, décrits plus bas, qui
+    jouent en faveur des mots propres à la personne.
+  </p>
+
+  <div class="tiles">
+    <div class="tile"><span class="n">5 296</span><span class="k">mots créoles</span></div>
+    <div class="tile"><span class="n">8 852</span><span class="k">contextes de mot suivant</span></div>
+    <div class="tile"><span class="n">1 lettre</span><span class="k">avant la première proposition</span></div>
+    <div class="tile"><span class="n">1 geste</span><span class="k">mot + espace + majuscule</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Le mot suivant, sans taper aucune lettre</h2>
+  <p>
+    Après un mot validé, le clavier propose la suite en s'appuyant sur les deux
+    mots précédents : 8&nbsp;852 contextes sont enregistrés. Quand la proposition
+    est juste, le mot suivant coûte un seul geste, sans toucher une seule touche
+    de lettre. C'est le coût minimal atteignable, et c'est la fonction la plus
+    intéressante pour une personne dont chaque appui est coûteux.
+  </p>
+  <p>
+    La réserve doit être dite : ces contextes proviennent de textes littéraires
+    créoles, pas de conversations du quotidien. Sur un message à la famille, les
+    propositions de mot suivant sont donc moins souvent justes que le chiffre ne
+    le suggère. C'est précisément le point que nous aimerions faire vérifier par
+    des professionnels en situation réelle.
+  </p>
+</section>
+
+<section>
+  <h2>Le clavier s'adapte au vocabulaire de la personne</h2>
+  <p>
+    Chaque mot validé est compté, et ce compteur entre dans le classement des
+    propositions : un mot employé une vingtaine de fois remonte durablement en
+    tête de liste. Quelqu'un qui écrit aux mêmes personnes sur les mêmes sujets a
+    un vocabulaire actif de quelques centaines de mots. Au bout de quelques
+    semaines d'usage, ce sont les siens qui arrivent en premier, donc joignables
+    dès la première lettre.
+  </p>
+  <p>
+    Ce comptage ne quitte pas le téléphone : le clavier fonctionne entièrement
+    hors ligne, sans compte et sans accès au réseau.
+  </p>
+</section>
+
+<section>
+  <h2>Ce qui absorbe l'imprécision du geste</h2>
+  <ul class="plain">
+    <li>
+      <strong>Les fautes de frappe motrices sont tolérées.</strong> Un appui rebondi
+      qui double une lettre, un doigt qui tombe sur la touche voisine, une lettre
+      oubliée : le mot visé reste proposé. La comparaison est également tolérante
+      aux accents, donc taper <em>e</em> retrouve <em>é</em>.
+    </li>
+    <li>
+      <strong>Aucun geste ne demande de maintenir et glisser en même temps.</strong>
+      Les accents s'obtiennent par un appui maintenu qui ouvre une petite fenêtre,
+      puis un appui sur le caractère voulu. C'est deux appuis distincts, là où la
+      plupart des claviers exigent un glissement précis sans relâcher.
+    </li>
+    <li>
+      <strong>Une fenêtre d'accents ouverte par erreur est récupérable.</strong> Un
+      relâchement lent ouvre la fenêtre sans que ce soit voulu, mais la lettre sans
+      accent y figure en première position : un appui de plus et le caractère
+      correct est écrit. Rien n'est déformé silencieusement.
+    </li>
+    <li>
+      <strong>Une proposition touchée par erreur peut être annulée.</strong> Poser
+      le doigt sur la mauvaise proposition, puis glisser en dehors avant de
+      relâcher, annule la sélection.
+    </li>
+    <li>
+      <strong>Maintenir la touche de suppression n'efface qu'un caractère.</strong>
+      Il n'y a pas de répétition automatique, donc pas de phrase entière effacée
+      par un doigt qui ne se relève pas assez vite.
+    </li>
+    <li>
+      <strong>Les rangées ne se décalent jamais pendant la frappe.</strong> Une
+      cible visée reste au même endroit le temps que le geste aboutisse, même
+      quand la liste des propositions change.
+    </li>
+    <li>
+      <strong>Il n'y a aucune correction automatique.</strong> Le texte affiché est
+      exactement le texte saisi. Rien n'est réécrit à l'insu de la personne, ce qui
+      compte quand la relecture est elle-même difficile.
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Les limites, dites franchement</h2>
+  <p>
+    Le clavier ne propose aujourd'hui aucun réglage d'accessibilité. Mieux vaut le
+    savoir avant de le présenter à quelqu'un.
+  </p>
+  <ul class="plain caution">
+    <li>
+      <strong>Les propositions se touchent presque.</strong> Chaque proposition est
+      une étiquette d'environ 44 unités d'écran de haut (près de 7&nbsp;mm), mais
+      seulement 7 unités la séparent de sa voisine, soit un peu plus d'un
+      millimètre, sans zone neutre entre les deux. Un appui qui manque sa cible ne
+      tombe donc pas dans le vide : il valide le mot d'à côté, et corriger coûte
+      plus cher que le geste économisé. C'est, à notre avis, le défaut le plus
+      gênant pour ce profil.
+    </li>
+    <li>
+      <strong>Trois propositions affichées au maximum.</strong> Ce réglage suppose
+      une frappe rapide et peu coûteuse. Une personne dont chaque appui est
+      pénible échangerait volontiers de la surface d'écran contre des appuis
+      économisés.
+    </li>
+    <li>
+      <strong>La taille des touches n'est pas réglable.</strong> Environ 7,6&nbsp;mm
+      de haut en mode portrait, et seulement 5&nbsp;mm en mode paysage. Le mode
+      paysage est à éviter avec ce profil.
+    </li>
+    <li>
+      <strong>La vibration ne peut pas être coupée.</strong> Le clavier vibre à
+      chaque appui, même lorsque les vibrations sont désactivées dans les réglages
+      du téléphone. À signaler en cas d'hypersensibilité ou si la vibration gêne
+      le geste.
+    </li>
+    <li>
+      <strong>Le délai de l'appui long est fixe</strong> (une demi-seconde), donc
+      non ajustable à un relâchement lent.
+    </li>
+    <li>
+      <strong>Android uniquement</strong>, à partir d'Android 5. Il n'existe pas de
+      version iPhone.
+    </li>
+  </ul>
+  <p>
+    Ces points sont recensés, avec ce qu'il faudrait modifier pour chacun, dans
+    <a href="https://github.com/famibelle/KreyolKeyb/blob/main/ACCESSIBILITE.md">une note publique du dépôt</a>.
+    Un retour de votre part sur leur ordre de priorité changerait ce qui est
+    corrigé en premier.
+  </p>
+</section>
+
+<section>
+  <h2>Essayer sans rien installer</h2>
+  <p>
+    Le simulateur reproduit dans le navigateur le moteur de propositions du
+    clavier, avec le même dictionnaire. Il permet de juger en quelques minutes,
+    sur un ordinateur, avant d'installer quoi que ce soit sur le téléphone de la
+    personne.
+  </p>
+  <div class="cta-row">
+    <a class="btn primary" href="simulateur.html">🧪 Ouvrir le simulateur</a>
+    <a class="btn" href="guide.html">Guide d'installation</a>
+  </div>
+
+  <h3>Compter les appuis, en trois minutes</h3>
+  <ol class="steps">
+    <li>Choisir une phrase que la personne écrit réellement souvent, pas une phrase d'exemple.</li>
+    <li>La saisir lettre par lettre, sans toucher les propositions, et compter les appuis.</li>
+    <li>La saisir en touchant une proposition dès que le mot voulu apparaît, et compter à nouveau.</li>
+  </ol>
+  <p>
+    L'écart entre les deux nombres est la seule mesure qui vaille, et elle est
+    propre à chaque personne. Nous ne publions pas de moyenne, parce qu'une
+    moyenne n'aurait ici aucun sens.
+  </p>
+</section>
+
+<section>
+  <h2>Mettre en place sur le téléphone</h2>
+  <p>
+    L'installation est gratuite depuis le Play Store, puis l'activation se fait en
+    trois étapes détaillées avec des captures dans le
+    <a href="guide.html">guide d'installation</a>. Trois points pratiques méritent
+    d'être connus avant la séance.
+  </p>
+  <table>
+    <tr>
+      <th>Point</th>
+      <th>Ce qu'il faut savoir</th>
+    </tr>
+    <tr>
+      <td>Activation</td>
+      <td>
+        Le clavier doit d'abord être coché dans les réglages du téléphone, puis
+        choisi comme clavier actif. Deux opérations dans deux écrans différents,
+        c'est le point où l'on abandonne le plus souvent.
+      </td>
+    </tr>
+    <tr>
+      <td>Correcteur créole</td>
+      <td>
+        Fourni séparément, il évite que chaque mot créole soit souligné en rouge
+        dans les autres applications. Il fonctionne même si la personne saisit
+        autrement, par dictée vocale, par balayage ou avec un autre clavier. Il
+        doit être sélectionné à la main dans Réglages, Système, Clavier,
+        Correcteur orthographique. Android affiche alors un avertissement
+        inquiétant sur la collecte du texte saisi : c'est le message générique du
+        système, à préparer avec la personne. Le clavier ne collecte rien et
+        n'accède pas au réseau.
+      </td>
+    </tr>
+    <tr>
+      <td>Jeux et suivi</td>
+      <td>
+        Trois jeux de vocabulaire et un suivi des mots employés sont accessibles
+        depuis les réglages de l'application. Ils n'ont aucune visée
+        thérapeutique. Le suivi peut néanmoins servir de trace concrète
+        d'activité, consultable en séance.
+      </td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>Nous écrire</h2>
+  <p>
+    Le clavier est développé bénévolement en Guadeloupe. Un retour de
+    professionnel vaut plus que n'importe quelle mesure faite sans vous : quelles
+    cibles sont trop petites en pratique, quel réglage manque en premier, et si
+    les propositions de mot suivant tiennent sur du langage du quotidien.
+  </p>
+  <div class="cta-row">
+    <a class="btn primary" href="mailto:contact@potomitan.io?subject=Fiche%20ergoth%C3%A9rapie%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l">✉️ contact@potomitan.io</a>
+    <a class="btn" href="feedbacks_form.html">Formulaire d'avis</a>
+  </div>
+  <p class="muted" style="margin-top:16px;">
+    Gratuit, sans publicité, sans compte, entièrement hors ligne, code source
+    ouvert sous licence MIT. Ce n'est pas un dispositif médical.
+  </p>
+</section>
+
+</div>
+<!-- footer:start -->
+<footer class="site">
+  <div class="footer-cta">
+    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
+  </div>
+  <div class="footer-cols">
+    <div>
+      <strong>Le clavier</strong>
+      <a href="./">Accueil</a>
+      <a href="simulateur.html">Essayer en ligne</a>
+      <a href="guide.html">Guide d'installation</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div>
+      <strong>Le projet</strong>
+      <a href="corpus.html">Le corpus en chiffres</a>
+      <a href="presskit.html">Dossier de presse</a>
+      <a href="notes_techniques.html">Notes techniques</a>
+      <a href="ergotherapie.html" aria-current="page">Fiche ergothérapie</a>
+      <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
+    </div>
+    <div>
+      <strong>Faire connaître</strong>
+      <a href="ambassadeurs.html">Espace ambassadeurs</a>
+      <a href="ambassade.html">Vin Anbasadè</a>
+      <a href="charte-ambassadeur.html">Charte de l'ambassadeur</a>
+      <a href="tract.html">Tract</a>
+      <a href="affiche.html">Affiche</a>
+      <a href="triptyque.html">Triptyque</a>
+      <a href="publicites.html">Visuels publicitaires</a>
+      <a href="charte-graphique.html">Charte graphique</a>
+    </div>
+    <div>
+      <strong>Participer</strong>
+      <a href="beta_onboarding.html">Devenir bêta-testeur</a>
+      <a href="feedbacks_form.html">Donner son avis</a>
+      <a href="jauge.html">La jauge des 10 000</a>
+      <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>Potomitan™, Teknoloji pou tout moun.</span>
+    <a href="privacy/privacy-policy.html">Politique de confidentialité</a>
+    <span>Gratuit, open source (MIT), zéro pub, 100&nbsp;% hors ligne.</span>
+  </div>
+</footer>
+<!-- footer:end -->
+</body>
+</html>

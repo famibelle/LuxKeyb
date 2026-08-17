@@ -224,6 +224,7 @@ Le code source est ouvert et public sur
       <a href="corpus.html">Le corpus en chiffres</a>
       <a href="presskit.html">Dossier de presse</a>
       <a href="notes_techniques.html">Notes techniques</a>
+      <a href="ergotherapie.html">Fiche ergothérapie</a>
       <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
     </div>
     <div>
