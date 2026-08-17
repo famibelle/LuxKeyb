@@ -5,6 +5,24 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.2] - 2026-08-17
+
+### ♿ Un mot français se validait à la place du mot créole visé
+
+Les deux rangées de suggestions n'étaient séparées que de 0,58 mm. Un appui un demi-millimètre trop bas validait « Partie » à la place de « Paré ». Comme l'imprécision d'un doigt est d'abord verticale, c'était l'erreur la plus facile à commettre, et la plus coûteuse à réparer : il faut effacer le mot, le retaper, puis le revalider.
+
+L'intervalle vide autour de chaque puce passe à 1,85 mm dans toutes les directions, entre deux puces voisines comme entre les deux rangées. Cet espace n'appartient à aucun bouton, donc un appui qui y tombe ne fait rien, et c'est voulu : un appui perdu coûte un geste, un appui sur le mot voisin en coûte cinq.
+
+La place est prise sur la hauteur des puces, qui passe de 6,1 à 5,4 mm, et non sur celle des rangées. Le clavier occupe donc exactement la même hauteur qu'avant et aucune touche ne bouge. En paysage, où les suggestions tiennent déjà sur une seule rangée, la géométrie ne change pas du tout : il n'y a rien à séparer et pas de hauteur à dépenser en vide.
+
+Les mesures ont été relevées au pixel dans des captures d'écran, avant et après, sur un Pixel 5 à 440 dpi. Elles ont démenti l'hypothèse de départ, qui visait la largeur des puces : celle-ci est déjà de 14 mm pour tous les mots, y compris les plus courts. Le défaut était ailleurs.
+
+### 📄 Une fiche pour les ergothérapeutes
+
+Le site accueille une fiche destinée aux professionnels qui accompagnent des personnes gênées dans le geste de la main, après un AVC notamment : ce que le clavier fait réellement gagner en nombre d'appuis, ce qu'il ne fait pas, ses limites connues, et un protocole pour compter les appuis en séance sans rien installer. Elle ne revendique aucun effet thérapeutique.
+
+Les six autres chantiers d'accessibilité identifiés pour ce profil, avec pour chacun le point du code concerné et la façon de le vérifier, sont recensés dans `ACCESSIBILITE.md`, à la racine du dépôt.
+
 ## [10.11.1] - 2026-08-15
 
 ### 📐 Le clavier prenait tout l'écran en paysage

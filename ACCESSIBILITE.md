@@ -1,7 +1,7 @@
 # Accessibilité : ce qu'il reste à faire
 
-État au 17 août 2026. **Aucun des points listés ici n'est implémenté.** Ce fichier
-est la contrepartie technique de [`docs/ergotherapie.html`](docs/ergotherapie.html),
+État au 17 août 2026. **Le point 1 est fait, les six autres ne le sont pas.** Ce
+fichier est la contrepartie technique de [`docs/ergotherapie.html`](docs/ergotherapie.html),
 la fiche publique destinée aux ergothérapeutes : cette page annonce des limites,
 celle-ci dit ce qu'il faudrait changer pour les lever, où, et comment le vérifier.
 
@@ -57,35 +57,70 @@ plomberie est donc à faire une seule fois :
 Tant que cette plomberie n'existe pas, chaque point isolé coûte plus cher qu'il
 n'en a l'air. Le faire d'abord, puis ajouter les réglages, est le bon ordre.
 
-## 1. Écart et zone neutre entre les puces de suggestion
+## 1. Écart et zone neutre entre les puces de suggestion — FAIT le 2026-08-17
 
-**Constat.** C'est le défaut le plus gênant pour ce profil. Contrairement à ce
-qu'on suppose, les puces ne sont pas minuscules : avec `setPadding(dpToPx(14), …)`
-de part et d'autre, une puce de deux lettres fait environ 42 dp de large et la
-hauteur de la rangée, soit 44 dp en portrait (`SUGGESTION_ROW_HEIGHT_DP`), donc
-près de 7 mm de côté. Le problème est ailleurs : `setMargins(dpToPx(3), 0, dpToPx(4), 0)`
-laisse **7 dp entre deux puces, soit un peu plus d'un millimètre, sans zone
-neutre**. Un appui qui manque sa cible ne tombe pas dans le vide, il valide le
-mot voisin. Et corriger une mauvaise validation coûte bien plus que le geste
-économisé, ce qui annule le bénéfice de toute la barre.
+**Fait en 10.11.2.** Publié sur GitHub à ce tag ; l'arrivée sur le Play Store
+demande une validation, donc une installation faite juste après cette date peut
+encore porter la 10.11.1, qui ne l'a pas.
 
-En paysage la rangée tombe à 38 dp (`SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP`) et il
-n'y en a plus qu'une (`suggestionRowCount()`).
+**Ce que la mesure a montré, contre l'hypothèse de départ.** Cette section
+affirmait d'abord qu'une puce de deux lettres faisait « environ 42 dp de large ».
+C'était faux, et la piste de correction qui en découlait (`minWidth` de 56 à
+64 dp) aurait **rétréci** les puces au lieu de les agrandir. Mesuré sur l'AVD
+`kreyol_test` (Pixel 5, 1080 × 2340, 440 dpi) en analysant les boîtes englobantes
+des puces dans une capture : une puce fait **88 dp de large**, quel que soit le
+mot, parce que le style `Button` de la plateforme impose déjà ce plancher. La
+largeur n'était donc jamais le problème.
 
-**Où.** `KreyolInputMethodServiceRefactored.addSuggestionChip()`.
+Le vrai défaut était vertical, et il n'avait pas été mesuré du tout : **3,6 dp
+(0,58 mm) entre la rangée kréyòl et la rangée française**, contre 6,9 dp
+(1,10 mm) entre deux puces d'une même rangée. Or l'imprécision d'un doigt est
+d'abord verticale. Un demi-millimètre trop bas validait un mot français à la
+place du mot créole visé.
 
-**Quoi.** Deux pistes, la seconde étant préférable :
+| | avant | après |
+|---|---|---|
+| Puce (portrait) | 88 × 38,2 dp (14,0 × 6,1 mm) | 88 × 34,2 dp (14,0 × 5,4 mm) |
+| Écart horizontal | 6,9 dp (1,10 mm) | 11,6 dp (1,85 mm) |
+| Écart vertical entre rangées | **3,6 dp (0,58 mm)** | **11,6 dp (1,85 mm)** |
+| Puce (paysage) | 88 × 32 dp | 88 × 32 dp, inchangée |
+| Hauteur du clavier | référence | identique au pixel |
 
-- élargir les marges à 8 dp et poser un `minWidth` de 56 à 64 dp sur la puce, ce
-  qui écarte les cibles sans changer la structure ;
-- ou insérer entre les puces un espace **non cliquable** de quelques dp,
-  c'est à dire une vraie zone morte où un appui ne fait rien. Ne rien faire est
-  ici le bon comportement : l'appui perdu coûte un geste, l'appui sur le mauvais
-  mot en coûte cinq.
+**Ce qui a été changé.** Une constante unique,
+`SUGGESTION_CHIP_GAP_DP = 12`, dans `KreyolInputMethodServiceRefactored` :
 
-**Vérification.** Écrire une phrase en visant délibérément à un ou deux
-millimètres à côté de chaque puce et compter les validations erronées, avant et
-après.
+- la moitié de chaque côté en marge de puce (`addSuggestionChip()`, et la puce de
+  partage `showShareInviteChip()` pour n'avoir qu'une règle) ;
+- la moitié en padding bas de `kreyolScroll` et en padding haut de `frScroll`, ce
+  qui crée l'intervalle vertical. Ce padding n'est appliqué que si
+  `suggestionRowCount() > 1` : en paysage il n'y a qu'une rangée, donc rien à
+  séparer et pas de hauteur à dépenser en vide ;
+- `minWidth` fixé à 88 dp, non pour élargir mais pour figer ce que le thème donne
+  aujourd'hui, afin qu'un changement de thème ne rétrécisse pas les cibles sans
+  qu'on s'en aperçoive.
+
+L'intervalle n'appartient à aucune vue cliquable : le `LinearLayout` parent n'a pas
+de `OnClickListener`, donc un appui qui y tombe ne fait rien. C'est le
+comportement voulu, un appui perdu coûtant un geste là où un appui sur le mot
+voisin en coûte cinq.
+
+**Le coût, assumé.** La hauteur de puce passe de 38,2 à 34,2 dp, soit 0,6 mm
+perdus, parce que l'intervalle est pris sur la hauteur des puces et non sur celle
+des rangées : `SUGGESTION_ROW_HEIGHT_DP` ne change pas, le clavier occupe la même
+place et aucune touche ne bouge (vérifié en comparant les captures avant et après,
+la zone des touches est identique au pixel). Échanger 0,6 mm de hauteur contre
+1,3 mm de séparation est favorable pour ce profil.
+
+**Ce qui reste à faire sur ce point.**
+
+- La mesure qui compte, le **taux de validations erronées** en visant
+  délibérément à côté, n'a pas été faite : elle demande un geste imprécis réel,
+  pas des `adb input tap` parfaitement centrés.
+- Les mots longs restent à surveiller : trois puces d'un mot comme
+  « Bonmaten-la » dépassent la largeur de l'écran et la rangée défile alors
+  horizontalement. Une proposition qu'il faut faire défiler pour l'atteindre est
+  pire qu'absente pour ce profil. L'intervalle plus large rapproche légèrement ce
+  seuil, il ne le crée pas.
 
 ## 2. Vibration désactivable
 

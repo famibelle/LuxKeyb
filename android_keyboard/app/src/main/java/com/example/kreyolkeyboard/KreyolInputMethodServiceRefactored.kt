@@ -55,6 +55,30 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // basse : les deux rangées empilées coûtaient 88 dp sur les 359 dp que la
         // fenêtre IME reçoit dans cette orientation (contre 891 dp en portrait).
         private const val SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP = 38
+        // Intervalle vide autour d'une puce de suggestion, horizontalement comme
+        // verticalement : la marge d'erreur de visée. Cf. ACCESSIBILITE.md, point 1.
+        //
+        // Cet intervalle n'appartient à aucune vue cliquable, donc un appui qui y
+        // tombe ne fait rien, et c'est le bon comportement : un appui perdu coûte un
+        // geste, un appui sur le mot voisin en coûte cinq (effacer, retaper,
+        // revalider). Mesuré sur Pixel 5 (440 dpi) avant ce changement : 6,9 dp
+        // (1,10 mm) entre deux puces d'une même rangée, et surtout **3,6 dp
+        // (0,58 mm) entre la rangée kréyòl et la rangée française**, alors que
+        // l'imprécision d'un doigt est d'abord verticale. Un demi-millimètre trop
+        // bas validait un mot français à la place du mot créole visé.
+        //
+        // Les 12 dp sont pris sur la hauteur des puces (38 dp → 34 dp), pas sur la
+        // hauteur des rangées : SUGGESTION_ROW_HEIGHT_DP ne change pas, donc le
+        // clavier occupe exactement la même place et aucune autre rangée ne bouge.
+        // L'échange est favorable : 0,4 mm de hauteur de cible contre 1,3 mm de
+        // séparation.
+        private const val SUGGESTION_CHIP_GAP_DP = 12
+        // Largeur minimale d'une puce. Ce n'est pas un élargissement : le style
+        // Button de la plateforme impose déjà 88 dp, ce qui rend les puces de
+        // « ka » ou « ki » aussi larges que celles des mots longs. La valeur est
+        // fixée ici pour que la taille de cible ne dépende plus d'un défaut de
+        // thème susceptible de changer sans qu'on s'en aperçoive.
+        private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -405,7 +429,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 rowHeightPx
             )
-            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
+            // Le padding bas porte la moitié de l'intervalle qui sépare une puce
+            // kréyòl de la puce française juste en dessous, l'autre moitié venant du
+            // padding haut de la rangée française. En paysage cette rangée n'existe
+            // pas : rien à séparer, et la hauteur disponible y est trop courte pour
+            // la dépenser en vide.
+            val bottomPadDp = if (suggestionRowCount() > 1) SUGGESTION_CHIP_GAP_DP / 2 else 2
+            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(bottomPadDp))
         }
         kreyolRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -437,7 +467,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     rowHeightPx
                 )
-                setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
+                // Moitié haute de l'intervalle entre les deux rangées, cf. kreyolScroll.
+                setPadding(dpToPx(8), dpToPx(SUGGESTION_CHIP_GAP_DP / 2), dpToPx(8), dpToPx(4))
                 visibility = View.INVISIBLE
             }
             frenchRow = LinearLayout(this).apply {
@@ -465,6 +496,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     /** Nombre de rangées de suggestions réellement empilées : une seule en paysage. */
     private fun suggestionRowCount(): Int = if (isLandscape()) 1 else 2
+
+    /**
+     * Demi-intervalle porté par chaque puce de suggestion. Deux puces voisines
+     * portent chacune la leur, donc le vide effectif entre elles vaut
+     * SUGGESTION_CHIP_GAP_DP.
+     */
+    private fun suggestionChipHalfGapPx(): Int = dpToPx(SUGGESTION_CHIP_GAP_DP) / 2
 
     private fun isLandscape(): Boolean = KeyboardLayoutManager.isLandscape(this)
     
@@ -764,11 +802,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
             setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
 
+            minWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
+            minimumWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
+            gravity = android.view.Gravity.CENTER
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             ).apply {
-                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+                // La moitié de l'intervalle de chaque côté : deux puces voisines
+                // portent chacune la sienne, et leur somme fait l'écart voulu.
+                setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
 
             setOnClickListener {
@@ -980,7 +1024,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             ).apply {
-                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+                // Même intervalle que les puces de suggestion : une seule règle pour
+                // tout ce qui se touche dans cette rangée.
+                setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
             setOnClickListener {
                 currentInputConnection?.commitText(SHARE_INVITE_MESSAGE, 1)
