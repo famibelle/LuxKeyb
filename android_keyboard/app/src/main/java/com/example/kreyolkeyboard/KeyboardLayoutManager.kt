@@ -757,16 +757,24 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Exécute le feedback haptique classique (comme dans la version originale)
+     * Vibration à la frappe, sous le contrôle du réglage de retour tactile du
+     * téléphone.
+     *
+     * v10.11.5 : `FLAG_IGNORE_GLOBAL_SETTING` a été retiré. Il faisait vibrer le
+     * clavier même quand le retour tactile était désactivé dans les réglages du
+     * téléphone, et l'application n'offrait aucun moyen de l'éteindre : c'était un
+     * blocage sans échappatoire pour une hypersensibilité sensorielle ou quand la
+     * vibration perturbe le geste (cf. ACCESSIBILITE.md, point 2).
+     *
+     * Aucun réglage n'est ajouté dans l'application, volontairement : le téléphone en
+     * a déjà un, il couvre les deux sens, et un clavier n'a pas à dupliquer
+     * l'interrupteur du système. Qui ne veut pas de vibration la coupe une fois pour
+     * toutes les applications.
      */
     private fun performHapticFeedback(view: android.view.View) {
         try {
-            // Feedback haptique léger (identique à la version originale)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                view.performHapticFeedback(
-                    android.view.HapticFeedbackConstants.KEYBOARD_TAP,
-                    android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                )
+                view.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
             }
         } catch (e: Exception) {
             // Silencieusement ignorer si feedback haptique non supporté

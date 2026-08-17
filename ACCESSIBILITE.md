@@ -1,6 +1,7 @@
 # Accessibilité : ce qu'il reste à faire
 
-État au 17 août 2026. **Le point 1 est fait, les six autres ne le sont pas.** Ce
+État au 17 août 2026. **Les points 1 et 2 sont faits, les cinq autres ne le sont
+pas.** Ce
 fichier est la contrepartie technique de [`docs/ergotherapie.html`](docs/ergotherapie.html),
 la fiche publique destinée aux ergothérapeutes : cette page annonce des limites,
 celle-ci dit ce qu'il faudrait changer pour les lever, où, et comment le vérifier.
@@ -42,22 +43,38 @@ détruire en croyant améliorer le clavier.
 | Aucune correction automatique | `InputProcessor.handleSpace()` finalise sans réécrire | Le texte affiché est le texte saisi, ce qui compte quand la relecture est difficile. |
 | Aucun signal intrusif pendant la frappe | pas de pastille ni d'animation dans la barre de suggestions | Décision déjà prise pour d'autres raisons, mais c'est aussi un acquis d'accessibilité. |
 
-## Prérequis commun aux points 2 à 6
+## Prérequis commun aux points 3 à 6
 
-Il n'existe aujourd'hui **aucun écran de réglages du clavier** : `SettingsActivity`
-est l'écran d'accueil de l'application, et l'IME ne lit aucune préférence de
-comportement. Cinq des sept points ci-dessous en ont besoin. Le travail de
-plomberie est donc à faire une seule fois :
+Il n'existe **aucun écran de réglages du clavier** : `SettingsActivity` est l'écran
+d'accueil de l'application, et l'IME ne lit aucune préférence de comportement.
+Quatre des points ci-dessous en ont besoin. Le travail de plomberie est à faire une
+seule fois :
 
 - un écran de réglages dédié, ou une section dans `SettingsActivity` ;
 - des `SharedPreferences` lues par `KreyolInputMethodServiceRefactored` ;
 - une reconstruction du layout à la prise de focus (`onStartInputView`) pour que
   le changement s'applique sans redémarrer le téléphone, ce que personne ne fera.
 
-Tant que cette plomberie n'existe pas, chaque point isolé coûte plus cher qu'il
-n'en a l'air. Le faire d'abord, puis ajouter les réglages, est le bon ordre.
+**Cette plomberie a été écrite puis retirée le 2026-08-17**, avec le point 2. Elle
+fonctionnait, vérifiée de bout en bout sur émulateur : un `KeyboardPreferences`
+comme point d'entrée unique, une carte de réglages dans l'onglet À Propos, et une
+relecture des valeurs à chaque prise de focus, appliquée à chaud sans redémarrage du
+service. Elle a été supprimée parce que le point 2 ne la justifiait pas : le
+téléphone a déjà un interrupteur de retour tactile, qui fonctionne dans les deux
+sens. Ajouter un réglage dupliquant celui du système, c'est ajouter une décision à
+prendre pour l'utilisateur sans rien lui donner de plus.
 
-## 1. Écart et zone neutre entre les puces de suggestion — FAIT le 2026-08-17
+La leçon pour les points suivants : **avant d'ajouter un réglage, vérifier que le
+système n'en offre pas déjà un.** Les points 3 à 6 ne sont pas dans ce cas, aucun
+réglage Android ne pilotant la taille des touches d'un clavier tiers ni le délai de
+son appui long ; ils ont donc réellement besoin de cette plomberie. Le code retiré
+est récupérable dans l'historique git (commit du point 2).
+
+Un point d'attention pour eux : les réglages qui changent la **géométrie** (points 3
+et 5) demandent en plus une reconstruction de la mise en page, là où une valeur comme
+la vibration se contentait d'être relue.
+
+## 1. Écart et zone neutre entre les puces de suggestion : FAIT le 2026-08-17
 
 **Fait en 10.11.2.** Publié sur GitHub à ce tag ; l'arrivée sur le Play Store
 demande une validation, donc une installation faite juste après cette date peut
@@ -125,23 +142,35 @@ la zone des touches est identique au pixel). Échanger 0,6 mm de hauteur contre
   pire qu'absente pour ce profil. L'intervalle plus large rapproche légèrement ce
   seuil, il ne le crée pas.
 
-## 2. Vibration désactivable
+## 2. Vibration désactivable : FAIT en 10.11.5
 
-**Constat.** `performHapticFeedback()` passe
-`HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING` : le clavier vibre même
-quand l'utilisateur a coupé les vibrations dans les réglages du téléphone, et
-l'application n'offre aucun interrupteur. C'est le seul point de cette liste qui
+**Constat.** `performHapticFeedback()` passait
+`HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING` : le clavier vibrait même
+quand l'utilisateur avait coupé le retour tactile dans les réglages du téléphone, et
+l'application n'offrait aucun interrupteur. C'était le seul point de cette liste qui
 soit un blocage total sans échappatoire, pour une hypersensibilité sensorielle ou
 quand la vibration perturbe le geste.
 
-**Où.** `KeyboardLayoutManager.performHapticFeedback()`.
+**Ce qui a été fait.** Le drapeau est retiré, rien de plus. Une ligne de code. Le
+clavier suit désormais le réglage de retour tactile du téléphone, comme n'importe
+quelle autre application.
 
-**Quoi.** Retirer le drapeau, ce qui suffit à respecter le réglage système, et
-ajouter par dessus un réglage applicatif à trois positions (système, toujours,
-jamais).
+**Ce qui a été fait puis défait.** Un réglage applicatif à trois positions (système,
+toujours, jamais) avait d'abord été ajouté, avec toute la plomberie décrite plus
+haut. Il a été retiré : le téléphone offre déjà cet interrupteur, dans les deux sens.
+Le mode « toujours » avait un usage théorique, vouloir la vibration du clavier sans
+l'activer ailleurs, mais il ne valait pas un écran de réglages, ni la décision
+supplémentaire imposée à tout le monde.
 
-**Vérification.** Couper les vibrations dans les réglages Android, taper, et
-constater le silence.
+**Changement de comportement par défaut, assumé.** Quelqu'un qui avait coupé le
+retour tactile de son téléphone sentait quand même ce clavier vibrer ; il ne le
+sentira plus. C'est précisément le défaut à corriger. Personne ne perd la vibration
+sans l'avoir désactivée soi-même quelque part.
+
+**Vérification.** L'absence réelle de vibration ne se constate pas sur émulateur, qui
+n'en produit aucune : elle demande un appareil réel avec le retour tactile désactivé
+dans les réglages Android, à la rubrique des sons et des vibrations. Ce qui a été
+vérifié sur émulateur relève de la chaîne logique, pas de la sensation.
 
 ## 3. Hauteur de touche réglable, et plancher en paysage
 

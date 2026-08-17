@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.5] - 2026-08-17
+
+### ♿ La vibration du clavier obéit enfin au téléphone
+
+Le clavier vibrait à chaque appui même quand le retour tactile était désactivé dans les réglages du téléphone : il posait un drapeau qui demande explicitement au système de passer outre le choix de l'utilisateur. Vibrations coupées partout ailleurs, celle du clavier restait, et rien ne permettait de l'éteindre. Pour une hypersensibilité sensorielle, ou quand la vibration perturbe le geste d'une main qui tremble, c'était un blocage sans issue.
+
+Ce drapeau est retiré. Le clavier se comporte désormais comme n'importe quelle autre application : il suit le réglage de retour tactile du téléphone, qui se trouve dans les réglages Android, à la rubrique des sons et des vibrations.
+
+Aucun réglage n'est ajouté dans l'application, volontairement. Le téléphone en a déjà un, il fonctionne dans les deux sens, et un clavier n'a pas à dupliquer l'interrupteur du système.
+
 ## [10.11.4] - 2026-08-17
 
 ### ✍️ L'apostrophe retrouve une touche
