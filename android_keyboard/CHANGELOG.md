@@ -5,6 +5,23 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.7] - 2026-08-18
+
+### 🔔 Le clavier était devenu muet sur Samsung, il reprend la main
+
+Signalé sur un Samsung en 10.11.6 : plus aucune vibration ni aucun son à la frappe. La cause vient de la version 10.11.5, qui avait fait obéir le clavier au réglage de retour tactile du téléphone au lieu de décider lui-même. L'intention était bonne, mais elle repose sur une supposition fausse : **sur One UI, « Vibration au toucher » ne gouverne que le clavier Samsung**, et rien n'est proposé pour les claviers installés. Le clavier restait donc silencieux, sans aucun moyen de le rallumer.
+
+Le clavier reprend donc la main sur son retour de frappe, comme le font Gboard et SwiftKey, qui ont eux aussi leurs propres interrupteurs plutôt que de dépendre du réglage générique du téléphone. Vibration et son repartent, quel que soit l'état des réglages système.
+
+### ⚙️ Deux interrupteurs dans l'application
+
+Puisque le clavier ne suit plus le téléphone, il doit offrir lui-même de quoi le faire taire. L'onglet À Propos accueille une carte **Réglages du clavier** avec deux interrupteurs, actifs par défaut :
+
+- **Vibration à la frappe**
+- **Son de frappe**
+
+Le choix s'applique dès le retour dans un champ de saisie, sans redémarrer le téléphone. Sans ces interrupteurs, forcer la vibration redeviendrait un blocage sans issue pour une hypersensibilité sensorielle, ou quand la vibration perturbe le geste d'une main qui tremble.
+
 ## [10.11.6] - 2026-08-17
 
 ### 📳 Le clavier se sent et s'entend comme les autres claviers

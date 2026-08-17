@@ -1,7 +1,7 @@
 # Accessibilité : ce qu'il reste à faire
 
-État au 17 août 2026. **Les points 1 et 2 sont faits, les cinq autres ne le sont
-pas.** Ce
+État au 18 août 2026. **Les points 1 et 2 sont faits, les cinq autres ne le sont
+pas**, et l'écran de réglages dont quatre d'entre eux dépendaient existe désormais. Ce
 fichier est la contrepartie technique de [`docs/ergotherapie.html`](docs/ergotherapie.html),
 la fiche publique destinée aux ergothérapeutes : cette page annonce des limites,
 celle-ci dit ce qu'il faudrait changer pour les lever, où, et comment le vérifier.
@@ -43,36 +43,51 @@ détruire en croyant améliorer le clavier.
 | Aucune correction automatique | `InputProcessor.handleSpace()` finalise sans réécrire | Le texte affiché est le texte saisi, ce qui compte quand la relecture est difficile. |
 | Aucun signal intrusif pendant la frappe | pas de pastille ni d'animation dans la barre de suggestions | Décision déjà prise pour d'autres raisons, mais c'est aussi un acquis d'accessibilité. |
 
-## Prérequis commun aux points 3 à 6
+## L'écran de réglages du clavier : il existe depuis la 10.11.7
 
-Il n'existe **aucun écran de réglages du clavier** : `SettingsActivity` est l'écran
-d'accueil de l'application, et l'IME ne lit aucune préférence de comportement.
-Quatre des points ci-dessous en ont besoin. Le travail de plomberie est à faire une
-seule fois :
+`SettingsActivity` reste l'écran d'accueil de l'application, mais l'onglet À Propos
+porte désormais une carte « Réglages du clavier », et l'IME lit des préférences de
+comportement. La plomberie que les points 3 à 6 attendaient est donc en place :
 
-- un écran de réglages dédié, ou une section dans `SettingsActivity` ;
-- des `SharedPreferences` lues par `KreyolInputMethodServiceRefactored` ;
-- une reconstruction du layout à la prise de focus (`onStartInputView`) pour que
-  le changement s'applique sans redémarrer le téléphone, ce que personne ne fera.
+- [`KeyboardPreferences`](android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KeyboardPreferences.kt),
+  point d'entrée unique, pour que les deux côtés ne manipulent pas des clés en dur ;
+- la carte dans l'onglet À Propos, faute d'onglet dédié : la barre en porte déjà
+  sept, un huitième la rendrait illisible ;
+- une relecture des réglages dans `onStartInputView`, pour qu'un changement
+  s'applique dès le retour dans un champ de saisie et non au prochain redémarrage.
 
-**Cette plomberie a été écrite puis retirée le 2026-08-17**, avec le point 2. Elle
-fonctionnait, vérifiée de bout en bout sur émulateur : un `KeyboardPreferences`
-comme point d'entrée unique, une carte de réglages dans l'onglet À Propos, et une
-relecture des valeurs à chaque prise de focus, appliquée à chaud sans redémarrage du
-service. Elle a été supprimée parce que le point 2 ne la justifiait pas : le
-téléphone a déjà un interrupteur de retour tactile, qui fonctionne dans les deux
-sens. Ajouter un réglage dupliquant celui du système, c'est ajouter une décision à
-prendre pour l'utilisateur sans rien lui donner de plus.
+Le service et l'activité partageant le processus, aucune diffusion n'est
+nécessaire : l'instance de `SharedPreferences` est la même des deux côtés.
 
-La leçon pour les points suivants : **avant d'ajouter un réglage, vérifier que le
-système n'en offre pas déjà un.** Les points 3 à 6 ne sont pas dans ce cas, aucun
-réglage Android ne pilotant la taille des touches d'un clavier tiers ni le délai de
-son appui long ; ils ont donc réellement besoin de cette plomberie. Le code retiré
-est récupérable dans l'historique git (commit du point 2).
+**Ajouter un réglage coûte donc trois petites choses** : une entrée dans
+`KeyboardPreferences`, un interrupteur dans la carte, et la lecture de la valeur là
+où elle sert. Point d'attention pour les points 3 et 5 : ils changent la
+**géométrie**, donc ils demandent en plus une reconstruction de la mise en page, là
+où le retour de frappe se contente d'une valeur relue.
 
-Un point d'attention pour eux : les réglages qui changent la **géométrie** (points 3
-et 5) demandent en plus une reconstruction de la mise en page, là où une valeur comme
-la vibration se contentait d'être relue.
+### La leçon, apprise deux fois
+
+Cette plomberie a été écrite le 2026-08-17 avec le point 2, retirée le jour même,
+puis rétablie le lendemain. Le détour vaut d'être retenu.
+
+Elle a d'abord été retirée au motif que le téléphone offrait déjà l'interrupteur, et
+qu'un clavier n'a pas à dupliquer un réglage du système. Le raisonnement était juste,
+la prémisse fausse : **sur One UI, « Vibration au toucher » ne gouverne que le
+clavier Samsung**, et aucun réglage accessible ne couvre les claviers tiers.
+Constaté sur un appareil réel en 10.11.6, où le clavier était devenu complètement
+muet, sans recours.
+
+Deux règles en sortent, dans cet ordre :
+
+1. **Vérifier que le réglage système existe vraiment pour un clavier tiers**, et pas
+   seulement dans les écrans de réglages du constructeur. Ce qui est vrai sur AOSP ne
+   l'est pas forcément sur One UI, MIUI ou Magic UI.
+2. Ne pas dupliquer un réglage du système reste la bonne règle quand ce réglage
+   existe et s'applique. Gboard et SwiftKey ont leurs propres interrupteurs de retour
+   de frappe précisément parce que ce n'est pas le cas ici.
+
+Corollaire pour la suite : un émulateur AOSP ne pouvait pas révéler ce problème. Les
+comportements dépendant des réglages du constructeur demandent un appareil réel.
 
 ## 1. Écart et zone neutre entre les puces de suggestion : FAIT le 2026-08-17
 
@@ -142,35 +157,55 @@ la zone des touches est identique au pixel). Échanger 0,6 mm de hauteur contre
   pire qu'absente pour ce profil. L'intervalle plus large rapproche légèrement ce
   seuil, il ne le crée pas.
 
-## 2. Vibration désactivable : FAIT en 10.11.5
+## 2. Vibration désactivable : FAIT en 10.11.7, après un détour
 
 **Constat.** `performHapticFeedback()` passait
 `HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING` : le clavier vibrait même
-quand l'utilisateur avait coupé le retour tactile dans les réglages du téléphone, et
-l'application n'offrait aucun interrupteur. C'était le seul point de cette liste qui
-soit un blocage total sans échappatoire, pour une hypersensibilité sensorielle ou
-quand la vibration perturbe le geste.
+quand l'utilisateur avait coupé le retour tactile du téléphone, et l'application
+n'offrait aucun interrupteur. C'était le seul point de cette liste qui soit un
+blocage total sans échappatoire, pour une hypersensibilité sensorielle ou quand la
+vibration perturbe le geste.
 
-**Ce qui a été fait.** Le drapeau est retiré, rien de plus. Une ligne de code. Le
-clavier suit désormais le réglage de retour tactile du téléphone, comme n'importe
-quelle autre application.
+**Première tentative, 10.11.5 : retirer le drapeau, sans rien ajouter.** Le clavier
+suivait alors le réglage du téléphone, comme n'importe quelle application. Une ligne
+de code, aucun réglage à maintenir. C'était le bon raisonnement sur une prémisse
+fausse, et ça a cassé le clavier.
 
-**Ce qui a été fait puis défait.** Un réglage applicatif à trois positions (système,
-toujours, jamais) avait d'abord été ajouté, avec toute la plomberie décrite plus
-haut. Il a été retiré : le téléphone offre déjà cet interrupteur, dans les deux sens.
-Le mode « toujours » avait un usage théorique, vouloir la vibration du clavier sans
-l'activer ailleurs, mais il ne valait pas un écran de réglages, ni la décision
-supplémentaire imposée à tout le monde.
+**Ce que l'appareil réel a montré.** Sur Samsung en 10.11.6, plus aucune vibration
+ni aucun son. Sur One UI, « Vibration au toucher » ne gouverne que le clavier
+Samsung : rien n'est proposé pour les claviers tiers. Le clavier était donc muet
+sans recours possible, et l'utilisateur n'avait aucun moyen de comprendre pourquoi.
 
-**Changement de comportement par défaut, assumé.** Quelqu'un qui avait coupé le
-retour tactile de son téléphone sentait quand même ce clavier vibrer ; il ne le
-sentira plus. C'est précisément le défaut à corriger. Personne ne perd la vibration
-sans l'avoir désactivée soi-même quelque part.
+Mesuré sur émulateur au moment du diagnostic, avec `dumpsys vibrator_manager` qui
+horodate chaque demande et son sort :
 
-**Vérification.** L'absence réelle de vibration ne se constate pas sur émulateur, qui
-n'en produit aucune : elle demande un appareil réel avec le retour tactile désactivé
-dans les réglages Android, à la rubrique des sons et des vibrations. Ce qui a été
-vérifié sur émulateur relève de la chaîne logique, pas de la sensation.
+| Réglage système | Sort de la demande |
+|---|---|
+| retour tactile activé | `status: finished`, la vibration part |
+| retour tactile désactivé | `status: ignored_for_settings`, la demande est jetée |
+
+**Ce qui a été fait, 10.11.7.** Le clavier reprend la main, et l'échappatoire passe
+par l'application :
+
+- `FLAG_IGNORE_GLOBAL_SETTING` est reposé pour la vibration ;
+- le son utilise `playSoundEffect(effectType, volume)`, la variante à volume
+  explicite, qui contrairement à `playSoundEffect(effectType)` ne consulte pas le
+  réglage « sons au toucher » du téléphone. C'est ce que fait AOSP LatinIME ;
+- deux interrupteurs dans l'application, actifs par défaut, coupent l'un ou l'autre
+  ([`KeyboardPreferences`](android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KeyboardPreferences.kt)) ;
+- toute la politique vit dans [`KeyFeedback`](android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KeyFeedback.kt),
+  seul endroit où ces contournements sont écrits.
+
+C'est le comportement de Gboard et de SwiftKey, qui ont leurs propres interrupteurs
+pour la même raison.
+
+**Vérification, sur émulateur.** Réglages système coupés, la vibration part quand
+même (`status: finished`), ce qui reproduit et corrige le cas Samsung. Interrupteur
+de l'application coupé, plus aucune demande n'est émise. Rallumé, elle repart.
+
+**Ce qui reste à vérifier sur appareil réel** : que la vibration se sente et que le
+son s'entende. L'émulateur ne vibre pas et tourne sans audio ; c'est justement ce qui
+a laissé passer la régression de la 10.11.5.
 
 ## 3. Hauteur de touche réglable, et plancher en paysage
 

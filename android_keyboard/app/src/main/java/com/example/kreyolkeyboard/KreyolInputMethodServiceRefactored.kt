@@ -928,7 +928,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
-        
+
+        // Réglages du retour de frappe relus à chaque prise de focus : le service
+        // survit au passage dans l'écran de l'application, donc un interrupteur
+        // changé là-bas doit s'appliquer dès le retour dans un champ de saisie.
+        KeyFeedback.refresh(this)
+
         // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
             keyboardLayoutManager.forceAlphabeticMode()

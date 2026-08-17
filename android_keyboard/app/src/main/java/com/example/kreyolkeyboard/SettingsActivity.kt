@@ -1602,6 +1602,90 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     // Onglet 3 : À Propos
+    /**
+     * Réglages du retour de frappe : vibration et son.
+     *
+     * Placés en tête de l'onglet À Propos faute d'écran dédié : la barre porte déjà
+     * sept onglets, un huitième la rendrait illisible, et cet onglet héberge déjà
+     * les informations de diagnostic. Si les réglages se multiplient, ils
+     * mériteront leur propre onglet.
+     *
+     * Ils ne dupliquent pas un interrupteur du système : sur One UI, « Vibration au
+     * toucher » ne gouverne que le clavier Samsung, et rien n'est proposé pour les
+     * claviers tiers. Cf. KeyboardPreferences et ACCESSIBILITE.md, point 2.
+     */
+    private fun createKeyboardSettingsCard(): LinearLayout {
+        val card = createCard("#FFFFFF")
+
+        card.addView(TextView(this).apply {
+            text = "⚙️ Réglages du clavier"
+            textSize = 20f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, 0, 0, 8)
+        })
+
+        card.addView(TextView(this).apply {
+            text = "Ce que le clavier fait à chaque frappe. Le choix s'applique dès " +
+                    "le retour dans un champ de saisie."
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, 8)
+        })
+
+        card.addView(interrupteurReglage(
+            "Vibration à la frappe",
+            KeyboardPreferences.hapticEnabled(this)
+        ) { actif -> KeyboardPreferences.setHapticEnabled(this, actif) })
+
+        card.addView(interrupteurReglage(
+            "Son de frappe",
+            KeyboardPreferences.soundEnabled(this)
+        ) { actif -> KeyboardPreferences.setSoundEnabled(this, actif) })
+
+        return card
+    }
+
+    /**
+     * Une ligne de réglage avec son interrupteur.
+     *
+     * Les couleurs sont posées explicitement : les états non cochés du thème sont un
+     * gris presque blanc, invisible sur la carte blanche, ce qui avait déjà fait
+     * disparaître des boutons radio d'un premier essai de cette carte.
+     */
+    private fun interrupteurReglage(
+        libelle: String,
+        actifAuDepart: Boolean,
+        onChange: (Boolean) -> Unit
+    ): View = Switch(this).apply {
+        text = libelle
+        textSize = 15f
+        setTextColor(Color.parseColor("#333333"))
+        isChecked = actifAuDepart
+        setPadding(8, 24, 8, 24)
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        val actifInactif = arrayOf(
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
+        )
+        thumbTintList = android.content.res.ColorStateList(
+            actifInactif,
+            intArrayOf(Color.parseColor("#0080FF"), Color.parseColor("#BDBDBD"))
+        )
+        trackTintList = android.content.res.ColorStateList(
+            actifInactif,
+            intArrayOf(Color.parseColor("#90CAF9"), Color.parseColor("#757575"))
+        )
+        setOnCheckedChangeListener { _, coche ->
+            onChange(coche)
+            Log.d("SettingsActivity", "Réglage « $libelle » : $coche")
+        }
+    }
+
     fun createAboutContent(): LinearLayout {
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -1613,6 +1697,11 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
         
+        // Réglages en tête : quelqu'un que la vibration gêne cherche un
+        // interrupteur, pas un texte de présentation.
+        mainLayout.addView(createKeyboardSettingsCard())
+        mainLayout.addView(createSpacing(16))
+
         // Mission
         val missionCard = createCard("#FFFFFF")
         
