@@ -162,7 +162,22 @@ class KeyboardLayoutManager(private val context: Context) {
      * Crée le layout alphabétique (AZERTY créole)
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "ò", "p")
+        // v10.11.3 : "ò" retiré de cette rangée, qui repasse à 10 touches. Elle en
+        // portait 11, ce qui la rendait la plus étroite du clavier alors qu'elle est
+        // la plus frappée : mesuré sur Pixel 5, 29,1 dp par touche (4,6 mm) contre
+        // 32,4 dp en rangée 2 et 37,0 dp en rangée 3, pour 48,9 % de la frappe ici
+        // (fréquences des lettres pondérées par celles des mots de creole_dict.json)
+        // contre 23,4 % et 17,5 %. La largeur était donc inversement proportionnelle
+        // à l'usage. Sans "ò", chaque touche de la rangée passe à 32,4 dp (5,1 mm),
+        // soit 3,3 dp de plus, et les deux rangées de dix touches deviennent
+        // identiques (mesuré après coup avec scripts/geo_puces.py, la géométrie
+        // rendue ne se déduisant pas des constantes).
+        // "ò" ne pesant que 1,24 % des lettres frappées et restant accessible en
+        // appui long sur "o" (AccentHandler, où il figure en tête, et affiché dans
+        // l'indice de coin de la touche), l'échange se fait contre un appui long sur
+        // un caractère rare. Même raisonnement que é et è, dédiés en rangée 4 où ils
+        // ne coûtent aucune largeur aux lettres.
+        val row1 = arrayOf("a", "z", "e", "r", "t", "y", "u", "i", "o", "p")
         val row2 = arrayOf("q", "s", "d", "f", "g", "h", "j", "k", "l", "m")
         val row3 = arrayOf("⇧", "w", "x", "c", "v", "b", "n", "⌫")
         // v8.6.0 : "-" ajouté en touche dédiée (21,7% des mots créoles en

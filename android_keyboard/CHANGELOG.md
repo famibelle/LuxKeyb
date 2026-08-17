@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.11.3] - 2026-08-17
+
+### ⌨️ Les lettres les plus tapées avaient les touches les plus étroites
+
+La rangée du haut portait onze touches, `a z e r t y u i o ò p`, là où les autres en ont dix. Ses touches étaient donc les plus étroites du clavier, 4,6 mm contre 5,1 mm en deuxième rangée et 5,9 mm en troisième, alors que c'est de loin la plus sollicitée : les lettres qu'elle porte représentent près de la moitié de la frappe en créole, contre 23 % pour la deuxième rangée et 17 % pour la troisième. La largeur des touches était donc inversement proportionnelle à leur usage.
+
+La touche `ò` quitte cette rangée, qui repasse à dix touches de 5,1 mm, désormais identiques à celles de la rangée du dessous. Les lettres les plus fréquentes du créole, `a`, `o`, `i`, `t`, `u`, `p`, gagnent chacune un tiers de millimètre.
+
+`ò` reste accessible en appui long sur `o`, où il figure en première position juste après la lettre sans accent, et l'indice affiché dans le coin de la touche continue de l'annoncer. Le caractère ne pèse que 1,24 % des lettres écrites, contre 8 % pour le `o` seul : l'échange se fait donc contre un appui long sur un caractère rare, déjà atteignable autrement. C'est le même raisonnement que pour `é` et `è`, qui gardent une touche dédiée en quatrième rangée, où elle ne coûte aucune largeur aux lettres.
+
+Un mot contenant `ò` reste par ailleurs trouvable sans taper l'accent du tout, les suggestions étant tolérantes aux accents : taper `bon` propose déjà `bòn`.
+
+Le simulateur du site suit la même disposition, pour continuer de montrer le clavier réellement livré.
+
 ## [10.11.2] - 2026-08-17
 
 ### ♿ Un mot français se validait à la place du mot créole visé

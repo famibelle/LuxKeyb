@@ -8,7 +8,10 @@
   'use strict';
 
   const ALPHA_ROWS = [
-    ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'ò', 'p'],
+    // 10 touches depuis la v10.11.3 : « ò » a quitté cette rangée, la plus frappée
+    // du clavier et pourtant la plus étroite quand elle en portait 11. Il reste en
+    // appui long sur « o », où l'indice de coin l'affiche. Cf. KeyboardLayoutManager.
+    ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
     ['q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm'],
     ['⇧', 'w', 'x', 'c', 'v', 'b', 'n', '⌫'],
     ['123', ',', 'é', '-', ' ', 'è', '.', "'", '⏎']
