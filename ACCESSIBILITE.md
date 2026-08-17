@@ -63,7 +63,10 @@ n'en a l'air. Le faire d'abord, puis ajouter les réglages, est le bon ordre.
 demande une validation, donc une installation faite juste après cette date peut
 encore porter la 10.11.1, qui ne l'a pas.
 
-**Ce que la mesure a montré, contre l'hypothèse de départ.** Cette section
+**Ce que la mesure a montré, contre l'hypothèse de départ.** La mesure se refait
+avec [`scripts/geo_puces.py`](scripts/geo_puces.py), qui relève les puces au pixel
+dans une capture : la fenêtre de l'IME n'apparaît pas dans `uiautomator dump`, et
+les valeurs du code ne suffisent pas à prédire ce qui s'affiche. Cette section
 affirmait d'abord qu'une puce de deux lettres faisait « environ 42 dp de large ».
 C'était faux, et la piste de correction qui en découlait (`minWidth` de 56 à
 64 dp) aurait **rétréci** les puces au lieu de les agrandir. Mesuré sur l'AVD
