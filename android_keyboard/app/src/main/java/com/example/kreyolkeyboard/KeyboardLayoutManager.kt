@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,18 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val VERTICAL_PADDING_LANDSCAPE_DP = 4
         private const val BUTTON_MARGIN_DP = 2
         private const val CORNER_RADIUS_DP = 8f
-        private const val TEXT_SIZE_SP = 16f
+        // Taille de police d'une lettre, en part de la hauteur de touche. Elle
+        // valait 16 sp fixes, soit 44 px sur les 116 d'une touche en portrait
+        // (38 %) : mesuré sur le même écran, Gboard y dessine ses lettres à
+        // environ 62 px, presque une fois et demie plus grandes. Proportionnelle
+        // comme le padding des icônes, pour ne pas déborder de la touche réduite
+        // en paysage (32 dp), où une taille absolue ne laisserait pas la place.
+        private const val KEY_TEXT_HEIGHT_RATIO = 0.52f
+        // Les libellés de plusieurs caractères ("123", "ABC", "Potomitan™") sont
+        // contraints par la largeur de la touche, pas par sa hauteur : les
+        // agrandir les ferait tronquer. Ce rapport reprend leur taille d'avant
+        // (16 sp × 0,75) rapportée aux 48 dp de la hauteur nominale.
+        private const val WIDE_LABEL_TEXT_RATIO = 0.28f
         private const val HINT_TEXT_SIZE_SP = 8f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
@@ -361,15 +373,18 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police personnalisée pour Potomitan™ branding discret,
-                // et repli sur la même taille pour les libellés de mode ("123",
-                // "ABC"), qui doivent tenir sur une seule ligne dans une touche
-                // étroite
-                textSize = if (key == " " || key == "123" || key == "ABC") {
-                    TEXT_SIZE_SP * 0.75f
+                // Taille de police dérivée de la hauteur de touche, en pixels :
+                // le clavier doit rester lisible sans dépendre de l'échelle de
+                // police du système, qui pourrait faire déborder la lettre de sa
+                // touche. Les libellés longs (Potomitan™ sur l'espace, les modes
+                // "123" et "ABC") gardent leur taille réduite, sans quoi ils ne
+                // tiennent plus sur une seule ligne dans une touche étroite.
+                val labelRatio = if (key == " " || key == "123" || key == "ABC") {
+                    WIDE_LABEL_TEXT_RATIO
                 } else {
-                    TEXT_SIZE_SP
+                    KEY_TEXT_HEIGHT_RATIO
                 }
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * labelRatio)
                 setTypeface(typeface, Typeface.BOLD)
                 // Le style Button par défaut apporte 30 px de padding sur chaque
                 // bord, hérités de son fond d'origine. L'apparence des touches

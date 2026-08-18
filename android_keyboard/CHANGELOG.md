@@ -5,6 +5,14 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.2] - 2026-08-18
+
+### 🔠 Des lettres plus grandes sur les touches
+
+Les lettres n'occupaient guère plus du tiers de la hauteur de leur touche, nettement moins que sur les autres claviers du téléphone : mesurées sur le même écran, celles de Gboard sont presque une fois et demie plus hautes. Elles gagnent 60 % de hauteur et remplissent maintenant leur touche.
+
+Leur taille suit désormais celle de la touche au lieu d'être figée, si bien que le clavier reste lisible en paysage, où les touches sont plus basses, et qu'une police système agrandie ne peut plus faire déborder une lettre de sa touche. Les libellés qui tiennent dans la largeur au caractère près, « 123 », « ABC » et la barre d'espace, gardent leur taille pour ne pas être tronqués. Les aperçus d'appui long dans les coins des touches restent lisibles, et la hauteur du clavier ne change pas.
+
 ## [10.12.1] - 2026-08-18
 
 ### ⚙️ Les réglages du clavier ont leur propre écran
