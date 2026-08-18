@@ -40,6 +40,143 @@ DIAGNOSTIC_PREFIXES = (
 # l'extraction automatique. Complétez cette liste au fil des prochaines
 # versions pour garder une formulation orientée utilisateur.
 CURATED: dict[str, list[dict[str, str]]] = {
+    "10.12.1": [
+        {
+            "emoji": "⚙️",
+            "title": "Les réglages du clavier ont leur propre écran",
+            "description": (
+                "Ils étaient arrivés dans une carte de l'onglet À Propos, une "
+                "page de présentation où personne ne cherche un interrupteur. "
+                "Un engrenage en haut à droite de l'application ouvre "
+                "maintenant un écran « Réglages du clavier », comme partout "
+                "ailleurs sur Android."
+            ),
+        },
+        {
+            "emoji": "🏷️",
+            "title": "Les noms des onglets sont de nouveau lisibles",
+            "description": (
+                "La barre du haut n'identifiait ses sept destinations que par "
+                "des emojis : les noms existaient, mais ils étaient rognés hors "
+                "de la vue. On relit Démarrage, Kréyòl an mwen, Mots Mêlés, "
+                "Mots Mélangés, Mo an Karénaj, Guide et À Propos sous chaque "
+                "icône."
+            ),
+        },
+    ],
+    "10.11.7": [
+        {
+            "emoji": "🔔",
+            "title": "Vibration et son repartent sur Samsung",
+            "description": (
+                "Sur One UI, le réglage « Vibration au toucher » ne gouverne "
+                "que le clavier Samsung : depuis la 10.11.5, le clavier kréyòl "
+                "restait donc muet, sans aucun moyen de le rallumer. Il reprend "
+                "la main sur son retour de frappe, comme le font Gboard et "
+                "SwiftKey."
+            ),
+        },
+        {
+            "emoji": "🎚️",
+            "title": "Deux interrupteurs pour la vibration et le son",
+            "description": (
+                "Puisque le clavier ne suit plus le téléphone, il offre "
+                "lui-même de quoi le faire taire : « Vibration à la frappe » et "
+                "« Son de frappe », actifs par défaut, dans les réglages du "
+                "clavier. Le choix s'applique dès le retour dans un champ de "
+                "saisie."
+            ),
+        },
+    ],
+    "10.11.6": [
+        {
+            "emoji": "📳",
+            "title": "La frappe se sent et s'entend partout",
+            "description": (
+                "Les touches vibraient, mais ni les propositions ni les emojis, "
+                "et la barre d'espace ne faisait aucun bruit. Tout ce qui écrit "
+                "du texte donne maintenant les deux retours, avec les vrais "
+                "sons de clavier d'Android : un pour les lettres, un pour "
+                "l'espace, un pour la suppression, un pour l'entrée."
+            ),
+        }
+    ],
+    "10.11.4": [
+        {
+            "emoji": "✍️",
+            "title": "L'apostrophe retrouve une touche",
+            "description": (
+                "Écrire « l' », « d' » ou « qu' » demandait un appui long sur "
+                "la virgule, et rien ne l'annonçait sur le clavier. Elle "
+                "redevient une touche visible en troisième rangée, juste après "
+                "le n, avec une cible de 5,7 mm. Elle reste aussi accessible "
+                "sous la virgule."
+            ),
+        }
+    ],
+    "10.11.3": [
+        {
+            "emoji": "⌨️",
+            "title": "Les lettres les plus tapées ont des touches plus larges",
+            "description": (
+                "La rangée du haut portait onze touches quand les autres en ont "
+                "dix : les lettres les plus fréquentes du créole avaient les "
+                "cibles les plus étroites. La touche ò la quitte, et a, o, i, "
+                "t, u, p gagnent chacune un tiers de millimètre. ò reste en "
+                "appui long sur o."
+            ),
+        }
+    ],
+    "10.11.2": [
+        {
+            "emoji": "♿",
+            "title": "Les propositions ne se touchent plus",
+            "description": (
+                "Les deux rangées de suggestions n'étaient séparées que de 0,58 "
+                "mm : un appui un demi-millimètre trop bas validait le mot "
+                "français à la place du mot kréyòl visé. L'espace vide autour "
+                "de chaque puce passe à 1,85 mm, pris sur leur hauteur, donc le "
+                "clavier n'occupe pas un pixel de plus."
+            ),
+        },
+        {
+            "emoji": "📄",
+            "title": "Une fiche pour les ergothérapeutes",
+            "description": (
+                "Le site accueille une fiche destinée aux professionnels qui "
+                "accompagnent des personnes gênées dans le geste de la main : "
+                "ce que le clavier fait gagner en nombre d'appuis, ce qu'il ne "
+                "fait pas, ses limites connues, et un protocole pour compter "
+                "les appuis en séance."
+            ),
+        },
+    ],
+    "10.11.1": [
+        {
+            "emoji": "📐",
+            "title": "Le clavier ne prend plus tout l'écran en paysage",
+            "description": (
+                "Écran couché, il occupait 87 % de la hauteur et ne laissait "
+                "voir que la moitié du champ de saisie, et sa rangée du bas "
+                "était coupée en deux. Touches plus basses, marges resserrées "
+                "et suggestions sur une seule rangée le ramènent à 58 %. Le "
+                "portrait ne bouge pas d'un pixel."
+            ),
+        }
+    ],
+    "10.9.3": [
+        {
+            "emoji": "⇧",
+            "title": "La touche majuscule montre où elle en est",
+            "description": (
+                "Ses trois états, minuscules, majuscule pour une lettre et "
+                "verrouillage, étaient prévus mais ne se voyaient pas : elle "
+                "restait blanche dans les trois cas. Son fond suit désormais "
+                "l'état, et ses icônes ont été refaites autour d'une silhouette "
+                "unique."
+            ),
+        }
+    ],
     "10.9.2": [
         {
             "emoji": "🔖",
