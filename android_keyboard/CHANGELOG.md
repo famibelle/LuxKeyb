@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.1] - 2026-08-18
+
+### ⚙️ Les réglages du clavier ont leur propre écran
+
+Ils étaient arrivés la veille dans une carte de l'onglet À Propos, une page de présentation où personne ne cherche un interrupteur. Un engrenage apparaît maintenant en haut à droite de l'application et ouvre un écran « Réglages du clavier », ce qui est la convention sur Android et laisse la place aux réglages à venir : taille des touches, délai de l'appui long, nombre de propositions affichées.
+
+### 🏷️ Les noms des onglets sont enfin lisibles
+
+La barre du haut identifiait ses sept destinations par des emojis seuls. Les noms existaient pourtant dans le code, mais ils étaient rognés hors de la vue : la barre réservait 140 pixels de hauteur, quand l'emoji seul en réclamait 165. On lit de nouveau Démarrage, Kréyòl an mwen, Mots Mêlés, Mots Mélangés, Mo an Karénaj, Guide et À Propos sous leur icône.
+
+Deux corrections de fond expliquent que ça ait pu passer inaperçu si longtemps. La barre était construite à deux endroits différents du code, en copies qui avaient divergé : celle qui s'affichait n'était pas celle que l'on modifiait. Il n'y en a plus qu'une. Et le nom de chaque onglet tient désormais sur deux lignes au besoin, au lieu de déborder.
+
 ## [10.11.7] - 2026-08-18
 
 ### 🔔 Le clavier était devenu muet sur Samsung, il reprend la main

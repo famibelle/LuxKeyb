@@ -45,14 +45,18 @@ détruire en croyant améliorer le clavier.
 
 ## L'écran de réglages du clavier : il existe depuis la 10.11.7
 
-`SettingsActivity` reste l'écran d'accueil de l'application, mais l'onglet À Propos
-porte désormais une carte « Réglages du clavier », et l'IME lit des préférences de
-comportement. La plomberie que les points 3 à 6 attendaient est donc en place :
+`SettingsActivity` reste l'écran d'accueil de l'application, et un engrenage dans
+son bandeau ouvre désormais un écran « Réglages du clavier » à part entière, dont
+l'IME lit les préférences. La plomberie que les points 3 à 6 attendaient est donc en
+place :
 
 - [`KeyboardPreferences`](android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KeyboardPreferences.kt),
   point d'entrée unique, pour que les deux côtés ne manipulent pas des clés en dur ;
-- la carte dans l'onglet À Propos, faute d'onglet dédié : la barre en porte déjà
-  sept, un huitième la rendrait illisible ;
+- [`KeyboardSettingsActivity`](android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KeyboardSettingsActivity.kt),
+  écran dédié plutôt qu'un huitième onglet : les réglages vivent derrière un
+  engrenage sur Android, et la barre en porte déjà sept. Les réglages ont d'abord
+  vécu dans une carte de l'onglet À Propos, une page de présentation où personne ne
+  cherche un interrupteur ;
 - une relecture des réglages dans `onStartInputView`, pour qu'un changement
   s'applique dès le retour dans un champ de saisie et non au prochain redémarrage.
 

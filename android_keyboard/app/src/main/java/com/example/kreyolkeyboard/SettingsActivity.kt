@@ -680,16 +680,49 @@ class SettingsActivity : AppCompatActivity() {
                 setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
                 gravity = Gravity.CENTER
+                // Poids 1 : le titre occupe la place laissée par l'engrenage et reste
+                // centré sur le bandeau entier.
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                )
             }
-            
+
+            // Les réglages du clavier vivent derrière cet engrenage, dans leur propre
+            // écran : c'est la convention Android, et la barre porte déjà sept onglets.
+            val settingsButton = TextView(this@SettingsActivity).apply {
+                text = "⚙️"
+                textSize = 22f
+                gravity = Gravity.CENTER
+                contentDescription = "Réglages du clavier"
+                minWidth = (48 * resources.displayMetrics.density).toInt()
+                minHeight = (48 * resources.displayMetrics.density).toInt()
+                isClickable = true
+                isFocusable = true
+                setOnClickListener {
+                    startActivity(Intent(this@SettingsActivity, KeyboardSettingsActivity::class.java))
+                }
+            }
+
+            // Cale de la largeur de l'engrenage, à gauche : sans elle le titre,
+            // centré dans la place restante, se décale visiblement vers la gauche.
+            appHeader.addView(View(this@SettingsActivity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    (48 * resources.displayMetrics.density).toInt(), 1
+                )
+            })
             appHeader.addView(appTitle)
+            appHeader.addView(settingsButton)
             
             // Container pour les onglets
             val tabContainer = LinearLayout(this@SettingsActivity).apply {
                 orientation = LinearLayout.HORIZONTAL
+                // Hauteur suivant le contenu, et non 140 px figés : l'emoji seul en
+                // réclamait 165 (60 dp), donc le libellé de chaque onglet était rogné
+                // hors de la vue et la barre n'identifiait sept destinations que par
+                // des emojis nus.
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    140
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                 gravity = Gravity.CENTER
             }
@@ -757,7 +790,9 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            setPadding(24, 12, 24, 12) // Padding vertical augmenté
+            // Padding horizontal resserré : sur sept onglets, 24 px de chaque
+            // côté retiraient au libellé le tiers de sa largeur.
+            setPadding(4, 10, 4, 8)
             layoutParams = LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -783,17 +818,21 @@ class SettingsActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                // Conversion pixels en DP pour meilleur affichage
-                val density = resources.displayMetrics.density
-                minHeight = (60 * density).toInt() // 60dp en pixels
+                // Plus de minHeight de 60 dp : il réservait à l'emoji seul plus de
+                // hauteur que la barre n'en avait, ce qui chassait le libellé.
             }
             
             // Label du tab
             val labelView = TextView(this@SettingsActivity).apply {
                 text = label
-                textSize = 10f
+                textSize = 9f
                 gravity = Gravity.CENTER
                 setPadding(0, 0, 0, 2)
+                // Sept onglets se partagent la largeur : un libellé long y tient sur
+                // deux lignes, et se termine par des points de suspension au delà,
+                // plutôt que de déborder ou de repousser ses voisins.
+                maxLines = 2
+                ellipsize = android.text.TextUtils.TruncateAt.END
                 setTextColor(
                     if (tabIndex == currentTab) 
                         Color.parseColor("#FF8C00") 
@@ -869,64 +908,24 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    /**
+     * Reconstruit la barre après un changement d'onglet, pour que l'onglet actif
+     * change d'aspect.
+     *
+     * Elle recopiait auparavant toute la construction de [createTabBar], et les deux
+     * copies ont divergé : l'engrenage des réglages et la correction de hauteur des
+     * onglets n'existaient que dans l'original, donc ne s'affichaient jamais, cette
+     * fonction étant appelée dès le premier changement d'onglet. Une seule
+     * construction fait désormais autorité.
+     */
     private fun updateTabBar() {
         tabBar.removeAllViews()
-        
-        // Bandeau bleu en haut
-        val appHeader = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setBackgroundColor(Color.parseColor("#0080FF"))
-            gravity = Gravity.CENTER
-            setPadding(16, 16, 16, 16)
-        }
-        
-        val appTitle = TextView(this).apply {
-            text = "Klavyé Kréyòl"
-            textSize = 22f
-            setTextColor(Color.WHITE)
-            setTypeface(null, Typeface.BOLD)
-            gravity = Gravity.CENTER
-        }
-        
-        appHeader.addView(appTitle)
-        
-        // Container pour les onglets
-        val tabContainer = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                140
-            )
-            gravity = Gravity.CENTER
-        }
-        
-        // Tabs avec les 7 onglets
-        tabContainer.addView(createTab(0, "🚀", "Démarrage"))
-        tabContainer.addView(createTab(1, "📊", "Kréyòl an mwen"))
-        tabContainer.addView(createTab(2, "🎲", "Mots Mêlés"))
-        tabContainer.addView(createTab(3, "🔤", "Mots Mélangés"))
-        tabContainer.addView(createTab(4, "🟩", "Mo an Karénaj"))
-        tabContainer.addView(createTab(5, "📖", "Guide"))
-        tabContainer.addView(createTab(6, "ℹ️", "À Propos"))
-        
-        // Ligne de séparation en bas
-        val separator = View(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                2
-            )
-            setBackgroundColor(Color.parseColor("#E0E0E0"))
-        }
-        
-        tabBar.addView(appHeader)
-        tabBar.addView(tabContainer)
-        tabBar.addView(separator)
+        val fraiche = createTabBar()
+        val enfants = (0 until fraiche.childCount).map { fraiche.getChildAt(it) }
+        fraiche.removeAllViews() // une vue ne peut pas avoir deux parents
+        enfants.forEach { tabBar.addView(it) }
     }
-    
+
     // Onglet 1 : Démarrage / Onboarding
     fun createOnboardingContent(): LinearLayout {
         val mainLayout = LinearLayout(this).apply {
@@ -1602,90 +1601,6 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     // Onglet 3 : À Propos
-    /**
-     * Réglages du retour de frappe : vibration et son.
-     *
-     * Placés en tête de l'onglet À Propos faute d'écran dédié : la barre porte déjà
-     * sept onglets, un huitième la rendrait illisible, et cet onglet héberge déjà
-     * les informations de diagnostic. Si les réglages se multiplient, ils
-     * mériteront leur propre onglet.
-     *
-     * Ils ne dupliquent pas un interrupteur du système : sur One UI, « Vibration au
-     * toucher » ne gouverne que le clavier Samsung, et rien n'est proposé pour les
-     * claviers tiers. Cf. KeyboardPreferences et ACCESSIBILITE.md, point 2.
-     */
-    private fun createKeyboardSettingsCard(): LinearLayout {
-        val card = createCard("#FFFFFF")
-
-        card.addView(TextView(this).apply {
-            text = "⚙️ Réglages du clavier"
-            textSize = 20f
-            setTextColor(Color.parseColor("#0080FF"))
-            setTypeface(null, Typeface.BOLD)
-            setPadding(0, 0, 0, 8)
-        })
-
-        card.addView(TextView(this).apply {
-            text = "Ce que le clavier fait à chaque frappe. Le choix s'applique dès " +
-                    "le retour dans un champ de saisie."
-            textSize = 14f
-            setTextColor(Color.parseColor("#666666"))
-            setLineSpacing(0f, 1.3f)
-            setPadding(0, 0, 0, 8)
-        })
-
-        card.addView(interrupteurReglage(
-            "Vibration à la frappe",
-            KeyboardPreferences.hapticEnabled(this)
-        ) { actif -> KeyboardPreferences.setHapticEnabled(this, actif) })
-
-        card.addView(interrupteurReglage(
-            "Son de frappe",
-            KeyboardPreferences.soundEnabled(this)
-        ) { actif -> KeyboardPreferences.setSoundEnabled(this, actif) })
-
-        return card
-    }
-
-    /**
-     * Une ligne de réglage avec son interrupteur.
-     *
-     * Les couleurs sont posées explicitement : les états non cochés du thème sont un
-     * gris presque blanc, invisible sur la carte blanche, ce qui avait déjà fait
-     * disparaître des boutons radio d'un premier essai de cette carte.
-     */
-    private fun interrupteurReglage(
-        libelle: String,
-        actifAuDepart: Boolean,
-        onChange: (Boolean) -> Unit
-    ): View = Switch(this).apply {
-        text = libelle
-        textSize = 15f
-        setTextColor(Color.parseColor("#333333"))
-        isChecked = actifAuDepart
-        setPadding(8, 24, 8, 24)
-        layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        val actifInactif = arrayOf(
-            intArrayOf(android.R.attr.state_checked),
-            intArrayOf(-android.R.attr.state_checked)
-        )
-        thumbTintList = android.content.res.ColorStateList(
-            actifInactif,
-            intArrayOf(Color.parseColor("#0080FF"), Color.parseColor("#BDBDBD"))
-        )
-        trackTintList = android.content.res.ColorStateList(
-            actifInactif,
-            intArrayOf(Color.parseColor("#90CAF9"), Color.parseColor("#757575"))
-        )
-        setOnCheckedChangeListener { _, coche ->
-            onChange(coche)
-            Log.d("SettingsActivity", "Réglage « $libelle » : $coche")
-        }
-    }
-
     fun createAboutContent(): LinearLayout {
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -1697,11 +1612,6 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
         
-        // Réglages en tête : quelqu'un que la vibration gêne cherche un
-        // interrupteur, pas un texte de présentation.
-        mainLayout.addView(createKeyboardSettingsCard())
-        mainLayout.addView(createSpacing(16))
-
         // Mission
         val missionCard = createCard("#FFFFFF")
         
