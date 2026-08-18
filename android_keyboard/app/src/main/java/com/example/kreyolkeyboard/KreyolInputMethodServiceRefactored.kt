@@ -78,6 +78,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // « ka » ou « ki » aussi larges que celles des mots longs. La valeur est
         // fixée ici pour que la taille de cible ne dépende plus d'un défaut de
         // thème susceptible de changer sans qu'on s'en aperçoive.
+        // Taille du mot proposé dans une puce. Elle valait 14 sp, la plus petite
+        // du clavier : 32 px de glyphe quand une lettre de touche en fait 38,
+        // alors que c'est ce texte que l'on lit pour décider d'accepter une
+        // suggestion. Le fond de la puce mesure 82 px de haut et ne dépend pas
+        // d'elle, il restait donc 50 px inutilisés autour du mot. À 18 sp les
+        // glyphes rejoignent ceux des touches, et un mot long tient encore dans
+        // la rangée réduite du paysage (38 dp).
+        private const val SUGGESTION_TEXT_SIZE_SP = 18f
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -787,7 +795,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private fun addSuggestionChip(container: LinearLayout, bilingualSuggestion: BilingualSuggestion) {
         val suggestionButton = Button(this).apply {
             text = bilingualSuggestion.word
-            textSize = 14f
+            textSize = SUGGESTION_TEXT_SIZE_SP
             setTextColor(KeyboardColors.CHIP_TEXT)
 
             val bgColor = bilingualSuggestion.getColor()

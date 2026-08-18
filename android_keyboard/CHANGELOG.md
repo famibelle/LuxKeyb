@@ -5,6 +5,14 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.4] - 2026-08-19
+
+### 💬 Les mots proposés se lisent enfin d'un coup d'œil
+
+Le texte des puces de suggestions était le plus petit du clavier, plus petit encore que les lettres des touches, alors que c'est justement ce qu'on lit pour décider d'accepter un mot. Il grandit d'un quart et atteint la taille des lettres du clavier.
+
+Rien ne bouge autour : la puce garde sa taille, les trois propositions tiennent toujours côte à côte, et un mot long reste entier même en paysage, où la rangée est plus basse.
+
 ## [10.12.3] - 2026-08-19
 
 ### 🔤 La touche « 123 » se réaligne, et les lettres grandissent encore
