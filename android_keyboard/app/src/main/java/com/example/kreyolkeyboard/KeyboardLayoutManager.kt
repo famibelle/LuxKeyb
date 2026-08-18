@@ -50,7 +50,13 @@ class KeyboardLayoutManager(private val context: Context) {
         // environ 62 px, presque une fois et demie plus grandes. Proportionnelle
         // comme le padding des icônes, pour ne pas déborder de la touche réduite
         // en paysage (32 dp), où une taille absolue ne laisserait pas la place.
-        private const val KEY_TEXT_HEIGHT_RATIO = 0.52f
+        //
+        // Ce qui borne ce rapport est la largeur, pas la hauteur : les jambages
+        // passent encore à 0,72 même en paysage, mais le "m" y occupe 78 % de la
+        // largeur de touche (mesuré sur un Galaxy A15) et vient toucher les
+        // aperçus d'appui long des coins, plus encore sur un écran étroit. À
+        // 0,62 il en occupe 66 %, sans collision.
+        private const val KEY_TEXT_HEIGHT_RATIO = 0.62f
         // Les libellés de plusieurs caractères ("123", "ABC", "Potomitan™") sont
         // contraints par la largeur de la touche, pas par sa hauteur : les
         // agrandir les ferait tronquer. Ce rapport reprend leur taille d'avant
@@ -264,6 +270,13 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createKeyboardRow(keys: Array<String>): LinearLayout {
         val rowLayout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
+            // Un LinearLayout horizontal aligne par défaut ses enfants sur la
+            // ligne de base de leur texte : une touche au libellé plus petit
+            // que ses voisines se retrouve poussée vers le bas pour que les
+            // deux lignes de base coïncident. C'est ce qui décalait « 123 » et
+            // « ABC », seuls libellés à taille réduite de leur rangée. Les
+            // touches doivent s'aligner sur leur cadre, pas sur leur texte.
+            isBaselineAligned = false
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

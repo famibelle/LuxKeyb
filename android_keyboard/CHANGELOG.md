@@ -5,6 +5,14 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.3] - 2026-08-19
+
+### 🔤 La touche « 123 » se réaligne, et les lettres grandissent encore
+
+La touche « 123 » flottait quelques pixels plus bas que ses voisines de la rangée du bas, un défaut discret qui s'était accentué avec les lettres agrandies de la version précédente. En cause, une règle d'affichage d'Android : dans une rangée, les touches s'alignaient sur la ligne d'écriture de leur libellé plutôt que sur leur cadre, si bien qu'un libellé écrit plus petit que les autres, comme « 123 » ou « ABC », se retrouvait poussé vers le bas. Les touches s'alignent maintenant sur leur cadre.
+
+Les lettres gagnent au passage 19 % de hauteur supplémentaire. La marge restante a été mesurée palier par palier sur un Galaxy A15 : au-delà, c'est la largeur des touches qui manque, le « m » venant toucher les aperçus d'appui long affichés dans les coins.
+
 ## [10.12.2] - 2026-08-18
 
 ### 🔠 Des lettres plus grandes sur les touches
