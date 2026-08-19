@@ -796,6 +796,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val suggestionButton = Button(this).apply {
             text = bilingualSuggestion.word
             textSize = SUGGESTION_TEXT_SIZE_SP
+            // Sans cela, la ligne réserve au-dessus et au-dessous du mot les
+            // parties de la police qu'aucune lettre latine n'atteint, et comme
+            // cette réserve est plus épaisse en haut qu'en bas, le mot centré
+            // paraît posé trop bas dans sa puce (mesuré : 29 px de vide au-dessus
+            // contre 14 en dessous).
+            includeFontPadding = false
             setTextColor(KeyboardColors.CHIP_TEXT)
 
             val bgColor = bilingualSuggestion.getColor()

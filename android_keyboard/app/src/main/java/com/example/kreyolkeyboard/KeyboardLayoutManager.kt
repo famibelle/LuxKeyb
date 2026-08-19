@@ -62,6 +62,19 @@ class KeyboardLayoutManager(private val context: Context) {
         // agrandir les ferait tronquer. Ce rapport reprend leur taille d'avant
         // (16 sp × 0,75) rapportée aux 48 dp de la hauteur nominale.
         private const val WIDE_LABEL_TEXT_RATIO = 0.28f
+        // La hauteur ne peut pas commander seule : une touche est plus haute que
+        // large, et un glyphe large finit par déborder puis se faire remplacer
+        // par une ellipse. Ces rapports plafonnent la police à une part de la
+        // largeur de touche. 0,90 pour un libellé latin, dont la lettre la plus
+        // large ("m") n'occupe que 0,9 em, ce qui ne mord qu'au-delà des écrans
+        // étroits ; 0,77 pour l'emoji de la touche 😀, dessiné dans un carré
+        // d'environ 1,2 em, qui réclamait plus que sa touche dès la 10.12.3 et
+        // s'affichait "…" (signalé le 19/08/2026).
+        private const val LABEL_WIDTH_RATIO = 0.90f
+        private const val EMOJI_WIDTH_RATIO = 0.77f
+        // Padding latéral du bloc de touches, retiré de la largeur d'écran pour
+        // savoir ce qui revient réellement à chaque touche.
+        private const val KEYBOARD_SIDE_PADDING_DP = 8
         private const val HINT_TEXT_SIZE_SP = 8f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
@@ -143,6 +156,18 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
+     * Largeur que la rangée accorde à une touche, marges déduites. Pendant du
+     * calcul de hauteur ci-dessus : la taille du libellé se plafonne dessus,
+     * sans quoi un glyphe large déborde d'une touche étroite.
+     */
+    private fun keyWidthPx(weight: Float, totalWeight: Float): Int {
+        val disponible = context.resources.displayMetrics.widthPixels -
+            dpToPx(KEYBOARD_SIDE_PADDING_DP) * 2
+        val part = (disponible * weight / totalWeight).toInt()
+        return (part - dpToPx(BUTTON_MARGIN_DP) * 2).coerceAtLeast(1)
+    }
+
+    /**
      * Crée le layout principal du clavier avec toutes les rangées
      */
     fun createKeyboardLayout(): LinearLayout {
@@ -152,8 +177,8 @@ class KeyboardLayoutManager(private val context: Context) {
         val mainLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
-                dpToPx(8), verticalPaddingPx,
-                dpToPx(8), verticalPaddingPx
+                dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx,
+                dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx
             )
         }
         
@@ -397,7 +422,16 @@ class KeyboardLayoutManager(private val context: Context) {
                 } else {
                     KEY_TEXT_HEIGHT_RATIO
                 }
-                setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * labelRatio)
+                val widthRatio = if (key == "EMOJI") EMOJI_WIDTH_RATIO else LABEL_WIDTH_RATIO
+                val taillePx = minOf(
+                    keyHeightPx() * labelRatio,
+                    keyWidthPx(getKeyWeight(key), totalWeight) * widthRatio
+                )
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, taillePx)
+                // Même raison que pour les puces de suggestion : la réserve de
+                // police au-dessus de la lettre est plus épaisse que celle du
+                // dessous, ce qui pose le caractère trop bas dans sa touche.
+                includeFontPadding = false
                 setTypeface(typeface, Typeface.BOLD)
                 // Le style Button par défaut apporte 30 px de padding sur chaque
                 // bord, hérités de son fond d'origine. L'apparence des touches

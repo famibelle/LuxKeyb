@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.5] - 2026-08-19
+
+### 😀 La touche emoji réapparaît
+
+Elle affichait « … » à la place du visage souriant. La taille des caractères ne tenait compte que de la hauteur de la touche depuis la 10.12.2, or un emoji est dessiné dans un carré, bien plus large qu'une lettre : il réclamait plus de place que sa touche n'en offrait, et Android le remplaçait alors par des points de suspension. La taille des libellés tient désormais compte de la largeur de la touche autant que de sa hauteur, ce qui protège aussi les lettres sur les téléphones à écran étroit.
+
+### 💬 Les mots des suggestions bien au milieu de leur puce
+
+Le mot proposé paraissait posé trop bas dans sa puce. Une ligne de texte réserve au-dessus et au-dessous d'elle la place des accents et des jambages les plus extrêmes de la police, que le français n'atteint jamais, et cette réserve est plus épaisse en haut. Elle n'est plus comptée : le mot retrouve le milieu de sa puce, et les lettres celui de leurs touches.
+
 ## [10.12.4] - 2026-08-19
 
 ### 💬 Les mots proposés se lisent enfin d'un coup d'œil
