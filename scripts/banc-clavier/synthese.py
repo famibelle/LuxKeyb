@@ -46,8 +46,23 @@ def main(dossier):
         print(f"{nom:<{largeur}} {etat}")
         for n, d in echecs:
             print(f"{'':<{largeur}}   → {n} : {d}")
+    # Une capture absente sortait du tableau sans un mot : l'appareil paraissait
+    # simplement ne pas exister, et « 0 échec » couvrait une orientation jamais
+    # vue. Les fichiers d'information, écrits pour tout AVD ayant démarré, disent
+    # ce qui aurait dû être là.
+    attendus = {os.path.basename(f)[:-len("_info.txt")]
+                for f in glob.glob(f"{dossier}/*_info.txt")}
+    presents = {n for n, _ in lignes}
+    manquants = sorted(f"{avd}_{o}" for avd in attendus for o in ("portrait", "paysage")
+                       if f"{avd}_{o}" not in presents)
+    for nom in manquants:
+        print(f"{nom:<{largeur}} MANQUANTE")
+
     print()
-    print(f"{len(lignes)} captures analysées, {echecs_total} contrôle(s) en échec")
+    resume = f"{len(lignes)} captures analysées, {echecs_total} contrôle(s) en échec"
+    if manquants:
+        resume += f", {len(manquants)} capture(s) manquante(s)"
+    print(resume)
 
 
 if __name__ == "__main__":

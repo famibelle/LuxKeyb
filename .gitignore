@@ -195,3 +195,4 @@ Corpus/LaJamaïqueestmonAfriqueGertyDAMBURY.txt
 Utilitaire/AdapationPourHuggingFace.py
 Corpus/
 NETTOYAGE_SYSTEMES_NIVEAUX.md
+scripts/banc-clavier/__pycache__/

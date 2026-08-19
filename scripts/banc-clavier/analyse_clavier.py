@@ -85,10 +85,19 @@ def analyse(chemin, y_ime):
     px, w, h, y0 = charger(chemin, y_ime)
     fond, bandes = rangees(px, w, h, y0)
     res = []
-    if len(bandes) < 2:
-        return [("rangées", "ECHEC", f"{len(bandes)} rangée(s) détectée(s)")]
+    # Sur un écran peu dense en paysage, le fond des touches de lettres est
+    # exactement celui du clavier et seules leurs bordures ressortent : les
+    # rangées de lettres n'y forment plus de bande continue et la détection
+    # n'en rapporte qu'une, la rangée du bas, seule colorée. Exiger deux bandes
+    # y faisait échouer l'analyse sur un clavier pourtant intact (constaté sur
+    # kreyol_a05, vérifié à l'œil). Tout se déduisant de la rangée du bas, une
+    # seule bande suffit, pourvu qu'elle ait la taille d'une rangée de touches.
+    hautes = [b for b in bandes if b[1] - b[0] > 30]
+    if not hautes:
+        return [("rangées", "ECHEC",
+                 f"{len(bandes)} bande(s), aucune à la taille d'une rangée")]
 
-    derniere = bandes[-1] if bandes[-1][1] - bandes[-1][0] > 30 else bandes[-2]
+    derniere = hautes[-1]
     hauteur_rangee = derniere[1] - derniere[0] + 1
     milieu = (derniere[0] + derniere[1]) // 2
 
@@ -150,15 +159,38 @@ def analyse(chemin, y_ime):
     # Libellés qui portent du texte : la touche de mode (première touche
     # colorée, « 123 ») et la barre d'espace (la plus large). Une ellipse « … »
     # ne tiendrait que sur une hauteur ou une largeur dérisoire. Les
-    # ponctuations sont écartées : une virgule est petite par nature.
+    # ponctuations sont écartées : une virgule est petite par nature. Les deux
+    # libellés ne se lisent pas de la même façon : « 123 » est un blanc franc,
+    # la signature de l'espace un blanc très dilué (voir encre_signature).
     def blanc(a, b):
-        # Le libellé de la barre d'espace est un blanc semi-transparent : on ne
-        # cherche donc pas du blanc pur mais ce qui tranche sur le fond de la
-        # touche, relevé dans son coin supérieur gauche, à l'écart du texte.
+        # Libellé blanc franc, cherché comme ce qui tranche sur le fond de la
+        # touche, relevé près de son bord supérieur, à l'écart du texte.
         ref = sum(px[(a + b) // 2, derniere[0] + hauteur_rangee // 8]) / 3
         return [(x, y) for y in range(derniere[0] + 3, derniere[1] - 2)
                 for x in range(a + 5, b - 4)
                 if sum(px[x, y]) / 3 > ref + 45]
+
+    def encre_signature(a, b):
+        """Colonnes portant l'encre de « Potomitan™ » sur la barre d'espace.
+
+        Depuis la 10.12.9 cette signature est peinte en blanc à 0x73 sur le
+        dégradé bleu de la touche : trop pâle pour le seuil de blanc(), qui ne
+        relevait plus alors que les deux bords de la touche et aurait donc
+        laissé passer une signature réduite à « … » ou absente. On mesure ici
+        l'écart au fond de la rangée elle-même, pris par sa médiane, qui suit
+        le dégradé. La bande centrale seule est lue : l'indice 🌐 loge dans un
+        coin et gonflerait la largeur mesurée.
+        """
+        haut = derniere[0] + int(hauteur_rangee * 0.28)
+        bas = derniere[1] - int(hauteur_rangee * 0.28)
+        x0, x1 = a + 10, b - 9
+        colonnes = []
+        for y in range(haut, bas):
+            rang = sorted(sum(px[x, y]) / 3 for x in range(x0, x1))
+            fond_y = rang[len(rang) // 2]
+            colonnes += [x for x in range(x0, x1)
+                         if sum(px[x, y]) / 3 > fond_y + 18]
+        return colonnes
 
     if segs:
         a, b = segs[0]
@@ -167,11 +199,18 @@ def analyse(chemin, y_ime):
         res.append(("libellé de la touche 123", "OK" if part > 0.18 else "ECHEC",
                     f"occupe {part:.0%} de la hauteur de touche"))
 
+        # Rapportée à la largeur de la touche, la signature paraît deux fois
+        # plus courte en paysage (14 %) qu'en portrait (47 %) : la touche s'y
+        # étire quand le libellé, lui, se dimensionne sur la hauteur. Rapportée
+        # à la hauteur de rangée elle vaut 1,1 partout, portrait comme paysage,
+        # ce qui en fait l'étalon stable. Une ellipse « … » tomberait à 0,2.
         a, b = max(segs, key=lambda s: s[1] - s[0])
-        pts = blanc(a, b)
-        part = ((max(p[0] for p in pts) - min(p[0] for p in pts) + 1) / (b - a + 1)) if pts else 0
-        res.append(("libellé de la barre d'espace", "OK" if part > 0.25 else "ECHEC",
-                    f"occupe {part:.0%} de la largeur de la touche"))
+        cols = encre_signature(a, b)
+        largeur_encre = (max(cols) - min(cols) + 1) if cols else 0
+        rapport = largeur_encre / hauteur_rangee
+        res.append(("libellé de la barre d'espace", "OK" if rapport > 0.55 else "ECHEC",
+                    f"encre large de {rapport:.2f} hauteur de touche "
+                    f"({largeur_encre} px, 1,1 attendu)"))
 
     # Rangées de lettres : les compter par leur fond est illusoire, il se
     # confond avec celui du clavier, et le découpage en rangées est fragile en

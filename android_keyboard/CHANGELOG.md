@@ -5,6 +5,49 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.10] - 2026-08-19
+
+### 🧪 Le banc d'affichage cesse de mentir sur le paysage
+
+Aucun changement dans le clavier. Cette version corrige l'outillage qui le vérifie,
+qui déclarait dix appareils sur dix-huit testés en paysage alors que la capture
+analysée était un portrait, aux dimensions exactes de la capture portrait du même
+appareil. Trois causes, toutes constatées sur émulateur.
+
+Le banc n'acceptait que `ROTATION_90`, quand le système sert le paysage
+indifféremment en 90 ou en 270. La rotation était par ailleurs demandée pendant que
+le launcher, verrouillé en portrait, tenait encore l'écran : elle est bien
+enregistrée mais le display la refuse, et rien ne la rejoue ensuite, Android ne
+réévaluant l'orientation que sur événement. Enfin le verrou lui-même n'est pas
+immédiat : `accelerometer_rotation` passe à 0 dans les réglages tandis que le
+gestionnaire de fenêtres reste un temps en `USER_ROTATION_FREE`, où la rotation
+demandée est simplement ignorée.
+
+Le banc attend désormais la résumption réelle de l'activité, puis le verrou effectif,
+avant de demander la rotation en repassant par l'orientation opposée, seule façon de
+déclencher une réévaluation. Surtout, il refuse là où il se taisait : l'appareil est
+abandonné si la rotation n'est pas obtenue, et la capture jetée si la forme de
+l'image dément son nom. La synthèse affiche les captures manquantes au lieu de les
+omettre du tableau, un « 0 échec » ne pouvant plus reposer sur une orientation
+jamais vue.
+
+### 🌐 La signature discrète redevient mesurable
+
+Peinte depuis la 10.12.9 en blanc très dilué sur le dégradé de la barre d'espace,
+« Potomitan™ » était devenue trop pâle pour le seuil de blanc franc du banc, qui ne
+relevait plus que les bords de la touche et aurait donc laissé passer une signature
+réduite à « … » ou absente. Elle est maintenant mesurée par son écart au fond de la
+rangée, et rapportée à la hauteur de touche plutôt qu'à la largeur de la barre
+d'espace : ce rapport vaut 1,1 en portrait comme en paysage, quand le précédent
+variait du simple au triple selon l'orientation.
+
+Le contrôle a été étalonné contre deux témoins fabriqués depuis une capture réelle :
+signature effacée donne 0,00, réduite à « … » donne 0,17, intacte donne 1,06 à 1,14
+selon l'appareil, pour un seuil placé à 0,55.
+
+Campagne complète sur les dix-huit appareils testables, portrait et paysage : trente-six
+captures, aucun contrôle en échec.
+
 ## [10.12.9] - 2026-08-19
 
 ### ⏎ La touche entrée retrouve sa taille
