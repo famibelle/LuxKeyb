@@ -355,7 +355,15 @@ class KeyboardLayoutManager(private val context: Context) {
                 val iconPaddingRatio = when (key) {
                     "⏎" -> 8f / BUTTON_HEIGHT_DP  // Moins de padding pour l'icône Enter (plus grande)
                     "⌫" -> 10f / BUTTON_HEIGHT_DP // Padding moyen pour Backspace
-                    else -> 12f / BUTTON_HEIGHT_DP // Padding normal pour Shift
+                    // Shift : 12 dp jusqu'en 10.12.6, ce qui le faisait paraître
+                    // plus petit que ses voisines une fois les lettres agrandies
+                    // (36 px de flèche contre 51 pour la corbeille et 54 pour un
+                    // « b », mesurés sur un Galaxy A15). Deux causes cumulées :
+                    // le plus fort padding des trois icônes, et un tracé qui
+                    // n'occupe que 62 % de la hauteur de son cadre là où celui
+                    // de la corbeille en remplit près de 80. Le padding
+                    // compense la différence de tracé.
+                    else -> 6f / BUTTON_HEIGHT_DP
                 }
                 val iconPadding = (keyHeightPx() * iconPaddingRatio).toInt()
                 setPadding(iconPadding, iconPadding, iconPadding, iconPadding)

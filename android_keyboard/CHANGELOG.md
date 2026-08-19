@@ -5,6 +5,12 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.7] - 2026-08-19
+
+### ⇧ La touche majuscule reprend sa taille
+
+Sa flèche paraissait plus petite que le reste du clavier, et elle l'était : 36 pixels de haut quand la corbeille en fait 51 et un « b » 54. Elle passait inaperçue tant que les lettres étaient petites, l'écart n'apparaissant qu'une fois celles-ci agrandies. La flèche retrouve le gabarit de ses voisines, dans ses trois états : au repos, en majuscule ponctuelle et en verrouillage.
+
 ## [10.12.6] - 2026-08-19
 
 ### 🧪 Un banc d'essai pour l'affichage des touches
