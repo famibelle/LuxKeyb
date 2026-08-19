@@ -1,8 +1,48 @@
 {
   "production_version": "10.6.0",
-  "latest_version": "10.12.4",
+  "latest_version": "10.12.6",
   "as_of": "2026-08-19",
   "features": [
+    {
+      "version": "10.12.5",
+      "emoji": "😀",
+      "title": "La touche emoji réapparaît",
+      "description": "Elle affichait « … » à la place du visage souriant : agrandi avec les lettres, l'emoji réclamait plus de place que sa touche n'en offrait, et Android le remplaçait alors par des points de suspension. La taille des caractères tient désormais compte de la largeur des touches autant que de leur hauteur, y compris sur les téléphones à écran étroit.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.12.5",
+      "curated": true
+    },
+    {
+      "version": "10.12.5",
+      "emoji": "💬",
+      "title": "Les mots proposés bien au milieu de leur puce",
+      "description": "Le mot suggéré paraissait posé trop bas dans sa pastille colorée : la ligne réservait au-dessus de lui la place d'accents que le français n'écrit jamais. Il retrouve le milieu de sa puce, et les lettres celui de leurs touches.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.12.5",
+      "curated": true
+    },
+    {
+      "version": "10.12.4",
+      "emoji": "🔎",
+      "title": "Les mots proposés se lisent d'un coup d'œil",
+      "description": "Le texte des propositions était le plus petit du clavier, plus petit encore que les lettres des touches, alors que c'est précisément ce qu'on lit pour décider d'accepter un mot. Il grandit d'un quart et atteint la taille des lettres, sans que la pastille change de taille ni que les trois propositions cessent de tenir côte à côte.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.12.4",
+      "curated": true
+    },
+    {
+      "version": "10.12.3",
+      "emoji": "📐",
+      "title": "La touche 123 retrouve sa place",
+      "description": "Elle flottait quelques pixels plus bas que ses voisines de la rangée du bas. Les touches s'alignaient sur la ligne d'écriture de leur libellé plutôt que sur leur cadre, si bien qu'un libellé écrit plus petit que les autres se retrouvait poussé vers le bas. Les neuf touches de la rangée sont de nouveau à la même hauteur.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.12.3",
+      "curated": true
+    },
+    {
+      "version": "10.12.2",
+      "emoji": "🔠",
+      "title": "Des lettres à la taille de leurs touches",
+      "description": "Les lettres n'occupaient qu'un peu plus du tiers de la hauteur de leur touche, nettement moins que sur les autres claviers du téléphone. Elles gagnent 60 % de hauteur et remplissent maintenant leur touche, sans que le clavier prenne plus de place à l'écran et sans rien perdre en paysage, où les touches sont plus basses.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.12.2",
+      "curated": true
+    },
     {
       "version": "10.12.1",
       "emoji": "⚙️",
