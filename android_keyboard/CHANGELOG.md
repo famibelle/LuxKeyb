@@ -5,6 +5,40 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.8] - 2026-08-19
+
+### ✍️ Les digraphes proposent enfin des mots
+
+Commencer un mot par un digraphe choisi en appui long, « tj », « dj » ou « ch », ne
+donnait aucune suggestion, et l'insérer au milieu d'un mot laissait la barre figée
+sur les propositions du préfixe précédent. Le caractère était bien écrit, mais le
+moteur de suggestions n'était jamais prévenu qu'il venait s'ajouter au mot en cours.
+Taper « t » puis « tj » en appui long propose maintenant tjè, tjwé et tjuit, et un
+accent inséré en cours de mot rafraîchit la liste comme une lettre ordinaire.
+
+### ⌨️ Quatre digraphes retirés de l'appui long
+
+« ng », « ny », « gn » et « gy » disparaissent, ce qui laisse les touches « n » et
+« g » sans appui long. Ils avaient été retenus sur un comptage de leurs occurrences
+n'importe où dans le mot, ce qui ne dit rien de l'utilité d'un raccourci : ces
+quatre-là s'écrivent sans hésitation avec les deux touches voisines, contrairement
+aux caractères accentués absents du clavier. « ch », « dj » et « tj » restent sous
+« c », « d » et « t ».
+
+### 👁️ Les aperçus d'appui long lisibles sur toutes les touches
+
+Ceux des touches « , » et « . » se confondaient avec leur fond orange : leur couleur
+était recopiée du libellé de la touche, blanc, alors que du blanc sur cet orange ne
+dépasse pas 2:1 de contraste. Elle est désormais choisie en comparant les deux encres
+possibles, sombre et claire, contre le fond réel de la touche : l'aperçu passe à
+4,8:1, mesuré sur capture d'écran. Les touches lettres, déjà largement lisibles,
+gardent exactement leur gris discret.
+
+Leur taille suit par ailleurs la hauteur de la touche au lieu de 8 points figés,
+comme les lettres depuis la 10.12.2 : ils en faisaient 24 pixels quand la lettre de
+la même touche en fait 49. Et les aperçus de la touche « o » rejoignent le côté
+droit, où se trouvent ceux de toutes les autres touches.
+
 ## [10.12.7] - 2026-08-19
 
 ### ⇧ La touche majuscule reprend sa taille

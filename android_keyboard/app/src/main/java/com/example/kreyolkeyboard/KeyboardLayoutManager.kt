@@ -75,7 +75,12 @@ class KeyboardLayoutManager(private val context: Context) {
         // Padding latéral du bloc de touches, retiré de la largeur d'écran pour
         // savoir ce qui revient réellement à chaque touche.
         private const val KEYBOARD_SIDE_PADDING_DP = 8
-        private const val HINT_TEXT_SIZE_SP = 8f
+        // Aperçus d'appui long dans les coins des touches. Ils valaient 8 sp
+        // fixes : 24 px sur un HONOR 200, contre 49 px de hauteur pour la
+        // lettre de la même touche depuis que celle-ci suit sa hauteur. Ils
+        // suivent désormais la touche eux aussi, en restant assez discrets pour
+        // ne pas venir toucher la lettre centrale.
+        private const val HINT_TEXT_HEIGHT_RATIO = 0.21f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
 
@@ -479,8 +484,7 @@ class KeyboardLayoutManager(private val context: Context) {
         // Aperçu des options d'appui long dans les coins de la touche (v8.3.0)
         val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
         if (!hints.isNullOrEmpty()) {
-            val onStartSide = accentHandler?.isCornerHintOnStartSide(key) == true
-            return wrapWithLongPressHints(button, hints, onStartSide)
+            return wrapWithLongPressHints(button, hints, key)
         }
 
         // 🌐 Indice visuel : l'appui long sur la barre d'espace change de clavier
@@ -507,7 +511,7 @@ class KeyboardLayoutManager(private val context: Context) {
         )
         val hint = TextView(context).apply {
             text = "🌐"
-            textSize = HINT_TEXT_SIZE_SP + 2f
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * HINT_TEXT_HEIGHT_RATIO * 1.2f)
             setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte Potomitan™
             isClickable = false
             isFocusable = false
@@ -528,36 +532,82 @@ class KeyboardLayoutManager(private val context: Context) {
 
     /**
      * Enveloppe une touche dans un FrameLayout pour superposer, en haut et en
-     * bas d'un même côté (droit par défaut, gauche si onStartSide), un aperçu
-     * des deux premières options d'appui long. La touche d'origine garde
-     * exactement sa zone tactile, son style et son ancrage pour la popup
-     * d'accents (le FrameLayout se contente de prendre sa place dans la
-     * rangée) ; keyboardButtons ne référence jamais ce FrameLayout, seulement la
-     * touche brute qu'il contient.
+     * bas du côté droit, un aperçu des deux premières options d'appui long. La
+     * touche d'origine garde exactement sa zone tactile, son style et son
+     * ancrage pour la popup d'accents (le FrameLayout se contente de prendre sa
+     * place dans la rangée) ; keyboardButtons ne référence jamais ce
+     * FrameLayout, seulement la touche brute qu'il contient.
      */
-    private fun wrapWithLongPressHints(inner: View, hints: List<String>, onStartSide: Boolean): FrameLayout {
+    private fun wrapWithLongPressHints(inner: View, hints: List<String>, key: String): FrameLayout {
         val outerParams = inner.layoutParams
         inner.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT
         )
-        val horizontalGravity = if (onStartSide) Gravity.START else Gravity.END
+
+        val hintColor = hintColorFor(key)
 
         return FrameLayout(context).apply {
             layoutParams = outerParams
             addView(inner)
-            addView(createHintLabel(hints[0], Gravity.TOP or horizontalGravity, onStartSide))
+            addView(createHintLabel(hints[0], Gravity.TOP or Gravity.END, hintColor))
             if (hints.size > 1) {
-                addView(createHintLabel(hints[1], Gravity.BOTTOM or horizontalGravity, onStartSide))
+                addView(createHintLabel(hints[1], Gravity.BOTTOM or Gravity.END, hintColor))
             }
         }
     }
 
-    private fun createHintLabel(hintText: String, gravity: Int, onStartSide: Boolean): TextView {
+    /**
+     * Couleur d'un indice de coin : celle des deux encres, sombre ou blanche,
+     * qui contraste le plus avec le fond de la touche.
+     *
+     * Elle ne peut être ni figée en gris foncé (invisible sur l'orange des
+     * touches « , » et « . »), ni recopiée du libellé : le libellé de ces
+     * touches est blanc, or du blanc sur cet orange plafonne à 2:1 quand du
+     * sombre atteint 5:1. Un fond de milieu de gamme porte mieux une encre
+     * sombre qu'une encre claire, et seul le calcul de contraste le voit.
+     */
+    private fun hintColorFor(key: String): Int {
+        val fond = keyBackgroundColors(key).let { melangerCouleurs(it.first(), it.last()) }
+        val sombre = Color.parseColor("#333333")
+        val encre = if (contraste(sombre, fond) >= contraste(Color.WHITE, fond)) sombre else Color.WHITE
+        // Un fond blanc laisse une marge de contraste telle que l'indice peut
+        // rester discret ; sur un fond coloré cette marge est déjà consommée, et
+        // à cette taille de glyphe l'anti-crénelage en mange encore une part :
+        // mesuré sur capture, l'atténuation y coûtait un point de contraste.
+        val alpha = if (contraste(encre, fond) > 8f) 0x99 else 0xFF
+        return Color.argb(alpha, Color.red(encre), Color.green(encre), Color.blue(encre))
+    }
+
+    /** Moyenne de deux couleurs, pour juger un dégradé sur sa teinte médiane. */
+    private fun melangerCouleurs(a: Int, b: Int): Int = Color.rgb(
+        (Color.red(a) + Color.red(b)) / 2,
+        (Color.green(a) + Color.green(b)) / 2,
+        (Color.blue(a) + Color.blue(b)) / 2
+    )
+
+    /** Rapport de contraste WCAG entre deux couleurs opaques, de 1 à 21. */
+    private fun contraste(a: Int, b: Int): Float {
+        val la = luminanceRelative(a)
+        val lb = luminanceRelative(b)
+        return (maxOf(la, lb) + 0.05f) / (minOf(la, lb) + 0.05f)
+    }
+
+    private fun luminanceRelative(couleur: Int): Float {
+        fun canal(v: Int): Float {
+            val c = v / 255f
+            return if (c <= 0.03928f) c / 12.92f else Math.pow(((c + 0.055f) / 1.055f).toDouble(), 2.4).toFloat()
+        }
+        return 0.2126f * canal(Color.red(couleur)) +
+               0.7152f * canal(Color.green(couleur)) +
+               0.0722f * canal(Color.blue(couleur))
+    }
+
+    private fun createHintLabel(hintText: String, gravity: Int, textColor: Int): TextView {
         return TextView(context).apply {
             text = hintText
-            textSize = HINT_TEXT_SIZE_SP
-            setTextColor(Color.parseColor("#99333333"))
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * HINT_TEXT_HEIGHT_RATIO)
+            setTextColor(textColor)
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -565,15 +615,58 @@ class KeyboardLayoutManager(private val context: Context) {
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 gravity
             ).apply {
-                if (onStartSide) {
-                    setMargins(dpToPx(3), dpToPx(2), 0, dpToPx(2))
-                } else {
-                    setMargins(0, dpToPx(2), dpToPx(3), dpToPx(2))
-                }
+                setMargins(0, dpToPx(2), dpToPx(3), dpToPx(2))
             }
         }
     }
     
+    /**
+     * Dégradé de fond d'une touche, du haut vers le bas. Extrait de
+     * applyGuadeloupeStyleToView() pour que hintColorFor() puisse interroger la
+     * même source : la lisibilité d'un indice de coin se juge contre le fond sur
+     * lequel il est posé, pas contre le libellé de la touche.
+     */
+    private fun keyBackgroundColors(key: String): IntArray {
+        return when (key) {
+            "⇧" -> when {
+                // Touche Shift avec nuance de blanc/gris
+                isCapsLock -> intArrayOf(Color.parseColor("#E8E8E8"), Color.parseColor("#D0D0D0")) // Gris moyen activé
+                isCapitalMode -> intArrayOf(Color.parseColor("#F0F0F0"), Color.parseColor("#E0E0E0")) // Gris clair actif
+                else -> intArrayOf(Color.parseColor("#FFFFFF"), Color.parseColor("#F8F8F8")) // Blanc neutre
+            }
+            // Touche Supprimer avec couleur semi-transparente
+            "⌫" -> intArrayOf(
+                Color.parseColor("#CCFFFFFF"), // Blanc semi-transparent
+                Color.parseColor("#C0F0F0F0")  // Gris très clair semi-transparent
+            )
+            // Touche Entrée et touches de mode avec vert tropical
+            "⏎", "123", "ABC", "EMOJI" -> intArrayOf(
+                Color.parseColor("#00C853"), // Vert tropical vif
+                Color.parseColor("#00A843")  // Vert tropical foncé
+            )
+            // Touches virgule, point, apostrophe et trait d'union avec orange caraïbe
+            ",", ".", "'", "-" -> intArrayOf(
+                Color.parseColor("#FF8C00"), // Orange caraïbe vif
+                Color.parseColor("#FF7000")  // Orange caraïbe foncé
+            )
+            // Touches créoles avec nuance de blanc/gris
+            "à", "è", "ò", "é", "ù", "ì", "ç" -> intArrayOf(
+                Color.parseColor("#FFFFFF"), // Blanc
+                Color.parseColor("#F8F8F8")  // Blanc cassé
+            )
+            // Barre d'espace avec bleu caraïbe
+            " " -> intArrayOf(
+                Color.parseColor("#1E90FF"), // Bleu caraïbe
+                Color.parseColor("#0000FF")  // Bleu pour dégradé
+            )
+            // Touches normales avec gradient blanc/gris
+            else -> intArrayOf(
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#F5F5F5")
+            )
+        }
+    }
+
     /**
      * Applique le style visuel spécifique à la Guadeloupe (supporte Button et ImageButton)
      */
@@ -581,74 +674,8 @@ class KeyboardLayoutManager(private val context: Context) {
         val drawable = GradientDrawable().apply {
             cornerRadius = dpToPx(CORNER_RADIUS_DP.toInt()).toFloat()
             
-            when (key) {
-                "⇧" -> {
-                    // Touche Shift avec nuance de blanc/gris
-                    val colors = when {
-                        isCapsLock -> intArrayOf(Color.parseColor("#E8E8E8"), Color.parseColor("#D0D0D0")) // Gris moyen activé
-                        isCapitalMode -> intArrayOf(Color.parseColor("#F0F0F0"), Color.parseColor("#E0E0E0")) // Gris clair actif
-                        else -> intArrayOf(Color.parseColor("#FFFFFF"), Color.parseColor("#F8F8F8")) // Blanc neutre
-                    }
-                    setColors(colors)
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "⌫" -> {
-                    // Touche Supprimer avec couleur semi-transparente
-                    setColors(intArrayOf(
-                        Color.parseColor("#CCFFFFFF"), // Blanc semi-transparent
-                        Color.parseColor("#C0F0F0F0")  // Gris très clair semi-transparent
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "⏎" -> {
-                    // Touche Entrée avec vert tropical
-                    setColors(intArrayOf(
-                        Color.parseColor("#00C853"), // Vert tropical vif
-                        Color.parseColor("#00A843")  // Vert tropical foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                ",", ".", "'", "-" -> {
-                    // Touches virgule, point, apostrophe et trait d'union avec orange caraïbe
-                    setColors(intArrayOf(
-                        Color.parseColor("#FF8C00"), // Orange caraïbe vif
-                        Color.parseColor("#FF7000")  // Orange caraïbe foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "123", "ABC", "EMOJI" -> {
-                    // Touches de mode avec vert tropical
-                    setColors(intArrayOf(
-                        Color.parseColor("#00C853"), // Vert tropical vif
-                        Color.parseColor("#00A843")  // Vert tropical foncé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                "à", "è", "ò", "é", "ù", "ì", "ç" -> {
-                    // Touches créoles avec nuance de blanc/gris
-                    setColors(intArrayOf(
-                        Color.parseColor("#FFFFFF"), // Blanc
-                        Color.parseColor("#F8F8F8")  // Blanc cassé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                " " -> {
-                    // Barre d'espace avec bleu caraïbe
-                    setColors(intArrayOf(
-                        Color.parseColor("#1E90FF"), // Bleu caraïbe
-                        Color.parseColor("#0000FF")  // Bleu pour dégradé
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-                else -> {
-                    // Touches normales avec gradient blanc/gris
-                    setColors(intArrayOf(
-                        Color.parseColor("#FFFFFF"),
-                        Color.parseColor("#F5F5F5")
-                    ))
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM
-                }
-            }
+            setColors(keyBackgroundColors(key))
+            orientation = GradientDrawable.Orientation.TOP_BOTTOM
             
             // Bordure subtile
             setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))

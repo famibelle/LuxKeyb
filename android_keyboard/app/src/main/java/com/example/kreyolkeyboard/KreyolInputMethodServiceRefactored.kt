@@ -639,7 +639,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             if (accent.all { it.isLetter() }) {
                 val currentWord = inputProcessor.getCurrentWord()
                 val updatedWord = currentWord + accent
-                inputProcessor.updateCurrentWordSilently(updatedWord)
+                // setCurrentWord() et non une mise à jour muette : c'est le
+                // rappel onWordChanged() qui régénère les suggestions, exactement
+                // comme pour une lettre tapée normalement. Sans lui, un mot
+                // commencé par un digraphe choisi en appui long ("tj", "dj",
+                // "ch"...) n'obtenait jamais de propositions.
+                inputProcessor.setCurrentWord(updatedWord)
                 Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
             } else {
                 inputProcessor.finalizeCurrentWordFromEmoji()

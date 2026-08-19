@@ -52,24 +52,23 @@ class AccentHandler(private val context: Context) {
     // é (86 743, 1603 mots) > è (45 490, 992 mots) > ê (15, 1 mot).
     // v8.7.0 (suite) : ò rejoint l'appui long sur "o" (déjà touche dédiée par
     // ailleurs, même logique que é/è sur "e") ; ordre choisi ò, ô, ó, œ.
-    // v8.7.3 : trois digraphes GEREC manquants ajoutés, sur la base d'un
-    // comptage des occurrences cumulées (creole_dict.json + french_simple_dict.json) :
-    // "n" gagne "ny" (/ɲ/, 1353 occurrences, 47 mots) en plus de "ng", déjà
-    // plus fréquent que "dj" (74) présent depuis v8.2.0. "g" gagne "gn" (2915,
-    // digraphe français : montagne, campagne) et "gy" (221, variante créole
-    // rare), touche qui n'avait jusqu'ici aucun appui long. "t" gagne "tj"
-    // (/tʃ/, 184) qui complète la série des occlusives palatalisées GEREC
-    // ch/dj/tj/ng aux côtés des touches c/d/n déjà couvertes.
+    // v8.7.3 : digraphes GEREC ajoutés, sur la base d'un comptage des
+    // occurrences cumulées (creole_dict.json + french_simple_dict.json) :
+    // "t" gagne "tj" (/tʃ/, 184) aux côtés de ch et dj déjà couverts par c/d.
+    // v10.12.8 : ng, ny, gn et gy retirés, laissant les touches "n" et "g"
+    // sans appui long. Le comptage de v8.7.3 portait sur les occurrences du
+    // digraphe n'importe où dans le mot, or l'appui long n'est utile qu'aux
+    // endroits où l'on hésite sur la saisie : ces quatre-là s'écrivent sans
+    // difficulté avec les deux touches voisines, contrairement aux caractères
+    // accentués absents du clavier.
     private val accentMap = mapOf(
         "a" to listOf("à", "â"),
         "e" to listOf("é", "è", "ê"),
         "i" to listOf("î", "ï"),
         "o" to listOf("ò", "ô", "ó", "œ"),
         "u" to listOf("ù", "û"),
-        "n" to listOf("ng", "ny"),
         "c" to listOf("ç", "ch"),
         "d" to listOf("dj"),
-        "g" to listOf("gn", "gy"),
         "t" to listOf("tj"),
         // v9.1.0 : "'" n'est plus une touche visible dédiée (0 occurrence dans
         // creole_dict.json) ; rejoint l'appui long sur "," pour libérer une
@@ -87,10 +86,6 @@ class AccentHandler(private val context: Context) {
         "e" to listOf("è", "é"),
         "o" to listOf("ò", "ó")
     )
-
-    // Touches dont les aperçus en coin s'affichent à gauche plutôt qu'à droite
-    // (toute touche absente de cet ensemble garde le coin droit par défaut)
-    private val cornerHintOnStartSide = setOf("o")
 
     // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
     // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =
@@ -406,14 +401,6 @@ class AccentHandler(private val context: Context) {
      */
     fun getCornerHintsForKey(key: String): List<String> {
         return cornerHintOverrides[key.lowercase()] ?: getAccentsForKey(key)
-    }
-
-    /**
-     * Indique si les aperçus en coin de cette touche doivent s'afficher côté
-     * gauche (haut-gauche/bas-gauche) plutôt que côté droit (par défaut)
-     */
-    fun isCornerHintOnStartSide(key: String): Boolean {
-        return key.lowercase() in cornerHintOnStartSide
     }
 
     /**
