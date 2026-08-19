@@ -5,6 +5,27 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.9] - 2026-08-19
+
+### ⏎ La touche entrée retrouve sa taille
+
+Sa flèche était deux fois plus petite que ses voisines : 25 pixels de haut quand la
+corbeille en fait 58 et la flèche majuscule 62. Deux causes se cumulaient. Le dessin
+n'occupait que la moitié de son cadre, et ce vide était agrandi avec lui ; sa touche
+est par ailleurs la plus étroite des trois porteuses d'icône, si bien que sa marge
+intérieure lui coûtait double, en largeur comme en hauteur. Le cadre est recadré sur
+le trait et la marge réduite : la flèche passe à 62 sur 38 pixels, au même niveau que
+le reste de la rangée. Son dessin n'a pas changé.
+
+### 🌐 La signature de la barre d'espace se fait discrète
+
+« Potomitan™ » s'affichait en gras, souligné d'une ombre portée, dans le blanc franc
+et à la taille des libellés « 123 » et « ABC ». Ce sont des traitements faits pour des
+touches qu'on vise du pouce, appliqués à un mot qui n'appelle aucune action. Il garde
+sa place et reste lisible de près, mais passe en graisse normale, sans ombre et à un
+tiers de son contraste précédent. L'indice 🌐 du coin, lui, ne bouge pas : il annonce
+un appui long, la signature non.
+
 ## [10.12.8] - 2026-08-19
 
 ### ✍️ Les digraphes proposent enfin des mots

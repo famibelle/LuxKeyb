@@ -62,6 +62,11 @@ class KeyboardLayoutManager(private val context: Context) {
         // agrandir les ferait tronquer. Ce rapport reprend leur taille d'avant
         // (16 sp × 0,75) rapportée aux 48 dp de la hauteur nominale.
         private const val WIDE_LABEL_TEXT_RATIO = 0.28f
+        // La signature Potomitan™ de la barre d'espace n'est pas une commande :
+        // elle ne s'appuie pas, elle ne se lit qu'une fois. Elle partageait la
+        // taille des libellés de mode ("123", "ABC"), qui eux se visent, ce qui
+        // la posait au même niveau de présence que le reste du clavier.
+        private const val SPACE_LABEL_TEXT_RATIO = 0.22f
         // La hauteur ne peut pas commander seule : une touche est plus haute que
         // large, et un glyphe large finit par déborder puis se faire remplacer
         // par une ellipse. Ces rapports plafonnent la police à une part de la
@@ -358,7 +363,14 @@ class KeyboardLayoutManager(private val context: Context) {
                 // Les rapports reprennent les valeurs d'origine, rapportées aux 48 dp
                 // de la hauteur nominale.
                 val iconPaddingRatio = when (key) {
-                    "⏎" -> 8f / BUTTON_HEIGHT_DP  // Moins de padding pour l'icône Enter (plus grande)
+                    // Entrée : 8 dp jusqu'en 10.12.8. Sa touche est la plus
+                    // étroite des trois porteuses d'icône (poids 1 contre 1,25
+                    // pour shift et retour arrière) et sa flèche la plus large :
+                    // c'est donc la largeur qui borne sa mise à l'échelle, et le
+                    // padding y coûte deux fois, en largeur comme en hauteur.
+                    // Réduit à 4 dp, il laisse la flèche remplir la touche comme
+                    // ses voisines remplissent les leurs.
+                    "⏎" -> 4f / BUTTON_HEIGHT_DP
                     "⌫" -> 10f / BUTTON_HEIGHT_DP // Padding moyen pour Backspace
                     // Shift : 12 dp jusqu'en 10.12.6, ce qui le faisait paraître
                     // plus petit que ses voisines une fois les lettres agrandies
@@ -430,10 +442,10 @@ class KeyboardLayoutManager(private val context: Context) {
                 // touche. Les libellés longs (Potomitan™ sur l'espace, les modes
                 // "123" et "ABC") gardent leur taille réduite, sans quoi ils ne
                 // tiennent plus sur une seule ligne dans une touche étroite.
-                val labelRatio = if (key == " " || key == "123" || key == "ABC") {
-                    WIDE_LABEL_TEXT_RATIO
-                } else {
-                    KEY_TEXT_HEIGHT_RATIO
+                val labelRatio = when (key) {
+                    " " -> SPACE_LABEL_TEXT_RATIO
+                    "123", "ABC" -> WIDE_LABEL_TEXT_RATIO
+                    else -> KEY_TEXT_HEIGHT_RATIO
                 }
                 val widthRatio = if (key == "EMOJI") EMOJI_WIDTH_RATIO else LABEL_WIDTH_RATIO
                 val taillePx = minOf(
@@ -445,7 +457,10 @@ class KeyboardLayoutManager(private val context: Context) {
                 // police au-dessus de la lettre est plus épaisse que celle du
                 // dessous, ce qui pose le caractère trop bas dans sa touche.
                 includeFontPadding = false
-                setTypeface(typeface, Typeface.BOLD)
+                // Le gras sert la visée : il épaissit le glyphe qu'on cherche du
+                // pouce. La signature de l'espace ne se vise pas, elle reste donc
+                // en graisse normale.
+                setTypeface(typeface, if (key == " ") Typeface.NORMAL else Typeface.BOLD)
                 // Le style Button par défaut apporte 30 px de padding sur chaque
                 // bord, hérités de son fond d'origine. L'apparence des touches
                 // vient entièrement du GradientDrawable posé plus bas, et ce
@@ -512,7 +527,9 @@ class KeyboardLayoutManager(private val context: Context) {
         val hint = TextView(context).apply {
             text = "🌐"
             setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * HINT_TEXT_HEIGHT_RATIO * 1.2f)
-            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte Potomitan™
+            // Reste à 0xCC, plus franc que la signature depuis la 10.12.9 : celle-ci
+            // ne dit rien à faire, l'indice si.
+            setTextColor(Color.parseColor("#CCFFFFFF"))
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -690,16 +707,23 @@ class KeyboardLayoutManager(private val context: Context) {
                 ",", ".", "'", "-" -> Color.WHITE // Texte blanc sur fond orange caraïbe
                 "⏎", "123", "ABC", "EMOJI" -> Color.WHITE // Texte blanc sur fond vert tropical
                 "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.parseColor("#333333") // Texte gris foncé sur fond blanc
-                " " -> Color.parseColor("#CCFFFFFF") // Blanc semi-transparent pour Potomitan™ - discret mais lisible
+                // Potomitan™ : 0xCC jusqu'en 10.12.8, soit un blanc encore franc
+                // sur le bleu de l'espace. Ramené à 0x73, le mot reste lisible de
+                // près sans revendiquer le regard pendant la frappe.
+                " " -> Color.parseColor("#73FFFFFF")
                 else -> Color.parseColor("#333333")
             })
             
             // Ombre portée pour l'effet de profondeur
             // setShadowLayer() sous rendu accéléré matériellement est une source connue
             // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
-            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
-            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
+            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter.
+            // L'espace en est exempté : son ombre détourait la signature sur le
+            // bleu et lui rendait la présence que l'alpha vient de lui retirer.
+            if (key != " ") {
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor("#40000000"))
+            }
         }
         
         // Teinte de l'icône pour ImageButton
