@@ -5,6 +5,17 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.6] - 2026-08-19
+
+### 🧪 Un banc d'essai pour l'affichage des touches
+
+Rien ne change dans le clavier. Cette version verse dans le dépôt le banc d'essai
+monté pour la précédente : il démarre chaque téléphone émulé, y installe le
+clavier, l'affiche en portrait puis en paysage et vérifie sur l'image que chaque
+touche est à sa place et que chaque libellé est entier. Les deux défauts corrigés
+en 10.12.5 avaient échappé à toute vérification automatique jusqu'à ce qu'un œil
+humain les remarque ; ils seraient désormais signalés.
+
 ## [10.12.5] - 2026-08-19
 
 ### 😀 La touche emoji réapparaît
