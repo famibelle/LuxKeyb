@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.11] - 2026-08-20
+
+### 🔤 Le mot d'une suggestion tient à nouveau dans sa puce
+
+La taille du texte des puces est demandée en sp : elle suit donc l'échelle de
+police du système, alors que la puce, elle, est en dp et ne bouge pas. Au réglage
+« Grande » d'Android, la ligne devenait plus haute que la puce et `TextView` la
+rognait à hauteur de sa réserve intérieure. Mesuré sur émulateur à l'échelle 1,3 :
+29 px de vide au-dessus du mot contre 16 en dessous, jambages de « j », « q » et
+« g » coupés net. Le mot paraissait posé trop bas dans sa puce alors qu'il était
+simplement trop grand pour elle.
+
+La police est maintenant ramenée à ce que la hauteur de puce peut afficher en
+entier, et seulement quand elle déborde : à l'échelle normale rien ne change, au
+delà le mot reste lisible et complet plutôt que tronqué. La hauteur de ligne est
+lue sur la police elle-même plutôt que sur un ratio écrit en dur. C'est la règle
+déjà appliquée aux touches, dont la police se déduit de la hauteur de touche pour
+la même raison. Vérifié en portrait et en paysage, aux échelles 1,0 et 1,3.
+
+### 🏷️ Les étiquettes KR et FR retrouvent le milieu de leur rangée
+
+Le centrage vertical était posé sur les `LayoutParams` de l'étiquette, alors que
+la vue occupe déjà toute la hauteur de la rangée : il n'avait rien à décaler et le
+texte restait collé en haut, à côté de puces dont le mot, lui, est centré.
+
 ## [10.12.10] - 2026-08-19
 
 ### 🧪 Le banc d'affichage cesse de mentir sur le paysage

@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.app.ActivityManager
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -85,7 +86,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // d'elle, il restait donc 50 px inutilisés autour du mot. À 18 sp les
         // glyphes rejoignent ceux des touches, et un mot long tient encore dans
         // la rangée réduite du paysage (38 dp).
+        // Réserve verticale entre le bord de la barre et la puce, du côté qui
+        // touche l'extérieur (haut de la rangée kréyòl, bas de la rangée
+        // française). Le côté intérieur, lui, porte l'écart entre les deux
+        // rangées : cf. suggestionRowInnerPadDp().
+        private const val SUGGESTION_ROW_OUTER_PAD_DP = 4
         private const val SUGGESTION_TEXT_SIZE_SP = 18f
+        // Réserve verticale à l'intérieur d'une puce, entre le fond arrondi et le
+        // mot. C'est elle qui borne la taille de police réellement affichable :
+        // cf. fitTextToChipHeight().
+        private const val SUGGESTION_CHIP_PADDING_V_DP = 6
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "kreyol_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -442,8 +452,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // padding haut de la rangée française. En paysage cette rangée n'existe
             // pas : rien à séparer, et la hauteur disponible y est trop courte pour
             // la dépenser en vide.
-            val bottomPadDp = if (suggestionRowCount() > 1) SUGGESTION_CHIP_GAP_DP / 2 else 2
-            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(bottomPadDp))
+            setPadding(
+                dpToPx(8),
+                dpToPx(SUGGESTION_ROW_OUTER_PAD_DP),
+                dpToPx(8),
+                dpToPx(suggestionRowInnerPadDp())
+            )
         }
         kreyolRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -476,7 +490,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     rowHeightPx
                 )
                 // Moitié haute de l'intervalle entre les deux rangées, cf. kreyolScroll.
-                setPadding(dpToPx(8), dpToPx(SUGGESTION_CHIP_GAP_DP / 2), dpToPx(8), dpToPx(4))
+                setPadding(
+                    dpToPx(8),
+                    dpToPx(suggestionRowInnerPadDp()),
+                    dpToPx(8),
+                    dpToPx(SUGGESTION_ROW_OUTER_PAD_DP)
+                )
                 visibility = View.INVISIBLE
             }
             frenchRow = LinearLayout(this).apply {
@@ -504,6 +523,52 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     /** Nombre de rangées de suggestions réellement empilées : une seule en paysage. */
     private fun suggestionRowCount(): Int = if (isLandscape()) 1 else 2
+
+    /**
+     * Réserve verticale du côté intérieur d'une rangée : la moitié de l'écart qui
+     * sépare les deux rangées empilées. En paysage il n'y a qu'une rangée, donc
+     * rien à séparer, et la hauteur y est trop courte pour la dépenser en vide.
+     */
+    private fun suggestionRowInnerPadDp(): Int =
+        if (suggestionRowCount() > 1) SUGGESTION_CHIP_GAP_DP / 2 else 2
+
+    /**
+     * Hauteur réellement occupée par une puce : la rangée moins ce que son
+     * conteneur réserve en haut et en bas. Les puces sont en MATCH_PARENT, donc
+     * c'est aussi la place dont dispose le mot qu'elles portent.
+     */
+    private fun suggestionChipHeightPx(): Int =
+        dpToPx(suggestionRowHeightDp()) - dpToPx(SUGGESTION_ROW_OUTER_PAD_DP) - dpToPx(suggestionRowInnerPadDp())
+
+    /**
+     * Ramène la police d'une puce à ce que sa hauteur peut afficher en entier.
+     *
+     * La taille demandée est en sp : elle suit donc l'échelle de police du
+     * système, alors que la puce, elle, est en dp et ne bouge pas. Au réglage
+     * « Grande » d'Android, la ligne de texte devenait plus haute que la puce et
+     * TextView la rognait à hauteur du padding : mesuré sur émulateur à
+     * l'échelle 1,3, il restait 29 px de vide au-dessus du mot contre 16 en
+     * dessous, jambages de « j », « q » et « g » coupés net. Le mot paraissait
+     * posé trop bas dans sa puce alors qu'il était simplement trop grand pour
+     * elle.
+     *
+     * Les touches du clavier règlent le même problème en dérivant leur police de
+     * la hauteur de touche (cf. KeyboardLayoutManager) ; ici on garde la taille
+     * en sp tant qu'elle tient, et on ne la réduit qu'au-delà, pour respecter le
+     * réglage de l'utilisateur aussi loin que la barre le permet.
+     *
+     * La hauteur de ligne se lit sur la police elle-même (ascent/descent, sans
+     * la réserve de police puisque includeFontPadding est désactivé), et non sur
+     * un ratio écrit en dur qui vieillirait mal si la police changeait.
+     */
+    private fun fitTextToChipHeight(view: TextView) {
+        val dispoPx = suggestionChipHeightPx() - 2 * dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+        val metrics = view.paint.fontMetricsInt
+        val lignePx = metrics.descent - metrics.ascent
+        if (lignePx > dispoPx && dispoPx > 0) {
+            view.setTextSize(TypedValue.COMPLEX_UNIT_PX, view.textSize * dispoPx / lignePx)
+        }
+    }
 
     /**
      * Demi-intervalle porté par chaque puce de suggestion. Deux puces voisines
@@ -784,12 +849,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             textSize = 10f
             setTextColor(KeyboardColors.TEXT_SECONDARY)
             setPadding(dpToPx(4), 0, dpToPx(2), 0)
+            // Le centrage vertical se joue ici, sur la vue : la vue occupe toute la
+            // hauteur de la rangée (MATCH_PARENT), donc le layout_gravity posé sur
+            // ses LayoutParams n'a rien à décaler et l'étiquette restait collée en
+            // haut de la rangée, à côté de puces dont le mot, lui, est centré.
+            gravity = android.view.Gravity.CENTER_VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
-            ).apply {
-                gravity = android.view.Gravity.CENTER_VERTICAL
-            }
+            )
         }
         container.addView(groupLabel)
     }
@@ -819,7 +887,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             val colorHex = String.format("#%06X", 0xFFFFFF and bgColor)
             Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': ${bilingualSuggestion.getLanguageName()} → fond $colorHex")
 
-            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            setPadding(
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP),
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+            )
+            // Après le padding, qui borne la place restante pour le mot.
+            fitTextToChipHeight(this)
             // Le son de frappe est joué par KeyFeedback : sans cette ligne,
             // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
             isSoundEffectsEnabled = false
@@ -1066,7 +1141,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 cornerRadius = dpToPx(16).toFloat()
                 setColor(Color.parseColor("#FF8A00"))
             }
-            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            // Même réserve verticale et même garde-fou que les puces de suggestion :
+            // cette puce partage leur rangée, elle doit tenir dans la même hauteur.
+            includeFontPadding = false
+            setPadding(
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP),
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+            )
+            fitTextToChipHeight(this)
             // Le son de frappe est joué par KeyFeedback : sans cette ligne,
             // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
             isSoundEffectsEnabled = false
