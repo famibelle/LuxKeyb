@@ -45,7 +45,7 @@ la plus visible avant troncature sur les petits écrans. 75 caractères.
 *4000 caractères max.*
 
 ```
-Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké an bèl Kréyòl
+Osez le Kréyòl Gwada ! Klavyé Kréyòl le clavier qui aide à maké on bèl Kréyòl
 
 Enfin écrire en kréyòl sans galérer !
 

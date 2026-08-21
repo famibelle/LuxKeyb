@@ -66,7 +66,7 @@ Max Rippon, Robert Fontes, Esnard Boisdur et bien d'autres.
   </a>
 </div>
 
-## Maké an bèl Kréyòl et enfin écrire en kréyòl sans galérer !
+## Maké on bèl Kréyòl et enfin écrire en kréyòl sans galérer !
 
 Essaie-le tout de suite, directement dans ton navigateur, sans rien installer :
 tape un mot, regarde les suggestions kréyòl et français apparaître, découvre
@@ -208,7 +208,7 @@ Le code source est ouvert et public sur
 <!-- footer:start -->
 <footer class="site">
   <div class="footer-cta">
-    <p class="footer-baseline">Maké an bèl Kréyòl asi téléfòn a-w.</p>
+    <p class="footer-baseline">Maké on bèl Kréyòl asi téléfòn a-w.</p>
     <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dpied">📲 Installer, c'est gratuit</a>
   </div>
   <div class="footer-cols">
