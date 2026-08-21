@@ -2,12 +2,12 @@
 
 ## Métadonnées du Corpus
 
-- **Date de génération** : 15 August 2026 à 14:47
+- **Date de génération** : 21 August 2026 à 19:25
 - **Version du pipeline** : 3.0 - Pipeline Unique
 - **Source des données** : Dataset POTOMITAN/PawolKreyol-gfc (Hugging Face)
-- **Nombre de textes** : 2519
-- **Tokens totaux** : 36,480
-- **Types lexicaux** : 5,296
+- **Nombre de textes** : 2520
+- **Tokens totaux** : 36,481
+- **Types lexicaux** : 5,297
 
 ---
 
@@ -15,9 +15,9 @@
 
 ### 1.1 Taille et Couverture
 
-- **Total des tokens** : 36,513
-- **Types lexicaux uniques** : 5,296
-- **Type-Token Ratio (TTR)** : 0.1450
+- **Total des tokens** : 36,514
+- **Types lexicaux uniques** : 5,297
+- **Type-Token Ratio (TTR)** : 0.1451
 - **Richesse lexicale** : Élevée
 
 ## 2. Analyse Morphologique
@@ -30,7 +30,7 @@
 |  3 lettres |    418 |   7.9% ███ |
 |  4 lettres |    728 |  13.7% ██████ |
 |  5 lettres |    925 |  17.5% ████████ |
-|  6 lettres |    930 |  17.6% ████████ |
+|  6 lettres |    931 |  17.6% ████████ |
 |  7 lettres |    721 |  13.6% ██████ |
 |  8 lettres |    529 |  10.0% ████ |
 |  9 lettres |    371 |   7.0% ███ |
@@ -94,7 +94,7 @@
 
 ### 4.1 Distribution de Fréquence (Loi de Zipf)
 
-- **Hapax legomena** (freq=1) : 2,960 mots (55.9%)
+- **Hapax legomena** (freq=1) : 2,961 mots (55.9%)
 - **Dis legomena** (freq=2) : 794 mots (15.0%)
 - **Mots rares** (freq 3-5) : 773 mots
 - **Mots fréquents** (freq 6-20) : 542 mots
@@ -117,7 +117,7 @@
 |  6 | **té** | 726 | 17.42% |
 |  7 | **pa** | 664 | 19.23% |
 |  8 | **yo** | 638 | 20.98% |
-|  9 | **nou** | 633 | 22.72% |
+|  9 | **nou** | 633 | 22.71% |
 | 10 | **ou** | 611 | 24.39% |
 | 11 | **ki** | 548 | 25.89% |
 | 12 | **la** | 481 | 27.21% |
@@ -131,7 +131,7 @@
 | 20 | **pé** | 244 | 34.63% |
 | 21 | **si** | 218 | 35.23% |
 | 22 | **kon** | 214 | 35.82% |
-| 23 | **lè** | 211 | 36.40% |
+| 23 | **lè** | 211 | 36.39% |
 | 24 | **tout** | 206 | 36.96% |
 | 25 | **adan** | 202 | 37.51% |
 | 26 | **mé** | 187 | 38.02% |
@@ -144,7 +144,7 @@
 | 33 | **krab** | 129 | 40.75% |
 | 34 | **kou** | 125 | 41.09% |
 | 35 | **ay** | 113 | 41.40% |
-| 36 | **dé** | 111 | 41.71% |
+| 36 | **dé** | 111 | 41.70% |
 | 37 | **èvè** | 111 | 42.01% |
 | 38 | **ès** | 110 | 42.31% |
 | 39 | **asi** | 109 | 42.61% |
@@ -152,8 +152,8 @@
 | 41 | **épi** | 97 | 43.14% |
 | 42 | **bon** | 97 | 43.41% |
 | 43 | **ja** | 97 | 43.67% |
-| 44 | **rivé** | 95 | 43.94% |
-| 45 | **viktò** | 95 | 44.20% |
+| 44 | **rivé** | 95 | 43.93% |
+| 45 | **viktò** | 95 | 44.19% |
 | 46 | **ba** | 91 | 44.44% |
 | 47 | **tini** | 91 | 44.69% |
 | 48 | **dlo** | 90 | 44.94% |
@@ -263,8 +263,12 @@
 ## 7. Évolution Diachronique du Lexique
 
 - **Mots conservés** : 5,296 (100.0% de l'ancien dictionnaire)
-- **Mots ajoutés** : 0
+- **Mots ajoutés** : 1
 - **Mots supprimés** : 0
+
+### 7.1 Nouveaux Mots Ajoutés (échantillon)
+
+`cadina`
 
 ## 8. Qualité et Validation Linguistique
 
@@ -276,7 +280,7 @@
 
 ## 9. Métriques Linguistiques Avancées
 
-- **Type-Token Ratio (TTR)** : 0.1450
+- **Type-Token Ratio (TTR)** : 0.1451
 - **Entropie lexicale (Shannon)** : 9.34 bits
 - **Diversité lexicale** : Moyenne
 
@@ -284,7 +288,7 @@
 
 ### 10.1 Forces du Corpus
 
-- Couverture lexicale importante (5,296 types)
+- Couverture lexicale importante (5,297 types)
 - Richesse des bigrammes (20,300 patterns)
 - Présence des marqueurs TMA caractéristiques du créole
 

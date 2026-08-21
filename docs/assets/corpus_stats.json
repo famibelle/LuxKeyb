@@ -1,10 +1,10 @@
 {
- "lignes_total": 2620,
+ "lignes_total": 2621,
  "lignes_vides": 122,
- "lignes_utiles": 2498,
- "sources_total": 85,
- "caracteres": 191672,
- "octets_utf8": 208918,
+ "lignes_utiles": 2499,
+ "sources_total": 86,
+ "caracteres": 191678,
+ "octets_utf8": 208924,
  "longueur_entree": {
   "min": 1,
   "max": 42906,
@@ -16,7 +16,7 @@
   {
    "min": 0,
    "max": 10,
-   "n": 604
+   "n": 605
   },
   {
    "min": 10,
@@ -49,14 +49,14 @@
    "n": 43
   }
  ],
- "mots_total": 36480,
- "mots_uniques": 5281,
+ "mots_total": 36481,
+ "mots_uniques": 5282,
  "richesse_lexicale": 0.1448,
  "mots_par_entree": 14.6,
  "bigrammes_uniques": 20300,
  "trigrammes_uniques": 26955,
- "hapax": 2949,
- "hapax_pourcent": 55.8,
+ "hapax": 2950,
+ "hapax_pourcent": 55.9,
  "longueur_mot_moyenne": 3.91,
  "top_mots": [
   {
@@ -353,8 +353,8 @@
   "50": 72,
   "75": 521,
   "90": 1983,
-  "95": 3457,
-  "99": 4917
+  "95": 3458,
+  "99": 4918
  },
  "mots_longs": [
   {
@@ -477,7 +477,7 @@
   },
   {
    "lettres": 6,
-   "mots": 930
+   "mots": 931
   },
   {
    "lettres": 7,
@@ -912,12 +912,12 @@
  "top_lettres": [
   {
    "lettre": "a",
-   "n": 19538,
+   "n": 19540,
    "pourcent": 13.65
   },
   {
    "lettre": "n",
-   "n": 15281,
+   "n": 15282,
    "pourcent": 10.68
   },
   {
@@ -932,7 +932,7 @@
   },
   {
    "lettre": "i",
-   "n": 8445,
+   "n": 8446,
    "pourcent": 5.9
   },
   {
@@ -1136,7 +1136,8 @@
  "dataset": "POTOMITAN/PawolKreyol-gfc",
  "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
  "source_donnees": "huggingface",
- "dataset_revision": "4e49decedd23232a028db23e5354ee02c958c4d9",
- "dataset_revision_parquet": "b66d1029c163432188508f9ce27819ef14beaf6a",
- "dataset_derniere_modification": "2026-08-15T14:45:08.000Z"
+ "parquet_octets": 139485,
+ "dataset_revision": "080a404a5887861145ca6cf0998282df9ef197d1",
+ "dataset_revision_parquet": "cd3134efad67f13751b901ce0140b2cfc71a5f1e",
+ "dataset_derniere_modification": "2026-08-19T18:24:15.000Z"
 }
