@@ -1209,7 +1209,7 @@ class SettingsActivity : AppCompatActivity() {
         
         val testEditText = EditText(this).apply {
             tag = "onboarding_test_field"
-            hint = if (isStep3Locked) "🔒 Verrouillé" else "Koumansé maké an bèl kréyòl isit..."
+            hint = if (isStep3Locked) "🔒 Verrouillé" else "Koumansé maké on bèl kréyòl isit..."
             textSize = 16f
             setPadding(16, 16, 16, 16)
             minHeight = 100
