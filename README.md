@@ -195,7 +195,28 @@ cd KreyolKeyb/android_keyboard
 ./gradlew installDebug
 ```
 
-4. **Activer le clavier** :
+4. **Tester sur émulateur** :
+```bash
+# Lister les profils disponibles (Pixel, Samsung, Xiaomi, Honor…)
+$HOME/Android/Sdk/emulator/emulator -list-avds
+
+# Lancer un profil, en fenêtré
+$HOME/Android/Sdk/emulator/emulator -avd kreyol_pixel7pro -netdelay none -netspeed full &
+
+# Attendre la fin du démarrage
+until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 5; done
+
+# Installer le clavier, l'activer et le choisir par défaut
+adb install -r app/build/outputs/apk/debug/Potomitan_Kreyol_Keyboard_v*_debug_*.apk
+IME=com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored
+adb shell ime enable $IME && adb shell ime set $IME
+```
+
+Si l'émulateur refuse de démarrer faute d'accès à la virtualisation : `sudo chmod 666 /dev/kvm`.
+
+Un APK récupéré depuis une release GitHub ne peut pas mettre à jour une installation issue d'une compilation locale : les deux sont signés par des clés différentes et `adb install -r` répond `INSTALL_FAILED_UPDATE_INCOMPATIBLE`. Recompiler en local met à jour sans rien perdre ; `adb uninstall` avant d'installer la release marche aussi, mais efface la progression enregistrée sur l'appareil.
+
+5. **Activer le clavier** :
    - Aller dans **Paramètres** → **Système** → **Langues et saisie**
    - Sélectionner **Claviers virtuels**
    - Activer **Clavier Créole Guadeloupéen**
