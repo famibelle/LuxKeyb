@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.12] - 2026-08-21
+
+### 🔤 « on bèl kréyòl » dans le champ d'essai
+
+L'invite du champ « Tester le clavier » disait « Koumansé maké an bèl kréyòl
+isit... ». La formule retenue pour la marque est « on bèl kréyòl », et c'était sa
+dernière occurrence dans l'application : les supports du site, les affiches, les
+tracts, le triptyque et les visuels du Play Store ont été repris en même temps.
+Vérifié sur émulateur Pixel 7 Pro.
+
 ## [10.12.11] - 2026-08-20
 
 ### 🔤 Le mot d'une suggestion tient à nouveau dans sa puce
