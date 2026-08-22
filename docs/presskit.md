@@ -229,7 +229,7 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
     <p><small>Jeu Mots Mélangés</small></p>
   </div>
   <div style="width: 22%; min-width: 140px;">
-    <img src="Screenshots/app_apropos.png" alt="Écran À propos : mission du projet et sources littéraires" style="width: 100%; border-radius: 8px;">
+    <img src="Screenshots/app_onglet_apropos.png" alt="Écran À propos : mission du projet et sources littéraires" style="width: 100%; border-radius: 8px;">
     <p><small>À propos / mission</small></p>
   </div>
   <div style="width: 22%; min-width: 140px;">

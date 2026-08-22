@@ -30,7 +30,7 @@ utilisateur réel (touche « * », 8.8.5).
 ⌨️ Le clavier numérique gagne la touche « * » (mots de passe, calculs).
 ✨ Petites corrections de textes en créole.
 
-Ba kréyòl la lanmou'w : télécharge, note, partage !
+Ba kréyòl-la lanmou a-w : télécharge, note, partage !
 ```
 
 263 caractères, largement sous la limite de 500.
