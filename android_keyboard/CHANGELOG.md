@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.14] - 2026-08-22
+
+### 🔤 « Ba kréyòl-la lanmou a-w » et vocabulaire enrichi
+
+La carte Partage de l'onglet À Propos écrivait « Ba kréyòl la lanmou'w ». La
+forme correcte est « Ba kréyòl-la lanmou a-w » : le déterminant se lie au nom
+par un trait d'union, et le possessif s'écrit « a-w » plutôt que collé au nom.
+La formule a été reprise dans l'application, dans le pack ASO du Play Store et
+dans la capture d'écran publiée sur le site.
+
+Le dictionnaire et le modèle n-gram embarqués sont régénérés à chaque build
+depuis le dataset POTOMITAN/PawolKreyol-gfc : cette version reprend le
+vocabulaire ajouté au corpus depuis la précédente.
+
 ## [10.12.13] - 2026-08-22
 
 ### 🔄 Comment revenir au clavier kréyòl, expliqué dans l'onglet Démarrage
