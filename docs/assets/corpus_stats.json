@@ -1,10 +1,10 @@
 {
- "lignes_total": 2627,
+ "lignes_total": 2630,
  "lignes_vides": 122,
- "lignes_utiles": 2505,
+ "lignes_utiles": 2508,
  "sources_total": 87,
- "caracteres": 191722,
- "octets_utf8": 208973,
+ "caracteres": 191772,
+ "octets_utf8": 209025,
  "longueur_entree": {
   "min": 1,
   "max": 42906,
@@ -21,7 +21,7 @@
   {
    "min": 10,
    "max": 25,
-   "n": 818
+   "n": 821
   },
   {
    "min": 25,
@@ -49,12 +49,12 @@
    "n": 43
   }
  ],
- "mots_total": 36489,
+ "mots_total": 36499,
  "mots_uniques": 5285,
  "richesse_lexicale": 0.1448,
  "mots_par_entree": 14.6,
- "bigrammes_uniques": 20302,
- "trigrammes_uniques": 26956,
+ "bigrammes_uniques": 20307,
+ "trigrammes_uniques": 26960,
  "hapax": 2952,
  "hapax_pourcent": 55.9,
  "longueur_mot_moyenne": 3.91,
@@ -72,7 +72,7 @@
   {
    "mot": "sé",
    "n": 885,
-   "pourcent": 2.43
+   "pourcent": 2.42
   },
   {
    "mot": "on",
@@ -350,8 +350,8 @@
   }
  ],
  "couverture": {
-  "50": 72,
-  "75": 522,
+  "50": 73,
+  "75": 521,
   "90": 1985,
   "95": 3461,
   "99": 4921
@@ -469,7 +469,7 @@
   },
   {
    "lettres": 4,
-   "mots": 725
+   "mots": 726
   },
   {
    "lettres": 5,
@@ -505,7 +505,7 @@
   },
   {
    "lettres": 13,
-   "mots": 72
+   "mots": 71
   },
   {
    "lettres": 14,
@@ -541,9 +541,9 @@
   }
  ],
  "composes": {
-  "mots": 1088,
+  "mots": 1089,
   "pourcent": 20.6,
-  "occurrences": 2321,
+  "occurrences": 2323,
   "occurrences_pourcent": 6.4,
   "exemples": [
    {
@@ -556,7 +556,7 @@
    },
    {
     "mot": "a-w",
-    "n": 59
+    "n": 60
    },
    {
     "mot": "an-nou",
@@ -598,7 +598,7 @@
   "segments": [
    {
     "segments": 2,
-    "mots": 1029
+    "mots": 1030
    },
    {
     "segments": 3,
@@ -611,7 +611,7 @@
   ]
  },
  "mots_10_lettres": {
-  "mots": 572,
+  "mots": 571,
   "pourcent": 10.8,
   "avec_trait_union": 392,
   "hapax": 443
@@ -828,7 +828,7 @@
    "court": "Dialogue entre Léontin, Dèdèt, René, Ejèni…",
    "mots": 2531,
    "lignes": 47,
-   "caracteres": 12620
+   "caracteres": 12613
   },
   {
    "source": "Marga ANZALA, Zyé a Mangrov'la",
@@ -912,27 +912,27 @@
  "top_lettres": [
   {
    "lettre": "a",
-   "n": 19551,
+   "n": 19558,
    "pourcent": 13.66
   },
   {
    "lettre": "n",
-   "n": 15283,
+   "n": 15287,
    "pourcent": 10.68
   },
   {
    "lettre": "o",
-   "n": 11255,
+   "n": 11260,
    "pourcent": 7.86
   },
   {
    "lettre": "é",
-   "n": 9967,
+   "n": 9968,
    "pourcent": 6.96
   },
   {
    "lettre": "i",
-   "n": 8446,
+   "n": 8448,
    "pourcent": 5.9
   },
   {
@@ -942,39 +942,39 @@
   },
   {
    "lettre": "k",
-   "n": 6737,
+   "n": 6739,
    "pourcent": 4.71
   },
   {
    "lettre": "l",
-   "n": 6634,
-   "pourcent": 4.63
+   "n": 6639,
+   "pourcent": 4.64
   },
   {
    "lettre": "s",
-   "n": 5734,
+   "n": 5736,
    "pourcent": 4.01
   },
   {
    "lettre": "u",
-   "n": 5518,
-   "pourcent": 3.85
+   "n": 5521,
+   "pourcent": 3.86
   },
   {
    "lettre": "p",
-   "n": 5337,
+   "n": 5339,
    "pourcent": 3.73
   },
   {
    "lettre": "m",
-   "n": 5125,
+   "n": 5126,
    "pourcent": 3.58
   }
  ],
  "accents": [
   {
    "lettre": "é",
-   "n": 9967
+   "n": 9968
   },
   {
    "lettre": "è",
@@ -982,7 +982,7 @@
   },
   {
    "lettre": "ò",
-   "n": 1752
+   "n": 1753
   },
   {
    "lettre": "à",
@@ -1015,10 +1015,10 @@
  ],
  "accents_pourcent": 11.62,
  "modele": {
-  "cles": 8845,
+  "cles": 8846,
   "cles_1mot": 4595,
-  "cles_2mots": 4250,
-  "contextes_ecartes": 14909,
+  "cles_2mots": 4251,
+  "contextes_ecartes": 14910,
   "candidats_moyen": 2.11
  },
  "contextes_frequents": [
@@ -1136,8 +1136,8 @@
  "dataset": "POTOMITAN/PawolKreyol-gfc",
  "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
  "source_donnees": "huggingface",
- "parquet_octets": 139787,
- "dataset_revision": "1f0e49e24391685588c156df2a686f138ef3f5b7",
- "dataset_revision_parquet": "4a6ede2adc2f25a4962c9a5726abdf351404f1a6",
- "dataset_derniere_modification": "2026-08-22T19:21:53.000Z"
+ "parquet_octets": 139606,
+ "dataset_revision": "56ebdb86551deddf2d9c5312e2a5859008f62479",
+ "dataset_revision_parquet": "e9634bf673484d63e52e139afa57b1fb304c61f8",
+ "dataset_derniere_modification": "2026-08-22T19:59:48.000Z"
 }
