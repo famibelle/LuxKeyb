@@ -5,6 +5,27 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.13] - 2026-08-22
+
+### 🔄 Comment revenir au clavier kréyòl, expliqué dans l'onglet Démarrage
+
+Une fois le clavier activé et sélectionné, une carte explique comment passer d'un
+clavier à l'autre. Le point important est que le geste n'est pas symétrique :
+l'appui long sur la barre d'espace quitte bien le clavier créole, mais sur Gboard
+et la plupart des autres claviers le même geste ne change que leur propre langue
+interne et ne ramène nulle part. Le chemin de retour est l'icône de clavier de la
+barre de navigation, affichée tant qu'un clavier est ouvert. La carte le dit, et
+son bouton ouvre le même sélecteur pour les téléphones qui n'affichent pas cette
+icône. Le guide du site le documentait déjà, pas l'application. Vérifié sur
+émulateur Pixel 5.
+
+Deux textes qui disaient l'inverse ont été repris au passage. La question
+« le clavier créole n'apparaît pas quand je tape ? » de l'onglet Guide
+renvoyait à l'appui long sur la barre d'espace, ce qui laissait croire que ce
+geste ramène au kréyòl depuis n'importe quel clavier. Et le message affiché
+quand le sélecteur refuse de s'ouvrir renvoyait à la barre de notifications,
+qui n'a plus de ligne « choisir la méthode de saisie » depuis Android 8.
+
 ## [10.12.12] - 2026-08-21
 
 ### 🔤 « on bèl kréyòl » dans le champ d'essai

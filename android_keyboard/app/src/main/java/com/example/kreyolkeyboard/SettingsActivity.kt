@@ -1282,6 +1282,102 @@ class SettingsActivity : AppCompatActivity() {
         mainLayout.addView(step4Card)
         mainLayout.addView(createSpacing(24))
 
+        // Bascule d'un clavier à l'autre : l'aller et le retour n'utilisent
+        // pas le même geste (chemins vérifiés à l'émulateur), et c'est le
+        // retour vers le kréyòl qui bloque les utilisateurs, l'appui long sur
+        // la barre d'espace des autres claviers ne changeant que leur propre
+        // langue. Affiché une fois la configuration terminée, au moment où la
+        // question se pose vraiment.
+        if (isEnabled && isSelected) {
+            val switchCard = createCard("#E3F2FD")
+
+            val switchTitle = TextView(this).apply {
+                text = "🔄 Passer du français au kréyòl, et l'inverse"
+                textSize = 18f
+                setTextColor(Color.parseColor("#0D47A1"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 0, 0, 12)
+            }
+
+            val switchIntro = TextView(this).apply {
+                text = "Klavyé Kréyòl ne remplace pas vos autres claviers : il s'ajoute à la liste, " +
+                        "et vous basculez de l'un à l'autre en deux secondes, aussi souvent que vous voulez."
+                textSize = 14f
+                setTextColor(Color.parseColor("#1565C0"))
+                setLineSpacing(0f, 1.3f)
+                setPadding(0, 0, 0, 12)
+            }
+
+            val switchAwayTitle = TextView(this).apply {
+                text = "➡️ Quitter le kréyòl"
+                textSize = 15f
+                setTextColor(Color.parseColor("#0D47A1"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 0, 0, 4)
+            }
+
+            val switchAway = TextView(this).apply {
+                text = "Appuyez une seconde sur la barre d'espace du clavier créole ; le petit 🌐 " +
+                        "dans son coin est là pour vous le rappeler. Le sélecteur Android s'ouvre : " +
+                        "touchez Gboard, Samsung Keyboard ou celui que vous voulez."
+                textSize = 14f
+                setTextColor(Color.parseColor("#1565C0"))
+                setLineSpacing(0f, 1.3f)
+                setPadding(0, 0, 0, 12)
+            }
+
+            val switchBackTitle = TextView(this).apply {
+                text = "⬅️ Revenir au kréyòl"
+                textSize = 15f
+                setTextColor(Color.parseColor("#0D47A1"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, 0, 0, 4)
+            }
+
+            val switchBack = TextView(this).apply {
+                text = "Le geste n'est pas symétrique : sur Gboard et la plupart des autres claviers, " +
+                        "l'appui long sur la barre d'espace ne change que leur propre langue. " +
+                        "Touchez plutôt l'icône de clavier en bas de l'écran, dans la barre de " +
+                        "navigation, affichée tant qu'un clavier est ouvert : le sélecteur revient, " +
+                        "et « Klavyé Kréyòl Karukéra » y attend."
+                textSize = 14f
+                setTextColor(Color.parseColor("#1565C0"))
+                setLineSpacing(0f, 1.3f)
+                setPadding(0, 0, 0, 12)
+            }
+
+            val switchNote = TextView(this).apply {
+                text = "Le clavier choisi vaut pour toutes vos applications et reste mémorisé, " +
+                        "même après un redémarrage du téléphone. Si votre téléphone n'affiche pas " +
+                        "l'icône de clavier, le bouton ci-dessous ouvre exactement le même sélecteur."
+                textSize = 13f
+                setTextColor(Color.parseColor("#5C6BC0"))
+                setLineSpacing(0f, 1.3f)
+                setPadding(0, 0, 0, 16)
+            }
+
+            val switchButton = Button(this).apply {
+                text = "Ouvrir le sélecteur de claviers"
+                textSize = 15f
+                setBackgroundColor(Color.parseColor("#0080FF"))
+                setTextColor(Color.WHITE)
+                setPadding(24, 16, 24, 16)
+                setOnClickListener { openInputMethodPicker() }
+            }
+
+            switchCard.addView(switchTitle)
+            switchCard.addView(switchIntro)
+            switchCard.addView(switchAwayTitle)
+            switchCard.addView(switchAway)
+            switchCard.addView(switchBackTitle)
+            switchCard.addView(switchBack)
+            switchCard.addView(switchNote)
+            switchCard.addView(switchButton)
+
+            mainLayout.addView(switchCard)
+            mainLayout.addView(createSpacing(16))
+        }
+
         // Section "Astuce" si tout est configuré
         if (isEnabled && isSelected) {
             val tipCard = createCard("#FFF9E6")
@@ -2201,9 +2297,13 @@ class SettingsActivity : AppCompatActivity() {
         val faqText = TextView(this).apply {
             text = "Le clavier créole n'apparaît pas quand je tape ?\n" +
                     "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Démarrage, " +
-                    "étape 2, ou appui long sur la barre d'espace pour changer de clavier à tout moment.\n\n" +
+                    "étape 2, ou touchez l'icône de clavier de la barre de navigation, en bas de " +
+                    "l'écran, pendant que vous écrivez.\n\n" +
                     "Comment revenir à un autre clavier ponctuellement ?\n" +
-                    "→ Appui long sur la barre d'espace, puis choisissez un autre clavier dans la liste.\n\n" +
+                    "→ Appui long sur la barre d'espace du clavier créole, puis choisissez un autre " +
+                    "clavier dans la liste. Le retour au kréyòl passe par l'icône de clavier de la " +
+                    "barre de navigation : sur les autres claviers, l'appui long sur la barre " +
+                    "d'espace ne change que leur propre langue.\n\n" +
                     "Mes données sont-elles envoyées quelque part ?\n" +
                     "→ Non : le clavier fonctionne entièrement en local."
             textSize = 14f
@@ -2594,7 +2694,8 @@ class SettingsActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture sélecteur clavier: ${e.message}")
             Toast.makeText(this, 
-                "Impossible d'ouvrir le sélecteur. Utilisez la barre de notification pour changer de clavier.", 
+                "Impossible d'ouvrir le sélecteur. Touchez l'icône de clavier en bas de l'écran, " +
+                    "dans la barre de navigation, pendant que vous écrivez.", 
                 Toast.LENGTH_LONG
             ).show()
         }
