@@ -1,14 +1,14 @@
 {
- "lignes_total": 2621,
+ "lignes_total": 2627,
  "lignes_vides": 122,
- "lignes_utiles": 2499,
- "sources_total": 86,
- "caracteres": 191678,
- "octets_utf8": 208924,
+ "lignes_utiles": 2505,
+ "sources_total": 87,
+ "caracteres": 191722,
+ "octets_utf8": 208973,
  "longueur_entree": {
   "min": 1,
   "max": 42906,
-  "moyenne": 76.7,
+  "moyenne": 76.5,
   "mediane": 20,
   "p90": 87
  },
@@ -16,12 +16,12 @@
   {
    "min": 0,
    "max": 10,
-   "n": 605
+   "n": 610
   },
   {
    "min": 10,
    "max": 25,
-   "n": 817
+   "n": 818
   },
   {
    "min": 25,
@@ -49,13 +49,13 @@
    "n": 43
   }
  ],
- "mots_total": 36481,
- "mots_uniques": 5282,
+ "mots_total": 36489,
+ "mots_uniques": 5285,
  "richesse_lexicale": 0.1448,
  "mots_par_entree": 14.6,
- "bigrammes_uniques": 20300,
- "trigrammes_uniques": 26955,
- "hapax": 2950,
+ "bigrammes_uniques": 20302,
+ "trigrammes_uniques": 26956,
+ "hapax": 2952,
  "hapax_pourcent": 55.9,
  "longueur_mot_moyenne": 3.91,
  "top_mots": [
@@ -102,7 +102,7 @@
   {
    "mot": "nou",
    "n": 633,
-   "pourcent": 1.74
+   "pourcent": 1.73
   },
   {
    "mot": "ou",
@@ -351,10 +351,10 @@
  ],
  "couverture": {
   "50": 72,
-  "75": 521,
-  "90": 1983,
-  "95": 3458,
-  "99": 4918
+  "75": 522,
+  "90": 1985,
+  "95": 3461,
+  "99": 4921
  },
  "mots_longs": [
   {
@@ -481,15 +481,15 @@
   },
   {
    "lettres": 7,
-   "mots": 719
+   "mots": 720
   },
   {
    "lettres": 8,
-   "mots": 526
+   "mots": 527
   },
   {
    "lettres": 9,
-   "mots": 371
+   "mots": 372
   },
   {
    "lettres": 10,
@@ -543,7 +543,7 @@
  "composes": {
   "mots": 1088,
   "pourcent": 20.6,
-  "occurrences": 2320,
+  "occurrences": 2321,
   "occurrences_pourcent": 6.4,
   "exemples": [
    {
@@ -556,7 +556,7 @@
    },
    {
     "mot": "a-w",
-    "n": 58
+    "n": 59
    },
    {
     "mot": "an-nou",
@@ -819,9 +819,9 @@
   {
    "source": "Bel poveb kréyol, potomitan.info (collecte Jid)",
    "court": "Bel poveb kréyol, potomitan.info (collecte…",
-   "mots": 2637,
+   "mots": 2638,
    "lignes": 156,
-   "caracteres": 12580
+   "caracteres": 12581
   },
   {
    "source": "Dialogue entre Léontin, Dèdèt, René, Ejèni, et Man Azoé",
@@ -912,22 +912,22 @@
  "top_lettres": [
   {
    "lettre": "a",
-   "n": 19540,
-   "pourcent": 13.65
+   "n": 19551,
+   "pourcent": 13.66
   },
   {
    "lettre": "n",
-   "n": 15282,
+   "n": 15283,
    "pourcent": 10.68
   },
   {
    "lettre": "o",
-   "n": 11254,
+   "n": 11255,
    "pourcent": 7.86
   },
   {
    "lettre": "é",
-   "n": 9964,
+   "n": 9967,
    "pourcent": 6.96
   },
   {
@@ -938,16 +938,16 @@
   {
    "lettre": "t",
    "n": 7134,
-   "pourcent": 4.99
+   "pourcent": 4.98
   },
   {
    "lettre": "k",
-   "n": 6731,
-   "pourcent": 4.7
+   "n": 6737,
+   "pourcent": 4.71
   },
   {
    "lettre": "l",
-   "n": 6628,
+   "n": 6634,
    "pourcent": 4.63
   },
   {
@@ -957,8 +957,8 @@
   },
   {
    "lettre": "u",
-   "n": 5519,
-   "pourcent": 3.86
+   "n": 5518,
+   "pourcent": 3.85
   },
   {
    "lettre": "p",
@@ -967,18 +967,18 @@
   },
   {
    "lettre": "m",
-   "n": 5119,
+   "n": 5125,
    "pourcent": 3.58
   }
  ],
  "accents": [
   {
    "lettre": "é",
-   "n": 9964
+   "n": 9967
   },
   {
    "lettre": "è",
-   "n": 4884
+   "n": 4886
   },
   {
    "lettre": "ò",
@@ -1015,10 +1015,10 @@
  ],
  "accents_pourcent": 11.62,
  "modele": {
-  "cles": 8846,
-  "cles_1mot": 4596,
+  "cles": 8845,
+  "cles_1mot": 4595,
   "cles_2mots": 4250,
-  "contextes_ecartes": 14908,
+  "contextes_ecartes": 14909,
   "candidats_moyen": 2.11
  },
  "contextes_frequents": [
@@ -1136,8 +1136,8 @@
  "dataset": "POTOMITAN/PawolKreyol-gfc",
  "dataset_url": "https://huggingface.co/datasets/POTOMITAN/PawolKreyol-gfc",
  "source_donnees": "huggingface",
- "parquet_octets": 139485,
- "dataset_revision": "080a404a5887861145ca6cf0998282df9ef197d1",
- "dataset_revision_parquet": "cd3134efad67f13751b901ce0140b2cfc71a5f1e",
- "dataset_derniere_modification": "2026-08-19T18:24:15.000Z"
+ "parquet_octets": 139787,
+ "dataset_revision": "1f0e49e24391685588c156df2a686f138ef3f5b7",
+ "dataset_revision_parquet": "4a6ede2adc2f25a4962c9a5726abdf351404f1a6",
+ "dataset_derniere_modification": "2026-08-22T19:21:53.000Z"
 }

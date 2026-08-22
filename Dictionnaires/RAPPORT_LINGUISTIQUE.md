@@ -2,12 +2,12 @@
 
 ## Métadonnées du Corpus
 
-- **Date de génération** : 21 August 2026 à 19:25
+- **Date de génération** : 22 August 2026 à 19:47
 - **Version du pipeline** : 3.0 - Pipeline Unique
 - **Source des données** : Dataset POTOMITAN/PawolKreyol-gfc (Hugging Face)
-- **Nombre de textes** : 2520
-- **Tokens totaux** : 36,481
-- **Types lexicaux** : 5,297
+- **Nombre de textes** : 2526
+- **Tokens totaux** : 36,489
+- **Types lexicaux** : 5,301
 
 ---
 
@@ -15,8 +15,8 @@
 
 ### 1.1 Taille et Couverture
 
-- **Total des tokens** : 36,514
-- **Types lexicaux uniques** : 5,297
+- **Total des tokens** : 36,523
+- **Types lexicaux uniques** : 5,301
 - **Type-Token Ratio (TTR)** : 0.1451
 - **Richesse lexicale** : Élevée
 
@@ -29,11 +29,11 @@
 |  2 lettres |    102 |   1.9%  |
 |  3 lettres |    418 |   7.9% ███ |
 |  4 lettres |    728 |  13.7% ██████ |
-|  5 lettres |    925 |  17.5% ████████ |
-|  6 lettres |    931 |  17.6% ████████ |
-|  7 lettres |    721 |  13.6% ██████ |
-|  8 lettres |    529 |  10.0% ████ |
-|  9 lettres |    371 |   7.0% ███ |
+|  5 lettres |    925 |  17.4% ████████ |
+|  6 lettres |    932 |  17.6% ████████ |
+|  7 lettres |    722 |  13.6% ██████ |
+|  8 lettres |    530 |  10.0% ████ |
+|  9 lettres |    372 |   7.0% ███ |
 | 10 lettres |    232 |   4.4% ██ |
 | 11 lettres |    129 |   2.4% █ |
 | 12 lettres |     89 |   1.7%  |
@@ -49,7 +49,7 @@
 
 ### 2.2 Mots Composés (avec trait d'union)
 
-- **Total** : 1088 mots (20.5%)
+- **Total** : 1089 mots (20.5%)
 - **Exemples** : a-y, an-mwen, a-w, an-nou, a-yo, ba-w, fi-la, ban-mwen, fè-mwen, kaz-la, rann-nou, di-mwen, ba-y, péyi-la, moun-la
 
 ## 3. Analyse Phonographématique
@@ -58,8 +58,8 @@
 
 | Caractère | Fréquence | Usage |
 |-----------|-----------|-------|
-| **é** | 2,028 | Très fréquent
-| **è** | 1,165 | Très fréquent
+| **é** | 2,031 | Très fréquent
+| **è** | 1,166 | Très fréquent
 | **ò** | 436 | Très fréquent
 | **à** | 12 | Modéré
 | **ô** | 2 | Rare |
@@ -70,23 +70,23 @@
 | Digramme | Fréquence |
 |----------|-----------|
 | **an** | 1,201 |
-| **la** | 884 |
+| **la** | 887 |
 | **ou** | 774 |
 | **on** | 595 |
-| **-l** | 502 |
+| **-l** | 503 |
 | **en** | 496 |
-| **ma** | 386 |
+| **ma** | 390 |
 | **ko** | 339 |
 | **ch** | 324 |
 | **ra** | 318 |
 | **nn** | 315 |
-| **al** | 292 |
+| **al** | 293 |
 | **as** | 285 |
-| **é-** | 266 |
+| **é-** | 267 |
 | **ka** | 265 |
-| **yé** | 255 |
+| **yé** | 256 |
 | **ri** | 252 |
-| **ré** | 250 |
+| **ré** | 251 |
 | **n-** | 238 |
 | **té** | 230 |
 
@@ -94,15 +94,15 @@
 
 ### 4.1 Distribution de Fréquence (Loi de Zipf)
 
-- **Hapax legomena** (freq=1) : 2,961 mots (55.9%)
+- **Hapax legomena** (freq=1) : 2,964 mots (55.9%)
 - **Dis legomena** (freq=2) : 794 mots (15.0%)
-- **Mots rares** (freq 3-5) : 773 mots
+- **Mots rares** (freq 3-5) : 774 mots
 - **Mots fréquents** (freq 6-20) : 542 mots
 - **Mots très fréquents** (freq >20) : 227 mots
 
 ### 4.2 Principe de Pareto
 
-- **792 mots** (15.0%) représentent **80%** des occurrences
+- **793 mots** (15.0%) représentent **80%** des occurrences
 - **Vocabulaire fondamental** : Les 1000 mots les plus fréquents
 
 ### 4.3 Vocabulaire Fondamental (Top 50)
@@ -112,53 +112,53 @@
 |  1 | **ka** | 1,800 | 4.93% |
 |  2 | **an** | 1,388 | 8.73% |
 |  3 | **sé** | 885 | 11.15% |
-|  4 | **on** | 833 | 13.44% |
-|  5 | **pou** | 727 | 15.43% |
-|  6 | **té** | 726 | 17.42% |
+|  4 | **on** | 833 | 13.43% |
+|  5 | **pou** | 727 | 15.42% |
+|  6 | **té** | 726 | 17.41% |
 |  7 | **pa** | 664 | 19.23% |
 |  8 | **yo** | 638 | 20.98% |
 |  9 | **nou** | 633 | 22.71% |
-| 10 | **ou** | 611 | 24.39% |
-| 11 | **ki** | 548 | 25.89% |
-| 12 | **la** | 481 | 27.21% |
+| 10 | **ou** | 611 | 24.38% |
+| 11 | **ki** | 548 | 25.88% |
+| 12 | **la** | 481 | 27.20% |
 | 13 | **ni** | 408 | 28.32% |
-| 14 | **fè** | 404 | 29.43% |
-| 15 | **sa** | 401 | 30.53% |
+| 14 | **fè** | 404 | 29.42% |
+| 15 | **sa** | 401 | 30.52% |
 | 16 | **mwen** | 400 | 31.62% |
-| 17 | **ké** | 337 | 32.55% |
-| 18 | **moun** | 267 | 33.28% |
-| 19 | **di** | 251 | 33.97% |
-| 20 | **pé** | 244 | 34.63% |
-| 21 | **si** | 218 | 35.23% |
-| 22 | **kon** | 214 | 35.82% |
+| 17 | **ké** | 337 | 32.54% |
+| 18 | **moun** | 267 | 33.27% |
+| 19 | **di** | 251 | 33.96% |
+| 20 | **pé** | 244 | 34.62% |
+| 21 | **si** | 218 | 35.22% |
+| 22 | **kon** | 214 | 35.81% |
 | 23 | **lè** | 211 | 36.39% |
-| 24 | **tout** | 206 | 36.96% |
-| 25 | **adan** | 202 | 37.51% |
-| 26 | **mé** | 187 | 38.02% |
-| 27 | **vwè** | 165 | 38.48% |
-| 28 | **pran** | 152 | 38.89% |
-| 29 | **zòt** | 145 | 39.29% |
-| 30 | **menm** | 144 | 39.68% |
-| 31 | **ti** | 130 | 40.04% |
-| 32 | **a-y** | 130 | 40.40% |
-| 33 | **krab** | 129 | 40.75% |
-| 34 | **kou** | 125 | 41.09% |
-| 35 | **ay** | 113 | 41.40% |
-| 36 | **dé** | 111 | 41.70% |
-| 37 | **èvè** | 111 | 42.01% |
-| 38 | **ès** | 110 | 42.31% |
-| 39 | **asi** | 109 | 42.61% |
-| 40 | **jan** | 98 | 42.88% |
-| 41 | **épi** | 97 | 43.14% |
-| 42 | **bon** | 97 | 43.41% |
-| 43 | **ja** | 97 | 43.67% |
-| 44 | **rivé** | 95 | 43.93% |
-| 45 | **viktò** | 95 | 44.19% |
-| 46 | **ba** | 91 | 44.44% |
-| 47 | **tini** | 91 | 44.69% |
-| 48 | **dlo** | 90 | 44.94% |
-| 49 | **byen** | 90 | 45.19% |
-| 50 | **pè** | 90 | 45.43% |
+| 24 | **tout** | 206 | 36.95% |
+| 25 | **adan** | 202 | 37.50% |
+| 26 | **mé** | 187 | 38.01% |
+| 27 | **vwè** | 165 | 38.47% |
+| 28 | **pran** | 152 | 38.88% |
+| 29 | **zòt** | 145 | 39.28% |
+| 30 | **menm** | 144 | 39.67% |
+| 31 | **ti** | 130 | 40.03% |
+| 32 | **a-y** | 130 | 40.39% |
+| 33 | **krab** | 129 | 40.74% |
+| 34 | **kou** | 125 | 41.08% |
+| 35 | **ay** | 113 | 41.39% |
+| 36 | **dé** | 111 | 41.69% |
+| 37 | **èvè** | 111 | 42.00% |
+| 38 | **ès** | 110 | 42.30% |
+| 39 | **asi** | 109 | 42.60% |
+| 40 | **jan** | 98 | 42.87% |
+| 41 | **épi** | 97 | 43.13% |
+| 42 | **bon** | 97 | 43.40% |
+| 43 | **ja** | 97 | 43.66% |
+| 44 | **rivé** | 95 | 43.92% |
+| 45 | **viktò** | 95 | 44.18% |
+| 46 | **ba** | 91 | 44.43% |
+| 47 | **tini** | 91 | 44.68% |
+| 48 | **dlo** | 90 | 44.93% |
+| 49 | **byen** | 90 | 45.17% |
+| 50 | **pè** | 90 | 45.42% |
 
 ## 5. Analyse Syntaxique et Collocations
 
@@ -263,12 +263,12 @@
 ## 7. Évolution Diachronique du Lexique
 
 - **Mots conservés** : 5,296 (100.0% de l'ancien dictionnaire)
-- **Mots ajoutés** : 1
+- **Mots ajoutés** : 5
 - **Mots supprimés** : 0
 
 ### 7.1 Nouveaux Mots Ajoutés (échantillon)
 
-`cadina`
+`cadina, klavyé-la, makrèl, makrélaj, malmaké`
 
 ## 8. Qualité et Validation Linguistique
 
@@ -288,8 +288,8 @@
 
 ### 10.1 Forces du Corpus
 
-- Couverture lexicale importante (5,297 types)
-- Richesse des bigrammes (20,300 patterns)
+- Couverture lexicale importante (5,301 types)
+- Richesse des bigrammes (20,302 patterns)
 - Présence des marqueurs TMA caractéristiques du créole
 
 ### 10.2 Axes d'Amélioration
