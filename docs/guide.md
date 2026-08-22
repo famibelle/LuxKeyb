@@ -186,6 +186,14 @@ Si votre téléphone n'affiche pas cette icône, ouvrez l'**application Klavyé
 Kréyòl Karukera** et touchez le bouton de l'étape 2, « Sélectionner le
 clavier » : il ouvre exactement le même sélecteur.
 
+L'application rappelle ces deux gestes dans son onglet **Démarrage**, une fois
+le clavier activé et sélectionné, avec un bouton qui ouvre le sélecteur
+directement.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_carte_changer_clavier.png" alt="Carte « Passer du français au kréyòl, et l'inverse » dans l'onglet Démarrage, expliquant le geste pour quitter le clavier créole et celui pour y revenir" width="35%">
+</div>
+
 ### Ce qu'il faut savoir
 
 - Le choix est **global**, pas par application : le clavier sélectionné vaut
@@ -201,21 +209,104 @@ clavier » : il ouvre exactement le même sélecteur.
   n'est utile que si vous avez besoin d'une autre langue ou d'une
   disposition particulière.
 
-## Jeux de vocabulaire et progression
+## Les écrans de l'application
 
-En dehors du clavier, l'application propose deux jeux pour enrichir son
-vocabulaire créole à partir du dictionnaire intégré : **Mots Mêlés**
-(retrouver des mots cachés dans une grille de lettres) et **Mots Mélangés**
-(reconstituer un mot à partir de lettres dans le désordre).
+L'application qui accompagne le clavier sert d'abord à l'installer, puis à
+suivre sa progression et à jouer. Sa **barre d'onglets n'apparaît qu'une fois
+le clavier activé et sélectionné** : tant que la configuration n'est pas
+terminée, l'écran de démarrage reste seul, pour ne pas disperser.
 
-<div align="center" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1762982783_grid.png" alt="Jeu Mots Mêlés : grille de lettres avec les mots créoles déjà trouvés" width="30%">
-  <img src="Screenshots/Screenshot_1760389184.png" alt="Tableau de progression : niveau Ti moun, mot du jour et statistiques de mots découverts" width="30%">
+### 🚀 Démarrage
+
+Le point d'entrée, et le seul onglet visible tant que le clavier n'est pas en
+place. Il affiche la progression de l'installation, les trois étapes
+(activer, sélectionner, essayer dans un champ de test) et, en dessous, l'étape
+facultative du correcteur orthographique. Une fois tout coché, il devient un
+tableau de bord : rappel des gestes pour changer de clavier, astuce de la
+semaine, raccourci vers les statistiques.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_demarrage.png" alt="Onglet Démarrage : bandeau « Tout est prêt », étapes 1 et 2 cochées, champ d'essai de l'étape 3" width="35%">
 </div>
 
-Chaque mot tapé au clavier ou découvert dans les jeux fait progresser votre
-maîtrise du kréyòl, visible dans l'onglet des statistiques. **7 niveaux
-culturels** jalonnent le parcours, de « Pipirit » à « Potomitan ».
+### 📊 Kréyòl an mwen
+
+Votre progression. Le niveau atteint, la part du dictionnaire déjà employée,
+le **mot du jour** et une liste de mots à découvrir, tirés du dictionnaire.
+Chaque mot tapé au clavier ou trouvé dans un jeu compte. **7 niveaux
+culturels** jalonnent le parcours : Pipirit, Ti moun, Débrouya, An mitan,
+Kompè Lapen, Kompè Zamba, Potomitan. Un bouton permet de partager sa carte de
+niveau.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_kreyol_an_mwen.png" alt="Onglet Kréyòl an mwen : niveau An mitan, 12 % du dictionnaire découvert, mot du jour « piébwa » et mots à découvrir" width="35%">
+</div>
+
+### 🎲 Mots Mêlés
+
+Une grille de lettres où se cachent des mots créoles, listés sous la grille.
+Glissez le doigt de la première à la dernière lettre d'un mot pour le
+valider : il passe au vert. « Nouvelle grille » tire une autre grille du
+dictionnaire.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_mots_meles.png" alt="Onglet Mots Mêlés : grille de lettres, bouton Nouvelle grille et liste des mots créoles à trouver" width="35%">
+</div>
+
+### 🔤 Mots Mélangés
+
+Dix mots par partie, à reconstituer à partir de leurs lettres dans le
+désordre. La première et la dernière lettre sont données. « Indice » place une
+lettre de plus mais coûte 20 points, « Passer » enchaîne sur le mot suivant.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_mots_melanges.png" alt="Onglet Mots Mélangés : lettres disponibles U O O K, réponse en cours avec la première et la dernière lettre déjà placées" width="35%">
+</div>
+
+### 🟩 Mo an Karénaj
+
+Un mot kréyòl de 5 lettres à deviner en 6 essais. Après chaque proposition,
+les cases se colorent : vert pour une lettre bien placée, orange pour une
+lettre présente mais ailleurs, gris pour une lettre absente. Le mot proposé
+doit exister dans le dictionnaire kréyòl.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_mokarenaj.png" alt="Onglet Mo an Karénaj : deux essais joués, ZANMI tout en gris et KOURI avec le K en orange" width="35%">
+</div>
+
+### 📖 Guide
+
+Le même mode d'emploi que cette page, embarqué dans l'application et illustré
+de captures : installation, accents, suggestions, correcteur, chiffres,
+jeux, progression, questions fréquentes. Utile hors connexion, ou pour
+accompagner quelqu'un à qui vous faites installer le clavier.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_guide.png" alt="Onglet Guide : sections Installation et activation, puis capture de l'écran système « Clavier à l'écran »" width="35%">
+</div>
+
+### ℹ️ À Propos
+
+La raison d'être du projet, les boutons pour partager l'application et la
+noter sur le Play Store, et les **sources littéraires** dont sont tirés les
+mots du dictionnaire.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_onglet_apropos.png" alt="Onglet À Propos : Notre Mission, boutons Partager et Noter l'application, début de la section Sources littéraires" width="35%">
+</div>
+
+### ⚙️ Réglages du clavier
+
+Derrière l'engrenage, en haut à droite de la barre bleue, et non dans les
+onglets. Deux réglages : la **vibration** et le **son** à la frappe. Ils
+vivent dans l'application plutôt que dans les paramètres du téléphone, parce
+que sur beaucoup d'appareils le réglage système de vibration au toucher ne
+gouverne que le clavier du constructeur. Le choix s'applique dès le retour
+dans un champ de saisie.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/app_reglages_clavier.png" alt="Écran Réglages du clavier : interrupteurs Vibration à la frappe et Son de frappe" width="35%">
+</div>
 
 ## Questions fréquentes
 
