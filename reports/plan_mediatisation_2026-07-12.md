@@ -82,10 +82,11 @@ place (pas de compte réseaux sociaux, pas d'accès e-mail).
 
 ### L'atout maître : le calendrier
 
-La **Jounen Entènasyonal Kréyòl (28 octobre)** et le mois du créole (octobre)
-sont LE moment où tous les médias antillais cherchent des sujets créole. Un
-clavier kréyòl open source est un sujet clé en main pour eux. Pitcher la
-presse **fin septembre / début octobre** multiplie les chances de reprise : c'est le meilleur multiplicateur gratuit du plan.
+Le **Festival Mois Kréyol**, du **3 octobre au 30 novembre 2026**, est LE
+moment où tous les médias antillais cherchent des sujets créole. Un clavier
+kréyòl open source est un sujet clé en main pour eux. Pitcher la presse
+**fin septembre / début octobre** multiplie les chances de reprise : c'est le meilleur multiplicateur gratuit du plan. La fenêtre dure deux mois, pas un
+jour : elle permet plusieurs relances plutôt qu'un seul pic.
 
 ## Calendrier phasé : 🚀 démarrage immédiat (12 juillet 2026)
 
@@ -98,7 +99,7 @@ rend la progression visible de tous.
 |---|---|---|---|---|
 | 1. Cercle proche | **Maintenant** → fin août | **15/jour** | WhatsApp, groupes Facebook diaspora, bouton partage in-app (7.0.7+), page ambassadeurs à diffuser | ~1 000 |
 | 2. Prescripteurs | Septembre (rentrée) → mi-octobre | **40/jour** | Profs de créole (académie), Université des Antilles, associations, auteurs du corpus, intro Lab'An Nou / Orange AG via POTOMITAN | ~3 000 |
-| 3. Pic médiatique | Mi-octobre (Jounen kréyòl 28/10) → décembre | **100/jour** | Pitch presse France-Antilles + RCI + la 1ère + KEPKAA Montréal, posts réseaux coordonnés, Show HN / Product Hunt | **10 000+** |
+| 3. Pic médiatique | Festival Mois Kréyol (03/10 → 30/11) → décembre | **100/jour** | Pitch presse France-Antilles + RCI + la 1ère + KEPKAA Montréal, posts réseaux coordonnés, Show HN / Product Hunt | **10 000+** |
 
 La jauge se met à jour automatiquement chaque jour (palier public de la
 fiche Play, GitHub Action `update-download-stats.yml`) et manuellement avec
@@ -134,7 +135,7 @@ champ `current` (chiffre lu dans la Play Console).
 ### Email de pitch presse (court)
 
 > Objet : Un clavier Android pour écrire en kréyòl guadeloupéen
-> *(variante octobre : « Pour la Jounen Kréyòl, un clavier pour écrire
+> *(variante Festival Mois Kréyol : « Pour le Mois Kréyol, un clavier pour écrire
 > en kréyòl gwadloupéyen sur son téléphone »)*
 >
 > Bonjour,

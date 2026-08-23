@@ -368,6 +368,7 @@ Une question qui n'est pas couverte ici ? Écrivez à
       <strong>Le projet</strong>
       <a href="corpus.html">Le corpus en chiffres</a>
       <a href="presskit.html">Dossier de presse</a>
+      <a href="partenaires.html">Devenir partenaire</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="ergotherapie.html">Fiche ergothérapie</a>
       <a href="comparatif-gboard.html">Comparatif avec Gboard</a>

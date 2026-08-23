@@ -123,8 +123,8 @@ claviers standards.
   continuer d'exister à l'ère de l'IA ?
 - **Patrimoine × tech** : quand l'intelligence des claviers se met au service
   d'une langue régionale
-- **Jounen Entènasyonal Kréyòl (28 octobre)** : un outil concret pour écrire
-  en créole toute l'année
+- **Festival Mois Kréyol (3 octobre au 30 novembre 2026)** : un outil concret
+  pour écrire en créole toute l'année
 - **Éducation** : un support moderne pour les professeurs de créole (LVR,
   CAPES créole) et leurs élèves
 - **Open source citoyen** : un projet indépendant, auditable, sans modèle
@@ -275,6 +275,7 @@ Une question, une proposition, un partenariat ? Écrivez à
       <strong>Le projet</strong>
       <a href="corpus.html">Le corpus en chiffres</a>
       <a href="presskit.html" aria-current="page">Dossier de presse</a>
+      <a href="partenaires.html">Devenir partenaire</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="ergotherapie.html">Fiche ergothérapie</a>
       <a href="comparatif-gboard.html">Comparatif avec Gboard</a>
