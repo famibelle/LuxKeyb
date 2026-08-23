@@ -1,0 +1,5 @@
+kreyol_smallphone|Petit écran 720x1280 (360 dp)
+kreyol_magic5lite|Honor Magic5 Lite (480 dpi)
+kreyol_a05|Samsung Galaxy A05 (262 dpi)
+kreyol_pixel7pro|Google Pixel 7 Pro (560 dpi)
+honor_x9c_test|Honor X9c (Android 16 / API 36)

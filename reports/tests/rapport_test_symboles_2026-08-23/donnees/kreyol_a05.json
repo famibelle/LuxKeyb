@@ -1,0 +1,258 @@
+{
+ "avd": "kreyol_a05",
+ "label": "Samsung Galaxy A05 (262 dpi)",
+ "orientations": [
+  {
+   "orientation": "portrait",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 0,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    720,
+    1600
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 1175,
+     "bot": 1252,
+     "h": 77,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 1259,
+     "bot": 1336,
+     "h": 77,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 1343,
+     "bot": 1420,
+     "h": 77,
+     "keys": 9,
+     "expected": 9
+    },
+    {
+     "top": 1427,
+     "bot": 1504,
+     "h": 77,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     1015,
+     720,
+     1600
+    ],
+    "app_bounds": [
+     0,
+     136,
+     720,
+     1561
+    ]
+   },
+   "ime_height_px": 585,
+   "ime_height_dp": 357.3,
+   "ime_share_screen_pct": 36.6,
+   "app_area_px": 1425,
+   "app_left_px": 879,
+   "app_left_dp": 536.8,
+   "ime_share_app_pct": 41.1,
+   "key_height_px": 77,
+   "key_height_dp": 47.0,
+   "key_width_dp": 36.9,
+   "last_row_bottom_px": 1504,
+   "px_below_last_row": 96,
+   "cleared_taps": 112,
+   "partial_shot": true,
+   "typed": "Nou ka palé",
+   "typed_attempts": [
+    "Nou ka palé"
+   ],
+   "typed_ok": true,
+   "sym_layout_ok": true,
+   "sym_rows": [
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 77
+    },
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 77
+    },
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 77
+    },
+    {
+     "keys": 4,
+     "expected": 4,
+     "h": 77
+    }
+   ],
+   "sym_key_width_dp": [
+    38.1,
+    38.1,
+    38.1
+   ],
+   "sym_width_spread_dp": 0.0,
+   "sym_hash_center": [
+    588,
+    1381
+   ],
+   "sym_hash_offset_px": -13,
+   "sym_field_avant": "Nou ka palé",
+   "sym_field_apres": "Nou ka palé#",
+   "sym_hash_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 4252): Mode de suggestion changé: CONTEXTUAL",
+    "D/SuggestionEngine( 4252): N-gram contexte retenu: 'ka palé'",
+    "D/SuggestionEngine( 4252): Prédictions contextuelles: [la, kréyòl, ka, sé, tini]",
+    "D/KreyolIME-Potomitan™( 4252): 📝 Affichage suggestions simples: la, kréyòl, ka, sé, tini",
+    "D/KreyolIME-Potomitan™( 4252): displaySuggestions appelé avec 5 suggestions: la, kréyòl, ka, sé, tini",
+    "D/KreyolIME-Potomitan™( 4252): Container de suggestions trouvé, vidage des vues existantes"
+   ],
+   "height_log": [],
+   "errors": []
+  },
+  {
+   "orientation": "paysage",
+   "ime_avant": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "rotation_ok": true,
+   "rotation": 270,
+   "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored",
+   "input_shown": true,
+   "screen": [
+    1600,
+    720
+   ],
+   "layout_ok": true,
+   "rows": [
+    {
+     "top": 406,
+     "bot": 457,
+     "h": 51,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 464,
+     "bot": 515,
+     "h": 51,
+     "keys": 10,
+     "expected": 10
+    },
+    {
+     "top": 522,
+     "bot": 573,
+     "h": 51,
+     "keys": 9,
+     "expected": 9
+    },
+    {
+     "top": 580,
+     "bot": 631,
+     "h": 51,
+     "keys": 9,
+     "expected": 9
+    }
+   ],
+   "ime_frame": {
+    "frame": [
+     0,
+     335,
+     1464,
+     720
+    ],
+    "app_bounds": [
+     0,
+     0,
+     1464,
+     681
+    ]
+   },
+   "ime_height_px": 385,
+   "ime_height_dp": 235.1,
+   "ime_share_screen_pct": 53.5,
+   "app_area_px": 681,
+   "app_left_px": 335,
+   "app_left_dp": 204.6,
+   "ime_share_app_pct": 56.5,
+   "key_height_px": 51,
+   "key_height_dp": 31.1,
+   "key_width_dp": 80.9,
+   "last_row_bottom_px": 631,
+   "px_below_last_row": 89,
+   "cleared_taps": 96,
+   "partial_shot": true,
+   "typed": "Ou ka paléou ka palé",
+   "typed_attempts": [
+    "Ou ka palé",
+    "Ou ka paléou ka palé"
+   ],
+   "typed_ok": false,
+   "sym_layout_ok": true,
+   "sym_rows": [
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 51
+    },
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 51
+    },
+    {
+     "keys": 10,
+     "expected": 10,
+     "h": 51
+    },
+    {
+     "keys": 4,
+     "expected": 4,
+     "h": 51
+    }
+   ],
+   "sym_key_width_dp": [
+    83.5,
+    83.5,
+    83.5
+   ],
+   "sym_width_spread_dp": 0.0,
+   "sym_hash_center": [
+    1205,
+    547
+   ],
+   "sym_hash_offset_px": -29,
+   "sym_field_avant": "Ou ka paléou ka palé",
+   "sym_field_apres": "Ou ka paléou ka palé#",
+   "sym_hash_ok": true,
+   "sugg_lines": [
+    "D/KreyolIME-Potomitan™( 4252): Mode de suggestion changé: CONTEXTUAL",
+    "D/SuggestionEngine( 4252): N-gram contexte retenu: 'ka palé'",
+    "D/SuggestionEngine( 4252): Prédictions contextuelles: [la, kréyòl, ka, sé, tini]",
+    "D/KreyolIME-Potomitan™( 4252): 📝 Affichage suggestions simples: la, kréyòl, ka, sé, tini",
+    "D/KreyolIME-Potomitan™( 4252): displaySuggestions appelé avec 5 suggestions: la, kréyòl, ka, sé, tini",
+    "D/KreyolIME-Potomitan™( 4252): Container de suggestions trouvé, vidage des vues existantes"
+   ],
+   "height_log": [],
+   "errors": []
+  }
+ ],
+ "density": 262,
+ "api": "system-images/android-34/google_apis/x86_64/",
+ "geometry": "720x1600",
+ "boot_seconds": 54,
+ "ime": "com.potomitan.kreyolkeyboard/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
+}
