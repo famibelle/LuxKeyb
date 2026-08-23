@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.15] - 2026-08-23
+
+### #️⃣ La touche « # » arrive en mode 123
+
+Le hashtag ne pouvait pas s'écrire avec ce clavier. La page de symboles du mode
+123 est la seule qu'il propose, il n'y a pas de seconde page de caractères comme
+sur d'autres claviers, donc un caractère absent de cette page est un caractère
+qu'il faut aller chercher ailleurs. « # » y figure désormais, en troisième
+rangée, sous « @ ».
+
+L'ajout ne coûte rien aux touches voisines : cette rangée n'en portait que neuf
+là où les deux du dessus en portent dix. La dixième aligne les trois rangées sur
+la même largeur de touche.
+
 ## [10.12.14] - 2026-08-22
 
 ### 🔤 « Ba kréyòl-la lanmou a-w » et vocabulaire enrichi

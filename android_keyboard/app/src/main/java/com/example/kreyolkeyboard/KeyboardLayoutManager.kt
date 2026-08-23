@@ -272,7 +272,14 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createNumericLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         val row2 = arrayOf("-", "/", ":", ";", "(", ")", "€", "&", "@", "\"")
-        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "⌫")
+        // v10.12.15 : "#" ajouté. C'est la seule page de symboles du clavier (il
+        // n'y a pas de seconde page comme le "=\<" de Gboard), donc son absence
+        // signifiait qu'aucun hashtag ne pouvait être écrit sans changer de
+        // clavier. La rangée 3 n'avait que 9 touches contre 10 aux rangées 1 et 2 :
+        // la dixième aligne simplement leurs largeurs, sans rétrécir aucune touche
+        // en deçà de ce qui existe déjà ailleurs. Placé en 9e colonne, sous "@" de
+        // la rangée du dessus, l'autre caractère des identifiants et des réseaux.
+        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "#", "⌫")
         val row4 = arrayOf("ABC", "EMOJI", " ", "⏎")
 
         mainLayout.addView(createKeyboardRow(row1))
