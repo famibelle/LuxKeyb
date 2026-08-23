@@ -49,7 +49,6 @@ table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px;}
 th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
 th{background:var(--sea-soft);font-weight:700;}
 tbody tr:nth-child(2n){background:var(--stripe);}
-td.num{white-space:nowrap;font-family:var(--mono);}
 
 /* Formules de parrainage : une carte par palier, empilées sur mobile. */
 .paliers{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:18px 0 6px;}
@@ -205,56 +204,55 @@ td.num{white-space:nowrap;font-family:var(--mono);}
   <div class="scroll">
     <table>
       <thead>
-        <tr><th>Chantier</th><th>Ce que ça produit</th><th>Budget</th></tr>
+        <tr><th>Chantier</th><th>Ce que ça produit</th></tr>
       </thead>
       <tbody>
         <tr>
           <td>Portage iOS</td>
           <td>Le clavier disponible sur iPhone, soit environ la moitié du
           public aujourd'hui hors d'atteinte</td>
-          <td class="num">12 000 €</td>
         </tr>
         <tr>
           <td>Élargissement du corpus et du dictionnaire</td>
           <td>Numérisation et intégration de nouveaux textes créoles, droits
           associés, meilleures suggestions</td>
-          <td class="num">8 000 €</td>
         </tr>
         <tr>
           <td>Ateliers en établissement scolaire</td>
           <td>Interventions auprès des classes de créole, kit pédagogique,
           accompagnement des enseignants</td>
-          <td class="num">6 000 €</td>
         </tr>
         <tr>
           <td>Diffusion et présence sur le terrain</td>
           <td>Impression des tracts, affiches et triptyques, présence lors
           des rendez-vous culturels créoles</td>
-          <td class="num">4 000 €</td>
         </tr>
         <tr>
           <td>Accessibilité et maintenance</td>
           <td>Adaptations pour les troubles moteurs, compatibilité avec les
           nouvelles versions d'Android, corrections</td>
-          <td class="num">5 000 €</td>
         </tr>
       </tbody>
     </table>
   </div>
   <p class="muted">Un partenaire peut financer un chantier complet et lui
   être associé nommément, ou contribuer à l'ensemble via l'une des formules
-  ci-dessous.</p>
+  ci-dessous. Le chiffrage de chaque chantier vous est communiqué sur
+  demande.</p>
 </section>
 
 <section id="formules">
   <h2>Les formules</h2>
   <p>Elles portent les noms des niveaux du parcours de vocabulaire intégré à
-  l'application. Chaque palier reprend les contreparties du précédent.</p>
+  l'application, et vont du plus accessible au plus engageant. Chaque palier
+  reprend les contreparties du précédent. Le montant de chacun s'établit avec
+  vous, en fonction de ce que vous cherchez à faire et de la durée sur
+  laquelle vous souhaitez vous inscrire.</p>
 
   <div class="paliers">
     <div class="palier">
       <p class="nom">🔥 Débrouya</p>
-      <p class="prix">1 500 €</p>
+      <p class="prix">Premier palier</p>
       <ul>
         <li>Logo et lien sur cette page</li>
         <li>Mention dans les supports imprimés diffusés sur le terrain</li>
@@ -265,7 +263,7 @@ td.num{white-space:nowrap;font-family:var(--mono);}
 
     <div class="palier">
       <p class="nom">🐇 Kompè Lapen</p>
-      <p class="prix">5 000 €</p>
+      <p class="prix">Deuxième palier</p>
       <ul>
         <li>Logo sur l'ensemble des supports du projet</li>
         <li>Citation dans les communiqués de presse de la période</li>
@@ -277,7 +275,7 @@ td.num{white-space:nowrap;font-family:var(--mono);}
 
     <div class="palier">
       <p class="nom">🐘 Kompè Zamba</p>
-      <p class="prix">15 000 €</p>
+      <p class="prix">Troisième palier</p>
       <ul>
         <li>Un chantier financé et associé à votre nom</li>
         <li>Mention dans l'écran « À propos » de l'application</li>
@@ -289,7 +287,7 @@ td.num{white-space:nowrap;font-family:var(--mono);}
 
     <div class="palier top">
       <p class="nom">👑 Potomitan</p>
-      <p class="prix">40 000 €</p>
+      <p class="prix">Partenaire principal</p>
       <ul>
         <li>Partenaire principal, cité en premier sur tous les supports</li>
         <li>Association au lancement de la version iOS</li>
@@ -366,7 +364,7 @@ td.num{white-space:nowrap;font-family:var(--mono);}
 <section id="contact">
   <h2>Parlons-en</h2>
   <p>Dites-nous simplement ce que vous cherchez à faire, nous vous répondrons
-  avec une proposition chiffrée et un calendrier. Une visioconférence de
+  avec une proposition chiffrée et un calendrier adaptés à votre situation. Une visioconférence de
   vingt minutes suffit le plus souvent à savoir si le projet vous
   correspond.</p>
   <div class="cta">
