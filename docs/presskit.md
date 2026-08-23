@@ -123,8 +123,9 @@ claviers standards.
   continuer d'exister à l'ère de l'IA ?
 - **Patrimoine × tech** : quand l'intelligence des claviers se met au service
   d'une langue régionale
-- **Festival Mois Kréyol (3 octobre au 30 novembre 2026)** : un outil concret
-  pour écrire en créole toute l'année
+- **Les rendez-vous de la langue créole** : festivals, semaines culturelles
+  et événements scolaires de l'automne trouvent ici un outil concret, qui sert
+  ensuite toute l'année
 - **Éducation** : un support moderne pour les professeurs de créole (LVR,
   CAPES créole) et leurs élèves
 - **Open source citoyen** : un projet indépendant, auditable, sans modèle
