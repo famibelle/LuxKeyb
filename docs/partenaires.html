@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Partenariats institutionnels : Klavyé Kréyòl Karukera</title>
 <meta name="description" content="Partenariats publics autour du clavier créole guadeloupéen : apport à une politique linguistique, éducative et numérique, objets contractualisables, formes de collaboration et cadre administratif.">
+<!-- Aperçu de partage : cette page circule à l'intérieur des administrations,
+     transférée de boîte en boîte. Sans ces balises, le lien arrive nu. -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Klavyé Kréyòl Karukera">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Partenariats institutionnels : Klavyé Kréyòl Karukera">
+<meta property="og:description" content="Ce qu'un partenaire public finance, ce qu'il obtient en retour, et dans quel cadre. Clavier créole guadeloupéen, gratuit, libre, sans collecte de données.">
+<meta property="og:url" content="https://famibelle.github.io/KreyolKeyb/partenaires.html">
+<meta property="og:image" content="https://famibelle.github.io/KreyolKeyb/assets/ads/export/google-paysage-A.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -60,6 +70,39 @@ tbody tr:nth-child(2n){background:var(--stripe);}
 .forme .pour{font-size:13px;color:var(--ink-soft);margin:10px 0 0;padding-top:9px;border-top:1px solid var(--line);}
 
 .cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 0;}
+
+/* Ligne de provenance réservée au papier et au PDF. */
+.print-source { display:none; }
+
+/* Impression et export PDF. Le dossier circule en pièce jointe dans les
+   administrations : il doit s'imprimer sans la barre de navigation, sans les
+   appels à l'action du site, et sans couper une carte en deux entre deux
+   pages. La palette est forcée en clair, un PDF sombre étant illisible une
+   fois imprimé. */
+@media print {
+  /* Les trois sélecteurs, sinon la variante posée par la bascule de thème
+     l'emporte sur un :root nu et le PDF sort en sombre. */
+  :root, :root[data-theme="light"], :root[data-theme="dark"] {
+    --paper:#FFFFFF; --ink:#1C2624; --ink-soft:#4B5750;
+    --sea:#0E6E76; --sea-soft:#DDEEEE; --sun:#C97F1E; --sun-soft:#F6E9D2;
+    --line:rgba(28,38,36,0.22); --card:#FFFFFF; --stripe:rgba(28,38,36,0.05);
+  }
+  html, body { background:#FFFFFF !important; }
+  nav.site, .install-bar, .theme-toggle, footer.site .footer-cta,
+  .no-print { display:none !important; }
+  body { padding:0; font-size:11pt; }
+  .wrap { max-width:none; }
+  section { margin-top:22px; }
+  h2 { break-after:avoid; }
+  .card, .forme, .tile { break-inside:avoid; }
+  h1 { font-size:22pt; }
+  h2 { font-size:13pt; }
+  .scroll { overflow:visible; }
+  table { min-width:0; font-size:10pt; }
+  a { text-decoration:underline; }
+  .print-source { display:block; margin-top:26px; padding-top:10px;
+                  border-top:1px solid var(--line); font-size:9pt; color:var(--ink-soft); }
+}
 </style>
 </head>
 <body>
@@ -415,8 +458,10 @@ tbody tr:nth-child(2n){background:var(--stripe);}
   le plus souvent à savoir si le projet répond à votre besoin.</p>
   <div class="cta">
     <a class="btn primary" href="mailto:contact@potomitan.io?subject=Partenariat%20institutionnel%20Klavy%C3%A9%20Kr%C3%A9y%C3%B2l%20Karukera">Écrire à contact@potomitan.io</a>
+    <a class="btn no-print" href="presse/dossier-partenariat.pdf">Télécharger ce dossier (PDF)</a>
     <a class="btn" href="presskit.html">Voir le dossier de presse</a>
   </div>
+  <p class="print-source">Document extrait de https://famibelle.github.io/KreyolKeyb/partenaires.html · Potomitan™ · contact@potomitan.io</p>
   <p class="muted" style="margin-top:16px">Médhi Famibelle, Potomitan™.
   Échanges possibles en français comme en kréyòl.</p>
 </section>

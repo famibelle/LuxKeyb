@@ -345,7 +345,8 @@ conditions d'utilisation.
 - [Fiche d'usage en ergothérapie](ergotherapie.html) : intérêt pour les
   personnes ayant des difficultés motrices de saisie
 - [Partenariats institutionnels](partenaires.html) : formes de collaboration
-  avec la sphère publique
+  avec la sphère publique, également disponible
+  [en PDF](presse/dossier-partenariat.pdf)
 
 ## Contact
 

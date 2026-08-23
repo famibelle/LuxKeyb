@@ -6,3 +6,16 @@
 <link rel="stylesheet" href="{{ '/assets/theme.css' | relative_url }}">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="{{ '/assets/theme.js' | relative_url }}"></script>
+
+<!-- Aperçu de partage. Ces pages existent pour être transférées, par mail ou
+     dans une messagerie : sans ces balises, le lien arrive nu chez le
+     destinataire. Le préfixe est écrit en dur, faute de _config.yml où
+     site.url serait défini. -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Klavyé Kréyòl Karukera">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="{{ page.title | default: 'Klavyé Kréyòl Karukera' | escape }}">
+<meta property="og:description" content="{{ page.description | default: page.title | escape }}">
+<meta property="og:url" content="https://famibelle.github.io/KreyolKeyb{{ page.url }}">
+<meta property="og:image" content="https://famibelle.github.io/KreyolKeyb/assets/ads/export/google-paysage-A.png">
+<meta name="twitter:card" content="summary_large_image">
