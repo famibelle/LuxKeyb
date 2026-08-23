@@ -14,6 +14,7 @@ lang: fr
     <div class="menu-panel">
       <a href="corpus.html">Le corpus en chiffres</a>
       <a href="presskit.html">Dossier de presse</a>
+      <a href="partenaires.html">Partenariats institutionnels</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="https://github.com/famibelle/KreyolKeyb">Code source</a>
       <a href="privacy/privacy-policy.html">Confidentialité</a>
@@ -223,7 +224,7 @@ Le code source est ouvert et public sur
       <strong>Le projet</strong>
       <a href="corpus.html">Le corpus en chiffres</a>
       <a href="presskit.html">Dossier de presse</a>
-      <a href="partenaires.html">Devenir partenaire</a>
+      <a href="partenaires.html">Partenariats institutionnels</a>
       <a href="notes_techniques.html">Notes techniques</a>
       <a href="ergotherapie.html">Fiche ergothérapie</a>
       <a href="comparatif-gboard.html">Comparatif avec Gboard</a>
