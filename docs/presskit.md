@@ -152,8 +152,9 @@ claviers standards.
 - **Les rendez-vous de la langue créole** : festivals, semaines culturelles
   et événements scolaires de l'automne trouvent ici un outil concret, qui sert
   ensuite toute l'année
-- **Éducation** : un support moderne pour les professeurs de créole (LVR,
-  CAPES créole) et leurs élèves
+- **Éducation** : un outil d'écriture pour les professeurs de créole (LVR,
+  CAPES créole) et leurs élèves, dans une discipline où l'écrit est évalué
+  (voir *Un usage en classe de langue vivante régionale*, plus bas)
 - **Numérique public et égalité d'accès** : gratuit, fonctionnant sur des
   appareils anciens, sans connexion et sans compte, l'outil n'écarte aucune
   famille pour des raisons d'équipement ou de forfait. Une
@@ -203,6 +204,35 @@ Un clavier qui **travaille pour le kréyòl au lieu de le combattre** :
   **progression gamifiée** en 7 niveaux culturels, de « Pipirit » à « Potomitan »
 - **100 % local, zéro collecte de données**, code source public (licence MIT)
 
+## Un usage en classe de langue vivante régionale
+
+Le créole est enseigné en langue vivante régionale de l'école au lycée, et
+l'écrit y occupe une place centrale. C'est exactement là que les claviers du
+marché travaillent contre l'élève, en corrigeant sa langue vers le français.
+
+Ce que le clavier apporte dans ce cadre, aujourd'hui :
+
+- La suggestion des mots kréyòl **avec leurs accents**, sur un dictionnaire
+  construit à partir de textes créoles
+- Deux jeux de vocabulaire et un parcours de progression en niveaux,
+  utilisables comme support d'activité
+- Gratuit, sans compte, sans connexion, sur des appareils Android anciens :
+  aucune famille n'en est écartée pour des raisons d'équipement, de forfait ou
+  de moyens
+- Une [fiche d'usage en ergothérapie](ergotherapie.html) pour les élèves ayant
+  des difficultés motrices de saisie
+- Aucun traitement de données à déclarer : ni compte, ni serveur, ni
+  télémétrie, ce qui simplifie considérablement l'introduction de l'outil dans
+  un établissement
+
+**Une précision qui a son importance :** ce n'est pas une méthode
+d'apprentissage du créole et cela ne prétend pas l'être. C'est un outil
+d'écriture, qui sert l'enseignement de l'écrit.
+
+Les formes de collaboration possibles avec les académies, les établissements
+et les collectivités sont décrites sur la page
+[Partenariats institutionnels](partenaires.html#lvr).
+
 ## Ce que l'application contient, et ce qu'elle ne contient pas
 
 Ces éléments sont vérifiables dans le
@@ -250,6 +280,7 @@ Les suggestions s'appuient sur les œuvres de :
 | Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
 | Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
 | Utilisateurs | <span id="pk-users">3 223</span> installations au <span id="pk-date">23 août 2026</span> (chiffre exact de la Play Console, [progression publique](jauge.html)) |
+| Usage scolaire | Langue vivante régionale, de l'école au lycée ([détail](partenaires.html#lvr)) |
 | Partenariats | [Partenariats institutionnels](partenaires.html) |
 
 ## Visuels
