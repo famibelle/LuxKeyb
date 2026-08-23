@@ -54,7 +54,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 23 août 2026*
+*Dernière mise à jour : 24 août 2026*
 
 ## En une phrase
 
@@ -62,6 +62,23 @@ lang: fr
 créole guadeloupéen** : il suggère les mots en kréyòl pendant la frappe, à
 partir d'un corpus littéraire créole authentique. Gratuit, open source, et
 sans aucune collecte de données.
+
+## L'éditeur
+
+Klavyé Kréyòl Karukera est édité par **Potomitan™**, société par actions
+simplifiée.
+
+Potomitan™ développe également [POTOMITAN](https://potomitan.io), un
+traducteur d'urgence français et créole soutenu par la Préfecture de
+Guadeloupe dans le cadre du Lab'An Nou et présenté par Orange
+Antilles-Guyane, déjà couvert par France-Antilles sous le titre « POTOMITAN,
+l'IA qui parle créole ». Écrire le kréyòl avec le clavier, le traduire avec
+POTOMITAN : deux réponses complémentaires au même vide numérique, portées par
+la même structure.
+
+Collectivités, services de l'État, établissements et opérateurs publics : les
+formes de collaboration possibles sont décrites sur la page
+[Partenariats institutionnels](partenaires.html).
 
 ## Ils en parlent déjà
 
@@ -148,14 +165,9 @@ claviers standards.
   (dont Tony Mango sur Radyo Tanbou) annoncent explorer les origines
   africaines réelles de la langue mère du côté des langues congolaises, un
   écho direct au corpus littéraire créole sur lequel s'appuie le clavier
-- **Un écosystème, pas un produit isolé** : Klavyé Kréyòl s'inscrit dans
-  l'écosystème Potomitan™, qui développe aussi
-  [POTOMITAN](https://potomitan.io), un traducteur d'urgence
-  français ↔ créole soutenu par la Préfecture de Guadeloupe (Lab'An Nou) et
-  présenté par Orange Antilles-Guyane, déjà couvert par France-Antilles
-  (« POTOMITAN, l'IA qui parle créole »). Écrire le kréyòl (le clavier) et
-  le traduire (POTOMITAN) : deux réponses complémentaires au même vide
-  numérique
+- **Un écosystème, pas un produit isolé** : le clavier et le traducteur
+  POTOMITAN répondent au même vide numérique, l'un pour écrire le kréyòl,
+  l'autre pour le traduire (voir *L'éditeur*, plus haut)
 
 ## Le contexte, en chiffres
 
@@ -191,6 +203,28 @@ Un clavier qui **travaille pour le kréyòl au lieu de le combattre** :
   **progression gamifiée** en 7 niveaux culturels, de « Pipirit » à « Potomitan »
 - **100 % local, zéro collecte de données**, code source public (licence MIT)
 
+## Ce que l'application contient, et ce qu'elle ne contient pas
+
+Ces éléments sont vérifiables dans le
+[dépôt public](https://github.com/famibelle/KreyolKeyb) et détaillés dans les
+[notes techniques](notes_techniques.html).
+
+- **Aucun texte d'auteur n'est embarqué.** L'application ne transporte que des
+  statistiques : une liste de couples mot et fréquence, et pour chaque clé la
+  liste des mots suivants observés avec leur probabilité. La plus longue
+  séquence de mots reconstructible depuis ces données est de **trois mots**
+- **Chaque entrée du corpus source porte sa source**, ce qui rend la
+  provenance traçable entrée par entrée. Le corpus rassemble 86 sources
+  distinctes, dont la majorité est produite dans le cadre du projet
+- **Aucune donnée ne quitte l'appareil.** Pas de compte, pas de serveur, pas
+  de statistique d'usage remontée, y compris de manière anonyme. Le clavier
+  fonctionne sans connexion
+- **Aucune publicité, aucun achat intégré, aucune marque.** L'application ne
+  fait la promotion de personne, y compris d'un éventuel partenaire ou
+  financeur
+- **Le code est public sous licence MIT** et auditable, y compris les
+  développements financés dans le cadre d'un partenariat
+
 ## Le corpus : un hommage aux défenseurs du kréyòl
 
 Les suggestions s'appuient sur les œuvres de :
@@ -211,6 +245,8 @@ Les suggestions s'appuient sur les œuvres de :
 | Écosystème | Développe aussi [POTOMITAN](https://potomitan.io), traducteur d'urgence français ↔ créole |
 | Téléchargement | [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k) |
 | Couverture presse | Canal 10, Guadeloupe la 1ère (TV, juillet 2026), France-Antilles Guadeloupe (04/08/2026) |
+| Corpus source | 86 sources distinctes, provenance tracée entrée par entrée ([le corpus en chiffres](corpus.html)) |
+| Données embarquées | Fréquences et probabilités de succession, aucun texte d'auteur |
 | Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
 | Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
 | Utilisateurs | <span id="pk-users">3 223</span> installations au <span id="pk-date">23 août 2026</span> (chiffre exact de la Play Console, [progression publique](jauge.html)) |
@@ -267,6 +303,18 @@ conditions d'utilisation.
 - [Toutes les captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux, gamification)
 - [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
 - [Logo Potomitan™ en haute résolution](assets/potomitan-logo.png)
+
+## Pour aller plus loin
+
+- [Le corpus en chiffres](corpus.html) : composition, sources, méthode de calcul
+- [Notes techniques](notes_techniques.html) : architecture, moteur de
+  suggestions, protocoles de test
+- [Comparatif avec Gboard](comparatif-gboard.html) : mesures de performance et
+  inventaire de fonctions
+- [Fiche d'usage en ergothérapie](ergotherapie.html) : intérêt pour les
+  personnes ayant des difficultés motrices de saisie
+- [Partenariats institutionnels](partenaires.html) : formes de collaboration
+  avec la sphère publique
 
 ## Contact
 
