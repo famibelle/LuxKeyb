@@ -54,7 +54,7 @@ lang: fr
 
 # Dossier de presse : Klavyé Kréyòl Karukera
 
-*Dernière mise à jour : 12 août 2026*
+*Dernière mise à jour : 23 août 2026*
 
 ## En une phrase
 
@@ -106,6 +106,15 @@ frustration personnelle », y explique-t-il, décrivant comment ses propres
 messages en créole étaient systématiquement corrigés en français par les
 claviers standards.
 
+### Revue de presse
+
+| Média | Date | Format | Sujet |
+|---|---|---|---|
+| Canal 10 | juillet 2026 | Télévision, sujet Tech | « Une application intuitive pour écrire en créole » |
+| Guadeloupe la 1ère (France Télévisions) | 28/07/2026 | Télévision, *Guadeloupe Soir 19h30* | [« Karukéra : on jan pou maké kréyòl-la »](https://la1ere.franceinfo.fr/guadeloupe/programme-video/la1ere_guadeloupe_guadeloupe-soir-19h30/diffusion/8682591-emission-du-mardi-28-juillet-2026.html) |
+| la1ere.franceinfo.fr | 30/07/2026 | Article web | [« Klavyé Kréyòl Karukera, l'appli. pour smartphone qui facilite la rédaction de messages en créole guadeloupéen »](https://la1ere.franceinfo.fr/guadeloupe/klavye-kreyol-karukera-l-appli-pour-smartphone-qui-facilite-la-redaction-de-messages-en-creole-guadeloupeen-1723969.html) |
+| France-Antilles Guadeloupe | 04/08/2026 | Presse écrite, entretien | [« Si le créole guadeloupéen n'existe pas, petit à petit, on s'efface »](https://www.guadeloupe.franceantilles.fr/actualite/economie/si-le-creole-guadeloupeen-nexiste-pas-petit-a-petit-on-sefface-1088477.php) |
+
 ## Angles possibles
 
 - **Souveraineté et préservation numériques** : en Guadeloupe, un
@@ -128,6 +137,11 @@ claviers standards.
   ensuite toute l'année
 - **Éducation** : un support moderne pour les professeurs de créole (LVR,
   CAPES créole) et leurs élèves
+- **Numérique public et égalité d'accès** : gratuit, fonctionnant sur des
+  appareils anciens, sans connexion et sans compte, l'outil n'écarte aucune
+  famille pour des raisons d'équipement ou de forfait. Une
+  [fiche d'usage en ergothérapie](ergotherapie.html) documente par ailleurs
+  son intérêt pour les personnes ayant des difficultés motrices de saisie
 - **Open source citoyen** : un projet indépendant, auditable, sans modèle
   publicitaire
 - **Les racines du kréyòl** : en février 2026, des chercheurs créolistes
@@ -193,12 +207,14 @@ Les suggestions s'appuient sur les œuvres de :
 | Prix | Gratuit, sans pub, sans achat intégré |
 | Données personnelles | Aucune collecte, fonctionnement 100 % hors ligne |
 | Licence | Open source (MIT), code sur [GitHub](https://github.com/famibelle/KreyolKeyb) |
-| Éditeur | [Potomitan™](https://potomitan.io) |
+| Éditeur | [Potomitan™](https://potomitan.io), société par actions simplifiée |
 | Écosystème | Développe aussi [POTOMITAN](https://potomitan.io), traducteur d'urgence français ↔ créole |
 | Téléchargement | [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&referrer=utm_source%3Dpresse%26utm_campaign%3Dlaunch10k) |
 | Couverture presse | Canal 10, Guadeloupe la 1ère (TV, juillet 2026), France-Antilles Guadeloupe (04/08/2026) |
 | Dictionnaire | 5 284 mots kréyòl + 662 mots français (fallback bilingue) |
 | Modèle de prédiction | 4 601 mots-pivots (n-grams contextuels) |
+| Utilisateurs | <span id="pk-users">3 223</span> installations au <span id="pk-date">23 août 2026</span> (chiffre exact de la Play Console, [progression publique](jauge.html)) |
+| Partenariats | [Partenariats institutionnels](partenaires.html) |
 
 ## Visuels
 
@@ -243,6 +259,10 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
   </div>
 </div>
 
+**[Télécharger le kit presse (ZIP, 1,7 Mo)](presse/kit-presse.zip)** :
+les huit captures ci-dessus en pleine résolution et le logo, avec leurs
+conditions d'utilisation.
+
 - [Animation du clavier en action](Screenshots/KlavyéAnAktion.gif)
 - [Toutes les captures d'écran](https://github.com/famibelle/KreyolKeyb/tree/main/docs/Screenshots) (suggestions, accents, jeux, gamification)
 - [Reportage Canal 10](Medias/TV_Canal10.mp4) et [reportage Guadeloupe la 1ère](Medias/TV_Guadeloupe1ère.mp4) (extraits vidéo, voir aussi ci-dessus)
@@ -250,13 +270,29 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
 
 ## Contact
 
-**Médhi Famibelle**, Potomitan™
+**Médhi Famibelle**, Potomitan™ (SAS). Échanges possibles en français comme
+en kréyòl.
 [GitHub du projet](https://github.com/famibelle/KreyolKeyb) ·
 [Page du projet](index.html) ·
 [Devenir ambassadeur](ambassade.html)
 
-Une question, une proposition, un partenariat ? Écrivez à
+Une question, une demande d'interview, un visuel manquant ? Écrivez à
 **[contact@potomitan.io](mailto:contact@potomitan.io)**.
+
+Collectivités, services de l'État, établissements et opérateurs publics :
+voir la page [Partenariats institutionnels](partenaires.html).
+
+<script>
+// Le compteur d'installations et sa date viennent de docs/stats/downloads.json,
+// mis à jour quotidiennement : un chiffre figé dans un dossier de presse
+// vieillit à la vue de tous.
+fetch('stats/downloads.json').then(function(r){ return r.json(); }).then(function(s){
+  var d = new Date(s.as_of + 'T00:00:00');
+  document.getElementById('pk-users').textContent = s.current.toLocaleString('fr-FR');
+  document.getElementById('pk-date').textContent =
+    d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}).catch(function(){});
+</script>
 
 <!-- footer:start -->
 <footer class="site">
