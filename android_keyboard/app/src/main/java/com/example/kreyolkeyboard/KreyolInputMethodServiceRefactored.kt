@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.app.ActivityManager
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -47,6 +48,55 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     companion object {
         private const val TAG = "LuxIME-Potomitan™"
         private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
+        // Hauteur d'une rangée de suggestions : ce que le clavier consomme en
+        // hauteur en dehors des rangées de touches elles-mêmes. Le padding
+        // vertical du bloc de touches vit dans KeyboardLayoutManager, qui le pose.
+        private const val SUGGESTION_ROW_HEIGHT_DP = 44
+        // En paysage les suggestions tiennent sur une seule rangée un peu plus
+        // basse : les deux rangées empilées coûtaient 88 dp sur les 359 dp que la
+        // fenêtre IME reçoit dans cette orientation (contre 891 dp en portrait).
+        private const val SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP = 38
+        // Intervalle vide autour d'une puce de suggestion, horizontalement comme
+        // verticalement : la marge d'erreur de visée. Cf. ACCESSIBILITE.md, point 1.
+        //
+        // Cet intervalle n'appartient à aucune vue cliquable, donc un appui qui y
+        // tombe ne fait rien, et c'est le bon comportement : un appui perdu coûte un
+        // geste, un appui sur le mot voisin en coûte cinq (effacer, retaper,
+        // revalider). Mesuré sur Pixel 5 (440 dpi) avant ce changement : 6,9 dp
+        // (1,10 mm) entre deux puces d'une même rangée, et surtout **3,6 dp
+        // (0,58 mm) entre la rangée luxembourgeoise et la rangée française**, alors que
+        // l'imprécision d'un doigt est d'abord verticale. Un demi-millimètre trop
+        // bas validait un mot français à la place du mot luxembourgeois visé.
+        //
+        // Les 12 dp sont pris sur la hauteur des puces (38 dp → 34 dp), pas sur la
+        // hauteur des rangées : SUGGESTION_ROW_HEIGHT_DP ne change pas, donc le
+        // clavier occupe exactement la même place et aucune autre rangée ne bouge.
+        // L'échange est favorable : 0,4 mm de hauteur de cible contre 1,3 mm de
+        // séparation.
+        private const val SUGGESTION_CHIP_GAP_DP = 12
+        // Largeur minimale d'une puce. Ce n'est pas un élargissement : le style
+        // Button de la plateforme impose déjà 88 dp, ce qui rend les puces de
+        // « an » ou « et » aussi larges que celles des mots longs. La valeur est
+        // fixée ici pour que la taille de cible ne dépende plus d'un défaut de
+        // thème susceptible de changer sans qu'on s'en aperçoive.
+        // Taille du mot proposé dans une puce. Elle valait 14 sp, la plus petite
+        // du clavier : 32 px de glyphe quand une lettre de touche en fait 38,
+        // alors que c'est ce texte que l'on lit pour décider d'accepter une
+        // suggestion. Le fond de la puce mesure 82 px de haut et ne dépend pas
+        // d'elle, il restait donc 50 px inutilisés autour du mot. À 18 sp les
+        // glyphes rejoignent ceux des touches, et un mot long tient encore dans
+        // la rangée réduite du paysage (38 dp).
+        // Réserve verticale entre le bord de la barre et la puce, du côté qui
+        // touche l'extérieur (haut de la rangée luxembourgeoise, bas de la rangée
+        // française). Le côté intérieur, lui, porte l'écart entre les deux
+        // rangées : cf. suggestionRowInnerPadDp().
+        private const val SUGGESTION_ROW_OUTER_PAD_DP = 4
+        private const val SUGGESTION_TEXT_SIZE_SP = 18f
+        // Réserve verticale à l'intérieur d'une puce, entre le fond arrondi et le
+        // mot. C'est elle qui borne la taille de police réellement affichable :
+        // cf. fitTextToChipHeight().
+        private const val SUGGESTION_CHIP_PADDING_V_DP = 6
+        private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -347,16 +397,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Créer la zone de suggestions
         createSuggestionsArea(mainLayout)
         
-        // 📱 PADDING ADAPTATIF SELON MODE DE NAVIGATION
-        // Créer un conteneur avec padding pour éviter que la navigation bar masque le clavier
+        // 📱 Conteneur dont le bas se décale de ce que la barre de navigation
+        // masque réellement du clavier, mesuré après la mise en page (voir
+        // adjustForNavigationBarOverlap). Zéro tant que rien ne prouve un
+        // recouvrement : le système place déjà la fenêtre de saisie au-dessus de
+        // la barre, et réserver la place une seconde fois laissait une bande
+        // vide entre la dernière rangée et le bas de l'écran.
         val keyboardContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            val adaptivePadding = getAdaptiveNavigationPadding()
-            setPadding(0, 0, 0, adaptivePadding)
-            Log.d(TAG, "✅ Padding adaptatif appliqué: ${adaptivePadding}px")
+            setPadding(0, 0, 0, 0)
         }
-        
-        // Créer le clavier principal
+        mainLayout.post { adjustForNavigationBarOverlap(mainLayout, keyboardContainer) }
+
+        // Créer le clavier principal, dimensionné pour la place que la fenêtre
+        // IME accordera réellement (voir availableRowsHeightPx)
+        keyboardLayoutManager.setAvailableRowsHeight(computeAvailableRowsHeight())
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
@@ -376,6 +431,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * sur la touche de la rangée voisine — bug constaté et corrigé le 23/07/2026.
      */
     private fun createSuggestionsArea(parentLayout: LinearLayout) {
+        val rowHeightPx = dpToPx(suggestionRowHeightDp())
+
         val suggestionsContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -388,9 +445,19 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val kreyolScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
+                rowHeightPx
             )
-            setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(2))
+            // Le padding bas porte la moitié de l'intervalle qui sépare une puce
+            // kréyòl de la puce française juste en dessous, l'autre moitié venant du
+            // padding haut de la rangée française. En paysage cette rangée n'existe
+            // pas : rien à séparer, et la hauteur disponible y est trop courte pour
+            // la dépenser en vide.
+            setPadding(
+                dpToPx(8),
+                dpToPx(SUGGESTION_ROW_OUTER_PAD_DP),
+                dpToPx(8),
+                dpToPx(suggestionRowInnerPadDp())
+            )
         }
         kreyolRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -400,33 +467,117 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             )
         }
         kreyolScroll.addView(kreyolRow)
-
-        val frScroll = HorizontalScrollView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(44)
-            )
-            setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(4))
-            visibility = View.INVISIBLE
-        }
-        frenchRow = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-        frScroll.addView(frenchRow)
-        frenchRowScroll = frScroll
-
         suggestionsContainer.addView(kreyolScroll)
-        suggestionsContainer.addView(frScroll)
+
+        // En paysage la seconde rangée n'est pas construite du tout : les suggestions
+        // françaises rejoignent la rangée kreyòl, qui défile horizontalement et où
+        // l'étiquette de langue et la couleur des puces les distinguent déjà. Le
+        // décalage des rangées de touches que la réserve permanente évitait ne peut
+        // pas se produire ici, puisque la mise en page est figée pour l'orientation :
+        // rien n'apparaît ni ne disparaît pendant la frappe.
+        // Le service survit aux rotations : sans cette remise à null, ces champs
+        // gardent la rangée française construite lors d'une mise en page portrait
+        // précédente, vue détachée de la hiérarchie affichée. Les suggestions
+        // françaises y étaient bien ajoutées, mais dans le vide, et disparaissaient
+        // de l'écran dès la première rotation.
+        frenchRow = null
+        frenchRowScroll = null
+
+        if (!isLandscape()) {
+            val frScroll = HorizontalScrollView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    rowHeightPx
+                )
+                // Moitié haute de l'intervalle entre les deux rangées, cf. kreyolScroll.
+                setPadding(
+                    dpToPx(8),
+                    dpToPx(suggestionRowInnerPadDp()),
+                    dpToPx(8),
+                    dpToPx(SUGGESTION_ROW_OUTER_PAD_DP)
+                )
+                visibility = View.INVISIBLE
+            }
+            frenchRow = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+            frScroll.addView(frenchRow)
+            frenchRowScroll = frScroll
+            suggestionsContainer.addView(frScroll)
+        }
+
         // Alias historique : les modes non-bilingues (prédictions contextuelles) affichent
         // dans la rangée du haut, la rangée française reste masquée dans ce cas.
         suggestionsView = kreyolRow
 
         parentLayout.addView(suggestionsContainer)
     }
+
+    /** Hauteur d'une rangée de suggestions, réduite en paysage. */
+    private fun suggestionRowHeightDp(): Int =
+        if (isLandscape()) SUGGESTION_ROW_HEIGHT_LANDSCAPE_DP else SUGGESTION_ROW_HEIGHT_DP
+
+    /** Nombre de rangées de suggestions réellement empilées : une seule en paysage. */
+    private fun suggestionRowCount(): Int = if (isLandscape()) 1 else 2
+
+    /**
+     * Réserve verticale du côté intérieur d'une rangée : la moitié de l'écart qui
+     * sépare les deux rangées empilées. En paysage il n'y a qu'une rangée, donc
+     * rien à séparer, et la hauteur y est trop courte pour la dépenser en vide.
+     */
+    private fun suggestionRowInnerPadDp(): Int =
+        if (suggestionRowCount() > 1) SUGGESTION_CHIP_GAP_DP / 2 else 2
+
+    /**
+     * Hauteur réellement occupée par une puce : la rangée moins ce que son
+     * conteneur réserve en haut et en bas. Les puces sont en MATCH_PARENT, donc
+     * c'est aussi la place dont dispose le mot qu'elles portent.
+     */
+    private fun suggestionChipHeightPx(): Int =
+        dpToPx(suggestionRowHeightDp()) - dpToPx(SUGGESTION_ROW_OUTER_PAD_DP) - dpToPx(suggestionRowInnerPadDp())
+
+    /**
+     * Ramène la police d'une puce à ce que sa hauteur peut afficher en entier.
+     *
+     * La taille demandée est en sp : elle suit donc l'échelle de police du
+     * système, alors que la puce, elle, est en dp et ne bouge pas. Au réglage
+     * « Grande » d'Android, la ligne de texte devenait plus haute que la puce et
+     * TextView la rognait à hauteur du padding : mesuré sur émulateur à
+     * l'échelle 1,3, il restait 29 px de vide au-dessus du mot contre 16 en
+     * dessous, jambages de « j », « q » et « g » coupés net. Le mot paraissait
+     * posé trop bas dans sa puce alors qu'il était simplement trop grand pour
+     * elle.
+     *
+     * Les touches du clavier règlent le même problème en dérivant leur police de
+     * la hauteur de touche (cf. KeyboardLayoutManager) ; ici on garde la taille
+     * en sp tant qu'elle tient, et on ne la réduit qu'au-delà, pour respecter le
+     * réglage de l'utilisateur aussi loin que la barre le permet.
+     *
+     * La hauteur de ligne se lit sur la police elle-même (ascent/descent, sans
+     * la réserve de police puisque includeFontPadding est désactivé), et non sur
+     * un ratio écrit en dur qui vieillirait mal si la police changeait.
+     */
+    private fun fitTextToChipHeight(view: TextView) {
+        val dispoPx = suggestionChipHeightPx() - 2 * dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+        val metrics = view.paint.fontMetricsInt
+        val lignePx = metrics.descent - metrics.ascent
+        if (lignePx > dispoPx && dispoPx > 0) {
+            view.setTextSize(TypedValue.COMPLEX_UNIT_PX, view.textSize * dispoPx / lignePx)
+        }
+    }
+
+    /**
+     * Demi-intervalle porté par chaque puce de suggestion. Deux puces voisines
+     * portent chacune la leur, donc le vide effectif entre elles vaut
+     * SUGGESTION_CHIP_GAP_DP.
+     */
+    private fun suggestionChipHalfGapPx(): Int = dpToPx(SUGGESTION_CHIP_GAP_DP) / 2
+
+    private fun isLandscape(): Boolean = KeyboardLayoutManager.isLandscape(this)
     
     // ===== IMPLÉMENTATION KeyboardInteractionListener =====
     
@@ -553,7 +704,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             if (accent.all { it.isLetter() }) {
                 val currentWord = inputProcessor.getCurrentWord()
                 val updatedWord = currentWord + accent
-                inputProcessor.updateCurrentWordSilently(updatedWord)
+                // setCurrentWord() et non une mise à jour muette : c'est le
+                // rappel onWordChanged() qui régénère les suggestions, exactement
+                // comme pour une lettre tapée normalement. Sans lui, un mot
+                // commencé par un digraphe choisi en appui long ("tj", "dj",
+                // "ch"...) n'obtenait jamais de propositions.
+                inputProcessor.setCurrentWord(updatedWord)
                 Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
             } else {
                 inputProcessor.finalizeCurrentWordFromEmoji()
@@ -658,7 +814,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {
         Log.d(TAG, "displayBilingualSuggestions appelé avec ${suggestions.size} suggestions bilingues")
         val kreyolContainer = kreyolRow ?: return
-        val frenchContainer = frenchRow ?: return
+        // En paysage il n'y a qu'une rangée : les deux langues la partagent.
+        val frenchContainer = frenchRow ?: kreyolContainer
 
         kreyolContainer.removeAllViews()
         frenchContainer.removeAllViews()
@@ -692,12 +849,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             textSize = 10f
             setTextColor(KeyboardColors.TEXT_SECONDARY)
             setPadding(dpToPx(4), 0, dpToPx(2), 0)
+            // Le centrage vertical se joue ici, sur la vue : la vue occupe toute la
+            // hauteur de la rangée (MATCH_PARENT), donc le layout_gravity posé sur
+            // ses LayoutParams n'a rien à décaler et l'étiquette restait collée en
+            // haut de la rangée, à côté de puces dont le mot, lui, est centré.
+            gravity = android.view.Gravity.CENTER_VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
-            ).apply {
-                gravity = android.view.Gravity.CENTER_VERTICAL
-            }
+            )
         }
         container.addView(groupLabel)
     }
@@ -709,7 +869,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private fun addSuggestionChip(container: LinearLayout, bilingualSuggestion: BilingualSuggestion) {
         val suggestionButton = Button(this).apply {
             text = bilingualSuggestion.word
-            textSize = 14f
+            textSize = SUGGESTION_TEXT_SIZE_SP
+            // Sans cela, la ligne réserve au-dessus et au-dessous du mot les
+            // parties de la police qu'aucune lettre latine n'atteint, et comme
+            // cette réserve est plus épaisse en haut qu'en bas, le mot centré
+            // paraît posé trop bas dans sa puce (mesuré : 29 px de vide au-dessus
+            // contre 14 en dessous).
+            includeFontPadding = false
             setTextColor(bilingualSuggestion.getTextColor())
 
             val bgColor = bilingualSuggestion.getColor()
@@ -722,16 +888,52 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             val colorHex = String.format("#%06X", 0xFFFFFF and bgColor)
             Log.d(TAG, "🎨 Bouton '${bilingualSuggestion.word}': ${bilingualSuggestion.getLanguageName()} → fond $colorHex")
 
-            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            setPadding(
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP),
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+            )
+            // Après le padding, qui borne la place restante pour le mot.
+            fitTextToChipHeight(this)
+            // Le son de frappe est joué par KeyFeedback : sans cette ligne,
+            // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
+            isSoundEffectsEnabled = false
+
+            minWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
+            minimumWidth = dpToPx(SUGGESTION_CHIP_MIN_WIDTH_DP)
+            gravity = android.view.Gravity.CENTER
 
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             ).apply {
-                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+                // La moitié de l'intervalle de chaque côté : deux puces voisines
+                // portent chacune la sienne, et leur somme fait l'écart voulu.
+                setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
 
-            setOnClickListener {
+            setOnClickListener { chip ->
+                // v10.11.6 : la vibration manquait ici. Les touches en donnaient une,
+                // pas les puces, alors que valider une proposition est l'action
+                // principale de qui écrit à un ou deux appuis par mot : le geste le
+                // plus important était le seul sans confirmation tactile.
+                //
+                // Au clic et non au toucher, contrairement aux touches : glisser hors
+                // d'une puce avant de relâcher annule la sélection, et cette sortie de
+                // secours ne doit pas vibrer comme si le mot avait été écrit. La
+                // vibration signifie ici « le mot est écrit », et rien d'autre.
+                // Vérifié sur émulateur en comptant les vibrations enregistrées par
+                // dumpsys vibrator_manager : un geste annulé n'en produit aucune.
+                //
+                // Nuance mesurée le même jour : l'annulation fonctionne pour tout
+                // glissement qui reste dans la fenêtre du clavier (puce voisine,
+                // intervalle entre deux puces, rangées de touches), mais **pas** vers
+                // le haut hors du clavier. Le doigt quitte alors la fenêtre, qui ne
+                // reçoit plus d'événements de déplacement, donc la vue ne se sait
+                // jamais quittée et le clic part au relâchement.
+                KeyFeedback.onKeyPress(chip)
+
                 inputProcessor.processSuggestionSelection(bilingualSuggestion.word)
 
                 // 🔧 FIX SAMSUNG A21S: Performance optimisée
@@ -821,7 +1023,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
-        
+
+        // Réglages du retour de frappe relus à chaque prise de focus : le service
+        // survit au passage dans l'écran de l'application, donc un interrupteur
+        // changé là-bas doit s'appliquer dès le retour dans un champ de saisie.
+        KeyFeedback.refresh(this)
+
         // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
             keyboardLayoutManager.forceAlphabeticMode()
@@ -935,14 +1142,31 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 cornerRadius = dpToPx(16).toFloat()
                 setColor(Color.parseColor("#FF8A00"))
             }
-            setPadding(dpToPx(14), dpToPx(6), dpToPx(14), dpToPx(6))
+            // Même réserve verticale et même garde-fou que les puces de suggestion :
+            // cette puce partage leur rangée, elle doit tenir dans la même hauteur.
+            includeFontPadding = false
+            setPadding(
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP),
+                dpToPx(14),
+                dpToPx(SUGGESTION_CHIP_PADDING_V_DP)
+            )
+            fitTextToChipHeight(this)
+            // Le son de frappe est joué par KeyFeedback : sans cette ligne,
+            // performClick() ajouterait son clic d'interface et la puce sonnerait deux fois.
+            isSoundEffectsEnabled = false
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             ).apply {
-                setMargins(dpToPx(3), 0, dpToPx(4), 0)
+                // Même intervalle que les puces de suggestion : une seule règle pour
+                // tout ce qui se touche dans cette rangée.
+                setMargins(suggestionChipHalfGapPx(), 0, suggestionChipHalfGapPx(), 0)
             }
             setOnClickListener {
+                // Même règle que les puces de suggestion : ce qui écrit du texte se
+                // sent, et se sent au moment où le texte part.
+                KeyFeedback.onKeyPress(chip)
                 currentInputConnection?.commitText(SHARE_INVITE_MESSAGE, 1)
                 container.removeView(chip)
             }
@@ -1200,91 +1424,86 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     /**
-     * 📱 Détecte le mode de navigation système actif
-     * @return Code du mode: 0=3-button, 1=2-button, 2=Gesture, -1=Unknown
+     * 📏 Hauteur restant aux quatre rangées de touches une fois retiré tout ce que
+     * le clavier consomme par ailleurs.
+     *
+     * `screenHeightDp` donne la hauteur d'écran barre de navigation déduite, mais
+     * pas la barre d'état, sous laquelle la fenêtre IME commence : il faut la
+     * retirer aussi, sans quoi le compte est trop généreux d'exactement sa hauteur
+     * et la rangée du bas reste rognée (mesuré sur l'émulateur, 72 px de trop).
+     * En portrait la place dépasse largement le besoin et la hauteur nominale des
+     * touches est conservée ; en paysage (288 dp sur un 1080x2400 en 480 dpi) elle
+     * est inférieure aux 332 dp de la mise en page nominale, et sans ce calcul la
+     * rangée du bas est coupée en deux au lieu d'être simplement plus basse.
+     *
+     * Rien n'est réservé ici pour la barre de navigation : le système la déduit
+     * déjà de la fenêtre de saisie, et le cas contraire est rattrapé après coup
+     * par adjustForNavigationBarOverlap(), qui dispose alors d'autant de hauteur
+     * supplémentaire puisque la fenêtre descend jusqu'au bas de l'écran.
      */
-    private fun detectNavigationMode(): Int {
-        return try {
-            val navigationMode = android.provider.Settings.Secure.getInt(
-                contentResolver,
-                "navigation_mode",
-                0  // 0 par défaut (3-button)
-            )
-            
-            val modeName = when (navigationMode) {
-                0 -> "3-button navigation"
-                1 -> "2-button navigation"
-                2 -> "Gesture navigation"
-                else -> "Unknown navigation mode"
-            }
-            
-            Log.d(TAG, "📱 Mode de navigation détecté: $modeName (valeur: $navigationMode)")
-            return navigationMode
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "❌ Erreur détection mode navigation: ${e.message}")
-            return -1  // Unknown
-        }
-    }
-    
-    /**
-     * 📏 Calcule le padding bottom adapté selon le mode de navigation
-     * Utilise la hauteur réelle de la navigation bar système + marge adaptée
-     * @return Padding en pixels
-     */
-    private fun getAdaptiveNavigationPadding(): Int {
-        val navigationMode = detectNavigationMode()
-        
-        // Obtenir la hauteur système de la navigation bar
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        val rawNavBarHeight = if (resourceId > 0) {
-            resources.getDimensionPixelSize(resourceId)
+    private fun computeAvailableRowsHeight(): Int {
+        val statusBarId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        val statusBarPx = if (statusBarId > 0) {
+            resources.getDimensionPixelSize(statusBarId)
         } else {
-            (48 * resources.displayMetrics.density).toInt() // Fallback 48dp
+            dpToPx(24)
         }
-        // Certaines ROM OEM (constaté sur un téléphone bas de gamme non identifié,
-        // "P300", en portrait uniquement) renvoient une valeur aberrante pour ce
-        // dimen système, ce qui pousse tout le clavier hors de l'écran visible.
-        // Une vraie navigation bar Android ne dépasse jamais ~64dp : on plafonne
-        // pour ignorer les valeurs corrompues plutôt que de leur faire confiance.
-        val maxNavBarHeightPx = (64 * resources.displayMetrics.density).toInt()
-        val systemNavBarHeight = rawNavBarHeight.coerceIn(0, maxNavBarHeightPx)
-        
-        val padding = when (navigationMode) {
-            0 -> {
-                // 3-button navigation: hauteur système + marge sécurité 12dp
-                val marginDp = 12
-                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
-                val paddingPx = systemNavBarHeight + marginPx
-                Log.d(TAG, "🔘 3-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
-                paddingPx
-            }
-            1 -> {
-                // 2-button navigation: hauteur système + marge sécurité 8dp
-                val marginDp = 8
-                val marginPx = (marginDp * resources.displayMetrics.density).toInt()
-                val paddingPx = systemNavBarHeight + marginPx
-                Log.d(TAG, "🔘 2-button: NavBar ${systemNavBarHeight}px + ${marginDp}dp marge = ${paddingPx}px")
-                paddingPx
-            }
-            2 -> {
-                // Gesture navigation: padding minimal 20dp (juste la barre indicateur)
-                val paddingDp = 20
-                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
-                Log.d(TAG, "👆 Gesture: Padding minimal ${paddingDp}dp = ${paddingPx}px")
-                paddingPx
-            }
-            else -> {
-                // Mode inconnu: padding de sécurité
-                val paddingDp = 48
-                val paddingPx = (paddingDp * resources.displayMetrics.density).toInt()
-                Log.d(TAG, "⚠️ Mode inconnu: Padding sécurité ${paddingDp}dp = ${paddingPx}px")
-                paddingPx
-            }
-        }
-        
-        Log.d(TAG, "✅ Padding adaptatif calculé: ${padding}px")
-        return padding
+        val windowHeightPx = dpToPx(resources.configuration.screenHeightDp) - statusBarPx
+        val suggestionsPx = dpToPx(suggestionRowHeightDp()) * suggestionRowCount()
+        val keyboardPaddingPx = dpToPx(KeyboardLayoutManager.verticalPaddingDp(this)) * 2
+        // Marge d'arrondi : le calcul tombe sinon au pixel près sur le bas de la
+        // fenêtre, où la moindre différence de mesure ronge à nouveau la dernière rangée
+        val safetyPx = dpToPx(4)
+        val available = windowHeightPx - suggestionsPx - keyboardPaddingPx - safetyPx
+        Log.d(TAG, "📏 Hauteur fenêtre ${windowHeightPx}px (barre d'état ${statusBarPx}px déduite), " +
+            "dont suggestions ${suggestionsPx}px, padding clavier ${keyboardPaddingPx}px " +
+            "→ ${available}px pour les rangées")
+        return available
     }
-    
+
+    /**
+     * 📏 Décale le bas du clavier de ce que la barre de navigation lui masque
+     * réellement, mesuré une fois la mise en page faite.
+     *
+     * L'ancienne version estimait ce décalage à partir du mode de navigation et
+     * du dimen système `navigation_bar_height`, sans vérifier qu'il servait à
+     * quelque chose. Or le système place déjà la fenêtre de saisie au-dessus de
+     * la barre : la réserve était payée deux fois et laissait une bande vide
+     * sous la dernière rangée (constaté en paysage sur émulateur Android 13).
+     * Elle exposait aussi le clavier aux ROM qui renvoient une valeur aberrante
+     * pour ce dimen (signalé sur un "P300", clavier poussé hors de l'écran).
+     *
+     * Comparer la position réelle du clavier à celle de la barre traite les deux
+     * cas sans rien supposer : zéro quand le système a déjà fait le travail, le
+     * recouvrement exact quand il ne l'a pas fait.
+     */
+    private fun adjustForNavigationBarOverlap(root: View, container: View) {
+        val insets = window?.window?.decorView?.rootWindowInsets ?: return
+        val navBarPx = if (android.os.Build.VERSION.SDK_INT >= 30) {
+            insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+        } else {
+            @Suppress("DEPRECATION")
+            insets.systemWindowInsetBottom
+        }
+
+        val displayHeightPx = if (android.os.Build.VERSION.SDK_INT >= 30) {
+            (getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager)
+                .maximumWindowMetrics.bounds.height()
+        } else {
+            resources.displayMetrics.heightPixels
+        }
+
+        val position = IntArray(2)
+        root.getLocationOnScreen(position)
+        val keyboardBottomPx = position[1] + root.height
+        val overlapPx = keyboardBottomPx - (displayHeightPx - navBarPx)
+
+        val paddingPx = if (overlapPx > 0) overlapPx else 0
+        Log.d(TAG, "📏 Bas du clavier ${keyboardBottomPx}px, barre de navigation à " +
+            "${displayHeightPx - navBarPx}px → recouvrement ${overlapPx}px, padding ${paddingPx}px")
+        if (container.paddingBottom != paddingPx) {
+            container.setPadding(0, 0, 0, paddingPx)
+        }
+    }
+
 }

@@ -173,7 +173,12 @@ class EmojiPickerView(
             val emoji = emojis[position]
             holder.label.text = emoji
 
-            holder.label.setOnClickListener {
+            // v10.11.6 : un emoji choisi écrit du texte, donc il se sent et s'entend
+            // comme une touche. Le son est joué par KeyFeedback avec l'effet du
+            // clavier, d'où le clic d'interface coupé pour ne pas l'entendre deux fois.
+            holder.label.isSoundEffectsEnabled = false
+            holder.label.setOnClickListener { vue ->
+                KeyFeedback.onKeyPress(vue)
                 onEmojiSelected?.invoke(emoji)
             }
 

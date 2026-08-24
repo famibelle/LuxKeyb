@@ -12,13 +12,24 @@ android {
         }
         
         release {
-            // Priorité : gradle.properties (local) > System.getenv (GitHub Actions)
-            def keystoreFile = project.findProperty('KEYSTORE_FILE') ?: System.getenv("KEYSTORE_FILE")
-            def storePass = project.findProperty('STORE_PASSWORD') ?: System.getenv("STORE_PASSWORD")
-            def keyAliasEnv = project.findProperty('KEY_ALIAS') ?: System.getenv("KEY_ALIAS")
-            def keyPass = project.findProperty('KEY_PASSWORD') ?: System.getenv("KEY_PASSWORD")
+            // Priorité : keystore.properties (local, jamais versionné) > gradle.properties > System.getenv (GitHub Actions)
+            def keystoreProps = new Properties()
+            def keystorePropsFile = rootProject.file('keystore.properties')
+            if (keystorePropsFile.exists()) {
+                keystorePropsFile.withInputStream { keystoreProps.load(it) }
+            }
+            def signingProp = { String name ->
+                keystoreProps.getProperty(name) ?: project.findProperty(name) ?: System.getenv(name)
+            }
 
-            // Résoudre le chemin relatif depuis le dossier racine du projet (android_keyboard)
+            def keystoreFile = signingProp('KEYSTORE_FILE')
+            def storePass = signingProp('STORE_PASSWORD')
+            def keyAliasEnv = signingProp('KEY_ALIAS')
+            def keyPass = signingProp('KEY_PASSWORD')
+
+            // Chemin résolu depuis android_keyboard/ et non depuis app/ : c'est là que
+            // vit le keystore, et les diagnostics plus bas relisent ce chemin résolu.
+            // Le file(keystoreFile) d'upstream le chercherait dans app/.
             def keystorePath = keystoreFile ? rootProject.file(keystoreFile) : null
 
             if (keystoreFile && keystorePath && keystorePath.exists() && storePass && keyAliasEnv && keyPass) {
@@ -59,8 +70,8 @@ android {
         applicationId "com.potomitan.luxkeyboard"
         minSdk = 21
         targetSdk = 36
-        versionCode = 101000
-        versionName "10.10.0"
+        versionCode = 101300
+        versionName "10.13.0"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true

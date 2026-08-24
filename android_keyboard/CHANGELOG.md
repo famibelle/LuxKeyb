@@ -9,6 +9,92 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.13.0] - 2026-08-24
+
+Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.12.15. Ce qui
+est repris ici est le travail d'affichage et d'accessibilité mené en amont entre
+les 10.9.3 et 10.12.15 ; l'identité luxembourgeoise — QWERTZ, `é ä ë '`,
+`accentMap`, palette du drapeau, niveaux, dictionnaire — est conservée telle
+quelle. Le numéro saute au-dessus de celui d'amont pour que les deux dépôts
+restent distinguables.
+
+### 📐 Le clavier tient enfin dans l'écran en paysage
+
+- **Le clavier ne prend plus tout l'écran en paysage.** La fenêtre IME n'y reçoit
+  qu'environ 359 dp de haut contre 891 en portrait : garder 48 dp par touche lui
+  faisait occuper 87 % de l'écran, ne laissant que 51 dp à l'application. Les
+  touches y descendent à 32 dp, le plancher de visée.
+- **La rangée du bas ne déborde plus** et la bande vide entre le clavier et le
+  bas de l'écran disparaît.
+- **Les suggestions tiennent sur une rangée plus basse en paysage** (38 dp au
+  lieu de deux rangées empilées à 88 dp).
+- **Les suggestions françaises survivent à une rotation** — elles disparaissaient
+  jusqu'ici au changement d'orientation.
+
+### 🔤 Les lettres à la taille de leurs touches
+
+- **Taille de police dérivée de la hauteur de touche**, et non plus fixée à
+  16 sp : une lettre occupait 44 px sur les 116 d'une touche en portrait, quand
+  Gboard y dessine environ 62 px. Elle ne dépend plus non plus de l'échelle de
+  police du système, qui pouvait la faire déborder de sa touche.
+- **Le padding implicite du style `Button` est neutralisé** : ses 30 px par bord
+  coupaient les jambages (q, g, j, p, y) en paysage et tronquaient « 123 » en
+  « 12 » en portrait.
+- **L'emoji tient dans sa touche**, les libellés retrouvent leur milieu vertical
+  (`includeFontPadding = false`), la flèche du shift reprend le gabarit de ses
+  voisines et la touche entrée sa bonne taille.
+- **La signature `LuxKeyb™` de la barre d'espace s'efface** : graisse normale et
+  plus d'ombre portée. Elle ne se vise pas, elle n'a pas à revendiquer le regard
+  pendant la frappe.
+- **Le mot d'une suggestion tient dans sa puce**, à 18 sp au lieu de 14 — c'est
+  ce texte-là qu'on lit pour décider d'accepter une proposition.
+
+### ♿ Retour de frappe et cibles
+
+- **Vibration et son au frappé** (`KeyFeedback`), qui obéissent aux réglages du
+  téléphone plutôt que de les ignorer.
+- **Les puces de suggestion sont écartées de 12 dp.** Il n'y avait que 3,6 dp
+  (0,58 mm) entre la rangée luxembourgeoise et la rangée française, alors que
+  l'imprécision d'un doigt est d'abord verticale : un demi-millimètre trop bas
+  validait un mot français à la place du mot visé. Les 12 dp sont pris sur la
+  hauteur des puces, pas sur celle des rangées — le clavier occupe la même place.
+- `ACCESSIBILITE.md` entre dans le dépôt : la feuille de route technique dont ces
+  deux points sont les deux premiers.
+
+### ⚙️ Réglages du clavier
+
+- **Un écran de réglages dédié** (`KeyboardSettingsActivity`), derrière un
+  engrenage dans le bandeau — la barre porte déjà sept onglets.
+- **Les libellés d'onglets s'affichent de nouveau.** La barre réservait 140 px
+  figés quand l'emoji seul en réclamait 165, ce qui chassait le texte hors de la
+  vue : sept destinations n'étaient plus identifiées que par des emojis nus.
+- **`updateTabBar()` cesse de recopier `createTabBar()`.** Les deux copies
+  avaient divergé, si bien que l'engrenage et la correction de hauteur
+  n'existaient que dans l'original et disparaissaient au premier changement
+  d'onglet.
+- **Une carte explique comment revenir au clavier luxembourgeois.** Le geste
+  n'est pas symétrique : sur les autres claviers, l'appui long sur la barre
+  d'espace ne change que leur propre langue, et c'est l'icône de clavier de la
+  barre de navigation qui ramène ici. La FAQ et le message d'erreur du sélecteur
+  disaient jusqu'ici le contraire.
+
+### 🔐 Signature et CI
+
+- **Les identifiants de signature passent par `android_keyboard/keystore.properties`**
+  (ignoré par git, voir `keystore.properties.example`), avant `gradle.properties`
+  puis les variables d'environnement. `gradle.properties` est versionné : il ne
+  doit plus contenir la moindre valeur réelle. `.gitignore` bloque aussi
+  `keystore.properties`.
+- **Les actions GitHub passent au runtime Node 24** — Node 20 est déprécié sur
+  les runners, qui forçaient déjà l'exécution avec un avertissement par job.
+
+### 🧹 Ce qui n'a pas été repris
+
+Le site vitrine créole, les campagnes de captures multi-appareils, les visuels
+Play Store, le banc de test d'affichage `scripts/banc-clavier/` et le workflow
+`rapport-corpus.yml` (qui régénère un rapport sur le corpus créole) restent en
+amont.
+
 ## [10.10.0] - 2026-08-15
 
 Le clavier passe en QWERTZ et gagne une touche apostrophe, à la demande d'un
