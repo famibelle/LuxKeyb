@@ -1,8 +1,24 @@
 {
   "production_version": "10.6.0",
-  "latest_version": "10.12.15",
+  "latest_version": "10.13.0",
   "as_of": "2026-08-24",
   "features": [
+    {
+      "version": "10.13.0",
+      "emoji": "🌙",
+      "title": "Le clavier passe en thème sombre",
+      "description": "Il restait blanc quelle que soit l'heure et quel que soit le réglage du téléphone : dans une conversation affichée en sombre, il éclairait l'écran à chaque saisie. Il suit désormais le mode sombre du système, ses touches de lettres passant du blanc à l'anthracite. Le vert, l'orange et le bleu de la charte, eux, ne changent pas.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.13.0",
+      "curated": true
+    },
+    {
+      "version": "10.13.0",
+      "emoji": "🎚️",
+      "title": "Trois positions pour l'apparence du clavier",
+      "description": "Les réglages du clavier accueillent une carte « Apparence » : « Comme le téléphone », « Toujours clair » ou « Toujours sombre ». Les deux dernières existent parce que sur plusieurs surcouches, le réglage jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers. Le choix s'applique dès le retour dans un champ de saisie.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.13.0",
+      "curated": true
+    },
     {
       "version": "10.12.5",
       "emoji": "😀",

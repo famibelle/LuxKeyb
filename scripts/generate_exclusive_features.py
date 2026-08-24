@@ -40,6 +40,32 @@ DIAGNOSTIC_PREFIXES = (
 # l'extraction automatique. Complétez cette liste au fil des prochaines
 # versions pour garder une formulation orientée utilisateur.
 CURATED: dict[str, list[dict[str, str]]] = {
+    "10.13.0": [
+        {
+            "emoji": "🌙",
+            "title": "Le clavier passe en thème sombre",
+            "description": (
+                "Il restait blanc quelle que soit l'heure et quel que soit le "
+                "réglage du téléphone : dans une conversation affichée en "
+                "sombre, il éclairait l'écran à chaque saisie. Il suit "
+                "désormais le mode sombre du système, ses touches de lettres "
+                "passant du blanc à l'anthracite. Le vert, l'orange et le bleu "
+                "de la charte, eux, ne changent pas."
+            ),
+        },
+        {
+            "emoji": "🎚️",
+            "title": "Trois positions pour l'apparence du clavier",
+            "description": (
+                "Les réglages du clavier accueillent une carte « Apparence » : "
+                "« Comme le téléphone », « Toujours clair » ou « Toujours "
+                "sombre ». Les deux dernières existent parce que sur plusieurs "
+                "surcouches, le réglage jour/nuit du téléphone ne descend pas "
+                "jusqu'aux claviers tiers. Le choix s'applique dès le retour "
+                "dans un champ de saisie."
+            ),
+        },
+    ],
     "10.12.5": [
         {
             "emoji": "😀",
