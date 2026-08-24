@@ -89,17 +89,9 @@ class KeyboardLayoutManager(private val context: Context) {
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
 
-        // Couleurs du drapeau luxembourgeois : rouge Pantone 032, blanc, et le
-        // bleu ciel Pantone 299 — le bleu clair qui distingue ce drapeau de
-        // celui des Pays-Bas.
-        private const val ROUGE = "#ED2939"
-        private const val BLANC = "#FFFFFF"
-        private const val BLEU = "#00A1DE"
-
-        private const val BLANC_ACTIF = "#E0E0E0"   // majuscule enclenchée
-        private const val BORDURE = "#D0D0D0"
-        private const val ENCRE = "#1A1A1A"
-        private const val ENCRE_ATTENUEE = "#666666"
+        // Les couleurs vivent dans KeyboardTheme, qui en tient deux jeux : le
+        // drapeau luxembourgeois (rouge Pantone 032 et bleu ciel Pantone 299) est
+        // commun aux deux thèmes, seul le blanc des lettres bascule en anthracite.
 
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
@@ -586,7 +578,7 @@ class KeyboardLayoutManager(private val context: Context) {
      * blanc) dont hintInk() documente déjà l'encre mesurée, alors on la relit
      * plutôt que de la recalculer.
      */
-    private fun hintColorFor(key: String): Int = Color.parseColor(hintInk(key))
+    private fun hintColorFor(key: String): Int = hintInk(key)
 
     private fun createHintLabel(hintText: String, gravity: Int, textColor: Int): TextView {
         return TextView(context).apply {
@@ -611,15 +603,15 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun applyKeyStyleToView(view: View, key: String) {
         val drawable = GradientDrawable().apply {
             cornerRadius = dpToPx(CORNER_RADIUS_DP.toInt()).toFloat()
-            setColor(Color.parseColor(keyBackground(key)))
+            setColor(keyBackground(key))
             // Le blanc du drapeau étant aussi celui des touches de lettres, il
             // leur faut un contour pour rester distinctes du fond du clavier.
-            setStroke(dpToPx(1), Color.parseColor(BORDURE))
+            setStroke(dpToPx(1), KeyboardTheme.palette().bordure)
         }
 
         view.background = drawable
 
-        val encre = Color.parseColor(keyForeground(key))
+        val encre = keyForeground(key)
 
         if (view is Button) {
             view.setTextColor(encre)
@@ -632,10 +624,12 @@ class KeyboardLayoutManager(private val context: Context) {
             // rendait la présence que sa graisse normale vient de lui retirer.
             if (key != " ") {
                 view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-                // Ombre claire sur les touches colorées, sombre sur les blanches :
-                // une ombre noire sous du texte blanc le rend sale.
-                val ombre = if (keyBackground(key) == ROUGE) "#40FFFFFF" else "#40000000"
-                view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor(ombre))
+                // Ombre claire sur les touches colorées, sombre sur les autres :
+                // une ombre noire sous du texte blanc le rend sale. Le rouge ne
+                // bougeant pas d'un thème à l'autre, cette distinction non plus.
+                val p = KeyboardTheme.palette()
+                val ombre = if (keyBackground(key) == p.accent) p.ombreSurAccent else p.ombreSurTouche
+                view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), ombre)
             }
         }
 
@@ -652,11 +646,14 @@ class KeyboardLayoutManager(private val context: Context) {
      * ciel revient à la barre d'espace et à la ponctuation, qui accompagnent la
      * frappe sans l'interrompre.
      */
-    private fun keyBackground(key: String): String = when (key) {
-        "⏎", "123", "ABC", "EMOJI" -> ROUGE
-        " ", ",", ".", "'" -> BLEU
-        "⇧" -> if (isCapsLock || isCapitalMode) BLANC_ACTIF else BLANC
-        else -> BLANC
+    private fun keyBackground(key: String): Int {
+        val p = KeyboardTheme.palette()
+        return when (key) {
+            "⏎", "123", "ABC", "EMOJI" -> p.accent
+            " ", ",", ".", "'" -> p.secondaire
+            "⇧" -> if (isCapsLock || isCapitalMode) p.toucheActive else p.touche
+            else -> p.touche
+        }
     }
 
     /**
@@ -665,16 +662,27 @@ class KeyboardLayoutManager(private val context: Context) {
      * Blanc sur le rouge du drapeau donne 4,2:1, suffisant pour les glyphes
      * larges et gras des touches. Blanc sur le bleu ciel ne donnerait que
      * 2,9:1 — illisible ; ce bleu porte donc une encre sombre (5,9:1).
+     *
+     * Le choix se fait sur le **fond** et non sur la touche, ce qui est exactement
+     * ce qu'il faut pour un thème : le rouge et le bleu ne bougeant pas d'un thème
+     * à l'autre, leurs encres non plus, et seul le cas des touches de lettres suit
+     * la palette. Cette fonction n'a pas eu à changer de forme.
      */
-    private fun keyForeground(key: String): String = when (keyBackground(key)) {
-        ROUGE -> BLANC
-        BLANC_ACTIF -> ENCRE_ATTENUEE
-        else -> ENCRE
+    private fun keyForeground(key: String): Int {
+        val p = KeyboardTheme.palette()
+        return when (keyBackground(key)) {
+            p.accent -> p.encreSurAccent
+            p.secondaire -> p.encreSurSecondaire
+            p.toucheActive -> p.encreAttenuee
+            else -> p.encre
+        }
     }
 
     /** Encre des aperçus de coin : même famille que le glyphe, en plus discret. */
-    private fun hintInk(key: String): String =
-        if (keyBackground(key) == ROUGE) "#CCFFFFFF" else "#99333333"
+    private fun hintInk(key: String): Int {
+        val p = KeyboardTheme.palette()
+        return if (keyBackground(key) == p.accent) p.apercuSurAccent else p.apercu
+    }
 
     /**
      * Surcharge de compatibilité pour les appels qui passent encore un Button.
@@ -856,7 +864,7 @@ class KeyboardLayoutManager(private val context: Context) {
                                   else R.drawable.ic_shift_off
                     button.setImageResource(newIcon)
                     // Le fond doit suivre l'état au même titre que l'icône :
-                    // keyBackground() prévoit BLANC_ACTIF pour la majuscule
+                    // keyBackground() prévoit toucheActive pour la majuscule
                     // enclenchée, mais seule la branche Button ci-dessous
                     // restylait la touche — shift étant une ImageButton, ce gris
                     // n'était jamais rendu et le fond restait blanc dans les

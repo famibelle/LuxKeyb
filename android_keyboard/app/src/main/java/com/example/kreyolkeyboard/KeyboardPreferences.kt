@@ -34,6 +34,7 @@ object KeyboardPreferences {
     private const val PREFS_NAME = "kreyol_clavier_prefs"
     private const val KEY_HAPTIC_ENABLED = "haptic_enabled"
     private const val KEY_SOUND_ENABLED = "sound_enabled"
+    private const val KEY_THEME_MODE = "theme_mode"
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
@@ -55,5 +56,22 @@ object KeyboardPreferences {
     fun setSoundEnabled(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_SOUND_ENABLED, enabled).apply()
         KeyFeedback.refresh(context)
+    }
+
+    /**
+     * Thème du clavier. Par défaut il suit le téléphone.
+     *
+     * Un choix explicite plutôt que le seul suivi du système, pour la même raison
+     * que les deux interrupteurs ci-dessus : sur plusieurs surcouches, le réglage
+     * jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers, et
+     * l'utilisateur se retrouverait sans moyen d'obtenir le clavier qu'il veut.
+     * Gboard et SwiftKey proposent également les trois positions.
+     */
+    fun themeMode(context: Context): KeyboardTheme.Mode =
+        KeyboardTheme.Mode.depuisCle(prefs(context).getString(KEY_THEME_MODE, null))
+
+    fun setThemeMode(context: Context, mode: KeyboardTheme.Mode) {
+        prefs(context).edit().putString(KEY_THEME_MODE, mode.cle).apply()
+        KeyboardTheme.refresh(context)
     }
 }

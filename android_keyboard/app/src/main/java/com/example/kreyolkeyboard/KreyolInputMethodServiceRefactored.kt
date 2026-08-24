@@ -164,6 +164,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var frenchRow: LinearLayout? = null
     private var frenchRowScroll: HorizontalScrollView? = null
     private var mainKeyboardView: View? = null
+
+    /**
+     * Palette avec laquelle la vue d'entrée courante a été construite.
+     *
+     * C'est la seule façon fiable de savoir s'il faut la reconstruire : les
+     * couleurs sont figées dans les widgets au moment de leur création, et rien
+     * dans [KeyboardTheme] ne peut répondre à la place du service, l'écran de
+     * réglages rafraîchissant la palette globale avant que le service reprenne la
+     * main. `null` tant qu'aucune vue n'a été construite.
+     */
+    private var paletteDeLaVue: KeyboardTheme.Palette? = null
     
     // État du service
     private var isInitialized = false
@@ -384,14 +395,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onCreateInputView(): View? {
         Log.d(TAG, "onCreateInputView() appelée")
-        
+
+        // Avant toute vue : les couleurs sont posées sur les widgets à leur
+        // construction, donc la palette doit être résolue en amont. C'est aussi ce
+        // qui rattrape une rotation ou une bascule jour/nuit du système, qui
+        // rappellent cette méthode sans repasser par onStartInputView().
+        KeyboardTheme.refresh(this)
+        paletteDeLaVue = KeyboardTheme.palette()
+
         // 🅰️ FORCER LE MODE ALPHABÉTIQUE AU DÉMARRAGE
         keyboardLayoutManager.forceAlphabeticMode()
         Log.d(TAG, "✅ Mode alphabétique forcé lors de la création du clavier")
         
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#F5F5F5"))
+            setBackgroundColor(KeyboardTheme.palette().fondClavier)
         }
         
         // Créer la zone de suggestions
@@ -439,7 +457,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            setBackgroundColor(Color.parseColor("#FFFFFF"))
+            setBackgroundColor(KeyboardTheme.palette().fondSuggestions)
         }
 
         val kreyolScroll = HorizontalScrollView(this).apply {
@@ -847,7 +865,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val groupLabel = TextView(this).apply {
             text = label
             textSize = 10f
-            setTextColor(KeyboardColors.TEXT_SECONDARY)
+            setTextColor(KeyboardTheme.palette().encreAttenuee)
             setPadding(dpToPx(4), 0, dpToPx(2), 0)
             // Le centrage vertical se joue ici, sur la vue : la vue occupe toute la
             // hauteur de la rangée (MATCH_PARENT), donc le layout_gravity posé sur
@@ -1028,6 +1046,22 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // survit au passage dans l'écran de l'application, donc un interrupteur
         // changé là-bas doit s'appliquer dès le retour dans un champ de saisie.
         KeyFeedback.refresh(this)
+
+        // Le thème se relit au même moment et pour la même raison, mais lui ne
+        // suffit pas à se relire : les couleurs sont posées sur les vues à leur
+        // construction, et InputMethodService garde la vue d'entrée en cache d'une
+        // saisie à l'autre. Un changement de palette impose de la reconstruire.
+        //
+        // La comparaison porte sur la palette avec laquelle la vue a été construite,
+        // et non sur ce que renverrait un « refresh a-t-il changé quelque chose ? ».
+        // L'écran de réglages partage ce processus : au moment du clic il a déjà
+        // rafraîchi la palette globale, si bien qu'un tel booléen serait toujours
+        // faux ici et que le clavier garderait ses anciennes couleurs.
+        KeyboardTheme.refresh(this)
+        if (paletteDeLaVue !== KeyboardTheme.palette()) {
+            Log.d(TAG, "Thème changé : reconstruction de la vue d'entrée")
+            setInputView(onCreateInputView())
+        }
 
         // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
         if (!restarting) {
