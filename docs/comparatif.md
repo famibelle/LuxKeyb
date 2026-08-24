@@ -36,7 +36,7 @@ marché**. Ce qu'il ne fait pas, c'est traiter le lëtzebuergesch comme une lang
 | Prédiction du mot suivant | **Oui**, 25 194 contextes (bigrammes et trigrammes) | Oui, réseaux de neurones et apprentissage fédéré | Oui, modèle embarqué |
 | Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui |
 | Écriture sans diacritiques | **Oui**, `Letzebuergesch` retrouve `Lëtzebuergesch` | — | — |
-| Deux langues sans rien régler | **Oui**, repli français d'emblée | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues) |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues), à activer |
 | Correcteur système en luxembourgeois | **Oui** (et en français) | Intégré au clavier | Intégré, mais pas en lb avant iOS 27 |
 | Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Frappe embarquée |
 | Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
@@ -68,11 +68,20 @@ l'application est lisible. Chez les deux autres, la qualité du luxembourgeois
 est une boîte noire : impossible de savoir quels mots sont connus, ni d'où ils
 viennent.
 
-**Le bilinguisme comme situation normale**, et non comme réglage à activer : le
-correcteur couvre le luxembourgeois **et** le français, et les suggestions
-françaises arrivent en repli dès trois lettres. Sans compter les niveaux et les
-jeux de vocabulaire, qui n'ont aucun équivalent chez Gboard ni chez Apple — ce
-clavier sert aussi à réapprendre la langue en l'écrivant.
+**Le bilinguisme comme situation normale**, et non comme réglage à activer.
+Au Luxembourg on écrit rarement dans une seule langue, et le clavier est
+construit là-dessus : il affiche **deux rangées de suggestions à la fois**, une
+`LB` au rouge du drapeau et une `FR` au bleu ciel, chaque mot proposé sachant de
+quelle langue il vient. Le luxembourgeois garde la priorité — son score est
+majoré de moitié, celui du français réduit d'un cinquième, et il ne peut jamais
+y avoir plus de deux mots français en face de trois luxembourgeois. Le français
+n'apparaît qu'à partir de trois lettres, sur les 662 mots les plus courants :
+de quoi dépanner sans jamais prendre le dessus. Le correcteur orthographique,
+lui, est déclaré dans les deux langues.
+
+Sans compter les niveaux et les jeux de vocabulaire, qui n'ont aucun équivalent
+chez Gboard ni chez Apple — ce clavier sert aussi à réapprendre la langue en
+l'écrivant.
 
 ## Ce que les autres font mieux
 

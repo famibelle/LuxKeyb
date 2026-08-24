@@ -18,7 +18,7 @@ lëtzebuergesch comme une langue à part entière.
 | **Dictionnaire** | 9 016 mots issus d'un corpus luxembourgeois public ([POTOMITAN/luxembourgish-corpus](https://huggingface.co/datasets/POTOMITAN/luxembourgish-corpus)), **auditable et régénérable** | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
 | **Prédiction contextuelle** | 25 194 contextes n-grammes, très majoritairement à deux mots : bigrammes + trigrammes | Réseaux de neurones, apprentissage fédéré | Modèle Transformer embarqué, Apple Intelligence sur les appareils récents |
 | **Tolérance aux fautes** | Distance de Levenshtein + correspondance insensible aux accents | Correction automatique mature | Correction automatique mature |
-| **Repli français** | Oui, à partir de 3 caractères — pensé pour le quotidien bilingue du Luxembourg | Multilingue simultané (jusqu'à 3 langues) | Saisie multilingue limitée (≈31 langues) |
+| **Bilingue lb + fr** | **Par défaut, sans réglage** : deux rangées de suggestions simultanées, étiquetées `LB` et `FR` et distinguées par couleur ; le luxembourgeois passe devant (score ×1,5 contre ×0,8), le français s'ajoute dès 3 lettres | Multilingue simultané (jusqu'à 3 langues), à activer | Saisie multilingue limitée (≈31 langues), à activer |
 | **Correcteur orthographique système** | Oui, service dédié déclaré en `lb` **et** `fr` | Intégré au clavier | Intégré au système |
 | **Saisie gestuelle (glissé)** | Non | Oui | Oui (QuickPath) |
 | **Dictée vocale** | Non (celle du système reste accessible) | Oui, selon la langue | Oui, selon la langue |
@@ -41,8 +41,14 @@ lëtzebuergesch comme une langue à part entière.
 - **Un dictionnaire vérifiable.** Le corpus est public, le script de génération est dans le
   dépôt, le fichier d'assets est lisible. Chez les deux autres, la qualité du
   luxembourgeois est une boîte noire.
-- **Le bilinguisme comme cas normal**, et non comme réglage à activer : le correcteur
-  couvre `lb` et `fr`, et les suggestions françaises arrivent en repli.
+- **Le bilinguisme est câblé dans le moteur**, pas ajouté en repli. Le mode bilingue est
+  activé dès l'initialisation du clavier ; chaque suggestion porte sa langue
+  (`BilingualSuggestion`), et l'affichage la montre : rangée `LB` en rouge du drapeau,
+  rangée `FR` en bleu ciel, avec des encres choisies sur le contraste mesuré (4,2:1 et
+  5,9:1). Le classement privilégie le luxembourgeois — +50 % sur son score, −20 % sur
+  celui du français, 3 suggestions lb pour 2 fr au maximum — et le français n'apparaît
+  qu'à partir de 3 lettres, sur 662 mots courants. Le correcteur système, lui, est
+  déclaré en `lb` **et** en `fr`.
 - **Apprendre en écrivant.** Niveaux et jeux de vocabulaire n'ont aucun équivalent chez
   Gboard ou Apple — c'est un clavier qui sert aussi la transmission de la langue.
 - **Aucune télémétrie de frappe.** Les mots hors dictionnaire — mots de passe, noms

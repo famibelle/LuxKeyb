@@ -167,7 +167,7 @@ depuis 2013, sans prédiction du mot suivant.
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
 | Dictionnaire luxembourgeois | **9 016 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 25 194 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
-| Deux langues sans rien régler | **Oui**, lb et fr mélangés d'emblée | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — |
 | Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
