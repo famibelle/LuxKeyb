@@ -47,7 +47,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     companion object {
         private const val TAG = "LuxIME-Potomitan™"
-        private const val MAX_SUGGESTIONS = 5  // 3 Kreyòl + 2 Français (mode bilingue)
+        private const val MAX_SUGGESTIONS = 5  // 3 Lëtzebuergesch + 2 Français (mode bilingue)
         // Hauteur d'une rangée de suggestions : ce que le clavier consomme en
         // hauteur en dehors des rangées de touches elles-mêmes. Le padding
         // vertical du bloc de touches vit dans KeyboardLayoutManager, qui le pose.
@@ -160,7 +160,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     // Vues principales
     private var suggestionsView: LinearLayout? = null
-    private var kreyolRow: LinearLayout? = null
+    private var luxRow: LinearLayout? = null
     private var frenchRow: LinearLayout? = null
     private var frenchRowScroll: HorizontalScrollView? = null
     private var mainKeyboardView: View? = null
@@ -182,7 +182,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "=== KREYOL IME SERVICE REFACTORISÉ onCreate() ===")
+        Log.d(TAG, "=== LUXEMBOURGISH IME SERVICE REFACTORISÉ onCreate() ===")
         
         // 🔍 DIAGNOSTIC SAMSUNG A21S: Informations système détaillées
         logSystemInfo()
@@ -355,7 +355,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 isInitialized = true
                 Log.d(TAG, "✅ Moteur de suggestions initialisé (mode: ${if (isLowEnd) "A21s optimisé" else "standard"})")
 
-                // 🟢🔵 Support bilingue Kreyòl + Français (Kreyòl-first, Français dès 3 lettres)
+                // 🟢🔵 Support bilingue Lëtzebuergesch + Français (Lëtzebuergesch-first, Français dès 3 lettres)
                 suggestionEngine.enableBilingualSupport()
                 Log.d(TAG, "🎯 Mode suggestions bilingue avec AccentTolerantMatching activé")
                 
@@ -421,9 +421,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     /**
-     * Crée la zone des suggestions : deux rangées empilées (Kreyòl puis Français) pour
+     * Crée la zone des suggestions : deux rangées empilées (Lëtzebuergesch puis Français) pour
      * que le français reste toujours entièrement visible, sans scroll ni troncature,
-     * même quand les suggestions kreyòl sont longues ("Bonmaten-la"). La rangée
+     * même quand les suggestions luxembourgeoises sont longues ("Sproochenmeeschter"). La rangée
      * française reste toujours réservée en hauteur (INVISIBLE, jamais GONE) même
      * quand elle est vide : un GONE/VISIBLE dynamique décale toutes les rangées du
      * clavier en dessous pendant la frappe (ex. au franchissement du seuil de 3
@@ -442,7 +442,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
 
-        val kreyolScroll = HorizontalScrollView(this).apply {
+        val luxScroll = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 rowHeightPx
@@ -459,18 +459,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 dpToPx(suggestionRowInnerPadDp())
             )
         }
-        kreyolRow = LinearLayout(this).apply {
+        luxRow = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
-        kreyolScroll.addView(kreyolRow)
-        suggestionsContainer.addView(kreyolScroll)
+        luxScroll.addView(luxRow)
+        suggestionsContainer.addView(luxScroll)
 
         // En paysage la seconde rangée n'est pas construite du tout : les suggestions
-        // françaises rejoignent la rangée kreyòl, qui défile horizontalement et où
+        // françaises rejoignent la rangée luxembourgeoise, qui défile horizontalement et où
         // l'étiquette de langue et la couleur des puces les distinguent déjà. Le
         // décalage des rangées de touches que la réserve permanente évitait ne peut
         // pas se produire ici, puisque la mise en page est figée pour l'orientation :
@@ -489,7 +489,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     rowHeightPx
                 )
-                // Moitié haute de l'intervalle entre les deux rangées, cf. kreyolScroll.
+                // Moitié haute de l'intervalle entre les deux rangées, cf. luxScroll.
                 setPadding(
                     dpToPx(8),
                     dpToPx(suggestionRowInnerPadDp()),
@@ -512,7 +512,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         // Alias historique : les modes non-bilingues (prédictions contextuelles) affichent
         // dans la rangée du haut, la rangée française reste masquée dans ce cas.
-        suggestionsView = kreyolRow
+        suggestionsView = luxRow
 
         parentLayout.addView(suggestionsContainer)
     }
@@ -663,7 +663,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onDictionaryLoaded(wordCount: Int) {
-        Log.d(TAG, "🟢 Dictionnaire kreyòl chargé: $wordCount mots")
+        Log.d(TAG, "🟢 Dictionnaire luxembourgeois chargé: $wordCount mots")
     }
     
     override fun onFrenchDictionaryLoaded(wordCount: Int) {
@@ -671,7 +671,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onNgramModelLoaded() {
-        Log.d(TAG, "🟢 Modèle N-gram kreyòl chargé")
+        Log.d(TAG, "🟢 Modèle N-gram luxembourgeois chargé")
     }
     
     override fun onModeChanged(newMode: SuggestionEngine.SuggestionMode) {
@@ -786,7 +786,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     /**
      * Affiche les suggestions dans la barre de suggestions (mode simple : dictionnaire
-     * hors bilingue, ou prédictions contextuelles n-gram — toutes deux Kreyòl uniquement).
+     * hors bilingue, ou prédictions contextuelles n-gram — toutes deux Lëtzebuergesch uniquement).
      * Réutilise le même style de puce pleine arrondie que le mode bilingue, pour éviter
      * qu'un second look (l'ancien rectangle bleu pastel) ne cohabite avec le premier.
      */
@@ -800,32 +800,32 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             container.removeAllViews()
 
             suggestions.take(MAX_SUGGESTIONS).forEach { suggestion ->
-                addSuggestionChip(container, BilingualSuggestion(suggestion, 0f, SuggestionLanguage.KREYOL))
+                addSuggestionChip(container, BilingualSuggestion(suggestion, 0f, SuggestionLanguage.LUXEMBOURGISH))
             }
         }
     }
     
     /**
-     * 🎯 Affiche les suggestions bilingues sur deux rangées empilées (Kreyòl en haut,
+     * 🎯 Affiche les suggestions bilingues sur deux rangées empilées (Lëtzebuergesch en haut,
      * Français en bas) : le français reste toujours entièrement visible, sans scroll
-     * ni troncature, même quand une suggestion kreyòl est longue ("Bonmaten-la"). La
+     * ni troncature, même quand une suggestion luxembourgeoise est longue ("Sproochenmeeschter"). La
      * rangée française se masque (hauteur nulle) quand elle est vide.
      */
     private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {
         Log.d(TAG, "displayBilingualSuggestions appelé avec ${suggestions.size} suggestions bilingues")
-        val kreyolContainer = kreyolRow ?: return
+        val luxContainer = luxRow ?: return
         // En paysage il n'y a qu'une rangée : les deux langues la partagent.
-        val frenchContainer = frenchRow ?: kreyolContainer
+        val frenchContainer = frenchRow ?: luxContainer
 
-        kreyolContainer.removeAllViews()
+        luxContainer.removeAllViews()
         frenchContainer.removeAllViews()
 
-        val kreyolSuggestions = suggestions.filter { it.language == SuggestionLanguage.KREYOL }
+        val luxSuggestions = suggestions.filter { it.language == SuggestionLanguage.LUXEMBOURGISH }
         val frenchSuggestions = suggestions.filter { it.language == SuggestionLanguage.FRENCH }
 
-        if (kreyolSuggestions.isNotEmpty()) {
-            addLanguageLabel(kreyolContainer, kreyolSuggestions.first().getShortLabel())
-            kreyolSuggestions.forEach { addSuggestionChip(kreyolContainer, it) }
+        if (luxSuggestions.isNotEmpty()) {
+            addLanguageLabel(luxContainer, luxSuggestions.first().getShortLabel())
+            luxSuggestions.forEach { addSuggestionChip(luxContainer, it) }
         }
 
         if (frenchSuggestions.isNotEmpty()) {
@@ -837,7 +837,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // rangées du clavier en dessous pendant la frappe (cf. bug du 23/07/2026).
         frenchRowScroll?.visibility = if (frenchSuggestions.isNotEmpty()) View.VISIBLE else View.INVISIBLE
 
-        Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées (${kreyolSuggestions.size} Kreyòl / ${frenchSuggestions.size} Français)")
+        Log.d(TAG, "✅ ${suggestions.size} suggestions bilingues affichées (${luxSuggestions.size} Lëtzebuergesch / ${frenchSuggestions.size} Français)")
     }
 
     /**
@@ -1131,7 +1131,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * vide le conteneur et la puce disparaît naturellement.
      */
     private fun showShareInviteChip() {
-        val container = kreyolRow ?: return
+        val container = luxRow ?: return
         lateinit var chip: Button
         chip = Button(this).apply {
             text = "📤 Envoyer un mot à un ami"
@@ -1283,7 +1283,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             suggestionsView = null
             frenchRow?.removeAllViews()
             frenchRow = null
-            kreyolRow = null
+            luxRow = null
             frenchRowScroll = null
             mainKeyboardView = null
             

@@ -12,7 +12,7 @@ import android.util.Log
  * 
  * Example:
  * - "bonjo" → "bonjou" (distance = 1, missing 'u')
- * - "kreyol" → "kréyòl" (distance = 2, missing accents)
+ * - "letzebuergesch" → "lëtzebuergesch" (distance = 1, accent manquant)
  * - "mesli" → "mèsi" (distance = 1, extra 'l')
  */
 object LevenshteinDistance {

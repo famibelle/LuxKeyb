@@ -57,7 +57,7 @@ class CreoleDictionaryWithUsage(private val context: Context) {
      * retenir le processus.
      */
     private val saveExecutor = Executors.newSingleThreadExecutor { runnable ->
-        Thread(runnable, "KreyolDictSave").apply { isDaemon = true }
+        Thread(runnable, "LuxDictSave").apply { isDaemon = true }
     }
     private val savePending = AtomicBoolean(false)
 

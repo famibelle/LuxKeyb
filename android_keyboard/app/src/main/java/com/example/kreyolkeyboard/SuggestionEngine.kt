@@ -8,8 +8,8 @@ import org.json.JSONObject
 
 /**
  * Moteur de suggestions bilingue pour le clavier créole
- * Gère le dictionnaire kreyòl, les N-grams et le support français
- * 🎯 PRIORITÉ KREYÒL: Français activé seulement à partir de 3 lettres
+ * Gère le dictionnaire luxembourgeois, les N-grams et le support français
+ * 🎯 PRIORITÉ LUXEMBOURGEOIS: Français activé seulement à partir de 3 lettres
  * 
  * À la mémoire de mon père, Saint-Ange Corneille Famibelle
  */
@@ -17,7 +17,7 @@ class SuggestionEngine(private val context: Context) {
     
     companion object {
         private const val TAG = "SuggestionEngine"
-        private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 kreyòl + 2 français)
+        private const val MAX_SUGGESTIONS = 5  // Augmenté pour bilingue (3 luxembourgeois + 2 français)
         private const val MAX_WORD_HISTORY = 5
         private const val MIN_WORD_LENGTH = 1  // Le kréyòl a des mots très fréquents dès 1-2 lettres (ka, an, sé)
 
@@ -180,7 +180,7 @@ class SuggestionEngine(private val context: Context) {
         }
     }
     
-    // Données du moteur kreyòl (existant)
+    // Données du moteur luxembourgeois (existant)
     private var dictionary: List<Pair<String, Int>> = emptyList()
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
@@ -267,7 +267,7 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Initialise le moteur de suggestions (kreyòl + français)
+     * Initialise le moteur de suggestions (luxembourgeois + français)
      */
     suspend fun initialize() = withContext(Dispatchers.IO) {
         try {
@@ -277,19 +277,19 @@ class SuggestionEngine(private val context: Context) {
             frenchDictionary = FrenchDictionary(context)
             
             // 2. Chargement en parallèle de tous les dictionnaires
-            val kreyolDictDeferred = async { loadDictionary() }
+            val luxDictDeferred = async { loadDictionary() }
             val ngramDeferred = async { loadNgramModel() }
             val frenchDictDeferred = async { frenchDictionary.initialize() }
             
             // 3. Attendre que tout soit chargé
-            kreyolDictDeferred.await()
+            luxDictDeferred.await()
             ngramDeferred.await()
             frenchDictDeferred.await()
 
             removeLegacyPersonalDictionary()
 
             Log.d(TAG, "✅ Moteur bilingue initialisé:")
-            Log.d(TAG, "   🟢 Kreyòl: ${dictionary.size} mots + ${ngramModel.size} N-grams")
+            Log.d(TAG, "   🟢 Lëtzebuergesch: ${dictionary.size} mots + ${ngramModel.size} N-grams")
             Log.d(TAG, "   🔵 Français: ${frenchDictionary.getStats()["word_count"]} mots")
             
             // Notifier le chargement du dictionnaire français
@@ -339,7 +339,7 @@ class SuggestionEngine(private val context: Context) {
 
     
     /**
-     * 🎯 Active le support bilingue Kreyòl + Français
+     * 🎯 Active le support bilingue Lëtzebuergesch + Français
      */
     fun enableBilingualSupport() {
         isBilingualEnabled = true
@@ -348,7 +348,7 @@ class SuggestionEngine(private val context: Context) {
 
     /**
      * 🎯 NOUVELLE MÉTHODE PRINCIPALE: Génère des suggestions bilingues intelligentes
-     * Logique: Kreyòl prioritaire, Français à partir de 3 lettres
+     * Logique: Lëtzebuergesch prioritaire, Français à partir de 3 lettres
      */
     fun generateBilingualSuggestions(input: String) {
         if (input.length < MIN_WORD_LENGTH) {
@@ -378,12 +378,12 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Crée les suggestions bilingues selon la stratégie Kreyòl-First
+     * Crée les suggestions bilingues selon la stratégie Lëtzebuergesch-First
      * 💙 PRIORITÉ ABSOLUE: Détection séquences mémoire pour papa Saint-Ange
      */
     private fun createBilingualSuggestions(input: String): List<BilingualSuggestion> {
-        // 1. 🟢 TOUJOURS obtenir suggestions kreyòl (priorité absolue)
-        val kreyolSuggestions = getKreyolSuggestions(input)
+        // 1. 🟢 TOUJOURS obtenir suggestions luxembourgeoises (priorité absolue)
+        val luxSuggestions = getLuxSuggestions(input)
         
         // 2. 🔵 Obtenir suggestions françaises SEULEMENT si 3+ lettres
         val frenchSuggestions = if (bilingualConfig.shouldActivateFrench(input)) {
@@ -393,24 +393,24 @@ class SuggestionEngine(private val context: Context) {
             emptyList()
         }
         
-        // 3. 🎯 Fusion avec priorité kreyòl stricte
-        return mergeSuggestionsKreyolFirst(kreyolSuggestions, frenchSuggestions)
+        // 3. 🎯 Fusion avec priorité luxembourgeoise stricte
+        return mergeSuggestionsLuxFirst(luxSuggestions, frenchSuggestions)
     }
     
     /**
-     * Obtient les suggestions kreyòl (existant + adapté)
+     * Obtient les suggestions luxembourgeoises (existant + adapté)
      */
-    private fun getKreyolSuggestions(input: String): List<BilingualSuggestion> {
+    private fun getLuxSuggestions(input: String): List<BilingualSuggestion> {
         val dictionaryMatches = getDictionarySuggestions(input)
         val ngramMatches = if (wordHistory.isNotEmpty()) getNgramSuggestions() else emptyList()
         
-        // Fusionner dictionnaire + n-grams kreyòl
-        val allKreyol = mutableMapOf<String, Float>()
+        // Fusionner dictionnaire + n-grams luxembourgeois
+        val allLux = mutableMapOf<String, Float>()
         
         // Ajouter suggestions dictionnaire
         dictionaryMatches.forEach { (word, frequency, distance) ->
             val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
-            allKreyol[word] = score.toFloat()
+            allLux[word] = score.toFloat()
         }
         
         // Ajouter suggestions n-gram avec bonus (uniquement si le mot correspond
@@ -421,19 +421,19 @@ class SuggestionEngine(private val context: Context) {
         ngramMatches
             .filter { it.startsWith(input, ignoreCase = true) }
             .forEach { word ->
-                val currentScore = allKreyol[word] ?: 0f
-                allKreyol[word] = currentScore + 50f  // Bonus contextuel
+                val currentScore = allLux[word] ?: 0f
+                allLux[word] = currentScore + 50f  // Bonus contextuel
             }
         
-        // Convertir en BilingualSuggestion et appliquer boost kreyòl + casse
-        return allKreyol.entries
+        // Convertir en BilingualSuggestion et appliquer boost luxembourgeois + casse
+        return allLux.entries
             .map { (word, score) ->
                 val casedWord = applyCasingPattern(input, word)
-                val adjustedScore = bilingualConfig.adjustScoreByLanguage(score, SuggestionLanguage.KREYOL)
-                BilingualSuggestion(casedWord, adjustedScore, SuggestionLanguage.KREYOL, SuggestionSource.HYBRID)
+                val adjustedScore = bilingualConfig.adjustScoreByLanguage(score, SuggestionLanguage.LUXEMBOURGISH)
+                BilingualSuggestion(casedWord, adjustedScore, SuggestionLanguage.LUXEMBOURGISH, SuggestionSource.HYBRID)
             }
             .sortedByDescending { it.score }
-            .take(bilingualConfig.maxKreyolSuggestions)
+            .take(bilingualConfig.maxLuxSuggestions)
     }
     
     /**
@@ -458,18 +458,18 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * 🎯 FUSION KREYÒL-FIRST: Positions 1-3 réservées kreyòl, 4-5 français optionnel
+     * 🎯 FUSION LUXEMBOURGEOIS-FIRST: Positions 1-3 réservées au luxembourgeois, 4-5 français optionnel
      */
-    private fun mergeSuggestionsKreyolFirst(
-        kreyolSuggs: List<BilingualSuggestion>,
+    private fun mergeSuggestionsLuxFirst(
+        luxSuggs: List<BilingualSuggestion>,
         frenchSuggs: List<BilingualSuggestion>
     ): List<BilingualSuggestion> {
         
         val result = mutableListOf<BilingualSuggestion>()
         val usedWords = mutableSetOf<String>()
         
-        // 1. 🟢 POSITIONS 1-3: Toujours kreyòl d'abord
-        kreyolSuggs.take(3).forEach { suggestion ->
+        // 1. 🟢 POSITIONS 1-3: Toujours luxembourgeois d'abord
+        luxSuggs.take(3).forEach { suggestion ->
             if (!usedWords.contains(suggestion.word.lowercase())) {
                 result.add(suggestion)
                 usedWords.add(suggestion.word.lowercase())
@@ -485,8 +485,8 @@ class SuggestionEngine(private val context: Context) {
             }
         }
         
-        // 3. 🟢 COMPLÉTER avec plus de kreyòl si pas assez de français
-        kreyolSuggs.drop(3).forEach { suggestion ->
+        // 3. 🟢 COMPLÉTER avec plus de luxembourgeois si pas assez de français
+        luxSuggs.drop(3).forEach { suggestion ->
             if (result.size < MAX_SUGGESTIONS && 
                 !usedWords.contains(suggestion.word.lowercase())) {
                 result.add(suggestion)
@@ -494,7 +494,7 @@ class SuggestionEngine(private val context: Context) {
             }
         }
         
-        Log.d(TAG, "🎯 Fusion finale: ${result.size} suggestions (Kreyòl: ${result.count { it.language == SuggestionLanguage.KREYOL }}, Français: ${result.count { it.language == SuggestionLanguage.FRENCH }})")
+        Log.d(TAG, "🎯 Fusion finale: ${result.size} suggestions (Lëtzebuergesch: ${result.count { it.language == SuggestionLanguage.LUXEMBOURGISH }}, Français: ${result.count { it.language == SuggestionLanguage.FRENCH }})")
         
         return result
     }
@@ -745,7 +745,7 @@ class SuggestionEngine(private val context: Context) {
      * Détecte et corrige:
      * - Les lettres mélangées: "bonjo" → "bonjou"
      * - Les fautes d'orthographe: "mesli" → "mèsi"
-     * - Les lettres manquantes/en trop: "kreyol" → "kréyòl"
+     * - Les lettres manquantes/en trop: "letzebuergesch" → "lëtzebuergesch"
      * 
      * @param input Le mot saisi par l'utilisateur (potentiellement mal orthographié)
      * @return Liste de (mot, fréquence, distance) triée par pertinence (distance + fréquence)
@@ -874,11 +874,11 @@ class SuggestionEngine(private val context: Context) {
     }
     
     /**
-     * Active/désactive le mode Kreyòl uniquement
+     * Active/désactive le mode Lëtzebuergesch uniquement
      */
-    fun setKreyolOnlyMode(kreyolOnly: Boolean) {
-        bilingualConfig = bilingualConfig.copy(kreyolOnlyMode = kreyolOnly)
-        Log.d(TAG, "Mode Kreyòl seul: $kreyolOnly")
+    fun setLuxOnlyMode(luxOnly: Boolean) {
+        bilingualConfig = bilingualConfig.copy(luxOnlyMode = luxOnly)
+        Log.d(TAG, "Mode Lëtzebuergesch seul: $luxOnly")
     }
     
     /**
@@ -900,20 +900,20 @@ class SuggestionEngine(private val context: Context) {
         }
         
         return mapOf(
-            "kreyol_words" to dictionary.size,
-            "kreyol_ngrams" to ngramModel.size,
+            "lux_words" to dictionary.size,
+            "lux_ngrams" to ngramModel.size,
             "french_loaded" to (frenchStats["loaded"] as Boolean),
             "french_words" to (frenchStats["word_count"] as Int),
             "config" to mapOf(
                 "french_support" to bilingualConfig.enableFrenchSupport,
                 "activation_threshold" to bilingualConfig.frenchActivationThreshold,
-                "kreyol_only" to bilingualConfig.kreyolOnlyMode
+                "lux_only" to bilingualConfig.luxOnlyMode
             )
         )
     }
 
     /**
-     * Nettoie les ressources (kreyòl + français)
+     * Nettoie les ressources (luxembourgeois + français)
      */
     fun cleanup() {
         suggestionScope.cancel()

@@ -16,7 +16,7 @@ data class BilingualSuggestion(
      */
     fun getColor(): Int {
         return when (language) {
-            SuggestionLanguage.KREYOL -> KeyboardColors.LUX_RED
+            SuggestionLanguage.LUXEMBOURGISH -> KeyboardColors.LUX_RED
             SuggestionLanguage.FRENCH -> KeyboardColors.LUX_BLUE
         }
     }
@@ -28,7 +28,7 @@ data class BilingualSuggestion(
      */
     fun getTextColor(): Int {
         return when (language) {
-            SuggestionLanguage.KREYOL -> KeyboardColors.CHIP_TEXT_ON_RED
+            SuggestionLanguage.LUXEMBOURGISH -> KeyboardColors.CHIP_TEXT_ON_RED
             SuggestionLanguage.FRENCH -> KeyboardColors.CHIP_TEXT_ON_BLUE
         }
     }
@@ -38,7 +38,7 @@ data class BilingualSuggestion(
      */
     fun getLanguageName(): String {
         return when (language) {
-            SuggestionLanguage.KREYOL -> "Lëtzebuergesch"
+            SuggestionLanguage.LUXEMBOURGISH -> "Lëtzebuergesch"
             SuggestionLanguage.FRENCH -> "Français"
         }
     }
@@ -48,7 +48,7 @@ data class BilingualSuggestion(
      */
     fun getShortLabel(): String {
         return when (language) {
-            SuggestionLanguage.KREYOL -> "LB"
+            SuggestionLanguage.LUXEMBOURGISH -> "LB"
             SuggestionLanguage.FRENCH -> "FR"
         }
     }
@@ -58,7 +58,7 @@ data class BilingualSuggestion(
  * Types de langues supportées
  */
 enum class SuggestionLanguage {
-    KREYOL,
+    LUXEMBOURGISH,
     FRENCH
 }
 
@@ -95,12 +95,12 @@ object KeyboardColors {
  */
 data class BilingualConfig(
     val frenchActivationThreshold: Int = 3,        // Activer français à partir de 3 lettres
-    val maxKreyolSuggestions: Int = 3,             // Maximum 3 suggestions kreyòl
+    val maxLuxSuggestions: Int = 3,             // Maximum 3 suggestions luxembourgeoises
     val maxFrenchSuggestions: Int = 2,             // Maximum 2 suggestions françaises
-    val kreyolPriorityBoost: Float = 1.5f,         // Bonus score pour kreyòl (+50%)
+    val luxPriorityBoost: Float = 1.5f,         // Bonus score pour luxembourgeois (+50%)
     val frenchPenalty: Float = 0.8f,               // Malus pour français (-20%)
     val enableFrenchSupport: Boolean = true,       // Support français activé
-    val kreyolOnlyMode: Boolean = false,           // Mode 100% kreyòl
+    val luxOnlyMode: Boolean = false,           // Mode 100% luxembourgeois
     val showLanguageIndicators: Boolean = true      // Afficher couleurs langues
 ) {
     /**
@@ -108,7 +108,7 @@ data class BilingualConfig(
      */
     fun shouldActivateFrench(input: String): Boolean {
         return enableFrenchSupport && 
-               !kreyolOnlyMode && 
+               !luxOnlyMode && 
                input.length >= frenchActivationThreshold
     }
     
@@ -117,7 +117,7 @@ data class BilingualConfig(
      */
     fun adjustScoreByLanguage(score: Float, language: SuggestionLanguage): Float {
         return when (language) {
-            SuggestionLanguage.KREYOL -> score * kreyolPriorityBoost
+            SuggestionLanguage.LUXEMBOURGISH -> score * luxPriorityBoost
             SuggestionLanguage.FRENCH -> score * frenchPenalty
         }
     }
