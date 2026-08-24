@@ -9,6 +9,33 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.14.0] - 2026-08-24
+
+Le clavier se met en clair ou en sombre, au choix de l'utilisateur.
+
+### 🌗 Thème du clavier
+
+- **Trois positions dans les réglages du clavier** — « Comme le téléphone » (par
+  défaut), « Toujours clair », « Toujours sombre ». Un choix explicite et pas
+  seulement le suivi du système, pour la raison qui avait déjà justifié les
+  interrupteurs de vibration et de son : sur plusieurs surcouches, le réglage
+  jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers.
+- **Le drapeau ne s'inverse pas.** Le rouge Pantone 032 et le bleu ciel Pantone
+  299 sont identiques dans les deux thèmes — ce sont eux qui rendent ce clavier
+  reconnaissable, et leurs contrastes (4,22:1 et 5,93:1) ne dépendent pas de ce
+  qui les entoure. Seul le blanc des touches de lettres passe en anthracite, et
+  avec lui l'encre, la bordure, le fond du clavier et la popup d'appui long.
+- **Chaque valeur sombre égale ou dépasse son homologue claire** : lettre sur sa
+  touche 12,42:1, majuscule enclenchée 4,62:1, aperçu d'appui long 5,16:1 —
+  contre 17,40, 4,35 et 3,45 en clair. Le tableau complet est dans la
+  documentation de `KeyboardTheme`.
+- **Le thème clair ne change pas d'un pixel** : il reprend une à une les
+  constantes qui existaient avant.
+- Les quatre surfaces concernées — touches, barre de suggestions, popup d'appui
+  long, panneau emoji — écrivaient leurs couleurs en littéral à leur point
+  d'usage, ce qui rendait tout thème impossible. Elles lisent désormais
+  `KeyboardTheme`.
+
 ## [10.13.0] - 2026-08-24
 
 Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.12.15. Ce qui
