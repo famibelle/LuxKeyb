@@ -86,15 +86,6 @@ class AccentHandler(private val context: Context) {
         "e" to listOf("è", "ê")
     )
 
-    // Touches dont les aperçus en coin s'affichent à gauche plutôt qu'à droite
-    // (toute touche absente de cet ensemble garde le coin droit par défaut).
-    // Vide en luxembourgeois : l'exception amont visait le "o" de la rangée 1,
-    // que la touche dédiée "ò" jouxtait en créole. En QWERTZ, aucune touche
-    // portant des aperçus ne touche le bord droit du clavier — "é" ferme bien
-    // la rangée d'accueil mais n'a pas d'entrée dans accentMap, donc pas
-    // d'aperçu à décaler.
-    private val cornerHintOnStartSide = emptySet<String>()
-
     // Tons de peau pour le panneau emoji exhaustif (v10.1.0), chargés depuis
     // emoji_data.json au démarrage du clavier (EmojiData.skinTones) : clé =
     // emoji neutre/jaune affiché dans la grille, valeur = les 5 tons de peau
@@ -286,7 +277,15 @@ class AccentHandler(private val context: Context) {
             background = createAccentButtonBackground(isBase)
             
             // ├ëv├®nement de clic
-            setOnClickListener {
+            // Le son de frappe vient de KeyFeedback, avec l'effet du clavier et non le
+            // clic d'interface que performClick() ajouterait sinon par-dessus.
+            isSoundEffectsEnabled = false
+
+            setOnClickListener { bouton ->
+                // v10.11.6 : ces touches écrivent un caractère, elles doivent se sentir
+                // et s'entendre comme celles du clavier. Elles sonnaient déjà, par le
+                // clic générique du framework, mais ne vibraient pas.
+                KeyFeedback.onKeyPress(bouton)
                 handleAccentSelection(accent)
             }
             
@@ -401,14 +400,6 @@ class AccentHandler(private val context: Context) {
      */
     fun getCornerHintsForKey(key: String): List<String> {
         return cornerHintOverrides[key.lowercase()] ?: getAccentsForKey(key)
-    }
-
-    /**
-     * Indique si les aperçus en coin de cette touche doivent s'afficher côté
-     * gauche (haut-gauche/bas-gauche) plutôt que côté droit (par défaut)
-     */
-    fun isCornerHintOnStartSide(key: String): Boolean {
-        return key.lowercase() in cornerHintOnStartSide
     }
 
     /**

@@ -37,15 +37,9 @@ org.gradle.daemon=false
 org.gradle.workers.max=2
 
 # Configuration pour la signature de l'APK
-# ⚠️ INSTRUCTIONS:
-# 1. Copiez ce fichier en gradle.properties (sans .example)
-# 2. Remplacez les valeurs ci-dessous par vos vraies valeurs
-# 3. NE COMMITEZ JAMAIS le fichier gradle.properties !
-
-# KEYSTORE_FILE=potomitan-keystore.jks
-# STORE_PASSWORD=your_secure_password_here
-# KEY_ALIAS=potomitan-release-key
-# KEY_PASSWORD=your_secure_password_here
+# ⚠️ Ne PAS mettre les identifiants ici : gradle.properties est versionné.
+# Copier keystore.properties.example en keystore.properties (ignoré par git)
+# et y renseigner KEYSTORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD.
 
 # 📊 CONFIGURATION BUILD SCAN®
 # ===============================================

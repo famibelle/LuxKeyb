@@ -1,12 +1,14 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -24,10 +26,66 @@ class KeyboardLayoutManager(private val context: Context) {
     
     companion object {
         private const val BUTTON_HEIGHT_DP = 48
+        // Sous cette hauteur les touches deviennent difficiles à viser : mieux vaut
+        // alors rogner ailleurs que continuer à réduire.
+        private const val BUTTON_MIN_HEIGHT_DP = 32
+        // En paysage la fenêtre IME ne reçoit qu'environ 359 dp de haut, contre 891
+        // en portrait sur le même écran : garder 48 dp par touche y faisait occuper
+        // au clavier 87 % de l'écran, ne laissant que 51 dp à l'application. Les
+        // touches s'y posent donc directement sur le plancher de visée, la hauteur
+        // étant la seule ressource qui manque dans cette orientation, où la largeur
+        // laisse au contraire chaque touche deux fois plus large qu'en portrait.
+        private const val BUTTON_HEIGHT_LANDSCAPE_DP = BUTTON_MIN_HEIGHT_DP
+        private const val KEYBOARD_ROW_COUNT = 4
+        // Padding vertical du bloc de touches, resserré en paysage pour la même
+        // raison. Le service s'en sert pour calculer la place laissée aux rangées,
+        // d'où l'exposition ici plutôt qu'une valeur écrite des deux côtés.
+        private const val VERTICAL_PADDING_DP = 8
+        private const val VERTICAL_PADDING_LANDSCAPE_DP = 4
         private const val BUTTON_MARGIN_DP = 2
         private const val CORNER_RADIUS_DP = 8f
-        private const val TEXT_SIZE_SP = 16f
-        private const val HINT_TEXT_SIZE_SP = 8f
+        // Taille de police d'une lettre, en part de la hauteur de touche. Elle
+        // valait 16 sp fixes, soit 44 px sur les 116 d'une touche en portrait
+        // (38 %) : mesuré sur le même écran, Gboard y dessine ses lettres à
+        // environ 62 px, presque une fois et demie plus grandes. Proportionnelle
+        // comme le padding des icônes, pour ne pas déborder de la touche réduite
+        // en paysage (32 dp), où une taille absolue ne laisserait pas la place.
+        //
+        // Ce qui borne ce rapport est la largeur, pas la hauteur : les jambages
+        // passent encore à 0,72 même en paysage, mais le "m" y occupe 78 % de la
+        // largeur de touche (mesuré sur un Galaxy A15) et vient toucher les
+        // aperçus d'appui long des coins, plus encore sur un écran étroit. À
+        // 0,62 il en occupe 66 %, sans collision.
+        private const val KEY_TEXT_HEIGHT_RATIO = 0.62f
+        // Les libellés de plusieurs caractères ("123", "ABC", "LuxKeyb™") sont
+        // contraints par la largeur de la touche, pas par sa hauteur : les
+        // agrandir les ferait tronquer. Ce rapport reprend leur taille d'avant
+        // (16 sp × 0,75) rapportée aux 48 dp de la hauteur nominale.
+        private const val WIDE_LABEL_TEXT_RATIO = 0.28f
+        // La signature LuxKeyb™ de la barre d'espace n'est pas une commande :
+        // elle ne s'appuie pas, elle ne se lit qu'une fois. Elle partageait la
+        // taille des libellés de mode ("123", "ABC"), qui eux se visent, ce qui
+        // la posait au même niveau de présence que le reste du clavier.
+        private const val SPACE_LABEL_TEXT_RATIO = 0.22f
+        // La hauteur ne peut pas commander seule : une touche est plus haute que
+        // large, et un glyphe large finit par déborder puis se faire remplacer
+        // par une ellipse. Ces rapports plafonnent la police à une part de la
+        // largeur de touche. 0,90 pour un libellé latin, dont la lettre la plus
+        // large ("m") n'occupe que 0,9 em, ce qui ne mord qu'au-delà des écrans
+        // étroits ; 0,77 pour l'emoji de la touche 😀, dessiné dans un carré
+        // d'environ 1,2 em, qui réclamait plus que sa touche dès la 10.12.3 et
+        // s'affichait "…" (signalé le 19/08/2026).
+        private const val LABEL_WIDTH_RATIO = 0.90f
+        private const val EMOJI_WIDTH_RATIO = 0.77f
+        // Padding latéral du bloc de touches, retiré de la largeur d'écran pour
+        // savoir ce qui revient réellement à chaque touche.
+        private const val KEYBOARD_SIDE_PADDING_DP = 8
+        // Aperçus d'appui long dans les coins des touches. Ils valaient 8 sp
+        // fixes : 24 px sur un HONOR 200, contre 49 px de hauteur pour la
+        // lettre de la même touche depuis que celle-ci suit sa hauteur. Ils
+        // suivent désormais la touche eux aussi, en restant assez discrets pour
+        // ne pas venir toucher la lettre centrale.
+        private const val HINT_TEXT_HEIGHT_RATIO = 0.21f
         private const val SHADOW_RADIUS = 4f
         private const val TAG = "KeyboardLayoutManager"
 
@@ -45,6 +103,12 @@ class KeyboardLayoutManager(private val context: Context) {
 
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
+
+        fun isLandscape(context: Context): Boolean =
+            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        fun verticalPaddingDp(context: Context): Int =
+            if (isLandscape(context)) VERTICAL_PADDING_LANDSCAPE_DP else VERTICAL_PADDING_DP
     }
     
     // État du clavier
@@ -53,6 +117,15 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private var isEmojiMode = false
     private val keyboardButtons = mutableListOf<View>() // Changé de TextView à View pour supporter ImageButton
+
+    // Hauteur que la fenêtre IME peut réellement accorder aux quatre rangées de
+    // touches, renseignée par le service avant chaque création de layout. En
+    // paysage cette fenêtre se limite à l'espace entre barre d'état et barre de
+    // navigation (288 dp sur un 1080x2400 en 480 dpi) alors que la mise en page
+    // nominale en réclame 332 : la rangée du bas (123, espace, entrée…) était
+    // coupée en deux, bug signalé le 13/08/2026. Laissé à 0 par le clavier de
+    // démonstration des Réglages, qui garde la hauteur nominale.
+    private var availableRowsHeightPx = 0
 
     // Référence optionnelle pour prévisualiser les options d'appui long dans
     // les coins des touches (v8.3.0). Laissé à null par le clavier de démo
@@ -81,18 +154,53 @@ class KeyboardLayoutManager(private val context: Context) {
     fun setInteractionListener(listener: KeyboardInteractionListener) {
         this.interactionListener = listener
     }
+
+    /**
+     * Déclare la hauteur disponible pour les rangées de touches, marges comprises.
+     * À appeler avant createKeyboardLayout() : la hauteur des touches en découle.
+     */
+    fun setAvailableRowsHeight(heightPx: Int) {
+        availableRowsHeightPx = heightPx.coerceAtLeast(0)
+    }
+
+    /**
+     * Hauteur d'une touche : la hauteur nominale tant qu'elle tient, sinon la part
+     * de place restante, sans jamais descendre sous le seuil de visée.
+     */
+    private fun keyHeightPx(): Int {
+        val nominal = dpToPx(
+            if (isLandscape(context)) BUTTON_HEIGHT_LANDSCAPE_DP else BUTTON_HEIGHT_DP
+        )
+        if (availableRowsHeightPx <= 0) return nominal
+        val verticalMargins = dpToPx(BUTTON_MARGIN_DP) * 2
+        val fitted = availableRowsHeightPx / KEYBOARD_ROW_COUNT - verticalMargins
+        return fitted.coerceIn(dpToPx(BUTTON_MIN_HEIGHT_DP), nominal)
+    }
     
+    /**
+     * Largeur que la rangée accorde à une touche, marges déduites. Pendant du
+     * calcul de hauteur ci-dessus : la taille du libellé se plafonne dessus,
+     * sans quoi un glyphe large déborde d'une touche étroite.
+     */
+    private fun keyWidthPx(weight: Float, totalWeight: Float): Int {
+        val disponible = context.resources.displayMetrics.widthPixels -
+            dpToPx(KEYBOARD_SIDE_PADDING_DP) * 2
+        val part = (disponible * weight / totalWeight).toInt()
+        return (part - dpToPx(BUTTON_MARGIN_DP) * 2).coerceAtLeast(1)
+    }
+
     /**
      * Crée le layout principal du clavier avec toutes les rangées
      */
     fun createKeyboardLayout(): LinearLayout {
         Log.d("KeyboardLayoutManager", "🎯 createKeyboardLayout - isNumericMode: $isNumericMode")
         
+        val verticalPaddingPx = dpToPx(verticalPaddingDp(context))
         val mainLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
-                dpToPx(8), dpToPx(8), 
-                dpToPx(8), dpToPx(8)
+                dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx,
+                dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx
             )
         }
         
@@ -163,7 +271,14 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createNumericLayout(mainLayout: LinearLayout) {
         val row1 = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         val row2 = arrayOf("-", "/", ":", ";", "(", ")", "€", "&", "@", "\"")
-        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "⌫")
+        // v10.12.15 : "#" ajouté. C'est la seule page de symboles du clavier (il
+        // n'y a pas de seconde page comme le "=\<" de Gboard), donc son absence
+        // signifiait qu'aucun hashtag ne pouvait être écrit sans changer de
+        // clavier. La rangée 3 n'avait que 9 touches contre 10 aux rangées 1 et 2 :
+        // la dixième aligne simplement leurs largeurs, sans rétrécir aucune touche
+        // en deçà de ce qui existe déjà ailleurs. Placé en 9e colonne, sous "@" de
+        // la rangée du dessus, l'autre caractère des identifiants et des réseaux.
+        val row3 = arrayOf("=", ".", ",", "?", "!", "'", "+", "*", "#", "⌫")
         val row4 = arrayOf("ABC", "EMOJI", " ", "⏎")
 
         mainLayout.addView(createKeyboardRow(row1))
@@ -196,6 +311,13 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun createKeyboardRow(keys: Array<String>): LinearLayout {
         val rowLayout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
+            // Un LinearLayout horizontal aligne par défaut ses enfants sur la
+            // ligne de base de leur texte : une touche au libellé plus petit
+            // que ses voisines se retrouve poussée vers le bas pour que les
+            // deux lignes de base coïncident. C'est ce qui décalait « 123 » et
+            // « ABC », seuls libellés à taille réduite de leur rangée. Les
+            // touches doivent s'aligner sur leur cadre, pas sur leur texte.
+            isBaselineAligned = false
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -240,13 +362,33 @@ class KeyboardLayoutManager(private val context: Context) {
                 // Teinter l'icône en blanc pour visibilité sur fond coloré
                 setColorFilter(Color.WHITE)
                 
-                // Configurer la taille et le padding de l'icône (différent selon la touche)
-                val iconPadding = when (key) {
-                    "⏎" -> dpToPx(8)  // Moins de padding pour l'icône Enter (plus grande)
-                    "⌫" -> dpToPx(10) // Padding moyen pour Backspace
-                    "⇧" -> dpToPx(12) // Padding normal pour Shift
-                    else -> dpToPx(12)
+                // Padding de l'icône, différent selon la touche et proportionnel à la
+                // hauteur de touche : écrit en dur, il mangeait la même hauteur sur une
+                // touche réduite, et l'icône y devenait deux fois plus petite qu'en
+                // portrait (constaté en paysage, 12 dp de flèche dans une touche de 36).
+                // Les rapports reprennent les valeurs d'origine, rapportées aux 48 dp
+                // de la hauteur nominale.
+                val iconPaddingRatio = when (key) {
+                    // Entrée : 8 dp jusqu'en 10.12.8. Sa touche est la plus
+                    // étroite des trois porteuses d'icône (poids 1 contre 1,25
+                    // pour shift et retour arrière) et sa flèche la plus large :
+                    // c'est donc la largeur qui borne sa mise à l'échelle, et le
+                    // padding y coûte deux fois, en largeur comme en hauteur.
+                    // Réduit à 4 dp, il laisse la flèche remplir la touche comme
+                    // ses voisines remplissent les leurs.
+                    "⏎" -> 4f / BUTTON_HEIGHT_DP
+                    "⌫" -> 10f / BUTTON_HEIGHT_DP // Padding moyen pour Backspace
+                    // Shift : 12 dp jusqu'en 10.12.6, ce qui le faisait paraître
+                    // plus petit que ses voisines une fois les lettres agrandies
+                    // (36 px de flèche contre 51 pour la corbeille et 54 pour un
+                    // « b », mesurés sur un Galaxy A15). Deux causes cumulées :
+                    // le plus fort padding des trois icônes, et un tracé qui
+                    // n'occupe que 62 % de la hauteur de son cadre là où celui
+                    // de la corbeille en remplit près de 80. Le padding
+                    // compense la différence de tracé.
+                    else -> 6f / BUTTON_HEIGHT_DP
                 }
+                val iconPadding = (keyHeightPx() * iconPaddingRatio).toInt()
                 setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
                 scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                 adjustViewBounds = true
@@ -266,7 +408,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
-                    dpToPx(BUTTON_HEIGHT_DP),
+                    keyHeightPx(),
                     weight
                 ).apply {
                     setMargins(
@@ -285,6 +427,10 @@ class KeyboardLayoutManager(private val context: Context) {
                 // touche (" " → "LuxKeyb™", "EMOJI" → "😀", "ABC"). Voir le
                 // commentaire de getKeyFromButton().
                 tag = key
+                // « 123 » et « ABC » ne tiennent pas en pleine taille dans la
+                // largeur d'une touche en portrait : le libellé se renvoyait à la
+                // ligne et sa seconde ligne débordait sous le bas de la touche
+                maxLines = 1
                 // Le thème AppCompat d'une activité impose textAllCaps=true
                 // aux Button : les touches doivent refléter exactement l'état
                 // shift, quel que soit le contexte (IME ou clavier d'essai)
@@ -296,15 +442,47 @@ class KeyboardLayoutManager(private val context: Context) {
                 // après restait invisible tant que ceci n'était pas neutralisé).
                 elevation = 0f
                 stateListAnimator = null
-                // Taille de police personnalisée pour le branding LuxKeyb™ discret
-                textSize = if (key == " ") TEXT_SIZE_SP * 0.75f else TEXT_SIZE_SP
-                setTypeface(typeface, Typeface.BOLD)
+                // Taille de police dérivée de la hauteur de touche, en pixels :
+                // le clavier doit rester lisible sans dépendre de l'échelle de
+                // police du système, qui pourrait faire déborder la lettre de sa
+                // touche. Les libellés longs (LuxKeyb™ sur l'espace, les modes
+                // "123" et "ABC") gardent leur taille réduite, sans quoi ils ne
+                // tiennent plus sur une seule ligne dans une touche étroite.
+                val labelRatio = when (key) {
+                    " " -> SPACE_LABEL_TEXT_RATIO
+                    "123", "ABC" -> WIDE_LABEL_TEXT_RATIO
+                    else -> KEY_TEXT_HEIGHT_RATIO
+                }
+                val widthRatio = if (key == "EMOJI") EMOJI_WIDTH_RATIO else LABEL_WIDTH_RATIO
+                val taillePx = minOf(
+                    keyHeightPx() * labelRatio,
+                    keyWidthPx(getKeyWeight(key), totalWeight) * widthRatio
+                )
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, taillePx)
+                // Même raison que pour les puces de suggestion : la réserve de
+                // police au-dessus de la lettre est plus épaisse que celle du
+                // dessous, ce qui pose le caractère trop bas dans sa touche.
+                includeFontPadding = false
+                // Le gras sert la visée : il épaissit le glyphe qu'on cherche du
+                // pouce. La signature de l'espace ne se vise pas, elle reste donc
+                // en graisse normale.
+                setTypeface(typeface, if (key == " ") Typeface.NORMAL else Typeface.BOLD)
+                // Le style Button par défaut apporte 30 px de padding sur chaque
+                // bord, hérités de son fond d'origine. L'apparence des touches
+                // vient entièrement du GradientDrawable posé plus bas, et ce
+                // padding ne fait que rogner le texte : sur une touche réduite en
+                // paysage il ne restait que 45 px pour une ligne de 57, coupant
+                // les jambages (q, g, j, p, y) ; en portrait c'est lui qui
+                // tronquait le libellé « 123 » en « 12 ».
+                setPadding(0, 0, 0, 0)
+                minHeight = 0
+                minWidth = 0
                 
                 // Calcul du poids selon le type de touche
                 val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
-                    dpToPx(BUTTON_HEIGHT_DP),
+                    keyHeightPx(),
                     weight
                 ).apply {
                     setMargins(
@@ -327,8 +505,7 @@ class KeyboardLayoutManager(private val context: Context) {
         // Aperçu des options d'appui long dans les coins de la touche (v8.3.0)
         val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
         if (!hints.isNullOrEmpty()) {
-            val onStartSide = accentHandler?.isCornerHintOnStartSide(key) == true
-            return wrapWithLongPressHints(button, hints, onStartSide, key)
+            return wrapWithLongPressHints(button, hints, key)
         }
 
         // 🌐 Indice visuel : l'appui long sur la barre d'espace change de clavier
@@ -355,8 +532,10 @@ class KeyboardLayoutManager(private val context: Context) {
         )
         val hint = TextView(context).apply {
             text = "🌐"
-            textSize = HINT_TEXT_SIZE_SP + 2f
-            setTextColor(Color.parseColor("#CCFFFFFF")) // Même blanc semi-transparent que le texte LuxKeyb™
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * HINT_TEXT_HEIGHT_RATIO * 1.2f)
+            // Reste à 0xCC, plus franc que la signature depuis la 10.12.9 : celle-ci
+            // ne dit rien à faire, l'indice si.
+            setTextColor(Color.parseColor("#CCFFFFFF"))
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -376,48 +555,44 @@ class KeyboardLayoutManager(private val context: Context) {
 
     /**
      * Enveloppe une touche dans un FrameLayout pour superposer, en haut et en
-     * bas d'un même côté (droit par défaut, gauche si onStartSide), un aperçu
-     * des deux premières options d'appui long. La touche d'origine garde
-     * exactement sa zone tactile, son style et son ancrage pour la popup
-     * d'accents (le FrameLayout se contente de prendre sa place dans la
-     * rangée) ; keyboardButtons ne référence jamais ce FrameLayout, seulement la
-     * touche brute qu'il contient.
+     * bas du côté droit, un aperçu des deux premières options d'appui long. La
+     * touche d'origine garde exactement sa zone tactile, son style et son
+     * ancrage pour la popup d'accents (le FrameLayout se contente de prendre sa
+     * place dans la rangée) ; keyboardButtons ne référence jamais ce
+     * FrameLayout, seulement la touche brute qu'il contient.
      */
-    private fun wrapWithLongPressHints(
-        inner: View,
-        hints: List<String>,
-        onStartSide: Boolean,
-        key: String
-    ): FrameLayout {
+    private fun wrapWithLongPressHints(inner: View, hints: List<String>, key: String): FrameLayout {
         val outerParams = inner.layoutParams
         inner.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT
         )
-        val horizontalGravity = if (onStartSide) Gravity.START else Gravity.END
+
+        val hintColor = hintColorFor(key)
 
         return FrameLayout(context).apply {
             layoutParams = outerParams
             addView(inner)
-            addView(createHintLabel(hints[0], Gravity.TOP or horizontalGravity, onStartSide, key))
+            addView(createHintLabel(hints[0], Gravity.TOP or Gravity.END, hintColor))
             if (hints.size > 1) {
-                addView(createHintLabel(hints[1], Gravity.BOTTOM or horizontalGravity, onStartSide, key))
+                addView(createHintLabel(hints[1], Gravity.BOTTOM or Gravity.END, hintColor))
             }
         }
     }
 
-    private fun createHintLabel(
-        hintText: String,
-        gravity: Int,
-        onStartSide: Boolean,
-        key: String
-    ): TextView {
+    /**
+     * Couleur d'un indice de coin. Upstream la calcule par contraste WCAG sur
+     * le dégradé de la touche ; notre palette n'a que trois fonds (rouge, bleu,
+     * blanc) dont hintInk() documente déjà l'encre mesurée, alors on la relit
+     * plutôt que de la recalculer.
+     */
+    private fun hintColorFor(key: String): Int = Color.parseColor(hintInk(key))
+
+    private fun createHintLabel(hintText: String, gravity: Int, textColor: Int): TextView {
         return TextView(context).apply {
             text = hintText
-            textSize = HINT_TEXT_SIZE_SP
-            // L'aperçu s'efface volontairement derrière le glyphe principal,
-            // mais il doit rester lisible sur les touches colorées.
-            setTextColor(Color.parseColor(hintInk(key)))
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, keyHeightPx() * HINT_TEXT_HEIGHT_RATIO)
+            setTextColor(textColor)
             isClickable = false
             isFocusable = false
             layoutParams = FrameLayout.LayoutParams(
@@ -425,11 +600,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 gravity
             ).apply {
-                if (onStartSide) {
-                    setMargins(dpToPx(3), dpToPx(2), 0, dpToPx(2))
-                } else {
-                    setMargins(0, dpToPx(2), dpToPx(3), dpToPx(2))
-                }
+                setMargins(0, dpToPx(2), dpToPx(3), dpToPx(2))
             }
         }
     }
@@ -456,12 +627,16 @@ class KeyboardLayoutManager(private val context: Context) {
             // Ombre portée pour l'effet de profondeur.
             // setShadowLayer() sous rendu accéléré matériellement est une source connue
             // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
-            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter
-            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            // Ombre claire sur les touches colorées, sombre sur les blanches :
-            // une ombre noire sous du texte blanc le rend sale.
-            val ombre = if (keyBackground(key) == ROUGE) "#40FFFFFF" else "#40000000"
-            view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor(ombre))
+            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter.
+            // L'espace en est exempté : son ombre détourait la signature et lui
+            // rendait la présence que sa graisse normale vient de lui retirer.
+            if (key != " ") {
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                // Ombre claire sur les touches colorées, sombre sur les blanches :
+                // une ombre noire sous du texte blanc le rend sale.
+                val ombre = if (keyBackground(key) == ROUGE) "#40FFFFFF" else "#40000000"
+                view.setShadowLayer(SHADOW_RADIUS, 0f, dpToPx(1).toFloat(), Color.parseColor(ombre))
+            }
         }
 
         if (view is android.widget.ImageButton) {
@@ -512,6 +687,11 @@ class KeyboardLayoutManager(private val context: Context) {
      * Configure les interactions tactiles pour un bouton
      */
     private fun setupButtonInteractions(button: View, key: String) {
+        // Le son de frappe est joué explicitement par KeyFeedback, avec l'effet propre
+        // à la touche. Sans cette ligne, performClick() y ajouterait son clic
+        // d'interface générique et chaque touche sonnerait deux fois.
+        button.isSoundEffectsEnabled = false
+
         // 🌐 Appui long personnalisé pour la barre d'espace (1 seconde)
         if (key == " ") {
             // Pas de setOnClickListener ici : setupSpaceLongPress() gère déjà le clic
@@ -529,7 +709,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 true
             }
             // Animation tactile pour les touches autres que la barre d'espace
-            addTouchAnimation(button)
+            addTouchAnimation(button, key)
         }
     }
     
@@ -549,8 +729,7 @@ class KeyboardLayoutManager(private val context: Context) {
                         .setDuration(100)
                         .start()
                     
-                    // Feedback haptique
-                    performHapticFeedback(view)
+                    KeyFeedback.onKeyPress(view, key)
                     
                     // Démarrer le timer de 1 seconde pour l'appui long
                     spaceLongPressRunnable = Runnable {
@@ -602,12 +781,14 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Ajoute une animation tactile et feedback haptique au bouton
+     * Animation d'appui, vibration et son de frappe sur un bouton de touche.
+     *
+     * Le retour part sur ACTION_DOWN, à l'instant où le doigt se pose, comme sur
+     * tous les claviers : la frappe se sent et s'entend avant le relâchement. La
+     * touche est passée pour que le son soit celui de sa nature (espace,
+     * suppression, entrée ou frappe standard).
      */
-    /**
-     * Ajoute une animation tactile et feedback haptique au bouton
-     */
-    private fun addTouchAnimation(view: View) {
+    private fun addTouchAnimation(view: View, key: String) {
         view.setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
@@ -618,8 +799,7 @@ class KeyboardLayoutManager(private val context: Context) {
                         .setDuration(100)
                         .start()
                     
-                    // 📳 FEEDBACK HAPTIQUE MODERNE
-                    performHapticFeedback(v)
+                    KeyFeedback.onKeyPress(v, key)
                     
                     false
                 }
@@ -637,24 +817,6 @@ class KeyboardLayoutManager(private val context: Context) {
                 }
                 else -> false
             }
-        }
-    }
-    
-    /**
-     * Exécute le feedback haptique classique (comme dans la version originale)
-     */
-    private fun performHapticFeedback(view: android.view.View) {
-        try {
-            // Feedback haptique léger (identique à la version originale)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                view.performHapticFeedback(
-                    android.view.HapticFeedbackConstants.KEYBOARD_TAP,
-                    android.view.HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                )
-            }
-        } catch (e: Exception) {
-            // Silencieusement ignorer si feedback haptique non supporté
-            Log.d(TAG, "Feedback haptique non disponible: ${e.message}")
         }
     }
     
@@ -839,7 +1001,11 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun getKeyWeight(key: String): Float {
         return when (key) {
             " " -> 4.0f      // Barre d'espace plus large
-            "⇧", "⌫" -> 1.5f // Touches de fonction plus larges
+            // v10.11.4 : 1,5 → 1,25 pour financer l'apostrophe ajoutée en rangée 3
+            // sans rétrécir les lettres sous la largeur des rangées 1 et 2. Ces deux
+            // touches restent les plus larges de leur rangée, ce qui compte : elles
+            // sont aux deux extrémités, là où la visée du pouce est la plus mauvaise.
+            "⇧", "⌫" -> 1.25f
             else -> 1.0f     // Touches normales
         }
     }

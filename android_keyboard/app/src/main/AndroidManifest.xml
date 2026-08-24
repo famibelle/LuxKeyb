@@ -78,6 +78,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Réglages du clavier, atteints par l'engrenage du bandeau de
+             SettingsActivity. Non exporté : rien d'extérieur n'a à ouvrir cet
+             écran, et parentActivityName donne la remontée système. -->
+        <activity
+            android:name=".KeyboardSettingsActivity"
+            android:label="Réglages du clavier"
+            android:parentActivityName=".SettingsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
