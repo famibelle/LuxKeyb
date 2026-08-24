@@ -78,16 +78,20 @@ enum class SuggestionSource {
 object KeyboardColors {
     // Couleurs du drapeau luxembourgeois, comme les touches : le luxembourgeois
     // prend le rouge, le français le bleu ciel.
+    //
+    // Ces quatre-là ne figurent pas dans KeyboardTheme et n'ont pas à y figurer :
+    // ce sont les couleurs du drapeau et leurs encres mesurées, identiques en
+    // thème clair et en thème sombre. Tout ce qui bascule vit dans KeyboardTheme.
     val LUX_RED = Color.parseColor("#ED2939")
     val LUX_BLUE = Color.parseColor("#00A1DE")
-
-    // Couleurs d'interface
-    val BACKGROUND_NEUTRAL = Color.parseColor("#F8F9FA")  // Fond neutre
-    val BORDER_LIGHT = Color.parseColor("#E9ECEF")        // Bordures subtiles
-    val TEXT_PRIMARY = Color.parseColor("#212529")        // Texte principal
-    val TEXT_SECONDARY = Color.parseColor("#6C757D")      // Texte secondaire
     val CHIP_TEXT_ON_RED = Color.parseColor("#FFFFFF")    // 4,2:1 sur le rouge
     val CHIP_TEXT_ON_BLUE = Color.parseColor("#1A1A1A")   // 5,9:1 sur le bleu ciel
+
+    // BACKGROUND_NEUTRAL, BORDER_LIGHT, TEXT_PRIMARY et TEXT_SECONDARY ont été
+    // retirés avec l'arrivée du thème : les trois premiers n'avaient aucun
+    // appelant, et le quatrième colorait l'étiquette de langue de la barre de
+    // suggestions, qui lit désormais KeyboardTheme.palette().encreAttenuee — sans
+    // quoi elle serait restée gris moyen sur le fond sombre.
 }
 
 /**

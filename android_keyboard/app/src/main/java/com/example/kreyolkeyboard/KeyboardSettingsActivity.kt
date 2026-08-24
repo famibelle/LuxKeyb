@@ -9,6 +9,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.Switch
 import android.widget.TextView
@@ -101,6 +103,21 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         setPadding(dp(16), dp(16), dp(16), dp(24))
 
         addView(carte().apply {
+            addView(titreSection("Apparence"))
+            addView(explication(
+                "La couleur des touches. Le rouge et le bleu du drapeau ne changent " +
+                        "pas : seul le blanc des lettres passe en anthracite."
+            ))
+            addView(choixTheme())
+            addView(explication(
+                "« Comme le téléphone » suit le mode sombre du système. Les deux " +
+                        "autres positions existent parce que sur plusieurs surcouches ce " +
+                        "mode ne descend pas jusqu'aux claviers tiers."
+            ))
+        })
+        addView(espacement())
+
+        addView(carte().apply {
             addView(titreSection("Retour de frappe"))
             addView(explication(
                 "Ce que le clavier fait à chaque appui. Le choix s'applique dès le " +
@@ -124,6 +141,57 @@ class KeyboardSettingsActivity : AppCompatActivity() {
                         "toucher ne gouverne que le clavier du constructeur."
             ))
         })
+    }
+
+    /**
+     * Les trois positions du thème, en boutons radio.
+     *
+     * Un groupe radio et non un interrupteur : trois états, dont un — « comme le
+     * téléphone » — n'est ni l'un ni l'autre des deux autres et se perdrait dans
+     * une bascule à deux positions.
+     *
+     * Les couleurs sont posées à la main pour la même raison que sur les
+     * interrupteurs voisins : l'état non coché du thème est un gris presque blanc,
+     * invisible sur une carte blanche.
+     */
+    private fun choixTheme(): View {
+        val actuel = KeyboardPreferences.themeMode(this)
+        return RadioGroup(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            KeyboardTheme.Mode.entries.forEach { mode ->
+                addView(RadioButton(this@KeyboardSettingsActivity).apply {
+                    id = View.generateViewId()
+                    tag = mode
+                    text = mode.libelle
+                    textSize = 16f
+                    setTextColor(Color.parseColor(ENCRE))
+                    isChecked = mode == actuel
+                    setPadding(dp(8), dp(12), 0, dp(12))
+                    buttonTintList = ColorStateList(
+                        arrayOf(
+                            intArrayOf(android.R.attr.state_checked),
+                            intArrayOf(-android.R.attr.state_checked)
+                        ),
+                        intArrayOf(Color.parseColor(BLEU), Color.parseColor("#757575"))
+                    )
+                })
+            }
+            setOnCheckedChangeListener { groupe, idCoche ->
+                val mode = groupe.findViewById<View>(idCoche)?.tag as? KeyboardTheme.Mode ?: return@setOnCheckedChangeListener
+                KeyboardPreferences.setThemeMode(this@KeyboardSettingsActivity, mode)
+                Log.d(TAG, "Thème du clavier : ${mode.cle}")
+            }
+        }
+    }
+
+    private fun espacement(): View = View(this).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, dp(16)
+        )
     }
 
     private fun carte(): LinearLayout = LinearLayout(this).apply {

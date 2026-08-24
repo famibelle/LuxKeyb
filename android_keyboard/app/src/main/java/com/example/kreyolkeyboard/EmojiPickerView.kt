@@ -109,7 +109,7 @@ class EmojiPickerView(
         tabViews.forEachIndexed { index, tab ->
             tab.background = if (index == selectedIndex) {
                 GradientDrawable().apply {
-                    setColor(Color.parseColor("#E0F2E9"))
+                    setColor(KeyboardTheme.palette().emojiOngletActif)
                     cornerRadius = dpToPx(6).toFloat()
                 }
             } else {
