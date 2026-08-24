@@ -32,7 +32,7 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
      style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
             border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
-    📲 Télécharger l'APK (version 10.13.0)
+    📲 Télécharger l'APK (version 10.14.0)
   </a>
   <figure style="margin:0;text-align:center;">
     <img src="assets/qr-luxkeyb-apk.png"
