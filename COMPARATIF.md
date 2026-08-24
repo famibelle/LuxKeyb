@@ -15,8 +15,8 @@ lëtzebuergesch comme une langue à part entière.
 | **Luxembourgeois pris en charge** | Oui — c'est la seule langue du projet | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 (juin 2026, pas encore diffusé) |
 | **Disposition** | QWERTZ luxembourgeois, calquée sur le clavier physique suisse-français | QWERTZ générique de la locale choisie | QWERTZ/AZERTY allemand ou français ; disposition lb avec iOS 27 |
 | **Touches diacritiques dédiées** | `é` `ä` `ë` et l'apostrophe ont leur **propre touche** (choix fondé sur le comptage du corpus) | Appui long sur la voyelle | Appui long sur la voyelle |
-| **Dictionnaire** | Environ 9 000 mots issus d'un corpus luxembourgeois public ([POTOMITAN/luxembourgish-corpus](https://huggingface.co/datasets/POTOMITAN/luxembourgish-corpus)), **auditable et régénérable** | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
-| **Prédiction contextuelle** | Environ 25 000 contextes n-grammes, très majoritairement à deux mots : bigrammes + trigrammes | Réseaux de neurones, apprentissage fédéré | Modèle Transformer embarqué, Apple Intelligence sur les appareils récents |
+| **Dictionnaire** | 9 016 mots issus d'un corpus luxembourgeois public ([POTOMITAN/luxembourgish-corpus](https://huggingface.co/datasets/POTOMITAN/luxembourgish-corpus)), **auditable et régénérable** | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
+| **Prédiction contextuelle** | 25 194 contextes n-grammes, très majoritairement à deux mots : bigrammes + trigrammes | Réseaux de neurones, apprentissage fédéré | Modèle Transformer embarqué, Apple Intelligence sur les appareils récents |
 | **Tolérance aux fautes** | Distance de Levenshtein + correspondance insensible aux accents | Correction automatique mature | Correction automatique mature |
 | **Repli français** | Oui, à partir de 3 caractères — pensé pour le quotidien bilingue du Luxembourg | Multilingue simultané (jusqu'à 3 langues) | Saisie multilingue limitée (≈31 langues) |
 | **Correcteur orthographique système** | Oui, service dédié déclaré en `lb` **et** `fr` | Intégré au clavier | Intégré au système |
@@ -60,6 +60,8 @@ langue première, hors ligne et sans boîte noire.
 À noter enfin : l'arrivée du luxembourgeois dans iOS 27 est une bonne nouvelle pour la
 langue. Elle laisse toutefois Android sans clavier pensé pour le lëtzebuergesch, et ne
 répond ni à l'auditabilité du dictionnaire, ni à l'apprentissage.
+
+La version en ligne de ce comparatif : <https://famibelle.github.io/LuxKeyb/comparatif.html>
 
 ## Sources
 

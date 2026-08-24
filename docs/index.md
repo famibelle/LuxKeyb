@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
@@ -164,8 +165,8 @@ depuis 2013, sans prédiction du mot suivant.
 | | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
 |---|---|---|---|---|---|
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **8 792 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 23 169 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
+| Dictionnaire luxembourgeois | **9 016 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 25 194 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
 | Deux langues sans rien régler | **Oui**, lb et fr mélangés d'emblée | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — |
@@ -182,6 +183,10 @@ depuis 2013, sans prédiction du mot suivant.
 <p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Chiffres relevés en
 août 2026 ; le dictionnaire luxembourgeois des claviers libres provient du
 <a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.</p>
+
+Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
+pas encore le luxembourgeois : voir le
+[comparatif détaillé face à Gboard et à Apple](comparatif.html).
 
 **Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, pas de
 thème sombre, et pas de dictionnaire allemand à côté du français. Ces manques
