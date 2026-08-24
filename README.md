@@ -64,6 +64,8 @@ Le clavier fonctionne **entièrement hors ligne** : il n'a aucun accès à Inter
 #### 📚 **Corpus des suggestions**
 Le dictionnaire et les n-grammes sont générés à partir d'un corpus de luxembourgeois contemporain : les transcriptions des conférences de presse du gouvernement luxembourgeois, publiées comme jeu de données ouvert. Le pipeline est relancé à chaque build, ce qui fait évoluer les suggestions avec l'usage réel de la langue.
 
+### ⚖️ **Face à Gboard et au clavier Apple**
+Gboard gère le luxembourgeois parmi 900 autres langues, et Apple ne l'ajoutera qu'avec iOS 27 : voir le **[comparatif détaillé](COMPARATIF.md)** — disposition, dictionnaire, vie privée, ce que les autres font mieux.
 
 ## 📦 Téléchargements
 
