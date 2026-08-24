@@ -650,44 +650,48 @@ class KeyboardLayoutManager(private val context: Context) {
      * même source : la lisibilité d'un indice de coin se juge contre le fond sur
      * lequel il est posé, pas contre le libellé de la touche.
      */
-    private fun keyBackgroundColors(key: String): IntArray {
+    private fun keyBackgroundColors(key: String): IntArray = keyBackground(key).couleurs()
+
+    /**
+     * Fond d'une touche, dans la palette du thème en cours.
+     *
+     * Le vert tropical (Entrée et changements de mode), l'orange caraïbe (la
+     * ponctuation) et le bleu caraïbe (la barre d'espace) sont les mêmes en clair
+     * et en sombre : ce sont les couleurs produit de la charte, et c'est à elles
+     * que le clavier se reconnaît. Seules les touches non colorées basculent, du
+     * blanc à l'anthracite.
+     */
+    private fun keyBackground(key: String): KeyboardTheme.Degrade {
+        val p = KeyboardTheme.palette()
         return when (key) {
             "⇧" -> when {
-                // Touche Shift avec nuance de blanc/gris
-                isCapsLock -> intArrayOf(Color.parseColor("#E8E8E8"), Color.parseColor("#D0D0D0")) // Gris moyen activé
-                isCapitalMode -> intArrayOf(Color.parseColor("#F0F0F0"), Color.parseColor("#E0E0E0")) // Gris clair actif
-                else -> intArrayOf(Color.parseColor("#FFFFFF"), Color.parseColor("#F8F8F8")) // Blanc neutre
+                isCapsLock -> p.toucheCaps
+                isCapitalMode -> p.toucheMaj
+                else -> p.toucheAccentuee
             }
-            // Touche Supprimer avec couleur semi-transparente
-            "⌫" -> intArrayOf(
-                Color.parseColor("#CCFFFFFF"), // Blanc semi-transparent
-                Color.parseColor("#C0F0F0F0")  // Gris très clair semi-transparent
-            )
-            // Touche Entrée et touches de mode avec vert tropical
-            "⏎", "123", "ABC", "EMOJI" -> intArrayOf(
-                Color.parseColor("#00C853"), // Vert tropical vif
-                Color.parseColor("#00A843")  // Vert tropical foncé
-            )
-            // Touches virgule, point, apostrophe et trait d'union avec orange caraïbe
-            ",", ".", "'", "-" -> intArrayOf(
-                Color.parseColor("#FF8C00"), // Orange caraïbe vif
-                Color.parseColor("#FF7000")  // Orange caraïbe foncé
-            )
-            // Touches créoles avec nuance de blanc/gris
-            "à", "è", "ò", "é", "ù", "ì", "ç" -> intArrayOf(
-                Color.parseColor("#FFFFFF"), // Blanc
-                Color.parseColor("#F8F8F8")  // Blanc cassé
-            )
-            // Barre d'espace avec bleu caraïbe
-            " " -> intArrayOf(
-                Color.parseColor("#1E90FF"), // Bleu caraïbe
-                Color.parseColor("#0000FF")  // Bleu pour dégradé
-            )
-            // Touches normales avec gradient blanc/gris
-            else -> intArrayOf(
-                Color.parseColor("#FFFFFF"),
-                Color.parseColor("#F5F5F5")
-            )
+            "⌫" -> p.toucheSuppr
+            "⏎", "123", "ABC", "EMOJI" -> p.vert
+            ",", ".", "'", "-" -> p.orange
+            // Touches créoles dédiées, sur la même nuance que le shift au repos
+            "à", "è", "ò", "é", "ù", "ì", "ç" -> p.toucheAccentuee
+            " " -> p.bleu
+            else -> p.touche
+        }
+    }
+
+    /**
+     * Encre d'une touche, choisie sur le fond et non sur la touche.
+     *
+     * C'est exactement ce qu'il faut pour un thème : les trois couleurs produit ne
+     * bougeant pas d'un thème à l'autre, leurs encres non plus, et seul le cas des
+     * touches non colorées suit la palette.
+     */
+    private fun keyForeground(key: String): Int {
+        val p = KeyboardTheme.palette()
+        return when (keyBackground(key)) {
+            p.vert, p.orange, p.bleu -> p.encreSurCouleur
+            p.toucheMaj, p.toucheCaps -> p.encreAttenuee
+            else -> p.encre
         }
     }
 
@@ -701,8 +705,10 @@ class KeyboardLayoutManager(private val context: Context) {
             setColors(keyBackgroundColors(key))
             orientation = GradientDrawable.Orientation.TOP_BOTTOM
             
-            // Bordure subtile
-            setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))
+            // Bordure subtile, qui détache la touche du fond du clavier. Elle
+            // compte davantage en thème sombre, où l'écart entre les deux est
+            // plus faible qu'entre le blanc d'une touche et le gris du fond.
+            setStroke(dpToPx(1), KeyboardTheme.palette().bordure)
         }
         
         view.background = drawable
@@ -710,15 +716,12 @@ class KeyboardLayoutManager(private val context: Context) {
         // Couleur du texte (seulement pour Button, pas ImageButton)
         if (view is Button) {
             view.setTextColor(when (key) {
-                "⇧" -> if (isCapsLock || isCapitalMode) Color.parseColor("#666666") else Color.parseColor("#333333")
-                ",", ".", "'", "-" -> Color.WHITE // Texte blanc sur fond orange caraïbe
-                "⏎", "123", "ABC", "EMOJI" -> Color.WHITE // Texte blanc sur fond vert tropical
-                "à", "è", "ò", "é", "ù", "ì", "ç" -> Color.parseColor("#333333") // Texte gris foncé sur fond blanc
                 // Potomitan™ : 0xCC jusqu'en 10.12.8, soit un blanc encore franc
                 // sur le bleu de l'espace. Ramené à 0x73, le mot reste lisible de
-                // près sans revendiquer le regard pendant la frappe.
+                // près sans revendiquer le regard pendant la frappe. Le bleu ne
+                // bougeant pas d'un thème à l'autre, cette signature non plus.
                 " " -> Color.parseColor("#73FFFFFF")
-                else -> Color.parseColor("#333333")
+                else -> keyForeground(key)
             })
             
             // Ombre portée pour l'effet de profondeur
@@ -733,15 +736,11 @@ class KeyboardLayoutManager(private val context: Context) {
             }
         }
         
-        // Teinte de l'icône pour ImageButton
+        // Teinte de l'icône pour ImageButton : même encre que le libellé d'une
+        // touche de même fond (shift et retour arrière suivent le thème, la
+        // flèche d'Entrée reste blanche sur son vert).
         if (view is android.widget.ImageButton) {
-            // Couleur des icônes selon le type de touche
-            when (key) {
-                "⇧" -> view.setColorFilter(if (isCapsLock || isCapitalMode) Color.parseColor("#666666") else Color.parseColor("#333333"))
-                "⌫" -> view.setColorFilter(Color.parseColor("#333333")) // Icône gris foncé sur fond blanc
-                "⏎" -> view.setColorFilter(Color.WHITE) // Icône blanche sur fond vert tropical
-                else -> view.setColorFilter(Color.WHITE)
-            }
+            view.setColorFilter(keyForeground(key))
         }
     }
     

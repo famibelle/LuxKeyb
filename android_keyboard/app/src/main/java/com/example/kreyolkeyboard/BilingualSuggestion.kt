@@ -64,18 +64,24 @@ enum class SuggestionSource {
  * Couleurs du clavier
  */
 object KeyboardColors {
-    // 🟢 Vert pour Guadeloupéen/Kreyòl (fond plein, texte blanc — contraste renforcé)
+    // Ces trois couleurs ne figurent pas dans KeyboardTheme et n'ont pas à y
+    // figurer : les puces de suggestion sont des pastilles pleines, lisibles
+    // telles quelles sur le fond clair comme sur le fond sombre de la barre.
+    // Tout ce qui bascule vit dans KeyboardTheme.
+
+    // 🟢 Vert pour Guadeloupéen/Kreyòl (fond plein, texte blanc, contraste renforcé)
     val KREYOL_GREEN = Color.parseColor("#2E9E5B")
 
-    // 🔵 Bleu pour Français (fond plein, texte blanc — contraste renforcé)
+    // 🔵 Bleu pour Français (fond plein, texte blanc, contraste renforcé)
     val FRENCH_BLUE = Color.parseColor("#3B6FC4")
 
-    // Couleurs d'interface
-    val BACKGROUND_NEUTRAL = Color.parseColor("#F8F9FA")  // Fond neutre
-    val BORDER_LIGHT = Color.parseColor("#E9ECEF")        // Bordures subtiles
-    val TEXT_PRIMARY = Color.parseColor("#212529")        // Texte principal
-    val TEXT_SECONDARY = Color.parseColor("#6C757D")      // Texte secondaire
     val CHIP_TEXT = Color.parseColor("#FFFFFF")           // Texte des puces (fond plein)
+
+    // BACKGROUND_NEUTRAL, BORDER_LIGHT, TEXT_PRIMARY et TEXT_SECONDARY ont été
+    // retirés avec l'arrivée du thème : les trois premiers n'avaient aucun
+    // appelant, et le quatrième colorait l'étiquette de langue de la barre de
+    // suggestions, qui lit désormais KeyboardTheme.palette().encreEtiquette, sans
+    // quoi elle serait restée gris moyen sur le fond sombre.
 }
 
 /**

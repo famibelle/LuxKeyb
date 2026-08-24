@@ -1,7 +1,6 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
@@ -261,7 +260,9 @@ class AccentHandler(private val context: Context) {
             // Appliquer la majuscule si le mode est actif
             text = if (isCapitalMode) accent.uppercase() else accent
             textSize = 18f
-            setTextColor(if (isBase) Color.parseColor("#666666") else Color.parseColor("#333333"))
+            setTextColor(
+                KeyboardTheme.palette().let { if (isBase) it.popupBaseEncre else it.popupAccentEncre }
+            )
             
             // Taille et style
             layoutParams = LinearLayout.LayoutParams(
@@ -326,14 +327,12 @@ class AccentHandler(private val context: Context) {
      * Cr├®e l'arri├¿re-plan de la popup
      */
     private fun createPopupBackground(): GradientDrawable {
+        val p = KeyboardTheme.palette()
         return GradientDrawable().apply {
             cornerRadius = dpToPx(12).toFloat()
-            setColors(intArrayOf(
-                Color.parseColor("#FFFFFF"),
-                Color.parseColor("#F8F8F8")
-            ))
+            setColors(intArrayOf(p.popupHaut, p.popupBas))
             orientation = GradientDrawable.Orientation.TOP_BOTTOM
-            setStroke(dpToPx(1), Color.parseColor("#E0E0E0"))
+            setStroke(dpToPx(1), p.popupBordure)
         }
     }
     
@@ -341,23 +340,18 @@ class AccentHandler(private val context: Context) {
      * Cr├®e l'arri├¿re-plan d'un bouton d'accent
      */
     private fun createAccentButtonBackground(isBase: Boolean): GradientDrawable {
+        val p = KeyboardTheme.palette()
         return GradientDrawable().apply {
             cornerRadius = dpToPx(8).toFloat()
             
             if (isBase) {
                 // Bouton de base (caract├¿re original) - style att├®nu├®
-                setColors(intArrayOf(
-                    Color.parseColor("#F5F5F5"),
-                    Color.parseColor("#E8E8E8")
-                ))
-                setStroke(dpToPx(1), Color.parseColor("#D0D0D0"))
+                setColors(intArrayOf(p.popupBaseHaut, p.popupBaseBas))
+                setStroke(dpToPx(1), p.popupBaseBordure)
             } else {
                 // Boutons d'accents - style actif
-                setColors(intArrayOf(
-                    Color.parseColor("#FFFFFF"),
-                    Color.parseColor("#F0F0F0")
-                ))
-                setStroke(dpToPx(1), Color.parseColor("#C0C0C0"))
+                setColors(intArrayOf(p.popupAccentHaut, p.popupAccentBas))
+                setStroke(dpToPx(1), p.popupAccentBordure)
             }
             
             orientation = GradientDrawable.Orientation.TOP_BOTTOM

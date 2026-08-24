@@ -67,6 +67,31 @@ The refactored IME coordinates four components via listener interfaces:
 | `AccentHandler` | Long-press popup for accented characters |
 | `InputProcessor` | Handles key events, backspace, word commit to `InputConnection` |
 
+### Keyboard Theme (`KeyboardTheme.kt`)
+
+One palette object, resolved once per focus, that the four painted surfaces read: the
+keys, the suggestion bar, the long-press popup and the emoji panel. The three vivid
+product colours (green for Enter/mode keys, orange for punctuation, blue for the
+space bar) are **identical in both themes** and defined once; only the white letter
+keys and everything derived from them (ink, border, keyboard background, popup) flip
+to anthracite. The light theme is pixel-identical to what shipped before the theme.
+
+Two traps, both ported from the same work on the LuxKeyb fork:
+
+- `KeyboardTheme.refresh()` deliberately returns nothing. The settings screen shares
+  the IME's process and refreshes the global palette at click time, so a "did it
+  change?" boolean read by the service afterwards is always false. The service
+  instead compares `palette()` against `paletteDeLaVue`, the palette its cached input
+  view was **built** with, and calls `setInputView(onCreateInputView())` when they differ.
+- `InputMethodService` caches the input view between fields, and colours are frozen
+  into the widgets at construction. Nothing repaints on its own: the rebuild in
+  `onStartInputView()` is what makes both the settings choice and the system night
+  toggle take effect.
+
+The mode (`systeme` / `clair` / `sombre`) lives in `KeyboardPreferences`, next to the
+haptic and sound switches, and for the same reason: on several OEM skins the phone's
+day/night setting does not reach third-party keyboards.
+
 ### Suggestion Pipeline (`SuggestionEngine.kt`)
 
 1. **Prefix match** against `creole_dict.json` (Kreyòl prioritized)

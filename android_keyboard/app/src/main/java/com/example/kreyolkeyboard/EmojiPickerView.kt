@@ -1,7 +1,6 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.MotionEvent
@@ -109,7 +108,7 @@ class EmojiPickerView(
         tabViews.forEachIndexed { index, tab ->
             tab.background = if (index == selectedIndex) {
                 GradientDrawable().apply {
-                    setColor(Color.parseColor("#E0F2E9"))
+                    setColor(KeyboardTheme.palette().emojiOngletActif)
                     cornerRadius = dpToPx(6).toFloat()
                 }
             } else {

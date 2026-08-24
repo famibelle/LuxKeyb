@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.13.0] - 2026-08-24
+
+### 🌙 Le clavier passe en thème sombre
+
+Le clavier restait blanc quelle que soit l'heure et quel que soit le réglage du
+téléphone : dans une conversation affichée en sombre, il éclairait l'écran à
+chaque saisie. Il suit désormais le mode sombre du système, et ses touches de
+lettres passent alors du blanc à l'anthracite.
+
+Le vert, l'orange et le bleu de la charte ne changent pas d'un thème à l'autre :
+ce sont eux qui rendent ce clavier reconnaissable, et leurs contrastes ne
+dépendent pas de ce qui les entoure. Ne basculent que les touches de lettres et
+ce qui en découle : l'encre, le contour, le fond du clavier, la barre de
+propositions, la fenêtre d'appui long et le panneau emoji. Le clavier clair ne
+change pas d'un pixel.
+
+### 🎚️ Trois positions dans les réglages du clavier
+
+Une carte « Apparence » ouvre le choix entre « Comme le téléphone », « Toujours
+clair » et « Toujours sombre ». Les deux dernières existent pour la même raison
+que les interrupteurs de vibration et de son : sur plusieurs surcouches, le
+réglage jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers, et sans
+elles l'utilisateur n'aurait aucun moyen d'obtenir le clavier qu'il veut. Le
+choix s'applique dès le retour dans un champ de saisie.
+
 ## [10.12.15] - 2026-08-23
 
 ### #️⃣ La touche « # » arrive en mode 123
