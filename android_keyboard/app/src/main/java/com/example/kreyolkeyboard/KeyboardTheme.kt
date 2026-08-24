@@ -236,17 +236,28 @@ object KeyboardTheme {
      */
     fun refresh(context: Context) {
         val avant = courante
-        courante = resoudre(context)
+        courante = resoudre(KeyboardPreferences.themeMode(context), systemeEnSombre(context))
         if (avant !== courante) {
             Log.d(TAG, "Palette : ${if (courante === SOMBRE) "sombre" else "claire"}")
         }
     }
 
-    private fun resoudre(context: Context): Palette =
-        when (KeyboardPreferences.themeMode(context)) {
+    /**
+     * La table de décision, séparée de la lecture du contexte pour être
+     * vérifiable hors appareil (voir `KeyboardThemeTest`).
+     *
+     * Un test JVM ne peut ni fabriquer un `Context` ni obtenir de vraies couleurs
+     * (`android.graphics.Color` n'est pas implémenté hors appareil, et
+     * `unitTests.returnDefaultValues` fait renvoyer 0 à `parseColor`) : les deux
+     * palettes y sont donc indiscernables champ par champ. Elles restent deux
+     * objets distincts, et c'est leur **identité** que le test compare, ce qui
+     * suffit à couvrir les six cases de cette table.
+     */
+    internal fun resoudre(mode: Mode, systemeEnSombre: Boolean): Palette =
+        when (mode) {
             Mode.CLAIR -> CLAIR
             Mode.SOMBRE -> SOMBRE
-            Mode.SYSTEME -> if (systemeEnSombre(context)) SOMBRE else CLAIR
+            Mode.SYSTEME -> if (systemeEnSombre) SOMBRE else CLAIR
         }
 
     /**
