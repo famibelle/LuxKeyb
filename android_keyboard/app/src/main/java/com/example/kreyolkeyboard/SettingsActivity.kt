@@ -989,16 +989,6 @@ class SettingsActivity : AppCompatActivity() {
         val showIncompleteNudge = !isEnabled && settingsVisitAt != 0L
         if (showIncompleteNudge) recordFunnelStep("funnel_settings_return_no_enable")
 
-        // Essai du clavier avant l'effort : un vrai clavier interactif avec
-        // suggestions bilingues, AVANT de demander d'aller accepter des
-        // avertissements dans les réglages système — la motivation précède
-        // la mécanique. Inutile pour un utilisateur qui revient après une
-        // désélection : il connaît déjà
-        if ((!isEnabled || !isSelected) && !hasCompletedBefore) {
-            mainLayout.addView(createDemoKeyboardCard())
-            mainLayout.addView(createSpacing(16))
-        }
-
         // Bandeau de réussite : le clavier est utilisable dès qu'il est
         // activé et sélectionné, avant même que l'utilisateur ait écrit quoi
         // que ce soit. Son texte le dit alors sans prétendre que la
@@ -1010,8 +1000,8 @@ class SettingsActivity : AppCompatActivity() {
 
         // Carte de configuration, isolée dans son propre conteneur : déplier
         // une étape ne reconstruit qu'elle, et ne refait pas le clavier
-        // d'essai posé juste au-dessus (rechargement des dictionnaires,
-        // perte du texte déjà tapé dedans).
+        // d'essai (rechargement des dictionnaires, perte du texte déjà tapé
+        // dedans).
         val conteneurConfig = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -1022,6 +1012,20 @@ class SettingsActivity : AppCompatActivity() {
         remplirCarteConfig(conteneurConfig, isEnabled, isSelected, hasCompletedBefore, showIncompleteNudge)
         mainLayout.addView(conteneurConfig)
         mainLayout.addView(createSpacing(24))
+
+        // Essai du clavier : un vrai clavier interactif avec suggestions
+        // bilingues, à essayer sans rien installer. Il ouvrait l'onglet, pour
+        // que la motivation précède la mécanique, mais il occupait alors toute
+        // la hauteur visible et repoussait sous la ligne de flottaison le
+        // bouton qui ouvre les réglages Android : l'action attendue de
+        // l'utilisateur ne se voyait plus sans faire défiler. Il passe donc
+        // sous la carte de configuration, où il reste la première chose que
+        // l'on rencontre en descendant. Inutile pour un utilisateur qui
+        // revient après une désélection : il connaît déjà.
+        if ((!isEnabled || !isSelected) && !hasCompletedBefore) {
+            mainLayout.addView(createDemoKeyboardCard())
+            mainLayout.addView(createSpacing(24))
+        }
 
         // Correcteur orthographique : fonctionnalité indépendante des 3 étapes
         // critiques (fonctionne même sans avoir activé le clavier Kréyòl),

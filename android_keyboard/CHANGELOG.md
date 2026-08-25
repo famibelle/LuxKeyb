@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.1] - 2026-08-25
+
+### ⬇️ Le clavier d'essai passe sous les étapes de configuration
+
+Sur un premier lancement, le clavier à essayer occupait toute la hauteur
+visible : le bouton qui ouvre les réglages Android, pourtant dans l'étape
+dépliée juste en dessous, ne se voyait qu'après avoir fait défiler l'écran.
+L'action attendue de l'utilisateur est désormais visible dès l'ouverture, et le
+clavier d'essai reste la première chose que l'on rencontre en descendant.
+
 ## [10.14.0] - 2026-08-25
 
 ### 📍 L'écran de démarrage tient sur une hauteur d'écran
