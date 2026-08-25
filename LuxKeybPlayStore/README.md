@@ -15,9 +15,9 @@ texts/
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
-  feature-graphic/        les 8 fichiers à envoyer, numérotés dans l'ordre
-                          des emplacements de la Console, + la source HTML
-                          de l'image de présentation
+  feature-graphic/        les 8 fichiers à envoyer, chacun nommé d'après
+                          l'emplacement de la Console où il va, + la source
+                          HTML de l'image de présentation
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
 ```
 

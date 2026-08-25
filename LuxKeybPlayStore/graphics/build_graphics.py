@@ -8,11 +8,15 @@
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les huit fichiers à envoyer à la Play
-Console, numérotés dans l'ordre des emplacements du formulaire :
+Console. Chacun porte le nom de l'emplacement du formulaire où il va, pour
+qu'il n'y ait rien à retrouver au moment de l'envoi :
 
-  01_icone_512x512.png          depuis Logos/luxembourg-logo-hd.png
-  02_presentation_1024x500.png  depuis feature_graphic_source.html
-  03..08_*_1080x1920.png        depuis docs/Screenshots/lux_*.png
+  Icône de l'application.png              depuis Logos/luxembourg-logo-hd.png
+  Image de présentation.png               depuis feature_graphic_source.html
+  Captures d'écran pour téléphone 1-6.png depuis docs/Screenshots/lux_*.png
+
+Le numéro des captures est leur ordre d'envoi ; le tableau `SPECS` dit lequel
+montre quoi.
 
 Contraintes de la Console, toutes vérifiables avec `check` :
 icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
@@ -25,10 +29,15 @@ Les captures sources sont natives 1080 px de large (recapturées sur émulateur
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
-Piège Chrome headless : le viewport rendu fait 87 px de moins que le
-`--window-size` demandé (hauteur de la barre de fenêtre), et le bas de la page
-est alors laissé vide. On rend donc plus haut que nécessaire, puis on recadre —
-voir `render()`.
+Deux pièges de Chrome headless :
+
+- le viewport rendu fait 87 px de moins que le `--window-size` demandé (hauteur
+  de la barre de fenêtre), et le bas de la page est alors laissé vide. On rend
+  donc plus haut que nécessaire, puis on recadre — voir `render()` ;
+- Chrome n'ouvre pas un fichier HTML dont le chemin porte une apostrophe : il
+  sort sans rien écrire et sans message. Les HTML intermédiaires sont donc
+  nommés par leur numéro, jamais d'après la capture. Le `--screenshot=`, lui,
+  accepte l'apostrophe, ce qui laisse les noms de sortie libres.
 
 La Play Console refuse la transparence sur l'icône et l'image mise en avant :
 tout est aplati sur blanc en sortie.
@@ -47,7 +56,7 @@ REPO = HERE.parents[1]
 SHOTS = REPO / "docs" / "Screenshots"
 LOGO = REPO / "Logos" / "luxembourg-logo-hd.png"
 OUT = HERE / "feature-graphic"
-ICON = OUT / "01_icone_512x512.png"
+ICON = OUT / "Icône de l'application.png"
 
 # marge de rendu qui absorbe la hauteur de fenêtre non peinte par Chrome
 CHROME_GUTTER = 200
@@ -56,22 +65,22 @@ ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 
 # (sortie, source, index de frame si GIF, kicker, titre, sous-titre)
 SPECS = [
-    ("03_suggestions_1080x1920", "lux_suggestions.png", None, "Suggestions",
+    ("Captures d'écran pour téléphone 1", "lux_suggestions.png", None, "Suggestions",
      "Il vous souffle les mots",
      "Le luxembourgeois d'abord, le français pour les emprunts — sans changer de clavier."),
-    ("04_accents_1080x1920", "lux_accents.png", None, "Diacritiques",
+    ("Captures d'écran pour téléphone 2", "lux_accents.png", None, "Diacritiques",
      "ë ä é ont leur propre touche",
      "Les autres accents (ü, è, à, ê, ö) restent sous un appui long."),
-    ("05_niveaux_1080x1920", "lux_niveaux.png", None, "Progression",
+    ("Captures d'écran pour téléphone 3", "lux_niveaux.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("06_wuertsich_1080x1920", "lux_wuertsich.png", None, "Jeux",
+    ("Captures d'écran pour téléphone 4", "lux_wuertsich.png", None, "Jeux",
      "Trois jeux pour élargir son vocabulaire",
      "Wuertsich, Wuertmix et Wuertriet, tirés du dictionnaire du clavier."),
-    ("07_onboarding_1080x1920", "lux_onboarding.png", None, "Installation",
+    ("Captures d'écran pour téléphone 5", "lux_onboarding.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ("08_numerique_1080x1920", "lux_numerique.png", None, "Clavier numérique",
+    ("Captures d'écran pour téléphone 6", "lux_numerique.png", None, "Clavier numérique",
      "Chiffres, symboles et ponctuation",
      "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
 ]
@@ -153,7 +162,7 @@ def build_icon() -> None:
 
 def build_feature() -> None:
     src = OUT / "feature_graphic_source.html"
-    out = OUT / "02_presentation_1024x500.png"
+    out = OUT / "Image de présentation.png"
     render(src, out, 1024, 500)
     print(f"{out.relative_to(HERE)}  ok")
 
@@ -167,15 +176,17 @@ def build_shots() -> None:
         magick(str(ICON), "-resize", "104x104", str(small_icon))
         icon = b64(small_icon)
 
-        for name, src, frame, kicker, title, sub in SPECS:
+        for index, (name, src, frame, kicker, title, sub) in enumerate(SPECS, 1):
             source = SHOTS / src
             if not source.exists():
                 sys.exit(f"source manquante : {source}")
-            shot = tmp / f"{name}.png"
+            shot = tmp / f"{index:02d}.png"
             magick(f"{source}[{frame}]" if frame is not None else str(source),
                    "-resize", "1600x", str(shot))
 
-            html = tmp / f"{name}.html"
+            # nom neutre : Chrome n'ouvre pas un fichier dont le chemin porte
+            # une apostrophe, or les captures s'appellent « Captures d'écran… »
+            html = tmp / f"{index:02d}.html"
             html.write_text(SHOT_TEMPLATE.format(
                 papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
                 kicker=kicker, title=title, sub=sub,
@@ -198,7 +209,8 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
 def build_check() -> None:
     """Confronte les fichiers produits aux contraintes de la Play Console."""
     shots = [OUT / f"{name}.png" for name, *_ in SPECS]
-    expected = [(ICON, 512, 512, 1), (OUT / "02_presentation_1024x500.png", 1024, 500, 15)]
+    expected = [(ICON, 512, 512, 1),
+                (OUT / "Image de présentation.png", 1024, 500, 15)]
     problems = []
 
     for path, want_w, want_h, max_mo in expected:

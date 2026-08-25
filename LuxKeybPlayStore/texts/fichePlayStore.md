@@ -214,10 +214,9 @@ s'affiche par défaut, ce qui n'est pas bloquant.
 ## Éléments graphiques à fournir
 
 Les huit fichiers à envoyer sont dans
-[`../graphics/feature-graphic/`](../graphics/feature-graphic/), numérotés dans
-l'ordre des emplacements du formulaire de la Console : le 01 va dans « Icône de
-l'application », le 02 dans « Image de présentation », les 03 à 08 dans
-« Captures d'écran pour téléphone ». Tous sont fabriqués par
+[`../graphics/feature-graphic/`](../graphics/feature-graphic/). Chacun porte le
+nom de l'emplacement du formulaire de la Console où il va, il n'y a donc rien à
+retrouver au moment de l'envoi. Tous sont fabriqués par
 [`../graphics/build_graphics.py`](../graphics/build_graphics.py) à partir des
 sources du dépôt (le logo de `Logos/`, les captures réelles de
 `docs/Screenshots/`) ; `python3 build_graphics.py check` les reconfronte aux
@@ -226,23 +225,27 @@ reprennent le gabarit ne sont plus dans le dépôt.
 
 | Élément | Format exigé | Fichier |
 |---|---|---|
-| Icône | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `01_icone_512x512.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
-| Image mise en avant | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `02_presentation_1024x500.png` (114 Ko), source HTML à côté |
-| Captures téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `03…08_*_1080x1920.png`, six captures 9:16 de 196 à 261 Ko, légende incrustée |
+| Icône de l'application | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `Icône de l'application.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
+| Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
+| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1-6.png`, 1080 × 1920, de 196 à 261 Ko, légende incrustée |
 | Captures tablette | facultatif | Non prévu |
 | Vidéo YouTube | facultatif | Aucune. `docs/Screenshots/lux_clavier_demo.gif` n'est pas utilisable : le Store ne prend **pas** les GIF |
 
 Les six captures dépassent toutes 1080 × 1080, et il y en a plus de quatre :
 les deux conditions que la Console pose pour que l'application soit
-promouvable. L'ordre est celui des numéros ; le premier écran est le seul que
-voit la plupart des visiteurs :
+promouvable. Leur numéro est leur ordre d'envoi ; le premier écran est le seul
+que voit la plupart des visiteurs :
 
-3. `03_suggestions_1080x1920.png` — la barre de suggestions bilingue en cours de frappe
-4. `04_accents_1080x1920.png` — l'appui long sur `e`
-5. `05_niveaux_1080x1920.png` — la progression et le mot du jour
-6. `06_wuertsich_1080x1920.png` — les mots mêlés
-7. `07_onboarding_1080x1920.png` — l'installation guidée
-8. `08_numerique_1080x1920.png` — chiffres et symboles
+1. la barre de suggestions bilingue en cours de frappe
+2. l'appui long sur `e`
+3. la progression et le mot du jour
+4. les mots mêlés
+5. l'installation guidée
+6. chiffres et symboles
+
+Les noms ne disent plus ce que montre chaque capture, c'est le prix des noms
+d'emplacement ; la liste ci-dessus et le tableau `SPECS` de
+[`../graphics/build_graphics.py`](../graphics/build_graphics.py) le disent.
 
 La légende est incrustée dans l'image parce que la Play Console n'en fournit
 pas, et qu'elle aide beaucoup sur ce type d'application, où la valeur n'est
