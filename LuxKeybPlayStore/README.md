@@ -15,9 +15,9 @@ texts/
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
-  app-icon/               icône 512 × 512
-  feature-graphic/        image mise en avant 1024 × 500 + source HTML
-  screenshots-phone/      6 captures 1080 × 1920, légende incrustée
+  feature-graphic/        les 8 fichiers à envoyer, numérotés dans l'ordre
+                          des emplacements de la Console, + la source HTML
+                          de l'image de présentation
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
 ```
 
@@ -25,8 +25,9 @@ graphics/
 
 ```bash
 cd graphics
-python3 build_graphics.py              # icône + image mise en avant + captures
+python3 build_graphics.py              # les 8 fichiers, puis leur vérification
 python3 build_graphics.py shots        # les captures seules
+python3 build_graphics.py check        # vérifie sans rien refabriquer
 ```
 
 Demande `google-chrome` et ImageMagick (`convert`). Les sources sont
