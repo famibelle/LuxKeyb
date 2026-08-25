@@ -2,10 +2,9 @@
 
 Complète [`fichePlayStore.md`](fichePlayStore.md), qui porte les textes à
 coller. Ce fichier-ci porte les décisions : le titre, les canaux, le suivi des
-installations, les avis. Adapté du pack créole
-(`KreyolKeybPlayStore/texts/aso_pack_7.0.7.md` et `aso_pack_9.0.0.md`), dont
-les recettes tiennent, mais dont les contenus — presse locale, auteurs,
-créolophonie — ne se transposent pas.
+installations, les avis. Adapté des packs ASO créoles de KreyolKeyb (7.0.7 et
+9.0.0, hors dépôt), dont les recettes tiennent, mais dont les contenus —
+presse locale, auteurs, créolophonie — ne se transposent pas.
 
 `applicationId` : `com.potomitan.luxkeyboard`. L'application **n'est pas encore
 publiée** : rien de ce qui suit n'a été mesuré, tout est à vérifier après le

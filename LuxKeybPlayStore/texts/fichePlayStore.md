@@ -216,8 +216,8 @@ s'affiche par défaut, ce qui n'est pas bloquant.
 Tout est prêt dans [`../graphics/`](../graphics/), fabriqué par
 [`../graphics/build_graphics.py`](../graphics/build_graphics.py) à partir des
 sources du dépôt (le logo de `Logos/`, les captures réelles de
-`docs/Screenshots/`). Les fichiers de `KreyolKeybPlayStore/graphics/` sont
-créoles et n'ont servi que de gabarit.
+`docs/Screenshots/`). Les graphiques créoles dont ils reprennent le gabarit ne
+sont plus dans le dépôt.
 
 | Élément | Format exigé | Fichier |
 |---|---|---|

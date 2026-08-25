@@ -4,9 +4,9 @@ Tout ce qui part vers la Play Console pour **Lëtzebuergesch Clavier**
 (`com.potomitan.luxkeyboard`), plus le flyer imprimable. Rien ici n'entre dans
 l'APK : ce dossier ne déclenche aucun build.
 
-C'est le pendant luxembourgeois de `KreyolKeybPlayStore/`, dont il reprend
-l'organisation. Les contenus créoles — presse guadeloupéenne, auteurs du
-corpus kréyòl, bannières, captures — ont servi de gabarit et **rien n'a été
+L'organisation est reprise du dossier Play Store créole de KreyolKeyb, depuis
+retiré de ce dépôt. Ses contenus — presse guadeloupéenne, auteurs du corpus
+kréyòl, bannières, captures — n'ont servi que de gabarit et **rien n'a été
 repris tel quel** : tout est refait à partir des sources de ce dépôt-ci.
 
 ```
