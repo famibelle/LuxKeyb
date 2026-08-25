@@ -5,6 +5,20 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.13.1] - 2026-08-25
+
+### ⚙️ L'engrenage des réglages redevient lisible sur le bandeau bleu
+
+Retour utilisateur : l'accès aux réglages du clavier, en haut à droite de
+l'écran d'accueil, ne se voyait pas. L'icône était l'emoji « ⚙️ », que la
+police du téléphone dessine en gris bleuté : posée sur le bandeau bleu de
+l'application, elle s'y fondait au lieu de s'en détacher.
+
+C'est désormais une icône dessinée, en blanc plein, comme le titre à côté
+d'elle. Son contraste ne dépend plus de la police emoji installée, donc elle
+ressort de la même façon sur tous les téléphones. La zone tactile reste de
+48 dp et le bandeau garde exactement la même hauteur.
+
 ## [10.13.0] - 2026-08-24
 
 ### 🌙 Le clavier passe en thème sombre

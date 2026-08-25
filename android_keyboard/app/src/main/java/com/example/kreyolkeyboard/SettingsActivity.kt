@@ -689,13 +689,22 @@ class SettingsActivity : AppCompatActivity() {
 
             // Les réglages du clavier vivent derrière cet engrenage, dans leur propre
             // écran : c'est la convention Android, et la barre porte déjà sept onglets.
-            val settingsButton = TextView(this@SettingsActivity).apply {
-                text = "⚙️"
-                textSize = 22f
-                gravity = Gravity.CENTER
+            // Icône vectorielle blanche, et non l'emoji ⚙️ : la police emoji du
+            // système le dessine en gris bleuté, une teinte que le bandeau bleu
+            // avale. Le tracé blanc ne dépend plus de la police du téléphone et
+            // ressort de la même façon sur tous les appareils.
+            val densite = resources.displayMetrics.density
+            val settingsButton = ImageView(this@SettingsActivity).apply {
+                setImageResource(R.drawable.ic_settings_gear)
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
                 contentDescription = "Réglages du clavier"
-                minWidth = (48 * resources.displayMetrics.density).toInt()
-                minHeight = (48 * resources.displayMetrics.density).toInt()
+                // 48 dp de zone tactile, icône dessinée à 26 dp au centre : c'est
+                // l'encombrement qu'avait déjà le TextView, la hauteur du bandeau
+                // ne bouge donc pas.
+                val zone = (48 * densite).toInt()
+                layoutParams = LinearLayout.LayoutParams(zone, zone)
+                val marge = (11 * densite).toInt()
+                setPadding(marge, marge, marge, marge)
                 isClickable = true
                 isFocusable = true
                 setOnClickListener {
@@ -707,7 +716,7 @@ class SettingsActivity : AppCompatActivity() {
             // centré dans la place restante, se décale visiblement vers la gauche.
             appHeader.addView(View(this@SettingsActivity).apply {
                 layoutParams = LinearLayout.LayoutParams(
-                    (48 * resources.displayMetrics.density).toInt(), 1
+                    (48 * densite).toInt(), 1
                 )
             })
             appHeader.addView(appTitle)
