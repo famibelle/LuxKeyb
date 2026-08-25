@@ -10,7 +10,10 @@ Produit, à partir des sources du dépôt :
 
   app-icon/luxkeyb-icon-512.png            depuis Logos/luxembourg-logo-hd.png
   feature-graphic/luxkeyb-feature-1024x500.png  depuis feature_graphic_source.html
-  screenshots-phone/0*.png                 depuis docs/Screenshots/lux_*.png|gif
+  screenshots-phone/0*.png                 depuis docs/Screenshots/lux_*.png
+
+Les captures sources sont natives 1080 px de large (recapturées sur émulateur
+1080x2340 le 2026-08-25, sous la 10.14.0) : rien n'est agrandi ici.
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -52,7 +55,7 @@ SPECS = [
     ("03_niveaux", "lux_niveaux.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("04_wuertsich", "lux_wuertsich.gif", 0, "Jeux",
+    ("04_wuertsich", "lux_wuertsich.png", None, "Jeux",
      "Trois jeux pour élargir son vocabulaire",
      "Wuertsich, Wuertmix et Wuertriet, tirés du dictionnaire du clavier."),
     ("05_onboarding", "lux_onboarding.png", None, "Installation",

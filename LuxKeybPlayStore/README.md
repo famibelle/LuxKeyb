@@ -59,10 +59,10 @@ prêtes à envoyer, mais rien n'a encore été mesuré. Ce qui reste à faire es
 listé en fin de `texts/fichePlayStore.md` (avant le premier envoi) et de
 `texts/aso_pack_10.14.0.md` (après).
 
-Deux réserves connues :
+Une réserve connue : les brèves descriptions luxembourgeoise et allemande
+doivent être relues par un locuteur natif avant publication.
 
-- les captures d'origine font 440 à 540 px de large ; agrandies à 1080 elles
-  restent un peu molles. Le correctif est de les recapturer sur un émulateur en
-  1080 × 2340, puis `python3 build_graphics.py shots` ;
-- les brèves descriptions luxembourgeoise et allemande doivent être relues par
-  un locuteur natif avant publication.
+Les captures sources (`docs/Screenshots/lux_*.png`) ont été reprises le
+2026-08-25 sur un émulateur 1080 × 2340 sous la 10.14.0 : elles sont natives,
+rien n'est agrandi. Après un changement d'interface, les recapturer au même
+endroit puis relancer `python3 build_graphics.py shots`.

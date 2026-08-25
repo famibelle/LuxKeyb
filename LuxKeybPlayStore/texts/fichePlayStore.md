@@ -241,10 +241,10 @@ La légende est incrustée dans l'image parce que la Play Console n'en fournit
 pas, et qu'elle aide beaucoup sur ce type d'application, où la valeur n'est
 pas lisible d'un coup d'œil.
 
-**Réserve sur la définition.** Les captures d'origine font 440 à 540 px de
-large : agrandies à 1080, elles restent un peu molles. C'est acceptable pour
-un premier envoi, mais le vrai correctif est de les recapturer sur un
-émulateur en 1080 × 2340 puis de relancer `build_graphics.py shots`.
+**Définition.** Les captures sources sont natives : elles ont été reprises le
+2026-08-25 sur un émulateur 1080 × 2340 sous la 10.14.0, donc rien n'est
+agrandi. Les refaire après un changement d'interface : recapturer dans
+`docs/Screenshots/lux_*.png`, puis `python3 build_graphics.py shots`.
 
 Le flyer triptyque A4 (`graphics/flyer-triptyque/`) ne sert pas à la Play
 Console : il est là pour l'impression, adapté du flyer créole.

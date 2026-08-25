@@ -123,7 +123,7 @@ un mot de cinq lettres en six essais.
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Écran de progression : niveau Ufänker, 0,4 % du dictionnaire découvert, mot du jour et mots à découvrir">
+         alt="Écran de progression : niveau Ufänker, 0,5 % du dictionnaire découvert, mot du jour et mots à découvrir">
     <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Progression et mot du jour</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
