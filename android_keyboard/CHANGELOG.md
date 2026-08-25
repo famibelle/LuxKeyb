@@ -5,6 +5,36 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.0] - 2026-08-25
+
+### 📍 L'écran de démarrage tient sur une hauteur d'écran
+
+Les trois étapes de configuration occupaient chacune une carte pleine, sous une
+carte d'accueil et sa barre de progression : cinq blocs à faire défiler avant la
+première action. Elles deviennent trois lignes dans une carte « Configuration
+rapide », avec un anneau qui affiche ce qu'il reste à faire plutôt que le chemin
+parcouru.
+
+Une seule étape est ouverte à la fois, celle qui reste à faire. Elle garde tout
+ce dont elle a besoin : ce qu'il faut chercher dans l'écran Android qui va
+s'ouvrir, l'avertissement de sécurité que le téléphone affiche pour tous les
+claviers tiers, et le rappel des deux validations successives quand un
+aller-retour dans les réglages n'a rien activé. Les étapes déjà faites se
+replient sur une ligne, et se rouvrent d'une touche pour refaire le chemin.
+
+Une fois les trois étapes faites, la carte se réduit à son en-tête : le haut de
+l'écran cesse d'être occupé par une liste de cases cochées.
+
+### ✍️ « Essayer le clavier » se coche quand vous avez écrit
+
+La troisième étape se validait toute seule dès que le clavier était sélectionné,
+alors qu'il n'y avait encore rien eu à essayer. Elle attend désormais le premier
+mot réellement écrit avec le clavier, dans le champ d'essai ou dans n'importe
+quelle application, et se coche pendant la frappe sans interrompre la saisie.
+
+Le bandeau vert le dit dans les mêmes termes : « Clavier en place » tant que rien
+n'a été écrit, « Tout est prêt » ensuite.
+
 ## [10.13.1] - 2026-08-25
 
 ### ⚙️ L'engrenage des réglages redevient lisible sur le bandeau bleu
