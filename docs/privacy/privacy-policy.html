@@ -267,7 +267,6 @@
 <ul>
 <li><strong>Contrôle d&#39;installation :</strong> Contrôle total sur l&#39;installation/désinstallation</li>
 <li><strong>Gestion des permissions :</strong> Peut révoquer toute permission à tout moment via les paramètres Android</li>
-<li><strong>Gestion du dictionnaire utilisateur :</strong> Peut voir, modifier ou supprimer les entrées du dictionnaire personnel via les paramètres Android (Paramètres &gt; Système &gt; Langues et saisie &gt; Dictionnaire personnel)</li>
 <li><strong>Réinitialisation des paramètres :</strong> Peut effacer toutes les préférences via les paramètres Android</li>
 <li><strong>Aucun compte requis :</strong> Aucune création de compte, connexion ou inscription nécessaire</li>
 <li><strong>Désinstaller = Suppression complète :</strong> La désinstallation supprime toutes les données de l&#39;app de l&#39;appareil</li>
@@ -313,15 +312,6 @@
 <h3>📱 Ce qui Reste sur Votre Appareil (Local Uniquement) :</h3>
 <p>Les données suivantes existent <strong>uniquement sur votre appareil</strong> et ne sont <strong>jamais transmises à nous ou à quiconque</strong> :</p>
 <ol>
-<li><p><strong>Ajouts au Dictionnaire Utilisateur :</strong></p>
-<ul>
-<li>Mots que vous ajoutez manuellement à votre dictionnaire personnel (ex: noms, termes luxembourgeois personnalisés)</li>
-<li>Stockés dans le <strong>dictionnaire système Android</strong>, pas dans notre app</li>
-<li>Nous ne pouvons pas accéder à ces données - c&#39;est géré par Android</li>
-<li>Peut être consulté/modifié/supprimé via : Paramètres &gt; Système &gt; Langues et saisie &gt; Dictionnaire personnel</li>
-<li>Synchronisé par Google si vous activez la sync du compte Google (nous n&#39;avons aucun contrôle sur ceci)</li>
-</ul>
-</li>
 <li><p><strong>Paramètres/Préférences de l&#39;App :</strong></p>
 <ul>
 <li>Votre choix de thème du clavier (schéma de couleurs)</li>
@@ -409,7 +399,6 @@
 <p>Puisque nous ne collectons aucune donnée au départ, il n&#39;y a rien à conserver sur nos serveurs.</p>
 <p><strong>Conservation des Données Locales :</strong></p>
 <ul>
-<li>Dictionnaire utilisateur : Persiste sur l&#39;appareil jusqu&#39;à suppression manuelle ou désinstallation de l&#39;app</li>
 <li>Préférences de l&#39;app : Persistent jusqu&#39;à effacement des données de l&#39;app ou désinstallation</li>
 <li>Progression de gamification : Persiste jusqu&#39;à effacement des données de l&#39;app ou désinstallation</li>
 <li><strong>Pas d&#39;expiration automatique</strong> car les données ne quittent jamais votre appareil</li>
@@ -419,8 +408,8 @@
 <p>Notre app demande les autorisations Android suivantes. Voici exactement pourquoi nous avons besoin de chacune et ce qu&#39;elle <strong>ne peut pas</strong> faire :</p>
 <h3>1️⃣ BIND_INPUT_METHOD (Obligatoire)</h3>
 <p><strong>Ce qu&#39;elle fait :</strong> Permet à l&#39;app de fonctionner comme méthode de saisie (clavier)<br><strong>Pourquoi nous en avons besoin :</strong> Sans cette autorisation de base, l&#39;app ne peut pas fonctionner comme clavier<br><strong>Impact sur la vie privée :</strong> Aucun - c&#39;est une autorisation au niveau système requise pour toutes les apps de clavier<br><strong>Ce qu&#39;elle NE PEUT PAS faire :</strong> Cette autorisation ne donne PAS accès à votre contenu tapé<br><strong>Contrôle utilisateur :</strong> Vous activez ceci en sélectionnant notre clavier dans les paramètres Android (Paramètres &gt; Système &gt; Langues et saisie &gt; Clavier à l&#39;écran)</p>
-<h3>2️⃣ WRITE_USER_DICTIONARY (Optionnel)</h3>
-<p><strong>Ce qu&#39;elle fait :</strong> Permet d&#39;ajouter des mots au dictionnaire personnel de votre appareil<br><strong>Pourquoi nous en avons besoin :</strong> Pour que vous puissiez enregistrer des mots luxembourgeois personnalisés que vous utilisez fréquemment, permettant une meilleure autocorrection<br><strong>Impact sur la vie privée :</strong> Aucun - les mots sont stockés dans le dictionnaire système Android (non accessible par nous)<br><strong>Ce qu&#39;elle NE PEUT PAS faire :</strong> Ne peut pas accéder aux mots du dictionnaire existants d&#39;autres apps<br><strong>Contrôle utilisateur :</strong> Peut être révoquée dans Infos app &gt; Autorisations ; peut supprimer les mots via Paramètres Android &gt; Système &gt; Langues et saisie &gt; Dictionnaire personnel<br><strong>Emplacement des données :</strong> Stockage système Android (partagé avec d&#39;autres claviers si vous le choisissez)</p>
+<h3>2️⃣ POST_NOTIFICATIONS (Optionnel, Android 13+)</h3>
+<p><strong>Ce qu&#39;elle fait :</strong> Permet d&#39;afficher une notification locale quand vous passez un niveau de progression<br><strong>Pourquoi nous en avons besoin :</strong> Uniquement pour vous signaler une montée de niveau (ex : « Vous êtes maintenant Fléisseg ! »)<br><strong>Impact sur la vie privée :</strong> Aucun - la notification est générée sur l&#39;appareil, sans connexion réseau ni notification push<br><strong>Ce qu&#39;elle NE PEUT PAS faire :</strong> Ne peut pas lire vos autres notifications, ni recevoir de messages depuis un serveur<br><strong>Contrôle utilisateur :</strong> Peut être refusée à l&#39;invite système ou révoquée dans Infos app &gt; Notifications ; la gamification continue de fonctionner sans<br><strong>Emplacement des données :</strong> Aucune - rien n&#39;est stocké ni transmis</p>
 <h3>❌ Autorisations que Nous NE Demandons PAS :</h3>
 <p>Nous ne demandons <strong>intentionnellement pas</strong> les autorisations courantes suivantes :</p>
 <ul>
@@ -428,6 +417,7 @@
 <li><strong>ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION :</strong> Pas de suivi de localisation</li>
 <li><strong>CAMERA :</strong> Pas de capture photo/vidéo</li>
 <li><strong>RECORD_AUDIO / MICROPHONE :</strong> Pas d&#39;enregistrement vocal</li>
+<li><strong>WRITE_USER_DICTIONARY :</strong> Pas d&#39;écriture dans le dictionnaire personnel Android</li>
 <li><strong>READ_CONTACTS / WRITE_CONTACTS :</strong> Pas d&#39;accès aux contacts</li>
 <li><strong>READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE :</strong> Pas d&#39;accès aux fichiers</li>
 <li><strong>READ_PHONE_STATE :</strong> Pas de collecte d&#39;ID d&#39;appareil</li>
@@ -520,19 +510,11 @@
 <h3>Données Locales sur Votre Appareil :</h3>
 <p>Les données suivantes persistent sur votre appareil tant que l&#39;app est installée :</p>
 <ul>
-<li><strong>Dictionnaire Utilisateur :</strong> Stocké indéfiniment par Android OS, partagé avec d&#39;autres claviers</li>
 <li><strong>Préférences de l&#39;App :</strong> Stockées jusqu&#39;à ce que vous effaciez les données de l&#39;app ou désinstalliez</li>
 <li><strong>Progression de Gamification :</strong> Stockée jusqu&#39;à ce que vous effaciez les données de l&#39;app ou désinstalliez</li>
 </ul>
 <h3>Comment Supprimer Vos Données :</h3>
-<p><strong>Option 1 : Supprimer des Entrées Spécifiques du Dictionnaire Utilisateur</strong></p>
-<ol>
-<li>Allez dans : Paramètres Android</li>
-<li>Sélectionnez : Système &gt; Langues et saisie &gt; Dictionnaire personnel</li>
-<li>Choisissez la langue (Luxembourgeois ou Français)</li>
-<li>Supprimez des mots individuels ou appuyez sur menu &gt; Tout supprimer</li>
-</ol>
-<p><strong>Option 2 : Effacer les Préférences de l&#39;App (Garder l&#39;App Installée)</strong></p>
+<p><strong>Option 1 : Effacer les Préférences de l&#39;App (Garder l&#39;App Installée)</strong></p>
 <ol>
 <li>Allez dans : Paramètres Android &gt; Apps</li>
 <li>Sélectionnez : Lëtzebuergesch Clavier</li>
@@ -540,22 +522,21 @@
 <li>Confirmez la suppression</li>
 <li>Ceci réinitialise tous les paramètres et la progression de gamification</li>
 </ol>
-<p><strong>Option 3 : Suppression Complète (Désinstaller l&#39;App)</strong></p>
+<p><strong>Option 2 : Suppression Complète (Désinstaller l&#39;App)</strong></p>
 <ol>
 <li>Allez dans : Paramètres Android &gt; Apps &gt; Lëtzebuergesch Clavier</li>
 <li>Appuyez sur : Désinstaller</li>
 <li>Ou : Google Play Store &gt; Installé &gt; Lëtzebuergesch Clavier &gt; Désinstaller</li>
 <li>Toutes les données de l&#39;app sont immédiatement supprimées de votre appareil</li>
 </ol>
-<p><strong>Option 4 : Réinitialisation d&#39;Usine de l&#39;Appareil</strong></p>
+<p><strong>Option 3 : Réinitialisation d&#39;Usine de l&#39;Appareil</strong></p>
 <ul>
 <li>Option nucléaire : Réinitialise l&#39;appareil entier et supprime toutes les apps</li>
 </ul>
 <p><strong>Note sur les Sauvegardes Cloud :</strong>
 Si vous avez activé la sauvegarde Android (Paramètres &gt; Google &gt; Sauvegarde), Google peut sauvegarder :</p>
 <ul>
-<li>Les préférences de l&#39;app</li>
-<li>Le dictionnaire utilisateur
+<li>Les préférences de l&#39;app
 Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtre. Pour empêcher cela :</li>
 <li>Paramètres &gt; Google &gt; Sauvegarde &gt; Désactiver &quot;Sauvegarder sur Google Drive&quot;</li>
 </ul>
@@ -587,7 +568,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li><p><strong>Droit à la Portabilité des Données (Article 20) :</strong> </p>
 <ul>
 <li>Vous pouvez exporter vos données dans un format lisible par machine</li>
-<li><strong>Notre réponse :</strong> Vous pouvez exporter votre dictionnaire utilisateur via les paramètres Android</li>
+<li><strong>Notre réponse :</strong> Aucune donnée personnelle à exporter ; vos préférences et votre progression restent locales sur l&#39;appareil</li>
 </ul>
 </li>
 <li><p><strong>Droit d&#39;Opposition (Article 21) :</strong> </p>
@@ -772,6 +753,9 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li>Retrait de la marque et des coordonnées Potomitan</li>
 <li>Autorité de contrôle et juridiction alignées sur le Luxembourg (CNPD)</li>
 <li>Mise à jour des niveaux de gamification (8 rangs luxembourgeois)</li>
+<li>Retrait du dictionnaire utilisateur : la fonctionnalité n&#39;existe plus</li>
+<li>Permissions WRITE_USER_DICTIONARY et READ_EXTERNAL_STORAGE retirées de l&#39;app</li>
+<li>Documentation de POST_NOTIFICATIONS (notifications de montée de niveau)</li>
 </ul>
 <p><strong>Version 2.0 (10 novembre 2025) :</strong></p>
 <ul>

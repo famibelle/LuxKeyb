@@ -101,7 +101,6 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 - **Contrôle d'installation :** Contrôle total sur l'installation/désinstallation
 - **Gestion des permissions :** Peut révoquer toute permission à tout moment via les paramètres Android
-- **Gestion du dictionnaire utilisateur :** Peut voir, modifier ou supprimer les entrées du dictionnaire personnel via les paramètres Android (Paramètres > Système > Langues et saisie > Dictionnaire personnel)
 - **Réinitialisation des paramètres :** Peut effacer toutes les préférences via les paramètres Android
 - **Aucun compte requis :** Aucune création de compte, connexion ou inscription nécessaire
 - **Désinstaller = Suppression complète :** La désinstallation supprime toutes les données de l'app de l'appareil
@@ -156,14 +155,7 @@ Nous voulons être parfaitement clairs sur ce que nous **ne collectons pas** :
 
 Les données suivantes existent **uniquement sur votre appareil** et ne sont **jamais transmises à nous ou à quiconque** :
 
-1. **Ajouts au Dictionnaire Utilisateur :**
-   - Mots que vous ajoutez manuellement à votre dictionnaire personnel (ex: noms, termes luxembourgeois personnalisés)
-   - Stockés dans le **dictionnaire système Android**, pas dans notre app
-   - Nous ne pouvons pas accéder à ces données - c'est géré par Android
-   - Peut être consulté/modifié/supprimé via : Paramètres > Système > Langues et saisie > Dictionnaire personnel
-   - Synchronisé par Google si vous activez la sync du compte Google (nous n'avons aucun contrôle sur ceci)
-
-2. **Paramètres/Préférences de l'App :**
+1. **Paramètres/Préférences de l'App :**
    - Votre choix de thème du clavier (schéma de couleurs)
    - Préférences de son et vibration
    - Personnalisations de la disposition
@@ -171,7 +163,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
    - Stockés localement dans Android SharedPreferences (stockage Android standard)
    - Ne quittent jamais votre appareil
 
-3. **Progression de Gamification :**
+2. **Progression de Gamification :**
    - Nombre de mots appris (combien de mots du dictionnaire vous avez tapés)
    - Niveau actuel (Ufänker, Klengen, Fléisseg, Geschéit, Renert, Roude Léiw, Sproochenkënner ou Sproochenmeeschter)
    - Récompenses débloquées (ex: "100 premiers mots tapés")
@@ -179,7 +171,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
    - Non synchronisés avec le cloud ou d'autres appareils
    - Utilisés uniquement pour les fonctionnalités motivationnelles
 
-4. **Utilisation de l'App (Local Uniquement) :**
+3. **Utilisation de l'App (Local Uniquement) :**
    - Dernière fois que vous avez ouvert les paramètres de l'app
    - Si vous avez terminé le tutoriel d'intégration
    - Statistiques locales pour affichage dans l'app (ex: "Vous avez appris 250 mots !")
@@ -235,7 +227,6 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 Puisque nous ne collectons aucune donnée au départ, il n'y a rien à conserver sur nos serveurs.
 
 **Conservation des Données Locales :**
-- Dictionnaire utilisateur : Persiste sur l'appareil jusqu'à suppression manuelle ou désinstallation de l'app
 - Préférences de l'app : Persistent jusqu'à effacement des données de l'app ou désinstallation
 - Progression de gamification : Persiste jusqu'à effacement des données de l'app ou désinstallation
 - **Pas d'expiration automatique** car les données ne quittent jamais votre appareil
@@ -254,14 +245,14 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 **Ce qu'elle NE PEUT PAS faire :** Cette autorisation ne donne PAS accès à votre contenu tapé  
 **Contrôle utilisateur :** Vous activez ceci en sélectionnant notre clavier dans les paramètres Android (Paramètres > Système > Langues et saisie > Clavier à l'écran)
 
-### 2️⃣ WRITE_USER_DICTIONARY (Optionnel)
+### 2️⃣ POST_NOTIFICATIONS (Optionnel, Android 13+)
 
-**Ce qu'elle fait :** Permet d'ajouter des mots au dictionnaire personnel de votre appareil  
-**Pourquoi nous en avons besoin :** Pour que vous puissiez enregistrer des mots luxembourgeois personnalisés que vous utilisez fréquemment, permettant une meilleure autocorrection  
-**Impact sur la vie privée :** Aucun - les mots sont stockés dans le dictionnaire système Android (non accessible par nous)  
-**Ce qu'elle NE PEUT PAS faire :** Ne peut pas accéder aux mots du dictionnaire existants d'autres apps  
-**Contrôle utilisateur :** Peut être révoquée dans Infos app > Autorisations ; peut supprimer les mots via Paramètres Android > Système > Langues et saisie > Dictionnaire personnel  
-**Emplacement des données :** Stockage système Android (partagé avec d'autres claviers si vous le choisissez)
+**Ce qu'elle fait :** Permet d'afficher une notification locale quand vous passez un niveau de progression  
+**Pourquoi nous en avons besoin :** Uniquement pour vous signaler une montée de niveau (ex : « Vous êtes maintenant Fléisseg ! »)  
+**Impact sur la vie privée :** Aucun - la notification est générée sur l'appareil, sans connexion réseau ni notification push  
+**Ce qu'elle NE PEUT PAS faire :** Ne peut pas lire vos autres notifications, ni recevoir de messages depuis un serveur  
+**Contrôle utilisateur :** Peut être refusée à l'invite système ou révoquée dans Infos app > Notifications ; la gamification continue de fonctionner sans  
+**Emplacement des données :** Aucune - rien n'est stocké ni transmis
 
 ### ❌ Autorisations que Nous NE Demandons PAS :
 
@@ -271,6 +262,7 @@ Nous ne demandons **intentionnellement pas** les autorisations courantes suivant
 - **ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION :** Pas de suivi de localisation
 - **CAMERA :** Pas de capture photo/vidéo
 - **RECORD_AUDIO / MICROPHONE :** Pas d'enregistrement vocal
+- **WRITE_USER_DICTIONARY :** Pas d'écriture dans le dictionnaire personnel Android
 - **READ_CONTACTS / WRITE_CONTACTS :** Pas d'accès aux contacts
 - **READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE :** Pas d'accès aux fichiers
 - **READ_PHONE_STATE :** Pas de collecte d'ID d'appareil
@@ -382,38 +374,30 @@ Puisqu'aucune donnée n'est collectée sur nos serveurs, il n'y a rien à conser
 
 Les données suivantes persistent sur votre appareil tant que l'app est installée :
 
-- **Dictionnaire Utilisateur :** Stocké indéfiniment par Android OS, partagé avec d'autres claviers
 - **Préférences de l'App :** Stockées jusqu'à ce que vous effaciez les données de l'app ou désinstalliez
 - **Progression de Gamification :** Stockée jusqu'à ce que vous effaciez les données de l'app ou désinstalliez
 
 ### Comment Supprimer Vos Données :
 
-**Option 1 : Supprimer des Entrées Spécifiques du Dictionnaire Utilisateur**
-1. Allez dans : Paramètres Android
-2. Sélectionnez : Système > Langues et saisie > Dictionnaire personnel
-3. Choisissez la langue (Luxembourgeois ou Français)
-4. Supprimez des mots individuels ou appuyez sur menu > Tout supprimer
-
-**Option 2 : Effacer les Préférences de l'App (Garder l'App Installée)**
+**Option 1 : Effacer les Préférences de l'App (Garder l'App Installée)**
 1. Allez dans : Paramètres Android > Apps
 2. Sélectionnez : Lëtzebuergesch Clavier
 3. Appuyez sur : Stockage > Effacer les données
 4. Confirmez la suppression
 5. Ceci réinitialise tous les paramètres et la progression de gamification
 
-**Option 3 : Suppression Complète (Désinstaller l'App)**
+**Option 2 : Suppression Complète (Désinstaller l'App)**
 1. Allez dans : Paramètres Android > Apps > Lëtzebuergesch Clavier
 2. Appuyez sur : Désinstaller
 3. Ou : Google Play Store > Installé > Lëtzebuergesch Clavier > Désinstaller
 4. Toutes les données de l'app sont immédiatement supprimées de votre appareil
 
-**Option 4 : Réinitialisation d'Usine de l'Appareil**
+**Option 3 : Réinitialisation d'Usine de l'Appareil**
 - Option nucléaire : Réinitialise l'appareil entier et supprime toutes les apps
 
 **Note sur les Sauvegardes Cloud :**
 Si vous avez activé la sauvegarde Android (Paramètres > Google > Sauvegarde), Google peut sauvegarder :
 - Les préférences de l'app
-- Le dictionnaire utilisateur
 Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtre. Pour empêcher cela :
 - Paramètres > Google > Sauvegarde > Désactiver "Sauvegarder sur Google Drive"
 
@@ -443,7 +427,7 @@ Même si nous ne collectons aucune donnée, nous respectons tous les droits à l
 
 4. **Droit à la Portabilité des Données (Article 20) :** 
    - Vous pouvez exporter vos données dans un format lisible par machine
-   - **Notre réponse :** Vous pouvez exporter votre dictionnaire utilisateur via les paramètres Android
+   - **Notre réponse :** Aucune donnée personnelle à exporter ; vos préférences et votre progression restent locales sur l'appareil
 
 5. **Droit d'Opposition (Article 21) :** 
    - Vous pouvez vous opposer au traitement des données
@@ -629,6 +613,9 @@ Nous pouvons mettre à jour cette politique pour refléter :
 - Retrait de la marque et des coordonnées Potomitan
 - Autorité de contrôle et juridiction alignées sur le Luxembourg (CNPD)
 - Mise à jour des niveaux de gamification (8 rangs luxembourgeois)
+- Retrait du dictionnaire utilisateur : la fonctionnalité n'existe plus
+- Permissions WRITE_USER_DICTIONARY et READ_EXTERNAL_STORAGE retirées de l'app
+- Documentation de POST_NOTIFICATIONS (notifications de montée de niveau)
 
 **Version 2.0 (10 novembre 2025) :**
 - Réécriture complète pour la conformité Data Safety de Google Play

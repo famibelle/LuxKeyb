@@ -2,15 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permission pour ajouter des mots au dictionnaire personnel -->
-    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
-    
-    <!-- Permissions requises pour Android 14+ -->
+    <!-- Notifications de montée de niveau (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    
-    <!-- Déclarer que l'app fonctionne avec l'état d'écriture externe granulaire -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
-        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
