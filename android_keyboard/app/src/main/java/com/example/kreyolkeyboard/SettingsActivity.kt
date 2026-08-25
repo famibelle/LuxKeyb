@@ -528,7 +528,7 @@ class SettingsActivity : AppCompatActivity() {
             "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
             "Télécharge-le gratuitement :\n" +
             "https://play.google.com/store/apps/details?id=$packageName" +
-            "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dactivation_success\n\n" +
+            "&referrer=utm_source%3Dactivation_share%26utm_campaign%3Dlaunch_lu\n\n" +
             SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
@@ -2668,7 +2668,7 @@ class SettingsActivity : AppCompatActivity() {
                 "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
                 "Télécharge-le gratuitement :\n" +
                 "https://play.google.com/store/apps/details?id=$packageName" +
-                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch10k\n\n" +
+                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch_lu\n\n" +
                 SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
@@ -3393,7 +3393,7 @@ class SettingsActivity : AppCompatActivity() {
             textSize = 42f
             textAlign = Paint.Align.CENTER
         }
-        canvas.drawText("Klavyé gratui asi Google Play", cx, 1195f, footerPaint)
+        canvas.drawText("Gratis Tastatur um Google Play", cx, 1195f, footerPaint)
 
         return bitmap
     }
@@ -3411,10 +3411,11 @@ class SettingsActivity : AppCompatActivity() {
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "An rivé nivo $levelName asi Lëtzebuergesch Clavier ! É vou menm, ki nivo a'w ?\n" +
-                    "Télécharge le clavier gratuitement :\n" +
+            val message = "Ech sinn um Niveau $levelName am Lëtzebuergesch Clavier ! A du, wéi wäit bass du ?\n" +
+                    "J'ai atteint le niveau $levelName du clavier luxembourgeois.\n\n" +
+                    "Télécharge-le gratuitement :\n" +
                     "https://play.google.com/store/apps/details?id=$packageName" +
-                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch10k\n\n" +
+                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch_lu\n\n" +
                     SHARE_HASHTAG
 
             val intent = Intent(Intent.ACTION_SEND).apply {

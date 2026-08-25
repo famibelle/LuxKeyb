@@ -65,21 +65,21 @@ Base : `https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&
 | Site GitHub Pages | `utm_source%3Dlanding%26utm_campaign%3Dlaunch_lu` |
 | Flyer imprimé (QR code) | `utm_source%3Dflyer%26utm_campaign%3Dlaunch_lu` |
 
-**Attention à la campagne.** L'application émet déjà ses propres liens, et ils
-ne portent pas ce nom de campagne :
+**Les liens émis par l'application sont alignés dessus** depuis le
+2026-08-25. Ils portaient `launch10k` — l'objectif créole des 10 000
+installations — hérité tel quel ; tout est passé à `launch_lu` pendant qu'aucune
+donnée n'était encore accumulée :
 
 | Où | `utm_source` | `utm_campaign` |
 |---|---|---|
-| `SettingsActivity.shareActivationSuccess()` | `in_app_share` | `activation_success` |
-| Bouton « partager l'application » (≈ ligne 2671) | `in_app_share` | `launch10k` |
-| Partage d'une carte de niveau (≈ ligne 3417) | `level_share` | `launch10k` |
+| `SettingsActivity.shareActivationSuccess()` | `activation_share` | `launch_lu` |
+| Bouton « partager l'application », `shareApp()` | `in_app_share` | `launch_lu` |
+| Partage d'une carte de niveau, `shareLevelCard()` | `level_share` | `launch_lu` |
 
-`launch10k` est l'objectif créole (10 000 installations), hérité tel quel.
-Deux options, aucune n'est urgente : garder `launch10k` partout pour ne pas
-éclater les rapports, ou remplacer les trois occurrences par `launch_lu` — un
-`sed` sur `SettingsActivity.kt` — avant le premier envoi, pendant qu'aucune
-donnée n'est encore accumulée. La seconde est plus propre ; c'est celle que
-supposent les liens ci-dessus.
+La source du partage d'activation est passée de `in_app_share` à
+`activation_share` : les deux partageaient le même nom et ne se
+distinguaient que par leur campagne, que cet alignement vient justement de
+rendre identique.
 
 Le QR code du flyer (`graphics/flyer-triptyque/`) pointe pour l'instant sur
 `famibelle.github.io/LuxKeyb`, l'application n'étant pas publiée. Après
@@ -102,13 +102,19 @@ dans l'application, il n'y a rien à coder :
   seule fois, juste après le passage par les réglages système, avec un message
   pré-rédigé et un lien tracké.
 
-⚠️ **Le texte de partage d'une carte de niveau est resté en créole.**
-`shareLevelCard()` (`SettingsActivity.kt`, ≈ ligne 3414) envoie « An rivé nivo
-X asi Lëtzebuergesch Clavier ! É vou menm, ki nivo a'w ? » — hérité du Klavyé
-Kréyòl et jamais traduit. C'est le seul message que l'application fait publier
-par ses utilisateurs sur les réseaux : à corriger avant toute campagne, une
-phrase suffit (« Ech si beim Niveau X am Lëtzebuergesch Clavier ! A du, wéi
-wäit bass du ? »). Hors du périmètre de ce dossier, mais bloquant pour lui.
+Le texte de partage d'une carte de niveau était **resté en créole** —
+« An rivé nivo X asi Lëtzebuergesch Clavier ! É vou menm, ki nivo a'w ? »,
+hérité du Klavyé Kréyòl et jamais traduit, alors que c'est le seul message que
+l'application fait publier par ses utilisateurs. Corrigé le 2026-08-25 :
+« Ech sinn um Niveau X am Lëtzebuergesch Clavier ! A du, wéi wäit bass du ? »,
+suivi d'une ligne française. Le pied de la carte partagée disait de même
+« Klavyé gratui asi Google Play » ; il dit maintenant « Gratis Tastatur um
+Google Play ».
+
+Reste, sur cette carte, un fond en dégradé turquoise décrit dans le code comme
+« mer des Caraïbes », avec son soleil décoratif : c'est de l'identité
+guadeloupéenne sur une carte luxembourgeoise. Le repeindre aux couleurs du
+drapeau est un changement visuel, laissé à décider.
 
 Reste la partie humaine : demander un avis aux premiers utilisateurs
 convaincus. À 0 avis, cinq avis 5 étoiles déplacent la fiche ; à 500, non.
