@@ -1,28 +1,27 @@
-# Politique de Confidentialité - Lëtzebuergesch Clavier • Potomitan™
+# Politique de Confidentialité - Lëtzebuergesch Clavier
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 14 août 2026  
-**Version :** 2.0  
-**Application :** Lëtzebuergesch Clavier • Potomitan™  
+**Dernière mise à jour :** 25 août 2026  
+**Version :** 2.1  
+**Application :** Lëtzebuergesch Clavier  
 **Nom du package :** com.potomitan.luxkeyboard
 
 ---
 
 ## 🏛️ Informations sur le Développeur
 
-**Nom du développeur :** Médhi Famibelle / Potomitan™  
-**Adresse :** Guadeloupe, Antilles françaises  
-**Email de contact :** contact@potomitan.io  
-**Site web :** https://potomitan.io  
+**Nom du développeur :** Famibelle Médhi  
+**Adresse :** Luxembourg, Grand-Duché de Luxembourg  
+**Email de contact :** medhi.famibelle@gmail.com  
 **URL de la politique de confidentialité :** https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html
 
-**Potomitan** est une organisation dédiée à la préservation et à la promotion de la langue luxembourgeoise. Notre mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues régionales et minoritaires, en particulier le luxembourgeois (lëtzebuergesch).
+**Lëtzebuergesch Clavier** est un projet indépendant dédié à la préservation et à la promotion de la langue luxembourgeoise. Sa mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues régionales et minoritaires, en particulier le luxembourgeois (lëtzebuergesch).
 
 ---
 
 ## 📱 À propos de l'Application
 
-**Lëtzebuergesch Clavier • Potomitan™** est un clavier virtuel pour appareils Android qui permet de saisir du texte en luxembourgeois avec des suggestions intelligentes et des corrections automatiques.
+**Lëtzebuergesch Clavier** est un clavier virtuel pour appareils Android qui permet de saisir du texte en luxembourgeois avec des suggestions intelligentes et des corrections automatiques.
 
 ### Fonctionnalités principales :
 - Clavier virtuel optimisé pour le luxembourgeois
@@ -113,7 +112,7 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 ## 🎯 Notre Engagement de Confidentialité
 
-**Lëtzebuergesch Clavier • Potomitan™** respecte absolument votre vie privée. Nous croyons que :
+**Lëtzebuergesch Clavier** respecte absolument votre vie privée. Nous croyons que :
 
 1. **Vos données vous appartiennent :** Ce que vous tapez vous appartient et reste sur votre appareil
 2. **Aucune surveillance :** Nous ne suivons, ne surveillons ni n'analysons votre comportement de frappe
@@ -174,7 +173,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 3. **Progression de Gamification :**
    - Nombre de mots appris (combien de mots du dictionnaire vous avez tapés)
-   - Niveau actuel (Pipirit, Ti moun, Débrouya, An mitan, Kompè Lapen, Kompè Zamba ou Potomitan)
+   - Niveau actuel (Ufänker, Klengen, Fléisseg, Geschéit, Renert, Roude Léiw, Sproochenkënner ou Sproochenmeeschter)
    - Récompenses débloquées (ex: "100 premiers mots tapés")
    - Stockés localement dans la base de données de l'app
    - Non synchronisés avec le cloud ou d'autres appareils
@@ -304,7 +303,7 @@ Soyons explicites sur ce que nous **ne faisons pas** :
 
 ### Transferts d'Entreprise :
 
-Dans le cas improbable où Potomitan serait acquis ou fusionnerait avec une autre organisation :
+Dans le cas improbable où l&#39;application serait cédée à une autre organisation ou fusionnerait avec elle :
 - Nous n'aurions toujours aucune donnée utilisateur à transférer
 - Le nouveau propriétaire serait lié par cette politique de confidentialité
 - Les utilisateurs seraient notifiés de tout changement de politique
@@ -323,7 +322,7 @@ Nous notifierions les utilisateurs si nous changions un jour cette architecture 
 
 ## 👶 Vie Privée des Enfants (Conformité COPPA)
 
-**Lëtzebuergesch Clavier • Potomitan™** est sûr pour les utilisateurs de tous âges, y compris les enfants de moins de 13 ans.
+**Lëtzebuergesch Clavier** est sûr pour les utilisateurs de tous âges, y compris les enfants de moins de 13 ans.
 
 ### Pourquoi c'est sûr pour les enfants :
 
@@ -354,7 +353,7 @@ Les parents et éducateurs peuvent en toute confiance permettre aux enfants d'ut
 **Non applicable :** Puisque nous ne collectons aucune donnée, il n'y a pas de transferts internationaux de données.
 
 Pour la transparence légale :
-- **Localisation du développeur :** Guadeloupe (territoire français d'outre-mer, lois de confidentialité de l'UE s'appliquent)  
+- **Localisation du développeur :** Luxembourg (État membre de l'Union européenne, le RGPD s'applique)  
 - **Public visé :** Luxembourg (Union européenne)
 - **App distribuée via :** Google Play Store (distribution mondiale)
 - **Localisation des données utilisateur :** Uniquement sur l'appareil de l'utilisateur (pas transférées nulle part)
@@ -456,7 +455,7 @@ Même si nous ne collectons aucune donnée, nous respectons tous les droits à l
 
 7. **Droit de Déposer une Plainte (Article 77) :** 
    - Vous pouvez vous plaindre auprès d'une autorité de surveillance
-   - **Contact :** CNIL (France) : www.cnil.fr
+   - **Contact :** CNPD (Luxembourg) : cnpd.public.lu
 
 ### Selon la CCPA (California Consumer Privacy Act) :
 
@@ -496,7 +495,7 @@ Nous nous conformons aux réglementations de confidentialité dans le monde, inc
 
 ### Comment Exercer Vos Droits :
 
-**Contactez-nous à :** contact@potomitan.io  
+**Contactez-nous à :** medhi.famibelle@gmail.com  
 **Objet :** "Demande de Droits à la Vie Privée - Lëtzebuergesch Clavier"  
 **Inclure :** Votre type de demande (accès, suppression, etc.) et tous détails pertinents  
 **Temps de réponse :** Dans les 30 jours (exigence RGPD) ou 45 jours (exigence CCPA)  
@@ -511,7 +510,7 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 
 ### Comment Fonctionne la Gamification :
 
-- **7 Niveaux :** Pipirit → Ti moun → Débrouya → An mitan → Kompè Lapen → Kompè Zamba → Potomitan
+- **8 Niveaux :** Ufänker → Klengen → Fléisseg → Geschéit → Renert → Roude Léiw → Sproochenkënner → Sproochenmeeschter
 - **Suivi de Progression :** Compte combien de mots luxembourgeois uniques vous avez tapés
 - **Récompenses :** Débloque des badges pour des jalons (ex: "100 premiers mots")
 
@@ -555,25 +554,25 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 ### Pour les Questions sur la Vie Privée :
 
 **Contact Principal :**  
-**Email :** contact@potomitan.io  
+**Email :** medhi.famibelle@gmail.com  
 **Objet :** "Question Vie Privée - Lëtzebuergesch Clavier"  
 
 
 **Délégué à la Protection des Données (DPO) :**  
-**Email :** contact@potomitan.io  
-**Basé à :** Guadeloupe, France (UE)  
+**Email :** medhi.famibelle@gmail.com  
+**Basé à :** Luxembourg, Grand-Duché de Luxembourg (UE)  
 **Responsable de :** Conformité RGPD, demandes de confidentialité
 
 ### Pour le Support Général :
 
-**Email :** contact@potomitan.io  
+**Email :** medhi.famibelle@gmail.com  
 **GitHub Issues :** https://github.com/famibelle/LuxKeyb/issues  
 **Documentation :** https://github.com/famibelle/LuxKeyb/blob/main/README.md
 
 ### Pour les Demandes de Fonctionnalités :
 
 **GitHub Discussions :** https://github.com/famibelle/LuxKeyb/discussions  
-**Email :** contact@potomitan.io avec objet "Demande de Fonctionnalité"
+**Email :** medhi.famibelle@gmail.com avec objet "Demande de Fonctionnalité"
 
 ### Support Linguistique :
 
@@ -585,9 +584,9 @@ Nous répondons aux demandes en :
 ### Procédure de Plainte :
 
 Si vous avez une préoccupation de confidentialité :
-1. **Contactez-nous d'abord :** contact@potomitan.io (nous répondrons dans les 7 jours)
+1. **Contactez-nous d'abord :** medhi.famibelle@gmail.com (nous répondrons dans les 7 jours)
 2. **Escaladez à l'autorité de surveillance** si insatisfait :
-   - **Résidents UE :** CNIL (France) - www.cnil.fr
+   - **Résidents UE :** CNPD (Luxembourg) - cnpd.public.lu
    - **Résidents US :** FTC - www.ftc.gov
    - **Autres :** Votre autorité locale de protection des données
 
@@ -624,6 +623,12 @@ Nous pouvons mettre à jour cette politique pour refléter :
 - Option de réviser les changements avant d'accepter
 
 ### Historique des Changements :
+
+**Version 2.1 (25 août 2026) :**
+- Identité du développeur : Famibelle Médhi, établi au Luxembourg
+- Retrait de la marque et des coordonnées Potomitan
+- Autorité de contrôle et juridiction alignées sur le Luxembourg (CNPD)
+- Mise à jour des niveaux de gamification (8 rangs luxembourgeois)
 
 **Version 2.0 (10 novembre 2025) :**
 - Réécriture complète pour la conformité Data Safety de Google Play
@@ -664,10 +669,10 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 Cette politique de confidentialité et tout litige en découlant sont régis par :
 
-- **Droit Français :**
+- **Droit Luxembourgeois :**
   - Code de la consommation
-  - Loi Informatique et Libertés
-  - RGPD (implémentation française du GDPR)
+  - Loi du 1er août 2018 sur la protection des données
+  - RGPD (mise en œuvre luxembourgeoise)
 
 - **Droit de l'Union Européenne :**
   - RGPD (Règlement 2016/679)
@@ -675,25 +680,25 @@ Cette politique de confidentialité et tout litige en découlant sont régis par
   - Directive sur les droits des consommateurs
 
 - **Réglementations Locales :**
-  - Lois locales de protection des consommateurs de la Guadeloupe
+  - Lois luxembourgeoises de protection des consommateurs
 
 ### Processus de Résolution des Litiges :
 
 **Étape 1 : Résolution Informelle**
-- Contactez-nous à : contact@potomitan.io
+- Contactez-nous à : medhi.famibelle@gmail.com
 - Nous travaillerons avec vous pour résoudre le problème
 - Réponse dans les 7 jours ouvrables
 - Effort de bonne foi pour trouver une solution
 
 **Étape 2 : Médiation (résidents UE)**
 - Utilisez la plateforme de résolution des litiges en ligne de l'UE : https://ec.europa.eu/consumers/odr
-- Ou contactez le service français de médiation : Médiateur de la consommation
+- Ou saisissez le Service national du Médiateur de la consommation (Luxembourg)
 
 **Étape 3 : Plainte auprès de l'Autorité de Surveillance**
-- **France :** CNIL (Commission Nationale de l'Informatique et des Libertés)
-  - Site web : www.cnil.fr
-  - Adresse : 3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07
-  - Téléphone : +33 1 53 73 22 22
+- **Luxembourg :** CNPD (Commission nationale pour la protection des données)
+  - Site web : cnpd.public.lu
+  - Adresse : 15, boulevard du Jazz, L-4370 Belvaux
+  - Téléphone : +352 26 10 60 1
 
 - **UE :** Contactez votre Autorité de Protection des Données locale
   - Liste : https://edpb.europa.eu/about-edpb/board/members_en
@@ -703,9 +708,9 @@ Cette politique de confidentialité et tout litige en découlant sont régis par
   - Téléphone : 1-877-FTC-HELP
 
 **Étape 4 : Action Légale**
-- **Juridiction :** Tribunaux français (Tribunal de Grande Instance)
-- **Lieu :** Guadeloupe ou Paris, France
-- **Loi Applicable :** Droit français et européen
+- **Juridiction :** Tribunaux luxembourgeois
+- **Lieu :** Luxembourg, Grand-Duché de Luxembourg
+- **Loi Applicable :** Droit luxembourgeois et européen
 - **Droit de Poursuivre :** Les utilisateurs conservent tous les droits légaux
 
 ### Limitation de Responsabilité :
@@ -780,8 +785,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 - ✅ **Open source :** Code publiquement vérifiable
 
 ### Contact :
-- 📧 **Email :** contact@potomitan.io
-- 🌐 **Site web :** potomitan.io
+- 📧 **Email :** medhi.famibelle@gmail.com
 - 💻 **GitHub :** github.com/famibelle/LuxKeyb
 
 **En résumé :** C'est le clavier le plus respectueux de la vie privée que vous pouvez utiliser. Nous l'avons construit ainsi intentionnellement.
@@ -800,7 +804,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 ### Éducation à la Vie Privée :
 
 - **Site Officiel RGPD :** https://gdpr.eu
-- **Site Officiel CNIL :** https://www.cnil.fr
+- **Site Officiel CNPD :** https://cnpd.public.lu
 - **Privacy Rights Clearinghouse :** https://privacyrights.org
 - **Electronic Frontier Foundation :** https://www.eff.org/issues/privacy
 
@@ -808,7 +812,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 
 Si vous découvrez une vulnérabilité de sécurité :
 - **NE PAS** publier publiquement sur GitHub
-- **Email :** contact@potomitan.io avec objet "SÉCURITÉ"
+- **Email :** medhi.famibelle@gmail.com avec objet "SÉCURITÉ"
 - **Inclure :** Description détaillée, étapes pour reproduire, évaluation de l'impact
 - **Réponse :** Dans les 48 heures
 - **Divulgation :** Divulgation responsable coordonnée après correction
@@ -817,7 +821,7 @@ Si vous découvrez une vulnérabilité de sécurité :
 
 ## ✅ Reconnaissance de l'Utilisateur
 
-En installant et utilisant **Lëtzebuergesch Clavier • Potomitan™**, vous reconnaissez que :
+En installant et utilisant **Lëtzebuergesch Clavier**, vous reconnaissez que :
 
 1. Vous avez lu et compris cette Politique de Confidentialité
 2. Vous consentez aux pratiques décrites ici (qui sont essentiellement : nous ne faisons rien avec vos données)
@@ -831,7 +835,7 @@ En installant et utilisant **Lëtzebuergesch Clavier • Potomitan™**, vous re
 
 ## 🎯 Notre Promesse
 
-Chez Potomitan, nous avons construit **Lëtzebuergesch Clavier** parce que nous aimons notre langue et notre culture - pas pour gagner de l'argent avec vos données.
+Nous avons construit **Lëtzebuergesch Clavier** parce que nous aimons notre langue et notre culture - pas pour gagner de l'argent avec vos données.
 
 **Notre engagement :**
 - Nous ne collecterons **JAMAIS** vos données personnelles
@@ -849,7 +853,7 @@ C'est pourquoi nous avons construit ce clavier de la bonne manière : **La confi
 
 ---
 
-**Merci de soutenir la préservation du lëtzebuergesch avec Lëtzebuergesch Clavier • Potomitan™** 🇱🇺
+**Merci de soutenir la préservation du lëtzebuergesch avec Lëtzebuergesch Clavier** 🇱🇺
 
 ---
 
