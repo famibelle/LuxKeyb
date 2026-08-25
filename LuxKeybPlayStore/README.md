@@ -13,7 +13,6 @@ repris tel quel** : tout est refait à partir des sources de ce dépôt-ci.
 texts/
   fichePlayStore.md       les textes à coller dans la Play Console
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
-  securite-keystore.md    audit de l'historique git, clé de signature
 graphics/
   build_graphics.py       fabrique tout ce qui suit
   app-icon/               icône 512 × 512

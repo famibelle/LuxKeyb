@@ -253,18 +253,7 @@ Console : il est là pour l'impression, adapté du flyer créole.
 
 ## À régler avant le premier envoi
 
-1. **La clé de signature actuelle n'est pas celle qui a fuité** — vérifié le
-   2026-08-15, contrairement à ce que laisse entendre la section « Known gaps »
-   de `CLAUDE.md`. Détail dans [`securite-keystore.md`](securite-keystore.md).
-   En résumé : `luxkeyb-release.jks` (alias `upload`, créé le 2026-08-14) n'a
-   jamais été suivi par git, donc **rien n'oblige à la régénérer avant le
-   premier envoi**. Deux réserves :
-   - si son mot de passe est celui qui traîne dans l'historique public, le
-     changer — `keytool -storepasswd`, la clé et l'empreinte sont conservées,
-     l'opération est indolore ;
-   - l'ancien keystore créole, lui, a bel et bien été commité **en binaire**.
-     Cela concerne la publication de KreyolKeyb, pas celle-ci.
-2. **Les 9 captures du guide intégré (`res/drawable-nodpi/guide_screenshot_*.png`)
+1. **Les 9 captures du guide intégré (`res/drawable-nodpi/guide_screenshot_*.png`)
    montrent encore le clavier créole.** Elles ne partent pas au Store, mais un
    testeur qui ouvre l'onglet Guide les verra, et elles peuvent se retrouver
    dans une capture d'écran de la fiche par inadvertance.
