@@ -2403,8 +2403,8 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
-            "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
-                    "l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukéra » apparaît " +
+            "Depuis l'onglet Démarrage, le bouton « Ouvrir les réglages Android » mène directement " +
+                    "à l'écran système « Clavier à l'écran », où « Klavyé Kréyòl Karukéra » apparaît " +
                     "à côté des autres claviers installés, interrupteur éteint."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
@@ -2421,14 +2421,14 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
             "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
-                    "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
-                    "touchez « Klavyé Kréyòl Karukéra » pour en faire le clavier utilisé."
+                    "débloque. Le bouton « Ouvrir le sélecteur de claviers » ouvre la liste des claviers " +
+                    "actifs : touchez « Klavyé Kréyòl Karukéra » pour en faire le clavier utilisé."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
 
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Configuration terminée",
-            "Les deux étapes cochées, le clavier Kréyòl s'affiche partout où vous tapez, y compris " +
+            "Ces deux étapes faites, le clavier Kréyòl s'affiche partout où vous tapez, y compris " +
                     "dans le champ d'essai de l'onglet Démarrage. Un appui long sur la barre d'espace " +
                     "permet de rebasculer vers un autre clavier à tout moment."
         )
@@ -2443,8 +2443,8 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#F0F8E8", "🔤 Accents et caractères spéciaux",
             "Appuyez longuement sur une lettre pour faire apparaître ses variantes accentuées " +
-                    "(é, è, à, ò...) et caractères spéciaux du kréyòl. Glissez le doigt vers l'accent voulu " +
-                    "puis relâchez."
+                    "(é, è, à, ò...) et caractères spéciaux du kréyòl. La fenêtre reste ouverte quand " +
+                    "vous relâchez : touchez l'accent voulu pour l'insérer."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, "Popup d'accents sur la lettre e")
 
@@ -2459,9 +2459,10 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Correction orthographique partout",
-            "Activez le correcteur Kréyòl dans les paramètres système (onglet Démarrage, étape 4) " +
-                    "pour que vos mots créoles et français ne soient plus soulignés en rouge dans Messages, " +
-                    "Notes et les autres applications."
+            "Activez le correcteur Kréyòl dans les paramètres système : onglet Démarrage, carte " +
+                    "« Corriger l'orthographe partout », sous « Pou ay pli lwen ». Vos mots créoles " +
+                    "et français cessent alors d'être soulignés en rouge dans Messages, Notes et " +
+                    "les autres applications."
         )
 
         addGuideSection(
@@ -2474,8 +2475,9 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Deux jeux (onglets « Mots Mêlés » et « Mots Mélangés ») aident à mémoriser du vocabulaire " +
-                    "créole en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
+            "Trois jeux (onglets « Mots Mêlés », « Mots Mélangés » et « Mo an Karénaj ») aident à " +
+                    "mémoriser du vocabulaire créole en s'amusant, à partir des mots déjà présents " +
+                    "dans le dictionnaire du clavier."
         )
 
         addGuideSection(
