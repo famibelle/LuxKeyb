@@ -1,8 +1,18 @@
 {
   "production_version": "10.6.0",
-  "latest_version": "10.14.1",
+  "latest_version": "10.14.2",
   "as_of": "2026-08-26",
   "features": [
+    {
+      "version": "10.14.2",
+      "emoji": "🔤",
+      "title": "Les lettres des touches perdent leur gras",
+      "description": "Elles étaient écrites en gras depuis les premières versions, au point que le clavier paraissait surchargé : à la taille où elles sont affichées, cette graisse noircissait un tiers de surface en plus et refermait les blancs du g et du m. Les lettres passent en graisse normale et respirent dans leur touche, qui reste détachée par son fond et son ombre.",
+      "release_url": "https://github.com/famibelle/KreyolKeyb/releases/tag/v10.14.2",
+      "curated": true,
+      "image": "Screenshots/nouveaute_10.14.2_graisse_touches.png",
+      "image_alt": "Les trois rangées de lettres du clavier avant et après : en haut les lettres en gras jusqu'à la 10.14.1, en bas les mêmes lettres en graisse normale en 10.14.2."
+    },
     {
       "version": "10.13.0",
       "emoji": "🌙",

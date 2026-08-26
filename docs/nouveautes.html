@@ -35,6 +35,7 @@ section{margin-top:36px;}
 .feature h3{margin:0 0 4px;font-size:16.5px;}
 .feature p{margin:0 0 8px;color:var(--ink-soft);font-size:14.5px;}
 .feature .meta{font-size:12px;color:var(--ink-soft);}
+.feature .shot{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:9px;margin:2px 0 10px;background:#fff;}
 .feature .meta a{color:var(--sea);text-decoration:none;font-weight:600;}
 .feature .meta a:hover{text-decoration:underline;}
 .beta-frame{display:block;width:100%;height:440px;border:1px solid var(--line);border-radius:12px;margin-top:6px;background:var(--card);}
@@ -152,6 +153,7 @@ fetch('stats/exclusive_features.json').then(function(r){ return r.json(); }).the
       '<div>' +
         '<h3>' + f.title + '</h3>' +
         '<p>' + f.description + '</p>' +
+        (f.image ? '<img class="shot" src="' + f.image + '" alt="' + (f.image_alt || f.title).replace(/"/g, '&quot;') + '" loading="lazy" decoding="async">' : '') +
         '<div class="meta">Depuis v' + f.version + (f.release_url ? ' · <a href="' + f.release_url + '" target="_blank" rel="noopener">voir la release →</a>' : '') + '</div>' +
       '</div>' +
     '</div>';

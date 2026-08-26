@@ -40,6 +40,26 @@ DIAGNOSTIC_PREFIXES = (
 # l'extraction automatique. Complétez cette liste au fil des prochaines
 # versions pour garder une formulation orientée utilisateur.
 CURATED: dict[str, list[dict[str, str]]] = {
+    "10.14.2": [
+        {
+            "emoji": "🔤",
+            "title": "Les lettres des touches perdent leur gras",
+            "description": (
+                "Elles étaient écrites en gras depuis les premières versions, "
+                "au point que le clavier paraissait surchargé : à la taille où "
+                "elles sont affichées, cette graisse noircissait un tiers de "
+                "surface en plus et refermait les blancs du g et du m. Les "
+                "lettres passent en graisse normale et respirent dans leur "
+                "touche, qui reste détachée par son fond et son ombre."
+            ),
+            "image": "Screenshots/nouveaute_10.14.2_graisse_touches.png",
+            "image_alt": (
+                "Les trois rangées de lettres du clavier avant et après : "
+                "en haut les lettres en gras jusqu'à la 10.14.1, en bas les "
+                "mêmes lettres en graisse normale en 10.14.2."
+            ),
+        }
+    ],
     "10.13.0": [
         {
             "emoji": "🌙",
@@ -523,16 +543,21 @@ def build_features(
     for version in eligible:
         if version in CURATED:
             for item in CURATED[version]:
-                features.append(
-                    {
-                        "version": version,
-                        "emoji": item["emoji"],
-                        "title": item["title"],
-                        "description": item["description"],
-                        "release_url": RELEASE_URL.format(version=version),
-                        "curated": True,
-                    }
-                )
+                feature = {
+                    "version": version,
+                    "emoji": item["emoji"],
+                    "title": item["title"],
+                    "description": item["description"],
+                    "release_url": RELEASE_URL.format(version=version),
+                    "curated": True,
+                }
+                # Illustration facultative : la page ne l'affiche que si la
+                # clé est présente, une nouveauté sans capture reste donc
+                # rendue comme avant.
+                for cle in ("image", "image_alt"):
+                    if item.get(cle):
+                        feature[cle] = item[cle]
+                features.append(feature)
             continue
 
         for section in versions[version]:
