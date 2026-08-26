@@ -166,15 +166,15 @@
       "name": "Quelles permissions l'application demande-t-elle ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Trois, toutes locales : ajouter des mots à votre dictionnaire personnel Android ; afficher une notification, pour signaler un nouveau niveau atteint ; lire le stockage, sur les versions d'Android antérieures à la 13. Ni internet, ni contacts, ni localisation, ni micro. Le code source est public si vous voulez le vérifier vous-même."
+        "text": "Une seule est réellement exercée : afficher une notification, pour signaler un nouveau niveau de vocabulaire atteint. Deux autres sont déclarées mais inutilisées, l'écriture dans le dictionnaire personnel d'Android et la lecture du stockage sur Android 12 et antérieurs : aucune ligne de code ne les appelle. Ni internet, ni contacts, ni localisation, ni micro. Le code source est public si vous voulez le vérifier vous-même."
       }
     },
     {
       "@type": "Question",
-      "name": "Les mots que j'écris souvent sont mémorisés, où sont-ils stockés ?",
+      "name": "Le clavier apprend-il les mots que je tape ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Dans un fichier privé de l'application, sur le téléphone. Il sert aux statistiques de vocabulaire et à mieux classer vos suggestions. Il part avec l'application si vous la désinstallez."
+        "text": "Non, et c'est une décision, pas un manque : l'application ne construit aucun dictionnaire personnel. Un mot absent du dictionnaire livré n'est jamais enregistré, même tapé cent fois. La version 10.5.0 apprenait ces mots pour les proposer ensuite. La fonction a été retirée dès la 10.6.0, parce qu'un clavier qui conserve des mots tapés, si encadré soit-il, reste un clavier qui conserve ce qu'on écrit. L'application efface d'elle-même le fichier laissé sur les téléphones qui avaient installé cette version. Ce qu'elle tient, ce sont des compteurs d'usage portant uniquement sur les mots déjà présents dans son dictionnaire, pour l'écran « Kréyòl an mwen » et pour mieux classer vos suggestions. Les mots de moins de trois lettres, ceux qui contiennent un chiffre, les adresses mail et les liens en sont exclus. Le fichier ne quitte pas le téléphone et part avec l'application si vous la désinstallez."
       }
     },
     {
@@ -608,12 +608,13 @@ details.qa .a li{margin-bottom:6px;}
   <details class="qa">
     <summary>Quelles permissions l'application demande-t-elle ?</summary>
     <div class="a">
-      <p>Trois, toutes locales :</p>
-      <ul>
-        <li>ajouter des mots à votre dictionnaire personnel Android ;</li>
-        <li>afficher une notification, pour signaler un nouveau niveau atteint ;</li>
-        <li>lire le stockage, sur les versions d'Android antérieures à la 13.</li>
-      </ul>
+      <p>
+        Une seule est réellement exercée : afficher une notification, pour
+        signaler un nouveau niveau de vocabulaire atteint. Deux autres sont
+        déclarées mais inutilisées, l'écriture dans le dictionnaire personnel
+        d'Android et la lecture du stockage sur Android 12 et antérieurs :
+        aucune ligne de code ne les appelle.
+      </p>
       <p>
         Ni internet, ni contacts, ni localisation, ni micro. Le
         <a href="https://github.com/famibelle/KreyolKeyb">code source</a> est
@@ -623,11 +624,26 @@ details.qa .a li{margin-bottom:6px;}
   </details>
 
   <details class="qa">
-    <summary>Les mots que j'écris souvent sont mémorisés, où sont-ils stockés ?</summary>
+    <summary>Le clavier apprend-il les mots que je tape ?</summary>
     <div class="a">
       <p>
-        Dans un fichier privé de l'application, sur le téléphone. Il sert aux
-        statistiques de vocabulaire et à mieux classer vos suggestions. Il part
+        Non, et c'est une décision, pas un manque : l'application ne construit
+        aucun dictionnaire personnel. Un mot absent du dictionnaire livré n'est
+        jamais enregistré, même tapé cent fois.
+      </p>
+      <p>
+        La version 10.5.0 apprenait ces mots pour les proposer ensuite. La
+        fonction a été retirée dès la 10.6.0, parce qu'un clavier qui conserve
+        des mots tapés, si encadré soit-il, reste un clavier qui conserve ce
+        qu'on écrit. L'application efface d'elle-même le fichier laissé sur les
+        téléphones qui avaient installé cette version.
+      </p>
+      <p>
+        Ce qu'elle tient, ce sont des compteurs d'usage portant uniquement sur
+        les mots déjà présents dans son dictionnaire, pour l'écran « Kréyòl an
+        mwen » et pour mieux classer vos suggestions. Les mots de moins de
+        trois lettres, ceux qui contiennent un chiffre, les adresses mail et
+        les liens en sont exclus. Le fichier ne quitte pas le téléphone et part
         avec l'application si vous la désinstallez.
       </p>
     </div>
