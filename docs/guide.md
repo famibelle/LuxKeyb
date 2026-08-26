@@ -157,7 +157,7 @@ Messages, WhatsApp, les mails ou n'importe quel champ de texte, avec ses
 suggestions kréyòl.
 
 <div align="center" style="margin: 16px 0;">
-  <img loading="lazy" src="Screenshots/gif_sms.gif" alt="Animation : réponse « Mèsi anpil » écrite au clavier kréyòl dans un SMS, envoyée, puis message reçu en kréyòl" width="45%">
+  <img loading="lazy" src="Screenshots/gif_sms.gif" alt="Animation : réponse « Mèsi onpil » écrite au clavier kréyòl dans un SMS, envoyée, puis message reçu en kréyòl" width="45%">
 </div>
 
 ## Passer d'un clavier à l'autre
