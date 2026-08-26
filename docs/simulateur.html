@@ -96,20 +96,104 @@
   }
   .reset-btn:hover { background: var(--stripe); color: var(--ink); }
 
-  /* ---- barre de suggestions ---- */
+  /* ---- palette du clavier ----
+     Recopiée telle quelle de KeyboardTheme.kt (android_keyboard), qui reste la
+     seule source : le simulateur montre le clavier de l'application, il ne
+     redéfinit aucune de ses couleurs. C'est la palette produit de la charte, à
+     ne pas mélanger avec celle du site (theme.css) qui habille le reste de la
+     page. Les trois couleurs produit — vert des touches d'action, orange de la
+     ponctuation, bleu de la barre d'espace — sont identiques dans les deux
+     thèmes ; seules les touches non colorées basculent, comme dans l'app. */
+  :root {
+    --kb-vert-haut: #00C853;          --kb-vert-bas: #00A843;
+    --kb-orange-haut: #FF8C00;        --kb-orange-bas: #FF7000;
+    --kb-bleu-haut: #1E90FF;          --kb-bleu-bas: #0000FF;
+    --kb-touche-haut: #FFFFFF;        --kb-touche-bas: #F5F5F5;
+    --kb-accent-haut: #FFFFFF;        --kb-accent-bas: #F8F8F8;
+    --kb-maj-haut: #F0F0F0;           --kb-maj-bas: #E0E0E0;
+    --kb-caps-haut: #E8E8E8;          --kb-caps-bas: #D0D0D0;
+    --kb-suppr-haut: rgba(255,255,255,.8); --kb-suppr-bas: rgba(240,240,240,.75);
+    --kb-bordure: #D0D0D0;
+    --kb-encre: #333333;
+    --kb-encre-attenuee: #666666;
+    --kb-encre-sur-couleur: #FFFFFF;
+    --kb-encre-etiquette: #6C757D;
+    --kb-fond-clavier: #F5F5F5;
+    --kb-fond-suggestions: #FFFFFF;
+    --kb-popup-haut: #FFFFFF;         --kb-popup-bas: #F8F8F8;
+    --kb-popup-bordure: #E0E0E0;
+    --kb-popup-accent-haut: #FFFFFF;  --kb-popup-accent-bas: #F0F0F0;
+    --kb-popup-accent-bordure: #C0C0C0; --kb-popup-accent-encre: #333333;
+    --kb-popup-base-haut: #F5F5F5;    --kb-popup-base-bas: #E8E8E8;
+    --kb-popup-base-bordure: #D0D0D0; --kb-popup-base-encre: #666666;
+    --kb-emoji-onglet-actif: #E0F2E9;
+    /* Indice d'appui long : hintColorFor() retient celle des deux encres qui
+       contraste le plus avec le fond de la touche, atténuée tant que la marge
+       de contraste le permet. Sur une touche claire, c'est l'encre sombre. */
+    --kb-indice: rgba(51,51,51,.6);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --kb-touche-haut: #2B2B2B;      --kb-touche-bas: #242424;
+      --kb-accent-haut: #2B2B2B;      --kb-accent-bas: #262626;
+      --kb-maj-haut: #3A3A3A;         --kb-maj-bas: #333333;
+      --kb-caps-haut: #4A4A4A;        --kb-caps-bas: #404040;
+      --kb-suppr-haut: rgba(43,43,43,.8); --kb-suppr-bas: rgba(36,36,36,.75);
+      --kb-bordure: #4A4A4A;
+      --kb-encre: #F0F0F0;
+      --kb-encre-attenuee: #B4B4B4;
+      --kb-encre-etiquette: #9AA3AB;
+      --kb-fond-clavier: #131313;
+      --kb-fond-suggestions: #202020;
+      --kb-popup-haut: #2B2B2B;       --kb-popup-bas: #242424;
+      --kb-popup-bordure: #454545;
+      --kb-popup-accent-haut: #333333; --kb-popup-accent-bas: #2B2B2B;
+      --kb-popup-accent-bordure: #4A4A4A; --kb-popup-accent-encre: #F0F0F0;
+      --kb-popup-base-haut: #232323;  --kb-popup-base-bas: #1E1E1E;
+      --kb-popup-base-bordure: #3A3A3A; --kb-popup-base-encre: #909090;
+      --kb-emoji-onglet-actif: #26382D;
+      --kb-indice: rgba(240,240,240,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --kb-touche-haut: #2B2B2B;        --kb-touche-bas: #242424;
+    --kb-accent-haut: #2B2B2B;        --kb-accent-bas: #262626;
+    --kb-maj-haut: #3A3A3A;           --kb-maj-bas: #333333;
+    --kb-caps-haut: #4A4A4A;          --kb-caps-bas: #404040;
+    --kb-suppr-haut: rgba(43,43,43,.8); --kb-suppr-bas: rgba(36,36,36,.75);
+    --kb-bordure: #4A4A4A;
+    --kb-encre: #F0F0F0;
+    --kb-encre-attenuee: #B4B4B4;
+    --kb-encre-etiquette: #9AA3AB;
+    --kb-fond-clavier: #131313;
+    --kb-fond-suggestions: #202020;
+    --kb-popup-haut: #2B2B2B;         --kb-popup-bas: #242424;
+    --kb-popup-bordure: #454545;
+    --kb-popup-accent-haut: #333333;  --kb-popup-accent-bas: #2B2B2B;
+    --kb-popup-accent-bordure: #4A4A4A; --kb-popup-accent-encre: #F0F0F0;
+    --kb-popup-base-haut: #232323;    --kb-popup-base-bas: #1E1E1E;
+    --kb-popup-base-bordure: #3A3A3A; --kb-popup-base-encre: #909090;
+    --kb-emoji-onglet-actif: #26382D;
+    --kb-indice: rgba(240,240,240,.6);
+  }
+
+  /* ---- barre de suggestions ----
+     Mesures de KreyolInputMethodServiceRefactored : rangée de 44 dp, puces de
+     16 dp de rayon, mot à 18 sp, largeur minimale de 88 dp, 12 dp entre deux
+     puces, micro-étiquette KR/FR à 10 sp. */
   .sugg-bar {
     margin-top: 8px;
-    background: var(--card);
-    border: 1px solid var(--line);
+    background: var(--kb-fond-suggestions);
+    border: 1px solid var(--kb-bordure);
     border-radius: 12px;
     padding: 4px 6px;
   }
   .sugg-row {
     display: flex;
     align-items: center;
-    gap: 6px;
-    min-height: 34px;
-    padding: 3px 2px;
+    gap: 12px;
+    min-height: 40px;
+    padding: 2px;
     overflow-x: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* vieux Edge */
@@ -119,16 +203,18 @@
     flex: none;
     font-size: 10px;
     font-weight: 700;
-    color: var(--ink-soft);
+    color: var(--kb-encre-etiquette);
     padding: 0 4px;
   }
   .chip {
     flex: none;
     border: none;
     border-radius: 16px;
+    min-width: 88px;
     padding: 6px 14px;
-    font-size: 14px;
-    font-weight: 600;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 500;
     color: #fff;
     cursor: pointer;
   }
@@ -136,84 +222,187 @@
   .chip-french { background: #3B6FC4; }
   .chip:active { filter: brightness(0.92); }
 
-  /* ---- clavier ---- */
+  /* ---- clavier ----
+     Géométrie reprise de KeyboardLayoutManager : touches de 48 dp de haut,
+     2 dp de marge tout autour, 8 dp de rayon, 8 dp de padding autour du bloc.
+     Le téléphone du simulateur étant dessiné à la largeur d'un écran de 360 dp,
+     un dp y vaut un pixel. La taille des libellés, elle, se calcule en JS comme
+     dans createKeyButton() : elle dépend de la largeur réelle de la touche. */
   .keyboard {
-    margin-top: 10px;
-    background: #E4E7EB;
+    margin-top: 8px;
+    background: var(--kb-fond-clavier);
     border-radius: 16px;
-    padding: 8px 6px;
+    padding: 8px;
   }
-  @media (prefers-color-scheme: dark) { .keyboard { background: #2A2E33; } }
-  :root[data-theme="dark"] .keyboard { background: #2A2E33; }
-  :root[data-theme="light"] .keyboard { background: #E4E7EB; }
-  .kb-row { display: flex; margin: 3px 0; }
-  .kb-key-wrap { position: relative; margin: 0 2px; display: flex; }
+  .kb-row { display: flex; margin: 2px 0; }
+  /* flex-basis nulle : les largeurs suivent alors exactement les poids posés en
+     JS, comme un LinearLayout pondéré à largeur 0. Avec la base automatique,
+     « Potomitan™ » élargissait sa touche au-delà de son poids. */
+  .kb-key-wrap {
+    position: relative;
+    display: flex;
+    margin: 0 2px;
+    /* En longhands : « flex: 0 1 0 » n'est pas une valeur valable, le zéro sans
+       unité y étant lu comme un nombre et non comme une base. */
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 0;
+    min-width: 0;
+  }
   .kb-key {
     flex: 1 1 auto;
     width: 100%;
-    height: 42px;
-    border: 1px solid #D0D0D0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--kb-bordure);
     border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
     font-family: inherit;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
     cursor: pointer;
-    background: linear-gradient(#FFFFFF, #F5F5F5);
-    color: #333;
-    box-shadow: 0 1px 0 rgba(0,0,0,.12);
+    color: var(--kb-encre);
+    background: linear-gradient(var(--kb-touche-haut), var(--kb-touche-bas));
+    /* setShadowLayer(4, 0, 1dp, #40000000) dans applyGuadeloupeStyleToView() */
+    text-shadow: 0 1px 4px rgba(0,0,0,.25);
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
   }
   .kb-key:active, .kb-key.kb-key-active { transform: scale(0.95); }
-  .kb-key.kb-punct { background: linear-gradient(#FF8C00, #FF7000); color: #fff; border-color: #E67600; }
-  .kb-key.kb-mode, .kb-key.kb-enter { background: linear-gradient(#00C853, #00A843); color: #fff; border-color: #009640; }
-  .kb-key.kb-backspace { background: linear-gradient(rgba(255,255,255,.8), rgba(240,240,240,.75)); color: #333; }
-  .kb-key.kb-shift { background: linear-gradient(#FFFFFF, #F8F8F8); color: #333; }
-  .kb-key.kb-shift-on { background: linear-gradient(#F0F0F0, #E0E0E0); color: #666; }
-  .kb-key.kb-shift-caps { background: linear-gradient(#E8E8E8, #D0D0D0); color: #666; }
-  .kb-key.kb-space-key {
-    background: linear-gradient(#1E90FF, #0000FF);
-    color: rgba(255,255,255,.85);
-    font-size: 11px;
-    font-weight: 700;
+  .kb-key.kb-punct {
+    background: linear-gradient(var(--kb-orange-haut), var(--kb-orange-bas));
+    color: var(--kb-encre-sur-couleur);
   }
+  .kb-key.kb-mode, .kb-key.kb-enter {
+    background: linear-gradient(var(--kb-vert-haut), var(--kb-vert-bas));
+    color: var(--kb-encre-sur-couleur);
+  }
+  .kb-key.kb-backspace {
+    background: linear-gradient(var(--kb-suppr-haut), var(--kb-suppr-bas));
+  }
+  .kb-key.kb-shift, .kb-key.kb-accent {
+    background: linear-gradient(var(--kb-accent-haut), var(--kb-accent-bas));
+  }
+  .kb-key.kb-shift-on {
+    background: linear-gradient(var(--kb-maj-haut), var(--kb-maj-bas));
+    color: var(--kb-encre-attenuee);
+  }
+  .kb-key.kb-shift-caps {
+    background: linear-gradient(var(--kb-caps-haut), var(--kb-caps-bas));
+    color: var(--kb-encre-attenuee);
+  }
+  .kb-key.kb-space-key {
+    /* #73FFFFFF : la signature Potomitan™ se lit de près sans revendiquer le
+       regard pendant la frappe. Elle est aussi la seule touche sans ombre. */
+    color: rgba(255,255,255,.45);
+    background: linear-gradient(var(--kb-bleu-haut), var(--kb-bleu-bas));
+    text-shadow: none;
+  }
+  /* Icônes Material des touches ⇧, ⌫ et ⏎, dessinées comme un FIT_CENTER
+     Android : le padding vient de createKeyButton(), posé en JS. */
+  .kb-key svg { width: 100%; height: 100%; fill: currentColor; }
 
   .kb-hint {
     position: absolute;
-    font-size: 8px;
-    color: rgba(51,51,51,.65);
+    font-size: 10px;
+    color: var(--kb-indice);
     pointer-events: none;
     line-height: 1;
   }
-  .kb-hint-top { top: 3px; }
-  .kb-hint-bottom { bottom: 3px; }
-  .kb-hint-end { right: 4px; }
-  .kb-hint-start { left: 4px; }
+  .kb-hint-top { top: 2px; }
+  .kb-hint-bottom { bottom: 2px; }
+  .kb-hint-end { right: 3px; }
+  /* Sur l'orange de la ponctuation, l'encre sombre contraste deux fois mieux
+     que le blanc, et sa marge est trop courte pour l'atténuer (hintColorFor). */
+  .kb-punct-hint { color: #333333; }
+  .kb-space-hint {
+    position: absolute;
+    top: 2px; right: 4px;
+    font-size: 12px;
+    color: rgba(255,255,255,.8);
+    pointer-events: none;
+    line-height: 1;
+  }
 
+  /* ---- panneau emoji (EmojiPickerView) ----
+     Onglets de 40 dp, grille de 10 colonnes, cellules de 44 dp, trois rangées
+     visibles. Sans les tons de peau en appui long ni le swipe entre catégories,
+     qui n'ont pas d'équivalent utile à la souris. */
+  .kb-emoji-tabs { display: flex; height: 40px; margin-bottom: 2px; }
+  .kb-emoji-tab {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .kb-emoji-tab.is-active { background: var(--kb-emoji-onglet-actif); }
+  .kb-emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    height: 132px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .kb-emoji-grid::-webkit-scrollbar { display: none; }
+  .kb-emoji-cell {
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .kb-emoji-cell:active { background: var(--kb-emoji-onglet-actif); border-radius: 8px; }
+  .kb-emoji-message {
+    height: 132px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--kb-encre-attenuee);
+  }
+
+  /* ---- popup d'appui long (AccentHandler) ---- */
   .accent-popup {
     position: fixed;
     display: flex;
-    gap: 4px;
-    background: #FFFFFF;
-    border: 1px solid #E0E0E0;
+    background: linear-gradient(var(--kb-popup-haut), var(--kb-popup-bas));
+    border: 1px solid var(--kb-popup-bordure);
     border-radius: 12px;
-    padding: 6px;
+    padding: 8px;
     box-shadow: 0 8px 24px rgba(0,0,0,.3);
     z-index: 1000;
   }
   .accent-btn {
-    width: 42px; height: 42px;
+    width: 48px; height: 48px;
+    margin: 0 4px;
     border-radius: 8px;
-    border: 1px solid #C0C0C0;
-    background: linear-gradient(#FFFFFF, #F0F0F0);
-    font-size: 17px;
-    font-weight: 700;
-    color: #333;
+    border: 1px solid var(--kb-popup-accent-bordure);
+    background: linear-gradient(var(--kb-popup-accent-haut), var(--kb-popup-accent-bas));
+    font-family: inherit;
+    font-size: 18px;
+    color: var(--kb-popup-accent-encre);
     cursor: pointer;
   }
-  .accent-btn.accent-base { background: linear-gradient(#F5F5F5, #E8E8E8); color: #666; }
-  .accent-btn:active { filter: brightness(0.94); }
+  .accent-btn.accent-base {
+    border-color: var(--kb-popup-base-bordure);
+    background: linear-gradient(var(--kb-popup-base-haut), var(--kb-popup-base-bas));
+    color: var(--kb-popup-base-encre);
+  }
+  .accent-btn:active { transform: scale(0.9); }
+
 
   .status-line {
     text-align: center;

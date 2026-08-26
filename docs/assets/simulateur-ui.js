@@ -16,31 +16,78 @@
     // v10.11.4 : l'apostrophe rejoint cette rangée, financée par ⇧ et ⌫ dont le
     // poids passe de 1,5 à 1,25 comme dans KeyboardLayoutManager.
     ['⇧', 'w', 'x', 'c', 'v', 'b', 'n', "'", '⌫'],
-    // L'apostrophe a quitté cette rangée en v9.1.0, où l'application a désormais une
-    // touche emoji. Le simulateur n'implémente pas de panneau emoji, donc cette
-    // place reste vide plutôt que de porter une apostrophe en double : divergence
-    // assumée et visible, préférable à une disposition fausse à deux endroits.
-    ['123', ',', 'é', '-', ' ', 'è', '.', '⏎']
+    ['123', ',', 'é', '-', ' ', 'è', '.', 'EMOJI', '⏎']
   ];
 
   const NUMERIC_ROWS = [
     ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
     ['-', '/', ':', ';', '(', ')', '€', '&', '@', '"'],
-    ['=', '.', ',', '?', '!', "'", '+', '*', '⌫'],
-    ['ABC', ' ', '⏎']
+    // v10.12.15 : « # » ajouté. C'est la seule page de symboles du clavier, donc
+    // son absence signifiait qu'aucun hashtag ne pouvait être écrit.
+    ['=', '.', ',', '?', '!', "'", '+', '*', '#', '⌫'],
+    ['ABC', 'EMOJI', ' ', '⏎']
   ];
 
-  // AccentHandler.kt accentMap (v8.7.3)
+  // Rangée de contrôle sous le panneau emoji (createEmojiLayout()).
+  const EMOJI_CONTROL_ROW = ['ABC', '⌫', ' ', '⏎'];
+
+  // Géométrie et tailles de police reprises de KeyboardLayoutManager. Le
+  // téléphone du simulateur est dessiné à la largeur d'un écran de 360 dp, donc
+  // un dp y vaut un pixel et ces constantes se lisent telles quelles.
+  const KEY_HEIGHT_PX = 48;
+  const KEY_TEXT_HEIGHT_RATIO = 0.62;
+  const WIDE_LABEL_TEXT_RATIO = 0.28;
+  const SPACE_LABEL_TEXT_RATIO = 0.22;
+  const LABEL_WIDTH_RATIO = 0.90;
+  const EMOJI_WIDTH_RATIO = 0.77;
+
+  // Les trois touches à icône de l'application (ic_shift_off/on/caps.xml,
+  // ic_backspace.xml, ic_keyboard_return.xml). Les tracés sont recopiés tels
+  // quels : le pathData d'un vector Android est un « d » SVG. Le padding, lui
+  // aussi repris de createKeyButton(), s'exprime en part de la hauteur de touche
+  // et l'icône se dessine dedans comme un FIT_CENTER.
+  const ICONS = {
+    backspace: {
+      viewBox: '0 0 24 24',
+      d: 'M22,3L7,3c-0.69,0 -1.23,0.35 -1.59,0.88L0,12l5.41,8.11c0.36,0.53 0.9,0.89 1.59,0.89h15c1.1,0 2,-0.9 2,-2L24,5c0,-1.1 -0.9,-2 -2,-2zM19,15.59L17.59,17 14,13.41 10.41,17 9,15.59 12.59,12 9,8.41 10.41,7 14,10.59 17.59,7 19,8.41 15.41,12 19,15.59z',
+      padRatio: 10 / 48
+    },
+    // Cadre recadré sur l'encre (19 × 12) et tracé replacé dedans, exactement
+    // comme le fait le <group> du vector : sans cela la flèche ne remplirait que
+    // la moitié de sa touche.
+    enter: {
+      viewBox: '0 0 19 12',
+      d: 'M19,7v4H5.83l3.58,-3.59L8,6l-6,6 6,6 1.41,-1.41L5.83,13H21V7z',
+      transform: 'translate(-2,-6)',
+      padRatio: 4 / 48
+    },
+    shiftOff: {
+      viewBox: '0 0 24 24',
+      d: 'M12,3L3,12h5v6h8v-6h5L12,3zM12,5.83L16.17,10H14v6h-4v-6H7.83L12,5.83z',
+      fillRule: 'evenodd',
+      padRatio: 6 / 48
+    },
+    shiftOn: {
+      viewBox: '0 0 24 24',
+      d: 'M12,3L3,12h5v6h8v-6h5L12,3z',
+      padRatio: 6 / 48
+    },
+    shiftCaps: {
+      viewBox: '0 0 24 24',
+      d: 'M12,2L3,11h5v5h8v-5h5L12,2zM8,18h8v2H8z',
+      padRatio: 6 / 48
+    }
+  };
+
+  // AccentHandler.kt accentMap (v10.14.x)
   const ACCENT_MAP = {
     a: ['à', 'â'],
     e: ['é', 'è', 'ê'],
     i: ['î', 'ï'],
     o: ['ò', 'ô', 'ó', 'œ'],
     u: ['ù', 'û'],
-    n: ['ng', 'ny'],
     c: ['ç', 'ch'],
     d: ['dj'],
-    g: ['gn', 'gy'],
     t: ['tj'],
     // L'apostrophe reste sous la virgule même depuis qu'elle a retrouvé une touche
     // dédiée (v10.11.4), comme é et è restent sous « e ».
@@ -50,8 +97,9 @@
     // disparu avec elle en v9.1.0 (aucun usage relevé dans les dictionnaires) et
     // n'ont pas été rétablis côté application. Cf. AccentHandler.accentMap.
   };
+  // AccentHandler.cornerHintOverrides : « e » affiche è puis é, alors que le popup
+  // liste é avant è (fréquence décroissante).
   const CORNER_HINTS = { e: ['è', 'é'], o: ['ò', 'ó'] };
-  const CORNER_LEFT = new Set(['o']);
   const DEDICATED_ACCENTED_KEYS = new Set(['à', 'è', 'ò', 'é', 'ù', 'ì', 'ç']);
   const LETTER_RE = /^[a-zA-Zàáâãäåèéêëìíîïòóôõöøùúûüýÿñçĉĝĥĵŝŭ]$/;
 
@@ -65,6 +113,12 @@
       this.isCapitalMode = false;
       this.isCapsLock = false;
       this.isNumericMode = false;
+      this.isEmojiMode = false;
+      // Le jeu d'emojis (~1900) n'est chargé qu'à la première ouverture du
+      // panneau : la page n'a pas à payer 49 ko pour un mode qu'on n'ouvre pas.
+      this.emojiData = null;
+      this.emojiLoading = false;
+      this.emojiCategory = 0;
 
       this.currentPopup = null;
       this._popupOutsideHandler = null;
@@ -79,6 +133,13 @@
 
       this.els.resetBtn?.addEventListener('click', () => this.reset());
       this.bindPhysicalKeyboard();
+
+      // La taille des libellés dépend de la largeur réelle des touches, qui
+      // change avec celle de la fenêtre : elle se recalcule à chaque
+      // redimensionnement du clavier, et pas seulement au rendu.
+      if (window.ResizeObserver) {
+        new ResizeObserver(() => this.sizeKeyLabels()).observe(this.els.keyboard);
+      }
     }
 
     // ---- clavier physique (confort desktop, en plus du clavier tactile) ----
@@ -151,6 +212,7 @@
       if (key === '⇧' || key === '⌫' || key === '⏎') return key;
       if (key === '123') return this.isNumericMode ? 'ABC' : '123';
       if (key === 'ABC') return 'ABC';
+      if (key === 'EMOJI') return '😀';
       const upper = this.isCapitalMode || this.isCapsLock;
       if (DEDICATED_ACCENTED_KEYS.has(key)) return upper ? key.toUpperCase() : key;
       return upper ? key.toUpperCase() : key.toLowerCase();
@@ -164,9 +226,11 @@
       }
       if (key === '⌫') return 'kb-backspace';
       if (key === '⏎') return 'kb-enter';
-      if (key === '123' || key === 'ABC') return 'kb-mode';
+      if (key === '123' || key === 'ABC' || key === 'EMOJI') return 'kb-mode';
       if (key === ' ') return 'kb-space-key';
       if ([',', '.', "'", '-'].includes(key)) return 'kb-punct';
+      // Touches créoles dédiées, sur la même nuance que le shift au repos.
+      if (DEDICATED_ACCENTED_KEYS.has(key)) return 'kb-accent';
       return 'kb-normal';
     }
 
@@ -180,14 +244,69 @@
     // ---- rendu clavier ----
 
     renderKeyboard() {
-      const rows = this.isNumericMode ? NUMERIC_ROWS : ALPHA_ROWS;
       this.els.keyboard.innerHTML = '';
-      rows.forEach((rowKeys) => {
-        const rowEl = document.createElement('div');
-        rowEl.className = 'kb-row';
-        rowKeys.forEach((key) => rowEl.appendChild(this.createKey(key)));
-        this.els.keyboard.appendChild(rowEl);
+      if (this.isEmojiMode) {
+        this.els.keyboard.appendChild(this.createEmojiPanel());
+        this.els.keyboard.appendChild(this.createRow(EMOJI_CONTROL_ROW));
+      } else {
+        const rows = this.isNumericMode ? NUMERIC_ROWS : ALPHA_ROWS;
+        rows.forEach((rowKeys) => this.els.keyboard.appendChild(this.createRow(rowKeys)));
+      }
+      this.sizeKeyLabels();
+    }
+
+    createRow(rowKeys) {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'kb-row';
+      rowKeys.forEach((key) => rowEl.appendChild(this.createKey(key)));
+      return rowEl;
+    }
+
+    /**
+     * Taille de police d'un libellé : min(hauteur × ratio, largeur × ratio),
+     * exactement createKeyButton(). La largeur d'une touche n'étant connue
+     * qu'une fois la rangée disposée, elle se lit sur la touche rendue plutôt
+     * que de refaire le partage des poids.
+     */
+    sizeKeyLabels() {
+      this.els.keyboard.querySelectorAll('.kb-key').forEach((btn) => {
+        const key = btn.dataset.key;
+        if (key === undefined || ICONS[btn.dataset.icon]) return;
+        const largeur = btn.getBoundingClientRect().width;
+        if (!largeur) return;
+        const ratioHauteur =
+          key === ' ' ? SPACE_LABEL_TEXT_RATIO
+          : (key === '123' || key === 'ABC') ? WIDE_LABEL_TEXT_RATIO
+          : KEY_TEXT_HEIGHT_RATIO;
+        const ratioLargeur = key === 'EMOJI' ? EMOJI_WIDTH_RATIO : LABEL_WIDTH_RATIO;
+        btn.style.fontSize =
+          Math.min(KEY_HEIGHT_PX * ratioHauteur, largeur * ratioLargeur).toFixed(1) + 'px';
       });
+    }
+
+    /** Icône d'une touche, ou null si elle porte un libellé texte. */
+    iconFor(key) {
+      if (key === '⌫') return 'backspace';
+      if (key === '⏎') return 'enter';
+      if (key !== '⇧') return null;
+      if (this.isCapsLock) return 'shiftCaps';
+      if (this.isCapitalMode) return 'shiftOn';
+      return 'shiftOff';
+    }
+
+    createIcon(nom) {
+      const icone = ICONS[nom];
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', icone.viewBox);
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.padding = (KEY_HEIGHT_PX * icone.padRatio).toFixed(1) + 'px';
+      svg.style.boxSizing = 'border-box';
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', icone.d);
+      if (icone.fillRule) path.setAttribute('fill-rule', icone.fillRule);
+      if (icone.transform) path.setAttribute('transform', icone.transform);
+      svg.appendChild(path);
+      return svg;
     }
 
     createKey(key) {
@@ -198,8 +317,24 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'kb-key ' + this.keyClass(key);
-      btn.textContent = this.displayText(key);
-      btn.setAttribute('aria-label', key === ' ' ? 'Espace' : key);
+      btn.dataset.key = key;
+
+      const icone = this.iconFor(key);
+      if (icone) {
+        btn.dataset.icon = icone;
+        btn.appendChild(this.createIcon(icone));
+      } else {
+        btn.textContent = this.displayText(key);
+      }
+      btn.setAttribute(
+        'aria-label',
+        key === ' ' ? 'Espace'
+          : key === '⌫' ? 'Supprimer'
+          : key === '⏎' ? 'Entrée'
+          : key === '⇧' ? 'Majuscule'
+          : key === 'EMOJI' ? 'Emojis'
+          : key
+      );
 
       let holdTimer = null;
       let longPressed = false;
@@ -244,22 +379,103 @@
 
       wrap.appendChild(btn);
 
+      // Aperçu des deux premières options d'appui long, en haut et en bas du
+      // côté droit de la touche — wrapWithLongPressHints() n'en connaît pas
+      // d'autre côté.
       const hints = this.cornerHints(key);
       if (hints.length) {
-        const side = CORNER_LEFT.has(key.toLowerCase()) ? 'start' : 'end';
-        wrap.appendChild(this.createHint(hints[0], 'top', side));
-        if (hints[1]) wrap.appendChild(this.createHint(hints[1], 'bottom', side));
+        const punct = this.keyClass(key) === 'kb-punct';
+        wrap.appendChild(this.createHint(hints[0], 'top', punct));
+        if (hints[1]) wrap.appendChild(this.createHint(hints[1], 'bottom', punct));
+      }
+
+      // 🌐 : dans l'application, un appui long sur l'espace ouvre le sélecteur de
+      // claviers du système. Le geste n'a pas d'équivalent dans un navigateur,
+      // l'indice reste donc purement visuel ici, avec une infobulle qui le dit.
+      if (key === ' ') {
+        const globe = document.createElement('span');
+        globe.className = 'kb-space-hint';
+        globe.textContent = '🌐';
+        globe.title = "Dans l'application, un appui long ici ouvre le sélecteur de claviers.";
+        wrap.appendChild(globe);
       }
 
       return wrap;
     }
 
-    createHint(text, vPos, side) {
+    createHint(text, vPos, punct) {
       const span = document.createElement('span');
-      span.className = `kb-hint kb-hint-${vPos} kb-hint-${side}`;
+      span.className = `kb-hint kb-hint-${vPos} kb-hint-end` + (punct ? ' kb-punct-hint' : '');
       span.textContent = text;
       return span;
     }
+
+    // ---- panneau emoji (EmojiPickerView.kt) ----
+
+    createEmojiPanel() {
+      const panel = document.createElement('div');
+      panel.className = 'kb-emoji-panel';
+
+      if (!this.emojiData) {
+        this.loadEmojiData();
+        const message = document.createElement('div');
+        message.className = 'kb-emoji-message';
+        message.textContent = this.emojiLoading ? 'Chargement des emojis…' : 'Emojis indisponibles.';
+        panel.appendChild(message);
+        return panel;
+      }
+
+      const tabs = document.createElement('div');
+      tabs.className = 'kb-emoji-tabs';
+      this.emojiData.categories.forEach((categorie, index) => {
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'kb-emoji-tab' + (index === this.emojiCategory ? ' is-active' : '');
+        tab.textContent = categorie.icon;
+        tab.title = categorie.name;
+        tab.addEventListener('click', () => {
+          this.emojiCategory = index;
+          this.renderKeyboard();
+        });
+        tabs.appendChild(tab);
+      });
+      panel.appendChild(tabs);
+
+      const grid = document.createElement('div');
+      grid.className = 'kb-emoji-grid';
+      this.emojiData.categories[this.emojiCategory].emojis.forEach((emoji) => {
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'kb-emoji-cell';
+        cell.textContent = emoji;
+        cell.addEventListener('click', () => this.processKey(emoji));
+        grid.appendChild(cell);
+      });
+      panel.appendChild(grid);
+
+      return panel;
+    }
+
+    loadEmojiData() {
+      if (this.emojiLoading || this.emojiData) return;
+      this.emojiLoading = true;
+      fetch('assets/emoji_data.json', { cache: 'force-cache' })
+        .then((res) => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then((data) => {
+          this.emojiData = data;
+          this.emojiLoading = false;
+          if (this.isEmojiMode) this.renderKeyboard();
+        })
+        .catch((err) => {
+          this.emojiLoading = false;
+          console.error(err);
+          if (this.isEmojiMode) this.renderKeyboard();
+        });
+    }
+
 
     // ---- popup d'accents ----
 
@@ -341,6 +557,9 @@
         case 'ABC':
           this.handleModeSwitch();
           break;
+        case 'EMOJI':
+          this.handleEmojiSwitch();
+          break;
         case ' ':
           this.handleSpace();
           break;
@@ -392,8 +611,23 @@
       }
     }
 
+    /**
+     * Bascule 123/ABC. Depuis le panneau emoji, « ABC » remonte ce même chemin :
+     * on revient à l'alphabétique plutôt que de basculer le mode numérique, ce
+     * qui ouvrirait le 123 au lieu des lettres (InputProcessor.handleModeSwitch).
+     */
     handleModeSwitch() {
-      this.isNumericMode = !this.isNumericMode;
+      if (this.isEmojiMode) {
+        this.isEmojiMode = false;
+        this.isNumericMode = false;
+      } else {
+        this.isNumericMode = !this.isNumericMode;
+      }
+    }
+
+    handleEmojiSwitch() {
+      this.isEmojiMode = true;
+      this.isNumericMode = false;
     }
 
     handleSpace() {
@@ -512,6 +746,7 @@
       this.isCapitalMode = false;
       this.isCapsLock = false;
       this.isNumericMode = false;
+      this.isEmojiMode = false;
       this.engine.clearHistory();
       this.dismissAccentPopup();
       this.updateSuggestions([], false);
