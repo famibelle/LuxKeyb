@@ -36,9 +36,6 @@ import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
@@ -94,11 +91,6 @@ class SettingsActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     
     companion object {
-        // Système de cache ultra-léger pour les modifications
-        private val pendingUpdates = ConcurrentHashMap<String, Int>(16, 0.75f, 1)
-        private var lastSaveTime = 0L
-        private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
-        private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/KreyolKeyb/privacy/privacy-policy.html"
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
@@ -173,165 +165,6 @@ class SettingsActivity : AppCompatActivity() {
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
             "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
         )
-
-        private var saveExecutor: ScheduledExecutorService? = null
-        
-        // Fonction statique pour mettre à jour l'usage d'un mot (appelée depuis le clavier)
-        @JvmStatic
-        fun updateWordUsage(context: Context, word: String) {
-            // Filtrer les mots trop courts ou invalides
-            if (word.length < 2 || word.isBlank()) return
-            
-            // Incrémenter dans le cache (thread-safe)
-            pendingUpdates.merge(word.lowercase().trim(), 1) { old, new -> old + new }
-            
-            // Si trop d'updates en attente, forcer une sauvegarde
-            if (pendingUpdates.size >= MAX_PENDING_UPDATES) {
-                flushPendingUpdates(context)
-            }
-            
-            // Programmer une sauvegarde différée si pas déjà programmée
-            scheduleDelayedSave(context)
-        }
-        
-        // Sauvegarde différée pour optimiser les I/O
-        private fun scheduleDelayedSave(context: Context) {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastSaveTime < SAVE_INTERVAL_MS) return
-            
-            if (saveExecutor == null) {
-                saveExecutor = Executors.newSingleThreadScheduledExecutor()
-            }
-            
-            saveExecutor?.schedule({
-                flushPendingUpdates(context)
-            }, SAVE_INTERVAL_MS, TimeUnit.MILLISECONDS)
-        }
-        
-        // Vider le cache en mémoire vers le fichier
-        @JvmStatic
-        fun flushPendingUpdates(context: Context, scope: CoroutineScope? = null) {
-            if (pendingUpdates.isEmpty()) return
-            
-            // Copie atomique du cache pour libérer rapidement la mémoire
-            val updatesToSave = HashMap<String, Int>(pendingUpdates)
-            pendingUpdates.clear()
-            lastSaveTime = System.currentTimeMillis()
-            
-            // 🔧 FIX CRITIQUE: Utiliser le scope fourni ou créer un scope avec SupervisorJob
-            // Cela évite les JobCancellationException et fuites mémoire
-            val executionScope = scope ?: CoroutineScope(Dispatchers.IO + SupervisorJob())
-            
-            executionScope.launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        saveUpdatesToFile(context, updatesToSave)
-                    }
-                } catch (e: CancellationException) {
-                    Log.d("SettingsActivity", "💾 Sauvegarde annulée, rollback des updates")
-                    // En cas d'annulation, remettre les updates dans le cache
-                    updatesToSave.forEach { (word, count) ->
-                        pendingUpdates.merge(word, count) { old, new -> old + new }
-                    }
-                    throw e // Important: re-throw CancellationException
-                } catch (e: Exception) {
-                    Log.e("SettingsActivity", "❌ Erreur sauvegarde: ${e.message}")
-                    // En cas d'erreur, remettre les updates dans le cache
-                    updatesToSave.forEach { (word, count) ->
-                        pendingUpdates.merge(word, count) { old, new -> old + new }
-                    }
-                }
-            }
-        }
-        
-        // Sauvegarde optimisée par lecture partielle
-        private suspend fun saveUpdatesToFile(context: Context, updates: Map<String, Int>) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
-            
-            if (!usageFile.exists()) {
-                // Créer le fichier s'il n'existe pas
-                createInitialUsageFile(context)
-            }
-            
-            // Lecture streaming pour économiser la mémoire
-            val existingData = try {
-                usageFile.bufferedReader().use { reader ->
-                    val sb = StringBuilder(8192) // Buffer fixe
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) {
-                        sb.append(line)
-                    }
-                    JSONObject(sb.toString())
-                }
-            } catch (e: Exception) {
-                Log.w("SettingsActivity", "Fichier corrompu, recréation")
-                createInitialUsageFile(context)
-                JSONObject()
-            }
-            
-            // Appliquer seulement les modifications nécessaires
-            var hasChanges = false
-            updates.forEach { (word, incrementCount) ->
-                if (existingData.has(word)) {
-                    val currentCount = existingData.optInt(word, 0)
-                    existingData.put(word, currentCount + incrementCount)
-                    hasChanges = true
-                } else {
-                    // Nouveau mot, l'ajouter seulement s'il est dans le dictionnaire
-                    if (isWordInDictionary(context, word)) {
-                        existingData.put(word, incrementCount)
-                        hasChanges = true
-                    }
-                }
-            }
-            
-            // Sauvegarder seulement si des changements ont été faits
-            if (hasChanges) {
-                // Écriture atomique pour éviter la corruption
-                val tempFile = File(context.filesDir, "creole_dict_with_usage.json.tmp")
-                tempFile.bufferedWriter().use { writer ->
-                    writer.write(existingData.toString())
-                }
-                tempFile.renameTo(usageFile)
-                
-                val motsSauvegardes = updates.map { "${it.key}(+${it.value})" }.joinToString(", ")
-                Log.d("SettingsActivity", "Sauvegardé ${updates.size} mots: $motsSauvegardes")
-            }
-        }
-        
-        // Vérification rapide si un mot existe dans le dictionnaire
-        private fun isWordInDictionary(context: Context, word: String): Boolean {
-            return try {
-                context.assets.open("creole_dict.json").bufferedReader().use { reader ->
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) {
-                        if (line!!.contains("\"$word\"", ignoreCase = true)) {
-                            return true
-                        }
-                    }
-                }
-                false
-            } catch (e: Exception) {
-                false
-            }
-        }
-        
-        // Création optimisée du fichier initial
-        private fun createInitialUsageFile(context: Context) {
-            val usageFile = File(context.filesDir, "creole_dict_with_usage.json")
-            
-            // Créer un fichier complètement vide sans aucune donnée de démonstration
-            val emptyUsageObject = JSONObject()
-            usageFile.writeText(emptyUsageObject.toString())
-        }
-        
-        // Nettoyage des ressources
-        @JvmStatic
-        fun cleanup() {
-            saveExecutor?.shutdown()
-            saveExecutor = null
-            pendingUpdates.clear()
-        }
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -610,9 +443,6 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onDestroy() {
-        // 🔧 FIX CRITIQUE: Sauvegarder avec le scope de l'activité avant annulation
-        flushPendingUpdates(this, activityScope)
-        
         // 🔧 FIX CRITIQUE: Annuler toutes les coroutines de l'activité
         activityScope.cancel()
         Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
@@ -3967,9 +3797,6 @@ class SettingsActivity : AppCompatActivity() {
 
                     // Afficher un message
                     Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
-
-                    // Forcer la sauvegarde des données en attente
-                    flushPendingUpdates(activity, activity.activityScope)
 
                     // Attendre un peu puis recréer l'activité
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
