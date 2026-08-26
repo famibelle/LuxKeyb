@@ -877,20 +877,19 @@ class SettingsActivity : AppCompatActivity() {
             isLocked = false,
             icon = "🔤",
             title = "Corriger l'orthographe partout",
-            // Le texte détaille chaque étape de l'écran système, parce que le
-            // bouton n'y mène que : la sélection s'y fait dans un sous-menu
-            // (« Correcteur par défaut ») que rien ne signale, et Android
-            // intercale un avertissement sur l'accès au texte saisi. Sans
-            // préparation, l'utilisateur s'arrête à l'un ou l'autre.
-            description = "Pour ne plus voir vos mots kréyòl soulignés en rouge dans Messages, " +
-                "Notes et ailleurs.\n\n" +
-                "Dans l'écran qui s'ouvre :\n" +
-                "1. touchez « Correcteur par défaut »\n" +
-                "2. choisissez « Correcteur Kréyòl Karukéra »\n" +
-                "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
-                "puis demande de confirmer\n\n" +
-                "Le nôtre compare vos mots au dictionnaire kréyòl de l'application. " +
-                "Il n'en conserve aucun et n'envoie rien.",
+            // Deux points seulement, mais les deux sur lesquels l'utilisateur
+            // s'arrête : le bouton ne mène qu'à l'écran système, où la
+            // sélection se fait dans un sous-menu (« Correcteur par défaut »)
+            // que rien ne signale, et Android intercale un avertissement sur
+            // l'accès au texte saisi. La marche à suivre numérotée en trois
+            // points disait la même chose en trois fois plus long.
+            description = "Pour ne plus voir vos mots kréyòl soulignés en rouge dans " +
+                "Messages, Notes et ailleurs.\n\n" +
+                "Dans l'écran qui s'ouvre : « Correcteur par défaut », puis " +
+                "« Correcteur Kréyòl Karukéra ».\n\n" +
+                "Android avertit qu'un correcteur peut lire le texte saisi. Le nôtre " +
+                "le compare au dictionnaire de l'application, sans rien conserver " +
+                "ni rien envoyer.",
             buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
             buttonEnabled = !isSpellCheckerOn,
             buttonAction = {
@@ -918,8 +917,8 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchIntro = TextView(this).apply {
-                text = "Klavyé Kréyòl ne remplace pas vos autres claviers : il s'ajoute à la liste, " +
-                        "et vous basculez de l'un à l'autre en deux secondes, aussi souvent que vous voulez."
+                text = "Klavyé Kréyòl ne remplace pas vos autres claviers : il s'ajoute à la " +
+                        "liste, et vous passez de l'un à l'autre en deux secondes."
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -935,9 +934,8 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchAway = TextView(this).apply {
-                text = "Appuyez une seconde sur la barre d'espace du clavier créole ; le petit 🌐 " +
-                        "dans son coin est là pour vous le rappeler. Le sélecteur Android s'ouvre : " +
-                        "touchez Gboard, Samsung Keyboard ou celui que vous voulez."
+                text = "Appuyez une seconde sur la barre d'espace du clavier créole (le 🌐 dans " +
+                        "son coin le rappelle), puis touchez le clavier voulu."
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -953,11 +951,9 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchBack = TextView(this).apply {
-                text = "Le geste n'est pas symétrique : sur Gboard et la plupart des autres claviers, " +
-                        "l'appui long sur la barre d'espace ne change que leur propre langue. " +
-                        "Touchez plutôt l'icône de clavier en bas de l'écran, dans la barre de " +
-                        "navigation, affichée tant qu'un clavier est ouvert : le sélecteur revient, " +
-                        "et « Klavyé Kréyòl Karukéra » y attend."
+                text = "Le geste n'est pas le même : ailleurs, l'appui long sur la barre d'espace " +
+                        "ne change que la langue de ce clavier. Touchez plutôt l'icône de clavier " +
+                        "en bas de l'écran, dans la barre de navigation."
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -965,9 +961,8 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchNote = TextView(this).apply {
-                text = "Le clavier choisi vaut pour toutes vos applications et reste mémorisé, " +
-                        "même après un redémarrage du téléphone. Si votre téléphone n'affiche pas " +
-                        "l'icône de clavier, le bouton ci-dessous ouvre exactement le même sélecteur."
+                text = "Le choix vaut pour toutes vos applications et survit au redémarrage. " +
+                        "Sans icône de clavier en bas, le bouton ci-dessous ouvre le même sélecteur."
                 textSize = 13f
                 setTextColor(Color.parseColor("#5C6BC0"))
                 setLineSpacing(0f, 1.3f)
