@@ -5,6 +5,21 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.2] - 2026-08-26
+
+### 🔤 Les lettres des touches perdent leur gras
+
+Les libellés des touches étaient affichés en gras depuis les premières versions.
+À la taille de police que le clavier calcule à partir de la hauteur de touche,
+cette graisse couvrait un tiers de matière sombre en plus (6,5 % de pixels
+sombres contre 4,7 % sur les trois rangées de lettres) et refermait les blancs
+internes du g et du m, jusqu'à donner l'impression d'un texte surchargé.
+
+Les touches passent en graisse normale. Elles restent distinguées par leur fond
+et leur ombre, qui font déjà le travail de séparation, et la lettre respire dans
+sa touche. Les icônes (majuscule, retour arrière, emoji) ne sont pas concernées :
+ce sont des dessins, pas du texte.
+
 ## [10.14.1] - 2026-08-25
 
 ### ⬇️ Le clavier d'essai passe sous les étapes de configuration
