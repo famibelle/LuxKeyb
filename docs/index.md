@@ -48,6 +48,9 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
 
 <p align="center"><em>Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau</em></p>
 
+<p align="center"><em>Vous préférez le Play Store ? L'application y est en test
+fermé : <a href="#devenir-testeur">devenir testeur</a>.</em></p>
+
 ## Le clavier en action
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
@@ -200,6 +203,33 @@ luxembourgeois contemporain, publié en jeu de données ouvert :
 
 Le pipeline est relancé à chaque publication, ce qui fait évoluer les
 suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
+
+## Devenir testeur
+
+L'application est en **test fermé sur Google Play**. Rejoindre le test, c'est
+la recevoir comme n'importe quelle autre application : installation en un geste,
+mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
+
+1. Depuis votre téléphone, ouvrez la
+   [page d'inscription au test](https://play.google.com/apps/testing/com.potomitan.luxkeyboard)
+   avec le compte Google que vous utilisez sur le Play Store.
+2. Appuyez sur **Devenir testeur**.
+3. Suivez le lien vers Google Play qui apparaît ensuite : la fiche s'ouvre,
+   signalée comme version de test, et l'installation se fait normalement.
+
+Le test est réservé à une liste de comptes. Si la page vous répond que le
+programme n'est pas ouvert au vôtre, indiquez l'adresse Google concernée dans le
+[formulaire de retours](feedbacks_form.html) et elle y sera ajoutée.
+
+Vous quittez le programme quand vous voulez, depuis la même page. L'APK de cette
+page, lui, reste disponible et contient exactement le même code : le test fermé
+change la façon d'installer, pas l'application.
+
+<p style="font-size:0.9em;opacity:0.8;">Pourquoi un test fermé ? Google demande
+qu'une nouvelle application soit testée par au moins douze personnes pendant
+quatorze jours avant d'autoriser sa publication à tout le monde. C'est cette
+étape-là qui est en cours : chaque testeur rapproche le clavier d'une
+publication ouverte.</p>
 
 ## Installer
 
