@@ -373,6 +373,9 @@ le retour dans un champ de saisie.
 
 ## Questions fréquentes
 
+*Les blocages les plus courants de l'installation. La [FAQ complète](faq.html) couvre le reste : vie privée, permissions,
+origine des mots, place occupée sur le téléphone.*
+
 **Le clavier créole n'apparaît pas quand je tape ?**
 Vérifiez qu'il est bien *sélectionné* (pas seulement activé) : reprenez
 l'étape 2, ou touchez l'icône de clavier en bas de l'écran pendant que vous
@@ -425,6 +428,7 @@ Une question qui n'est pas couverte ici ? Écrivez à
       <a href="./">Accueil</a>
       <a href="simulateur.html">Essayer en ligne</a>
       <a href="guide.html" aria-current="page">Guide d'installation</a>
+      <a href="faq.html">Questions fréquentes</a>
       <a href="nouveautes.html">Nouveautés</a>
     </div>
     <div>

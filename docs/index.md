@@ -196,7 +196,11 @@ le laisser chez le boulanger, le pharmacien ou la boutique du coin.
 
 ## Contacts
 
-Une question, une proposition, un partenariat ? Écrivez à
+Les questions les plus posées, « est-ce que ça remplace mon clavier ? »,
+« mes messages partent-ils quelque part ? », ont leur réponse sur la page
+**[questions fréquentes](faq.html)**.
+
+Pour le reste, une proposition, un partenariat ? Écrivez à
 **[contact@potomitan.io](mailto:contact@potomitan.io)**.
 
 Le code source est ouvert et public sur
@@ -218,6 +222,7 @@ Le code source est ouvert et public sur
       <a href="./" aria-current="page">Accueil</a>
       <a href="simulateur.html">Essayer en ligne</a>
       <a href="guide.html">Guide d'installation</a>
+      <a href="faq.html">Questions fréquentes</a>
       <a href="nouveautes.html">Nouveautés</a>
     </div>
     <div>
