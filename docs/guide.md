@@ -97,7 +97,7 @@ suggestions apparaître au-dessus du clavier. Si des mots créoles vous sont
 proposés, tout fonctionne.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1761763491.png" alt="Écran de configuration dans l'application, avec les 3 étapes cochées et un champ de test du clavier" width="32%">
+  <img src="Screenshots/app_configuration_rapide.png" alt="Carte « Configuration rapide » de l'onglet Démarrage, dépliée : activer le clavier, sélectionner le clavier et essayer le clavier, les trois cochées" width="32%">
 </div>
 
 ### Étape 4 (optionnelle) : le correcteur orthographique
@@ -110,7 +110,7 @@ Correction orthographique, puis activez « Klavyé Kréyòl Karukera ».
 ## Utilisation au quotidien
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/Screenshot_1758752019.png" alt="Clavier Klavyé Kréyòl Karukera affiché avec la barre de suggestions bengné, bel, ben au-dessus des touches" width="32%">
+  <img src="Screenshots/app_clavier_suggestions.png" alt="Clavier Klavyé Kréyòl Karukera dans un message : « Bonjou tout moun » écrit, et la barre de suggestions proposant ki, an, ka, sé au-dessus des touches" width="32%">
 </div>
 
 ### Écrire en kréyòl
@@ -121,22 +121,44 @@ clavier.
 
 ### Accents et caractères spéciaux
 
-Appuyez **longuement** sur une lettre pour faire apparaître ses variantes
-accentuées (é, è, à, ò...) et les caractères spéciaux du kréyòl. Glissez le
-doigt vers l'accent voulu puis relâchez pour le sélectionner.
+Appuyez **longuement** (une seconde) sur une lettre pour faire apparaître ses
+variantes accentuées (é, è, à, ò...) et les caractères spéciaux du kréyòl. Le
+choix reste affiché quand vous relâchez : touchez ensuite l'accent voulu, il
+s'insère à la place de la lettre. Les petits accents imprimés dans le coin
+d'une touche annoncent ce qu'elle cache.
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_accents.gif" alt="Animation : « kré », puis appui long sur la touche o qui ouvre le choix o, ò, ô, ó, œ, et le ò touché complète « Kréyòl »" width="45%">
+</div>
 
 ### Suggestions et autocomplétion
 
 Une barre de suggestions apparaît dès que vous commencez à taper. Les mots
-en kréyòl sont prioritaires ; le français prend le relais à partir de 3
-lettres si aucun mot créole ne correspond. Touchez un mot suggéré pour le
-compléter instantanément, espace inclus.
+en kréyòl sont prioritaires (étiquette **KR**) ; le français prend le relais à
+partir de 3 lettres si aucun mot créole ne correspond (étiquette **FR**).
+Touchez un mot suggéré pour le compléter instantanément, espace inclus. Une
+fois le mot validé, la barre propose les **mots qui suivent habituellement**,
+d'après le corpus littéraire créole.
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_saisie.gif" alt="Animation : « bonjou », « tou » puis « mou » tapés au clavier, chaque fois complétés en touchant la suggestion kréyòl, pour écrire « Bonjou tout moun »" width="45%">
+</div>
 
 ### Chiffres et symboles
 
 Le bouton **« 123 »** en bas à gauche du clavier bascule vers les chiffres
 et symboles usuels. La ponctuation de base (virgule, point, apostrophe)
 reste accessible directement sur le clavier alphabétique.
+
+### Dans une conversation
+
+Rien de particulier à faire : une fois le clavier sélectionné, il s'ouvre dans
+Messages, WhatsApp, les mails ou n'importe quel champ de texte, avec ses
+suggestions kréyòl.
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_sms.gif" alt="Animation : réponse « Mèsi anpil » écrite au clavier kréyòl dans un SMS, envoyée, puis message reçu en kréyòl" width="45%">
+</div>
 
 ## Passer d'un clavier à l'autre
 
@@ -183,6 +205,12 @@ y attend.
   <img src="Screenshots/app_changer_clavier_4_retour_kreyol.png" alt="Le clavier créole de retour dans le champ de message, avec ses touches accentuées" width="30%">
 </div>
 
+Le trajet complet, aller et retour :
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_changer_clavier.gif" alt="Animation : appui long sur la barre d'espace, sélecteur Android, passage à Gboard, puis retour au clavier kréyòl par l'icône de clavier de la barre de navigation" width="45%">
+</div>
+
 Si votre téléphone n'affiche pas cette icône, ouvrez l'**application Klavyé
 Kréyòl Karukera** et touchez le bouton de l'étape 2, « Sélectionner le
 clavier » : il ouvre exactement le même sélecteur.
@@ -220,14 +248,16 @@ terminée, l'écran de démarrage reste seul, pour ne pas disperser.
 ### 🚀 Démarrage
 
 Le point d'entrée, et le seul onglet visible tant que le clavier n'est pas en
-place. Il affiche la progression de l'installation, les trois étapes
-(activer, sélectionner, essayer dans un champ de test) et, en dessous, l'étape
-facultative du correcteur orthographique. Une fois tout coché, il devient un
-tableau de bord : rappel des gestes pour changer de clavier, astuce de la
-semaine, raccourci vers les statistiques.
+place. Les trois étapes (activer, sélectionner, essayer dans un champ de test)
+tiennent dans une carte **« Configuration rapide »** : tant qu'il reste
+quelque chose à faire elle est dépliée, une fois tout coché elle se replie sur
+un simple **3/3**, que « Voir les 3 étapes » rouvre au besoin. En dessous
+viennent l'étape facultative du correcteur orthographique, le rappel des
+gestes pour changer de clavier, l'astuce de la semaine et un raccourci vers
+les statistiques.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_onglet_demarrage.png" alt="Onglet Démarrage : bandeau « Tout est prêt », étapes 1 et 2 cochées, champ d'essai de l'étape 3" width="35%">
+  <img src="Screenshots/app_onglet_demarrage.png" alt="Onglet Démarrage : bandeau « Tout est prêt » et carte « Configuration rapide » repliée sur 3/3" width="35%">
 </div>
 
 ### 📊 Kréyòl an mwen
@@ -240,7 +270,14 @@ Kompè Lapen, Kompè Zamba, Potomitan. Un bouton permet de partager sa carte de
 niveau.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_onglet_kreyol_an_mwen.png" alt="Onglet Kréyòl an mwen : niveau An mitan, 12 % du dictionnaire découvert, mot du jour « piébwa » et mots à découvrir" width="35%">
+  <img src="Screenshots/app_onglet_kreyol_an_mwen.png" alt="Onglet Kréyòl an mwen : niveau An mitan, 12 % du dictionnaire découvert, mot du jour « milya » et mots à découvrir" width="35%">
+</div>
+
+La carte de niveau part comme une image, avec un texte tout prêt : de quoi
+lancer un défi à ses proches.
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_partage_niveau.gif" alt="Animation : le bouton « Partager ma carte de niveau » ouvre le partage Android avec l'image du niveau An mitan et son message en kréyòl" width="45%">
 </div>
 
 ### 🎲 Mots Mêlés
@@ -261,7 +298,11 @@ désordre. La première et la dernière lettre sont données. « Indice » place
 lettre de plus mais coûte 20 points, « Passer » enchaîne sur le mot suivant.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_onglet_mots_melanges.png" alt="Onglet Mots Mélangés : lettres disponibles U O O K, réponse en cours avec la première et la dernière lettre déjà placées" width="35%">
+  <img src="Screenshots/app_onglet_mots_melanges.png" alt="Onglet Mots Mélangés : score de 100 points, mot 2 sur 10, lettres disponibles N N A et réponse commencée par M" width="35%">
+</div>
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_mots_melanges.gif" alt="Animation : les lettres mélangées touchées une à une viennent remplir les cases de la réponse, que « Valider » accepte et qui fait passer le score à 100" width="45%">
 </div>
 
 ### 🟩 Mo an Karénaj
@@ -272,7 +313,13 @@ lettre présente mais ailleurs, gris pour une lettre absente. Le mot proposé
 doit exister dans le dictionnaire kréyòl.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_onglet_mokarenaj.png" alt="Onglet Mo an Karénaj : deux essais joués, ZANMI tout en gris et KOURI avec le K en orange" width="35%">
+  <img src="Screenshots/app_onglet_mokarenaj.png" alt="Onglet Mo an Karénaj : deux essais joués, ZANMI avec A, N et M en orange, KOURI tout en gris, et la ligne des lettres déjà employées" width="35%">
+</div>
+
+Le mot se tape avec le clavier kréyòl, accents compris :
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_jeu_mokarenaj.gif" alt="Animation : les essais GOUTI puis TOUDI tapés au clavier, les cases se colorant en vert, orange et gris jusqu'au message « Bravo ! »" width="45%">
 </div>
 
 ### 📖 Guide
@@ -296,17 +343,32 @@ mots du dictionnaire.
   <img src="Screenshots/app_onglet_apropos.png" alt="Onglet À Propos : Notre Mission, boutons Partager et Noter l'application, début de la section Sources littéraires" width="35%">
 </div>
 
+« Partager l'application » prépare un message en kréyòl et laisse choisir par
+où il part :
+
+<div align="center" style="margin: 16px 0;">
+  <img loading="lazy" src="Screenshots/gif_partage.gif" alt="Animation : le bouton « Partager l'application » ouvre le partage Android avec un message en kréyòl et le lien de téléchargement" width="45%">
+</div>
+
 ### ⚙️ Réglages du clavier
 
 Derrière l'engrenage, en haut à droite de la barre bleue, et non dans les
-onglets. Deux réglages : la **vibration** et le **son** à la frappe. Ils
-vivent dans l'application plutôt que dans les paramètres du téléphone, parce
-que sur beaucoup d'appareils le réglage système de vibration au toucher ne
-gouverne que le clavier du constructeur. Le choix s'applique dès le retour
-dans un champ de saisie.
+onglets. Deux blocs :
+
+- **Apparence** : « Comme le téléphone », « Toujours clair » ou « Toujours
+  sombre ». Seul le blanc des touches de lettres passe en anthracite ; le
+  vert, l'orange et le bleu du clavier ne bougent pas. Les deux positions
+  fixes existent parce que sur plusieurs surcouches constructeur le mode
+  sombre du téléphone ne descend pas jusqu'aux claviers tiers.
+- **Retour de frappe** : la **vibration** et le **son** à chaque appui.
+
+Ces réglages vivent dans l'application plutôt que dans les paramètres du
+téléphone, parce que sur beaucoup d'appareils le réglage système de vibration
+au toucher ne gouverne que le clavier du constructeur. Le choix s'applique dès
+le retour dans un champ de saisie.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_reglages_clavier.png" alt="Écran Réglages du clavier : interrupteurs Vibration à la frappe et Son de frappe" width="35%">
+  <img src="Screenshots/app_reglages_clavier.png" alt="Écran Réglages du clavier : bloc Apparence avec les trois choix de thème, puis interrupteurs Vibration à la frappe et Son de frappe" width="35%">
 </div>
 
 ## Questions fréquentes
