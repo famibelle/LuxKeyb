@@ -870,33 +870,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         mainLayout.addView(extrasTitle)
 
-        val isSpellCheckerOn = isSpellCheckerSelected()
-        val step4Card = createStepCard(
-            badge = "✚",
-            isCompleted = isSpellCheckerOn,
-            isLocked = false,
-            icon = "🔤",
-            title = "Corriger l'orthographe partout",
-            // Deux points seulement, mais les deux sur lesquels l'utilisateur
-            // s'arrête : le bouton ne mène qu'à l'écran système, où la
-            // sélection se fait dans un sous-menu (« Correcteur par défaut »)
-            // que rien ne signale, et Android intercale un avertissement sur
-            // l'accès au texte saisi. La marche à suivre numérotée en trois
-            // points disait la même chose en trois fois plus long.
-            description = "Pour ne plus voir vos mots kréyòl soulignés en rouge dans " +
-                "Messages, Notes et ailleurs.\n\n" +
-                "Dans l'écran qui s'ouvre : « Correcteur par défaut », puis " +
-                "« Correcteur Kréyòl Karukéra ».\n\n" +
-                "Android avertit qu'un correcteur peut lire le texte saisi. Le nôtre " +
-                "le compare au dictionnaire de l'application, sans rien conserver " +
-                "ni rien envoyer.",
-            buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
-            buttonEnabled = !isSpellCheckerOn,
-            buttonAction = {
-                openSpellCheckerSettings()
-            }
-        )
-        mainLayout.addView(step4Card)
+        mainLayout.addView(createSpellCheckerCard())
         mainLayout.addView(createSpacing(24))
 
         // Bascule d'un clavier à l'autre : l'aller et le retour n'utilisent
@@ -1650,6 +1624,145 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     // Fonction pour créer une card d'étape
+    /**
+     * Carte du correcteur orthographique. Elle emprunte l'habillage des étapes
+     * de configuration (badge, icône, titre) mais pas leur mécanique : ce n'est
+     * pas une étape du parcours numéroté, et sa mise en page diverge sur trois
+     * points.
+     *
+     * La carte entière est la cible de clic, signalée par un chevron : un
+     * bouton pleine largeur donnait à une fonction optionnelle le même poids
+     * visuel qu'aux trois étapes qui, elles, conditionnent l'usage du clavier.
+     *
+     * Ne reste visible que la promesse, plus l'avertissement qu'Android
+     * affichera. Ce dernier ne peut pas être replié : le dialogue système
+     * prévient que le correcteur « peut collecter tout le texte que vous tapez,
+     * y compris des données personnelles comme les mots de passe », et c'est là
+     * que l'utilisateur non prévenu abandonne. Une ligne le désamorce.
+     *
+     * La marche à suivre, elle, se déplie à la demande, sous un intitulé qui
+     * annonce ce qu'on y trouve : elle ne sert qu'une fois l'écran système
+     * ouvert, où la sélection se fait dans un sous-menu (« Correcteur par
+     * défaut ») que rien ne signale.
+     */
+    private fun createSpellCheckerCard(): LinearLayout {
+        val estActif = isSpellCheckerSelected()
+        val card = createRoundedCard("#FFFFFF")
+
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, 12)
+        }
+
+        val badgeView = TextView(this).apply {
+            text = "✚"
+            textSize = 20f
+            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 8, 12, 8)
+            setBackgroundColor(Color.parseColor(if (estActif) "#E8F5E9" else "#E3F2FD"))
+        }
+
+        val iconText = TextView(this).apply {
+            text = "🔤"
+            textSize = 24f
+            setPadding(16, 0, 12, 0)
+        }
+
+        val titleText = TextView(this).apply {
+            text = "Corriger l'orthographe partout"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        }
+
+        val marqueur = TextView(this).apply {
+            text = if (estActif) "✓" else "›"
+            textSize = if (estActif) 24f else 34f
+            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#757575"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 0, 4, 0)
+        }
+
+        header.addView(badgeView)
+        header.addView(iconText)
+        header.addView(titleText)
+        header.addView(marqueur)
+
+        val descText = TextView(this).apply {
+            // Le bénéfice s'énonce par ce qu'il apporte, pas par ce qu'il
+            // supprime, mais le trait rouge reste nommé : c'est à lui que
+            // l'utilisateur reconnaît la gêne qu'il subit tous les jours.
+            text = if (estActif) {
+                "Vos mots kréyòl sont reconnus dans Messages, Notes et ailleurs, " +
+                    "sans trait rouge dessous."
+            } else {
+                "Faites reconnaître vos mots kréyòl dans Messages, Notes et " +
+                    "ailleurs, sans trait rouge dessous."
+            }
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, if (estActif) 0 else 12)
+        }
+
+        card.addView(header)
+        card.addView(descText)
+
+        if (estActif) return card
+
+        val avertissement = TextView(this).apply {
+            text = "Android vous préviendra qu'un correcteur peut lire le texte saisi. " +
+                "Le nôtre le compare au dictionnaire de l'application, sans rien " +
+                "conserver ni rien envoyer."
+            textSize = 13f
+            setTextColor(Color.parseColor("#9E9E9E"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, 12)
+        }
+        card.addView(avertissement)
+
+        val details = TextView(this).apply {
+            text = "Dans l'écran qui s'ouvre :\n" +
+                "1. touchez « Correcteur par défaut »\n" +
+                "2. choisissez « Correcteur Kréyòl Karukéra »\n" +
+                "3. confirmez l'avertissement d'Android"
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, 0, 0, 12)
+            visibility = View.GONE
+        }
+
+        val lien = TextView(this).apply {
+            text = "ⓘ  Ce qu'Android va vous demander"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            gravity = Gravity.CENTER
+            setPadding(0, 8, 0, 0)
+            setOnClickListener {
+                val ouvert = details.visibility == View.VISIBLE
+                details.visibility = if (ouvert) View.GONE else View.VISIBLE
+                text = if (ouvert) "ⓘ  Ce qu'Android va vous demander" else "▲  Masquer"
+            }
+        }
+
+        card.addView(details)
+        card.addView(lien)
+
+        card.isClickable = true
+        card.setOnClickListener { openSpellCheckerSettings() }
+
+        return card
+    }
+
     private fun createStepCard(
         badge: String,
         isCompleted: Boolean,
