@@ -10,6 +10,7 @@ lang: fr
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="index.html#devenir-testeur">🧪 Testeur</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
   <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
