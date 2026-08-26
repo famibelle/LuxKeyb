@@ -5,6 +5,18 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.8] - 2026-08-26
+
+### 🤫 Le guide révélait le huitième niveau
+
+La section « Progression » annonçait « huit niveaux culturels » et les nommait
+tous. Le huitième est un easter egg : il n'a pas à être annoncé, `ASTUCES.md`
+le dit depuis longtemps et l'onglet « Kréyòl an mwen » le respecte déjà, ne
+montrant jamais que le niveau atteint et le suivant.
+
+Le guide s'aligne : sept niveaux nommés, de Pipirit à Potomitan, et un
+huitième à trouver.
+
 ## [10.14.7] - 2026-08-26
 
 ### 📖 Le guide décrivait une application qui avait changé sous lui
