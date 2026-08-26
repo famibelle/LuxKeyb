@@ -5,6 +5,31 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.6] - 2026-08-26
+
+### 👆 La carte du correcteur se touche, elle n'a plus de bouton
+
+Le correcteur orthographique est une option, pas une étape du parcours
+d'installation. Son bouton bleu pleine largeur lui donnait pourtant le même
+poids visuel que les trois étapes qui, elles, conditionnent l'usage du clavier.
+Il disparaît : la carte entière devient la cible du toucher, signalée par un
+chevron, et se replie de moitié.
+
+Reste visible la promesse, et une ligne sur ce qu'Android va demander. Ce
+dernier point ne peut pas être replié : le système prévient qu'un correcteur
+« peut collecter tout le texte que vous tapez, y compris des données
+personnelles comme les mots de passe », et c'est là que l'utilisateur non
+prévenu renonce. La marche à suivre, elle, se déplie sous « Ce qu'Android va
+vous demander », un intitulé qui annonce ce qu'on y trouve.
+
+La promesse s'énonce enfin par ce qu'elle apporte : « Faites reconnaître vos
+mots kréyòl dans Messages, Notes et ailleurs, sans trait rouge dessous », là où
+la formulation précédente commençait par une privation. Le trait rouge reste
+nommé, c'est à lui que la gêne se reconnaît.
+
+Une fois le correcteur choisi, la carte tient en deux lignes, badge et coche
+verts.
+
 ## [10.14.5] - 2026-08-26
 
 ### ✂️ La section optionnelle de l'onglet Démarrage, deux fois plus courte
