@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.5] - 2026-08-26
+
+### ✂️ La section optionnelle de l'onglet Démarrage, deux fois plus courte
+
+Les deux cartes qui suivent la configuration en trois étapes étaient devenues
+des pavés : celle du correcteur orthographique tenait en onze lignes, dont une
+marche à suivre numérotée, et celle de la bascule entre claviers en cinq
+paragraphes. Sur un écran de téléphone, la première remplissait tout ce qui
+restait sous le titre de section.
+
+Les deux sont resserrées sans rien perdre de ce qui débloque réellement
+l'utilisateur : pour le correcteur, le sous-menu « Correcteur par défaut »
+que rien ne signale et l'avertissement d'Android sur l'accès au texte saisi ;
+pour la bascule, l'asymétrie du geste de retour, l'appui long sur la barre
+d'espace des autres claviers ne changeant que leur propre langue. Ce qui part,
+ce sont les noms de claviers cités en exemple et les redites.
+
+Chaque carte tient maintenant dans un écran, bouton compris.
+
 ## [10.14.4] - 2026-08-26
 
 ### 🧹 Un seul chemin d'écriture pour les compteurs de vocabulaire
