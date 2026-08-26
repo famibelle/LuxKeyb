@@ -29,7 +29,7 @@ Clavier créole guadeloupéen : suggestions kréyòl, accents, 100 % hors ligne
 
 ```
 📣 Nouveau : partage l'appli et donne ton avis en un clic depuis l'onglet À Propos.
-🎉 Chaque niveau atteint (Pipirit → Benzo) génère une carte à partager avec tes amis.
+🎉 Chaque niveau atteint (Pipirit → Potomitan) génère une carte à partager avec tes amis.
 ✨ Petites corrections de textes en créole.
 
 Ba kréyòl la lanmou'w : télécharge, note, partage !
