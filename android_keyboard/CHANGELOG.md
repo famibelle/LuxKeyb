@@ -5,6 +5,34 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.3] - 2026-08-26
+
+### 🔒 Le clavier ne demande plus que la notification
+
+Deux autorisations quittent le manifeste : l'écriture dans le dictionnaire
+personnel d'Android et la lecture du stockage. Ni l'une ni l'autre n'avait
+d'appelant dans le code. La première avait été ajoutée pour le dictionnaire
+personnel de la 10.5.0, fonction supprimée dès la 10.6.0 ; la seconde n'a
+jamais servi. L'attribut `requestLegacyExternalStorage` part avec elles :
+il n'accompagnait que la seconde, et il est sans effet depuis targetSdk 30.
+
+Une autorisation déclarée s'affiche sur la fiche Play et doit être justifiée
+dans la politique de confidentialité. En garder une dont rien ne se sert coûte
+de la confiance sans rien apporter. Il reste `POST_NOTIFICATIONS`, la seule que
+le clavier exerce, pour annoncer un nouveau niveau de vocabulaire.
+
+Rien ne change à la frappe, aux suggestions, aux accents ni aux jeux.
+
+### 📄 La politique de confidentialité dit ce que l'application fait
+
+Elle décrivait encore le dictionnaire personnel de la 10.5.0, à cinq endroits,
+et omettait `POST_NOTIFICATIONS`, la seule autorisation réellement demandée.
+Elle documente désormais ce qui existe : des compteurs d'usage portant
+uniquement sur les mots déjà présents dans le dictionnaire livré, un mot absent
+n'étant jamais enregistré.
+
+Le site accueille par ailleurs une page de questions fréquentes.
+
 ## [10.14.2] - 2026-08-26
 
 ### 🔤 Les lettres des touches perdent leur gras
