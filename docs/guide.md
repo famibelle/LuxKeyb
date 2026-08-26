@@ -313,13 +313,13 @@ lettre présente mais ailleurs, gris pour une lettre absente. Le mot proposé
 doit exister dans le dictionnaire kréyòl.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/app_onglet_mokarenaj.png" alt="Onglet Mo an Karénaj : deux essais joués, ZANMI avec A, N et M en orange, KOURI tout en gris, et la ligne des lettres déjà employées" width="35%">
+  <img src="Screenshots/app_onglet_mokarenaj.png" alt="Onglet Mo an Karénaj : deux essais joués, ZANMI avec le A en orange, KOURI tout en gris, et la ligne des lettres déjà employées" width="35%">
 </div>
 
 Le mot se tape avec le clavier kréyòl, accents compris :
 
 <div align="center" style="margin: 16px 0;">
-  <img loading="lazy" src="Screenshots/gif_jeu_mokarenaj.gif" alt="Animation : les essais GOUTI puis TOUDI tapés au clavier, les cases se colorant en vert, orange et gris jusqu'au message « Bravo ! »" width="45%">
+  <img loading="lazy" src="Screenshots/gif_jeu_mokarenaj.gif" alt="Animation : les essais RIPAJ, TIRAJ puis VIRAJ tapés au clavier, les cases se colorant en vert, orange et gris jusqu'au message « Bravo ! »" width="45%">
 </div>
 
 ### 📖 Guide
