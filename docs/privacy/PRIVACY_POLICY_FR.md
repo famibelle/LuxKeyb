@@ -1,8 +1,8 @@
 # Politique de Confidentialité - Klavyé Kréyòl Karukera • Potomitan™
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 10 novembre 2025  
-**Version :** 2.0  
+**Dernière mise à jour :** 26 août 2026  
+**Version :** 2.1  
 **Application :** Klavyé Kréyòl Karukera • Potomitan™  
 **Nom du package :** com.potomitan.kreyolkeyboard
 
@@ -102,7 +102,7 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 - **Contrôle d'installation :** Contrôle total sur l'installation/désinstallation
 - **Gestion des permissions :** Peut révoquer toute permission à tout moment via les paramètres Android
-- **Gestion du dictionnaire utilisateur :** Peut voir, modifier ou supprimer les entrées du dictionnaire personnel via les paramètres Android (Paramètres > Système > Langues et saisie > Dictionnaire personnel)
+- **Aucun apprentissage de vos mots :** L'app ne construit aucun dictionnaire personnel ; il n'existe donc aucune liste de mots tapés à consulter, à corriger ou à purger
 - **Réinitialisation des paramètres :** Peut effacer toutes les préférences via les paramètres Android
 - **Aucun compte requis :** Aucune création de compte, connexion ou inscription nécessaire
 - **Désinstaller = Suppression complète :** La désinstallation supprime toutes les données de l'app de l'appareil
@@ -157,12 +157,13 @@ Nous voulons être parfaitement clairs sur ce que nous **ne collectons pas** :
 
 Les données suivantes existent **uniquement sur votre appareil** et ne sont **jamais transmises à nous ou à quiconque** :
 
-1. **Ajouts au Dictionnaire Utilisateur :**
-   - Mots que vous ajoutez manuellement à votre dictionnaire personnel (ex: noms, termes créoles personnalisés)
-   - Stockés dans le **dictionnaire système Android**, pas dans notre app
-   - Nous ne pouvons pas accéder à ces données - c'est géré par Android
-   - Peut être consulté/modifié/supprimé via : Paramètres > Système > Langues et saisie > Dictionnaire personnel
-   - Synchronisé par Google si vous activez la sync du compte Google (nous n'avons aucun contrôle sur ceci)
+1. **Compteurs d'Usage du Vocabulaire :**
+   - Un compteur par mot, portant **uniquement** sur les mots déjà présents dans le dictionnaire livré avec l'app
+   - Un mot absent de ce dictionnaire n'est **jamais** enregistré, quel que soit le nombre de fois où vous le tapez
+   - Sont écartés avant tout comptage : les mots de moins de 3 lettres, ceux qui contiennent un chiffre, les adresses email et les liens
+   - Servent à l'écran « Kréyòl an mwen » et au classement de vos suggestions
+   - Stockés dans un fichier privé de l'app, effacés avec elle
+   - **L'app ne construit aucun dictionnaire personnel.** Cette fonction a existé dans la version 10.5.0 et a été retirée dès la 10.6.0 ; l'app efface d'elle-même le fichier laissé sur les appareils qui avaient installé cette version
 
 2. **Paramètres/Préférences de l'App :**
    - Votre choix de thème du clavier (schéma de couleurs)
@@ -236,7 +237,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 Puisque nous ne collectons aucune donnée au départ, il n'y a rien à conserver sur nos serveurs.
 
 **Conservation des Données Locales :**
-- Dictionnaire utilisateur : Persiste sur l'appareil jusqu'à suppression manuelle ou désinstallation de l'app
+- Compteurs d'usage du vocabulaire : Persistent jusqu'à effacement des données de l'app ou désinstallation
 - Préférences de l'app : Persistent jusqu'à effacement des données de l'app ou désinstallation
 - Progression de gamification : Persiste jusqu'à effacement des données de l'app ou désinstallation
 - **Pas d'expiration automatique** car les données ne quittent jamais votre appareil
@@ -255,14 +256,18 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 **Ce qu'elle NE PEUT PAS faire :** Cette autorisation ne donne PAS accès à votre contenu tapé  
 **Contrôle utilisateur :** Vous activez ceci en sélectionnant notre clavier dans les paramètres Android (Paramètres > Système > Langues et saisie > Clavier à l'écran)
 
-### 2️⃣ WRITE_USER_DICTIONARY (Optionnel)
+### 2️⃣ POST_NOTIFICATIONS (Optionnel, Android 13+)
 
-**Ce qu'elle fait :** Permet d'ajouter des mots au dictionnaire personnel de votre appareil  
-**Pourquoi nous en avons besoin :** Pour que vous puissiez enregistrer des mots créoles personnalisés que vous utilisez fréquemment, permettant une meilleure autocorrection  
-**Impact sur la vie privée :** Aucun - les mots sont stockés dans le dictionnaire système Android (non accessible par nous)  
-**Ce qu'elle NE PEUT PAS faire :** Ne peut pas accéder aux mots du dictionnaire existants d'autres apps  
-**Contrôle utilisateur :** Peut être révoquée dans Infos app > Autorisations ; peut supprimer les mots via Paramètres Android > Système > Langues et saisie > Dictionnaire personnel  
-**Emplacement des données :** Stockage système Android (partagé avec d'autres claviers si vous le choisissez)
+**Ce qu'elle fait :** Permet d'afficher une notification  
+**Pourquoi nous en avons besoin :** Uniquement pour signaler qu'un nouveau niveau de vocabulaire vient d'être atteint  
+**Impact sur la vie privée :** Aucun - la notification est composée sur l'appareil, rien n'est transmis  
+**Ce qu'elle NE PEUT PAS faire :** Ne donne accès à aucune donnée, ni aux vôtres ni à celles des autres apps  
+**Contrôle utilisateur :** Peut être refusée à l'invite ou révoquée dans Infos app > Notifications ; l'app fonctionne à l'identique sans elle  
+**Emplacement des données :** Aucune donnée stockée
+
+### 🧹 Autorisations Retirées en Version 10.14.3
+
+**WRITE_USER_DICTIONARY** et **READ_EXTERNAL_STORAGE** figuraient au manifeste des versions antérieures sans qu'aucune ligne de code ne les appelle. La première avait été ajoutée pour le dictionnaire personnel de la 10.5.0, fonction supprimée dès la 10.6.0. Elles ne sont plus demandées : une autorisation affichée sur la fiche Play doit correspondre à un usage réel.
 
 ### ❌ Autorisations que Nous NE Demandons PAS :
 
@@ -382,38 +387,30 @@ Puisqu'aucune donnée n'est collectée sur nos serveurs, il n'y a rien à conser
 
 Les données suivantes persistent sur votre appareil tant que l'app est installée :
 
-- **Dictionnaire Utilisateur :** Stocké indéfiniment par Android OS, partagé avec d'autres claviers
+- **Compteurs d'usage du vocabulaire :** Stockés jusqu'à ce que vous effaciez les données de l'app ou désinstalliez
 - **Préférences de l'App :** Stockées jusqu'à ce que vous effaciez les données de l'app ou désinstalliez
 - **Progression de Gamification :** Stockée jusqu'à ce que vous effaciez les données de l'app ou désinstalliez
 
 ### Comment Supprimer Vos Données :
 
-**Option 1 : Supprimer des Entrées Spécifiques du Dictionnaire Utilisateur**
-1. Allez dans : Paramètres Android
-2. Sélectionnez : Système > Langues et saisie > Dictionnaire personnel
-3. Choisissez la langue (Créole ou Français)
-4. Supprimez des mots individuels ou appuyez sur menu > Tout supprimer
-
-**Option 2 : Effacer les Préférences de l'App (Garder l'App Installée)**
+**Option 1 : Effacer les Préférences de l'App (Garder l'App Installée)**
 1. Allez dans : Paramètres Android > Apps
 2. Sélectionnez : Klavyé Kréyòl Karukera
 3. Appuyez sur : Stockage > Effacer les données
 4. Confirmez la suppression
 5. Ceci réinitialise tous les paramètres et la progression de gamification
 
-**Option 3 : Suppression Complète (Désinstaller l'App)**
+**Option 2 : Suppression Complète (Désinstaller l'App)**
 1. Allez dans : Paramètres Android > Apps > Klavyé Kréyòl Karukera
 2. Appuyez sur : Désinstaller
 3. Ou : Google Play Store > Installé > Klavyé Kréyòl > Désinstaller
 4. Toutes les données de l'app sont immédiatement supprimées de votre appareil
 
-**Option 4 : Réinitialisation d'Usine de l'Appareil**
+**Option 3 : Réinitialisation d'Usine de l'Appareil**
 - Option nucléaire : Réinitialise l'appareil entier et supprime toutes les apps
 
 **Note sur les Sauvegardes Cloud :**
-Si vous avez activé la sauvegarde Android (Paramètres > Google > Sauvegarde), Google peut sauvegarder :
-- Les préférences de l'app
-- Le dictionnaire utilisateur
+Si vous avez activé la sauvegarde Android (Paramètres > Google > Sauvegarde), Google peut sauvegarder les préférences de l'app.
 Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtre. Pour empêcher cela :
 - Paramètres > Google > Sauvegarde > Désactiver "Sauvegarder sur Google Drive"
 
@@ -443,7 +440,7 @@ Même si nous ne collectons aucune donnée, nous respectons tous les droits à l
 
 4. **Droit à la Portabilité des Données (Article 20) :** 
    - Vous pouvez exporter vos données dans un format lisible par machine
-   - **Notre réponse :** Vous pouvez exporter votre dictionnaire utilisateur via les paramètres Android
+   - **Notre réponse :** Nous ne détenons aucune donnée vous concernant, il n'y a donc rien à exporter de notre côté
 
 5. **Droit d'Opposition (Article 21) :** 
    - Vous pouvez vous opposer au traitement des données
@@ -604,7 +601,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 ### Contrôle de Version :
 
-1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **2.0**)
+1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **2.1**)
 2. **Date d'Entrée en Vigueur :** Mise à jour en haut de ce document
 3. **Historique des Changements :** Disponible sur notre dépôt GitHub
 4. **Changements Importants :** Seront mis en évidence dans les annonces de mise à jour
