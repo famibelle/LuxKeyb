@@ -5,6 +5,32 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.7] - 2026-08-26
+
+### 📖 Le guide décrivait une application qui avait changé sous lui
+
+Six passages de l'onglet « Guide » ne correspondaient plus à ce que
+l'utilisateur a sous les yeux. Deux comptaient vraiment.
+
+Le geste des accents, d'abord : le guide demandait de glisser le doigt vers
+l'accent voulu puis de relâcher. C'est le geste de Gboard, pas le nôtre. Les
+touches de la fenêtre d'accents ne répondent qu'au clic ; un geste continu
+parti de la lettre n'insère rien. La fenêtre reste ouverte au relâchement, et
+c'est un second appui qui choisit l'accent : le guide le dit maintenant.
+
+L'étape 4, ensuite : le correcteur orthographique a été sorti du parcours
+numéroté pour ne pas laisser croire à une quatrième étape face à un anneau qui
+en annonce trois. Le guide y envoyait toujours. Il renvoie désormais à la carte
+« Corriger l'orthographe partout », sous « Pou ay pli lwen ».
+
+Le reste est du vocabulaire à réaligner : les boutons « Ouvrir les réglages
+Android » et « Ouvrir le sélecteur de claviers » étaient cités sous leurs
+anciens noms, le parcours était décrit avec deux étapes au lieu de trois, et
+les jeux étaient annoncés au nombre de deux alors que Mo an Karénaj les a
+portés à trois en 10.3.0.
+
+Rien ne change dans le clavier lui-même.
+
 ## [10.14.6] - 2026-08-26
 
 ### 👆 La carte du correcteur se touche, elle n'a plus de bouton
