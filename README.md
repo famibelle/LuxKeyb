@@ -74,6 +74,18 @@ Gboard gère le luxembourgeois parmi 900 autres langues, et Apple ne l'ajoutera 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/LuxKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases/latest)
 [![GitHub all releases](https://img.shields.io/github/downloads/famibelle/LuxKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases)
 
+### 🧪 **Test fermé sur Google Play**
+
+L'application est en test fermé sur le Play Store. Y participer, c'est la recevoir comme n'importe quelle autre application : installation en un geste, mises à jour automatiques, sans autoriser les « sources inconnues ».
+
+1. Depuis votre téléphone, ouvrez la [page d'inscription au test](https://play.google.com/apps/testing/com.potomitan.luxkeyboard) avec le compte Google que vous utilisez sur le Play Store
+2. Appuyez sur **Devenir testeur**, puis suivez le lien vers Google Play
+3. Le test est réservé à une liste de comptes : si le vôtre n'y est pas encore, ouvrez une [issue](https://github.com/famibelle/LuxKeyb/issues) ou passez par le [formulaire de retours](https://famibelle.github.io/LuxKeyb/feedbacks_form.html)
+
+Google demande au moins douze testeurs pendant quatorze jours avant d'autoriser une publication ouverte : chaque inscription rapproche le clavier du Play Store public. Détails sur la [page d'accueil du site](https://famibelle.github.io/LuxKeyb/#devenir-testeur).
+
+L'APK ci-dessous reste disponible et contient exactement le même code.
+
 ### 📱 **Installation Rapide**
 
 1. **Téléchargez l'APK** depuis la [dernière release](https://github.com/famibelle/LuxKeyb/releases/latest)

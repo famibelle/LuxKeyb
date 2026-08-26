@@ -58,6 +58,10 @@ Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statis
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/famibelle/LuxKeyb?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases/latest)
 [![GitHub all releases](https://img.shields.io/github/downloads/famibelle/LuxKeyb/total?style=for-the-badge&logo=github)](https://github.com/famibelle/LuxKeyb/releases)
 
+### 🧪 **Test fermé sur Google Play**
+
+L'application est en test fermé sur le Play Store : [devenir testeur](https://play.google.com/apps/testing/com.potomitan.luxkeyboard) depuis votre téléphone, avec le compte Google que vous y utilisez. Installation en un geste et mises à jour automatiques, sans passer par les « sources inconnues ». Le test est réservé à une liste de comptes ; si le vôtre n'y est pas encore, dites-le dans le [formulaire de retours](feedbacks_form.html). Détails sur la [page d'accueil](index.html#devenir-testeur).
+
 ### 📱 **Installation Rapide**
 
 📥[Télécharger directement](https://github.com/famibelle/LuxKeyb/releases)
