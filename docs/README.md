@@ -62,6 +62,10 @@ Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statis
 
 L'application est en test fermé sur le Play Store : [devenir testeur](https://play.google.com/apps/testing/com.potomitan.luxkeyboard) depuis votre téléphone, avec le compte Google que vous y utilisez. Installation en un geste et mises à jour automatiques, sans passer par les « sources inconnues ». Le test est réservé à une liste de comptes ; si le vôtre n'y est pas encore, dites-le dans le [formulaire de retours](feedbacks_form.html). Détails sur la [page d'accueil](index.html#devenir-testeur).
 
+<div align="center">
+  <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"><img src="assets/qr-luxkeyb-test-ferme.png" alt="QR code ouvrant la page d'inscription au test fermé sur Google Play" width="200"></a>
+</div>
+
 ### 📱 **Installation Rapide**
 
 📥[Télécharger directement](https://github.com/famibelle/LuxKeyb/releases)

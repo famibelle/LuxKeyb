@@ -218,6 +218,19 @@ mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
 3. Suivez le lien vers Google Play qui apparaît ensuite : la fiche s'ouvre,
    signalée comme version de test, et l'installation se fait normalement.
 
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;text-align:center;">
+    <img src="assets/qr-luxkeyb-test-ferme.png"
+         alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
+         width="160" height="160"
+         style="display:block;width:160px;height:160px;background:#fff;
+                border-radius:8px;padding:6px;box-sizing:border-box;">
+    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
+      Scannez : la page d'inscription s'ouvre
+    </figcaption>
+  </figure>
+</div>
+
 Le test est réservé à une liste de comptes. Si la page vous répond que le
 programme n'est pas ouvert au vôtre, indiquez l'adresse Google concernée dans le
 [formulaire de retours](feedbacks_form.html) et elle y sera ajoutée.
