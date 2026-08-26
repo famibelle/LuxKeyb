@@ -5,6 +5,22 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.14.4] - 2026-08-26
+
+### 🧹 Un seul chemin d'écriture pour les compteurs de vocabulaire
+
+L'écran des réglages portait un second système d'enregistrement des compteurs
+d'usage, complet mais sans appelant : son commentaire annonçait qu'il était
+« appelé depuis le clavier », ce qui n'était pas le cas. Il écrivait le même
+fichier que le clavier, mais dans un format différent, qui n'aurait pas conservé
+les fréquences du corpus. Rebranché un jour par inadvertance, il aurait effacé
+en silence une information que rien ne permet de reconstituer sur l'appareil.
+
+Il est supprimé. Le clavier garde son unique chemin d'écriture, inchangé, et
+l'onglet « Kréyòl an mwen » continue de relire le fichier à chaque ouverture.
+
+Aucun changement visible : mêmes compteurs, mêmes statistiques, mêmes niveaux.
+
 ## [10.14.3] - 2026-08-26
 
 ### 🔒 Le clavier ne demande plus que la notification
