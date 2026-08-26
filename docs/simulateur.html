@@ -51,8 +51,11 @@
     min-height: 130px;
     max-height: 190px;
     overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* vieux Edge */
     padding: 14px;
   }
+  .phone-screen::-webkit-scrollbar { display: none; } /* Chrome/Safari */
   .phone-screen-text {
     font-size: 16px;
     line-height: 1.5;
