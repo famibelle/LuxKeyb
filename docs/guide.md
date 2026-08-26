@@ -20,6 +20,7 @@ lang: fr
       <a href="privacy/privacy-policy.html">Confidentialité</a>
     </div>
   </details>
+  <a href="faq.html">❓ FAQ</a>
   <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dlanding%26utm_campaign%3Dlaunch10k%26utm_content%3Dnav">📲 Installer, c'est gratuit</a>
   <details class="menu nav-after" name="navmenu">
     <summary class="in-section">Déjà installé ?</summary>
