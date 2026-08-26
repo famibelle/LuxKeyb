@@ -2483,8 +2483,9 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
             "Chaque mot que vous tapez fait progresser votre maîtrise du kréyòl, visible dans l'onglet " +
-                    "« Kréyòl an mwen ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
-                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
+                    "« Kréyòl an mwen ». Sept niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
+                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan. Un huitième existe, " +
+                    "à vous de le trouver."
         )
 
         val faqCard = createCard("#FFF8E1")
