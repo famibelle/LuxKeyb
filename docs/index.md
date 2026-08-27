@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
@@ -51,6 +52,10 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
 
 <p align="center"><em>Vous préférez le Play Store ? L'application y est en test
 fermé : <a href="#devenir-testeur">devenir testeur</a>.</em></p>
+
+<p align="center"><em>Envie de l'essayer d'abord ? Le clavier tourne aussi
+<a href="simulateur.html">dans votre navigateur</a>, avec son vrai dictionnaire
+et ses vraies suggestions.</em></p>
 
 ## Le clavier en action
 

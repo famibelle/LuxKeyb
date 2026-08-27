@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <strong>📘 Guide</strong> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·

@@ -1,13 +1,18 @@
 /*
- * Moteur de suggestion du simulateur Klavyé Kréyòl Karukera.
+ * Moteur de suggestion du simulateur Lëtzebuergesch Clavier.
  * Port JS fidèle de SuggestionEngine.kt / LevenshteinDistance.kt /
  * AccentTolerantMatcher.kt / BilingualSuggestion.kt (android_keyboard/).
  * Toute divergence de comportement avec l'app Android est un bug de ce fichier.
+ *
+ * Les noms globaux (KreyolSimulatorEngine, plus bas) restent ceux du dépôt
+ * amont KreyolKeyb, dont ce fichier est un portage : les renommer rendrait
+ * chaque futur `git merge` plus coûteux pour un gain nul côté page. Même
+ * politique que le paquet Kotlin com.example.kreyolkeyboard.
  */
 (function (global) {
   'use strict';
 
-  const MAX_SUGGESTIONS = 5; // 3 kréyòl + 2 français, comme SuggestionEngine.MAX_SUGGESTIONS
+  const MAX_SUGGESTIONS = 5; // 3 lëtzebuergesch + 2 français, comme SuggestionEngine.MAX_SUGGESTIONS
   const MIN_WORD_LENGTH = 1;
 
   // ---- AccentTolerantMatcher ----
@@ -164,12 +169,12 @@
 
   const DEFAULT_BILINGUAL_CONFIG = {
     frenchActivationThreshold: 3,
-    maxKreyolSuggestions: 3,
+    maxLuxSuggestions: 3,
     maxFrenchSuggestions: 2,
-    kreyolPriorityBoost: 1.5,
+    luxPriorityBoost: 1.5,
     frenchPenalty: 0.8,
     enableFrenchSupport: true,
-    kreyolOnlyMode: false
+    luxOnlyMode: false
   };
 
   // ---- SuggestionEngine ----
@@ -215,12 +220,12 @@
 
     shouldActivateFrench(input) {
       const c = this.bilingualConfig;
-      return c.enableFrenchSupport && !c.kreyolOnlyMode && input.length >= c.frenchActivationThreshold;
+      return c.enableFrenchSupport && !c.luxOnlyMode && input.length >= c.frenchActivationThreshold;
     }
 
     adjustScoreByLanguage(score, language) {
       const c = this.bilingualConfig;
-      return language === 'KREYOL' ? score * c.kreyolPriorityBoost : score * c.frenchPenalty;
+      return language === 'LUX' ? score * c.luxPriorityBoost : score * c.frenchPenalty;
     }
 
     // → [[word, freq, distance], ...]
@@ -257,11 +262,24 @@
       return findClosestMatches(input, this.dictionary, 2, MAX_SUGGESTIONS, 2);
     }
 
+    // Le modèle porte deux familles de clés dans un seul objet plat : un mot
+    // ("der", issu des bigrammes) et deux mots ("an der", issu des trigrammes).
+    // La paire est essayée en premier, nettement plus précise, avec repli sur le
+    // dernier mot seul. Cf. SuggestionEngine.resolveNgramContext().
+    resolveNgramContext(previousWord, lastWord) {
+      const twoWordContext = previousWord ? previousWord + ' ' + lastWord : null;
+      if (twoWordContext && Object.prototype.hasOwnProperty.call(this.ngramModel, twoWordContext)) {
+        return twoWordContext;
+      }
+      return lastWord;
+    }
+
     // → [word, ...] triés par probabilité décroissante
     getNgramSuggestions() {
       const lastWord = this.wordHistory[this.wordHistory.length - 1];
       if (!lastWord) return [];
-      const list = this.ngramModel[lastWord];
+      const previousWord = this.wordHistory[this.wordHistory.length - 2];
+      const list = this.ngramModel[this.resolveNgramContext(previousWord, lastWord)];
       if (!list) return [];
 
       const seen = new Set();
@@ -279,7 +297,7 @@
     }
 
     // → [{word, score, language}, ...] casse déjà appliquée
-    getKreyolSuggestions(input) {
+    getLuxSuggestions(input) {
       const dictMatches = this.getDictionarySuggestions(input);
       const ngramMatches = this.wordHistory.length > 0 ? this.getNgramSuggestions() : [];
 
@@ -297,11 +315,11 @@
 
       const result = [...scores.entries()].map(([word, score]) => ({
         word: applyCasingPattern(input, word),
-        score: this.adjustScoreByLanguage(score, 'KREYOL'),
-        language: 'KREYOL'
+        score: this.adjustScoreByLanguage(score, 'LUX'),
+        language: 'LUX'
       }));
       result.sort((a, b) => b.score - a.score);
-      return result.slice(0, this.bilingualConfig.maxKreyolSuggestions);
+      return result.slice(0, this.bilingualConfig.maxLuxSuggestions);
     }
 
     getFrenchSuggestions(input) {
@@ -325,12 +343,12 @@
       return result;
     }
 
-    // Positions 1-3 réservées kréyòl, 4-5 français optionnel (mergeSuggestionsKreyolFirst)
-    mergeSuggestionsKreyolFirst(kreyolSuggs, frenchSuggs) {
+    // Positions 1-3 réservées au luxembourgeois, 4-5 français optionnel
+    mergeSuggestionsLuxFirst(luxSuggs, frenchSuggs) {
       const result = [];
       const used = new Set();
 
-      for (const s of kreyolSuggs.slice(0, 3)) {
+      for (const s of luxSuggs.slice(0, 3)) {
         const key = s.word.toLowerCase();
         if (!used.has(key)) {
           result.push(s);
@@ -344,7 +362,7 @@
           used.add(key);
         }
       }
-      for (const s of kreyolSuggs.slice(3)) {
+      for (const s of luxSuggs.slice(3)) {
         const key = s.word.toLowerCase();
         if (result.length < MAX_SUGGESTIONS && !used.has(key)) {
           result.push(s);
@@ -357,12 +375,12 @@
     // Suggestions bilingues (mode frappe) — équivalent generateBilingualSuggestions()
     generateBilingualSuggestions(input) {
       if (input.length < MIN_WORD_LENGTH) return [];
-      const kreyol = this.getKreyolSuggestions(input);
+      const lux = this.getLuxSuggestions(input);
       const french = this.shouldActivateFrench(input) ? this.getFrenchSuggestions(input) : [];
-      return this.mergeSuggestionsKreyolFirst(kreyol, french);
+      return this.mergeSuggestionsLuxFirst(lux, french);
     }
 
-    // Prédictions contextuelles n-gram (mode après espace) — kréyòl uniquement
+    // Prédictions contextuelles n-gram (mode après espace) — luxembourgeois uniquement
     generateContextualSuggestions() {
       if (this.wordHistory.length === 0 || Object.keys(this.ngramModel).length === 0) return [];
       return this.getNgramSuggestions();
