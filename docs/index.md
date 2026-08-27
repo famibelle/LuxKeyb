@@ -8,6 +8,7 @@ lang: fr
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·

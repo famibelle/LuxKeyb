@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les corpus du Lëtzebuergesch Clavier en chiffres</title>
+<meta name="description" content="D'où viennent les suggestions du clavier luxembourgeois : les deux corpus ouverts LuxAlign et LETZ, leur taille, leur vocabulaire, leurs accents, et ce qui en arrive dans l'application.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:780px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:62ch;margin:0 0 10px;}
+section{margin-top:46px;}
+h2{font-size:21px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+h3{font-size:15px;font-weight:700;margin:0 0 10px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 0;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.tile .n{display:block;font-size:clamp(22px,5vw,29px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px;}
+.tile .sub{display:block;font-size:12px;color:var(--ink-soft);margin-top:6px;}
+
+/* Fiche de corpus : en-tête, chiffres, puis la citation exigée par la licence */
+.corpus{border:1px solid var(--line);border-radius:14px;padding:0;margin-bottom:18px;overflow:hidden;background:var(--card);}
+.corpus > .body{padding:18px;}
+.corpus .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:4px;}
+.corpus .name{font-size:19px;font-weight:800;letter-spacing:-0.01em;margin:0;}
+.corpus .role{font-size:13px;color:var(--ink-soft);}
+.lic{display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink-soft);white-space:nowrap;}
+.lic.nc{background:var(--sun-soft);border-color:color-mix(in srgb, var(--sun) 35%, transparent);color:var(--ink);}
+.lic.by{background:var(--sea-soft);border-color:color-mix(in srgb, var(--sea) 30%, transparent);color:var(--ink);}
+.corpus .meta{font-size:13.5px;color:var(--ink-soft);margin:0 0 12px;}
+.corpus .meta a{color:var(--sea);}
+
+.cite{border-top:1px solid var(--line);background:var(--stripe);padding:14px 18px 16px;}
+.cite .cite-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.cite h4{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:700;}
+/* La citation est le motif principal de cette page : elle doit se lire en
+   entier sans défilement latéral. L'enroulement est purement visuel — le
+   bouton copie textContent, qui conserve les vraies fins de ligne du BibTeX. */
+.cite pre{margin:0;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere;}
+.copy{border:1px solid var(--line);background:var(--card);color:var(--sea);font:inherit;font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 12px;cursor:pointer;white-space:nowrap;}
+.copy:hover{background:var(--sea-soft);}
+.copy:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+.copy.done{color:var(--ink);}
+
+.chart{margin:6px 0 0;}
+.chart .row{display:grid;grid-template-columns:minmax(84px,auto) 1fr auto;align-items:center;gap:10px;padding:3px 0;}
+.chart.wide-label .row{grid-template-columns:minmax(150px,40%) 1fr auto;}
+.chart .lbl{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chart .lbl .mono{font-family:var(--mono);}
+.chart .track{background:var(--stripe);border-radius:4px;height:14px;}
+.chart .bar{display:block;height:100%;background:var(--sea);border-radius:0 4px 4px 0;min-width:2px;}
+.chart .bar.alt{background:var(--hibiscus);}
+.chart .val{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:58px;text-align:right;}
+.chart-note{font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;}
+
+.table-scroll{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);}
+tbody tr:hover{background:var(--stripe);}
+.lux{font-family:var(--mono);font-size:13.5px;}
+.win{color:var(--sea);font-weight:700;}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;}
+.pill{border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:14px;background:var(--card);}
+.pill b{font-variant-numeric:tabular-nums;}
+.pill .g{font-family:var(--mono);font-size:15px;}
+
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
+.note p:last-child{margin-bottom:0;}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-top:14px;}
+.flow .step{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;}
+.flow .step .n{font-family:var(--mono);font-size:12px;color:var(--sea);letter-spacing:.08em;}
+.flow .step h3{margin:6px 0 4px;font-size:15px;}
+.flow .step p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+a{color:var(--sea);}
+footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
+.loading{color:var(--ink-soft);font-size:14px;font-style:italic;}
+
+@media (max-width:520px){
+  body{padding:0 12px 60px;}
+  .card,.corpus > .body{padding:14px;}
+  .cite{padding:12px 14px 14px;}
+  .tiles{grid-template-columns:repeat(auto-fit,minmax(132px,1fr));}
+  .tile{padding:12px 13px;}
+  .chart .row{grid-template-columns:minmax(64px,auto) 1fr auto;gap:8px;}
+  .chart.wide-label .row{grid-template-columns:minmax(92px,42%) 1fr auto;}
+  .chart .lbl{font-size:12.5px;}
+  .chart .val{min-width:48px;font-size:12px;}
+  th,td{padding:6px 7px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <strong>📚 Les corpus</strong> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Sous le capot</p>
+  <h1>Les corpus du clavier, en chiffres</h1>
+  <p class="lead">
+    Les suggestions du Lëtzebuergesch Clavier ne sortent pas d'une intelligence
+    artificielle entraînée ailleurs. Elles viennent de deux corpus de
+    luxembourgeois écrit, publiés en accès libre sur Hugging Face, et comptés
+    mot à mot par un script qu'on peut relancer. Voici ce qu'ils contiennent, et
+    pourquoi il en faut deux.
+  </p>
+  <p class="muted" id="maj">Chiffres recalculés depuis les jeux de données publiés.</p>
+</header>
+
+<section id="corpus">
+  <h2>Les deux corpus</h2>
+  <p class="muted">
+    Aucun des deux ne remplace l'autre. Le premier apporte le vocabulaire et
+    l'enchaînement des mots, le second la langue de tous les jours. Tous deux
+    sont sous licence Creative&nbsp;Commons et <strong>exigent la citation de
+    leurs auteurs</strong> : la voici, pour chacun.
+  </p>
+
+  <article class="corpus">
+    <div class="body">
+      <div class="top">
+        <h3 class="name">LuxAlign</h3>
+        <span class="lic nc">CC BY-NC 4.0</span>
+        <span class="role">le volume et la syntaxe</span>
+      </div>
+      <p class="meta">
+        Phrases d'articles de presse publiés par <a href="https://www.rtl.lu">RTL.lu</a>,
+        appariées à leurs équivalents anglais et français.
+        Fred Philippy, Siwen Guo, Jacques Klein, Tegawendé F. Bissyandé — COLING 2025.<br>
+        <a href="https://huggingface.co/datasets/fredxlpy/LuxAlign">huggingface.co/datasets/fredxlpy/LuxAlign</a>
+        · version <code>v3</code>
+        · <a href="https://aclanthology.org/2025.coling-main.753/">l'article</a>
+      </p>
+      <div class="tiles" id="tiles-luxalign"></div>
+    </div>
+    <div class="cite">
+      <div class="cite-head">
+        <h4>Citation BibTeX</h4>
+        <button type="button" class="copy" data-cite="luxalign">Copier</button>
+      </div>
+<pre id="cite-luxalign">@inproceedings{philippy-etal-2025-luxembedder,
+    title     = "{L}ux{E}mbedder: A Cross-Lingual Approach to Enhanced {L}uxembourgish Sentence Embeddings",
+    author    = "Philippy, Fred and Guo, Siwen and Klein, Jacques and Bissyande, Tegawende",
+    booktitle = "Proceedings of the 31st International Conference on Computational Linguistics",
+    year      = "2025",
+    address   = "Abu Dhabi, UAE",
+    publisher = "Association for Computational Linguistics",
+    url       = "https://aclanthology.org/2025.coling-main.753/",
+    pages     = "11369--11379"
+}</pre>
+    </div>
+  </article>
+
+  <article class="corpus">
+    <div class="body">
+      <div class="top">
+        <h3 class="name">LETZ</h3>
+        <span class="lic by">CC BY 4.0</span>
+        <span class="role">la langue du quotidien</span>
+      </div>
+      <p class="meta">
+        Phrases d'exemple du <a href="https://lod.lu">Lëtzebuerger Online Dictionnaire</a>,
+        dont les données d'origine sont publiées en CC0 par la plateforme
+        luxembourgeoise de données ouvertes.
+        Fred Philippy, Shohreh Haddadan, Siwen Guo — SIGUL @ LREC-COLING 2024.<br>
+        <a href="https://huggingface.co/datasets/fredxlpy/LETZ">huggingface.co/datasets/fredxlpy/LETZ</a>
+        · configurations <code>LETZ-SYN</code> et <code>LETZ-WoT</code>
+        · <a href="https://aclanthology.org/2024.sigul-1.13/">l'article</a>
+      </p>
+      <div class="tiles" id="tiles-letz"></div>
+    </div>
+    <div class="cite">
+      <div class="cite-head">
+        <h4>Citation BibTeX</h4>
+        <button type="button" class="copy" data-cite="letz">Copier</button>
+      </div>
+<pre id="cite-letz">@inproceedings{philippy-etal-2024-forget,
+    title     = "Forget {NLI}, Use a Dictionary: Zero-Shot Topic Classification for Low-Resource Languages with Application to {L}uxembourgish",
+    author    = "Philippy, Fred and Haddadan, Shohreh and Guo, Siwen",
+    booktitle = "Proceedings of the 3rd Annual Meeting of the Special Interest Group on Under-resourced Languages @ LREC-COLING 2024",
+    year      = "2024",
+    address   = "Torino, Italia",
+    publisher = "ELRA and ICCL",
+    url       = "https://aclanthology.org/2024.sigul-1.13",
+    pages     = "97--104"
+}</pre>
+    </div>
+  </article>
+
+  <div class="note">
+    <p>
+      <strong>Ce que la licence implique pour l'application.</strong> Le code du
+      clavier et les fichiers de dictionnaire qu'il embarque ne sont pas sous la
+      même licence, et c'est voulu : le code garde la sienne, les fichiers de
+      dictionnaire sont des œuvres dérivées de LuxAlign et héritent donc de sa
+      clause <em>NonCommercial</em>. « Open source » ne lève pas cette clause —
+      les licences approuvées par l'OSI autorisent explicitement l'usage
+      commercial, ce que CC&nbsp;BY-NC interdit. L'application est gratuite et le
+      restera ; toute réutilisation commerciale des fichiers de dictionnaire
+      demande l'accord préalable des ayants droit.
+    </p>
+  </div>
+</section>
+
+<section id="complementarite">
+  <h2>Pourquoi deux corpus et pas un</h2>
+  <p class="muted">
+    LuxAlign est soixante fois plus gros. On pourrait croire qu'il suffit. Mais
+    un corpus de presse ne tutoie personne, et un clavier de téléphone ne fait
+    presque que ça. Voici la même mesure sur les deux : la part de mots du
+    registre familier — <span class="lux">dech</span>,
+    <span class="lux">däin</span>, <span class="lux">hues</span>,
+    <span class="lux">bass</span>, <span class="lux">mamm</span>,
+    <span class="lux">brudder</span>… — ramenée à dix mille mots, pour que la
+    différence de taille ne fausse pas la comparaison.
+  </p>
+  <div class="card">
+    <h3>Mots du quotidien, pour dix mille mots de corpus</h3>
+    <div class="chart wide-label" id="chart-registre"></div>
+    <p class="chart-note" id="note-registre"></p>
+  </div>
+  <div class="card">
+    <h3>Vocabulaire partagé et vocabulaire propre à chacun</h3>
+    <div class="chart wide-label" id="chart-recouvrement"></div>
+    <p class="chart-note" id="note-recouvrement"></p>
+  </div>
+</section>
+
+<section id="proprete">
+  <h2>Une langue, pas trois</h2>
+  <p class="muted">
+    Le luxembourgeois s'écrit dans un pays où l'on parle aussi allemand et
+    français, et beaucoup de corpus disponibles mélangent les trois. Un
+    dictionnaire qui avale ce mélange finit par proposer de l'allemand à
+    quelqu'un qui écrit en luxembourgeois. La mesure ci-dessous compte les mots
+    allemands sans équivalent orthographique possible en luxembourgeois —
+    <span class="lux">und</span>, <span class="lux">wir</span>,
+    <span class="lux">auch</span>, <span class="lux">ich</span>,
+    <span class="lux">ist</span> — ce qui signale une bascule de langue et non
+    un emprunt.
+  </p>
+  <div class="card">
+    <h3>Mots allemands, pour dix mille mots de corpus</h3>
+    <div class="chart wide-label" id="chart-germanismes"></div>
+    <p class="chart-note">
+      Pour situer : le corpus de conférences de presse gouvernementales qui
+      servait jusqu'à la version 10.15 en comptait <strong>272</strong> pour dix
+      mille — les ministres passent régulièrement à l'allemand en pleine
+      réponse. Il a été retiré pour cette raison.
+    </p>
+  </div>
+  <div class="note">
+    <p>
+      <strong>Un faux ami à ne pas corriger :</strong> <span class="lux">dass</span>
+      n'est pas de l'allemand. C'est une variante orthographique luxembourgeoise
+      parfaitement légitime, présente dans les deux corpus retenus à raison d'une
+      occurrence pour une et demie de <span class="lux">datt</span>. Elle reste
+      donc au dictionnaire.
+    </p>
+  </div>
+</section>
+
+<section id="mots">
+  <h2>Les mots</h2>
+  <p class="muted">
+    Le découpage en mots est exactement celui du script qui fabrique le
+    dictionnaire embarqué : lettres accentuées et traits d'union compris, deux
+    caractères minimum, la ponctuation écartée.
+  </p>
+  <div class="tiles" id="tiles-mots"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les 25 mots les plus fréquents</h3>
+    <div class="chart" id="chart-mots"></div>
+    <p class="chart-note" id="note-mots"></p>
+  </div>
+  <div class="card">
+    <h3>Combien de mots différents faut-il pour lire le corpus</h3>
+    <div class="chart wide-label" id="chart-couverture"></div>
+    <p class="chart-note">
+      Une poignée de mots outils porte la moitié du texte, puis la courbe
+      s'aplatit : c'est la longue traîne du vocabulaire. C'est elle qui rend un
+      gros dictionnaire utile, et elle aussi qui impose un seuil — les formes
+      vues une seule fois sont écartées.
+    </p>
+  </div>
+</section>
+
+<section id="accents">
+  <h2>Les accents, et la disposition du clavier</h2>
+  <p class="muted">
+    Le clavier est en QWERTZ, la convention au Luxembourg, avec trois voyelles
+    accentuées sur des touches à elles : <span class="lux">é</span>,
+    <span class="lux">ä</span> et <span class="lux">ë</span>. Ce choix n'est pas
+    esthétique, il vient du décompte ci-dessous.
+  </p>
+  <div class="pills" id="pills-accents"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les lettres accentuées, par nombre d'occurrences</h3>
+    <div class="chart" id="chart-accents"></div>
+    <p class="chart-note" id="note-accents"></p>
+  </div>
+  <div class="card">
+    <h3>Les signes de ponctuation, par nombre d'occurrences</h3>
+    <div class="chart wide-label" id="chart-ponctuation"></div>
+    <p class="chart-note" id="note-ponctuation"></p>
+  </div>
+</section>
+
+<section id="ngrams">
+  <h2>Les n&#8209;grammes, ou comment le clavier devine la suite</h2>
+  <p class="muted">
+    Un n&#8209;gramme, c'est une suite de mots observée dans les textes. En les
+    comptant, on obtient un modèle qui répond à une question simple : après ces
+    mots-là, qu'est-ce qui vient d'habitude ? C'est ici que LuxAlign compte le
+    plus : ses phrases font dix-sept mots en moyenne, contre neuf pour LETZ, et
+    seul un texte suivi apprend au clavier ce qui suit quoi.
+  </p>
+  <div class="tiles" id="tiles-ngrams"></div>
+  <div class="card" style="margin-top:14px;">
+    <h3>Les 20 suites de deux mots les plus fréquentes</h3>
+    <div class="chart wide-label" id="chart-bigrammes"></div>
+  </div>
+  <div class="card">
+    <h3>Les 15 suites de trois mots les plus fréquentes</h3>
+    <div class="chart wide-label" id="chart-trigrammes"></div>
+  </div>
+  <div class="card table-scroll">
+    <h3>Ce que le modèle propose après les contextes les plus courants</h3>
+    <table>
+      <thead><tr><th>Contexte</th><th>Suite la plus probable</th><th class="num">Probabilité</th><th class="num">Contexte vu</th></tr></thead>
+      <tbody id="table-contextes"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="clavier">
+  <h2>Du corpus au clavier</h2>
+  <p class="muted">
+    Les corpus ne sont pas embarqués tels quels. Un script les transforme en deux
+    fichiers compacts, les seuls que l'application lit, et qui tiennent dans
+    l'APK pour fonctionner sans aucune connexion.
+  </p>
+  <div class="flow">
+    <div class="step">
+      <span class="n">01</span>
+      <h3>Dédoublonnage</h3>
+      <p>Chaque phrase n'est comptée qu'une fois : LuxAlign apparie la même phrase à l'anglais et au français, LETZ la réutilise des dizaines de fois.</p>
+    </div>
+    <div class="step">
+      <span class="n">02</span>
+      <h3>Comptage</h3>
+      <p>Chaque mot reçoit sa fréquence, chaque suite de deux ou trois mots la sienne.</p>
+    </div>
+    <div class="step">
+      <span class="n">03</span>
+      <h3>Filtrage</h3>
+      <p>Les mots vus moins de trois fois et les contextes vus moins de vingt fois sont écartés : citer un passage n'est pas prédire.</p>
+    </div>
+    <div class="step">
+      <span class="n">04</span>
+      <h3>Embarquement</h3>
+      <p>Deux fichiers JSON partent dans l'APK, relus hors ligne à chaque frappe.</p>
+    </div>
+  </div>
+  <div class="tiles" id="tiles-clavier"></div>
+  <p class="chart-note" id="note-clavier"></p>
+  <div class="card" style="margin-top:18px;">
+    <h3>Est-ce que ça prédit vraiment ?</h3>
+    <p class="muted" style="margin-bottom:10px;">
+      Mesuré sur des phrases mises de côté avant l'entraînement, pour que le
+      modèle ne soit pas noté sur ses propres données.
+    </p>
+    <div class="tiles" id="tiles-prediction" style="margin-top:0;"></div>
+    <p class="chart-note" id="note-prediction"></p>
+  </div>
+  <p class="muted" style="margin-top:14px;">
+    Envie de voir le résultat sans rien installer ?
+    <a href="simulateur.html">Le simulateur</a> fait tourner ce même dictionnaire
+    et ce même modèle directement dans le navigateur.
+  </p>
+</section>
+
+<section id="methode">
+  <h2>Méthode et limites</h2>
+  <div class="note">
+    <p>
+      Les chiffres de cette page sont recalculés depuis les jeux de données
+      publiés, avec la même expression régulière de découpage et les mêmes seuils
+      que <code>Dictionnaires/LuxembourgishComplet.py</code>, le script qui
+      produit les fichiers du clavier. Les totaux sont donc comparables terme à
+      terme avec ce que l'application embarque.
+    </p>
+    <p>
+      <strong>Ce que ces corpus ne sont pas.</strong> LuxAlign est du
+      journalisme : les chiffres, les pourcentages, les parenthèses et les
+      guillemets y sont sur-représentés par rapport à ce qu'on tape sur un
+      téléphone, et les points d'exclamation sous-représentés. LETZ est
+      lexicographique : ses phrases sont construites pour illustrer une entrée de
+      dictionnaire, donc riches en vocabulaire rare. Les deux ensemble corrigent
+      une partie de ces biais, aucun ne les corrige seul.
+    </p>
+    <p>
+      Le luxembourgeois reste une langue à faibles ressources : ces deux corpus
+      réunis pèsent trois millions de mots, là où le français ou l'anglais se
+      comptent en milliards. Le dictionnaire grandira avec eux.
+    </p>
+  </div>
+  <p class="muted" style="margin-top:14px;">
+    Jeux de données :
+    <a href="https://huggingface.co/datasets/fredxlpy/LuxAlign">fredxlpy/LuxAlign</a> ·
+    <a href="https://huggingface.co/datasets/fredxlpy/LETZ">fredxlpy/LETZ</a><br>
+    Script de calcul :
+    <a href="https://github.com/famibelle/LuxKeyb/blob/main/docs/scripts/generate_corpus_stats.py">generate_corpus_stats.py</a> ·
+    Attribution complète :
+    <a href="https://github.com/famibelle/LuxKeyb/blob/main/Dictionnaires/CORPUS.md">CORPUS.md</a> ·
+    Données brutes de cette page :
+    <a href="assets/corpus_stats.json">corpus_stats.json</a>
+  </p>
+</section>
+
+<footer class="page">
+  Lëtzebuergesch Clavier · Potomitan ·
+  <a href="https://github.com/famibelle/LuxKeyb">Code source</a> ·
+  <a href="index.html">Accueil</a>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var nf = new Intl.NumberFormat('fr-FR');
+  var $ = function (id) { return document.getElementById(id); };
+
+  // Copie de la citation BibTeX. execCommand en repli : la page peut être
+  // servie en http:// en local, où navigator.clipboard n'existe pas.
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pre = $('cite-' + btn.dataset.cite);
+      if (!pre) return;
+      var texte = pre.textContent;
+      var fini = function () {
+        btn.textContent = 'Copié ✓';
+        btn.classList.add('done');
+        setTimeout(function () {
+          btn.textContent = 'Copier';
+          btn.classList.remove('done');
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texte).then(fini, function () {});
+        return;
+      }
+      var zone = document.createElement('textarea');
+      zone.value = texte;
+      zone.setAttribute('readonly', '');
+      zone.style.position = 'absolute';
+      zone.style.left = '-9999px';
+      document.body.appendChild(zone);
+      zone.select();
+      try { document.execCommand('copy'); fini(); } catch (e) {}
+      document.body.removeChild(zone);
+    });
+  });
+
+  function tuiles(cible, items) {
+    var el = $(cible);
+    if (!el) return;
+    el.innerHTML = '';
+    items.forEach(function (item) {
+      var div = document.createElement('div');
+      div.className = 'tile';
+      var n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = item.n;
+      var k = document.createElement('span');
+      k.className = 'k';
+      k.textContent = item.k;
+      div.appendChild(n);
+      div.appendChild(k);
+      if (item.sub) {
+        var s = document.createElement('span');
+        s.className = 'sub';
+        s.textContent = item.sub;
+        div.appendChild(s);
+      }
+      el.appendChild(div);
+    });
+  }
+
+  // Barres. `format` met en forme la valeur affichée à droite ; `alt` colore
+  // différemment une ligne pour opposer deux séries dans le même graphique.
+  function barres(cible, lignes, options) {
+    var el = $(cible);
+    if (!el) return;
+    options = options || {};
+    el.innerHTML = '';
+    var max = lignes.reduce(function (m, l) { return Math.max(m, l.v); }, 0) || 1;
+    lignes.forEach(function (l) {
+      var row = document.createElement('div');
+      row.className = 'row';
+
+      var lbl = document.createElement('div');
+      lbl.className = 'lbl';
+      var span = document.createElement('span');
+      if (options.mono !== false) span.className = 'mono';
+      span.textContent = l.l;
+      lbl.appendChild(span);
+      lbl.title = l.l;
+
+      var track = document.createElement('div');
+      track.className = 'track';
+      var bar = document.createElement('span');
+      bar.className = 'bar' + (l.alt ? ' alt' : '');
+      bar.style.width = Math.max(2, Math.round(1000 * l.v / max) / 10) + '%';
+      track.appendChild(bar);
+
+      var val = document.createElement('div');
+      val.className = 'val';
+      val.textContent = options.format ? options.format(l.v) : nf.format(l.v);
+
+      row.appendChild(lbl);
+      row.appendChild(track);
+      row.appendChild(val);
+      el.appendChild(row);
+    });
+  }
+
+  function echec(message) {
+    document.querySelectorAll('.chart, .tiles').forEach(function (el) {
+      if (!el.children.length) {
+        el.innerHTML = '<p class="loading">' + message + '</p>';
+      }
+    });
+  }
+
+  fetch('assets/corpus_stats.json')
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
+    .then(function (d) {
+      var la = d.corpus.luxalign, lz = d.corpus.letz, g = d.global;
+
+      $('maj').textContent =
+        'Chiffres recalculés depuis les jeux de données publiés, le ' +
+        new Date(d.genere_le + 'T00:00:00').toLocaleDateString('fr-FR',
+          { day: 'numeric', month: 'long', year: 'numeric' }) + '.';
+
+      tuiles('tiles-luxalign', [
+        { n: nf.format(la.phrases), k: 'phrases' },
+        { n: nf.format(la.mots), k: 'mots' },
+        { n: nf.format(la.formes), k: 'mots différents' },
+        { n: la.longueur_moyenne, k: 'mots par phrase' }
+      ]);
+      tuiles('tiles-letz', [
+        { n: nf.format(lz.phrases), k: 'phrases' },
+        { n: nf.format(lz.mots), k: 'mots' },
+        { n: nf.format(lz.formes), k: 'mots différents' },
+        { n: lz.longueur_moyenne, k: 'mots par phrase' }
+      ]);
+
+      var un = function (x) { return nf.format(x); };
+
+      barres('chart-registre', [
+        { l: 'LETZ (dictionnaire)', v: lz.quotidien_pour_10000 },
+        { l: 'LuxAlign (presse)', v: la.quotidien_pour_10000, alt: true }
+      ], { mono: false, format: un });
+      $('note-registre').textContent =
+        'À taille égale, LETZ est ' +
+        nf.format(Math.round(10 * lz.quotidien_pour_10000 / la.quotidien_pour_10000) / 10) +
+        ' fois plus riche en langue de tous les jours. C’est tout ce qu’il ' +
+        'apporte, et c’est irremplaçable : sans lui, le clavier ne saurait pas ' +
+        'écrire « däin » ni « mamm ».';
+
+      var r = d.recouvrement;
+      barres('chart-recouvrement', [
+        { l: 'Propre à LuxAlign', v: r.luxalign_seul },
+        { l: 'Communs aux deux', v: r.communes },
+        { l: 'Propre à LETZ', v: r.letz_seul, alt: true }
+      ], { mono: false });
+      $('note-recouvrement').textContent =
+        'Sur ' + nf.format(g.formes) + ' mots différents au total, ' +
+        nf.format(r.communes) + ' seulement figurent dans les deux corpus. ' +
+        'Chacun apporte un vocabulaire que l’autre ignore.';
+
+      barres('chart-germanismes', [
+        { l: 'LETZ', v: lz.germanismes_pour_10000 },
+        { l: 'LuxAlign', v: la.germanismes_pour_10000 },
+        { l: 'Corpus retiré (10.15)', v: 272, alt: true }
+      ], { mono: false, format: un });
+
+      tuiles('tiles-mots', [
+        { n: nf.format(g.mots), k: 'mots au total' },
+        { n: nf.format(g.formes), k: 'mots différents' },
+        { n: nf.format(g.hapax), k: 'vus une seule fois',
+          sub: Math.round(100 * g.hapax / g.formes) + ' % des mots différents' },
+        { n: nf.format(g.caracteres), k: 'caractères' }
+      ]);
+
+      barres('chart-mots', g.top_mots.map(function (m) {
+        return { l: m[0], v: m[1] };
+      }));
+      $('note-mots').textContent =
+        'Le mot le plus fréquent, « ' + g.top_mots[0][0] + ' », revient ' +
+        nf.format(g.top_mots[0][1]) + ' fois.';
+
+      barres('chart-couverture', d.couverture.map(function (c) {
+        return { l: nf.format(c[0]) + ' mots', v: c[1] };
+      }), { mono: false, format: function (v) { return nf.format(v) + ' %'; } });
+
+      var pills = $('pills-accents');
+      d.diacritiques.slice(0, 6).forEach(function (a) {
+        var el = document.createElement('span');
+        el.className = 'pill';
+        el.innerHTML = '<span class="g">' + a[0] + '</span> · <b>' +
+          nf.format(a[1]) + '</b>';
+        pills.appendChild(el);
+      });
+
+      barres('chart-accents', d.diacritiques.map(function (a) {
+        return { l: a[0], v: a[1] };
+      }));
+      var trois = d.diacritiques[2], quatre = d.diacritiques[3];
+      $('note-accents').textContent =
+        'La falaise se situe entre « ' + trois[0] + ' » et « ' + quatre[0] +
+        ' » : ' + Math.round(trois[1] / quatre[1]) + ' fois moins d’occurrences. ' +
+        'C’est ce qui justifie trois touches dédiées et pas quatre — les ' +
+        'suivantes restent accessibles par appui long.';
+
+      var nomSigne = {
+        '.': 'point', ',': 'virgule', "'": 'apostrophe droite',
+        '-': 'trait d’union', '"': 'guillemet droit',
+        '’': 'apostrophe courbe', ':': 'deux-points', '%': 'pour cent',
+        '?': 'point d’interrogation', '“': 'guillemet ouvrant',
+        '„': 'guillemet bas', '!': 'point d’exclamation',
+        ';': 'point-virgule'
+      };
+      barres('chart-ponctuation', d.ponctuation.slice(0, 10).map(function (p) {
+        return { l: p[0] + '  ' + (nomSigne[p[0]] || ''), v: p[1] };
+      }));
+      $('note-ponctuation').textContent =
+        'L’apostrophe droite arrive juste après le point et la virgule : ' +
+        'elle a sa propre touche. Le trait d’union la suit de près.';
+
+      var n = d.ngrams;
+      tuiles('tiles-ngrams', [
+        { n: nf.format(n.bigrammes_distincts), k: 'suites de deux mots' },
+        { n: nf.format(n.trigrammes_distincts), k: 'suites de trois mots' },
+        { n: nf.format(d.clavier.contextes), k: 'contextes retenus',
+          sub: 'vus au moins ' + d.clavier.seuil_contexte + ' fois' },
+        { n: nf.format(d.clavier.contextes_deux_mots), k: 'contextes de deux mots' }
+      ]);
+
+      barres('chart-bigrammes', n.top_bigrammes.map(function (b) {
+        return { l: b[0], v: b[1] };
+      }));
+      barres('chart-trigrammes', n.top_trigrammes.map(function (t) {
+        return { l: t[0], v: t[1] };
+      }));
+
+      var tbody = $('table-contextes');
+      n.exemples_contextes.forEach(function (e) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td class="lux">' + e[0] + '</td>' +
+          '<td class="lux win">' + e[1] + '</td>' +
+          '<td class="num">' + Math.round(e[2] * 100) + ' %</td>' +
+          '<td class="num">' + nf.format(e[3]) + '</td>';
+        tbody.appendChild(tr);
+      });
+
+      var c = d.clavier;
+      var mo = function (o) { return (Math.round(o / 104857.6) / 10) + ' Mo'; };
+      tuiles('tiles-clavier', [
+        { n: nf.format(c.mots_dictionnaire), k: 'mots au dictionnaire',
+          sub: mo(c.octets_dictionnaire) },
+        { n: nf.format(c.contextes), k: 'contextes de prédiction',
+          sub: mo(c.octets_ngrams) },
+        { n: nf.format(c.frequence_max), k: 'occurrences pour « ' + c.mot_le_plus_frequent + ' »' },
+        { n: '0', k: 'connexion nécessaire', sub: 'tout est hors ligne' }
+      ]);
+      $('note-clavier').textContent =
+        'Les mots vus moins de ' + c.seuil_frequence + ' fois sont écartés : ' +
+        nf.format(g.formes - c.mots_dictionnaire) + ' formes sur ' +
+        nf.format(g.formes) + ', pour l’essentiel des noms propres et des ' +
+        'coquilles, qui feraient grossir le fichier sans rien prédire.';
+
+      var p = d.prediction;
+      tuiles('tiles-prediction', [
+        { n: p.contexte_reconnu + ' %', k: 'des contextes reconnus' },
+        { n: p.top3 + ' %', k: 'du temps, le bon mot est proposé',
+          sub: 'parmi les trois affichés' },
+        { n: nf.format(p.evenements), k: 'frappes simulées' }
+      ]);
+      $('note-prediction').textContent =
+        'Un mot sur quatre peut donc être saisi d’un seul appui sur une ' +
+        'suggestion, avant même d’avoir tapé la première lettre. Le clavier ' +
+        'complète aussi par préfixe, ce que cette mesure ne compte pas.';
+    })
+    .catch(function () {
+      echec('Chiffres indisponibles — relancez docs/scripts/generate_corpus_stats.py.');
+    });
+})();
+</script>
+</body>
+</html>
