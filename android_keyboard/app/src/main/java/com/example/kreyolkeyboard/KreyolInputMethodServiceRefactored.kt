@@ -406,6 +406,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // 🅰️ FORCER LE MODE ALPHABÉTIQUE AU DÉMARRAGE
         keyboardLayoutManager.forceAlphabeticMode()
         Log.d(TAG, "✅ Mode alphabétique forcé lors de la création du clavier")
+
+        // La palette est résolue avant de poser la moindre couleur, et retenue :
+        // c'est elle que onStartInputView() comparera pour savoir si la vue
+        // gardée en cache par InputMethodService est encore à la bonne couleur.
+        KeyboardTheme.refresh(this)
+        paletteDeLaVue = KeyboardTheme.palette()
         
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -1050,7 +1056,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Le thème se relit au même moment et pour la même raison, mais lui ne
         // suffit pas à se relire : les couleurs sont posées sur les vues à leur
         // construction, et InputMethodService garde la vue d'entrée en cache d'une
-        // saisie à l'autre. Un changement de palette impose de la reconstruire.
+        // saisie à l'autre. Un changement de palette impose de la reconstruire,
+        // qu'il vienne de l'écran de réglages ou du mode sombre du téléphone.
         //
         // La comparaison porte sur la palette avec laquelle la vue a été construite,
         // et non sur ce que renverrait un « refresh a-t-il changé quelque chose ? ».

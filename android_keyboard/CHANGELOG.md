@@ -9,6 +9,54 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.15.0] - 2026-08-27
+
+Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.14.8. Est repris
+ici le travail mené en amont sur l'écran de démarrage entre les 10.14.1 et
+10.14.8 ; l'identité luxembourgeoise — QWERTZ, palette du drapeau, libellés,
+niveaux, dictionnaire — est conservée telle quelle.
+
+### 🚀 L'écran de démarrage tient dans un écran
+
+- **Une carte « Configuration rapide »** remplace les trois cartes d'étapes
+  empilées. Une ligne compacte par étape, un anneau de progression, et une seule
+  étape dépliée à la fois : celle qui reste à faire, sauf si l'utilisateur en
+  ouvre une autre. Les trois étapes faites, la carte se replie sur son en-tête et
+  rend la place au reste de l'onglet.
+- **Le repli reste piloté par l'état, jamais systématique.** La description de
+  l'étape en cours, l'avertissement Android et le rappel des deux validations
+  successives sont ce qui fait passer l'utilisateur à travers les réglages
+  système ; les réduire à un chevron ferait gagner de la place là où le tunnel se
+  joue.
+- **La troisième étape se coche sur un vrai mot écrit**, au jalon posé par le
+  service de saisie — donc pas sur un texte collé ni tapé avec un autre clavier.
+  Elle se coche pendant la frappe, sans reconstruire la carte, qui ferait perdre
+  le focus et refermerait le clavier au premier mot.
+- **Le clavier d'essai passe sous la carte de configuration.** En tête d'onglet,
+  il occupait toute la hauteur visible et repoussait sous la ligne de flottaison
+  le bouton qui ouvre les réglages Android.
+- **La carte du correcteur orthographique se touche, sans bouton**, et son
+  bénéfice s'énonce par ce qu'il apporte plutôt que par ce qu'il supprime. Le
+  détail de ce qu'Android va demander se déplie à la demande.
+
+### 🔧 Réglages et affichage
+
+- **L'engrenage des réglages est une icône vectorielle blanche** et non plus
+  l'emoji ⚙️, que la police système dessine en gris bleuté — une teinte que le
+  bandeau bleu avalait. Le contraste ne dépend plus de la police du téléphone.
+- **Le manifeste documente sa permission unique** : `POST_NOTIFICATIONS`, la
+  seule que le code exerce.
+
+### 🧹 Cuisine interne
+
+- **Le second écrivain du fichier de compteurs disparaît** — un cache de mots en
+  attente, avec son exécuteur et sa sauvegarde différée, que plus aucune ligne
+  n'appelait depuis que `CreoleDictionaryWithUsage` est seul à écrire ce fichier.
+- **La table de décision du thème passe sous tests.** `KeyboardTheme.resoudre()`
+  prend désormais le mode et l'état du système en paramètres au lieu de lire le
+  `Context` : les six cases se vérifient hors appareil. `KeyboardThemeTest`
+  reprend et complète l'ancien `KeyboardThemeModeTest`, qui est retiré.
+
 ## [10.14.0] - 2026-08-24
 
 Le clavier se met en clair ou en sombre, au choix de l'utilisateur.

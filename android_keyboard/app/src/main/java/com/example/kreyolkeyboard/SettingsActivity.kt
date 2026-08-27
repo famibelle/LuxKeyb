@@ -36,9 +36,6 @@ import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
@@ -72,6 +69,16 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var bottomInstallBanner: LinearLayout
 
     /**
+     * Étape dépliée dans la carte « Configuration rapide » : null laisse
+     * l'ouverture automatique décider (l'étape qui reste à faire), -1 signifie
+     * que l'utilisateur les a toutes repliées.
+     */
+    private var etapeConfigOuverte: Int? = null
+
+    /** Les 3 lignes restent-elles visibles une fois la configuration terminée ? */
+    private var detailsConfigDeplies = false
+
+    /**
      * Présence de la pastille de niveau dans la barre d'onglets telle qu'elle
      * est actuellement dessinée, à distinguer de l'état enregistré dans les
      * préférences. Le service de saisie pose la pastille pendant que
@@ -84,11 +91,6 @@ class SettingsActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     
     companion object {
-        // Système de cache ultra-léger pour les modifications
-        private val pendingUpdates = ConcurrentHashMap<String, Int>(16, 0.75f, 1)
-        private var lastSaveTime = 0L
-        private const val SAVE_INTERVAL_MS = 30000L // 30 secondes
-        private const val MAX_PENDING_UPDATES = 50 // Limite pour éviter l'accumulation
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html"
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
@@ -163,165 +165,6 @@ class SettingsActivity : AppCompatActivity() {
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
             "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
         )
-
-        private var saveExecutor: ScheduledExecutorService? = null
-        
-        // Fonction statique pour mettre à jour l'usage d'un mot (appelée depuis le clavier)
-        @JvmStatic
-        fun updateWordUsage(context: Context, word: String) {
-            // Filtrer les mots trop courts ou invalides
-            if (word.length < 2 || word.isBlank()) return
-            
-            // Incrémenter dans le cache (thread-safe)
-            pendingUpdates.merge(word.lowercase().trim(), 1) { old, new -> old + new }
-            
-            // Si trop d'updates en attente, forcer une sauvegarde
-            if (pendingUpdates.size >= MAX_PENDING_UPDATES) {
-                flushPendingUpdates(context)
-            }
-            
-            // Programmer une sauvegarde différée si pas déjà programmée
-            scheduleDelayedSave(context)
-        }
-        
-        // Sauvegarde différée pour optimiser les I/O
-        private fun scheduleDelayedSave(context: Context) {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastSaveTime < SAVE_INTERVAL_MS) return
-            
-            if (saveExecutor == null) {
-                saveExecutor = Executors.newSingleThreadScheduledExecutor()
-            }
-            
-            saveExecutor?.schedule({
-                flushPendingUpdates(context)
-            }, SAVE_INTERVAL_MS, TimeUnit.MILLISECONDS)
-        }
-        
-        // Vider le cache en mémoire vers le fichier
-        @JvmStatic
-        fun flushPendingUpdates(context: Context, scope: CoroutineScope? = null) {
-            if (pendingUpdates.isEmpty()) return
-            
-            // Copie atomique du cache pour libérer rapidement la mémoire
-            val updatesToSave = HashMap<String, Int>(pendingUpdates)
-            pendingUpdates.clear()
-            lastSaveTime = System.currentTimeMillis()
-            
-            // 🔧 FIX CRITIQUE: Utiliser le scope fourni ou créer un scope avec SupervisorJob
-            // Cela évite les JobCancellationException et fuites mémoire
-            val executionScope = scope ?: CoroutineScope(Dispatchers.IO + SupervisorJob())
-            
-            executionScope.launch {
-                try {
-                    withContext(Dispatchers.IO) {
-                        saveUpdatesToFile(context, updatesToSave)
-                    }
-                } catch (e: CancellationException) {
-                    Log.d("SettingsActivity", "💾 Sauvegarde annulée, rollback des updates")
-                    // En cas d'annulation, remettre les updates dans le cache
-                    updatesToSave.forEach { (word, count) ->
-                        pendingUpdates.merge(word, count) { old, new -> old + new }
-                    }
-                    throw e // Important: re-throw CancellationException
-                } catch (e: Exception) {
-                    Log.e("SettingsActivity", "❌ Erreur sauvegarde: ${e.message}")
-                    // En cas d'erreur, remettre les updates dans le cache
-                    updatesToSave.forEach { (word, count) ->
-                        pendingUpdates.merge(word, count) { old, new -> old + new }
-                    }
-                }
-            }
-        }
-        
-        // Sauvegarde optimisée par lecture partielle
-        private suspend fun saveUpdatesToFile(context: Context, updates: Map<String, Int>) {
-            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
-            
-            if (!usageFile.exists()) {
-                // Créer le fichier s'il n'existe pas
-                createInitialUsageFile(context)
-            }
-            
-            // Lecture streaming pour économiser la mémoire
-            val existingData = try {
-                usageFile.bufferedReader().use { reader ->
-                    val sb = StringBuilder(8192) // Buffer fixe
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) {
-                        sb.append(line)
-                    }
-                    JSONObject(sb.toString())
-                }
-            } catch (e: Exception) {
-                Log.w("SettingsActivity", "Fichier corrompu, recréation")
-                createInitialUsageFile(context)
-                JSONObject()
-            }
-            
-            // Appliquer seulement les modifications nécessaires
-            var hasChanges = false
-            updates.forEach { (word, incrementCount) ->
-                if (existingData.has(word)) {
-                    val currentCount = existingData.optInt(word, 0)
-                    existingData.put(word, currentCount + incrementCount)
-                    hasChanges = true
-                } else {
-                    // Nouveau mot, l'ajouter seulement s'il est dans le dictionnaire
-                    if (isWordInDictionary(context, word)) {
-                        existingData.put(word, incrementCount)
-                        hasChanges = true
-                    }
-                }
-            }
-            
-            // Sauvegarder seulement si des changements ont été faits
-            if (hasChanges) {
-                // Écriture atomique pour éviter la corruption
-                val tempFile = File(context.filesDir, "luxemburgish_dict_with_usage.json.tmp")
-                tempFile.bufferedWriter().use { writer ->
-                    writer.write(existingData.toString())
-                }
-                tempFile.renameTo(usageFile)
-                
-                val motsSauvegardes = updates.map { "${it.key}(+${it.value})" }.joinToString(", ")
-                Log.d("SettingsActivity", "Sauvegardé ${updates.size} mots: $motsSauvegardes")
-            }
-        }
-        
-        // Vérification rapide si un mot existe dans le dictionnaire
-        private fun isWordInDictionary(context: Context, word: String): Boolean {
-            return try {
-                context.assets.open("luxemburgish_dict.json").bufferedReader().use { reader ->
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) {
-                        if (line!!.contains("\"$word\"", ignoreCase = true)) {
-                            return true
-                        }
-                    }
-                }
-                false
-            } catch (e: Exception) {
-                false
-            }
-        }
-        
-        // Création optimisée du fichier initial
-        private fun createInitialUsageFile(context: Context) {
-            val usageFile = File(context.filesDir, "luxemburgish_dict_with_usage.json")
-            
-            // Créer un fichier complètement vide sans aucune donnée de démonstration
-            val emptyUsageObject = JSONObject()
-            usageFile.writeText(emptyUsageObject.toString())
-        }
-        
-        // Nettoyage des ressources
-        @JvmStatic
-        fun cleanup() {
-            saveExecutor?.shutdown()
-            saveExecutor = null
-            pendingUpdates.clear()
-        }
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -600,9 +443,6 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onDestroy() {
-        // 🔧 FIX CRITIQUE: Sauvegarder avec le scope de l'activité avant annulation
-        flushPendingUpdates(this, activityScope)
-        
         // 🔧 FIX CRITIQUE: Annuler toutes les coroutines de l'activité
         activityScope.cancel()
         Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
@@ -689,13 +529,22 @@ class SettingsActivity : AppCompatActivity() {
 
             // Les réglages du clavier vivent derrière cet engrenage, dans leur propre
             // écran : c'est la convention Android, et la barre porte déjà sept onglets.
-            val settingsButton = TextView(this@SettingsActivity).apply {
-                text = "⚙️"
-                textSize = 22f
-                gravity = Gravity.CENTER
+            // Icône vectorielle blanche, et non l'emoji ⚙️ : la police emoji du
+            // système le dessine en gris bleuté, une teinte que le bandeau bleu
+            // avale. Le tracé blanc ne dépend plus de la police du téléphone et
+            // ressort de la même façon sur tous les appareils.
+            val densite = resources.displayMetrics.density
+            val settingsButton = ImageView(this@SettingsActivity).apply {
+                setImageResource(R.drawable.ic_settings_gear)
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
                 contentDescription = "Réglages du clavier"
-                minWidth = (48 * resources.displayMetrics.density).toInt()
-                minHeight = (48 * resources.displayMetrics.density).toInt()
+                // 48 dp de zone tactile, icône dessinée à 26 dp au centre : c'est
+                // l'encombrement qu'avait déjà le TextView, la hauteur du bandeau
+                // ne bouge donc pas.
+                val zone = (48 * densite).toInt()
+                layoutParams = LinearLayout.LayoutParams(zone, zone)
+                val marge = (11 * densite).toInt()
+                setPadding(marge, marge, marge, marge)
                 isClickable = true
                 isFocusable = true
                 setOnClickListener {
@@ -707,7 +556,7 @@ class SettingsActivity : AppCompatActivity() {
             // centré dans la place restante, se décale visiblement vers la gauche.
             appHeader.addView(View(this@SettingsActivity).apply {
                 layoutParams = LinearLayout.LayoutParams(
-                    (48 * resources.displayMetrics.density).toInt(), 1
+                    (48 * densite).toInt(), 1
                 )
             })
             appHeader.addView(appTitle)
@@ -937,13 +786,20 @@ class SettingsActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        
+
         val isEnabled = isKeyboardEnabled()
         val isSelected = isKeyboardSelected()
         // Distingue le tout premier setup d'un retour après désélection
         // (mise à jour système, changement de clavier...) : le ton et
         // l'habillage diffèrent, mais les étapes restent les mêmes
         val hasCompletedBefore = onboardingPrefs().getBoolean("onboarding_completed", false)
+
+        // Toute reconstruction complète de l'onglet (retour au premier plan,
+        // changement détecté dans les réglages système) rend la main à
+        // l'ouverture automatique : c'est l'étape qui reste à faire qui doit
+        // être dépliée, pas celle que l'utilisateur avait ouverte à la main
+        // deux écrans plus tôt.
+        etapeConfigOuverte = null
 
         // 🔍 Log pour déboguer l'état du clavier
         Log.d("SettingsActivity", "📋 État du clavier: isEnabled=$isEnabled, isSelected=$isSelected")
@@ -961,283 +817,45 @@ class SettingsActivity : AppCompatActivity() {
             onboardingPrefs().edit().remove("settings_visit_at").apply()
         }
         val showIncompleteNudge = !isEnabled && settingsVisitAt != 0L
-        
-        // Hero Section - Bienvenue avec progression (carte compacte)
-        val heroCard = createCard("#FFFFFF")
-        
-        // Layout horizontal pour icône + texte
-        val headerLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(0, 0, 0, 12)
+        if (showIncompleteNudge) recordFunnelStep("funnel_settings_return_no_enable")
+
+        // Bandeau de réussite : le clavier est utilisable dès qu'il est
+        // activé et sélectionné, avant même que l'utilisateur ait écrit quoi
+        // que ce soit. Son texte le dit alors sans prétendre que la
+        // configuration est terminée, sinon il contredirait l'anneau 2/3.
+        if (isEnabled && isSelected) {
+            mainLayout.addView(createReadyBanner(aEcritUnMot()))
+            mainLayout.addView(createSpacing(12))
         }
-        
-        val welcomeIcon = TextView(this).apply {
-            text = when {
-                isEnabled && isSelected -> "✅"
-                hasCompletedBefore -> "🔔"
-                isEnabled -> "🎯"
-                else -> "🚀"
-            }
-            textSize = 32f
-            setPadding(0, 0, 16, 0)
-        }
-        
-        val textContainer = LinearLayout(this).apply {
+
+        // Carte de configuration, isolée dans son propre conteneur : déplier
+        // une étape ne reconstruit qu'elle, et ne refait pas le clavier
+        // d'essai (rechargement des dictionnaires, perte du texte déjà tapé
+        // dedans).
+        val conteneurConfig = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1f
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        
-        val welcomeTitle = TextView(this).apply {
-            text = when {
-                isEnabled && isSelected -> "Tout est prêt !"
-                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné"
-                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif"
-                isEnabled -> "Vous y êtes presque !"
-                else -> "Bienvenue sur Lëtzebuergesch Clavier !"
-            }
-            textSize = 18f
-            setTextColor(when {
-                isEnabled && isSelected -> Color.parseColor("#4CAF50")
-                isEnabled -> Color.parseColor("#FF9800")
-                else -> Color.parseColor("#0080FF")
-            })
-            setTypeface(null, Typeface.BOLD)
-        }
+        remplirCarteConfig(conteneurConfig, isEnabled, isSelected, hasCompletedBefore, showIncompleteNudge)
+        mainLayout.addView(conteneurConfig)
+        mainLayout.addView(createSpacing(24))
 
-        val welcomeSubtitle = TextView(this).apply {
-            text = when {
-                isEnabled && isSelected -> "Vous pouvez taper en lëtzebuergesch partout !"
-                hasCompletedBefore && isEnabled -> "Sans doute après une mise à jour ou un changement de réglages : rouvrez le sélecteur pour le remettre"
-                hasCompletedBefore -> "Sans doute après une mise à jour ou un changement de réglages : une minute suffit pour le réactiver"
-                isEnabled -> "Sélectionnez le clavier pour l'utiliser"
-                else -> "Configurez votre clavier en 3 étapes ⏱️"
-            }
-            textSize = 13f
-            setTextColor(Color.parseColor("#666666"))
-        }
-        
-        textContainer.addView(welcomeTitle)
-        textContainer.addView(welcomeSubtitle)
-        
-        headerLayout.addView(welcomeIcon)
-        headerLayout.addView(textContainer)
-        
-        heroCard.addView(headerLayout)
-        
-        // Barre de progression compacte
-        val progressBar = createProgressBar(isEnabled, isSelected)
-        heroCard.addView(progressBar)
-        
-        mainLayout.addView(heroCard)
-        mainLayout.addView(createSpacing(16))
-
-        // Essai du clavier avant l'effort : un vrai clavier interactif avec
-        // suggestions bilingues, AVANT de demander d'aller accepter des
-        // avertissements dans les réglages système — la motivation précède
-        // la mécanique. Inutile pour un utilisateur qui revient après une
-        // désélection : il connaît déjà
+        // Essai du clavier : un vrai clavier interactif avec suggestions
+        // bilingues, à essayer sans rien installer. Il ouvrait l'onglet, pour
+        // que la motivation précède la mécanique, mais il occupait alors toute
+        // la hauteur visible et repoussait sous la ligne de flottaison le
+        // bouton qui ouvre les réglages Android : l'action attendue de
+        // l'utilisateur ne se voyait plus sans faire défiler. Il passe donc
+        // sous la carte de configuration, où il reste la première chose que
+        // l'on rencontre en descendant. Inutile pour un utilisateur qui
+        // revient après une désélection : il connaît déjà.
         if ((!isEnabled || !isSelected) && !hasCompletedBefore) {
             mainLayout.addView(createDemoKeyboardCard())
-            mainLayout.addView(createSpacing(16))
+            mainLayout.addView(createSpacing(24))
         }
-
-        // Section "En 3 étapes"
-        val stepsTitle = TextView(this).apply {
-            text = "📍 Configuration"
-            textSize = 18f
-            setTextColor(Color.parseColor("#333333"))
-            setTypeface(null, Typeface.BOLD)
-            setPadding(0, 0, 0, 12)
-        }
-        mainLayout.addView(stepsTitle)
-
-        // Carte d'explication avant l'avertissement système Android, affichée
-        // uniquement tant que le clavier n'est pas encore activé : le
-        // dialogue "ce clavier peut collecter tout ce que vous tapez..." est
-        // affiché par Android pour tout clavier tiers, sans que l'app ne
-        // puisse le personnaliser — on prépare l'utilisateur avant qu'il
-        // n'apparaisse plutôt que de le laisser le découvrir sans contexte.
-        // Carte d'encouragement après un aller-retour infructueux dans les
-        // réglages : remplace la carte d'information (déjà lue) par le
-        // diagnostic de l'échec le plus probable et l'invitation à réessayer
-        if (showIncompleteNudge) {
-            recordFunnelStep("funnel_settings_return_no_enable")
-            val nudgeCard = createCard("#FFF3E0")
-
-            val nudgeText = TextView(this).apply {
-                text = "💡 Presque ! Validez bien les 2 avertissements Android l'un après " +
-                        "l'autre : s'arrêter au premier annule l'activation."
-                textSize = 16f
-                setTextColor(Color.parseColor("#BF360C"))
-                setLineSpacing(0f, 1.3f)
-            }
-
-            nudgeCard.addView(nudgeText)
-            mainLayout.addView(nudgeCard)
-            mainLayout.addView(createSpacing(12))
-        }
-
-        if (!isEnabled && !showIncompleteNudge) {
-            val privacyNoticeCard = createCard("#FFF8E1")
-
-            val privacyNoticeText = TextView(this).apply {
-                text = "ℹ️ Android va afficher un avertissement de sécurité standard, " +
-                        "montré pour tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée."
-                textSize = 16f
-                setTextColor(Color.parseColor("#5D4037"))
-                setLineSpacing(0f, 1.2f)
-            }
-
-            val privacyNoticeLink = TextView(this).apply {
-                text = "Lire la politique de confidentialité"
-                textSize = 13f
-                setTextColor(Color.parseColor("#0080FF"))
-                setTypeface(null, Typeface.BOLD)
-                setPadding(0, 12, 0, 0)
-                setOnClickListener { openPrivacyPolicy() }
-            }
-
-            privacyNoticeCard.addView(privacyNoticeText)
-            privacyNoticeCard.addView(privacyNoticeLink)
-            mainLayout.addView(privacyNoticeCard)
-            mainLayout.addView(createSpacing(12))
-        }
-
-        // ÉTAPE 1 : Activer le clavier
-        val step1Card = createStepCard(
-            badge = "1",
-            isCompleted = isEnabled,
-            isLocked = false,
-            icon = "⚙️",
-            title = "Activer le clavier",
-            description = "Trouvez 'Lëtzebuergesch Clavier' dans l'écran qui s'ouvre, activez l'interrupteur, puis revenez ici",
-            buttonText = if (isEnabled) "✓ Activé" else "Ouvrir les paramètres",
-            buttonEnabled = !isEnabled,
-            buttonAction = {
-                showPreSettingsWarningDialog()
-            }
-        )
-        mainLayout.addView(step1Card)
-        mainLayout.addView(createSpacing(12))
-        
-        // ÉTAPE 2 : Sélectionner le clavier
-        val step2Card = createStepCard(
-            badge = "2",
-            isCompleted = isSelected,
-            isLocked = !isEnabled,
-            icon = "🔄",
-            title = "Sélectionner le clavier",
-            description = if (!isEnabled) "Complétez d'abord l'étape 1" else "Choisissez 'Lëtzebuergesch Clavier' dans la liste des claviers",
-            buttonText = when {
-                !isEnabled -> "🔒 Verrouillé"
-                isSelected -> "✓ Sélectionné"
-                else -> "Ouvrir le sélecteur"
-            },
-            buttonEnabled = isEnabled && !isSelected,
-            buttonAction = {
-                openInputMethodPicker()
-            }
-        )
-        mainLayout.addView(step2Card)
-        mainLayout.addView(createSpacing(12))
-        
-        // ÉTAPE 3 : Tester le clavier
-        val step3Card = createCard("#FFFFFF")
-        
-        val isStep3Locked = !isEnabled || !isSelected
-        
-        val step3Header = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(0, 0, 0, 12)
-        }
-        
-        val step3Badge = TextView(this).apply {
-            text = if (isStep3Locked) "🔒" else "3"
-            textSize = 20f
-            setTextColor(
-                when {
-                    isStep3Locked -> Color.parseColor("#999999")
-                    else -> Color.parseColor("#0080FF")
-                }
-            )
-            setTypeface(null, Typeface.BOLD)
-            setPadding(12, 8, 12, 8)
-            setBackgroundColor(
-                when {
-                    isStep3Locked -> Color.parseColor("#F5F5F5")
-                    else -> Color.parseColor("#E3F2FD")
-                }
-            )
-        }
-        
-        val step3Icon = TextView(this).apply {
-            text = "✍️"
-            textSize = 24f
-            setPadding(16, 0, 12, 0)
-            alpha = if (isStep3Locked) 0.5f else 1.0f
-        }
-        
-        val step3TitleText = TextView(this).apply {
-            text = "Tester le clavier"
-            textSize = 18f
-            setTextColor(if (isStep3Locked) Color.parseColor("#999999") else Color.parseColor("#333333"))
-            setTypeface(null, Typeface.BOLD)
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1f
-            )
-        }
-        
-        step3Header.addView(step3Badge)
-        step3Header.addView(step3Icon)
-        step3Header.addView(step3TitleText)
-        
-        val step3Desc = TextView(this).apply {
-            text = if (isStep3Locked) "Complétez les étapes 1 et 2 pour débloquer" else "Essayez d'écrire « Moien alleguer » et regardez les suggestions vous aider"
-            textSize = 14f
-            setTextColor(Color.parseColor("#666666"))
-            setPadding(0, 0, 0, 12)
-            setLineSpacing(0f, 1.3f)
-        }
-        
-        val testEditText = EditText(this).apply {
-            tag = "onboarding_test_field"
-            hint = if (isStep3Locked) "🔒 Verrouillé" else "Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)"
-            textSize = 16f
-            setPadding(16, 16, 16, 16)
-            minHeight = 100
-            setBackgroundColor(if (isStep3Locked) Color.parseColor("#EEEEEE") else Color.parseColor("#F9F9F9"))
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setHintTextColor(Color.parseColor("#999999"))
-            this.isEnabled = !isStep3Locked
-            alpha = if (isStep3Locked) 0.5f else 1.0f
-            
-            // Force le scroll vers ce champ quand il obtient le focus
-            if (!isStep3Locked) {
-                setOnFocusChangeListener { view, hasFocus ->
-                    if (hasFocus) {
-                        // Post avec délai pour laisser le clavier s'ouvrir
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            view.parent?.requestChildFocus(view, view)
-                        }, 300)
-                    }
-                }
-            }
-        }
-        
-        step3Card.addView(step3Header)
-        step3Card.addView(step3Desc)
-        step3Card.addView(testEditText)
-        
-        mainLayout.addView(step3Card)
-        mainLayout.addView(createSpacing(24))
 
         // Correcteur orthographique : fonctionnalité indépendante des 3 étapes
         // critiques (fonctionne même sans avoir activé le clavier Kréyòl),
@@ -1252,34 +870,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         mainLayout.addView(extrasTitle)
 
-        val isSpellCheckerOn = isSpellCheckerSelected()
-        val step4Card = createStepCard(
-            badge = "✚",
-            isCompleted = isSpellCheckerOn,
-            isLocked = false,
-            icon = "🔤",
-            title = "Corriger l'orthographe partout",
-            // Le texte détaille chaque étape de l'écran système, parce que le
-            // bouton n'y mène que : la sélection s'y fait dans un sous-menu
-            // (« Correcteur par défaut ») que rien ne signale, et Android
-            // intercale un avertissement sur l'accès au texte saisi. Sans
-            // préparation, l'utilisateur s'arrête à l'un ou l'autre.
-            description = "Pour ne plus voir vos mots luxembourgeois soulignés en rouge dans Messages, " +
-                "Notes et ailleurs.\n\n" +
-                "Dans l'écran qui s'ouvre :\n" +
-                "1. touchez « Correcteur par défaut »\n" +
-                "2. choisissez « Correcteur Lëtzebuergesch »\n" +
-                "3. Android prévient qu'un correcteur peut lire le texte saisi, " +
-                "puis demande de confirmer\n\n" +
-                "Le nôtre compare vos mots au dictionnaire luxembourgeois de l'application. " +
-                "Il n'en conserve aucun et n'envoie rien.",
-            buttonText = if (isSpellCheckerOn) "✓ Activé" else "Ouvrir les paramètres",
-            buttonEnabled = !isSpellCheckerOn,
-            buttonAction = {
-                openSpellCheckerSettings()
-            }
-        )
-        mainLayout.addView(step4Card)
+        mainLayout.addView(createSpellCheckerCard())
         mainLayout.addView(createSpacing(24))
 
         // Bascule d'un clavier à l'autre : l'aller et le retour n'utilisent
@@ -1289,7 +880,7 @@ class SettingsActivity : AppCompatActivity() {
         // langue. Affiché une fois la configuration terminée, au moment où la
         // question se pose vraiment.
         if (isEnabled && isSelected) {
-            val switchCard = createCard("#E3F2FD")
+            val switchCard = createRoundedCard("#E3F2FD")
 
             val switchTitle = TextView(this).apply {
                 text = "🔄 Passer du français au luxembourgeois, et l'inverse"
@@ -1347,9 +938,8 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchNote = TextView(this).apply {
-                text = "Le clavier choisi vaut pour toutes vos applications et reste mémorisé, " +
-                        "même après un redémarrage du téléphone. Si votre téléphone n'affiche pas " +
-                        "l'icône de clavier, le bouton ci-dessous ouvre exactement le même sélecteur."
+                text = "Le choix vaut pour toutes vos applications et survit au redémarrage. " +
+                        "Sans icône de clavier en bas, le bouton ci-dessous ouvre le même sélecteur."
                 textSize = 13f
                 setTextColor(Color.parseColor("#5C6BC0"))
                 setLineSpacing(0f, 1.3f)
@@ -1380,7 +970,7 @@ class SettingsActivity : AppCompatActivity() {
 
         // Section "Astuce" si tout est configuré
         if (isEnabled && isSelected) {
-            val tipCard = createCard("#FFF9E6")
+            val tipCard = createRoundedCard("#FFF9E6")
             
             val tipHeader = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -1418,7 +1008,7 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout.addView(createSpacing(16))
             
             // Lien vers statistiques
-            val statsLinkCard = createCard("#E8F5E9")
+            val statsLinkCard = createRoundedCard("#E8F5E9")
             
             val statsLinkLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -1474,96 +1064,708 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout.addView(statsLinkCard)
         }
         
-        // Message si clavier non activé
-        if (!isEnabled) {
-            mainLayout.addView(createSpacing(16))
-            
-            val helpCard = createCard("#FFF3E0")
-            
-            val helpText = TextView(this).apply {
-                text = "❓ Besoin d'aide ? Suivez les étapes ci-dessus dans l'ordre pour configurer votre clavier."
-                textSize = 14f
-                setTextColor(Color.parseColor("#E65100"))
-                gravity = Gravity.CENTER
-                setLineSpacing(0f, 1.3f)
-            }
-            
-            helpCard.addView(helpText)
-            mainLayout.addView(helpCard)
-        }
-        
         return mainLayout
     }
     
-    // Fonction pour créer la barre de progression
-    private fun createProgressBar(isEnabled: Boolean, isSelected: Boolean): LinearLayout {
-        val container = LinearLayout(this).apply {
+    /** Conversion en pixels d'une dimension exprimée en dp. */
+    private fun enDp(valeur: Int): Int = (valeur * resources.displayMetrics.density).toInt()
+
+    /**
+     * Un mot a-t-il déjà été écrit avec le clavier ? Le jalon est posé par le
+     * service de saisie au premier mot validé, y compris dans le champ de test
+     * de l'application : c'est donc le seul signal honnête pour cocher la
+     * troisième étape, qui n'est pas un réglage mais un essai.
+     */
+    private fun aEcritUnMot(): Boolean = onboardingPrefs().contains("funnel_first_word")
+
+    /**
+     * Carte à coins arrondis, réservée à l'onglet Démarrage. [createCard] reste
+     * la carte carrée utilisée par tous les autres onglets : les arrondir tous
+     * d'un coup dépasserait ce qui a été demandé ici.
+     */
+    private fun createRoundedCard(backgroundColor: String): LinearLayout {
+        return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, 8, 0, 0)
-        }
-        
-        val progressText = TextView(this).apply {
-            text = when {
-                isEnabled && isSelected -> "Configuration terminée ✓"
-                isEnabled -> "Étape 2 sur 3"
-                else -> "Étape 1 sur 3"
+            setPadding(enDp(18), enDp(18), enDp(18), enDp(18))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = enDp(16).toFloat()
+                setColor(Color.parseColor(backgroundColor))
             }
-            textSize = 12f
-            setTextColor(Color.parseColor("#999999"))
-            setPadding(0, 0, 0, 6)
         }
-        
-        val progressBarContainer = LinearLayout(this).apply {
+    }
+
+    /**
+     * Anneau « n/3 » : arc proportionnel au nombre d'étapes faites, chiffre au
+     * centre. Il remplace l'ancienne barre de progression, qui disait où on en
+     * était mais pas ce qu'il restait.
+     */
+    private class ProgressRingView(context: Context, private val total: Int) : View(context) {
+        var done: Int = 0
+            set(value) {
+                field = value
+                invalidate()
+            }
+
+        private val densite = context.resources.displayMetrics.density
+        private val piste = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 4f * densite
+            color = Color.parseColor("#E8EAED")
+        }
+        private val arc = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 4f * densite
+            strokeCap = Paint.Cap.ROUND
+        }
+        private val encre = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            textAlign = Paint.Align.CENTER
+            textSize = 15f * densite
+            typeface = Typeface.DEFAULT_BOLD
+        }
+
+        override fun onDraw(canvas: Canvas) {
+            super.onDraw(canvas)
+            val marge = piste.strokeWidth / 2f
+            val cadre = android.graphics.RectF(marge, marge, width - marge, height - marge)
+            val couleur = Color.parseColor(if (done >= total) "#4CAF50" else "#0080FF")
+            arc.color = couleur
+            encre.color = couleur
+            canvas.drawArc(cadre, 0f, 360f, false, piste)
+            if (done > 0) {
+                canvas.drawArc(cadre, -90f, 360f * done / total, false, arc)
+            }
+            val ligneDeBase = height / 2f - (encre.descent() + encre.ascent()) / 2f
+            canvas.drawText("$done/$total", width / 2f, ligneDeBase, encre)
+        }
+    }
+
+    /**
+     * Bandeau vert de réussite. Deux textes distincts selon que l'utilisateur
+     * a déjà écrit un mot ou non : afficher « Tout est prêt » au-dessus d'un
+     * anneau qui affiche 2/3 ferait dire deux choses différentes au même écran.
+     */
+    private fun createReadyBanner(aDejaEcrit: Boolean): LinearLayout {
+        val banner = createRoundedCard("#4CAF50").apply {
             orientation = LinearLayout.HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                8
-            )
-            setBackgroundColor(Color.parseColor("#E0E0E0"))
+            gravity = Gravity.CENTER_VERTICAL
         }
-        
-        val filledPart = View(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                when {
-                    isEnabled && isSelected -> 3f
-                    isEnabled -> 2f
-                    else -> 1f
+
+        val icone = TextView(this).apply {
+            text = "✅"
+            textSize = 24f
+            setPadding(0, 0, enDp(14), 0)
+        }
+
+        val textes = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+        }
+
+        val titre = TextView(this).apply {
+            text = if (aDejaEcrit) "Tout est prêt !" else "Clavier en place !"
+            textSize = 17f
+            setTextColor(Color.WHITE)
+            setTypeface(null, Typeface.BOLD)
+        }
+
+        val sousTitre = TextView(this).apply {
+            text = if (aDejaEcrit) "Vous pouvez taper en lëtzebuergesch partout."
+                   else "Écrivez un mot pour terminer la configuration."
+            textSize = 13f
+            setTextColor(Color.parseColor("#E8F5E9"))
+            setPadding(0, enDp(2), 0, 0)
+        }
+
+        textes.addView(titre)
+        textes.addView(sousTitre)
+        banner.addView(icone)
+        banner.addView(textes)
+        return banner
+    }
+
+    /**
+     * (Re)construit la carte de configuration dans son conteneur. Passer par le
+     * conteneur plutôt que par un rafraîchissement complet de l'onglet évite de
+     * reconstruire le clavier d'essai à chaque fois qu'une étape se déplie.
+     */
+    private fun remplirCarteConfig(
+        conteneur: LinearLayout,
+        isEnabled: Boolean,
+        isSelected: Boolean,
+        hasCompletedBefore: Boolean,
+        showIncompleteNudge: Boolean
+    ) {
+        conteneur.removeAllViews()
+        conteneur.addView(
+            createQuickSetupCard(isEnabled, isSelected, hasCompletedBefore, showIncompleteNudge) {
+                remplirCarteConfig(conteneur, isEnabled, isSelected, hasCompletedBefore, showIncompleteNudge)
+            }
+        )
+    }
+
+    /**
+     * Carte « Configuration rapide » : une ligne compacte par étape, et une
+     * seule dépliée à la fois — celle qui reste à faire, sauf si l'utilisateur
+     * en ouvre une autre.
+     *
+     * Le repli est piloté par l'état, jamais systématique : la description de
+     * l'étape en cours, l'avertissement Android et le rappel des deux
+     * validations successives sont ce qui fait passer l'utilisateur à travers
+     * les réglages système. Les réduire à un chevron ferait gagner de la place
+     * là où le tunnel se joue.
+     */
+    private fun createQuickSetupCard(
+        isEnabled: Boolean,
+        isSelected: Boolean,
+        hasCompletedBefore: Boolean,
+        showIncompleteNudge: Boolean,
+        onRebuild: () -> Unit
+    ): LinearLayout {
+        val card = createRoundedCard("#FFFFFF")
+
+        val etape3Faite = isEnabled && isSelected && aEcritUnMot()
+        val faites = listOf(isEnabled, isSelected, etape3Faite).count { it }
+        val toutFait = faites == 3
+
+        // === En-tête : titre, état, anneau ===
+        val entete = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val textesEntete = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+        }
+
+        val titre = TextView(this).apply {
+            text = "Configuration rapide"
+            textSize = 18f
+            setTextColor(Color.parseColor("#1C1C1C"))
+            setTypeface(null, Typeface.BOLD)
+        }
+
+        val sousTitre = TextView(this).apply {
+            text = when {
+                toutFait -> "Les 3 étapes sont faites."
+                isEnabled && isSelected -> "Plus qu'à l'essayer."
+                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné, sans doute après une mise à jour."
+                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif, sans doute après une mise à jour."
+                isEnabled -> "Plus qu'une étape."
+                else -> "3 étapes pour taper en lëtzebuergesch partout."
+            }
+            textSize = 13f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, enDp(3), enDp(12), 0)
+            setLineSpacing(0f, 1.25f)
+        }
+
+        val anneau = ProgressRingView(this, 3).apply {
+            done = faites
+            contentDescription = "$faites étapes sur 3 terminées"
+            layoutParams = LinearLayout.LayoutParams(enDp(52), enDp(52))
+        }
+
+        textesEntete.addView(titre)
+        textesEntete.addView(sousTitre)
+        entete.addView(textesEntete)
+        entete.addView(anneau)
+        card.addView(entete)
+
+        // Une fois les 3 étapes faites, la carte n'a plus rien à demander :
+        // elle se replie sur son en-tête et laisse la place au reste de
+        // l'onglet, au lieu de garder trois lignes cochées en haut de l'écran
+        // pour toujours.
+        if (toutFait && !detailsConfigDeplies) {
+            card.addView(TextView(this).apply {
+                text = "Voir les 3 étapes"
+                textSize = 14f
+                setTextColor(Color.parseColor("#0080FF"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, enDp(14), 0, 0)
+                isClickable = true
+                isFocusable = true
+                setOnClickListener {
+                    detailsConfigDeplies = true
+                    onRebuild()
                 }
-            )
-            setBackgroundColor(when {
-                isEnabled && isSelected -> Color.parseColor("#4CAF50")
-                isEnabled -> Color.parseColor("#FF9800")
-                else -> Color.parseColor("#0080FF")
+            })
+            return card
+        }
+
+        // === Étape dépliée : celle qui reste à faire, sauf choix contraire ===
+        val etapeParDefaut = when {
+            !isEnabled -> 0
+            !isSelected -> 1
+            !etape3Faite -> 2
+            else -> -1
+        }
+        val ouverte = etapeConfigOuverte ?: etapeParDefaut
+
+        fun basculer(index: Int): () -> Unit = {
+            etapeConfigOuverte = if (ouverte == index) -1 else index
+            onRebuild()
+        }
+
+        fun corps(): LinearLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(enDp(40), 0, 0, enDp(16))
+        }
+
+        fun texte(contenu: String): TextView = TextView(this).apply {
+            text = contenu
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, 0, 0, enDp(12))
+        }
+
+        fun encart(fond: String, encre: String, contenu: String): TextView = TextView(this).apply {
+            text = contenu
+            textSize = 13f
+            setTextColor(Color.parseColor(encre))
+            setLineSpacing(0f, 1.3f)
+            setPadding(enDp(12), enDp(12), enDp(12), enDp(12))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = enDp(10).toFloat()
+                setColor(Color.parseColor(fond))
+            }
+        }
+
+        // Le libellé porte le fait que le bouton quitte l'application : un
+        // chevron seul laisserait croire à une navigation interne, alors que
+        // ces deux étapes se terminent dans les réglages Android.
+        fun bouton(libelle: String, action: () -> Unit): Button = Button(this).apply {
+            text = libelle
+            textSize = 15f
+            isAllCaps = false
+            setTextColor(Color.WHITE)
+            setPadding(enDp(20), enDp(14), enDp(20), enDp(14))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = enDp(10).toFloat()
+                setColor(Color.parseColor("#0080FF"))
+            }
+            setOnClickListener { action() }
+        }
+
+        // === Étape 1 : activer le clavier ===
+        val corps1 = corps().apply {
+            addView(texte("Trouvez « Lëtzebuergesch Clavier » dans l'écran qui s'ouvre, " +
+                    "activez l'interrupteur, puis revenez ici."))
+            when {
+                showIncompleteNudge -> addView(encart("#FFF3E0", "#BF360C",
+                    "💡 Presque ! Validez bien les 2 avertissements Android l'un après " +
+                    "l'autre : s'arrêter au premier annule l'activation."))
+                !isEnabled -> addView(encart("#FFF8E1", "#5D4037",
+                    "ℹ️ Android affiche un avertissement de sécurité standard, montré pour " +
+                    "tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée."))
+            }
+            if (!isEnabled) {
+                addView(TextView(this@SettingsActivity).apply {
+                    text = "Lire la politique de confidentialité"
+                    textSize = 13f
+                    setTextColor(Color.parseColor("#0080FF"))
+                    setTypeface(null, Typeface.BOLD)
+                    setPadding(0, enDp(10), 0, 0)
+                    isClickable = true
+                    isFocusable = true
+                    setOnClickListener { openPrivacyPolicy() }
+                })
+            }
+            addView(createSpacing(12))
+            addView(bouton(
+                if (isEnabled) "Rouvrir les réglages Android ↗" else "Ouvrir les réglages Android ↗"
+            ) { showPreSettingsWarningDialog() })
+        }
+
+        val ligne1 = createSetupRow(
+            numero = 1,
+            faite = isEnabled,
+            verrouillee = false,
+            titre = "Activer le clavier",
+            sousTitre = if (isEnabled) "Le clavier est activé." else "Dans les réglages Android.",
+            ouverte = ouverte == 0,
+            contenu = corps1,
+            onToggle = basculer(0)
+        )
+
+        // === Étape 2 : sélectionner le clavier ===
+        val corps2 = corps().apply {
+            addView(texte("Choisissez « Lëtzebuergesch Clavier » dans la liste des claviers " +
+                    "qui s'affiche. Vos autres claviers restent installés."))
+            addView(bouton("Ouvrir le sélecteur de claviers ↗") { openInputMethodPicker() })
+        }
+
+        val ligne2 = createSetupRow(
+            numero = 2,
+            faite = isSelected,
+            verrouillee = !isEnabled,
+            titre = "Sélectionner le clavier",
+            sousTitre = when {
+                isSelected -> "Lëtzebuergesch Clavier est sélectionné."
+                !isEnabled -> "Terminez d'abord l'étape 1."
+                else -> "Choisissez-le dans la liste."
+            },
+            ouverte = ouverte == 1,
+            contenu = corps2,
+            onToggle = basculer(1)
+        )
+
+        // === Étape 3 : essayer le clavier ===
+        val champTest = EditText(this).apply {
+            tag = "onboarding_test_field"
+            hint = "Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)"
+            textSize = 16f
+            setPadding(enDp(14), enDp(14), enDp(14), enDp(14))
+            minHeight = enDp(56)
+            setTextColor(Color.parseColor("#1C1C1C"))
+            setHintTextColor(Color.parseColor("#999999"))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = enDp(10).toFloat()
+                setColor(Color.parseColor("#F7F7F7"))
+                setStroke(enDp(1), Color.parseColor("#E0E0E0"))
+            }
+            // Force le scroll vers ce champ quand il obtient le focus
+            setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    // Délai : laisser le clavier s'ouvrir avant de recadrer
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        view.parent?.requestChildFocus(view, view)
+                    }, 300)
+                }
+            }
+        }
+
+        val corps3 = corps().apply {
+            addView(texte("Écrivez « Moien alleguer » et regardez les suggestions vous aider."))
+            addView(champTest)
+        }
+
+        val ligne3 = createSetupRow(
+            numero = 3,
+            faite = etape3Faite,
+            verrouillee = !isEnabled || !isSelected,
+            titre = "Essayer le clavier",
+            sousTitre = when {
+                etape3Faite -> "Vous avez écrit vos premiers mots."
+                !isEnabled || !isSelected -> "Terminez les étapes 1 et 2."
+                else -> "Écrivez un mot pour vérifier."
+            },
+            ouverte = ouverte == 2,
+            contenu = corps3,
+            onToggle = basculer(2)
+        )
+
+        // La troisième étape se coche pendant la frappe, sans reconstruire la
+        // carte : reconstruire ferait perdre le focus et refermerait le clavier
+        // au premier mot écrit. Le jalon lu est celui du service de saisie, donc
+        // la pastille ne s'allume pas sur un texte collé ou tapé avec un autre
+        // clavier — et ne se rallume pas à faux au rafraîchissement suivant.
+        if (!etape3Faite) {
+            champTest.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: android.text.Editable?) {
+                    if (s.isNullOrEmpty() || !aEcritUnMot()) return
+                    marquerEtapeFaite(ligne3)
+                    anneau.done = 3
+                    sousTitre.text = "Les 3 étapes sont faites."
+                }
             })
         }
-        
-        val emptyPart = View(this).apply {
+
+        card.addView(createSpacing(6))
+        card.addView(ligne1)
+        card.addView(createSetupSeparator())
+        card.addView(ligne2)
+        card.addView(createSetupSeparator())
+        card.addView(ligne3)
+
+        if (toutFait) {
+            card.addView(TextView(this).apply {
+                text = "Masquer le détail"
+                textSize = 14f
+                setTextColor(Color.parseColor("#0080FF"))
+                setTypeface(null, Typeface.BOLD)
+                setPadding(0, enDp(12), 0, 0)
+                isClickable = true
+                isFocusable = true
+                setOnClickListener {
+                    detailsConfigDeplies = false
+                    onRebuild()
+                }
+            })
+        }
+
+        return card
+    }
+
+    /**
+     * Une ligne d'étape : pastille d'état, titre, sous-titre d'une ligne, et
+     * son contenu déplié en dessous. Verrouillée, la ligne est grisée et sans
+     * chevron — pas de cadenas : c'est une icône de plus pour dire ce que le
+     * gris dit déjà.
+     */
+    private fun createSetupRow(
+        numero: Int,
+        faite: Boolean,
+        verrouillee: Boolean,
+        titre: String,
+        sousTitre: String,
+        ouverte: Boolean,
+        contenu: View?,
+        onToggle: () -> Unit
+    ): LinearLayout {
+        val bloc = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        val ligne = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            // 56 dp : au-delà des 48 dp de cible tactile minimale, la ligne
+            // reste confortable à viser pour une main qui tremble
+            minimumHeight = enDp(56)
+            setPadding(0, enDp(12), 0, enDp(12))
+            contentDescription = when {
+                faite -> "$titre, étape terminée"
+                verrouillee -> "$titre, étape verrouillée"
+                else -> titre
+            }
+            if (!verrouillee) {
+                isClickable = true
+                isFocusable = true
+                setOnClickListener { onToggle() }
+            }
+        }
+
+        val pastille = TextView(this).apply {
+            tag = "pastille_etape"
+            text = if (faite) "✓" else numero.toString()
+            textSize = 14f
+            gravity = Gravity.CENTER
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(when {
+                faite -> Color.WHITE
+                verrouillee -> Color.parseColor("#9E9E9E")
+                else -> Color.parseColor("#0080FF")
+            })
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(Color.parseColor(when {
+                    faite -> "#4CAF50"
+                    verrouillee -> "#F0F0F0"
+                    else -> "#E3F2FD"
+                }))
+            }
+            layoutParams = LinearLayout.LayoutParams(enDp(28), enDp(28)).apply {
+                rightMargin = enDp(12)
+            }
+        }
+
+        val colonne = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
+        }
+
+        colonne.addView(TextView(this).apply {
+            text = titre
+            textSize = 16f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor(if (verrouillee) "#9E9E9E" else "#1C1C1C"))
+        })
+
+        colonne.addView(TextView(this).apply {
+            text = sousTitre
+            textSize = 13f
+            setTextColor(Color.parseColor(if (verrouillee) "#BDBDBD" else "#666666"))
+            setPadding(0, enDp(2), enDp(8), 0)
+        })
+
+        val chevron = TextView(this).apply {
+            text = "›"
+            textSize = 22f
+            setTextColor(Color.parseColor("#B0B0B0"))
+            rotation = if (ouverte) 90f else 0f
+            visibility = if (verrouillee) View.INVISIBLE else View.VISIBLE
+        }
+
+        ligne.addView(pastille)
+        ligne.addView(colonne)
+        ligne.addView(chevron)
+        bloc.addView(ligne)
+
+        if (ouverte && !verrouillee && contenu != null) {
+            bloc.addView(contenu)
+        }
+
+        return bloc
+    }
+
+    /** Filet de séparation entre deux lignes, aligné sur le texte. */
+    private fun createSetupSeparator(): View = View(this).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 1
+        ).apply { leftMargin = enDp(40) }
+        setBackgroundColor(Color.parseColor("#EEEEEE"))
+    }
+
+    /** Passe la pastille d'une ligne d'étape au vert, sans reconstruire la carte. */
+    private fun marquerEtapeFaite(ligne: View) {
+        val pastille = ligne.findViewWithTag<TextView>("pastille_etape") ?: return
+        pastille.text = "✓"
+        pastille.setTextColor(Color.WHITE)
+        (pastille.background as? GradientDrawable)?.setColor(Color.parseColor("#4CAF50"))
+    }
+
+    // Fonction pour créer une card d'étape
+    /**
+     * Carte du correcteur orthographique. Elle emprunte l'habillage des étapes
+     * de configuration (badge, icône, titre) mais pas leur mécanique : ce n'est
+     * pas une étape du parcours numéroté, et sa mise en page diverge sur trois
+     * points.
+     *
+     * La carte entière est la cible de clic, signalée par un chevron : un
+     * bouton pleine largeur donnait à une fonction optionnelle le même poids
+     * visuel qu'aux trois étapes qui, elles, conditionnent l'usage du clavier.
+     *
+     * Ne reste visible que la promesse, plus l'avertissement qu'Android
+     * affichera. Ce dernier ne peut pas être replié : le dialogue système
+     * prévient que le correcteur « peut collecter tout le texte que vous tapez,
+     * y compris des données personnelles comme les mots de passe », et c'est là
+     * que l'utilisateur non prévenu abandonne. Une ligne le désamorce.
+     *
+     * La marche à suivre, elle, se déplie à la demande, sous un intitulé qui
+     * annonce ce qu'on y trouve : elle ne sert qu'une fois l'écran système
+     * ouvert, où la sélection se fait dans un sous-menu (« Correcteur par
+     * défaut ») que rien ne signale.
+     */
+    private fun createSpellCheckerCard(): LinearLayout {
+        val estActif = isSpellCheckerSelected()
+        val card = createRoundedCard("#FFFFFF")
+
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(0, 0, 0, 12)
+        }
+
+        val badgeView = TextView(this).apply {
+            text = "✚"
+            textSize = 20f
+            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 8, 12, 8)
+            setBackgroundColor(Color.parseColor(if (estActif) "#E8F5E9" else "#E3F2FD"))
+        }
+
+        val iconText = TextView(this).apply {
+            text = "🔤"
+            textSize = 24f
+            setPadding(16, 0, 12, 0)
+        }
+
+        val titleText = TextView(this).apply {
+            text = "Corriger l'orthographe partout"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
             layoutParams = LinearLayout.LayoutParams(
                 0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                when {
-                    isEnabled && isSelected -> 0f
-                    isEnabled -> 1f
-                    else -> 2f
-                }
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
             )
-            setBackgroundColor(Color.TRANSPARENT)
         }
-        
-        progressBarContainer.addView(filledPart)
-        if (emptyPart.layoutParams.width != 0) {
-            progressBarContainer.addView(emptyPart)
+
+        val marqueur = TextView(this).apply {
+            text = if (estActif) "✓" else "›"
+            textSize = if (estActif) 24f else 34f
+            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#757575"))
+            setTypeface(null, Typeface.BOLD)
+            setPadding(12, 0, 4, 0)
         }
-        
-        container.addView(progressText)
-        container.addView(progressBarContainer)
-        
-        return container
+
+        header.addView(badgeView)
+        header.addView(iconText)
+        header.addView(titleText)
+        header.addView(marqueur)
+
+        val descText = TextView(this).apply {
+            // Le bénéfice s'énonce par ce qu'il apporte, pas par ce qu'il
+            // supprime, mais le trait rouge reste nommé : c'est à lui que
+            // l'utilisateur reconnaît la gêne qu'il subit tous les jours.
+            text = if (estActif) {
+                "Vos mots luxembourgeois sont reconnus dans Messages, Notes et ailleurs, " +
+                    "sans trait rouge dessous."
+            } else {
+                "Faites reconnaître vos mots luxembourgeois dans Messages, Notes et " +
+                    "ailleurs, sans trait rouge dessous."
+            }
+            textSize = 16f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, if (estActif) 0 else 12)
+        }
+
+        card.addView(header)
+        card.addView(descText)
+
+        if (estActif) return card
+
+        val avertissement = TextView(this).apply {
+            text = "Android vous préviendra qu'un correcteur peut lire le texte saisi. " +
+                "Le nôtre le compare au dictionnaire de l'application, sans rien " +
+                "conserver ni rien envoyer."
+            textSize = 13f
+            setTextColor(Color.parseColor("#9E9E9E"))
+            setLineSpacing(0f, 1.3f)
+            setPadding(0, 0, 0, 12)
+        }
+        card.addView(avertissement)
+
+        val details = TextView(this).apply {
+            text = "Dans l'écran qui s'ouvre :\n" +
+                "1. touchez « Correcteur par défaut »\n" +
+                "2. choisissez « Correcteur Lëtzebuergesch »\n" +
+                "3. confirmez l'avertissement d'Android"
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, 0, 0, 12)
+            visibility = View.GONE
+        }
+
+        val lien = TextView(this).apply {
+            text = "ⓘ  Ce qu'Android va vous demander"
+            textSize = 14f
+            setTextColor(Color.parseColor("#0080FF"))
+            setTypeface(null, Typeface.BOLD)
+            gravity = Gravity.CENTER
+            setPadding(0, 8, 0, 0)
+            setOnClickListener {
+                val ouvert = details.visibility == View.VISIBLE
+                details.visibility = if (ouvert) View.GONE else View.VISIBLE
+                text = if (ouvert) "ⓘ  Ce qu'Android va vous demander" else "▲  Masquer"
+            }
+        }
+
+        card.addView(details)
+        card.addView(lien)
+
+        card.isClickable = true
+        card.setOnClickListener { openSpellCheckerSettings() }
+
+        return card
     }
-    
-    // Fonction pour créer une card d'étape
+
     private fun createStepCard(
         badge: String,
         isCompleted: Boolean,
@@ -1575,7 +1777,7 @@ class SettingsActivity : AppCompatActivity() {
         buttonEnabled: Boolean,
         buttonAction: () -> Unit
     ): LinearLayout {
-        val card = createCard("#FFFFFF")
+        val card = createRoundedCard("#FFFFFF")
         
         // Appliquer une opacité si verrouillé
         if (isLocked) {
@@ -1898,7 +2100,7 @@ class SettingsActivity : AppCompatActivity() {
     private var demoKeyboardManager: KeyboardLayoutManager? = null
 
     private fun createDemoKeyboardCard(): LinearLayout {
-        val card = createCard("#FFFFFF")
+        val card = createRoundedCard("#FFFFFF")
 
         val title = TextView(this).apply {
             text = "🎹 Essayez-le tout de suite !"
@@ -3707,9 +3909,6 @@ class SettingsActivity : AppCompatActivity() {
 
                     // Afficher un message
                     Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
-
-                    // Forcer la sauvegarde des données en attente
-                    flushPendingUpdates(activity, activity.activityScope)
 
                     // Attendre un peu puis recréer l'activité
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({

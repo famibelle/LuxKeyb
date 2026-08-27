@@ -146,8 +146,8 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     /**
      * Les trois positions du thème, en boutons radio.
      *
-     * Un groupe radio et non un interrupteur : trois états, dont un — « comme le
-     * téléphone » — n'est ni l'un ni l'autre des deux autres et se perdrait dans
+     * Un groupe radio et non un interrupteur : trois états, dont un, « comme le
+     * téléphone », n'est ni l'un ni l'autre des deux autres et se perdrait dans
      * une bascule à deux positions.
      *
      * Les couleurs sont posées à la main pour la même raison que sur les
@@ -181,7 +181,8 @@ class KeyboardSettingsActivity : AppCompatActivity() {
                 })
             }
             setOnCheckedChangeListener { groupe, idCoche ->
-                val mode = groupe.findViewById<View>(idCoche)?.tag as? KeyboardTheme.Mode ?: return@setOnCheckedChangeListener
+                val mode = groupe.findViewById<View>(idCoche)?.tag as? KeyboardTheme.Mode
+                    ?: return@setOnCheckedChangeListener
                 KeyboardPreferences.setThemeMode(this@KeyboardSettingsActivity, mode)
                 Log.d(TAG, "Thème du clavier : ${mode.cle}")
             }

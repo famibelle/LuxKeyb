@@ -2,7 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Notifications de montée de niveau (Android 13+) -->
+    <!-- Seule permission demandée, et seule exercée par le code : la notification
+         qui annonce un nouveau niveau de vocabulaire (Android 13+).
+
+         WRITE_USER_DICTIONARY et READ_EXTERNAL_STORAGE ont été retirées en
+         10.14.3. La première servait au dictionnaire personnel de la 10.5.0,
+         fonction supprimée dès la 10.6.0 ; la seconde n'a jamais eu d'appelant.
+         Une permission déclarée est affichée sur la fiche Play et doit être
+         justifiée dans la politique de confidentialité : en garder une dont
+         aucune ligne ne se sert coûte de la confiance sans rien apporter.
+         Ne pas les remettre sans un appelant réel. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -15,7 +24,6 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:extractNativeLibs="true"
-        android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         tools:targetApi="34">
