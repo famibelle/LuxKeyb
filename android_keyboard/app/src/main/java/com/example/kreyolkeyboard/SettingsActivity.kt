@@ -2007,11 +2007,21 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 12)
         }
         
+        // Attribution des corpus. Les deux jeux de données sont sous licence
+        // Creative Commons et exigent la citation de leurs auteurs : cette
+        // carte n'est pas décorative, elle remplit l'obligation « BY ».
+        // LuxAlign porte en plus une clause NonCommercial. Détail complet et
+        // références bibliographiques dans Dictionnaires/CORPUS.md.
         val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots sont construites sur un corpus de luxembourgeois contemporain :\n\n" +
-                    "✍️ les transcriptions des conférences de presse du gouvernement luxembourgeois " +
-                    "(sip.gouvernement.lu), publiées comme jeu de données ouvert\n\n" +
-                    "Le dictionnaire s'enrichit au fil des mises à jour, pour coller à l'usage réel du lëtzebuergesch d'aujourd'hui."
+            text = "Les suggestions de mots sont construites sur deux corpus " +
+                    "ouverts de luxembourgeois contemporain :\n\n" +
+                    "📰 LuxAlign — phrases d'articles de RTL.lu, réunies par " +
+                    "Fred Philippy et coll. (COLING 2025). Licence CC BY-NC 4.0.\n\n" +
+                    "📖 LETZ — phrases d'exemple du Lëtzebuerger Online " +
+                    "Dictionnaire (lod.lu), réunies par Fred Philippy et coll. " +
+                    "(SIGUL 2024). Licence CC BY 4.0.\n\n" +
+                    "Le premier apporte le vocabulaire et l'enchaînement des " +
+                    "mots, le second la langue de tous les jours."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -3691,7 +3701,10 @@ class SettingsActivity : AppCompatActivity() {
             count
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur comptage mots: ${e.message}")
-            14722 // Fallback sur la valeur connue du dictionnaire complet
+            // Repli sur la taille connue du dictionnaire livré. Sert de
+            // dénominateur aux paliers de progression : une valeur trop basse
+            // ferait afficher des pourcentages supérieurs à 100 %.
+            37734
         }
     }
     

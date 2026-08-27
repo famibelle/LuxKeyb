@@ -8,8 +8,8 @@ Le pipeline ultime pour le clavier luxembourgeois intelligent.
 EXÉCUTION AUTOMATIQUE COMPLÈTE - Aucune interaction requise !
 
 Pipeline automatique intégré:
-• Récupération données Hugging Face (POTOMITAN/luxembourgish-corpus)
-• Extraction depuis la colonne "Texte"
+• Récupération données Hugging Face (fredxlpy/LuxAlign + fredxlpy/LETZ)
+• Extraction des phrases luxembourgeoises, dédoublonnées
 • Création/enrichissement dictionnaire  
 • Génération N-grams intelligents
 • Analyse comparative (delta)
@@ -20,6 +20,9 @@ Pipeline automatique intégré:
 • Sauvegarde sécurisée
 
 Usage simple: python LuxembourgishComplet.py
+
+Corpus sources et attribution : voir CORPUS.md (les deux jeux de données
+sont sous licence Creative Commons et exigent la citation de leurs auteurs).
 
 Fait avec ❤️ pour préserver le Luxembourgeois
 """
@@ -51,6 +54,65 @@ try:
     HAS_DOTENV = True
 except ImportError:
     HAS_DOTENV = False
+
+# ---------------------------------------------------------------------------
+# Corpus sources
+# ---------------------------------------------------------------------------
+#
+# Deux jeux de données Hugging Face, complémentaires et volontairement gardés
+# séparés plutôt que fusionnés en amont :
+#
+#  - LuxAlign fournit le volume et la prose suivie (articles RTL.lu, phrases
+#    de 17 mots en moyenne). C'est lui qui alimente les n-grammes : c'est la
+#    seule source du projet où les mots s'enchaînent vraiment.
+#  - LETZ fournit le registre quotidien (phrases d'exemple du Lëtzebuerger
+#    Online Dictionnaire) : deuxième personne, famille, objets du quotidien.
+#    Cent fois plus petit, mais c'est le seul endroit où « dech », « däin »,
+#    « hues » ou « mamm » apparaissent en quantité — soit exactement ce qu'on
+#    tape sur un téléphone et que la presse écrite n'emploie jamais.
+#
+# Le corpus POTOMITAN/luxembourgish-corpus utilisé jusqu'ici (157 tours de
+# parole de conférences de presse gouvernementales) a été retiré : les
+# ministres passent régulièrement au Hochdeutsch en pleine réponse, ce qui
+# injectait 2,7 % de mots allemands non ambigus dans le dictionnaire livré
+# (« und », « wir », « auch », « ich », « ist », « für »…). Attention, « dass »
+# n'en fait pas partie : c'est une variante orthographique luxembourgeoise
+# parfaitement légitime, présente dans les deux corpus retenus.
+#
+# Les deux jeux sont publics : aucun HF_TOKEN n'est nécessaire pour les lire.
+CORPUS_SOURCES = [
+    {
+        "dataset": "fredxlpy/LuxAlign",
+        "configs": ["lb-en", "lb-fr"],
+        "champ": "lb",
+        "libelle": "LuxAlign v3 (RTL.lu, prose journalistique)",
+    },
+    {
+        "dataset": "fredxlpy/LETZ",
+        "configs": ["LETZ-SYN", "LETZ-WoT"],
+        "champ": "text",
+        "libelle": "LETZ (LOD, phrases d'exemple du quotidien)",
+    },
+]
+
+# Seuil de fréquence pour retenir un mot dans le dictionnaire livré.
+#
+# Sur 3,17 M d'occurrences, 52 % des formes sont des hapax : noms propres,
+# coquilles, formes accidentelles. Les inclure ferait tripler le fichier tout
+# en dégradant le rapprochement Levenshtein, qui aurait d'autant plus de
+# candidats parasites à distance 1. Le seuil 3 retient 37 734 formes et couvre
+# encore 97,3 % des occurrences du corpus.
+SEUIL_FREQUENCE_DICO = 3
+
+# Seuil d'occurrences d'un contexte pour qu'il produise une prédiction.
+#
+# Mesuré sur 5 000 phrases tenues à l'écart de l'entraînement : passer de 20 à
+# 5 fait gagner 1,5 point de précision top-3 (23,9 % → 25,4 %) pour 3,6 fois
+# plus de clés et un fichier de 18 Mo. Le rendement s'effondre bien avant, on
+# s'arrête à 20 — soit 26 172 contextes, du même ordre que les 23 169 actuels
+# mais estimés sur un corpus cent fois plus grand.
+SEUIL_OCCURRENCES_CONTEXTE = 20
+
 
 class LuxembourgishPipelineUnique:
     """Pipeline unique automatique pour le système luxembourgeois"""
@@ -143,230 +205,130 @@ class LuxembourgishPipelineUnique:
                 print(f"⚠️ Erreur lecture N-grams: {e}")
     
     def charger_textes_luxembourgeois(self):
-        """Charge les textes luxembourgeois depuis Hugging Face"""
-        print("\n📖 CHARGEMENT DES TEXTES LUXEMBOURGEOIS")
-        print("-" * 45)
-        
-        textes_charges = False
-        
-        # Essayer Hugging Face d'abord
-        dataset = None  # Initialisation pour éviter l'erreur de variable non définie
-        if HAS_DATASETS:
-            try:
-                print("🔄 Téléchargement depuis Hugging Face...")
-                print(f"   📡 Connexion au dataset POTOMITAN/luxembourgish-corpus...")
-                print("   📝 Dataset texte détecté - Mode optimisé pour corpus textuel")
-                
-                # Chargement optimisé - utilisation du streaming pour traiter les données par lots
-                try:
-                    print("   🚀 Méthode streaming (rapide)...")
-                    ds = load_dataset("POTOMITAN/luxembourgish-corpus", streaming=True)
-                    
-                    print("   ✅ Streaming activé")
-                    # Afficher les splits disponibles
-                    available_splits = list(ds.keys())
-                    print(f"   📁 Splits disponibles: {available_splits}")
-                    print("   📝 Extraction des textes en mode streaming depuis TOUS les splits...")
-                    
-                    self.textes_luxembourgeois = []
-                    textes_vides = 0
-                    textes_avec_texte = 0
-                    total_processed = 0
-                    
-                    # Traitement en streaming - plus rapide, pour tous les splits
-                    for split_name in available_splits:
-                        print(f"   🔹 Traitement du split '{split_name}'...")
-                        split_data = ds[split_name]
-                        
-                        for i, item in enumerate(split_data):
-                            # Limiter pour éviter trop de données en streaming
-                            if total_processed >= 500:  # Limite raisonnable pour le clavier
-                                break
-                                
-                            if "Texte" in item and item["Texte"]:
-                                self.textes_luxembourgeois.append({
-                                    "Texte": item["Texte"],
-                                    "Source": f"POTOMITAN/luxembourgish-corpus ({split_name}, streaming)",
-                                    "metadata": {k: v for k, v in item.items() if k not in ["Texte", "Source"]}
-                                })
-                                textes_avec_texte += 1
-                            else:
-                                textes_vides += 1
-                            
-                            total_processed += 1
-                            
-                            # Affichage de progression
-                            if total_processed % 50 == 0:
-                                print(f"      📊 Traité {total_processed} textes...")
-                        
-                        if total_processed >= 500:
-                            break
-                    
-                    print(f"   📈 Statistiques d'extraction (streaming):")
-                    print(f"      - Textes traités: {textes_avec_texte + textes_vides}")
-                    print(f"      - Avec texte valide: {textes_avec_texte}")
-                    print(f"      - Vides ou invalides: {textes_vides}")
-                    print(f"      - Textes extraits: {len(self.textes_luxembourgeois)}")
-                    
-                    # Échantillon des premiers textes
-                    if self.textes_luxembourgeois:
-                        print("   🔬 Échantillon des textes:")
-                        for i, texte in enumerate(self.textes_luxembourgeois[:3]):
-                            preview = texte["Texte"][:50] + "..." if len(texte["Texte"]) > 50 else texte["Texte"]
-                            print(f"      Texte {i+1}: '{preview}'")
-                    
-                    if self.textes_luxembourgeois:
-                        print(f"🎉 TÉLÉCHARGEMENT HUGGING FACE RÉUSSI (STREAMING) !")
-                        print(f"   ✅ {len(self.textes_luxembourgeois)} textes récupérés")
-                        print(f"   📊 Source: Dataset POTOMITAN (mode streaming)")
-                        textes_charges = True
-                    else:
-                        print("⚠️ STREAMING INCOMPLET - Tentative méthode standard...")
-                        textes_charges = False
-                        
-                except Exception as e_stream:
-                    print(f"   ⚠️ Streaming échoué: {e_stream}")
-                    print("   🔄 Tentative méthode standard...")
-                    textes_charges = False
-                
-                # Fallback: méthode standard si streaming échoue
-                if not textes_charges:
-                    # Utilisation du code simplifié avec chargement complet
-                    ds = load_dataset("POTOMITAN/luxembourgish-corpus")
-                    dataset = ds
-                    print("   ✅ Dataset récupéré avec succès")
-                    
-                    # Vérifier la structure du dataset
-                    print(f"   📁 Structure du dataset: {list(dataset.keys())}")
-                    
-                    # Combiner TOUS les splits disponibles
-                    print("   📝 Combinaison de TOUS les splits...")
-                    all_items = []
-                    total_rows = 0
-                    for split_name in dataset.keys():
-                        split_data = dataset[split_name]
-                        all_items.extend(split_data)
-                        total_rows += len(split_data)
-                        print(f"      - Split '{split_name}': {len(split_data)} rows")
-                    
-                    print(f"   📊 Nombre total de rows (tous splits): {total_rows}")
-                    print("   🔍 Extraction des textes...")
-                
-                    # Échantillon des premières rows pour debug
-                    print("   🔬 Échantillon des premières rows:")
-                    for i in range(min(3, len(all_items))):
-                        item = all_items[i]
-                        print(f"      Row {i+1}: {list(item.keys())}")
-                        if 'Texte' in item:
-                            preview = str(item['Texte'])[:50] + "..." if len(str(item['Texte'])) > 50 else str(item['Texte'])
-                            print(f"         Texte: '{preview}'")
-                    
-                    self.textes_luxembourgeois = []
-                    textes_vides = 0
-                    textes_avec_texte = 0
-                    
-                    for i, item in enumerate(all_items):
-                        if "Texte" in item and item["Texte"]:
-                            # Déterminer le split d'origine si possible
-                            split_source = "POTOMITAN/luxembourgish-corpus"
-                            self.textes_luxembourgeois.append({
-                                "Texte": item["Texte"],
-                                "Source": split_source,
-                                "metadata": {k: v for k, v in item.items() if k != "Texte"}
-                            })
-                            textes_avec_texte += 1
-                        else:
-                            textes_vides += 1
-                            if textes_vides <= 3:  # Afficher seulement les 3 premiers exemples
-                                print(f"   ⚠️ Row {i+1} sans texte valide: {list(item.keys())}")
-                    
-                    print(f"   📈 Statistiques d'extraction:")
-                    print(f"      - Rows totales: {total_rows}")
-                    print(f"      - Avec champ 'Texte': {textes_avec_texte}")
-                    print(f"      - Vides ou invalides: {textes_vides}")
-                    print(f"      - Textes extraits: {len(self.textes_luxembourgeois)}")
-                    
-                    if self.textes_luxembourgeois:
-                        print(f"🎉 TÉLÉCHARGEMENT HUGGING FACE RÉUSSI !")
-                        print(f"   ✅ {len(self.textes_luxembourgeois)} textes récupérés")
-                        print(f"   📊 Source: Dataset POTOMITAN/luxembourgish-corpus")
-                        textes_charges = True
-                    else:
-                        print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
-                        print("   ⚠️ Dataset vide - aucun texte trouvé")
-                    
-            except Exception as e:
-                print("❌ TÉLÉCHARGEMENT HUGGING FACE ÉCHOUÉ !")
-                print(f"   💥 Erreur: {e}")
-                print("   🔄 Passage au mode fallback local...")
-        else:
-            print("❌ TÉLÉCHARGEMENT HUGGING FACE IMPOSSIBLE !")
-            print("   📦 Bibliothèque 'datasets' non installée")
-            print("   🔄 Passage au mode fallback local...")
-        
-        # Fallback local si Hugging Face échoue
-        if not textes_charges and self.strict:
-            print("\n❌ MODE STRICT : téléchargement Hugging Face échoué.")
-            print("   Le corpus local de secours ne compte que quelques phrases :")
-            print("   s'en servir reconstruirait les n-grammes sur presque rien,")
-            print("   en conservant l'ancien dictionnaire — une dégradation")
-            print("   invisible pour les contrôles de format et de volumétrie.")
-            print("   Vérifiez HF_TOKEN, puis relancez.")
-            return False
+        """Charge les phrases luxembourgeoises depuis les corpus Hugging Face.
 
-        if not textes_charges:
-            print("\n🔄 FALLBACK: Recherche de fichiers locaux...")
-            chemins_locaux = [
-                "luxemburgish_data/textes.json",
-                "../luxemburgish_data/textes.json",
-                "textes_luxembourgeois.json"
-            ]
-            
-            for chemin in chemins_locaux:
-                print(f"   🔍 Vérification: {chemin}")
-                if os.path.exists(chemin):
-                    try:
-                        print(f"   📁 Fichier trouvé, chargement...")
-                        with open(chemin, 'r', encoding='utf-8') as f:
-                            data = json.load(f)
-                        
-                        if isinstance(data, list):
-                            self.textes_luxembourgeois = data
-                        elif isinstance(data, dict) and "textes" in data:
-                            self.textes_luxembourgeois = data["textes"]
-                        else:
-                            print(f"   ⚠️ Format inattendu dans {chemin}")
+        Les phrases sont dédoublonnées globalement, toutes sources confondues :
+        LuxAlign apparie chaque phrase luxembourgeoise à l'anglais *et* au
+        français, et LETZ réutilise la même phrase avec des dizaines d'étiquettes
+        de thème différentes. Sans déduplication, LETZ pèserait 63 694 lignes
+        pour 5 862 phrases réelles et écraserait les fréquences.
+        """
+        print("\n📖 CHARGEMENT DES CORPUS LUXEMBOURGEOIS")
+        print("-" * 45)
+
+        if not HAS_DATASETS:
+            print("❌ Bibliothèque 'datasets' non installée")
+            if self.strict:
+                print("   Mode strict : arrêt. Faites `pip install datasets`.")
+                return False
+            return self._charger_fallback_local()
+
+        vues = set()
+        self.textes_luxembourgeois = []
+        sources_ok = 0
+
+        for source in CORPUS_SOURCES:
+            nom = source["dataset"]
+            champ = source["champ"]
+            print(f"\n🔄 {nom} — {source['libelle']}")
+            phrases_source = 0
+            doublons_source = 0
+
+            for config in source["configs"]:
+                try:
+                    ds = load_dataset(nom, config)
+                except Exception as e:
+                    print(f"   ❌ config '{config}' indisponible: {e}")
+                    continue
+
+                for split in ds.keys():
+                    for item in ds[split]:
+                        texte = item.get(champ)
+                        if not texte or not isinstance(texte, str):
                             continue
-                        
-                        print(f"✅ FALLBACK RÉUSSI !")
-                        print(f"   📊 {len(self.textes_luxembourgeois)} textes chargés depuis {chemin}")
-                        textes_charges = True
-                        break
-                        
-                    except Exception as e:
-                        print(f"   ❌ Erreur lecture {chemin}: {e}")
-                else:
-                    print(f"   ❌ Fichier non trouvé")
-        
-        if not textes_charges:
-            print("\n❌ ÉCHEC TOTAL !")
-            print("   💥 Aucun texte luxembourgeois trouvé (ni Hugging Face, ni local)")
-            print("   🚨 Le pipeline ne peut pas continuer sans données")
-            return False
-        
+                        texte = texte.strip()
+                        if not texte:
+                            continue
+                        if texte in vues:
+                            doublons_source += 1
+                            continue
+                        vues.add(texte)
+                        self.textes_luxembourgeois.append({
+                            "Texte": texte,
+                            "Source": f"{nom} ({config})",
+                        })
+                        phrases_source += 1
+
+                print(f"   ✅ config '{config}' traitée")
+
+            if phrases_source:
+                sources_ok += 1
+                print(f"   📊 {phrases_source} phrases retenues, "
+                      f"{doublons_source} doublons écartés")
+            else:
+                print(f"   ⚠️ aucune phrase retenue depuis {nom}")
+
+        if not self.textes_luxembourgeois:
+            print("\n❌ Aucun corpus n'a pu être chargé.")
+            if self.strict:
+                print("   Mode strict : arrêt, aucun fichier réécrit.")
+                return False
+            return self._charger_fallback_local()
+
+        # Une seule source sur deux, c'est un dictionnaire amputé de la moitié
+        # de son vocabulaire ou de tout son registre familier selon celle qui
+        # manque — et rien dans les contrôles de format de la CI ne le verrait.
+        if sources_ok < len(CORPUS_SOURCES):
+            print(f"\n⚠️ Seulement {sources_ok}/{len(CORPUS_SOURCES)} corpus chargés.")
+            if self.strict:
+                print("   Mode strict : arrêt, le dictionnaire serait déséquilibré.")
+                return False
+
         print(f"\n📋 RÉSUMÉ CHARGEMENT:")
-        # Détection de source plus précise
-        if textes_charges and self.textes_luxembourgeois:
-            source_hf = any(t.get("Source", "").find("POTOMITAN") != -1 for t in self.textes_luxembourgeois[:5])
-            source = "Hugging Face (POTOMITAN)" if source_hf else "Local"
-        else:
-            source = "Inconnu"
-        print(f"   📊 {len(self.textes_luxembourgeois)} textes chargés")
-        print(f"   🌐 Source: {source}")
+        print(f"   📊 {len(self.textes_luxembourgeois)} phrases uniques")
+        print(f"   🌐 Sources: {sources_ok}/{len(CORPUS_SOURCES)}")
         print(f"   ✅ Prêt pour traitement")
-        
         return True
-    
+
+    def _charger_fallback_local(self):
+        """Repli sur un corpus local. Hors mode strict uniquement.
+
+        Ce repli ne compte que quelques dizaines de phrases : il produit un
+        dictionnaire techniquement valide et fonctionnellement vide. Il n'existe
+        que pour permettre une exécution hors ligne du script, jamais pour
+        alimenter un build — d'où le refus en mode strict, que la CI utilise.
+        """
+        print("\n🔄 FALLBACK: recherche de fichiers locaux...")
+        chemins_locaux = [
+            "luxemburgish_data/textes.json",
+            "../luxemburgish_data/textes.json",
+            "textes_luxembourgeois.json",
+        ]
+
+        for chemin in chemins_locaux:
+            if not os.path.exists(chemin):
+                print(f"   ❌ {chemin} non trouvé")
+                continue
+            try:
+                with open(chemin, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if isinstance(data, list):
+                    self.textes_luxembourgeois = data
+                elif isinstance(data, dict) and "textes" in data:
+                    self.textes_luxembourgeois = data["textes"]
+                else:
+                    print(f"   ⚠️ Format inattendu dans {chemin}")
+                    continue
+                print(f"✅ FALLBACK: {len(self.textes_luxembourgeois)} textes "
+                      f"depuis {chemin}")
+                print("   ⚠️ Corpus de dépannage — ne pas livrer ce résultat.")
+                return True
+            except Exception as e:
+                print(f"   ❌ Erreur lecture {chemin}: {e}")
+
+        print("\n❌ ÉCHEC TOTAL : aucun texte luxembourgeois trouvé.")
+        return False
+
     def creer_dictionnaire(self):
         """Crée un dictionnaire enrichi à partir des textes luxembourgeois"""
         print("\n📚 CRÉATION DU DICTIONNAIRE LUXEMBOURGEOIS")
@@ -397,24 +359,45 @@ class LuxembourgishPipelineUnique:
                 if len(mot) >= 2:
                     compteur_mots[mot] += 1
         
-        # Fusionner avec le dictionnaire existant
-        for mot, freq_nouvelle in compteur_mots.items():
-            freq_existante = self.dictionnaire_actuel.get(mot, 0)
-            compteur_mots[mot] = freq_existante + freq_nouvelle
-        
-        # Ajouter les mots existants non trouvés
-        for mot, freq in self.dictionnaire_actuel.items():
-            if mot not in compteur_mots:
-                compteur_mots[mot] = freq
-        
-        self.nouveau_dictionnaire = dict(compteur_mots.most_common())
-        
-        nouveaux_mots = len(self.nouveau_dictionnaire) - len(self.dictionnaire_actuel)
+        # Le dictionnaire est REMPLACÉ, jamais fusionné avec le précédent.
+        #
+        # L'ancien code faisait `compteur[mot] = freq_existante + freq_nouvelle`
+        # puis réinjectait les mots absents du corpus. Deux dégâts cumulés :
+        #
+        #  1. chaque exécution rajoutait le corpus entier par-dessus le total
+        #     précédent. Les fréquences livrées valaient environ 5,8 fois les
+        #     fréquences réelles et dérivaient vers le haut à chaque passage de
+        #     la CI. Or calculateDictionaryScore() est calibré dessus : ses
+        #     constantes visaient une cible mouvante.
+        #  2. les mots ne figurant plus dans le corpus survivaient indéfiniment.
+        #     49 % du dictionnaire livré (4 324 entrées sur 8 792) venait ainsi
+        #     d'un corpus COVID disparu depuis : « geimpft », « covidcheck »,
+        #     « astrazeneca », « omicron »… Le dictionnaire n'était plus le
+        #     reflet de sa source, mais un sédiment de toutes ses sources
+        #     passées.
+        #
+        # Le prix à payer est qu'un rétrécissement du corpus rétrécit désormais
+        # le dictionnaire — ce que le garde-fou de volumétrie de la CI détecte,
+        # là où l'accumulation le masquait par construction.
+        total_formes = len(compteur_mots)
+        total_occurrences = sum(compteur_mots.values())
+        retenus = {mot: freq for mot, freq in compteur_mots.items()
+                   if freq >= SEUIL_FREQUENCE_DICO}
+        self.nouveau_dictionnaire = dict(
+            sorted(retenus.items(), key=lambda item: (-item[1], item[0]))
+        )
+
+        couverture = (100 * sum(retenus.values()) / total_occurrences
+                      if total_occurrences else 0)
         print(f"✅ Dictionnaire luxembourgeois créé:")
-        print(f"   - Total mots: {len(self.nouveau_dictionnaire)}")
-        print(f"   - Nouveaux mots: {nouveaux_mots}")
-        print(f"   - Mots existants: {len(self.dictionnaire_actuel)}")
-        
+        print(f"   - Occurrences analysées: {total_occurrences}")
+        print(f"   - Formes distinctes: {total_formes}")
+        print(f"   - Retenues (freq >= {SEUIL_FREQUENCE_DICO}): "
+              f"{len(self.nouveau_dictionnaire)}")
+        print(f"   - Couverture du corpus: {couverture:.1f}% des occurrences")
+        print(f"   - Dictionnaire précédent: {len(self.dictionnaire_actuel)} mots "
+              f"(remplacé, non fusionné)")
+
         return True
     
     def creer_ngrams(self):
@@ -470,10 +453,16 @@ class LuxembourgishPipelineUnique:
         predictions = {}
 
         def _classer(candidats_par_cle, contextes):
-            """Transforme {contexte: Counter(suivants)} en prédictions triées."""
+            """Transforme {contexte: Counter(suivants)} en prédictions triées.
+
+            Les contextes trop rares sont écartés : sur 3,17 M d'occurrences,
+            un contexte vu deux fois donne une probabilité de 0,5 qui ne
+            reflète rien, et gonfle le fichier livré d'un facteur trois pour
+            un gain de précision de l'ordre du point.
+            """
             for contexte, suivants in candidats_par_cle.items():
                 total = contextes[contexte]
-                if not total:
+                if total < SEUIL_OCCURRENCES_CONTEXTE:
                     continue
                 candidats = [
                     {"word": suivant, "probability": round(freq / total, 3)}
@@ -656,11 +645,18 @@ class LuxembourgishPipelineUnique:
             print(f"✅ Dictionnaire luxembourgeois sauvegardé: {len(paires)} mots")
         
         # Sauvegarder les nouveaux N-grams
+        # Les n-grammes sont écrits sans indentation : le fichier compte des
+        # dizaines de milliers de clés, personne ne le relit à la main, et
+        # l'indentation lui coûtait 40 % de volume. Le dictionnaire, lui, reste
+        # indenté : il est lisible et se relit dans les diffs.
         if self.nouveaux_ngrams:
             os.makedirs(os.path.dirname(self.chemin_ngrams), exist_ok=True)
             with open(self.chemin_ngrams, 'w', encoding='utf-8') as f:
-                json.dump(self.nouveaux_ngrams, f, ensure_ascii=False, indent=2)
-            print(f"✅ N-grams luxembourgeois sauvegardés: {len(self.nouveaux_ngrams)} prédictions")
+                json.dump(self.nouveaux_ngrams, f, ensure_ascii=False,
+                          separators=(',', ':'))
+            taille_mo = os.path.getsize(self.chemin_ngrams) / (1024 * 1024)
+            print(f"✅ N-grams luxembourgeois sauvegardés: "
+                  f"{len(self.nouveaux_ngrams)} prédictions ({taille_mo:.1f} Mo)")
         
         return True
     

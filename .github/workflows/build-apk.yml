@@ -45,7 +45,10 @@ jobs:
     - name: 📦 Generate Fresh Lëtzebuergesch Dictionary
       run: |
         echo "🔄 Régénération du dictionnaire luxembourgeois depuis Hugging Face..."
-        echo "🔑 Token configuré: $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
+        # LuxAlign et LETZ sont publics : HF_TOKEN n'est plus requis. Il reste
+        # transmis parce qu'un jeton valide relève les quotas de téléchargement
+        # anonymes, mais son absence n'est plus une cause d'échec.
+        echo "🔑 Token configuré (facultatif): $(if [ -n "$HF_TOKEN" ]; then echo "✅ Oui"; else echo "❌ Non"; fi)"
 
         cd Dictionnaires
         python -m pip install --upgrade pip
@@ -83,13 +86,18 @@ jobs:
           exit 1
         fi
 
-        # Garde-fou de repli silencieux : sans HF_TOKEN valide, le script
-        # bascule sans broncher sur un corpus local de secours de quelques
+        # Garde-fou de repli silencieux : si un corpus est indisponible, le
+        # script peut basculer sur un corpus local de secours de quelques
         # dizaines de lignes. Le fichier serait bien formé, mais l'APK
         # livrerait un dictionnaire vide de sens.
+        #
+        # Le seuil est calé sous la production normale (37 734 mots depuis
+        # LuxAlign + LETZ) mais très au-dessus de ce que produirait une source
+        # unique : LETZ seul ne donnerait que ~2 500 formes au-dessus du seuil
+        # de fréquence. 20 000 sépare donc franchement les deux cas.
         DICT_COUNT=$(jq 'length' "$A/luxemburgish_dict.json")
-        if [ "$DICT_COUNT" -lt 3000 ]; then
-          echo "::error::Dictionnaire anormalement petit ($DICT_COUNT mots, moins de 3000). Le pipeline est probablement retombé sur le corpus local faute de HF_TOKEN valide."
+        if [ "$DICT_COUNT" -lt 20000 ]; then
+          echo "::error::Dictionnaire anormalement petit ($DICT_COUNT mots, moins de 20000). Un des deux corpus (LuxAlign, LETZ) n'a probablement pas été chargé."
           exit 1
         fi
 
@@ -102,14 +110,22 @@ jobs:
           exit 1
         fi
 
-        # Garde-fou de volumétrie des n-grammes. Le seuil sur le dictionnaire ne
-        # suffit pas : le pipeline enrichit la liste de mots existante mais
-        # reconstruit les n-grammes à zéro. Un repli sur le corpus de secours
-        # laisse donc les 6 000 mots en place et fait fondre les contextes de
-        # 6 000 à 262, sans qu'aucune autre vérification s'en aperçoive.
+        # Garde-fou de volumétrie des n-grammes, désormais indépendant de
+        # celui du dictionnaire : les deux sont reconstruits à zéro à chaque
+        # exécution, mais les contextes retenus dépendent du seuil
+        # d'occurrences et s'effondrent bien plus vite que le lexique quand le
+        # corpus rétrécit. Production normale : 26 172 contextes.
         NGRAMS_COUNT=$(jq 'length' "$A/luxemburgish_ngrams.json")
-        if [ "$NGRAMS_COUNT" -lt 3000 ]; then
-          echo "::error::Modèle n-grammes anormalement petit ($NGRAMS_COUNT contextes, moins de 3000). Le corpus source est probablement incomplet."
+        if [ "$NGRAMS_COUNT" -lt 15000 ]; then
+          echo "::error::Modèle n-grammes anormalement petit ($NGRAMS_COUNT contextes, moins de 15000). Le corpus source est probablement incomplet."
+          exit 1
+        fi
+
+        # LuxAlign impose l'attribution de ses auteurs (CC BY-NC 4.0), LETZ
+        # aussi (CC BY 4.0). Le fichier qui porte cette obligation est suivi
+        # en git : s'il disparaît, l'APK n'est plus distribuable en l'état.
+        if [ ! -f Dictionnaires/CORPUS.md ]; then
+          echo "::error::Dictionnaires/CORPUS.md manquant : les corpus sources exigent l'attribution de leurs auteurs."
           exit 1
         fi
 

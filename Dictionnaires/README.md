@@ -36,10 +36,10 @@ C'est tout ! Le pipeline fait **TOUT** automatiquement :
 - **"sèvis-ladministrasyon"** (21 caractères, mot le plus long)
 
 ### 🇱🇺 Dictionnaire Luxembourgeois
-- Génération automatique depuis **POTOMITAN/luxembourgish-corpus**
+- Génération automatique depuis **fredxlpy/LuxAlign** (v3) et **fredxlpy/LETZ**
 - Support natif des caractères luxembourgeois
-- Mots courants : "den", "ech", "dat", "mir", "an", "op"
-- Prédictions optimisées pour le contexte gouvernemental
+- Mots courants : "an", "de", "der", "vun", "ass", "op"
+- Attribution obligatoire — voir [CORPUS.md](CORPUS.md)
 
 ### N-grams (Prédictions Intelligentes)
 - **Créole** : 1,721 prédictions | "ka" → fè, di, vwè | "nou" → ka, yé, fè
@@ -71,10 +71,11 @@ Les fichiers générés sont **directement prêts** pour l'app Android :
 - Fallback sur fichiers locaux si nécessaire
 
 ### Pipeline Luxembourgeois
-- Token Hugging Face (depuis `.env`)
-- Dataset `POTOMITAN/luxembourgish-corpus`
-- Colonne "Texte" pour extraction
-- Fallback sur fichiers locaux si nécessaire
+- Datasets `fredxlpy/LuxAlign` (champ `lb`) et `fredxlpy/LETZ` (champ `text`)
+- **Publics : aucun `HF_TOKEN` n'est nécessaire**
+- Phrases dédoublonnées toutes sources confondues avant comptage
+- `--strict` refuse le repli local et l'absence d'un des deux corpus
+- Licences et citations : [CORPUS.md](CORPUS.md)
 
 ## 📁 Structure
 
