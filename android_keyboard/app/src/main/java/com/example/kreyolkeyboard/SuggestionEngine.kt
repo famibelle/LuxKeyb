@@ -41,6 +41,15 @@ class SuggestionEngine(private val context: Context) {
         // mot personnel rarement pertinent.
         private const val MAX_COUNTED_USAGES = 20
 
+        /**
+         * Écart de score entre deux distances d'édition consécutives.
+         *
+         * Doit rester strictement supérieur à la plus haute fréquence du
+         * dictionnaire livré (~100 000 aujourd'hui) pour que la distance prime
+         * toujours sur la fréquence. Voir calculateDictionaryScore().
+         */
+        internal const val EDIT_DISTANCE_WEIGHT = 1_000_000.0
+
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
@@ -121,11 +130,21 @@ class SuggestionEngine(private val context: Context) {
             score += minOf(usageCount, MAX_COUNTED_USAGES) * USAGE_WEIGHT
 
             // Corrections orthographiques : la distance prime sur tout le reste.
-            // Le poids (100 000) dépasse toute fréquence du dictionnaire (~15 500 max) :
-            // une correction à 1 édition bat toujours une correction à 2 éditions,
-            // quelle que soit leur fréquence ("mesli" → "mèsi" avant "mésyé")
+            // Une correction à 1 édition doit battre une correction à 2 éditions
+            // quelle que soit leur fréquence ("mesli" → "mèsi" avant "mésyé").
+            //
+            // L'écart entre deux distances vaut EDIT_DISTANCE_WEIGHT ; il doit
+            // donc rester supérieur à la plus haute fréquence du dictionnaire,
+            // sans quoi un mot très fréquent à 2 éditions repasse devant un mot
+            // rare à 1 édition. Le poids valait 100 000 pour un dictionnaire
+            // plafonnant à ~15 500 — confortable en créole, mais franchi par le
+            // corpus luxembourgeois actuel, où « an » culmine à 100 105 : une
+            // correction à 2 éditions vers « an » (200 105) passait devant toute
+            // correction à 1 édition d'un mot de fréquence < 105 (200 003).
+            // SuggestionScoringTest verrouille l'invariant contre le
+            // dictionnaire réellement livré.
             if (levenshteinDistance > 0) {
-                score += (3 - levenshteinDistance) * 100_000.0
+                score += (3 - levenshteinDistance) * EDIT_DISTANCE_WEIGHT
             }
 
             // Bonus si le mot commence par l'input, comparaison insensible aux accents :

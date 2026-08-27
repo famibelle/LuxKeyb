@@ -2,6 +2,8 @@ package com.example.kreyolkeyboard
 
 import org.junit.Test
 import org.junit.Assert.*
+import org.json.JSONArray
+import java.io.File
 
 /**
  * Tests du score de pertinence des suggestions, en particulier la propagation
@@ -9,6 +11,55 @@ import org.junit.Assert.*
  * battre une correction à 2 éditions, quelle que soit la fréquence.
  */
 class SuggestionScoringTest {
+
+    /**
+     * Le classement par distance ne doit pas dépendre de l'échelle de
+     * fréquences du corpus du moment.
+     *
+     * calculateDictionaryScore() additionne la fréquence et un poids fonction
+     * de la distance : la distance ne prime que tant que l'écart entre deux
+     * distances dépasse la plus haute fréquence livrée. Les autres tests de ce
+     * fichier utilisent des fréquences créoles (15 000 max) et resteraient
+     * verts après un changement de corpus qui casserait l'invariant — c'est
+     * exactement ce qui est arrivé en passant à LuxAlign, où « an » atteint
+     * 100 105 alors que le poids valait 100 000.
+     *
+     * Ce test lit donc le dictionnaire réellement livré et confronte ses deux
+     * extrêmes : le mot le plus fréquent à 2 éditions ne doit jamais passer
+     * devant le mot le plus rare à 1 édition.
+     */
+    @Test
+    fun testDistanceBeatsFrequencyAtShippedDictionaryScale() {
+        val asset = File("src/main/assets/luxemburgish_dict.json")
+        assertTrue(
+            "Dictionnaire introuvable : ${asset.absolutePath}",
+            asset.exists()
+        )
+
+        val entries = JSONArray(asset.readText())
+        assertTrue("Dictionnaire vide", entries.length() > 0)
+
+        var frequenceMax = 0
+        var frequenceMin = Int.MAX_VALUE
+        for (i in 0 until entries.length()) {
+            val frequence = entries.getJSONArray(i).getInt(1)
+            if (frequence > frequenceMax) frequenceMax = frequence
+            if (frequence < frequenceMin) frequenceMin = frequence
+        }
+
+        val correctionProche =
+            SuggestionEngine.calculateDictionaryScore("rare", "raree", frequenceMin, 1)
+        val correctionLointaine =
+            SuggestionEngine.calculateDictionaryScore("frequent", "raree", frequenceMax, 2)
+
+        assertTrue(
+            "Une correction à 1 édition du mot le plus rare (f=$frequenceMin) doit " +
+                "battre une correction à 2 éditions du mot le plus fréquent " +
+                "(f=$frequenceMax) : $correctionProche vs $correctionLointaine. " +
+                "Relever EDIT_DISTANCE_WEIGHT au-dessus de $frequenceMax.",
+            correctionProche > correctionLointaine
+        )
+    }
 
     @Test
     fun testCorrectionCloserDistanceBeatsHigherFrequency() {
