@@ -9,6 +9,71 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.16.0] - 2026-08-27
+
+Changement de corpus. Le dictionnaire et les prédictions sont désormais
+construits sur deux jeux de données luxembourgeois ouverts au lieu d'un, cent
+fois plus gros et bien plus propres que le précédent.
+
+### 📚 Deux corpus à la place d'un
+
+- **LuxAlign v3** (RTL.lu, 180 342 phrases, ~3,1 M de mots) apporte le
+  vocabulaire et l'enchaînement des mots. C'est la première source du projet
+  avec de la prose suivie : les phrases y font 17 mots en moyenne, contre des
+  exemples isolés jusqu'ici.
+- **LETZ** (Lëtzebuerger Online Dictionnaire, 5 862 phrases) apporte la langue
+  de tous les jours. Soixante fois plus petit, mais seul endroit où « dech »,
+  « däin », « hues » ou « mamm » apparaissent en quantité — soit ce qu'on tape
+  sur un téléphone et que la presse n'écrit jamais.
+- Les deux sont sous licence Creative Commons et **exigent la citation de leurs
+  auteurs** : elle figure dans l'onglet « À propos » de l'application et dans
+  `Dictionnaires/CORPUS.md`. LuxAlign porte en plus une clause NonCommercial,
+  qui s'applique aux fichiers de dictionnaire livrés — le code, lui, garde sa
+  propre licence.
+
+- **Retrait du corpus de conférences de presse gouvernementales.** Les ministres
+  passaient régulièrement à l'allemand en pleine réponse, et le dictionnaire
+  livré contenait 42 mots allemands sans ambiguïté : « und » 372 occurrences,
+  « wir » 352, « auch » 324, « ich » 124. Sur un préfixe « au », le clavier
+  proposait « auch ». Ils tombent respectivement à 53, 8, 5 et 8, résidus de
+  citations dans de vrais articles.
+
+### 📈 Ce que ça change en pratique
+
+| | avant | après |
+|---|---|---|
+| Mots au dictionnaire | 8 792 | **37 734** |
+| Contextes de prédiction | 23 169 | **26 172** |
+| Mots reconnus dans un texte inédit | 80 % | **97 %** |
+| Bon mot proposé dans les trois premiers | 7 % | **24 %** |
+
+L'APK passe de 7,6 à 8,4 Mo.
+
+### 🐛 Corrections
+
+- **La distance d'édition reprend le pas sur la fréquence.** Le score d'une
+  suggestion additionne la fréquence du mot et un poids lié au nombre de
+  corrections nécessaires ; ce poids valait 100 000, calibré pour un
+  dictionnaire plafonnant à 15 500. Le nouveau corpus monte à 100 105 pour
+  « an », si bien qu'une correction à deux lettres près vers « an » repassait
+  devant toute correction à une lettre près d'un mot moins fréquent que 105.
+  Le poids passe à 1 000 000, et un test le vérifie désormais contre le
+  dictionnaire réellement livré, pas contre des valeurs écrites en dur.
+
+- **Les fréquences du dictionnaire sont enfin les vraies.** Chaque régénération
+  additionnait le corpus entier au total précédent au lieu de le remplacer : les
+  fréquences livrées valaient environ 5,8 fois les réelles et montaient à chaque
+  passage de l'intégration continue. Pire, les mots disparus du corpus
+  survivaient indéfiniment — 49 % du dictionnaire venait d'un corpus COVID hors
+  service depuis longtemps (« geimpft », « covidcheck », « astrazeneca »).
+
+### 🔧 Interne
+
+- `HF_TOKEN` n'est plus nécessaire : les deux corpus sont publics.
+- Garde-fous d'intégration continue relevés : 20 000 mots et 15 000 contextes
+  minimum, plus un contrôle de présence du fichier d'attribution.
+- Suite de tests : 127 tests.
+
 ## [10.15.0] - 2026-08-27
 
 Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.14.8. Est repris
