@@ -75,7 +75,7 @@ tape un mot, regarde les suggestions kréyòl et français apparaître, découvr
 les accents par appui long.
 
 <div align="center">
-  <iframe src="simulateur.html?embed=1" width="380" height="760" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"></iframe>
+  <iframe src="simulateur.html?embed=1" width="380" height="620" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"></iframe>
 </div>
 
 ## Le clavier en action

@@ -22,9 +22,15 @@
   html.embed-mode header.hero,
   html.embed-mode .cta-row,
   html.embed-mode footer.note,
-  html.embed-mode .embed-section { display: none; }
+  html.embed-mode footer.site,
+  html.embed-mode .install-bar,
+  html.embed-mode .embed-section { display: none !important; }
   html.embed-mode main { max-width: 420px; padding: 8px; }
   html.embed-mode .phone-shell { margin: 4px auto; }
+  /* La barre d'installation mobile se déclenche sous 640 px de large : dans une
+     iframe de 380 px elle apparaît donc toujours, avec la réserve de place que
+     theme.css met sous le corps de page. Les deux sautent en mode embed. */
+  html.embed-mode body { padding-bottom: 0 !important; }
 
   header.hero { text-align: center; padding: 28px 0 8px; }
   .eyebrow { color: var(--sea); font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
@@ -562,7 +568,7 @@
   <div class="card embed-section">
     <h2>🔗 Intégrer ce simulateur ailleurs</h2>
     <p>Copie ce code pour l'afficher dans une autre page, en dehors de ce site.</p>
-    <textarea class="embed-snippet" id="embed-snippet" readonly rows="3" onclick="this.select()">&lt;iframe src="https://famibelle.github.io/KreyolKeyb/simulateur.html?embed=1" width="380" height="760" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"&gt;&lt;/iframe&gt;</textarea>
+    <textarea class="embed-snippet" id="embed-snippet" readonly rows="3" onclick="this.select()">&lt;iframe src="https://famibelle.github.io/KreyolKeyb/simulateur.html?embed=1" width="380" height="620" style="border:0;max-width:100%;" loading="lazy" title="Simulateur Klavyé Kréyòl Karukera"&gt;&lt;/iframe&gt;</textarea>
     <button type="button" class="btn embed-copy-btn" id="embed-copy-btn">📋 Copier</button>
     <span class="embed-copy-feedback" id="embed-copy-feedback"></span>
   </div>
