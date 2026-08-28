@@ -31,29 +31,46 @@ Luxembourg. Plus besoin de chercher un `ë` dans un menu d'accents : les trois
 diacritiques qui portent la langue — **é**, **ä** et **ë** — ont chacune leur
 touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
 
-<div style="display:flex;justify-content:center;align-items:center;gap:32px;
-            flex-wrap:wrap;margin:24px 0;">
-  <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
-     style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
-            border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
-    📲 Télécharger l'APK (version 10.16.0)
-  </a>
+<div style="display:flex;justify-content:center;align-items:center;gap:36px;
+            flex-wrap:wrap;margin:28px 0 12px;">
+  <div style="text-align:center;flex:1 1 320px;max-width:400px;">
+    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+       style="display:inline-block;padding:16px 30px;background:#ED2939;color:#fff;
+              border-radius:10px;font-weight:bold;text-decoration:none;font-size:1.15em;">
+      🧪 Devenir testeur sur Google Play
+    </a>
+    <p style="margin:14px 0 0;font-size:0.95em;opacity:0.85;">
+      L'application est en <strong>test fermé</strong>. Une fois inscrit, elle
+      s'installe et se met à jour comme n'importe quelle autre — sans passer par
+      les « sources inconnues ».
+    </p>
+    <p style="margin:16px 0 0;">
+      <img src="assets/badge-bientot-android.svg"
+           alt="Bientôt disponible sur Android"
+           width="240" height="60"
+           style="display:inline-block;max-width:100%;height:auto;">
+    </p>
+  </div>
   <figure style="margin:0;text-align:center;">
-    <img src="assets/qr-luxkeyb-apk.png"
-         alt="QR code téléchargeant directement l'APK de la dernière version de Lëtzebuergesch Clavier"
-         width="160" height="160"
-         style="display:block;width:160px;height:160px;background:#fff;
-                border-radius:8px;padding:6px;box-sizing:border-box;">
+    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
+      <img src="assets/qr-luxkeyb-test-ferme.png"
+           alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
+           width="176" height="176"
+           style="display:block;width:176px;height:176px;background:#fff;
+                  border-radius:8px;padding:6px;box-sizing:border-box;">
+    </a>
     <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
-      Scannez : le téléchargement démarre
+      Scannez : la page d'inscription s'ouvre
     </figcaption>
   </figure>
 </div>
 
-<p align="center"><em>Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau</em></p>
+<p align="center"><em>Le test est réservé à une liste de comptes ;
+<a href="#devenir-testeur">comment y être ajouté</a>.</em></p>
 
-<p align="center"><em>Vous préférez le Play Store ? L'application y est en test
-fermé : <a href="#devenir-testeur">devenir testeur</a>.</em></p>
+<p align="center"><em>Pas envie d'attendre ? L'APK s'installe directement :
+<a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">télécharger la version 10.16.0</a>
+— Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau.</em></p>
 
 <p align="center"><em>Envie de l'essayer d'abord ? Le clavier tourne aussi
 <a href="simulateur.html">dans votre navigateur</a>, avec son vrai dictionnaire
@@ -98,7 +115,7 @@ barre d'espace et la ponctuation.
 
 ### Il vous souffle les mots
 
-Le dictionnaire compte **8 792 mots** et **23 169 contextes** de prédiction.
+Le dictionnaire compte **37 734 mots** et **26 172 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
@@ -176,8 +193,8 @@ depuis 2013, sans prédiction du mot suivant.
 | | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
 |---|---|---|---|---|---|
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **9 016 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 25 194 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
+| Dictionnaire luxembourgeois | **37 734 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 26 172 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — |
@@ -205,12 +222,16 @@ sont réels et connus ; ils sont en tête de la liste des choses à faire.
 
 ## D'où viennent les suggestions
 
-Le dictionnaire et les n-grammes sont générés à partir d'un corpus de
-luxembourgeois contemporain, publié en jeu de données ouvert :
-[POTOMITAN/luxembourgish-corpus](https://huggingface.co/datasets/POTOMITAN/luxembourgish-corpus).
+Le dictionnaire et les n-grammes sont générés à partir de deux jeux de
+données ouverts : [LuxAlign](https://huggingface.co/datasets/fredxlpy/LuxAlign),
+180 342 phrases de presse qui apportent le volume lexical, et
+[LETZ](https://huggingface.co/datasets/fredxlpy/LETZ), les phrases d'exemple du
+*Lëtzebuerger Online Dictionnaire*, seules porteuses du registre quotidien.
 
 Le pipeline est relancé à chaque publication, ce qui fait évoluer les
 suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
+Le détail des corpus, des mesures et des citations est sur la
+[page des corpus](corpus.html).
 
 ## Devenir testeur
 
@@ -225,15 +246,23 @@ mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
 3. Suivez le lien vers Google Play qui apparaît ensuite : la fiche s'ouvre,
    signalée comme version de test, et l'installation se fait normalement.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
+<div style="display:flex;justify-content:center;align-items:center;gap:28px;
+            flex-wrap:wrap;margin:24px 0;">
+  <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+     style="display:inline-block;padding:15px 28px;background:#ED2939;color:#fff;
+            border-radius:10px;font-weight:bold;text-decoration:none;font-size:1.1em;">
+    🧪 Ouvrir la page d'inscription
+  </a>
   <figure style="margin:0;text-align:center;">
-    <img src="assets/qr-luxkeyb-test-ferme.png"
-         alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
-         width="160" height="160"
-         style="display:block;width:160px;height:160px;background:#fff;
-                border-radius:8px;padding:6px;box-sizing:border-box;">
+    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
+      <img src="assets/qr-luxkeyb-test-ferme.png"
+           alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
+           width="160" height="160"
+           style="display:block;width:160px;height:160px;background:#fff;
+                  border-radius:8px;padding:6px;box-sizing:border-box;">
+    </a>
     <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
-      Scannez : la page d'inscription s'ouvre
+      Le même QR code qu'en haut de page
     </figcaption>
   </figure>
 </div>
@@ -254,10 +283,29 @@ publication ouverte.</p>
 
 ## Installer
 
-1. [Téléchargez l'APK](https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk),
-   ou scannez le QR code en haut de page depuis votre téléphone : dans les deux
-   cas le téléchargement démarre directement. Toutes les versions restent
-   listées sur la [page des releases](https://github.com/famibelle/LuxKeyb/releases).
+Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
+
+<div style="display:flex;justify-content:center;align-items:center;gap:28px;
+            flex-wrap:wrap;margin:24px 0;">
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
+     class="btn">📲 Télécharger l'APK (version 10.16.0)</a>
+  <figure style="margin:0;text-align:center;">
+    <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">
+      <img src="assets/qr-luxkeyb-apk.png"
+           alt="QR code téléchargeant directement l'APK de la dernière version de Lëtzebuergesch Clavier"
+           width="150" height="150"
+           style="display:block;width:150px;height:150px;background:#fff;
+                  border-radius:8px;padding:6px;box-sizing:border-box;">
+    </a>
+    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
+      Scannez : le téléchargement démarre
+    </figcaption>
+  </figure>
+</div>
+
+1. Téléchargez l'APK par le bouton ou le QR code ci-dessus : dans les deux cas
+   le téléchargement démarre directement. Toutes les versions restent listées
+   sur la [page des releases](https://github.com/famibelle/LuxKeyb/releases).
 2. Autorisez l'installation depuis cette source, si Android le demande.
 3. Ouvrez l'application : elle vous guide en trois étapes pour activer le
    clavier, le sélectionner, puis l'essayer.
@@ -285,5 +333,12 @@ Un mot manque, une suggestion tombe à côté, une touche vous gêne ? Ouvrez un
 grâce à ces signalements.
 
 ---
+
+<p align="center" style="font-size:0.85em;opacity:0.7;">Le robot Android est
+reproduit et modifié à partir d'un travail créé et partagé par Google, utilisé
+selon les termes de la
+<a href="https://creativecommons.org/licenses/by/3.0/">licence Creative Commons Attribution 3.0</a>.
+Android et Google Play sont des marques de Google LLC ; cette application n'est
+ni éditée ni approuvée par Google.</p>
 
 <p align="center"><em>Fait au Luxembourg avec ❤️ — « Mir wëlle bleiwe wat mir sinn »</em></p>
