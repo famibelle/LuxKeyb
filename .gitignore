@@ -72,6 +72,10 @@ Dictionnaries/archives/scripts/
 # orthographiées, ne couvrent rien (même faute que le filtre de chemins de
 # build-apk.yml)
 Dictionnaires/__pycache__/
+# Les caches Python, où qu'ils soient : stt/ et stt/bench/ en produisent
+# depuis que le banc d'essai importe ses propres modules.
+__pycache__/
+*.pyc
 Dictionnaires/.env.template
 Dictionnaires/archives/scripts/
 Dictionnaries/backups/

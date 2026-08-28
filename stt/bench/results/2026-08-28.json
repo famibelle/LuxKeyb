@@ -1,0 +1,48 @@
+{
+ "date": "2026-08-28",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio non redistribué",
+ "machine": "hôte x86_64, 3 threads, whisper.cpp v1.7.4",
+ "modeles": {
+  "tiny": {
+   "asset_octets": 32152690,
+   "wer_continu_50f": 0.48723532970356925,
+   "cer_median_50f": 0.22532628638837432,
+   "rtf_median": 0.04951083333333334,
+   "boucles_50f": 3,
+   "wer_continu_15f": 0.49159663865546216,
+   "wer_enonces_courts_15f": 0.7205882352941176,
+   "premiere_hypothese_ms_2a4s": 1550.2,
+   "apres_stop_ms_2a4s": 864.9,
+   "enonces_sans_hypothese_sur_161": 0,
+   "boucles_161_enonces": 4,
+   "cout_passe_ms": {
+    "0-2s": 824,
+    "2-4s": 854,
+    "4-6s": 892,
+    "6-10s": 934,
+    "10-16s": 1030
+   }
+  },
+  "base": {
+   "asset_octets": 59707642,
+   "wer_continu_50f": 0.36563823351482155,
+   "cer_median_50f": 0.1331445444863975,
+   "rtf_median": 0.09515,
+   "boucles_50f": 3,
+   "wer_continu_15f": 0.32941176470588235,
+   "wer_enonces_courts_15f": 0.3600840336134454,
+   "premiere_hypothese_ms_2a4s": 2542.1,
+   "apres_stop_ms_2a4s": 1789.4,
+   "enonces_sans_hypothese_sur_161": 13,
+   "boucles_161_enonces": 0,
+   "cout_passe_ms": {
+    "0-2s": 1734,
+    "2-4s": 1790,
+    "4-6s": 1847,
+    "6-10s": 1938,
+    "10-16s": 2039
+   }
+  }
+ }
+}
