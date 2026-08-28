@@ -222,12 +222,31 @@ jobs:
         unzip -v "$APK" | grep 'ggml-lb-tiny-q5_1.bin' | grep -q 'Stored' \
           || { echo "::error::modèle absent ou compressé dans l'APK"; exit 1; }
 
-        # 3. La signature de production (apksigner comprend v2/v3, pas jarsigner).
-        APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
-        "$APKSIGNER" verify --print-certs "$APK" | grep -q "Signer #1" \
-          || { echo "::error::APK non signé"; exit 1; }
+        # 3. La signature. apksigner comprend les schémas v2/v3, contrairement à
+        #    jarsigner qui ne voit que v1.
+        #
+        #    La sortie est capturée puis analysée, et non passée directement à
+        #    grep : sous `pipefail`, un apksigner qui sort non-zéro faisait
+        #    échouer tout le pipeline et la vraie raison se perdait derrière un
+        #    « APK non signé » générique.
+        APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+        echo "🔧 $APKSIGNER"
+        [ -n "$APKSIGNER" ] || { echo "::error::apksigner introuvable sous $ANDROID_HOME"; exit 1; }
 
-        echo "✅ libluxstt.so (2 ABI), modèle mmap-able, APK signé"
+        "$APKSIGNER" verify --verbose --print-certs "$APK" 2>&1 | tee /tmp/apk-verify.txt
+
+        # Une sortie vide ferait passer les deux assertions suivantes sans avoir
+        # rien vérifié.
+        grep -q "certificate DN" /tmp/apk-verify.txt \
+          || { echo "::error::apksigner n'a produit aucune information de certificat"; exit 1; }
+
+        # Décisif pour Labs : un APK signé debug s'installe, mais jamais
+        # par-dessus une version stable, et le testeur ne le découvrirait qu'à ce
+        # moment-là.
+        ! grep -q "CN=Android Debug" /tmp/apk-verify.txt \
+          || { echo "::error::APK signé avec la clé debug, pas avec celle de production"; exit 1; }
+
+        echo "✅ libluxstt.so (2 ABI), modèle mmap-able, signature de production"
 
     - name: 🏷️ Nommer l'artefact
       id: rename
