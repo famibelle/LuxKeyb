@@ -14,6 +14,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 `feat/speech-to-text-lb`, pas encore dans une version publiée.
 
+### 🔬 Chronomètre à l'écran (diagnostic Labs)
+
+- Le bandeau de dictée affiche la durée de chaque passe whisper —
+  `🎙️ Schwätzt… 3,6 s → 940 ms` pendant l'écoute, puis `✅ 3,6 s → 886 ms`
+  pendant quatre secondes une fois le texte rendu. C'est la latence réelle sur
+  l'appareil, la seule qui compte : le banc d'essai tourne sur un hôte x86 dont
+  les temps ne disent rien d'un ARM, et un binaire déporté par adb mesurerait un
+  processus isolé, sans le rendu du clavier ni le throttling thermique.
+- Diagnostic temporaire, pas une fonctionnalité : `SHOW_PASS_TIMING` à false
+  suffit à le retirer.
+
 ### 📊 Qualité et latence enfin chiffrées
 
 - Banc d'essai complet dans `stt/bench/` : le modèle mesuré seul, puis le
