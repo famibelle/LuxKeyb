@@ -43,6 +43,16 @@ le clavier ship un bouton micro qui s'excuse à chaque appui. C'est pourquoi
 `build.gradle` **refuse les tâches de release** quand le fichier manque ou fait
 moins de 25 Mo, et se contente d'un avertissement en debug.
 
+## Essayer sans compiler
+
+Le workflow **Labs** (`.github/workflows/labs.yml`) construit un APK signé à
+chaque commit de la branche et le publie en préversion sous un tag fixe :
+
+    https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk
+
+La préversion est marquée `prerelease` et n'est jamais « latest » : le bouton de
+téléchargement du site continue de servir les versions stables.
+
 ## Architecture embarquée
 
 | Élément | Rôle |
