@@ -3,6 +3,14 @@
 # Fichiers de build Android
 android_keyboard/.gradle/
 android_keyboard/app/build/
+# Cache de build du NDK (dictée vocale) : objets et bases CMake par ABI,
+# plusieurs centaines de Mo, entièrement régénérables.
+android_keyboard/app/.cxx/
+
+# Modèle de dictée vocale (31 Mo) : régénéré par la CI depuis Hugging Face et
+# passé aux jobs de build par upload-artifact, comme les assets du dictionnaire.
+# Localement : python stt/convert_model.py --output android_keyboard/app/src/main/assets
+android_keyboard/app/src/main/assets/ggml-lb-tiny-*.bin
 android_keyboard/build/
 android_keyboard/local.properties
 android_keyboard/.idea/

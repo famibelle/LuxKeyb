@@ -197,6 +197,65 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
         retention-days: 1
 
+  # 🎙️ ÉTAPE 1 ter : MODÈLE DE DICTÉE VOCALE
+  # Régénéré plutôt que versionné : l'asset pèse 31 Mo, et l'historique git est
+  # définitif. Même logique que le dictionnaire — conversion ici, transmission
+  # aux jobs de build par upload-artifact, jamais par le checkout.
+  #
+  # Tourne en parallèle de generate-dictionary : les deux sont indépendants.
+  generate-stt-model:
+    name: 🎙️ Generate Speech-to-Text Model
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v5
+
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Install conversion toolchain
+      run: |
+        python -m pip install --upgrade pip
+        # Index CPU explicite : la roue par défaut tire les paquets CUDA, soit
+        # ~2,5 Go inutiles sur un runner sans GPU.
+        pip install --index-url https://download.pytorch.org/whl/cpu torch
+        pip install transformers numpy huggingface_hub
+
+    - name: 🔄 Convert and quantize (unilux/whisper-tiny-v1-luxembourgish)
+      run: |
+        python stt/convert_model.py --output android_keyboard/app/src/main/assets
+
+    - name: ✅ Validate model asset
+      run: |
+        MODEL=android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
+        if [ ! -f "$MODEL" ]; then
+          echo "::error::Conversion silencieusement ratée : $MODEL absent."
+          exit 1
+        fi
+        SIZE=$(stat -c%s "$MODEL")
+        echo "📦 $(( SIZE / 1000000 )) Mo"
+        # Un fichier tronqué se charge sans erreur visible jusqu'à l'appel natif.
+        if [ "$SIZE" -lt 25000000 ]; then
+          echo "::error::Modèle tronqué : $SIZE octets au lieu des ~31 Mo attendus."
+          exit 1
+        fi
+        # L'en-tête ggml ('ggml' en little-endian) : garantit qu'on n'a pas
+        # empaqueté une page d'erreur HTML de Hugging Face.
+        head -c 4 "$MODEL" | grep -q 'lmgg' || {
+          echo "::error::En-tête ggml absent : le fichier n'est pas un modèle."
+          exit 1
+        }
+
+    - name: 📤 Upload STT Model
+      uses: actions/upload-artifact@v6
+      with:
+        name: lux-stt-model
+        path: android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
+        retention-days: 1
+
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES
   # Absents du pipeline amont : `./gradlew test` n'y était qu'une étape locale et
   # manuelle. Les faire tourner ici est ce qui donne leur valeur aux garde-fous
@@ -210,6 +269,12 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui, la configuration CMake
+        # de la dictée vocale échoue et emporte tout le build Gradle, tests
+        # unitaires compris (le bloc externalNativeBuild est évalué à la
+        # configuration, pas seulement à la compilation du C++).
+        submodules: recursive
 
     - name: ☕ Setup JDK 17
       uses: actions/setup-java@v5
@@ -243,7 +308,7 @@ jobs:
   build-debug-apk:
     name: 🔧 Build Debug APK
     runs-on: ubuntu-latest
-    needs: generate-dictionary
+    needs: [generate-dictionary, generate-stt-model]
 
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
@@ -254,6 +319,18 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui, la configuration CMake
+        # de la dictée vocale échoue et emporte tout le build Gradle, tests
+        # unitaires compris (le bloc externalNativeBuild est évalué à la
+        # configuration, pas seulement à la compilation du C++).
+        submodules: recursive
+
+    - name: 📥 Download Speech-to-Text Model
+      uses: actions/download-artifact@v7
+      with:
+        name: lux-stt-model
+        path: android_keyboard/app/src/main/assets/
 
     - name: 📥 Download Fresh Dictionary Assets
       uses: actions/download-artifact@v7
@@ -314,7 +391,7 @@ jobs:
   build-debug-aab:
     name: 📦 Build Debug AAB
     runs-on: ubuntu-latest
-    needs: generate-dictionary
+    needs: [generate-dictionary, generate-stt-model]
 
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
@@ -325,6 +402,18 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui, la configuration CMake
+        # de la dictée vocale échoue et emporte tout le build Gradle, tests
+        # unitaires compris (le bloc externalNativeBuild est évalué à la
+        # configuration, pas seulement à la compilation du C++).
+        submodules: recursive
+
+    - name: 📥 Download Speech-to-Text Model
+      uses: actions/download-artifact@v7
+      with:
+        name: lux-stt-model
+        path: android_keyboard/app/src/main/assets/
 
     - name: 📥 Download Fresh Dictionary Assets
       uses: actions/download-artifact@v7
@@ -365,7 +454,7 @@ jobs:
   build-release-apk:
     name: 🚀 Build Release APK
     runs-on: ubuntu-latest
-    needs: generate-dictionary
+    needs: [generate-dictionary, generate-stt-model]
 
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
@@ -376,6 +465,18 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui, la configuration CMake
+        # de la dictée vocale échoue et emporte tout le build Gradle, tests
+        # unitaires compris (le bloc externalNativeBuild est évalué à la
+        # configuration, pas seulement à la compilation du C++).
+        submodules: recursive
+
+    - name: 📥 Download Speech-to-Text Model
+      uses: actions/download-artifact@v7
+      with:
+        name: lux-stt-model
+        path: android_keyboard/app/src/main/assets/
 
     - name: 📥 Download Fresh Dictionary Assets
       uses: actions/download-artifact@v7
@@ -468,7 +569,7 @@ jobs:
   build-release-aab:
     name: 🎯 Build Release AAB
     runs-on: ubuntu-latest
-    needs: generate-dictionary
+    needs: [generate-dictionary, generate-stt-model]
 
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
@@ -479,6 +580,18 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui, la configuration CMake
+        # de la dictée vocale échoue et emporte tout le build Gradle, tests
+        # unitaires compris (le bloc externalNativeBuild est évalué à la
+        # configuration, pas seulement à la compilation du C++).
+        submodules: recursive
+
+    - name: 📥 Download Speech-to-Text Model
+      uses: actions/download-artifact@v7
+      with:
+        name: lux-stt-model
+        path: android_keyboard/app/src/main/assets/
 
     - name: 📥 Download Fresh Dictionary Assets
       uses: actions/download-artifact@v7

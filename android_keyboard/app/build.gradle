@@ -6,6 +6,11 @@ android {
     compileSdk = 36
     namespace 'com.example.kreyolkeyboard'
 
+    // Épinglé : AGP réclame sinon la version NDK qu'il considère par défaut,
+    // qui n'est pas forcément celle installée, et l'erreur ne se voit qu'au
+    // premier build touchant au C++ (dictée vocale).
+    ndkVersion '27.0.12077973'
+
     signingConfigs {
         debug {
             // Configuration debug par défaut (automatique)
@@ -81,6 +86,16 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
+
+        // Dictée vocale : whisper.cpp compilé pour les deux ABI ci-dessus.
+        externalNativeBuild {
+            cmake {
+                // STL statique : le .so de la dictée est le seul consommateur de
+                // la libc++ du projet, l'embarquer évite un second .so par ABI.
+                arguments '-DANDROID_STL=c++_static'
+                cppFlags '-O3', '-ffast-math', '-fno-finite-math-only'
+            }
+        }
     }
 
     // Configuration pour Android App Bundle (AAB)
@@ -120,9 +135,34 @@ android {
             debuggable = true
             minifyEnabled = false
             shrinkResources = false
+
+            // x86_64 uniquement en debug, pour que la dictée vocale soit
+            // testable sur émulateur : les AVD courants sont x86_64, et sans
+            // cette ABI libluxstt.so est absent de l'APK, donc la dictée
+            // s'annonce indisponible sans qu'on puisse rien observer. Les
+            // artefacts de release restent strictement ARM.
+            ndk {
+                abiFilters 'x86_64'
+            }
         }
     }
     
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+            version '3.22.1'
+        }
+    }
+
+    androidResources {
+        // Le modèle ggml doit rester NON compressé dans l'APK : c'est ce qui
+        // permet à AAsset_getBuffer() de renvoyer un pointeur mmap'é sur la
+        // région de l'APK au lieu de décompresser 31 Mo en RAM à chaque
+        // ouverture du micro. Un .bin compressé serait de toute façon inutile,
+        // les poids quantifiés n'étant plus compressibles.
+        noCompress 'bin'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -171,6 +211,45 @@ tasks.matching {
                 "Configure KEYSTORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD " +
                 "(gradle.properties ou variables d'environnement) : la clé debug " +
                 "est refusée par le Play Store."
+            )
+        }
+    }
+}
+
+// Le modèle de dictée vocale n'est plus versionné (31 Mo) : la CI le régénère
+// depuis Hugging Face et le dépose dans les assets, comme le dictionnaire.
+//
+// Son absence ne casse aucun build — un asset manquant est simplement absent de
+// l'APK — mais elle produit un clavier dont le bouton micro s'excuse à chaque
+// appui. C'est exactement le genre de panne silencieuse que ce dépôt paie déjà
+// ailleurs, d'où le refus explicite sur les tâches de release, calqué sur celui
+// de la signature. Les builds debug se contentent d'un avertissement : un
+// développeur qui n'a pas encore converti le modèle doit pouvoir travailler sur
+// le reste du clavier.
+def sttModel = file('src/main/assets/ggml-lb-tiny-q5_1.bin')
+def sttModelHint =
+    "Modèle de dictée vocale absent (${sttModel.name}). " +
+    "Régénérez-le : python stt/convert_model.py --output android_keyboard/app/src/main/assets"
+
+if (!sttModel.exists()) {
+    println "⚠️  ${sttModelHint}"
+}
+
+tasks.matching {
+    it.name in ['packageRelease', 'packageReleaseBundle']
+}.configureEach {
+    doFirst {
+        if (!sttModel.exists()) {
+            throw new GradleException(sttModelHint)
+        }
+        // Un asset tronqué (téléchargement interrompu, artefact CI partiel) se
+        // charge sans erreur visible jusqu'à l'appel natif. 25 Mo est un plancher
+        // large : le fichier q5_1 en pèse 31.
+        def mo = sttModel.length() / 1e6
+        if (mo < 25) {
+            throw new GradleException(
+                "Modèle de dictée vocale tronqué : ${String.format('%.1f', mo)} Mo " +
+                "au lieu des ~31 Mo attendus."
             )
         }
     }

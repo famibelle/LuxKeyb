@@ -8,4 +8,12 @@
     <string name="spellchecker_name">Correcteur Lëtzebuergesch • Luxembourg</string>
     <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxembourg</string>
     <string name="subtype_kreyol_description">Lëtzebuergesch</string>
+
+    <!-- Dictée vocale luxembourgeoise (whisper tiny embarqué, hors ligne) -->
+    <string name="stt_mic_description">Dictée vocale</string>
+    <string name="stt_listening">Schwätzt…</string>
+    <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
+    <string name="stt_mic_unavailable">Micro indisponible</string>
+    <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>
+    <string name="stt_not_in_password">Dictée désactivée dans les champs de mot de passe</string>
 </resources>
