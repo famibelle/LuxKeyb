@@ -45,10 +45,11 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
       les « sources inconnues ».
     </p>
     <p style="margin:16px 0 0;">
-      <img src="assets/badge-bientot-android.svg"
-           alt="Bientôt disponible sur Android"
-           width="240" height="60"
-           style="display:inline-block;max-width:100%;height:auto;">
+      <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
+         class="btn">📲 Ou télécharger l'APK (version 10.16.0)</a>
+    </p>
+    <p style="margin:10px 0 0;font-size:0.85em;opacity:0.75;">
+      Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau
     </p>
   </div>
   <figure style="margin:0;text-align:center;">
@@ -67,10 +68,6 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
 
 <p align="center"><em>Le test est réservé à une liste de comptes ;
 <a href="#devenir-testeur">comment y être ajouté</a>.</em></p>
-
-<p align="center"><em>Pas envie d'attendre ? L'APK s'installe directement :
-<a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">télécharger la version 10.16.0</a>
-— Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau.</em></p>
 
 <p align="center"><em>Envie de l'essayer d'abord ? Le clavier tourne aussi
 <a href="simulateur.html">dans votre navigateur</a>, avec son vrai dictionnaire
@@ -334,11 +331,8 @@ grâce à ces signalements.
 
 ---
 
-<p align="center" style="font-size:0.85em;opacity:0.7;">Le robot Android est
-reproduit et modifié à partir d'un travail créé et partagé par Google, utilisé
-selon les termes de la
-<a href="https://creativecommons.org/licenses/by/3.0/">licence Creative Commons Attribution 3.0</a>.
-Android et Google Play sont des marques de Google LLC ; cette application n'est
-ni éditée ni approuvée par Google.</p>
+<p align="center" style="font-size:0.85em;opacity:0.7;">Android et Google Play
+sont des marques de Google LLC ; cette application n'est ni éditée ni approuvée
+par Google.</p>
 
 <p align="center"><em>Fait au Luxembourg avec ❤️ — « Mir wëlle bleiwe wat mir sinn »</em></p>
