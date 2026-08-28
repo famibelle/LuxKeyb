@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Labs — la dictée vocale luxembourgeoise en avant-première</title>
+<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. Reconnaissance entièrement hors ligne, aucun son ne quitte le téléphone.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:720px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sun);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;}
+h3{font-size:15.5px;font-weight:700;margin:18px 0 4px;}
+section{margin-top:38px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14px;}
+
+/* Bandeau d'état du build publié, renseigné depuis l'API GitHub. */
+.status{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;
+  font-size:13.5px;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:12px;background:var(--card);
+  padding:14px 18px;margin:0 0 18px;}
+.status .v{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums;font-family:var(--mono);}
+
+.cta{margin:0 0 10px;}
+.cta .btn{font-size:15.5px;padding:13px 20px;}
+
+/* Encart d'avertissement : ton posé, pas alarmiste, mais visuellement distinct
+   du reste — c'est ce que le lecteur doit avoir lu avant de télécharger. */
+.warn{border:1px solid var(--line);border-left:4px solid var(--sun);
+  background:var(--sun-soft);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+.warn h2{margin-top:0;}
+.warn p:last-child{margin-bottom:0;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin-top:0;}
+.card p:last-child{margin-bottom:0;}
+
+ol.steps{margin:0;padding-left:22px;}
+ol.steps li{margin-bottom:10px;}
+ol.steps code{font-family:var(--mono);font-size:13px;background:var(--stripe);
+  padding:1px 5px;border-radius:4px;}
+
+.facts{list-style:none;margin:0;padding:0;}
+.facts li{padding:9px 0;border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:4px 14px;}
+.facts li:last-child{border-bottom:0;}
+.facts .k{font-weight:700;min-width:180px;}
+.facts .v{color:var(--ink-soft);flex:1 1 220px;}
+
+footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:14px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <strong>🔬 Labs</strong> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · Labs</p>
+  <h1>Parlez, le clavier écrit 🔬</h1>
+  <p class="lead">
+    Labs est l'atelier du clavier : des versions expérimentales, en avance sur
+    la version stable, que vous pouvez essayer avant tout le monde. Celle-ci
+    ajoute la <strong>dictée vocale luxembourgeoise</strong> — et elle
+    fonctionne <strong>sans connexion</strong>.
+  </p>
+</header>
+
+<section>
+  <div class="status">
+    <span class="v" id="lab-version">version en cours</span>
+    <span id="lab-date">publiée automatiquement à chaque amélioration</span>
+    <span id="lab-size">environ 38 Mo</span>
+  </div>
+
+  <p class="cta">
+    <a class="btn primary"
+       href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
+      📲 Télécharger la version Labs
+    </a>
+  </p>
+  <p class="muted">
+    Android 5.0 ou plus récent · fichier APK à installer à la main ·
+    aucune permission réseau
+  </p>
+</section>
+
+<section>
+  <h2>Ce que la dictée sait faire</h2>
+
+  <p>
+    Un bouton micro apparaît à droite de la barre de suggestions. Vous le
+    touchez, vous parlez, et le texte s'écrit au fil de votre phrase — il se
+    corrige tout seul à mesure que le clavier comprend la suite. Un second
+    appui fige le résultat ; sinon la dictée s'arrête d'elle-même après un
+    silence.
+  </p>
+
+  <div class="card">
+    <h3>🔒 Aucun son ne quitte votre téléphone</h3>
+    <p>
+      C'est la différence de fond avec la dictée des autres claviers, qui
+      envoient votre voix à un serveur. Ici, le modèle de reconnaissance est
+      <strong>embarqué dans l'application</strong> et le calcul se fait sur
+      l'appareil. L'application ne demande d'ailleurs
+      <strong>aucune permission réseau</strong> : elle ne peut techniquement
+      rien envoyer nulle part. La dictée fonctionne donc aussi en avion, dans
+      un tunnel, ou sans forfait.
+    </p>
+    <p class="muted">
+      Elle reste désactivée dans les champs de mot de passe, comme le reste des
+      traitements du clavier.
+    </p>
+  </div>
+
+  <p class="muted">
+    Le modèle de reconnaissance vient du projet
+    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg,
+    publié sous licence ouverte. Merci à son équipe : sans elle, cette
+    fonction n'existerait pas.
+  </p>
+</section>
+
+<section>
+  <div class="warn">
+    <h2>⚠️ À lire avant de télécharger</h2>
+    <p>
+      <strong>La qualité de la reconnaissance n'est pas encore mesurée.</strong>
+      Le modèle embarqué est le plus petit de sa famille — celui qui tient dans
+      un téléphone. Il se trompe, et il se trompe davantage en milieu bruyant,
+      loin du micro, ou sur des noms propres. C'est précisément ce que cette
+      version sert à découvrir.
+    </p>
+    <p>
+      <strong>L'application passe de 4,5 à 38 Mo</strong> : le modèle en occupe
+      31 à lui seul. C'est le prix d'une reconnaissance qui ne dépend d'aucun
+      serveur.
+    </p>
+    <p>
+      <strong>Ce n'est pas la version stable.</strong> Elle est reconstruite à
+      chaque amélioration et peut changer d'un jour à l'autre. Si vous
+      cherchez simplement un bon clavier luxembourgeois, prenez plutôt la
+      <a href="index.html">version normale</a>.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Installer et essayer</h2>
+  <div class="card">
+    <ol class="steps">
+      <li>Téléchargez le fichier APK avec le bouton ci-dessus.</li>
+      <li>
+        Ouvrez-le. Android demandera d'autoriser l'installation depuis cette
+        source : c'est normal pour une application qui ne vient pas du Play
+        Store.
+      </li>
+      <li>
+        Activez le clavier dans
+        <code>Paramètres › Système › Claviers</code>, puis choisissez-le comme
+        clavier courant.
+      </li>
+      <li>
+        Ouvrez n'importe quel champ de texte, touchez le <strong>micro</strong>
+        à droite des suggestions, et autorisez l'accès au microphone au premier
+        usage.
+      </li>
+    </ol>
+  </div>
+
+  <h3>Revenir à la version stable</h3>
+  <p>
+    Réinstallez simplement la
+    <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version
+    normale</a> par-dessus : elle est signée avec la même clé, donc elle
+    s'installe sans désinstaller quoi que ce soit, et vos réglages comme votre
+    progression de vocabulaire sont conservés.
+  </p>
+  <p class="muted">
+    À noter : la version Labs remplace l'application installée, y compris celle
+    reçue par le test fermé de Google Play. Les deux ne peuvent pas cohabiter.
+  </p>
+</section>
+
+<section>
+  <h2>Dites-nous ce que ça donne</h2>
+  <p>
+    C'est tout l'intérêt de Labs : vos retours décident de ce qui atteindra la
+    version stable. Le plus utile à nous transmettre, c'est un cas précis —
+    <strong>le modèle de téléphone, ce que vous avez dit, et ce qui s'est
+    écrit</strong>.
+  </p>
+  <p>
+    <a class="btn" href="feedbacks_form.html">💬 Formulaire de retour</a>
+    <a class="btn" href="https://github.com/famibelle/LuxKeyb/issues">🐛 Signaler sur GitHub</a>
+  </p>
+</section>
+
+<section>
+  <h2>En résumé</h2>
+  <ul class="facts">
+    <li><span class="k">Ce que ça ajoute</span><span class="v">La dictée vocale en luxembourgeois</span></li>
+    <li><span class="k">Connexion nécessaire</span><span class="v">Aucune — la reconnaissance est locale</span></li>
+    <li><span class="k">Où va votre voix</span><span class="v">Nulle part : elle ne sort pas du téléphone</span></li>
+    <li><span class="k">Taille</span><span class="v">38 Mo, contre 4,5 Mo pour la version stable</span></li>
+    <li><span class="k">Qualité</span><span class="v">Non mesurée à ce jour — des erreurs sont attendues</span></li>
+    <li><span class="k">Installation</span><span class="v">APK manuel, hors Play Store</span></li>
+    <li><span class="k">Mise à jour</span><span class="v">À retélécharger depuis cette page</span></li>
+  </ul>
+</section>
+
+<footer class="page">
+  <p>
+    Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
+    Les versions stables sont sur la page <a href="nouveautes.html">Nouveautés</a>.
+  </p>
+  <p>Potomitan™ · Lëtzebuergesch Clavier</p>
+</footer>
+
+</div>
+
+<script>
+// Le bandeau d'état se renseigne depuis la préversion « labs » publiée par
+// GitHub Actions : la page annonce ainsi le build réellement téléchargeable,
+// sans qu'il faille la modifier à chaque amélioration.
+//
+// L'échec est silencieux et sans conséquence : le HTML porte déjà un texte
+// d'attente correct, et le lien de téléchargement, lui, ne dépend pas de ce
+// script.
+(function () {
+  var set = function (id, txt) {
+    var n = document.getElementById(id);
+    if (n && txt) n.textContent = txt;
+  };
+
+  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      // Le nom de la release contient « (10.16.0+sha) » : on n'en garde que la
+      // parenthèse, le reste étant déjà dit par le titre de la page.
+      var m = /\(([^)]+)\)/.exec(d.name || '');
+      if (m) set('lab-version', m[1]);
+
+      if (d.published_at) {
+        set('lab-date', 'publiée le ' + new Date(d.published_at)
+          .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }));
+      }
+
+      var apk = (d.assets || []).filter(function (a) {
+        return a.name === 'LetzebuergeschClavier-Labs.apk';
+      })[0];
+      if (apk) set('lab-size', Math.round(apk.size / 1e6) + ' Mo');
+    })
+    .catch(function () { /* le texte statique reste affiché */ });
+})();
+</script>
+</body>
+</html>

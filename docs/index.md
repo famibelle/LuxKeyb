@@ -10,6 +10,7 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
@@ -277,6 +278,21 @@ qu'une nouvelle application soit testée par au moins douze personnes pendant
 quatorze jours avant d'autoriser sa publication à tout le monde. C'est cette
 étape-là qui est en cours : chaque testeur rapproche le clavier d'une
 publication ouverte.</p>
+
+## En avant-première : la dictée vocale 🔬
+
+À côté de la version stable, **Labs** propose des versions expérimentales, en
+avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
+vous parlez, le clavier écrit.
+
+La reconnaissance tourne **entièrement sur le téléphone** — aucun son n'est
+envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
+contrepartie, elle pèse 38 Mo au lieu de 4,5, et sa précision n'est pas encore
+mesurée : c'est justement ce que ces essais servent à établir.
+
+<p style="margin:18px 0;">
+  <a href="labs.html" class="btn">🔬 Découvrir la version Labs</a>
+</p>
 
 ## Installer
 
