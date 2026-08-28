@@ -11,7 +11,12 @@
 
     <!-- Dictée vocale luxembourgeoise (whisper tiny embarqué, hors ligne) -->
     <string name="stt_mic_description">Dictée vocale</string>
-    <string name="stt_listening">Schwätzt…</string>
+    <!-- Bandeau affiché à la place des suggestions pendant la dictée.
+         En luxembourgeois : il s'adresse à quelqu'un qui est en train de
+         parler sa langue, et il doit tenir sur une rangée de clavier. -->
+    <string name="stt_preparing">🎙️ Moment…</string>
+    <string name="stt_listening">🎙️ Schwätzt…</string>
+    <string name="stt_transcribing">✍️ Transkriptioun…</string>
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>

@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.stt
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.os.SystemClock
 import android.util.Log
 
 /**
@@ -77,11 +78,39 @@ class SttEngine {
      */
     fun transcribe(samples: FloatArray, singleSegment: Boolean): String {
         if (samples.isEmpty()) return ""
+
+        // whisper.cpp abandonne sans rien dire un spectrogramme de moins de
+        // 100 trames, soit une seconde d'audio : whisper_full() rend 0 et zéro
+        // segment, pas une erreur. Toutes les premières hypothèses d'une dictée
+        // tombaient dans ce trou, et un « Jo » de 400 ms n'était jamais
+        // transcrit. Compléter par du silence ne coûte rien — la fenêtre mel
+        // est de toute façon complétée à 30 s en interne — et rend l'énoncé
+        // court exploitable.
+        val pcm = if (samples.size < MIN_WHISPER_SAMPLES) {
+            samples.copyOf(MIN_WHISPER_SAMPLES)
+        } else {
+            samples
+        }
+
         return synchronized(nativeLock) {
             val ptr = contextPtr
             if (ptr == 0L) return@synchronized ""
             try {
-                nativeTranscribe(ptr, samples, threadCount(), singleSegment).trim()
+                val startedAt = SystemClock.elapsedRealtime()
+                val text = nativeTranscribe(ptr, pcm, threadCount(), singleSegment).trim()
+                // Journalisé systématiquement : c'est la seule façon de savoir,
+                // sur l'appareil d'un testeur, si les hypothèses manquent parce
+                // que la passe est trop lente ou parce qu'elle rend du vide.
+                Log.d(
+                    TAG,
+                    "passe ${if (singleSegment) "partielle" else "finale"} : " +
+                        "%.1f s d'audio en %d ms → « %s »".format(
+                            pcm.size.toFloat() / SAMPLE_RATE,
+                            SystemClock.elapsedRealtime() - startedAt,
+                            text
+                        )
+                )
+                text
             } catch (e: Throwable) {
                 Log.e(TAG, "❌ Exception pendant la transcription: ${e.message}", e)
                 ""
@@ -133,6 +162,13 @@ class SttEngine {
 
         /** Whisper attend impérativement du 16 kHz mono. */
         const val SAMPLE_RATE = 16_000
+
+        /**
+         * Durée minimale réellement acceptée par whisper_full(), complétée par
+         * du silence au besoin. Le seuil interne est d'une seconde pile ; on
+         * prend une marge pour ne pas dépendre d'un arrondi de trames.
+         */
+        const val MIN_WHISPER_SAMPLES = (1.2 * SAMPLE_RATE).toInt()
 
         /**
          * Le chargement de la bibliothèque est tenté une fois et son échec est

@@ -19,9 +19,13 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 - Nouveau bouton micro, au bord droit de la barre de suggestions. Un appui
   démarre la dictée, un second la fige ; elle s'arrête aussi seule après 1,6 s
   de silence ou 30 s de parole.
-- Le texte s'écrit **au fil de la parole** : toutes les 900 ms, une hypothèse
-  remplace la précédente en texte de composition, jusqu'à la transcription
-  définitive.
+- Le texte s'écrit **au fil de la parole** : dès qu'une hypothèse est prête, la
+  suivante est relancée sur tout ce qui a été dit depuis le début, et remplace
+  la précédente en texte de composition, jusqu'à la transcription définitive.
+- Pendant la dictée, la barre de suggestions cède la place à un bandeau d'état
+  — préparation, écoute, transcription — et le micro bat au rythme de la voix
+  captée : de quoi savoir que le clavier écoute avant même le premier mot
+  affiché.
 - **Rien ne quitte le téléphone.** Le modèle est embarqué dans l'application et
   la reconnaissance tourne localement. Aucune permission réseau n'a été ajoutée,
   et la politique de confidentialité est inchangée.
