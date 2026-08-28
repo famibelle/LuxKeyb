@@ -58,6 +58,37 @@ Platform.
 }
 ```
 
+## ParaLux — jeu d'évaluation, pas corpus
+
+Les chiffres de prédiction publiés sur [la page corpus du site](https://famibelle.github.io/LuxKeyb/corpus.html)
+sont mesurés sur **ParaLux**, qui n'entre jamais dans le dictionnaire.
+
+- Dépôt : <https://huggingface.co/datasets/fredxlpy/ParaLux>
+- Licence : **CC BY-NC 4.0**
+- Citation : **la même que LuxAlign** — ParaLux est issu du même article
+  (LuxEmbedder, Philippy et al.), le dépôt renvoyant à sa préproduction arXiv
+  `2412.03331`. Reprendre le BibTeX ci-dessus.
+
+Pourquoi il n'a pas été retenu comme corpus : c'est un banc d'essai de
+détection de paraphrase, pas un texte. Ses 312 exemples ne contiennent que
+**312 phrases authentiques distinctes** — le jeu est bâti sur 156 paires
+mutuelles, chaque phrase figurant une fois comme ancre et une fois comme
+paraphrase d'une autre. Cela pèse 5 669 mots, soit 0,18 % du corpus. Surtout,
+sa colonne `not_paraphrase` contient des altérations **fabriquées exprès pour
+être fausses** (« aus hirem Haus » là où l'original dit « aus hirem Auto ») :
+les verser dans un dictionnaire de fréquences reviendrait à y injecter des
+phrases délibérément erronées.
+
+Pourquoi il est précieux quand même : **aucune de ses phrases ne figure dans
+LuxAlign**, alors qu'ils partagent leur source RTL.lu. C'est donc le seul jeu
+réellement inédit dont on dispose. Une partition aléatoire du corpus
+d'entraînement flatte le modèle — mêmes articles, même période, même style —
+et annonçait 23,9 % de bonnes propositions en top-3 là où ParaLux en donne
+18,8 %. C'est ce dernier chiffre qui est publié.
+
+Comme rien n'en est redistribué, seul l'usage local du jeu est concerné par sa
+licence.
+
 ## Conséquence sur la licence du projet
 
 Le code de l'application et les données qu'elle embarque **ne sont pas sous la

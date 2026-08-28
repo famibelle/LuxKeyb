@@ -400,8 +400,11 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
   <div class="card" style="margin-top:18px;">
     <h3>Est-ce que ça prédit vraiment ?</h3>
     <p class="muted" style="margin-bottom:10px;">
-      Mesuré sur des phrases mises de côté avant l'entraînement, pour que le
-      modèle ne soit pas noté sur ses propres données.
+      Mesuré sur <strong>ParaLux</strong>, un jeu de phrases luxembourgeoises
+      qui n'a servi ni de près ni de loin à fabriquer le clavier — aucune de
+      ses phrases ne figure dans les corpus d'entraînement. Ce sont les
+      fichiers réellement embarqués dans l'application qui sont interrogés :
+      le chiffre annoncé est celui que vous obtenez.
     </p>
     <div class="tiles" id="tiles-prediction" style="margin-top:0;"></div>
     <p class="chart-note" id="note-prediction"></p>
@@ -433,6 +436,17 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       une partie de ces biais, aucun ne les corrige seul.
     </p>
     <p>
+      <strong>Le jeu d'évaluation.</strong> Les chiffres de prédiction sont
+      mesurés sur <a href="https://huggingface.co/datasets/fredxlpy/ParaLux">ParaLux</a>,
+      un banc d'essai de détection de paraphrase issu du même article que
+      LuxAlign, et dont aucune phrase ne figure dans les corpus d'entraînement.
+      Il ne sert jamais à construire le dictionnaire, et rien n'en est
+      redistribué : 312 phrases authentiques y sont retenues, à l'exclusion des
+      <code>not_paraphrase</code>, qui sont des altérations fabriquées exprès
+      pour être fausses. Comme il partage l'article de LuxAlign, il partage sa
+      citation, ci-dessus.
+    </p>
+    <p>
       Le luxembourgeois reste une langue à faibles ressources : ces deux corpus
       réunis pèsent trois millions de mots, là où le français ou l'anglais se
       comptent en milliards. Le dictionnaire grandira avec eux.
@@ -441,7 +455,8 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
   <p class="muted" style="margin-top:14px;">
     Jeux de données :
     <a href="https://huggingface.co/datasets/fredxlpy/LuxAlign">fredxlpy/LuxAlign</a> ·
-    <a href="https://huggingface.co/datasets/fredxlpy/LETZ">fredxlpy/LETZ</a><br>
+    <a href="https://huggingface.co/datasets/fredxlpy/LETZ">fredxlpy/LETZ</a> ·
+    <a href="https://huggingface.co/datasets/fredxlpy/ParaLux">fredxlpy/ParaLux</a> (évaluation)<br>
     Script de calcul :
     <a href="https://github.com/famibelle/LuxKeyb/blob/main/docs/scripts/generate_corpus_stats.py">generate_corpus_stats.py</a> ·
     Attribution complète :
@@ -720,15 +735,22 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
 
       var p = d.prediction;
       tuiles('tiles-prediction', [
-        { n: p.contexte_reconnu + ' %', k: 'des contextes reconnus' },
-        { n: p.top3 + ' %', k: 'du temps, le bon mot est proposé',
+        { n: nf.format(p.couverture_lexicale) + ' %', k: 'des mots déjà connus',
+          sub: 'présents au dictionnaire' },
+        { n: nf.format(p.contexte_reconnu) + ' %', k: 'des contextes reconnus' },
+        { n: nf.format(p.top3) + ' %', k: 'du temps, le bon mot est proposé',
           sub: 'parmi les trois affichés' },
-        { n: nf.format(p.evenements), k: 'frappes simulées' }
+        { n: nf.format(p.evenements), k: 'frappes évaluées',
+          sub: nf.format(p.phrases) + ' phrases inédites' }
       ]);
       $('note-prediction').textContent =
-        'Un mot sur quatre peut donc être saisi d’un seul appui sur une ' +
-        'suggestion, avant même d’avoir tapé la première lettre. Le clavier ' +
-        'complète aussi par préfixe, ce que cette mesure ne compte pas.';
+        'Près d’un mot sur cinq peut donc être saisi d’un seul appui sur une ' +
+        'suggestion, avant même d’avoir tapé la première lettre — et le ' +
+        'clavier complète aussi par préfixe, ce que cette mesure ne compte ' +
+        'pas. Évaluer sur une partie du corpus d’entraînement mise de côté ' +
+        'aurait donné 23,9 % : les phrases retirées viennent des mêmes ' +
+        'articles et du même style que celles gardées, ce qui flatte le ' +
+        'modèle de cinq points.';
     })
     .catch(function () {
       echec('Chiffres indisponibles — relancez docs/scripts/generate_corpus_stats.py.');

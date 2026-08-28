@@ -1,5 +1,5 @@
 {
- "genere_le": "2026-08-27",
+ "genere_le": "2026-08-28",
  "corpus": {
   "luxalign": {
    "phrases": 180342,
@@ -711,8 +711,11 @@
   "octets_ngrams": 5123096
  },
  "prediction": {
-  "evenements": 80217,
-  "contexte_reconnu": 91.4,
-  "top3": 23.9
+  "jeu": "ParaLux",
+  "phrases": 312,
+  "evenements": 2503,
+  "couverture_lexicale": 94.1,
+  "contexte_reconnu": 86.7,
+  "top3": 18.8
  }
 }
