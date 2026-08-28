@@ -29,6 +29,13 @@ class SttSession(
     interface Listener {
         /** Hypothèse intermédiaire, destinée au texte en composition. */
         fun onPartial(text: String)
+        /**
+         * Énergie du dernier bloc capté, dans [0, 1] après compression.
+         * Publié ~25 fois par seconde pendant l'écoute : c'est le seul retour
+         * immédiat possible, whisper ne rendant sa première hypothèse qu'après
+         * une bonne seconde.
+         */
+        fun onLevel(level: Float)
         /** Transcription définitive ; le texte en composition doit être validé. */
         fun onFinal(text: String)
         fun onStateChanged(state: State)
@@ -210,8 +217,7 @@ class SttSession(
         }
 
         if (total - lastPartialAt >= PARTIAL_STEP_SAMPLES) {
-            lastPartialAt = total
-            schedulePartial()
+            schedulePartial(total)
         }
     }
 
@@ -226,6 +232,16 @@ class SttSession(
         for (s in chunk) sum += s.toDouble() * s
         val rms = Math.sqrt(sum / chunk.size)
 
+        if (state == State.LISTENING) {
+            // Racine plutôt que valeur brute : l'échelle linéaire d'un RMS de
+            // parole tient dans les 5 % du bas de l'intervalle, où aucun
+            // mouvement n'est visible à l'œil.
+            val level = Math.sqrt(
+                (rms / LEVEL_FULL_SCALE).coerceIn(0.0, 1.0)
+            ).toFloat()
+            main.post { listener.onLevel(level) }
+        }
+
         if (rms >= SPEECH_RMS_THRESHOLD) {
             speechSeen = true
             silenceRun = 0
@@ -234,11 +250,21 @@ class SttSession(
         }
     }
 
-    private fun schedulePartial() {
+    private fun schedulePartial(at: Int) {
         // Si une passe tourne encore, on saute ce tour : empiler les passes
         // ferait diverger l'affichage du micro, chaque hypothèse arrivant de
         // plus en plus en retard sur ce qui est dit.
+        //
+        // Le pas n'est consommé qu'ici, une fois la passe réellement lancée.
+        // Le décompter à la tentative faisait attendre un pas entier de plus
+        // après chaque tour sauté : sur un appareil où une passe dure plus
+        // longtemps que le pas — le cas courant — les hypothèses se
+        // raréfiaient au lieu de s'enchaîner aussi vite que possible.
+        // Sous le minimum on ne consomme pas le pas : le bloc suivant, 60 ms
+        // plus tard, retentera au lieu d'attendre un pas entier pour rien.
+        if (at < MIN_PARTIAL_SAMPLES) return
         if (!transcribing.compareAndSet(false, true)) return
+        lastPartialAt = at
 
         val gen = generation
         submit("hypothèse") {
@@ -295,15 +321,23 @@ class SttSession(
         const val MAX_UTTERANCE_SAMPLES = 30 * RATE
 
         /**
-         * Intervalle entre deux hypothèses. 900 ms est le compromis mesuré :
-         * plus court, les passes se chevauchent dès que l'énoncé s'allonge sur
-         * un appareil lent ; plus long, le texte affiché décroche visiblement
-         * de la parole.
+         * Audio minimal accumulé entre deux hypothèses. Volontairement court :
+         * ce n'est plus lui qui cadence l'affichage depuis que le pas n'est
+         * consommé qu'au lancement effectif d'une passe — c'est la durée d'une
+         * passe qui le fait, et elle dépend de l'appareil. Le pas ne sert donc
+         * plus qu'à éviter de relancer whisper sur 60 ms d'audio de plus.
          */
-        const val PARTIAL_STEP_SAMPLES = (0.9 * RATE).toInt()
+        const val PARTIAL_STEP_SAMPLES = (0.6 * RATE).toInt()
 
         /** En deçà, whisper hallucine plus qu'il ne transcrit. */
         const val MIN_PARTIAL_SAMPLES = (0.6 * RATE).toInt()
+
+        /**
+         * RMS considéré comme « à fond » pour l'indicateur de niveau. Une voix
+         * proche du micro tourne autour de 0,1 ; au-delà on sature l'affichage
+         * plutôt que de comprimer tout le reste vers le bas.
+         */
+        const val LEVEL_FULL_SCALE = 0.18
         const val MIN_FINAL_SAMPLES = (0.3 * RATE).toInt()
 
         /** Silence après lequel la dictée se termine seule. */

@@ -108,6 +108,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          * laissant la zone tactile occuper le carré entier.
          */
         private const val MIC_ICON_PADDING_DP = 10
+
+        /**
+         * Amplitude du battement du micro, en fraction de sa taille. 18 % se
+         * voit du coin de l'œil sans faire déborder le glyphe de la marge que
+         * MIC_ICON_PADDING_DP lui réserve.
+         */
+        private const val MIC_LEVEL_SCALE = 0.18f
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -184,6 +191,25 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      */
     private var sttSession: SttSession? = null
     private var micButton: ImageView? = null
+
+    /**
+     * Bandeau d'état de la dictée, affiché à la place des suggestions.
+     *
+     * Le changement de teinte du micro ne suffisait pas : sur un téléphone en
+     * main, une icône de 8 mm qui passe du gris au vert ne se remarque pas, et
+     * l'utilisateur n'avait donc aucun moyen de savoir que le clavier
+     * l'écoutait — ni, ensuite, qu'il était en train de transcrire.
+     */
+    private var dictationStatusView: TextView? = null
+    private var luxScrollView: HorizontalScrollView? = null
+
+    /**
+     * Visibilité de la rangée française avant que la dictée ne la masque.
+     * Elle est pilotée par le moteur de suggestions ; la dictée doit la rendre
+     * telle qu'elle l'a trouvée, sans quoi des suggestions périmées
+     * réapparaîtraient sous le texte dicté.
+     */
+    private var frenchRowVisibilityBeforeDictation: Int? = null
 
     /**
      * Texte en composition posé par la dictée. Distinct du mot courant
@@ -538,7 +564,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
         )
         luxRowWithMic.addView(luxScroll)
+        luxRowWithMic.addView(createDictationStatusView())
         luxRowWithMic.addView(createMicButton(rowHeightPx))
+        luxScrollView = luxScroll
         suggestionsContainer.addView(luxRowWithMic)
 
         // En paysage la seconde rangée n'est pas construite du tout : les suggestions
@@ -619,6 +647,27 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
+     * Bandeau occupant la place des suggestions pendant la dictée. Construit
+     * une fois et masqué, plutôt qu'ajouté et retiré : insérer une vue dans la
+     * rangée en cours de dictée relance une passe de mise en page sous le
+     * doigt de l'utilisateur.
+     */
+    private fun createDictationStatusView(): View {
+        val view = TextView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+            )
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dpToPx(12), 0, dpToPx(8), 0)
+            textSize = SUGGESTION_TEXT_SIZE_SP - 2f
+            maxLines = 1
+            visibility = View.GONE
+        }
+        dictationStatusView = view
+        return view
+    }
+
+    /**
      * Le micro n'a que deux états visuels, et ils doivent se distinguer sans
      * couleur : l'opacité change en même temps que la teinte, pour rester
      * lisible en cas de daltonisme comme sur un écran délavé au soleil.
@@ -628,7 +677,53 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         micButton?.apply {
             setColorFilter(if (listening) palette.accent else palette.encreAttenuee)
             alpha = if (listening) 1.0f else 0.65f
+            if (!listening) {
+                scaleX = 1f
+                scaleY = 1f
+            }
         }
+    }
+
+    /**
+     * Affiche le bandeau de dictée, ou le retire et rend la rangée de
+     * suggestions. [resId] à null remet l'affichage normal.
+     */
+    private fun showDictationStatus(resId: Int?) {
+        val status = dictationStatusView ?: return
+        val palette = paletteDeLaVue ?: KeyboardTheme.palette()
+
+        if (resId == null) {
+            status.visibility = View.GONE
+            luxScrollView?.visibility = View.VISIBLE
+            frenchRowVisibilityBeforeDictation?.let { frenchRowScroll?.visibility = it }
+            frenchRowVisibilityBeforeDictation = null
+            return
+        }
+
+        if (status.visibility != View.VISIBLE) {
+            // Les suggestions affichées sont celles du mot tapé avant l'appui
+            // sur le micro : les laisser sous un texte dicté inviterait à
+            // valider un mot sans rapport.
+            frenchRowVisibilityBeforeDictation = frenchRowScroll?.visibility
+            frenchRowScroll?.visibility = View.INVISIBLE
+            luxScrollView?.visibility = View.GONE
+            status.visibility = View.VISIBLE
+        }
+        status.setTextColor(palette.encre)
+        status.text = getString(resId)
+    }
+
+    /**
+     * Fait respirer le micro au rythme de la voix captée. C'est le seul retour
+     * réellement immédiat : la première hypothèse de whisper n'arrive qu'après
+     * une seconde ou deux, pendant lesquelles rien ne distinguait un micro qui
+     * enregistre d'un micro muet.
+     */
+    private fun applyMicLevel(level: Float) {
+        val button = micButton ?: return
+        val scale = 1f + MIC_LEVEL_SCALE * level.coerceIn(0f, 1f)
+        button.scaleX = scale
+        button.scaleY = scale
     }
 
     private fun onMicTapped() {
@@ -697,8 +792,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             dictationComposing = false
         }
 
+        override fun onLevel(level: Float) = applyMicLevel(level)
+
         override fun onStateChanged(state: SttSession.State) {
             applyMicTint(listening = state == SttSession.State.LISTENING)
+            showDictationStatus(
+                when (state) {
+                    // Le chargement du modèle prend jusqu'à une seconde au
+                    // premier appui : sans message, l'utilisateur croit que
+                    // son appui n'a pas été pris et appuie une seconde fois.
+                    SttSession.State.LOADING -> R.string.stt_preparing
+                    SttSession.State.LISTENING -> R.string.stt_listening
+                    SttSession.State.FINALIZING -> R.string.stt_transcribing
+                    SttSession.State.IDLE -> null
+                }
+            )
         }
 
         override fun onError(error: SttSession.Error) {
@@ -714,6 +822,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     private fun showDictationMessage(resId: Int) {
         applyMicTint(listening = false)
+        showDictationStatus(null)
         Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show()
     }
 
@@ -733,6 +842,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             dictationComposing = false
         }
         applyMicTint(listening = false)
+        showDictationStatus(null)
     }
 
     /** Hauteur d'une rangée de suggestions, réduite en paysage. */
@@ -1535,6 +1645,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             frenchRowScroll = null
             mainKeyboardView = null
             micButton = null
+            dictationStatusView = null
+            luxScrollView = null
             
             Log.d(TAG, "Nettoyage terminé avec succès - Compatible A21s")
             
