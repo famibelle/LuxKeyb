@@ -40,6 +40,16 @@ p{margin:0 0 12px;}
 .cta{margin:0 0 10px;}
 .cta .btn{font-size:15.5px;padding:13px 20px;}
 
+/* Bouton et code QR côte à côte, empilés sous 520 px. Le QR sert au cas le
+   plus courant : on lit la page sur un ordinateur, on installe sur le
+   téléphone — sans avoir à retaper une URL de release GitHub. */
+.get{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center;}
+.get-main{flex:1 1 300px;min-width:0;}
+.qr{margin:0;text-align:center;flex:0 0 auto;}
+.qr img{display:block;width:160px;height:160px;background:#fff;
+  border-radius:10px;padding:7px;box-sizing:border-box;border:1px solid var(--line);}
+.qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+
 /* Encart d'avertissement : ton posé, pas alarmiste, mais visuellement distinct
    du reste — c'est ce que le lecteur doit avoir lu avant de télécharger. */
 .warn{border:1px solid var(--line);border-left:4px solid var(--sun);
@@ -103,16 +113,28 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <span id="lab-size">environ 38 Mo</span>
   </div>
 
-  <p class="cta">
-    <a class="btn primary"
-       href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
-      📲 Télécharger la version Labs
-    </a>
-  </p>
-  <p class="muted">
-    Android 5.0 ou plus récent · fichier APK à installer à la main ·
-    aucune permission réseau
-  </p>
+  <div class="get">
+    <div class="get-main">
+      <p class="cta">
+        <a class="btn primary"
+           href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
+          📲 Télécharger la version Labs
+        </a>
+      </p>
+      <p class="muted">
+        Android 5.0 ou plus récent · fichier APK à installer à la main ·
+        aucune permission réseau
+      </p>
+    </div>
+    <figure class="qr">
+      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
+        <img src="assets/qr-luxkeyb-labs.png"
+             alt="Code QR téléchargeant directement l'APK de la version Labs du Lëtzebuergesch Clavier"
+             width="160" height="160" loading="lazy">
+      </a>
+      <figcaption>Scannez pour télécharger<br>directement sur le téléphone</figcaption>
+    </figure>
+  </div>
 </section>
 
 <section>
