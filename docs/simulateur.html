@@ -554,12 +554,21 @@
 
   async function init() {
     try {
-      // Les trois fichiers sont ceux de l'application, recopiés depuis
-      // android_keyboard/app/src/main/assets/ : le simulateur ne dispose
-      // d'aucune donnée que le clavier n'aurait pas.
+      // Les données sont celles de l'application : le simulateur ne dispose
+      // d'aucune information que le clavier n'aurait pas. Dictionnaire et
+      // lexique français sont recopiés tels quels depuis
+      // android_keyboard/app/src/main/assets/.
+      //
+      // Le modèle n-grammes, lui, est réencodé par
+      // docs/scripts/build_simulateur_ngrams.py : mêmes contextes, mêmes
+      // candidats, même ordre, mais 1,4 Mo au lieu de 5,1 Mo. Le fichier de
+      // l'APK répète {"word":…,"probability":…} pour chacun de ses 129 071
+      // candidats, alors que le simulateur n'affiche que les mots et que
+      // l'ordre du fichier remplace les probabilités. Sur Android le fichier
+      // est lu une fois en local ; ici il repart sur le réseau à chaque visite.
       const [dict, ngrams, french] = await Promise.all([
         fetchJson('assets/luxemburgish_dict.json'),
-        fetchJson('assets/luxemburgish_ngrams.json'),
+        fetchJson('assets/simulateur-ngrams.json'),
         fetchJson('assets/french_simple_dict.json')
       ]);
 

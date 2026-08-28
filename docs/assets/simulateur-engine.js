@@ -282,11 +282,23 @@
       const list = this.ngramModel[this.resolveNgramContext(previousWord, lastWord)];
       if (!list) return [];
 
+      // Deux encodages sont acceptés, et donnent exactement les mêmes
+      // suggestions :
+      //   - {word, probability}, celui du fichier embarqué dans l'APK ;
+      //   - une simple chaîne, celui de simulateur-ngrams.json, qui pèse 1,4 Mo
+      //     au lieu de 5,1 Mo pour un fichier retéléchargé à chaque visite.
+      // Les probabilités n'ont jamais servi qu'à ce tri, et les deux fichiers
+      // sont écrits par probabilité décroissante : le tri est donc déjà fait.
+      // Il est conservé pour le format de l'APK, et neutre sur l'autre — le
+      // tri de JavaScript est stable depuis ES2019, une liste de zéros garde
+      // son ordre. Cette tolérance permet de déposer le fichier de l'APK tel
+      // quel dans assets/ pour comparer les deux moteurs.
       const seen = new Set();
       const suggestions = [];
       for (const entry of list) {
-        const word = entry.word;
-        const prob = typeof entry.probability === 'number' ? entry.probability : 0;
+        const word = typeof entry === 'string' ? entry : entry.word;
+        const prob = (entry && typeof entry.probability === 'number')
+          ? entry.probability : 0;
         if (word && !seen.has(word)) {
           seen.add(word);
           suggestions.push([word, prob]);
