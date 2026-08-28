@@ -115,6 +115,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          * MIC_ICON_PADDING_DP lui réserve.
          */
         private const val MIC_LEVEL_SCALE = 0.18f
+
+        /**
+         * Affiche la durée de chaque passe whisper dans le bandeau de dictée.
+         *
+         * Diagnostic du canal Labs. La latence de la dictée n'a jamais été
+         * mesurée sur un appareil réel : le banc d'essai de `stt/bench` tourne
+         * sur un hôte x86 dont les temps ne disent rien d'un ARM, et un binaire
+         * déporté par adb mesurerait un processus isolé, sans le rendu du
+         * clavier ni le throttling. Le seul chiffre juste se lit ici. À
+         * repasser à false une fois la mesure faite.
+         */
+        private const val SHOW_PASS_TIMING = true
+
+        /** Durée d'affichage du chronométrage final, une fois la dictée finie. */
+        private const val FINAL_TIMING_HOLD_MS = 4000L
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -201,6 +216,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * l'écoutait — ni, ensuite, qu'il était en train de transcrire.
      */
     private var dictationStatusView: TextView? = null
+
+    /**
+     * Chronométrage de la dernière passe whisper, affiché dans le bandeau.
+     *
+     * Diagnostic du canal Labs, pas une fonctionnalité : la latence de la
+     * dictée n'a jamais été mesurée sur un appareil réel. Mettre
+     * [SHOW_PASS_TIMING] à false suffit à le retirer, sans rien changer
+     * d'autre.
+     */
+    private var lastPassTiming: String? = null
+    private var pendingFinalTiming: String? = null
     private var luxScrollView: HorizontalScrollView? = null
 
     /**
@@ -710,7 +736,34 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             status.visibility = View.VISIBLE
         }
         status.setTextColor(palette.encre)
-        status.text = getString(resId)
+        val timing = lastPassTiming.takeIf { SHOW_PASS_TIMING }
+        status.text = if (timing == null) getString(resId)
+                      else "${getString(resId)}  $timing"
+    }
+
+    /**
+     * Laisse le chronométrage de la passe finale à l'écran quelques secondes
+     * après la fin de la dictée. Sans ce délai, le bandeau disparaît dans le
+     * même souffle que l'arrivée du texte et le chiffre n'est jamais lisible.
+     */
+    private fun holdFinalTiming() {
+        val timing = pendingFinalTiming ?: return
+        pendingFinalTiming = null
+        val status = dictationStatusView ?: return
+        lastPassTiming = timing
+        // Le passage à IDLE a déjà rendu les deux rangées de suggestions : il
+        // faut les remasquer, et surtout re-mémoriser l'état de la rangée
+        // française, que showDictationStatus(null) vient d'oublier — sans quoi
+        // elle resterait masquée après le délai.
+        frenchRowVisibilityBeforeDictation = frenchRowScroll?.visibility
+        frenchRowScroll?.visibility = View.INVISIBLE
+        luxScrollView?.visibility = View.GONE
+        status.visibility = View.VISIBLE
+        status.text = "✅ $timing"
+        status.postDelayed({
+            lastPassTiming = null
+            if (sttSession?.isBusy != true) showDictationStatus(null)
+        }, FINAL_TIMING_HOLD_MS)
     }
 
     /**
@@ -794,6 +847,24 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         override fun onLevel(level: Float) = applyMicLevel(level)
 
+        override fun onPassTiming(audioSeconds: Float, ms: Long, partial: Boolean) {
+            if (!SHOW_PASS_TIMING) return
+            lastPassTiming = "%.1f s → %d ms".format(audioSeconds, ms)
+            if (partial) {
+                // Rafraîchit le bandeau en place, sans le faire réapparaître
+                // s'il a déjà été retiré.
+                if (dictationStatusView?.visibility == View.VISIBLE) {
+                    showDictationStatus(R.string.stt_listening)
+                }
+            } else {
+                // La passe finale est le chiffre qui compte — le délai entre le
+                // relâchement du micro et le texte. Il est retenu ici parce que
+                // le passage à IDLE, qui suit immédiatement, retirerait le
+                // bandeau avant qu'on ait pu le lire.
+                pendingFinalTiming = lastPassTiming
+            }
+        }
+
         override fun onStateChanged(state: SttSession.State) {
             applyMicTint(listening = state == SttSession.State.LISTENING)
             showDictationStatus(
@@ -807,6 +878,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     SttSession.State.IDLE -> null
                 }
             )
+            if (state == SttSession.State.IDLE) holdFinalTiming()
         }
 
         override fun onError(error: SttSession.Error) {

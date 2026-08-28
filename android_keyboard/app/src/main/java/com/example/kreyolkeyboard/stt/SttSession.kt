@@ -3,6 +3,7 @@ package com.example.kreyolkeyboard.stt
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -38,6 +39,20 @@ class SttSession(
         fun onLevel(level: Float)
         /** Transcription définitive ; le texte en composition doit être validé. */
         fun onFinal(text: String)
+        /**
+         * Durée mesurée d'une passe whisper : [audioSeconds] d'audio soumis
+         * transcrits en [ms] millisecondes, [partial] distinguant une
+         * hypothèse d'une passe finale.
+         *
+         * Existe pour une raison précise : la latence de la dictée n'a jamais
+         * été mesurée sur un appareil réel, seulement sur un hôte x86 où elle
+         * ne veut rien dire. Un banc d'essai déporté ne la donnerait pas non
+         * plus tout à fait — il tourne dans un processus isolé, là où l'IME
+         * subit en plus le rendu du clavier et le throttling thermique. La
+         * seule mesure juste est celle prise ici, dans le processus qui rend
+         * le service.
+         */
+        fun onPassTiming(audioSeconds: Float, ms: Long, partial: Boolean)
         fun onStateChanged(state: State)
         fun onError(error: Error)
     }
@@ -148,6 +163,7 @@ class SttSession(
         val gen = generation
         submit("finalisation") {
             val samples = snapshot()
+            val startedAt = SystemClock.elapsedRealtime()
             val text = if (samples.size >= MIN_FINAL_SAMPLES) {
                 engine.transcribe(samples, singleSegment = false)
             } else {
@@ -158,6 +174,7 @@ class SttSession(
             // Une annulation ou une nouvelle dictée a pu survenir pendant la
             // passe : ni l'état ni le texte de celle-ci ne la concernent.
             if (gen != generation) return@submit
+            reportTiming(samples.size, startedAt, partial = false)
             setState(State.IDLE)
             main.post { listener.onFinal(text) }
         }
@@ -273,7 +290,9 @@ class SttSession(
                 val samples = snapshot()
                 if (samples.size < MIN_PARTIAL_SAMPLES) return@submit
 
+                val startedAt = SystemClock.elapsedRealtime()
                 val text = engine.transcribe(samples, singleSegment = true)
+                reportTiming(samples.size, startedAt, partial = true)
                 if (text.isNotEmpty() && gen == generation && state == State.LISTENING) {
                     main.post { listener.onPartial(text) }
                 }
@@ -281,6 +300,13 @@ class SttSession(
                 transcribing.set(false)
             }
         }
+    }
+
+    /** Publie la durée de la passe qui vient de se terminer. */
+    private fun reportTiming(samples: Int, startedAt: Long, partial: Boolean) {
+        val ms = SystemClock.elapsedRealtime() - startedAt
+        val secs = samples.toFloat() / RATE
+        main.post { listener.onPassTiming(secs, ms, partial) }
     }
 
     private fun snapshot(): FloatArray = synchronized(bufferLock) {
