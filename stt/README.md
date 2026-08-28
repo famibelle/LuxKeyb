@@ -16,11 +16,25 @@ projet **LuxASR**, Université du Luxembourg — Département des sciences humai
   des corpus du dictionnaire, qui, elle, interdit la redistribution commerciale.
 - Asset embarqué : `ggml-lb-tiny-q5_1.bin`, 31 Mo
 
-**La qualité en luxembourgeois n'est pas mesurée.** Aucun WER n'est publié pour
-ce modèle, et LuxASR fait tourner `large-v3-turbo` — non diffusé — sur son propre
-site et son API. `tiny` est le plus faible de la famille. Le seul contrôle
-effectué est un test de fumée qui vérifie la conversion, pas la précision.
-Mesurer un WER sur du vrai audio luxembourgeois reste à faire.
+**La qualité est mesurée depuis le 28 août 2026, et elle disqualifie `tiny`.**
+Sur 50 min de conférences de presse gouvernementales luxembourgeoises
+(`Akabi/Luxemburgish_Press_Conferences_Gov`, transcriptions humaines), `tiny`
+rend **48,7 % de WER** en une passe sur 60 s de parole continue. Mais le chiffre
+qui compte est celui du régime réel d'un clavier — des énoncés de quelques
+secondes — et là il tombe à **72,1 %** : privé de contexte, `tiny` s'effondre.
+
+`base` ne s'effondre pas : 32,9 % en continu, **36,0 % sur des énoncés de 4 s**,
+soit 3,1 points de perte contre 22,9. Dans le régime qui nous intéresse, l'écart
+entre les deux modèles n'est pas de douze points mais de **trente-six** — la
+moitié des erreurs. Il coûte +27,5 Mo d'asset et ×1,9 de calcul. Mesurer les
+modèles sur des fichiers longs, comme le fait tout banc d'essai ASR, aurait
+laissé croire à un choix de confort ; c'en est un de viabilité.
+
+Le protocole, le harnais et le rapport sont dans [`bench/`](bench/). Deux
+réserves à ne pas perdre de vue : la carte du modèle ne publie pas ses données
+d'entraînement, donc une contamination par ce corpus public est plausible et le
+WER mesuré est un *plafond* ; et tous les temps ci-dessous sont ceux d'un hôte
+x86, jamais d'un téléphone.
 
 ## L'asset n'est pas versionné
 
@@ -72,8 +86,19 @@ depuis l'appui sur le micro. Chaque passe rend une phrase complète qui annule e
 remplace la précédente — ce qui correspond exactement au texte en composition
 d'un IME (`setComposingText`), et évite d'avoir à recoller des fragments.
 
-Conséquence assumée : le coût d'une passe croît avec la durée de l'énoncé. La
-dictée se termine d'elle-même à 30 s, ou après 1,6 s de silence.
+On a longtemps écrit ici que le coût d'une passe croissait avec la durée de
+l'énoncé. **C'est faux au premier ordre**, et la mesure le montre : une passe
+coûte 824 ms sur 0–2 s d'audio et 1 030 ms sur 10–16 s. L'audio est multiplié par
+huit, le coût par 1,25. L'encodeur de Whisper travaille toujours sur une fenêtre
+de 30 s, remplie de silence le reste du temps, et il pèse 80 à 95 % d'une passe ;
+seul le décodage grandit.
+
+Deux conséquences pratiques. La borne des 30 s n'est pas là pour contenir un coût
+qui s'emballe, mais parce que la fenêtre mel s'arrête là. Et le seul vrai levier
+de latence est `whisper_full_params.audio_ctx`, qui tronque le contexte de
+l'encodeur — jamais essayé ici, et probablement ce qui rendrait `base` abordable.
+
+La dictée se termine d'elle-même à 30 s, ou après 1,6 s de silence.
 
 ### Mémoire — le point sensible
 
@@ -118,7 +143,13 @@ JNI survivent à R8 malgré `-repackageclasses ''` ; le modèle est bien `Stored
 (non compressé) dans l'APK, condition du mmap par `AAsset_getBuffer()` ; les
 127 tests unitaires passent.
 
-Non vérifié : la précision en luxembourgeois, la latence réelle sur un téléphone,
+Mesuré depuis le 28 août 2026 : la précision (ci-dessus), le coût réel d'une
+passe, et la chronologie complète de la dictée — première hypothèse à 1,55 s avec
+`tiny` et 2,54 s avec `base`, texte définitif à +0,87 s et +1,79 s, sur l'hôte.
+Aucun des 161 énoncés rejoués ne reste sans hypothèse avec `tiny` ; `base` en
+laisse 13, c'est-à-dire qu'il n'a presque plus de marge.
+
+Non vérifié : la latence réelle sur un téléphone,
 et le comportement mémoire sous pression. L'émulateur disponible est x86_64,
 environ **50× plus lent que l'hôte** pour ggml et sujet à des artefacts de rendu
 sous swiftshader : ses temps ne disent rien d'un appareil ARM. x86_64 n'est

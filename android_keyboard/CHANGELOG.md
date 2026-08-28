@@ -14,6 +14,31 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 `feat/speech-to-text-lb`, pas encore dans une version publiée.
 
+### 📊 Qualité et latence enfin chiffrées
+
+- Banc d'essai complet dans `stt/bench/` : le modèle mesuré seul, puis le
+  pipeline temps réel rejoué énoncé par énoncé sur une horloge virtuelle, avec
+  les paramètres de décodage recopiés à l'identique depuis `whisper_jni.cpp`.
+  Corpus : 50 min de conférences de presse gouvernementales luxembourgeoises,
+  161 énoncés découpés aux silences.
+- **`tiny` ne tient pas le régime d'un clavier.** 48,7 % de WER sur 60 s de
+  parole continue, mais **72,1 % sur des énoncés de quelques secondes** : privé
+  de contexte, il s'effondre. `base` passe de 32,9 % à 36,0 % seulement, soit
+  3,1 points de perte contre 22,9 — trente-six points d'écart entre les deux
+  modèles dans le régime réel, pour +27,5 Mo d'asset et ×1,9 de calcul.
+- Chronologie mesurée : première hypothèse à 1,55 s avec `tiny`, 2,54 s avec
+  `base` ; texte définitif à +0,87 s et +1,79 s. Aucun des 161 énoncés ne reste
+  sans hypothèse avec `tiny` ; `base` en laisse 13, c'est-à-dire presque plus de
+  marge. Sur hôte x86 — jamais mesuré sur un téléphone.
+- **Correction d'une affirmation fausse du README** : le coût d'une passe ne
+  croît pas avec la durée de l'énoncé. 824 ms sur 0–2 s d'audio, 1 030 ms sur
+  10–16 s — l'audio ×8, le coût ×1,25. L'encodeur travaille toujours sur 30 s et
+  pèse 80 à 95 % d'une passe. Le seul vrai levier de latence est donc
+  `audio_ctx`, jamais essayé.
+- `convert_model.py` accepte `--repo` et `--quant` pour comparer d'autres tailles
+  de modèle hors de l'APK ; les valeurs par défaut reproduisent l'asset embarqué
+  à l'identique.
+
 ### 🎙️ Dictée vocale embarquée
 
 - Nouveau bouton micro, au bord droit de la barre de suggestions. Un appui

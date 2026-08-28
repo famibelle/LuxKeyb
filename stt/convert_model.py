@@ -32,7 +32,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-HF_REPO = "unilux/whisper-tiny-v1-luxembourgish"
+HF_REPO = "unilux/whisper-tiny-v1-luxembourgish"   # défaut : le modèle embarqué
 WHISPER_CPP = "https://github.com/ggerganov/whisper.cpp.git"
 WHISPER_CPP_TAG = "v1.7.4"          # doit rester aligné sur le sous-module
 OPENAI_WHISPER = "https://github.com/openai/whisper.git"
@@ -44,7 +44,15 @@ HF_FILES = [
 ]
 
 QUANT = "q5_1"
-ASSET_NAME = f"ggml-lb-tiny-{QUANT}.bin"
+
+
+def asset_name(repo: str, quant: str) -> str:
+    """ggml-lb-<taille>-<quant>.bin, la taille lue dans le nom du dépôt."""
+    size = repo.split("/")[-1].split("-")[1]      # whisper-tiny-v1-… → tiny
+    return f"ggml-lb-{size}-{quant}.bin"
+
+
+ASSET_NAME = asset_name(HF_REPO, QUANT)
 
 
 def run(cmd, **kw):
@@ -52,12 +60,12 @@ def run(cmd, **kw):
     subprocess.run(cmd, check=True, **kw)
 
 
-def fetch_model(dest: Path):
+def fetch_model(dest: Path, repo: str = HF_REPO):
     from huggingface_hub import hf_hub_download
     dest.mkdir(parents=True, exist_ok=True)
     for name in HF_FILES:
         print(f"  ⬇️  {name}")
-        shutil.copy(hf_hub_download(HF_REPO, name), dest / name)
+        shutil.copy(hf_hub_download(repo, name), dest / name)
 
 
 def patch_max_length(model_dir: Path):
@@ -85,16 +93,27 @@ def main():
                     help="dossier assets de l'app")
     ap.add_argument("--work", type=Path, default=None,
                     help="dossier de travail (temporaire par défaut)")
+    # Les deux options servent à comparer des tailles de modèle hors de l'APK
+    # (cf. stt/bench). Les valeurs par défaut reproduisent exactement l'asset
+    # embarqué : la commande du README et le job CI generate-stt-model
+    # n'ont pas à changer.
+    ap.add_argument("--repo", default=HF_REPO,
+                    help=f"dépôt Hugging Face (défaut : {HF_REPO})")
+    ap.add_argument("--quant", default=QUANT,
+                    help=f"quantification ggml (défaut : {QUANT})")
     args = ap.parse_args()
+
+    repo, quant = args.repo, args.quant
+    asset = asset_name(repo, quant)
 
     work = args.work or Path(tempfile.mkdtemp(prefix="luxstt-"))
     work.mkdir(parents=True, exist_ok=True)
     print(f"📂 Dossier de travail : {work}")
 
-    print("\n1/5 · Récupération du modèle Hugging Face")
+    print(f"\n1/5 · Récupération de {repo}")
     model_dir = work / "hf-model"
     if not (model_dir / "model.safetensors").exists():
-        fetch_model(model_dir)
+        fetch_model(model_dir, repo)
     patch_max_length(model_dir)
 
     print("\n2/5 · Dépôts outils")
@@ -121,12 +140,12 @@ def main():
          "-DWHISPER_BUILD_TESTS=OFF", "-DWHISPER_BUILD_SERVER=OFF"])
     run(["cmake", "--build", str(build), "-j", "--target", "quantize"])
 
-    print(f"\n5/5 · Quantification {QUANT}")
-    out = ggml_dir / ASSET_NAME
-    run([str(build / "bin" / "quantize"), str(f16), str(out), QUANT])
+    print(f"\n5/5 · Quantification {quant}")
+    out = ggml_dir / asset
+    run([str(build / "bin" / "quantize"), str(f16), str(out), quant])
 
     args.output.mkdir(parents=True, exist_ok=True)
-    dest = args.output / ASSET_NAME
+    dest = args.output / asset
     shutil.copy(out, dest)
 
     mo = dest.stat().st_size / 1e6
