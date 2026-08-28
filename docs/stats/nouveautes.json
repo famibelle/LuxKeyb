@@ -1,0 +1,448 @@
+{
+ "genere_le": "2026-08-28",
+ "derniere_version": "10.16.0",
+ "derniere_date": "2026-08-27",
+ "depot": "https://github.com/famibelle/LuxKeyb",
+ "versions": [
+  {
+   "version": "10.16.0",
+   "date": "2026-08-27",
+   "intro": "Changement de corpus. Le dictionnaire et les prédictions sont désormais construits sur deux jeux de données luxembourgeois ouverts au lieu d'un, cent fois plus gros et bien plus propres que le précédent.",
+   "sections": [
+    {
+     "emoji": "📚",
+     "titre": "Deux corpus à la place d'un",
+     "points": [
+      {
+       "titre": "LuxAlign v3",
+       "texte": "(RTL.lu, 180 342 phrases, ~3,1 M de mots) apporte le vocabulaire et l'enchaînement des mots. C'est la première source du projet avec de la prose suivie : les phrases y font 17 mots en moyenne, contre des exemples isolés jusqu'ici."
+      },
+      {
+       "titre": "LETZ",
+       "texte": "(Lëtzebuerger Online Dictionnaire, 5 862 phrases) apporte la langue de tous les jours. Soixante fois plus petit, mais seul endroit où « dech », « däin », « hues » ou « mamm » apparaissent en quantité — soit ce qu'on tape sur un téléphone et que la presse n'écrit jamais."
+      },
+      {
+       "titre": null,
+       "texte": "Les deux sont sous licence Creative Commons et <strong>exigent la citation de leurs auteurs</strong> : elle figure dans l'onglet « À propos » de l'application et dans <code>Dictionnaires/CORPUS.md</code>. LuxAlign porte en plus une clause NonCommercial, qui s'applique aux fichiers de dictionnaire livrés — le code, lui, garde sa propre licence."
+      },
+      {
+       "titre": "Retrait du corpus de conférences de presse gouvernementales",
+       "texte": "Les ministres passaient régulièrement à l'allemand en pleine réponse, et le dictionnaire livré contenait 42 mots allemands sans ambiguïté : « und » 372 occurrences, « wir » 352, « auch » 324, « ich » 124. Sur un préfixe « au », le clavier proposait « auch ». Ils tombent respectivement à 53, 8, 5 et 8, résidus de citations dans de vrais articles."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "📈",
+     "titre": "Ce que ça change en pratique",
+     "points": [],
+     "texte": "L'APK passe de 7,6 à 8,4 Mo.",
+     "tableau": {
+      "entetes": [
+       "",
+       "avant",
+       "après"
+      ],
+      "lignes": [
+       [
+        "Mots au dictionnaire",
+        "8 792",
+        "<strong>37 734</strong>"
+       ],
+       [
+        "Contextes de prédiction",
+        "23 169",
+        "<strong>26 172</strong>"
+       ],
+       [
+        "Mots reconnus dans un texte inédit",
+        "80 %",
+        "<strong>97 %</strong>"
+       ],
+       [
+        "Bon mot proposé dans les trois premiers",
+        "7 %",
+        "<strong>24 %</strong>"
+       ]
+      ]
+     }
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La distance d'édition reprend le pas sur la fréquence",
+       "texte": "Le score d'une suggestion additionne la fréquence du mot et un poids lié au nombre de corrections nécessaires ; ce poids valait 100 000, calibré pour un dictionnaire plafonnant à 15 500. Le nouveau corpus monte à 100 105 pour « an », si bien qu'une correction à deux lettres près vers « an » repassait devant toute correction à une lettre près d'un mot moins fréquent que 105. Le poids passe à 1 000 000, et un test le vérifie désormais contre le dictionnaire réellement livré, pas contre des valeurs écrites en dur."
+      },
+      {
+       "titre": "Les fréquences du dictionnaire sont enfin les vraies",
+       "texte": "Chaque régénération additionnait le corpus entier au total précédent au lieu de le remplacer : les fréquences livrées valaient environ 5,8 fois les réelles et montaient à chaque passage de l'intégration continue. Pire, les mots disparus du corpus survivaient indéfiniment — 49 % du dictionnaire venait d'un corpus COVID hors service depuis longtemps (« geimpft », « covidcheck », « astrazeneca »)."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Interne",
+     "points": [
+      {
+       "titre": null,
+       "texte": "<code>HF_TOKEN</code> n'est plus nécessaire : les deux corpus sont publics."
+      },
+      {
+       "titre": null,
+       "texte": "Garde-fous d'intégration continue relevés : 20 000 mots et 15 000 contextes minimum, plus un contrôle de présence du fichier d'attribution."
+      },
+      {
+       "titre": null,
+       "texte": "Suite de tests : 127 tests."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.15.0",
+   "date": "2026-08-27",
+   "intro": "Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.14.8. Est repris ici le travail mené en amont sur l'écran de démarrage entre les 10.14.1 et 10.14.8 ; l'identité luxembourgeoise — QWERTZ, palette du drapeau, libellés, niveaux, dictionnaire — est conservée telle quelle.",
+   "sections": [
+    {
+     "emoji": "🚀",
+     "titre": "L'écran de démarrage tient dans un écran",
+     "points": [
+      {
+       "titre": "Une carte « Configuration rapide »",
+       "texte": "remplace les trois cartes d'étapes empilées. Une ligne compacte par étape, un anneau de progression, et une seule étape dépliée à la fois : celle qui reste à faire, sauf si l'utilisateur en ouvre une autre. Les trois étapes faites, la carte se replie sur son en-tête et rend la place au reste de l'onglet."
+      },
+      {
+       "titre": "Le repli reste piloté par l'état, jamais systématique",
+       "texte": "La description de l'étape en cours, l'avertissement Android et le rappel des deux validations successives sont ce qui fait passer l'utilisateur à travers les réglages système ; les réduire à un chevron ferait gagner de la place là où le tunnel se joue."
+      },
+      {
+       "titre": "La troisième étape se coche sur un vrai mot écrit",
+       "texte": ", au jalon posé par le service de saisie — donc pas sur un texte collé ni tapé avec un autre clavier. Elle se coche pendant la frappe, sans reconstruire la carte, qui ferait perdre le focus et refermerait le clavier au premier mot."
+      },
+      {
+       "titre": "Le clavier d'essai passe sous la carte de configuration",
+       "texte": "En tête d'onglet, il occupait toute la hauteur visible et repoussait sous la ligne de flottaison le bouton qui ouvre les réglages Android."
+      },
+      {
+       "titre": "La carte du correcteur orthographique se touche, sans bouton",
+       "texte": ", et son bénéfice s'énonce par ce qu'il apporte plutôt que par ce qu'il supprime. Le détail de ce qu'Android va demander se déplie à la demande."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Réglages et affichage",
+     "points": [
+      {
+       "titre": "L'engrenage des réglages est une icône vectorielle blanche",
+       "texte": "et non plus l'emoji ⚙️, que la police système dessine en gris bleuté — une teinte que le bandeau bleu avalait. Le contraste ne dépend plus de la police du téléphone."
+      },
+      {
+       "titre": "Le manifeste documente sa permission unique",
+       "texte": ": <code>POST_NOTIFICATIONS</code>, la seule que le code exerce."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🧹",
+     "titre": "Cuisine interne",
+     "points": [
+      {
+       "titre": "Le second écrivain du fichier de compteurs disparaît",
+       "texte": "— un cache de mots en attente, avec son exécuteur et sa sauvegarde différée, que plus aucune ligne n'appelait depuis que <code>CreoleDictionaryWithUsage</code> est seul à écrire ce fichier."
+      },
+      {
+       "titre": "La table de décision du thème passe sous tests",
+       "texte": "<code>KeyboardTheme.resoudre()</code> prend désormais le mode et l'état du système en paramètres au lieu de lire le <code>Context</code> : les six cases se vérifient hors appareil. <code>KeyboardThemeTest</code> reprend et complète l'ancien <code>KeyboardThemeModeTest</code>, qui est retiré."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.14.0",
+   "date": "2026-08-24",
+   "intro": "Le clavier se met en clair ou en sombre, au choix de l'utilisateur.",
+   "sections": [
+    {
+     "emoji": "🌗",
+     "titre": "Thème du clavier",
+     "points": [
+      {
+       "titre": "Trois positions dans les réglages du clavier",
+       "texte": "— « Comme le téléphone » (par défaut), « Toujours clair », « Toujours sombre ». Un choix explicite et pas seulement le suivi du système, pour la raison qui avait déjà justifié les interrupteurs de vibration et de son : sur plusieurs surcouches, le réglage jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers."
+      },
+      {
+       "titre": "Le drapeau ne s'inverse pas",
+       "texte": "Le rouge Pantone 032 et le bleu ciel Pantone 299 sont identiques dans les deux thèmes — ce sont eux qui rendent ce clavier reconnaissable, et leurs contrastes (4,22:1 et 5,93:1) ne dépendent pas de ce qui les entoure. Seul le blanc des touches de lettres passe en anthracite, et avec lui l'encre, la bordure, le fond du clavier et la popup d'appui long."
+      },
+      {
+       "titre": "Chaque valeur sombre égale ou dépasse son homologue claire",
+       "texte": ": lettre sur sa touche 12,42:1, majuscule enclenchée 4,62:1, aperçu d'appui long 5,16:1 — contre 17,40, 4,35 et 3,45 en clair. Le tableau complet est dans la documentation de <code>KeyboardTheme</code>."
+      },
+      {
+       "titre": "Le thème clair ne change pas d'un pixel",
+       "texte": ": il reprend une à une les constantes qui existaient avant."
+      },
+      {
+       "titre": null,
+       "texte": "Les quatre surfaces concernées — touches, barre de suggestions, popup d'appui long, panneau emoji — écrivaient leurs couleurs en littéral à leur point d'usage, ce qui rendait tout thème impossible. Elles lisent désormais <code>KeyboardTheme</code>."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.13.0",
+   "date": "2026-08-24",
+   "intro": "Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.12.15. Ce qui est repris ici est le travail d'affichage et d'accessibilité mené en amont entre les 10.9.3 et 10.12.15 ; l'identité luxembourgeoise — QWERTZ, <code>é ä ë '</code>, <code>accentMap</code>, palette du drapeau, niveaux, dictionnaire — est conservée telle quelle. Le numéro saute au-dessus de celui d'amont pour que les deux dépôts restent distinguables.",
+   "sections": [
+    {
+     "emoji": "📐",
+     "titre": "Le clavier tient enfin dans l'écran en paysage",
+     "points": [
+      {
+       "titre": "Le clavier ne prend plus tout l'écran en paysage",
+       "texte": "La fenêtre IME n'y reçoit qu'environ 359 dp de haut contre 891 en portrait : garder 48 dp par touche lui faisait occuper 87 % de l'écran, ne laissant que 51 dp à l'application. Les touches y descendent à 32 dp, le plancher de visée."
+      },
+      {
+       "titre": "La rangée du bas ne déborde plus",
+       "texte": "et la bande vide entre le clavier et le bas de l'écran disparaît."
+      },
+      {
+       "titre": "Les suggestions tiennent sur une rangée plus basse en paysage",
+       "texte": "(38 dp au lieu de deux rangées empilées à 88 dp)."
+      },
+      {
+       "titre": "Les suggestions françaises survivent à une rotation",
+       "texte": "— elles disparaissaient jusqu'ici au changement d'orientation."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔤",
+     "titre": "Les lettres à la taille de leurs touches",
+     "points": [
+      {
+       "titre": "Taille de police dérivée de la hauteur de touche",
+       "texte": ", et non plus fixée à 16 sp : une lettre occupait 44 px sur les 116 d'une touche en portrait, quand Gboard y dessine environ 62 px. Elle ne dépend plus non plus de l'échelle de police du système, qui pouvait la faire déborder de sa touche."
+      },
+      {
+       "titre": "Le padding implicite du style <code>Button</code> est neutralisé",
+       "texte": ": ses 30 px par bord coupaient les jambages (q, g, j, p, y) en paysage et tronquaient « 123 » en « 12 » en portrait."
+      },
+      {
+       "titre": "L'emoji tient dans sa touche",
+       "texte": ", les libellés retrouvent leur milieu vertical (<code>includeFontPadding = false</code>), la flèche du shift reprend le gabarit de ses voisines et la touche entrée sa bonne taille."
+      },
+      {
+       "titre": "La signature <code>LuxKeyb™</code> de la barre d'espace s'efface",
+       "texte": ": graisse normale et plus d'ombre portée. Elle ne se vise pas, elle n'a pas à revendiquer le regard pendant la frappe."
+      },
+      {
+       "titre": "Le mot d'une suggestion tient dans sa puce",
+       "texte": ", à 18 sp au lieu de 14 — c'est ce texte-là qu'on lit pour décider d'accepter une proposition."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "♿",
+     "titre": "Retour de frappe et cibles",
+     "points": [
+      {
+       "titre": "Vibration et son au frappé",
+       "texte": "(<code>KeyFeedback</code>), qui obéissent aux réglages du téléphone plutôt que de les ignorer."
+      },
+      {
+       "titre": "Les puces de suggestion sont écartées de 12 dp",
+       "texte": "Il n'y avait que 3,6 dp (0,58 mm) entre la rangée luxembourgeoise et la rangée française, alors que l'imprécision d'un doigt est d'abord verticale : un demi-millimètre trop bas validait un mot français à la place du mot visé. Les 12 dp sont pris sur la hauteur des puces, pas sur celle des rangées — le clavier occupe la même place."
+      },
+      {
+       "titre": null,
+       "texte": "<code>ACCESSIBILITE.md</code> entre dans le dépôt : la feuille de route technique dont ces deux points sont les deux premiers."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚙️",
+     "titre": "Réglages du clavier",
+     "points": [
+      {
+       "titre": "Un écran de réglages dédié",
+       "texte": "(<code>KeyboardSettingsActivity</code>), derrière un engrenage dans le bandeau — la barre porte déjà sept onglets."
+      },
+      {
+       "titre": "Les libellés d'onglets s'affichent de nouveau",
+       "texte": "La barre réservait 140 px figés quand l'emoji seul en réclamait 165, ce qui chassait le texte hors de la vue : sept destinations n'étaient plus identifiées que par des emojis nus."
+      },
+      {
+       "titre": "<code>updateTabBar()</code> cesse de recopier <code>createTabBar()</code>",
+       "texte": "Les deux copies avaient divergé, si bien que l'engrenage et la correction de hauteur n'existaient que dans l'original et disparaissaient au premier changement d'onglet."
+      },
+      {
+       "titre": "Une carte explique comment revenir au clavier luxembourgeois",
+       "texte": "Le geste n'est pas symétrique : sur les autres claviers, l'appui long sur la barre d'espace ne change que leur propre langue, et c'est l'icône de clavier de la barre de navigation qui ramène ici. La FAQ et le message d'erreur du sélecteur disaient jusqu'ici le contraire."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔐",
+     "titre": "Signature et CI",
+     "points": [
+      {
+       "titre": "Les identifiants de signature passent par <code>android_keyboard/keystore.properties</code>",
+       "texte": "(ignoré par git, voir <code>keystore.properties.example</code>), avant <code>gradle.properties</code> puis les variables d'environnement. <code>gradle.properties</code> est versionné : il ne doit plus contenir la moindre valeur réelle. <code>.gitignore</code> bloque aussi <code>keystore.properties</code>."
+      },
+      {
+       "titre": "Les actions GitHub passent au runtime Node 24",
+       "texte": "— Node 20 est déprécié sur les runners, qui forçaient déjà l'exécution avec un avertissement par job."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🧹",
+     "titre": "Ce qui n'a pas été repris",
+     "points": [],
+     "texte": "Le site vitrine créole, les campagnes de captures multi-appareils, les visuels Play Store, le banc de test d'affichage <code>scripts/banc-clavier/</code> et le workflow <code>rapport-corpus.yml</code> (qui régénère un rapport sur le corpus créole) restent en amont.",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.10.0",
+   "date": "2026-08-15",
+   "intro": "Le clavier passe en QWERTZ et gagne une touche apostrophe, à la demande d'un utilisateur. Les choix de disposition sont arbitrés sur des comptages du corpus brut <code>POTOMITAN/luxembourgish-corpus</code> (158 documents, 204 366 caractères).",
+   "sections": [
+    {
+     "emoji": "",
+     "titre": "⌨️ La disposition passe en QWERTZ",
+     "points": [
+      {
+       "titre": "Rangées 1 à 3 en QWERTZ",
+       "texte": "— <code>q w e r t z u i o p</code> / <code>a s d f g h j k l é</code> / <code>⇧ y x c v b n m ⌫</code>. C'est la disposition des claviers physiques au Luxembourg (suisse-français) et celle que le luxembourgeois partage avec l'allemand ; l'AZERTY était un héritage créole. Les trois rangées de lettres font désormais exactement 10 unités de largeur, donc les touches s'alignent verticalement, ce que l'AZERTY (10 / 10 / 9) ne faisait pas."
+      },
+      {
+       "titre": "<code>é</code> ferme la rangée d'accueil",
+       "texte": ", à droite du <code>l</code>, là où le QWERTZ suisse la place. C'est la diacritique n°1 du luxembourgeois (2596 occurrences, 14 % des mots) : elle prend ainsi la touche la plus large disponible, 36 dp contre 30 en rangée 4. <code>ä</code> et <code>ë</code> gardent leur touche dédiée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "✨",
+     "titre": "Une touche apostrophe",
+     "points": [
+      {
+       "titre": "L'apostrophe a sa propre touche",
+       "texte": ", avec <code>’ “ ” \"</code> en appui long. L'élision est structurelle en luxembourgeois — <code>d'Land</code>, <code>s'Kanner</code>, <code>hunn's</code> — et le corpus la donne à 649 occurrences, plus que <code>ü</code> et 4,5 fois le trait d'union. Elle était auparavant reléguée en appui long sur <code>,</code>, et l'apostrophe typographique <code>’</code>, pourtant la forme la plus fréquente du corpus (469 contre 180), n'était atteignable nulle part."
+      },
+      {
+       "titre": "Les appuis longs suivent les fréquences réelles",
+       "texte": "et non l'habitude française : <code>?</code> (133) passe devant <code>!</code> (1) sous la touche <code>.</code>, et <code>:</code> (122) devant <code>;</code> (6) sous la touche <code>,</code>."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🎨",
+     "titre": "La touche shift se lit enfin",
+     "points": [
+      {
+       "titre": "Les trois états ont des icônes distinctes",
+       "texte": ": flèche creuse au repos, pleine quand la majuscule est armée, pleine avec barre de verrouillage en caps lock. L'état repos affichait jusqu'ici un chevron vers le bas — l'affordance système « masquer le clavier », visible au même moment dans la barre de navigation — et les états actif et verrouillé ne se distinguaient que par une rotation."
+      },
+      {
+       "titre": "Le fond gris de la majuscule armée s'affiche enfin",
+       "texte": "<code>keyBackground()</code> le prévoyait depuis toujours, mais <code>updateKeyboardDisplay()</code> ne restylait que les <code>Button</code> : la touche shift étant une <code>ImageButton</code>, son fond restait blanc dans les trois états."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Les libellés de touches ne se détruisent plus eux-mêmes",
+       "texte": "<code>getKeyFromButton()</code> réidentifiait chaque touche depuis son libellé affiché, en minuscules. Les touches dont le libellé diffère de la touche s'en trouvaient dégradées à la première mise à jour d'affichage : la barre d'espace passait de <code>Potomitan™</code> à <code>potomitan™</code>, et la touche de retour à l'alphabétique affichait <code>abc</code>, en basculant en <code>ABC</code> au gré du shift — un état sans rapport avec elle. Les boutons portent maintenant leur touche en <code>tag</code>, comme le faisaient déjà les <code>ImageButton</code>."
+      },
+      {
+       "titre": "L'apostrophe est bleue",
+       "texte": "comme le reste de la ponctuation, <code>keyBackground() </code> énumérant les touches une à une."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔤",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "La barre d'espace affiche <code>LuxKeyb™</code>",
+       "texte": "au lieu de <code>Potomitan™</code>. La mention de copyright de l'écran À Propos, elle, garde le nom de l'éditeur."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.9.5",
+   "date": "2026-08-15",
+   "intro": "Aucun changement visible dans le clavier : cette version durcit la chaîne de build et de publication.",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Technique",
+     "points": [
+      {
+       "titre": "Le refus de signer avec la clé debug ne casse plus les builds debug",
+       "texte": "Un <code>throw</code> posé dans le bloc <code>signingConfigs</code> s'exécutait à chaque invocation de Gradle, pas seulement pour les tâches de release : <code>assembleDebug</code>, <code>testDebugUnitTest</code> et la synchro Android Studio devenaient impossibles sur toute machine sans les secrets de keystore. Le refus est conservé, mais porté par les tâches qui produisent réellement l'artefact."
+      },
+      {
+       "titre": "La vérification de signature en CI vérifie enfin quelque chose",
+       "texte": "L'étape de l'AAB terminait par un pipeline dont le code de sortie était toujours nul, et <code>jarsigner -verify</code> sort en 0 sur une archive non signée : rien ne pouvait la faire échouer. Le job de l'APK, lui, n'avait aucune vérification. Les deux exigent maintenant une signature valide et refusent un certificat <code>CN=Android Debug</code>."
+      },
+      {
+       "titre": null,
+       "texte": "<code>docs/index.md</code> est mis à jour automatiquement avec la version publiée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  }
+ ]
+}

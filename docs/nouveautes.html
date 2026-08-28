@@ -3,45 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nouveautés en exclusivité : Klavyé Kréyòl Karukera</title>
-<meta name="description" content="Les dernières fonctionnalités du clavier créole guadeloupéen, déjà disponibles avant leur arrivée sur le Play Store.">
+<title>Nouveautés du Lëtzebuergesch Clavier</title>
+<meta name="description" content="Ce qui vient d'arriver dans le clavier luxembourgeois : les dernières versions publiées, ce qu'elles changent, et comment les installer dès maintenant.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
 *{box-sizing:border-box;}
-html{overflow-x:hidden;}
+html{overflow-x:clip;}
 body{
   margin:0; padding:0 18px 70px;
   background:var(--paper); color:var(--ink);
   font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
-  line-height:1.55;
-  overflow-x:hidden;
-  overflow-wrap:break-word;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
 }
-.wrap{max-width:680px;margin:0 auto;}
-header{padding:20px 0 10px;}
-nav.site{text-align:center;padding:10px 0;margin-top:6px;border-bottom:1px solid var(--line);font-size:14.5px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;}
-nav.site a{color:var(--sea);text-decoration:none;font-weight:600;}
-nav.site a:hover{text-decoration:underline;}
-nav.site strong{color:var(--ink);}
+.wrap{max-width:720px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
 h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
-.lead{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 8px;}
-h2{font-size:19px;font-weight:800;margin:0 0 4px;}
-section{margin-top:36px;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+section{margin-top:38px;}
+p{margin:0 0 12px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
-.status-card{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-soft);}
-.status-card strong{color:var(--ink);}
-.feature{display:flex;gap:14px;align-items:flex-start;}
-.feature .emoji{font-size:26px;line-height:1.3;}
-.feature h3{margin:0 0 4px;font-size:16.5px;}
-.feature p{margin:0 0 8px;color:var(--ink-soft);font-size:14.5px;}
-.feature .meta{font-size:12px;color:var(--ink-soft);}
-.feature .meta a{color:var(--sea);text-decoration:none;font-weight:600;}
-.feature .meta a:hover{text-decoration:underline;}
-.beta-frame{display:block;width:100%;height:440px;border:1px solid var(--line);border-radius:12px;margin-top:6px;background:var(--card);}
+
+/* Bandeau d'état : version, date, et d'où elle se télécharge */
+.status{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;font-size:13.5px;color:var(--ink-soft);}
+.status .v{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;font-variant-numeric:tabular-nums;}
+.status .sep{flex:1 1 0;min-width:0;}
+
+/* Une version = un bloc, la plus récente ouverte, les autres repliées */
+.version{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:14px;overflow:hidden;}
+.version > summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;}
+.version > summary::-webkit-details-marker{display:none;}
+.version > summary:hover{background:var(--stripe);}
+.version > summary:focus-visible{outline:2px solid var(--sea);outline-offset:-2px;}
+.version .num{font-size:17px;font-weight:800;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;}
+.version .date{font-size:13px;color:var(--ink-soft);}
+.version .count{font-size:12px;color:var(--ink-soft);margin-left:auto;}
+.version .chev{font-size:12px;color:var(--ink-soft);transition:transform .15s ease;}
+.version[open] .chev{transform:rotate(90deg);}
+.version .body{padding:0 18px 18px;}
+.version .intro{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px;}
+.badge-new{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);color:var(--ink);border-radius:999px;padding:2px 9px;}
+
+.grp{margin-top:18px;}
+.grp:first-child{margin-top:0;}
+.grp h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px;font-weight:700;}
+.grp h3 .e{font-size:18px;line-height:1;}
+.grp > p{font-size:14px;color:var(--ink-soft);margin:0 0 10px;}
+.pt{border-left:2px solid var(--line);padding:0 0 0 14px;margin:0 0 12px;}
+.pt:last-child{margin-bottom:0;}
+.pt h4{margin:0 0 3px;font-size:14.5px;font-weight:700;}
+.pt p{margin:0;font-size:14px;color:var(--ink-soft);}
+.pt code, .grp code, .intro code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);border-radius:4px;padding:1px 5px;}
+
+.table-scroll{overflow-x:auto;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;font-size:13.5px;}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;}
+td:not(:first-child){font-variant-numeric:tabular-nums;}
+tbody tr:hover{background:var(--stripe);}
+
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
 .btn{display:inline-block;text-decoration:none;text-align:center;cursor:pointer;font-size:14px;font-weight:700;border-radius:9px;padding:11px 16px;border:1.5px solid var(--sea);color:var(--sea);background:transparent;font-family:inherit;}
 .btn:hover{background:var(--sea-soft);}
@@ -49,10 +73,21 @@ section{margin-top:36px;}
 .btn.primary{background:var(--sea);color:var(--paper);border-color:var(--sea);}
 .btn.primary:hover{filter:brightness(1.08);}
 .note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
-footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
-footer a{color:var(--sea);}
-.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;line-height:1;cursor:pointer;font-family:inherit;}
-.theme-toggle:hover{border-color:var(--sea);}
+.note p:last-child{margin-bottom:0;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+a{color:var(--sea);}
+footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
+.loading{color:var(--ink-soft);font-size:14px;font-style:italic;}
+
+@media (max-width:520px){
+  body{padding:0 12px 60px;}
+  .card{padding:14px;}
+  .version > summary{padding:13px 14px;}
+  .version .body{padding:0 14px 14px;}
+  .version .count{margin-left:0;flex-basis:100%;}
+  .pt{padding-left:11px;}
+  th,td{padding:5px 7px;}
+}
 </style>
 </head>
 <body>
@@ -61,83 +96,179 @@ footer a{color:var(--sea);}
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
-  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <strong>🎁 Nouveautés</strong> ·
-  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
-  <a href="tract.html">🪧 Tract</a> ·
-  <a href="tract-eco.html">💧 Tract éco encre</a> ·
-  <a href="affiche.html">🖨️ Affiche</a> ·
-  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
-  <a href="triptyque.html">📖 Triptyque</a> ·
-  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
-  <a href="presskit.html">📰 Presse</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dnouveautes%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
-<header>
-  <p class="eyebrow">Klavyé Kréyòl Karukera · nouveautés</p>
-  <h1>À découvrir en exclusivité 🎁</h1>
-  <p class="lead">Le clavier évolue chaque semaine. Les fonctionnalités listées ici sont déjà dans la dernière version publiée sur GitHub, en attendant leur arrivée sur le Play Store.</p>
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · nouveautés</p>
+  <h1>Ce qui vient d'arriver 🎁</h1>
+  <p class="lead">
+    Le clavier évolue vite. Voici ce que les dernières versions ont changé,
+    dans l'ordre, et comment les installer dès maintenant — chaque version est
+    téléchargeable le jour où elle sort.
+  </p>
 </header>
 
-<div class="card status-card">
-  <span>Version actuelle sur le Play Store : <strong id="ef-prod">…</strong></span>
-  <span>Dernière version disponible : <strong id="ef-latest">…</strong></span>
-  <span id="ef-asof"></span>
+<div class="card">
+  <div class="status">
+    <span>Dernière version&nbsp; <span class="v" id="nv-version">…</span></span>
+    <span id="nv-date"></span>
+    <span class="sep"></span>
+    <span id="nv-maj"></span>
+  </div>
+  <div class="actions">
+    <a href="https://github.com/famibelle/LuxKeyb/releases/latest" class="btn primary">📲 Télécharger la dernière version</a>
+    <a href="guide.html" class="btn">📘 Comment l'installer</a>
+  </div>
 </div>
 
-<section id="ef-list">
-  <div class="card"><p style="color:var(--ink-soft);">Chargement des nouveautés…</p></div>
+<section id="nv-liste">
+  <div class="card"><p class="loading">Chargement des nouveautés…</p></div>
 </section>
 
 <section>
-  <h2>Comment les essayer maintenant ?</h2>
-  <p class="lead" style="font-size:14.5px;">Ces fonctionnalités sont déjà dans l'application, mais la mise à jour du Play Store demande une validation qui prend un peu de temps. En attendant, deux options :</p>
-  <iframe src="beta_form_mini.html" title="🧪 Rejoindre les bêta-testeurs" class="beta-frame" loading="lazy"></iframe>
-  <div class="actions">
-    <a href="https://github.com/famibelle/KreyolKeyb/releases" class="btn">🚀 Télécharger l'APK (GitHub)</a>
+  <h2>Où trouver l'application</h2>
+  <p class="muted">
+    Le Lëtzebuergesch Clavier n'est pas encore sur le Play&nbsp;Store. Il se
+    télécharge depuis les <a href="https://github.com/famibelle/LuxKeyb/releases">releases GitHub</a>,
+    où chaque version est publiée avec son APK signé, dès qu'elle est prête.
+    Le <a href="guide.html">guide d'installation</a> explique la manipulation,
+    qui prend une minute.
+  </p>
+  <div class="note">
+    <p>
+      💡 L'APK publié est construit par l'intégration continue à partir du code
+      de ce dépôt, et signé avec la clé de production. Rien d'autre n'y est
+      ajouté : pas de publicité, pas de traceur, aucune donnée qui sorte de
+      l'appareil. Vous pouvez le vérifier — <a href="https://github.com/famibelle/LuxKeyb">tout le code est ouvert</a>.
+    </p>
   </div>
-  <div class="note">💡 Le programme bêta passe par le Play Store officiel : pas besoin d'autoriser les « sources inconnues ». L'APK GitHub, lui, est disponible immédiatement mais s'installe manuellement. Dans les deux cas, même code que celui envoyé à Google Play : zéro collecte de données.</div>
+  <div class="actions">
+    <a href="simulateur.html" class="btn">⌨️ Essayer d'abord dans le navigateur</a>
+    <a href="feedbacks_form.html" class="btn">💬 Donner son avis</a>
+  </div>
 </section>
 
-<footer>
-  <p>Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
-  Code source ouvert sur <a href="https://github.com/famibelle/KreyolKeyb">GitHub</a> · Journal complet des versions : <a href="https://github.com/famibelle/KreyolKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG.md</a></p>
-  <p>Potomitan™, Teknoloji pou tout moun.</p>
+<footer class="page">
+  <p>
+    Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
+    Journal complet des versions :
+    <a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG.md</a>
+  </p>
+  <p>Potomitan™ · Lëtzebuergesch Clavier</p>
 </footer>
 
 </div>
 
 <script>
-fetch('stats/exclusive_features.json').then(function(r){ return r.json(); }).then(function(d){
-  document.getElementById('ef-prod').textContent = 'v' + d.production_version;
-  document.getElementById('ef-latest').textContent = 'v' + d.latest_version;
-  document.getElementById('ef-asof').textContent = 'MAJ ' + d.as_of;
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
 
-  var list = document.getElementById('ef-list');
-  if (!d.features || !d.features.length) {
-    list.innerHTML = '<div class="card"><p style="color:var(--ink-soft);">Rien de nouveau à signaler pour le moment : le Play Store est à jour !</p></div>';
-    return;
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
   }
-  list.innerHTML = d.features.map(function(f){
-    return '<div class="card feature">' +
-      '<span class="emoji">' + f.emoji + '</span>' +
-      '<div>' +
-        '<h3>' + f.title + '</h3>' +
-        '<p>' + f.description + '</p>' +
-        '<div class="meta">Depuis v' + f.version + (f.release_url ? ' · <a href="' + f.release_url + '" target="_blank" rel="noopener">voir la release →</a>' : '') + '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-}).catch(function(){
-  document.getElementById('ef-list').innerHTML = '<div class="card"><p style="color:var(--ink-soft);">Impossible de charger les nouveautés pour le moment.</p></div>';
-});
+
+  function dateLisible(iso) {
+    return new Date(iso + 'T00:00:00').toLocaleDateString('fr-FR',
+      { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function rendreTableau(t) {
+    var wrap = el('div', 'table-scroll');
+    var table = el('table');
+    var thead = el('thead');
+    var tr = el('tr');
+    t.entetes.forEach(function (h) { tr.appendChild(el('th', null, h)); });
+    thead.appendChild(tr);
+    var tbody = el('tbody');
+    t.lignes.forEach(function (l) {
+      var r = el('tr');
+      l.forEach(function (c) { r.appendChild(el('td', null, c)); });
+      tbody.appendChild(r);
+    });
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    return wrap;
+  }
+
+  function rendreVersion(v, premiere) {
+    var d = el('details', 'version');
+    if (premiere) d.open = true;
+
+    var nb = v.sections.reduce(function (n, s) { return n + s.points.length; }, 0);
+    var s = el('summary');
+    s.appendChild(el('span', 'chev', '▸'));
+    s.appendChild(el('span', 'num', 'v' + v.version));
+    s.appendChild(el('span', 'date', dateLisible(v.date)));
+    if (premiere) s.appendChild(el('span', 'badge-new', 'la plus récente'));
+    s.appendChild(el('span', 'count',
+      nb + (nb > 1 ? ' changements' : ' changement')));
+    d.appendChild(s);
+
+    var body = el('div', 'body');
+    if (v.intro) body.appendChild(el('p', 'intro', v.intro));
+
+    v.sections.forEach(function (sec) {
+      var g = el('div', 'grp');
+      var h = el('h3');
+      if (sec.emoji) h.appendChild(el('span', 'e', sec.emoji));
+      h.appendChild(el('span', null, sec.titre));
+      g.appendChild(h);
+      if (sec.tableau) g.appendChild(rendreTableau(sec.tableau));
+      if (sec.texte) g.appendChild(el('p', null, sec.texte));
+      sec.points.forEach(function (p) {
+        var pt = el('div', 'pt');
+        if (p.titre) pt.appendChild(el('h4', null, p.titre));
+        if (p.texte) pt.appendChild(el('p', null, p.texte));
+        g.appendChild(pt);
+      });
+      body.appendChild(g);
+    });
+
+    d.appendChild(body);
+    return d;
+  }
+
+  fetch('stats/nouveautes.json')
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
+    .then(function (d) {
+      $('nv-version').textContent = 'v' + d.derniere_version;
+      $('nv-date').textContent = 'publiée le ' + dateLisible(d.derniere_date);
+      $('nv-maj').textContent = 'Page à jour au ' + dateLisible(d.genere_le);
+
+      var liste = $('nv-liste');
+      liste.innerHTML = '';
+      d.versions.forEach(function (v, i) {
+        liste.appendChild(rendreVersion(v, i === 0));
+      });
+
+      var p = el('p', 'muted');
+      p.innerHTML = 'Les versions plus anciennes sont dans le ' +
+        '<a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">' +
+        'journal complet</a>.';
+      liste.appendChild(p);
+    })
+    .catch(function () {
+      $('nv-liste').innerHTML =
+        '<div class="card"><p class="loading">Nouveautés indisponibles — ' +
+        'consultez le <a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG</a>.</p></div>';
+    });
+})();
 </script>
 </body>
 </html>
