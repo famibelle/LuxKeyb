@@ -34,6 +34,10 @@ import com.example.kreyolkeyboard.gamification.CreoleDictionaryWithUsage
 import com.example.kreyolkeyboard.gamification.LuxLevels
 import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import com.example.kreyolkeyboard.gamification.WordCommitListener
+import com.example.kreyolkeyboard.stt.MicPermissionActivity
+import com.example.kreyolkeyboard.stt.SttSession
+import android.widget.ImageView
+import android.view.Gravity
 
 /**
  * Service principal du clavier créole refactorisé
@@ -96,6 +100,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // mot. C'est elle qui borne la taille de police réellement affichable :
         // cf. fitTextToChipHeight().
         private const val SUGGESTION_CHIP_PADDING_V_DP = 6
+
+        /**
+         * Marge intérieure du bouton micro. Le bouton est carré et fait la
+         * hauteur d'une rangée de suggestions ; ce retrait ramène le glyphe à
+         * une taille optique comparable à celle du texte des puces, tout en
+         * laissant la zone tactile occuper le carré entier.
+         */
+        private const val MIC_ICON_PADDING_DP = 10
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -164,6 +176,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var frenchRow: LinearLayout? = null
     private var frenchRowScroll: HorizontalScrollView? = null
     private var mainKeyboardView: View? = null
+
+    /**
+     * Dictée vocale. Construite paresseusement au premier appui sur le micro :
+     * whisper alloue ~165 Mo de tampons de calcul, qu'il serait absurde de
+     * réserver dans le processus IME pour un utilisateur qui ne dicte jamais.
+     */
+    private var sttSession: SttSession? = null
+    private var micButton: ImageView? = null
+
+    /**
+     * Texte en composition posé par la dictée. Distinct du mot courant
+     * d'InputProcessor : celui-ci suit la frappe au clavier, celui-là est
+     * remplacé en bloc à chaque hypothèse de whisper.
+     */
+    private var dictationComposing = false
 
     /**
      * Palette avec laquelle la vue d'entrée courante a été construite.
@@ -491,7 +518,28 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             )
         }
         luxScroll.addView(luxRow)
-        suggestionsContainer.addView(luxScroll)
+
+        // Le micro occupe le bord droit de la première rangée de suggestions.
+        // C'est la seule place disponible sans rien sacrifier : la rangée du bas
+        // pèse déjà exactement 12 unités de largeur, et l'appui long sur la barre
+        // d'espace est pris par le sélecteur de claviers du système.
+        val luxRowWithMic = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                rowHeightPx
+            )
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        // Largeur 0 + poids 1 : les suggestions prennent toute la place que le
+        // micro ne consomme pas, et cessent donc de passer sous lui quand elles
+        // sont longues.
+        luxScroll.layoutParams = LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+        )
+        luxRowWithMic.addView(luxScroll)
+        luxRowWithMic.addView(createMicButton(rowHeightPx))
+        suggestionsContainer.addView(luxRowWithMic)
 
         // En paysage la seconde rangée n'est pas construite du tout : les suggestions
         // françaises rejoignent la rangée luxembourgeoise, qui défile horizontalement et où
@@ -539,6 +587,152 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         suggestionsView = luxRow
 
         parentLayout.addView(suggestionsContainer)
+    }
+
+    // =========================================================================
+    // DICTÉE VOCALE
+    //
+    // Modèle whisper tiny affiné pour le luxembourgeois (unilux/LuxASR),
+    // embarqué dans l'APK et exécuté localement : aucun octet d'audio ne quitte
+    // l'appareil, ce qui laisse la politique de confidentialité inchangée.
+    // =========================================================================
+
+    /**
+     * Bouton micro, carré, calé sur la hauteur d'une rangée de suggestions pour
+     * ne pas rallonger le clavier d'un pixel.
+     */
+    private fun createMicButton(rowHeightPx: Int): View {
+        val button = ImageView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(rowHeightPx, rowHeightPx)
+            setImageResource(R.drawable.ic_mic)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            val pad = dpToPx(MIC_ICON_PADDING_DP)
+            setPadding(pad, pad, pad, pad)
+            contentDescription = getString(R.string.stt_mic_description)
+            isClickable = true
+            isFocusable = true
+            setOnClickListener { onMicTapped() }
+        }
+        micButton = button
+        applyMicTint(listening = false)
+        return button
+    }
+
+    /**
+     * Le micro n'a que deux états visuels, et ils doivent se distinguer sans
+     * couleur : l'opacité change en même temps que la teinte, pour rester
+     * lisible en cas de daltonisme comme sur un écran délavé au soleil.
+     */
+    private fun applyMicTint(listening: Boolean) {
+        val palette = paletteDeLaVue ?: KeyboardTheme.palette()
+        micButton?.apply {
+            setColorFilter(if (listening) palette.accent else palette.encreAttenuee)
+            alpha = if (listening) 1.0f else 0.65f
+        }
+    }
+
+    private fun onMicTapped() {
+        val session = sttSession
+        if (session != null && session.isActive) {
+            // Second appui : l'utilisateur a fini de parler, on fige.
+            session.stop()
+            return
+        }
+        if (session != null && session.isBusy) {
+            // Finalisation en cours : le micro est déjà fermé mais la dernière
+            // passe tourne encore. On ignore l'appui plutôt que d'ouvrir une
+            // seconde dictée par-dessus, dont le texte se mélangerait au sien.
+            return
+        }
+
+        // Un mot de passe dicté finirait dans le presse-papier vocal du
+        // système chez d'autres claviers ; ici il ne sortirait pas de
+        // l'appareil, mais la règle du projet est qu'un champ sensible ne
+        // déclenche aucun traitement du tout.
+        if (isSensitiveField()) {
+            showDictationMessage(R.string.stt_not_in_password)
+            return
+        }
+
+        if (!MicPermissionActivity.hasPermission(this)) {
+            MicPermissionActivity.request(this) { granted ->
+                if (granted) startDictation()
+                else showDictationMessage(R.string.stt_permission_denied)
+            }
+            return
+        }
+
+        startDictation()
+    }
+
+    private fun startDictation() {
+        val session = sttSession ?: SttSession(this, dictationListener).also { sttSession = it }
+        dictationComposing = false
+        session.start()
+    }
+
+    private val dictationListener = object : SttSession.Listener {
+
+        /**
+         * Hypothèse intermédiaire : posée en texte de composition, donc
+         * soulignée et remplaçable en bloc. C'est exactement la sémantique dont
+         * whisper a besoin — chaque passe rend une phrase entière qui annule et
+         * remplace la précédente, sans qu'il faille recoller des fragments.
+         */
+        override fun onPartial(text: String) {
+            val ic = currentInputConnection ?: return
+            dictationComposing = true
+            ic.setComposingText(text, 1)
+        }
+
+        override fun onFinal(text: String) {
+            val ic = currentInputConnection ?: return
+            if (text.isNotEmpty()) {
+                ic.setComposingText(text, 1)
+            }
+            // Si la passe finale ne rend rien alors que des hypothèses avaient
+            // été affichées, on garde la dernière plutôt que d'effacer sous les
+            // yeux de l'utilisateur un texte qu'il a vu se construire.
+            ic.finishComposingText()
+            dictationComposing = false
+        }
+
+        override fun onStateChanged(state: SttSession.State) {
+            applyMicTint(listening = state == SttSession.State.LISTENING)
+        }
+
+        override fun onError(error: SttSession.Error) {
+            dictationComposing = false
+            showDictationMessage(
+                when (error) {
+                    SttSession.Error.MIC_UNAVAILABLE -> R.string.stt_mic_unavailable
+                    SttSession.Error.MODEL_UNAVAILABLE -> R.string.stt_model_unavailable
+                }
+            )
+        }
+    }
+
+    private fun showDictationMessage(resId: Int) {
+        applyMicTint(listening = false)
+        Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Coupe la dictée et abandonne le texte en composition. Appelée dès que le
+     * clavier change de champ ou disparaît : laisser tourner le micro derrière
+     * un clavier fermé serait à la fois un bug de batterie et un problème de
+     * confiance.
+     */
+    private fun cancelDictation() {
+        val session = sttSession ?: return
+        if (!session.isActive && !dictationComposing) return
+
+        session.cancel()
+        if (dictationComposing) {
+            currentInputConnection?.finishComposingText()
+            dictationComposing = false
+        }
+        applyMicTint(listening = false)
     }
 
     /** Hauteur d'une rangée de suggestions, réduite en paysage. */
@@ -1226,6 +1420,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         accentHandler.dismissAccentPopup()
         inputProcessor.resetState()
+
+        // Le champ de saisie change : la dictée en cours n'a plus de
+        // destinataire. On rend aussi les ~165 Mo de tampons de whisper, que
+        // rien ne justifie de garder pendant que l'utilisateur est ailleurs —
+        // c'est précisément ce qui ferait du processus IME une cible du tueur
+        // de mémoire.
+        cancelDictation()
+        sttSession?.releaseModel()
     }
     
     /**
@@ -1312,6 +1514,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             
             // Arrêter la suppression par mots si active
             stopWordDeletion()
+
+            // Dictée : coupe le micro, libère le contexte whisper et arrête son
+            // thread de travail.
+            sttSession?.shutdown()
+            sttSession = null
             
             // Nettoyage des composants dans l'ordre inverse de création
             accentHandler.cleanup()
@@ -1327,6 +1534,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             luxRow = null
             frenchRowScroll = null
             mainKeyboardView = null
+            micButton = null
             
             Log.d(TAG, "Nettoyage terminé avec succès - Compatible A21s")
             

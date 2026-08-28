@@ -119,3 +119,19 @@
 # Réduire la taille du fichier
 -repackageclasses ''
 -allowaccessmodification
+# =====================================
+# DICTÉE VOCALE (JNI whisper.cpp)
+# =====================================
+
+# Les symboles natifs sont nommés d'après le paquet et la classe
+# (Java_com_example_kreyolkeyboard_stt_SttEngine_nativeTranscribe). Le
+# -repackageclasses '' plus haut déplace toutes les classes à la racine, ce qui
+# suffirait à faire échouer la résolution au premier appel — d'où ce keep
+# explicite plutôt que la seule règle keepclasseswithmembernames par défaut.
+-keep class com.example.kreyolkeyboard.stt.SttEngine {
+    native <methods>;
+    <init>(...);
+}
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}

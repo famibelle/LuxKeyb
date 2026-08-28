@@ -9,6 +9,37 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [Non publié] — dictée vocale
+
+Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
+`feat/speech-to-text-lb`, pas encore dans une version publiée.
+
+### 🎙️ Dictée vocale embarquée
+
+- Nouveau bouton micro, au bord droit de la barre de suggestions. Un appui
+  démarre la dictée, un second la fige ; elle s'arrête aussi seule après 1,6 s
+  de silence ou 30 s de parole.
+- Le texte s'écrit **au fil de la parole** : toutes les 900 ms, une hypothèse
+  remplace la précédente en texte de composition, jusqu'à la transcription
+  définitive.
+- **Rien ne quitte le téléphone.** Le modèle est embarqué dans l'application et
+  la reconnaissance tourne localement. Aucune permission réseau n'a été ajoutée,
+  et la politique de confidentialité est inchangée.
+- La dictée est refusée dans les champs de mot de passe, comme le reste des
+  traitements du clavier.
+- Modèle : `unilux/whisper-tiny-v1-luxembourgish`, projet **LuxASR** de
+  l'Université du Luxembourg, sous licence open-mdw. Quantifié en q5_1, il pèse
+  31 Mo — l'application passe donc de 9 à 41 Mo. Le fichier n'est pas versionné :
+  la CI le régénère à chaque build, comme le dictionnaire.
+
+### ⚠️ Ce qui n'est pas encore vérifié
+
+- La **précision en luxembourgeois n'est pas mesurée**. Aucun WER n'est publié
+  pour ce modèle, et LuxASR utilise un modèle bien plus gros, non diffusé, pour
+  son propre service. Attendez-vous à des erreurs.
+- La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
+  est trop lent pour être représentatif.
+
 ## [10.16.0] - 2026-08-27
 
 Changement de corpus. Le dictionnaire et les prédictions sont désormais
