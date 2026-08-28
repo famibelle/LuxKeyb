@@ -130,6 +130,22 @@ android {
                 legacyCompat: "true"
             ]
         }
+        // Canal Labs : identique à release — même signature, donc réinstallable
+        // par-dessus une version stable — à ceci près que src/labs/res/ y
+        // substitue une icône de lancement portant la mention « LABS ». Les
+        // deux builds partagent l'applicationId et ne peuvent pas cohabiter sur
+        // le téléphone : le bandeau est le seul moyen pour un testeur de savoir
+        // lequel des deux il a sous les yeux.
+        //
+        // Un type de build plutôt qu'une variante de produit : celles-ci
+        // multiplieraient les tâches (assembleStableRelease, assembleLabsRelease…)
+        // et casseraient build-apk.yml, qui n'a rien à voir avec ce canal.
+        labs {
+            initWith release
+            // Les dépendances AAR ne publient que debug et release : sans ce
+            // repli, la résolution échoue sur un type de build qu'elles ignorent.
+            matchingFallbacks = ['release']
+        }
         debug {
             // Configuration pour le build de debug
             debuggable = true
@@ -202,7 +218,8 @@ androidComponents {
 // packageReleaseResources, qui fusionne des ressources et ne signe rien, se
 // ferait attraper au passage.
 tasks.matching {
-    it.name in ['validateSigningRelease', 'packageRelease', 'signReleaseBundle', 'packageReleaseBundle']
+    it.name in ['validateSigningRelease', 'packageRelease', 'signReleaseBundle', 'packageReleaseBundle',
+                'validateSigningLabs', 'packageLabs', 'signLabsBundle', 'packageLabsBundle']
 }.configureEach {
     doFirst {
         if (!project.ext.releaseSigningReady) {
@@ -236,7 +253,7 @@ if (!sttModel.exists()) {
 }
 
 tasks.matching {
-    it.name in ['packageRelease', 'packageReleaseBundle']
+    it.name in ['packageRelease', 'packageReleaseBundle', 'packageLabs', 'packageLabsBundle']
 }.configureEach {
     doFirst {
         if (!sttModel.exists()) {

@@ -196,14 +196,19 @@ jobs:
         keytool -list -v -keystore "$KEYSTORE_FILE" -alias "$KEY_ALIAS" \
           -storepass "$STORE_PASSWORD" | grep "SHA1:"
 
-    - name: 🚀 Construire l'APK release
-      run: cd android_keyboard && gradle assembleRelease --no-daemon
+    - name: 🚀 Construire l'APK Labs
+      # assembleLabs et non assembleRelease : le type de build `labs` est
+      # identique à release — même signature, donc réinstallable par-dessus une
+      # version stable — mais substitue une icône de lancement portant la
+      # mention « LABS ». Les deux builds partagent l'applicationId et ne
+      # peuvent pas cohabiter : le bandeau est le seul repère visuel du testeur.
+      run: cd android_keyboard && gradle assembleLabs --no-daemon
 
     - name: ✅ La dictée est-elle réellement dans l'APK ?
       run: |
         set -euo pipefail
         cd android_keyboard
-        APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+        APK=$(ls app/build/outputs/apk/labs/*.apk | head -1)
         echo "📦 $APK"
 
         # Tout l'intérêt de ce canal est de livrer la dictée : on vérifie ce
@@ -257,7 +262,7 @@ jobs:
         SHA=$(git rev-parse --short HEAD)
         NAME="LetzebuergeschClavier-Labs.apk"
         mkdir -p ../labs-out
-        cp "$(ls app/build/outputs/apk/release/*.apk | head -1)" "../labs-out/$NAME"
+        cp "$(ls app/build/outputs/apk/labs/*.apk | head -1)" "../labs-out/$NAME"
         # Copie horodatée à côté de l'alias fixe : l'alias sert au lien stable,
         # celle-ci permet de dire exactement quel build un testeur a installé.
         cp "../labs-out/$NAME" "../labs-out/LetzebuergeschClavier-Labs-${VERSION}-${SHA}.apk"
