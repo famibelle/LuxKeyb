@@ -1,0 +1,348 @@
+name: 🧪 Labs — build expérimental installable
+
+# Canal d'essai, séparé de build-apk.yml.
+#
+# build-apk.yml ne se déclenche que sur `main` et les tags `v*` : une branche de
+# fonctionnalité comme feat/speech-to-text-lb n'y produit donc aucun APK, et il
+# n'existait aucun moyen de faire essayer la dictée vocale à quelqu'un sans lui
+# demander de compiler le projet — ce qui suppose le NDK, le JDK 17 et la
+# conversion du modèle whisper.
+#
+# Ce workflow publie une préversion GitHub sous un tag fixe, `labs`, pour que
+# l'adresse de téléchargement ne change jamais :
+#
+#   https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk
+#
+# La préversion est explicitement `prerelease` et `make_latest: false` : sans
+# quoi elle deviendrait la « latest » du dépôt et le bouton de téléchargement du
+# site (docs/simulateur.html pointe sur releases/latest/download/…) servirait un
+# build de laboratoire aux visiteurs ordinaires.
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - 'feat/**'
+      - 'labs/**'
+    paths:
+      - 'android_keyboard/**'
+      - 'Dictionnaires/**'
+      - 'stt/**'
+      - '.github/workflows/labs.yml'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publier la préversion « labs » (sinon, artefact du run seulement)"
+        type: boolean
+        default: true
+
+concurrency:
+  # Un seul build Labs à la fois par branche : deux runs concurrents se
+  # disputeraient le tag `labs` et le dernier à finir gagnerait, pas le dernier
+  # commit poussé.
+  group: labs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  dictionary:
+    name: 🔤 Dictionnaire
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Régénérer le dictionnaire
+      run: |
+        cd Dictionnaires
+        python -m pip install --upgrade pip
+        pip install datasets huggingface_hub
+        python LuxembourgishComplet.py --strict
+
+    - name: ✅ Garde-fous de volumétrie
+      run: |
+        set -euo pipefail
+        A=android_keyboard/app/src/main/assets
+        # Mêmes invariants que build-apk.yml : un dictionnaire au mauvais type
+        # JSON reste un JSON valide et désactive silencieusement toutes les
+        # suggestions, et des n-grammes sans clés à deux mots rendent la
+        # prédiction contextuelle inerte sans rien casser de visible.
+        jq -e 'type == "array"' "$A/luxemburgish_dict.json" > /dev/null
+        DICT=$(jq 'length' "$A/luxemburgish_dict.json")
+        NG=$(jq 'keys | length' "$A/luxemburgish_ngrams.json")
+        TWO=$(jq '[keys[] | select(test(" "))] | length' "$A/luxemburgish_ngrams.json")
+        echo "📊 $DICT mots, $NG contextes (dont $TWO à deux mots)"
+        [ "$DICT" -ge 20000 ] || { echo "::error::dictionnaire trop petit ($DICT)"; exit 1; }
+        [ "$NG" -ge 15000 ] || { echo "::error::n-grammes trop peu nombreux ($NG)"; exit 1; }
+        [ "$TWO" -gt 0 ] || { echo "::error::aucune clé de contexte à deux mots"; exit 1; }
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: labs-dictionary
+        path: |
+          android_keyboard/app/src/main/assets/luxemburgish_dict.json
+          android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
+        retention-days: 1
+
+  # ---------------------------------------------------------------------------
+  stt-model:
+    name: 🎙️ Modèle de dictée
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Chaîne de conversion
+      run: |
+        python -m pip install --upgrade pip
+        # Index CPU explicite : la roue par défaut tire ~2,5 Go de paquets CUDA
+        # inutiles sur un runner sans GPU.
+        pip install --index-url https://download.pytorch.org/whl/cpu torch
+        pip install transformers numpy huggingface_hub
+
+    - name: 🔄 Convertir et quantifier
+      run: python stt/convert_model.py --output android_keyboard/app/src/main/assets
+
+    - name: ✅ Valider le modèle
+      run: |
+        set -euo pipefail
+        M=android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
+        [ -f "$M" ] || { echo "::error::conversion ratée, $M absent"; exit 1; }
+        SIZE=$(stat -c%s "$M"); echo "📦 $(( SIZE / 1000000 )) Mo"
+        [ "$SIZE" -ge 25000000 ] || { echo "::error::modèle tronqué ($SIZE octets)"; exit 1; }
+        # En-tête ggml (0x67676d6c en little-endian) : écarte une page d'erreur
+        # HTML de Hugging Face empaquetée à la place du modèle.
+        head -c 4 "$M" | grep -q 'lmgg' || { echo "::error::en-tête ggml absent"; exit 1; }
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: labs-stt-model
+        path: android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
+        retention-days: 1
+
+  # ---------------------------------------------------------------------------
+  build:
+    name: 🏗️ APK Labs
+    runs-on: ubuntu-latest
+    needs: [dictionary, stt-model]
+
+    env:
+      KEYSTORE_FILE: potomitan-keystore.jks
+      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    outputs:
+      apk-name: ${{ steps.rename.outputs.apk-name }}
+      version: ${{ steps.rename.outputs.version }}
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        # whisper.cpp est un sous-module : sans lui la configuration CMake de la
+        # dictée échoue et emporte tout le build Gradle.
+        submodules: recursive
+
+    - uses: actions/setup-java@v5
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - uses: gradle/actions/setup-gradle@v5
+      with:
+        gradle-version: 9.6.1
+
+    - name: 📥 Dictionnaire régénéré
+      uses: actions/download-artifact@v7
+      with:
+        name: labs-dictionary
+        path: android_keyboard/app/src/main/assets/
+
+    - name: 📥 Modèle de dictée régénéré
+      uses: actions/download-artifact@v7
+      with:
+        name: labs-stt-model
+        path: android_keyboard/app/src/main/assets/
+
+    - name: 🧪 Tests unitaires
+      run: cd android_keyboard && gradle testDebugUnitTest --no-daemon
+
+    - name: 🔐 Clé de signature
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      run: |
+        set -euo pipefail
+        cd android_keyboard
+        if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${STORE_PASSWORD:-}" ] \
+           || [ -z "${KEY_ALIAS:-}" ] || [ -z "${KEY_PASSWORD:-}" ]; then
+          # Pas de repli sur une clé debug, contrairement aux jobs de
+          # build-apk.yml : un APK Labs signé debug ne peut pas se réinstaller
+          # par-dessus une version stable, et le testeur ne découvrirait le
+          # problème qu'au moment de l'installation.
+          echo "::error::Secrets de signature absents. Labs exige la clé de production."
+          exit 1
+        fi
+        echo "$KEYSTORE_BASE64" | base64 -d > "$KEYSTORE_FILE"
+        keytool -list -v -keystore "$KEYSTORE_FILE" -alias "$KEY_ALIAS" \
+          -storepass "$STORE_PASSWORD" | grep "SHA1:"
+
+    - name: 🚀 Construire l'APK release
+      run: cd android_keyboard && gradle assembleRelease --no-daemon
+
+    - name: ✅ La dictée est-elle réellement dans l'APK ?
+      run: |
+        set -euo pipefail
+        cd android_keyboard
+        APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+        echo "📦 $APK"
+
+        # Tout l'intérêt de ce canal est de livrer la dictée : on vérifie ce
+        # qu'on annonce plutôt que de l'espérer. Chacun de ces trois points
+        # peut manquer sans faire échouer le build.
+
+        # 1. La bibliothèque native, sur les deux ABI de production.
+        for ABI in arm64-v8a armeabi-v7a; do
+          unzip -l "$APK" | grep -q "lib/$ABI/libluxstt.so" \
+            || { echo "::error::libluxstt.so absent pour $ABI"; exit 1; }
+        done
+
+        # 2. Le modèle, et surtout NON COMPRESSÉ : c'est ce qui permet à
+        #    AAsset_getBuffer() de le mmap depuis l'APK au lieu d'en inflater
+        #    31 Mo en RAM à chaque ouverture du micro.
+        unzip -v "$APK" | grep 'ggml-lb-tiny-q5_1.bin' | grep -q 'Stored' \
+          || { echo "::error::modèle absent ou compressé dans l'APK"; exit 1; }
+
+        # 3. La signature de production (apksigner comprend v2/v3, pas jarsigner).
+        APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
+        "$APKSIGNER" verify --print-certs "$APK" | grep -q "Signer #1" \
+          || { echo "::error::APK non signé"; exit 1; }
+
+        echo "✅ libluxstt.so (2 ABI), modèle mmap-able, APK signé"
+
+    - name: 🏷️ Nommer l'artefact
+      id: rename
+      run: |
+        set -euo pipefail
+        cd android_keyboard
+        VERSION=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle)
+        SHA=$(git rev-parse --short HEAD)
+        NAME="LetzebuergeschClavier-Labs.apk"
+        mkdir -p ../labs-out
+        cp "$(ls app/build/outputs/apk/release/*.apk | head -1)" "../labs-out/$NAME"
+        # Copie horodatée à côté de l'alias fixe : l'alias sert au lien stable,
+        # celle-ci permet de dire exactement quel build un testeur a installé.
+        cp "../labs-out/$NAME" "../labs-out/LetzebuergeschClavier-Labs-${VERSION}-${SHA}.apk"
+        ls -lh ../labs-out/
+        echo "apk-name=$NAME" >> $GITHUB_OUTPUT
+        echo "version=$VERSION+$SHA" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: labs-apk
+        path: labs-out/
+        retention-days: 30
+
+  # ---------------------------------------------------------------------------
+  publish:
+    name: 🚀 Publier la préversion Labs
+    runs-on: ubuntu-latest
+    needs: build
+    # La branche vitrine du canal Labs est nommée explicitement : sans cela,
+    # toute branche feat/** s'approprierait le tag `labs` au premier push et
+    # écraserait la préversion d'une autre expérimentation en cours. Les autres
+    # branches passent quand même par les jobs ci-dessus — tests, garde-fous,
+    # APK en artefact du run — elles ne publient simplement pas.
+    # Un workflow_dispatch reste maître : il publie depuis la branche choisie.
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.publish)
+      || (github.event_name == 'push' && github.ref_name == 'feat/speech-to-text-lb')
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: actions/download-artifact@v7
+      with:
+        name: labs-apk
+        path: labs-out/
+
+    - name: 📝 Notes de version
+      run: |
+        cat > /tmp/labs-notes.md <<'NOTES'
+        # 🧪 Labs — build expérimental
+
+        Version de test du **Lëtzebuergesch Clavier**, construite automatiquement
+        à chaque commit de la branche en cours d'expérimentation. Ce n'est pas
+        une version stable et elle n'apparaît pas dans « Releases › Latest ».
+
+        ## Ce qu'elle contient de plus
+
+        **La dictée vocale luxembourgeoise**, entièrement hors ligne. Le modèle
+        de reconnaissance (whisper affiné pour le luxembourgeois par le projet
+        LuxASR de l'Université du Luxembourg) est embarqué dans l'application :
+        **aucun son ne quitte le téléphone**, et l'application ne demande aucune
+        permission réseau.
+
+        Le micro se trouve à droite de la barre de suggestions. Un appui démarre
+        la dictée, un second la fige ; elle s'arrête aussi seule après un silence.
+
+        ## À savoir avant d'installer
+
+        - **La qualité de la reconnaissance n'est pas mesurée.** Le modèle
+          embarqué est le plus petit de sa famille et son taux d'erreur n'est
+          publié nulle part. Attendez-vous à des fautes, surtout en milieu bruyant.
+        - **L'application pèse ~41 Mo** au lieu de 9 : le modèle en occupe 31 à
+          lui seul.
+        - Signée avec la même clé que les versions stables, elle **remplace**
+          une installation existante. Réinstaller une version stable par-dessus
+          la fait revenir en arrière sans perdre vos données.
+        - Après l'installation, activez le clavier dans
+          *Paramètres › Système › Claviers*, puis autorisez le micro au premier
+          appui.
+
+        ## Signaler un problème
+
+        Les retours sur la dictée sont les bienvenus dans les *Issues* du dépôt —
+        en précisant le modèle de téléphone, ce que vous avez dit et ce qui s'est
+        écrit.
+        NOTES
+
+        {
+          echo ""
+          echo "---"
+          echo ""
+          echo "Build \`${{ needs.build.outputs.version }}\` · branche \`${{ github.ref_name }}\` · $(date -u '+%Y-%m-%d %H:%M UTC')"
+        } >> /tmp/labs-notes.md
+
+    - name: 🚀 Remplacer la préversion « labs »
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        set -euo pipefail
+        # Le tag `labs` est volontairement roulant : c'est ce qui garde une URL
+        # de téléchargement stable à donner aux testeurs. GitHub ne déplace pas
+        # un tag existant à la publication, d'où la suppression préalable de la
+        # préversion ET de son tag (--cleanup-tag). Seule la préversion Labs est
+        # concernée : les releases `v*` ne sont jamais touchées.
+        gh release delete labs --yes --cleanup-tag 2>/dev/null || true
+
+        gh release create labs \
+          --title "🧪 Labs — dictée vocale (${{ needs.build.outputs.version }})" \
+          --notes-file /tmp/labs-notes.md \
+          --prerelease \
+          --target "${{ github.sha }}" \
+          labs-out/*.apk
+
+        echo "### 🧪 Préversion Labs publiée" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Lien stable à partager :" >> $GITHUB_STEP_SUMMARY
+        echo '`https://github.com/${{ github.repository }}/releases/download/labs/LetzebuergeschClavier-Labs.apk`' >> $GITHUB_STEP_SUMMARY
