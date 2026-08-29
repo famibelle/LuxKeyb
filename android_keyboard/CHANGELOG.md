@@ -9,6 +9,35 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [Non publié] — démonstration LuxASR en ligne
+
+Sur la branche `feat/luxasr-online` **uniquement**. Support de démonstration
+pour un rendez-vous avec le projet LuxASR de l'Université du Luxembourg ; ne
+doit pas être fusionné.
+
+### 🌐 Dictée déléguée au service luxasr.uni.lu
+
+- Nouveau `LuxAsrSession` : client WebSocket vers `wss://luxasr.uni.lu/prod/ws/transcribe`,
+  PCM 16 bits 16 kHz mono en trames binaires, contrôle en JSON. Le serveur
+  découpe lui-même sur les silences et gère le contexte inter-segments — ce que
+  notre découpage local perd.
+- `DictationSession` abstrait ce que l'IME attend d'une dictée ; `SttSession` et
+  `LuxAsrSession` l'implémentent. L'interface existe pour que l'arbitrage tienne
+  en une ligne au point de construction, pas pour laisser croire que les deux se
+  valent.
+- **L'audio quitte l'appareil**, ce que la politique de confidentialité publiée
+  affirme ne jamais arriver. Le bandeau affiche 🌐 LuxASR pendant toute la
+  dictée, la préversion est publiée sous un tag distinct (`labs-luxasr`) avec
+  son propre nom de fichier, et le flashcode du site continue de servir la
+  version hors ligne.
+- Le site de LuxASR demande un accord préalable pour toute intégration : cette
+  branche est le support de cette demande, pas son contournement.
+
+Pourquoi : la dictée embarquée mesurée le 28 août rend 72 % de WER avec le
+modèle embarqué et 36 % avec `base`, quand il en faudrait moins de 15 %. Le même
+énoncé revient de LuxASR correct, ponctué et capitalisé, en ~270 ms de
+traitement serveur.
+
 ## [Non publié] — dictée vocale
 
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche

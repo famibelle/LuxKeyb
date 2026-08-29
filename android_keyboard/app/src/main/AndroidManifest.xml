@@ -22,6 +22,13 @@
          permet à la politique de confidentialité de rester inchangée. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- Dictée en ligne LuxASR (branche de démonstration uniquement). L'audio
+         quitte l'appareil, ce qui contredit la politique de confidentialité
+         publiée : à ne pas fusionner sans l'accord de LuxASR et une politique
+         réécrite. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- required=false : sans micro le clavier reste parfaitement utilisable,
          seule la dictée disparaît. Sans cette ligne, Play filtrerait l'app sur
          les appareils sans micro. -->

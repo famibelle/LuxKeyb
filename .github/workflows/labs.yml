@@ -281,15 +281,19 @@ jobs:
     name: 🚀 Publier la préversion Labs
     runs-on: ubuntu-latest
     needs: build
-    # La branche vitrine du canal Labs est nommée explicitement : sans cela,
-    # toute branche feat/** s'approprierait le tag `labs` au premier push et
-    # écraserait la préversion d'une autre expérimentation en cours. Les autres
-    # branches passent quand même par les jobs ci-dessus — tests, garde-fous,
-    # APK en artefact du run — elles ne publient simplement pas.
+    # Les branches publiantes sont nommées explicitement, et chacune a SON tag :
+    # `labs` pour la dictée embarquée, `labs-luxasr` pour la démonstration en
+    # ligne. Sans cette séparation, la seconde écraserait la première et le
+    # flashcode du site — qui pointe sur `labs` — servirait un build qui envoie
+    # l'audio à un tiers.
+    #
+    # Toute autre branche feat/** passe quand même par les jobs ci-dessus —
+    # tests, garde-fous, APK en artefact du run — elle ne publie simplement pas.
     # Un workflow_dispatch reste maître : il publie depuis la branche choisie.
     if: >-
       (github.event_name == 'workflow_dispatch' && inputs.publish)
       || (github.event_name == 'push' && github.ref_name == 'feat/speech-to-text-lb')
+      || (github.event_name == 'push' && github.ref_name == 'feat/luxasr-online')
 
     steps:
     - uses: actions/checkout@v5
@@ -299,7 +303,63 @@ jobs:
         name: labs-apk
         path: labs-out/
 
-    - name: 📝 Notes de version
+    - name: 🏷️ Tag et intitulé selon la branche
+      run: |
+        if [ "${{ github.ref_name }}" = "feat/luxasr-online" ]; then
+          echo "LABS_TAG=labs-luxasr"                          >> $GITHUB_ENV
+          echo "LABS_TITLE=🌐 Labs — dictée en ligne LuxASR"    >> $GITHUB_ENV
+          echo "LABS_APK=LetzebuergeschClavier-LuxASR-Demo.apk" >> $GITHUB_ENV
+        else
+          echo "LABS_TAG=labs"                                 >> $GITHUB_ENV
+          echo "LABS_TITLE=🧪 Labs — dictée vocale"             >> $GITHUB_ENV
+          echo "LABS_APK=LetzebuergeschClavier-Labs.apk"        >> $GITHUB_ENV
+        fi
+
+    - name: 📝 Notes de version — dictée EN LIGNE
+      if: github.ref_name == 'feat/luxasr-online'
+      run: |
+        cat > /tmp/labs-notes.md <<'NOTES'
+        # 🌐 Démonstration — dictée en ligne LuxASR
+
+        Build de **démonstration**, préparé pour un rendez-vous avec le projet
+        LuxASR de l'Université du Luxembourg. Ce n'est ni une version stable, ni
+        une préversion destinée aux testeurs.
+
+        ## ⚠️ L'audio quitte le téléphone
+
+        Contrairement à toutes les autres versions de ce clavier, cette
+        démonstration **envoie le son du micro au service `luxasr.uni.lu`** pour
+        le faire transcrire. Le bandeau de dictée l'indique à l'écran (🌐 LuxASR)
+        pendant toute la durée de l'enregistrement.
+
+        La politique de confidentialité publiée du clavier affirme le contraire :
+        elle décrit la dictée embarquée, hors ligne, qui reste ce que livrent les
+        versions stables et la préversion `labs`. **Cette démonstration ne doit
+        pas être diffusée** au-delà de son objet.
+
+        ## Pourquoi elle existe
+
+        La dictée embarquée a été mesurée le 28 août 2026 sur 50 minutes de
+        luxembourgeois. Sur des énoncés de longueur clavier, le modèle embarqué
+        (`whisper-tiny` luxembourgeois) rend **72 % de WER** ; `whisper-base`
+        36 % ; les modèles wav2vec 2.0 luxembourgeois 44 % et 35 %. Il en
+        faudrait moins de 15 % pour qu'une dictée fasse gagner du temps plutôt
+        que d'en coûter. Et sur un téléphone ancien, une passe coûte 6,2 s quelle
+        que soit la longueur de la phrase, parce que whisper encode toujours une
+        fenêtre de 30 s.
+
+        Le service LuxASR, qui fait tourner `large-v3-turbo`, transcrit le même
+        énoncé correctement, ponctué et capitalisé, en ~270 ms.
+
+        ## Statut
+
+        Le site de LuxASR demande que toute intégration dans une autre
+        application fasse l'objet d'un accord préalable. Cette démonstration est
+        le support de cette demande, pas son contournement.
+        NOTES
+
+    - name: 📝 Notes de version — dictée embarquée
+      if: github.ref_name != 'feat/luxasr-online'
       run: |
         cat > /tmp/labs-notes.md <<'NOTES'
         # 🧪 Labs — build expérimental
@@ -347,7 +407,7 @@ jobs:
           echo "Build \`${{ needs.build.outputs.version }}\` · branche \`${{ github.ref_name }}\` · $(date -u '+%Y-%m-%d %H:%M UTC')"
         } >> /tmp/labs-notes.md
 
-    - name: 🚀 Remplacer la préversion « labs »
+    - name: 🚀 Remplacer la préversion du canal
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
@@ -357,16 +417,30 @@ jobs:
         # un tag existant à la publication, d'où la suppression préalable de la
         # préversion ET de son tag (--cleanup-tag). Seule la préversion Labs est
         # concernée : les releases `v*` ne sont jamais touchées.
-        gh release delete labs --yes --cleanup-tag 2>/dev/null || true
+        gh release delete "$LABS_TAG" --yes --cleanup-tag 2>/dev/null || true
 
-        gh release create labs \
-          --title "🧪 Labs — dictée vocale (${{ needs.build.outputs.version }})" \
+        # Nom de fichier distinct par canal : une démonstration qui envoie
+        # l'audio en ligne ne doit pas pouvoir être confondue avec la préversion
+        # hors ligne, y compris une fois dans le dossier de téléchargement. Les
+        # deux APK produits (le fixe et le versionné) sont renommés.
+        if [ "$LABS_TAG" = "labs-luxasr" ]; then
+          for f in labs-out/*.apk; do
+            n=$(basename "$f" | sed 's/Labs/LuxASR-Demo/')
+            if [ "$n" != "$(basename "$f")" ]; then
+              mv "$f" "labs-out/$n"
+            fi
+          done
+        fi
+        ls -l labs-out/
+
+        gh release create "$LABS_TAG" \
+          --title "$LABS_TITLE (${{ needs.build.outputs.version }})" \
           --notes-file /tmp/labs-notes.md \
           --prerelease \
           --target "${{ github.sha }}" \
           labs-out/*.apk
 
-        echo "### 🧪 Préversion Labs publiée" >> $GITHUB_STEP_SUMMARY
+        echo "### Préversion publiée sous le tag \`$LABS_TAG\`" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Lien stable à partager :" >> $GITHUB_STEP_SUMMARY
-        echo '`https://github.com/${{ github.repository }}/releases/download/labs/LetzebuergeschClavier-Labs.apk`' >> $GITHUB_STEP_SUMMARY
+        echo "Lien stable :" >> $GITHUB_STEP_SUMMARY
+        echo "\`https://github.com/${{ github.repository }}/releases/download/$LABS_TAG/$LABS_APK\`" >> $GITHUB_STEP_SUMMARY

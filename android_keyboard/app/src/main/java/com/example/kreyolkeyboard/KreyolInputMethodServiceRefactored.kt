@@ -128,6 +128,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          */
         private const val SHOW_PASS_TIMING = true
 
+        /**
+         * Délègue la dictée au service en ligne LuxASR plutôt qu'au modèle
+         * embarqué. **L'audio quitte alors l'appareil.**
+         *
+         * Vrai uniquement sur `feat/luxasr-online`, la branche de démonstration
+         * du rendez-vous avec l'Université du Luxembourg. Ne doit pas atteindre
+         * une version publiée avant, dans cet ordre : l'accord de LuxASR, et une
+         * politique de confidentialité réécrite — celle qui est en ligne
+         * aujourd'hui affirme le contraire.
+         */
+        private const val USE_LUXASR_ONLINE = true
+
         /** Durée d'affichage du chronométrage final, une fois la dictée finie. */
         private const val FINAL_TIMING_HOLD_MS = 4000L
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
@@ -216,7 +228,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * whisper alloue ~165 Mo de tampons de calcul, qu'il serait absurde de
      * réserver dans le processus IME pour un utilisateur qui ne dicte jamais.
      */
-    private var sttSession: SttSession? = null
+    private var sttSession: com.example.kreyolkeyboard.stt.DictationSession? = null
     private var micButton: ImageView? = null
 
     /**
@@ -843,10 +855,28 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     private fun startDictation() {
-        val session = sttSession ?: SttSession(this, dictationListener).also { sttSession = it }
+        val session = sttSession ?: newDictationSession().also { sttSession = it }
         dictationComposing = false
         session.start()
     }
+
+    /**
+     * Choisit entre la dictée embarquée et le service en ligne LuxASR.
+     *
+     * Ce n'est pas un réglage d'implémentation. La dictée embarquée garantit que
+     * l'audio ne quitte jamais l'appareil, ce sur quoi repose la politique de
+     * confidentialité publiée ; le service en ligne rompt cette garantie en
+     * échange d'une qualité que le matériel mobile ne permet pas — 72 % de WER
+     * mesurés pour le modèle embarqué contre une transcription correcte,
+     * ponctuée et capitalisée en ~270 ms côté serveur.
+     *
+     * [USE_LUXASR_ONLINE] n'est vrai que sur la branche de démonstration
+     * préparée pour le rendez-vous avec l'Université du Luxembourg, dont le
+     * service demande explicitement qu'on les contacte avant toute intégration.
+     */
+    private fun newDictationSession(): com.example.kreyolkeyboard.stt.DictationSession =
+        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener)
+        else SttSession(this, dictationListener)
 
     private val dictationListener = object : SttSession.Listener {
 
@@ -883,7 +913,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 // Rafraîchit le bandeau en place, sans le faire réapparaître
                 // s'il a déjà été retiré.
                 if (dictationStatusView?.visibility == View.VISIBLE) {
-                    showDictationStatus(R.string.stt_listening)
+                    showDictationStatus(
+                        if (USE_LUXASR_ONLINE) R.string.stt_online_listening
+                        else R.string.stt_listening
+                    )
                 }
             } else {
                 // La passe finale est le chiffre qui compte — le délai entre le
@@ -901,9 +934,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     // Le chargement du modèle prend jusqu'à une seconde au
                     // premier appui : sans message, l'utilisateur croit que
                     // son appui n'a pas été pris et appuie une seconde fois.
-                    SttSession.State.LOADING -> R.string.stt_preparing
-                    SttSession.State.LISTENING -> R.string.stt_listening
-                    SttSession.State.FINALIZING -> R.string.stt_transcribing
+                    SttSession.State.LOADING ->
+                        if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
+                        else R.string.stt_preparing
+                    SttSession.State.LISTENING ->
+                        if (USE_LUXASR_ONLINE) R.string.stt_online_listening
+                        else R.string.stt_listening
+                    SttSession.State.FINALIZING ->
+                        if (USE_LUXASR_ONLINE) R.string.stt_online_transcribing
+                        else R.string.stt_transcribing
                     SttSession.State.IDLE -> null
                 }
             )

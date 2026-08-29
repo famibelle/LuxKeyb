@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class SttSession(
     private val context: Context,
     private val listener: Listener
-) {
+) : DictationSession {
 
     interface Listener {
         /** Hypothèse intermédiaire, destinée au texte en composition. */
@@ -120,7 +120,7 @@ class SttSession(
     private var silenceRun = 0
 
     /** Le micro est ouvert (ou sur le point de l'être) : un appui doit arrêter. */
-    val isActive: Boolean
+    override val isActive: Boolean
         get() = state == State.LISTENING || state == State.LOADING
 
     /**
@@ -129,10 +129,10 @@ class SttSession(
      * plus le micro mais tient encore le worker, et en démarrer une seconde
      * par-dessus faisait diverger les deux.
      */
-    val isBusy: Boolean
+    override val isBusy: Boolean
         get() = state != State.IDLE
 
-    fun start() {
+    override fun start() {
         if (isBusy) return
 
         synchronized(bufferLock) { written = 0 }
@@ -167,7 +167,7 @@ class SttSession(
     }
 
     /** Termine la dictée et demande la transcription définitive. */
-    fun stop() {
+    override fun stop() {
         if (state != State.LISTENING && state != State.LOADING) return
 
         setState(State.FINALIZING)
@@ -198,7 +198,7 @@ class SttSession(
     }
 
     /** Abandonne la dictée sans rien restituer (retour arrière, changement de champ). */
-    fun cancel() {
+    override fun cancel() {
         if (state == State.IDLE) return
         // Incrémenter d'abord : toute passe déjà soumise devient caduque et ne
         // publiera ni son texte ni son état.
@@ -214,11 +214,11 @@ class SttSession(
      * quitte l'écran : les garder pendant la frappe normale fait du processus
      * IME une cible de choix pour le tueur de mémoire du système.
      */
-    fun releaseModel() {
+    override fun releaseModel() {
         worker.execute { engine.release() }
     }
 
-    fun shutdown() {
+    override fun shutdown() {
         cancel()
         worker.execute { engine.release() }
         worker.shutdown()

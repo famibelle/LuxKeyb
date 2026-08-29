@@ -17,6 +17,13 @@
     <string name="stt_preparing">🎙️ Moment…</string>
     <string name="stt_listening">🎙️ Schwätzt…</string>
     <string name="stt_transcribing">✍️ Transkriptioun…</string>
+
+    <!-- Bandeau de la dictée EN LIGNE (branche de démonstration LuxASR). Le globe
+         et la mention du service sont là pour qu'on ne puisse pas confondre avec
+         la dictée embarquée : l'audio part sur un serveur tiers. -->
+    <string name="stt_online_connecting">🌐 LuxASR verbannen…</string>
+    <string name="stt_online_listening">🌐 LuxASR · Schwätzt…</string>
+    <string name="stt_online_transcribing">🌐 LuxASR · Transkriptioun…</string>
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>
