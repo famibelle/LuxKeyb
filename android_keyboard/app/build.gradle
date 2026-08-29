@@ -266,12 +266,11 @@ tasks.matching {
 // pour que personne ne s'étonne de ne pas le retrouver dans l'APK.
 //
 // La bibliothèque native, elle, reste compilée et empaquetée, et c'est un choix
-// discutable : libwhisper et les trois libggml pèsent 4,22 Mo empaquetés pour
-// les deux ABI de production — mesuré, pas estimé — soit plus des deux tiers
-// d'un APK qui en pèse 6,2 une fois le modèle parti. Elles ne peuvent rien
-// faire ici, faute de modèle à charger.
+// discutable : libwhisper et les trois libggml pèsent 3,73 Mo dans l'APK Labs
+// publié, pour les deux ABI de production — soit 60 % de ses 6,22 Mo une fois
+// le modèle parti. Elles ne peuvent rien faire ici, faute de modèle à charger.
 //
-// Elles restent parce que 6,2 Mo se téléchargent déjà en quelques secondes,
+// Elles restent parce que 6,22 Mo se téléchargent déjà en quelques secondes,
 // alors que retirer externalNativeBuild ferait diverger la configuration CMake,
 // la CI (qui n'aurait plus besoin du sous-module) et les vérifications d'APK,
 // sur une branche dont tout l'intérêt est d'être jetable. Le jour où la taille
