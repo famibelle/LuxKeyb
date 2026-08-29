@@ -38,12 +38,18 @@ CODES = {
         "#0E6E76",
     ),
     "qr-luxkeyb-luxasr.png": (
-        # Vers la page, et non vers l'APK : celui qui scanne est sur le
-        # téléphone, et c'est là qu'il doit lire comment activer le clavier
-        # dans les réglages Android — une étape qu'un téléchargement direct
-        # ne raconte à personne. L'URL de la page ne bouge pas non plus quand
-        # le nom de l'asset ou le tag de la préversion change.
-        "https://famibelle.github.io/LuxKeyb/labs-luxasr.html",
+        # Directement sur l'APK, comme les trois autres : en démonstration, le
+        # téléchargement doit partir dès le scan, et c'est le présentateur qui
+        # dit à voix haute comment activer le clavier ensuite. Une version
+        # antérieure pointait sur labs-luxasr.html pour que le téléphone lise
+        # lui-même la marche à suivre ; cela coûtait une pression de plus au
+        # moment précis où tout le monde regarde.
+        #
+        # Contrepartie assumée : ce QR devient faux si le tag `labs-luxasr` ou
+        # le nom de l'asset changent. Les deux sont fixés par .github/workflows/
+        # labs.yml — les modifier oblige à repasser ici avec --force.
+        "https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/"
+        "LetzebuergeschClavier-LuxASR-Demo.apk",
         # --sun du thème : la couleur que le site emploie déjà pour signaler
         # ce qui demande une lecture attentive, et distincte des trois autres.
         "#C97F1E",
@@ -73,11 +79,23 @@ if __name__ == "__main__":
     # Par défaut, seuls les QR manquants sont écrits. Réécrire un QR déjà en
     # place change son tramage sans rien apporter, et ces fichiers partent à
     # l'impression : mieux vaut ne pas les faire bouger sans raison.
-    tout = "--force" in sys.argv
+    #
+    # --force seul réécrit TOUT, ce qui a déjà fait bouger deux QR étrangers au
+    # changement en cours. On peut donc le restreindre :
+    #
+    #     python docs/scripts/generate_qr.py --force qr-luxkeyb-luxasr.png
+    force = "--force" in sys.argv
+    vises = [a for a in sys.argv[1:] if not a.startswith("-")]
+    if vises:
+        inconnus = set(vises) - set(CODES)
+        if inconnus:
+            sys.exit(f"Nom(s) inconnu(s) : {', '.join(sorted(inconnus))}")
 
     print(f"QR codes dans {ASSETS} :")
     for nom, (url, couleur) in CODES.items():
-        if (ASSETS / nom).exists() and not tout:
+        if vises and nom not in vises:
+            continue
+        if (ASSETS / nom).exists() and not force:
             print(f"  {nom}  déjà présent, ignoré (--force pour réécrire)")
             continue
         generer(nom, url, couleur)
