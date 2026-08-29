@@ -255,9 +255,15 @@ class LuxAsrSession(
                     .ifEmpty { accumulated }
                 val ms = SystemClock.elapsedRealtime() - startedAt
                 val proc = json.optJSONObject("metrics")?.optDouble("processing_time", 0.0) ?: 0.0
+                // Le texte livré est filtré, celui qu'on retient ne l'est pas :
+                // le service réécrit `accumulated_text` en entier à chaque
+                // passe, et une passe ultérieure peut très bien lever
+                // l'ambiguïté d'une boucle naissante. Filtrer au stockage
+                // ferait diverger notre état du sien.
+                val propre = RepetitionTrimmer.trim(accumulated)
                 main.post {
                     listener.onPassTiming((ms / 1000f), (proc * 1000).toLong(), true)
-                    if (accumulated.isNotEmpty()) listener.onPartial(accumulated)
+                    if (propre.isNotEmpty()) listener.onPartial(propre)
                 }
             }
 
@@ -268,7 +274,7 @@ class LuxAsrSession(
 
     private fun finish() {
         if (state == SttSession.State.IDLE) return
-        val text = accumulated
+        val text = RepetitionTrimmer.trim(accumulated)
         setState(SttSession.State.IDLE)
         main.post { listener.onFinal(text) }
     }
