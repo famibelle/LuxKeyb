@@ -104,7 +104,7 @@ class LuxAsrSession(
                 if (gen != generation) return
                 recorder.stop()
                 setState(SttSession.State.IDLE)
-                main.post { listener.onError(SttSession.Error.MODEL_UNAVAILABLE) }
+                main.post { listener.onError(SttSession.Error.SERVICE_UNREACHABLE) }
             }
 
             override fun onClosed(ws: WebSocket, code: Int, reason: String) {

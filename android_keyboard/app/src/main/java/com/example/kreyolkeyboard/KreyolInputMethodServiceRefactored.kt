@@ -955,6 +955,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 when (error) {
                     SttSession.Error.MIC_UNAVAILABLE -> R.string.stt_mic_unavailable
                     SttSession.Error.MODEL_UNAVAILABLE -> R.string.stt_model_unavailable
+                    SttSession.Error.SERVICE_UNREACHABLE -> R.string.stt_service_unreachable
                 }
             )
         }

@@ -27,5 +27,10 @@
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>
+    <!-- Branche de démonstration : un échec de connexion n'est PAS une
+         incapacité de l'appareil. Réutiliser stt_model_unavailable, comme
+         c'était le cas, faisait accuser le téléphone alors que le service ou
+         le réseau étaient en cause — constaté sur un vrai téléphone. -->
+    <string name="stt_service_unreachable">Service LuxASR injoignable — vérifiez le réseau</string>
     <string name="stt_not_in_password">Dictée désactivée dans les champs de mot de passe</string>
 </resources>

@@ -63,6 +63,22 @@ traitement serveur.
   quelques secondes de téléchargement. C'est le premier endroit où couper si la
   taille devient un sujet.
 
+### 🩺 Un échec réseau ne s'accuse plus l'appareil
+
+- `LuxAsrSession.onFailure` rendait `MODEL_UNAVAILABLE`, dont le libellé est
+  « Dictée indisponible sur cet appareil ». Sur la branche en ligne, cette
+  erreur signifie en pratique « je n'ai pas pu joindre luxasr.uni.lu » : le
+  message accusait le téléphone d'une incapacité qu'il n'a pas. Constaté sur un
+  vrai téléphone pendant la préparation du rendez-vous.
+- Nouvelle erreur `SERVICE_UNREACHABLE`, distincte, et sa chaîne : « Service
+  LuxASR injoignable — vérifiez le réseau ». Vérifié sur l'émulateur Wi-Fi et
+  données coupées ; le journal donne la cause exacte
+  (`Unable to resolve host "luxasr.uni.lu"`) et le bandeau la bonne phrase.
+
+Pourquoi : en démonstration, un message qui désigne le mauvais coupable coûte
+plus cher que pas de message du tout — on cherche du côté du téléphone pendant
+que le problème est le réseau de la salle.
+
 ## [Non publié] — dictée vocale
 
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche

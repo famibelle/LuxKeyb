@@ -63,7 +63,9 @@ class SttSession(
         /** ABI non couverte, asset manquant, ou mémoire insuffisante. */
         MODEL_UNAVAILABLE,
         /** Permission refusée, micro déjà pris, format refusé. */
-        MIC_UNAVAILABLE
+        MIC_UNAVAILABLE,
+        /** Dictée en ligne seulement : réseau absent ou service muet. */
+        SERVICE_UNREACHABLE
     }
 
     private val engine = SttEngine()
