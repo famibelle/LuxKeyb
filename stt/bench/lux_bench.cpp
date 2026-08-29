@@ -40,6 +40,10 @@ constexpr int MIN_FINAL_SAMPLES     = (int)(0.3 * SAMPLE_RATE);
 // erreur. SttEngine complète par du silence ; on fait pareil.
 constexpr int MIN_WHISPER_SAMPLES   = (int)(1.2 * SAMPLE_RATE);
 
+// Largeur du faisceau, lue par app_params() qui est appelée bien avant
+// l'analyse des arguments.
+int g_beam = 1;
+
 double now_ms() {
     using namespace std::chrono;
     return duration<double, std::milli>(steady_clock::now().time_since_epoch()).count();
@@ -86,10 +90,37 @@ std::vector<float> read_f32(const char *path) {
 // PARITÉ — chaque ligne de cette fonction a son jumeau dans whisper_jni.cpp.
 // Toute divergence invalide la mesure : la modifier sans modifier l'autre est
 // un bug, pas un réglage.
-whisper_full_params app_params(int n_threads, bool single_segment) {
-    whisper_full_params p = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
-    p.greedy.best_of        = 1;
-    p.beam_search.beam_size = 1;
+// Contexte de l'encodeur. 1500 positions couvrent les 30 s de la fenêtre mel ;
+// whisper encode toujours la fenêtre entière, silence compris, ce qui fait de
+// ce paramètre la quasi-totalité du coût d'une passe — 6,2 s sur un téléphone
+// milieu de gamme, indépendamment de la parole soumise.
+//
+// `auto` le dimensionne sur l'énoncé. Attention : trop court, ce n'est pas une
+// dégradation mais une troncature — la fin de l'audio n'est jamais encodée. La
+// marge de 15 % couvre l'arrondi des trames mel.
+int resolve_audio_ctx(int requested, int n_samples) {
+    if (requested > 0) return requested;
+    if (requested == 0) return 0;                 // 0 = défaut de whisper (1500)
+    const double secs = (double) n_samples / SAMPLE_RATE;
+    int ctx = (int) (secs / 30.0 * 1500.0 * 1.15);
+    if (ctx < 128) ctx = 128;
+    if (ctx > 1500) ctx = 1500;
+    return ctx;
+}
+
+whisper_full_params app_params(int n_threads, bool single_segment, int audio_ctx,
+                               int beam) {
+    // Le beam search a été écarté dans le README au motif qu'il multiplie le
+    // temps de décodage par ~4. C'est exact, mais la mesure a montré que le
+    // décodage ne pèse presque rien : l'encodeur, qui broie toujours 30 s,
+    // représente 80 à 95 % d'une passe sur l'hôte et la quasi-totalité sur un
+    // téléphone (4,5 s → 6 571 ms, 11,0 s → 6 164 ms : coût plat). Quadrupler
+    // un poste nul reste nul. À vérifier plutôt qu'à supposer, dans les deux
+    // sens.
+    whisper_full_params p = whisper_full_default_params(
+        beam > 1 ? WHISPER_SAMPLING_BEAM_SEARCH : WHISPER_SAMPLING_GREEDY);
+    p.greedy.best_of        = beam > 1 ? beam : 1;
+    p.beam_search.beam_size = beam > 1 ? beam : 1;
     p.n_threads        = n_threads;
     p.language         = "lb";
     p.translate        = false;
@@ -104,14 +135,15 @@ whisper_full_params app_params(int n_threads, bool single_segment) {
     p.suppress_blank   = true;
     p.suppress_nst     = true;
     p.temperature_inc  = 0.0f;   // sans quoi : jusqu'à six redécodages
+    p.audio_ctx        = audio_ctx;
     return p;
 }
 
 // Une passe, telle que SttEngine.transcribe l'exécute, remplissage compris.
 // `ms` reçoit le temps mesuré, `padded` la taille réellement soumise.
 std::string one_pass(whisper_context *ctx, const float *data, int n,
-                     int n_threads, bool single_segment,
-                     double *ms, int *padded) {
+                     int n_threads, bool single_segment, int audio_ctx_req,
+                     double *ms, int *padded, int *ctx_used) {
     std::vector<float> buf;
     const float *pcm = data;
     if (n < MIN_WHISPER_SAMPLES) {
@@ -121,8 +153,9 @@ std::string one_pass(whisper_context *ctx, const float *data, int n,
         n   = MIN_WHISPER_SAMPLES;
     }
     *padded = n;
+    *ctx_used = resolve_audio_ctx(audio_ctx_req, n);
 
-    whisper_full_params p = app_params(n_threads, single_segment);
+    whisper_full_params p = app_params(n_threads, single_segment, *ctx_used, g_beam);
     const double t0 = now_ms();
     const int rc = whisper_full(ctx, p, pcm, n);
     *ms = now_ms() - t0;
@@ -136,12 +169,15 @@ std::string one_pass(whisper_context *ctx, const float *data, int n,
 
 const char *g_file = "";
 
+int g_ctx_used = 0;
+
 void emit(const char *kind, int idx, int audio_samples, int padded,
           double ms, double t_launch, double t_shown, const std::string &text) {
     printf("{\"file\":\"%s\",\"kind\":\"%s\",\"i\":%d,\"audio_s\":%.3f,\"padded_s\":%.3f,"
-           "\"ms\":%.1f,\"t_launch_ms\":%.1f,\"t_shown_ms\":%.1f,\"text\":\"%s\"}\n",
+           "\"ms\":%.1f,\"audio_ctx\":%d,\"t_launch_ms\":%.1f,"
+           "\"t_shown_ms\":%.1f,\"text\":\"%s\"}\n",
            g_file, kind, idx, audio_samples / (double) SAMPLE_RATE,
-           padded / (double) SAMPLE_RATE, ms, t_launch, t_shown,
+           padded / (double) SAMPLE_RATE, ms, g_ctx_used, t_launch, t_shown,
            json_escape(text).c_str());
     fflush(stdout);
 }
@@ -152,6 +188,9 @@ int main(int argc, char **argv) {
     const char *model = nullptr, *input = nullptr, *mode = "full";
     int n_threads = 3;         // ce que SttEngine.threadCount() choisit ici
     int chunk = 1024;          // bloc AudioRecorder : minBuffer/2, ~64 ms
+    int audio_ctx = 0;         // 0 = défaut whisper, -1 = ajusté à l'énoncé
+    bool flash_attn = false;
+    int beam = 1;
 
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
@@ -161,12 +200,20 @@ int main(int argc, char **argv) {
         else if (a == "--mode")    mode  = next();
         else if (a == "--threads") n_threads = atoi(next());
         else if (a == "--chunk")   chunk = atoi(next());
+        else if (a == "--flash-attn") flash_attn = true;
+        else if (a == "--beam")    beam = atoi(next());
+        else if (a == "--audio-ctx") {
+            std::string v = next();
+            audio_ctx = (v == "auto") ? -1 : atoi(v.c_str());
+        }
     }
     if (!model || !input) {
         fprintf(stderr, "usage: lux_bench --model M.bin --input X.f32 "
                         "[--mode full|stream] [--threads N] [--chunk N]\n");
         return 2;
     }
+
+    g_beam = beam;
 
     std::vector<std::string> inputs;
     if (input[0] == '@') {           // @liste.txt : un chemin par ligne
@@ -184,6 +231,11 @@ int main(int argc, char **argv) {
 
     whisper_context_params cp = whisper_context_default_params();
     cp.use_gpu = false;                       // comme dans l'APK
+    // L'attention « flash » regroupe les opérations d'attention en un noyau
+    // unique. Gain nul à modéré sur CPU selon l'architecture — à mesurer, pas
+    // à supposer : contrairement à audio_ctx, elle ne change pas le calcul,
+    // donc elle ne peut pas dégrader la transcription.
+    cp.flash_attn = flash_attn;
 
     const double t0 = now_ms();
     whisper_context *ctx = whisper_init_from_file_with_params(model, cp);
@@ -203,7 +255,7 @@ int main(int argc, char **argv) {
         double ms; int padded;
         std::string text = one_pass(ctx, pcm.data(), (int) pcm.size(),
                                     n_threads, /*single_segment=*/false,
-                                    &ms, &padded);
+                                    audio_ctx, &ms, &padded, &g_ctx_used);
         emit("final", 0, (int) pcm.size(), padded, ms, 0.0, ms, text);
     } else {
         // --- Rejeu de SttSession sur horloge virtuelle -----------------------
@@ -229,7 +281,8 @@ int main(int argc, char **argv) {
             last_partial_at = t_audio;
             double ms; int padded;
             std::string text = one_pass(ctx, pcm.data(), t_audio, n_threads,
-                                        /*single_segment=*/true, &ms, &padded);
+                                        /*single_segment=*/true, audio_ctx,
+                                        &ms, &padded, &g_ctx_used);
             busy_until = t_wall + ms;
             emit("partial", idx++, t_audio, padded, ms, t_wall, t_wall + ms, text);
         }
@@ -239,7 +292,8 @@ int main(int argc, char **argv) {
         double ms = 0; int padded = 0;
         std::string text;
         if (n_total >= MIN_FINAL_SAMPLES)
-            text = one_pass(ctx, pcm.data(), n_total, n_threads, false, &ms, &padded);
+            text = one_pass(ctx, pcm.data(), n_total, n_threads, false,
+                            audio_ctx, &ms, &padded, &g_ctx_used);
         emit("final", idx, n_total, padded, ms, t_stop, t_stop + ms, text);
     }
     }

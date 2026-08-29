@@ -97,7 +97,7 @@ class SttEngine {
             if (ptr == 0L) return@synchronized ""
             try {
                 val startedAt = SystemClock.elapsedRealtime()
-                val text = nativeTranscribe(ptr, pcm, threadCount(), singleSegment).trim()
+                val text = nativeTranscribe(ptr, pcm, threadCount(singleSegment), singleSegment).trim()
                 // Journalisé systématiquement : c'est la seule façon de savoir,
                 // sur l'appareil d'un testeur, si les hypothèses manquent parce
                 // que la passe est trop lente ou parce qu'elle rend du vide.
@@ -139,13 +139,21 @@ class SttEngine {
     }
 
     /**
-     * Whisper sature au-delà de la moitié des cœurs sur un mobile : les cœurs
-     * restants servent à l'IME lui-même, dont la boucle d'entrée doit rester
-     * fluide pendant que la dictée tourne.
+     * Nombre de threads, différent selon la nature de la passe.
+     *
+     * Pendant l'écoute, la moitié des cœurs : les autres servent à l'IME
+     * lui-même, dont la boucle d'entrée doit rester fluide pendant qu'on parle.
+     *
+     * Après le relâchement du micro, plus rien ne concourt — ni capture, ni
+     * passe partielle, ni frappe — et c'est précisément la passe que
+     * l'utilisateur attend, les yeux sur un bandeau qui ne bouge pas. On prend
+     * donc tous les cœurs moins un, celui-là restant à l'interface pour que le
+     * clavier ne se fige pas.
      */
-    private fun threadCount(): Int =
+    private fun threadCount(singleSegment: Boolean): Int =
         Runtime.getRuntime().availableProcessors().let { cores ->
-            (cores / 2).coerceIn(2, 4)
+            if (singleSegment) (cores / 2).coerceIn(2, 4)
+            else (cores - 1).coerceIn(2, 8)
         }
 
     private external fun nativeInitFromAsset(assets: AssetManager, assetPath: String): Long

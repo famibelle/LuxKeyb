@@ -99,6 +99,22 @@ class SttSession(
      */
     @Volatile private var generation = 0
 
+    /**
+     * L'appareil tient-il le rythme des hypothèses intermédiaires ?
+     *
+     * Mesuré sur un Samsung ancien : une passe y coûte ~6,2 s quelle que soit
+     * la longueur de l'énoncé, parce que whisper encode toujours une fenêtre de
+     * 30 s. Aucune hypothèse n'apparaît donc avant la fin de la phrase, et
+     * chacune monopolise le CPU que la passe finale attend — celle-là même que
+     * l'utilisateur regarde. On les abandonne dès qu'une passe dure plus
+     * longtemps que la parole qu'elle transcrit : à ce régime elles ne
+     * rattraperont jamais leur retard, il ne fera que croître.
+     *
+     * Remis à vrai à chaque dictée : un appareil peut être lent parce qu'il
+     * était occupé, pas parce qu'il est incapable.
+     */
+    @Volatile private var partialsViable = true
+
     /** Compteurs du détecteur d'activité vocale, en échantillons. */
     private var speechSeen = false
     private var silenceRun = 0
@@ -123,6 +139,7 @@ class SttSession(
         lastPartialAt = 0
         speechSeen = false
         silenceRun = 0
+        partialsViable = true
         val gen = ++generation
 
         setState(State.LOADING)
@@ -280,6 +297,7 @@ class SttSession(
         // Sous le minimum on ne consomme pas le pas : le bloc suivant, 60 ms
         // plus tard, retentera au lieu d'attendre un pas entier pour rien.
         if (at < MIN_PARTIAL_SAMPLES) return
+        if (!partialsViable) return
         if (!transcribing.compareAndSet(false, true)) return
         lastPartialAt = at
 
@@ -292,6 +310,11 @@ class SttSession(
 
                 val startedAt = SystemClock.elapsedRealtime()
                 val text = engine.transcribe(samples, singleSegment = true)
+                val took = SystemClock.elapsedRealtime() - startedAt
+                if (took > SLOW_PASS_MS) {
+                    Log.i(TAG, "hypothèses abandonnées : une passe a pris $took ms")
+                    partialsViable = false
+                }
                 reportTiming(samples.size, startedAt, partial = true)
                 if (text.isNotEmpty() && gen == generation && state == State.LISTENING) {
                     main.post { listener.onPartial(text) }
@@ -365,6 +388,21 @@ class SttSession(
          */
         const val LEVEL_FULL_SCALE = 0.18
         const val MIN_FINAL_SAMPLES = (0.3 * RATE).toInt()
+
+        /**
+         * Au-delà, les hypothèses intermédiaires sont abandonnées pour l'énoncé
+         * en cours.
+         *
+         * Le seuil est absolu et non relatif à l'audio transcrit : la première
+         * passe porte toujours sur 0,6 s et coûte pourtant ~800 ms même sur une
+         * machine rapide, où les hypothèses s'enchaînent ensuite très bien. Ce
+         * qui les rend inutiles n'est pas qu'une passe dure plus que son audio,
+         * c'est qu'elle dure plus qu'un énoncé entier — 2,5 s, quand la médiane
+         * mesurée sur corpus est de 4,2 s. À ce régime l'utilisateur voit au
+         * mieux une hypothèse, arrivée après qu'il a fini de parler, et payée
+         * par un retard équivalent sur la passe finale qu'il attend vraiment.
+         */
+        const val SLOW_PASS_MS = 2_500L
 
         /** Silence après lequel la dictée se termine seule. */
         const val AUTO_STOP_SILENCE_SAMPLES = (1.6 * RATE).toInt()

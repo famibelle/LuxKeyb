@@ -31,6 +31,41 @@ bool abort_requested(void * /*user_data*/) {
     return g_abort.load(std::memory_order_relaxed);
 }
 
+// Ne conserve que les séquences UTF-8 complètes et valides.
+//
+// whisper peut rendre une séquence multi-octets tronquée en fin de segment :
+// constaté en réduisant audio_ctx, mais rien ne garantit que cela n'arrive
+// jamais en fonctionnement normal — le découpage se fait sur des jetons, pas
+// sur des caractères. Or NewStringUTF() sur des octets malformés est un
+// comportement indéfini : selon la JVM, chaîne corrompue, exception, ou mort du
+// processus. Pour un clavier, c'est la disparition du clavier en pleine frappe.
+//
+// Le luxembourgeois rend le cas fréquent plutôt qu'exotique : é, ë et ä sont
+// des séquences de deux octets, et ils sont partout.
+std::string sanitize_utf8(const std::string &in) {
+    std::string out;
+    out.reserve(in.size());
+    size_t i = 0;
+    while (i < in.size()) {
+        const unsigned char c = in[i];
+        size_t len;
+        if      (c < 0x80)          len = 1;
+        else if ((c & 0xE0) == 0xC0) len = 2;
+        else if ((c & 0xF0) == 0xE0) len = 3;
+        else if ((c & 0xF8) == 0xF0) len = 4;
+        else { ++i; continue; }              // octet de continuation orphelin
+
+        if (i + len > in.size()) break;      // séquence coupée par la fin
+        bool ok = true;
+        for (size_t k = 1; k < len; ++k) {
+            if ((static_cast<unsigned char>(in[i + k]) & 0xC0) != 0x80) { ok = false; break; }
+        }
+        if (ok) out.append(in, i, len);
+        i += ok ? len : 1;
+    }
+    return out;
+}
+
 } // namespace
 
 extern "C" {
@@ -161,7 +196,7 @@ Java_com_example_kreyolkeyboard_stt_SttEngine_nativeTranscribe(
         out += whisper_full_get_segment_text(ctx, i);
     }
 
-    return env->NewStringUTF(out.c_str());
+    return env->NewStringUTF(sanitize_utf8(out).c_str());
 }
 
 // Demande l'interruption de la transcription en cours. Sans effet si aucune

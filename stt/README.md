@@ -93,10 +93,42 @@ huit, le coût par 1,25. L'encodeur de Whisper travaille toujours sur une fenêt
 de 30 s, remplie de silence le reste du temps, et il pèse 80 à 95 % d'une passe ;
 seul le décodage grandit.
 
-Deux conséquences pratiques. La borne des 30 s n'est pas là pour contenir un coût
-qui s'emballe, mais parce que la fenêtre mel s'arrête là. Et le seul vrai levier
-de latence est `whisper_full_params.audio_ctx`, qui tronque le contexte de
-l'encodeur — jamais essayé ici, et probablement ce qui rendrait `base` abordable.
+La borne des 30 s n'est donc pas là pour contenir un coût qui s'emballe, mais
+parce que la fenêtre mel s'arrête là.
+
+**Mesuré sur un Samsung ancien, le 28 août 2026 :** 4,5 s d'audio → 6 571 ms,
+6,9 s → 6 183 ms, 11,0 s → 6 164 ms. Le coût est plat, et six fois celui de
+l'hôte x86. Sur cet appareil, `tiny` fait attendre six secondes après la fin de
+la phrase et n'affiche aucune hypothèse pendant qu'on parle.
+
+### `audio_ctx` : la fausse bonne idée, mesurée et écartée
+
+`whisper_full_params.audio_ctx` tronque le contexte de l'encodeur et paraît donc
+être *le* levier : il attaque le poste qui coûte tout. Il a été mesuré, et il ne
+marche pas.
+
+| `audio_ctx` | WER `tiny` | WER `base` | gain |
+|---|---|---|---|
+| 1500 (défaut) | 72,1 % | **36,0 %** | 1,00× |
+| 768 | 105,6 % | 41,3 % | 2,2–2,3× |
+| 512 | 279,8 % | 79,2 % | 2,6–3,5× |
+| 384 | 407,9 % | 111,2 % | 1,5–4,8× |
+| 256 | 574,6 % | 218,9 % | 1,4–5,7× |
+
+Au-delà de 768 le WER dépasse 100 % : le modèle n'est plus imprécis, il boucle.
+La raison est structurelle — les 1 500 positions ne sont pas un paramètre de
+configuration mais une propriété apprise, et les tronquer met le modèle hors de
+sa distribution d'entraînement. Dimensionner `audio_ctx` sur la durée de
+l'énoncé, qui semble pourtant l'évidence, donne 177 % de WER avec `base`.
+
+Le seul point exploitable est **768**, qui coûte 5,3 points à `base` pour 2,3× de
+vitesse. À n'envisager que si la latence bloque tout le reste.
+
+Corollaire à ne pas perdre : à contexte réduit, whisper rend parfois une
+séquence UTF-8 tronquée. `whisper_jni.cpp` assainit désormais la sortie avant
+`NewStringUTF()`, dont le comportement sur des octets malformés est indéfini —
+en luxembourgeois, où é, ë et ä sont des séquences de deux octets, le cas n'a
+rien d'exotique.
 
 La dictée se termine d'elle-même à 30 s, ou après 1,6 s de silence.
 
