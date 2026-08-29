@@ -101,4 +101,44 @@ class SuggestionScoringTest {
 
         assertTrue(scoreFe > scoreFenmen)
     }
+
+    /**
+     * Le bonus de contexte doit peser plus que l'écart de fréquence du
+     * dictionnaire livré, sinon il ne réordonne rien.
+     *
+     * Même piège qu'au-dessus, sur une autre constante. Le bonus valait 50
+     * face à des fréquences montant à 100 105 : mesuré sur ParaLux, le passer
+     * de 50 à 0 ne changeait pratiquement rien (31,40 % → 31,11 % de bons mots
+     * dans les trois premiers après deux frappes), preuve qu'il ne servait à
+     * rien. Ce test l'ancre sur l'asset réel, pour qu'un futur changement de
+     * corpus qui repousse la fréquence maximale échoue ici plutôt qu'en
+     * silence.
+     */
+    @Test
+    fun testNgramContextOutweighsFrequencyAtShippedDictionaryScale() {
+        val asset = File("src/main/assets/luxemburgish_dict.json")
+        assertTrue("Dictionnaire introuvable : ${asset.absolutePath}", asset.exists())
+
+        val entries = JSONArray(asset.readText())
+        var frequenceMax = 0
+        for (i in 0 until entries.length()) {
+            val frequence = entries.getJSONArray(i).getInt(1)
+            if (frequence > frequenceMax) frequenceMax = frequence
+        }
+
+        // Le mot le plus rare, attendu par le contexte, contre le mot le plus
+        // fréquent du lexique, que le contexte n'attend pas.
+        val attenduParLeContexte =
+            SuggestionEngine.calculateDictionaryScore("rar", "ra", 1) +
+                SuggestionEngine.NGRAM_CONTEXT_WEIGHT
+        val simplementFrequent =
+            SuggestionEngine.calculateDictionaryScore("frequent", "ra", frequenceMax)
+
+        assertTrue(
+            "Un mot attendu par le contexte doit passer devant un mot seulement " +
+                "fréquent (f=$frequenceMax) : $attenduParLeContexte vs " +
+                "$simplementFrequent. Relever NGRAM_CONTEXT_WEIGHT.",
+            attenduParLeContexte > simplementFrequent
+        )
+    }
 }
