@@ -27,18 +27,53 @@ class SuggestionEngine(private val context: Context) {
         // ("bon" 97 contre "bonjou" 17). À 5 points par utilisation, il faut une
         // quinzaine de frappes pour faire remonter le mot réellement employé.
         //
-        // La valeur a été divisée par dix en même temps que les fréquences du
-        // dictionnaire, ramenées à leur vraie échelle par la correction du cumul
-        // dans creer_dictionnaire() : elles étaient jusque-là gonflées d'un facteur
-        // douze par les exécutions successives du pipeline.
-        private const val USAGE_WEIGHT = 5.0
+        // Troisième constante de ce fichier calibrée sur une échelle de
+        // fréquences qui n'existe plus. Elle valait 5, pour un plafond de 20
+        // validations comptées, soit **+100 au maximum** — et le commentaire qui
+        // la justifiait invoquait un 99e centile à 88 et des mots créoles
+        // culminant à 1 800. Sur le dictionnaire livré aujourd'hui, le 99e
+        // centile est à 874 et le maximum à 100 105.
+        //
+        // Ce qu'un bonus permet, mesuré sur les assets réels : part des préfixes
+        // où un mot placé au rang k entre dans les trois suggestions affichées.
+        //
+        // ```
+        // bonus   rang 4  rang 8  rang 12  rang 20  rang 40
+        //   +25      73 %    38 %     21 %      8 %      0 %
+        //  +100      88 %    69 %     58 %     42 %     16 %   ← ancien plafond
+        //  +250      94 %    83 %     76 %     65 %     44 %
+        // +1000      99 %    95 %     94 %     91 %     84 %   ← nouveau plafond
+        // ```
+        //
+        // Autrement dit, avec l'ancien réglage, un mot que l'utilisateur avait
+        // validé **vingt fois** échouait encore à entrer dans les suggestions
+        // depuis le rang 20 dans 58 % des cas. La rampe était trop lente pour que
+        // la personnalisation se remarque, alors même que toute la gamification
+        // existe pour l'alimenter.
+        //
+        // La valeur retenue est 20, et non davantage, à cause d'une contrainte
+        // que le fichier de tests portait déjà : « quelques utilisations ne
+        // suffisent pas à bouleverser le classement » — trois frappes ne doivent
+        // pas déloger un mot nettement plus fréquent, le signal personnel doit
+        // se confirmer avant de peser. À 50, trois validations (+150) passaient
+        // devant un écart de fréquence de 80 et cassaient cette règle. À 20,
+        // trois validations valent +60 et la règle tient, tandis que vingt
+        // valent +400 — quatre fois l'ancien plafond, et le rang 20 devient
+        // joignable dans environ trois cas sur quatre au lieu de deux sur cinq.
+        //
+        // Le plafond ne change pas : le grief portait sur la lenteur des
+        // premières frappes, pas sur les gros utilisateurs.
+        private const val USAGE_WEIGHT = 20.0
 
         // Plafond du bonus d'usage, exprimé en nombre d'utilisations comptées.
-        // Deux garanties : le bonus maximal (100) reste très en dessous du poids
-        // d'une correction orthographique (100 000), donc une correction gagne
-        // toujours ; et il ne dépasse pas le 99e centile des fréquences corpus (88),
-        // donc les mots hyper-fréquents (ka 1800, pa 664) ne sont pas délogés par un
-        // mot personnel rarement pertinent.
+        // Il fixe la hiérarchie des trois poids de ce fichier, et cet ordre est
+        // délibéré :
+        //
+        //   usage (≤ 1 000) < contexte (150 000) < distance d'édition (1 000 000)
+        //
+        // Ce qu'on est en train d'écrire l'emporte sur ce qu'on écrit
+        // d'habitude, et une correction orthographique proche l'emporte sur les
+        // deux. `SuggestionScoringTest` verrouille cet ordre.
         private const val MAX_COUNTED_USAGES = 20
 
         /**

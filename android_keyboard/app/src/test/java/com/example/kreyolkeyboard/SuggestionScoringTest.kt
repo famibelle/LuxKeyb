@@ -141,4 +141,85 @@ class SuggestionScoringTest {
             attenduParLeContexte > simplementFrequent
         )
     }
+
+    /** Bonus effectivement accordé à un mot validé [usages] fois. */
+    private fun bonusDUsage(usages: Int): Double =
+        SuggestionEngine.calculateDictionaryScore("mot", "mo", 100, 0, usages) -
+            SuggestionEngine.calculateDictionaryScore("mot", "mo", 100, 0, 0)
+
+    /**
+     * Les trois poids du score doivent rester dans cet ordre :
+     *
+     *     usage personnel < contexte n-gramme < distance d'édition
+     *
+     * Ce n'est pas une commodité, c'est le comportement voulu : ce que
+     * l'utilisateur est en train d'écrire l'emporte sur ce qu'il écrit
+     * d'habitude, et une correction orthographique proche l'emporte sur les
+     * deux. Relever un poids sans regarder les autres casserait cet ordre en
+     * silence — c'est déjà arrivé deux fois sur ce fichier.
+     */
+    @Test
+    fun testScoreWeightsKeepTheirOrder() {
+        val usageMaximal = bonusDUsage(1000) // au-delà du plafond interne
+        assertTrue(
+            "Le bonus d'usage maximal ($usageMaximal) doit rester sous le poids " +
+                "du contexte (${SuggestionEngine.NGRAM_CONTEXT_WEIGHT}) : sinon " +
+                "l'habitude prime sur ce que l'utilisateur écrit à l'instant.",
+            usageMaximal < SuggestionEngine.NGRAM_CONTEXT_WEIGHT
+        )
+        assertTrue(
+            "Le poids du contexte (${SuggestionEngine.NGRAM_CONTEXT_WEIGHT}) doit " +
+                "rester sous celui de la distance d'édition " +
+                "(${SuggestionEngine.EDIT_DISTANCE_WEIGHT}).",
+            SuggestionEngine.NGRAM_CONTEXT_WEIGHT < SuggestionEngine.EDIT_DISTANCE_WEIGHT
+        )
+    }
+
+    /**
+     * Un mot validé vingt fois doit devenir joignable, sur le dictionnaire
+     * réellement livré.
+     *
+     * Le bonus d'usage a longtemps valu +100 au maximum, calibré sur un
+     * dictionnaire créole plafonnant à 15 519. Sur celui d'aujourd'hui, l'écart
+     * médian entre la 3ᵉ et la 20ᵉ suggestion d'un préfixe est de 137 : un mot
+     * validé vingt fois n'entrait donc toujours pas dans les propositions dans
+     * plus de la moitié des cas, et toute la gamification qui alimente ce
+     * compteur ne servait à rien de visible.
+     */
+    @Test
+    fun testUsageBonusCanPromoteAtShippedDictionaryScale() {
+        val asset = File("src/main/assets/luxemburgish_dict.json")
+        assertTrue("Dictionnaire introuvable : ${asset.absolutePath}", asset.exists())
+
+        val entries = JSONArray(asset.readText())
+        val parPrefixe = HashMap<String, MutableList<Int>>()
+        for (i in 0 until entries.length()) {
+            val entree = entries.getJSONArray(i)
+            val mot = entree.getString(0).lowercase()
+            val frequence = entree.getInt(1)
+            for (k in 1..3) {
+                if (mot.length > k) {
+                    parPrefixe.getOrPut(mot.substring(0, k)) { mutableListOf() }.add(frequence)
+                }
+            }
+        }
+
+        val RANG = 20
+        val ecarts = parPrefixe.values
+            .map { it.sortedDescending() }
+            .filter { it.size >= RANG }
+            .map { it[2] - it[RANG - 1] }
+            .sorted()
+        assertTrue("Pas assez de préfixes pour mesurer", ecarts.size > 100)
+        val median = ecarts[ecarts.size / 2].toDouble()
+
+        val bonusMaximal = bonusDUsage(1000)
+        assertTrue(
+            "Un mot validé vingt fois obtient $bonusMaximal, insuffisant pour " +
+                "franchir l'écart médian entre la 3ᵉ et la ${RANG}ᵉ suggestion " +
+                "($median) sur le dictionnaire livré : la personnalisation ne se " +
+                "voit pas. Relever USAGE_WEIGHT.",
+            bonusMaximal >= median
+        )
+    }
 }
