@@ -154,6 +154,24 @@ jobs:
 
         echo "✅ Format, volumétrie et familles de clés vérifiés"
 
+    # Les contrôles ci-dessus vérifient la FORME des assets ; celui-ci vérifie
+    # ce que l'utilisateur ressent — le nombre de frappes économisées. Deux
+    # constantes de score ont cessé de fonctionner en silence quand la
+    # fréquence maximale du corpus a été multipliée par six, et les deux sont
+    # passées à travers une suite de tests entièrement verte : un dictionnaire
+    # bien formé, de la bonne taille, peut parfaitement être mal classé.
+    #
+    # Mesuré sur ParaLux, dont aucune phrase n'est dans le corpus
+    # d'entraînement. Le fichier exporté reste dans le répertoire temporaire du
+    # runner : rien de ce jeu d'évaluation n'est redistribué.
+    - name: ⌨️ Banc de frappes (classement des suggestions)
+      run: |
+        set -euo pipefail
+        python docs/scripts/export_paralux.py "$RUNNER_TEMP/paralux.json"
+        node docs/scripts/bench_frappes.js "$RUNNER_TEMP/paralux.json"
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
     - name: 📈 Dictionary Statistics
       id: stats
       run: |
