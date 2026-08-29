@@ -1,9 +1,108 @@
 {
- "genere_le": "2026-08-28",
- "derniere_version": "10.16.0",
- "derniere_date": "2026-08-27",
+ "genere_le": "2026-08-29",
+ "derniere_version": "10.17.0",
+ "derniere_date": "2026-08-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "10.17.0",
+   "date": "2026-08-29",
+   "intro": "Les majuscules du luxembourgeois. Le clavier propose désormais <code>Haus</code>, <code>Joer</code> ou <code>Kand</code> avec la majuscule que la langue exige, même tapés en minuscules — la casse de chaque mot est apprise du corpus au lieu d'être ignorée.",
+   "sections": [
+    {
+     "emoji": "🔠",
+     "titre": "Groussschreiwung : le clavier propose enfin les majuscules",
+     "points": [
+      {
+       "titre": "La casse est apprise du corpus, pas devinée",
+       "texte": "Le pipeline comptait tout en minuscules ; il élit désormais une casse canonique par forme, en ne retenant <strong>que les occurrences situées ailleurs qu'en tête de phrase</strong> — une majuscule de début de phrase ne dit rien du mot, et la compter classerait <code>an</code> et <code>ech</code> parmi les substantifs. Sur les 37 734 formes retenues : 25 165 substantifs capitalisés, 680 acronymes (<code>RTL</code>, <code>CFL</code>), 12 565 mots en minuscules."
+      },
+      {
+       "titre": "Les vrais homographes sont livrés dans les deux casses",
+       "texte": ", avec leurs fréquences réparties : <code>Froen</code> (les questions) et <code>froen</code> (demander), <code>Gréng</code> (le parti) et <code>gréng</code> (la couleur), <code>Liewen</code> et <code>liewen</code>. 676 paires, soit +1,8 % d'entrées."
+      },
+      {
+       "titre": "Le moteur ne détruit plus la majuscule",
+       "texte": "<code>applyCasingPattern</code> recopiait la casse de la frappe sur la suggestion : taper <code>hau</code> rendait <code>haus</code>. La règle est inversée — un signal explicite de l'utilisateur l'emporte (tout en capitales, ou majuscule initiale), sinon la forme du dictionnaire fait foi. Une frappe en minuscules n'est pas une demande de minuscules, c'est l'absence de signal."
+      },
+      {
+       "titre": "Les prédictions contextuelles suivent",
+       "texte": ": après <code>an der</code>, le clavier propose <code>Rue</code>, <code>Stad</code>, <code>Nuecht</code>, <code>Chamber</code>. Les clés de contexte restent en minuscules, seuls les mots proposés portent la casse."
+      },
+      {
+       "titre": "Mesure sur un texte inédit",
+       "texte": ": 99,5 % de casse correcte sur 2 384 mots de ParaLux, jeu d'évaluation dont aucune phrase ne figure dans le corpus d'entraînement. Les onze erreurs restantes sont presque toutes des adjectifs substantivés (<code>den Däischteren</code>, <code>de Schlëmmsten</code>), que seule la phrase permet de trancher."
+      }
+     ],
+     "texte": "Le luxembourgeois capitalise tous les substantifs, comme l'allemand. La majuscule y est porteuse de sens, pas un accident de saisie — et le clavier l'ignorait complètement : il ne proposait jamais <code>Joer</code>, <code>Haus</code> ni <code>Kand</code> autrement qu'en minuscules, alors que la dictée, elle, rend déjà du texte capitalisé. Ce qui n'est pas encore résolu : la barre de suggestions n'affiche qu'une seule casse par mot, donc <code>froe</code> propose <code>Froen</code> mais jamais <code>froen</code> ; un substantif minoritaire face à son homographe verbal reste inatteignable (<code>Wäert</code>) ; et le correcteur orthographique ne signale pas une majuscule manquante.",
+     "tableau": {
+      "entetes": [
+       "tapé",
+       "avant",
+       "après"
+      ],
+      "lignes": [
+       [
+        "<code>hau</code>",
+        "haut · haus · hausse",
+        "haut · <strong>Haus</strong> · <strong>Hausse</strong>"
+       ],
+       [
+        "<code>jo</code>",
+        "joer · jo · jonk",
+        "<strong>Joer</strong> · jo · jonk"
+       ],
+       [
+        "<code>rt</code>",
+        "rtl · rtl-interview",
+        "<strong>RTL</strong> · <strong>RTL-Interview</strong>"
+       ],
+       [
+        "<code>kan</code>",
+        "kann · kanner · kand",
+        "kann · <strong>Kanner</strong> · <strong>Kand</strong>"
+       ],
+       [
+        "<code>an</code>",
+        "an · aner · anerem",
+        "an · aner · anerem"
+       ]
+      ]
+     }
+    },
+    {
+     "emoji": "🎮",
+     "titre": "Le comptage des mots aurait cessé en silence",
+     "points": [],
+     "texte": "Corrigé avant d'être visible, mais la panne aurait été totale et muette. <code>CreoleDictionaryWithUsage</code> construisait son fichier de comptage avec la clé brute du dictionnaire (<code>Haus</code>) alors que toutes ses lectures normalisent en minuscules (<code>haus</code>). Avec le dictionnaire capitalisé, <strong>les 25 845 substantifs auraient cessé d'être comptés</strong> : plus de progression, plus de couverture, aucune erreur affichée. La clé est désormais repliée, et la fréquence la plus haute conservée quand les deux variantes d'un homographe retombent sur la même.",
+     "tableau": null
+    },
+    {
+     "emoji": "✅",
+     "titre": "Vérifications",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Suite de tests portée à 138 (11 nouveaux sur la casse), dont un contrôle négatif : replier le dictionnaire en minuscules fait bien échouer cinq des six tests de <code>GroussschreiwungTest</code>."
+      },
+      {
+       "titre": null,
+       "texte": "L'intégration continue refuse désormais un dictionnaire de moins de 15 000 entrées capitalisées, et des n-grammes de moins de 10 000 candidats capitalisés — sans ce garde-fou, un retour au repli en minuscules produirait un fichier du bon type, de la bonne taille, parfaitement valide, et un clavier muet sur les majuscules."
+      },
+      {
+       "titre": null,
+       "texte": "Le simulateur du site rejoue le même moteur et a été mis à jour avec lui."
+      },
+      {
+       "titre": null,
+       "texte": "Vérifié sur émulateur Android 14 : <code>hau</code> puis <code>jo</code> puis <code>kan</code>, tapés en minuscules et validés depuis la barre, donnent <code>Haus Joer Kand</code> dans le champ."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "10.16.0",
    "date": "2026-08-27",
@@ -410,33 +509,6 @@
       {
        "titre": "La barre d'espace affiche <code>LuxKeyb™</code>",
        "texte": "au lieu de <code>Potomitan™</code>. La mention de copyright de l'écran À Propos, elle, garde le nom de l'éditeur."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.9.5",
-   "date": "2026-08-15",
-   "intro": "Aucun changement visible dans le clavier : cette version durcit la chaîne de build et de publication.",
-   "sections": [
-    {
-     "emoji": "🔧",
-     "titre": "Technique",
-     "points": [
-      {
-       "titre": "Le refus de signer avec la clé debug ne casse plus les builds debug",
-       "texte": "Un <code>throw</code> posé dans le bloc <code>signingConfigs</code> s'exécutait à chaque invocation de Gradle, pas seulement pour les tâches de release : <code>assembleDebug</code>, <code>testDebugUnitTest</code> et la synchro Android Studio devenaient impossibles sur toute machine sans les secrets de keystore. Le refus est conservé, mais porté par les tâches qui produisent réellement l'artefact."
-      },
-      {
-       "titre": "La vérification de signature en CI vérifie enfin quelque chose",
-       "texte": "L'étape de l'AAB terminait par un pipeline dont le code de sortie était toujours nul, et <code>jarsigner -verify</code> sort en 0 sur une archive non signée : rien ne pouvait la faire échouer. Le job de l'APK, lui, n'avait aucune vérification. Les deux exigent maintenant une signature valide et refusent un certificat <code>CN=Android Debug</code>."
-      },
-      {
-       "titre": null,
-       "texte": "<code>docs/index.md</code> est mis à jour automatiquement avec la version publiée."
       }
      ],
      "texte": "",

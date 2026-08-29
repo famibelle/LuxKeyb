@@ -9,6 +9,83 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.17.0] - 2026-08-29
+
+Les majuscules du luxembourgeois. Le clavier propose désormais `Haus`, `Joer`
+ou `Kand` avec la majuscule que la langue exige, même tapés en minuscules — la
+casse de chaque mot est apprise du corpus au lieu d'être ignorée.
+
+### 🔠 Groussschreiwung : le clavier propose enfin les majuscules
+
+Le luxembourgeois capitalise tous les substantifs, comme l'allemand. La
+majuscule y est porteuse de sens, pas un accident de saisie — et le clavier
+l'ignorait complètement : il ne proposait jamais `Joer`, `Haus` ni `Kand`
+autrement qu'en minuscules, alors que la dictée, elle, rend déjà du texte
+capitalisé.
+
+| tapé | avant | après |
+|---|---|---|
+| `hau` | haut · haus · hausse | haut · **Haus** · **Hausse** |
+| `jo` | joer · jo · jonk | **Joer** · jo · jonk |
+| `rt` | rtl · rtl-interview | **RTL** · **RTL-Interview** |
+| `kan` | kann · kanner · kand | kann · **Kanner** · **Kand** |
+| `an` | an · aner · anerem | an · aner · anerem |
+
+- **La casse est apprise du corpus, pas devinée.** Le pipeline comptait tout
+  en minuscules ; il élit désormais une casse canonique par forme, en ne
+  retenant **que les occurrences situées ailleurs qu'en tête de phrase** — une
+  majuscule de début de phrase ne dit rien du mot, et la compter classerait
+  `an` et `ech` parmi les substantifs. Sur les 37 734 formes retenues :
+  25 165 substantifs capitalisés, 680 acronymes (`RTL`, `CFL`), 12 565 mots
+  en minuscules.
+- **Les vrais homographes sont livrés dans les deux casses**, avec leurs
+  fréquences réparties : `Froen` (les questions) et `froen` (demander),
+  `Gréng` (le parti) et `gréng` (la couleur), `Liewen` et `liewen`. 676 paires,
+  soit +1,8 % d'entrées.
+- **Le moteur ne détruit plus la majuscule.** `applyCasingPattern` recopiait la
+  casse de la frappe sur la suggestion : taper `hau` rendait `haus`. La règle
+  est inversée — un signal explicite de l'utilisateur l'emporte (tout en
+  capitales, ou majuscule initiale), sinon la forme du dictionnaire fait foi.
+  Une frappe en minuscules n'est pas une demande de minuscules, c'est l'absence
+  de signal.
+- **Les prédictions contextuelles suivent** : après `an der`, le clavier
+  propose `Rue`, `Stad`, `Nuecht`, `Chamber`. Les clés de contexte restent en
+  minuscules, seuls les mots proposés portent la casse.
+- **Mesure sur un texte inédit** : 99,5 % de casse correcte sur 2 384 mots de
+  ParaLux, jeu d'évaluation dont aucune phrase ne figure dans le corpus
+  d'entraînement. Les onze erreurs restantes sont presque toutes des adjectifs
+  substantivés (`den Däischteren`, `de Schlëmmsten`), que seule la phrase
+  permet de trancher.
+
+Ce qui n'est pas encore résolu : la barre de suggestions n'affiche qu'une seule
+casse par mot, donc `froe` propose `Froen` mais jamais `froen` ; un substantif
+minoritaire face à son homographe verbal reste inatteignable (`Wäert`) ; et le
+correcteur orthographique ne signale pas une majuscule manquante.
+
+### 🎮 Le comptage des mots aurait cessé en silence
+
+Corrigé avant d'être visible, mais la panne aurait été totale et muette.
+`CreoleDictionaryWithUsage` construisait son fichier de comptage avec la clé
+brute du dictionnaire (`Haus`) alors que toutes ses lectures normalisent en
+minuscules (`haus`). Avec le dictionnaire capitalisé, **les 25 845 substantifs
+auraient cessé d'être comptés** : plus de progression, plus de couverture,
+aucune erreur affichée. La clé est désormais repliée, et la fréquence la plus
+haute conservée quand les deux variantes d'un homographe retombent sur la même.
+
+### ✅ Vérifications
+
+- Suite de tests portée à 138 (11 nouveaux sur la casse), dont un contrôle
+  négatif : replier le dictionnaire en minuscules fait bien échouer cinq des
+  six tests de `GroussschreiwungTest`.
+- L'intégration continue refuse désormais un dictionnaire de moins de 15 000
+  entrées capitalisées, et des n-grammes de moins de 10 000 candidats
+  capitalisés — sans ce garde-fou, un retour au repli en minuscules produirait
+  un fichier du bon type, de la bonne taille, parfaitement valide, et un
+  clavier muet sur les majuscules.
+- Le simulateur du site rejoue le même moteur et a été mis à jour avec lui.
+- Vérifié sur émulateur Android 14 : `hau` puis `jo` puis `kan`, tapés en
+  minuscules et validés depuis la barre, donnent `Haus Joer Kand` dans le champ.
+
 ## [10.16.0] - 2026-08-27
 
 Changement de corpus. Le dictionnaire et les prédictions sont désormais
