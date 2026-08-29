@@ -292,6 +292,33 @@ class SuggestionEngine(private val context: Context) {
          * déjà normalisées. `internal` (et non private) pour être testable en JVM sans
          * Context — cœur logique de `isKnownWord()`.
          */
+        /**
+         * Choisit, parmi les [candidats] qu'un contexte n-gramme propose, la
+         * forme capitalisée correspondant à [word], ou `null`.
+         *
+         * Cœur de décision de la correction de la Groussschreiwung, isolé du
+         * `Context` Android pour rester vérifiable en JVM. La règle : on ne
+         * capitalise que ce que le corpus a vu capitalisé **après le mot
+         * précédent**, et jamais si l'utilisateur a lui-même mis une majuscule
+         * quelque part — ce qu'il a tapé lui appartient.
+         */
+        internal fun pickContextualCapitalization(
+            word: String,
+            candidats: List<String>
+        ): String? {
+            if (word.length < 2) return null
+            if (word.any { it.isUpperCase() }) return null
+
+            // Le PREMIER candidat correspondant fait foi, quelle que soit sa
+            // casse : les candidats arrivent triés par probabilité
+            // décroissante, donc c'est la forme que ce contexte attend. Si
+            // c'est la minuscule, il n'y a rien à corriger — aller chercher
+            // plus loin une variante capitalisée moins probable reviendrait à
+            // imposer une majuscule que le contexte ne demande pas.
+            val attendu = candidats.firstOrNull { it.lowercase() == word } ?: return null
+            return if (attendu == word) null else attendu
+        }
+
         internal fun isWordKnown(word: String, normalizedWords: List<String>): Boolean {
             if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
             return normalizedWords.contains(AccentTolerantMatcher.normalize(word))
@@ -675,6 +702,42 @@ class SuggestionEngine(private val context: Context) {
         }
     }
     
+    /**
+     * Forme capitalisée que le contexte atteste pour [word], ou `null`.
+     *
+     * Sert la correction automatique de la Groussschreiwung à la frappe. Le
+     * garde-fou tient en une phrase : **on ne capitalise que ce que le corpus a
+     * réellement vu capitalisé après le mot précédent**, jamais sur la seule
+     * casse canonique du dictionnaire.
+     *
+     * La différence n'est pas théorique. Appliquer la casse canonique à tout mot
+     * connu abîmerait 3,5 % des phrases correctement écrites (mesuré sur
+     * ParaLux), et surtout capitaliserait **161 des 662 mots du dictionnaire
+     * français de secours** — `rue`, `moment`, `centre`, `chambre`, `route`,
+     * `santé`, `café`… Au Luxembourg, où l'on passe d'une langue à l'autre dans
+     * la même conversation, un mot sur quatre d'un message en français se
+     * retrouverait capitalisé au milieu de la phrase.
+     *
+     * Le contexte filtre ce cas tout seul : dans « la rue de la gare », le mot
+     * précédent est `la`, qui n'est pas un contexte luxembourgeois connu, donc
+     * rien ne se déclenche. Dans « an der rue », le contexte `an der` atteste
+     * `Rue`, et la correction tombe juste.
+     *
+     * Rend `null` dès que l'utilisateur a donné le moindre signal de casse : ce
+     * qu'il a tapé en majuscules lui appartient.
+     */
+    fun contextualCapitalization(word: String): String? {
+        if (ngramModel.isEmpty()) return null
+        val lastWord = wordHistory.lastOrNull() ?: return null
+        val previousWord = wordHistory.getOrNull(wordHistory.size - 2)
+        val context = resolveNgramContext(previousWord, lastWord) { ngramModel.containsKey(it) }
+        val candidats = ngramModel[context] ?: return null
+        return pickContextualCapitalization(
+            word,
+            candidats.mapNotNull { it["word"] as? String }
+        )
+    }
+
     /**
      * Ajoute un mot à l'historique pour les N-grams
      */

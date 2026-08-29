@@ -870,6 +870,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         mainLayout.addView(extrasTitle)
 
+        mainLayout.addView(createGroussschreiwungCard())
+        mainLayout.addView(createSpacing(16))
         mainLayout.addView(createSpellCheckerCard())
         mainLayout.addView(createSpacing(24))
 
@@ -1648,6 +1650,76 @@ class SettingsActivity : AppCompatActivity() {
      * ouvert, où la sélection se fait dans un sous-menu (« Correcteur par
      * défaut ») que rien ne signale.
      */
+    /**
+     * Interrupteur de la correction automatique de la Groussschreiwung.
+     *
+     * Le luxembourgeois capitalise tous ses substantifs, et le clavier rétablit
+     * la majuscule quand le contexte l'atteste — « an der rue » devient « an
+     * der Rue » à la validation du mot. La fonction est active par défaut :
+     * elle n'a d'intérêt que si elle agit sans qu'on la cherche.
+     *
+     * Mais une correction imposée qu'on ne peut pas éteindre est une fonction
+     * subie, et c'est le seul endroit de l'application où l'on peut la couper.
+     */
+    private fun createGroussschreiwungCard(): LinearLayout {
+        val card = createRoundedCard("#FFFFFF")
+
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val iconText = TextView(this).apply {
+            text = "🔠"
+            textSize = 24f
+            setPadding(0, 0, 12, 0)
+        }
+
+        val titleText = TextView(this).apply {
+            text = "Majuscules automatiques"
+            textSize = 18f
+            setTextColor(Color.parseColor("#333333"))
+            setTypeface(null, Typeface.BOLD)
+            layoutParams = LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+            )
+        }
+
+        val prefs = getSharedPreferences(
+            KreyolInputMethodServiceRefactored.KEYBOARD_PREFS_NAME, Context.MODE_PRIVATE
+        )
+        val interrupteur = Switch(this).apply {
+            isChecked = prefs.getBoolean(
+                KreyolInputMethodServiceRefactored.PREF_AUTO_CAPITALIZE, true
+            )
+            setOnCheckedChangeListener { _, coche ->
+                prefs.edit()
+                    .putBoolean(
+                        KreyolInputMethodServiceRefactored.PREF_AUTO_CAPITALIZE, coche
+                    )
+                    .apply()
+            }
+        }
+
+        header.addView(iconText)
+        header.addView(titleText)
+        header.addView(interrupteur)
+
+        val description = TextView(this).apply {
+            text = "Rétablit la majuscule des substantifs quand la phrase la " +
+                "réclame : « an der rue » devient « an der Rue ». Le clavier ne " +
+                "corrige que ce qu'il a réellement vu écrit ainsi, et une touche " +
+                "Retour arrière annule la correction."
+            textSize = 14f
+            setTextColor(Color.parseColor("#666666"))
+            setPadding(0, 10, 0, 0)
+        }
+
+        card.addView(header)
+        card.addView(description)
+        return card
+    }
+
     private fun createSpellCheckerCard(): LinearLayout {
         val estActif = isSpellCheckerSelected()
         val card = createRoundedCard("#FFFFFF")

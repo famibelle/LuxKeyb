@@ -73,9 +73,30 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     
     private var processorListener: InputProcessorListener? = null
     private var wordCommitListener: WordCommitListener? = null  // 🎮 Gamification: Tracking des mots
+
+    /**
+     * Rend la forme capitalisée attestée par le contexte pour un mot tapé en
+     * minuscules, ou `null`. Fourni par le service IME plutôt qu'appelé
+     * directement : ce processeur ne connaît ni le moteur de suggestions ni les
+     * préférences, et le fournisseur rend `null` quand la correction est
+     * désactivée ou le champ sensible.
+     */
+    private var capitalizationProvider: ((String) -> String?)? = null
+
+    /**
+     * Dernière capitalisation appliquée d'office : (ce que l'utilisateur a
+     * tapé, ce qui a été écrit). Une seule touche Retour arrière la défait,
+     * comme le veut la convention de toute correction automatique — sans quoi
+     * elle serait subie. Remise à `null` dès qu'autre chose est frappé.
+     */
+    private var lastAutoCapitalization: Pair<String, String>? = null
     
     fun setInputProcessorListener(listener: InputProcessorListener) {
         this.processorListener = listener
+    }
+
+    fun setCapitalizationProvider(provider: ((String) -> String?)?) {
+        this.capitalizationProvider = provider
     }
     
     /**
@@ -137,6 +158,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         // Ajouter le caractère au mot courant
         if (character.isNotEmpty() && character.all { isWordCharacter(it) }) {
             currentWord += character
+            lastAutoCapitalization = null
             Log.d(TAG, "Caractère '$character' ajouté, mot courant: '$currentWord'")
             processorListener?.onWordChanged(currentWord)
             Log.d(TAG, "onWordChanged appelé avec: '$currentWord'")
@@ -160,6 +182,9 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Retour arrière
      */
     private fun handleBackspace(inputConnection: InputConnection): Boolean {
+        // Une majuscule imposée d'office se défait au premier Retour arrière.
+        if (revertAutoCapitalization(inputConnection)) return true
+
         // Supprimer le(s) caractère(s) précédent(s) dans l'éditeur. La plupart des
         // emojis (panneau emoji, mais aussi ceux tapés via un autre clavier avant de
         // basculer sur Kréyòl) sont hors du plan de base Unicode et occupent une
@@ -344,9 +369,60 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * Réécrit le mot courant avec la majuscule que le contexte atteste, avant
+     * qu'il ne soit clos par l'espace.
+     *
+     * Le mot est déjà dans le champ — chaque frappe y a été validée au fil de
+     * l'eau — il faut donc l'effacer et le réécrire, comme le fait déjà la
+     * sélection d'une suggestion.
+     */
+    private fun applyContextualCapitalization(inputConnection: InputConnection) {
+        lastAutoCapitalization = null
+        val mot = currentWord
+        if (mot.isEmpty()) return
+        val corrige = capitalizationProvider?.invoke(mot) ?: return
+        if (corrige == mot) return
+
+        // Le curseur peut avoir été déplacé au milieu du mot : on ne réécrit
+        // que si ce qui précède est bien le mot courant, sinon on abîmerait le
+        // texte au lieu de le corriger.
+        val avant = inputConnection.getTextBeforeCursor(mot.length, 0)?.toString()
+        if (avant != mot) return
+
+        inputConnection.deleteSurroundingText(mot.length, 0)
+        inputConnection.commitText(corrige, 1)
+        currentWord = corrige
+        lastAutoCapitalization = mot to corrige
+        Log.d(TAG, "🔠 Capitalisation contextuelle: '$mot' -> '$corrige'")
+    }
+
+    /**
+     * Défait la capitalisation qui vient d'être imposée, si le Retour arrière
+     * suit immédiatement.
+     *
+     * L'espace est conservé : l'utilisateur voulait annuler la majuscule, pas
+     * revenir en arrière dans sa phrase. Un second Retour arrière se comporte
+     * normalement.
+     */
+    private fun revertAutoCapitalization(inputConnection: InputConnection): Boolean {
+        val (origine, corrige) = lastAutoCapitalization ?: return false
+        lastAutoCapitalization = null
+
+        val attendu = "$corrige "
+        val avant = inputConnection.getTextBeforeCursor(attendu.length, 0)?.toString()
+        if (avant != attendu) return false
+
+        inputConnection.deleteSurroundingText(attendu.length, 0)
+        inputConnection.commitText("$origine ", 1)
+        Log.d(TAG, "↩️ Capitalisation annulée: '$corrige' -> '$origine'")
+        return true
+    }
+
+    /**
      * Traite la barre d'espace
      */
     private fun handleSpace(inputConnection: InputConnection): Boolean {
+        applyContextualCapitalization(inputConnection)
         finalizeCurrentWord()
         inputConnection.commitText(" ", 1)
         

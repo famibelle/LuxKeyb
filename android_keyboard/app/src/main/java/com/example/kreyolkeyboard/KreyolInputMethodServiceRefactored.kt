@@ -112,6 +112,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // consomme pas le franchissement et que l'utilisateur retrouve quand
         // même sa carte en ouvrant l'application.
         private const val GAMIFICATION_PREFS = "lux_gamification_prefs"
+
+        /**
+         * Réglages du clavier lui-même, distincts de l'accueil et de la
+         * progression. Le premier est la correction automatique de la
+         * Groussschreiwung, active par défaut : le luxembourgeois capitalise
+         * tous ses substantifs, et l'intérêt de la fonction est précisément
+         * qu'elle agisse sans qu'on la cherche. Elle reste débrayable, parce
+         * qu'une correction imposée que l'on ne peut pas éteindre est une
+         * fonction subie.
+         */
+        const val KEYBOARD_PREFS_NAME = "lux_keyboard_prefs"
+        const val PREF_AUTO_CAPITALIZE = "auto_capitalize_nouns"
         private const val PREF_LAST_NOTIFIED_LEVEL = "last_notified_level_index"
 
         /**
@@ -310,6 +322,19 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             dictionaryWithUsage.getWordUsageCount(word)
         }
 
+        // Correction de la Groussschreiwung à la validation du mot. Trois
+        // conditions, dans cet ordre : le réglage est actif, le champ n'est pas
+        // sensible — on ne retouche jamais un mot de passe — et le contexte
+        // n-gramme atteste réellement la forme capitalisée. Le moteur ne
+        // capitalise pas sur la seule casse canonique du dictionnaire :
+        // 161 des 662 mots du dictionnaire français de secours y sont
+        // capitalisés (« rue », « moment », « centre »…), et un message en
+        // français en ressortirait défiguré.
+        inputProcessor.setCapitalizationProvider { mot ->
+            if (!capitalisationAutomatiqueActive() || isSensitiveField()) null
+            else suggestionEngine.contextualCapitalization(mot)
+        }
+
         // Connecter le listener de tracking au InputProcessor
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
@@ -393,6 +418,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
     }
     
+    private fun capitalisationAutomatiqueActive(): Boolean =
+        getSharedPreferences(KEYBOARD_PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(PREF_AUTO_CAPITALIZE, true)
+
     override fun onCreateInputView(): View? {
         Log.d(TAG, "onCreateInputView() appelée")
 
