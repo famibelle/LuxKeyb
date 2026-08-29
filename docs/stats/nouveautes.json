@@ -1,9 +1,76 @@
 {
- "genere_le": "2026-08-29",
- "derniere_version": "10.18.0",
- "derniere_date": "2026-08-29",
+ "genere_le": "2026-08-30",
+ "derniere_version": "10.19.0",
+ "derniere_date": "2026-08-30",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "10.19.0",
+   "date": "2026-08-30",
+   "intro": "Le clavier rétablit la majuscule des substantifs pendant que vous écrivez. <code>an der rue</code> devient <code>an der Rue</code> dès que le mot est validé. C'est la première fois que le clavier modifie ce que vous avez tapé — d'où les précautions qui suivent.",
+   "sections": [
+    {
+     "emoji": "🔠",
+     "titre": "La Groussschreiwung se corrige toute seule",
+     "points": [
+      {
+       "titre": "Seulement quand la phrase le réclame",
+       "texte": "Le clavier ne capitalise pas tout mot dont il connaît la forme majuscule : il ne rétablit la majuscule que lorsqu'il a réellement vu ce mot écrit ainsi <strong>après le mot qui précède</strong>. <code>an der</code> appelle <code>Rue</code> ; <code>la</code> n'appelle rien."
+      },
+      {
+       "titre": "Ce que vous écrivez en français reste intact",
+       "texte": "C'est la raison d'être de cette prudence : 161 des 662 mots du dictionnaire français de secours portent une majuscule en luxembourgeois — <code>rue</code>, <code>moment</code>, <code>partie</code>, <code>centre</code>, <code>chambre</code>, <code>route</code>, <code>santé</code>, <code>marché</code>, <code>café</code>. Une correction fondée sur le seul dictionnaire aurait capitalisé un mot sur quatre dans un message en français. Le clavier n'a pas de détecteur de langue ; c'est le contexte qui fait le tri."
+      },
+      {
+       "titre": "Vos majuscules à vous sont intouchables",
+       "texte": "Dès que le mot tapé contient la moindre majuscule, la correction se tait."
+      },
+      {
+       "titre": "Une touche Retour arrière l'annule",
+       "texte": ", en gardant l'espace. Le second retour arrière se comporte normalement."
+      },
+      {
+       "titre": "Un interrupteur la coupe",
+       "texte": ", dans les réglages, à côté du correcteur orthographique. Elle est active par défaut : elle n'a d'intérêt que si elle agit sans qu'on la cherche."
+      },
+      {
+       "titre": "Jamais dans un champ de mot de passe",
+       "texte": ""
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "📏",
+     "titre": "Ce que ça donne, mesuré",
+     "points": [],
+     "texte": "Sur ParaLux, jeu de phrases dont aucune ne figure dans le corpus qui a servi à construire le dictionnaire, en simulant deux façons d'écrire : À titre de comparaison, capitaliser d'après le seul dictionnaire aurait abîmé <strong>3,5 %</strong> des phrases correctement écrites. 818 majuscules manquantes n'ont pas été rétablies, faute de contexte attesté. C'est assumé : une majuscule oubliée ne coûte presque rien, une majuscule imposée à tort oblige à revenir en arrière et à se battre avec son clavier. Ces chiffres portent sur 312 phrases. Ils ne prouvent pas un taux d'erreur nul, ils le bornent — et cette version est la première à toucher au texte de l'utilisateur, donc les retours sont particulièrement bienvenus.",
+     "tableau": {
+      "entetes": [
+       "",
+       "mots retouchés",
+       "à tort",
+       "phrases abîmées"
+      ],
+      "lignes": [
+       [
+        "vous mettez vos majuscules",
+        "<strong>0</strong>",
+        "0",
+        "0 %"
+       ],
+       [
+        "vous tapez tout en minuscules",
+        "126 rétablies",
+        "<strong>0</strong>",
+        "<strong>0 %</strong>"
+       ]
+      ]
+     }
+    }
+   ]
+  },
   {
    "version": "10.18.0",
    "date": "2026-08-29",
@@ -417,132 +484,6 @@
       }
      ],
      "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.13.0",
-   "date": "2026-08-24",
-   "intro": "Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.12.15. Ce qui est repris ici est le travail d'affichage et d'accessibilité mené en amont entre les 10.9.3 et 10.12.15 ; l'identité luxembourgeoise — QWERTZ, <code>é ä ë '</code>, <code>accentMap</code>, palette du drapeau, niveaux, dictionnaire — est conservée telle quelle. Le numéro saute au-dessus de celui d'amont pour que les deux dépôts restent distinguables.",
-   "sections": [
-    {
-     "emoji": "📐",
-     "titre": "Le clavier tient enfin dans l'écran en paysage",
-     "points": [
-      {
-       "titre": "Le clavier ne prend plus tout l'écran en paysage",
-       "texte": "La fenêtre IME n'y reçoit qu'environ 359 dp de haut contre 891 en portrait : garder 48 dp par touche lui faisait occuper 87 % de l'écran, ne laissant que 51 dp à l'application. Les touches y descendent à 32 dp, le plancher de visée."
-      },
-      {
-       "titre": "La rangée du bas ne déborde plus",
-       "texte": "et la bande vide entre le clavier et le bas de l'écran disparaît."
-      },
-      {
-       "titre": "Les suggestions tiennent sur une rangée plus basse en paysage",
-       "texte": "(38 dp au lieu de deux rangées empilées à 88 dp)."
-      },
-      {
-       "titre": "Les suggestions françaises survivent à une rotation",
-       "texte": "— elles disparaissaient jusqu'ici au changement d'orientation."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔤",
-     "titre": "Les lettres à la taille de leurs touches",
-     "points": [
-      {
-       "titre": "Taille de police dérivée de la hauteur de touche",
-       "texte": ", et non plus fixée à 16 sp : une lettre occupait 44 px sur les 116 d'une touche en portrait, quand Gboard y dessine environ 62 px. Elle ne dépend plus non plus de l'échelle de police du système, qui pouvait la faire déborder de sa touche."
-      },
-      {
-       "titre": "Le padding implicite du style <code>Button</code> est neutralisé",
-       "texte": ": ses 30 px par bord coupaient les jambages (q, g, j, p, y) en paysage et tronquaient « 123 » en « 12 » en portrait."
-      },
-      {
-       "titre": "L'emoji tient dans sa touche",
-       "texte": ", les libellés retrouvent leur milieu vertical (<code>includeFontPadding = false</code>), la flèche du shift reprend le gabarit de ses voisines et la touche entrée sa bonne taille."
-      },
-      {
-       "titre": "La signature <code>LuxKeyb™</code> de la barre d'espace s'efface",
-       "texte": ": graisse normale et plus d'ombre portée. Elle ne se vise pas, elle n'a pas à revendiquer le regard pendant la frappe."
-      },
-      {
-       "titre": "Le mot d'une suggestion tient dans sa puce",
-       "texte": ", à 18 sp au lieu de 14 — c'est ce texte-là qu'on lit pour décider d'accepter une proposition."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "♿",
-     "titre": "Retour de frappe et cibles",
-     "points": [
-      {
-       "titre": "Vibration et son au frappé",
-       "texte": "(<code>KeyFeedback</code>), qui obéissent aux réglages du téléphone plutôt que de les ignorer."
-      },
-      {
-       "titre": "Les puces de suggestion sont écartées de 12 dp",
-       "texte": "Il n'y avait que 3,6 dp (0,58 mm) entre la rangée luxembourgeoise et la rangée française, alors que l'imprécision d'un doigt est d'abord verticale : un demi-millimètre trop bas validait un mot français à la place du mot visé. Les 12 dp sont pris sur la hauteur des puces, pas sur celle des rangées — le clavier occupe la même place."
-      },
-      {
-       "titre": null,
-       "texte": "<code>ACCESSIBILITE.md</code> entre dans le dépôt : la feuille de route technique dont ces deux points sont les deux premiers."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚙️",
-     "titre": "Réglages du clavier",
-     "points": [
-      {
-       "titre": "Un écran de réglages dédié",
-       "texte": "(<code>KeyboardSettingsActivity</code>), derrière un engrenage dans le bandeau — la barre porte déjà sept onglets."
-      },
-      {
-       "titre": "Les libellés d'onglets s'affichent de nouveau",
-       "texte": "La barre réservait 140 px figés quand l'emoji seul en réclamait 165, ce qui chassait le texte hors de la vue : sept destinations n'étaient plus identifiées que par des emojis nus."
-      },
-      {
-       "titre": "<code>updateTabBar()</code> cesse de recopier <code>createTabBar()</code>",
-       "texte": "Les deux copies avaient divergé, si bien que l'engrenage et la correction de hauteur n'existaient que dans l'original et disparaissaient au premier changement d'onglet."
-      },
-      {
-       "titre": "Une carte explique comment revenir au clavier luxembourgeois",
-       "texte": "Le geste n'est pas symétrique : sur les autres claviers, l'appui long sur la barre d'espace ne change que leur propre langue, et c'est l'icône de clavier de la barre de navigation qui ramène ici. La FAQ et le message d'erreur du sélecteur disaient jusqu'ici le contraire."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔐",
-     "titre": "Signature et CI",
-     "points": [
-      {
-       "titre": "Les identifiants de signature passent par <code>android_keyboard/keystore.properties</code>",
-       "texte": "(ignoré par git, voir <code>keystore.properties.example</code>), avant <code>gradle.properties</code> puis les variables d'environnement. <code>gradle.properties</code> est versionné : il ne doit plus contenir la moindre valeur réelle. <code>.gitignore</code> bloque aussi <code>keystore.properties</code>."
-      },
-      {
-       "titre": "Les actions GitHub passent au runtime Node 24",
-       "texte": "— Node 20 est déprécié sur les runners, qui forçaient déjà l'exécution avec un avertissement par job."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧹",
-     "titre": "Ce qui n'a pas été repris",
-     "points": [],
-     "texte": "Le site vitrine créole, les campagnes de captures multi-appareils, les visuels Play Store, le banc de test d'affichage <code>scripts/banc-clavier/</code> et le workflow <code>rapport-corpus.yml</code> (qui régénère un rapport sur le corpus créole) restent en amont.",
      "tableau": null
     }
    ]

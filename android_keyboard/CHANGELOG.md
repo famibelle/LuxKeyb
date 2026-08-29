@@ -9,6 +9,56 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.19.0] - 2026-08-30
+
+Le clavier rétablit la majuscule des substantifs pendant que vous écrivez.
+`an der rue` devient `an der Rue` dès que le mot est validé. C'est la première
+fois que le clavier modifie ce que vous avez tapé — d'où les précautions qui
+suivent.
+
+### 🔠 La Groussschreiwung se corrige toute seule
+
+- **Seulement quand la phrase le réclame.** Le clavier ne capitalise pas tout
+  mot dont il connaît la forme majuscule : il ne rétablit la majuscule que
+  lorsqu'il a réellement vu ce mot écrit ainsi **après le mot qui précède**.
+  `an der` appelle `Rue` ; `la` n'appelle rien.
+- **Ce que vous écrivez en français reste intact.** C'est la raison d'être de
+  cette prudence : 161 des 662 mots du dictionnaire français de secours portent
+  une majuscule en luxembourgeois — `rue`, `moment`, `partie`, `centre`,
+  `chambre`, `route`, `santé`, `marché`, `café`. Une correction fondée sur le
+  seul dictionnaire aurait capitalisé un mot sur quatre dans un message en
+  français. Le clavier n'a pas de détecteur de langue ; c'est le contexte qui
+  fait le tri.
+- **Vos majuscules à vous sont intouchables.** Dès que le mot tapé contient la
+  moindre majuscule, la correction se tait.
+- **Une touche Retour arrière l'annule**, en gardant l'espace. Le second retour
+  arrière se comporte normalement.
+- **Un interrupteur la coupe**, dans les réglages, à côté du correcteur
+  orthographique. Elle est active par défaut : elle n'a d'intérêt que si elle
+  agit sans qu'on la cherche.
+- **Jamais dans un champ de mot de passe.**
+
+### 📏 Ce que ça donne, mesuré
+
+Sur ParaLux, jeu de phrases dont aucune ne figure dans le corpus qui a servi à
+construire le dictionnaire, en simulant deux façons d'écrire :
+
+| | mots retouchés | à tort | phrases abîmées |
+|---|---|---|---|
+| vous mettez vos majuscules | **0** | 0 | 0 % |
+| vous tapez tout en minuscules | 126 rétablies | **0** | **0 %** |
+
+À titre de comparaison, capitaliser d'après le seul dictionnaire aurait abîmé
+**3,5 %** des phrases correctement écrites.
+
+818 majuscules manquantes n'ont pas été rétablies, faute de contexte attesté.
+C'est assumé : une majuscule oubliée ne coûte presque rien, une majuscule
+imposée à tort oblige à revenir en arrière et à se battre avec son clavier.
+
+Ces chiffres portent sur 312 phrases. Ils ne prouvent pas un taux d'erreur nul,
+ils le bornent — et cette version est la première à toucher au texte de
+l'utilisateur, donc les retours sont particulièrement bienvenus.
+
 ## [10.18.0] - 2026-08-29
 
 Le clavier tient enfin compte de ce que vous venez d'écrire. Trois constantes
