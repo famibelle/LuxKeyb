@@ -86,10 +86,15 @@ jobs:
         DICT=$(jq 'length' "$A/luxemburgish_dict.json")
         NG=$(jq 'keys | length' "$A/luxemburgish_ngrams.json")
         TWO=$(jq '[keys[] | select(test(" "))] | length' "$A/luxemburgish_ngrams.json")
-        echo "📊 $DICT mots, $NG contextes (dont $TWO à deux mots)"
+        # La casse est élue sur le corpus (Groussschreiwung) : un repli en
+        # minuscules passerait tous les autres contrôles sans rien casser de
+        # visible, mais le clavier ne proposerait plus jamais « Joer ».
+        CAPS=$(jq '[.[] | .[0] | select(test("^\\p{Lu}"))] | length' "$A/luxemburgish_dict.json")
+        echo "📊 $DICT mots (dont $CAPS capitalisés), $NG contextes (dont $TWO à deux mots)"
         [ "$DICT" -ge 20000 ] || { echo "::error::dictionnaire trop petit ($DICT)"; exit 1; }
         [ "$NG" -ge 15000 ] || { echo "::error::n-grammes trop peu nombreux ($NG)"; exit 1; }
         [ "$TWO" -gt 0 ] || { echo "::error::aucune clé de contexte à deux mots"; exit 1; }
+        [ "$CAPS" -ge 15000 ] || { echo "::error::casse canonique perdue ($CAPS entrées capitalisées)"; exit 1; }
 
     - uses: actions/upload-artifact@v6
       with:
