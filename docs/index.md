@@ -301,7 +301,7 @@ Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
 <div style="display:flex;justify-content:center;align-items:center;gap:28px;
             flex-wrap:wrap;margin:24px 0;">
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
-     class="btn">📲 Télécharger l'APK (version 10.16.0)</a>
+     class="btn">📲 Télécharger l'APK (version 10.17.0)</a>
   <figure style="margin:0;text-align:center;">
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">
       <img src="assets/qr-luxkeyb-apk.png"
