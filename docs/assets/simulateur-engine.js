@@ -115,6 +115,11 @@
     return isLetter(ch) && ch === ch.toLowerCase() && ch !== ch.toUpperCase();
   }
 
+  // Groussschreiwung : un signal EXPLICITE de l'utilisateur l'emporte, sinon
+  // la casse du dictionnaire fait foi. Une frappe en minuscules n'est pas une
+  // demande de minuscules, c'est l'absence de signal — recopier la casse de la
+  // frappe détruirait la majuscule du substantif (« hau » → « haus »).
+  // Miroir de SuggestionEngine.applyCasingPattern.
   function applyCasingPattern(input, suggestion) {
     if (!input || !suggestion) return suggestion;
 
@@ -123,10 +128,13 @@
       return suggestion.toUpperCase();
     }
 
-    if (input.length >= 1 && isUpper(input[0]) &&
+    if (isUpper(input[0]) &&
         [...input.slice(1)].every((ch) => isLower(ch) || !isLetter(ch))) {
       return suggestion.charAt(0).toUpperCase() + suggestion.slice(1);
     }
+
+    // Motif mixte : une majuscule ailleurs qu'en tête, choix délibéré.
+    if (![...input.slice(1)].some(isUpper)) return suggestion;
 
     let result = '';
     for (let i = 0; i < suggestion.length; i++) {
@@ -190,7 +198,9 @@
     }
 
     loadDictionary(rawArray) {
-      const list = rawArray.map(([word, freq]) => [String(word).toLowerCase(), freq || 1]);
+      // La casse livrée est conservée (« Joer », « RTL ») : les comparaisons
+      // passent par normalizedWords, qui replie déjà.
+      const list = rawArray.map(([word, freq]) => [String(word), freq || 1]);
       list.sort((a, b) => b[1] - a[1]);
       this.dictionary = list;
       this.normalizedWords = list.map(([word]) => AccentTolerantMatcher.normalize(word));

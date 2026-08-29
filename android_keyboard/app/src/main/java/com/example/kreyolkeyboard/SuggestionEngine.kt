@@ -57,16 +57,31 @@ class SuggestionEngine(private val context: Context) {
         private const val CANDIDATE_POOL_SIZE = 40
         
         /**
-         * Applique le pattern de casse (majuscules/minuscules) de l'input à un mot suggéré
+         * Concilie la casse voulue par l'utilisateur et celle que porte le mot
+         * du dictionnaire.
+         *
+         * Le luxembourgeois capitalise tous les substantifs, et le dictionnaire
+         * livre depuis le 2026-08-29 la casse canonique de chaque forme
+         * (« Joer », « RTL », « an »). La règle est donc : un signal EXPLICITE
+         * de l'utilisateur l'emporte, sinon le dictionnaire fait foi.
+         *
+         * L'ancienne version recopiait systématiquement la casse de la frappe
+         * sur la suggestion. C'était juste tant que le dictionnaire était en
+         * minuscules ; avec la casse canonique, cela détruisait la majuscule du
+         * substantif dès que l'utilisateur tapait en minuscules — « hau »
+         * aurait rendu « haus » au lieu de « Haus », et la Groussschreiwung
+         * n'aurait jamais été visible.
+         *
          * Exemples:
-         * - input="kaBr", suggestion="kabrit" → "kaBrit"
-         * - input="BONJ", suggestion="bonjou" → "BONJOU"
-         * - input="Bon", suggestion="bonjou" → "Bonjou"
+         * - input="hau",  suggestion="Haus"   → "Haus"   (le dictionnaire décide)
+         * - input="Hau",  suggestion="Haus"   → "Haus"
+         * - input="HAU",  suggestion="Haus"   → "HAUS"
+         * - input="bon",  suggestion="bonjou" → "bonjou"
+         * - input="Bon",  suggestion="bonjou" → "Bonjou" (majuscule demandée)
+         * - input="kaBr", suggestion="kabrit" → "kaBrit" (motif mixte respecté)
          */
         internal fun applyCasingPattern(input: String, suggestion: String): String {
             if (input.isEmpty() || suggestion.isEmpty()) return suggestion
-
-            val result = StringBuilder()
 
             // Cas 1: Tout en majuscules — au moins 2 lettres, sinon une seule
             // majuscule initiale (shift automatique) mettrait toute la
@@ -75,33 +90,43 @@ class SuggestionEngine(private val context: Context) {
             if (letters.length >= 2 && letters.all { it.isUpperCase() }) {
                 return suggestion.uppercase()
             }
-            
-            // Cas 2: Première lettre majuscule seulement
-            if (input.length >= 1 && input[0].isUpperCase() && 
+
+            // Cas 2: Première lettre majuscule seulement. L'utilisateur réclame
+            // une capitale que le mot n'a peut-être pas (début de phrase, nom
+            // propre absent du corpus) : on la lui donne.
+            if (input[0].isUpperCase() &&
                 input.drop(1).all { it.isLowerCase() || !it.isLetter() }) {
                 return suggestion.replaceFirstChar { it.uppercase() }
             }
-            
-            // Cas 3: Pattern mixte - appliquer caractère par caractère
-            for (i in suggestion.indices) {
-                if (i < input.length) {
-                    val inputChar = input[i]
-                    val suggestionChar = suggestion[i]
-                    
-                    result.append(
-                        when {
-                            inputChar.isUpperCase() -> suggestionChar.uppercase()
-                            inputChar.isLowerCase() -> suggestionChar.lowercase()
-                            else -> suggestionChar
-                        }
-                    )
-                } else {
-                    // Au-delà de la longueur de l'input, garder la casse originale
-                    result.append(suggestion[i])
+
+            // Cas 3: Motif mixte — une majuscule ailleurs qu'en tête. Rare, mais
+            // c'est un choix délibéré de l'utilisateur, qu'on recopie
+            // caractère par caractère comme avant.
+            if (input.drop(1).any { it.isUpperCase() }) {
+                val result = StringBuilder()
+                for (i in suggestion.indices) {
+                    if (i < input.length) {
+                        val inputChar = input[i]
+                        val suggestionChar = suggestion[i]
+                        result.append(
+                            when {
+                                inputChar.isUpperCase() -> suggestionChar.uppercase()
+                                inputChar.isLowerCase() -> suggestionChar.lowercase()
+                                else -> suggestionChar
+                            }
+                        )
+                    } else {
+                        // Au-delà de la longueur de l'input, garder la casse originale
+                        result.append(suggestion[i])
+                    }
                 }
+                return result.toString()
             }
-            
-            return result.toString()
+
+            // Cas 4: frappe entièrement en minuscules — aucun signal. La forme
+            // du dictionnaire est livrée telle quelle : c'est elle qui porte la
+            // Groussschreiwung.
+            return suggestion
         }
 
         /**
@@ -654,7 +679,10 @@ class SuggestionEngine(private val context: Context) {
             
             for (i in 0 until wordsArray.length()) {
                 val wordArray = wordsArray.getJSONArray(i)
-                val word = wordArray.getString(0).lowercase()
+                // La casse livrée est conservée : c'est elle qui porte la
+                // Groussschreiwung (« Joer », « RTL »). Les comparaisons se
+                // font par ailleurs sur `normalizedWords`, qui replie déjà.
+                val word = wordArray.getString(0)
                 val frequency = wordArray.optInt(1, 1)
                 loadedDictionary.add(Pair(word, frequency))
             }

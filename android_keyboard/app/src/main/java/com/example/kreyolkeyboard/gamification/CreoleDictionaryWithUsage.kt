@@ -172,7 +172,21 @@ class CreoleDictionaryWithUsage(private val context: Context) {
                     put("user_count", 0)
                 }
                 
-                migratedDict.put(word, wordData)
+                // Clé repliée en minuscules : toutes les lectures
+                // (trackWordUsage, getWordUsageCount, getWordFrequency)
+                // normalisent ainsi. Depuis que l'asset porte la casse
+                // canonique, garder « Haus » tel quel ferait échouer
+                // silencieusement le comptage des 25 845 substantifs
+                // capitalisés — donc la progression et la couverture.
+                //
+                // Les 676 homographes livrés dans les deux casses
+                // (Froen/froen) retombent sur une même clé : on garde la
+                // fréquence la plus haute, l'asset étant trié par fréquence
+                // décroissante, la seconde écriture serait la plus faible.
+                val existant = migratedDict.optJSONObject(word.lowercase())
+                if (existant == null || existant.getInt("frequency") < frequency) {
+                    migratedDict.put(word.lowercase(), wordData)
+                }
                 count++
             }
             
