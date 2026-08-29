@@ -8,6 +8,14 @@ name: 🧪 Labs — build expérimental installable
 # demander de compiler le projet — ce qui suppose le NDK, le JDK 17 et la
 # conversion du modèle whisper.
 #
+# Cette copie du workflow est celle de la branche `feat/luxasr-online` : la
+# reconnaissance y passe par le service de l'Uni.lu, donc le job qui convertit
+# le modèle whisper (pip install torch, ~2 minutes) a été retiré et la
+# vérification de l'APK est inversée — le modèle doit en être ABSENT. La branche
+# de la dictée embarquée garde sa propre copie, où le modèle reste obligatoire.
+# GitHub Actions exécute toujours le fichier du ref poussé : les deux ne se
+# marchent pas dessus.
+#
 # Ce workflow publie une préversion GitHub sous un tag fixe, `labs`, pour que
 # l'adresse de téléchargement ne change jamais :
 #
@@ -92,49 +100,10 @@ jobs:
         retention-days: 1
 
   # ---------------------------------------------------------------------------
-  stt-model:
-    name: 🎙️ Modèle de dictée
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v5
-
-    - uses: actions/setup-python@v6
-      with:
-        python-version: '3.11'
-
-    - name: 📦 Chaîne de conversion
-      run: |
-        python -m pip install --upgrade pip
-        # Index CPU explicite : la roue par défaut tire ~2,5 Go de paquets CUDA
-        # inutiles sur un runner sans GPU.
-        pip install --index-url https://download.pytorch.org/whl/cpu torch
-        pip install transformers numpy huggingface_hub
-
-    - name: 🔄 Convertir et quantifier
-      run: python stt/convert_model.py --output android_keyboard/app/src/main/assets
-
-    - name: ✅ Valider le modèle
-      run: |
-        set -euo pipefail
-        M=android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
-        [ -f "$M" ] || { echo "::error::conversion ratée, $M absent"; exit 1; }
-        SIZE=$(stat -c%s "$M"); echo "📦 $(( SIZE / 1000000 )) Mo"
-        [ "$SIZE" -ge 25000000 ] || { echo "::error::modèle tronqué ($SIZE octets)"; exit 1; }
-        # En-tête ggml (0x67676d6c en little-endian) : écarte une page d'erreur
-        # HTML de Hugging Face empaquetée à la place du modèle.
-        head -c 4 "$M" | grep -q 'lmgg' || { echo "::error::en-tête ggml absent"; exit 1; }
-
-    - uses: actions/upload-artifact@v6
-      with:
-        name: labs-stt-model
-        path: android_keyboard/app/src/main/assets/ggml-lb-tiny-q5_1.bin
-        retention-days: 1
-
-  # ---------------------------------------------------------------------------
   build:
     name: 🏗️ APK Labs
     runs-on: ubuntu-latest
-    needs: [dictionary, stt-model]
+    needs: [dictionary]
 
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
@@ -166,12 +135,6 @@ jobs:
       uses: actions/download-artifact@v7
       with:
         name: labs-dictionary
-        path: android_keyboard/app/src/main/assets/
-
-    - name: 📥 Modèle de dictée régénéré
-      uses: actions/download-artifact@v7
-      with:
-        name: labs-stt-model
         path: android_keyboard/app/src/main/assets/
 
     - name: 🧪 Tests unitaires
@@ -221,11 +184,18 @@ jobs:
             || { echo "::error::libluxstt.so absent pour $ABI"; exit 1; }
         done
 
-        # 2. Le modèle, et surtout NON COMPRESSÉ : c'est ce qui permet à
-        #    AAsset_getBuffer() de le mmap depuis l'APK au lieu d'en inflater
-        #    31 Mo en RAM à chaque ouverture du micro.
-        unzip -v "$APK" | grep 'ggml-lb-tiny-q5_1.bin' | grep -q 'Stored' \
-          || { echo "::error::modèle absent ou compressé dans l'APK"; exit 1; }
+        # 2. Le modèle whisper doit être ABSENT — c'est l'inverse de ce que
+        #    vérifie la branche de la dictée embarquée. La reconnaissance passe
+        #    ici par luxasr.uni.lu ; un modèle réempaqueté par accident ferait
+        #    un APK de 38 Mo au lieu de 6,2, sans que rien ne s'en aperçoive
+        #    puisqu'il ne serait jamais chargé.
+        ! unzip -l "$APK" | grep -q 'assets/ggml-.*\.bin' \
+          || { echo "::error::le modèle whisper est dans l'APK alors que cette branche l'exclut"; exit 1; }
+
+        # 2 bis. Et le dictionnaire, lui, doit y être : sans lui la vérification
+        #    ci-dessus passerait tout aussi bien sur un APK aux assets vides.
+        unzip -l "$APK" | grep -q 'assets/luxemburgish_dict.json' \
+          || { echo "::error::dictionnaire absent de l'APK"; exit 1; }
 
         # 3. La signature. apksigner comprend les schémas v2/v3, contrairement à
         #    jarsigner qui ne voit que v1.
@@ -251,7 +221,7 @@ jobs:
         ! grep -q "CN=Android Debug" /tmp/apk-verify.txt \
           || { echo "::error::APK signé avec la clé debug, pas avec celle de production"; exit 1; }
 
-        echo "✅ libluxstt.so (2 ABI), modèle mmap-able, signature de production"
+        echo "✅ libluxstt.so (2 ABI), aucun modèle embarqué, dictionnaire présent, signature de production"
 
     - name: 🏷️ Nommer l'artefact
       id: rename
@@ -350,6 +320,16 @@ jobs:
 
         Le service LuxASR, qui fait tourner `large-v3-turbo`, transcrit le même
         énoncé correctement, ponctué et capitalisé, en ~270 ms.
+
+        ## Installation
+
+        Page d'installation, avec flashcode et marche à suivre :
+        <https://famibelle.github.io/LuxKeyb/labs-luxasr.html>
+
+        L'APK pèse ~6 Mo : le modèle whisper de 31 Mo est **exclu du paquet**,
+        n'ayant rien à y faire dès lors que la reconnaissance est distante. Le
+        téléphone a besoin d'une connexion pour dicter, et pas seulement pour
+        installer — il n'y a pas de repli hors ligne.
 
         ## Statut
 

@@ -171,12 +171,37 @@ android {
     }
 
     androidResources {
-        // Le modèle ggml doit rester NON compressé dans l'APK : c'est ce qui
-        // permet à AAsset_getBuffer() de renvoyer un pointeur mmap'é sur la
-        // région de l'APK au lieu de décompresser 31 Mo en RAM à chaque
-        // ouverture du micro. Un .bin compressé serait de toute façon inutile,
-        // les poids quantifiés n'étant plus compressibles.
+        // Sans effet sur cette branche, où aucun .bin n'est empaqueté (voir
+        // l'exclusion du modèle ci-dessous) : conservé tel quel pour que la
+        // branche de la dictée embarquée reste diffable ligne à ligne.
+        //
+        // Là-bas, le modèle ggml doit rester NON compressé dans l'APK : c'est
+        // ce qui permet à AAsset_getBuffer() de renvoyer un pointeur mmap'é sur
+        // la région de l'APK au lieu de décompresser 31 Mo en RAM à chaque
+        // ouverture du micro.
         noCompress 'bin'
+
+        // Branche de démonstration : la reconnaissance passe par luxasr.uni.lu,
+        // jamais par whisper embarqué. Le modèle de 31 Mo n'a donc rien à faire
+        // dans l'APK — il en ferait un de 38 Mo au lieu de 6,2, à télécharger
+        // sur le wifi d'une salle de réunion pendant que tout le monde attend.
+        //
+        // Exclu ici plutôt que simplement « pas généré par la CI » : un
+        // développeur qui a converti le modèle pour l'autre branche l'a dans ses
+        // assets, et rien ne l'empêcherait de le réempaqueter sans s'en
+        // apercevoir. La CI vérifie ensuite son absence de l'APK produit —
+        // l'exclusion est le moyen, la vérification est la preuve.
+        //
+        // sourceSets.main.assets.filter.exclude ne fonctionne pas ici : le
+        // filtre est ignoré par la tâche de fusion des assets, vérifié en
+        // construisant l'APK.
+        //
+        // Le motif REMPLACE celui d'aapt au lieu de s'y ajouter : les entrées
+        // par défaut sont donc recopiées telles quelles avant la nôtre, faute
+        // de quoi un .DS_Store ou un fichier ~ déposé un jour dans assets/
+        // finirait dans l'APK.
+        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:' +
+                            '!thumbs.db:!picasa.ini:!*~:!ggml-lb-tiny-q5_1.bin'
     }
 
     compileOptions {
@@ -233,43 +258,28 @@ tasks.matching {
     }
 }
 
-// Le modèle de dictée vocale n'est plus versionné (31 Mo) : la CI le régénère
-// depuis Hugging Face et le dépose dans les assets, comme le dictionnaire.
+// La dictée de cette branche passe par le service en ligne de l'Uni.lu : le
+// modèle whisper embarqué n'y est jamais chargé, et il est exclu du paquet
+// (voir androidResources.ignoreAssetsPattern plus haut). Le garde-fou de la
+// branche `feat/speech-to-text-lb` — qui refuse une release sans modèle — est
+// remplacé par son inverse : on signale un modèle présent dans les assets,
+// pour que personne ne s'étonne de ne pas le retrouver dans l'APK.
 //
-// Son absence ne casse aucun build — un asset manquant est simplement absent de
-// l'APK — mais elle produit un clavier dont le bouton micro s'excuse à chaque
-// appui. C'est exactement le genre de panne silencieuse que ce dépôt paie déjà
-// ailleurs, d'où le refus explicite sur les tâches de release, calqué sur celui
-// de la signature. Les builds debug se contentent d'un avertissement : un
-// développeur qui n'a pas encore converti le modèle doit pouvoir travailler sur
-// le reste du clavier.
+// La bibliothèque native, elle, reste compilée et empaquetée, et c'est un choix
+// discutable : libwhisper et les trois libggml pèsent 4,22 Mo empaquetés pour
+// les deux ABI de production — mesuré, pas estimé — soit plus des deux tiers
+// d'un APK qui en pèse 6,2 une fois le modèle parti. Elles ne peuvent rien
+// faire ici, faute de modèle à charger.
+//
+// Elles restent parce que 6,2 Mo se téléchargent déjà en quelques secondes,
+// alors que retirer externalNativeBuild ferait diverger la configuration CMake,
+// la CI (qui n'aurait plus besoin du sous-module) et les vérifications d'APK,
+// sur une branche dont tout l'intérêt est d'être jetable. Le jour où la taille
+// compte vraiment, c'est le premier endroit où couper.
 def sttModel = file('src/main/assets/ggml-lb-tiny-q5_1.bin')
-def sttModelHint =
-    "Modèle de dictée vocale absent (${sttModel.name}). " +
-    "Régénérez-le : python stt/convert_model.py --output android_keyboard/app/src/main/assets"
-
-if (!sttModel.exists()) {
-    println "⚠️  ${sttModelHint}"
-}
-
-tasks.matching {
-    it.name in ['packageRelease', 'packageReleaseBundle', 'packageLabs', 'packageLabsBundle']
-}.configureEach {
-    doFirst {
-        if (!sttModel.exists()) {
-            throw new GradleException(sttModelHint)
-        }
-        // Un asset tronqué (téléchargement interrompu, artefact CI partiel) se
-        // charge sans erreur visible jusqu'à l'appel natif. 25 Mo est un plancher
-        // large : le fichier q5_1 en pèse 31.
-        def mo = sttModel.length() / 1e6
-        if (mo < 25) {
-            throw new GradleException(
-                "Modèle de dictée vocale tronqué : ${String.format('%.1f', mo)} Mo " +
-                "au lieu des ~31 Mo attendus."
-            )
-        }
-    }
+if (sttModel.exists()) {
+    println "ℹ️  Modèle de dictée présent dans les assets (${String.format('%.1f', sttModel.length() / 1e6)} Mo) : " +
+            "exclu de l'APK sur cette branche, qui délègue la reconnaissance à luxasr.uni.lu."
 }
 
 dependencies {

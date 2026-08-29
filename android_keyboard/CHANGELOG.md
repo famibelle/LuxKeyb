@@ -38,6 +38,31 @@ modèle embarqué et 36 % avec `base`, quand il en faudrait moins de 15 %. Le m�
 énoncé revient de LuxASR correct, ponctué et capitalisé, en ~270 ms de
 traitement serveur.
 
+### 📦 Le modèle whisper sort du paquet — 38 Mo → 6,2 Mo
+
+- `ignoreAssetsPattern` exclut `ggml-lb-tiny-q5_1.bin` de l'APK : la
+  reconnaissance étant distante, les 31 Mo n'y servaient qu'à faire attendre
+  celui qui installe. L'exclusion agit même si le fichier traîne dans les assets
+  d'un développeur qui a travaillé sur l'autre branche — le motif d'aapt étant
+  *remplacé* et non complété, ses entrées par défaut (`.ds_store`, `*~`, …) sont
+  recopiées avant la nôtre.
+- `sourceSets.main.assets.filter.exclude` a été essayé d'abord et **ne
+  fonctionne pas** : la tâche de fusion des assets ignore le filtre, ce que seul
+  l'examen de l'APK produit a révélé. Noté ici pour que personne n'y retourne.
+- Le garde-fou de release est inversé : la branche embarquée refuse de publier
+  *sans* modèle, celle-ci signale un modèle présent dans les assets, et la CI
+  vérifie son absence de l'APK — plus une vérification que le dictionnaire, lui,
+  y est bien, faute de quoi un APK aux assets vides passerait le test.
+- Le job CI de conversion du modèle (installation de torch comprise) disparaît
+  de cette branche. Les deux branches ont leur propre copie de `labs.yml` et
+  GitHub exécute celle du ref poussé : elles ne se marchent pas dessus.
+- La bibliothèque native reste, elle : `libwhisper` et les trois `libggml`
+  pèsent 4,22 Mo empaquetés pour les deux ABI de production, soit plus des deux
+  tiers de ce qui reste. Elles ne peuvent rien faire sans modèle, mais les
+  retirer ferait diverger CMake, la CI et les vérifications d'APK pour gagner
+  quelques secondes de téléchargement. C'est le premier endroit où couper si la
+  taille devient un sujet.
+
 ## [Non publié] — dictée vocale
 
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
