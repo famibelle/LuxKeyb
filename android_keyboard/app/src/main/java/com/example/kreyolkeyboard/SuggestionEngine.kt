@@ -50,6 +50,45 @@ class SuggestionEngine(private val context: Context) {
          */
         internal const val EDIT_DISTANCE_WEIGHT = 1_000_000.0
 
+        /**
+         * Poids d'une correspondance avec le contexte n-gramme.
+         *
+         * Même piège qu'[EDIT_DISTANCE_WEIGHT], découvert de la même façon :
+         * le bonus valait 50 face à des fréquences qui montaient à 15 519 en
+         * créole — déjà ténu — et qui montent à 100 105 ici. Le score étant
+         * dominé par la fréquence corpus, un bonus de 50 ne réordonnait
+         * strictement rien : le classement se réduisait à « trier par
+         * fréquence », et les n-grammes, tout le travail de la pipeline pour
+         * les produire et les 5 Mo qu'ils pèsent dans l'APK, ne servaient plus
+         * qu'au mode prédiction pure, quand rien n'est encore tapé.
+         *
+         * Mesuré sur ParaLux, jeu dont aucune phrase n'est dans le corpus
+         * d'entraînement, 1 755 mots en contexte, « le mot est-il proposé dans
+         * les trois premiers après k frappes » :
+         *
+         * ```
+         * bonus       @1 frappe   @2 frappes  @3 frappes
+         *       0       12,99 %     31,11 %     55,50 %
+         *      50       12,99 %     31,40 %     55,84 %   ← livré jusqu'ici
+         *   5 000       16,64 %     34,70 %     57,44 %
+         *  50 000       21,99 %     35,67 %     57,44 %
+         * 150 000       22,22 %     35,67 %     57,44 %   ← retenu
+         * ```
+         *
+         * Entre 0 et 50 l'écart est du bruit : le bonus livré ne faisait rien.
+         * La courbe sature une fois le poids passé au-dessus de la fréquence
+         * maximale du dictionnaire (100 105), ce qui est exactement l'invariant
+         * à tenir : au-delà, seul l'ordre compte et il ne change plus. 150 000
+         * garde la même marge que celle prise pour [EDIT_DISTANCE_WEIGHT].
+         *
+         * Le bonus ne s'applique qu'aux candidats qui correspondent déjà au
+         * préfixe tapé : il réordonne des mots que le clavier aurait proposés
+         * de toute façon, il n'en introduit aucun. Et il reste très inférieur à
+         * [EDIT_DISTANCE_WEIGHT], de sorte qu'une correction orthographique
+         * proche continue de primer.
+         */
+        internal const val NGRAM_CONTEXT_WEIGHT = 150_000.0
+
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
@@ -466,7 +505,7 @@ class SuggestionEngine(private val context: Context) {
             .filter { it.startsWith(input, ignoreCase = true) }
             .forEach { word ->
                 val currentScore = allLux[word] ?: 0f
-                allLux[word] = currentScore + 50f  // Bonus contextuel
+                allLux[word] = currentScore + NGRAM_CONTEXT_WEIGHT.toFloat()
             }
         
         // Convertir en BilingualSuggestion et appliquer boost luxembourgeois + casse
@@ -890,8 +929,7 @@ class SuggestionEngine(private val context: Context) {
         ngramSuggestions.forEach { word ->
             val casedWord = applyCasingPattern(input, word)
             val currentScore = allSuggestions[casedWord] ?: 0.0
-            val ngramBonus = 50.0 // Bonus pour les suggestions contextuelles
-            allSuggestions[casedWord] = currentScore + ngramBonus
+            allSuggestions[casedWord] = currentScore + NGRAM_CONTEXT_WEIGHT
         }
         
         // Trier par score et retourner les meilleures

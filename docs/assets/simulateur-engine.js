@@ -156,7 +156,12 @@
     const distance = levenshteinDistance || 0;
 
     if (distance > 0) {
-      score += (3 - distance) * 100000;
+      // 1 000 000 et non 100 000 : le poids doit dépasser la fréquence la plus
+      // haute du dictionnaire, sinon une correction à deux éditions vers un mot
+      // très fréquent repasse devant une correction à une édition. Relevé à
+      // 100 000 ici alors que le moteur Android était passé à 1 000 000 le
+      // 27 août — le simulateur rejouait donc le bug corrigé dans l'application.
+      score += (3 - distance) * 1000000;
     }
     if (AccentTolerantMatcher.startsWith(input, word)) {
       score += 50;
@@ -331,7 +336,9 @@
       const lowerInput = input.toLowerCase();
       for (const word of ngramMatches) {
         if (word.toLowerCase().startsWith(lowerInput)) {
-          scores.set(word, (scores.get(word) || 0) + 50);
+          // Miroir de SuggestionEngine.NGRAM_CONTEXT_WEIGHT : à 50, face à des
+          // fréquences qui montent à 100 105, le contexte ne réordonnait rien.
+          scores.set(word, (scores.get(word) || 0) + 150000);
         }
       }
 
