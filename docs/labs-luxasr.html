@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dictée en ligne LuxASR — démonstration</title>
+<meta name="description" content="Version de démonstration du Lëtzebuergesch Clavier dont la dictée est confiée au service LuxASR de l'Université du Luxembourg. Le son du micro quitte le téléphone.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:720px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sun);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;}
+h3{font-size:15.5px;font-weight:700;margin:18px 0 4px;}
+section{margin-top:38px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14px;}
+a{color:var(--sea);}
+
+/* L'avertissement passe avant le bouton, contrairement à la page Labs : ici
+   il ne prévient pas d'un défaut de qualité mais d'un envoi de la voix à un
+   tiers. Personne ne doit pouvoir télécharger sans l'avoir lu. */
+.warn{border:1px solid var(--line);border-left:4px solid var(--sun);
+  background:var(--sun-soft);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+.warn h2{margin-top:0;}
+.warn p:last-child{margin-bottom:0;}
+
+.status{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;
+  font-size:13.5px;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:12px;background:var(--card);
+  padding:14px 18px;margin:0 0 18px;}
+.status .v{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums;font-family:var(--mono);}
+
+.cta{margin:0 0 10px;}
+.cta .btn{font-size:15.5px;padding:13px 20px;}
+
+.get{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center;}
+.get-main{flex:1 1 300px;min-width:0;}
+.qr{margin:0;text-align:center;flex:0 0 auto;}
+.qr img{display:block;width:170px;height:170px;background:#fff;
+  border-radius:10px;padding:7px;box-sizing:border-box;border:1px solid var(--line);}
+.qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+/* Le QR pointe sur cette page même : qui le lit sur un téléphone l'a déjà
+   scanné, et n'a que faire de le revoir au-dessus du bouton. */
+@media (max-width:560px){ .qr{display:none;} }
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin-top:0;}
+.card p:last-child{margin-bottom:0;}
+
+ol.steps{margin:0;padding-left:22px;}
+ol.steps li{margin-bottom:12px;}
+ol.steps code{font-family:var(--mono);font-size:13px;background:var(--stripe);
+  padding:1px 5px;border-radius:4px;}
+
+.tablewrap{overflow-x:auto;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:14.5px;}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-soft);font-family:var(--mono);font-weight:700;}
+tbody th{font-weight:700;width:34%;}
+td{color:var(--ink-soft);}
+td.good{color:var(--ink);}
+
+.facts{list-style:none;margin:0;padding:0;}
+.facts li{padding:9px 0;border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:4px 14px;}
+.facts li:last-child{border-bottom:0;}
+.facts .k{font-weight:700;min-width:180px;}
+.facts .v{color:var(--ink-soft);flex:1 1 220px;}
+
+footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:14px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <strong>🌐 Démo LuxASR</strong> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · Labs · démonstration</p>
+  <h1>La dictée, confiée à LuxASR 🌐</h1>
+  <p class="lead">
+    Cette version du clavier n'utilise pas son modèle embarqué : elle envoie
+    le son du micro au service de reconnaissance
+    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg,
+    et affiche le texte qui revient. Elle existe pour une seule raison — montrer
+    à quoi ressemblerait la dictée luxembourgeoise si elle s'appuyait sur ce
+    service plutôt que sur un petit modèle enfermé dans le téléphone.
+  </p>
+</header>
+
+<section>
+  <div class="warn">
+    <h2>⚠️ Votre voix quitte le téléphone</h2>
+    <p>
+      C'est l'inverse exact de la <a href="labs.html">version Labs</a>, dont
+      tout l'argument est que rien ne sort de l'appareil. Ici, l'application
+      demande la permission <strong>Internet</strong> et transmet le son
+      capté par le micro à <code>luxasr.uni.lu</code>, en direct, pendant que
+      vous parlez.
+    </p>
+    <p>
+      N'y dictez donc rien de confidentiel. Le traitement des enregistrements
+      par ce service ne relève pas de nous, et n'est pas couvert par notre
+      <a href="privacy/privacy-policy.html">politique de confidentialité</a>,
+      qui décrit la version publiée du clavier.
+    </p>
+    <p>
+      <strong>Cette version n'est pas destinée à être distribuée.</strong> Elle
+      sert de support de démonstration, et le service n'a rien promis à ce jour :
+      une intégration réelle supposerait l'accord de l'équipe de LuxASR. Elle ne
+      sera jamais proposée par la page <a href="index.html">d'accueil</a>, ni
+      publiée sur le Play Store.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Installer la démonstration</h2>
+
+  <div class="status">
+    <span class="v" id="lab-version">version en cours</span>
+    <span id="lab-date">reconstruite à chaque modification</span>
+    <span id="lab-size">environ 38 Mo</span>
+  </div>
+
+  <div class="get">
+    <div class="get-main">
+      <p class="cta">
+        <a class="btn primary"
+           href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk">
+          📲 Télécharger l'APK de démonstration
+        </a>
+      </p>
+      <p class="muted">
+        Android 5.0 ou plus récent · fichier APK à installer à la main ·
+        demande les permissions <strong>micro</strong> et <strong>Internet</strong>
+      </p>
+    </div>
+    <figure class="qr">
+      <img src="assets/qr-luxkeyb-luxasr.png"
+           alt="Code QR ouvrant cette page de démonstration sur un téléphone"
+           width="170" height="170">
+      <figcaption>Scannez avec le téléphone<br>de démonstration</figcaption>
+    </figure>
+  </div>
+
+  <div class="card">
+    <ol class="steps">
+      <li>
+        <strong>Téléchargez</strong> le fichier APK avec le bouton ci-dessus.
+      </li>
+      <li>
+        <strong>Ouvrez-le.</strong> Android demandera d'autoriser l'installation
+        depuis cette source : c'est normal pour une application qui ne vient pas
+        du Play Store.
+      </li>
+      <li>
+        <strong>Activez le clavier</strong> dans
+        <code>Paramètres › Système › Claviers › Claviers à l'écran</code>, puis
+        choisissez-le comme clavier courant — au besoin, via l'icône de clavier
+        qui apparaît en bas de l'écran quand un champ de texte est ouvert.
+      </li>
+      <li>
+        <strong>Dictez.</strong> Ouvrez n'importe quel champ de texte, touchez
+        le <strong>micro</strong> à droite de la barre de suggestions, et
+        autorisez l'accès au microphone. Le bandeau affiche
+        <strong>🌐 LuxASR</strong> : c'est le signe que la reconnaissance se
+        fait à distance et non dans le téléphone.
+      </li>
+    </ol>
+  </div>
+
+  <p class="muted">
+    Le téléphone a besoin d'une connexion pour l'étape 4, et pas seulement
+    pour le téléchargement. Sans réseau, le micro ne rend rien : cette version
+    n'a pas de repli hors ligne, volontairement, pour que la démonstration
+    montre bien ce qu'elle prétend montrer.
+  </p>
+</section>
+
+<section>
+  <h2>Ce que la démonstration met en regard</h2>
+
+  <p>
+    Les deux versions sont le même clavier, à un détail près : d'où vient le
+    texte quand vous parlez. Tout le reste — la disposition QWERTZ, le
+    dictionnaire, les suggestions — est identique.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th scope="col"></th><th scope="col">Labs, modèle embarqué</th><th scope="col">Cette démonstration</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Où va la voix</th>
+          <td class="good">Nulle part : aucune permission réseau</td>
+          <td>À <code>luxasr.uni.lu</code>, en direct</td>
+        </tr>
+        <tr>
+          <th scope="row">Sans connexion</th>
+          <td class="good">Fonctionne : avion, tunnel, sans forfait</td>
+          <td>Ne fonctionne pas du tout</td>
+        </tr>
+        <tr>
+          <th scope="row">Justesse</th>
+          <td>72 % de mots erronés sur notre corpus d'essai</td>
+          <td class="good">Non mesurée, mais le texte rendu est correct
+            à la lecture</td>
+        </tr>
+        <tr>
+          <th scope="row">Ponctuation, majuscules</th>
+          <td>Rendues par le modèle, souvent à côté</td>
+          <td class="good">Rendues, et justes sur nos essais</td>
+        </tr>
+        <tr>
+          <th scope="row">Délai</th>
+          <td>≈ 6 s par passe sur un téléphone ancien,
+            quelle que soit la longueur de la phrase</td>
+          <td class="good">≈ 0,3 s de réponse depuis une liaison fixe ;
+            jamais mesuré depuis un téléphone en 4G</td>
+        </tr>
+        <tr>
+          <th scope="row">Dépendance</th>
+          <td class="good">Aucune : le modèle est dans l'application</td>
+          <td>Entière : le service, sa disponibilité, son accord</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted">
+    Les 72 % viennent de 161 énoncés de longueur courante extraits d'un corpus
+    de conférences de presse gouvernementales luxembourgeoises, hors du domaine
+    d'entraînement du modèle. C'est une borne haute, mais l'ordre de grandeur
+    est celui-là : au-delà d'environ 25 %, corriger coûte plus cher que taper.
+    Le même banc d'essai reste à passer sur LuxASR — et c'est l'une des choses
+    dont nous aimerions parler.
+  </p>
+
+  <div class="card">
+    <h3>Comment ça marche, techniquement</h3>
+    <p>
+      L'application ouvre une connexion WebSocket vers le service, y pousse
+      l'audio du micro en PCM 16 bits à 16 kHz au fil de la capture, et remplace
+      le texte en composition à chaque hypothèse reçue. Le texte se corrige donc
+      sous les yeux pendant qu'on parle, et se fige au relâchement du micro.
+      Aucun enregistrement n'est conservé sur le téléphone.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>En résumé</h2>
+  <ul class="facts">
+    <li><span class="k">Ce que c'est</span><span class="v">Une démonstration technique, pas un produit</span></li>
+    <li><span class="k">Reconnaissance</span><span class="v">Service LuxASR, Université du Luxembourg</span></li>
+    <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, en direct</span></li>
+    <li><span class="k">Connexion</span><span class="v">Indispensable, y compris pour dicter</span></li>
+    <li><span class="k">Taille</span><span class="v">38 Mo — le modèle embarqué y est toujours,
+      inutilisé, faute d'avoir voulu toucher à la chaîne de construction avant la démonstration</span></li>
+    <li><span class="k">Distribution</span><span class="v">Aucune : ni Play Store, ni page d'accueil</span></li>
+    <li><span class="k">Revenir en arrière</span><span class="v">Réinstallez la
+      <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version stable</a>
+      par-dessus — même clé de signature, réglages conservés</span></li>
+  </ul>
+</section>
+
+<footer class="page">
+  <p>
+    Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
+    La version hors ligne se trouve sur la page <a href="labs.html">Labs</a>.
+  </p>
+  <p>Potomitan™ · Lëtzebuergesch Clavier</p>
+</footer>
+
+</div>
+
+<script>
+// Même mécanique que la page Labs, sur le tag « labs-luxasr » : la page annonce
+// le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
+// silencieux — le HTML porte déjà un texte d'attente correct et le lien de
+// téléchargement ne dépend pas de ce script.
+(function () {
+  var set = function (id, txt) {
+    var n = document.getElementById(id);
+    if (n && txt) n.textContent = txt;
+  };
+
+  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs-luxasr')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      var m = /\(([^)]+)\)/.exec(d.name || '');
+      if (m) set('lab-version', m[1]);
+
+      if (d.published_at) {
+        set('lab-date', 'publiée le ' + new Date(d.published_at)
+          .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }));
+      }
+
+      var apk = (d.assets || []).filter(function (a) {
+        return a.name === 'LetzebuergeschClavier-LuxASR-Demo.apk';
+      })[0];
+      if (apk) set('lab-size', Math.round(apk.size / 1e6) + ' Mo');
+    })
+    .catch(function () { /* le texte statique reste affiché */ });
+})();
+</script>
+</body>
+</html>

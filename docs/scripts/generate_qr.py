@@ -37,6 +37,17 @@ CODES = {
         # et du bleu de l'APK stable.
         "#0E6E76",
     ),
+    "qr-luxkeyb-luxasr.png": (
+        # Vers la page, et non vers l'APK : celui qui scanne est sur le
+        # téléphone, et c'est là qu'il doit lire comment activer le clavier
+        # dans les réglages Android — une étape qu'un téléchargement direct
+        # ne raconte à personne. L'URL de la page ne bouge pas non plus quand
+        # le nom de l'asset ou le tag de la préversion change.
+        "https://famibelle.github.io/LuxKeyb/labs-luxasr.html",
+        # --sun du thème : la couleur que le site emploie déjà pour signaler
+        # ce qui demande une lecture attentive, et distincte des trois autres.
+        "#C97F1E",
+    ),
 }
 
 
