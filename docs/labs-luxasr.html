@@ -201,7 +201,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         le <strong>micro</strong> à droite de la barre de suggestions, et
         autorisez l'accès au microphone. Le bandeau affiche
         <strong>🌐 LuxASR</strong> : c'est le signe que la reconnaissance se
-        fait à distance et non dans le téléphone.
+        fait à distance et non dans le téléphone. Inutile de retoucher le
+        micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
+        une seconde et demie après la fin de la phrase.
       </li>
     </ol>
   </div>
@@ -242,8 +244,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Justesse</th>
           <td>72 % de mots erronés sur notre corpus d'essai</td>
-          <td class="good">Non mesurée, mais le texte rendu est correct
-            à la lecture</td>
+          <td class="good">11 % à 15 % de mots erronés, mesurés sur téléphone
+            sur un extrait de conférence de presse</td>
         </tr>
         <tr>
           <th scope="row">Ponctuation, majuscules</th>
@@ -276,8 +278,21 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     de conférences de presse gouvernementales luxembourgeoises, hors du domaine
     d'entraînement du modèle. C'est une borne haute, mais l'ordre de grandeur
     est celui-là : au-delà d'environ 25 %, corriger coûte plus cher que taper.
-    Le même banc d'essai reste à passer sur LuxASR — et c'est l'une des choses
-    dont nous aimerions parler.
+  </p>
+
+  <p class="muted">
+    Les 11 % à 15 % en regard sont d'une autre nature, et il faut le dire :
+    ils viennent d'<strong>un seul extrait de dix secondes</strong>, rejoué au
+    haut-parleur d'un téléphone devant son propre micro, cinq fois de suite.
+    Trois passes tombent entre 11,1 % et 14,8 % de mots erronés ; les deux
+    autres montent à 52 %, à cause d'une clause dupliquée en fin de
+    transcription — un défaut connu des modèles de cette famille, que
+    l'application filtre désormais lorsqu'il prend la forme d'une boucle, mais
+    pas lorsqu'il n'apparaît qu'une fois. Ce n'est donc pas un banc d'essai,
+    mais une mesure de terrain, dans les conditions réelles d'un clavier et sur
+    un énoncé que le service n'avait jamais vu. Passer le banc des 161 énoncés
+    sur LuxASR reste à faire — et c'est l'une des choses dont nous aimerions
+    parler.
   </p>
 
   <div class="card">
