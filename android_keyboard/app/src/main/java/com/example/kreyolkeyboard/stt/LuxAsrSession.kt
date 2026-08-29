@@ -65,6 +65,11 @@ class LuxAsrSession(
     @Volatile private var startedAt = 0L
     private var generation = 0
 
+    // Détection de fin d'énoncé (voir detecterFinDEnonce)
+    @Volatile private var heardSpeech = false
+    @Volatile private var lastSpeechAt = 0L
+    @Volatile private var noiseFloor = 0.0
+
     override val isActive: Boolean
         get() = state == SttSession.State.LISTENING || state == SttSession.State.LOADING
     override val isBusy: Boolean
@@ -74,6 +79,9 @@ class LuxAsrSession(
         if (isBusy) return
         val gen = ++generation
         accumulated = ""
+        heardSpeech = false
+        lastSpeechAt = 0L
+        noiseFloor = 0.0
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -168,6 +176,67 @@ class LuxAsrSession(
         val rms = Math.sqrt(sum / chunk.size)
         val level = Math.sqrt((rms / LEVEL_FULL_SCALE).coerceIn(0.0, 1.0)).toFloat()
         main.post { listener.onLevel(level) }
+
+        detecterFinDEnonce(rms)
+    }
+
+    /**
+     * Termine l'énoncé quand la parole s'arrête, plutôt que d'attendre que
+     * l'utilisateur pense à appuyer sur stop.
+     *
+     * Mesuré sur téléphone le 29 août 2026, sur le même extrait rejoué au
+     * haut-parleur : couper deux secondes après la fin de la parole tronque le
+     * dernier segment (18,5 % de WER, « gestëmmt » perdu) ; laisser tourner dix
+     * secondes de silence fait **inventer** le service, qui re-segmente le blanc
+     * — « A wat dat bedo - déi Motioun gestëmmt. -6 -0, Marie -Cole. » sur un
+     * extrait qui n'en contient rien. 14,8 % de WER sur le texte utile, 40,7 %
+     * en comptant cette queue.
+     *
+     * Filtrer la queue après coup n'est pas possible proprement : le service
+     * renvoie `accumulated_text`, l'énoncé entier réécrit à chaque passe, et non
+     * un segment ajouté. Refuser un suffixe supposerait de diffuser le texte par
+     * fragments et de les recoller — exactement ce que ce client évite. On coupe
+     * donc à la source : pas de silence envoyé, pas de silence à halluciner.
+     *
+     * Le compromis assumé : une pause de plus de [SILENCE_HANGOVER_MS] termine
+     * la dictée. C'est le comportement de toutes les dictées de téléphone, et il
+     * vaut mieux que l'alternative — l'utilisateur doit sinon viser une fenêtre
+     * entre « trop tôt, la fin manque » et « trop tard, le service brode ».
+     */
+    private fun detecterFinDEnonce(rms: Double) {
+        val now = SystemClock.elapsedRealtime()
+
+        // Garde-fou de durée : si le seuil ne se déclenche jamais — pièce
+        // bruyante, micro qui souffle — on ne diffuse pas indéfiniment l'audio
+        // d'un utilisateur vers un service tiers.
+        if (startedAt != 0L && now - startedAt >= MAX_UTTERANCE_MS) {
+            Log.i(TAG, "⏱️ énoncé plafonné à ${MAX_UTTERANCE_MS / 1000} s")
+            main.post { if (state == SttSession.State.LISTENING) stop() }
+            return
+        }
+
+        // Plancher de bruit adaptatif : il redescend d'un coup sur le silence et
+        // ne remonte que lentement, de sorte qu'une pièce bruyante relève le
+        // seuil sans qu'une voyelle tenue le fasse. Un seuil fixe fonctionnerait
+        // sur l'appareil où il a été réglé et nulle part ailleurs : le gain du
+        // micro varie d'un téléphone à l'autre, et VOICE_RECOGNITION applique
+        // en plus son propre traitement.
+        noiseFloor = if (rms < noiseFloor) rms
+                     else noiseFloor + (rms - noiseFloor) * NOISE_RISE
+        val seuil = maxOf(SPEECH_FLOOR_RMS, noiseFloor * SPEECH_MARGIN)
+
+        if (rms >= seuil) {
+            heardSpeech = true
+            lastSpeechAt = now
+            return
+        }
+
+        // Rien n'a encore été dit : on laisse à l'utilisateur le temps de
+        // commencer, sans quoi le micro se refermerait aussitôt ouvert.
+        if (!heardSpeech || now - lastSpeechAt < SILENCE_HANGOVER_MS) return
+
+        Log.i(TAG, "🔇 fin d'énoncé après ${SILENCE_HANGOVER_MS} ms de silence")
+        main.post { if (state == SttSession.State.LISTENING) stop() }
     }
 
     private fun handleMessage(text: String) {
@@ -223,6 +292,31 @@ class LuxAsrSession(
 
         /** Attente maximale du dernier segment après « stop ». */
         const val FINAL_GRACE_MS = 4_000L
+
+        /**
+         * Silence qui termine l'énoncé. Assez long pour survivre à une
+         * respiration ou à une pause entre deux propositions, assez court pour
+         * ne pas laisser au service de quoi broder — dix secondes de blanc
+         * suffisaient à lui faire inventer une phrase entière.
+         */
+        const val SILENCE_HANGOVER_MS = 1_500L
+
+        /**
+         * Plancher absolu sous lequel aucune énergie n'est prise pour de la
+         * parole, quel que soit le plancher de bruit observé — sans lui, une
+         * pièce parfaitement silencieuse ferait descendre le seuil adaptatif
+         * jusqu'au bruit de quantification.
+         */
+        const val SPEECH_FLOOR_RMS = 0.012
+
+        /** Marge au-dessus du plancher de bruit pour déclarer « parole ». */
+        const val SPEECH_MARGIN = 2.5
+
+        /** Vitesse de remontée du plancher de bruit, par bloc de ~160 ms. */
+        const val NOISE_RISE = 0.02
+
+        /** Durée maximale d'un énoncé, garde-fou si le silence n'arrive jamais. */
+        const val MAX_UTTERANCE_MS = 90_000L
 
         /** Même échelle que SttSession, pour que le micro respire pareil. */
         const val LEVEL_FULL_SCALE = 0.18
