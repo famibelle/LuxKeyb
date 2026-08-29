@@ -113,6 +113,22 @@ SEUIL_FREQUENCE_DICO = 3
 # mais estimés sur un corpus cent fois plus grand.
 SEUIL_OCCURRENCES_CONTEXTE = 20
 
+# Évidence minimale pour qu'un contexte impose sa propre casse à un candidat,
+# plutôt que de laisser jouer la casse canonique globale du dictionnaire.
+#
+# La casse canonique est un vote sur tout le corpus : elle donne « Froen »,
+# parce que le substantif l'emporte sur le verbe, et le clavier ne proposait
+# donc jamais « froen » — même après « mir ». Un n-gramme sait pourtant que
+# « mir froen » ne s'écrit pas comme « déi Froen » : c'est exactement ce qu'il
+# est censé apporter.
+#
+# Le seuil vaut 3 observations et 70 % de majorité : sous ça, on retombe sur la
+# casse canonique. Un contexte vu deux fois ne dit rien de la casse d'un mot, et
+# se fier à lui reviendrait à remplacer un vote global fiable par un vote local
+# fondé sur du bruit.
+SEUIL_CASSE_CONTEXTE = 3
+SEUIL_MAJORITE_CONTEXTE = 0.70
+
 # ---------------------------------------------------------------------------
 # Casse canonique (Groussschreiwung)
 # ---------------------------------------------------------------------------
@@ -582,6 +598,8 @@ class LuxembourgishPipelineUnique:
         unigrammes = Counter()
         bigrammes = Counter()
         trigrammes = Counter()
+        # {(précédent, suivant): Counter(forme de surface du suivant)}
+        formes_apres = defaultdict(Counter)
         
         # Les n-grammes se comptent en minuscules, et leurs CLÉS restent en
         # minuscules : le moteur les fabrique depuis `wordHistory`, qui replie
@@ -597,7 +615,8 @@ class LuxembourgishPipelineUnique:
             if not contenu_texte:
                 continue
                 
-            mots = [mot.lower() for mot, _ in tokeniser(contenu_texte)]
+            tokens = tokeniser(contenu_texte)
+            mots = [mot.lower() for mot, _ in tokens]
             
             # Unigrammes
             for mot in mots:
@@ -607,6 +626,12 @@ class LuxembourgishPipelineUnique:
             for i in range(len(mots) - 1):
                 bigramme = (mots[i], mots[i + 1])
                 bigrammes[bigramme] += 1
+                # Casse du mot suivant DANS CE CONTEXTE. Les occurrences en
+                # tête de phrase sont écartées du vote, comme pour le
+                # dictionnaire : leur majuscule vient de la ponctuation, pas
+                # du mot.
+                if not tokens[i + 1][1]:
+                    formes_apres[bigramme][tokens[i + 1][0]] += 1
             
             # Trigrammes
             for i in range(len(mots) - 2):
@@ -622,6 +647,32 @@ class LuxembourgishPipelineUnique:
         # rendrait le contexte trigramme inopérant.
         predictions = {}
 
+        def _casse_en_contexte(precedent, suivant):
+            """Casse du candidat telle qu'elle est attestée après `precedent`.
+
+            La casse canonique du dictionnaire est globale : elle donne
+            « Froen » parce que le nom l'emporte sur le verbe dans l'ensemble du
+            corpus, et le clavier ne proposait donc jamais « froen », quel que
+            soit ce qui précède. Or c'est précisément le rôle d'un n-gramme de
+            savoir que « mir froen » s'écrit autrement que « déi Froen ».
+
+            On ne tranche que sur une évidence nette — au moins
+            SEUIL_CASSE_CONTEXTE observations hors tête de phrase, et une
+            majorité franche — sinon on retombe sur la casse canonique. Un
+            contexte vu deux fois ne dit rien de la casse d'un mot.
+            """
+            formes = formes_apres.get((precedent, suivant))
+            defaut = self.casse_canonique.get(suivant, suivant)
+            if not formes:
+                return defaut
+            total = sum(formes.values())
+            if total < SEUIL_CASSE_CONTEXTE:
+                return defaut
+            forme, freq = formes.most_common(1)[0]
+            if freq / total < SEUIL_MAJORITE_CONTEXTE:
+                return defaut
+            return forme
+
         def _classer(candidats_par_cle, contextes):
             """Transforme {contexte: Counter(suivants)} en prédictions triées.
 
@@ -634,8 +685,12 @@ class LuxembourgishPipelineUnique:
                 total = contextes[contexte]
                 if total < SEUIL_OCCURRENCES_CONTEXTE:
                     continue
+                # Le dernier mot de la clé est le prédécesseur immédiat du
+                # candidat, que la clé porte un mot (« der ») ou deux
+                # (« an der ») : c'est lui qui détermine la casse observée.
+                precedent = contexte.rsplit(" ", 1)[-1]
                 candidats = [
-                    {"word": self.casse_canonique.get(suivant, suivant),
+                    {"word": _casse_en_contexte(precedent, suivant),
                      "probability": round(freq / total, 3)}
                     for suivant, freq in suivants.items()
                     if freq / total > SEUIL_PERTINENCE
