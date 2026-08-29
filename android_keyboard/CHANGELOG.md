@@ -9,6 +9,88 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.18.0] - 2026-08-29
+
+Le clavier tient enfin compte de ce que vous venez d'écrire. Trois constantes
+qui pilotent le classement des suggestions avaient cessé de fonctionner en
+silence quand le corpus a changé d'échelle : le contexte ne réordonnait plus
+rien, et la personnalisation mettait vingt frappes à se voir.
+
+### 🎯 Le contexte compte à nouveau dans le classement
+
+| après k frappes | avant | après |
+|---|---|---|
+| 1 frappe | 13,0 % | **22,2 %** |
+| 2 frappes | 31,4 % | **35,7 %** |
+| 3 frappes | 55,8 % | **57,4 %** |
+
+*Part des mots proposés dans les trois premières suggestions, mesurée sur
+1 755 mots de ParaLux — un jeu dont aucune phrase ne figure dans le corpus qui
+a servi à construire le dictionnaire.*
+
+- **Le bonus de contexte valait 50, face à des fréquences qui montent à
+  100 105.** Le score d'une suggestion additionne la fréquence du mot dans le
+  corpus et quelques bonus ; à cette échelle, 50 ne déplaçait rien. Le
+  classement se réduisait à « trier par fréquence », et les n-grammes — tout le
+  travail de la pipeline pour les produire, les 5 Mo qu'ils pèsent dans
+  l'application — ne servaient plus qu'au mode prédiction pure, quand rien
+  n'est encore tapé. Vérifié en le ramenant à zéro : le résultat ne bougeait
+  pratiquement pas.
+- **Concrètement.** Après `an der`, taper `r` propose `Rue · Regierung · ronn`
+  au lieu de `Regierung · ronn · Rue`. Après `ech`, taper `m` propose
+  `mengen · mat · méi` au lieu de `mat · méi · mam`.
+- Le bonus ne s'applique qu'aux mots correspondant déjà à ce qui est tapé : il
+  réordonne des suggestions que le clavier proposait de toute façon, il n'en
+  invente aucune. Et il reste très en dessous du poids d'une correction
+  orthographique, qui continue de primer.
+
+### 🔠 Le contexte choisit aussi la casse
+
+- **`déi Gréng` et `als nei gréng` ne s'écrivent pas pareil**, et le clavier le
+  sait désormais. La casse de chaque mot était élue sur l'ensemble du corpus,
+  ce qui donnait toujours la forme majoritaire : `Froen` le substantif, jamais
+  `froen` le verbe, même après `mir`. Chaque prédiction reçoit maintenant la
+  casse réellement observée après le mot qui la précède.
+- **59 homographes ont désormais leurs deux orthographes accessibles**, contre
+  zéro auparavant : `Froen`/`froen`, `Liewen`/`liewen`, `Gréng`/`gréng`. Ils
+  étaient livrés en double depuis la 10.17.0, mais le clavier ne pouvait en
+  proposer qu'un.
+- La décision demande une évidence nette — trois observations et 70 % de
+  majorité — faute de quoi la casse générale reprend la main. Un contexte vu
+  deux fois ne dit rien de la casse d'un mot.
+
+### 👤 Les mots que vous employez remontent plus vite
+
+- **Un mot validé vingt fois n'entrait toujours pas dans les suggestions**
+  depuis le rang 20 dans 58 % des cas. Le bonus d'usage plafonnait à +100, une
+  valeur calibrée quand le dictionnaire culminait à 15 519 occurrences ; il en
+  compte aujourd'hui 100 105. Le compteur alimenté par la progression existait,
+  mais son effet restait sous le seuil du perceptible.
+- Le poids passe de 5 à 20 par utilisation, plafond inchangé : vingt
+  validations valent maintenant +400, et le rang 20 devient accessible dans
+  trois cas sur quatre au lieu de deux sur cinq.
+- **Trois frappes ne délogent toujours pas un mot nettement plus fréquent.**
+  C'était une règle explicite du projet, et elle a décidé de la valeur retenue :
+  le signal personnel doit se confirmer avant de peser.
+
+### 🧪 Un banc d'essai qui mesure les frappes économisées
+
+- **Les trois régressions ci-dessus sont passées à travers 138 tests verts et
+  tous les contrôles de l'intégration continue**, parce qu'aucun ne mesurait ce
+  que l'utilisateur ressent. Un dictionnaire bien formé, du bon type, de la
+  bonne taille peut parfaitement être mal classé.
+- Un banc mesure désormais, à chaque construction, la part des mots proposés
+  après une, deux et trois frappes, sur des phrases inédites, et **échoue sous
+  un plancher**. Le bonus de contexte remis à son ancienne valeur le fait
+  tomber en échec.
+- Le simulateur du site rejouait un défaut corrigé dans l'application deux
+  jours plus tôt : un test verrouille désormais l'égalité des constantes entre
+  les deux moteurs.
+- Le test de correction orthographique retombait sur un échantillon de quarante
+  mots dès que le dictionnaire manquait, et faisait de même sur une erreur de
+  format — laissant la suite entièrement verte. Un garde-fou qui se désarme
+  quand ce qu'il garde disparaît ne garde rien.
+
 ## [10.17.0] - 2026-08-29
 
 Les majuscules du luxembourgeois. Le clavier propose désormais `Haus`, `Joer`
