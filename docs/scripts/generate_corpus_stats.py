@@ -223,7 +223,12 @@ def main():
                 if isinstance(texte, str) and texte.strip():
                     phrases_eval.add(texte.strip())
 
-    formes_dico = {mot for mot, _ in dico}
+    # Les entrées du dictionnaire portent depuis 2026-08-29 leur casse
+    # canonique (« Joer », « RTL »), tandis que `decouper()` replie les phrases
+    # en minuscules. Comparer les deux tels quels ferait chuter la couverture
+    # et le top-3 d'une vingtaine de points, pour une régression qui n'existe
+    # pas : l'évaluation se fait donc à casse repliée, des deux côtés.
+    formes_dico = {mot.lower() for mot, _ in dico}
     touches = bons = evenements = 0
     mots_vus = couverts = 0
     for phrase in sorted(phrases_eval):
@@ -239,7 +244,7 @@ def main():
                 candidats = ngrams.get(m[i - 1])
             if candidats:
                 touches += 1
-                if m[i] in [c["word"] for c in candidats[:3]]:
+                if m[i] in [c["word"].lower() for c in candidats[:3]]:
                     bons += 1
 
     resultat = {

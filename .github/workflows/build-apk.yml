@@ -110,6 +110,29 @@ jobs:
           exit 1
         fi
 
+        # Garde-fou de casse (Groussschreiwung). Le luxembourgeois capitalise
+        # tous les substantifs : depuis le 2026-08-29 la casse est élue sur le
+        # corpus, hors tête de phrase, et 25 845 des 38 410 entrées livrées
+        # portent une majuscule. Un retour accidentel au repli en minuscules
+        # (`contenu_texte.lower()`) produirait un dictionnaire parfaitement
+        # valide, de la bonne taille, du bon type — et un clavier qui ne
+        # propose plus jamais « Joer » ni « Haus ». Rien ne le signalerait.
+        CAPS=$(jq '[.[] | .[0] | select(test("^\\p{Lu}"))] | length' "$A/luxemburgish_dict.json")
+        if [ "$CAPS" -lt 15000 ]; then
+          echo "::error::Seulement $CAPS entrées capitalisées (moins de 15000) : la casse canonique n'a pas été élue, le dictionnaire est replié en minuscules."
+          exit 1
+        fi
+
+        # Même garde-fou côté n-grammes : leurs CLÉS restent en minuscules (le
+        # moteur les fabrique depuis un historique replié), seuls les mots
+        # CANDIDATS portent la casse canonique. S'ils la perdent, la barre de
+        # suggestions retombe en minuscules sans que rien n'échoue.
+        NG_CAPS=$(jq '[.[][] | .word | select(test("^\\p{Lu}"))] | length' "$A/luxemburgish_ngrams.json")
+        if [ "$NG_CAPS" -lt 10000 ]; then
+          echo "::error::Seulement $NG_CAPS candidats n-grammes capitalisés (moins de 10000) : les prédictions ont perdu leur casse canonique."
+          exit 1
+        fi
+
         # Garde-fou de volumétrie des n-grammes, désormais indépendant de
         # celui du dictionnaire : les deux sont reconstruits à zéro à chaque
         # exécution, mais les contextes retenus dépendent du seuil

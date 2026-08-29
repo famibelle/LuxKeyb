@@ -1,5 +1,5 @@
 {
- "genere_le": "2026-08-28",
+ "genere_le": "2026-08-29",
  "corpus": {
   "luxalign": {
    "phrases": 180342,
@@ -700,14 +700,14 @@
   ]
  },
  "clavier": {
-  "mots_dictionnaire": 37734,
+  "mots_dictionnaire": 38410,
   "frequence_max": 100105,
   "mot_le_plus_frequent": "an",
   "contextes": 26172,
   "contextes_deux_mots": 16249,
   "seuil_frequence": 3,
   "seuil_contexte": 20,
-  "octets_dictionnaire": 1252097,
+  "octets_dictionnaire": 1273074,
   "octets_ngrams": 5123096
  },
  "prediction": {

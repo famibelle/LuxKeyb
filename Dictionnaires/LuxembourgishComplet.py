@@ -113,6 +113,108 @@ SEUIL_FREQUENCE_DICO = 3
 # mais estimés sur un corpus cent fois plus grand.
 SEUIL_OCCURRENCES_CONTEXTE = 20
 
+# ---------------------------------------------------------------------------
+# Casse canonique (Groussschreiwung)
+# ---------------------------------------------------------------------------
+#
+# Le luxembourgeois capitalise tous les substantifs, comme l'allemand : la
+# majuscule est porteuse de sens, pas un accident de saisie. Le pipeline
+# repliait pourtant tout le corpus en minuscules, si bien que le clavier ne
+# proposait jamais « Joer », « Haus » ou « Kand » avec leur majuscule légitime
+# — alors que la dictée, elle, rend déjà du texte capitalisé.
+#
+# La casse de chaque forme est donc élue sur le corpus, en ne comptant QUE les
+# occurrences situées ailleurs qu'en tête de phrase : la majuscule de début de
+# phrase ne dit rien du mot, et la retenir classerait « an » ou « ech » parmi
+# les substantifs. Mesuré sur LuxAlign + LETZ (2026-08-29), sur les 37 734
+# entrées retenues : 24 081 formes canoniquement majuscules, 11 580
+# minuscules, 678 acronymes et 1 378 dans la bande ambiguë.
+SEUIL_CASSE_MAJUSCULE = 0.70
+SEUIL_CASSE_MINUSCULE = 0.30
+
+# Un mot écrit en capitales dans la majorité de ses occurrences est un
+# acronyme (RTL, CSV, ADR, OGBL) : il garde ses capitales et ne doit pas
+# tirer la moyenne du lemme vers la casse Titre.
+SEUIL_CASSE_ACRONYME = 0.50
+
+# Entre les deux seuils vivent les vrais homographes, où la casse distingue
+# deux mots : « Froen » (les questions) et « froen » (demander), « Liewen » et
+# « liewen », « Gréng » (le parti) et « gréng » (la couleur), « Wäert » (la
+# valeur) et « wäert » (l'auxiliaire du futur). Ceux-là sont livrés en DEUX
+# entrées, avec leurs fréquences réparties — à condition que chaque variante
+# atteigne le seuil ordinaire du dictionnaire. Elles ne pèsent que 3,7 % des
+# occurrences, et seules ~660 d'entre elles sont assez fournies pour être
+# dédoublées : le coût est de +1,8 % d'entrées.
+
+# Motif de découpage en mots, partagé par le dictionnaire et les n-grammes.
+# Il accepte les deux casses : c'est ce qui permet de compter les formes de
+# surface telles qu'elles sont écrites.
+PATTERN_MOT = re.compile(
+    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b'
+)
+
+# Caractères qui peuvent séparer une fin de phrase du mot suivant sans rompre
+# la position initiale : espaces, guillemets ouvrants, parenthèses, tirets de
+# dialogue. L'apostrophe en fait partie, mais elle est presque toujours
+# précédée d'une lettre (« d'Regierung ») : le mot n'est alors pas en tête.
+_CARACTERES_TRANSPARENTS = ' \t\r\n"\'«»“”„‘’()[]-–—'
+_FINS_DE_PHRASE = '.!?…'
+
+
+def tokeniser(texte):
+    """Découpe un texte en (mot, en_tete_de_phrase), casse d'origine gardée."""
+    tokens = []
+    for correspondance in PATTERN_MOT.finditer(texte):
+        mot = correspondance.group(0).strip('-')
+        if len(mot) < 2:
+            continue
+        i = correspondance.start() - 1
+        while i >= 0 and texte[i] in _CARACTERES_TRANSPARENTS:
+            i -= 1
+        tokens.append((mot, i < 0 or texte[i] in _FINS_DE_PHRASE))
+    return tokens
+
+
+def _classe_de_casse(forme):
+    if len(forme) > 1 and forme.isupper():
+        return 'ACRONYME'
+    if forme[:1].isupper():
+        return 'MAJUSCULE'
+    return 'minuscule'
+
+
+def elire_casse(formes_hors_tete):
+    """Élit la casse canonique d'un lemme.
+
+    `formes_hors_tete` est un Counter des formes de surface observées ailleurs
+    qu'en tête de phrase. Retourne (forme_capitalisée, taux_de_majuscule), ou
+    None si le lemme n'a jamais été vu ailleurs qu'en tête de phrase — 17 cas
+    sur 37 734, pour lesquels le corpus ne dit rien et où l'on retombe sur la
+    minuscule.
+    """
+    total = sum(formes_hors_tete.values())
+    if total == 0:
+        return None
+
+    par_classe = defaultdict(Counter)
+    for forme, freq in formes_hors_tete.items():
+        par_classe[_classe_de_casse(forme)][forme] += freq
+
+    acronymes = par_classe['ACRONYME']
+    if sum(acronymes.values()) / total >= SEUIL_CASSE_ACRONYME:
+        return acronymes.most_common(1)[0][0], 1.0
+
+    majuscules = par_classe['MAJUSCULE']
+    depart = sum(majuscules.values()) + sum(par_classe['minuscule'].values())
+    if depart == 0:  # que des acronymes, sans atteindre le seuil : rare
+        return acronymes.most_common(1)[0][0], 1.0
+
+    if not majuscules:
+        return None
+    # La forme majuscule la plus fréquente, et non lemme.capitalize() : elle
+    # préserve les casses internes réellement attestées (« CFL-Bus »).
+    return majuscules.most_common(1)[0][0], sum(majuscules.values()) / depart
+
 
 class LuxembourgishPipelineUnique:
     """Pipeline unique automatique pour le système luxembourgeois"""
@@ -131,6 +233,11 @@ class LuxembourgishPipelineUnique:
         self.ngrams_actuels = {}
         self.nouveau_dictionnaire = {}
         self.nouveaux_ngrams = {}
+        # Casse canonique élue par creer_dictionnaire(), consommée par
+        # creer_ngrams() : {forme_minuscule: forme_à_afficher}. Une seule
+        # entrée par lemme, même pour les homographes dédoublés — un n-gramme
+        # ne connaît pas la casse de son candidat, il prend la majoritaire.
+        self.casse_canonique = {}
         
         # Affichage d'en-tête
         self._afficher_entete()
@@ -340,9 +447,13 @@ class LuxembourgishPipelineUnique:
         
         print(f"🔍 Analyse de {len(self.textes_luxembourgeois)} textes...")
         
+        # Deux comptages en un seul passage : la fréquence du lemme (toutes
+        # positions confondues, c'est elle qui est livrée et sur laquelle
+        # calculateDictionaryScore est calibré) et la distribution des formes
+        # de surface hors tête de phrase, seule base honnête pour élire la
+        # casse.
         compteur_mots = Counter()
-        # Pattern adapté pour le luxembourgeois (incluant les caractères spéciaux)
-        pattern_mot = re.compile(r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b')
+        formes_hors_tete = defaultdict(Counter)
         
         for transcription in self.textes_luxembourgeois:
             if isinstance(transcription, dict):
@@ -353,11 +464,11 @@ class LuxembourgishPipelineUnique:
             if not contenu_texte:
                 continue
                 
-            mots = pattern_mot.findall(contenu_texte.lower())
-            for mot in mots:
-                mot = mot.strip('-')
-                if len(mot) >= 2:
-                    compteur_mots[mot] += 1
+            for mot, en_tete in tokeniser(contenu_texte):
+                lemme = mot.lower()
+                compteur_mots[lemme] += 1
+                if not en_tete:
+                    formes_hors_tete[lemme][mot] += 1
         
         # Le dictionnaire est REMPLACÉ, jamais fusionné avec le précédent.
         #
@@ -383,8 +494,58 @@ class LuxembourgishPipelineUnique:
         total_occurrences = sum(compteur_mots.values())
         retenus = {mot: freq for mot, freq in compteur_mots.items()
                    if freq >= SEUIL_FREQUENCE_DICO}
+
+        # Chaque lemme retenu reçoit sa casse canonique. Les homographes de la
+        # bande ambiguë sont livrés en deux entrées, la fréquence du lemme
+        # étant répartie au prorata du taux de majuscule observé : les
+        # occurrences de tête de phrase, indécidables, suivent la proportion
+        # de celles qui, elles, se laissent trancher.
+        entrees = {}
+        nb_majuscules = nb_acronymes = nb_dedoublees = nb_sans_preuve = 0
+        for lemme, freq in retenus.items():
+            election = elire_casse(formes_hors_tete[lemme])
+            if election is None:
+                nb_sans_preuve += 1
+                entrees[lemme] = freq
+                self.casse_canonique[lemme] = lemme
+                continue
+
+            forme_majuscule, taux = election
+            if taux >= SEUIL_CASSE_MAJUSCULE:
+                entrees[forme_majuscule] = freq
+                self.casse_canonique[lemme] = forme_majuscule
+                if _classe_de_casse(forme_majuscule) == 'ACRONYME':
+                    nb_acronymes += 1
+                else:
+                    nb_majuscules += 1
+            elif taux <= SEUIL_CASSE_MINUSCULE:
+                entrees[lemme] = freq
+                self.casse_canonique[lemme] = lemme
+            else:
+                freq_majuscule = round(freq * taux)
+                freq_minuscule = freq - freq_majuscule
+                if (freq_majuscule >= SEUIL_FREQUENCE_DICO
+                        and freq_minuscule >= SEUIL_FREQUENCE_DICO):
+                    entrees[forme_majuscule] = freq_majuscule
+                    entrees[lemme] = freq_minuscule
+                    nb_dedoublees += 1
+                    nb_majuscules += 1
+                elif taux >= 0.5:
+                    entrees[forme_majuscule] = freq
+                    nb_majuscules += 1
+                else:
+                    entrees[lemme] = freq
+                # Le n-gramme, lui, ne tranche pas : il prend la majoritaire.
+                self.casse_canonique[lemme] = (
+                    forme_majuscule if taux >= 0.5 else lemme
+                )
+
+        # Tri par fréquence décroissante, puis alphabétique insensible à la
+        # casse : sans quoi les 24 000 formes capitalisées se regrouperaient
+        # avant les minuscules à fréquence égale, rendant les diffs illisibles.
         self.nouveau_dictionnaire = dict(
-            sorted(retenus.items(), key=lambda item: (-item[1], item[0]))
+            sorted(entrees.items(),
+                   key=lambda item: (-item[1], item[0].lower(), item[0]))
         )
 
         couverture = (100 * sum(retenus.values()) / total_occurrences
@@ -392,11 +553,18 @@ class LuxembourgishPipelineUnique:
         print(f"✅ Dictionnaire luxembourgeois créé:")
         print(f"   - Occurrences analysées: {total_occurrences}")
         print(f"   - Formes distinctes: {total_formes}")
-        print(f"   - Retenues (freq >= {SEUIL_FREQUENCE_DICO}): "
-              f"{len(self.nouveau_dictionnaire)}")
+        print(f"   - Retenues (freq >= {SEUIL_FREQUENCE_DICO}): {len(retenus)}")
+        print(f"   - Entrées livrées: {len(self.nouveau_dictionnaire)}")
         print(f"   - Couverture du corpus: {couverture:.1f}% des occurrences")
         print(f"   - Dictionnaire précédent: {len(self.dictionnaire_actuel)} mots "
               f"(remplacé, non fusionné)")
+        print(f"\n   🔠 CASSE CANONIQUE (Groussschreiwung):")
+        print(f"   - Substantifs capitalisés: {nb_majuscules}")
+        print(f"   - Acronymes: {nb_acronymes}")
+        print(f"   - Homographes dédoublés: {nb_dedoublees} "
+              f"(ex. Froen/froen, Liewen/liewen)")
+        print(f"   - Sans occurrence hors tête de phrase: {nb_sans_preuve} "
+              f"(repli minuscule)")
 
         return True
     
@@ -415,9 +583,11 @@ class LuxembourgishPipelineUnique:
         bigrammes = Counter()
         trigrammes = Counter()
         
-        # Pattern adapté pour le luxembourgeois
-        pattern_mot = re.compile(r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b')
-        
+        # Les n-grammes se comptent en minuscules, et leurs CLÉS restent en
+        # minuscules : le moteur les fabrique depuis `wordHistory`, qui replie
+        # déjà en minuscules (SuggestionEngine, `cleanWord`). Seuls les mots
+        # CANDIDATS reçoivent la casse canonique, plus bas, au moment de
+        # l'émission — ils partent directement dans la barre de suggestions.
         for transcription in self.textes_luxembourgeois:
             if isinstance(transcription, dict):
                 contenu_texte = transcription.get("Texte", "")
@@ -427,7 +597,7 @@ class LuxembourgishPipelineUnique:
             if not contenu_texte:
                 continue
                 
-            mots = [mot.lower().strip('-') for mot in pattern_mot.findall(contenu_texte.lower()) if len(mot.strip('-')) >= 2]
+            mots = [mot.lower() for mot, _ in tokeniser(contenu_texte)]
             
             # Unigrammes
             for mot in mots:
@@ -465,7 +635,8 @@ class LuxembourgishPipelineUnique:
                 if total < SEUIL_OCCURRENCES_CONTEXTE:
                     continue
                 candidats = [
-                    {"word": suivant, "probability": round(freq / total, 3)}
+                    {"word": self.casse_canonique.get(suivant, suivant),
+                     "probability": round(freq / total, 3)}
                     for suivant, freq in suivants.items()
                     if freq / total > SEUIL_PERTINENCE
                 ]
@@ -574,17 +745,29 @@ class LuxembourgishPipelineUnique:
         print("-" * 55)
         
         # Delta dictionnaire
-        anciens_mots = set(self.dictionnaire_actuel.keys())
-        nouveaux_mots = set(self.nouveau_dictionnaire.keys())
+        # Le delta se calcule sur les clés repliées en minuscules. Depuis que
+        # la casse est élue sur le corpus, comparer « Joer » à « joer » ferait
+        # apparaître 24 000 ajouts et autant de suppressions au premier
+        # passage, pour un dictionnaire contenant exactement les mêmes mots.
+        # Le changement de casse est compté à part. (Les homographes
+        # dédoublés se replient sur une seule clé ici : c'est un rapport de
+        # delta, pas un inventaire.)
+        anciens = {mot.lower(): mot for mot in self.dictionnaire_actuel}
+        nouveaux = {mot.lower(): mot for mot in self.nouveau_dictionnaire}
+        anciens_mots = set(anciens)
+        nouveaux_mots = set(nouveaux)
         
         mots_ajoutes = nouveaux_mots - anciens_mots
         mots_supprimes = anciens_mots - nouveaux_mots
         mots_conserves = anciens_mots & nouveaux_mots
+        recasses = sum(1 for cle in mots_conserves
+                       if anciens[cle] != nouveaux[cle])
         
         print(f"\n📚 DELTA DICTIONNAIRE LUXEMBOURGEOIS:")
         print(f"   ➕ Mots ajoutés: {len(mots_ajoutes)}")
         print(f"   ➖ Mots supprimés: {len(mots_supprimes)}")
         print(f"   🔄 Mots conservés: {len(mots_conserves)}")
+        print(f"   🔠 Casse modifiée: {recasses}")
         
         if mots_ajoutes:
             echantillon = list(mots_ajoutes)[:10]
