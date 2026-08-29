@@ -1584,7 +1584,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
             Toast.makeText(
                 this,
-                "Apiyé lontan asi on lèt pou wè aksan la (é, è, ò...)",
+                getString(R.string.first_use_accent_tip),
                 Toast.LENGTH_LONG
             ).show()
             prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()

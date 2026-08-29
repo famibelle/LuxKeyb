@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Ancre de confiance pour luxasr.uni.lu, sur la branche de démonstration en
+  ligne uniquement.
+
+  Le certificat de *.uni.lu est signé par « GEANT TLS RSA 1 », lui-même issu de
+  « HARICA TLS RSA Root CA 2021 » — une racine créée en 2021 et ajoutée au
+  magasin système d'Android bien après. Un Galaxy A21s sous Android 12 en
+  compte 125, et celle-ci n'y est pas : la poignée de main TLS d'OkHttp échoue
+  donc sur « Trust anchor for certification path not found », le WebSocket rend
+  onFailure, et l'utilisateur lit « Service LuxASR injoignable » alors que son
+  réseau va très bien. Constaté sur l'appareil le 2026-08-29 : la connexion TCP
+  vers [2001:a18:a:c5::99]:443 s'établit puis retombe aussitôt.
+
+  Chrome ne le voit pas — il embarque son propre magasin de racines depuis 2023
+  et charge le même service sans broncher sur le même téléphone, ce qui rend le
+  diagnostic trompeur si l'on s'arrête là.
+
+  La racine est donc empaquetée et déclarée **pour ce seul domaine**, en plus du
+  magasin système : rien n'est affaibli ailleurs dans l'application, et le jour
+  où Android rattrape son retard cette configuration devient redondante sans
+  devenir fausse.
+
+  Le fichier porte l'extension .crt et non .pem : `*.pem` est ignoré par git
+  depuis le durcissement qui a suivi la fuite du keystore de 2025. La règle
+  vise les clés privées et n'a aucune raison de céder pour un certificat
+  public — d'où le renommage plutôt qu'une exception dans .gitignore.
+
+  Empreinte SHA-256 du DER, à vérifier si le fichier est un jour remplacé :
+  D9:5D:0E:8E:DA:79:52:5B:F9:BE:B1:1B:14:D2:10:0D:
+  32:94:98:5F:0C:62:D9:FA:BD:9C:D9:99:EC:CB:7B:1D
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="false">luxasr.uni.lu</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/harica_tls_rsa_root_ca_2021" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

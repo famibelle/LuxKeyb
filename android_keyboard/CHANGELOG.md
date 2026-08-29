@@ -38,6 +38,48 @@ modèle embarqué et 36 % avec `base`, quand il en faudrait moins de 15 %. Le m�
 énoncé revient de LuxASR correct, ponctué et capitalisé, en ~270 ms de
 traitement serveur.
 
+### 🔐 La racine TLS de l'Uni.lu manque à Android 12 — dictée impossible
+
+Constaté sur un Galaxy A21s sous Android 12, le téléphone de démonstration :
+tout appui sur le micro rendait « Service LuxASR injoignable — vérifiez le
+réseau », alors que le réseau allait très bien.
+
+- Le certificat de `*.uni.lu` remonte à **HARICA TLS RSA Root CA 2021**, racine
+  créée en 2021 et ajoutée au magasin système d'Android bien plus tard. Cet
+  appareil en compte 125 ; celle-là n'y est pas. La poignée de main TLS d'OkHttp
+  échoue donc, le WebSocket rend `onFailure`, et l'utilisateur lit un message
+  qui accuse son réseau.
+- **Chrome ne le voit pas** : il embarque son propre magasin de racines depuis
+  2023 et ouvre le même WebSocket en 0,27 s sur le même téléphone. Vérifier « le
+  site s'affiche, donc le réseau marche » mène donc exactement à côté. Ce qui a
+  tranché : la connexion TCP vers `[2001:a18:a:c5::99]:443` s'établit dans
+  `/proc/net/tcp6` puis retombe aussitôt — l'échec est postérieur au TCP.
+- La racine est désormais empaquetée (`res/raw/`) et déclarée dans
+  `res/xml/network_security_config.xml` **pour le seul domaine
+  `luxasr.uni.lu`**, en plus du magasin système : rien n'est affaibli ailleurs,
+  et le jour où Android rattrape son retard la configuration devient redondante
+  sans devenir fausse.
+- Vérifié sur l'appareil après correction : `✅ session ws_… · service v2.3.0`,
+  puis une transcription correcte d'un extrait de conférence de presse
+  gouvernementale rejoué au haut-parleur — « Souwäit ech mech elo erënnere ka vu
+  virun enger hallwer Stonn huet d'Majoritéit vun den Deputéierte géint
+  gestëmmt » — capitalisation et ponctuation comprises.
+
+Les journaux étant supprimés en release (`-assumenosideeffects` sur
+`android.util.Log`), rien de tout ceci n'apparaît dans l'APK Labs : le
+diagnostic est passé par `/proc/net/tcp6`, la chaîne TLS relevée depuis l'hôte
+et un test WebSocket servi au téléphone par `adb reverse`.
+
+### 🇱🇺 La première astuce affichée n'était pas dans la bonne langue
+
+`maybeShowFirstRealUseTip` montrait « Apiyé lontan asi on lèt pou wè aksan la
+(é, è, ò...) », en créole guadeloupéen, avec les accents du créole. C'est le tout
+premier message qu'un nouvel utilisateur voit, une seule fois, au premier usage
+réel du clavier — donc exactement ce que verrait quelqu'un qui installe l'APK de
+démonstration. Passée en ressource `first_use_accent_tip`, avec les accents que
+l'appui long donne réellement ici (`è, ê, ü, ö` ; `é`, `ä` et `ë` ont leur propre
+touche).
+
 ### 📦 Le modèle whisper sort du paquet — 38,4 Mo → 6,22 Mo
 
 - `ignoreAssetsPattern` exclut `ggml-lb-tiny-q5_1.bin` de l'APK : la

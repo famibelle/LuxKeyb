@@ -9,6 +9,13 @@
     <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxembourg</string>
     <string name="subtype_kreyol_description">Lëtzebuergesch</string>
 
+    <!-- Astuce montrée une seule fois, au premier usage réel du clavier. Elle
+         était restée en créole guadeloupéen, avec les accents du créole
+         (é, è, ò) : le tout premier message qu'un nouvel utilisateur
+         luxembourgeois voyait. Les exemples sont désormais ceux que l'appui
+         long donne réellement ici — é, ä et ë ont leur propre touche. -->
+    <string name="first_use_accent_tip">Appui long sur une lettre pour ses accents (è, ê, ü, ö…)</string>
+
     <!-- Dictée vocale luxembourgeoise (whisper tiny embarqué, hors ligne) -->
     <string name="stt_mic_description">Dictée vocale</string>
     <!-- Bandeau affiché à la place des suggestions pendant la dictée.
