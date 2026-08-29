@@ -17,84 +17,36 @@ class LevenshteinDictionaryTest {
 
     @Before
     fun loadDictionary() {
-        // Charger le dictionnaire créole depuis le fichier JSON
-        try {
-            val dictionaryFile = File("src/main/assets/luxemburgish_dict.json")
-            if (!dictionaryFile.exists()) {
-                // Fallback pour CI ou environnements différents
-                println("⚠️ Dictionary file not found, using sample data")
-                dictionary = getSampleDictionary()
-                return
-            }
-
-            val jsonString = dictionaryFile.readText()
-            val wordsArray = JSONArray(jsonString)
-            
-            val loadedDictionary = mutableListOf<Pair<String, Int>>()
-            
-            for (i in 0 until wordsArray.length()) {
-                val wordArray = wordsArray.getJSONArray(i)
-                val word = wordArray.getString(0).lowercase()
-                val frequency = wordArray.optInt(1, 1)
-                loadedDictionary.add(Pair(word, frequency))
-            }
-            
-            dictionary = loadedDictionary
-            println("✅ Dictionary loaded: ${dictionary.size} words")
-        } catch (e: Exception) {
-            println("⚠️ Error loading dictionary: ${e.message}, using sample data")
-            dictionary = getSampleDictionary()
-        }
-    }
-
-    private fun getSampleDictionary(): List<Pair<String, Int>> {
-        // Échantillon du dictionnaire réel pour les tests en environnement limité.
-        // Mots et fréquences relevés tels quels dans luxemburgish_dict.json : les
-        // 24 plus fréquents, plus ceux que les cas de test ci-dessous citent
-        // nommément.
-        return listOf(
-            Pair("an", 2090),
-            Pair("déi", 1992),
-            Pair("och", 1943),
-            Pair("ass", 1840),
-            Pair("dat", 1619),
-            Pair("mir", 1459),
-            Pair("de", 1206),
-            Pair("et", 1202),
-            Pair("eng", 1019),
-            Pair("fir", 965),
-            Pair("hunn", 898),
-            Pair("dass", 879),
-            Pair("net", 870),
-            Pair("sinn", 850),
-            Pair("vun", 798),
-            Pair("der", 758),
-            Pair("do", 745),
-            Pair("ech", 721),
-            Pair("ze", 719),
-            Pair("mer", 712),
-            Pair("am", 675),
-            Pair("den", 655),
-            Pair("nach", 622),
-            Pair("ginn", 577),
-            Pair("leit", 563),
-            Pair("dann", 383),
-            Pair("ganz", 370),
-            Pair("kéier", 204),
-            Pair("ëmmer", 181),
-            Pair("wäert", 163),
-            Pair("gesot", 160),
-            Pair("regierung", 66),
-            Pair("kanner", 41),
-            Pair("merci", 32),
-            Pair("moien", 24),
-            Pair("sécher", 24),
-            Pair("aarbecht", 22),
-            Pair("zesummen", 21),
-            Pair("haus", 9),
-            Pair("frënn", 3),
-            Pair("lëtzebuergesch", 2)
+        // Aucun repli : le fichier DOIT être là et DOIT être bien formé.
+        //
+        // Ce test retombait sur un échantillon de quarante mots en dur dès que
+        // l'asset manquait, et faisait de même en attrapant toute exception de
+        // lecture. Un dictionnaire absent, tronqué, ou livré comme objet JSON
+        // au lieu du tableau de paires attendu — le défaut exact qui a rendu la
+        // v10.2.6 muette en amont — laissait donc la suite entièrement verte.
+        // Un garde-fou qui se désarme tout seul quand ce qu'il garde disparaît
+        // ne garde rien.
+        val dictionaryFile = File("src/main/assets/luxemburgish_dict.json")
+        assertTrue(
+            "Dictionnaire introuvable : ${dictionaryFile.absolutePath}. " +
+                "Régénérer les assets avec Dictionnaires/LuxembourgishComplet.py.",
+            dictionaryFile.exists()
         )
+
+        val wordsArray = JSONArray(dictionaryFile.readText())
+        assertTrue("Dictionnaire vide", wordsArray.length() > 0)
+
+        val loadedDictionary = mutableListOf<Pair<String, Int>>()
+        for (i in 0 until wordsArray.length()) {
+            val wordArray = wordsArray.getJSONArray(i)
+            // Replié en minuscules : ces tests mesurent la distance d'édition,
+            // pas la Groussschreiwung, que GroussschreiwungTest couvre.
+            val word = wordArray.getString(0).lowercase()
+            val frequency = wordArray.optInt(1, 1)
+            loadedDictionary.add(Pair(word, frequency))
+        }
+
+        dictionary = loadedDictionary
     }
 
     @Test
