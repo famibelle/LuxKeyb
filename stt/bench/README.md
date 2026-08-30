@@ -116,3 +116,55 @@ gratuits — ce qui est optimiste par construction et le reste des deux côtés.
 `compare_luxasr.py --work` ajoute le WER de pipeline, tranches recollées contre
 la référence entière : c'est le protocole du banc embarqué du 28 août, donc le
 seul chiffre directement comparable à ses 72,1 % (tiny) et 36,0 % (base).
+
+## Le grain de la dictée est un réglage du serveur
+
+`accumulated_text` n'arrive pas quand la personne parle, mais quand le service
+décide de décoder : par défaut toutes les 5 s d'audio, ou sur une pause de
+0,8 s, plafonné à 30 s. Le message `connected` annonce ces valeurs dans
+`config.chunk_params`, et `processing` dit ensuite pourquoi il a décodé —
+`periodic_timeout`, `periodic_pause`, `silence_detected`.
+
+Elles sont réglables, ce que leur propre client web n'exploite pas : il
+n'envoie que `language`, `use_context` et les options de traduction. Le serveur
+accepte pourtant un message
+
+```json
+{"type": "config", "language": "lb",
+ "chunk_params": {"periodic_send_interval": 2.0, "silence_threshold": 0.5,
+                  "max_chunk_duration": 30.0}}
+```
+
+et le réémet en accusé. **Uniquement sous cette forme imbriquée** : les mêmes
+clés à plat sont ignorées en silence, sans accusé ni erreur — c'est ce qui rend
+le premier essai trompeur. Rien de tout cela n'est documenté, sur une API déjà
+non authentifiée ; si le serveur cessait de lire ces clés on retomberait sur son
+défaut sans rien casser.
+
+`compare_grain.py` apparie deux passages de `bench_device.py` sur les mêmes
+tranches. Il faut les enchaîner dos à dos sans bouger le téléphone : entre deux
+séances, l'acoustique de la pièce se mélange à l'effet cherché.
+
+```bash
+python3 bench_device.py --work $W --out $W/a.json --device $D --parents 002,006 --clips 19
+# installer l'APK modifié, puis
+python3 bench_device.py --work $W --out $W/b.json --device $D --parents 002,006 --clips 19
+python3 compare_grain.py --a $W/a.json --b $W/b.json --nom-a défaut --nom-b réglé
+```
+
+Mesuré ainsi le 30 août, 19 tranches, seul l'APK changeant entre les deux :
+
+| | défaut 5,0 / 0,8 | réglé 2,0 / 0,5 |
+|---|---|---|
+| WER pondéré | 31,7 % | 37,0 % |
+| WER médian | 27,9 % | 30,8 % |
+| 1er texte | 6,53 s | 4,32 s |
+| texte avant la fin de la parole | 6/19 | 13/19 |
+| mises à jour | 34 | 49 |
+
+L'écart apparié a une médiane **nulle** : la moitié des tranches ne bouge pas,
+et la moyenne perd 4,9 points à cause de quelques-unes qui se dégradent
+franchement. Compter les mises à jour ne suffit pas à dire que la dictée est
+devenue progressive — la dernière remplace toujours la précédente, y compris
+quand tout est arrivé après coup ; le critère retenu est donc `premier texte <
+durée de l'énoncé`.

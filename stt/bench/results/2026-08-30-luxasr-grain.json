@@ -1,0 +1,52 @@
+{
+ "date": "2026-08-30",
+ "objet": "effet du réglage chunk_params du service sur la dictée telle qu'elle se voit dans le clavier",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "service": "LuxASR (Uni.lu) v2.3.0, wss://luxasr.uni.lu/prod/ws/transcribe",
+ "appareil": "Samsung SM-A217F (Galaxy A21s), Android 12, APK debug bâti sur feat/luxasr-online",
+ "protocole": "deux passages dos à dos, mêmes 19 tranches, même position du téléphone ; seul l'APK change",
+ "notation": "alignement d'infixe contre la référence du fichier de 60 s",
+ "defaut_5s_0s8": {
+  "tranches": 19,
+  "muettes": 1,
+  "wer_pondere": 0.3170731707317073,
+  "wer_median": 0.2792207792207792,
+  "maj_total": 34,
+  "avant_la_fin": 6,
+  "t_premier_median": 6.5265,
+  "t_final_apres_audio_median": 1.5114999999999998
+ },
+ "regle_2s_0s5": {
+  "tranches": 19,
+  "muettes": 1,
+  "wer_pondere": 0.3699186991869919,
+  "wer_median": 0.3076923076923077,
+  "maj_total": 49,
+  "avant_la_fin": 13,
+  "t_premier_median": 4.322,
+  "t_final_apres_audio_median": 1.471
+ },
+ "ecart_apparie": {
+  "n": 18,
+  "median": 0.0,
+  "moyen": 0.04881806465139798
+ },
+ "temoin_hote_10_tranches": {
+  "defaut_5s_0s8": {
+   "wer_pondere": 0.303,
+   "t_premier_median": 7.25,
+   "passes": 14
+  },
+  "regle_2s_0s5": {
+   "wer_pondere": 0.373,
+   "t_premier_median": 4.47,
+   "passes": 22
+  },
+  "regle_1s2_0s3": {
+   "wer_pondere": 0.386,
+   "t_premier_median": 4.46,
+   "passes": 28
+  }
+ }
+}

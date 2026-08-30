@@ -343,6 +343,17 @@ class LuxAsrSession(
          * ne rattrapent qu'en partie. Descendre sous 2 s n'achète plus de
          * latence, le plancher étant le temps de décodage, mais coûte encore en
          * exactitude : d'où 2,0 et pas moins.
+         *
+         * Vérifié le même jour sur le téléphone, deux passages dos à dos sur les
+         * mêmes 19 tranches, seul l'APK changeant : le texte arrive avant la fin
+         * de la parole dans 13 énoncés sur 19 au lieu de 6, le premier texte
+         * tombe à 4,32 s au lieu de 6,53 s, et le nombre de mises à jour passe
+         * de 34 à 49 — sur un énoncé de 15 s, 7 au lieu de 3. Le prix y est plus
+         * doux qu'en laboratoire : l'écart apparié a une **médiane nulle**, la
+         * moyenne perdant 4,9 points parce que quelques tranches se dégradent
+         * franchement quand la coupure tombe au milieu d'un mot. C'est la forme
+         * de l'arbitrage : la dictée devient vivante, et de temps en temps plus
+         * fausse.
          */
         const val CHUNK_INTERVAL_S = 2.0
 
