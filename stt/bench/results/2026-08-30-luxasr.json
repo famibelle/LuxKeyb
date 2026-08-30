@@ -1,0 +1,51 @@
+{
+ "date": "2026-08-30",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "service": "LuxASR (Uni.lu), wss://luxasr.uni.lu/prod/ws/transcribe",
+ "appareil": "Samsung SM-A217F (Galaxy A21s), Android 12, LuxKeyb 10.19.0 labs-luxasr",
+ "protocole": {
+  "notation_tranche": "alignement d'infixe contre la référence du fichier de 60 s (optimiste, appliqué des deux côtés)",
+  "notation_pipeline": "tranches d'un fichier recollées contre la référence entière — protocole du banc du 28 août",
+  "telephone": "tranches rejouées au haut-parleur devant le micro du même appareil, Chrome comme lecteur et champ de saisie"
+ },
+ "service_seul": {
+  "tranches": 62,
+  "wer_pondere": 0.26373626373626374,
+  "wer_median": 0.23443223443223443,
+  "finale_ms_median": 588.187712502986,
+  "traitement_ms_median": 329.9332857131958,
+  "muettes": 1,
+  "wer_pipeline_par_fichier": {
+   "001_839ff4ad": 0.22916666666666666,
+   "002_b754b913": 0.3333333333333333,
+   "003_bc3df29c": 0.24770642201834864,
+   "004_5c83e2b0": 0.195,
+   "005_f1795896": 0.45714285714285713,
+   "006_3b62a239": 0.29591836734693877
+  }
+ },
+ "telephone": {
+  "tranches": 29,
+  "wer_pondere": 0.3364485981308411,
+  "wer_median": 0.2857142857142857,
+  "muettes": 2,
+  "texte_avant_la_fin": 15,
+  "t_final_apres_parole_s_median": 1.751,
+  "wer_pipeline_par_fichier": {
+   "002_b754b913": 0.4444444444444444,
+   "006_3b62a239": 0.42857142857142855
+  }
+ },
+ "apparie": {
+  "tranches": 29,
+  "wer_pondere_service": 0.2588495575221239,
+  "wer_pondere_telephone": 0.3364485981308411,
+  "ecart_median_pt": 4.102564102564105,
+  "ecart_moyen_pt": 7.564584757763387
+ },
+ "rappel_28_aout": {
+  "tiny_enonces_courts": 0.7205882352941176,
+  "base_enonces_courts": 0.3600840336134454
+ }
+}

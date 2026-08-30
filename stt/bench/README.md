@@ -68,3 +68,51 @@ rapport ARM/x86 sur ggml va couramment de 3 à 8×. Le comportement mémoire sou
 pression. Et le harnais tourne dans un processus isolé, là où l'IME subit en plus
 le rendu du clavier et le throttling thermique : ses chiffres sont un plancher
 optimiste.
+
+## Banc de la dictée en ligne (LuxASR)
+
+Deux scripts, à lire ensemble :
+
+```bash
+python stt/bench/prepare_dataset.py --work W --files 6 --slice-files 6
+python stt/bench/bench_luxasr.py --work W --out R/luxasr_service.json
+python stt/bench/bench_device.py --work W --out R/luxasr_tel.json \
+       --device 192.168.1.236:36331 --clips 20
+python stt/bench/compare_luxasr.py --hote R/luxasr_service.json \
+       --tel R/luxasr_tel.json --work W
+```
+
+`bench_luxasr.py` parle au service depuis le poste, dans le protocole exact de
+`LuxAsrSession` (PCM 16 bits, 16 kHz, trames de 160 ms, `stop` final) : c'est le
+service seul, avec de l'audio parfait. `bench_device.py` fait rejouer les mêmes
+tranches par le haut-parleur du téléphone devant son propre micro et laisse
+l'application faire tout le reste. L'écart entre les deux est le coût de la
+chaîne acoustique et du détecteur de fin d'énoncé, mesuré et non supposé.
+
+Ce qui est délicat dans le banc sur téléphone :
+
+- **Rien ne doit changer d'application pendant la mesure.** Basculer vers un
+  lecteur audio déclencherait `onFinishInput` et couperait la dictée. La page
+  servie par `adb reverse` est donc à la fois le lecteur et le champ de saisie,
+  et elle renvoie ses horodatages au poste — d'où le délai réel entre la fin de
+  la parole et le texte.
+- **Chrome n'autorise le son qu'après un geste.** Un appui sur « Démarrer »
+  lance un fichier de silence sur l'élément `<audio>` ; les lectures suivantes,
+  programmées, passent alors sans refus.
+- **Les appuis sont conditionnés à Chrome au premier plan.** Un enchaînement
+  raté envoie sinon des appuis aveugles dans l'application qui se trouve
+  dessous — ici une conversation personnelle, à un doigt du bouton « envoyer ».
+  `assurer_chrome()` interrompt le banc plutôt que de taper à l'aveugle.
+- **Le clavier n'apparaît pas dans `uiautomator dump`** sur One UI 4 : le
+  bouton micro est retrouvé par repli géométrique, à vérifier sur une capture
+  avant de faire confiance aux chiffres.
+- **Deux horloges.** Les estampilles de la page viennent du téléphone, celles
+  du pilote du poste ; les événements sont donc appariés par index, jamais par
+  date, et les durées ne se calculent qu'entre événements d'une même horloge.
+
+**Notation.** Le corpus ne donne de référence que par fichier de 60 s. Chaque
+tranche est donc notée par alignement d'infixe — début et fin de la référence
+gratuits — ce qui est optimiste par construction et le reste des deux côtés.
+`compare_luxasr.py --work` ajoute le WER de pipeline, tranches recollées contre
+la référence entière : c'est le protocole du banc embarqué du 28 août, donc le
+seul chiffre directement comparable à ses 72,1 % (tiny) et 36,0 % (base).
