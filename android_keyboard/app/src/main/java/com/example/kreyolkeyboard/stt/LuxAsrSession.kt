@@ -89,6 +89,17 @@ class LuxAsrSession(
 
             override fun onOpen(ws: WebSocket, response: Response) {
                 if (gen != generation) { ws.close(1000, null); return }
+                // Réglages envoyés avant la première trame : le serveur applique
+                // la configuration à ce qu'il reçoit ensuite, pas à ce qu'il a
+                // déjà mis de côté.
+                ws.send(JSONObject()
+                    .put("type", "config")
+                    .put("language", "lb")
+                    .put("chunk_params", JSONObject()
+                        .put("periodic_send_interval", CHUNK_INTERVAL_S)
+                        .put("silence_threshold", CHUNK_SILENCE_S)
+                        .put("max_chunk_duration", CHUNK_MAX_S))
+                    .toString())
                 // Le micro n'est ouvert qu'une fois la connexion établie :
                 // l'inverse capturerait une amorce que le serveur ne verrait
                 // jamais, et que l'utilisateur croirait pourtant dictée.
@@ -298,6 +309,48 @@ class LuxAsrSession(
 
         /** Attente maximale du dernier segment après « stop ». */
         const val FINAL_GRACE_MS = 4_000L
+
+        /**
+         * Cadence à laquelle le service transcrit ce qu'il a reçu.
+         *
+         * Le grain de la dictée n'est pas chez nous : `accumulated_text` arrive
+         * quand le serveur décide de décoder, et par défaut il ne décode que
+         * toutes les 5 s d'audio ou sur une pause de 0,8 s. Sur des énoncés de
+         * longueur clavier — 6 s — cela ne fait qu'une seule passe, donc aucun
+         * mot ne s'affiche avant la fin : mesuré le 29 août, du texte
+         * apparaissait avant la fin de la parole dans 11 énoncés sur 20
+         * seulement.
+         *
+         * Ces paramètres sont réglables, ce que leur propre client web n'utilise
+         * pas : il n'envoie que `language`, `use_context` et les options de
+         * traduction. Le serveur accepte pourtant `chunk_params` dans un message
+         * `config` et le réémet en accusé — mais **uniquement sous cette forme
+         * imbriquée** ; les mêmes clés à plat sont ignorées en silence. C'est
+         * donc hors du protocole documenté, sur une API déjà non authentifiée :
+         * si un jour le serveur cesse de les lire, on retombe simplement sur son
+         * défaut, sans rien casser.
+         *
+         * Ce que ça coûte, mesuré le 30 août sur dix tranches, même audio et
+         * mêmes références, WER par alignement d'infixe :
+         *
+         *     défaut 5,0 / 0,8   WER 30,3 %   1er texte 7,25 s   14 passes
+         *     2,0 / 0,5          WER 37,3 %   1er texte 4,47 s   22 passes
+         *     1,2 / 0,3          WER 38,6 %   1er texte 4,46 s   28 passes
+         *
+         * Environ 2,8 s gagnées sur le premier mot contre 7 points de WER —
+         * whisper décode une fenêtre et un morceau de 2 s lui laisse moins de
+         * contexte, que le recouvrement et les 80 tokens de contexte du service
+         * ne rattrapent qu'en partie. Descendre sous 2 s n'achète plus de
+         * latence, le plancher étant le temps de décodage, mais coûte encore en
+         * exactitude : d'où 2,0 et pas moins.
+         */
+        const val CHUNK_INTERVAL_S = 2.0
+
+        /** Pause qui déclenche une transcription anticipée. */
+        const val CHUNK_SILENCE_S = 0.5
+
+        /** Plafond d'un morceau, laissé au défaut du service. */
+        const val CHUNK_MAX_S = 30.0
 
         /**
          * Silence qui termine l'énoncé. Assez long pour survivre à une
