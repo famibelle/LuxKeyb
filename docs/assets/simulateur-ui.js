@@ -179,6 +179,18 @@
           this.dismissAccentPopup();
           return;
         }
+        // Tab complète avec la première suggestion, comme la touche de
+        // complétion d'un terminal. Uniquement quand il y en a une, et jamais
+        // sur Maj+Tab : sinon la touche cesserait de servir à naviguer dans la
+        // page, et un visiteur au clavier s'y retrouverait piégé.
+        if (e.key === 'Tab' && !e.shiftKey) {
+          const premiere = this.els.rowLux.querySelector('.chip');
+          if (premiere) {
+            e.preventDefault();
+            this.selectSuggestion(premiere.textContent);
+          }
+          return;
+        }
         if (e.key.length === 1) {
           e.preventDefault();
           this.insertPhysicalChar(e.key);
