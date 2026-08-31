@@ -22,6 +22,7 @@
   html.embed-mode header.hero,
   html.embed-mode .cta-row,
   html.embed-mode footer.note,
+  html.embed-mode .demo-section,
   html.embed-mode .embed-section { display: none !important; }
   html.embed-mode main { max-width: 420px; padding: 8px; }
   html.embed-mode .phone-shell { margin: 4px auto; }
@@ -400,6 +401,102 @@
   }
   .status-line.error { color: var(--hibiscus); }
 
+
+  /* ---- exemples rejoués, avec compteur de frappes ---- */
+  .demo-section {
+    margin: 26px 0 0;
+    padding: 18px;
+    text-align: center;
+  }
+  .demo-section h2 {
+    font-size: 16px;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .demo-section > p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0 auto 14px;
+    max-width: 460px;
+  }
+  .demo-groupe {
+    margin: 0 0 12px;
+  }
+  .demo-groupe-titre {
+    display: block;
+    font-size: 11.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+  .demo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 7px;
+  }
+  .demo-chip {
+    font: inherit;
+    font-size: 13.5px;
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .demo-chip:hover { background: var(--sea-soft); border-color: var(--sea); }
+  .demo-chip:focus-visible { outline: 2px solid var(--sea); outline-offset: 2px; }
+  .demo-chip[aria-pressed="true"] {
+    background: var(--sea);
+    border-color: var(--sea);
+    color: var(--paper);
+  }
+  .demo-section.joue .demo-chip:not([aria-pressed="true"]) { opacity: .55; }
+
+  .demo-meter {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px auto 0;
+    padding: 9px 14px;
+    max-width: 420px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--stripe);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .demo-meter strong { color: var(--ink); font-size: 17px; }
+  .demo-meter .demo-gain {
+    color: var(--sea);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .demo-meter.fini { border-color: var(--sea); }
+  .demo-meter[hidden] { display: none; } /* sinon display:flex l'emporte sur [hidden] */
+  .demo-stop {
+    font: inherit;
+    font-size: 12.5px;
+    margin-top: 10px;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .demo-section:not(.joue) .demo-stop { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .demo-chip { transition: none; }
+  }
+
   .cta-row {
     text-align: center;
     margin: 28px 0 12px;
@@ -511,6 +608,49 @@
     <p class="status-line" id="status-line">Chargement du dictionnaire…</p>
   </div>
 
+  <div class="card demo-section" id="demo-section">
+    <h2>▶ Exemples à rejouer</h2>
+    <p>Le clavier tape la phrase à votre place, lettre à lettre, et touche
+       la suggestion dès qu'elle apparaît. Le compteur ne simule rien : il
+       additionne les frappes réellement faites.</p>
+    <div class="demo-groupe">
+      <span class="demo-groupe-titre">Se saluer</span>
+      <div class="demo-chips">
+        <button type="button" class="demo-chip" data-phrase="Moien, wéi geet et?">Moien, wéi geet et?</button>
+        <button type="button" class="demo-chip" data-phrase="Merci a bis geschwënn">Merci a bis geschwënn</button>
+      </div>
+    </div>
+    <div class="demo-groupe">
+      <span class="demo-groupe-titre">Au quotidien</span>
+      <div class="demo-chips">
+        <button type="button" class="demo-chip" data-phrase="Ech wunnen zu Lëtzebuerg">Ech wunnen zu Lëtzebuerg</button>
+        <button type="button" class="demo-chip" data-phrase="Ech schaffen an der Stad">Ech schaffen an der Stad</button>
+        <button type="button" class="demo-chip" data-phrase="Ech schwätzen e bëssen Lëtzebuergesch">Ech schwätzen e bëssen Lëtzebuergesch</button>
+      </div>
+    </div>
+    <div class="demo-groupe">
+      <span class="demo-groupe-titre">Typiquement luxembourgeois</span>
+      <div class="demo-chips">
+        <button type="button" class="demo-chip" data-phrase="Mir schwätzen dräi Sproochen all Dag">Mir schwätzen dräi Sproochen all Dag</button>
+        <button type="button" class="demo-chip" data-phrase="Ech ginn op d'Schueberfouer">Ech ginn op d'Schueberfouer</button>
+        <button type="button" class="demo-chip" data-phrase="D'Gemeng huet eng nei Schoul gebaut">D'Gemeng huet eng nei Schoul gebaut</button>
+      </div>
+    </div>
+    <div class="demo-groupe">
+      <span class="demo-groupe-titre">Mots composés</span>
+      <div class="demo-chips">
+        <button type="button" class="demo-chip" data-phrase="D'Chamber huet de Gesetzprojet gestëmmt">D'Chamber huet de Gesetzprojet gestëmmt</button>
+        <button type="button" class="demo-chip" data-phrase="D'Regierung huet haut eng Pressekonferenz">D'Regierung huet haut eng Pressekonferenz</button>
+      </div>
+    </div>
+    <div class="demo-meter" id="demo-meter" hidden>
+      <span><strong id="demo-taps">0</strong> frappes</span>
+      <span>pour <strong id="demo-chars">0</strong> caractères</span>
+      <strong class="demo-gain" id="demo-gain"></strong>
+    </div>
+    <button type="button" class="demo-stop" id="demo-stop">■ Arrêter</button>
+  </div>
+
   <div class="cta-row">
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk" class="btn primary">📲 Télécharger l'APK</a>
     <a href="guide.html" class="btn">📘 Voir le guide</a>
@@ -532,6 +672,7 @@
 
 <script src="assets/simulateur-engine.js"></script>
 <script src="assets/simulateur-ui.js"></script>
+<script src="assets/simulateur-demo.js"></script>
 <script>
 (function () {
   const statusEl = document.getElementById('status-line');
@@ -578,7 +719,8 @@
       engine.loadNgramModel(ngrams);
       engine.loadFrenchDictionary(french);
 
-      new window.KreyolKeyboardSimulator(engine, els);
+      const sim = new window.KreyolKeyboardSimulator(engine, els);
+      brancherExemples(sim);
 
       const fmt = (n) => n.toLocaleString('fr-FR');
       statusEl.textContent =
@@ -591,6 +733,50 @@
       placeholderEl.textContent = 'Simulateur indisponible pour le moment.';
       console.error(err);
     }
+  }
+
+  // ---- exemples rejoués ----
+  function brancherExemples(sim) {
+    const section = document.getElementById('demo-section');
+    if (!section) return;
+
+    const demo = new window.KreyolSimulatorDemo(sim, {
+      rowLux: els.rowLux,
+      demoSection: section,
+      compteur: document.getElementById('demo-meter'),
+      compteurFrappes: document.getElementById('demo-taps'),
+      compteurCaracteres: document.getElementById('demo-chars'),
+      compteurGain: document.getElementById('demo-gain')
+    });
+
+    const chips = Array.from(section.querySelectorAll('.demo-chip'));
+    const relacher = () => chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+    relacher();
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', async () => {
+        const dejaEnCours = chip.getAttribute('aria-pressed') === 'true' && demo.enCours;
+        relacher();
+        if (dejaEnCours) { demo.arreter(); return; }
+        chip.setAttribute('aria-pressed', 'true');
+        await demo.jouer(chip.dataset.phrase);
+      });
+    });
+
+    document.getElementById('demo-stop')?.addEventListener('click', () => {
+      demo.arreter();
+      relacher();
+    });
+
+    // Reprendre la main à tout moment : taper ou effacer interrompt le rejeu.
+    const interrompre = () => {
+      if (!demo.enCours) return;
+      demo.arreter();
+      relacher();
+    };
+    els.keyboard.addEventListener('pointerdown', interrompre);
+    els.resetBtn?.addEventListener('click', interrompre);
+    document.addEventListener('keydown', interrompre);
   }
 
   init();
