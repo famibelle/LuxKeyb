@@ -184,12 +184,18 @@
      16 dp de rayon, mot à 18 sp, largeur minimale de 88 dp, 12 dp entre deux
      puces, micro-étiquette LB/FR à 10 sp. */
   .sugg-bar {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
     margin-top: 8px;
     background: var(--kb-fond-suggestions);
     border: 1px solid var(--kb-bordure);
     border-radius: 12px;
     padding: 4px 6px;
   }
+  /* Les suggestions prennent toute la place que le micro ne consomme pas, et
+     cessent donc de passer sous lui quand elles sont longues. */
+  .sugg-stack { flex: 1 1 auto; min-width: 0; }
   .sugg-row {
     display: flex;
     align-items: center;
@@ -224,6 +230,66 @@
   .chip-lux { background: var(--kb-accent); color: var(--kb-encre-sur-accent); }
   .chip-french { background: var(--kb-secondaire); color: var(--kb-encre-sur-secondaire); }
   .chip:active { filter: brightness(0.92); }
+
+  /* Texte dicté, tant qu'il n'est pas figé : souligné et remplaçable en bloc,
+     comme le texte que l'IME passe à setComposingText(). */
+  .phone-composing {
+    text-decoration: underline;
+    text-decoration-color: var(--kb-accent);
+    text-underline-offset: 2px;
+  }
+
+  /* ---- dictée (?asr=1) ----
+     Le micro occupe le bord droit de la première rangée de suggestions, comme
+     dans l'application : c'est la seule place libre sans rien sacrifier, la
+     rangée du bas pesant déjà exactement 12 unités de largeur. */
+  .asr-avis {
+    max-width: 380px;
+    margin: 0 auto 12px;
+    border: 1px solid var(--sun);
+    border-left-width: 4px;
+    background: var(--sun-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+  .asr-avis p { margin: 0 0 10px; }
+  .asr-avis.arme { border-color: var(--line); background: var(--stripe); }
+  .asr-avis .btn { font-size: 13.5px; padding: 8px 14px; }
+  .asr-note { margin: 0; color: var(--ink-soft); font-size: 12.5px; }
+
+  .mic-btn {
+    flex: none;
+    width: 40px; height: 40px;
+    margin: 2px 0 0 2px;
+    border: none; background: transparent;
+    color: var(--kb-encre-attenuee);
+    opacity: .65;
+    cursor: pointer;
+    border-radius: 10px;
+    /* MIC_ICON_PADDING_DP : la zone tactile occupe le carré entier, le glyphe
+       reste à une taille optique comparable au texte des puces. */
+    padding: 10px;
+    transition: opacity .15s, color .15s, transform .08s linear;
+  }
+  .mic-btn svg { display: block; width: 100%; height: 100%; }
+  .mic-btn.mic-on { color: var(--kb-accent); opacity: 1; }
+  /* Le bandeau se pose par-dessus les suggestions plutôt que de les remplacer
+     dans le flux : insérer une vue dans la rangée en cours de dictée relance
+     une passe de mise en page sous le doigt de l'utilisateur. */
+  .sugg-banner {
+    position: absolute;
+    left: 10px; right: 54px; top: 6px;
+    height: 40px;
+    display: flex; align-items: center;
+    margin: 0;
+    font-size: 16px;
+    color: var(--kb-encre);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   /* ---- clavier ----
      Géométrie reprise de KeyboardLayoutManager : touches de 48 dp de haut,
@@ -608,6 +674,21 @@
     </p>
   </header>
 
+  <div class="asr-avis" id="asr-avis" hidden>
+    <p>
+      <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier envoie votre voix
+      au service de l'Université du Luxembourg, en direct, pendant que vous
+      parlez — rien n'est reconnu sur votre appareil, et rien ne passe par nous.
+      N'y dictez rien de confidentiel.
+      <a href="labs-luxasr.html">Ce que fait cette démonstration</a>.
+    </p>
+    <button type="button" class="btn primary" id="asr-activer">🎙️ Activer le micro</button>
+    <p class="asr-note" id="asr-note" hidden>
+      Touchez le micro à droite des suggestions pour dicter. La dictée se
+      termine d'elle-même après une seconde et demie de silence.
+    </p>
+  </div>
+
   <div class="phone-shell">
     <div class="phone">
       <div class="phone-notch"></div>
@@ -623,8 +704,24 @@
       </div>
 
       <div class="sugg-bar">
-        <div class="sugg-row" id="row-lux"></div>
-        <div class="sugg-row" id="row-french"></div>
+        <div class="sugg-stack" id="sugg-stack">
+          <div class="sugg-row" id="row-lux"></div>
+          <div class="sugg-row" id="row-french"></div>
+        </div>
+        <!-- Dictée : masqués tant que ?asr=1 n'est pas demandé et le micro
+             pas armé. La voix part chez un tiers, ce n'est pas un réglage par
+             défaut. -->
+        <p class="sugg-banner" id="sugg-banner" hidden></p>
+        <!-- Tracé de res/drawable/ic_mic.xml : le pathData d'un vector Android
+             est un « d » SVG, et currentColor le fait suivre la teinte du
+             bouton comme le fait setColorFilter() côté application. -->
+        <button type="button" class="mic-btn" id="mic-btn"
+                aria-label="Dictée vocale" aria-pressed="false" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+            <path d="M12,14c1.66,0 2.99,-1.34 2.99,-3L15,5c0,-1.66 -1.34,-3 -3,-3S9,3.34 9,5v6c0,1.66 1.34,3 3,3z"/>
+            <path d="M17.3,11c0,3 -2.54,5.1 -5.3,5.1S6.7,14 6.7,11L5,11c0,3.41 2.72,6.23 6,6.72L11,21h2v-3.28c3.28,-0.48 6,-3.3 6,-6.72h-1.7z"/>
+          </svg>
+        </button>
       </div>
 
       <div class="keyboard" id="keyboard"></div>
@@ -699,6 +796,8 @@
 <script src="assets/simulateur-engine.js"></script>
 <script src="assets/simulateur-ui.js"></script>
 <script src="assets/simulateur-demo.js"></script>
+<script src="assets/luxasr-client.js"></script>
+<script src="assets/simulateur-dictee.js"></script>
 <script>
 (function () {
   const statusEl = document.getElementById('status-line');
@@ -757,6 +856,8 @@
 
       const sim = new window.KreyolKeyboardSimulator(engine, els);
       brancherExemples(sim);
+      // Dictée en ligne : ne fait rien sans ?asr=1 dans l'adresse.
+      if (window.brancherDictee) window.brancherDictee(sim);
 
       const fmt = (n) => n.toLocaleString('fr-FR');
       statusEl.textContent =

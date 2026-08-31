@@ -131,6 +131,15 @@
       this._popupOutsideHandler = null;
       this._contextualTimer = null;
 
+      // Texte dicté en cours : longueur de la composition et texte qui la
+      // précède. `null` tant qu'aucune dictée n'est ouverte — cf.
+      // setDictationText(), qui porte la sémantique de setComposingText().
+      this.composingLength = 0;
+      this.dictationBase = null;
+      // Installé par simulateur-dictee.js : rend true si une dictée était en
+      // cours et vient d'être arrêtée par la frappe.
+      this.dictationInterrupter = null;
+
       this.els.caret = document.createElement('span');
       this.els.caret.className = 'phone-caret';
 
@@ -202,6 +211,7 @@
     // physique (Maj/Verr.Maj/touches mortes gérées par l'OS) fournit déjà
     // le bon caractère dans e.key.
     insertPhysicalChar(character) {
+      if (this.dictationInterrupter && this.dictationInterrupter()) return;
       if (LETTER_RE.test(character)) {
         this.currentWord += character;
         this.onWordChanged();
@@ -561,6 +571,12 @@
     // ---- logique de saisie (InputProcessor.kt) ----
 
     processKey(key) {
+      // Pendant la dictée, la frappe reprend la main : une lettre insérée au
+      // milieu d'un texte en composition serait effacée par l'hypothèse
+      // suivante, qui remplace la phrase entière. Le premier appui ferme donc
+      // la dictée et n'écrit rien, comme le clavier coupe la dictée quand le
+      // champ de saisie change.
+      if (this.dictationInterrupter && this.dictationInterrupter()) return;
       switch (key) {
         case '⌫':
           this.handleBackspace();
@@ -742,7 +758,19 @@
     // ---- rendu écran / suggestions ----
 
     renderScreen() {
-      this.els.screenText.textContent = this.screenText;
+      const composing = Math.min(this.composingLength, this.screenText.length);
+      if (composing) {
+        // Le texte en composition est souligné et remplaçable en bloc, comme
+        // celui que l'IME passe à setComposingText() : chaque passe de la
+        // dictée rend une phrase entière qui annule et remplace la précédente.
+        this.els.screenText.textContent = this.screenText.slice(0, -composing);
+        const span = document.createElement('span');
+        span.className = 'phone-composing';
+        span.textContent = this.screenText.slice(-composing);
+        this.els.screenText.appendChild(span);
+      } else {
+        this.els.screenText.textContent = this.screenText;
+      }
       this.els.screenText.appendChild(this.els.caret);
       this.els.placeholder.style.display = this.screenText ? 'none' : 'block';
       this.els.screen.scrollTop = this.els.screen.scrollHeight;
@@ -775,7 +803,69 @@
       });
     }
 
+    // ---- dictée (KreyolInputMethodServiceRefactored.dictationListener) ----
+
+    /**
+     * Pose le texte dicté en composition. Chaque hypothèse remplace la
+     * précédente en bloc — jamais de recollage de fragments — et le texte déjà
+     * tapé avant l'appui sur le micro n'est pas touché.
+     */
+    setDictationText(texte) {
+      if (this.dictationBase === null) {
+        this.finalizeCurrentWord();
+        let base = this.screenText;
+        // La dictée reprend une phrase entière : elle ne se colle pas au mot
+        // précédent.
+        if (base && !/\s$/.test(base)) base += ' ';
+        this.dictationBase = base;
+      }
+      this.screenText = this.dictationBase + texte;
+      this.composingLength = texte.length;
+      this.renderScreen();
+    }
+
+    /**
+     * Fige le texte dicté, comme finishComposingText().
+     *
+     * Les mots entrent ensuite dans l'historique de prédiction comme s'ils
+     * avaient été tapés — **écart délibéré avec l'application**, dont la dictée
+     * passe par setComposingText() sans traverser le suivi de mots
+     * d'InputProcessor : après une dictée, le clavier propose donc encore la
+     * suite du dernier mot *tapé*, qui peut dater. Enchaîner sur ce qui vient
+     * d'être dit est ce que l'utilisateur attend, et c'est sans risque ici : le
+     * simulateur n'a pas de compteur d'usage à alimenter, seulement un
+     * historique de cinq mots gardé en mémoire.
+     */
+    finishDictation(texte) {
+      if (texte) this.setDictationText(texte);
+      const dicte = this.composingLength ? this.screenText.slice(-this.composingLength) : '';
+      this.composingLength = 0;
+      this.dictationBase = null;
+      this.currentWord = '';
+      dicte.split(/[^\p{L}\p{N}'’-]+/u)
+        .filter(Boolean)
+        .forEach((mot) => this.engine.addWordToHistory(mot));
+      this.renderScreen();
+      this.handleAutoCapitalization();
+      this.renderKeyboard();
+      if (dicte) {
+        const preds = this.engine.generateContextualSuggestions();
+        this.updateSuggestions(preds.map((w) => ({ word: w, language: 'LUX' })), false);
+      }
+    }
+
+    /** Abandonne la dictée et le texte en composition avec elle. */
+    cancelDictation() {
+      if (this.dictationBase === null) return;
+      this.screenText = this.dictationBase;
+      this.composingLength = 0;
+      this.dictationBase = null;
+      this.renderScreen();
+    }
+
     reset() {
+      this.composingLength = 0;
+      this.dictationBase = null;
       this.screenText = '';
       this.currentWord = '';
       this.isCapitalMode = false;
