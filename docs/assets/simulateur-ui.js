@@ -476,7 +476,9 @@
     loadEmojiData() {
       if (this.emojiLoading || this.emojiData) return;
       this.emojiLoading = true;
-      fetch('assets/emoji_data.json', { cache: 'force-cache' })
+      // Mode par défaut, pas 'force-cache' : voir simulateur.html — une copie
+      // figée survit au rechargement forcé et fait mentir la page.
+      fetch('assets/emoji_data.json')
         .then((res) => {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.json();

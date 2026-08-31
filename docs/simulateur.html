@@ -706,8 +706,18 @@
     keyboard: document.getElementById('keyboard')
   };
 
+  // Surtout pas `cache: 'force-cache'` : ce mode rend la copie stockée sans
+  // jamais interroger le serveur, quelle que soit son ancienneté, et un
+  // rechargement forcé (Ctrl+Maj+R) ne le déloge pas — il ne contourne le cache
+  // que pour le document et ses sous-ressources, pas pour un fetch() qui a
+  // demandé explicitement le cache. Un visiteur venu avant le 29 août gardait
+  // ainsi indéfiniment le dictionnaire d'avant la Groussschreiwung et voyait
+  // « sprooch » là où le clavier écrit « Sprooch ». Le mode par défaut
+  // revalide : GitHub Pages sert un max-age de 600 s et un ETag fort, donc
+  // c'est un hit sec pendant dix minutes puis un 304 de quelques centaines
+  // d'octets — le gain de bande passante reste, la péremption disparaît.
   async function fetchJson(path) {
-    const res = await fetch(path, { cache: 'force-cache' });
+    const res = await fetch(path);
     if (!res.ok) throw new Error('HTTP ' + res.status + ' sur ' + path);
     return res.json();
   }
