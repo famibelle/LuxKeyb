@@ -462,9 +462,9 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
-    margin: 14px auto 0;
-    padding: 9px 14px;
-    max-width: 420px;
+    margin: 10px auto 0;
+    padding: 8px 14px;
+    max-width: 380px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--stripe);
@@ -491,7 +491,9 @@
     color: var(--ink-soft);
     cursor: pointer;
   }
-  .demo-section:not(.joue) .demo-stop { display: none; }
+  .demo-stop { display: none; }
+  body.demo-joue .demo-stop { display: inline-block; }
+  .demo-live { text-align: center; }
 
   @media (prefers-reduced-motion: reduce) {
     .demo-chip { transition: none; }
@@ -605,6 +607,14 @@
 
       <div class="keyboard" id="keyboard"></div>
     </div>
+    <div class="demo-live">
+      <div class="demo-meter" id="demo-meter" hidden>
+        <span><strong id="demo-taps">0</strong> frappes</span>
+        <span>pour <strong id="demo-chars">0</strong> caractères</span>
+        <strong class="demo-gain" id="demo-gain"></strong>
+      </div>
+      <button type="button" class="demo-stop" id="demo-stop">■ Arrêter</button>
+    </div>
     <p class="status-line" id="status-line">Chargement du dictionnaire…</p>
   </div>
 
@@ -643,12 +653,6 @@
         <button type="button" class="demo-chip" data-phrase="D'Regierung huet haut eng Pressekonferenz">D'Regierung huet haut eng Pressekonferenz</button>
       </div>
     </div>
-    <div class="demo-meter" id="demo-meter" hidden>
-      <span><strong id="demo-taps">0</strong> frappes</span>
-      <span>pour <strong id="demo-chars">0</strong> caractères</span>
-      <strong class="demo-gain" id="demo-gain"></strong>
-    </div>
-    <button type="button" class="demo-stop" id="demo-stop">■ Arrêter</button>
   </div>
 
   <div class="cta-row">

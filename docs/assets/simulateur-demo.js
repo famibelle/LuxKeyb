@@ -67,6 +67,7 @@
       this.jeton++;
       this.enCours = false;
       this.els.demoSection.classList.remove('joue');
+      document.body.classList.remove('demo-joue');
     }
 
     async jouer(phrase) {
@@ -76,6 +77,7 @@
 
       this.enCours = true;
       this.els.demoSection.classList.add('joue');
+      document.body.classList.add('demo-joue');
       this.els.compteur.hidden = false;
       this.sim.reset();
 
@@ -146,6 +148,7 @@
       if (!vivant()) return;
       this.enCours = false;
       this.els.demoSection.classList.remove('joue');
+      document.body.classList.remove('demo-joue');
       this.majCompteur(frappes, this.sim.screenText, true);
     }
   }
