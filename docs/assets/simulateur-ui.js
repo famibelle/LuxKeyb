@@ -634,7 +634,24 @@
       this.isNumericMode = false;
     }
 
+    // Réécrit le mot courant avec la majuscule que le contexte atteste, avant
+    // qu'il ne soit clos par l'espace — comme InputProcessor.handleSpace(), qui
+    // appelle applyContextualCapitalization() avant finalizeCurrentWord() : à ce
+    // moment l'historique porte les mots précédents, pas celui qu'on valide.
+    applyContextualCapitalization() {
+      const mot = this.currentWord;
+      if (!mot) return;
+      const corrige = this.engine.contextualCapitalization(mot);
+      if (!corrige || corrige === mot) return;
+      // Ne réécrire que si ce qui précède est bien le mot courant.
+      if (this.screenText.slice(-mot.length) !== mot) return;
+      this.screenText = this.screenText.slice(0, -mot.length) + corrige;
+      this.currentWord = corrige;
+      this.renderScreen();
+    }
+
     handleSpace() {
+      this.applyContextualCapitalization();
       this.finalizeCurrentWord();
       this.screenText += ' ';
       this.renderScreen();

@@ -180,6 +180,25 @@
 
   // ---- BilingualConfig defaults (BilingualSuggestion.kt) ----
 
+  /**
+   * Choisit, parmi les candidats qu'un contexte n-gramme propose, la forme
+   * capitalisée correspondant à `word`, ou null. Miroir exact de
+   * SuggestionEngine.pickContextualCapitalization().
+   *
+   * Le PREMIER candidat correspondant fait foi, quelle que soit sa casse : les
+   * candidats arrivent triés par probabilité décroissante, donc c'est la forme
+   * que ce contexte attend. Si c'est la minuscule, il n'y a rien à corriger —
+   * aller chercher plus loin une variante capitalisée moins probable
+   * reviendrait à imposer une majuscule que le contexte ne demande pas.
+   */
+  function pickContextualCapitalization(word, candidats) {
+    if (word.length < 2) return null;
+    if (/\p{Lu}/u.test(word)) return null; // l'utilisateur a donné un signal de casse
+    const attendu = candidats.find((c) => c.toLowerCase() === word);
+    if (!attendu || attendu === word) return null;
+    return attendu;
+  }
+
   const DEFAULT_BILINGUAL_CONFIG = {
     frenchActivationThreshold: 3,
     maxLuxSuggestions: 3,
@@ -323,6 +342,41 @@
       return suggestions.slice(0, MAX_SUGGESTIONS).map((s) => s[0]);
     }
 
+    // Tous les candidats d'un contexte, dans l'ordre du fichier et sans
+    // troncature : la capitalisation contextuelle cherche une forme précise,
+    // pas les cinq meilleures.
+    ngramCandidateWords(context) {
+      const list = this.ngramModel[context];
+      if (!list) return [];
+      const mots = [];
+      for (const entry of list) {
+        const word = typeof entry === 'string' ? entry : entry && entry.word;
+        if (word) mots.push(word);
+      }
+      return mots;
+    }
+
+    /**
+     * Rétablit la majuscule du substantif quand — et seulement quand — le
+     * contexte n-gramme atteste la forme capitalisée. Miroir de
+     * SuggestionEngine.contextualCapitalization().
+     *
+     * La casse canonique du dictionnaire ne suffit pas à déclencher la
+     * correction : le dictionnaire français de secours capitalise « rue »,
+     * « moment », « centre », et un message en français en ressortirait
+     * défiguré. Dans « la rue de la gare », le mot précédent est `la`, contexte
+     * inconnu, rien ne se déclenche ; dans « an der rue », le contexte
+     * « an der » atteste `Rue`.
+     */
+    contextualCapitalization(word) {
+      if (!word || Object.keys(this.ngramModel).length === 0) return null;
+      const lastWord = this.wordHistory[this.wordHistory.length - 1];
+      if (!lastWord) return null;
+      const previousWord = this.wordHistory[this.wordHistory.length - 2];
+      const context = this.resolveNgramContext(previousWord, lastWord);
+      return pickContextualCapitalization(word, this.ngramCandidateWords(context));
+    }
+
     // → [{word, score, language}, ...] casse déjà appliquée
     getLuxSuggestions(input) {
       const dictMatches = this.getDictionarySuggestions(input);
@@ -421,6 +475,7 @@
     AccentTolerantMatcher,
     levenshtein,
     applyCasingPattern,
+    pickContextualCapitalization,
     calculateDictionaryScore
   };
 })(typeof window !== 'undefined' ? window : globalThis);
