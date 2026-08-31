@@ -73,6 +73,41 @@ tbody th{font-weight:700;width:34%;}
 td{color:var(--ink-soft);}
 td.good{color:var(--ink);}
 
+/* Dictée en direct dans la page. Le micro reprend la forme qu'il a dans le
+   clavier — rond, pulsant au rythme de la voix — parce que c'est le seul
+   retour immédiat : sans lui, rien ne distingue pendant plusieurs secondes un
+   micro qui capte d'un micro mort. */
+.card.asr{padding:20px 18px;}
+.asr-consent-txt{font-size:14.5px;}
+.asr-tete{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.asr-micro{flex:0 0 auto;width:62px;height:62px;border-radius:50%;
+  border:1px solid var(--line);background:var(--stripe);color:var(--ink);
+  font-size:25px;line-height:1;cursor:pointer;
+  transition:background .18s,border-color .18s,box-shadow .12s;}
+.asr-micro:focus-visible{outline:2px solid var(--sea);outline-offset:3px;}
+.asr-micro.attente{background:var(--sun-soft);border-color:var(--sun);}
+.asr-micro.actif{background:var(--sea);border-color:var(--sea);color:var(--paper);
+  box-shadow:0 0 0 calc(var(--niveau,0) * 16px) var(--sea-soft);}
+.asr-etat{min-width:0;}
+.asr-bandeau{margin:0;font-family:var(--mono);font-size:13.5px;
+  letter-spacing:.03em;color:var(--ink-soft);}
+.asr-bandeau.vif{color:var(--sea);font-weight:700;}
+.asr-chrono{margin:3px 0 0;font-family:var(--mono);font-size:12.5px;
+  color:var(--ink-soft);font-variant-numeric:tabular-nums;min-height:1em;}
+/* Souligné tant que le texte n'est pas acquis : c'est le texte en composition
+   de l'IME, qui se réécrit en entier à chaque hypothèse reçue. */
+.asr-texte{margin:0 0 14px;padding:14px 15px;border-radius:10px;
+  background:var(--stripe);border:1px solid var(--line);
+  font-size:17px;line-height:1.5;min-height:3.6em;}
+.asr-texte.partiel{text-decoration:underline;text-decoration-style:dotted;
+  text-underline-offset:3px;color:var(--ink-soft);}
+.asr-texte.vide{color:var(--ink-soft);font-style:italic;font-size:15px;}
+.asr-pied{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;}
+.asr-pied .btn{padding:7px 14px;font-size:13.5px;}
+.asr-erreur{margin:12px 0 0;padding:11px 13px;border-radius:9px;
+  background:var(--hibiscus-soft);border:1px solid var(--hibiscus);
+  font-size:14px;color:var(--ink);}
+
 .facts{list-style:none;margin:0;padding:0;}
 .facts li{padding:9px 0;border-bottom:1px solid var(--line);
   display:flex;flex-wrap:wrap;gap:4px 14px;}
@@ -141,6 +176,64 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       publiée sur le Play Store.
     </p>
   </div>
+</section>
+
+<section>
+  <h2 id="essayer">Essayer tout de suite, sans rien installer</h2>
+
+  <p>
+    Le clavier n'est pas nécessaire pour entendre ce que donne LuxASR. Cette
+    page parle au même service, avec les mêmes réglages que l'application —
+    même découpage à deux secondes, même arrêt sur le silence, même filtre de
+    boucle — en passant par le micro de l'appareil que vous tenez. C'est la
+    dictée de la démonstration, sans le clavier autour.
+  </p>
+
+  <div class="card asr">
+    <div id="asr-gate">
+      <p class="asr-consent-txt">
+        <strong>Ce bouton ouvre le micro et envoie votre voix à
+        <code>luxasr.uni.lu</code></strong>, en direct, pendant que vous parlez.
+        Nous n'enregistrons rien et n'entendons rien : le son va du navigateur
+        au service, sans passer par nous. Mais il quitte votre appareil, pour un
+        service que nous n'exploitons pas — n'y dictez rien de confidentiel.
+      </p>
+      <button type="button" id="asr-consent" class="btn primary">
+        🎙️ J'ai compris — activer le micro
+      </button>
+    </div>
+
+    <div id="asr-live" hidden>
+      <div class="asr-tete">
+        <button type="button" id="asr-micro" class="asr-micro"
+                aria-pressed="false" aria-label="Démarrer la dictée">🎙️</button>
+        <div class="asr-etat">
+          <p id="asr-bandeau" class="asr-bandeau">Prêt — touchez le micro et parlez en luxembourgeois</p>
+          <p id="asr-chrono" class="asr-chrono"></p>
+        </div>
+      </div>
+      <p id="asr-texte" class="asr-texte vide" aria-live="polite">Le texte reconnu s'affichera ici.</p>
+      <div class="asr-pied">
+        <button type="button" id="asr-effacer" class="btn" hidden>Effacer</button>
+        <span class="muted">
+          La dictée se termine d'elle-même après une seconde et demie de
+          silence ; le micro se referme avec elle.
+        </span>
+      </div>
+      <p id="asr-erreur" class="asr-erreur" role="status" hidden></p>
+    </div>
+  </div>
+
+  <p class="muted">
+    Le bandeau est celui du clavier, et le déroulé aussi : le texte apparaît
+    pendant qu'on parle, souligné tant qu'il n'est pas acquis, et se réécrit en
+    entier à chaque hypothèse plutôt que de s'ajouter au bout. Ce qui change
+    ici, c'est le micro — celui d'un ordinateur, à
+    cinquante centimètres, n'est pas celui d'un téléphone tenu en main, et le
+    navigateur y ajoute son propre traitement du son. Les taux d'erreur cités
+    sur cette page ont été mesurés à travers un téléphone : ils ne se
+    transposent pas tels quels à ce qu'on entendra ici.
+  </p>
 </section>
 
 <section>
@@ -329,6 +422,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
 </div>
 
+<script defer src="assets/luxasr-demo.js"></script>
 <script>
 // Même mécanique que la page Labs, sur le tag « labs-luxasr » : la page annonce
 // le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
