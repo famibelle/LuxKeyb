@@ -47,7 +47,7 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
     </p>
     <p style="margin:16px 0 0;">
       <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
-         class="btn">📲 Ou télécharger l'APK (version 10.16.0)</a>
+         class="btn">📲 Ou télécharger la dernière version de l'APK</a>
     </p>
     <p style="margin:10px 0 0;font-size:0.85em;opacity:0.75;">
       Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau
@@ -301,7 +301,7 @@ Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
 <div style="display:flex;justify-content:center;align-items:center;gap:28px;
             flex-wrap:wrap;margin:24px 0;">
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
-     class="btn">📲 Télécharger l'APK (version 10.19.0)</a>
+     class="btn">📲 Télécharger la dernière version de l'APK</a>
   <figure style="margin:0;text-align:center;">
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">
       <img src="assets/qr-luxkeyb-apk.png"
