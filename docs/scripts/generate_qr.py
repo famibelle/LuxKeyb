@@ -37,6 +37,14 @@ CODES = {
         # et du bleu de l'APK stable.
         "#0E6E76",
     ),
+    "qr-luxkeyb-ambassadeurs.png": (
+        # Le seul QR qui mène à une page et non à un téléchargement : il finit
+        # sur une diapositive ou un stand, là où l'on montre le kit à quelqu'un
+        # qui va relayer. D'où une couleur hors des quatre autres, qui sont
+        # toutes celles d'une installation.
+        "https://famibelle.github.io/LuxKeyb/ambassadeurs.html",
+        "#4A3B8C",
+    ),
     "qr-luxkeyb-luxasr.png": (
         # Directement sur l'APK, comme les trois autres : en démonstration, le
         # téléchargement doit partir dès le scan, et c'est le présentateur qui

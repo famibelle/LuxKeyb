@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espace ambassadeurs · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et le seul palier qui compte aujourd'hui — 12 testeurs pendant 14 jours.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<!-- Cette page est faite pour être collée dans WhatsApp ou sur Facebook :
+     sans ces balises, l'aperçu n'affiche que l'URL brute. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Espace ambassadeurs · Lëtzebuergesch Clavier">
+<meta property="og:description" content="Messages déjà écrits, liens qui convainquent, codes à scanner : de quoi faire connaître le clavier luxembourgeois en trente secondes ou en dix minutes.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/ambassadeurs.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/Screenshots/lux_suggestions.png">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:700px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 4px;letter-spacing:-0.01em;}
+section{margin-top:40px;}
+p{margin:0 0 12px;}
+a{color:var(--sea);}
+.section-sub{font-size:14.5px;color:var(--ink-soft);margin:4px 0 18px;max-width:60ch;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin:0 0 4px;font-size:16px;}
+.card .meta{font-size:13px;color:var(--ink-soft);margin:0 0 12px;}
+.card p{font-size:14.5px;color:var(--ink-soft);}
+.actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* Le texte à copier : reconnaissable au premier coup d'œil comme « ceci n'est
+   pas la page qui parle, c'est ce que vous allez envoyer ». */
+.script{
+  background:color-mix(in srgb, var(--sea) 5%, transparent);
+  border:1px dashed var(--line);border-radius:9px;
+  padding:13px 15px;font-size:14px;white-space:pre-wrap;margin:0 0 12px;color:var(--ink);
+}
+.script .lb{display:block;}
+
+.btn.copied{background:var(--sun);border-color:var(--sun);color:var(--paper);}
+
+/* Le lien de la page, en évidence : c'est l'objet même de cette page, elle est
+   faite pour être envoyée telle quelle dans un groupe. */
+.share-card{background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);border-radius:12px;padding:18px;margin-top:22px;}
+.share-card h2{margin-bottom:8px;}
+.url{
+  display:block;background:var(--card);border:1px dashed var(--line);border-radius:9px;
+  padding:12px 14px;font-family:var(--mono);font-size:13.5px;color:var(--ink);
+  margin:0 0 12px;word-break:break-all;
+}
+
+/* Le palier des 12 testeurs remplace la jauge de téléchargements du projet
+   jumeau : l'application n'étant pas publiée, il n'existe aucun compteur
+   public, et afficher une barre de progression inventée serait mentir. */
+.goal{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--hibiscus);
+  border-radius:12px;padding:18px 20px;margin-top:22px;}
+.goal h2{margin-bottom:6px;}
+.goal .figures{display:flex;gap:26px;flex-wrap:wrap;margin:14px 0 4px;}
+.goal .fig{flex:0 0 auto;}
+.goal .fig b{display:block;font-family:var(--mono);font-size:26px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;}
+.goal .fig span{font-size:12.5px;color:var(--ink-soft);}
+
+.links{list-style:none;padding:0;margin:0;}
+.links li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
+.links li:last-child{border-bottom:0;}
+.links a{font-weight:700;}
+.links span{color:var(--ink-soft);}
+
+.qr-grid{display:flex;gap:16px;flex-wrap:wrap;}
+.qr-grid figure{margin:0;flex:1 1 150px;max-width:190px;text-align:center;}
+.qr-grid img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--line);
+  border-radius:10px;padding:7px;box-sizing:border-box;}
+.qr-grid figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
+.note p:last-child{margin-bottom:0;}
+
+.rules{list-style:none;padding:0;margin:0;}
+.rules li{padding:9px 0 9px 26px;position:relative;font-size:14.5px;color:var(--ink-soft);}
+.rules li::before{content:"·";position:absolute;left:8px;top:6px;font-weight:800;color:var(--hibiscus);font-size:18px;}
+.rules b{color:var(--ink);}
+.legal{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <strong>📣 Ambassadeurs</strong> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
+  <h1>Espace ambassadeurs 🇱🇺</h1>
+  <p class="lead">
+    Une seule adresse à envoyer, et tout est là : ce qui se fait en trente
+    secondes, les messages déjà écrits, les liens qui convainquent, les codes à
+    scanner. Rien à installer, rien à demander — servez-vous.
+  </p>
+
+  <div class="goal">
+    <h2>🎯 Le seul chiffre qui compte aujourd'hui</h2>
+    <p class="meta">Ce qui sépare le clavier d'une publication ouverte sur Google Play</p>
+    <div class="figures">
+      <div class="fig"><b>12</b><span>testeurs inscrits</span></div>
+      <div class="fig"><b>14</b><span>jours d'affilée</span></div>
+    </div>
+    <p style="margin:10px 0 0;font-size:14.5px;color:var(--ink-soft);">
+      Google exige qu'une nouvelle application soit testée par au moins douze
+      personnes pendant quatorze jours consécutifs avant d'autoriser sa
+      publication à tout le monde. C'est l'étape en cours, et la plus utile :
+      <strong>chaque personne qui rejoint le test — et qui y reste — rapproche
+      le clavier de sa sortie publique.</strong> Il n'y a pas de compteur de
+      téléchargements sur cette page parce qu'il n'y en a pas encore de public :
+      l'application n'est pas publiée.
+    </p>
+  </div>
+
+  <div class="share-card">
+    <h2>📎 Le lien à faire circuler</h2>
+    <p class="meta">Copiez-le, envoyez-le dans un groupe WhatsApp, une liste de diffusion, un compte-rendu d'association : la personne qui l'ouvre trouve tout le kit.</p>
+    <code class="url" id="page-url">https://famibelle.github.io/LuxKeyb/ambassadeurs.html</code>
+    <div class="actions">
+      <button class="btn primary" data-copy="page-url">📋 Copier le lien</button>
+      <a class="btn" id="wa-share" href="#">💬 Envoyer sur WhatsApp</a>
+      <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffamibelle.github.io%2FLuxKeyb%2Fambassadeurs.html" target="_blank" rel="noopener">📘 Partager sur Facebook</a>
+    </div>
+  </div>
+</header>
+
+<section id="trente-secondes">
+  <h2>1. En trente secondes</h2>
+  <p class="section-sub">
+    Envoyer le clavier à trois personnes qui écrivent en luxembourgeois tous les
+    jours. Le lien à envoyer n'est pas celui du téléchargement mais celui du
+    simulateur : on y tape sur le vrai clavier, avec son vrai dictionnaire, sans
+    rien installer — c'est ce qui fait dire « ah oui, quand même ».
+  </p>
+
+  <div class="card">
+    <h3>💬 Le message, en luxembourgeois</h3>
+    <p class="meta">Pour un message privé, un groupe familial, un groupe de collègues</p>
+    <div class="script" id="msg-lb">Moien! Ech hunn e Clavier fonnt fir op Lëtzebuergesch ze schreiwen: hie schléit d'Wierder vir wärend ech tippen, an é, ä an ë hunn all hir eege Tast. Gratis, ouni Reklamm, an alles bleift um Telefon — näischt gëtt verschéckt. Probéier en direkt am Browser: https://famibelle.github.io/LuxKeyb/simulateur.html</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="msg-lb">📋 Copier le message</button>
+      <a class="btn" href="simulateur.html">Voir le simulateur</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 Le même, en français</h3>
+    <p class="meta">Pour les proches qui lisent le luxembourgeois sans l'écrire</p>
+    <div class="script" id="msg-fr">Je suis tombé sur un clavier Android fait uniquement pour le luxembourgeois : il propose les mots pendant qu'on tape, et é, ä et ë ont chacun leur touche au lieu d'être planqués dans un menu. Gratuit, sans pub, et rien de ce qu'on écrit ne quitte le téléphone. On peut l'essayer dans le navigateur avant d'installer quoi que ce soit : https://famibelle.github.io/LuxKeyb/simulateur.html</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="msg-fr">📋 Copier le message</button>
+    </div>
+  </div>
+</section>
+
+<section id="test-ferme">
+  <h2>2. En deux minutes : entrer dans le test</h2>
+  <p class="section-sub">
+    La mission qui compte double : elle fait avancer le palier des douze, et elle
+    donne un vrai retour d'usage. Rejoindre le test fermé, c'est recevoir
+    l'application comme n'importe quelle autre — installation en un geste, mises
+    à jour automatiques, sans autoriser les « sources inconnues ».
+  </p>
+
+  <div class="card">
+    <h3>🧪 Rejoindre le test fermé sur Google Play</h3>
+    <p class="meta">Depuis le téléphone, avec le compte Google du Play Store</p>
+    <p>
+      Ouvrir la page d'inscription, appuyer sur <strong>Devenir testeur</strong>,
+      puis suivre le lien vers Google Play qui apparaît ensuite. Le test est
+      réservé à une liste de comptes : si la page répond que le programme n'est
+      pas ouvert au vôtre, indiquez l'adresse Google concernée dans le
+      formulaire de retours, elle y sera ajoutée.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">Ouvrir la page d'inscription</a>
+      <a class="btn" href="feedbacks_form.html">Demander à être ajouté</a>
+      <a class="btn" href="index.html#devenir-testeur">Les trois étapes en détail</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 Le message pour recruter un testeur</h3>
+    <p class="meta">À envoyer à quelqu'un qui a déjà essayé le simulateur et l'a aimé</p>
+    <div class="script" id="msg-test">Wëlls du hëllefen? D'App ass am geschlossenen Test op Google Play: eréischt wa 12 Persoune se 14 Deeg laang testen, dierf se fir jiddereen erauskommen. Aschreiwen dauert eng Minutt: https://play.google.com/apps/testing/com.potomitan.luxkeyboard
+
+(En français : l'appli est en test fermé sur Google Play. Il faut douze testeurs inscrits pendant quatorze jours pour qu'elle puisse sortir publiquement. L'inscription prend une minute, et ensuite elle s'installe et se met à jour comme n'importe quelle autre application.)</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="msg-test">📋 Copier le message</button>
+    </div>
+  </div>
+</section>
+
+<section id="dix-minutes">
+  <h2>3. En dix minutes : en parler là où ça compte</h2>
+  <p class="section-sub">
+    Un cours du soir, une école, une association, une rédaction. Ces messages
+    sont volontairement factuels : ils avancent des chiffres vérifiables et
+    disent aussi ce que le clavier ne sait pas faire — c'est ce qui les rend
+    lisibles par un enseignant ou un journaliste.
+  </p>
+
+  <div class="card">
+    <h3>🏫 À un cours de langue, une école, un institut</h3>
+    <p class="meta">Cours communaux, Institut National des Langues, Zentrum fir d'Lëtzebuerger Sprooch, enseignants de lëtzebuergesch</p>
+    <div class="script" id="msg-ecole">Bonjour,
+
+Je vous signale un clavier Android gratuit et open source entièrement dédié au luxembourgeois : Lëtzebuergesch Clavier.
+
+Disposition QWERTZ, touches é, ä et ë en accès direct, apostrophe d'élision sur sa propre touche (d'Land, s'Kanner). Dictionnaire de 38 410 mots et prédiction du mot suivant sur 26 172 contextes, régénérés à partir de deux corpus publics (LuxAlign et LETZ, ce dernier étant constitué des phrases d'exemple du Lëtzebuerger Online Dictionnaire). Il tolère les fautes de frappe et l'écriture sans diacritiques : « letzebuergesch » propose « lëtzebuergesch ».
+
+Deux points qui peuvent vous intéresser en contexte scolaire : l'application n'a aucune permission réseau, donc rien de ce qui est tapé ne quitte l'appareil ; et elle comporte trois jeux de vocabulaire ainsi qu'une progression par niveaux, construits sur le même dictionnaire.
+
+Il s'essaie sans rien installer, directement dans le navigateur :
+https://famibelle.github.io/LuxKeyb/simulateur.html
+
+Le détail des corpus, des mesures et des citations est ici :
+https://famibelle.github.io/LuxKeyb/corpus.html
+
+L'application est actuellement en test fermé sur Google Play avant sa publication ; je peux vous indiquer comment y accéder si cela vous intéresse.
+
+Je ne suis pas l'auteur du projet, simplement un utilisateur.
+
+Cordialement,</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="msg-ecole">📋 Copier le message</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📰 À un média, une association, une newsletter</h3>
+    <p class="meta">RTL Lëtzebuerg, Radio 100,7, Tageblatt, Luxemburger Wort, Paperjam, Reporter.lu, associations de promotion de la langue</p>
+    <div class="script" id="msg-media">Bonjour,
+
+Un clavier Android entièrement dédié au lëtzebuergesch vient d'arriver, et il est gratuit, open source (licence MIT), sans publicité et sans aucune permission réseau.
+
+Ce qu'il fait : disposition QWERTZ comme les claviers physiques du pays, touches é, ä et ë en accès direct, dictionnaire de 38 410 mots, prédiction du mot suivant sur 26 172 contextes, correcteur orthographique système qui cesse de souligner le luxembourgeois en rouge dans les autres applications.
+
+Ce qui le distingue des grands claviers : le luxembourgeois n'y est pas une langue parmi des centaines, et le dictionnaire est régénéré à partir de corpus publics à chaque publication, au lieu d'être une liste figée.
+
+Le projet publie ses mesures plutôt que des promesses : 18,8 % de mot juste dans les trois propositions, mesuré sur ParaLux, un jeu d'évaluation extérieur au corpus d'entraînement. Il dit aussi ce qui manque encore : pas de saisie glissée, pas de thème sombre, et la dictée vocale est encore au stade des essais.
+
+À essayer dans le navigateur, avec le vrai dictionnaire :
+https://famibelle.github.io/LuxKeyb/simulateur.html
+
+Le code et les publications : https://github.com/famibelle/LuxKeyb
+
+Bien à vous,</div>
+    <div class="actions">
+      <button class="btn primary" data-copy="msg-media">📋 Copier le message</button>
+      <a class="btn" href="corpus.html">Les chiffres, en détail</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><strong>Aucune adresse de contact n'est fournie ici, volontairement.</strong>
+    Écrire à la bonne personne — l'enseignant qu'on connaît, le formulaire de
+    contact de la rédaction — vaut infiniment mieux qu'un envoi en masse, et un
+    message reçu d'un inconnu se traite comme du démarchage. Présentez-vous
+    comme utilisateur, pas comme porte-parole du projet.</p>
+  </div>
+</section>
+
+<section id="liens">
+  <h2>4. Les liens qui convainquent</h2>
+  <p class="section-sub">Selon l'objection qu'on vous oppose, ce n'est pas la même page qu'il faut ouvrir.</p>
+  <ul class="links">
+    <li><a href="simulateur.html">Le simulateur</a> — <span>« Ça marche vraiment ? » Le clavier tourne dans le navigateur, avec le dictionnaire et les suggestions de l'application. Rien à installer.</span></li>
+    <li><a href="comparatif.html">Le comparatif</a> — <span>« Gboard le fait déjà. » Le face-à-face avec Gboard et le clavier d'Apple, y compris ce que les autres font mieux.</span></li>
+    <li><a href="corpus.html">Les corpus en chiffres</a> — <span>« Les mots viennent d'où ? » Les deux jeux de données, leurs licences, et la qualité de prédiction mesurée sur un jeu externe.</span></li>
+    <li><a href="privacy/privacy-policy.html">La confidentialité</a> — <span>« Un clavier voit tout ce que je tape. » Aucune permission réseau, désactivation automatique dans les champs de mot de passe.</span></li>
+    <li><a href="guide.html">Le guide</a> — <span>« Je ne saurai pas l'installer. » L'installation et l'activation, étape par étape.</span></li>
+    <li><a href="nouveautes.html">Les nouveautés</a> — <span>« C'est encore vivant ? » Ce qui a changé à chaque version, en clair.</span></li>
+    <li><a href="labs.html">Labs</a> — <span>« Et la dictée ? » Les versions expérimentales, à présenter comme des essais et rien de plus.</span></li>
+  </ul>
+</section>
+
+<section id="scanner">
+  <h2>5. À scanner, à coller</h2>
+  <p class="section-sub">
+    Codes en 980 × 980 px, correction d'erreur maximale : ils restent lisibles
+    imprimés, photographiés de travers ou repris dans une story. Une couleur par
+    destination, pour que deux codes côte à côte ne se confondent pas.
+  </p>
+
+  <div class="card">
+    <div class="qr-grid">
+      <figure>
+        <a href="assets/qr-luxkeyb-ambassadeurs.png" download><img src="assets/qr-luxkeyb-ambassadeurs.png" alt="QR code ouvrant cette page, l'espace ambassadeurs"></a>
+        <figcaption><strong>Cette page</strong><br>pour une diapositive, un stand, un compte-rendu</figcaption>
+      </figure>
+      <figure>
+        <a href="assets/qr-luxkeyb-test-ferme.png" download><img src="assets/qr-luxkeyb-test-ferme.png" alt="QR code ouvrant l'inscription au test fermé sur Google Play"></a>
+        <figcaption><strong>Test fermé</strong><br>l'inscription Google Play s'ouvre</figcaption>
+      </figure>
+      <figure>
+        <a href="assets/qr-luxkeyb-apk.png" download><img src="assets/qr-luxkeyb-apk.png" alt="QR code téléchargeant directement l'APK de la dernière version"></a>
+        <figcaption><strong>APK stable</strong><br>le téléchargement démarre au scan</figcaption>
+      </figure>
+      <figure>
+        <a href="assets/qr-luxkeyb-labs.png" download><img src="assets/qr-luxkeyb-labs.png" alt="QR code téléchargeant l'APK de la version Labs"></a>
+        <figcaption><strong>Labs</strong><br>version expérimentale, pour les curieux</figcaption>
+      </figure>
+    </div>
+    <p style="margin:14px 0 0;">Clic droit ou appui long sur un code pour l'enregistrer, ou clic simple pour le télécharger.</p>
+  </div>
+
+  <div class="note">
+    <p><strong>Pas encore de tract ni d'affiche en luxembourgeois.</strong> Les
+    supports imprimables du dépôt (tract A5, affiche A4, triptyque) datent du
+    projet jumeau en créole guadeloupéen dont ce clavier partage le code, et
+    n'ont pas encore été adaptés. Mieux vaut un lien ou un QR code qu'un tract
+    dans la mauvaise langue.</p>
+  </div>
+</section>
+
+<section id="cadre">
+  <h2>6. Ce qu'on vous demande de ne pas faire</h2>
+  <p class="section-sub">
+    Un clavier qu'on installe pour écrire sa langue tous les jours se recommande
+    sur ce qu'il fait, pas sur ce qu'on en promet. Quatre règles, et elles
+    tiennent en une phrase chacune.
+  </p>
+  <div class="card">
+    <ul class="rules">
+      <li><b>Pas de faux avis, pas de notes gonflées.</b> Une note de complaisance se repère, et elle discrédite le projet plus sûrement qu'une absence de note.</li>
+      <li><b>Pas d'envoi en masse.</b> Trois messages à des personnes qui écrivent vraiment en luxembourgeois valent mieux que trois cents dans des groupes au hasard.</li>
+      <li><b>Dites ce qui manque.</b> Pas de saisie glissée, pas de thème sombre, pas de dictionnaire allemand, et la dictée de Labs est un essai dont la précision n'est pas au niveau de la frappe. Annoncer ces manques évite la déception qui fait désinstaller.</li>
+      <li><b>Ne vous présentez pas comme l'éditeur.</b> Vous êtes utilisateur du clavier ; pour les questions techniques ou institutionnelles, renvoyez vers le dépôt.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔁 Et le retour le plus utile de tous</h3>
+    <p class="meta">Ce qui améliore le clavier plus vite que n'importe quel partage</p>
+    <p>
+      Un mot qui manque, une suggestion qui tombe à côté, une touche mal placée :
+      c'est de là que vient l'essentiel des corrections du dictionnaire.
+      Signalez-le, et dites dans quelle phrase cela s'est produit.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="feedbacks_form.html">💬 Formulaire de retours</a>
+      <a class="btn" href="https://github.com/famibelle/LuxKeyb/issues">Ouvrir une issue</a>
+    </div>
+  </div>
+</section>
+
+<p class="legal">
+  Chiffres relevés le 29 août 2026 sur le dictionnaire livré avec l'application.
+  Android et Google Play sont des marques de Google LLC ; cette application n'est
+  ni éditée ni approuvée par Google. Les corpus LuxAlign (CC BY-NC 4.0) et LETZ
+  (CC BY 4.0) sont cités sur la <a href="corpus.html">page des corpus</a>.
+  <br><em>Mir wëlle bleiwe wat mir sinn.</em>
+</p>
+
+</div>
+<script>
+(function(){
+  var pageUrl = "https://famibelle.github.io/LuxKeyb/ambassadeurs.html";
+  var waText = "Voici tout le kit pour faire connaître le Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android : messages prêts à envoyer, liens à montrer, QR codes. Servez-vous : " + pageUrl;
+  document.getElementById('wa-share').href = "https://wa.me/?text=" + encodeURIComponent(waText);
+
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      navigator.clipboard.writeText(el.innerText).then(function(){
+        var t = btn.textContent;
+        btn.textContent = "✅ Copié !";
+        btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent = t; btn.classList.remove('copied'); }, 1600);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

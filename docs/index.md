@@ -12,6 +12,7 @@ lang: fr
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="#devenir-testeur">🧪 Testeur</a> ·
@@ -113,7 +114,7 @@ barre d'espace et la ponctuation.
 
 ### Il vous souffle les mots
 
-Le dictionnaire compte **37 734 mots** et **26 172 contextes** de prédiction.
+Le dictionnaire compte **38 410 mots** et **26 172 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
@@ -191,7 +192,7 @@ depuis 2013, sans prédiction du mot suivant.
 | | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
 |---|---|---|---|---|---|
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **37 734 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Dictionnaire luxembourgeois | **38 410 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 26 172 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
