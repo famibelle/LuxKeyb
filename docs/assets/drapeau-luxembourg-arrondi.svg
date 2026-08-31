@@ -1,0 +1,10 @@
+<!-- Variante à coins arrondis, pour les usages en ligne de texte (hauteur 1em)
+     où l'angle vif d'un rectangle plein accroche l'œil plus que le drapeau. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" role="img" aria-label="Drapeau du Luxembourg">
+  <clipPath id="r"><rect width="500" height="300" rx="26" ry="26"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="500" height="100" y="0" fill="#ED2939"/>
+    <rect width="500" height="100" y="100" fill="#FFFFFF"/>
+    <rect width="500" height="100" y="200" fill="#00A1DE"/>
+  </g>
+</svg>

@@ -3,13 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Triptyque éco encre à imprimer · Klavyé Kréyòl Karukera</title>
-<meta name="description" content="Version éco encre (fond blanc) du flyer triptyque A4 paysage recto-verso pour faire connaître le clavier créole guadeloupéen : QR code vers Google Play.">
+<title>Triptyque éco encre à imprimer · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Version éco encre du dépliant trois volets du clavier luxembourgeois : fonds blancs, repères de pliage, lisible en noir et blanc.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -18,7 +16,7 @@ html{overflow-x:hidden;}
 body{
   margin:0; padding:0 18px 60px;
   background:var(--paper); color:var(--ink);
-  font-family:"Atkinson Hyperlegible",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
   line-height:1.55;
   overflow-x:hidden;
 }
@@ -49,41 +47,58 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .page{
   width:297mm; height:210mm; flex:0 0 auto;
   position:relative; overflow:hidden;
-  box-shadow:0 8px 40px rgba(0,0,0,.18);
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
   background:#FFFFFF;
   display:flex; flex-direction:row;
-  font-family:"Atkinson Hyperlegible",-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
 }
 .panel{
   width:100.5mm; height:100%; position:relative;
   display:flex; flex-direction:column;
   padding:9mm 8mm; overflow:hidden;
-  border-right:1.5px dashed rgba(28,38,36,.4);
-  background:#FFFFFF;
 }
-.panel:first-child{ width:96mm; } /* volet qui se replie en premier (à confirmer avec l'imprimeur) */
-.panel:last-child{ border-right:none; }
+/* Le volet étroit, celui qui se replie en premier, est un bandeau physique
+   unique traversant la feuille : il doit se retrouver au même endroit sur les
+   deux faces. Le retournement bord court d'une feuille paysage inverse la
+   gauche et la droite, donc les rainures situées à 96 et 196,5 mm du bord
+   gauche au recto se retrouvent à 100,5 et 201 mm du bord gauche au verso.
+   D'où :first-child d'un côté et :last-child de l'autre. Les deux faces le
+   déclaraient auparavant en tête, ce qui décalait les deux rainures de
+   4,5 mm entre le recto et le verso. */
+#face-recto .panel:first-child{ width:96mm; }
+#face-verso .panel:last-child { width:96mm; }
+/* Sans la rampe de fonds, plus rien ne dit où sont les rainures : deux repères
+   de pliage les rendent, en pointillé très clair pour ne pas se lire comme un
+   trait de découpe. */
+#face-recto .panel + .panel,
+#face-verso .panel + .panel{ border-left:1px dashed rgba(28,38,36,.22); }
 
-/* ---------- Couverture (éco : fond blanc, accents en couleur) ---------- */
-.cover{ justify-content:flex-start; }
+/* ---------- Couverture ---------- */
+/* Palette figée volontairement (pas de var(--...)) : cette page simule
+   un support imprimé, son rendu ne doit pas changer avec le thème du
+   site (clair/sombre) ni avec les préférences système du visiteur. */
+/* Version éco encre : la couverture n'a plus d'aplat. Il reste un lavis du
+   bleu profond à 5 % — assez pour que le volet de couverture ne se confonde
+   pas avec les volets intérieurs, assez peu pour ne rien coûter — et le rouge
+   du drapeau se réduit au bandeau de 6 mm en tête. */
+.cover{ padding:0; background:color-mix(in srgb, #003876 5%, white); color:#1C2624; justify-content:flex-start; border-top:6mm solid #ED2939; }
 .cover .top{ padding:4mm 8mm 3mm; text-align:center; }
 .cover .logo-row{ display:flex; align-items:center; justify-content:center; gap:2.5mm; margin-bottom:2.5mm; }
 .cover .logo-circle{
   width:12mm; height:12mm; border-radius:50%; background:#fff; flex:0 0 auto;
   display:flex; align-items:center; justify-content:center; overflow:hidden;
-  border:2px solid var(--hibiscus);
 }
 .cover .logo-circle img{ width:78%; height:78%; object-fit:contain; }
 .cover .brand-badge{
-  display:inline-block; background:#fff; color:var(--hibiscus); font-family:"Fredoka",sans-serif;
+  display:inline-block; background:#fff; border:1.4px solid #003876; color:#003876; font-family:"Fredoka",sans-serif;
   font-weight:700; font-size:10.5px; letter-spacing:.03em; padding:1.6mm 4mm; border-radius:999px;
-  border:1.5px solid var(--hibiscus); white-space:nowrap;
+  box-shadow:0 3px 10px rgba(0,0,0,.15); white-space:nowrap;
 }
 .cover h1.h{
-  font-family:"Fredoka",sans-serif; font-weight:800;
-  font-size:22px; line-height:1.14; margin:0 0 2mm; color:var(--hibiscus);
+  font-family:"Fredoka",sans-serif; font-weight:700;
+  font-size:22px; line-height:1.14; margin:0 0 2mm; color:#003876;
 }
-.cover .sub{ font-size:11px; color:#000; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
+.cover .sub{ font-size:11px; color:#1C2624; opacity:.92; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
 .cover .press-cards{
   display:flex; flex-direction:column; gap:1.3mm;
   margin:3mm 8mm 0; text-align:left;
@@ -93,11 +108,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 .cover .press-card .src{
   float:left; margin:0 1.5mm 1mm 0; font-family:"Fredoka",sans-serif; font-weight:700; font-size:8px;
-  text-transform:uppercase; letter-spacing:.02em; color:var(--hibiscus);
-  border:1.1px solid var(--hibiscus); background:#fff;
-  padding:.4mm 2mm; border-radius:999px; white-space:nowrap;
+  text-transform:uppercase; letter-spacing:.02em; background:#FFFFFF; border:1px solid #003876; color:#003876;
+  padding:.5mm 2mm; border-radius:999px; white-space:nowrap;
 }
-.cover .press-card .txt{ font-style:italic; color:#3A4440; }
+.cover .press-card .txt{ font-style:italic; opacity:.95; }
 .cover .hero-card{
   flex:1; min-height:0; margin:3mm 8mm 0; border-radius:10px; overflow:hidden; position:relative;
   display:flex; align-items:center; justify-content:center;
@@ -106,156 +120,206 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .cover .phone-medallion{
   position:absolute; right:4mm; bottom:4mm; z-index:3;
   width:32mm; height:auto; border-radius:6px;
-  border:3px solid #FFFFFF;
+  border:3px solid #FFFFFF; box-shadow:0 6px 16px rgba(0,0,0,.35);
   transform:rotate(-4deg);
 }
 .cover .hero-caption{
   position:absolute; top:5mm; left:6mm; right:6mm; z-index:2; text-align:center;
-  font-family:"Fredoka",sans-serif; font-weight:800; font-size:16px; color:#fff;
-  text-shadow:0 2px 10px rgba(0,0,0,.35);
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:16px; color:#003876;
 }
 .cover .cta{
-  margin:3mm 8mm 8mm; background:color-mix(in srgb, var(--hibiscus) 8%, white); color:var(--hibiscus); border-radius:12px;
+  margin:3mm 8mm 8mm; background:#fff; border:1.4px solid rgba(28,38,36,.18); color:#003876; border-radius:12px;
   padding:4mm 5mm; display:flex; align-items:center; justify-content:center; gap:4mm;
-  border:2px solid var(--hibiscus);
 }
-.cover .cta img{ width:26mm; height:26mm; border-radius:5px; border:1px solid rgba(28,38,36,.2); flex:0 0 auto; }
-.cover .cta .txt{ text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
+.cover .cta img{ width:26mm; height:26mm; border-radius:5px; flex:0 0 auto; }
+.cover .cta .txt{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
+/* L'appel à l'action est une capsule pleine, comme sur tout le reste des
+   supports : c'est la seule forme que la charte reconnaisse comme un bouton.
+   Elle vit dans la carte du QR plutôt qu'à côté, parce que le code a besoin
+   de sa zone blanche de silence et que séparer les deux ferait deux objets
+   là où le lecteur n'a qu'un geste à faire. Le libellé est court : dans une
+   capsule, à côté d'un QR de 26 mm sur un volet de 100 mm, une phrase entière
+   déborde. */
 .cover .cta .txt b{
-  display:block; font-family:"Fredoka",sans-serif; font-size:15px; font-weight:700; text-transform:uppercase;
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:12px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#003876; color:#F5F5F5; border-radius:999px;
+  padding:2.2mm 5mm; margin-bottom:1.8mm;
 }
-.cover .cta .txt .free{ display:block; color:var(--sea); font-weight:800; margin-top:1mm; }
+.cover .cta .txt .free{ display:block; color:#003876; font-weight:700; margin-top:1mm; }
 
 /* ---------- Dos : QR + tampon gratuit ---------- */
 .back-cover .promo-row{
   display:flex; align-items:center; justify-content:center; gap:5mm; margin:4mm 0;
 }
 .back-cover .qr-box{
-  background:#fff; border:1.5px solid var(--hibiscus); border-radius:10px; padding:2mm; flex:0 0 auto;
+  background:#fff; border-radius:10px; padding:2mm; flex:0 0 auto;
+  border:1.2px solid rgba(28,38,36,.18);
   display:flex; flex-direction:column; align-items:center;
 }
 .back-cover .qr-box img{ display:block; width:20mm; height:20mm; }
 .back-cover .qr-label{
-  font-size:9.5px; font-weight:700; color:var(--hibiscus); text-transform:uppercase;
+  font-size:9.5px; font-weight:700; color:#003876; text-transform:uppercase;
   text-align:center; margin-top:1.5mm; letter-spacing:.03em;
 }
 .back-cover .stamp{
   width:24mm; height:24mm; border-radius:50%; flex:0 0 auto;
-  border:2px dashed var(--hibiscus); display:flex; flex-direction:column;
+  border:2px dashed #ED2939; display:flex; flex-direction:column;
   align-items:center; justify-content:center; transform:rotate(-8deg);
 }
 .back-cover .stamp span{
-  font-family:"Fredoka",sans-serif; font-weight:800; color:var(--hibiscus);
+  font-family:"Fredoka",sans-serif; font-weight:700; color:#003876;
   text-transform:uppercase; line-height:1.15; text-align:center;
 }
 .back-cover .stamp .big{ font-size:11px; }
 .back-cover .stamp .small{ font-size:7px; margin-top:.6mm; }
 
-/* ---------- Dos (éco : léger lavis pour ne pas finir sur du blanc pur) ---------- */
-.back-cover{
-  color:#1C2624; justify-content:flex-start;
-  background:color-mix(in srgb, #0E6E76 5%, white);
-  border-left:3px solid #C94A3B;
-}
+/* ---------- Dos ---------- */
+.back-cover{ background:color-mix(in srgb, #003876 5%, white); color:#1C2624; justify-content:flex-start; }
 .back-cover > div:last-child{ margin-top:auto; }
-.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--hibiscus); }
+.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:#003876; }
 .back-cover .quote{
-  font-size:22px; font-style:italic; font-weight:700; line-height:1.35; color:#000;
-  border-left:4px solid var(--hibiscus); padding-left:12px; margin:8mm 0 5mm;
+  font-size:22px; font-style:italic; font-weight:700; line-height:1.35; color:#003876;
+  border-left:4px solid #ED2939; padding-left:12px; margin:8mm 0 5mm;
 }
-.back-cover .mission{ font-size:11px; font-weight:500; line-height:1.6; color:#000; margin:0 0 6mm; }
-.back-cover .contact{ font-size:12px; font-weight:500; line-height:2; }
-.back-cover .contact div{ color:#000; }
-.back-cover .contact div span{ color:var(--sea); font-weight:700; display:inline-block; width:56px; }
-.back-cover .legal{ font-size:10px; font-weight:500; color:#000; line-height:1.5; margin-top:5mm; text-align:left; }
+.back-cover .mission{ font-size:11px; line-height:1.6; color:#4B5750; margin:0 0 6mm; }
+.back-cover .contact{ font-size:12px; line-height:2; }
+.back-cover .contact div span{ color:#003876; display:inline-block; width:56px; }
+.back-cover .legal{ font-size:10px; color:#4B5750; line-height:1.5; margin-top:3mm; text-align:left; }
+/* Les quatre promesses, en pied du dépliant : le dos en est le pied. */
+.back-cover .promises{
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:10.5px;
+  letter-spacing:.02em; color:#003876; margin-top:5mm; text-align:left;
+}
 
-/* ---------- panneaux clairs (identiques à la version couleur) ---------- */
+/* ---------- panneaux clairs ---------- */
+/* Les quatre volets intérieurs se distinguent par une rampe de fonds, pour
+   qu'un dépliant ouvert se lise comme quatre pages et non comme un aplat
+   continu. La rampe est froide (bleutée) et non crème : c'est la famille du
+   bleu du drapeau, et elle ne concurrence pas le rouge.
+   Les valeurs ne sont pas libres. L* descend de 97,8 à 86,9 et C* monte de 1,2
+   à 9,7, ce qui tient exactement ΔE 4,6 entre volets voisins — le seuil en
+   deçà duquel deux pages côte à côte paraissent de la même couleur.
+   Les encadrés posés dessus (rappel, encart d'installation) sont blancs et non
+   teintés : un bloc teinté aurait fatalement croisé la rampe et disparu sur
+   l'un des quatre volets. Le blanc reste au-dessus d'elle partout, de ΔE 2,5
+   sur le volet le plus clair — où c'est le filet bleu qui le tient — à 16,2
+   sur le plus foncé. L'encre garde 11,08:1 sur ce volet le plus foncé, l'encre
+   douce 5,39:1. */
 .light{ background:#FFFFFF; }
+.light.rang-2{ background:#FFFFFF; }
+.light.rang-3{ background:#FFFFFF; }
+.light.rang-4{ background:#FFFFFF; }
 .light h2{
-  font-size:16px; font-weight:800; color:var(--ink); margin:0 0 3mm;
-  padding-bottom:2mm; border-bottom:3px solid var(--hibiscus);
+  font-size:16px; font-weight:700; color:#1C2624; margin:0 0 3mm;
+  padding-bottom:2mm; border-bottom:3px solid #ED2939;
 }
-.light p{ font-size:13px; font-weight:500; line-height:1.55; color:#000; margin:0 0 3mm; }
-.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:var(--sea); text-transform:uppercase; margin-bottom:1mm; }
+.light p{ font-size:13px; font-weight:500; line-height:1.55; color:#1C2624; margin:0 0 3mm; }
+.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:#003876; text-transform:uppercase; margin-bottom:1mm; }
 
-.bullets{ list-style:none; margin:0; padding:0; font-size:13px; font-weight:500; color:#000; }
+.bullets{ list-style:none; margin:0; padding:0; font-size:13px; font-weight:500; color:#1C2624; }
 .bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
-.bullets li .ic{ flex:0 0 auto; font-size:14px; }
-.bullets li b{ color:#000; }
+/* Puce en soleil plutôt qu'un emoji : la charte ne reconnaît que six emoji,
+   tous des repères de navigation, et le soleil est justement la couleur du
+   décor. Les sept emoji de la frise des niveaux, eux, restent : ils viennent
+   de CreoleLevels.kt et montrent le produit tel qu'il est. */
+.bullets li::before{
+  content:""; flex:0 0 auto; align-self:flex-start;
+  width:2mm; height:2mm; margin-top:1.7mm; border-radius:50%; background:#00A1DE;
+}
+.bullets li b{ color:#1C2624; }
 
 .steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
 .steps li{
   counter-increment:step; position:relative; padding-left:26px; margin-bottom:5mm;
-  font-size:13px; font-weight:500; line-height:1.45; color:#000;
+  font-size:13px; font-weight:500; line-height:1.45; color:#1C2624;
 }
 .steps li::before{
   content:counter(step); position:absolute; left:0; top:0;
-  width:19px; height:19px; border-radius:50%; background:#fff; color:var(--sea); border:1.5px solid var(--sea);
-  font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  width:19px; height:19px; border-radius:50%; background:#003876; color:#fff;
+  font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
 }
-.steps li b{ display:block; color:#000; font-size:13.5px; }
+.steps li b{ display:block; color:#1C2624; font-size:13.5px; }
 .dl-row{
-  display:flex; align-items:center; gap:3mm; background:var(--sea-soft);
-  border:1px solid var(--sea); border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
+  display:flex; align-items:center; gap:3mm; background:#FFFFFF; outline:1px solid rgba(28,38,36,.13);
+  border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
 }
 .dl-row img{ width:16mm; height:16mm; flex:0 0 auto; border-radius:3px; background:#fff; padding:1px; }
-.dl-row .dl-txt{ font-size:10.5px; font-weight:500; color:#000; line-height:1.3; }
-.dl-row .dl-txt b{ display:block; font-size:12px; color:var(--sea); }
+.dl-row .dl-txt{ font-size:10.5px; font-weight:500; color:#1C2624; line-height:1.3; }
+.dl-row .dl-txt b{ display:block; font-size:12px; color:#003876; }
 
-.mini-shots{ position:relative; width:72mm; height:60mm; margin:2mm auto 0; flex:0 0 auto; }
+.mini-shots{ position:relative; width:82mm; height:44mm; margin:2mm auto 0; flex:0 0 auto; }
 .mini-shots img{
-  position:absolute; top:0; width:33mm; height:auto; border-radius:8px;
-  border:1.5px solid rgba(28,38,36,.45);
+  position:absolute; top:0; width:41mm; height:auto; border-radius:8px;
+  border:3px solid #FFFFFF; box-shadow:0 4px 14px rgba(0,0,0,.22);
+  /* Même filet que .shot img : la bordure blanche sur le crème du volet ne
+     fait que 1,13:1 de contraste, le cadre ne tenait donc que par son ombre
+     portée, qui s'aplatit à l'impression. */
+  outline:1px solid rgba(28,38,36,.13);
 }
-.mini-shots img.s1{ left:50%; transform:translateX(-82%) rotate(-8deg); z-index:1; }
-.mini-shots img.s2{ left:50%; transform:translateX(-16%) rotate(6deg); z-index:2; }
-.mini-shots.large{ width:84mm; height:92mm; }
-.mini-shots.large img{ width:38mm; }
+.mini-shots img.s1{ left:50%; transform:translateX(-99%) rotate(-5deg); z-index:1; }
+.mini-shots img.s2{ left:50%; transform:translateX(-1%) rotate(4deg); z-index:2; }
+.mini-shots.large{ width:84mm; height:56mm; }
+.mini-shots.large img{ width:42mm; }
 
 .shot{ text-align:center; margin-top:auto; flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
 .shot img{
   max-width:100%; max-height:100%; border-radius:9px;
-  border:1.5px solid rgba(28,38,36,.45);
+  box-shadow:0 4px 16px rgba(0,0,0,.25); border:4px solid #FFFFFF;
+  outline:1px solid rgba(28,38,36,.13);
 }
 .shot.tall img{ max-height:94mm; }
 
 .callout{
-  margin-top:auto; background:var(--sun-soft); border:1.5px solid var(--sun);
-  border-radius:8px; padding:3mm 4mm; font-size:11.5px; color:#000; font-weight:600; text-align:center;
+  margin-top:auto; background:#FFFFFF; border:1px solid rgba(28,38,36,.13);
+  border-left:3px solid #00A1DE;
+  border-radius:8px; padding:3mm 4mm; font-size:11.5px; color:#1C2624; font-weight:600; text-align:center;
 }
 .back-cover .help-title{
   font-family:"Fredoka",sans-serif; font-weight:700; font-size:11px;
-  letter-spacing:.04em; text-transform:uppercase; color:var(--hibiscus); margin:0 0 2.5mm;
+  letter-spacing:.04em; text-transform:uppercase; color:#003876; margin:0 0 2.5mm;
 }
 .back-cover .help-list{ list-style:none; margin:0; padding:0; font-size:11.5px; line-height:2; }
 
 .panel-cta{
-  margin-top:4mm; background:var(--sea-soft); border:1.5px solid var(--sea); border-radius:10px;
+  margin-top:4mm; background:#E1F1FA; border-radius:10px;
   padding:3mm 4mm; display:flex; align-items:center; gap:4mm;
 }
 .panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
-.panel-cta .txt{ font-size:10.5px; font-weight:600; color:#000; line-height:1.3; }
-.panel-cta .txt b{ display:block; font-size:12.5px; color:var(--sea); text-transform:uppercase; }
-.panel-cta .txt .free{ display:block; color:var(--hibiscus); font-weight:800; margin-top:1mm; }
+.panel-cta .txt{ display:flex; flex-direction:column; align-items:flex-start; font-size:10.5px; font-weight:600; color:#1C2624; line-height:1.3; }
+.panel-cta .txt b{
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#003876; color:#F5F5F5; border-radius:999px;
+  padding:1.8mm 4mm; margin-bottom:1.4mm;
+}
+/* « 100 % gratuit » est l'argument le plus vendeur du dépliant : il est écrit
+   en bleu profond, qui tient 9,94:1 sur le bleu très clair du bloc. Le rouge
+   du drapeau n'y donnerait que 3,65:1 — au-dessous du seuil de 4,5:1 pour du
+   petit texte, et c'est pourquoi il ne prend jamais un mot de cette taille. */
+.panel-cta .txt .free{ display:block; color:#003876; font-weight:700; margin-top:1mm; }
 
 .levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
 .level-step{
   flex:1; display:flex; align-items:flex-start; justify-content:center;
-  background:var(--sea-soft); border:1.5px solid var(--sea); border-bottom:none;
-  border-radius:4px 4px 0 0; padding-top:1.3mm;
+  background:#E1F1FA; border-radius:4px 4px 0 0; padding-top:1.3mm;
 }
 .level-step span{ font-size:12px; text-align:center; }
-.level-step.h1{ height:5mm; }
-.level-step.h2{ height:8mm; }
-.level-step.h3{ height:11mm; }
-.level-step.h4{ height:14mm; }
-.level-step.h5{ height:17mm; }
-.level-step.h6{ height:20mm; }
-.level-step.h7{ height:23mm; background:var(--sun); border-color:var(--sun); }
-.level-step.h7 span{ font-size:14px; }
+/* Huit marches, une par niveau de l'application, du bleu ciel du drapeau au
+   bleu profond des aplats. Le sommet rompt avec la rampe et passe au rouge :
+   Sproochenmeeschter n'est pas la suite des sept paliers, c'est leur terme. */
+.level-step.h1{ height:4mm; }
+.level-step.h2{ height:6.5mm; background:#C3E3F5; }
+.level-step.h3{ height:9mm;   background:#A5D6F0; }
+.level-step.h4{ height:11.5mm; background:#7FC4E8; }
+.level-step.h5{ height:14mm;  background:#4FADDD; }
+.level-step.h6{ height:16.5mm; background:#2A8CC4; }
+.level-step.h7{ height:19mm;  background:#14639C; }
+.level-step.h8{ height:22mm;  background:#ED2939; }
+.level-step.h8 span{ font-size:14px; }
 .levels-caption{
   display:flex; justify-content:space-between; margin:0 0 4mm;
-  font-family:var(--mono); font-size:8.5px; font-weight:700; color:#000;
+  font-family:var(--mono); font-size:8.5px; font-weight:700; color:#1C2624;
   text-transform:uppercase; letter-spacing:.03em;
 }
 
@@ -268,7 +332,6 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   .preview-shell{padding:0;overflow:visible;gap:0;}
   .face-label{display:none;}
   .page{box-shadow:none;page-break-after:always;}
-  .panel{border-right:none;}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
 }
 body[data-print-mode="recto"] #face-verso{ display:none; }
@@ -281,45 +344,37 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
-  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
-  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
-  <a href="tract.html">🪧 Tract</a> ·
-  <a href="tract-eco.html">💧 Tract éco encre</a> ·
-  <a href="affiche.html">🖨️ Affiche</a> ·
-  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
-  <a href="triptyque.html">📖 Triptyque</a> ·
-  <strong>💧 Triptyque éco</strong> ·
-  <a href="presskit.html">📰 Presse</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Dtriptyque_eco%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
 <header style="padding:20px 0 10px;">
-  <p class="eyebrow">Klavyé Kréyòl Karukera · kit ambassadeur</p>
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
   <h1>Le triptyque, version éco encre 💧</h1>
-  <p class="lead">Le même flyer 3 volets recto-verso (4 étapes d'installation, QR triplé), mais sur fond blanc : idéal pour imprimer une pile entière sans vider la cartouche couleur. Les accents et les captures d'écran gardent leur couleur, le reste passe en noir et blanc.</p>
+  <p class="lead">Le même dépliant sans aplat : les six volets sont sur papier, la couleur ne tient plus que les titres, les puces et les traits. Six panneaux d'aplat coûtent une cartouche à eux seuls — c'est la version à imprimer quand le tirage se compte en dizaines.</p>
 
   <div class="actions">
-    <a class="btn primary" href="assets/triptyque-eco-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF (2 pages A4 paysage)</a>
-    <a class="btn" href="triptyque.html">📖 Version couleur (fond dégradé)</a>
-    <a class="btn" href="ambassade.html">← Retour au kit ambassadeur</a>
+    <a class="btn primary" href="assets/triptyque-eco-letzebuergesch-clavier-A4.pdf" download>📄 Télécharger le PDF (A4 paysage, recto-verso)</a>
+    <a class="btn" href="triptyque.html">🎨 Version en couleur</a>
+    <a class="btn" href="ambassadeurs.html">← Retour à l'espace ambassadeurs</a>
   </div>
-
   <div class="print-modes">
-    <button class="btn primary" onclick="printMode('both')">🖨️ Imprimer les 2 faces</button>
-    <button class="btn" onclick="printMode('recto')">Imprimer le recto seul</button>
-    <button class="btn" onclick="printMode('verso')">Imprimer le verso seul</button>
+    <button class="btn" onclick="printMode('recto')">🖨️ Imprimer le recto</button>
+    <button class="btn" onclick="printMode('verso')">🖨️ Imprimer le verso</button>
+    <button class="btn" onclick="printMode('both')">🖨️ Imprimer les deux faces</button>
   </div>
 
   <div class="note">
-    Réglages à vérifier dans la boîte de dialogue d'impression : papier <strong>A4, orientation Paysage</strong>, marges <strong>Aucune</strong>, échelle <strong>100&nbsp;%</strong>. Pour l'imprimeur : impression recto-verso, retournement bord court.
+    Impression : A4 <b>paysage</b>, « Aucune marge », en-têtes et pieds de page désactivés. Pour le recto-verso manuel, imprimez d'abord le recto, remettez la feuille en la retournant <b>par le bord court</b>, puis imprimez le verso — les deux rainures tomberont l'une sur l'autre. Pliage : rabattre le volet gauche vers l'intérieur, puis le droit par-dessus.
   </div>
 </header>
 
@@ -333,74 +388,75 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     <div class="panel back-cover">
       <div>
         <div class="wordmark">POTOMITAN™</div>
-        <div class="quote">&laquo;&nbsp;An kréyòl nou ka palé, an kréyòl nou ka maké&nbsp;!&nbsp;&raquo;</div>
-        <p class="mission">Ce clavier s'appuie sur les textes de Sonny Rupaire, Sylviane Telchid, Max Rippon, Gisèle Pineau et d'autres grands défenseurs du kréyòl guadeloupéen : écrivains, linguistes et artistes qui ont structuré et transmis la langue.</p>
+        <div class="quote">&laquo;&nbsp;Mir wëlle bleiwe wat mir sinn.&nbsp;&raquo;</div>
+        <p class="mission">Le dictionnaire de ce clavier n'est pas une liste figée : il est reconstruit à chaque publication à partir de deux corpus publics — <b>LuxAlign</b>, 180 342 phrases de presse, et <b>LETZ</b>, les phrases d'exemple du <i>Lëtzebuerger Online Dictionnaire</i>. La langue qu'il propose est celle qui s'écrit, pas celle d'un dictionnaire arrêté une fois pour toutes.</p>
       </div>
       <div class="promo-row">
         <div class="qr-box">
-          <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-          <div class="qr-label">Scanne · Télécharge</div>
+          <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
+          <div class="qr-label">Flashez le code</div>
         </div>
         <div class="stamp">
-          <span class="big">100%<br>gratuit</span>
+          <span class="big">100&nbsp;%<br>gratuit</span>
           <span class="small">zéro pub</span>
         </div>
       </div>
       <div>
         <div class="help-title">Comment nous aider</div>
         <ul class="help-list">
-          <li>⭐ Note l'app sur Google Play</li>
-          <li>📣 Parle-en autour de toi</li>
-          <li>🐛 Signale un mot manquant</li>
+          <li>Rejoignez le test sur Google Play</li>
+          <li>Parlez-en autour de vous</li>
+          <li>Signalez un mot qui manque</li>
         </ul>
       </div>
       <div>
         <div class="contact">
-          <div><span>Web</span> potomitan.io</div>
-          <div><span>Kontak</span> contact@potomitan.io</div>
+          <div><span>Web</span> famibelle.github.io/LuxKeyb</div>
+          <div><span>Kontakt</span> contact@potomitan.io</div>
         </div>
-        <div class="legal">Klavyé Kréyòl Karukera est un projet citoyen, gratuit et open source (licence MIT), publié par Potomitan™. Zéro collecte de données personnelles : fonctionnement 100&nbsp;% local.</div>
-        <div class="legal" style="margin-top:2mm;">Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe" style="height:2.8mm;vertical-align:-0.4mm;border-radius:1px;"> · https://potomitan.io/</div>
+        <div class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</div>
+        <div class="legal">Lëtzebuergesch Clavier est un projet citoyen publié par Potomitan™. Aucune collecte de données personnelles : l'application n'a aucune permission réseau et le clavier fonctionne entièrement sur l'appareil.</div>
+        <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg" style="height:3.6mm;vertical-align:-0.4mm;"> · https://potomitan.io/</div>
       </div>
     </div>
 
     <!-- P2 : pourquoi -->
     <div class="panel light">
       <div class="kicker">Pourquoi</div>
-      <h2>Pourquoi un clavier créole ?</h2>
+      <h2>Pourquoi un clavier luxembourgeois&nbsp;?</h2>
       <ul class="bullets" style="margin:0 0 3mm;">
-        <li><span class="ic">🛠️</span><span>Si ton kréyòl est très rouillé…</span></li>
-        <li><span class="ic">😤</span><span>Que tu galères à écrire en kréyòl parce que ton téléphone refuse tous les mots</span></li>
-        <li><span class="ic">🤔</span><span>Que tu doutes de l'orthographe à chaque message…</span></li>
-        <li><span class="ic">➡️</span><span><b>Klavyé Kréyòl Karukera est fait pour toi&nbsp;!</b></span></li>
+        <li><span>Votre téléphone «&nbsp;corrige&nbsp;» votre lëtzebuergesch en allemand ou en français.</span></li>
+        <li><span>Le ë et le ä se cachent dans un menu d'accents, à chaque mot.</span></li>
+        <li><span>Vous hésitez sur l'orthographe à chaque message.</span></li>
+        <li><span><b>Ce clavier est fait pour vous.</b></span></li>
       </ul>
       <div class="mini-shots large">
-        <img class="s1" src="assets/triptyque-p2-sms1.jpg" alt="Échange de SMS écrit en kréyòl avec le clavier">
-        <img class="s2" src="assets/triptyque-p2-sms2.jpg" alt="Le clavier en action : suggestions de mots pendant la frappe">
+        <img class="s1" src="Screenshots/lux_suggestions.png" alt="Le clavier pendant la frappe : suggestions luxembourgeoises en rouge, françaises en bleu">
+        <img class="s2" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê s'ouvre">
       </div>
-      <div class="callout">🎮 Et à l'intérieur : jeux de vocabulaire, accents créoles par appui long, progression en 7 niveaux. Retourne le dépliant pour tout découvrir&nbsp;!</div>
+      <div class="callout">À l'intérieur : les diacritiques en accès direct, un correcteur qui vaut pour toutes vos applications, trois jeux de vocabulaire et huit niveaux de progression. Retournez le dépliant.</div>
     </div>
 
     <!-- P3 : couverture -->
     <div class="panel cover">
       <div class="top">
         <div class="logo-row">
-          <div class="logo-circle"><img src="assets/potomitan-logo.png" alt="Potomitan"></div>
-          <span class="brand-badge">KLAVYÉ KRÉYÒL KARUKERA</span>
+          <div class="logo-circle"><img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier"></div>
+          <span class="brand-badge">LËTZEBUERGESCH CLAVIER</span>
         </div>
-        <h1 class="h">Enfin écrire en kréyòl<br>sans galérer&nbsp;!</h1>
+        <h1 class="h">Enfin écrire en lëtzebuergesch<br>sans se battre&nbsp;!</h1>
         <div class="press-cards">
-          <div class="press-card"><span class="src">📺 Canal 10</span><span class="txt">«&nbsp;Une application intuitive pour écrire en Kréyòl.&nbsp;»</span></div>
-          <div class="press-card"><span class="src">📺 Guadeloupe la 1ère</span><span class="txt">«&nbsp;Klavyé Kréyòl Karukera aide les utilisateurs à écrire leurs messages [en Kréyòl].&nbsp;»</span></div>
-          <div class="press-card"><span class="src">📰 France-Antilles</span><span class="txt">«&nbsp;Le créole guadeloupéen dispose désormais de son premier clavier intelligent.&nbsp;»</span></div>
+          <div class="press-card"><span class="src">38 410 mots</span><span class="txt">un dictionnaire luxembourgeois régénéré à partir de corpus publics, pas une liste figée</span></div>
+          <div class="press-card"><span class="src">QWERTZ</span><span class="txt">la disposition des claviers physiques du pays, avec é, ä, ë et l'apostrophe en accès direct</span></div>
+          <div class="press-card"><span class="src">0 réseau</span><span class="txt">aucune permission Internet : rien de ce que vous tapez ne quitte le téléphone</span></div>
         </div>
       </div>
       <div class="hero-card">
-        <img src="assets/triptyque-cover-screenshot.png" alt="Conversation SMS écrite en créole avec le clavier Klavyé Kréyòl">
+        <img src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois pendant la frappe d'un SMS">
       </div>
       <div class="cta">
-        <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Scanne pour télécharger</b>Disponible sur Google Play<span class="free">100% gratuit</span></div>
+        <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
+        <div class="txt"><b>Flashez le code</b>Essayez-le d'abord dans le navigateur<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -409,68 +465,62 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   <div class="page" id="face-verso">
 
     <!-- P4 : installation -->
-    <div class="panel light">
+    <div class="panel light rang-2">
       <div class="kicker">C'est parti</div>
       <h2>Installation en 4 étapes</h2>
       <ol class="steps">
         <li>
-          <b>Télécharge l'app, c'est gratuit</b>
+          <b>Ouvrez le site, c'est gratuit</b>
           <div class="dl-row">
-            <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-            <span class="dl-txt"><b>Scanne ce code</b>Vise-le avec l'appareil photo, ou cherche « Klavyé Kréyòl » sur Google Play</span>
+            <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
+            <span class="dl-txt"><b>Flashez ce code</b>Visez-le avec l'appareil photo : le site s'ouvre et le clavier s'essaie dans le navigateur, sans rien installer</span>
           </div>
         </li>
-        <li><b>Teste le clavier de démo</b>Ouvre l'app : un clavier d'essai te permet de taper « bonjou » et de voir les suggestions, sans rien activer.</li>
-        <li>
-          <b>Active le clavier dans les réglages</b>
-          Un bouton dans l'app t'amène directement au bon écran des paramètres Android.
-          <div class="dl-row">
-            <img src="assets/triptyque-avertissement-android.png" alt="Message système Android : « ce clavier peut collecter le texte que tu tapes »" style="object-fit:cover;">
-            <span class="dl-txt"><b>Ce message est normal</b>Android l'affiche pour tous les claviers, pas seulement celui-ci</span>
-          </div>
-        </li>
-        <li><b>Choisis-le et écris</b>De retour dans l'app, le sélecteur de clavier s'ouvre : choisis Klavyé Kréyòl et tape ton premier mot.</li>
+        <li><b>Installez l'application</b>Deux chemins depuis le site : rejoindre le test sur Google Play — installation et mises à jour comme n'importe quelle autre application — ou télécharger l'APK directement.</li>
+        <li><b>Activez le clavier dans les réglages</b>Un bouton de l'application mène droit au bon écran Android. Le système affiche alors un avertissement sur la saisie : il est générique, Android le montre pour <i>tout</i> clavier tiers, et celui-ci n'a aucune permission réseau pour envoyer quoi que ce soit.</li>
+        <li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez Lëtzebuergesch Clavier et tapez votre premier mot.</li>
       </ol>
-      <div class="shot"><img src="assets/triptyque-conversation.jpg" alt="Le clavier en action : conversation en kréyòl avec des suggestions de mots pendant la frappe"></div>
+      <div class="shot"><img src="Screenshots/lux_onboarding.png" alt="Le parcours d'installation dans l'application : les étapes cochées et le champ d'essai du clavier"></div>
     </div>
 
     <!-- P5 : fonctionnalités -->
-    <div class="panel light">
+    <div class="panel light rang-3">
       <div class="kicker">Fonctionnalités</div>
-      <h2>Ce qu'il fait pour toi</h2>
+      <h2>Ce qu'il fait pour vous</h2>
       <ul class="bullets">
-        <li><span class="ic">💬</span><span><b>Suggestions bilingues</b> : le kréyòl d'abord, le français prend le relais si besoin</span></li>
-        <li><span class="ic">✒️</span><span><b>Accents créoles</b> (é, è, à, ò...) par simple appui long</span></li>
-        <li><span class="ic">🔤</span><span>Il comprend même si <b>tu te trompes</b> d'accent ou de lettre</span></li>
-        <li><span class="ic">🧩</span><span><b>Jeux de vocabulaire</b> intégrés : mots mêlés, mots mélangés</span></li>
-        <li><span class="ic">🏆</span><span><b>Progression en 7 niveaux</b>, comme un jeu, de Pipirit à Potomitan</span></li>
+        <li><span><b>Suggestions bilingues</b> : le luxembourgeois d'abord, le français prend le relais pour les emprunts</span></li>
+        <li><span><b>é, ä, ë</b> ont leur touche, et les autres diacritiques viennent par appui long</span></li>
+        <li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;lëtzebuergesch&nbsp;»</span></li>
+        <li><span>Un <b>correcteur système</b> : vos mots cessent d'être soulignés en rouge dans vos autres applications</span></li>
+        <li><span><b>Trois jeux</b> de vocabulaire : Wuertsich, Wuertmix et Wuertriet</span></li>
       </ul>
       <div class="mini-shots">
-        <img class="s1" src="assets/tract-visuel-1.png" alt="Klavyé Kréyòl Karukera : maké an bel kréyòl">
-        <img class="s2" src="assets/tract-visuel-2.png" alt="Conversation SMS écrite en créole avec le clavier">
+        <img class="s1" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê">
+        <img class="s2" src="Screenshots/lux_numerique.png" alt="Le mode chiffres et symboles du clavier">
       </div>
-      <div class="callout">Le dictionnaire s'enrichit à chaque mise à jour, construit à partir des textes des grands défenseurs du kréyòl.</div>
+      <div class="callout">La prédiction du mot suivant s'appuie sur 26 172 contextes : après un espace, le clavier propose la suite d'après les deux mots précédents, pas seulement le dernier.</div>
     </div>
 
     <!-- P6 : progression -->
-    <div class="panel light">
+    <div class="panel light rang-4">
       <div class="kicker">Motivation</div>
-      <h2>Suis ta progression</h2>
-      <p>Un tableau de bord suit les mots créoles que tu utilises et ta progression vers le niveau <b>Potomitan</b>, le sommet des niveaux de maîtrise.</p>
+      <h2>Suivez votre progression</h2>
+      <p>Chaque mot que vous employez fait avancer votre niveau, selon la part du dictionnaire que vous avez déjà utilisée — d'<b>Ufänker</b> à <b>Sproochenmeeschter</b>. Seuls les mots déjà présents dans le dictionnaire sont comptés : un mot de passe ou un nom propre n'y figure pas, et n'est donc jamais enregistré.</p>
       <div class="levels">
         <div class="level-step h1"><span>🌍</span></div>
         <div class="level-step h2"><span>🌱</span></div>
         <div class="level-step h3"><span>🔥</span></div>
         <div class="level-step h4"><span>💎</span></div>
-        <div class="level-step h5"><span>🐇</span></div>
-        <div class="level-step h6"><span>🐘</span></div>
+        <div class="level-step h5"><span>🦊</span></div>
+        <div class="level-step h6"><span>🦁</span></div>
         <div class="level-step h7"><span>👑</span></div>
+        <div class="level-step h8"><span>🧙</span></div>
       </div>
-      <div class="levels-caption"><span>Pipirit</span><span>Potomitan</span></div>
-      <div class="shot tall"><img src="assets/triptyque-stats.jpg" alt="Tableau de bord Mon Kréyòl"></div>
+      <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
+      <div class="shot tall"><img src="Screenshots/lux_niveaux.png" alt="Écran de progression : niveau atteint, part du dictionnaire découverte, mot du jour"></div>
       <div class="panel-cta">
-        <img src="assets/qr-triptyque.png" alt="QR code Google Play">
-        <div class="txt"><b>Scanne pour télécharger</b>Rejoins la communauté créolophone<span class="free">100% gratuit</span></div>
+        <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
+        <div class="txt"><b>Installez maintenant</b>Chaque testeur rapproche le clavier de sa sortie publique<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -485,6 +535,5 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     document.body.removeAttribute('data-print-mode');
   });
 </script>
-
 </body>
 </html>

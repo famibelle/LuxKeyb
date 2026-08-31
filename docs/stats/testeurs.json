@@ -1,0 +1,8 @@
+{
+  "objectif": 12,
+  "jours": 14,
+  "actuel": 4,
+  "as_of": "2026-08-31",
+  "source": "console Google Play, test fermé com.potomitan.luxkeyboard",
+  "commentaire": "Nombre de testeurs inscrits au test fermé. Google exige 12 testeurs pendant 14 jours consécutifs avant d'autoriser une publication ouverte. Mettre à jour à la main : il n'existe pas d'API publique pour ce chiffre."
+}

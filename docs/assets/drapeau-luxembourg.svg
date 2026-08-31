@@ -1,0 +1,8 @@
+<!-- Drapeau luxembourgeois, proportions officielles 3:5. Les deux couleurs
+     sont celles que le clavier emploie déjà à l'écran : rouge #ED2939 pour les
+     touches d'action, bleu #00A1DE pour la barre d'espace. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" role="img" aria-label="Drapeau du Luxembourg">
+  <rect width="500" height="100" y="0" fill="#ED2939"/>
+  <rect width="500" height="100" y="100" fill="#FFFFFF"/>
+  <rect width="500" height="100" y="200" fill="#00A1DE"/>
+</svg>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charte graphique · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Couleurs, typographie, logo et règles d'écriture du Lëtzebuergesch Clavier : de quoi fabriquer un support cohérent avec ceux du projet, avec les contrastes mesurés.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:760px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:60ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 4px;letter-spacing:-0.01em;}
+h3{font-size:15.5px;font-weight:700;margin:22px 0 6px;}
+section{margin-top:44px;}
+p{margin:0 0 12px;}
+a{color:var(--sea);}
+.section-sub{font-size:14.5px;color:var(--ink-soft);margin:4px 0 18px;max-width:62ch;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+
+/* Les pastilles de couleur : le fond est la couleur elle-même, écrite en dur —
+   une charte qui décrirait ses couleurs à travers les variables du thème
+   changerait de couleurs avec le thème du lecteur. */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:0 0 8px;}
+.sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
+.sw .chip{height:76px;display:flex;align-items:flex-end;padding:8px 10px;font-family:"Fredoka",sans-serif;font-weight:700;font-size:13px;}
+.sw .meta{padding:10px 12px 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.45;}
+.sw .meta b{display:block;color:var(--ink);font-size:13.5px;}
+.sw .hex{font-family:var(--mono);font-size:12px;}
+
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 14px;}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.ok{color:#1B7F3B;font-weight:700;}
+.ko{color:#B3261E;font-weight:700;}
+
+.rules{list-style:none;padding:0;margin:0;}
+.rules li{padding:9px 0 9px 26px;position:relative;font-size:14.5px;color:var(--ink-soft);}
+.rules li::before{content:"·";position:absolute;left:8px;top:6px;font-weight:800;color:#ED2939;font-size:18px;}
+.rules b{color:var(--ink);}
+
+.specimen{background:#003876;border-radius:12px;padding:22px 20px;color:#fff;}
+.specimen .d1{font-family:"Fredoka",sans-serif;font-weight:700;font-size:34px;line-height:1.05;margin:0 0 6px;}
+.specimen .d2{font-family:"Fredoka",sans-serif;font-weight:700;font-style:italic;font-size:18px;text-transform:uppercase;margin:0 0 14px;}
+.specimen .d3{font-size:14.5px;margin:0;opacity:.94;}
+
+.logo-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+.logo-demo{width:104px;height:104px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 3px 10px rgba(0,0,0,.18);}
+.logo-demo img{width:86%;height:86%;object-fit:contain;}
+.logo-demo.sur-bleu{background:#003876;}
+.logo-demo.carre{border-radius:14px;}
+
+.motif{height:120px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(103deg,#003876 0 55.5%,#FFFFFF 55.5% 57.2%,#ED2939 57.2% 100%);}
+.motif.mauvais{background:linear-gradient(103deg,#003876 0%,#ED2939 100%);}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:8px 0 6px;}
+.duo figcaption{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+figure{margin:0;}
+
+.files{list-style:none;padding:0;margin:0;}
+.files li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
+.files li:last-child{border-bottom:0;}
+.files a{font-weight:700;}
+.files span{color:var(--ink-soft);}
+.legal{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
+  <h1>Charte graphique 🖌️</h1>
+  <p class="lead">
+    De quoi fabriquer une affichette, une story ou une diapositive qui ressemble
+    aux supports du projet. Les couleurs, la police, le logo, et surtout les
+    règles qui disent <em>où</em> chaque couleur a le droit d'aller — celles-là
+    ne sont pas des préférences, elles viennent de contrastes mesurés.
+  </p>
+</header>
+
+<section id="marque">
+  <h2>1. La marque</h2>
+  <p class="section-sub">Deux noms, et ils ne s'emploient pas l'un pour l'autre.</p>
+  <div class="card">
+    <p><b>Lëtzebuergesch Clavier</b> est le nom du produit. Il s'écrit toujours
+    ainsi, avec le tréma et sans trait d'union, et ne se traduit pas — pas de
+    « clavier luxembourgeois » en guise de nom propre, cette formule sert à
+    <em>décrire</em> le produit, pas à le nommer.</p>
+    <p><b>Potomitan™</b> est l'éditeur. Il signe les supports en pied de page,
+    jamais en tête : c'est le clavier qu'on présente, pas la maison.</p>
+    <p style="margin:0">La signature produit, qui ferme les supports imprimés comme
+    elle ferme le site : <b>« Däi Lëtzebuergesch, op dengem Telefon. »</b><br>
+    L'accroche, celle qui ouvre : <b>« Mir schwätze Lëtzebuergesch — elo
+    schreiwe mir et och. »</b></p>
+  </div>
+</section>
+
+<section id="couleurs">
+  <h2>2. Les couleurs</h2>
+  <p class="section-sub">
+    Deux couleurs viennent du drapeau, et ce sont exactement celles que le
+    clavier affiche à l'écran : le rouge des touches d'action et des suggestions
+    luxembourgeoises, le bleu de la barre d'espace et des suggestions
+    françaises. Les deux autres sont des couleurs de service.
+  </p>
+
+  <div class="swatches">
+    <div class="sw">
+      <div class="chip" style="background:#ED2939;color:#fff;">Rouge drapeau</div>
+      <div class="meta"><b>Rouge</b><span class="hex">#ED2939</span><br>Aplats, traits, gros titres. Jamais de petit texte.</div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#00A1DE;color:#1C2624;">Bleu drapeau</div>
+      <div class="meta"><b>Bleu ciel</b><span class="hex">#00A1DE</span><br>Puces, filets, marches, cerclages. Jamais de texte.</div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#003876;color:#fff;">Bleu profond</div>
+      <div class="meta"><b>Nuit</b><span class="hex">#003876</span><br>Le fond qui porte du texte, et la couleur des titres sur papier.</div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#1C2624;color:#fff;">Encre</div>
+      <div class="meta"><b>Encre</b><span class="hex">#1C2624</span><br>Le texte courant, et le fond du dos du dépliant.</div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:#F5F5F5;color:#1C2624;border-bottom:1px solid rgba(0,0,0,.1)">Papier</div>
+      <div class="meta"><b>Papier</b><span class="hex">#F5F5F5</span><br>Le fond clair, celui du clavier lui-même. Le blanc pur reste réservé aux cartes posées dessus.</div>
+    </div>
+  </div>
+
+  <h3>La règle, et d'où elle vient</h3>
+  <p>Les deux couleurs du drapeau sont vives et claires. Mesurées contre le
+  blanc, elles ne tiennent pas ce qu'un aplat de marque promet :</p>
+
+  <table>
+    <tr><th>Couleur</th><th>sur blanc</th><th>sur encre</th><th>Ce qu'elle a le droit de porter</th></tr>
+    <tr><td>Rouge #ED2939</td><td class="num">4,22:1 <span class="ko">✗</span></td><td class="num">3,68:1 <span class="ko">✗</span></td><td>Du texte de 24 px, ou 18,7 px en gras, et au-delà (seuil 3:1). Rien de plus petit.</td></tr>
+    <tr><td>Bleu ciel #00A1DE</td><td class="num">2,94:1 <span class="ko">✗</span></td><td class="num">5,29:1 <span class="ok">✓</span></td><td>Aucun texte sur fond clair. Sur fond sombre, il redevient lisible et sert d'accent.</td></tr>
+    <tr><td>Bleu profond #003876</td><td class="num">11,49:1 <span class="ok">✓</span></td><td class="num">1,35:1 <span class="ko">✗</span></td><td>Tout, sur fond clair. Rien sur fond sombre.</td></tr>
+    <tr><td>Encre #1C2624</td><td class="num">15,53:1 <span class="ok">✓</span></td><td>—</td><td>Le texte courant, partout sur fond clair.</td></tr>
+  </table>
+
+  <p>D'où les trois règles qui gouvernent tous les supports du projet :</p>
+  <div class="card">
+    <ul class="rules">
+      <li><b>Le rouge ne porte jamais une ligne de texte courant.</b> Il fait les aplats, les traits, les titres en grand corps — et il est le seul à pouvoir crier.</li>
+      <li><b>Le bleu ciel ne porte jamais de texte sur fond clair.</b> Il est fait pour les puces, les filets, les cerclages et les marches de progression. Sur un fond sombre, il reprend le rôle d'accent que le bleu profond ne peut plus tenir.</li>
+      <li><b>Le bleu profond porte le texte.</b> C'est lui, et non le rouge, qui fait les aplats sur lesquels on écrit en blanc.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="motif">
+  <h2>3. Le motif : la coupe franche</h2>
+  <p class="section-sub">
+    Le rouge et le bleu du drapeau sont presque complémentaires : les fondre
+    l'un dans l'autre fait traverser le violet, et cette bande sale se voit sur
+    chaque support. Le drapeau règle lui-même la question — il les sépare par
+    une bande blanche.
+  </p>
+  <div class="duo">
+    <figure>
+      <div class="motif"></div>
+      <figcaption>✅ Coupe franche, filet blanc de 1,7 % : les deux couleurs se touchent sans se mélanger. C'est le fond du tract et de la couverture du dépliant.</figcaption>
+    </figure>
+    <figure>
+      <div class="motif mauvais"></div>
+      <figcaption>❌ Dégradé direct : le milieu vire au violet, une couleur qui n'appartient ni au drapeau ni à la marque.</figcaption>
+    </figure>
+  </div>
+  <p>Sur l'affiche, la coupe est horizontale et le panneau blanc du contenu tient
+  lui-même la bande blanche : le support se lit alors comme le drapeau, rouge en
+  haut, blanc au milieu, bleu en bas.</p>
+</section>
+
+<section id="typo">
+  <h2>4. La typographie</h2>
+  <p class="section-sub">Deux familles, trois usages, et une graisse plafond.</p>
+  <div class="specimen">
+    <p class="d1">Schreif Lëtzebuergesch.</p>
+    <p class="d2">« Mir schwätze Lëtzebuergesch — elo schreiwe mir et och. »</p>
+    <p class="d3">Fredoka 700 pour les titres et les accroches, police système pour le texte courant, comme ici.</p>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <ul class="rules">
+      <li><b>Fredoka, graisse 700</b> — titres, accroches, capsules, chiffres mis en avant. 700 est un plafond : c'est la graisse la plus lourde embarquée dans <code>assets/fredoka-embed.css</code>, et demander 800 ne donne pas un titre plus gras, mais un faux gras fabriqué par le moteur de rendu.</li>
+      <li><b>Police système</b> (<code>-apple-system, "Segoe UI", Helvetica Neue, Arial</code>) — tout le texte courant. Aucun chargement, aucun décalage au premier affichage.</li>
+      <li><b>Chasse fixe</b> — les valeurs techniques, les URL, les mentions de pied de support.</li>
+      <li><b>La police est embarquée en base64</b>, pas servie par Google Fonts : les supports imprimés s'exportent parfois hors ligne, et une police absente au moment du rendu recomposerait toute la page. Fredoka est sous licence SIL Open Font 1.1, l'embarquement est donc permis.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="logo">
+  <h2>5. Le logo</h2>
+  <p class="section-sub">
+    Le lion rouge du Luxembourg, dessiné en traits fins sur fond très clair —
+    c'est l'icône de l'application, et elle sert de logo à tous les supports.
+  </p>
+  <div class="card">
+    <div class="logo-row">
+      <div class="logo-demo"><img src="assets/logo/luxkeyb-logo-192.png" alt="Le logo sur pastille blanche"></div>
+      <div class="logo-demo sur-bleu"><img src="assets/logo/luxkeyb-logo-192.png" alt="Le logo sur fond bleu profond, dans sa pastille"></div>
+      <div class="logo-demo carre"><img src="assets/logo/luxkeyb-logo-192.png" alt="Le logo en carré arrondi"></div>
+      <div style="flex:1 1 220px;min-width:0;font-size:14.5px;color:var(--ink-soft)">
+        Sur fond coloré, le logo se pose <b>dans une pastille claire</b> : son
+        tracé est fait de traits fins, il perdrait son contour à même l'aplat.
+        Sur fond clair, la pastille disparaît — elle n'existait que pour cela.
+      </div>
+    </div>
+    <ul class="rules" style="margin-top:10px">
+      <li><b>Taille minimale : 12 mm</b> de côté à l'impression, 40 px à l'écran. En dessous, les traits du lion se referment.</li>
+      <li><b>Zone de protection</b> : un quart de la largeur du tracé, tout autour. Dans la pastille, c'est le bord de la pastille qui la tient.</li>
+      <li><b>Ne pas</b> recolorer le lion, l'étirer, lui ajouter une ombre portée, ni le poser sur une photo.</li>
+      <li>Le fichier livré est en 192 px : c'est la plus grande taille produite par l'application. À 14 mm cela fait 348 dpi, largement au-dessus de ce que demande un tract ; pour un support plus grand, agrandir le <b>cadre</b>, pas le lion.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="ecriture">
+  <h2>6. L'écriture</h2>
+  <p class="section-sub">Ce qui distingue le ton du projet, et ce qu'on ne s'autorise pas.</p>
+  <div class="card">
+    <ul class="rules">
+      <li><b>Le français explique, le luxembourgeois signe.</b> Les pages et les supports sont rédigés en français — la langue commune du pays pour ce genre de document — et les accroches, la signature et les noms de niveaux restent en lëtzebuergesch. C'est le clavier qui parle luxembourgeois, pas la brochure.</li>
+      <li><b>Un chiffre plutôt qu'un adjectif.</b> « 38 410 mots » plutôt que « un dictionnaire riche » ; « 18,8 % de mot juste dans les trois propositions » plutôt que « des suggestions pertinentes ». Tout chiffre publié vient du dictionnaire livré ou d'une mesure reproductible.</li>
+      <li><b>Dire ce qui manque.</b> Pas de saisie glissée, pas de thème sombre, pas de dictionnaire allemand, la dictée encore au stade des essais. Un support qui tait cela obtient une installation et perd un utilisateur la semaine suivante.</li>
+      <li><b>Jamais de citation de presse inventée.</b> Le projet n'a pas de revue de presse ; à la place des encarts de citations, les supports portent trois faits vérifiables. Le jour où un média en parlera vraiment, la citation prendra leur place.</li>
+      <li><b>Les emoji sont des repères, pas de la décoration.</b> Un par section au plus, toujours le même pour la même idée : 📲 installer, 🪧 tract, 🎨 affiche, 📖 dépliant, 🔬 Labs, 💧 version éco encre.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="fichiers">
+  <h2>7. Les fichiers</h2>
+  <p class="section-sub">Tout ce qui est réutilisable, et comment le régénérer.</p>
+  <ul class="files">
+    <li><a href="assets/logo/luxkeyb-logo-192.png" download>Logo PNG 192 px</a> — <span>l'icône de l'application, fond clair opaque</span></li>
+    <li><a href="assets/drapeau-luxembourg.svg" download>Drapeau SVG</a> et <a href="assets/drapeau-luxembourg-arrondi.svg" download>sa variante à coins arrondis</a> — <span>proportions officielles 3:5, les deux couleurs de la charte</span></li>
+    <li><a href="assets/fredoka-embed.css" download>Fredoka embarquée (CSS)</a> — <span>graisses 500 à 700 en base64, licence SIL OFL 1.1</span></li>
+    <li><a href="assets/qr-luxkeyb-site.png" download>QR code des supports imprimés</a> — <span>980 × 980, correction d'erreur maximale, noir d'encre pour survivre à la photocopie</span></li>
+    <li><a href="tract.html">Tract</a>, <a href="affiche.html">affiche</a>, <a href="triptyque.html">dépliant</a> — <span>chacun avec sa version éco encre et son PDF</span></li>
+    <li><a href="publicites.html">Visuels publicitaires</a> — <span>tous les formats des régies, exportés en PNG à leur taille exacte</span></li>
+    <li><code>python3 docs/scripts/generate_qr.py</code> — <span>régénère les QR codes ; chaque destination y est décrite en clair</span></li>
+  </ul>
+  <div class="card" style="margin-top:16px">
+    <p style="margin:0">Les supports sont des pages HTML, pas des fichiers de
+    maquette : le PDF se refait à tout moment avec
+    <code>google-chrome --headless --print-to-pdf</code>, et changer une phrase
+    ne demande pas de rouvrir un logiciel de mise en page. C'est aussi ce qui
+    garantit que le tract et le site ne divergent pas sur les chiffres.</p>
+  </div>
+</section>
+
+<p class="legal">
+  Contrastes calculés selon WCAG 2.1 (rapport de luminance relative), arrondis
+  au centième. Les seuils cités : 4,5:1 pour le texte courant, 3:1 pour le texte
+  large (24 px, ou 18,7 px en gras). Fredoka est distribuée sous licence
+  <a href="https://openfontlicense.org/">SIL Open Font License 1.1</a>.
+  <br><em>Däi Lëtzebuergesch, op dengem Telefon.</em>
+</p>
+
+</div>
+</body>
+</html>

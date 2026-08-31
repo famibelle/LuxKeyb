@@ -3,13 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Affiche à imprimer · Klavyé Kréyòl Karukera</title>
-<meta name="description" content="Affiche prête à imprimer pour faire connaître le clavier créole guadeloupéen : QR code vers Google Play, à afficher chez les commerçants.">
+<title>Affiche à imprimer · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Affiche A4 prête à imprimer pour faire connaître le clavier luxembourgeois : à afficher dans un hall d'association, une école, une maison des jeunes, une vitrine. QR code vers le site.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -56,9 +54,19 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   overflow:hidden;
   box-shadow:0 8px 40px rgba(0,0,0,.25);
   font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  /* Palette de communication (assets/theme.css), écrite en dur : cette page
+     simule une feuille imprimée, son rendu ne doit suivre ni le thème du site
+     ni les préférences système du visiteur.
+     Les trois bandes du drapeau, dans l'ordre et à la verticale : le rouge en
+     haut, le panneau blanc du contenu au milieu, le bleu en dessous. Aucune
+     interpolation entre le rouge et le bleu — ils sont quasi complémentaires et
+     le mélange vire au violet ; c'est justement le rôle de la bande blanche.
+     Le rouge #ED2939 ne donne que 4,22:1 en blanc : il ne porte que le titre et
+     le slogan, tous deux en gros corps (seuil 3:1). Le texte courant est sur le
+     bleu profond, à 11,49:1, ou en encre sur le panneau blanc. */
   background:
-    radial-gradient(circle at 85% 8%, rgba(255,255,255,.14), transparent 40%),
-    linear-gradient(150deg,#0B5E66 0%,#0E6E76 22%,#146B54 48%,#1F7A47 68%,#2E8B3D 100%);
+    radial-gradient(circle at 85% 8%, rgba(255,255,255,.12), transparent 40%),
+    linear-gradient(180deg,#ED2939 0 33%,#003876 33% 100%);
 }
 
 /* header */
@@ -66,24 +74,30 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  padding:11mm 12mm 0;
+  padding:9mm 12mm 0;
 }
-.hd-left{max-width:130mm;}
+.hd-left{max-width:152mm;}
+/* Graisse 700 partout : c'est le plafond de la charte pour Fredoka, et c'est
+   aussi la graisse la plus lourde embarquée dans fredoka-embed.css. Demander
+   800 ne donnait donc pas un titre plus gras, mais un gras synthétique
+   fabriqué par le moteur de rendu.
+   L'ombre portée dure qui doublait le titre en rouge brique a disparu avec
+   cette couleur : reste l'ombre douce, qui décolle le blanc du dégradé. */
 .title{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
-  font-size:64px;
-  line-height:.92;
+  font-weight:700;
+  font-size:52px;
+  line-height:.94;
   letter-spacing:-0.01em;
   color:#FFFFFF;
-  text-shadow:3px 3px 0 #8B1E14, 0 6px 18px rgba(0,0,0,.25);
+  text-shadow:0 6px 18px rgba(0,0,0,.28);
   margin:0 0 5mm;
   text-transform:uppercase;
 }
 .badge{
   display:inline-block;
-  background:#8B1E14;
-  color:#FFFFFF;
+  background:#F5F5F5;
+  color:#003876;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:13.5px;
@@ -98,10 +112,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-weight:700;
   font-style:italic;
   font-size:15.5px;
-  color:#FFE24B;
+  color:#FFFFFF;
   text-transform:uppercase;
   text-shadow:0 2px 6px rgba(0,0,0,.25);
-  max-width:120mm;
+  max-width:156mm;
   line-height:1.3;
 }
 .logo-badge{
@@ -117,33 +131,29 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   flex:0 0 auto;
 }
 .logo-badge img{width:88%;height:88%;object-fit:contain;}
-.geo-flag{
-  position:absolute;
-  top:40mm;
-  right:16mm;
-  width:46mm;
-  height:auto;
-  filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
-  z-index:1;
-}
+/* La silhouette de l'archipel remplace le drapeau, comme sur tous les
+   supports. Variante à remplissage papier, celle des fonds sombres. */
+/* Les captures d'écran : une portrait derrière, le clavier en grand devant.
+   Le clavier est le produit ; l'écran de progression dit qu'il y a une
+   application autour, sans lui disputer la place. */
 
 /* center panel */
 .panel{
   background:#FFFFFF;
-  margin:9mm 12mm 0;
+  margin:7mm 12mm 0;
   border-radius:20px;
-  padding:9mm 10mm 8mm;
+  padding:7mm 10mm 6mm;
   box-shadow:0 10px 30px rgba(0,0,0,.22);
   text-align:center;
 }
 .subtitle{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
+  font-weight:700;
   font-size:24px;
   line-height:1.15;
-  color:#8B1E14;
+  color:#003876;
   text-transform:uppercase;
-  margin:0 0 7mm;
+  margin:0 0 5mm;
   text-wrap:balance;
 }
 .shots{
@@ -153,53 +163,55 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   gap:-6mm;
   margin:0 0 5mm;
   position:relative;
-  height:62mm;
+  /* La capture du clavier est presque carrée (1080 × 1010) : à 78 mm de large
+     elle occupe déjà 73 mm de haut, d'où cette hauteur de bloc. La caler sur
+     la largeur du panneau la ferait déborder par le bas. */
+  height:70mm;
 }
 .shots img{
   position:absolute;
-  width:35mm;
   height:auto;
   border-radius:9px;
   box-shadow:0 10px 24px rgba(0,0,0,.28);
   border:3px solid #FFFFFF;
 }
 .shots img.s1{
-  left:50%;
-  transform:translateX(-86%) rotate(-9deg);
+  left:2mm;
+  top:4mm;
+  width:29mm;
+  transform:rotate(-7deg);
   z-index:1;
 }
 .shots img.s2{
-  left:50%;
-  transform:translateX(-10%) rotate(7deg);
+  right:1mm;
+  top:1mm;
+  width:72mm;
+  transform:rotate(3deg);
   z-index:2;
 }
-.pills{
-  display:flex;
-  justify-content:center;
-  gap:5mm;
-  flex-wrap:wrap;
-  margin-bottom:2mm;
-}
-.pill{
+/* Deux capsules pleines, bleue et verte, tenaient ici la place de simples
+   mentions : pleines et colorées, elles se lisaient comme des boutons alors
+   que l'affiche n'a qu'une action, le QR code. Elles laissent la place aux
+   quatre promesses, que la charte demande en pied de support. */
+.promises{
+  margin:1mm 0 0;
   font-family:"Fredoka",sans-serif;
   font-weight:700;
   font-size:13px;
-  letter-spacing:.02em;
-  color:#FFFFFF;
-  padding:3mm 7mm;
-  border-radius:999px;
+  letter-spacing:.03em;
+  line-height:1.5;
   text-transform:uppercase;
+  color:#003876;
 }
-.pill.blue{background:#1E6FD9;}
-.pill.green{background:#1E8449;}
+.promises .sep{color:#00A1DE;margin:0 1.5mm;}
 
 .stamp{
   width:42mm;
   height:42mm;
   flex:0 0 auto;
   border-radius:50%;
-  background:#FFE24B;
-  border:3px dashed #8B1E14;
+  background:#F5F5F5;
+  border:3px dashed #00A1DE;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -207,10 +219,12 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   transform:rotate(-9deg);
   box-shadow:0 8px 20px rgba(0,0,0,.22);
 }
+/* Anneau en bleu ciel, texte en encre : à 2,94:1 sur papier, ce bleu ne passe
+   aucun seuil de lisibilité — il tient le trait, jamais les mots. */
 .stamp span{
   font-family:"Fredoka",sans-serif;
-  font-weight:800;
-  color:#8B1E14;
+  font-weight:700;
+  color:#1C2624;
   text-transform:uppercase;
   line-height:1.15;
   text-align:center;
@@ -218,32 +232,47 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .stamp .big{font-size:15.5px;}
 .stamp .small{font-size:9.5px;margin-top:1mm;}
 
-/* CTA band + QR, directly under the panel */
+/* L'action, sous le bloc de contenu. Une capsule pleine, la seule du support,
+   et la tache la plus claire de l'affiche. */
 .cta-band{
-  background:#FFFFFF;
-  margin:6mm 12mm 0;
-  padding:4.5mm 8mm;
-  border-radius:16px;
+  display:block;
+  width:max-content;
+  max-width:186mm;
+  background:#F5F5F5;
+  margin:5mm auto 0;
+  padding:4mm 12mm;
+  border-radius:999px;
   box-shadow:0 8px 22px rgba(0,0,0,.2);
   text-align:center;
 }
 .cta-band .subtitle{margin:0;}
+/* Signature produit : elle ferme les supports imprimés comme elle ouvre le
+   pied de page du site. */
+.signature{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:#FFFFFF;
+  text-align:center;
+  text-shadow:0 2px 8px rgba(0,0,0,.28);
+  margin:4mm 12mm 0;
+}
 .qr-center{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10mm;
-  margin:7mm 0 0;
+  margin:5mm 0 0;
 }
 .qr-wrap{
   display:inline-block;
   background:#FFFFFF;
-  border:4px solid #8B1E14;
+  border:4px solid #003876;
   border-radius:16px;
   padding:4mm;
   box-shadow:0 10px 26px rgba(0,0,0,.24);
 }
-.qr-wrap img{display:block;width:50mm;height:50mm;}
+.qr-wrap img{display:block;width:44mm;height:44mm;}
 .credit{
   position:absolute;
   left:12mm; right:12mm; bottom:2.5mm;
@@ -272,39 +301,33 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
-  <a href="simulateur.html">🧪 Essayer en ligne</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
-  <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
-  <a href="tract.html">🪧 Tract</a> ·
-  <a href="tract-eco.html">💧 Tract éco encre</a> ·
-  <strong>🖨️ Affiche</strong> ·
-  <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
-  <a href="triptyque.html">📖 Triptyque</a> ·
-  <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
-  <a href="presskit.html">📰 Presse</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.kreyolkeyboard&amp;referrer=utm_source%3Daffiche%26utm_campaign%3Dlaunch10k">📲 Installer Klavyé Kréyòl</a> ·
-  <a href="https://github.com/famibelle/KreyolKeyb">💻 GitHub</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
 <header style="padding:20px 0 10px;">
-  <p class="eyebrow">Klavyé Kréyòl Karukera · kit ambassadeur</p>
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
   <h1>Une affiche à imprimer 🎨</h1>
-  <p class="lead">Format A4, prête à afficher chez le boulanger, le pharmacien, à la boutique du coin ou au marché. Le QR code renvoie directement vers Google Play.</p>
+  <p class="lead">Format A4, prête à afficher dans le hall d'une association, d'une maison des jeunes, d'un cours du soir, ou en vitrine. Le QR code ouvre le site, d'où le clavier s'essaie dans le navigateur sans rien installer.</p>
 
   <div class="actions">
-    <a class="btn primary" href="assets/affiche-kreyolkeyboard-A4.pdf" download>📄 Télécharger le PDF (A4, haute résolution)</a>
+    <a class="btn primary" href="assets/affiche-letzebuergesch-clavier-A4.pdf" download>📄 Télécharger le PDF (A4, haute résolution)</a>
     <button class="btn" onclick="window.print()">🖨️ Imprimer directement</button>
-    <a class="btn" href="ambassade.html">← Retour au kit ambassadeur</a>
+    <a class="btn" href="affiche-eco.html">💧 Version éco encre (fond blanc)</a>
+    <a class="btn" href="ambassadeurs.html">← Retour à l'espace ambassadeurs</a>
   </div>
 
   <div class="note">
-    Astuce : dans les options d'impression, choisissez « Aucune marge » et désactivez les en-têtes/pieds de page pour un rendu plein cadre. L'affiche s'imprime aussi très bien en A5, en réduisant l'échelle à 70 %. Le PDF est conçu pour rester lisible aussi bien en impression couleur qu'en noir et blanc, et à toute résolution d'imprimante.
+    Astuce : dans les options d'impression, choisissez « Aucune marge » et désactivez les en-têtes/pieds de page pour un rendu plein cadre. L'affiche reste lisible réduite en A5 à 70 %, et le QR code garde sa correction d'erreur maximale — il se scanne encore photocopié de travers.
   </div>
 </header>
 
@@ -314,44 +337,41 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   <div class="page">
     <div class="hd">
       <div class="hd-left">
-        <div class="title">Maké<br>kréyòl</div>
-        <div class="badge">KLAVYÉ KRÉYÒL KARUKERA</div>
-        <p class="slogan">An kréyòl nou ka palé, an kréyòl nou ka maké !</p>
+        <div class="title">Schreif<br>Lëtzebuergesch.</div>
+        <div class="badge">LËTZEBUERGESCH CLAVIER</div>
+        <p class="slogan">Mir schwätze Lëtzebuergesch — elo schreiwe mir et och.</p>
       </div>
       <div class="logo-badge">
-        <img src="assets/potomitan-logo.png" alt="Potomitan">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier">
       </div>
     </div>
 
-    <img class="geo-flag" src="assets/guadeloupe-silhouette-drapeau.png" alt="Silhouette de la Guadeloupe aux couleurs du drapeau">
-
     <div class="panel">
-      <p class="subtitle">Ton clavier kréyòl 100% gratuit</p>
+      <p class="subtitle">Votre clavier luxembourgeois,<br>100&nbsp;% gratuit</p>
       <div class="shots">
-        <img class="s1" src="assets/affiche-screenshot1.png" alt="Klavyé Kréyòl Karukera : écris un beau kréyòl">
-        <img class="s2" src="assets/affiche-screenshot2.png" alt="Suggestions de mots en créole pendant la frappe d'un SMS">
+        <img class="s1" src="Screenshots/lux_niveaux.png" alt="Écran de progression de l'application : niveau atteint, mot du jour, mots à découvrir">
+        <img class="s2" src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois pendant la frappe : suggestions luxembourgeoises en rouge, françaises en bleu">
       </div>
-      <div class="pills">
-        <span class="pill blue">✅ Disponible maintenant</span>
-        <span class="pill green">📲 Google Play</span>
-      </div>
+      <p class="promises">Gratuit<span class="sep">·</span>Open source (MIT)<span class="sep">·</span>Zéro publicité<span class="sep">·</span>100&nbsp;% hors ligne</p>
     </div>
 
     <div class="cta-band">
-      <p class="subtitle">📲 Flash le code pour installer Klavyé Kréyòl</p>
+      <p class="subtitle">📲 Flashez le code, c'est gratuit</p>
     </div>
 
     <div class="qr-center">
       <div class="stamp">
-        <span class="big">100%<br>gratuit</span>
+        <span class="big">100&nbsp;%<br>gratuit</span>
         <span class="small">zéro pub</span>
       </div>
       <div class="qr-wrap">
-        <img src="assets/qr-google-play.png" alt="QR code vers Klavyé Kréyòl Karukera sur Google Play" width="2280" height="2280">
+        <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier" width="980" height="980">
       </div>
     </div>
 
-    <div class="credit">famibelle.github.io/KreyolKeyb/ · Créé par un Guadeloupéen pour les Guadeloupéens <img src="assets/drapeau-guadeloupe.png" alt="Drapeau de la Guadeloupe"> · contact@potomitan.io</div>
+    <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
+
+    <div class="credit">Potomitan™ · famibelle.github.io/LuxKeyb · Fait au Luxembourg <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg"> · contact@potomitan.io</div>
   </div>
 </div>
 

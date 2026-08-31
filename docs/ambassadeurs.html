@@ -69,10 +69,17 @@ a{color:var(--sea);}
 .goal{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--hibiscus);
   border-radius:12px;padding:18px 20px;margin-top:22px;}
 .goal h2{margin-bottom:6px;}
-.goal .figures{display:flex;gap:26px;flex-wrap:wrap;margin:14px 0 4px;}
-.goal .fig{flex:0 0 auto;}
-.goal .fig b{display:block;font-family:var(--mono);font-size:26px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;}
-.goal .fig span{font-size:12.5px;color:var(--ink-soft);}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin:14px 0 10px;}
+.gauge-num{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+.gauge-num small{font-size:14px;font-weight:400;color:var(--ink-soft);}
+.gauge-manque{font-weight:700;color:var(--hibiscus);font-size:14px;}
+.gauge-bar{height:16px;border-radius:999px;background:color-mix(in srgb, var(--sea) 12%, transparent);overflow:hidden;}
+/* La barre part du rouge du drapeau et finit sur son bleu : le trajet direct
+   entre les deux passe par le violet, d'où l'étape blanche au milieu — le même
+   principe que la coupe franche des supports imprimés. */
+.gauge-fill{height:100%;border-radius:999px;min-width:10px;transition:width .8s ease;
+  background:linear-gradient(90deg,#ED2939 0%,#F7F7F7 52%,#00A1DE 100%);}
+.gauge-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
 
 .links{list-style:none;padding:0;margin:0;}
 .links li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
@@ -122,17 +129,23 @@ a{color:var(--sea);}
   <p class="lead">
     Une seule adresse à envoyer, et tout est là : ce qui se fait en trente
     secondes, les messages déjà écrits, les liens qui convainquent, les codes à
-    scanner. Rien à installer, rien à demander — servez-vous.
+    scanner, le tract, l'affiche et le dépliant à imprimer, les visuels à
+    publier. Rien à installer, rien à demander — servez-vous.
   </p>
 
   <div class="goal">
     <h2>🎯 Le seul chiffre qui compte aujourd'hui</h2>
     <p class="meta">Ce qui sépare le clavier d'une publication ouverte sur Google Play</p>
-    <div class="figures">
-      <div class="fig"><b>12</b><span>testeurs inscrits</span></div>
-      <div class="fig"><b>14</b><span>jours d'affilée</span></div>
+    <div class="gauge-head">
+      <span class="gauge-num"><span id="t-actuel">…</span> <small>testeurs sur <span id="t-objectif">12</span></small></span>
+      <span class="gauge-manque" id="t-manque">&nbsp;</span>
     </div>
-    <p style="margin:10px 0 0;font-size:14.5px;color:var(--ink-soft);">
+    <div class="gauge-bar"><div class="gauge-fill" id="t-fill" style="width:4%"></div></div>
+    <div class="gauge-meta">
+      <span>puis <b><span id="t-jours">14</span> jours consécutifs</b> sans que personne ne quitte le test</span>
+      <span id="t-asof"></span>
+    </div>
+    <p style="margin:14px 0 0;font-size:14.5px;color:var(--ink-soft);">
       Google exige qu'une nouvelle application soit testée par au moins douze
       personnes pendant quatorze jours consécutifs avant d'autoriser sa
       publication à tout le monde. C'est l'étape en cours, et la plus utile :
@@ -309,9 +322,10 @@ Bien à vous,</div>
 <section id="scanner">
   <h2>5. À scanner, à coller</h2>
   <p class="section-sub">
-    Codes en 980 × 980 px, correction d'erreur maximale : ils restent lisibles
-    imprimés, photographiés de travers ou repris dans une story. Une couleur par
-    destination, pour que deux codes côte à côte ne se confondent pas.
+    Cinq codes, cinq destinations, une couleur chacun — pour qu'on ne les
+    confonde pas sur une même table. Tous en 980 × 980 px avec la correction
+    d'erreur maximale : ils restent lisibles imprimés, photographiés de travers
+    ou repris dans une story.
   </p>
 
   <div class="card">
@@ -332,21 +346,103 @@ Bien à vous,</div>
         <a href="assets/qr-luxkeyb-labs.png" download><img src="assets/qr-luxkeyb-labs.png" alt="QR code téléchargeant l'APK de la version Labs"></a>
         <figcaption><strong>Labs</strong><br>version expérimentale, pour les curieux</figcaption>
       </figure>
+      <figure>
+        <a href="assets/qr-luxkeyb-site.png" download><img src="assets/qr-luxkeyb-site.png" alt="QR code ouvrant la page d'accueil du site"></a>
+        <figcaption><strong>Le site</strong><br>celui des supports imprimés, en noir d'encre</figcaption>
+      </figure>
     </div>
     <p style="margin:14px 0 0;">Clic droit ou appui long sur un code pour l'enregistrer, ou clic simple pour le télécharger.</p>
   </div>
 
   <div class="note">
-    <p><strong>Pas encore de tract ni d'affiche en luxembourgeois.</strong> Les
-    supports imprimables du dépôt (tract A5, affiche A4, triptyque) datent du
-    projet jumeau en créole guadeloupéen dont ce clavier partage le code, et
-    n'ont pas encore été adaptés. Mieux vaut un lien ou un QR code qu'un tract
-    dans la mauvaise langue.</p>
+    <p>Les quatre codes mènent à des destinations différentes et portent
+    chacun leur couleur, pour qu'on ne les confonde pas sur une même table.
+    Celui des supports imprimés est en noir d'encre : il finit photocopié, où
+    une couleur claire perd le contraste dont la lecture optique a besoin.</p>
+  </div>
+</section>
+
+<section id="imprimer">
+  <h2>6. Imprimer et distribuer</h2>
+  <p class="section-sub">
+    Trois supports, chacun en deux versions : en couleur pour un tirage soigné,
+    et <b>éco encre</b> sur fond blanc pour une imprimante de bureau — un aplat
+    A4 coûte une cartouche à lui seul. Tous portent le QR code du site, où le
+    clavier s'essaie dans le navigateur avant toute installation.
+  </p>
+
+  <div class="card">
+    <h3>🪧 Tract A5</h3>
+    <p class="meta">2 tracts par feuille A4, à découper · comptoir de boulangerie, café, maison des jeunes</p>
+    <div class="actions">
+      <a class="btn primary" href="tract.html">Voir et imprimer</a>
+      <a class="btn" href="assets/tract-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="tract-eco.html">💧 Version éco encre</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 Affiche A4</h3>
+    <p class="meta">Hall d'association, école, maison des jeunes, vitrine · lisible réduite en A5</p>
+    <div class="actions">
+      <a class="btn primary" href="affiche.html">Voir et imprimer</a>
+      <a class="btn" href="assets/affiche-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="affiche-eco.html">💧 Version éco encre</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 Dépliant trois volets</h3>
+    <p class="meta">A4 paysage recto-verso · pourquoi, installation pas à pas, fonctions, progression, et comment aider</p>
+    <div class="actions">
+      <a class="btn primary" href="triptyque.html">Voir et imprimer</a>
+      <a class="btn" href="assets/triptyque-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+      <a class="btn" href="triptyque-eco.html">💧 Version éco encre</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>Les supports sont des pages web, pas des fichiers de maquette : le PDF se
+    refait à tout moment, et une correction de chiffre se répercute partout sans
+    rouvrir un logiciel de mise en page. Si vous en fabriquez un vous-même, la
+    <a href="charte-graphique.html">charte graphique</a> donne les couleurs, la
+    police et les règles qui vont avec.</p>
+  </div>
+</section>
+
+<section id="publier">
+  <h2>7. Publier en ligne</h2>
+  <p class="section-sub">Pour une story, une page d'association, ou vos propres supports.</p>
+
+  <div class="card">
+    <h3>📺 Visuels prêts à publier</h3>
+    <p class="meta">Vingt formats · TikTok, Instagram, Facebook, Google, Snapchat · deux axes créatifs</p>
+    <p>
+      Chaque visuel est exporté en PNG à sa taille de diffusion exacte. Ils sont
+      pensés pour des campagnes payantes, mais servent tels quels pour une
+      publication ordinaire — c'est même le seul usage prévu aujourd'hui.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="publicites.html">Voir les visuels</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🖌️ Charte graphique</h3>
+    <p class="meta">Couleurs et leurs contrastes mesurés, typographie, logo, règles d'écriture</p>
+    <p>
+      Si vous fabriquez votre propre affichette, cette page dit quelles couleurs
+      vont où — et pourquoi le rouge du drapeau ne porte jamais une ligne de
+      texte.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="charte-graphique.html">Consulter la charte</a>
+    </div>
   </div>
 </section>
 
 <section id="cadre">
-  <h2>6. Ce qu'on vous demande de ne pas faire</h2>
+  <h2>8. Ce qu'on vous demande de ne pas faire</h2>
   <p class="section-sub">
     Un clavier qu'on installe pour écrire sa langue tous les jours se recommande
     sur ce qu'il fait, pas sur ce qu'on en promet. Quatre règles, et elles
@@ -387,6 +483,22 @@ Bien à vous,</div>
 </div>
 <script>
 (function(){
+  // La jauge lit un fichier tenu à la main : la console Google Play n'expose
+  // pas ce chiffre par API, et le laisser en dur dans la page ferait qu'on
+  // oublierait de le bouger.
+  fetch('stats/testeurs.json').then(function(r){ return r.json(); }).then(function(t){
+    var manque = Math.max(0, t.objectif - t.actuel);
+    document.getElementById('t-actuel').textContent = t.actuel;
+    document.getElementById('t-objectif').textContent = t.objectif;
+    document.getElementById('t-jours').textContent = t.jours;
+    document.getElementById('t-manque').textContent =
+      manque ? 'il en manque ' + manque : 'objectif atteint';
+    document.getElementById('t-asof').textContent = 'relevé le ' +
+      new Date(t.as_of).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+    document.getElementById('t-fill').style.width =
+      Math.max(4, Math.min(100, (t.actuel / t.objectif) * 100)) + '%';
+  }).catch(function(){ /* le texte statique reste affiché */ });
+
   var pageUrl = "https://famibelle.github.io/LuxKeyb/ambassadeurs.html";
   var waText = "Voici tout le kit pour faire connaître le Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android : messages prêts à envoyer, liens à montrer, QR codes. Servez-vous : " + pageUrl;
   document.getElementById('wa-share').href = "https://wa.me/?text=" + encodeURIComponent(waText);
