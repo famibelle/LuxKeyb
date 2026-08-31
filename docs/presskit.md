@@ -12,12 +12,11 @@ lang: fr
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="beta_onboarding.html">🎫 Bêta-testeurs</a> ·
-  <a href="ambassade.html">📣 Vin Anbasadè</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
   <a href="tract.html">🪧 Tract</a> ·
   <a href="tract-eco.html">💧 Tract éco encre</a> ·
   <a href="affiche.html">🖨️ Affiche</a> ·
   <a href="affiche-eco.html">💧 Affiche éco encre</a> ·
-  <a href="affiche-classique.html">🎨 Affiche classique</a> ·
   <a href="triptyque.html">📖 Triptyque</a> ·
   <a href="triptyque-eco.html">💧 Triptyque éco</a> ·
   <strong>📰 Presse</strong> ·
@@ -260,7 +259,7 @@ Captures d'écran de chaque section de l'application (juillet 2026) :
 **Médhi Famibelle**, Potomitan™
 [GitHub du projet](https://github.com/famibelle/KreyolKeyb) ·
 [Page du projet](index.html) ·
-[Devenir ambassadeur](ambassade.html)
+[Devenir ambassadeur](ambassadeurs.html)
 
 Une question, une proposition, un partenariat ? Écrivez à
 **[contact@potomitan.io](mailto:contact@potomitan.io)**.
