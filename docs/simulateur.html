@@ -45,6 +45,7 @@
   }
   .phone-notch { width: 70px; height: 5px; border-radius: 999px; background: var(--line); margin: 2px auto 10px; }
 
+  .phone-screen-wrap { position: relative; }
   .phone-screen {
     position: relative;
     background: var(--paper);
@@ -56,6 +57,8 @@
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* vieux Edge */
     padding: 14px;
+    /* La dernière ligne ne doit pas courir sous le bouton. */
+    padding-bottom: 36px;
   }
   .phone-screen::-webkit-scrollbar { display: none; } /* Chrome/Safari */
   .phone-screen-text {
@@ -87,7 +90,7 @@
 
   .reset-btn {
     position: absolute;
-    top: 8px; right: 8px;
+    bottom: 8px; right: 8px;
     border: none;
     background: transparent;
     color: var(--ink-soft);
@@ -608,10 +611,14 @@
     <div class="phone">
       <div class="phone-notch"></div>
 
-      <div class="phone-screen" id="phone-screen">
+      <!-- Le bouton est hors de .phone-screen : cette zone défile, et un
+           élément positionné à l'intérieur défilerait avec le texte. -->
+      <div class="phone-screen-wrap">
+        <div class="phone-screen" id="phone-screen">
+          <p class="phone-screen-text" id="screen-text"></p>
+          <p class="phone-placeholder" id="screen-placeholder">Schreift hei op Lëtzebuergesch</p>
+        </div>
         <button type="button" class="reset-btn" id="reset-btn">↺ Effacer</button>
-        <p class="phone-screen-text" id="screen-text"></p>
-        <p class="phone-placeholder" id="screen-placeholder">Schreift hei op Lëtzebuergesch</p>
       </div>
 
       <div class="sugg-bar">
