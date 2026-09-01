@@ -9,6 +9,62 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.21.0] - 2026-09-01
+
+### ✨ Ajouté
+
+- **Traduction française des mots dans les quatre jeux.** Un utilisateur a
+  signalé que les jeux faisaient chercher des mots luxembourgeois sans jamais
+  dire ce qu'ils voulaient dire : on y exerçait son orthographe, jamais son
+  vocabulaire. Chaque jeu affiche désormais la glose française, au moment où
+  elle ne donne pas la réponse — la liste des mots à trouver de Wuertsich, en
+  indice sous les lettres mélangées de Wuertmix, à la fin de la partie de
+  Wuertriet, et après avoir tranché la question de Wuertlück.
+- **Nouvel actif `luxemburgish_translations.json`** (609 Ko), produit par
+  `Dictionnaires/generate_translations.py` à partir du **Lëtzebuerger Online
+  Dictionnaire** (LOD), le dictionnaire officiel publié en CC0 par le Zenter
+  fir d'Lëtzebuerger Sprooch. 20 604 des 38 410 formes du dictionnaire y sont
+  glosées, soit 53,6 % des formes et 87,8 % des occurrences. Le clavier lui-même
+  ne le charge pas : seul l'écran des jeux en a l'usage.
+
+- **Onglet « Wierderbuch » (9ᵉ onglet).** Un champ de recherche et une liste :
+  on tape un mot et on lit sa traduction. La recherche **fonctionne dans les
+  deux sens** — « Haus » comme « maison » — et le sens de la requête est déduit
+  plutôt que demandé : si un mot du dictionnaire se glose exactement par ce qui
+  est tapé, c'est du français, et les mots dont c'est le sens passent devant.
+  Sans cette déduction, chercher « maison » remontait d'abord `Maison`, emprunt
+  luxembourgeois glosé « maison médicale de garde », et reléguait `Haus`.
+- **Traductions dans l'onglet « Mäi Lëtzebuergesch ».** Le mot du jour porte sa
+  glose sous le mot, et n'est plus tiré que parmi les mots traduisibles. Les
+  mots à découvrir, les mots découverts et le classement des mots les plus
+  utilisés portent la leur à côté du mot.
+
+### 🔄 Modifié
+
+- **Les trois jeux qui tirent un mot ne le tirent plus que parmi les formes dont
+  la traduction apprend quelque chose.** Sont écartés d'une part les mots que le
+  LOD n'a aucune raison de gloser — noms propres, « Esch », « Bettel », « RTL »,
+  « Jean-Claude » — d'autre part les 1 278 formes glosées par elles-mêmes, le
+  luxembourgeois empruntant massivement au français : demander de retrouver
+  « ACCIDENT » en indiquant « accident » fait passer le jeu pour cassé. Les
+  réserves restent larges : 8 740 mots pour Wuertsich, 12 825 pour Wuertmix,
+  1 330 pour Wuertriet. La table complète, elle, garde ces mots : croisés par un
+  autre chemin (une réponse de Wuertlück), ils affichent toujours leur glose. Une
+  proposition du joueur dans Wuertriet reste acceptée dès lors qu'elle est au
+  dictionnaire, traduite ou non.
+- **Crédit du LOD** ajouté à la carte « Sources » de l'onglet « À propos » et au
+  pied de l'onglet Wierderbuch. CC0 n'impose aucune attribution ; on cite le ZLS
+  quand même, et un test échoue si la mention disparaît.
+- **Libellés d'onglets à 8sp au lieu de 9.** Le neuvième onglet faisait passer
+  « Wuertsich », « Wuertmix » et « Wuertriet » sur deux lignes, coupés en plein
+  milieu d'un mot ; un point de moins les ramène sur une seule.
+
+### 🐛 Corrigé
+
+- **Fin de partie de Wuertriet en créole.** La boîte de dialogue annonçait
+  encore « Ou touvé mo-a an 3 èsèy » et « Mo la té », hérités du clavier
+  guadeloupéen. Elle est en français, et donne la traduction du mot cherché.
+
 ## [10.20.1] - 2026-09-01
 
 ### 🐛 Corrigé
