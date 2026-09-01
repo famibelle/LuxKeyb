@@ -146,5 +146,4 @@ TL;DR zero data collectée
 ## 📧 Contact
 
 **Développeur :** Médhi Famibelle  
-**Email :** medhi@potomitan.io  
-**Organisation :** Potomitan™
+**Email :** medhi.famibelle@gmail.com

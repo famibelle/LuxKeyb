@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inscrit la marque Potomitan™ dans les métadonnées des visuels du dépôt.
+"""Inscrit la signature du projet dans les métadonnées des visuels du dépôt.
 
 Un visuel finit toujours par circuler seul : téléchargé d'une page, réexporté
 par une régie publicitaire, transmis à un journaliste. Ses métadonnées sont
@@ -53,18 +53,21 @@ TIERS = (
 
 EXTENSIONS = {".png", ".jpg", ".jpeg", ".svg", ".pdf"}
 
-MARQUE = "Potomitan™"
 PRODUIT = "Lëtzebuergesch Clavier"
 ANNEE = date.today().year
-AUTEUR = MARQUE
-COPYRIGHT = f"© {ANNEE} {MARQUE} · {PRODUIT}"
-DESCRIPTION = f"Visuel de {PRODUIT}, le clavier luxembourgeois publié par {MARQUE}."
-SITE = "https://potomitan.io/"
-OUTIL = "scripts/tag_assets.py · Potomitan™"
+AUTEUR = "Médhi Famibelle"
+MARQUE = AUTEUR  # l'éditeur est une personne, plus une structure
+COPYRIGHT = f"© {ANNEE} {AUTEUR} · {PRODUIT}"
+DESCRIPTION = f"Visuel de {PRODUIT}, le clavier luxembourgeois, publié par {AUTEUR}."
+SITE = "https://famibelle.github.io/LuxKeyb/"
+OUTIL = f"scripts/tag_assets.py · {PRODUIT}"
 
 # Écrit dans chaque paquet XMP : c'est à cette chaîne que le script reconnaît
-# son propre travail quand il repasse sur un fichier.
-SIGNATURE = "potomitan:tag_assets"
+# son propre travail quand il repasse sur un fichier. SIGNATURES garde les
+# formes antérieures, sans quoi un SVG déjà marqué se verrait empiler un
+# second bloc <metadata> au lieu de voir le premier remplacé.
+SIGNATURE = "luxkeyb:tag_assets"
+SIGNATURES = (SIGNATURE, "potomitan:tag_assets")
 
 
 def titre(chemin: Path) -> str:
@@ -226,7 +229,7 @@ def marquer_svg(texte: str, chemin: Path) -> str:
     # le précède : sinon chaque passage empilerait un bloc de plus, ou au moins
     # une ligne vide de plus, et le fichier ne se stabiliserait jamais.
     debut = texte.find("<metadata>")
-    if debut != -1 and SIGNATURE in texte:
+    if debut != -1 and any(s in texte for s in SIGNATURES):
         fin = texte.find("</metadata>", debut)
         if fin != -1:
             fin += len("</metadata>")
@@ -306,7 +309,7 @@ def marquer_pdf(chemin: Path) -> bool:
             meta["dc:description"] = DESCRIPTION
             meta["dc:publisher"] = [MARQUE]
             meta["xmp:CreatorTool"] = OUTIL
-            meta["pdf:Keywords"] = f"{PRODUIT}, {MARQUE}, kréyòl, Guadeloupe, clavier"
+            meta["pdf:Keywords"] = f"{PRODUIT}, {MARQUE}, luxembourgeois, Luxembourg, clavier"
         # Le dictionnaire /Info reste ce que lisent les visionneuses et les
         # imprimeurs, bien après que XMP soit devenu la référence.
         pdf.docinfo["/Title"] = titre_pdf
@@ -335,7 +338,8 @@ def deja_marque(chemin: Path) -> bool:
             return True  # rien à reprocher au fichier si l'outil manque
         with pikepdf.open(chemin) as pdf:
             return str(pdf.docinfo.get("/Author", "")) == AUTEUR
-    return SIGNATURE.encode("utf-8") in chemin.read_bytes()
+    octets = chemin.read_bytes()
+    return SIGNATURE.encode("utf-8") in octets
 
 
 def main() -> int:
@@ -379,10 +383,10 @@ def main() -> int:
     if verifier:
         for f in manquants:
             print(f"  sans métadonnées : {f.relative_to(RACINE)}")
-        print(f"\n{len(fichiers) - len(manquants)}/{len(fichiers)} visuels portent {MARQUE}.")
+        print(f"\n{len(fichiers) - len(manquants)}/{len(fichiers)} visuels signés {PRODUIT}.")
         return 1 if manquants else 0
 
-    print(f"{marques} visuels marqués {MARQUE} ({ANNEE}).")
+    print(f"{marques} visuels marqués {PRODUIT} ({ANNEE}).")
     if sans_pikepdf:
         print(f"{sans_pikepdf} PDF laissés de côté : pip install pikepdf")
     if ecartes:

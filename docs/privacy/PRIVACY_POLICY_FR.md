@@ -610,7 +610,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 **Version 2.1 (25 août 2026) :**
 - Identité du développeur : Famibelle Médhi, établi au Luxembourg
-- Retrait de la marque et des coordonnées Potomitan
+- Retrait de la marque et des coordonnées de l'ancien éditeur
 - Autorité de contrôle et juridiction alignées sur le Luxembourg (CNPD)
 - Mise à jour des niveaux de gamification (8 rangs luxembourgeois)
 - Retrait du dictionnaire utilisateur : la fonctionnalité n'existe plus

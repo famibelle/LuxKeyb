@@ -105,19 +105,10 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .brand .name{font-size:3.4cqw;font-weight:600;line-height:1.12;letter-spacing:.005em;}
 .brand .name b{display:block;font-weight:700;font-size:4cqw;}
 .brand .name span{display:block;opacity:.72;font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;}
-/* L'éditeur, sur tous les formats. Sa taille suit celle du bloc de marque en
-   em : elle n'a donc pas à être redéclarée dans chaque layout. Sélecteur sur
-   .name et non sur .brand .name, parce que le format « logo » compose son bloc
-   sans conteneur .brand. */
-.name i{
-  display:block;font-style:normal;font-weight:600;font-size:.72em;
-  opacity:.6;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
-}
 /* Le nom du produit disparaît là où le surtitre ou le bouton le porte déjà :
-   sinon « Lëtzebuergesch Clavier » se lit jusqu'à trois fois dans le même visuel. La
-   ligne d'éditeur reste : c'est la seule mention de Potomitan™ du visuel. */
-.brand.mark-only .name b,
-.brand.mark-only .name > span{display:none;}
+   sinon « Lëtzebuergesch Clavier » se lit jusqu'à trois fois dans le même
+   visuel. Le logo porte alors seul la marque. */
+.brand.mark-only .name{display:none;}
 
 /* --- Titres --- */
 .kicker{font-size:4.4cqw;font-weight:500;opacity:.9;margin:0 0 1.2cqh;line-height:1.2;}
@@ -300,19 +291,14 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-bar.thin .head{font-size:40cqh;}
 .L-bar.thin .btn{font-size:26cqh;padding:11cqh 4cqw;}
 /* 320x50 : cinquante pixels de haut, l'accroche et le bouton prennent tout.
-   Le logo y porte seul la marque, la mention d'éditeur vit dans les
-   métadonnées du fichier. */
+   Le logo y porte seul la marque. */
 .L-bar.thin .brand .name{display:none;}
-/* 320 x 100 : trop étroit pour le nom de marque, l'accroche passe sur deux lignes. */
-/* 320x100 : le nom du produit ne tient pas à côté de l'accroche, la ligne
-   d'éditeur si, à condition de passer sous le logo. Posée à côté, elle vole
-   à l'accroche la largeur qui lui évite de passer sur trois lignes, et le
-   bouton sort du cadre. */
+/* 320x100 : le nom du produit ne tient pas à côté de l'accroche — posé là, il
+   lui vole la largeur qui lui évite de passer sur trois lignes, et le bouton
+   sort du cadre. Le logo reste seul, l'accroche passe sur deux lignes. */
 .L-bar.mid .brand{flex-direction:column;gap:.5cqh;}
 .L-bar.mid .brand .mark{height:46cqh;}
-.L-bar.mid .brand .name b,
-.L-bar.mid .brand .name > span{display:none;}
-.L-bar.mid .brand .name i{font-size:8.5cqh;letter-spacing:.06em;opacity:.7;}
+.L-bar.mid .brand .name{display:none;}
 .L-bar.mid .head{font-size:26cqh;}
 .L-bar.mid .btn{font-size:17cqh;padding:8cqh 3.5cqw;}
 
@@ -344,13 +330,10 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-logo .mark img{width:86%;height:86%;object-fit:contain;}
 .L-logo .name{font-size:12cqh;font-weight:700;text-align:center;line-height:1.12;}
 .L-logo .name span{display:block;font-size:7cqh;font-weight:500;letter-spacing:.14em;text-transform:uppercase;opacity:.7;}
-/* Le nom de l'éditeur ferme le bloc, plus discret que celui du territoire. */
-.L-logo .name i{font-size:5.6cqh;margin-top:1.4cqh;}
 .L-logo.bar .inner{flex-direction:row;gap:4%;}
 .L-logo.bar .mark{width:74cqh;height:74cqh;}
 .L-logo.bar .name{font-size:30cqh;text-align:left;}
 .L-logo.bar .name span{font-size:16cqh;}
-.L-logo.bar .name i{font-size:13cqh;margin-top:1cqh;}
 </style>
 </head>
 <body>
@@ -471,7 +454,7 @@ const SHOT  = 'Screenshots/lux_suggestions.png';
 const brand = (spec, markOnly) => `
   <div class="brand${markOnly ? ' mark-only' : ''}">
     <span class="mark"><img src="${LOGO}" alt=""></span>
-    <span class="name"><b>Lëtzebuergesch</b><span>Clavier</span><i>Potomitan™</i></span>
+    <span class="name"><b>Lëtzebuergesch</b><span>Clavier</span></span>
   </div>`;
 
 const cta   = c => `<span class="cta">${c.cta}</span>`;
@@ -548,7 +531,7 @@ const LAYOUTS = {
 
   logo: () => `
     <span class="mark"><img src="${LOGO}" alt=""></span>
-    <span class="name">Lëtzebuergesch<span>Clavier</span><i>Potomitan™</i></span>`
+    <span class="name">Lëtzebuergesch<span>Clavier</span></span>`
 };
 
 /* ==========================================================================
