@@ -9,6 +9,42 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.21.1] - 2026-09-01
+
+### 🔄 Modifié
+
+- **Barre d'onglets ramenée de neuf à quatre.** À neuf, chaque onglet disposait
+  de 80 px sur un écran de 720 : les libellés se coupaient en plein milieu d'un
+  mot (« Wuertsic / h »), et il avait fallu descendre la police à 8sp pour
+  limiter les dégâts. Les quatre destinations restantes — Démarrage, Mäi
+  Lëtzebuergesch, Spiller, Wierderbuch — disposent de 180 px, et la police
+  remonte à 11sp.
+- **Les quatre jeux passent derrière un onglet « Spiller ».** Ils occupaient
+  quatre onglets sur neuf, soit 44 % de la barre, pour une activité que l'on
+  choisit une fois par session. L'onglet présente quatre cartes ; le jeu choisi
+  s'installe dans le même onglet, avec une barre « ‹ Tous les jeux » pour
+  revenir. Le bouton Retour d'Android ramène lui aussi au choix, via un
+  `OnBackPressedCallback` actif seulement pendant qu'un jeu est ouvert — partout
+  ailleurs il quitte l'application comme avant.
+- **Guide et À Propos quittent la barre** pour le pied de l'onglet Démarrage,
+  d'où ils s'ouvrent en plein écran. Ce sont des pages de référence que l'on lit
+  une fois ; elles coûtaient deux neuvièmes de la largeur à chaque ouverture de
+  l'application. Les deux astuces qui les désignaient comme des onglets ont été
+  réécrites.
+
+### 🐛 Corrigé
+
+- **Couleurs translucides fausses.** Concaténer l'opacité à une couleur —
+  `"$couleur20"` — ne produit pas une transparence : `Color.parseColor` lit huit
+  chiffres comme `#AARRGGBB`, si bien que `"#4CAF50" + "20"` devenait un alpha
+  de 0x4C sur le brun `#AF5020`. Les pastilles de mots de l'onglet Mäi
+  Lëtzebuergesch s'affichaient donc en brun sur fond vert annoncé. Remplacé par
+  `avecOpacite()`, qui compose la valeur.
+- **Raccourci « Découvrez vos statistiques ».** Il posait `currentItem = 1`,
+  c'est-à-dire le bord gauche de la plage virtuelle du pager cyclique : le bon
+  contenu s'affichait, mais on atterrissait là où plus rien ne se balaye vers la
+  gauche. Il vise désormais la position la plus proche du bon onglet.
+
 ## [10.21.0] - 2026-09-01
 
 ### ✨ Ajouté
