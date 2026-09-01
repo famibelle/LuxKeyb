@@ -1,0 +1,844 @@
+{
+ "date": "2026-09-01",
+ "objet": "parole enchaînée : ce que coûte la segmentation par pauses sur une dictée d'une à trois phrases",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "service": "LuxASR (Uni.lu) v2.3.0",
+ "chunk_params": "2,0 / 0,5 (le réglage de l'application)",
+ "decoupe": "fenêtres de 8 à 22 s bornées par des pauses réelles — 22 énoncés, médiane 12 s",
+ "hote": {
+  "regimes": {
+   "continu": {
+    "enonces": 22,
+    "wer_pondere": 0.3832240825461867,
+    "wer_median": 0.3474137931034483,
+    "sessions": 22,
+    "coupures_intra_phrase": 0
+   },
+   "hangover": {
+    "enonces": 22,
+    "wer_pondere": 0.3548347962720262,
+    "wer_median": 0.3390804597701149,
+    "sessions": 24,
+    "coupures_intra_phrase": 2
+   }
+  },
+  "ecart_apparie": {
+   "n": 22,
+   "median": 0.0,
+   "moyen": -0.015527961546219533
+  }
+ },
+ "detecteur_hors_ligne": {
+  "enonces_8_22s": {
+   "total": 22,
+   "avec_au_moins_une_coupure": 2,
+   "part": 0.09090909090909091
+  },
+  "fichiers_60s": {
+   "total": 6,
+   "coupures": 7,
+   "par_minute": 1.1666666666666667
+  }
+ },
+ "telephone": {
+  "appareil": "SM-A217F (Galaxy A21s), APK Labs 10.19.0 release",
+  "constat": "sur 3 minutes de parole rejouée au haut-parleur, le détecteur embarqué n'a jamais refermé le micro, là où le même audio propre en prédisait 6 coupures : le bruit de la pièce tient le seuil adaptatif au-dessus du silence",
+  "queue_hallucinee": "un passage a tenu jusqu'au plafond de 90 s, soit 60 s d'audio puis ~30 s de silence de pièce : 270 mots pour 192 attendus, 19,9 % de répétition, WER 61,5 % contre 27,8 % quand la session s'arrête à temps"
+ },
+ "lecture": "Dans le régime visé, la coupure sur pause ne coûte pas d'exactitude — elle coûte des interruptions. 2 énoncés sur 22 (9 %) sont coupés au milieu d'une phrase ; l'écart apparié de WER a une médiane nulle et penche même de 1,6 pt en faveur du régime coupé, la pause offrant au service une frontière de découpe propre. Allonger le hangover supprime l'interruption mais rend cette frontière : c'est le robinet audio qui obtient les deux.",
+ "mesures_hote": [
+  {
+   "fichier": "001_839ff4ad_00",
+   "regime": "continu",
+   "wer": 0.3870967741935484,
+   "mots": 31,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 2,
+   "t_premier_texte": 4.6410736450052354,
+   "repetition": 0.0,
+   "audio_emis_s": 8.16,
+   "hyp": "Testing, wou zu deem Zäitpunkt, dat ass iwwert de Summer ganz kloer gewiescht, wou mer déi Présentation dass mer do e ganz staarke Fokus haten, fir eeben, wa Klassik ze maachen,"
+  },
+  {
+   "fichier": "001_839ff4ad_00",
+   "regime": "hangover",
+   "wer": 0.3870967741935484,
+   "mots": 31,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 2,
+   "t_premier_texte": 4.640823466004804,
+   "repetition": 0.0,
+   "audio_emis_s": 8.16,
+   "hyp": "Testing, wou zu deem Zäitpunkt, dat ass iwwert de Summer ganz kloer gewiescht, wou mer déi Présentation dass mer do e ganz staarke Fokus haten, fir eeben, wa Klassik ze maachen,",
+   "segments": [
+    "Testing, wou zu deem Zäitpunkt, dat ass iwwert de Summer ganz kloer gewiescht, wou mer déi Présentation dass mer do e ganz staarke Fokus haten, fir eeben, wa Klassik ze maachen,"
+   ]
+  },
+  {
+   "fichier": "001_839ff4ad_01",
+   "regime": "continu",
+   "wer": 0.41935483870967744,
+   "mots": 31,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 2,
+   "t_premier_texte": 4.641316023975378,
+   "repetition": 0.0,
+   "audio_emis_s": 8.24,
+   "hyp": "Mastere kommen direkt aktiv ze ginn. Dir erënnert Iech, dat war deen Achse mat den Equipe-Mobillen. Ufank vum Lab -Scale -Testing si mer einfach generell an d'Bevëlkerung eragaangem, mee en Echamps."
+  },
+  {
+   "fichier": "001_839ff4ad_01",
+   "regime": "hangover",
+   "wer": 0.41935483870967744,
+   "mots": 31,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 2,
+   "t_premier_texte": 4.641558695002459,
+   "repetition": 0.0,
+   "audio_emis_s": 8.24,
+   "hyp": "Mastere kommen direkt aktiv ze ginn. Dir erënnert Iech, dat war deen Achse mat den Equipe-Mobillen. Ufank vum Lab -Scale -Testing si mer einfach generell an d'Bevëlkerung eragaangem, mee en Echamps.",
+   "segments": [
+    "Mastere kommen direkt aktiv ze ginn. Dir erënnert Iech, dat war deen Achse mat den Equipe-Mobillen. Ufank vum Lab -Scale -Testing si mer einfach generell an d'Bevëlkerung eragaangem, mee en Echamps."
+   ]
+  },
+  {
+   "fichier": "001_839ff4ad_02",
+   "regime": "continu",
+   "wer": 0.7142857142857143,
+   "mots": 56,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641283296019537,
+   "repetition": 0.037735849056603765,
+   "audio_emis_s": 12.96,
+   "hyp": "Jo, an duerno ass dat méi differenzéiert ginn. A mir waren zu deem Zäitpunkt opgestallt. Mir hunn, do wou déi fragill Leit sinn, eeben, eeben duerchgetest, mat enger gewësser Reegel, méi sech D'Lëtzebuerger, déi fir déi fragil Leit sinn, déi d'Lëtzebuerger, déi méi léi Schuh méi léi Schuh méi léi Schëff, déi drëm huet dergéiert ginn."
+  },
+  {
+   "fichier": "001_839ff4ad_02",
+   "regime": "hangover",
+   "wer": 0.5714285714285714,
+   "mots": 35,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641599385009613,
+   "repetition": 0.0,
+   "audio_emis_s": 12.96,
+   "hyp": "Jo, an duerno ass dat méi differenzéiert ginn. A mir waren zu deem Zäitpunkt opgestallt. Mir hunn, do wou déi fragill Leit sinn, eeben, eeben duerchgetest, mat enger gewësser Reegel, méi sech D'Lëtzebuerg, déi deem.",
+   "segments": [
+    "Jo, an duerno ass dat méi differenzéiert ginn. A mir waren zu deem Zäitpunkt opgestallt. Mir hunn, do wou déi fragill Leit sinn, eeben, eeben duerchgetest, mat enger gewësser Reegel, méi sech D'Lëtzebuerg, déi deem."
+   ]
+  },
+  {
+   "fichier": "001_839ff4ad_03",
+   "regime": "continu",
+   "wer": 0.3333333333333333,
+   "mots": 36,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.36180309500196,
+   "repetition": 0.0,
+   "audio_emis_s": 12.24,
+   "hyp": "Mir sinn och direkt an den Asaz gaangen, wann Clustere waren. Da konnte mer op d'Plaz goen. Da konnte mer do wierklech duerchtesten dat am Fong och eis Strategie voit. D'Hygiènesuren, den Ëmmeren mam Covid -19."
+  },
+  {
+   "fichier": "001_839ff4ad_03",
+   "regime": "hangover",
+   "wer": 0.3333333333333333,
+   "mots": 38,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.361259539000457,
+   "repetition": 0.0,
+   "audio_emis_s": 12.24,
+   "hyp": "Mir sinn och direkt an den Asaz gaangen, wann Clustere waren. Da konnte mer op d'Plaz goen. Da konnte mer do wierklech duerchtesten soudass dat am Fong och eis Strategie voit. D'Hygiènesuren, den Ëmmer ... mam Covid ...",
+   "segments": [
+    "Mir sinn och direkt an den Asaz gaangen, wann Clustere waren. Da konnte mer op d'Plaz goen. Da konnte mer do wierklech duerchtesten soudass dat am Fong och eis Strategie voit. D'Hygiènesuren, den Ëmmer ... mam Covid ..."
+   ]
+  },
+  {
+   "fichier": "001_839ff4ad_04",
+   "regime": "continu",
+   "wer": 0.2826086956521739,
+   "mots": 46,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.6416329969943035,
+   "repetition": 0.0,
+   "audio_emis_s": 13.52,
+   "hyp": "déi Patient, dat war bis dohinner bekannt. Dat ass dee Sockel, deen ech virdrun erwäänt. Mir hunn am Ufank vun der Pandemie bei null ugefaangen. Da si d'Haiser gaangen, mir hu Maassstëdd gesat wéi geet een ëm an där Pandemie, wéi isoléiert ee se scho positiv."
+  },
+  {
+   "fichier": "001_839ff4ad_04",
+   "regime": "hangover",
+   "wer": 0.2826086956521739,
+   "mots": 46,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.6411446960119065,
+   "repetition": 0.0,
+   "audio_emis_s": 13.52,
+   "hyp": "déi Patient, dat war bis dohinner bekannt. Dat ass dee Sockel, deen ech virdrun erwäänt. Mir hunn am Ufank vun der Pandemie bei null ugefaangen. Da si d'Haiser gaangen, mir hu Maassstëdd gesat wéi geet een ëm an där Pandemie, wéi isoléiert ee se scho positiv.",
+   "segments": [
+    "déi Patient, dat war bis dohinner bekannt. Dat ass dee Sockel, deen ech virdrun erwäänt. Mir hunn am Ufank vun der Pandemie bei null ugefaangen. Da si d'Haiser gaangen, mir hu Maassstëdd gesat wéi geet een ëm an där Pandemie, wéi isoléiert ee se scho positiv."
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c_00",
+   "regime": "continu",
+   "wer": 0.2916666666666667,
+   "mots": 48,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641484218998812,
+   "repetition": 0.0,
+   "audio_emis_s": 13.44,
+   "hyp": "Dofir ass also haut och nach eng Kéier den Opruff vun der Offer, feelt et net, mir hunn immens vill place huet een de Choix vum Impfstoff weider aktiv bleiwe mat de Busser op d'Plazen och elo am Hiersch, déi ënnerdauschtert ginn wäerte sinn an de Centre -commerciauxen."
+  },
+  {
+   "fichier": "003_bc3df29c_00",
+   "regime": "hangover",
+   "wer": 0.2916666666666667,
+   "mots": 48,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.640940263983794,
+   "repetition": 0.0,
+   "audio_emis_s": 13.44,
+   "hyp": "Dofir ass also haut och nach eng Kéier den Opruff vun der Offer, feelt et net, mir hunn immens vill place huet een de Choix vum Impfstoff weider aktiv bleiwe mat de Busser op d'Plazen och elo am Hiersch, déi ënnerdauschtert ginn wäerte sinn an de Centre -commerciauxen.",
+   "segments": [
+    "Dofir ass also haut och nach eng Kéier den Opruff vun der Offer, feelt et net, mir hunn immens vill place huet een de Choix vum Impfstoff weider aktiv bleiwe mat de Busser op d'Plazen och elo am Hiersch, déi ënnerdauschtert ginn wäerte sinn an de Centre -commerciauxen."
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c_01",
+   "regime": "continu",
+   "wer": 0.3076923076923077,
+   "mots": 26,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.642263095011003,
+   "repetition": 0.0,
+   "audio_emis_s": 8.96,
+   "hyp": "A soen d'Kommerziale bei de Betriber an de Gemengen, et ass wierklech Opruff nach eng Kéier jiddweree fir sech selwer, loosst Iech impfen, wann Der net."
+  },
+  {
+   "fichier": "003_bc3df29c_01",
+   "regime": "hangover",
+   "wer": 0.3076923076923077,
+   "mots": 26,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641594031010754,
+   "repetition": 0.0,
+   "audio_emis_s": 8.96,
+   "hyp": "A soen d'Kommerziale bei de Betriber an de Gemengen, et ass wierklech Opruff nach eng Kéier jiddweree fir sech selwer, loosst Iech impfen, wann Der net.",
+   "segments": [
+    "A soen d'Kommerziale bei de Betriber an de Gemengen, et ass wierklech Opruff nach eng Kéier jiddweree fir sech selwer, loosst Iech impfen, wann Der net."
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c_02",
+   "regime": "continu",
+   "wer": 0.17647058823529413,
+   "mots": 51,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.6413426990038715,
+   "repetition": 0.0625,
+   "audio_emis_s": 13.2,
+   "hyp": "Wann Der Froen hutt, zéckt net bei eis Leit ze goen. D'Ekippe sinn och do, fir Är Froen ze bauen. Et ass net, well Der bei de Bus gitt, dass Der zwangsgeimpft gitt. Dir kënnt Iech nach anescht iwwerleeën. Mee d'Leit sinn och do, fir Är Froen entgéint ze huelen huelen."
+  },
+  {
+   "fichier": "003_bc3df29c_02",
+   "regime": "hangover",
+   "wer": 0.17647058823529413,
+   "mots": 51,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641291353997076,
+   "repetition": 0.0625,
+   "audio_emis_s": 13.2,
+   "hyp": "Wann Der Froen hutt, zéckt net bei eis Leit ze goen. D'Ekippe sinn och do, fir Är Froen ze bauen. Et ass net, well Der bei de Bus gitt, dass Der zwangsgeimpft gitt. Dir kënnt Iech nach anescht iwwerleeën. Mee d'Leit sinn och do, fir Är Froen entgéint ze huelen huelen.",
+   "segments": [
+    "Wann Der Froen hutt, zéckt net bei eis Leit ze goen. D'Ekippe sinn och do, fir Är Froen ze bauen. Et ass net, well Der bei de Bus gitt, dass Der zwangsgeimpft gitt. Dir kënnt Iech nach anescht iwwerleeën. Mee d'Leit sinn och do, fir Är Froen entgéint ze huelen huelen."
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c_03",
+   "regime": "continu",
+   "wer": 0.25806451612903225,
+   "mots": 33,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.161576432990842,
+   "repetition": 0.0,
+   "audio_emis_s": 8.88,
+   "hyp": "Iech vläicht nach déi Erklärungen ze ginn, déi Iech feelen an Ärem Ëmfeld, ech géif och en Opruff maachen, jiddwereen a sengem Ëmfeld, eng Kéier ze kucke ... dann do vläicht nach ..."
+  },
+  {
+   "fichier": "003_bc3df29c_03",
+   "regime": "hangover",
+   "wer": 0.25806451612903225,
+   "mots": 33,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.161597645987058,
+   "repetition": 0.0,
+   "audio_emis_s": 8.88,
+   "hyp": "Iech vläicht nach déi Erklärungen ze ginn, déi Iech feelen an Ärem Ëmfeld, ech géif och en Opruff maachen, jiddwereen a sengem Ëmfeld, eng Kéier ze kucke ... dann do vläicht nach ...",
+   "segments": [
+    "Iech vläicht nach déi Erklärungen ze ginn, déi Iech feelen an Ärem Ëmfeld, ech géif och en Opruff maachen, jiddwereen a sengem Ëmfeld, eng Kéier ze kucke ... dann do vläicht nach ..."
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c_04",
+   "regime": "continu",
+   "wer": 0.35,
+   "mots": 43,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.841045067005325,
+   "repetition": 0.0,
+   "audio_emis_s": 12.16,
+   "hyp": "nach net geimpft. Mir hunn et gesinn, vill eeler Leit, vläicht ... wunnen, déi aleng sinn, hu vläicht net déi néideg Berodung. Och do wär ... gutt, wa jiddwereen eng Kéier kéint e bësse ronderëm kucken. Et si bestëmmt nach Leit, déi ..."
+  },
+  {
+   "fichier": "003_bc3df29c_04",
+   "regime": "hangover",
+   "wer": 0.35,
+   "mots": 43,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.84155975599424,
+   "repetition": 0.0,
+   "audio_emis_s": 12.16,
+   "hyp": "nach net geimpft. Mir hunn et gesinn, vill eeler Leit, vläicht ... wunnen, déi aleng sinn, hu vläicht net déi néideg Berodung. Och do wär ... gutt, wa jiddwereen eng Kéier kéint e bësse ronderëm kucken. Et si bestëmmt nach Leit, déi ...",
+   "segments": [
+    "nach net geimpft. Mir hunn et gesinn, vill eeler Leit, vläicht ... wunnen, déi aleng sinn, hu vläicht net déi néideg Berodung. Och do wär ... gutt, wa jiddwereen eng Kéier kéint e bësse ronderëm kucken. Et si bestëmmt nach Leit, déi ..."
+   ]
+  },
+  {
+   "fichier": "004_5c83e2b0_00",
+   "regime": "continu",
+   "wer": 0.140625,
+   "mots": 68,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 6,
+   "t_premier_texte": 4.640929732006043,
+   "repetition": 0.0,
+   "audio_emis_s": 20.8,
+   "hyp": "Bis elo ass et esou, datt mer nach weider déi Tester hunn, déi ... virum Summer agesat goufen. Et ass awer och esou, datt eng ... gemaach ginn ass vun der Santé fir nei Tester ... ze bestellen. Dat mengen Informatioun ass dat en Tipp, deen elo liwwer ... aneschters ass, mee et sinn nach ëmmer Tester, déi duerch d'Nues ginn. Et ass net méi genau dee selwechten."
+  },
+  {
+   "fichier": "004_5c83e2b0_00",
+   "regime": "hangover",
+   "wer": 0.15,
+   "mots": 64,
+   "sessions": 2,
+   "coupures": 1,
+   "coupures_intra_phrase": 1,
+   "passes": 6,
+   "t_premier_texte": 4.641498361015692,
+   "repetition": 0.0,
+   "audio_emis_s": 20.799999999999997,
+   "hyp": "Bis elo ass et esou, datt mer nach weider déi Tester hunn, déi ... virum Summer agesat goufen. Et ass awer och esou, ... datt eng Ausschreiwung gemaach ginn ass vun der Santé fir nei Tester bestellen. Lafmengen -Informatioun ass dat en Tipp, deen elo ... aneschters ass. Mee et sinn nach ëmmer Tester, déi duerch d'Nues ginn. Et ass net méi genau ...",
+   "segments": [
+    "Bis elo ass et esou, datt mer nach weider déi Tester hunn, déi ... virum Summer agesat goufen. Et ass awer och esou, ...",
+    "datt eng Ausschreiwung gemaach ginn ass vun der Santé fir nei Tester bestellen. Lafmengen -Informatioun ass dat en Tipp, deen elo ... aneschters ass. Mee et sinn nach ëmmer Tester, déi duerch d'Nues ginn. Et ass net méi genau ..."
+   ]
+  },
+  {
+   "fichier": "004_5c83e2b0_01",
+   "regime": "continu",
+   "wer": 0.4423076923076923,
+   "mots": 52,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641333709994797,
+   "repetition": 0.0,
+   "audio_emis_s": 14.08,
+   "hyp": "Dann déi lescht Fro, Dir hatt gesot, d'Periparascolar-Aktivitéite kënnen stattfannen. Do war mer net ganz kloer, ass dat och dann an deem, dass d'Lëtzebuerg méi och nach eng Kéier kënnen ënner CovidCheck oder ass dat wéi an der Maison relais? Et ass ab 10 ALTERNATIÓN D'Lëtzebuerg schéng Grupp vun zéng dann erëm."
+  },
+  {
+   "fichier": "004_5c83e2b0_01",
+   "regime": "hangover",
+   "wer": 0.32558139534883723,
+   "mots": 43,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641303365002386,
+   "repetition": 0.0,
+   "audio_emis_s": 14.08,
+   "hyp": "Dann déi lescht Fro, Dir hatt gesot, d'Periparascolar-Aktivitéite kënnen stattfannen. Do war mer net ganz kloer, ass dat och dann scho ginn ënner CovidCheck oder ass dat wéi an der Maison relais? Et ass ab 10 D' Léng Grupp vun zéng dann erëm.",
+   "segments": [
+    "Dann déi lescht Fro, Dir hatt gesot, d'Periparascolar-Aktivitéite kënnen stattfannen. Do war mer net ganz kloer, ass dat och dann scho ginn ënner CovidCheck oder ass dat wéi an der Maison relais? Et ass ab 10 D' Léng Grupp vun zéng dann erëm."
+   ]
+  },
+  {
+   "fichier": "005_f1795896_00",
+   "regime": "continu",
+   "wer": 0.2631578947368421,
+   "mots": 40,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641221330006374,
+   "repetition": 0.0,
+   "audio_emis_s": 9.44,
+   "hyp": "An ech hoffen, dass mer muer zu engem Accord kommen. Dir verstitt, dass ech Iech elo net soen, wou, iwwer wat mer ... wou nach Punkten sinn, déi musse gekläert ginn. Dat maache mer net op der Place publique. ..."
+  },
+  {
+   "fichier": "005_f1795896_00",
+   "regime": "hangover",
+   "wer": 0.2631578947368421,
+   "mots": 40,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641598003014224,
+   "repetition": 0.0,
+   "audio_emis_s": 9.44,
+   "hyp": "An ech hoffen, dass mer muer zu engem Accord kommen. Dir verstitt, dass ech Iech elo net soen, wou, iwwer wat mer ... wou nach Punkten sinn, déi musse gekläert ginn. Dat maache mer net op der Place publique. ...",
+   "segments": [
+    "An ech hoffen, dass mer muer zu engem Accord kommen. Dir verstitt, dass ech Iech elo net soen, wou, iwwer wat mer ... wou nach Punkten sinn, déi musse gekläert ginn. Dat maache mer net op der Place publique. ..."
+   ]
+  },
+  {
+   "fichier": "005_f1795896_01",
+   "regime": "continu",
+   "wer": 0.5333333333333333,
+   "mots": 45,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641453462973004,
+   "repetition": 0.0,
+   "audio_emis_s": 13.28,
+   "hyp": "déi och muerwäerte stattfannen. An ech hoffen, dass mer zu engem Accord kommen, wa mer net zu engem Accord also dass mer eis eenge kënnen. Wa mer net, dann ass et e puer. Responsabilitéit et ze maachen oder ouni Zoustëmmung oder Applaus oder déi zoustëmmen."
+  },
+  {
+   "fichier": "005_f1795896_01",
+   "regime": "hangover",
+   "wer": 0.5227272727272727,
+   "mots": 44,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 4.641415379999671,
+   "repetition": 0.0,
+   "audio_emis_s": 13.28,
+   "hyp": "déi och muerwäerte stattfannen. An ech hoffen, dass mer zu engem Accord kommen, wa mer net zu engem Accord also dass mer eis eenge kënnen. Wa mer net, dann ass et e puer. Responsabilitéit et ze maachen oder ouni Zoustëmmung oder Applaus oder oder.",
+   "segments": [
+    "déi och muerwäerte stattfannen. An ech hoffen, dass mer zu engem Accord kommen, wa mer net zu engem Accord also dass mer eis eenge kënnen. Wa mer net, dann ass et e puer. Responsabilitéit et ze maachen oder ouni Zoustëmmung oder Applaus oder oder."
+   ]
+  },
+  {
+   "fichier": "005_f1795896_02",
+   "regime": "continu",
+   "wer": 0.17647058823529413,
+   "mots": 17,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.321378378022928,
+   "repetition": 0.0,
+   "audio_emis_s": 8.16,
+   "hyp": "d liichten Approbatioun vun den Sozialpartner. Dir hutt Iech elo nach eng Kéier géint eng Impfflicht ausgeschwat."
+  },
+  {
+   "fichier": "005_f1795896_02",
+   "regime": "hangover",
+   "wer": 0.17647058823529413,
+   "mots": 17,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.321535466995556,
+   "repetition": 0.0,
+   "audio_emis_s": 8.16,
+   "hyp": "d liichten Approbatioun vun den Sozialpartner. Dir hutt Iech elo nach eng Kéier géint eng Impfflicht ausgeschwat.",
+   "segments": [
+    "d liichten Approbatioun vun den Sozialpartner. Dir hutt Iech elo nach eng Kéier géint eng Impfflicht ausgeschwat."
+   ]
+  },
+  {
+   "fichier": "005_f1795896_03",
+   "regime": "continu",
+   "wer": 0.5223880597014925,
+   "mots": 69,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 5,
+   "t_premier_texte": 4.642176495020976,
+   "repetition": 0.0,
+   "audio_emis_s": 19.2,
+   "hyp": "Ë, à première vue, kéint Iech awer virstellen, eng Ausweispflicht anzefären, dat heescht, dass d'Personal Gesondheetssecteur muss uginn, ob se geimpft sinn oder net. Dat huet jo awer relativ grouss Improved d'Prise en charge. Mir hunn nach ee Punkt vergiess. Also, pardon, deen hunn ech vergiess. Dat ass d'Impfen. Ech hunn deen, pardon. Mir sinn och amgaang ze kucken, ähm ... wësst jo, dass d'Bas de Donnéeës -Texter ..."
+  },
+  {
+   "fichier": "005_f1795896_03",
+   "regime": "hangover",
+   "wer": 0.5223880597014925,
+   "mots": 69,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 5,
+   "t_premier_texte": 4.6415563139889855,
+   "repetition": 0.0,
+   "audio_emis_s": 19.2,
+   "hyp": "Ë, à première vue, kéint Iech awer virstellen, eng Ausweispflicht anzefären, dat heescht, dass d'Personal Gesondheetssecteur muss uginn, ob se geimpft sinn oder net. Dat huet jo awer relativ grouss Improved d'Prise en charge. Mir hunn nach ee Punkt vergiess. Also, pardon, deen hunn ech vergiess. Dat ass d'Impfen. Ech hunn deen, pardon. Mir sinn och amgaang ze kucken, ähm ... wësst jo, dass d'Bas de Donnéeës -Texter ...",
+   "segments": [
+    "Ë, à première vue, kéint Iech awer virstellen, eng Ausweispflicht anzefären, dat heescht, dass d'Personal Gesondheetssecteur muss uginn, ob se geimpft sinn oder net. Dat huet jo awer relativ grouss Improved d'Prise en charge. Mir hunn nach ee Punkt vergiess. Also, pardon, deen hunn ech vergiess. Dat ass d'Impfen. Ech hunn deen, pardon. Mir sinn och amgaang ze kucken, ähm ... wësst jo, dass d'Bas de Donnéeës -Texter ..."
+   ]
+  },
+  {
+   "fichier": "005_f1795896_04",
+   "regime": "continu",
+   "wer": 0.53125,
+   "mots": 32,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641534914000658,
+   "repetition": 0.0,
+   "audio_emis_s": 9.92,
+   "hyp": "jo och virgesinn, dass mer net kënnen soe mat Lëscht, wie geimpft a wie net geimpft ass deem dote Punkt, an dat ass nämlech e wichtege Punkt dowéinst, wäerte mer den Text"
+  },
+  {
+   "fichier": "005_f1795896_04",
+   "regime": "hangover",
+   "wer": 0.53125,
+   "mots": 32,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641743097017752,
+   "repetition": 0.0,
+   "audio_emis_s": 9.92,
+   "hyp": "jo och virgesinn, dass mer net kënnen soe mat Lëscht, wie geimpft a wie net geimpft ass deem dote Punkt, an dat ass nämlech e wichtege Punkt dowéinst, wäerte mer den Text",
+   "segments": [
+    "jo och virgesinn, dass mer net kënnen soe mat Lëscht, wie geimpft a wie net geimpft ass deem dote Punkt, an dat ass nämlech e wichtege Punkt dowéinst, wäerte mer den Text"
+   ]
+  },
+  {
+   "fichier": "006_3b62a239_00",
+   "regime": "continu",
+   "wer": 0.5384615384615384,
+   "mots": 15,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 3.2011993570195045,
+   "repetition": 0.0,
+   "audio_emis_s": 9.76,
+   "hyp": "Ëm, also do . wierklech festgestallt, dass d'Couverture vaccinale exzessivement niddreglech ass. An deem ..."
+  },
+  {
+   "fichier": "006_3b62a239_00",
+   "regime": "hangover",
+   "wer": 0.5384615384615384,
+   "mots": 15,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 3.201469581021229,
+   "repetition": 0.0,
+   "audio_emis_s": 9.76,
+   "hyp": "Ëm, also do . wierklech festgestallt, dass d'Couverture vaccinale exzessivement niddreglech ass. An deem ...",
+   "segments": [
+    "Ëm, also do . wierklech festgestallt, dass d'Couverture vaccinale exzessivement niddreglech ass. An deem ..."
+   ]
+  },
+  {
+   "fichier": "006_3b62a239_01",
+   "regime": "continu",
+   "wer": 0.5294117647058824,
+   "mots": 17,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 2.561447242012946,
+   "repetition": 0.0,
+   "audio_emis_s": 14.32,
+   "hyp": "Secteur de soin wierklech kappzerbriechen hutt gesinn, dass an der oder och ausserhalb vun de Sipaen ka"
+  },
+  {
+   "fichier": "006_3b62a239_01",
+   "regime": "hangover",
+   "wer": 0.4375,
+   "mots": 16,
+   "sessions": 2,
+   "coupures": 1,
+   "coupures_intra_phrase": 1,
+   "passes": 4,
+   "t_premier_texte": 2.5615484250010923,
+   "repetition": 0.0,
+   "audio_emis_s": 14.32,
+   "hyp": "Secteur de soin wierklech hutt gesinn, dass an der Sipan oder och ausserhalb vun de Sipan",
+   "segments": [
+    "Secteur de soin wierklech",
+    "hutt gesinn, dass an der Sipan oder och ausserhalb vun de Sipan"
+   ]
+  },
+  {
+   "fichier": "006_3b62a239_02",
+   "regime": "continu",
+   "wer": 0.8888888888888888,
+   "mots": 18,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641445456974907,
+   "repetition": 0.2666666666666667,
+   "audio_emis_s": 8.56,
+   "hyp": "an d'Effectivité vaccinal, pardon kann d'Couverture vaccinal eh, d'ëm 30 Ëm 30 Ëm 30 Ëm 30 Ëm 30."
+  },
+  {
+   "fichier": "006_3b62a239_02",
+   "regime": "hangover",
+   "wer": 0.9,
+   "mots": 10,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.640764348994708,
+   "repetition": 0.0,
+   "audio_emis_s": 8.56,
+   "hyp": "an d'Effectivité vaccinal, pardon kann d'Couverture vaccinal eh, d'ëm 30...",
+   "segments": [
+    "an d'Effectivité vaccinal, pardon kann d'Couverture vaccinal eh, d'ëm 30..."
+   ]
+  },
+  {
+   "fichier": "006_3b62a239_03",
+   "regime": "continu",
+   "wer": 0.3448275862068966,
+   "mots": 29,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.3614515049848706,
+   "repetition": 0.0,
+   "audio_emis_s": 13.28,
+   "hyp": "Prozent zum Deelnëmme sinn an och mer wëssen, dass déi Zuele vläicht net déi definitiv Zuele sinn. Trotzdeem mécht dat op d'Kapp ze zerbriechen zwar aus zwee Grënn. Engersäits"
+  },
+  {
+   "fichier": "006_3b62a239_03",
+   "regime": "hangover",
+   "wer": 0.3448275862068966,
+   "mots": 29,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 4,
+   "t_premier_texte": 3.3609795899828896,
+   "repetition": 0.0,
+   "audio_emis_s": 13.28,
+   "hyp": "Prozent zum Deelnëmme sinn an och mer wëssen, dass déi Zuele vläicht net déi definitiv Zuele sinn. Trotzdeem mécht dat op d'Kapp ze zerbriechen zwar aus zwee Grënn. Engersäits",
+   "segments": [
+    "Prozent zum Deelnëmme sinn an och mer wëssen, dass déi Zuele vläicht net déi definitiv Zuele sinn. Trotzdeem mécht dat op d'Kapp ze zerbriechen zwar aus zwee Grënn. Engersäits"
+   ]
+  },
+  {
+   "fichier": "006_3b62a239_04",
+   "regime": "continu",
+   "wer": 0.23809523809523808,
+   "mots": 21,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.641826330014737,
+   "repetition": 0.0,
+   "audio_emis_s": 9.84,
+   "hyp": "well d'Zuelen sou niddreg sinn, an anerersäits well et ëmmer nach net méiglech, fir do net méiglech realistesch Zuelen ze kréien."
+  },
+  {
+   "fichier": "006_3b62a239_04",
+   "regime": "hangover",
+   "wer": 0.23809523809523808,
+   "mots": 21,
+   "sessions": 1,
+   "coupures": 0,
+   "coupures_intra_phrase": 0,
+   "passes": 3,
+   "t_premier_texte": 4.640829971991479,
+   "repetition": 0.0,
+   "audio_emis_s": 9.84,
+   "hyp": "well d'Zuelen sou niddreg sinn, an anerersäits well et ëmmer nach net méiglech, fir do net méiglech realistesch Zuelen ze kréien.",
+   "segments": [
+    "well d'Zuelen sou niddreg sinn, an anerersäits well et ëmmer nach net méiglech, fir do net méiglech realistesch Zuelen ze kréien."
+   ]
+  }
+ ],
+ "mesures_telephone": [
+  {
+   "fichier": "001_839ff4ad",
+   "mode": "un_appui",
+   "wer": 0.40948275862068967,
+   "mots": 232,
+   "mots_reference": 192,
+   "couverture": 1.2083333333333333,
+   "repetition": 0.004366812227074246,
+   "hyp": "Den Teststing huet zu deem Zäitpunkt, dat ass iwwert de Summer ganz kloer ge... wou mer dee presentéiert hunn, dass mer do e ganz staarke Fokus haten ebe wa Clustere kommen direkt aktiv ze ginn. Dir erënneren Iech, dat war deen Achs mat den... -mobillen. Am Ufank vum Large Scale Testing si mer einfach generell an d' Vëllk... eragaangen, mee en Echantillon duerno ass dat méi differenzéiert ginn. A mir waren zu deem opgestallt. An dat ass och gemaach ginn. Mir hunn do, wou déi fragill Leit sinn eeben flächendeckend duerchgetest enger gewësser Reegelméissegkeet a mir sinn och direkt an den Asaz gaangen wa Clustere waren. Da konnte mer op d'Plaz goen, da konnte mer do wierklech... soudass dat am Fong och eis Strategie war den Ëmgang mam Covidpatient, dat war bis dohinner bekannt dee Sockel, deen ech virdrun erwäänt hunn. Mir hunn am Ufank vun der Pandemie déi mat ugefaangen. Da si mer duerch d'Haiser gaangen. Mir hu Maassstëdd gesat. Wéi, wéi geet een an där Pandemie? Wéi isoléiert ee? Wéi verhält ee sech, wa Positiver do sinn? heescht dat Soutch, am Fong, war den Ëmgang domadder. An, an dat zëmgeholl och kéinten, dat ech virdrun erëm nach fir dote Grëff vun. An, datt net ugehaapt vun de Sëtzer, datt net gan dat zwou de Grëff vun. An, datt datt dat? Ech wa pouf hutt. Mee. An datt dat heescht dat",
+   "maj": 16,
+   "reappuis": 0,
+   "coupures": 2,
+   "t_coupures": [
+    21.7,
+    49.9
+   ]
+  },
+  {
+   "fichier": "001_839ff4ad",
+   "mode": "re_appui",
+   "wer": 0.31843575418994413,
+   "mots": 179,
+   "mots_reference": 192,
+   "couverture": 0.9322916666666666,
+   "repetition": 0.0,
+   "hyp": "Testing huet zu deem Zäitpunkt, dat ass iwwert de Summer ganz kloer gewinn wou mer dee presentéiert hunn, dass mer do e ganz staarke Fokus haten ebe wa Clustere kommen direkt aktiv ze ginn. Dir erënnert Iech, dat war deen Achs mat den ee -mobillen. Am Ufank vum Lab -Scale -Testing si mer einfach generell an d' Bevëlkerung eragaangem, mee en Echantillon duerno ass dat méi differenzéiert ginn. A mir waren zu deem opgestallt. An dat ass och gemaach.... Reegelméissegkeet a mir sinn och direkt an den Asaz gaangen wa Clustere waren. Da konnte mer op d'Plaz goen, da konnte mer do wierklech duerch testen soudass dat am Fong geholl eis Strategie war. D'Hygiènesurë ... den Ëmgang mam Covidpatient, dat war bis dohinner bekannt. Dat ass deen ... deen ech virdrun erwäänt hunn. Mir hunn am Ufank vun der Pandemie bei Null ugefaangen. Da si mer duerch d'Haiser gaangen. Mir hu Maassstift gesat. Wéi, wéi geet een ... där Pandemie? Wéi isoléiert een? Wéi verhält ee sech, wa Positiver do sinn? Dat heescht, dat Soutch am Fong geholl den Ëmgang domadder an ...",
+   "maj": 15,
+   "reappuis": 2,
+   "coupures": 2,
+   "t_coupures": [
+    21.7,
+    28.2
+   ]
+  },
+  {
+   "fichier": "002_b754b913",
+   "mode": "un_appui",
+   "wer": 0.37579617834394907,
+   "mots": 157,
+   "mots_reference": 144,
+   "couverture": 1.0902777777777777,
+   "repetition": 0.01948051948051943,
+   "hyp": "Mir gesinn, souwéi ech virdru gesot hunn, dass Mesuren och fir net Leit ze schützen de Risk, dass déi Leit sech och an den nächste Wochen ustët hunn ass eng Realitéit de Risiko, dass se e schwéiere Verlaf vun ... och eng Realitéit. An de ... dass d'Klinicken iwwerlaascht kënne ginn, ass. ... eng Realitéit den 2G -System soll sou séier wéi méiglech och gëllen. Mee wäert ... bis den 18. Dezember waarden. Dir wësst jo, dass den alen ... bis den 18. Dezember och leeft. An ... dëse Projet de loi nach dës Woch an der Regierung och adoptéiert en op den Instanzewee och ze bréngen. A fir eis wier et ... Hoffnung, dass dee schonn d'nächst Woch kéint der Chamber, wann och de Vott vum Staatsrot kéint ... Decisioune vum Staatsrot, den Avis vum Staatsrot kéint kommen, dass dee schonn d'nächst Woch dann och kéint ... Kraaft freeën. Dat heescht, mir waarden net bis zum 18. Mir sinn Demandeur, fir deen esou fréi ... méi",
+   "maj": 18,
+   "reappuis": 0,
+   "coupures": 1,
+   "t_coupures": [
+    5.0
+   ]
+  },
+  {
+   "fichier": "002_b754b913",
+   "mode": "re_appui",
+   "wer": 0.5934959349593496,
+   "mots": 123,
+   "mots_reference": 144,
+   "couverture": 0.8541666666666666,
+   "repetition": 0.008333333333333304,
+   "hyp": "gesinn, esou wéi ech virdru gesot hunn, dass d'Mesuren och fir net ...Dat ass eng Realitéit. Risiko, dass se e schwéiere Verlaf hunn, ass ... eng Realitéit. An de ... dass d'Klinicken iwwerlaascht kënne ginn, ass ... eng Realitéit den 2G -System soll sou séier wéi méiglech och gëllen. Mee wäert ... bis den 18. Dezember waarden. Dir wësst jo, dass den alen den 18. Dezember.... och ze bréngen. A fir eis wier et d'Hoffnung dass déi schonn d'nächst Woch kéint och vun der Chamber, wann och de Vott kéint, also wann d'Decisioun vum Staatsrot, den Avis vum Staatsrot kéint kommen déi schonn d'nächst Woch dann och kéint a Kraaft trieden. Dat heescht mir waarden net bis zum 18 an d'Nolauschteren. Merci sinn Demandeur, fir deen esou.",
+   "maj": 14,
+   "reappuis": 5,
+   "coupures": 5,
+   "t_coupures": [
+    5.0,
+    11.6,
+    35.3,
+    41.9,
+    59.9
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c",
+   "mode": "un_appui",
+   "wer": 0.45689655172413796,
+   "mots": 232,
+   "mots_reference": 218,
+   "couverture": 1.0642201834862386,
+   "repetition": 0.09170305676855894,
+   "hyp": "haut och nach eng Kéier den Opruff vun der Offer feelt et net, mir hunn immens ... place, fir deen de Choix vum Impfstoff, mee ... weider aktiv bleiwe mat de Busser op d'Plaz, fir deen d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d'Leit op d' Leit och elo am Hiersch, déi ënnerdaachwäerte sinn, an de Centres -commerciauxen soen d'Commerciallen, bei de Betriber, an de Gemengen, et ass fir d'Leit op d' Leit den, den Opruff nach eng Kéier jiddweree fir sech selwer. Loosst Iech Imb... Der nach Bedenken hutt, wann Der froen hutt zéck eis Leit ze goen. D'Ekippe sinn och do, fir Är Froen ze beäntwerten well Der bei de Bus gitt, dass Der zwangsgeimpft gitt. Dir kënnt Iech ëmmer nach anescht iwwerleeën. Mä d'Leit sinn och do, fir Är Froen entgéint ze huelen, Är Suergen ze héieren nach déi Erklärungen ze ginn, déi Iech feelen an Ärem Ëmfeld. Ech géif och en Opruff maachen sengem Ëmfeld, a sengem Ëmfeld, eng Kéier ze kucke wien ass dann do vläicht nach net geimpft. Mir hunn et gesinn eeler Leit, ehhh ... doheem wunnen, déi aleng sinn vläicht net déi néideg Berodung, och do ... et gutt, wa jiddwereen eng Kéier kéint e bësse ronderëm kucken ze nach Leit, déi vläicht aus verschiddene Grënnen, wéi een et ... hunn. An d'Dokteren ass net net",
+   "maj": 19,
+   "reappuis": 0,
+   "coupures": 2,
+   "t_coupures": [
+    5.0,
+    19.8
+   ]
+  },
+  {
+   "fichier": "003_bc3df29c",
+   "mode": "re_appui",
+   "wer": 0.5804195804195804,
+   "mots": 143,
+   "mots_reference": 218,
+   "couverture": 0.6559633027522935,
+   "repetition": 0.021428571428571463,
+   "hyp": "haut och nach eng Kéier den Opruff vun der Offer, feelt et net, mir hunn immens ...... an de Centre-commerciauxen ... d'Kommerciallen bei de Betriber an de Gemengen, dass fir ... den, den Opruff nach eng Kéier jiddweree fir sech selwer. Loosst Iech Infoen. Der nach Bedenken hutt, wann Der Froen hutt zéck eis Leit ze goen. D'Ekippe sinn och do, fir Är Froen ze beäntwerten wat Der bei de Bus gitt, dass Der zwangsgeimpft gitt. Dir kënnt Iech ëmmer nach anescht iwwerleeën. Mä d'Leit sinn och do, fir Är Froen entgéint ze huelen, Är Suergen ze héieren, Iech nach déi Erklärungen ze ginn, déi Iech Zesummenziplin.... a Leit, ehm, ... ... ... ... doheem wunnen, déi aleng sinn net déi néideg Berodung, och do ... et gutt, wa jiddwereen eng Kéier kéint e bësse ronderëm kucken, zéi ... nach Leit, déi vläicht ... verschiddene Grënnen, wéi en et fonnt hunn. An d'Dokumenter",
+   "maj": 15,
+   "reappuis": 4,
+   "coupures": 4,
+   "t_coupures": [
+    5.0,
+    11.6,
+    38.3,
+    46.1
+   ]
+  }
+ ]
+}

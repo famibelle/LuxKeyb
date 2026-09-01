@@ -1,0 +1,74 @@
+{
+ "date": "2026-09-01",
+ "objet": "sonde du protocole LuxASR : ce que devient le décodage quand on cesse d'émettre",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "service": "LuxASR (Uni.lu) v2.3.0, wss://luxasr.uni.lu/prod/ws/transcribe",
+ "hote": "poste x86, audio parfait — aucune chaîne acoustique",
+ "chunk_params": "2,0 / 0,5 (le réglage de l'application)",
+ "protocole": "3 fichiers × 5 conditions × 2 passages ; 22 s d'audio, trou de 3 s placé dans une pause réelle du locuteur, queue de 8 s ; une hypothèse n'est comptée « dans la fenêtre » que 1,5 s après son ouverture, au-delà du délai de traitement du service (~270 ms)",
+ "conditions": {
+  "plein": {
+   "passages": 6,
+   "wer_pondere": 0.400990099009901,
+   "mots_median": 77.5,
+   "passes_median": 6.0,
+   "passes_dans_la_fenetre": 0,
+   "repetition_max": 0.0
+  },
+  "silence_insere": {
+   "passages": 6,
+   "wer_pondere": 0.366412213740458,
+   "mots_median": 75.5,
+   "passes_median": 7.0,
+   "passes_dans_la_fenetre": 0,
+   "repetition_max": 0.0
+  },
+  "coupure": {
+   "passages": 6,
+   "wer_pondere": 0.37,
+   "mots_median": 72.0,
+   "passes_median": 7.0,
+   "passes_dans_la_fenetre": 0,
+   "repetition_max": 0.0
+  },
+  "queue_silence": {
+   "passages": 6,
+   "wer_pondere": 0.3842239185750636,
+   "mots_median": 76.0,
+   "passes_median": 6.0,
+   "passes_dans_la_fenetre": 3,
+   "repetition_max": 0.0
+  },
+  "queue_coupure": {
+   "passages": 6,
+   "wer_pondere": 0.37628865979381443,
+   "mots_median": 75.0,
+   "passes_median": 6.0,
+   "passes_dans_la_fenetre": 0,
+   "repetition_max": 0.0
+  }
+ },
+ "reponses": {
+  "1_decoupeur": "échantillons reçus, pas horloge. Sur la même fenêtre de 6,5 s, 8 s de silence ÉMISES déclenchent 3 hypothèses et 8 s sans émission n'en déclenchent aucune. Suspendre le flux suspend le décodage : un robinet audio est jouable côté client.",
+  "2_contexte": "il survit à l'interruption. WER pondéré 36,6 % silence émis contre 37,0 % flux suspendu, soit +0,4 pt — et les deux passent SOUS la condition sans trou (40,1 %), la pause offrant au service une frontière de découpe à un endroit que le locuteur a choisi.",
+  "3_queue": "non reproduite. 8 s de silence émises avant « stop » ne font ni gonfler le texte (76 mots médians contre 78 sans queue) ni apparaître de boucle (répétition nulle partout, sur les 30 passages). L'hallucination observée le 29 août à 10 s de blanc reste une observation unique ; elle ne justifie pas à elle seule un hangover de 1,5 s."
+ },
+ "par_fichier": {
+  "001_839ff4ad": {
+   "plein": 0.3076923076923077,
+   "silence_insere": 0.35600375234521575,
+   "coupure": 0.3426564156945917
+  },
+  "002_b754b913": {
+   "plein": 0.5121951219512195,
+   "silence_insere": 0.5121951219512195,
+   "coupure": 0.5365853658536586
+  },
+  "003_bc3df29c": {
+   "plein": 0.43076025098497006,
+   "silence_insere": 0.2977360477360477,
+   "coupure": 0.3055555555555556
+  }
+ }
+}

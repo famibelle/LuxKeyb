@@ -1,0 +1,98 @@
+{
+ "date": "2026-09-01",
+ "objet": "API par lots /asr2 contre WebSocket temps réel : qualité, délai, leviers",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "aucune licence déclarée sur le dépôt HF — audio et transcriptions jamais versionnés, seuls les agrégats le sont",
+ "service": {
+  "flux": "wss://luxasr.uni.lu/prod/ws/transcribe (v2.3.0)",
+  "lots": "https://luxasr.uni.lu/asr2 + /v3/asr/jobs/<id>[/result]",
+  "acces": "accès limité accordé pour un usage de laboratoire ; appels séquentiels, un travail à la fois",
+  "note": "l'ancien flux est déprécié côté service ; /asr2 est le chemin soutenu"
+ },
+ "notation": "WER infixe (bords de la référence libres), normalisation conservatrice de wer.py — voir bench_luxasr.wer_infixe",
+ "tranches_2_15s": {
+  "n": 62,
+  "websocket": {
+   "wer_pondere": 0.2637,
+   "wer_median": 0.2308
+  },
+  "api_defaut": {
+   "wer_pondere": 0.252,
+   "wer_median": 0.2143
+  },
+  "api_beam10": {
+   "wer_pondere": 0.2502,
+   "wer_median": 0.2143
+  },
+  "api_prompt_domaine": {
+   "wer_pondere": 0.2534,
+   "wer_median": 0.2143
+  },
+  "apparie_ws_vs_api": {
+   "n": 61,
+   "ws_median": 0.23076923076923078,
+   "api_median": 0.21428571428571427,
+   "ecart_median": 0.0,
+   "ecart_moyen": -0.007200689616110357,
+   "api_meilleur": 11
+  },
+  "textes_identiques": 43,
+  "lecture": "43 sorties sur 62 identiques au caractère près : les deux points de terminaison servent le même modèle. beam_size et prompt ne déplacent rien sur ce matériau."
+ },
+ "enonces_8_22s": {
+  "n": 22,
+  "duree_mediane_s": 12.2,
+  "duree_min_max_s": [
+   8.2,
+   20.8
+  ],
+  "audio_total_s": 262.5,
+  "api": {
+   "wer_pondere": 0.268,
+   "wer_median": 0.231,
+   "wer_p90": 0.4667
+  },
+  "websocket_continu": {
+   "wer_pondere": 0.383,
+   "wer_median": 0.347
+  },
+  "websocket_hangover": {
+   "wer_pondere": 0.355,
+   "wer_median": 0.339
+  },
+  "lecture": "c'est le régime que le clavier vise — une à trois phrases. L'écart s'y creuse : 26,8 % contre 38,3 %, soit 11,5 points, là où il n'était que de 1,2 point sur les tranches de 2 à 15 s. Décoder l'énoncé d'un seul tenant vaut d'autant plus que l'énoncé est long."
+ },
+ "delais": {
+  "api_apres_arret_s": {
+   "median": 1.31,
+   "max": 2.14,
+   "part_de_la_duree_audio": 0.102
+  },
+  "websocket_telephone": {
+   "premier_texte_s": 6.53,
+   "texte_final_apres_audio_s": 1.87,
+   "max_s": 4.44
+  },
+  "lecture": "délai final équivalent, plafond bien plus serré côté API (2,1 s contre 4,4 s). Le flux achète un aperçu pendant qu'on parle ; l'API rend tout 1,3 s après l'arrêt. Mesuré sur un service au repos avec un seul client : la file est partagée."
+ },
+ "composition_des_erreurs": {
+  "base": "62 tranches, 1092 mots d'hypothèse, sortie WebSocket",
+  "wer_global": 0.264,
+  "wer_sans_chiffres_ni_abreviations": 0.26,
+  "postes": {
+   "insertions": 107,
+   "mots_differents": 76,
+   "variantes_orthographiques": 75,
+   "omissions": 24,
+   "chiffres": 9
+  },
+  "wer_incompressible": 0.187,
+  "hors_dictionnaire": {
+   "mots": 93,
+   "sur": 1087,
+   "a_une_lettre_du_dico": 41
+  },
+  "lecture": "la normalisation des chiffres ne vaut que 0,4 point : levier mort. Les variantes orthographiques valent ~7 points et sont la seule cible d'un post-traitement par le dictionnaire embarqué. En dessous de 18,7 % rien ne descend sans changer de modèle ou de matériau."
+ },
+ "decision": "chemin en ligne = API par lots. Qualité supérieure dans le régime visé, délai final équivalent au plafond près, et suppression de toute la segmentation — VAD serveur, chunk_params, robinet, texte de composition réécrit. LuxAsrSession reste sur la branche en repli si la file du service s'allonge en conditions réelles."
+}

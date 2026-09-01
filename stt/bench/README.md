@@ -168,3 +168,140 @@ franchement. Compter les mises à jour ne suffit pas à dire que la dictée est
 devenue progressive — la dernière remplace toujours la précédente, y compris
 quand tout est arrivé après coup ; le critère retenu est donc `premier texte <
 durée de l'énoncé`.
+
+## Sonde du protocole : ce que devient le décodage quand on cesse d'émettre
+
+Trois questions dont dépend l'architecture de la dictée, et auxquelles rien dans
+le protocole publié ne répond. `probe_gap.py` les tranche en jouant cinq
+conditions sur le même audio, le trou expérimental étant placé dans une pause
+que le locuteur a réellement laissée — couper ailleurs mesurerait la découpe et
+non la reprise :
+
+```bash
+python stt/bench/probe_gap.py --work $W --out R/sonde.json \
+       --fichiers 3 --repet 2 --duree 22 --trou 3 --queue 8
+```
+
+`plein` · `silence_insere` (le trou est **émis**) · `coupure` (rien n'est émis,
+l'horloge avançant) · `queue_silence` et `queue_coupure` (même distinction, en
+fin d'énoncé avant « stop »). La chronologie est identique dans tous les cas :
+seul change le droit du silence à partir sur le réseau. Une hypothèse n'est
+comptée « dans la fenêtre » que 1,5 s après son ouverture, au-delà du délai de
+traitement du service (~270 ms) — sans cette marge on compterait le décodage de
+ce qui précédait le trou.
+
+Mesuré le 1er septembre 2026, 3 fichiers × 5 conditions × 2 passages
+(`results/2026-09-01-sonde-flux.json`) :
+
+| | plein | silence émis | flux suspendu |
+|---|---|---|---|
+| WER pondéré, trou médian | 40,1 % | 36,6 % | 37,0 % |
+| passes dans la fenêtre de 6,5 s (queue) | — | 3 | 0 |
+| répétition, max sur 30 passages | 0 % | 0 % | 0 % |
+
+1. **Le découpeur compte les échantillons reçus, pas l'horloge.** Sur la même
+   fenêtre, 8 s de silence émises déclenchent 3 hypothèses et 8 s sans émission
+   aucune. Suspendre le flux suspend le décodage : un robinet audio est jouable
+   côté client, sans rien demander au serveur.
+2. **Le contexte survit à l'interruption** : +0,4 pt de WER, du bruit. Et les
+   deux conditions à trou passent **sous** la condition sans trou — une pause
+   offre au service une frontière de découpe à un endroit que le locuteur a
+   choisi. Une bonne frontière vaut ici 3,5 points.
+3. **La queue hallucinée ne se reproduit pas à 8 s.** Ni gonflement du texte
+   (76 mots médians contre 78) ni boucle. L'hallucination observée le 29 août à
+   10 s de blanc reste une observation unique ; elle ne justifie pas à elle
+   seule un hangover de 1,5 s. Elle se reproduit en revanche franchement à
+   ~30 s — voir le volet téléphone ci-dessous.
+
+## Parole enchaînée : le banc que les tranches ne peuvent pas remplacer
+
+Tout ce que `bench_luxasr.py` et `bench_device.py` mesurent passe par `slices/`,
+dont les tranches sont découpées **aux silences** (médiane 3,7 s). C'est le
+régime « phrase par phrase », le seul où une pause coïncide forcément avec une
+frontière de phrase — donc le seul où la segmentation par pauses ne peut pas se
+tromper. Le banc était aveugle par construction au reproche qu'on lui fait.
+
+`bench_continu.py` rejoue de la parole enchaînée dans deux découpes et deux
+régimes :
+
+```bash
+# une à trois phrases : la dictée que ce clavier veut servir
+python stt/bench/bench_continu.py --work $W --out R/enonce.json --decoupe enonce
+# fichiers de 60 s : le pire cas, la queue de la distribution des usages
+python stt/bench/bench_continu.py --work $W --out R/60s.json --decoupe fichier
+```
+
+`continu` tient une seule session ; `hangover` rejoue l'application telle
+qu'elle est — `SILENCE_HANGOVER_MS` termine l'énoncé, l'utilisateur rouvre une
+session, les textes se recollent. **Le régime `hangover` y est optimiste** : la
+reprise est instantanée (`--reprise 0`), alors qu'en vrai il faut d'abord
+s'apercevoir que le micro s'est fermé, et tout ce qui est dit entre-temps est
+perdu. Une coupure est comptée intra-phrase quand le segment qu'elle termine ne
+finit pas sur une ponctuation forte, ou quand le suivant démarre en minuscule :
+c'est le jugement du service sur sa propre sortie, le texte rendu étant ponctué
+et capitalisé.
+
+`vad.py` est le port fidèle de `detecterFinDEnonce()` — mêmes constantes, même
+cadence de blocs, plancher de bruit adaptatif compris. Toute divergence avec le
+Kotlin fausserait le seul chiffre qui compte ici ; si une constante bouge
+là-bas, elle doit bouger ici.
+
+Mesuré le 1er septembre 2026, 22 énoncés de 8 à 22 s (médiane 12 s) tirés de
+6 fichiers (`results/2026-09-01-parole-continue.json`) :
+
+| | continu | hangover |
+|---|---|---|
+| WER pondéré | 38,3 % | 35,5 % |
+| WER médian | 34,7 % | 33,9 % |
+| sessions pour 22 énoncés | 22 | 24 |
+| coupures intra-phrase | 0 | 2 |
+
+Écart apparié : **médiane nulle**, moyenne −1,6 pt en faveur du régime coupé.
+Autrement dit, dans le régime visé, **la coupure sur pause ne coûte pas
+d'exactitude — elle coûte des interruptions** : 2 énoncés sur 22 (9 %) sont
+coupés au milieu d'une phrase, et le WER n'en souffre pas parce que la pause
+offre au service une frontière propre. Allonger le hangover supprime
+l'interruption mais rend cette frontière ; le robinet audio obtient les deux.
+
+Le détecteur seul, sans aucune session, donne la même chose sous un autre
+angle : 2 énoncés sur 22 dans le régime visé, mais 7 coupures sur 6 minutes de
+monologue, soit 1,2 par minute. Lire les deux ensemble — la dictée courte est
+peu exposée, la dictée longue beaucoup.
+
+### Sur le téléphone, le détecteur se déclenche bien moins
+
+`bench_device_continu.py` rejoue les fichiers de 60 s au haut-parleur et laisse
+le détecteur embarqué décider.
+
+```bash
+python stt/bench/bench_device_continu.py --work $W --out R/tel.json \
+       --device 192.168.1.37:34737 --fichiers 3
+```
+
+**La coupure ne se lit pas dans `logcat`** : l'APK Labs est un build release et
+sur ce One UI aucune ligne `LuxAsrSession` n'atteint le tampon (vérifié — on y
+voit Chromium et le système, rien de l'IME). Elle se lit dans le DOM : la dictée
+arrive en texte de composition, et `finishComposingText()` produit un
+`compositionend` dans le champ de la page. C'est l'application qui annonce sa
+coupure, à l'instant où elle la décide. Autocontrôle : chaque passage doit finir
+sur au moins un `compositionend` ; zéro ne veut pas dire « aucune coupure » mais
+« le signal ne remonte pas ».
+
+Un premier instrument déduisait la coupure d'un silence du texte. Il comptait
+faux — 5 s sans mise à jour arrivent aussi au démarrage, avant la première
+hypothèse — et les ré-appuis déclenchés sur ces fausses coupures **arrêtaient**
+la dictée en cours, un second appui valant « stop ». Ne pas y revenir : ce
+régime-là mesurait l'instrument.
+
+Deux constats, le 1er septembre 2026 :
+
+- Sur 3 minutes de parole rejouée, **le détecteur n'a pas refermé le micro une
+  seule fois**, là où le même audio propre en prédisait 6 coupures. Le bruit de
+  la pièce tient le seuil adaptatif au-dessus du silence. En conditions réelles,
+  notre segmentation par pauses mord donc beaucoup moins qu'en laboratoire — ce
+  qu'il faut savoir avant d'attribuer une gêne observée à cette cause plutôt
+  qu'au découpage du service.
+- Un passage a tenu jusqu'au plafond de 90 s, soit 60 s d'audio puis ~30 s de
+  silence de pièce : **270 mots pour 192 attendus, 19,9 % de répétition, WER
+  61,5 %** contre 27,8 % sur le même fichier quand la session s'arrête à temps.
+  La queue hallucinée, introuvable à 8 s de blanc, est bien là à 30 s.
