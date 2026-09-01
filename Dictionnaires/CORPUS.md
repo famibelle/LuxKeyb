@@ -1,12 +1,14 @@
 # Corpus sources et attribution
 
-Le dictionnaire, le modèle n-grammes et le jeu de phrases à trous livrés dans
-l'application (`android_keyboard/app/src/main/assets/luxemburgish_dict.json`,
-`luxemburgish_ngrams.json` et `luxemburgish_cloze.json`) sont dérivés de deux
-jeux de données publics.
-Les deux sont sous licence Creative Commons et **exigent la citation de leurs
-auteurs**. Cette page remplit cette obligation ; les crédits sont également
-affichés dans l'application, onglet « À propos », carte « Sources ».
+Le dictionnaire, le modèle n-grammes, le jeu de phrases à trous et la table de
+traductions livrés dans l'application
+(`android_keyboard/app/src/main/assets/luxemburgish_dict.json`,
+`luxemburgish_ngrams.json`, `luxemburgish_cloze.json` et
+`luxemburgish_translations.json`) sont dérivés de trois jeux de données
+publics.
+Deux d'entre eux sont sous licence Creative Commons et **exigent la citation de
+leurs auteurs**. Cette page remplit cette obligation ; les crédits sont
+également affichés dans l'application, onglet « À propos », carte « Sources ».
 
 ## LuxAlign
 
@@ -113,6 +115,44 @@ autorisent explicitement l'usage commercial, ce que CC BY-NC interdit. Une
 distribution payante de l'application, ou une réutilisation commerciale des
 fichiers de dictionnaire, demande l'accord préalable des ayants droit — le
 contact indiqué par les auteurs pour les données RTL est <ai@rtl.lu>.
+
+## LOD — Lëtzebuerger Online Dictionnaire
+
+Dictionnaire officiel de la langue luxembourgeoise, publié par le **Zenter fir
+d'Lëtzebuerger Sprooch** (ZLS). C'est la source des **traductions françaises**
+affichées dans les quatre jeux, et de rien d'autre : aucune de ses données
+n'entre dans le dictionnaire de saisie ni dans le modèle n-grammes.
+
+- Portail : <https://data.public.lu/fr/organizations/zenter-fir-dletzebuerger-sprooch/>
+- Site : <https://lod.lu>
+- Éditeur : Zenter fir d'Lëtzebuerger Sprooch (ministère de l'Éducation nationale)
+- Licence : **CC0 1.0** — domaine public, aucune obligation
+- Apport : 27 081 articles glosés en français et 199 015 graphies indexées,
+  qui donnent une traduction à 20 604 des 38 410 formes du dictionnaire livré
+  (53,6 % des formes, 87,8 % des occurrences).
+
+Deux ressources sont consultées, et il faut les deux :
+
+| Jeu de données | Fichier | Rôle |
+|---|---|---|
+| *Linguistesch Daten* | `new_lod-art.xml` | les articles, donc les traductions |
+| *Index vun der Sich-Funktioun* | `new_lod-search.xml` | les graphies, donc les flexions |
+
+L'index de recherche n'est pas un confort. Le dictionnaire de l'application
+contient des formes fléchies (`Haiser`, `huet`, `goufen`) que la liste des
+lemmes du LOD ne connaît pas : passer par les `<spelling>` de l'index fait
+monter la couverture de 36 % à 54 % des formes, et de 72 % à 88 % des
+occurrences.
+
+**CC0 n'oblige à rien, et on cite quand même.** Le ZLS est crédité dans la clé
+`attribution` de l'actif, dans la carte « Sources » de l'onglet « À propos », et
+`TranslationAssetTest` échoue si la mention disparaît. La licence rend cette
+attribution facultative en droit ; elle ne la rend pas facultative ici.
+
+Régénération : `python Dictionnaires/generate_translations.py --strict`. Le
+script résout l'URL de la dernière édition via l'API de data.public.lu — le ZLS
+republie chaque trimestre sous un chemin horodaté — et met les deux XML en cache
+sous `Dictionnaires/luxemburgish_data/lod/` (180 Mo, hors dépôt).
 
 ## Corpus retiré
 

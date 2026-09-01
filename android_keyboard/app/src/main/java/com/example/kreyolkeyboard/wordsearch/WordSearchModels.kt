@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.wordsearch
 
 import android.content.Context
+import com.example.kreyolkeyboard.TranslationDictionary
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -76,11 +77,20 @@ object WordSearchThemes {
     private var cachedWords: List<String>? = null
     
     /**
-     * Charge tous les mots du dictionnaire créole (3 à 8 lettres)
+     * Charge tous les mots du dictionnaire luxembourgeois (3 à 8 lettres) dont
+     * on connaît la traduction française.
+     *
+     * Le filtre par la traduction n'est pas cosmétique : la grille affiche la
+     * glose à côté de chaque mot à trouver, et un mot sans glose y laisserait
+     * un trou. Ce que le filtre écarte est presque uniquement du nom propre
+     * (« Esch », « Bettel », « RTL »), qui n'avait rien à faire dans un jeu de
+     * vocabulaire de toute façon.
      */
     fun getThemeWords(theme: String, context: Context): List<String> {
         // Utiliser le cache si disponible
-        cachedWords?.let { return it.shuffled() }
+        cachedWords?.let {
+            return TranslationDictionary.filtrerMotsTraduits(context, it).shuffled()
+        }
         
         val words = mutableListOf<String>()
         
@@ -102,7 +112,9 @@ object WordSearchThemes {
                 }
             }
             
-            // Mettre en cache
+            // Mettre en cache la liste brute : c'est le filtrage par la
+            // traduction, et non la lecture du dictionnaire, qui doit pouvoir
+            // se relâcher si la table des gloses vient à manquer.
             cachedWords = words
             
         } catch (e: Exception) {
@@ -111,6 +123,6 @@ object WordSearchThemes {
             return listOf("mir", "eng", "haus", "leit", "kéier", "ëmmer", "wäert", "sech")
         }
         
-        return words.shuffled()
+        return TranslationDictionary.filtrerMotsTraduits(context, words).shuffled()
     }
 }

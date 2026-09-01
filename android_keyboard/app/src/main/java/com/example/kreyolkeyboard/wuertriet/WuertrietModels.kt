@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.wuertriet
 
 import android.content.Context
 import android.graphics.Color
+import com.example.kreyolkeyboard.TranslationDictionary
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -63,8 +64,17 @@ object WuertrietData {
         return words
     }
 
+    /**
+     * Tire le mot à deviner parmi les seuls mots traduits : la fin de partie
+     * annonce ce qu'il voulait dire, et un mot sans glose ne l'apprendrait à
+     * personne.
+     *
+     * Le filtre ne s'applique qu'ici, jamais à [isValidWord] : une proposition
+     * du joueur doit rester acceptée dès lors qu'elle est au dictionnaire,
+     * même si le LOD ne la glose pas.
+     */
     fun pickRandomWord(context: Context): String {
-        val words = loadWords(context)
+        val words = TranslationDictionary.filtrerMotsTraduits(context, loadWords(context))
         return words.random()
     }
 

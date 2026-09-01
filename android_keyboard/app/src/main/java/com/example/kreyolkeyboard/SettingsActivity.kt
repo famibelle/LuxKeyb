@@ -54,8 +54,10 @@ import com.example.kreyolkeyboard.cloze.ClozeData
 import com.example.kreyolkeyboard.cloze.ClozeDifficulty
 import com.example.kreyolkeyboard.cloze.ClozeQuestion
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import com.google.android.play.core.review.ReviewManagerFactory
 import android.graphics.Bitmap
@@ -614,13 +616,20 @@ class SettingsActivity : AppCompatActivity() {
             tabContainer.addView(clozeTab)
             Log.d("SettingsActivity", "Onglet Wuertlück créé et ajouté")
 
+            // Tab Wierderbuch. Le libellé est raccourci : « Wierderbuch » est
+            // le mot juste, mais sur neuf onglets il se coupe en « Wierderbu /
+            // ch ». Le titre complet est en tête de l'onglet.
+            val dictionaryTab = createTab(6, "📚", "Wierder")
+            tabContainer.addView(dictionaryTab)
+            Log.d("SettingsActivity", "Onglet Wierderbuch créé et ajouté")
+
             // Tab Guide
-            val guideTab = createTab(6, "📖", "Guide")
+            val guideTab = createTab(7, "📖", "Guide")
             tabContainer.addView(guideTab)
             Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
 
             // Tab À Propos
-            val aboutTab = createTab(7, "ℹ️", "À Propos")
+            val aboutTab = createTab(8, "ℹ️", "À Propos")
             tabContainer.addView(aboutTab)
             Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
 
@@ -652,7 +661,7 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            // Padding horizontal resserré : sur huit onglets, 24 px de chaque
+            // Padding horizontal resserré : sur neuf onglets, 24 px de chaque
             // côté retiraient au libellé le tiers de sa largeur.
             setPadding(4, 10, 4, 8)
             layoutParams = LinearLayout.LayoutParams(
@@ -687,10 +696,13 @@ class SettingsActivity : AppCompatActivity() {
             // Label du tab
             val labelView = TextView(this@SettingsActivity).apply {
                 text = label
-                textSize = 9f
+                // 8sp et non 9 : le neuvième onglet a fait passer « Wuertsich »
+                // et « Wierderbuch » sur deux lignes, coupés en plein milieu
+                // d'un mot. Un point de moins les ramène sur une seule.
+                textSize = 8f
                 gravity = Gravity.CENTER
                 setPadding(0, 0, 0, 2)
-                // Huit onglets se partagent la largeur : un libellé long y tient sur
+                // Neuf onglets se partagent la largeur : un libellé long y tient sur
                 // deux lignes, et se termine par des points de suspension au delà,
                 // plutôt que de déborder ou de repousser ses voisins.
                 maxLines = 2
@@ -2117,7 +2129,10 @@ class SettingsActivity : AppCompatActivity() {
                     "Dictionnaire (lod.lu), réunies par Fred Philippy et coll. " +
                     "(SIGUL 2024). Licence CC BY 4.0.\n\n" +
                     "Le premier apporte le vocabulaire et l'enchaînement des " +
-                    "mots, le second la langue de tous les jours."
+                    "mots, le second la langue de tous les jours.\n\n" +
+                    "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu) — Zenter fir " +
+                    "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Les traductions " +
+                    "françaises affichées dans les jeux en sont tirées."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -3195,6 +3210,18 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 16)
         }
         
+        // Sans sa traduction, le mot du jour est une suite de lettres qu'on
+        // regarde une seconde et qu'on oublie. C'est la seule chose qui en fait
+        // un mot du jour plutôt qu'un tirage au sort.
+        val wordGloss = TextView(this).apply {
+            text = TranslationDictionary.traduire(this@SettingsActivity, wordOfDay) ?: ""
+            textSize = 18f
+            setTextColor(Color.parseColor("#555555"))
+            gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 12)
+            visibility = if (text.isNullOrEmpty()) View.GONE else View.VISIBLE
+        }
+
         val wordUsage = TextView(this).apply {
             text = if (usageCount > 0) "utilisé $usageCount fois" else "nouveau mot à découvrir"
             textSize = 14f
@@ -3204,6 +3231,7 @@ class SettingsActivity : AppCompatActivity() {
         
         wordContainer.addView(wordLabel)
         wordContainer.addView(wordText)
+        wordContainer.addView(wordGloss)
         wordContainer.addView(wordUsage)
         
         // === Top 5 - Liste simple ===
@@ -3237,7 +3265,17 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val wordName = TextView(this).apply {
-                text = word.first
+                val glose = TranslationDictionary.traduire(this@SettingsActivity, word.first)
+                text = if (glose != null) {
+                    SpannableStringBuilder(word.first).apply {
+                        val debut = length
+                        append("  ").append(glose)
+                        setSpan(ForegroundColorSpan(Color.parseColor("#999999")),
+                            debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        setSpan(RelativeSizeSpan(0.7f),
+                            debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                } else word.first
                 textSize = 20f
                 setTextColor(Color.parseColor("#1C1C1C"))
                 layoutParams = LinearLayout.LayoutParams(
@@ -3405,14 +3443,37 @@ class SettingsActivity : AppCompatActivity() {
                 val screenWidth = resources.displayMetrics.widthPixels - 96
                 
                 words.forEach { word ->
-                    // Créer le chip du mot
+                    // Créer le chip du mot, suivi de sa traduction quand on la
+                    // connaît. Le chip mesure sa propre largeur juste après,
+                    // donc l'ajout de la glose est absorbé par le passage à la
+                    // ligne : rien d'autre n'est à ajuster.
                     val wordChip = TextView(this@SettingsActivity).apply {
-                        text = word
+                        // Une seule acception sur un chip : « Aarbechtsmaart ·
+                        // marché du travail, marché de l'emploi » déborde de la
+                        // largeur de l'écran. Le sens complet est dans l'onglet
+                        // Wierderbuch.
+                        val glose = TranslationDictionary.traduire(this@SettingsActivity, word)
+                            ?.substringBefore(",")
+                        text = if (glose != null) {
+                            SpannableStringBuilder(word).apply {
+                                val debut = length
+                                append(" · ").append(glose)
+                                setSpan(ForegroundColorSpan(Color.parseColor("#8A8A8A")),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                setSpan(RelativeSizeSpan(0.75f),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            }
+                        } else word
                         textSize = 19.5f  // Augmenté de 1.5x (13f * 1.5)
                         setTextColor(Color.parseColor(accentColor))
                         setPadding(15, 7, 15, 7)  // Augmenté de 1.5x (10, 5, 10, 5)
                         setBackgroundColor(Color.parseColor("${accentColor}20"))
                         setSingleLine(true)
+                        // Filet de sécurité : un mot composé suivi de sa glose
+                        // peut dépasser la largeur de l'écran, et le calcul de
+                        // passage à la ligne ne saurait alors où le couper.
+                        maxWidth = screenWidth
+                        ellipsize = android.text.TextUtils.TruncateAt.END
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -3810,7 +3871,7 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 8 // Nombre réel d'onglets (ajout du Wuertlück)
+            const val REAL_COUNT = 9 // Nombre réel d'onglets (ajout du Wierderbuch)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
@@ -3827,8 +3888,9 @@ class SettingsActivity : AppCompatActivity() {
                 3 -> WordScrambleFragment()
                 4 -> WuertrietFragment()
                 5 -> ClozeFragment()
-                6 -> GuideFragment()
-                7 -> AboutFragment()
+                6 -> DictionaryFragment()
+                7 -> GuideFragment()
+                8 -> AboutFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -4082,6 +4144,25 @@ class SettingsActivity : AppCompatActivity() {
         return WEEKLY_TIPS[(weekIndex % WEEKLY_TIPS.size).toInt()]
     }
 
+    /**
+     * Tire un mot du jour dont on connaît la traduction, en gardant le tirage
+     * déterministe pour la journée.
+     *
+     * On ne filtre pas la liste avant de tirer : la construire coûterait un
+     * parcours de 38 000 formes à chaque ouverture de l'onglet, pour une chance
+     * sur deux de tomber juste du premier coup. Quelques essais successifs sur
+     * le même générateur suffisent — et si aucun n'aboutit (table absente), le
+     * dernier tirage est rendu tel quel plutôt que de laisser l'écran vide.
+     */
+    private fun tirerMotTraduisible(mots: List<String>, random: Random): String {
+        var choisi = mots[random.nextInt(mots.size)]
+        repeat(20) {
+            if (TranslationDictionary.aUneTraduction(this, choisi)) return choisi
+            choisi = mots[random.nextInt(mots.size)]
+        }
+        return choisi
+    }
+
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
             val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
@@ -4107,7 +4188,7 @@ class SettingsActivity : AppCompatActivity() {
                 val seed = dateString.hashCode().toLong()
                 val random = Random(seed)
                 
-                val selectedWord = allWords[random.nextInt(allWords.size)]
+                val selectedWord = tirerMotTraduisible(allWords, random)
                 // Lire directement l'entier
                 usageCount = jsonObject.optInt(selectedWord, 0)
                 
@@ -4136,7 +4217,7 @@ class SettingsActivity : AppCompatActivity() {
                 val seed = dateString.hashCode().toLong()
                 val random = Random(seed)
                 
-                val selectedWord = allWords[random.nextInt(allWords.size)]
+                val selectedWord = tirerMotTraduisible(allWords, random)
                 
                 return Pair(selectedWord, 0)
             }
@@ -4422,7 +4503,26 @@ class SettingsActivity : AppCompatActivity() {
             
             words.forEach { word ->
                 val wordView = TextView(activity).apply {
-                    text = if (word.isFound) "✅ ${word.word.uppercase()}" else "📝 ${word.word.uppercase()}"
+                    // Le mot est déjà donné : afficher sa traduction n'aide pas
+                    // à le trouver dans la grille, mais c'est la seule chose
+                    // qui distingue une grille de vocabulaire d'un exercice de
+                    // repérage de lettres.
+                    val puce = if (word.isFound) "✅ " else "📝 "
+                    val glose = TranslationDictionary.traduire(activity, word.word)
+                    val ligne = SpannableStringBuilder(puce).append(word.word.uppercase())
+                    if (glose != null) {
+                        val debut = ligne.length
+                        ligne.append("  ").append(glose)
+                        ligne.setSpan(
+                            ForegroundColorSpan(Color.parseColor("#777777")),
+                            debut, ligne.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        ligne.setSpan(
+                            RelativeSizeSpan(0.85f),
+                            debut, ligne.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                    text = ligne
                     textSize = 14f
                     setPadding(12, 8, 12, 8)
                     setTextColor(if (word.isFound) Color.parseColor("#4CAF50") else Color.parseColor("#333333"))
@@ -4474,6 +4574,7 @@ class SettingsActivity : AppCompatActivity() {
         
         private lateinit var tvScore: TextView
         private lateinit var tvWordNumber: TextView
+        private lateinit var tvTranslation: TextView
         private lateinit var gridScrambled: GridView
         private lateinit var gridAnswer: GridView
         private lateinit var btnValidate: Button
@@ -4587,6 +4688,23 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
                     }
                     addView(title)
+
+                    // Traduction du mot caché. Contrairement aux autres jeux
+                    // ce n'est pas un simple rappel de vocabulaire mais la
+                    // consigne elle-même : sans elle, remettre des lettres
+                    // dans l'ordre se joue par permutations, pas par le sens.
+                    tvTranslation = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        textSize = 16f
+                        gravity = Gravity.CENTER
+                        setTextColor(Color.parseColor("#555555"))
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 24
+                        visibility = View.GONE
+                    }
+                    addView(tvTranslation)
                     
                     // Label lettres disponibles
                     val labelScrambled = TextView(activity).apply {
@@ -4811,6 +4929,16 @@ class SettingsActivity : AppCompatActivity() {
             tvWordNumber.text = "Mot ${currentWordIndex + 1}/${gameWords.size}"
             tvScore.text = "Score: $score"
             progressBar.progress = currentWordIndex
+
+            val glose = TranslationDictionary.traduire(requireContext(), currentWord)
+            if (glose != null) {
+                tvTranslation.text = "💡 $glose"
+                tvTranslation.visibility = View.VISIBLE
+            } else {
+                // Le tirage ne propose normalement que des mots traduits ; ce
+                // cas ne survient qu'en repli, table des gloses absente.
+                tvTranslation.visibility = View.GONE
+            }
         }
 
         
@@ -4872,7 +5000,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         private fun skipWord() {
-            Toast.makeText(requireContext(), "Le mot était: $currentWord", Toast.LENGTH_SHORT).show()
+            val glose = TranslationDictionary.traduire(requireContext(), currentWord)
+            val revelation = if (glose != null) "Le mot était : $currentWord ($glose)"
+                             else "Le mot était : $currentWord"
+            Toast.makeText(requireContext(), revelation, Toast.LENGTH_SHORT).show()
             currentWordIndex++
             loadNextWord()
         }
@@ -5321,11 +5452,17 @@ class SettingsActivity : AppCompatActivity() {
             editGuess.isEnabled = false
             btnSubmit.isEnabled = false
 
+            // Le mot n'a été montré à personne pendant la partie : la fin est
+            // le seul moment où sa traduction peut être donnée sans livrer la
+            // réponse. C'est là que le jeu apprend quelque chose.
+            val glose = TranslationDictionary.traduire(requireContext(), targetWord)
+            val motEtGlose = targetWord.uppercase() + (glose?.let { "\n« $it »" } ?: "")
+
             AlertDialog.Builder(requireContext())
                 .setTitle(if (won) "🎉 Bravo !" else "😔 Domaj !")
                 .setMessage(
-                    if (won) "Ou touvé mo-a an $currentAttempt èsèy : ${targetWord.uppercase()}"
-                    else "Mo la té : ${targetWord.uppercase()}"
+                    if (won) "Trouvé en $currentAttempt essai(s) : $motEtGlose"
+                    else "Le mot était : $motEtGlose"
                 )
                 .setPositiveButton("Rejouer") { _, _ -> startNewGame() }
                 .setNegativeButton("OK", null)
@@ -5771,8 +5908,16 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             tvSentence.text = sentenceWithAnswer(question)
+            // La glose ne s'affiche qu'une fois la question tranchée : donnée
+            // avant, elle désignerait la bonne case. Les mots masqués sont des
+            // mots pleins, donc le LOD en glose la plupart — mais pas tous, et
+            // une réponse sans traduction se contente du verdict.
+            val glose = TranslationDictionary.traduire(requireContext(), question.answer)
+            val gloseAffichee = glose?.let { " (${question.answer} : $it)" } ?: ""
             tvFeedback.apply {
-                text = if (juste) "✅ Richteg !" else "❌ La phrase disait « ${question.answer} »"
+                text = if (juste) "✅ Richteg !$gloseAffichee"
+                       else "❌ La phrase disait « ${question.answer} »" +
+                            (glose?.let { " — $it" } ?: "")
                 setTextColor(if (juste) couleurJuste else couleurFausse)
                 visibility = View.VISIBLE
             }
@@ -5813,6 +5958,195 @@ class SettingsActivity : AppCompatActivity() {
         override fun onDestroyView() {
             super.onDestroyView()
             optionButtons.clear()
+            rootView = null
+        }
+    }
+
+    // Fragment « Wierderbuch » : un champ de saisie et une liste de résultats.
+    // C'est le seul onglet qui ne joue à rien — on y cherche un mot, dans un
+    // sens ou dans l'autre, et on lit sa traduction.
+    class DictionaryFragment : Fragment() {
+
+        private var rootView: ScrollView? = null
+        private lateinit var champRecherche: EditText
+        private lateinit var conteneurResultats: LinearLayout
+        private lateinit var tvEtat: TextView
+
+        // La recherche parcourt 20 000 entrées : à la vitesse de frappe, c'est
+        // une dizaine de parcours par mot tapé. On attend 200 ms de silence
+        // avant de chercher, ce qui ramène cela à un seul.
+        private val delaiRecherche = Handler(Looper.getMainLooper())
+        private var rechercheEnAttente: Runnable? = null
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            val racine = ScrollView(activity).apply {
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                isFillViewport = true
+            }
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(24, 24, 24, 24)
+            }
+
+            colonne.addView(TextView(activity).apply {
+                text = "📚 Wierderbuch"
+                textSize = 22f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1976D2"))
+                setPadding(0, 0, 0, 8)
+            })
+
+            colonne.addView(TextView(activity).apply {
+                val total = TranslationDictionary.taille(activity)
+                text = "Tapez un mot luxembourgeois ou français : la recherche " +
+                        "fonctionne dans les deux sens. $total mots traduits."
+                textSize = 14f
+                setTextColor(Color.parseColor("#666666"))
+                setLineSpacing(0f, 1.2f)
+                setPadding(0, 0, 0, 20)
+            })
+
+            champRecherche = EditText(activity).apply {
+                hint = "Haus, maison, Kaz, chat…"
+                textSize = 18f
+                // Couleurs explicites : sur fond blanc imposé, la couleur de
+                // texte héritée du thème est elle-même claire, et le champ
+                // paraissait vide alors qu'il contenait la requête.
+                setTextColor(Color.parseColor("#1C1C1C"))
+                setHintTextColor(Color.parseColor("#BBBBBB"))
+                setSingleLine(true)
+                imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+                setPadding(24, 20, 24, 20)
+                setBackgroundColor(Color.WHITE)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                addTextChangedListener(object : android.text.TextWatcher {
+                    override fun afterTextChanged(s: android.text.Editable?) {
+                        rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
+                        val requete = s?.toString() ?: ""
+                        val tache = Runnable { if (isAdded) afficherResultats(requete) }
+                        rechercheEnAttente = tache
+                        delaiRecherche.postDelayed(tache, 200)
+                    }
+
+                    override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                    override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                })
+            }
+            colonne.addView(champRecherche)
+
+            tvEtat = TextView(activity).apply {
+                textSize = 15f
+                setTextColor(Color.parseColor("#999999"))
+                setPadding(4, 20, 4, 8)
+                setLineSpacing(0f, 1.25f)
+            }
+            colonne.addView(tvEtat)
+
+            conteneurResultats = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(0, 0, 0, 0)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            colonne.addView(conteneurResultats)
+
+            // La source est en CC0 : la citation n'est pas due, elle est rendue.
+            // C'est aussi ce qui dit à l'utilisateur d'où sort la traduction
+            // qu'il lit, et donc jusqu'où il peut lui faire confiance.
+            colonne.addView(TextView(activity).apply {
+                text = "Traductions issues du Lëtzebuerger Online Dictionnaire " +
+                        "(lod.lu), Zenter fir d'Lëtzebuerger Sprooch — CC0."
+                textSize = 12f
+                setTextColor(Color.parseColor("#AAAAAA"))
+                setLineSpacing(0f, 1.2f)
+                setPadding(4, 28, 4, 8)
+            })
+
+            racine.addView(colonne)
+            rootView = racine
+
+            afficherResultats("")
+            return racine
+        }
+
+        /**
+         * Affiche les résultats d'une requête, ou l'invite quand elle est vide.
+         *
+         * Le cas « rien trouvé » mérite une explication plutôt qu'un vide :
+         * près de la moitié des formes du dictionnaire de saisie n'ont pas de
+         * traduction, et ce sont massivement des noms propres. Sans ce message,
+         * l'utilisateur qui cherche « Bettel » croit l'application cassée.
+         */
+        private fun afficherResultats(requete: String) {
+            val activity = activity as? SettingsActivity ?: return
+            conteneurResultats.removeAllViews()
+
+            if (requete.trim().length < 2) {
+                tvEtat.text = "Entrez au moins deux lettres."
+                return
+            }
+
+            val resultats = TranslationDictionary.rechercher(activity, requete)
+            if (resultats.isEmpty()) {
+                tvEtat.text = "Aucun résultat pour « ${requete.trim()} ».\n" +
+                        "Les noms propres et les noms de lieux n'ont pas de " +
+                        "traduction dans le dictionnaire officiel."
+                return
+            }
+
+            tvEtat.text = if (resultats.size == 1) "1 résultat"
+                          else "${resultats.size} résultats"
+
+            resultats.forEachIndexed { rang, resultat ->
+                conteneurResultats.addView(ligneResultat(activity, resultat, rang))
+            }
+        }
+
+        private fun ligneResultat(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat,
+            rang: Int
+        ): View = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 16, 20, 16)
+            // Une ligne sur deux légèrement teintée : la liste peut compter
+            // quarante entrées, et rien d'autre ne sépare une glose du mot
+            // suivant.
+            setBackgroundColor(
+                if (rang % 2 == 0) Color.WHITE else Color.parseColor("#FAFAFA")
+            )
+
+            addView(TextView(activity).apply {
+                text = resultat.mot
+                textSize = 19f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+            })
+            addView(TextView(activity).apply {
+                text = resultat.glose
+                textSize = 16f
+                setTextColor(Color.parseColor("#555555"))
+                setPadding(0, 4, 0, 0)
+            })
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
+            rechercheEnAttente = null
             rootView = null
         }
     }

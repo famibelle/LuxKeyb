@@ -68,6 +68,14 @@ jobs:
         # fréquence, et ClozeAssetTest le verrait échouer.
         python generate_cloze.py --strict
 
+        # La table des traductions se dérive elle aussi du dictionnaire qui
+        # vient d'être écrit : elle ne glose que des formes qui y figurent.
+        # La régénérer ici évite qu'un corpus rafraîchi laisse sans traduction
+        # les mots qu'il vient d'introduire — les jeux tirent leurs mots parmi
+        # les formes glosées, donc une table périmée rétrécit leur réserve en
+        # silence. La source (LOD, data.public.lu) est publique et sans jeton.
+        python generate_translations.py --strict
+
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
 
@@ -75,7 +83,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -176,6 +184,32 @@ jobs:
           exit 1
         fi
 
+        # Garde-fou des traductions. Les trois jeux qui tirent un mot ne le
+        # tirent que parmi les formes glosées : une table effondrée ne fait
+        # rien planter, elle fait retomber les jeux sur leur repli et le mot à
+        # trouver redevient muet — exactement le défaut que la table corrige.
+        TRAD_COUNT=$(jq '.translations | length' "$A/luxemburgish_translations.json")
+        if [ "$TRAD_COUNT" -lt 15000 ]; then
+          echo "::error::Table de traductions anormalement petite ($TRAD_COUNT formes, moins de 15000). L'appariement avec le LOD a probablement échoué."
+          exit 1
+        fi
+
+        # Wuertriet est la réserve la plus étroite du lot : cinq lettres, une
+        # seule longueur. C'est elle qui se vide en premier si la couverture
+        # baisse, et c'est donc elle qu'on compte.
+        TRAD_CINQ=$(jq '[.translations | keys[] | select(length == 5)] | length' "$A/luxemburgish_translations.json")
+        if [ "$TRAD_CINQ" -lt 300 ]; then
+          echo "::error::Seulement $TRAD_CINQ mots de 5 lettres traduits : Wuertriet n'aurait plus de réserve."
+          exit 1
+        fi
+
+        # Le LOD est en CC0 et n'impose donc rien, mais on cite le ZLS :
+        # l'attribution voyage dans l'actif et l'écran « À propos » l'affiche.
+        if ! jq -e '.attribution | length >= 1' "$A/luxemburgish_translations.json" > /dev/null; then
+          echo "::error::luxemburgish_translations.json ne porte pas le crédit du LOD."
+          exit 1
+        fi
+
         # LuxAlign impose l'attribution de ses auteurs (CC BY-NC 4.0), LETZ
         # aussi (CC BY 4.0). Le fichier qui porte cette obligation est suivi
         # en git : s'il disparaît, l'APK n'est plus distribuable en l'état.
@@ -228,6 +262,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_dict.json
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
+          android_keyboard/app/src/main/assets/luxemburgish_translations.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES

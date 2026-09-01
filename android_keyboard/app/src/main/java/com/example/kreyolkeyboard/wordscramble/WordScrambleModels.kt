@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.wordscramble
 
 import android.content.Context
+import com.example.kreyolkeyboard.TranslationDictionary
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -38,11 +39,16 @@ object WordScrambleData {
     private var cachedWords: List<String>? = null
     
     /**
-     * Charge les mots du dictionnaire selon la difficulté
+     * Charge les mots du dictionnaire selon la difficulté, en ne gardant que
+     * ceux dont on connaît la traduction française.
+     *
+     * Le mot est caché : sa traduction est l'indice qui rend la partie
+     * jouable autrement qu'en essayant les permutations. Un mot sans glose ne
+     * peut donc pas être proposé.
      */
     fun loadWords(context: Context, difficulty: ScrambleDifficulty): List<String> {
         cachedWords?.let { 
-            return filterByDifficulty(it, difficulty).shuffled().take(10)
+            return pickPlayable(context, it, difficulty)
         }
         
         val words = mutableListOf<String>()
@@ -73,7 +79,23 @@ object WordScrambleData {
             return listOf("leit", "sech", "wann", "kéier", "ëmmer", "wäert", "gesot", "haus")
         }
         
-        return filterByDifficulty(words, difficulty).shuffled().take(10)
+        return pickPlayable(context, words, difficulty)
+    }
+
+    /**
+     * Dix mots de la bonne longueur et traduits. Le repli de
+     * [TranslationDictionary.filtrerMotsTraduits] garde le jeu jouable si la
+     * table des gloses manque : la partie se joue alors sans indice.
+     */
+    private fun pickPlayable(
+        context: Context,
+        words: List<String>,
+        difficulty: ScrambleDifficulty
+    ): List<String> {
+        val candidates = filterByDifficulty(words, difficulty)
+        return TranslationDictionary.filtrerMotsTraduits(context, candidates)
+            .shuffled()
+            .take(10)
     }
     
     private fun isValidForDifficulty(word: String, difficulty: ScrambleDifficulty): Boolean {

@@ -177,6 +177,8 @@ android_keyboard/screenshot_tabs_v3.png
 screenshot_keyboard_name.png
 screenshot_final.png
 Dictionnaires/cache_hf/
+# Cache des XML du LOD : 180 Mo, retéléchargeables depuis data.public.lu
+Dictionnaires/luxemburgish_data/lod/
 RAPPORT_INTEGRATION_LUXEMBOURG.md
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/AccentTolerantMatchingTest.kt.old
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KreyolInputMethodService.kt.old
