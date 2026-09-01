@@ -117,6 +117,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          */
         private const val MIC_LEVEL_SCALE = 0.18f
 
+        /** Épaisseur du trait de l'anneau tournant autour du micro. */
+        private const val MIC_RING_WIDTH_DP = 2
+
+        /**
+         * Durée d'un tour d'anneau. Assez lent pour être calme sous le pouce,
+         * assez rapide pour qu'on voie le mouvement du coin de l'œil — le
+         * témoin du champ de saisie fait son tour en un peu plus d'une
+         * demi-seconde, mais lui n'a qu'une seconde et demie à occuper.
+         */
+        private const val MIC_RING_PERIOD_MS = 1400L
+
         /**
          * Affiche la durée de chaque passe whisper dans le bandeau de dictée.
          *
@@ -146,6 +157,29 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         /** Période d'une image de l'indicateur de transcription. */
         private const val SPINNER_PERIOD_MS = 140L
+
+        /** Période d'une image du tracé de niveau affiché pendant la parole. */
+        private const val METER_PERIOD_MS = 110L
+
+        /** Largeur du tracé, en barres. */
+        private const val METER_BARS = 6
+
+        /** Symbole qui ouvre le tracé, pour qu'on sache de quoi il parle. */
+        private const val MIC_GLYPH = "🎤"
+
+        /**
+         * Hauteurs du tracé de niveau. Les barres partielles (U+2581–U+2587)
+         * sont largement présentes, mais comme les quarts de cercle elles
+         * appartiennent à un bloc que rien n'oblige une surcouche à couvrir :
+         * même vérification, même repli, pour la même raison — un rectangle
+         * vide au milieu du texte de quelqu'un est pire que pas d'animation.
+         */
+        private val METER_GLYPHS: List<String> by lazy {
+            val barres = listOf("▁", "▂", "▃", "▄", "▅", "▆", "▇")
+            val dispo = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                barres.all { android.graphics.Paint().hasGlyph(it) }
+            if (dispo) barres else listOf(".", ".", ":", ":", "|", "|", "|")
+        }
 
         /**
          * Images de l'indicateur posé dans le champ de saisie.
@@ -253,6 +287,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      */
     private var sttSession: com.example.kreyolkeyboard.stt.DictationSession? = null
     private var micButton: ImageView? = null
+    @Volatile private var dictationLevel = 0f
+    private var micRing: MicRingDrawable? = null
+    private var micRingAnimator: android.animation.ValueAnimator? = null
 
     /**
      * Bandeau d'état de la dictée, affiché à la place des suggestions.
@@ -294,6 +331,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private val spinnerHandler = Handler(Looper.getMainLooper())
     private var spinnerRunnable: Runnable? = null
     private var spinnerFrame = 0
+    /** Dernières énergies captées, de la plus ancienne à la plus récente. */
+    private val niveauxRecents = ArrayDeque<Float>()
 
     /**
      * Palette avec laquelle la vue d'entrée courante a été construite.
@@ -776,6 +815,54 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 scaleY = 1f
             }
         }
+        if (listening) startMicRing(palette.accent) else stopMicRing()
+    }
+
+    /**
+     * Fait tourner un anneau autour du micro pendant l'écoute.
+     *
+     * Le micro pulsait déjà au rythme de la voix, mais ce retour s'éteint
+     * exactement quand on doute : entre deux phrases, dans une pièce calme,
+     * quand on hésite avant de commencer. L'anneau tourne indépendamment de ce
+     * qui est capté, et dit donc « ça écoute » et non « ça entend ».
+     *
+     * Même vocabulaire visuel que le témoin posé dans le champ de saisie
+     * pendant la transcription — un arc qui fait le tour — pour que les deux
+     * temps de la dictée se lisent comme une seule chose qui avance.
+     *
+     * L'animation est supprimée quand le système annonce des animations
+     * désactivées : c'est un réglage d'accessibilité, pas une préférence
+     * esthétique, et une rotation perpétuelle est exactement ce qu'il vise.
+     */
+    private fun startMicRing(couleur: Int) {
+        val button = micButton ?: return
+        micRing?.teinte(couleur)
+        if (micRingAnimator?.isRunning == true) return
+
+        val anneau = micRing ?: MicRingDrawable(couleur, dpToPx(MIC_RING_WIDTH_DP).toFloat())
+            .also { micRing = it }
+        button.background = anneau
+
+        if (android.provider.Settings.Global.getFloat(
+                contentResolver,
+                android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f) {
+            anneau.angle = -90f          // arc figé en haut : présent, immobile
+            return
+        }
+
+        micRingAnimator = android.animation.ValueAnimator.ofFloat(0f, 360f).apply {
+            duration = MIC_RING_PERIOD_MS
+            repeatCount = android.animation.ValueAnimator.INFINITE
+            interpolator = android.view.animation.LinearInterpolator()
+            addUpdateListener { anneau.angle = it.animatedValue as Float - 90f }
+            start()
+        }
+    }
+
+    private fun stopMicRing() {
+        micRingAnimator?.cancel()
+        micRingAnimator = null
+        micButton?.background = null
     }
 
     /**
@@ -948,7 +1035,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             dictationPartial = ""
         }
 
-        override fun onLevel(level: Float) = applyMicLevel(level)
+        override fun onLevel(level: Float) {
+            dictationLevel = level
+            applyMicLevel(level)
+        }
 
         override fun onPassTiming(audioSeconds: Float, ms: Long, partial: Boolean) {
             if (!SHOW_PASS_TIMING) return
@@ -973,8 +1063,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         override fun onStateChanged(state: SttSession.State) {
             applyMicTint(listening = state == SttSession.State.LISTENING)
-            if (state == SttSession.State.FINALIZING) startDictationSpinner()
-            else stopDictationSpinner()
+            when (state) {
+                SttSession.State.LISTENING -> startDictationMeter()
+                SttSession.State.FINALIZING -> {
+                    // Le VU-mètre et le témoin se partagent la même boucle :
+                    // on l'arrête avant de la relancer sous l'autre forme.
+                    stopDictationSpinner()
+                    startDictationSpinner()
+                }
+                else -> stopDictationSpinner()
+            }
             showDictationStatus(
                 when (state) {
                     // Le chargement du modèle prend jusqu'à une seconde au
@@ -1030,6 +1128,51 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * l'animation dise « ce n'est pas fini » plutôt que d'effacer ce que
      * l'utilisateur a vu se construire.
      */
+    /**
+     * Petit micro suivi d'un tracé de niveau, posé **dans le champ de saisie**
+     * pendant qu'on parle.
+     *
+     * Même raison que le témoin de transcription, à l'autre bout de la dictée,
+     * et même endroit : le regard est sur le curseur, pas sur le clavier. La
+     * différence est que celui-ci n'est pas décoratif — les barres suivent
+     * l'énergie réellement captée, donc l'animation dit « je t'entends » et non
+     * seulement « je tourne ». Un micro coupé par une autre application, une
+     * main posée dessus, une voix trop lointaine se voient immédiatement.
+     *
+     * Le tracé défile : chaque image décale l'historique d'un cran et pousse la
+     * mesure du moment à droite, du côté du curseur, là où le texte va
+     * atterrir.
+     *
+     * Cadencé à [METER_PERIOD_MS] et non aux ~25 mesures par seconde que publie
+     * la capture : chaque image est un `setComposingText`, donc un aller-retour
+     * vers l'application et un rendu de sa part. Vingt-cinq par seconde
+     * saccadent les champs lents pour une animation que personne ne lit à cette
+     * vitesse.
+     */
+    private fun startDictationMeter() {
+        if (spinnerRunnable != null) return
+        if (currentInputConnection == null) return
+        niveauxRecents.clear()
+        val boucle = object : Runnable {
+            override fun run() {
+                val conn = currentInputConnection ?: return
+                niveauxRecents.addLast(dictationLevel)
+                while (niveauxRecents.size > METER_BARS) niveauxRecents.removeFirst()
+                val trace = StringBuilder()
+                repeat(METER_BARS - niveauxRecents.size) { trace.append(METER_GLYPHS.first()) }
+                for (n in niveauxRecents) {
+                    val i = (n.coerceIn(0f, 1f) * (METER_GLYPHS.size - 1)).toInt()
+                    trace.append(METER_GLYPHS[i])
+                }
+                conn.setComposingText("$MIC_GLYPH $trace", 1)
+                dictationComposing = true
+                spinnerHandler.postDelayed(this, METER_PERIOD_MS)
+            }
+        }
+        spinnerRunnable = boucle
+        boucle.run()
+    }
+
     private fun startDictationSpinner() {
         if (spinnerRunnable != null) return
         val ic = currentInputConnection ?: return
@@ -1885,6 +2028,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             luxRow = null
             frenchRowScroll = null
             mainKeyboardView = null
+            stopMicRing()
+            micRing = null
             micButton = null
             dictationStatusView = null
             luxScrollView = null
