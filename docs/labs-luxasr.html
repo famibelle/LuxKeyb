@@ -73,40 +73,19 @@ tbody th{font-weight:700;width:34%;}
 td{color:var(--ink-soft);}
 td.good{color:var(--ink);}
 
-/* Dictée en direct dans la page. Le micro reprend la forme qu'il a dans le
-   clavier — rond, pulsant au rythme de la voix — parce que c'est le seul
-   retour immédiat : sans lui, rien ne distingue pendant plusieurs secondes un
-   micro qui capte d'un micro mort. */
-.card.asr{padding:20px 18px;}
-.asr-consent-txt{font-size:14.5px;}
-.asr-tete{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
-.asr-micro{flex:0 0 auto;width:62px;height:62px;border-radius:50%;
-  border:1px solid var(--line);background:var(--stripe);color:var(--ink);
-  font-size:25px;line-height:1;cursor:pointer;
-  transition:background .18s,border-color .18s,box-shadow .12s;}
-.asr-micro:focus-visible{outline:2px solid var(--sea);outline-offset:3px;}
-.asr-micro.attente{background:var(--sun-soft);border-color:var(--sun);}
-.asr-micro.actif{background:var(--sea);border-color:var(--sea);color:var(--paper);
-  box-shadow:0 0 0 calc(var(--niveau,0) * 16px) var(--sea-soft);}
-.asr-etat{min-width:0;}
-.asr-bandeau{margin:0;font-family:var(--mono);font-size:13.5px;
-  letter-spacing:.03em;color:var(--ink-soft);}
-.asr-bandeau.vif{color:var(--sea);font-weight:700;}
-.asr-chrono{margin:3px 0 0;font-family:var(--mono);font-size:12.5px;
-  color:var(--ink-soft);font-variant-numeric:tabular-nums;min-height:1em;}
-/* Souligné tant que le texte n'est pas acquis : c'est le texte en composition
-   de l'IME, qui se réécrit en entier à chaque hypothèse reçue. */
-.asr-texte{margin:0 0 14px;padding:14px 15px;border-radius:10px;
-  background:var(--stripe);border:1px solid var(--line);
-  font-size:17px;line-height:1.5;min-height:3.6em;}
-.asr-texte.partiel{text-decoration:underline;text-decoration-style:dotted;
-  text-underline-offset:3px;color:var(--ink-soft);}
-.asr-texte.vide{color:var(--ink-soft);font-style:italic;font-size:15px;}
-.asr-pied{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;}
-.asr-pied .btn{padding:7px 14px;font-size:13.5px;}
-.asr-erreur{margin:12px 0 0;padding:11px 13px;border-radius:9px;
-  background:var(--hibiscus-soft);border:1px solid var(--hibiscus);
-  font-size:14px;color:var(--ink);}
+/* Déroulé de la dictée : les repères temporels tiennent une colonne à gauche,
+   pour que l'ordre des événements se lise avant leur description. */
+.tl{list-style:none;margin:0;padding:0;}
+.tl li{display:flex;flex-wrap:wrap;gap:2px 16px;padding:13px 0;
+  border-bottom:1px solid var(--line);}
+.tl li:last-child{border-bottom:0;}
+.tl .t{font-family:var(--mono);font-size:12.5px;font-weight:700;
+  letter-spacing:.04em;color:var(--sun);min-width:92px;padding-top:3px;
+  font-variant-numeric:tabular-nums;}
+.tl .d{flex:1 1 300px;min-width:0;}
+.tl .d strong{display:block;margin-bottom:3px;color:var(--ink);}
+.tl .d p{margin:0;color:var(--ink-soft);font-size:14.5px;}
+.tl .d p + p{margin-top:7px;}
 
 .facts{list-style:none;margin:0;padding:0;}
 .facts li{padding:9px 0;border-bottom:1px solid var(--line);
@@ -125,14 +104,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
-  <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <strong>🌐 Démo LuxASR</strong> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
-  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
@@ -159,9 +136,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <p>
       C'est l'inverse exact de la <a href="labs.html">version Labs</a>, dont
       tout l'argument est que rien ne sort de l'appareil. Ici, l'application
-      demande la permission <strong>Internet</strong> et transmet le son
-      capté par le micro à <code>luxasr.uni.lu</code>, en direct, pendant que
-      vous parlez.
+      demande la permission <strong>Internet</strong> et envoie à
+      <code>luxasr.uni.lu</code> l'enregistrement de ce que vous venez de dire,
+      dès que vous avez fini de parler.
     </p>
     <p>
       N'y dictez donc rien de confidentiel. Le traitement des enregistrements
@@ -177,75 +154,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       publiée sur le Play Store.
     </p>
   </div>
-</section>
-
-<section>
-  <h2 id="essayer">Essayer tout de suite, sans rien installer</h2>
-
-  <p>
-    Le clavier n'est pas nécessaire pour entendre ce que donne LuxASR. Cette
-    page parle au même service, avec les mêmes réglages que l'application —
-    même découpage à deux secondes, même arrêt sur le silence, même filtre de
-    boucle — en passant par le micro de l'appareil que vous tenez. C'est la
-    dictée de la démonstration, sans le clavier autour.
-  </p>
-
-  <div class="card asr">
-    <div id="asr-gate">
-      <p class="asr-consent-txt">
-        <strong>Ce bouton ouvre le micro et envoie votre voix à
-        <code>luxasr.uni.lu</code></strong>, en direct, pendant que vous parlez.
-        Nous n'enregistrons rien et n'entendons rien : le son va du navigateur
-        au service, sans passer par nous. Mais il quitte votre appareil, pour un
-        service que nous n'exploitons pas — n'y dictez rien de confidentiel.
-      </p>
-      <button type="button" id="asr-consent" class="btn primary">
-        🎙️ J'ai compris — activer le micro
-      </button>
-    </div>
-
-    <div id="asr-live" hidden>
-      <div class="asr-tete">
-        <button type="button" id="asr-micro" class="asr-micro"
-                aria-pressed="false" aria-label="Démarrer la dictée">🎙️</button>
-        <div class="asr-etat">
-          <p id="asr-bandeau" class="asr-bandeau">Prêt — touchez le micro et parlez en luxembourgeois</p>
-          <p id="asr-chrono" class="asr-chrono"></p>
-        </div>
-      </div>
-      <p id="asr-texte" class="asr-texte vide" aria-live="polite">Le texte reconnu s'affichera ici.</p>
-      <div class="asr-pied">
-        <button type="button" id="asr-effacer" class="btn" hidden>Effacer</button>
-        <span class="muted">
-          La dictée se termine d'elle-même après une seconde et demie de
-          silence ; le micro se referme avec elle.
-        </span>
-      </div>
-      <p id="asr-erreur" class="asr-erreur" role="status" hidden></p>
-    </div>
-  </div>
-
-  <p class="cta">
-    <a class="btn" href="simulateur.html?asr=1">⌨️ Le clavier entier, dictée comprise</a>
-  </p>
-  <p class="muted">
-    Ce bouton ouvre le simulateur de clavier avec le micro branché : la dictée y
-    est au même endroit que dans l'application — à droite des suggestions — et
-    le texte dicté arrive dans le champ, souligné puis figé, comme sur le
-    téléphone. Le simulateur ordinaire, lui, n'a pas de micro : la dictée ne
-    s'ajoute que sur cette adresse-là.
-  </p>
-
-  <p class="muted">
-    Le bandeau est celui du clavier, et le déroulé aussi : le texte apparaît
-    pendant qu'on parle, souligné tant qu'il n'est pas acquis, et se réécrit en
-    entier à chaque hypothèse plutôt que de s'ajouter au bout. Ce qui change
-    ici, c'est le micro — celui d'un ordinateur, à
-    cinquante centimètres, n'est pas celui d'un téléphone tenu en main, et le
-    navigateur y ajoute son propre traitement du son. Les taux d'erreur cités
-    sur cette page ont été mesurés à travers un téléphone : ils ne se
-    transposent pas tels quels à ce qu'on entendra ici.
-  </p>
 </section>
 
 <section>
@@ -304,7 +212,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <strong>🌐 LuxASR</strong> : c'est le signe que la reconnaissance se
         fait à distance et non dans le téléphone. Inutile de retoucher le
         micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
-        une seconde et demie après la fin de la phrase.
+        une seconde et demie après la fin de la phrase. Le déroulé complet est
+        décrit <a href="#deroule">juste en dessous</a>.
       </li>
     </ol>
   </div>
@@ -315,6 +224,116 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     n'a pas de repli hors ligne, volontairement, pour que la démonstration
     montre bien ce qu'elle prétend montrer.
   </p>
+</section>
+
+<section>
+  <h2 id="deroule">Ce qui se passe quand on appuie sur le micro</h2>
+
+  <p>
+    Le déroulé ci-dessous n'est pas une intention : il est mesuré sur vingt-deux
+    énoncés d'un corpus de conférences de presse, d'une à trois phrases, de huit
+    à vingt et une secondes.
+  </p>
+
+  <ol class="tl">
+    <li>
+      <span class="t">à l'appui</span>
+      <span class="d">
+        <strong>Le micro s'ouvre et se met à battre</strong>
+        <p>
+          La barre de suggestions laisse place à un bandeau
+          <strong>🌐 LuxASR · Schwätzt…</strong> — « parlez ». Le globe est là à
+          chaque étape, exprès : on ne doit jamais pouvoir confondre cette
+          version avec celle qui reconnaît dans le téléphone.
+        </p>
+        <p>
+          Le micro change de couleur et pulse au rythme de la voix captée. C'est
+          le seul retour immédiat, et il compte plus qu'avant : rien ne
+          s'affichera dans le champ avant que vous ayez fini.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t">pendant</span>
+      <span class="d">
+        <strong>Le champ reste vide</strong>
+        <p>
+          C'est un choix, et c'est le changement principal de cette version.
+          L'énoncé n'est plus découpé et envoyé au fil de la parole ; il est
+          enregistré en entier, puis transcrit d'un seul tenant.
+        </p>
+        <p>
+          On y perd le texte qui se construit sous les yeux. On y gagne
+          <strong>onze points et demi de justesse</strong> — 26,8 % de mots
+          erronés contre 38,3 % — parce que le modèle voit la phrase complète au
+          lieu de deviner à chaque morceau où elle se coupe.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t">on se tait</span>
+      <span class="d">
+        <strong>La dictée se ferme d'elle-même</strong>
+        <p>
+          Cinq secondes de silence suffisent, et le seuil s'adapte au bruit de la
+          pièce. Retoucher le micro fait la même chose immédiatement. Le silence
+          qui entoure la phrase n'est pas envoyé : les modèles de cette famille
+          inventent du texte quand on leur donne du blanc.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t">+ 1,3 s</span>
+      <span class="d">
+        <strong>Un petit cercle tourne dans le champ, puis le texte le remplace</strong>
+        <p>
+          Le témoin est posé là où le texte va atterrir, souligné comme lui : il
+          dit que quelque chose travaille. Une seconde et trois dixièmes en
+          médiane, deux et un dixième au pire, sur vingt-deux énoncés.
+        </p>
+        <p>
+          Ce délai ne s'allonge pas avec la longueur de la dictée : il vaut
+          environ un dixième de la durée de ce qu'on a dit. Puis le texte perd
+          son soulignement, il est acquis, et les suggestions reviennent.
+        </p>
+      </span>
+    </li>
+  </ol>
+
+  <div class="card">
+    <h3>Trois choses qui surprennent</h3>
+    <p>
+      <strong>Rien ne s'affiche pendant qu'on parle.</strong> C'est déroutant
+      quand on vient d'un clavier qui écrit au fil de la voix, et c'est assumé :
+      la version qui affichait en direct se trompait d'un tiers plus souvent.
+    </p>
+    <p>
+      <strong>Les énoncés très courts peuvent ne rien rendre.</strong> Une phrase
+      de deux secondes est revenue vide, deux fois sur deux. Trois mots jetés au
+      micro ne suffisent pas toujours.
+    </p>
+    <p>
+      <strong>Des chiffres s'affichent dans le bandeau</strong>, du genre
+      <code>7.2 s → 330 ms</code> pendant la dictée puis <code>✅ …</code>
+      quelques secondes après. C'est un instrument de mesure laissé en place
+      pour cette démonstration, pas un défaut d'affichage.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>Les cas où rien ne part</h3>
+    <p>
+      Dans un <strong>champ de mot de passe</strong>, le micro refuse de
+      démarrer et le dit. Aucun traitement n'est déclenché, pas même localement.
+    </p>
+    <p>
+      Si l'accès au micro est <strong>refusé</strong>, ou si le
+      <strong>service est injoignable</strong>, le bandeau affiche lequel des
+      deux est en cause. La distinction est délibérée : un service en panne
+      n'est pas un téléphone incapable, et le message précédent faisait accuser
+      l'appareil à tort.
+    </p>
+  </div>
 </section>
 
 <section>
@@ -335,7 +354,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Où va la voix</th>
           <td class="good">Nulle part : aucune permission réseau</td>
-          <td>À <code>luxasr.uni.lu</code>, en direct</td>
+          <td>À <code>luxasr.uni.lu</code>, à la fin de chaque dictée</td>
         </tr>
         <tr>
           <th scope="row">Sans connexion</th>
@@ -345,8 +364,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Justesse</th>
           <td>72 % de mots erronés sur notre corpus d'essai</td>
-          <td class="good">11 % à 15 % de mots erronés, mesurés sur téléphone
-            sur un extrait de conférence de presse</td>
+          <td class="good">26,8 % de mots erronés sur des dictées d'une à trois
+            phrases, en interrogeant le service directement — et 11 % à 15 % sur
+            un extrait lu proprement</td>
         </tr>
         <tr>
           <th scope="row">Ponctuation, majuscules</th>
@@ -357,8 +377,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <th scope="row">Délai</th>
           <td>≈ 6 s par passe sur un téléphone ancien,
             quelle que soit la longueur de la phrase</td>
-          <td class="good">≈ 0,3 s de réponse depuis une liaison fixe ;
-            jamais mesuré depuis un téléphone en 4G</td>
+          <td class="good">Rien pendant qu'on parle, puis le texte entier
+            ≈ 1,3 s après la dernière syllabe — 2,1 s au pire, et le délai ne
+            grandit pas avec la longueur de la dictée</td>
         </tr>
         <tr>
           <th scope="row">Taille de l'application</th>
@@ -382,28 +403,55 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </p>
 
   <p class="muted">
-    Les 11 % à 15 % en regard sont d'une autre nature, et il faut le dire :
-    ils viennent d'<strong>un seul extrait de dix secondes</strong>, rejoué au
-    haut-parleur d'un téléphone devant son propre micro, cinq fois de suite.
-    Trois passes tombent entre 11,1 % et 14,8 % de mots erronés ; les deux
-    autres montent à 52 %, à cause d'une clause dupliquée en fin de
-    transcription — un défaut connu des modèles de cette famille, que
-    l'application filtre désormais lorsqu'il prend la forme d'une boucle, mais
-    pas lorsqu'il n'apparaît qu'une fois. Ce n'est donc pas un banc d'essai,
-    mais une mesure de terrain, dans les conditions réelles d'un clavier et sur
-    un énoncé que le service n'avait jamais vu. Passer le banc des 161 énoncés
-    sur LuxASR reste à faire — et c'est l'une des choses dont nous aimerions
-    parler.
+    Les chiffres en regard viennent d'un banc passé le 1<sup>er</sup> septembre
+    2026 sur vingt-deux dictées d'une à trois phrases, découpées aux pauses du
+    locuteur, huit à vingt et une secondes. Interrogé directement, sans micro ni
+    haut-parleur, le service se trompe sur <strong>26,8 % des mots</strong>. La
+    même mesure sur la version qui transcrivait au fil de la parole donnait
+    <strong>38,3 %</strong> : l'écart est le prix du découpage, pas celui du
+    service. Un banc antérieur, sur des tranches plus courtes, a montré que
+    rejouer au haut-parleur devant le micro d'un téléphone coûte encore quatre
+    points en médiane — la chaîne acoustique, cette fois. La mesure équivalente
+    sur cette version reste à faire.
+  </p>
+
+  <p class="muted">
+    Ces valeurs sont pessimistes des deux côtés — les transcriptions humaines
+    du corpus omettent parfois ce que l'orateur a réellement dit, et le passage
+    est alors compté faux. À l'opposé, les <strong>11 % à 15 %</strong> viennent
+    d'un extrait lu proprement, rejoué cinq fois : trois passes entre 11,1 % et
+    14,8 %, deux à 52 % à cause d'une clause dupliquée en fin de transcription —
+    un défaut connu des modèles de cette famille, que l'application filtre
+    lorsqu'il prend la forme d'une boucle, mais pas lorsqu'il n'apparaît qu'une
+    fois. La vérité de l'usage courant est entre les deux, et d'autant plus près
+    du bas qu'on articule dans un endroit calme.
   </p>
 
   <div class="card">
     <h3>Comment ça marche, techniquement</h3>
     <p>
-      L'application ouvre une connexion WebSocket vers le service, y pousse
-      l'audio du micro en PCM 16 bits à 16 kHz au fil de la capture, et remplace
-      le texte en composition à chaque hypothèse reçue. Le texte se corrige donc
-      sous les yeux pendant qu'on parle, et se fige au relâchement du micro.
-      Aucun enregistrement n'est conservé sur le téléphone.
+      L'application enregistre l'énoncé en PCM 16 bits à 16 kHz, rogne le silence
+      qui l'entoure, puis l'envoie d'un bloc au service, qui le met en file et le
+      transcrit. Le clavier interroge le travail cinq fois par seconde et insère
+      le texte quand il arrive. Aucun enregistrement n'est conservé sur le
+      téléphone.
+    </p>
+    <p>
+      Une version précédente poussait l'audio en continu sur une connexion
+      WebSocket et réécrivait le texte à chaque hypothèse reçue. Elle a été
+      abandonnée pour une raison mesurée. Les deux points d'entrée servent le
+      même modèle — sur soixante-deux énoncés, quarante-trois transcriptions sont
+      identiques au caractère près — mais le découpage en direct oblige à décider
+      où la phrase s'arrête, et une pause n'est pas une fin de phrase. Sur des
+      dictées d'une à trois phrases, décider vaut onze points et demi de mots
+      erronés. Le délai final, lui, ne change pas.
+    </p>
+    <p>
+      Le silence n'est pas envoyé, et ce n'est pas une économie de données : les
+      modèles de cette famille inventent du texte quand on leur en donne. Un
+      énoncé laissé tourner quatre-vingt-dix secondes, dont trente de salle
+      vide, a rendu deux cent soixante-dix mots pour cent quatre-vingt-douze
+      réellement prononcés.
     </p>
   </div>
 </section>
@@ -413,7 +461,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <ul class="facts">
     <li><span class="k">Ce que c'est</span><span class="v">Une démonstration technique, pas un produit</span></li>
     <li><span class="k">Reconnaissance</span><span class="v">Service LuxASR, Université du Luxembourg</span></li>
-    <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, en direct</span></li>
+    <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, à la fin de chaque dictée</span></li>
     <li><span class="k">Connexion</span><span class="v">Indispensable, y compris pour dicter</span></li>
     <li><span class="k">Taille</span><span class="v">6,2 Mo — le modèle de reconnaissance
       de 31 Mo est retiré du paquet, la reconnaissance étant distante</span></li>
@@ -426,16 +474,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
 <footer class="page">
   <p>
-    Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
+    Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
     La version hors ligne se trouve sur la page <a href="labs.html">Labs</a>.
   </p>
-  <p>Lëtzebuergesch Clavier</p>
+  <p>Potomitan™ · Lëtzebuergesch Clavier</p>
 </footer>
 
 </div>
 
-<script defer src="assets/luxasr-client.js"></script>
-<script defer src="assets/luxasr-demo.js"></script>
 <script>
 // Même mécanique que la page Labs, sur le tag « labs-luxasr » : la page annonce
 // le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
