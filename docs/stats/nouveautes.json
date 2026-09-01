@@ -1,9 +1,98 @@
 {
- "genere_le": "2026-08-30",
- "derniere_version": "10.19.0",
- "derniere_date": "2026-08-30",
+ "genere_le": "2026-09-01",
+ "derniere_version": "10.20.1",
+ "derniere_date": "2026-09-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "10.20.1",
+   "date": "2026-09-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Alignement des rangées de clavier",
+       "texte": "Les touches Shift et Retour arrière pesaient 1,25 unité depuis la v10.11.4, où elles finançaient l'apostrophe alors en rangée 3. Celle-ci vit désormais en rangée 4, mais la réduction était restée, posant la rangée 3 à 9,5 unités au lieu de 10, soit 5,3 % plus larges que les rangées 1 et 2. Rétabli à 1,5 pour aligner les trois rangées de lettres."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.20.0",
+   "date": "2026-09-01",
+   "intro": "Un quatrième jeu rejoint les trois autres : <strong>Wuertlück</strong>, le jeu de phrases à trous. Une phrase luxembourgeoise authentique s'affiche, un mot lui manque, et quatre propositions sont offertes — une seule est celle qu'a écrite l'auteur.",
+   "sections": [
+    {
+     "emoji": "📝",
+     "titre": "Wuertlück, l'onglet des phrases à trous",
+     "points": [
+      {
+       "titre": "1 600 phrases réelles",
+       "texte": ", tirées des mêmes corpus que le dictionnaire : articles de RTL.lu pour la langue publique, phrases d'exemple du Lëtzebuerger Online Dictionnaire pour le registre quotidien, qui pèse un quart du total. Aucune phrase n'a été écrite pour le jeu."
+      },
+      {
+       "titre": "Les leurres viennent du modèle de prédiction du clavier",
+       "texte": "Les trois mauvaises propositions sont des mots que le corpus atteste réellement à cet endroit-là, après les mêmes mots. Ils sonnent donc juste tant qu'on n'a pas lu la phrase entière — c'est ce qui distingue le jeu d'un tirage au sort."
+      },
+      {
+       "titre": "Trois difficultés",
+       "texte": ", réglées sur la fréquence du mot manquant : courant en « Facile », rare en « Difficile ». Une manche fait dix questions."
+      },
+      {
+       "titre": "La bonne réponse s'affiche toujours",
+       "texte": ", en vert dans la phrase reconstituée, qu'on l'ait trouvée ou non : voir la phrase complète compte autant que marquer le point."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔤",
+     "titre": "Ce que le jeu ne fait pas",
+     "points": [
+      {
+       "titre": "Aucun nom propre en réponse",
+       "texte": "Les patronymes des députés et les noms d'organisations sont écartés à la génération : retrouver « Spautz » après « Marc » ne s'apprend pas, cela se sait ou non."
+      },
+      {
+       "titre": "Aucune phrase à chiffres, ni incise, ni citation coupée",
+       "texte": "Les dépêches de résultats et de budgets ne se lisent pas hors de leur article ; 73 000 phrases ont été écartées pour cette seule raison."
+      },
+      {
+       "titre": "Pas de repli de secours",
+       "texte": "Si les phrases ne se chargent pas, l'écran le dit au lieu de proposer une partie de dépannage qui masquerait la panne."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Toucher un onglet éloigné n'ouvre plus le mauvais écran",
+       "texte": "La barre d'onglets demandait un défilement animé quelle que soit la distance ; au-delà d'un onglet voisin, ViewPager2 s'arrêtait en chemin, et l'onglet s'affichait en surbrillance alors que le contenu était celui d'un autre. Depuis l'accueil, « Wuertmix » ouvrait « Wuertsich » et « Wuertlück » ouvrait « À Propos ». Le saut est désormais direct dès qu'il dépasse un onglet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "📚",
+     "titre": "Attribution",
+     "points": [],
+     "texte": "Le jeu affiche la source de chaque phrase et les crédits des deux corpus sous les règles. Les phrases sont des extraits sous licence Creative Commons (CC BY-NC 4.0 pour LuxAlign, CC BY 4.0 pour LETZ) : cette mention est une obligation de licence, détaillée dans <code>Dictionnaires/CORPUS.md</code>.",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "10.19.0",
    "date": "2026-08-30",
@@ -379,108 +468,6 @@
       {
        "titre": null,
        "texte": "Suite de tests : 127 tests."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.15.0",
-   "date": "2026-08-27",
-   "intro": "Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.14.8. Est repris ici le travail mené en amont sur l'écran de démarrage entre les 10.14.1 et 10.14.8 ; l'identité luxembourgeoise — QWERTZ, palette du drapeau, libellés, niveaux, dictionnaire — est conservée telle quelle.",
-   "sections": [
-    {
-     "emoji": "🚀",
-     "titre": "L'écran de démarrage tient dans un écran",
-     "points": [
-      {
-       "titre": "Une carte « Configuration rapide »",
-       "texte": "remplace les trois cartes d'étapes empilées. Une ligne compacte par étape, un anneau de progression, et une seule étape dépliée à la fois : celle qui reste à faire, sauf si l'utilisateur en ouvre une autre. Les trois étapes faites, la carte se replie sur son en-tête et rend la place au reste de l'onglet."
-      },
-      {
-       "titre": "Le repli reste piloté par l'état, jamais systématique",
-       "texte": "La description de l'étape en cours, l'avertissement Android et le rappel des deux validations successives sont ce qui fait passer l'utilisateur à travers les réglages système ; les réduire à un chevron ferait gagner de la place là où le tunnel se joue."
-      },
-      {
-       "titre": "La troisième étape se coche sur un vrai mot écrit",
-       "texte": ", au jalon posé par le service de saisie — donc pas sur un texte collé ni tapé avec un autre clavier. Elle se coche pendant la frappe, sans reconstruire la carte, qui ferait perdre le focus et refermerait le clavier au premier mot."
-      },
-      {
-       "titre": "Le clavier d'essai passe sous la carte de configuration",
-       "texte": "En tête d'onglet, il occupait toute la hauteur visible et repoussait sous la ligne de flottaison le bouton qui ouvre les réglages Android."
-      },
-      {
-       "titre": "La carte du correcteur orthographique se touche, sans bouton",
-       "texte": ", et son bénéfice s'énonce par ce qu'il apporte plutôt que par ce qu'il supprime. Le détail de ce qu'Android va demander se déplie à la demande."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Réglages et affichage",
-     "points": [
-      {
-       "titre": "L'engrenage des réglages est une icône vectorielle blanche",
-       "texte": "et non plus l'emoji ⚙️, que la police système dessine en gris bleuté — une teinte que le bandeau bleu avalait. Le contraste ne dépend plus de la police du téléphone."
-      },
-      {
-       "titre": "Le manifeste documente sa permission unique",
-       "texte": ": <code>POST_NOTIFICATIONS</code>, la seule que le code exerce."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧹",
-     "titre": "Cuisine interne",
-     "points": [
-      {
-       "titre": "Le second écrivain du fichier de compteurs disparaît",
-       "texte": "— un cache de mots en attente, avec son exécuteur et sa sauvegarde différée, que plus aucune ligne n'appelait depuis que <code>CreoleDictionaryWithUsage</code> est seul à écrire ce fichier."
-      },
-      {
-       "titre": "La table de décision du thème passe sous tests",
-       "texte": "<code>KeyboardTheme.resoudre()</code> prend désormais le mode et l'état du système en paramètres au lieu de lire le <code>Context</code> : les six cases se vérifient hors appareil. <code>KeyboardThemeTest</code> reprend et complète l'ancien <code>KeyboardThemeModeTest</code>, qui est retiré."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.14.0",
-   "date": "2026-08-24",
-   "intro": "Le clavier se met en clair ou en sombre, au choix de l'utilisateur.",
-   "sections": [
-    {
-     "emoji": "🌗",
-     "titre": "Thème du clavier",
-     "points": [
-      {
-       "titre": "Trois positions dans les réglages du clavier",
-       "texte": "— « Comme le téléphone » (par défaut), « Toujours clair », « Toujours sombre ». Un choix explicite et pas seulement le suivi du système, pour la raison qui avait déjà justifié les interrupteurs de vibration et de son : sur plusieurs surcouches, le réglage jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers."
-      },
-      {
-       "titre": "Le drapeau ne s'inverse pas",
-       "texte": "Le rouge Pantone 032 et le bleu ciel Pantone 299 sont identiques dans les deux thèmes — ce sont eux qui rendent ce clavier reconnaissable, et leurs contrastes (4,22:1 et 5,93:1) ne dépendent pas de ce qui les entoure. Seul le blanc des touches de lettres passe en anthracite, et avec lui l'encre, la bordure, le fond du clavier et la popup d'appui long."
-      },
-      {
-       "titre": "Chaque valeur sombre égale ou dépasse son homologue claire",
-       "texte": ": lettre sur sa touche 12,42:1, majuscule enclenchée 4,62:1, aperçu d'appui long 5,16:1 — contre 17,40, 4,35 et 3,45 en clair. Le tableau complet est dans la documentation de <code>KeyboardTheme</code>."
-      },
-      {
-       "titre": "Le thème clair ne change pas d'un pixel",
-       "texte": ": il reprend une à une les constantes qui existaient avant."
-      },
-      {
-       "titre": null,
-       "texte": "Les quatre surfaces concernées — touches, barre de suggestions, popup d'appui long, panneau emoji — écrivaient leurs couleurs en littéral à leur point d'usage, ce qui rendait tout thème impossible. Elles lisent désormais <code>KeyboardTheme</code>."
       }
      ],
      "texte": "",
