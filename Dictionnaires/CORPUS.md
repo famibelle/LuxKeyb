@@ -1,8 +1,9 @@
 # Corpus sources et attribution
 
-Le dictionnaire et le modèle n-grammes livrés dans l'application
-(`android_keyboard/app/src/main/assets/luxemburgish_dict.json` et
-`luxemburgish_ngrams.json`) sont dérivés de deux jeux de données publics.
+Le dictionnaire, le modèle n-grammes et le jeu de phrases à trous livrés dans
+l'application (`android_keyboard/app/src/main/assets/luxemburgish_dict.json`,
+`luxemburgish_ngrams.json` et `luxemburgish_cloze.json`) sont dérivés de deux
+jeux de données publics.
 Les deux sont sous licence Creative Commons et **exigent la citation de leurs
 auteurs**. Cette page remplit cette obligation ; les crédits sont également
 affichés dans l'application, onglet « À propos », carte « Sources ».
@@ -97,7 +98,15 @@ même licence**, et c'est délibéré :
 - le **code** reste sous la licence du dépôt ;
 - les **assets de dictionnaire** (`luxemburgish_dict.json`,
   `luxemburgish_ngrams.json`) sont des œuvres dérivées de LuxAlign et héritent
-  donc de sa clause **NonCommercial**.
+  donc de sa clause **NonCommercial** ;
+- l'actif du jeu « Wuertlück » (`luxemburgish_cloze.json`) va plus loin : il ne
+  contient pas des fréquences mais **1 600 phrases entières reprises telles
+  quelles** des deux corpus, un mot masqué près. C'est une redistribution
+  d'extraits, pas une statistique agrégée. Elle est couverte par les mêmes
+  licences — CC BY-NC pour LuxAlign, CC BY pour LETZ — **à condition que
+  l'attribution soit visible**. Elle l'est à trois endroits : la clé `sources`
+  du fichier lui-même, la carte « Règles du jeu » sous le plateau, et la
+  mention de la source sous chaque phrase. Ne pas retirer ces trois affichages.
 
 « Open source » ne lève pas la clause NC : les licences approuvées par l'OSI
 autorisent explicitement l'usage commercial, ce que CC BY-NC interdit. Une

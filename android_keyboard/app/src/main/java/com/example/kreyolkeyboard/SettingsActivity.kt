@@ -50,6 +50,13 @@ import com.example.kreyolkeyboard.wuertriet.WuertrietData
 import com.example.kreyolkeyboard.wuertriet.WuertrietRow
 import com.example.kreyolkeyboard.wuertriet.LetterState
 import com.example.kreyolkeyboard.wuertriet.color
+import com.example.kreyolkeyboard.cloze.ClozeData
+import com.example.kreyolkeyboard.cloze.ClozeDifficulty
+import com.example.kreyolkeyboard.cloze.ClozeQuestion
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import com.google.android.play.core.review.ReviewManagerFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -63,7 +70,7 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = guide, 6 = à propos
+    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = phrases à trous, 6 = guide, 7 = à propos
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
@@ -163,7 +170,8 @@ class SettingsActivity : AppCompatActivity() {
             "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
-            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
+            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes.",
+            "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur."
         )
     }
     
@@ -601,13 +609,18 @@ class SettingsActivity : AppCompatActivity() {
             tabContainer.addView(wuertrietTab)
             Log.d("SettingsActivity", "Onglet Wuertriet créé et ajouté")
 
+            // Tab Wuertlück
+            val clozeTab = createTab(5, "📝", "Wuertlück")
+            tabContainer.addView(clozeTab)
+            Log.d("SettingsActivity", "Onglet Wuertlück créé et ajouté")
+
             // Tab Guide
-            val guideTab = createTab(5, "📖", "Guide")
+            val guideTab = createTab(6, "📖", "Guide")
             tabContainer.addView(guideTab)
             Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
 
             // Tab À Propos
-            val aboutTab = createTab(6, "ℹ️", "À Propos")
+            val aboutTab = createTab(7, "ℹ️", "À Propos")
             tabContainer.addView(aboutTab)
             Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
 
@@ -639,7 +652,7 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            // Padding horizontal resserré : sur sept onglets, 24 px de chaque
+            // Padding horizontal resserré : sur huit onglets, 24 px de chaque
             // côté retiraient au libellé le tiers de sa largeur.
             setPadding(4, 10, 4, 8)
             layoutParams = LinearLayout.LayoutParams(
@@ -677,7 +690,7 @@ class SettingsActivity : AppCompatActivity() {
                 textSize = 9f
                 gravity = Gravity.CENTER
                 setPadding(0, 0, 0, 2)
-                // Sept onglets se partagent la largeur : un libellé long y tient sur
+                // Huit onglets se partagent la largeur : un libellé long y tient sur
                 // deux lignes, et se termine par des points de suspension au delà,
                 // plutôt que de déborder ou de repousser ses voisins.
                 maxLines = 2
@@ -746,13 +759,24 @@ class SettingsActivity : AppCompatActivity() {
                 val backwardDistance = (currentRealTab - targetRealTab + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
                 
                 // Choisir la direction la plus courte
+                val distance = minOf(forwardDistance, backwardDistance)
                 val targetPosition = if (forwardDistance <= backwardDistance) {
                     currentPosition + forwardDistance
                 } else {
                     currentPosition - backwardDistance
                 }
-                
-                viewPager.setCurrentItem(targetPosition, true)
+
+                // Défilement animé pour un onglet voisin seulement. Au-delà,
+                // ViewPager2 s'arrête en chemin : un saut de trois pages
+                // atterrissait une ou deux pages trop tôt, la barre d'onglets
+                // affichant pourtant l'onglet demandé — `onPageSelected` reçoit
+                // bien la position visée, c'est le défilement qui n'y arrive
+                // pas. Constaté sur émulateur pour 0 → 3 (on atterrit sur
+                // Wuertsich) et 0 → 5 (on atterrit sur À Propos). Le défaut
+                // vaut pour toute distance ≥ 2 et ne dépend pas du nombre
+                // d'onglets ; il devient simplement visible depuis l'accueil
+                // avec un huitième onglet.
+                viewPager.setCurrentItem(targetPosition, distance <= 1)
             }
         }
     }
@@ -2559,8 +2583,11 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Deux jeux (onglets « Wuertsich » et « Wuertmix ») aident à mémoriser du vocabulaire " +
-                    "luxembourgeois en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
+            "Quatre jeux aident à mémoriser du vocabulaire luxembourgeois en s'amusant, " +
+                    "à partir des mots déjà présents dans le dictionnaire du clavier : « Wuertsich » " +
+                    "(mots mêlés), « Wuertmix » (lettres à remettre dans l'ordre), « Wuertriet » " +
+                    "(un mot de 5 lettres à deviner) et « Wuertlück », où il manque un mot à une " +
+                    "vraie phrase luxembourgeoise."
         )
 
         addGuideSection(
@@ -3783,7 +3810,7 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Wuertriet)
+            const val REAL_COUNT = 8 // Nombre réel d'onglets (ajout du Wuertlück)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
@@ -3799,8 +3826,9 @@ class SettingsActivity : AppCompatActivity() {
                 2 -> WordSearchFragment()
                 3 -> WordScrambleFragment()
                 4 -> WuertrietFragment()
-                5 -> GuideFragment()
-                6 -> AboutFragment()
+                5 -> ClozeFragment()
+                6 -> GuideFragment()
+                7 -> AboutFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -5306,6 +5334,485 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onDestroyView() {
             super.onDestroyView()
+            rootView = null
+        }
+    }
+
+    // Fragment pour le Wuertlück : une phrase authentique dont un mot manque,
+    // et quatre propositions. Les phrases, la réponse et les leurres viennent
+    // tels quels de l'actif ; ce fragment ne fait que présenter et compter.
+    class ClozeFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var tvScore: TextView
+        private lateinit var tvProgress: TextView
+        private lateinit var progressBar: ProgressBar
+        private lateinit var tvSentence: TextView
+        private lateinit var tvSource: TextView
+        private lateinit var tvFeedback: TextView
+        private lateinit var optionsContainer: LinearLayout
+        private lateinit var btnNext: Button
+        private lateinit var difficultyRow: LinearLayout
+
+        private val optionButtons = mutableListOf<Button>()
+
+        private var round: List<ClozeQuestion> = emptyList()
+        private var questionIndex = 0
+        private var score = 0
+        private var answered = false
+        private var difficulty = ClozeDifficulty.NORMALE
+
+        private val couleurNeutre = Color.parseColor("#1976D2")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    // Titre et score sur une ligne : la phrase à trous a besoin
+                    // de toute la hauteur qu'on peut lui laisser.
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 12 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "📝 Wuertlück"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        }
+                        addView(title)
+
+                        tvScore = TextView(activity).apply {
+                            text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerRow)
+
+                    // Choix de la difficulté : elle porte sur la fréquence du
+                    // mot masqué, pas sur le nombre de propositions.
+                    difficultyRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    ClozeDifficulty.values().forEach { niveau ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulty = niveau
+                                startNewRound()
+                            }
+                        }
+                        difficultyRow.addView(bouton)
+                    }
+                    addView(difficultyRow)
+
+                    tvProgress = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 6 }
+                        text = "Question 1 / ${ClozeData.QUESTIONS_PER_ROUND}"
+                        textSize = 13f
+                        setTextColor(Color.parseColor("#666666"))
+                    }
+                    addView(tvProgress)
+
+                    progressBar = ProgressBar(
+                        activity, null, android.R.attr.progressBarStyleHorizontal
+                    ).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        max = ClozeData.QUESTIONS_PER_ROUND
+                        progress = 0
+                    }
+                    addView(progressBar)
+
+                    // Carte de la phrase
+                    val sentenceCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 20 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(28, 28, 28, 24)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        tvSentence = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            textSize = 18f
+                            setLineSpacing(0f, 1.25f)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        addView(tvSentence)
+
+                        // La source est affichée par phrase : les deux corpus
+                        // sont sous licence Creative Commons et exigent la
+                        // citation de leurs auteurs.
+                        tvSource = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 14 }
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#9E9E9E"))
+                        }
+                        addView(tvSource)
+                    }
+                    addView(sentenceCard)
+
+                    // Les quatre propositions, une par ligne : les mots
+                    // luxembourgeois composés sont longs, deux colonnes les
+                    // couperaient.
+                    optionsContainer = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    repeat(4) { position ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 12 }
+                            textSize = 16f
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            isAllCaps = false
+                            setOnClickListener { onOptionChosen(position) }
+                        }
+                        optionButtons.add(bouton)
+                        optionsContainer.addView(bouton)
+                    }
+                    addView(optionsContainer)
+
+                    tvFeedback = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4; bottomMargin = 8 }
+                        textSize = 14f
+                        setTypeface(null, Typeface.BOLD)
+                        gravity = Gravity.CENTER
+                        visibility = View.GONE
+                    }
+                    addView(tvFeedback)
+
+                    btnNext = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4 }
+                        text = "➡️ Question suivante"
+                        setBackgroundColor(couleurNeutre)
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        visibility = View.INVISIBLE
+                        setOnClickListener { goToNextQuestion() }
+                    }
+                    addView(btnNext)
+
+                    val btnRestart = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        text = "🔄 Nouvelle partie"
+                        textSize = 14f
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        setOnClickListener { startNewRound() }
+                    }
+                    addView(btnRestart)
+
+                    // Règles + crédits des corpus
+                    val rulesCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        val rulesTitle = TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        }
+                        addView(rulesTitle)
+
+                        val rulesText = TextView(activity).apply {
+                            text = "Chaque phrase est une phrase luxembourgeoise réelle, " +
+                                "à laquelle il manque un mot. Parmi les quatre propositions, " +
+                                "une seule est celle qu'a écrite l'auteur : les trois autres " +
+                                "sont des mots que le corpus atteste au même endroit, elles " +
+                                "sonnent donc juste tant qu'on ne lit pas toute la phrase.\n\n" +
+                                "La difficulté porte sur la fréquence du mot manquant : " +
+                                "courant en « Facile », rare en « Difficile »."
+                            textSize = 14f
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(rulesText)
+
+                        val creditsText = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Phrases extraites des corpus :\n" +
+                                ClozeData.attribution(activity)
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        }
+                        addView(creditsText)
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) {
+                        startNewRound()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun startNewRound() {
+            val activity = requireActivity()
+            round = ClozeData.newRound(activity, difficulty)
+            questionIndex = 0
+            score = 0
+            answered = false
+            tvScore.text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
+            progressBar.max = maxOf(1, round.size)
+            progressBar.progress = 0
+            highlightDifficulty()
+
+            if (round.isEmpty()) {
+                showMissingAsset()
+                return
+            }
+            renderQuestion()
+        }
+
+        private fun highlightDifficulty() {
+            for (i in 0 until difficultyRow.childCount) {
+                val bouton = difficultyRow.getChildAt(i) as Button
+                val actif = bouton.tag == difficulty
+                bouton.setBackgroundColor(if (actif) couleurNeutre else couleurInerte)
+            }
+        }
+
+        /**
+         * Sans l'actif, le jeu ne se rabat pas sur des phrases de secours : il
+         * le dit. Un jeu de dépannage jouable masquerait une livraison cassée.
+         */
+        private fun showMissingAsset() {
+            tvSentence.text = "Les phrases du Wuertlück n'ont pas pu être chargées."
+            tvSource.text = ""
+            tvProgress.text = ""
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+            optionButtons.forEach {
+                it.visibility = View.GONE
+            }
+        }
+
+        private fun renderQuestion() {
+            val question = round[questionIndex]
+            answered = false
+
+            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
+            tvSource.text = "Phrase du corpus ${question.source}"
+            tvSentence.text = sentenceWithBlank(question)
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+
+            optionButtons.forEachIndexed { position, bouton ->
+                val proposition = question.options.getOrNull(position)
+                if (proposition == null) {
+                    bouton.visibility = View.GONE
+                } else {
+                    bouton.visibility = View.VISIBLE
+                    bouton.text = proposition
+                    bouton.isEnabled = true
+                    bouton.setBackgroundColor(couleurNeutre)
+                }
+            }
+        }
+
+        /** La phrase avec son trou matérialisé, en gras et en couleur. */
+        private fun sentenceWithBlank(question: ClozeQuestion): CharSequence {
+            val trou = "_____"
+            val texte = question.before + trou + question.after
+            return SpannableString(texte).apply {
+                val debut = question.before.length
+                setSpan(
+                    ForegroundColorSpan(couleurNeutre),
+                    debut, debut + trou.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    debut, debut + trou.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+
+        /** La phrase complétée, le mot retrouvé mis en évidence. */
+        private fun sentenceWithAnswer(question: ClozeQuestion): CharSequence {
+            val texte = question.completed
+            return SpannableString(texte).apply {
+                val debut = question.before.length
+                setSpan(
+                    ForegroundColorSpan(couleurJuste),
+                    debut, debut + question.answer.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    debut, debut + question.answer.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+
+        private fun onOptionChosen(position: Int) {
+            if (answered || round.isEmpty()) return
+            val question = round[questionIndex]
+            val choix = question.options.getOrNull(position) ?: return
+            answered = true
+
+            val juste = choix == question.answer
+            if (juste) {
+                score++
+                tvScore.text = "$score / ${round.size}"
+            }
+
+            // Toutes les propositions se figent : la bonne en vert, celle qu'on
+            // a touchée en rouge si elle était fausse. Voir la bonne réponse
+            // compte autant que marquer le point.
+            optionButtons.forEachIndexed { i, bouton ->
+                val proposition = question.options.getOrNull(i)
+                bouton.isEnabled = false
+                bouton.setBackgroundColor(
+                    when {
+                        proposition == question.answer -> couleurJuste
+                        i == position -> couleurFausse
+                        else -> couleurInerte
+                    }
+                )
+            }
+
+            tvSentence.text = sentenceWithAnswer(question)
+            tvFeedback.apply {
+                text = if (juste) "✅ Richteg !" else "❌ La phrase disait « ${question.answer} »"
+                setTextColor(if (juste) couleurJuste else couleurFausse)
+                visibility = View.VISIBLE
+            }
+
+            progressBar.progress = questionIndex + 1
+            btnNext.visibility = View.VISIBLE
+            btnNext.text =
+                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
+                else "➡️ Question suivante"
+        }
+
+        private fun goToNextQuestion() {
+            if (questionIndex + 1 >= round.size) {
+                endRound()
+                return
+            }
+            questionIndex++
+            renderQuestion()
+        }
+
+        private fun endRound() {
+            val total = round.size
+            val message = when {
+                score == total -> "Sans faute : $score sur $total !"
+                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
+                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
+                score * 2 >= total -> "$score bonnes réponses sur $total."
+                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+            }
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setMessage(message)
+                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            optionButtons.clear()
             rootView = null
         }
     }

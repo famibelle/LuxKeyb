@@ -60,6 +60,14 @@ jobs:
         # reconstruire les n-grammes sur quinze phrases.
         python LuxembourgishComplet.py --strict
 
+        # Le jeu de phrases à trous se dérive du dictionnaire et des n-grammes
+        # qui viennent d'être écrits : il choisit le mot masqué parmi les formes
+        # retenues et tire ses leurres du modèle de contexte. Le régénérer ici
+        # n'est pas un confort — la version committée référencerait des mots
+        # qu'un corpus rafraîchi peut avoir fait passer sous le seuil de
+        # fréquence, et ClozeAssetTest le verrait échouer.
+        python generate_cloze.py --strict
+
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
 
@@ -67,7 +75,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -144,6 +152,30 @@ jobs:
           exit 1
         fi
 
+
+        # Garde-fou du jeu de phrases à trous. Une question dont la réponse ne
+        # figure pas dans ses propositions, ou dont la phrase a perdu son
+        # marqueur, se joue sans être gagnable : le fichier reste du JSON
+        # valide et l'écran s'affiche normalement.
+        CLOZE_COUNT=$(jq '.items | length' "$A/luxemburgish_cloze.json")
+        if [ "$CLOZE_COUNT" -lt 1000 ]; then
+          echo "::error::Jeu de phrases à trous anormalement petit ($CLOZE_COUNT questions, moins de 1000)."
+          exit 1
+        fi
+
+        CLOZE_CASSEES=$(jq '[.items[] | select((.s | test("___")) | not)] | length' "$A/luxemburgish_cloze.json")
+        if [ "$CLOZE_CASSEES" -ne 0 ]; then
+          echo "::error::$CLOZE_CASSEES phrases à trous sans marqueur ___ : elles s'afficheraient sans trou."
+          exit 1
+        fi
+
+        # L'attribution voyage dans l'actif lui-même, et le jeu l'affiche :
+        # les phrases livrées sont des extraits de corpus CC BY-NC et CC BY.
+        if ! jq -e '.sources | length >= 2' "$A/luxemburgish_cloze.json" > /dev/null; then
+          echo "::error::luxemburgish_cloze.json ne porte pas l'attribution de ses corpus sources."
+          exit 1
+        fi
+
         # LuxAlign impose l'attribution de ses auteurs (CC BY-NC 4.0), LETZ
         # aussi (CC BY 4.0). Le fichier qui porte cette obligation est suivi
         # en git : s'il disparaît, l'APK n'est plus distribuable en l'état.
@@ -195,6 +227,7 @@ jobs:
         path: |
           android_keyboard/app/src/main/assets/luxemburgish_dict.json
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
+          android_keyboard/app/src/main/assets/luxemburgish_cloze.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES

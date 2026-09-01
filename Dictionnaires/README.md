@@ -14,7 +14,13 @@ python KreyolComplet.py
 ### Pipeline Luxembourgeois (Nouveau)
 ```bash
 python LuxembourgishComplet.py
+python generate_cloze.py        # jeu « Wuertlück », APRÈS le pipeline
 ```
+
+`generate_cloze.py` ne reconstruit rien : il lit le dictionnaire et les
+n-grammes que le pipeline vient d'écrire pour en tirer 1 600 phrases à trous
+(`luxemburgish_cloze.json`). Le lancer avant produirait un jeu calé sur
+l'ancien modèle. Les deux acceptent `--strict`, que la CI utilise.
 
 C'est tout ! Le pipeline fait **TOUT** automatiquement :
 
@@ -83,6 +89,7 @@ Les fichiers générés sont **directement prêts** pour l'app Android :
 Dictionnaires/
 ├── KreyolComplet.py          # ⭐ PIPELINE CRÉOLE
 ├── LuxembourgishComplet.py   # ⭐ PIPELINE LUXEMBOURGEOIS
+├── generate_cloze.py         # Jeu de phrases à trous (dérive des assets ci-dessus)
 ├── README.md                 # Documentation
 ├── README_Luxemburgish.md    # Documentation luxembourgeoise
 ├── requirements.txt          # Dépendances créoles
