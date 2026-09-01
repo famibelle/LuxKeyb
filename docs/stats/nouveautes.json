@@ -1,9 +1,115 @@
 {
- "genere_le": "2026-09-01",
- "derniere_version": "10.20.1",
+ "genere_le": "2026-09-02",
+ "derniere_version": "10.21.1",
  "derniere_date": "2026-09-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "10.21.1",
+   "date": "2026-09-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔄",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Barre d'onglets ramenée de neuf à quatre",
+       "texte": "À neuf, chaque onglet disposait de 80 px sur un écran de 720 : les libellés se coupaient en plein milieu d'un mot (« Wuertsic / h »), et il avait fallu descendre la police à 8sp pour limiter les dégâts. Les quatre destinations restantes — Démarrage, Mäi Lëtzebuergesch, Spiller, Wierderbuch — disposent de 180 px, et la police remonte à 11sp."
+      },
+      {
+       "titre": "Les quatre jeux passent derrière un onglet « Spiller »",
+       "texte": "Ils occupaient quatre onglets sur neuf, soit 44 % de la barre, pour une activité que l'on choisit une fois par session. L'onglet présente quatre cartes ; le jeu choisi s'installe dans le même onglet, avec une barre « ‹ Tous les jeux » pour revenir. Le bouton Retour d'Android ramène lui aussi au choix, via un <code>OnBackPressedCallback</code> actif seulement pendant qu'un jeu est ouvert — partout ailleurs il quitte l'application comme avant."
+      },
+      {
+       "titre": "Guide et À Propos quittent la barre",
+       "texte": "pour le pied de l'onglet Démarrage, d'où ils s'ouvrent en plein écran. Ce sont des pages de référence que l'on lit une fois ; elles coûtaient deux neuvièmes de la largeur à chaque ouverture de l'application. Les deux astuces qui les désignaient comme des onglets ont été réécrites."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Couleurs translucides fausses",
+       "texte": "Concaténer l'opacité à une couleur — <code>\"$couleur20\"</code> — ne produit pas une transparence : <code>Color.parseColor</code> lit huit chiffres comme <code>#AARRGGBB</code>, si bien que <code>\"#4CAF50\" + \"20\"</code> devenait un alpha de 0x4C sur le brun <code>#AF5020</code>. Les pastilles de mots de l'onglet Mäi Lëtzebuergesch s'affichaient donc en brun sur fond vert annoncé. Remplacé par <code>avecOpacite()</code>, qui compose la valeur."
+      },
+      {
+       "titre": "Raccourci « Découvrez vos statistiques »",
+       "texte": "Il posait <code>currentItem = 1</code>, c'est-à-dire le bord gauche de la plage virtuelle du pager cyclique : le bon contenu s'affichait, mais on atterrissait là où plus rien ne se balaye vers la gauche. Il vise désormais la position la plus proche du bon onglet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.21.0",
+   "date": "2026-09-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Traduction française des mots dans les quatre jeux",
+       "texte": "Un utilisateur a signalé que les jeux faisaient chercher des mots luxembourgeois sans jamais dire ce qu'ils voulaient dire : on y exerçait son orthographe, jamais son vocabulaire. Chaque jeu affiche désormais la glose française, au moment où elle ne donne pas la réponse — la liste des mots à trouver de Wuertsich, en indice sous les lettres mélangées de Wuertmix, à la fin de la partie de Wuertriet, et après avoir tranché la question de Wuertlück."
+      },
+      {
+       "titre": "Nouvel actif <code>luxemburgish_translations.json</code>",
+       "texte": "(609 Ko), produit par <code>Dictionnaires/generate_translations.py</code> à partir du <strong>Lëtzebuerger Online Dictionnaire</strong> (LOD), le dictionnaire officiel publié en CC0 par le Zenter fir d'Lëtzebuerger Sprooch. 20 604 des 38 410 formes du dictionnaire y sont glosées, soit 53,6 % des formes et 87,8 % des occurrences. Le clavier lui-même ne le charge pas : seul l'écran des jeux en a l'usage."
+      },
+      {
+       "titre": "Onglet « Wierderbuch » (9ᵉ onglet)",
+       "texte": "Un champ de recherche et une liste : on tape un mot et on lit sa traduction. La recherche <strong>fonctionne dans les deux sens</strong> — « Haus » comme « maison » — et le sens de la requête est déduit plutôt que demandé : si un mot du dictionnaire se glose exactement par ce qui est tapé, c'est du français, et les mots dont c'est le sens passent devant. Sans cette déduction, chercher « maison » remontait d'abord <code>Maison</code>, emprunt luxembourgeois glosé « maison médicale de garde », et reléguait <code>Haus</code>."
+      },
+      {
+       "titre": "Traductions dans l'onglet « Mäi Lëtzebuergesch »",
+       "texte": "Le mot du jour porte sa glose sous le mot, et n'est plus tiré que parmi les mots traduisibles. Les mots à découvrir, les mots découverts et le classement des mots les plus utilisés portent la leur à côté du mot."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔄",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Les trois jeux qui tirent un mot ne le tirent plus que parmi les formes dont la traduction apprend quelque chose",
+       "texte": "Sont écartés d'une part les mots que le LOD n'a aucune raison de gloser — noms propres, « Esch », « Bettel », « RTL », « Jean-Claude » — d'autre part les 1 278 formes glosées par elles-mêmes, le luxembourgeois empruntant massivement au français : demander de retrouver « ACCIDENT » en indiquant « accident » fait passer le jeu pour cassé. Les réserves restent larges : 8 740 mots pour Wuertsich, 12 825 pour Wuertmix, 1 330 pour Wuertriet. La table complète, elle, garde ces mots : croisés par un autre chemin (une réponse de Wuertlück), ils affichent toujours leur glose. Une proposition du joueur dans Wuertriet reste acceptée dès lors qu'elle est au dictionnaire, traduite ou non."
+      },
+      {
+       "titre": "Crédit du LOD",
+       "texte": "ajouté à la carte « Sources » de l'onglet « À propos » et au pied de l'onglet Wierderbuch. CC0 n'impose aucune attribution ; on cite le ZLS quand même, et un test échoue si la mention disparaît."
+      },
+      {
+       "titre": "Libellés d'onglets à 8sp au lieu de 9",
+       "texte": "Le neuvième onglet faisait passer « Wuertsich », « Wuertmix » et « Wuertriet » sur deux lignes, coupés en plein milieu d'un mot ; un point de moins les ramène sur une seule."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Fin de partie de Wuertriet en créole",
+       "texte": "La boîte de dialogue annonçait encore « Ou touvé mo-a an 3 èsèy » et « Mo la té », hérités du clavier guadeloupéen. Elle est en français, et donne la traduction du mot cherché."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "10.20.1",
    "date": "2026-09-01",
@@ -267,207 +373,6 @@
       {
        "titre": null,
        "texte": "Le test de correction orthographique retombait sur un échantillon de quarante mots dès que le dictionnaire manquait, et faisait de même sur une erreur de format — laissant la suite entièrement verte. Un garde-fou qui se désarme quand ce qu'il garde disparaît ne garde rien."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.17.0",
-   "date": "2026-08-29",
-   "intro": "Les majuscules du luxembourgeois. Le clavier propose désormais <code>Haus</code>, <code>Joer</code> ou <code>Kand</code> avec la majuscule que la langue exige, même tapés en minuscules — la casse de chaque mot est apprise du corpus au lieu d'être ignorée.",
-   "sections": [
-    {
-     "emoji": "🔠",
-     "titre": "Groussschreiwung : le clavier propose enfin les majuscules",
-     "points": [
-      {
-       "titre": "La casse est apprise du corpus, pas devinée",
-       "texte": "Le pipeline comptait tout en minuscules ; il élit désormais une casse canonique par forme, en ne retenant <strong>que les occurrences situées ailleurs qu'en tête de phrase</strong> — une majuscule de début de phrase ne dit rien du mot, et la compter classerait <code>an</code> et <code>ech</code> parmi les substantifs. Sur les 37 734 formes retenues : 25 165 substantifs capitalisés, 680 acronymes (<code>RTL</code>, <code>CFL</code>), 12 565 mots en minuscules."
-      },
-      {
-       "titre": "Les vrais homographes sont livrés dans les deux casses",
-       "texte": ", avec leurs fréquences réparties : <code>Froen</code> (les questions) et <code>froen</code> (demander), <code>Gréng</code> (le parti) et <code>gréng</code> (la couleur), <code>Liewen</code> et <code>liewen</code>. 676 paires, soit +1,8 % d'entrées."
-      },
-      {
-       "titre": "Le moteur ne détruit plus la majuscule",
-       "texte": "<code>applyCasingPattern</code> recopiait la casse de la frappe sur la suggestion : taper <code>hau</code> rendait <code>haus</code>. La règle est inversée — un signal explicite de l'utilisateur l'emporte (tout en capitales, ou majuscule initiale), sinon la forme du dictionnaire fait foi. Une frappe en minuscules n'est pas une demande de minuscules, c'est l'absence de signal."
-      },
-      {
-       "titre": "Les prédictions contextuelles suivent",
-       "texte": ": après <code>an der</code>, le clavier propose <code>Rue</code>, <code>Stad</code>, <code>Nuecht</code>, <code>Chamber</code>. Les clés de contexte restent en minuscules, seuls les mots proposés portent la casse."
-      },
-      {
-       "titre": "Mesure sur un texte inédit",
-       "texte": ": 99,5 % de casse correcte sur 2 384 mots de ParaLux, jeu d'évaluation dont aucune phrase ne figure dans le corpus d'entraînement. Les onze erreurs restantes sont presque toutes des adjectifs substantivés (<code>den Däischteren</code>, <code>de Schlëmmsten</code>), que seule la phrase permet de trancher."
-      }
-     ],
-     "texte": "Le luxembourgeois capitalise tous les substantifs, comme l'allemand. La majuscule y est porteuse de sens, pas un accident de saisie — et le clavier l'ignorait complètement : il ne proposait jamais <code>Joer</code>, <code>Haus</code> ni <code>Kand</code> autrement qu'en minuscules, alors que la dictée, elle, rend déjà du texte capitalisé. Ce qui n'est pas encore résolu : la barre de suggestions n'affiche qu'une seule casse par mot, donc <code>froe</code> propose <code>Froen</code> mais jamais <code>froen</code> ; un substantif minoritaire face à son homographe verbal reste inatteignable (<code>Wäert</code>) ; et le correcteur orthographique ne signale pas une majuscule manquante.",
-     "tableau": {
-      "entetes": [
-       "tapé",
-       "avant",
-       "après"
-      ],
-      "lignes": [
-       [
-        "<code>hau</code>",
-        "haut · haus · hausse",
-        "haut · <strong>Haus</strong> · <strong>Hausse</strong>"
-       ],
-       [
-        "<code>jo</code>",
-        "joer · jo · jonk",
-        "<strong>Joer</strong> · jo · jonk"
-       ],
-       [
-        "<code>rt</code>",
-        "rtl · rtl-interview",
-        "<strong>RTL</strong> · <strong>RTL-Interview</strong>"
-       ],
-       [
-        "<code>kan</code>",
-        "kann · kanner · kand",
-        "kann · <strong>Kanner</strong> · <strong>Kand</strong>"
-       ],
-       [
-        "<code>an</code>",
-        "an · aner · anerem",
-        "an · aner · anerem"
-       ]
-      ]
-     }
-    },
-    {
-     "emoji": "🎮",
-     "titre": "Le comptage des mots aurait cessé en silence",
-     "points": [],
-     "texte": "Corrigé avant d'être visible, mais la panne aurait été totale et muette. <code>CreoleDictionaryWithUsage</code> construisait son fichier de comptage avec la clé brute du dictionnaire (<code>Haus</code>) alors que toutes ses lectures normalisent en minuscules (<code>haus</code>). Avec le dictionnaire capitalisé, <strong>les 25 845 substantifs auraient cessé d'être comptés</strong> : plus de progression, plus de couverture, aucune erreur affichée. La clé est désormais repliée, et la fréquence la plus haute conservée quand les deux variantes d'un homographe retombent sur la même.",
-     "tableau": null
-    },
-    {
-     "emoji": "✅",
-     "titre": "Vérifications",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Suite de tests portée à 138 (11 nouveaux sur la casse), dont un contrôle négatif : replier le dictionnaire en minuscules fait bien échouer cinq des six tests de <code>GroussschreiwungTest</code>."
-      },
-      {
-       "titre": null,
-       "texte": "L'intégration continue refuse désormais un dictionnaire de moins de 15 000 entrées capitalisées, et des n-grammes de moins de 10 000 candidats capitalisés — sans ce garde-fou, un retour au repli en minuscules produirait un fichier du bon type, de la bonne taille, parfaitement valide, et un clavier muet sur les majuscules."
-      },
-      {
-       "titre": null,
-       "texte": "Le simulateur du site rejoue le même moteur et a été mis à jour avec lui."
-      },
-      {
-       "titre": null,
-       "texte": "Vérifié sur émulateur Android 14 : <code>hau</code> puis <code>jo</code> puis <code>kan</code>, tapés en minuscules et validés depuis la barre, donnent <code>Haus Joer Kand</code> dans le champ."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.16.0",
-   "date": "2026-08-27",
-   "intro": "Changement de corpus. Le dictionnaire et les prédictions sont désormais construits sur deux jeux de données luxembourgeois ouverts au lieu d'un, cent fois plus gros et bien plus propres que le précédent.",
-   "sections": [
-    {
-     "emoji": "📚",
-     "titre": "Deux corpus à la place d'un",
-     "points": [
-      {
-       "titre": "LuxAlign v3",
-       "texte": "(RTL.lu, 180 342 phrases, ~3,1 M de mots) apporte le vocabulaire et l'enchaînement des mots. C'est la première source du projet avec de la prose suivie : les phrases y font 17 mots en moyenne, contre des exemples isolés jusqu'ici."
-      },
-      {
-       "titre": "LETZ",
-       "texte": "(Lëtzebuerger Online Dictionnaire, 5 862 phrases) apporte la langue de tous les jours. Soixante fois plus petit, mais seul endroit où « dech », « däin », « hues » ou « mamm » apparaissent en quantité — soit ce qu'on tape sur un téléphone et que la presse n'écrit jamais."
-      },
-      {
-       "titre": null,
-       "texte": "Les deux sont sous licence Creative Commons et <strong>exigent la citation de leurs auteurs</strong> : elle figure dans l'onglet « À propos » de l'application et dans <code>Dictionnaires/CORPUS.md</code>. LuxAlign porte en plus une clause NonCommercial, qui s'applique aux fichiers de dictionnaire livrés — le code, lui, garde sa propre licence."
-      },
-      {
-       "titre": "Retrait du corpus de conférences de presse gouvernementales",
-       "texte": "Les ministres passaient régulièrement à l'allemand en pleine réponse, et le dictionnaire livré contenait 42 mots allemands sans ambiguïté : « und » 372 occurrences, « wir » 352, « auch » 324, « ich » 124. Sur un préfixe « au », le clavier proposait « auch ». Ils tombent respectivement à 53, 8, 5 et 8, résidus de citations dans de vrais articles."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📈",
-     "titre": "Ce que ça change en pratique",
-     "points": [],
-     "texte": "L'APK passe de 7,6 à 8,4 Mo.",
-     "tableau": {
-      "entetes": [
-       "",
-       "avant",
-       "après"
-      ],
-      "lignes": [
-       [
-        "Mots au dictionnaire",
-        "8 792",
-        "<strong>37 734</strong>"
-       ],
-       [
-        "Contextes de prédiction",
-        "23 169",
-        "<strong>26 172</strong>"
-       ],
-       [
-        "Mots reconnus dans un texte inédit",
-        "80 %",
-        "<strong>97 %</strong>"
-       ],
-       [
-        "Bon mot proposé dans les trois premiers",
-        "7 %",
-        "<strong>24 %</strong>"
-       ]
-      ]
-     }
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La distance d'édition reprend le pas sur la fréquence",
-       "texte": "Le score d'une suggestion additionne la fréquence du mot et un poids lié au nombre de corrections nécessaires ; ce poids valait 100 000, calibré pour un dictionnaire plafonnant à 15 500. Le nouveau corpus monte à 100 105 pour « an », si bien qu'une correction à deux lettres près vers « an » repassait devant toute correction à une lettre près d'un mot moins fréquent que 105. Le poids passe à 1 000 000, et un test le vérifie désormais contre le dictionnaire réellement livré, pas contre des valeurs écrites en dur."
-      },
-      {
-       "titre": "Les fréquences du dictionnaire sont enfin les vraies",
-       "texte": "Chaque régénération additionnait le corpus entier au total précédent au lieu de le remplacer : les fréquences livrées valaient environ 5,8 fois les réelles et montaient à chaque passage de l'intégration continue. Pire, les mots disparus du corpus survivaient indéfiniment — 49 % du dictionnaire venait d'un corpus COVID hors service depuis longtemps (« geimpft », « covidcheck », « astrazeneca »)."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Interne",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>HF_TOKEN</code> n'est plus nécessaire : les deux corpus sont publics."
-      },
-      {
-       "titre": null,
-       "texte": "Garde-fous d'intégration continue relevés : 20 000 mots et 15 000 contextes minimum, plus un contrôle de présence du fichier d'attribution."
-      },
-      {
-       "titre": null,
-       "texte": "Suite de tests : 127 tests."
       }
      ],
      "texte": "",
