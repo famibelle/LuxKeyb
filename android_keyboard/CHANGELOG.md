@@ -9,6 +9,56 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.20.0] - 2026-09-01
+
+Un quatrième jeu rejoint les trois autres : **Wuertlück**, le jeu de phrases à
+trous. Une phrase luxembourgeoise authentique s'affiche, un mot lui manque, et
+quatre propositions sont offertes — une seule est celle qu'a écrite l'auteur.
+
+### 📝 Wuertlück, l'onglet des phrases à trous
+
+- **1 600 phrases réelles**, tirées des mêmes corpus que le dictionnaire :
+  articles de RTL.lu pour la langue publique, phrases d'exemple du Lëtzebuerger
+  Online Dictionnaire pour le registre quotidien, qui pèse un quart du total.
+  Aucune phrase n'a été écrite pour le jeu.
+- **Les leurres viennent du modèle de prédiction du clavier.** Les trois
+  mauvaises propositions sont des mots que le corpus atteste réellement à cet
+  endroit-là, après les mêmes mots. Ils sonnent donc juste tant qu'on n'a pas
+  lu la phrase entière — c'est ce qui distingue le jeu d'un tirage au sort.
+- **Trois difficultés**, réglées sur la fréquence du mot manquant : courant en
+  « Facile », rare en « Difficile ». Une manche fait dix questions.
+- **La bonne réponse s'affiche toujours**, en vert dans la phrase reconstituée,
+  qu'on l'ait trouvée ou non : voir la phrase complète compte autant que
+  marquer le point.
+
+### 🔤 Ce que le jeu ne fait pas
+
+- **Aucun nom propre en réponse.** Les patronymes des députés et les noms
+  d'organisations sont écartés à la génération : retrouver « Spautz » après
+  « Marc » ne s'apprend pas, cela se sait ou non.
+- **Aucune phrase à chiffres, ni incise, ni citation coupée.** Les dépêches de
+  résultats et de budgets ne se lisent pas hors de leur article ; 73 000
+  phrases ont été écartées pour cette seule raison.
+- **Pas de repli de secours.** Si les phrases ne se chargent pas, l'écran le
+  dit au lieu de proposer une partie de dépannage qui masquerait la panne.
+
+### 🐛 Corrigé
+
+- **Toucher un onglet éloigné n'ouvre plus le mauvais écran.** La barre
+  d'onglets demandait un défilement animé quelle que soit la distance ;
+  au-delà d'un onglet voisin, ViewPager2 s'arrêtait en chemin, et l'onglet
+  s'affichait en surbrillance alors que le contenu était celui d'un autre.
+  Depuis l'accueil, « Wuertmix » ouvrait « Wuertsich » et « Wuertlück »
+  ouvrait « À Propos ». Le saut est désormais direct dès qu'il dépasse un
+  onglet.
+
+### 📚 Attribution
+
+Le jeu affiche la source de chaque phrase et les crédits des deux corpus sous
+les règles. Les phrases sont des extraits sous licence Creative Commons
+(CC BY-NC 4.0 pour LuxAlign, CC BY 4.0 pour LETZ) : cette mention est une
+obligation de licence, détaillée dans `Dictionnaires/CORPUS.md`.
+
 ## [10.19.0] - 2026-08-30
 
 Le clavier rétablit la majuscule des substantifs pendant que vous écrivez.
