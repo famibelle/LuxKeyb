@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·

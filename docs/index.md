@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
@@ -51,7 +52,7 @@ touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
          class="btn">📲 Ou télécharger la dernière version de l'APK</a>
     </p>
     <p style="margin:10px 0 0;font-size:0.85em;opacity:0.75;">
-      Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau
+      Android 5.0 ou plus récent · environ 4,6 Mo · aucune permission réseau
     </p>
   </div>
   <figure style="margin:0;text-align:center;">

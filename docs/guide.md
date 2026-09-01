@@ -7,6 +7,7 @@ lang: fr
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <strong>📘 Guide</strong> ·
+  <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
@@ -158,6 +159,9 @@ Trois jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
 **Wuertriet** (deviner un mot de cinq lettres en six essais).
 
 ## Questions fréquentes
+
+*Les plus courantes sont ci-dessous ; la [FAQ complète](faq.html) en couvre une
+trentaine, de la place occupée aux majuscules des noms.*
 
 **Le clavier n'apparaît pas quand je tape.**
 Vérifiez qu'il est bien *sélectionné*, et pas seulement activé : reprenez

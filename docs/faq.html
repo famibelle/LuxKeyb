@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions fréquentes : Lëtzebuergesch Clavier</title>
+<meta name="description" content="Les questions les plus posées sur le clavier luxembourgeois pour Android : gratuité, vie privée, installation et activation, touches é ä ë, majuscules des noms, place occupée. Réponses courtes et chiffrées.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Questions fréquentes : Lëtzebuergesch Clavier">
+<meta property="og:description" content="Gratuité, vie privée, installation, touches é ä ë, majuscules des noms, place occupée : les questions que l'on nous pose sur le clavier luxembourgeois, et leurs réponses.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/faq.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/assets/ads/export/google-paysage-A.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Balisage FAQPage : il reprend mot pour mot les réponses de la page. Les
+     modifier ici sans le mettre à jour ferait afficher à Google un texte que
+     la page ne contient plus. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Le clavier est-il gratuit ? Y a-t-il de la publicité ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gratuit, sans publicité, sans achat intégré, sans compte à créer. Le code est ouvert et consultable sur GitHub, sous licence MIT."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Installer ce clavier va-t-il supprimer mon clavier habituel ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Il s'ajoute à la liste des claviers du téléphone sans toucher aux autres. Vous basculez de l'un à l'autre quand vous voulez, et vous pouvez revenir à votre clavier habituel à tout moment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il une connexion internet ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Uniquement pour le télécharger. Ensuite tout se passe dans le téléphone : les suggestions, les accents, le correcteur et les jeux fonctionnent en avion, dans une zone sans réseau, sans forfait data. L'application ne demande d'ailleurs même pas la permission d'accéder à internet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je l'essayer avant de l'installer ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Le simulateur en ligne fait tourner le vrai clavier dans le navigateur, avec le dictionnaire et le modèle de suggestions livrés dans l'application. Rien à installer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment l'installer : Google Play ou fichier APK ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Les deux marchent. Sur Google Play, l'application est en test fermé : il faut d'abord s'inscrire depuis son téléphone, avec le compte Google qu'on y utilise, puis elle s'installe et se met à jour comme n'importe quelle autre. Le test est réservé à une liste de comptes ; si le vôtre n'y est pas encore, demandez-le par le formulaire de retours. Sinon, l'APK se télécharge directement depuis les versions publiées sur GitHub, au prix d'une autorisation « sources inconnues » et de mises à jour à refaire à la main."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mon téléphone est ancien, est-ce qu'il va suivre ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le clavier fonctionne à partir d'Android 5.0, sorti en 2014. Tout le calcul est local et tient dans un dictionnaire de quelques mégaoctets : il n'y a ni modèle de langue à charger, ni requête réseau à attendre."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Je n'ai presque plus de place, combien le clavier va-t-il en prendre ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "4,6 Mo à télécharger. Tout est dedans : le dictionnaire luxembourgeois de 38 410 mots, le modèle de suggestions contextuelles, le dictionnaire français de secours, les emojis et les jeux. Rien n'est téléchargé ensuite et l'application ne grossit pas avec l'usage. Autrement dit, le clavier tient dans une ou deux photos : en supprimer une, déjà sauvegardée, suffit à lui faire de la place. Mesure faite sur l'APK de la version 10.19.0 : 4 582 365 octets. Le poids d'une photo est un ordre de grandeur courant, pas une mesure. Google Play ne télécharge par ailleurs que les morceaux utiles à votre modèle, donc le téléchargement réel y est un peu plus court."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Et sur iPhone ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, le clavier n'existe que sur Android. Du côté d'Apple, le luxembourgeois n'était pas pris en charge jusqu'à iOS 26 ; une disposition lb est annoncée pour iOS 27."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Android m'affiche un avertissement inquiétant au moment d'activer le clavier. C'est normal ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Android affiche ce message pour tous les claviers, Gboard compris, parce qu'un clavier voit par construction ce qui est tapé. La question utile est donc ce que le clavier fait de ce texte : ici, rien ne sort du téléphone, et l'application n'a pas la permission d'accéder à internet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le clavier n'apparaît pas quand je tape.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Presque toujours la même cause : il a été activé mais pas sélectionné. Ce sont deux étapes distinctes. Touchez un champ de texte, puis l'icône de clavier en bas de l'écran, et choisissez « Lëtzebuergesch Clavier » dans la liste."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment revenir au clavier luxembourgeois après en avoir changé ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le geste n'est pas symétrique, et c'est ce qui surprend. Pour quitter le clavier luxembourgeois : appui long sur sa barre d'espace. Pour y revenir : l'appui long sur la barre d'espace de l'autre clavier ne suffit pas, il change seulement sa langue interne. Il faut toucher l'icône de clavier dans la barre de navigation, en bas de l'écran."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes mots luxembourgeois restent soulignés en rouge dans les autres applications.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le soulignement rouge ne vient pas du clavier mais du correcteur orthographique du système, qui ne connaît pas le lëtzebuergesch. L'application en fournit un : Paramètres Android → Système → Clavier → Correcteur orthographique, puis choisissez « Lëtzebuergesch Clavier ». C'est bien sous Clavier, pas sous Langues."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le correcteur reste muet après une mise à jour.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Android garde parfois l'ancienne liaison jusqu'au redémarrage du téléphone. Cela vient du système, pas du clavier : redémarrez, le correcteur reprend."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Pourquoi QWERTZ et pas AZERTY ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Parce que c'est la disposition des claviers physiques au Luxembourg, celle du clavier suisse-français, et celle que le luxembourgeois partage avec l'allemand. Le é ferme la rangée du milieu, là où le QWERTZ suisse-français le place."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Où sont é, ä et ë ? Et les autres accents ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Les trois diacritiques qui portent la langue ont chacune leur touche, sans appui long : é, ä et ë. C'est un choix mesuré sur le corpus, où é, ë et ä comptent 269 749, 142 374 et 111 780 occurrences, quand le suivant, ü, tombe à 7 184. Les autres — ü, è, ê, ô, à, ö — s'obtiennent par un appui long d'une seconde sur la voyelle : les variantes apparaissent au-dessus, et les petits accents imprimés dans le coin d'une touche annoncent ce qu'elle cache."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "À quoi sert la touche apostrophe ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "À l'élision, omniprésente en luxembourgeois : d'Land, s'Kanner, d'Kand. Elle a sa propre touche parce que le corpus compte 99 349 apostrophes, plus que le trait d'union et six fois plus que l'apostrophe courbe ’. Un appui long donne ’ “ ” et le guillemet droit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le clavier met-il les majuscules des noms tout seul ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui depuis la version 10.19.0, et prudemment. Le luxembourgeois capitalise ses substantifs — la Groussschreiwung — et le clavier rétablit la majuscule au moment où le mot est validé : an der rue devient an der Rue. Il ne le fait que lorsqu'il a réellement vu ce mot écrit ainsi après le mot qui précède, ce qui laisse intact ce que vous écrivez en français. Dès que vous tapez vous-même une majuscule, la correction se tait ; une touche Retour arrière l'annule ; un interrupteur dans les réglages la coupe ; et elle ne s'active jamais dans un champ de mot de passe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je aussi écrire en français avec ce clavier ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, sans changer de clavier. Les suggestions françaises prennent le relais à partir de trois lettres tapées, à côté des propositions luxembourgeoises. Beaucoup de conversations au Luxembourg passent d'une langue à l'autre d'une phrase à la suivante : c'est le cas prévu. Le correcteur orthographique fourni couvre lui aussi le français."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Si j'écris sans les accents, le clavier retrouve-t-il le mot ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Letzebuergesch retrouve Lëtzebuergesch : la comparaison ignore les diacritiques. Les fautes de frappe sont pardonnées de la même façon, par distance d'édition — une ou deux lettres de travers ne font pas perdre le mot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le clavier ne connaît pas un mot que j'utilise.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le dictionnaire compte 38 410 mots, reconstruit à chaque publication à partir de deux corpus publics de luxembourgeois. Un mot vu moins de trois fois dans ces corpus n'y entre pas, et un mot qui ne s'écrit nulle part dans la presse ni dans le LOD peut donc manquer. Signalez-le par le formulaire de retours ou par une issue GitHub : c'est de cette manière que la liste grandit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Y a-t-il la dictée vocale ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pas dans la version stable. Une reconnaissance vocale luxembourgeoise est en essai dans le canal Labs, et elle n'ira pas plus loin tant que sa qualité et son cadre juridique ne seront pas réglés. La dictée du système, elle, reste accessible normalement, avec les langues qu'elle connaît."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "À quoi servent les jeux et les niveaux ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "À réviser le vocabulaire sans y penser. Trois jeux puisent dans le même dictionnaire que le clavier : Wuertsich (mots mêlés), Wuertmix (remettre des lettres dans l'ordre) et Wuertriet (deviner un mot de cinq lettres en six essais). En parallèle, huit niveaux jalonnent votre progression, d'Ufänker à Sproochenmeeschter, selon la part du dictionnaire que vous avez déjà employée. Tout cela est facultatif et ne change rien à la frappe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce que je tape part-il quelque part ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Rien n'est envoyé, ni à nous ni à un tiers : il n'y a ni serveur, ni compte, ni statistique d'usage collectée. Ce n'est pas seulement une promesse d'intention, c'est vérifiable : l'application ne déclare pas la permission internet, donc le système Android l'empêcherait d'émettre quoi que ce soit même si elle essayait."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelles permissions l'application demande-t-elle ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Une seule : afficher une notification, pour signaler un nouveau niveau de vocabulaire atteint. Refusez-la, le clavier fonctionne à l'identique. Ni internet, ni contacts, ni localisation, ni micro, ni accès à vos fichiers. Le code source est public si vous voulez le vérifier vous-même."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le clavier apprend-il les mots que je tape ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Il ne construit aucun dictionnaire personnel : un mot absent du dictionnaire livré n'est jamais enregistré, même tapé cent fois. Ce qu'il tient, ce sont des compteurs d'usage portant uniquement sur les mots déjà présents dans son dictionnaire, pour l'écran « Mäi Lëtzebuergesch » et pour mieux classer vos suggestions. Un mot de passe, un nom propre, un identifiant, une adresse n'y figurent pas et ne sont donc jamais comptés — et le clavier se met de lui-même en retrait dans les champs de mot de passe. Le fichier ne quitte pas le téléphone et part avec l'application si vous la désinstallez."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "D'où viennent les mots du dictionnaire ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "De deux corpus de luxembourgeois écrit publiés en accès libre sur Hugging Face. LuxAlign apporte 180 342 phrases de presse RTL.lu, soit 3,1 millions de mots : c'est de là que viennent le vocabulaire et presque tous les enchaînements. LETZ apporte les 5 862 phrases d'exemple du Lëtzebuerger Online Dictionnaire : soixante fois plus petit, mais le seul endroit où l'on trouve en quantité dech, däin, hues, mamm — c'est-à-dire ce qu'on tape sur un téléphone et que la presse n'écrit jamais. Il en sort 38 410 mots et 26 172 contextes de prédiction."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Les suggestions sont-elles bonnes ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mesuré, et sans enjoliver : sur ParaLux, un jeu de phrases luxembourgeoises qu'aucun corpus d'entraînement ne contient, le mot réellement tapé figure dans les trois suggestions affichées 18,8 % du temps, et 94,1 % des mots de ces phrases sont connus du dictionnaire. Le chiffre est calculé sur les fichiers réellement livrés dans l'application, pas sur un jeu maison : un échantillon retenu du corpus d'entraînement afficherait 23,9 %, et flatterait le modèle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qui est derrière l'application ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Médhi Famibelle, développeur établi au Luxembourg. C'est un projet citoyen, bénévole, sans structure commerciale derrière, et son code est ouvert."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je réutiliser le dictionnaire dans mon propre projet ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le code est sous licence MIT, donc oui. Le dictionnaire, non sans précaution : il dérive de LuxAlign, publié en CC BY-NC 4.0, et de LETZ, en CC BY 4.0. L'attribution est obligatoire dans les deux cas, et la clause NC interdit un usage commercial des fichiers qui en descendent, même si le code, lui, est libre. Les citations exigées sont rassemblées dans CORPUS.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment aider le projet ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En l'installant, d'abord, et en en parlant autour de vous : c'est le nombre d'utilisateurs qui donne du poids au lëtzebuergesch écrit sur les téléphones. Ensuite en signalant ce qui manque — un mot absent, une suggestion à côté, un blocage à l'installation — par le formulaire de retours, et en diffusant les tracts, affiches et triptyques de l'espace ambassadeurs."
+      }
+    }
+  ]
+}
+</script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;scroll-behavior:smooth;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:820px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(26px,5.6vw,36px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 10px;}
+section{margin-top:44px;}
+h2{font-size:21px;font-weight:800;margin:0 0 4px;letter-spacing:-0.01em;scroll-margin-top:70px;}
+.section-note{color:var(--ink-soft);font-size:14.5px;margin:0 0 14px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
+a{color:var(--sea);}
+strong{font-weight:700;}
+kbd{font-family:var(--mono);font-size:.92em;border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--stripe);}
+
+/* Tableau de comparaison des tailles. Il vit dans une réponse d'accordéon,
+   donc il doit rester compact et défiler seul sur petit écran. */
+.t-wrap{overflow-x:auto;margin:2px 0 12px;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:330px;}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;}
+td.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+tr.moi td{background:var(--sea-soft);font-weight:700;}
+
+/* Les questions. Un accordéon par question : sur téléphone la liste doit
+   pouvoir être parcourue du pouce sans dérouler dix écrans de réponses. */
+details.qa{border:1px solid var(--line);border-radius:10px;background:var(--card);margin:0 0 8px;}
+details.qa > summary{
+  list-style:none;cursor:pointer;padding:13px 40px 13px 15px;position:relative;
+  font-weight:700;font-size:15.5px;letter-spacing:-0.01em;
+}
+details.qa > summary::-webkit-details-marker{display:none;}
+details.qa > summary::after{
+  content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;
+  border-right:2px solid var(--sea);border-bottom:2px solid var(--sea);
+  transform:translateY(-70%) rotate(45deg);transition:transform .15s;
+}
+details.qa[open] > summary::after{transform:translateY(-30%) rotate(-135deg);}
+details.qa > summary:hover{color:var(--sea);}
+details.qa .a{padding:0 15px 14px;font-size:15px;}
+details.qa .a > :last-child{margin-bottom:0;}
+details.qa .a ul{margin:0 0 12px;padding-left:20px;}
+details.qa .a li{margin-bottom:6px;}
+
+/* Filtre. Il ouvre les réponses correspondantes, sinon un mot tapé ici ne
+   trouverait rien : le texte des accordéons fermés échappe au Ctrl+F. */
+.filter{position:relative;margin:22px 0 0;}
+.filter input{
+  width:100%;padding:12px 14px;font-size:16px;font-family:inherit;
+  color:var(--ink);background:var(--card);
+  border:1px solid var(--line);border-radius:10px;
+}
+.filter input:focus{outline:2px solid var(--sea);outline-offset:1px;}
+.filter-count{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0;}
+.hidden{display:none !important;}
+
+.cta{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 18px;margin-top:40px;text-align:center;}
+.cta p{margin:0 0 12px;}
+
+footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);text-align:center;}
+
+@media (max-width:520px){
+  body{padding:0 12px 60px;}
+  details.qa > summary{font-size:15px;padding:12px 36px 12px 13px;}
+  details.qa .a{padding:0 13px 13px;}
+}
+
+@media print{
+  nav.site,footer.page,.theme-toggle,.filter,.cta{display:none !important;}
+  body{background:#fff;color:#000;padding:0;font-size:11pt;}
+  details.qa,table{border-color:#bbb;background:#fff;}
+  details.qa .a{display:block !important;}
+  section{margin-top:22px;page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <strong>❓ FAQ</strong> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<div class="wrap">
+
+<header class="page">
+  <p class="eyebrow">Questions fréquentes</p>
+  <h1>Vos questions, nos réponses</h1>
+  <p class="lead">
+    Ce que l'on nous demande le plus souvent, avant et après l'installation.
+    Chaque réponse tient en quelques lignes. Pour les gestes détaillés, avec
+    captures d'écran, voir le <a href="guide.html">guide d'installation</a>.
+  </p>
+</header>
+
+<div class="filter">
+  <label class="hidden" for="q">Chercher dans les questions</label>
+  <input type="search" id="q" placeholder="Chercher : place, accents, gratuit, majuscules, vie privée…" autocomplete="off">
+  <p class="filter-count" id="filter-count" hidden></p>
+</div>
+
+<section>
+  <h2 id="avant">Avant d'installer</h2>
+  <p class="section-note">Ce qu'il faut savoir avant d'appuyer sur le bouton.</p>
+
+  <details class="qa">
+    <summary>Le clavier est-il gratuit ? Y a-t-il de la publicité ?</summary>
+    <div class="a">
+      <p>
+        Gratuit, sans publicité, sans achat intégré, sans compte à créer. Le
+        code est ouvert et consultable
+        (<a href="https://github.com/famibelle/LuxKeyb">licence MIT sur GitHub</a>).
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Installer ce clavier va-t-il supprimer mon clavier habituel ?</summary>
+    <div class="a">
+      <p>
+        Non. Il s'ajoute à la liste des claviers du téléphone sans toucher aux
+        autres. Vous basculez de l'un à l'autre quand vous voulez, et vous
+        pouvez revenir à votre clavier habituel à tout moment.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Faut-il une connexion internet ?</summary>
+    <div class="a">
+      <p>
+        Uniquement pour le télécharger. Ensuite tout se passe dans le
+        téléphone : les suggestions, les accents, le correcteur et les jeux
+        fonctionnent en avion, dans une zone sans réseau, sans forfait data.
+        L'application ne demande d'ailleurs même pas la permission d'accéder à
+        internet.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Puis-je l'essayer avant de l'installer ?</summary>
+    <div class="a">
+      <p>
+        Oui. Le <a href="simulateur.html">simulateur en ligne</a> fait tourner
+        le vrai clavier dans le navigateur, avec le dictionnaire et le modèle
+        de suggestions livrés dans l'application. Rien à installer.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Comment l'installer : Google Play ou fichier APK ?</summary>
+    <div class="a">
+      <p>
+        Les deux marchent. Sur Google Play, l'application est en
+        <strong>test fermé</strong> : il faut d'abord
+        <a href="index.html#devenir-testeur">s'inscrire depuis son téléphone</a>,
+        avec le compte Google qu'on y utilise, puis elle s'installe et se met à
+        jour comme n'importe quelle autre. Le test est réservé à une liste de
+        comptes ; si le vôtre n'y est pas encore, demandez-le par le
+        <a href="feedbacks_form.html">formulaire de retours</a>.
+      </p>
+      <p>
+        Sinon,
+        <a href="https://github.com/famibelle/LuxKeyb/releases/latest">l'APK se télécharge directement</a>
+        depuis les versions publiées sur GitHub, au prix d'une autorisation
+        « sources inconnues » et de mises à jour à refaire à la main.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Mon téléphone est ancien, est-ce qu'il va suivre ?</summary>
+    <div class="a">
+      <p>
+        Le clavier fonctionne à partir d'<strong>Android 5.0</strong>, sorti en
+        2014. Tout le calcul est local et tient dans un dictionnaire de
+        quelques mégaoctets : il n'y a ni modèle de langue à charger, ni
+        requête réseau à attendre. Ce qu'il fait et ce qu'il ne fait pas, face
+        à Gboard et au clavier d'Apple, est détaillé sur la page
+        <a href="comparatif.html">comparatif</a>.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Je n'ai presque plus de place, combien le clavier va-t-il en prendre ?</summary>
+    <div class="a">
+      <p>
+        <strong>4,6 Mo</strong> à télécharger. Tout est dedans : le
+        dictionnaire luxembourgeois de 38 410 mots, le modèle de suggestions
+        contextuelles, le dictionnaire français de secours, les emojis et les
+        jeux. Rien n'est téléchargé ensuite et l'application ne grossit pas
+        avec l'usage. Autrement dit, le clavier tient dans une ou deux photos :
+        en supprimer une, déjà sauvegardée, suffit à lui faire de la place.
+      </p>
+      <div class="t-wrap">
+        <table>
+          <thead>
+            <tr><th>Ce que garde un téléphone</th><th class="v">Place occupée</th></tr>
+          </thead>
+          <tbody>
+            <tr class="moi"><td>Lëtzebuergesch Clavier, à télécharger</td><td class="v">4,6 Mo</td></tr>
+            <tr><td>Une photo prise avec le téléphone</td><td class="v">2 à 5 Mo</td></tr>
+            <tr><td>Une application courante : Messages, YouTube, Photos</td><td class="v">80 à 140 Mo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">
+        Mesure faite sur l'APK de la version 10.19.0 : 4 582 365 octets. Le
+        poids d'une photo est un ordre de grandeur courant, pas une mesure : il
+        dépend du téléphone et de la scène. Google Play ne télécharge par
+        ailleurs que les morceaux utiles à votre modèle, donc le téléchargement
+        réel y est un peu plus court.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Et sur iPhone ?</summary>
+    <div class="a">
+      <p>
+        Non, le clavier n'existe que sur Android. Du côté d'Apple, le
+        luxembourgeois n'était pas pris en charge jusqu'à iOS 26 ; une
+        disposition <code>lb</code> est annoncée pour iOS 27.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2 id="installation">Installation et activation</h2>
+  <p class="section-note">Les blocages classiques des premières minutes.</p>
+
+  <details class="qa">
+    <summary>Android m'affiche un avertissement inquiétant au moment d'activer le clavier. C'est normal ?</summary>
+    <div class="a">
+      <p>
+        Oui. Android affiche ce message pour <em>tous</em> les claviers, Gboard
+        compris, parce qu'un clavier voit par construction ce qui est tapé. La
+        question utile est donc ce que le clavier fait de ce texte : ici, rien
+        ne sort du téléphone, et l'application n'a pas la permission d'accéder
+        à internet. Voir la
+        <a href="privacy/privacy-policy.html">politique de confidentialité</a>.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Le clavier n'apparaît pas quand je tape.</summary>
+    <div class="a">
+      <p>
+        Presque toujours la même cause : il a été <em>activé</em> mais pas
+        <em>sélectionné</em>. Ce sont deux étapes distinctes. Touchez un champ
+        de texte, puis l'icône de clavier en bas de l'écran, et choisissez
+        « Lëtzebuergesch Clavier » dans la liste. Le
+        <a href="guide.html#étape-2--sélectionner-le-clavier">guide</a> montre
+        le geste en images.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Comment revenir au clavier luxembourgeois après en avoir changé ?</summary>
+    <div class="a">
+      <p>
+        Le geste n'est pas symétrique, et c'est ce qui surprend. Pour
+        <em>quitter</em> le clavier luxembourgeois : appui long sur sa barre
+        d'espace. Pour y <em>revenir</em> : l'appui long sur la barre d'espace
+        de l'autre clavier ne suffit pas, il change seulement sa langue
+        interne. Il faut toucher <strong>l'icône de clavier dans la barre de
+        navigation</strong>, en bas de l'écran.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Mes mots luxembourgeois restent soulignés en rouge dans les autres applications.</summary>
+    <div class="a">
+      <p>
+        Le soulignement rouge ne vient pas du clavier mais du correcteur
+        orthographique du système, qui ne connaît pas le lëtzebuergesch.
+        L'application en fournit un : <strong>Paramètres Android → Système →
+        Clavier → Correcteur orthographique</strong>, puis choisissez
+        « Lëtzebuergesch Clavier ». C'est bien sous <em>Clavier</em>, pas sous
+        <em>Langues</em> — c'est là que la plupart des gens le cherchent en
+        vain.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Le correcteur reste muet après une mise à jour.</summary>
+    <div class="a">
+      <p>
+        Android garde parfois l'ancienne liaison jusqu'au redémarrage du
+        téléphone. Cela vient du système, pas du clavier : redémarrez, le
+        correcteur reprend.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2 id="quotidien">Au quotidien</h2>
+  <p class="section-note">Une fois le clavier en place.</p>
+
+  <details class="qa">
+    <summary>Pourquoi QWERTZ et pas AZERTY ?</summary>
+    <div class="a">
+      <p>
+        Parce que c'est la disposition des claviers physiques au Luxembourg,
+        celle du clavier suisse-français, et celle que le luxembourgeois
+        partage avec l'allemand. Le <kbd>é</kbd> ferme la rangée du milieu, là
+        où le QWERTZ suisse-français le place.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Où sont é, ä et ë ? Et les autres accents ?</summary>
+    <div class="a">
+      <p>
+        Les trois diacritiques qui portent la langue ont chacune
+        <strong>leur touche</strong>, sans appui long : <kbd>é</kbd>,
+        <kbd>ä</kbd> et <kbd>ë</kbd>. C'est un choix mesuré sur le corpus, où
+        <em>é</em>, <em>ë</em> et <em>ä</em> comptent 269 749, 142 374 et
+        111 780 occurrences, quand le suivant, <em>ü</em>, tombe à 7 184.
+      </p>
+      <p>
+        Les autres — <em>ü è ê ô à ö</em> — s'obtiennent par un appui long
+        d'une seconde sur la voyelle : les variantes apparaissent au-dessus, et
+        les petits accents imprimés dans le coin d'une touche annoncent ce
+        qu'elle cache.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>À quoi sert la touche apostrophe ?</summary>
+    <div class="a">
+      <p>
+        À l'élision, omniprésente en luxembourgeois : <em>d'Land</em>,
+        <em>s'Kanner</em>, <em>d'Kand</em>. Elle a sa propre touche parce que
+        le corpus compte 99 349 apostrophes, plus que le trait d'union et six
+        fois plus que l'apostrophe courbe <em>’</em>. Un appui long donne
+        <em>’ “ ”</em> et le guillemet droit.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Le clavier met-il les majuscules des noms tout seul ?</summary>
+    <div class="a">
+      <p>
+        Oui depuis la version 10.19.0, et prudemment. Le luxembourgeois
+        capitalise ses substantifs — la <em>Groussschreiwung</em> — et le
+        clavier rétablit la majuscule au moment où le mot est validé :
+        <em>an der rue</em> devient <em>an der Rue</em>.
+      </p>
+      <p>
+        Il ne le fait que lorsqu'il a réellement vu ce mot écrit ainsi
+        <em>après le mot qui précède</em>, ce qui laisse intact ce que vous
+        écrivez en français : sans cette prudence, un message français aurait
+        vu un mot sur quatre se faire capitaliser. Dès que vous tapez vous-même
+        une majuscule, la correction se tait ; une touche <kbd>⌫</kbd>
+        l'annule ; un interrupteur dans les réglages la coupe ; et elle ne
+        s'active jamais dans un champ de mot de passe.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Puis-je aussi écrire en français avec ce clavier ?</summary>
+    <div class="a">
+      <p>
+        Oui, sans changer de clavier. Les suggestions françaises prennent le
+        relais à partir de trois lettres tapées, à côté des propositions
+        luxembourgeoises. Beaucoup de conversations au Luxembourg passent d'une
+        langue à l'autre d'une phrase à la suivante : c'est le cas prévu. Le
+        correcteur orthographique fourni couvre lui aussi le français.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Si j'écris sans les accents, le clavier retrouve-t-il le mot ?</summary>
+    <div class="a">
+      <p>
+        Oui. <em>Letzebuergesch</em> retrouve <em>Lëtzebuergesch</em> : la
+        comparaison ignore les diacritiques. Les fautes de frappe sont
+        pardonnées de la même façon, par distance d'édition — une ou deux
+        lettres de travers ne font pas perdre le mot.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Le clavier ne connaît pas un mot que j'utilise.</summary>
+    <div class="a">
+      <p>
+        Le dictionnaire compte <strong>38 410 mots</strong>, reconstruit à
+        chaque publication à partir de deux corpus publics de luxembourgeois.
+        Un mot vu moins de trois fois dans ces corpus n'y entre pas, et un mot
+        qui ne s'écrit nulle part dans la presse ni dans le LOD peut donc
+        manquer. Signalez-le par le
+        <a href="feedbacks_form.html">formulaire de retours</a> ou par une
+        <a href="https://github.com/famibelle/LuxKeyb/issues">issue GitHub</a> :
+        c'est de cette manière que la liste grandit.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Y a-t-il la dictée vocale ?</summary>
+    <div class="a">
+      <p>
+        Pas dans la version stable. Une reconnaissance vocale luxembourgeoise
+        est en essai dans le canal <a href="labs.html">Labs</a>, et elle n'ira
+        pas plus loin tant que sa qualité et son cadre juridique ne seront pas
+        réglés. La dictée du système, elle, reste accessible normalement, avec
+        les langues qu'elle connaît.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>À quoi servent les jeux et les niveaux ?</summary>
+    <div class="a">
+      <p>
+        À réviser le vocabulaire sans y penser. Trois jeux puisent dans le même
+        dictionnaire que le clavier : <strong>Wuertsich</strong> (mots mêlés),
+        <strong>Wuertmix</strong> (remettre des lettres dans l'ordre) et
+        <strong>Wuertriet</strong> (deviner un mot de cinq lettres en six
+        essais).
+      </p>
+      <p>
+        En parallèle, huit niveaux jalonnent votre progression, d'<em>Ufänker</em>
+        à <em>Sproochenmeeschter</em>, selon la part du dictionnaire que vous
+        avez déjà employée. Tout cela est facultatif et ne change rien à la
+        frappe.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2 id="confidentialite">Vie privée</h2>
+  <p class="section-note">Ce que le clavier voit, et ce qu'il en fait.</p>
+
+  <details class="qa">
+    <summary>Ce que je tape part-il quelque part ?</summary>
+    <div class="a">
+      <p>
+        Non. Rien n'est envoyé, ni à nous ni à un tiers : il n'y a ni serveur,
+        ni compte, ni statistique d'usage collectée. Ce n'est pas seulement une
+        promesse d'intention, c'est vérifiable : l'application ne déclare pas
+        la permission internet, donc le système Android l'empêcherait
+        d'émettre quoi que ce soit même si elle essayait.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Quelles permissions l'application demande-t-elle ?</summary>
+    <div class="a">
+      <p>
+        Une seule : <strong>afficher une notification</strong>, pour signaler
+        un nouveau niveau de vocabulaire atteint. Refusez-la, le clavier
+        fonctionne à l'identique. Ni internet, ni contacts, ni localisation, ni
+        micro, ni accès à vos fichiers.
+      </p>
+      <p>
+        Le <a href="https://github.com/famibelle/LuxKeyb">code source</a> est
+        public si vous voulez le vérifier vous-même, et la
+        <a href="privacy/privacy-policy.html">politique de confidentialité</a>
+        détaille chaque autorisation.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Le clavier apprend-il les mots que je tape ?</summary>
+    <div class="a">
+      <p>
+        Il ne construit aucun dictionnaire personnel : un mot absent du
+        dictionnaire livré n'est jamais enregistré, même tapé cent fois.
+      </p>
+      <p>
+        Ce qu'il tient, ce sont des compteurs d'usage portant uniquement sur
+        les mots <em>déjà présents</em> dans son dictionnaire, pour l'écran
+        « Mäi Lëtzebuergesch » et pour mieux classer vos suggestions. Un mot de
+        passe, un nom propre, un identifiant, une adresse n'y figurent pas et
+        ne sont donc jamais comptés — et le clavier se met de lui-même en
+        retrait dans les champs de mot de passe. Le fichier ne quitte pas le
+        téléphone et part avec l'application si vous la désinstallez.
+      </p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2 id="projet">Le projet</h2>
+  <p class="section-note">Qui fait ce clavier, et avec quoi.</p>
+
+  <details class="qa">
+    <summary>D'où viennent les mots du dictionnaire ?</summary>
+    <div class="a">
+      <p>
+        De deux corpus de luxembourgeois écrit publiés en accès libre sur
+        Hugging Face. <strong>LuxAlign</strong> apporte 180 342 phrases de
+        presse RTL.lu, soit 3,1 millions de mots : c'est de là que viennent le
+        vocabulaire et presque tous les enchaînements. <strong>LETZ</strong>
+        apporte les 5 862 phrases d'exemple du <em>Lëtzebuerger Online
+        Dictionnaire</em> : soixante fois plus petit, mais le seul endroit où
+        l'on trouve en quantité <em>dech</em>, <em>däin</em>, <em>hues</em>,
+        <em>mamm</em> — c'est-à-dire ce qu'on tape sur un téléphone et que la
+        presse n'écrit jamais.
+      </p>
+      <p>
+        Il en sort 38 410 mots et 26 172 contextes de prédiction. Le détail,
+        chiffres et méthode, est sur la page
+        <a href="corpus.html">les corpus en chiffres</a>.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Les suggestions sont-elles bonnes ?</summary>
+    <div class="a">
+      <p>
+        Mesuré, et sans enjoliver : sur <strong>ParaLux</strong>, un jeu de
+        phrases luxembourgeoises qu'aucun corpus d'entraînement ne contient, le
+        mot réellement tapé figure dans les trois suggestions affichées
+        <strong>18,8 %</strong> du temps, et <strong>94,1 %</strong> des mots
+        de ces phrases sont connus du dictionnaire.
+      </p>
+      <p>
+        Le chiffre est calculé sur les fichiers réellement livrés dans
+        l'application, pas sur un jeu maison : un échantillon retenu du corpus
+        d'entraînement afficherait 23,9 %, et flatterait le modèle.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Qui est derrière l'application ?</summary>
+    <div class="a">
+      <p>
+        <strong>Médhi Famibelle</strong>, développeur établi au Luxembourg.
+        C'est un projet citoyen, bénévole, sans structure commerciale derrière,
+        et son <a href="https://github.com/famibelle/LuxKeyb">code est ouvert</a>.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Puis-je réutiliser le dictionnaire dans mon propre projet ?</summary>
+    <div class="a">
+      <p>
+        Le code est sous licence MIT, donc oui. Le dictionnaire, non sans
+        précaution : il dérive de <strong>LuxAlign</strong>, publié en
+        CC&nbsp;BY-NC&nbsp;4.0, et de <strong>LETZ</strong>, en
+        CC&nbsp;BY&nbsp;4.0. L'attribution est obligatoire dans les deux cas,
+        et la clause NC interdit un usage commercial des fichiers qui en
+        descendent, même si le code, lui, est libre. Les citations exigées sont
+        rassemblées dans
+        <a href="https://github.com/famibelle/LuxKeyb/blob/main/Dictionnaires/CORPUS.md">CORPUS.md</a>.
+      </p>
+    </div>
+  </details>
+
+  <details class="qa">
+    <summary>Comment aider le projet ?</summary>
+    <div class="a">
+      <p>
+        En l'installant, d'abord, et en en parlant autour de vous : c'est le
+        nombre d'utilisateurs qui donne du poids au lëtzebuergesch écrit sur
+        les téléphones. Ensuite en signalant ce qui manque — un mot absent, une
+        suggestion à côté, un blocage à l'installation — par le
+        <a href="feedbacks_form.html">formulaire de retours</a>, et en
+        diffusant les tracts, affiches et triptyques de l'<a href="ambassadeurs.html">espace
+        ambassadeurs</a>.
+      </p>
+    </div>
+  </details>
+</section>
+
+<div class="cta">
+  <p><strong>Une question qui n'est pas ici ?</strong></p>
+  <p class="muted">
+    Passez par le <a href="feedbacks_form.html">formulaire de retours</a>, ou
+    ouvrez une <a href="https://github.com/famibelle/LuxKeyb/issues">issue sur GitHub</a>.
+  </p>
+  <p style="margin-top:16px;">
+    <a class="btn primary" href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger le clavier</a>
+  </p>
+</div>
+
+<footer class="page">
+  Lëtzebuergesch Clavier ·
+  <a href="https://github.com/famibelle/LuxKeyb">Code source</a> ·
+  <a href="index.html">Accueil</a>
+</footer>
+
+</div>
+
+<script>
+// Filtre : masque les questions sans correspondance et ouvre celles qui
+// restent, puisque le texte d'un accordéon fermé est invisible au lecteur.
+(function () {
+  var input = document.getElementById('q');
+  var count = document.getElementById('filter-count');
+  if (!input) return;
+  // Le titre de la section est joint au texte cherché : « vie privée » est un
+  // mot que l'on tape ici alors qu'il ne figure dans aucune question. Le chapô
+  // de section, lui, reste hors du filtre : ses tournures courantes feraient
+  // remonter cinq questions sans rapport pour un mot comme « place ».
+  var items = [].slice.call(document.querySelectorAll('details.qa')).map(function (el) {
+    var section = el.closest('section');
+    return { el: el, text: el.textContent + ' ' + (section ? section.querySelector('h2').textContent : '') };
+  });
+  var sections = [].slice.call(document.querySelectorAll('section'));
+
+  function normalise(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  items.forEach(function (i) { i.text = normalise(i.text); });
+
+  input.addEventListener('input', function () {
+    var q = normalise(input.value.trim());
+    if (!q) {
+      items.forEach(function (i) { i.el.classList.remove('hidden'); i.el.open = false; });
+      sections.forEach(function (s) { s.classList.remove('hidden'); });
+      count.hidden = true;
+      return;
+    }
+    var found = 0;
+    items.forEach(function (i) {
+      var hit = i.text.indexOf(q) !== -1;
+      i.el.classList.toggle('hidden', !hit);
+      i.el.open = hit;
+      if (hit) found++;
+    });
+    sections.forEach(function (s) {
+      s.classList.toggle('hidden', !s.querySelector('details.qa:not(.hidden)'));
+    });
+    count.hidden = false;
+    count.textContent = found === 0
+      ? 'Aucune question ne correspond. Écrivez-nous par le formulaire de retours.'
+      : found + (found > 1 ? ' questions correspondent.' : ' question correspond.');
+  });
+})();
+</script>
+</body>
+</html>
