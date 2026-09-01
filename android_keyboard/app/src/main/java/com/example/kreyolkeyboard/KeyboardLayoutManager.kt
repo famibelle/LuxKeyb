@@ -1012,11 +1012,17 @@ class KeyboardLayoutManager(private val context: Context) {
     private fun getKeyWeight(key: String): Float {
         return when (key) {
             " " -> 4.0f      // Barre d'espace plus large
-            // v10.11.4 : 1,5 → 1,25 pour financer l'apostrophe ajoutée en rangée 3
-            // sans rétrécir les lettres sous la largeur des rangées 1 et 2. Ces deux
-            // touches restent les plus larges de leur rangée, ce qui compte : elles
-            // sont aux deux extrémités, là où la visée du pouce est la plus mauvaise.
-            "⇧", "⌫" -> 1.25f
+            // 1,5 et non 1,25 : c'est ce qui pose la rangée 3 à exactement 10 unités
+            // (1,5 + 7 lettres + 1,5), donc à la même largeur de touche que les
+            // rangées 1 et 2, qui en comptent dix. La v10.11.4 les avait réduites à
+            // 1,25 pour financer l'apostrophe alors ajoutée en rangée 3 ; celle-ci
+            // vit désormais en rangée 4, mais la réduction était restée et laissait
+            // la rangée 3 à 9,5 unités — ses lettres 5,3 % plus larges que celles
+            // des rangées du dessus, soit l'inverse du désalignement qu'on voulait
+            // éviter. Ces deux touches sont par ailleurs aux extrémités de la
+            // rangée, là où la visée du pouce est la plus mauvaise : les garder les
+            // plus larges de leur rangée sert aussi à ça.
+            "⇧", "⌫" -> 1.5f
             else -> 1.0f     // Touches normales
         }
     }

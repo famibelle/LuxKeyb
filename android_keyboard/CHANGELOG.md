@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.20.1] - 2026-09-01
+
+### 🐛 Corrigé
+
+- **Alignement des rangées de clavier.** Les touches Shift et Retour arrière
+  pesaient 1,25 unité depuis la v10.11.4, où elles finançaient l'apostrophe
+  alors en rangée 3. Celle-ci vit désormais en rangée 4, mais la réduction
+  était restée, posant la rangée 3 à 9,5 unités au lieu de 10, soit 5,3 % plus
+  larges que les rangées 1 et 2. Rétabli à 1,5 pour aligner les trois rangées
+  de lettres.
+
 ## [10.20.0] - 2026-09-01
 
 Un quatrième jeu rejoint les trois autres : **Wuertlück**, le jeu de phrases à
