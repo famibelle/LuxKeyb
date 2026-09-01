@@ -167,12 +167,12 @@ class SettingsActivity : AppCompatActivity() {
             "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
             "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
             "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
-            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, notamment les transcriptions des conférences de presse du gouvernement, détaillé dans l'onglet « À Propos ».",
+            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l'onglet Démarrage.",
             "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
             "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
-            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes.",
+            "Le guide, en bas de l'onglet Démarrage, reprend toutes les étapes en images, suivies des questions fréquentes.",
             "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur."
         )
     }
@@ -596,42 +596,22 @@ class SettingsActivity : AppCompatActivity() {
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
-            // Tab Wuertsich
-            val wordSearchTab = createTab(2, "🎲", "Wuertsich")
-            tabContainer.addView(wordSearchTab)
-            Log.d("SettingsActivity", "Onglet Wuertsich créé et ajouté")
-            
-            // Tab Wuertmix
-            val wordScrambleTab = createTab(3, "🔤", "Wuertmix")
-            tabContainer.addView(wordScrambleTab)
-            Log.d("SettingsActivity", "Onglet Wuertmix créé et ajouté")
+            // Tab Spiller : les quatre jeux derrière une seule destination.
+            // Ils occupaient quatre onglets sur neuf, soit 44 % de la barre,
+            // pour une activité que l'on choisit une fois par session.
+            val gamesTab = createTab(2, "🎮", "Spiller")
+            tabContainer.addView(gamesTab)
+            Log.d("SettingsActivity", "Onglet Spiller créé et ajouté")
 
-            // Tab Wuertriet
-            val wuertrietTab = createTab(4, "🟩", "Wuertriet")
-            tabContainer.addView(wuertrietTab)
-            Log.d("SettingsActivity", "Onglet Wuertriet créé et ajouté")
-
-            // Tab Wuertlück
-            val clozeTab = createTab(5, "📝", "Wuertlück")
-            tabContainer.addView(clozeTab)
-            Log.d("SettingsActivity", "Onglet Wuertlück créé et ajouté")
-
-            // Tab Wierderbuch. Le libellé est raccourci : « Wierderbuch » est
-            // le mot juste, mais sur neuf onglets il se coupe en « Wierderbu /
-            // ch ». Le titre complet est en tête de l'onglet.
-            val dictionaryTab = createTab(6, "📚", "Wierder")
+            // Tab Wierderbuch
+            val dictionaryTab = createTab(3, "📚", "Wierderbuch")
             tabContainer.addView(dictionaryTab)
             Log.d("SettingsActivity", "Onglet Wierderbuch créé et ajouté")
 
-            // Tab Guide
-            val guideTab = createTab(7, "📖", "Guide")
-            tabContainer.addView(guideTab)
-            Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
-
-            // Tab À Propos
-            val aboutTab = createTab(8, "ℹ️", "À Propos")
-            tabContainer.addView(aboutTab)
-            Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
+            // Guide et À Propos ne sont plus des onglets : ce sont des pages de
+            // référence que l'on lit une fois, pas des destinations
+            // quotidiennes. Elles s'ouvrent depuis le pied de l'onglet
+            // Démarrage, en plein écran (voir SheetFragment).
 
             // Ligne de séparation en bas (fine)
             val separator = View(this@SettingsActivity).apply {
@@ -661,9 +641,7 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            // Padding horizontal resserré : sur neuf onglets, 24 px de chaque
-            // côté retiraient au libellé le tiers de sa largeur.
-            setPadding(4, 10, 4, 8)
+            setPadding(8, 10, 8, 8)
             layoutParams = LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -696,15 +674,14 @@ class SettingsActivity : AppCompatActivity() {
             // Label du tab
             val labelView = TextView(this@SettingsActivity).apply {
                 text = label
-                // 8sp et non 9 : le neuvième onglet a fait passer « Wuertsich »
-                // et « Wierderbuch » sur deux lignes, coupés en plein milieu
-                // d'un mot. Un point de moins les ramène sur une seule.
-                textSize = 8f
+                // 11sp : quatre onglets se partagent la largeur au lieu de
+                // neuf, et « Wierderbuch », le plus long, tient largement.
+                textSize = 11f
                 gravity = Gravity.CENTER
                 setPadding(0, 0, 0, 2)
-                // Neuf onglets se partagent la largeur : un libellé long y tient sur
-                // deux lignes, et se termine par des points de suspension au delà,
-                // plutôt que de déborder ou de repousser ses voisins.
+                // Garde-fou conservé bien que quatre onglets laissent la place :
+                // un libellé plus long qu'attendu doit passer à la ligne ou se
+                // terminer en points de suspension, jamais repousser ses voisins.
                 maxLines = 2
                 ellipsize = android.text.TextUtils.TruncateAt.END
                 setTextColor(
@@ -1096,17 +1073,125 @@ class SettingsActivity : AppCompatActivity() {
             
             statsLinkCard.addView(statsLinkLayout)
             statsLinkCard.setOnClickListener {
-                viewPager.currentItem = 1 // Naviguer vers l'onglet Stats
+                // Et non `currentItem = 1` : le pager est cyclique, et la
+                // position absolue 1 est le bord gauche de la plage virtuelle.
+                // Le contenu affiché était bien celui des statistiques, mais on
+                // atterrissait là où il n'y a plus rien à balayer vers la
+                // gauche. On vise la position la plus proche du bon onglet.
+                allerAOnglet(TAB_STATS)
             }
             
             mainLayout.addView(statsLinkCard)
         }
-        
+
+        // Guide et À Propos ont quitté la barre d'onglets : ce sont des pages
+        // qu'on lit une fois, et elles y coûtaient deux neuvièmes de la largeur
+        // à chaque ouverture de l'application. Elles atterrissent ici, en pied
+        // de l'écran de configuration, qui est déjà l'endroit où l'on vient
+        // quand on cherche à comprendre plutôt qu'à jouer.
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
+            "📖", "Guide d'utilisation",
+            "Réglages, correcteur, astuces de saisie",
+            SheetFragment.PAGE_GUIDE
+        ))
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
+            "ℹ️", "À propos",
+            "Version, sources des données, licences",
+            SheetFragment.PAGE_A_PROPOS
+        ))
+        mainLayout.addView(createSpacing(16))
+
         return mainLayout
     }
+
+    /**
+     * Ligne d'accès à une page de référence, ouverte en plein écran.
+     *
+     * Volontairement plus discrète que les cartes de configuration au-dessus :
+     * ces deux pages ne demandent aucune action, elles répondent à une question
+     * que l'utilisateur ne se pose pas encore.
+     */
+    private fun createReferenceLink(
+        emoji: String,
+        titre: String,
+        resume: String,
+        page: String
+    ): LinearLayout = LinearLayout(this).apply {
+        orientation = LinearLayout.HORIZONTAL
+        gravity = Gravity.CENTER_VERTICAL
+        setBackgroundColor(Color.WHITE)
+        setPadding(20, 18, 20, 18)
+        isClickable = true
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        addView(TextView(this@SettingsActivity).apply {
+            text = emoji
+            textSize = 22f
+            setPadding(0, 0, 18, 0)
+        })
+        addView(LinearLayout(this@SettingsActivity).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+            )
+            addView(TextView(this@SettingsActivity).apply {
+                text = titre
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+            })
+            addView(TextView(this@SettingsActivity).apply {
+                text = resume
+                textSize = 13f
+                setTextColor(Color.parseColor("#888888"))
+            })
+        })
+        addView(TextView(this@SettingsActivity).apply {
+            text = "›"
+            textSize = 24f
+            setTextColor(Color.parseColor("#BBBBBB"))
+        })
+
+        setOnClickListener {
+            SheetFragment.pour(page).show(supportFragmentManager, "sheet_$page")
+        }
+    }
     
+    /**
+     * Amène le pager sur un onglet, en restant dans le cycle courant.
+     *
+     * Le ViewPager répète les onglets sur une longue plage virtuelle pour que
+     * le balayage puisse tourner dans les deux sens indéfiniment ; une position
+     * absolue n'a donc de sens que relativement à celle où l'on se trouve.
+     */
+    private fun allerAOnglet(onglet: Int) {
+        val position = viewPager.currentItem
+        val actuel = position % SettingsPagerAdapter.REAL_COUNT
+        val avant = (onglet - actuel + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+        val arriere = (actuel - onglet + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+        val cible = if (avant <= arriere) position + avant else position - arriere
+        viewPager.setCurrentItem(cible, avant.coerceAtMost(arriere) <= 1)
+    }
+
     /** Conversion en pixels d'une dimension exprimée en dp. */
     private fun enDp(valeur: Int): Int = (valeur * resources.displayMetrics.density).toInt()
+
+    /**
+     * Une couleur `#RRGGBB` reprise avec l'opacité demandée.
+     *
+     * Concaténer les deux chaînes — `"$couleur20"` — ne donne pas ce qu'on
+     * croit : `Color.parseColor` lit huit chiffres comme `#AARRGGBB`, si bien
+     * que `"#4CAF50" + "20"` devient un alpha de 0x4C sur le brun `#AF5020`.
+     * L'astuce se lit comme un ajout de transparence et produit une autre
+     * teinte, opaque.
+     */
+    fun avecOpacite(couleur: String, alpha: Int): Int =
+        (alpha shl 24) or (Color.parseColor(couleur) and 0x00FFFFFF)
 
     /**
      * Un mot a-t-il déjà été écrit avec le clavier ? Le jalon est posé par le
@@ -3467,7 +3552,7 @@ class SettingsActivity : AppCompatActivity() {
                         textSize = 19.5f  // Augmenté de 1.5x (13f * 1.5)
                         setTextColor(Color.parseColor(accentColor))
                         setPadding(15, 7, 15, 7)  // Augmenté de 1.5x (10, 5, 10, 5)
-                        setBackgroundColor(Color.parseColor("${accentColor}20"))
+                        setBackgroundColor(avecOpacite(accentColor, 0x20))
                         setSingleLine(true)
                         // Filet de sécurité : un mot composé suivi de sa glose
                         // peut dépasser la largeur de l'écran, et le calcul de
@@ -3871,7 +3956,7 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 9 // Nombre réel d'onglets (ajout du Wierderbuch)
+            const val REAL_COUNT = 4 // Nombre réel d'onglets (jeux regroupés)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
@@ -3884,13 +3969,8 @@ class SettingsActivity : AppCompatActivity() {
             return when (realPosition) {
                 0 -> OnboardingFragment()
                 1 -> StatsFragment()
-                2 -> WordSearchFragment()
-                3 -> WordScrambleFragment()
-                4 -> WuertrietFragment()
-                5 -> ClozeFragment()
-                6 -> DictionaryFragment()
-                7 -> GuideFragment()
-                8 -> AboutFragment()
+                2 -> GamesFragment()
+                3 -> DictionaryFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -6148,6 +6228,322 @@ class SettingsActivity : AppCompatActivity() {
             rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
             rechercheEnAttente = null
             rootView = null
+        }
+    }
+
+    /**
+     * Onglet « Spiller » : le choix des quatre jeux, puis le jeu choisi.
+     *
+     * Ce fragment ne joue à rien lui-même. Il montre quatre cartes et, au tap,
+     * installe le fragment du jeu dans son propre conteneur. Aucun pager
+     * imbriqué : les jeux comportent des grilles qui se manipulent au doigt
+     * (le glissé de Wuertsich, notamment), et un second ViewPager leur aurait
+     * disputé chaque geste horizontal.
+     *
+     * Le retour au choix passe par [OnBackPressedCallback] plutôt que par
+     * l'override d'`onBackPressed` de l'activité : le rappel n'est actif que
+     * pendant qu'un jeu est ouvert, si bien que le bouton Retour continue de
+     * quitter l'application partout ailleurs, sans que l'activité ait à savoir
+     * ce que ses onglets contiennent.
+     */
+    class GamesFragment : Fragment() {
+
+        private var rootView: LinearLayout? = null
+        private var conteneurJeu: FrameLayout? = null
+        private var barreRetour: LinearLayout? = null
+        private var grilleChoix: View? = null
+
+        private val retourAuChoix = object : androidx.activity.OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() = fermerLeJeu()
+        }
+
+        private data class Jeu(
+            val emoji: String,
+            val nom: String,
+            val resume: String,
+            val couleur: String,
+            val fabrique: () -> Fragment
+        )
+
+        private val jeux = listOf(
+            Jeu("🎲", "Wuertsich", "Retrouvez les mots cachés dans la grille",
+                "#9C27B0") { WordSearchFragment() },
+            Jeu("🔤", "Wuertmix", "Remettez les lettres dans l'ordre",
+                "#1976D2") { WordScrambleFragment() },
+            Jeu("🟩", "Wuertriet", "Devinez le mot de 5 lettres en 6 essais",
+                "#4CAF50") { WuertrietFragment() },
+            Jeu("📝", "Wuertlück", "Complétez la phrase à laquelle il manque un mot",
+                "#FF8C00") { ClozeFragment() }
+        )
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+
+            barreRetour = construireBarreRetour(activity).also {
+                it.visibility = View.GONE
+                colonne.addView(it)
+            }
+
+            grilleChoix = construireGrilleChoix(activity).also { colonne.addView(it) }
+
+            conteneurJeu = FrameLayout(activity).apply {
+                id = View.generateViewId()
+                visibility = View.GONE
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+            colonne.addView(conteneurJeu)
+
+            requireActivity().onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, retourAuChoix)
+
+            rootView = colonne
+            return colonne
+        }
+
+        private fun construireBarreRetour(activity: SettingsActivity) =
+            LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(16, 12, 16, 12)
+                isClickable = true
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                addView(TextView(activity).apply {
+                    text = "‹  Tous les jeux"
+                    textSize = 16f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.parseColor("#1976D2"))
+                })
+                setOnClickListener { fermerLeJeu() }
+            }
+
+        private fun construireGrilleChoix(activity: SettingsActivity): View {
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(20, 24, 20, 24)
+            }
+
+            colonne.addView(TextView(activity).apply {
+                text = "🎮 Spiller"
+                textSize = 22f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+                setPadding(4, 0, 4, 6)
+            })
+            colonne.addView(TextView(activity).apply {
+                text = "Quatre façons de travailler son vocabulaire " +
+                        "luxembourgeois. Chacune donne la traduction française " +
+                        "des mots, au moment où elle ne livre pas la réponse."
+                textSize = 14f
+                setTextColor(Color.parseColor("#666666"))
+                setLineSpacing(0f, 1.25f)
+                setPadding(4, 0, 4, 20)
+            })
+
+            // Deux cartes par ligne : quatre jeux tombent juste, et une carte
+            // pleine largeur pour chacun aurait poussé le quatrième hors de
+            // l'écran, là où on ne le découvre plus.
+            jeux.chunked(2).forEach { paire ->
+                colonne.addView(LinearLayout(activity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 16 }
+                    paire.forEachIndexed { rang, jeu ->
+                        addView(carteJeu(activity, jeu, marginDroite = rang == 0))
+                    }
+                })
+            }
+
+            return colonne
+        }
+
+        private fun carteJeu(activity: SettingsActivity, jeu: Jeu, marginDroite: Boolean) =
+            LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER_HORIZONTAL
+                setPadding(16, 24, 16, 24)
+                background = GradientDrawable().apply {
+                    setColor(Color.WHITE)
+                    cornerRadius = 16f * resources.displayMetrics.density
+                    setStroke(
+                        (1.5f * resources.displayMetrics.density).toInt(),
+                        activity.avecOpacite(jeu.couleur, 0x55)
+                    )
+                }
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                ).apply { if (marginDroite) rightMargin = 16 }
+
+                addView(TextView(activity).apply {
+                    text = jeu.emoji
+                    textSize = 40f
+                    gravity = Gravity.CENTER
+                })
+                addView(TextView(activity).apply {
+                    text = jeu.nom
+                    textSize = 17f
+                    setTypeface(null, Typeface.BOLD)
+                    gravity = Gravity.CENTER
+                    setTextColor(Color.parseColor(jeu.couleur))
+                    setPadding(0, 8, 0, 4)
+                })
+                addView(TextView(activity).apply {
+                    text = jeu.resume
+                    textSize = 12f
+                    gravity = Gravity.CENTER
+                    setTextColor(Color.parseColor("#777777"))
+                    setLineSpacing(0f, 1.2f)
+                })
+
+                isClickable = true
+                setOnClickListener { ouvrirLeJeu(jeu) }
+            }
+
+        private fun ouvrirLeJeu(jeu: Jeu) {
+            val conteneur = conteneurJeu ?: return
+            childFragmentManager.beginTransaction()
+                .replace(conteneur.id, jeu.fabrique())
+                .commit()
+            grilleChoix?.visibility = View.GONE
+            conteneur.visibility = View.VISIBLE
+            barreRetour?.visibility = View.VISIBLE
+            retourAuChoix.isEnabled = true
+        }
+
+        private fun fermerLeJeu() {
+            val conteneur = conteneurJeu ?: return
+            childFragmentManager.findFragmentById(conteneur.id)?.let {
+                childFragmentManager.beginTransaction().remove(it).commit()
+            }
+            conteneur.visibility = View.GONE
+            barreRetour?.visibility = View.GONE
+            grilleChoix?.visibility = View.VISIBLE
+            retourAuChoix.isEnabled = false
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rootView = null
+            conteneurJeu = null
+            barreRetour = null
+            grilleChoix = null
+        }
+    }
+
+    /**
+     * Enveloppe plein écran pour les pages de référence — Guide, À Propos —
+     * sorties de la barre d'onglets.
+     *
+     * Un [DialogFragment] plutôt qu'une Activity : les deux pages existent déjà
+     * sous forme de Fragment, et les héberger ici évite deux déclarations de
+     * manifeste et deux cycles de vie de plus pour un contenu qu'on ouvre et
+     * qu'on referme.
+     */
+    class SheetFragment : androidx.fragment.app.DialogFragment() {
+
+        companion object {
+            private const val ARG_PAGE = "page"
+            const val PAGE_GUIDE = "guide"
+            const val PAGE_A_PROPOS = "a_propos"
+
+            fun pour(page: String) = SheetFragment().apply {
+                arguments = android.os.Bundle().apply { putString(ARG_PAGE, page) }
+            }
+        }
+
+        override fun onCreate(savedInstanceState: android.os.Bundle?) {
+            super.onCreate(savedInstanceState)
+            setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
+        }
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            val page = arguments?.getString(ARG_PAGE) ?: PAGE_GUIDE
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+            }
+
+            colonne.addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setBackgroundColor(Color.parseColor("#2196F3"))
+                setPadding(16, 14, 16, 14)
+                addView(TextView(activity).apply {
+                    text = if (page == PAGE_GUIDE) "📖  Guide" else "ℹ️  À propos"
+                    textSize = 18f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.WHITE)
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
+                })
+                addView(TextView(activity).apply {
+                    text = "✕"
+                    textSize = 22f
+                    setTextColor(Color.WHITE)
+                    setPadding(20, 0, 8, 0)
+                    isClickable = true
+                    setOnClickListener { dismiss() }
+                })
+            })
+
+            val hote = FrameLayout(activity).apply {
+                id = View.generateViewId()
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+            colonne.addView(hote)
+
+            if (savedInstanceState == null) {
+                childFragmentManager.beginTransaction()
+                    .replace(
+                        hote.id,
+                        if (page == PAGE_GUIDE) GuideFragment() else AboutFragment()
+                    )
+                    .commit()
+            }
+
+            return colonne
+        }
+
+        override fun onStart() {
+            super.onStart()
+            // Sans cela le dialogue s'ajuste à son contenu et laisse le fond de
+            // l'activité visible sur les bords : ces deux pages sont de la
+            // lecture longue, elles méritent tout l'écran.
+            dialog?.window?.setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            )
         }
     }
 }
