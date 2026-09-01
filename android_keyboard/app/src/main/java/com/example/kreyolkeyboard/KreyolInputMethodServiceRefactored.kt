@@ -24,6 +24,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.KeyEvent
 import kotlinx.coroutines.*
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import java.util.Timer
@@ -142,6 +143,28 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         /** Durée d'affichage du chronométrage final, une fois la dictée finie. */
         private const val FINAL_TIMING_HOLD_MS = 4000L
+
+        /** Période d'une image de l'indicateur de transcription. */
+        private const val SPINNER_PERIOD_MS = 140L
+
+        /**
+         * Images de l'indicateur posé dans le champ de saisie.
+         *
+         * Les quarts de cercle (U+25D0–U+25D3) donnent un vrai cercle qui
+         * tourne, mais ils appartiennent au bloc « formes géométriques » et
+         * rien ne garantit qu'une surcouche les couvre — un caractère manquant
+         * afficherait un rectangle vide au milieu du texte de l'utilisateur,
+         * ce qui est pire que pas d'animation du tout. On vérifie donc leur
+         * présence à l'exécution, et on retombe sur des points, qui existent
+         * partout, quand la police ne suit pas. `hasGlyph` n'existe qu'à
+         * partir d'Android 6 ; en dessous on ne prend pas le risque.
+         */
+        private val SPINNER_FRAMES: List<String> by lazy {
+            val cercles = listOf("◐", "◓", "◑", "◒")
+            val dispo = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                cercles.all { android.graphics.Paint().hasGlyph(it) }
+            if (dispo) cercles else listOf("·", "··", "···", "··")
+        }
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
@@ -267,6 +290,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * remplacé en bloc à chaque hypothèse de whisper.
      */
     private var dictationComposing = false
+    private var dictationPartial = ""
+    private val spinnerHandler = Handler(Looper.getMainLooper())
+    private var spinnerRunnable: Runnable? = null
+    private var spinnerFrame = 0
 
     /**
      * Palette avec laquelle la vue d'entrée courante a été construite.
@@ -867,15 +894,20 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * l'audio ne quitte jamais l'appareil, ce sur quoi repose la politique de
      * confidentialité publiée ; le service en ligne rompt cette garantie en
      * échange d'une qualité que le matériel mobile ne permet pas — 72 % de WER
-     * mesurés pour le modèle embarqué contre une transcription correcte,
-     * ponctuée et capitalisée en ~270 ms côté serveur.
+     * mesurés pour le modèle embarqué contre 25 % pour le service, avec
+     * ponctuation et capitalisation.
+     *
+     * Le chemin en ligne est l'API par lots `/asr2`, et non le WebSocket : à
+     * qualité et à délai final mesurés équivalents, elle décode l'énoncé d'un
+     * seul tenant et supprime toute la segmentation. Voir [LuxAsrApiSession]
+     * pour les chiffres ; [LuxAsrSession] reste sur la branche en repli.
      *
      * [USE_LUXASR_ONLINE] n'est vrai que sur la branche de démonstration
      * préparée pour le rendez-vous avec l'Université du Luxembourg, dont le
      * service demande explicitement qu'on les contacte avant toute intégration.
      */
     private fun newDictationSession(): com.example.kreyolkeyboard.stt.DictationSession =
-        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener)
+        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrApiSession(dictationListener)
         else SttSession(this, dictationListener)
 
     private val dictationListener = object : SttSession.Listener {
@@ -888,20 +920,32 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          */
         override fun onPartial(text: String) {
             val ic = currentInputConnection ?: return
+            stopDictationSpinner()
+            dictationPartial = text
             dictationComposing = true
             ic.setComposingText(text, 1)
         }
 
         override fun onFinal(text: String) {
             val ic = currentInputConnection ?: return
+            stopDictationSpinner()
             if (text.isNotEmpty()) {
                 ic.setComposingText(text, 1)
+            } else if (dictationPartial.isEmpty()) {
+                // Rien à valider et rien à garder : l'animation était le seul
+                // contenu du champ, il faut l'effacer.
+                ic.setComposingText("", 1)
+            } else {
+                // On a coupé l'animation mais le champ porte encore la dernière
+                // hypothèse suivie du glyphe : on le réécrit sans lui.
+                ic.setComposingText(dictationPartial, 1)
             }
             // Si la passe finale ne rend rien alors que des hypothèses avaient
             // été affichées, on garde la dernière plutôt que d'effacer sous les
             // yeux de l'utilisateur un texte qu'il a vu se construire.
             ic.finishComposingText()
             dictationComposing = false
+            dictationPartial = ""
         }
 
         override fun onLevel(level: Float) = applyMicLevel(level)
@@ -929,6 +973,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         override fun onStateChanged(state: SttSession.State) {
             applyMicTint(listening = state == SttSession.State.LISTENING)
+            if (state == SttSession.State.FINALIZING) startDictationSpinner()
+            else stopDictationSpinner()
             showDictationStatus(
                 when (state) {
                     // Le chargement du modèle prend jusqu'à une seconde au
@@ -950,7 +996,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
 
         override fun onError(error: SttSession.Error) {
+            stopDictationSpinner()
+            if (dictationComposing) currentInputConnection?.finishComposingText()
             dictationComposing = false
+            dictationPartial = ""
             showDictationMessage(
                 when (error) {
                     SttSession.Error.MIC_UNAVAILABLE -> R.string.stt_mic_unavailable
@@ -959,6 +1008,55 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
             )
         }
+    }
+
+    /**
+     * Petit indicateur de travail posé **dans le champ de saisie**, en texte de
+     * composition, pendant que la transcription se calcule.
+     *
+     * Il existe parce que l'API par lots ne rend rien avant la fin : entre
+     * l'arrêt du micro et le texte il s'écoule 1,7 s en médiane (mesuré sur
+     * 62 énoncés, 1,8 s au pire), pendant lesquelles le champ resterait vide et
+     * le clavier muet. Sans repère, l'utilisateur croit que son appui n'a pas
+     * été pris — c'est le même raisonnement que le bandeau « préparation », à
+     * ceci près que le regard est sur le curseur, pas sur le clavier.
+     *
+     * Le texte de composition est le bon véhicule : souligné, transitoire, et
+     * remplacé d'un bloc par la transcription quand elle arrive. Rien n'est
+     * jamais validé dans le champ.
+     *
+     * Quand des hypothèses ont déjà été affichées — c'est le cas du flux
+     * WebSocket, pas de l'API — l'indicateur se place **après** elles, pour que
+     * l'animation dise « ce n'est pas fini » plutôt que d'effacer ce que
+     * l'utilisateur a vu se construire.
+     */
+    private fun startDictationSpinner() {
+        if (spinnerRunnable != null) return
+        val ic = currentInputConnection ?: return
+        spinnerFrame = 0
+        val boucle = object : Runnable {
+            override fun run() {
+                val conn = currentInputConnection ?: return
+                val prefixe = if (dictationPartial.isEmpty()) "" else "$dictationPartial "
+                conn.setComposingText(
+                    prefixe + SPINNER_FRAMES[spinnerFrame % SPINNER_FRAMES.size], 1)
+                dictationComposing = true
+                spinnerFrame++
+                spinnerHandler.postDelayed(this, SPINNER_PERIOD_MS)
+            }
+        }
+        spinnerRunnable = boucle
+        boucle.run()
+    }
+
+    /**
+     * Retire l'animation. Ne touche pas au champ : l'appelant enchaîne toujours
+     * sur un `setComposingText` définitif ou sur un `finishComposingText`, et
+     * effacer ici ferait clignoter le champ entre les deux.
+     */
+    private fun stopDictationSpinner() {
+        spinnerRunnable?.let { spinnerHandler.removeCallbacks(it) }
+        spinnerRunnable = null
     }
 
     private fun showDictationMessage(resId: Int) {
@@ -978,6 +1076,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!session.isActive && !dictationComposing) return
 
         session.cancel()
+        stopDictationSpinner()
+        dictationPartial = ""
         if (dictationComposing) {
             currentInputConnection?.finishComposingText()
             dictationComposing = false

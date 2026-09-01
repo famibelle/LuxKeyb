@@ -70,6 +70,14 @@ class LuxAsrSession(
     @Volatile private var lastSpeechAt = 0L
     @Volatile private var noiseFloor = 0.0
 
+    // Robinet audio (voir robinet) : ouvert pendant la parole, fermé pendant
+    // les pauses. `amorce` retient les derniers blocs non émis pour que la
+    // reprise ne coupe pas l'attaque du mot suivant.
+    private var robinetOuvert = false
+    private var robinetForce = false
+    private val amorce = ArrayDeque<ByteArray>()
+    private var amorceOctets = 0
+
     override val isActive: Boolean
         get() = state == SttSession.State.LISTENING || state == SttSession.State.LOADING
     override val isBusy: Boolean
@@ -82,6 +90,10 @@ class LuxAsrSession(
         heardSpeech = false
         lastSpeechAt = 0L
         noiseFloor = 0.0
+        robinetOuvert = false
+        robinetForce = false
+        amorce.clear()
+        amorceOctets = 0
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -182,41 +194,124 @@ class LuxAsrSession(
             pcm[i * 2] = (v and 0xFF).toByte()
             pcm[i * 2 + 1] = ((v shr 8) and 0xFF).toByte()
         }
-        ws.send(pcm.toByteString())
-
         val rms = Math.sqrt(sum / chunk.size)
         val level = Math.sqrt((rms / LEVEL_FULL_SCALE).coerceIn(0.0, 1.0)).toFloat()
         main.post { listener.onLevel(level) }
 
-        detecterFinDEnonce(rms)
+        val now = SystemClock.elapsedRealtime()
+        val parle = estParole(rms)
+        for (trame in robinet(parle, now, pcm)) ws.send(trame.toByteString())
+        detecterFinDEnonce(parle, now)
+    }
+
+    /**
+     * Vrai quand ce bloc porte de la parole, selon un plancher de bruit
+     * adaptatif : il redescend d'un coup sur le silence et ne remonte que
+     * lentement, de sorte qu'une pièce bruyante relève le seuil sans qu'une
+     * voyelle tenue le fasse. Un seuil fixe fonctionnerait sur l'appareil où il
+     * a été réglé et nulle part ailleurs : le gain du micro varie d'un téléphone
+     * à l'autre, et VOICE_RECOGNITION applique en plus son propre traitement.
+     */
+    private fun estParole(rms: Double): Boolean {
+        noiseFloor = if (rms < noiseFloor) rms
+                     else noiseFloor + (rms - noiseFloor) * NOISE_RISE
+        return rms >= maxOf(SPEECH_FLOOR_RMS, noiseFloor * SPEECH_MARGIN)
+    }
+
+    /**
+     * Décide ce qui part sur le réseau. Pendant une pause, on cesse d'émettre
+     * sans fermer la session : le silence n'est jamais donné au modèle, et le
+     * contexte de la dictée est conservé.
+     *
+     * Ce que ça achète, mesuré sur banc (`stt/bench/probe_gap.py`, 3 fichiers
+     * × 5 conditions × 2 passages, 1er septembre 2026) : le découpage du service
+     * suit les échantillons reçus, pas l'horloge — sur la même fenêtre, 8 s de
+     * silence émis produisent 3 hypothèses, 8 s de flux suspendu n'en produisent
+     * aucune. Suspendre ne perd pas le contexte (36,6 % de WER contre 37,0 % en
+     * émettant le silence) et **place la frontière sur une vraie pause du
+     * locuteur**, ce qui vaut 3,5 points contre une frontière arbitraire
+     * (36,6 % contre 40,1 % sans pause). Le banc de parole enchaînée
+     * (`bench_continu.py`, 22 énoncés de 8 à 22 s) montre l'autre moitié : sur
+     * ce format, couper la session pour obtenir cette frontière ne gagnait rien
+     * en exactitude et interrompait 9 % des énoncés en pleine phrase. Le robinet
+     * donne la frontière sans l'interruption.
+     *
+     * Deux détails sans lesquels ça se retourne :
+     *
+     * - On continue d'émettre [TAP_HANGOVER_MS] après la dernière parole. Il en
+     *   faut plus que [CHUNK_SILENCE_S] pour que le service voie lui-même la
+     *   pause et close son morceau ; sans ça il garderait le dernier fragment en
+     *   attente, et les consonnes finales seraient rognées.
+     * - On garde [AMORCE_MS] d'audio non émis sous le coude. L'attaque d'un mot
+     *   passe sous le seuil avant de le franchir ; reprendre l'émission au bloc
+     *   qui déclenche coûterait la première consonne.
+     */
+    private fun robinet(parle: Boolean, now: Long, pcm: ByteArray): List<ByteArray> {
+        // Filet de sécurité : le seuil de parole n'était jusqu'ici qu'une
+        // heuristique d'arrêt, une erreur coûtait un mot ; il commande
+        // désormais l'émission, et une erreur coûterait toute la dictée. Si
+        // rien n'a franchi le seuil au bout de [FAIL_OPEN_MS] — voix faible
+        // dans une pièce bruyante, micro au gain inhabituel — on ouvre en
+        // grand pour le reste de la session : un texte imparfait vaut mieux
+        // qu'un blanc.
+        if (!robinetForce && !robinetOuvert && !heardSpeech && !parle &&
+            startedAt != 0L && now - startedAt >= FAIL_OPEN_MS) {
+            Log.w(TAG, "🚰 aucune parole détectée en $FAIL_OPEN_MS ms — robinet forcé")
+            robinetForce = true
+        }
+        if (robinetForce) return listOf(pcm)
+
+        if (parle) {
+            if (robinetOuvert) return listOf(pcm)
+            robinetOuvert = true
+            val reprise = amorce.toMutableList()
+            reprise.add(pcm)
+            amorce.clear()
+            amorceOctets = 0
+            return reprise
+        }
+
+        if (robinetOuvert) {
+            if (now - lastSpeechAt < TAP_HANGOVER_MS) return listOf(pcm)
+            robinetOuvert = false
+            Log.i(TAG, "🚰 robinet fermé, la session reste ouverte")
+            return emptyList()
+        }
+
+        amorce.addLast(pcm)
+        amorceOctets += pcm.size
+        while (amorceOctets > AMORCE_MS * OCTETS_PAR_MS) {
+            amorceOctets -= amorce.removeFirst().size
+        }
+        return emptyList()
     }
 
     /**
      * Termine l'énoncé quand la parole s'arrête, plutôt que d'attendre que
      * l'utilisateur pense à appuyer sur stop.
      *
-     * Mesuré sur téléphone le 29 août 2026, sur le même extrait rejoué au
-     * haut-parleur : couper deux secondes après la fin de la parole tronque le
-     * dernier segment (18,5 % de WER, « gestëmmt » perdu) ; laisser tourner dix
-     * secondes de silence fait **inventer** le service, qui re-segmente le blanc
-     * — « A wat dat bedo - déi Motioun gestëmmt. -6 -0, Marie -Cole. » sur un
-     * extrait qui n'en contient rien. 14,8 % de WER sur le texte utile, 40,7 %
-     * en comptant cette queue.
+     * Ce seuil ne protège plus de l'hallucination — c'est le robinet qui s'en
+     * charge, en n'envoyant pas le silence. Il ne répond plus qu'à une question
+     * d'usage : à partir de quand considère-t-on que la personne a fini. D'où un
+     * délai bien plus long qu'avant, où il fallait couper vite sous peine de
+     * laisser le service broder sur le blanc.
      *
-     * Filtrer la queue après coup n'est pas possible proprement : le service
-     * renvoie `accumulated_text`, l'énoncé entier réécrit à chaque passe, et non
-     * un segment ajouté. Refuser un suffixe supposerait de diffuser le texte par
-     * fragments et de les recoller — exactement ce que ce client évite. On coupe
-     * donc à la source : pas de silence envoyé, pas de silence à halluciner.
+     * Pour mémoire, ce que coûtait l'ancien réglage, mesuré sur téléphone le
+     * 29 août 2026 sur le même extrait rejoué au haut-parleur : couper deux
+     * secondes après la fin de la parole tronque le dernier segment (18,5 % de
+     * WER, « gestëmmt » perdu) ; laisser tourner dix secondes de silence fait
+     * **inventer** le service, qui re-segmente le blanc — « A wat dat bedo - déi
+     * Motioun gestëmmt. -6 -0, Marie -Cole. » sur un extrait qui n'en contient
+     * rien. 14,8 % de WER sur le texte utile, 40,7 % en comptant cette queue.
+     * Il n'y avait pas de bon réglage entre les deux ; il y avait un robinet.
      *
-     * Le compromis assumé : une pause de plus de [SILENCE_HANGOVER_MS] termine
-     * la dictée. C'est le comportement de toutes les dictées de téléphone, et il
-     * vaut mieux que l'alternative — l'utilisateur doit sinon viser une fenêtre
-     * entre « trop tôt, la fin manque » et « trop tard, le service brode ».
+     * Filtrer la queue après coup n'est toujours pas possible proprement : le
+     * service renvoie `accumulated_text`, l'énoncé entier réécrit à chaque
+     * passe, et non un segment ajouté. Refuser un suffixe supposerait de
+     * diffuser le texte par fragments et de les recoller — exactement ce que ce
+     * client évite.
      */
-    private fun detecterFinDEnonce(rms: Double) {
-        val now = SystemClock.elapsedRealtime()
-
+    private fun detecterFinDEnonce(parle: Boolean, now: Long) {
         // Garde-fou de durée : si le seuil ne se déclenche jamais — pièce
         // bruyante, micro qui souffle — on ne diffuse pas indéfiniment l'audio
         // d'un utilisateur vers un service tiers.
@@ -226,17 +321,7 @@ class LuxAsrSession(
             return
         }
 
-        // Plancher de bruit adaptatif : il redescend d'un coup sur le silence et
-        // ne remonte que lentement, de sorte qu'une pièce bruyante relève le
-        // seuil sans qu'une voyelle tenue le fasse. Un seuil fixe fonctionnerait
-        // sur l'appareil où il a été réglé et nulle part ailleurs : le gain du
-        // micro varie d'un téléphone à l'autre, et VOICE_RECOGNITION applique
-        // en plus son propre traitement.
-        noiseFloor = if (rms < noiseFloor) rms
-                     else noiseFloor + (rms - noiseFloor) * NOISE_RISE
-        val seuil = maxOf(SPEECH_FLOOR_RMS, noiseFloor * SPEECH_MARGIN)
-
-        if (rms >= seuil) {
+        if (parle) {
             heardSpeech = true
             lastSpeechAt = now
             return
@@ -297,7 +382,13 @@ class LuxAsrSession(
         main.post { listener.onStateChanged(next) }
     }
 
-    private companion object {
+    /**
+     * Réglages de la détection de parole. Publics parce que
+     * [LuxAsrApiSession], qui est aujourd'hui le chemin en ligne retenu, s'en
+     * sert aussi : ce sont les mêmes seuils, calibrés sur les mêmes mesures, et
+     * les dupliquer garantirait qu'ils divergent au premier réglage.
+     */
+    companion object {
         const val TAG = "LuxAsrSession"
 
         /**
@@ -364,12 +455,39 @@ class LuxAsrSession(
         const val CHUNK_MAX_S = 30.0
 
         /**
-         * Silence qui termine l'énoncé. Assez long pour survivre à une
-         * respiration ou à une pause entre deux propositions, assez court pour
-         * ne pas laisser au service de quoi broder — dix secondes de blanc
-         * suffisaient à lui faire inventer une phrase entière.
+         * Silence qui termine la dictée. Cinq secondes, là où il fallait couper
+         * à 1,5 s avant le robinet : le silence n'étant plus émis, l'attendre ne
+         * coûte plus rien au texte. Le banc de parole enchaînée du
+         * 1er septembre 2026 montrait qu'à 1,5 s, 9 % des énoncés de une à trois
+         * phrases étaient coupés en pleine phrase — sans le moindre gain
+         * d'exactitude en échange.
          */
-        const val SILENCE_HANGOVER_MS = 1_500L
+        const val SILENCE_HANGOVER_MS = 5_000L
+
+        /**
+         * Émission maintenue après la dernière parole, avant de fermer le
+         * robinet. Doit dépasser [CHUNK_SILENCE_S] pour que le service voie
+         * lui-même la pause et close son morceau plutôt que de retenir le
+         * dernier fragment.
+         */
+        const val TAP_HANGOVER_MS = 700L
+
+        /**
+         * Audio retenu pendant que le robinet est fermé, réémis à la reprise :
+         * l'attaque d'un mot passe sous le seuil avant de le franchir.
+         */
+        const val AMORCE_MS = 400L
+
+        /**
+         * Délai au bout duquel un robinet qui n'a jamais vu de parole s'ouvre
+         * en grand. Plus long que le temps de réaction d'un utilisateur qui
+         * vient d'appuyer sur le micro, sinon le filet se déclencherait à
+         * chaque hésitation.
+         */
+        const val FAIL_OPEN_MS = 4_000L
+
+        /** PCM 16 bits à 16 kHz : deux octets par échantillon. */
+        const val OCTETS_PAR_MS = 32
 
         /**
          * Plancher absolu sous lequel aucune énergie n'est prise pour de la
