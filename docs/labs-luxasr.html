@@ -136,9 +136,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <p>
       C'est l'inverse exact de la <a href="labs.html">version Labs</a>, dont
       tout l'argument est que rien ne sort de l'appareil. Ici, l'application
-      demande la permission <strong>Internet</strong> et transmet le son
-      capté par le micro à <code>luxasr.uni.lu</code>, en direct, pendant que
-      vous parlez.
+      demande la permission <strong>Internet</strong> et envoie à
+      <code>luxasr.uni.lu</code> l'enregistrement de ce que vous venez de dire,
+      dès que vous avez fini de parler.
     </p>
     <p>
       N'y dictez donc rien de confidentiel. Le traitement des enregistrements
@@ -230,68 +230,43 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2 id="deroule">Ce qui se passe quand on appuie sur le micro</h2>
 
   <p>
-    Le déroulé ci-dessous n'est pas une intention : il est mesuré sur un
-    téléphone d'entrée de gamme en wifi, sur dix-neuf énoncés d'un corpus de
-    conférences de presse rejoués devant son micro.
+    Le déroulé ci-dessous n'est pas une intention : il est mesuré sur vingt-deux
+    énoncés d'un corpus de conférences de presse, d'une à trois phrases, de huit
+    à vingt et une secondes.
   </p>
 
   <ol class="tl">
     <li>
       <span class="t">à l'appui</span>
       <span class="d">
-        <strong>La barre de suggestions laisse place à un bandeau</strong>
+        <strong>Le micro s'ouvre et se met à battre</strong>
         <p>
-          Il affiche <strong>🌐 LuxASR verbannen…</strong> — « connexion ». Le
-          globe est là à chaque étape, exprès : on ne doit jamais pouvoir
-          confondre cette version avec celle qui reconnaît dans le téléphone.
-        </p>
-      </span>
-    </li>
-    <li>
-      <span class="t">+ 0,2 s</span>
-      <span class="d">
-        <strong>Le micro s'ouvre, et se met à battre</strong>
-        <p>
-          Le bandeau passe à <strong>🌐 LuxASR · Schwätzt…</strong> — « parlez ».
-          Le micro change de couleur, passe en pleine opacité et pulse au rythme
-          de la voix captée. C'est le seul retour réellement immédiat : sans lui,
-          pendant plusieurs secondes, rien ne distinguerait un micro qui
-          enregistre d'un micro mort.
+          La barre de suggestions laisse place à un bandeau
+          <strong>🌐 LuxASR · Schwätzt…</strong> — « parlez ». Le globe est là à
+          chaque étape, exprès : on ne doit jamais pouvoir confondre cette
+          version avec celle qui reconnaît dans le téléphone.
         </p>
         <p>
-          Le micro ne s'ouvre qu'<em>après</em> la connexion, jamais avant :
-          capter pendant que la liaison s'établit enregistrerait un début de
-          phrase que le service ne verrait jamais, et qu'on croirait pourtant
-          dicté.
-        </p>
-      </span>
-    </li>
-    <li>
-      <span class="t">≈ 4 s</span>
-      <span class="d">
-        <strong>Les premiers mots apparaissent</strong>
-        <p>
-          Quatre secondes et trois dixièmes après le début de la phrase, en
-          médiane. Sur <strong>treize énoncés sur dix-neuf</strong>, le texte
-          arrive avant qu'on ait fini de parler. Il est souligné : il n'est pas
-          encore acquis.
+          Le micro change de couleur et pulse au rythme de la voix captée. C'est
+          le seul retour immédiat, et il compte plus qu'avant : rien ne
+          s'affichera dans le champ avant que vous ayez fini.
         </p>
       </span>
     </li>
     <li>
       <span class="t">pendant</span>
       <span class="d">
-        <strong>Le texte se réécrit sous les yeux</strong>
+        <strong>Le champ reste vide</strong>
         <p>
-          Chaque nouvelle hypothèse ne s'ajoute pas au bout : elle remplace la
-          phrase entière. Des mots déjà affichés peuvent donc changer quand la
-          suite lève une ambiguïté. Sur un énoncé de quinze secondes, cela s'est
-          produit sept fois.
+          C'est un choix, et c'est le changement principal de cette version.
+          L'énoncé n'est plus découpé et envoyé au fil de la parole ; il est
+          enregistré en entier, puis transcrit d'un seul tenant.
         </p>
         <p>
-          Ce n'est pas le défilement tranquille d'un iPhone, dont le moteur émet
-          un mot et n'y revient plus. Ici la phrase respire, hésite et se
-          corrige — c'est ce que sait faire un modèle qui redécode par morceaux.
+          On y perd le texte qui se construit sous les yeux. On y gagne
+          <strong>onze points et demi de justesse</strong> — 26,8 % de mots
+          erronés contre 38,3 % — parce que le modèle voit la phrase complète au
+          lieu de deviner à chaque morceau où elle se coupe.
         </p>
       </span>
     </li>
@@ -300,22 +275,26 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <span class="d">
         <strong>La dictée se ferme d'elle-même</strong>
         <p>
-          Une seconde et demie de silence suffit. Le seuil s'adapte au bruit de
-          la pièce. Retoucher le micro fait la même chose immédiatement, mais ce
-          n'est pas nécessaire.
+          Cinq secondes de silence suffisent, et le seuil s'adapte au bruit de la
+          pièce. Retoucher le micro fait la même chose immédiatement. Le silence
+          qui entoure la phrase n'est pas envoyé : les modèles de cette famille
+          inventent du texte quand on leur donne du blanc.
         </p>
       </span>
     </li>
     <li>
-      <span class="t">+ 1,5 s</span>
+      <span class="t">+ 1,3 s</span>
       <span class="d">
-        <strong>Le texte se fige</strong>
+        <strong>Un petit cercle tourne dans le champ, puis le texte le remplace</strong>
         <p>
-          Le bandeau passe à <strong>🌐 LuxASR · Transkriptioun…</strong>, puis le
-          texte perd son soulignement : il est acquis, et les suggestions
-          reviennent. L'essentiel de cette seconde et demie est notre propre
-          attente de silence — le service, lui, rend son dernier morceau en six
-          dixièmes de seconde.
+          Le témoin est posé là où le texte va atterrir, souligné comme lui : il
+          dit que quelque chose travaille. Une seconde et trois dixièmes en
+          médiane, deux et un dixième au pire, sur vingt-deux énoncés.
+        </p>
+        <p>
+          Ce délai ne s'allonge pas avec la longueur de la dictée : il vaut
+          environ un dixième de la durée de ce qu'on a dit. Puis le texte perd
+          son soulignement, il est acquis, et les suggestions reviennent.
         </p>
       </span>
     </li>
@@ -324,9 +303,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="card">
     <h3>Trois choses qui surprennent</h3>
     <p>
-      <strong>Le texte se corrige en arrière.</strong> C'est normal et c'est le
-      prix du procédé : mieux vaut une phrase qui se rectifie qu'une phrase
-      fausse figée dès le premier mot.
+      <strong>Rien ne s'affiche pendant qu'on parle.</strong> C'est déroutant
+      quand on vient d'un clavier qui écrit au fil de la voix, et c'est assumé :
+      la version qui affichait en direct se trompait d'un tiers plus souvent.
     </p>
     <p>
       <strong>Les énoncés très courts peuvent ne rien rendre.</strong> Une phrase
@@ -375,7 +354,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Où va la voix</th>
           <td class="good">Nulle part : aucune permission réseau</td>
-          <td>À <code>luxasr.uni.lu</code>, en direct</td>
+          <td>À <code>luxasr.uni.lu</code>, à la fin de chaque dictée</td>
         </tr>
         <tr>
           <th scope="row">Sans connexion</th>
@@ -385,9 +364,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Justesse</th>
           <td>72 % de mots erronés sur notre corpus d'essai</td>
-          <td class="good">34 % de mots erronés à travers le micro du
-            téléphone, 26 % en interrogeant le service directement — et 11 % à
-            15 % sur un extrait lu proprement</td>
+          <td class="good">26,8 % de mots erronés sur des dictées d'une à trois
+            phrases, en interrogeant le service directement — et 11 % à 15 % sur
+            un extrait lu proprement</td>
         </tr>
         <tr>
           <th scope="row">Ponctuation, majuscules</th>
@@ -398,9 +377,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <th scope="row">Délai</th>
           <td>≈ 6 s par passe sur un téléphone ancien,
             quelle que soit la longueur de la phrase</td>
-          <td class="good">Premiers mots ≈ 4,3 s après le début de la phrase,
-            texte figé ≈ 1,5 s après la dernière syllabe — mesurés sur téléphone
-            en wifi</td>
+          <td class="good">Rien pendant qu'on parle, puis le texte entier
+            ≈ 1,3 s après la dernière syllabe — 2,1 s au pire, et le délai ne
+            grandit pas avec la longueur de la dictée</td>
         </tr>
         <tr>
           <th scope="row">Taille de l'application</th>
@@ -424,13 +403,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </p>
 
   <p class="muted">
-    Les chiffres en regard viennent d'un banc passé le 30 août 2026, et
-    l'écart entre eux dit où se perd la qualité. Interrogé directement, sans
-    micro ni haut-parleur, le service se trompe sur <strong>26 % des
-    mots</strong> de soixante-deux énoncés. Les mêmes énoncés rejoués au
-    haut-parleur devant le micro d'un téléphone montent à <strong>34 %</strong> :
-    l'écart, quatre points en médiane, est le prix de la chaîne acoustique, pas
-    celui du service.
+    Les chiffres en regard viennent d'un banc passé le 1<sup>er</sup> septembre
+    2026 sur vingt-deux dictées d'une à trois phrases, découpées aux pauses du
+    locuteur, huit à vingt et une secondes. Interrogé directement, sans micro ni
+    haut-parleur, le service se trompe sur <strong>26,8 % des mots</strong>. La
+    même mesure sur la version qui transcrivait au fil de la parole donnait
+    <strong>38,3 %</strong> : l'écart est le prix du découpage, pas celui du
+    service. Un banc antérieur, sur des tranches plus courtes, a montré que
+    rejouer au haut-parleur devant le micro d'un téléphone coûte encore quatre
+    points en médiane — la chaîne acoustique, cette fois. La mesure équivalente
+    sur cette version reste à faire.
   </p>
 
   <p class="muted">
@@ -448,22 +430,28 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="card">
     <h3>Comment ça marche, techniquement</h3>
     <p>
-      L'application ouvre une connexion WebSocket vers le service, y pousse
-      l'audio du micro en PCM 16 bits à 16 kHz au fil de la capture, et remplace
-      le texte en composition à chaque hypothèse reçue. Le texte se corrige donc
-      sous les yeux pendant qu'on parle, et se fige au relâchement du micro.
-      Aucun enregistrement n'est conservé sur le téléphone.
+      L'application enregistre l'énoncé en PCM 16 bits à 16 kHz, rogne le silence
+      qui l'entoure, puis l'envoie d'un bloc au service, qui le met en file et le
+      transcrit. Le clavier interroge le travail cinq fois par seconde et insère
+      le texte quand il arrive. Aucun enregistrement n'est conservé sur le
+      téléphone.
     </p>
     <p>
-      Le rythme auquel les mots apparaissent ne se décide pas dans le clavier :
-      le service ne transcrit que lorsqu'il a mis assez d'audio de côté. Son
-      réglage d'origine — cinq secondes, ou une pause de huit dixièmes — ne
-      produisait qu'une seule transcription sur une phrase de longueur courante,
-      donc rien avant la fin. La démonstration lui demande de descendre à deux
-      secondes, ce qui fait passer le texte apparu en cours de parole de six
-      énoncés sur dix-neuf à treize. Le prix est une exactitude un peu plus
-      variable : la moitié des phrases est inchangée, quelques-unes se dégradent
-      nettement quand la coupure tombe au milieu d'un mot.
+      Une version précédente poussait l'audio en continu sur une connexion
+      WebSocket et réécrivait le texte à chaque hypothèse reçue. Elle a été
+      abandonnée pour une raison mesurée. Les deux points d'entrée servent le
+      même modèle — sur soixante-deux énoncés, quarante-trois transcriptions sont
+      identiques au caractère près — mais le découpage en direct oblige à décider
+      où la phrase s'arrête, et une pause n'est pas une fin de phrase. Sur des
+      dictées d'une à trois phrases, décider vaut onze points et demi de mots
+      erronés. Le délai final, lui, ne change pas.
+    </p>
+    <p>
+      Le silence n'est pas envoyé, et ce n'est pas une économie de données : les
+      modèles de cette famille inventent du texte quand on leur en donne. Un
+      énoncé laissé tourner quatre-vingt-dix secondes, dont trente de salle
+      vide, a rendu deux cent soixante-dix mots pour cent quatre-vingt-douze
+      réellement prononcés.
     </p>
   </div>
 </section>
@@ -473,7 +461,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <ul class="facts">
     <li><span class="k">Ce que c'est</span><span class="v">Une démonstration technique, pas un produit</span></li>
     <li><span class="k">Reconnaissance</span><span class="v">Service LuxASR, Université du Luxembourg</span></li>
-    <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, en direct</span></li>
+    <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, à la fin de chaque dictée</span></li>
     <li><span class="k">Connexion</span><span class="v">Indispensable, y compris pour dicter</span></li>
     <li><span class="k">Taille</span><span class="v">6,2 Mo — le modèle de reconnaissance
       de 31 Mo est retiré du paquet, la reconnaissance étant distante</span></li>
