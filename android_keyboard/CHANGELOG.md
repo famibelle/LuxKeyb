@@ -18,8 +18,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   résultat, dont une seule est du luxembourgeois correct. L'exercice est un
   transcodage : passer du chiffre à la lettre. `Zuelwuert` est le mot du LOD
   pour « numéral », littéralement le mot-nombre.
-- **Les leurres sont les fautes qu'on fait vraiment**, et le jeu dit laquelle
-  après coup plutôt que d'afficher un carré rouge : l'allemand
+- **Les leurres sont les fautes qu'on fait vraiment.** Le jeu dit laquelle
+  après coup, plutôt que d'afficher un carré rouge : l'allemand
   (« sechsundfünfzig »), les chiffres lus à l'envers (« sechsandrësseg », qui
   vaut 36), le trait d'union et l'espace (« sechsa-fofzeg », « sechs a
   fofzeg »), la finale -ig de l'allemand là où le luxembourgeois écrit -eg, un
@@ -31,8 +31,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   sont tirés ; en Normal seuls les nombres composés sortent ; en Difficile les
   leurres deviennent des paires minimales et **le produit n'est plus affiché**,
   il faut le calculer avant de l'écrire.
-- **Les 101 orthographes ont été vérifiées une à une contre le LOD**
-  (Lëtzebuerger Online Dictionnaire, ZLS, CC0), dans les deux sens : aucune
+- **Les 101 orthographes ont été vérifiées une à une contre le LOD.**
+  Lëtzebuerger Online Dictionnaire, ZLS, CC0 — dans les deux sens : aucune
   forme produite par le jeu n'est absente des graphies que le LOD suggère, et
   aucune graphie composée que le LOD suggère n'échappe à la liste des variantes
   acceptées — celle qui interdit de proposer « siechzeg » en face de
