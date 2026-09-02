@@ -9,6 +9,35 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.26.0] - 2026-09-02
+
+### ✨ Ajouté
+
+- **Le clavier connaît 123 265 formes au lieu de 38 410.** Des locuteurs
+  luxembourgeois ont signalé des mots manquants : ils avaient raison, et la
+  cause était structurelle. Le corpus est fait d'articles de RTL.lu, qui
+  n'écrivent jamais ce qu'on tape sur un téléphone — « Läffelen »,
+  « Forschetten », « Telleren », « Mounden », « sprang », « denks »,
+  « schaffesch » n'y figuraient pas. Le Lëtzebuerger Online Dictionnaire, lui,
+  les atteste : ses 84 855 formes absentes du corpus complètent désormais la
+  saisie.
+- **Le correcteur reconnaît en plus 26 424 variantes de la règle d'Eifel**
+  (« Ae » pour « Aen » devant consonne). Elles sont correctes en contexte : les
+  souligner en rouge était un défaut. Elles ne sont jamais proposées pour
+  autant.
+- **L'onglet Wierderbuch cherche dans 88 852 mots au lieu de 20 604.** Les
+  formes apportées par le LOD sont glosées comme les autres.
+
+### 🔧 Modifié
+
+- **Les jeux et la progression ne bougent pas.** Les formes du LOD vivent dans
+  un actif séparé du dictionnaire de fréquences : les trois jeux gardent
+  exactement les mêmes réserves, et les huit paliers de « Mäi Lëtzebuergesch »
+  restent calculés sur le vocabulaire du corpus — personne ne recule d'un rang.
+- **Le correcteur orthographique répond en temps constant.** Il parcourait la
+  liste entière des formes pour chaque mot examiné ; la correction
+  orthographique, elle, allouait deux copies du dictionnaire par recours.
+
 ## [10.25.0] - 2026-09-02
 
 ### 🔧 Modifié
