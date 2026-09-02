@@ -144,9 +144,11 @@ messagerie.
 
 Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
 **Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
-utilisée. Trois jeux de vocabulaire complètent le parcours : **Wuertsich**
-(mots mêlés), **Wuertmix** (mots mélangés) et **Wuertriet**, où il faut deviner
-un mot de cinq lettres en six essais.
+utilisée. Cinq jeux complètent le parcours : **Wuertsich** (mots mêlés),
+**Wuertmix** (mots mélangés), **Wuertriet**, où il faut deviner un mot de cinq
+lettres en six essais, **Wuertlück**, une phrase luxembourgeoise authentique à
+laquelle il manque un mot, et **Zuelwuert**, où l'on écrit en toutes lettres le
+résultat d'une multiplication.
 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
@@ -201,7 +203,7 @@ depuis 2013, sans prédiction du mot suivant.
 | Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
 | Aucun accès à Internet | **Oui** | Non | Non | Oui | Oui |
 | Code ouvert | **Oui**, MIT | Non | Non | Oui | Oui |
-| Jeux et progression | **Oui**, 3 jeux, 8 niveaux | Non | Non | Non | Non |
+| Jeux et progression | **Oui**, 5 jeux, 8 niveaux | Non | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Bibliothèque à ajouter | Gestes |
 | Dictée vocale | Non | Oui | Oui | Non | Non |
 | Thème sombre | Non | Oui | Oui | Oui | Oui |
@@ -335,8 +337,8 @@ Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
 
 Android affiche au passage un avertissement générique, montré pour **tout**
 clavier tiers, sur la capture éventuelle de ce que vous tapez. Il est normal, et
-l'onglet Guide de l'application explique pourquoi ce clavier-ci ne peut rien
-envoyer nulle part.
+le guide de l'application, au bas de l'onglet Démarrage, explique pourquoi ce
+clavier-ci ne peut rien envoyer nulle part.
 
 ## Contribuer
 

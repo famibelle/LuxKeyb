@@ -49,7 +49,7 @@ marché**. Ce qu'il ne fait pas, c'est traiter le lëtzebuergesch comme une lang
 | Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Frappe embarquée |
 | Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
 | Code ouvert | **Oui**, MIT | Non | Non |
-| Jeux et progression | **Oui**, 3 jeux et 8 niveaux | Non | Non |
+| Jeux et progression | **Oui**, 5 jeux et 8 niveaux | Non | Non |
 | Saisie glissée | Non | Oui | Oui |
 | Dictée vocale | Non (celle du système reste accessible) | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Partiellement |

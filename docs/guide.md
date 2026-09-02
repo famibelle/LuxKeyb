@@ -154,9 +154,14 @@ visible dans l'onglet **« Mäi Lëtzebuergesch »**. Huit niveaux jalonnent le
 parcours, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire
 que vous avez déjà utilisée. Vous pouvez partager votre carte de niveau.
 
-Trois jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
-**Wuertmix** (remettre des lettres dans l'ordre contre la montre) et
-**Wuertriet** (deviner un mot de cinq lettres en six essais).
+Quatre jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
+**Wuertmix** (remettre des lettres dans l'ordre contre la montre),
+**Wuertriet** (deviner un mot de cinq lettres en six essais) et **Wuertlück**
+(retrouver le mot qui manque à une phrase luxembourgeoise authentique). Un
+cinquième, **Zuelwuert**, ne puise nulle part : il pose une multiplication et
+fait choisir la bonne orthographe de son résultat, « sechsafofzeg » pour 56.
+
+Les cinq sont réunis derrière l'onglet **« Spiller »**.
 
 ## Questions fréquentes
 
