@@ -9,6 +9,31 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.24.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **La neutralité s'étend aux partis et au registre qui choque.** Aux
+  quatre-vingt-quinze formes religieuses de la 10.23.0 s'ajoutent les sigles et
+  les étiquettes idéologiques (CSV, LSAP, DP, ADR, Piraten, racisme, fascisme,
+  extrémisme, populisme, antisémitisme) et un registre que l'application n'a pas
+  à proposer dans un jeu : avortement, viol, prostitution, pédophilie, drogues
+  dures, meurtre, suicide, terrorisme. Cent quatre-vingt-deux formes en tout,
+  soit 0,29 % des occurrences du corpus.
+- **Le critère est la posture, pas le thème.** Est écarté ce qui prend parti ou
+  ce qui choque, pas ce qui parle du monde : « Regierung », « Minister »,
+  « Chamber », « Wahlen », « Partei », « Police », « Geriicht », « Prisong »,
+  « Krich », « Waff », « Doud », « Spidol », « Kriibs » restent proposés. Ce
+  sont des mots dont un apprenant a besoin, et les retirer aurait vidé les jeux
+  sans rien régler.
+- **Les phrases de Wuertlück profitent de la même liste.** Une phrase de dépêche
+  parle souvent d'autre chose que du mot à trouver, et une sur trois nommait un
+  député par son parti. Le jeu conserve 1 529 phrases sur 1 600, réparties
+  372 / 647 / 510 sur les trois niveaux.
+- **Rien de tout cela ne touche la saisie**, comme en 10.23.0 : ces mots restent
+  dans le dictionnaire, dans les suggestions, dans le correcteur et dans la
+  recherche du Wierderbuch.
+
 ## [10.23.0] - 2026-09-02
 
 ### 🔧 Modifié
