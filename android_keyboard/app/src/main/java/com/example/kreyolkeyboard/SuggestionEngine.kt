@@ -124,6 +124,38 @@ class SuggestionEngine(private val context: Context) {
          */
         internal const val NGRAM_CONTEXT_WEIGHT = 150_000.0
 
+        /**
+         * Formes attestées par le LOD et absentes du relevé de fréquences.
+         *
+         * Le corpus est du journalisme RTL : il n'écrit jamais ce qu'on tape
+         * sur un téléphone. « Läffelen », « Forschetten », « sprang »,
+         * « denks », « schaffesch » manquaient tous, alors que le
+         * Lëtzebuerger Online Dictionnaire les atteste. L'actif apporte
+         * ~85 000 formes proposables et ~26 000 connues du seul correcteur,
+         * soit 38 410 → 123 265 formes reconnues à la frappe.
+         *
+         * Il est délibérément SÉPARÉ de luxemburgish_dict.json, qui reste un
+         * relevé de fréquences corpus : les jeux, le mot du jour et surtout
+         * LuxLevels — qui calcule ses huit paliers en pourcentage de la taille
+         * du dictionnaire — le lisent et feraient reculer d'un cran tous les
+         * joueurs si on y versait trois fois plus de formes sans fréquence.
+         * Voir Dictionnaires/generate_lod_forms.py.
+         */
+        private const val LOD_FORMS_ASSET = "luxemburgish_lod_forms.json"
+
+        /**
+         * Fréquence attribuée à une forme venue du LOD.
+         *
+         * Le corpus, lui, ne retient rien sous SEUIL_FREQUENCE_DICO = 3 : la
+         * valeur 1 est donc un marqueur sans ambiguïté autant qu'un poids. Ces
+         * formes se rangent en queue du classement par fréquence, là où
+         * getDictionarySuggestions() ne va les chercher que si moins de
+         * CANDIDATE_POOL_SIZE mots du corpus partagent le préfixe tapé —
+         * autrement dit elles complètent les préfixes rares sans rien changer
+         * à la frappe courante.
+         */
+        internal const val LOD_FREQUENCY = 1
+
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
@@ -319,7 +351,11 @@ class SuggestionEngine(private val context: Context) {
             return if (attendu == word) null else attendu
         }
 
-        internal fun isWordKnown(word: String, normalizedWords: List<String>): Boolean {
+        // `Collection` et non `List` : le moteur passe désormais un Set, dont
+        // le `contains` est en temps constant. Avec 123 265 formes chargées, le
+        // parcours linéaire d'une List coûtait au correcteur un balayage
+        // complet du dictionnaire par mot examiné.
+        internal fun isWordKnown(word: String, normalizedWords: Collection<String>): Boolean {
             if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
             return normalizedWords.contains(AccentTolerantMatcher.normalize(word))
         }
@@ -330,6 +366,15 @@ class SuggestionEngine(private val context: Context) {
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
+    // Même contenu que `normalizedWords`, en table de hachage : le correcteur
+    // orthographique interroge forme par forme et ne peut pas balayer une liste
+    // de 123 000 entrées à chaque mot.
+    private var normalizedWordSet: Set<String> = emptySet()
+    // Formes correctes que le clavier ne PROPOSE pas mais ne doit pas souligner :
+    // les variantes de la règle d'Eifel du LOD (« Ae » pour « Aen » devant
+    // consonne). Elles n'entrent pas dans `dictionary`, donc ni dans la
+    // complétion ni dans les corrections offertes.
+    private var extraKnownForms: Set<String> = emptySet()
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
 
@@ -789,7 +834,9 @@ class SuggestionEngine(private val context: Context) {
      * souligné comme faute par le correcteur orthographique système.
      */
     fun isKnownWord(word: String): Boolean {
-        if (isWordKnown(word, normalizedWords)) return true
+        if (isWordKnown(word, normalizedWordSet)) return true
+        // Second palier : correct, mais jamais proposé. Voir [extraKnownForms].
+        if (extraKnownForms.contains(AccentTolerantMatcher.normalize(word))) return true
         return ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
     }
 
@@ -824,15 +871,32 @@ class SuggestionEngine(private val context: Context) {
                 loadedDictionary.add(Pair(word, frequency))
             }
             
-            // Trier par fréquence décroissante
-            dictionary = loadedDictionary.sortedByDescending { it.second }
+            // Trier par fréquence décroissante. Les formes du LOD arrivent
+            // ensuite, à LOD_FREQUENCY = 1 : elles se rangent donc toutes après
+            // les mots du corpus, dont aucun ne descend sous 3
+            // (SEUIL_FREQUENCE_DICO). Le classement reste strictement
+            // décroissant, ce dont dépend la fenêtre CANDIDATE_POOL_SIZE de
+            // getDictionarySuggestions().
+            val corpusWords = loadedDictionary.sortedByDescending { it.second }
+            val lodForms = loadLodForms()
+
+            dictionary = corpusWords + lodForms.first.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+            normalizedWordSet = normalizedWords.toHashSet()
+            extraKnownForms = lodForms.second.mapTo(HashSet(lodForms.second.size)) {
+                AccentTolerantMatcher.normalize(it)
+            }
 
             withContext(Dispatchers.Main) {
-                suggestionListener?.onDictionaryLoaded(dictionary.size)
+                // Le compte annoncé reste celui du corpus : c'est lui que
+                // LuxLevels utilise comme dénominateur des paliers, et un
+                // dictionnaire qui triple ferait reculer tous les joueurs.
+                suggestionListener?.onDictionaryLoaded(corpusWords.size)
             }
             
-            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+            Log.d(TAG, "Dictionnaire chargé: ${corpusWords.size} mots du corpus "
+                    + "+ ${lodForms.first.size} formes LOD proposables "
+                    + "+ ${lodForms.second.size} connues du seul correcteur")
 
         } catch (e: Exception) {
             // Pas seulement IOException : un format inattendu (ex. objet {mot: fréquence}
@@ -843,6 +907,35 @@ class SuggestionEngine(private val context: Context) {
         }
     }
     
+    /**
+     * Lit [LOD_FORMS_ASSET] : (formes proposables, formes seulement connues).
+     *
+     * L'actif manquant n'est pas une erreur — le clavier retombe simplement sur
+     * la couverture du corpus, comme avant. On journalise et on continue,
+     * plutôt que de laisser une exception vider le dictionnaire entier.
+     */
+    private fun loadLodForms(): Pair<List<String>, List<String>> {
+        return try {
+            val jsonString = context.assets.open(LOD_FORMS_ASSET)
+                .bufferedReader().use { it.readText() }
+            val racine = JSONObject(jsonString)
+            Pair(lireTableau(racine, "suggest"), lireTableau(racine, "spellcheck"))
+        } catch (e: Exception) {
+            Log.w(TAG, "Formes LOD indisponibles (${e.message}) : "
+                    + "couverture limitée au corpus")
+            Pair(emptyList(), emptyList())
+        }
+    }
+
+    private fun lireTableau(racine: JSONObject, cle: String): List<String> {
+        val tableau = racine.optJSONArray(cle) ?: return emptyList()
+        val formes = ArrayList<String>(tableau.length())
+        for (i in 0 until tableau.length()) {
+            tableau.optString(i, "").takeIf { it.isNotEmpty() }?.let { formes.add(it) }
+        }
+        return formes
+    }
+
     /**
      * Charge le modèle N-gram depuis les assets
      */

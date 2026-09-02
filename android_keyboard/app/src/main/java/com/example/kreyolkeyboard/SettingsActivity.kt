@@ -2220,8 +2220,9 @@ class SettingsActivity : AppCompatActivity() {
                     "Le premier apporte le vocabulaire et l'enchaînement des " +
                     "mots, le second la langue de tous les jours.\n\n" +
                     "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu) — Zenter fir " +
-                    "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Les traductions " +
-                    "françaises affichées dans les jeux en sont tirées."
+                    "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
+                    "traductions françaises et 85 000 formes que la presse " +
+                    "n'écrit jamais."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)

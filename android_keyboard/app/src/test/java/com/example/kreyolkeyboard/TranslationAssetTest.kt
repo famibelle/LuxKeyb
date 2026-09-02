@@ -83,10 +83,21 @@ class TranslationAssetTest {
         val table = charger().getJSONObject("translations")
         assertTrue("table quasi vide : ${table.length()} entrées", table.length() >= 15000)
 
+        // Le comptage se restreint aux formes du dictionnaire : les trois jeux
+        // tirent leurs mots de `luxemburgish_dict.json`, et non des formes que
+        // le LOD ajoute pour la seule complétion. Compter la table entière
+        // annoncerait une réserve cinq fois plus large que celle qu'ils voient.
+        val duDictionnaire = dictionnaire().let { tableau ->
+            (0 until tableau.length())
+                .map { tableau.getJSONArray(it).getString(0) }
+                .toHashSet()
+        }
+
         var wuertsich = 0   // grille 8x8 : 3 à 8 lettres
         var wuertmix = 0    // lettres mélangées : 4 à 10 lettres
         var wuertriet = 0   // wordle luxembourgeois : exactement 5 lettres
         for (forme in table.keys()) {
+            if (forme !in duDictionnaire) continue
             if (!instructive(forme, table.getString(forme))) continue
             if (forme.length in 3..8) wuertsich++
             if (forme.length in 4..10) wuertmix++
@@ -102,19 +113,27 @@ class TranslationAssetTest {
     }
 
     @Test
-    fun `les cles sont des formes du dictionnaire livre`() {
+    fun `les cles sont des formes que le clavier connait`() {
         val table = charger().getJSONObject("translations")
         val formes = dictionnaire().let { tableau ->
             (0 until tableau.length())
                 .map { tableau.getJSONArray(it).getString(0) }
                 .toHashSet()
         }
+        // Depuis 2026-09-02 la table glose aussi ce que le LOD apporte au
+        // clavier par-dessus le corpus, sinon l'onglet Wierderbuch chercherait
+        // dans 38 000 mots pendant que la complétion en connaît 123 000.
+        val fichierLod = File("src/main/assets/luxemburgish_lod_forms.json")
+        if (fichierLod.exists()) {
+            val suggest = JSONObject(fichierLod.readText()).getJSONArray("suggest")
+            (0 until suggest.length()).forEach { formes.add(suggest.getString(it)) }
+        }
 
         val intruses = table.keys().asSequence().filterNot { formes.contains(it) }.take(5).toList()
-        // Le script n'écrit que des formes lues dans le dictionnaire : une seule
-        // intruse signale que les deux actifs ont été régénérés séparément.
+        // Le script n'écrit que des formes lues dans l'un des deux actifs : une
+        // seule intruse signale qu'ils ont été régénérés séparément.
         assertTrue(
-            "clés absentes du dictionnaire : $intruses",
+            "clés absentes du dictionnaire et des formes LOD : $intruses",
             intruses.isEmpty()
         )
     }

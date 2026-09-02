@@ -51,15 +51,14 @@ Fait avec ❤️ pour préserver le Luxembourgeois
 import argparse
 import io
 import json
-import os
 import sys
 import unicodedata
-import urllib.request
 import xml.etree.ElementTree as ET
-import zipfile
 from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
+
+from lod_source import ATTRIBUTION, telecharger_source
 
 if sys.platform.startswith('win'):
     import codecs
@@ -70,30 +69,8 @@ RACINE_ASSETS = Path(__file__).resolve().parent.parent / \
     "android_keyboard/app/src/main/assets"
 CHEMIN_DICT = RACINE_ASSETS / "luxemburgish_dict.json"
 CHEMIN_TRAD = RACINE_ASSETS / "luxemburgish_translations.json"
-DOSSIER_CACHE = Path(__file__).resolve().parent / "luxemburgish_data" / "lod"
+CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
-
-API_DATASETS = "https://data.public.lu/api/1/datasets/{slug}/"
-
-# Les deux jeux de données du ZLS dont on a besoin. Le premier porte les
-# traductions, le second la liste des graphies qui mènent à chaque article.
-SOURCES_LOD = {
-    "art": {
-        "slug": "letzebuerger-online-dictionnaire-lod-linguistesch-daten",
-        "fichier": "new_lod-art.xml",
-        "libelle": "LOD — Linguistesch Daten (articles)",
-    },
-    "search": {
-        "slug": "letzebuerger-online-dictionnaire-lod-index-vun-der-sich-funktioun",
-        "fichier": "new_lod-search.xml",
-        "libelle": "LOD — Index vun der Sich-Funktioun (graphies)",
-    },
-}
-
-ATTRIBUTION = [
-    "Lëtzebuerger Online Dictionnaire (LOD) — Zenter fir d'Lëtzebuerger Sprooch",
-    "https://lod.lu · data.public.lu · licence CC0 1.0",
-]
 
 # Nombre maximal d'acceptions gardées par mot. Une seule glose ampute
 # « Schlass » (château / serrure) d'un sens que le joueur croira faux ; au-delà
@@ -103,56 +80,6 @@ MAX_GLOSES = 3
 # Une glose plus longue que cela est une définition déguisée, pas une
 # traduction : elle ne tiendra pas sur la ligne du mot à trouver.
 LONGUEUR_MAX_GLOSE = 48
-
-
-def telecharger_source(cle, hors_ligne, verbeux=True):
-    """Renvoie le XML d'une des deux ressources LOD, depuis le cache si possible.
-
-    L'URL n'est pas codée en dur : le ZLS republie chaque trimestre sous un
-    chemin horodaté, et l'ancien reste en ligne. On demande à l'API la
-    ressource la plus récente, sinon la table gloserait avec l'édition de 2023.
-    """
-    source = SOURCES_LOD[cle]
-    cache = DOSSIER_CACHE / source["fichier"]
-
-    if cache.exists():
-        if verbeux:
-            taille = cache.stat().st_size / 1_048_576
-            print(f"   📁 cache : {cache.name} ({taille:.1f} Mo)")
-        return cache.read_bytes()
-
-    if hors_ligne:
-        raise RuntimeError(
-            f"{source['fichier']} absent du cache et mode hors ligne demandé")
-
-    url_api = API_DATASETS.format(slug=source["slug"])
-    if verbeux:
-        print(f"   🌐 {source['libelle']}")
-    with urllib.request.urlopen(url_api, timeout=60) as reponse:
-        metadonnees = json.load(reponse)
-
-    ressources = [r for r in metadonnees.get("resources", [])
-                  if (r.get("format") or "").lower() == "zip"]
-    if not ressources:
-        raise RuntimeError(f"aucune archive ZIP publiée pour {source['slug']}")
-    ressource = max(ressources, key=lambda r: r.get("last_modified") or "")
-    if verbeux:
-        print(f"      {ressource['title']} — {ressource.get('last_modified', '?')[:10]}")
-
-    with urllib.request.urlopen(ressource["url"], timeout=600) as reponse:
-        archive = reponse.read()
-
-    with zipfile.ZipFile(io.BytesIO(archive)) as zf:
-        noms = [n for n in zf.namelist() if n.endswith(".xml")]
-        if not noms:
-            raise RuntimeError(f"pas de XML dans {ressource['title']}")
-        contenu = zf.read(noms[0])
-
-    DOSSIER_CACHE.mkdir(parents=True, exist_ok=True)
-    cache.write_bytes(contenu)
-    if verbeux:
-        print(f"      → {len(contenu) / 1_048_576:.1f} Mo mis en cache")
-    return contenu
 
 
 def lire_traductions(xml_articles, verbeux=True):
@@ -348,8 +275,34 @@ def main():
 
     part_formes = 100 * len(table) / max(1, len(dictionnaire))
     part_occurrences = 100 * occurrences_glosees / max(1, occurrences_totales)
-    print(f"   ✅ {len(table)} formes glosées "
+    print(f"   ✅ {len(table)} formes du corpus glosées "
           f"({part_formes:.1f} % des formes, {part_occurrences:.1f} % des occurrences)")
+
+    # Les formes que le LOD apporte au clavier sans passer par le corpus
+    # (`generate_lod_forms.py`) sont glosées elles aussi : sans quoi l'onglet
+    # Wierderbuch chercherait dans 38 000 mots pendant que le clavier en
+    # complète 123 000, et « Läffelen » n'y renverrait rien.
+    #
+    # Elles ne rejoignent PAS les réserves de jeu comptées plus bas : les trois
+    # jeux tirent leurs mots de luxemburgish_dict.json, et le chiffre annoncé
+    # ici doit rester celui qu'ils voient.
+    formes_lod = []
+    if CHEMIN_FORMES.exists():
+        actif = json.loads(CHEMIN_FORMES.read_text(encoding="utf-8"))
+        formes_lod = [f for f in actif.get("suggest", []) if f not in table]
+    else:
+        print("   ⚠️ luxemburgish_lod_forms.json absent — "
+              "seules les formes du corpus seront glosées")
+
+    glosees_lod = 0
+    for forme in formes_lod:
+        gloses = gloser(forme, par_graphie, par_graphie_min, par_article)
+        if gloses:
+            table[forme] = ", ".join(gloses)
+            glosees_lod += 1
+    if formes_lod:
+        print(f"   ✅ {glosees_lod} formes LOD glosées en plus "
+              f"(sur {len(formes_lod)} apportées au clavier)")
 
     # Les jeux ne tirent que parmi les formes dont la glose apprend quelque
     # chose : si l'une de ces réserves se vide, le jeu correspondant se
@@ -357,9 +310,13 @@ def main():
     # ici, où l'échec est bruyant — avec la même règle que
     # `TranslationDictionary.gloseInstructive`, sinon le chiffre annoncé ne
     # serait pas celui que le jeu voit.
-    instructives = [f for f, glose in table.items() if _instructive(f, glose)]
-    print(f"   💡 {len(instructives)} formes dont la glose ne répète pas le mot "
-          f"({len(table) - len(instructives)} emprunts ou toponymes écartés du tirage)")
+    formes_dictionnaire = {forme for forme, _ in dictionnaire}
+    instructives = [f for f, glose in table.items()
+                    if f in formes_dictionnaire and _instructive(f, glose)]
+    glosees_dico = sum(1 for f in table if f in formes_dictionnaire)
+    print(f"   💡 {len(instructives)} formes du dictionnaire dont la glose ne répète "
+          f"pas le mot ({glosees_dico - len(instructives)} emprunts ou toponymes "
+          f"écartés du tirage)")
     reserves = {
         "Wuertsich (3–8 lettres)": sum(1 for f in instructives if 3 <= len(f) <= 8),
         "Wuertmix (4–10 lettres)": sum(1 for f in instructives if 4 <= len(f) <= 10),

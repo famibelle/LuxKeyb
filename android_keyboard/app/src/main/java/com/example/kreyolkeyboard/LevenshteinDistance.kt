@@ -106,33 +106,37 @@ object LevenshteinDistance {
         
         val inputLength = input.length
         
-        // Pre-filter by length for performance (skip words that are too different in length)
-        val candidates = dictionary.filter { (word, _) ->
-            kotlin.math.abs(word.length - inputLength) <= lengthTolerance
+        // Un seul parcours, sans liste intermédiaire : le filtre par longueur
+        // puis le calcul de distance allouaient chacun une copie du
+        // dictionnaire. Sans conséquence sur 38 000 entrées, mesurable depuis
+        // que les formes du LOD en portent le total à 123 000 — et ce chemin
+        // est celui de la correction orthographique, appelé dès qu'aucun
+        // préfixe ne correspond.
+        val matches = ArrayList<Triple<String, Int, Int>>()
+        var examined = 0
+        for ((word, freq) in dictionary) {
+            if (kotlin.math.abs(word.length - inputLength) > lengthTolerance) continue
+            examined++
+            val distance = calculate(input, word)
+            if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
         }
         
-        Log.d(TAG, "Spell check '$input': ${candidates.size}/${dictionary.size} candidates after length filter")
+        Log.d(TAG, "Spell check '$input': $examined/${dictionary.size} candidates after length filter")
         
-        // Calculate distance for each candidate
-        val matches = candidates
-            .map { (word, freq) -> 
-                val distance = calculate(input, word)
-                Triple(word, freq, distance)
-            }
-            .filter { it.third <= maxDistance }  // Only keep words within distance threshold
+        val ranked = matches
             .sortedWith(
                 compareBy<Triple<String, Int, Int>> { it.third }  // Sort by distance (lower is better)
                     .thenByDescending { it.second }  // Then by frequency (higher is better)
             )
             .take(maxResults)
 
-        if (matches.isNotEmpty()) {
-            Log.d(TAG, "✓ Found ${matches.size} corrections for '$input': ${matches.take(3).map { it.first }}")
+        if (ranked.isNotEmpty()) {
+            Log.d(TAG, "✓ Found ${ranked.size} corrections for '$input': ${ranked.take(3).map { it.first }}")
         } else {
             Log.d(TAG, "✗ No corrections found for '$input' (within distance $maxDistance)")
         }
         
-        return matches
+        return ranked
     }
     
     /**
@@ -159,29 +163,28 @@ object LevenshteinDistance {
         val normalizedInput = normalizer(input)
         val inputLength = normalizedInput.length
         
-        // Pre-filter by normalized length
-        val candidates = dictionary.filter { (word, _) ->
+        // Un seul parcours, et surtout un seul appel à `normalizer` par mot :
+        // le filtre par longueur et le calcul de distance normalisaient chacun
+        // la même forme, soit 246 000 chaînes construites par recours depuis
+        // que le LOD porte le dictionnaire à 123 000 entrées.
+        val matches = ArrayList<Triple<String, Int, Int>>()
+        for ((word, freq) in dictionary) {
             val normalizedWord = normalizer(word)
-            kotlin.math.abs(normalizedWord.length - inputLength) <= 2
+            if (kotlin.math.abs(normalizedWord.length - inputLength) > 2) continue
+            val distance = calculate(normalizedInput, normalizedWord)
+            if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
         }
-        
-        // Calculate normalized distance for each candidate
-        val matches = candidates
-            .map { (word, freq) ->
-                val normalizedWord = normalizer(word)
-                val distance = calculate(normalizedInput, normalizedWord)
-                Triple(word, freq, distance)
-            }
-            .filter { it.third <= maxDistance }
+
+        val ranked = matches
             .sortedWith(
                 compareBy<Triple<String, Int, Int>> { it.third }
                     .thenByDescending { it.second }
             )
             .take(maxResults)
 
-        Log.d(TAG, "Normalized spell check '$input': ${matches.size} matches found")
+        Log.d(TAG, "Normalized spell check '$input': ${ranked.size} matches found")
         
-        return matches
+        return ranked
     }
     
 }

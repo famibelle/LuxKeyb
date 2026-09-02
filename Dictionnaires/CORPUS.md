@@ -119,17 +119,41 @@ contact indiqué par les auteurs pour les données RTL est <ai@rtl.lu>.
 ## LOD — Lëtzebuerger Online Dictionnaire
 
 Dictionnaire officiel de la langue luxembourgeoise, publié par le **Zenter fir
-d'Lëtzebuerger Sprooch** (ZLS). C'est la source des **traductions françaises**
-affichées dans les quatre jeux, et de rien d'autre : aucune de ses données
-n'entre dans le dictionnaire de saisie ni dans le modèle n-grammes.
+d'Lëtzebuerger Sprooch** (ZLS). Il sert deux fois : les **traductions
+françaises** affichées dans les jeux et l'onglet Wierderbuch, et depuis le
+2026-09-02 les **formes que le corpus ne connaît pas**. Il n'entre toujours pas
+dans le modèle n-grammes, qui reste entièrement corpus.
 
 - Portail : <https://data.public.lu/fr/organizations/zenter-fir-dletzebuerger-sprooch/>
 - Site : <https://lod.lu>
 - Éditeur : Zenter fir d'Lëtzebuerger Sprooch (ministère de l'Éducation nationale)
 - Licence : **CC0 1.0** — domaine public, aucune obligation
-- Apport : 27 081 articles glosés en français et 199 015 graphies indexées,
-  qui donnent une traduction à 20 604 des 38 410 formes du dictionnaire livré
-  (53,6 % des formes, 87,8 % des occurrences).
+- Apport aux gloses : 27 081 articles glosés en français et 199 015 graphies
+  indexées, qui donnent une traduction à 20 604 des 38 410 formes du
+  dictionnaire (53,6 % des formes, 87,8 % des occurrences) et à 68 248 des
+  84 855 formes que le LOD ajoute au clavier.
+- Apport aux formes : **84 855 formes proposables** et 26 424 variantes de la
+  règle d'Eifel connues du seul correcteur, soit 38 410 → 123 265 formes
+  reconnues à la frappe.
+
+### Pourquoi le corpus ne suffisait pas
+
+Des locuteurs ont signalé des mots manquants. LuxAlign est du journalisme
+RTL.lu : il n'écrit jamais ce qu'on tape sur un téléphone. Manquaient ainsi
+`Läffelen`, `Forschetten`, `Telleren`, `Mounden`, `sprang`, `denks`,
+`schaffesch`, `schreifs` — toutes attestées au LOD. Le dictionnaire couvre
+38 410 formes, le LOD en propose 103 688, et leur intersection n'est que de
+18 752.
+
+L'inverse est vrai aussi, et c'est pourquoi il s'agit d'une **union et jamais
+d'un remplacement** : 19 374 entrées du dictionnaire sont inconnues du LOD —
+`Rue`, `CSV`, `RTL`, `Bettel`, `Juncker`, `OGBL` — soit 7,3 % des occurrences
+du corpus. Noms propres, sigles et emprunts, qu'aucun dictionnaire de langue
+n'a vocation à lister.
+
+La couverture « intégrale » n'existe pas : le luxembourgeois compose à
+l'infini, et certaines flexions courantes (`kaafs`, `lafs`, `schwätzs`)
+n'apparaissent dans aucune des deux sources.
 
 Deux ressources sont consultées, et il faut les deux :
 
@@ -149,10 +173,17 @@ occurrences.
 `TranslationAssetTest` échoue si la mention disparaît. La licence rend cette
 attribution facultative en droit ; elle ne la rend pas facultative ici.
 
-Régénération : `python Dictionnaires/generate_translations.py --strict`. Le
-script résout l'URL de la dernière édition via l'API de data.public.lu — le ZLS
-republie chaque trimestre sous un chemin horodaté — et met les deux XML en cache
-sous `Dictionnaires/luxemburgish_data/lod/` (180 Mo, hors dépôt).
+Régénération, dans cet ordre et après `LuxembourgishComplet.py` :
+
+```bash
+python Dictionnaires/generate_lod_forms.py --strict     # les formes
+python Dictionnaires/generate_translations.py --strict  # les gloses, qui lisent les formes
+```
+
+`Dictionnaires/lod_source.py` porte l'accès partagé : il résout l'URL de la
+dernière édition via l'API de data.public.lu — le ZLS republie chaque trimestre
+sous un chemin horodaté — et met les deux XML en cache sous
+`Dictionnaires/luxemburgish_data/lod/` (180 Mo, hors dépôt).
 
 ## Corpus retiré
 

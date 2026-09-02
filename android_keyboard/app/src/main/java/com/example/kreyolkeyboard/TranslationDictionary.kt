@@ -15,14 +15,18 @@ import java.io.InputStreamReader
  * traduit ici : ce fichier ne fait que lire et chercher.
  *
  * Le clavier lui-même ne s'en sert pas — un dictionnaire de traduction n'a
- * rien à faire dans le service de saisie, où il coûterait 600 Ko de mémoire à
+ * rien à faire dans le service de saisie, où il coûterait 2,7 Mo de mémoire à
  * chaque ouverture du clavier pour un usage nul. Il n'est chargé que par
- * l'écran des jeux.
+ * l'écran des jeux et l'onglet Wierderbuch.
  *
- * Deux tiers seulement du dictionnaire y figurent : le reste est
- * essentiellement des noms propres (« Esch », « Bettel », « RTL ») que le LOD
- * n'a aucune raison de gloser. C'est pourquoi les jeux tirent leurs mots parmi
- * les seules formes glosées — voir [filtrerMotsTraduits].
+ * La table glose deux populations : les 38 410 formes du dictionnaire de
+ * fréquences, à hauteur de 20 604, et les 84 855 formes que le LOD apporte au
+ * clavier par-dessus le corpus (`luxemburgish_lod_forms.json`), à hauteur de
+ * 68 248. Ce qui reste sans glose est essentiellement des noms propres
+ * (« Esch », « Bettel », « RTL ») que le LOD n'a aucune raison de gloser.
+ *
+ * Les jeux, eux, ne tirent que parmi les formes du **dictionnaire** qui sont
+ * glosées — voir [filtrerMotsTraduits] : leur réserve n'a pas changé.
  */
 object TranslationDictionary {
 
@@ -47,10 +51,14 @@ object TranslationDictionary {
      * Index de recherche : une entrée par forme, avec ses deux versions pliées
      * (casse et accents retirés) déjà calculées.
      *
-     * Il est construit une fois au chargement plutôt qu'à chaque frappe. Une
-     * recherche parcourt les 20 604 entrées linéairement — c'est assez rapide
-     * pour un champ de saisie, et cela évite d'entretenir deux tables inversées
-     * dont l'une, côté français, aurait de toute façon dû être parcourue.
+     * Il est construit au premier appel de [rechercher] et non au chargement.
+     * Depuis que la table glose aussi les formes que le LOD apporte au clavier
+     * (88 852 entrées contre 20 604), le construire d'office coûterait deux
+     * repliages et une allocation par forme sur le fil principal, à l'ouverture
+     * de l'onglet statistiques — qui, lui, ne cherche rien. Une recherche
+     * parcourt ensuite l'index linéairement : c'est assez rapide pour un champ
+     * de saisie débounçé, et cela évite d'entretenir deux tables inversées dont
+     * l'une, côté français, aurait de toute façon dû être parcourue.
      */
     private class Entree(
         val forme: String,
@@ -59,7 +67,7 @@ object TranslationDictionary {
         val glosePliee: String
     )
 
-    private var index: List<Entree> = emptyList()
+    private var index: List<Entree>? = null
 
     /**
      * Formes pliées que l'application peut proposer d'elle-même, calculées une
@@ -68,8 +76,7 @@ object TranslationDictionary {
      * Le mot du jour ne teste que quelques mots, mais « Mots à découvrir »
      * parcourt les 37 734 clés du fichier d'usage à chaque ouverture de
      * l'onglet. Redécouper une glose sur des virgules et replier chaque
-     * acception 37 734 fois, sur le fil principal, se voit à l'écran ; le
-     * pliage est déjà fait pour [index], autant s'en servir.
+     * acception 37 734 fois, sur le fil principal, se voit à l'écran.
      */
     private var proposables: Set<String> = emptySet()
 
@@ -104,17 +111,13 @@ object TranslationDictionary {
 
             traductions = exactes
             traductionsMinuscules = minuscules
-            index = exactes.map { (forme, glose) ->
-                Entree(
-                    forme, glose,
-                    AccentTolerantMatcher.normalize(forme),
-                    AccentTolerantMatcher.normalize(glose)
-                )
-            }
+            index = null
 
-            proposables = index.asSequence()
-                .filter { gloseInstructive(it.forme, it.glose) && !MotsEcartes.estEcarte(it.forme) }
-                .mapTo(HashSet()) { it.formePliee }
+            proposables = exactes.asSequence()
+                .filter { (forme, glose) ->
+                    gloseInstructive(forme, glose) && !MotsEcartes.estEcarte(forme)
+                }
+                .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it.key) }
 
             val sources = racine.optJSONArray("attribution")
             attribution = if (sources == null) "" else
@@ -127,9 +130,27 @@ object TranslationDictionary {
             Log.e(TAG, "Actif $ASSET illisible: ${e.message}", e)
             traductions = emptyMap()
             traductionsMinuscules = emptyMap()
-            index = emptyList()
+            index = null
             proposables = emptySet()
         }
+    }
+
+    /**
+     * L'index de recherche, construit au premier besoin. Voir [Entree] : seul
+     * l'onglet Wierderbuch s'en sert, et il pèse quatre chaînes par forme.
+     */
+    @Synchronized
+    private fun indexRecherche(): List<Entree> {
+        index?.let { return it }
+        val construit = traductions.map { (forme, glose) ->
+            Entree(
+                forme, glose,
+                AccentTolerantMatcher.normalize(forme),
+                AccentTolerantMatcher.normalize(glose)
+            )
+        }
+        index = construit
+        return construit
     }
 
     /** Un résultat de recherche : le mot luxembourgeois et sa glose. */
@@ -165,6 +186,8 @@ object TranslationDictionary {
         charger(context)
         val pliee = AccentTolerantMatcher.normalize(requete.trim())
         if (pliee.isEmpty()) return emptyList()
+
+        val index = indexRecherche()
 
         fun sensExact(entree: Entree) =
             entree.glosePliee.split(",").any { it.trim() == pliee }
@@ -218,8 +241,8 @@ object TranslationDictionary {
      * Vrai si la glose apprend quelque chose, c'est-à-dire si au moins une de
      * ses acceptions diffère du mot lui-même.
      *
-     * Le luxembourgeois emprunte massivement au français, si bien que 1 278 des
-     * 20 604 formes glosées le sont par elles-mêmes : « Accident » → accident,
+     * Le luxembourgeois emprunte massivement au français, si bien que 2 744 des
+     * 88 852 formes glosées le sont par elles-mêmes : « Accident » → accident,
      * « Budget » → budget, « Ministère » → ministère. La glose est exacte, elle
      * n'est simplement d'aucun secours — et fait passer le jeu pour cassé. Même
      * chose pour les localités dont le nom ne se traduit pas (« Käerjeng »).

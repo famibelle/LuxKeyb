@@ -60,6 +60,13 @@ jobs:
         # reconstruire les n-grammes sur quinze phrases.
         python LuxembourgishComplet.py --strict
 
+        # Les formes du LOD complètent le dictionnaire de fréquences là où le
+        # corpus ne peut rien : LuxAlign est du journalisme RTL, qui n'écrit
+        # jamais « Läffelen », « sprang » ni « denks ». L'actif est SÉPARÉ de
+        # luxemburgish_dict.json — voir generate_lod_forms.py — et doit être
+        # produit avant generate_translations.py, qui glose aussi ces formes.
+        python generate_lod_forms.py --strict
+
         # Le jeu de phrases à trous se dérive du dictionnaire et des n-grammes
         # qui viennent d'être écrits : il choisit le mot masqué parmi les formes
         # retenues et tire ses leurres du modèle de contexte. Le régénérer ici
@@ -83,7 +90,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -184,6 +191,36 @@ jobs:
           exit 1
         fi
 
+        # Garde-fou des formes LOD. Leur absence ne casse rien de visible :
+        # SuggestionEngine journalise et retombe sur la couverture du corpus,
+        # l'APK s'installe, les suggestions marchent — elles connaissent
+        # simplement trois fois moins de mots, ce qui est le défaut qu'on
+        # corrigeait. Mesuré à 84 855 / 26 424 le 2026-09-02.
+        LOD_SUGGEST=$(jq '.suggest | length' "$A/luxemburgish_lod_forms.json")
+        LOD_SPELL=$(jq '.spellcheck | length' "$A/luxemburgish_lod_forms.json")
+        if [ "$LOD_SUGGEST" -lt 40000 ]; then
+          echo "::error::Seulement $LOD_SUGGEST formes LOD proposables (attendu >= 40000). L'index de recherche du LOD a probablement changé de structure."
+          exit 1
+        fi
+        if [ "$LOD_SPELL" -lt 10000 ]; then
+          echo "::error::Seulement $LOD_SPELL variantes de la règle d'Eifel : le correcteur soulignerait des formes correctes."
+          exit 1
+        fi
+
+        # Les deux paliers doivent rester disjoints, et disjoints du
+        # dictionnaire : un doublon ferait charger deux fois la même forme et
+        # afficher deux fois la même suggestion.
+        # L'appartenance passe par un objet et non par `index` : sur 123 000
+        # formes contre 38 000, la recherche linéaire ne finit pas.
+        DOUBLONS=$(jq -n --slurpfile d "$A/luxemburgish_dict.json" --slurpfile l "$A/luxemburgish_lod_forms.json" \
+          '($d[0] | map({(.[0] | ascii_downcase): 1}) | add) as $c
+           | [($l[0].suggest + $l[0].spellcheck)[] | ascii_downcase | select($c[.])]
+           | length')
+        if [ "$DOUBLONS" -ne 0 ]; then
+          echo "::error::$DOUBLONS formes LOD sont déjà dans luxemburgish_dict.json : les deux actifs ont été régénérés séparément."
+          exit 1
+        fi
+
         # Garde-fou des traductions. Les trois jeux qui tirent un mot ne le
         # tirent que parmi les formes glosées : une table effondrée ne fait
         # rien planter, elle fait retomber les jeux sur leur repli et le mot à
@@ -263,6 +300,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
+          android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES
