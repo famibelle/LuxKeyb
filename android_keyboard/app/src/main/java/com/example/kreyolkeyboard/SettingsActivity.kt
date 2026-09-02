@@ -3695,11 +3695,28 @@ class SettingsActivity : AppCompatActivity() {
                 val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
                 val coverage = if (totalDictWords > 0) (wordsDiscovered.toFloat() / totalDictWords * 100) else 0f
                 
-                // Générer les mots à découvrir (utilisations <= 2 et longueur >= 3)
-                val wordsToDiscoverCandidates = jsonObject.keys().asSequence().toList().filter { word ->
-                    val count = jsonObject.optInt(word, 0)
-                    count <= 2 && word.length >= 3
-                }
+                // Les mots à découvrir : peu ou pas employés, et proposables.
+                //
+                // Ils étaient tirés dans le dictionnaire entier, sans filtre :
+                // d'où les noms de localités sans glose (« Ierpeldeng-Sauer »)
+                // et le vocabulaire d'actualité que le corpus de dépêches
+                // charrie — c'est ainsi que « Ramadan » se retrouvait proposé.
+                // estProposable() exige une glose qui apprenne quelque chose et
+                // écarte le confessionnel ; il écarte aussi, par la seule
+                // exigence de glose, l'essentiel des noms propres, personnalités
+                // politiques comprises.
+                //
+                // Le compteur se lit comme plus haut : optInt() ne reconnaît que
+                // l'entier nu des premières versions, si bien que le seuil ne
+                // filtrait rien du tout.
+                val dejaEmploye = wordUsages.toMap()
+                val wordsToDiscoverCandidates = jsonObject.keys().asSequence()
+                    .filter { word ->
+                        word.length >= 3 &&
+                            (dejaEmploye[word] ?: 0) <= 2 &&
+                            TranslationDictionary.estProposable(this, word)
+                    }
+                    .toList()
                 val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
                 
                 return VocabularyStats(
@@ -4243,8 +4260,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Tire un mot du jour dont la traduction apprend quelque chose, en gardant
-     * le tirage déterministe pour la journée.
+     * Tire un mot du jour que l'application peut proposer — glose instructive,
+     * et pas une forme mise à l'écart — en gardant le tirage déterministe pour
+     * la journée.
      *
      * On ne filtre pas la liste avant de tirer : la construire coûterait un
      * parcours de 38 000 formes à chaque ouverture de l'onglet, pour une chance
@@ -4255,10 +4273,12 @@ class SettingsActivity : AppCompatActivity() {
      * rien — la ligne de traduction passe en `GONE` et l'écran a l'air normal,
      * seulement moins utile :
      *
-     * - le critère est [TranslationDictionary.aUneGloseInstructive] et non la
-     *   simple présence d'une glose. Le luxembourgeois a emprunté assez de mots
-     *   au français pour que 1 278 formes se glosent par elles-mêmes
-     *   (« Accident » → accident) : la traduction est là, elle n'apprend rien ;
+     * - le critère est [TranslationDictionary.estProposable] et non la simple
+     *   présence d'une glose. Le luxembourgeois a emprunté assez de mots au
+     *   français pour que 1 278 formes se glosent par elles-mêmes
+     *   (« Accident » → accident) : la traduction est là, elle n'apprend rien,
+     *   et [MotsEcartes] retire au passage le vocabulaire confessionnel que le
+     *   corpus de dépêches charrie ;
      * - si les vingt tirages échouent — table absente, ou malchance — on
      *   parcourt la liste au lieu de rendre le dernier tirage tel quel. Le
      *   parcours part de l'index tiré et reste donc déterministe : le mot du
@@ -4267,14 +4287,14 @@ class SettingsActivity : AppCompatActivity() {
     private fun tirerMotTraduisible(mots: List<String>, random: Random): String {
         var index = random.nextInt(mots.size)
         repeat(20) {
-            if (TranslationDictionary.aUneGloseInstructive(this, mots[index])) {
+            if (TranslationDictionary.estProposable(this, mots[index])) {
                 return mots[index]
             }
             index = random.nextInt(mots.size)
         }
         for (decalage in mots.indices) {
             val candidat = mots[(index + decalage) % mots.size]
-            if (TranslationDictionary.aUneGloseInstructive(this, candidat)) return candidat
+            if (TranslationDictionary.estProposable(this, candidat)) return candidat
         }
         // Aucune glose nulle part : l'actif manque. Un mot sans traduction vaut
         // mieux qu'un écran vide.

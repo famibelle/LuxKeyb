@@ -61,6 +61,18 @@ object TranslationDictionary {
 
     private var index: List<Entree> = emptyList()
 
+    /**
+     * Formes pliées que l'application peut proposer d'elle-même, calculées une
+     * fois au chargement.
+     *
+     * Le mot du jour ne teste que quelques mots, mais « Mots à découvrir »
+     * parcourt les 37 734 clés du fichier d'usage à chaque ouverture de
+     * l'onglet. Redécouper une glose sur des virgules et replier chaque
+     * acception 37 734 fois, sur le fil principal, se voit à l'écran ; le
+     * pliage est déjà fait pour [index], autant s'en servir.
+     */
+    private var proposables: Set<String> = emptySet()
+
     @Synchronized
     fun charger(context: Context) {
         if (estCharge) return
@@ -100,6 +112,10 @@ object TranslationDictionary {
                 )
             }
 
+            proposables = index.asSequence()
+                .filter { gloseInstructive(it.forme, it.glose) && !MotsEcartes.estEcarte(it.forme) }
+                .mapTo(HashSet()) { it.formePliee }
+
             val sources = racine.optJSONArray("attribution")
             attribution = if (sources == null) "" else
                 (0 until sources.length()).joinToString("\n") { sources.getString(it) }
@@ -112,6 +128,7 @@ object TranslationDictionary {
             traductions = emptyMap()
             traductionsMinuscules = emptyMap()
             index = emptyList()
+            proposables = emptySet()
         }
     }
 
@@ -189,19 +206,6 @@ object TranslationDictionary {
     }
 
     /**
-     * Vrai si le mot a une glose et que cette glose apprend quelque chose.
-     *
-     * C'est le seul test qui vaille avant d'afficher un mot à quelqu'un : une
-     * glose absente laisse une ligne vide, une glose égale au mot laisse une
-     * ligne inutile, et les deux se lisent de la même façon — le mot n'est pas
-     * traduit. Voir [gloseInstructive] pour la règle exacte.
-     */
-    fun aUneGloseInstructive(context: Context, mot: String): Boolean {
-        val glose = traduire(context, mot) ?: return false
-        return gloseInstructive(mot, glose)
-    }
-
-    /**
      * Glose prête à afficher à côté du mot, ou chaîne vide.
      * Le tiret cadratin sépare mieux que les parenthèses sur une seule ligne.
      */
@@ -230,6 +234,24 @@ object TranslationDictionary {
     }
 
     /**
+     * Vrai si l'application peut proposer ce mot d'elle-même.
+     *
+     * Deux conditions, et c'est le point de passage unique du mot du jour, des
+     * mots à découvrir et des trois jeux qui tirent un mot : la glose apprend
+     * quelque chose (voir [gloseInstructive]), et le mot n'est pas de ceux que
+     * [MotsEcartes] tient à l'écart. Une glose absente laisse une ligne vide,
+     * une glose égale au mot laisse une ligne inutile, et les deux se lisent de
+     * la même façon — le mot n'est pas traduit.
+     *
+     * Le calcul est fait une fois pour toutes au chargement : voir
+     * [proposables].
+     */
+    fun estProposable(context: Context, mot: String): Boolean {
+        charger(context)
+        return AccentTolerantMatcher.normalize(mot) in proposables
+    }
+
+    /**
      * Restreint une réserve de mots à ceux dont la traduction apprend quelque
      * chose. C'est ce qui alimente le tirage des trois jeux qui choisissent un
      * mot ; la table complète, elle, reste consultable — un mot glosé par
@@ -247,7 +269,7 @@ object TranslationDictionary {
         minimum: Int = 50
     ): List<String> {
         charger(context)
-        val traduits = mots.filter { aUneGloseInstructive(context, it) }
+        val traduits = mots.filter { estProposable(context, it) }
         return if (traduits.size >= minimum) traduits else mots
     }
 

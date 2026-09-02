@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.cloze
 
 import android.content.Context
 import android.util.Log
+import com.example.kreyolkeyboard.MotsEcartes
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -99,6 +100,16 @@ object ClozeData {
                 for (j in 0 until leurres.length()) {
                     propositions.add(leurres.getString(j))
                 }
+
+                // Les phrases viennent de dépêches : elles parlent parfois
+                // d'autre chose que du mot à trouver. Le filtre porte sur la
+                // phrase entière et pas seulement sur les propositions — quatre
+                // items sur 1 600 au moment de l'écriture, dont un sur une
+                // attaque contre un musée. Il est appliqué ici plutôt qu'à la
+                // génération pour que l'actif déjà livré en profite aussi.
+                if (MotsEcartes.phraseEcartee(phrase) ||
+                    propositions.any { MotsEcartes.estEcarte(it) }
+                ) continue
 
                 liste.add(
                     ClozeQuestion(
