@@ -124,23 +124,71 @@ object MotsEcartes {
         "Mord", "Morde", "Morden", "Mordfäll", "Mordversuch", "Selbstmord"
     )
 
+    /**
+     * Vocabulaire qui trahit le **sujet d'une dépêche**, et non un mot à
+     * proscrire.
+     *
+     * Ces formes-là ne sont pas écartées du vocabulaire : `Police`, `Accident`,
+     * `Geriicht`, `Prisong`, `Affer` sont des mots utiles, et les jeux
+     * continuent de les proposer. Mais une phrase de Wuertlück qui les contient
+     * est un fait divers — un accident sur la N7, un cambriolage, un verdict —
+     * et un jeu de vocabulaire n'a pas à mettre ça en scène. La distinction
+     * porte donc sur la phrase, jamais sur le mot.
+     *
+     * Le repérage par le sens a été essayé et abandonné : passer par les gloses
+     * françaises fait sonner `hat` (l'auxiliaire, glosé « fendre, abattre,
+     * frapper ») et `gemaach` (glosé « publier, tuer, vider ») sur 68 phrases,
+     * soit plus que tous les vrais déclencheurs réunis. La liste est donc
+     * relevée sur les formes qui déclenchent réellement, une par une.
+     *
+     * Coût mesuré : 156 phrases sur 1 529, et la réserve reste à 316 / 583 / 474
+     * pour les trois niveaux.
+     */
+    private val SUJETS = listOf(
+        // Police et secours
+        "Police", "Polizist", "Polizisten", "Poliziste", "Ambulanz", "Pompjee",
+        "Pompjeeën", "Pompjeeë", "Pompjeeen", "Zeienopruff",
+        // Justice
+        "Geriicht", "Geriichter", "Prozess", "Prozesser", "Riichter",
+        "Riichterin", "Riichteren", "Affekot", "Affekote", "Affekoten",
+        "Ugeklote", "Ugekloten", "Beschëllegten", "Beschëllegte", "Plainte",
+        "Plaintë", "Enquête", "Enquêten", "Enquêteur", "Ermëttlung",
+        "Ermëttlungen", "Perquisitioun", "Perquisitiounen", "Prisong",
+        "Prisongen", "festgeholl", "verhaft", "Parquet", "Täter",
+        "Verdächtegen", "Verdächtegt",
+        // Vols et effractions
+        "geklaut", "geklaute", "klauen", "Abroch", "Abréch", "Déifstall",
+        "Iwwerfall", "Iwwerfäll", "Raiber", "Déif",
+        // Accidents, violences, décès
+        "Accident", "Accidenter", "blesséiert", "Blesséierten", "Blesséierter",
+        "Blessur", "Blessuren", "geschloen", "geschloe", "attackéiert",
+        "ugegraff", "Menace", "Menacen", "Pefferspray", "Gewier", "Messer",
+        "gestuerwen", "doudeg", "doudege", "doudegen", "Doudeger", "Affer",
+        "Doudschlag", "ëmbruecht", "erschoss"
+    )
+
     private val FORMES: Set<String> =
         (RELIGION + PARTIS + REGISTRE).mapTo(HashSet()) {
             AccentTolerantMatcher.normalize(it)
         }
+
+    private val FORMES_ET_SUJETS: Set<String> =
+        FORMES + SUJETS.map { AccentTolerantMatcher.normalize(it) }
 
     /** Vrai si l'application doit s'abstenir de proposer ce mot. */
     fun estEcarte(mot: String): Boolean =
         AccentTolerantMatcher.normalize(mot) in FORMES
 
     /**
-     * Vrai si une phrase contient une forme écartée.
+     * Vrai si une phrase ne doit pas être montrée : elle contient une forme
+     * écartée, ou un mot qui la désigne comme fait divers (voir [SUJETS]).
      *
      * Sert aux phrases de Wuertlück, qui viennent des dépêches et parlent donc
-     * parfois d'autre chose que du mot à trouver. Le découpage est sur les
+     * souvent d'autre chose que du mot à trouver. Le découpage est sur les
      * non-lettres, donc `LSAP-Deputéierten` est bien vu comme `LSAP` suivi du
      * reste.
      */
     fun phraseEcartee(phrase: String): Boolean =
-        phrase.split(Regex("[^\\p{L}]+")).any { it.isNotEmpty() && estEcarte(it) }
+        phrase.split(Regex("[^\\p{L}]+"))
+            .any { it.isNotEmpty() && AccentTolerantMatcher.normalize(it) in FORMES_ET_SUJETS }
 }

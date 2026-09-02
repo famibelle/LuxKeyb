@@ -85,6 +85,22 @@ class MotsEcartesTest {
      * vu comme `LSAP` suivi du reste, sans quoi le nom du parti passerait dès
      * qu'il est composé — et il l'est presque toujours dans les dépêches.
      */
+    /**
+     * Les mots qui désignent le sujet d'une dépêche écartent la phrase mais
+     * restent proposables comme vocabulaire : `Police` et `Accident` sont des
+     * mots utiles, c'est le fait divers qui n'a pas sa place dans un jeu.
+     */
+    @Test
+    fun `un fait divers est ecarte sans que ses mots le soient`() {
+        assertTrue(MotsEcartes.phraseEcartee("Accident um Freideg zu Mamer mat engem Blesséierten."))
+        assertTrue(MotsEcartes.phraseEcartee("D'Täter sinn no der Dot onerkannt gelaf."))
+        assertTrue(MotsEcartes.phraseEcartee("Den Auto war e puer Deeg virdrun zu Namur geklaut ginn."))
+        assertFalse(MotsEcartes.estEcarte("Police"))
+        assertFalse(MotsEcartes.estEcarte("Accident"))
+        assertFalse(MotsEcartes.estEcarte("Geriicht"))
+        assertFalse(MotsEcartes.estEcarte("Affer"))
+    }
+
     @Test
     fun `un sigle compose est reconnu`() {
         assertTrue(MotsEcartes.phraseEcartee("Sou den LSAP-Deputéierten e Méindeg."))
@@ -129,8 +145,9 @@ class MotsEcartesTest {
      * niveau qui tomberait sous les dix items servirait des manches répétitives
      * sans que rien n'échoue.
      *
-     * Au moment de l'écriture : 1 529 phrases conservées sur 1 600, réparties
-     * 372 / 647 / 510 sur les trois niveaux.
+     * Au moment de l'écriture : 1 373 phrases conservées sur 1 600, réparties
+     * 316 / 583 / 474 sur les trois niveaux — les 156 phrases de faits divers
+     * retirées en plus des 71 écartées pour leur vocabulaire.
      */
     @Test
     fun `Wuertluck garde une reserve suffisante a chaque niveau`() {
