@@ -9,6 +9,38 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.23.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **L'application ne propose plus de vocabulaire religieux d'elle-même.** Le
+  corpus est fait de dépêches : « Ramadan », « Poopst » ou « Moschee » y
+  figurent comme n'importe quel mot de l'actualité, et le tirage aléatoire les
+  remontait tels quels — dans les mots à découvrir, le mot du jour et les jeux.
+  Quatre-vingt-quinze formes sont désormais tenues à l'écart de tout ce que
+  l'application choisit de montrer sans qu'on le lui demande, phrases de
+  Wuertlück comprises.
+- **Ces mots restent entièrement disponibles à la saisie.** Ils sont toujours
+  dans le dictionnaire, dans les suggestions, dans le correcteur et dans la
+  recherche du Wierderbuch : qui veut écrire « Kierch » l'écrit, qui en cherche
+  le sens le trouve. Un clavier qui refuse des mots n'est pas neutre, il est
+  cassé.
+- **Les fêtes du calendrier civil sont conservées.** « Chrëschtdag »,
+  « Ouschteren », « Kleeschen » et « Oktav » sont des jours fériés et des
+  repères de l'année luxembourgeoise avant d'être des fêtes religieuses. Sont
+  conservés de même les mots dont le sens courant n'est pas le sens religieux :
+  « Här » (monsieur), « Mass » (masse), « Kräiz » (croix), « Wonner »
+  (merveille), « Sënn » (sens).
+
+### 🐛 Corrigé
+
+- **Les mots à découvrir sont enfin des mots à découvrir.** Ils étaient tirés
+  dans le dictionnaire entier sans le moindre filtre : d'où les noms de
+  localités sans traduction (« Ierpeldeng-Sauer », « Lux-Hennecke »). Ils sont
+  maintenant tirés parmi les mots dont la traduction apprend quelque chose, ce
+  qui écarte du même coup l'essentiel des noms propres. Le seuil « peu employé »
+  ne filtrait rien non plus, pour la même raison que le compteur du mot du jour.
+
 ## [10.22.1] - 2026-09-02
 
 ### 🐛 Corrigé
