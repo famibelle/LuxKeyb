@@ -1,9 +1,184 @@
 {
  "genere_le": "2026-09-02",
- "derniere_version": "10.22.0",
+ "derniere_version": "10.26.0",
  "derniere_date": "2026-09-02",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "10.26.0",
+   "date": "2026-09-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Le clavier connaît 123 265 formes au lieu de 38 410",
+       "texte": "Des locuteurs luxembourgeois ont signalé des mots manquants : ils avaient raison, et la cause était structurelle. Le corpus est fait d'articles de RTL.lu, qui n'écrivent jamais ce qu'on tape sur un téléphone — « Läffelen », « Forschetten », « Telleren », « Mounden », « sprang », « denks », « schaffesch » n'y figuraient pas. Le Lëtzebuerger Online Dictionnaire, lui, les atteste : ses 84 855 formes absentes du corpus complètent désormais la saisie."
+      },
+      {
+       "titre": "Le correcteur reconnaît en plus 26 424 variantes de la règle d'Eifel",
+       "texte": "(« Ae » pour « Aen » devant consonne). Elles sont correctes en contexte : les souligner en rouge était un défaut. Elles ne sont jamais proposées pour autant."
+      },
+      {
+       "titre": "L'onglet Wierderbuch cherche dans 88 852 mots au lieu de 20 604",
+       "texte": "Les formes apportées par le LOD sont glosées comme les autres."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Les jeux et la progression ne bougent pas",
+       "texte": "Les formes du LOD vivent dans un actif séparé du dictionnaire de fréquences : les trois jeux gardent exactement les mêmes réserves, et les huit paliers de « Mäi Lëtzebuergesch » restent calculés sur le vocabulaire du corpus — personne ne recule d'un rang."
+      },
+      {
+       "titre": "Le correcteur orthographique répond en temps constant",
+       "texte": "Il parcourait la liste entière des formes pour chaque mot examiné ; la correction orthographique, elle, allouait deux copies du dictionnaire par recours."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.25.0",
+   "date": "2026-09-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Wuertlück ne sert plus de phrases de faits divers",
+       "texte": "Ses phrases viennent de dépêches, et une sur dix racontait un accident, un cambriolage ou un verdict — le mot à trouver, lui, était souvent anodin. Soixante-treize formes désignent désormais ce registre : police et secours, justice, vols, accidents et victimes. Le jeu conserve 1 373 phrases sur 1 600, réparties 316 / 583 / 474 sur les trois niveaux."
+      },
+      {
+       "titre": "Ces mots-là restent proposés comme vocabulaire",
+       "texte": "« Police », « Accident », « Geriicht », « Prisong », « Affer » sont des mots utiles, et les jeux continuent de les tirer : c'est la phrase qui est écartée, jamais le mot. La liste des mots jamais proposés, elle, ne bouge pas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.24.0",
+   "date": "2026-09-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "La neutralité s'étend aux partis et au registre qui choque",
+       "texte": "Aux quatre-vingt-quinze formes religieuses de la 10.23.0 s'ajoutent les sigles et les étiquettes idéologiques (CSV, LSAP, DP, ADR, Piraten, racisme, fascisme, extrémisme, populisme, antisémitisme) et un registre que l'application n'a pas à proposer dans un jeu : avortement, viol, prostitution, pédophilie, drogues dures, meurtre, suicide, terrorisme. Cent quatre-vingt-deux formes en tout, soit 0,29 % des occurrences du corpus."
+      },
+      {
+       "titre": "Le critère est la posture, pas le thème",
+       "texte": "Est écarté ce qui prend parti ou ce qui choque, pas ce qui parle du monde : « Regierung », « Minister », « Chamber », « Wahlen », « Partei », « Police », « Geriicht », « Prisong », « Krich », « Waff », « Doud », « Spidol », « Kriibs » restent proposés. Ce sont des mots dont un apprenant a besoin, et les retirer aurait vidé les jeux sans rien régler."
+      },
+      {
+       "titre": "Les phrases de Wuertlück profitent de la même liste",
+       "texte": "Une phrase de dépêche parle souvent d'autre chose que du mot à trouver, et une sur trois nommait un député par son parti. Le jeu conserve 1 529 phrases sur 1 600, réparties 372 / 647 / 510 sur les trois niveaux."
+      },
+      {
+       "titre": "Rien de tout cela ne touche la saisie",
+       "texte": ", comme en 10.23.0 : ces mots restent dans le dictionnaire, dans les suggestions, dans le correcteur et dans la recherche du Wierderbuch."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.23.0",
+   "date": "2026-09-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "L'application ne propose plus de vocabulaire religieux d'elle-même",
+       "texte": "Le corpus est fait de dépêches : « Ramadan », « Poopst » ou « Moschee » y figurent comme n'importe quel mot de l'actualité, et le tirage aléatoire les remontait tels quels — dans les mots à découvrir, le mot du jour et les jeux. Quatre-vingt-quinze formes sont désormais tenues à l'écart de tout ce que l'application choisit de montrer sans qu'on le lui demande, phrases de Wuertlück comprises."
+      },
+      {
+       "titre": "Ces mots restent entièrement disponibles à la saisie",
+       "texte": "Ils sont toujours dans le dictionnaire, dans les suggestions, dans le correcteur et dans la recherche du Wierderbuch : qui veut écrire « Kierch » l'écrit, qui en cherche le sens le trouve. Un clavier qui refuse des mots n'est pas neutre, il est cassé."
+      },
+      {
+       "titre": "Les fêtes du calendrier civil sont conservées",
+       "texte": "« Chrëschtdag », « Ouschteren », « Kleeschen » et « Oktav » sont des jours fériés et des repères de l'année luxembourgeoise avant d'être des fêtes religieuses. Sont conservés de même les mots dont le sens courant n'est pas le sens religieux : « Här » (monsieur), « Mass » (masse), « Kräiz » (croix), « Wonner » (merveille), « Sënn » (sens)."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Les mots à découvrir sont enfin des mots à découvrir",
+       "texte": "Ils étaient tirés dans le dictionnaire entier sans le moindre filtre : d'où les noms de localités sans traduction (« Ierpeldeng-Sauer », « Lux-Hennecke »). Ils sont maintenant tirés parmi les mots dont la traduction apprend quelque chose, ce qui écarte du même coup l'essentiel des noms propres. Le seuil « peu employé » ne filtrait rien non plus, pour la même raison que le compteur du mot du jour."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "10.22.1",
+   "date": "2026-09-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Le mot du jour s'affiche à nouveau avec sa traduction française",
+       "texte": "Il est tiré parmi les mots déjà connus de l'appareil, pas dans le dictionnaire livré : quand ce fichier vient d'une installation plus ancienne — Android le restaure d'une sauvegarde après une réinstallation — les vingt tirages successifs pouvaient tous tomber sur un mot que la table du LOD ne glose pas, et le dernier était affiché tel quel. La ligne de traduction disparaissait alors sans rien dire : une carte d'apparence normale, simplement sans traduction. Le tirage parcourt désormais la liste jusqu'à un mot glosé au lieu d'abandonner."
+      },
+      {
+       "titre": "Un mot du jour glosé par lui-même ne sort plus",
+       "texte": "Le luxembourgeois emprunte assez au français pour que 1 278 formes se traduisent par elles-mêmes — « Accident » → accident, « Budget » → budget. La traduction était exacte et n'apprenait rien ; c'était le cas 17 jours par an."
+      },
+      {
+       "titre": "Le compteur d'usage du mot du jour lisait le mauvais format",
+       "texte": "Un mot employé cent fois s'annonçait quand même « nouveau mot à découvrir »."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "La traduction du mot du jour est annoncée",
+       "texte": ", « en français : profil », au lieu d'être posée en gris entre le mot et sa ligne d'usage, où elle se lisait comme un sous-titre de plus."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "10.22.0",
    "date": "2026-09-02",
@@ -48,268 +223,6 @@
      ],
      "texte": "",
      "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.21.1",
-   "date": "2026-09-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🔄",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Barre d'onglets ramenée de neuf à quatre",
-       "texte": "À neuf, chaque onglet disposait de 80 px sur un écran de 720 : les libellés se coupaient en plein milieu d'un mot (« Wuertsic / h »), et il avait fallu descendre la police à 8sp pour limiter les dégâts. Les quatre destinations restantes — Démarrage, Mäi Lëtzebuergesch, Spiller, Wierderbuch — disposent de 180 px, et la police remonte à 11sp."
-      },
-      {
-       "titre": "Les quatre jeux passent derrière un onglet « Spiller »",
-       "texte": "Ils occupaient quatre onglets sur neuf, soit 44 % de la barre, pour une activité que l'on choisit une fois par session. L'onglet présente quatre cartes ; le jeu choisi s'installe dans le même onglet, avec une barre « ‹ Tous les jeux » pour revenir. Le bouton Retour d'Android ramène lui aussi au choix, via un <code>OnBackPressedCallback</code> actif seulement pendant qu'un jeu est ouvert — partout ailleurs il quitte l'application comme avant."
-      },
-      {
-       "titre": "Guide et À Propos quittent la barre",
-       "texte": "pour le pied de l'onglet Démarrage, d'où ils s'ouvrent en plein écran. Ce sont des pages de référence que l'on lit une fois ; elles coûtaient deux neuvièmes de la largeur à chaque ouverture de l'application. Les deux astuces qui les désignaient comme des onglets ont été réécrites."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Couleurs translucides fausses",
-       "texte": "Concaténer l'opacité à une couleur — <code>\"$couleur20\"</code> — ne produit pas une transparence : <code>Color.parseColor</code> lit huit chiffres comme <code>#AARRGGBB</code>, si bien que <code>\"#4CAF50\" + \"20\"</code> devenait un alpha de 0x4C sur le brun <code>#AF5020</code>. Les pastilles de mots de l'onglet Mäi Lëtzebuergesch s'affichaient donc en brun sur fond vert annoncé. Remplacé par <code>avecOpacite()</code>, qui compose la valeur."
-      },
-      {
-       "titre": "Raccourci « Découvrez vos statistiques »",
-       "texte": "Il posait <code>currentItem = 1</code>, c'est-à-dire le bord gauche de la plage virtuelle du pager cyclique : le bon contenu s'affichait, mais on atterrissait là où plus rien ne se balaye vers la gauche. Il vise désormais la position la plus proche du bon onglet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.21.0",
-   "date": "2026-09-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Traduction française des mots dans les quatre jeux",
-       "texte": "Un utilisateur a signalé que les jeux faisaient chercher des mots luxembourgeois sans jamais dire ce qu'ils voulaient dire : on y exerçait son orthographe, jamais son vocabulaire. Chaque jeu affiche désormais la glose française, au moment où elle ne donne pas la réponse — la liste des mots à trouver de Wuertsich, en indice sous les lettres mélangées de Wuertmix, à la fin de la partie de Wuertriet, et après avoir tranché la question de Wuertlück."
-      },
-      {
-       "titre": "Nouvel actif <code>luxemburgish_translations.json</code>",
-       "texte": "(609 Ko), produit par <code>Dictionnaires/generate_translations.py</code> à partir du <strong>Lëtzebuerger Online Dictionnaire</strong> (LOD), le dictionnaire officiel publié en CC0 par le Zenter fir d'Lëtzebuerger Sprooch. 20 604 des 38 410 formes du dictionnaire y sont glosées, soit 53,6 % des formes et 87,8 % des occurrences. Le clavier lui-même ne le charge pas : seul l'écran des jeux en a l'usage."
-      },
-      {
-       "titre": "Onglet « Wierderbuch » (9ᵉ onglet)",
-       "texte": "Un champ de recherche et une liste : on tape un mot et on lit sa traduction. La recherche <strong>fonctionne dans les deux sens</strong> — « Haus » comme « maison » — et le sens de la requête est déduit plutôt que demandé : si un mot du dictionnaire se glose exactement par ce qui est tapé, c'est du français, et les mots dont c'est le sens passent devant. Sans cette déduction, chercher « maison » remontait d'abord <code>Maison</code>, emprunt luxembourgeois glosé « maison médicale de garde », et reléguait <code>Haus</code>."
-      },
-      {
-       "titre": "Traductions dans l'onglet « Mäi Lëtzebuergesch »",
-       "texte": "Le mot du jour porte sa glose sous le mot, et n'est plus tiré que parmi les mots traduisibles. Les mots à découvrir, les mots découverts et le classement des mots les plus utilisés portent la leur à côté du mot."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔄",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Les trois jeux qui tirent un mot ne le tirent plus que parmi les formes dont la traduction apprend quelque chose",
-       "texte": "Sont écartés d'une part les mots que le LOD n'a aucune raison de gloser — noms propres, « Esch », « Bettel », « RTL », « Jean-Claude » — d'autre part les 1 278 formes glosées par elles-mêmes, le luxembourgeois empruntant massivement au français : demander de retrouver « ACCIDENT » en indiquant « accident » fait passer le jeu pour cassé. Les réserves restent larges : 8 740 mots pour Wuertsich, 12 825 pour Wuertmix, 1 330 pour Wuertriet. La table complète, elle, garde ces mots : croisés par un autre chemin (une réponse de Wuertlück), ils affichent toujours leur glose. Une proposition du joueur dans Wuertriet reste acceptée dès lors qu'elle est au dictionnaire, traduite ou non."
-      },
-      {
-       "titre": "Crédit du LOD",
-       "texte": "ajouté à la carte « Sources » de l'onglet « À propos » et au pied de l'onglet Wierderbuch. CC0 n'impose aucune attribution ; on cite le ZLS quand même, et un test échoue si la mention disparaît."
-      },
-      {
-       "titre": "Libellés d'onglets à 8sp au lieu de 9",
-       "texte": "Le neuvième onglet faisait passer « Wuertsich », « Wuertmix » et « Wuertriet » sur deux lignes, coupés en plein milieu d'un mot ; un point de moins les ramène sur une seule."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Fin de partie de Wuertriet en créole",
-       "texte": "La boîte de dialogue annonçait encore « Ou touvé mo-a an 3 èsèy » et « Mo la té », hérités du clavier guadeloupéen. Elle est en français, et donne la traduction du mot cherché."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.20.1",
-   "date": "2026-09-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Alignement des rangées de clavier",
-       "texte": "Les touches Shift et Retour arrière pesaient 1,25 unité depuis la v10.11.4, où elles finançaient l'apostrophe alors en rangée 3. Celle-ci vit désormais en rangée 4, mais la réduction était restée, posant la rangée 3 à 9,5 unités au lieu de 10, soit 5,3 % plus larges que les rangées 1 et 2. Rétabli à 1,5 pour aligner les trois rangées de lettres."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.20.0",
-   "date": "2026-09-01",
-   "intro": "Un quatrième jeu rejoint les trois autres : <strong>Wuertlück</strong>, le jeu de phrases à trous. Une phrase luxembourgeoise authentique s'affiche, un mot lui manque, et quatre propositions sont offertes — une seule est celle qu'a écrite l'auteur.",
-   "sections": [
-    {
-     "emoji": "📝",
-     "titre": "Wuertlück, l'onglet des phrases à trous",
-     "points": [
-      {
-       "titre": "1 600 phrases réelles",
-       "texte": ", tirées des mêmes corpus que le dictionnaire : articles de RTL.lu pour la langue publique, phrases d'exemple du Lëtzebuerger Online Dictionnaire pour le registre quotidien, qui pèse un quart du total. Aucune phrase n'a été écrite pour le jeu."
-      },
-      {
-       "titre": "Les leurres viennent du modèle de prédiction du clavier",
-       "texte": "Les trois mauvaises propositions sont des mots que le corpus atteste réellement à cet endroit-là, après les mêmes mots. Ils sonnent donc juste tant qu'on n'a pas lu la phrase entière — c'est ce qui distingue le jeu d'un tirage au sort."
-      },
-      {
-       "titre": "Trois difficultés",
-       "texte": ", réglées sur la fréquence du mot manquant : courant en « Facile », rare en « Difficile ». Une manche fait dix questions."
-      },
-      {
-       "titre": "La bonne réponse s'affiche toujours",
-       "texte": ", en vert dans la phrase reconstituée, qu'on l'ait trouvée ou non : voir la phrase complète compte autant que marquer le point."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔤",
-     "titre": "Ce que le jeu ne fait pas",
-     "points": [
-      {
-       "titre": "Aucun nom propre en réponse",
-       "texte": "Les patronymes des députés et les noms d'organisations sont écartés à la génération : retrouver « Spautz » après « Marc » ne s'apprend pas, cela se sait ou non."
-      },
-      {
-       "titre": "Aucune phrase à chiffres, ni incise, ni citation coupée",
-       "texte": "Les dépêches de résultats et de budgets ne se lisent pas hors de leur article ; 73 000 phrases ont été écartées pour cette seule raison."
-      },
-      {
-       "titre": "Pas de repli de secours",
-       "texte": "Si les phrases ne se chargent pas, l'écran le dit au lieu de proposer une partie de dépannage qui masquerait la panne."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Toucher un onglet éloigné n'ouvre plus le mauvais écran",
-       "texte": "La barre d'onglets demandait un défilement animé quelle que soit la distance ; au-delà d'un onglet voisin, ViewPager2 s'arrêtait en chemin, et l'onglet s'affichait en surbrillance alors que le contenu était celui d'un autre. Depuis l'accueil, « Wuertmix » ouvrait « Wuertsich » et « Wuertlück » ouvrait « À Propos ». Le saut est désormais direct dès qu'il dépasse un onglet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📚",
-     "titre": "Attribution",
-     "points": [],
-     "texte": "Le jeu affiche la source de chaque phrase et les crédits des deux corpus sous les règles. Les phrases sont des extraits sous licence Creative Commons (CC BY-NC 4.0 pour LuxAlign, CC BY 4.0 pour LETZ) : cette mention est une obligation de licence, détaillée dans <code>Dictionnaires/CORPUS.md</code>.",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.19.0",
-   "date": "2026-08-30",
-   "intro": "Le clavier rétablit la majuscule des substantifs pendant que vous écrivez. <code>an der rue</code> devient <code>an der Rue</code> dès que le mot est validé. C'est la première fois que le clavier modifie ce que vous avez tapé — d'où les précautions qui suivent.",
-   "sections": [
-    {
-     "emoji": "🔠",
-     "titre": "La Groussschreiwung se corrige toute seule",
-     "points": [
-      {
-       "titre": "Seulement quand la phrase le réclame",
-       "texte": "Le clavier ne capitalise pas tout mot dont il connaît la forme majuscule : il ne rétablit la majuscule que lorsqu'il a réellement vu ce mot écrit ainsi <strong>après le mot qui précède</strong>. <code>an der</code> appelle <code>Rue</code> ; <code>la</code> n'appelle rien."
-      },
-      {
-       "titre": "Ce que vous écrivez en français reste intact",
-       "texte": "C'est la raison d'être de cette prudence : 161 des 662 mots du dictionnaire français de secours portent une majuscule en luxembourgeois — <code>rue</code>, <code>moment</code>, <code>partie</code>, <code>centre</code>, <code>chambre</code>, <code>route</code>, <code>santé</code>, <code>marché</code>, <code>café</code>. Une correction fondée sur le seul dictionnaire aurait capitalisé un mot sur quatre dans un message en français. Le clavier n'a pas de détecteur de langue ; c'est le contexte qui fait le tri."
-      },
-      {
-       "titre": "Vos majuscules à vous sont intouchables",
-       "texte": "Dès que le mot tapé contient la moindre majuscule, la correction se tait."
-      },
-      {
-       "titre": "Une touche Retour arrière l'annule",
-       "texte": ", en gardant l'espace. Le second retour arrière se comporte normalement."
-      },
-      {
-       "titre": "Un interrupteur la coupe",
-       "texte": ", dans les réglages, à côté du correcteur orthographique. Elle est active par défaut : elle n'a d'intérêt que si elle agit sans qu'on la cherche."
-      },
-      {
-       "titre": "Jamais dans un champ de mot de passe",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📏",
-     "titre": "Ce que ça donne, mesuré",
-     "points": [],
-     "texte": "Sur ParaLux, jeu de phrases dont aucune ne figure dans le corpus qui a servi à construire le dictionnaire, en simulant deux façons d'écrire : À titre de comparaison, capitaliser d'après le seul dictionnaire aurait abîmé <strong>3,5 %</strong> des phrases correctement écrites. 818 majuscules manquantes n'ont pas été rétablies, faute de contexte attesté. C'est assumé : une majuscule oubliée ne coûte presque rien, une majuscule imposée à tort oblige à revenir en arrière et à se battre avec son clavier. Ces chiffres portent sur 312 phrases. Ils ne prouvent pas un taux d'erreur nul, ils le bornent — et cette version est la première à toucher au texte de l'utilisateur, donc les retours sont particulièrement bienvenus.",
-     "tableau": {
-      "entetes": [
-       "",
-       "mots retouchés",
-       "à tort",
-       "phrases abîmées"
-      ],
-      "lignes": [
-       [
-        "vous mettez vos majuscules",
-        "<strong>0</strong>",
-        "0",
-        "0 %"
-       ],
-       [
-        "vous tapez tout en minuscules",
-        "126 rétablies",
-        "<strong>0</strong>",
-        "<strong>0 %</strong>"
-       ]
-      ]
-     }
     }
    ]
   }
