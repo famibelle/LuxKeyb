@@ -513,6 +513,18 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       vide, a rendu deux cent soixante-dix mots pour cent quatre-vingt-douze
       réellement prononcés.
     </p>
+    <p>
+      <strong>Le simulateur de cette page fait la même chose</strong>, à une
+      réserve près, qui ne tient pas à nous : depuis un navigateur, la
+      soumission est soumise à la politique d'origine croisée, et la réponse qui
+      porte le numéro du travail n'en déclare pas. Le navigateur la bloque donc,
+      alors que l'application, elle, passe sans difficulté. Quand cela arrive, la
+      page ne fait pas reparler l'utilisateur : elle rejoue sur l'ancienne
+      connexion WebSocket l'énoncé qu'elle a déjà enregistré, et le texte arrive
+      quand même — avec la justesse moindre du découpage en direct. Une seule
+      entête ajoutée côté service ferait basculer la page sur l'API sans qu'on y
+      touche.
+    </p>
   </div>
 </section>
 

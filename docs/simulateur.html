@@ -275,6 +275,46 @@
   }
   .mic-btn svg { display: block; width: 100%; height: 100%; }
   .mic-btn.mic-on { color: var(--kb-accent); opacity: 1; }
+
+  /* Anneau qui tourne autour du micro pendant l'écoute (MicRingDrawable) : un
+     anneau complet très atténué, et par-dessus un arc de 100° qui en fait le
+     tour en 1,4 s. Le micro pulsait déjà au rythme de la voix, mais ce
+     retour-là s'éteint précisément quand on doute — entre deux phrases, dans
+     une pièce calme, avant de commencer. L'anneau tourne indépendamment de ce
+     qui est capté : il dit « ça écoute », non « ça entend ».
+
+     Le fond atténué n'est pas décoratif non plus : sans lui, l'arc semble
+     flotter et sa position de départ paraît arbitraire. */
+  .mic-btn { position: relative; }
+  .mic-btn.mic-on::before,
+  .mic-btn.mic-on::after {
+    content: '';
+    position: absolute;
+    /* Retiré d'une demi-épaisseur, sinon le trait est rogné par les bords. */
+    inset: 1px;
+    border-radius: 50%;
+  }
+  .mic-btn.mic-on::before {
+    border: 2px solid currentColor;
+    opacity: .18;                     /* ALPHA_FOND = 45/255 */
+  }
+  .mic-btn.mic-on::after {
+    /* Un disque tronqué à 100°, évidé en anneau par le masque : c'est le
+       drawArc(cadre, angle, ARC_DEGRES) d'Android, sans canevas. */
+    background: conic-gradient(currentColor 0 100deg, transparent 100deg);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 2px), #000 calc(100% - 2px));
+            mask: radial-gradient(farthest-side, #0000 calc(100% - 2px), #000 calc(100% - 2px));
+    animation: mic-anneau 1.4s linear infinite;
+  }
+  @keyframes mic-anneau {
+    from { transform: rotate(-90deg); }
+    to   { transform: rotate(270deg); }
+  }
+  /* Réglage d'accessibilité, pas préférence esthétique : une rotation
+     perpétuelle est exactement ce qu'il vise. L'arc reste, figé en haut. */
+  @media (prefers-reduced-motion: reduce) {
+    .mic-btn.mic-on::after { animation: none; transform: rotate(-90deg); }
+  }
   /* Le bandeau se pose par-dessus les suggestions plutôt que de les remplacer
      dans le flux : insérer une vue dans la rangée en cours de dictée relance
      une passe de mise en page sous le doigt de l'utilisateur. */
@@ -681,16 +721,18 @@
 
   <div class="asr-avis" id="asr-avis" hidden>
     <p>
-      <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier envoie votre voix
-      au service de l'Université du Luxembourg, en direct, pendant que vous
-      parlez — rien n'est reconnu sur votre appareil, et rien ne passe par nous.
-      N'y dictez rien de confidentiel.
+      <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier enregistre votre
+      énoncé et l'envoie d'un seul bloc, à la fin, au service de l'Université du
+      Luxembourg — rien n'est reconnu sur votre appareil, et rien ne passe par
+      nous. N'y dictez rien de confidentiel.
       <a href="labs-luxasr.html">Ce que fait cette démonstration</a>.
     </p>
     <button type="button" class="btn primary" id="asr-activer">🎙️ Activer le micro</button>
     <p class="asr-note" id="asr-note" hidden>
-      Touchez le micro à droite des suggestions pour dicter. La dictée se
-      termine d'elle-même après une seconde et demie de silence.
+      Touchez le micro à droite des suggestions pour dicter. Rien ne s'écrit
+      pendant qu'on parle : le champ montre le niveau capté, puis le texte
+      arrive d'un coup. La dictée se termine d'elle-même après cinq secondes
+      de silence.
     </p>
   </div>
 
