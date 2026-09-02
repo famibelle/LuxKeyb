@@ -9,6 +9,45 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.22.0] - 2026-09-02
+
+### ✨ Ajouté
+
+- **« Zuelwuert », un cinquième jeu : écrire les nombres.** Le jeu pose une
+  multiplication simple — 7 × 8 = 56 — et propose quatre orthographes de son
+  résultat, dont une seule est du luxembourgeois correct. L'exercice est un
+  transcodage : passer du chiffre à la lettre. `Zuelwuert` est le mot du LOD
+  pour « numéral », littéralement le mot-nombre.
+- **Les leurres sont les fautes qu'on fait vraiment**, et le jeu dit laquelle
+  après coup plutôt que d'afficher un carré rouge : l'allemand
+  (« sechsundfünfzig »), les chiffres lus à l'envers (« sechsandrësseg », qui
+  vaut 36), le trait d'union et l'espace (« sechsa-fofzeg », « sechs a
+  fofzeg »), la finale -ig de l'allemand là où le luxembourgeois écrit -eg, un
+  accent manquant, et surtout la **règle d'Eifel** : le n de la liaison tombe
+  devant f, s, v… et se maintient devant d, t, z, n, h et les voyelles, d'où
+  « sechsafofzeg » pour 56 mais « sechsandrësseg » pour 36. Une bonne réponse
+  affiche la décomposition, « 56 = sechs + a + fofzeg ».
+- **Trois niveaux.** En Facile les leurres sont grossiers et les petits nombres
+  sont tirés ; en Normal seuls les nombres composés sortent ; en Difficile les
+  leurres deviennent des paires minimales et **le produit n'est plus affiché**,
+  il faut le calculer avant de l'écrire.
+- **Les 101 orthographes ont été vérifiées une à une contre le LOD**
+  (Lëtzebuerger Online Dictionnaire, ZLS, CC0), dans les deux sens : aucune
+  forme produite par le jeu n'est absente des graphies que le LOD suggère, et
+  aucune graphie composée que le LOD suggère n'échappe à la liste des variantes
+  acceptées — celle qui interdit de proposer « siechzeg » en face de
+  « sechzeg », ce qui donnerait deux bonnes réponses. `ZuelenSpellerTest` fige
+  ce résultat en neuf tests.
+
+### 🔄 Modifié
+
+- L'onglet « Spiller » présente désormais cinq cartes. Le cinquième jeu occupe
+  toute la largeur de sa ligne, ce qui le rend le plus visible — c'est le
+  nouveau.
+- Le Zuelwuert ne dépend d'aucun actif et ne lit pas le dictionnaire : ses mots
+  se calculent. Il n'ajoute donc rien au poids de l'application, ni au temps de
+  chargement de l'onglet.
+
 ## [10.21.1] - 2026-09-01
 
 ### 🔄 Modifié
