@@ -9,6 +9,32 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.22.1] - 2026-09-02
+
+### 🐛 Corrigé
+
+- **Le mot du jour s'affiche à nouveau avec sa traduction française.** Il est
+  tiré parmi les mots déjà connus de l'appareil, pas dans le dictionnaire
+  livré : quand ce fichier vient d'une installation plus ancienne — Android le
+  restaure d'une sauvegarde après une réinstallation — les vingt tirages
+  successifs pouvaient tous tomber sur un mot que la table du LOD ne glose pas,
+  et le dernier était affiché tel quel. La ligne de traduction disparaissait
+  alors sans rien dire : une carte d'apparence normale, simplement sans
+  traduction. Le tirage parcourt désormais la liste jusqu'à un mot glosé au
+  lieu d'abandonner.
+- **Un mot du jour glosé par lui-même ne sort plus.** Le luxembourgeois
+  emprunte assez au français pour que 1 278 formes se traduisent par
+  elles-mêmes — « Accident » → accident, « Budget » → budget. La traduction
+  était exacte et n'apprenait rien ; c'était le cas 17 jours par an.
+- **Le compteur d'usage du mot du jour lisait le mauvais format.** Un mot
+  employé cent fois s'annonçait quand même « nouveau mot à découvrir ».
+
+### 🔧 Modifié
+
+- **La traduction du mot du jour est annoncée**, « en français : profil », au
+  lieu d'être posée en gris entre le mot et sa ligne d'usage, où elle se lisait
+  comme un sous-titre de plus.
+
 ## [10.22.0] - 2026-09-02
 
 ### ✨ Ajouté
