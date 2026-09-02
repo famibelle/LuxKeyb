@@ -53,6 +53,9 @@ import com.example.kreyolkeyboard.wuertriet.color
 import com.example.kreyolkeyboard.cloze.ClozeData
 import com.example.kreyolkeyboard.cloze.ClozeDifficulty
 import com.example.kreyolkeyboard.cloze.ClozeQuestion
+import com.example.kreyolkeyboard.zuelen.ZuelenData
+import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
+import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -173,7 +176,8 @@ class SettingsActivity : AppCompatActivity() {
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
             "Le guide, en bas de l'onglet Démarrage, reprend toutes les étapes en images, suivies des questions fréquentes.",
-            "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur."
+            "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur.",
+            "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça."
         )
     }
     
@@ -596,7 +600,7 @@ class SettingsActivity : AppCompatActivity() {
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
             
-            // Tab Spiller : les quatre jeux derrière une seule destination.
+            // Tab Spiller : tous les jeux derrière une seule destination.
             // Ils occupaient quatre onglets sur neuf, soit 44 % de la barre,
             // pour une activité que l'on choisit une fois par session.
             val gamesTab = createTab(2, "🎮", "Spiller")
@@ -2687,7 +2691,9 @@ class SettingsActivity : AppCompatActivity() {
                     "à partir des mots déjà présents dans le dictionnaire du clavier : « Wuertsich » " +
                     "(mots mêlés), « Wuertmix » (lettres à remettre dans l'ordre), « Wuertriet » " +
                     "(un mot de 5 lettres à deviner) et « Wuertlück », où il manque un mot à une " +
-                    "vraie phrase luxembourgeoise."
+                    "vraie phrase luxembourgeoise. Un cinquième, « Zuelwuert », ne porte pas sur " +
+                    "le vocabulaire mais sur l'écriture des nombres : une multiplication, et " +
+                    "quatre orthographes de son résultat dont une seule est correcte."
         )
 
         addGuideSection(
@@ -6042,6 +6048,447 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fragment « Zuelwuert » : une multiplication, quatre orthographes de son
+     * résultat.
+     *
+     * Le seul jeu qui ne tire rien du dictionnaire : ses mots se calculent
+     * (voir [ZuelenSpeller]). Il n'affiche donc pas de glose française — le
+     * chiffre est déjà à l'écran, il est sa propre traduction.
+     */
+    class ZuelenFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var tvScore: TextView
+        private lateinit var tvProgress: TextView
+        private lateinit var progressBar: ProgressBar
+        private lateinit var tvOperation: TextView
+        private lateinit var tvConsigne: TextView
+        private lateinit var tvFeedback: TextView
+        private lateinit var optionsContainer: LinearLayout
+        private lateinit var btnNext: Button
+        private lateinit var difficultyRow: LinearLayout
+
+        private val optionButtons = mutableListOf<Button>()
+
+        private var round: List<ZuelenQuestion> = emptyList()
+        private var questionIndex = 0
+        private var score = 0
+        private var answered = false
+        private var difficulty = ZuelenDifficulty.NORMALE
+
+        private val couleurNeutre = Color.parseColor("#00897B")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 12 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "🔢 Zuelwuert"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        }
+                        addView(title)
+
+                        tvScore = TextView(activity).apply {
+                            text = "0 / ${ZuelenData.QUESTIONS_PER_ROUND}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerRow)
+
+                    // La difficulté porte sur les tables tirées, sur la finesse
+                    // des leurres, et — au niveau le plus dur — sur le fait que
+                    // le produit n'est plus donné.
+                    difficultyRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    ZuelenDifficulty.values().forEach { niveau ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulty = niveau
+                                startNewRound()
+                            }
+                        }
+                        difficultyRow.addView(bouton)
+                    }
+                    addView(difficultyRow)
+
+                    tvProgress = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 6 }
+                        text = "Question 1 / ${ZuelenData.QUESTIONS_PER_ROUND}"
+                        textSize = 13f
+                        setTextColor(Color.parseColor("#666666"))
+                    }
+                    addView(tvProgress)
+
+                    progressBar = ProgressBar(
+                        activity, null, android.R.attr.progressBarStyleHorizontal
+                    ).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        max = ZuelenData.QUESTIONS_PER_ROUND
+                        progress = 0
+                    }
+                    addView(progressBar)
+
+                    // Carte de l'opération
+                    val operationCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 20 }
+                        orientation = LinearLayout.VERTICAL
+                        gravity = Gravity.CENTER_HORIZONTAL
+                        setPadding(28, 28, 28, 24)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        tvOperation = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            textSize = 34f
+                            gravity = Gravity.CENTER
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        addView(tvOperation)
+
+                        tvConsigne = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 10 }
+                            textSize = 13f
+                            gravity = Gravity.CENTER
+                            setTextColor(Color.parseColor("#9E9E9E"))
+                        }
+                        addView(tvConsigne)
+                    }
+                    addView(operationCard)
+
+                    // Une proposition par ligne : « fënnefasiwwenzeg » et son
+                    // leurre allemand ne tiennent pas côte à côte.
+                    optionsContainer = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    repeat(ZuelenData.OPTIONS_PER_QUESTION) { position ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 12 }
+                            textSize = 16f
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            isAllCaps = false
+                            setOnClickListener { onOptionChosen(position) }
+                        }
+                        optionButtons.add(bouton)
+                        optionsContainer.addView(bouton)
+                    }
+                    addView(optionsContainer)
+
+                    tvFeedback = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4; bottomMargin = 8 }
+                        textSize = 14f
+                        setLineSpacing(0f, 1.2f)
+                        gravity = Gravity.CENTER
+                        visibility = View.GONE
+                    }
+                    addView(tvFeedback)
+
+                    btnNext = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4 }
+                        text = "➡️ Question suivante"
+                        setBackgroundColor(couleurNeutre)
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        visibility = View.INVISIBLE
+                        setOnClickListener { goToNextQuestion() }
+                    }
+                    addView(btnNext)
+
+                    val btnRestart = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        text = "🔄 Nouvelle partie"
+                        textSize = 14f
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        setOnClickListener { startNewRound() }
+                    }
+                    addView(btnRestart)
+
+                    val rulesCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        addView(TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        })
+
+                        addView(TextView(activity).apply {
+                            text = "Une multiplication, et quatre façons d'écrire " +
+                                "son résultat : une seule est du luxembourgeois " +
+                                "correct. Les autres sont les fautes qu'on fait " +
+                                "vraiment — l'allemand, les chiffres inversés, le " +
+                                "trait d'union, la règle d'Eifel, la finale -ig. " +
+                                "Quand vous vous trompez, le jeu dit laquelle.\n\n" +
+                                "Deux règles suffisent à écrire tous les nombres " +
+                                "jusqu'à cent. L'unité se dit avant la dizaine : 56, " +
+                                "c'est six-et-cinquante, « sechsafofzeg ». Et le n de " +
+                                "la liaison « an » tombe devant f, s, v, m…, mais se " +
+                                "maintient devant d, t, z, n, h et les voyelles — " +
+                                "c'est la règle d'Eifel, d'où « sechsafofzeg » (56) " +
+                                "mais « sechsandrësseg » (36).\n\n" +
+                                "En « Difficile », le produit n'est plus affiché : " +
+                                "il faut le calculer avant de l'écrire."
+                            textSize = 14f
+                            setLineSpacing(0f, 1.2f)
+                            setTextColor(Color.parseColor("#333333"))
+                        })
+
+                        // Les orthographes ne sont pas de nous : elles ont été
+                        // vérifiées une à une contre le dictionnaire officiel.
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Orthographes vérifiées contre le Lëtzebuerger " +
+                                "Online Dictionnaire (LOD), Zenter fir d'Lëtzebuerger " +
+                                "Sprooch — data.public.lu, CC0."
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        })
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) {
+                        startNewRound()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun startNewRound() {
+            round = ZuelenData.newRound(difficulty)
+            questionIndex = 0
+            score = 0
+            answered = false
+            tvScore.text = "0 / ${round.size.coerceAtLeast(1)}"
+            progressBar.max = maxOf(1, round.size)
+            progressBar.progress = 0
+            highlightDifficulty()
+            if (round.isNotEmpty()) renderQuestion()
+        }
+
+        private fun highlightDifficulty() {
+            for (i in 0 until difficultyRow.childCount) {
+                val bouton = difficultyRow.getChildAt(i) as Button
+                val actif = bouton.tag == difficulty
+                bouton.setBackgroundColor(if (actif) couleurNeutre else couleurInerte)
+            }
+        }
+
+        private fun renderQuestion() {
+            val question = round[questionIndex]
+            answered = false
+
+            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
+            tvOperation.text = question.enonce
+            tvConsigne.text = if (question.montreLeProduit)
+                "Comment s'écrit ce nombre ?"
+            else
+                "Calculez, puis choisissez l'orthographe."
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+
+            optionButtons.forEachIndexed { position, bouton ->
+                val proposition = question.options.getOrNull(position)
+                if (proposition == null) {
+                    bouton.visibility = View.GONE
+                } else {
+                    bouton.visibility = View.VISIBLE
+                    bouton.text = proposition.texte
+                    bouton.isEnabled = true
+                    bouton.setBackgroundColor(couleurNeutre)
+                }
+            }
+        }
+
+        private fun onOptionChosen(position: Int) {
+            if (answered || round.isEmpty()) return
+            val question = round[questionIndex]
+            val choix = question.options.getOrNull(position) ?: return
+            answered = true
+
+            if (choix.juste) {
+                score++
+                tvScore.text = "$score / ${round.size}"
+            }
+
+            optionButtons.forEachIndexed { i, bouton ->
+                val proposition = question.options.getOrNull(i)
+                bouton.isEnabled = false
+                bouton.setBackgroundColor(
+                    when {
+                        proposition?.juste == true -> couleurJuste
+                        i == position -> couleurFausse
+                        else -> couleurInerte
+                    }
+                )
+            }
+
+            // Le produit reste caché pendant la question au niveau difficile ;
+            // une fois répondu il n'y a plus de raison de le taire.
+            tvOperation.text = "${question.gauche} × ${question.droite} = ${question.produit}"
+
+            // C'est ici que le jeu enseigne : la raison de la faute commise,
+            // pas seulement le verdict. Une bonne réponse rappelle la forme.
+            tvFeedback.apply {
+                text = if (choix.juste)
+                    "✅ Richteg ! ${choix.raison}"
+                else
+                    "❌ ${choix.raison}\nLa bonne réponse était « ${question.reponse} »."
+                setTextColor(if (choix.juste) couleurJuste else couleurFausse)
+                visibility = View.VISIBLE
+            }
+
+            progressBar.progress = questionIndex + 1
+            btnNext.visibility = View.VISIBLE
+            btnNext.text =
+                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
+                else "➡️ Question suivante"
+        }
+
+        private fun goToNextQuestion() {
+            if (questionIndex + 1 >= round.size) {
+                endRound()
+                return
+            }
+            questionIndex++
+            renderQuestion()
+        }
+
+        private fun endRound() {
+            val total = round.size
+            val message = when {
+                score == total -> "Sans faute : $score sur $total !"
+                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
+                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
+                score * 2 >= total -> "$score bonnes réponses sur $total."
+                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+            }
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setMessage(message)
+                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            optionButtons.clear()
+            rootView = null
+        }
+    }
+
     // Fragment « Wierderbuch » : un champ de saisie et une liste de résultats.
     // C'est le seul onglet qui ne joue à rien — on y cherche un mot, dans un
     // sens ou dans l'autre, et on lit sa traduction.
@@ -6232,7 +6679,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Onglet « Spiller » : le choix des quatre jeux, puis le jeu choisi.
+     * Onglet « Spiller » : le choix du jeu, puis le jeu choisi.
      *
      * Ce fragment ne joue à rien lui-même. Il montre quatre cartes et, au tap,
      * installe le fragment du jeu dans son propre conteneur. Aucun pager
@@ -6273,7 +6720,9 @@ class SettingsActivity : AppCompatActivity() {
             Jeu("🟩", "Wuertriet", "Devinez le mot de 5 lettres en 6 essais",
                 "#4CAF50") { WuertrietFragment() },
             Jeu("📝", "Wuertlück", "Complétez la phrase à laquelle il manque un mot",
-                "#FF8C00") { ClozeFragment() }
+                "#FF8C00") { ClozeFragment() },
+            Jeu("🔢", "Zuelwuert", "Écrivez en lettres le résultat d'une multiplication",
+                "#00897B") { ZuelenFragment() }
         )
 
         override fun onCreateView(
@@ -6350,18 +6799,20 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(4, 0, 4, 6)
             })
             colonne.addView(TextView(activity).apply {
-                text = "Quatre façons de travailler son vocabulaire " +
-                        "luxembourgeois. Chacune donne la traduction française " +
-                        "des mots, au moment où elle ne livre pas la réponse."
+                text = "Cinq façons de travailler son luxembourgeois. Les " +
+                        "quatre jeux de vocabulaire donnent la traduction " +
+                        "française des mots, au moment où elle ne livre pas la " +
+                        "réponse ; le cinquième porte sur l'écriture des nombres."
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.25f)
                 setPadding(4, 0, 4, 20)
             })
 
-            // Deux cartes par ligne : quatre jeux tombent juste, et une carte
-            // pleine largeur pour chacun aurait poussé le quatrième hors de
-            // l'écran, là où on ne le découvre plus.
+            // Deux cartes par ligne : une carte pleine largeur par jeu aurait
+            // poussé les derniers hors de l'écran, là où on ne les découvre
+            // plus. Un nombre impair de jeux laisse le dernier occuper toute
+            // la ligne — c'est voulu, il est ainsi le plus visible.
             jeux.chunked(2).forEach { paire ->
                 colonne.addView(LinearLayout(activity).apply {
                     orientation = LinearLayout.HORIZONTAL
