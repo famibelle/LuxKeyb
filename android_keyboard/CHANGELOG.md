@@ -9,6 +9,21 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.25.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **Wuertlück ne sert plus de phrases de faits divers.** Ses phrases viennent de
+  dépêches, et une sur dix racontait un accident, un cambriolage ou un verdict —
+  le mot à trouver, lui, était souvent anodin. Soixante-treize formes désignent
+  désormais ce registre : police et secours, justice, vols, accidents et
+  victimes. Le jeu conserve 1 373 phrases sur 1 600, réparties 316 / 583 / 474
+  sur les trois niveaux.
+- **Ces mots-là restent proposés comme vocabulaire.** « Police », « Accident »,
+  « Geriicht », « Prisong », « Affer » sont des mots utiles, et les jeux
+  continuent de les tirer : c'est la phrase qui est écartée, jamais le mot. La
+  liste des mots jamais proposés, elle, ne bouge pas.
+
 ## [10.24.0] - 2026-09-02
 
 ### 🔧 Modifié
