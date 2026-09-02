@@ -3304,13 +3304,25 @@ class SettingsActivity : AppCompatActivity() {
         // Sans sa traduction, le mot du jour est une suite de lettres qu'on
         // regarde une seconde et qu'on oublie. C'est la seule chose qui en fait
         // un mot du jour plutôt qu'un tirage au sort.
+        //
+        // La glose est annoncée, pas seulement posée sous le mot : entre le mot
+        // en 48sp et la ligne d'usage en gris, une ligne grise de plus se lit
+        // comme un sous-titre quelconque. « en français : » lève l'ambiguïté en
+        // trois mots, et le sens lui-même est repris en plus sombre.
+        val glose = TranslationDictionary.traduire(this@SettingsActivity, wordOfDay)
         val wordGloss = TextView(this).apply {
-            text = TranslationDictionary.traduire(this@SettingsActivity, wordOfDay) ?: ""
+            text = if (glose == null) "" else SpannableStringBuilder("en français : ").apply {
+                setSpan(ForegroundColorSpan(Color.parseColor("#999999")),
+                    0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                val debut = length
+                append(glose)
+                setSpan(ForegroundColorSpan(Color.parseColor("#333333")),
+                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
             textSize = 18f
-            setTextColor(Color.parseColor("#555555"))
             gravity = Gravity.CENTER
             setPadding(0, 0, 0, 12)
-            visibility = if (text.isNullOrEmpty()) View.GONE else View.VISIBLE
+            visibility = if (glose == null) View.GONE else View.VISIBLE
         }
 
         val wordUsage = TextView(this).apply {
@@ -4231,22 +4243,42 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Tire un mot du jour dont on connaît la traduction, en gardant le tirage
-     * déterministe pour la journée.
+     * Tire un mot du jour dont la traduction apprend quelque chose, en gardant
+     * le tirage déterministe pour la journée.
      *
      * On ne filtre pas la liste avant de tirer : la construire coûterait un
      * parcours de 38 000 formes à chaque ouverture de l'onglet, pour une chance
      * sur deux de tomber juste du premier coup. Quelques essais successifs sur
-     * le même générateur suffisent — et si aucun n'aboutit (table absente), le
-     * dernier tirage est rendu tel quel plutôt que de laisser l'écran vide.
+     * le même générateur suffisent dans l'immense majorité des cas.
+     *
+     * Deux garde-fous, parce qu'un mot du jour sans glose ne se signale par
+     * rien — la ligne de traduction passe en `GONE` et l'écran a l'air normal,
+     * seulement moins utile :
+     *
+     * - le critère est [TranslationDictionary.aUneGloseInstructive] et non la
+     *   simple présence d'une glose. Le luxembourgeois a emprunté assez de mots
+     *   au français pour que 1 278 formes se glosent par elles-mêmes
+     *   (« Accident » → accident) : la traduction est là, elle n'apprend rien ;
+     * - si les vingt tirages échouent — table absente, ou malchance — on
+     *   parcourt la liste au lieu de rendre le dernier tirage tel quel. Le
+     *   parcours part de l'index tiré et reste donc déterministe : le mot du
+     *   jour ne change pas d'un affichage à l'autre dans la journée.
      */
     private fun tirerMotTraduisible(mots: List<String>, random: Random): String {
-        var choisi = mots[random.nextInt(mots.size)]
+        var index = random.nextInt(mots.size)
         repeat(20) {
-            if (TranslationDictionary.aUneTraduction(this, choisi)) return choisi
-            choisi = mots[random.nextInt(mots.size)]
+            if (TranslationDictionary.aUneGloseInstructive(this, mots[index])) {
+                return mots[index]
+            }
+            index = random.nextInt(mots.size)
         }
-        return choisi
+        for (decalage in mots.indices) {
+            val candidat = mots[(index + decalage) % mots.size]
+            if (TranslationDictionary.aUneGloseInstructive(this, candidat)) return candidat
+        }
+        // Aucune glose nulle part : l'actif manque. Un mot sans traduction vaut
+        // mieux qu'un écran vide.
+        return mots[index]
     }
 
     private fun getWordOfTheDay(): Pair<String, Int> {
@@ -4275,8 +4307,16 @@ class SettingsActivity : AppCompatActivity() {
                 val random = Random(seed)
                 
                 val selectedWord = tirerMotTraduisible(allWords, random)
-                // Lire directement l'entier
-                usageCount = jsonObject.optInt(selectedWord, 0)
+                // Le fichier d'usage porte deux formats : l'objet
+                // {"frequency", "user_count"} qu'écrit CreoleDictionaryWithUsage,
+                // et l'entier nu des toutes premières versions. optInt() ne lit
+                // que le second, si bien qu'un mot déjà employé cent fois
+                // s'annonçait quand même « nouveau mot à découvrir ».
+                usageCount = when (val brut = jsonObject.opt(selectedWord)) {
+                    is Int -> brut
+                    is JSONObject -> brut.optInt("user_count", 0)
+                    else -> 0
+                }
                 
                 return Pair(selectedWord, usageCount)
             } else {

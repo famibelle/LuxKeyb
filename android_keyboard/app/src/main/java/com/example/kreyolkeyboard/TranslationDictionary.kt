@@ -188,8 +188,18 @@ object TranslationDictionary {
         return traductions[mot] ?: traductionsMinuscules[mot.lowercase()]
     }
 
-    fun aUneTraduction(context: Context, mot: String): Boolean =
-        traduire(context, mot) != null
+    /**
+     * Vrai si le mot a une glose et que cette glose apprend quelque chose.
+     *
+     * C'est le seul test qui vaille avant d'afficher un mot à quelqu'un : une
+     * glose absente laisse une ligne vide, une glose égale au mot laisse une
+     * ligne inutile, et les deux se lisent de la même façon — le mot n'est pas
+     * traduit. Voir [gloseInstructive] pour la règle exacte.
+     */
+    fun aUneGloseInstructive(context: Context, mot: String): Boolean {
+        val glose = traduire(context, mot) ?: return false
+        return gloseInstructive(mot, glose)
+    }
 
     /**
      * Glose prête à afficher à côté du mot, ou chaîne vide.
@@ -237,10 +247,7 @@ object TranslationDictionary {
         minimum: Int = 50
     ): List<String> {
         charger(context)
-        val traduits = mots.filter { mot ->
-            val glose = traduire(context, mot)
-            glose != null && gloseInstructive(mot, glose)
-        }
+        val traduits = mots.filter { aUneGloseInstructive(context, it) }
         return if (traduits.size >= minimum) traduits else mots
     }
 
