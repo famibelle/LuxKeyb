@@ -290,6 +290,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  /* Sans cela le display:flex ci-dessus l'emporte sur [hidden] : le bandeau
+     reste posé sur la première rangée de suggestions, vide et invisible, et
+     avale chaque appui sur une puce LB. Même piège que .demo-meter. */
+  .sugg-banner[hidden] { display: none; }
 
   /* ---- clavier ----
      Géométrie reprise de KeyboardLayoutManager : touches de 48 dp de haut,
