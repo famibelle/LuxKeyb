@@ -82,6 +82,19 @@
   /** Au-delà, on abandonne : la file est partagée et peut s'allonger. */
   var TIMEOUT_LOT_MS = 30000;
 
+  /**
+   * Combien de temps on patiente sur des sondages illisibles avant de conclure
+   * que la voie ne passe pas.
+   *
+   * Un sondage bloqué ressemble exactement à un travail pas encore prêt : c'est
+   * le `202 ACCEPTED` de « processing » qui ne porte pas d'entête CORS, quand
+   * le `200 OK` de « completed » en porte une. On ne peut donc pas distinguer
+   * les deux, et abandonner au premier échec ferait basculer sur le flux à
+   * chaque dictée alors que la soumission, elle, serait passée. Le délai couvre
+   * une file chargée — 1,3 s en médiane, 2,1 s au pire lors du banc.
+   */
+  var GRACE_SONDAGE_MS = 8000;
+
   /** Marge gardée de part et d'autre de la parole avant l'envoi (MARGE_MS). */
   var MARGE_MS = 300;
 
@@ -440,6 +453,7 @@
 
     /** Interroge le travail jusqu'à `completed`, puis rend son texte. */
     function sonder(gen, job, t0) {
+      var luUnEtat = false;
       return new Promise(function (resoudre, rejeter) {
         (function tour() {
           if (gen !== generation) return;
@@ -448,6 +462,7 @@
             if (gen !== generation) return;
             fetch(BASE + '/v3/asr/jobs/' + job).then(function (r) { return r.json(); })
               .then(function (s) {
+                luUnEtat = true;
                 if (s.status === 'failed') { rejeter(new Error('job ' + job + ' en échec')); return; }
                 if (s.status !== 'completed') { tour(); return; }
                 fetch(BASE + '/v3/asr/jobs/' + job + '/result')
@@ -455,7 +470,11 @@
                     if (!r.ok) throw new Error('result ' + r.status);
                     return r.text();
                   }).then(resoudre, rejeter);
-              }, rejeter);
+              }, function (e) {
+                // Illisible ne veut pas dire perdu : cf. GRACE_SONDAGE_MS.
+                if (luUnEtat || Date.now() - t0 < GRACE_SONDAGE_MS) { tour(); return; }
+                rejeter(e);
+              });
           }, SONDAGE_MS);
         })();
       });
