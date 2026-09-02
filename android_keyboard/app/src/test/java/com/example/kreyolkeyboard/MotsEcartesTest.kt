@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -18,10 +19,19 @@ import java.io.File
 class MotsEcartesTest {
 
     private val vises = listOf(
+        // Religion
         "Ramadan", "Kierch", "Kierchen", "Moschee", "Synagog", "Poopst",
         "Bëschof", "Relioun", "Islam", "Koran", "Bibel", "Gott", "Chrëscht",
         "kathoulesch", "jiddesch", "Judden", "Moslemen", "Gebiet", "bieden",
-        "Engel", "Däiwel", "Kommioun", "Klouschter", "Kapell", "Abtei"
+        "Engel", "Däiwel", "Kommioun", "Klouschter", "Kapell", "Abtei",
+        // Partis et étiquettes idéologiques
+        "CSV", "LSAP", "ADR", "DP", "Piraten", "Rassismus", "rassistesch",
+        "Antisemitismus", "Faschismus", "Extremismus", "Populismus", "Nazien",
+        // Questions disputées et registre qui choque
+        "Ofdreiwung", "Vergewaltegung", "vergewaltegt", "Prostitutioun",
+        "sexuell", "Sex", "Pedophilie", "Kondom", "Drogen", "Kokain", "Heroin",
+        "Drogendealer", "Attentat", "Attentäter", "Terrorismus", "terroristesch",
+        "Mord", "Selbstmord"
     )
 
     /**
@@ -30,9 +40,17 @@ class MotsEcartesTest {
      * `Mass` comptent parmi les formes les plus fréquentes du dictionnaire.
      */
     private val gardes = listOf(
+        // Sens courant qui n'est pas le sens religieux
         "bekannt", "bekannten", "Här", "Hären", "Mass", "Massen", "Kräiz",
         "Wonner", "Por", "Sënn", "Séil", "Testament", "Seminaire", "Laien",
-        "weien", "widmen", "Chrëschtdag", "Ouschteren", "Oktav", "Kierchbierg"
+        "weien", "widmen", "Chrëschtdag", "Ouschteren", "Oktav", "Kierchbierg",
+        // Institutions et vie ordinaire : un apprenant en a besoin
+        "Regierung", "Minister", "Chamber", "Deputéiert", "Wahlen", "Partei",
+        "Oppositioun", "Koalitioun", "Gewerkschaft", "Streik", "Police",
+        "Geriicht", "Prisong", "Riichter", "Affekot", "Krich", "Zaldoten",
+        "Waff", "Doud", "Spidol", "krank", "Kriibs", "Aids", "Gewalt",
+        // Homographes et voisins qu'un filtre par préfixe emporterait
+        "Gréng", "gréng", "Geschlecht", "Adress", "Drogerie", "Morgen"
     )
 
     @Test
@@ -63,10 +81,25 @@ class MotsEcartesTest {
     }
 
     /**
+     * Le découpage se fait sur les non-lettres : `LSAP-Deputéierten` doit être
+     * vu comme `LSAP` suivi du reste, sans quoi le nom du parti passerait dès
+     * qu'il est composé — et il l'est presque toujours dans les dépêches.
+     */
+    @Test
+    fun `un sigle compose est reconnu`() {
+        assertTrue(MotsEcartes.phraseEcartee("Sou den LSAP-Deputéierten e Méindeg."))
+        assertTrue(MotsEcartes.phraseEcartee("Eng Fuerderung, déi d'ADR ënnerstëtzt."))
+        assertFalse(MotsEcartes.phraseEcartee("Seng Adress steet um Formulaire."))
+    }
+
+    /**
      * La liste vaut par ce qu'elle retire, mais elle ne doit pas amputer le
      * dictionnaire : ces formes restent tapables, suggérables et cherchables.
-     * Si la part écartée dépassait le pour-mille, c'est que le filtre aurait
-     * débordé de son rôle.
+     *
+     * Elle pèse 0,29 % des occurrences du corpus, dont près de la moitié pour
+     * les quatre sigles de partis (`CSV`, `LSAP`, `DP`, `ADR`), omniprésents
+     * dans des dépêches politiques. Le garde-fou est à 1 % : au-delà, ce n'est
+     * plus un filtre de neutralité, c'est une amputation du vocabulaire.
      */
     @Test
     fun `la part ecartee du dictionnaire reste marginale`() {
@@ -85,7 +118,44 @@ class MotsEcartesTest {
         assertTrue("dictionnaire vide", total > 0)
         assertTrue(
             "$ecarte occurrences écartées sur $total : le filtre déborde",
-            ecarte * 1000 < total
+            ecarte * 100 < total
         )
+    }
+
+    /**
+     * Wuertlück filtre ses phrases sur la même liste, et une phrase de dépêche
+     * parle souvent d'autre chose que du mot à trouver — un député y est nommé
+     * par son parti. Allonger la liste rétrécit donc la réserve du jeu, et un
+     * niveau qui tomberait sous les dix items servirait des manches répétitives
+     * sans que rien n'échoue.
+     *
+     * Au moment de l'écriture : 1 529 phrases conservées sur 1 600, réparties
+     * 372 / 647 / 510 sur les trois niveaux.
+     */
+    @Test
+    fun `Wuertluck garde une reserve suffisante a chaque niveau`() {
+        val fichier = File("src/main/assets/luxemburgish_cloze.json")
+        assertTrue("luxemburgish_cloze.json manquant", fichier.exists())
+        val items = JSONObject(fichier.readText()).getJSONArray("items")
+
+        val restants = IntArray(4)
+        for (i in 0 until items.length()) {
+            val item = items.getJSONObject(i)
+            val phrase = item.getString("s")
+            val propositions = mutableListOf(item.getString("a"))
+            val leurres = item.getJSONArray("d")
+            for (j in 0 until leurres.length()) propositions.add(leurres.getString(j))
+
+            if (MotsEcartes.phraseEcartee(phrase)) continue
+            if (propositions.any { MotsEcartes.estEcarte(it) }) continue
+            restants[item.optInt("l", 2)]++
+        }
+
+        for (niveau in 1..3) {
+            assertTrue(
+                "niveau $niveau : ${restants[niveau]} phrases après filtrage",
+                restants[niveau] >= 100
+            )
+        }
     }
 }
