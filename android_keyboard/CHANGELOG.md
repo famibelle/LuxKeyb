@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.1.1] - 2026-09-03
+
+### 🐛 Corrigé
+
+- **La fiche d'un mot s'ouvre entière.** Sur un petit écran, ou avec une police
+  système agrandie, elle pouvait s'ouvrir en cachant ses deux boutons sans que
+  rien n'indique qu'il fallait la tirer vers le haut.
+- **Toutes les formes d'un mot sont montrées.** « sinn » en affichait dix suivies
+  de « … », et les douze autres n'étaient atteignables nulle part.
+- **Les deux phrases d'exemple se distinguent l'une de l'autre** : elles se
+  lisaient comme un seul paragraphe.
+- **« léieren » (apprendre) et « nennen » (nommer) sont revenus.** Deux mots très
+  courants avaient disparu des suggestions, des jeux et du mot du jour : ils
+  s'écrivent, à l'accent ou au pluriel près, comme deux mots que l'application
+  met de côté.
+
 ## [11.1.0] - 2026-09-03
 
 ### ✨ Ajouté
