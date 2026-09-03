@@ -9,6 +9,23 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.1.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Chaque mot du dictionnaire montre comment il s'emploie.** Sa fiche porte
+  maintenant une ou deux phrases d'exemple, le mot en gras : « Haus » n'est plus
+  seulement « maison », c'est aussi « mir hunn nach vill Aarbecht ronderëm eist
+  neit Haus ». Les phrases viennent du dictionnaire officiel (LOD), qui les
+  écrit pour cela ; 26 148 mots en ont une.
+
+### 🔧 Modifié
+
+- **Le clavier ne propose plus de grossièretés.** Ni en complétion, ni en
+  correction, ni en suggestion du mot suivant, et le dictionnaire ne les remonte
+  plus quand on cherche par le sens français. Elles restent saisissables et
+  trouvables : le correcteur ne les souligne pas, et les taper les trouve.
+
 ## [11.0.0] - 2026-09-03
 
 ### 🔧 Modifié
