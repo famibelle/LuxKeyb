@@ -177,3 +177,99 @@ nav.site strong { color: var(--ink); }
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
+
+/* ------------------------------------------------------------------
+   Lisibilité — pensé pour une lectrice de 74 ans sur téléphone.
+
+   Deux règles tenues partout : rien sous 16 px, et aucune opacité sous
+   0.85 sur du texte qui porte du sens. Le gris passe par `--ink-soft`,
+   qui garde son contraste sur les deux fonds, au lieu d'une opacité qui
+   délave aussi la couleur.
+   ------------------------------------------------------------------ */
+
+.markdown-body {
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.markdown-body figcaption {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+/* Le petit texte d'appoint : mentions légales, notes de bas de tableau. */
+.markdown-body .note {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+/* Chapô : ce que l'application fait pour vous, avant tout vocabulaire. */
+.markdown-body .chapo {
+  font-size: 21px;
+  line-height: 1.55;
+  margin: 18px 0 14px;
+}
+
+.markdown-body .chapo-note {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--sea);
+  margin: 0 0 8px;
+}
+
+/* Bouton d'installation : la seule action principale de la page. */
+.btn-installer {
+  display: inline-block;
+  padding: 18px 32px;
+  background: #ED2939;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  text-decoration: none;
+  line-height: 1.3;
+}
+.btn-installer:hover { filter: brightness(1.07); color: #fff; }
+.btn-installer:focus-visible { outline: 3px solid var(--sea); outline-offset: 3px; }
+
+/* L'avertissement Android est annoncé ici, avant qu'Android ne le montre. */
+.markdown-body .rassurance {
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--sea);
+  background: var(--sea-soft);
+  border-radius: 0 8px 8px 0;
+  text-align: left;
+}
+
+/* Les destinations sorties de la barre du haut, réunies en pied de page. */
+.markdown-body .liens-secondaires {
+  line-height: 2.4;
+}
+
+nav.site {
+  font-size: 16px;
+  gap: 10px 14px;
+}
+nav.site a { padding: 8px 4px; }   /* cible tactile, pas seulement du texte */
+
+.btn {
+  font-size: 17px;
+  padding: 15px 22px;
+}
+
+/* Le sélecteur de fond porte son nom dans la barre ; épinglé en coin de
+   page (.fixed), il redevient une pastille. */
+.theme-toggle {
+  width: auto;
+  min-width: 34px;
+  padding: 0 12px;
+  gap: 6px;
+}
+.theme-toggle.fixed { width: 34px; padding: 0; }
+
+@media (max-width: 600px) {
+  .btn,
+  .btn-installer { display: block; width: 100%; box-sizing: border-box; }
+}

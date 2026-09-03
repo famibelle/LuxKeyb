@@ -14,11 +14,15 @@
     var toggles = document.querySelectorAll(".theme-toggle");
     for (var i = 0; i < toggles.length; i++) {
       var btn = toggles[i];
+      // Épinglé en coin de page, le bouton reste une pastille ; dans la
+      // barre de navigation il porte son nom, une icône seule ne se
+      // devinant pas.
+      var pastille = btn.classList.contains("fixed");
       if (theme === "dark") {
-        btn.textContent = "☀️";
+        btn.textContent = pastille ? "☀️" : "☀️ Fond clair";
         btn.setAttribute("aria-label", "Passer en mode clair");
       } else {
-        btn.textContent = "🌙";
+        btn.textContent = pastille ? "🌙" : "🌙 Fond sombre";
         btn.setAttribute("aria-label", "Passer en mode sombre");
       }
     }
