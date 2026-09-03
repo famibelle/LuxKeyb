@@ -290,10 +290,25 @@ jobs:
         # orthographique : kreyol_spellchecker.xml déclare la locale `fr`, donc
         # le clavier remplace le correcteur français du système. Trop maigre,
         # il souligne du français correct dans toutes les applications.
-        FR_COUNT=$(jq '.words | length' "$A/french_simple_dict.json")
-        echo "🇫🇷 Formes françaises : $FR_COUNT"
+        FR_SUGG=$(jq '.suggest_mots | length' "$A/french_simple_dict.json")
+        FR_COUNT=$(jq '.word_count' "$A/french_simple_dict.json")
+        FR_BLOOM=$(jq -r '.bloom | length' "$A/french_simple_dict.json")
+        echo "🇫🇷 Formes françaises : $FR_COUNT ($FR_SUGG proposables, filtre de Bloom de $FR_BLOOM caractères)"
+        # Le correcteur ne lit plus une liste de mots mais un filtre de Bloom :
+        # vide ou tronqué, il rejetterait tout et le français redeviendrait
+        # souligné partout, sans que le compte des formes bouge.
+        if [ "$FR_BLOOM" -lt 100000 ]; then
+          echo "::error::Filtre de Bloom français absent ou tronqué ($FR_BLOOM caractères)."
+          exit 1
+        fi
         if [ "$FR_COUNT" -lt 60000 ]; then
           echo "::error::Seulement $FR_COUNT formes françaises : le correcteur soulignerait du français correct. Lancez Dictionnaires/generate_french_dict.py"
+          exit 1
+        fi
+        # Le partage entre paliers est grammatical : un bug de catégorisation
+        # viderait la rangée bleue sans faire bouger le total.
+        if [ "$FR_SUGG" -lt 40000 ]; then
+          echo "::error::Seulement $FR_SUGG formes françaises proposables : la rangée bleue se viderait."
           exit 1
         fi
 
