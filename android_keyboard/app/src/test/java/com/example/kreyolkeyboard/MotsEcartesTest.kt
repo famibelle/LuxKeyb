@@ -68,6 +68,44 @@ class MotsEcartesTest {
     }
 
     @Test
+    fun `les grossieretes ne sont jamais proposees`() {
+        val grossier = listOf(
+            "Fotz", "Fotzen", "Houer", "Louder", "Aarschlach", "Aasch",
+            "Drecksak", "Schäiss", "Schäissdreck", "Bordell", "Puff",
+            "Emmerdeur", "Knaschtsak", "Tëtt", "fuck", "shit", "féckt",
+            "veraascht", "schäissegal"
+        )
+        for (mot in grossier) {
+            assertTrue("« $mot » devrait être filtré", MotsEcartes.estGrossier(mot))
+            // Le filtre du clavier implique celui des jeux et du mot du jour.
+            assertTrue("« $mot » devrait aussi être écarté", MotsEcartes.estEcarte(mot))
+        }
+    }
+
+    /**
+     * Le garde-fou de cette liste-là : la catégorie `FRECHHEET` du LOD marque
+     * ces mots comme injures, alors que ce sont des mots parfaitement
+     * ordinaires dont l'injure n'est qu'un emploi second. S'y être fié aurait
+     * privé le clavier de « Vull », « Sak » et « Kou`.
+     */
+    @Test
+    fun `les mots ordinaires que le LOD marque aussi comme injures restent proposes`() {
+        val ordinaires = listOf(
+            "Vull", "Vullen", "Sak", "Kou", "Kéi", "Geess", "Iesel", "Ochs",
+            "Noss", "Quetsch", "Porrett", "See", "Hex", "Draach", "Idiot",
+            "Bock", "Af", "Schwäin", "Gauner", "Trampel",
+            // Collisions écartées à la main lors du relevé sur les gloses
+            "Sakgaass", "Chili", "Kuss", "Bees", "Picknick", "Schlamassel",
+            "gewichst", "Baatsch", "Witz",
+            // La ville, qui n'est pas la variante crue « Eesch »
+            "Esch"
+        )
+        for (mot in ordinaires) {
+            assertFalse("« $mot » ne doit pas être filtré", MotsEcartes.estGrossier(mot))
+        }
+    }
+
+    @Test
     fun `la casse et les accents ne comptent pas`() {
         assertTrue(MotsEcartes.estEcarte("RAMADAN"))
         assertTrue(MotsEcartes.estEcarte("kierch"))

@@ -520,14 +520,43 @@ class SuggestionEngine(private val context: Context) {
             }
             
             // Appliquer la casse de l'input aux suggestions
-            val casedSuggestions = suggestions.map { applyCasingPattern(input, it) }
-            
+            val casedSuggestions = sansGrossieretes(
+                suggestions.map { applyCasingPattern(input, it) }
+            )
+
             suggestionListener?.onSuggestionsReady(casedSuggestions)
         }
     }
     
 
     
+    /**
+     * Retire les grossièretés d'une liste de suggestions.
+     *
+     * Signalé par l'usage : « salope » est apparu comme traduction d'un mot du
+     * Wierderbuch. Le clavier ne les propose donc plus — ni en complétion, ni
+     * en correction, ni en prédiction de mot suivant.
+     *
+     * **Ce n'est pas un refus de saisie**, et la nuance est toute la
+     * différence : ces mots restent dans le dictionnaire, [isKnownWord] les
+     * reconnaît toujours et le correcteur ne les souligne donc pas ; qui veut
+     * les écrire les écrit, lettre à lettre. Le clavier s'abstient seulement de
+     * les mettre dans la bouche de quelqu'un qui ne les a pas demandés — c'est
+     * ce que fait tout clavier du marché.
+     *
+     * Le prix, assumé : taper « Schäis » ne corrigera pas en « Schäiss ».
+     *
+     * Voir [MotsEcartes.estGrossier] pour la liste et la manière dont elle a
+     * été relevée.
+     */
+    private fun sansGrossieretes(mots: List<String>): List<String> =
+        mots.filterNot { MotsEcartes.estGrossier(it) }
+
+    private fun sansGrossieretesBilingues(
+        suggestions: List<BilingualSuggestion>
+    ): List<BilingualSuggestion> =
+        suggestions.filterNot { MotsEcartes.estGrossier(it.word) }
+
     /**
      * 🎯 Active le support bilingue Lëtzebuergesch + Français
      */
@@ -554,9 +583,11 @@ class SuggestionEngine(private val context: Context) {
             }
             
             // Appliquer la casse de l'input aux suggestions
-            val casedSuggestions = suggestions.map { suggestion ->
-                suggestion.copy(word = applyCasingPattern(input, suggestion.word))
-            }
+            val casedSuggestions = sansGrossieretesBilingues(
+                suggestions.map { suggestion ->
+                    suggestion.copy(word = applyCasingPattern(input, suggestion.word))
+                }
+            )
             
             // Notifier avec les deux formats pour compatibilité
             val simpleWords = casedSuggestions.map { it.word }
@@ -723,7 +754,7 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Suggestions dictionnaire: $suggestions")
-            suggestionListener?.onSuggestionsReady(suggestions)
+            suggestionListener?.onSuggestionsReady(sansGrossieretes(suggestions))
         }
     }
     
@@ -743,7 +774,7 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Prédictions contextuelles: $predictions")
-            suggestionListener?.onSuggestionsReady(predictions)
+            suggestionListener?.onSuggestionsReady(sansGrossieretes(predictions))
         }
     }
     
@@ -846,9 +877,15 @@ class SuggestionEngine(private val context: Context) {
      * `word` est reportée sur chaque suggestion, comme pour la frappe normale.
      */
     fun getSpellingSuggestions(word: String, maxResults: Int = MAX_SUGGESTIONS): List<String> {
-        return getSpellCorrectionSuggestions(word)
-            .take(maxResults)
-            .map { applyCasingPattern(word, it.first) }
+        // Filtré comme les suggestions du clavier : le correcteur système
+        // propose, lui aussi. Ce qu'il ne fait pas, et ne doit pas faire, c'est
+        // souligner ces mots — cela passe par [isKnownWord], qui les reconnaît
+        // toujours.
+        return sansGrossieretes(
+            getSpellCorrectionSuggestions(word)
+                .take(maxResults)
+                .map { applyCasingPattern(word, it.first) }
+        )
     }
 
     /**

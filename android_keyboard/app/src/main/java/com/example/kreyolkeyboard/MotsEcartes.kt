@@ -125,6 +125,87 @@ object MotsEcartes {
     )
 
     /**
+     * Grossièretés : le registre obscène et les insultes crues.
+     *
+     * Signalé par l'usage — « salope » est apparu dans la traduction d'un mot
+     * du Wierderbuch. Contrairement au reste de ce fichier, cette liste-là
+     * s'applique **aussi aux suggestions du clavier** : voir
+     * [SuggestionEngine], qui ne les propose jamais. C'est ce que fait tout
+     * clavier du marché, et ce n'est pas un refus de saisie — qui veut écrire
+     * ces mots les écrit lettre à lettre, le correcteur ne les souligne pas, et
+     * la recherche du Wierderbuch les trouve quand on les tape.
+     *
+     * **La catégorie `FRECHHEET` du LOD ne convient pas**, exactement comme
+     * `RELIOUN` plus haut. Elle marque 187 articles d'injures, dont 476 formes
+     * que le clavier connaît — mais parmi elles `Vull` (oiseau), `Sak` (sac),
+     * `Kou` (vache), `Geess` (chèvre), `Iesel` (âne), `Noss` (noix), `Quetsch`
+     * (quetsche), `See` (lac), `Porrett` (poireau) : des mots parfaitement
+     * ordinaires dont l'injure n'est qu'un emploi second. Filtrer `Vull`
+     * aurait été une régression grave.
+     *
+     * La liste est donc relevée sur les **gloses françaises** du LOD, comme les
+     * précédentes : 99 articles dont une acception emploie un terme obscène du
+     * français, puis triés à la main. Ce tri écarte les collisions —
+     * `Sakgaass` (cul-de-sac), `Bëschwaasserleefer` (chevalier cul-blanc),
+     * `Zonkmësch` (bruant zizi), `Chili` (chili con carne), `Kuss` et `Bees`
+     * (baiser au sens de bise), `Picknick`, `Schlamassel` (pétrin),
+     * `gewichst` (cirer) — et garde le mot quand l'obscénité est son sens
+     * premier.
+     *
+     * Deux vérifications valent d'être refaites après toute mise à jour du
+     * LOD : `Eesch` est bien la variante de `Aasch` et non la ville `Esch`
+     * (absente du corpus sous cette graphie, où `Esch` compte 1 952
+     * occurrences) ; et aucune forme de la liste n'est un mot courant du
+     * corpus — la plus fréquente est `Aasch`, à 15.
+     */
+    private val GROSSIERETES = listOf(
+        "Aarsch", "Aarschkrécher", "Aarschkréchesch", "Aarschkréchesche",
+        "Aarschkrécheschen", "Aarschlach", "Aarschlächer", "Aasch",
+        "Aaschkrécher", "Aaschkréchesch", "Aaschkréchesche",
+        "Aaschkrécheschen", "Aaschlach", "Aaschlächer", "Bepisstes",
+        "Beseechtes", "Bordell", "Bordelle", "Bordellen", "Drecksak",
+        "Drecksäck", "Eesch", "Emmerdeur", "Emmerdeure", "Emmerdeuren",
+        "Emmerdeuse", "Emmerdeusen", "Emmerdeusë", "Emmerdéiertes",
+        "Fatzert", "Fatzerte", "Fatzerten", "Fotz", "Fotze", "Fotzen",
+        "Gefécktes", "Houer", "Houere", "Houeren", "Hourebud",
+        "Hourebude", "Hourebuden", "Klut", "Klute", "Kluten",
+        "Knaschtert", "Knaschterte", "Knaschterten", "Knaschtsak",
+        "Knaschtsäck", "Louder", "Loudere", "Louderen", "Merd", "Nenn",
+        "Nenne", "Nennen", "Piss", "Puff", "Puffe", "Puffen",
+        "Schläimschësser", "Schläimschëssesch", "Schläimschësseschen",
+        "Schäiss", "Schäissdreck", "Schäisserei", "Schäissereie",
+        "Schäissereien", "Schäisshaiser", "Schäisshaus",
+        "Schäisspabeier", "Seech", "Säckdréier", "Tëtt", "Tëtten",
+        "Veraaschtes", "Vullemätti", "Vullemättie", "Vullemättien",
+        "bepiss", "bepisse", "bepissen", "bepissend", "bepisst",
+        "bepisste", "bepisstem", "bepissten", "bepisstene",
+        "bepisstenem", "bepisstenen", "bepisstener", "bepisstent",
+        "bepisster", "beschass", "beschäiss", "beschäisse",
+        "beschäissen", "beschäissend", "beschäisst", "beseech",
+        "beseeche", "beseechen", "beseechend", "beseechs", "beseecht",
+        "beseechte", "beseechtem", "beseechten", "beseechtene",
+        "beseechtenem", "beseechtenen", "beseechtener", "beseechtent",
+        "beseechter", "emmerdéier", "emmerdéiere", "emmerdéieren",
+        "emmerdéierend", "emmerdéiers", "emmerdéiert", "emmerdéierte",
+        "emmerdéiertem", "emmerdéierten", "emmerdéiertene",
+        "emmerdéiertenem", "emmerdéiertenen", "emmerdéiertener",
+        "emmerdéiertent", "emmerdéierter", "freck", "fuck", "féck",
+        "fécke", "fécken", "féckend", "fécks", "féckt", "geféckt",
+        "geféckte", "gefécktem", "geféckten", "gefécktene",
+        "gefécktenem", "gefécktenen", "gefécktener", "gefécktent",
+        "geféckter", "gehouert", "gepisst", "geschass", "geseecht",
+        "houer", "houere", "houeren", "houerend", "houers", "houert",
+        "piss", "pisse", "pissen", "pissend", "pisst", "schäiss",
+        "schäisse", "schäissegal", "schäissen", "schäissend", "schäisst",
+        "seech", "seeche", "seechen", "seechend", "seechs", "seecht",
+        "shit", "veraasch", "veraasche", "veraaschen", "veraaschend",
+        "veraaschs", "veraascht", "veraaschte", "veraaschtem",
+        "veraaschten", "veraaschtene", "veraaschtenem", "veraaschtenen",
+        "veraaschtener", "veraaschtent", "veraaschter", "vreck",
+        "Äersch"
+    )
+
+    /**
      * Vocabulaire qui trahit le **sujet d'une dépêche**, et non un mot à
      * proscrire.
      *
@@ -168,9 +249,12 @@ object MotsEcartes {
     )
 
     private val FORMES: Set<String> =
-        (RELIGION + PARTIS + REGISTRE).mapTo(HashSet()) {
+        (RELIGION + PARTIS + REGISTRE + GROSSIERETES).mapTo(HashSet()) {
             AccentTolerantMatcher.normalize(it)
         }
+
+    private val GROSSIER: Set<String> =
+        GROSSIERETES.mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
 
     private val FORMES_ET_SUJETS: Set<String> =
         FORMES + SUJETS.map { AccentTolerantMatcher.normalize(it) }
@@ -178,6 +262,17 @@ object MotsEcartes {
     /** Vrai si l'application doit s'abstenir de proposer ce mot. */
     fun estEcarte(mot: String): Boolean =
         AccentTolerantMatcher.normalize(mot) in FORMES
+
+    /**
+     * Vrai si le mot relève du registre obscène — voir [GROSSIERETES].
+     *
+     * Portée plus large que [estEcarte] : celui-ci ne régit que ce que
+     * l'application montre d'elle-même, celui-là s'applique en plus aux
+     * suggestions du clavier. Le partage reste le même dans son principe :
+     * jamais proposé, toujours saisissable.
+     */
+    fun estGrossier(mot: String): Boolean =
+        AccentTolerantMatcher.normalize(mot) in GROSSIER
 
     /**
      * Vrai si une phrase ne doit pas être montrée : elle contient une forme

@@ -276,16 +276,26 @@ object TranslationDictionary {
 
         val trouves = ArrayList<Pair<Int, Entree>>()
         for (entree in index) {
+            // `parLaGlose` distingue « l'utilisateur a tapé ce mot » de
+            // « l'application le propose » : le rang ne suffit pas, puisque 0
+            // et 1 se confondent quand la requête n'est pas française.
+            var parLaGlose = false
             val rang = when {
                 // N'arrive que si la requête est française : sinon aucune glose
                 // ne lui est exactement égale.
-                sensExact(entree) -> 0
+                sensExact(entree) -> { parLaGlose = true; 0 }
                 entree.formePliee == pliee -> rangFormeExacte
                 entree.formePliee.startsWith(pliee) -> 2
-                debuteUnMot(entree.glosePliee, pliee) -> 3
-                entree.glosePliee.contains(pliee) -> 4
+                debuteUnMot(entree.glosePliee, pliee) -> { parLaGlose = true; 3 }
+                entree.glosePliee.contains(pliee) -> { parLaGlose = true; 4 }
                 else -> continue
             }
+            // Une grossièreté atteinte par son sens français est une
+            // proposition de l'application — chercher « chat » sortait
+            // « Fotz », glosé « chatte, salope ». Atteinte par sa forme, elle
+            // reste : le dictionnaire répond à qui l'interroge. C'est la même
+            // ligne que partout ailleurs, jamais proposé, toujours trouvable.
+            if (parLaGlose && MotsEcartes.estGrossier(entree.forme)) continue
             trouves.add(rang to entree)
         }
 
