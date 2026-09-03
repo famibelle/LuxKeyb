@@ -6895,6 +6895,32 @@ class SettingsActivity : AppCompatActivity() {
             // suppose de savoir déjà ce qu'est le LOD. Le libellé dit
             // maintenant où l'on va ; l'attribution, elle, reste en pied
             // d'onglet.
+            // Les autres formes du même mot, après le sens : on vient chercher
+            // ce que le mot veut dire, la morphologie est un second temps.
+            // C'est aussi ce qui rend le regroupement lisible — la liste ne
+            // montre plus « Forschett » et « Forschetten » l'un sous l'autre,
+            // la fiche dit qu'ils sont le même mot.
+            if (resultat.formes.isNotEmpty()) {
+                colonne.addView(TextView(activity).apply {
+                    text = "AUTRES FORMES"
+                    textSize = 11f
+                    letterSpacing = 0.12f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.parseColor("#AAAAAA"))
+                    setPadding(0, 26, 0, 10)
+                })
+                colonne.addView(TextView(activity).apply {
+                    // Plafonnées : « sinn » en compte dix-sept, qui pousseraient
+                    // les deux boutons hors de l'écran.
+                    val montrees = resultat.formes.take(MAX_FORMES_FICHE)
+                    text = montrees.joinToString(" · ") +
+                            if (resultat.formes.size > montrees.size) " …" else ""
+                    textSize = 16f
+                    setTextColor(Color.parseColor("#555555"))
+                    setLineSpacing(0f, 1.2f)
+                })
+            }
+
             colonne.addView(LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(0, 30, 0, 0)
@@ -6991,6 +7017,9 @@ class SettingsActivity : AppCompatActivity() {
 
         companion object {
             private const val LOD_RECHERCHE = "https://lod.lu/sich/lb/"
+
+            /** Combien de flexions la fiche montre avant de couper. */
+            private const val MAX_FORMES_FICHE = 10
         }
 
         override fun onDestroyView() {

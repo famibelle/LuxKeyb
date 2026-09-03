@@ -69,6 +69,7 @@ RACINE_ASSETS = Path(__file__).resolve().parent.parent / \
     "android_keyboard/app/src/main/assets"
 CHEMIN_DICT = RACINE_ASSETS / "luxemburgish_dict.json"
 CHEMIN_TRAD = RACINE_ASSETS / "luxemburgish_translations.json"
+CHEMIN_FAMILLES = RACINE_ASSETS / "luxemburgish_familles.json"
 CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
@@ -157,6 +158,31 @@ def lire_graphies(xml_index, verbeux=True):
     return par_graphie
 
 
+def articles_tries(forme, par_graphie, par_graphie_min, par_article):
+    """Articles du LOD atteints par une forme, du plus pertinent au moins.
+
+    Extrait de [gloser] pour que la glose d'une forme et la famille à laquelle
+    on la rattache désignent le **même** article : sans cela, « Forschetten »
+    pourrait être glosée par un article et regroupée sous un autre, et la fiche
+    afficherait des formes qui n'ont rien à voir avec le sens montré.
+    """
+    identifiants = par_graphie.get(forme) or par_graphie_min.get(forme.lower())
+    if not identifiants:
+        return []
+
+    def priorite(identifiant):
+        lemme, nom_propre, _ = par_article.get(identifiant, ("", True, []))
+        if lemme == forme:
+            rang = 0
+        elif lemme.lower() == forme.lower():
+            rang = 1
+        else:
+            rang = 2
+        return (rang, 1 if nom_propre else 0)
+
+    return sorted(identifiants, key=priorite)
+
+
 def gloser(forme, par_graphie, par_graphie_min, par_article):
     """Gloses d'une forme du dictionnaire, ou None.
 
@@ -175,22 +201,12 @@ def gloser(forme, par_graphie, par_graphie_min, par_article):
       priverait « Lëtzebuerg » de sa seule glose ; les laisser devant fait
       gloser « Schlass » par « Beaufort-Château » plutôt que par « château ».
     """
-    identifiants = par_graphie.get(forme) or par_graphie_min.get(forme.lower())
+    identifiants = articles_tries(forme, par_graphie, par_graphie_min, par_article)
     if not identifiants:
         return None
 
-    def priorite(identifiant):
-        lemme, nom_propre, _ = par_article.get(identifiant, ("", True, []))
-        if lemme == forme:
-            rang = 0
-        elif lemme.lower() == forme.lower():
-            rang = 1
-        else:
-            rang = 2
-        return (rang, 1 if nom_propre else 0)
-
     gloses = []
-    for identifiant in sorted(identifiants, key=priorite):
+    for identifiant in identifiants:
         for glose in par_article.get(identifiant, ("", False, []))[2]:
             if glose not in gloses:
                 gloses.append(glose)
@@ -266,12 +282,16 @@ def main():
     table = OrderedDict()
     occurrences_glosees = 0
     occurrences_totales = 0
+    article_de = {}
     for forme, frequence in dictionnaire:
         occurrences_totales += frequence
         gloses = gloser(forme, par_graphie, par_graphie_min, par_article)
         if gloses:
             table[forme] = ", ".join(gloses)
             occurrences_glosees += frequence
+            tries = articles_tries(forme, par_graphie, par_graphie_min, par_article)
+            if tries:
+                article_de[forme] = tries[0]
 
     part_formes = 100 * len(table) / max(1, len(dictionnaire))
     part_occurrences = 100 * occurrences_glosees / max(1, occurrences_totales)
@@ -300,6 +320,9 @@ def main():
         if gloses:
             table[forme] = ", ".join(gloses)
             glosees_lod += 1
+            tries = articles_tries(forme, par_graphie, par_graphie_min, par_article)
+            if tries:
+                article_de[forme] = tries[0]
     if formes_lod:
         print(f"   ✅ {glosees_lod} formes LOD glosées en plus "
               f"(sur {len(formes_lod)} apportées au clavier)")
@@ -326,7 +349,41 @@ def main():
     for libelle, compte in reserves.items():
         print(f"   🎮 {libelle} : {compte} mots")
 
+    # Les familles : une entrée du Wierderbuch par article du LOD, et non par
+    # forme. Sans elles, chercher « manger » remplit l'écran de « iessen »,
+    # « iesse », « giess », « ësst » — quarante lignes pour neuf mots.
+    #
+    # Le représentant est le lemme de l'article quand il figure dans la famille,
+    # sinon la forme la plus courte. Le lemme d'abord parce que c'est l'entrée
+    # que le LOD lui-même affiche, et qu'un pluriel en tête de liste se lit
+    # comme une faute.
+    par_article_formes = OrderedDict()
+    for forme, identifiant in article_de.items():
+        par_article_formes.setdefault(identifiant, []).append(forme)
+
+    familles = OrderedDict()
+    for identifiant, formes in par_article_formes.items():
+        if len(formes) < 2:
+            continue
+        lemme = par_article.get(identifiant, ("", True, []))[0]
+        if lemme in formes:
+            representant = lemme
+        else:
+            minuscules = {f.lower(): f for f in formes}
+            representant = minuscules.get(lemme.lower()) or \
+                min(formes, key=lambda f: (len(f), f))
+        autres = sorted(f for f in formes if f != representant)
+        familles[representant] = " ".join(autres)
+
+    formes_groupees = sum(1 + v.count(" ") + 1 for v in familles.values()) if familles else 0
+    print(f"   👪 {len(familles)} familles regroupant {formes_groupees} formes "
+          f"(sur {len(table)} glosées)")
+
     if arguments.strict:
+        if len(familles) < 10000:
+            print(f"❌ --strict : seulement {len(familles)} familles, "
+                  "le regroupement du Wierderbuch serait inopérant")
+            return 1
         if part_formes < 40:
             print(f"❌ --strict : couverture des formes tombée à {part_formes:.1f} %")
             return 1
@@ -353,6 +410,27 @@ def main():
         encoding="utf-8")
     taille = arguments.sortie.stat().st_size / 1024
     print(f"\n💾 {arguments.sortie.name} — {taille:.0f} Ko")
+
+    # Actif séparé, comme luxemburgish_lod_forms.json : seul le champ de
+    # recherche du Wierderbuch s'en sert. Le fondre dans les traductions
+    # ferait analyser un mégaoctet de plus à l'ouverture de l'onglet des jeux,
+    # qui n'en a aucun usage.
+    contenu_familles = {
+        "version": contenu["version"],
+        "generated": contenu["generated"],
+        "source": contenu["source"],
+        "licence": contenu["licence"],
+        "attribution": ATTRIBUTION,
+        "count": len(familles),
+        "familles": familles,
+    }
+    sauvegarder_precedent(CHEMIN_FAMILLES)
+    CHEMIN_FAMILLES.write_text(
+        json.dumps(contenu_familles, ensure_ascii=False, indent=None,
+                   separators=(",", ":")),
+        encoding="utf-8")
+    taille = CHEMIN_FAMILLES.stat().st_size / 1024
+    print(f"💾 {CHEMIN_FAMILLES.name} — {taille:.0f} Ko")
     print("✅ Terminé")
     return 0
 

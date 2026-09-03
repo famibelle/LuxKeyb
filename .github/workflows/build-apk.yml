@@ -90,7 +90,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -242,6 +242,16 @@ jobs:
 
         # Le LOD est en CC0 et n'impose donc rien, mais on cite le ZLS :
         # l'attribution voyage dans l'actif et l'écran « À propos » l'affiche.
+        # Les familles regroupent les flexions d'un même mot dans le
+        # Wierderbuch. Effondrées, la recherche fonctionne toujours — elle
+        # répète simplement les flexions comme avant, sans rien signaler.
+        FAM_COUNT=$(jq '.familles | length' "$A/luxemburgish_familles.json")
+        echo "👪 Familles de formes : $FAM_COUNT"
+        if [ "$FAM_COUNT" -lt 10000 ]; then
+          echo "::error::Seulement $FAM_COUNT familles : le regroupement du Wierderbuch serait inopérant."
+          exit 1
+        fi
+
         if ! jq -e '.attribution | length >= 1' "$A/luxemburgish_translations.json" > /dev/null; then
           echo "::error::luxemburgish_translations.json ne porte pas le crédit du LOD."
           exit 1
@@ -301,6 +311,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
+          android_keyboard/app/src/main/assets/luxemburgish_familles.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES

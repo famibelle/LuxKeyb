@@ -31,6 +31,7 @@ import java.io.InputStreamReader
 object TranslationDictionary {
 
     private const val ASSET = "luxemburgish_translations.json"
+    private const val ASSET_FAMILLES = "luxemburgish_familles.json"
     private const val TAG = "TranslationDictionary"
 
     /** Forme telle que livrée par le dictionnaire → glose française. */
@@ -68,6 +69,23 @@ object TranslationDictionary {
     )
 
     private var index: List<Entree>? = null
+
+    /**
+     * Les familles du LOD : toutes les formes d'un même article, rattachées à
+     * l'une d'entre elles.
+     *
+     * Le dictionnaire glose 88 852 formes pour 26 000 articles environ — 3,4
+     * formes par mot. Sans regroupement, chercher « manger » remplit l'écran de
+     * « iessen », « iesse », « giess », « ësst » : quarante lignes pour neuf
+     * mots. Ces tables ramènent une entrée par mot, les autres formes passant
+     * dans la fiche.
+     *
+     * Actif séparé, et chargé au premier appel de [rechercher] seulement : les
+     * jeux et les statistiques n'ont que faire d'un mégaoctet de flexions.
+     */
+    private var representantDe: Map<String, String> = emptyMap()
+    private var formesDe: Map<String, List<String>> = emptyMap()
+    private var famillesChargees = false
 
     /**
      * Formes pliées que l'application peut proposer d'elle-même, calculées une
@@ -153,8 +171,55 @@ object TranslationDictionary {
         return construit
     }
 
-    /** Un résultat de recherche : le mot luxembourgeois et sa glose. */
-    data class Resultat(val mot: String, val glose: String)
+    @Synchronized
+    private fun chargerFamilles(context: Context) {
+        if (famillesChargees) return
+        famillesChargees = true
+
+        try {
+            val contenu = BufferedReader(
+                InputStreamReader(context.assets.open(ASSET_FAMILLES))
+            ).use { it.readText() }
+
+            val table = JSONObject(contenu).getJSONObject("familles")
+            val vers = HashMap<String, String>(table.length() * 5)
+            val depuis = HashMap<String, List<String>>(table.length())
+
+            val cles = table.keys()
+            while (cles.hasNext()) {
+                val representant = cles.next()
+                val autres = table.getString(representant)
+                    .split(" ").filter { it.isNotEmpty() }
+                depuis[representant] = autres
+                // Le représentant se désigne lui-même : la recherche peut
+                // alors interroger la table sans distinguer les deux cas.
+                vers[representant] = representant
+                autres.forEach { vers[it] = representant }
+            }
+
+            representantDe = vers
+            formesDe = depuis
+            Log.d(TAG, "${depuis.size} familles chargées (${vers.size} formes)")
+        } catch (e: Exception) {
+            // Sans familles la recherche fonctionne, elle répète simplement les
+            // flexions comme avant : une dégradation, pas une panne.
+            Log.e(TAG, "Actif $ASSET_FAMILLES illisible: ${e.message}", e)
+            representantDe = emptyMap()
+            formesDe = emptyMap()
+        }
+    }
+
+    /**
+     * Un résultat de recherche : le mot, sa glose, et ses autres formes.
+     *
+     * [formes] est vide quand le mot n'a pas de famille — un nom propre, un
+     * invariable, ou une forme que l'index du LOD ne rattache à rien.
+     */
+    data class Resultat(
+        val mot: String,
+        val glose: String,
+        val formes: List<String> = emptyList()
+    )
 
     /**
      * Cherche dans les deux sens : un mot luxembourgeois comme un mot français.
@@ -176,14 +241,28 @@ object TranslationDictionary {
      * « Accident », « Budget », « Service » : tous les emprunts, c'est-à-dire
      * précisément les mots qu'un francophone tape en premier.
      *
-     * Quatre rangs ensuite, du plus sûr au plus lâche : la glose exacte (une
+     * Cinq rangs ensuite, du plus sûr au plus lâche : la glose exacte (une
      * acception entière, pas un fragment) quand la requête est française, la
-     * forme luxembourgeoise exacte, le préfixe luxembourgeois, puis le reste.
+     * forme luxembourgeoise exacte, le préfixe luxembourgeois, la glose où la
+     * requête **commence un mot**, puis la glose où elle n'est qu'un morceau.
      * À rang égal, le mot le plus court d'abord : c'est presque toujours le
      * lemme plutôt qu'un composé.
+     *
+     * Ce dernier rang était confondu avec le précédent, et c'est ce qui rendait
+     * les mots courts inutilisables. Mesuré sur l'actif livré : « eau » donnait
+     * 38 lignes sur 40 où le mot n'est qu'un fragment — « beaucoup »,
+     * « nouveau », « de nouveau » ; « chat » en donnait 26, tous tirés de
+     * « achat » et « châtaigne » (le repli des accents efface l'accent
+     * circonflexe). Ces résultats ne sont pas écartés, seulement relégués : un
+     * « maisonnette » reste trouvable, et une requête qui n'a que cela vaut
+     * mieux qu'un écran vide.
+     *
+     * Les résultats sont enfin **regroupés par famille** : une ligne par mot du
+     * LOD, portant le représentant, et non une ligne par flexion.
      */
     fun rechercher(context: Context, requete: String, maximum: Int = 40): List<Resultat> {
         charger(context)
+        chargerFamilles(context)
         val pliee = AccentTolerantMatcher.normalize(requete.trim())
         if (pliee.isEmpty()) return emptyList()
 
@@ -203,16 +282,55 @@ object TranslationDictionary {
                 sensExact(entree) -> 0
                 entree.formePliee == pliee -> rangFormeExacte
                 entree.formePliee.startsWith(pliee) -> 2
-                entree.glosePliee.contains(pliee) -> 3
+                debuteUnMot(entree.glosePliee, pliee) -> 3
+                entree.glosePliee.contains(pliee) -> 4
                 else -> continue
             }
             trouves.add(rang to entree)
         }
 
-        return trouves
-            .sortedWith(compareBy({ it.first }, { it.second.forme.length }, { it.second.forme }))
+        // Une entrée par famille, au meilleur rang qu'une de ses formes ait
+        // atteint : chercher « Haiser » doit mener à « Haus » aussi sûrement
+        // que chercher « Haus », et ne le montrer qu'une fois.
+        val meilleurs = LinkedHashMap<String, Pair<Int, Entree>>()
+        for ((rang, entree) in trouves) {
+            val cle = representantDe[entree.forme] ?: entree.forme
+            val actuel = meilleurs[cle]
+            if (actuel == null || rang < actuel.first) meilleurs[cle] = rang to entree
+        }
+
+        return meilleurs.entries
+            .sortedWith(compareBy({ it.value.first }, { it.key.length }, { it.key }))
             .take(maximum)
-            .map { Resultat(it.second.forme, it.second.glose) }
+            .map { (representant, trouve) ->
+                Resultat(
+                    representant,
+                    // La glose montrée est celle du représentant, pour qu'elle
+                    // s'accorde au mot affiché ; celle de la forme trouvée ne
+                    // sert que si le représentant n'est pas glosé.
+                    traductions[representant] ?: trouve.second.glose,
+                    formesDe[representant] ?: emptyList()
+                )
+            }
+    }
+
+    /**
+     * La requête commence-t-elle un mot du texte ?
+     *
+     * Écrit à la main plutôt qu'avec une expression régulière : la boucle
+     * tourne sur 88 852 gloses à chaque frappe, et compiler un motif par
+     * recherche coûterait plus que la recherche elle-même. Un mot commence là
+     * où le caractère précédent n'est pas une lettre — les deux textes sont
+     * déjà repliés en minuscules sans accents.
+     */
+    private fun debuteUnMot(texte: String, motif: String): Boolean {
+        var depuis = 0
+        while (true) {
+            val i = texte.indexOf(motif, depuis)
+            if (i < 0) return false
+            if (i == 0 || !texte[i - 1].isLetter()) return true
+            depuis = i + 1
+        }
     }
 
     /** Glose française d'un mot, ou null s'il n'en a pas. */
