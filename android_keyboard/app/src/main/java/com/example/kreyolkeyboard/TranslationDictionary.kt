@@ -33,6 +33,7 @@ object TranslationDictionary {
     private const val ASSET = "luxemburgish_translations.json"
     private const val ASSET_FAMILLES = "luxemburgish_familles.json"
     private const val ASSET_EXEMPLES = "luxemburgish_exemples.json"
+    private const val ASSET_LOD_IDS = "luxemburgish_lod_ids.json"
     private const val TAG = "TranslationDictionary"
 
     /** Forme telle que livrée par le dictionnaire → glose française. */
@@ -107,6 +108,18 @@ object TranslationDictionary {
     private var exemples: Map<String, List<String>> = emptyMap()
     private var exemplesCharges = false
     private val verrouExemples = Any()
+
+    /**
+     * Forme affichée → identifiant de l'article du LOD, pour le bouton « Voir
+     * sur le dictionnaire officiel ».
+     *
+     * Chargé et verrouillé à part pour la même raison que les exemples : c'est
+     * la fiche seule qui s'en sert, et l'onglet le précharge sur un fil de
+     * fond pendant que l'on tape.
+     */
+    private var articlesLod: Map<String, String> = emptyMap()
+    private var articlesCharges = false
+    private val verrouArticles = Any()
 
     /**
      * Formes pliées que l'application peut proposer d'elle-même, calculées une
@@ -267,6 +280,61 @@ object TranslationDictionary {
                 exemples = emptyMap()
             }
         }
+    }
+
+    /**
+     * Charge la table des identifiants d'article. Sans effet si elle l'est
+     * déjà.
+     *
+     * Préchargée avec les exemples, sur le même fil : elle ne sert qu'au
+     * dernier geste de la fiche, mais l'analyser à ce moment-là ferait
+     * attendre le navigateur.
+     */
+    fun chargerArticles(context: Context) {
+        synchronized(verrouArticles) {
+            if (articlesCharges) return
+            articlesCharges = true
+
+            try {
+                val contenu = BufferedReader(
+                    InputStreamReader(context.assets.open(ASSET_LOD_IDS))
+                ).use { it.readText() }
+
+                val table = JSONObject(contenu).getJSONObject("articles")
+                val lues = HashMap<String, String>(table.length())
+
+                val cles = table.keys()
+                while (cles.hasNext()) {
+                    val mot = cles.next()
+                    lues[mot] = table.getString(mot)
+                }
+
+                articlesLod = lues
+                Log.d(TAG, "${lues.size} articles du LOD indexés")
+            } catch (e: Exception) {
+                // Sans la table, le bouton retombe sur la recherche du LOD :
+                // dégradé, pas cassé.
+                Log.e(TAG, "Actif $ASSET_LOD_IDS illisible: ${e.message}", e)
+                articlesLod = emptyMap()
+            }
+        }
+    }
+
+    /**
+     * Identifiant de l'article du LOD qui a fourni la glose de [mot], ou
+     * `null` si l'on ne le connaît pas.
+     *
+     * Sert à fabriquer `lod.lu/artikel/<id>`, la seule adresse de lod.lu qui
+     * arrive sur l'article. Sa route de recherche, `/sich/<langue>/<mot>`,
+     * n'est pas utilisable depuis l'extérieur : le composant qui la sert émet
+     * sa requête sur un bus d'événements au moment où il se monte, et lors
+     * d'une ouverture à froid — c'est-à-dire chaque fois qu'on y arrive par un
+     * lien — l'écouteur n'existe pas encore. La recherche est perdue et la
+     * page propose d'ajouter le mot au dictionnaire, même pour « Haus ».
+     */
+    fun articleLod(context: Context, mot: String): String? {
+        chargerArticles(context)
+        return articlesLod[mot]
     }
 
     /**

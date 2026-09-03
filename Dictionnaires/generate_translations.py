@@ -71,6 +71,7 @@ CHEMIN_DICT = RACINE_ASSETS / "luxemburgish_dict.json"
 CHEMIN_TRAD = RACINE_ASSETS / "luxemburgish_translations.json"
 CHEMIN_FAMILLES = RACINE_ASSETS / "luxemburgish_familles.json"
 CHEMIN_EXEMPLES = RACINE_ASSETS / "luxemburgish_exemples.json"
+CHEMIN_LOD_IDS = RACINE_ASSETS / "luxemburgish_lod_ids.json"
 CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
@@ -514,6 +515,24 @@ def main():
     print(f"   💬 {len(exemples)} mots illustrés d'au moins une phrase "
           f"({couverture:.1f} % des articles atteints)")
 
+    # L'identifiant d'article du LOD, pour le bouton « Voir sur le
+    # dictionnaire officiel ». Il faut l'embarquer parce que lod.lu ne peut
+    # pas être atteint par une recherche : sa route /sich/<langue>/<mot> émet
+    # sa recherche sur un bus d'événements au montage du composant, et sur une
+    # ouverture à froid — ce que fait un lien venu d'ailleurs, à chaque fois —
+    # personne n'écoute encore. La page tombe alors sur « proposez ce mot »,
+    # y compris pour « Haus ». La route /artikel/<id>, elle, est rendue par
+    # leur serveur et arrive directement sur l'article.
+    #
+    # Indexé par la forme que la fiche affiche, comme les exemples : c'est
+    # `Resultat.mot` que le bouton passera. Le premier article gagne quand
+    # deux se partagent un représentant — c'est celui qu'`articles_tries` a
+    # classé en tête, donc celui dont la fiche montre la glose.
+    articles = OrderedDict()
+    for identifiant, representant in representant_de_article.items():
+        if representant not in articles:
+            articles[representant] = identifiant
+
     if arguments.strict:
         if len(familles) < 10000:
             print(f"❌ --strict : seulement {len(familles)} familles, "
@@ -525,6 +544,11 @@ def main():
         if len(exemples) < 10000:
             print(f"❌ --strict : seulement {len(exemples)} mots illustrés, "
                   "les fiches du Wierderbuch seraient sans exemple")
+            return 1
+        if len(articles) < 20000:
+            print(f"❌ --strict : seulement {len(articles)} identifiants "
+                  "d'article, le bouton lod.lu retomberait sur une recherche "
+                  "qui ne donne rien")
             return 1
         if reserves["Wuertriet (5 lettres)"] < 300:
             print("❌ --strict : moins de 300 mots de 5 lettres glosés, "
@@ -592,6 +616,26 @@ def main():
         encoding="utf-8")
     taille = CHEMIN_EXEMPLES.stat().st_size / 1024
     print(f"💾 {CHEMIN_EXEMPLES.name} — {taille:.0f} Ko")
+
+    # Quatrième actif séparé : la fiche ne l'ouvre que si l'on touche « Voir
+    # sur le dictionnaire officiel ». Il est aussi le seul dont le contenu
+    # n'est pas du texte lisible, ce qui le rend inutile partout ailleurs.
+    contenu_ids = {
+        "version": contenu["version"],
+        "generated": contenu["generated"],
+        "source": contenu["source"],
+        "licence": contenu["licence"],
+        "attribution": ATTRIBUTION,
+        "count": len(articles),
+        "articles": articles,
+    }
+    sauvegarder_precedent(CHEMIN_LOD_IDS)
+    CHEMIN_LOD_IDS.write_text(
+        json.dumps(contenu_ids, ensure_ascii=False, indent=None,
+                   separators=(",", ":")),
+        encoding="utf-8")
+    taille = CHEMIN_LOD_IDS.stat().st_size / 1024
+    print(f"💾 {CHEMIN_LOD_IDS.name} — {taille:.0f} Ko")
     print("✅ Terminé")
     return 0
 

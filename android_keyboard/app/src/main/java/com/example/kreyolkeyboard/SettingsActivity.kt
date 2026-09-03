@@ -6667,7 +6667,10 @@ class SettingsActivity : AppCompatActivity() {
             // table est lue par un accès protégé, et la fiche qui la
             // demanderait trop tôt attend simplement la fin de l'analyse.
             val applicatif = activity.applicationContext
-            Thread { TranslationDictionary.chargerExemples(applicatif) }.start()
+            Thread {
+                TranslationDictionary.chargerExemples(applicatif)
+                TranslationDictionary.chargerArticles(applicatif)
+            }.start()
 
             colonne.addView(TextView(activity).apply {
                 text = "Tapez un mot luxembourgeois ou français : la recherche " +
@@ -7093,21 +7096,30 @@ class SettingsActivity : AppCompatActivity() {
         /**
          * Ouvre la fiche LOD du mot dans le navigateur.
          *
-         * lod.lu est une application monopage : la route `/sich/<langue>/<mot>`
-         * lance la recherche au montage, c'est donc le lien profond que le site
-         * fabrique lui-même quand on cherche depuis sa propre barre. On
-         * l'interroge toujours en luxembourgeois, parce que
-         * [TranslationDictionary.Resultat.mot] est toujours la forme
-         * luxembourgeoise, y compris quand la requête était en français.
+         * **Par l'identifiant d'article, jamais par la recherche.** La route
+         * `/sich/<langue>/<mot>` du LOD paraissait le lien naturel — c'est
+         * celui que le site fabrique lui-même — mais elle ne fonctionne pas
+         * quand on y arrive de l'extérieur : le composant qui la sert émet sa
+         * requête sur un bus d'événements dans son `mounted()`, et à
+         * l'ouverture à froid d'un onglet neuf l'écouteur n'est pas encore là.
+         * La recherche se perd, et la page propose d'ajouter le mot au
+         * dictionnaire — y compris pour « Haus ». Vérifié au navigateur le
+         * 2026-09-03 ; c'est un défaut de leur côté, pas du nôtre.
          *
-         * La recherche du LOD indexe les mêmes `<spelling>` que
-         * `generate_translations.py`, formes fléchies comprises : « Haiser »
-         * arrive bien sur l'article « Haus ». Les noms propres, eux, n'y sont
-         * pas plus que dans nos gloses — la puce mène alors à une page sans
-         * résultat, ce qui reste une réponse honnête.
+         * `/artikel/<id>` est rendue par leur serveur et arrive directement
+         * sur l'article, ce qui vaut mieux qu'une liste de résultats de toute
+         * façon. Les identifiants viennent de `luxemburgish_lod_ids.json`,
+         * indexé par la forme que la fiche affiche.
+         *
+         * Le repli sur la recherche reste là pour les mots hors table — noms
+         * propres, formes que l'index du LOD ne rattache à rien. Il ne mènera
+         * à rien tant que leur défaut dure, mais c'est déjà ce que donnait
+         * l'ancienne adresse.
          */
         private fun ouvrirLod(activity: SettingsActivity, mot: String) {
-            val url = LOD_RECHERCHE + Uri.encode(mot)
+            val article = TranslationDictionary.articleLod(activity, mot)
+            val url = if (article != null) LOD_ARTICLE + Uri.encode(article)
+                      else LOD_RECHERCHE + Uri.encode(mot)
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             } catch (e: Exception) {
@@ -7117,6 +7129,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         companion object {
+            private const val LOD_ARTICLE = "https://lod.lu/artikel/"
             private const val LOD_RECHERCHE = "https://lod.lu/sich/lb/"
         }
 
