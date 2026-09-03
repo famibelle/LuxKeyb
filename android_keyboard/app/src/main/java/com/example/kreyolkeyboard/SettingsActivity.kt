@@ -895,6 +895,24 @@ class SettingsActivity : AppCompatActivity() {
         val showIncompleteNudge = !isEnabled && settingsVisitAt != 0L
         if (showIncompleteNudge) recordFunnelStep("funnel_settings_return_no_enable")
 
+        // Retour au clavier après un détour : l'utilisateur a déjà configuré
+        // l'application, le clavier est toujours installé, mais ce n'est plus
+        // lui qui s'ouvre. C'est l'état où l'on se retrouve après un appui
+        // long sur la barre d'espace suivi d'un choix dans le sélecteur
+        // système — et l'observation de terrain qui a motivé cette carte est
+        // que personne n'en revient tout seul.
+        //
+        // Android interdit à un clavier de se remettre en service lui-même :
+        // un IME peut demander à partir (showInputMethodPicker), jamais à
+        // revenir. Une fois l'autre clavier actif, il n'y a plus rien à
+        // chercher dans le clavier, et le seul chemin de retour passe par
+        // l'application ou par la petite icône de la barre de navigation. La
+        // carte est donc placée en tête, avant même la configuration rapide.
+        if (hasCompletedBefore && isEnabled && !isSelected) {
+            mainLayout.addView(createRetourClavierCard())
+            mainLayout.addView(createSpacing(16))
+        }
+
         // Bandeau de réussite : le clavier est utilisable dès qu'il est
         // activé et sélectionné, avant même que l'utilisateur ait écrit quoi
         // que ce soit. Son texte le dit alors sans prétendre que la
@@ -1371,6 +1389,83 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
+     * Carte « Revenir au clavier luxembourgeois », en tête de l'onglet
+     * Démarrage quand le clavier est installé mais qu'un autre est en service.
+     *
+     * Elle existe parce qu'Android ne laisse pas un clavier se réactiver
+     * lui-même : `showInputMethodPicker()` ne fonctionne que depuis le clavier
+     * courant ou depuis une activité au premier plan. Une fois parti, le
+     * clavier ne peut plus rien pour l'utilisateur ; seule l'application le
+     * peut, et encore faut-il qu'elle le propose au lieu de rejouer un tunnel
+     * de configuration en trois étapes à quelqu'un qui a tout configuré.
+     *
+     * Le clavier n'est ni désinstallé ni désactivé dans cet état, et le texte
+     * le dit : la seule chose à faire est de le rechoisir. Un seul bouton,
+     * pleine largeur, et l'autre chemin — l'icône de la barre de navigation —
+     * rappelé en dessous pour la fois d'après, puisque c'est celui qui marche
+     * sans quitter l'application où l'on écrit.
+     *
+     * Rien à rafraîchir à la main : [OnboardingFragment] observe
+     * `DEFAULT_INPUT_METHOD` et reconstruit l'onglet dès que le choix est fait,
+     * ce qui fait disparaître la carte et apparaître le bandeau de réussite.
+     *
+     * Les tailles de texte sont au-dessus de celles des autres cartes de
+     * l'onglet : c'est l'écran que lit quelqu'un qui a perdu son clavier et qui
+     * ne sait pas pourquoi, et rien d'utile n'y descend sous 16 sp.
+     */
+    private fun createRetourClavierCard(): LinearLayout {
+        val card = createRoundedCard("#FFF3E0")
+
+        val titre = TextView(this).apply {
+            text = "⌨️ Revenir au clavier luxembourgeois"
+            textSize = 19f
+            setTextColor(Color.parseColor("#E65100"))
+            setTypeface(null, Typeface.BOLD)
+            setLineSpacing(0f, 1.25f)
+            setPadding(0, 0, 0, enDp(10))
+        }
+
+        val explication = TextView(this).apply {
+            text = "En ce moment, c'est un autre clavier qui s'ouvre quand vous écrivez. " +
+                    "Le clavier luxembourgeois est toujours installé sur votre téléphone : " +
+                    "il suffit de le rechoisir."
+            textSize = 16f
+            setTextColor(Color.parseColor("#5D4037"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, 0, 0, enDp(16))
+        }
+
+        val bouton = Button(this).apply {
+            text = "Choisir le clavier luxembourgeois"
+            textSize = 17f
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            setTextColor(Color.WHITE)
+            minHeight = enDp(56)
+            setPadding(enDp(16), enDp(14), enDp(16), enDp(14))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener { openInputMethodPicker() }
+        }
+
+        val autreChemin = TextView(this).apply {
+            text = "Sans passer par ici : pendant que vous écrivez, touchez la petite icône de " +
+                    "clavier en bas de l'écran, dans la barre de navigation. Le même choix s'ouvre."
+            textSize = 16f
+            setTextColor(Color.parseColor("#795548"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, enDp(14), 0, 0)
+        }
+
+        card.addView(titre)
+        card.addView(explication)
+        card.addView(bouton)
+        card.addView(autreChemin)
+        return card
+    }
+
+    /**
      * (Re)construit la carte de configuration dans son conteneur. Passer par le
      * conteneur plutôt que par un rafraîchissement complet de l'onglet évite de
      * reconstruire le clavier d'essai à chaque fois qu'une étape se déplie.
@@ -1436,8 +1531,12 @@ class SettingsActivity : AppCompatActivity() {
             text = when {
                 toutFait -> "Les 3 étapes sont faites."
                 isEnabled && isSelected -> "Plus qu'à l'essayer."
-                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné, sans doute après une mise à jour."
-                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif, sans doute après une mise à jour."
+                // Sans « sans doute après une mise à jour » : la cause la plus
+                // fréquente est un détour volontaire par un autre clavier, et
+                // annoncer un incident système à quelqu'un qui a simplement
+                // changé de clavier l'envoie chercher au mauvais endroit.
+                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus celui qui s'affiche quand vous écrivez."
+                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif sur ce téléphone."
                 isEnabled -> "Plus qu'une étape."
                 else -> "3 étapes pour taper en lëtzebuergesch partout."
             }
