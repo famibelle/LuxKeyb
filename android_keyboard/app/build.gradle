@@ -70,8 +70,8 @@ android {
         applicationId "com.potomitan.luxkeyboard"
         minSdk = 21
         targetSdk = 36
-        versionCode = 102600
-        versionName "10.26.0"
+        versionCode = 102700
+        versionName "10.27.0"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true

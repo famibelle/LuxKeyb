@@ -9,6 +9,32 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [10.27.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Chaque mot du Wierderbuch a maintenant sa fiche.** La liste de résultats ne
+  réagissait à rien : ni clic, ni retour visuel. Un tap ouvre désormais le mot en
+  grand, ses acceptions une par une au lieu d'être serrées sur une ligne, et deux
+  actions — copier le mot, ou l'ouvrir sur le dictionnaire officiel du Zenter fir
+  d'Lëtzebuerger Sprooch, qui en donne la prononciation et des exemples.
+- **L'appui long copie le mot directement**, sans passer par la fiche : coller un
+  mot ailleurs reste un seul geste.
+
+### 🔧 Modifié
+
+- **Le dictionnaire et les jeux s'ouvrent sans attendre l'installation du
+  clavier.** Tant que le clavier n'avait jamais été entièrement configuré,
+  l'application se réduisait à son écran de configuration. Or ces deux onglets ne
+  demandent rien d'installé. Les onglets reviennent dès que le clavier a été
+  activé une fois, et ne repartent plus — même si une mise à jour du téléphone
+  le désélectionne plus tard, ou si l'on essaie un autre clavier entre-temps.
+- **La liste de résultats a été allégée.** Chaque ligne portait un bouton
+  « lod.lu » ; quarante fois la même étiquette se lisait comme du bruit et
+  rognait la place des traductions à plusieurs sens. Les lignes ne portent plus
+  que le mot et sa traduction, et les traductions longues tiennent enfin
+  entières.
+
 ## [10.26.0] - 2026-09-02
 
 ### ✨ Ajouté
