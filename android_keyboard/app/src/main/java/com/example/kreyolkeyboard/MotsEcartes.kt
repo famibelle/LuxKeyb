@@ -79,8 +79,15 @@ object MotsEcartes {
         "kommunizéieren", "kommunizéiert", "kommunizéiere", "Consecratioun",
         "Engel", "Engelen", "Däiwel", "Häll", "helleg", "hellege", "Hellege",
         "Hellegen", "Helleger", "Muttergottes", "Jongfra", "Ramadan", "Daf",
-        "Kanddaf", "gedeeft", "Seegen", "geseent", "Kulten", "leieren",
+        "Kanddaf", "gedeeft", "Seegen", "geseent", "Kulten",
         "Faaschten"
+        // Pas de `leieren` (psalmodier) : le repli des accents le confond avec
+        // `léieren` (apprendre), 184 occurrences, et privait les jeux comme le
+        // mot du jour de l'un des verbes les plus utiles de la langue. Le LOD
+        // en fait bien deux articles (LEIEREN1, LEIEREN2), mais
+        // [estEcarte] compare des formes repliées : la seule façon de garder
+        // l'un sans perdre l'autre serait de comparer avec les accents, ce qui
+        // ferait passer au travers tout ce que l'on tape sans accent.
     )
 
     /**
@@ -157,6 +164,12 @@ object MotsEcartes {
      * (absente du corpus sous cette graphie, où `Esch` compte 1 952
      * occurrences) ; et aucune forme de la liste n'est un mot courant du
      * corpus — la plus fréquente est `Aasch`, à 15.
+     *
+     * `Nenn` (nichon) y figure **au singulier seulement**. Son pluriel se
+     * replie sur `nennen` et `nenne` (appeler, nommer — 120 et 16 occurrences),
+     * que le clavier a cessé de proposer le temps d'une version. Le singulier,
+     * lui, ne heurte rien et reste filtré même quand la casse a été recopiée
+     * sur ce que l'utilisateur tape — c'est le repli de la casse qui l'assure.
      */
     private val GROSSIERETES = listOf(
         "Aarsch", "Aarschkrécher", "Aarschkréchesch", "Aarschkréchesche",
@@ -171,7 +184,7 @@ object MotsEcartes {
         "Hourebude", "Hourebuden", "Klut", "Klute", "Kluten",
         "Knaschtert", "Knaschterte", "Knaschterten", "Knaschtsak",
         "Knaschtsäck", "Louder", "Loudere", "Louderen", "Merd", "Nenn",
-        "Nenne", "Nennen", "Piss", "Puff", "Puffe", "Puffen",
+        "Piss", "Puff", "Puffe", "Puffen",
         "Schläimschësser", "Schläimschëssesch", "Schläimschësseschen",
         "Schäiss", "Schäissdreck", "Schäisserei", "Schäissereie",
         "Schäissereien", "Schäisshaiser", "Schäisshaus",

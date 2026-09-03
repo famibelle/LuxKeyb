@@ -50,7 +50,13 @@ class MotsEcartesTest {
         "Geriicht", "Prisong", "Riichter", "Affekot", "Krich", "Zaldoten",
         "Waff", "Doud", "Spidol", "krank", "Kriibs", "Aids", "Gewalt",
         // Homographes et voisins qu'un filtre par préfixe emporterait
-        "Gréng", "gréng", "Geschlecht", "Adress", "Drogerie", "Morgen"
+        "Gréng", "gréng", "Geschlecht", "Adress", "Drogerie", "Morgen",
+        // Homographes que le repli des accents ou de la casse a déjà emportés :
+        // « léieren » (apprendre, 184 occurrences) valait « leieren »
+        // (psalmodier), et « nennen » / « nenne » (appeler, 120 et 16) valaient
+        // le pluriel de « Nenn ». Les deux verbes ont cessé d'être proposés le
+        // temps d'une version.
+        "léieren", "Léieren", "Léier", "nennen", "nenne"
     )
 
     @Test
@@ -98,7 +104,9 @@ class MotsEcartesTest {
             "Sakgaass", "Chili", "Kuss", "Bees", "Picknick", "Schlamassel",
             "gewichst", "Baatsch", "Witz",
             // La ville, qui n'est pas la variante crue « Eesch »
-            "Esch"
+            "Esch",
+            // Le verbe « nommer », que le pluriel de « Nenn » emportait
+            "nennen", "nenne", "Nennen"
         )
         for (mot in ordinaires) {
             assertFalse("« $mot » ne doit pas être filtré", MotsEcartes.estGrossier(mot))
