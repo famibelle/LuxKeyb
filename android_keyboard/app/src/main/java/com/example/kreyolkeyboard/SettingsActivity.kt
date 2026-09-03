@@ -230,6 +230,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Calculer la position réelle (0, 1 ou 2) avec modulo
                     currentTab = position % SettingsPagerAdapter.REAL_COUNT
                     updateTabBar()
+                    majBandeauInstallation()
                 }
             })
             
@@ -296,12 +297,18 @@ class SettingsActivity : AppCompatActivity() {
         requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATIONS)
     }
 
-    // Mode « première ouverture » : tant que le clavier n'a jamais été
-    // entièrement configuré, la barre d'onglets et le swipe sont masqués pour
-    // concentrer l'utilisateur sur la configuration (jeux, stats et guide
-    // n'ont pas de valeur avant l'activation). Le flag ne se pose qu'une
-    // fois : un utilisateur configuré qui désélectionne plus tard le clavier
-    // garde l'accès à tous les onglets.
+    // Mode « première ouverture » : tant que le clavier n'a jamais été activé,
+    // la barre d'onglets et le swipe sont masqués pour concentrer sur la
+    // configuration. Le flag ne se pose qu'une fois : un utilisateur configuré
+    // qui désélectionne plus tard le clavier garde l'accès à tout.
+    //
+    // Le mode restreint s'arrêtait auparavant à la configuration *complète* —
+    // clavier activé **et** sélectionné comme clavier courant. C'était trop
+    // tard : quelqu'un qui a activé le clavier puis essayé un autre, ou qu'une
+    // mise à jour système a désélectionné, se retrouvait renvoyé dans le
+    // tunnel, sans Wierderbuch ni jeux, alors qu'il connaît déjà l'application.
+    // Or ces deux-là ne dépendent que des assets et marchent sans clavier
+    // installé. La barre revient donc dès l'activation, et ne repart plus.
     private fun onboardingPrefs() =
         getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
 
@@ -325,9 +332,59 @@ class SettingsActivity : AppCompatActivity() {
             onboardingPrefs().edit().putBoolean("onboarding_completed", true).apply()
             return
         }
-        tabBar.visibility = View.GONE
-        viewPager.isUserInputEnabled = false
-        bottomInstallBanner.visibility = View.VISIBLE
+        if (!aDejaActiveLeClavier()) {
+            tabBar.visibility = View.GONE
+            viewPager.isUserInputEnabled = false
+        }
+        majBandeauInstallation()
+    }
+
+    /**
+     * Le clavier a-t-il déjà été activé, maintenant ou par le passé ?
+     *
+     * `funnel_keyboard_enabled` est horodaté une seule fois, au premier passage
+     * à l'état activé : il survit donc à une désactivation, à une mise à jour
+     * système qui désélectionne le clavier, ou au détour par un autre clavier.
+     */
+    private fun aDejaActiveLeClavier(): Boolean =
+        isKeyboardEnabled() || onboardingPrefs().contains("funnel_keyboard_enabled")
+
+    /**
+     * Rend la navigation dès l'activation, sans attendre la sélection.
+     *
+     * [onOnboardingCompleted] ne se déclenche qu'à la configuration complète ;
+     * sans ce complément, quelqu'un qui active le clavier puis referme le
+     * sélecteur système resterait enfermé jusqu'à sa prochaine ouverture de
+     * l'application, alors que la condition d'accès est déjà remplie.
+     */
+    fun revelerNavigationSiClavierActive() {
+        if (tabBar.visibility == View.VISIBLE) return
+        if (!aDejaActiveLeClavier()) return
+        tabBar.visibility = View.VISIBLE
+        tabBar.alpha = 0f
+        tabBar.animate().alpha(1f).setDuration(400).start()
+        viewPager.isUserInputEnabled = true
+    }
+
+    /**
+     * Le bandeau d'installation ne paraît que sur Démarrage, et seulement tant
+     * que le clavier n'a jamais été configuré.
+     *
+     * Il était posé une fois pour toutes, ce qui suffisait quand Démarrage
+     * était le seul onglet atteignable avant configuration. Maintenant que les
+     * quatre le sont, il se superposerait au bas de la grille de Wuertsich et
+     * de la liste du Wierderbuch — un rappel permanent qui mangerait le
+     * contenu qu'il est censé faire découvrir.
+     */
+    private fun majBandeauInstallation() {
+        if (!::bottomInstallBanner.isInitialized) return
+        val aConfigurer = !onboardingPrefs().getBoolean("onboarding_completed", false)
+        if (aConfigurer && currentTab == 0) {
+            bottomInstallBanner.alpha = 1f
+            bottomInstallBanner.visibility = View.VISIBLE
+        } else {
+            bottomInstallBanner.visibility = View.GONE
+        }
     }
 
     // Appelé par l'onboarding quand la configuration vient d'aboutir :
@@ -4099,6 +4156,10 @@ class SettingsActivity : AppCompatActivity() {
             if (lastKnownEnabled && lastKnownSelected) {
                 // Configuration aboutie : révéler la navigation (idempotent)
                 activity.onOnboardingCompleted()
+            } else {
+                // Activé mais pas encore sélectionné : la navigation revient
+                // quand même, elle ne dépend que de l'activation.
+                activity.revelerNavigationSiClavierActive()
             }
             Log.d("SettingsActivity", "🔄 Contenu de l'onboarding rafraîchi (enabled=$lastKnownEnabled, selected=$lastKnownSelected, spellChecker=$lastKnownSpellCheckerOn)")
         }
