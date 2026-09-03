@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.4.0] - 2026-09-03
+
+### 🎨 Amélioré
+
+- **Le clavier consomme nettement moins de mémoire.** Le dictionnaire français
+  ajouté à la version précédente pesait lourd dans un clavier, qu'Android arrête
+  quand il grossit — il faut alors le recharger, et vous voyez un blanc avant
+  qu'il n'apparaisse. Il occupe maintenant environ 12 Mo de moins, sans que rien
+  ne change à l'écran : les mêmes mots vous sont proposés, et le correcteur
+  reconnaît toujours les 125 348 formes du français.
+
 ## [11.3.0] - 2026-09-03
 
 ### ✨ Ajouté
