@@ -41,6 +41,7 @@ import kotlinx.coroutines.*
 import kotlin.random.Random
 import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
 import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
@@ -6591,10 +6592,16 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(0, 0, 0, 8)
             })
 
+            // Le chargement reste ici, seul le compteur s'en va : c'est lui qui
+            // évite d'analyser 2,7 Mo de JSON dans la première recherche, où
+            // l'attente se verrait entre la frappe et les résultats.
+            TranslationDictionary.charger(activity)
+
             colonne.addView(TextView(activity).apply {
-                val total = TranslationDictionary.taille(activity)
                 text = "Tapez un mot luxembourgeois ou français : la recherche " +
-                        "fonctionne dans les deux sens. $total mots traduits."
+                        "fonctionne dans les deux sens.\n" +
+                        "Touchez un mot pour ouvrir sa fiche ; appui long pour " +
+                        "le copier."
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.2f)
@@ -6708,7 +6715,8 @@ class SettingsActivity : AppCompatActivity() {
             resultat: TranslationDictionary.Resultat,
             rang: Int
         ): View = LinearLayout(activity).apply {
-            orientation = LinearLayout.VERTICAL
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
             setPadding(20, 16, 20, 16)
             // Une ligne sur deux légèrement teintée : la liste peut compter
             // quarante entrées, et rien d'autre ne sépare une glose du mot
@@ -6716,19 +6724,212 @@ class SettingsActivity : AppCompatActivity() {
             setBackgroundColor(
                 if (rang % 2 == 0) Color.WHITE else Color.parseColor("#FAFAFA")
             )
+            isClickable = true
+            setOnClickListener { ouvrirFiche(activity, resultat) }
+            // L'appui long garde la copie à un seul geste : c'est l'action
+            // courante, et la faire passer par la fiche coûterait deux taps à
+            // qui veut seulement coller un mot ailleurs.
+            setOnLongClickListener { copierMot(activity, resultat.mot); true }
 
+            addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                )
+                addView(TextView(activity).apply {
+                    text = resultat.mot
+                    textSize = 19f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.parseColor("#1C1C1C"))
+                })
+                addView(TextView(activity).apply {
+                    text = resultat.glose
+                    textSize = 16f
+                    setTextColor(Color.parseColor("#555555"))
+                    setPadding(0, 4, 0, 0)
+                })
+            })
+
+            // Le chevron de [createReferenceLink] plutôt qu'une puce d'action :
+            // c'est déjà, ailleurs dans l'application, ce qui annonce qu'une
+            // ligne ouvre quelque chose, et quarante chevrons se lisent comme
+            // une colonne là où quarante puces bleues se lisaient comme du
+            // bruit — en prenant la largeur des gloses à trois sens, qui sont
+            // justement les plus utiles.
             addView(TextView(activity).apply {
+                text = "›"
+                textSize = 22f
+                setTextColor(Color.parseColor("#BBBBBB"))
+                setPadding(20, 0, 0, 0)
+            })
+        }
+
+        /**
+         * Fiche d'un mot : ses sens un par un, et les actions.
+         *
+         * La liste ne porte plus que du contenu. Une puce « lod.lu » par ligne
+         * répétait quarante fois la même étiquette, et toute action ajoutée
+         * ensuite — prononciation, favori — aurait ajouté une puce de plus.
+         * Ici elles ont la place de porter un vrai libellé.
+         *
+         * La fiche a d'abord annoncé la provenance du mot — « mot du corpus,
+         * 65 occurrences » contre « forme du LOD ». C'était une confidence de
+         * pipeline : elle décrit d'où vient notre fichier, pas le mot que la
+         * personne cherche, et personne n'ouvre un dictionnaire pour lire un
+         * décompte d'occurrences. Retirée, avec la table de fréquences qui
+         * n'existait que pour elle.
+         */
+        private fun ouvrirFiche(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat
+        ) {
+            val dialogue = BottomSheetDialog(activity)
+            dialogue.setContentView(contenuFiche(activity, resultat, dialogue))
+            dialogue.show()
+        }
+
+        private fun contenuFiche(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat,
+            dialogue: BottomSheetDialog
+        ): View {
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(40, 36, 40, 44)
+            }
+
+            colonne.addView(TextView(activity).apply {
                 text = resultat.mot
-                textSize = 19f
+                textSize = 30f
                 setTypeface(null, Typeface.BOLD)
                 setTextColor(Color.parseColor("#1C1C1C"))
             })
-            addView(TextView(activity).apply {
-                text = resultat.glose
-                textSize = 16f
-                setTextColor(Color.parseColor("#555555"))
-                setPadding(0, 4, 0, 0)
+
+            colonne.addView(TextView(activity).apply {
+                text = "EN FRANÇAIS"
+                textSize = 11f
+                letterSpacing = 0.12f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#AAAAAA"))
+                setPadding(0, 30, 0, 10)
             })
+
+            // Le générateur assemble les acceptions avec « , » ; rien ne lui
+            // interdit d'en produire une qui contienne elle-même une virgule.
+            // Découper là est donc une heuristique : au pire une acception
+            // s'affiche sur deux lignes, jamais aucune n'est perdue.
+            resultat.glose.split(", ").filter { it.isNotBlank() }.forEach { sens ->
+                colonne.addView(TextView(activity).apply {
+                    text = "•  $sens"
+                    textSize = 17f
+                    setTextColor(Color.parseColor("#333333"))
+                    setPadding(0, 0, 0, 8)
+                    setLineSpacing(0f, 1.15f)
+                })
+            }
+
+            // L'une sous l'autre, en pleine largeur : côte à côte, la seconde
+            // n'avait la place que d'un nom de domaine, « lod.lu ↗ », qui
+            // suppose de savoir déjà ce qu'est le LOD. Le libellé dit
+            // maintenant où l'on va ; l'attribution, elle, reste en pied
+            // d'onglet.
+            colonne.addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(0, 30, 0, 0)
+
+                addView(boutonFiche(
+                    activity, "Copier le mot",
+                    Color.parseColor("#1976D2"), Color.WHITE, null
+                ) {
+                    copierMot(activity, resultat.mot)
+                    dialogue.dismiss()
+                }.apply {
+                    (layoutParams as LinearLayout.LayoutParams).bottomMargin = 20
+                })
+
+                addView(boutonFiche(
+                    activity, "Voir sur le dictionnaire officiel ↗",
+                    Color.WHITE, Color.parseColor("#2C7A8C"), Color.parseColor("#B9D6DD")
+                ) {
+                    ouvrirLod(activity, resultat.mot)
+                    dialogue.dismiss()
+                })
+            })
+
+            return ScrollView(activity).apply { addView(colonne) }
+        }
+
+        private fun boutonFiche(
+            activity: SettingsActivity,
+            libelle: String,
+            fond: Int,
+            encre: Int,
+            bordure: Int?,
+            action: () -> Unit
+        ): TextView = TextView(activity).apply {
+            text = libelle
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(encre)
+            setPadding(20, 32, 20, 32)
+            background = GradientDrawable().apply {
+                cornerRadius = 14f
+                setColor(fond)
+                if (bordure != null) setStroke(3, bordure)
+            }
+            isClickable = true
+            setOnClickListener { action() }
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        /**
+         * Copie le mot dans le presse-papiers.
+         *
+         * Le Toast se tait à partir d'Android 13 : le système affiche lui-même
+         * une confirmation de copie, et les deux se superposaient.
+         */
+        private fun copierMot(activity: SettingsActivity, mot: String) {
+            val presse = activity.getSystemService(Context.CLIPBOARD_SERVICE)
+                    as? android.content.ClipboardManager ?: return
+            presse.setPrimaryClip(ClipData.newPlainText("Wierderbuch", mot))
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                Toast.makeText(activity, "« $mot » copié", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        /**
+         * Ouvre la fiche LOD du mot dans le navigateur.
+         *
+         * lod.lu est une application monopage : la route `/sich/<langue>/<mot>`
+         * lance la recherche au montage, c'est donc le lien profond que le site
+         * fabrique lui-même quand on cherche depuis sa propre barre. On
+         * l'interroge toujours en luxembourgeois, parce que
+         * [TranslationDictionary.Resultat.mot] est toujours la forme
+         * luxembourgeoise, y compris quand la requête était en français.
+         *
+         * La recherche du LOD indexe les mêmes `<spelling>` que
+         * `generate_translations.py`, formes fléchies comprises : « Haiser »
+         * arrive bien sur l'article « Haus ». Les noms propres, eux, n'y sont
+         * pas plus que dans nos gloses — la puce mène alors à une page sans
+         * résultat, ce qui reste une réponse honnête.
+         */
+        private fun ouvrirLod(activity: SettingsActivity, mot: String) {
+            val url = LOD_RECHERCHE + Uri.encode(mot)
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (e: Exception) {
+                Log.e("DictionaryFragment", "Ouverture de lod.lu impossible", e)
+                Toast.makeText(activity, "Impossible d'ouvrir lod.lu", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        companion object {
+            private const val LOD_RECHERCHE = "https://lod.lu/sich/lb/"
         }
 
         override fun onDestroyView() {

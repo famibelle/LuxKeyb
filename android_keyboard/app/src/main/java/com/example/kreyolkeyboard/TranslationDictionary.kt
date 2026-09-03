@@ -215,12 +215,6 @@ object TranslationDictionary {
             .map { Resultat(it.second.forme, it.second.glose) }
     }
 
-    /** Combien de mots la table peut traduire, pour l'afficher à l'écran. */
-    fun taille(context: Context): Int {
-        charger(context)
-        return traductions.size
-    }
-
     /** Glose française d'un mot, ou null s'il n'en a pas. */
     fun traduire(context: Context, mot: String): String? {
         charger(context)
