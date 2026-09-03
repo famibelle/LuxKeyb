@@ -9,6 +9,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.2.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Un bouton pour revenir au clavier luxembourgeois.** Quand un autre clavier
+  a pris la main, l'onglet Démarrage l'annonce en tête d'écran et propose de
+  rechoisir le luxembourgeois en un appui. Le clavier n'est ni désinstallé ni
+  désactivé dans ce cas, et le message le dit : il n'y a qu'à le rechoisir.
+  Le second chemin est rappelé juste en dessous — la petite icône de clavier
+  en bas de l'écran, pendant que vous écrivez, ouvre le même choix sans quitter
+  l'application où vous êtes.
+
+### 🎨 Amélioré
+
+- La carte « Configuration rapide » n'annonce plus une mise à jour du téléphone
+  quand le clavier a simplement changé : elle dit ce qui est, sans en supposer
+  la cause.
+
 ## [11.1.2] - 2026-09-03
 
 ### 🐛 Corrigé
