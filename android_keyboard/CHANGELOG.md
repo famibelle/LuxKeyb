@@ -9,6 +9,21 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.0.0] - 2026-09-03
+
+### 🔧 Modifié
+
+- **Le dictionnaire ne répète plus les formes d'un même mot.** Chercher
+  « manger » donnait quarante lignes pour neuf mots : « iessen », « iesse »,
+  « giess », « ësst » se suivaient, tous traduits pareil. Chaque mot n'a plus
+  qu'une entrée, et sa fiche montre ses autres formes — « Forschett » avec son
+  pluriel « Forschetten », le verbe « sinn » avec toute sa conjugaison.
+- **Les mots courts trouvent enfin quelque chose.** « eau » renvoyait
+  « beaucoup », « nouveau », « de nouveau » — le mot cherché n'était qu'un
+  morceau d'un autre. Il donne maintenant « Waasser », « Drëpp » (eau-de-vie),
+  « Quell » (source d'eau). Même chose pour « chat », qui parlait d'achats et
+  de châtaignes, et qui commence désormais par « Kaz ».
+
 ## [10.27.0] - 2026-09-03
 
 ### ✨ Ajouté
