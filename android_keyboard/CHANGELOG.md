@@ -9,6 +9,25 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.3.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Le français du clavier devient un vrai dictionnaire.** La seconde rangée de
+  suggestions, en bleu sous les propositions luxembourgeoises, s'appuyait sur
+  662 mots ; elle en connaît maintenant 125 348, formes conjuguées et accordées
+  comprises. Tapez « cepe » et « cependant » vous est proposé.
+
+### 🐛 Corrigé
+
+- **Le correcteur ne souligne plus le français correct.** Le clavier remplace le
+  correcteur français du téléphone : avec 662 mots connus, il signalait comme
+  fautes presque tous les mots français écrits, dans toutes les applications.
+
+Source : Lexique 3.83, la base lexicale du français de Boris New et Christophe
+Pallier (lexique.org), sous licence CC BY-SA 4.0. Elle est créditée dans la
+carte « Sources » de l'application.
+
 ## [11.2.0] - 2026-09-03
 
 ### ✨ Ajouté
