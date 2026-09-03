@@ -1,25 +1,16 @@
 ---
 title: "Guide d'installation et d'utilisation : Lëtzebuergesch Clavier"
-description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : configuration en 3 étapes, diacritiques, suggestions, jeux de vocabulaire et FAQ."
+description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : installation guidée, diacritiques, suggestions, majuscules automatiques des noms, dictionnaire Wierderbuch, jeux de vocabulaire et FAQ."
 lang: fr
 ---
 
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
-  <strong>📘 Guide</strong> ·
-  <a href="faq.html">❓ FAQ</a> ·
+  <a href="index.html#installer">📲 Installer</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
-  <a href="corpus.html">📚 Les corpus</a> ·
-  <a href="nouveautes.html">🎁 Nouveautés</a> ·
-  <a href="labs.html">🔬 Labs</a> ·
-  <a href="comparatif.html">⚖️ Comparatif</a> ·
-  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
-  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
-  <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="index.html#devenir-testeur">🧪 Testeur</a> ·
-  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
-  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
-  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  <strong>📘 Guide</strong> ·
+  <a href="faq.html">❓ Aide</a> ·
+  <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
 # Guide d'installation et d'utilisation
@@ -29,10 +20,12 @@ meilleur, en cinq minutes.*
 
 ## Installation en 3 étapes
 
-Téléchargez d'abord l'APK depuis la
-[dernière version](https://github.com/famibelle/LuxKeyb/releases/latest), puis
-ouvrez-la. Android demande une autorisation pour installer depuis cette source :
-c'est le régime normal des applications distribuées hors du Play Store.
+Installez d'abord l'application. Le plus simple est de passer par
+[Google Play](https://play.google.com/apps/testing/com.potomitan.luxkeyboard) :
+elle s'y installe et s'y met à jour comme n'importe quelle autre. Si vous
+préférez le fichier d'installation, il est sur la
+[page d'accueil](index.html#installer-sans-passer-par-google-play), et Android
+vous demandera alors une autorisation pour cette source.
 
 Une fois installée, l'application doit être activée comme clavier système avant
 de pouvoir servir dans vos autres applications. Elle vous guide, et coche les
@@ -141,11 +134,40 @@ personnage pour choisir sa couleur de peau.
   <img src="Screenshots/lux_numerique.png" alt="Mode chiffres et symboles du clavier" width="32%">
 </div>
 
+### Les majuscules des noms se mettent toutes seules
+
+En luxembourgeois, tous les noms prennent une majuscule — la
+*Groussschreiwung*. Le clavier s'en charge : quand vous appuyez sur la barre
+d'espace, il remet la majuscule au mot que vous venez d'écrire si la phrase la
+demande. Vous tapez « an der stad », vous obtenez « an der Stad ».
+
+Trois choses à savoir, et elles suffisent :
+
+- **Il ne le fait que s'il en est sûr.** La décision se prend d'après le mot
+  précédent : le clavier ne capitalise que ce qu'il a vu capitalisé après ce
+  mot-là. Dans le doute, il ne touche à rien.
+- **Ce que vous écrivez vous appartient.** Si vous avez mis une majuscule
+  vous-même, où que ce soit dans le mot, le clavier n'y revient pas.
+- **Un retour arrière annule.** Si la majuscule ne vous convient pas, appuyez
+  une fois sur ⌫ juste après : le mot reprend sa minuscule, sans perdre
+  l'espace. Un second retour arrière efface normalement.
+
 ### Majuscules et effacement
 
 La touche majuscule a trois états : un appui pour une seule majuscule, deux pour
 le verrouillage, trois pour revenir au normal. Un appui long sur le retour
 arrière efface le mot entier plutôt que lettre à lettre.
+
+## L'application, en quatre onglets
+
+Au-delà du clavier lui-même, l'application tient en quatre destinations :
+
+| Onglet | Ce qu'on y trouve |
+|---|---|
+| 🚀 **Démarrage** | Les étapes d'installation, le champ d'essai, et — tout en bas — ce guide et la page « À propos » |
+| 📊 **Mäi Lëtzebuergesch** | Votre niveau, le mot du jour, vos mots les plus employés et ceux qu'il vous reste à découvrir |
+| 🎮 **Spiller** | Les cinq jeux |
+| 📖 **Wierderbuch** | Le dictionnaire luxembourgeois–français |
 
 ## Progression et jeux
 
@@ -161,7 +183,33 @@ Quatre jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
 cinquième, **Zuelwuert**, ne puise nulle part : il pose une multiplication et
 fait choisir la bonne orthographe de son résultat, « sechsafofzeg » pour 56.
 
-Les cinq sont réunis derrière l'onglet **« Spiller »**.
+Les cinq sont réunis derrière l'onglet **« Spiller »**, et chacun affiche la
+**traduction française** du mot cherché — au moment où elle ne donne pas la
+réponse : dans la liste pour Wuertsich, sous les lettres pour Wuertmix, à la fin
+de la partie pour Wuertriet. On y apprend donc du vocabulaire, pas seulement des
+suites de lettres.
+
+## Le dictionnaire « Wierderbuch »
+
+Le quatrième onglet est un dictionnaire luxembourgeois–français de
+**88 852 mots**, qui ne demande jamais dans quel sens vous cherchez : tapez
+« Haus », vous obtenez « maison » ; tapez « maison », vous obtenez « Haus ». Le
+clavier luxembourgeois s'ouvre dans le champ de recherche, accents compris.
+
+**Touchez un résultat** et sa fiche s'ouvre. Elle contient :
+
+- **le sens**, ou les sens quand le mot en a plusieurs ;
+- **des phrases d'exemple** qui emploient le mot, écrites par le
+  *Lëtzebuerger Online Dictionnaire*, le dictionnaire officiel de la langue —
+  parce que « Haus = maison » ne vous apprend pas à vous en servir dans une
+  phrase ;
+- **les autres formes du même mot** : *Haus* et *Haiser* sont une seule entrée,
+  pas deux résultats. Chercher un pluriel ou un verbe conjugué retrouve donc le
+  mot en entier ;
+- un bouton pour **copier le mot**, et un autre pour l'ouvrir sur **lod.lu**, le
+  site du dictionnaire officiel.
+
+Un **appui long** sur un résultat le copie directement, sans ouvrir la fiche.
 
 ## Questions fréquentes
 
@@ -188,8 +236,12 @@ Android garde parfois l'ancienne liaison jusqu'au redémarrage du téléphone.
 Cela vient du système, pas du clavier.
 
 **Un mot que je connais n'est pas proposé.**
-Le dictionnaire est reconstruit à chaque publication à partir d'un corpus de
-luxembourgeois contemporain. Signalez le mot manquant via le
+Le clavier reconnaît **123 265 formes** : celles d'un corpus de luxembourgeois
+contemporain, reconstruit à chaque publication, complétées par celles du
+dictionnaire officiel — ce sont ces dernières qui ont apporté les mots du
+quotidien que la presse n'écrit jamais, comme *Läffelen* ou *schaffesch*. Il
+reste des manques, la langue composant ses mots sans limite. Signalez le mot
+manquant via le
 [formulaire de retours](feedbacks_form.html) ou une
 [issue GitHub](https://github.com/famibelle/LuxKeyb/issues).
 
@@ -204,9 +256,19 @@ Une question qui n'est pas couverte ici ? Passez par le
 [issue](https://github.com/famibelle/LuxKeyb/issues).
 
 <div align="center" style="margin: 24px 0;">
-  <a href="https://github.com/famibelle/LuxKeyb/releases/latest"
-     style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
-            border-radius:8px;font-weight:bold;text-decoration:none;font-size:1.1em;">
-    📲 Télécharger l'APK
-  </a>
+  <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+     class="btn-installer">📲 Installer sur mon téléphone</a>
 </div>
+
+## Pour aller plus loin
+
+<p class="liens-secondaires">
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="corpus.html">📚 D'où viennent les mots</a> ·
+  <a href="comparatif.html">⚖️ Comparatif détaillé</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Nous écrire</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a>
+</p>
