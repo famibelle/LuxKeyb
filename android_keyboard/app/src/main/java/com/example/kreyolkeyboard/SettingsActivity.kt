@@ -41,6 +41,7 @@ import kotlinx.coroutines.*
 import kotlin.random.Random
 import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
 import com.example.kreyolkeyboard.wordsearch.WordSearchWord
@@ -6857,6 +6858,16 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             val dialogue = BottomSheetDialog(activity)
             dialogue.setContentView(contenuFiche(activity, resultat, dialogue))
+            // Déployée d'emblée, et pas de position repliée du tout.
+            // Une feuille inférieure s'ouvre par défaut à une hauteur de repli
+            // calculée sur l'écran : tant que la fiche tient dedans on ne voit
+            // rien, mais sur un petit écran — ou avec une police système
+            // agrandie, ce qui revient au même — elle s'ouvre en cachant les
+            // deux boutons, sans que rien n'indique qu'il faut la tirer. Le
+            // contenu défile désormais dans une feuille pleine hauteur au lieu
+            // d'être coupé.
+            dialogue.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            dialogue.behavior.skipCollapsed = true
             dialogue.show()
         }
 
@@ -6911,13 +6922,27 @@ class SettingsActivity : AppCompatActivity() {
                     if (exemples.size == 1) "EXEMPLE" else "EXEMPLES",
                     26
                 ))
-                exemples.forEach { phrase ->
+                // Chacune sur son fond, séparées d'un vrai intervalle : à dix
+                // pixels l'une de l'autre et sur le blanc de la fiche, les deux
+                // phrases se lisaient comme un seul paragraphe, et la seconde
+                // paraissait continuer la première.
+                exemples.forEachIndexed { rang, phrase ->
                     colonne.addView(TextView(activity).apply {
                         text = phraseIllustree(phrase, resultat)
                         textSize = 16f
                         setTextColor(Color.parseColor("#333333"))
-                        setLineSpacing(0f, 1.2f)
-                        setPadding(0, 0, 0, 10)
+                        setLineSpacing(0f, 1.25f)
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.parseColor("#F6F7F8"))
+                        }
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            if (rang < exemples.size - 1) bottomMargin = 14
+                        }
                     })
                 }
             }
@@ -6935,11 +6960,13 @@ class SettingsActivity : AppCompatActivity() {
             if (resultat.formes.isNotEmpty()) {
                 colonne.addView(titreSection(activity, "AUTRES FORMES", 26))
                 colonne.addView(TextView(activity).apply {
-                    // Plafonnées : « sinn » en compte dix-sept, qui pousseraient
-                    // les deux boutons hors de l'écran.
-                    val montrees = resultat.formes.take(MAX_FORMES_FICHE)
-                    text = montrees.joinToString(" · ") +
-                            if (resultat.formes.size > montrees.size) " …" else ""
+                    // Toutes, désormais. Elles étaient plafonnées à dix pour que
+                    // « sinn » et ses vingt-deux formes ne poussent pas les
+                    // boutons hors de l'écran ; le « … » qui suivait annonçait
+                    // qu'il en manquait douze sans donner aucun moyen de les
+                    // voir. La feuille s'ouvrant maintenant déployée, le
+                    // contenu défile au lieu d'être coupé.
+                    text = resultat.formes.joinToString(" · ")
                     textSize = 16f
                     setTextColor(Color.parseColor("#555555"))
                     setLineSpacing(0f, 1.2f)
@@ -7091,9 +7118,6 @@ class SettingsActivity : AppCompatActivity() {
 
         companion object {
             private const val LOD_RECHERCHE = "https://lod.lu/sich/lb/"
-
-            /** Combien de flexions la fiche montre avant de couper. */
-            private const val MAX_FORMES_FICHE = 10
         }
 
         override fun onDestroyView() {
