@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.1.2] - 2026-09-03
+
+### 🐛 Corrigé
+
+- **« Voir sur le dictionnaire officiel » ouvre enfin le mot.** Depuis la fiche
+  du Wierderbuch, le bouton menait à une page de lod.lu qui proposait d'ajouter
+  le mot au dictionnaire, comme s'il n'y figurait pas — y compris pour des mots
+  aussi courants que « Haus ». Le lien passe désormais directement par la fiche
+  du mot sur lod.lu, qui s'affiche tout de suite.
+
 ## [11.1.1] - 2026-09-03
 
 ### 🐛 Corrigé
