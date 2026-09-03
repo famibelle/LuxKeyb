@@ -70,6 +70,7 @@ RACINE_ASSETS = Path(__file__).resolve().parent.parent / \
 CHEMIN_DICT = RACINE_ASSETS / "luxemburgish_dict.json"
 CHEMIN_TRAD = RACINE_ASSETS / "luxemburgish_translations.json"
 CHEMIN_FAMILLES = RACINE_ASSETS / "luxemburgish_familles.json"
+CHEMIN_EXEMPLES = RACINE_ASSETS / "luxemburgish_exemples.json"
 CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
@@ -81,6 +82,36 @@ MAX_GLOSES = 3
 # Une glose plus longue que cela est une définition déguisée, pas une
 # traduction : elle ne tiendra pas sur la ligne du mot à trouver.
 LONGUEUR_MAX_GLOSE = 48
+
+# Combien de phrases d'exemple la fiche d'un mot porte. Deux : une seule laisse
+# croire que le mot ne s'emploie que là, et au-delà la fiche pousse ses deux
+# boutons hors de l'écran — le même plafond que les flexions, pour la même
+# raison.
+MAX_EXEMPLES = 2
+
+# Une phrase plus longue que cela est un paragraphe sur un téléphone. La
+# médiane du LOD est à 53 caractères, le neuvième décile à 77 : on ne coupe
+# donc que la queue (maximum observé : 149).
+LONGUEUR_MAX_EXEMPLE = 110
+
+# Une phrase trop courte n'illustre rien : « en décke Kapp » n'apprend pas à
+# employer le mot.
+LONGUEUR_MIN_EXEMPLE = 15
+
+# Les marques que porte un `<attribute>` d'exemple, et pourquoi on les écarte
+# toutes les trois :
+#
+#   EGS   3 040 — emploi figuré. Chacune de ces phrases, sans exception, porte
+#                 un `<gloss>` qui l'explique : la montrer sans lui ferait
+#                 illustrer « A » (œil) par une expression qui ne parle pas
+#                 d'organe. C'est la règle du `secondaryHeadword` appliquée à
+#                 l'exemple plutôt qu'à l'acception.
+#   VULG      8 — registre obscène, jamais montré par l'application.
+#   PEJ       1 — péjoratif, même raison.
+#
+# IRON (35) et FAM (29) restent : ce sont des phrases ordinaires, seulement
+# marquées comme telles.
+MARQUES_ECARTEES = {"EGS", "VULG", "PEJ"}
 
 
 def lire_traductions(xml_articles, verbeux=True):
@@ -130,6 +161,89 @@ def lire_traductions(xml_articles, verbeux=True):
         propres = sum(1 for _, propre, _ in par_article.values() if propre)
         print(f"   📖 {len(par_article)} articles glosés en français "
               f"(dont {propres} noms propres)")
+    return par_article
+
+
+def _phrase(texte):
+    """Recompose la phrase d'un `<example>`, mot à mot.
+
+    Le LOD ne stocke pas de phrase : il stocke la suite de ses mots, le mot
+    vedette étant balisé à part (`<inflectedHeadword>`) pour que le site le
+    mette en gras. Recoller demande deux précautions, sinon la phrase se lit
+    comme une transcription :
+
+    - pas d'espace après une élision (« d' », « s' »), qui est un mot à elle
+      seule dans le fichier — sans quoi « an d' Ae gekuckt » ;
+    - pas d'espace avant une ponctuation isolée, le fichier écrivant tantôt
+      « midd, » d'un bloc, tantôt « ! » à part.
+    """
+    morceaux = []
+    for enfant in texte:
+        if enfant.tag == "attribute":
+            continue
+        mot = (enfant.text or "").strip()
+        if not mot:
+            continue
+        if morceaux and not morceaux[-1].endswith(("'", "\u2019")) \
+                and mot[0] not in ",.!?;:)»…":
+            morceaux.append(" ")
+        morceaux.append(mot)
+    return "".join(morceaux)
+
+
+def lire_exemples(xml_articles, verbeux=True):
+    """id d'article → phrases d'exemple, dans l'ordre des acceptions.
+
+    Le LOD porte 58 962 phrases d'exemple, écrites par le ZLS pour illustrer
+    l'emploi de chaque mot : c'est ce qu'une glose ne donne jamais. « Haus =
+    maison » ne dit pas qu'on dit « ech ginn heem », et un apprenant lit une
+    phrase plus vite qu'une définition.
+
+    Deux tris repris de [lire_traductions], pour que la phrase montrée illustre
+    bien le sens affiché : les acceptions idiomatiques (`secondaryHeadword`)
+    sont sautées, et les autres remises dans l'ordre de leur `<number>`, que le
+    fichier ne respecte pas. Sans ce second tri la fiche de « gutt »
+    illustrerait « huppé » pendant que sa glose annonce « bon ».
+    """
+    par_article = {}
+    for _, entree in ET.iterparse(io.BytesIO(xml_articles), events=("end",)):
+        if entree.tag != "entry":
+            continue
+        identifiant = entree.get("id")
+
+        phrases = []
+        for sens in entree.iter("meaning"):
+            if sens.find("secondaryHeadword") is not None:
+                continue
+            try:
+                rang = int(sens.findtext("number") or 0)
+            except ValueError:
+                rang = 0
+            for exemple in sens.iter("example"):
+                texte = exemple.find("text")
+                if texte is None:
+                    continue
+                marques = {(e.text or "").strip() for e in texte
+                           if e.tag == "attribute"}
+                if marques & MARQUES_ECARTEES:
+                    continue
+                phrase = _phrase(texte)
+                if LONGUEUR_MIN_EXEMPLE <= len(phrase) <= LONGUEUR_MAX_EXEMPLE:
+                    phrases.append((rang, phrase))
+
+        retenues = []
+        for _, phrase in sorted(phrases, key=lambda p: p[0]):
+            if phrase not in retenues:
+                retenues.append(phrase)
+            if len(retenues) >= MAX_EXEMPLES:
+                break
+        if identifiant and retenues:
+            par_article[identifiant] = retenues
+        entree.clear()
+
+    if verbeux:
+        total = sum(len(v) for v in par_article.values())
+        print(f"   💬 {total} phrases d'exemple sur {len(par_article)} articles")
     return par_article
 
 
@@ -273,6 +387,7 @@ def main():
         return 1
 
     par_article = lire_traductions(xml_articles)
+    exemples_par_article = lire_exemples(xml_articles)
     par_graphie = lire_graphies(xml_index)
     par_graphie_min = {}
     for forme, identifiants in par_graphie.items():
@@ -362,9 +477,8 @@ def main():
         par_article_formes.setdefault(identifiant, []).append(forme)
 
     familles = OrderedDict()
+    representant_de_article = {}
     for identifiant, formes in par_article_formes.items():
-        if len(formes) < 2:
-            continue
         lemme = par_article.get(identifiant, ("", True, []))[0]
         if lemme in formes:
             representant = lemme
@@ -372,12 +486,33 @@ def main():
             minuscules = {f.lower(): f for f in formes}
             representant = minuscules.get(lemme.lower()) or \
                 min(formes, key=lambda f: (len(f), f))
+        # Retenu même pour un article à forme unique : c'est la clé sous
+        # laquelle la fiche cherchera ses exemples, et le Wierderbuch affiche
+        # alors cette forme-là sans qu'elle constitue une famille.
+        representant_de_article[identifiant] = representant
+        if len(formes) < 2:
+            continue
         autres = sorted(f for f in formes if f != representant)
         familles[representant] = " ".join(autres)
 
     formes_groupees = sum(1 + v.count(" ") + 1 for v in familles.values()) if familles else 0
     print(f"   👪 {len(familles)} familles regroupant {formes_groupees} formes "
           f"(sur {len(table)} glosées)")
+
+    # Les exemples sont indexés par la forme que la fiche affiche — le
+    # représentant de la famille, ou la forme elle-même quand elle est seule —
+    # et jamais par flexion : dupliquer les deux phrases de « Haus » sous
+    # « Haiser », « Haus », « Haus' » triplerait l'actif pour un contenu
+    # identique, alors que la recherche remonte déjà de la flexion au
+    # représentant.
+    exemples = OrderedDict()
+    for identifiant, representant in representant_de_article.items():
+        phrases = exemples_par_article.get(identifiant)
+        if phrases and representant not in exemples:
+            exemples[representant] = phrases
+    couverture = 100 * len(exemples) / max(1, len(representant_de_article))
+    print(f"   💬 {len(exemples)} mots illustrés d'au moins une phrase "
+          f"({couverture:.1f} % des articles atteints)")
 
     if arguments.strict:
         if len(familles) < 10000:
@@ -386,6 +521,10 @@ def main():
             return 1
         if part_formes < 40:
             print(f"❌ --strict : couverture des formes tombée à {part_formes:.1f} %")
+            return 1
+        if len(exemples) < 10000:
+            print(f"❌ --strict : seulement {len(exemples)} mots illustrés, "
+                  "les fiches du Wierderbuch seraient sans exemple")
             return 1
         if reserves["Wuertriet (5 lettres)"] < 300:
             print("❌ --strict : moins de 300 mots de 5 lettres glosés, "
@@ -431,6 +570,28 @@ def main():
         encoding="utf-8")
     taille = CHEMIN_FAMILLES.stat().st_size / 1024
     print(f"💾 {CHEMIN_FAMILLES.name} — {taille:.0f} Ko")
+
+    # Troisième actif séparé, et pour la même raison que les familles : seule
+    # la fiche d'un mot ouvre ce fichier, une fois qu'on a touché un résultat.
+    # Le fondre dans les traductions ferait analyser ces phrases à l'ouverture
+    # de l'onglet des jeux, du mot du jour et des mots à découvrir, qui n'en
+    # montrent aucune.
+    contenu_exemples = {
+        "version": contenu["version"],
+        "generated": contenu["generated"],
+        "source": contenu["source"],
+        "licence": contenu["licence"],
+        "attribution": ATTRIBUTION,
+        "count": len(exemples),
+        "exemples": exemples,
+    }
+    sauvegarder_precedent(CHEMIN_EXEMPLES)
+    CHEMIN_EXEMPLES.write_text(
+        json.dumps(contenu_exemples, ensure_ascii=False, indent=None,
+                   separators=(",", ":")),
+        encoding="utf-8")
+    taille = CHEMIN_EXEMPLES.stat().st_size / 1024
+    print(f"💾 {CHEMIN_EXEMPLES.name} — {taille:.0f} Ko")
     print("✅ Terminé")
     return 0
 

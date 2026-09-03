@@ -90,7 +90,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -252,6 +252,17 @@ jobs:
           exit 1
         fi
 
+        # Les exemples sont ce qui distingue une fiche d'une ligne de
+        # traduction : sans eux le Wierderbuch dit ce qu'un mot veut dire, mais
+        # plus comment il s'emploie. Effondrés, la fiche s'affiche sans sa
+        # section et rien ne le signale.
+        EX_COUNT=$(jq '.exemples | length' "$A/luxemburgish_exemples.json")
+        echo "💬 Mots illustrés : $EX_COUNT"
+        if [ "$EX_COUNT" -lt 10000 ]; then
+          echo "::error::Seulement $EX_COUNT mots illustrés : les fiches du Wierderbuch seraient sans exemple."
+          exit 1
+        fi
+
         if ! jq -e '.attribution | length >= 1' "$A/luxemburgish_translations.json" > /dev/null; then
           echo "::error::luxemburgish_translations.json ne porte pas le crédit du LOD."
           exit 1
@@ -312,6 +323,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
           android_keyboard/app/src/main/assets/luxemburgish_familles.json
+          android_keyboard/app/src/main/assets/luxemburgish_exemples.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES

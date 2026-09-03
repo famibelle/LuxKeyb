@@ -32,6 +32,7 @@ object TranslationDictionary {
 
     private const val ASSET = "luxemburgish_translations.json"
     private const val ASSET_FAMILLES = "luxemburgish_familles.json"
+    private const val ASSET_EXEMPLES = "luxemburgish_exemples.json"
     private const val TAG = "TranslationDictionary"
 
     /** Forme telle que livrée par le dictionnaire → glose française. */
@@ -86,6 +87,26 @@ object TranslationDictionary {
     private var representantDe: Map<String, String> = emptyMap()
     private var formesDe: Map<String, List<String>> = emptyMap()
     private var famillesChargees = false
+
+    /**
+     * Les phrases d'exemple du LOD, indexées par le mot que la fiche affiche.
+     *
+     * Une glose dit ce qu'un mot veut dire, jamais comment il s'emploie :
+     * « Haus = maison » ne fait pas deviner « ech ginn heem ». Le ZLS écrit
+     * ces phrases pour cela, et elles sont en CC0 comme le reste du LOD.
+     *
+     * Troisième actif chargé à part, et le plus tardif des trois : seule la
+     * fiche d'un mot en montre, c'est-à-dire seulement après qu'on a touché un
+     * résultat de recherche. Les jeux, le mot du jour et les mots à découvrir
+     * n'en affichent aucune et n'ont pas à analyser 2,6 Mo pour cela.
+     *
+     * Le verrou lui est propre : synchroniser sur l'objet ferait attendre une
+     * recherche pendant que le préchargement analyse le fichier, et le champ
+     * de saisie se figerait le temps d'une frappe.
+     */
+    private var exemples: Map<String, List<String>> = emptyMap()
+    private var exemplesCharges = false
+    private val verrouExemples = Any()
 
     /**
      * Formes pliées que l'application peut proposer d'elle-même, calculées une
@@ -208,6 +229,78 @@ object TranslationDictionary {
             formesDe = emptyMap()
         }
     }
+
+    /**
+     * Charge les phrases d'exemple. Sans effet si elles le sont déjà.
+     *
+     * Publique parce que l'onglet Wierderbuch la lance sur un fil de fond dès
+     * qu'il s'ouvre : l'analyse dure le temps d'un clignement, mais elle
+     * tomberait sinon sur le premier mot touché, c'est-à-dire au moment précis
+     * où la fiche doit s'afficher.
+     */
+    fun chargerExemples(context: Context) {
+        synchronized(verrouExemples) {
+            if (exemplesCharges) return
+            exemplesCharges = true
+
+            try {
+                val contenu = BufferedReader(
+                    InputStreamReader(context.assets.open(ASSET_EXEMPLES))
+                ).use { it.readText() }
+
+                val table = JSONObject(contenu).getJSONObject("exemples")
+                val lues = HashMap<String, List<String>>(table.length())
+
+                val cles = table.keys()
+                while (cles.hasNext()) {
+                    val mot = cles.next()
+                    val phrases = table.getJSONArray(mot)
+                    lues[mot] = (0 until phrases.length()).map { phrases.getString(it) }
+                }
+
+                exemples = lues
+                Log.d(TAG, "${lues.size} mots illustrés")
+            } catch (e: Exception) {
+                // Sans exemples la fiche garde son sens et ses formes : la
+                // section disparaît, rien d'autre ne change.
+                Log.e(TAG, "Actif $ASSET_EXEMPLES illisible: ${e.message}", e)
+                exemples = emptyMap()
+            }
+        }
+    }
+
+    /**
+     * Phrases illustrant un résultat de recherche, au plus deux.
+     *
+     * Le filtre est celui de tout le reste de l'application, à une nuance
+     * près : une phrase est écartée si elle contient une forme mise de côté
+     * **autre que le mot cherché**. Chercher « Kierch » donne donc bien la
+     * phrase du LOD qui l'emploie — c'est une réponse à une question posée,
+     * pas une proposition — mais la fiche de « Mass » ne ramène pas la messe
+     * par la bande.
+     *
+     * C'est [MotsEcartes.estEcarte] et non `phraseEcartee` : ces phrases sont
+     * écrites par un dictionnaire pour illustrer un mot, pas tirées de
+     * dépêches comme celles de Wuertlück. Écarter tout ce que touche un fait
+     * divers priverait « Police » ou « Accident » de leur exemple, alors que
+     * c'est justement l'emploi de ces mots-là qu'il s'agit de montrer.
+     */
+    fun exemples(context: Context, resultat: Resultat): List<String> {
+        chargerExemples(context)
+        val phrases = exemples[resultat.mot] ?: return emptyList()
+        val duMot = (resultat.formes + resultat.mot)
+            .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
+        return phrases.filter { phrase ->
+            decouperEnMots(phrase).none { mot ->
+                AccentTolerantMatcher.normalize(mot) !in duMot &&
+                    MotsEcartes.estEcarte(mot)
+            }
+        }
+    }
+
+    /** Les mots d'une phrase, la ponctuation et les élisions retirées. */
+    fun decouperEnMots(phrase: String): List<String> =
+        phrase.split(Regex("[^\\p{L}]+")).filter { it.isNotEmpty() }
 
     /**
      * Un résultat de recherche : le mot, sa glose, et ses autres formes.

@@ -6658,11 +6658,21 @@ class SettingsActivity : AppCompatActivity() {
             // l'attente se verrait entre la frappe et les résultats.
             TranslationDictionary.charger(activity)
 
+            // Les exemples, eux, partent sur un fil de fond : la fiche est le
+            // seul écran qui en montre, et les charger à son ouverture ferait
+            // attendre 2,6 Mo d'analyse au moment précis où elle doit
+            // apparaître. Le contexte de l'application, jamais le fragment :
+            // le fil survit à l'onglet. Rien à synchroniser au retour — la
+            // table est lue par un accès protégé, et la fiche qui la
+            // demanderait trop tôt attend simplement la fin de l'analyse.
+            val applicatif = activity.applicationContext
+            Thread { TranslationDictionary.chargerExemples(applicatif) }.start()
+
             colonne.addView(TextView(activity).apply {
                 text = "Tapez un mot luxembourgeois ou français : la recherche " +
                         "fonctionne dans les deux sens.\n" +
-                        "Touchez un mot pour ouvrir sa fiche ; appui long pour " +
-                        "le copier."
+                        "Touchez un mot pour ouvrir sa fiche — sens, exemples " +
+                        "et autres formes ; appui long pour le copier."
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.2f)
@@ -6723,8 +6733,9 @@ class SettingsActivity : AppCompatActivity() {
             // C'est aussi ce qui dit à l'utilisateur d'où sort la traduction
             // qu'il lit, et donc jusqu'où il peut lui faire confiance.
             colonne.addView(TextView(activity).apply {
-                text = "Traductions issues du Lëtzebuerger Online Dictionnaire " +
-                        "(lod.lu), Zenter fir d'Lëtzebuerger Sprooch — CC0."
+                text = "Traductions et exemples issus du Lëtzebuerger Online " +
+                        "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
+                        "Sprooch — CC0."
                 textSize = 12f
                 setTextColor(Color.parseColor("#AAAAAA"))
                 setLineSpacing(0f, 1.2f)
@@ -6867,14 +6878,7 @@ class SettingsActivity : AppCompatActivity() {
                 setTextColor(Color.parseColor("#1C1C1C"))
             })
 
-            colonne.addView(TextView(activity).apply {
-                text = "EN FRANÇAIS"
-                textSize = 11f
-                letterSpacing = 0.12f
-                setTypeface(null, Typeface.BOLD)
-                setTextColor(Color.parseColor("#AAAAAA"))
-                setPadding(0, 30, 0, 10)
-            })
+            colonne.addView(titreSection(activity, "EN FRANÇAIS", 30))
 
             // Le générateur assemble les acceptions avec « , » ; rien ne lui
             // interdit d'en produire une qui contienne elle-même une virgule.
@@ -6890,6 +6894,34 @@ class SettingsActivity : AppCompatActivity() {
                 })
             }
 
+            // Les phrases du LOD, après le sens et avant la morphologie : elles
+            // illustrent ce qu'on vient de lire. Une glose dit ce que le mot
+            // veut dire, jamais comment il s'emploie — « Haus = maison » ne
+            // fait pas deviner « ech ginn heem ». Le mot cherché est mis en
+            // gras dans la phrase, comme le LOD le balise lui-même : c'est ce
+            // qui fait lire une illustration plutôt qu'une phrase de plus.
+            //
+            // Un mot sur cinq n'en a pas — noms propres, formes que le ZLS n'a
+            // pas illustrées. La section disparaît alors, plutôt que de poser
+            // un titre sur du vide.
+            val exemples = TranslationDictionary.exemples(activity, resultat)
+            if (exemples.isNotEmpty()) {
+                colonne.addView(titreSection(
+                    activity,
+                    if (exemples.size == 1) "EXEMPLE" else "EXEMPLES",
+                    26
+                ))
+                exemples.forEach { phrase ->
+                    colonne.addView(TextView(activity).apply {
+                        text = phraseIllustree(phrase, resultat)
+                        textSize = 16f
+                        setTextColor(Color.parseColor("#333333"))
+                        setLineSpacing(0f, 1.2f)
+                        setPadding(0, 0, 0, 10)
+                    })
+                }
+            }
+
             // L'une sous l'autre, en pleine largeur : côte à côte, la seconde
             // n'avait la place que d'un nom de domaine, « lod.lu ↗ », qui
             // suppose de savoir déjà ce qu'est le LOD. Le libellé dit
@@ -6901,14 +6933,7 @@ class SettingsActivity : AppCompatActivity() {
             // montre plus « Forschett » et « Forschetten » l'un sous l'autre,
             // la fiche dit qu'ils sont le même mot.
             if (resultat.formes.isNotEmpty()) {
-                colonne.addView(TextView(activity).apply {
-                    text = "AUTRES FORMES"
-                    textSize = 11f
-                    letterSpacing = 0.12f
-                    setTypeface(null, Typeface.BOLD)
-                    setTextColor(Color.parseColor("#AAAAAA"))
-                    setPadding(0, 26, 0, 10)
-                })
+                colonne.addView(titreSection(activity, "AUTRES FORMES", 26))
                 colonne.addView(TextView(activity).apply {
                     // Plafonnées : « sinn » en compte dix-sept, qui pousseraient
                     // les deux boutons hors de l'écran.
@@ -6945,6 +6970,55 @@ class SettingsActivity : AppCompatActivity() {
             })
 
             return ScrollView(activity).apply { addView(colonne) }
+        }
+
+        /**
+         * Intitulé d'une section de la fiche. Les trois se ressemblent au
+         * pixel près ; seul l'espace au-dessus du premier diffère, la fiche
+         * ouvrant sur le mot en 30sp.
+         */
+        private fun titreSection(
+            activity: SettingsActivity,
+            libelle: String,
+            marge: Int
+        ): TextView = TextView(activity).apply {
+            text = libelle
+            textSize = 11f
+            letterSpacing = 0.12f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#AAAAAA"))
+            setPadding(0, marge, 0, 10)
+        }
+
+        /**
+         * La phrase d'exemple, le mot cherché en gras.
+         *
+         * On met en gras toute forme de la famille : la phrase du LOD emploie
+         * le mot fléchi (« déi Blus passt gutt bei deng blo **Aen** »), et
+         * chercher la seule forme affichée n'en surlignerait presque jamais
+         * aucune. Une flexion que le LOD n'a pas glosée n'est pas dans la
+         * famille : la phrase s'affiche alors sans gras, ce qui reste lisible.
+         */
+        private fun phraseIllustree(
+            phrase: String,
+            resultat: TranslationDictionary.Resultat
+        ): CharSequence {
+            val formes = (resultat.formes + resultat.mot)
+                .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
+            val rendu = SpannableString(phrase)
+            var depuis = 0
+            for (mot in TranslationDictionary.decouperEnMots(phrase)) {
+                val debut = phrase.indexOf(mot, depuis)
+                if (debut < 0) continue
+                depuis = debut + mot.length
+                if (AccentTolerantMatcher.normalize(mot) in formes) {
+                    rendu.setSpan(
+                        StyleSpan(Typeface.BOLD), debut, depuis,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+            return rendu
         }
 
         private fun boutonFiche(
