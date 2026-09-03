@@ -179,6 +179,8 @@ screenshot_final.png
 Dictionnaires/cache_hf/
 # Cache des XML du LOD : 180 Mo, retéléchargeables depuis data.public.lu
 Dictionnaires/luxemburgish_data/lod/
+# Cache de Lexique 3.83 : 26 Mo, retéléchargeable depuis lexique.org
+Dictionnaires/french_data/
 RAPPORT_INTEGRATION_LUXEMBOURG.md
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/AccentTolerantMatchingTest.kt.old
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KreyolInputMethodService.kt.old

@@ -2362,11 +2362,13 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 12)
         }
         
-        // Attribution des corpus. Les deux jeux de données sont sous licence
-        // Creative Commons et exigent la citation de leurs auteurs : cette
-        // carte n'est pas décorative, elle remplit l'obligation « BY ».
-        // LuxAlign porte en plus une clause NonCommercial. Détail complet et
-        // références bibliographiques dans Dictionnaires/CORPUS.md.
+        // Attribution des sources. Trois des quatre exigent la citation de
+        // leurs auteurs : cette carte n'est pas décorative, elle remplit
+        // l'obligation « BY ». LuxAlign porte en plus une clause
+        // NonCommercial, et Lexique un partage à l'identique qui porte sur
+        // l'actif français dérivé. Seul le LOD, en CC0, n'impose rien — il est
+        // cité quand même. Détail complet et références bibliographiques dans
+        // Dictionnaires/CORPUS.md.
         val sourcesText = TextView(this).apply {
             text = "Les suggestions de mots sont construites sur deux corpus " +
                     "ouverts de luxembourgeois contemporain :\n\n" +
@@ -2380,7 +2382,12 @@ class SettingsActivity : AppCompatActivity() {
                     "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu) — Zenter fir " +
                     "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
                     "traductions françaises et 85 000 formes que la presse " +
-                    "n'écrit jamais."
+                    "n'écrit jamais.\n\n" +
+                    "🇫🇷 Lexique 3.83 — base lexicale du français de Boris New " +
+                    "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
+                    "Elle apporte les 125 000 formes de la seconde rangée de " +
+                    "suggestions, et évite au correcteur de souligner du " +
+                    "français correct."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)

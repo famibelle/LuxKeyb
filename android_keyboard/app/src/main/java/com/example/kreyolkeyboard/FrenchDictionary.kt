@@ -18,12 +18,29 @@ class FrenchDictionary(private val context: Context) {
         private const val FRENCH_DICT_FILE = "french_simple_dict.json"
         private const val MIN_ACTIVATION_LENGTH = 3
         private const val MAX_FRENCH_SUGGESTIONS = 2  // Maximum 2 suggestions françaises
+        private const val MAX_CACHE_ENTRIES = 1000
     }
     
     // Données du dictionnaire français
     private var frenchWords: List<Pair<String, Int>> = emptyList()
     private var isLoaded = false
-    
+
+    // Fréquence par mot, pour que containsWord() et getWordFrequency() ne
+    // parcourent pas la liste. Le second est appelé une fois par suggestion
+    // retenue, le premier une fois par mot examiné par le correcteur
+    // orthographique système — qui, la locale `fr` étant déclarée, remplace
+    // celui du français. À 125 000 formes, deux balayages linéaires par mot
+    // tapé n'étaient plus tenables : c'est le même défaut que le palier LOD
+    // côté luxembourgeois, et la même correction.
+    private var frequencyByWord: Map<String, Int> = emptyMap()
+
+    // Index des candidats par trois premières lettres. Les suggestions
+    // françaises ne s'activent qu'à partir de MIN_ACTIVATION_LENGTH lettres,
+    // donc ce préfixe existe toujours au moment de la recherche : au lieu de
+    // filtrer les 125 000 formes, on ne regarde que le seau correspondant,
+    // quelques dizaines d'entrées déjà triées par fréquence décroissante.
+    private var prefixIndex: Map<String, List<Pair<String, Int>>> = emptyMap()
+
     // Cache pour optimiser les recherches répétées
     private val suggestionCache = mutableMapOf<String, List<String>>()
     
@@ -53,9 +70,15 @@ class FrenchDictionary(private val context: Context) {
             
             // Trier par fréquence décroissante pour optimiser les suggestions
             frenchWords = loadedWords.sortedByDescending { it.second }
+            // Une seule entrée par graphie : l'actif n'en livre pas de doublon,
+            // mais associateBy laisse passer un doublon éventuel sans exploser.
+            frequencyByWord = frenchWords.associate { it }
+            prefixIndex = frenchWords
+                .filter { it.first.length >= MIN_ACTIVATION_LENGTH }
+                .groupBy { it.first.substring(0, MIN_ACTIVATION_LENGTH) }
             isLoaded = true
-            
-            Log.d(TAG, "✅ Dictionnaire français chargé: ${frenchWords.size} mots")
+
+            Log.d(TAG, "✅ Dictionnaire français chargé: ${frenchWords.size} mots, ${prefixIndex.size} préfixes")
             
         } catch (e: IOException) {
             Log.e(TAG, "❌ Erreur chargement dictionnaire français: ${e.message}", e)
@@ -90,7 +113,12 @@ class FrenchDictionary(private val context: Context) {
         // Recherche dans le dictionnaire
         val suggestions = searchFrenchWords(prefix)
         
-        // Mettre en cache le résultat
+        // Mettre en cache le résultat. Le cache est vidé au-delà d'un millier
+        // d'entrées : il sert à absorber les frappes répétées d'une même
+        // saisie, pas à retenir toute une session — et une clé par préfixe
+        // tapé finirait par peser sur un processus de saisie déjà chargé de
+        // deux dictionnaires.
+        if (suggestionCache.size >= MAX_CACHE_ENTRIES) suggestionCache.clear()
         suggestionCache[cacheKey] = suggestions
         
         Log.d(TAG, "🔵 Suggestions françaises pour '$prefix': $suggestions")
@@ -98,12 +126,19 @@ class FrenchDictionary(private val context: Context) {
     }
     
     /**
-     * Recherche des mots français par préfixe
+     * Recherche des mots français par préfixe, dans le seul seau du préfixe.
+     *
+     * L'ordre est celui d'avant — fréquence décroissante, puis mots courts
+     * préférés à égalité — mais il ne s'applique qu'aux candidats du seau. Le
+     * tri reste donc négligeable là où il portait sur toutes les formes
+     * commençant par ces lettres.
      */
     private fun searchFrenchWords(prefix: String): List<String> {
         val prefixLower = prefix.lowercase()
-        
-        return frenchWords
+        val seau = prefixIndex[prefixLower.substring(0, MIN_ACTIVATION_LENGTH)]
+            ?: return emptyList()
+
+        return seau
             .filter { it.first.startsWith(prefixLower) }
             .sortedWith(compareByDescending<Pair<String, Int>> { it.second } // Fréquence d'abord
                 .thenBy { it.first.length })  // Puis mots courts préférés
@@ -117,8 +152,7 @@ class FrenchDictionary(private val context: Context) {
     fun containsWord(word: String): Boolean {
         if (!isLoaded) return false
         
-        val wordLower = word.lowercase()
-        return frenchWords.any { it.first == wordLower }
+        return frequencyByWord.containsKey(word.lowercase())
     }
     
     /**
@@ -127,8 +161,7 @@ class FrenchDictionary(private val context: Context) {
     fun getWordFrequency(word: String): Int {
         if (!isLoaded) return 0
         
-        val wordLower = word.lowercase()
-        return frenchWords.find { it.first == wordLower }?.second ?: 0
+        return frequencyByWord[word.lowercase()] ?: 0
     }
     
     /**
@@ -171,6 +204,8 @@ class FrenchDictionary(private val context: Context) {
      */
     fun cleanup() {
         frenchWords = emptyList()
+        frequencyByWord = emptyMap()
+        prefixIndex = emptyMap()
         clearCache()
         isLoaded = false
         Log.d(TAG, "Dictionnaire français nettoyé")

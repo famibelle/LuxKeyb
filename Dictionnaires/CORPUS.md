@@ -185,6 +185,60 @@ dernière édition via l'API de data.public.lu — le ZLS republie chaque trimes
 sous un chemin horodaté — et met les deux XML en cache sous
 `Dictionnaires/luxemburgish_data/lod/` (180 Mo, hors dépôt).
 
+## Lexique 3.83 — le français de la seconde rangée
+
+Base lexicale de référence du français, publiée par Boris New et Christophe
+Pallier. Elle n'alimente **que le français** : ni le dictionnaire
+luxembourgeois, ni le modèle n-grammes, ni les jeux, ni le Wierderbuch.
+
+- Site : <http://www.lexique.org>
+- Auteurs : Boris New, Christophe Pallier
+- Licence : **CC BY-SA 4.0** — attribution et partage à l'identique
+- Citation : New, B., Pallier, C., Brysbaert, M., Ferrand, L. (2004).
+  *Lexique 2 : A New French Lexical Database.* Behavior Research Methods,
+  Instruments, & Computers, 36(3), 516-524.
+- Apport : **125 348 formes fléchies** et leur fréquence par million, contre
+  les 662 mots aux fréquences écrites à la main que le projet livrait
+  auparavant, hérités du clavier créole dont il est issu.
+
+### Pourquoi cet actif comptait plus qu'il n'y paraissait
+
+`french_simple_dict.json` sert deux fonctions, et la seconde est la plus
+exposée. Il remplit la seconde rangée de suggestions, à partir de trois lettres
+— visible, mais secondaire. Il alimente surtout `containsWord()`, donc
+`SuggestionEngine.isKnownWord()`, donc la décision du correcteur orthographique
+système de souligner un mot ou non. Or `res/xml/kreyol_spellchecker.xml`
+déclare la locale **`fr`** : le clavier **remplace le correcteur français du
+système**. Avec 662 mots, il soulignait la quasi-totalité du français écrit par
+l'utilisateur, dans toutes ses applications.
+
+C'est pourquoi les formes rares sont conservées au lieu d'être coupées sur un
+seuil de fréquence : un mot rare mais correct ne doit pas être souligné. 92 805
+des 125 348 formes sont au plancher de 1 occurrence par million, et elles ne
+remonteront jamais dans les suggestions — elles servent à ne pas être
+signalées comme des fautes.
+
+### Deux pièges du fichier source
+
+- Les fréquences de Lexique sont données **par entrée (forme, lemme,
+  catégorie)** et non par forme : `est` figure en ADJ, NOM, AUX et VER avec
+  quatre valeurs différentes. Il faut les **sommer** par graphie, sinon la
+  forme la plus fréquente du français hérite du score du point cardinal.
+- Deux registres sont livrés, `freqfilms2` (sous-titres) et `freqlivres`. On
+  additionne les deux, pour la même raison que LuxAlign et LETZ coexistent côté
+  luxembourgeois : `bonjour` vaut 569,88 aux sous-titres contre 50,74 aux
+  livres, un rapport de 11, mais ne garder que le parlé perdrait `cependant` et
+  `notamment`, que les gens écrivent aussi.
+
+### Conséquence sur la licence
+
+CC BY-SA impose le **partage à l'identique de l'œuvre dérivée** :
+`french_simple_dict.json` est donc distribué sous CC BY-SA 4.0, séparément des
+actifs luxembourgeois qui héritent, eux, de la clause NonCommercial de
+LuxAlign. L'attribution figure dans le fichier lui-même (clés `source`,
+`licence`, `attribution`), dans ce document, et dans la carte « Sources » de
+l'application. `FrenchDictAssetTest` échoue si elle disparaît.
+
 ## Corpus retiré
 
 `POTOMITAN/luxembourgish-corpus` (157 tours de parole de conférences de presse

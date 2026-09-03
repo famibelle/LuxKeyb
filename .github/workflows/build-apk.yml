@@ -279,6 +279,31 @@ jobs:
           echo "::error::luxemburgish_translations.json ne porte pas le crédit du LOD."
           exit 1
         fi
+        # Le dictionnaire français n'est pas régénéré par CI : Lexique 3.83
+        # est une version figée, et la retélécharger à chaque exécution
+        # ajouterait 26 Mo et une dépendance à lexique.org pour un fichier qui
+        # ne change pas. Il est donc suivi en git — et c'est précisément ce qui
+        # rend une régression silencieuse possible, comme les 662 mots aux
+        # fréquences inventées qu'il a portés pendant toute la vie du projet.
+        #
+        # L'enjeu n'est pas la seconde rangée de suggestions mais le correcteur
+        # orthographique : kreyol_spellchecker.xml déclare la locale `fr`, donc
+        # le clavier remplace le correcteur français du système. Trop maigre,
+        # il souligne du français correct dans toutes les applications.
+        FR_COUNT=$(jq '.words | length' "$A/french_simple_dict.json")
+        echo "🇫🇷 Formes françaises : $FR_COUNT"
+        if [ "$FR_COUNT" -lt 60000 ]; then
+          echo "::error::Seulement $FR_COUNT formes françaises : le correcteur soulignerait du français correct. Lancez Dictionnaires/generate_french_dict.py"
+          exit 1
+        fi
+
+        # Lexique est en CC BY-SA 4.0 : l'attribution est une obligation de
+        # licence, et le partage à l'identique porte sur l'actif dérivé.
+        if ! jq -e '.attribution | test("Lexique")' "$A/french_simple_dict.json" > /dev/null; then
+          echo "::error::french_simple_dict.json ne porte pas l'attribution de Lexique (CC BY-SA 4.0)."
+          exit 1
+        fi
+
 
         # LuxAlign impose l'attribution de ses auteurs (CC BY-NC 4.0), LETZ
         # aussi (CC BY 4.0). Le fichier qui porte cette obligation est suivi
