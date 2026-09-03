@@ -57,12 +57,22 @@ def separer_puce(brut):
     Le CHANGELOG ouvre presque toutes ses puces par un segment en gras qui
     résume le point ; c'est lui qui sert de titre à la carte. Une puce sans
     gras initial n'a pas de titre, et son texte est rendu tel quel.
+
+    Le gras n'est pas toujours une phrase entière : « **L'appui long copie le
+    mot**, sans passer par la fiche » laisse un corps qui commence par une
+    virgule, et la carte affichait « , sans passer par la fiche ». La
+    ponctuation de liaison est donc retirée et la phrase remise sur ses pieds —
+    seulement quand elle commence par une lettre, pour ne pas capitaliser un
+    guillemet ou un nom de code.
     """
     m = re.match(r'^\*\*(.+?)\*\*[  ]*(.*)$', brut, re.S)
     if not m:
         return None, en_html(brut.strip())
     titre = m.group(1).strip().rstrip(':').rstrip('.')
-    return en_html(titre), en_html(m.group(2).strip())
+    corps = m.group(2).strip().lstrip(',;:').strip()
+    if corps[:1].isalpha():
+        corps = corps[0].upper() + corps[1:]
+    return en_html(titre), en_html(corps)
 
 
 def lire_versions(lignes):
