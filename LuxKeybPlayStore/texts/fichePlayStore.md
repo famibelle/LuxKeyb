@@ -58,13 +58,17 @@ Les trois diacritiques qui portent la langue — é, ä et ë — ont chacune le
 
 🧠 IL VOUS SOUFFLE LES MOTS
 
-• 8 792 mots luxembourgeois, tirés d'un corpus contemporain
-• 23 169 contextes de prédiction : après un espace, le clavier propose la suite probable d'après les deux derniers mots, pas seulement le dernier
+• 123 265 formes luxembourgeoises reconnues à la frappe, du corpus contemporain et du dictionnaire officiel LOD
+• 26 172 contextes de prédiction : après un espace, le clavier propose la suite probable d'après les deux derniers mots, pas seulement le dernier
 • Les mots que vous employez souvent remontent d'eux-mêmes
 
 🇱🇺 🇫🇷 DEUX LANGUES, AUCUN RÉGLAGE
 
-Les suggestions luxembourgeoises passent en premier, le français prend le relais pour les emprunts. « ech hunn eng réunion muer » s'écrit sans changer de clavier.
+Le luxembourgeois passe en premier, le français prend le relais sur une seconde rangée. « ech hunn eng réunion muer » s'écrit sans changer de clavier.
+
+📖 UN DICTIONNAIRE DANS L'APPLICATION
+
+L'onglet Wierderbuch traduit 88 852 mots dans les deux sens, luxembourgeois et français, avec des phrases d'exemple du dictionnaire officiel. Hors ligne, comme le reste.
 
 ✍️ IL PARDONNE LES FAUTES DE FRAPPE
 
@@ -76,11 +80,13 @@ Un correcteur orthographique système est fourni : une fois activé, vos mots lu
 
 🎮 IL VOUS FAIT PROGRESSER
 
-Chaque mot employé fait avancer votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙, selon la part du dictionnaire que vous avez déjà utilisée. Trois jeux de vocabulaire complètent le parcours :
+Chaque mot employé fait monter votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙. Cinq jeux complètent le parcours :
 
 • Wuertsich — les mots mêlés
-• Wuertmix — reconstituer un mot dont les lettres sont mélangées
+• Wuertmix — remettre les lettres d'un mot dans l'ordre
 • Wuertriet — deviner un mot de cinq lettres en six essais
+• Wuertlück — retrouver le mot qui manque dans une phrase
+• Zuelwuert — écrire les nombres en toutes lettres
 
 🔒 IL NE SAIT RIEN DE VOUS
 
@@ -88,44 +94,49 @@ Chaque mot employé fait avancer votre niveau, d'Ufänker 🌍 à Sproochenmeesc
 • Aucune collecte, aucun compte, aucune publicité
 • Seuls les mots déjà présents dans le dictionnaire sont comptés pour la progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et ne sont donc jamais enregistrés
 • Le clavier se désactive de lui-même dans les champs de mot de passe
-• Code source ouvert et auditable, licence MIT
+• Code source ouvert et auditable sous licence MIT ; les dictionnaires gardent la licence de leurs corpus
 
 📱 COMPATIBILITÉ
 
-• Android 5.0 et plus récent, environ 3 Mo
+• Android 5.0 et plus récent, moins de 8 Mo
 • Thème clair ou sombre, au choix ou d'après le réglage du téléphone
 • Fonctionne dans toutes les applications : WhatsApp, SMS, e-mail, réseaux sociaux
 • Installation guidée en trois étapes, avec un clavier d'essai dans l'application
-• Android affiche au passage l'avertissement générique montré pour tout clavier tiers : il est normal, et l'onglet Guide explique pourquoi ce clavier-ci ne peut rien envoyer nulle part
+• Android affiche l'avertissement générique de tout clavier tiers : c'est normal, l'onglet Guide explique pourquoi celui-ci ne peut rien envoyer nulle part
 
 🙋 CE QU'IL NE FAIT PAS ENCORE
 
-Pas de saisie glissée, pas de dictée vocale. Ces manques sont connus et en tête de la liste des choses à faire.
+Pas de saisie glissée, pas de dictée vocale. Ces manques sont connus et prioritaires.
 
 🎯 POUR QUI ?
 
 • Celles et ceux qui écrivent en lëtzebuergesch tous les jours
-• Les résidents qui apprennent la langue
-• Les familles qui la transmettent aux enfants
-• Les élèves, et les candidats aux cours de langue
+• Les résidents qui apprennent la langue et les familles qui la transmettent
 • Tous ceux qui en ont assez de corriger leur langue à la main
 
 📈 UN DICTIONNAIRE QUI BOUGE
 
-Le dictionnaire est régénéré à chaque version à partir d'un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste de mots figée.
+Le dictionnaire est régénéré à chaque version à partir d'un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste figée.
 
-Un mot manque, une suggestion tombe à côté ? Signalez-le, c'est ainsi que le dictionnaire progresse : github.com/famibelle/LuxKeyb
+Un mot manque, une suggestion tombe à côté ? Signalez-le : github.com/famibelle/LuxKeyb
 
 🗣️ Potomitan™
 « Mir wëlle bleiwe wat mir sinn »
 ```
 
-3 754 caractères sur 4 000 (3 771 si la Play Console compte en unités
-UTF-16, ce que fait son compteur : les drapeaux et quelques émojis valent
-2 chacun). Il reste donc moins de 250 caractères de marge — tout ajout
-suppose d'en retirer autant.
+3937 unités UTF-16 sur 4 000 — c'est ainsi que compte la Play Console,
+les drapeaux et quelques émojis valant 2 chacun. Il reste **63 caractères
+de marge** : tout ajout suppose d'en retirer autant.
 
-Trois choses sont **délibérément absentes** de ce texte, contrairement à la
+Les chiffres cités sont ceux de la version livrée et sont vérifiables dans les
+actifs : `luxemburgish_dict.json` + `luxemburgish_lod_forms.json` pour les
+123 265 formes, `luxemburgish_ngrams.json` pour les 26 172 contextes,
+`luxemburgish_translations.json` pour les 88 852 mots du Wierderbuch,
+`french_simple_dict.json` pour le français. **Les relire à chaque envoi** : ils
+ont été faux pendant longtemps, la fiche annonçant encore 8 792 mots et 3 Mo
+quand l'application en livrait cinq fois plus.
+
+Quatre choses sont **délibérément absentes** de ce texte, contrairement à la
 fiche du Klavyé Kréyòl dont elle reprend la structure :
 
 - **aucune citation de presse** — les mentions Canal 10 / Guadeloupe la 1ère
@@ -134,29 +145,27 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
   agrégé et non une anthologie d'auteurs identifiés ;
 - **aucune promesse de saisie glissée ni de dictée vocale** : la section
   « ce qu'il ne fait pas encore » évite les avis 1 étoile de déception, qui
-  pèsent lourd sur une fiche à faible volume. Le thème sombre y figurait
-  jusqu'à la 10.13.0 ; il est livré depuis la 10.14.0 et est passé du côté
-  des arguments.
+  pèsent lourd sur une fiche à faible volume ;
+- **aucun « MIT » sans qualificatif.** Le code l'est, les dictionnaires non :
+  ils dérivent de corpus en CC BY-NC et CC BY-SA. Voir `NOTICE.md`.
 
 ## Nouveautés de cette version
 
-*500 caractères maximum. Champ « Nouveautés » de la version 10.14.0.*
+*500 caractères maximum. Champ « Nouveautés » de la version 11.3.0.*
 
 ```
-🌗 Le clavier se met en clair ou en sombre : « comme le téléphone », « toujours clair » ou « toujours sombre », dans les réglages du clavier.
+📖 Le français du clavier passe de 662 à 125 348 mots : la seconde rangée de suggestions devient enfin utile, et le correcteur cesse de souligner en rouge des mots français corrects.
 
-Le drapeau ne change pas au passage : le rouge et le bleu ciel restent les mêmes dans les deux thèmes, seul le blanc des lettres passe en anthracite.
+⌨️ Un bouton ramène au clavier luxembourgeois quand un autre clavier a pris la main.
 
-📐 Le clavier tient enfin dans l'écran en mode paysage, suggestions comprises.
+🔗 « Voir sur le dictionnaire officiel » ouvre la fiche du mot sur lod.lu.
 ```
 
-370 caractères. Pour une **première** publication, ce champ n'est pas affiché
-aux nouveaux visiteurs : le garder quand même, il devient visible dès la mise
-à jour suivante.
-
-Le texte de la 10.9.5 — palette du drapeau, tons de peau des emojis — a servi
-de brouillon à celui-ci ; il est conservé dans l'historique git de ce fichier
-si la fiche doit être remplie pour une version antérieure.
+344 unités sur 500. Ce champ n'est pas affiché aux nouveaux visiteurs
+d'une première publication, mais il l'est à chaque mise à jour — et
+l'application étant déjà en test fermé, il est lu par les testeurs dès
+maintenant. Les textes des versions antérieures sont dans l'historique git de
+ce fichier.
 
 ---
 
@@ -261,13 +270,35 @@ Console : il est là pour l'impression, adapté du flyer créole.
 
 ---
 
-## À régler avant le premier envoi
+## À régler avant le passage en production
 
-1. **Les 9 captures du guide intégré (`res/drawable-nodpi/guide_screenshot_*.png`)
-   montrent encore le clavier créole.** Elles ne partent pas au Store, mais un
-   testeur qui ouvre l'onglet Guide les verra, et elles peuvent se retrouver
-   dans une capture d'écran de la fiche par inadvertance.
+L'application est **déjà publiée en test fermé**. Ce qui suit conditionne le
+passage en production, pas un premier envoi.
 
-Vérifier aussi que l'AAB envoyé est bien signé avec la clé de release : le
+1. **Douze testeurs pendant quatorze jours consécutifs.** C'est une exigence de
+   Google, pas un choix : sans elle la Console refuse la promotion. État au
+   2026-09-03 : **9 sur 12** (`docs/stats/testeurs.json`, tenu à la main, il
+   n'existe pas d'API publique pour ce chiffre). C'est le seul point dont le
+   délai ne dépend pas de nous.
+
+2. **Écrire à <ai@rtl.lu> avant la publication ouverte.** `luxemburgish_cloze.json`
+   redistribue 1 600 phrases entières de RTL.lu, mot pour mot : ce n'est plus une
+   statistique agrégée mais de la republication de contenu. CC BY-NC l'autorise
+   pour un usage non commercial avec attribution visible — les deux conditions
+   sont remplies — mais c'est le seul point où un tiers peut dire non, et les
+   auteurs indiquent eux-mêmes ce contact. Voir `NOTICE.md`.
+
+3. **Les captures du guide intégré** (`res/drawable-nodpi/guide_screenshot_*.png`)
+   doivent montrer le clavier luxembourgeois. Elles ne partent pas au Store, mais
+   un testeur qui ouvre l'onglet Guide les voit.
+
+4. **Les six captures du Store** sont refaites à chaque changement d'interface.
+   Elles doivent montrer la version envoyée : barre à quatre onglets, Wierderbuch,
+   cinq jeux.
+
+5. **Relire les chiffres de la description** contre les actifs livrés, voir plus
+   haut.
+
+Vérifier enfin que l'AAB envoyé est bien signé avec la clé de release : le
 build tombe en signature debug avec un simple `println` si un secret manque
 (voir le journal du job CI, pas seulement son statut vert).

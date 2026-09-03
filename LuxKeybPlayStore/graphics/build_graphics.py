@@ -25,7 +25,12 @@ moins de 8 Mo. Les six captures font 1080x1920, donc au-dessus du 1080x1080
 exigé pour que l'application soit promouvable — il en faut au moins quatre.
 
 Les captures sources sont natives 1080 px de large (recapturées sur émulateur
-1080x2340 le 2026-08-25, sous la 10.14.0) : rien n'est agrandi ici.
+1080x2340 le 2026-09-03, sous la 11.3.0) : rien n'est agrandi ici. Les trois
+captures de clavier sont prises dans Messages et recadrées sur champ de saisie
++ barre de suggestions + clavier ; les trois autres sont des écrans entiers de
+l'application. À refaire à chaque changement visible : celles d'août
+annonçaient encore sept onglets, « 8792 mots » et une rangée française qui ne
+propose plus les mêmes mots.
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -74,9 +79,9 @@ SPECS = [
     ("Captures d'écran pour téléphone 3", "lux_niveaux.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("Captures d'écran pour téléphone 4", "lux_wuertsich.png", None, "Jeux",
-     "Trois jeux pour élargir son vocabulaire",
-     "Wuertsich, Wuertmix et Wuertriet, tirés du dictionnaire du clavier."),
+    ("Captures d'écran pour téléphone 4", "lux_spiller.png", None, "Jeux",
+     "Cinq jeux pour élargir son vocabulaire",
+     "Quatre tirent leurs mots du dictionnaire du clavier ; le cinquième porte sur l'écriture des nombres."),
     ("Captures d'écran pour téléphone 5", "lux_onboarding.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),

@@ -25,6 +25,11 @@ C'est un acte de transmission, un hommage à la langue, une technologie au servi
 ![Android](https://img.shields.io/badge/Android-5.0+-green?style=for-the-badge&logo=android)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
+> Le **code** est sous licence MIT ([`LICENSE`](LICENSE)). Les **dictionnaires**
+> livrés avec l'application ne le sont pas : ce sont des œuvres dérivées de
+> corpus tiers, en CC BY-NC, CC BY-SA et CC0 selon la source. Voir
+> [`NOTICE.md`](NOTICE.md).
+
 
 ## 📱 Aperçu
 
