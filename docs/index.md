@@ -71,7 +71,7 @@ renvoie vers Google Play. C'est la seule différence, et
   <summary>Installer sans passer par Google Play</summary>
   <p>C'est possible, en installant le fichier à la main :
   <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
-  Android 5.0 ou plus récent · environ 6,6 Mo · aucune permission réseau.</p>
+  Android 5.0 ou plus récent · environ 7 Mo · aucune permission réseau.</p>
 </details>
 
 ## Une fois installée, il se passe quoi ?
@@ -309,7 +309,7 @@ vous parlez, le clavier écrit.
 
 La reconnaissance tourne **entièrement sur le téléphone** — aucun son n'est
 envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
-contrepartie, elle pèse 38 Mo au lieu de 6,6, et sa précision n'est pas encore
+contrepartie, elle pèse 38 Mo au lieu de 7, et sa précision n'est pas encore
 mesurée : c'est justement ce que ces essais servent à établir.
 
 <p style="margin:22px 0;">

@@ -39,7 +39,7 @@ marché**. Ce qu'il ne fait pas, c'est traiter le lëtzebuergesch comme une lang
 | Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 |
 | Disposition | **QWERTZ luxembourgeois**, celle des claviers physiques du pays | QWERTZ de la locale choisie | Allemand ou français ; disposition lb avec iOS 27 |
 | Touches diacritiques | **`é` `ä` `ë` et l'apostrophe ont leur propre touche** | Appui long sur la voyelle | Appui long sur la voyelle |
-| Dictionnaire | **38 410 mots**, corpus luxembourgeois public et vérifiable | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
+| Dictionnaire | **123 265 formes**, corpus public et dictionnaire officiel, l'un et l'autre vérifiables | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
 | Prédiction du mot suivant | **Oui**, 26 172 contextes (bigrammes et trigrammes) | Oui, réseaux de neurones et apprentissage fédéré | Oui, modèle embarqué |
 | Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui |
 | Écriture sans diacritiques | **Oui**, `Letzebuergesch` retrouve `Lëtzebuergesch` | — | — |
