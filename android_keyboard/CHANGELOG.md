@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.5.0] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Le clavier propose plus souvent le mot suivant, et se tait moins.** Les mots
+  d'une seule lettre — `d'` de « d'Leit », `a`, `e` — étaient absents du
+  dictionnaire : le programme qui le fabrique les jetait. Or `d'` est le mot le
+  plus fréquent de la langue. Il est maintenant connu, comme les autres : après
+  lui, le clavier sait de nouveau quoi proposer.
+- Les prédictions passent de 17,1 % à **20,8 %** de bonnes réponses en trois
+  propositions, mesurées sur des phrases que le dictionnaire n'a jamais vues.
+  Et la barre de suggestions reste vide **12 % du temps au lieu de 16 %**.
+
 ## [11.4.1] - 2026-09-04
 
 ### 🐛 Corrigé
