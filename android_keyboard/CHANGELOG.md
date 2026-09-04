@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.4.1] - 2026-09-04
+
+### 🐛 Corrigé
+
+- **Écrire un mot français ne fait plus apparaître de mots luxembourgeois sans
+  rapport.** En tapant « déchet », le clavier proposait « Bechet », « Deche » et
+  « Dechen » avant le bon mot : il cherchait à corriger une faute là où il n'y en
+  avait pas. Ces propositions disparaissent, et le mot juste passe en tête.
+
+### 🎨 Amélioré
+
+- **La frappe redevient instantanée dans ce cas.** La recherche de correction
+  parcourait tout le dictionnaire luxembourgeois : mesuré sur un téléphone
+  d'entrée de gamme, la dernière lettre de « déchet » prenait 914 ms, contre
+  50 ms maintenant.
+
 ## [11.4.0] - 2026-09-03
 
 ### 🎨 Amélioré
