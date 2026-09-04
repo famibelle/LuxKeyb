@@ -711,11 +711,20 @@
   "octets_ngrams": 5387581
  },
  "prediction": {
-  "jeu": "ParaLux",
+  "phrases": 10038,
+  "evenements": 135343,
+  "couverture_lexicale": 93.6,
+  "contexte_reconnu": 87.8,
+  "top3": 18.1,
+  "jeu": "ZLS Iwwersetzungskorpus (inédits)",
+  "recouvrement_entrainement": 6.84
+ },
+ "prediction_paralux": {
   "phrases": 312,
   "evenements": 2703,
   "couverture_lexicale": 94.5,
   "contexte_reconnu": 87.6,
-  "top3": 20.8
+  "top3": 20.8,
+  "jeu": "ParaLux"
  }
 }

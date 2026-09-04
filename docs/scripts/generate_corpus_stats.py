@@ -236,23 +236,62 @@ def main():
     # et le top-3 d'une vingtaine de points, pour une régression qui n'existe
     # pas : l'évaluation se fait donc à casse repliée, des deux côtés.
     formes_dico = {mot.lower() for mot, _ in dico}
+
+    def evaluer(phrases):
+        touches = bons = evenements = 0
+        mots_vus = couverts = 0
+        for phrase in sorted(phrases):
+            m = decouper(phrase)
+            for mot in m:
+                mots_vus += 1
+                if mot in formes_dico:
+                    couverts += 1
+            for i in range(1, len(m)):
+                evenements += 1
+                candidats = ngrams.get(f"{m[i - 2]} {m[i - 1]}") if i >= 2 else None
+                if candidats is None:
+                    candidats = ngrams.get(m[i - 1])
+                if candidats:
+                    touches += 1
+                    if m[i] in [c["word"].lower() for c in candidats[:3]]:
+                        bons += 1
+        return {
+            "phrases": len(phrases),
+            "evenements": evenements,
+            "couverture_lexicale": round(100 * couverts / max(mots_vus, 1), 1),
+            "contexte_reconnu": round(100 * touches / max(evenements, 1), 1),
+            "top3": round(100 * bons / max(evenements, 1), 1),
+        }
+
+    # Jeu principal : le corpus de traduction du ZLS, dont on retire les
+    # segments déjà vus à l'entraînement. Cinquante fois plus d'événements que
+    # ParaLux, en CC0, et d'un mélange de sources différent (Chambre, presse,
+    # LOD). ParaLux reste mesuré à côté : deux témoins indépendants qui
+    # s'accordent valent mieux qu'un seul, et l'écart entre eux dit quelque
+    # chose — ParaLux partage la source RTL de LuxAlign et flatte donc un peu.
+    #
+    # Ce corpus n'est **pas** à l'entraînement, et c'est ce qui lui donne sa
+    # valeur : voir la note en tête de `CORPUS_SOURCES` dans
+    # `Dictionnaires/LuxembourgishComplet.py`.
+    zls_mesure = None
+    try:
+        sys.path.insert(0, str(RACINE / "Dictionnaires"))
+        import zls_source
+        # `union` réunit déjà les phrases des deux corpus d'entraînement,
+        # dédupliquées : c'est exactement ce dont le filtre de recouvrement a
+        # besoin.
+        phrases_entrainement = union
+        inedits = zls_source.segments_inedits(phrases_entrainement)
+        zls_mesure = evaluer({s["lb"] for s in inedits})
+        zls_mesure["jeu"] = "ZLS Iwwersetzungskorpus (inédits)"
+        zls_mesure["recouvrement_entrainement"] = round(
+            100 * (1 - len(inedits) / max(len(zls_source.segments()), 1)), 2)
+    except Exception as exc:  # noqa: BLE001 — le jeu principal ne doit pas casser la CI
+        print(f"  ⚠️ corpus ZLS indisponible pour l'évaluation : {exc}")
+
+    paralux = evaluer(phrases_eval)
     touches = bons = evenements = 0
     mots_vus = couverts = 0
-    for phrase in sorted(phrases_eval):
-        m = decouper(phrase)
-        for mot in m:
-            mots_vus += 1
-            if mot in formes_dico:
-                couverts += 1
-        for i in range(1, len(m)):
-            evenements += 1
-            candidats = ngrams.get(f"{m[i - 2]} {m[i - 1]}") if i >= 2 else None
-            if candidats is None:
-                candidats = ngrams.get(m[i - 1])
-            if candidats:
-                touches += 1
-                if m[i] in [c["word"].lower() for c in candidats[:3]]:
-                    bons += 1
 
     resultat = {
         "genere_le": date.today().isoformat(),
@@ -287,14 +326,9 @@ def main():
             "octets_dictionnaire": (ASSETS / "luxemburgish_dict.json").stat().st_size,
             "octets_ngrams": (ASSETS / "luxemburgish_ngrams.json").stat().st_size,
         },
-        "prediction": {
-            "jeu": "ParaLux",
-            "phrases": len(phrases_eval),
-            "evenements": evenements,
-            "couverture_lexicale": round(100 * couverts / max(mots_vus, 1), 1),
-            "contexte_reconnu": round(100 * touches / max(evenements, 1), 1),
-            "top3": round(100 * bons / max(evenements, 1), 1),
-        },
+        "prediction": dict(zls_mesure or paralux,
+                           **({} if zls_mesure is None else {})),
+        "prediction_paralux": dict(paralux, jeu="ParaLux"),
     }
 
     SORTIE.parent.mkdir(parents=True, exist_ok=True)

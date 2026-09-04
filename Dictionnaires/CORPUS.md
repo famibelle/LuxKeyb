@@ -239,6 +239,57 @@ LuxAlign. L'attribution figure dans le fichier lui-même (clés `source`,
 `licence`, `attribution`), dans ce document, et dans la carte « Sources » de
 l'application. `FrenchDictAssetTest` échoue si elle disparaît.
 
+## Iwwersetzungskorpus du ZLS — jeu d'évaluation, pas corpus
+
+Corpus de traduction parallèle publié par le **Zenter fir d'Lëtzebuerger
+Sprooch** (Tech-in-GOV 2025) : 10 807 segments, ~153 600 mots luxembourgeois
+traduits par des professionnels en français, allemand et anglais, à partir de
+sources publiques (Chambre, presse, LOD) et **orthographiquement
+standardisés**.
+
+- Portail : <https://data.public.lu/fr/datasets/meisproochegen-iwwersetzungskorpus-fir-dletzebuergescht/>
+- Éditeur : Zenter fir d'Lëtzebuerger Sprooch
+- Licence : **CC0 1.0** — domaine public, aucune obligation. Le ZLS est crédité
+  quand même, comme pour le LOD.
+- Accès : `Dictionnaires/zls_source.py`, qui demande à l'API de data.public.lu
+  la ressource la plus récente et met l'archive en cache hors du dépôt.
+
+### Pourquoi il n'entre pas dans le dictionnaire
+
+Il le pourrait, et cela a été mesuré le 2026-09-04. L'ajouter à l'entraînement
+apporte 1 719 formes et 1 099 contextes, mais sur ParaLux — le seul jeu
+indépendant des deux — le top-3 passe de 20,8 % à 20,9 % et la couverture de
+94,5 % à 94,7 % : trois événements sur 2 703, soit du bruit. Les formes gagnées
+sont thématiques (`Kryptowärung`, `Palliativmedezin`, `Atomprogramm`) ou des
+noms propres, 66 % capitalisées, et 1 189 des 1 719 n'apparaissent que trois
+fois dans 153 000 mots.
+
+En le gardant dehors, on obtient en revanche **le seul grand jeu inédit du
+projet** : 6,84 % de recouvrement avec LuxAlign + LETZ, donc 10 038 segments et
+**135 343 événements de frappe** après filtrage — contre 312 phrases et 2 703
+événements pour ParaLux. Cinquante fois plus de matière, soit ±0,1 point de
+bruit statistique au lieu de ±0,8.
+
+L'échange serait mauvais : quelques formes thématiques contre l'instrument qui
+mesure tout le reste.
+
+### Ce qu'il mesure
+
+Les deux jeux sont évalués côte à côte par `docs/scripts/generate_corpus_stats.py` :
+
+| | ParaLux | ZLS |
+|---|---|---|
+| phrases inédites | 312 | 10 038 |
+| événements | 2 703 | 135 343 |
+| couverture lexicale | 94,5 % | 93,6 % |
+| contexte reconnu | 87,6 % | 87,8 % |
+| top-3 | 20,8 % | 18,1 % |
+
+Ils s'accordent à moins d'un point sur la couverture et le contexte, ce qui les
+valide mutuellement. L'écart de 2,7 points sur le top-3 va dans le sens
+attendu : ParaLux partage la source RTL.lu et le registre de LuxAlign, il
+flatte légèrement. **Publier le chiffre ZLS**, garder ParaLux comme témoin.
+
 ## Corpus retiré
 
 `POTOMITAN/luxembourgish-corpus` (157 tours de parole de conférences de presse
