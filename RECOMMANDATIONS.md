@@ -62,7 +62,34 @@ passe normalisée puis la directe. Trois leviers, par rendement décroissant :
 3. **Relever le seuil de déclenchement de 3 à 4 lettres.** Sous quatre lettres,
    une distance de 2 rapproche presque n'importe quoi.
 
-### 2.2 L'allemand, deuxième langue de la seconde rangée
+### 2.2 L'allemand, deuxième langue de la seconde rangée — le poste le plus lourd
+
+**Mesuré le 2026-09-04 sur le corpus du ZLS**, dont les colonnes `lb`, `fr` et
+`de` sont des traductions professionnelles du même texte — les trois langues
+sont donc jugées sur un contenu comparable, ce qu'aucune autre source ne
+permet. Sur 10 068 segments inédits (`docs/scripts/bench_qualite.py`) :
+
+| | soulignement abusif | correction indue |
+|---|---|---|
+| luxembourgeois | 2,9 % | 4,9 % |
+| français | **1,2 %** | **1,5 %** |
+| **allemand** | **37,7 %** | **38,7 %** |
+
+Pour quelqu'un qui écrit en allemand — une des trois langues officielles du
+pays — le clavier **conteste plus d'un mot sur trois et propose d'en corriger
+autant**. Ce n'est pas une lacune, c'est une hostilité active.
+
+Le français, lui, est désormais la langue la mieux servie, devant le
+luxembourgeois : c'est Lexique et le filtre de Bloom qui font la différence.
+Le même chemin s'applique tel quel à l'allemand.
+
+La latence le confirme par une seconde voie, mesurée sur un Galaxy A21s : p95
+de **287 ms** pour l'allemand contre 68 à 103 ms pour le luxembourgeois et le
+français, parce que l'allemand déclenche le repli de correction comme n'importe
+quel mot inconnu.
+
+#### Contraintes connues d'avance
+
 
 Mesuré sur les 158 tours des conférences de presse du gouvernement, avec le
 découpage réel du moteur : **26,7 % des phrases avaient au moins un mot
