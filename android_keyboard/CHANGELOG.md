@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.5.1] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Plus d'attente quand vous écrivez un mot que le clavier ne connaît pas.**
+  Un mot allemand, un nom propre, un mot composé : le clavier cherchait alors
+  une correction en parcourant tout son dictionnaire, et il y passait près
+  d'une seconde sur un téléphone d'entrée de gamme. C'est désormais cinq fois
+  plus rapide, et les propositions sont les mêmes.
+
 ## [11.5.0] - 2026-09-04
 
 ### 🎨 Amélioré
