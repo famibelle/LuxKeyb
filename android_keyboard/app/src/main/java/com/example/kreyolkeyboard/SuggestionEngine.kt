@@ -402,6 +402,12 @@ class SuggestionEngine(private val context: Context) {
     // consonne). Elles n'entrent pas dans `dictionary`, donc ni dans la
     // complétion ni dans les corrections offertes.
     private var extraKnownForms: Set<String> = emptySet()
+
+    // Filtre de Bloom de toutes les formes reconnues, repliées. Remplace les
+    // deux ensembles ci-dessus quand l'actif le fournit.
+    private var bloomFormes: ByteArray = ByteArray(0)
+    private var bloomBits: Long = 0
+    private var bloomHachages: Int = 0
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
 
@@ -902,9 +908,14 @@ class SuggestionEngine(private val context: Context) {
      * souligné comme faute par le correcteur orthographique système.
      */
     fun isKnownWord(word: String): Boolean {
-        if (isWordKnown(word, normalizedWordSet)) return true
-        // Second palier : correct, mais jamais proposé. Voir [extraKnownForms].
-        if (extraKnownForms.contains(AccentTolerantMatcher.normalize(word))) return true
+        if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
+        val replie = AccentTolerantMatcher.normalize(word)
+        if (bloomFormes.isNotEmpty()) {
+            if (BloomFilter.contient(replie, bloomFormes, bloomBits, bloomHachages)) return true
+        } else {
+            if (isWordKnown(word, normalizedWordSet)) return true
+            if (extraKnownForms.contains(replie)) return true
+        }
         return ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
     }
 
@@ -954,11 +965,24 @@ class SuggestionEngine(private val context: Context) {
             val corpusWords = loadedDictionary.sortedByDescending { it.second }
             val lodForms = loadLodForms()
 
-            dictionary = corpusWords + lodForms.first.map { Pair(it, LOD_FREQUENCY) }
+            dictionary = corpusWords + lodForms.proposables.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
-            normalizedWordSet = normalizedWords.toHashSet()
-            extraKnownForms = lodForms.second.mapTo(HashSet(lodForms.second.size)) {
-                AccentTolerantMatcher.normalize(it)
+            // `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
+            // (26 000 chaînes qui n'existaient que pour elle) sont remplacés
+            // par un filtre de Bloom livré avec l'actif : 171 Ko contre
+            // plusieurs Mo. Voir [BloomFilter] pour pourquoi l'approximation
+            // est acceptable ici et seulement ici.
+            bloomFormes = lodForms.bloom
+            bloomBits = lodForms.bits
+            bloomHachages = lodForms.hachages
+            if (bloomFormes.isEmpty()) {
+                // Filtre absent : on retombe sur l'ensemble exact plutôt que
+                // de ne plus rien reconnaître et de tout souligner.
+                Log.w(TAG, "Filtre de reconnaissance absent : repli sur l'ensemble complet")
+                normalizedWordSet = normalizedWords.toHashSet()
+                extraKnownForms = lodForms.connuesSeules.mapTo(
+                    HashSet(lodForms.connuesSeules.size)
+                ) { AccentTolerantMatcher.normalize(it) }
             }
 
             withContext(Dispatchers.Main) {
@@ -969,8 +993,8 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Dictionnaire chargé: ${corpusWords.size} mots du corpus "
-                    + "+ ${lodForms.first.size} formes LOD proposables "
-                    + "+ ${lodForms.second.size} connues du seul correcteur")
+                    + "+ ${lodForms.proposables.size} formes LOD proposables "
+                    + "+ ${lodForms.connuesSeules.size} connues du seul correcteur")
 
         } catch (e: Exception) {
             // Pas seulement IOException : un format inattendu (ex. objet {mot: fréquence}
@@ -988,16 +1012,31 @@ class SuggestionEngine(private val context: Context) {
      * la couverture du corpus, comme avant. On journalise et on continue,
      * plutôt que de laisser une exception vider le dictionnaire entier.
      */
-    private fun loadLodForms(): Pair<List<String>, List<String>> {
+    /** Formes proposables, formes connues du seul correcteur, et leur filtre. */
+    private data class FormesLod(
+        val proposables: List<String>,
+        val connuesSeules: List<String>,
+        val bloom: ByteArray = ByteArray(0),
+        val bits: Long = 0,
+        val hachages: Int = 0
+    )
+
+    private fun loadLodForms(): FormesLod {
         return try {
             val jsonString = context.assets.open(LOD_FORMS_ASSET)
                 .bufferedReader().use { it.readText() }
             val racine = JSONObject(jsonString)
-            Pair(lireTableau(racine, "suggest"), lireTableau(racine, "spellcheck"))
+            FormesLod(
+                lireTableau(racine, "suggest"),
+                lireTableau(racine, "spellcheck"),
+                BloomFilter.decoderBase64(racine.optString("bloom", "")),
+                racine.optLong("bloom_bits", 0),
+                racine.optInt("bloom_hachages", 0)
+            )
         } catch (e: Exception) {
             Log.w(TAG, "Formes LOD indisponibles (${e.message}) : "
                     + "couverture limitée au corpus")
-            Pair(emptyList(), emptyList())
+            FormesLod(emptyList(), emptyList())
         }
     }
 

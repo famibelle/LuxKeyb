@@ -57,7 +57,9 @@ Fait avec ❤️ pour préserver le Luxembourgeois
 """
 
 import argparse
+import base64
 import json
+import unicodedata
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -67,6 +69,8 @@ if sys.platform.startswith('win'):
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
+from bloom import construire as construire_bloom
+from bloom import mesurer_faux_positifs
 from lod_source import (ATTRIBUTION, CATEGORIES_CONNUES, CATEGORIES_SUGGEREES,
                         graphies_par_categorie, telecharger_source)
 
@@ -81,6 +85,18 @@ DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 # on refuse en dessous de la moitié.
 SEUIL_STRICT_SUGGEST = 40_000
 SEUIL_STRICT_SPELLCHECK = 10_000
+
+
+def replier(mot):
+    """Comme `AccentTolerantMatcher.normalize` : minuscules sans diacritiques.
+
+    C'est sous cette forme que `SuggestionEngine.isKnownWord` interroge, donc
+    c'est sous cette forme que le filtre doit être construit. Une divergence
+    ferait souligner toute la langue d'un coup ; `LodFormsAssetTest` rejoue le
+    filtre livré sur les formes livrées.
+    """
+    return "".join(c for c in unicodedata.normalize("NFD", mot.lower())
+                   if unicodedata.category(c) != "Mn")
 
 
 def choisir_casse(formes):
@@ -183,6 +199,30 @@ def main():
                   f"attendu ≥ {SEUIL_STRICT_SPELLCHECK}")
             return 1
 
+    # Filtre de Bloom de **toutes** les formes que le clavier reconnaît :
+    # le dictionnaire de fréquences, les formes proposables du LOD et les
+    # variantes de la règle d'Eifel, repliées comme `AccentTolerantMatcher`
+    # les replie — c'est sous cette forme que `isKnownWord` interroge.
+    #
+    # Il remplace deux tables de hachage tenues en mémoire par le processus de
+    # saisie : `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
+    # (26 000 chaînes qui n'existaient que pour elle). Le correcteur ne pose
+    # qu'une question, « ce mot existe-t-il », et un filtre de Bloom ne peut
+    # jamais rejeter ce qu'on y a mis : il ne fera donc pas souligner un mot
+    # correct. Il accepte ~1 % d'intrus, c'est-à-dire qu'il laisse passer une
+    # faute de temps en temps — sans conséquence.
+    reconnues = ({replier(m) for m, _ in dictionnaire}
+                 | {replier(m) for m in proposables}
+                 | {replier(m) for m in connues_seules})
+    tableau, bits, hachages = construire_bloom(reconnues)
+    faux = mesurer_faux_positifs(tableau, bits, hachages, reconnues)
+    print(f"\n🧪 Filtre de Bloom : {len(tableau) // 1024} Ko, {hachages} hachages "
+          f"pour {len(reconnues)} formes repliées")
+    print(f"   faux positifs mesurés : {100 * faux:.2f} %")
+    if arguments.strict and faux > 0.02:
+        print(f"\n❌ --strict : {100*faux:.1f} % de faux positifs, filtre sous-dimensionné")
+        return 1
+
     contenu = {
         "version": datetime.now().strftime("%Y.%m.%d"),
         "generated": datetime.now().isoformat(timespec="seconds"),
@@ -192,6 +232,9 @@ def main():
         "counts": {"suggest": len(proposables), "spellcheck": len(connues_seules)},
         "suggest": proposables,
         "spellcheck": connues_seules,
+        "bloom_bits": bits,
+        "bloom_hachages": hachages,
+        "bloom": base64.b64encode(bytes(tableau)).decode("ascii"),
     }
 
     sauvegarder_precedent(arguments.sortie)

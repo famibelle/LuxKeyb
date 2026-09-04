@@ -73,7 +73,7 @@ def charger():
     # soulignement français serait surestimé. On réutilise le hachage du
     # générateur plutôt que d'en écrire un troisième.
     import base64
-    from generate_french_dict import indices_bloom
+    from bloom import indices as indices_bloom
     bloom = bytearray(base64.b64decode(fr["bloom"]))
     bits, hachages = fr["bloom_bits"], fr["bloom_hachages"]
 

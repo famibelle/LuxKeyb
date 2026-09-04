@@ -206,61 +206,11 @@ def lire_frequences(chemin):
     return frequences, categories, locutions
 
 
-FNV_OFFSET = 0xCBF29CE484222325
-FNV_PRIME = 0x100000001B3
-MASQUE64 = 0xFFFFFFFFFFFFFFFF
-MASQUE63 = 0x7FFFFFFFFFFFFFFF
-BLOOM_FAUX_POSITIFS = 0.01
-
-
-def fnv1a(donnees):
-    """FNV-1a 64 bits. Choisi pour être réimplémentable à l'identique en Kotlin
-    en dix lignes, sans dépendance : le filtre est écrit ici et relu là-bas, et
-    la moindre divergence de hachage ferait souligner tout le français."""
-    h = FNV_OFFSET
-    for octet in donnees:
-        h = ((h ^ octet) * FNV_PRIME) & MASQUE64
-    return h
-
-
-def bits_bloom(nombre, faux_positifs=BLOOM_FAUX_POSITIFS):
-    """Taille et nombre de hachages optimaux.
-
-    Le nombre de bits est rendu **impair** et le second hachage forcé impair
-    dans [indices_bloom] : sans ces deux précautions, la construction de
-    Kirsch-Mitzenmacher fait partager leur parité aux k indices d'un même mot,
-    qui ne couvrent alors que la moitié du filtre. Mesuré : 3,4 % de faux
-    positifs au lieu de 1 %, pour la même taille.
-    """
-    import math
-    bits = int(-nombre * math.log(faux_positifs) / (math.log(2) ** 2))
-    if bits % 2 == 0:
-        bits += 1
-    hachages = max(1, round(bits / nombre * math.log(2)))
-    return bits, hachages
-
-
-def indices_bloom(mot, bits, hachages):
-    """Kirsch-Mitzenmacher : deux hachages suffisent à en simuler k.
-
-    Le masque 63 bits, plutôt qu'un modulo non signé, existe pour Kotlin : ses
-    Long sont signés et `remainderUnsigned` n'arrive qu'à l'API 24, sous le
-    minSdk 21 du projet. Les deux côtés font donc la même opération simple.
-    """
-    donnees = mot.encode("utf-8")
-    h1 = fnv1a(donnees)
-    h2 = fnv1a(b"\x00" + donnees) | 1
-    return [((h1 + i * h2) & MASQUE63) % bits for i in range(hachages)]
-
-
-def construire_bloom(formes):
-    bits, hachages = bits_bloom(len(formes))
-    tableau = bytearray((bits + 7) // 8)
-    for mot in formes:
-        for indice in indices_bloom(mot, bits, hachages):
-            tableau[indice >> 3] |= 1 << (indice & 7)
-    return tableau, bits, hachages
-
+# Le filtre de Bloom est construit par `bloom.py`, partagé avec
+# `generate_lod_forms.py` : une seule implémentation du hachage côté Python,
+# une seule côté Kotlin.
+from bloom import construire as construire_bloom
+from bloom import mesurer_faux_positifs
 
 CATEGORIES_VERBALES = {"VER", "AUX"}
 SEUIL_VERBE_RARE = 5
@@ -278,23 +228,6 @@ def est_verbe_rare(graphie, frequence, categories):
         return False
     dominante = max(par_categorie, key=par_categorie.get)
     return dominante in CATEGORIES_VERBALES and frequence < SEUIL_VERBE_RARE
-
-
-def mesurer_faux_positifs(tableau, bits, hachages, connues, echantillons=20000):
-    """Taux mesuré, pas calculé : c'est le filtre livré qu'on interroge."""
-    import random
-    alea = random.Random(20260903)
-    lettres = "abcdefghijklmnopqrstuvwxyzéèêàôùïüç"
-    faux = essais = 0
-    while essais < echantillons:
-        mot = "".join(alea.choice(lettres) for _ in range(alea.randint(4, 12)))
-        if mot in connues:
-            continue
-        essais += 1
-        if all(tableau[i >> 3] & (1 << (i & 7))
-               for i in indices_bloom(mot, bits, hachages)):
-            faux += 1
-    return faux / essais
 
 
 def sauvegarder_precedent(chemin):

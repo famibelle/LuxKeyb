@@ -50,80 +50,15 @@ class FrenchDictionary(private val context: Context) {
         private const val MAX_FRENCH_SUGGESTIONS = 2  // Maximum 2 suggestions françaises
         private const val MAX_CACHE_ENTRIES = 1000
 
-        private const val FNV_OFFSET = -3750763034362895579L // 0xCBF29CE484222325
-        private const val FNV_PRIME = 0x100000001B3L
-
-        /**
-         * FNV-1a 64 bits, réimplémenté à l'identique de
-         * `Dictionnaires/generate_french_dict.py`.
-         *
-         * [prefixe] ajoute l'octet 0x00 devant les données pour obtenir le
-         * second hachage indépendant de la construction de
-         * Kirsch-Mitzenmacher. Toute divergence avec le Python ferait souligner
-         * tout le français d'un coup sans rien casser d'autre : c'est pourquoi
-         * ces fonctions sont `internal` et non `private`, et pourquoi
-         * `FrenchDictAssetTest` rejoue le filtre livré sur les formes livrées.
-         */
-        internal fun fnv1a(donnees: ByteArray, prefixe: Boolean): Long {
-            var h = FNV_OFFSET
-            if (prefixe) h = (h xor 0L) * FNV_PRIME
-            for (octet in donnees) {
-                h = (h xor (octet.toLong() and 0xFF)) * FNV_PRIME
-            }
-            return h
-        }
-
-        /**
-         * Le mot est-il dans le filtre ? Le masque 63 bits, plutôt qu'un
-         * modulo non signé, existe parce que `Long.remainderUnsigned` n'arrive
-         * qu'à l'API 24, sous le minSdk 21 du projet — le Python fait la même
-         * opération.
-         */
+        // Le hachage et le décodage vivent dans `BloomFilter`, partagés avec
+        // le filtre luxembourgeois : une seule implémentation côté Kotlin,
+        // une seule côté Python.
         internal fun bloomContient(
             mot: String, bloom: ByteArray, bits: Long, hachages: Int
-        ): Boolean {
-            if (bits <= 0 || hachages <= 0 || bloom.isEmpty()) return false
-            val donnees = mot.lowercase().toByteArray(Charsets.UTF_8)
-            val h1 = fnv1a(donnees, false)
-            val h2 = fnv1a(donnees, true) or 1L
-            for (i in 0 until hachages) {
-                val indice = ((h1 + i * h2) and Long.MAX_VALUE) % bits
-                val octet = (indice ushr 3).toInt()
-                if (bloom[octet].toInt() and (1 shl (indice and 7L).toInt()) == 0) {
-                    return false
-                }
-            }
-            return true
-        }
+        ): Boolean = BloomFilter.contient(mot.lowercase(), bloom, bits, hachages)
 
-        /**
-         * Base64 décodé à la main : `java.util.Base64` demande l'API 26 et
-         * `android.util.Base64` n'existe pas sur la JVM des tests, alors que le
-         * minSdk du projet est 21 et que le filtre doit être vérifiable hors
-         * appareil.
-         */
-        internal fun decoderBase64(texte: String): ByteArray {
-            val table = IntArray(128) { -1 }
-            val alphabet =
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-            for (i in alphabet.indices) table[alphabet[i].code] = i
-            val utiles = texte.count { it.code < 128 && table[it.code] >= 0 }
-            val sortie = ByteArray(utiles * 3 / 4)
-            var tampon = 0
-            var bits = 0
-            var pos = 0
-            for (c in texte) {
-                val v = if (c.code < 128) table[c.code] else -1
-                if (v < 0) continue
-                tampon = (tampon shl 6) or v
-                bits += 6
-                if (bits >= 8) {
-                    bits -= 8
-                    sortie[pos++] = ((tampon ushr bits) and 0xFF).toByte()
-                }
-            }
-            return sortie
-        }
+        internal fun decoderBase64(texte: String): ByteArray =
+            BloomFilter.decoderBase64(texte)
     }
 
     // Palier proposable, livré trié par fréquence décroissante : les deux

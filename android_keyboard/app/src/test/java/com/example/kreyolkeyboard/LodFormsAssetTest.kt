@@ -149,3 +149,82 @@ class LodFormsAssetTest {
         assertEquals(liste("spellcheck").size, comptes.getInt("spellcheck"))
     }
 }
+
+/**
+ * Contrôles du filtre de reconnaissance luxembourgeois.
+ *
+ * `SuggestionEngine.isKnownWord()` n'interroge plus deux tables de hachage —
+ * 123 000 formes repliées et 26 000 variantes de la règle d'Eifel — mais un
+ * filtre de Bloom livré avec l'actif. C'est ce qui décide si le correcteur
+ * système souligne un mot.
+ *
+ * Le hachage est écrit deux fois, en Python et en Kotlin. Une divergence
+ * ferait souligner **toute la langue d'un coup**, sans rien casser d'autre :
+ * le JSON resterait valide, le clavier chargerait, les suggestions
+ * fonctionneraient. D'où un test qui rejoue le filtre livré sur les formes
+ * livrées — un filtre de Bloom ne peut pas rejeter ce qu'il contient, donc un
+ * seul rejet prouve l'écart.
+ */
+class LodBloomTest {
+
+    private fun actif(): JSONObject {
+        val fichier = File("src/main/assets/luxemburgish_lod_forms.json")
+        assertTrue("luxemburgish_lod_forms.json manquant", fichier.exists())
+        return JSONObject(fichier.readText())
+    }
+
+    private fun replie(mot: String) = AccentTolerantMatcher.normalize(mot)
+
+    @Test
+    fun leFiltreReconnaitToutesLesFormesLivrees() {
+        val a = actif()
+        val bloom = BloomFilter.decoderBase64(a.getString("bloom"))
+        val bits = a.getLong("bloom_bits")
+        val k = a.getInt("bloom_hachages")
+        assertTrue("Filtre absent ou vide", bloom.isNotEmpty() && bits > 0 && k > 0)
+
+        val formes = mutableListOf<String>()
+        for (cle in listOf("suggest", "spellcheck")) {
+            val tableau = a.getJSONArray(cle)
+            for (i in 0 until tableau.length()) formes.add(tableau.getString(i))
+        }
+        // Le dictionnaire de fréquences est dans le filtre lui aussi : le
+        // moteur y verse les deux paliers plus le corpus.
+        val dico = JSONArray(File("src/main/assets/luxemburgish_dict.json").readText())
+        for (i in 0 until dico.length()) formes.add(dico.getJSONArray(i).getString(0))
+
+        val rejetees = formes.filterNot {
+            BloomFilter.contient(replie(it), bloom, bits, k)
+        }
+        assertTrue(
+            "Le filtre rejette ${rejetees.size} formes qu'il contient " +
+                "(${rejetees.take(5)}) : le hachage Kotlin a divergé du Python.",
+            rejetees.isEmpty()
+        )
+    }
+
+    /**
+     * Le filtre accepte parfois à tort — c'est admis, ne pas souligner une
+     * faute est bénin. Mais au-delà de quelques pour cent, le correcteur
+     * deviendrait inerte et ne signalerait plus rien.
+     */
+    @Test
+    fun tauxDeFauxPositifsRaisonnable() {
+        val a = actif()
+        val bloom = BloomFilter.decoderBase64(a.getString("bloom"))
+        val bits = a.getLong("bloom_bits")
+        val k = a.getInt("bloom_hachages")
+        val alea = java.util.Random(20260904)
+        val lettres = "abcdefghijklmnopqrstuvwxyz"
+        var faux = 0
+        val essais = 20_000
+        repeat(essais) {
+            val n = 6 + alea.nextInt(7)
+            val mot = buildString { repeat(n) { append(lettres[alea.nextInt(26)]) } }
+            if (BloomFilter.contient(mot, bloom, bits, k)) faux++
+        }
+        val taux = 100.0 * faux / essais
+        assertTrue("Faux positifs : %.2f %%, filtre sous-dimensionné".format(taux),
+            taux < 3.0)
+    }
+}
