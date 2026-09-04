@@ -355,6 +355,33 @@ class SuggestionEngine(private val context: Context) {
         // le `contains` est en temps constant. Avec 123 265 formes chargées, le
         // parcours linéaire d'une List coûtait au correcteur un balayage
         // complet du dictionnaire par mot examiné.
+        /**
+         * Faut-il chercher une correction luxembourgeoise pour ce mot ?
+         *
+         * Non s'il est trop court — la distance de Levenshtein sur deux lettres
+         * rapproche n'importe quoi de n'importe quoi. Et non, surtout, **si le
+         * mot est du français reconnu** : le repli parcourt alors deux fois les
+         * 38 410 formes luxembourgeoises pour proposer de corriger un mot qui
+         * n'a aucune faute, et dans la mauvaise langue. Mesuré sur un Galaxy
+         * A21s, ce parcours coûte ~700 ms là où une frappe ordinaire en prend
+         * 60 : c'est le chemin le plus lent du clavier, et il se déclenchait
+         * exactement quand on insère un mot français dans du luxembourgeois.
+         *
+         * L'aide n'est pas perdue : la rangée bleue propose déjà le mot, elle
+         * l'a trouvé par préfixe. Ce qui disparaît, ce sont les trois
+         * propositions luxembourgeoises sans rapport qui la surplombaient —
+         * `Bechet`, `Deche`, `Mécht` face à `déchet`.
+         *
+         * Le contrôle porte sur le mot **entier** : tant qu'on tape `déche`,
+         * le français ne le reconnaît pas encore et le repli garde sa place,
+         * ce qui laisse intacte la correction d'une vraie faute de frappe
+         * luxembourgeoise.
+         */
+        internal fun devraitCorriger(input: String, estFrancaisConnu: Boolean): Boolean {
+            if (input.length < 3) return false
+            return !estFrancaisConnu
+        }
+
         internal fun isWordKnown(word: String, normalizedWords: Collection<String>): Boolean {
             if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
             return normalizedWords.contains(AccentTolerantMatcher.normalize(word))
@@ -859,6 +886,16 @@ class SuggestionEngine(private val context: Context) {
     }
 
     /**
+     * Ce mot est-il du français reconnu ? Interroge le seul palier français,
+     * là où [isKnownWord] réunit les deux langues.
+     *
+     * Sert à ne pas déclencher le repli Levenshtein luxembourgeois sur un mot
+     * français correct — voir [devraitCorriger].
+     */
+    private fun isFrenchWord(word: String): Boolean =
+        ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
+
+    /**
      * Correspondance EXACTE (insensible aux accents) dans le dictionnaire créole OU
      * français — contrairement à getDictionarySuggestions() qui fait une recherche par
      * préfixe. Utilisé par KreyolSpellCheckerService pour décider si un mot doit être
@@ -1043,8 +1080,9 @@ class SuggestionEngine(private val context: Context) {
             }
         }
 
-        // ✨ Si aucune correspondance par préfixe, essayer la correction orthographique
-        if (matches.isEmpty() && input.length >= 3) {
+        // ✨ Si aucune correspondance par préfixe, essayer la correction
+        // orthographique — sauf si le mot tapé est du français reconnu.
+        if (matches.isEmpty() && devraitCorriger(input, isFrenchWord(input))) {
             return getSpellCorrectionSuggestions(input)
         }
 
