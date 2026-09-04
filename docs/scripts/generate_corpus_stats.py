@@ -27,8 +27,14 @@ ASSETS = RACINE / "android_keyboard" / "app" / "src" / "main" / "assets"
 
 # Mêmes constantes que le pipeline : toute divergence rendrait la page fausse
 # de façon invisible, puisque les deux chiffres resteraient plausibles.
+# {1,} et non {2,} : le clavier compte les mots d'une lettre. `InputProcessor`
+# découpe sur tout ce qui n'est pas une lettre — l'apostrophe comprise — donc
+# `d'Leit` lui donne `d` puis `Leit`, et le pipeline tokenise pareil depuis le
+# 2026-09-04. Un motif qui refuse `d` mesurerait le modèle avec une définition
+# du mot que l'application n'a pas : il compterait comme une erreur toute
+# prédiction de `d`, `a` ou `e`, qui sont parmi les mots les plus fréquents.
 MOTIF_MOT = re.compile(
-    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b'
+    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{1,}\b'
 )
 SEUIL_FREQUENCE_DICO = 3
 SEUIL_OCCURRENCES_CONTEXTE = 20
@@ -81,8 +87,9 @@ DIACRITIQUES = "éëäüèêçôàöîâ"
 
 
 def decouper(texte):
+    """Découpe comme le clavier, mots d'une lettre compris — voir MOTIF_MOT."""
     return [m.lower().strip("-") for m in MOTIF_MOT.findall(texte.lower())
-            if len(m.strip("-")) >= 2]
+            if m.strip("-")]
 
 
 def charger(source):

@@ -165,8 +165,15 @@ SEUIL_CASSE_ACRONYME = 0.50
 # Motif de découpage en mots, partagé par le dictionnaire et les n-grammes.
 # Il accepte les deux casses : c'est ce qui permet de compter les formes de
 # surface telles qu'elles sont écrites.
+# {1,} et non {2,} : le luxembourgeois a des mots d'une seule lettre, et ils
+# sont parmi les plus fréquents. `d'` (l'article élidé de `d'Leit`), `a` (la
+# forme de `an` devant consonne par la règle d'Eifel) et `e` (l'article
+# indéfini) étaient jusqu'ici jetés à la tokenisation, donc absents du
+# dictionnaire ET du modèle n-grammes. Conséquence mesurée sur les conférences
+# de presse du gouvernement : après l'un de ces mots, le clavier n'avait plus
+# aucune prédiction à offrir — 1 220 des 5 053 barres vides, soit un quart.
 PATTERN_MOT = re.compile(
-    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b'
+    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{1,}\b'
 )
 
 # Caractères qui peuvent séparer une fin de phrase du mot suivant sans rompre
@@ -182,7 +189,7 @@ def tokeniser(texte):
     tokens = []
     for correspondance in PATTERN_MOT.finditer(texte):
         mot = correspondance.group(0).strip('-')
-        if len(mot) < 2:
+        if not mot:
             continue
         i = correspondance.start() - 1
         while i >= 0 and texte[i] in _CARACTERES_TRANSPARENTS:

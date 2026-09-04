@@ -42,13 +42,18 @@ const ASSETS = path.join(RACINE, 'android_keyboard', 'app', 'src', 'main', 'asse
 const MOTEUR = path.join(RACINE, 'docs', 'assets', 'simulateur-engine.js');
 
 // Planchers de non-régression, et non objectifs : ils sont placés sous les
-// valeurs mesurées le 2026-08-29 (22,2 / 35,7 / 57,4) avec assez de marge pour
+// valeurs mesurées le 2026-09-04 (22,5 / 37,1 / 59,6) avec assez de marge pour
 // absorber une régénération du dictionnaire, et assez près pour qu'un bonus
 // redevenu inopérant les franchisse. Un bonus de contexte remis à 50 fait
 // tomber la première colonne à 13,0 % : le plancher se déclenche.
 const PLANCHERS = {1: 20.0, 2: 33.0, 3: 55.0};
 
-const MOT = /[\p{L}\-']{2,}/gu;
+// Découpage aligné sur celui du clavier : `InputProcessor.isWordCharacter`
+// n'accepte que des lettres, donc l'apostrophe sépare — `d'Leit` donne `d`
+// puis `Leit` — et les mots d'une lettre en sont. Le motif d'origine faisait
+// l'inverse sur les deux points, et mesurait donc un modèle que l'application
+// n'exécute pas.
+const MOT = /[\p{L}\-]{1,}/gu;
 const LONGUEUR_MINIMALE = 4; // sous 4 lettres, taper le mot coûte moins cher
 
 function phrasesDepuis(chemin) {
