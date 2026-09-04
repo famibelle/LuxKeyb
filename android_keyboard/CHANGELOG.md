@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.6.0] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Le clavier occupe près de 6 Mo de mémoire en moins.** Il gardait la liste
+  complète des 150 000 formes qu'il sait reconnaître, uniquement pour décider
+  s'il doit souligner un mot. Une structure compacte suffit à répondre à cette
+  question. Rien ne change à l'écran, mais le clavier se fait moins souvent
+  mettre de côté par le téléphone — et il revient plus vite quand il l'a été.
+
 ## [11.5.2] - 2026-09-04
 
 ### 🐛 Corrigé
