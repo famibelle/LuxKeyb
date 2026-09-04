@@ -1109,6 +1109,7 @@ class SuggestionEngine(private val context: Context) {
         val normalizedMatches = LevenshteinDistance.findClosestMatchesNormalized(
             input = input,
             dictionary = dictionary,
+            normalizedWords = normalizedWords,
             normalizer = { str -> AccentTolerantMatcher.normalize(str) },
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS

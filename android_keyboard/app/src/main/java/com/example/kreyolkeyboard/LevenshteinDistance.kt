@@ -27,36 +27,65 @@ object LevenshteinDistance {
      * @param s2 Second string
      * @return The minimum number of edits needed to transform s1 into s2
      */
-    fun calculate(s1: String, s2: String): Int {
+    fun calculate(s1: String, s2: String): Int =
+        calculateBounded(s1, s2, Int.MAX_VALUE)
+
+    /**
+     * Distance de Levenshtein, abandonnée dès qu'elle dépasse [maxDistance].
+     *
+     * Trois choses la séparent d'une implémentation naïve, et elles comptent
+     * parce que cette fonction est appelée pour chaque mot du dictionnaire à
+     * chaque frappe qui déclenche le repli de correction :
+     *
+     * - **deux lignes au lieu d'une matrice.** L'ancienne version allouait
+     *   `Array(len1 + 1) { IntArray(len2 + 1) }`, soit une douzaine de tableaux
+     *   par mot comparé et des centaines de milliers d'allocations par frappe ;
+     * - **la casse repliée une fois par chaîne** et non à chaque cellule.
+     *   `lowercaseChar()` était appelé len1 × len2 fois par comparaison ;
+     * - **l'abandon anticipé** : si toute une ligne dépasse déjà [maxDistance],
+     *   aucune suite ne peut redescendre, et la réponse ne sera de toute façon
+     *   pas retenue.
+     *
+     * Renvoie une valeur strictement supérieure à [maxDistance] quand la
+     * distance réelle l'est, sans garantir laquelle : l'appelant ne compare
+     * qu'au seuil.
+     */
+    fun calculateBounded(s1: String, s2: String, maxDistance: Int): Int {
         val len1 = s1.length
         val len2 = s2.length
-        
-        // Handle empty strings
+
         if (len1 == 0) return len2
         if (len2 == 0) return len1
-        
-        // Create distance matrix (using dynamic programming)
-        val dp = Array(len1 + 1) { IntArray(len2 + 1) }
-        
-        // Initialize first row and column (base cases)
-        for (i in 0..len1) dp[i][0] = i  // Cost of deleting all characters from s1
-        for (j in 0..len2) dp[0][j] = j  // Cost of inserting all characters from s2
-        
-        // Fill the matrix using the recurrence relation
+        // La différence de longueur est un minorant de la distance : inutile
+        // de dérouler la programmation dynamique pour s'en apercevoir.
+        if (kotlin.math.abs(len1 - len2) > maxDistance) return maxDistance + 1
+
+        val a = CharArray(len1) { s1[it].lowercaseChar() }
+        val b = CharArray(len2) { s2[it].lowercaseChar() }
+
+        var precedente = IntArray(len2 + 1) { it }
+        var courante = IntArray(len2 + 1)
+
         for (i in 1..len1) {
+            courante[0] = i
+            var minimumLigne = courante[0]
             for (j in 1..len2) {
-                // If characters match, no cost; otherwise substitution costs 1
-                val cost = if (s1[i - 1].lowercaseChar() == s2[j - 1].lowercaseChar()) 0 else 1
-                
-                dp[i][j] = minOf(
-                    dp[i - 1][j] + 1,       // Deletion
-                    dp[i][j - 1] + 1,       // Insertion
-                    dp[i - 1][j - 1] + cost // Substitution (or match if cost=0)
+                val cout = if (a[i - 1] == b[j - 1]) 0 else 1
+                val v = minOf(
+                    precedente[j] + 1,          // suppression
+                    courante[j - 1] + 1,        // insertion
+                    precedente[j - 1] + cout    // substitution
                 )
+                courante[j] = v
+                if (v < minimumLigne) minimumLigne = v
             }
+            if (minimumLigne > maxDistance) return maxDistance + 1
+            val echange = precedente
+            precedente = courante
+            courante = echange
         }
-        
-        return dp[len1][len2]
+
+        return precedente[len2]
     }
     
     /**
@@ -117,7 +146,7 @@ object LevenshteinDistance {
         for ((word, freq) in dictionary) {
             if (kotlin.math.abs(word.length - inputLength) > lengthTolerance) continue
             examined++
-            val distance = calculate(input, word)
+            val distance = calculateBounded(input, word, maxDistance)
             if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
         }
         
@@ -153,6 +182,7 @@ object LevenshteinDistance {
     fun findClosestMatchesNormalized(
         input: String,
         dictionary: List<Pair<String, Int>>,
+        normalizedWords: List<String>,
         normalizer: (String) -> String,
         maxDistance: Int = 2,
         maxResults: Int = 5
@@ -162,17 +192,27 @@ object LevenshteinDistance {
         
         val normalizedInput = normalizer(input)
         val inputLength = normalizedInput.length
-        
-        // Un seul parcours, et surtout un seul appel à `normalizer` par mot :
-        // le filtre par longueur et le calcul de distance normalisaient chacun
-        // la même forme, soit 246 000 chaînes construites par recours depuis
-        // que le LOD porte le dictionnaire à 123 000 entrées.
+
+        // `normalizedWords` est la liste précalculée au chargement du moteur,
+        // alignée indice à indice avec `dictionary`. Sans elle, cette boucle
+        // appelait `normalizer(word)` sur **chacune** des 38 442 formes, avant
+        // même le filtre de longueur : le repli reconstruisait le dictionnaire
+        // normalisé à chaque frappe. C'était l'essentiel des 670 à 1 180 ms
+        // mesurés sur un Galaxy A21s, bien avant le coût de la distance
+        // elle-même.
+        //
+        // Le filtre de longueur passe donc en premier, sur un entier, et rien
+        // n'est alloué pour les mots qu'il écarte — l'écrasante majorité.
         val matches = ArrayList<Triple<String, Int, Int>>()
-        for ((word, freq) in dictionary) {
-            val normalizedWord = normalizer(word)
-            if (kotlin.math.abs(normalizedWord.length - inputLength) > 2) continue
-            val distance = calculate(normalizedInput, normalizedWord)
-            if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
+        val n = minOf(dictionary.size, normalizedWords.size)
+        for (i in 0 until n) {
+            val normalizedWord = normalizedWords[i]
+            if (kotlin.math.abs(normalizedWord.length - inputLength) > maxDistance) continue
+            val distance = calculateBounded(normalizedInput, normalizedWord, maxDistance)
+            if (distance <= maxDistance) {
+                val (word, freq) = dictionary[i]
+                matches.add(Triple(word, freq, distance))
+            }
         }
 
         val ranked = matches
