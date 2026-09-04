@@ -181,6 +181,14 @@ Dictionnaires/cache_hf/
 Dictionnaires/luxemburgish_data/lod/
 # Cache de Lexique 3.83 : 26 Mo, retéléchargeable depuis lexique.org
 Dictionnaires/french_data/
+
+# Modèle de reconnaissance vocale : 31 Mo, délibérément hors de git. L'histoire
+# est définitive, et une réécriture casserait la base de fusion partagée avec
+# KreyolKeyb. La CI le fabrique et le passe aux jobs de build par artefact ;
+# voir stt/README.md. Ajouté après qu'un `git add` sur le répertoire d'actifs
+# l'a fait entrer dans deux releases, qui pesaient 37,8 Mo au lieu de 7,9.
+*.bin
+android_keyboard/app/src/main/assets/ggml-*.bin
 RAPPORT_INTEGRATION_LUXEMBOURG.md
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/AccentTolerantMatchingTest.kt.old
 android_keyboard/app/src/main/java/com/example/kreyolkeyboard/KreyolInputMethodService.kt.old

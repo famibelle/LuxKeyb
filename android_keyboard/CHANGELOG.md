@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.5.2] - 2026-09-04
+
+### 🐛 Corrigé
+
+- **L'application repasse de 38 à 8 Mo.** Les versions 11.5.0 et 11.5.1
+  embarquaient par erreur un modèle de reconnaissance vocale de 32 Mo, qui ne
+  sert à aucune fonction du clavier. Rien d'autre ne change.
+
 ## [11.5.1] - 2026-09-04
 
 ### 🎨 Amélioré
