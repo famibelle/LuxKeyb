@@ -141,3 +141,14 @@ footer.page{margin-top:62px;padding-top:20px;border-top:1px solid var(--line);fo
 /* Tableau de licences : la colonne « droit » porte l'information. */
 .lic-ok{color:var(--sea);font-weight:700;}
 .lic-no{color:var(--hibiscus);font-weight:700;}
+
+/* Citation d'une forme luxembourgeoise à l'intérieur d'une phrase : le
+   monospace la détache du texte courant sans la mettre en valeur, comme
+   sur la page des corpus. */
+.lux{font-family:var(--mono);font-size:0.93em;}
+
+/* Rangée de cartes de largeur égale (les trois étapes de fabrication des
+   données). Était posé en style inline, ce qui rendait la classe inerte. */
+.flow{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
+.flow .card{flex:1 1 200px;margin:0;}
+.flow .card h3{margin-top:0;}

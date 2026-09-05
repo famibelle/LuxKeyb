@@ -77,17 +77,17 @@
     l'intégration continue le régénère à chaque livraison.
   </p>
 
-  <div class="flow" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;">
-    <div class="card" style="flex:1 1 200px;margin:0;">
-      <h3 style="margin-top:0;">1 · Sources</h3>
+  <div class="flow">
+    <div class="card">
+      <h3>1 · Sources</h3>
       <p class="muted">Les jeux du ZLS sur data.public.lu, plus deux corpus universitaires. Les URL ne sont pas codées en dur : les scripts demandent à l'API de data.public.lu la ressource la plus récente, parce que le ZLS republie chaque trimestre sous un chemin horodaté.</p>
     </div>
-    <div class="card" style="flex:1 1 200px;margin:0;">
-      <h3 style="margin-top:0;">2 · Scripts</h3>
+    <div class="card">
+      <h3>2 · Scripts</h3>
       <p class="muted">Six programmes Python découpent, comptent, élisent la casse de chaque forme, construisent les n-grammes et écrivent directement dans les données de l'application, avec des sauvegardes horodatées.</p>
     </div>
-    <div class="card" style="flex:1 1 200px;margin:0;">
-      <h3 style="margin-top:0;">3 · Garde-fous</h3>
+    <div class="card">
+      <h3>3 · Garde-fous</h3>
       <p class="muted">L'intégration continue refuse de construire l'application si un fichier tombe sous un seuil de volume, change de forme, ou perd son attribution. Une régression silencieuse des données est le risque principal de ce genre de projet.</p>
     </div>
   </div>
