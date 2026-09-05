@@ -366,7 +366,7 @@ grâce à ces signalements.
 <p class="liens-secondaires">
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="corpus.html">📚 D'où viennent les mots</a> ·
-  <a href="presse.html">📄 Dossier institutionnel</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
   <a href="comparatif.html">⚖️ Comparatif détaillé</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche technique — Lëtzebuergesch Clavier</title>
+<meta name="description" content="Comment le Lëtzebuergesch Clavier est fait : chaîne de fabrication des données à partir des jeux du ZLS, moteur de suggestion, protocole de mesure et limites connues. Tout est rejouable.">
+<meta property="og:title" content="Fiche technique — Lëtzebuergesch Clavier">
+<meta property="og:description" content="Comment le Lëtzebuergesch Clavier est fait : chaîne de fabrication des données à partir des jeux du ZLS, moteur de suggestion, protocole de mesure et limites connues. Tout est rejouable.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/dossier.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <strong>📄 Dossier</strong> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Dossier · document 3</p>
+  <h1>Fiche technique</h1>
+  <p class="lead">
+    Comment l'application est faite, comment son dictionnaire est fabriqué à
+    partir des jeux du ZLS, et comment les chiffres de qualité sont obtenus.
+    Y compris ce qui n'est pas mesuré et devrait l'être.
+  </p>
+  <p class="dest">
+    Document public · septembre 2026 · version 11.6.0 de l'application
+  </p>
+  <nav class="dossier-nav" aria-label="Documents du dossier">
+  <a href="dossier.html">Sommaire</a>
+  <a href="dossier-note.html">Note d'opportunité</a>
+  <a href="dossier-feuille-de-route.html">Feuille de route</a>
+  <strong aria-current="page">Fiche technique</strong>
+  <a href="dossier-licences.html">Licences</a>
+  <a href="presse.html">Dossier de presse</a>
+</nav>
+</header>
+
+<section>
+  <h2>Ce que c'est, techniquement</h2>
+  <div class="table-scroll">
+    <table class="faits">
+      <tbody>
+        <tr><td>Nature</td><td>Un <i>Input Method Editor</i> Android — le composant système qui remplace le clavier, plus un service de correction orthographique déclaré séparément</td></tr>
+        <tr><td>Langage</td><td>Kotlin, sans dépendance externe pour le moteur</td></tr>
+        <tr><td>Compatibilité</td><td>Android 5.0 (API 21) à Android 16 (API 36)</td></tr>
+        <tr><td>Taille</td><td>Environ 7,7 Mo installés, dont 16,4 Mo de données compressées à 7 Mo</td></tr>
+        <tr><td>Réseau</td><td><b>Aucune permission réseau déclarée.</b> L'application fonctionne en mode avion</td></tr>
+        <tr><td>Tests</td><td>209 tests unitaires exécutés à chaque intégration, dont plusieurs lisent les fichiers de données réellement livrés</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>La chaîne de fabrication des données</h2>
+  <p>
+    Rien n'est saisi à la main. Chaque fichier de données est produit par un
+    script versionné, à partir de sources publiques identifiées, et
+    l'intégration continue le régénère à chaque livraison.
+  </p>
+
+  <div class="flow" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;">
+    <div class="card" style="flex:1 1 200px;margin:0;">
+      <h3 style="margin-top:0;">1 · Sources</h3>
+      <p class="muted">Les jeux du ZLS sur data.public.lu, plus deux corpus universitaires. Les URL ne sont pas codées en dur : les scripts demandent à l'API de data.public.lu la ressource la plus récente, parce que le ZLS republie chaque trimestre sous un chemin horodaté.</p>
+    </div>
+    <div class="card" style="flex:1 1 200px;margin:0;">
+      <h3 style="margin-top:0;">2 · Scripts</h3>
+      <p class="muted">Six programmes Python découpent, comptent, élisent la casse de chaque forme, construisent les n-grammes et écrivent directement dans les données de l'application, avec des sauvegardes horodatées.</p>
+    </div>
+    <div class="card" style="flex:1 1 200px;margin:0;">
+      <h3 style="margin-top:0;">3 · Garde-fous</h3>
+      <p class="muted">L'intégration continue refuse de construire l'application si un fichier tombe sous un seuil de volume, change de forme, ou perd son attribution. Une régression silencieuse des données est le risque principal de ce genre de projet.</p>
+    </div>
+  </div>
+
+  <h3>Ce que les garde-fous vérifient</h3>
+  <ul>
+    <li>Au moins 20 000 entrées de dictionnaire et 15 000 contextes de prédiction</li>
+    <li>Au moins 15 000 entrées portant une majuscule — sans quoi une régression
+    rendrait au clavier un luxembourgeois sans <i>Groussschreiwung</i>, parfaitement
+    valide en apparence et faux dans les faits</li>
+    <li>Au moins 10 000 familles de formes, 10 000 mots illustrés, 20 000 liens
+    vers le LOD, 60 000 formes françaises</li>
+    <li>La présence des mentions d'attribution exigées par les licences</li>
+    <li>Que le filtre de reconnaissance accepte bien chacune des formes livrées :
+    un test rejoue le filtre sur l'intégralité du dictionnaire, parce qu'une
+    divergence soulignerait toute la langue d'un coup sans rien casser d'autre</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Comment une suggestion est choisie</h2>
+  <p>
+    Le moteur essaie cinq voies, dans cet ordre, et s'arrête à la première qui
+    donne un résultat :
+  </p>
+  <ol>
+    <li><b>Le préfixe.</b> Les mots du dictionnaire commençant par ce qui est
+    tapé, classés par fréquence réelle dans le corpus.</li>
+    <li><b>Le contexte.</b> Les deux mots précédents, puis le mot précédent
+    seul, servent de clé dans un modèle de 27 746 contextes.</li>
+    <li><b>La correction.</b> Une distance d'édition tolérante aux fautes de
+    frappe, avec un seuil qui dépend de la longueur du mot.</li>
+    <li><b>Les accents.</b> Une comparaison insensible aux diacritiques, pour
+    que <span class="lux">letzebuergesch</span> trouve
+    <span class="lux">Lëtzebuergesch</span>.</li>
+    <li><b>Le français</b>, à partir de trois caractères seulement, sur une
+    ligne distincte — le clavier sert à écrire du luxembourgeois, pas à
+    basculer.</li>
+  </ol>
+
+  <div class="note">
+    <p>
+      <b>Une décision de conception qui mérite d'être signalée : la barre reste
+      vide quand le modèle ne sait pas.</b> Mesuré sur le corpus, quand le
+      contexte est reconnu le mot juste figure dans les trois premières
+      suggestions 18,6 % du temps. Quand il ne l'est pas, les stratégies de
+      repli plafonnent à 2 à 4 %. Des suggestions justes une fois sur
+      vingt-cinq, habillées exactement comme celles qui sont justes une fois
+      sur cinq, coûtent plus qu'une barre éteinte. Le clavier se tait donc
+      12 % du temps, et c'est un choix, pas une panne.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Le protocole de mesure</h2>
+  <p>
+    C'est la partie la plus facile à truquer dans ce genre de projet, et donc
+    celle qu'il faut exposer le plus complètement.
+  </p>
+
+  <h3>Le piège évité : ne jamais évaluer sur son propre corpus</h3>
+  <p>
+    Une part de corpus mise de côté vient des mêmes articles, de la même
+    période et du même registre que ce qui reste à l'entraînement : elle flatte
+    le modèle. Mesurée, elle annonce <b>23,9 %</b> là où un jeu réellement
+    indépendant donne <b>18,1 %</b>. Cinq points d'écart, entièrement
+    artificiels.
+  </p>
+
+  <h3>Le jeu d'évaluation retenu</h3>
+  <p>
+    Le <b>Méisproochegen Iwwersetzungskorpus</b> du ZLS, dont le recouvrement
+    avec les corpus d'entraînement n'est que de 6,84 %. Restent
+    <b>10 038 segments inédits</b>, soit <b>135 343 événements de frappe</b> —
+    contre 2 703 pour le seul autre jeu indépendant disponible. Le bruit
+    statistique passe de ±0,8 point à ±0,1.
+  </p>
+  <p class="muted">
+    Ce corpus n'est <em>jamais</em> versé à l'entraînement, et c'est un
+    arbitrage assumé : l'y ajouter ferait gagner environ 0,1 point de qualité
+    et détruirait le seul jeu de contrôle honnête du projet.
+  </p>
+
+  <h3>Résultats sur les fichiers réellement livrés</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Mesure</th><th class="num">Valeur</th><th>Définition</th></tr></thead>
+      <tbody>
+        <tr><td>Couverture lexicale</td><td class="num">93,6 %</td><td>Part des mots du texte que le clavier connaît</td></tr>
+        <tr><td>Contexte reconnu</td><td class="num">87,8 %</td><td>Part des frappes pour lesquelles le modèle a une proposition</td></tr>
+        <tr><td>Mot juste dans les trois premiers</td><td class="num">18,1 %</td><td>Part des frappes remplaçables par un appui sur une suggestion</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="margin-top:12px;">
+    La comparaison est faite casse repliée des deux côtés. Le script d'évaluation
+    lit les fichiers embarqués dans l'application, pas une version de travail :
+    le chiffre publié est celui que les utilisateurs obtiennent.
+  </p>
+</section>
+
+<section>
+  <h2>La variante entièrement CC0, mesurée</h2>
+  <p>
+    Puisque la question se posera — voir la page
+    <a href="dossier-licences.html">licences</a> — elle a été tranchée par la
+    mesure plutôt que par l'intuition. Un clavier entraîné <em>uniquement</em>
+    sur les jeux du ZLS a été construit avec les mêmes seuils et évalué sur le
+    même jeu de contrôle.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Mesure</th><th class="num">Version livrée</th><th class="num">Variante CC0</th></tr></thead>
+      <tbody>
+        <tr><td>Formes du dictionnaire</td><td class="num">37 761</td><td class="num">12 472</td></tr>
+        <tr><td>Contextes de prédiction</td><td class="num">27 746</td><td class="num">3 672</td></tr>
+        <tr><td>Couverture lexicale</td><td class="num">93,6 %</td><td class="num">86,3 %</td></tr>
+        <tr><td>Contexte reconnu</td><td class="num">87,8 %</td><td class="num">73,9 %</td></tr>
+        <tr><td>Mot juste dans les trois premiers</td><td class="num">18,1 %</td><td class="num">14,0 %</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px;">
+    Le coût ressenti n'est pas le taux de réussite mais <b>le silence</b> : la
+    barre resterait vide 26 % du temps au lieu de 12 %, soit deux fois plus
+    souvent. Ce qui disparaîtrait du dictionnaire est identifiable — 15 % des
+    occurrences, essentiellement des noms propres, des sigles
+    (<span class="lux">RTL</span>, <span class="lux">CSV</span>,
+    <span class="lux">OGBL</span>) et des variantes orthographiques que le LOD
+    ne lemmatise pas (<span class="lux">dass</span>,
+    <span class="lux">tëscht</span>, <span class="lux">iwwert</span>,
+    <span class="lux">mä</span>).
+  </p>
+  <p class="muted">
+    À noter : la <em>reconnaissance</em> des mots et le correcteur
+    orthographique ne seraient pas affectés, puisqu'ils reposent déjà
+    entièrement sur le LOD, en CC0.
+  </p>
+</section>
+
+<section>
+  <h2>Ce qui n'est pas mesuré, et devrait l'être</h2>
+  <div class="note">
+    <p>
+      Un dossier qui ne signale aucune limite n'est pas crédible. Trois choses
+      manquent, et aucune ne se règle sans utilisateurs :
+    </p>
+    <ul style="margin-top:10px;margin-bottom:0;">
+      <li><b>L'usage réel.</b> Combien de personnes accepteraient effectivement
+      les suggestions, et lesquelles. Aucune télémétrie n'existe — par choix —
+      donc cette donnée ne viendra que d'un test encadré auprès de volontaires.</li>
+      <li><b>La qualité perçue par des locuteurs natifs.</b> Les mesures
+      ci-dessus disent que le mot juste est proposé ; elles ne disent pas que
+      les mots proposés sont ceux qu'un Luxembourgeois trouve naturels. C'est
+      l'objet du chantier 2 de la
+      <a href="dossier-feuille-de-route.html">feuille de route</a>.</li>
+      <li><b>Le comportement sur appareils anciens et sous pression mémoire.</b>
+      Les temps de réponse ont été mesurés sur un téléphone d'entrée de gamme,
+      mais pas sur un parc représentatif.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Tout est vérifiable</h2>
+  <p>
+    Le code, les scripts de fabrication des données, les tests et la
+    configuration d'intégration continue sont publics sur
+    <a href="https://github.com/famibelle/LuxKeyb">GitHub</a>. Les mesures de
+    cette page sont reproduites par un script du dépôt, qui lit les données
+    embarquées et réécrit les chiffres publiés sur ce site.
+  </p>
+  <p class="muted">
+    La page <a href="corpus.html">Les corpus en chiffres</a> présente le détail
+    des sources, leur composition et leur recouvrement.
+  </p>
+</section>
+
+<footer class="page">
+  Lëtzebuergesch Clavier · gratuit, open source (MIT), sans publicité,
+  sans permission réseau.<br>
+  Données du Lëtzebuerger Online Dictionnaire et du corpus de traduction du
+  <a href="https://data.public.lu/en/organizations/zenter-fir-dletzebuerger-sprooch/#/datasets">Zenter fir d'Lëtzebuerger Sprooch</a>, licence CC0 1.0.
+</footer>
+
+</div>
+</body>
+</html>
