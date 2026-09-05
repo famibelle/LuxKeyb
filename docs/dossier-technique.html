@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fiche technique — Lëtzebuergesch Clavier</title>
+<title>Fiche technique · Lëtzebuergesch Clavier</title>
 <meta name="description" content="Comment le Lëtzebuergesch Clavier est fait : chaîne de fabrication des données à partir des jeux du ZLS, moteur de suggestion, protocole de mesure et limites connues. Tout est rejouable.">
-<meta property="og:title" content="Fiche technique — Lëtzebuergesch Clavier">
+<meta property="og:title" content="Fiche technique · Lëtzebuergesch Clavier">
 <meta property="og:description" content="Comment le Lëtzebuergesch Clavier est fait : chaîne de fabrication des données à partir des jeux du ZLS, moteur de suggestion, protocole de mesure et limites connues. Tout est rejouable.">
 <meta property="og:type" content="article">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -58,7 +58,7 @@
   <div class="table-scroll">
     <table class="faits">
       <tbody>
-        <tr><td>Nature</td><td>Un <i>Input Method Editor</i> Android — le composant système qui remplace le clavier, plus un service de correction orthographique déclaré séparément</td></tr>
+        <tr><td>Nature</td><td>Un <i>Input Method Editor</i> Android, c'est-à-dire le composant système qui remplace le clavier, plus un service de correction orthographique déclaré séparément</td></tr>
         <tr><td>Langage</td><td>Kotlin, sans dépendance externe pour le moteur</td></tr>
         <tr><td>Compatibilité</td><td>Android 5.0 (API 21) à Android 16 (API 36)</td></tr>
         <tr><td>Taille</td><td>Environ 7,7 Mo installés, dont 16,4 Mo de données compressées à 7 Mo</td></tr>
@@ -95,7 +95,7 @@
   <h3>Ce que les garde-fous vérifient</h3>
   <ul>
     <li>Au moins 20 000 entrées de dictionnaire et 15 000 contextes de prédiction</li>
-    <li>Au moins 15 000 entrées portant une majuscule — sans quoi une régression
+    <li>Au moins 15 000 entrées portant une majuscule, sans quoi une régression
     rendrait au clavier un luxembourgeois sans <i>Groussschreiwung</i>, parfaitement
     valide en apparence et faux dans les faits</li>
     <li>Au moins 10 000 familles de formes, 10 000 mots illustrés, 20 000 liens
@@ -124,7 +124,7 @@
     que <span class="lux">letzebuergesch</span> trouve
     <span class="lux">Lëtzebuergesch</span>.</li>
     <li><b>Le français</b>, à partir de trois caractères seulement, sur une
-    ligne distincte — le clavier sert à écrire du luxembourgeois, pas à
+    ligne distincte : le clavier sert à écrire du luxembourgeois, pas à
     basculer.</li>
   </ol>
 
@@ -162,7 +162,7 @@
   <p>
     Le <b>Méisproochegen Iwwersetzungskorpus</b> du ZLS, dont le recouvrement
     avec les corpus d'entraînement n'est que de 6,84 %. Restent
-    <b>10 038 segments inédits</b>, soit <b>135 343 événements de frappe</b> —
+    <b>10 038 segments inédits</b>, soit <b>135 343 événements de frappe</b>,
     contre 2 703 pour le seul autre jeu indépendant disponible. Le bruit
     statistique passe de ±0,8 point à ±0,1.
   </p>
@@ -193,8 +193,8 @@
 <section>
   <h2>La variante entièrement CC0, mesurée</h2>
   <p>
-    Puisque la question se posera — voir la page
-    <a href="dossier-licences.html">licences</a> — elle a été tranchée par la
+    Puisque la question se posera (voir la page
+    <a href="dossier-licences.html">licences</a>), elle a été tranchée par la
     mesure plutôt que par l'intuition. Un clavier entraîné <em>uniquement</em>
     sur les jeux du ZLS a été construit avec les mêmes seuils et évalué sur le
     même jeu de contrôle.
@@ -214,7 +214,7 @@
   <p style="margin-top:14px;">
     Le coût ressenti n'est pas le taux de réussite mais <b>le silence</b> : la
     barre resterait vide 26 % du temps au lieu de 12 %, soit deux fois plus
-    souvent. Ce qui disparaîtrait du dictionnaire est identifiable — 15 % des
+    souvent. Ce qui disparaîtrait du dictionnaire est identifiable : 15 % des
     occurrences, essentiellement des noms propres, des sigles
     (<span class="lux">RTL</span>, <span class="lux">CSV</span>,
     <span class="lux">OGBL</span>) et des variantes orthographiques que le LOD
@@ -238,7 +238,7 @@
     </p>
     <ul style="margin-top:10px;margin-bottom:0;">
       <li><b>L'usage réel.</b> Combien de personnes accepteraient effectivement
-      les suggestions, et lesquelles. Aucune télémétrie n'existe — par choix —
+      les suggestions, et lesquelles. Aucune télémétrie n'existe, par choix,
       donc cette donnée ne viendra que d'un test encadré auprès de volontaires.</li>
       <li><b>La qualité perçue par des locuteurs natifs.</b> Les mesures
       ci-dessus disent que le mot juste est proposé ; elles ne disent pas que

@@ -513,9 +513,9 @@ object TranslationDictionary {
 
     /**
      * Glose prête à afficher à côté du mot, ou chaîne vide.
-     * Le tiret cadratin sépare mieux que les parenthèses sur une seule ligne.
+     * Le point médian sépare mieux que les parenthèses sur une seule ligne.
      */
-    fun libelle(context: Context, mot: String, prefixe: String = "— "): String {
+    fun libelle(context: Context, mot: String, prefixe: String = "· "): String {
         val glose = traduire(context, mot) ?: return ""
         return "$prefixe$glose"
     }

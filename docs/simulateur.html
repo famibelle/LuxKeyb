@@ -104,8 +104,8 @@
   /* ---- palette du clavier ----
      Recopiée telle quelle de KeyboardTheme.kt (android_keyboard), qui reste la
      seule source : le simulateur montre le clavier de l'application, il ne
-     redéfinit aucune de ses couleurs. C'est la palette produit — le drapeau
-     luxembourgeois — à ne pas mélanger avec celle du site (theme.css) qui
+     redéfinit aucune de ses couleurs. C'est la palette produit (le drapeau
+     luxembourgeois), à ne pas mélanger avec celle du site (theme.css) qui
      habille le reste de la page.
 
      Le drapeau ne s'inverse pas : le rouge Pantone 032 et le bleu ciel
@@ -279,7 +279,7 @@
   /* Anneau qui tourne autour du micro pendant l'écoute (MicRingDrawable) : un
      anneau complet très atténué, et par-dessus un arc de 100° qui en fait le
      tour en 1,4 s. Le micro pulsait déjà au rythme de la voix, mais ce
-     retour-là s'éteint précisément quand on doute — entre deux phrases, dans
+     retour-là s'éteint précisément quand on doute : entre deux phrases, dans
      une pièce calme, avant de commencer. L'anneau tourne indépendamment de ce
      qui est capté : il dit « ça écoute », non « ça entend ».
 
@@ -724,7 +724,7 @@
     <p>
       <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier enregistre votre
       énoncé et l'envoie d'un seul bloc, à la fin, au service de l'Université du
-      Luxembourg — rien n'est reconnu sur votre appareil, et rien ne passe par
+      Luxembourg. Rien n'est reconnu sur votre appareil, et rien ne passe par
       nous. N'y dictez rien de confidentiel.
       <a href="labs-luxasr.html">Ce que fait cette démonstration</a>.
     </p>
@@ -863,14 +863,14 @@
 
   // Surtout pas `cache: 'force-cache'` : ce mode rend la copie stockée sans
   // jamais interroger le serveur, quelle que soit son ancienneté, et un
-  // rechargement forcé (Ctrl+Maj+R) ne le déloge pas — il ne contourne le cache
+  // rechargement forcé (Ctrl+Maj+R) ne le déloge pas : il ne contourne le cache
   // que pour le document et ses sous-ressources, pas pour un fetch() qui a
   // demandé explicitement le cache. Un visiteur venu avant le 29 août gardait
   // ainsi indéfiniment le dictionnaire d'avant la Groussschreiwung et voyait
   // « sprooch » là où le clavier écrit « Sprooch ». Le mode par défaut
   // revalide : GitHub Pages sert un max-age de 600 s et un ETag fort, donc
   // c'est un hit sec pendant dix minutes puis un 304 de quelques centaines
-  // d'octets — le gain de bande passante reste, la péremption disparaît.
+  // d'octets : le gain de bande passante reste, la péremption disparaît.
   async function fetchJson(path) {
     const res = await fetch(path);
     if (!res.ok) throw new Error('HTTP ' + res.status + ' sur ' + path);

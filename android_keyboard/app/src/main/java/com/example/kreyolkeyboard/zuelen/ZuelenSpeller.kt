@@ -137,7 +137,7 @@ object ZuelenSpeller {
         val dizaine = enLettres((nombre / 10) * 10)
         val liaison = liaison(dizaine)
         val unite = retenue.dropLast(dizaine.length + liaison.length)
-        return "$nombre = $unite + $liaison + $dizaine — l'unité d'abord."
+        return "$nombre = $unite + $liaison + $dizaine, l'unité d'abord."
     }
 
     /**

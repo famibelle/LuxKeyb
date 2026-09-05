@@ -52,7 +52,7 @@ p{margin:0 0 12px;}
 .cite .cite-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
 .cite h4{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:700;}
 /* La citation est le motif principal de cette page : elle doit se lire en
-   entier sans défilement latéral. L'enroulement est purement visuel — le
+   entier sans défilement latéral. L'enroulement est purement visuel : le
    bouton copie textContent, qui conserve les vraies fins de ligne du BibTeX. */
 .cite pre{margin:0;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere;}
 .copy{border:1px solid var(--line);background:var(--card);color:var(--sea);font:inherit;font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 12px;cursor:pointer;white-space:nowrap;}
@@ -163,7 +163,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       <p class="meta">
         Phrases d'articles de presse publiés par <a href="https://www.rtl.lu">RTL.lu</a>,
         appariées à leurs équivalents anglais et français.
-        Fred Philippy, Siwen Guo, Jacques Klein, Tegawendé F. Bissyandé — COLING 2025.<br>
+        Fred Philippy, Siwen Guo, Jacques Klein, Tegawendé F. Bissyandé, COLING 2025.<br>
         <a href="https://huggingface.co/datasets/fredxlpy/LuxAlign">huggingface.co/datasets/fredxlpy/LuxAlign</a>
         · version <code>v3</code>
         · <a href="https://aclanthology.org/2025.coling-main.753/">l'article</a>
@@ -199,7 +199,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
         Phrases d'exemple du <a href="https://lod.lu">Lëtzebuerger Online Dictionnaire</a>,
         dont les données d'origine sont publiées en CC0 par la plateforme
         luxembourgeoise de données ouvertes.
-        Fred Philippy, Shohreh Haddadan, Siwen Guo — SIGUL @ LREC-COLING 2024.<br>
+        Fred Philippy, Shohreh Haddadan, Siwen Guo, SIGUL @ LREC-COLING 2024.<br>
         <a href="https://huggingface.co/datasets/fredxlpy/LETZ">huggingface.co/datasets/fredxlpy/LETZ</a>
         · configurations <code>LETZ-SYN</code> et <code>LETZ-WoT</code>
         · <a href="https://aclanthology.org/2024.sigul-1.13/">l'article</a>
@@ -230,7 +230,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       clavier et les fichiers de dictionnaire qu'il embarque ne sont pas sous la
       même licence, et c'est voulu : le code garde la sienne, les fichiers de
       dictionnaire sont des œuvres dérivées de LuxAlign et héritent donc de sa
-      clause <em>NonCommercial</em>. « Open source » ne lève pas cette clause —
+      clause <em>NonCommercial</em>. « Open source » ne lève pas cette clause :
       les licences approuvées par l'OSI autorisent explicitement l'usage
       commercial, ce que CC&nbsp;BY-NC interdit. L'application est gratuite et le
       restera ; toute réutilisation commerciale des fichiers de dictionnaire
@@ -245,10 +245,10 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     LuxAlign est soixante fois plus gros. On pourrait croire qu'il suffit. Mais
     un corpus de presse ne tutoie personne, et un clavier de téléphone ne fait
     presque que ça. Voici la même mesure sur les deux : la part de mots du
-    registre familier — <span class="lux">dech</span>,
+    registre familier (<span class="lux">dech</span>,
     <span class="lux">däin</span>, <span class="lux">hues</span>,
     <span class="lux">bass</span>, <span class="lux">mamm</span>,
-    <span class="lux">brudder</span>… — ramenée à dix mille mots, pour que la
+    <span class="lux">brudder</span>…) ramenée à dix mille mots, pour que la
     différence de taille ne fausse pas la comparaison.
   </p>
   <div class="card">
@@ -270,10 +270,10 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     français, et beaucoup de corpus disponibles mélangent les trois. Un
     dictionnaire qui avale ce mélange finit par proposer de l'allemand à
     quelqu'un qui écrit en luxembourgeois. La mesure ci-dessous compte les mots
-    allemands sans équivalent orthographique possible en luxembourgeois —
-    <span class="lux">und</span>, <span class="lux">wir</span>,
+    allemands sans équivalent orthographique possible en luxembourgeois
+    (<span class="lux">und</span>, <span class="lux">wir</span>,
     <span class="lux">auch</span>, <span class="lux">ich</span>,
-    <span class="lux">ist</span> — ce qui signale une bascule de langue et non
+    <span class="lux">ist</span>) : cela signale une bascule de langue et non
     un emprunt.
   </p>
   <div class="card">
@@ -282,7 +282,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     <p class="chart-note">
       Pour situer : le corpus de conférences de presse gouvernementales qui
       servait jusqu'à la version 10.15 en comptait <strong>272</strong> pour dix
-      mille — les ministres passent régulièrement à l'allemand en pleine
+      mille, et les ministres passent régulièrement à l'allemand en pleine
       réponse. Il a été retiré pour cette raison.
     </p>
   </div>
@@ -316,7 +316,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     <p class="chart-note">
       Une poignée de mots outils porte la moitié du texte, puis la courbe
       s'aplatit : c'est la longue traîne du vocabulaire. C'est elle qui rend un
-      gros dictionnaire utile, et elle aussi qui impose un seuil — les formes
+      gros dictionnaire utile, et elle aussi qui impose un seuil : les formes
       vues une seule fois sont écartées.
     </p>
   </div>
@@ -405,7 +405,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     <h3>Est-ce que ça prédit vraiment ?</h3>
     <p class="muted" style="margin-bottom:10px;">
       Mesuré sur <strong>ParaLux</strong>, un jeu de phrases luxembourgeoises
-      qui n'a servi ni de près ni de loin à fabriquer le clavier — aucune de
+      qui n'a servi ni de près ni de loin à fabriquer le clavier : aucune de
       ses phrases ne figure dans les corpus d'entraînement. Ce sont les
       fichiers réellement embarqués dans l'application qui sont interrogés :
       le chiffre annoncé est celui que vous obtenez.
@@ -416,7 +416,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
   <p class="muted" style="margin-top:14px;">
     Envie de voir le résultat sans rien installer ?
     <a href="simulateur.html">Le simulateur</a> fait tourner ce même dictionnaire
-    et ces mêmes prédictions directement dans le navigateur — le modèle y est
+    et ces mêmes prédictions directement dans le navigateur, où le modèle est
     simplement réencodé plus compactement, à suggestions identiques, pour ne
     pas faire retélécharger cinq mégaoctets à chaque visite.
   </p>
@@ -678,7 +678,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       $('note-accents').textContent =
         'La falaise se situe entre « ' + trois[0] + ' » et « ' + quatre[0] +
         ' » : ' + Math.round(trois[1] / quatre[1]) + ' fois moins d’occurrences. ' +
-        'C’est ce qui justifie trois touches dédiées et pas quatre — les ' +
+        'C’est ce qui justifie trois touches dédiées et pas quatre : les ' +
         'suivantes restent accessibles par appui long.';
 
       var nomSigne = {
@@ -751,7 +751,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       ]);
       $('note-prediction').textContent =
         'Près d’un mot sur cinq peut donc être saisi d’un seul appui sur une ' +
-        'suggestion, avant même d’avoir tapé la première lettre — et le ' +
+        'suggestion, avant même d’avoir tapé la première lettre, et le ' +
         'clavier complète aussi par préfixe, ce que cette mesure ne compte ' +
         'pas. Évaluer sur une partie du corpus d’entraînement mise de côté ' +
         'aurait donné 23,9 % : les phrases retirées viennent des mêmes ' +
@@ -759,7 +759,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
         'modèle de cinq points.';
     })
     .catch(function () {
-      echec('Chiffres indisponibles — relancez docs/scripts/generate_corpus_stats.py.');
+      echec('Chiffres indisponibles, relancez docs/scripts/generate_corpus_stats.py.');
     });
 })();
 </script>

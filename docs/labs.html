@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Labs — la dictée vocale luxembourgeoise en avant-première</title>
+<title>Labs · la dictée vocale luxembourgeoise en avant-première</title>
 <meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. Reconnaissance entièrement hors ligne, aucun son ne quitte le téléphone.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
@@ -43,7 +43,7 @@ a{color:var(--sea);}
 
 /* Bouton et code QR côte à côte, empilés sous 520 px. Le QR sert au cas le
    plus courant : on lit la page sur un ordinateur, on installe sur le
-   téléphone — sans avoir à retaper une URL de release GitHub. */
+   téléphone, sans avoir à retaper une URL de release GitHub. */
 .get{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center;}
 .get-main{flex:1 1 300px;min-width:0;}
 .qr{margin:0;text-align:center;flex:0 0 auto;}
@@ -52,7 +52,7 @@ a{color:var(--sea);}
 .qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
 
 /* Encart d'avertissement : ton posé, pas alarmiste, mais visuellement distinct
-   du reste — c'est ce que le lecteur doit avoir lu avant de télécharger. */
+   du reste : c'est ce que le lecteur doit avoir lu avant de télécharger. */
 .warn{border:1px solid var(--line);border-left:4px solid var(--sun);
   background:var(--sun-soft);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
 .warn h2{margin-top:0;}
@@ -115,7 +115,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <p class="lead">
     Labs est l'atelier du clavier : des versions expérimentales, en avance sur
     la version stable, que vous pouvez essayer avant tout le monde. Celle-ci
-    ajoute la <strong>dictée vocale luxembourgeoise</strong> — et elle
+    ajoute la <strong>dictée vocale luxembourgeoise</strong>, et elle
     fonctionne <strong>sans connexion</strong>.
   </p>
 </header>
@@ -156,7 +156,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   <p>
     Un bouton micro apparaît à droite de la barre de suggestions. Vous le
-    touchez, vous parlez, et le texte s'écrit au fil de votre phrase — il se
+    touchez, vous parlez, et le texte s'écrit au fil de votre phrase : il se
     corrige tout seul à mesure que le clavier comprend la suite. Un second
     appui fige le résultat ; sinon la dictée s'arrête d'elle-même après un
     silence.
@@ -209,7 +209,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <h2>⚠️ À lire avant de télécharger</h2>
     <p>
       <strong>La qualité de la reconnaissance n'est pas encore mesurée.</strong>
-      Le modèle embarqué est le plus petit de sa famille — celui qui tient dans
+      Le modèle embarqué est le plus petit de sa famille, celui qui tient dans
       un téléphone. Il se trompe, et il se trompe davantage en milieu bruyant,
       loin du micro, ou sur des noms propres. C'est précisément ce que cette
       version sert à découvrir.
@@ -261,7 +261,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </p>
   <p class="muted">
     À noter : la version Labs remplace l'application installée, y compris celle
-    reçue par le test fermé de Google Play. Les deux ne peuvent pas cohabiter —
+    reçue par le test fermé de Google Play. Les deux ne peuvent pas cohabiter,
     c'est pourquoi son icône porte la mention <strong>LABS</strong> sur
     l'écran d'accueil : elle vous dit d'un coup d'œil laquelle des deux est
     installée.
@@ -274,7 +274,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     Il existe une seconde version, qui ne sert pas le même but : au lieu du
     modèle embarqué, elle confie la dictée au service en ligne
     <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg.
-    La reconnaissance y est nettement meilleure — mais <strong>le son du micro
+    La reconnaissance y est nettement meilleure, mais <strong>le son du micro
     quitte le téléphone</strong>, ce qui est exactement ce que la version
     ci-dessus refuse de faire.
   </p>
@@ -292,7 +292,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2>Dites-nous ce que ça donne</h2>
   <p>
     C'est tout l'intérêt de Labs : vos retours décident de ce qui atteindra la
-    version stable. Le plus utile à nous transmettre, c'est un cas précis —
+    version stable. Le plus utile à nous transmettre, c'est un cas précis :
     <strong>le modèle de téléphone, ce que vous avez dit, et ce qui s'est
     écrit</strong>.
   </p>
@@ -306,10 +306,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2>En résumé</h2>
   <ul class="facts">
     <li><span class="k">Ce que ça ajoute</span><span class="v">La dictée vocale en luxembourgeois</span></li>
-    <li><span class="k">Connexion nécessaire</span><span class="v">Aucune — la reconnaissance est locale</span></li>
+    <li><span class="k">Connexion nécessaire</span><span class="v">Aucune, la reconnaissance est locale</span></li>
     <li><span class="k">Où va votre voix</span><span class="v">Nulle part : elle ne sort pas du téléphone</span></li>
     <li><span class="k">Taille</span><span class="v">38 Mo, contre 7 Mo pour la version stable</span></li>
-    <li><span class="k">Qualité</span><span class="v">Non mesurée à ce jour — des erreurs sont attendues</span></li>
+    <li><span class="k">Qualité</span><span class="v">Non mesurée à ce jour, des erreurs sont attendues</span></li>
     <li><span class="k">Installation</span><span class="v">APK manuel, hors Play Store</span></li>
     <li><span class="k">Mise à jour</span><span class="v">À retélécharger depuis cette page</span></li>
   </ul>

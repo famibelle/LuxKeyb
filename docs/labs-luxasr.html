@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dictée en ligne LuxASR — démonstration</title>
+<title>Dictée en ligne LuxASR · démonstration</title>
 <meta name="description" content="Version de démonstration du Lëtzebuergesch Clavier dont la dictée est confiée au service LuxASR de l'Université du Luxembourg. Le son du micro quitte le téléphone.">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -95,7 +95,7 @@ td.good{color:var(--ink);}
 .facts .v{color:var(--ink-soft);flex:1 1 220px;}
 
 /* Simulation de la dictée : elle rejoue les trois temps que décrit le déroulé
-   ci-dessous, avec les cadences réelles de l'application — 110 ms par image du
+   ci-dessous, avec les cadences réelles de l'application : 110 ms par image du
    tracé de niveau, 140 ms par image du témoin, et l'attente de 1,3 s mesurée
    entre la fin de la parole et le texte. Seule la durée de la parole est
    raccourcie : une dictée réelle dure une douzaine de secondes, et personne ne
@@ -160,7 +160,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     Cette version du clavier n'utilise pas son modèle embarqué : elle envoie
     le son du micro au service de reconnaissance
     <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg,
-    et affiche le texte qui revient. Elle existe pour une seule raison — montrer
+    et affiche le texte qui revient. Elle existe pour une seule raison : montrer
     à quoi ressemblerait la dictée luxembourgeoise si elle s'appuyait sur ce
     service plutôt que sur un petit modèle enfermé dans le téléphone.
   </p>
@@ -238,7 +238,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <li>
         <strong>Activez le clavier</strong> dans
         <code>Paramètres › Système › Claviers › Claviers à l'écran</code>, puis
-        choisissez-le comme clavier courant — au besoin, via l'icône de clavier
+        choisissez-le comme clavier courant, au besoin, via l'icône de clavier
         qui apparaît en bas de l'écran quand un champ de texte est ouvert.
       </li>
       <li>
@@ -294,7 +294,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <strong>Le micro s'ouvre et se met à battre</strong>
         <p>
           La barre de suggestions laisse place à un bandeau
-          <strong>🌐 LuxASR · Schwätzt…</strong> — « parlez ». Le globe est là à
+          <strong>🌐 LuxASR · Schwätzt…</strong>, « parlez ». Le globe est là à
           chaque étape, exprès : on ne doit jamais pouvoir confondre cette
           version avec celle qui reconnaît dans le téléphone.
         </p>
@@ -323,8 +323,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         </p>
         <p>
           On perd le texte qui se construit sous les yeux. On gagne
-          <strong>onze points et demi de justesse</strong> — 26,8 % de mots
-          erronés contre 38,3 % — parce que le modèle voit la phrase complète au
+          <strong>onze points et demi de justesse</strong>, 26,8 % de mots
+          erronés contre 38,3 %, parce que le modèle voit la phrase complète au
           lieu de deviner à chaque morceau où elle se coupe.
         </p>
       </span>
@@ -402,8 +402,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   <p>
     Les deux versions sont le même clavier, à un détail près : d'où vient le
-    texte quand vous parlez. Tout le reste — la disposition QWERTZ, le
-    dictionnaire, les suggestions — est identique.
+    texte quand vous parlez. Tout le reste (la disposition QWERTZ, le
+    dictionnaire, les suggestions) est identique.
   </p>
 
   <div class="tablewrap">
@@ -426,7 +426,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <th scope="row">Justesse</th>
           <td>72 % de mots erronés sur notre corpus d'essai</td>
           <td class="good">26,8 % de mots erronés sur des dictées d'une à trois
-            phrases, en interrogeant le service directement — et 11 % à 15 % sur
+            phrases, en interrogeant le service directement, et 11 % à 15 % sur
             un extrait lu proprement</td>
         </tr>
         <tr>
@@ -439,7 +439,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <td>≈ 6 s par passe sur un téléphone ancien,
             quelle que soit la longueur de la phrase</td>
           <td class="good">Rien pendant qu'on parle, puis le texte entier
-            ≈ 1,3 s après la dernière syllabe — 2,1 s au pire, et le délai ne
+            ≈ 1,3 s après la dernière syllabe, 2,1 s au pire, et le délai ne
             grandit pas avec la longueur de la dictée</td>
         </tr>
         <tr>
@@ -472,16 +472,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <strong>38,3 %</strong> : l'écart est le prix du découpage, pas celui du
     service. Un banc antérieur, sur des tranches plus courtes, a montré que
     rejouer au haut-parleur devant le micro d'un téléphone coûte encore quatre
-    points en médiane — la chaîne acoustique, cette fois. La mesure équivalente
+    points en médiane, la chaîne acoustique, cette fois. La mesure équivalente
     sur cette version reste à faire.
   </p>
 
   <p class="muted">
-    Ces valeurs sont pessimistes des deux côtés — les transcriptions humaines
+    Ces valeurs sont pessimistes des deux côtés : les transcriptions humaines
     du corpus omettent parfois ce que l'orateur a réellement dit, et le passage
     est alors compté faux. À l'opposé, les <strong>11 % à 15 %</strong> viennent
     d'un extrait lu proprement, rejoué cinq fois : trois passes entre 11,1 % et
-    14,8 %, deux à 52 % à cause d'une clause dupliquée en fin de transcription —
+    14,8 %, deux à 52 % à cause d'une clause dupliquée en fin de transcription,
     un défaut connu des modèles de cette famille, que l'application filtre
     lorsqu'il prend la forme d'une boucle, mais pas lorsqu'il n'apparaît qu'une
     fois. La vérité de l'usage courant est entre les deux, et d'autant plus près
@@ -501,8 +501,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       Une version précédente poussait l'audio en continu sur une connexion
       WebSocket et réécrivait le texte à chaque hypothèse reçue. Elle a été
       abandonnée pour une raison mesurée. Les deux points d'entrée servent le
-      même modèle — sur soixante-deux énoncés, quarante-trois transcriptions sont
-      identiques au caractère près — mais le découpage en direct oblige à décider
+      même modèle : sur soixante-deux énoncés, quarante-trois transcriptions sont
+      identiques au caractère près. Mais le découpage en direct oblige à décider
       où la phrase s'arrête, et une pause n'est pas une fin de phrase. Sur des
       dictées d'une à trois phrases, décider vaut onze points et demi de mots
       erronés. Le délai final, lui, ne change pas.
@@ -522,7 +522,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       alors que l'application, elle, passe sans difficulté. Quand cela arrive, la
       page ne fait pas reparler l'utilisateur : elle rejoue sur l'ancienne
       connexion WebSocket l'énoncé qu'elle a déjà enregistré, et le texte arrive
-      quand même — avec la justesse moindre du découpage en direct. Une seule
+      quand même, avec la justesse moindre du découpage en direct. Une seule
       entête ajoutée côté service ferait basculer la page sur l'API sans qu'on y
       touche.
     </p>
@@ -536,12 +536,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <li><span class="k">Reconnaissance</span><span class="v">Service LuxASR, Université du Luxembourg</span></li>
     <li><span class="k">Où va votre voix</span><span class="v">Sur les serveurs du service, à la fin de chaque dictée</span></li>
     <li><span class="k">Connexion</span><span class="v">Indispensable, y compris pour dicter</span></li>
-    <li><span class="k">Taille</span><span class="v">6,2 Mo — le modèle de reconnaissance
+    <li><span class="k">Taille</span><span class="v">6,2 Mo : le modèle de reconnaissance
       de 31 Mo est retiré du paquet, la reconnaissance étant distante</span></li>
     <li><span class="k">Distribution</span><span class="v">Aucune : ni Play Store, ni page d'accueil</span></li>
     <li><span class="k">Revenir en arrière</span><span class="v">Réinstallez la
       <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version stable</a>
-      par-dessus — même clé de signature, réglages conservés</span></li>
+      par-dessus, même clé de signature, réglages conservés</span></li>
   </ul>
 </section>
 
@@ -561,8 +561,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 // transcription, puis le texte qui remplace le tout d'un bloc. Les trois
 // s'écrivent au même endroit, comme le texte en composition du clavier.
 //
-// Les glyphes et les cadences sont ceux du code Android — barres U+2581–2587
-// toutes les 110 ms, quarts de cercle toutes les 140 ms — pour que la page
+// Les glyphes et les cadences sont ceux du code Android : barres U+2581 à 2587
+// toutes les 110 ms, quarts de cercle toutes les 140 ms, pour que la page
 // montre le produit et non une interprétation.
 (function () {
   var champ = document.getElementById('sim-txt');
@@ -610,7 +610,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       return;
     }
 
-    // 1. la parole — les barres suivent une enveloppe qui monte, retombe entre
+    // 1. la parole : les barres suivent une enveloppe qui monte, retombe entre
     //    deux mots et repart, pour ressembler à une phrase plutôt qu'à du bruit.
     etat.textContent = '🎤 écoute…';
     var niveaux = [], t0 = Date.now();
@@ -627,7 +627,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       ecrire('🎤 ' + trace, true);
     }, 110));
 
-    // 2. la transcription — le témoin remplace le tracé, au même endroit.
+    // 2. la transcription : le témoin remplace le tracé, au même endroit.
     minuteurs.push(setTimeout(function () {
       nettoyer();
       micro.dataset.on = '0';
@@ -662,7 +662,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 <script>
 // Même mécanique que la page Labs, sur le tag « labs-luxasr » : la page annonce
 // le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
-// silencieux — le HTML porte déjà un texte d'attente correct et le lien de
+// silencieux : le HTML porte déjà un texte d'attente correct et le lien de
 // téléchargement ne dépend pas de ce script.
 (function () {
   var set = function (id, txt) {

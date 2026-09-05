@@ -12,7 +12,7 @@
     LOADING: '🌐 LuxASR verbannen…',
     LISTENING: '🌐 LuxASR · Schwätzt…',
     FINALIZING: '🌐 LuxASR · Transkriptioun…',
-    IDLE: 'Prêt — touchez le micro et parlez en luxembourgeois'
+    IDLE: 'Prêt, touchez le micro et parlez en luxembourgeois'
   };
 
   var ui = {}, client = null, aDuTexte = false;
@@ -58,8 +58,8 @@
     onErreur: function (quoi, detail) {
       if (quoi === 'MIC') {
         erreur(detail === 'NotAllowedError' || detail === 'SecurityError'
-          ? '🎙️ Micro refusé. Autorisez-le pour ce site — l’icône dans la barre ' +
-            'd’adresse — puis réessayez.'
+          ? '🎙️ Micro refusé. Autorisez-le pour ce site (l’icône dans la barre ' +
+            'd’adresse) puis réessayez.'
           : '🎙️ Aucun micro accessible sur cet appareil.');
       } else {
         erreur('🌐 Service injoignable. LuxASR est une démonstration de recherche : ' +
@@ -76,7 +76,7 @@
     if (!window.LuxAsrClient || !window.LuxAsrClient.disponible()) {
       ui.consent.disabled = true;
       ui.consent.textContent = '🚫 Navigateur incompatible';
-      erreur('Ce navigateur ne donne pas accès au micro — il faut une page en HTTPS ' +
+      erreur('Ce navigateur ne donne pas accès au micro : il faut une page en HTTPS ' +
              'et un navigateur récent. L’APK ci-dessous fait la même démonstration.');
       ui.gate.appendChild(ui.erreur);
       return;

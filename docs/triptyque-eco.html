@@ -78,8 +78,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
    un support imprimé, son rendu ne doit pas changer avec le thème du
    site (clair/sombre) ni avec les préférences système du visiteur. */
 /* Version éco encre : la couverture n'a plus d'aplat. Il reste un lavis du
-   bleu profond à 5 % — assez pour que le volet de couverture ne se confonde
-   pas avec les volets intérieurs, assez peu pour ne rien coûter — et le rouge
+   bleu profond à 5 %, assez pour que le volet de couverture ne se confonde
+   pas avec les volets intérieurs, assez peu pour ne rien coûter, et le rouge
    du drapeau se réduit au bandeau de 6 mm en tête. */
 .cover{ padding:0; background:color-mix(in srgb, #003876 5%, white); color:#1C2624; justify-content:flex-start; border-top:6mm solid #ED2939; }
 .cover .top{ padding:4mm 8mm 3mm; text-align:center; }
@@ -198,12 +198,12 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
    continu. La rampe est froide (bleutée) et non crème : c'est la famille du
    bleu du drapeau, et elle ne concurrence pas le rouge.
    Les valeurs ne sont pas libres. L* descend de 97,8 à 86,9 et C* monte de 1,2
-   à 9,7, ce qui tient exactement ΔE 4,6 entre volets voisins — le seuil en
+   à 9,7, ce qui tient exactement ΔE 4,6 entre volets voisins, le seuil en
    deçà duquel deux pages côte à côte paraissent de la même couleur.
    Les encadrés posés dessus (rappel, encart d'installation) sont blancs et non
    teintés : un bloc teinté aurait fatalement croisé la rampe et disparu sur
    l'un des quatre volets. Le blanc reste au-dessus d'elle partout, de ΔE 2,5
-   sur le volet le plus clair — où c'est le filet bleu qui le tient — à 16,2
+   sur le volet le plus clair (où c'est le filet bleu qui le tient) à 16,2
    sur le plus foncé. L'encre garde 11,08:1 sur ce volet le plus foncé, l'encre
    douce 5,39:1. */
 .light{ background:#FFFFFF; }
@@ -295,7 +295,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 /* « 100 % gratuit » est l'argument le plus vendeur du dépliant : il est écrit
    en bleu profond, qui tient 9,94:1 sur le bleu très clair du bloc. Le rouge
-   du drapeau n'y donnerait que 3,65:1 — au-dessous du seuil de 4,5:1 pour du
+   du drapeau n'y donnerait que 3,65:1, au-dessous du seuil de 4,5:1 pour du
    petit texte, et c'est pourquoi il ne prend jamais un mot de cette taille. */
 .panel-cta .txt .free{ display:block; color:#003876; font-weight:700; margin-top:1mm; }
 
@@ -361,7 +361,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 <header style="padding:20px 0 10px;">
   <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
   <h1>Le triptyque, version éco encre 💧</h1>
-  <p class="lead">Le même dépliant sans aplat : les six volets sont sur papier, la couleur ne tient plus que les titres, les puces et les traits. Six panneaux d'aplat coûtent une cartouche à eux seuls — c'est la version à imprimer quand le tirage se compte en dizaines.</p>
+  <p class="lead">Le même dépliant sans aplat : les six volets sont sur papier, la couleur ne tient plus que les titres, les puces et les traits. Six panneaux d'aplat coûtent une cartouche à eux seuls : c'est la version à imprimer quand le tirage se compte en dizaines.</p>
 
   <div class="actions">
     <a class="btn primary" href="assets/triptyque-eco-letzebuergesch-clavier-A4.pdf" download>📄 Télécharger le PDF (A4 paysage, recto-verso)</a>
@@ -375,14 +375,14 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   </div>
 
   <div class="note">
-    Impression : A4 <b>paysage</b>, « Aucune marge », en-têtes et pieds de page désactivés. Pour le recto-verso manuel, imprimez d'abord le recto, remettez la feuille en la retournant <b>par le bord court</b>, puis imprimez le verso — les deux rainures tomberont l'une sur l'autre. Pliage : rabattre le volet gauche vers l'intérieur, puis le droit par-dessus.
+    Impression : A4 <b>paysage</b>, « Aucune marge », en-têtes et pieds de page désactivés. Pour le recto-verso manuel, imprimez d'abord le recto, remettez la feuille en la retournant <b>par le bord court</b>, puis imprimez le verso : les deux rainures tomberont l'une sur l'autre. Pliage : rabattre le volet gauche vers l'intérieur, puis le droit par-dessus.
   </div>
 </header>
 
 </div>
 
 <div class="preview-shell">
-  <p class="face-label noprint">Recto — panneaux 1 · 2 · 3 (le 3 est la couverture)</p>
+  <p class="face-label noprint">Recto, panneaux 1 · 2 · 3 (le 3 est la couverture)</p>
   <div class="page" id="face-recto">
 
     <!-- P1 : dos -->
@@ -390,7 +390,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div>
         <div class="wordmark">LËTZEBUERGESCH CLAVIER</div>
         <div class="quote">&laquo;&nbsp;Mir wëlle bleiwe wat mir sinn.&nbsp;&raquo;</div>
-        <p class="mission">Le dictionnaire de ce clavier n'est pas une liste figée : il est reconstruit à chaque publication à partir de deux corpus publics — <b>LuxAlign</b>, 180 342 phrases de presse, et <b>LETZ</b>, les phrases d'exemple du <i>Lëtzebuerger Online Dictionnaire</i>. La langue qu'il propose est celle qui s'écrit, pas celle d'un dictionnaire arrêté une fois pour toutes.</p>
+        <p class="mission">Le dictionnaire de ce clavier n'est pas une liste figée : il est reconstruit à chaque publication à partir de deux corpus publics : <b>LuxAlign</b>, 180 342 phrases de presse, et <b>LETZ</b>, les phrases d'exemple du <i>Lëtzebuerger Online Dictionnaire</i>. La langue qu'il propose est celle qui s'écrit, pas celle d'un dictionnaire arrêté une fois pour toutes.</p>
       </div>
       <div class="promo-row">
         <div class="qr-box">
@@ -462,7 +462,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     </div>
   </div>
 
-  <p class="face-label noprint">Verso — panneaux 4 · 5 · 6 (lecture intérieure de gauche à droite)</p>
+  <p class="face-label noprint">Verso, panneaux 4 · 5 · 6 (lecture intérieure de gauche à droite)</p>
   <div class="page" id="face-verso">
 
     <!-- P4 : installation -->
@@ -477,7 +477,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
             <span class="dl-txt"><b>Flashez ce code</b>Visez-le avec l'appareil photo : le site s'ouvre et le clavier s'essaie dans le navigateur, sans rien installer</span>
           </div>
         </li>
-        <li><b>Installez l'application</b>Deux chemins depuis le site : rejoindre le test sur Google Play — installation et mises à jour comme n'importe quelle autre application — ou télécharger l'APK directement.</li>
+        <li><b>Installez l'application</b>Deux chemins depuis le site : rejoindre le test sur Google Play (installation et mises à jour comme n'importe quelle autre application) ou télécharger l'APK directement.</li>
         <li><b>Activez le clavier dans les réglages</b>Un bouton de l'application mène droit au bon écran Android. Le système affiche alors un avertissement sur la saisie : il est générique, Android le montre pour <i>tout</i> clavier tiers, et celui-ci n'a aucune permission réseau pour envoyer quoi que ce soit.</li>
         <li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez Lëtzebuergesch Clavier et tapez votre premier mot.</li>
       </ol>
@@ -506,7 +506,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
     <div class="panel light rang-4">
       <div class="kicker">Motivation</div>
       <h2>Suivez votre progression</h2>
-      <p>Chaque mot que vous employez fait avancer votre niveau, selon la part du dictionnaire que vous avez déjà utilisée — d'<b>Ufänker</b> à <b>Sproochenmeeschter</b>. Seuls les mots déjà présents dans le dictionnaire sont comptés : un mot de passe ou un nom propre n'y figure pas, et n'est donc jamais enregistré.</p>
+      <p>Chaque mot que vous employez fait avancer votre niveau, selon la part du dictionnaire que vous avez déjà utilisée, d'<b>Ufänker</b> à <b>Sproochenmeeschter</b>. Seuls les mots déjà présents dans le dictionnaire sont comptés : un mot de passe ou un nom propre n'y figure pas, et n'est donc jamais enregistré.</p>
       <div class="levels">
         <div class="level-step h1"><span>🌍</span></div>
         <div class="level-step h2"><span>🌱</span></div>

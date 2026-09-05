@@ -2372,18 +2372,18 @@ class SettingsActivity : AppCompatActivity() {
         val sourcesText = TextView(this).apply {
             text = "Les suggestions de mots sont construites sur deux corpus " +
                     "ouverts de luxembourgeois contemporain :\n\n" +
-                    "📰 LuxAlign — phrases d'articles de RTL.lu, réunies par " +
+                    "📰 LuxAlign : phrases d'articles de RTL.lu, réunies par " +
                     "Fred Philippy et coll. (COLING 2025). Licence CC BY-NC 4.0.\n\n" +
-                    "📖 LETZ — phrases d'exemple du Lëtzebuerger Online " +
+                    "📖 LETZ : phrases d'exemple du Lëtzebuerger Online " +
                     "Dictionnaire (lod.lu), réunies par Fred Philippy et coll. " +
                     "(SIGUL 2024). Licence CC BY 4.0.\n\n" +
                     "Le premier apporte le vocabulaire et l'enchaînement des " +
                     "mots, le second la langue de tous les jours.\n\n" +
-                    "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu) — Zenter fir " +
+                    "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir " +
                     "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
                     "traductions françaises et 85 000 formes que la presse " +
                     "n'écrit jamais.\n\n" +
-                    "🇫🇷 Lexique 3.83 — base lexicale du français de Boris New " +
+                    "🇫🇷 Lexique 3.83 : base lexicale du français de Boris New " +
                     "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
                     "Elle apporte les 125 000 formes de la seconde rangée de " +
                     "suggestions, et évite au correcteur de souligner du " +
@@ -6233,7 +6233,7 @@ class SettingsActivity : AppCompatActivity() {
             tvFeedback.apply {
                 text = if (juste) "✅ Richteg !$gloseAffichee"
                        else "❌ La phrase disait « ${question.answer} »" +
-                            (glose?.let { " — $it" } ?: "")
+                            (glose?.let { " : $it" } ?: "")
                 setTextColor(if (juste) couleurJuste else couleurFausse)
                 visibility = View.VISIBLE
             }
@@ -6547,14 +6547,14 @@ class SettingsActivity : AppCompatActivity() {
                             text = "Une multiplication, et quatre façons d'écrire " +
                                 "son résultat : une seule est du luxembourgeois " +
                                 "correct. Les autres sont les fautes qu'on fait " +
-                                "vraiment — l'allemand, les chiffres inversés, le " +
+                                "vraiment : l'allemand, les chiffres inversés, le " +
                                 "trait d'union, la règle d'Eifel, la finale -ig. " +
                                 "Quand vous vous trompez, le jeu dit laquelle.\n\n" +
                                 "Deux règles suffisent à écrire tous les nombres " +
                                 "jusqu'à cent. L'unité se dit avant la dizaine : 56, " +
                                 "c'est six-et-cinquante, « sechsafofzeg ». Et le n de " +
                                 "la liaison « an » tombe devant f, s, v, m…, mais se " +
-                                "maintient devant d, t, z, n, h et les voyelles — " +
+                                "maintient devant d, t, z, n, h et les voyelles, " +
                                 "c'est la règle d'Eifel, d'où « sechsafofzeg » (56) " +
                                 "mais « sechsandrësseg » (36).\n\n" +
                                 "En « Difficile », le produit n'est plus affiché : " +
@@ -6573,7 +6573,7 @@ class SettingsActivity : AppCompatActivity() {
                             ).apply { topMargin = 16 }
                             text = "Orthographes vérifiées contre le Lëtzebuerger " +
                                 "Online Dictionnaire (LOD), Zenter fir d'Lëtzebuerger " +
-                                "Sprooch — data.public.lu, CC0."
+                                "Sprooch, data.public.lu, CC0."
                             textSize = 11f
                             setTextColor(Color.parseColor("#757575"))
                         })
@@ -6781,7 +6781,7 @@ class SettingsActivity : AppCompatActivity() {
             colonne.addView(TextView(activity).apply {
                 text = "Tapez un mot luxembourgeois ou français : la recherche " +
                         "fonctionne dans les deux sens.\n" +
-                        "Touchez un mot pour ouvrir sa fiche — sens, exemples " +
+                        "Touchez un mot pour ouvrir sa fiche : sens, exemples " +
                         "et autres formes ; appui long pour le copier."
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
@@ -6845,7 +6845,7 @@ class SettingsActivity : AppCompatActivity() {
             colonne.addView(TextView(activity).apply {
                 text = "Traductions et exemples issus du Lëtzebuerger Online " +
                         "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
-                        "Sprooch — CC0."
+                        "Sprooch, CC0."
                 textSize = 12f
                 setTextColor(Color.parseColor("#AAAAAA"))
                 setLineSpacing(0f, 1.2f)
