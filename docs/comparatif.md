@@ -10,6 +10,7 @@ lang: fr
   <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="presse.html">📰 Presse</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <strong>⚖️ Comparatif</strong> ·

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dossier de presse — Lëtzebuergesch Clavier</title>
+<meta name="description" content="Dossier de presse du Lëtzebuergesch Clavier, clavier Android luxembourgeois gratuit et hors ligne : faits clés, chiffres, visuels, contact. Plus de la moitié de ses données viennent des jeux ouverts du Zenter fir d'Lëtzebuerger Sprooch.">
+<meta property="og:title" content="Dossier de presse — Lëtzebuergesch Clavier">
+<meta property="og:description" content="Un clavier Android pour le luxembourgeois, construit sur les données ouvertes du Zenter fir d'Lëtzebuerger Sprooch.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:820px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(28px,6.2vw,40px);font-weight:800;line-height:1.08;letter-spacing:-0.022em;margin:0 0 14px;text-wrap:balance;}
+.lead{font-size:17.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 10px;}
+.maj{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin:14px 0 0;}
+section{margin-top:52px;}
+h2{font-size:23px;font-weight:800;margin:0 0 8px;letter-spacing:-0.015em;text-wrap:balance;}
+h3{font-size:16px;font-weight:700;margin:0 0 8px;}
+p{margin:0 0 13px;}
+a{color:var(--sea);}
+.muted{color:var(--ink-soft);font-size:15px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+
+/* Le chapô : la phrase que la presse reprendra telle quelle. */
+.pitch{border-left:4px solid var(--hibiscus);background:var(--hibiscus-soft);border-radius:0 12px 12px 0;padding:18px 20px;margin:26px 0 0;}
+.pitch p{font-size:18.5px;line-height:1.5;margin:0;}
+.pitch p + p{margin-top:10px;font-size:16px;color:var(--ink-soft);}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:20px 0 0;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.tile .n{display:block;font-size:clamp(23px,5vw,30px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13.5px;color:var(--ink-soft);margin-top:5px;}
+
+/* Le registre des jeux de données : une ligne par jeu publié par le ZLS,
+   les neuf, y compris ceux que le clavier n'utilise pas. Le tampon d'état
+   est la colonne qui porte l'information. */
+.ledger{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);margin-top:20px;}
+.ds{display:grid;grid-template-columns:1fr auto;gap:4px 14px;padding:16px 18px;border-bottom:1px solid var(--line);}
+.ds:last-child{border-bottom:0;}
+.ds.off{background:var(--stripe);}
+.ds .nom{font-size:16px;font-weight:700;margin:0;letter-spacing:-0.01em;}
+.ds .slug{grid-column:1/2;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);word-break:break-all;}
+.ds .role{grid-column:1/-1;font-size:14.5px;margin:6px 0 0;color:var(--ink-soft);}
+.ds .role b{color:var(--ink);font-weight:600;}
+.stamp{grid-column:2/3;grid-row:1/3;align-self:start;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:4px 11px;white-space:nowrap;border:1px solid var(--line);color:var(--ink-soft);}
+.stamp.on{background:var(--sea-soft);border-color:color-mix(in srgb,var(--sea) 40%,transparent);color:var(--ink);font-weight:700;}
+.stamp.test{background:var(--sun-soft);border-color:color-mix(in srgb,var(--sun) 40%,transparent);color:var(--ink);font-weight:700;}
+.lic{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--ink-soft);white-space:nowrap;margin-left:8px;vertical-align:2px;}
+
+.table-scroll{overflow-x:auto;margin-top:14px;}
+table{border-collapse:collapse;width:100%;font-size:15px;}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;}
+tbody tr:hover{background:var(--stripe);}
+td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.faits td:first-child{width:34%;color:var(--ink-soft);font-size:14.5px;}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;}
+.cols .card{margin:0;}
+.cols h3{margin-top:0;}
+.cols p{font-size:14.5px;color:var(--ink-soft);margin-bottom:0;}
+
+ul{margin:0 0 13px;padding-left:22px;}
+li{margin-bottom:7px;}
+
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb,var(--sun) 30%,transparent);border-radius:10px;padding:15px 17px;font-size:15px;margin-top:20px;}
+.note p:last-child{margin-bottom:0;}
+.attrib{background:var(--stripe);border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin-top:18px;}
+.attrib h3{margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);}
+.attrib pre{margin:0;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.55;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere;}
+
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px;}
+.shots figure{margin:0;}
+.shots img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line);background:var(--card);}
+.shots figcaption{font-size:13.5px;color:var(--ink-soft);margin-top:7px;}
+
+.cta{display:inline-block;padding:15px 26px;background:#ED2939;color:#fff;border-radius:10px;font-weight:700;font-size:17px;text-decoration:none;margin-top:6px;}
+.cta:hover{filter:brightness(1.07);color:#fff;}
+.cta:focus-visible{outline:3px solid var(--sea);outline-offset:3px;}
+
+footer.page{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink-soft);text-align:center;}
+
+@media (max-width:560px){
+  body{padding:0 12px 60px;}
+  .card,.ds{padding:14px;}
+  .tiles{grid-template-columns:repeat(auto-fit,minmax(136px,1fr));}
+  .ds{grid-template-columns:1fr;}
+  .stamp{grid-column:1;grid-row:auto;justify-self:start;margin-top:8px;}
+  .faits td:first-child{width:auto;}
+  th,td{padding:8px 7px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <strong>📰 Presse</strong> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Dossier de presse</p>
+  <h1>Lëtzebuergesch Clavier</h1>
+  <p class="lead">
+    Un clavier Android pour écrire en luxembourgeois, gratuit, sans publicité et
+    entièrement hors ligne. Plus de la moitié des données qu'il embarque vient
+    des jeux ouverts publiés par le <strong>Zenter fir d'Lëtzebuerger
+    Sprooch</strong> sur data.public.lu.
+  </p>
+  <p class="maj">Version 11.6.0 · mis à jour le 5 septembre 2026</p>
+</header>
+
+<div class="pitch">
+  <p>
+    <strong>Lëtzebuergesch Clavier propose les mots luxembourgeois pendant la
+    frappe, met les accents et les majuscules à votre place, et cesse de
+    souligner votre langue en rouge.</strong>
+  </p>
+  <p>
+    Il reconnaît plus de 123 000 formes, traduit 88 883 d'entre elles en
+    français, et montre 38 348 phrases d'exemple — presque tout cela vient du
+    Lëtzebuerger Online Dictionnaire, publié en CC0 par le ZLS.
+  </p>
+</div>
+
+<section>
+  <h2>Le problème</h2>
+  <p>
+    Les claviers du marché ne connaissent pas le luxembourgeois. Ils soulignent
+    chaque mot en rouge, corrigent <em>Haus</em> en <em>Haut</em>, et rendent
+    pénible ce qui devrait être ordinaire : écrire un SMS dans sa langue. Le
+    luxembourgeois est parlé par environ 400 000 personnes ; il s'écrit chaque
+    jour dans les messageries, et c'est précisément là qu'il n'est pas outillé.
+  </p>
+
+  <h2 style="margin-top:34px;">La réponse</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>⌨️ Une disposition juste</h3>
+      <p>QWERTZ, comme les claviers physiques du pays. <b>é</b>, <b>ä</b> et
+      <b>ë</b> ont chacune leur touche, et l'apostrophe de l'élision —
+      <em>d'Land</em>, <em>s'Kanner</em> — la sienne.</p>
+    </div>
+    <div class="card">
+      <h3>💡 Des suggestions qui savent</h3>
+      <p>Un dictionnaire de fréquences et un modèle de contexte à trois mots,
+      construits sur du luxembourgeois écrit réel, et vérifiés sur un corpus
+      que le modèle n'a jamais vu.</p>
+    </div>
+    <div class="card">
+      <h3>📖 Un dictionnaire embarqué</h3>
+      <p>Chaque mot proposé peut être ouvert : son sens en français, ses autres
+      formes, deux phrases d'exemple, et un lien vers l'article du LOD.</p>
+    </div>
+    <div class="card">
+      <h3>🎮 Cinq jeux de vocabulaire</h3>
+      <p>Mots mêlés, anagrammes, mot mystère, texte à trous et transcription
+      des nombres — avec la traduction française du mot cherché.</p>
+    </div>
+    <div class="card">
+      <h3>🔒 Rien ne sort du téléphone</h3>
+      <p>Pas de compte, pas de serveur, pas de statistique remontée. Le clavier
+      n'a aucune permission réseau et fonctionne en avion.</p>
+    </div>
+    <div class="card">
+      <h3>🆓 Gratuit et auditable</h3>
+      <p>Sans publicité, sans achat intégré, code source public sous licence
+      MIT. Fonctionne dès Android 5.0, sur des appareils anciens.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Le cœur du dossier</p>
+  <h2>Le clavier est bâti sur les données ouvertes du ZLS</h2>
+  <p>
+    Le <strong>Zenter fir d'Lëtzebuerger Sprooch</strong> publie neuf jeux de
+    données sur
+    <a href="https://data.public.lu/en/organizations/zenter-fir-dletzebuerger-sprooch/#/datasets">data.public.lu</a>.
+    Le clavier en exploite trois, en a mesuré un quatrième, et écarte les cinq
+    autres pour des raisons qu'il vaut mieux dire explicitement. Voici le
+    registre complet, sans rien retirer.
+  </p>
+
+  <div class="tiles">
+    <div class="tile"><span class="n">8,6 Mo</span><span class="k">de données issues du ZLS embarquées, sur 16,4 Mo au total</span></div>
+    <div class="tile"><span class="n">88 883</span><span class="k">traductions françaises, tirées du LOD</span></div>
+    <div class="tile"><span class="n">38 348</span><span class="k">phrases d'exemple pour 26 149 mots</span></div>
+    <div class="tile"><span class="n">123 265</span><span class="k">formes reconnues, dont 84 855 par le seul LOD</span></div>
+  </div>
+
+  <div class="ledger">
+
+    <div class="ds">
+      <p class="nom">Lëtzebuerger Online Dictionnaire — Linguistesch Daten<span class="lic">CC0 1.0</span></p>
+      <span class="slug">letzebuerger-online-dictionnaire-lod-linguistesch-daten</span>
+      <span class="stamp on">Utilisé</span>
+      <p class="role">Le dictionnaire officiel lui-même. Il fournit les
+      <b>88 883 traductions françaises</b> affichées dans les jeux et dans
+      l'onglet dictionnaire, les <b>38 348 phrases d'exemple</b> qui montrent
+      chaque mot en contexte, les <b>19 943 familles de formes</b> qui
+      regroupent <em>Haus</em> et <em>Haiser</em> sur une seule fiche, et les
+      <b>26 250 identifiants d'articles</b> qui renvoient l'utilisateur vers
+      lod.lu.</p>
+    </div>
+
+    <div class="ds">
+      <p class="nom">LOD — Index vun der Sich-Funktioun<span class="lic">CC0 1.0</span></p>
+      <span class="slug">letzebuerger-online-dictionnaire-lod-index-vun-der-sich-funktioun</span>
+      <span class="stamp on">Utilisé</span>
+      <p class="role">L'index des graphies qui mènent à un article :
+      <b>103 688 orthographes</b>, formes fléchies comprises. C'est lui qui fait
+      passer le clavier de 38 442 formes reconnues à plus de 123 000, dont
+      <b>84 855 qu'il peut proposer</b> et 26 424 qu'il accepte sans jamais
+      souligner. Sans cet index, la couverture des traductions tomberait de
+      54 % à 36 % des formes.</p>
+    </div>
+
+    <div class="ds">
+      <p class="nom">Méisproochegen Iwwersetzungskorpus fir d'Lëtzebuergescht<span class="lic">CC0 1.0</span></p>
+      <span class="slug">meisproochegen-iwwersetzungskorpus-fir-dletzebuergescht</span>
+      <span class="stamp test">Banc d'essai</span>
+      <p class="role">Le corpus de traduction quadrilingue du projet Tech-in-GOV
+      2025 sert à <b>mesurer</b> le clavier, jamais à l'entraîner : ses
+      <b>10 038 segments jamais vus</b> à l'entraînement produisent
+      <b>135 343 frappes simulées</b>, contre 2 703 pour le seul autre jeu
+      inédit disponible. C'est ce qui ramène le bruit statistique de ±0,8 point
+      à ±0,1, et c'est de lui que viennent les chiffres de qualité publiés sur
+      ce site. L'y verser comme corpus d'entraînement gagnerait 0,1 point et
+      détruirait le seul jeu de contrôle honnête du projet.</p>
+    </div>
+
+    <div class="ds">
+      <p class="nom">LOD — Flexiounstabellen<span class="lic">CC0 1.0</span></p>
+      <span class="slug">letzebuerger-online-dictionnaire-lod-flexiounstabellen</span>
+      <span class="stamp test">Mesuré</span>
+      <p class="role">Les tableaux de flexion ont été évalués puis mis en
+      attente, chiffres à l'appui : <b>19 072 de leurs 19 074 formes sont déjà
+      connues</b> du clavier par l'index de recherche. Le gain lexical est nul.
+      Leur intérêt serait ailleurs — afficher une conjugaison complète dans la
+      fiche d'un verbe — et reste une piste ouverte.</p>
+    </div>
+
+    <div class="ds off">
+      <p class="nom">LOD — Public API<span class="lic">CC0 1.0</span></p>
+      <span class="slug">letzebuerger-online-dictionnaire-lod-public-api</span>
+      <span class="stamp">Écarté par conception</span>
+      <p class="role">Le clavier n'a aucune permission réseau : il embarque les
+      exports statiques plutôt que d'interroger un service. Consulter une API
+      pendant la frappe reviendrait à faire sortir du téléphone ce que
+      l'utilisateur écrit — exactement ce que la politique de confidentialité
+      promet de ne jamais faire.</p>
+    </div>
+
+    <div class="ds off">
+      <p class="nom">Sproochemodell fir Lëtzebuergesch Sproocherkennung<span class="lic">licence ouverte</span></p>
+      <span class="slug">sproochemodell-fir-letzebuergesch-sproocherkennung</span>
+      <span class="stamp">Hors périmètre</span>
+      <p class="role">Reconnaissance vocale. Une dictée luxembourgeoise
+      expérimentale existe sur une branche séparée, elle n'est pas dans
+      l'application publiée et n'y entrera pas avant discussion avec
+      l'Université du Luxembourg.</p>
+    </div>
+
+    <div class="ds off">
+      <p class="nom">Dataset for finetuning a Luxembourgish ASR<span class="lic">licence ouverte</span></p>
+      <span class="slug">dataset-for-finetuning-a-luxembourgish-automatic-speech-recognition</span>
+      <span class="stamp">Hors périmètre</span>
+      <p class="role">Même raison : c'est de l'audio pour la reconnaissance
+      vocale, pas du texte pour un clavier.</p>
+    </div>
+
+    <div class="ds off">
+      <p class="nom">Hackathon LOD data<span class="lic">non spécifiée</span></p>
+      <span class="slug">hackathon-lod-data</span>
+      <span class="stamp">Écarté</span>
+      <p class="role">Aucune licence déclarée. Un projet qui redistribue ses
+      données ne peut pas embarquer un fichier dont il ne sait pas ce qu'il a le
+      droit d'en faire.</p>
+    </div>
+
+    <div class="ds off">
+      <p class="nom">Hackathon data 2<span class="lic">non spécifiée</span></p>
+      <span class="slug">hackathon-data-2</span>
+      <span class="stamp">Écarté</span>
+      <p class="role">Idem.</p>
+    </div>
+
+  </div>
+
+  <h3 style="margin-top:34px;">Ce que ça change à l'écran</h3>
+  <p>
+    Ces jeux ne sont pas une note de bas de page technique : ils sont ce que
+    l'utilisateur voit. Sans le LOD, le clavier proposerait le vocabulaire de la
+    presse et rien d'autre — <em>Läffelen</em> (cuillères),
+    <em>Forschetten</em> (fourchettes), <em>schaffesch</em> (tu travailles) en
+    étaient absents, parce qu'un quotidien ne les écrit jamais. Ce sont
+    exactement les mots qu'on tape sur un téléphone.
+  </p>
+  <ul>
+    <li><b>Le mot proposé est le bon mot.</b> Le luxembourgeois met une majuscule
+    à tous ses noms ; le clavier restitue <em>Joer</em>, <em>Haus</em>,
+    <em>RTL</em> avec leur casse correcte.</li>
+    <li><b>Chaque mot peut être ouvert.</b> Sens en français, autres formes de la
+    famille, deux phrases d'exemple écrites par les lexicographes du ZLS, et un
+    lien direct vers l'article sur lod.lu.</li>
+    <li><b>Les jeux enseignent.</b> Les cinq jeux de vocabulaire affichent la
+    traduction du mot cherché au moment où elle ne vend pas la mèche.</li>
+    <li><b>Le correcteur cesse de se tromper.</b> Il accepte aussi les formes de
+    la règle d'Eifel — <em>Ae</em> pour <em>Aen</em> devant consonne — sans
+    jamais les proposer : correctes en contexte, elles ne doivent pas être
+    soulignées.</li>
+  </ul>
+
+  <div class="attrib">
+    <h3>Attribution, telle qu'elle figure dans l'application et dans le dépôt</h3>
+    <pre>Lëtzebuerger Online Dictionnaire (LOD) — Zenter fir d'Lëtzebuerger Sprooch
+https://lod.lu · data.public.lu · licence CC0 1.0
+
+Méisproochegen Iwwersetzungskorpus fir d'Lëtzebuergescht (Tech-in-GOV 2025)
+Zenter fir d'Lëtzebuerger Sprooch · data.public.lu · licence CC0 1.0</pre>
+    <p class="muted" style="margin:10px 0 0;">
+      Le CC0 n'impose aucune obligation de citation. Le crédit est affiché
+      quand même, dans la carte « Sources » des réglages et sur ce site, et un
+      test automatisé échoue s'il disparaît.
+    </p>
+  </div>
+
+  <div class="note">
+    <p>
+      <b>Une précision sur les licences.</b> Tout ce qui vient du ZLS est en
+      CC0, donc librement réutilisable. Le modèle de <em>prédiction</em> —
+      dictionnaire de fréquences et contextes — s'appuie en plus sur deux
+      corpus de luxembourgeois écrit publiés par l'Université du Luxembourg,
+      <a href="corpus.html">LuxAlign et LETZ</a>, dont l'un porte une clause
+      non commerciale. Les fichiers de prédiction en héritent ; le code, lui,
+      est sous licence MIT.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que l'application n'embarque pas</h2>
+  <p>
+    Vérifiable dans le <a href="https://github.com/famibelle/LuxKeyb">dépôt
+    public</a>, où le script qui fabrique chaque fichier de données est lisible
+    et rejouable.
+  </p>
+  <ul>
+    <li><b>Aucune donnée ne quitte l'appareil.</b> Pas de compte, pas de
+    serveur, pas de télémétrie même anonyme. Le clavier fonctionne sans
+    connexion.</li>
+    <li><b>Ce que vous tapez n'est pas enregistré.</b> Seuls les mots déjà
+    présents dans le dictionnaire alimentent le compteur de progression : un mot
+    de passe, un code, un nom propre inconnu ne sont jamais comptés, et les
+    champs de saisie sensibles désactivent complètement ce suivi.</li>
+    <li><b>Aucun texte d'auteur n'est transporté</b> dans le modèle de
+    prédiction : uniquement des fréquences et des probabilités de succession. La
+    plus longue séquence reconstructible depuis ces données est de trois
+    mots.</li>
+    <li><b>Aucune publicité, aucun achat intégré, aucune marque.</b></li>
+    <li><b>Le clavier ne propose de lui-même ni politique ni religion.</b> Ces
+    mots restent tapables, suggérés et corrigés — un clavier qui refuse des mots
+    est cassé — mais l'application ne les met jamais en avant dans le mot du
+    jour ni dans les jeux.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Les chiffres, et comment ils sont obtenus</h2>
+  <p>
+    Mesurés sur les fichiers réellement livrés dans l'application, contre les
+    10 038 segments du corpus de traduction du ZLS que le modèle n'a jamais vus
+    — 135 343 frappes simulées. Le script est
+    <a href="https://github.com/famibelle/LuxKeyb/blob/main/docs/scripts/generate_corpus_stats.py">public</a>
+    et le détail se lit sur <a href="corpus.html">la page des corpus</a>.
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Mesure</th><th class="num">Valeur</th><th>Ce que ça veut dire</th></tr></thead>
+      <tbody>
+        <tr><td>Couverture lexicale</td><td class="num">93,6 %</td><td>Des mots écrits par un traducteur professionnel, le clavier en connaît neuf sur dix</td></tr>
+        <tr><td>Contexte reconnu</td><td class="num">87,8 %</td><td>Il a quelque chose à proposer pour neuf frappes sur dix</td></tr>
+        <tr><td>Mot juste dans les trois premiers</td><td class="num">18,1 %</td><td>Environ une frappe sur cinq peut être remplacée par un appui sur une suggestion</td></tr>
+        <tr><td>Formes reconnues</td><td class="num">123 265</td><td>38 442 du corpus de fréquences, 84 855 du seul LOD</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="margin-top:12px;">
+    La barre de suggestions reste volontairement vide quand le modèle n'a rien
+    de fiable à dire. Une proposition fausse quatre-vingt-dix-neuf fois sur cent,
+    habillée comme une proposition juste, coûte plus qu'une barre éteinte.
+  </p>
+</section>
+
+<section>
+  <h2>Faits clés</h2>
+  <div class="table-scroll">
+    <table class="faits">
+      <tbody>
+        <tr><td>Nom</td><td><strong>Lëtzebuergesch Clavier</strong></td></tr>
+        <tr><td>Version</td><td>11.6.0 (septembre 2026)</td></tr>
+        <tr><td>Plateforme</td><td>Android 5.0 et plus</td></tr>
+        <tr><td>Prix</td><td>Gratuit, sans publicité, sans achat intégré</td></tr>
+        <tr><td>Données personnelles</td><td>Aucune collecte, fonctionnement 100 % hors ligne — <a href="privacy/privacy-policy.html">politique de confidentialité</a></td></tr>
+        <tr><td>Licence du code</td><td>MIT, source sur <a href="https://github.com/famibelle/LuxKeyb">GitHub</a></td></tr>
+        <tr><td>Sources de données</td><td>Lëtzebuerger Online Dictionnaire et corpus de traduction du ZLS (CC0) ; corpus LuxAlign et LETZ de l'Université du Luxembourg</td></tr>
+        <tr><td>Dictionnaire</td><td>123 265 formes luxembourgeoises reconnues, 88 883 traduites en français, plus 125 348 formes françaises</td></tr>
+        <tr><td>Modèle de prédiction</td><td>27 746 contextes, dont 17 798 à deux mots</td></tr>
+        <tr><td>Fonctions</td><td>Suggestions bilingues, correcteur système, disposition QWERTZ, panneau emoji, dictionnaire embarqué, cinq jeux, progression en huit niveaux</td></tr>
+        <tr><td>Disponibilité</td><td>Test fermé sur <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">Google Play</a> ; APK également disponible en <a href="https://github.com/famibelle/LuxKeyb/releases/latest">téléchargement direct</a></td></tr>
+        <tr><td>Éditeur</td><td>Potomitan™ — Médhi Famibelle</td></tr>
+        <tr><td>Origine</td><td>Le code est issu du <a href="https://github.com/famibelle/KreyolKeyb">Klavyé Kréyòl Karukéra</a>, clavier créole guadeloupéen du même auteur, couvert par France-Antilles et Guadeloupe la 1ère en 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:20px;">
+    <a class="cta" href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">📲 Installer l'application</a>
+    &nbsp;
+    <a href="simulateur.html">ou l'essayer d'abord dans le navigateur</a>
+  </p>
+</section>
+
+<section>
+  <h2>Visuels</h2>
+  <p>
+    Captures libres de reproduction dans le cadre d'un article sur
+    l'application. Toutes en 1080 px de large.
+  </p>
+  <div class="shots">
+    <figure>
+      <img src="Screenshots/lux_suggestions.png" alt="Le clavier en cours de frappe : la barre affiche des suggestions luxembourgeoises sur fond rouge et françaises sur fond bleu">
+      <figcaption>Suggestions bilingues pendant la frappe</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/lux_accents.png" alt="Disposition QWERTZ du clavier avec les touches dédiées é, ä et ë">
+      <figcaption>Disposition QWERTZ, accents en touches directes</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/lux_onboarding.png" alt="Écran d'accueil de l'application, avec l'activation guidée du clavier">
+      <figcaption>Accueil et activation guidée</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/lux_niveaux.png" alt="Écran de progression : niveau atteint, mot du jour et mots découverts">
+      <figcaption>Progression et mot du jour</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/lux_spiller.png" alt="Écran Spiller présentant les cinq jeux de vocabulaire">
+      <figcaption>Les cinq jeux de vocabulaire</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/lux_wuertsich.png" alt="Jeu Wuertsich : grille de lettres où retrouver des mots luxembourgeois">
+      <figcaption>Wuertsich, les mots mêlés</figcaption>
+    </figure>
+  </div>
+  <p style="margin-top:16px;">
+    Également disponibles :
+    <a href="Screenshots/lux_clavier_demo.gif">une animation du clavier en action</a>,
+    <a href="Screenshots/lux_wuertriet.gif">une partie de Wuertriet</a>, et
+    <a href="https://github.com/famibelle/LuxKeyb/tree/main/docs/Screenshots">toutes les captures du dépôt</a>.
+  </p>
+</section>
+
+<section>
+  <h2>Angles possibles</h2>
+  <ul>
+    <li><b>Données ouvertes, effet concret.</b> Le ZLS publie son dictionnaire en
+    CC0 sur data.public.lu ; ce clavier montre ce qu'un tiers en fait
+    réellement — plus de la moitié de ce qu'il embarque en vient. C'est un cas
+    d'usage documenté, chiffré et rejouable de l'open data luxembourgeois.</li>
+    <li><b>Souveraineté linguistique à l'ère de l'IA.</b> Une langue qui ne
+    s'écrit pas dans le numérique devient invisible pour les modèles qui
+    apprennent de ce qui est en ligne. Outiller la frappe, c'est produire du
+    luxembourgeois écrit qui nourrira demain les corpus.</li>
+    <li><b>Ce qu'un dictionnaire de presse ne sait pas.</b> Les mots absents du
+    corpus journalistique — cuillère, fourchette, « tu travailles » — disent
+    quelque chose sur l'écart entre la langue des médias et celle des
+    messageries.</li>
+    <li><b>Enseignement.</b> Un outil d'écriture pour les cours de
+    luxembourgeois : gratuit, sans compte, sans connexion, sans donnée à
+    déclarer, et adossé au dictionnaire officiel du pays.</li>
+    <li><b>Un clavier qui refuse de bluffer.</b> La barre reste vide quand le
+    modèle ne sait pas — un choix d'honnêteté rare dans une interface, et
+    mesuré.</li>
+    <li><b>Du créole au luxembourgeois.</b> La même base de code sert deux
+    langues minorisées à 7 000 km d'écart, avec la même méthode et deux corpus
+    différents.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Contact</h2>
+  <p>
+    <strong>Médhi Famibelle</strong>, Potomitan™. Échanges en français ou en
+    anglais.
+  </p>
+  <p>
+    Demande d'interview, visuel manquant, question technique :
+    <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>
+  </p>
+  <p class="muted">
+    Pour aller plus loin :
+    <a href="corpus.html">les corpus en chiffres</a> ·
+    <a href="comparatif.html">le comparatif avec les autres claviers</a> ·
+    <a href="faq.html">les questions fréquentes</a> ·
+    <a href="https://github.com/famibelle/LuxKeyb">le code source</a>
+  </p>
+</section>
+
+<footer class="page">
+  Lëtzebuergesch Clavier · gratuit, open source (MIT), sans publicité,
+  100 % hors ligne.<br>
+  Données du Lëtzebuerger Online Dictionnaire et du corpus de traduction du
+  <a href="https://data.public.lu/en/organizations/zenter-fir-dletzebuerger-sprooch/#/datasets">Zenter fir d'Lëtzebuerger Sprooch</a>, licence CC0 1.0.
+</footer>
+
+</div>
+</body>
+</html>
