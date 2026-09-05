@@ -8,9 +8,9 @@
 ## 📱 Aperçu
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
-  <img src="Screenshots\Screenshot_1761490896.png" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots\Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots\Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761490896.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
 
 ## 🎮 Système de progression et de gamification
@@ -131,8 +131,8 @@ L'application s'ouvre automatiquement et vous guide :
 2. **Appuyez dans la zone de texte** pour faire apparaître le clavier
 3. En bas du clavier, vous verrez une **icône de globe 🌐** ou **d'engrenage ⚙️**
 4. **Appuyez longuement** sur cette icône
-5. **Choisissez "Klavyé Kréyòl Karukera"** dans la liste
-6. C'est parti ! Vous pouvez maintenant écrire en kréyòl ! 🎉
+5. **Choisissez "Lëtzebuergesch Clavier"** dans la liste
+6. C'est parti ! Vous pouvez maintenant écrire en luxembourgeois ! 🎉
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
