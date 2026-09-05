@@ -5686,7 +5686,7 @@ class SettingsActivity : AppCompatActivity() {
             val guess = editGuess.text.toString().trim().lowercase()
 
             if (guess.length != WuertrietData.WORD_LENGTH) {
-                showTopMessage("Mo la dwèt ni ${WuertrietData.WORD_LENGTH} lèt")
+                showTopMessage("D'Wuert muss ${WuertrietData.WORD_LENGTH} Buschtawen hunn")
                 return
             }
             if (!WuertrietData.isValidWord(activity, guess)) {
