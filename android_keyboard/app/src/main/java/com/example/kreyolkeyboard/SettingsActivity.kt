@@ -179,7 +179,8 @@ class SettingsActivity : AppCompatActivity() {
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
             "Le guide, en bas de l'onglet Démarrage, reprend toutes les étapes en images, suivies des questions fréquentes.",
             "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur.",
-            "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça."
+            "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça.",
+            "Glissez le doigt le long de la barre d'espace pour promener le curseur lettre par lettre : plus besoin de viser entre deux caractères pour corriger un mot."
         )
     }
     
