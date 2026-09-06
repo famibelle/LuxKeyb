@@ -9,6 +9,60 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [11.7.0] - 2026-09-06
+
+### ✨ Ajouté
+
+- **Le curseur se promène en glissant le doigt sur la barre d'espace.** Poser
+  un curseur entre deux lettres est le geste le plus raté de la saisie mobile :
+  la cible fait deux millimètres et le doigt en couvre dix. Le doigt part de la
+  barre d'espace et le curseur suit, une lettre à la fois, avec une courte
+  vibration à chaque caractère franchi. Le geste ne s'arrête pas au bord de la
+  touche : il court sur toute la largeur de l'écran, de quoi traverser une
+  phrase sans lever le doigt. Les deux gestes que la barre d'espace portait
+  déjà sont intacts : l'appui long ouvre toujours le sélecteur de claviers, et
+  placer le curseur au milieu d'un mot ne laisse pas d'espace derrière soi.
+- **Le panneau emoji s'ouvre sur ceux que vous venez d'employer.** Il en
+  propose près de 1 900 en neuf catégories quand chacun en emploie une
+  poignée : le même envoi recommençait par la même descente dans la grille. Un
+  onglet « Récents » ouvre désormais la liste, et le panneau s'ouvre dessus. Il
+  retient les trente derniers, soit exactement la page visible. Une couleur de
+  peau choisie en appui long y rejoint la liste telle qu'elle a été employée.
+- **« Vider les emojis récents »**, dans les réglages du clavier, sous les
+  interrupteurs de vibration et de son.
+
+### 🐛 Corrigé
+
+- **La touche « 123 » ne fige plus le clavier.** Chaque passage entre les
+  lettres, les chiffres et les emojis reconstruisait tout l'arbre de touches,
+  trente-quatre boutons neufs d'un seul bloc sur le fil principal. Mesuré sur un
+  Galaxy A21s, cela bloquait l'écran quatre à cinq images à chaque appui, soit
+  le petit délai que l'on sentait. Désormais les pavés alphabétique et numérique
+  sont montés une seule fois et la bascule ne fait que changer lequel est
+  visible : la même mesure tombe à une ou deux images.
+- **Fuite mémoire sur les changements de mode.** La liste interne des touches
+  n'était jamais vidée tant que le clavier vivait : elle grossissait d'une
+  trentaine d'entrées à chaque bascule, pour toute la durée du processus. Elle
+  est maintenant remise à zéro à chaque reconstruction.
+
+### 🔧 Modifié
+
+- Les suggestions ne clignotent plus pendant un déplacement de curseur : elles
+  ne sont recalculées qu'une fois le doigt arrêté, sur la position d'arrivée.
+- Le rendu logiciel forcé sur chaque touche, ajouté pour un défaut d'affichage
+  propre aux ROM Honor et Huawei, n'est plus appliqué ailleurs, où il ne
+  servait qu'à ralentir chaque redessin. L'ombre portée des libellés ne change
+  pas.
+
+### 🔒 Confidentialité
+
+- La liste des emojis récents ne retient que des identifiants pris dans un
+  ensemble fermé et public, jamais du texte libre. Elle est bornée à trente
+  entrées, sans horodatage ni compteur. Elle obéit à la même exclusion que les
+  statistiques de vocabulaire : rien n'y est ajouté depuis un champ de mot de
+  passe. Elle ne quitte pas l'appareil, et l'onglet « Récents » n'apparaît pas
+  tant que rien n'a été employé.
+
 ## [11.6.0] - 2026-09-04
 
 ### 🎨 Amélioré
