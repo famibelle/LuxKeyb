@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [12.0.0] - 2026-09-06
+
+### 🎨 Modifié
+
+- **La barre de suggestions est creusée dans le clavier.** Elle avait le même
+  fond que le reste et flottait au-dessus des touches sans jamais s'y rattacher.
+  Elle forme maintenant un léger renfoncement : fond un peu plus sombre que les
+  touches, ombre le long du bord haut, filet clair le long du bord bas, et le
+  fond du clavier qui réapparaît de chaque côté. Les touches y gagnent leur
+  relief, et la barre se lit comme une partie du clavier. Rien ne bouge de
+  place : le creux tient dans l'espace qui séparait déjà les puces du bord, il
+  ne coûte pas un pixel de hauteur aux rangées de touches. Le rouge du
+  luxembourgeois et le bleu du français ressortent mieux sur ce fond.
+
 ## [11.7.0] - 2026-09-06
 
 ### ✨ Ajouté
