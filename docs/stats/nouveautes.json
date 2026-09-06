@@ -1,9 +1,28 @@
 {
  "genere_le": "2026-09-06",
- "derniere_version": "20.1.0",
+ "derniere_version": "20.1.1",
  "derniere_date": "2026-09-06",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.1.1",
+   "date": "2026-09-06",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "La barre de défilement ne barre plus les mots proposés",
+       "texte": "Quand la barre de suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire défiler la rangée faisait apparaître un trait en travers des puces — et précisément pendant qu'on les lisait pour choisir. Android dessine la barre de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur une puce rouge se lit comme un mot barré. Elle est retirée : l'indication qu'il reste des mots à droite était déjà portée par la puce coupée au bord. La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la même raison, et est corrigée avec elle."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "20.1.0",
    "date": "2026-09-06",
@@ -157,25 +176,6 @@
       {
        "titre": "Le clavier occupe près de 6 Mo de mémoire en moins",
        "texte": "Il gardait la liste complète des 150 000 formes qu'il sait reconnaître, uniquement pour décider s'il doit souligner un mot. Une structure compacte suffit à répondre à cette question. Rien ne change à l'écran, mais le clavier se fait moins souvent mettre de côté par le téléphone — et il revient plus vite quand il l'a été."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "11.5.2",
-   "date": "2026-09-04",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "L'application repasse de 38 à 8 Mo",
-       "texte": "Les versions 11.5.0 et 11.5.1 embarquaient par erreur un modèle de reconnaissance vocale de 32 Mo, qui ne sert à aucune fonction du clavier. Rien d'autre ne change."
       }
      ],
      "texte": "",

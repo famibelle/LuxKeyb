@@ -9,6 +9,21 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.1.1] - 2026-09-06
+
+### 🐛 Corrigé
+
+- **La barre de défilement ne barre plus les mots proposés.** Quand la barre de
+  suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire
+  défiler la rangée faisait apparaître un trait en travers des puces — et
+  précisément pendant qu'on les lisait pour choisir. Android dessine la barre
+  de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une
+  rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur
+  une puce rouge se lit comme un mot barré. Elle est retirée : l'indication
+  qu'il reste des mots à droite était déjà portée par la puce coupée au bord.
+  La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la
+  même raison, et est corrigée avec elle.
+
 ## [20.1.0] - 2026-09-06
 
 ### 🎨 Modifié
