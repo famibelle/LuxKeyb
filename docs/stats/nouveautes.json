@@ -1,9 +1,28 @@
 {
  "genere_le": "2026-09-06",
- "derniere_version": "11.7.0",
+ "derniere_version": "12.0.0",
  "derniere_date": "2026-09-06",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "12.0.0",
+   "date": "2026-09-06",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🎨",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "La barre de suggestions est creusée dans le clavier",
+       "texte": "Elle avait le même fond que le reste et flottait au-dessus des touches sans jamais s'y rattacher. Elle forme maintenant un léger renfoncement : fond un peu plus sombre que les touches, ombre le long du bord haut, filet clair le long du bord bas, et le fond du clavier qui réapparaît de chaque côté. Les touches y gagnent leur relief, et la barre se lit comme une partie du clavier. Rien ne bouge de place : le creux tient dans l'espace qui séparait déjà les puces du bord, il ne coûte pas un pixel de hauteur aux rangées de touches. Le rouge du luxembourgeois et le bleu du français ressortent mieux sur ce fond."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "11.7.0",
    "date": "2026-09-06",
@@ -148,37 +167,6 @@
       {
        "titre": null,
        "texte": "Les prédictions passent de 17,1 % à <strong>20,8 %</strong> de bonnes réponses en trois propositions, mesurées sur des phrases que le dictionnaire n'a jamais vues. Et la barre de suggestions reste vide <strong>12 % du temps au lieu de 16 %</strong>."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "11.4.1",
-   "date": "2026-09-04",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Écrire un mot français ne fait plus apparaître de mots luxembourgeois sans rapport",
-       "texte": "En tapant « déchet », le clavier proposait « Bechet », « Deche » et « Dechen » avant le bon mot : il cherchait à corriger une faute là où il n'y en avait pas. Ces propositions disparaissent, et le mot juste passe en tête."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🎨",
-     "titre": "Amélioré",
-     "points": [
-      {
-       "titre": "La frappe redevient instantanée dans ce cas",
-       "texte": "La recherche de correction parcourait tout le dictionnaire luxembourgeois : mesuré sur un téléphone d'entrée de gamme, la dernière lettre de « déchet » prenait 914 ms, contre 50 ms maintenant."
       }
      ],
      "texte": "",
