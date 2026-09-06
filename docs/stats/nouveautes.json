@@ -1,9 +1,31 @@
 {
  "genere_le": "2026-09-06",
- "derniere_version": "12.0.0",
+ "derniere_version": "20.0.0",
  "derniere_date": "2026-09-06",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.0.0",
+   "date": "2026-09-06",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Kräizwuert, des mots croisés français → luxembourgeois",
+       "texte": "Sixième jeu de l'onglet Spiller, et le seul où l'on <strong>écrit</strong> le luxembourgeois au lieu de le reconnaître : les cinq autres montrent le mot, ici la case est vide. Chaque définition est le sens français tiré du LOD, et à vous d'écrire le mot dans la grille, accents compris — Ä, Ë, É, Ö et Ü sont sur le pavé du jeu, qui ne dépend donc pas du clavier actif de l'appareil. Une faute ne se signale qu'une fois le mot entièrement écrit, pour ne pas dicter la réponse lettre par lettre ; chaque mot trouvé rappelle son orthographe véritable, puisque la grille en capitales efface justement la majuscule des substantifs. 300 grilles livrées, cent par difficulté, construites et vérifiées hors de l'appareil par <code>Dictionnaires/generate_crossword.py</code>. La difficulté porte sur la rareté du vocabulaire, pas sur la taille de la grille."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_kraizwuert.png",
+   "image_alt": "Une grille de mots croisés dans l'application : deux mots trouvés en vert, ZEJOERT et LÄNNER, la définition « travail · 8 lettres » au-dessus de la grille et le pavé de lettres en dessous.",
+   "image_legende": "Deux mots trouvés sur sept. La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — « Länner » garde sa majuscule."
+  },
   {
    "version": "12.0.0",
    "date": "2026-09-06",
@@ -147,29 +169,6 @@
       {
        "titre": "Plus d'attente quand vous écrivez un mot que le clavier ne connaît pas",
        "texte": "Un mot allemand, un nom propre, un mot composé : le clavier cherchait alors une correction en parcourant tout son dictionnaire, et il y passait près d'une seconde sur un téléphone d'entrée de gamme. C'est désormais cinq fois plus rapide, et les propositions sont les mêmes."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "11.5.0",
-   "date": "2026-09-04",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🎨",
-     "titre": "Amélioré",
-     "points": [
-      {
-       "titre": "Le clavier propose plus souvent le mot suivant, et se tait moins",
-       "texte": "Les mots d'une seule lettre — <code>d'</code> de « d'Leit », <code>a</code>, <code>e</code> — étaient absents du dictionnaire : le programme qui le fabrique les jetait. Or <code>d'</code> est le mot le plus fréquent de la langue. Il est maintenant connu, comme les autres : après lui, le clavier sait de nouveau quoi proposer."
-      },
-      {
-       "titre": null,
-       "texte": "Les prédictions passent de 17,1 % à <strong>20,8 %</strong> de bonnes réponses en trois propositions, mesurées sur des phrases que le dictionnaire n'a jamais vues. Et la barre de suggestions reste vide <strong>12 % du temps au lieu de 16 %</strong>."
       }
      ],
      "texte": "",

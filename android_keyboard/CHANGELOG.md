@@ -9,6 +9,27 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.0.0] - 2026-09-06
+
+> Le saut de 12.1 à 20.0 est un repère, pas une rupture : il remet le numéro
+> au-dessus de celui du Klavyé Kréyòl Karukéra, avec qui ce dépôt partage sa
+> base de code, pour que les deux lignes restent distinguables d'un coup d'œil.
+
+### ✨ Ajouté
+
+- **Kräizwuert, des mots croisés français → luxembourgeois.** Sixième jeu de
+  l'onglet Spiller, et le seul où l'on **écrit** le luxembourgeois au lieu de le
+  reconnaître : les cinq autres montrent le mot, ici la case est vide. Chaque
+  définition est le sens français tiré du LOD, et à vous d'écrire le mot dans la
+  grille, accents compris — Ä, Ë, É, Ö et Ü sont sur le pavé du jeu, qui ne
+  dépend donc pas du clavier actif de l'appareil. Une faute ne se signale
+  qu'une fois le mot entièrement écrit, pour ne pas dicter la réponse lettre
+  par lettre ; chaque mot trouvé rappelle son orthographe véritable, puisque la
+  grille en capitales efface justement la majuscule des substantifs. 300 grilles
+  livrées, cent par difficulté, construites et vérifiées hors de l'appareil par
+  `Dictionnaires/generate_crossword.py`. La difficulté porte sur la rareté du
+  vocabulaire, pas sur la taille de la grille.
+
 ## [12.0.0] - 2026-09-06
 
 ### 🎨 Modifié
