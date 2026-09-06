@@ -3,7 +3,7 @@
   "20.0.0": {
     "image": "Screenshots/lux_kraizwuert.png",
     "alt": "Une grille de mots croisés dans l'application : deux mots trouvés en vert, ZEJOERT et LÄNNER, la définition « travail · 8 lettres » au-dessus de la grille et le pavé de lettres en dessous.",
-    "legende": "Deux mots trouvés sur sept. La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — « Länner » garde sa majuscule."
+    "legende": "Deux mots trouvés sur sept. La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — « Länner » garde sa majuscule. Le pavé de lettres appartient au jeu et non au clavier du téléphone : c'est ce qui garantit que Ä, Ë, É, Ö et Ü sont toujours à portée de doigt."
   },
   "12.0.0": {
     "image": "Screenshots/lux_cuvette.png",
