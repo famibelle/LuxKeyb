@@ -99,10 +99,11 @@ et ses vraies suggestions.</em></p>
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_clavier_demo.gif" style="width:100%;border-radius:8px;"
-         alt="Animation : saisie de « Moien wéi geet et » sur le clavier QWERTZ. Un cercle bleu marque chaque appui du doigt, sur les touches comme sur la puce rouge « Moien » choisie dans la barre. Après le premier mot, la barre propose la suite de la phrase.">
+         alt="Animation : la phrase « Ech hunn op der Schueberfouer Gromperekichelcher giess » tapée sur le clavier QWERTZ. Un cercle bleu suit le doigt. Après « op der » la barre propose des mots pour continuer, et « Schueberfouer », « Gromperekichelcher » puis « giess » sont complétés en un appui depuis la barre de suggestions.">
     <figcaption>
-      « Moien wéi geet et » : suggestions luxembourgeoises en rouge et françaises
-      en bleu pendant la frappe, touche « é » dédiée, puis prédiction du mot suivant
+      « Ech hunn op der Schueberfouer Gromperekichelcher giess »
+      (j'ai mangé des galettes de pommes de terre à la Schueberfouer) : la barre
+      propose la suite après « op der », puis complète les mots longs en un appui.
     </figcaption>
   </figure>
 </div>
