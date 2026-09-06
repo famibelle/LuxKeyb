@@ -83,6 +83,14 @@ jobs:
         # silence. La source (LOD, data.public.lu) est publique et sans jeton.
         python generate_translations.py --strict
 
+        # Les grilles de mots croisés se dérivent des DEUX actifs précédents :
+        # les mots viennent du dictionnaire de fréquences, les définitions de la
+        # table des traductions. Elles passent donc en dernier. Ne pas les
+        # régénérer laisserait des grilles dont un mot a pu quitter le
+        # dictionnaire ou perdre sa glose, et CrosswordAssetTest le verrait
+        # échouer.
+        python generate_crossword.py --strict
+
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
 
@@ -90,7 +98,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -188,6 +196,39 @@ jobs:
         # les phrases livrées sont des extraits de corpus CC BY-NC et CC BY.
         if ! jq -e '.sources | length >= 2' "$A/luxemburgish_cloze.json" > /dev/null; then
           echo "::error::luxemburgish_cloze.json ne porte pas l'attribution de ses corpus sources."
+          exit 1
+        fi
+
+        # Garde-fou des grilles de mots croisés. Une grille dont un mot n'est
+        # plus dans le dictionnaire, dont une définition contient sa réponse ou
+        # dont deux mots se collent en fabriquant une suite de lettres que
+        # personne n'a écrite reste du JSON valide et s'affiche normalement :
+        # c'est le joueur qui découvre que la grille est insoluble.
+        # CrosswordAssetTest vérifie tout cela mot à mot ; ici on ne garde que
+        # ce que jq peut dire vite, à savoir le volume et l'attribution.
+        GRILLES=$(jq '.grilles | length' "$A/luxemburgish_crossword.json")
+        echo "🧩 Grilles de mots croisés : $GRILLES"
+        # 300 en production, et le filtre de neutralité en retire une quinzaine
+        # au chargement : 250 laisse la marge sans tolérer un effondrement.
+        if [ "$GRILLES" -lt 250 ]; then
+          echo "::error::Seulement $GRILLES grilles de mots croisés (attendu ~300). Le vivier de mots glosés s'est probablement effondré."
+          exit 1
+        fi
+
+        # Chaque niveau doit garder de quoi jouer : une réserve vide fait
+        # resservir les mêmes grilles sans que rien n'échoue.
+        for NIVEAU in 1 2 3; do
+          COMPTE=$(jq --argjson n "$NIVEAU" '[.grilles[] | select(.l == $n)] | length' "$A/luxemburgish_crossword.json")
+          if [ "$COMPTE" -lt 80 ]; then
+            echo "::error::Difficulté $NIVEAU : $COMPTE grilles seulement (attendu ~100)."
+            exit 1
+          fi
+        done
+
+        # Le jeu affiche ces crédits : les définitions viennent du LOD, les mots
+        # des deux corpus sous Creative Commons.
+        if ! jq -e '.attribution | length >= 3' "$A/luxemburgish_crossword.json" > /dev/null; then
+          echo "::error::luxemburgish_crossword.json ne porte pas l'attribution de ses sources."
           exit 1
         fi
 
@@ -372,6 +413,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_dict.json
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
+          android_keyboard/app/src/main/assets/luxemburgish_crossword.json
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
           android_keyboard/app/src/main/assets/luxemburgish_familles.json
