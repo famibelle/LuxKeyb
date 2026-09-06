@@ -97,6 +97,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // cf. fitTextToChipHeight().
         private const val SUGGESTION_CHIP_PADDING_V_DP = 6
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
+
+        /**
+         * Encastrement latéral du plateau de suggestions.
+         *
+         * C'est lui qui fait la margelle : le fond du clavier apparaît de chaque
+         * côté, et sans ce rebord visible rien ne porterait l'ombre interne,
+         * donc rien ne se lirait comme un creux. Latéral seulement : une marge
+         * haute ou basse s'ajouterait à la hauteur consommée sans que
+         * [computeAvailableRowsHeight] la voie, et la dernière rangée de touches
+         * se ferait rogner d'autant.
+         */
+        private const val SUGGESTION_BAR_INSET_DP = 8
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -514,8 +526,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setBackgroundColor(KeyboardTheme.palette().fondSuggestions)
+            ).apply {
+                // Voir SUGGESTION_BAR_INSET_DP : latéral seulement, la hauteur
+                // consommée doit rester celle que le budget vertical prévoit.
+                marginStart = dpToPx(SUGGESTION_BAR_INSET_DP)
+                marginEnd = dpToPx(SUGGESTION_BAR_INSET_DP)
+            }
+            // Plateau creusé dans le clavier : fond plus sombre que les touches,
+            // ombre interne au bord haut, liséré clair au bord bas. Le fond du
+            // clavier (posé sur mainLayout) lui sert de margelle.
+            background = KeyboardTheme.cuvetteSuggestions(this@KreyolInputMethodServiceRefactored)
         }
 
         val luxScroll = HorizontalScrollView(this).apply {

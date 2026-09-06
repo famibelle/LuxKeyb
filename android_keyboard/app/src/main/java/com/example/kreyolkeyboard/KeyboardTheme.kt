@@ -3,6 +3,7 @@ package com.example.kreyolkeyboard
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.Log
 
 /**
@@ -97,8 +98,25 @@ object KeyboardTheme {
         val ombreSurAccent: Int,
         /** Fond derrière les touches. */
         val fondClavier: Int,
-        /** Fond de la barre de suggestions. */
+        /**
+         * Fond de la barre de suggestions, c'est-à-dire le fond du plateau
+         * creusé. **Plus sombre que [fondClavier]** dans les deux thèmes : c'est
+         * le signal principal du creux. Une barre plus claire que les touches se
+         * lirait posée au-dessus d'elles, l'inverse de l'effet voulu.
+         */
         val fondSuggestions: Int,
+        /**
+         * Ombre interne du bord haut du plateau, et liséré éclairé de son bord
+         * bas. Voir [CuvetteSuggestions].
+         *
+         * Leur alpha diffère beaucoup d'un thème à l'autre parce que leur
+         * support diffère : sur le fond clair, 13 % de noir se voient déjà ; sur
+         * le fond sombre il en faut 40 % pour un écart comparable, et le liséré
+         * doit y être un blanc translucide là où le thème clair se contente d'un
+         * blanc presque plein.
+         */
+        val ombreCuvette: Int,
+        val lisereCuvette: Int,
         /** Popup d'appui long : dégradé du haut, dégradé du bas, contour. */
         val popupHaut: Int,
         val popupBas: Int,
@@ -140,7 +158,9 @@ object KeyboardTheme {
         ombreSurTouche = Color.parseColor(OMBRE_SOMBRE),
         ombreSurAccent = Color.parseColor(OMBRE_CLAIRE),
         fondClavier = Color.parseColor("#F5F5F5"),
-        fondSuggestions = Color.parseColor("#FFFFFF"),
+        fondSuggestions = Color.parseColor("#ECECEC"),
+        ombreCuvette = Color.parseColor("#22000000"),
+        lisereCuvette = Color.parseColor("#CCFFFFFF"),
         popupHaut = Color.parseColor("#FFFFFF"),
         popupBas = Color.parseColor("#F8F8F8"),
         popupBordure = Color.parseColor("#E0E0E0"),
@@ -173,7 +193,9 @@ object KeyboardTheme {
         ombreSurTouche = Color.parseColor(OMBRE_SOMBRE),
         ombreSurAccent = Color.parseColor(OMBRE_CLAIRE),
         fondClavier = Color.parseColor("#131313"),
-        fondSuggestions = Color.parseColor("#202020"),
+        fondSuggestions = Color.parseColor("#0C0C0C"),
+        ombreCuvette = Color.parseColor("#66000000"),
+        lisereCuvette = Color.parseColor("#26FFFFFF"),
         popupHaut = Color.parseColor("#2B2B2B"),
         popupBas = Color.parseColor("#242424"),
         popupBordure = Color.parseColor("#454545"),
@@ -197,6 +219,46 @@ object KeyboardTheme {
 
     /** La palette en vigueur. Sûre à appeler depuis le dessin d'une touche. */
     fun palette(): Palette = courante
+
+    /**
+     * Les trois cotes du plateau creusé des suggestions.
+     *
+     * L'ombre interne tient dans les 4 dp que la première rangée de suggestions
+     * réserve déjà au-dessus de sa première puce (`SUGGESTION_ROW_OUTER_PAD_DP`
+     * côté service), et le liséré dans le rembourrage symétrique du bas : le
+     * creux ne coûte donc pas un pixel de hauteur, ce qui compte,
+     * `computeAvailableRowsHeight()` comptant le budget vertical au pixel près.
+     *
+     * L'encastrement latéral, lui, est posé par le service sur les marges de la
+     * barre (`SUGGESTION_BAR_INSET_DP`) : c'est une affaire de mise en page, pas
+     * de peinture.
+     */
+    private const val OMBRE_INTERNE_DP = 4
+    private const val LISERE_DP = 1
+    private const val RAYON_CUVETTE_DP = 10
+
+    /**
+     * Le fond de la barre de suggestions, creusé dans le clavier.
+     *
+     * Fabriqué ici plutôt que dans le service pour que les trois cotes vivent à
+     * côté des trois couleurs qu'elles dosent : c'est l'ensemble qui fait
+     * l'effet, et les séparer garantirait qu'un réglage de l'un se fasse sans
+     * voir les autres.
+     */
+    fun cuvetteSuggestions(context: Context): Drawable {
+        val densite = context.resources.displayMetrics.density
+        val p = palette()
+        return CuvetteSuggestions(
+            fond = p.fondSuggestions,
+            ombre = p.ombreCuvette,
+            lisere = p.lisereCuvette,
+            ombrePx = (OMBRE_INTERNE_DP * densite).toInt(),
+            // Au moins un pixel : sous mdpi le liséré s'arrondirait à zéro et le
+            // creux perdrait le signal qui fait basculer sa lecture.
+            liserePx = maxOf(1, (LISERE_DP * densite).toInt()),
+            rayonPx = RAYON_CUVETTE_DP * densite
+        )
+    }
 
     /**
      * Relit le réglage et la configuration système.
