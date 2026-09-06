@@ -99,10 +99,10 @@ et ses vraies suggestions.</em></p>
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_clavier_demo.gif" style="width:100%;border-radius:8px;"
-         alt="Animation : saisie de « Moien wéi geet et ». Un cercle marque chaque appui du doigt — sur les touches, sur la touche e maintenue pour ouvrir le choix é ë è ê, et sur les suggestions choisies dans la barre">
+         alt="Animation : saisie de « Moien wéi geet et » sur le clavier QWERTZ. Un cercle bleu marque chaque appui du doigt, sur les touches comme sur la puce rouge « Moien » choisie dans la barre. Après le premier mot, la barre propose la suite de la phrase.">
     <figcaption>
-      « Moien wéi geet et » : suggestions pendant la frappe, accents par appui
-      long, puis prédiction du mot suivant
+      « Moien wéi geet et » : suggestions luxembourgeoises en rouge et françaises
+      en bleu pendant la frappe, touche « é » dédiée, puis prédiction du mot suivant
     </figcaption>
   </figure>
 </div>
@@ -176,12 +176,12 @@ résultat d'une multiplication.
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertsich : le doigt trace EINIGE, GEWËNN puis BEWISEN dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
+         alt="Animation Wuertsich : le doigt trace KORREKT à l'horizontale puis BRAUCHT en diagonale dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
     <figcaption>Wuertsich · mots mêlés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « bestoen », dont la première et la dernière lettre sont données">
+         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « Rulle » (roulette, rouleau), dont la première et la dernière lettre sont données, puis la réponse est validée">
     <figcaption>Wuertmix · mots mélangés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
