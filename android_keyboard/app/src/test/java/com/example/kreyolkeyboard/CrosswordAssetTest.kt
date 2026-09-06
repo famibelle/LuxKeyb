@@ -286,6 +286,39 @@ class CrosswordAssetTest {
         }
     }
 
+    /**
+     * Le pavé du jeu porte toutes les lettres qu'il faut écrire.
+     *
+     * Le pavé suit la disposition du clavier, donc une rangée réécrite à la
+     * main peut perdre une lettre — et rien ne le signalerait : la grille
+     * s'affiche, les définitions sont bonnes, mais les mots qui emploient cette
+     * lettre deviennent inachevables. C'est le seul contrôle qui relie
+     * l'alphabet du générateur à celui de l'écran.
+     */
+    @Test
+    fun `le pave porte toutes les lettres des grilles`() {
+        val touches = com.example.kreyolkeyboard.crossword.CrosswordData
+            .RANGEES.joinToString("").toSet()
+        assertEquals(
+            "le pavé ne porte pas l'alphabet attendu",
+            alphabet, touches
+        )
+
+        val grilles = grilles()
+        for (i in 0 until grilles.length()) {
+            val mots = grilles.getJSONObject(i).getJSONArray("mots")
+            for (j in 0 until mots.length()) {
+                val reponse = mots.getJSONObject(j).getString("m")
+                val absentes = reponse.toSet() - touches
+                assertTrue(
+                    "grille #$i : « $reponse » demande des lettres absentes du " +
+                        "pavé : $absentes",
+                    absentes.isEmpty()
+                )
+            }
+        }
+    }
+
     /** La requête apparaît-elle comme mot entier dans le texte, accents pliés ? */
     private fun contientLeMot(texte: String, mot: String): Boolean {
         val cible = AccentTolerantMatcher.normalize(mot)

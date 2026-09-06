@@ -7038,8 +7038,10 @@ class SettingsActivity : AppCompatActivity() {
                         addView(TextView(activity).apply {
                             text = "Chaque définition est le sens français d'un mot " +
                                 "luxembourgeois : à vous de l'écrire dans la grille, " +
-                                "lettre par lettre et accents compris — Ä, Ë, É, Ö et Ü " +
-                                "sont sur le pavé.\n\n" +
+                                "lettre par lettre et accents compris. Le pavé " +
+                                "reprend la disposition du clavier luxembourgeois, " +
+                                "et Ä, Ë, É, Ö et Ü y sont en clair — sans appui " +
+                                "long.\n\n" +
                                 "Touchez une case pour choisir un mot, touchez-la de " +
                                 "nouveau pour passer à l'autre sens. Une faute ne se " +
                                 "voit qu'une fois le mot entièrement écrit.\n\n" +
@@ -7080,39 +7082,64 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /**
-         * Le pavé de saisie : quatre rangées de huit touches, alphabétiques,
-         * plus l'effacement.
+         * Le pavé de saisie, dans la disposition du clavier — voir
+         * [CrosswordData.RANGEES] pour le raisonnement.
+         *
+         * Chaque rangée pèse dix unités, comme les rangées du clavier, et c'est
+         * ce qui aligne les touches d'une rangée à l'autre : la troisième porte
+         * sept lettres entre l'emplacement vide de `⇧` et `⌫`, tous deux d'une
+         * unité et demie ; la quatrième porte quatre voyelles infléchies en
+         * touches doubles, centrées.
          *
          * Construit une fois pour toutes — il ne dépend pas de la grille.
          */
         private fun construirePave(activity: SettingsActivity) {
-            CrosswordData.LETTRES.forEachIndexed { rang, rangee ->
+            CrosswordData.RANGEES.forEachIndexed { rang, rangee ->
                 val ligne = LinearLayout(activity).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { bottomMargin = 6 }
+                    ).apply { bottomMargin = 5 }
                     orientation = LinearLayout.HORIZONTAL
                 }
+
+                val poidsLettre = if (rang == CrosswordData.RANGEE_ACCENTS) 2f else 1f
+                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
+                    // L'emplacement de la touche majuscule reste vide : la
+                    // grille est tout en capitales, mais retirer la place
+                    // décalerait la rangée par rapport aux deux du dessus.
+                    ligne.addView(espaceurDuPave(activity, 1.5f))
+                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
+                    ligne.addView(espaceurDuPave(activity, 1f))
+                }
+
                 rangee.forEach { lettre ->
-                    ligne.addView(toucheDuPave(activity, lettre.toString()) {
+                    ligne.addView(toucheDuPave(activity, lettre.toString(), poidsLettre) {
                         session?.ecrire(lettre)
                         apresSaisie()
                     })
                 }
-                // La dernière rangée porte une lettre de moins que les autres :
-                // le retour arrière y prend la place libre, ce qui garde les
-                // quatre rangées de même largeur et évite une rangée pour lui
-                // seul.
-                if (rang == CrosswordData.LETTRES.lastIndex) {
-                    ligne.addView(toucheDuPave(activity, "⌫") {
+
+                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
+                    ligne.addView(toucheDuPave(activity, "⌫", poids = 1.5f) {
                         session?.effacer()
                         apresSaisie()
                     })
+                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
+                    ligne.addView(espaceurDuPave(activity, 1f))
                 }
+
                 conteneurPave.addView(ligne)
             }
         }
+
+        /** Place réservée dans une rangée du pavé, sans touche dessous. */
+        private fun espaceurDuPave(activity: SettingsActivity, poids: Float) =
+            View(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, poids
+                )
+            }
 
         private fun toucheDuPave(
             activity: SettingsActivity,
@@ -7126,7 +7153,7 @@ class SettingsActivity : AppCompatActivity() {
             text = libelle
             textSize = 16f
             gravity = Gravity.CENTER
-            setPadding(0, 12, 0, 12)
+            setPadding(0, 9, 0, 9)
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.parseColor("#212121"))
             background = GradientDrawable().apply {
@@ -7196,7 +7223,18 @@ class SettingsActivity : AppCompatActivity() {
 
             val densite = resources.displayMetrics.density
             val disponible = resources.displayMetrics.widthPixels - (48 * 2)
-            val cote = minOf(disponible / grille.width, (44 * densite).toInt())
+            // Trois bornes, et la troisième est celle qui compte : une grille
+            // haute chassait le pavé hors de l'écran, en commençant par sa
+            // rangée d'accents — c'est-à-dire par les cinq touches pour
+            // lesquelles ce pavé existe. La grille cède donc quelques pixels
+            // plutôt que le pavé, qui est le seul des deux dont on ne peut pas
+            // se passer sans faire défiler l'écran à chaque lettre.
+            val budgetHauteur = (resources.displayMetrics.heightPixels * 0.40f).toInt()
+            val cote = minOf(
+                disponible / grille.width,
+                budgetHauteur / grille.height,
+                (44 * densite).toInt()
+            )
 
             for (r in 0 until grille.height) {
                 val ligne = LinearLayout(activity).apply {

@@ -241,18 +241,48 @@ object CrosswordData {
     private const val TAG = "CrosswordData"
 
     /**
-     * Les lettres du pavé de saisie, dans l'ordre où il les range.
+     * Les rangées du pavé de saisie, **dans la disposition du clavier**.
      *
-     * L'ordre est alphabétique et non celui du clavier : on ne compose pas de
-     * texte ici, on cherche une lettre précise, et une personne qui apprend la
-     * trouve plus vite dans l'alphabet que sur un QWERTZ. Les cinq voyelles
-     * infléchies ferment la dernière rangée — sans elles, la moitié des mots
-     * luxembourgeois seraient inécrivables, et `generate_crossword.py` ne
-     * retient que des mots qui s'écrivent avec ces trente et une lettres.
+     * Alphabétiques dans la première version, et c'était une erreur : cette
+     * application existe pour qu'on écrive le luxembourgeois sur son clavier à
+     * elle, en QWERTZ. Un pavé alphabétique fait chercher les lettres dans un
+     * ordre que le joueur ne retrouvera nulle part ensuite ; en QWERTZ, le jeu
+     * travaille les positions de doigts dont il se servira en écrivant un
+     * message. Le jeu cesse d'être à côté du clavier, il en devient
+     * l'entraînement.
+     *
+     * Trois fidélités et une infidélité :
+     *
+     * - Les trois rangées de lettres sont celles de `createAlphabeticLayout()`,
+     *   `é` compris, qui reste en bout de rangée du milieu là où le QWERTZ
+     *   suisse-français le met.
+     * - `⌫` ferme la troisième rangée, à la place exacte qu'il occupe sur le
+     *   clavier ; l'emplacement de `⇧`, inutile dans une grille tout en
+     *   capitales, reste vide pour que les rangées gardent leur alignement.
+     * - **L'appui long n'est pas repris.** Sur le clavier, `ö` et `ü` n'existent
+     *   que derrière un appui long sur `o` et `u` (voir `accentMap`), et
+     *   `ä`/`ë` vivent autour de la barre d'espace. Les reproduire ainsi
+     *   cacherait deux des cinq voyelles infléchies dont le jeu a besoin —
+     *   exactement le défaut que ce pavé existe pour éviter. La rangée de la
+     *   barre d'espace est donc remplacée par `Ä Ë Ö Ü`, en touches larges.
+     *
+     * `generate_crossword.py` ne retient que des mots qui s'écrivent avec ces
+     * trente et une lettres ; `CrosswordAssetTest` vérifie que le pavé les
+     * porte toutes, car une lettre oubliée ici rendrait des grilles
+     * inachevables sans rien casser d'autre.
      */
-    val LETTRES: List<String> = (
-        "ABCDEFGH IJKLMNOP QRSTUVWX YZÄËÉÖÜ"
-        ).split(" ")
+    val RANGEES: List<String> = listOf(
+        "QWERTZUIOP",
+        "ASDFGHJKLÉ",
+        "YXCVBNM",
+        "ÄËÖÜ"
+    )
+
+    /** Rang de la rangée que `⌫` ferme, comme sur le clavier. */
+    const val RANGEE_EFFACEMENT = 2
+
+    /** Rang de la rangée des voyelles infléchies, en touches larges. */
+    const val RANGEE_ACCENTS = 3
 
     private var cachedGrids: List<CrosswordGrid>? = null
     private var cachedAttribution: String? = null
