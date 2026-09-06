@@ -2653,13 +2653,11 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     "123", "ABC" -> {
                         manager.switchKeyboardMode()
-                        keyboardContainer.removeAllViews()
-                        keyboardContainer.addView(manager.createKeyboardLayout())
+                        manager.applyMode()
                     }
                     "EMOJI" -> {
                         manager.switchToEmojiMode()
-                        keyboardContainer.removeAllViews()
-                        keyboardContainer.addView(manager.createKeyboardLayout())
+                        manager.applyMode()
                     }
                     else -> {
                         insertText(if (demoCapital || demoCapsLock) key.uppercase() else key)
