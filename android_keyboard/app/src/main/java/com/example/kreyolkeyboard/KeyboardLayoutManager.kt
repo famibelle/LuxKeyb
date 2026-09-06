@@ -96,6 +96,35 @@ class KeyboardLayoutManager(private val context: Context) {
         // 🌐 Délai pour l'appui long sur la barre d'espace (1 seconde)
         private const val SPACE_LONG_PRESS_DELAY = 1000L
 
+        /**
+         * Distance que le doigt parcourt sur la barre d'espace pour déplacer le
+         * curseur d'un caractère (v14.0.0).
+         *
+         * Dix dp est un compromis entre deux contraintes opposées. La barre
+         * d'espace ne fait qu'une soixantaine de dp de large, mais le geste ne
+         * s'y arrête pas : la vue garde le doigt jusqu'au relâchement, donc la
+         * course utile est celle de l'écran, environ 360 dp, soit trente-six
+         * caractères. C'est assez pour traverser une ligne de texte sans lever
+         * le doigt, et assez peu pour viser une lettre précise, ce qui est le
+         * geste que cette fonction existe pour rendre possible.
+         */
+        private const val SPACE_CURSOR_STEP_DP = 10
+
+        /**
+         * Nombre de caractères dont le curseur doit se déplacer pour un
+         * déplacement de [deltaPx] du doigt depuis le dernier cran franchi,
+         * négatif vers la gauche.
+         *
+         * `internal` (et non private) pour être testable en JVM sans MotionEvent.
+         *
+         * La troncature vers zéro est ce qu'on veut des deux côtés : elle rend
+         * le geste symétrique, un demi-cran ne déplaçant rien ni à gauche ni à
+         * droite. Un arrondi au plus proche avancerait d'un caractère à mi-course
+         * et reculerait au retour, ce qui se sent comme un curseur qui hésite.
+         */
+        internal fun cursorStepsFor(deltaPx: Float, stepPx: Float): Int =
+            if (stepPx <= 0f) 0 else (deltaPx / stepPx).toInt()
+
         fun isLandscape(context: Context): Boolean =
             context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -109,6 +138,13 @@ class KeyboardLayoutManager(private val context: Context) {
     private var isNumericMode = false // FORCE ALPHABÉTIQUE PAR DÉFAUT
     private var isEmojiMode = false
     private val keyboardButtons = mutableListOf<View>() // Changé de TextView à View pour supporter ImageButton
+
+    // Voir applyKeyStyleToView : seules les ROM Honor / Huawei ont besoin
+    // du rendu logiciel par touche, ailleurs il ne fait que ralentir.
+    private val forcerRenduLogiciel: Boolean = run {
+        val fabricant = android.os.Build.MANUFACTURER?.lowercase().orEmpty()
+        fabricant == "honor" || fabricant == "huawei"
+    }
 
     // Hauteur que la fenêtre IME peut réellement accorder aux quatre rangées de
     // touches, renseignée par le service avant chaque création de layout. En
@@ -128,6 +164,13 @@ class KeyboardLayoutManager(private val context: Context) {
     private val spaceLongPressHandler = Handler(Looper.getMainLooper())
     private var spaceLongPressRunnable: Runnable? = null
     private var isSpaceLongPressTriggered = false
+
+    // Glissement horizontal sur la barre d'espace (v14.0.0). L'ancre n'est pas
+    // le point de départ du geste mais le dernier cran franchi : elle avance
+    // d'un pas à chaque caractère, de sorte que l'arrondi ne se cumule jamais
+    // et qu'un aller-retour du doigt ramène le curseur exactement d'où il vient.
+    private var spaceCursorAnchorX = 0f
+    private var isSpaceCursorMode = false
     
     init {
         // Garantir que le clavier démarre toujours en mode alphabétique
@@ -139,6 +182,19 @@ class KeyboardLayoutManager(private val context: Context) {
         fun onKeyPress(key: String)
         fun onLongPress(key: String, button: View) // Changé de TextView à View
         fun onKeyRelease()
+
+        /**
+         * Le doigt glisse sur la barre d'espace : déplacer le curseur de [steps]
+         * caractères, négatif vers la gauche (v14.0.0).
+         *
+         * Corps par défaut vide, pour le seul clavier de démonstration de
+         * l'onglet Démarrage : il pilote un EditText et non un champ distant,
+         * et le geste n'y a rien à montrer que la frappe ne montre déjà.
+         */
+        fun onSpaceCursorMove(steps: Int) {}
+
+        /** Le doigt se lève après un glissement de curseur (v14.0.0). */
+        fun onSpaceCursorEnd() {}
     }
     
     private var interactionListener: KeyboardInteractionListener? = null
@@ -182,37 +238,105 @@ class KeyboardLayoutManager(private val context: Context) {
     }
 
     /**
-     * Crée le layout principal du clavier avec toutes les rangées
+     * Les panneaux alphabétique et numérique coexistent dans un même conteneur :
+     * passer de l'un à l'autre bascule leur `visibility` au lieu de reconstruire
+     * ~34 touches à chaque appui sur « 123 » (mesuré à 3 ou 4 frames perdues sur
+     * A21s, voir PERF_CLAVIER.md). Le panneau emoji est monté à la demande et
+     * démonté en sortie, pour que « Récents » soit recalculé à chaque ouverture.
      */
-    fun createKeyboardLayout(): LinearLayout {
+    private var panelHolder: FrameLayout? = null
+    private var alphaPanel: View? = null
+    private var numericPanel: View? = null
+    private var emojiPanel: View? = null
+    // Touches de la rangée de contrôle emoji : suivies à part pour ne pas gonfler
+    // keyboardButtons d'une ouverture du panneau à l'autre.
+    private val emojiPanelButtons = mutableListOf<View>()
+
+    /**
+     * Construit le conteneur du clavier : les panneaux alpha et numérique, prêts
+     * tous les deux, seul celui du mode courant visible. À appeler une fois, à la
+     * création de la vue de saisie ; les bascules de mode passent ensuite par
+     * [applyMode].
+     */
+    fun createKeyboardLayout(): View {
         Log.d("KeyboardLayoutManager", "🎯 createKeyboardLayout - isNumericMode: $isNumericMode")
-        
+
+        keyboardButtons.clear()
+        emojiPanelButtons.clear()
+
+        val holder = FrameLayout(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        val alpha = buildPanel { createAlphabeticLayout(it) }
+        val numeric = buildPanel { createNumericLayout(it) }
+        holder.addView(alpha)
+        holder.addView(numeric)
+
+        alphaPanel = alpha
+        numericPanel = numeric
+        panelHolder = holder
+        emojiPanel = null
+        applyMode()
+        return holder
+    }
+
+    /** Enveloppe une série de rangées dans le conteneur vertical à padding du clavier. */
+    private fun buildPanel(remplir: (LinearLayout) -> Unit): LinearLayout {
         val verticalPaddingPx = dpToPx(verticalPaddingDp(context))
-        val mainLayout = LinearLayout(context).apply {
+        val panel = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
                 dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx,
                 dpToPx(KEYBOARD_SIDE_PADDING_DP), verticalPaddingPx
             )
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
         }
-        
-        // Créer les différentes rangées selon le mode
-        when {
-            isEmojiMode -> {
-                Log.d("KeyboardLayoutManager", "😀 Création du layout EMOJI")
-                createEmojiLayout(mainLayout)
-            }
-            isNumericMode -> {
-                Log.d("KeyboardLayoutManager", "🔢 Création du layout NUMÉRIQUE")
-                createNumericLayout(mainLayout)
-            }
-            else -> {
-                Log.d("KeyboardLayoutManager", "🔤 Création du layout ALPHABÉTIQUE")
-                createAlphabeticLayout(mainLayout)
-            }
+        remplir(panel)
+        return panel
+    }
+
+    /**
+     * Affiche le panneau du mode courant, masque les autres. Remplace la
+     * reconstruction complète du clavier qui avait lieu à chaque bascule.
+     * Idempotent : peut être appelée à chaque `onModeChanged`.
+     *
+     * Alpha et numérique se masquent en `INVISIBLE` et non `GONE` : les deux
+     * ont la même hauteur (quatre rangées), donc rien ne bouge, et la liste
+     * d'affichage du panneau masqué reste enregistrée. La bascule n'est alors
+     * qu'un redessin, pas une remise en page suivie d'un ré-enregistrement.
+     * Le panneau emoji, lui, a une autre hauteur : on le retire vraiment.
+     */
+    fun applyMode() {
+        val holder = panelHolder ?: return
+        if (isEmojiMode) rebuildEmojiPanel(holder) else dropEmojiPanel(holder)
+        val alphaVisible = !isNumericMode && !isEmojiMode
+        alphaPanel?.visibility = if (alphaVisible) View.VISIBLE else View.INVISIBLE
+        numericPanel?.visibility = if (isNumericMode && !isEmojiMode) View.VISIBLE else View.INVISIBLE
+        emojiPanel?.visibility = if (isEmojiMode) View.VISIBLE else View.GONE
+    }
+
+    private fun rebuildEmojiPanel(holder: FrameLayout) {
+        dropEmojiPanel(holder)
+        val avant = keyboardButtons.size
+        val panel = buildPanel { createEmojiLayout(it) }
+        emojiPanelButtons.addAll(keyboardButtons.subList(avant, keyboardButtons.size))
+        emojiPanel = panel
+        holder.addView(panel)
+    }
+
+    private fun dropEmojiPanel(holder: FrameLayout) {
+        emojiPanel?.let { holder.removeView(it) }
+        emojiPanel = null
+        if (emojiPanelButtons.isNotEmpty()) {
+            keyboardButtons.removeAll(emojiPanelButtons.toSet())
+            emojiPanelButtons.clear()
         }
-        
-        return mainLayout
     }
     
     /**
@@ -285,12 +409,21 @@ class KeyboardLayoutManager(private val context: Context) {
      * chaque catégorie défilant verticalement, le swipe latéral changeant de
      * catégorie (EmojiPickerView, RecyclerView/ViewPager2 virtualisés).
      * Accessible depuis le clavier alphabétique et depuis le mode 123.
+     *
+     * Reconstruit à chaque entrée en mode emoji (voir [rebuildEmojiPanel]) : la
+     * catégorie « Récents » y est figée à la construction, la reconstruire est ce
+     * qui la tient à jour d'une ouverture à l'autre.
      */
     private fun createEmojiLayout(mainLayout: LinearLayout) {
         val controlRow = arrayOf("ABC", "⌫", " ", "⏎")
 
         val picker = EmojiPickerView(context, accentHandler).apply {
-            onEmojiSelected = { emoji -> interactionListener?.onKeyPress(emoji) }
+            onEmojiSelected = { emoji ->
+                // Noté ici et non dans la vue : le panneau reste une vue, et
+                // EmojiRecents écarte de lui-même les champs sensibles.
+                EmojiRecents.enregistrer(context, emoji)
+                interactionListener?.onKeyPress(emoji)
+            }
         }
 
         mainLayout.addView(picker)
@@ -620,13 +753,18 @@ class KeyboardLayoutManager(private val context: Context) {
             view.setTextColor(encre)
 
             // Ombre portée pour l'effet de profondeur.
-            // setShadowLayer() sous rendu accéléré matériellement est une source connue
-            // de texte invisible sur certains GPU/drivers (rapporté sur Honor 200/SDK 36) ;
-            // LAYER_TYPE_SOFTWARE force le rendu logiciel de cette vue pour l'éviter.
             // L'espace en est exempté : son ombre détourait la signature et lui
             // rendait la présence que sa graisse normale vient de lui retirer.
             if (key != " ") {
-                view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                // setShadowLayer() sous rendu accéléré matériellement rendait le
+                // texte invisible selon le pilote GPU (signalé Honor 200 / Magic
+                // UI). Le calque logiciel écarte ce bug mais fait re-rastériser
+                // chaque touche à chaque (re)construction : ~18 ms d'upload GPU
+                // sur A21s (PERF_CLAVIER.md). Réservé aux ROM concernées ; l'ombre
+                // reste posée partout.
+                if (forcerRenduLogiciel) {
+                    view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                }
                 // Ombre claire sur les touches colorées, sombre sur les autres :
                 // une ombre noire sous du texte blanc le rend sale. Le rouge ne
                 // bougeant pas d'un thème à l'autre, cette distinction non plus.
@@ -725,13 +863,31 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * 🌐 Configure l'appui long personnalisé de 1 seconde pour la barre d'espace
+     * 🌐 Gestes de la barre d'espace : appui court, appui long d'une seconde
+     * (sélecteur de claviers) et, depuis la v14.0.0, glissement horizontal pour
+     * déplacer le curseur.
+     *
+     * Les trois cohabitent dans un seul `OnTouchListener` parce qu'ils se
+     * départagent : passé le seuil de glissement, le timer d'appui long est
+     * annulé et le relâchement n'insère plus d'espace. Poser le curseur en
+     * traversant un mot ne doit pas laisser un espace derrière soi.
+     *
+     * Le listener rend `false` partout, comme avant : `View.onTouchEvent`
+     * consomme alors le ACTION_DOWN parce que la vue est cliquable, ce qui
+     * garantit que les ACTION_MOVE et le ACTION_UP continuent d'arriver ici
+     * même quand le doigt a quitté la barre. C'est ce qui donne au geste toute
+     * la largeur de l'écran plutôt que la seule largeur de la touche.
      */
     private fun setupSpaceLongPress(button: View, key: String) {
+        val slopPx = android.view.ViewConfiguration.get(context).scaledTouchSlop
+        val stepPx = dpToPx(SPACE_CURSOR_STEP_DP).toFloat()
+
         button.setOnTouchListener { view, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
                     isSpaceLongPressTriggered = false
+                    isSpaceCursorMode = false
+                    spaceCursorAnchorX = event.x
                     
                     // Animation d'appui (100ms)
                     view.animate()
@@ -752,22 +908,48 @@ class KeyboardLayoutManager(private val context: Context) {
                     
                     false
                 }
+                android.view.MotionEvent.ACTION_MOVE -> {
+                    if (!isSpaceCursorMode) {
+                        // Le seuil est celui du système (scaledTouchSlop) et non une
+                        // valeur maison : c'est la distance en dessous de laquelle
+                        // Android considère qu'un doigt n'a pas bougé, et la prendre
+                        // telle quelle évite de déclencher un glissement sur le
+                        // tremblement qui accompagne un appui long volontaire.
+                        if (kotlin.math.abs(event.x - spaceCursorAnchorX) > slopPx) {
+                            isSpaceCursorMode = true
+                            spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
+                            // L'ancre repart du point courant : sans cela le curseur
+                            // sauterait du seuil déjà parcouru dès le premier cran.
+                            spaceCursorAnchorX = event.x
+                            releaseKeyScale(view)
+                            Log.d(TAG, "↔️ Glissement du curseur engagé sur la barre d'espace")
+                        }
+                    } else {
+                        val steps = cursorStepsFor(event.x - spaceCursorAnchorX, stepPx)
+                        if (steps != 0) {
+                            spaceCursorAnchorX += steps * stepPx
+                            KeyFeedback.onCursorStep(view)
+                            interactionListener?.onSpaceCursorMove(steps)
+                        }
+                    }
+                    false
+                }
                 android.view.MotionEvent.ACTION_UP -> {
                     // Annuler le timer si relâché avant 1 seconde
                     spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
                     
-                    // Animation de relâchement (120ms)
-                    view.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(120)
-                        .start()
+                    releaseKeyScale(view)
                     
                     interactionListener?.onKeyRelease()
                     
-                    // Si relâché rapidement (pas d'appui long), c'est un clic normal
-                    if (!isSpaceLongPressTriggered) {
-                        interactionListener?.onKeyPress(key)
+                    when {
+                        // Un glissement n'écrit rien : il a déplacé le curseur
+                        isSpaceCursorMode -> {
+                            isSpaceCursorMode = false
+                            interactionListener?.onSpaceCursorEnd()
+                        }
+                        // Si relâché rapidement (pas d'appui long), c'est un clic normal
+                        !isSpaceLongPressTriggered -> interactionListener?.onKeyPress(key)
                     }
                     
                     false
@@ -776,19 +958,27 @@ class KeyboardLayoutManager(private val context: Context) {
                     // Annuler le timer en cas d'annulation
                     spaceLongPressRunnable?.let { spaceLongPressHandler.removeCallbacks(it) }
                     
-                    // Animation de relâchement (120ms)
-                    view.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(120)
-                        .start()
+                    releaseKeyScale(view)
                     
                     interactionListener?.onKeyRelease()
+                    if (isSpaceCursorMode) {
+                        isSpaceCursorMode = false
+                        interactionListener?.onSpaceCursorEnd()
+                    }
                     false
                 }
                 else -> false
             }
         }
+    }
+
+    /** Animation de relâchement (120 ms), commune aux fins de geste de l'espace. */
+    private fun releaseKeyScale(view: View) {
+        view.animate()
+            .scaleX(1.0f)
+            .scaleY(1.0f)
+            .setDuration(120)
+            .start()
     }
     
     /**
@@ -985,6 +1175,11 @@ class KeyboardLayoutManager(private val context: Context) {
             cleanupView(button)
         }
         keyboardButtons.clear()
+        emojiPanelButtons.clear()
+        panelHolder = null
+        alphaPanel = null
+        numericPanel = null
+        emojiPanel = null
         interactionListener = null
     }
     
