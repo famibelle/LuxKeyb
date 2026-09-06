@@ -5501,6 +5501,10 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             )
+                            // Même défaut que la barre de suggestions du clavier :
+                            // la barre de défilement se dessine par-dessus le
+                            // contenu, et cette rangée n'est haute que d'une puce.
+                            isHorizontalScrollBarEnabled = false
                             addView(legendContainer)
                         }
                         addView(legendScroll)

@@ -543,6 +543,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 rowHeightPx
             )
+            // Sans cela, Android dessine sa barre de défilement DANS la vue et
+            // par-dessus le contenu (SCROLLBARS_INSIDE_OVERLAY, le défaut d'un
+            // HorizontalScrollView). Sur une rangée haute d'une seule puce, elle
+            // tombe en travers des mots, exactement pendant qu'on les lit pour
+            // choisir — un trait clair sur une puce rouge se lit comme un mot
+            // barré. La passer en OUTSIDE n'est pas une option : la cuvette a un
+            // budget vertical fixe, et il faudrait le prendre aux touches.
+            // L'indice de défilement reste porté par la puce coupée au bord.
+            isHorizontalScrollBarEnabled = false
             // Le padding bas porte la moitié de l'intervalle qui sépare une puce
             // kréyòl de la puce française juste en dessous, l'autre moitié venant du
             // padding haut de la rangée française. En paysage cette rangée n'existe
@@ -585,6 +594,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     rowHeightPx
                 )
+                // Même raison que pour luxScroll, ci-dessus.
+                isHorizontalScrollBarEnabled = false
                 // Moitié haute de l'intervalle entre les deux rangées, cf. luxScroll.
                 setPadding(
                     dpToPx(8),
