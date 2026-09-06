@@ -25,6 +25,10 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[2]
 CHANGELOG = RACINE / "android_keyboard" / "CHANGELOG.md"
 SORTIE = RACINE / "docs" / "stats" / "nouveautes.json"
+# Illustrations tenues à la main, par version : le CHANGELOG ne porte pas
+# d'images (il est aussi lu tel quel sur GitHub), donc la capture d'une
+# nouveauté vit à côté et se fusionne ici. Absent ou incomplet, on s'en passe.
+MEDIAS = RACINE / "docs" / "stats" / "nouveautes-medias.json"
 
 VERSIONS_AFFICHEES = 6
 
@@ -167,6 +171,18 @@ def main():
         sys.exit(f"CHANGELOG introuvable : {CHANGELOG}")
 
     versions = lire_versions(CHANGELOG.read_text("utf-8").splitlines())
+
+    medias = {}
+    if MEDIAS.exists():
+        brut = json.loads(MEDIAS.read_text("utf-8"))
+        medias = {k: v for k, v in brut.items() if not k.startswith("_")}
+    for v in versions:
+        m = medias.get(v["version"])
+        if m and m.get("image"):
+            v["image"] = m["image"]
+            v["image_alt"] = m.get("alt", "")
+            v["image_legende"] = m.get("legende", "")
+
     for v in versions:
         for s in v["sections"]:
             s["texte"] = en_html(" ".join(s["texte"]).strip())

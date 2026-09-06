@@ -1,0 +1,8 @@
+{
+  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "12.0.0": {
+    "image": "Screenshots/lux_cuvette.png",
+    "alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
+    "legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
+  }
+}

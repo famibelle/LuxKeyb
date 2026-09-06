@@ -21,7 +21,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_cuvette.png",
+   "image_alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
+   "image_legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
   },
   {
    "version": "11.7.0",

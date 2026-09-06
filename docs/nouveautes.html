@@ -48,6 +48,10 @@ p{margin:0 0 12px;}
 .version .intro{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px;}
 .badge-new{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);color:var(--ink);border-radius:999px;padding:2px 9px;}
 
+.version .shot{margin:0 0 20px;}
+.version .shot img{width:100%;border:1px solid var(--line);border-radius:10px;display:block;}
+.version .shot figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+
 .grp{margin-top:18px;}
 .grp:first-child{margin-top:0;}
 .grp h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px;font-weight:700;}
@@ -223,6 +227,17 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
 
     var body = el('div', 'body');
     if (v.intro) body.appendChild(el('p', 'intro', v.intro));
+
+    if (v.image) {
+      var fig = el('figure', 'shot');
+      var img = el('img');
+      img.src = v.image;
+      img.alt = v.image_alt || '';
+      img.loading = 'lazy';
+      fig.appendChild(img);
+      if (v.image_legende) fig.appendChild(el('figcaption', null, v.image_legende));
+      body.appendChild(fig);
+    }
 
     v.sections.forEach(function (sec) {
       var g = el('div', 'grp');
