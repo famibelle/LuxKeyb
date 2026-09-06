@@ -1,12 +1,31 @@
 {
- "genere_le": "2026-09-03",
- "derniere_version": "11.1.1",
- "derniere_date": "2026-09-03",
+ "genere_le": "2026-09-06",
+ "derniere_version": "11.6.0",
+ "derniere_date": "2026-09-04",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "11.1.1",
-   "date": "2026-09-03",
+   "version": "11.6.0",
+   "date": "2026-09-04",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🎨",
+     "titre": "Amélioré",
+     "points": [
+      {
+       "titre": "Le clavier occupe près de 6 Mo de mémoire en moins",
+       "texte": "Il gardait la liste complète des 150 000 formes qu'il sait reconnaître, uniquement pour décider s'il doit souligner un mot. Une structure compacte suffit à répondre à cette question. Rien ne change à l'écran, mais le clavier se fait moins souvent mettre de côté par le téléphone — et il revient plus vite quand il l'a été."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "11.5.2",
+   "date": "2026-09-04",
    "intro": "",
    "sections": [
     {
@@ -14,20 +33,8 @@
      "titre": "Corrigé",
      "points": [
       {
-       "titre": "La fiche d'un mot s'ouvre entière",
-       "texte": "Sur un petit écran, ou avec une police système agrandie, elle pouvait s'ouvrir en cachant ses deux boutons sans que rien n'indique qu'il fallait la tirer vers le haut."
-      },
-      {
-       "titre": "Toutes les formes d'un mot sont montrées",
-       "texte": "« sinn » en affichait dix suivies de « … », et les douze autres n'étaient atteignables nulle part."
-      },
-      {
-       "titre": "Les deux phrases d'exemple se distinguent l'une de l'autre",
-       "texte": "Elles se lisaient comme un seul paragraphe."
-      },
-      {
-       "titre": "« léieren » (apprendre) et « nennen » (nommer) sont revenus",
-       "texte": "Deux mots très courants avaient disparu des suggestions, des jeux et du mot du jour : ils s'écrivent, à l'accent ou au pluriel près, comme deux mots que l'application met de côté."
+       "titre": "L'application repasse de 38 à 8 Mo",
+       "texte": "Les versions 11.5.0 et 11.5.1 embarquaient par erreur un modèle de reconnaissance vocale de 32 Mo, qui ne sert à aucune fonction du clavier. Rien d'autre ne change."
       }
      ],
      "texte": "",
@@ -36,29 +43,71 @@
    ]
   },
   {
-   "version": "11.1.0",
-   "date": "2026-09-03",
+   "version": "11.5.1",
+   "date": "2026-09-04",
    "intro": "",
    "sections": [
     {
-     "emoji": "✨",
-     "titre": "Ajouté",
+     "emoji": "🎨",
+     "titre": "Amélioré",
      "points": [
       {
-       "titre": "Chaque mot du dictionnaire montre comment il s'emploie",
-       "texte": "Sa fiche porte maintenant une ou deux phrases d'exemple, le mot en gras : « Haus » n'est plus seulement « maison », c'est aussi « mir hunn nach vill Aarbecht ronderëm eist neit Haus ». Les phrases viennent du dictionnaire officiel (LOD), qui les écrit pour cela ; 26 148 mots en ont une."
+       "titre": "Plus d'attente quand vous écrivez un mot que le clavier ne connaît pas",
+       "texte": "Un mot allemand, un nom propre, un mot composé : le clavier cherchait alors une correction en parcourant tout son dictionnaire, et il y passait près d'une seconde sur un téléphone d'entrée de gamme. C'est désormais cinq fois plus rapide, et les propositions sont les mêmes."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "11.5.0",
+   "date": "2026-09-04",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🎨",
+     "titre": "Amélioré",
+     "points": [
+      {
+       "titre": "Le clavier propose plus souvent le mot suivant, et se tait moins",
+       "texte": "Les mots d'une seule lettre — <code>d'</code> de « d'Leit », <code>a</code>, <code>e</code> — étaient absents du dictionnaire : le programme qui le fabrique les jetait. Or <code>d'</code> est le mot le plus fréquent de la langue. Il est maintenant connu, comme les autres : après lui, le clavier sait de nouveau quoi proposer."
+      },
+      {
+       "titre": null,
+       "texte": "Les prédictions passent de 17,1 % à <strong>20,8 %</strong> de bonnes réponses en trois propositions, mesurées sur des phrases que le dictionnaire n'a jamais vues. Et la barre de suggestions reste vide <strong>12 % du temps au lieu de 16 %</strong>."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "11.4.1",
+   "date": "2026-09-04",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Écrire un mot français ne fait plus apparaître de mots luxembourgeois sans rapport",
+       "texte": "En tapant « déchet », le clavier proposait « Bechet », « Deche » et « Dechen » avant le bon mot : il cherchait à corriger une faute là où il n'y en avait pas. Ces propositions disparaissent, et le mot juste passe en tête."
       }
      ],
      "texte": "",
      "tableau": null
     },
     {
-     "emoji": "🔧",
-     "titre": "Modifié",
+     "emoji": "🎨",
+     "titre": "Amélioré",
      "points": [
       {
-       "titre": "Le clavier ne propose plus de grossièretés",
-       "texte": "Ni en complétion, ni en correction, ni en suggestion du mot suivant, et le dictionnaire ne les remonte plus quand on cherche par le sens français. Elles restent saisissables et trouvables : le correcteur ne les souligne pas, et les taper les trouve."
+       "titre": "La frappe redevient instantanée dans ce cas",
+       "texte": "La recherche de correction parcourait tout le dictionnaire luxembourgeois : mesuré sur un téléphone d'entrée de gamme, la dernière lettre de « déchet » prenait 914 ms, contre 50 ms maintenant."
       }
      ],
      "texte": "",
@@ -67,126 +116,17 @@
    ]
   },
   {
-   "version": "11.0.0",
+   "version": "11.4.0",
    "date": "2026-09-03",
    "intro": "",
    "sections": [
     {
-     "emoji": "🔧",
-     "titre": "Modifié",
+     "emoji": "🎨",
+     "titre": "Amélioré",
      "points": [
       {
-       "titre": "Le dictionnaire ne répète plus les formes d'un même mot",
-       "texte": "Chercher « manger » donnait quarante lignes pour neuf mots : « iessen », « iesse », « giess », « ësst » se suivaient, tous traduits pareil. Chaque mot n'a plus qu'une entrée, et sa fiche montre ses autres formes — « Forschett » avec son pluriel « Forschetten », le verbe « sinn » avec toute sa conjugaison."
-      },
-      {
-       "titre": "Les mots courts trouvent enfin quelque chose",
-       "texte": "« eau » renvoyait « beaucoup », « nouveau », « de nouveau » — le mot cherché n'était qu'un morceau d'un autre. Il donne maintenant « Waasser », « Drëpp » (eau-de-vie), « Quell » (source d'eau). Même chose pour « chat », qui parlait d'achats et de châtaignes, et qui commence désormais par « Kaz »."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.27.0",
-   "date": "2026-09-03",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Chaque mot du Wierderbuch a maintenant sa fiche",
-       "texte": "La liste de résultats ne réagissait à rien : ni clic, ni retour visuel. Un tap ouvre désormais le mot en grand, ses acceptions une par une au lieu d'être serrées sur une ligne, et deux actions — copier le mot, ou l'ouvrir sur le dictionnaire officiel du Zenter fir d'Lëtzebuerger Sprooch, qui en donne la prononciation et des exemples."
-      },
-      {
-       "titre": "L'appui long copie le mot directement",
-       "texte": "Sans passer par la fiche : coller un mot ailleurs reste un seul geste."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Le dictionnaire et les jeux s'ouvrent sans attendre l'installation du clavier",
-       "texte": "Tant que le clavier n'avait jamais été entièrement configuré, l'application se réduisait à son écran de configuration. Or ces deux onglets ne demandent rien d'installé. Les onglets reviennent dès que le clavier a été activé une fois, et ne repartent plus — même si une mise à jour du téléphone le désélectionne plus tard, ou si l'on essaie un autre clavier entre-temps."
-      },
-      {
-       "titre": "La liste de résultats a été allégée",
-       "texte": "Chaque ligne portait un bouton « lod.lu » ; quarante fois la même étiquette se lisait comme du bruit et rognait la place des traductions à plusieurs sens. Les lignes ne portent plus que le mot et sa traduction, et les traductions longues tiennent enfin entières."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.26.0",
-   "date": "2026-09-02",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Le clavier connaît 123 265 formes au lieu de 38 410",
-       "texte": "Des locuteurs luxembourgeois ont signalé des mots manquants : ils avaient raison, et la cause était structurelle. Le corpus est fait d'articles de RTL.lu, qui n'écrivent jamais ce qu'on tape sur un téléphone — « Läffelen », « Forschetten », « Telleren », « Mounden », « sprang », « denks », « schaffesch » n'y figuraient pas. Le Lëtzebuerger Online Dictionnaire, lui, les atteste : ses 84 855 formes absentes du corpus complètent désormais la saisie."
-      },
-      {
-       "titre": "Le correcteur reconnaît en plus 26 424 variantes de la règle d'Eifel",
-       "texte": "(« Ae » pour « Aen » devant consonne). Elles sont correctes en contexte : les souligner en rouge était un défaut. Elles ne sont jamais proposées pour autant."
-      },
-      {
-       "titre": "L'onglet Wierderbuch cherche dans 88 852 mots au lieu de 20 604",
-       "texte": "Les formes apportées par le LOD sont glosées comme les autres."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Les jeux et la progression ne bougent pas",
-       "texte": "Les formes du LOD vivent dans un actif séparé du dictionnaire de fréquences : les trois jeux gardent exactement les mêmes réserves, et les huit paliers de « Mäi Lëtzebuergesch » restent calculés sur le vocabulaire du corpus — personne ne recule d'un rang."
-      },
-      {
-       "titre": "Le correcteur orthographique répond en temps constant",
-       "texte": "Il parcourait la liste entière des formes pour chaque mot examiné ; la correction orthographique, elle, allouait deux copies du dictionnaire par recours."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.25.0",
-   "date": "2026-09-02",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Wuertlück ne sert plus de phrases de faits divers",
-       "texte": "Ses phrases viennent de dépêches, et une sur dix racontait un accident, un cambriolage ou un verdict — le mot à trouver, lui, était souvent anodin. Soixante-treize formes désignent désormais ce registre : police et secours, justice, vols, accidents et victimes. Le jeu conserve 1 373 phrases sur 1 600, réparties 316 / 583 / 474 sur les trois niveaux."
-      },
-      {
-       "titre": "Ces mots-là restent proposés comme vocabulaire",
-       "texte": "« Police », « Accident », « Geriicht », « Prisong », « Affer » sont des mots utiles, et les jeux continuent de les tirer : c'est la phrase qui est écartée, jamais le mot. La liste des mots jamais proposés, elle, ne bouge pas."
+       "titre": "Le clavier consomme nettement moins de mémoire",
+       "texte": "Le dictionnaire français ajouté à la version précédente pesait lourd dans un clavier, qu'Android arrête quand il grossit — il faut alors le recharger, et vous voyez un blanc avant qu'il n'apparaisse. Il occupe maintenant environ 12 Mo de moins, sans que rien ne change à l'écran : les mêmes mots vous sont proposés, et le correcteur reconnaît toujours les 125 348 formes du français."
       }
      ],
      "texte": "",
