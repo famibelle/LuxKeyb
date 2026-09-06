@@ -9,6 +9,30 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.1.0] - 2026-09-06
+
+### 🎨 Modifié
+
+- **Le pavé de Kräizwuert reprend la disposition du clavier.** Il était
+  alphabétique, et c'était une erreur : cette application existe pour qu'on
+  écrive le luxembourgeois sur son clavier à elle, en QWERTZ. Chercher les
+  lettres dans un ordre qu'on ne retrouvera nulle part ensuite n'apprend rien ;
+  aux mêmes places que sur le clavier, le jeu travaille les positions de doigts
+  dont on se sert en écrivant un message, et il en devient l'entraînement. Les
+  trois rangées de lettres sont identiques à celles du clavier, `é` compris, et
+  l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule
+  infidélité, volontaire : `ö` et `ü` n'existent sur le clavier que derrière un
+  appui long, et `ä`/`ë` vivent autour de la barre d'espace — les reproduire
+  ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La
+  rangée de la barre d'espace est donc remplacée par `Ä Ë Ö Ü`, en touches
+  larges.
+- **La grille cède quelques pixels au pavé plutôt que l'inverse.** Une grille
+  haute poussait le pavé hors de l'écran en commençant par sa rangée
+  d'accents, c'est-à-dire par les cinq touches pour lesquelles ce pavé existe.
+  La taille des cases est maintenant bornée par la hauteur disponible autant
+  que par la largeur : grille, pavé et boutons tiennent ensemble à l'écran,
+  jusqu'à la grille de onze colonnes du niveau Difficile.
+
 ## [20.0.0] - 2026-09-06
 
 > Le saut de 12.1 à 20.0 est un repère, pas une rupture : il remet le numéro
