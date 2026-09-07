@@ -91,6 +91,15 @@ jobs:
         # échouer.
         python generate_crossword.py --strict
 
+        # Les grilles de chassé-croisé se dérivent des mêmes deux actifs et
+        # réutilisent le moteur de placement du script précédent — les mots
+        # viennent du dictionnaire, la glose de récompense de la table des
+        # traductions. Elles passent donc après. La contrainte propre à ce jeu
+        # est l'unicité de la solution : une grille qui en admet deux s'affiche
+        # normalement et refuse pourtant une réponse juste, ce que seul le
+        # générateur (puis ChasseCroiseAssetTest) sait voir.
+        python generate_chassecroise.py --strict
+
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
 
@@ -98,7 +107,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -229,6 +238,38 @@ jobs:
         # des deux corpus sous Creative Commons.
         if ! jq -e '.attribution | length >= 3' "$A/luxemburgish_crossword.json" > /dev/null; then
           echo "::error::luxemburgish_crossword.json ne porte pas l'attribution de ses sources."
+          exit 1
+        fi
+
+        # Garde-fou des grilles de chassé-croisé. Même logique que ci-dessus :
+        # jq juge le volume et l'attribution, ChasseCroiseAssetTest juge la
+        # géométrie et surtout l'unicité de la solution, que rien d'autre ne
+        # peut voir.
+        PLACES=$(jq '.grilles | length' "$A/luxemburgish_chassecroise.json")
+        echo "🔡 Grilles de chassé-croisé : $PLACES"
+        if [ "$PLACES" -lt 250 ]; then
+          echo "::error::Seulement $PLACES grilles de chassé-croisé (attendu ~300)."
+          exit 1
+        fi
+
+        for NIVEAU in 1 2 3; do
+          COMPTE=$(jq --argjson n "$NIVEAU" '[.grilles[] | select(.l == $n)] | length' "$A/luxemburgish_chassecroise.json")
+          if [ "$COMPTE" -lt 80 ]; then
+            echo "::error::Chassé-croisé, difficulté $NIVEAU : $COMPTE grilles seulement (attendu ~100)."
+            exit 1
+          fi
+        done
+
+        # Chaque mot posé doit porter sa glose : c'est la récompense du jeu, et
+        # un mot muet romprait la promesse pour toute la grille.
+        SANS_GLOSE=$(jq '[.grilles[].mots[] | select((.g | length) == 0)] | length' "$A/luxemburgish_chassecroise.json")
+        if [ "$SANS_GLOSE" -ne 0 ]; then
+          echo "::error::$SANS_GLOSE mots de chassé-croisé sans glose de récompense."
+          exit 1
+        fi
+
+        if ! jq -e '.attribution | length >= 3' "$A/luxemburgish_chassecroise.json" > /dev/null; then
+          echo "::error::luxemburgish_chassecroise.json ne porte pas l'attribution de ses sources."
           exit 1
         fi
 
@@ -414,6 +455,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
           android_keyboard/app/src/main/assets/luxemburgish_crossword.json
+          android_keyboard/app/src/main/assets/luxemburgish_chassecroise.json
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
           android_keyboard/app/src/main/assets/luxemburgish_familles.json
