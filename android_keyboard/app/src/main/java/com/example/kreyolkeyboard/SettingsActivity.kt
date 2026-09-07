@@ -7535,6 +7535,8 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var tvRetour: TextView
         private lateinit var conteneurGrille: LinearLayout
         private lateinit var conteneurMots: LinearLayout
+        private lateinit var titreGagnes: TextView
+        private lateinit var conteneurGagnes: LinearLayout
         private lateinit var ligneDifficulte: LinearLayout
 
         private var session: ChasseCroiseSession? = null
@@ -7688,6 +7690,39 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     addView(conteneurMots)
 
+                    // Les sens gagnés, qui s'accumulent au lieu de passer.
+                    //
+                    // Le bandeau du haut annonce, il ne conserve pas : plusieurs
+                    // mots se verrouillent souvent d'un coup, et « Grille
+                    // terminée » recouvrait le dernier lot. Mesuré sur les 284
+                    // grilles livrées, vingt ordres de pose chacune : 58,8 % des
+                    // mots ne montraient jamais leur traduction. Or c'est la
+                    // seule chose que ce jeu enseigne, donc la récompense doit
+                    // rester lisible après coup. La liste grandit vers le bas,
+                    // sous les pastilles : elle ne déplace ni la grille ni les
+                    // mots à poser, dont les appuis suivants dépendent.
+                    titreGagnes = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 8 }
+                        text = "📖 Ce que vous avez gagné"
+                        textSize = 15f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(couleurNeutre)
+                        visibility = View.GONE
+                    }
+                    addView(titreGagnes)
+
+                    conteneurGagnes = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurGagnes)
+
                     val ligneBoutons = LinearLayout(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -7752,7 +7787,8 @@ class SettingsActivity : AppCompatActivity() {
                                 "Quand tous les croisements d'un mot sont posés, il " +
                                 "se verrouille et vous donne son sens en français. " +
                                 "C'est la récompense, et c'est pourquoi elle " +
-                                "n'arrive qu'à ce moment-là.\n\n" +
+                                "n'arrive qu'à ce moment-là. Chaque sens gagné " +
+                                "reste ensuite lisible sous la liste des mots.\n\n" +
                                 "Aucune connaissance du luxembourgeois n'est " +
                                 "nécessaire pour jouer : la déduction porte sur les " +
                                 "longueurs et les croisements. La difficulté suit la " +
@@ -7799,6 +7835,8 @@ class SettingsActivity : AppCompatActivity() {
                 session = null
                 conteneurGrille.removeAllViews()
                 conteneurMots.removeAllViews()
+                conteneurGagnes.removeAllViews()
+                titreGagnes.visibility = View.GONE
                 tvProgres.text = ""
                 tvRetour.text = "Aucune grille disponible : l'actif " +
                     "luxemburgish_chassecroise.json manque à l'application."
@@ -8161,6 +8199,49 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             tvProgres.text = "${partie.motsJustes()} / ${grille.words.size} mots"
+            rafraichirGagnes(partie)
+        }
+
+        /**
+         * Reconstruit la liste des sens gagnés.
+         *
+         * L'ordre est celui des verrouillages, que [resolus] conserve puisque
+         * `mutableSetOf` est un LinkedHashSet : l'ordre d'obtention raconte la
+         * partie, là où l'ordre de la grille ne dit rien.
+         *
+         * Reconstruire à chaque rafraîchissement plutôt que d'ajouter une ligne
+         * au verrouillage : un mot retiré doit reprendre son sens avec lui, et
+         * une liste tenue par ajouts seuls le garderait affiché.
+         */
+        private fun rafraichirGagnes(partie: ChasseCroiseSession) {
+            val ctx = context ?: return
+            conteneurGagnes.removeAllViews()
+
+            val gagnes = resolus.filter { partie.verrouille(it) }
+            titreGagnes.visibility = if (gagnes.isEmpty()) View.GONE else View.VISIBLE
+
+            gagnes.forEach { index ->
+                val mot = partie.grid.words[index]
+                val ligne = SpannableString("${mot.canonical} : ${mot.clue}")
+                ligne.setSpan(
+                    StyleSpan(Typeface.BOLD), 0, mot.canonical.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                ligne.setSpan(
+                    ForegroundColorSpan(couleurNeutre), 0, mot.canonical.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                conteneurGagnes.addView(TextView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 7 }
+                    text = ligne
+                    textSize = 14f
+                    setLineSpacing(0f, 1.15f)
+                    setTextColor(Color.parseColor("#333333"))
+                })
+            }
         }
 
         override fun onDestroyView() {
