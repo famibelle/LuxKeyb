@@ -167,7 +167,9 @@ object TranslationDictionary {
 
             proposables = exactes.asSequence()
                 .filter { (forme, glose) ->
-                    gloseInstructive(forme, glose) && !MotsEcartes.estEcarte(forme)
+                    gloseInstructive(forme, glose) &&
+                        !estNomPropre(glose) &&
+                        !MotsEcartes.estEcarte(forme)
                 }
                 .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it.key) }
 
@@ -540,11 +542,39 @@ object TranslationDictionary {
     }
 
     /**
+     * Vrai si la glose désigne un nom propre : toutes ses acceptions
+     * commencent par une majuscule.
+     *
+     * Le LOD écrit ses gloses en français, et le français réserve la minuscule
+     * aux noms communs : « Beetebuerg » → Bettembourg, « Houwald » → Howald,
+     * « José » → San José. C'est le même critère que
+     * `generate_crossword.py:est_nom_propre()`, qui écarte ces mots des grilles
+     * de Kräizwuert et de Wuertplaz ; il fallait aussi l'appliquer ici.
+     *
+     * [gloseInstructive] n'y suffisait pas et c'est ce qui a laissé passer le
+     * défaut : elle ne rejette qu'un mot glosé **par lui-même**, donc elle
+     * attrape « Käerjeng » → Käerjeng mais laisse « Beetebuerg » →
+     * Bettembourg, puisque les deux graphies diffèrent. Mesuré sur la
+     * livraison du 2026-09-07 : 757 des 19 350 formes tirables, soit 3,9 %, et
+     * Wuertriet pouvait demander « Athen », « Basel » ou « Abeba » comme mot
+     * de cinq lettres à deviner.
+     *
+     * Les mêmes 17 pertes légitimes qu'à la génération des grilles, les
+     * gentilés surtout (« Fransous » → Français), et pour la même raison :
+     * une liste d'exceptions coûterait plus à tenir que ce qu'elle rendrait.
+     */
+    private fun estNomPropre(glose: String): Boolean {
+        val acceptions = glose.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        return acceptions.isNotEmpty() && acceptions.all { it.first().isUpperCase() }
+    }
+
+    /**
      * Vrai si l'application peut proposer ce mot d'elle-même.
      *
-     * Deux conditions, et c'est le point de passage unique du mot du jour, des
-     * mots à découvrir et des trois jeux qui tirent un mot : la glose apprend
-     * quelque chose (voir [gloseInstructive]), et le mot n'est pas de ceux que
+     * Trois conditions, et c'est le point de passage unique du mot du jour,
+     * des mots à découvrir et des trois jeux qui tirent un mot : la glose
+     * apprend quelque chose (voir [gloseInstructive]), elle ne désigne pas un
+     * nom propre (voir [estNomPropre]), et le mot n'est pas de ceux que
      * [MotsEcartes] tient à l'écart. Une glose absente laisse une ligne vide,
      * une glose égale au mot laisse une ligne inutile, et les deux se lisent de
      * la même façon — le mot n'est pas traduit.

@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard
 
 import org.json.JSONArray
 import org.json.JSONObject
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -78,6 +79,65 @@ class TranslationAssetTest {
         return glose.split(",").any { AccentTolerantMatcher.normalize(it.trim()) != motPlie }
     }
 
+    private fun nomPropre(glose: String): Boolean {
+        val acceptions = glose.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        return acceptions.isNotEmpty() && acceptions.all { it.first().isUpperCase() }
+    }
+
+    /**
+     * Les trois jeux qui tirent un mot ne tirent pas de noms propres.
+     *
+     * [TranslationDictionary.gloseInstructive] ne suffisait pas et c'est ce qui
+     * a laissé passer le défaut : elle ne rejette qu'un mot glosé par
+     * lui-même, donc elle attrape « Käerjeng » et laisse « Beetebuerg » →
+     * Bettembourg, dont les deux graphies diffèrent. 757 des 19 350 formes
+     * tirables étaient dans ce cas au 2026-09-07, et Wuertriet pouvait
+     * demander « Athen » ou « Basel ».
+     *
+     * Le critère est celui des générateurs de grilles : le LOD glose en
+     * français, et le français réserve la minuscule aux noms communs.
+     */
+    @Test
+    fun `les jeux ne tirent pas de noms propres`() {
+        val table = charger().getJSONObject("translations")
+        val duDictionnaire = dictionnaire().let { tableau ->
+            (0 until tableau.length())
+                .map { tableau.getJSONArray(it).getString(0) }
+                .toHashSet()
+        }
+
+        for (attendu in listOf("Beetebuerg", "Houwald", "Miersch", "Frankräich")) {
+            val glose = table.optString(attendu, "")
+            if (glose.isEmpty()) continue
+            assertTrue("« $attendu » devrait être vu comme un nom propre", nomPropre(glose))
+        }
+        for (garde in listOf("Haus", "Brout", "Aarbecht", "schaffen")) {
+            val glose = table.optString(garde, "")
+            if (glose.isEmpty()) continue
+            assertFalse("« $garde » n'est pas un nom propre", nomPropre(glose))
+        }
+
+        var tirables = 0
+        var propres = 0
+        for (forme in table.keys()) {
+            if (forme !in duDictionnaire) continue
+            val glose = table.getString(forme)
+            if (!instructive(forme, glose)) continue
+            tirables++
+            if (nomPropre(glose)) propres++
+        }
+        // Le filtre vit dans TranslationDictionary, pas dans l'actif : la table
+        // garde ses noms propres, un mot croisé ailleurs affiche toujours sa
+        // glose. Ce test mesure donc ce que le filtre a à retirer, et échoue
+        // si la population explosait au point de vider les viviers.
+        assertTrue("aucune forme tirable", tirables > 10000)
+        assertTrue(
+            "$propres noms propres sur $tirables formes tirables : le filtre " +
+                "de TranslationDictionary retirerait trop",
+            propres * 10 < tirables
+        )
+    }
+
     @Test
     fun `le volume livre suffit aux trois jeux qui tirent des mots`() {
         val table = charger().getJSONObject("translations")
@@ -87,6 +147,8 @@ class TranslationAssetTest {
         // tirent leurs mots de `luxemburgish_dict.json`, et non des formes que
         // le LOD ajoute pour la seule complétion. Compter la table entière
         // annoncerait une réserve cinq fois plus large que celle qu'ils voient.
+        // Les noms propres sont retirés du compte pour la même raison : depuis
+        // le 2026-09-07 le filtre les écarte du tirage.
         val duDictionnaire = dictionnaire().let { tableau ->
             (0 until tableau.length())
                 .map { tableau.getJSONArray(it).getString(0) }
@@ -99,6 +161,7 @@ class TranslationAssetTest {
         for (forme in table.keys()) {
             if (forme !in duDictionnaire) continue
             if (!instructive(forme, table.getString(forme))) continue
+            if (nomPropre(table.getString(forme))) continue
             if (forme.length in 3..8) wuertsich++
             if (forme.length in 4..10) wuertmix++
             if (forme.length == 5 && forme.all { it.isLetter() }) wuertriet++
