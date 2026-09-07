@@ -7640,6 +7640,13 @@ class SettingsActivity : AppCompatActivity() {
                     // enseigne. Elle garde sa place même vide, sinon la grille
                     // saute d'un cran à chaque mot verrouillé et le doigt tombe
                     // à côté de la case visée.
+                    //
+                    // Trois lignes réservées, et non une : le message porte le
+                    // mot, son sens et parfois la leçon de majuscule, donc il
+                    // dépasse presque toujours une ligne. Réserver la hauteur
+                    // du plus long est la seule façon que la grille ne bouge
+                    // pas entre deux appuis — c'est l'appui suivant qui paie
+                    // le décalage, et il tombe alors sur la mauvaise case.
                     tvRetour = TextView(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -7650,6 +7657,7 @@ class SettingsActivity : AppCompatActivity() {
                         setTypeface(null, Typeface.BOLD)
                         setLineSpacing(0f, 1.2f)
                         setPadding(16, 14, 16, 14)
+                        minLines = 3
                         background = GradientDrawable().apply {
                             cornerRadius = 12f
                             setColor(Color.WHITE)
@@ -8806,6 +8814,10 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun construireGrilleChoix(activity: SettingsActivity): View {
             val colonne = LinearLayout(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 orientation = LinearLayout.VERTICAL
                 setPadding(20, 24, 20, 24)
             }
@@ -8848,7 +8860,19 @@ class SettingsActivity : AppCompatActivity() {
                 })
             }
 
-            return colonne
+            // Le choix défile depuis la septième carte. Six tenaient dans un
+            // écran de téléphone, si bien que le hub n'avait jamais eu besoin
+            // de défiler ; la septième tombait sous le bord, et rien ne le
+            // signalait : la carte existait, elle était simplement
+            // inatteignable. Le poids fait prendre à la vue la hauteur restante
+            // sous la barre de retour, et jamais plus, sinon les cartes se
+            // centrent au lieu de commencer en haut.
+            return ScrollView(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+                )
+                addView(colonne)
+            }
         }
 
         private fun carteJeu(activity: SettingsActivity, jeu: Jeu, marginDroite: Boolean) =
