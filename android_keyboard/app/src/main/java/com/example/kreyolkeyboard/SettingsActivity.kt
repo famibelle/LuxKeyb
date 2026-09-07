@@ -7643,12 +7643,13 @@ class SettingsActivity : AppCompatActivity() {
                     // saute d'un cran à chaque mot verrouillé et le doigt tombe
                     // à côté de la case visée.
                     //
-                    // Trois lignes réservées, et non une : le message porte le
-                    // mot, son sens et parfois la leçon de majuscule, donc il
-                    // dépasse presque toujours une ligne. Réserver la hauteur
-                    // du plus long est la seule façon que la grille ne bouge
-                    // pas entre deux appuis — c'est l'appui suivant qui paie
-                    // le décalage, et il tombe alors sur la mauvaise case.
+                    // Deux lignes réservées, et non une : le message porte le
+                    // mot et ses acceptions, donc il déborde souvent. Réserver
+                    // la hauteur du plus long est la seule façon que la grille
+                    // ne bouge pas entre deux appuis — c'est l'appui suivant
+                    // qui paie le décalage, et il tombe alors sur la mauvaise
+                    // case. Trois lignes tant que la leçon de majuscule
+                    // s'affichait ; deux depuis qu'elle est retirée.
                     tvRetour = TextView(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -7659,7 +7660,7 @@ class SettingsActivity : AppCompatActivity() {
                         setTypeface(null, Typeface.BOLD)
                         setLineSpacing(0f, 1.2f)
                         setPadding(16, 14, 16, 14)
-                        minLines = 3
+                        minLines = 2
                         background = GradientDrawable().apply {
                             cornerRadius = 12f
                             setColor(Color.WHITE)
@@ -7781,14 +7782,15 @@ class SettingsActivity : AppCompatActivity() {
                                 "trouver leur place. Touchez un mot de la liste, " +
                                 "puis une case de la grille : les emplacements où " +
                                 "il peut aller s'éclairent. Touchez un mot déjà " +
-                                "posé pour le retirer.\n\n" +
+                                "posé pour le reprendre.\n\n" +
                                 "Un mot qui contredirait une lettre déjà écrite ne " +
                                 "se pose pas : c'est le crayon, pas une correction.\n\n" +
                                 "Quand tous les croisements d'un mot sont posés, il " +
                                 "se verrouille et vous donne son sens en français. " +
                                 "C'est la récompense, et c'est pourquoi elle " +
-                                "n'arrive qu'à ce moment-là. Chaque sens gagné " +
-                                "reste ensuite lisible sous la liste des mots.\n\n" +
+                                "n'arrive qu'à ce moment-là. Un mot gagné passe au " +
+                                "vert et ne se reprend plus ; son sens reste " +
+                                "lisible sous la liste des mots.\n\n" +
                                 "Aucune connaissance du luxembourgeois n'est " +
                                 "nécessaire pour jouer : la déduction porte sur les " +
                                 "longueurs et les croisements. La difficulté suit la " +
@@ -8029,6 +8031,10 @@ class SettingsActivity : AppCompatActivity() {
          * est rare, parce qu'elle demande que les deux emplacements aient la
          * même longueur *et* acceptent le même mot, et le joueur la lève en
          * touchant une autre case du mot visé.
+         *
+         * Un mot gagné ne se retire plus : le geste est refusé et dit
+         * pourquoi, plutôt que de ne rien faire — un appui sans effet se lit
+         * comme une panne.
          */
         private fun toucherCase(r: Int, c: Int) {
             val partie = session ?: return
@@ -8047,12 +8053,16 @@ class SettingsActivity : AppCompatActivity() {
                 return
             }
 
-            val occupe = emplacements.firstOrNull { it in partie.occupes }
-            if (occupe != null) {
-                partie.retirer(occupe)
-                resolus.remove(occupe)
+            val occupe = emplacements.firstOrNull { it in partie.occupes } ?: return
+            if (partie.retirer(occupe)) {
                 tvRetour.visibility = View.INVISIBLE
                 rafraichir()
+            } else {
+                annoncer(
+                    "🔒 ${partie.grid.words[occupe].canonical} est gagné : " +
+                        "il reste en place.",
+                    couleurNeutre
+                )
             }
         }
 
@@ -8060,10 +8070,15 @@ class SettingsActivity : AppCompatActivity() {
          * Appelé après chaque pose : rafraîchit, puis dit ce qui vient d'être
          * gagné.
          *
-         * La glose n'apparaît qu'ici, au verrouillage. Le mot est en outre
-         * rappelé sous sa forme canonique : la grille est tout en capitales, et
-         * la majuscule des substantifs est une règle du luxembourgeois, pas une
-         * convention typographique.
+         * La glose n'apparaît qu'ici, au verrouillage, et le mot est rappelé
+         * sous sa forme canonique parce que la grille est tout en capitales.
+         *
+         * Le rappel s'arrête là. Kräizwuert ajoute « un substantif : hors de
+         * la grille, il garde sa majuscule », et c'est justifié là-bas : le
+         * joueur a produit l'orthographe lui-même, sans jamais voir la forme
+         * écrite. Ici les mots sont donnés dans la liste, déjà casés comme il
+         * faut — la phrase ne dit alors que ce que l'écran montre déjà, et
+         * elle le répète à chaque mot gagné.
          */
         private fun apresCoup() {
             val partie = session ?: return
@@ -8084,15 +8099,9 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 nouveaux.isNotEmpty() -> {
                     val mot = grille.words[nouveaux.first()]
-                    val majuscule = if (mot.enseigneUneMajuscule)
-                        " · un substantif : hors de la grille, il garde sa majuscule"
-                    else ""
                     val autres = if (nouveaux.size > 1)
                         " (+${nouveaux.size - 1})" else ""
-                    annoncer(
-                        "✅ ${mot.canonical} : ${mot.clue}$majuscule$autres",
-                        couleurJuste
-                    )
+                    annoncer("✅ ${mot.canonical} : ${mot.clue}$autres", couleurJuste)
                 }
                 grille.words.indices.any { partie.fautif(it) } -> {
                     annoncer(
@@ -8175,9 +8184,17 @@ class SettingsActivity : AppCompatActivity() {
             chipsParMot.forEach { (index, chip) ->
                 val pose = partie.estPose(index)
                 val choisi = index == partie.motChoisi
+                // Un mot gagné se distingue d'un mot seulement posé : le
+                // premier est acquis et ne bougera plus, le second peut
+                // encore être repris. Les deux étaient gris, donc rien ne
+                // disait lesquels étaient encore en jeu.
+                val gagne = partie.grid.words.indices.any {
+                    partie.motDe(it) == index && partie.verrouille(it)
+                }
                 (chip.background as? GradientDrawable)?.apply {
                     setColor(
                         when {
+                            gagne -> fondJuste
                             pose -> Color.parseColor("#EEEEEE")
                             choisi -> fondPossible
                             else -> Color.WHITE
@@ -8189,7 +8206,11 @@ class SettingsActivity : AppCompatActivity() {
                     )
                 }
                 chip.setTextColor(
-                    if (pose) Color.parseColor("#9E9E9E") else Color.parseColor("#212121")
+                    when {
+                        gagne -> couleurNeutre
+                        pose -> Color.parseColor("#9E9E9E")
+                        else -> Color.parseColor("#212121")
+                    }
                 )
                 chip.paintFlags = if (pose) {
                     chip.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -8207,20 +8228,23 @@ class SettingsActivity : AppCompatActivity() {
          *
          * L'ordre est celui des verrouillages, que [resolus] conserve puisque
          * `mutableSetOf` est un LinkedHashSet : l'ordre d'obtention raconte la
-         * partie, là où l'ordre de la grille ne dit rien.
+         * partie, là où l'ordre de la grille ne dit rien. C'est aussi pourquoi
+         * l'ordre vit ici et non dans la partie, dont l'ensemble des gagnés est
+         * un HashSet.
          *
-         * Reconstruire à chaque rafraîchissement plutôt que d'ajouter une ligne
-         * au verrouillage : un mot retiré doit reprendre son sens avec lui, et
-         * une liste tenue par ajouts seuls le garderait affiché.
+         * La liste ne perd jamais une ligne : un mot gagné ne se retire plus
+         * (voir `ChasseCroiseSession.retirer`), donc ce qui est versé est
+         * acquis. Elle est tout de même reconstruite à chaque rafraîchissement
+         * plutôt que tenue par ajouts, pour que l'affichage n'ait qu'une seule
+         * source de vérité.
          */
         private fun rafraichirGagnes(partie: ChasseCroiseSession) {
             val ctx = context ?: return
             conteneurGagnes.removeAllViews()
 
-            val gagnes = resolus.filter { partie.verrouille(it) }
-            titreGagnes.visibility = if (gagnes.isEmpty()) View.GONE else View.VISIBLE
+            titreGagnes.visibility = if (resolus.isEmpty()) View.GONE else View.VISIBLE
 
-            gagnes.forEach { index ->
+            resolus.forEach { index ->
                 val mot = partie.grid.words[index]
                 val ligne = SpannableString("${mot.canonical} : ${mot.clue}")
                 ligne.setSpan(

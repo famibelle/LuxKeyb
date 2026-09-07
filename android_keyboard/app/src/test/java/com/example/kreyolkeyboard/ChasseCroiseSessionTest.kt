@@ -148,11 +148,65 @@ class ChasseCroiseSessionTest {
         assertFalse(partie.retirer(0))
     }
 
+    /**
+     * Un mot gagné est acquis : il ne se retire plus.
+     *
+     * Ce n'est pas une commodité d'interface mais la contrepartie de la
+     * récompense. Le jeu a versé la glose et l'a inscrite dans la liste des
+     * sens acquis ; rendre le mot à la liste rouvrirait un emplacement dont le
+     * joueur connaît déjà la réponse, et obligerait cette liste à reprendre ce
+     * qu'elle a donné.
+     */
+    @Test
+    fun `un mot gagne ne se retire plus`() {
+        val partie = partie()
+        partie.choisir(0)
+        assertTrue(partie.poser(0)) // HAUS
+        partie.choisir(1)
+        assertTrue(partie.poser(1)) // HAND
+
+        // HAND n'a qu'un croisement, le H de HAUS : il est déjà confronté,
+        // donc gagné. HAUS attend encore SEE.
+        assertTrue(partie.verrouille(1))
+        assertFalse(partie.verrouille(0))
+
+        assertFalse("un mot gagné ne se retire pas", partie.retirer(1))
+        assertTrue(partie.estPose(1))
+        assertEquals('A', partie.lettreAt(1, 0))
+
+        assertTrue("HAUS n'est pas prouvé, il se reprend", partie.retirer(0))
+    }
+
+    /**
+     * Le gain ne dépend plus de l'état courant de la grille.
+     *
+     * Sans mémoire, retirer un mot voisin ferait retomber
+     * [croisementsCouverts] à faux et le sens déjà lu disparaîtrait de la
+     * liste : le joueur verrait sa récompense reprise pour un geste qui ne le
+     * concernait pas.
+     */
+    @Test
+    fun `un mot gagne le reste quand son voisin s'en va`() {
+        val partie = partie()
+        partie.choisir(0)
+        assertTrue(partie.poser(0))
+        partie.choisir(1)
+        assertTrue(partie.poser(1))
+        assertTrue(partie.verrouille(1))
+
+        assertTrue(partie.retirer(0)) // HAUS s'en va, HAND perd son croisement
+        assertFalse(partie.croisementsCouverts(1))
+        assertTrue("le sens déjà versé ne se reprend pas", partie.verrouille(1))
+    }
+
     @Test
     fun `la solution remplit la grille`() {
         val partie = partie()
         partie.reveler()
         assertTrue(partie.termine())
+        // Tout est posé, donc tout est confronté : la solution affichée
+        // alimente la liste des sens comme une partie gagnée.
+        assertTrue(partie.grid.words.indices.all { partie.verrouille(it) })
         assertEquals(3, partie.motsJustes())
         assertEquals('S', partie.lettreAt(0, 3))
         assertEquals('E', partie.lettreAt(2, 3))

@@ -47,6 +47,22 @@ class ChasseCroiseSession(val grid: CrosswordGrid, melangeur: (List<Int>) -> Lis
     /** Emplacement → rang du mot posé dedans, dans [grid].words. */
     private val places = HashMap<Int, Int>()
 
+    /**
+     * Emplacements gagnés. **Cet ensemble ne fait que grandir.**
+     *
+     * Un mot gagné est un mot dont les croisements ont prouvé la place : le
+     * jeu a versé sa glose et l'a inscrit dans la liste des sens acquis. Deux
+     * conséquences, et ce sont elles qui justifient de mémoriser plutôt que de
+     * recalculer :
+     *
+     * - il ne se retire plus (voir [retirer]) ;
+     * - il reste gagné même si un mot voisin, lui, s'en va. Sans mémoire,
+     *   [croisementsCouverts] redeviendrait faux et le sens déjà lu
+     *   disparaîtrait de la liste — le joueur verrait sa récompense reprise
+     *   pour un geste qui ne le concernait pas.
+     */
+    private val gagnes = HashSet<Int>()
+
     /** Les mots proposés au joueur, dans un ordre qui ne dit rien. */
     val liste: List<Int> = melangeur(grid.words.indices.toList())
 
@@ -101,11 +117,40 @@ class ChasseCroiseSession(val grid: CrosswordGrid, melangeur: (List<Int>) -> Lis
         if (mot < 0 || !peutPoser(emplacement, mot)) return false
         places[emplacement] = mot
         motChoisi = -1
+        encaisser()
         return true
     }
 
-    /** Retire le mot d'un emplacement et le rend à la liste. */
-    fun retirer(emplacement: Int): Boolean = places.remove(emplacement) != null
+    /**
+     * Retire le mot d'un emplacement et le rend à la liste.
+     *
+     * **Un mot gagné ne se retire pas.** Ses croisements l'ont confronté, le
+     * jeu a versé sa glose et l'a compté : le rendre à la liste rouvrirait un
+     * emplacement dont le joueur connaît déjà la réponse, et obligerait la
+     * liste des sens acquis à reprendre ce qu'elle a donné. Reste retirable
+     * tout ce qui n'est pas prouvé — un mot posé qu'aucun croisement n'a
+     * encore confronté, et un mot [fautif].
+     */
+    fun retirer(emplacement: Int): Boolean {
+        if (emplacement in gagnes) return false
+        return places.remove(emplacement) != null
+    }
+
+    /**
+     * Enregistre les emplacements que le dernier coup vient de prouver.
+     *
+     * Appelé après chaque pose, et jamais après un retrait : [gagnes] ne
+     * décroît pas.
+     */
+    private fun encaisser() {
+        for (emplacement in grid.words.indices) {
+            if (emplacement !in gagnes &&
+                juste(emplacement) && croisementsCouverts(emplacement)
+            ) {
+                gagnes.add(emplacement)
+            }
+        }
+    }
 
     /** Les emplacements libres où le mot choisi pourrait aller. */
     fun emplacementsPossibles(mot: Int): List<Int> =
@@ -155,9 +200,11 @@ class ChasseCroiseSession(val grid: CrosswordGrid, melangeur: (List<Int>) -> Lis
      * par sondage — poser, regarder si la glose s'allume, retirer. Même
      * discipline que Kräizwuert, qui ne signale une lettre fausse qu'une fois
      * son mot entièrement écrit.
+     *
+     * La réponse est acquise : voir [gagnes]. Un mot verrouillé le reste
+     * jusqu'à la fin de la partie, et ne se retire plus.
      */
-    fun verrouille(emplacement: Int): Boolean =
-        juste(emplacement) && croisementsCouverts(emplacement)
+    fun verrouille(emplacement: Int): Boolean = emplacement in gagnes
 
     /** Posé, confronté, et pourtant faux : le seul cas qu'on signale en rouge. */
     fun fautif(emplacement: Int): Boolean =
@@ -172,6 +219,7 @@ class ChasseCroiseSession(val grid: CrosswordGrid, melangeur: (List<Int>) -> Lis
         places.clear()
         grid.words.indices.forEach { places[it] = it }
         motChoisi = -1
+        encaisser()
     }
 }
 
