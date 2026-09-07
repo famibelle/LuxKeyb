@@ -9,6 +9,53 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.3.0] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **Les grilles casaient des communes, des pays et des prénoms.** Wuertplaz en
+  portait 115 sur 1 954 formes, Kräizwuert 54 sur 1 527, jusqu'à demander
+  « CAFÉ » sous la définition « Eschweiler-Halte ». Les deux générateurs
+  affirmaient que les noms propres n'avaient pas besoin d'être détectés, au
+  motif que le dictionnaire officiel ne traduit ni « Bettel », ni « RTL », ni
+  « Esch » : c'est vrai de ceux-là et faux en général, puisqu'il consacre un
+  article à l'essentiel des communes du pays et des pays d'Europe. Ils sont
+  maintenant reconnus au fait que toutes leurs traductions commencent par une
+  majuscule, le français réservant la minuscule aux noms communs. Il n'en reste
+  aucun dans les deux jeux, et un contrôle automatique refuse leur retour.
+- **Une traduction ne traîne plus de nom propre derrière elle.** Le
+  dictionnaire signale parfois, après le sens courant, l'emploi du mot dans un
+  nom propre : « Stad : ville, Luxembourg-ville », « Fra : femme, Gëlle Fra »,
+  « Papp : père, Dieu le Père ». 68 mots étaient dans ce cas et montraient au
+  joueur une moitié de ligne inutilisable. Seul le sens commun reste.
+- **Wuertsich, Wuertmix et Wuertriet tiraient eux aussi des noms propres.** Le
+  même défaut, par un autre chemin : le filtre de ces trois jeux ne rejetait
+  qu'un mot traduit par lui-même, donc il attrapait « Käerjeng » mais laissait
+  passer « Beetebuerg », dont la traduction « Bettembourg » s'écrit autrement.
+  757 formes sur 19 350, et Wuertriet pouvait demander « Athen » ou « Basel »
+  comme mot de cinq lettres à deviner. Le mot du jour et « Mots à découvrir »
+  passent par le même point et en profitent.
+- **« Viol » est apparu dans une grille.** Le filtre de neutralité existait
+  mais n'avait relevé que la moitié germanique du registre écarté :
+  « Vergewaltegung » en était, « Viol » non, et de même « Ofdreiwung » sans
+  « Avortement », « Selbstmord » sans « Suicide », « Kokain » sans
+  « Cannabis » ni « Haschisch ». Un mot filtré dont le synonyme emprunté ne
+  l'est pas ne filtre rien. Les deux moitiés y sont désormais.
+
+### 🔄 Modifié
+
+- **Un mot gagné ne se retire plus, dans Wuertplaz.** Ses croisements l'ont
+  prouvé, le jeu a versé sa traduction et l'a inscrite dans les sens acquis :
+  le rendre à la liste rouvrirait un emplacement dont la réponse est déjà
+  connue. Il passe au vert dans la liste des mots, et le toucher dans la grille
+  répond qu'il reste en place au lieu de ne rien faire. Un mot seulement posé,
+  lui, se reprend toujours, et un mot gagné le reste même si son voisin s'en
+  va.
+- **Wuertplaz ne répète plus « un substantif : hors de la grille, il garde sa
+  majuscule ».** La phrase revenait à chaque mot gagné pour dire ce que la
+  liste des mots à caser montrait déjà. Elle demeure dans Kräizwuert, où le
+  joueur écrit lui-même le mot sans jamais en voir la forme.
+
 ## [20.2.2] - 2026-09-07
 
 ### 🐛 Corrigé
@@ -91,7 +138,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - **La barre de défilement ne barre plus les mots proposés.** Quand la barre de
   suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire
-  défiler la rangée faisait apparaître un trait en travers des puces — et
+  défiler la rangée faisait apparaître un trait en travers des puces, et
   précisément pendant qu'on les lisait pour choisir. Android dessine la barre
   de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une
   rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur
@@ -113,7 +160,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   trois rangées de lettres sont identiques à celles du clavier, `é` compris, et
   l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule
   infidélité, volontaire : `ö` et `ü` n'existent sur le clavier que derrière un
-  appui long, et `ä`/`ë` vivent autour de la barre d'espace — les reproduire
+  appui long, et `ä`/`ë` vivent autour de la barre d'espace : les reproduire
   ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La
   rangée de la barre d'espace est donc remplacée par `Ä Ë Ö Ü`, en touches
   larges.

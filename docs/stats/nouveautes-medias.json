@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "20.3.0": {
+    "image": "Screenshots/lux_wuertplaz_gagne.png",
+    "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
+    "legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
+  },
   "20.2.2": {
     "image": "Screenshots/lux_wuertplaz_sens.png",
     "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
@@ -13,12 +18,12 @@
   "20.1.0": {
     "image": "Screenshots/lux_kraizwuert_pave.png",
     "alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
-    "legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies — plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
+    "legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
   },
   "20.0.0": {
     "image": "Screenshots/lux_kraizwuert.png",
     "alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
-    "legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
+    "legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille, ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
   },
   "12.0.0": {
     "image": "Screenshots/lux_cuvette.png",

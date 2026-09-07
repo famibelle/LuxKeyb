@@ -1,9 +1,59 @@
 {
  "genere_le": "2026-09-07",
- "derniere_version": "20.2.2",
+ "derniere_version": "20.3.0",
  "derniere_date": "2026-09-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.3.0",
+   "date": "2026-09-07",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Les grilles casaient des communes, des pays et des prénoms",
+       "texte": "Wuertplaz en portait 115 sur 1 954 formes, Kräizwuert 54 sur 1 527, jusqu'à demander « CAFÉ » sous la définition « Eschweiler-Halte ». Les deux générateurs affirmaient que les noms propres n'avaient pas besoin d'être détectés, au motif que le dictionnaire officiel ne traduit ni « Bettel », ni « RTL », ni « Esch » : c'est vrai de ceux-là et faux en général, puisqu'il consacre un article à l'essentiel des communes du pays et des pays d'Europe. Ils sont maintenant reconnus au fait que toutes leurs traductions commencent par une majuscule, le français réservant la minuscule aux noms communs. Il n'en reste aucun dans les deux jeux, et un contrôle automatique refuse leur retour."
+      },
+      {
+       "titre": "Une traduction ne traîne plus de nom propre derrière elle",
+       "texte": "Le dictionnaire signale parfois, après le sens courant, l'emploi du mot dans un nom propre : « Stad : ville, Luxembourg-ville », « Fra : femme, Gëlle Fra », « Papp : père, Dieu le Père ». 68 mots étaient dans ce cas et montraient au joueur une moitié de ligne inutilisable. Seul le sens commun reste."
+      },
+      {
+       "titre": "Wuertsich, Wuertmix et Wuertriet tiraient eux aussi des noms propres",
+       "texte": "Le même défaut, par un autre chemin : le filtre de ces trois jeux ne rejetait qu'un mot traduit par lui-même, donc il attrapait « Käerjeng » mais laissait passer « Beetebuerg », dont la traduction « Bettembourg » s'écrit autrement. 757 formes sur 19 350, et Wuertriet pouvait demander « Athen » ou « Basel » comme mot de cinq lettres à deviner. Le mot du jour et « Mots à découvrir » passent par le même point et en profitent."
+      },
+      {
+       "titre": "« Viol » est apparu dans une grille",
+       "texte": "Le filtre de neutralité existait mais n'avait relevé que la moitié germanique du registre écarté : « Vergewaltegung » en était, « Viol » non, et de même « Ofdreiwung » sans « Avortement », « Selbstmord » sans « Suicide », « Kokain » sans « Cannabis » ni « Haschisch ». Un mot filtré dont le synonyme emprunté ne l'est pas ne filtre rien. Les deux moitiés y sont désormais."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔄",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Un mot gagné ne se retire plus, dans Wuertplaz",
+       "texte": "Ses croisements l'ont prouvé, le jeu a versé sa traduction et l'a inscrite dans les sens acquis : le rendre à la liste rouvrirait un emplacement dont la réponse est déjà connue. Il passe au vert dans la liste des mots, et le toucher dans la grille répond qu'il reste en place au lieu de ne rien faire. Un mot seulement posé, lui, se reprend toujours, et un mot gagné le reste même si son voisin s'en va."
+      },
+      {
+       "titre": "Wuertplaz ne répète plus « un substantif : hors de la grille, il garde sa majuscule »",
+       "texte": "La phrase revenait à chaque mot gagné pour dire ce que la liste des mots à caser montrait déjà. Elle demeure dans Kräizwuert, où le joueur écrit lui-même le mot sans jamais en voir la forme."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_wuertplaz_gagne.png",
+   "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
+   "image_legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
+  },
   {
    "version": "20.2.2",
    "date": "2026-09-07",
@@ -106,7 +156,7 @@
      "points": [
       {
        "titre": "La barre de défilement ne barre plus les mots proposés",
-       "texte": "Quand la barre de suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire défiler la rangée faisait apparaître un trait en travers des puces — et précisément pendant qu'on les lisait pour choisir. Android dessine la barre de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur une puce rouge se lit comme un mot barré. Elle est retirée : l'indication qu'il reste des mots à droite était déjà portée par la puce coupée au bord. La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la même raison, et est corrigée avec elle."
+       "texte": "Quand la barre de suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire défiler la rangée faisait apparaître un trait en travers des puces, et précisément pendant qu'on les lisait pour choisir. Android dessine la barre de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur une puce rouge se lit comme un mot barré. Elle est retirée : l'indication qu'il reste des mots à droite était déjà portée par la puce coupée au bord. La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la même raison, et est corrigée avec elle."
       }
      ],
      "texte": "",
@@ -125,7 +175,7 @@
      "points": [
       {
        "titre": "Le pavé de Kräizwuert reprend la disposition du clavier",
-       "texte": "Il était alphabétique, et c'était une erreur : cette application existe pour qu'on écrive le luxembourgeois sur son clavier à elle, en QWERTZ. Chercher les lettres dans un ordre qu'on ne retrouvera nulle part ensuite n'apprend rien ; aux mêmes places que sur le clavier, le jeu travaille les positions de doigts dont on se sert en écrivant un message, et il en devient l'entraînement. Les trois rangées de lettres sont identiques à celles du clavier, <code>é</code> compris, et l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule infidélité, volontaire : <code>ö</code> et <code>ü</code> n'existent sur le clavier que derrière un appui long, et <code>ä</code>/<code>ë</code> vivent autour de la barre d'espace — les reproduire ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La rangée de la barre d'espace est donc remplacée par <code>Ä Ë Ö Ü</code>, en touches larges."
+       "texte": "Il était alphabétique, et c'était une erreur : cette application existe pour qu'on écrive le luxembourgeois sur son clavier à elle, en QWERTZ. Chercher les lettres dans un ordre qu'on ne retrouvera nulle part ensuite n'apprend rien ; aux mêmes places que sur le clavier, le jeu travaille les positions de doigts dont on se sert en écrivant un message, et il en devient l'entraînement. Les trois rangées de lettres sont identiques à celles du clavier, <code>é</code> compris, et l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule infidélité, volontaire : <code>ö</code> et <code>ü</code> n'existent sur le clavier que derrière un appui long, et <code>ä</code>/<code>ë</code> vivent autour de la barre d'espace : les reproduire ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La rangée de la barre d'espace est donc remplacée par <code>Ä Ë Ö Ü</code>, en touches larges."
       },
       {
        "titre": "La grille cède quelques pixels au pavé plutôt que l'inverse",
@@ -138,29 +188,7 @@
    ],
    "image": "Screenshots/lux_kraizwuert_pave.png",
    "image_alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
-   "image_legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies — plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
-  },
-  {
-   "version": "20.0.0",
-   "date": "2026-09-06",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Kräizwuert, des mots croisés français → luxembourgeois",
-       "texte": "Sixième jeu de l'onglet Spiller, et le seul où l'on <strong>écrit</strong> le luxembourgeois au lieu de le reconnaître : les cinq autres montrent le mot, ici la case est vide. Chaque définition est le sens français tiré du LOD, et à vous d'écrire le mot dans la grille, accents compris — Ä, Ë, É, Ö et Ü sont sur le pavé du jeu, qui ne dépend donc pas du clavier actif de l'appareil. Une faute ne se signale qu'une fois le mot entièrement écrit, pour ne pas dicter la réponse lettre par lettre ; chaque mot trouvé rappelle son orthographe véritable, puisque la grille en capitales efface justement la majuscule des substantifs. 300 grilles livrées, cent par difficulté, construites et vérifiées hors de l'appareil par <code>Dictionnaires/generate_crossword.py</code>. La difficulté porte sur la rareté du vocabulaire, pas sur la taille de la grille."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_kraizwuert.png",
-   "image_alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
-   "image_legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
+   "image_legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
   }
  ]
 }
