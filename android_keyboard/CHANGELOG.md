@@ -9,6 +9,42 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.2.0] - 2026-09-07
+
+### ✨ Ajouté
+
+- **Wuertplaz, un chassé-croisé luxembourgeois.** Septième jeu de l'onglet
+  Spiller, et le premier **jouable sans connaître un mot de luxembourgeois** :
+  les six autres supposent une compréhension préalable, ne serait-ce que pour
+  lire une définition. Ici la grille est vide, tous les mots vous sont donnés,
+  et il s'agit de trouver leur place. La déduction porte sur les longueurs et
+  sur les croisements, pas sur le sens. On touche un mot de la liste, puis une
+  case : les emplacements où il peut aller s'éclairent. Un mot qui contredirait
+  une lettre déjà écrite ne se pose pas, comme au crayon on n'écrit pas deux
+  lettres dans la même case.
+- **La traduction française devient la récompense.** Elle n'apparaît qu'au
+  moment où un mot se verrouille, c'est-à-dire quand tous ses croisements sont
+  posés. La montrer au dépôt ferait résoudre la grille par sondage (poser,
+  regarder si la glose s'allume, retirer), alors qu'ainsi elle se mérite. C'est
+  l'inverse de Kräizwuert, où le sens est la question : ici on rencontre le mot
+  d'abord et on apprend ce qu'il veut dire ensuite, ce qui est le sens dans
+  lequel on aborde une langue qu'on ne connaît pas encore. Chaque mot gagné
+  rappelle aussi son orthographe véritable, la grille en capitales effaçant la
+  majuscule des substantifs.
+- **300 grilles livrées, cent par difficulté**, construites et vérifiées hors de
+  l'appareil par `Dictionnaires/generate_chassecroise.py`, qui réutilise le
+  moteur de placement de Kräizwuert. Chacune est garantie **à solution unique**.
+  Une grille où deux mots peuvent s'échanger sans contredire un croisement
+  s'affiche normalement et refuse pourtant une réponse juste, ce que le joueur
+  lit comme sa propre erreur. Le générateur les écarte, et
+  `ChasseCroiseAssetTest` rejoue la vérification sur l'actif livré.
+- **La difficulté porte sur la géométrie, pas sur la rareté du vocabulaire.**
+  Les mots étant affichés, leur fréquence ne fait plus la difficulté : ce qui la
+  fait est la taille de la grille et le nombre de mots partageant une même
+  longueur, puisqu'une longueur unique désigne son emplacement toute seule. Un
+  seul plancher de fréquence suffit donc, ce qui porte le vivier à 6 001 mots
+  aux trois niveaux, là où le niveau Facile de Kräizwuert plafonne à 227.
+
 ## [20.1.1] - 2026-09-06
 
 ### 🐛 Corrigé

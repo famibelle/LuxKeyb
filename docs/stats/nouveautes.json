@@ -1,9 +1,40 @@
 {
- "genere_le": "2026-09-06",
- "derniere_version": "20.1.1",
- "derniere_date": "2026-09-06",
+ "genere_le": "2026-09-07",
+ "derniere_version": "20.2.0",
+ "derniere_date": "2026-09-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.2.0",
+   "date": "2026-09-07",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Wuertplaz, un chassé-croisé luxembourgeois",
+       "texte": "Septième jeu de l'onglet Spiller, et le premier <strong>jouable sans connaître un mot de luxembourgeois</strong> : les six autres supposent une compréhension préalable, ne serait-ce que pour lire une définition. Ici la grille est vide, tous les mots vous sont donnés, et il s'agit de trouver leur place. La déduction porte sur les longueurs et sur les croisements, pas sur le sens. On touche un mot de la liste, puis une case : les emplacements où il peut aller s'éclairent. Un mot qui contredirait une lettre déjà écrite ne se pose pas, comme au crayon on n'écrit pas deux lettres dans la même case."
+      },
+      {
+       "titre": "La traduction française devient la récompense",
+       "texte": "Elle n'apparaît qu'au moment où un mot se verrouille, c'est-à-dire quand tous ses croisements sont posés. La montrer au dépôt ferait résoudre la grille par sondage (poser, regarder si la glose s'allume, retirer), alors qu'ainsi elle se mérite. C'est l'inverse de Kräizwuert, où le sens est la question : ici on rencontre le mot d'abord et on apprend ce qu'il veut dire ensuite, ce qui est le sens dans lequel on aborde une langue qu'on ne connaît pas encore. Chaque mot gagné rappelle aussi son orthographe véritable, la grille en capitales effaçant la majuscule des substantifs."
+      },
+      {
+       "titre": "300 grilles livrées, cent par difficulté",
+       "texte": "Construites et vérifiées hors de l'appareil par <code>Dictionnaires/generate_chassecroise.py</code>, qui réutilise le moteur de placement de Kräizwuert. Chacune est garantie <strong>à solution unique</strong>. Une grille où deux mots peuvent s'échanger sans contredire un croisement s'affiche normalement et refuse pourtant une réponse juste, ce que le joueur lit comme sa propre erreur. Le générateur les écarte, et <code>ChasseCroiseAssetTest</code> rejoue la vérification sur l'actif livré."
+      },
+      {
+       "titre": "La difficulté porte sur la géométrie, pas sur la rareté du vocabulaire",
+       "texte": "Les mots étant affichés, leur fréquence ne fait plus la difficulté : ce qui la fait est la taille de la grille et le nombre de mots partageant une même longueur, puisqu'une longueur unique désigne son emplacement toute seule. Un seul plancher de fréquence suffit donc, ce qui porte le vivier à 6 001 mots aux trois niveaux, là où le niveau Facile de Kräizwuert plafonne à 227."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "20.1.1",
    "date": "2026-09-06",
@@ -157,25 +188,6 @@
       {
        "titre": null,
        "texte": "La liste des emojis récents ne retient que des identifiants pris dans un ensemble fermé et public, jamais du texte libre. Elle est bornée à trente entrées, sans horodatage ni compteur. Elle obéit à la même exclusion que les statistiques de vocabulaire : rien n'y est ajouté depuis un champ de mot de passe. Elle ne quitte pas l'appareil, et l'onglet « Récents » n'apparaît pas tant que rien n'a été employé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "11.6.0",
-   "date": "2026-09-04",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🎨",
-     "titre": "Amélioré",
-     "points": [
-      {
-       "titre": "Le clavier occupe près de 6 Mo de mémoire en moins",
-       "texte": "Il gardait la liste complète des 150 000 formes qu'il sait reconnaître, uniquement pour décider s'il doit souligner un mot. Une structure compacte suffit à répondre à cette question. Rien ne change à l'écran, mais le clavier se fait moins souvent mettre de côté par le téléphone — et il revient plus vite quand il l'a été."
       }
      ],
      "texte": "",
