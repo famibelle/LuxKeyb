@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "20.2.0": {
+    "image": "Screenshots/lux_wuertplaz.png",
+    "alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
+    "legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
+  },
   "20.1.0": {
     "image": "Screenshots/lux_kraizwuert_pave.png",
     "alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",

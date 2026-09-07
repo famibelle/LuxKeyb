@@ -1,9 +1,32 @@
 {
  "genere_le": "2026-09-07",
- "derniere_version": "20.2.0",
+ "derniere_version": "20.2.1",
  "derniere_date": "2026-09-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.2.1",
+   "date": "2026-09-07",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "La septième carte de jeu était inatteignable",
+       "texte": "L'écran de choix des jeux n'avait jamais eu besoin de défiler : six cartes tenaient exactement dans un écran de téléphone. La septième, Wuertplaz, tombait sous le bord, et rien ne le signalait puisque la carte existait bel et bien. L'écran défile désormais."
+      },
+      {
+       "titre": "La ligne de récompense de Wuertplaz ne décale plus la grille",
+       "texte": "Elle ne réservait qu'une ligne alors que son message en occupe presque toujours deux, portant le mot, son sens et parfois le rappel de la majuscule des substantifs. La grille descendait donc d'un cran au moment précis où le joueur visait la case suivante, et l'appui tombait à côté. La hauteur du plus long message est maintenant réservée d'avance."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "20.2.0",
    "date": "2026-09-07",
@@ -33,7 +56,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_wuertplaz.png",
+   "image_alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
+   "image_legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
   },
   {
    "version": "20.1.1",
@@ -123,77 +149,6 @@
    "image": "Screenshots/lux_cuvette.png",
    "image_alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
    "image_legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
-  },
-  {
-   "version": "11.7.0",
-   "date": "2026-09-06",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Le curseur se promène en glissant le doigt sur la barre d'espace",
-       "texte": "Poser un curseur entre deux lettres est le geste le plus raté de la saisie mobile : la cible fait deux millimètres et le doigt en couvre dix. Le doigt part de la barre d'espace et le curseur suit, une lettre à la fois, avec une courte vibration à chaque caractère franchi. Le geste ne s'arrête pas au bord de la touche : il court sur toute la largeur de l'écran, de quoi traverser une phrase sans lever le doigt. Les deux gestes que la barre d'espace portait déjà sont intacts : l'appui long ouvre toujours le sélecteur de claviers, et placer le curseur au milieu d'un mot ne laisse pas d'espace derrière soi."
-      },
-      {
-       "titre": "Le panneau emoji s'ouvre sur ceux que vous venez d'employer",
-       "texte": "Il en propose près de 1 900 en neuf catégories quand chacun en emploie une poignée : le même envoi recommençait par la même descente dans la grille. Un onglet « Récents » ouvre désormais la liste, et le panneau s'ouvre dessus. Il retient les trente derniers, soit exactement la page visible. Une couleur de peau choisie en appui long y rejoint la liste telle qu'elle a été employée."
-      },
-      {
-       "titre": "« Vider les emojis récents »",
-       "texte": "Dans les réglages du clavier, sous les interrupteurs de vibration et de son."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "La touche « 123 » ne fige plus le clavier",
-       "texte": "Chaque passage entre les lettres, les chiffres et les emojis reconstruisait tout l'arbre de touches, trente-quatre boutons neufs d'un seul bloc sur le fil principal. Mesuré sur un Galaxy A21s, cela bloquait l'écran quatre à cinq images à chaque appui, soit le petit délai que l'on sentait. Désormais les pavés alphabétique et numérique sont montés une seule fois et la bascule ne fait que changer lequel est visible : la même mesure tombe à une ou deux images."
-      },
-      {
-       "titre": "Fuite mémoire sur les changements de mode",
-       "texte": "La liste interne des touches n'était jamais vidée tant que le clavier vivait : elle grossissait d'une trentaine d'entrées à chaque bascule, pour toute la durée du processus. Elle est maintenant remise à zéro à chaque reconstruction."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Les suggestions ne clignotent plus pendant un déplacement de curseur : elles ne sont recalculées qu'une fois le doigt arrêté, sur la position d'arrivée."
-      },
-      {
-       "titre": null,
-       "texte": "Le rendu logiciel forcé sur chaque touche, ajouté pour un défaut d'affichage propre aux ROM Honor et Huawei, n'est plus appliqué ailleurs, où il ne servait qu'à ralentir chaque redessin. L'ombre portée des libellés ne change pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": null,
-       "texte": "La liste des emojis récents ne retient que des identifiants pris dans un ensemble fermé et public, jamais du texte libre. Elle est bornée à trente entrées, sans horodatage ni compteur. Elle obéit à la même exclusion que les statistiques de vocabulaire : rien n'y est ajouté depuis un champ de mot de passe. Elle ne quitte pas l'appareil, et l'onglet « Récents » n'apparaît pas tant que rien n'a été employé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

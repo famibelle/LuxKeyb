@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.2.1] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **La septième carte de jeu était inatteignable.** L'écran de choix des jeux
+  n'avait jamais eu besoin de défiler : six cartes tenaient exactement dans un
+  écran de téléphone. La septième, Wuertplaz, tombait sous le bord, et rien ne
+  le signalait puisque la carte existait bel et bien. L'écran défile
+  désormais.
+- **La ligne de récompense de Wuertplaz ne décale plus la grille.** Elle ne
+  réservait qu'une ligne alors que son message en occupe presque toujours deux,
+  portant le mot, son sens et parfois le rappel de la majuscule des
+  substantifs. La grille descendait donc d'un cran au moment précis où le
+  joueur visait la case suivante, et l'appui tombait à côté. La hauteur du plus
+  long message est maintenant réservée d'avance.
+
 ## [20.2.0] - 2026-09-07
 
 ### ✨ Ajouté
