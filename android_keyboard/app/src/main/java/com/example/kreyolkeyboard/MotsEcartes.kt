@@ -113,22 +113,44 @@ object MotsEcartes {
      *
      * `Waff`, `Krich`, `Doud`, `Police` et `Prisong` n'en sont pas : ce sont les
      * mots ordinaires de la langue, et un apprenant en a besoin.
+     *
+     * **La liste n'avait d'abord relevé que la moitié germanique du registre**,
+     * et c'est ce qui a laissé passer `Viol` dans une grille de Wuertplaz
+     * (signalé le 2026-09-07). Elle a été écrite en lisant les gloses
+     * françaises du LOD puis en notant la forme luxembourgeoise correspondante
+     * — `Vergewaltegung`, `Ofdreiwung`, `Selbstmord`, `Mord`, `Kokain` — sans
+     * voir que le luxembourgeois emprunte aussi le mot français lui-même et
+     * que le corpus l'emploie : `Viol` 34 occurrences, `Avortement` 39,
+     * `Suicide` 49, `Cannabis` 212, `Haschisch` 127. Un mot filtré dont le
+     * synonyme emprunté ne l'est pas ne filtre rien du tout. **Toute addition
+     * ici doit donc chercher les deux formes**, la germanique et l'empruntée.
      */
     private val REGISTRE = listOf(
         "Ofdreiwung", "Ofdreiwungen", "ofdreiwen", "Ofdreiwungsgesetz",
+        "Avortement", "Avortementer", "Avortementsgesetz",
         "Vergewaltegung", "Vergewaltegungen", "vergewaltegt", "vergewaltegen",
-        "Vergewalteger", "Prostitutioun", "Prostituéiert", "Prostituéierten",
+        "Vergewalteger", "Viol", "Viole", "Violen",
+        "Prostitutioun", "Prostituéiert", "Prostituéierten",
         "Prostituéierter", "prostituéieren", "sexuell", "sexuelle", "sexuellen",
         "sexueller", "sexuellem", "Sex", "pedophil", "Pedophilie", "Pedophiller",
         "pornographesch", "pornographeschem", "Kondom", "Kondomer",
+        "Mëssbrauch", "Mëssbrauchsaffer", "mëssbraucht", "mëssbrauchen",
+        // `homosexuell` suit `sexuell`, deux lignes plus haut : la liste écarte
+        // le registre sexuel sans distinguer les orientations, et l'y laisser
+        // aurait été une inconséquence, pas une ouverture.
+        "homosexuell", "homosexuelle", "Homosexueller", "Homosexuellen",
         "Drog", "Drogen", "Droge", "Drogendealer", "Drogenhandel",
         "Drogekriminalitéit", "Drogendelikter", "Kokain", "Heroin",
         "drogenofhängeg", "Drogenofhängeger", "Dopping",
-        "Attentat", "Attentater", "Terror", "Terrorismus", "Terrorissem",
+        "Cannabis", "Cannabisplanz", "Cannabisplanzen", "Cannabiskonsum",
+        "Cannabisgeroch", "Cannabisbléie", "Haschisch", "Ecstasy", "Overdose",
+        "Attentat", "Attentater", "Attentats", "Attentatspläng",
+        "Terror", "Terrorismus", "Terrorissem", "Terrorismusfinanzéierung",
         "Terrorist", "Terroristen", "Terroriste", "terroristesch",
         "terroristeschen", "terroristescher", "terroristesche",
-        "Terrororganisatioun", "Terrormiliz",
-        "Mord", "Morde", "Morden", "Mordfäll", "Mordversuch", "Selbstmord"
+        "Terrororganisatioun", "Terrormiliz", "Terrorattack", "Terrorattacken",
+        "Mord", "Morde", "Morden", "Mordfäll", "Mordversuch", "Selbstmord",
+        "Mäerder", "Suicide", "Suiciden", "Suicidegedanken", "Genozid"
     )
 
     /**

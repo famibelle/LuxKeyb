@@ -31,7 +31,15 @@ class MotsEcartesTest {
         "Ofdreiwung", "Vergewaltegung", "vergewaltegt", "Prostitutioun",
         "sexuell", "Sex", "Pedophilie", "Kondom", "Drogen", "Kokain", "Heroin",
         "Drogendealer", "Attentat", "Attentäter", "Terrorismus", "terroristesch",
-        "Mord", "Selbstmord"
+        "Mord", "Selbstmord",
+        // La moitié empruntée du même registre, oubliée jusqu'au 2026-09-07 :
+        // la liste avait été relevée sur les formes germaniques, si bien que
+        // `Vergewaltegung` était écarté et `Viol` non — ce dernier est arrivé
+        // dans une grille de Wuertplaz. Un mot filtré dont le synonyme
+        // emprunté ne l'est pas ne filtre rien.
+        "Viol", "Violen", "Avortement", "Suicide", "Suiciden", "Suicidë",
+        "Cannabis", "Cannabisplanzen", "Haschisch", "Ecstasy", "Mäerder",
+        "Genozid", "Mëssbrauch", "mëssbraucht", "homosexuell", "Homosexueller"
     )
 
     /**
@@ -51,6 +59,11 @@ class MotsEcartesTest {
         "Waff", "Doud", "Spidol", "krank", "Kriibs", "Aids", "Gewalt",
         // Homographes et voisins qu'un filtre par préfixe emporterait
         "Gréng", "gréng", "Geschlecht", "Adress", "Drogerie", "Morgen",
+        // La frontière du côté emprunté : `Viol` s'en va, `Violence` et
+        // `Violatioun` restent. Ce sont les mots ordinaires d'un débat public,
+        // au même titre que `Gewalt` deux lignes plus haut, et un filtre par
+        // préfixe les aurait emportés avec le premier.
+        "Violence", "Violatioun", "violéiert",
         // Homographes que le repli des accents ou de la casse a déjà emportés :
         // « léieren » (apprendre, 184 occurrences) valait « leieren »
         // (psalmodier), et « nennen » / « nenne » (appeler, 120 et 16) valaient
