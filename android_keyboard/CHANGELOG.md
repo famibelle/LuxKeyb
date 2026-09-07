@@ -9,6 +9,30 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.2.2] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **Six traductions sur dix n'étaient jamais montrées dans Wuertplaz.** Le
+  bandeau d'annonce ne portait qu'un mot à la fois, alors que plusieurs se
+  verrouillent souvent ensemble : les autres se réduisaient à un « (+2) » entre
+  parenthèses, et leur sens n'apparaissait nulle part. Le message « Grille
+  terminée » recouvrait en outre le dernier lot, c'est-à-dire justement celui
+  qui en compte le plus. Mesuré sur les 284 grilles livrées, vingt ordres de
+  pose chacune, soit 52 420 mots posés : 58,8 % ne montraient jamais leur
+  traduction. C'était grave pour ce jeu en particulier, dont le sens gagné est
+  la seule chose qui s'apprend.
+
+### ✨ Ajouté
+
+- **Une liste « Ce que vous avez gagné », sous les mots à caser.** Chaque mot
+  verrouillé y inscrit sa forme véritable et son sens, dans l'ordre où il a été
+  trouvé. La récompense cesse d'être fugace : rien ne peut être manqué, la
+  grille se double d'un petit lexique à mesure qu'on la remplit, et la liste
+  enseigne au passage la majuscule des substantifs en montrant côte à côte
+  « Houwald » et « gestach ». Elle grandit vers le bas, sous les pastilles,
+  donc elle ne déplace ni la grille ni les mots que l'on s'apprête à toucher.
+
 ## [20.2.1] - 2026-09-07
 
 ### 🐛 Corrigé

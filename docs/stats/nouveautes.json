@@ -1,9 +1,43 @@
 {
  "genere_le": "2026-09-07",
- "derniere_version": "20.2.1",
+ "derniere_version": "20.2.2",
  "derniere_date": "2026-09-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.2.2",
+   "date": "2026-09-07",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Six traductions sur dix n'étaient jamais montrées dans Wuertplaz",
+       "texte": "Le bandeau d'annonce ne portait qu'un mot à la fois, alors que plusieurs se verrouillent souvent ensemble : les autres se réduisaient à un « (+2) » entre parenthèses, et leur sens n'apparaissait nulle part. Le message « Grille terminée » recouvrait en outre le dernier lot, c'est-à-dire justement celui qui en compte le plus. Mesuré sur les 284 grilles livrées, vingt ordres de pose chacune, soit 52 420 mots posés : 58,8 % ne montraient jamais leur traduction. C'était grave pour ce jeu en particulier, dont le sens gagné est la seule chose qui s'apprend."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Une liste « Ce que vous avez gagné », sous les mots à caser",
+       "texte": "Chaque mot verrouillé y inscrit sa forme véritable et son sens, dans l'ordre où il a été trouvé. La récompense cesse d'être fugace : rien ne peut être manqué, la grille se double d'un petit lexique à mesure qu'on la remplit, et la liste enseigne au passage la majuscule des substantifs en montrant côte à côte « Houwald » et « gestach ». Elle grandit vers le bas, sous les pastilles, donc elle ne déplace ni la grille ni les mots que l'on s'apprête à toucher."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_wuertplaz_sens.png",
+   "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
+   "image_legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
+  },
   {
    "version": "20.2.1",
    "date": "2026-09-07",
@@ -127,28 +161,6 @@
    "image": "Screenshots/lux_kraizwuert.png",
    "image_alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
    "image_legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille — ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
-  },
-  {
-   "version": "12.0.0",
-   "date": "2026-09-06",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🎨",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "La barre de suggestions est creusée dans le clavier",
-       "texte": "Elle avait le même fond que le reste et flottait au-dessus des touches sans jamais s'y rattacher. Elle forme maintenant un léger renfoncement : fond un peu plus sombre que les touches, ombre le long du bord haut, filet clair le long du bord bas, et le fond du clavier qui réapparaît de chaque côté. Les touches y gagnent leur relief, et la barre se lit comme une partie du clavier. Rien ne bouge de place : le creux tient dans l'espace qui séparait déjà les puces du bord, il ne coûte pas un pixel de hauteur aux rangées de touches. Le rouge du luxembourgeois et le bleu du français ressortent mieux sur ce fond."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_cuvette.png",
-   "image_alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
-   "image_legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
   }
  ]
 }
