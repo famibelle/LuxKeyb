@@ -368,6 +368,46 @@ class ChasseCroiseAssetTest {
     }
 
     /**
+     * Aucun nom propre dans les grilles.
+     *
+     * Un chassé-croisé de communes n'apprend rien : le mot est donné, et la
+     * récompense « Beetebuerg : Bettembourg » ne fait que retraduire une
+     * carte. La livraison du 2026-09-07 en portait 115 sur 1 954 formes, et le
+     * générateur affirmait alors qu'ils n'avaient pas besoin d'être détectés —
+     * vrai de `Bettel` et de `RTL`, que le LOD ne glose pas, faux des 1 736
+     * articles qu'il marque `NP`.
+     *
+     * Le repérage tient à ce que le LOD écrit ses gloses en français : un nom
+     * commun français est en minuscules. Une glose dont **toutes** les
+     * acceptions commencent par une majuscule désigne donc un nom propre. La
+     * règle vit dans `generate_crossword.py` ; ce test la rejoue sur l'actif,
+     * parce qu'un vivier reconstruit sans elle repasserait sans rien casser.
+     */
+    @Test
+    fun `aucun mot n'est un nom propre`() {
+        val grilles = grilles()
+        val fautifs = mutableSetOf<String>()
+        for (i in 0 until grilles.length()) {
+            val mots = grilles.getJSONObject(i).getJSONArray("mots")
+            for (j in 0 until mots.length()) {
+                val mot = mots.getJSONObject(j)
+                val acceptions = mot.getString("g").split(",")
+                    .map { it.trim() }.filter { it.isNotEmpty() }
+                if (acceptions.isNotEmpty() &&
+                    acceptions.all { it.first().isUpperCase() }
+                ) {
+                    fautifs.add("${mot.getString("f")} : ${mot.getString("g")}")
+                }
+            }
+        }
+        assertTrue(
+            "gloses entièrement capitalisées, donc noms propres : " +
+                fautifs.sorted().joinToString(" · "),
+            fautifs.isEmpty()
+        )
+    }
+
+    /**
      * Le filtre de neutralité écarte des grilles entières, et il faut qu'il en
      * reste assez.
      *

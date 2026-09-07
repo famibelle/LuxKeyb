@@ -200,6 +200,7 @@ def definition_de(mot, glose):
 
     if not retenues:
         return None
+    retenues = sans_noms_propres(retenues)
     # Les locutions ne sont écartées que s'il reste autre chose : mieux vaut une
     # définition longue que pas de définition.
     courtes = [a for a in retenues if len(a) <= LONGUEUR_MAX_ACCEPTION]
@@ -208,17 +209,73 @@ def definition_de(mot, glose):
     return ", ".join(retenues[:ACCEPTIONS_MAX])
 
 
+def est_nom_propre(glose):
+    """Vrai si toutes les acceptions commencent par une majuscule.
+
+    Le repérage des noms propres, et il tient en une ligne parce que le LOD
+    écrit ses gloses en français : un nom commun français est en minuscules,
+    un nom propre non. « Beetebuerg » se glose « Bettembourg », « Houwald »
+    « Howald », « José » « San José » — tous capitalisés, tous du même coup.
+
+    **Il fallait bien les détecter, contrairement à ce que ce fichier a
+    longtemps affirmé.** L'argument était que le LOD ne glose ni « Bettel », ni
+    « RTL », ni « Esch », donc que l'exigence d'une glose suffisait. C'est vrai
+    de ceux-là et faux en général : le LOD glose 1 736 articles marqués `NP`,
+    dont l'essentiel des communes du pays, des pays d'Europe et une poignée de
+    prénoms. Signalé le 2026-09-07 sur Wuertplaz, qui en affichait 115 sur
+    1 954 formes ; Kräizwuert en portait 54 sur 1 527, jusqu'à demander
+    « CAFÉ » sous la définition « Eschweiler-Halte ».
+
+    Mesuré sur le vivier de Wuertplaz (6 001 mots) contre le marquage `NP` du
+    LOD lui-même : 321 formes écartées, dont 273 lemmes `NP`, 31 formes
+    fléchies ou éléments de noms propres que le marquage ne couvre pas (`José`,
+    `Sophie`, `York`, `Faso`, `Costa`), et **17 pertes légitimes** — les
+    gentilés `Fransous`, `Hollänner`, `Amerikaner`, `Spuenier`, `Syrer`,
+    `Ukrainer`, `Australier`, `Europäer`, que le français capitalise, plus
+    `Staat`, `Staatsrot`, `Ministerrot`, `Rechtsstaat`, `Premier`, `Internet`,
+    `Domaine`, `Hamilius`, `House`. Soit 0,3 % du vivier : pas de liste
+    d'exceptions pour si peu, elle coûterait plus à tenir qu'elle ne rapporte.
+
+    Dans l'autre sens, dix `NP` du vivier passent au travers, et c'est correct :
+    leur glose est un nom commun parce que c'est l'homographe commun que le LOD
+    a retenu — `Stroossen` (rues), `Grenzen` (frontières), `Platen` (plaques).
+    Le joueur apprend alors le mot commun, ce qui est exactement le but.
+
+    C'est aussi pourquoi la règle porte sur la glose **source** et non sur la
+    définition retenue : `definition_de()` supprime l'acception qui répète le
+    mot, si bien que « Café » (glosé « café, Eschweiler-Halte ») perdrait son
+    sens ordinaire et ne resterait qu'un lieu-dit.
+    """
+    acceptions = [a.strip() for a in glose.split(",") if a.strip()]
+    return bool(acceptions) and all(a[:1].isupper() for a in acceptions)
+
+
+def sans_noms_propres(acceptions):
+    """Retire les acceptions qui sont des noms propres, s'il en reste d'autres.
+
+    Le pendant de [est_nom_propre] pour les mots que celui-ci garde : un mot
+    commun dont le LOD signale aussi l'emploi dans un nom propre. 68 formes du
+    vivier sont dans ce cas, soit 1,2 %, et ce qu'elles montraient au joueur
+    était du bruit qu'il ne pouvait pas employer — « Café : café,
+    Eschweiler-Halte », « Stad : ville, Luxembourg-ville », « Fra : femme,
+    Gëlle Fra », « Papp : père, Dieu le Père ».
+
+    La condition « s'il en reste d'autres » est ce qui distingue cette fonction
+    d'un second filtre : un mot dont toutes les acceptions sont capitalisées
+    est un nom propre et a déjà quitté le vivier.
+    """
+    communes = [a for a in acceptions if not a[:1].isupper()]
+    return communes if communes else acceptions
+
+
 def construire_vivier(dico, table):
     """Les mots jouables, par niveau de difficulté.
 
     Le filtre est le même que celui des autres jeux — une forme du dictionnaire
-    de fréquences, glosée par une glose qui apprend quelque chose — plus deux
-    exigences propres à la grille : elle s'écrit dans l'alphabet du pavé, et sa
-    définition ne la contient pas.
-
-    Les noms propres n'ont pas besoin d'être détectés : le LOD ne glose ni
-    « Bettel », ni « RTL », ni « Esch », donc ils ne franchissent pas la
-    première condition. C'est ce qui permet à ce script de se passer du corpus.
+    de fréquences, glosée par une glose qui apprend quelque chose — plus trois
+    exigences propres à la grille : elle s'écrit dans l'alphabet du pavé, sa
+    définition ne la contient pas, et ce n'est pas un nom propre (voir
+    [est_nom_propre]).
     """
     print("\n🔤 CONSTRUCTION DU VIVIER")
     print("-" * 45)
@@ -253,9 +310,22 @@ def construire_vivier(dico, table):
             rejets["sans glose"] += 1
             continue
 
+        if est_nom_propre(glose):
+            rejets["nom propre"] += 1
+            continue
+
         definition = definition_de(mot, glose)
         if definition is None:
             rejets["glose = le mot"] += 1
+            continue
+
+        # Deuxième passage de la même règle, sur ce qu'il reste après le
+        # retrait de l'acception qui répète le mot : « Musée » se glose
+        # « musée, Lëtzebuerg City Museum », et une fois « musée » retiré la
+        # définition n'est plus qu'un nom propre. De même « Parc » → « Park »
+        # et « Pole » → « Polonais, Pologne ».
+        if est_nom_propre(definition):
+            rejets["nom propre"] += 1
             continue
 
         vivier.append({

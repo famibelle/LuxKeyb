@@ -92,6 +92,8 @@ from generate_crossword import (
     _dun_seul_tenant,
     _suites,
     charger_actifs,
+    sans_noms_propres,
+    est_nom_propre,
 )
 
 if sys.platform.startswith('win'):
@@ -154,12 +156,16 @@ def recompense_de(mot, glose):
     - Rien n'exige que la glose « apprenne quelque chose » : ce filtre existe
       pour les jeux qui font *chercher* le mot, pas pour celui qui le donne.
 
-    Ce qui reste : les locutions trop longues débordent de l'écran d'un
-    téléphone, et on les laisse tomber s'il reste autre chose.
+    Ce qui reste : les acceptions qui ne sont que des noms propres s'en vont
+    s'il subsiste un sens commun (voir [sans_noms_propres]) — « Café : café »
+    plutôt que « Café : café, Eschweiler-Halte » — et les locutions trop
+    longues débordent de l'écran d'un téléphone, donc on les laisse tomber s'il
+    reste autre chose.
     """
     retenues = [a.strip() for a in glose.split(",") if a.strip()]
     if not retenues:
         return None
+    retenues = sans_noms_propres(retenues)
     courtes = [a for a in retenues if len(a) <= LONGUEUR_MAX_ACCEPTION]
     if courtes:
         retenues = courtes
@@ -170,12 +176,15 @@ def construire_vivier(dico, table):
     """Les mots casables, en un seul vivier.
 
     Mêmes exigences que Kräizwuert — une forme du dictionnaire de fréquences,
-    écrite dans l'alphabet du pavé, ni acronyme ni mot grammatical — moins
-    l'exigence que la glose ne contienne pas le mot, plus un plancher de
-    fréquence unique.
+    écrite dans l'alphabet du pavé, ni acronyme ni mot grammatical, et pas un
+    nom propre — moins l'exigence que la glose ne contienne pas le mot, plus un
+    plancher de fréquence unique.
 
-    Les noms propres n'ont toujours pas besoin d'être détectés : le LOD ne glose
-    ni « Bettel », ni « RTL », ni « Esch », et l'exigence de glose les écarte.
+    Le refus des noms propres passe par [est_nom_propre], partagé avec
+    Kräizwuert : c'est le même défaut des deux côtés, et la livraison du
+    2026-09-07 casait ici 115 communes, pays et prénoms. Un chassé-croisé de
+    noms de localités n'apprend rien — le mot est donné, et la récompense
+    « Beetebuerg : Bettembourg » ne fait que retraduire une carte.
     """
     print("\n🔤 CONSTRUCTION DU VIVIER")
     print("-" * 45)
@@ -211,6 +220,10 @@ def construire_vivier(dico, table):
         glose = table.get(mot) or table.get(mot.lower())
         if not glose:
             rejets["sans glose"] += 1
+            continue
+
+        if est_nom_propre(glose):
+            rejets["nom propre"] += 1
             continue
 
         recompense = recompense_de(mot, glose)

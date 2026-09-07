@@ -287,6 +287,45 @@ class CrosswordAssetTest {
     }
 
     /**
+     * Aucune définition n'est un nom propre.
+     *
+     * Demander « BEETEBUERG » sous la définition « Bettembourg » ne fait pas
+     * apprendre un mot, cela fait recopier une carte. La livraison du
+     * 2026-09-07 en portait 54 sur 1 527 formes, dont « CAFÉ » sous
+     * « Eschweiler-Halte » : le mot est glosé « café, Lëtzebuerg City Museum »,
+     * et `definition_de()` retire l'acception qui répète le mot, ne laissant
+     * que le lieu-dit. C'est pourquoi le générateur applique la règle deux
+     * fois, sur la glose source puis sur la définition retenue.
+     *
+     * Le repérage tient à ce que le LOD écrit ses gloses en français : un nom
+     * commun français est en minuscules, donc une définition dont toutes les
+     * acceptions commencent par une majuscule désigne un nom propre.
+     */
+    @Test
+    fun `aucune definition n'est un nom propre`() {
+        val grilles = grilles()
+        val fautifs = mutableSetOf<String>()
+        for (i in 0 until grilles.length()) {
+            val mots = grilles.getJSONObject(i).getJSONArray("mots")
+            for (j in 0 until mots.length()) {
+                val mot = mots.getJSONObject(j)
+                val acceptions = mot.getString("g").split(",")
+                    .map { it.trim() }.filter { it.isNotEmpty() }
+                if (acceptions.isNotEmpty() &&
+                    acceptions.all { it.first().isUpperCase() }
+                ) {
+                    fautifs.add("${mot.getString("f")} : ${mot.getString("g")}")
+                }
+            }
+        }
+        assertTrue(
+            "définitions entièrement capitalisées, donc noms propres : " +
+                fautifs.sorted().joinToString(" · "),
+            fautifs.isEmpty()
+        )
+    }
+
+    /**
      * Le pavé du jeu porte toutes les lettres qu'il faut écrire.
      *
      * Le pavé suit la disposition du clavier, donc une rangée réécrite à la
