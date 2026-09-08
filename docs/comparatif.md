@@ -118,30 +118,42 @@ dictionnaire vérifiable, ni à celle de l'apprentissage.
 ## Et le clavier Samsung ?
 
 La remarque revient souvent : « le luxembourgeois est pris en charge par les
-téléphones Samsung ». Elle est vraie du téléphone, pas forcément de son clavier,
-et la nuance mérite d'être posée.
+téléphones Samsung ». **Elle est exacte**, et il vaut mieux le dire clairement
+que de laisser croire le contraire.
 
-Du côté du téléphone, écrire en luxembourgeois avec de la prédiction est
-possible sur un Galaxy aujourd'hui : il suffit d'y installer Gboard ou SwiftKey,
-qui proposent l'un et l'autre la langue. Vérifié le 8 septembre 2026 : les
-ressources livrées avec Gboard contiennent bien « Lëtzebuergesch », et la liste
-officielle de Microsoft SwiftKey (plus de 700 langues sur Android) cite
-« Luxembourgish ».
+Vérifié le 8 septembre 2026, sans posséder l'appareil : nous avons ouvert le
+Clavier Samsung livré avec le **Galaxy S24 Ultra** (`SM-S928B`, One UI 7 sous
+Android 15, build `S928BXXS4BYEC`), récupéré dans un dépôt public de
+micrologiciels. Son catalogue de langues compte **691 entrées**, et le
+luxembourgeois y figure : code `lb`, affiché « Lëtzebuergesch », avec un nom
+traduit dans toutes les langues d'interface de Samsung. Il apparaît donc bien
+dans *Paramètres › Gestion globale › Clavier Samsung › Langues et types ›
+Gérer les langues de saisie*.
 
-Le clavier maison de Samsung, lui, est un cas non tranché, et nous préférons
-l'écrire ainsi plutôt que de trancher à sa place. Samsung annonce « plus de
-370 langues » sur la fiche Galaxy Store du Clavier Samsung (version 5.9.30.97,
-mise à jour de juillet 2026) mais ne publie la liste nulle part. Le dernier
-relevé public que nous ayons retrouvé date de juillet 2022 : environ 90 langues,
-du galicien au silésien en passant par le twi, sans le luxembourgeois. Depuis,
-le compteur annoncé a plus que triplé, donc cette absence ne prouve rien pour
-2026.
+Ce que le fichier déclare pour cette entrée, mot pour mot : disposition
+**QWERTZ** par défaut (qwerty et azerty au choix), prédiction, texte prédictif,
+correction automatique, vérification orthographique, saisie glissée, espacement
+automatique. C'est une prise en charge réelle, et sur plusieurs de ces points le
+clavier de Samsung fait ce que le nôtre ne fait pas.
 
-Le test tient en trente secondes sur un Galaxy : *Paramètres › Gestion globale ›
-Paramètres du clavier Samsung › Langues et types › Gérer les langues de saisie*,
-puis chercher « Lëtzebuergesch » ou « Luxembourgish ». Si vous avez la réponse
-sous les yeux, [dites-le nous](feedbacks_form.html) : le tableau sera corrigé le
-jour même, dans un sens comme dans l'autre.
+Trois nuances, toutes lisibles dans ce même fichier :
+
+- **Le luxembourgeois est dans la longue traîne, pas dans le noyau.** Sur les
+  691 langues du catalogue, 67 seulement reçoivent le jeu complet d'options
+  (celles qui incluent la mise en majuscule automatique et la recherche).
+  `lb` n'en fait pas partie, en compagnie de l'alsacien, du frison, du corse ou
+  du français de Belgique.
+- **Aucune disposition dessinée pour la langue.** `lb` hérite du QWERTZ
+  générique, partagé avec des dizaines d'autres langues ; l'allemand, lui, a
+  droit à son `german_qwertz`. Les `é`, `ä` et `ë` restent donc en appui long,
+  alors qu'ils pèsent 269 749, 111 780 et 142 374 occurrences dans notre corpus.
+  C'est exactement la différence que ce clavier-ci existe pour corriger.
+- **Rien n'est publié sur le contenu.** Ni la taille du dictionnaire
+  luxembourgeois, ni sa source, ni son taux de réussite. C'est vrai de Samsung
+  comme de Gboard et de SwiftKey, et pour cause : le moteur de prédiction de
+  Samsung est celui de SwiftKey (la bibliothèque `libfluency-java.so` est dans
+  l'application). Impossible de savoir quels mots sont connus, ni d'où ils
+  viennent.
 
 Une précision utile au passage : aucun téléphone Android n'affiche son
 *interface* en luxembourgeois. La langue est bien reconnue comme locale
@@ -149,13 +161,13 @@ Une précision utile au passage : aucun téléphone Android n'affiche son
 ressources) ne contient aucune traduction luxembourgeoise. Ce qui se joue sur
 ces appareils est donc la saisie, jamais l'affichage.
 
-Reste la question de fond, que la réponse de Samsung soit oui ou non : « prendre
-en charge une langue » ne veut pas dire la même chose d'un clavier à l'autre.
-Cela peut être une simple disposition de touches, une liste de mots fermée, ou
-un dictionnaire dont on publie la taille, la source et le taux de réussite. Nous
-sommes le seul des cinq à donner les trois, et le seul à traiter la
-*Groussschreiwung*, l'écriture sans diacritiques et le bilinguisme
-luxembourgeois-français comme la situation normale plutôt que comme un réglage.
+Reste la question de fond : « prendre en charge une langue » ne veut pas dire la
+même chose d'un clavier à l'autre. Cela peut être une disposition héritée d'une
+autre langue, une liste de mots fermée, ou un dictionnaire dont on publie la
+taille, la source et le taux de réussite. Nous sommes le seul à donner les
+trois, et le seul à traiter la *Groussschreiwung*, l'écriture sans diacritiques,
+le correcteur système et le bilinguisme luxembourgeois-français comme la
+situation normale plutôt que comme une case à cocher parmi 691.
 
 ## Et face aux claviers libres ?
 
