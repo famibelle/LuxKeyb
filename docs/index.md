@@ -211,34 +211,40 @@ champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-
 
 ## Face aux autres claviers
 
-Le luxembourgeois n'est absent d'aucun grand clavier : Gboard comme SwiftKey le
-proposent. Mais aucun n'est **construit** pour lui, et les claviers libres qui
-acceptent un dictionnaire luxembourgeois s'appuient sur une liste de mots figée
-depuis 2013, sans prédiction du mot suivant.
+Le luxembourgeois n'est absent d'aucun grand clavier : Gboard et SwiftKey le
+proposent tous les deux, et le clavier maison de Samsung annonce « plus de
+370 langues » sans publier laquelle. Mais aucun n'est **construit** pour lui, et
+les claviers libres qui acceptent un dictionnaire luxembourgeois s'appuient sur
+une liste de mots figée depuis 2013, sans prédiction du mot suivant.
 
 <div class="table-scroll" markdown="1">
 
-| | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
-|---|---|---|---|---|---|
-| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
-| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
-| Écriture sans diacritiques | **Oui** | — | — | — | — |
-| Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
-| Aucun accès à Internet | **Oui** | Non | Non | Oui | Oui |
-| Code ouvert | **Oui**, MIT | Non | Non | Oui | Oui |
-| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non |
-| Saisie glissée | Non | Oui | Oui | Bibliothèque à ajouter | Gestes |
-| Dictée vocale | Non | Oui | Oui | Non | Non |
-| Thème sombre | Non | Oui | Oui | Oui | Oui |
+| | **Lëtzebuergesch Clavier** | Gboard | Clavier Samsung | SwiftKey | HeliBoard | AnySoftKeyboard |
+|---|---|---|---|---|---|---|
+| Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Non documenté, liste jamais publiée | Oui, liste officielle Microsoft | Oui, dictionnaire à ajouter | Oui, pack séparé |
+| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi « plus de 370 » | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
+| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
+| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
+| Écriture sans diacritiques | **Oui** | — | — | — | — | — |
+| Correcteur système (lb) | **Oui** | Oui | — | — | Non | Non |
+| Aucun accès à Internet | **Oui** | Non | Non | Non | Oui | Oui |
+| Code ouvert | **Oui**, MIT | Non | Non | Non | Oui | Oui |
+| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
+| Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
+| Dictée vocale | Non | Oui | Oui | Oui | Non | Non |
+| Thème sombre | Non | Oui | Oui | Oui | Oui | Oui |
 
 </div>
 
 <p class="note">« — » : non vérifié. Chiffres relevés en
-août 2026 ; le dictionnaire luxembourgeois des claviers libres provient du
-<a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.</p>
+août 2026, colonne Samsung en septembre 2026 d'après sa
+<a href="https://galaxystore.samsung.com/detail/com.samsung.android.honeyboard">fiche Galaxy Store</a>
+(version 5.9.30.97) ; le dictionnaire luxembourgeois des claviers libres provient du
+<a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.
+Sur la disponibilité du luxembourgeois chez Samsung, voir
+<a href="comparatif.html#et-le-clavier-samsung">le comparatif</a>.</p>
 
 Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
