@@ -1,9 +1,21 @@
-**📱Lëtzebuergesch Clavier** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **Lëtzebuergesch** sur leur smartphone, avec fluidité, authenticité et fierté.
+**Lëtzebuergesch Clavier** est un clavier intelligent qui répond à un besoin
+simple : écrire facilement en **Lëtzebuergesch**, avec fluidité, authenticité et
+fierté.
 
 - 🛠️ Si votre luxembourgeois est très rouillé...
 - 😤 Que vous galériez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
 - 🤔 Que vous doutez de l'orthographe à chaque message...
 - ➡️ Klaviatur Lëtzebuergesch est fait pour vous !
+
+## ⌨️ L'essayer tout de suite
+
+**[Ouvrir le clavier dans votre navigateur](simulateur.html)** : rien à
+installer, rien à autoriser. C'est le vrai clavier, avec sa disposition QWERTZ,
+ses touches `é` `ä` `ë` et ses suggestions luxembourgeoises.
+
+Pour écrire partout sur votre téléphone, dans WhatsApp, dans vos SMS, dans vos
+notes, il faut ensuite l'installer : l'application Android est plus bas, et la
+marche à suivre est détaillée pas à pas.
 
 ## 📱 Aperçu
 
@@ -139,7 +151,7 @@ L'application s'ouvre automatiquement et vous guide :
 
 ## 🔒 Déclaration de confidentialité
 
-Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
+Consultez notre [Déclaration de confidentialité](privacy/privacy-policy.html) pour en savoir plus sur la manière dont vos données sont traitées.
 
 TL;DR zero data collectée
 

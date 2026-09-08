@@ -1,6 +1,6 @@
 ---
-title: "Lëtzebuergesch Clavier : le clavier luxembourgeois pour Android"
-description: "Clavier Android gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité."
+title: "Lëtzebuergesch Clavier : le clavier luxembourgeois, en ligne et sur Android"
+description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité. À essayer dans le navigateur, à installer sur Android."
 lang: fr
 ---
 
@@ -13,7 +13,7 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
-# Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android
+# Lëtzebuergesch Clavier, le clavier luxembourgeois
 
 <p class="chapo">Vous écrivez en luxembourgeois sur votre téléphone ? Ce clavier
 vous propose les mots pendant que vous tapez, met les accents et les majuscules
@@ -23,14 +23,19 @@ vos messages.</p>
 <p class="chapo-note">Gratuit · sans publicité · rien de ce que vous tapez ne
 sort de votre téléphone</p>
 
-Lëtzebuergesch Clavier est un clavier Android **gratuit, open source, sans
-publicité et entièrement hors ligne**, qui propose des suggestions de mots en
-luxembourgeois pendant la frappe.
+<p class="chapo-note"><a href="simulateur.html">Essayez-le d'abord dans votre
+navigateur</a>, sans rien installer. Pour vous en servir dans vos messages,
+installez ensuite l'application Android.</p>
+
+Lëtzebuergesch Clavier est un clavier **gratuit, open source, sans publicité et
+entièrement hors ligne**, qui propose des suggestions de mots en luxembourgeois
+pendant la frappe. Il tourne dans le navigateur pour l'essai, et s'installe sur
+Android pour l'usage de tous les jours.
 
 Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
 Luxembourg. Plus besoin de chercher un `ë` dans un menu d'accents : les trois
-diacritiques qui portent la langue — **é**, **ä** et **ë** — ont chacune leur
-touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
+diacritiques qui portent la langue, **é**, **ä** et **ë**, ont chacune leur
+touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
 
 <div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
             flex-wrap:wrap;margin:28px 0 12px;">
@@ -127,28 +132,28 @@ et ses vraies suggestions.</em></p>
 </div>
 
 Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
-rouge pour ce qui agit — Entrée, changement de mode — et le bleu ciel pour la
+rouge pour ce qui agit (Entrée, changement de mode) et le bleu ciel pour la
 barre d'espace et la ponctuation.
 
 ## Ce qu'il sait faire
 
 ### Il vous souffle les mots
 
-Le clavier reconnaît **123 265 formes** et **26 172 contextes** de prédiction.
+Le clavier reconnaît **123 297 formes** et **27 746 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
 Les suggestions luxembourgeoises passent en premier ; le français prend le
 relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
 Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
-luxembourgeoise — « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
+luxembourgeoise : « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
 Le côté français se limite volontairement aux mots les plus courants : il est là
 pour les emprunts, pas pour rédiger en français.
 
 ### Il pardonne les fautes de frappe
 
 Une lettre oubliée, une lettre en trop, une touche voisine : les suggestions
-arrivent quand même. Et vous pouvez écrire sans diacritiques — tapez
+arrivent quand même. Et vous pouvez écrire sans diacritiques : tapez
 « letzebuergesch », le clavier vous propose « lëtzebuergesch ».
 
 La casse est respectée, et les mots que vous employez souvent remontent d'eux-mêmes.
@@ -163,11 +168,13 @@ messagerie.
 
 Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
 **Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
-utilisée. Cinq jeux complètent le parcours : **Wuertsich** (mots mêlés),
+utilisée. Sept jeux complètent le parcours : **Wuertsich** (mots mêlés),
 **Wuertmix** (mots mélangés), **Wuertriet**, où il faut deviner un mot de cinq
 lettres en six essais, **Wuertlück**, une phrase luxembourgeoise authentique à
-laquelle il manque un mot, et **Zuelwuert**, où l'on écrit en toutes lettres le
-résultat d'une multiplication.
+laquelle il manque un mot, **Zuelwuert**, où l'on écrit en toutes lettres le
+résultat d'une multiplication, **Kräizwuert**, des mots croisés dont les
+définitions sont en français, et **Wuertplaz**, une grille vide et une liste de
+mots à y caser.
 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
@@ -214,15 +221,15 @@ depuis 2013, sans prédiction du mot suivant.
 | | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
 |---|---|---|---|---|---|
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **123 265 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 26 172 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
+| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — |
 | Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
 | Aucun accès à Internet | **Oui** | Non | Non | Oui | Oui |
 | Code ouvert | **Oui**, MIT | Non | Non | Oui | Oui |
-| Jeux et progression | **Oui**, 5 jeux, 8 niveaux | Non | Non | Non | Non |
+| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Bibliothèque à ajouter | Gestes |
 | Dictée vocale | Non | Oui | Oui | Non | Non |
 | Thème sombre | Non | Oui | Oui | Oui | Oui |
@@ -308,7 +315,7 @@ publication ouverte.</p>
 avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
 vous parlez, le clavier écrit.
 
-La reconnaissance tourne **entièrement sur le téléphone** — aucun son n'est
+La reconnaissance tourne **entièrement sur le téléphone**, aucun son n'est
 envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
 contrepartie, elle pèse 38 Mo au lieu de 7, et sa précision n'est pas encore
 mesurée : c'est justement ce que ces essais servent à établir.
@@ -346,7 +353,7 @@ Si vous préférez ne pas passer par Google Play, le fichier d'installation
 2. Autorisez l'installation depuis cette source, si Android le demande.
 3. Ouvrez l'application : elle vous guide comme ci-dessus.
 
-Là aussi, Android affiche un avertissement générique — montré pour **tout**
+Là aussi, Android affiche un avertissement générique, montré pour **tout**
 clavier, sur la capture éventuelle de ce que vous tapez. Il est normal, et le
 guide de l'application, au bas de l'onglet Démarrage, explique pourquoi
 celui-ci ne peut rien envoyer nulle part.
@@ -382,4 +389,4 @@ grâce à ces signalements.
 sont des marques de Google LLC ; cette application n'est ni éditée ni approuvée
 par Google.</p>
 
-<p align="center"><em>Fait au Luxembourg avec ❤️ — « Mir wëlle bleiwe wat mir sinn »</em></p>
+<p align="center"><em>Fait au Luxembourg avec ❤️ · « Mir wëlle bleiwe wat mir sinn »</em></p>
