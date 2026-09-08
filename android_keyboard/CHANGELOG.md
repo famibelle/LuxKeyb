@@ -9,6 +9,31 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.4.0] - 2026-09-08
+
+### ✨ Ajouté
+
+- **Wuertplaz fête un mot débloqué.** Un joueur a signalé que le verrouillage
+  d'un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre,
+  sans mouvement ni son, alors que c'est le seul moment où ce jeu enseigne. Le
+  verrouillage se ponctue maintenant — les lettres du mot s'allument en vert
+  vif l'une après l'autre, une carte verte entre en scène avec le sens
+  français, et un retour haptique accompagne le tout.
+- **Le coup double a sa fête à lui.** Verrouiller plusieurs mots d'une seule
+  pose est l'événement le plus gratifiant de la partie : carte orange
+  « 🔥 N mots d'un coup ! », balayages en cascade, retour haptique plus
+  appuyé. Le détail des sens gagnés reste, comme avant, dans « Ce que vous
+  avez gagné ».
+- **La collection compte et s'anime.** Le bandeau « Ce que vous avez gagné »
+  porte le nombre de mots appris et fait un rebond quand il monte ; chaque
+  sens nouvellement acquis entre en glissant.
+- **La fin de grille lâche des confettis** et affiche une note en trois
+  paliers, tous félicitants — ⭐⭐⭐ « sans une seule reprise » à ⭐ « grille
+  bouclée » — calée sur les mots repris en cours de partie, pas sur le temps.
+- Toutes ces animations sont sautées quand l'utilisateur a coupé les
+  animations du système ; le retour haptique, lui, suit le réglage haptique
+  d'Android et ne demande aucune permission.
+
 ## [20.3.0] - 2026-09-07
 
 ### 🐛 Corrigé
