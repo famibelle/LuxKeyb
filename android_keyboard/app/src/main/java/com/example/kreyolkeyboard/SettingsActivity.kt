@@ -18,9 +18,11 @@ import android.os.Looper
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -7643,13 +7645,14 @@ class SettingsActivity : AppCompatActivity() {
                     // saute d'un cran à chaque mot verrouillé et le doigt tombe
                     // à côté de la case visée.
                     //
-                    // Deux lignes réservées, et non une : le message porte le
-                    // mot et ses acceptions, donc il déborde souvent. Réserver
-                    // la hauteur du plus long est la seule façon que la grille
-                    // ne bouge pas entre deux appuis — c'est l'appui suivant
-                    // qui paie le décalage, et il tombe alors sur la mauvaise
-                    // case. Trois lignes tant que la leçon de majuscule
-                    // s'affichait ; deux depuis qu'elle est retirée.
+                    // Hauteur figée à deux lignes — minLines ET maxLines — pour
+                    // que la carte ne change jamais la mise en page, quel que
+                    // soit le message : « 🔥 3 mots d'un coup ! » tient sur une
+                    // ligne, les formes sur la seconde, et une glose trop
+                    // longue est tronquée plutôt que de pousser la grille (sans
+                    // quoi c'est l'appui suivant qui paie le décalage et tombe
+                    // sur la mauvaise case). Le texte complet des sens gagnés
+                    // reste lisible dans « Ce que vous avez gagné ».
                     tvRetour = TextView(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -7661,6 +7664,8 @@ class SettingsActivity : AppCompatActivity() {
                         setLineSpacing(0f, 1.2f)
                         setPadding(16, 14, 16, 14)
                         minLines = 2
+                        maxLines = 2
+                        ellipsize = android.text.TextUtils.TruncateAt.END
                         background = GradientDrawable().apply {
                             cornerRadius = 12f
                             setColor(Color.WHITE)
@@ -7831,6 +7836,11 @@ class SettingsActivity : AppCompatActivity() {
             val grille = ChasseCroiseData.newGrid(activity, difficulte)
             resolus.clear()
             surlignerDifficulte()
+            tvRetour.animate().cancel()
+            tvRetour.alpha = 1f
+            tvRetour.translationY = 0f
+            tvRetour.scaleX = 1f
+            tvRetour.scaleY = 1f
             tvRetour.visibility = View.INVISIBLE
 
             if (grille == null) {
@@ -7840,10 +7850,11 @@ class SettingsActivity : AppCompatActivity() {
                 conteneurGagnes.removeAllViews()
                 titreGagnes.visibility = View.GONE
                 tvProgres.text = ""
-                tvRetour.text = "Aucune grille disponible : l'actif " +
-                    "luxemburgish_chassecroise.json manque à l'application."
-                tvRetour.setTextColor(couleurFausse)
-                tvRetour.visibility = View.VISIBLE
+                annoncer(
+                    "Aucune grille disponible : l'actif " +
+                        "luxemburgish_chassecroise.json manque à l'application.",
+                    couleurFausse
+                )
                 return
             }
 
@@ -7874,6 +7885,12 @@ class SettingsActivity : AppCompatActivity() {
             conteneurGrille.removeAllViews()
             fondsCase.clear()
             lettresCase.clear()
+
+            // Le balayage de verrouillage fait légèrement grossir une case
+            // au-delà de sa ligne : sans cela elle serait rognée en haut et
+            // en bas. Purement visuel, aucun effet sur la mise en page.
+            conteneurGrille.clipChildren = false
+            conteneurGrille.clipToPadding = false
 
             val densite = resources.displayMetrics.density
             val disponible = resources.displayMetrics.widthPixels - (48 * 2)
@@ -7929,6 +7946,8 @@ class SettingsActivity : AppCompatActivity() {
 
                     ligne.addView(cadre)
                 }
+                ligne.clipChildren = false
+                ligne.clipToPadding = false
                 conteneurGrille.addView(ligne)
             }
         }
@@ -8092,17 +8111,17 @@ class SettingsActivity : AppCompatActivity() {
 
             when {
                 partie.termine() -> {
-                    annoncer(
+                    balayerMots(nouveaux)
+                    retourHaptique(fort = true)
+                    annoncerCarte(
                         "🎉 Grille terminée : ${grille.words.size} mots placés !",
                         couleurJuste
                     )
+                    annoncerA11y(
+                        "Grille terminée, ${grille.words.size} mots placés."
+                    )
                 }
-                nouveaux.isNotEmpty() -> {
-                    val mot = grille.words[nouveaux.first()]
-                    val autres = if (nouveaux.size > 1)
-                        " (+${nouveaux.size - 1})" else ""
-                    annoncer("✅ ${mot.canonical} : ${mot.clue}$autres", couleurJuste)
-                }
+                nouveaux.isNotEmpty() -> celebrerGains(nouveaux)
                 grille.words.indices.any { partie.fautif(it) } -> {
                     annoncer(
                         "❌ Un mot est à la mauvaise place. Retirez-le et " +
@@ -8114,7 +8133,159 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        /**
+         * La récompense d'un ou plusieurs mots verrouillés d'un coup.
+         *
+         * Le verrouillage est le seul moment où ce jeu enseigne, et un joueur a
+         * signalé qu'il passait inaperçu : les cases changeaient d'un vert pâle
+         * à un autre, sans mouvement ni son. Ici on le ponctue — balayage des
+         * cases du mot, retour haptique, carte qui entre en scène — et on
+         * distingue le coup double : plusieurs mots d'un coup est l'événement
+         * le plus gratifiant de la partie, il mérite une carte à part (orange)
+         * et un retour haptique plus appuyé. Le détail des sens va, comme
+         * avant, dans « Ce que vous avez gagné » ; la carte ne fait que fêter.
+         */
+        private fun celebrerGains(nouveaux: List<Int>) {
+            val grille = session?.grid ?: return
+            val combo = nouveaux.size > 1
+            balayerMots(nouveaux)
+            retourHaptique(fort = combo)
+
+            if (combo) {
+                val formes = nouveaux.take(3)
+                    .joinToString(" · ") { grille.words[it].canonical }
+                val suite = if (nouveaux.size > 3) " +${nouveaux.size - 3}" else ""
+                annoncerCarte(
+                    "🔥 ${nouveaux.size} mots d'un coup !\n$formes$suite",
+                    Color.parseColor("#FB8C00")
+                )
+                annoncerA11y(
+                    nouveaux.size.toString() + " mots gagnés : " +
+                        nouveaux.joinToString(", ") {
+                            "${grille.words[it].canonical}, ${grille.words[it].clue}"
+                        }
+                )
+            } else {
+                val mot = grille.words[nouveaux.first()]
+                annoncerCarte("✅ ${mot.canonical} : ${mot.clue}", couleurJuste)
+                annoncerA11y("Mot gagné : ${mot.canonical}, ${mot.clue}")
+            }
+        }
+
+        /**
+         * Balaye les cases des mots donnés : chaque case s'allume en vert vif
+         * avec un léger rebond, l'une après l'autre dans le sens du mot, et les
+         * mots s'enchaînent. On lit un courant qui parcourt le mot.
+         *
+         * Purement visuel : aucune vue n'est ajoutée ni retirée, seules la
+         * couleur du fond et l'échelle de la case bougent, et un unique
+         * `rafraichir()` en fin de course remet chaque case à sa couleur
+         * d'état réelle. Sauté quand les animations système sont coupées.
+         */
+        private fun balayerMots(emplacements: List<Int>) {
+            val partie = session ?: return
+            val grille = partie.grid
+            if (emplacements.isEmpty() || animationsReduites()) return
+            val vif = Color.parseColor("#69F0AE")
+            var pas = 0L
+            emplacements.forEach { emplacement ->
+                val mot = grille.words.getOrNull(emplacement) ?: return@forEach
+                for (i in 0 until mot.length) {
+                    val cle = mot.rowAt(i) * grille.width + mot.colAt(i)
+                    val fond = fondsCase[cle] ?: continue
+                    val cadre = lettresCase[cle]?.parent as? View ?: continue
+                    tvRetour.postDelayed({
+                        if (!isAdded || session !== partie) return@postDelayed
+                        fond.setColor(vif)
+                        cadre.scaleX = 0.8f
+                        cadre.scaleY = 0.8f
+                        cadre.animate()
+                            .scaleX(1f).scaleY(1f)
+                            .setInterpolator(OvershootInterpolator(2.5f))
+                            .setDuration(280)
+                            .start()
+                    }, pas)
+                    pas += 45L
+                }
+                pas += 120L
+            }
+            tvRetour.postDelayed(
+                { if (isAdded && session === partie) rafraichir() },
+                pas + 260L
+            )
+        }
+
+        /**
+         * Un retour haptique sur le verrouillage. `fort` (coup double, grille
+         * terminée) rejoue l'impulsion deux fois de plus. Passe par
+         * `performHapticFeedback`, qui ne demande aucune permission et suit le
+         * réglage haptique du système ; rien à faire pour le désactiver.
+         */
+        private fun retourHaptique(fort: Boolean) {
+            val v = rootView ?: return
+            val effet = if (Build.VERSION.SDK_INT >= 30)
+                HapticFeedbackConstants.CONFIRM
+            else
+                HapticFeedbackConstants.LONG_PRESS
+            v.performHapticFeedback(effet)
+            if (fort) {
+                v.postDelayed({ v.performHapticFeedback(effet) }, 85)
+                v.postDelayed({ v.performHapticFeedback(effet) }, 170)
+            }
+        }
+
+        /**
+         * La carte de récompense : fond plein de la couleur donnée, texte
+         * blanc, et une entrée en scène (fondu + léger rebond) pour qu'on la
+         * voie apparaître. `annoncer` reste pour les messages neutres, sur
+         * fond blanc et sans animation.
+         */
+        private fun annoncerCarte(texte: String, couleurFond: Int) {
+            tvRetour.animate().cancel()
+            tvRetour.text = texte
+            tvRetour.setTextColor(Color.WHITE)
+            (tvRetour.background as? GradientDrawable)?.setColor(couleurFond)
+            tvRetour.visibility = View.VISIBLE
+            if (animationsReduites()) {
+                tvRetour.alpha = 1f
+                tvRetour.translationY = 0f
+                tvRetour.scaleX = 1f
+                tvRetour.scaleY = 1f
+                return
+            }
+            tvRetour.alpha = 0f
+            tvRetour.translationY = 14f
+            tvRetour.scaleX = 0.96f
+            tvRetour.scaleY = 0.96f
+            tvRetour.animate()
+                .alpha(1f).translationY(0f).scaleX(1f).scaleY(1f)
+                .setInterpolator(OvershootInterpolator(1.7f))
+                .setDuration(300)
+                .start()
+        }
+
+        private fun annoncerA11y(texte: String) {
+            rootView?.announceForAccessibility(texte)
+        }
+
+        /** Vrai si l'utilisateur a coupé les animations système. */
+        private fun animationsReduites(): Boolean = try {
+            Settings.Global.getFloat(
+                requireContext().contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                1f
+            ) == 0f
+        } catch (e: Exception) {
+            false
+        }
+
         private fun annoncer(texte: String, couleur: Int) {
+            tvRetour.animate().cancel()
+            tvRetour.alpha = 1f
+            tvRetour.translationY = 0f
+            tvRetour.scaleX = 1f
+            tvRetour.scaleY = 1f
+            (tvRetour.background as? GradientDrawable)?.setColor(Color.WHITE)
             tvRetour.text = texte
             tvRetour.setTextColor(couleur)
             tvRetour.visibility = View.VISIBLE
