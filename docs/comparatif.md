@@ -160,7 +160,7 @@ Trois nuances, toutes lisibles dans ce même fichier :
 Puisque le Clavier Samsung propose la langue, la question suivante est de savoir
 ce qu'il en fait. Mesure du 8 septembre 2026 sur un **Galaxy A21s** (Android 12),
 avec son clavier d'origine 5.4.85.4, luxembourgeois déjà activé, contre notre
-version 20.3.0 : 20 phrases du corpus ZLS jamais entraîné, **166 frontières de
+version 20.3.0 : 40 phrases du corpus ZLS jamais entraîné, **341 frontières de
 mots**, et à chaque fois la même question, *le mot suivant est-il dans les trois
 suggestions affichées, sans qu'une seule de ses lettres ait été tapée ?*
 
@@ -168,24 +168,35 @@ suggestions affichées, sans qu'une seule de ses lettres ait été tapée ?*
 
 | | barre vide | mot juste en 1ʳᵉ position | mot juste dans les 3 |
 |---|---|---|---|
-| **Lëtzebuergesch Clavier 20.3.0** | 9,0 % | **10,8 %** | **21,1 %** |
-| Clavier Samsung 5.4.85.4 | 0,0 % | 9,0 % | 16,9 % |
+| **Lëtzebuergesch Clavier 20.3.0** | 11,1 % | 10,0 % | 20,2 % |
+| Clavier Samsung 5.4.85.4 | 0,0 % | 7,9 % | 17,6 % |
 
 </div>
 
-Le détail apparié dit mieux que les totaux ce qui sépare les deux claviers. Les
-deux trouvent le mot 21 fois, **nous seuls 14 fois**, Samsung seul 7 fois. Et
-quand notre barre propose quelque chose, elle a raison **23,2 %** du temps, contre
-**15,2 %** au Clavier Samsung sur ces mêmes positions. La différence tient à ce
-qu'il fait de son silence : n'ayant pas de contexte, il affiche *de · an · der*,
-les trois mots les plus fréquents de la langue, ce qui lui vaut quelques
-victoires et beaucoup de bruit. Nous préférons la barre vide, 9 fois sur 100.
+**Disons-le franchement : cet écart de 2,6 points ne prouve rien.** Sur les 341
+positions, les deux claviers trouvent le mot 46 fois ensemble, nous seuls 23 fois,
+Samsung seul 14 fois ; le test de McNemar sur ces discordances donne 1,73 pour un
+seuil de 3,84, autrement dit un avantage qui n'est pas significatif. Sur la
+prédiction pure, en luxembourgeois, **le Clavier Samsung fait jeu égal avec nous**.
+
+Ce qui, en revanche, les sépare vraiment est la conduite de la barre. Samsung ne
+se tait jamais : faute de contexte, il affiche *de · an · der*, les trois mots
+les plus fréquents de la langue. Nos propres mesures créditent cette stratégie de
+2,7 % de réussite ; elle lui rapporte quelques mots et beaucoup de bruit. Nous
+laissons la barre vide 11 fois sur 100, et sur ces positions-là Samsung ne trouve
+le mot que 7 fois sur 38.
 
 Deux vérifications qui donnent sa valeur au chiffre : notre résultat est
-**exactement celui que promet le fichier de n-grammes embarqué** (21,1 % lui
-aussi, calculé hors ligne sur ces positions), et les phrases retenues ne
-contiennent aucun diacritique, faute de pouvoir les taper en automatique sans
-avantager l'un des deux claviers.
+**exactement celui que promet le fichier de n-grammes embarqué** (20,2 % lui
+aussi, calculé hors ligne sur ces positions), et la mesure a été faite deux fois,
+sur 166 positions sans diacritique puis sur 175 positions en contenant, avec des
+résultats cohérents (21,1 % et 19,4 % chez nous, 16,9 % et 18,3 % chez Samsung).
+
+Cette seconde série a coûté cher à préparer, et c'est un résultat en soi : pour
+écrire `ë`, notre clavier demande **un appui sur une touche dédiée**, le Clavier
+Samsung **un appui long sur `e` puis un glissement** jusqu'à la quatrième case du
+menu `è é ê ë ē`, soit 1,2 seconde de geste. Le luxembourgeois écrit `ë`
+142 374 fois dans notre corpus, et `é` 269 749 fois.
 
 Sur la mécanique, même appareil, clavier ouvert dans un champ neutre :
 

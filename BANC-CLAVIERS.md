@@ -22,11 +22,12 @@ comparaison entre les claviers testés.
 - **Claviers** : Clavier Samsung 5.4.85.4, celui d'origine, avec le luxembourgeois
   déjà activé (la barre d'espace affiche « Lëtzebuergesch ») ; Lëtzebuergesch
   Clavier 20.3.0, version release publiée.
-- **Corpus** : *Méisproochegen Iwwersetzungskorpus* (ZLS, CC0), 20 phrases tirées
-  au sort parmi celles de 8 à 15 mots **sans diacritique**, 166 positions. La
-  restriction vient de `adb shell input text`, qui ne sait pas écrire « ë » :
-  faire dépendre la frappe d'un appui long propre à chaque clavier aurait
-  introduit une différence entre les deux.
+- **Corpus** : *Méisproochegen Iwwersetzungskorpus* (ZLS, CC0), 40 phrases tirées
+  au sort parmi celles de 8 à 15 mots, 341 positions. Deux séries : 20 phrases
+  sans diacritique (166 positions), puis 20 phrases contenant `é` ou `ë`
+  (175 positions). `adb shell input text` ne sait pas écrire « ë » : la seconde
+  série tape ces lettres sur le clavier lui-même, touche dédiée chez nous, appui
+  long puis glissement chez Samsung.
 - **Protocole** : les mots sont écrits l'un après l'autre dans un même champ,
   sans jamais rouvrir la session ; la barre d'espace du clavier testé est frappée
   et la barre de suggestions photographiée, une fois stabilisée, puis lue par OCR.
@@ -34,21 +35,36 @@ comparaison entre les claviers testés.
 
 ### Qualité des prédictions
 
-| | barre vide | top-1 | top-3 |
-|---|---|---|---|
-| **Lëtzebuergesch Clavier 20.3.0** | 9,0 % | **10,8 %** | **21,1 %** |
-| **Clavier Samsung 5.4.85.4** | 0,0 % | 9,0 % | 16,9 % |
+Deux séries, la première sur des phrases sans diacritique, la seconde sur des
+phrases en contenant, chaque `é` et chaque `ë` étant réellement frappé sur le
+clavier testé.
 
-Le détail apparié, sur les mêmes 166 positions :
+| | positions | barre vide | top-1 | top-3 |
+|---|---|---|---|---|
+| **Lëtzebuergesch Clavier 20.3.0** | 341 | 11,1 % | 10,0 % | **20,2 %** |
+| **Clavier Samsung 5.4.85.4** | 341 | 0,0 % | 7,9 % | 17,6 % |
+| *dont série sans diacritique* | *166* | *9,0 / 0,0 %* | *10,8 / 9,0 %* | *21,1 / 16,9 %* |
+| *dont série accentuée* | *175* | *13,1 / 0,0 %* | *9,1 / 6,9 %* | *19,4 / 18,3 %* |
 
-- les deux trouvent : 21 · **nous seuls : 14** · Samsung seul : 7 · aucun : 124 ;
-- **quand notre barre parle**, c'est-à-dire sur 151 positions, nous sommes à
-  **23,2 %** contre **15,2 %** au Clavier Samsung sur ces mêmes positions ;
-- sur nos 15 barres vides, Samsung trouve le mot 5 fois : le silence coûte, mais
-  peu.
-- **Notre chiffre est exactement celui du modèle livré** : le fichier
-  `luxemburgish_ngrams.json`, interrogé hors ligne sur ces 166 positions, donne
-  21,1 % lui aussi. Ce que promet l'asset arrive donc intact à l'écran.
+**L'écart de 2,6 points n'est pas significatif.** Les deux claviers trouvent le
+mot 46 fois ensemble, nous seuls 23 fois, Samsung seul 14 fois ; le khi² de
+McNemar sur ces discordances vaut 1,73 pour un seuil de 3,84 à 5 %. Sur la
+prédiction pure, en luxembourgeois, les deux moteurs font jeu égal, et il faut
+l'écrire ainsi.
+
+Ce qui se voit en revanche sans test statistique :
+
+- **la barre vide** : 0,0 % chez Samsung contre 11,1 % chez nous. Faute de
+  contexte, il affiche *de · an · der*, les trois mots les plus fréquents de la
+  langue ; nos propres mesures créditent cette stratégie de 2,7 %. Sur nos 38
+  positions muettes, il ne trouve le mot que 7 fois ;
+- **la fidélité au modèle** : `luxemburgish_ngrams.json`, interrogé hors ligne
+  sur les mêmes positions, donne 21,1 % puis 19,4 %, exactement les chiffres
+  relevés à l'écran. Rien ne se perd entre l'asset et la barre ;
+- **le coût d'un accent**, mesuré en construisant la seconde série : chez nous un
+  appui sur une touche dédiée, chez Samsung un appui long sur `e` suivi d'un
+  glissement jusqu'à la quatrième case du menu `è é ê ë ē`, soit 1,2 s de geste.
+  Le corpus écrit `ë` 142 374 fois et `é` 269 749 fois.
 
 Ce que Samsung affiche quand il n'a pas de contexte est instructif : **« de · an
 · der »**, les trois mots les plus fréquents de la langue, servis tels quels. Nos

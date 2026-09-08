@@ -1,0 +1,2627 @@
+[
+ {
+  "phrase": 0,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "spillen",
+  "image": "00_01.png",
+  "top3": [
+   "verstinn",
+   "hunn",
+   "mech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 2,
+  "contexte": "ech spillen",
+  "attendu": "der",
+  "image": "00_02.png",
+  "top3": [
+   "an",
+   "déi",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 3,
+  "contexte": "ech spillen der",
+  "attendu": "de",
+  "image": "00_03.png",
+  "top3": [
+   "Klunsch",
+   "zweeter",
+   "Stad"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 4,
+  "contexte": "ech spillen der de",
+  "attendu": "Rhythmus",
+  "image": "00_04.png",
+  "top3": [
+   "Jong",
+   "Match",
+   "Luxembourg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 5,
+  "contexte": "ech spillen der de Rhythmus",
+  "attendu": "eng",
+  "image": "00_05.png",
+  "top3": [
+   "vun",
+   "an",
+   "vu"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 6,
+  "contexte": "ech spillen der de Rhythmus eng",
+  "attendu": "Kéier",
+  "image": "00_06.png",
+  "top3": [
+   "administrativ",
+   "Keier",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 7,
+  "contexte": "ech spillen der de Rhythmus eng Kéier",
+  "attendu": "kuerz",
+  "image": "00_07.png",
+  "top3": [
+   "an",
+   "op",
+   "e"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 8,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz",
+  "attendu": "op",
+  "image": "00_08.png",
+  "top3": [
+   "drop",
+   "virun",
+   "no"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 9,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op",
+  "attendu": "de",
+  "image": "00_09.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 10,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op de",
+  "attendu": "Claves",
+  "image": "00_10.png",
+  "top3": [
+   "Wee",
+   "Marche",
+   "Maart"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 11,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op de Claves",
+  "attendu": "vir",
+  "image": "00_11.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 1,
+  "contexte": "meng",
+  "attendu": "Mamm",
+  "image": "01_01.png",
+  "top3": [
+   "Duebeler",
+   "Meenung",
+   "Fro"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 2,
+  "contexte": "meng Mamm",
+  "attendu": "kacht",
+  "image": "01_02.png",
+  "top3": [
+   "huet",
+   "an",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 3,
+  "contexte": "meng Mamm kacht",
+  "attendu": "all",
+  "image": "01_03.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 4,
+  "contexte": "meng Mamm kacht all",
+  "attendu": "Summer",
+  "image": "01_04.png",
+  "top3": [
+   "Joer",
+   "déi",
+   "Dag"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 5,
+  "contexte": "meng Mamm kacht all Summer",
+  "attendu": "Gebeess",
+  "image": "01_05.png",
+  "top3": [
+   "ass",
+   "an",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 6,
+  "contexte": "meng Mamm kacht all Summer Gebeess",
+  "attendu": "mat",
+  "image": "01_06.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 7,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat",
+  "attendu": "de",
+  "image": "01_07.png",
+  "top3": [
+   "der",
+   "engem",
+   "enger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 8,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de",
+  "attendu": "Schwaarze",
+  "image": "01_08.png",
+  "top3": [
+   "folgenden",
+   "Leit",
+   "Kanner"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 9,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze",
+  "attendu": "Kréischelen",
+  "image": "01_09.png",
+  "top3": [
+   "Prenz",
+   "Lach",
+   "Peiter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 10,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen",
+  "attendu": "aus",
+  "image": "01_10.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 11,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen aus",
+  "attendu": "eisem",
+  "image": "01_11.png",
+  "top3": [
+   "dem",
+   "der",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 12,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen aus eisem",
+  "attendu": "Gaart",
+  "image": "01_12.png",
+  "top3": [
+   "Sonnesystem",
+   "Land",
+   "Kierper"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 1,
+  "contexte": "haut",
+  "attendu": "de",
+  "image": "02_01.png",
+  "top3": [
+   "nach",
+   "an",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 2,
+  "contexte": "haut de",
+  "attendu": "Mëtteg",
+  "image": "02_02.png",
+  "top3": [
+   "Moien",
+   "Mueren",
+   "Metteg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 3,
+  "contexte": "haut de Mëtteg",
+  "attendu": "gëtt",
+  "image": "02_03.png",
+  "top3": [
+   "um",
+   "an",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 4,
+  "contexte": "haut de Mëtteg gëtt",
+  "attendu": "et",
+  "image": "02_04.png",
+  "top3": [
+   "et",
+   "de",
+   "an"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 5,
+  "contexte": "haut de Mëtteg gëtt et",
+  "attendu": "Bulletten",
+  "image": "02_05.png",
+  "top3": [
+   "eng",
+   "och",
+   "nach"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 6,
+  "contexte": "haut de Mëtteg gëtt et Bulletten",
+  "attendu": "an",
+  "image": "02_06.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 7,
+  "contexte": "haut de Mëtteg gëtt et Bulletten an",
+  "attendu": "der",
+  "image": "02_07.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 8,
+  "contexte": "haut de Mëtteg gëtt et Bulletten an der",
+  "attendu": "Kantin",
+  "image": "02_08.png",
+  "top3": [
+   "zweeter",
+   "Klunsch",
+   "Regioun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 1,
+  "contexte": "kënnt",
+  "attendu": "ee",
+  "image": "03_01.png",
+  "top3": [
+   "op",
+   "et",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 2,
+  "contexte": "kënnt ee",
+  "attendu": "mam",
+  "image": "03_02.png",
+  "top3": [
+   "sech",
+   "mat",
+   "bei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 3,
+  "contexte": "kënnt ee mam",
+  "attendu": "Zuch",
+  "image": "03_03.png",
+  "top3": [
+   "Auto",
+   "Joer",
+   "Jean"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 4,
+  "contexte": "kënnt ee mam Zuch",
+  "attendu": "vun",
+  "image": "03_04.png",
+  "top3": [
+   "op",
+   "vun",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 3,
+  "position": 5,
+  "contexte": "kënnt ee mam Zuch vun",
+  "attendu": "Amsterdam",
+  "image": "03_05.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 6,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam",
+  "attendu": "op",
+  "image": "03_06.png",
+  "top3": [
+   "vertrueden",
+   "an",
+   "a"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 7,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam op",
+  "attendu": "Den",
+  "image": "03_07.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 3,
+  "position": 8,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam op Den",
+  "attendu": "Haag",
+  "image": "03_08.png",
+  "top3": [
+   "Numm",
+   "zu",
+   "Desch"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 1,
+  "contexte": "deng",
+  "attendu": "nei",
+  "image": "04_01.png",
+  "top3": [
+   "Fro",
+   "Geschicht",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 2,
+  "contexte": "deng nei",
+  "attendu": "Tallekeschong",
+  "image": "04_02.png",
+  "top3": [
+   "Single",
+   "Regierung",
+   "Saison"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 3,
+  "contexte": "deng nei Tallekeschong",
+  "attendu": "maachen",
+  "image": "04_03.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 4,
+  "contexte": "deng nei Tallekeschong maachen",
+  "attendu": "der",
+  "image": "04_04.png",
+  "top3": [
+   "an",
+   "a",
+   "ech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 5,
+  "contexte": "deng nei Tallekeschong maachen der",
+  "attendu": "schéi",
+  "image": "04_05.png",
+  "top3": [
+   "Klunsch",
+   "zweeter",
+   "Stad"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 6,
+  "contexte": "deng nei Tallekeschong maachen der schéi",
+  "attendu": "laang",
+  "image": "04_06.png",
+  "top3": [
+   "brav",
+   "war",
+   "sinn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 7,
+  "contexte": "deng nei Tallekeschong maachen der schéi laang",
+  "attendu": "Been",
+  "image": "04_07.png",
+  "top3": [
+   "net",
+   "an",
+   "Zait"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 1,
+  "contexte": "zwee",
+  "attendu": "Punkte",
+  "image": "05_01.png",
+  "top3": [
+   "Joer",
+   "Kanner",
+   "Deeg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 2,
+  "contexte": "zwee Punkte",
+  "attendu": "kënnen",
+  "image": "05_02.png",
+  "top3": [
+   "Virsprong",
+   "fir",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 3,
+  "contexte": "zwee Punkte kënnen",
+  "attendu": "duerch",
+  "image": "05_03.png",
+  "top3": [
+   "ze",
+   "an",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 4,
+  "contexte": "zwee Punkte kënnen duerch",
+  "attendu": "e",
+  "image": "05_04.png",
+  "top3": [
+   "de",
+   "den",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 5,
+  "contexte": "zwee Punkte kënnen duerch e",
+  "attendu": "riichte",
+  "image": "05_05.png",
+  "top3": [
+   "Gesetz",
+   "Feier",
+   "puer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 6,
+  "contexte": "zwee Punkte kënnen duerch e riichte",
+  "attendu": "Stréch",
+  "image": "05_06.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 7,
+  "contexte": "zwee Punkte kënnen duerch e riichte Stréch",
+  "attendu": "verbonne",
+  "image": "05_07.png",
+  "top3": [
+   "duerch",
+   "gefuer",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 8,
+  "contexte": "zwee Punkte kënnen duerch e riichte Stréch verbonne",
+  "attendu": "ginn",
+  "image": "05_08.png",
+  "top3": [
+   "sinn",
+   "mat",
+   "war"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 1,
+  "contexte": "wéi",
+  "attendu": "kann",
+  "image": "06_01.png",
+  "top3": [
+   "de",
+   "och",
+   "déi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 2,
+  "contexte": "wéi kann",
+  "attendu": "ech",
+  "image": "06_02.png",
+  "top3": [
+   "een",
+   "ee",
+   "ech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 6,
+  "position": 3,
+  "contexte": "wéi kann ech",
+  "attendu": "déi",
+  "image": "06_03.png",
+  "top3": [
+   "net",
+   "mech",
+   "mer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 4,
+  "contexte": "wéi kann ech déi",
+  "attendu": "Donnéeën",
+  "image": "06_04.png",
+  "top3": [
+   "lescht",
+   "sech",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 5,
+  "contexte": "wéi kann ech déi Donnéeën",
+  "attendu": "an",
+  "image": "06_05.png",
+  "top3": [
+   "iwwer",
+   "ze",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 6,
+  "contexte": "wéi kann ech déi Donnéeën an",
+  "attendu": "eis",
+  "image": "06_06.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 7,
+  "contexte": "wéi kann ech déi Donnéeën an eis",
+  "attendu": "Datebank",
+  "image": "06_07.png",
+  "top3": [
+   "Sprooch",
+   "Kinoen",
+   "Gesellschaft"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 8,
+  "contexte": "wéi kann ech déi Donnéeën an eis Datebank",
+  "attendu": "importéieren",
+  "image": "06_08.png",
+  "top3": [
+   "vu",
+   "vun",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "Fatzbeidel",
+  "image": "07_01.png",
+  "top3": [
+   "sech",
+   "vun",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 2,
+  "contexte": "dee Fatzbeidel",
+  "attendu": "beduckst",
+  "image": "07_02.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 3,
+  "contexte": "dee Fatzbeidel beduckst",
+  "attendu": "déi",
+  "image": "07_03.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 4,
+  "contexte": "dee Fatzbeidel beduckst déi",
+  "attendu": "aner",
+  "image": "07_04.png",
+  "top3": [
+   "sech",
+   "an",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 5,
+  "contexte": "dee Fatzbeidel beduckst déi aner",
+  "attendu": "Leit",
+  "image": "07_05.png",
+  "top3": [
+   "Sait",
+   "Leit",
+   "Woch"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 7,
+  "position": 6,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit",
+  "attendu": "drop",
+  "image": "07_06.png",
+  "top3": [
+   "déi",
+   "op",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 7,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit drop",
+  "attendu": "an",
+  "image": "07_07.png",
+  "top3": [
+   "huet",
+   "ass",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 7,
+  "position": 8,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit drop an",
+  "attendu": "derwidder",
+  "image": "07_08.png",
+  "top3": [
+   "drun",
+   "der",
+   "loosst"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 1,
+  "contexte": "am",
+  "attendu": "Mëttelalter",
+  "image": "08_01.png",
+  "top3": [
+   "Departement",
+   "Joer",
+   "Arrondissement"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 2,
+  "contexte": "am Mëttelalter",
+  "attendu": "si",
+  "image": "08_02.png",
+  "top3": [
+   "an",
+   "war",
+   "gouf"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 3,
+  "contexte": "am Mëttelalter si",
+  "attendu": "vill",
+  "image": "08_03.png",
+  "top3": [
+   "hunn",
+   "ass",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 4,
+  "contexte": "am Mëttelalter si vill",
+  "attendu": "Fraen",
+  "image": "08_04.png",
+  "top3": [
+   "méi",
+   "Leit",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 5,
+  "contexte": "am Mëttelalter si vill Fraen",
+  "attendu": "als",
+  "image": "08_05.png",
+  "top3": [
+   "hunn",
+   "a",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 6,
+  "contexte": "am Mëttelalter si vill Fraen als",
+  "attendu": "Hex",
+  "image": "08_06.png",
+  "top3": [
+   "éischt",
+   "eng",
+   "ee"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 7,
+  "contexte": "am Mëttelalter si vill Fraen als Hex",
+  "attendu": "verbrannt",
+  "image": "08_07.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 8,
+  "contexte": "am Mëttelalter si vill Fraen als Hex verbrannt",
+  "attendu": "ginn",
+  "image": "08_08.png",
+  "top3": [
+   "ginn",
+   "an",
+   "gett"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "hat",
+  "image": "09_01.png",
+  "top3": [
+   "ass",
+   "neit",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 2,
+  "contexte": "Dat hat",
+  "attendu": "de",
+  "image": "09_02.png",
+  "top3": [
+   "de",
+   "den",
+   "sech"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 3,
+  "contexte": "Dat hat de",
+  "attendu": "franséische",
+  "image": "09_03.png",
+  "top3": [
+   "Mann",
+   "Komeit",
+   "Letzebuerger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 4,
+  "contexte": "Dat hat de franséische",
+  "attendu": "President",
+  "image": "09_04.png",
+  "top3": [
+   "President",
+   "Schreftsteller",
+   "Kinnek"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 5,
+  "contexte": "Dat hat de franséische President",
+  "attendu": "Emmanuel",
+  "image": "09_05.png",
+  "top3": [
+   "Francois",
+   "Hollande",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 6,
+  "contexte": "Dat hat de franséische President Emmanuel",
+  "attendu": "Macron",
+  "image": "09_06.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 7,
+  "contexte": "Dat hat de franséische President Emmanuel Macron",
+  "attendu": "déi",
+  "image": "09_07.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 8,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi",
+  "attendu": "lescht",
+  "image": "09_08.png",
+  "top3": [
+   "sech",
+   "an",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 9,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi lescht",
+  "attendu": "Woch",
+  "image": "09_09.png",
+  "top3": [
+   "Woch",
+   "Deeg",
+   "Etapp"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 10,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi lescht Woch",
+  "attendu": "annoncéiert",
+  "image": "09_10.png",
+  "top3": [
+   "an",
+   "war",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 1,
+  "contexte": "an",
+  "attendu": "der",
+  "image": "10_01.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 10,
+  "position": 2,
+  "contexte": "an der",
+  "attendu": "indescher",
+  "image": "10_02.png",
+  "top3": [
+   "zweeter",
+   "Klunsch",
+   "Regioun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 3,
+  "contexte": "an der indescher",
+  "attendu": "Kiche",
+  "image": "10_03.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 4,
+  "contexte": "an der indescher Kiche",
+  "attendu": "gëtt",
+  "image": "10_04.png",
+  "top3": [
+   "Lexikon",
+   "de",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 5,
+  "contexte": "an der indescher Kiche gëtt",
+  "attendu": "vill",
+  "image": "10_05.png",
+  "top3": [
+   "et",
+   "de",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 6,
+  "contexte": "an der indescher Kiche gëtt vill",
+  "attendu": "mat",
+  "image": "10_06.png",
+  "top3": [
+   "iwwer",
+   "iwwert",
+   "méi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 7,
+  "contexte": "an der indescher Kiche gëtt vill mat",
+  "attendu": "Koriander",
+  "image": "10_07.png",
+  "top3": [
+   "der",
+   "engem",
+   "enger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 8,
+  "contexte": "an der indescher Kiche gëtt vill mat Koriander",
+  "attendu": "gekacht",
+  "image": "10_08.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 1,
+  "contexte": "du",
+  "attendu": "muss",
+  "image": "11_01.png",
+  "top3": [
+   "hues",
+   "kanns",
+   "bass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 2,
+  "contexte": "du muss",
+  "attendu": "deng",
+  "image": "11_02.png",
+  "top3": [
+   "een",
+   "ee",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 3,
+  "contexte": "du muss deng",
+  "attendu": "Blummen",
+  "image": "11_03.png",
+  "top3": [
+   "Fro",
+   "Geschicht",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 4,
+  "contexte": "du muss deng Blummen",
+  "attendu": "a",
+  "image": "11_04.png",
+  "top3": [
+   "a",
+   "an",
+   "de"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 11,
+  "position": 5,
+  "contexte": "du muss deng Blummen a",
+  "attendu": "méi",
+  "image": "11_05.png",
+  "top3": [
+   "gestuerwen",
+   "vun",
+   "seng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 6,
+  "contexte": "du muss deng Blummen a méi",
+  "attendu": "grouss",
+  "image": "11_06.png",
+  "top3": [
+   "wéi",
+   "speit",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 7,
+  "contexte": "du muss deng Blummen a méi grouss",
+  "attendu": "Kiwwele",
+  "image": "11_07.png",
+  "top3": [
+   "wéi",
+   "ass",
+   "ginn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 8,
+  "contexte": "du muss deng Blummen a méi grouss Kiwwele",
+  "attendu": "setzen",
+  "image": "11_08.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 1,
+  "contexte": "déi",
+  "attendu": "problematesch",
+  "image": "12_01.png",
+  "top3": [
+   "greng",
+   "Lénk",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 2,
+  "contexte": "déi problematesch",
+  "attendu": "Situatioun",
+  "image": "12_02.png",
+  "top3": [
+   "ass",
+   "ginn",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 3,
+  "contexte": "déi problematesch Situatioun",
+  "attendu": "soll",
+  "image": "12_03.png",
+  "top3": [
+   "an",
+   "vun",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 4,
+  "contexte": "déi problematesch Situatioun soll",
+  "attendu": "esou",
+  "image": "12_04.png",
+  "top3": [
+   "een",
+   "de",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 5,
+  "contexte": "déi problematesch Situatioun soll esou",
+  "attendu": "séier",
+  "image": "12_05.png",
+  "top3": [
+   "eng",
+   "vill",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 6,
+  "contexte": "déi problematesch Situatioun soll esou séier",
+  "attendu": "ewéi",
+  "image": "12_06.png",
+  "top3": [
+   "wéi",
+   "an",
+   "a"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 7,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi",
+  "attendu": "méiglech",
+  "image": "12_07.png",
+  "top3": [
+   "eng",
+   "déi",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 8,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi méiglech",
+  "attendu": "berengegt",
+  "image": "12_08.png",
+  "top3": [
+   "ze",
+   "ass",
+   "sinn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 9,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi méiglech berengegt",
+  "attendu": "ginn",
+  "image": "12_09.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 1,
+  "contexte": "an",
+  "attendu": "Amerika",
+  "image": "13_01.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 2,
+  "contexte": "an Amerika",
+  "attendu": "gëtt",
+  "image": "13_02.png",
+  "top3": [
+   "an",
+   "ass",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 3,
+  "contexte": "an Amerika gëtt",
+  "attendu": "haut",
+  "image": "13_03.png",
+  "top3": [
+   "et",
+   "de",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 4,
+  "contexte": "an Amerika gëtt haut",
+  "attendu": "en",
+  "image": "13_04.png",
+  "top3": [
+   "an",
+   "nach",
+   "als"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 5,
+  "contexte": "an Amerika gëtt haut en",
+  "attendu": "neie",
+  "image": "13_05.png",
+  "top3": [
+   "Bas",
+   "Deel",
+   "ass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 6,
+  "contexte": "an Amerika gëtt haut en neie",
+  "attendu": "President",
+  "image": "13_06.png",
+  "top3": [
+   "Rekord",
+   "President",
+   "Letzebuerger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 13,
+  "position": 7,
+  "contexte": "an Amerika gëtt haut en neie President",
+  "attendu": "gewielt",
+  "image": "13_07.png",
+  "top3": [
+   "vun",
+   "vum",
+   "gewielt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 14,
+  "position": 1,
+  "contexte": "Den",
+  "attendu": "individuellen",
+  "image": "14_01.png",
+  "top3": [
+   "Haaptuert",
+   "Numm",
+   "Arrondissement"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 2,
+  "contexte": "Den individuellen",
+  "attendu": "Impakt",
+  "image": "14_02.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 3,
+  "contexte": "Den individuellen Impakt",
+  "attendu": "vun",
+  "image": "14_03.png",
+  "top3": [
+   "op",
+   "vun",
+   "vu"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 14,
+  "position": 4,
+  "contexte": "Den individuellen Impakt vun",
+  "attendu": "all",
+  "image": "14_04.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 5,
+  "contexte": "Den individuellen Impakt vun all",
+  "attendu": "Projet",
+  "image": "14_05.png",
+  "top3": [
+   "de",
+   "deenen",
+   "Artikel"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 6,
+  "contexte": "Den individuellen Impakt vun all Projet",
+  "attendu": "gëtt",
+  "image": "14_06.png",
+  "top3": [
+   "de",
+   "vun",
+   "vum"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 7,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt",
+  "attendu": "no",
+  "image": "14_07.png",
+  "top3": [
+   "et",
+   "de",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 8,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no",
+  "attendu": "den",
+  "image": "14_08.png",
+  "top3": [
+   "sengem",
+   "engem",
+   "dem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 9,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den",
+  "attendu": "uewe",
+  "image": "14_09.png",
+  "top3": [
+   "Attentater",
+   "eischten",
+   "eischte"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 10,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe",
+  "attendu": "genannte",
+  "image": "14_10.png",
+  "top3": [
+   "genannte",
+   "riets",
+   "méi"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 14,
+  "position": 11,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe genannte",
+  "attendu": "Prinzippien",
+  "image": "14_11.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 12,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe genannte Prinzippien",
+  "attendu": "evaluéiert",
+  "image": "14_12.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 1,
+  "contexte": "den",
+  "attendu": "Owend",
+  "image": "15_01.png",
+  "top3": [
+   "Numm",
+   "Owend",
+   "USA"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 15,
+  "position": 2,
+  "contexte": "den Owend",
+  "attendu": "gëtt",
+  "image": "15_02.png",
+  "top3": [
+   "an",
+   "um",
+   "am"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 3,
+  "contexte": "den Owend gëtt",
+  "attendu": "et",
+  "image": "15_03.png",
+  "top3": [
+   "ZU",
+   "et",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 15,
+  "position": 4,
+  "contexte": "den Owend gëtt et",
+  "attendu": "eng",
+  "image": "15_04.png",
+  "top3": [
+   "eng",
+   "och",
+   "nach"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 15,
+  "position": 5,
+  "contexte": "den Owend gëtt et eng",
+  "attendu": "Lasagne",
+  "image": "15_05.png",
+  "top3": [
+   "ganz",
+   "Victoire",
+   "Rei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 6,
+  "contexte": "den Owend gëtt et eng Lasagne",
+  "attendu": "mat",
+  "image": "15_06.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 7,
+  "contexte": "den Owend gëtt et eng Lasagne mat",
+  "attendu": "Spinat",
+  "image": "15_07.png",
+  "top3": [
+   "der",
+   "engem",
+   "enger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 8,
+  "contexte": "den Owend gëtt et eng Lasagne mat Spinat",
+  "attendu": "a",
+  "image": "15_08.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 9,
+  "contexte": "den Owend gëtt et eng Lasagne mat Spinat a",
+  "attendu": "Ricotta",
+  "image": "15_09.png",
+  "top3": [
+   "gestuerwen",
+   "vun",
+   "seng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 1,
+  "contexte": "Et",
+  "attendu": "géif",
+  "image": "16_01.png",
+  "top3": [
+   "ass",
+   "gett",
+   "war"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 2,
+  "contexte": "Et géif",
+  "attendu": "awer",
+  "image": "16_02.png",
+  "top3": [
+   "een",
+   "ee",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 3,
+  "contexte": "Et géif awer",
+  "attendu": "net",
+  "image": "16_03.png",
+  "top3": [
+   "net",
+   "och",
+   "nach"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 4,
+  "contexte": "Et géif awer net",
+  "attendu": "nëmmen",
+  "image": "16_04.png",
+  "top3": [
+   "méi",
+   "nemmen",
+   "sou"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 5,
+  "contexte": "Et géif awer net nëmmen",
+  "attendu": "un",
+  "image": "16_05.png",
+  "top3": [
+   "de",
+   "an",
+   "e"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 6,
+  "contexte": "Et géif awer net nëmmen un",
+  "attendu": "der",
+  "image": "16_06.png",
+  "top3": [
+   "de",
+   "déi",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 7,
+  "contexte": "Et géif awer net nëmmen un der",
+  "attendu": "Infrastruktur",
+  "image": "16_07.png",
+  "top3": [
+   "Klunsch",
+   "Spetzt",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 8,
+  "contexte": "Et géif awer net nëmmen un der Infrastruktur",
+  "attendu": "leien",
+  "image": "16_08.png",
+  "top3": [
+   "fir",
+   "an",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 1,
+  "contexte": "eng",
+  "attendu": "zolidd",
+  "image": "17_01.png",
+  "top3": [
+   "administrativ",
+   "Keier",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 2,
+  "contexte": "eng zolidd",
+  "attendu": "Well",
+  "image": "17_02.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 3,
+  "contexte": "eng zolidd Well",
+  "attendu": "huet",
+  "image": "17_03.png",
+  "top3": [
+   "de",
+   "et",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 4,
+  "contexte": "eng zolidd Well huet",
+  "attendu": "de",
+  "image": "17_04.png",
+  "top3": [
+   "de",
+   "sech",
+   "hien"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 17,
+  "position": 5,
+  "contexte": "eng zolidd Well huet de",
+  "attendu": "Kanner",
+  "image": "17_05.png",
+  "top3": [
+   "Jean",
+   "Letzebuerger",
+   "Paul"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 6,
+  "contexte": "eng zolidd Well huet de Kanner",
+  "attendu": "hir",
+  "image": "17_06.png",
+  "top3": [
+   "an",
+   "a",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 7,
+  "contexte": "eng zolidd Well huet de Kanner hir",
+  "attendu": "schéi",
+  "image": "17_07.png",
+  "top3": [
+   "Kanner",
+   "Aarbecht",
+   "eege"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 8,
+  "contexte": "eng zolidd Well huet de Kanner hir schéi",
+  "attendu": "Sandbuerg",
+  "image": "17_08.png",
+  "top3": [
+   "brav",
+   "war",
+   "sinn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 9,
+  "contexte": "eng zolidd Well huet de Kanner hir schéi Sandbuerg",
+  "attendu": "ewechgespullt",
+  "image": "17_09.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 1,
+  "contexte": "eisen",
+  "attendu": "Noper",
+  "image": "18_01.png",
+  "top3": [
+   "Noperen",
+   "daitschen",
+   "Informatiounen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 2,
+  "contexte": "eisen Noper",
+  "attendu": "huet",
+  "image": "18_02.png",
+  "top3": [
+   "vun",
+   "Dag",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 3,
+  "contexte": "eisen Noper huet",
+  "attendu": "sech",
+  "image": "18_03.png",
+  "top3": [
+   "de",
+   "sech",
+   "hien"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 18,
+  "position": 4,
+  "contexte": "eisen Noper huet sech",
+  "attendu": "eng",
+  "image": "18_04.png",
+  "top3": [
+   "de",
+   "an",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 5,
+  "contexte": "eisen Noper huet sech eng",
+  "attendu": "schéin",
+  "image": "18_05.png",
+  "top3": [
+   "ganz",
+   "nei",
+   "Rei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 6,
+  "contexte": "eisen Noper huet sech eng schéin",
+  "attendu": "Tromm",
+  "image": "18_06.png",
+  "top3": [
+   "Zait",
+   "Haut",
+   "a"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 7,
+  "contexte": "eisen Noper huet sech eng schéin Tromm",
+  "attendu": "gezillt",
+  "image": "18_07.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "mësche",
+  "image": "19_01.png",
+  "top3": [
+   "verstinn",
+   "hunn",
+   "mech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 2,
+  "contexte": "ech mësche",
+  "attendu": "mech",
+  "image": "19_02.png",
+  "top3": [
+   "de",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 3,
+  "contexte": "ech mësche mech",
+  "attendu": "prinzipiell",
+  "image": "19_03.png",
+  "top3": [
+   "net",
+   "op",
+   "ass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 4,
+  "contexte": "ech mësche mech prinzipiell",
+  "attendu": "net",
+  "image": "19_04.png",
+  "top3": [
+   "fir",
+   "och",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 19,
+  "position": 5,
+  "contexte": "ech mësche mech prinzipiell net",
+  "attendu": "an",
+  "image": "19_05.png",
+  "top3": [
+   "méi",
+   "nemmen",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 6,
+  "contexte": "ech mësche mech prinzipiell net an",
+  "attendu": "anere",
+  "image": "19_06.png",
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 7,
+  "contexte": "ech mësche mech prinzipiell net an anere",
+  "attendu": "Leit",
+  "image": "19_07.png",
+  "top3": [
+   "Lanner",
+   "Wierder",
+   "Sproochen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 8,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit",
+  "attendu": "hir",
+  "image": "19_08.png",
+  "top3": [
+   "ze",
+   "déi",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 9,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit hir",
+  "attendu": "Saachen",
+  "image": "19_09.png",
+  "top3": [
+   "Kanner",
+   "Aarbecht",
+   "eege"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 10,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit hir Saachen",
+  "attendu": "an",
+  "image": "19_10.png",
+  "top3": [
+   "dei",
+   "ze",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ }
+]
