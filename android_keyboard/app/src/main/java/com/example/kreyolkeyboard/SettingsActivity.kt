@@ -3,6 +3,7 @@ package com.example.kreyolkeyboard
 import android.Manifest
 import android.content.ClipData
 import android.content.Context
+import android.animation.ValueAnimator
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import com.example.kreyolkeyboard.gamification.LuxLevels
@@ -7533,6 +7534,11 @@ class SettingsActivity : AppCompatActivity() {
 
         private var rootView: ScrollView? = null
 
+        // Les confettis de fin de grille sont posés dans le cadre de contenu de
+        // l'activité (android.R.id.content), au-dessus de tout : ils ne
+        // défilent pas et ne décalent rien. Suivi ici pour être retirés.
+        private var confetti: ConfettiView? = null
+
         private lateinit var tvProgres: TextView
         private lateinit var tvRetour: TextView
         private lateinit var conteneurGrille: LinearLayout
@@ -7550,6 +7556,20 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Mots déjà verrouillés, pour ne récompenser qu'une fois. */
         private val resolus = mutableSetOf<Int>()
+
+        /**
+         * Lignes de « Ce que vous avez gagné » déjà portées à l'écran : sert à
+         * n'animer l'entrée que des nouvelles, la liste étant reconstruite en
+         * entier à chaque rafraîchissement.
+         */
+        private val gagnesAffiches = mutableSetOf<Int>()
+
+        /**
+         * Nombre de mots repris de la grille dans la partie en cours. Un mot
+         * gagné ne se reprend plus, donc ceci ne compte que les tâtonnements —
+         * c'est la note de fin de grille.
+         */
+        private var retraits = 0
 
         private val couleurNeutre = Color.parseColor("#00796B")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -7835,7 +7855,13 @@ class SettingsActivity : AppCompatActivity() {
             val activity = requireActivity() as SettingsActivity
             val grille = ChasseCroiseData.newGrid(activity, difficulte)
             resolus.clear()
+            gagnesAffiches.clear()
+            retraits = 0
+            enleverConfettis()
             surlignerDifficulte()
+            titreGagnes.animate().cancel()
+            titreGagnes.scaleX = 1f
+            titreGagnes.scaleY = 1f
             tvRetour.animate().cancel()
             tvRetour.alpha = 1f
             tvRetour.translationY = 0f
@@ -8074,6 +8100,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val occupe = emplacements.firstOrNull { it in partie.occupes } ?: return
             if (partie.retirer(occupe)) {
+                retraits++
                 tvRetour.visibility = View.INVISIBLE
                 rafraichir()
             } else {
@@ -8113,12 +8140,23 @@ class SettingsActivity : AppCompatActivity() {
                 partie.termine() -> {
                     balayerMots(nouveaux)
                     retourHaptique(fort = true)
+                    // Une note douce : trois paliers, tous félicitants. Elle
+                    // suit les tâtonnements ([retraits]), pas le chrono — le
+                    // jeu n'est pas contre la montre.
+                    val (etoiles, mention) = when {
+                        retraits == 0 -> 3 to "sans une seule reprise"
+                        retraits <= 2 -> 2 to "bien joué"
+                        else -> 1 to "grille bouclée"
+                    }
                     annoncerCarte(
-                        "🎉 Grille terminée : ${grille.words.size} mots placés !",
+                        "🎉 Grille terminée — ${grille.words.size} mots\n" +
+                            "⭐".repeat(etoiles) + "  $mention",
                         couleurJuste
                     )
+                    lancerConfettis()
                     annoncerA11y(
-                        "Grille terminée, ${grille.words.size} mots placés."
+                        "Grille terminée, ${grille.words.size} mots placés, " +
+                            "$etoiles étoiles sur 3."
                     )
                 }
                 nouveaux.isNotEmpty() -> celebrerGains(nouveaux)
@@ -8279,6 +8317,79 @@ class SettingsActivity : AppCompatActivity() {
             false
         }
 
+        /** Un petit rebond d'échelle, pour attirer l'œil sur un compteur qui bouge. */
+        private fun pop(v: View) {
+            v.animate().cancel()
+            v.scaleX = 1f
+            v.scaleY = 1f
+            v.animate().scaleX(1.14f).scaleY(1.14f).setDuration(110)
+                .withEndAction {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(170)
+                        .setInterpolator(OvershootInterpolator(3f)).start()
+                }.start()
+        }
+
+        /**
+         * L'entrée d'une ligne fraîchement gagnée dans « Ce que vous avez
+         * gagné » : elle glisse depuis la gauche et un fond vert s'éteint sur
+         * elle, le temps qu'on la repère.
+         */
+        private fun animerEntreeLigne(v: TextView) {
+            v.alpha = 0f
+            v.translationX = -24f
+            v.animate().alpha(1f).translationX(0f).setDuration(300)
+                .setInterpolator(OvershootInterpolator(1.4f)).start()
+
+            val surligne = Color.parseColor("#B2DFDB")
+            val fond = GradientDrawable().apply {
+                cornerRadius = 8f * resources.displayMetrics.density
+                setColor(surligne)
+            }
+            v.background = fond
+            v.setPadding(10, 6, 10, 6)
+            ValueAnimator.ofArgb(surligne, Color.TRANSPARENT).apply {
+                duration = 1100
+                startDelay = 220
+                addUpdateListener { fond.setColor(it.animatedValue as Int) }
+                addListener(object : android.animation.AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: android.animation.Animator) {
+                        v.background = null
+                        v.setPadding(0, 0, 0, 0)
+                    }
+                })
+                start()
+            }
+        }
+
+        /**
+         * Les confettis de fin de grille : posés dans le cadre de contenu de
+         * l'activité, au-dessus de tout, sans défilement ni décalage. Sautés
+         * quand les animations système sont coupées.
+         */
+        private fun lancerConfettis() {
+            if (animationsReduites()) return
+            val hote = activity?.findViewById<ViewGroup>(android.R.id.content)
+                ?: return
+            enleverConfettis()
+            val vue = ConfettiView(hote.context)
+            vue.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            vue.isClickable = false
+            confetti = vue
+            hote.addView(vue)
+            vue.demarrer { enleverConfettis() }
+        }
+
+        private fun enleverConfettis() {
+            confetti?.let {
+                it.stopper()
+                (it.parent as? ViewGroup)?.removeView(it)
+            }
+            confetti = null
+        }
+
         private fun annoncer(texte: String, couleur: Int) {
             tvRetour.animate().cancel()
             tvRetour.alpha = 1f
@@ -8413,10 +8524,20 @@ class SettingsActivity : AppCompatActivity() {
             val ctx = context ?: return
             conteneurGagnes.removeAllViews()
 
-            titreGagnes.visibility = if (resolus.isEmpty()) View.GONE else View.VISIBLE
+            val n = resolus.size
+            titreGagnes.visibility = if (n == 0) View.GONE else View.VISIBLE
+            // Le compteur vit dans le titre : c'est là que l'œil va quand la
+            // liste grandit, et il n'ajoute aucune vue à la mise en page.
+            titreGagnes.text = "📖 Ce que vous avez gagné · $n"
 
+            var duNeuf = false
             resolus.forEach { index ->
                 val mot = partie.grid.words[index]
+                val nouveau = index !in gagnesAffiches
+                if (nouveau) {
+                    gagnesAffiches.add(index)
+                    duNeuf = true
+                }
                 val ligne = SpannableString("${mot.canonical} : ${mot.clue}")
                 ligne.setSpan(
                     StyleSpan(Typeface.BOLD), 0, mot.canonical.length,
@@ -8426,7 +8547,7 @@ class SettingsActivity : AppCompatActivity() {
                     ForegroundColorSpan(couleurNeutre), 0, mot.canonical.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                conteneurGagnes.addView(TextView(ctx).apply {
+                val tv = TextView(ctx).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -8435,17 +8556,109 @@ class SettingsActivity : AppCompatActivity() {
                     textSize = 14f
                     setLineSpacing(0f, 1.15f)
                     setTextColor(Color.parseColor("#333333"))
-                })
+                }
+                conteneurGagnes.addView(tv)
+                if (nouveau && !animationsReduites()) animerEntreeLigne(tv)
             }
+            if (duNeuf && !animationsReduites()) pop(titreGagnes)
         }
 
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverConfettis()
             fondsCase.clear()
             lettresCase.clear()
             chipsParMot.clear()
             session = null
             rootView = null
+        }
+
+        /**
+         * Les confettis de fin de grille.
+         *
+         * Un `ValueAnimator` fait tomber une quarantaine de rectangles pendant
+         * ~1,8 s, chacun avec sa vitesse, sa dérive et sa rotation, en
+         * s'effaçant sur la fin. Aucune dépendance, aucune image : `onDraw`
+         * seul. La vue se retire d'elle-même à la fin (voir [demarrer]).
+         */
+        private class ConfettiView(context: Context) : View(context) {
+
+            private class Bout(
+                val x0: Float, val vx: Float,
+                val vy: Float, val delai: Float,
+                val rot0: Float, val vrot: Float,
+                val cote: Float, val couleur: Int
+            )
+
+            private val bouts = ArrayList<Bout>()
+            private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+            private var t = 0f
+            private var anim: ValueAnimator? = null
+
+            private val palette = intArrayOf(
+                Color.parseColor("#00796B"), Color.parseColor("#4CAF50"),
+                Color.parseColor("#80CBC4"), Color.parseColor("#FFB74D"),
+                Color.parseColor("#A5D6A7"), Color.parseColor("#26A69A")
+            )
+
+            fun demarrer(surFin: () -> Unit) {
+                val d = resources.displayMetrics.density
+                val w = if (width > 0) width
+                    else resources.displayMetrics.widthPixels
+                val alea = java.util.Random()
+                bouts.clear()
+                repeat(42) {
+                    bouts.add(
+                        Bout(
+                            x0 = alea.nextFloat() * w,
+                            vx = (alea.nextFloat() - 0.5f) * 240f * d,
+                            vy = (900f + alea.nextFloat() * 700f) * d,
+                            delai = alea.nextFloat() * 0.35f,
+                            rot0 = alea.nextFloat() * 360f,
+                            vrot = (alea.nextFloat() - 0.5f) * 900f,
+                            cote = (5f + alea.nextFloat() * 6f) * d,
+                            couleur = palette[alea.nextInt(palette.size)]
+                        )
+                    )
+                }
+                anim?.cancel()
+                anim = ValueAnimator.ofFloat(0f, 1.8f).apply {
+                    duration = 1800
+                    addUpdateListener { t = it.animatedValue as Float; invalidate() }
+                    addListener(object : android.animation.AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: android.animation.Animator) {
+                            surFin()
+                        }
+                    })
+                    start()
+                }
+            }
+
+            fun stopper() {
+                anim?.cancel()
+                anim = null
+            }
+
+            override fun onDraw(canvas: Canvas) {
+                val h = height.toFloat()
+                for (b in bouts) {
+                    val u = (t - b.delai).coerceAtLeast(0f)
+                    if (u <= 0f) continue
+                    val x = b.x0 + b.vx * u
+                    val y = 0.5f * b.vy * u * u          // chute accélérée
+                    if (y - b.cote > h) continue
+                    pinceau.color = b.couleur
+                    pinceau.alpha =
+                        (255 * (1f - (t / 1.8f)).coerceIn(0f, 1f)).toInt()
+                    canvas.save()
+                    canvas.rotate(b.rot0 + b.vrot * u, x, y)
+                    canvas.drawRect(
+                        x - b.cote / 2, y - b.cote / 2,
+                        x + b.cote / 2, y + b.cote / 2, pinceau
+                    )
+                    canvas.restore()
+                }
+            }
         }
     }
 
