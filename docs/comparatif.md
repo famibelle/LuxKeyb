@@ -1,6 +1,6 @@
 ---
-title: "Lëtzebuergesch Clavier, Gboard ou clavier Apple : lequel pour écrire en luxembourgeois ?"
-description: "Comparatif détaillé du Lëtzebuergesch Clavier face à Gboard (Android) et au clavier intégré d'Apple : disposition, dictionnaire, prédiction, vie privée, et ce que les autres font mieux."
+title: "Lëtzebuergesch Clavier, Clavier Samsung, Gboard ou clavier Apple : lequel pour écrire en luxembourgeois ?"
+description: "Comparatif détaillé du Lëtzebuergesch Clavier face au Clavier Samsung, à Gboard et au clavier d'Apple : disposition, dictionnaire, prédiction mesurée sur un Galaxy, mémoire, vie privée, et ce que les autres font mieux."
 lang: fr
 ---
 
@@ -23,46 +23,60 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
-# Lëtzebuergesch Clavier, Gboard ou clavier Apple ?
+# Lëtzebuergesch Clavier, Clavier Samsung, Gboard ou clavier Apple ?
 
-*Pour écrire en luxembourgeois sur un téléphone, trois voies : le clavier livré
-avec l'iPhone, Gboard — celui de Google, installé par défaut sur presque tous
-les Android — et celui-ci. Voici ce qui les sépare, sans enjoliver.*
+*Pour écrire en luxembourgeois sur un téléphone, quatre voies : le clavier livré
+avec l'iPhone, celui livré avec les Galaxy, Gboard — celui de Google, installé
+par défaut sur presque tous les Android — et celui-ci. Voici ce qui les sépare,
+sans enjoliver.*
 
 Autant l'annoncer tout de suite : **Gboard reste le clavier le plus complet du
-marché**. Ce qu'il ne fait pas, c'est traiter le lëtzebuergesch comme une langue
-à part entière plutôt que comme la 900ᵉ ligne d'une liste.
+marché**, et **le Clavier Samsung prédit le luxembourgeois aussi bien que nous**,
+mesures à l'appui. Ce qu'aucun des deux ne fait, c'est traiter le lëtzebuergesch
+comme une langue à part entière plutôt que comme une ligne parmi des centaines.
 
 <div class="table-scroll" markdown="1">
 
-| | **🇱🇺 Lëtzebuergesch Clavier** | Gboard (Google) | Clavier Apple (iOS) |
-|---|---|---|---|
-| Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 |
-| Disposition | **QWERTZ luxembourgeois**, celle des claviers physiques du pays | QWERTZ de la locale choisie | Allemand ou français ; disposition lb avec iOS 27 |
-| Touches diacritiques | **`é` `ä` `ë` et l'apostrophe ont leur propre touche** | Appui long sur la voyelle | Appui long sur la voyelle |
-| Dictionnaire | **123 265 formes**, corpus public et dictionnaire officiel, l'un et l'autre vérifiables | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
-| Prédiction du mot suivant | **Oui**, 26 172 contextes (bigrammes et trigrammes) | Oui, réseaux de neurones et apprentissage fédéré | Oui, modèle embarqué |
-| Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui |
-| Écriture sans diacritiques | **Oui**, `Letzebuergesch` retrouve `Lëtzebuergesch` | — | — |
-| Majuscules des noms (*Groussschreiwung*) | **Oui**, rétablies d'après le contexte, désactivables | — | — |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues), à activer |
-| Correcteur système en luxembourgeois | **Oui** (et en français) | Intégré au clavier | Intégré, mais pas en lb avant iOS 27 |
-| Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Frappe embarquée |
-| Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
-| Code ouvert | **Oui**, MIT | Non | Non |
-| Jeux et progression | **Oui**, 5 jeux et 8 niveaux | Non | Non |
-| Saisie glissée | Non | Oui | Oui |
-| Dictée vocale | Non (celle du système reste accessible) | Oui | Oui |
-| Traduction, presse-papiers, écriture manuscrite | Non | Oui | Partiellement |
-| Thèmes et personnalisation | Palette luxembourgeoise | Très étendus | Très limités |
-| Plateformes | Android 5.0 et plus | Android et iOS | iOS et iPadOS |
-| Prix | Gratuit, sans publicité | Gratuit | Inclus |
+| | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS) |
+|---|---|---|---|---|
+| Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, une langue parmi 377 | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 |
+| Disposition | **QWERTZ luxembourgeois**, celle des claviers physiques du pays | QWERTZ générique, partagé avec des dizaines de langues | QWERTZ de la locale choisie | Allemand ou français ; disposition lb avec iOS 27 |
+| Touches diacritiques | **`é` `ä` `ë` et l'apostrophe ont leur propre touche** | Appui long puis glissement, 1,2 s par accent | Appui long sur la voyelle | Appui long sur la voyelle |
+| Dictionnaire | **123 297 formes**, corpus public et dictionnaire officiel, l'un et l'autre vérifiables | Non communiqué | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes (bigrammes et trigrammes) | Oui | Oui, réseaux de neurones et apprentissage fédéré | Oui, modèle embarqué |
+| **Mot juste dans les 3 suggestions** *(mesuré)* | **20,2 %** | 17,6 % | — | — |
+| **Mot juste en 1ʳᵉ position** *(mesuré)* | **10,0 %** | 7,9 % | — | — |
+| **Barre laissée vide faute de contexte** *(mesuré)* | 11,1 % | 0,0 %, remplie par *de · an · der* | — | — |
+| **Mémoire vive, clavier ouvert** *(mesuré)* | **105 à 137 Mo** | 158 à 171 Mo | — | — |
+| **Taille installée** *(mesuré)* | **8,4 Mo** | 110,1 Mo | — | — |
+| Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui | Oui |
+| Écriture sans diacritiques | **Oui**, `Letzebuergesch` retrouve `Lëtzebuergesch` | — | — | — |
+| Majuscules des noms (*Groussschreiwung*) | **Oui**, rétablies d'après le contexte, désactivables | — | — | — |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Plusieurs langues, à activer | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues), à activer |
+| Correcteur système en luxembourgeois | **Oui** (et en français) | Non déclaré pour le lb sur cette version | Intégré au clavier | Intégré, mais pas en lb avant iOS 27 |
+| Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Non | Frappe embarquée |
+| Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Apprentissage personnalisé annoncé par l'éditeur | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
+| Code ouvert | **Oui**, MIT | Non | Non | Non |
+| Jeux et progression | **Oui**, 7 jeux et 8 niveaux | Non | Non | Non |
+| Saisie glissée | Non | Oui | Oui | Oui |
+| Dictée vocale | Non (celle du système reste accessible) | Oui | Oui | Oui |
+| Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
+| Thèmes et personnalisation | Palette luxembourgeoise | Étendus | Très étendus | Très limités |
+| Plateformes | Android 5.0 et plus | Galaxy uniquement | Android et iOS | iOS et iPadOS |
+| Prix | Gratuit, sans publicité | Préinstallé | Gratuit | Inclus |
 
 </div>
 
 <p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Colonnes Gboard et
-Apple relevées en août 2026. Chiffres du dictionnaire : les fichiers réellement
-livrés dans la version 10.19.0.</p>
+Apple relevées en août 2026 ; colonne Samsung relevée le 8 septembre 2026 sur un
+Galaxy A21s (Android 12, Clavier Samsung 5.4.85.4), le nombre de langues étant lu
+dans le catalogue embarqué. Les cinq lignes <em>(mesuré)</em> viennent du banc de
+frappe décrit <a href="#les-deux-claviers-mesurés-côte-à-côte-sur-un-galaxy">plus
+bas</a> : 341 frontières de mots du corpus ZLS, sur le même téléphone, le même
+jour. <strong>L'écart de prédiction entre les deux premières colonnes n'est pas
+statistiquement significatif</strong> ; celui sur la mémoire et la taille l'est
+sans discussion. Chiffres du dictionnaire : les fichiers réellement livrés dans
+la version 20.3.0.</p>
 
 ## Trois choses que les autres ne font pas
 
@@ -75,12 +89,12 @@ plus que le trait d'union et six fois plus que l'apostrophe courbe `’`.
 
 **Un dictionnaire que vous pouvez ouvrir.** Le corpus est public, le script qui
 en tire le dictionnaire est dans le dépôt, le fichier embarqué dans
-l'application est lisible. Chez les deux autres, la qualité du luxembourgeois
+l'application est lisible. Chez les trois autres, la qualité du luxembourgeois
 est une boîte noire : impossible de savoir quels mots sont connus, ni d'où ils
 viennent. Ouvrable veut aussi dire mesurable : sur *ParaLux*, un jeu de phrases
 qu'aucun corpus d'entraînement ne contient, le mot réellement tapé figure dans
 les trois suggestions affichées **18,8 %** du temps, et **94,1 %** des mots de
-ces phrases sont connus du dictionnaire. Ni Gboard ni Apple ne publient
+ces phrases sont connus du dictionnaire. Ni Samsung, ni Gboard, ni Apple ne publient
 d'équivalent pour le lëtzebuergesch.
 
 **Le bilinguisme comme situation normale**, et non comme réglage à activer.
@@ -95,7 +109,7 @@ de quoi dépanner sans jamais prendre le dessus. Le correcteur orthographique,
 lui, est déclaré dans les deux langues.
 
 Sans compter les niveaux et les jeux de vocabulaire, qui n'ont aucun équivalent
-chez Gboard ni chez Apple — ce clavier sert aussi à réapprendre la langue en
+chez Samsung, chez Gboard ni chez Apple — ce clavier sert aussi à réapprendre la langue en
 l'écrivant.
 
 ## Ce que les autres font mieux
