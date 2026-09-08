@@ -1,0 +1,1164 @@
+[
+ {
+  "phrase": 0,
+  "position": 1,
+  "contexte": "eis",
+  "attendu": "Ekipp",
+  "image": "00_01.png"
+ },
+ {
+  "phrase": 0,
+  "position": 2,
+  "contexte": "eis Ekipp",
+  "attendu": "ass",
+  "image": "00_02.png"
+ },
+ {
+  "phrase": 0,
+  "position": 3,
+  "contexte": "eis Ekipp ass",
+  "attendu": "schonn",
+  "image": "00_03.png"
+ },
+ {
+  "phrase": 0,
+  "position": 4,
+  "contexte": "eis Ekipp ass schonn",
+  "attendu": "an",
+  "image": "00_04.png"
+ },
+ {
+  "phrase": 0,
+  "position": 5,
+  "contexte": "eis Ekipp ass schonn an",
+  "attendu": "der",
+  "image": "00_05.png"
+ },
+ {
+  "phrase": 0,
+  "position": 6,
+  "contexte": "eis Ekipp ass schonn an der",
+  "attendu": "zweeter",
+  "image": "00_06.png"
+ },
+ {
+  "phrase": 0,
+  "position": 7,
+  "contexte": "eis Ekipp ass schonn an der zweeter",
+  "attendu": "Ronn",
+  "image": "00_07.png"
+ },
+ {
+  "phrase": 0,
+  "position": 8,
+  "contexte": "eis Ekipp ass schonn an der zweeter Ronn",
+  "attendu": "ausgescheet",
+  "image": "00_08.png"
+ },
+ {
+  "phrase": 1,
+  "position": 1,
+  "contexte": "wat",
+  "attendu": "bretzt",
+  "image": "01_01.png"
+ },
+ {
+  "phrase": 1,
+  "position": 2,
+  "contexte": "wat bretzt",
+  "attendu": "deen",
+  "image": "01_02.png"
+ },
+ {
+  "phrase": 1,
+  "position": 3,
+  "contexte": "wat bretzt deen",
+  "attendu": "sech",
+  "image": "01_03.png"
+ },
+ {
+  "phrase": 1,
+  "position": 4,
+  "contexte": "wat bretzt deen sech",
+  "attendu": "mat",
+  "image": "01_04.png"
+ },
+ {
+  "phrase": 1,
+  "position": 5,
+  "contexte": "wat bretzt deen sech mat",
+  "attendu": "senger",
+  "image": "01_05.png"
+ },
+ {
+  "phrase": 1,
+  "position": 6,
+  "contexte": "wat bretzt deen sech mat senger",
+  "attendu": "neier",
+  "image": "01_06.png"
+ },
+ {
+  "phrase": 1,
+  "position": 7,
+  "contexte": "wat bretzt deen sech mat senger neier",
+  "attendu": "Gromper",
+  "image": "01_07.png"
+ },
+ {
+  "phrase": 2,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "ass",
+  "image": "02_01.png"
+ },
+ {
+  "phrase": 2,
+  "position": 2,
+  "contexte": "Dat ass",
+  "attendu": "op",
+  "image": "02_02.png"
+ },
+ {
+  "phrase": 2,
+  "position": 3,
+  "contexte": "Dat ass op",
+  "attendu": "en",
+  "image": "02_03.png"
+ },
+ {
+  "phrase": 2,
+  "position": 4,
+  "contexte": "Dat ass op en",
+  "attendu": "negativen",
+  "image": "02_04.png"
+ },
+ {
+  "phrase": 2,
+  "position": 5,
+  "contexte": "Dat ass op en negativen",
+  "attendu": "Avis",
+  "image": "02_05.png"
+ },
+ {
+  "phrase": 2,
+  "position": 6,
+  "contexte": "Dat ass op en negativen Avis",
+  "attendu": "getraff",
+  "image": "02_06.png"
+ },
+ {
+  "phrase": 2,
+  "position": 7,
+  "contexte": "Dat ass op en negativen Avis getraff",
+  "attendu": "vum",
+  "image": "02_07.png"
+ },
+ {
+  "phrase": 2,
+  "position": 8,
+  "contexte": "Dat ass op en negativen Avis getraff vum",
+  "attendu": "Staatsrot",
+  "image": "02_08.png"
+ },
+ {
+  "phrase": 3,
+  "position": 1,
+  "contexte": "huel",
+  "attendu": "der",
+  "image": "03_01.png"
+ },
+ {
+  "phrase": 3,
+  "position": 2,
+  "contexte": "huel der",
+  "attendu": "e",
+  "image": "03_02.png"
+ },
+ {
+  "phrase": 3,
+  "position": 3,
+  "contexte": "huel der e",
+  "attendu": "Stull",
+  "image": "03_03.png"
+ },
+ {
+  "phrase": 3,
+  "position": 4,
+  "contexte": "huel der e Stull",
+  "attendu": "a",
+  "image": "03_04.png"
+ },
+ {
+  "phrase": 3,
+  "position": 5,
+  "contexte": "huel der e Stull a",
+  "attendu": "setz",
+  "image": "03_05.png"
+ },
+ {
+  "phrase": 3,
+  "position": 6,
+  "contexte": "huel der e Stull a setz",
+  "attendu": "dech",
+  "image": "03_06.png"
+ },
+ {
+  "phrase": 3,
+  "position": 7,
+  "contexte": "huel der e Stull a setz dech",
+  "attendu": "bei",
+  "image": "03_07.png"
+ },
+ {
+  "phrase": 3,
+  "position": 8,
+  "contexte": "huel der e Stull a setz dech bei",
+  "attendu": "eis",
+  "image": "03_08.png"
+ },
+ {
+  "phrase": 4,
+  "position": 1,
+  "contexte": "ouni",
+  "attendu": "gudden",
+  "image": "04_01.png"
+ },
+ {
+  "phrase": 4,
+  "position": 2,
+  "contexte": "ouni gudden",
+  "attendu": "Affekot",
+  "image": "04_02.png"
+ },
+ {
+  "phrase": 4,
+  "position": 3,
+  "contexte": "ouni gudden Affekot",
+  "attendu": "kanns",
+  "image": "04_03.png"
+ },
+ {
+  "phrase": 4,
+  "position": 4,
+  "contexte": "ouni gudden Affekot kanns",
+  "attendu": "de",
+  "image": "04_04.png"
+ },
+ {
+  "phrase": 4,
+  "position": 5,
+  "contexte": "ouni gudden Affekot kanns de",
+  "attendu": "dee",
+  "image": "04_05.png"
+ },
+ {
+  "phrase": 4,
+  "position": 6,
+  "contexte": "ouni gudden Affekot kanns de dee",
+  "attendu": "Prozess",
+  "image": "04_06.png"
+ },
+ {
+  "phrase": 4,
+  "position": 7,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess",
+  "attendu": "do",
+  "image": "04_07.png"
+ },
+ {
+  "phrase": 4,
+  "position": 8,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess do",
+  "attendu": "ni",
+  "image": "04_08.png"
+ },
+ {
+  "phrase": 4,
+  "position": 9,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess do ni",
+  "attendu": "gewannen",
+  "image": "04_09.png"
+ },
+ {
+  "phrase": 5,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "der",
+  "image": "05_01.png"
+ },
+ {
+  "phrase": 5,
+  "position": 2,
+  "contexte": "no der",
+  "attendu": "Vakanz",
+  "image": "05_02.png"
+ },
+ {
+  "phrase": 5,
+  "position": 3,
+  "contexte": "no der Vakanz",
+  "attendu": "hate",
+  "image": "05_03.png"
+ },
+ {
+  "phrase": 5,
+  "position": 4,
+  "contexte": "no der Vakanz hate",
+  "attendu": "mer",
+  "image": "05_04.png"
+ },
+ {
+  "phrase": 5,
+  "position": 5,
+  "contexte": "no der Vakanz hate mer",
+  "attendu": "all",
+  "image": "05_05.png"
+ },
+ {
+  "phrase": 5,
+  "position": 6,
+  "contexte": "no der Vakanz hate mer all",
+  "attendu": "eng",
+  "image": "05_06.png"
+ },
+ {
+  "phrase": 5,
+  "position": 7,
+  "contexte": "no der Vakanz hate mer all eng",
+  "attendu": "gesond",
+  "image": "05_07.png"
+ },
+ {
+  "phrase": 5,
+  "position": 8,
+  "contexte": "no der Vakanz hate mer all eng gesond",
+  "attendu": "Faarf",
+  "image": "05_08.png"
+ },
+ {
+  "phrase": 6,
+  "position": 1,
+  "contexte": "am",
+  "attendu": "Gruef",
+  "image": "06_01.png"
+ },
+ {
+  "phrase": 6,
+  "position": 2,
+  "contexte": "am Gruef",
+  "attendu": "louch",
+  "image": "06_02.png"
+ },
+ {
+  "phrase": 6,
+  "position": 3,
+  "contexte": "am Gruef louch",
+  "attendu": "de",
+  "image": "06_03.png"
+ },
+ {
+  "phrase": 6,
+  "position": 4,
+  "contexte": "am Gruef louch de",
+  "attendu": "Kadaver",
+  "image": "06_04.png"
+ },
+ {
+  "phrase": 6,
+  "position": 5,
+  "contexte": "am Gruef louch de Kadaver",
+  "attendu": "vun",
+  "image": "06_05.png"
+ },
+ {
+  "phrase": 6,
+  "position": 6,
+  "contexte": "am Gruef louch de Kadaver vun",
+  "attendu": "engem",
+  "image": "06_06.png"
+ },
+ {
+  "phrase": 6,
+  "position": 7,
+  "contexte": "am Gruef louch de Kadaver vun engem",
+  "attendu": "Hond",
+  "image": "06_07.png"
+ },
+ {
+  "phrase": 7,
+  "position": 1,
+  "contexte": "fuer",
+  "attendu": "der",
+  "image": "07_01.png"
+ },
+ {
+  "phrase": 7,
+  "position": 2,
+  "contexte": "fuer der",
+  "attendu": "net",
+  "image": "07_02.png"
+ },
+ {
+  "phrase": 7,
+  "position": 3,
+  "contexte": "fuer der net",
+  "attendu": "mat",
+  "image": "07_03.png"
+ },
+ {
+  "phrase": 7,
+  "position": 4,
+  "contexte": "fuer der net mat",
+  "attendu": "deene",
+  "image": "07_04.png"
+ },
+ {
+  "phrase": 7,
+  "position": 5,
+  "contexte": "fuer der net mat deene",
+  "attendu": "knaschtege",
+  "image": "07_05.png"
+ },
+ {
+  "phrase": 7,
+  "position": 6,
+  "contexte": "fuer der net mat deene knaschtege",
+  "attendu": "Fangeren",
+  "image": "07_06.png"
+ },
+ {
+  "phrase": 7,
+  "position": 7,
+  "contexte": "fuer der net mat deene knaschtege Fangeren",
+  "attendu": "an",
+  "image": "07_07.png"
+ },
+ {
+  "phrase": 7,
+  "position": 8,
+  "contexte": "fuer der net mat deene knaschtege Fangeren an",
+  "attendu": "de",
+  "image": "07_08.png"
+ },
+ {
+  "phrase": 7,
+  "position": 9,
+  "contexte": "fuer der net mat deene knaschtege Fangeren an de",
+  "attendu": "Mond",
+  "image": "07_09.png"
+ },
+ {
+  "phrase": 8,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "muss",
+  "image": "08_01.png"
+ },
+ {
+  "phrase": 8,
+  "position": 2,
+  "contexte": "ech muss",
+  "attendu": "heiansdo",
+  "image": "08_02.png"
+ },
+ {
+  "phrase": 8,
+  "position": 3,
+  "contexte": "ech muss heiansdo",
+  "attendu": "sonndes",
+  "image": "08_03.png"
+ },
+ {
+  "phrase": 8,
+  "position": 4,
+  "contexte": "ech muss heiansdo sonndes",
+  "attendu": "oder",
+  "image": "08_04.png"
+ },
+ {
+  "phrase": 8,
+  "position": 5,
+  "contexte": "ech muss heiansdo sonndes oder",
+  "attendu": "op",
+  "image": "08_05.png"
+ },
+ {
+  "phrase": 8,
+  "position": 6,
+  "contexte": "ech muss heiansdo sonndes oder op",
+  "attendu": "engem",
+  "image": "08_06.png"
+ },
+ {
+  "phrase": 8,
+  "position": 7,
+  "contexte": "ech muss heiansdo sonndes oder op engem",
+  "attendu": "Feierdag",
+  "image": "08_07.png"
+ },
+ {
+  "phrase": 8,
+  "position": 8,
+  "contexte": "ech muss heiansdo sonndes oder op engem Feierdag",
+  "attendu": "schaffen",
+  "image": "08_08.png"
+ },
+ {
+  "phrase": 9,
+  "position": 1,
+  "contexte": "mir",
+  "attendu": "hu",
+  "image": "09_01.png"
+ },
+ {
+  "phrase": 9,
+  "position": 2,
+  "contexte": "mir hu",
+  "attendu": "muer",
+  "image": "09_02.png"
+ },
+ {
+  "phrase": 9,
+  "position": 3,
+  "contexte": "mir hu muer",
+  "attendu": "eng",
+  "image": "09_03.png"
+ },
+ {
+  "phrase": 9,
+  "position": 4,
+  "contexte": "mir hu muer eng",
+  "attendu": "grouss",
+  "image": "09_04.png"
+ },
+ {
+  "phrase": 9,
+  "position": 5,
+  "contexte": "mir hu muer eng grouss",
+  "attendu": "Etapp",
+  "image": "09_05.png"
+ },
+ {
+  "phrase": 9,
+  "position": 6,
+  "contexte": "mir hu muer eng grouss Etapp",
+  "attendu": "virun",
+  "image": "09_06.png"
+ },
+ {
+  "phrase": 9,
+  "position": 7,
+  "contexte": "mir hu muer eng grouss Etapp virun",
+  "attendu": "eis",
+  "image": "09_07.png"
+ },
+ {
+  "phrase": 10,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "hu",
+  "image": "10_01.png"
+ },
+ {
+  "phrase": 10,
+  "position": 2,
+  "contexte": "ech hu",
+  "attendu": "mech",
+  "image": "10_02.png"
+ },
+ {
+  "phrase": 10,
+  "position": 3,
+  "contexte": "ech hu mech",
+  "attendu": "zu",
+  "image": "10_03.png"
+ },
+ {
+  "phrase": 10,
+  "position": 4,
+  "contexte": "ech hu mech zu",
+  "attendu": "Doud",
+  "image": "10_04.png"
+ },
+ {
+  "phrase": 10,
+  "position": 5,
+  "contexte": "ech hu mech zu Doud",
+  "attendu": "bei",
+  "image": "10_05.png"
+ },
+ {
+  "phrase": 10,
+  "position": 6,
+  "contexte": "ech hu mech zu Doud bei",
+  "attendu": "deem",
+  "image": "10_06.png"
+ },
+ {
+  "phrase": 10,
+  "position": 7,
+  "contexte": "ech hu mech zu Doud bei deem",
+  "attendu": "Film",
+  "image": "10_07.png"
+ },
+ {
+  "phrase": 10,
+  "position": 8,
+  "contexte": "ech hu mech zu Doud bei deem Film",
+  "attendu": "gelangweilt",
+  "image": "10_08.png"
+ },
+ {
+  "phrase": 11,
+  "position": 1,
+  "contexte": "Fir",
+  "attendu": "dat",
+  "image": "11_01.png"
+ },
+ {
+  "phrase": 11,
+  "position": 2,
+  "contexte": "Fir dat",
+  "attendu": "alles",
+  "image": "11_02.png"
+ },
+ {
+  "phrase": 11,
+  "position": 3,
+  "contexte": "Fir dat alles",
+  "attendu": "hu",
+  "image": "11_03.png"
+ },
+ {
+  "phrase": 11,
+  "position": 4,
+  "contexte": "Fir dat alles hu",
+  "attendu": "mer",
+  "image": "11_04.png"
+ },
+ {
+  "phrase": 11,
+  "position": 5,
+  "contexte": "Fir dat alles hu mer",
+  "attendu": "keen",
+  "image": "11_05.png"
+ },
+ {
+  "phrase": 11,
+  "position": 6,
+  "contexte": "Fir dat alles hu mer keen",
+  "attendu": "Accord",
+  "image": "11_06.png"
+ },
+ {
+  "phrase": 11,
+  "position": 7,
+  "contexte": "Fir dat alles hu mer keen Accord",
+  "attendu": "fonnt",
+  "image": "11_07.png"
+ },
+ {
+  "phrase": 11,
+  "position": 8,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt",
+  "attendu": "mat",
+  "image": "11_08.png"
+ },
+ {
+  "phrase": 11,
+  "position": 9,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt mat",
+  "attendu": "de",
+  "image": "11_09.png"
+ },
+ {
+  "phrase": 11,
+  "position": 10,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt mat de",
+  "attendu": "Gewerkschaften",
+  "image": "11_10.png"
+ },
+ {
+  "phrase": 12,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "mengem",
+  "image": "12_01.png"
+ },
+ {
+  "phrase": 12,
+  "position": 2,
+  "contexte": "no mengem",
+  "attendu": "Regimm",
+  "image": "12_02.png"
+ },
+ {
+  "phrase": 12,
+  "position": 3,
+  "contexte": "no mengem Regimm",
+  "attendu": "hu",
+  "image": "12_03.png"
+ },
+ {
+  "phrase": 12,
+  "position": 4,
+  "contexte": "no mengem Regimm hu",
+  "attendu": "meng",
+  "image": "12_04.png"
+ },
+ {
+  "phrase": 12,
+  "position": 5,
+  "contexte": "no mengem Regimm hu meng",
+  "attendu": "Kleeder",
+  "image": "12_05.png"
+ },
+ {
+  "phrase": 12,
+  "position": 6,
+  "contexte": "no mengem Regimm hu meng Kleeder",
+  "attendu": "missen",
+  "image": "12_06.png"
+ },
+ {
+  "phrase": 12,
+  "position": 7,
+  "contexte": "no mengem Regimm hu meng Kleeder missen",
+  "attendu": "ageholl",
+  "image": "12_07.png"
+ },
+ {
+  "phrase": 12,
+  "position": 8,
+  "contexte": "no mengem Regimm hu meng Kleeder missen ageholl",
+  "attendu": "ginn",
+  "image": "12_08.png"
+ },
+ {
+  "phrase": 13,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "hu",
+  "image": "13_01.png"
+ },
+ {
+  "phrase": 13,
+  "position": 2,
+  "contexte": "ech hu",
+  "attendu": "meng",
+  "image": "13_02.png"
+ },
+ {
+  "phrase": 13,
+  "position": 3,
+  "contexte": "ech hu meng",
+  "attendu": "rout",
+  "image": "13_03.png"
+ },
+ {
+  "phrase": 13,
+  "position": 4,
+  "contexte": "ech hu meng rout",
+  "attendu": "Hoer",
+  "image": "13_04.png"
+ },
+ {
+  "phrase": 13,
+  "position": 5,
+  "contexte": "ech hu meng rout Hoer",
+  "attendu": "vu",
+  "image": "13_05.png"
+ },
+ {
+  "phrase": 13,
+  "position": 6,
+  "contexte": "ech hu meng rout Hoer vu",
+  "attendu": "mengem",
+  "image": "13_06.png"
+ },
+ {
+  "phrase": 13,
+  "position": 7,
+  "contexte": "ech hu meng rout Hoer vu mengem",
+  "attendu": "Papp",
+  "image": "13_07.png"
+ },
+ {
+  "phrase": 13,
+  "position": 8,
+  "contexte": "ech hu meng rout Hoer vu mengem Papp",
+  "attendu": "geierft",
+  "image": "13_08.png"
+ },
+ {
+  "phrase": 14,
+  "position": 1,
+  "contexte": "mat",
+  "attendu": "der",
+  "image": "14_01.png"
+ },
+ {
+  "phrase": 14,
+  "position": 2,
+  "contexte": "mat der",
+  "attendu": "neier",
+  "image": "14_02.png"
+ },
+ {
+  "phrase": 14,
+  "position": 3,
+  "contexte": "mat der neier",
+  "attendu": "Ausriichtung",
+  "image": "14_03.png"
+ },
+ {
+  "phrase": 14,
+  "position": 4,
+  "contexte": "mat der neier Ausriichtung",
+  "attendu": "vun",
+  "image": "14_04.png"
+ },
+ {
+  "phrase": 14,
+  "position": 5,
+  "contexte": "mat der neier Ausriichtung vun",
+  "attendu": "der",
+  "image": "14_05.png"
+ },
+ {
+  "phrase": 14,
+  "position": 6,
+  "contexte": "mat der neier Ausriichtung vun der",
+  "attendu": "Antenn",
+  "image": "14_06.png"
+ },
+ {
+  "phrase": 14,
+  "position": 7,
+  "contexte": "mat der neier Ausriichtung vun der Antenn",
+  "attendu": "ass",
+  "image": "14_07.png"
+ },
+ {
+  "phrase": 14,
+  "position": 8,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass",
+  "attendu": "den",
+  "image": "14_08.png"
+ },
+ {
+  "phrase": 14,
+  "position": 9,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass den",
+  "attendu": "Empfang",
+  "image": "14_09.png"
+ },
+ {
+  "phrase": 14,
+  "position": 10,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass den Empfang",
+  "attendu": "besser",
+  "image": "14_10.png"
+ },
+ {
+  "phrase": 15,
+  "position": 1,
+  "contexte": "menger",
+  "attendu": "Mamm",
+  "image": "15_01.png"
+ },
+ {
+  "phrase": 15,
+  "position": 2,
+  "contexte": "menger Mamm",
+  "attendu": "hir",
+  "image": "15_02.png"
+ },
+ {
+  "phrase": 15,
+  "position": 3,
+  "contexte": "menger Mamm hir",
+  "attendu": "Posche",
+  "image": "15_03.png"
+ },
+ {
+  "phrase": 15,
+  "position": 4,
+  "contexte": "menger Mamm hir Posche",
+  "attendu": "sinn",
+  "image": "15_04.png"
+ },
+ {
+  "phrase": 15,
+  "position": 5,
+  "contexte": "menger Mamm hir Posche sinn",
+  "attendu": "all",
+  "image": "15_05.png"
+ },
+ {
+  "phrase": 15,
+  "position": 6,
+  "contexte": "menger Mamm hir Posche sinn all",
+  "attendu": "aus",
+  "image": "15_06.png"
+ },
+ {
+  "phrase": 15,
+  "position": 7,
+  "contexte": "menger Mamm hir Posche sinn all aus",
+  "attendu": "Lieder",
+  "image": "15_07.png"
+ },
+ {
+  "phrase": 16,
+  "position": 1,
+  "contexte": "elo",
+  "attendu": "hunn",
+  "image": "16_01.png"
+ },
+ {
+  "phrase": 16,
+  "position": 2,
+  "contexte": "elo hunn",
+  "attendu": "ech",
+  "image": "16_02.png"
+ },
+ {
+  "phrase": 16,
+  "position": 3,
+  "contexte": "elo hunn ech",
+  "attendu": "de",
+  "image": "16_03.png"
+ },
+ {
+  "phrase": 16,
+  "position": 4,
+  "contexte": "elo hunn ech de",
+  "attendu": "Kaffi",
+  "image": "16_04.png"
+ },
+ {
+  "phrase": 16,
+  "position": 5,
+  "contexte": "elo hunn ech de Kaffi",
+  "attendu": "an",
+  "image": "16_05.png"
+ },
+ {
+  "phrase": 16,
+  "position": 6,
+  "contexte": "elo hunn ech de Kaffi an",
+  "attendu": "dat",
+  "image": "16_06.png"
+ },
+ {
+  "phrase": 16,
+  "position": 7,
+  "contexte": "elo hunn ech de Kaffi an dat",
+  "attendu": "falscht",
+  "image": "16_07.png"
+ },
+ {
+  "phrase": 16,
+  "position": 8,
+  "contexte": "elo hunn ech de Kaffi an dat falscht",
+  "attendu": "Lach",
+  "image": "16_08.png"
+ },
+ {
+  "phrase": 16,
+  "position": 9,
+  "contexte": "elo hunn ech de Kaffi an dat falscht Lach",
+  "attendu": "kritt",
+  "image": "16_09.png"
+ },
+ {
+  "phrase": 17,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "muss",
+  "image": "17_01.png"
+ },
+ {
+  "phrase": 17,
+  "position": 2,
+  "contexte": "Dat muss",
+  "attendu": "ee",
+  "image": "17_02.png"
+ },
+ {
+  "phrase": 17,
+  "position": 3,
+  "contexte": "Dat muss ee",
+  "attendu": "sech",
+  "image": "17_03.png"
+ },
+ {
+  "phrase": 17,
+  "position": 4,
+  "contexte": "Dat muss ee sech",
+  "attendu": "emol",
+  "image": "17_04.png"
+ },
+ {
+  "phrase": 17,
+  "position": 5,
+  "contexte": "Dat muss ee sech emol",
+  "attendu": "op",
+  "image": "17_05.png"
+ },
+ {
+  "phrase": 17,
+  "position": 6,
+  "contexte": "Dat muss ee sech emol op",
+  "attendu": "der",
+  "image": "17_06.png"
+ },
+ {
+  "phrase": 17,
+  "position": 7,
+  "contexte": "Dat muss ee sech emol op der",
+  "attendu": "Zong",
+  "image": "17_07.png"
+ },
+ {
+  "phrase": 17,
+  "position": 8,
+  "contexte": "Dat muss ee sech emol op der Zong",
+  "attendu": "zergoe",
+  "image": "17_08.png"
+ },
+ {
+  "phrase": 17,
+  "position": 9,
+  "contexte": "Dat muss ee sech emol op der Zong zergoe",
+  "attendu": "loossen",
+  "image": "17_09.png"
+ },
+ {
+  "phrase": 18,
+  "position": 1,
+  "contexte": "eis",
+  "attendu": "Heck",
+  "image": "18_01.png"
+ },
+ {
+  "phrase": 18,
+  "position": 2,
+  "contexte": "eis Heck",
+  "attendu": "besteet",
+  "image": "18_02.png"
+ },
+ {
+  "phrase": 18,
+  "position": 3,
+  "contexte": "eis Heck besteet",
+  "attendu": "aus",
+  "image": "18_03.png"
+ },
+ {
+  "phrase": 18,
+  "position": 4,
+  "contexte": "eis Heck besteet aus",
+  "attendu": "Hielenner",
+  "image": "18_04.png"
+ },
+ {
+  "phrase": 18,
+  "position": 5,
+  "contexte": "eis Heck besteet aus Hielenner",
+  "attendu": "an",
+  "image": "18_05.png"
+ },
+ {
+  "phrase": 18,
+  "position": 6,
+  "contexte": "eis Heck besteet aus Hielenner an",
+  "attendu": "aus",
+  "image": "18_06.png"
+ },
+ {
+  "phrase": 18,
+  "position": 7,
+  "contexte": "eis Heck besteet aus Hielenner an aus",
+  "attendu": "Hieselter",
+  "image": "18_07.png"
+ },
+ {
+  "phrase": 19,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "souz",
+  "image": "19_01.png"
+ },
+ {
+  "phrase": 19,
+  "position": 2,
+  "contexte": "ech souz",
+  "attendu": "de",
+  "image": "19_02.png"
+ },
+ {
+  "phrase": 19,
+  "position": 3,
+  "contexte": "ech souz de",
+  "attendu": "ganze",
+  "image": "19_03.png"
+ },
+ {
+  "phrase": 19,
+  "position": 4,
+  "contexte": "ech souz de ganze",
+  "attendu": "Weekend",
+  "image": "19_04.png"
+ },
+ {
+  "phrase": 19,
+  "position": 5,
+  "contexte": "ech souz de ganze Weekend",
+  "attendu": "am",
+  "image": "19_05.png"
+ },
+ {
+  "phrase": 19,
+  "position": 6,
+  "contexte": "ech souz de ganze Weekend am",
+  "attendu": "Gaart",
+  "image": "19_06.png"
+ },
+ {
+  "phrase": 19,
+  "position": 7,
+  "contexte": "ech souz de ganze Weekend am Gaart",
+  "attendu": "op",
+  "image": "19_07.png"
+ },
+ {
+  "phrase": 19,
+  "position": 8,
+  "contexte": "ech souz de ganze Weekend am Gaart op",
+  "attendu": "der",
+  "image": "19_08.png"
+ },
+ {
+  "phrase": 19,
+  "position": 9,
+  "contexte": "ech souz de ganze Weekend am Gaart op der",
+  "attendu": "Klunsch",
+  "image": "19_09.png"
+ },
+ {
+  "phrase": 19,
+  "position": 10,
+  "contexte": "ech souz de ganze Weekend am Gaart op der Klunsch",
+  "attendu": "ze",
+  "image": "19_10.png"
+ },
+ {
+  "phrase": 19,
+  "position": 11,
+  "contexte": "ech souz de ganze Weekend am Gaart op der Klunsch ze",
+  "attendu": "liesen",
+  "image": "19_11.png"
+ }
+]

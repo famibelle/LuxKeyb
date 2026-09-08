@@ -228,6 +228,7 @@ prédiction du mot suivant.
 | Disposition propre à la langue | **Oui**, QWERTZ avec `é` `ä` `ë` en touches pleines | — | Non, QWERTZ générique | — | — | — |
 | Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
+| Prédiction mesurée sur un Galaxy A21s | **21,1 %** de mots justes dans les 3 | — | 16,9 % | — | — | — |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — | — |
@@ -247,8 +248,11 @@ langues du Clavier Samsung livré sur le Galaxy S24 Ultra (One UI 7, build
 <code>S928BXXS4BYEC</code>) ; le dictionnaire luxembourgeois des claviers libres
 provient du
 <a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.
-Ce que « prendre en charge le luxembourgeois » recouvre chez Samsung est détaillé
-dans <a href="comparatif.html#et-le-clavier-samsung">le comparatif</a>.</p>
+La ligne « prédiction mesurée » vient d'un banc de frappe du 8 septembre 2026 sur
+un Galaxy A21s : 166 frontières de mots de phrases du corpus ZLS, le mot suivant
+doit figurer dans les trois suggestions affichées sans qu'une seule de ses
+lettres ait été tapée. Méthode, relevés bruts et limites dans
+<a href="comparatif.html#les-deux-claviers-mesurés-côte-à-côte-sur-un-galaxy">le comparatif</a>.</p>
 
 Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le

@@ -155,6 +155,53 @@ Trois nuances, toutes lisibles dans ce même fichier :
   l'application). Impossible de savoir quels mots sont connus, ni d'où ils
   viennent.
 
+### Les deux claviers, mesurés côte à côte sur un Galaxy
+
+Puisque le Clavier Samsung propose la langue, la question suivante est de savoir
+ce qu'il en fait. Mesure du 8 septembre 2026 sur un **Galaxy A21s** (Android 12),
+avec son clavier d'origine 5.4.85.4, luxembourgeois déjà activé, contre notre
+version 20.3.0 : 20 phrases du corpus ZLS jamais entraîné, **166 frontières de
+mots**, et à chaque fois la même question, *le mot suivant est-il dans les trois
+suggestions affichées, sans qu'une seule de ses lettres ait été tapée ?*
+
+<div class="table-scroll" markdown="1">
+
+| | barre vide | mot juste en 1ʳᵉ position | mot juste dans les 3 |
+|---|---|---|---|
+| **Lëtzebuergesch Clavier 20.3.0** | 9,0 % | **10,8 %** | **21,1 %** |
+| Clavier Samsung 5.4.85.4 | 0,0 % | 9,0 % | 16,9 % |
+
+</div>
+
+Le détail apparié dit mieux que les totaux ce qui sépare les deux claviers. Les
+deux trouvent le mot 21 fois, **nous seuls 14 fois**, Samsung seul 7 fois. Et
+quand notre barre propose quelque chose, elle a raison **23,2 %** du temps, contre
+**15,2 %** au Clavier Samsung sur ces mêmes positions. La différence tient à ce
+qu'il fait de son silence : n'ayant pas de contexte, il affiche *de · an · der*,
+les trois mots les plus fréquents de la langue, ce qui lui vaut quelques
+victoires et beaucoup de bruit. Nous préférons la barre vide, 9 fois sur 100.
+
+Deux vérifications qui donnent sa valeur au chiffre : notre résultat est
+**exactement celui que promet le fichier de n-grammes embarqué** (21,1 % lui
+aussi, calculé hors ligne sur ces positions), et les phrases retenues ne
+contiennent aucun diacritique, faute de pouvoir les taper en automatique sans
+avantager l'un des deux claviers.
+
+Sur la mécanique, même appareil, clavier ouvert dans un champ neutre :
+
+<div class="table-scroll" markdown="1">
+
+| | mémoire vive | processeur au repos | taille installée |
+|---|---|---|---|
+| **Lëtzebuergesch Clavier 20.3.0** | **105 à 137 Mo** | **0 ms / 30 s** | **8,4 Mo** |
+| Clavier Samsung 5.4.85.4 | 158 à 171 Mo | 70 ms / 30 s | 110,1 Mo |
+
+</div>
+
+Le détail de la méthode, les scripts et les relevés bruts sont dans le dépôt
+(`BANC-CLAVIERS.md`), y compris les défauts que ce banc nous a fait trouver chez
+nous.
+
 Une précision utile au passage : aucun téléphone Android n'affiche son
 *interface* en luxembourgeois. La langue est bien reconnue comme locale
 (`lb-LU`) par le système, mais le socle d'Android (API 36, vérifié dans ses

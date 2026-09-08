@@ -20,7 +20,7 @@ import argparse, json, re, shlex, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from bench import CLAVIERS, CHAMP, ESPACE, shell, capture, sequence_pose  # noqa: E402
+from bench import CLAVIERS, CHAMP, ESPACE, shell, capture, sequence_pose, clavier_visible  # noqa: E402
 
 
 def capture_stable(bande, essais=5):
@@ -68,6 +68,30 @@ def phrases_du_corpus(n, graine):
     return retenues[:n]
 
 
+# Carte des touches de notre clavier, relevée sur la disposition livrée : trois
+# rangées de lettres plus les deux voyelles de la rangée du bas. Tout est frappé
+# en minuscules, le moteur repliant la casse pour chercher son contexte.
+_X = [73, 176, 279, 382, 486, 590, 694, 798, 902, 1006]
+_X3 = [225, 329, 433, 537, 642, 747, 852]
+CARTE = {c: (_X[i], 1690) for i, c in enumerate("qwertzuiop")}
+CARTE.update({c: (_X[i], 1830) for i, c in enumerate("asdfghjkl")})
+CARTE["é"] = (_X[9], 1830)
+CARTE.update({c: (_X3[i], 1972) for i, c in enumerate("yxcvbnm")})
+CARTE["ä"] = (242, 2114)
+CARTE["ë"] = (670, 2114)
+
+
+def frappe_touches(mot):
+    """Frappe un mot touche par touche, comme le ferait un doigt."""
+    cmds = []
+    for c in mot.lower():
+        if c not in CARTE:
+            raise KeyError(f"pas de touche pour {c!r} dans {mot!r}")
+        x, y = CARTE[c]
+        cmds.append(f"input tap {x} {y}; sleep 0.12")
+    return "; ".join(cmds)
+
+
 def frappe_du_mot(mot):
     """Commandes shell qui écrivent un mot : texte ASCII d'un bloc, lettres
     accentuées sur leur touche."""
@@ -89,13 +113,14 @@ def frappe_du_mot(mot):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("clavier", choices=list(CLAVIERS))
-    ap.add_argument("--mode", choices=["live", "intent"], required=True)
+    ap.add_argument("--mode", choices=["live", "intent", "touches"], required=True)
     ap.add_argument("--phrases", type=int, default=20)
     ap.add_argument("--graine", type=int, default=20260908)
     args = ap.parse_args()
 
     cfg = CLAVIERS[args.clavier]
-    dossier = SP / f"shots2_{args.clavier}"
+    dossier = SP / (f"shots3_{args.clavier}" if args.mode == "touches"
+                    else f"shots2_{args.clavier}")
     dossier.mkdir(exist_ok=True)
     shell("ime", "set", cfg["ime"])
     time.sleep(1.5)
@@ -106,12 +131,21 @@ def main():
     journal, t0 = [], time.time()
     for ip, phrase in enumerate(phrases):
         mots = phrase.split()
-        if args.mode == "live":
+        if args.mode in ("live", "touches"):
             # une seule session : on ouvre le champ, on le vide, on frappe
+            ecrire = frappe_touches if args.mode == "touches" else frappe_du_mot
             shell(sequence_pose(mots[0]).replace("; input keyevent 123; sleep 0.2", ""),
                   timeout=180)
-            shell("input keyevent " + " ".join(["67"] * 80) + "; sleep 0.4"
-                  + "; " + frappe_du_mot(mots[0]) + espace, timeout=180)
+            # La frappe touche par touche exige que le clavier soit réellement à
+            # l'écran : un tap sur une touche absente tombe dans l'application.
+            for essai in range(4):
+                if clavier_visible():
+                    break
+                shell(f"input tap {CHAMP[0]} {CHAMP[1]}; sleep 0.9", timeout=120)
+            else:
+                print(f"  ! clavier absent, phrase {ip}", flush=True)
+            shell("input keyevent " + " ".join(["67"] * 140) + "; sleep 0.5"
+                  + "; " + ecrire(mots[0]) + espace, timeout=300)
         else:
             shell(sequence_pose(mots[0]) + espace, timeout=180)
         for i in range(1, len(mots)):
@@ -120,13 +154,14 @@ def main():
             journal.append({"phrase": ip, "position": i, "contexte": " ".join(mots[:i]),
                             "attendu": mots[i], "image": nom})
             if i + 1 < len(mots):
-                if args.mode == "live":
-                    shell(frappe_du_mot(mots[i]) + espace, timeout=180)
+                if args.mode in ("live", "touches"):
+                    shell(ecrire(mots[i]) + espace, timeout=300)
                 else:
                     shell(sequence_pose(" ".join(mots[:i + 1])) + espace, timeout=180)
         print(f"[{args.clavier}/{args.mode}] phrase {ip+1}/{len(phrases)} "
               f"({len(mots)-1} positions, {time.time()-t0:.0f}s)", flush=True)
-    (SP / f"journal2_{args.clavier}.json").write_text(
+    (SP / (f"journal3_{args.clavier}.json" if args.mode == "touches"
+           else f"journal2_{args.clavier}.json")).write_text(
         json.dumps(journal, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[{args.clavier}] terminé : {len(journal)} positions en {time.time()-t0:.0f}s")
 
