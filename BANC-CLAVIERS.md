@@ -66,10 +66,9 @@ Ce qui se voit en revanche sans test statistique :
   glissement jusqu'à la quatrième case du menu `è é ê ë ē`, soit 1,2 s de geste.
   Le corpus écrit `ë` 142 374 fois et `é` 269 749 fois.
 
-Ce que Samsung affiche quand il n'a pas de contexte est instructif : **« de · an
-· der »**, les trois mots les plus fréquents de la langue, servis tels quels. Nos
-propres mesures donnaient 2,7 % de réussite à cette stratégie ; elle explique une
-partie de ses 7 victoires (`huel` → der, `fuer` → der, `Fangeren` → an).
+Le remplissage systématique explique une partie des victoires de Samsung :
+`huel` → der, `fuer` → der, `Fangeren` → an, toutes obtenues par le même triplet
+servi à l'aveugle.
 
 ### Mémoire, processeur, encombrement
 
