@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Espace ambassadeurs · Lëtzebuergesch Clavier</title>
-<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et le seul palier qui compte aujourd'hui · 12 testeurs pendant 14 jours.">
+<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et un compte à rebours jusqu'au lancement sur Google Play.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <!-- Cette page est faite pour être collée dans WhatsApp ou sur Facebook :
@@ -136,25 +136,21 @@ a{color:var(--sea);}
   </p>
 
   <div class="goal">
-    <h2>🎯 Le seul chiffre qui compte aujourd'hui</h2>
-    <p class="meta">Ce qui sépare le clavier d'une publication ouverte sur Google Play</p>
+    <h2>⏱️ Compte à rebours jusqu'au Play Store</h2>
+    <p class="meta">Le lancement public du clavier luxembourgeois approche</p>
     <div class="gauge-head">
-      <span class="gauge-num"><span id="t-actuel">…</span> <small>testeurs sur <span id="t-objectif">12</span></small></span>
-      <span class="gauge-manque" id="t-manque">&nbsp;</span>
+      <span class="gauge-num"><span id="t-jours-count">…</span><span id="t-jours-label"> jours</span></span>
+      <span class="gauge-num" style="font-size: 18px; font-weight: 600;"><span id="t-heures-count">…</span><span id="t-heures-label">h</span><span id="t-minutes-count">…</span><span id="t-minutes-label">m</span><span id="t-secondes-count">…</span><span id="t-secondes-label">s</span></span>
     </div>
-    <div class="gauge-bar"><div class="gauge-fill" id="t-fill" style="width:4%"></div></div>
     <div class="gauge-meta">
-      <span>puis <b><span id="t-jours">14</span> jours consécutifs</b> sans que personne ne quitte le test</span>
+      <span>jusqu'au <b><span id="t-launch-date">23 septembre 2026</span></b></span>
       <span id="t-asof"></span>
     </div>
     <p style="margin:14px 0 0;font-size:14.5px;color:var(--ink-soft);">
-      Google exige qu'une nouvelle application soit testée par au moins douze
-      personnes pendant quatorze jours consécutifs avant d'autoriser sa
-      publication à tout le monde. C'est l'étape en cours, et la plus utile :
-      <strong>chaque personne qui rejoint le test, et qui y reste, rapproche
-      le clavier de sa sortie publique.</strong> Il n'y a pas de compteur de
-      téléchargements sur cette page parce qu'il n'y en a pas encore de public :
-      l'application n'est pas publiée.
+      L'application <strong>Lëtzebuergesch Clavier</strong> sera bientôt
+      disponible publiquement sur Google Play. Ce compte à rebours affiche
+      le temps qu'il reste avant le lancement. Merci à tous les testeurs qui
+      ont aidé à porter le clavier luxembourgeois sur le Play Store !
     </p>
   </div>
 
@@ -485,21 +481,42 @@ Bien à vous,</div>
 </div>
 <script>
 (function(){
-  // La jauge lit un fichier tenu à la main : la console Google Play n'expose
-  // pas ce chiffre par API, et le laisser en dur dans la page ferait qu'on
-  // oublierait de le bouger.
+  var launchDate = null;
+
+  // Charger la date depuis le JSON au démarrage
   fetch('stats/testeurs.json').then(function(r){ return r.json(); }).then(function(t){
-    var manque = Math.max(0, t.objectif - t.actuel);
-    document.getElementById('t-actuel').textContent = t.actuel;
-    document.getElementById('t-objectif').textContent = t.objectif;
-    document.getElementById('t-jours').textContent = t.jours;
-    document.getElementById('t-manque').textContent =
-      manque ? 'il en manque ' + manque : 'objectif atteint';
-    document.getElementById('t-asof').textContent = 'relevé le ' +
-      new Date(t.as_of).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
-    document.getElementById('t-fill').style.width =
-      Math.max(4, Math.min(100, (t.actuel / t.objectif) * 100)) + '%';
+    launchDate = new Date(t.lancement_play_store + 'T00:00:00Z');
+    updateCountdown(); // première mise à jour immédiate
   }).catch(function(){ /* le texte statique reste affiché */ });
+
+  // Compte à rebours jusqu'au lancement sur Google Play
+  function updateCountdown(){
+    if (!launchDate) return;
+
+    var now = new Date();
+
+    // Calcul du temps restant en millisecondes
+    var remaining = launchDate - now;
+
+    // Conversion en jours, heures, minutes et secondes
+    var totalSeconds = Math.max(0, Math.floor(remaining / 1000));
+    var days = Math.floor(totalSeconds / 86400);
+    var hours = Math.floor((totalSeconds % 86400) / 3600);
+    var minutes = Math.floor((totalSeconds % 3600) / 60);
+    var seconds = totalSeconds % 60;
+
+    // Affichage avec zéro à gauche si nécessaire
+    document.getElementById('t-jours-count').textContent = days;
+    document.getElementById('t-heures-count').textContent = String(hours).padStart(2, '0');
+    document.getElementById('t-minutes-count').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('t-secondes-count').textContent = String(seconds).padStart(2, '0');
+
+    // Masquer "jours" si zéro
+    document.getElementById('t-jours-label').style.display = days === 0 ? 'none' : 'inline';
+  }
+
+  // Mise à jour chaque seconde pour un vrai compte à rebours
+  setInterval(updateCountdown, 1000);
 
   var pageUrl = "https://famibelle.github.io/LuxKeyb/ambassadeurs.html";
   var waText = "Voici tout le kit pour faire connaître le Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android : messages prêts à envoyer, liens à montrer, QR codes. Servez-vous : " + pageUrl;
