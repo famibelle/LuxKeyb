@@ -64,8 +64,10 @@ import com.example.kreyolkeyboard.crossword.CrosswordGrid
 import com.example.kreyolkeyboard.crossword.CrosswordSession
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
+import com.example.kreyolkeyboard.carnet.Booster
 import com.example.kreyolkeyboard.carnet.CarnetFragment
 import com.example.kreyolkeyboard.carnet.CarnetWuertplaz
+import com.example.kreyolkeyboard.carnet.CarteWuert
 import com.example.kreyolkeyboard.zuelen.ZuelenData
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
@@ -7541,6 +7543,17 @@ class SettingsActivity : AppCompatActivity() {
         // défilent pas et ne décalent rien. Suivi ici pour être retirés.
         private var confetti: ConfettiView? = null
 
+        /** La pochette de fin de grille, posée au même endroit. */
+        private var pochette: View? = null
+
+        /**
+         * Délai minimum entre la fin d'une grille et l'ouverture de la
+         * pochette : le temps de lire « Grille terminée » et de voir tomber
+         * les confettis. Ce n'est pas une attente ajoutée mais un plancher —
+         * l'assemblage des cartes prend souvent plus que cela.
+         */
+        private val DELAI_POCHETTE = 1500L
+
         private lateinit var tvProgres: TextView
         private lateinit var tvRetour: TextView
         private lateinit var conteneurGrille: LinearLayout
@@ -7900,6 +7913,7 @@ class SettingsActivity : AppCompatActivity() {
             cartesNeuves.clear()
             retraits = 0
             enleverConfettis()
+            enleverPochette()
             surlignerDifficulte()
             majBoutonCarnet()
             titreGagnes.animate().cancel()
@@ -8198,6 +8212,7 @@ class SettingsActivity : AppCompatActivity() {
                         couleurJuste
                     )
                     lancerConfettis()
+                    ouvrirPochette()
                     annoncerA11y(
                         "Grille terminée, ${grille.words.size} mots placés, " +
                             "$etoiles étoiles sur 3."
@@ -8247,6 +8262,59 @@ class SettingsActivity : AppCompatActivity() {
         private fun ouvrirCarnet() {
             if (!isAdded) return
             CarnetFragment().show(parentFragmentManager, "carnet")
+        }
+
+        /**
+         * La pochette de fin de grille.
+         *
+         * Elle n'arrive qu'après une grille **gagnée** : « Solution » ne passe
+         * pas par ici, ne verse rien au carnet, et n'ouvre donc pas de
+         * pochette.
+         *
+         * Deux précautions de fil. L'assemblage des cartes demande les phrases
+         * d'exemple du LOD (2,6 Mo) et les rangs de fréquence (1,27 Mo) : sur
+         * le fil principal, ce serait un gel au moment précis où les confettis
+         * tombent. Tout est donc préparé en fond. Et l'ouverture attend
+         * [DELAI_POCHETTE] depuis la fin de la grille, pour que la carte de
+         * félicitations et les confettis aient le temps d'exister — sans quoi,
+         * sur un appareil rapide, la pochette les recouvrirait aussitôt.
+         */
+        private fun ouvrirPochette() {
+            val ctx = context?.applicationContext ?: return
+            val partie = session ?: return
+            val grille = partie.grid
+            val formes = resolus.map { grille.words[it].canonical }
+            val neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical }
+            val anime = !animationsReduites()
+            val depuis = System.currentTimeMillis()
+            val principal = Handler(Looper.getMainLooper())
+
+            Thread {
+                TranslationDictionary.charger(ctx)
+                TranslationDictionary.chargerExemples(ctx)
+                val connues = CarnetWuertplaz.cartes(ctx).associateBy { it.forme }
+                val contenus = formes.mapNotNull { connues[it] }
+                    .map { CarteWuert.contenu(ctx, it) }
+                val reste = DELAI_POCHETTE - (System.currentTimeMillis() - depuis)
+                principal.postDelayed({
+                    if (!isAdded || session !== partie || contenus.isEmpty()) {
+                        return@postDelayed
+                    }
+                    val hote = activity?.findViewById<ViewGroup>(android.R.id.content)
+                        ?: return@postDelayed
+                    enleverPochette()
+                    pochette = Booster.ouvrir(
+                        hote, contenus, neuves, anime,
+                        surCarnet = { ouvrirCarnet() },
+                        surFin = { pochette = null }
+                    )
+                }, reste.coerceAtLeast(0L))
+            }.start()
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
         }
 
         /**
@@ -8652,6 +8720,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onDestroyView() {
             super.onDestroyView()
             enleverConfettis()
+            enleverPochette()
             fondsCase.clear()
             lettresCase.clear()
             chipsParMot.clear()
