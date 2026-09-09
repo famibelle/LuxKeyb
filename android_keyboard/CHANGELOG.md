@@ -9,6 +9,45 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.5.0] - 2026-09-09
+
+### ✨ Ajouté
+
+- **Un carnet de cartes à collectionner.** Chaque mot verrouillé dans
+  Wuertplaz devient une carte et rejoint une collection qui, elle, ne repart
+  pas de zéro à la grille suivante. On l'ouvre depuis le jeu, à l'endroit
+  exact où la liste des sens gagnés vivait déjà. Une carte porte le mot, sa
+  nature quand la majuscule la donne, une illustration, le sens français, une
+  phrase d'exemple du dictionnaire officiel, les autres formes de sa famille,
+  et son rang dans la collection.
+- **La rareté d'une carte est la fréquence du mot**, et rien d'autre. Le
+  dictionnaire est trié par fréquence décroissante : le rang d'une forme *est*
+  sa rareté, sans qu'il faille inventer la moindre statistique — poser des
+  « points de vie » sur une vraie langue aurait appris quelque chose de faux.
+  Les quatre paliers sont mesurés sur le vivier réel du jeu : 37 % de communs,
+  34 % de peu communs, 20 % de rares, 8 % de très rares.
+- **Les illustrations sont dessinées à partir du mot lui-même**, sans aucune
+  image dans l'application : teinte, anneaux et filigrane sont dérivés de ses
+  lettres, si bien que la même forme donne toujours la même carte. Un tableau
+  mot → emoji a été mesuré puis écarté — le vocabulaire du jeu compte 1 453
+  premiers sens distincts pour 1 963 formes, dont les plus partagés sont
+  « devoir », « marcher », « pouvoir ».
+- **Le carnet distingue ce qui est neuf de ce qui est revu** : une carte
+  jamais rencontrée est signalée dans la partie, et le bouton porte le total
+  acquis depuis toujours.
+- La collection est rangée avec les préférences, donc **sauvegardée et
+  transférée d'un téléphone à l'autre** comme les réglages du clavier. Ce sont
+  des mots de dictionnaire, déjà filtrés à l'ouverture des grilles.
+
+### 🐛 Corrigé
+
+- **Une carte pouvait montrer le sens d'un autre mot de sa famille.** La fiche
+  prenait la traduction du représentant, si bien que le substantif « Notze »
+  (utilité) s'affichait sous celle du verbe « notzen » (profiter de) — le même
+  piège que « rout », qui est rouge et non « se reposer ». Le sens de la forme
+  rencontrée l'emporte désormais ; le repli sur la famille ne sert plus qu'aux
+  flexions que le dictionnaire ne traduit pas seules.
+
 ## [20.4.0] - 2026-09-08
 
 ### ✨ Ajouté
