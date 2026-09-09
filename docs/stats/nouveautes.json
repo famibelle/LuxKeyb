@@ -1,9 +1,118 @@
 {
- "genere_le": "2026-09-07",
- "derniere_version": "20.3.0",
- "derniere_date": "2026-09-07",
+ "genere_le": "2026-09-09",
+ "derniere_version": "20.6.0",
+ "derniere_date": "2026-09-09",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.6.0",
+   "date": "2026-09-09",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Une pochette de cartes s'ouvre à la fin d'une grille",
+       "texte": "Les mots gagnés se retournent un par un, chacun montrant sa carte, puis un bilan dit ce que la grille a rapporté et propose d'aller voir le carnet. Le carnet conservait déjà, mais il fallait y aller ; la pochette, elle, paie la grille au moment où elle se termine."
+      },
+      {
+       "titre": "La pochette rend toutes les cartes de la grille, pas seulement les inédites",
+       "texte": "N'ouvrir que les nouveautés aurait vidé la récompense dès que le joueur commence à connaître le vocabulaire, c'est-à-dire précisément quand il progresse ; les cartes jamais rencontrées passent devant et sont signalées."
+      },
+      {
+       "titre": null,
+       "texte": "Une carte se retourne d'elle-même et un appui passe à la suivante, « Passer » restant offert dès la première : c'est un cadeau, pas un passage obligé avant la grille suivante. Une grille dont on a demandé la solution n'en ouvre aucune, puisqu'elle ne rapporte rien."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "20.5.0",
+   "date": "2026-09-09",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Un carnet de cartes à collectionner",
+       "texte": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui, elle, ne repart pas de zéro à la grille suivante. On l'ouvre depuis le jeu, à l'endroit exact où la liste des sens gagnés vivait déjà. Une carte porte le mot, sa nature quand la majuscule la donne, une illustration, le sens français, une phrase d'exemple du dictionnaire officiel, les autres formes de sa famille, et son rang dans la collection."
+      },
+      {
+       "titre": "La rareté d'une carte est la fréquence du mot",
+       "texte": "Et rien d'autre. Le dictionnaire est trié par fréquence décroissante : le rang d'une forme <em>est</em> sa rareté, sans qu'il faille inventer la moindre statistique — poser des « points de vie » sur une vraie langue aurait appris quelque chose de faux. Les quatre paliers sont mesurés sur le vivier réel du jeu : 37 % de communs, 34 % de peu communs, 20 % de rares, 8 % de très rares."
+      },
+      {
+       "titre": "Les illustrations sont dessinées à partir du mot lui-même",
+       "texte": "Sans aucune image dans l'application : teinte, anneaux et filigrane sont dérivés de ses lettres, si bien que la même forme donne toujours la même carte. Un tableau mot → emoji a été mesuré puis écarté — le vocabulaire du jeu compte 1 453 premiers sens distincts pour 1 963 formes, dont les plus partagés sont « devoir », « marcher », « pouvoir »."
+      },
+      {
+       "titre": "Le carnet distingue ce qui est neuf de ce qui est revu",
+       "texte": "Une carte jamais rencontrée est signalée dans la partie, et le bouton porte le total acquis depuis toujours."
+      },
+      {
+       "titre": null,
+       "texte": "La collection est rangée avec les préférences, donc <strong>sauvegardée et transférée d'un téléphone à l'autre</strong> comme les réglages du clavier. Ce sont des mots de dictionnaire, déjà filtrés à l'ouverture des grilles."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Une carte pouvait montrer le sens d'un autre mot de sa famille",
+       "texte": "La fiche prenait la traduction du représentant, si bien que le substantif « Notze » (utilité) s'affichait sous celle du verbe « notzen » (profiter de) — le même piège que « rout », qui est rouge et non « se reposer ». Le sens de la forme rencontrée l'emporte désormais ; le repli sur la famille ne sert plus qu'aux flexions que le dictionnaire ne traduit pas seules."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "20.4.0",
+   "date": "2026-09-08",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Wuertplaz fête un mot débloqué",
+       "texte": "Un joueur a signalé que le verrouillage d'un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son, alors que c'est le seul moment où ce jeu enseigne. Le verrouillage se ponctue maintenant — les lettres du mot s'allument en vert vif l'une après l'autre, une carte verte entre en scène avec le sens français, et un retour haptique accompagne le tout."
+      },
+      {
+       "titre": "Le coup double a sa fête à lui",
+       "texte": "Verrouiller plusieurs mots d'une seule pose est l'événement le plus gratifiant de la partie : carte orange « 🔥 N mots d'un coup ! », balayages en cascade, retour haptique plus appuyé. Le détail des sens gagnés reste, comme avant, dans « Ce que vous avez gagné »."
+      },
+      {
+       "titre": "La collection compte et s'anime",
+       "texte": "Le bandeau « Ce que vous avez gagné » porte le nombre de mots appris et fait un rebond quand il monte ; chaque sens nouvellement acquis entre en glissant."
+      },
+      {
+       "titre": "La fin de grille lâche des confettis",
+       "texte": "Et affiche une note en trois paliers, tous félicitants — ⭐⭐⭐ « sans une seule reprise » à ⭐ « grille bouclée » — calée sur les mots repris en cours de partie, pas sur le temps."
+      },
+      {
+       "titre": null,
+       "texte": "Toutes ces animations sont sautées quand l'utilisateur a coupé les animations du système ; le retour haptique, lui, suit le réglage haptique d'Android et ne demande aucune permission."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "20.3.0",
    "date": "2026-09-07",
@@ -110,85 +219,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "20.2.0",
-   "date": "2026-09-07",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Wuertplaz, un chassé-croisé luxembourgeois",
-       "texte": "Septième jeu de l'onglet Spiller, et le premier <strong>jouable sans connaître un mot de luxembourgeois</strong> : les six autres supposent une compréhension préalable, ne serait-ce que pour lire une définition. Ici la grille est vide, tous les mots vous sont donnés, et il s'agit de trouver leur place. La déduction porte sur les longueurs et sur les croisements, pas sur le sens. On touche un mot de la liste, puis une case : les emplacements où il peut aller s'éclairent. Un mot qui contredirait une lettre déjà écrite ne se pose pas, comme au crayon on n'écrit pas deux lettres dans la même case."
-      },
-      {
-       "titre": "La traduction française devient la récompense",
-       "texte": "Elle n'apparaît qu'au moment où un mot se verrouille, c'est-à-dire quand tous ses croisements sont posés. La montrer au dépôt ferait résoudre la grille par sondage (poser, regarder si la glose s'allume, retirer), alors qu'ainsi elle se mérite. C'est l'inverse de Kräizwuert, où le sens est la question : ici on rencontre le mot d'abord et on apprend ce qu'il veut dire ensuite, ce qui est le sens dans lequel on aborde une langue qu'on ne connaît pas encore. Chaque mot gagné rappelle aussi son orthographe véritable, la grille en capitales effaçant la majuscule des substantifs."
-      },
-      {
-       "titre": "300 grilles livrées, cent par difficulté",
-       "texte": "Construites et vérifiées hors de l'appareil par <code>Dictionnaires/generate_chassecroise.py</code>, qui réutilise le moteur de placement de Kräizwuert. Chacune est garantie <strong>à solution unique</strong>. Une grille où deux mots peuvent s'échanger sans contredire un croisement s'affiche normalement et refuse pourtant une réponse juste, ce que le joueur lit comme sa propre erreur. Le générateur les écarte, et <code>ChasseCroiseAssetTest</code> rejoue la vérification sur l'actif livré."
-      },
-      {
-       "titre": "La difficulté porte sur la géométrie, pas sur la rareté du vocabulaire",
-       "texte": "Les mots étant affichés, leur fréquence ne fait plus la difficulté : ce qui la fait est la taille de la grille et le nombre de mots partageant une même longueur, puisqu'une longueur unique désigne son emplacement toute seule. Un seul plancher de fréquence suffit donc, ce qui porte le vivier à 6 001 mots aux trois niveaux, là où le niveau Facile de Kräizwuert plafonne à 227."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_wuertplaz.png",
-   "image_alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
-   "image_legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
-  },
-  {
-   "version": "20.1.1",
-   "date": "2026-09-06",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "La barre de défilement ne barre plus les mots proposés",
-       "texte": "Quand la barre de suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire défiler la rangée faisait apparaître un trait en travers des puces, et précisément pendant qu'on les lisait pour choisir. Android dessine la barre de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur une puce rouge se lit comme un mot barré. Elle est retirée : l'indication qu'il reste des mots à droite était déjà portée par la puce coupée au bord. La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la même raison, et est corrigée avec elle."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "20.1.0",
-   "date": "2026-09-06",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🎨",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Le pavé de Kräizwuert reprend la disposition du clavier",
-       "texte": "Il était alphabétique, et c'était une erreur : cette application existe pour qu'on écrive le luxembourgeois sur son clavier à elle, en QWERTZ. Chercher les lettres dans un ordre qu'on ne retrouvera nulle part ensuite n'apprend rien ; aux mêmes places que sur le clavier, le jeu travaille les positions de doigts dont on se sert en écrivant un message, et il en devient l'entraînement. Les trois rangées de lettres sont identiques à celles du clavier, <code>é</code> compris, et l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule infidélité, volontaire : <code>ö</code> et <code>ü</code> n'existent sur le clavier que derrière un appui long, et <code>ä</code>/<code>ë</code> vivent autour de la barre d'espace : les reproduire ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La rangée de la barre d'espace est donc remplacée par <code>Ä Ë Ö Ü</code>, en touches larges."
-      },
-      {
-       "titre": "La grille cède quelques pixels au pavé plutôt que l'inverse",
-       "texte": "Une grille haute poussait le pavé hors de l'écran en commençant par sa rangée d'accents, c'est-à-dire par les cinq touches pour lesquelles ce pavé existe. La taille des cases est maintenant bornée par la hauteur disponible autant que par la largeur : grille, pavé et boutons tiennent ensemble à l'écran, jusqu'à la grille de onze colonnes du niveau Difficile."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_kraizwuert_pave.png",
-   "image_alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
-   "image_legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
   }
  ]
 }
