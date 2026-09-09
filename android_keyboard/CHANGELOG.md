@@ -9,6 +9,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.6.0] - 2026-09-09
+
+### ✨ Ajouté
+
+- **Une pochette de cartes s'ouvre à la fin d'une grille.** Les mots gagnés se
+  retournent un par un, chacun montrant sa carte, puis un bilan dit ce que la
+  grille a rapporté et propose d'aller voir le carnet. Le carnet conservait
+  déjà, mais il fallait y aller ; la pochette, elle, paie la grille au moment
+  où elle se termine.
+- **La pochette rend toutes les cartes de la grille, pas seulement les
+  inédites.** N'ouvrir que les nouveautés aurait vidé la récompense dès que le
+  joueur commence à connaître le vocabulaire, c'est-à-dire précisément quand il
+  progresse ; les cartes jamais rencontrées passent devant et sont signalées.
+- Une carte se retourne d'elle-même et un appui passe à la suivante, « Passer »
+  restant offert dès la première : c'est un cadeau, pas un passage obligé avant
+  la grille suivante. Une grille dont on a demandé la solution n'en ouvre
+  aucune, puisqu'elle ne rapporte rien.
+
 ## [20.5.0] - 2026-09-09
 
 ### ✨ Ajouté
