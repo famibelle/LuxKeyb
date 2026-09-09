@@ -506,6 +506,39 @@ object TranslationDictionary {
         }
     }
 
+    /**
+     * La fiche d'une forme donnée : sa glose, et les autres formes de sa
+     * famille.
+     *
+     * C'est ce que [rechercher] fabrique pour chaque résultat, mais sans passer
+     * par la recherche : le carnet connaît déjà la forme exacte, il lui manque
+     * seulement de quoi la présenter.
+     *
+     * **La glose de la forme l'emporte sur celle de son représentant**, et
+     * c'est l'inverse de ce que fait [rechercher]. La raison tient au sens de
+     * lecture : la recherche affiche le représentant et doit donc le gloser
+     * lui, tandis que le carnet affiche la forme rencontrée et doit donc
+     * gloser celle-là. Prendre le représentant présentait le substantif
+     * « Notze » (utilité) sous la glose du verbe « notzen » (profiter de) —
+     * le même piège que « rout », rouge et non « se reposer ». Le repli sur le
+     * représentant reste, pour les flexions que le LOD ne glose pas seules.
+     *
+     * [Resultat.mot] porte le représentant : c'est la clé sous laquelle les
+     * phrases d'exemple sont rangées, donc ce qu'attend [exemples].
+     */
+    fun fiche(context: Context, mot: String): Resultat {
+        charger(context)
+        chargerFamilles(context)
+        val representant = representantDe[mot]
+            ?: representantDe[mot.lowercase()]
+            ?: mot
+        val glose = traductions[mot]
+            ?: traductionsMinuscules[mot.lowercase()]
+            ?: traductions[representant]
+            ?: ""
+        return Resultat(representant, glose, formesDe[representant] ?: emptyList())
+    }
+
     /** Glose française d'un mot, ou null s'il n'en a pas. */
     fun traduire(context: Context, mot: String): String? {
         charger(context)

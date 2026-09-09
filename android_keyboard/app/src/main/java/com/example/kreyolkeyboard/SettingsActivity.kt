@@ -64,6 +64,8 @@ import com.example.kreyolkeyboard.crossword.CrosswordGrid
 import com.example.kreyolkeyboard.crossword.CrosswordSession
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
+import com.example.kreyolkeyboard.carnet.CarnetFragment
+import com.example.kreyolkeyboard.carnet.CarnetWuertplaz
 import com.example.kreyolkeyboard.zuelen.ZuelenData
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
@@ -7544,6 +7546,7 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var conteneurGrille: LinearLayout
         private lateinit var conteneurMots: LinearLayout
         private lateinit var titreGagnes: TextView
+        private lateinit var boutonCarnet: TextView
         private lateinit var conteneurGagnes: LinearLayout
         private lateinit var ligneDifficulte: LinearLayout
 
@@ -7570,6 +7573,14 @@ class SettingsActivity : AppCompatActivity() {
          * c'est la note de fin de grille.
          */
         private var retraits = 0
+
+        /**
+         * Emplacements dont le mot est entré au carnet pour la première fois
+         * — jamais rencontré dans aucune partie précédente. C'est ce qui
+         * distingue « nouveau » de « revu » dans la liste des sens gagnés, et
+         * c'est le seul frisson que la collection ait à offrir.
+         */
+        private val cartesNeuves = mutableSetOf<Int>()
 
         private val couleurNeutre = Color.parseColor("#00796B")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -7727,18 +7738,48 @@ class SettingsActivity : AppCompatActivity() {
                     // rester lisible après coup. La liste grandit vers le bas,
                     // sous les pastilles : elle ne déplace ni la grille ni les
                     // mots à poser, dont les appuis suivants dépendent.
+                    //
+                    // La ligne porte aussi l'entrée du carnet, et c'est
+                    // délibérément là : le bouton dit « cette liste a une
+                    // maison permanente » à l'endroit exact où la liste vit.
+                    // Il reste visible même quand rien n'a encore été gagné,
+                    // pour qu'un joueur qui revient retrouve sa collection
+                    // sans avoir à finir une grille d'abord.
                     titreGagnes = TextView(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        ).apply { bottomMargin = 8 }
+                            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                        )
                         text = "📖 Ce que vous avez gagné"
                         textSize = 15f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(couleurNeutre)
-                        visibility = View.GONE
+                        visibility = View.INVISIBLE
                     }
-                    addView(titreGagnes)
+
+                    boutonCarnet = TextView(activity).apply {
+                        text = "📔 Carnet"
+                        textSize = 13f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.WHITE)
+                        setPadding(20, 10, 20, 10)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 20f * resources.displayMetrics.density
+                            setColor(couleurNeutre)
+                        }
+                        isClickable = true
+                        setOnClickListener { ouvrirCarnet() }
+                    }
+
+                    addView(LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 8 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        addView(titreGagnes)
+                        addView(boutonCarnet)
+                    })
 
                     conteneurGagnes = LinearLayout(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
@@ -7856,9 +7897,11 @@ class SettingsActivity : AppCompatActivity() {
             val grille = ChasseCroiseData.newGrid(activity, difficulte)
             resolus.clear()
             gagnesAffiches.clear()
+            cartesNeuves.clear()
             retraits = 0
             enleverConfettis()
             surlignerDifficulte()
+            majBoutonCarnet()
             titreGagnes.animate().cancel()
             titreGagnes.scaleX = 1f
             titreGagnes.scaleY = 1f
@@ -8134,6 +8177,7 @@ class SettingsActivity : AppCompatActivity() {
                 it !in resolus && partie.verrouille(it)
             }
             resolus.addAll(nouveaux)
+            encarter(nouveaux)
             rafraichir()
 
             when {
@@ -8169,6 +8213,40 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 else -> tvRetour.visibility = View.INVISIBLE
             }
+        }
+
+        /**
+         * Verse au carnet les mots qui viennent d'être gagnés.
+         *
+         * C'est le seul point d'entrée de la collection permanente : un mot
+         * n'y entre qu'une fois **verrouillé**, c'est-à-dire prouvé par ses
+         * croisements. Un mot simplement posé, ou posé puis repris, ne compte
+         * pas — la carte se gagne comme la glose se gagne.
+         *
+         * La forme versée est la forme canonique, celle que le joueur lit dans
+         * la liste et que la table des gloses sait traduire ; la grille, elle,
+         * est tout en capitales.
+         */
+        private fun encarter(nouveaux: List<Int>) {
+            if (nouveaux.isEmpty()) return
+            val ctx = context ?: return
+            val grille = session?.grid ?: return
+            nouveaux.forEach { emplacement ->
+                val forme = grille.words[emplacement].canonical
+                if (CarnetWuertplaz.ajouter(ctx, forme)) cartesNeuves.add(emplacement)
+            }
+            majBoutonCarnet()
+        }
+
+        private fun majBoutonCarnet() {
+            val ctx = context ?: return
+            val total = CarnetWuertplaz.taille(ctx)
+            boutonCarnet.text = if (total == 0) "📔 Carnet" else "📔 Carnet · $total"
+        }
+
+        private fun ouvrirCarnet() {
+            if (!isAdded) return
+            CarnetFragment().show(parentFragmentManager, "carnet")
         }
 
         /**
@@ -8525,7 +8603,9 @@ class SettingsActivity : AppCompatActivity() {
             conteneurGagnes.removeAllViews()
 
             val n = resolus.size
-            titreGagnes.visibility = if (n == 0) View.GONE else View.VISIBLE
+            // INVISIBLE et non GONE : le bouton du carnet partage sa ligne, et
+            // la ligne ne doit pas se replier quand le titre s'efface.
+            titreGagnes.visibility = if (n == 0) View.INVISIBLE else View.VISIBLE
             // Le compteur vit dans le titre : c'est là que l'œil va quand la
             // liste grandit, et il n'ajoute aucune vue à la mise en page.
             titreGagnes.text = "📖 Ce que vous avez gagné · $n"
@@ -8538,13 +8618,19 @@ class SettingsActivity : AppCompatActivity() {
                     gagnesAffiches.add(index)
                     duNeuf = true
                 }
-                val ligne = SpannableString("${mot.canonical} : ${mot.clue}")
+                // « ✨ » signale une carte que le carnet n'avait jamais vue,
+                // toutes parties confondues. Sans ce repère, la vingtième
+                // rencontre de « Haus » se lit comme la première.
+                val marque = if (index in cartesNeuves) "✨ " else ""
+                val ligne = SpannableString("$marque${mot.canonical} : ${mot.clue}")
                 ligne.setSpan(
-                    StyleSpan(Typeface.BOLD), 0, mot.canonical.length,
+                    StyleSpan(Typeface.BOLD), marque.length,
+                    marque.length + mot.canonical.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 ligne.setSpan(
-                    ForegroundColorSpan(couleurNeutre), 0, mot.canonical.length,
+                    ForegroundColorSpan(couleurNeutre), marque.length,
+                    marque.length + mot.canonical.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 val tv = TextView(ctx).apply {
