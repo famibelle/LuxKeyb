@@ -67,10 +67,50 @@ touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
   </figure>
 </div>
 
-<p>L'application n'est pas encore ouverte à tout le monde : la page qui s'ouvre
-vous demande d'abord d'appuyer sur <strong>Devenir testeur</strong>, puis vous
-renvoie vers Google Play. C'est la seule différence, et
-<a href="#devenir-testeur">elle est expliquée plus bas</a>.</p>
+<div class="sortie" data-sortie>
+  <!-- Fredoka et le décompte ne servent qu'à ce bloc : chargés ici plutôt que
+       dans _includes/head-custom.html, qui les imposerait à toutes les pages
+       Markdown du site pour les 140 Ko de la police embarquée. Déclarés dans
+       le bloc et non avant lui : kramdown ne reconnaît pas <link> comme un
+       élément de bloc et l'envelopperait dans un paragraphe. -->
+  <link rel="stylesheet" href="assets/fredoka-embed.css">
+  <link rel="stylesheet" href="assets/countdown.css">
+  <script defer src="assets/countdown.js"></script>
+
+  <p class="sortie__eyebrow">Google Play · sortie publique</p>
+  <p class="sortie__titre">🗓️ Ouvert à tout le monde le 23 septembre 2026</p>
+  <p class="sortie__date">
+    D'ici là, la page qui s'ouvre vous demande d'abord d'appuyer sur
+    <strong>Devenir testeur</strong>, puis vous renvoie vers Google Play.
+    C'est la seule différence, et elle a maintenant une date de fin.
+  </p>
+
+  <div class="sortie__corps">
+    <div class="sortie__compteur">
+      <div class="sortie__attente">
+        <div class="sortie__cells" aria-hidden="true">
+          <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
+          <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
+          <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
+          <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
+        </div>
+        <p class="sortie__pied">
+          Rien ne vous oblige à attendre : le test fermé installe exactement le
+          même clavier, avec les mêmes mises à jour automatiques.
+          <a href="#devenir-testeur">Les trois étapes sont expliquées plus bas.</a>
+        </p>
+      </div>
+
+      <div class="sortie__sortie">
+        <p class="sortie__pied" style="margin-top:0">
+          C'est fait : le clavier est ouvert à tout le monde sur
+          <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard">Google Play</a>,
+          et s'installe désormais sans passer par le test.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <details>
   <summary>Installer sans passer par Google Play</summary>
@@ -320,9 +360,12 @@ change la façon d'installer, pas l'application.
 
 <p class="note">Pourquoi un test fermé ? Google demande
 qu'une nouvelle application soit testée par au moins douze personnes pendant
-quatorze jours avant d'autoriser sa publication à tout le monde. C'est cette
-étape-là qui est en cours : chaque testeur rapproche le clavier d'une
-publication ouverte.</p>
+quatorze jours avant d'autoriser sa publication à tout le monde. Les douze sont
+réunis depuis le 9 septembre 2026 ; ce sont les quatorze jours qui courent
+maintenant, et c'est ce qui date la sortie publique au
+<strong>23 septembre 2026</strong>. Rejoindre le test d'ici là, c'est aider à
+les tenir : le compte doit rester à douze sans que personne ne quitte le
+programme.</p>
 
 ## En avant-première : la dictée vocale 🔬
 

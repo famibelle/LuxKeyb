@@ -1,5 +1,9 @@
 {
-  "lancement_play_store": "2026-09-23",
-  "source": "Date de mise à disposition sur Google Play Store",
-  "commentaire": "Date de mise en ligne de l'application sur le Play Store. Utilisée pour afficher un compte à rebours en jours et heures jusqu'au lancement."
+  "sortie_publique": "2026-09-23T00:00:00+02:00",
+  "objectif": 12,
+  "actuel": 12,
+  "jours": 14,
+  "as_of": "2026-09-09",
+  "source": "console Google Play, test fermé com.potomitan.luxkeyboard",
+  "commentaire": "Deux choses dans un seul fichier, parce qu'elles ne se lisent que l'une par l'autre : le palier des douze testeurs, atteint le 9 septembre 2026, et la date de sortie publique qu'il rend possible. Le décompte des pages est calé sur sortie_publique, écrite avec son décalage horaire (+02:00, heure d'été luxembourgeoise) : sans lui, un navigateur à Londres afficherait un jour de moins pendant deux heures. Tenu à la main, la console Google Play n'exposant ce chiffre par aucune API."
 }

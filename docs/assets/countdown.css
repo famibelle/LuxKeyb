@@ -1,0 +1,174 @@
+/* Le décompte jusqu'à la sortie publique sur Google Play.
+   Un seul objet visuel, partagé par l'accueil et la page ambassadeurs, pour
+   que la même nouvelle ait la même tête aux deux endroits.
+
+   Les couleurs sont écrites en dur et non prises au thème : c'est un aplat de
+   marque, au sens de la charte, et il doit rester le même en clair comme en
+   sombre. Le choix de #003876 pour le fond n'est pas décoratif : la charte en
+   fait l'aplat sur lequel on écrit en blanc, et le rapport se lit dans les deux
+   sens (11,49:1), là où le rouge plafonne à 4,22:1 et le bleu ciel à 2,94:1.
+   Le rouge ne fait donc ici que le filet du haut, et le bleu ciel les
+   séparateurs et le cerclage : aucun des deux ne porte une lettre. */
+
+.sortie {
+  position: relative;
+  overflow: hidden;
+  background: #003876;
+  color: #fff;
+  border-radius: 14px;
+  padding: 26px 22px 22px;
+  margin: 28px 0;
+}
+
+/* La coupe franche de la charte, réduite à un filet : les deux couleurs se
+   touchent par une bande blanche au lieu de se fondre, un dégradé direct
+   passant par un violet qui n'appartient à rien.
+
+   Le filet prend le rouge et le bleu ciel, et non le bleu profond du tract :
+   ici le fond EST le bleu profond, et la moitié gauche du filet disparaîtrait
+   dedans, ne laissant qu'un trait rouge qui s'arrête au milieu sans raison.
+   Ce sont d'ailleurs les deux couleurs du drapeau lui-même. */
+.sortie::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: linear-gradient(103deg,
+    #ED2939 0 55.5%, #FFFFFF 55.5% 57.2%, #00A1DE 57.2% 100%);
+}
+
+.sortie__eyebrow {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: .88;
+}
+
+.sortie__titre {
+  font-family: "Fredoka", -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(21px, 4.4vw, 27px);
+  line-height: 1.15;
+  margin: 0 0 4px;
+  color: #fff;
+}
+
+.sortie__date {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #fff;
+  opacity: .88;
+}
+
+.sortie__corps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.sortie__compteur { flex: 1 1 300px; min-width: 0; }
+
+/* Quatre cellules séparées par des filets bleu ciel : le rôle que la charte
+   donne à cette couleur, qui n'a pas le droit de porter du texte. */
+.sortie__cells {
+  display: flex;
+  align-items: stretch;
+  background: rgba(255, 255, 255, .06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sortie__cell {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 12px 4px 10px;
+  min-width: 0;
+}
+
+.sortie__cell + .sortie__cell { border-left: 1px solid #00A1DE; }
+
+/* Fredoka 700, la graisse plafond de la charte : au-delà, le moteur de rendu
+   fabrique un faux gras au lieu d'aller chercher une vraie graisse. */
+.sortie__n {
+  display: block;
+  font-family: "Fredoka", -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 8vw, 44px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.sortie__u {
+  display: block;
+  margin-top: 5px;
+  font-size: 13.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: .88;
+}
+
+/* 16 px au moins : c'est la phrase qui porte le sens du bloc, et le plancher
+   de lisibilité que le thème tient partout ailleurs vaut ici aussi. Les
+   libellés d'unités au-dessus y échappent, ils étiquettent un chiffre de
+   44 px et ne se lisent pas en continu. */
+.sortie__pied {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #fff;
+  opacity: .88;
+}
+
+.sortie__pied a { color: #fff; text-decoration: underline; }
+
+/* Le QR sur sa pastille claire, cerclée de bleu ciel : à même l'aplat, un code
+   sombre sur fond sombre ne se lit pas, et le lecteur optique a besoin de la
+   marge blanche que la pastille lui rend. */
+.sortie__flash {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: center;
+  width: 164px;
+  max-width: 100%;
+}
+
+.sortie__flash img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 3px solid #00A1DE;
+  border-radius: 12px;
+  padding: 7px;
+  box-sizing: border-box;
+}
+
+.sortie__flash figcaption {
+  margin-top: 8px;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: #fff;
+  opacity: .88;
+}
+
+/* Une fois la date passée, le décompte n'a plus rien à compter : il cède la
+   place à l'annonce, sans qu'il reste une ligne de zéros à l'écran. */
+.sortie__sortie { display: none; }
+.sortie[data-etat="sortie"] .sortie__attente { display: none; }
+.sortie[data-etat="sortie"] .sortie__sortie { display: block; }
+
+@media (max-width: 430px) {
+  .sortie { padding: 22px 16px 18px; }
+  .sortie__corps { gap: 16px; }
+  .sortie__cell { padding: 10px 2px 8px; }
+  .sortie__u { font-size: 12px; letter-spacing: 0; }
+  .sortie__flash { width: 100%; max-width: 220px; margin: 0 auto; }
+}

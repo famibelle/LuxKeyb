@@ -4,9 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Espace ambassadeurs · Lëtzebuergesch Clavier</title>
-<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et un compte à rebours jusqu'au lancement sur Google Play.">
+<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et le décompte jusqu'à la sortie publique sur Google Play, le 23 septembre 2026.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
+<!-- Fredoka porte les chiffres mis en avant du décompte, comme sur les supports
+     imprimés : c'est le seul endroit de la page qui en ait besoin. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<link rel="stylesheet" href="assets/countdown.css">
+<script defer src="assets/countdown.js"></script>
 <!-- Cette page est faite pour être collée dans WhatsApp ou sur Facebook :
      sans ces balises, l'aperçu n'affiche que l'URL brute. -->
 <meta property="og:type" content="website">
@@ -63,23 +68,10 @@ a{color:var(--sea);}
   margin:0 0 12px;word-break:break-all;
 }
 
-/* Le palier des 12 testeurs remplace la jauge de téléchargements du projet
-   jumeau : l'application n'étant pas publiée, il n'existe aucun compteur
-   public, et afficher une barre de progression inventée serait mentir. */
-.goal{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--hibiscus);
-  border-radius:12px;padding:18px 20px;margin-top:22px;}
-.goal h2{margin-bottom:6px;}
-.gauge-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin:14px 0 10px;}
-.gauge-num{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
-.gauge-num small{font-size:14px;font-weight:400;color:var(--ink-soft);}
-.gauge-manque{font-weight:700;color:var(--hibiscus);font-size:14px;}
-.gauge-bar{height:16px;border-radius:999px;background:color-mix(in srgb, var(--sea) 12%, transparent);overflow:hidden;}
-/* La barre part du rouge du drapeau et finit sur son bleu : le trajet direct
-   entre les deux passe par le violet, d'où l'étape blanche au milieu : le même
-   principe que la coupe franche des supports imprimés. */
-.gauge-fill{height:100%;border-radius:999px;min-width:10px;transition:width .8s ease;
-  background:linear-gradient(90deg,#ED2939 0%,#F7F7F7 52%,#00A1DE 100%);}
-.gauge-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+/* Le décompte jusqu'à la sortie publique a remplacé la jauge des douze
+   testeurs, atteinte le 9 septembre 2026 : il vit dans assets/countdown.css,
+   partagé avec l'accueil pour que la nouvelle ait la même tête aux deux
+   endroits. */
 
 .links{list-style:none;padding:0;margin:0;}
 .links li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
@@ -135,23 +127,51 @@ a{color:var(--sea);}
     publier. Rien à installer, rien à demander : servez-vous.
   </p>
 
-  <div class="goal">
-    <h2>⏱️ Compte à rebours jusqu'au Play Store</h2>
-    <p class="meta">Le lancement public du clavier luxembourgeois approche</p>
-    <div class="gauge-head">
-      <span class="gauge-num"><span id="t-jours-count">…</span><span id="t-jours-label"> jours</span></span>
-      <span class="gauge-num" style="font-size: 18px; font-weight: 600;"><span id="t-heures-count">…</span><span id="t-heures-label">h</span><span id="t-minutes-count">…</span><span id="t-minutes-label">m</span><span id="t-secondes-count">…</span><span id="t-secondes-label">s</span></span>
-    </div>
-    <div class="gauge-meta">
-      <span>jusqu'au <b><span id="t-launch-date">23 septembre 2026</span></b></span>
-      <span id="t-asof"></span>
-    </div>
-    <p style="margin:14px 0 0;font-size:14.5px;color:var(--ink-soft);">
-      L'application <strong>Lëtzebuergesch Clavier</strong> sera bientôt
-      disponible publiquement sur Google Play. Ce compte à rebours affiche
-      le temps qu'il reste avant le lancement. Merci à tous les testeurs qui
-      ont aidé à porter le clavier luxembourgeois sur le Play Store !
+  <div class="sortie" data-sortie>
+    <p class="sortie__eyebrow">Google Play · sortie publique</p>
+    <h2 class="sortie__titre">🗓️ Le clavier sort le 23 septembre 2026</h2>
+    <p class="sortie__date">
+      Les douze testeurs demandés par Google sont réunis depuis le 9 septembre.
+      Les quatorze jours consécutifs courent, et la fiche s'ouvre à tout le
+      monde au bout : c'est la date ci-dessous.
     </p>
+
+    <div class="sortie__corps">
+      <div class="sortie__compteur">
+        <div class="sortie__attente">
+          <!-- Les chiffres sont masqués aux lecteurs d'écran : ils changent
+               chaque seconde, et la phrase au-dessus porte déjà la date. -->
+          <div class="sortie__cells" aria-hidden="true">
+            <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
+            <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
+            <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
+            <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
+          </div>
+          <p class="sortie__pied">
+            D'ici là, le clavier s'installe déjà par le
+            <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">test fermé</a> :
+            c'est exactement le même code, et les mises à jour arrivent toutes seules.
+          </p>
+        </div>
+
+        <div class="sortie__sortie">
+          <p class="sortie__pied" style="margin-top:0">
+            C'est fait : le clavier est ouvert à tout le monde sur
+            <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard">Google Play</a>.
+            Plus besoin de passer par le test fermé, et le lien à faire
+            circuler est désormais celui de la fiche publique.
+          </p>
+        </div>
+      </div>
+
+      <figure class="sortie__flash">
+        <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
+          <img src="assets/qr-luxkeyb-test-ferme.png"
+               alt="QR code ouvrant l'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play">
+        </a>
+        <figcaption>Scannez : l'inscription au test fermé s'ouvre</figcaption>
+      </figure>
+    </div>
   </div>
 
   <div class="share-card">
@@ -198,8 +218,11 @@ a{color:var(--sea);}
 <section id="test-ferme">
   <h2>2. En deux minutes : entrer dans le test</h2>
   <p class="section-sub">
-    La mission qui compte double : elle fait avancer le palier des douze, et elle
-    donne un vrai retour d'usage. Rejoindre le test fermé, c'est recevoir
+    Le palier des douze est atteint, mais le test reste ouvert jusqu'au
+    23 septembre, et c'est encore la mission qui compte double : elle tient les
+    quatorze jours qui doivent s'écouler sans que personne ne quitte le
+    programme, et elle donne un vrai retour d'usage avant que le clavier ne
+    s'ouvre à tout le monde. Rejoindre le test fermé, c'est recevoir
     l'application comme n'importe quelle autre : installation en un geste, mises
     à jour automatiques, sans autoriser les « sources inconnues ».
   </p>
@@ -481,42 +504,7 @@ Bien à vous,</div>
 </div>
 <script>
 (function(){
-  var launchDate = null;
-
-  // Charger la date depuis le JSON au démarrage
-  fetch('stats/testeurs.json').then(function(r){ return r.json(); }).then(function(t){
-    launchDate = new Date(t.lancement_play_store + 'T00:00:00Z');
-    updateCountdown(); // première mise à jour immédiate
-  }).catch(function(){ /* le texte statique reste affiché */ });
-
-  // Compte à rebours jusqu'au lancement sur Google Play
-  function updateCountdown(){
-    if (!launchDate) return;
-
-    var now = new Date();
-
-    // Calcul du temps restant en millisecondes
-    var remaining = launchDate - now;
-
-    // Conversion en jours, heures, minutes et secondes
-    var totalSeconds = Math.max(0, Math.floor(remaining / 1000));
-    var days = Math.floor(totalSeconds / 86400);
-    var hours = Math.floor((totalSeconds % 86400) / 3600);
-    var minutes = Math.floor((totalSeconds % 3600) / 60);
-    var seconds = totalSeconds % 60;
-
-    // Affichage avec zéro à gauche si nécessaire
-    document.getElementById('t-jours-count').textContent = days;
-    document.getElementById('t-heures-count').textContent = String(hours).padStart(2, '0');
-    document.getElementById('t-minutes-count').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('t-secondes-count').textContent = String(seconds).padStart(2, '0');
-
-    // Masquer "jours" si zéro
-    document.getElementById('t-jours-label').style.display = days === 0 ? 'none' : 'inline';
-  }
-
-  // Mise à jour chaque seconde pour un vrai compte à rebours
-  setInterval(updateCountdown, 1000);
+  // Le décompte vit dans assets/countdown.js, partagé avec l'accueil.
 
   var pageUrl = "https://famibelle.github.io/LuxKeyb/ambassadeurs.html";
   var waText = "Voici tout le kit pour faire connaître le Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android : messages prêts à envoyer, liens à montrer, QR codes. Servez-vous : " + pageUrl;
