@@ -29,7 +29,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_pochette.png",
+   "image_alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
+   "image_legende": "Une grille terminée verse sa pochette : les mots gagnés se retournent un par un, ceux que le carnet n'avait jamais vus portant une étiquette. « Passer » est offert dès la première carte — c'est un cadeau, pas un passage obligé. Le bilan compte ce que la grille a rapporté et ouvre sur la collection. Une grille dont on a demandé la solution n'en verse aucune, puisqu'elle ne rapporte rien."
   },
   {
    "version": "20.5.0",
@@ -76,7 +79,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_carnet.png",
+   "image_alt": "Deux écrans du carnet. À gauche, l'en-tête « Mäi Carnet », la ligne « 30 mots » suivie du compte par rareté, trois tris (Récent, A → Z, Rareté) et une grille de cartes à deux colonnes : Fans, Stëmme, geparkten, virgelies, sechs, Artikele, chacune avec son illustration, son mot en vert, son symbole de rareté et son sens français. À droite, la carte « virgelies » ouverte par-dessus la grille assombrie : badge violet « Très rare », « 9 lettres », le sens « lire à haute voix (à) », une phrase d'exemple, la même famille, et « n° 27 · 9958ᵉ mot le plus fréquent ».",
+   "image_legende": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui ne repart plus de zéro à la grille suivante. La rareté n'est pas inventée : c'est le rang du mot dans le dictionnaire de fréquences, ce qui rend « virgelies » aussi rare que le corpus le dit. Les illustrations sont dessinées à partir des lettres du mot, si bien que la même forme donne toujours la même carte."
   },
   {
    "version": "20.4.0",
@@ -111,7 +117,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_recompense_verrouillage.png",
+   "image_alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
+   "image_legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
   },
   {
    "version": "20.3.0",
