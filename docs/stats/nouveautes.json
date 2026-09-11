@@ -1,9 +1,84 @@
 {
- "genere_le": "2026-09-09",
- "derniere_version": "20.6.0",
- "derniere_date": "2026-09-09",
+ "genere_le": "2026-09-11",
+ "derniere_version": "20.7.0",
+ "derniere_date": "2026-09-11",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "20.7.0",
+   "date": "2026-09-11",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "Le carnet devient commun aux sept jeux",
+       "texte": "Il était né dans Wuertplaz et n'y gardait que les mots verrouillés ; ce qu'il réparait — une récompense qui disparaît avec la grille — n'avait pourtant rien de propre à ce jeu. Chaque mot trouvé dans Wuertsich, remis dans l'ordre dans Wuertmix, deviné dans Wuertriet, retrouvé dans la phrase de Wuertlück, bien orthographié dans Zuelwuert ou écrit dans Kräizwuert devient désormais une carte."
+      },
+      {
+       "titre": "Le carnet est en tête de l'écran des jeux",
+       "texte": "Pleine largeur, au-dessus des sept cartes. Il fallait auparavant choisir Wuertplaz <em>puis</em> finir une grille pour découvrir qu'une collection existait. La bannière porte le total et les emojis des jeux qui ont déjà donné une carte, comme une carte de progression."
+      },
+      {
+       "titre": "Chaque jeu porte sa pastille « 📔 Carnet »",
+       "texte": "Dans son en-tête, avec le total acquis, et l'ouvre d'une touche — même quand rien n'a encore été gagné."
+      },
+      {
+       "titre": "La pochette s'ouvre à la fin de chaque partie",
+       "texte": "Et plus seulement au bout d'une grille de Wuertplaz : fin de manche dans Wuertmix, Wuertlück et Zuelwuert, grille complète dans Wuertsich et Kräizwuert, mot trouvé dans Wuertriet. Elle prend la couleur et l'emoji du jeu qu'on vient de quitter, et passe <strong>avant</strong> le bilan chiffré, qui est une fenêtre à part et la recouvrirait."
+      },
+      {
+       "titre": "Une carte dit d'où elle vient",
+       "texte": "L'emoji du jeu sur la vignette, l'étiquette entière sur la carte ouverte. Un mot gagné dans deux jeux reste une seule carte et porte les deux — ce sont les mêmes mots, en faire deux cartes doublerait la collection sans rien lui apprendre."
+      },
+      {
+       "titre": "Le carnet se filtre par jeu",
+       "texte": "Les filtres n'apparaissent qu'à mesure que les jeux donnent des cartes, et la ligne reste cachée tant qu'un seul jeu est représenté : un unique filtre et un bouton « Tous » diraient la même chose."
+      },
+      {
+       "titre": "Les numéraux de Zuelwuert ont leur propre lecture de la rareté",
+       "texte": "Mesuré sur l'actif livré, 86 des 101 nombres de 0 à 100 sont absents du corpus de fréquences, et les quinze présents sautent de <code>zwee</code> (rang 105) à <code>fofzeg</code> (36 954) : la lecture par rang aurait rendu « très rares » cinq cartes sur six. Leur rareté suit donc ce que leur orthographe demande — forme isolée, dizaine ronde, composé à liaison <code>an</code>, puis composé où la règle d'Eifel fait tomber le n, celle qu'on n'invente pas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Une carte ne se gagne nulle part sans avoir été trouvée : un mot passé dans Wuertmix, une réponse fausse dans Wuertlück ou Zuelwuert, un Wuertriet perdu et une grille dont on a demandé la solution ne versent rien au carnet et n'ouvrent aucune pochette. C'était déjà la règle de Wuertplaz ; elle vaut maintenant pour les sept."
+      },
+      {
+       "titre": null,
+       "texte": "Le carnet a sa couleur propre, qui n'est celle d'aucun jeu : il ne porte plus le vert-bleu de Wuertplaz, dont il n'est plus la collection."
+      },
+      {
+       "titre": null,
+       "texte": "La liste des mots de Wuertsich traduit désormais la forme du dictionnaire et non sa graphie de grille, tout en capitales — les substantifs y retrouvent leur glose."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔒",
+     "titre": "Vie privée",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Les cartes déjà collectées sont reprises telles quelles : le carnet change de domaine de préférences, la reprise est faite une fois à la première lecture, et l'ancien domaine est effacé derrière elle. Rien de nouveau n'est stocké hormis le jeu d'origine de chaque carte."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "20.6.0",
    "date": "2026-09-09",
@@ -205,29 +280,6 @@
    "image": "Screenshots/lux_wuertplaz_sens.png",
    "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
    "image_legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
-  },
-  {
-   "version": "20.2.1",
-   "date": "2026-09-07",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "La septième carte de jeu était inatteignable",
-       "texte": "L'écran de choix des jeux n'avait jamais eu besoin de défiler : six cartes tenaient exactement dans un écran de téléphone. La septième, Wuertplaz, tombait sous le bord, et rien ne le signalait puisque la carte existait bel et bien. L'écran défile désormais."
-      },
-      {
-       "titre": "La ligne de récompense de Wuertplaz ne décale plus la grille",
-       "texte": "Elle ne réservait qu'une ligne alors que son message en occupe presque toujours deux, portant le mot, son sens et parfois le rappel de la majuscule des substantifs. La grille descendait donc d'un cran au moment précis où le joueur visait la case suivante, et l'appui tombait à côté. La hauteur du plus long message est maintenant réservée d'avance."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

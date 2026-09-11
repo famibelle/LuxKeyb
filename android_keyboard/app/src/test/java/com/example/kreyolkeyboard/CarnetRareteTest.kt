@@ -1,6 +1,8 @@
 package com.example.kreyolkeyboard
 
+import com.example.kreyolkeyboard.carnet.JeuCarte
 import com.example.kreyolkeyboard.carnet.Rarete
+import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -160,6 +162,106 @@ class CarnetRareteTest {
                 "priorité de glose serait sans objet ($divergentes)",
             divergentes >= 1000
         )
+    }
+
+    /**
+     * La lecture de la rareté d'un numéral, mesurée sur l'actif livré.
+     *
+     * Ce test justifie l'existence de [Rarete.pourNombre] : si un jour le
+     * corpus contenait les composés, la lecture par rang redeviendrait la
+     * bonne, et cette règle-ci n'aurait plus lieu d'être. Tant que la mesure
+     * tient, elle l'a.
+     */
+    @Test
+    fun `le corpus ne contient presque aucun numeral compose`() {
+        val rangs = rangs()
+        val absents = (0..ZuelenSpeller.MAXIMUM).count {
+            rangs[ZuelenSpeller.enLettres(it)] == null
+        }
+        assertTrue(
+            "le corpus connaîtrait maintenant les numéraux ($absents absents " +
+                "sur 101) : la lecture par rang redeviendrait la bonne",
+            absents >= 70
+        )
+    }
+
+    /**
+     * Les quatre paliers d'un numéral suivent ce que son orthographe demande :
+     * forme isolée, dizaine ronde, composé à liaison « an », composé où la
+     * règle d'Eifel fait tomber le n.
+     */
+    @Test
+    fun `la rarete d'un numeral suit son orthographe`() {
+        assertEquals(Rarete.COMMUN, Rarete.pourNombre(8))
+        assertEquals(Rarete.COMMUN, Rarete.pourNombre(19))
+        assertEquals(Rarete.COMMUN, Rarete.pourNombre(ZuelenSpeller.MAXIMUM))
+        assertEquals(Rarete.PEU_COMMUN, Rarete.pourNombre(20))
+        assertEquals(Rarete.PEU_COMMUN, Rarete.pourNombre(90))
+        // 21 = een + an + zwanzeg : le n de liaison se maintient.
+        assertEquals(Rarete.RARE, Rarete.pourNombre(21))
+        assertEquals(Rarete.RARE, Rarete.pourNombre(99))
+        // 56 = sechs + a + fofzeg : la règle d'Eifel fait tomber le n.
+        assertEquals(Rarete.TRES_RARE, Rarete.pourNombre(56))
+        assertEquals(Rarete.TRES_RARE, Rarete.pourNombre(42))
+        // Hors bornes, le repli commun à tout le carnet.
+        assertEquals(Rarete.TRES_RARE, Rarete.pourNombre(-1))
+        assertEquals(Rarete.TRES_RARE, Rarete.pourNombre(1000))
+    }
+
+    /**
+     * La courbe des numéraux doit rester jouable elle aussi : Zuelwuert tire
+     * ses produits dans les tables de 2 à 10, et aucun palier ne doit y être
+     * vide ni tout absorber.
+     */
+    @Test
+    fun `la courbe de rarete de Zuelwuert reste jouable`() {
+        val produits = (2..10).flatMap { a -> (2..10).map { b -> a * b } }
+        val parts = produits.groupingBy { Rarete.pourNombre(it) }.eachCount()
+        Rarete.values().forEach {
+            assertTrue(
+                "aucun palier ne doit être vide : ${it.libelle}",
+                (parts[it] ?: 0) > 0
+            )
+        }
+        Rarete.values().forEach {
+            assertTrue(
+                "aucun palier ne doit tout absorber : ${it.libelle}",
+                (parts[it] ?: 0) * 100 / produits.size <= 50
+            )
+        }
+    }
+
+    /**
+     * Les identifiants des jeux sont **la clé de stockage** d'une carte : les
+     * renommer relirait les carnets déjà collectés comme des cartes sans
+     * provenance. Ce test les fige, et vérifie qu'aucun doublon n'existe.
+     */
+    @Test
+    fun `les identifiants de jeu sont uniques et stables`() {
+        val ids = JeuCarte.values().map { it.id }
+        assertEquals(7, ids.size)
+        assertEquals(7, ids.toSet().size)
+        assertEquals(
+            listOf("ws", "wm", "wr", "wl", "zw", "kw", "wp"),
+            ids
+        )
+        JeuCarte.values().forEach {
+            assertEquals("l'identifiant reste court", 2, it.id.length)
+            assertEquals(it, JeuCarte.parId(it.id))
+        }
+        assertTrue("un identifiant inconnu ne doit rien résoudre", JeuCarte.parId("xx") == null)
+    }
+
+    /**
+     * Un jeu doit se reconnaître à son emoji et à sa couleur : ce sont les
+     * deux seules choses qui disent d'où vient une carte, sur la vignette du
+     * carnet comme au dos de la pochette.
+     */
+    @Test
+    fun `chaque jeu se distingue a l'oeil`() {
+        assertEquals(7, JeuCarte.values().map { it.emoji }.toSet().size)
+        assertEquals(7, JeuCarte.values().map { it.couleur }.toSet().size)
+        assertEquals(7, JeuCarte.values().map { it.nom }.toSet().size)
     }
 
     /**

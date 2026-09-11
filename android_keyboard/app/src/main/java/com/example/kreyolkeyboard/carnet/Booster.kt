@@ -20,18 +20,23 @@ import android.widget.ScrollView
 import android.widget.TextView
 
 /**
- * La pochette de fin de grille : les cartes gagnées se retournent une à une.
+ * La pochette de fin de partie : les cartes gagnées se retournent une à une.
  *
  * C'est le geste qui manquait entre la partie et la collection. Le carnet
  * conserve, mais il ne raconte rien : on y va pour consulter. La pochette,
- * elle, **paie la grille au moment où elle se termine** — on ne consulte pas
+ * elle, **paie la partie au moment où elle se termine** — on ne consulte pas
  * ses cartes, on les découvre.
+ *
+ * Elle a été écrite pour Wuertplaz et sert aujourd'hui les sept jeux : une
+ * manche de Wuertlück, une grille de Kräizwuert et une partie de Wuertriet se
+ * terminent toutes sur le même geste, aux couleurs du jeu qu'on vient de
+ * quitter.
  *
  * Quatre choix qui portent le reste :
  *
- * - **Toutes les cartes de la grille, pas seulement les neuves.** Un paquet
+ * - **Toutes les cartes de la partie, pas seulement les neuves.** Un paquet
  *   dont on connaît déjà la moitié reste un paquet ; n'ouvrir que les
- *   nouveautés ferait des grilles sans récompense dès que le joueur commence à
+ *   nouveautés ferait des parties sans récompense dès que le joueur commence à
  *   connaître le vocabulaire, c'est-à-dire exactement quand il progresse. Les
  *   neuves passent devant et portent un bandeau.
  * - **Une carte se retourne toute seule, un appui passe à la suivante.** Deux
@@ -42,14 +47,18 @@ import android.widget.TextView
  *   un cadeau, pas un péage entre le joueur et la grille suivante.
  * - **Elle n'arrive jamais après « Solution ».** Une grille révélée ne verse
  *   rien au carnet, donc elle n'ouvre pas de pochette : la récompense suit ce
- *   qui a été gagné, pas ce qui a été montré.
+ *   qui a été gagné, pas ce qui a été montré. Même règle partout : un mot
+ *   passé dans Wuertmix, une réponse fausse dans Wuertlück, un Wuertriet perdu
+ *   ne donnent pas de carte.
  */
 object Booster {
 
-    private const val TEAL = 0xFF00796B.toInt()
-
     /**
      * Ouvre la pochette au-dessus de [hote].
+     *
+     * [jeu] est celui d'où sortent ces cartes : il donne sa couleur au dos et
+     * au bouton du carnet, pour que la pochette appartienne visiblement à la
+     * partie qu'on vient de finir.
      *
      * [nouvelles] porte les formes que le carnet n'avait jamais vues ; elles
      * sont montrées d'abord et signalées. [surFin] est appelé à la fermeture,
@@ -59,6 +68,7 @@ object Booster {
      */
     fun ouvrir(
         hote: ViewGroup,
+        jeu: JeuCarte,
         contenus: List<ContenuCarte>,
         nouvelles: Set<String>,
         animations: Boolean,
@@ -97,7 +107,7 @@ object Booster {
         }
 
         val titre = TextView(ctx).apply {
-            text = "🎁 Votre pochette"
+            text = "🎁 Votre pochette — ${jeu.nom}"
             textSize = 19f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.WHITE)
@@ -173,7 +183,7 @@ object Booster {
             setPadding(dp(20f), dp(11f), dp(20f), dp(11f))
             background = GradientDrawable().apply {
                 cornerRadius = 24f * d
-                setColor(TEAL)
+                setColor(jeu.couleur)
             }
             isClickable = true
             visibility = View.GONE
@@ -247,7 +257,7 @@ object Booster {
                     Gravity.CENTER
                 )
                 isVerticalScrollBarEnabled = false
-                addView(CarteWuert.complete(ctx, c))
+                addView(CarteCarnet.complete(ctx, c))
             }
 
             if (!animations) {
@@ -257,7 +267,7 @@ object Booster {
                 return
             }
 
-            val dos = DosDeCarte(ctx).apply {
+            val dos = DosDeCarte(ctx, jeu).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     (ctx.resources.displayMetrics.heightPixels * 0.44f).toInt(),
@@ -323,14 +333,17 @@ object Booster {
 /**
  * Le dos d'une carte.
  *
- * Volontairement identique pour toutes : un dos qui trahirait la carte
- * supprimerait le seul instant que la pochette fabrique. Le motif reprend la
- * vignette du jeu — quatre cases, comme la grille — plutôt qu'un logo, parce
- * que c'est de Wuertplaz que ces cartes viennent.
+ * Volontairement identique pour toutes les cartes d'une même pochette : un dos
+ * qui trahirait la carte supprimerait le seul instant que la pochette fabrique.
+ * Ce qu'il dit, c'est **le jeu** — sa couleur et son emoji — et non le mot
+ * caché dessous : on sait d'où vient le paquet, jamais ce qu'il contient.
  */
-class DosDeCarte(context: Context) : View(context) {
+class DosDeCarte(context: Context, private val jeu: JeuCarte) : View(context) {
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val pinceauTexte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
+    }
     private var fond: LinearGradient? = null
 
     override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
@@ -338,10 +351,23 @@ class DosDeCarte(context: Context) : View(context) {
         if (w <= 0 || h <= 0) return
         fond = LinearGradient(
             0f, 0f, w * 0.4f, h.toFloat(),
-            0xFF00897B.toInt(), 0xFF004D40.toInt(),
+            eclaircir(jeu.couleur, 0.22f), assombrir(jeu.couleur, 0.45f),
             Shader.TileMode.CLAMP
         )
     }
+
+    /** Le dégradé du dos : la couleur du jeu, une fois levée, une fois posée. */
+    private fun eclaircir(couleur: Int, part: Float) = Color.rgb(
+        (Color.red(couleur) + (255 - Color.red(couleur)) * part).toInt(),
+        (Color.green(couleur) + (255 - Color.green(couleur)) * part).toInt(),
+        (Color.blue(couleur) + (255 - Color.blue(couleur)) * part).toInt()
+    )
+
+    private fun assombrir(couleur: Int, part: Float) = Color.rgb(
+        (Color.red(couleur) * (1 - part)).toInt(),
+        (Color.green(couleur) * (1 - part)).toInt(),
+        (Color.blue(couleur) * (1 - part)).toInt()
+    )
 
     override fun onDraw(canvas: Canvas) {
         val w = width.toFloat()
@@ -373,9 +399,10 @@ class DosDeCarte(context: Context) : View(context) {
         }
         pinceau.style = Paint.Style.FILL
 
-        // Quatre cases, comme la grille du jeu.
+        // Quatre cases, comme une grille, et l'emoji du jeu au centre : le
+        // motif est le même pour les sept, la marque change.
         val cote = h * 0.075f
-        val ecart = cote * 0.34f
+        val ecart = cote * 2.6f
         val gx = w / 2f - cote - ecart / 2f
         val gy = h / 2f - cote - ecart / 2f
         pinceau.color = Color.WHITE
@@ -387,5 +414,12 @@ class DosDeCarte(context: Context) : View(context) {
                 RectF(x, y, x + cote, y + cote), 4f * d, 4f * d, pinceau
             )
         }
+
+        pinceauTexte.textSize = h * 0.10f
+        val mesure = Paint.FontMetrics().also { pinceauTexte.getFontMetrics(it) }
+        canvas.drawText(
+            jeu.emoji, w / 2f, h / 2f - (mesure.ascent + mesure.descent) / 2f,
+            pinceauTexte
+        )
     }
 }

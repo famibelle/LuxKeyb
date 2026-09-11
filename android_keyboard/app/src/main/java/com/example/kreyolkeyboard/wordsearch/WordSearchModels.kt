@@ -42,8 +42,18 @@ data class WordSearchPuzzle(
     }
 }
 
+/**
+ * Un mot posé dans la grille.
+ *
+ * [word] est la graphie de la grille, donc **en capitales** : c'est elle qu'on
+ * compare au tracé du joueur. [canonical] garde la forme du dictionnaire, avec
+ * ses minuscules et sa majuscule de substantif — c'est elle qui sert à
+ * traduire le mot et à en faire une carte du carnet, les deux tables du LOD
+ * étant indexées sur la graphie réelle et non sur son cri.
+ */
 data class WordSearchWord(
     val word: String,
+    val canonical: String = word,
     val startRow: Int,
     val startCol: Int,
     val direction: WordDirection,
