@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitch deck · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Treize pages : le problème, le marché, la technologie, les mesures, l'équipe et la demande. Le clavier luxembourgeois pour téléphone, publié, mesuré et hors ligne.">
+<meta property="og:title" content="Pitch deck · Lëtzebuergesch Clavier">
+<meta property="og:description" content="Un clavier luxembourgeois publié, mesuré sur un corpus de contrôle indépendant, et qui fonctionne sans aucune permission réseau. Treize pages.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+/* Deck autonome : il ne charge pas dossier.css, dont les styles de
+   document (marges de page, .wrap étroit) se battraient avec des pages
+   pleine hauteur. Seules les variables de theme.css sont partagées, pour
+   que le deck suive le thème clair/sombre du reste du site. */
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip;
+}
+.deck{scroll-snap-type:y proximity;}
+.slide{
+  min-height:100svh; display:flex; align-items:center;
+  scroll-snap-align:start; padding:76px 22px 64px;
+  border-bottom:1px solid var(--line); position:relative;
+}
+.slide > .in{width:100%; max-width:980px; margin:0 auto;}
+.slide:first-child{border-top:0;}
+
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--sea);margin:0 0 14px;font-weight:700;}
+h1{font-size:clamp(34px,6.6vw,62px);font-weight:800;line-height:1.03;letter-spacing:-0.028em;margin:0 0 18px;text-wrap:balance;}
+h2{font-size:clamp(25px,3.9vw,40px);font-weight:800;line-height:1.1;letter-spacing:-0.022em;margin:0 0 16px;text-wrap:balance;}
+.lead{font-size:clamp(17px,2.1vw,21px);color:var(--ink-soft);max-width:62ch;margin:0 0 8px;}
+p{margin:0 0 14px;}
+strong{font-weight:750;}
+a{color:var(--sea);}
+.small{font-size:14px;color:var(--ink-soft);}
+.mono{font-family:var(--mono);}
+
+/* Le chiffre est l'unité de base d'un deck : il doit se lire depuis le
+   fond d'une salle, la légende non. */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:26px 0 0;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:17px 18px;}
+.tile .n{display:block;font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-0.025em;line-height:1.08;font-variant-numeric:tabular-nums;}
+.tile .k{display:block;font-size:13.5px;color:var(--ink-soft);margin-top:6px;line-height:1.45;}
+.tile.hi{border-color:var(--sea);background:var(--sea-soft);}
+.tile.warn{border-color:color-mix(in srgb,var(--sun) 45%,transparent);background:var(--sun-soft);}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px 19px;}
+.card h3{margin:0 0 8px;font-size:16.5px;font-weight:750;letter-spacing:-0.01em;}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+.card p + p{margin-top:9px;}
+
+ul{margin:16px 0 0;padding-left:20px;}
+li{margin-bottom:11px;font-size:clamp(15px,1.75vw,17px);}
+li .t{font-weight:700;color:var(--ink);}
+li, li p{color:var(--ink-soft);}
+
+/* La chaîne d'outils publics : le tampon d'état porte l'argument, le
+   maillon manquant est la seule ligne en couleur. */
+.chain{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);margin-top:24px;}
+.link{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:13px 17px;border-bottom:1px solid var(--line);align-items:center;}
+.link:last-child{border-bottom:0;}
+.link .act{font-size:16px;font-weight:700;margin:0;color:var(--ink);}
+.link .tool{font-size:13.5px;color:var(--ink-soft);}
+.link .st{grid-column:2;grid-row:1/3;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 11px;white-space:nowrap;background:var(--stripe);border:1px solid var(--line);color:var(--ink-soft);font-weight:700;}
+.link.gap{background:var(--sun-soft);}
+.link.gap .st{background:var(--sun);border-color:var(--sun);color:#1C2624;}
+.link.gap .act{font-size:17.5px;}
+
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:22px;}
+.table-scroll{overflow-x:auto;}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:700;}
+td.num{text-align:right;font-variant-numeric:tabular-nums;}
+td.win{font-weight:800;color:var(--ink);}
+tbody tr:last-child td{border-bottom:0;}
+
+.quote{border-left:4px solid var(--hibiscus);background:var(--hibiscus-soft);border-radius:0 11px 11px 0;padding:16px 20px;margin:24px 0 0;font-size:clamp(16px,2vw,19px);line-height:1.5;}
+.quote cite{display:block;margin-top:9px;font-size:13.5px;font-style:normal;color:var(--ink-soft);}
+
+.ask{border:2px solid var(--sea);background:var(--sea-soft);border-radius:15px;padding:22px 24px;margin-top:24px;}
+.ask .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sea);font-weight:700;margin:0 0 10px;}
+.ask p{font-size:clamp(16px,2vw,19px);margin:0;}
+
+.note{background:var(--stripe);border:1px solid var(--line);border-radius:11px;padding:15px 17px;margin-top:22px;font-size:14.5px;color:var(--ink-soft);}
+.note p:last-child{margin-bottom:0;}
+
+/* Habillage d'écran : numéro de page, barre d'outils, points de
+   navigation. Tout disparaît à l'impression. */
+.num{position:absolute;top:22px;right:24px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.08em;}
+.deck-ui{position:fixed;top:14px;left:16px;z-index:9;display:flex;gap:8px;align-items:center;}
+.deck-ui a,.deck-ui button{
+  font:inherit;font-size:12.5px;line-height:1;padding:8px 12px;border-radius:999px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);
+  text-decoration:none;cursor:pointer;
+}
+.deck-ui a:hover,.deck-ui button:hover{border-color:var(--sea);}
+.dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:9;display:flex;flex-direction:column;gap:7px;}
+.dots a{width:8px;height:8px;border-radius:50%;background:var(--line);display:block;}
+.dots a[aria-current="true"]{background:var(--sea);transform:scale(1.4);}
+@media (max-width:720px){.dots{display:none;} .deck-ui{top:auto;bottom:12px;} .slide{padding:56px 18px 72px;}}
+
+@media print{
+  .deck-ui,.dots,.num{display:none;}
+  .slide{min-height:0;page-break-after:always;border:0;padding:0 0 22px;display:block;}
+  .slide:last-child{page-break-after:auto;}
+  body{background:#fff;color:#000;}
+  @page{size:A4 landscape;margin:14mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="deck-ui">
+  <a href="index.html">← Le site</a>
+  <button type="button" onclick="window.print()">Imprimer / PDF</button>
+  <!-- .fixed : theme.js n'écrit l'icône seule que sur cette classe, sinon il
+       peint « 🌙 Fond sombre » et la pastille s'étire. -->
+  <button type="button" class="theme-toggle fixed" aria-label="Changer de thème">🌙</button>
+</div>
+
+<nav class="dots" aria-label="Pages du deck"></nav>
+
+<main class="deck">
+
+<!-- 1 ............................................................. -->
+<section class="slide" id="p1">
+  <div class="in">
+    <p class="eyebrow">Pitch deck · septembre 2026 · version 20.6.0</p>
+    <h1>Lëtzebuergesch Clavier</h1>
+    <p class="lead">
+      Le clavier qui permet d'écrire le luxembourgeois sur son téléphone
+      aussi facilement qu'on y écrit le français ou l'allemand. Publié,
+      mesuré, et fonctionnant sans aucun accès au réseau.
+    </p>
+    <div class="tiles">
+      <div class="tile hi"><span class="n">123 265</span><span class="k">formes luxembourgeoises reconnues, contre 71 255 pour le dictionnaire Android figé depuis 2013</span></div>
+      <div class="tile"><span class="n">0</span><span class="k">permission réseau déclarée : aucune frappe ne peut quitter l'appareil</span></div>
+      <div class="tile"><span class="n">23 sept. 2026</span><span class="k">ouverture publique sur Google Play, après un test fermé</span></div>
+    </div>
+    <p class="small" style="margin-top:24px">
+      Médhi Famibelle · medhi.famibelle@gmail.com ·
+      <a href="simulateur.html">essayer le clavier dans le navigateur</a>
+    </p>
+  </div>
+</section>
+
+<!-- 2 ............................................................. -->
+<section class="slide" id="p2">
+  <div class="in">
+    <p class="eyebrow">Le problème</p>
+    <h2>Écrire sa langue, c'est se battre contre son téléphone</h2>
+    <p class="lead">
+      Une personne écrit un message en luxembourgeois. Son clavier souligne
+      chaque mot en rouge, transforme <strong>Haus</strong> en
+      <strong>Haut</strong>, lui propose de l'allemand ou du français, et lui
+      fait perdre le fil de sa phrase. Au bout de quelques mots, beaucoup
+      font la même chose : ils basculent en français ou en allemand, parce
+      que c'est plus rapide.
+    </p>
+    <div class="cols">
+      <div class="card">
+        <h3>Ce n'est la faute de personne</h3>
+        <p>Faute de dictionnaire luxembourgeois à jour, le clavier applique
+        celui de la langue voisine qu'il connaît. Ce n'est ni un problème
+        d'attachement à la langue, ni un problème de compétence : c'est une
+        ressource linguistique qui manque là où elle servirait.</p>
+      </div>
+      <div class="card">
+        <h3>Et c'est là que la langue s'écrit</h3>
+        <p>Le luxembourgeois s'écrit aujourd'hui surtout dans des messages,
+        et c'est précisément l'endroit où il n'est pas équipé, alors que le
+        français et l'allemand le sont pleinement, sur le même appareil,
+        dans la même conversation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ............................................................. -->
+<section class="slide" id="p3">
+  <div class="in">
+    <p class="eyebrow">Le marché</p>
+    <h2>Le défi n'est pas l'attachement, c'est l'échelle</h2>
+    <p class="lead">
+      Entre 2011 et 2021, le nombre de personnes déclarant le luxembourgeois
+      comme langue principale a <strong>augmenté</strong>. Mais le pays a
+      changé plus vite autour, si bien que la part recule mécaniquement.
+    </p>
+    <div class="tiles">
+      <div class="tile"><span class="n">275 361</span><span class="k">personnes déclarent le luxembourgeois comme langue principale (recensement 2021)</span></div>
+      <div class="tile"><span class="n">643 941</span><span class="k">résidents, soit +25,7 % en dix ans</span></div>
+      <div class="tile"><span class="n">131 588</span><span class="k">nouveaux arrivants sur la période, qui pour la plupart ne connaissent pas la langue</span></div>
+      <div class="tile hi"><span class="n">0 €</span><span class="k">coût par utilisateur supplémentaire : ni cours, ni inscription, ni temps dédié</span></div>
+    </div>
+    <p class="note">
+      Un clavier agit dans un geste que tout le monde fait déjà, des dizaines
+      de fois par jour. C'est le complément naturel d'une politique
+      linguistique qui doit désormais toucher deux fois plus de monde qu'il y
+      a quinze ans. S'y ajoutent les apprenants de la langue, plus de 70 000
+      sur le seul service public d'apprentissage en ligne.
+    </p>
+  </div>
+</section>
+
+<!-- 4 ............................................................. -->
+<section class="slide" id="p4">
+  <div class="in">
+    <p class="eyebrow">Le vide à combler</p>
+    <h2>Une langue bien équipée, sauf là où elle se produit</h2>
+    <p class="lead">
+      Le luxembourgeois est mieux outillé que beaucoup de langues
+      comparables. Il reste un usage, le plus fréquent de tous, où la
+      personne est encore seule.
+    </p>
+    <div class="chain">
+      <div class="link"><p class="act">Comprendre un mot</p><span class="tool">lod.lu, le dictionnaire officiel</span><span class="st">Existe</span></div>
+      <div class="link"><p class="act">Corriger un texte</p><span class="tool">spellchecker.lu</span><span class="st">Existe</span></div>
+      <div class="link"><p class="act">Apprendre l'orthographe</p><span class="tool">orthotrainer.lu</span><span class="st">Existe</span></div>
+      <div class="link"><p class="act">Dicter et faire lire</p><span class="tool">sproochmaschinn.lu</span><span class="st">Existe</span></div>
+      <div class="link"><p class="act">Apprendre la langue</p><span class="tool">plus de 70 000 apprenants en ligne</span><span class="st">Existe</span></div>
+      <div class="link gap"><p class="act">Écrire au quotidien, sur son téléphone</p><span class="tool">SMS, WhatsApp, courriel, formulaires</span><span class="st">Le vide</span></div>
+    </div>
+    <p class="note">
+      Les autres outils sont des <strong>destinations</strong> : il faut y
+      aller, consulter, revenir à son message. Le clavier, lui, est déjà
+      ouvert. C'est aussi le seul endroit où la langue se produit au lieu
+      d'être consultée.
+    </p>
+  </div>
+</section>
+
+<!-- 5 ............................................................. -->
+<section class="slide" id="p5">
+  <div class="in">
+    <p class="eyebrow">Le produit</p>
+    <h2>Ce qui est livré, aujourd'hui</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>Un clavier, pas une option</h3>
+        <p>Disposition QWERTZ luxembourgeoise, celle des claviers physiques
+        du pays. <strong>é, ä, ë et l'apostrophe ont leur propre touche</strong>
+        au lieu d'être cachés sous un appui long.</p>
+      </div>
+      <div class="card">
+        <h3>Deux langues sans rien régler</h3>
+        <p>Une rangée de suggestions luxembourgeoises, une rangée française
+        en dessous, simultanément. Personne n'a à basculer de langue au
+        milieu d'une phrase.</p>
+      </div>
+      <div class="card">
+        <h3>Correcteur système</h3>
+        <p>Un service de correction orthographique déclaré séparément, qui
+        cesse de souligner en rouge le luxembourgeois correct dans toutes
+        les applications du téléphone.</p>
+      </div>
+      <div class="card">
+        <h3>Le dictionnaire officiel embarqué</h3>
+        <p>Recherche dans les deux sens, sens français, familles de formes
+        et phrases d'exemple du LOD, hors ligne.</p>
+      </div>
+      <div class="card">
+        <h3>Sept jeux et huit niveaux</h3>
+        <p>Mots croisés, mots mêlés, textes à trous, transcodage des
+        nombres : le vocabulaire s'acquiert pendant qu'on écrit, et
+        l'orthographe se produit au lieu d'être lue.</p>
+      </div>
+      <div class="card">
+        <h3>Hors ligne intégral</h3>
+        <p>8,4 Mo installés, fonctionne en mode avion, sans publicité et
+        sans compte.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 ............................................................. -->
+<section class="slide" id="p6">
+  <div class="in">
+    <p class="eyebrow">Où nous en sommes</p>
+    <h2>Publié, testé, et daté</h2>
+    <div class="tiles">
+      <div class="tile hi"><span class="n">20.6.0</span><span class="k">version en test fermé sur Google Play, ouverture publique le 23 septembre 2026</span></div>
+      <div class="tile"><span class="n">270+</span><span class="k">tests automatisés à chaque intégration, dont plusieurs relisent les données réellement embarquées</span></div>
+      <div class="tile"><span class="n">1 an</span><span class="k">de développement, sur temps libre, par une seule personne</span></div>
+      <div class="tile warn"><span class="n">Aucune</span><span class="k">télémétrie, donc aucune statistique d'usage : c'est un choix, et une limite assumée</span></div>
+    </div>
+    <p class="note">
+      La chaîne de fabrication des données est automatisée et rejouable :
+      l'intégration continue régénère les dictionnaires à chaque livraison et
+      <strong>refuse de construire l'application</strong> si un fichier tombe
+      sous un seuil de volume, change de forme ou perd son attribution. Une
+      régression silencieuse des données est le risque principal de ce genre
+      de projet.
+    </p>
+  </div>
+</section>
+
+<!-- 7 ............................................................. -->
+<section class="slide" id="p7">
+  <div class="in">
+    <p class="eyebrow">La technologie</p>
+    <h2>Une chaîne de ressources linguistiques, pas un modèle de plus</h2>
+    <p class="lead">
+      Rien n'est saisi à la main : six programmes fabriquent les données
+      depuis des sources publiques identifiées, et les régénèrent à chaque
+      livraison.
+    </p>
+    <ul>
+      <li><span class="t">La Groussschreiwung, traitée de bout en bout.</span>
+      Le luxembourgeois capitalise ses substantifs : la casse porte du sens.
+      La chaîne élit une casse canonique par forme <strong>en ne comptant que
+      les occurrences qui ne sont pas en début de phrase</strong>, et traite
+      les 676 homographes réels où la majuscule distingue deux mots.</li>
+      <li><span class="t">La reconnaissance passe par des filtres de Bloom.</span>
+      171 Ko au lieu de plusieurs mégaoctets, 5,85 Mo de mémoire vive
+      économisés sur appareil. L'asymétrie d'erreur est le raisonnement
+      central : un tel filtre ne peut jamais rejeter une forme qu'il
+      contient, donc <strong>il ne peut jamais souligner un mot correct</strong>.</li>
+      <li><span class="t">27 746 contextes de prédiction</span> en bigrammes
+      et trigrammes, et une correction tolérante aux fautes de frappe
+      réécrite pour être cinq fois plus rapide sur un téléphone d'entrée de
+      gamme.</li>
+      <li><span class="t">La barre se tait quand le modèle ne sait pas.</span>
+      Mesuré : hors contexte reconnu, toutes les stratégies de repli
+      plafonnent entre 2 et 4 % de réussite. Des suggestions justes une fois
+      sur vingt-cinq, habillées comme celles qui le sont une fois sur cinq,
+      coûtent plus qu'une barre éteinte.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 8 ............................................................. -->
+<section class="slide" id="p8">
+  <div class="in">
+    <p class="eyebrow">Les preuves</p>
+    <h2>Mesuré sur un corpus que le modèle n'a jamais vu</h2>
+    <p class="lead">
+      C'est la partie la plus facile à truquer dans ce genre de projet, donc
+      celle qu'il faut exposer le plus complètement. Une part de corpus mise
+      de côté vient des mêmes articles et du même registre : elle annonce
+      23,9 % là où un jeu réellement indépendant donne 18,1 %.
+    </p>
+    <div class="tiles">
+      <div class="tile"><span class="n">10 038</span><span class="k">segments inédits du corpus de traduction du ZLS, recouvrement de 6,84 % avec l'entraînement</span></div>
+      <div class="tile"><span class="n">135 343</span><span class="k">événements de frappe évalués, soit ±0,1 point de bruit statistique</span></div>
+      <div class="tile hi"><span class="n">93,6 %</span><span class="k">de couverture lexicale, et 87,8 % de contextes reconnus</span></div>
+      <div class="tile hi"><span class="n">18,1 %</span><span class="k">de frappes remplaçables par un appui sur une suggestion</span></div>
+    </div>
+    <p class="note">
+      Le script d'évaluation lit les fichiers <strong>embarqués dans
+      l'application livrée</strong>, pas une version de travail : le chiffre
+      publié est celui que les utilisateurs obtiennent. Code, scripts et
+      mesures sont publics et rejouables.
+    </p>
+  </div>
+</section>
+
+<!-- 9 ............................................................. -->
+<section class="slide" id="p9">
+  <div class="in">
+    <p class="eyebrow">La concurrence</p>
+    <h2>Face aux claviers installés par défaut</h2>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>Mesuré sur le même appareil</th><th class="num">Lëtzebuergesch Clavier</th><th class="num">Clavier Samsung</th></tr></thead>
+      <tbody>
+        <tr><td>Mot juste dans les 3 suggestions</td><td class="num win">20,2 %</td><td class="num">17,6 %</td></tr>
+        <tr><td>Mot juste en 1<sup>re</sup> position</td><td class="num win">10,0 %</td><td class="num">7,9 %</td></tr>
+        <tr><td>Mémoire vive, clavier ouvert</td><td class="num win">105 à 137 Mo</td><td class="num">158 à 171 Mo</td></tr>
+        <tr><td>Taille installée</td><td class="num win">8,4 Mo</td><td class="num">110,1 Mo</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="cols">
+      <div class="card">
+        <h3>Une langue parmi des centaines</h3>
+        <p>Gboard et le clavier Samsung gèrent le luxembourgeois comme une
+        ligne parmi 377 à 900 variétés de langues, avec des modèles
+        propriétaires non consultables, non auditables et non gouvernables
+        par une institution luxembourgeoise.</p>
+      </div>
+      <div class="card">
+        <h3>Sur iPhone, rien du tout</h3>
+        <p>Le luxembourgeois n'est pas pris en charge par iOS jusqu'à la
+        version 26, et <strong>aucun clavier luxembourgeois, natif ou tiers,
+        n'y existe</strong>. C'est environ la moitié du parc du pays, le seul
+        de la région où les deux plateformes sont à parité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 ............................................................ -->
+<section class="slide" id="p10">
+  <div class="in">
+    <p class="eyebrow">Souveraineté</p>
+    <h2>Ce que l'application ne fait pas</h2>
+    <p class="lead">
+      La promesse de confidentialité n'est pas une politique écrite dans un
+      document : elle est une propriété du logiciel, vérifiable par
+      quiconque.
+    </p>
+    <ul>
+      <li><span class="t">Aucune permission réseau n'est déclarée.</span>
+      L'application fonctionne intégralement en mode avion. Il n'est pas
+      seulement interdit qu'une frappe quitte l'appareil, c'est
+      techniquement impossible.</li>
+      <li><span class="t">Aucune télémétrie, aucun compte, aucune publicité.</span>
+      Seuls les mots déjà présents dans le dictionnaire sont comptés,
+      localement, pour la progression : mots de passe et chaînes
+      personnelles ne sont jamais enregistrés.</li>
+      <li><span class="t">Code ouvert sous licence MIT</span>, données issues
+      des jeux ouverts du Zenter fir d'Lëtzebuerger Sprooch, et mesures
+      rejouables par un script public.</li>
+      <li><span class="t">8,6 Mo de données publiques luxembourgeoises</span>
+      embarquées dans l'application, sur 16,6 Mo au total : la ressource
+      linguistique reste sur le territoire et dans la poche de son
+      utilisateur.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 ............................................................ -->
+<section class="slide" id="p11">
+  <div class="in">
+    <p class="eyebrow">L'équipe</p>
+    <h2>Quatre personnes, un développeur, rien de formalisé</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>Médhi Famibelle · fondateur</h3>
+        <p>Ingénieur de formation, spécialisé en intelligence artificielle.
+        Vingt ans d'expérience dans l'informatique, aujourd'hui architecte IA
+        en société de services sur des projets bancaires.</p>
+        <p>Conception, développement Android, chaîne de traitement des
+        données, intégration continue, site et documentation. Le projet est
+        mené sur temps libre depuis un an.</p>
+      </div>
+      <div class="card">
+        <h3>Trois contributeurs bénévoles</h3>
+        <p>Retours d'usage, tests et relecture, à temps partiel. L'une de ces
+        personnes prend en charge les relations avec les entités et le
+        contact institutionnel.</p>
+        <p>Il n'y a ni rôles formalisés, ni contrats, ni répartition du
+        capital, pour la raison simple qu'il n'y a pas de capital.</p>
+      </div>
+    </div>
+    <p class="note">
+      Ce que l'équipe n'a pas, et qu'il serait malhonnête de masquer :
+      <strong>aucune compétence business constituée</strong> et
+      <strong>aucun linguiste</strong>. La validation de la langue par des
+      locuteurs natifs et par le ZLS est un chantier identifié, pas un
+      acquis.
+    </p>
+  </div>
+</section>
+
+<!-- 12 ............................................................ -->
+<section class="slide" id="p12">
+  <div class="in">
+    <p class="eyebrow">Modèle économique</p>
+    <h2>Aucun revenu à ce jour, et une décision à prendre</h2>
+    <p class="lead">
+      Gratuit, open source, sans publicité ni collecte. Le projet n'a reçu
+      aucun financement, public ou privé. La question du modèle est ouverte,
+      et une contrainte la structure.
+    </p>
+    <div class="cols">
+      <div class="card">
+        <h3>La clause non commerciale</h3>
+        <p>Deux des corpus d'entraînement sont sous licence CC BY-NC : les
+        fichiers de dictionnaire produits <strong>ne sont pas
+        redistribuables commercialement</strong> en l'état, même si le code
+        l'est.</p>
+      </div>
+      <div class="card">
+        <h3>La variante CC0, déjà mesurée</h3>
+        <p>Entraînée uniquement sur les jeux ouverts du ZLS : 12 472 formes
+        au lieu de 37 761, et 14,0 % au lieu de 18,1 %. Elle est viable, son
+        coût de qualité est chiffré, et la question a donc été tranchée par
+        la mesure plutôt que par l'intuition.</p>
+      </div>
+    </div>
+    <ul>
+      <li><span class="t">Outil de politique linguistique publique</span> :
+      l'hypothèse principale, le clavier complétant les cinq outils
+      numériques déjà financés, à l'endroit précis où il n'y a rien.</li>
+      <li><span class="t">Portage iOS</span>, qui décide si l'outil s'adresse
+      à la moitié du pays ou à sa totalité.</li>
+      <li><span class="t">Adaptation sous licence</span> pour des
+      organisations ayant besoin d'une saisie luxembourgeoise souveraine et
+      hors ligne, sur la base de la variante CC0.</li>
+      <li><span class="t">Réplication de la méthode</span> pour d'autres
+      langues peu dotées : la chaîne est générique, seules les sources
+      changent.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 13 ............................................................ -->
+<section class="slide" id="p13">
+  <div class="in">
+    <p class="eyebrow">La demande</p>
+    <h2>Ce qu'un projet individuel ne peut pas se donner</h2>
+    <div class="ask">
+      <p class="t">En une phrase</p>
+      <p>L'application existe et elle fonctionne. Ce qui lui manque est
+      d'être <strong>connue de ceux à qui elle sert</strong>,
+      <strong>validée par des linguistes</strong>, et
+      <strong>maintenue au-delà de la disponibilité d'une seule
+      personne</strong>.</p>
+    </div>
+    <ul>
+      <li><span class="t">Mise en relation avec l'écosystème.</span> Le
+      verrou principal : on ne se référence pas soi-même depuis lod.lu. Sans
+      cette étape, la qualité de l'outil reste sans effet.</li>
+      <li><span class="t">Orientation vers un financement public RDI</span>,
+      pour ce qui ne peut pas être fait sur du temps libre : validation
+      linguistique, portage iOS, instruction de la dictée.</li>
+      <li><span class="t">Structuration.</span> Statut juridique, rôles,
+      modèle : c'est un travail que je préfère ne pas faire seul et au
+      hasard.</li>
+    </ul>
+    <p class="note" style="margin-top:26px">
+      <strong>Médhi Famibelle</strong> · medhi.famibelle@gmail.com ·
+      échanges possibles en français, en anglais ou en allemand<br>
+      Le dossier détaillé : <a href="dossier.html">dossier institutionnel</a> ·
+      Les mesures : <a href="dossier-technique.html">fiche technique</a> ·
+      Le code : <a href="https://github.com/famibelle/LuxKeyb">GitHub</a><br>
+      Pour juger sur pièce sans rien installer :
+      <a href="simulateur.html">le clavier tourne dans le navigateur</a>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* Numéro de page, points de navigation et flèches du clavier. Un deck se
+   parcourt au clavier ou au doigt, jamais à la barre de défilement. */
+(function () {
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dots = document.querySelector('.dots');
+
+  pages.forEach(function (p, i) {
+    var n = document.createElement('span');
+    n.className = 'num';
+    n.textContent = (i + 1) + ' / ' + pages.length;
+    p.appendChild(n);
+
+    var d = document.createElement('a');
+    d.href = '#' + p.id;
+    d.setAttribute('aria-label', 'Page ' + (i + 1));
+    dots.appendChild(d);
+  });
+
+  var liens = Array.prototype.slice.call(dots.children);
+  var courant = 0;
+
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        courant = pages.indexOf(e.target);
+        liens.forEach(function (l, i) {
+          l.setAttribute('aria-current', i === courant ? 'true' : 'false');
+        });
+      });
+    }, { threshold: 0.5 });
+    pages.forEach(function (p) { obs.observe(p); });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var cible = null;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') cible = courant + 1;
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') cible = courant - 1;
+    else if (e.key === 'Home') cible = 0;
+    else if (e.key === 'End') cible = pages.length - 1;
+    if (cible === null) return;
+    if (cible < 0 || cible >= pages.length) return;
+    e.preventDefault();
+    pages[cible].scrollIntoView({ behavior: 'smooth' });
+  });
+})();
+</script>
+
+</body>
+</html>
