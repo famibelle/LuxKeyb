@@ -137,7 +137,7 @@ tbody tr:last-child td{border-bottom:0;}
       mesuré, et fonctionnant sans aucun accès au réseau.
     </p>
     <div class="tiles">
-      <div class="tile hi"><span class="n">123 265</span><span class="k">formes luxembourgeoises reconnues, issues du dictionnaire officiel et d'un corpus public</span></div>
+      <div class="tile hi"><span class="n">123 265</span><span class="k">formes luxembourgeoises reconnues, adossées au dictionnaire officiel de la langue</span></div>
       <div class="tile"><span class="n">0</span><span class="k">permission réseau déclarée : aucune frappe ne peut quitter l'appareil</span></div>
       <div class="tile"><span class="n">23 sept. 2026</span><span class="k">ouverture publique sur Google Play, après un test fermé</span></div>
     </div>
@@ -386,26 +386,35 @@ tbody tr:last-child td{border-bottom:0;}
 <section class="slide" id="p9">
   <div class="in">
     <p class="eyebrow">Modèle économique</p>
-    <h2>Aucun revenu à ce jour, et une décision à prendre</h2>
+    <h2>Aucun revenu à ce jour, et aucun verrou sur la suite</h2>
     <p class="lead">
       Gratuit, open source, sans publicité ni collecte. Le projet n'a reçu
       aucun financement, public ou privé. La question du modèle est ouverte,
-      et une contrainte la structure.
+      et rien dans les données ne l'entrave : <strong>la source de référence
+      de l'application est le dictionnaire officiel, en CC0</strong>.
     </p>
     <div class="cols">
       <div class="card">
-        <h3>La clause non commerciale</h3>
-        <p>Deux des corpus d'entraînement sont sous licence CC BY-NC : les
-        fichiers de dictionnaire produits <strong>ne sont pas
-        redistribuables commercialement</strong> en l'état, même si le code
-        l'est.</p>
+        <h3>Le socle : le LOD et le ZLS, en CC0</h3>
+        <p><strong>8,6 Mo des 16,6 de données embarquées</strong>, avant
+        compression, 111 279 des formes
+        reconnues, et la totalité des sens, des familles de formes, des
+        phrases d'exemple et du correcteur orthographique. Licence CC0 :
+        aucune obligation, aucune restriction d'usage commercial.</p>
       </div>
       <div class="card">
-        <h3>La variante CC0, déjà mesurée</h3>
-        <p>Entraînée uniquement sur les jeux ouverts du ZLS : 12 472 formes au
-        lieu de 37 761, et 14,0 % au lieu de 18,1 %. Elle est viable, son coût
-        est chiffré, et la question a donc été tranchée par la mesure plutôt
-        que par l'intuition.</p>
+        <h3>La couche statistique, expérimentale</h3>
+        <p>Deux corpus universitaires fournissent les fréquences et les
+        27 746 contextes de prédiction. L'un porte une clause non
+        commerciale : <strong>c'est le seul composant restreint</strong>, il
+        classe et prédit, il ne définit pas la langue.</p>
+      </div>
+      <div class="card">
+        <h3>La sortie est déjà construite</h3>
+        <p>Variante entièrement CC0, mesurée : 14,0 % au lieu de 18,1 % de
+        mot juste dans les trois premières suggestions. <strong>La
+        reconnaissance des mots et le correcteur ne bougent pas</strong>,
+        puisqu'ils reposent déjà entièrement sur le LOD.</p>
       </div>
     </div>
     <ul>
