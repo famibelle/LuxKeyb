@@ -64,10 +64,10 @@ import com.example.kreyolkeyboard.crossword.CrosswordGrid
 import com.example.kreyolkeyboard.crossword.CrosswordSession
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
-import com.example.kreyolkeyboard.carnet.Booster
+import com.example.kreyolkeyboard.carnet.Carnet
 import com.example.kreyolkeyboard.carnet.CarnetFragment
-import com.example.kreyolkeyboard.carnet.CarnetWuertplaz
-import com.example.kreyolkeyboard.carnet.CarteWuert
+import com.example.kreyolkeyboard.carnet.JeuCarte
+import com.example.kreyolkeyboard.carnet.Pochette
 import com.example.kreyolkeyboard.zuelen.ZuelenData
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
@@ -4629,6 +4629,16 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var wordsListContainer: LinearLayout
         private lateinit var tvTheme: TextView
         private lateinit var tvScore: TextView
+        private lateinit var boutonCarnet: TextView
+
+        /** Les formes gagnées dans la grille en cours, dans l'ordre du tracé. */
+        private val gagnes = mutableListOf<String>()
+
+        /** Celles que le carnet n'avait jamais vues. */
+        private val neuves = mutableSetOf<String>()
+
+        /** La pochette de fin de grille, posée au-dessus de tout. */
+        private var pochette: View? = null
         
         override fun onCreateView(
             inflater: android.view.LayoutInflater,
@@ -4676,6 +4686,22 @@ class SettingsActivity : AppCompatActivity() {
                             gravity = Gravity.END
                         }
                         addView(tvScore)
+
+                        // L'entrée du carnet, dans l'en-tête de chaque jeu.
+                        // Elle reste visible même quand rien n'a été gagné :
+                        // un joueur qui revient doit retrouver sa collection
+                        // sans avoir à finir une grille d'abord.
+                        boutonCarnet = Pochette.bouton(
+                            this@WordSearchFragment,
+                            Color.parseColor("#9C27B0"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { leftMargin = 12 }
+                        }
+                        addView(boutonCarnet)
                     }
                     addView(headerLayout)
                     
@@ -4796,6 +4822,10 @@ class SettingsActivity : AppCompatActivity() {
                 // Réinitialiser
                 startTime = System.currentTimeMillis()
                 wordsFound = 0
+                gagnes.clear()
+                neuves.clear()
+                enleverPochette()
+                Pochette.rafraichir(boutonCarnet, activity)
                 updateScore(0)
 
                 Log.d("WordSearchFragment", "Nouvelle grille générée: ${currentPuzzle?.words?.size} mots")
@@ -4837,7 +4867,7 @@ class SettingsActivity : AppCompatActivity() {
                     // qui distingue une grille de vocabulaire d'un exercice de
                     // repérage de lettres.
                     val puce = if (word.isFound) "✅ " else "📝 "
-                    val glose = TranslationDictionary.traduire(activity, word.word)
+                    val glose = TranslationDictionary.traduire(activity, word.canonical)
                     val ligne = SpannableStringBuilder(puce).append(word.word.uppercase())
                     if (glose != null) {
                         val debut = ligne.length
@@ -4865,8 +4895,11 @@ class SettingsActivity : AppCompatActivity() {
             wordsFound++
             
             // Mettre à jour la liste
-            currentPuzzle?.words?.find { it.word.equals(word, ignoreCase = true) }?.isFound = true
+            val trouve = currentPuzzle?.words?.find { it.word.equals(word, ignoreCase = true) }
+            trouve?.isFound = true
             displayWordsList(currentPuzzle?.words ?: emptyList())
+
+            encarter(trouve?.canonical)
             
             // Calculer les points
             val points = word.length * 10
@@ -4888,6 +4921,47 @@ class SettingsActivity : AppCompatActivity() {
                     view.layoutParams = it
                 }
             }.show()
+
+            if (wordsFound == currentPuzzle?.words?.size) ouvrirPochette()
+        }
+
+        /**
+         * Verse au carnet un mot **trouvé dans la grille**.
+         *
+         * Le mot était donné d'avance ici : ce qui se gagne n'est pas sa
+         * traduction mais sa graphie, repérée lettre à lettre. C'est tout de
+         * même une rencontre, et le carnet les garde toutes.
+         */
+        private fun encarter(forme: String?) {
+            val ctx = context ?: return
+            if (forme.isNullOrBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTSICH)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette, une fois la grille complète. */
+        private fun ouvrirPochette() {
+            val grille = currentPuzzle ?: return
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTSICH,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { currentPuzzle === grille },
+                surVue = { pochette = it }
+            )
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverPochette()
         }
         
         private fun updateScore(points: Int) {
@@ -4925,6 +4999,13 @@ class SettingsActivity : AppCompatActivity() {
         private var wordsCorrect = 0
         private var score = 0
         private var difficulty = com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty.NORMAL
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Les mots remis dans l'ordre pendant la manche. Un mot passé n'y est pas. */
+        private val gagnes = mutableListOf<String>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
         
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -4963,6 +5044,9 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
                         
                         tvScore = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
                             text = "Score: 0"
                             textSize = 24f
                             setTypeface(null, Typeface.BOLD)
@@ -4970,6 +5054,13 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(Color.parseColor("#4CAF50"))
                         }
                         addView(tvScore)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@WordScrambleFragment,
+                            Color.parseColor("#1976D2"),
+                            petit = true
+                        )
+                        addView(boutonCarnet)
                     }
                     addView(headerLayout)
                     
@@ -5192,6 +5283,10 @@ class SettingsActivity : AppCompatActivity() {
             score = 0
             currentWordIndex = 0
             wordsCorrect = 0
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, requireContext())
             
             gameWords = com.example.kreyolkeyboard.wordscramble.WordScrambleData.loadWords(requireContext(), difficulty)
             
@@ -5319,6 +5414,7 @@ class SettingsActivity : AppCompatActivity() {
                 
                 Toast.makeText(requireContext(), "✅ Correct! +100 pts", Toast.LENGTH_SHORT).show()
 
+                encarter(currentWord)
                 wordsCorrect++
                 currentWordIndex++
                 loadNextWord()
@@ -5373,7 +5469,28 @@ class SettingsActivity : AppCompatActivity() {
             btnValidate.isEnabled = false
         }
         
+        /**
+         * La fin de manche : la pochette d'abord, le bilan ensuite.
+         *
+         * L'`AlertDialog` est une fenêtre à part : ouvert en même temps que la
+         * pochette, il la recouvrirait. Les cartes se regardent, puis le score
+         * se lit.
+         */
         private fun endGame() {
+            val manche = gameWords
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTMIX,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { gameWords === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && gameWords === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
             AlertDialog.Builder(requireContext())
                 .setTitle("🎉 Partie terminée!")
                 .setMessage("Score final: $score\nMots réussis: $wordsCorrect/${gameWords.size}")
@@ -5383,9 +5500,28 @@ class SettingsActivity : AppCompatActivity() {
                 .setNegativeButton("OK", null)
                 .show()
         }
+
+        /**
+         * Verse au carnet un mot **remis dans l'ordre**.
+         *
+         * Un mot passé ne compte pas : sa réponse a été montrée, pas trouvée.
+         */
+        private fun encarter(forme: String) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTMIX)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
         
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             rootView = null
         }
     }
@@ -5405,6 +5541,9 @@ class SettingsActivity : AppCompatActivity() {
         private var gameOver = false
         private val rows = mutableListOf<WuertrietRow>()
         private val letterBestState = mutableMapOf<Char, LetterState>()
+
+        private lateinit var boutonCarnet: TextView
+        private var pochette: View? = null
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -5450,6 +5589,18 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(Color.parseColor("#1976D2"))
                         }
                         addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@WuertrietFragment,
+                            Color.parseColor("#4CAF50"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
 
                         tvAttempts = TextView(activity).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -5680,6 +5831,8 @@ class SettingsActivity : AppCompatActivity() {
             currentAttempt = 0
             gameOver = false
             letterBestState.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
             rows.clear()
             repeat(WuertrietData.MAX_ATTEMPTS) {
                 rows.add(
@@ -5781,10 +5934,35 @@ class SettingsActivity : AppCompatActivity() {
             LetterState.EMPTY -> 0
         }
 
+        /**
+         * La fin de partie.
+         *
+         * **Une seule carte est en jeu, et elle ne se gagne qu'en trouvant.**
+         * Un mot perdu a été montré, pas deviné : il donne sa traduction — ce
+         * que le jeu enseigne — mais pas sa carte. C'est la même règle que la
+         * « Solution » de Kräizwuert.
+         */
         private fun endGame(won: Boolean) {
             editGuess.isEnabled = false
             btnSubmit.isEnabled = false
 
+            val mot = targetWord
+            val neuve = won && Carnet.ajouter(requireContext(), mot, JeuCarte.WUERTRIET)
+            if (won) Pochette.rafraichir(boutonCarnet, requireContext())
+
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTRIET,
+                formes = if (won) listOf(mot) else emptyList(),
+                neuves = if (neuve) setOf(mot) else emptySet(),
+                encoreValide = { targetWord == mot },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && targetWord == mot) montrerLeBilan(won) }
+            )
+        }
+
+        private fun montrerLeBilan(won: Boolean) {
             // Le mot n'a été montré à personne pendant la partie : la fin est
             // le seul moment où sa traduction peut être donnée sans livrer la
             // réponse. C'est là que le jeu apprend quelque chose.
@@ -5802,8 +5980,14 @@ class SettingsActivity : AppCompatActivity() {
                 .show()
         }
 
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             rootView = null
         }
     }
@@ -5831,6 +6015,13 @@ class SettingsActivity : AppCompatActivity() {
         private var score = 0
         private var answered = false
         private var difficulty = ClozeDifficulty.NORMALE
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Les mots retrouvés dans la phrase pendant la manche. */
+        private val gagnes = mutableListOf<String>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#1976D2")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -5879,6 +6070,18 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(couleurNeutre)
                         }
                         addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@ClozeFragment,
+                            Color.parseColor("#FF8C00"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
 
                         tvScore = TextView(activity).apply {
                             text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
@@ -6120,6 +6323,10 @@ class SettingsActivity : AppCompatActivity() {
             questionIndex = 0
             score = 0
             answered = false
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
             tvScore.text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
             progressBar.max = maxOf(1, round.size)
             progressBar.progress = 0
@@ -6223,6 +6430,7 @@ class SettingsActivity : AppCompatActivity() {
             if (juste) {
                 score++
                 tvScore.text = "$score / ${round.size}"
+                encarter(question.answer)
             }
 
             // Toutes les propositions se figent : la bonne en vert, celle qu'on
@@ -6271,7 +6479,36 @@ class SettingsActivity : AppCompatActivity() {
             renderQuestion()
         }
 
+        /**
+         * Verse au carnet le mot **retrouvé dans la phrase**.
+         *
+         * Une réponse fausse ne donne rien : la bonne proposition s'affiche
+         * alors en vert, mais elle a été montrée, pas trouvée.
+         */
+        private fun encarter(forme: String) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTLUECK)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette d'abord, le bilan de manche ensuite. */
         private fun endRound() {
+            val manche = round
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTLUECK,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { round === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && round === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
             val total = round.size
             val message = when {
                 score == total -> "Sans faute : $score sur $total !"
@@ -6288,8 +6525,14 @@ class SettingsActivity : AppCompatActivity() {
                 .show()
         }
 
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             optionButtons.clear()
             rootView = null
         }
@@ -6323,6 +6566,18 @@ class SettingsActivity : AppCompatActivity() {
         private var score = 0
         private var answered = false
         private var difficulty = ZuelenDifficulty.NORMALE
+
+        private lateinit var boutonCarnet: TextView
+
+        /**
+         * Les numéraux bien orthographiés de la manche, avec leur valeur.
+         *
+         * La valeur suit la forme jusqu'au carnet : elle est la seule manière
+         * de lire la rareté d'un composé, que le corpus ne contient pas.
+         */
+        private val gagnes = LinkedHashMap<String, Int>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#00897B")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -6369,6 +6624,18 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(couleurNeutre)
                         }
                         addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@ZuelenFragment,
+                            couleurNeutre,
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
 
                         tvScore = TextView(activity).apply {
                             text = "0 / ${ZuelenData.QUESTIONS_PER_ROUND}"
@@ -6617,6 +6884,10 @@ class SettingsActivity : AppCompatActivity() {
             questionIndex = 0
             score = 0
             answered = false
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            context?.let { Pochette.rafraichir(boutonCarnet, it) }
             tvScore.text = "0 / ${round.size.coerceAtLeast(1)}"
             progressBar.max = maxOf(1, round.size)
             progressBar.progress = 0
@@ -6667,6 +6938,7 @@ class SettingsActivity : AppCompatActivity() {
             if (choix.juste) {
                 score++
                 tvScore.text = "$score / ${round.size}"
+                encarter(choix.texte, question.produit)
             }
 
             optionButtons.forEachIndexed { i, bouton ->
@@ -6712,7 +6984,38 @@ class SettingsActivity : AppCompatActivity() {
             renderQuestion()
         }
 
+        /**
+         * Verse au carnet le numéral **bien orthographié**.
+         *
+         * Une réponse fausse ne donne rien : la bonne forme s'affiche alors en
+         * vert, mais elle a été montrée, pas écrite. Et une même manche ne tire
+         * jamais deux fois le même produit, donc jamais deux fois la même
+         * carte.
+         */
+        private fun encarter(forme: String, valeur: Int) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.ZUELWUERT, valeur)) neuves.add(forme)
+            gagnes[forme] = valeur
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette d'abord, le bilan de manche ensuite. */
         private fun endRound() {
+            val manche = round
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.ZUELWUERT,
+                formes = gagnes.keys.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { round === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && round === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
             val total = round.size
             val message = when {
                 score == total -> "Sans faute : $score sur $total !"
@@ -6729,8 +7032,14 @@ class SettingsActivity : AppCompatActivity() {
                 .show()
         }
 
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             optionButtons.clear()
             rootView = null
         }
@@ -6777,6 +7086,24 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Mots déjà trouvés, pour ne féliciter qu'une fois. */
         private val resolus = mutableSetOf<Int>()
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Emplacements dont le mot est entré au carnet pour la première fois. */
+        private val cartesNeuves = mutableSetOf<Int>()
+
+        /** La pochette de fin de grille, posée au-dessus de tout. */
+        private var pochette: View? = null
+
+        /**
+         * Vrai dès que « Solution » a été touché.
+         *
+         * Une grille révélée ne verse rien au carnet et n'ouvre pas de
+         * pochette : la récompense suit ce qui a été trouvé, pas ce qui a été
+         * montré. Les mots déjà gagnés avant la révélation, eux, restent
+         * acquis — ils l'ont été.
+         */
+        private var solutionMontree = false
 
         private val couleurNeutre = Color.parseColor("#1976D2")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -6832,6 +7159,18 @@ class SettingsActivity : AppCompatActivity() {
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
                         })
+
+                        boutonCarnet = Pochette.bouton(
+                            this@CrosswordFragment,
+                            Color.parseColor("#C2185B"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
 
                         tvProgres = TextView(activity).apply {
                             textSize = 14f
@@ -7185,6 +7524,10 @@ class SettingsActivity : AppCompatActivity() {
             val activity = requireActivity()
             val grille = CrosswordData.newGrid(activity, difficulte)
             resolus.clear()
+            cartesNeuves.clear()
+            solutionMontree = false
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
             surlignerDifficulte()
             // Sans cela « Solution affichée — cette grille ne compte pas »
             // survit au changement de grille et accuse la suivante.
@@ -7360,6 +7703,7 @@ class SettingsActivity : AppCompatActivity() {
                 it !in resolus && partie.motJuste(it)
             }
             resolus.addAll(nouveaux)
+            encarter(nouveaux)
             // Un mot achevé rend la main au suivant : sans cela le pavé continue
             // d'écrire dans un mot déjà juste, et le joueur doit viser une case
             // pour repartir.
@@ -7374,6 +7718,7 @@ class SettingsActivity : AppCompatActivity() {
                         "${grille.words.size} !"
                     tvRetour.setTextColor(couleurJuste)
                     tvRetour.visibility = View.VISIBLE
+                    if (!solutionMontree) ouvrirPochette()
                 }
                 nouveaux.isNotEmpty() -> {
                     val mot = grille.words[nouveaux.first()]
@@ -7401,6 +7746,51 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /**
+         * Verse au carnet les mots qui viennent d'être écrits.
+         *
+         * Kräizwuert est le seul jeu où le joueur **écrit** le mot lui-même, à
+         * partir de sa seule définition : la carte s'y mérite plus qu'ailleurs.
+         * Elle se prend sur la forme canonique — la grille, elle, est tout en
+         * capitales, et la majuscule des substantifs y disparaît.
+         *
+         * Une grille révélée ne verse rien : `reveler()` remplit les cases
+         * sans que personne les ait trouvées, et [apresSaisie] n'est de toute
+         * façon plus appelé à ce moment-là.
+         */
+        private fun encarter(nouveaux: List<Int>) {
+            if (nouveaux.isEmpty() || solutionMontree) return
+            val ctx = context ?: return
+            val grille = session?.grid ?: return
+            nouveaux.forEach { emplacement ->
+                val forme = grille.words[emplacement].canonical
+                if (Carnet.ajouter(ctx, forme, JeuCarte.KRAIZWUERT)) {
+                    cartesNeuves.add(emplacement)
+                }
+            }
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette, une fois la grille entièrement trouvée. */
+        private fun ouvrirPochette() {
+            val partie = session ?: return
+            val grille = partie.grid
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.KRAIZWUERT,
+                formes = resolus.sorted().map { grille.words[it].canonical },
+                neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical },
+                encoreValide = { session === partie },
+                surVue = { pochette = it }
+            )
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        /**
          * Passe au premier mot encore faux, dans l'ordre des numéros. Le tour
          * est circulaire : après le dernier on revient au début, parce que les
          * mots trouvés ne le sont pas dans l'ordre de la grille.
@@ -7422,6 +7812,7 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun montrerLaSolution() {
             val partie = session ?: return
+            solutionMontree = true
             partie.reveler()
             resolus.addAll(partie.grid.words.indices)
             rafraichir()
@@ -7501,6 +7892,7 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             fondsCase.clear()
             lettresCase.clear()
             lignesDefinition.clear()
@@ -7545,14 +7937,6 @@ class SettingsActivity : AppCompatActivity() {
 
         /** La pochette de fin de grille, posée au même endroit. */
         private var pochette: View? = null
-
-        /**
-         * Délai minimum entre la fin d'une grille et l'ouverture de la
-         * pochette : le temps de lire « Grille terminée » et de voir tomber
-         * les confettis. Ce n'est pas une attente ajoutée mais un plancher —
-         * l'assemblage des cartes prend souvent plus que cela.
-         */
-        private val DELAI_POCHETTE = 1500L
 
         private lateinit var tvProgres: TextView
         private lateinit var tvRetour: TextView
@@ -8248,68 +8632,41 @@ class SettingsActivity : AppCompatActivity() {
             val grille = session?.grid ?: return
             nouveaux.forEach { emplacement ->
                 val forme = grille.words[emplacement].canonical
-                if (CarnetWuertplaz.ajouter(ctx, forme)) cartesNeuves.add(emplacement)
+                if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTPLAZ)) {
+                    cartesNeuves.add(emplacement)
+                }
             }
             majBoutonCarnet()
         }
 
         private fun majBoutonCarnet() {
             val ctx = context ?: return
-            val total = CarnetWuertplaz.taille(ctx)
-            boutonCarnet.text = if (total == 0) "📔 Carnet" else "📔 Carnet · $total"
+            Pochette.rafraichir(boutonCarnet, ctx)
         }
 
-        private fun ouvrirCarnet() {
-            if (!isAdded) return
-            CarnetFragment().show(parentFragmentManager, "carnet")
-        }
+        private fun ouvrirCarnet() = Pochette.montrerLeCarnet(this)
 
         /**
          * La pochette de fin de grille.
          *
          * Elle n'arrive qu'après une grille **gagnée** : « Solution » ne passe
          * pas par ici, ne verse rien au carnet, et n'ouvre donc pas de
-         * pochette.
-         *
-         * Deux précautions de fil. L'assemblage des cartes demande les phrases
-         * d'exemple du LOD (2,6 Mo) et les rangs de fréquence (1,27 Mo) : sur
-         * le fil principal, ce serait un gel au moment précis où les confettis
-         * tombent. Tout est donc préparé en fond. Et l'ouverture attend
-         * [DELAI_POCHETTE] depuis la fin de la grille, pour que la carte de
-         * félicitations et les confettis aient le temps d'exister — sans quoi,
-         * sur un appareil rapide, la pochette les recouvrirait aussitôt.
+         * pochette. Le reste — le chargement en fond, le délai plancher, la
+         * vue hôte — appartient à [Pochette], qui le fait pour les sept jeux.
          */
         private fun ouvrirPochette() {
-            val ctx = context?.applicationContext ?: return
             val partie = session ?: return
             val grille = partie.grid
-            val formes = resolus.map { grille.words[it].canonical }
-            val neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical }
-            val anime = !animationsReduites()
-            val depuis = System.currentTimeMillis()
-            val principal = Handler(Looper.getMainLooper())
-
-            Thread {
-                TranslationDictionary.charger(ctx)
-                TranslationDictionary.chargerExemples(ctx)
-                val connues = CarnetWuertplaz.cartes(ctx).associateBy { it.forme }
-                val contenus = formes.mapNotNull { connues[it] }
-                    .map { CarteWuert.contenu(ctx, it) }
-                val reste = DELAI_POCHETTE - (System.currentTimeMillis() - depuis)
-                principal.postDelayed({
-                    if (!isAdded || session !== partie || contenus.isEmpty()) {
-                        return@postDelayed
-                    }
-                    val hote = activity?.findViewById<ViewGroup>(android.R.id.content)
-                        ?: return@postDelayed
-                    enleverPochette()
-                    pochette = Booster.ouvrir(
-                        hote, contenus, neuves, anime,
-                        surCarnet = { ouvrirCarnet() },
-                        surFin = { pochette = null }
-                    )
-                }, reste.coerceAtLeast(0L))
-            }.start()
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTPLAZ,
+                formes = resolus.map { grille.words[it].canonical },
+                neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical },
+                delai = Pochette.DELAI,
+                encoreValide = { session === partie },
+                surVue = { pochette = it }
+            )
         }
 
         private fun enleverPochette() {
@@ -9367,6 +9724,10 @@ class SettingsActivity : AppCompatActivity() {
         private var barreRetour: LinearLayout? = null
         private var grilleChoix: View? = null
 
+        /** La bannière du carnet, en tête du hub, remise à jour au retour. */
+        private var tvCarnetTotal: TextView? = null
+        private var tvCarnetDetail: TextView? = null
+
         private val retourAuChoix = object : androidx.activity.OnBackPressedCallback(false) {
             override fun handleOnBackPressed() = fermerLeJeu()
         }
@@ -9480,12 +9841,14 @@ class SettingsActivity : AppCompatActivity() {
                         "Zuelwuert porte sur l'écriture des nombres, " +
                         "Kräizwuert est le seul où l'on écrit soi-même les " +
                         "mots, et Wuertplaz le seul qui se joue sans connaître " +
-                        "la langue."
+                        "la langue. Tous versent au même carnet."
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.25f)
                 setPadding(4, 0, 4, 20)
             })
+
+            colonne.addView(banniereCarnet(activity))
 
             // Deux cartes par ligne : une carte pleine largeur par jeu aurait
             // poussé les derniers hors de l'écran, là où on ne les découvre
@@ -9517,6 +9880,126 @@ class SettingsActivity : AppCompatActivity() {
                 )
                 addView(colonne)
             }
+        }
+
+        /**
+         * La bannière du carnet, au-dessus des sept jeux.
+         *
+         * Le carnet était une pastille au fond d'un seul jeu : pour le
+         * découvrir il fallait avoir choisi Wuertplaz, puis avoir fini une
+         * grille. C'était l'inverse de ce qu'il est — la chose qui relie les
+         * sept parties entre elles, et la seule qui reste quand la partie est
+         * finie. Il est donc en tête du hub, pleine largeur, au-dessus des jeux
+         * plutôt qu'à côté d'eux.
+         *
+         * Elle n'affiche que ce qui se lit **sans toucher aux actifs** : le
+         * total et les jeux représentés sortent des préférences. Les raretés
+         * demanderaient le balayage de `luxemburgish_dict.json` (1,27 Mo), qui
+         * n'a rien à faire sur le fil principal à l'ouverture d'un onglet —
+         * elles sont dans le carnet lui-même, à une touche d'ici.
+         */
+        private fun banniereCarnet(activity: SettingsActivity): View {
+            val d = resources.displayMetrics.density
+            fun dp(v: Float) = (v * d).toInt()
+            val accent = Carnet.COULEUR
+
+            return LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(dp(16f), dp(16f), dp(16f), dp(16f))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = dp(18f) }
+                background = GradientDrawable().apply {
+                    cornerRadius = 16f * d
+                    setColor(accent)
+                }
+
+                addView(TextView(activity).apply {
+                    text = "📔"
+                    textSize = 34f
+                    setPadding(0, 0, dp(14f), 0)
+                })
+
+                addView(LinearLayout(activity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
+                    addView(TextView(activity).apply {
+                        text = "Mäi Carnet"
+                        textSize = 18f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.WHITE)
+                    })
+                    tvCarnetTotal = TextView(activity).apply {
+                        textSize = 13f
+                        setTextColor(0xFFE8E0FF.toInt())
+                        setLineSpacing(0f, 1.2f)
+                    }
+                    addView(tvCarnetTotal)
+                    tvCarnetDetail = TextView(activity).apply {
+                        textSize = 13f
+                        setPadding(0, dp(4f), 0, 0)
+                    }
+                    addView(tvCarnetDetail)
+                })
+
+                addView(TextView(activity).apply {
+                    text = "Ouvrir  ›"
+                    textSize = 14f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(accent)
+                    setPadding(dp(14f), dp(8f), dp(14f), dp(8f))
+                    background = GradientDrawable().apply {
+                        cornerRadius = 20f * d
+                        setColor(Color.WHITE)
+                    }
+                })
+
+                isClickable = true
+                setOnClickListener {
+                    CarnetFragment().show(parentFragmentManager, "carnet")
+                }
+                majBanniereCarnet()
+            }
+        }
+
+        /**
+         * Remet la bannière à jour.
+         *
+         * Appelée à la construction et à chaque retour sur le hub : une partie
+         * qui vient de se finir a presque toujours changé le total, et une
+         * bannière figée ferait mentir la seule chose qu'elle affiche.
+         */
+        private fun majBanniereCarnet() {
+            val ctx = context ?: return
+            val total = Carnet.taille(ctx)
+            tvCarnetTotal?.text = when (total) {
+                0 -> "Les mots que vous gagnez deviennent des cartes."
+                1 -> "1 carte collectée"
+                else -> "$total cartes collectées"
+            }
+            val jeux = Carnet.jeuxRepresentes(ctx)
+            tvCarnetDetail?.apply {
+                if (jeux.isEmpty()) {
+                    text = "Les sept jeux y versent."
+                    setTextColor(0xFFCFC2F0.toInt())
+                } else {
+                    // Les emojis des jeux qui ont déjà donné une carte : la
+                    // collection se lit d'un coup d'œil comme une carte de
+                    // progression, sans compter ni classer.
+                    text = jeux.joinToString(" ") { it.emoji } +
+                        "   ${jeux.size}/${JeuCarte.values().size} jeux"
+                    setTextColor(0xFFE8E0FF.toInt())
+                }
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            majBanniereCarnet()
         }
 
         private fun carteJeu(activity: SettingsActivity, jeu: Jeu, marginDroite: Boolean) =
@@ -9574,6 +10057,10 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun fermerLeJeu() {
             val conteneur = conteneurJeu ?: return
+            // Le hub redevient visible sans repasser par onResume : la
+            // bannière se remettrait à jour au prochain onglet, c'est-à-dire
+            // trop tard pour la partie qu'on vient de finir.
+            majBanniereCarnet()
             childFragmentManager.findFragmentById(conteneur.id)?.let {
                 childFragmentManager.beginTransaction().remove(it).commit()
             }
@@ -9589,6 +10076,8 @@ class SettingsActivity : AppCompatActivity() {
             conteneurJeu = null
             barreRetour = null
             grilleChoix = null
+            tvCarnetTotal = null
+            tvCarnetDetail = null
         }
     }
 

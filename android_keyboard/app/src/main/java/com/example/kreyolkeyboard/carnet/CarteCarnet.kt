@@ -11,10 +11,10 @@ import android.graphics.drawable.GradientDrawable
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -41,7 +41,7 @@ data class ContenuCarte(
  * Le rendu d'une carte du carnet.
  *
  * **Pas d'illustration récupérée ailleurs, et pas d'emoji.** Un tableau
- * mot → emoji aurait été tentant, mais le vocabulaire du jeu est très
+ * mot → emoji aurait été tentant, mais le vocabulaire des jeux est très
  * abstrait : mesuré sur les 1 963 formes de Wuertplaz, 1 453 premiers sens
  * distincts, dont les plus partagés sont « devoir », « marcher », « pouvoir ».
  * Une table raisonnable en aurait couvert une poignée, et un jeu où quelques
@@ -49,22 +49,39 @@ data class ContenuCarte(
  * inachevé. L'illustration est donc **générative pour toutes** : un motif
  * dérivé du mot lui-même, unique et reproductible, qui fait de chaque carte un
  * objet et non une ligne de liste.
+ *
+ * Depuis que les sept jeux alimentent le carnet, la carte dit aussi **d'où
+ * elle vient** : l'emoji du jeu d'origine en vignette, l'étiquette entière sur
+ * la carte complète. C'est la seule chose qui distingue deux cartes du même
+ * mot gagné à deux endroits, et c'est ce qui fait du carnet la mémoire de tous
+ * les jeux plutôt que d'un seul.
  */
-object CarteWuert {
+object CarteCarnet {
 
     private val FORMAT_DATE = SimpleDateFormat("d MMM yyyy", Locale.FRENCH)
 
     private const val ENCRE = 0xFF212121.toInt()
     private const val ENCRE_DOUCE = 0xFF616161.toInt()
-    private const val TEAL = 0xFF00796B.toInt()
 
     fun contenu(context: Context, carte: CarteMot): ContenuCarte {
+        // Un numéral n'a pas de fiche au dictionnaire : sa leçon est sa
+        // décomposition, qui est exactement ce que Zuelwuert enseigne.
+        carte.nombre?.let { valeur ->
+            return ContenuCarte(
+                carte = carte,
+                rarete = Rarete.pourNombre(valeur),
+                rang = null,
+                glose = "le nombre $valeur",
+                autresFormes = emptyList(),
+                exemple = ZuelenSpeller.decomposition(valeur).ifEmpty { null }
+            )
+        }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemples(context, fiche).firstOrNull()
         return ContenuCarte(
             carte = carte,
-            rarete = CarnetWuertplaz.rarete(context, carte.forme),
-            rang = CarnetWuertplaz.rang(context, carte.forme),
+            rarete = Carnet.rarete(context, carte),
+            rang = Carnet.rang(context, carte.forme),
             glose = fiche.glose,
             autresFormes = (listOf(fiche.mot) + fiche.formes)
                 .distinct()
@@ -82,13 +99,14 @@ object CarteWuert {
      */
     fun vignette(context: Context, c: ContenuCarte, cote: Int): View {
         val d = context.resources.displayMetrics.density
+        val jeu = c.carte.origine
 
         return LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             background = cadre(d, c.rarete, epais = false)
             setPadding((6 * d).toInt(), (6 * d).toInt(), (6 * d).toInt(), (8 * d).toInt())
 
-            addView(IllustrationWuert(context, c.carte.forme, c.rarete).apply {
+            addView(IllustrationCarte(context, c.carte.forme, c.rarete).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, (cote * 0.62f).toInt()
                 )
@@ -103,15 +121,15 @@ object CarteWuert {
                 ).apply { topMargin = (6 * d).toInt() }
 
                 addView(TextView(context).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
-                    )
                     text = c.carte.forme
                     textSize = 15f
                     setTypeface(null, Typeface.BOLD)
-                    setTextColor(TEAL)
+                    setTextColor(jeu.couleur)
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
                 })
                 addView(TextView(context).apply {
                     text = c.rarete.symbole
@@ -120,16 +138,31 @@ object CarteWuert {
                 })
             })
 
-            addView(TextView(context).apply {
+            addView(LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                text = if (c.glose.isEmpty()) "—" else c.glose
-                textSize = 12f
-                setTextColor(ENCRE_DOUCE)
-                maxLines = 1
-                ellipsize = TextUtils.TruncateAt.END
+                // L'emoji du jeu plutôt que son nom : à cette taille, un nom
+                // de jeu prendrait toute la ligne et chasserait le sens, qui
+                // est ce que la carte apprend.
+                addView(TextView(context).apply {
+                    text = c.carte.jeux.joinToString("") { it.emoji }
+                    textSize = 10f
+                    setPadding(0, 0, (4 * d).toInt(), 0)
+                })
+                addView(TextView(context).apply {
+                    text = if (c.glose.isEmpty()) "—" else c.glose
+                    textSize = 12f
+                    setTextColor(ENCRE_DOUCE)
+                    maxLines = 1
+                    ellipsize = TextUtils.TruncateAt.END
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
+                })
             })
         }
     }
@@ -140,11 +173,13 @@ object CarteWuert {
      * L'ordre suit celui d'une carte à collectionner : identité en haut,
      * illustration, puis ce que la carte apprend — le sens, une phrase du
      * dictionnaire officiel qui montre le mot en situation, la famille, et un
-     * pied qui situe la carte dans la collection.
+     * pied qui situe la carte dans la collection et nomme le jeu qui l'a
+     * donnée.
      */
     fun complete(context: Context, c: ContenuCarte): View {
         val d = context.resources.displayMetrics.density
         fun dp(v: Float) = (v * d).toInt()
+        val jeu = c.carte.origine
 
         return LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
@@ -164,7 +199,7 @@ object CarteWuert {
                     text = c.carte.forme
                     textSize = 24f
                     setTypeface(null, Typeface.BOLD)
-                    setTextColor(TEAL)
+                    setTextColor(jeu.couleur)
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
                 })
@@ -186,15 +221,18 @@ object CarteWuert {
                 // La majuscule est une information, pas une décoration : en
                 // luxembourgeois elle marque le substantif. C'est la seule
                 // nature qu'on puisse affirmer sans étiquetage grammatical,
-                // donc la seule qu'on affirme.
-                val nature = if (c.carte.forme.first().isUpperCase())
-                    "Substantif · " else ""
+                // donc la seule qu'on affirme. Un numéral, lui, s'annonce.
+                val nature = when {
+                    c.carte.nombre != null -> "Numéral · "
+                    c.carte.forme.first().isUpperCase() -> "Substantif · "
+                    else -> ""
+                }
                 text = "$nature${c.carte.forme.length} lettres"
                 textSize = 12f
                 setTextColor(ENCRE_DOUCE)
             })
 
-            addView(IllustrationWuert(context, c.carte.forme, c.rarete).apply {
+            addView(IllustrationCarte(context, c.carte.forme, c.rarete).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, dp(130f)
                 ).apply { topMargin = dp(10f); bottomMargin = dp(12f) }
@@ -213,7 +251,9 @@ object CarteWuert {
                 addView(separateur(context, d))
                 addView(TextView(context).apply {
                     layoutParams = largeur()
-                    text = "« $phrase »"
+                    // La décomposition d'un numéral est une explication, pas
+                    // une citation : elle ne prend pas les guillemets.
+                    text = if (c.carte.nombre != null) phrase else "« $phrase »"
                     textSize = 13f
                     setTypeface(null, Typeface.ITALIC)
                     setTextColor(ENCRE_DOUCE)
@@ -232,9 +272,23 @@ object CarteWuert {
                 })
             }
 
+            // La provenance, en toutes lettres. Une carte gagnée dans deux jeux
+            // les porte tous les deux : c'est la trace qu'un même mot a été
+            // reconnu de deux manières, et c'est plus flatteur qu'un compteur.
             addView(separateur(context, d))
-            addView(TextView(context).apply {
+            addView(LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
                 layoutParams = largeur()
+                c.carte.jeux.forEachIndexed { i, j ->
+                    addView(etiquetteJeu(context, j, d).apply {
+                        (layoutParams as LinearLayout.LayoutParams).leftMargin =
+                            if (i == 0) 0 else dp(6f)
+                    })
+                }
+            })
+
+            addView(TextView(context).apply {
+                layoutParams = largeur().apply { topMargin = dp(10f) }
                 val vues = if (c.carte.rencontres > 1)
                     " · rencontré ${c.carte.rencontres} fois" else ""
                 val rang = c.rang?.let { " · ${it + 1}ᵉ mot le plus fréquent" } ?: ""
@@ -245,6 +299,25 @@ object CarteWuert {
             })
         }
     }
+
+    /** L'étiquette d'un jeu : son emoji, son nom, sa couleur. */
+    fun etiquetteJeu(context: Context, jeu: JeuCarte, d: Float): TextView =
+        TextView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            text = "${jeu.emoji} ${jeu.nom}"
+            textSize = 11f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(jeu.couleur)
+            setPadding((8 * d).toInt(), (4 * d).toInt(), (8 * d).toInt(), (4 * d).toInt())
+            background = GradientDrawable().apply {
+                cornerRadius = 12f * d
+                setColor(Color.WHITE)
+                setStroke((1 * d).toInt(), jeu.couleur)
+            }
+        }
 
     private fun largeur() = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -275,8 +348,12 @@ object CarteWuert {
  * condensé du mot, les anneaux de ses lettres, et l'initiale sert de filigrane.
  * Rien n'est aléatoire, rien n'est stocké, et il n'y a aucune image dans
  * l'application.
+ *
+ * La teinte vient du **mot** et non du jeu : c'est ce qui garde la collection
+ * variée maintenant que sept jeux l'alimentent, et ce qui fait qu'un mot gagné
+ * deux fois reste la même carte.
  */
-class IllustrationWuert(
+class IllustrationCarte(
     context: Context,
     private val mot: String,
     private val rarete: Rarete

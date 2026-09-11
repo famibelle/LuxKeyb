@@ -9,6 +9,63 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [20.7.0] - 2026-09-11
+
+### ✨ Ajouté
+
+- **Le carnet devient commun aux sept jeux.** Il était né dans Wuertplaz et n'y
+  gardait que les mots verrouillés ; ce qu'il réparait — une récompense qui
+  disparaît avec la grille — n'avait pourtant rien de propre à ce jeu. Chaque
+  mot trouvé dans Wuertsich, remis dans l'ordre dans Wuertmix, deviné dans
+  Wuertriet, retrouvé dans la phrase de Wuertlück, bien orthographié dans
+  Zuelwuert ou écrit dans Kräizwuert devient désormais une carte.
+- **Le carnet est en tête de l'écran des jeux**, pleine largeur, au-dessus des
+  sept cartes. Il fallait auparavant choisir Wuertplaz *puis* finir une grille
+  pour découvrir qu'une collection existait. La bannière porte le total et les
+  emojis des jeux qui ont déjà donné une carte, comme une carte de progression.
+- **Chaque jeu porte sa pastille « 📔 Carnet »** dans son en-tête, avec le total
+  acquis, et l'ouvre d'une touche — même quand rien n'a encore été gagné.
+- **La pochette s'ouvre à la fin de chaque partie**, et plus seulement au bout
+  d'une grille de Wuertplaz : fin de manche dans Wuertmix, Wuertlück et
+  Zuelwuert, grille complète dans Wuertsich et Kräizwuert, mot trouvé dans
+  Wuertriet. Elle prend la couleur et l'emoji du jeu qu'on vient de quitter, et
+  passe **avant** le bilan chiffré, qui est une fenêtre à part et la
+  recouvrirait.
+- **Une carte dit d'où elle vient** : l'emoji du jeu sur la vignette,
+  l'étiquette entière sur la carte ouverte. Un mot gagné dans deux jeux reste
+  une seule carte et porte les deux — ce sont les mêmes mots, en faire deux
+  cartes doublerait la collection sans rien lui apprendre.
+- **Le carnet se filtre par jeu.** Les filtres n'apparaissent qu'à mesure que
+  les jeux donnent des cartes, et la ligne reste cachée tant qu'un seul jeu est
+  représenté : un unique filtre et un bouton « Tous » diraient la même chose.
+- **Les numéraux de Zuelwuert ont leur propre lecture de la rareté.** Mesuré sur
+  l'actif livré, 86 des 101 nombres de 0 à 100 sont absents du corpus de
+  fréquences, et les quinze présents sautent de `zwee` (rang 105) à `fofzeg`
+  (36 954) : la lecture par rang aurait rendu « très rares » cinq cartes sur
+  six. Leur rareté suit donc ce que leur orthographe demande — forme isolée,
+  dizaine ronde, composé à liaison `an`, puis composé où la règle d'Eifel fait
+  tomber le n, celle qu'on n'invente pas.
+
+### 🔧 Modifié
+
+- Une carte ne se gagne nulle part sans avoir été trouvée : un mot passé dans
+  Wuertmix, une réponse fausse dans Wuertlück ou Zuelwuert, un Wuertriet perdu
+  et une grille dont on a demandé la solution ne versent rien au carnet et
+  n'ouvrent aucune pochette. C'était déjà la règle de Wuertplaz ; elle vaut
+  maintenant pour les sept.
+- Le carnet a sa couleur propre, qui n'est celle d'aucun jeu : il ne porte plus
+  le vert-bleu de Wuertplaz, dont il n'est plus la collection.
+- La liste des mots de Wuertsich traduit désormais la forme du dictionnaire et
+  non sa graphie de grille, tout en capitales — les substantifs y retrouvent
+  leur glose.
+
+### 🔒 Vie privée
+
+- Les cartes déjà collectées sont reprises telles quelles : le carnet change de
+  domaine de préférences, la reprise est faite une fois à la première lecture,
+  et l'ancien domaine est effacé derrière elle. Rien de nouveau n'est stocké
+  hormis le jeu d'origine de chaque carte.
+
 ## [20.6.0] - 2026-09-09
 
 ### ✨ Ajouté

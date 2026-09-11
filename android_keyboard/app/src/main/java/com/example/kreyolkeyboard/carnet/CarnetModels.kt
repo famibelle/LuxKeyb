@@ -2,21 +2,55 @@ package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
 import android.util.Log
+import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 /**
- * Le carnet : les mots que le joueur a rencontrés, et de quoi en faire des
- * cartes à collectionner.
+ * Les sept jeux, du point de vue du carnet.
  *
- * Wuertplaz est le seul jeu où l'on croise un mot **avant** d'en connaître le
- * sens ; la traduction y est la récompense du verrouillage. Ce qu'il manquait
- * est ce qu'on fait de cette récompense une fois la grille finie : elle
- * disparaissait avec la grille. Le carnet la garde.
+ * Une carte porte **le ou les jeux où elle a été gagnée**, et c'est la seule
+ * chose que le carnet sait de sa provenance. L'identifiant court est ce qui
+ * part dans les préférences : le nom d'énumération peut changer, le stockage
+ * non.
  *
- * Trois choix qui portent le reste :
+ * Les couleurs reprennent, à l'unité près, celles des cartes du hub : un
+ * joueur doit reconnaître d'où vient une carte avant d'avoir lu son étiquette.
+ */
+enum class JeuCarte(
+    val id: String,
+    val nom: String,
+    val emoji: String,
+    val couleur: Int
+) {
+    WUERTSICH("ws", "Wuertsich", "🎲", 0xFF9C27B0.toInt()),
+    WUERTMIX("wm", "Wuertmix", "🔤", 0xFF1976D2.toInt()),
+    WUERTRIET("wr", "Wuertriet", "🟩", 0xFF4CAF50.toInt()),
+    WUERTLUECK("wl", "Wuertlück", "📝", 0xFFFF8C00.toInt()),
+    ZUELWUERT("zw", "Zuelwuert", "🔢", 0xFF00897B.toInt()),
+    KRAIZWUERT("kw", "Kräizwuert", "🧩", 0xFFC2185B.toInt()),
+    WUERTPLAZ("wp", "Wuertplaz", "🔡", 0xFF00796B.toInt());
+
+    companion object {
+        private val PAR_ID = values().associateBy { it.id }
+        fun parId(id: String): JeuCarte? = PAR_ID[id]
+    }
+}
+
+/**
+ * Le carnet : les mots que le joueur a gagnés, et de quoi en faire des cartes
+ * à collectionner.
+ *
+ * Il est né dans Wuertplaz, seul jeu où l'on croise un mot **avant** d'en
+ * connaître le sens, et où la traduction est la récompense du verrouillage.
+ * Mais ce que le carnet répare — une récompense qui disparaît avec la grille —
+ * n'avait rien de propre à ce jeu : les six autres apprenaient tout autant et
+ * ne gardaient rien. Le carnet est donc **commun aux sept**, et une carte sait
+ * d'où elle vient.
+ *
+ * Quatre choix qui portent le reste :
  *
  * - **Il ne fait que grandir, et il survit à l'application.** Une collection
  *   qui repart de zéro à chaque partie n'est pas une collection. Le stockage
@@ -32,19 +66,33 @@ import java.io.InputStreamReader
  *   sans qu'il faille fabriquer la moindre statistique. Poser des « points de
  *   vie » sur une vraie langue apprendrait quelque chose de faux ; un rang de
  *   fréquence est vérifiable et se trouve être exactement la mécanique qu'on
- *   cherchait.
+ *   cherchait. Les numéraux de Zuelwuert, eux, ne sont pas dans le corpus et
+ *   se lisent autrement — voir [Rarete.pourNombre].
  * - **Les rangs sont lus à l'ouverture du carnet, jamais pendant la partie.**
  *   Et par un balayage du texte brut plutôt qu'un `JSONArray` : l'actif fait
  *   1,27 Mo pour 38 442 formes, dont l'arbre complet ferait 77 000 objets pour
  *   les quelques dizaines de rangs dont le carnet a besoin. C'est le même
  *   piège que celui documenté pour le dictionnaire français.
+ * - **Un mot gagné dans deux jeux reste une carte.** Ce sont les mêmes mots :
+ *   en faire deux cartes doublerait la collection sans rien lui apprendre. Le
+ *   deuxième jeu s'ajoute à la carte, et le compteur de rencontres monte.
  */
-object CarnetWuertplaz {
+object Carnet {
 
-    private const val PREFS = "wuertplaz_carnet"
+    /**
+     * La couleur du carnet.
+     *
+     * Il en fallait une qui ne soit celle d'aucun des sept jeux : le carnet
+     * n'appartient plus à Wuertplaz, dont il portait le vert-bleu, et le
+     * reprendre laisserait croire que la collection est encore la sienne.
+     */
+    const val COULEUR = 0xFF5E35B1.toInt()
+
+    private const val PREFS = "carnet_cartes"
+    private const val PREFS_HERITE = "wuertplaz_carnet"
     private const val CLE_CARTES = "cartes"
     private const val ASSET_DICO = "luxemburgish_dict.json"
-    private const val TAG = "CarnetWuertplaz"
+    private const val TAG = "Carnet"
 
     /** Ordre de capture. La liste ne perd jamais d'entrée. */
     private var cartes: MutableList<CarteMot> = ArrayList()
@@ -60,7 +108,7 @@ object CarnetWuertplaz {
         if (charge) return
         charge = true
         try {
-            val brut = prefs(context).getString(CLE_CARTES, null) ?: return
+            val brut = lireBrut(context) ?: return
             val tableau = JSONArray(brut)
             for (i in 0 until tableau.length()) {
                 val o = tableau.getJSONObject(i)
@@ -72,7 +120,9 @@ object CarnetWuertplaz {
                         forme = forme,
                         premiereFois = o.optLong("d"),
                         rencontres = o.optInt("n", 1),
-                        numero = cartes.size + 1
+                        numero = cartes.size + 1,
+                        jeux = lireJeux(o.optString("g")),
+                        nombre = if (o.has("v")) o.optInt("v") else null
                     )
                 )
             }
@@ -87,19 +137,67 @@ object CarnetWuertplaz {
     }
 
     /**
+     * Le contenu stocké, en reprenant au besoin celui du carnet d'avant.
+     *
+     * Les premières versions ne connaissaient que Wuertplaz et rangeaient tout
+     * dans `wuertplaz_carnet`. Le nom était juste tant que le carnet l'était ;
+     * il ne l'est plus. La reprise est faite **une fois**, à la première
+     * lecture, et l'ancien domaine est effacé derrière elle — une collection
+     * ne doit pas se retrouver en double si un jour quelqu'un relit l'ancien
+     * nom.
+     */
+    private fun lireBrut(context: Context): String? {
+        val prefs = prefs(context)
+        prefs.getString(CLE_CARTES, null)?.let { return it }
+
+        val ancien = context.getSharedPreferences(PREFS_HERITE, Context.MODE_PRIVATE)
+        val herite = ancien.getString(CLE_CARTES, null) ?: return null
+        Log.d(TAG, "Reprise du carnet Wuertplaz")
+        prefs.edit().putString(CLE_CARTES, herite).apply()
+        ancien.edit().remove(CLE_CARTES).apply()
+        return herite
+    }
+
+    /**
+     * Les jeux d'une carte stockée.
+     *
+     * Vide veut dire « carte d'avant la généralisation » : elle ne pouvait
+     * venir que de Wuertplaz, le seul jeu qui alimentait alors le carnet.
+     */
+    private fun lireJeux(brut: String): Set<JeuCarte> {
+        if (brut.isEmpty()) return setOf(JeuCarte.WUERTPLAZ)
+        val jeux = brut.split(',').mapNotNull { JeuCarte.parId(it) }
+        return if (jeux.isEmpty()) setOf(JeuCarte.WUERTPLAZ) else LinkedHashSet(jeux)
+    }
+
+    /**
      * Enregistre une rencontre. Retourne vrai si la carte est neuve.
      *
-     * Une forme déjà là n'est pas dupliquée : son compteur monte, et c'est ce
-     * qui permet de dire « nouveau » ou « revu » au bilan de fin de grille.
+     * Une forme déjà là n'est pas dupliquée : son compteur monte, le jeu
+     * s'ajoute à sa provenance, et c'est ce qui permet de dire « nouveau » ou
+     * « revu » au bilan de fin de partie.
+     *
+     * [nombre] n'est rempli que par Zuelwuert : c'est la valeur du numéral, la
+     * seule chose qui permette de lire sa rareté, puisque le corpus ne contient
+     * pas les composés.
      */
     @Synchronized
-    fun ajouter(context: Context, forme: String): Boolean {
+    fun ajouter(
+        context: Context,
+        forme: String,
+        jeu: JeuCarte,
+        nombre: Int? = null
+    ): Boolean {
         charger(context)
         if (forme.isBlank()) return false
         val existant = parForme[forme]
         if (existant != null) {
             val c = cartes[existant]
-            cartes[existant] = c.copy(rencontres = c.rencontres + 1)
+            cartes[existant] = c.copy(
+                rencontres = c.rencontres + 1,
+                jeux = if (jeu in c.jeux) c.jeux else LinkedHashSet(c.jeux).apply { add(jeu) },
+                nombre = c.nombre ?: nombre
+            )
             enregistrer(context)
             return false
         }
@@ -109,7 +207,9 @@ object CarnetWuertplaz {
                 forme = forme,
                 premiereFois = System.currentTimeMillis(),
                 rencontres = 1,
-                numero = cartes.size + 1
+                numero = cartes.size + 1,
+                jeux = setOf(jeu),
+                nombre = nombre
             )
         )
         enregistrer(context)
@@ -134,17 +234,27 @@ object CarnetWuertplaz {
         return forme in parForme
     }
 
+    /** Les jeux dont au moins une carte est au carnet, dans l'ordre du hub. */
+    @Synchronized
+    fun jeuxRepresentes(context: Context): List<JeuCarte> {
+        charger(context)
+        val vus = cartes.flatMapTo(HashSet()) { it.jeux }
+        return JeuCarte.values().filter { it in vus }
+    }
+
     /**
-     * Rareté d'une forme, d'après son rang dans le dictionnaire de fréquences.
+     * Rareté d'une carte.
      *
-     * Les rangs sont chargés à la première demande et remis en cache tant que
-     * le carnet ne grandit pas — ouvrir le carnet ne relit donc l'actif
-     * qu'une fois.
+     * Un numéral de Zuelwuert se lit sur sa valeur, tout le reste sur le rang
+     * de fréquence de sa forme. Les rangs sont chargés à la première demande et
+     * remis en cache tant que le carnet ne grandit pas — ouvrir le carnet ne
+     * relit donc l'actif qu'une fois.
      */
     @Synchronized
-    fun rarete(context: Context, forme: String): Rarete {
+    fun rarete(context: Context, carte: CarteMot): Rarete {
+        carte.nombre?.let { return Rarete.pourNombre(it) }
         assurerRangs(context)
-        return Rarete.pourRang(rangs[forme])
+        return Rarete.pourRang(rangs[carte.forme])
     }
 
     @Synchronized
@@ -162,6 +272,8 @@ object CarnetWuertplaz {
         rangsPour = -1
         charge = true
         prefs(context).edit().remove(CLE_CARTES).apply()
+        context.getSharedPreferences(PREFS_HERITE, Context.MODE_PRIVATE)
+            .edit().remove(CLE_CARTES).apply()
     }
 
     private fun prefs(context: Context) =
@@ -170,12 +282,13 @@ object CarnetWuertplaz {
     private fun enregistrer(context: Context) {
         val tableau = JSONArray()
         cartes.forEach {
-            tableau.put(
-                JSONObject()
-                    .put("m", it.forme)
-                    .put("d", it.premiereFois)
-                    .put("n", it.rencontres)
-            )
+            val o = JSONObject()
+                .put("m", it.forme)
+                .put("d", it.premiereFois)
+                .put("n", it.rencontres)
+                .put("g", it.jeux.joinToString(",") { j -> j.id })
+            it.nombre?.let { v -> o.put("v", v) }
+            tableau.put(o)
         }
         prefs(context).edit().putString(CLE_CARTES, tableau.toString()).apply()
     }
@@ -185,7 +298,7 @@ object CarnetWuertplaz {
         if (rangsPour == cartes.size) return
         rangsPour = cartes.size
         rangs = if (cartes.isEmpty()) emptyMap()
-        else lireRangs(context, cartes.mapTo(HashSet()) { it.forme })
+        else lireRangs(context, cartes.filter { it.nombre == null }.mapTo(HashSet()) { it.forme })
     }
 
     /**
@@ -199,6 +312,7 @@ object CarnetWuertplaz {
      * guillemet ni contre-oblique, la lecture est donc sûre telle quelle.
      */
     private fun lireRangs(context: Context, formes: Set<String>): Map<String, Int> {
+        if (formes.isEmpty()) return emptyMap()
         return try {
             val texte = BufferedReader(
                 InputStreamReader(context.assets.open(ASSET_DICO))
@@ -236,14 +350,21 @@ object CarnetWuertplaz {
  *
  * [numero] est l'ordre de capture, celui qu'affiche le pied de carte — la
  * collection se raconte dans l'ordre où on l'a faite, pas dans celui du
- * dictionnaire.
+ * dictionnaire. [jeux] garde les jeux où la carte a été gagnée, dans l'ordre
+ * où ils l'ont donnée : le premier est celui qui l'a fait entrer au carnet.
+ * [nombre] n'est rempli que pour les numéraux de Zuelwuert.
  */
 data class CarteMot(
     val forme: String,
     val premiereFois: Long,
     val rencontres: Int,
-    val numero: Int
-)
+    val numero: Int,
+    val jeux: Set<JeuCarte> = setOf(JeuCarte.WUERTPLAZ),
+    val nombre: Int? = null
+) {
+    /** Le jeu qui a fait entrer la carte au carnet. */
+    val origine: JeuCarte get() = jeux.firstOrNull() ?: JeuCarte.WUERTPLAZ
+}
 
 /**
  * Les quatre paliers de rareté, lus sur le rang de fréquence.
@@ -255,11 +376,9 @@ data class CarteMot(
  * Kräizwuert donnent 58 / 21 / 13 / 6 %, ce qui est cohérent : ses grilles
  * faciles plafonnent volontairement dans les mots les plus fréquents.
  *
- * Un rang inconnu (forme absente du dictionnaire de fréquences, ce qui
- * n'arrive pas aujourd'hui mais arriverait si un jeu alimentait le carnet
- * depuis le vivier du LOD) est traité comme le plus rare : c'est la lecture
- * juste, une forme que le corpus ne connaît pas est plus rare que tout ce
- * qu'il connaît.
+ * Un rang inconnu (forme absente du dictionnaire de fréquences) est traité
+ * comme le plus rare : c'est la lecture juste, une forme que le corpus ne
+ * connaît pas est plus rare que tout ce qu'il connaît.
  */
 enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
     COMMUN("Commun", "●", 0xFF78909C.toInt()),
@@ -278,6 +397,37 @@ enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
             rang < SEUIL_PEU_COMMUN -> PEU_COMMUN
             rang < SEUIL_RARE -> RARE
             else -> TRES_RARE
+        }
+
+        /**
+         * La rareté d'un numéral, lue sur **ce que son orthographe demande**.
+         *
+         * Le rang de fréquence ne dit rien ici : mesuré sur l'actif livré, 86
+         * des 101 nombres de 0 à 100 sont absents du corpus, et les quinze
+         * présents sautent de `zwee` (rang 105) à `fofzeg` (36 954) sans rien
+         * entre les deux. Appliquer [pourRang] rendrait « très rares » cinq
+         * cartes sur six et viderait le palier de son sens, dans le seul jeu
+         * où toutes les cartes se ressemblent déjà.
+         *
+         * La graduation suit donc les règles que [ZuelenSpeller] décrit, et qui
+         * sont exactement ce que Zuelwuert enseigne :
+         *
+         * - **Commun** : 0 à 19 et `honnert` — formes isolées, rien à composer.
+         * - **Peu commun** : les dizaines rondes, une forme et pas de liaison.
+         * - **Rare** : les composés dont le n de liaison se maintient
+         *   (`eenanzwanzeg`), la lecture qu'on devine.
+         * - **Très rare** : les composés où la règle d'Eifel fait tomber le n
+         *   (`sechsafofzeg`), celle qu'on n'invente pas.
+         *
+         * Hors de [0, ZuelenSpeller.MAXIMUM] on ne sait rien, et on retombe sur
+         * le repli commun à tout le carnet : le plus rare.
+         */
+        fun pourNombre(valeur: Int): Rarete {
+            if (valeur !in 0..ZuelenSpeller.MAXIMUM) return TRES_RARE
+            if (valeur < 20 || valeur == ZuelenSpeller.MAXIMUM) return COMMUN
+            if (valeur % 10 == 0) return PEU_COMMUN
+            val dizaine = ZuelenSpeller.enLettres(valeur - valeur % 10)
+            return if (ZuelenSpeller.liaison(dizaine) == "an") RARE else TRES_RARE
         }
     }
 }

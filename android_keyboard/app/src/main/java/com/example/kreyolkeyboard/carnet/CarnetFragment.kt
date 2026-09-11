@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -25,7 +26,7 @@ import com.example.kreyolkeyboard.TranslationDictionary
  * chaque grille et se lisait comme un journal. Ici la collection est
  * permanente, elle a un lieu, et chaque mot y est un objet.
  *
- * Trois décisions d'écran :
+ * Quatre décisions d'écran :
  *
  * - **Un `DialogFragment` plein écran**, comme le Guide et À Propos : pas
  *   d'entrée au manifeste, pas de cycle de vie d'activité en plus, et surtout
@@ -40,6 +41,12 @@ import com.example.kreyolkeyboard.TranslationDictionary
  *   retourne pour arriver. La vignette fait la collection, la carte fait la
  *   leçon ; tout mettre dans la vignette rendrait la grille illisible, tout
  *   mettre dans la carte supprimerait la collection.
+ * - **Un filtre par jeu, et seulement sur les jeux déjà joués.** Depuis que les
+ *   sept alimentent le carnet, « d'où vient cette carte » est une vraie
+ *   question ; mais afficher sept filtres à qui n'a joué qu'à un seul jeu
+ *   transforme une collection en formulaire. Les filtres apparaissent au fur et
+ *   à mesure que les jeux donnent des cartes, et la ligne disparaît tant qu'il
+ *   n'y en a qu'un.
  */
 class CarnetFragment : DialogFragment() {
 
@@ -48,15 +55,17 @@ class CarnetFragment : DialogFragment() {
     }
 
     private var tri = Tri.RECENT
+    private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
 
     private lateinit var racine: FrameLayout
     private lateinit var conteneurGrille: LinearLayout
     private lateinit var tvResume: TextView
     private lateinit var ligneTri: LinearLayout
+    private lateinit var ligneJeux: LinearLayout
+    private lateinit var defilementJeux: HorizontalScrollView
 
-    private val teal = Color.parseColor("#00796B")
-    private val inerte = Color.parseColor("#BDBDBD")
+    private val accent = Carnet.COULEUR
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +93,7 @@ class CarnetFragment : DialogFragment() {
         colonne.addView(LinearLayout(ctx).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            setBackgroundColor(teal)
+            setBackgroundColor(accent)
             setPadding(dp(16f), dp(14f), dp(16f), dp(14f))
             addView(TextView(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -116,6 +125,20 @@ class CarnetFragment : DialogFragment() {
             text = "Ouverture du carnet…"
         }
         colonne.addView(tvResume)
+
+        // Le filtre par jeu défile : sept jeux et un « Tous » ne tiennent pas
+        // sur la largeur d'un téléphone, et une ligne qui se replie en deux
+        // repousserait la collection hors de l'écran.
+        ligneJeux = LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(dp(12f), 0, dp(12f), dp(6f))
+        }
+        defilementJeux = HorizontalScrollView(ctx).apply {
+            isHorizontalScrollBarEnabled = false
+            visibility = View.GONE
+            addView(ligneJeux)
+        }
+        colonne.addView(defilementJeux)
 
         ligneTri = LinearLayout(ctx).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -179,15 +202,79 @@ class CarnetFragment : DialogFragment() {
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
-            val prets = CarnetWuertplaz.cartes(ctx).map { CarteWuert.contenu(ctx, it) }
+            val prets = Carnet.cartes(ctx).map { CarteCarnet.contenu(ctx, it) }
             principal.post {
                 if (!isAdded) return@post
                 contenus = prets
                 ligneTri.visibility = if (prets.isEmpty()) View.GONE else View.VISIBLE
+                construireFiltres()
                 surlignerTri()
                 remplirGrille()
             }
         }.start()
+    }
+
+    /**
+     * Les filtres, un par jeu qui a déjà donné une carte, plus « Tous ».
+     *
+     * Un seul jeu représenté ne mérite pas de filtre : le bouton « Tous » et le
+     * bouton du jeu diraient la même chose.
+     */
+    private fun construireFiltres() {
+        val ctx = context ?: return
+        val d = resources.displayMetrics.density
+        ligneJeux.removeAllViews()
+
+        val presents = JeuCarte.values().filter { jeu ->
+            contenus.any { jeu in it.carte.jeux }
+        }
+        if (presents.size < 2) {
+            defilementJeux.visibility = View.GONE
+            filtre = null
+            return
+        }
+        defilementJeux.visibility = View.VISIBLE
+
+        fun puce(libelle: String, jeu: JeuCarte?) = TextView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins((4 * d).toInt(), 0, (4 * d).toInt(), 0) }
+            text = libelle
+            textSize = 13f
+            setTypeface(null, Typeface.BOLD)
+            setPadding((12 * d).toInt(), (7 * d).toInt(), (12 * d).toInt(), (7 * d).toInt())
+            tag = jeu
+            isClickable = true
+            setOnClickListener {
+                filtre = jeu
+                surlignerFiltres()
+                remplirGrille()
+            }
+        }
+
+        ligneJeux.addView(puce("Tous", null))
+        presents.forEach { ligneJeux.addView(puce("${it.emoji} ${it.nom}", it)) }
+        if (filtre != null && filtre !in presents) filtre = null
+        surlignerFiltres()
+    }
+
+    private fun surlignerFiltres() {
+        val d = resources.displayMetrics.density
+        for (i in 0 until ligneJeux.childCount) {
+            val vue = ligneJeux.getChildAt(i) as TextView
+            val jeu = vue.tag as? JeuCarte
+            val actif = jeu == filtre
+            // Chaque filtre prend la couleur de son jeu : c'est la même que
+            // celle de la carte du hub et que celle du mot sur la vignette.
+            val couleur = jeu?.couleur ?: accent
+            vue.setTextColor(if (actif) Color.WHITE else couleur)
+            vue.background = GradientDrawable().apply {
+                cornerRadius = 20f * d
+                setColor(if (actif) couleur else Color.WHITE)
+                setStroke((1 * d).toInt(), couleur)
+            }
+        }
     }
 
     private fun surlignerTri() {
@@ -197,10 +284,10 @@ class CarnetFragment : DialogFragment() {
             vue.setTextColor(if (actif) Color.WHITE else Color.parseColor("#616161"))
             vue.background = GradientDrawable().apply {
                 cornerRadius = 20f * resources.displayMetrics.density
-                setColor(if (actif) teal else Color.WHITE)
+                setColor(if (actif) accent else Color.WHITE)
                 setStroke(
                     (1 * resources.displayMetrics.density).toInt(),
-                    if (actif) teal else Color.parseColor("#D0D0D0")
+                    if (actif) accent else Color.parseColor("#D0D0D0")
                 )
             }
         }
@@ -218,9 +305,10 @@ class CarnetFragment : DialogFragment() {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { topMargin = (40 * d).toInt() }
-                text = "Chaque mot verrouillé dans Wuertplaz devient une carte " +
-                    "et vient s'ajouter ici. Terminez une grille pour ouvrir " +
-                    "la collection."
+                text = "Chaque mot gagné dans l'un des sept jeux devient une " +
+                    "carte et vient s'ajouter ici. Trouvez un mot, devinez-en " +
+                    "un, écrivez-en un : la première carte est à une partie " +
+                    "d'ici."
                 textSize = 15f
                 gravity = Gravity.CENTER
                 setLineSpacing(0f, 1.25f)
@@ -230,10 +318,14 @@ class CarnetFragment : DialogFragment() {
             return
         }
 
-        val parRarete = contenus.groupingBy { it.rarete }.eachCount()
+        val visibles = filtre?.let { jeu -> contenus.filter { jeu in it.carte.jeux } }
+            ?: contenus
+
+        val parRarete = visibles.groupingBy { it.rarete }.eachCount()
         tvResume.text = buildString {
-            append("${contenus.size} mot")
-            if (contenus.size > 1) append("s")
+            append("${visibles.size} mot")
+            if (visibles.size > 1) append("s")
+            filtre?.let { append(" dans ${it.nom}") }
             append(" — ")
             append(
                 Rarete.values().reversed()
@@ -243,9 +335,9 @@ class CarnetFragment : DialogFragment() {
         }
 
         val ordonnes = when (tri) {
-            Tri.RECENT -> contenus.sortedByDescending { it.carte.numero }
-            Tri.ALPHA -> contenus.sortedBy { it.carte.forme.lowercase() }
-            Tri.RARETE -> contenus.sortedWith(
+            Tri.RECENT -> visibles.sortedByDescending { it.carte.numero }
+            Tri.ALPHA -> visibles.sortedBy { it.carte.forme.lowercase() }
+            Tri.RARETE -> visibles.sortedWith(
                 compareByDescending<ContenuCarte> { it.rarete.ordinal }
                     .thenBy { it.carte.forme.lowercase() }
             )
@@ -269,7 +361,7 @@ class CarnetFragment : DialogFragment() {
                 }
                 conteneurGrille.addView(ligne)
             }
-            ligne?.addView(CarteWuert.vignette(ctx, c, cote).apply {
+            ligne?.addView(CarteCarnet.vignette(ctx, c, cote).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     cote, LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { if (i % 2 == 0) rightMargin = (10 * d).toInt() }
@@ -305,7 +397,7 @@ class CarnetFragment : DialogFragment() {
             ).apply { setMargins((22 * d).toInt(), 0, (22 * d).toInt(), 0) }
             isVerticalScrollBarEnabled = false
         }
-        val carte = CarteWuert.complete(ctx, c)
+        val carte = CarteCarnet.complete(ctx, c)
         defilement.addView(carte)
         voile.addView(defilement)
 
