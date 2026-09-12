@@ -1,6 +1,6 @@
 ---
 title: "Guide d'installation et d'utilisation : Lëtzebuergesch Clavier"
-description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : installation guidée, diacritiques, suggestions, majuscules automatiques des noms, dictionnaire Wierderbuch, jeux de vocabulaire et FAQ."
+description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : installation guidée, diacritiques, suggestions, majuscules automatiques des noms, dictionnaire Wierderbuch, les sept jeux, le carnet de cartes et sa révision espacée, et la FAQ."
 lang: fr
 ---
 
@@ -130,6 +130,11 @@ bouton **« ABC »** ramène aux lettres. La touche emoji, en bas à droite, ouv
 un panneau de près de 1 900 emojis classés par catégories — appui long sur un
 personnage pour choisir sa couleur de peau.
 
+Le panneau s'ouvre sur l'onglet **« Récents »**, qui retient les trente derniers
+emojis employés, soit exactement la page visible : le même envoi ne recommence
+donc pas par la même descente dans la grille. Cette liste ne quitte pas le
+téléphone, et se vide depuis les réglages du clavier.
+
 <div align="center" style="margin: 16px 0;">
   <img src="Screenshots/lux_numerique.png" alt="Mode chiffres et symboles du clavier" width="32%">
 </div>
@@ -158,6 +163,32 @@ La touche majuscule a trois états : un appui pour une seule majuscule, deux pou
 le verrouillage, trois pour revenir au normal. Un appui long sur le retour
 arrière efface le mot entier plutôt que lettre à lettre.
 
+### Déplacer le curseur en glissant sur la barre d'espace
+
+Poser le curseur entre deux lettres est le geste le plus raté de la saisie
+mobile : la cible fait deux millimètres et le doigt en couvre dix. Posez le
+doigt sur la **barre d'espace** et faites-le glisser : le curseur suit, une
+lettre à la fois, avec une courte vibration à chaque caractère franchi. Le geste
+ne s'arrête pas au bord de la touche, il court sur toute la largeur de l'écran —
+de quoi traverser une phrase sans lever le doigt.
+
+Les autres gestes de la barre d'espace sont intacts : l'appui simple insère une
+espace, l'appui long d'une seconde ouvre le sélecteur de claviers.
+
+### Les réglages du clavier
+
+L'**engrenage**, en haut de l'application, ouvre les réglages propres au
+clavier :
+
+- **Apparence** — clair, sombre, ou « comme le téléphone ». Le rouge et le bleu
+  du drapeau ne changent pas ; seul le blanc des lettres passe en anthracite.
+  Les deux positions fixes existent parce que sur plusieurs surcouches le mode
+  sombre du système ne descend pas jusqu'aux claviers tiers.
+- **Vibration à la frappe** et **son de frappe**. Ils sont ici et non dans les
+  réglages du téléphone : sur beaucoup d'appareils, le réglage de vibration au
+  toucher ne gouverne que le clavier du constructeur.
+- **Vider les emojis récents.**
+
 ## L'application, en quatre onglets
 
 Au-delà du clavier lui-même, l'application tient en quatre destinations :
@@ -166,7 +197,7 @@ Au-delà du clavier lui-même, l'application tient en quatre destinations :
 |---|---|
 | 🚀 **Démarrage** | Les étapes d'installation, le champ d'essai, et — tout en bas — ce guide et la page « À propos » |
 | 📊 **Mäi Lëtzebuergesch** | Votre niveau, le mot du jour, vos mots les plus employés et ceux qu'il vous reste à découvrir |
-| 🎮 **Spiller** | Les cinq jeux |
+| 🎮 **Spiller** | Le carnet de cartes, puis les sept jeux |
 | 📖 **Wierderbuch** | Le dictionnaire luxembourgeois–français |
 
 ## Progression et jeux
@@ -176,23 +207,168 @@ visible dans l'onglet **« Mäi Lëtzebuergesch »**. Huit niveaux jalonnent le
 parcours, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire
 que vous avez déjà utilisée. Vous pouvez partager votre carte de niveau.
 
-Quatre jeux puisent dans ce même dictionnaire : **Wuertsich** (mots mêlés),
-**Wuertmix** (remettre des lettres dans l'ordre contre la montre),
-**Wuertriet** (deviner un mot de cinq lettres en six essais) et **Wuertlück**
-(retrouver le mot qui manque à une phrase luxembourgeoise authentique). Un
-cinquième, **Zuelwuert**, ne puise nulle part : il pose une multiplication et
-fait choisir la bonne orthographe de son résultat, « sechsafofzeg » pour 56.
+Sept jeux sont réunis derrière l'onglet **« Spiller »** :
 
-Les cinq sont réunis derrière l'onglet **« Spiller »**, et chacun affiche la
-**traduction française** du mot cherché — au moment où elle ne donne pas la
-réponse : dans la liste pour Wuertsich, sous les lettres pour Wuertmix, à la fin
-de la partie pour Wuertriet. On y apprend donc du vocabulaire, pas seulement des
-suites de lettres.
+| Jeu | Ce qu'on y fait |
+|---|---|
+| 🎲 **Wuertsich** | Des mots mêlés : tracer les mots au doigt dans une grille de lettres |
+| 🔤 **Wuertmix** | Remettre des lettres dans l'ordre, contre la montre |
+| 🟩 **Wuertriet** | Deviner un mot de cinq lettres en six essais |
+| 📝 **Wuertlück** | Retrouver le mot qui manque à une phrase luxembourgeoise authentique |
+| 🔢 **Zuelwuert** | Écrire en toutes lettres le résultat d'une multiplication — « sechsafofzeg » pour 56 |
+| 🧩 **Kräizwuert** | Des mots croisés : la définition est en français, la case à remplir en luxembourgeois |
+| 🔡 **Wuertplaz** | Une grille vide, une liste de mots, et leur place à trouver |
+
+Tous puisent dans le même dictionnaire que le clavier, sauf **Zuelwuert**, qui
+ne puise nulle part : il fabrique ses multiplications et n'a besoin que des
+noms de nombres.
+
+Les deux derniers sont les seuls où l'on **écrit** le luxembourgeois au lieu de
+le reconnaître. **Kräizwuert** donne le sens et demande le mot : ses lettres
+accentuées Ä, Ë, É, Ö et Ü sont sur son propre pavé, dans la disposition du
+clavier, si bien que le jeu ne dépend pas du clavier actif de l'appareil.
+**Wuertplaz** fait l'inverse, et c'est le seul **jouable sans connaître un mot
+de luxembourgeois** : la grille est vide, tous les mots vous sont donnés, et la
+déduction porte sur les longueurs et les croisements, pas sur le sens. La
+traduction n'y apparaît qu'au moment où un mot se verrouille — elle est la
+récompense, pas la question.
+
+Chacun affiche la **traduction française** du mot cherché, au moment où elle ne
+donne pas la réponse : dans la liste pour Wuertsich, sous les lettres pour
+Wuertmix, à la fin de la partie pour Wuertriet. On y apprend donc du
+vocabulaire, pas seulement des suites de lettres.
+
+## Le carnet de cartes
+
+Une partie finie ne laissait rien : la grille s'efface, et les mots avec elle.
+Le **carnet** est ce qui reste. Chaque mot trouvé dans l'un des sept jeux — un
+mot tracé dans Wuertsich, remis dans l'ordre dans Wuertmix, deviné dans
+Wuertriet, retrouvé dans Wuertlück, bien orthographié dans Zuelwuert, écrit dans
+Kräizwuert ou casé dans Wuertplaz — devient une **carte**, et la collection ne
+repart jamais de zéro.
+
+Il est en tête de l'onglet **« Spiller »**, pleine largeur, au-dessus des sept
+jeux : il n'y a aucune partie à finir pour découvrir qu'il existe. Sa bannière
+porte le total, les emojis des jeux qui ont déjà donné une carte, et le nombre
+de cartes à revoir aujourd'hui. Chaque jeu porte en plus sa pastille
+**« 📔 Carnet »** dans son en-tête, et l'ouvre d'une touche.
+
+### La pochette de fin de partie
+
+À la fin de chaque partie — fin de manche, grille complète, mot trouvé — une
+**pochette** s'ouvre aux couleurs du jeu que vous quittez : les cartes gagnées
+s'y retournent une à une, celles que le carnet n'avait jamais vues portant une
+étiquette « Nouvelle carte ». Elle rend **toutes** les cartes de la partie, pas
+seulement les inédites : n'ouvrir que les nouveautés viderait la récompense dès
+que vous commencez à connaître le vocabulaire, c'est-à-dire précisément quand
+vous progressez. « Passer » est offert dès la première carte — c'est un cadeau,
+pas un passage obligé. Une grille dont on a demandé la solution n'en verse
+aucune, puisqu'elle ne rapporte rien.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/lux_pochette.png" alt="Deux écrans de la pochette de fin de grille : à gauche, la carte du mot « gezielt » retournée face visible avec l'étiquette « Nouvelle carte » ; à droite, le bilan « 7 cartes · 7 nouvelles » et le bouton « Mon carnet »" width="72%">
+</div>
+
+### Ce que porte une carte
+
+Le mot, sa nature quand la majuscule la donne, une illustration, le sens
+français, une phrase d'exemple du dictionnaire officiel, les autres formes de sa
+famille, son rang dans la collection — et l'emoji du jeu dont elle vient. Un mot
+gagné dans deux jeux reste **une seule carte** et porte les deux emojis : ce sont
+les mêmes mots, en faire deux cartes doublerait la collection sans rien lui
+apprendre.
+
+La **rareté** n'est pas inventée : c'est le rang du mot dans le dictionnaire de
+fréquences, en quatre paliers — Commun ●, Peu commun ◆, Rare ★, Très rare ✦.
+Poser des « points de vie » sur une vraie langue aurait appris quelque chose de
+faux. Les illustrations, elles, sont dessinées à partir des lettres du mot :
+aucune image n'est embarquée dans l'application, et la même forme donne toujours
+la même carte.
+
+Le carnet se trie (Récent, A → Z, Rareté) et **se filtre par jeu**. Les filtres
+n'apparaissent qu'à mesure que les jeux donnent des cartes.
+
+<div align="center" style="margin: 16px 0;">
+  <img src="Screenshots/lux_carnet.png" alt="Deux écrans du carnet : à gauche la grille de cartes à deux colonnes avec leur illustration, leur mot et leur symbole de rareté ; à droite la carte « virgelies » ouverte, badge « Très rare », son sens, une phrase d'exemple et sa famille" width="72%">
+</div>
+
+## Widderhuelen : les cartes reviennent vous voir
+
+Une collection qu'on ne rouvre jamais est une étagère à trophées. Le carnet est
+donc aussi une **méthode de révision** — *Widderhuelen*, « répéter ».
+
+Chaque carte occupe une **boîte**, de 1 à 6. Une bonne réponse la fait monter
+d'une boîte, une mauvaise la ramène au départ, et le délai avant sa prochaine
+visite s'allonge à chaque montée :
+
+| Boîte | La carte revient dans |
+|---:|---|
+| 1 | 1 jour |
+| 2 | 3 jours |
+| 3 | 7 jours |
+| 4 | 16 jours |
+| 5 | 35 jours |
+| 6 | 90 jours |
+
+Au sortir de la sixième, la carte est **acquise** et ne revient plus : 152 jours
+séparent la première rencontre de l'acquisition. Une barre de six segments sous
+chaque vignette dit où en est sa révision — une barre et non une couleur, la
+couleur du cadre appartenant déjà à la rareté.
+
+Ces intervalles sont des valeurs d'usage, pas des valeurs mesurées, et
+l'application ne prétend pas le contraire : aucune donnée de rétention ne sort
+du téléphone, donc rien ici ne pouvait les mesurer.
+
+### C'est la boîte qui décide de la question
+
+Vous ne choisissez pas la difficulté, elle suit la mémoire :
+
+- **Boîtes 1 et 2 — reconnaître.** La carte se retourne et vous vous notez
+  vous-même, « Je savais » ou « Pas su ». Reconnaître suffit à ce stade.
+- **À partir de la boîte 3 — produire.** Il faut **écrire l'orthographe** :
+  dans la phrase du dictionnaire officiel dont le mot a été retiré (« Quel mot
+  manque ? »), ou à défaut depuis le sens français (« Comment l'écrit-on ? »).
+  Le mot se tape sur un pavé dans la disposition du clavier, avec une touche
+  majuscule à la place exacte qu'elle y occupe : la majuscule du substantif fait
+  partie de la question.
+
+**Juste à un accent ou à une majuscule près compte comme réussi.** La différence
+vous est montrée — « vous avez écrit *greng*, le mot s'écrit *gréng* » — et la
+carte **reste dans sa boîte** : ni punie, puisque le mot était su, ni promue,
+puisque l'orthographe ne l'était pas. C'est le seul endroit de l'application où
+l'accent et la majuscule sont la question, et non un détail d'affichage.
+
+Une réponse juste que le jeu n'attendait pas est acceptée : sur une question
+posée depuis le sens français, toute carte de votre paquet portant ce sens vaut
+réponse. Répondre *Akkord* là où la carte disait *Accord* n'est pas une erreur.
+
+### Le clavier est l'examen
+
+Une carte dont le compteur d'usage a monté depuis la dernière session **monte
+d'une boîte sans que la question soit posée** : avoir écrit le mot dans un vrai
+message est une preuve de mémoire plus forte qu'une carte retournée. Le bilan de
+fin de session le dit en clair — « vous avez écrit vous-même *…* depuis la
+dernière fois : ces cartes n'avaient rien à prouver. »
+
+### Une session tient en douze cartes
+
+Le bouton **« 🔁 Réviser N cartes »**, en tête du carnet, ouvre la session. Elle
+est plafonnée à **douze cartes**, les plus anciennement dues d'abord, puis les
+boîtes les plus basses ; une carte ratée repasse une fois en fin de session,
+pour ne pas quitter sur un mot qu'on n'a pas retrouvé.
+
+La bannière annonce ce que la prochaine session contient, jamais l'arriéré :
+promettre « 213 cartes à revoir » est la façon de n'en faire réviser aucune. De
+même, un carnet déjà rempli au moment de la mise à jour n'est pas rendu
+entièrement dû le jour même : les cartes sans échéance sont étalées par paquets
+de douze sur les jours suivants, dans leur ordre de capture. La collection
+revient au rythme où elle a été faite.
 
 ## Le dictionnaire « Wierderbuch »
 
 Le quatrième onglet est un dictionnaire luxembourgeois–français de
-**88 852 mots**, qui ne demande jamais dans quel sens vous cherchez : tapez
+**88 883 formes traduites**, regroupées par famille, qui ne demande jamais dans
+quel sens vous cherchez : tapez
 « Haus », vous obtenez « maison » ; tapez « maison », vous obtenez « Haus ». Le
 clavier luxembourgeois s'ouvre dans le champ de recherche, accents compris.
 
@@ -244,6 +420,18 @@ reste des manques, la langue composant ses mots sans limite. Signalez le mot
 manquant via le
 [formulaire de retours](feedbacks_form.html) ou une
 [issue GitHub](https://github.com/famibelle/LuxKeyb/issues).
+
+**Faut-il réviser tous les jours ?**
+Non. Une carte due qui n'est pas revue reste due, elle ne se perd pas et rien ne
+vous est reproché. Et comme une session est plafonnée à douze cartes, une
+semaine d'absence ne fabrique jamais un mur de deux cents cartes à l'ouverture.
+
+**Mon carnet suit-il si je change de téléphone ?**
+Oui : le carnet est rangé avec les réglages du clavier, donc sauvegardé et
+transféré comme eux. Ce sont des mots de dictionnaire. Les compteurs de frappe,
+eux, ne quittent jamais l'appareil : le carnet ne reçoit d'eux qu'une date
+d'échéance, et une échéance repoussée parce que vous avez écrit le mot est
+indiscernable d'une échéance repoussée par une carte réussie.
 
 **Le clavier est-il gratuit ?**
 Oui, entièrement, sans publicité et open source
