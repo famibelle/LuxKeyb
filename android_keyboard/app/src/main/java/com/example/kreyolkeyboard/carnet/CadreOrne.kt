@@ -896,8 +896,15 @@ class CarteOrnee(
         // ne se voit pas à cette taille.
         if (vignette || !rarete.distinguee) return
         if (Pochette.animationsReduites(context)) return
-        val manager = context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
-        val capteur = manager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) ?: return
+        val manager =
+            context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager ?: return
+        // L'accéléromètre brut mélange la pesanteur et l'accélération
+        // linéaire : marcher suffisait à faire trembler le reflet. Le capteur
+        // fusionné n'en garde que la pesanteur, ce qui est tout ce dont une
+        // orientation a besoin. Il n'existe pas partout, d'où le repli.
+        val capteur = manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+            ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            ?: return
         manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
         capteurs = manager
     }

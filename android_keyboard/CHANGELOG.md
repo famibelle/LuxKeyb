@@ -9,6 +9,74 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.3.0] - 2026-09-12
+
+> La 22.2.0 a donné aux cartes un cadre qui s'enrichit avec leur rareté, et à
+> la plus rare un reflet qui suit l'inclinaison du téléphone. Restait que la
+> carte, elle, ne bougeait pas : la lumière glissait sur une surface immobile.
+> Elle pivote maintenant avec la main.
+>
+> Cette version emporte aussi trois correctifs de la révision espacée, dont un
+> plantage à l'ouverture du carnet sous Android 5 et 6.
+
+### ✨ Ajouté
+
+- **La carte ouverte suit l'inclinaison de l'appareil.** Elle pivote de
+  quelques degrés quand on penche le téléphone, et le reflet spéculaire d'une
+  carte distinguée a enfin une surface qui lui donne raison. Le repos est pris
+  à l'ouverture de la carte et non à l'horizontale — personne ne tient son
+  téléphone à plat, et une carte calée sur l'orientation absolue serait penchée
+  en permanence — puis un rappel très lent la remet d'aplomb quand la posture
+  change. Le débattement reste volontairement petit : au-delà, les filets d'or
+  d'un pixel scintillent et la typographie du bord qui s'éloigne devient
+  illisible. L'effet vaut pour **toutes** les raretés : l'ornement est une
+  récompense, la physique n'en est pas une, et une commune qui ne répondrait
+  pas à la main se lirait comme un défaut. Jamais dans la grille, où des
+  vignettes qui s'inclinent à l'unisson se battraient contre le défilement, et
+  jamais si les animations du système sont coupées.
+
+### ♻️ Modifié
+
+- **Le suivi d'orientation passe au capteur de pesanteur fusionné.**
+  L'accéléromètre brut mélange la pesanteur et l'accélération linéaire, si bien
+  que marcher suffisait à faire trembler le reflet d'une carte rare. Le repli
+  sur l'accéléromètre reste en place pour les appareils dépourvus du capteur
+  fusionné.
+
+### ⚡ Performance
+
+- **L'inclinaison ne redessine rien.** Elle n'écrit que deux propriétés de
+  transformation, appliquées par le processeur graphique au moment de composer
+  l'image : la carte est recomposée, jamais repeinte. C'est moins cher que le
+  reflet, qui lui invalide la vue et rejoue son tracé.
+
+### 🐛 Corrigé
+
+- **Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6.** Le calcul
+  du jour de révision appelait `Math.floorDiv`, apparu avec l'API 24 alors que
+  l'application descend à l'API 21 et n'active pas le désucrage des
+  bibliothèques : sur ces appareils, ouvrir le carnet levait un
+  `NoSuchMethodError`. C'était la seule API Java 8 de tout le dépôt, et lint ne
+  la signale pas en `lintVital`. La division plancher est désormais écrite à la
+  main, et un test la vérifie de part et d'autre de 1970.
+- **« Presque juste » ne fait plus monter la carte d'une boîte**, comme la
+  22.0.0 l'annonçait sans le faire. Une réponse juste à un accent ou à une
+  majuscule près compte comme réussie et la différence est montrée — mais la
+  carte reste dans sa boîte et revient à son rythme. Le verdict était bien
+  calculé à trois niveaux et bien affiché, puis réduit à un simple « réussi ou
+  raté » une ligne avant d'être enregistré, si bien que `greng` valait `gréng`.
+  C'est le seul endroit de l'application où l'accent et la majuscule sont la
+  question et non un détail de rendu.
+- **La phrase à trous réclame le mot qu'elle a retiré.** Les phrases du
+  dictionnaire officiel sont rangées par famille : celle d'une carte `Haus` peut
+  illustrer `Haiser`. Le trou était creusé sur la forme de la famille mais la
+  réponse attendue restait celle de la carte — le joueur devait écrire un mot
+  que la phrase ne veut pas, et `Haiser`, seule réponse qui complète la phrase,
+  était comptée fausse. Mesuré sur les actifs livrés, 38,6 % des cartes
+  illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme,
+  celle de la carte quand la phrase la contient, et la question dit lorsqu'elle
+  réclame une autre forme de la même famille.
+
 ## [22.2.0] - 2026-09-12
 
 > Une carte du carnet devient une pièce d'orfèvrerie. Son ornementation monte

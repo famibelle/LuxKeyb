@@ -281,7 +281,9 @@ class CarnetFragment : DialogFragment() {
             Carnet.planifier(ctx)
             val file = Carnet.file(ctx)
             val ecrites = PreuveDeFrappe.ecritesDepuisLaDerniereFois(ctx, file.map { it.forme })
-            ecrites.forEach { Carnet.noter(ctx, it, reussi = true) }
+            // Un mot écrit dans un vrai message vaut une réponse exacte : c'est
+            // une preuve d'orthographe, pas seulement de mémoire.
+            ecrites.forEach { Carnet.noter(ctx, it, Verdict.EXACT) }
             val aDemander = file.filter { it.forme !in ecrites }
                 .map { CarteCarnet.contenu(ctx, it) }
             principal.post {
@@ -291,7 +293,7 @@ class CarnetFragment : DialogFragment() {
                     hote = racine,
                     paquet = aDemander,
                     monteesParLeClavier = ecrites.toList(),
-                    surNotation = { forme, reussi -> Carnet.noter(ctx, forme, reussi) },
+                    surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
                     surFin = { if (isAdded) chargerEnFond() }
                 ).ouvrir()
             }
@@ -509,7 +511,11 @@ class CarnetFragment : DialogFragment() {
             .setInterpolator(
                 if (c.rarete.distinguee) OvershootInterpolator(1.4f)
                 else DecelerateInterpolator()
-            ).start()
+            )
+            // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
+            // pour ne pas écrire dans `rotationY` pendant le retournement.
+            .withEndAction { Inclinaison.suivre(carte) }
+            .start()
     }
 
     override fun onStart() {

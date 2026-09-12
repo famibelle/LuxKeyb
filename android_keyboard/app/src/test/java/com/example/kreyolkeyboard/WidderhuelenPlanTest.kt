@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard
 
 import com.example.kreyolkeyboard.carnet.CarteMot
 import com.example.kreyolkeyboard.carnet.JeuCarte
+import com.example.kreyolkeyboard.carnet.Verdict
 import com.example.kreyolkeyboard.carnet.Widderhuelen
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -77,6 +78,85 @@ class WidderhuelenPlanTest {
     }
 
     // -------------------------------------------------------------- les jours
+
+    @Test
+    fun `le numero de jour est un plancher, meme avant 1970`() {
+        // `jour` divise par 86 400 000, et cette division doit arrondir **vers
+        // le bas**, pas vers zéro. Une division ordinaire ferait rendre le même
+        // numéro à deux instants séparés par la frontière de l'époque, et deux
+        // jours voisins se confondraient.
+        //
+        // Ce test garde aussi ce que le calcul ne doit pas être : `Math.floorDiv`
+        // dit exactement cela, mais il est apparu avec l'API 24 alors que le
+        // projet descend à 21 et n'active pas le désucrage — l'appel plantait à
+        // l'ouverture du carnet sur un Android 5 ou 6. La division est donc
+        // écrite à la main, et il faut vérifier qu'elle est juste.
+        val jour = 86_400_000L
+        val coupure = Widderhuelen.HEURE_COUPURE * 3_600_000L
+
+        // Deux instants d'un même jour local rendent le même numéro, deux
+        // instants de jours voisins des numéros qui se suivent — de part et
+        // d'autre de zéro comme ailleurs.
+        listOf(-3L, -1L, 0L, 1L, 3L, 700L).forEach { rang ->
+            val debutDuJour = coupure + rang * jour
+            assertEquals(
+                "le jour $rang doit être d'un seul tenant",
+                Widderhuelen.jour(debutDuJour, 0),
+                Widderhuelen.jour(debutDuJour + jour - 1, 0)
+            )
+            assertEquals(
+                "le jour ${rang + 1} suit immédiatement le jour $rang",
+                Widderhuelen.jour(debutDuJour, 0) + 1,
+                Widderhuelen.jour(debutDuJour + jour, 0)
+            )
+        }
+
+        // Et le pas reste de un, seconde par seconde, autour de la frontière
+        // que la troncature vers zéro casserait.
+        assertEquals(
+            Widderhuelen.jour(coupure, 0) - 1,
+            Widderhuelen.jour(coupure - 1, 0)
+        )
+    }
+
+    @Test
+    fun `presque juste ne fait pas monter la carte`() {
+        // La règle que le journal des versions annonce : une réponse juste à un
+        // accent ou à une majuscule près compte comme réussie, la différence est
+        // montrée, **et la carte ne monte pas de boîte**. C'est le seul endroit
+        // de l'application où l'accent et la majuscule sont l'objet de la
+        // question ; les laisser promouvoir enseignerait la faute que le jeu
+        // existe pour corriger.
+        //
+        // Le verdict était calculé et affiché, puis réduit à un booléen une
+        // ligne avant d'atteindre le carnet : « presque » promouvait donc comme
+        // « exact ». Ce test gèle les trois issues.
+        assertEquals(3, Widderhuelen.apresVerdict(2, Verdict.EXACT))
+        assertEquals(2, Widderhuelen.apresVerdict(2, Verdict.DETAIL))
+        assertEquals(0, Widderhuelen.apresVerdict(2, Verdict.FAUX))
+
+        // « Presque » ne descend pas non plus : le mot était su.
+        assertEquals(0, Widderhuelen.apresVerdict(0, Verdict.DETAIL))
+
+        // Et il n'acquiert jamais une carte par la bande, même au sommet.
+        val sommet = Widderhuelen.BOITE_ACQUISE - 1
+        assertEquals(sommet, Widderhuelen.apresVerdict(sommet, Verdict.DETAIL))
+        assertEquals(
+            Widderhuelen.BOITE_ACQUISE,
+            Widderhuelen.apresVerdict(sommet, Verdict.EXACT)
+        )
+    }
+
+    @Test
+    fun `presque fait revenir la carte au rythme de sa boite`() {
+        // Ni punie ni promue : elle revient quand sa boîte actuelle le veut.
+        val boite = 3
+        val apres = Widderhuelen.apresVerdict(boite, Verdict.DETAIL)
+        assertEquals(
+            100 + Widderhuelen.INTERVALLES[boite],
+            Widderhuelen.echeance(100, apres)
+        )
+    }
 
     @Test
     fun `la coupure de quatre heures rattache la nuit a la veille`() {

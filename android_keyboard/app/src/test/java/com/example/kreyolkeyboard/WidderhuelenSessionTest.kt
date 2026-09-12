@@ -93,17 +93,34 @@ class WidderhuelenSessionTest {
         val trouee = SessionWidderhuelen.phraseATrous(
             "mir bauen en Haus am Duerf", "Haus", emptyList()
         )
-        assertEquals("mir bauen en ${SessionWidderhuelen.TROU} am Duerf", trouee)
+        assertEquals("mir bauen en ${SessionWidderhuelen.TROU} am Duerf", trouee?.texte)
+        assertEquals("Haus", trouee?.motMasque)
     }
 
     @Test
-    fun `le troage accepte une autre forme de la famille`() {
+    fun `le troage accepte une autre forme de la famille, et la reclame`() {
         // La phrase est rangée sous le représentant : elle peut porter
-        // « Haiser » là où le joueur a gagné « Haus ».
+        // « Haiser » là où le joueur a gagné « Haus ». C'est alors « Haiser »
+        // que la question demande — creuser le trou à « Haiser » en attendant
+        // « Haus » réclamait un mot que la phrase ne veut pas, et refusait le
+        // seul qui la complète.
         val trouee = SessionWidderhuelen.phraseATrous(
             "d'Haiser sinn deier", "Haus", listOf("Haiser", "Haises")
         )
-        assertEquals("d'${SessionWidderhuelen.TROU} sinn deier", trouee)
+        assertEquals("d'${SessionWidderhuelen.TROU} sinn deier", trouee?.texte)
+        assertEquals("Haiser", trouee?.motMasque)
+    }
+
+    @Test
+    fun `la forme de la carte passe avant celle de la famille`() {
+        // Quand la phrase porte les deux, c'est le mot que le joueur a gagné
+        // qui est demandé, et lui seul : l'autre reste en clair, il fait partie
+        // de la phrase que le joueur doit lire.
+        val trouee = SessionWidderhuelen.phraseATrous(
+            "en Haus, zwee Haiser", "Haus", listOf("Haiser")
+        )
+        assertEquals("en ${SessionWidderhuelen.TROU}, zwee Haiser", trouee?.texte)
+        assertEquals("Haus", trouee?.motMasque)
     }
 
     @Test
@@ -114,7 +131,7 @@ class WidderhuelenSessionTest {
         assertNull(SessionWidderhuelen.phraseATrous("en schéint Land", "an", emptyList()))
         assertEquals(
             "${SessionWidderhuelen.TROU} schéint Land",
-            SessionWidderhuelen.phraseATrous("en schéint Land", "en", emptyList())
+            SessionWidderhuelen.phraseATrous("en schéint Land", "en", emptyList())?.texte
         )
     }
 
@@ -123,7 +140,9 @@ class WidderhuelenSessionTest {
         val trouee = SessionWidderhuelen.phraseATrous(
             "d'Haus ass gréng", "Gréng", listOf()
         )
-        assertEquals("d'Haus ass ${SessionWidderhuelen.TROU}", trouee)
+        assertEquals("d'Haus ass ${SessionWidderhuelen.TROU}", trouee?.texte)
+        // Le mot réclamé est la forme de la carte, pas la casse de la phrase.
+        assertEquals("Gréng", trouee?.motMasque)
     }
 
     @Test
@@ -132,7 +151,10 @@ class WidderhuelenSessionTest {
         val trouee = SessionWidderhuelen.phraseATrous(
             "en Haus ass en Haus", "Haus", emptyList()
         )
-        assertEquals("en ${SessionWidderhuelen.TROU} ass en ${SessionWidderhuelen.TROU}", trouee)
+        assertEquals(
+            "en ${SessionWidderhuelen.TROU} ass en ${SessionWidderhuelen.TROU}",
+            trouee?.texte
+        )
     }
 
     // ------------------------------------------------------------- la notation

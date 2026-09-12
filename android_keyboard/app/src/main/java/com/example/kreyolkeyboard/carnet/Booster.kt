@@ -353,6 +353,9 @@ object Booster {
                             )
                             .withEndAction {
                                 if (ferme) return@withEndAction
+                                // La carte a fini de se poser : elle suit
+                                // maintenant l'inclinaison de l'appareil.
+                                Inclinaison.suivre(face)
                                 if (rarete == Rarete.TRES_RARE) eclater(scene, rarete)
                                 if (neuve) {
                                     bandeau.visibility = View.VISIBLE

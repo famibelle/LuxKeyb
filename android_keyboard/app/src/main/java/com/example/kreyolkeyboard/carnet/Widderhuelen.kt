@@ -70,7 +70,22 @@ object Widderhuelen {
      */
     fun jour(instant: Long, decalageMillis: Int): Int {
         val local = instant + decalageMillis - HEURE_COUPURE * 3_600_000L
-        return Math.floorDiv(local, MILLIS_PAR_JOUR).toInt()
+        // Division entière **plancher**, écrite à la main. `Math.floorDiv` dit
+        // exactement cela, mais il est apparu avec l'API 24 alors que le
+        // minimum du projet est 21, et rien ici n'active le désucrage des
+        // bibliothèques : sur un Android 5 ou 6, l'appel lèverait un
+        // `NoSuchMethodError` à l'ouverture du carnet. C'était d'ailleurs la
+        // seule API Java 8 de tout le dépôt.
+        //
+        // Le plancher n'est pas un détail : une division ordinaire tronque vers
+        // zéro, si bien qu'un instant local négatif — horloge mal réglée,
+        // appareil revenu avant 1970 — rendrait le même numéro de jour que son
+        // symétrique positif, et deux jours voisins se confondraient.
+        return if (local >= 0) {
+            (local / MILLIS_PAR_JOUR).toInt()
+        } else {
+            -(((-local) + MILLIS_PAR_JOUR - 1) / MILLIS_PAR_JOUR).toInt()
+        }
     }
 
     /** Le jour local courant, fuseau de l'appareil compris. */
@@ -88,6 +103,28 @@ object Widderhuelen {
      * carte que le joueur vient d'échouer.
      */
     fun apresEchec(boite: Int): Int = 0
+
+    /**
+     * La boîte d'une carte selon le verdict, et c'est ici que se tient la règle
+     * de l'accent.
+     *
+     * [Verdict.DETAIL] — juste à un accent ou à une majuscule près — compte
+     * comme réussi mais **ne promeut pas** : le mot était su, son orthographe
+     * ne l'était pas, et la carte revient au rythme de sa boîte actuelle. C'est
+     * le seul endroit de l'application où l'accent et la majuscule sont l'objet
+     * de la question plutôt qu'un détail de rendu ; les laisser promouvoir
+     * enseignerait la faute que le jeu existe pour corriger.
+     *
+     * Cette fonction existe pour que le verdict à trois valeurs atteigne le
+     * modèle. Il était calculé, affiché, puis réduit à un booléen une ligne
+     * avant d'être enregistré — si bien que `greng` pour `gréng` faisait monter
+     * la carte, à l'inverse de ce que le journal des versions annonçait.
+     */
+    fun apresVerdict(boite: Int, verdict: Verdict): Int = when (verdict) {
+        Verdict.EXACT -> apresReussite(boite)
+        Verdict.DETAIL -> boite.coerceAtMost(BOITE_ACQUISE)
+        Verdict.FAUX -> apresEchec(boite)
+    }
 
     /**
      * L'échéance d'une carte qui vient d'entrer dans [boite].
