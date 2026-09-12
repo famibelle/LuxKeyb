@@ -1,10 +1,12 @@
 package com.example.kreyolkeyboard.carnet
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
@@ -14,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -260,30 +263,69 @@ object Booster {
                 addView(CarteCarnet.complete(ctx, c))
             }
 
+            val rarete = c.rarete
+
             if (!animations) {
+                // Sans animations, la lueur devient un état plutôt qu'un
+                // mouvement : la carte rare arrive face visible, mais elle
+                // arrive quand même sur son halo.
                 scene.removeAllViews()
+                if (rarete.distinguee) scene.addView(HaloRarete(ctx, rarete).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        Gravity.CENTER
+                    )
+                    alpha = 0.45f
+                })
                 scene.addView(face)
                 if (neuve) bandeau.visibility = View.VISIBLE
                 return
             }
 
-            val dos = DosDeCarte(ctx, jeu).apply {
+            val dos = DosDeCarte(ctx, jeu, rarete).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     (ctx.resources.displayMetrics.heightPixels * 0.44f).toInt(),
                     Gravity.CENTER
                 )
             }
+
+            // La lueur qui précède une carte rare.
+            //
+            // C'est le seul endroit du carnet où la rareté se sait **avant**
+            // d'être vue, et c'est voulu : l'attente est ce qui transforme un
+            // retournement en événement. Une commune n'en a pas, et ne perd
+            // rien — c'est de ne pas l'avoir qui dit ce qu'elle est.
+            val halo = if (rarete.distinguee) HaloRarete(ctx, rarete).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER
+                )
+                alpha = 0f
+            } else null
+
             scene.removeAllViews()
+            halo?.let { scene.addView(it) }
             scene.addView(dos)
 
             // Le dos arrive, puis se retourne de lui-même. Le retournement est
             // la récompense : la faire attendre un appui de plus ne la rend
-            // pas plus douce, elle rend la pochette longue.
+            // pas plus douce, elle rend la pochette longue. Une rare le fait
+            // attendre un peu, une très rare un peu plus : la durée est la
+            // seule chose qu'une animation sache dire, et elle le dit sans mot.
             dos.alpha = 0f
             dos.scaleX = 0.9f
             dos.scaleY = 0.9f
             dos.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(200).start()
+
+            val attente = when (rarete) {
+                Rarete.TRES_RARE -> 900L
+                Rarete.RARE -> 620L
+                else -> 380L
+            }
+            halo?.animate()?.alpha(1f)?.setDuration(attente)?.start()
 
             dos.postDelayed({
                 if (ferme || dos.parent == null) return@postDelayed
@@ -294,12 +336,25 @@ object Booster {
                     .withEndAction {
                         if (ferme) return@withEndAction
                         scene.removeAllViews()
+                        // Le halo reste derrière la carte révélée et s'efface
+                        // doucement : la lueur ne s'éteint pas au moment où
+                        // elle a enfin quelque chose à éclairer.
+                        halo?.let {
+                            scene.addView(it)
+                            it.animate().alpha(0.35f).setDuration(900).start()
+                        }
                         scene.addView(face)
                         face.rotationY = -90f
-                        face.animate().rotationY(0f).setDuration(210)
-                            .setInterpolator(DecelerateInterpolator())
+                        face.animate().rotationY(0f)
+                            .setDuration(if (rarete.distinguee) 300L else 210L)
+                            .setInterpolator(
+                                if (rarete.distinguee) OvershootInterpolator(1.2f)
+                                else DecelerateInterpolator()
+                            )
                             .withEndAction {
-                                if (!ferme && neuve) {
+                                if (ferme) return@withEndAction
+                                if (rarete == Rarete.TRES_RARE) eclater(scene, rarete)
+                                if (neuve) {
                                     bandeau.visibility = View.VISIBLE
                                     bandeau.alpha = 0f
                                     bandeau.scaleX = 0.8f
@@ -310,7 +365,7 @@ object Booster {
                             }
                             .start()
                     }.start()
-            }, 380)
+            }, attente)
         }
 
         // Un appui n'importe où sur le voile passe à la carte suivante ; le
@@ -328,6 +383,34 @@ object Booster {
         suivante()
         return voile
     }
+
+    /**
+     * L'éclat qui accompagne l'arrivée d'une très rare.
+     *
+     * Il ne dure pas : une demi-seconde, et la vue se retire d'elle-même. Un
+     * effet permanent aurait fini par gêner la lecture de la carte, qui reste
+     * ce qu'on est venu voir.
+     */
+    private fun eclater(scene: FrameLayout, rarete: Rarete) {
+        val eclat = EclatCarte(scene.context, rarete).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER
+            )
+        }
+        scene.addView(eclat)
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 520L
+            addUpdateListener { eclat.avancement = it.animatedValue as Float }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    (eclat.parent as? ViewGroup)?.removeView(eclat)
+                }
+            })
+            start()
+        }
+    }
 }
 
 /**
@@ -337,8 +420,17 @@ object Booster {
  * qui trahirait la carte supprimerait le seul instant que la pochette fabrique.
  * Ce qu'il dit, c'est **le jeu** — sa couleur et son emoji — et non le mot
  * caché dessous : on sait d'où vient le paquet, jamais ce qu'il contient.
+ *
+ * Le motif ne change donc pas avec [rarete] : seul le liseré s'allume. Le mot
+ * reste secret, mais le paquet a le droit de faire savoir qu'il tient quelque
+ * chose — c'est ce que fait n'importe quel joueur qui hésite avant de
+ * retourner une carte, et ce que le halo derrière le dos raconte déjà.
  */
-class DosDeCarte(context: Context, private val jeu: JeuCarte) : View(context) {
+class DosDeCarte(
+    context: Context,
+    private val jeu: JeuCarte,
+    private val rarete: Rarete = Rarete.COMMUN
+) : View(context) {
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val pinceauTexte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -356,19 +448,6 @@ class DosDeCarte(context: Context, private val jeu: JeuCarte) : View(context) {
         )
     }
 
-    /** Le dégradé du dos : la couleur du jeu, une fois levée, une fois posée. */
-    private fun eclaircir(couleur: Int, part: Float) = Color.rgb(
-        (Color.red(couleur) + (255 - Color.red(couleur)) * part).toInt(),
-        (Color.green(couleur) + (255 - Color.green(couleur)) * part).toInt(),
-        (Color.blue(couleur) + (255 - Color.blue(couleur)) * part).toInt()
-    )
-
-    private fun assombrir(couleur: Int, part: Float) = Color.rgb(
-        (Color.red(couleur) * (1 - part)).toInt(),
-        (Color.green(couleur) * (1 - part)).toInt(),
-        (Color.blue(couleur) * (1 - part)).toInt()
-    )
-
     override fun onDraw(canvas: Canvas) {
         val w = width.toFloat()
         val h = height.toFloat()
@@ -381,11 +460,14 @@ class DosDeCarte(context: Context, private val jeu: JeuCarte) : View(context) {
         canvas.drawRoundRect(0f, 0f, w, h, r, r, pinceau)
         pinceau.shader = null
 
-        // Le liseré, comme sur la face.
+        // Le liseré, comme sur la face — et allumé quand la carte est rare.
         pinceau.style = Paint.Style.STROKE
         pinceau.strokeWidth = 3f * d
-        pinceau.color = Color.WHITE
-        pinceau.alpha = 60
+        pinceau.color = if (rarete.distinguee)
+            eclaircir(rarete.couleur, 0.55f) else Color.WHITE
+        pinceau.alpha = if (rarete == Rarete.TRES_RARE) 190
+        else if (rarete == Rarete.RARE) 130
+        else 60
         canvas.drawRoundRect(
             2f * d, 2f * d, w - 2f * d, h - 2f * d, r, r, pinceau
         )
@@ -421,5 +503,102 @@ class DosDeCarte(context: Context, private val jeu: JeuCarte) : View(context) {
             jeu.emoji, w / 2f, h / 2f - (mesure.ascent + mesure.descent) / 2f,
             pinceauTexte
         )
+    }
+}
+
+/**
+ * Le halo qui monte derrière une carte rare avant qu'elle ne se retourne.
+ *
+ * Un simple dégradé radial, aux couleurs du palier. Il tient sa place parce
+ * qu'il ne dit **rien du mot** : le joueur apprend qu'il tient quelque chose,
+ * pas quoi. C'est la promesse, et la carte est le paiement.
+ */
+class HaloRarete(context: Context, private val rarete: Rarete) : View(context) {
+
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var lueur: RadialGradient? = null
+
+    override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
+        super.onSizeChanged(w, h, ow, oh)
+        if (w <= 0 || h <= 0) return
+        val vif = eclaircir(rarete.couleur, 0.30f)
+        val coeur = if (rarete == Rarete.TRES_RARE) 150 else 96
+        lueur = RadialGradient(
+            w * 0.5f, h * 0.5f, maxOf(w, h) * 0.55f,
+            intArrayOf(
+                Color.argb(coeur, Color.red(vif), Color.green(vif), Color.blue(vif)),
+                Color.argb(coeur / 3, Color.red(vif), Color.green(vif), Color.blue(vif)),
+                Color.TRANSPARENT
+            ),
+            floatArrayOf(0f, 0.45f, 1f),
+            Shader.TileMode.CLAMP
+        )
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val shader = lueur ?: return
+        pinceau.shader = shader
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), pinceau)
+    }
+}
+
+/**
+ * L'éclat d'une très rare, au moment où elle se pose.
+ *
+ * Douze rais qui partent du centre et un anneau qui s'ouvre, tous deux
+ * s'effaçant à mesure qu'ils s'écartent. Les angles sont réguliers et non
+ * tirés au hasard : un éclat qui change de forme à chaque carte se remarque,
+ * et ce n'est pas lui qu'on doit remarquer.
+ *
+ * [avancement] va de 0 à 1 et n'est piloté que par l'animateur de [Booster] :
+ * la vue ne connaît pas le temps, elle ne connaît que sa position dedans.
+ */
+class EclatCarte(context: Context, private val rarete: Rarete) : View(context) {
+
+    var avancement: Float = 0f
+        set(valeur) {
+            field = valeur
+            invalidate()
+        }
+
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val w = width.toFloat()
+        val h = height.toFloat()
+        if (w <= 0f || h <= 0f || avancement <= 0f) return
+        val d = resources.displayMetrics.density
+        val cx = w / 2f
+        val cy = h / 2f
+        val portee = minOf(w, h) * 0.48f
+        val reste = 1f - avancement
+
+        // Les rais : ils partent d'un cercle qui grandit et gardent une
+        // longueur fixe, ce qui donne l'impression qu'ils fuient le centre.
+        pinceau.color = eclaircir(rarete.couleur, 0.62f)
+        pinceau.strokeWidth = 2.5f * d
+        pinceau.alpha = (reste * 220).toInt().coerceIn(0, 255)
+        val rais = 12
+        val depart = portee * (0.35f + 0.55f * avancement)
+        val longueur = portee * 0.16f * reste
+        for (i in 0 until rais) {
+            val angle = (2.0 * Math.PI * i / rais).toFloat()
+            val dx = kotlin.math.cos(angle)
+            val dy = kotlin.math.sin(angle)
+            canvas.drawLine(
+                cx + dx * depart, cy + dy * depart,
+                cx + dx * (depart + longueur), cy + dy * (depart + longueur),
+                pinceau
+            )
+        }
+
+        // L'anneau, plus discret, qui donne l'échelle de l'éclat.
+        pinceau.color = Color.WHITE
+        pinceau.strokeWidth = 1.5f * d
+        pinceau.alpha = (reste * 120).toInt().coerceIn(0, 255)
+        canvas.drawCircle(cx, cy, portee * (0.30f + 0.62f * avancement), pinceau)
     }
 }

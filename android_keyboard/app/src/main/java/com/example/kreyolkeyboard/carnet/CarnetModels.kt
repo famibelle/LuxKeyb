@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import org.json.JSONArray
@@ -473,6 +474,26 @@ enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
     RARE("Rare", "★", 0xFF1E88E5.toInt()),
     TRES_RARE("Très rare", "✦", 0xFF8E24AA.toInt());
 
+    /**
+     * Le symbole, répété autant de fois que le palier est haut.
+     *
+     * La couleur seule ne suffit pas à séparer les paliers : le vert de
+     * *Peu commun* et le bleu-gris de *Commun* se confondent en deutéranopie,
+     * et une vignette de 160 dp ne laisse pas la place à un libellé. Compter
+     * des symboles, en revanche, se fait sans couleur — c'est la convention
+     * de tous les jeux de cartes, et elle ne coûte que trois caractères.
+     */
+    val insigne: String get() = symbole.repeat(ordinal + 1)
+
+    /**
+     * Le palier a-t-il droit aux marques réservées aux cartes rares ?
+     *
+     * Un seul endroit décide, parce que ces marques — le coin, le double
+     * filet, le halo, l'éclat — doivent toutes apparaître au même palier :
+     * une carte qui gagne le coin mais pas le halo se lit comme un bug.
+     */
+    val distinguee: Boolean get() = this == RARE || this == TRES_RARE
+
     companion object {
         const val SEUIL_COMMUN = 3000
         const val SEUIL_PEU_COMMUN = 6500
@@ -518,3 +539,24 @@ enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
         }
     }
 }
+
+/**
+ * Une couleur ramenée vers le blanc.
+ *
+ * Les dégradés du carnet — le dos d'une carte, le cadre d'une très rare, le
+ * halo qui la précède — se fabriquent tous à partir d'une seule couleur, celle
+ * du jeu ou celle du palier. Les deux fonctions ci-dessous sont ce qui en tire
+ * une famille : la même teinte, une fois levée, une fois posée.
+ */
+internal fun eclaircir(couleur: Int, part: Float): Int = Color.rgb(
+    (Color.red(couleur) + (255 - Color.red(couleur)) * part).toInt(),
+    (Color.green(couleur) + (255 - Color.green(couleur)) * part).toInt(),
+    (Color.blue(couleur) + (255 - Color.blue(couleur)) * part).toInt()
+)
+
+/** Une couleur ramenée vers le noir. Voir [eclaircir]. */
+internal fun assombrir(couleur: Int, part: Float): Int = Color.rgb(
+    (Color.red(couleur) * (1 - part)).toInt(),
+    (Color.green(couleur) * (1 - part)).toInt(),
+    (Color.blue(couleur) * (1 - part)).toInt()
+)

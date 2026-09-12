@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
@@ -196,11 +197,18 @@ class CarnetFragment : DialogFragment() {
         conteneurGrille = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(12f), 0, dp(12f), dp(24f))
+            // L'ombre portée des cartes rares déborde de leur vignette : sans
+            // ces deux drapeaux, elle est rognée au ras du cadre et le relief
+            // disparaît exactement là où il devait se voir.
+            clipToPadding = false
+            clipChildren = false
         }
         colonne.addView(ScrollView(ctx).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
             )
+            clipToPadding = false
+            clipChildren = false
             addView(conteneurGrille)
         })
 
@@ -430,6 +438,7 @@ class CarnetFragment : DialogFragment() {
             if (i % 2 == 0) {
                 ligne = LinearLayout(ctx).apply {
                     orientation = LinearLayout.HORIZONTAL
+                    clipChildren = false
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -489,10 +498,18 @@ class CarnetFragment : DialogFragment() {
         voile.alpha = 0f
         voile.animate().alpha(1f).setDuration(160).start()
 
+        // Une carte rare se retourne plus lentement et dépasse légèrement son
+        // aplomb avant de se poser : le même geste, mais qui prend son temps.
+        // C'est la seule chose que la durée d'une animation sait dire, et elle
+        // le dit sans un mot.
         carte.cameraDistance = 9000f * d
         carte.rotationY = -85f
-        carte.animate().rotationY(0f).setDuration(360)
-            .setInterpolator(DecelerateInterpolator()).start()
+        carte.animate().rotationY(0f)
+            .setDuration(if (c.rarete.distinguee) 470L else 360L)
+            .setInterpolator(
+                if (c.rarete.distinguee) OvershootInterpolator(1.4f)
+                else DecelerateInterpolator()
+            ).start()
     }
 
     override fun onStart() {

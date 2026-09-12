@@ -276,4 +276,48 @@ class CarnetRareteTest {
         assertEquals(4, Rarete.values().map { it.couleur }.toSet().size)
         assertEquals(4, Rarete.values().map { it.libelle }.toSet().size)
     }
+
+    /**
+     * L'insigne se lit **sans couleur**.
+     *
+     * C'est la seule marque de rareté qui survive à une vision déficiente : le
+     * vert de *Peu commun* et le bleu-gris de *Commun* se confondent en
+     * deutéranopie, et la vignette n'a pas la place d'un libellé. Compter des
+     * symboles marche pour tout le monde — encore faut-il que le compte soit
+     * différent d'un palier à l'autre, ce que ce test fige.
+     */
+    @Test
+    fun `l'insigne compte les paliers sans recourir a la couleur`() {
+        assertEquals(4, Rarete.values().map { it.insigne }.toSet().size)
+        Rarete.values().forEachIndexed { rang, palier ->
+            assertEquals(
+                "le nombre de symboles doit suivre le palier",
+                rang + 1,
+                palier.insigne.length / palier.symbole.length
+            )
+            assertTrue(
+                "l'insigne ne répète que le symbole du palier",
+                palier.insigne.startsWith(palier.symbole)
+            )
+        }
+        assertEquals("●", Rarete.COMMUN.insigne)
+        assertEquals("✦✦✦✦", Rarete.TRES_RARE.insigne)
+    }
+
+    /**
+     * Un seul palier de bascule pour toutes les marques de rareté.
+     *
+     * Le coin coupé, le double filet du cadre, l'ombre portée, le halo de la
+     * pochette et l'éclat d'arrivée se déclenchent tous sur `distinguee`. Le
+     * jour où l'un d'eux se met à tester `== TRES_RARE` de son côté, une carte
+     * gagnera le coin sans le halo, et cela se lira comme un bug plutôt que
+     * comme une distinction. Ce test fige les deux paliers concernés.
+     */
+    @Test
+    fun `les marques de rarete s'allument au meme palier`() {
+        assertEquals(
+            listOf(Rarete.RARE, Rarete.TRES_RARE),
+            Rarete.values().filter { it.distinguee }
+        )
+    }
 }
