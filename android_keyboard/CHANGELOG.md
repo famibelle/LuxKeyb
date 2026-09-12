@@ -9,6 +9,84 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.1.0] - 2026-09-12
+
+> Une carte très rare et une carte commune se ressemblaient : même cadre à la
+> couleur près, même illustration, même arrivée. La rareté était écrite sur la
+> carte, elle n'était pas visible. Elle passe désormais par ce qu'une couleur de
+> plus ne pouvait pas dire — la matière du panneau, le relief du cadre, et le
+> temps que met une carte à se retourner.
+
+### ✨ Ajouté
+
+- **Quatre matières pour quatre paliers.** L'illustration d'une carte est
+  dessinée à partir du mot, et sa teinte lui appartient : c'est donc la matière
+  du panneau qui dit la rareté. Une **commune** reçoit un aplat mat, aux anneaux
+  presque effacés ; une **peu commune**, un grain de hachures obliques ; une
+  **rare**, un halo clair derrière son initiale ; une **très rare**, une
+  irisation complète — un dégradé circulaire de teintes voisines traversé d'une
+  bande de brillance.
+- **L'irisation d'une très rare suit l'inclinaison du téléphone.** Le reflet
+  tourne et la bande glisse quand on penche l'appareil, comme sur une carte
+  brillante qu'on incline vers la lumière. L'accéléromètre n'est écouté que
+  pendant qu'une telle carte est **ouverte** : jamais dans la grille, jamais pour
+  un autre palier, et jamais si les animations du système sont coupées.
+- **Un coin coupé** aux couleurs du palier, à partir de *Rare*. C'est la marque
+  qui survit à la taille d'une vignette, là où le liseré blanc ne se voyait
+  pratiquement plus.
+- **Le cadre gagne du relief.** Une rare reçoit un second filet clair en retrait
+  du premier ; une très rare échange le filet uni contre un dégradé circulaire,
+  et sa bordure cesse de se lire comme un trait pour se lire comme une matière.
+- **Une ombre portée**, teintée du palier là où Android le permet, décolle les
+  cartes rares de la grille : la très rare se soulève, la rare effleure, les
+  autres restent posées.
+- **La lueur qui précède une carte rare.** Dans la pochette de fin de partie, le
+  dos d'une carte rare s'allume et son halo monte pendant que l'attente
+  s'allonge — 900 ms pour une très rare contre 380 pour une commune. C'est le
+  seul endroit du carnet où la rareté se sait avant d'être vue, et c'est voulu :
+  l'attente est ce qui transforme un retournement en événement.
+- **Un éclat à l'arrivée d'une très rare** : douze rais et un anneau qui
+  s'ouvrent puis s'effacent, une demi-seconde en tout.
+- **L'insigne compte les paliers** : ●, ◆◆, ★★★, ✦✦✦✦. La rareté se lit
+  désormais sans recourir à la couleur, et les deux paliers hauts la portent sur
+  une pastille pleine jusque dans la grille.
+
+### 🔧 Modifié
+
+- **Les cartes communes sont plus sobres qu'avant** : dégradé resserré, anneaux
+  ramenés de 48 à 30 d'opacité. Un palier ne se voit que par contraste, et
+  enrichir les rares sans appauvrir les communes n'aurait déplacé que la moitié
+  de l'écart.
+- **Une carte rare se retourne plus lentement**, et dépasse légèrement son
+  aplomb avant de se poser, dans la pochette comme dans le carnet. La durée d'une
+  animation ne sait dire qu'une chose, et elle la dit sans un mot.
+
+### ♿ Accessibilité
+
+- **La rareté ne dépend plus de la couleur seule.** Le vert de *Peu commun* et
+  le bleu-gris de *Commun* se confondent en deutéranopie ; le nombre de symboles
+  de l'insigne, lui, se compte sans couleur.
+- **Animations réduites respectées.** Sans elles, la carte rare arrive face
+  visible mais sur son halo, et l'irisation reste en place sans suivre le
+  téléphone : le réglage système dit « pas de mouvement », pas « pas de
+  couleur ».
+
+### 🧪 Tests
+
+- 2 tests de plus, 316 en tout. `CarnetRareteTest` fige le décompte de l'insigne
+  et vérifie que **toutes** les marques de rareté s'allument au même palier : le
+  coin, le double filet, l'ombre, le halo et l'éclat passent tous par
+  `Rarete.distinguee`, et une carte qui gagnerait le coin sans le halo se lirait
+  comme un bug plutôt que comme une distinction.
+
+### ⚙️ Rendu
+
+- Tous les dégradés et tous les chemins se construisent au changement de taille,
+  jamais à chaque trame : la grille peut afficher plusieurs centaines de
+  vignettes. L'irisation se pose en aplat translucide plutôt qu'en
+  `PorterDuff.SCREEN`, ce qui évite le calque hors écran qu'un mode de fusion
+  impose sur un canevas matériel.
+
 ## [22.0.0] - 2026-09-12
 
 > Le carnet gardait les mots gagnés, mais rien n'obligeait à rouvrir une carte :
