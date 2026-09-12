@@ -122,7 +122,9 @@ object Carnet {
                         rencontres = o.optInt("n", 1),
                         numero = cartes.size + 1,
                         jeux = lireJeux(o.optString("g")),
-                        nombre = if (o.has("v")) o.optInt("v") else null
+                        nombre = if (o.has("v")) o.optInt("v") else null,
+                        boite = o.optInt("b", 0),
+                        jourEcheance = o.optInt("j", Widderhuelen.JAMAIS_PLANIFIEE)
                     )
                 )
             }
@@ -243,6 +245,79 @@ object Carnet {
     }
 
     /**
+     * Donne une échéance aux cartes qu'aucune session n'a encore planifiées,
+     * en les étalant sur les jours suivants.
+     *
+     * Appelée à l'ouverture de la révision, donc aussi bien pour la reprise
+     * d'un carnet existant que pour les cartes gagnées depuis la dernière
+     * session : dans les deux cas le problème est le même, un paquet de cartes
+     * qui deviendraient toutes dues le même jour. Voir
+     * [Widderhuelen.echeanceDEtalement].
+     *
+     * Retourne le nombre de cartes planifiées, zéro si rien n'a bougé (le cas
+     * courant, qui n'écrit alors pas les préférences).
+     */
+    @Synchronized
+    fun planifier(context: Context, aujourdHui: Int = Widderhuelen.aujourdHui()): Int {
+        charger(context)
+        var position = 0
+        cartes.forEachIndexed { i, c ->
+            if (c.jourEcheance == Widderhuelen.JAMAIS_PLANIFIEE) {
+                cartes[i] = c.copy(
+                    jourEcheance = Widderhuelen.echeanceDEtalement(aujourdHui, position)
+                )
+                position++
+            }
+        }
+        if (position > 0) enregistrer(context)
+        return position
+    }
+
+    /** La file de la prochaine session : au plus [Widderhuelen.PLAFOND_SESSION] cartes. */
+    @Synchronized
+    fun file(context: Context, aujourdHui: Int = Widderhuelen.aujourdHui()): List<CarteMot> {
+        charger(context)
+        return Widderhuelen.file(cartes, aujourdHui)
+    }
+
+    /**
+     * Combien de cartes la prochaine session proposerait.
+     *
+     * C'est la taille de la file, donc un nombre **plafonné** : la bannière du
+     * hub annonce ce que la session contient, jamais l'arriéré. Se lit dans les
+     * préférences seules, sans toucher aux actifs, ce que la bannière exige.
+     */
+    @Synchronized
+    fun aRevoir(context: Context, aujourdHui: Int = Widderhuelen.aujourdHui()): Int =
+        file(context, aujourdHui).size
+
+    /**
+     * Enregistre le résultat d'une carte révisée.
+     *
+     * [reussi] à faux ramène la carte en boîte 0 ; la session, elle, se charge
+     * de la repasser avant la fin, sans quoi on quitterait sur un échec jamais
+     * rejoué.
+     */
+    @Synchronized
+    fun noter(
+        context: Context,
+        forme: String,
+        reussi: Boolean,
+        aujourdHui: Int = Widderhuelen.aujourdHui()
+    ) {
+        charger(context)
+        val index = parForme[forme] ?: return
+        val c = cartes[index]
+        val boite = if (reussi) Widderhuelen.apresReussite(c.boite)
+        else Widderhuelen.apresEchec(c.boite)
+        cartes[index] = c.copy(
+            boite = boite,
+            jourEcheance = Widderhuelen.echeance(aujourdHui, boite)
+        )
+        enregistrer(context)
+    }
+
+    /**
      * Rareté d'une carte.
      *
      * Un numéral de Zuelwuert se lit sur sa valeur, tout le reste sur le rang
@@ -288,6 +363,13 @@ object Carnet {
                 .put("n", it.rencontres)
                 .put("g", it.jeux.joinToString(",") { j -> j.id })
             it.nombre?.let { v -> o.put("v", v) }
+            // La révision n'écrit que ces deux entiers, et c'est ce qui tient
+            // la promesse de [PreuveDeFrappe] : une échéance repoussée parce
+            // que le mot a été écrit au clavier est indiscernable d'une
+            // échéance repoussée par une carte réussie. Aucun compteur de
+            // frappe n'entre dans un domaine sauvegardé.
+            if (it.boite != 0) o.put("b", it.boite)
+            if (it.jourEcheance != Widderhuelen.JAMAIS_PLANIFIEE) o.put("j", it.jourEcheance)
             tableau.put(o)
         }
         prefs(context).edit().putString(CLE_CARTES, tableau.toString()).apply()
@@ -360,10 +442,15 @@ data class CarteMot(
     val rencontres: Int,
     val numero: Int,
     val jeux: Set<JeuCarte> = setOf(JeuCarte.WUERTPLAZ),
-    val nombre: Int? = null
+    val nombre: Int? = null,
+    val boite: Int = 0,
+    val jourEcheance: Int = Widderhuelen.JAMAIS_PLANIFIEE
 ) {
     /** Le jeu qui a fait entrer la carte au carnet. */
     val origine: JeuCarte get() = jeux.firstOrNull() ?: JeuCarte.WUERTPLAZ
+
+    /** La carte a franchi toutes les boîtes : elle ne revient plus. */
+    val acquise: Boolean get() = boite >= Widderhuelen.BOITE_ACQUISE
 }
 
 /**

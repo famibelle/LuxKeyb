@@ -275,10 +275,39 @@ Tests (`app/src/test/`, il n'y a pas d'`androidTest/`) :
 - La règle de notation gelée : tolérance d'accent et de majuscule, et
   l'acceptation de toute carte du paquet dont la glose est celle affichée.
 
-## 10. Ce qui reste à trancher par le propriétaire
+## 10. Post-scriptum d'implémentation (12 septembre 2026, version 22.0.0)
+
+Le plan a été suivi, à trois écarts près, tous décidés en écrivant le code :
+
+- **Le pavé reçoit une touche `⇧`**, dans l'emplacement que Kräizwuert laisse
+  volontairement vide. Sans elle, la majuscule du substantif ne peut pas être
+  produite, donc pas être demandée, et la section 4 la donne pour l'objet même
+  de la question. La majuscule ne vaut que pour la lettre suivante, comme sur le
+  clavier, et elle n'est jamais préarmée.
+- **La phrase troue toutes les occurrences du mot, pas seulement la première.**
+  Le plan disait la première ; le test d'actif l'a contredit en trouvant les
+  phrases qui répètent leur mot, et une question dont la réponse est écrite
+  dedans est pire qu'une phrase un peu nue.
+- **Une quatrième forme de question n'a pas été nécessaire**, mais le repli sur
+  le sens français sert plus souvent que prévu : 93,3 % des formes des trois
+  viviers de contenu ont une phrase **trouable**, contre 97,2 % qui ont une
+  phrase. L'écart vient des flexions que la famille ne liste pas (`bestuete`
+  pour `bestuet`, `gezunn` pour `zéi`), et il est mesuré par
+  `CarnetRevisionAssetTest`.
+
+La vue a été séparée en deux fichiers plutôt qu'un (`SessionWidderhuelen.kt`
+pour les règles, `VueWidderhuelen.kt` pour l'écran), pour la raison qui vaut
+déjà pour `ChasseCroiseSession` : ce sont les règles qui cassent en silence, pas
+les pixels, et seules les règles se testent.
+
+## 11. Ce qui reste à trancher par le propriétaire
 
 1. **Le nom.** `Widderhuelen`, `Opfrëschen`, ou simplement « Réviser ». Aucun
-   n'est vérifié par un locuteur natif.
+   n'est vérifié par un locuteur natif. La 22.0.0 livre les deux : le bouton dit
+   « Réviser N cartes », l'en-tête de la session dit « Widderhuelen », comme la
+   barre d'onglets qui nomme en luxembourgeois ce que les écrans expliquent en
+   français. Si un locuteur natif tranche pour un seul, c'est le bouton qui
+   changera.
 2. **Le plafond (12) et les intervalles (1, 3, 7, 16, 35, 90).** Ce sont mes
    valeurs par défaut ; aucune mesure possible ici ne les départagera, seul
    l'usage le fera.

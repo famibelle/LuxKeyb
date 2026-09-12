@@ -164,8 +164,40 @@ object CarteCarnet {
                     )
                 })
             })
+
+            addView(barreDeBoite(context, c.carte.boite, d))
         }
     }
+
+    /**
+     * Où en est la carte dans sa révision : un segment par boîte franchie.
+     *
+     * **Pas une couleur**, une barre. La couleur du cadre et le symbole
+     * appartiennent déjà à la rareté, et deux échelles de couleur sur la même
+     * vignette ne se lisent plus : le joueur ne saurait plus si le violet dit
+     * « rare » ou « presque acquis ». La barre prend la couleur du carnet, qui
+     * n'est celle d'aucun jeu ni d'aucun palier de rareté.
+     */
+    fun barreDeBoite(context: Context, boite: Int, d: Float): View =
+        LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (3 * d).toInt()
+            ).apply { topMargin = (6 * d).toInt() }
+            repeat(Widderhuelen.BOITE_ACQUISE) { rang ->
+                addView(View(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                    ).apply { if (rang > 0) leftMargin = (2 * d).toInt() }
+                    background = GradientDrawable().apply {
+                        cornerRadius = 2f * d
+                        setColor(
+                            if (rang < boite) Carnet.COULEUR else 0xFFE0E0E0.toInt()
+                        )
+                    }
+                })
+            }
+        }
 
     /**
      * La carte entière, telle qu'on la regarde quand on l'a choisie.
@@ -286,6 +318,19 @@ object CarteCarnet {
                     })
                 }
             })
+
+            // Où en est la révision de cette carte. La barre reprend celle de
+            // la vignette, pour qu'un joueur qui ouvre une carte retrouve le
+            // même repère qu'il vient de voir dans la grille.
+            addView(separateur(context, d))
+            addView(TextView(context).apply {
+                layoutParams = largeur()
+                text = if (c.carte.acquise) "Révision · carte acquise"
+                else "Révision · boîte ${c.carte.boite + 1} sur ${Widderhuelen.BOITE_ACQUISE}"
+                textSize = 12f
+                setTextColor(ENCRE_DOUCE)
+            })
+            addView(barreDeBoite(context, c.carte.boite, d))
 
             addView(TextView(context).apply {
                 layoutParams = largeur().apply { topMargin = dp(10f) }

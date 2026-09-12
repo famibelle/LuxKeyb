@@ -57,6 +57,9 @@ class CarnetFragment : DialogFragment() {
     private var tri = Tri.RECENT
     private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
+    private var aRevoir = 0
+
+    private lateinit var boutonReviser: TextView
 
     private lateinit var racine: FrameLayout
     private lateinit var conteneurGrille: LinearLayout
@@ -125,6 +128,30 @@ class CarnetFragment : DialogFragment() {
             text = "Ouverture du carnet…"
         }
         colonne.addView(tvResume)
+
+        // La révision, au-dessus de la collection et non au fond : c'est ce
+        // qu'on vient faire quand des cartes sont dues, et la grille est ce
+        // qu'on vient regarder le reste du temps. Caché tant qu'il n'y a rien
+        // à revoir, pour ne pas promettre une session vide.
+        boutonReviser = TextView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(dp(16f), dp(6f), dp(16f), dp(10f)) }
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.WHITE)
+            setPadding(dp(16f), dp(13f), dp(16f), dp(13f))
+            background = GradientDrawable().apply {
+                cornerRadius = 24f * d
+                setColor(accent)
+            }
+            visibility = View.GONE
+            isClickable = true
+            setOnClickListener { lancerRevision() }
+        }
+        colonne.addView(boutonReviser)
 
         // Le filtre par jeu défile : sept jeux et un « Tous » ne tiennent pas
         // sur la largeur d'un téléphone, et une ligne qui se replie en deux
@@ -202,14 +229,63 @@ class CarnetFragment : DialogFragment() {
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
+            // Donner une échéance aux cartes qui n'en ont pas, ici et non à la
+            // capture : c'est ce qui étale un carnet déjà rempli au lieu de le
+            // rendre entièrement dû le même jour. Voir [Carnet.planifier].
+            Carnet.planifier(ctx)
+            val dues = Carnet.aRevoir(ctx)
             val prets = Carnet.cartes(ctx).map { CarteCarnet.contenu(ctx, it) }
             principal.post {
                 if (!isAdded) return@post
                 contenus = prets
+                aRevoir = dues
+                majBoutonReviser()
                 ligneTri.visibility = if (prets.isEmpty()) View.GONE else View.VISIBLE
                 construireFiltres()
                 surlignerTri()
                 remplirGrille()
+            }
+        }.start()
+    }
+
+    private fun majBoutonReviser() {
+        boutonReviser.visibility = if (aRevoir == 0) View.GONE else View.VISIBLE
+        boutonReviser.text = if (aRevoir == 1) "🔁  Réviser 1 carte"
+        else "🔁  Réviser $aRevoir cartes"
+    }
+
+    /**
+     * Lance une session.
+     *
+     * Tout ce qui lit un fichier est fait en fond : les rangs de fréquence, les
+     * phrases d'exemple, et surtout les compteurs de frappe de
+     * [PreuveDeFrappe], qui vivent dans `filesDir`. Les cartes que le joueur a
+     * écrites lui-même montent d'une boîte **sans passer par une question**, et
+     * le bilan de la session est le seul endroit qui le dit.
+     */
+    private fun lancerRevision() {
+        val ctx = requireContext().applicationContext
+        val principal = Handler(Looper.getMainLooper())
+        boutonReviser.isEnabled = false
+        Thread {
+            TranslationDictionary.charger(ctx)
+            TranslationDictionary.chargerExemples(ctx)
+            Carnet.planifier(ctx)
+            val file = Carnet.file(ctx)
+            val ecrites = PreuveDeFrappe.ecritesDepuisLaDerniereFois(ctx, file.map { it.forme })
+            ecrites.forEach { Carnet.noter(ctx, it, reussi = true) }
+            val aDemander = file.filter { it.forme !in ecrites }
+                .map { CarteCarnet.contenu(ctx, it) }
+            principal.post {
+                if (!isAdded) return@post
+                boutonReviser.isEnabled = true
+                VueWidderhuelen(
+                    hote = racine,
+                    paquet = aDemander,
+                    monteesParLeClavier = ecrites.toList(),
+                    surNotation = { forme, reussi -> Carnet.noter(ctx, forme, reussi) },
+                    surFin = { if (isAdded) chargerEnFond() }
+                ).ouvrir()
             }
         }.start()
     }

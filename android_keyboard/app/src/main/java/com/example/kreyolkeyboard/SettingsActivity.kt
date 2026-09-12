@@ -9727,6 +9727,7 @@ class SettingsActivity : AppCompatActivity() {
         /** La bannière du carnet, en tête du hub, remise à jour au retour. */
         private var tvCarnetTotal: TextView? = null
         private var tvCarnetDetail: TextView? = null
+        private var tvCarnetRevision: TextView? = null
 
         private val retourAuChoix = object : androidx.activity.OnBackPressedCallback(false) {
             override fun handleOnBackPressed() = fermerLeJeu()
@@ -9939,6 +9940,15 @@ class SettingsActivity : AppCompatActivity() {
                         setLineSpacing(0f, 1.2f)
                     }
                     addView(tvCarnetTotal)
+                    // Ce qui est dû aujourd'hui, sous le total. Se lit dans les
+                    // préférences comme le reste de la bannière : la règle
+                    // tient, rien ici ne touche aux actifs.
+                    tvCarnetRevision = TextView(activity).apply {
+                        textSize = 13f
+                        setTypeface(null, Typeface.BOLD)
+                        setPadding(0, dp(4f), 0, 0)
+                    }
+                    addView(tvCarnetRevision)
                     tvCarnetDetail = TextView(activity).apply {
                         textSize = 13f
                         setPadding(0, dp(4f), 0, 0)
@@ -9980,6 +9990,21 @@ class SettingsActivity : AppCompatActivity() {
                 0 -> "Les mots que vous gagnez deviennent des cartes."
                 1 -> "1 carte collectée"
                 else -> "$total cartes collectées"
+            }
+            // Le décompte est celui de la file, donc plafonné : la bannière
+            // annonce ce que la prochaine session contient, jamais l'arriéré.
+            // Promettre « 213 cartes à revoir » est la façon de n'en faire
+            // réviser aucune.
+            val dues = Carnet.aRevoir(ctx)
+            tvCarnetRevision?.apply {
+                if (dues == 0) {
+                    visibility = View.GONE
+                } else {
+                    visibility = View.VISIBLE
+                    text = if (dues == 1) "🔁  1 carte à revoir aujourd'hui"
+                    else "🔁  $dues cartes à revoir aujourd'hui"
+                    setTextColor(Color.WHITE)
+                }
             }
             val jeux = Carnet.jeuxRepresentes(ctx)
             tvCarnetDetail?.apply {
@@ -10078,6 +10103,7 @@ class SettingsActivity : AppCompatActivity() {
             grilleChoix = null
             tvCarnetTotal = null
             tvCarnetDetail = null
+            tvCarnetRevision = null
         }
     }
 
