@@ -9,6 +9,85 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.0.0] - 2026-09-12
+
+> Le carnet gardait les mots gagnés, mais rien n'obligeait à rouvrir une carte :
+> une étagère à trophées là où il fallait un paquet qui revient vous voir. Il
+> devient une méthode. Le changement de majeur marque ce déplacement : la
+> collection cesse d'être un souvenir de partie pour devenir ce qui fait tenir le
+> vocabulaire, et le clavier lui-même se met à y contribuer.
+
+### ✨ Ajouté
+
+- **La révision espacée des cartes du carnet.** Six boîtes, aux intervalles fixes
+  de 1, 3, 7, 16, 35 et 90 jours, puis la carte est acquise et ne revient plus.
+  Une bonne réponse fait monter la carte d'une boîte, une mauvaise la ramène au
+  départ. Un bouton « Réviser N cartes » ouvre la session en tête du carnet, et
+  la bannière de l'onglet Spiller annonce ce qui est dû du jour.
+- **C'est la boîte qui décide de la question, jamais le joueur.** Dans les deux
+  premières, la carte se retourne et l'on s'autonote : reconnaître suffit. À
+  partir de la troisième, il faut **produire l'orthographe**, dans la phrase du
+  dictionnaire officiel dont le mot a été retiré, ou à défaut depuis le sens
+  français. Mesuré sur les actifs livrés : 93,3 % des mots que les jeux versent
+  au carnet ont une phrase où le mot se retrouve, donc la forme forte de la
+  question est presque toujours celle qui est posée.
+- **Le mot se tape sur un pavé dans la disposition du clavier**, celui de
+  Kräizwuert, avec une touche majuscule de plus à la place exacte qu'elle occupe
+  sur le clavier. Kräizwuert laissait cet emplacement vide, sa grille étant tout
+  en capitales ; ici la majuscule du substantif est l'objet de la question, donc
+  il faut pouvoir la produire.
+- **Juste à un accent ou à une majuscule près compte comme réussi**, la
+  différence est montrée, et la carte ne monte pas de boîte. C'est le seul
+  endroit de l'application où l'accent et la majuscule sont la question et non un
+  détail d'affichage.
+- **Une réponse juste que le jeu n'attendait pas est acceptée.** Sur une question
+  posée depuis le sens français, toute carte du paquet portant ce sens vaut
+  réponse : 36,2 % des familles glosées partagent leur premier sens, et neuf mots
+  se glosent « présenter ». Répondre `Akkord` là où la carte disait `Accord` n'est
+  pas une erreur.
+- **Le clavier est l'examen.** Une carte dont le compteur d'usage a monté depuis
+  la dernière session monte d'une boîte **sans que la question soit posée** :
+  avoir écrit le mot dans un vrai message est une preuve de mémoire plus forte
+  qu'une carte retournée. Le bilan de session le dit en clair.
+- **Une barre de six segments** sous chaque vignette, et une ligne sur la carte
+  ouverte, disent où en est sa révision. Une barre et non une couleur : la
+  couleur du cadre appartient déjà à la rareté.
+
+### 🔒 Confidentialité
+
+- **Rien de nouveau n'est collecté, et la frontière de stockage est tenue.** Les
+  compteurs de frappe vivent dans `filesDir`, que les deux règles de sauvegarde
+  excluent, et la référence dont la révision se sert pour savoir qu'un mot a été
+  écrit reste dans ce même domaine. Le carnet, lui, est sauvegardé dans le nuage,
+  et ne reçoit qu'une date d'échéance : une échéance repoussée par le clavier est
+  indiscernable d'une échéance repoussée par une carte réussie.
+
+### 🔧 Modifié
+
+- **Un carnet déjà rempli n'est pas rendu entièrement dû le jour de la mise à
+  jour.** Les cartes sans échéance sont étalées par paquets de douze sur les
+  jours suivants, dans leur ordre de capture : la collection revient au rythme où
+  elle a été faite. Sans cela, la première ouverture présentait un mur de deux
+  cents cartes, et un mur ne s'ouvre jamais.
+- **Une session est plafonnée à douze cartes**, les plus anciennement dues
+  d'abord, puis les boîtes les plus basses. Un échec repasse une fois en fin de
+  session, pour ne pas quitter sur un mot qu'on n'a pas retrouvé.
+
+### 🧪 Tests
+
+- 36 tests de plus, 314 en tout. `WidderhuelenPlanTest` gèle le calendrier (les
+  boîtes, la coupure de quatre heures, l'horloge reculée qui ne doit pas
+  verrouiller le paquet, le plafond, l'étalement), `WidderhuelenSessionTest` les
+  règles de la session et de la notation, et `CarnetRevisionAssetTest` rejoue le
+  troage sur les phrases réelles : une régénération qui perdrait les phrases
+  d'exemple ferait basculer toutes les cartes de production sur le repli français
+  sans rien casser de visible.
+
+### 📄 Documentation
+
+- `REVISION-CARNET.md` à la racine du dépôt : la note de conception, ses mesures
+  et ce qui reste à trancher.
+
 ## [21.0.0] - 2026-09-12
 
 > Le carnet de cartes n'est plus une récompense de Wuertplaz : il traverse les
