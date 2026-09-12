@@ -107,11 +107,11 @@ Pourquoi pas mieux :
 Trois formes, dans l'ordre où la mémoire les supporte (reconnaître avant
 produire) :
 
-- **Boîtes 0 et 1, reconnaissance.** Recto : la forme rencontrée, seule. On
-  retourne, et le verso est **la carte du carnet elle-même**
-  (`CarteCarnet.complete`), qui porte déjà la glose, la phrase, la famille, la
-  rareté et la provenance. Autonotation en deux boutons. Aucun rendu nouveau à
-  écrire.
+- **Boîtes 0 et 1, reconnaissance.** Recto : la forme rencontrée avec le logo de
+  l'application en arrière-plan. On retourne, et le verso est **la carte du
+  carnet elle-même** (`CarteCarnet.complete`), qui porte déjà la glose, la
+  phrase, la famille, la rareté et la provenance. Autonotation en deux boutons.
+  Aucun rendu nouveau à écrire.
 - **Boîtes 2 et au-delà, production.** La phrase du LOD avec le mot remplacé par
   des cases, et on le **tape** sur le pavé QWERTZ de Kräizwuert
   (`CrosswordData.RANGEES`, 31 touches, `ÄËÉÖÜ` comprises). C'est la seule forme

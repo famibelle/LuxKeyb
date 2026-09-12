@@ -34,6 +34,15 @@ enum class JeuCarte(
     KRAIZWUERT("kw", "Kräizwuert", "🧩", 0xFFC2185B.toInt()),
     WUERTPLAZ("wp", "Wuertplaz", "🔡", 0xFF00796B.toInt());
 
+    /**
+     * Le sigle du jeu, pour la ligne de série d'une carte.
+     *
+     * Sept jeux, sept extensions : c'est ce que le sigle dit, et il tient là
+     * où le nom complet déborderait. Il dérive de [id] plutôt que d'être une
+     * huitième colonne à tenir à jour.
+     */
+    val sigle: String get() = id.uppercase()
+
     companion object {
         private val PAR_ID = values().associateBy { it.id }
         fun parId(id: String): JeuCarte? = PAR_ID[id]
