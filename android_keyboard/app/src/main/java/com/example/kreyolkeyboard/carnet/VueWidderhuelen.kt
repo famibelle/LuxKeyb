@@ -255,13 +255,18 @@ class VueWidderhuelen(
 
         verdict?.let { corps.addView(bandeauVerdict(it, q)) }
 
-        corps.addView(CarteCarnet.complete(ctx, q.contenu).apply {
+        val carte = CarteCarnet.complete(ctx, q.contenu).apply {
             layoutParams = pleineLargeur().apply { topMargin = dp(12f) }
             cameraDistance = 9000f * d
             rotationY = -85f
-            animate().rotationY(0f).setDuration(320)
-                .setInterpolator(DecelerateInterpolator()).start()
-        })
+        }
+        corps.addView(carte)
+        carte.animate().rotationY(0f).setDuration(320)
+            .setInterpolator(DecelerateInterpolator())
+            // La carte posée suit la main. Armé seulement à la fin, sinon le
+            // suivi et le retournement s'écrivent dessus l'un l'autre.
+            .withEndAction { Inclinaison.suivre(carte) }
+            .start()
 
         if (verdict == null) {
             corps.addView(LinearLayout(ctx).apply {

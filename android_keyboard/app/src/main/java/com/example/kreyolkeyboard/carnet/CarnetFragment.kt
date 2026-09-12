@@ -511,7 +511,11 @@ class CarnetFragment : DialogFragment() {
             .setInterpolator(
                 if (c.rarete.distinguee) OvershootInterpolator(1.4f)
                 else DecelerateInterpolator()
-            ).start()
+            )
+            // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
+            // pour ne pas écrire dans `rotationY` pendant le retournement.
+            .withEndAction { Inclinaison.suivre(carte) }
+            .start()
     }
 
     override fun onStart() {
