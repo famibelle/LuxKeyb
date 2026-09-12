@@ -9,6 +9,35 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.0.1] - 2026-09-12
+
+### 🐛 Corrigé
+
+- **Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6.** Le calcul
+  du jour de révision appelait `Math.floorDiv`, apparu avec l'API 24 alors que
+  l'application descend à l'API 21 et n'active pas le désucrage des
+  bibliothèques : sur ces appareils, ouvrir le carnet levait un
+  `NoSuchMethodError`. C'était la seule API Java 8 de tout le dépôt, et lint ne
+  la signale pas en `lintVital`. La division plancher est désormais écrite à la
+  main, et un test la vérifie de part et d'autre de 1970.
+- **« Presque juste » ne fait plus monter la carte d'une boîte**, comme la
+  22.0.0 l'annonçait sans le faire. Une réponse juste à un accent ou à une
+  majuscule près compte comme réussie et la différence est montrée — mais la
+  carte reste dans sa boîte et revient à son rythme. Le verdict était bien
+  calculé à trois niveaux et bien affiché, puis réduit à un simple « réussi ou
+  raté » une ligne avant d'être enregistré, si bien que `greng` valait `gréng`.
+  C'est le seul endroit de l'application où l'accent et la majuscule sont la
+  question et non un détail de rendu.
+- **La phrase à trous réclame le mot qu'elle a retiré.** Les phrases du
+  dictionnaire officiel sont rangées par famille : celle d'une carte `Haus` peut
+  illustrer `Haiser`. Le trou était creusé sur la forme de la famille mais la
+  réponse attendue restait celle de la carte — le joueur devait écrire un mot
+  que la phrase ne veut pas, et `Haiser`, seule réponse qui complète la phrase,
+  était comptée fausse. Mesuré sur les actifs livrés, 38,6 % des cartes
+  illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme,
+  celle de la carte quand la phrase la contient, et la question dit lorsqu'elle
+  réclame une autre forme de la même famille.
+
 ## [22.0.0] - 2026-09-12
 
 > Le carnet gardait les mots gagnés, mais rien n'obligeait à rouvrir une carte :

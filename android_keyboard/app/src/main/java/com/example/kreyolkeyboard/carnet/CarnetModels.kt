@@ -302,14 +302,13 @@ object Carnet {
     fun noter(
         context: Context,
         forme: String,
-        reussi: Boolean,
+        verdict: Verdict,
         aujourdHui: Int = Widderhuelen.aujourdHui()
     ) {
         charger(context)
         val index = parForme[forme] ?: return
         val c = cartes[index]
-        val boite = if (reussi) Widderhuelen.apresReussite(c.boite)
-        else Widderhuelen.apresEchec(c.boite)
+        val boite = Widderhuelen.apresVerdict(c.boite, verdict)
         cartes[index] = c.copy(
             boite = boite,
             jourEcheance = Widderhuelen.echeance(aujourdHui, boite)

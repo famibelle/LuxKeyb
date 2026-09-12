@@ -273,7 +273,9 @@ class CarnetFragment : DialogFragment() {
             Carnet.planifier(ctx)
             val file = Carnet.file(ctx)
             val ecrites = PreuveDeFrappe.ecritesDepuisLaDerniereFois(ctx, file.map { it.forme })
-            ecrites.forEach { Carnet.noter(ctx, it, reussi = true) }
+            // Un mot écrit dans un vrai message vaut une réponse exacte : c'est
+            // une preuve d'orthographe, pas seulement de mémoire.
+            ecrites.forEach { Carnet.noter(ctx, it, Verdict.EXACT) }
             val aDemander = file.filter { it.forme !in ecrites }
                 .map { CarteCarnet.contenu(ctx, it) }
             principal.post {
@@ -283,7 +285,7 @@ class CarnetFragment : DialogFragment() {
                     hote = racine,
                     paquet = aDemander,
                     monteesParLeClavier = ecrites.toList(),
-                    surNotation = { forme, reussi -> Carnet.noter(ctx, forme, reussi) },
+                    surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
                     surFin = { if (isAdded) chargerEnFond() }
                 ).ouvrir()
             }

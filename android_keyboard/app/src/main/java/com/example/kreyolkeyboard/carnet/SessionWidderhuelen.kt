@@ -21,14 +21,34 @@ enum class FormeQuestion {
 }
 
 /** Une question posée : la carte, sa forme, et la phrase trouée s'il y en a une. */
+/**
+ * Une question posée.
+ *
+ * [motAttendu] est **le mot que la question réclame**, et il n'est pas toujours
+ * celui de la carte : une phrase du LOD est rangée sous le représentant de la
+ * famille, donc elle peut illustrer `Haiser` là où le joueur a gagné `Haus`.
+ * Creuser le trou à `Haiser` en attendant `Haus` demandait au joueur d'écrire
+ * un mot que la phrase ne veut pas, et refusait celui qu'elle veut. Le trou et
+ * la réponse désignent désormais la même forme.
+ *
+ * La **carte**, elle, reste identifiée par `contenu.carte.forme` : c'est elle
+ * qui monte de boîte, quelle que soit la forme de sa famille que la phrase a
+ * fait écrire.
+ */
 data class QuestionRevision(
     val contenu: ContenuCarte,
     val forme: FormeQuestion,
-    val phraseTrouee: String? = null
+    val phraseTrouee: String? = null,
+    val motAttendu: String = contenu.carte.forme
 ) {
-    val motAttendu: String get() = contenu.carte.forme
     val tapee: Boolean get() = forme != FormeQuestion.RECONNAISSANCE
+
+    /** Vrai quand la phrase réclame une forme sœur plutôt que celle de la carte. */
+    val demandeUneAutreForme: Boolean get() = motAttendu != contenu.carte.forme
 }
+
+/** Une phrase dont un mot a été retiré, et le mot qui a été retiré. */
+data class PhraseTrouee(val texte: String, val motMasque: String)
 
 /**
  * Le résultat d'une réponse tapée.
@@ -90,7 +110,10 @@ class SessionWidderhuelen(file: List<ContenuCarte>) {
      */
     fun repondre(reussi: Boolean): Boolean {
         val q = courante ?: return false
-        val forme = q.motAttendu
+        // L'identité est celle de la carte, jamais le mot demandé : deux cartes
+        // d'une même famille peuvent réclamer la même forme sœur, et le
+        // repassage comme le score se compteraient alors sur la mauvaise.
+        val forme = q.contenu.carte.forme
         val repassage = forme in dejaRepassees
 
         if (!repassage) {
@@ -124,7 +147,9 @@ class SessionWidderhuelen(file: List<ContenuCarte>) {
             phraseATrous(it, contenu.carte.forme, contenu.autresFormes)
         }
         return if (trouee != null) {
-            QuestionRevision(contenu, FormeQuestion.PHRASE_A_TROUS, trouee)
+            QuestionRevision(
+                contenu, FormeQuestion.PHRASE_A_TROUS, trouee.texte, trouee.motMasque
+            )
         } else {
             QuestionRevision(contenu, FormeQuestion.GLOSE)
         }
@@ -139,49 +164,68 @@ class SessionWidderhuelen(file: List<ContenuCarte>) {
         const val TROU = "……"
 
         /**
-         * La phrase du LOD, le mot remplacé par [TROU], ou `null` si le mot n'y
-         * est pas.
+         * Retire de [phrase] une forme, et dit laquelle.
          *
-         * La phrase est rangée sous le représentant de la famille : elle peut
-         * porter `Haiser` là où le joueur a gagné `Haus`, et les formes de la
-         * famille sont donc des cibles comme la forme elle-même.
+         * **Une seule forme est masquée**, et c'est ce qui a changé : la version
+         * précédente creusait un trou sur n'importe quelle forme de la famille
+         * tout en attendant celle de la carte. Mesuré sur les actifs livrés,
+         * 38,6 % des cartes dont le premier exemple existe sont dans ce cas — le
+         * joueur devait alors écrire un mot que la phrase ne veut pas, et la
+         * seule réponse correcte pour la phrase était comptée fausse.
          *
-         * **Toutes** les occurrences sont trouées, pas seulement la première.
-         * Une phrase qui répète le mot donnerait sinon sa propre réponse, et
-         * une question dont la réponse est écrite dedans est pire qu'une phrase
-         * un peu nue. `CarnetRevisionAssetTest` le vérifie sur les phrases
-         * réelles, où les répétitions ne sont pas rares.
+         * La forme de la carte est préférée quand la phrase la porte ; sinon on
+         * prend la première forme de la famille qu'elle porte, et c'est elle que
+         * la question réclame. Toutes ses occurrences sont trouées — une phrase
+         * qui répète son mot ne doit pas en laisser une copie en clair, et
+         * `CarnetRevisionAssetTest` le vérifie sur les phrases réelles.
          *
          * La comparaison se fait mot par mot, jamais par `replace` sur la
-         * chaîne : `an` est un mot très fréquent et le trouver dans `Land`
-         * troue un mot qui n'est pas celui-là.
+         * chaîne : `an` est un mot très fréquent, et le chercher dans `Land`
+         * trouerait un mot qui n'est pas celui-là.
          */
-        fun phraseATrous(phrase: String, forme: String, autresFormes: List<String>): String? {
-            val cibles = LinkedHashSet<String>()
-            cibles.add(AccentTolerantMatcher.normalize(forme))
-            autresFormes.forEach { cibles.add(AccentTolerantMatcher.normalize(it)) }
+        fun phraseATrous(
+            phrase: String,
+            forme: String,
+            autresFormes: List<String>
+        ): PhraseTrouee? {
+            val presents = HashSet<String>()
+            parcourir(phrase) { mot, _, _ ->
+                presents.add(AccentTolerantMatcher.normalize(mot))
+            }
 
+            val cible = when {
+                AccentTolerantMatcher.normalize(forme) in presents -> forme
+                else -> autresFormes.firstOrNull {
+                    AccentTolerantMatcher.normalize(it) in presents
+                }
+            } ?: return null
+
+            val cibleNormalisee = AccentTolerantMatcher.normalize(cible)
             val sortie = StringBuilder(phrase.length)
-            var trouve = false
+            var precedent = 0
+            parcourir(phrase) { mot, debut, fin ->
+                if (AccentTolerantMatcher.normalize(mot) == cibleNormalisee) {
+                    sortie.append(phrase, precedent, debut).append(TROU)
+                    precedent = fin
+                }
+            }
+            sortie.append(phrase, precedent, phrase.length)
+            return PhraseTrouee(sortie.toString(), cible)
+        }
+
+        /** Appelle [action] sur chaque mot de [phrase], avec ses bornes. */
+        private inline fun parcourir(phrase: String, action: (String, Int, Int) -> Unit) {
             var i = 0
             while (i < phrase.length) {
                 if (!phrase[i].isLetter()) {
-                    sortie.append(phrase[i])
                     i++
                     continue
                 }
                 var fin = i
                 while (fin < phrase.length && phrase[fin].isLetter()) fin++
-                val mot = phrase.substring(i, fin)
-                if (AccentTolerantMatcher.normalize(mot) in cibles) {
-                    sortie.append(TROU)
-                    trouve = true
-                } else {
-                    sortie.append(mot)
-                }
+                action(phrase.substring(i, fin), i, fin)
                 i = fin
             }
-            return if (trouve) sortie.toString() else null
         }
 
         /**

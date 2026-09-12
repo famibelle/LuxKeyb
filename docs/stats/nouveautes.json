@@ -1,9 +1,36 @@
 {
  "genere_le": "2026-09-12",
- "derniere_version": "22.0.0",
+ "derniere_version": "22.0.1",
  "derniere_date": "2026-09-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.0.1",
+   "date": "2026-09-12",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrigé",
+     "points": [
+      {
+       "titre": "Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6",
+       "texte": "Le calcul du jour de révision appelait <code>Math.floorDiv</code>, apparu avec l'API 24 alors que l'application descend à l'API 21 et n'active pas le désucrage des bibliothèques : sur ces appareils, ouvrir le carnet levait un <code>NoSuchMethodError</code>. C'était la seule API Java 8 de tout le dépôt, et lint ne la signale pas en <code>lintVital</code>. La division plancher est désormais écrite à la main, et un test la vérifie de part et d'autre de 1970."
+      },
+      {
+       "titre": "« Presque juste » ne fait plus monter la carte d'une boîte",
+       "texte": "Comme la 22.0.0 l'annonçait sans le faire. Une réponse juste à un accent ou à une majuscule près compte comme réussie et la différence est montrée — mais la carte reste dans sa boîte et revient à son rythme. Le verdict était bien calculé à trois niveaux et bien affiché, puis réduit à un simple « réussi ou raté » une ligne avant d'être enregistré, si bien que <code>greng</code> valait <code>gréng</code>. C'est le seul endroit de l'application où l'accent et la majuscule sont la question et non un détail de rendu."
+      },
+      {
+       "titre": "La phrase à trous réclame le mot qu'elle a retiré",
+       "texte": "Les phrases du dictionnaire officiel sont rangées par famille : celle d'une carte <code>Haus</code> peut illustrer <code>Haiser</code>. Le trou était creusé sur la forme de la famille mais la réponse attendue restait celle de la carte — le joueur devait écrire un mot que la phrase ne veut pas, et <code>Haiser</code>, seule réponse qui complète la phrase, était comptée fausse. Mesuré sur les actifs livrés, 38,6 % des cartes illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme, celle de la carte quand la phrase la contient, et la question dit lorsqu'elle réclame une autre forme de la même famille."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "22.0.0",
    "date": "2026-09-12",
@@ -291,56 +318,6 @@
    "image": "Screenshots/lux_recompense_verrouillage.png",
    "image_alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
    "image_legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
-  },
-  {
-   "version": "20.3.0",
-   "date": "2026-09-07",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Les grilles casaient des communes, des pays et des prénoms",
-       "texte": "Wuertplaz en portait 115 sur 1 954 formes, Kräizwuert 54 sur 1 527, jusqu'à demander « CAFÉ » sous la définition « Eschweiler-Halte ». Les deux générateurs affirmaient que les noms propres n'avaient pas besoin d'être détectés, au motif que le dictionnaire officiel ne traduit ni « Bettel », ni « RTL », ni « Esch » : c'est vrai de ceux-là et faux en général, puisqu'il consacre un article à l'essentiel des communes du pays et des pays d'Europe. Ils sont maintenant reconnus au fait que toutes leurs traductions commencent par une majuscule, le français réservant la minuscule aux noms communs. Il n'en reste aucun dans les deux jeux, et un contrôle automatique refuse leur retour."
-      },
-      {
-       "titre": "Une traduction ne traîne plus de nom propre derrière elle",
-       "texte": "Le dictionnaire signale parfois, après le sens courant, l'emploi du mot dans un nom propre : « Stad : ville, Luxembourg-ville », « Fra : femme, Gëlle Fra », « Papp : père, Dieu le Père ». 68 mots étaient dans ce cas et montraient au joueur une moitié de ligne inutilisable. Seul le sens commun reste."
-      },
-      {
-       "titre": "Wuertsich, Wuertmix et Wuertriet tiraient eux aussi des noms propres",
-       "texte": "Le même défaut, par un autre chemin : le filtre de ces trois jeux ne rejetait qu'un mot traduit par lui-même, donc il attrapait « Käerjeng » mais laissait passer « Beetebuerg », dont la traduction « Bettembourg » s'écrit autrement. 757 formes sur 19 350, et Wuertriet pouvait demander « Athen » ou « Basel » comme mot de cinq lettres à deviner. Le mot du jour et « Mots à découvrir » passent par le même point et en profitent."
-      },
-      {
-       "titre": "« Viol » est apparu dans une grille",
-       "texte": "Le filtre de neutralité existait mais n'avait relevé que la moitié germanique du registre écarté : « Vergewaltegung » en était, « Viol » non, et de même « Ofdreiwung » sans « Avortement », « Selbstmord » sans « Suicide », « Kokain » sans « Cannabis » ni « Haschisch ». Un mot filtré dont le synonyme emprunté ne l'est pas ne filtre rien. Les deux moitiés y sont désormais."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔄",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Un mot gagné ne se retire plus, dans Wuertplaz",
-       "texte": "Ses croisements l'ont prouvé, le jeu a versé sa traduction et l'a inscrite dans les sens acquis : le rendre à la liste rouvrirait un emplacement dont la réponse est déjà connue. Il passe au vert dans la liste des mots, et le toucher dans la grille répond qu'il reste en place au lieu de ne rien faire. Un mot seulement posé, lui, se reprend toujours, et un mot gagné le reste même si son voisin s'en va."
-      },
-      {
-       "titre": "Wuertplaz ne répète plus « un substantif : hors de la grille, il garde sa majuscule »",
-       "texte": "La phrase revenait à chaque mot gagné pour dire ce que la liste des mots à caser montrait déjà. Elle demeure dans Kräizwuert, où le joueur écrit lui-même le mot sans jamais en voir la forme."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_wuertplaz_gagne.png",
-   "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
-   "image_legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
   }
  ]
 }

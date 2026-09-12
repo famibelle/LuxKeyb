@@ -42,7 +42,7 @@ class VueWidderhuelen(
     private val hote: ViewGroup,
     private val paquet: List<ContenuCarte>,
     private val monteesParLeClavier: List<String>,
-    private val surNotation: (forme: String, reussi: Boolean) -> Unit,
+    private val surNotation: (forme: String, verdict: Verdict) -> Unit,
     private val surFin: () -> Unit
 ) {
 
@@ -155,7 +155,18 @@ class VueWidderhuelen(
 
         when (q.forme) {
             FormeQuestion.RECONNAISSANCE -> questionReconnaissance(q)
-            FormeQuestion.PHRASE_A_TROUS -> questionTapee(q, q.phraseTrouee ?: "", "Quel mot manque ?")
+            // Quand la phrase réclame une forme sœur, le dire : sans cela le
+            // joueur cherche le mot de sa carte et se trompe sans comprendre
+            // pourquoi.
+            FormeQuestion.PHRASE_A_TROUS -> questionTapee(
+                q,
+                q.phraseTrouee ?: "",
+                if (q.demandeUneAutreForme) {
+                    "Quel mot manque ? (une forme de « ${q.contenu.carte.forme} »)"
+                } else {
+                    "Quel mot manque ?"
+                }
+            )
             FormeQuestion.GLOSE -> questionTapee(q, q.contenu.glose, "Comment l'écrit-on ?")
         }
     }
@@ -256,12 +267,12 @@ class VueWidderhuelen(
             corps.addView(LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = pleineLargeur().apply { topMargin = dp(16f) }
-                addView(bouton("Pas su", 0xFFB0575E.toInt()) { noter(q, false) }.apply {
+                addView(bouton("Pas su", 0xFFB0575E.toInt()) { noter(q, Verdict.FAUX) }.apply {
                     (layoutParams as LinearLayout.LayoutParams).apply {
                         width = 0; weight = 1f; rightMargin = dp(6f)
                     }
                 })
-                addView(bouton("Je savais", 0xFF2E7D32.toInt()) { noter(q, true) }.apply {
+                addView(bouton("Je savais", 0xFF2E7D32.toInt()) { noter(q, Verdict.EXACT) }.apply {
                     (layoutParams as LinearLayout.LayoutParams).apply {
                         width = 0; weight = 1f; leftMargin = dp(6f)
                     }
@@ -269,7 +280,7 @@ class VueWidderhuelen(
             })
         } else {
             corps.addView(bouton("Suivant", Carnet.COULEUR) {
-                noter(q, verdict != Verdict.FAUX)
+                noter(q, verdict)
             }.apply {
                 (layoutParams as LinearLayout.LayoutParams).topMargin = dp(16f)
             })
@@ -323,8 +334,22 @@ class VueWidderhuelen(
         }
     }
 
-    private fun noter(q: QuestionRevision, reussi: Boolean) {
-        if (session.repondre(reussi)) surNotation(q.motAttendu, reussi)
+    /**
+     * Enregistre la réponse.
+     *
+     * La session ne compte que réussi ou raté — c'est le score de la manche, et
+     * un « presque » y est une réussite. Le carnet, lui, reçoit le **verdict
+     * entier** : c'est de lui que dépend la boîte, et c'est là que
+     * [Verdict.DETAIL] cesse de promouvoir.
+     *
+     * La carte est identifiée par sa forme à elle, jamais par le mot demandé :
+     * une phrase trouée peut réclamer une autre forme de la famille, et
+     * l'enregistrement doit retomber sur la bonne carte.
+     */
+    private fun noter(q: QuestionRevision, verdict: Verdict) {
+        if (session.repondre(verdict != Verdict.FAUX)) {
+            surNotation(q.contenu.carte.forme, verdict)
+        }
         afficherQuestion()
     }
 

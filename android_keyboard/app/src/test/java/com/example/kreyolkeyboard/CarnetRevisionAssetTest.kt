@@ -125,6 +125,7 @@ class CarnetRevisionAssetTest {
         var instructives = 0
         var illustrees = 0
         var trouables = 0
+        var surLaFormeMeme = 0
         formes.forEach { forme ->
             val glose = dico.glose(forme)
             if (glose.isNotEmpty()) {
@@ -137,8 +138,18 @@ class CarnetRevisionAssetTest {
                 // La vraie question n'est pas « y a-t-il une phrase » mais
                 // « peut-on la trouer » : c'est la fonction livrée qui répond,
                 // rejouée ici sur les phrases réelles.
-                if (SessionWidderhuelen.phraseATrous(phrase, forme, dico.autresFormes(forme)) != null) {
+                val trouee = SessionWidderhuelen.phraseATrous(
+                    phrase, forme, dico.autresFormes(forme)
+                )
+                if (trouee != null) {
                     trouables++
+                    // Et la question la plus utile : le trou porte-t-il sur le
+                    // mot de la carte, ou sur une forme sœur ? Le second cas
+                    // reste une vraie question — la phrase réclame alors la
+                    // forme qu'elle porte — mais il est bien plus fréquent que
+                    // le taux de « trouables » ne le laisse croire, et c'est ce
+                    // que ce compteur garde sous les yeux.
+                    if (trouee.motMasque == forme) surLaFormeMeme++
                 }
             }
         }
@@ -149,6 +160,16 @@ class CarnetRevisionAssetTest {
         assertTrue("gloses instructives : ${part(instructives)} %", part(instructives) >= 85.0)
         assertTrue("illustrées : ${part(illustrees)} %", part(illustrees) >= 93.0)
         assertTrue("phrases trouables : ${part(trouables)} %", part(trouables) >= 88.0)
+        // Mesuré à l'écriture : 57 % des formes voient leur premier exemple
+        // porter leur propre graphie ; pour le reste, la phrase illustre une
+        // forme sœur et c'est elle que la question réclame. Le seuil est bas
+        // exprès — il n'est pas là pour exiger mieux, mais pour signaler si la
+        // proportion s'effondrait, auquel cas presque toutes les questions
+        // porteraient sur un autre mot que celui de la carte.
+        assertTrue(
+            "trous portant sur la forme de la carte : ${part(surLaFormeMeme)} %",
+            part(surLaFormeMeme) >= 45.0
+        )
     }
 
     @Test
@@ -164,9 +185,9 @@ class CarnetRevisionAssetTest {
             val trouee = SessionWidderhuelen.phraseATrous(phrase, forme, emptyList())
                 ?: return@forEach
             verifiees++
-            val motsRestants = trouee.split(Regex("[^\\p{L}]+")).filter { it.isNotEmpty() }
+            val motsRestants = trouee.texte.split(Regex("[^\\p{L}]+")).filter { it.isNotEmpty() }
             assertTrue(
-                "« $forme » reste en clair dans « $trouee »",
+                "« $forme » reste en clair dans « ${trouee.texte} »",
                 motsRestants.none { AccentTolerantMatcher.normalize(it) == AccentTolerantMatcher.normalize(forme) }
             )
         }

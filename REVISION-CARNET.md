@@ -300,6 +300,45 @@ pour les règles, `VueWidderhuelen.kt` pour l'écran), pour la raison qui vaut
 déjà pour `ChasseCroiseSession` : ce sont les règles qui cassent en silence, pas
 les pixels, et seules les règles se testent.
 
+## 10 bis. Trois corrections après relecture (22.0.1)
+
+La relecture du code livré a trouvé trois écarts entre ce que la 22.0.0 fait et
+ce que ce document — ou son propre journal des versions — annonce.
+
+1. **`Math.floorDiv` est une API 24**, et le projet descend à 21 sans activer le
+   désucrage : ouvrir le carnet plantait sur Android 5 et 6. C'était la seule
+   API Java 8 du dépôt, et `lintVitalRelease` ne l'attrape pas — il ne joue que
+   les règles de sévérité fatale, or `NewApi` est une simple erreur. La division
+   plancher est réécrite à la main.
+
+2. **« Presque » promouvait.** Le `Verdict` à trois valeurs était correct et le
+   bandeau affichait bien la différence, mais `repondre(reussi: Boolean)` et
+   `surNotation(forme, reussi: Boolean)` réduisaient le verdict à un booléen
+   avant qu'il n'atteigne le carnet : `EXACT` et `DETAIL` y arrivaient
+   indiscernables. Le type traverse maintenant jusqu'à `Carnet.noter`, et
+   `Widderhuelen.apresVerdict` tient la règle. La leçon vaut au-delà de ce
+   correctif : une distinction qui n'existe que dans un type intermédiaire
+   disparaît au premier `Boolean` qu'elle traverse.
+
+3. **Le trou ne réclamait pas le mot qu'il avait retiré.** La section 4
+   n'imaginait pas que la phrase du LOD, rangée par famille, illustre souvent
+   une forme sœur : le trou était creusé sur `Haiser` et la réponse attendue
+   restait `Haus`. La mesure manquait aussi au post-scriptum, qui donne 93,3 %
+   de phrases « trouables » sans distinguer *sur quel mot* : sur le premier
+   exemple, celui que la carte retient, **55,7 % des formes du vivier voient
+   leur propre graphie trouée, et 38,6 % une forme sœur**. Une seule forme est
+   désormais masquée, celle de la carte quand la phrase la porte, et c'est elle
+   que la question réclame ; l'écran le dit quand il s'agit d'une autre forme de
+   la famille. La carte, elle, reste identifiée par sa propre forme — c'est elle
+   qui monte de boîte.
+
+Reste ouvert, et noté ici pour mémoire : **rien ne garde l'arithmétique du
+débit**. Six révisions par carte, donc la charge quotidienne vaut six fois le
+nombre de cartes ajoutées par jour, et le plafond de 12 soutient deux nouvelles
+cartes par jour là où une grille de Wuertplaz en verse neuf. Un test qui fige ce
+calcul échouerait le jour où quelqu'un monterait le plafond en croyant rendre
+service.
+
 ## 11. Ce qui reste à trancher par le propriétaire
 
 1. **Le nom.** `Widderhuelen`, `Opfrëschen`, ou simplement « Réviser ». Aucun
