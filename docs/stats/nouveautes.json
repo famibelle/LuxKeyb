@@ -1,9 +1,104 @@
 {
  "genere_le": "2026-09-12",
- "derniere_version": "21.0.0",
+ "derniere_version": "22.0.0",
  "derniere_date": "2026-09-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.0.0",
+   "date": "2026-09-12",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Ajouté",
+     "points": [
+      {
+       "titre": "La révision espacée des cartes du carnet",
+       "texte": "Six boîtes, aux intervalles fixes de 1, 3, 7, 16, 35 et 90 jours, puis la carte est acquise et ne revient plus. Une bonne réponse fait monter la carte d'une boîte, une mauvaise la ramène au départ. Un bouton « Réviser N cartes » ouvre la session en tête du carnet, et la bannière de l'onglet Spiller annonce ce qui est dû du jour."
+      },
+      {
+       "titre": "C'est la boîte qui décide de la question, jamais le joueur",
+       "texte": "Dans les deux premières, la carte se retourne et l'on s'autonote : reconnaître suffit. À partir de la troisième, il faut <strong>produire l'orthographe</strong>, dans la phrase du dictionnaire officiel dont le mot a été retiré, ou à défaut depuis le sens français. Mesuré sur les actifs livrés : 93,3 % des mots que les jeux versent au carnet ont une phrase où le mot se retrouve, donc la forme forte de la question est presque toujours celle qui est posée."
+      },
+      {
+       "titre": "Le mot se tape sur un pavé dans la disposition du clavier",
+       "texte": "Celui de Kräizwuert, avec une touche majuscule de plus à la place exacte qu'elle occupe sur le clavier. Kräizwuert laissait cet emplacement vide, sa grille étant tout en capitales ; ici la majuscule du substantif est l'objet de la question, donc il faut pouvoir la produire."
+      },
+      {
+       "titre": "Juste à un accent ou à une majuscule près compte comme réussi",
+       "texte": "La différence est montrée, et la carte ne monte pas de boîte. C'est le seul endroit de l'application où l'accent et la majuscule sont la question et non un détail d'affichage."
+      },
+      {
+       "titre": "Une réponse juste que le jeu n'attendait pas est acceptée",
+       "texte": "Sur une question posée depuis le sens français, toute carte du paquet portant ce sens vaut réponse : 36,2 % des familles glosées partagent leur premier sens, et neuf mots se glosent « présenter ». Répondre <code>Akkord</code> là où la carte disait <code>Accord</code> n'est pas une erreur."
+      },
+      {
+       "titre": "Le clavier est l'examen",
+       "texte": "Une carte dont le compteur d'usage a monté depuis la dernière session monte d'une boîte <strong>sans que la question soit posée</strong> : avoir écrit le mot dans un vrai message est une preuve de mémoire plus forte qu'une carte retournée. Le bilan de session le dit en clair."
+      },
+      {
+       "titre": "Une barre de six segments",
+       "texte": "Sous chaque vignette, et une ligne sur la carte ouverte, disent où en est sa révision. Une barre et non une couleur : la couleur du cadre appartient déjà à la rareté."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔒",
+     "titre": "Confidentialité",
+     "points": [
+      {
+       "titre": "Rien de nouveau n'est collecté, et la frontière de stockage est tenue",
+       "texte": "Les compteurs de frappe vivent dans <code>filesDir</code>, que les deux règles de sauvegarde excluent, et la référence dont la révision se sert pour savoir qu'un mot a été écrit reste dans ce même domaine. Le carnet, lui, est sauvegardé dans le nuage, et ne reçoit qu'une date d'échéance : une échéance repoussée par le clavier est indiscernable d'une échéance repoussée par une carte réussie."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Un carnet déjà rempli n'est pas rendu entièrement dû le jour de la mise à jour",
+       "texte": "Les cartes sans échéance sont étalées par paquets de douze sur les jours suivants, dans leur ordre de capture : la collection revient au rythme où elle a été faite. Sans cela, la première ouverture présentait un mur de deux cents cartes, et un mur ne s'ouvre jamais."
+      },
+      {
+       "titre": "Une session est plafonnée à douze cartes",
+       "texte": "Les plus anciennement dues d'abord, puis les boîtes les plus basses. Un échec repasse une fois en fin de session, pour ne pas quitter sur un mot qu'on n'a pas retrouvé."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🧪",
+     "titre": "Tests",
+     "points": [
+      {
+       "titre": null,
+       "texte": "36 tests de plus, 314 en tout. <code>WidderhuelenPlanTest</code> gèle le calendrier (les boîtes, la coupure de quatre heures, l'horloge reculée qui ne doit pas verrouiller le paquet, le plafond, l'étalement), <code>WidderhuelenSessionTest</code> les règles de la session et de la notation, et <code>CarnetRevisionAssetTest</code> rejoue le troage sur les phrases réelles : une régénération qui perdrait les phrases d'exemple ferait basculer toutes les cartes de production sur le repli français sans rien casser de visible."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "📄",
+     "titre": "Documentation",
+     "points": [
+      {
+       "titre": null,
+       "texte": "<code>REVISION-CARNET.md</code> à la racine du dépôt : la note de conception, ses mesures et ce qui reste à trancher."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "21.0.0",
    "date": "2026-09-12",
@@ -246,40 +341,6 @@
    "image": "Screenshots/lux_wuertplaz_gagne.png",
    "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
    "image_legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
-  },
-  {
-   "version": "20.2.2",
-   "date": "2026-09-07",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Six traductions sur dix n'étaient jamais montrées dans Wuertplaz",
-       "texte": "Le bandeau d'annonce ne portait qu'un mot à la fois, alors que plusieurs se verrouillent souvent ensemble : les autres se réduisaient à un « (+2) » entre parenthèses, et leur sens n'apparaissait nulle part. Le message « Grille terminée » recouvrait en outre le dernier lot, c'est-à-dire justement celui qui en compte le plus. Mesuré sur les 284 grilles livrées, vingt ordres de pose chacune, soit 52 420 mots posés : 58,8 % ne montraient jamais leur traduction. C'était grave pour ce jeu en particulier, dont le sens gagné est la seule chose qui s'apprend."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Une liste « Ce que vous avez gagné », sous les mots à caser",
-       "texte": "Chaque mot verrouillé y inscrit sa forme véritable et son sens, dans l'ordre où il a été trouvé. La récompense cesse d'être fugace : rien ne peut être manqué, la grille se double d'un petit lexique à mesure qu'on la remplit, et la liste enseigne au passage la majuscule des substantifs en montrant côte à côte « Houwald » et « gestach ». Elle grandit vers le bas, sous les pastilles, donc elle ne déplace ni la grille ni les mots que l'on s'apprête à toucher."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_wuertplaz_sens.png",
-   "image_alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
-   "image_legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
   }
  ]
 }
