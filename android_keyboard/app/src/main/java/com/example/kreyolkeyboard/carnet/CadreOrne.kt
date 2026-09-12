@@ -78,6 +78,16 @@ object Ornement {
     const val HAUTEUR_VIGNETTE = 300f
 
     /**
+     * Le rayon des coins, en unités de carte.
+     *
+     * Il était écrit en clair aux trois endroits qui tracent le bord, et
+     * [Booster] en avait un quatrième, en dp, qui ne lui correspondait pas.
+     * Un dos et une face qui ne s'arrondissent pas pareil se retournent comme
+     * deux objets qui se remplacent, pas comme un carton.
+     */
+    const val RAYON = 18f
+
+    /**
      * Un palier, un alliage.
      *
      * C'est la convention de tous les jeux de collection, et c'est ce qui se
@@ -398,7 +408,7 @@ object Ornement {
         p.style = Paint.Style.STROKE
         p.strokeWidth = 2.5f
         p.color = m.trait
-        c.drawRoundRect(RectF(1.2f, 1.2f, LARGEUR - 1.2f, haut - 1.2f), 18f, 18f, p)
+        c.drawRoundRect(RectF(1.2f, 1.2f, LARGEUR - 1.2f, haut - 1.2f), RAYON, RAYON, p)
 
         // 2. La sertissure de l'ouverture : un jonc, doublé d'un filet clair
         //    à partir de Peu commun.
@@ -706,7 +716,19 @@ object Ornement {
     fun dessinerReflet(c: Canvas, p: Paint, rarete: Rarete, roulis: Float, vignette: Boolean) {
         if (!rarete.distinguee) return
         val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
-        val force = if (rarete == Rarete.TRES_RARE) 0x66 else 0x2E
+        refletBalaye(c, p, roulis, haut, if (rarete == Rarete.TRES_RARE) 0x66 else 0x2E)
+    }
+
+    /**
+     * Le balayage lui-même, sans la question de savoir qui y a droit.
+     *
+     * Extrait de [dessinerReflet] parce que le dos de révision l'utilise
+     * aussi, et qu'il n'a pas de rareté : un dos est le même pour toutes les
+     * cartes du paquet, c'est même sa raison d'être. Une seule implémentation,
+     * donc, sinon les deux faces d'un même carton finiraient par accrocher la
+     * lumière selon deux angles différents.
+     */
+    fun refletBalaye(c: Canvas, p: Paint, roulis: Float, haut: Float, force: Int) {
         val dx = roulis * LARGEUR * 0.55f
         p.style = Paint.Style.FILL
         p.shader = LinearGradient(
@@ -714,7 +736,7 @@ object Ornement {
             intArrayOf(0x00FFFFFF, (force shl 24) or 0xFFFFFF, 0x00FFFFFF),
             floatArrayOf(0.32f, 0.5f, 0.68f), Shader.TileMode.CLAMP
         )
-        c.drawRoundRect(RectF(0f, 0f, LARGEUR, haut), 18f, 18f, p)
+        c.drawRoundRect(RectF(0f, 0f, LARGEUR, haut), RAYON, RAYON, p)
         p.shader = null
     }
 
@@ -733,8 +755,7 @@ object Ornement {
 }
 
 /**
- * La carte ornée : un groupe de vues qui dessine son propre cadre et pose son
- * texte à des emplacements fixes.
+ * Le carton : ce que les deux faces d'une carte ont en commun.
  *
  * ## Pourquoi un ViewGroup et pas un empilement de LinearLayout
  *
@@ -747,15 +768,119 @@ object Ornement {
  * Les emplacements vivent dans [Ornement] et sont exprimés en unités de carte
  * (300 × 440). La vue les met à l'échelle de sa largeur réelle, ce qui rend la
  * même disposition valable en vignette de 160 dp et en carte ouverte.
+ *
+ * ## Pourquoi la géométrie a quitté [CarteOrnee]
+ *
+ * Depuis que la révision retourne ses cartes, une carte a un recto **et** un
+ * verso, et l'illusion du retournement ne tient qu'à une condition : que les
+ * deux faces soient le même objet vu des deux côtés. Même rectangle, même
+ * rapport, même rayon de coin, mêmes unités.
+ *
+ * Laisser le dos naître ailleurs aurait suffi à tout perdre : [DosDeCarte],
+ * écrit pour la pochette, arrondit ses coins à 14 dp fixes quand la face les
+ * arrondit à [Ornement.RAYON] unités. Deux faces qui ne s'arrondissent pas
+ * pareil se retournent comme deux objets qui se remplacent. La mesure, la mise
+ * à l'échelle et la pose sont donc ici, en amont des deux.
+ */
+abstract class Carton(context: Context) : ViewGroup(context) {
+
+    private val emplacements = ArrayList<RectF>()
+
+    /** La hauteur de ce carton-là, en unités de carte. */
+    protected abstract val hauteurUnites: Float
+
+    /**
+     * Le carton doit-il rétrécir pour tenir dans la hauteur qu'on lui donne ?
+     *
+     * Faux partout où la carte vit dans un flux vertical — la grille du
+     * carnet, la pochette : là, la largeur commande et la hauteur suit, et
+     * c'est le défilement qui absorbe le reste.
+     *
+     * Vrai en révision, où le carton partage l'écran avec un pavé de touches
+     * et doit se contenter de ce qui reste. C'est une option et non la règle
+     * parce qu'un carton qui rétrécirait partout rétrécirait aussi dans un
+     * `ScrollView`, dont la hauteur proposée ne veut rien dire.
+     */
+    var ajusteALaHauteur = false
+
+    fun posee(vue: View, ou: RectF): Carton {
+        addView(vue)
+        emplacements.add(ou)
+        return this
+    }
+
+    /**
+     * Met les corps de texte à l'échelle du carton.
+     *
+     * Un `TextView` porte dans son `tag` sa taille et sa marge haute **en
+     * unités de carte**. C'est la seule façon qu'une même disposition tienne
+     * à 160 dp de vignette et à 340 dp de carte ouverte sans qu'il faille
+     * écrire deux jeux de tailles et les tenir synchronisés.
+     */
+    private fun mettreALEchelle(vue: View, u: Float) {
+        (vue.tag as? FloatArray)?.let { t ->
+            (vue as? TextView)?.let { tv ->
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, t[0] * u)
+                tv.setPadding(0, (t[1] * u).toInt(), 0, 0)
+            }
+        }
+        if (vue is ViewGroup) {
+            for (i in 0 until vue.childCount) mettreALEchelle(vue.getChildAt(i), u)
+        }
+    }
+
+    override fun onMeasure(largeurSpec: Int, hauteurSpec: Int) {
+        var largeur = MeasureSpec.getSize(largeurSpec)
+        if (ajusteALaHauteur) {
+            val mode = MeasureSpec.getMode(hauteurSpec)
+            val plafond = MeasureSpec.getSize(hauteurSpec)
+            if (mode != MeasureSpec.UNSPECIFIED && plafond > 0) {
+                val tenable = (plafond * Ornement.LARGEUR / hauteurUnites).toInt()
+                if (tenable < largeur) largeur = tenable
+            }
+        }
+        val u = largeur / Ornement.LARGEUR
+        val hauteur = (hauteurUnites * u).toInt()
+        for (i in 0 until childCount) {
+            val r = emplacements[i]
+            mettreALEchelle(getChildAt(i), u)
+            getChildAt(i).measure(
+                MeasureSpec.makeMeasureSpec((r.width() * u).toInt(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec((r.height() * u).toInt(), MeasureSpec.EXACTLY)
+            )
+        }
+        setMeasuredDimension(largeur, hauteur)
+    }
+
+    override fun onLayout(change: Boolean, g: Int, h: Int, d: Int, b: Int) {
+        val u = (d - g) / Ornement.LARGEUR
+        for (i in 0 until childCount) {
+            val r = emplacements[i]
+            getChildAt(i).layout(
+                (r.left * u).toInt(), (r.top * u).toInt(),
+                (r.right * u).toInt(), (r.bottom * u).toInt()
+            )
+        }
+    }
+}
+
+/**
+ * Le recto : le cadre orné, l'illustration du mot, et le texte de la carte.
+ *
+ * C'est la face que le joueur a gagnée et que le carnet conserve. Tout ce qui
+ * relève de la géométrie du carton est dans [Carton] ; ce qui reste ici est le
+ * tracé, l'échelle d'ornement, et le reflet des deux paliers hauts.
  */
 class CarteOrnee(
     context: Context,
     private val mot: String,
     private val rarete: Rarete,
     private val vignette: Boolean
-) : ViewGroup(context), SensorEventListener {
+) : Carton(context), SensorEventListener {
 
-    private val emplacements = ArrayList<RectF>()
+    override val hauteurUnites: Float =
+        if (vignette) Ornement.HAUTEUR_VIGNETTE else Ornement.HAUTEUR
+
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val teinte: Float
     private var boite = 0
@@ -789,62 +914,9 @@ class CarteOrnee(
         clipChildren = false
     }
 
-    fun posee(vue: View, ou: RectF): CarteOrnee {
-        addView(vue)
-        emplacements.add(ou)
-        return this
-    }
-
     fun avecBoite(valeur: Int): CarteOrnee {
         boite = valeur
         return this
-    }
-
-    /**
-     * Met les corps de texte à l'échelle de la carte.
-     *
-     * Un `TextView` porte dans son `tag` sa taille et sa marge haute **en
-     * unités de carte**. C'est la seule façon qu'une même disposition tienne
-     * à 160 dp de vignette et à 340 dp de carte ouverte sans qu'il faille
-     * écrire deux jeux de tailles et les tenir synchronisés.
-     */
-    private fun mettreALEchelle(vue: View, u: Float) {
-        (vue.tag as? FloatArray)?.let { t ->
-            (vue as? TextView)?.let { tv ->
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, t[0] * u)
-                tv.setPadding(0, (t[1] * u).toInt(), 0, 0)
-            }
-        }
-        if (vue is ViewGroup) {
-            for (i in 0 until vue.childCount) mettreALEchelle(vue.getChildAt(i), u)
-        }
-    }
-
-    override fun onMeasure(largeurSpec: Int, hauteurSpec: Int) {
-        val largeur = MeasureSpec.getSize(largeurSpec)
-        val u = largeur / Ornement.LARGEUR
-        val hauteur =
-            ((if (vignette) Ornement.HAUTEUR_VIGNETTE else Ornement.HAUTEUR) * u).toInt()
-        for (i in 0 until childCount) {
-            val r = emplacements[i]
-            mettreALEchelle(getChildAt(i), u)
-            getChildAt(i).measure(
-                MeasureSpec.makeMeasureSpec((r.width() * u).toInt(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((r.height() * u).toInt(), MeasureSpec.EXACTLY)
-            )
-        }
-        setMeasuredDimension(largeur, hauteur)
-    }
-
-    override fun onLayout(change: Boolean, g: Int, h: Int, d: Int, b: Int) {
-        val u = (d - g) / Ornement.LARGEUR
-        for (i in 0 until childCount) {
-            val r = emplacements[i]
-            getChildAt(i).layout(
-                (r.left * u).toInt(), (r.top * u).toInt(),
-                (r.right * u).toInt(), (r.bottom * u).toInt()
-            )
-        }
     }
 
     /**
