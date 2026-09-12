@@ -15,6 +15,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > la plus rare un reflet qui suit l'inclinaison du téléphone. Restait que la
 > carte, elle, ne bougeait pas : la lumière glissait sur une surface immobile.
 > Elle pivote maintenant avec la main.
+>
+> Cette version emporte aussi trois correctifs de la révision espacée, dont un
+> plantage à l'ouverture du carnet sous Android 5 et 6.
 
 ### ✨ Ajouté
 
@@ -47,29 +50,6 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   l'image : la carte est recomposée, jamais repeinte. C'est moins cher que le
   reflet, qui lui invalide la vue et rejoue son tracé.
 
-## [22.2.0] - 2026-09-12
-
-> Une carte du carnet devient une pièce d'orfèvrerie. Son ornementation monte
-> avec sa rareté, de l'aplat mat jusqu'à l'irisation complète ; son cadre gagne
-> du relief et du coin coupé ; une ombre portée, une lueur d'attente, un éclat
-> à l'arrivée font de chaque tirage un moment. La grille elle-même raconte la
-> collection avant que le joueur ouvre une seule carte.
-
-### 🎨 Modifié
-
-- **L'illustration d'une carte du carnet.** Le code du rendu monte à 1 120
-  lignes et se concentre dans `CadreOrne.kt`, où tous les effets d'orfèvrerie
-  convergeant sur la rareté font leur calcul. `CarteCarnet.kt` ne parle plus que
-  de l'arborescence des vues.
-
-### 📄 Documentation
-
-- Deux sections de design au `README.md` du carnet : `REVISION-CARNET.md`
-  documenting le système de révision spécialisé, `REVISION-CHASSE-CROISE.md`
-  portant sur les grilles du jeu Wuertplaz.
-
-## [22.1.1] - 2026-09-12
-
 ### 🐛 Corrigé
 
 - **Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6.** Le calcul
@@ -96,6 +76,27 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme,
   celle de la carte quand la phrase la contient, et la question dit lorsqu'elle
   réclame une autre forme de la même famille.
+
+## [22.2.0] - 2026-09-12
+
+> Une carte du carnet devient une pièce d'orfèvrerie. Son ornementation monte
+> avec sa rareté, de l'aplat mat jusqu'à l'irisation complète ; son cadre gagne
+> du relief et du coin coupé ; une ombre portée, une lueur d'attente, un éclat
+> à l'arrivée font de chaque tirage un moment. La grille elle-même raconte la
+> collection avant que le joueur ouvre une seule carte.
+
+### 🎨 Modifié
+
+- **L'illustration d'une carte du carnet.** Le code du rendu monte à 1 120
+  lignes et se concentre dans `CadreOrne.kt`, où tous les effets d'orfèvrerie
+  convergeant sur la rareté font leur calcul. `CarteCarnet.kt` ne parle plus que
+  de l'arborescence des vues.
+
+### 📄 Documentation
+
+- Deux sections de design au `README.md` du carnet : `REVISION-CARNET.md`
+  documenting le système de révision spécialisé, `REVISION-CHASSE-CROISE.md`
+  portant sur les grilles du jeu Wuertplaz.
 
 ## [22.1.0] - 2026-09-12
 
