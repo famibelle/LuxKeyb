@@ -201,13 +201,12 @@ object Inclinaison {
             // l'écran : en paysage, ses deux axes sont échangés.
             val brutX = evenement.values[0]
             val brutY = evenement.values[1]
-            val x: Float
-            val y: Float
+            var x = brutX
+            var y = brutY
             when (rotationEcran()) {
                 Surface.ROTATION_90 -> { x = -brutY; y = brutX }
                 Surface.ROTATION_180 -> { x = -brutX; y = -brutY }
                 Surface.ROTATION_270 -> { x = brutY; y = -brutX }
-                else -> { x = brutX; y = brutY }
             }
 
             if (!cale) {
