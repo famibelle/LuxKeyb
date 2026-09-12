@@ -3,16 +3,33 @@ package com.example.kreyolkeyboard.carnet
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.LinearGradient
+import android.graphics.Matrix
+import android.graphics.Outline
 import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PixelFormat
+import android.graphics.RadialGradient
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.Shader
+import android.graphics.SweepGradient
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.Build
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import kotlin.math.abs
 import com.example.kreyolkeyboard.TranslationDictionary
 import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import java.text.SimpleDateFormat
@@ -55,6 +72,21 @@ data class ContenuCarte(
  * la carte complète. C'est la seule chose qui distingue deux cartes du même
  * mot gagné à deux endroits, et c'est ce qui fait du carnet la mémoire de tous
  * les jeux plutôt que d'un seul.
+ *
+ * ## Ce que la rareté a le droit de dire
+ *
+ * Deux échelles de couleur sont déjà prises : la **teinte** appartient au mot,
+ * et c'est elle qui garde la collection variée ; le violet du carnet appartient
+ * à la **barre de boîte**, et deux échelles chromatiques sur la même vignette
+ * ne se lisent plus (voir [barreDeBoite]). La rareté ne peut donc pas se
+ * distinguer par plus de couleur : elle passe par **la matière, le relief et le
+ * mouvement**, comme sur une vraie carte à collectionner, où la commune et la
+ * brillante partagent souvent la même illustration et ne diffèrent que par le
+ * papier.
+ *
+ * Le corollaire compte autant : les communes sont **volontairement plates**.
+ * Un palier ne se voit que par contraste, et rendre les rares plus riches sans
+ * rendre les communes plus sobres n'aurait déplacé que la moitié de l'écart.
  */
 object CarteCarnet {
 
@@ -104,6 +136,7 @@ object CarteCarnet {
         return LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             background = cadre(d, c.rarete, epais = false)
+            poserLeRelief(this, c.rarete, d)
             setPadding((6 * d).toInt(), (6 * d).toInt(), (6 * d).toInt(), (8 * d).toInt())
 
             addView(IllustrationCarte(context, c.carte.forme, c.rarete).apply {
@@ -131,11 +164,7 @@ object CarteCarnet {
                         0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                     )
                 })
-                addView(TextView(context).apply {
-                    text = c.rarete.symbole
-                    textSize = 13f
-                    setTextColor(c.rarete.couleur)
-                })
+                addView(pastilleRarete(context, c.rarete, d, avecLibelle = false))
             })
 
             addView(LinearLayout(context).apply {
@@ -235,17 +264,7 @@ object CarteCarnet {
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
                 })
-                addView(TextView(context).apply {
-                    text = "${c.rarete.symbole} ${c.rarete.libelle}"
-                    textSize = 12f
-                    setTypeface(null, Typeface.BOLD)
-                    setTextColor(Color.WHITE)
-                    setPadding(dp(9f), dp(4f), dp(9f), dp(4f))
-                    background = GradientDrawable().apply {
-                        cornerRadius = 20f * d
-                        setColor(c.rarete.couleur)
-                    }
-                })
+                addView(pastilleRarete(context, c.rarete, d, avecLibelle = true))
             })
 
             addView(TextView(context).apply {
@@ -264,7 +283,10 @@ object CarteCarnet {
                 setTextColor(ENCRE_DOUCE)
             })
 
-            addView(IllustrationCarte(context, c.carte.forme, c.rarete).apply {
+            // Seule la carte ouverte suit l'inclinaison du téléphone : dans la
+            // grille, autant de capteurs que de vignettes serait absurde, et
+            // l'effet ne se voit pas à cette taille.
+            addView(IllustrationCarte(context, c.carte.forme, c.rarete, reactive = true).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, dp(130f)
                 ).apply { topMargin = dp(10f); bottomMargin = dp(12f) }
@@ -376,13 +398,148 @@ object CarteCarnet {
         setBackgroundColor(0xFFE0E0E0.toInt())
     }
 
-    /** Le cadre : blanc, arrondi, bordé de la couleur de la rareté. */
-    private fun cadre(d: Float, rarete: Rarete, epais: Boolean) =
-        GradientDrawable().apply {
+    /**
+     * Le cadre : blanc, arrondi, et d'autant plus travaillé que la carte est rare.
+     *
+     * Trois reliefs pour quatre paliers. Les deux premiers gardent le filet
+     * simple d'origine — c'est le fond du panier, il n'a rien à annoncer. Une
+     * **rare** gagne un second filet clair en retrait, l'astuce d'encadreur qui
+     * donne de la profondeur sans ajouter de couleur. Une **très rare** perd le
+     * filet uni au profit d'un dégradé circulaire : la bordure ne se lit plus
+     * comme un trait mais comme une matière.
+     */
+    private fun cadre(d: Float, rarete: Rarete, epais: Boolean): Drawable {
+        val trait = ((if (epais) 3f else 2f) * d).toInt()
+        if (rarete == Rarete.TRES_RARE) return CadreIrise(d, epais)
+
+        val plein = GradientDrawable().apply {
             cornerRadius = 14f * d
             setColor(Color.WHITE)
-            setStroke(((if (epais) 3f else 2f) * d).toInt(), rarete.couleur)
+            setStroke(trait, rarete.couleur)
         }
+        if (rarete != Rarete.RARE) return plein
+
+        val retrait = trait + (2f * d).toInt()
+        return LayerDrawable(
+            arrayOf<Drawable>(
+                plein,
+                GradientDrawable().apply {
+                    cornerRadius = 11f * d
+                    setColor(Color.TRANSPARENT)
+                    setStroke((1f * d).toInt(), eclaircir(rarete.couleur, 0.60f))
+                }
+            )
+        ).apply { setLayerInset(1, retrait, retrait, retrait, retrait) }
+    }
+
+    /**
+     * L'ombre portée des cartes rares dans la grille.
+     *
+     * Une très rare se décolle de la page, une rare l'effleure, les autres y
+     * restent posées. L'ombre est teintée du palier là où Android le permet :
+     * en gris elle ne dirait que « ceci est en avant », en violet elle dit
+     * lequel des quatre paliers.
+     */
+    private fun poserLeRelief(vue: View, rarete: Rarete, d: Float) {
+        if (!rarete.distinguee) return
+        vue.elevation = (if (rarete == Rarete.TRES_RARE) 6f else 3f) * d
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            vue.outlineSpotShadowColor = rarete.couleur
+            vue.outlineAmbientShadowColor = rarete.couleur
+        }
+    }
+
+    /**
+     * La pastille de rareté : l'insigne, et le libellé quand la place le permet.
+     *
+     * En vignette, seuls les deux paliers hauts la portent. Une pastille sur
+     * toutes les cartes deviendrait un élément d'interface qu'on cesse de voir ;
+     * réservée aux deux tiers supérieurs, elle reste une distinction.
+     */
+    private fun pastilleRarete(
+        context: Context,
+        rarete: Rarete,
+        d: Float,
+        avecLibelle: Boolean
+    ): TextView = TextView(context).apply {
+        val nu = !avecLibelle && !rarete.distinguee
+        text = if (avecLibelle) "${rarete.insigne} ${rarete.libelle}" else rarete.insigne
+        textSize = if (avecLibelle) 12f else if (nu) 12f else 10f
+        setTypeface(null, Typeface.BOLD)
+        if (nu) {
+            // Les paliers bas gardent le symbole nu : pas de fond, pas de cadre,
+            // rien qui ressemble à une décoration qu'ils n'ont pas méritée.
+            setTextColor(rarete.couleur)
+            return@apply
+        }
+        setTextColor(Color.WHITE)
+        // La pastille d'une vignette reste serrée : la glose partage la ligne.
+        val large = if (avecLibelle) 9f else 6f
+        val haut = if (avecLibelle) 4f else 2f
+        setPadding((large * d).toInt(), (haut * d).toInt(), (large * d).toInt(), (haut * d).toInt())
+        background = GradientDrawable().apply {
+            cornerRadius = 20f * d
+            setColor(rarete.couleur)
+        }
+    }
+}
+
+/**
+ * Le cadre d'une très rare : un dégradé circulaire en guise de filet.
+ *
+ * [GradientDrawable.setStroke] ne prend qu'une couleur unie, et c'est la seule
+ * raison pour laquelle cette classe existe : il faut un [Paint] porteur d'un
+ * [SweepGradient] pour qu'une bordure change de teinte sur son tour. Le
+ * dégradé boucle — sa dernière couleur est la première — sinon la couture se
+ * voit sur le bord droit de la carte.
+ */
+private class CadreIrise(private val d: Float, epais: Boolean) : Drawable() {
+
+    private val trait = (if (epais) 3f else 2f) * d
+    private val rayon = 14f * d
+    private val zone = RectF()
+
+    private val fond = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
+    private val bord = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = trait
+    }
+
+    override fun onBoundsChange(bounds: Rect) {
+        super.onBoundsChange(bounds)
+        if (bounds.isEmpty) return
+        val base = Rarete.TRES_RARE.couleur
+        bord.shader = SweepGradient(
+            bounds.exactCenterX(), bounds.exactCenterY(),
+            intArrayOf(
+                base,
+                eclaircir(base, 0.55f),
+                0xFFFFD54F.toInt(),
+                eclaircir(base, 0.30f),
+                0xFF4FC3F7.toInt(),
+                eclaircir(base, 0.55f),
+                base
+            ),
+            null
+        )
+    }
+
+    override fun draw(canvas: Canvas) {
+        if (bounds.isEmpty) return
+        zone.set(bounds)
+        zone.inset(trait / 2f, trait / 2f)
+        canvas.drawRoundRect(zone, rayon, rayon, fond)
+        canvas.drawRoundRect(zone, rayon, rayon, bord)
+    }
+
+    /** Sans contour, pas d'ombre portée : c'est lui qui la découpe. */
+    override fun getOutline(outline: Outline) {
+        outline.setRoundRect(bounds, rayon)
+    }
+
+    override fun setAlpha(alpha: Int) = Unit
+    override fun setColorFilter(filtre: ColorFilter?) = Unit
+    override fun getOpacity(): Int = PixelFormat.OPAQUE
 }
 
 /**
@@ -397,12 +554,39 @@ object CarteCarnet {
  * La teinte vient du **mot** et non du jeu : c'est ce qui garde la collection
  * variée maintenant que sept jeux l'alimentent, et ce qui fait qu'un mot gagné
  * deux fois reste la même carte.
+ *
+ * ## Quatre matières pour quatre paliers
+ *
+ * La teinte étant prise par le mot, c'est la **matière** du panneau qui dit la
+ * rareté — exactement comme le papier d'une carte à collectionner :
+ *
+ * - **Commun** : un aplat mat, dégradé resserré, anneaux effacés. Volontairement
+ *   pauvre : sans une commune terne, une très rare n'a rien à surpasser.
+ * - **Peu commun** : le dégradé plein, plus un grain de hachures obliques.
+ * - **Rare** : un halo clair derrière le filigrane, comme si l'initiale était
+ *   éclairée par-derrière, et un coin coupé aux couleurs du palier.
+ * - **Très rare** : irisation complète — un dégradé circulaire de teintes
+ *   voisines, traversé d'une bande de brillance, qui **suit l'inclinaison du
+ *   téléphone** quand la carte est ouverte.
+ *
+ * ## Ce que coûte le rendu
+ *
+ * Tous les dégradés et tous les chemins se construisent dans [onSizeChanged],
+ * jamais dans [onDraw] : la grille du carnet peut afficher plusieurs centaines
+ * de vignettes, et une allocation par trame les rendrait toutes saccadées.
+ * L'irisation se pose en aplat translucide plutôt qu'en `PorterDuff.SCREEN` —
+ * le rendu est le même à l'œil, et il évite le calque hors écran qu'un mode de
+ * fusion impose sur un canevas matériel.
+ *
+ * [reactive] n'est vrai que pour la carte ouverte : une vignette n'écoute
+ * jamais l'accéléromètre.
  */
 class IllustrationCarte(
     context: Context,
     private val mot: String,
-    private val rarete: Rarete
-) : View(context) {
+    private val rarete: Rarete,
+    private val reactive: Boolean = false
+) : View(context), SensorEventListener {
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val pinceauTexte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -412,20 +596,169 @@ class IllustrationCarte(
     private val condense = mot.fold(7919) { acc, c -> acc * 31 + c.code }
     private val teinte = ((condense % 360) + 360) % 360f
 
+    // Tout ce qui ne dépend pas de la taille est calculé une fois : [onDraw]
+    // n'alloue rien, la grille en dépend.
+    private val lettres = mot.take(6)
+    private val initiale = mot.take(1).uppercase()
+    private val mesure = Paint.FontMetrics()
+
     private var fond: LinearGradient? = null
+    private var halo: RadialGradient? = null
+    private var irisation: SweepGradient? = null
+    private var brillance: LinearGradient? = null
+
+    /** Le côté du coin coupé, en pixels : posé par [onSizeChanged], relu par [onDraw]. */
+    private var coteCoin = 0f
+
+    private val decoupe = Path()
+    private val hachures = Path()
+    private val coin = Path()
+    private val zone = RectF()
+    private val matrice = Matrix()
+
+    /** Le roulis du téléphone, ramené dans [-1, 1]. Voir [onSensorChanged]. */
+    private var roulis = 0f
+    private var capteurs: SensorManager? = null
 
     override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
         super.onSizeChanged(w, h, ow, oh)
         if (w <= 0 || h <= 0) return
-        fond = LinearGradient(
+        val d = resources.displayMetrics.density
+        val r = 10f * d
+
+        // Le fond. Une commune reste dans un mouchoir de poche — deux valeurs
+        // proches, peu de saturation ; les autres gardent le dégradé d'origine.
+        fond = if (rarete == Rarete.COMMUN) LinearGradient(
+            0f, 0f, w * 0.35f, h.toFloat(),
+            couleur(0.16f, 0.93f), couleur(0.24f, 0.85f),
+            Shader.TileMode.CLAMP
+        ) else LinearGradient(
             0f, 0f, w * 0.35f, h.toFloat(),
             couleur(0.30f, 0.96f), couleur(0.55f, 0.72f),
             Shader.TileMode.CLAMP
         )
+
+        decoupe.reset()
+        decoupe.addRoundRect(RectF(0f, 0f, w.toFloat(), h.toFloat()), r, r, Path.Direction.CW)
+
+        hachures.reset()
+        if (rarete == Rarete.PEU_COMMUN) {
+            // Des obliques régulières d'un bord à l'autre : le grain du papier,
+            // pas un motif qu'on cherche à lire.
+            val pas = 9f * d
+            var x = -h.toFloat()
+            while (x < w) {
+                hachures.moveTo(x, h.toFloat())
+                hachures.lineTo(x + h, 0f)
+                x += pas
+            }
+        }
+
+        halo = if (rarete == Rarete.RARE) RadialGradient(
+            w * 0.5f, h * 0.5f, h * 0.72f,
+            intArrayOf(
+                Color.argb(120, 255, 255, 255),
+                Color.argb(40, 255, 255, 255),
+                Color.TRANSPARENT
+            ),
+            floatArrayOf(0f, 0.55f, 1f),
+            Shader.TileMode.CLAMP
+        ) else null
+
+        coin.reset()
+        coteCoin = h * 0.26f
+        if (rarete.distinguee) {
+            coin.moveTo(w - coteCoin, 0f)
+            coin.lineTo(w.toFloat(), 0f)
+            coin.lineTo(w.toFloat(), coteCoin)
+            coin.close()
+        }
+
+        if (rarete == Rarete.TRES_RARE) {
+            irisation = SweepGradient(w * 0.5f, h * 0.5f, arcEnCiel(), null)
+            brillance = LinearGradient(
+                0f, h.toFloat(), w.toFloat(), 0f,
+                intArrayOf(
+                    Color.TRANSPARENT,
+                    Color.argb(96, 255, 255, 255),
+                    Color.TRANSPARENT
+                ),
+                floatArrayOf(0.30f, 0.50f, 0.70f),
+                Shader.TileMode.CLAMP
+            )
+            appliquerRoulis()
+        } else {
+            irisation = null
+            brillance = null
+        }
     }
 
     private fun couleur(saturation: Float, valeur: Float) =
         Color.HSVToColor(floatArrayOf(teinte, saturation, valeur))
+
+    /**
+     * Les teintes de l'irisation : un tour complet du cercle depuis celle du mot.
+     *
+     * La dernière reprend la première, sinon le dégradé circulaire montre sa
+     * couture. La saturation reste basse : à pleine saturation, l'arc-en-ciel
+     * mange le mot au lieu de faire briller la carte.
+     */
+    private fun arcEnCiel(): IntArray {
+        val n = 7
+        return IntArray(n + 1) { i ->
+            val t = (teinte + 360f * (i % n) / n) % 360f
+            Color.HSVToColor(floatArrayOf(t, 0.45f, 1f))
+        }
+    }
+
+    /** Fait tourner l'irisation et glisser la bande de brillance. */
+    private fun appliquerRoulis() {
+        val w = width.toFloat()
+        val h = height.toFloat()
+        if (w <= 0f || h <= 0f) return
+        matrice.setRotate(roulis * 55f, w * 0.5f, h * 0.5f)
+        irisation?.setLocalMatrix(matrice)
+        matrice.setTranslate(roulis * w * 0.45f, 0f)
+        brillance?.setLocalMatrix(matrice)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!reactive || rarete != Rarete.TRES_RARE) return
+        // Sans animations, la carte garde son irisation mais cesse de bouger :
+        // le réglage système dit « pas de mouvement », pas « pas de couleur ».
+        if (Pochette.animationsReduites(context)) return
+        val manager = context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+        val capteur = manager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) ?: return
+        manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
+        capteurs = manager
+    }
+
+    override fun onDetachedFromWindow() {
+        capteurs?.unregisterListener(this)
+        capteurs = null
+        super.onDetachedFromWindow()
+    }
+
+    override fun onAccuracyChanged(capteur: Sensor?, precision: Int) = Unit
+
+    /**
+     * Le roulis, lissé, et seulement quand il a vraiment changé.
+     *
+     * L'accéléromètre livre une valeur plusieurs dizaines de fois par seconde ;
+     * redessiner à chaque fois pour un dixième de degré viderait la batterie
+     * sans que personne ne voie la différence. Le filtre passe-bas rend aussi
+     * le reflet lourd, ce qui est exactement l'effet voulu : une carte, ça a du
+     * poids.
+     */
+    override fun onSensorChanged(evenement: SensorEvent) {
+        if (evenement.values.isEmpty()) return
+        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
+        if (abs(cible - roulis) < 0.04f) return
+        roulis += (cible - roulis) * 0.20f
+        appliquerRoulis()
+        invalidate()
+    }
 
     override fun onDraw(canvas: Canvas) {
         val w = width.toFloat()
@@ -433,27 +766,41 @@ class IllustrationCarte(
         if (w <= 0f || h <= 0f) return
         val d = resources.displayMetrics.density
         val r = 10f * d
+        zone.set(0f, 0f, w, h)
 
         // Le fond, et un arrondi qui suit celui de la carte.
         pinceau.shader = fond
         pinceau.alpha = 255
-        canvas.drawRoundRect(0f, 0f, w, h, r, r, pinceau)
+        canvas.drawRoundRect(zone, r, r, pinceau)
         pinceau.shader = null
 
         canvas.save()
-        // Les anneaux restent dans le panneau : sans découpe ils déborderaient
-        // sur le texte de la carte.
-        val chemin = android.graphics.Path().apply {
-            addRoundRect(
-                android.graphics.RectF(0f, 0f, w, h), r, r,
-                android.graphics.Path.Direction.CW
-            )
+        // Tout reste dans le panneau : sans découpe, anneaux, hachures et coin
+        // déborderaient sur le texte de la carte.
+        canvas.clipPath(decoupe)
+
+        // Le grain d'une peu commune.
+        if (rarete == Rarete.PEU_COMMUN) {
+            pinceau.style = Paint.Style.STROKE
+            pinceau.strokeWidth = 1f * d
+            pinceau.color = Color.WHITE
+            pinceau.alpha = 22
+            canvas.drawPath(hachures, pinceau)
+            pinceau.style = Paint.Style.FILL
         }
-        canvas.clipPath(chemin)
+
+        // Le halo d'une rare, posé avant les anneaux pour rester derrière eux.
+        halo?.let {
+            pinceau.shader = it
+            pinceau.alpha = 255
+            canvas.drawRoundRect(zone, r, r, pinceau)
+            pinceau.shader = null
+        }
 
         // Un anneau par lettre, jusqu'à six : position et rayon lus dans le mot.
+        // Une commune les garde presque invisibles — c'est sa matière, mate.
         pinceau.style = Paint.Style.STROKE
-        val lettres = mot.take(6)
+        val opacite = if (rarete == Rarete.COMMUN) 30 else 48
         lettres.forEachIndexed { i, c ->
             val g = c.code
             val cx = w * (0.12f + 0.16f * ((g + i * 7) % 6))
@@ -461,27 +808,62 @@ class IllustrationCarte(
             val rayon = h * (0.22f + 0.09f * (g % 5))
             pinceau.strokeWidth = (1.4f + (g % 3)) * d
             pinceau.color = if (i % 2 == 0) Color.WHITE else couleur(0.65f, 0.45f)
-            pinceau.alpha = 48
+            pinceau.alpha = opacite
             canvas.drawCircle(cx, cy, rayon, pinceau)
         }
         pinceau.style = Paint.Style.FILL
 
+        // L'irisation d'une très rare : le dégradé circulaire, puis la bande de
+        // brillance par-dessus. Les deux suivent l'inclinaison du téléphone.
+        irisation?.let {
+            pinceau.shader = it
+            pinceau.alpha = 52
+            canvas.drawRoundRect(zone, r, r, pinceau)
+            pinceau.shader = null
+        }
+
         // L'initiale en filigrane : la carte dit son mot même en vignette.
+        pinceauTexte.style = Paint.Style.FILL
         pinceauTexte.color = Color.WHITE
         pinceauTexte.alpha = 64
         pinceauTexte.textSize = h * 0.72f
-        val mesure = Paint.FontMetrics().also { pinceauTexte.getFontMetrics(it) }
-        canvas.drawText(
-            mot.take(1).uppercase(),
-            w * 0.5f,
-            h * 0.5f - (mesure.ascent + mesure.descent) / 2f,
-            pinceauTexte
-        )
+        pinceauTexte.getFontMetrics(mesure)
+        val ligneDeBase = h * 0.5f - (mesure.ascent + mesure.descent) / 2f
+        canvas.drawText(initiale, w * 0.5f, ligneDeBase, pinceauTexte)
+        if (rarete == Rarete.TRES_RARE) {
+            // Un contour sur le filigrane : sous l'irisation, une lettre pleine
+            // se dilue ; détourée, elle tient.
+            pinceauTexte.style = Paint.Style.STROKE
+            pinceauTexte.strokeWidth = 1.6f * d
+            pinceauTexte.alpha = 92
+            canvas.drawText(initiale, w * 0.5f, ligneDeBase, pinceauTexte)
+            pinceauTexte.style = Paint.Style.FILL
+        }
+
+        brillance?.let {
+            pinceau.shader = it
+            pinceau.alpha = 255
+            canvas.drawRoundRect(zone, r, r, pinceau)
+            pinceau.shader = null
+        }
+
+        // Le coin coupé des deux paliers hauts. C'est la marque de rareté qui
+        // survit à la taille d'une vignette, là où le liseré ne se voyait plus.
+        if (rarete.distinguee) {
+            pinceau.color = rarete.couleur
+            pinceau.alpha = 235
+            canvas.drawPath(coin, pinceau)
+            pinceau.style = Paint.Style.STROKE
+            pinceau.strokeWidth = 1.3f * d
+            pinceau.color = Color.WHITE
+            pinceau.alpha = 180
+            canvas.drawLine(w - coteCoin, 0f, w, coteCoin, pinceau)
+            pinceau.style = Paint.Style.FILL
+        }
         canvas.restore()
 
-        // Les plus rares gagnent un liseré clair : le seul écart visuel entre
-        // les paliers, en plus de la couleur du cadre.
-        if (rarete == Rarete.TRES_RARE || rarete == Rarete.RARE) {
+        // Les plus rares gagnent un liseré clair, par-dessus tout le reste.
+        if (rarete.distinguee) {
             pinceau.style = Paint.Style.STROKE
             pinceau.strokeWidth = 2f * d
             pinceau.color = Color.WHITE
