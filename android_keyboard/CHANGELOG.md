@@ -9,6 +9,75 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.2.0] - 2026-09-12
+
+> La 22.1.0 avait rendu la rareté visible dans l'illustration, mais le cadre
+> restait le même pour les quatre paliers — or une carte à collectionner se
+> reconnaît d'abord à son cadre. Le cadre est maintenant tracé, il s'enrichit
+> palier par palier, et la carte ouverte suit l'inclinaison de la main.
+
+### ✨ Ajouté
+
+- **Le cadre s'enrichit avec la rareté, et chaque palier hérite du précédent.**
+  Une **commune** reçoit un cadre d'étain nu — ouverture rectangulaire, plaque
+  de nom, gemme de coût, panneau de texte, écus — volontairement pauvre, car
+  sans commune nue aucun des trois autres paliers ne se verrait. Une **peu
+  commune** ajoute des rivets sertis et un filet clair de bronze. Une **rare**
+  passe à l'argent : l'ouverture devient une arche, avec rayons en éventail,
+  volutes aux quatre angles, bandeaux à pointes, couronne de griffes et double
+  filet. Une **très rare** passe à l'or et ajoute clef de voûte sertie, huit
+  volutes, feuilles d'acanthe sur les flancs, joyaux satellites et semis
+  d'étincelles tiré du mot lui-même.
+- **Tout l'ornement est paramétrique** : les volutes sont des spirales
+  logarithmiques au trait qui s'affine, les feuilles des gouttes de Bézier, les
+  joyaux des dégradés radiaux à facettes, les rayons des secteurs alternés.
+  Aucun chemin recopié, aucune image à embarquer — le poids de l'application ne
+  bouge pas.
+- **La carte ouverte suit l'inclinaison de l'appareil.** Le reflet spéculaire
+  d'une carte distinguée suivait déjà le roulis, mais la carte, elle, ne
+  bougeait pas : la lumière glissait sur une surface immobile. Elle pivote
+  maintenant de quelques degrés avec la main, et le reflet a enfin une surface
+  qui lui donne raison. Le repos est pris à l'ouverture de la carte, pas à
+  l'horizontale — personne ne tient son téléphone à plat — et un rappel très
+  lent la remet d'aplomb quand la posture change. L'effet vaut pour **toutes**
+  les raretés : l'ornement est une récompense, la physique n'en est pas une.
+  Jamais dans la grille, où des vignettes qui s'inclinent à l'unisson se
+  battraient contre le défilement, et jamais si les animations du système sont
+  coupées.
+
+### ♻️ Modifié
+
+- **La disposition d'une carte cesse d'être un flux vertical.** La plaque de
+  nom, la fenêtre et les écus restent au même endroit quelle que soit la
+  longueur de la glose, là où une phrase du dictionnaire de trois lignes faisait
+  auparavant descendre les écus. Les emplacements sont exprimés en unités de
+  carte et mis à l'échelle de la largeur réelle : la même disposition sert la
+  vignette de la grille et la carte ouverte, sans deux jeux de tailles à tenir
+  synchronisés.
+- **La vignette de la grille s'allège** et ne porte plus que le cadre,
+  l'illustration, le mot et son sens en une ligne. À cette taille, un panneau de
+  glose serait six lignes que personne ne lit, tandis que l'ornement, lui, se
+  lit encore très bien : une très rare s'y reconnaît à sa dorure, plus à une
+  pastille.
+- **La teinte appartient toujours au mot, le métal au palier.** La règle « la
+  rareté ne prend pas une couleur de plus » tient encore, mais à l'intérieur du
+  cadre : la face et la gemme de coût gardent la teinte tirée du mot, et c'est
+  le métal du cadre qui dit la rareté. Le métal encadre au lieu de recouvrir.
+- **Le suivi d'orientation passe au capteur de pesanteur fusionné.**
+  L'accéléromètre brut mélange la pesanteur et l'accélération linéaire, si bien
+  que marcher suffisait à faire trembler le reflet d'une carte rare.
+
+### ⚡ Performance
+
+- **Deux couches de l'ornement sont mises en cache** — le métal et les rayons —
+  parce qu'elles ne dépendent que du palier et de la taille, jamais du mot :
+  toutes les cartes d'un même palier partagent la même image. Ce qui reste à
+  tracer à chaque image est une face en dégradé, le motif du mot et quelques
+  joyaux, là où une très rare demanderait près de trois cents ordres de tracé.
+- **L'inclinaison ne redessine rien.** Elle n'écrit que deux propriétés de
+  transformation, appliquées par le processeur graphique à la composition : la
+  carte est recomposée, jamais repeinte.
+
 ## [22.1.1] - 2026-09-12
 
 ### 🐛 Corrigé
