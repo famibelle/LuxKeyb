@@ -1,12 +1,12 @@
 {
- "genere_le": "2026-09-11",
- "derniere_version": "20.7.0",
- "derniere_date": "2026-09-11",
+ "genere_le": "2026-09-12",
+ "derniere_version": "21.0.0",
+ "derniere_date": "2026-09-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "20.7.0",
-   "date": "2026-09-11",
+   "version": "21.0.0",
+   "date": "2026-09-12",
    "intro": "",
    "sections": [
     {

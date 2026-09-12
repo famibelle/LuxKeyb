@@ -9,7 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
-## [20.7.0] - 2026-09-11
+## [21.0.0] - 2026-09-12
+
+> Le carnet de cartes n'est plus une récompense de Wuertplaz : il traverse les
+> sept jeux, ouvre l'onglet Spiller et devient ce qui reste d'une partie quand
+> la grille est effacée. Le changement de majeur marque ce déplacement — une
+> collection commune là où il n'y avait que des scores séparés.
 
 ### ✨ Ajouté
 
