@@ -9,6 +9,72 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.8.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **Quarante-cinq cartes de plus portent un meuble** : 120 des 2 798
+  emplacements du carnet sont enluminés, contre 75, soit 4,3 % au lieu de
+  2,7 %. Les nouveaux sujets sont l'hôpital, la banque, l'immeuble, la prison,
+  le mur, la gare, le parking, le restaurant ; le bus, le tram, le train, le
+  camion, l'ambulance, la moto, la rue, le panneau de danger, la pompe et la
+  valise ; le journal, le document, le dossier, le film, l'ordinateur et la
+  note ; la règle, la balance, la seringue, la pièce et la robe ; le globe, le
+  cercle d'étoiles, la tour Eiffel, l'île, la forêt, le flocon et le virus.
+  Trois mots de plus tombent sur des dessins qui existaient déjà — `Zäit` sur
+  l'horloge d'`Auer`, `Nuecht` sur la lune de `Mound`, `Telefon` sur le
+  téléphone de `Handy` — et `Café` sur la tasse de `Kaffi`, sans un trait de
+  plus.
+
+### 🔎 Ce que l'emoji a servi à faire, et ce qu'il ne pouvait pas faire
+
+La piste de départ était le poinçon : frapper l'emoji dans la fenêtre quand le
+mot est explicite. Elle a été mesurée puis rendue avant d'être tranchée.
+
+- **Le gisement est réel** : sur les 1 160 substantifs monosémiques encore sans
+  meuble, un échantillon de 160 en donne 19 % à qui l'on attribuerait un emoji
+  sans hésiter, soit environ 220 cartes.
+- **Mais l'emoji ne pouvait pas être livré.** Il apporte sa propre palette, qui
+  concurrence la teinte — or la teinte porte le champ, et c'est le seul canal
+  de couleur qui signifie quelque chose sur une carte. Désaturé pour s'y
+  soumettre, il perd la moitié des siens : le journal devient un rectangle
+  blanc, le panneau P un carré, l'œuf un ovale, et le drapeau suisse perd le
+  rouge qui *est* la Suisse. En pochoir alpha — la vraie gravure — cinq
+  candidats sur douze survivent. En petit, dans un coin, aucun ne se lit.
+- **Il a donc servi de crible et de croquis.** Là où le glyphe existe, le
+  concept a déjà un pictogramme conventionnel : c'est exactement ce qui rend
+  une silhouette lisible. La liste a été triée par rang de fréquence, pour que
+  l'effort de dessin tombe sur des cartes que les joueurs voient.
+
+### 🐛 Corrections
+
+- **Le croissant de `lune` était faux, et il était en production.** Il était
+  fait de deux disques posés l'un sur l'autre en comptant sur la règle
+  pair-impair pour les soustraire. Deux disques ne se soustraient pas : la part
+  du second qui sort du premier n'est recouverte qu'une fois, donc elle se
+  remplit. La carte portait un lobe plein, débordant de huit unités hors du
+  carré de tracé. Le croissant est désormais un seul contour à deux arcs.
+- **Les trois lingots d'`or` se recouvraient**, et un recouvrement se creuse :
+  ils sont maintenant empilés et aboutés.
+- Deux unités de rognage retirées à l'auréole d'`ange` et aux ondes
+  d'`antenne`.
+- Sept des quarante nouveaux dessins ont été refaits après première épreuve —
+  dont une gare qui, avec sa grande arche sous une horloge ronde, se lisait
+  comme une tête au-dessus d'un corps.
+
+### 🔧 Détails d'implémentation
+
+- `Meubles.kt` passe de 74 à 111 silhouettes. Trois noms de la nouvelle vague
+  entraient en collision avec des dessins existants (`horloge`, `lune`,
+  `telephone`) : en Kotlin le dernier d'un `mapOf` gagne en silence, et les
+  anciens auraient été masqués sans erreur. Les nouveaux ont été retirés, les
+  anciens réattribués.
+- `apercu_meubles.py` mesure désormais la boîte réelle de chaque tracé, courbes
+  échantillonnées par de Casteljau plutôt qu'approchées par leurs points de
+  contrôle, et signale tout dépassement du carré de cent. C'est ce contrôle qui
+  a trouvé `lune`, `or`, `ange` et `antenne`.
+- L'actif reste à 52 ko : quarante-cinq attributions de plus n'y pèsent rien.
+
 ## [22.7.0] - 2026-09-13
 
 ### ✨ Nouveautés

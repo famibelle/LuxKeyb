@@ -640,6 +640,57 @@ MEUBLES = {
     'Jeans': 'jean',            # jean
     'Schong': 'chaussure',      # chaussure
     'Zigarett': 'cigarette',    # cigarette
+
+    # le bâti
+    'Spidol':         'hopital',          # hôpital
+    'Bank':           'banque',           # banque
+    'Gebai':          'batiment',         # bâtiment
+    'Prisong':        'prison',           # (peine de) prison, prison
+    'Mauer':          'mur',              # mur
+    'Gare':           'gare',             # gare
+    'Parking':        'parking',          # parc de stationnement
+    'Restaurant':     'restaurant',       # restaurant
+    # ce qui roule
+    'Bus':            'bus',              # bus
+    'Tram':           'tram',             # tram
+    'Zuch':           'train',            # train, coup, caractéristique
+    'Camion':         'camion',           # camion
+    'Ambulanz':       'ambulance',        # ambulance
+    'Moto':           'moto',             # moto
+    'Motorrad':       'moto',             # moto
+    'Strooss':        'rue',              # rue, chaussée
+    'Gefor':          'panneau_danger',   # danger
+    'Diesel':         'pompe_essence',    # gazole
+    'Rees':           'valise',           # voyage
+    # ce qui se lit, s'écoute et s'écrit
+    'Zeitung':        'journal',          # journal
+    'Schreiwes':      'document',         # document
+    'Dokument':       'document',         # document
+    'Dossier':        'dossier',          # dossier
+    'Film':           'film',             # cinéma, pellicule
+    'Telefon':        'telephone',        # téléphone, appel
+    'Computer':       'ordinateur',       # ordinateur
+    'Musek':          'note',             # musique, harmonie municipale
+    # la mesure et l'objet
+    'Zäit':           'horloge',          # temps, heure
+    'Luucht':         'lampe',            # lampe, lumière, phares
+    'Meter':          'regle',            # mètre
+    'Justiz':         'balance',          # justice
+    'Vaccin':         'seringue',         # vaccin
+    'Su':             'piece',            # argent, pièce (de monnaie), moyens financiers
+    'Euro':           'piece',            # euro
+    'Cent':           'piece',            # cent
+    'Kleed':          'robe',             # vêtements, robe
+    # le monde
+    'Welt':           'globe',            # monde
+    'Europa':         'europe',           # Europe
+    'Paräis':         'tour_eiffel',      # Paris
+    'Insel':          'ile',              # île
+    'Bësch':          'foret',            # forêt
+    'Nuecht':         'lune',             # nuit, poste de nuit
+    'Wanter':         'flocon',           # hiver
+    'Coronavirus':    'virus',            # coronavirus
+    'Café':           'cafe',             # café
 }
 
 
