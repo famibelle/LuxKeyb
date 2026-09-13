@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.5.4] - 2026-09-13
+
+### 🐛 Correctifs
+
+- **Un import inexistant empêchait toute compilation.** `DosRevision.kt`
+  demandait `kotlin.math.minOf`, adresse à laquelle ce symbole n'a jamais
+  existé : `kotlin.math` fournit `min` et `max`, tandis que `minOf` est déclaré
+  dans le paquet `kotlin`, importé d'office. Les quatre jobs de build de la
+  22.5.3 sont tombés dessus, debug comme release, et le tag correspondant n'a
+  produit aucun artefact.
+- La preuve tenait dans le fichier lui-même : `maxOf`, employé quinze lignes
+  plus haut, n'a **aucun import** et se résolvait déjà. Le correctif est donc la
+  suppression de la ligne parasite, sans toucher à l'appel.
+
 ## [22.5.3] - 2026-09-13
 
 ### 🐛 Correctifs

@@ -13,7 +13,6 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import com.example.kreyolkeyboard.R
 import kotlin.math.abs
-import kotlin.math.minOf
 
 /**
  * Le verso d'une carte de révision : la question, écrite sur le dos du carton.
