@@ -164,8 +164,13 @@ object Ornement {
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
     val ECU_G_TEXTE = RectF(26f, 382f, 78f, 408f)
     val ECU_D_TEXTE = RectF(222f, 382f, 274f, 408f)
-    val SERIE_G = RectF(30f, 413f, 176f, 426f)
-    val SERIE_D = RectF(176f, 413f, 270f, 426f)
+    /**
+     * La ligne de série doit tenir dans le plateau du palier le plus orné :
+     * `bord = 12 + palier * 2` le referme à 422 pour l'or. Un bas au-delà et
+     * le texte se pose sur le métal du cadre, où le coin arrondi le rogne.
+     */
+    val SERIE_G = RectF(30f, 408f, 176f, 421f)
+    val SERIE_D = RectF(176f, 408f, 270f, 421f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
     val GLOSE_VIGNETTE = RectF(20f, 249f, 280f, 269f)
     val BOITE_VIGNETTE = RectF(30f, 277f, 270f, 281f)

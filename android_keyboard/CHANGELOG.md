@@ -9,6 +9,29 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.5.3] - 2026-09-13
+
+### 🐛 Correctifs
+
+- **Ligne de série : la marge manquante.** Le correctif 22.5.2 l'avait remontée à
+  `y 413 → 426`, ce qui suffisait aux deux paliers bas mais pas aux deux hauts :
+  le plateau intérieur se referme à `12 + palier * 2` du bord, soit **422 pour
+  l'or et 424 pour l'argent**, et les jambages du texte affleuraient encore le
+  métal du cadre. Le créneau passe à `y 408 → 421` : les glyphes occupent
+  410 → 419, avec trois unités de garde sous le palier le plus orné.
+- La bande 404 → 422 était libre depuis que les écus sont remontés en 22.5.2 —
+  la pointe réelle d'un écu tombe à 404, le point de contrôle à 415,6 n'étant
+  pas atteint par la quadratique. La série n'entre donc en collision ni avec les
+  blasons, ni avec le joyau de rareté, dont le bas s'arrête à 410.
+- La contrainte est désormais **écrite au-dessus du créneau** : c'est le genre de
+  nombre qu'on rétablit sans le savoir en croyant recentrer.
+
+### 🔍 Inchangé
+
+- Relief tactile : `aretes()` lit `SERIE_G.right`, les crans suivent le
+  déplacement sans qu'une ligne les concerne.
+- Aucun autre emplacement, rayon ou dégradé n'est touché.
+
 ## [22.5.2] - 2026-09-13
 
 ### ✨ Enrichissement
