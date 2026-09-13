@@ -9,9 +9,11 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
+import android.graphics.RadialGradient
 import android.graphics.Shader
 import com.example.kreyolkeyboard.R
 import kotlin.math.abs
+import kotlin.math.minOf
 
 /**
  * Le verso d'une carte de révision : la question, écrite sur le dos du carton.
@@ -193,10 +195,22 @@ class DosRevision(context: Context) : Carton(context) {
         pinceau.shader = null
 
         // Les deux angles du logo, portés à l'échelle du carton.
-        pinceau.color = ROUGE
+        // Dégradés radial pour donner du volume : clair au centre, sombre aux bords.
+        pinceau.shader = RadialGradient(
+            l * 0.35f, h * 0.35f, 120f,
+            intArrayOf(0xFFFF7B75.toInt(), ROUGE, ROUGE),
+            floatArrayOf(0f, 0.6f, 1f),
+            Shader.TileMode.CLAMP
+        )
         canvas.drawPath(angleRouge, pinceau)
-        pinceau.color = BLEU
+        pinceau.shader = RadialGradient(
+            l * 0.65f, h * 0.65f, 120f,
+            intArrayOf(0xFF66D9FF.toInt(), BLEU, BLEU),
+            floatArrayOf(0f, 0.6f, 1f),
+            Shader.TileMode.CLAMP
+        )
         canvas.drawPath(angleBleu, pinceau)
+        pinceau.shader = null
 
         // Le liseré blanc détache l'aplat de la bande ; le filet d'or, plus
         // fin et en retrait, est ce qui fait le carton plutôt que l'affiche.
@@ -235,12 +249,12 @@ class DosRevision(context: Context) : Carton(context) {
             pinceau.style = Paint.Style.FILL
             pinceau.color = BLANC
             pinceau.alpha = 235
-            canvas.drawRoundRect(Ornement.PANNEAU, 7f, 7f, pinceau)
+            canvas.drawRoundRect(Ornement.PANNEAU, 9f, 9f, pinceau)
             pinceau.alpha = 255
             pinceau.style = Paint.Style.STROKE
             pinceau.strokeWidth = 1.4f
             pinceau.color = OR
-            canvas.drawRoundRect(Ornement.PANNEAU, 7f, 7f, pinceau)
+            canvas.drawRoundRect(Ornement.PANNEAU, 9f, 9f, pinceau)
         }
 
         // Le bord, au même retrait que celui de la face.
