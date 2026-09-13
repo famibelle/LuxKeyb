@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.5.2] - 2026-09-13
+
+### 🐛 Correctifs
+
+- **Débordements des ornements.** La ligne de série se coupait aux coins arrondis
+  bas de la carte, les écus débordaient du plateau intérieur, la gemme de coût
+  était asymétriquement serti. Repositionnement des emplacements pour des marges
+  saines (SERIE +8 unités, ECU -12 unités, GEMME alignée).
+- **Harmonisation des coins arrondis.** Les fenêtres, panneaux et écus avaient
+  des rayons disparates (8/7/custom). Cascade hiérarchique (18 > 11 > 10 > 9 > 4)
+  pour une sensation d'élégance unifiée.
+- **Tranche.** Réduction de la largeur d'ombre (34→28 unités) pour éviter le
+  débordement sur les coins lors de l'inclinaison forte de l'appareil.
+
 ## [22.5.1] - 2026-09-13
 
 > La 22.5.0 a donné à la carte une épaisseur, une lumière qui suit le pouce et
