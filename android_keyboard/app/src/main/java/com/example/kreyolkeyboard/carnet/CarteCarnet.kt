@@ -29,20 +29,23 @@ data class ContenuCarte(
     val rang: Int?,
     val glose: String,
     val autresFormes: List<String>,
-    val exemple: String?
+    val exemple: String?,
+    val blason: Blasonnement = Blasonnement.AUCUN
 )
 
 /**
  * Le rendu d'une carte du carnet.
  *
- * **Pas d'illustration récupérée ailleurs, et pas d'emoji dans le sujet.** Un
- * tableau mot → emoji aurait été tentant, mais le vocabulaire des jeux est très
- * abstrait : mesuré sur les 1 963 formes de Wuertplaz, 1 453 premiers sens
- * distincts, dont les plus partagés sont « devoir », « marcher », « pouvoir ».
- * Une table raisonnable en aurait couvert une poignée, et un jeu où quelques
- * cartes portent une image et toutes les autres rien du tout se lit comme
- * inachevé. L'illustration est donc **générative pour toutes** : un motif
- * dérivé du mot lui-même, unique et reproductible.
+ * **Pas d'emoji, et une image seulement là où elle est juste.** Le vocabulaire
+ * des jeux est très abstrait : mesuré sur les 1 690 substantifs glosés du
+ * carnet, 1 504 têtes de glose distinctes, soit 1,12 mot par dessin. Une
+ * bibliothèque d'images ne peut donc pas couvrir la collection, et l'argument
+ * qui tenait ici — « un jeu où quelques cartes portent une image et les autres
+ * rien du tout se lit comme inachevé » — a été résolu autrement : *toutes* les
+ * cartes reçoivent un sujet génératif, le tracé de leur mot, et le dessin est
+ * un **surcroît** qui en distingue trois sur cent. Rien n'est inachevé, parce
+ * que rien n'est vide ; l'enluminure est une propriété collectionnable de plus,
+ * indépendante de la rareté. Voir [Blason] et [Meubles].
  *
  * ## La carte est une carte à jouer, et son ornement monte avec la rareté
  *
@@ -93,7 +96,12 @@ object CarteCarnet {
                 rang = null,
                 glose = "le nombre $valeur",
                 autresFormes = emptyList(),
-                exemple = ZuelenSpeller.decomposition(valeur).ifEmpty { null }
+                exemple = ZuelenSpeller.decomposition(valeur).ifEmpty { null },
+                // Un numéral n'est pas au classement — il n'est dans aucune
+                // grille — mais son champ ne fait aucun doute : c'est une
+                // mesure. Les cartes de Zuelwuert forment donc une famille de
+                // couleur, au lieu du semis aléatoire qu'elles étaient.
+                blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE)
             )
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
@@ -106,7 +114,11 @@ object CarteCarnet {
             autresFormes = (listOf(fiche.mot) + fiche.formes)
                 .distinct()
                 .filter { it != carte.forme },
-            exemple = exemple
+            exemple = exemple,
+            // Le blason se lit sur le représentant, comme la glose : le joueur
+            // a gagné « Männer », c'est le rangement de « Mann » qui vaut. La
+            // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
+            blason = Armorial.pour(context, fiche.mot, carte.forme)
         )
     }
 
@@ -124,7 +136,7 @@ object CarteCarnet {
      * l'ont donnée. La barre de Leitner est peinte sur le cadre.
      */
     fun vignette(context: Context, c: ContenuCarte, cote: Int): View {
-        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = true)
+        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = true, blason = c.blason)
             .avecBoite(c.carte.boite)
 
         carte.posee(
@@ -167,7 +179,7 @@ object CarteCarnet {
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)
-        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = false)
+        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = false, blason = c.blason)
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),

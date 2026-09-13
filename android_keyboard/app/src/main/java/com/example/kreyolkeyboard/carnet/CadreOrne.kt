@@ -660,10 +660,36 @@ object Ornement {
      * jurerait avec son carton se lirait comme un défaut d'impression.
      */
     fun teinteDe(mot: String): Float {
-        val tete = mot.lowercase().take(3)
-        val condense = tete.fold(7919) { acc, c -> acc * 31 + c.code }
+        val condense = condense(mot)
         return ((condense % 360) + 360) % 360f
     }
+
+    /**
+     * La teinte d'un mot **qui a un champ** : la couleur du champ, écartée.
+     *
+     * Sans champ, on retombe sur [teinteDe] et rien ne change. Avec, la carte
+     * prend la teinte de son domaine — et c'est ce qui fait qu'un tiroir du
+     * carnet cesse d'être un nuancier aléatoire pour devenir un rangement.
+     *
+     * L'écart de ±12° n'est pas une décoration : huit teintes strictement
+     * identiques feraient de chaque champ un aplat, et deux cartes voisines du
+     * même domaine deviendraient indiscernables l'une de l'autre. Il est tiré
+     * du même condensé que [teinteDe], donc des trois premières lettres, ce qui
+     * garde `Woch`, `Wochen` et `Woche` exactement sur la même couleur.
+     *
+     * Douze degrés, enfin, parce que c'est moins que la moitié du plus petit
+     * intervalle entre deux champs (34°, de 20 à 52) : deux domaines ne peuvent
+     * donc jamais se recouvrir, quel que soit le mot.
+     */
+    fun teinteDe(mot: String, champ: Champ?): Float {
+        if (champ == null) return teinteDe(mot)
+        val ecart = (((condense(mot) shr 3) % 25) + 25) % 25 - 12
+        return ((champ.hue + ecart) % 360f + 360f) % 360f
+    }
+
+    /** Le condensé des trois premières lettres, seule source des teintes. */
+    private fun condense(mot: String): Int =
+        mot.lowercase().take(3).fold(7919) { acc, c -> acc * 31 + c.code }
 
     /**
      * La face intérieure : la teinte du mot, et rien d'autre.
@@ -1483,7 +1509,8 @@ class CarteOrnee(
     context: Context,
     private val mot: String,
     private val rarete: Rarete,
-    private val vignette: Boolean
+    private val vignette: Boolean,
+    private val blason: Blasonnement = Blasonnement.AUCUN
 ) : Carton(context) {
 
     override val hauteurUnites: Float =
@@ -1521,10 +1548,13 @@ class CarteOrnee(
     private val motif: Motif
 
     init {
-        teinte = Ornement.teinteDe(mot)
+        // La face, la gemme et la fenêtre prennent la teinte du champ quand le
+        // mot en a un : c'est ce qui fait qu'un tiroir du carnet se lit comme
+        // un rangement et non comme un nuancier. Sans champ, rien ne change.
+        teinte = Ornement.teinteDe(mot, blason.champ)
         degradeFace = Ornement.degradeFace(teinte, rarete, vignette)
         degradeGemme = Ornement.degradeGemme(teinte)
-        motif = Motif(mot, rarete, fenetre)
+        motif = Motif(mot, rarete, fenetre, blason)
         setWillNotDraw(false)
         clipChildren = false
     }
@@ -1620,14 +1650,34 @@ class CarteOrnee(
  * toutes lettres, à la vignette comme à la carte ouverte, et une lettre géante
  * derrière un mot lisible n'ajoutait qu'un doublon.
  */
-class Motif(mot: String, rarete: Rarete, zone: RectF) {
+class Motif(
+    mot: String,
+    rarete: Rarete,
+    zone: RectF,
+    blason: Blasonnement = Blasonnement.AUCUN
+) {
 
-    private val teinte = Ornement.teinteDe(mot)
+    private val teinte = Ornement.teinteDe(mot, blason.champ)
     private val matiere = Matiere(rarete, zone, teinte)
-    private val sujet: Sujet = Trace(mot, zone, teinte)
+    private val partition = Partition(blason.nature, zone)
+
+    /**
+     * Le meuble s'il y en a un, le tracé sinon — et jamais les deux.
+     *
+     * Le repli n'est pas un pis-aller : le tracé porte 97 % du carnet, et
+     * c'est le meuble qui est l'exception. Un nom de meuble que
+     * [Meubles] ne connaît pas retombe ici sans bruit, ce qui permet à
+     * l'actif et à la bibliothèque d'avancer chacun à son rythme.
+     */
+    private val sujet: Sujet =
+        blason.meuble?.let { Enluminure.pour(it, zone, rarete) } ?: Trace(mot, zone, teinte)
 
     /**
      * Peint le motif dans son ouverture.
+     *
+     * L'ordre dit d'où vient chaque chose : le palier pose sa matière, le sens
+     * la divise, le mot s'inscrit dedans, et le palier reprend la main pour ce
+     * qui doit briller par-dessus.
      *
      * `roulis` est l'inclinaison de l'appareil ramenée dans [-1, 1] : elle ne
      * fait tourner que deux matrices, ce qui rend le suivi du capteur
@@ -1638,9 +1688,85 @@ class Motif(mot: String, rarete: Rarete, zone: RectF) {
         c.save()
         c.clipPath(decoupe)
         matiere.dessous(c, p)
+        partition.peindre(c, p)
         sujet.peindre(c)
         matiere.dessus(c, p, roulis)
         c.restore()
+    }
+}
+
+/**
+ * La partition : la division du champ, avant qu'on y pose quoi que ce soit.
+ *
+ * L'héraldique divise l'écu — plein, coupé, tranché — et c'est ici la seule
+ * information de la fenêtre qui **ne coûte ni donnée ni dessin** : elle se lit
+ * sur la forme du mot, que le luxembourgeois écrit avec une majuscule quand
+ * c'est un substantif.
+ *
+ * Elle rend un service qu'on n'attendait pas d'elle. Huit teintes sur une face
+ * désaturée, ça se confond : deux verts voisins ne se distinguent pas à 160 dp,
+ * et encore moins en deutéranopie. Une forme qui double la couleur rétablit la
+ * lecture — c'est le raisonnement des insignes de rareté, qui comptent des
+ * symboles au lieu de se fier au vert et au bleu-gris.
+ *
+ * Deux couches, et il faut les deux : un aplat à 26 % ne se voit pas sur une
+ * face déjà claire, et c'est le filet qui donne la ligne de partage. Sans lui,
+ * la partition ne servirait justement plus la lisibilité qui la justifie.
+ */
+private class Partition(nature: Nature, zone: RectF) {
+
+    private val aplat = Path()
+    private val ligne = Path()
+
+    init {
+        val h = zone.height()
+        when (nature) {
+            // Coupé : une bande en chef, la forme la plus franche, pour la
+            // nature la plus nombreuse après les noms.
+            Nature.VERBE -> {
+                val y = zone.top + h * 0.40f
+                aplat.addRect(zone.left, zone.top, zone.right, y, Path.Direction.CW)
+                ligne.moveTo(zone.left, y)
+                ligne.lineTo(zone.right, y)
+            }
+            // Tranché : une diagonale. Ce qui n'est ni nom ni verbe est
+            // hétéroclite, et la diagonale est la division qui ne prétend rien.
+            Nature.AUTRE -> {
+                aplat.moveTo(zone.left, zone.bottom)
+                aplat.lineTo(zone.right, zone.top)
+                aplat.lineTo(zone.right, zone.bottom)
+                aplat.close()
+                ligne.moveTo(zone.left, zone.bottom)
+                ligne.lineTo(zone.right, zone.top)
+            }
+            // Chevron : la division la plus stable, pour le substantif, qui
+            // est aussi ce que le carnet porte le plus.
+            Nature.NOM -> {
+                val faite = zone.top + h * 0.14f
+                aplat.moveTo(zone.left, zone.bottom)
+                aplat.lineTo(zone.centerX(), faite)
+                aplat.lineTo(zone.right, zone.bottom)
+                aplat.close()
+                ligne.moveTo(zone.left, zone.bottom)
+                ligne.lineTo(zone.centerX(), faite)
+                ligne.lineTo(zone.right, zone.bottom)
+            }
+        }
+    }
+
+    fun peindre(c: Canvas, p: Paint) {
+        p.style = Paint.Style.FILL
+        p.color = Color.WHITE
+        p.alpha = 66
+        c.drawPath(aplat, p)
+
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.6f
+        p.alpha = 107
+        c.drawPath(ligne, p)
+
+        p.alpha = 255
+        p.style = Paint.Style.FILL
     }
 }
 
@@ -1779,6 +1905,71 @@ private class Matiere(private val rarete: Rarete, private val zone: RectF, teint
  */
 private interface Sujet {
     fun peindre(c: Canvas)
+}
+
+/**
+ * L'enluminure : le meuble du mot, gravé dans la matière.
+ *
+ * C'est le sujet des cartes qu'on collectionne pour elles-mêmes — soixante-
+ * quinze mots sur deux mille huit cents, à peu près trois sur cent. La rareté
+ * n'y est pour rien : elle est fixée par le rang de fréquence et n'est pas
+ * négociable, alors que l'enluminure est un second axe de désirabilité, qui
+ * peut échoir à une commune comme à une très rare.
+ *
+ * La gravure est celle du reste du carnet — une ombre décalée vers le bas à
+ * droite, puis la matière claire — parce que la lumière du carnet vient d'en
+ * haut à gauche depuis les volutes. Un meuble posé à plat aurait l'air collé.
+ *
+ * Le plein cintre des deux paliers hauts mange le haut de la fenêtre : le
+ * meuble y rentre d'un cran et descend, au lieu d'être rogné par la découpe.
+ */
+private class Enluminure private constructor(chemin: Path, matrice: Matrix) : Sujet {
+
+    private val plume = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+
+    /**
+     * Le meuble déjà mis à l'échelle et posé : la carte se trace en unités de
+     * carte, donc la transformation n'a aucune raison d'être refaite à chaque
+     * trame — et le chemin de [Meubles] reste intact pour les autres cartes.
+     */
+    private val trace = Path().also {
+        chemin.transform(matrice, it)
+        // `transform` recopie la règle de remplissage, mais on ne la laisse pas
+        // à la charge d'un détail d'implémentation : sans « pair-impair », la
+        // porte d'une maison cesse d'être un trou et la silhouette se bouche.
+        it.fillType = Path.FillType.EVEN_ODD
+    }
+
+    override fun peindre(c: Canvas) {
+        c.save()
+        c.translate(DECALAGE_X, DECALAGE_Y)
+        plume.color = OMBRE
+        c.drawPath(trace, plume)
+        c.restore()
+        plume.color = TRAIT
+        c.drawPath(trace, plume)
+    }
+
+    companion object {
+        private val OMBRE = Color.argb(77, 0, 0, 0)
+        private val TRAIT = Color.argb(235, 255, 255, 255)
+        private const val DECALAGE_X = 2.2f
+        private const val DECALAGE_Y = 2.8f
+
+        /** `null` si la bibliothèque ne connaît pas ce meuble. */
+        fun pour(nom: String, zone: RectF, rarete: Rarete): Enluminure? {
+            val forme = Meubles.chemin(nom) ?: return null
+            val arche = rarete.ordinal >= 2
+            val taille = zone.height() * (if (arche) 0.60f else 0.72f)
+            val m = Matrix()
+            m.setScale(taille / Meubles.COTE, taille / Meubles.COTE)
+            m.postTranslate(
+                zone.centerX(),
+                zone.centerY() + zone.height() * (if (arche) 0.09f else 0.02f)
+            )
+            return Enluminure(forme, m)
+        }
+    }
 }
 
 /**

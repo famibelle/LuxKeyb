@@ -9,6 +9,125 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.7.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **Une carte a désormais un champ, et le carnet cesse d'être un nuancier.**
+  Jusqu'ici la teinte d'une carte venait de ses trois premières lettres : deux
+  cartes voisines dans un tiroir n'avaient aucune raison d'aller ensemble, et
+  feuilleter la collection ne rangeait rien. Chaque lemme est maintenant classé
+  dans l'un de **huit champs de sens** — Mouvement, Temps et mesure,
+  Territoire, Économie, Savoir et parole, Chose publique, Société, Vie et
+  corps — et c'est le champ qui donne la couleur de la face, de la gemme et de
+  la fenêtre.
+
+  Huit et non quatorze : au-delà, deux teintes voisines ne se séparent plus sur
+  une vignette de 160 dp. À l'intérieur d'un champ, la carte garde un écart de
+  ±12°, tiré du même condensé de trois lettres que l'ancienne teinte — les
+  cartes d'un même domaine se ressemblent sans se confondre, et `Woch`,
+  `Wochen` et `Woche` restent exactement sur la même couleur. Douze degrés,
+  c'est moins de la moitié du plus petit intervalle entre deux champs (34°) :
+  deux domaines ne peuvent donc jamais se recouvrir.
+
+  Le classement couvre **71 % des 2 798 emplacements** du carnet. Les 29 %
+  restants ne sont pas un chantier inachevé : ce sont des mots-outils —
+  pronoms, déterminants, adverbes — qui n'ont pas de domaine et qu'il serait
+  faux de ranger de force. Ils gardent la teinte de leurs lettres, c'est-à-dire
+  exactement l'état de la 22.6.0.
+
+- **La partition divise le champ, et elle ne coûte rien du tout.** L'héraldique
+  divise l'écu avant d'y poser quoi que ce soit ; la fenêtre fait maintenant
+  pareil — chevron pour un substantif, coupé pour un verbe, tranché pour le
+  reste. L'information est lue **sur la forme du mot** : en luxembourgeois la
+  majuscule *est* l'étiquette du substantif, et l'infinitif se termine en `-en`.
+  Pas un octet d'actif.
+
+  Elle rend un service qu'on n'attendait pas d'elle : huit teintes sur une face
+  désaturée se confondent, et une forme qui double la couleur rétablit la
+  lecture — y compris en deutéranopie. C'est le raisonnement des insignes de
+  rareté, qui comptent des symboles au lieu de se fier au vert et au bleu-gris.
+
+  La règle verbale est approchée, et il faut le chiffrer plutôt que le taire :
+  sur les 502 mots qu'elle appelle verbe, une quinzaine sont des déterminants
+  (`sengem`, `hirem`, `deenen`), soit 3 %. Les irréguliers en `-nn` sont
+  rattrapés — `sinn`, `ginn`, `hunn`, `gesinn` et leurs douze composés — moins
+  les trois adverbes qui portent la même finale.
+
+- **Soixante-quinze cartes portent une enluminure.** Une silhouette gravée
+  remplace le tracé sur les mots qu'on sait bien dessiner : `Haus`, `Kaz`,
+  `Brout`, `Léiw`, `Helikopter`, `Fändel`… Soixante-quatorze dessins pour
+  soixante-quinze mots, à peu près **trois cartes sur cent**. L'enluminure ne
+  suit pas la rareté — celle-là est fixée par le rang de fréquence et n'est pas
+  négociable — c'est un second axe de désirabilité, qui peut échoir à une
+  commune comme à une très rare.
+
+### 🧭 Ce que la mesure a démoli, et ce qui a survécu
+
+La 22.6.0 disait que l'illustration cessait d'être une cible de couverture.
+Voici le chiffre qui l'a décidé, parce qu'il contredisait ce que j'avais moi-
+même recommandé.
+
+L'argument était : « un meuble sert des dizaines de mots, une maison vaut pour
+`Haus`, `Wunneng`, `Duerf`, `Dier` ; on ne dessine pas 2 801 images, on dessine
+cent vingt silhouettes ». Mesuré sur les 1 690 substantifs glosés du carnet :
+**1 504 têtes de glose distinctes**, soit **1,12 mot par dessin**, et **89 %**
+des têtes ne concernent qu'un seul mot. La courbe de couverture colle à la
+diagonale — il n'y a pas de Pareto. Cent vingt silhouettes couvriraient 16 %
+des substantifs et 5 % du carnet.
+
+D'où venait l'erreur : j'avais raisonné sur les huit mots concrets d'une
+planche de démonstration, en oubliant que je les avais choisis **parce qu'ils
+étaient illustrables**. Le biais de sélection sous sa forme la plus banale, et
+la seule protection contre lui est de compter. Le corpus le dit d'ailleurs
+autrement : ses mots les plus tirés ne sont pas *chat* et *pain* mais *fin*,
+*question*, *cas*, *partie* — ce carnet n'est pas un imagier, c'est une salle
+de rédaction, et `Apel`, `Kou`, `Zopp` n'y figurent même pas.
+
+Un second obstacle, plus dur que le coût : **le meuble choisit un sens que la
+carte ne choisit pas.** La carte affiche toute la glose — « Wee : chemin, sens,
+moyen » — et un dessin n'en illustre qu'un. Sur la face réponse d'un outil de
+révision, une image qui tranche une polysémie est activement fausse. Le coût de
+dessin, on peut le payer ; un sens faux, non. C'est ce qui interdit toute
+attribution automatique, même par un bon classifieur.
+
+D'où le renversement : on ne dessine plus ce qu'il faudrait couvrir, **on
+n'attribue que là où c'est juste**. `Feier` est « feu, incendie, *fête* »,
+`Bierg` « montagne, côte, *garant* », `Nol` « clou, *ongle*, *aiguille* » —
+aucun des trois n'est enluminé, et chaque entrée du tableau a été relue contre
+la glose entière. Ce qu'il faut accepter en échange, et le dire en face : la
+fenêtre ne dit pas le sens sur la grande majorité des cartes. Le reste reçoit
+un rangement, pas un portrait.
+
+### 🔧 Détails d'implémentation
+
+- `Dictionnaires/generate_blasons.py` produit `luxemburgish_blasons.json`
+  (52 ko, 2 064 lemmes). Le classement se fait en deux passes : un lexique
+  français cherché dans la glose entière — le premier sens comptant triple,
+  puisque c'est celui que la carte met en tête — puis une table écrite à la
+  main qui gagne toujours. Le lexique a été écrit en trois vagues, chacune en
+  relisant ce que la précédente laissait dehors : 23 %, puis 44 %, puis 71 %.
+  Une dernière règle vaut une soixantaine de cartes : **un nom propre est un
+  lieu**, appliquée en dernier recours, quand les gentilés ont déjà été pris
+  par le lexique et qu'il ne reste que de la géographie.
+- `carnet/Blason.kt` — les huit champs, la nature, et l'armorial qui lit
+  l'actif. La clé est le **représentant** de la famille, pas la forme
+  rencontrée : le joueur a gagné « Männer », c'est le rangement de « Mann » qui
+  vaut, et `ContenuCarte` avait déjà ce représentant sous la main.
+- `carnet/Meubles.kt` — les 74 silhouettes, chacune dans un carré de cent
+  unités, remplies en `EVEN_ODD` pour que la porte d'une maison soit un trou et
+  non un second contour.
+- `Motif` prend un troisième participant. Il assemblait une matière (le palier)
+  et un sujet (le mot) ; il assemble maintenant matière, **partition** (la
+  nature) et sujet, et le sujet est le meuble s'il y en a un, le tracé sinon.
+- Les numéraux de Zuelwuert, que le corpus de fréquences ne connaît pas et
+  qu'aucune grille ne contient, reçoivent le champ *Temps et mesure* : leur
+  domaine ne fait aucun doute, et leurs cartes cessent d'être un semis.
+- `BlasonsAssetTest` garde quatre régressions muettes : un champ inconnu, un
+  meuble non dessiné, un meuble attribué à un mot qu'aucun jeu ne donne, et
+  l'effondrement de la couverture. Aucune ne fait planter — `Armorial` avale
+  exprès toute erreur de lecture pour qu'un actif abîmé n'éteigne pas le carnet.
+
 ## [22.6.1] - 2026-09-13
 
 ### 🎨 Ajustements
