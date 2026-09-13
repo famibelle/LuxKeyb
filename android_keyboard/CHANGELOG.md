@@ -9,6 +9,101 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.9.0] - 2026-09-13
+
+### 🐛 Corrections
+
+- **La pochette de fin de partie restait bloquée sur sa première carte.** Le
+  compteur annonçait « 1 / 7 », et il n'y avait aucun moyen d'atteindre la
+  deuxième.
+
+  La cause est un conflit de toucher, pas un oubli. Le passage d'une carte à
+  la suivante tenait à un `setOnClickListener` posé sur le voile
+  (`Booster.ouvrir`), tandis que la carte ouverte vit dans un `ScrollView` —
+  il lui faut pouvoir faire défiler une glose plus haute que l'écran. Or
+  `ScrollView.onTouchEvent` retourne `true` dès `ACTION_DOWN`, **même quand il
+  n'a rien à faire défiler**, et n'appelle jamais `performClick()`. L'appui
+  était donc consommé par la carte et n'arrivait pas au voile. La carte
+  occupant la quasi-totalité de la scène, les seuls appuis qui passaient
+  encore étaient ceux qui tombaient dans les quelques millimètres de marge
+  autour d'elle — autant dire aucun.
+
+  Ce n'était pas un défaut de découvrabilité : le geste documenté existait et
+  ne fonctionnait pas.
+
+### ✨ Nouveautés
+
+- **La pochette se parcourt au doigt, dans les deux sens.** On glisse vers la
+  gauche pour avancer, vers la droite pour revenir. Le bilan de fin est
+  devenu la dernière page du paquet au lieu d'un écran à part, ce qui permet
+  d'en ressortir vers la dernière carte : un bilan posé à côté du paquet
+  était un cul-de-sac, et c'était la moitié du problème.
+
+  Une carte déjà retournée se retrouve telle qu'on l'a laissée. La cérémonie
+  — le dos, le halo qui monte, le retournement — appartient à la découverte ;
+  la rejouer à chaque aller-retour aurait transformé la consultation en
+  attente. Aux deux bouts du paquet, le glissement résiste au tiers de la
+  course : la carte suit encore le doigt, mais dit qu'il n'y a rien derrière
+  sans avoir à l'écrire.
+
+  L'appui simple reste ce qu'il était, et marche de nouveau. Le compteur
+  porte désormais la mention du geste, faute de quoi il n'y aurait toujours
+  rien pour l'apprendre.
+
+- **Une carte rare part en feux d'artifice quand elle se pose.** Trois gerbes
+  pour une *Rare*, cinq pour une *Très rare*, décalées dans le temps, avec
+  pesanteur et traînées ; elles s'éteignent en `(1 - t)²`, donc bien avant
+  d'atteindre le bord — ce qu'on est venu voir, c'est le mot.
+
+  Elles partent **à chaque fois que la carte arrive à l'écran**, au
+  retournement qui la découvre comme au glissement qui y revient : la rareté
+  n'est pas une nouvelle qu'on annonce une fois, c'est une propriété que la
+  carte garde, et c'est ce qui donne une raison de parcourir sa pochette.
+
+  Le tirage des gerbes est fixé par la forme du mot (`graine =
+  forme.hashCode()`). Revenir sur une carte redonne exactement son bouquet, et
+  deux cartes voisines n'en donnent jamais deux pareils : le hasard sert la
+  variété, jamais l'instabilité. C'est la règle d'`EclatCarte` appliquée dans
+  l'autre sens — lui garde des angles réguliers parce qu'il est bref, elles
+  peuvent se permettre du désordre parce qu'il ne varie pas d'une fois sur
+  l'autre. Les deux cohabitent sur une très rare, la gerbe reprenant là où
+  l'éclat s'éteint.
+
+### 🔧 Détails d'implémentation
+
+- **`ScenePochette`** (nouveau, `Booster.kt`) : la scène lit le geste avant
+  ses enfants. Elle intercepte le glissement horizontal dès qu'il se déclare
+  (`|dx| > slop` et `|dx| > 1,2·|dy|` — les diagonales vont au défilement,
+  une carte qu'on voulait lire et qui s'en va valant bien pire qu'un
+  glissement à refaire), et reconnaît l'appui simple **sans jamais
+  l'intercepter**, dans `onInterceptTouchEvent`, qui reçoit tous les
+  événements du geste tant qu'elle laisse faire. Les deux chemins sont
+  exclusifs — si un enfant prend le geste, seul `onInterceptTouchEvent` voit
+  le relâchement ; sinon la scène l'a consommé dès l'appui — donc un appui ne
+  peut pas compter deux fois. Coordonnées lues en `raw` : la page glisse sous
+  le doigt, des coordonnées locales mesureraient ce déplacement au lieu de
+  celui de la main. Et quand le `ScrollView` se met à défiler, il demande
+  lui-même qu'on ne l'interrompe plus : le défilement gagne.
+- **`performClick()`** est surchargée et porte l'appui, plutôt que d'appeler
+  le rappel depuis `onTouchEvent` : les services d'accessibilité déclenchent
+  un clic sans jamais produire de `MotionEvent`, et la pochette n'aurait
+  sinon pas eu de carte suivante sous TalkBack.
+- **`FeuxArtifice`** (nouveau, `Booster.kt`) : une vue pilotée par un unique
+  `avancement` de 0 à 1, comme `EclatCarte`. Rayon en `1 - (1-t)²`, chute en
+  `t²`, traînée proportionnelle à la vitesse restante ; une étoile sur deux
+  part à 72 % du rayon, sans quoi la gerbe se lirait comme un anneau. Les
+  positions sont en fractions de la vue, jamais en pixels : le tirage a lieu
+  à la construction, avant qu'on connaisse la taille.
+- **Chaque page vit dans son propre `FrameLayout`**, ajouté à la scène et
+  retiré à la fin de sa sortie. Les rappels différés de la cérémonie
+  s'arrêtent sur `page.parent == null`, ce qui suffit à abandonner
+  proprement un retournement que le joueur a interrompu d'un glissement.
+- **`Passer` devient `Fermer` — et « 📔 Mon carnet » apparaît — dès que
+  toutes les cartes ont été vues**, où qu'on se trouve dans le paquet, et non
+  plus sur la seule page de bilan. Le bouton n'était caché que pour ne pas
+  inviter à partir avant d'avoir ouvert ; une fois tout ouvert, la raison
+  tombe.
+
 ## [22.8.0] - 2026-09-13
 
 ### ✨ Nouveautés
