@@ -618,6 +618,30 @@ object Ornement {
     // -------------------------------------------------------------- le vif
 
     /**
+     * La teinte d'un mot : le seul endroit qui la décide.
+     *
+     * Elle se lit sur les **trois premières lettres**, et non sur le mot
+     * entier. Le mot entier donnait à `Woch`, `Wochen` et `Woche` trois
+     * couleurs sans rapport : le carnet cachait activement qu'il s'agit d'un
+     * seul mot à trois états, alors que c'est exactement ce qu'un carnet de
+     * vocabulaire devrait montrer. Le préfixe suffit à les réunir, et il ne
+     * demande de consulter aucun lemme — donc il vaut aussi pour les 647
+     * formes que `luxemburgish_familles.json` ne rattache à rien.
+     *
+     * Le prix est l'homonymie de préfixe : `Stad` et `Statist` tomberont sur
+     * la même teinte. C'est sans conséquence, parce qu'une teinte n'identifie
+     * pas une carte — la plaque porte le mot — elle en rapproche.
+     *
+     * La face, la gemme et le motif la partagent : une carte dont la fenêtre
+     * jurerait avec son carton se lirait comme un défaut d'impression.
+     */
+    fun teinteDe(mot: String): Float {
+        val tete = mot.lowercase().take(3)
+        val condense = tete.fold(7919) { acc, c -> acc * 31 + c.code }
+        return ((condense % 360) + 360) % 360f
+    }
+
+    /**
      * La face intérieure : la teinte du mot, et rien d'autre.
      *
      * C'est la pièce qui garantit que la collection reste variée. Le métal
@@ -1472,8 +1496,7 @@ class CarteOrnee(
     private val motif: Motif
 
     init {
-        val condense = mot.fold(7919) { acc, c -> acc * 31 + c.code }
-        teinte = ((condense % 360) + 360) % 360f
+        teinte = Ornement.teinteDe(mot)
         degradeFace = Ornement.degradeFace(teinte, rarete, vignette)
         degradeGemme = Ornement.degradeGemme(teinte)
         motif = Motif(mot, rarete, fenetre)
@@ -1541,44 +1564,85 @@ class CarteOrnee(
 }
 
 /**
- * L'illustration générative d'une carte : un motif tiré du mot lui-même.
+ * L'illustration d'une carte : la matière de son palier, le sujet de son mot.
  *
- * Le tracé n'a pas bougé d'un trait depuis qu'il a été mesuré et défendu : un
- * anneau par lettre, la teinte tirée du mot, une matière par palier — commune
- * mate, grain oblique, halo, irisation — et l'initiale en filigrane. Deux
- * choses ont changé, et elles vont ensemble :
+ * ## Pourquoi deux objets là où il n'y en avait qu'un
  *
- * - le motif se découpe maintenant dans une **arche** quand le palier le
- *   mérite, au lieu d'un rectangle ; c'est [CarteOrnee] qui lui passe
- *   l'ouverture, il ne la choisit pas ;
- * - il n'est plus une `View`, mais un objet peint dans le canevas de la
- *   carte, ce qui permet au métal de passer par-dessus ses bords.
+ * L'ancien `Motif` peignait tout dans une seule méthode : le grain du bronze
+ * et l'initiale du mot s'y suivaient à quelques lignes d'écart, et l'on ne
+ * pouvait toucher à l'un sans relire l'autre. Or la fenêtre dit **deux**
+ * choses, qui n'ont ni la même source ni la même durée de vie :
  *
- * Comme la carte se trace en unités de carte, la zone ne change jamais de
- * taille : tout ce qui coûte — dégradés, hachures, positions d'anneaux — est
- * construit **une fois**, ici, et [peindre] n'alloue rien.
+ * - **ce que vaut la carte** — le palier, d'où viennent le grain, le halo et
+ *   l'irisation, mesurés et défendus de longue date ;
+ * - **quel mot elle porte** — le sujet, qui est la partie qu'on cherche encore.
+ *
+ * Elles sont désormais [Matiere] et [Sujet], et [Motif] n'est plus que leur
+ * assemblage dans l'ordre d'une carte imprimée : la matière dessous, le sujet
+ * au milieu, ce que la matière pose par-dessus. Essayer un autre sujet — un
+ * meuble héraldique, un poinçon — ne demande donc plus d'ouvrir le grain.
+ *
+ * ## Ce que le sujet est devenu
+ *
+ * Il était un anneau par lettre, plus l'initiale en filigrane. Les anneaux
+ * tiraient leur position du code des caractères : c'était un bruit stable et
+ * unique par mot, mais un bruit — rien n'y disait le mot, et deux formes d'un
+ * même lemme n'y avaient aucun air de famille. Le sujet est maintenant le
+ * **tracé** du mot, lettre à lettre : voir [Trace].
+ *
+ * L'initiale disparaît sans être remplacée. Elle se justifiait par « la carte
+ * dit son mot même en vignette » — mais [Ornement.PLAQUE] le porte déjà en
+ * toutes lettres, à la vignette comme à la carte ouverte, et une lettre géante
+ * derrière un mot lisible n'ajoutait qu'un doublon.
  */
-class Motif(mot: String, private val rarete: Rarete, private val zone: RectF) {
+class Motif(mot: String, rarete: Rarete, zone: RectF) {
 
-    private class Anneau(val cx: Float, val cy: Float, val r: Float, val trait: Float, val couleur: Int)
+    private val teinte = Ornement.teinteDe(mot)
+    private val matiere = Matiere(rarete, zone, teinte)
+    private val sujet: Sujet = Trace(mot, zone, teinte)
+
+    /**
+     * Peint le motif dans son ouverture.
+     *
+     * `roulis` est l'inclinaison de l'appareil ramenée dans [-1, 1] : elle ne
+     * fait tourner que deux matrices, ce qui rend le suivi du capteur
+     * pratiquement gratuit. Sans découpe, le tracé et la brillance
+     * déborderaient sur le cadre — et l'arche cesserait d'être une arche.
+     */
+    fun peindre(c: Canvas, p: Paint, roulis: Float, decoupe: Path) {
+        c.save()
+        c.clipPath(decoupe)
+        matiere.dessous(c, p)
+        sujet.peindre(c)
+        matiere.dessus(c, p, roulis)
+        c.restore()
+    }
+}
+
+/**
+ * Ce que le **palier** met dans la fenêtre : commune mate, grain oblique,
+ * halo, irisation.
+ *
+ * Le tracé n'a pas bougé d'un trait depuis qu'il a été mesuré ; il a seulement
+ * changé de maison. Il se peint en deux temps parce que le sujet s'intercale :
+ * [dessous] pose la face et sa texture, [dessus] pose ce qui doit passer
+ * par-dessus le sujet — l'irisation d'une très rare et sa brillance.
+ *
+ * La teinte lui est donnée plutôt que calculée : c'est la même que celle de la
+ * face et de la gemme, et une carte dont la fenêtre jurerait avec son carton
+ * se lirait comme un défaut d'impression.
+ */
+private class Matiere(private val rarete: Rarete, private val zone: RectF, teinte: Float) {
 
     private val commun = rarete == Rarete.COMMUN
-    private val initiale = mot.take(1).uppercase()
-    private val opacite = if (commun) 30 else 48
-
     private val fond: LinearGradient
+    private val hachures = Path()
     private val halo: RadialGradient?
     private val iris: SweepGradient?
     private val brillance: LinearGradient?
-    private val hachures = Path()
-    private val anneaux: List<Anneau>
     private val matrice = Matrix()
-    private val filigrane = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val ligneDeBase: Float
 
     init {
-        val condense = mot.fold(7919) { acc, ch -> acc * 31 + ch.code }
-        val teinte = ((condense % 360) + 360) % 360f
         fun couleur(s: Float, v: Float) = Color.HSVToColor(floatArrayOf(teinte, s, v))
         val w = zone.width()
         val h = zone.height()
@@ -1613,18 +1677,6 @@ class Motif(mot: String, private val rarete: Rarete, private val zone: RectF) {
             floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
         ) else null
 
-        // Un anneau par lettre, jusqu'à six : position et rayon lus dans le mot.
-        anneaux = mot.take(6).mapIndexed { i, ch ->
-            val g = ch.code
-            Anneau(
-                zone.left + w * (0.12f + 0.16f * ((g + i * 7) % 6)),
-                zone.top + h * (0.15f + 0.14f * ((g / 3 + i * 5) % 6)),
-                h * (0.22f + 0.09f * (g % 5)),
-                1.4f + (g % 3),
-                if (i % 2 == 0) Color.WHITE else couleur(0.65f, 0.45f)
-            )
-        }
-
         if (rarete == Rarete.TRES_RARE) {
             // Un tour complet du cercle depuis la teinte du mot. La dernière
             // reprend la première, sinon le dégradé montre sa couture ; la
@@ -1642,31 +1694,10 @@ class Motif(mot: String, private val rarete: Rarete, private val zone: RectF) {
             iris = null
             brillance = null
         }
-
-        filigrane.typeface = android.graphics.Typeface.create(
-            android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
-        )
-        filigrane.textAlign = Paint.Align.CENTER
-        filigrane.textSize = h * 0.72f
-        filigrane.color = Color.WHITE
-        val mesure = Paint.FontMetrics()
-        filigrane.getFontMetrics(mesure)
-        ligneDeBase = zone.centerY() - (mesure.ascent + mesure.descent) / 2f
     }
 
-    /**
-     * Peint le motif dans son ouverture.
-     *
-     * `roulis` est l'inclinaison de l'appareil ramenée dans [-1, 1] : elle ne
-     * fait tourner que deux matrices, ce qui rend le suivi du capteur
-     * pratiquement gratuit.
-     */
-    fun peindre(c: Canvas, p: Paint, roulis: Float, decoupe: Path) {
-        c.save()
-        // Sans découpe, anneaux, hachures et brillance déborderaient sur le
-        // cadre — et l'arche cesserait d'être une arche.
-        c.clipPath(decoupe)
-
+    /** La face de la fenêtre et sa texture, sous le sujet. */
+    fun dessous(c: Canvas, p: Paint) {
         p.style = Paint.Style.FILL
         p.shader = fond
         c.drawRect(zone, p)
@@ -1681,46 +1712,28 @@ class Motif(mot: String, private val rarete: Rarete, private val zone: RectF) {
             p.alpha = 255
         }
 
-        // Le halo d'une rare, posé avant les anneaux pour rester derrière eux.
+        // Le halo d'une rare, posé avant le sujet pour rester derrière lui.
         halo?.let {
             p.style = Paint.Style.FILL
             p.shader = it
             c.drawRect(zone, p)
             p.shader = null
         }
-
-        p.style = Paint.Style.STROKE
-        for (a in anneaux) {
-            p.strokeWidth = a.trait
-            p.color = a.couleur
-            p.alpha = opacite
-            c.drawCircle(a.cx, a.cy, a.r, p)
-        }
-        p.alpha = 255
         p.style = Paint.Style.FILL
+    }
 
+    /** Ce qui glisse par-dessus le sujet quand l'appareil tourne. */
+    fun dessus(c: Canvas, p: Paint, roulis: Float) {
         iris?.let {
             matrice.setRotate(roulis * 55f, zone.centerX(), zone.centerY())
             it.setLocalMatrix(matrice)
+            p.style = Paint.Style.FILL
             p.shader = it
             p.alpha = 52
             c.drawRect(zone, p)
             p.alpha = 255
             p.shader = null
         }
-
-        // L'initiale en filigrane : la carte dit son mot même en vignette.
-        filigrane.style = Paint.Style.FILL
-        filigrane.alpha = 64
-        c.drawText(initiale, zone.centerX(), ligneDeBase, filigrane)
-        if (rarete == Rarete.TRES_RARE) {
-            // Sous l'irisation, une lettre pleine se dilue ; détourée, elle tient.
-            filigrane.style = Paint.Style.STROKE
-            filigrane.strokeWidth = 1.6f
-            filigrane.alpha = 92
-            c.drawText(initiale, zone.centerX(), ligneDeBase, filigrane)
-        }
-
         brillance?.let {
             matrice.setTranslate(roulis * zone.width() * 0.45f, 0f)
             it.setLocalMatrix(matrice)
@@ -1728,7 +1741,156 @@ class Motif(mot: String, private val rarete: Rarete, private val zone: RectF) {
             c.drawRect(zone, p)
             p.shader = null
         }
+    }
+}
 
+/**
+ * Ce que le **mot** met dans la fenêtre.
+ *
+ * Une seule implémentation aujourd'hui, [Trace], et c'est tout l'intérêt de
+ * l'interface : la question « quelle image pour quel mot » n'est pas tranchée,
+ * et le jour où elle le sera, c'est ici que la réponse se branchera — sans
+ * qu'un seul trait de la matière change.
+ */
+private interface Sujet {
+    fun peindre(c: Canvas)
+}
+
+/**
+ * Le tracé du mot : une signature gravée, lue lettre à lettre.
+ *
+ * ## La règle
+ *
+ * Voyelle en haut, consonne en bas, la hauteur affinée par le code du
+ * caractère ; un nœud sur chaque voyelle, qui donne la scansion. Le pas est
+ * **constant et calé à gauche**, jamais étiré sur la largeur : c'est ce détail
+ * qui fait tout le travail, parce que deux formes qui partagent leur début
+ * partagent alors leurs points *exactement*, au lieu de seulement se
+ * ressembler. Dans une grille, `Woch`, `Wochen` et `Woche` se lisent enfin
+ * comme un seul mot à trois états.
+ *
+ * La teinte va dans le même sens : [Ornement.teinteDe] la lit sur les trois
+ * premières lettres, si bien que les formes d'une même famille tombent sur la
+ * même couleur **sans qu'on ait eu à consulter le moindre lemme**. Le prix est
+ * l'homonymie de préfixe, et il est modeste : une teinte n'identifie rien,
+ * elle rapproche.
+ *
+ * ## Ce que ça coûte
+ *
+ * Rien. Pas un octet d'actif, pas une ligne de données, aucune couverture à
+ * atteindre — le tracé vaut pour les 3 732 formes du carnet comme pour les
+ * numéraux de Zuelwuert, que le corpus de fréquences ne connaît même pas. Ce
+ * qu'il ne fait pas, il faut le dire aussi : il montre **le mot**, pas **la
+ * chose**. C'est un monogramme, pas une illustration.
+ *
+ * Comme la carte se trace en unités de carte, le chemin et les nœuds sont
+ * construits **une fois**, ici, et [peindre] n'alloue rien.
+ */
+private class Trace(mot: String, zone: RectF, teinte: Float) : Sujet {
+
+    private val chemin = Path()
+    private val noeudsX: FloatArray
+    private val noeudsY: FloatArray
+    private val rayon: Float
+    private val coeur: Float
+    private val couleurCoeur: Int
+    private val plume = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    init {
+        val lettres = mot.toCharArray()
+        val n = lettres.size
+        val w = zone.width()
+        val h = zone.height()
+
+        // Un mot de sept lettres occupe toute la largeur utile ; un plus court
+        // s'arrête avant, un plus long resserre son pas. Le pas ne dépend donc
+        // jamais de la longueur du mot voisin, ce qui est la condition pour
+        // que deux préfixes identiques se superposent.
+        val pas = w * 0.76f / (maxOf(n, 7) - 1).toFloat()
+        val x0 = zone.left + w * 0.12f
+        val cy = zone.centerY()
+        val amp = h * 0.30f
+
+        val xs = FloatArray(n)
+        val ys = FloatArray(n)
+        var voyelles = 0
+        for (i in 0 until n) {
+            val ch = lettres[i]
+            val estVoyelle = ch.lowercaseChar() in VOYELLES
+            if (estVoyelle) voyelles++
+            // Un mot d'une seule lettre n'a pas de tracé : on le centre.
+            xs[i] = if (n == 1) zone.centerX() else x0 + pas * i
+            ys[i] = cy + (if (estVoyelle) -1f else 1f) *
+                amp * (0.42f + 0.58f * ((ch.code % 7) / 6f))
+        }
+
+        // Deux quadratiques par segment, par le milieu : la courbe passe par
+        // chaque lettre sans le dépassement qu'une seule donnerait.
+        if (n >= 2) {
+            chemin.moveTo(xs[0], ys[0])
+            for (i in 0 until n - 1) {
+                val ax = xs[i]; val ay = ys[i]
+                val bx = xs[i + 1]; val by = ys[i + 1]
+                chemin.quadTo(ax + (bx - ax) * 0.55f, ay, (ax + bx) / 2f, (ay + by) / 2f)
+                chemin.quadTo(bx - (bx - ax) * 0.55f, by, bx, by)
+            }
+        }
+
+        noeudsX = FloatArray(voyelles)
+        noeudsY = FloatArray(voyelles)
+        var k = 0
+        for (i in 0 until n) {
+            if (lettres[i].lowercaseChar() in VOYELLES) {
+                noeudsX[k] = xs[i]; noeudsY[k] = ys[i]; k++
+            }
+        }
+
+        // Un mot long doit maigrir, sinon ses nœuds se recouvrent : à seize
+        // lettres, un pas fait onze unités et un nœud d'origine en ferait dix
+        // de rayon. Sept lettres est la longueur de référence.
+        val maigreur = (7f / maxOf(n, 7)).coerceAtMost(1f)
+        val epaisseur = h * 0.055f * maigreur
+        rayon = h * 0.055f * maigreur
+        coeur = h * 0.024f * maigreur
+        couleurCoeur = Color.HSVToColor(floatArrayOf(teinte, 0.55f, 0.62f))
+
+        plume.strokeWidth = epaisseur
+        plume.strokeCap = Paint.Cap.ROUND
+        plume.strokeJoin = Paint.Join.ROUND
+    }
+
+    /**
+     * Le tracé se pose deux fois : une ombre décalée, puis le trait clair.
+     *
+     * C'est la gravure du reste du carnet — la lumière vient d'en haut à
+     * gauche, comme pour les volutes et les écus — et c'est ce qui empêche un
+     * trait blanc de disparaître sur la face claire d'une commune.
+     */
+    override fun peindre(c: Canvas) {
+        plume.style = Paint.Style.STROKE
+        c.save()
+        c.translate(1.4f, 1.8f)
+        plume.color = OMBRE
+        c.drawPath(chemin, plume)
         c.restore()
+        plume.color = TRAIT
+        c.drawPath(chemin, plume)
+
+        plume.style = Paint.Style.FILL
+        for (i in noeudsX.indices) {
+            plume.color = OMBRE
+            c.drawCircle(noeudsX[i] + 1.4f, noeudsY[i] + 1.8f, rayon, plume)
+            plume.color = TRAIT
+            c.drawCircle(noeudsX[i], noeudsY[i], rayon, plume)
+            plume.color = couleurCoeur
+            c.drawCircle(noeudsX[i], noeudsY[i], coeur, plume)
+        }
+    }
+
+    private companion object {
+        /** Les voyelles du luxembourgeois, diacritiques compris. */
+        const val VOYELLES = "aeiouyäëéèêîïôöüû"
+        val OMBRE = Color.argb(72, 0, 0, 0)
+        val TRAIT = Color.argb(235, 255, 255, 255)
     }
 }

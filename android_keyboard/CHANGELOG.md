@@ -9,6 +9,65 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.6.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **La fenêtre d'une carte montre enfin le mot, et non un bruit stable.**
+  L'illustration était un anneau par lettre, posé à des coordonnées tirées du
+  code des caractères, plus l'initiale en filigrane. C'était unique par mot et
+  reproductible, mais rien n'y disait le mot : deux formes d'un même lemme n'y
+  avaient aucun air de famille, et l'initiale doublait la plaque qui porte
+  déjà le mot en toutes lettres.
+
+  À la place, le **tracé** : voyelle en haut, consonne en bas, la hauteur
+  affinée par le caractère, un nœud sur chaque voyelle. Le pas est constant et
+  calé à gauche — jamais étiré sur la largeur — et c'est ce détail qui porte
+  tout le bénéfice : deux formes qui partagent leur début partagent leurs
+  points *exactement*. `Woch`, `Wochen` et `Woche` se lisent désormais comme
+  un seul mot à trois états. Un mot long resserre son pas et maigrit d'autant,
+  sinon ses nœuds se recouvriraient au-delà de sept lettres.
+
+- **La teinte d'un mot se lit sur ses trois premières lettres**
+  ([`Ornement.teinteDe`]), et non plus sur le mot entier. Même raison : le mot
+  entier donnait trois couleurs sans rapport aux trois formes ci-dessus, alors
+  qu'un carnet de vocabulaire devrait précisément montrer qu'elles n'en font
+  qu'une. Le préfixe suffit à les réunir sans consulter le moindre lemme, donc
+  il vaut aussi pour les 647 formes que `luxemburgish_familles.json` ne
+  rattache à rien. Le prix — `Stad` et `Statist` tombent sur la même teinte —
+  est sans conséquence : une teinte n'identifie pas une carte, la plaque le
+  fait.
+
+  La face, la gemme et le motif la partagent maintenant depuis **un seul
+  endroit**, au lieu de recalculer chacun son condensé. Le semis d'étincelles
+  des très rares garde, lui, le condensé du mot entier : deux formes voisines
+  ne doivent pas avoir des étincelles superposées.
+
+### ♻️ Remaniements
+
+- **`Motif` se scinde en `Matiere` et `Sujet`.** Le grain du bronze et
+  l'initiale du mot étaient tracés dans la même méthode, à quelques lignes
+  d'écart : on ne pouvait toucher à l'un sans relire l'autre. La fenêtre dit
+  pourtant deux choses distinctes — ce que vaut la carte (le palier) et quel
+  mot elle porte — qui n'ont ni la même source ni la même durée de vie.
+  `Motif` n'est plus que leur assemblage : la matière dessous, le sujet au
+  milieu, ce que la matière pose par-dessus.
+
+  Aucun changement visible de ce fait seul : grain, halo, irisation et
+  brillance sont repris trait pour trait. L'intérêt est de pouvoir essayer un
+  autre sujet — un meuble héraldique, un poinçon — sans rouvrir des réglages
+  mesurés de longue date.
+
+### 📐 Mesures qui ont décidé de ce découpage
+
+Le carnet complet fait **3 732 formes**, soit 2 801 images à l'échelle du
+lemme — et non les 38 442 du dictionnaire de fréquences, puisqu'une carte ne
+naît que d'un mot gagné. Sur les 1 690 substantifs glosés, on compte **1 504
+têtes de glose distinctes**, dont 89 % ne servent qu'un seul mot : une
+bibliothèque de silhouettes amortirait **1,12 mot par dessin**. C'est ce
+chiffre qui écarte l'illustration sémantique comme cible de couverture, et qui
+fait du tracé — gratuit, universel, motivé par le mot — le bon socle.
+
 ## [22.5.4] - 2026-09-13
 
 ### 🐛 Correctifs

@@ -37,9 +37,11 @@ import kotlin.math.abs
  * savez-vous ? » et que toute fuite corrompt l'auto-notation. Deux tentations
  * ont donc été écartées, toutes deux à portée de copier-coller :
  *
- * - **La teinte générative.** [Motif] tire sa teinte du condensé du mot. Un
- *   dos teinté serait reconnaissable *par mot* au bout de quelques semaines :
- *   la fuite parfaite, invisible à la relecture du code.
+ * - **La teinte générative.** [Ornement.teinteDe] la tire des premières
+ *   lettres du mot. Un dos teinté serait reconnaissable *par mot* au bout de
+ *   quelques semaines — pire encore depuis que la teinte suit le préfixe, qui
+ *   réunit les formes d'une même famille : la fuite parfaite, invisible à la
+ *   relecture du code.
  * - **Le liseré de rareté.** La pochette l'allume volontairement. Ici,
  *   « cette carte est très rare » se lit « ce mot est difficile », et le
  *   joueur ajuste sa réponse avant d'avoir cherché.
