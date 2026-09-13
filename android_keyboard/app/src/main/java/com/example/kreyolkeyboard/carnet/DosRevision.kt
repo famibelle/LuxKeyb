@@ -10,10 +10,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import com.example.kreyolkeyboard.R
 import kotlin.math.abs
 
@@ -70,9 +66,16 @@ import kotlin.math.abs
  * existe en `Path` comme le reste du carnet, [lion] est le seul endroit à
  * changer.
  */
-class DosRevision(context: Context) : Carton(context), SensorEventListener {
+class DosRevision(context: Context) : Carton(context) {
 
     override val hauteurUnites: Float = Ornement.HAUTEUR
+
+    /**
+     * Le dos suit toujours la pesanteur : il n'a pas de rareté, donc pas de
+     * raison de ne pas y avoir droit, et c'est la surface du carnet qui reste
+     * le plus longtemps sous les yeux — tout le temps que le joueur cherche.
+     */
+    override val suitLaLumiere: Boolean get() = true
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val carton = RectF(0f, 0f, Ornement.LARGEUR, Ornement.HAUTEUR)
@@ -82,10 +85,6 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
 
     /** Le panneau de saisie n'est tracé que si quelque chose s'y écrit. */
     var avecArdoise = false
-
-    /** Le roulis du téléphone, ramené dans [-1, 1]. Voir [onSensorChanged]. */
-    private var roulis = 0f
-    private var capteurs: SensorManager? = null
 
     init {
         setWillNotDraw(false)
@@ -212,51 +211,12 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
         )
         pinceau.alpha = 255
 
-        // Le reflet, enfin : le dos étant le même pour toutes les cartes,
-        // c'est la seule surface du carnet où le balayage se voit à chaque
-        // question et pas seulement sur une rare.
+        // La tranche, puis le reflet : le dos étant le même pour toutes les
+        // cartes, c'est la seule surface du carnet où le balayage se voit à
+        // chaque question et pas seulement sur une rare.
+        Ornement.dessinerTranche(canvas, pinceau, assiette, h)
         Ornement.refletBalaye(canvas, pinceau, roulis, h, 0x4A)
         canvas.restore()
-    }
-
-    // ------------------------------------------------------------- le vivant
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        if (Pochette.animationsReduites(context)) return
-        val manager =
-            context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager ?: return
-        // Même repli que la face : l'accéléromètre brut mêle la pesanteur à
-        // l'accélération linéaire, et marcher suffisait à faire trembler le
-        // reflet. Le capteur fusionné n'existe pas partout.
-        val capteur = manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-            ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            ?: return
-        manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
-        capteurs = manager
-    }
-
-    override fun onDetachedFromWindow() {
-        capteurs?.unregisterListener(this)
-        capteurs = null
-        super.onDetachedFromWindow()
-    }
-
-    override fun onAccuracyChanged(lequel: Sensor?, precision: Int) = Unit
-
-    /**
-     * Le roulis, lissé, et seulement quand il a vraiment changé.
-     *
-     * Le seuil compte plus ici que sur la face : un dos se retrace pour une
-     * poignée d'ordres, mais il reste affiché tant que le joueur cherche sa
-     * réponse, c'est-à-dire bien plus longtemps qu'une carte ouverte.
-     */
-    override fun onSensorChanged(evenement: SensorEvent) {
-        if (evenement.values.isEmpty()) return
-        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
-        if (abs(cible - roulis) < 0.04f) return
-        roulis += (cible - roulis) * 0.20f
-        invalidate()
     }
 
     companion object {

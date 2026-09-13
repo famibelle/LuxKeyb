@@ -1,5 +1,8 @@
 package com.example.kreyolkeyboard.carnet
 
+import android.animation.TimeInterpolator
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -18,12 +21,16 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.LruCache
 import android.util.TypedValue
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.exp
+import kotlin.math.pow
 import kotlin.math.sin
 
 /**
@@ -86,6 +93,32 @@ object Ornement {
      * deux objets qui se remplacent, pas comme un carton.
      */
     const val RAYON = 18f
+
+    /**
+     * L'épaisseur apparente du carton à plein roulis, en unités de carte.
+     * Voir [dessinerTranche] : elle est volontairement plus grande que la
+     * vérité.
+     */
+    const val EPAISSEUR = 5f
+
+    /** Le cœur du carton, que l'impression ne recouvre pas. */
+    private const val TRANCHE = 0xFFFBF6EA.toInt()
+
+    /** La ligne où la face s'arrête sur la tranche. */
+    private const val TRANCHE_FIL = 0xFF6E6559.toInt()
+
+    /** Sur quelle largeur le bord fuyant tombe dans l'ombre. */
+    private const val LARGEUR_OMBRE = 34f
+
+    /**
+     * De combien un roulis de 1 déplace le balayage, en largeurs de carte.
+     *
+     * Nommé plutôt qu'écrit dans [refletBalaye] parce que [Carton] a besoin de
+     * l'**inverser** : pour poser la lumière exactement sous le pouce, il faut
+     * savoir quel roulis l'y amène. Les deux formules doivent donc lire le
+     * même nombre, sinon le reflet suivrait le doigt de loin.
+     */
+    const val ETALEMENT = 0.55f
 
     /**
      * Un palier, un alliage.
@@ -720,6 +753,78 @@ object Ornement {
     }
 
     /**
+     * L'épaisseur du carton : ce qui le sépare d'une découpe de papier.
+     *
+     * ## Pourquoi c'est le manque le plus criant
+     *
+     * Une carte inclinée montre sa tranche. C'est la chose qu'on ne remarque
+     * jamais consciemment et qui décide pourtant, à elle seule, si le cerveau
+     * range ce qu'il voit dans les objets ou dans les images. Le carnet
+     * savait déjà pencher ses cartes et y faire glisser une lumière ; ce
+     * qu'il ne savait pas, c'est leur donner un bord.
+     *
+     * ## Quel bord, et pourquoi celui-là
+     *
+     * Un `rotationY` positif fait **fuir le bord droit** — c'est la
+     * convention d'Android, et c'est celle sur laquelle [Inclinaison] a réglé
+     * son contre-pivot. Or la tranche qu'on voit n'est pas celle du bord qui
+     * s'éloigne mais celle du bord qui **s'approche** : c'est sa face
+     * latérale qui tourne vers l'œil, l'autre tournant le dos. Un roulis
+     * positif se dessine donc avec la tranche à gauche et l'ombre à droite,
+     * ce qui est l'inverse de ce que la main écrit spontanément.
+     *
+     * ## Une épaisseur assumée comme fausse
+     *
+     * Une carte à jouer fait trois dixièmes de millimètre, soit une unité et
+     * demie de carte, et sa projection à sept degrés vaut deux dixièmes
+     * d'unité — invisible. [EPAISSEUR] est donc un mensonge délibéré, et la
+     * racine appliquée au roulis en est un second : sans elle, la tranche ne
+     * se déplierait que dans le dernier quart du débattement, alors que le
+     * téléphone passe sa vie dans le premier.
+     */
+    fun dessinerTranche(c: Canvas, p: Paint, roulis: Float, haut: Float) {
+        val ouverture = abs(roulis)
+        if (ouverture < 0.02f) return
+        val e = EPAISSEUR * ouverture.pow(0.55f)
+        val contour = RectF(0f, 0f, LARGEUR, haut)
+        val fuiteADroite = roulis > 0f
+
+        // Le bord qui s'éloigne tombe dans l'ombre. Un dégradé, et non un
+        // aplat : une arête franche se lirait comme un trait d'encre.
+        c.save()
+        if (fuiteADroite) c.clipRect(LARGEUR - LARGEUR_OMBRE, 0f, LARGEUR, haut)
+        else c.clipRect(0f, 0f, LARGEUR_OMBRE, haut)
+        p.style = Paint.Style.FILL
+        p.shader = LinearGradient(
+            if (fuiteADroite) LARGEUR else 0f, 0f,
+            if (fuiteADroite) LARGEUR - LARGEUR_OMBRE else LARGEUR_OMBRE, 0f,
+            ((0x44 * ouverture).toInt() shl 24), 0x00000000, Shader.TileMode.CLAMP
+        )
+        c.drawRoundRect(contour, RAYON, RAYON, p)
+        p.shader = null
+        c.restore()
+
+        // Le bord qui vient vers le joueur montre son cœur. La découpe est
+        // rectangulaire et parallèle aux pixels, donc sans crénelage : les
+        // coins arrondis viennent du rectangle tracé dedans, lui antialiasé.
+        c.save()
+        if (fuiteADroite) c.clipRect(0f, 0f, e, haut) else c.clipRect(LARGEUR - e, 0f, LARGEUR, haut)
+        p.color = TRANCHE
+        c.drawRoundRect(contour, RAYON, RAYON, p)
+        c.restore()
+
+        // Là où l'impression s'arrête sur la tranche, il reste une ligne. Elle
+        // s'arrête avant les coins : à cette hauteur, la tranche a déjà tourné.
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.9f
+        p.color = TRANCHE_FIL
+        p.alpha = (230f * ouverture).toInt().coerceAtMost(230)
+        val x = if (fuiteADroite) e else LARGEUR - e
+        c.drawLine(x, RAYON * 0.8f, x, haut - RAYON * 0.8f, p)
+        p.alpha = 255
+    }
+
+    /**
      * Le balayage lui-même, sans la question de savoir qui y a droit.
      *
      * Extrait de [dessinerReflet] parce que le dos de révision l'utilise
@@ -729,7 +834,7 @@ object Ornement {
      * lumière selon deux angles différents.
      */
     fun refletBalaye(c: Canvas, p: Paint, roulis: Float, haut: Float, force: Int) {
-        val dx = roulis * LARGEUR * 0.55f
+        val dx = roulis * LARGEUR * ETALEMENT
         p.style = Paint.Style.FILL
         p.shader = LinearGradient(
             dx, haut, LARGEUR + dx, 0f,
@@ -781,8 +886,46 @@ object Ornement {
  * arrondit à [Ornement.RAYON] unités. Deux faces qui ne s'arrondissent pas
  * pareil se retournent comme deux objets qui se remplacent. La mesure, la mise
  * à l'échelle et la pose sont donc ici, en amont des deux.
+ *
+ * ## Pourquoi la lumière et la main sont ici aussi
+ *
+ * Le carton répondait au téléphone et pas à la main. On pouvait passer le
+ * pouce dessus dix secondes sans que rien n'arrive, ce qui suffisait à le
+ * ranger parmi les images : un objet réel réagit d'abord à ce qui le touche,
+ * et seulement ensuite à la façon dont on le penche.
+ *
+ * Trois choses le sortent de là, et elles vivent toutes ici parce qu'elles
+ * valent pour les deux faces :
+ *
+ * - **La tranche** ([Ornement.dessinerTranche]) — l'épaisseur qui se déplie
+ *   sur le bord qui s'approche. C'est le seul des trois qui ne demande pas
+ *   qu'on touche la carte, et probablement celui qui compte le plus.
+ * - **Le doigt prend la lumière** — tant que le pouce est posé, c'est lui et
+ *   non la pesanteur qui dit où tombe le reflet. Il n'a fallu inventer aucun
+ *   tracé : [Ornement.refletBalaye] et [Motif.peindre] lisaient déjà un
+ *   roulis, il leur en est simplement donné un autre.
+ * - **L'appui** — le carton s'enfonce du côté pressé et remonte en dépassant
+ *   légèrement son aplomb. C'est ce dépassement, et non l'enfoncement, qui se
+ *   lit comme de la masse.
+ *
+ * ## Deux roulis, et pourquoi ils ne peuvent pas n'en faire qu'un
+ *
+ * [roulis] dit **où tombe la lumière**, [orientation] dit **comment le carton
+ * est tourné**. Le doigt n'a le droit d'écrire que dans le premier : un pouce
+ * posé au bord droit déplace un reflet, il ne fait pas pivoter la carte de
+ * quarante degrés. Les confondre donnerait une tranche de cinq unités sur un
+ * carton parfaitement à plat, c'est-à-dire l'exact contraire de l'effet
+ * cherché.
+ *
+ * ## Ce que la main n'a pas le droit de faire
+ *
+ * Elle ne descend pas dans la grille, pour la même raison que l'inclinaison :
+ * une vignette de 160 dp n'a la place ni d'une tranche ni d'un reflet, et un
+ * `ACTION_DOWN` capté par chaque carte se battrait avec le défilement.
+ * [sensibleAuDoigt] est donc faux par défaut et s'allume à la main, là où un
+ * carton occupe l'écran pour lui seul.
  */
-abstract class Carton(context: Context) : ViewGroup(context) {
+abstract class Carton(context: Context) : ViewGroup(context), SensorEventListener {
 
     private val emplacements = ArrayList<RectF>()
 
@@ -862,6 +1005,259 @@ abstract class Carton(context: Context) : ViewGroup(context) {
             )
         }
     }
+
+    // ------------------------------------------------- la lumière et la main
+
+    /**
+     * Ce carton-là suit-il la pesanteur ?
+     *
+     * Faux par défaut, c'est-à-dire pour une vignette de grille : autant
+     * d'abonnements au capteur que de cartes visibles dans une colonne qui
+     * défile serait absurde, et à 160 dp ni la tranche ni le reflet n'ont la
+     * place d'exister.
+     */
+    protected open val suitLaLumiere: Boolean get() = false
+
+    /**
+     * Ce carton-là répond-il au doigt ?
+     *
+     * Allumé là où un carton occupe l'écran pour lui seul — la carte ouverte
+     * du carnet, les deux faces de la révision. **Pas** dans la pochette : le
+     * voile y prend l'appui pour passer à la carte suivante, et un carton qui
+     * consommerait le geste supprimerait cette navigation-là. La révélation
+     * d'un tirage est déjà un spectacle ; le pouce n'y a rien à ajouter.
+     *
+     * À allumer **une fois la mise en place finie**, comme
+     * [Inclinaison.suivre] et pour la même raison : tant qu'un
+     * `ViewPropertyAnimator` fait entrer la carte, il est seul à avoir le
+     * droit d'écrire dans `rotationY`.
+     */
+    var sensibleAuDoigt = false
+        set(valeur) {
+            field = valeur
+            if (valeur) Inclinaison.perspective(this)
+        }
+
+    private var capteurs: SensorManager? = null
+
+    /** Le roulis de l'appareil, dans [-1, 1]. */
+    private var pesanteur = 0f
+
+    /** Le roulis que dicte le doigt, dans [-1, 1]. */
+    private var doigt = 0f
+
+    /** La part du doigt dans la lumière : 0 la pesanteur, 1 le pouce. */
+    private var main = 0f
+
+    /** L'enfoncement, dans [0, 1] — et un peu en dessous au rebond. */
+    private var profondeur = 0f
+    private var appuiX = 0f
+    private var appuiY = 0f
+
+    private var fonduMain: ValueAnimator? = null
+    private var fonduAppui: ValueAnimator? = null
+
+    /**
+     * Où tombe la lumière, dans [-1, 1].
+     *
+     * C'est ce que lisent le reflet et l'irisation du motif. Le doigt
+     * l'emporte tant qu'il est posé, puis la pesanteur la reprend en une
+     * seconde environ : une lumière qui sauterait au relâchement dirait que
+     * le pouce était un mode, pas une main.
+     */
+    protected val roulis: Float get() = pesanteur + (doigt - pesanteur) * main
+
+    /**
+     * Comment le carton est réellement tourné, dans les mêmes unités.
+     *
+     * C'est ce que lit la tranche, et le doigt n'y écrit pas — sauf par
+     * l'appui, qui fait pivoter le carton pour de bon et mérite donc que son
+     * bord s'épaississe. [Inclinaison.AMPLITUDE] est le dénominateur commun
+     * qui ramène des degrés à un roulis.
+     */
+    protected val assiette: Float
+        get() = pesanteur + profondeur * appuiY / Inclinaison.AMPLITUDE
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!suitLaLumiere || Pochette.animationsReduites(context)) return
+        val manager =
+            context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager ?: return
+        // L'accéléromètre brut mélange la pesanteur et l'accélération
+        // linéaire : marcher suffisait à faire trembler le reflet. Le capteur
+        // fusionné n'en garde que la pesanteur, et n'existe pas partout.
+        val capteur = manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+            ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            ?: return
+        manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
+        capteurs = manager
+    }
+
+    override fun onDetachedFromWindow() {
+        capteurs?.unregisterListener(this)
+        capteurs = null
+        // Un carton qui reviendrait à l'écran encore enfoncé se lirait comme
+        // un bogue : l'appui appartient au geste, pas à la vue. Le test évite
+        // au passage de fabriquer un état pour chacune des vignettes d'une
+        // grille, qui n'ont jamais été touchées et ne le seront jamais.
+        if (sensibleAuDoigt) reposer()
+        super.onDetachedFromWindow()
+    }
+
+    /**
+     * Rend le carton à son aplomb, tout de suite et sans transition.
+     *
+     * À appeler avant de lui faire jouer une animation qui écrit dans
+     * `rotationY` — un retournement, typiquement. Le `ViewPropertyAnimator`
+     * ne connaît pas l'arbitrage d'[Inclinaison] et écrirait dans la même
+     * propriété que le rebond de l'appui : c'est exactement le tremblement à
+     * deux écrivains que cet arbitrage existe pour empêcher.
+     */
+    fun reposer() {
+        fonduMain?.cancel()
+        fonduAppui?.cancel()
+        fonduMain = null
+        fonduAppui = null
+        main = 0f
+        profondeur = 0f
+        appuiX = 0f
+        appuiY = 0f
+        scaleX = 1f
+        scaleY = 1f
+        Inclinaison.appui(this, 0f, 0f)
+        invalidate()
+    }
+
+    override fun onAccuracyChanged(capteur: Sensor?, precision: Int) = Unit
+
+    /**
+     * Le roulis, lissé, et seulement quand il a vraiment changé.
+     *
+     * Le filtre passe-bas rend la lumière lourde, ce qui est exactement
+     * l'effet voulu : une carte, ça a du poids. Le seuil évite de rejouer
+     * trois cents ordres de tracé pour un dixième de degré.
+     */
+    override fun onSensorChanged(evenement: SensorEvent) {
+        if (evenement.values.isEmpty()) return
+        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
+        if (abs(cible - pesanteur) < SEUIL) return
+        pesanteur += (cible - pesanteur) * LISSAGE
+        invalidate()
+    }
+
+    /**
+     * Le geste, en trois temps : saisir, glisser, lâcher.
+     *
+     * `super` voit tout, y compris l'appui qu'on réclame ensuite, pour que la
+     * machinerie de clic d'Android continue de fonctionner : la carte ouverte
+     * du carnet est `clickable` uniquement pour empêcher le voile de se
+     * fermer sous elle, et il n'y a aucune raison de lui retirer ça.
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val herite = super.onTouchEvent(event)
+        if (!sensibleAuDoigt || Pochette.animationsReduites(context)) return herite
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                saisir(event.x, event.y)
+                return true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                glisser(event.x)
+                return true
+            }
+            // Le `CANCEL` compte autant que le `UP` : dans la fiche du carnet,
+            // c'est le `ScrollView` qui reprend le geste dès qu'il devient
+            // vertical, et le carton doit alors se relever comme s'il avait
+            // été lâché.
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> lacher()
+        }
+        return herite
+    }
+
+    private fun saisir(x: Float, y: Float) {
+        if (width <= 0 || height <= 0) return
+        fonduMain?.cancel()
+        fonduMain = null
+        main = 1f
+        doigt = lumiereEn(x)
+        // Le point pressé s'enfonce : à droite, c'est le bord droit qui part
+        // en arrière (`rotationY` positif) ; en bas, c'est le bord bas, donc
+        // le haut qui revient (`rotationX` négatif).
+        val demiL = width / 2f
+        val demiH = height / 2f
+        appuiY = APPUI * ((x - demiL) / demiL).coerceIn(-1f, 1f)
+        appuiX = -APPUI * ((y - demiH) / demiH).coerceIn(-1f, 1f)
+        animerAppui(1f, ENFONCEMENT, DecelerateInterpolator())
+    }
+
+    private fun glisser(x: Float) {
+        doigt = lumiereEn(x)
+        invalidate()
+    }
+
+    private fun lacher() {
+        // Le dépassement est tout l'intérêt : le carton remonte, passe son
+        // aplomb et revient. C'est la seule chose de la liste qui se lise
+        // comme de la masse plutôt que comme une animation.
+        animerAppui(0f, REBOND, OvershootInterpolator(2.2f))
+        fonduMain?.cancel()
+        fonduMain = ValueAnimator.ofFloat(main, 0f).apply {
+            duration = RETOUR
+            addUpdateListener {
+                main = it.animatedValue as Float
+                this@Carton.invalidate()
+            }
+            start()
+        }
+    }
+
+    /**
+     * Quel roulis pose la tache de lumière exactement sous [x].
+     *
+     * L'inverse de ce que fait [Ornement.refletBalaye], à mi-hauteur — le
+     * balayage étant diagonal, la tache dérive un peu vers les bords haut et
+     * bas, et c'est très bien ainsi : une lumière qui collerait au doigt au
+     * pixel près serait un curseur, pas un reflet.
+     */
+    private fun lumiereEn(x: Float): Float =
+        ((x / width) - 0.5f).div(Ornement.ETALEMENT).coerceIn(-1f, 1f)
+
+    private fun animerAppui(vers: Float, duree: Long, courbe: TimeInterpolator) {
+        fonduAppui?.cancel()
+        fonduAppui = ValueAnimator.ofFloat(profondeur, vers).apply {
+            duration = duree
+            interpolator = courbe
+            addUpdateListener {
+                profondeur = it.animatedValue as Float
+                Inclinaison.appui(this@Carton, appuiX * profondeur, appuiY * profondeur)
+                val echelle = 1f - CREUX * profondeur
+                this@Carton.scaleX = echelle
+                this@Carton.scaleY = echelle
+                // La tranche dépend de l'assiette, qui vient de bouger.
+                this@Carton.invalidate()
+            }
+            start()
+        }
+    }
+
+    private companion object {
+        /** Le lissage du roulis du capteur, et le seuil sous lequel on l'ignore. */
+        const val LISSAGE = 0.20f
+        const val SEUIL = 0.04f
+
+        /** L'enfoncement maximum, en degrés, au bord du carton. */
+        const val APPUI = 2.6f
+
+        /** Ce que le carton perd en taille quand on appuie dessus. */
+        const val CREUX = 0.015f
+
+        const val ENFONCEMENT = 90L
+        const val REBOND = 300L
+
+        /** Le temps que met la pesanteur à reprendre la lumière au doigt. */
+        const val RETOUR = 700L
+    }
 }
 
 /**
@@ -876,10 +1272,22 @@ class CarteOrnee(
     private val mot: String,
     private val rarete: Rarete,
     private val vignette: Boolean
-) : Carton(context), SensorEventListener {
+) : Carton(context) {
 
     override val hauteurUnites: Float =
         if (vignette) Ornement.HAUTEUR_VIGNETTE else Ornement.HAUTEUR
+
+    /**
+     * Toute carte ouverte suit la pesanteur, et plus seulement les deux
+     * paliers hauts.
+     *
+     * Le reflet, lui, reste un privilège de rareté ; la tranche n'en est pas
+     * un. Une commune qui resterait plate pendant qu'une rare prend de
+     * l'épaisseur ne se lirait pas comme moins précieuse, mais comme moins
+     * réelle — et c'est précisément la distinction qu'[Inclinaison] refuse de
+     * faire depuis qu'elle existe.
+     */
+    override val suitLaLumiere: Boolean get() = !vignette
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val teinte: Float
@@ -899,10 +1307,6 @@ class CarteOrnee(
     private val degradeFace: android.graphics.LinearGradient
     private val degradeGemme: android.graphics.RadialGradient
     private val motif: Motif
-
-    /** Le roulis du téléphone, ramené dans [-1, 1]. */
-    private var roulis = 0f
-    private var capteurs: SensorManager? = null
 
     init {
         val condense = mot.fold(7919) { acc, c -> acc * 31 + c.code }
@@ -955,54 +1359,13 @@ class CarteOrnee(
             Ornement.dessinerJoyauRarete(canvas, pinceau, rarete)
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
+        // La tranche par-dessus le métal : c'est le bord du carton, et le
+        // cadre s'arrête dessus comme l'impression s'arrête sur la coupe.
+        Ornement.dessinerTranche(canvas, pinceau, assiette, hauteurUnites)
         Ornement.dessinerReflet(canvas, pinceau, rarete, roulis, vignette)
         canvas.restore()
     }
 
-    // ------------------------------------------------------------- le vivant
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        // Seule la carte ouverte suit l'inclinaison : autant de capteurs que
-        // de vignettes dans une grille qui défile serait absurde, et l'effet
-        // ne se voit pas à cette taille.
-        if (vignette || !rarete.distinguee) return
-        if (Pochette.animationsReduites(context)) return
-        val manager =
-            context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager ?: return
-        // L'accéléromètre brut mélange la pesanteur et l'accélération
-        // linéaire : marcher suffisait à faire trembler le reflet. Le capteur
-        // fusionné n'en garde que la pesanteur, ce qui est tout ce dont une
-        // orientation a besoin. Il n'existe pas partout, d'où le repli.
-        val capteur = manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-            ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            ?: return
-        manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
-        capteurs = manager
-    }
-
-    override fun onDetachedFromWindow() {
-        capteurs?.unregisterListener(this)
-        capteurs = null
-        super.onDetachedFromWindow()
-    }
-
-    override fun onAccuracyChanged(capteur: Sensor?, precision: Int) = Unit
-
-    /**
-     * Le roulis, lissé, et seulement quand il a vraiment changé.
-     *
-     * Le filtre passe-bas rend le reflet lourd, ce qui est exactement l'effet
-     * voulu : une carte, ça a du poids. Le seuil évite de redessiner trois
-     * cents ordres de tracé pour un dixième de degré.
-     */
-    override fun onSensorChanged(evenement: SensorEvent) {
-        if (evenement.values.isEmpty()) return
-        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
-        if (abs(cible - roulis) < 0.04f) return
-        roulis += (cible - roulis) * 0.20f
-        invalidate()
-    }
 }
 
 /**

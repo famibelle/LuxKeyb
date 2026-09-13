@@ -239,6 +239,11 @@ class VueWidderhuelen(
         }
 
         poserCarton(carton)
+        // Le dos entre sans animation : rien n'écrit dans sa rotation, il
+        // peut prendre le doigt tout de suite. Les deux faces y répondent —
+        // une question qui suivrait la main et une réponse qui n'y
+        // répondrait plus seraient deux objets, pas un carton retourné.
+        carton.sensibleAuDoigt = true
         dos = carton
 
         bas.removeAllViews()
@@ -347,6 +352,7 @@ class VueWidderhuelen(
 
             val recto = CarteCarnet.complete(ctx, q.contenu)
             poserCarton(recto)
+            val armer = { (recto as? Carton)?.sensibleAuDoigt = true }
             if (recto is Carton && !Pochette.animationsReduites(ctx)) {
                 recto.rotationY = -90f
                 // Le second temps n'est lancé qu'une fois la scène remesurée :
@@ -355,9 +361,10 @@ class VueWidderhuelen(
                 recto.post {
                     recto.animate().rotationY(0f).setDuration(220)
                         .setInterpolator(DecelerateInterpolator())
+                        .withEndAction { armer() }
                         .start()
                 }
-            }
+            } else armer()
         }
 
         // Lâché tout de suite : un second appui sur « Valider » pendant le
@@ -368,6 +375,10 @@ class VueWidderhuelen(
             poser()
             return
         }
+        // Le doigt vient peut-être de quitter le dos : son rebond dure trois
+        // cents millisecondes et écrit lui aussi dans la rotation. Il rend la
+        // main avant que le retournement ne commence.
+        sortant.reposer()
         // Premier temps : le dos se met de profil. C'est là, et pas ailleurs,
         // que la carte change de taille — de profil, elle est invisible.
         sortant.animate().rotationY(90f).setDuration(170)
