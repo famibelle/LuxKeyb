@@ -11,14 +11,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [22.5.2] - 2026-09-13
 
+### ✨ Enrichissement
+
+- **Verso enrichi : dégradés des angles.** Les deux angles du logo (rouge/bleu)
+  passent d'aplats pleins à dégradés radials — clair au centre, plein aux bords.
+  Crée une sensation de **relief optique** sans changer la neutralité (aucune fuite
+  de rareté). Le verso passe de « aplat épuré » à « volume épuré ». Relief tactile
+  inchangé.
+
 ### 🐛 Correctifs
 
-- **Débordements des ornements.** La ligne de série se coupait aux coins arrondis
+- **Débordements des ornements (recto).** La ligne de série se coupait aux coins arrondis
   bas de la carte, les écus débordaient du plateau intérieur, la gemme de coût
   était asymétriquement serti. Repositionnement des emplacements pour des marges
   saines (SERIE +8 unités, ECU -12 unités, GEMME alignée).
-- **Harmonisation des coins arrondis.** Les fenêtres, panneaux et écus avaient
-  des rayons disparates (8/7/custom). Cascade hiérarchique (18 > 11 > 10 > 9 > 4)
+- **Harmonisation des coins arrondis.** Les fenêtres, panneaux (recto & verso) et écus
+  avaient des rayons disparates (8/7/custom). Cascade hiérarchique (18 > 11 > 10 > 9 > 4)
   pour une sensation d'élégance unifiée.
 - **Tranche.** Réduction de la largeur d'ombre (34→28 unités) pour éviter le
   débordement sur les coins lors de l'inclinaison forte de l'appareil.
