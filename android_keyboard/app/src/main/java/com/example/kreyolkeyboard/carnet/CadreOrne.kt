@@ -1177,10 +1177,11 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
 
     private fun saisir(x: Float, y: Float) {
         if (width <= 0 || height <= 0) return
-        fonduMain?.cancel()
-        fonduMain = null
-        main = 1f
         doigt = lumiereEn(x)
+        // La lumière arrive sous le pouce dans le temps que met le carton à
+        // s'enfoncer, et n'y saute pas : le doigt n'est pas une lampe qu'on
+        // allume, c'est une surface qui bascule vers lui.
+        animerMain(1f, ENFONCEMENT)
         // Le point pressé s'enfonce : à droite, c'est le bord droit qui part
         // en arrière (`rotationY` positif) ; en bas, c'est le bord bas, donc
         // le haut qui revient (`rotationX` négatif).
@@ -1201,9 +1202,13 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         // aplomb et revient. C'est la seule chose de la liste qui se lise
         // comme de la masse plutôt que comme une animation.
         animerAppui(0f, REBOND, OvershootInterpolator(2.2f))
+        animerMain(0f, RETOUR)
+    }
+
+    private fun animerMain(vers: Float, duree: Long) {
         fonduMain?.cancel()
-        fonduMain = ValueAnimator.ofFloat(main, 0f).apply {
-            duration = RETOUR
+        fonduMain = ValueAnimator.ofFloat(main, vers).apply {
+            duration = duree
             addUpdateListener {
                 main = it.animatedValue as Float
                 this@Carton.invalidate()
