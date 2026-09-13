@@ -127,6 +127,15 @@ un rangement, pas un portrait.
   meuble non dessiné, un meuble attribué à un mot qu'aucun jeu ne donne, et
   l'effondrement de la couverture. Aucune ne fait planter — `Armorial` avale
   exprès toute erreur de lecture pour qu'un actif abîmé n'éteigne pas le carnet.
+- `Dictionnaires/apercu_meubles.py` transpose les 74 `Path` en SVG et en tire
+  une planche de contrôle dans un navigateur, sans émulateur. Elle n'est pas
+  un ornement : au premier tirage elle a renvoyé **dix-huit dessins sur
+  soixante-quatorze**. Six têtes d'animaux avaient les oreilles, cornes ou bois
+  posés *par-dessus* le crâne et s'y creusaient — `EVEN_ODD` perce là où deux
+  pleins se chevauchent — une main avait ses doigts au travers de la paume, un
+  banc ses pieds au travers de l'assise ; et une dizaine d'objets étaient
+  simplement illisibles. Rien de tout cela ne se voit en relisant des
+  coordonnées, et rien ne se serait vu avant l'installation.
 
 ## [22.6.1] - 2026-09-13
 

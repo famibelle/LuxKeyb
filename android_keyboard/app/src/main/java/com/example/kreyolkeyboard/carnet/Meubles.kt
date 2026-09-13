@@ -125,9 +125,11 @@ internal object Meubles {
         },
         "banc" to { p ->
             p.pol(-46f, -34f, 46f, -34f, 46f, -24f, -46f, -24f)   // le dossier
+            p.pol(-38f, -24f, -30f, -24f, -30f, 0f, -38f, 0f)     // ses montants
+            p.pol(30f, -24f, 38f, -24f, 38f, 0f, 30f, 0f)
             p.pol(-46f, 0f, 46f, 0f, 46f, 10f, -46f, 10f)         // l'assise
-            p.pol(-38f, -34f, -30f, -34f, -30f, 42f, -38f, 42f)
-            p.pol(30f, -34f, 38f, -34f, 38f, 42f, 30f, 42f)
+            p.pol(-38f, 10f, -30f, 10f, -30f, 42f, -38f, 42f)     // les pieds
+            p.pol(30f, 10f, 38f, 10f, 38f, 42f, 30f, 42f)
         },
         "lit" to { p ->
             p.pol(-48f, -6f, -48f, -34f, -36f, -34f, -36f, -6f)   // la tête de lit
@@ -154,9 +156,11 @@ internal object Meubles {
             p.pol(-22f, 38f, 22f, 38f, 22f, 46f, -22f, 46f)
         },
         "robinet" to { p ->
-            p.pol(-10f, -34f, 10f, -34f, 10f, 6f, 26f, 6f, 26f, 20f, -10f, 20f)
-            p.pol(-30f, -42f, 30f, -42f, 30f, -34f, -30f, -34f)   // le volant
-            p.pol(-4f, 26f, 4f, 26f, 4f, 44f, -4f, 44f)           // le filet d'eau
+            p.pol(-24f, -44f, 22f, -44f, 22f, -34f, -24f, -34f)        // le volant
+            p.pol(-4f, -34f, 4f, -34f, 4f, -26f, -4f, -26f)            // sa tige
+            p.pol(-18f, -26f, 8f, -26f, 8f, 0f, 30f, 0f,
+                  30f, 26f, 16f, 26f, 16f, 14f, -18f, 14f)             // le corps et le bec
+            p.pol(19f, 32f, 27f, 32f, 27f, 46f, 19f, 46f)              // le filet d'eau
         },
         "quille" to { p ->
             p.moveTo(0f, -46f)
@@ -207,9 +211,8 @@ internal object Meubles {
             p.pol(-34f, 34f, 34f, 34f, 34f, 46f, -34f, 46f)
         },
         "poteau" to { p ->
-            p.pol(-6f, -20f, 6f, -20f, 6f, 46f, -6f, 46f)
-            p.pol(-34f, -46f, 34f, -46f, 34f, -24f, -34f, -24f)
-            p.pol(-26f, -40f, 26f, -40f, 26f, -30f, -26f, -30f)
+            p.pol(-6f, -24f, 6f, -24f, 6f, 46f, -6f, 46f)              // le mât
+            p.pol(-34f, -46f, 26f, -46f, 40f, -35f, 26f, -24f, -34f, -24f)  // la plaque
         },
         "tunnel" to { p ->
             p.moveTo(-46f, 44f)
@@ -224,20 +227,22 @@ internal object Meubles {
             p.close()
         },
         "grue" to { p ->
-            p.pol(-8f, -20f, 4f, -20f, 4f, 44f, -8f, 44f)             // le mât
-            p.pol(-46f, -32f, 44f, -32f, 44f, -22f, -46f, -22f)       // la flèche
-            p.pol(-30f, -22f, -22f, -22f, -22f, -6f, -30f, -6f)       // le contrepoids
-            p.pol(30f, -22f, 34f, -22f, 34f, 6f, 30f, 6f)             // le câble
-            p.pol(24f, 6f, 40f, 6f, 40f, 18f, 24f, 18f)               // le crochet
-            p.pol(-26f, 44f, 22f, 44f, 22f, 50f, -26f, 50f)
+            p.pol(-44f, -34f, 44f, -34f, 44f, -24f, -44f, -24f)        // la flèche
+            p.pol(-40f, -24f, -28f, -24f, -28f, -8f, -40f, -8f)        // le contrepoids
+            p.pol(-6f, -24f, 6f, -24f, 6f, 40f, -6f, 40f)              // le mât
+            p.pol(-24f, 40f, 24f, 40f, 30f, 48f, -30f, 48f)            // l'embase
+            p.pol(26f, -24f, 30f, -24f, 30f, 4f, 26f, 4f)              // le câble
+            p.pol(20f, 4f, 36f, 4f, 36f, 16f, 20f, 16f)                // le crochet
         },
         "moulin" to { p ->
-            p.pol(-24f, 46f, -14f, -14f, 14f, -14f, 24f, 46f)
-            p.pol(-4f, -46f, 4f, -46f, 4f, -18f, -4f, -18f)
-            p.pol(-46f, -36f, -8f, -32f, -8f, -24f, -46f, -28f)       // les ailes
-            p.pol(46f, -20f, 8f, -24f, 8f, -32f, 46f, -28f)
-            p.pol(-20f, -50f, -12f, -50f, -8f, -20f, -16f, -20f)
-            p.pol(20f, -50f, 12f, -50f, 8f, -20f, 16f, -20f)
+            // Les quatre ailes partent d'un moyeu et ne se touchent jamais :
+            // deux ailes qui se croiseraient se perceraient l'une l'autre.
+            p.pol(-22f, 46f, -13f, -6f, 13f, -6f, 22f, 46f)           // le corps
+            p.disque(0f, -22f, 8f)                                    // le moyeu
+            p.pol(-11f, -25f, -46f, -30f, -46f, -20f, -11f, -19f)     // les ailes
+            p.pol(11f, -25f, 46f, -30f, 46f, -20f, 11f, -19f)
+            p.pol(-3f, -33f, -8f, -50f, 2f, -50f, 3f, -33f)
+            p.pol(-3f, -11f, -8f, 6f, 2f, 6f, 3f, -11f)
         },
         "tente" to { p ->
             p.pol(-48f, 40f, 0f, -44f, 48f, 40f)
@@ -276,15 +281,14 @@ internal object Meubles {
             p.pol(-40f, 16f, 40f, 16f, 40f, 22f, -40f, 22f)
         },
         "pizza" to { p ->
-            p.moveTo(0f, -44f)
-            p.cubicTo(30f, -44f, 46f, -18f, 40f, 12f)
-            p.lineTo(-40f, 12f)
-            p.cubicTo(-46f, -18f, -30f, -44f, 0f, -44f)
+            // Une part, pas une galette : c'est la pointe qui la sépare d'un pain.
+            p.moveTo(0f, -46f)
+            p.lineTo(34f, 32f)
+            p.cubicTo(22f, 42f, -22f, 42f, -34f, 32f)
             p.close()
-            p.pol(-44f, 12f, 44f, 12f, 44f, 30f, -44f, 30f)           // la croûte
-            p.disque(-16f, -14f, 7f)
-            p.disque(12f, -20f, 6f)
-            p.disque(16f, -2f, 7f)
+            p.disque(0f, -10f, 7f)
+            p.disque(-15f, 14f, 7f)
+            p.disque(15f, 14f, 7f)
         },
         "fruits" to { p ->
             p.moveTo(-14f, -12f)                                       // la poire
@@ -296,20 +300,20 @@ internal object Meubles {
             p.lineTo(-14f, -38f)
             p.cubicTo(-18f, -32f, -20f, -24f, -20f, -14f)
             p.close()
-            p.moveTo(20f, -8f)                                         // la pomme
-            p.cubicTo(34f, -8f, 44f, 4f, 44f, 20f)
-            p.cubicTo(44f, 34f, 34f, 44f, 22f, 44f)
-            p.cubicTo(10f, 44f, 2f, 34f, 2f, 20f)
-            p.cubicTo(2f, 4f, 8f, -8f, 20f, -8f)
+            p.moveTo(24f, -6f)                                         // la pomme
+            p.cubicTo(37f, -6f, 46f, 6f, 46f, 21f)
+            p.cubicTo(46f, 34f, 37f, 44f, 26f, 44f)
+            p.cubicTo(15f, 44f, 8f, 34f, 8f, 21f)
+            p.cubicTo(8f, 6f, 13f, -6f, 24f, -6f)
             p.close()
-            p.pol(20f, -10f, 26f, -10f, 26f, -26f, 20f, -26f)
+            p.pol(24f, -8f, 30f, -8f, 30f, -24f, 24f, -24f)
         },
         "lait" to { p ->
-            p.pol(-26f, -18f, 26f, -18f, 32f, 44f, -32f, 44f)          // le pot
-            p.pol(-16f, -34f, 16f, -34f, 18f, -18f, -18f, -18f)        // le col
-            p.pol(-20f, -42f, 20f, -42f, 20f, -34f, -20f, -34f)        // le couvercle
-            p.pol(26f, -8f, 42f, -2f, 42f, 18f, 26f, 24f)              // l'anse
-            p.pol(28f, 2f, 36f, 6f, 36f, 12f, 28f, 16f)
+            p.arrondi(-28f, -18f, 26f, 44f, 6f)                        // le pot
+            p.pol(-18f, -34f, 16f, -34f, 18f, -18f, -20f, -18f)        // le col
+            p.pol(-22f, -42f, 20f, -42f, 20f, -34f, -22f, -34f)        // le couvercle
+            p.pol(26f, -8f, 46f, -2f, 46f, 20f, 26f, 26f)              // l'anse
+            p.pol(29f, 2f, 39f, 5f, 39f, 13f, 29f, 16f)                // son ajour
         },
         "bouteille" to { p ->
             p.pol(-8f, -46f, 8f, -46f, 8f, -42f, -8f, -42f)
@@ -348,17 +352,20 @@ internal object Meubles {
             p.lineTo(24f, 10f)
             p.cubicTo(34f, 10f, 34f, 4f, 22f, 4f)
             p.close()
-            p.pol(-42f, 32f, 34f, 32f, 34f, 42f, -42f, 42f)            // la soucoupe
+            p.pol(-42f, 28f, 34f, 28f, 34f, 40f, -42f, 40f)            // la soucoupe
             p.pol(-16f, -44f, -10f, -44f, -10f, -22f, -16f, -22f)      // la vapeur
             p.pol(2f, -44f, 8f, -44f, 8f, -22f, 2f, -22f)
         },
         "couteau" to { p ->
-            p.moveTo(-44f, -18f)
-            p.cubicTo(-20f, -30f, 4f, -30f, 14f, -22f)
-            p.lineTo(14f, -6f)
-            p.lineTo(-44f, -6f)
+            // Lame, mitre et manche séparés par deux jours : collés, les trois
+            // se lisent comme une seule flèche.
+            p.moveTo(-46f, 2f)
+            p.lineTo(8f, -20f)
+            p.lineTo(8f, 6f)
+            p.cubicTo(-10f, 12f, -30f, 10f, -46f, 2f)
             p.close()
-            p.pol(14f, -22f, 44f, -20f, 44f, -8f, 14f, -6f)            // le manche
+            p.pol(11f, -20f, 17f, -20f, 17f, 8f, 11f, 8f)              // la mitre
+            p.arrondi(20f, -18f, 46f, 10f, 6f)                         // le manche
         },
         "eau" to { p ->
             for (i in 0..2) {
@@ -414,120 +421,138 @@ internal object Meubles {
             p.close()
         },
         "chien" to { p ->
-            p.moveTo(-26f, -30f)                                       // l'oreille tombante
-            p.cubicTo(-44f, -28f, -46f, 6f, -32f, 14f)
-            p.lineTo(-24f, -4f)
+            // Tête et oreilles d'un seul contour. Une oreille posée par-dessus
+            // le crâne s'y creuserait au lieu de s'y rattacher : c'est la règle
+            // pair-impair, et elle vaut pour les cinq têtes qui suivent.
+            p.moveTo(0f, -38f)
+            p.cubicTo(16f, -38f, 26f, -28f, 28f, -16f)
+            p.cubicTo(40f, -20f, 48f, -4f, 42f, 14f)
+            p.cubicTo(38f, 26f, 30f, 30f, 25f, 26f)
+            p.cubicTo(22f, 38f, 12f, 46f, 0f, 46f)
+            p.cubicTo(-12f, 46f, -22f, 38f, -25f, 26f)
+            p.cubicTo(-30f, 30f, -38f, 26f, -42f, 14f)
+            p.cubicTo(-48f, -4f, -40f, -20f, -28f, -16f)
+            p.cubicTo(-26f, -28f, -16f, -38f, 0f, -38f)
             p.close()
-            p.moveTo(26f, -30f)
-            p.cubicTo(44f, -28f, 46f, 6f, 32f, 14f)
-            p.lineTo(24f, -4f)
-            p.close()
-            p.moveTo(0f, -34f)
-            p.cubicTo(22f, -34f, 32f, -18f, 32f, 0f)
-            p.cubicTo(32f, 14f, 26f, 24f, 16f, 30f)
-            p.lineTo(16f, 42f)
-            p.lineTo(-16f, 42f)
-            p.lineTo(-16f, 30f)
-            p.cubicTo(-26f, 24f, -32f, 14f, -32f, 0f)
-            p.cubicTo(-32f, -18f, -22f, -34f, 0f, -34f)
-            p.close()
-            p.disque(0f, 34f, 5f)                                      // la truffe
+            p.disque(-12f, -4f, 4f)                                    // les yeux
+            p.disque(12f, -4f, 4f)
+            p.ovale(-12f, 18f, 12f, 34f)                               // le museau
+            p.ovale(-6f, 20f, 6f, 28f)                                 // la truffe
         },
         "lion" to { p ->
-            // La crinière : douze pointes autour du mufle, ce qui le distingue
-            // du chien et du chat à la vignette, où la fourrure ne se lit pas.
-            for (i in 0..11) {
-                val a = i * Math.PI.toFloat() / 6f
-                val c = Math.cos(a.toDouble()).toFloat()
-                val s = Math.sin(a.toDouble()).toFloat()
-                p.pol(c * 26f - s * 10f, s * 26f + c * 10f,
-                      c * 48f, s * 48f,
-                      c * 26f + s * 10f, s * 26f - c * 10f)
+            // La crinière EST la silhouette : dix pointes d'un seul contour. Un
+            // mufle posé par-dessus se creuserait dedans, alors il est en
+            // réserve — et le nez, posé dans le mufle, redevient plein.
+            for (i in 0..19) {
+                val a = i * Math.PI.toFloat() / 10f - Math.PI.toFloat() / 2f
+                val r = if (i % 2 == 0) 49f else 31f
+                val x = Math.cos(a.toDouble()).toFloat() * r
+                val y = Math.sin(a.toDouble()).toFloat() * r
+                if (i == 0) p.moveTo(x, y) else p.lineTo(x, y)
             }
-            p.disque(0f, 0f, 28f)
-            p.disque(-11f, -6f, 4f)
-            p.disque(11f, -6f, 4f)
-            p.pol(0f, 4f, 8f, 12f, -8f, 12f)
+            p.close()
+            p.disque(-13f, -9f, 4.5f)
+            p.disque(13f, -9f, 4.5f)
+            p.ovale(-16f, 4f, 16f, 24f)                                // le mufle
+            p.pol(0f, 17f, 8f, 7f, -8f, 7f)                            // le nez
         },
         "cheval" to { p ->
-            p.moveTo(-30f, 46f)                                        // l'encolure
-            p.cubicTo(-30f, 10f, -20f, -8f, -4f, -18f)
-            p.lineTo(-4f, -34f)
-            p.lineTo(6f, -22f)
-            p.cubicTo(24f, -22f, 40f, -12f, 44f, 2f)
-            p.lineTo(24f, 10f)
-            p.cubicTo(20f, 2f, 10f, -2f, 2f, 2f)
-            p.cubicTo(-6f, 12f, -8f, 26f, -8f, 46f)
+            p.moveTo(-6f, -46f)                        // le toupet
+            p.lineTo(4f, -30f)
+            p.cubicTo(22f, -28f, 38f, -16f, 44f, 0f)
+            p.lineTo(26f, 8f)
+            p.cubicTo(22f, 0f, 12f, -4f, 4f, 0f)
+            p.cubicTo(-4f, 10f, -8f, 26f, -8f, 46f)
+            p.lineTo(-32f, 46f)
+            p.cubicTo(-32f, 16f, -26f, -4f, -14f, -16f)
+            p.lineTo(-26f, -22f)                       // la crinière, en dents
+            p.lineTo(-14f, -26f)
+            p.lineTo(-24f, -36f)
+            p.lineTo(-10f, -32f)
             p.close()
-            p.pol(-22f, -14f, -14f, -44f, -6f, -20f)                   // la crinière
-            p.disque(14f, -8f, 3.5f)
+            p.disque(16f, -8f, 3.5f)
         },
         "boeuf" to { p ->
-            p.moveTo(-32f, -22f)                                       // les cornes
-            p.cubicTo(-48f, -34f, -46f, -8f, -34f, -2f)
-            p.lineTo(-30f, -12f)
+            p.moveTo(0f, -14f)
+            p.cubicTo(16f, -14f, 27f, -8f, 31f, 2f)
+            p.lineTo(42f, -34f)                                        // la corne droite
+            p.lineTo(50f, -28f)
+            p.lineTo(36f, 10f)
+            p.cubicTo(35f, 27f, 20f, 42f, 0f, 42f)
+            p.cubicTo(-20f, 42f, -35f, 27f, -36f, 10f)
+            p.lineTo(-50f, -28f)                                       // la corne gauche
+            p.lineTo(-42f, -34f)
+            p.lineTo(-31f, 2f)
+            p.cubicTo(-27f, -8f, -16f, -14f, 0f, -14f)
             p.close()
-            p.moveTo(32f, -22f)
-            p.cubicTo(48f, -34f, 46f, -8f, 34f, -2f)
-            p.lineTo(30f, -12f)
-            p.close()
-            p.moveTo(0f, -28f)
-            p.cubicTo(20f, -28f, 30f, -16f, 30f, 2f)
-            p.cubicTo(30f, 24f, 18f, 40f, 0f, 40f)
-            p.cubicTo(-18f, 40f, -30f, 24f, -30f, 2f)
-            p.cubicTo(-30f, -16f, -20f, -28f, 0f, -28f)
-            p.close()
-            p.disque(-9f, 22f, 4f)
-            p.disque(9f, 22f, 4f)
+            p.disque(-13f, 8f, 4f)
+            p.disque(13f, 8f, 4f)
+            p.ovale(-15f, 22f, 15f, 36f)                               // le mufle
         },
         "chevreuil" to { p ->
-            p.pol(-14f, -18f, -18f, -40f, -30f, -34f, -26f, -46f, -14f, -46f, -10f, -24f)
-            p.pol(14f, -18f, 18f, -40f, 30f, -34f, 26f, -46f, 14f, -46f, 10f, -24f)
-            p.moveTo(0f, -22f)
-            p.cubicTo(16f, -22f, 24f, -8f, 24f, 8f)
-            p.cubicTo(24f, 28f, 14f, 44f, 0f, 44f)
-            p.cubicTo(-14f, 44f, -24f, 28f, -24f, 8f)
-            p.cubicTo(-24f, -8f, -16f, -22f, 0f, -22f)
+            p.moveTo(0f, -16f)
+            p.lineTo(11f, -22f)                                        // le bois droit
+            p.lineTo(13f, -40f)
+            p.lineTo(23f, -32f)
+            p.lineTo(17f, -50f)
+            p.lineTo(28f, -46f)
+            p.lineTo(22f, -20f)
+            p.cubicTo(27f, -12f, 24f, 2f, 22f, 12f)
+            p.cubicTo(20f, 30f, 12f, 44f, 0f, 44f)
+            p.cubicTo(-12f, 44f, -20f, 30f, -22f, 12f)
+            p.cubicTo(-24f, 2f, -27f, -12f, -22f, -20f)
+            p.lineTo(-28f, -46f)                                       // le bois gauche
+            p.lineTo(-17f, -50f)
+            p.lineTo(-23f, -32f)
+            p.lineTo(-13f, -40f)
+            p.lineTo(-11f, -22f)
             p.close()
-            p.disque(-9f, 0f, 3.5f)
-            p.disque(9f, 0f, 3.5f)
+            p.disque(-9f, 2f, 3.5f)
+            p.disque(9f, 2f, 3.5f)
+            p.ovale(-8f, 28f, 8f, 38f)                                 // le mufle
         },
         "merle" to { p ->
-            p.moveTo(-4f, -34f)                                        // la tête et le corps
-            p.cubicTo(12f, -34f, 22f, -22f, 22f, -8f)
-            p.cubicTo(38f, 0f, 46f, 16f, 40f, 34f)
-            p.lineTo(-16f, 34f)
-            p.cubicTo(-32f, 34f, -40f, 20f, -34f, 4f)
-            p.cubicTo(-30f, -8f, -22f, -18f, -20f, -22f)
-            p.cubicTo(-18f, -30f, -12f, -34f, -4f, -34f)
+            p.moveTo(-46f, -18f)                       // la pointe du bec
+            p.lineTo(-20f, -26f)
+            p.cubicTo(-16f, -36f, -2f, -38f, 6f, -30f)
+            p.cubicTo(14f, -22f, 16f, -12f, 14f, -6f)
+            p.cubicTo(30f, 0f, 40f, 12f, 40f, 24f)
+            p.lineTo(48f, 40f)                         // la queue
+            p.lineTo(24f, 34f)
+            p.cubicTo(10f, 38f, -8f, 36f, -18f, 26f)
+            p.cubicTo(-30f, 14f, -32f, -2f, -22f, -10f)
             p.close()
-            p.pol(-20f, -24f, -46f, -18f, -20f, -12f)                  // le bec
-            p.pol(28f, 22f, 46f, 40f, 22f, 34f)                        // la queue
-            p.disque(-6f, -22f, 3.5f)
-            p.pol(-8f, 34f, -4f, 34f, -4f, 44f, -12f, 44f)
-            p.pol(10f, 34f, 14f, 34f, 14f, 44f, 6f, 44f)
+            p.disque(-9f, -22f, 3.5f)                  // l'œil
+            p.pol(-7f, 37f, -1f, 37f, -3f, 47f, -10f, 47f)   // les pattes
+            p.pol(9f, 35f, 15f, 35f, 14f, 47f, 7f, 47f)
         },
         "main" to { p ->
-            p.pol(-30f, 46f, -30f, 4f, -22f, 4f, -22f, 46f)            // la paume
-            p.arrondi(-30f, -2f, 30f, 46f, 8f)
-            p.arrondi(-26f, -30f, -14f, 6f, 6f)
-            p.arrondi(-11f, -42f, 1f, 6f, 6f)
-            p.arrondi(4f, -38f, 16f, 6f, 6f)
-            p.arrondi(19f, -26f, 31f, 6f, 6f)
-            p.moveTo(-30f, 10f)                                        // le pouce
-            p.cubicTo(-44f, 4f, -50f, 18f, -40f, 26f)
-            p.lineTo(-30f, 26f)
+            // Doigts et paume s'aboutissent à y = -2 : superposés, chaque doigt
+            // se creuserait dans la paume au lieu de s'y rattacher.
+            p.arrondi(-30f, -2f, 30f, 46f, 9f)                          // la paume
+            p.arrondi(-27f, -30f, -16f, -2f, 5.5f)
+            p.arrondi(-13f, -42f, -2f, -2f, 5.5f)
+            p.arrondi(1f, -40f, 12f, -2f, 5.5f)
+            p.arrondi(15f, -28f, 26f, -2f, 5.5f)
+            p.moveTo(-30f, 8f)                                          // le pouce
+            p.cubicTo(-42f, 2f, -50f, 14f, -42f, 24f)
+            p.lineTo(-30f, 24f)
             p.close()
         },
         "pied" to { p ->
-            p.moveTo(-18f, -44f)
-            p.cubicTo(2f, -44f, 12f, -30f, 14f, -10f)
-            p.cubicTo(16f, 8f, 30f, 18f, 34f, 30f)
-            p.cubicTo(38f, 42f, 28f, 46f, 12f, 46f)
-            p.lineTo(-14f, 46f)
-            p.cubicTo(-30f, 46f, -36f, 38f, -34f, 22f)
-            p.cubicTo(-32f, 4f, -34f, -44f, -18f, -44f)
+            // Une empreinte, plante et orteils détachés : un profil de pied ne
+            // se lit pas, une empreinte si.
+            p.moveTo(-12f, -8f)
+            p.cubicTo(10f, -8f, 22f, 6f, 22f, 22f)
+            p.cubicTo(22f, 38f, 10f, 48f, -4f, 48f)
+            p.cubicTo(-18f, 48f, -26f, 38f, -26f, 24f)
+            p.cubicTo(-26f, 8f, -24f, -8f, -12f, -8f)
             p.close()
+            p.ovale(-27f, -32f, -10f, -13f)                            // les orteils
+            p.ovale(-7f, -40f, 5f, -23f)
+            p.ovale(8f, -36f, 19f, -21f)
+            p.ovale(21f, -28f, 31f, -15f)
+            p.ovale(32f, -18f, 41f, -7f)
         },
         "tete" to { p ->
             p.moveTo(-6f, -46f)                                        // le profil
@@ -624,16 +649,17 @@ internal object Meubles {
             p.disque(26f, 22f, 5f)
         },
         "velo" to { p ->
-            p.disque(-28f, 14f, 24f)
-            p.disque(-28f, 14f, 18f)
-            p.disque(28f, 14f, 24f)
-            p.disque(28f, 14f, 18f)
-            p.pol(-28f, 11f, -2f, -14f, 4f, -8f, -25f, 17f)            // le cadre
-            p.pol(-2f, -14f, 28f, 11f, 25f, 17f, -8f, -8f)
-            p.pol(-28f, 11f, 28f, 11f, 28f, 17f, -28f, 17f)
-            p.pol(-8f, -22f, 8f, -22f, 8f, -16f, -8f, -16f)            // la selle
-            p.pol(24f, -28f, 40f, -28f, 40f, -22f, 24f, -22f)          // le guidon
-            p.pol(26f, -26f, 32f, -26f, 32f, 12f, 26f, 12f)
+            p.disque(-26f, 16f, 22f)
+            p.disque(-26f, 16f, 17f)
+            p.disque(26f, 16f, 22f)
+            p.disque(26f, 16f, 17f)
+            // Le cadre est un seul triangle évidé : trois barres superposées se
+            // perceraient l'une l'autre au moyeu.
+            p.pol(-6f, -18f, 28f, -18f, -24f, 20f)
+            p.pol(-2f, -10f, 15f, -10f, -14f, 11f)
+            p.pol(-16f, -28f, 2f, -28f, 2f, -20f, -16f, -20f)          // la selle
+            p.pol(18f, -36f, 38f, -36f, 38f, -28f, 18f, -28f)          // le guidon
+            p.pol(24f, -28f, 30f, -28f, 30f, -18f, 24f, -18f)          // la potence
         },
         "avion" to { p ->
             p.moveTo(0f, -46f)
@@ -656,20 +682,21 @@ internal object Meubles {
             p.close()
         },
         "helicoptere" to { p ->
-            p.pol(-44f, -34f, 44f, -34f, 44f, -28f, -44f, -28f)        // le rotor
-            p.pol(-3f, -28f, 3f, -28f, 3f, -16f, -3f, -16f)
-            p.moveTo(-22f, -16f)                                       // la cabine
-            p.cubicTo(2f, -16f, 16f, -6f, 18f, 6f)
-            p.lineTo(44f, 10f)
-            p.lineTo(44f, 20f)
-            p.lineTo(16f, 20f)
-            p.cubicTo(10f, 26f, -2f, 28f, -14f, 28f)
-            p.cubicTo(-32f, 28f, -40f, 18f, -40f, 6f)
-            p.cubicTo(-40f, -6f, -32f, -16f, -22f, -16f)
+            p.pol(-46f, -38f, 46f, -38f, 46f, -31f, -46f, -31f)        // le rotor
+            p.pol(-3f, -31f, 3f, -31f, 3f, -22f, -3f, -22f)            // le mât
+            p.moveTo(-24f, -22f)                                       // la cabine
+            p.cubicTo(0f, -22f, 16f, -10f, 18f, 2f)
+            p.lineTo(38f, 5f)
+            p.lineTo(38f, 15f)
+            p.lineTo(18f, 13f)
+            p.cubicTo(12f, 23f, -2f, 27f, -16f, 27f)
+            p.cubicTo(-34f, 27f, -44f, 16f, -44f, 3f)
+            p.cubicTo(-44f, -10f, -36f, -22f, -24f, -22f)
             p.close()
-            p.pol(38f, 6f, 48f, 2f, 48f, 26f, 38f, 22f)                // le rotor de queue
-            p.pol(-30f, 30f, 8f, 30f, 8f, 38f, -30f, 38f)              // les patins
-            p.pol(-22f, 24f, -16f, 24f, -16f, 34f, -22f, 34f)
+            p.pol(38f, -8f, 48f, -12f, 48f, 22f, 38f, 15f)             // la dérive
+            p.pol(-30f, 27f, -24f, 27f, -24f, 34f, -30f, 34f)          // les jambes
+            p.pol(-6f, 27f, 0f, 27f, 0f, 34f, -6f, 34f)
+            p.pol(-38f, 34f, 12f, 34f, 12f, 42f, -38f, 42f)            // les patins
         },
         "bateau" to { p ->
             p.moveTo(-46f, 20f)                                        // la coque
@@ -797,9 +824,10 @@ internal object Meubles {
         // ---- l'outil et le métal -------------------------------------------
 
         "marteau" to { p ->
-            p.pol(-44f, -34f, -4f, -34f, -4f, -8f, -44f, -8f)
-            p.pol(-22f, -8f, -10f, -8f, -4f, 44f, -20f, 44f)
-            p.pol(-4f, -30f, 30f, -30f, 44f, -12f, 30f, -12f, -4f, -12f)
+            // Une tête franche et un manche droit. Toute tentative de panne
+            // fendue se lisait comme un crochet, pas comme un marteau.
+            p.pol(-34f, -44f, 34f, -44f, 34f, -16f, -34f, -16f)        // la tête
+            p.pol(-9f, -16f, 9f, -16f, 6f, 46f, -6f, 46f)              // le manche
         },
         "or" to { p ->
             p.pol(-30f, -34f, 30f, -34f, 38f, -12f, -38f, -12f)        // trois lingots
@@ -843,12 +871,12 @@ internal object Meubles {
             p.pol(-36f, -12f, -22f, -12f, -20f, -4f, -36f, -4f)
         },
         "cigarette" to { p ->
-            p.pol(-46f, 10f, 30f, 10f, 30f, 30f, -46f, 30f)
-            p.pol(30f, 10f, 46f, 10f, 46f, 30f, 30f, 30f)              // le filtre
-            p.moveTo(-38f, 2f)                                         // la fumée
-            p.cubicTo(-46f, -12f, -30f, -20f, -38f, -34f)
-            p.lineTo(-30f, -38f)
-            p.cubicTo(-22f, -22f, -38f, -14f, -30f, -2f)
+            p.pol(-46f, 16f, 26f, 16f, 26f, 34f, -46f, 34f)            // le corps
+            p.pol(26f, 16f, 46f, 16f, 46f, 34f, 26f, 34f)              // le filtre
+            p.moveTo(-42f, 12f)                                        // la fumée, sur la braise
+            p.cubicTo(-50f, -4f, -32f, -14f, -42f, -30f)
+            p.lineTo(-32f, -34f)
+            p.cubicTo(-22f, -16f, -40f, -6f, -32f, 8f)
             p.close()
         },
     )
