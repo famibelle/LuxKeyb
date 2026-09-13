@@ -111,7 +111,7 @@ object Ornement {
     private const val TRANCHE_FIL = 0xFF6E6559.toInt()
 
     /** Sur quelle largeur le bord fuyant tombe dans l'ombre. */
-    private const val LARGEUR_OMBRE = 34f
+    private const val LARGEUR_OMBRE = 28f
 
     /**
      * De combien un roulis de 1 déplace le balayage, en largeurs de carte.
@@ -154,18 +154,18 @@ object Ornement {
     val FENETRE = RectF(32f, 74f, 268f, 250f)
     val FENETRE_VIGNETTE = RectF(26f, 26f, 274f, 212f)
     val PLAQUE = RectF(62f, 18f, 276f, 58f)
-    val GEMME = RectF(7f, 11f, 61f, 65f)
+    val GEMME = RectF(11f, 17f, 65f, 71f)
     val TYPE = RectF(46f, 256f, 254f, 284f)
     val PANNEAU = RectF(38f, 289f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
     val PANNEAU_TEXTE = RectF(48f, 297f, 252f, 378f)
-    val ECU_G = RectF(26f, 387f, 78f, 419f)
-    val ECU_D = RectF(222f, 387f, 274f, 419f)
+    val ECU_G = RectF(26f, 375f, 78f, 410f)
+    val ECU_D = RectF(222f, 375f, 274f, 410f)
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
-    val ECU_G_TEXTE = RectF(26f, 395f, 78f, 417f)
-    val ECU_D_TEXTE = RectF(222f, 395f, 274f, 417f)
-    val SERIE_G = RectF(30f, 421f, 176f, 436f)
-    val SERIE_D = RectF(176f, 421f, 270f, 436f)
+    val ECU_G_TEXTE = RectF(26f, 382f, 78f, 408f)
+    val ECU_D_TEXTE = RectF(222f, 382f, 274f, 408f)
+    val SERIE_G = RectF(30f, 413f, 176f, 426f)
+    val SERIE_D = RectF(176f, 413f, 270f, 426f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
     val GLOSE_VIGNETTE = RectF(20f, 249f, 280f, 269f)
     val BOITE_VIGNETTE = RectF(30f, 277f, 270f, 281f)
@@ -339,7 +339,7 @@ object Ornement {
     fun cheminFenetre(r: RectF, arche: Boolean): Path {
         val chemin = Path()
         if (!arche) {
-            chemin.addRoundRect(r, 8f, 8f, Path.Direction.CW)
+            chemin.addRoundRect(r, 10f, 10f, Path.Direction.CW)
             return chemin
         }
         val fleche = r.width() * 0.30f
@@ -569,15 +569,15 @@ object Ornement {
             0f, PANNEAU.top, 0f, PANNEAU.bottom,
             0xF7FFFCF2.toInt(), 0xF7F0EADA.toInt(), Shader.TileMode.CLAMP
         )
-        c.drawRoundRect(PANNEAU, 7f, 7f, p)
+        c.drawRoundRect(PANNEAU, 9f, 9f, p)
         p.shader = null
         p.style = Paint.Style.STROKE
         p.strokeWidth = 2.4f
         p.color = m.mid
-        c.drawRoundRect(PANNEAU, 7f, 7f, p)
+        c.drawRoundRect(PANNEAU, 9f, 9f, p)
         p.strokeWidth = 1f
         p.color = m.trait
-        c.drawRoundRect(PANNEAU, 7f, 7f, p)
+        c.drawRoundRect(PANNEAU, 9f, 9f, p)
         if (palier >= 2) {
             // Le double filet de l'encadreur, déjà utilisé par les cartes
             // rares du carnet : de la profondeur sans une couleur de plus.
