@@ -10,10 +10,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import com.example.kreyolkeyboard.R
 import kotlin.math.abs
 
@@ -70,9 +66,16 @@ import kotlin.math.abs
  * existe en `Path` comme le reste du carnet, [lion] est le seul endroit à
  * changer.
  */
-class DosRevision(context: Context) : Carton(context), SensorEventListener {
+class DosRevision(context: Context) : Carton(context) {
 
     override val hauteurUnites: Float = Ornement.HAUTEUR
+
+    /**
+     * Le dos suit toujours la pesanteur : il n'a pas de rareté, donc pas de
+     * raison de ne pas y avoir droit, et c'est la surface du carnet qui reste
+     * le plus longtemps sous les yeux — tout le temps que le joueur cherche.
+     */
+    override val suitLaLumiere: Boolean get() = true
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val carton = RectF(0f, 0f, Ornement.LARGEUR, Ornement.HAUTEUR)
@@ -82,10 +85,6 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
 
     /** Le panneau de saisie n'est tracé que si quelque chose s'y écrit. */
     var avecArdoise = false
-
-    /** Le roulis du téléphone, ramené dans [-1, 1]. Voir [onSensorChanged]. */
-    private var roulis = 0f
-    private var capteurs: SensorManager? = null
 
     init {
         setWillNotDraw(false)
@@ -129,6 +128,49 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
     }
 
     /**
+     * Le relief du dos, et ce qu'il n'a pas le droit de dire.
+     *
+     * Le dos a sa propre gravure — le bord du carton, les deux hypoténuses et
+     * les deux filets d'or en retrait — et elle est rigoureusement la même
+     * pour les douze cartes d'une session. C'est la règle de classe appliquée
+     * à la main : un dos dont le nombre de crans suivrait la rareté dirait
+     * « ce mot est difficile » par le pouce au lieu de le dire par la
+     * couleur, ce qui serait la même fuite déguisée en autre sens.
+     *
+     * L'ardoise ne compte que si elle est tracée : une question de
+     * reconnaissance n'a pas de panneau, et le doigt n'a donc rien à y
+     * trouver. Ça ne trahit rien — la forme de la question est déjà lisible.
+     */
+    override fun aretes(y: Float): FloatArray {
+        val l = Ornement.LARGEUR
+        val brut = ArrayList<Float>(10)
+        brut.add(Ornement.BORD_CARTE)
+        brut.add(l - Ornement.BORD_CARTE)
+        obliqueHaute(brut, y, ANGLE_HAUT, ANGLE_BAS)
+        obliqueHaute(brut, y, ANGLE_HAUT - RETRAIT_X, ANGLE_BAS - RETRAIT_Y)
+        obliqueBasse(brut, y, ANGLE_HAUT, ANGLE_BAS)
+        obliqueBasse(brut, y, ANGLE_HAUT - RETRAIT_X, ANGLE_BAS - RETRAIT_Y)
+        if (avecArdoise && y > Ornement.PANNEAU.top && y < Ornement.PANNEAU.bottom) {
+            brut.add(Ornement.PANNEAU.left)
+            brut.add(Ornement.PANNEAU.right)
+        }
+        return Ornement.crans(brut)
+    }
+
+    /** Où l'oblique de l'angle haut-gauche coupe la hauteur [y]. */
+    private fun obliqueHaute(brut: MutableList<Float>, y: Float, x0: Float, y0: Float) {
+        if (y < 0f || y >= y0) return
+        brut.add(x0 * (1f - y / y0))
+    }
+
+    /** La même, pour l'angle bas-droit, qui est son symétrique. */
+    private fun obliqueBasse(brut: MutableList<Float>, y: Float, x0: Float, y0: Float) {
+        val depuisLeBas = Ornement.HAUTEUR - y
+        if (depuisLeBas < 0f || depuisLeBas >= y0) return
+        brut.add(Ornement.LARGEUR - x0 * (1f - depuisLeBas / y0))
+    }
+
+    /**
      * L'ordre est celui d'une impression : le fond, les deux aplats, les
      * liserés qui les séparent, le filigrane, puis le panneau et le bord.
      *
@@ -168,8 +210,8 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
         pinceau.color = OR
         pinceau.alpha = 140
         pinceau.strokeWidth = 1.2f
-        canvas.drawLine(ANGLE_HAUT - 26f, 0f, 0f, ANGLE_BAS - 38f, pinceau)
-        canvas.drawLine(l - ANGLE_HAUT + 26f, h, l, h - ANGLE_BAS + 38f, pinceau)
+        canvas.drawLine(ANGLE_HAUT - RETRAIT_X, 0f, 0f, ANGLE_BAS - RETRAIT_Y, pinceau)
+        canvas.drawLine(l - ANGLE_HAUT + RETRAIT_X, h, l, h - ANGLE_BAS + RETRAIT_Y, pinceau)
         pinceau.alpha = 255
 
         // Le filigrane, dans la bande claire. Il est posé en unités de carte
@@ -212,51 +254,12 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
         )
         pinceau.alpha = 255
 
-        // Le reflet, enfin : le dos étant le même pour toutes les cartes,
-        // c'est la seule surface du carnet où le balayage se voit à chaque
-        // question et pas seulement sur une rare.
+        // La tranche, puis le reflet : le dos étant le même pour toutes les
+        // cartes, c'est la seule surface du carnet où le balayage se voit à
+        // chaque question et pas seulement sur une rare.
+        Ornement.dessinerTranche(canvas, pinceau, assiette, h)
         Ornement.refletBalaye(canvas, pinceau, roulis, h, 0x4A)
         canvas.restore()
-    }
-
-    // ------------------------------------------------------------- le vivant
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        if (Pochette.animationsReduites(context)) return
-        val manager =
-            context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager ?: return
-        // Même repli que la face : l'accéléromètre brut mêle la pesanteur à
-        // l'accélération linéaire, et marcher suffisait à faire trembler le
-        // reflet. Le capteur fusionné n'existe pas partout.
-        val capteur = manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-            ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            ?: return
-        manager.registerListener(this, capteur, SensorManager.SENSOR_DELAY_UI)
-        capteurs = manager
-    }
-
-    override fun onDetachedFromWindow() {
-        capteurs?.unregisterListener(this)
-        capteurs = null
-        super.onDetachedFromWindow()
-    }
-
-    override fun onAccuracyChanged(lequel: Sensor?, precision: Int) = Unit
-
-    /**
-     * Le roulis, lissé, et seulement quand il a vraiment changé.
-     *
-     * Le seuil compte plus ici que sur la face : un dos se retrace pour une
-     * poignée d'ordres, mais il reste affiché tant que le joueur cherche sa
-     * réponse, c'est-à-dire bien plus longtemps qu'une carte ouverte.
-     */
-    override fun onSensorChanged(evenement: SensorEvent) {
-        if (evenement.values.isEmpty()) return
-        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
-        if (abs(cible - roulis) < 0.04f) return
-        roulis += (cible - roulis) * 0.20f
-        invalidate()
     }
 
     companion object {
@@ -270,6 +273,15 @@ class DosRevision(context: Context) : Carton(context), SensorEventListener {
         /** Où les deux angles coupent les bords, en unités de carte. */
         private const val ANGLE_HAUT = 176f
         private const val ANGLE_BAS = 258f
+
+        /**
+         * De combien le filet d'or est en retrait du liseré blanc, sur chacun
+         * des deux axes. Nommé parce que le tracé et le relief sous le doigt
+         * doivent lire les mêmes nombres : un cran qui ne tomberait pas sur
+         * son filet se sentirait comme un défaut de l'écran.
+         */
+        private const val RETRAIT_X = 26f
+        private const val RETRAIT_Y = 38f
 
         /** L'opacité du filigrane, sur 255. Voir la note de classe. */
         private const val FILIGRANE = 34

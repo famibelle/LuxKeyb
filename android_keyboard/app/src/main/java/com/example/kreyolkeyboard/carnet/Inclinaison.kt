@@ -69,8 +69,15 @@ import java.util.WeakHashMap
  */
 object Inclinaison {
 
-    /** Le débattement en degrés, de part et d'autre du repos. */
-    private const val AMPLITUDE = 7f
+    /**
+     * Le débattement en degrés, de part et d'autre du repos.
+     *
+     * Public parce que [Carton] en a besoin : un appui du doigt s'exprime en
+     * degrés, et le tracé de la tranche en roulis. Sans le même dénominateur
+     * des deux côtés, l'épaisseur du carton ne correspondrait pas à sa
+     * propre inclinaison.
+     */
+    const val AMPLITUDE = 7f
 
     /**
      * Le lissage du suivi.
@@ -111,6 +118,69 @@ object Inclinaison {
     private val suivies = WeakHashMap<View, Boolean>()
 
     /**
+     * Ce qui incline chaque vue, en degrés : `[pesanteurX, pesanteurY,
+     * appuiX, appuiY]`.
+     *
+     * ## Pourquoi une somme, et pas deux écrivains
+     *
+     * `rotationX` et `rotationY` n'ont qu'une valeur. Tant que la pesanteur
+     * était seule à écrire dedans, la question ne se posait pas ; depuis que
+     * le doigt enfonce le carton, deux sources visent la même propriété, et
+     * la dernière servie gagne — soixante fois par seconde, ce qui se voit
+     * comme un tremblement et non comme un appui.
+     *
+     * Elles sont donc rangées séparément et **additionnées** au moment
+     * d'écrire. La pesanteur continue de dire où est le bas ; l'appui dit
+     * seulement de combien le carton s'enfonce en plus. Les deux restent
+     * vraies en même temps, ce qui est exactement ce qu'on observe en posant
+     * le pouce sur une carte tenue en main.
+     *
+     * Un `FloatArray` en valeur, et non le suiveur : une [WeakHashMap] dont
+     * la valeur référencerait sa clé retiendrait la vue pour toujours. Quatre
+     * flottants ne référencent rien.
+     */
+    private val etats = WeakHashMap<View, FloatArray>()
+
+    private fun etat(vue: View): FloatArray =
+        etats.getOrPut(vue) { FloatArray(4) }
+
+    private fun appliquer(vue: View, e: FloatArray) {
+        vue.rotationX = e[0] + e[2]
+        vue.rotationY = e[1] + e[3]
+    }
+
+    /**
+     * L'enfoncement du carton sous le doigt, en degrés, composé avec la
+     * pesanteur s'il y en a une.
+     *
+     * Passer par ici plutôt que d'écrire dans `rotationX` directement est ce
+     * qui rend l'appui visible sur une carte du carnet, où l'inclinaison est
+     * armée **sur la carte elle-même** ; sans cela, le prochain échantillon
+     * du capteur effacerait l'appui avant qu'on l'ait vu.
+     */
+    fun appui(vue: View, degresX: Float, degresY: Float) {
+        val e = etat(vue)
+        e[2] = degresX
+        e[3] = degresY
+        appliquer(vue, e)
+    }
+
+    /**
+     * Recule la caméra de [vue] assez pour que quelques degrés restent une
+     * inclinaison et non un écrasement du bord fuyant.
+     *
+     * Les appelants qui ont déjà réglé leur perspective — la pochette et la
+     * révision le font pour leur retournement — gardent la leur : on ne
+     * touche qu'au défaut d'Android.
+     */
+    fun perspective(vue: View) {
+        val densite = vue.resources.displayMetrics.density
+        if (vue.cameraDistance <= CAMERA_DEFAUT * densite) {
+            vue.cameraDistance = CAMERA * densite
+        }
+    }
+
+    /**
      * Fait suivre à [vue] l'inclinaison de l'appareil.
      *
      * À appeler **une fois le retournement terminé**, depuis son
@@ -130,13 +200,7 @@ object Inclinaison {
             ?: manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
             ?: return
 
-        // Sans recul de caméra, sept degrés suffisent à faire fondre le bord
-        // qui s'éloigne. Les appelants qui ont déjà réglé leur perspective
-        // pour le retournement gardent la leur : on ne touche qu'au défaut.
-        val densite = vue.resources.displayMetrics.density
-        if (vue.cameraDistance <= CAMERA_DEFAUT * densite) {
-            vue.cameraDistance = CAMERA * densite
-        }
+        perspective(vue)
 
         val suiveur = Suiveur(vue, manager, capteur)
         suivies[vue] = true
@@ -188,8 +252,10 @@ object Inclinaison {
          */
         override fun onViewDetachedFromWindow(v: View) {
             desarmer()
-            vue.rotationX = 0f
-            vue.rotationY = 0f
+            val e = etat(vue)
+            e[0] = 0f
+            e[1] = 0f
+            appliquer(vue, e)
         }
 
         override fun onAccuracyChanged(lequel: Sensor?, precision: Int) = Unit
@@ -225,8 +291,10 @@ object Inclinaison {
 
             // Deux écritures de propriété, pas un seul ordre de tracé : la
             // carte n'est pas redessinée, elle est recomposée.
-            vue.rotationY = roulis * AMPLITUDE
-            vue.rotationX = tangage * AMPLITUDE
+            val e = etat(vue)
+            e[0] = tangage * AMPLITUDE
+            e[1] = roulis * AMPLITUDE
+            appliquer(vue, e)
         }
 
         @Suppress("DEPRECATION")

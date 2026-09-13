@@ -513,8 +513,15 @@ class CarnetFragment : DialogFragment() {
                 else DecelerateInterpolator()
             )
             // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
-            // pour ne pas écrire dans `rotationY` pendant le retournement.
-            .withEndAction { Inclinaison.suivre(carte) }
+            // pour ne pas écrire dans `rotationY` pendant le retournement. Le
+            // doigt attend le même moment, et pour la même raison. Le
+            // `ScrollView` lui reprendra le geste dès qu'il partira vers le
+            // haut ou le bas — le carton reçoit alors un `CANCEL` et se
+            // relève, le défilement d'une fiche haute n'est pas sacrifié.
+            .withEndAction {
+                Inclinaison.suivre(carte)
+                (carte as? Carton)?.sensibleAuDoigt = true
+            }
             .start()
     }
 

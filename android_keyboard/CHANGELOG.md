@@ -9,6 +9,111 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.5.1] - 2026-09-13
+
+> La 22.5.0 a donné à la carte une épaisseur, une lumière qui suit le pouce et
+> un enfoncement. Les trois se voient. Aucune ne se sent.
+>
+> Le pouce sent maintenant la gravure : le bord du carton, la marche du cadre,
+> les flancs de l'ouverture, les écus. C'est le seul retour du carnet qui
+> fonctionne les yeux fermés, donc le seul qui prouve vraiment que la carte est
+> un objet et pas une lumière.
+
+### ✨ Ajouté
+
+- **Les crans du relief.** Un pouce qui traverse une carte franchit une poignée
+  d'arêtes, et chacune donne une vibration très courte — la même que celle d'un
+  cran de curseur sur la barre d'espace, qui est l'effet le plus bref du
+  catalogue. Le rythme dépend de la **hauteur** à laquelle le doigt passe : à
+  mi-carte il ne rencontre que le cadre et les flancs de l'ouverture, en bas il
+  traverse les deux écus et le joyau de rareté. C'est cette différence-là qui
+  distingue une surface gravée d'un curseur à crans.
+- **Le contact.** Poser le doigt sur une carte donne une vibration, avant même
+  de bouger. Un carton posé ne claque pas quand on le touche, mais un écran qui
+  ne répond pas à un doigt posé n'a rien touché du tout.
+- **Le dos a son propre relief**, tiré de sa géométrie à lui : le bord, les deux
+  hypoténuses, les deux filets d'or en retrait, et l'ardoise quand il y en a
+  une. Il est rigoureusement le même pour les douze cartes d'une session — un
+  dos dont le nombre de crans suivrait la rareté dirait « ce mot est difficile »
+  par le pouce au lieu de le dire par la couleur, ce qui serait la même fuite
+  déguisée en autre sens. Sur la face, en revanche, la rareté a le droit de se
+  sentir : le palier y est déjà sous les yeux.
+
+### ♻️ Modifié
+
+- **Les animations réduites ne coupent plus le retour tactile.** Elles coupent
+  ce qui bouge, ce qui est leur rôle ; le retour tactile, lui, n'occupe pas
+  l'écran, et pour qui coupe les animations c'est précisément le seul retour qui
+  reste. Le supprimer avec elles aurait été l'exact contraire de ce que ce
+  réglage demande.
+- **Le retour tactile des cartes suit l'interrupteur du clavier**, comme la
+  frappe et les crans du curseur : un seul réglage, celui de l'application, et
+  pas celui du téléphone.
+- **Deux nombres écrits en clair sont devenus des noms** — le retrait des filets
+  d'or du dos, et le bord sensible du carton. Un cran qui ne tomberait pas
+  exactement sur son filet se sentirait comme un défaut de l'écran, pas comme
+  une gravure.
+
+## [22.5.0] - 2026-09-13
+
+> Le carton répondait au téléphone, pas à la main. On pouvait passer le pouce
+> sur une carte pendant dix secondes sans que rien n'arrive — ce qui suffisait
+> à la ranger parmi les images, puisqu'un objet réel réagit d'abord à ce qui le
+> touche.
+>
+> Trois choses le sortent de là : une épaisseur, une lumière qui suit le pouce,
+> et un carton qui s'enfonce sous l'appui puis remonte en dépassant son
+> aplomb. Aucune n'invente de dessin nouveau ; elles branchent la main sur ce
+> que la carte savait déjà faire.
+
+### ✨ Ajouté
+
+- **La tranche.** Une carte inclinée montre son épaisseur. C'est la chose qu'on
+  ne remarque jamais consciemment et qui décide pourtant, à elle seule, si le
+  cerveau range ce qu'il voit dans les objets ou dans les images. Le bord qui
+  s'approche découvre le cœur du carton, celui qui s'éloigne tombe dans
+  l'ombre — et c'est bien le bord qui s'approche, car c'est sa face latérale
+  qui tourne vers l'œil. Elle vaut pour les quatre paliers : le reflet est un
+  privilège de rareté, pas l'épaisseur.
+- **Le pouce prend la lumière.** Tant que le doigt est posé sur une carte, c'est
+  lui et non la pesanteur qui dit où tombe le reflet, et la tache le suit
+  exactement — l'irisation de l'illustration d'une rare glisse avec. Au
+  relâchement, la pesanteur reprend la main en une seconde plutôt que de la
+  récupérer d'un coup.
+- **L'appui.** Le carton s'enfonce du côté pressé — le point touché part en
+  arrière, la carte perd un centième et demi de sa taille — puis remonte en
+  dépassant légèrement son aplomb. C'est ce dépassement, et non l'enfoncement,
+  qui se lit comme de la masse.
+
+### ♻️ Modifié
+
+- **La carte ouverte du carnet et les deux faces de la révision répondent au
+  doigt.** Pas la pochette : le voile y prend l'appui pour passer à la carte
+  suivante, et un carton qui consommerait le geste supprimerait cette
+  navigation. Pas la grille non plus, pour la même raison que l'inclinaison —
+  une vignette de 160 dp n'a la place de rien, et un appui capté par chaque
+  carte se battrait avec le défilement. Dans la fiche du carnet, le
+  `ScrollView` reprend le geste dès qu'il part vers le haut ou le bas : le
+  défilement d'une fiche haute n'est pas sacrifié à la lumière.
+- **Toute carte ouverte suit désormais la pesanteur**, et plus seulement les
+  deux paliers hauts, puisque la tranche concerne aussi les communes.
+- **Le suivi du capteur a quitté les deux faces pour le carton dont elles
+  héritent.** Le recto et le verso en avaient chacun une copie, au mot près,
+  avec deux abonnements au capteur pour un même objet et deux filtres qui
+  devaient se ressembler sans que rien ne l'impose. Il n'y en a plus qu'un.
+- **`Inclinaison` est le seul écrivain de la rotation d'une vue.** La pesanteur
+  et l'appui du doigt visaient la même propriété, et la dernière servie
+  gagnait — soixante fois par seconde, ce qui se voit comme un tremblement et
+  non comme un appui. Les deux sont maintenant rangées séparément et
+  additionnées au moment d'écrire.
+
+### 🐛 Corrigé
+
+- **Le rebond de l'appui ne se dispute plus le retournement.** Le doigt pouvait
+  quitter la carte moins de trois cents millisecondes avant un appui sur
+  « Valider » : le rebond et le retournement écrivaient alors tous deux dans la
+  rotation. Le carton rend sa rotation avant que le geste ne commence.
+
 ## [22.4.0] - 2026-09-12
 
 > La révision retournait déjà ses cartes — sauf qu'il n'y avait rien à
