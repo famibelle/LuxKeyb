@@ -203,18 +203,20 @@ object CarteCarnet {
             Ornement.ECU_D_TEXTE
         )
 
+        // Le corps de 7,5 est imposé par la bande, qui vit maintenant dans la
+        // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
         val serie = "n° %03d · %s · %s".format(
             Locale.FRENCH, c.carte.numero, jeu.sigle, FORMAT_DATE.format(Date(c.carte.premiereFois))
         )
         carte.posee(
-            ligne(context, serie, taille = 9f, couleur = metal.trait, gras = true, ou = Gravity.START),
+            ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
             Ornement.SERIE_G
         )
         carte.posee(
             ligne(
                 context,
                 c.rang?.let { "${it + 1}ᵉ" } ?: "hors corpus",
-                taille = 9f, couleur = metal.trait, gras = true, ou = Gravity.END
+                taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.SERIE_D
         )

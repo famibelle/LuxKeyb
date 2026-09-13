@@ -9,6 +9,49 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.6.1] - 2026-09-13
+
+### 🎨 Ajustements
+
+- **La ligne de série passe dans la marge.** Elle traversait les volutes
+  d'angle : à `bord = 18`, les spirales du bas sont centrées en (23, 417) et
+  (277, 417) sur 22 unités, et l'or en pose deux secondes en x = 39 et
+  x = 261 — soit quatre spirales sous un texte qui allait de 30 à 270, avec
+  l'exposant du rang rendu illisible à droite. Ce n'était pas un manque de
+  place, c'était une superposition.
+
+  La bande est désormais **428 → 437,5**, la même sur les quatre paliers
+  parce qu'elle est ancrée au bord bas et non à la marge, qui varie de 12 à
+  18 selon la rareté. Ces deux bornes sont mesurées : une volute a perdu 62 %
+  de son rayon quand elle passe à l'aplomb de son centre, donc aucune ne
+  descend plus bas que ~427 ; et le filet de contour extérieur commence à
+  437,5. En x, la ligne peut s'élargir de 30–270 à 22–278, plus rien ne la
+  gênant à cette hauteur.
+
+  C'est aussi l'endroit où ce genre de mention vit sur une carte imprimée —
+  numéro, jeu, date, rang : de l'administratif, qui n'a pas à disputer sa
+  place au contenu.
+
+- **Le corps de la ligne descend de 9 à 7,5.** La bande ne fait plus que neuf
+  unités et demie, et une boîte de ligne à 9 en demande dix et demie. 7,5 est
+  celui des libellés gravés dans les écus, pas une taille inventée pour
+  l'occasion. Le rétrécissement est réel et assumé : il requalifie la ligne en
+  petits caractères, ce qu'elle est.
+
+- **La couleur ne change pas, contrairement à ce que le raisonnement laissait
+  attendre.** Le bandeau étant plus sombre que le plateau, le réflexe était de
+  passer le texte de `trait` à `hi`. La mesure dit l'inverse : au bas du
+  bandeau le dégradé est à 63 % de `lo` vers `mid`, où le sombre tient 4,4:1
+  sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 pour le clair.
+
+- **Le relief perd un cran.** `aretes` posait une marche au partage des deux
+  moitiés de la ligne ; dans la marge le métal est lisse, et `bord` y est déjà
+  la seule marche que le doigt trouve.
+
+Treize unités se libèrent en 408–421. Elles ne profiteront au panneau que si
+les écus (375–410) descendent aussi : c'est une cascade de trois emplacements,
+laissée pour une prochaine fois.
+
 ## [22.6.0] - 2026-09-13
 
 ### ✨ Nouveautés

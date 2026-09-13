@@ -165,12 +165,36 @@ object Ornement {
     val ECU_G_TEXTE = RectF(26f, 382f, 78f, 408f)
     val ECU_D_TEXTE = RectF(222f, 382f, 274f, 408f)
     /**
-     * La ligne de série doit tenir dans le plateau du palier le plus orné :
-     * `bord = 12 + palier * 2` le referme à 422 pour l'or. Un bas au-delà et
-     * le texte se pose sur le métal du cadre, où le coin arrondi le rogne.
+     * La ligne de série est passée **dans la marge**, où ce genre de mention
+     * vit sur une carte imprimée : numéro, jeu, date, rang — de
+     * l'administratif, qui n'a pas à disputer sa place au contenu.
+     *
+     * Sur le plateau elle ne manquait pas seulement d'air, elle **traversait
+     * les volutes**. À `bord = 18`, les spirales du bas sont centrées en
+     * (23, 417) et (277, 417) sur 22 unités, et l'or en pose deux secondes en
+     * x = 39 et x = 261 : quatre spirales sous un texte qui allait de 30 à
+     * 270, et l'exposant du rang illisible à droite.
+     *
+     * La bande retenue est la même sur les quatre paliers, parce qu'elle est
+     * ancrée au bord bas et non à la marge, qui varie de 12 à 18 :
+     *
+     * - **428 en haut.** Une volute a perdu 62 % de son rayon quand elle passe
+     *   à l'aplomb de son centre (`r = taille · exp(-1,75 t)`, et l'angle bas
+     *   tombe à t ≈ 0,56) : aucune ne descend plus bas que ~427, or et rare
+     *   confondus, et les secondes spirales de l'or s'arrêtent vers 420.
+     * - **437,5 en bas.** Le filet de contour extérieur commence là —
+     *   `RectF(1.2, …, haut - 1.2)` tracé en 2,5 d'épaisseur.
+     *
+     * Neuf unités et demie, donc, et le corps descend à 7,5 : c'est celui des
+     * libellés gravés dans les écus, pas une taille inventée pour l'occasion.
+     * Serré, et c'est le prix — en échange la ligne se lit d'un bloc.
+     *
+     * Le texte reste en `trait`, le ton sombre du métal, et non en `hi` : au
+     * bas du bandeau le dégradé est entre `lo` et `mid`, où le sombre tient
+     * 4,4:1 sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 au clair.
      */
-    val SERIE_G = RectF(30f, 408f, 176f, 421f)
-    val SERIE_D = RectF(176f, 408f, 270f, 421f)
+    val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
+    val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
     val GLOSE_VIGNETTE = RectF(20f, 249f, 280f, 269f)
     val BOITE_VIGNETTE = RectF(30f, 277f, 270f, 281f)
@@ -899,7 +923,8 @@ object Ornement {
             brut.add(LARGEUR / 2f - r)
             brut.add(LARGEUR / 2f + r)
         }
-        if (y > SERIE_G.top && y < SERIE_G.bottom) brut.add(SERIE_G.right)
+        // Rien pour la ligne de série : elle est passée dans la marge, où le
+        // métal est lisse et où `bord` est déjà la seule marche du doigt.
         return crans(brut)
     }
 
