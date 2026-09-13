@@ -1910,8 +1910,8 @@ private interface Sujet {
 /**
  * L'enluminure : le meuble du mot, gravé dans la matière.
  *
- * C'est le sujet des cartes qu'on collectionne pour elles-mêmes — soixante-
- * quinze mots sur deux mille huit cents, à peu près trois sur cent. La rareté
+ * C'est le sujet des cartes qu'on collectionne pour elles-mêmes — cent vingt
+ * mots sur deux mille huit cents, à peu près quatre sur cent. La rareté
  * n'y est pour rien : elle est fixée par le rang de fréquence et n'est pas
  * négociable, alors que l'enluminure est un second axe de désirabilité, qui
  * peut échoir à une commune comme à une très rare.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Planche de contrôle des meubles : les 74 silhouettes de `carnet/Meubles.kt`,
+"""Planche de contrôle des meubles : les silhouettes de `carnet/Meubles.kt`,
 rendues dans un navigateur, sans émulateur ni appareil.
 
 ## Pourquoi cet outil existe
@@ -16,6 +16,11 @@ sur soixante-quatorze : six têtes d'animaux dont les oreilles se creusaient
 dans le crâne, une main dont les doigts perçaient la paume, un banc dont les
 pieds traversaient l'assise, et une dizaine d'objets simplement illisibles.
 Aucun n'aurait été vu autrement qu'en installant l'application.
+
+À la seconde vague elle en a renvoyé sept sur quarante — dont une gare qui se
+lisait comme un personnage dans une porte — et elle a du même coup montré un
+défaut passé en production : le croissant de `lune`, fait de deux disques,
+laissait un lobe plein là où le second sortait du premier.
 
 ## Ce que la planche montre, et ce qu'elle ne montre pas
 
@@ -144,10 +149,42 @@ def meubles():
         yield nom, ' '.join(t.d)
 
 
+def deborde(d):
+    """De combien le tracé sort du carré de cent, ou zéro s'il y tient.
+
+    Les courbes sont échantillonnées et non approchées par leurs points de
+    contrôle, qui débordent presque toujours sans que le trait suive. Un
+    dépassement est un rognage : `chemin` met le carré de cent à l'échelle de
+    la fenêtre, et ce qui sort du carré sort de la fenêtre.
+    """
+    xs, ys, cur = [], [], (0.0, 0.0)
+    for cmd, arg in re.findall(r'([MLCQZaAHV])([-\d. ]*)', d):
+        v = [float(x) for x in arg.split()] if arg.strip() else []
+        if cmd in 'ML':
+            cur = (v[0], v[1]); xs.append(cur[0]); ys.append(cur[1])
+        elif cmd in 'CQ':
+            n, p0 = (3 if cmd == 'C' else 2), cur
+            for k in range(21):
+                t = k / 20.0
+                pts = [p0] + [(v[2 * j], v[2 * j + 1]) for j in range(n)]
+                while len(pts) > 1:                      # de Casteljau
+                    pts = [(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)
+                           for a, b in zip(pts, pts[1:])]
+                xs.append(pts[0][0]); ys.append(pts[0][1])
+            cur = (v[2 * n - 2], v[2 * n - 1])
+        elif cmd == 'a':                                 # disque et ovale
+            rx, ry = v[0], v[1]
+            xs += [cur[0], cur[0] + 2 * rx]; ys += [cur[1] - ry, cur[1] + ry]
+    return max(0.0, max(max(abs(x) for x in xs), max(abs(y) for y in ys)) - 50)
+
+
 def main():
     sortie = sys.argv[1] if len(sys.argv) > 1 else os.path.join(RACINE, 'meubles.html')
-    tuiles = []
+    tuiles, hors = [], []
     for nom, d in meubles():
+        trop = deborde(d)
+        if trop:
+            hors.append((trop, nom))
         tuiles.append(
             f'<figure><svg viewBox="-52 -52 104 104" role="img" aria-label="{nom}">'
             f'<path d="{d}" fill="#fff" fill-rule="evenodd" '
@@ -166,6 +203,8 @@ def main():
                 'figcaption{margin-top:3px}</style><main>'
                 + ''.join(tuiles) + '</main>')
     print(f'{len(tuiles)} meubles → {sortie}')
+    for trop, nom in sorted(hors, reverse=True):
+        print(f'  hors cadre de {trop:.1f} : {nom}', file=sys.stderr)
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ import java.io.InputStreamReader
  * | la **matière** — grain, halo, irisation | le palier, donc le rang de fréquence | rien |
  * | la **partition** — la division du champ | la nature du mot, lue sur sa majuscule | rien |
  * | la **teinte** — le champ | le sens, classé hors ligne | 52 ko |
- * | le **sujet** — tracé ou meuble | le mot | 74 silhouettes |
+ * | le **sujet** — tracé ou meuble | le mot | 111 silhouettes |
  *
  * ## Pourquoi le champ et pas l'image
  *
