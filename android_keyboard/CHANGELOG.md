@@ -9,6 +9,66 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.4.0] - 2026-09-12
+
+> La révision retournait déjà ses cartes — sauf qu'il n'y avait rien à
+> retourner. La carte partait de profil et surgissait du néant, pendant que la
+> question flottait sur un aplat gris. Il ne manquait pas un décor : il
+> manquait la première moitié du geste.
+>
+> Les cartes de révision ont maintenant un verso, tiré de la composition du
+> logo, et la question y est écrite. Le retournement se joue en deux temps,
+> comme celui de la pochette.
+
+### ✨ Ajouté
+
+- **Le verso des cartes de révision.** La question est désormais écrite sur le
+  dos d'un carton, et non plus posée sur un fond gris : la consigne sur la
+  plaque de nom, l'énoncé dans l'ouverture d'illustration, et ce que le joueur
+  tape dans le panneau de texte — c'est-à-dire exactement là où le sens du mot
+  l'attend de l'autre côté. Le mot demandé et le mot révélé occupent le même
+  rectangle : l'œil ne se déplace pas, il traverse.
+- **Le motif du dos vient du logo.** Pas une vignette collée sur un fond, mais
+  la composition du logo portée à l'échelle du carton : les deux angles qui se
+  répondent en diagonale, rouge en haut à gauche, bleu clair en bas à droite,
+  la bande claire entre les deux, un liseré blanc et un filet d'or en retrait.
+  Le lion n'y figure qu'en filigrane très effacé.
+- **Le dos accroche la lumière.** Le reflet spéculaire, jusqu'ici réservé aux
+  deux paliers hauts, balaie aussi le verso — qui est le même pour toutes les
+  cartes du paquet, donc l'effet se voit à chaque question et non plus sur les
+  seules cartes rares. Le carton entier suit par ailleurs l'inclinaison de
+  l'appareil, comme la carte ouverte du carnet depuis la 22.3.0.
+
+### ♻️ Modifié
+
+- **Le retournement est devenu vrai.** Il se joue en deux temps — le dos se met
+  de profil, le recto revient de l'autre côté — au lieu d'une carte qui
+  apparaissait à −85° sans que rien n'occupe ces −85°.
+- **L'écran de révision est bâti autour de la carte.** Trois bandes : l'en-tête,
+  la scène qui ne contient que le carton, et le bas qui porte le pavé et les
+  boutons. Le défilement a disparu ; c'est la scène qui donne au carton la
+  taille de ce qui reste. Une question tapée laisse moins de place qu'une
+  question de reconnaissance, et une carte révélée, dont le pavé a disparu, en
+  retrouve : le carton change donc de taille au moment où il est de profil,
+  c'est-à-dire invisible.
+- **L'ardoise a rejoint la carte.** Ce qui est tapé s'inscrit dans le panneau
+  de texte du carton, ce qui libère du même coup la hauteur qu'une ardoise
+  séparée prenait au pavé. Sur un écran de moins de 620 dp de haut, les touches
+  se resserrent plutôt que de laisser le carton devenir illisible.
+- **La géométrie du carton est commune aux deux faces.** La mesure, la mise à
+  l'échelle en unités de carte et la pose du texte ont quitté la face pour un
+  socle partagé : deux faces qui ne s'arrondissent pas au même rayon se
+  retournent comme deux objets qui se remplacent, pas comme un carton. Le rayon
+  des coins, écrit en clair à trois endroits, est devenu une constante.
+
+### 🐛 Corrigé
+
+- **Le mot d'une question de reconnaissance ne prend plus la couleur de son
+  jeu.** Le paquet de révision mélange les sept jeux, et la couleur trahissait
+  la provenance de la carte avant que le joueur ait cherché. Pour la même
+  raison, le verso ne porte ni teinte tirée du mot ni liseré de rareté : il est
+  rigoureusement identique pour les douze cartes d'une session.
+
 ## [22.3.0] - 2026-09-12
 
 > La 22.2.0 a donné aux cartes un cadre qui s'enrichit avec leur rareté, et à
