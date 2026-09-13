@@ -27,9 +27,12 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import com.example.kreyolkeyboard.KeyFeedback
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.exp
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
 
@@ -825,6 +828,93 @@ object Ornement {
     }
 
     /**
+     * Les arêtes que le pouce franchit à la hauteur [y], en unités de carte.
+     *
+     * ## Ce que le doigt est censé sentir
+     *
+     * Une carte de collection est gravée : le cadre est en relief sur la
+     * face, l'ouverture est creusée dedans, les écus dépassent. Un pouce qui
+     * la traverse franchit donc une poignée de marches, et leur **rythme**
+     * dépend de la hauteur à laquelle il passe — à mi-carte il ne rencontre
+     * que le cadre et les flancs de l'ouverture, en bas il traverse les deux
+     * écus et le joyau. C'est cette différence-là qui distingue une surface
+     * gravée d'un curseur à crans, et c'est pour elle que la liste est
+     * calculée à partir d'un `y`.
+     *
+     * ## Pourquoi la rareté a le droit d'y être
+     *
+     * Sur la face, oui : le palier est déjà sous les yeux, une main qui le
+     * confirme n'apprend rien à personne. Sur le dos de révision, non — et
+     * c'est pourquoi [DosRevision] ne passe pas par ici mais donne sa propre
+     * géométrie, la même pour les douze cartes d'une session.
+     */
+    fun aretes(rarete: Rarete, y: Float): FloatArray {
+        val palier = rarete.ordinal
+        val bord = 12f + palier * 2f
+        val brut = ArrayList<Float>(14)
+        // Le bord du carton, puis celui du plateau : les deux seules marches
+        // que le doigt trouve à n'importe quelle hauteur.
+        brut.add(BORD_CARTE)
+        brut.add(LARGEUR - BORD_CARTE)
+        brut.add(bord)
+        brut.add(LARGEUR - bord)
+        dansLaBande(brut, y, GEMME, GEMME.left + 4f, GEMME.right - 4f)
+        dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
+        dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
+        dansLaBande(brut, y, TYPE, TYPE.left, TYPE.right)
+        dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
+        dansLaBande(brut, y, ECU_G, ECU_G.left, ECU_G.right)
+        dansLaBande(brut, y, ECU_D, ECU_D.left, ECU_D.right)
+        if (y > ECU_G.top && y < ECU_G.bottom) {
+            val r = 8f + palier
+            brut.add(LARGEUR / 2f - r)
+            brut.add(LARGEUR / 2f + r)
+        }
+        if (y > SERIE_G.top && y < SERIE_G.bottom) brut.add(SERIE_G.right)
+        return crans(brut)
+    }
+
+    private fun dansLaBande(
+        brut: MutableList<Float>, y: Float, bande: RectF, gauche: Float, droite: Float
+    ) {
+        if (y <= bande.top || y >= bande.bottom) return
+        brut.add(gauche)
+        brut.add(droite)
+    }
+
+    /**
+     * Trie des arêtes et fond celles qui se touchent.
+     *
+     * La gemme de coût et la plaque de nom se croisent en hauteur, et leurs
+     * flancs finissent à une unité l'un de l'autre : deux vibrations séparées
+     * par un cinquième de millimètre ne se sentent pas comme deux marches,
+     * elles se sentent comme un défaut.
+     */
+    fun crans(brut: MutableList<Float>): FloatArray {
+        brut.sort()
+        val net = ArrayList<Float>(brut.size)
+        for (x in brut) {
+            if (net.isEmpty() || x - net[net.size - 1] >= ECART_MIN) net.add(x)
+        }
+        return net.toFloatArray()
+    }
+
+    /** En deçà, deux arêtes n'en font qu'une sous le doigt. */
+    private const val ECART_MIN = 6f
+
+    /** Un carton lisse. Partagé : il est vide et personne n'y écrit. */
+    val SANS_ARETE = FloatArray(0)
+
+    /**
+     * Où se trouve le bord du carton pour le doigt.
+     *
+     * Deux unités en dedans du bord géométrique : c'est le moment où le pouce
+     * quitte la carte, et une carte qui se termine sans qu'on la sente finir
+     * est une carte qui n'avait pas de bord.
+     */
+    const val BORD_CARTE = 2f
+
+    /**
      * Le balayage lui-même, sans la question de savoir qui y a droit.
      *
      * Extrait de [dessinerReflet] parce que le dos de révision l'utilise
@@ -1058,6 +1148,19 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private var fonduAppui: ValueAnimator? = null
 
     /**
+     * Les arêtes que le doigt franchira pendant ce geste-ci, en unités de
+     * carte, triées.
+     *
+     * Calculées à la pose du doigt et gardées pour tout le geste : un pouce
+     * qui traverse une carte suit une horizontale, sa hauteur ne change
+     * pratiquement pas, et refaire la liste à chaque `ACTION_MOVE` coûterait
+     * une allocation par trame pour un résultat identique. Le rythme reste
+     * ainsi stable d'un bord à l'autre d'un même balayage.
+     */
+    private var relief: FloatArray = Ornement.SANS_ARETE
+    private var derniereX = 0f
+
+    /**
      * Où tombe la lumière, dans [-1, 1].
      *
      * C'est ce que lisent le reflet et l'irisation du motif. Le doigt
@@ -1077,6 +1180,16 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      */
     protected val assiette: Float
         get() = pesanteur + profondeur * appuiY / Inclinaison.AMPLITUDE
+
+    /**
+     * Le relief de ce carton-là à la hauteur [y], en unités de carte.
+     *
+     * Vide par défaut : un carton qui n'annonce rien est lisse, et le doigt
+     * n'y sentira que le contact. C'est le bon comportement pour une vignette
+     * — qui d'ailleurs ne reçoit jamais de doigt — et le seul honnête pour
+     * une face qu'on ajouterait sans lui dessiner de gravure.
+     */
+    protected open fun aretes(y: Float): FloatArray = Ornement.SANS_ARETE
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -1124,6 +1237,7 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         appuiY = 0f
         scaleX = 1f
         scaleY = 1f
+        relief = Ornement.SANS_ARETE
         Inclinaison.appui(this, 0f, 0f)
         invalidate()
     }
@@ -1152,11 +1266,17 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * machinerie de clic d'Android continue de fonctionner : la carte ouverte
      * du carnet est `clickable` uniquement pour empêcher le voile de se
      * fermer sous elle, et il n'y a aucune raison de lui retirer ça.
+     *
+     * Les animations réduites ne coupent plus le geste entier, seulement ce
+     * qui bouge : le retour tactile passe outre. Il n'a jamais gêné personne,
+     * il n'occupe pas l'écran, et pour qui coupe les animations c'est
+     * précisément le seul retour qui reste — le supprimer avec elles serait
+     * l'exact contraire de ce que ce réglage demande.
      */
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val herite = super.onTouchEvent(event)
-        if (!sensibleAuDoigt || Pochette.animationsReduites(context)) return herite
+        if (!sensibleAuDoigt) return herite
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 saisir(event.x, event.y)
@@ -1177,6 +1297,14 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
 
     private fun saisir(x: Float, y: Float) {
         if (width <= 0 || height <= 0) return
+        val u = Ornement.LARGEUR / width
+        relief = aretes(y * u)
+        derniereX = x * u
+        // Le contact lui-même. Un carton posé ne claque pas quand on le
+        // touche, mais un écran qui ne répond pas à un doigt posé n'a rien
+        // touché du tout.
+        KeyFeedback.onCardRidge(this)
+        if (Pochette.animationsReduites(context)) return
         doigt = lumiereEn(x)
         // La lumière arrive sous le pouce dans le temps que met le carton à
         // s'enfoncer, et n'y saute pas : le doigt n'est pas une lampe qu'on
@@ -1192,12 +1320,34 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         animerAppui(1f, ENFONCEMENT, DecelerateInterpolator())
     }
 
+    /**
+     * Le doigt avance : on regarde ce qu'il vient de franchir, puis on
+     * déplace la lumière.
+     *
+     * Une seule vibration par événement, même quand plusieurs arêtes ont été
+     * franchies d'un coup. C'est ce que fait une vraie surface gravée : un
+     * balayage lent donne des marches distinctes parce que les événements
+     * arrivent plus serrés que les arêtes, un balayage rapide donne un
+     * frottement. Le pas minimum, lui, empêche un pouce immobile posé
+     * exactement sur une arête de la franchir cent fois par tremblement.
+     */
     private fun glisser(x: Float) {
+        val u = Ornement.LARGEUR / width
+        val ou = x * u
+        if (abs(ou - derniereX) >= PAS_MIN) {
+            val bas = min(derniereX, ou)
+            val haut = max(derniereX, ou)
+            derniereX = ou
+            if (relief.any { it > bas && it <= haut }) KeyFeedback.onCardRidge(this)
+        }
+        if (Pochette.animationsReduites(context)) return
         doigt = lumiereEn(x)
         invalidate()
     }
 
     private fun lacher() {
+        relief = Ornement.SANS_ARETE
+        if (Pochette.animationsReduites(context)) return
         // Le dépassement est tout l'intérêt : le carton remonte, passe son
         // aplomb et revient. C'est la seule chose de la liste qui se lise
         // comme de la masse plutôt que comme une animation.
@@ -1262,6 +1412,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
 
         /** Le temps que met la pesanteur à reprendre la lumière au doigt. */
         const val RETOUR = 700L
+
+        /** De combien le doigt doit avancer avant qu'on regarde le relief. */
+        const val PAS_MIN = 2f
     }
 }
 
@@ -1322,6 +1475,15 @@ class CarteOrnee(
         setWillNotDraw(false)
         clipChildren = false
     }
+
+    /**
+     * Le relief de la face, celui du cadre orné.
+     *
+     * Une vignette n'en a pas : elle ne reçoit jamais de doigt, et à 160 dp
+     * ses arêtes seraient plus serrées que le seuil de perception.
+     */
+    override fun aretes(y: Float): FloatArray =
+        if (vignette) Ornement.SANS_ARETE else Ornement.aretes(rarete, y)
 
     fun avecBoite(valeur: Int): CarteOrnee {
         boite = valeur

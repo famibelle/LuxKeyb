@@ -116,6 +116,29 @@ object KeyFeedback {
         }
     }
 
+    /**
+     * Retour d'une arête franchie par le doigt sur une carte du carnet
+     * (v22.5.1) : vibration seule, et jamais de son.
+     *
+     * C'est la même intention que [onCursorStep] et le même effet, pour la
+     * même raison : un pouce qui traverse une carte franchit une poignée de
+     * reliefs — le bord du cadre, les flancs de l'ouverture, les écus — et ce
+     * qu'on cherche à rendre est la granularité de la surface, pas une suite
+     * de frappes. C'est aussi le seul retour du carnet qui fonctionne les
+     * yeux fermés, donc le seul qui prouve vraiment que la carte est un objet
+     * et pas une lumière.
+     *
+     * Le premier appel d'un geste ne correspond à aucune arête : c'est le
+     * contact lui-même. Un carton posé ne claque pas quand on le touche, mais
+     * un écran qui ne répond pas à un doigt posé n'a rien touché du tout.
+     */
+    fun onCardRidge(view: View) {
+        val context = view.context
+        if (hapticEnabled ?: KeyboardPreferences.hapticEnabled(context).also { hapticEnabled = it }) {
+            vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
+        }
+    }
+
     private fun vibrate(view: View, effect: Int = HapticFeedbackConstants.KEYBOARD_TAP) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
