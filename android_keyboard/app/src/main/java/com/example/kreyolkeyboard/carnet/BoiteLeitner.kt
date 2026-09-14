@@ -84,6 +84,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
     /** La plaque a été touchée. Ne se déclenche que s'il y a quelque chose à revoir. */
     var surRevision: (() -> Unit)? = null
 
+    /** Une carte a été cliquée. */
+    var surCarte: ((CarteMot) -> Unit)? = null
+
     private val densite = resources.displayMetrics.density
     private fun px(v: Float) = v * densite
 
@@ -91,6 +94,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private val dues = IntArray(CASIERS)
     private var aRevoir = 0
     private var total = 0
+
+    /** Les cartes, triées par compartiment. */
+    private val cartesParCasier = Array(CASIERS) { mutableListOf<CarteMot>() }
 
     /** Le casier ou la plaque sous le doigt, pour l'état pressé. [RIEN] sinon. */
     private var presse = RIEN
@@ -129,9 +135,12 @@ internal class BoiteLeitner(context: Context) : View(context) {
         dues.fill(0)
         aRevoir = 0
         total = cartes.size
+        for (i in cartesParCasier.indices) cartesParCasier[i].clear()
+
         for (c in cartes) {
             val boite = c.boite.coerceIn(0, Widderhuelen.BOITE_ACQUISE)
             combien[boite]++
+            cartesParCasier[boite].add(c)
             if (Widderhuelen.estDue(c.boite, c.jourEcheance, aujourdHui)) {
                 dues[boite]++
                 aRevoir++
@@ -147,9 +156,10 @@ internal class BoiteLeitner(context: Context) : View(context) {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val availableHeight = MeasureSpec.getSize(heightMeasureSpec)
         setMeasuredDimension(
             MeasureSpec.getSize(widthMeasureSpec),
-            px(HAUTEUR).toInt()
+            availableHeight
         )
     }
 
@@ -466,8 +476,13 @@ internal class BoiteLeitner(context: Context) : View(context) {
                 playSoundEffect(android.view.SoundEffectConstants.CLICK)
                 if (sur == PLAQUE) {
                     if (aRevoir > 0) surRevision?.invoke()
-                } else {
-                    surCasier?.invoke(sur)
+                } else if (sur >= 0 && sur < CASIERS) {
+                    val cartesEnZone = cartesParCasier[sur]
+                    if (cartesEnZone.isNotEmpty()) {
+                        surCarte?.invoke(cartesEnZone.first())
+                    } else {
+                        surCasier?.invoke(sur)
+                    }
                 }
                 return true
             }

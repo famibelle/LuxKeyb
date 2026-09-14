@@ -9743,6 +9743,8 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         private val jeux = listOf(
+            Jeu("📚", "Boîte de Leitner", "Révisez vos cartes à intervalle régulier",
+                "#8B4513") { BoiteFragment() },
             Jeu("🎲", "Wuertsich", "Retrouvez les mots cachés dans la grille",
                 "#9C27B0") { WordSearchFragment() },
             Jeu("🔤", "Wuertmix", "Remettez les lettres dans l'ordre",
@@ -9787,7 +9789,8 @@ class SettingsActivity : AppCompatActivity() {
                 visibility = View.GONE
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
+                    0,
+                    1f
                 )
             }
             colonne.addView(conteneurJeu)
@@ -9837,7 +9840,8 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(4, 0, 4, 6)
             })
             colonne.addView(TextView(activity).apply {
-                text = "Sept façons de travailler son luxembourgeois. Les jeux " +
+                text = "Huit façons de travailler son luxembourgeois. La Boîte " +
+                        "de Leitner donne accès à vos cartes étudiées. Les jeux " +
                         "de vocabulaire donnent la traduction française des " +
                         "mots, au moment où elle ne livre pas la réponse ; " +
                         "Zuelwuert porte sur l'écriture des nombres, " +
@@ -9948,10 +9952,6 @@ class SettingsActivity : AppCompatActivity() {
                         textSize = 13f
                         setTypeface(null, Typeface.BOLD)
                         setPadding(0, dp(4f), 0, 0)
-                        isClickable = true
-                        setOnClickListener {
-                            BoiteFragment().show(parentFragmentManager, "boite")
-                        }
                     }
                     addView(tvCarnetRevision)
                     tvCarnetDetail = TextView(activity).apply {

@@ -16,26 +16,21 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.example.kreyolkeyboard.TranslationDictionary
 
 /**
- * La boîte de Leitner en plein écran, depuis le hub.
+ * La boîte de Leitner comme jeu à part entière dans Spiller.
  *
- * Un [DialogFragment] plein écran qui affiche [BoiteLeitner] et gère les
- * interactions : taper un casier affiche la liste des cartes dedans, taper la
- * plaque de laiton lance une session de révision si des cartes sont dues.
+ * Un [Fragment] qui affiche [BoiteLeitner] et gère les interactions : taper
+ * un casier affiche la liste des cartes dedans, taper la plaque de laiton
+ * lance une session de révision si des cartes sont dues.
  */
-class BoiteFragment : DialogFragment() {
+class BoiteFragment : Fragment() {
 
     private lateinit var racine: FrameLayout
     private lateinit var boite: BoiteLeitner
     private var panneauCasier: View? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,60 +57,28 @@ class BoiteFragment : DialogFragment() {
             )
         }
 
-        // Barre supérieure
-        colonne.addView(LinearLayout(ctx).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setBackgroundColor(Color.WHITE)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(56f)
-            )
-            setPadding(dp(16f), dp(12f), dp(16f), dp(12f))
-            isClickable = true
-            addView(TextView(ctx).apply {
-                text = "‹  Retour"
-                textSize = 16f
-                setTextColor(Carnet.COULEUR)
-            })
-            setOnClickListener { dismiss() }
-        })
-
         // Boîte de Leitner
         boite = BoiteLeitner(ctx).apply {
+            isClickable = true
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
                 1f
-            ).apply { setMargins(dp(24f), dp(24f), dp(24f), dp(24f)) }
+            ).apply { setMargins(dp(24f), 0, dp(24f), 0) }
             surCasier = { boiteNo -> montrerCasier(boiteNo) }
             surRevision = { lancerRevision() }
+            surCarte = { carte -> lancerRevisionCarte(carte) }
         }
         colonne.addView(boite)
 
         racine.addView(colonne)
-
-        chargerEnFond()
 
         return racine
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val callback = object : androidx.activity.OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val ferme = panneauCasier?.let { panneau ->
-                    panneauCasier = null
-                    panneau.animate().alpha(0f).setDuration(120)
-                        .withEndAction { racine.removeView(panneau) }.start()
-                    true
-                } ?: false
-                if (!ferme) {
-                    dismiss()
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        chargerEnFond()
     }
 
     private fun chargerEnFond() {
@@ -242,6 +205,28 @@ class BoiteFragment : DialogFragment() {
                     hote = racine,
                     paquet = aDemander,
                     monteesParLeClavier = ecrites.toList(),
+                    surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
+                    surFin = { if (isAdded) chargerEnFond() }
+                ).ouvrir()
+            }
+        }.start()
+    }
+
+    private fun lancerRevisionCarte(carte: CarteMot) {
+        val ctx = requireContext().applicationContext
+        val principal = Handler(Looper.getMainLooper())
+        boite.isEnabled = false
+        Thread {
+            TranslationDictionary.charger(ctx)
+            TranslationDictionary.chargerExemples(ctx)
+            val contenu = CarteCarnet.contenu(ctx, carte)
+            principal.post {
+                if (!isAdded) return@post
+                boite.isEnabled = true
+                VueWidderhuelen(
+                    hote = racine,
+                    paquet = listOf(contenu),
+                    monteesParLeClavier = emptyList(),
                     surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
                     surFin = { if (isAdded) chargerEnFond() }
                 ).ouvrir()
