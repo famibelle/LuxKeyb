@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.9.1] - 2026-09-14
+
+### ✨ Améliorations
+
+- **La Boîte de Leitner occupe maintenant tout l'écran.** Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant `weight=1f` pour s'étendre, et `BoiteLeitner.onMeasure()` accepte la hauteur disponible au lieu de rester figée à 176dp.
+
 ## [22.9.0] - 2026-09-13
 
 ### 🐛 Corrections
