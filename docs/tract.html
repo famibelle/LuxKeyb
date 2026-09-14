@@ -104,7 +104,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   display:flex;
   align-items:center;
   gap:4mm;
-  margin:0 0 3.5mm;
+  margin:0 0 3mm;
 }
 .badge{
   display:inline-block;
@@ -148,7 +148,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   letter-spacing:-0.01em;
   color:#FFFFFF;
   text-shadow:0 3px 12px rgba(0,0,0,.22);
-  margin:0 0 3.5mm;
+  margin:0 0 3mm;
   white-space:nowrap;
 }
 .probs{
@@ -157,7 +157,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   padding:0;
   display:flex;
   flex-direction:column;
-  gap:3.2mm;
+  gap:2.8mm;
 }
 .probs li{
   display:flex;
@@ -187,7 +187,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-size:17.5px;
   line-height:1.25;
   color:#FFFFFF;
-  margin:3mm 0 0;
+  margin:2.4mm 0 0;
   padding-left:4.5mm;
 }
 .answer::before{
@@ -198,11 +198,15 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border-radius:999px;
   background:#00A1DE;
 }
+/* Quatre faits et non trois depuis que l'application ne se résume plus au
+   clavier : les interlignes de la colonne de gauche ont été resserrés d'un
+   demi-millimètre chacun pour loger le quatrième sans que le pied du tract,
+   où le QR a besoin de sa taille, ne descende d'un millimètre. */
 .facts{
   display:flex;
   flex-direction:column;
-  gap:1.2mm;
-  margin:2mm 0 0;
+  gap:1mm;
+  margin:1.6mm 0 0;
 }
 .fact{
   display:flex;
@@ -511,7 +515,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <div class="facts">
             <div class="fact"><span class="num">123 265</span><span class="txt">formes luxembourgeoises, du corpus public et du dictionnaire officiel</span></div>
             <div class="fact"><span class="num">QWERTZ</span><span class="txt">é, ä, ë et l'apostrophe ont chacun leur touche</span></div>
-            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien de ce que vous tapez ne sort du téléphone</span></div>
+            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien ne sort du téléphone</span></div>
+            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour retenir le vocabulaire</span></div>
           </div>
         </div>
         <div class="col-right">
@@ -558,7 +563,8 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <div class="facts">
             <div class="fact"><span class="num">123 265</span><span class="txt">formes luxembourgeoises, du corpus public et du dictionnaire officiel</span></div>
             <div class="fact"><span class="num">QWERTZ</span><span class="txt">é, ä, ë et l'apostrophe ont chacun leur touche</span></div>
-            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien de ce que vous tapez ne sort du téléphone</span></div>
+            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien ne sort du téléphone</span></div>
+            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour retenir le vocabulaire</span></div>
           </div>
         </div>
         <div class="col-right">
