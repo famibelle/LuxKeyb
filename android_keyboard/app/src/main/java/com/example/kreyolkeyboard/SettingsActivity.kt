@@ -66,6 +66,7 @@ import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
 import com.example.kreyolkeyboard.carnet.Carnet
 import com.example.kreyolkeyboard.carnet.CarnetFragment
+import com.example.kreyolkeyboard.carnet.BoiteFragment
 import com.example.kreyolkeyboard.carnet.JeuCarte
 import com.example.kreyolkeyboard.carnet.Pochette
 import com.example.kreyolkeyboard.zuelen.ZuelenData
@@ -9947,6 +9948,10 @@ class SettingsActivity : AppCompatActivity() {
                         textSize = 13f
                         setTypeface(null, Typeface.BOLD)
                         setPadding(0, dp(4f), 0, 0)
+                        isClickable = true
+                        setOnClickListener {
+                            BoiteFragment().show(parentFragmentManager, "boite")
+                        }
                     }
                     addView(tvCarnetRevision)
                     tvCarnetDetail = TextView(activity).apply {

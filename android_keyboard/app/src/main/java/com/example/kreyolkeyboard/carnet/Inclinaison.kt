@@ -77,7 +77,7 @@ object Inclinaison {
      * des deux côtés, l'épaisseur du carton ne correspondrait pas à sa
      * propre inclinaison.
      */
-    const val AMPLITUDE = 7f
+    const val AMPLITUDE = 10f
 
     /**
      * Le lissage du suivi.
