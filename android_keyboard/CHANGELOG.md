@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.3] - 2026-09-15
+
+### ✨ Améliorations
+
+- **Une carte ouverte se referme par glissé latéral.** Vers la gauche ou vers la droite, elle suit le doigt et sort de l'écran, et l'on retrouve l'éventail du casier au même endroit. Un geste trop court la remet en place.
+
 ## [22.12.2] - 2026-09-15
 
 ### 📖 Guide

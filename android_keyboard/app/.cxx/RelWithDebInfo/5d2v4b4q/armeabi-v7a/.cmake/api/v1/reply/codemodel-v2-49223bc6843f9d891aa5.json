@@ -1,0 +1,211 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-RelWithDebInfo-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "whisper.cpp",
+					"childIndexes" : 
+					[
+						2,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp-RelWithDebInfo-9c05b68e1148d44ec539.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "whisper.cpp"
+				},
+				{
+					"build" : "whisper.cpp/ggml",
+					"childIndexes" : 
+					[
+						3
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp.ggml-RelWithDebInfo-3ffb53df9444630dbec9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml"
+				},
+				{
+					"build" : "whisper.cpp/ggml/src",
+					"childIndexes" : 
+					[
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp.ggml.src-RelWithDebInfo-45de6ec491fb518c4131.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml/src",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				},
+				{
+					"build" : "whisper.cpp/ggml/src/ggml-cpu",
+					"jsonFile" : "directory-whisper.cpp.ggml.src.ggml-cpu-RelWithDebInfo-d9e6f93636dee721c3d5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml/src/ggml-cpu"
+				},
+				{
+					"build" : "whisper.cpp/src",
+					"jsonFile" : "directory-whisper.cpp.src-RelWithDebInfo-6cde81279a774ec00302.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "whisper.cpp/src",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "luxstt",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2
+					],
+					"directoryIndexes" : 
+					[
+						1,
+						5
+					],
+					"name" : "whisper.cpp",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"name" : "ggml",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-RelWithDebInfo-dc99ec8110a0bb1aeb65.json",
+					"name" : "ggml",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml-base::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-base-RelWithDebInfo-e6edd42a2c3d1ec0fceb.json",
+					"name" : "ggml-base",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml-cpu::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-cpu-RelWithDebInfo-4cefc2d6cc76b9538790.json",
+					"name" : "ggml-cpu",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "luxstt::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-luxstt-RelWithDebInfo-01f0c767806a72114a6f.json",
+					"name" : "luxstt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "whisper::@a8a66f5e841e94d32cb3",
+					"jsonFile" : "target-whisper-RelWithDebInfo-63cf6235324d5f1d3f15.json",
+					"name" : "whisper",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/.cxx/RelWithDebInfo/5d2v4b4q/armeabi-v7a",
+		"source" : "/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,20 @@
+                        -H/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=21
+-DANDROID_PLATFORM=android-21
+-DANDROID_ABI=x86_64
+-DCMAKE_ANDROID_ARCH_ABI=x86_64
+-DANDROID_NDK=/home/medhi/Android/Sdk/ndk/27.0.12077973
+-DCMAKE_ANDROID_NDK=/home/medhi/Android/Sdk/ndk/27.0.12077973
+-DCMAKE_TOOLCHAIN_FILE=/home/medhi/Android/Sdk/ndk/27.0.12077973/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/home/medhi/Android/Sdk/cmake/3.22.1/bin/ninja
+-DCMAKE_CXX_FLAGS=-O3 -ffast-math -fno-finite-math-only
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/x86_64
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/x86_64
+-DCMAKE_BUILD_TYPE=Debug
+-B/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/.cxx/Debug/586pa91e/x86_64
+-GNinja
+-DANDROID_STL=c++_static
+                        Build command args: []
+                        Version: 2

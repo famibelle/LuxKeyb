@@ -1,0 +1,211 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "whisper.cpp",
+					"childIndexes" : 
+					[
+						2,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp-Debug-f37fbf3acb52ae3f0c6f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "whisper.cpp"
+				},
+				{
+					"build" : "whisper.cpp/ggml",
+					"childIndexes" : 
+					[
+						3
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp.ggml-Debug-f71dac3404c4fb669ab3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml"
+				},
+				{
+					"build" : "whisper.cpp/ggml/src",
+					"childIndexes" : 
+					[
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-whisper.cpp.ggml.src-Debug-f8053c24aafaa3aec619.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml/src",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				},
+				{
+					"build" : "whisper.cpp/ggml/src/ggml-cpu",
+					"jsonFile" : "directory-whisper.cpp.ggml.src.ggml-cpu-Debug-d9e6f93636dee721c3d5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 2,
+					"source" : "whisper.cpp/ggml/src/ggml-cpu"
+				},
+				{
+					"build" : "whisper.cpp/src",
+					"jsonFile" : "directory-whisper.cpp.src-Debug-6cde81279a774ec00302.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "whisper.cpp/src",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "luxstt",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2
+					],
+					"directoryIndexes" : 
+					[
+						1,
+						5
+					],
+					"name" : "whisper.cpp",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"name" : "ggml",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-Debug-55b980dab6832e148518.json",
+					"name" : "ggml",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml-base::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-base-Debug-478504f6777121f48825.json",
+					"name" : "ggml-base",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ggml-cpu::@74253485f3a7ec30fb13",
+					"jsonFile" : "target-ggml-cpu-Debug-0afaac117ba45922cfc5.json",
+					"name" : "ggml-cpu",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "luxstt::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-luxstt-Debug-751b6d130c01c232e888.json",
+					"name" : "luxstt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "whisper::@a8a66f5e841e94d32cb3",
+					"jsonFile" : "target-whisper-Debug-b4f77386be7635cffdcb.json",
+					"name" : "whisper",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/.cxx/Debug/586pa91e/arm64-v8a",
+		"source" : "/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

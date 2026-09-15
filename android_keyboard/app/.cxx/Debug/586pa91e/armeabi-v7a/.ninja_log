@@ -1,0 +1,26 @@
+# ninja log v5
+4	2307	1787926011493953674	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o	52f3ac8ba4040a8f
+3029	3061	1787926012257986883	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libggml-cpu.so	7f2af9a66cf45d15
+2339	2491	1787926011684864888	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libggml-base.so	64fe5db08578b1b9
+2103	2618	1787926011808161715	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/mmq.cpp.o	b65638b63233dce6
+3	297	1787926009489123239	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o	97d336c6ee592fa0
+1078	1994	1787926011187700268	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu-quants.c.o	b82bde38e0307c40
+1050	1086	1787926010282144632	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu-hbm.cpp.o	3cfd5a5e2d2b4c04
+584	670	1788291106351435136	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libluxstt.so	10d5f5d5f6291305
+4	1050	1787926010222590149	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml-quants.c.o	82ed19df0ef80f8a
+4	538	1787926009730822195	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.o	3205cde5e1117eb5
+1994	2842	1787926012034913243	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/amx.cpp.o	c00efb23b7d7dfbb
+791	3028	1787926012218152306	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu-aarch64.cpp.o	a285c6cd1e7dc8bd
+1086	2532	1787926011716683424	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu-traits.cpp.o	aedd3d16369653b6
+3061	3117	1787926012313755294	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libggml.so	8f7e142e354bb481
+2	1078	1787926010258322839	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml.c.o	492f84da8857544
+0	26	0	clean	40d28f33826fce67
+297	2098	1787926011283155874	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.c.o	757c273fe9222775
+16979	17017	1787926026206609263	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libwhisper.so	15abbab936ed0465
+3	2338	1787926011525772210	whisper.cpp/ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.o	adfc2d620c7acb81
+11	2868	1787926012058813990	whisper.cpp/ggml/src/CMakeFiles/ggml.dir/ggml-backend-reg.cpp.o	97f99933a83342ba
+2300	16979	1787926026130207408	whisper.cpp/src/CMakeFiles/whisper.dir/whisper.cpp.o	b98a0b9af44c4cbd
+538	2299	1787926011482021723	whisper.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.cpp.o	b6c72320e8617ff
+5	584	1788291106259435188	CMakeFiles/luxstt.dir/whisper_jni.cpp.o	eb2226a800f5059e
+2	569	1788292271706664473	CMakeFiles/luxstt.dir/whisper_jni.cpp.o	eb2226a800f5059e
+569	594	1788292271734664483	/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/Debug/586pa91e/obj/armeabi-v7a/libluxstt.so	10d5f5d5f6291305

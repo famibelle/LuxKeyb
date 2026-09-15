@@ -302,7 +302,7 @@ class BoiteFragment : Fragment() {
         val ctx = context ?: return
         val d = resources.displayMetrics.density
 
-        val voile = VoileGlissable(ctx) { sens -> fermerCarte(sens) }.apply {
+        val voile = VoileGlissable(ctx) { sensX, sensY -> fermerCarte(sensX, sensY) }.apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -343,13 +343,15 @@ class BoiteFragment : Fragment() {
             .start()
     }
 
-    /** [sens] non nul : la carte a été chassée d'un glissé, elle sort par ce côté. */
-    private fun fermerCarte(sens: Int = 0) {
+    /** [sensX] ou [sensY] non nul : la carte a été chassée d'un glissé, elle sort par ce côté. */
+    private fun fermerCarte(sensX: Int = 0, sensY: Int = 0) {
         val voile = voileCarte ?: return
         voileCarte = null
         majRetour()
-        if (sens != 0 && voile is ViewGroup && voile.childCount > 0) {
-            voile.getChildAt(0).animate().translationY(sens * voile.height.toFloat())
+        if ((sensX != 0 || sensY != 0) && voile is ViewGroup && voile.childCount > 0) {
+            voile.getChildAt(0).animate()
+                .translationX(sensX * voile.width.toFloat())
+                .translationY(sensY * voile.height.toFloat())
                 .setDuration(200).setInterpolator(DecelerateInterpolator()).start()
         }
         voile.animate().alpha(0f).setDuration(160)

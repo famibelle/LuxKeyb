@@ -12,26 +12,35 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 /**
- * Le voile d'une carte ouverte depuis l'éventail : on la chasse vers le haut ou
- * vers le bas pour revenir aux cartes, comme on repose une carte sur la pile.
+ * Le voile d'une carte ouverte depuis l'éventail : on la chasse dans n'importe
+ * quel sens pour revenir aux cartes, comme on repose une carte sur la pile.
  *
- * Le geste n'est pris qu'une fois franchement vertical, et seulement quand la
- * carte ne peut plus défiler dans ce sens : une glose plus haute que l'écran se
- * lit d'abord jusqu'au bout, et c'est le glissé suivant qui la renvoie. L'appui
- * simple reste un clic, qui referme aussi.
+ * Le voile retient tous les gestes dès l'appui : sans cela, le glissé latéral
+ * remontait jusqu'au pager des onglets, qui changeait d'onglet par-dessus la
+ * carte au lieu de rendre l'éventail.
  *
- * [surEnvol] reçoit le sens du jet : -1 vers le haut, 1 vers le bas.
+ * Le geste vertical n'est pris que quand la carte ne peut plus défiler dans ce
+ * sens : une glose plus haute que l'écran se lit d'abord jusqu'au bout, et c'est
+ * le glissé suivant qui la renvoie. Le geste latéral est pris dès qu'il se
+ * déclare, la carte ne défilant jamais de côté. L'appui simple reste un clic,
+ * qui referme aussi.
+ *
+ * [surEnvol] reçoit le sens du jet sur chaque axe, l'un des deux restant nul :
+ * (-1, 0) vers la gauche, (1, 0) vers la droite, (0, -1) vers le haut, (0, 1)
+ * vers le bas.
  */
 internal class VoileGlissable(
     context: Context,
-    private val surEnvol: (Int) -> Unit
+    private val surEnvol: (Int, Int) -> Unit
 ) : FrameLayout(context) {
+
+    private enum class Axe { AUCUN, VERTICAL, HORIZONTAL }
 
     private val seuil = ViewConfiguration.get(context).scaledTouchSlop
     private val vitesseJet = 900f * resources.displayMetrics.density
     private var x0 = 0f
     private var y0 = 0f
-    private var glisse = false
+    private var axe = Axe.AUCUN
     private var suivi: VelocityTracker? = null
 
     private val contenu: View? get() = if (childCount > 0) getChildAt(0) else null
@@ -40,7 +49,7 @@ internal class VoileGlissable(
         if (e.actionMasked == MotionEvent.ACTION_DOWN) {
             x0 = e.rawX
             y0 = e.rawY
-            glisse = false
+            axe = Axe.AUCUN
             suivi?.recycle()
             suivi = VelocityTracker.obtain()
         }
@@ -49,41 +58,59 @@ internal class VoileGlissable(
         val brut = MotionEvent.obtain(e).apply { setLocation(e.rawX, e.rawY) }
         suivi?.addMovement(brut)
         brut.recycle()
-        return super.dispatchTouchEvent(e)
+        val pris = super.dispatchTouchEvent(e)
+        // Après super : un ViewGroup remet ce drapeau à zéro à chaque appui.
+        if (e.actionMasked == MotionEvent.ACTION_DOWN) {
+            parent?.requestDisallowInterceptTouchEvent(true)
+        }
+        return pris
     }
 
-    private fun devientVertical(e: MotionEvent): Boolean {
+    private fun axeDeclare(e: MotionEvent): Axe {
         val dx = e.rawX - x0
         val dy = e.rawY - y0
-        if (abs(dy) <= seuil || abs(dy) <= 1.5f * abs(dx)) return false
-        val defile = contenu as? ScrollView
-        return defile?.canScrollVertically(if (dy < 0) 1 else -1) != true
+        if (abs(dy) > seuil && abs(dy) > 1.5f * abs(dx)) {
+            val defile = contenu as? ScrollView
+            val bloque = defile?.canScrollVertically(if (dy < 0) 1 else -1) != true
+            return if (bloque) Axe.VERTICAL else Axe.AUCUN
+        }
+        if (abs(dx) > seuil && abs(dx) > 1.5f * abs(dy)) return Axe.HORIZONTAL
+        return Axe.AUCUN
     }
 
     override fun onInterceptTouchEvent(e: MotionEvent): Boolean {
-        if (e.actionMasked == MotionEvent.ACTION_MOVE && !glisse && devientVertical(e)) {
-            glisse = true
+        if (e.actionMasked == MotionEvent.ACTION_MOVE && axe == Axe.AUCUN) {
+            axe = axeDeclare(e)
         }
-        return glisse
+        return axe != Axe.AUCUN
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
-        if (!glisse && e.actionMasked == MotionEvent.ACTION_MOVE && devientVertical(e)) {
-            glisse = true
-            // L'appui commencé sur le voile ne doit plus devenir un clic.
-            super.onTouchEvent(MotionEvent.obtain(e).apply { action = MotionEvent.ACTION_CANCEL })
+        if (axe == Axe.AUCUN && e.actionMasked == MotionEvent.ACTION_MOVE) {
+            axe = axeDeclare(e)
+            if (axe != Axe.AUCUN) {
+                // L'appui commencé sur le voile ne doit plus devenir un clic.
+                super.onTouchEvent(MotionEvent.obtain(e).apply { action = MotionEvent.ACTION_CANCEL })
+            }
         }
-        if (!glisse) return super.onTouchEvent(e)
+        if (axe == Axe.AUCUN) return super.onTouchEvent(e)
 
-        val dy = e.rawY - y0
+        val horizontal = axe == Axe.HORIZONTAL
+        val d = if (horizontal) e.rawX - x0 else e.rawY - y0
         when (e.actionMasked) {
-            MotionEvent.ACTION_MOVE -> suivre(dy)
+            MotionEvent.ACTION_MOVE -> suivre(d, horizontal)
             MotionEvent.ACTION_UP -> {
                 suivi?.computeCurrentVelocity(1000)
-                val vy = suivi?.yVelocity ?: 0f
-                val loin = abs(dy) > height * 0.18f
-                val jet = abs(vy) > vitesseJet && sign(vy) == sign(dy)
-                if ((loin || jet) && dy != 0f) surEnvol(sign(dy).toInt()) else rappeler()
+                val v = (if (horizontal) suivi?.xVelocity else suivi?.yVelocity) ?: 0f
+                val etendue = if (horizontal) width else height
+                val loin = abs(d) > etendue * 0.18f
+                val jet = abs(v) > vitesseJet && sign(v) == sign(d)
+                if ((loin || jet) && d != 0f) {
+                    val s = sign(d).toInt()
+                    if (horizontal) surEnvol(s, 0) else surEnvol(0, s)
+                } else {
+                    rappeler()
+                }
                 finir()
             }
             MotionEvent.ACTION_CANCEL -> {
@@ -94,20 +121,21 @@ internal class VoileGlissable(
         return true
     }
 
-    private fun suivre(dy: Float) {
-        contenu?.translationY = dy
-        val part = (abs(dy) / height.coerceAtLeast(1)).coerceIn(0f, 1f)
+    private fun suivre(d: Float, horizontal: Boolean) {
+        val etendue = (if (horizontal) width else height).coerceAtLeast(1)
+        if (horizontal) contenu?.translationX = d else contenu?.translationY = d
+        val part = (abs(d) / etendue).coerceIn(0f, 1f)
         background?.alpha = (255 * (1f - part)).toInt()
     }
 
     private fun rappeler() {
-        contenu?.animate()?.translationY(0f)?.setDuration(200)
+        contenu?.animate()?.translationX(0f)?.translationY(0f)?.setDuration(200)
             ?.setInterpolator(DecelerateInterpolator())?.start()
         background?.alpha = 255
     }
 
     private fun finir() {
-        glisse = false
+        axe = Axe.AUCUN
         suivi?.recycle()
         suivi = null
     }

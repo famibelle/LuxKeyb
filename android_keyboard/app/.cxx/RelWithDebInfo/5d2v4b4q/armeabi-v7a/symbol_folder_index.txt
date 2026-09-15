@@ -1,0 +1,1 @@
+/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/build/intermediates/cxx/RelWithDebInfo/5d2v4b4q/obj/armeabi-v7a
