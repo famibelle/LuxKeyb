@@ -1,9 +1,93 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.4",
+ "derniere_version": "22.12.8",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.8",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La carte ouverte s'incline deux fois plus",
+       "texte": "Quand on penche le téléphone, elle pivote maintenant jusqu'à vingt degrés au lieu de dix."
+      },
+      {
+       "titre": "La carte s'incline aussi de haut en bas, à contre-mouvement",
+       "texte": "Quand on bascule le téléphone vers l'avant ou vers l'arrière, la carte résiste au geste comme elle le fait déjà de gauche à droite. Ce mouvement existait, mais un téléphone tenu presque debout le rendait imperceptible."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.12.7",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔄",
+     "titre": "Changé",
+     "points": [
+      {
+       "titre": "« Mäi Lëtzebuergesch » passe en dernier onglet",
+       "texte": "Ordre désormais Démarrage · Spiller · Wierderbuch · Mäi Lëtzebuergesch."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.12.6",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La plaque de nom s'arrête à l'aplomb de la fenêtre sur tous les paliers",
+       "texte": "Commun, Peu commun et Rare la traçaient jusqu'à 276, sept unités au-delà de la pointe de la ligne de type, là où la très rare s'arrêtait déjà à 269,4. Elle s'y arrête maintenant partout, et le nom qui ne tient pas au centre suit ce même tracé."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.12.5",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La clef de voûte, les griffes et les rivets sont opaques",
+       "texte": "Ils héritaient de l'alpha du liseré du joyau précédent et laissaient voir à travers eux. Même correction sur tous les joyaux de la carte."
+      },
+      {
+       "titre": "La plaque du nom ne laisse plus de triangle au-dessus de la pastille",
+       "texte": "Elle rentre maintenant dans le métal jusqu'au bord du cadre sur les très rares, sans laisser de marge."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "22.12.4",
    "date": "2026-09-15",
@@ -63,107 +147,6 @@
    "image": "Screenshots/lux_glisse_lateral.png",
    "image_alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
    "image_legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
-  },
-  {
-   "version": "22.12.2",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "📖",
-     "titre": "Guide",
-     "points": [
-      {
-       "titre": "Le guide explique les cartes du carnet, image à l'appui",
-       "texte": "Trois illustrations fléchées et numérotées détaillent la carte « Waasser » : le mot, sa longueur, l'illustration et le cadre ; la nature, le sens, l'exemple et sa traduction ; les écus VUES et NIVEAU, le joyau de rareté, la ligne de série et le rang. Une quatrième montre ce que garde la petite carte de la grille."
-      },
-      {
-       "titre": null,
-       "texte": "La section des jeux présente les sept jeux et la Boîte de Leitner, là où elle n'en citait que cinq."
-      },
-      {
-       "titre": null,
-       "texte": "La progression nomme les huit niveaux luxembourgeois, d'Ufänker à Sproochenmeeschter."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_guide_cartes.png",
-   "image_alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
-   "image_legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
-  },
-  {
-   "version": "22.12.1",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "L'éventail d'un casier se sent sous le doigt",
-       "texte": "Chaque carte qui passe au centre donne un léger cran de vibration, pendant le glissé comme quand l'éventail se cale : on compte les cartes sans les regarder. Aucun cran au-delà de la première ou de la dernière carte. Le retour suit le réglage « Vibration à la frappe » du clavier."
-      },
-      {
-       "titre": "Une carte ouverte depuis l'éventail se chasse d'un glissé",
-       "texte": "Vers le haut ou vers le bas, elle sort de l'écran et l'on retrouve l'éventail là où on l'avait laissé. Une carte plus haute que l'écran se lit d'abord jusqu'au bout : c'est le glissé suivant qui la renvoie. Toucher à côté ou le bouton retour la referment toujours."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_carte_glissee.png",
-   "image_alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
-   "image_legende": "Une carte ouverte depuis l'éventail se chasse d'un glissé vers le haut ou vers le bas, et l'on retrouve l'éventail sur la carte qu'on lisait. En parcourant l'éventail, chaque carte qui passe au centre donne un léger cran de vibration."
-  },
-  {
-   "version": "22.12.0",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Chaque carte du carnet dit la nature de son mot",
-       "texte": "La ligne sous l'illustration nomme sa catégorie telle que le dictionnaire officiel du ZLS la donne : « Nom féminin · gagné à Wuertplaz », « Verbe », « Adjectif », « Préposition »… Pour un nom, le genre est indiqué, c'est lui qui décide entre <em>de</em>, <em>d'</em> et <em>dat</em>."
-      },
-      {
-       "titre": null,
-       "texte": "Un mot absent du dictionnaire officiel, comme un sigle, garde l'ancienne règle : « Nom » s'il porte une majuscule, rien sinon."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_categories.png",
-   "image_alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
-   "image_legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
-  },
-  {
-   "version": "22.11.1",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Le libellé d'une carte du carnet « Substantif · Wuertplaz » se lisait comme si le jeu était un substantif. Il dit maintenant « Nom · gagné à Wuertplaz », qui classe clairement le mot et son origine."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }
