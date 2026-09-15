@@ -153,8 +153,25 @@ object Ornement {
     val FENETRE = RectF(32f, 74f, 268f, 250f)
     val FENETRE_VIGNETTE = RectF(26f, 26f, 274f, 212f)
     val PLAQUE = RectF(62f, 18f, 276f, 58f)
-    val GEMME = RectF(11f, 17f, 65f, 71f)
+    /** Centrée sur la plaque (y = 38) et à 11 unités des deux bords de l'angle. */
+    val GEMME = RectF(11f, 11f, 65f, 65f)
     val TYPE = RectF(46f, 256f, 254f, 284f)
+
+    /**
+     * Où poser le nom, selon sa largeur en unités de carte.
+     *
+     * Sur l'axe de la carte tant qu'il tient entre la gemme et son symétrique :
+     * la clef de voûte, l'arche, la ligne de type et le joyau y sont tous, et
+     * un nom centré sur la seule plaque tombait 19 unités à droite d'eux. Un
+     * nom trop long pour cet espace reprend toute la plaque, jusqu'avant sa pointe.
+     */
+    fun emplacementNom(rarete: Rarete, largeur: Float): RectF {
+        val gauche = GEMME.right
+        val droite = if (largeur <= LARGEUR - 2f * gauche - 4f) LARGEUR - gauche
+        else if (rarete.ordinal >= 3) plaqueTracee(rarete.ordinal).right + 15f
+        else PLAQUE.right
+        return RectF(gauche, PLAQUE.top, droite, PLAQUE.bottom)
+    }
     val PANNEAU = RectF(38f, 289f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
     val PANNEAU_TEXTE = RectF(48f, 297f, 252f, 378f)
@@ -371,16 +388,16 @@ object Ornement {
     /**
      * La plaque telle qu'elle est tracée, et non telle que le nom s'y centre.
      *
-     * À pointes (Très rare), elle entre dans le métal des deux côtés : arrêtée
-     * à 276 contre une face qui finit à 282, elle laissait sous sa pointe un
-     * triangle de face ; partie de 62, un coin de face restait entre elle et
-     * l'anneau de la gemme. Côté gauche, elle part du centre de la gemme, qui
-     * la recouvre.
+     * À pointes (Très rare), sa pointe a l'angle de celles de la ligne de type
+     * et tombe à l'aplomb de leur pointe droite (269,4), entièrement dans la
+     * face. Entrée dans le métal, elle s'arrêtait au milieu de la bande, deux
+     * fois plus émoussée que les pointes du dessous. Côté gauche, elle part du
+     * centre de la gemme, qui la recouvre.
      */
     private fun plaqueTracee(palier: Int): RectF {
         if (palier < 3) return PLAQUE
-        val bord = 12f + palier * 2f
-        return RectF(GEMME.centerX(), PLAQUE.top, LARGEUR - bord, PLAQUE.bottom)
+        val pointe = TYPE.right + TYPE.height() * 0.55f
+        return RectF(GEMME.centerX(), PLAQUE.top, pointe - PLAQUE.height() * 0.55f, PLAQUE.bottom)
     }
 
     /** L'écu d'une statistique : un blason à base arrondie. */

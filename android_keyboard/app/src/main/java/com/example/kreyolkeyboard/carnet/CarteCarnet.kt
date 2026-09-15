@@ -192,10 +192,10 @@ object CarteCarnet {
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),
             Ornement.GEMME
         )
-        carte.posee(
-            ligne(context, c.carte.forme, taille = 21f, couleur = ENCRE, gras = true),
-            Ornement.PLAQUE
-        )
+        val vueNom = ligne(context, c.carte.forme, taille = 21f, couleur = ENCRE, gras = true)
+        // La taille est en unités de carte : la largeur mesurée l'est aussi.
+        val largeurNom = android.text.TextPaint(vueNom.paint).apply { textSize = 21f }.measureText(c.carte.forme)
+        carte.posee(vueNom, Ornement.emplacementNom(c.rarete, largeurNom))
 
         // Chaque moitié dit ce qu'elle est : « Substantif · Wuertplaz » se
         // lisait comme si le jeu était un substantif.
