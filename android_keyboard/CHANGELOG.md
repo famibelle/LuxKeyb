@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Chaque carte du carnet dit la nature de son mot.** La ligne sous l'illustration nomme sa catégorie telle que le dictionnaire officiel du ZLS la donne : « Nom féminin · gagné à Wuertplaz », « Verbe », « Adjectif », « Préposition »… Pour un nom, le genre est indiqué, c'est lui qui décide entre *de*, *d'* et *dat*.
+- Un mot absent du dictionnaire officiel, comme un sigle, garde l'ancienne règle : « Nom » s'il porte une majuscule, rien sinon.
+
 ## [22.11.1] - 2026-09-15
 
 ### 🐛 Corrections
