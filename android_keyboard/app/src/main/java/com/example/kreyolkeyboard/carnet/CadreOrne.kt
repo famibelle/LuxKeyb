@@ -279,6 +279,9 @@ object Ornement {
     /** Un joyau serti : facette claire en haut à gauche, creux sombre en bas. */
     private fun joyau(c: Canvas, p: Paint, cx: Float, cy: Float, r: Float, couleur: Int, facettes: Int) {
         p.style = Paint.Style.FILL
+        // Opaque d'abord : le liseré du joyau précédent laissait 55 % d'alpha
+        // au pinceau, et sept griffes sur huit montraient l'anneau au travers.
+        p.color = Color.BLACK
         p.shader = RadialGradient(
             cx - r * 0.35f, cy - r * 0.4f, r * 1.35f,
             intArrayOf(0xF2FFFFFF.toInt(), couleur, 0x8C000000.toInt()),
@@ -363,6 +366,21 @@ object Ornement {
         p.strokeWidth = 1.2f
         p.color = m.trait
         c.drawPath(chemin, p)
+    }
+
+    /**
+     * La plaque telle qu'elle est tracée, et non telle que le nom s'y centre.
+     *
+     * À pointes (Très rare), elle entre dans le métal des deux côtés : arrêtée
+     * à 276 contre une face qui finit à 282, elle laissait sous sa pointe un
+     * triangle de face ; partie de 62, un coin de face restait entre elle et
+     * l'anneau de la gemme. Côté gauche, elle part du centre de la gemme, qui
+     * la recouvre.
+     */
+    private fun plaqueTracee(palier: Int): RectF {
+        if (palier < 3) return PLAQUE
+        val bord = 12f + palier * 2f
+        return RectF(GEMME.centerX(), PLAQUE.top, LARGEUR - bord, PLAQUE.bottom)
     }
 
     /** L'écu d'une statistique : un blason à base arrondie. */
@@ -542,6 +560,7 @@ object Ornement {
             clef.lineTo(kx + 15f, ky + 12f)
             clef.close()
             p.style = Paint.Style.FILL
+            p.color = Color.BLACK
             p.shader = LinearGradient(0f, ky - 8f, 0f, ky + 12f, m.hi, m.lo, Shader.TileMode.CLAMP)
             c.drawPath(clef, p)
             p.shader = null
@@ -614,7 +633,7 @@ object Ornement {
         if (vignette) return
 
         // 7. La plaque de nom.
-        bandeau(c, p, PLAQUE, palier >= 3, m)
+        bandeau(c, p, plaqueTracee(palier), palier >= 3, m)
 
         // 8. La sertissure de la gemme de coût, en débord sur la plaque.
         val gx = GEMME.centerX()
@@ -1015,7 +1034,8 @@ object Ornement {
         brut.add(bord)
         brut.add(LARGEUR - bord)
         dansLaBande(brut, y, GEMME, GEMME.left + 4f, GEMME.right - 4f)
-        dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
+        val plaque = plaqueTracee(palier)
+        dansLaBande(brut, y, plaque, plaque.left, plaque.right)
         dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
         dansLaBande(brut, y, TYPE, TYPE.left, TYPE.right)
         dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
