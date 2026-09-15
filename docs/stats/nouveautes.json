@@ -1,9 +1,32 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.0",
+ "derniere_version": "22.12.1",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.1",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "L'éventail d'un casier se sent sous le doigt",
+       "texte": "Chaque carte qui passe au centre donne un léger cran de vibration, pendant le glissé comme quand l'éventail se cale : on compte les cartes sans les regarder. Aucun cran au-delà de la première ou de la dernière carte. Le retour suit le réglage « Vibration à la frappe » du clavier."
+      },
+      {
+       "titre": "Une carte ouverte depuis l'éventail se chasse d'un glissé",
+       "texte": "Vers le haut ou vers le bas, elle sort de l'écran et l'on retrouve l'éventail là où on l'avait laissé. Une carte plus haute que l'écran se lit d'abord jusqu'au bout : c'est le glissé suivant qui la renvoie. Toucher à côté ou le bouton retour la referment toujours."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "22.12.0",
    "date": "2026-09-15",
@@ -174,69 +197,6 @@
       {
        "titre": "La Boîte de Leitner occupe maintenant tout l'écran",
        "texte": "Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant <code>weight=1f</code> pour s'étendre, et <code>BoiteLeitner.onMeasure()</code> accepte la hauteur disponible au lieu de rester figée à 176dp."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.9.0",
-   "date": "2026-09-13",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La pochette de fin de partie restait bloquée sur sa première carte",
-       "texte": "Le compteur annonçait « 1 / 7 », et il n'y avait aucun moyen d'atteindre la deuxième."
-      }
-     ],
-     "texte": "La cause est un conflit de toucher, pas un oubli. Le passage d'une carte à la suivante tenait à un <code>setOnClickListener</code> posé sur le voile (<code>Booster.ouvrir</code>), tandis que la carte ouverte vit dans un <code>ScrollView</code> — il lui faut pouvoir faire défiler une glose plus haute que l'écran. Or <code>ScrollView.onTouchEvent</code> retourne <code>true</code> dès <code>ACTION_DOWN</code>, <strong>même quand il n'a rien à faire défiler</strong>, et n'appelle jamais <code>performClick()</code>. L'appui était donc consommé par la carte et n'arrivait pas au voile. La carte occupant la quasi-totalité de la scène, les seuls appuis qui passaient encore étaient ceux qui tombaient dans les quelques millimètres de marge autour d'elle — autant dire aucun. Ce n'était pas un défaut de découvrabilité : le geste documenté existait et ne fonctionnait pas.",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "La pochette se parcourt au doigt, dans les deux sens",
-       "texte": "On glisse vers la gauche pour avancer, vers la droite pour revenir. Le bilan de fin est devenu la dernière page du paquet au lieu d'un écran à part, ce qui permet d'en ressortir vers la dernière carte : un bilan posé à côté du paquet était un cul-de-sac, et c'était la moitié du problème."
-      },
-      {
-       "titre": "Une carte rare part en feux d'artifice quand elle se pose",
-       "texte": "Trois gerbes pour une <em>Rare</em>, cinq pour une <em>Très rare</em>, décalées dans le temps, avec pesanteur et traînées ; elles s'éteignent en <code>(1 - t)²</code>, donc bien avant d'atteindre le bord — ce qu'on est venu voir, c'est le mot."
-      }
-     ],
-     "texte": "Une carte déjà retournée se retrouve telle qu'on l'a laissée. La cérémonie — le dos, le halo qui monte, le retournement — appartient à la découverte ; la rejouer à chaque aller-retour aurait transformé la consultation en attente. Aux deux bouts du paquet, le glissement résiste au tiers de la course : la carte suit encore le doigt, mais dit qu'il n'y a rien derrière sans avoir à l'écrire. L'appui simple reste ce qu'il était, et marche de nouveau. Le compteur porte désormais la mention du geste, faute de quoi il n'y aurait toujours rien pour l'apprendre. Elles partent <strong>à chaque fois que la carte arrive à l'écran</strong>, au retournement qui la découvre comme au glissement qui y revient : la rareté n'est pas une nouvelle qu'on annonce une fois, c'est une propriété que la carte garde, et c'est ce qui donne une raison de parcourir sa pochette. Le tirage des gerbes est fixé par la forme du mot (<code>graine = forme.hashCode()</code>). Revenir sur une carte redonne exactement son bouquet, et deux cartes voisines n'en donnent jamais deux pareils : le hasard sert la variété, jamais l'instabilité. C'est la règle d'<code>EclatCarte</code> appliquée dans l'autre sens — lui garde des angles réguliers parce qu'il est bref, elles peuvent se permettre du désordre parce qu'il ne varie pas d'une fois sur l'autre. Les deux cohabitent sur une très rare, la gerbe reprenant là où l'éclat s'éteint.",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Détails d'implémentation",
-     "points": [
-      {
-       "titre": "<code>ScenePochette</code>",
-       "texte": "(nouveau, <code>Booster.kt</code>) : la scène lit le geste avant ses enfants. Elle intercepte le glissement horizontal dès qu'il se déclare (<code>|dx| &gt; slop</code> et <code>|dx| &gt; 1,2·|dy|</code> — les diagonales vont au défilement, une carte qu'on voulait lire et qui s'en va valant bien pire qu'un glissement à refaire), et reconnaît l'appui simple <strong>sans jamais l'intercepter</strong>, dans <code>onInterceptTouchEvent</code>, qui reçoit tous les événements du geste tant qu'elle laisse faire. Les deux chemins sont exclusifs — si un enfant prend le geste, seul <code>onInterceptTouchEvent</code> voit le relâchement ; sinon la scène l'a consommé dès l'appui — donc un appui ne peut pas compter deux fois. Coordonnées lues en <code>raw</code> : la page glisse sous le doigt, des coordonnées locales mesureraient ce déplacement au lieu de celui de la main. Et quand le <code>ScrollView</code> se met à défiler, il demande lui-même qu'on ne l'interrompe plus : le défilement gagne."
-      },
-      {
-       "titre": "<code>performClick()</code>",
-       "texte": "Est surchargée et porte l'appui, plutôt que d'appeler le rappel depuis <code>onTouchEvent</code> : les services d'accessibilité déclenchent un clic sans jamais produire de <code>MotionEvent</code>, et la pochette n'aurait sinon pas eu de carte suivante sous TalkBack."
-      },
-      {
-       "titre": "<code>FeuxArtifice</code>",
-       "texte": "(nouveau, <code>Booster.kt</code>) : une vue pilotée par un unique <code>avancement</code> de 0 à 1, comme <code>EclatCarte</code>. Rayon en <code>1 - (1-t)²</code>, chute en <code>t²</code>, traînée proportionnelle à la vitesse restante ; une étoile sur deux part à 72 % du rayon, sans quoi la gerbe se lirait comme un anneau. Les positions sont en fractions de la vue, jamais en pixels : le tirage a lieu à la construction, avant qu'on connaisse la taille."
-      },
-      {
-       "titre": "Chaque page vit dans son propre <code>FrameLayout</code>",
-       "texte": "Ajouté à la scène et retiré à la fin de sa sortie. Les rappels différés de la cérémonie s'arrêtent sur <code>page.parent == null</code>, ce qui suffit à abandonner proprement un retournement que le joueur a interrompu d'un glissement."
-      },
-      {
-       "titre": "<code>Passer</code> devient <code>Fermer</code> — et « 📔 Mon carnet » apparaît — dès que toutes les cartes ont été vues",
-       "texte": "Où qu'on se trouve dans le paquet, et non plus sur la seule page de bilan. Le bouton n'était caché que pour ne pas inviter à partir avant d'avoir ouvert ; une fois tout ouvert, la raison tombe."
       }
      ],
      "texte": "",
