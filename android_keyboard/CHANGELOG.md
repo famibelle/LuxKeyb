@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.1] - 2026-09-15
+
+### ✨ Améliorations
+
+- **L'éventail d'un casier se sent sous le doigt.** Chaque carte qui passe au centre donne un léger cran de vibration, pendant le glissé comme quand l'éventail se cale : on compte les cartes sans les regarder. Aucun cran au-delà de la première ou de la dernière carte. Le retour suit le réglage « Vibration à la frappe » du clavier.
+- **Une carte ouverte depuis l'éventail se chasse d'un glissé.** Vers le haut ou vers le bas, elle sort de l'écran et l'on retrouve l'éventail là où on l'avait laissé. Une carte plus haute que l'écran se lit d'abord jusqu'au bout : c'est le glissé suivant qui la renvoie. Toucher à côté ou le bouton retour la referment toujours.
+
 ## [22.12.0] - 2026-09-15
 
 ### ✨ Nouveautés
