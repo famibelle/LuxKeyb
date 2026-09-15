@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.5] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La clef de voûte, les griffes et les rivets sont opaques.** Ils héritaient de l'alpha du liseré du joyau précédent et laissaient voir à travers eux. Même correction sur tous les joyaux de la carte.
+- **La plaque du nom ne laisse plus de triangle au-dessus de la pastille.** Elle rentre maintenant dans le métal jusqu'au bord du cadre sur les très rares, sans laisser de marge.
+
 ## [22.12.4] - 2026-09-15
 
 ### 🐛 Corrections
