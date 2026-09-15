@@ -59,6 +59,18 @@ import com.example.kreyolkeyboard.TranslationDictionary
  */
 class CarnetFragment : DialogFragment() {
 
+    companion object {
+        /**
+         * Largeur visée pour une vignette, en dp — celle mesurée en portrait
+         * sur un téléphone (deux colonnes sur ~393dp de large). Le nombre de
+         * colonnes en dérive plutôt que de rester figé à deux : à l'italienne
+         * la largeur disponible triple sans que la hauteur d'écran suive, et
+         * des vignettes toujours carrées sur deux colonnes débordent en bas
+         * de l'écran avant même de montrer le nom du mot.
+         */
+        private const val LARGEUR_CIBLE_VIGNETTE_DP = 165f
+    }
+
     /**
      * Les quatre façons de regarder la collection.
      *
@@ -390,11 +402,19 @@ class CarnetFragment : DialogFragment() {
             )
         }
 
-        // Deux colonnes, largeur calculée : les vignettes sont carrées à la
-        // marge près, sinon leurs illustrations n'ont pas la même hauteur d'une
-        // ligne à l'autre et la grille ondule.
+        // Largeur calculée, colonnes adaptées à ce qu'elle laisse : les
+        // vignettes visent LARGEUR_CIBLE_VIGNETTE_DP et restent carrées à la
+        // marge près, sinon leurs illustrations n'ont pas la même hauteur
+        // d'une ligne à l'autre et la grille ondule. Fixer les colonnes à
+        // deux, comme avant, grossissait les vignettes avec la largeur de
+        // l'écran plutôt que d'en tenir compte : à l'italienne, sur un
+        // téléphone, elles débordaient de la hauteur disponible et
+        // masquaient jusqu'au nom du mot sans un défilement.
+        val gouttiere = (10 * d).toInt()
         val dispo = resources.displayMetrics.widthPixels - (24 * d).toInt() * 2
-        val cote = (dispo - (10 * d).toInt()) / 2
+        val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
+        val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
+        val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
 
         if (tri == Tri.ETAGERE) {
             // Le résumé change de sujet avec la disposition : par casiers, ce
@@ -403,7 +423,7 @@ class CarnetFragment : DialogFragment() {
             val acquises = visibles.count { it.carte.acquise }
             tvResume.text = "$acquises acquis sur ${visibles.size} — six " +
                 "révisions réussies par carte, étalées sur cinq mois."
-            remplirEtagere(ctx, visibles, cote)
+            remplirEtagere(ctx, visibles, cote, colonnes)
             return
         }
 
@@ -415,7 +435,7 @@ class CarnetFragment : DialogFragment() {
             )
             else -> visibles.sortedByDescending { it.carte.numero }
         }
-        emettreVignettes(ctx, ordonnes, cote)
+        emettreVignettes(ctx, ordonnes, cote, colonnes)
     }
 
     /**
@@ -430,7 +450,12 @@ class CarnetFragment : DialogFragment() {
      * rareté n'ont de sens ici — le casier *est* déjà l'ordre, celui de la
      * mémoire, et on vient y chercher un mot précis.
      */
-    private fun remplirEtagere(ctx: Context, visibles: List<ContenuCarte>, cote: Int) {
+    private fun remplirEtagere(
+        ctx: Context,
+        visibles: List<ContenuCarte>,
+        cote: Int,
+        colonnes: Int
+    ) {
         val aujourdHui = Widderhuelen.aujourdHui()
         val parCasier = visibles.groupBy {
             it.carte.boite.coerceIn(0, Widderhuelen.BOITE_ACQUISE)
@@ -442,7 +467,7 @@ class CarnetFragment : DialogFragment() {
                 Widderhuelen.estDue(it.carte.boite, it.carte.jourEcheance, aujourdHui)
             }
             conteneurGrille.addView(etiquetteCasier(ctx, boite, dedans.size, dues))
-            emettreVignettes(ctx, dedans, cote)
+            emettreVignettes(ctx, dedans, cote, colonnes)
         }
     }
 
@@ -473,26 +498,29 @@ class CarnetFragment : DialogFragment() {
         ctx: Context,
         liste: List<ContenuCarte>,
         cote: Int,
+        colonnes: Int,
         hote: LinearLayout = conteneurGrille
     ) {
         val d = resources.displayMetrics.density
+        val gouttiere = (10 * d).toInt()
         var ligne: LinearLayout? = null
         liste.forEachIndexed { i, c ->
-            if (i % 2 == 0) {
+            val posColonne = i % colonnes
+            if (posColonne == 0) {
                 ligne = LinearLayout(ctx).apply {
                     orientation = LinearLayout.HORIZONTAL
                     clipChildren = false
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { bottomMargin = (10 * d).toInt() }
+                    ).apply { bottomMargin = gouttiere }
                 }
                 hote.addView(ligne)
             }
             ligne?.addView(CarteCarnet.vignette(ctx, c, cote).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     cote, LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { if (i % 2 == 0) rightMargin = (10 * d).toInt() }
+                ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
                 isClickable = true
                 setOnClickListener { montrerCarte(c) }
             })
