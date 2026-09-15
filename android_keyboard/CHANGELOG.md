@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.4] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Une carte ouverte pivote enfin à contre-mouvement.** Quand on penche le téléphone, la carte devait résister au geste comme un objet posé qui garde son aplomb : bord droit du téléphone qui descend, bord droit de la carte qui vient vers soi. Elle faisait l'inverse et suivait le téléphone, ce qui écrasait l'effet de profondeur. Même chose d'avant en arrière.
+- **La tranche et le reflet suivent la carte.** Un téléphone tenu penché gardait sa tranche visible alors que la carte s'était remise d'aplomb, et en paysage la tranche apparaissait du mauvais côté.
+
+### ✨ Améliorations
+
+- **La carte ouverte depuis la Boîte de Leitner suit la main**, comme celle du carnet : elle pivote avec l'inclinaison du téléphone et s'enfonce légèrement sous le doigt.
+
 ## [22.12.3] - 2026-09-15
 
 ### ✨ Améliorations
