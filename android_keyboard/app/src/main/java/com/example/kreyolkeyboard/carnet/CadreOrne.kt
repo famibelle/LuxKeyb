@@ -169,7 +169,7 @@ object Ornement {
         val gauche = GEMME.right
         val droite = if (largeur <= LARGEUR - 2f * gauche - 4f) LARGEUR - gauche
         else if (rarete.ordinal >= 3) plaqueTracee(rarete.ordinal).right + 15f
-        else PLAQUE.right
+        else plaqueTracee(rarete.ordinal).right
         return RectF(gauche, PLAQUE.top, droite, PLAQUE.bottom)
     }
     val PANNEAU = RectF(38f, 289f, 262f, 384f)
@@ -393,10 +393,14 @@ object Ornement {
      * face. Entrée dans le métal, elle s'arrêtait au milieu de la bande, deux
      * fois plus émoussée que les pointes du dessous. Côté gauche, elle part du
      * centre de la gemme, qui la recouvre.
+     *
+     * Sans pointes, son bout droit tombe au même aplomb : à 276 il dépassait
+     * la fenêtre et la ligne de type de 7 unités, alors que la gemme, à
+     * gauche, reste dans le cadre.
      */
     private fun plaqueTracee(palier: Int): RectF {
-        if (palier < 3) return PLAQUE
         val pointe = TYPE.right + TYPE.height() * 0.55f
+        if (palier < 3) return RectF(PLAQUE.left, PLAQUE.top, pointe, PLAQUE.bottom)
         return RectF(GEMME.centerX(), PLAQUE.top, pointe - PLAQUE.height() * 0.55f, PLAQUE.bottom)
     }
 
