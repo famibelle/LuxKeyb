@@ -721,23 +721,6 @@ object Ornement {
         c.drawText("VUES", ECU_G.centerX(), ECU_G.top + 9f, p)
         c.drawText("NIVEAU", ECU_D.centerX(), ECU_D.top + 9f, p)
         p.alpha = 255
-
-        // 12. Redessiner l'anneau de la gemme pour éviter qu'il soit occulté par la plaque.
-        dessinerAnneau(c, p, m)
-    }
-
-    private fun dessinerAnneau(c: Canvas, p: Paint, m: Metal) {
-        val gx = GEMME.centerX()
-        val gy = GEMME.centerY()
-        val gr = GEMME.width() / 2f
-        p.style = Paint.Style.FILL
-        p.shader = LinearGradient(gx, gy - gr, gx, gy + gr, m.hi, m.lo, Shader.TileMode.CLAMP)
-        c.drawCircle(gx, gy, gr, p)
-        p.shader = null
-        p.style = Paint.Style.STROKE
-        p.strokeWidth = 1.4f
-        p.color = m.trait
-        c.drawCircle(gx, gy, gr, p)
     }
 
     // -------------------------------------------------------------- le vif
