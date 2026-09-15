@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.11.1] - 2026-09-15
+
+### 🐛 Corrections
+
+- Le libellé d'une carte du carnet « Substantif · Wuertplaz » se lisait comme si le jeu était un substantif. Il dit maintenant « Nom · gagné à Wuertplaz », qui classe clairement le mot et son origine.
+
 ## [22.11.0] - 2026-09-15
 
 ### ✨ Nouveautés

@@ -193,13 +193,16 @@ object CarteCarnet {
             Ornement.PLAQUE
         )
 
+        // Chaque moitié dit ce qu'elle est : « Substantif · Wuertplaz » se
+        // lisait comme si le jeu était un substantif.
         val nature = when {
-            c.carte.nombre != null -> "Numéral · "
-            c.carte.forme.first().isUpperCase() -> "Substantif · "
-            else -> ""
+            c.carte.nombre != null -> "Nombre"
+            c.carte.forme.first().isUpperCase() -> "Nom"
+            else -> null
         }
+        val typeLigne = nature?.let { "$it · gagné à ${jeu.nom}" } ?: "Gagné à ${jeu.nom}"
         carte.posee(
-            ligne(context, "$nature${jeu.nom}", taille = 12f, couleur = ENCRE, gras = true),
+            ligne(context, typeLigne, taille = 12f, couleur = ENCRE, gras = true),
             Ornement.TYPE
         )
 
