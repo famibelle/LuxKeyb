@@ -9,6 +9,7 @@ import android.graphics.LinearGradient
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RadialGradient
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Region
@@ -84,9 +85,6 @@ internal class BoiteLeitner(context: Context) : View(context) {
     /** La plaque a été touchée. Ne se déclenche que s'il y a quelque chose à revoir. */
     var surRevision: (() -> Unit)? = null
 
-    /** Une carte a été cliquée. */
-    var surCarte: ((CarteMot) -> Unit)? = null
-
     private val densite = resources.displayMetrics.density
     private fun px(v: Float) = v * densite
 
@@ -95,8 +93,27 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private var aRevoir = 0
     private var total = 0
 
+    /** Le jour de la prochaine échéance, en jours depuis aujourd'hui. -1 : aucune. */
+    private var prochainDans = -1
+    private var prochainCombien = 0
+
     /** Les cartes, triées par compartiment. */
     private val cartesParCasier = Array(CASIERS) { mutableListOf<CarteMot>() }
+
+    /** Par casier, les cartes dues d'abord, puis les autres : l'ordre de la pile. */
+    private val pileParCasier = Array(CASIERS) { mutableListOf<CarteMot>() }
+
+    /**
+     * Le recto de chaque carte visible, par forme : la vignette du carnet, rendue
+     * une fois hors écran par l'appelant.
+     *
+     * Une carte sans recto est dessinée en carton uni, et c'est l'état voulu au
+     * premier affichage : le recto demande la fiche du dictionnaire, dont le
+     * chargement prend plusieurs secondes, et la boîte ne les attend pas.
+     */
+    private val rectos = HashMap<String, Bitmap>()
+    private val pinceauImage = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+    private val cadreCarte = RectF()
 
     /** Le casier ou la plaque sous le doigt, pour l'état pressé. [RIEN] sinon. */
     private var presse = RIEN
@@ -104,6 +121,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val texte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         typeface = Typeface.DEFAULT_BOLD
+    }
+    private val legende = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
     }
     private val chemin = Path()
 
@@ -137,6 +157,8 @@ internal class BoiteLeitner(context: Context) : View(context) {
         total = cartes.size
         for (i in cartesParCasier.indices) cartesParCasier[i].clear()
 
+        var prochain = Int.MAX_VALUE
+        prochainCombien = 0
         for (c in cartes) {
             val boite = c.boite.coerceIn(0, Widderhuelen.BOITE_ACQUISE)
             combien[boite]++
@@ -144,15 +166,113 @@ internal class BoiteLeitner(context: Context) : View(context) {
             if (Widderhuelen.estDue(c.boite, c.jourEcheance, aujourdHui)) {
                 dues[boite]++
                 aRevoir++
+            } else if (!c.acquise) {
+                when {
+                    c.jourEcheance < prochain -> { prochain = c.jourEcheance; prochainCombien = 1 }
+                    c.jourEcheance == prochain -> prochainCombien++
+                }
             }
+        }
+        prochainDans = if (prochainCombien > 0) prochain - aujourdHui else -1
+        for (i in 0 until CASIERS) {
+            val (d, r) = cartesParCasier[i]
+                .sortedBy { it.numero }
+                .partition { Widderhuelen.estDue(it.boite, it.jourEcheance, aujourdHui) }
+            pileParCasier[i].clear()
+            pileParCasier[i].addAll(d)
+            pileParCasier[i].addAll(r)
         }
         contentDescription = buildString {
             append("Boîte de révision, sept casiers, $total carte")
             if (total > 1) append("s")
             append(". ")
-            append(if (aRevoir == 0) "Rien à revoir aujourd'hui." else "$aRevoir à revoir.")
+            append(
+                if (aRevoir > 0) "${libelleRevision()}."
+                else listOfNotNull(libelleAJour(), libelleProchaine()).joinToString(", ") + "."
+            )
         }
         invalidate()
+    }
+
+    /**
+     * Les cartes que la boîte montre effectivement, levées comprises.
+     *
+     * L'appelant ne rend le recto que de celles-ci : une pile n'en montre que
+     * [CARTES_VUES], et rendre toute la collection coûterait un bitmap par carte
+     * pour des faces que personne ne verrait.
+     */
+    fun cartesVisibles(): List<CarteMot> = (0 until CASIERS).flatMap { i ->
+        val pile = pileParCasier[i]
+        val levees = minOf(dues[i], LEVEES)
+        pile.take(levees) + pile.drop(levees).take(minOf(pile.size, CARTES_VUES) - levees)
+    }
+
+    fun combienDans(casier: Int): Int = combien[casier]
+    fun duesDans(casier: Int): Int = dues[casier]
+
+    /** Le casier dont l'éventail est ouvert, qui reste éclairé. -1 : aucun. */
+    private var casierEclaire = RIEN
+
+    fun eclairer(casier: Int) {
+        casierEclaire = casier
+        invalidate()
+    }
+
+    /**
+     * La face avant de la pile d'un casier, dans les coordonnées de la vue : là
+     * d'où l'éventail fait partir les cartes, et où il les range.
+     *
+     * Même calcul que [casier], qui dessine cette face ; un casier vide rend la
+     * place qu'y occuperait sa première carte.
+     */
+    fun faceDuCasier(i: Int): RectF {
+        val u0 = uCasier[i][0]
+        val u1 = uCasier[i][1]
+        val marge = (u1 - u0) * 0.09f
+        val vBase = vAvant + 0.025f
+        val g = sx(u0 + marge, vBase)
+        val dr = sx(u1 - marge, vBase)
+        val bas = sy(vBase)
+        val hauteur = (dr - g) * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
+        return RectF(g, bas - hauteur, dr, bas)
+    }
+
+    /** Donne les rectos rendus. Ceux qui manquent restent en carton uni. */
+    fun poserRectos(parForme: Map<String, Bitmap>) {
+        rectos.clear()
+        rectos.putAll(parForme)
+        invalidate()
+    }
+
+    /**
+     * Le compte de la plaque est celui de la **session**, pas de l'arriéré.
+     *
+     * Une session s'arrête à [Widderhuelen.PLAFOND_SESSION] cartes. Annoncer
+     * trente cartes pour en servir douze, c'est un contrat rompu à la première
+     * révision ; et l'arriéré entier est exactement le mur que l'étalement
+     * existe pour ne jamais montrer.
+     */
+    private fun libelleRevision(): String {
+        val n = minOf(aRevoir, Widderhuelen.PLAFOND_SESSION)
+        return if (n == 1) "Réviser 1 carte" else "Réviser $n cartes"
+    }
+
+    private fun libelleAJour(): String =
+        if (prochainDans < 0) "Tout est acquis" else "Tout est à jour"
+
+    /**
+     * Quand revenir. Une plaque « rien à revoir » sans date est un bouton mort :
+     * elle dit non sans dire à quand, et c'est ce silence qui fait décrocher.
+     */
+    private fun libelleProchaine(): String? {
+        if (prochainDans < 0) return null
+        val quand = when (prochainDans) {
+            1 -> "demain"
+            2 -> "après-demain"
+            else -> "dans $prochainDans jours"
+        }
+        val cartes = if (prochainCombien == 1) "1 carte" else "$prochainCombien cartes"
+        return "$cartes $quand"
     }
 
     // La boîte prend toute la hauteur que son parent lui donne : ouverte depuis
@@ -180,12 +300,22 @@ internal class BoiteLeitner(context: Context) : View(context) {
         yAv = yMur - px(MUR_BAS - DESSUS_AVANT)
         yAr = px(DESSUS_ARRIERE)
         echelle = (yAv - yAr) / px(DESSUS_AVANT - DESSUS_ARRIERE)
-        plaque.set(l * 0.26f, yAv + px(5f), l * 0.74f, yMur - px(5f))
+        vAvant = (px(BANDEAU) / (yAv - yAr)).coerceIn(0.1f, 0.35f)
+        plaque.set(l * 0.12f, yAv + px(7f), l * 0.88f, yMur - px(7f))
         decouperCasiers()
     }
 
     /** La profondeur du dessus rapportée à celle de la boîte compacte d'origine. */
     private var echelle = 1f
+
+    /**
+     * Où commencent les fentes, en profondeur.
+     *
+     * Le bandeau avant porte les légendes des casiers : sa hauteur est fixée
+     * en densités, pas en part de profondeur, parce que du texte ne s'étire
+     * pas avec le meuble.
+     */
+    private var vAvant = 0.13f
 
     /**
      * Les sept casiers en coordonnées de surface.
@@ -202,7 +332,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
             uCasier[i][0] = u
             uCasier[i][1] = u + large
             u += large + if (i == CASIERS - 2) CLOISON_ACQUIS else CLOISON
-            zones[i] = region(quad(uCasier[i][0], uCasier[i][1], V_AVANT, V_ARRIERE))
+            // La zone descend jusqu'à l'arête avant : toucher la légende d'un
+            // casier, c'est désigner ce casier.
+            zones[i] = region(quad(uCasier[i][0], uCasier[i][1], 0f, V_ARRIERE))
         }
     }
 
@@ -287,17 +419,21 @@ internal class BoiteLeitner(context: Context) : View(context) {
         // Deux passes de plus en plus pâles valent un flou et ne coûtent qu'un
         // tracé de plus : une seule passe donnait une dalle grise à arête vive,
         // qui se lisait comme un élément d'interface posé sous la boîte.
+        //
+        // Même deux passes gardaient des bords nets : sur la page claire, elles
+        // se lisaient encore comme une barre grise glissée sous la boîte. C'est
+        // désormais un dégradé radial écrasé à la verticale, qui s'éteint dans
+        // toutes les directions et n'a donc aucune arête à montrer.
+        pinceau.color = Color.BLACK
+        val ombre = RadialGradient(
+            l / 2f, yMur, l * 0.52f,
+            intArrayOf(0x38000000, 0x14000000, 0x00000000),
+            floatArrayOf(0f, 0.6f, 1f), Shader.TileMode.CLAMP
+        )
+        ombre.setLocalMatrix(Matrix().apply { setScale(1f, px(16f) / (l * 0.52f), l / 2f, yMur) })
+        pinceau.shader = ombre
+        canvas.drawRect(0f, yMur - px(2f), l, yMur + px(18f), pinceau)
         pinceau.shader = null
-        pinceau.color = 0x1C000000
-        canvas.drawRoundRect(
-            px(18f), yMur - px(4f), l - px(18f), yMur + px(10f),
-            px(10f), px(10f), pinceau
-        )
-        pinceau.color = 0x24000000
-        canvas.drawRoundRect(
-            px(30f), yMur - px(4f), l - px(30f), yMur + px(5f),
-            px(6f), px(6f), pinceau
-        )
 
         // Le mur avant, puis le dessus : une face verticale reçoit moins de
         // lumière qu'une face horizontale, et tout l'effet de volume est là.
@@ -317,12 +453,13 @@ internal class BoiteLeitner(context: Context) : View(context) {
             val u0 = uCasier[i][1]
             val u1 = uCasier[i + 1][0]
             bois(
-                canvas, quad(u0, u1, V_AVANT, V_ARRIERE),
+                canvas, quad(u0, u1, vAvant, V_ARRIERE),
                 CLOISON_CLAIR, CLOISON_SOMBRE, travers = true, fibre = 95
             )
         }
 
         for (i in 0 until CASIERS) casier(canvas, i)
+        legendes(canvas)
 
         // Le lisséré clair sur l'arête avant du plateau : une arête vive de bois
         // ciré attrape la lumière, et sans elle le mur et le dessus se touchent
@@ -341,14 +478,17 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private fun casier(canvas: Canvas, i: Int) {
         val u0 = uCasier[i][0]
         val u1 = uCasier[i][1]
-        val fente = quad(u0, u1, V_AVANT, V_ARRIERE)
+        val fente = quad(u0, u1, vAvant, V_ARRIERE)
 
         // Le fond est plus sombre à l'avant qu'au fond : c'est là que la paroi
         // proche porte son ombre, et c'est ce dégradé qui creuse la fente.
         bois(canvas, fente, FOND_ARRIERE, FOND_AVANT, fibre = 45)
 
         val n = combien[i]
-        if (n == 0) return
+        if (n == 0) {
+            voileSiPresse(canvas, fente, i)
+            return
+        }
 
         val visibles = if (n < CARTES_VUES) n else CARTES_VUES
         val soulevees = if (dues[i] < LEVEES) dues[i] else LEVEES
@@ -363,14 +503,26 @@ internal class BoiteLeitner(context: Context) : View(context) {
         // sinon elle flotte. Et elle occupe une bonne moitié de la profondeur :
         // trop basse, la fente se lit comme un trou et la boîte comme vide.
         val marge = (u1 - u0) * 0.09f
-        val vBase = V_AVANT + 0.025f
+        val vBase = vAvant + 0.025f
         val g = sx(u0 + marge, vBase)
         val dr = sx(u1 - marge, vBase)
         val bas = sy(vBase)
-        // Mises à l'échelle de la fente : sinon, dans une boîte plein écran, la
-        // pile resterait un liseré au ras de l'avant et la fente se lirait vide.
-        val tranche = px(4.6f) * echelle
-        val hauteur = px(15f) * echelle
+        // Proportionnées à la fente elle-même, et non plus à une boîte de
+        // référence : une pile de huit cartes en occupe alors les trois quarts,
+        // et quatre cartes ne sont plus un liseré au bas d'un long trou sombre.
+        // La tranche reste la même d'un casier à l'autre, pour que la hauteur de
+        // la pile continue de dire lequel est le plus rempli.
+        // La face garde les proportions du recto, carré en vignette : une carte
+        // étirée à la hauteur de la fente déformerait son illustration. Même
+        // proportion en carton uni, pour que rien ne saute quand les rectos
+        // arrivent.
+        val hauteur = (dr - g) * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
+        // L'écart entre deux cartes et la levée des dues suivent la carte et non
+        // la fente : réglés sur la profondeur, ils dépassaient la hauteur d'une
+        // face carrée, et la pile se défaisait en cartes flottant séparément.
+        val tranche = hauteur * 0.3f
+        val levee = hauteur * 0.45f
+        val pile = pileParCasier[i]
 
         canvas.save()
         canvas.clipPath(fente)
@@ -378,22 +530,42 @@ internal class BoiteLeitner(context: Context) : View(context) {
         // devant, elles se retrouvaient sous les autres, ce qui est le contraire
         // de « voilà ce que vous devez ». Dessinées d'abord parce qu'elles sont
         // les plus hautes, donc les plus au fond.
+        //
+        // Et elles **dépassent** : levées d'un bon cran et chacune un peu de
+        // travers, comme une fiche qu'on a tirée à moitié pour ne pas l'oublier.
+        // Une pile bien alignée se lit comme rangée ; c'est le désordre qui dit
+        // « à faire ».
+        val cx = (g + dr) / 2f
         for (j in soulevees - 1 downTo 0) {
-            carte(canvas, g, dr, bas - (normales + j) * tranche - px(10f) * echelle, hauteur, true)
+            val pied = bas - (normales + j) * tranche - levee
+            canvas.save()
+            canvas.rotate(PENCHES[j % PENCHES.size], cx, pied)
+            carte(canvas, g, dr, pied, hauteur, true, pile.getOrNull(j))
+            canvas.restore()
         }
         for (j in normales - 1 downTo 0) {
-            carte(canvas, g, dr, bas - j * tranche, hauteur, false)
+            carte(canvas, g, dr, bas - j * tranche, hauteur, false, pile.getOrNull(soulevees + j))
         }
         canvas.restore()
+        voileSiPresse(canvas, fente, i)
+    }
+
+    /** Le retour du doigt sur un casier : la fente s'éclaire tant qu'on appuie. */
+    private fun voileSiPresse(canvas: Canvas, fente: Path, i: Int) {
+        if (presse != i && casierEclaire != i) return
+        pinceau.shader = null
+        pinceau.color = 0x2EFFFFFF
+        canvas.drawPath(fente, pinceau)
     }
 
     /**
-     * Une carte debout : sa face avant, sa tranche supérieure.
+     * Une carte debout, vue de face : son recto quand il est rendu, sinon un
+     * carton uni aux mêmes proportions.
      *
-     * On ne dessine que la face avant et l'arête du haut. La pile se lit parce
-     * que la carte de devant masque les faces des suivantes en laissant leurs
-     * tranches dépasser — c'est le rendu d'un jeu de cartes rangé, et il ne
-     * coûte qu'un quadrilatère par carte.
+     * La pile se lit parce que la carte de devant masque les faces des suivantes
+     * en laissant leur haut dépasser : c'est le rendu d'un jeu de cartes rangé.
+     * Avec les rectos, ce qui dépasse est le haut du cadre et de l'illustration,
+     * si bien que chaque carte de la pile reste reconnaissable à sa matière.
      */
     private fun carte(
         canvas: Canvas,
@@ -401,23 +573,106 @@ internal class BoiteLeitner(context: Context) : View(context) {
         dr: Float,
         bas: Float,
         hauteur: Float,
-        due: Boolean
+        due: Boolean,
+        qui: CarteMot?
     ) {
         val haut = bas - hauteur
-        pinceau.shader = LinearGradient(
-            g, haut, g, bas,
-            if (due) CARTE_DUE_CLAIR else CARTE_CLAIR,
-            if (due) CARTE_DUE_SOMBRE else CARTE_SOMBRE,
-            Shader.TileMode.CLAMP
-        )
-        canvas.drawRect(g, haut, dr, bas, pinceau)
+        val rayon = (dr - g) * Ornement.RAYON / Ornement.LARGEUR
+        cadreCarte.set(g, haut, dr, bas)
+        val recto = qui?.let { rectos[it.forme] }
 
-        pinceau.shader = null
-        pinceau.color = if (due) Carnet.COULEUR else CARTE_TRANCHE
-        pinceau.strokeWidth = px(1.4f)
+        if (recto != null) {
+            canvas.drawBitmap(recto, null, cadreCarte, pinceauImage)
+        } else {
+            pinceau.shader = LinearGradient(
+                g, haut, g, bas,
+                if (due) CARTE_DUE_CLAIR else CARTE_CLAIR,
+                if (due) CARTE_DUE_SOMBRE else CARTE_SOMBRE,
+                Shader.TileMode.CLAMP
+            )
+            canvas.drawRoundRect(cadreCarte, rayon, rayon, pinceau)
+            pinceau.shader = null
+        }
+
         pinceau.style = Paint.Style.STROKE
-        canvas.drawLine(g, haut, dr, haut, pinceau)
+        if (due) {
+            // Un filet violet tout autour, pas seulement sur la tranche : penchée,
+            // la carte doit se détacher de celle de derrière sur ses quatre côtés.
+            pinceau.color = Carnet.COULEUR
+            pinceau.strokeWidth = px(1.8f)
+            canvas.drawRoundRect(cadreCarte, rayon, rayon, pinceau)
+        } else if (recto == null) {
+            pinceau.color = CARTE_TRANCHE
+            pinceau.strokeWidth = px(1.4f)
+            canvas.drawLine(g + rayon, haut, dr - rayon, haut, pinceau)
+        }
         pinceau.style = Paint.Style.FILL
+    }
+
+    /**
+     * Les légendes, brûlées dans le bois : sous chaque casier son compte et le
+     * délai au bout duquel ses cartes reviennent, et sur le bandeau du fond la
+     * règle du jeu en une phrase.
+     *
+     * Sans elles, sept fentes identiques ne disent rien à qui n'a pas lu Leitner.
+     * Le délai est dit en mots courts (« 1 sem. ») et jamais par un numéro de
+     * boîte, pour la raison que donne [etiquetteCasier].
+     *
+     * La taille du texte s'ajuste à la largeur d'un casier plutôt que l'inverse :
+     * sur un écran étroit, « 3 jours » déborderait sur la légende voisine.
+     */
+    private fun legendes(canvas: Canvas) {
+        val haut = sy(vAvant)
+        val bandeau = yAv - haut
+        val pas = sx(uCasier[1][0], vAvant / 2f) - sx(uCasier[0][0], vAvant / 2f)
+
+        val rythmes = Array(CASIERS) { i ->
+            if (i >= Widderhuelen.BOITE_ACQUISE) "★ acquis"
+            else rythmeCourt(Widderhuelen.INTERVALLES[i])
+        }
+        legende.typeface = Typeface.DEFAULT
+        ajuster(legende, minOf(px(11f), bandeau * 0.26f), rythmes.toList(), pas * 0.94f)
+        texte.textAlign = Paint.Align.CENTER
+        texte.textSize = minOf(px(16f), bandeau * 0.38f)
+
+        val ligne1 = haut + bandeau * 0.46f
+        val ligne2 = haut + bandeau * 0.84f
+        for (i in 0 until CASIERS) {
+            val cx = sx((uCasier[i][0] + uCasier[i][1]) / 2f, vAvant / 2f)
+            val vide = combien[i] == 0
+            grave(canvas, texte, combien[i].toString(), cx, ligne1, if (vide) 0x80 else 0xFF)
+            grave(canvas, legende, rythmes[i], cx, ligne2, if (vide) 0x80 else 0xE6)
+        }
+
+        // La règle, sur le bandeau du fond. Plus étroit que l'avant : la fuite
+        // du trapèze le rentre des deux côtés.
+        val fond = sy(V_ARRIERE)
+        val hautFond = fond - yAr
+        val largeurFond = sx(1f, 1f) - sx(0f, 1f)
+        val regle = "Bonne réponse : la carte avance et revient plus tard  →"
+        legende.typeface = Typeface.DEFAULT_BOLD
+        ajuster(legende, minOf(px(12.5f), hautFond * 0.5f), listOf(regle), largeurFond * 0.9f)
+        val cy = yAr + hautFond / 2f - (legende.descent() + legende.ascent()) / 2f
+        grave(canvas, legende, regle, width / 2f, cy, 0xD0)
+    }
+
+    /** Ramène [p] à [taille], puis le réduit si le plus long de [mots] dépasse [largeur]. */
+    private fun ajuster(p: Paint, taille: Float, mots: List<String>, largeur: Float) {
+        p.textSize = taille
+        val plusLong = mots.maxOf { p.measureText(it) }
+        if (plusLong > largeur) p.textSize = taille * largeur / plusLong
+    }
+
+    /** Du texte brûlé dans le bois : encre sombre, rehaut clair d'un pixel dessous. */
+    private fun grave(canvas: Canvas, p: Paint, mot: String, cx: Float, y: Float, alpha: Int) {
+        p.textAlign = Paint.Align.CENTER
+        p.color = LUSTRE
+        p.alpha = (0x40 * alpha) / 0xFF
+        canvas.drawText(mot, cx, y + px(1f), p)
+        p.color = BRULURE
+        p.alpha = alpha
+        canvas.drawText(mot, cx, y, p)
+        p.alpha = 0xFF
     }
 
     /**
@@ -427,12 +682,21 @@ internal class BoiteLeitner(context: Context) : View(context) {
      * endroit de l'écran qui porte l'impératif que la pastille portait. Gravée
      * et non imprimée : le texte sombre reçoit un rehaut clair d'un pixel en
      * dessous, ce qui creuse la lettre dans le métal.
+     *
+     * Elle est l'action principale de l'écran, donc son plus gros bouton : le
+     * mur avant a été rehaussé pour lui donner une cible de doigt pleine. Quand
+     * rien n'est dû, elle ne se contente pas de dire non, elle dit quand revenir.
      */
     private fun plaqueLaiton(canvas: Canvas) {
         val rien = aRevoir == 0
         val enfonce = presse == PLAQUE && !rien
-        val r = if (enfonce) px(0.6f) else 0f
+        val r = if (enfonce) px(1f) else 0f
 
+        // Opaque d'abord : le pinceau sort de l'arête avant, tracée en LUSTRE à
+        // 25 % d'alpha, et un shader hérite de l'alpha de sa peinture. Sans cette
+        // ligne, le laiton était peint en transparence sur le mur et se lisait
+        // comme du bois terne, quelle que soit sa palette.
+        pinceau.color = Color.BLACK
         pinceau.shader = LinearGradient(
             plaque.left, plaque.top, plaque.left, plaque.bottom,
             if (rien) LAITON_TERNE else LAITON_CLAIR,
@@ -441,24 +705,47 @@ internal class BoiteLeitner(context: Context) : View(context) {
         )
         canvas.drawRoundRect(
             plaque.left, plaque.top + r, plaque.right, plaque.bottom + r,
-            px(3f), px(3f), pinceau
+            px(5f), px(5f), pinceau
         )
         pinceau.shader = null
-
-        texte.textSize = px(13.5f)
-        texte.textAlign = Paint.Align.CENTER
-        val mot = when {
-            rien -> "Rien à revoir aujourd'hui"
-            aRevoir == 1 -> "Réviser 1 carte"
-            else -> "Réviser $aRevoir cartes"
+        // Un liseré clair en haut : la tranche du métal qui attrape la lumière,
+        // et ce qui détache la plaque du bois sombre du mur.
+        if (!rien) {
+            pinceau.color = 0x70FFF6D0
+            pinceau.style = Paint.Style.STROKE
+            pinceau.strokeWidth = px(1.2f)
+            canvas.drawLine(
+                plaque.left + px(5f), plaque.top + r + px(1f),
+                plaque.right - px(5f), plaque.top + r + px(1f), pinceau
+            )
+            pinceau.style = Paint.Style.FILL
         }
-        val cx = plaque.centerX()
-        val cy = plaque.centerY() - (texte.descent() + texte.ascent()) / 2f + r
 
-        texte.color = LUSTRE
-        canvas.drawText(mot, cx, cy + px(1f), texte)
-        texte.color = if (rien) GRAVURE_TERNE else GRAVURE
-        canvas.drawText(mot, cx, cy, texte)
+        texte.textAlign = Paint.Align.CENTER
+        val cx = plaque.centerX()
+        val encre = if (rien) GRAVURE_TERNE else GRAVURE
+        val sousTitre = if (rien) libelleProchaine() else null
+
+        if (sousTitre == null) {
+            val mot = if (rien) libelleAJour() else libelleRevision()
+            ajuster(texte, px(17f), listOf(mot), plaque.width() * 0.9f)
+            val cy = plaque.centerY() - (texte.descent() + texte.ascent()) / 2f + r
+            graveMetal(canvas, texte, mot, cx, cy, encre)
+        } else {
+            ajuster(texte, px(15f), listOf(libelleAJour()), plaque.width() * 0.9f)
+            legende.typeface = Typeface.DEFAULT
+            ajuster(legende, px(12.5f), listOf(sousTitre), plaque.width() * 0.9f)
+            graveMetal(canvas, texte, libelleAJour(), cx, plaque.centerY() - px(2f) + r, encre)
+            graveMetal(canvas, legende, sousTitre, cx, plaque.centerY() + px(14f) + r, encre)
+        }
+    }
+
+    private fun graveMetal(canvas: Canvas, p: Paint, mot: String, cx: Float, y: Float, encre: Int) {
+        p.textAlign = Paint.Align.CENTER
+        p.color = LUSTRE
+        canvas.drawText(mot, cx, y + px(1f), p)
+        p.color = encre
+        canvas.drawText(mot, cx, y, p)
     }
 
     // ---- le doigt --------------------------------------------------------
@@ -490,12 +777,11 @@ internal class BoiteLeitner(context: Context) : View(context) {
                 if (sur == PLAQUE) {
                     if (aRevoir > 0) surRevision?.invoke()
                 } else if (sur >= 0 && sur < CASIERS) {
-                    val cartesEnZone = cartesParCasier[sur]
-                    if (cartesEnZone.isNotEmpty()) {
-                        surCarte?.invoke(cartesEnZone.first())
-                    } else {
-                        surCasier?.invoke(sur)
-                    }
+                    // Un casier se consulte, plein ou vide. Il lançait la révision
+                    // de sa première carte quand il en avait : c'était choisir ce
+                    // qu'on révise, ce que la note de classe interdit, et le doigt
+                    // qui voulait regarder se retrouvait interrogé.
+                    surCasier?.invoke(sur)
                 }
                 return true
             }
@@ -539,10 +825,15 @@ internal class BoiteLeitner(context: Context) : View(context) {
         private const val RIEN = -1
         private const val PLAQUE = -2
 
-        private const val HAUTEUR = 176f
+        // Le mur avant fait 60 dp, et non plus 28 : il porte la plaque, qui est
+        // le bouton principal de l'écran et doit offrir une cible de doigt pleine.
+        private const val HAUTEUR = 208f
         private const val DESSUS_ARRIERE = 8f
         private const val DESSUS_AVANT = 124f
-        private const val MUR_BAS = 152f
+        private const val MUR_BAS = 184f
+
+        /** La hauteur du bandeau avant, qui porte les légendes des casiers. */
+        private const val BANDEAU = 46f
 
         /** La rentrée du bord arrière, en part de la largeur : la perspective. */
         private const val FUITE = 0.075f
@@ -550,11 +841,13 @@ internal class BoiteLeitner(context: Context) : View(context) {
         private const val BORD = 0.035f
         private const val CLOISON = 0.013f
         private const val CLOISON_ACQUIS = 0.026f
-        private const val V_AVANT = 0.13f
         private const val V_ARRIERE = 0.87f
 
         private const val CARTES_VUES = 8
         private const val LEVEES = 3
+
+        /** L'inclinaison de chaque carte due, en degrés : irrégulière, comme à la main. */
+        private val PENCHES = floatArrayOf(-4f, 3f, -2f)
 
         /** L'espacement des fibres, en densités. Voir [bois]. */
         private const val PERIODE = 46f
@@ -583,6 +876,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
         private const val LAITON_TERNE_BAS = 0xFF8C836B.toInt()
         private const val GRAVURE = 0xFF31220A.toInt()
         private const val GRAVURE_TERNE = 0xFF413C2E.toInt()
+
+        /** L'encre des légendes : du bois brûlé, lisible sur le dessus clair. */
+        private const val BRULURE = 0xFF2E1A08.toInt()
 
         /** Le lustre du bois ciré : large et faible, à l'inverse du reflet de l'or. */
         private const val LUSTRE = 0x40FFFFFF
@@ -662,7 +958,7 @@ internal fun etiquetteCasier(ctx: Context, boite: Int, combien: Int, dues: Int):
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
             )
             text = if (acquis) "Acquis"
-            else "Revu ${rythmeCasier(Widderhuelen.INTERVALLES[boite])}"
+            else "Revient dans ${rythmeLong(Widderhuelen.INTERVALLES[boite])}"
             textSize = 14f
             setTypeface(null, Typeface.BOLD)
             setTextColor(if (vide) Color.parseColor("#9E9E9E") else accent)
@@ -713,11 +1009,39 @@ internal fun etiquetteCasier(ctx: Context, boite: Int, combien: Int, dues: Int):
  * d'intervalles retouchée laisserait sinon sept libellés qui mentent, sans rien
  * casser au passage.
  */
-internal fun rythmeCasier(jours: Int): String = when {
-    jours <= 1 -> "chaque jour"
-    jours == 7 -> "chaque semaine"
-    jours == 30 || jours == 31 -> "chaque mois"
-    jours % 30 == 0 -> "tous les ${jours / 30} mois"
-    jours % 7 == 0 -> "toutes les ${jours / 7} semaines"
-    else -> "tous les $jours jours"
+internal fun rythmeLong(jours: Int): String {
+    val (n, unite) = arrondiRythme(jours)
+    return when (unite) {
+        UniteRythme.JOUR -> if (n == 1) "1 jour" else "$n jours"
+        UniteRythme.SEMAINE -> if (n == 1) "1 semaine" else "$n semaines"
+        UniteRythme.MOIS -> "$n mois"
+    }
+}
+
+/**
+ * Le même délai en mots courts, pour la légende gravée sous un casier, où la
+ * place est celle d'une fente.
+ *
+ * Les deux formes passent par **un seul** arrondi, [arrondiRythme]. Elles
+ * disaient « 2 sem. » sur la boîte et « tous les 16 jours » dans le casier
+ * ouvert : deux chiffres pour le même casier, dont le joueur ne peut deviner
+ * qu'ils désignent la même chose.
+ */
+internal fun rythmeCourt(jours: Int): String {
+    val (n, unite) = arrondiRythme(jours)
+    return when (unite) {
+        UniteRythme.JOUR -> if (n == 1) "1 jour" else "$n jours"
+        UniteRythme.SEMAINE -> "$n sem."
+        UniteRythme.MOIS -> "$n mois"
+    }
+}
+
+private enum class UniteRythme { JOUR, SEMAINE, MOIS }
+
+/** Arrondi à la semaine ou au mois : « 2 semaines » pour seize jours dit le rythme, et le rythme est tout ce qu'on lit là. */
+private fun arrondiRythme(jours: Int): Pair<Int, UniteRythme> = when {
+    jours <= 1 -> 1 to UniteRythme.JOUR
+    jours < 7 -> jours to UniteRythme.JOUR
+    jours < 30 -> (jours + 3) / 7 to UniteRythme.SEMAINE
+    else -> (jours + 15) / 30 to UniteRythme.MOIS
 }
