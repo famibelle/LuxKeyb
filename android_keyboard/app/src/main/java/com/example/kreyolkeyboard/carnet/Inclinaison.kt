@@ -9,6 +9,8 @@ import android.view.Surface
 import android.view.View
 import android.view.WindowManager
 import java.util.WeakHashMap
+import kotlin.math.PI
+import kotlin.math.atan2
 
 /**
  * L'inclinaison du téléphone, rendue à la carte ouverte.
@@ -39,12 +41,12 @@ import java.util.WeakHashMap
  *   joue que l'écart. Un [RAPPEL] très lent ramène ce repos vers la
  *   posture courante, sans quoi la carte resterait de travers dès que le
  *   joueur s'allonge ou change de main.
- * - **[AMPLITUDE] est petite, et ce n'est pas de la timidité.** Au-delà
- *   d'une dizaine de degrés, les filets d'or d'un pixel se mettent à
- *   scintiller — l'anticrénelage ne suit pas le sous-pixel en mouvement —
- *   et la typographie du bord fuyant devient illisible. Les jeux de cartes
- *   vont plus loin, mais ils ont de la grande illustration là où le carnet
- *   a du texte de neuf unités.
+ * - **[AMPLITUDE] vaut vingt degrés.** Elle en valait dix, par crainte que
+ *   les filets d'or d'un pixel scintillent et que le bord fuyant devienne
+ *   illisible. Sur l'appareil, dix degrés ne se voyaient presque pas : le
+ *   capteur n'atteint jamais le bout de sa course dans une main, et la carte
+ *   restait sous les deux degrés. Doublée à la demande du propriétaire
+ *   (2026-09-15).
  * - **La carte contre-pivote.** Quand le bord droit du téléphone descend,
  *   le bord droit de la carte vient vers le joueur. La carte résiste au
  *   geste au lieu de le suivre, comme un objet posé qui garderait son
@@ -77,7 +79,7 @@ object Inclinaison {
      * des deux côtés, l'épaisseur du carton ne correspondrait pas à sa
      * propre inclinaison.
      */
-    const val AMPLITUDE = 10f
+    const val AMPLITUDE = 20f
 
     /**
      * Le lissage du suivi.
@@ -102,7 +104,7 @@ object Inclinaison {
     private const val CAMERA_DEFAUT = 1280f
 
     /**
-     * Une perspective assez lointaine pour que sept degrés restent une
+     * Une perspective assez lointaine pour que vingt degrés restent une
      * inclinaison et non un écrasement du bord fuyant.
      */
     private const val CAMERA = 9000f
@@ -287,12 +289,23 @@ object Inclinaison {
  * droit de la carte vers le joueur. Haut qui monte : y augmente, le tangage
  * est positif, et le haut de la carte recule. L'écart `repos - x` d'origine
  * faisait suivre le téléphone à la carte.
+ *
+ * ## Pourquoi le tangage se lit en angle
+ *
+ * Le roulis se lit sur `x / g`, le tangage se lisait sur `y / g`. Or un
+ * téléphone se tient presque debout, et `y = g·sin(tangage)` s'aplatit à
+ * l'approche de la verticale : dix degrés vers l'avant ou l'arrière ne
+ * bougeaient la carte que d'une fraction de degré, et l'inclinaison haut-bas
+ * passait pour absente. Le tangage est donc l'angle `atan2(y, z)`, compté
+ * depuis le repos et ramené à [-1, 1] sur [TANGAGE_PLEIN] : sa sensibilité ne
+ * dépend plus de la façon dont on tient l'appareil. Le roulis garde sa
+ * lecture, parce que le reflet et la tranche de [Carton] sont réglés dessus.
  */
 internal class Posture(private val vue: View, private val lissage: Float) {
 
     private var cale = false
     private var reposX = 0f
-    private var reposY = 0f
+    private var reposAngle = 0f
 
     var roulis = 0f
         private set
@@ -314,19 +327,42 @@ internal class Posture(private val vue: View, private val lissage: Float) {
             Surface.ROTATION_270 -> { x = brutY; y = -brutX }
         }
 
+        // Le z ne dépend pas de la rotation de l'écran : il reste la normale.
+        val z = if (valeurs.size > 2) valeurs[2] else 0f
+        val angle = atan2(y, z)
+
         if (!cale) {
             reposX = x
-            reposY = y
+            reposAngle = angle
             cale = true
         }
 
         val g = SensorManager.GRAVITY_EARTH
+        val ecart = demiTour(angle - reposAngle)
         val cibleRoulis = ((x - reposX) / g).coerceIn(-1f, 1f)
-        val cibleTangage = ((y - reposY) / g).coerceIn(-1f, 1f)
+        val cibleTangage = (ecart / TANGAGE_PLEIN).coerceIn(-1f, 1f)
         roulis += (cibleRoulis - roulis) * lissage
         tangage += (cibleTangage - tangage) * lissage
         reposX += (x - reposX) * Inclinaison.RAPPEL
-        reposY += (y - reposY) * Inclinaison.RAPPEL
+        reposAngle = demiTour(reposAngle + ecart * Inclinaison.RAPPEL)
+    }
+
+    /** Ramène un angle dans ]-π, π], pour qu'un téléphone retourné ne saute pas d'un tour. */
+    private fun demiTour(a: Float): Float {
+        val pi = PI.toFloat()
+        var r = a
+        while (r > pi) r -= 2f * pi
+        while (r <= -pi) r += 2f * pi
+        return r
+    }
+
+    private companion object {
+        /**
+         * L'écart de tangage, en radians, qui porte la carte au bout de son
+         * débattement : quarante-cinq degrés. Dix degrés de poignet donnent
+         * ainsi un peu plus de quatre degrés de carte.
+         */
+        val TANGAGE_PLEIN = (PI / 4).toFloat()
     }
 
     /** Le repos est perdu avec le capteur : la carte reprendra la posture du moment. */

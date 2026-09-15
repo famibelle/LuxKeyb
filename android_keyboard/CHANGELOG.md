@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.8] - 2026-09-15
+
+### ✨ Améliorations
+
+- **La carte ouverte s'incline deux fois plus.** Quand on penche le téléphone, elle pivote maintenant jusqu'à vingt degrés au lieu de dix.
+- **La carte s'incline aussi de haut en bas, à contre-mouvement.** Quand on bascule le téléphone vers l'avant ou vers l'arrière, la carte résiste au geste comme elle le fait déjà de gauche à droite. Ce mouvement existait, mais un téléphone tenu presque debout le rendait imperceptible.
+
 ## [22.12.7] - 2026-09-15
 
 ### 🔄 Changé
