@@ -1,9 +1,28 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.8",
+ "derniere_version": "22.12.9",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.9",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le carnet s'adapte au paysage",
+       "texte": "La grille du carnet gardait deux colonnes quelle que soit l'orientation, calculées sur la seule largeur de l'écran : à l'italienne sur un téléphone, les vignettes devenaient démesurées et débordaient de la hauteur disponible, masquant jusqu'au nom du mot sans un défilement. Le nombre de colonnes s'adapte maintenant à la largeur disponible."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "22.12.8",
    "date": "2026-09-15",
@@ -128,28 +147,6 @@
    "image": "Screenshots/lux_contre_pivot.gif",
    "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
    "image_legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
-  },
-  {
-   "version": "22.12.3",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Une carte ouverte se referme par glissé latéral",
-       "texte": "Vers la gauche ou vers la droite, elle suit le doigt et sort de l'écran, et l'on retrouve l'éventail du casier au même endroit. Un geste trop court la remet en place."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_glisse_lateral.png",
-   "image_alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
-   "image_legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
   }
  ]
 }
