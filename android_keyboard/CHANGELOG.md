@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.7] - 2026-09-15
+
+### 🔄 Changé
+
+- **« Mäi Lëtzebuergesch » passe en dernier onglet.** Ordre désormais Démarrage · Spiller · Wierderbuch · Mäi Lëtzebuergesch.
+
 ## [22.12.6] - 2026-09-15
 
 ### 🐛 Corrections
