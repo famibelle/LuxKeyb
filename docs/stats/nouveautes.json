@@ -38,8 +38,8 @@
      "tableau": null
     }
    ],
-   "image": "Screenshots/lux_contre_pivot.png",
-   "image_alt": "Deux fois la carte « Duerf » ouverte depuis la Boîte de Leitner, chacune surmontée d'un téléphone penché et d'une flèche orange courbe. À gauche, le téléphone penche vers la gauche, et la carte montre sa tranche claire le long de son bord gauche. À droite, le téléphone penche vers la droite, et la tranche apparaît le long du bord droit.",
+   "image": "Screenshots/lux_contre_pivot.gif",
+   "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
    "image_legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
   },
   {
