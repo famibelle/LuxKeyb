@@ -25,7 +25,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_inclinaison_deux_axes.gif",
+   "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
+   "image_legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
   },
   {
    "version": "22.12.7",

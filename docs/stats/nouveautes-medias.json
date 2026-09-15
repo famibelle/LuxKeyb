@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.12.8": {
+    "image": "Screenshots/lux_inclinaison_deux_axes.gif",
+    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
+    "legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
+  },
   "22.12.4": {
     "image": "Screenshots/lux_contre_pivot.gif",
     "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
