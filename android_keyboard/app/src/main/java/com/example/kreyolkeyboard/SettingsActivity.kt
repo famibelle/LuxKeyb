@@ -2871,76 +2871,94 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Quatre jeux aident à mémoriser du vocabulaire luxembourgeois en s'amusant, " +
-                    "à partir des mots déjà présents dans le dictionnaire du clavier : « Wuertsich » " +
-                    "(mots mêlés), « Wuertmix » (lettres à remettre dans l'ordre), « Wuertriet » " +
-                    "(un mot de 5 lettres à deviner) et « Wuertlück », où il manque un mot à une " +
-                    "vraie phrase luxembourgeoise. Un cinquième, « Zuelwuert », ne porte pas sur " +
-                    "le vocabulaire mais sur l'écriture des nombres : une multiplication, et " +
-                    "quatre orthographes de son résultat dont une seule est correcte."
+            "Sept jeux, réunis dans l'onglet Spiller, font travailler le luxembourgeois en " +
+                    "s'amusant :\n\n" +
+                    "• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n" +
+                    "• 🔤 Wuertmix : remettre les lettres d'un mot dans l'ordre.\n" +
+                    "• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n" +
+                    "• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n" +
+                    "• 🔢 Zuelwuert : écrire en lettres le résultat d'une multiplication.\n" +
+                    "• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n" +
+                    "• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, " +
+                    "sans aucune définition.\n\n" +
+                    "Chaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait " +
+                    "réviser à intervalles de plus en plus longs, jusqu'à ce qu'il soit acquis."
         )
 
         addGuideSection(
             mainLayout, "#FFF3E0", "🃏 Les cartes du carnet",
-            "Chaque mot gagné dans un jeu devient une carte, rangée dans «\u00A0Mäi Carnet\u00A0» " +
+            "Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » " +
                     "(onglet Spiller). Touchez une carte pour l'ouvrir en grand ; touchez à côté, " +
-                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer. Voici ce " +
-                    "que dit chaque partie d'une carte, avec l'exemple de «\u00A0Waasser\u00A0» (l'eau)."
+                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer.\n\n" +
+                    "Les images ci-dessous détaillent la carte « Waasser » (l'eau), partie " +
+                    "par partie : chaque numéro renvoie à l'explication qui suit l'image."
         )
 
+        addGuideImage(mainLayout, R.drawable.guide_carte_haut, "Le haut de la carte")
         addGuideSection(
             mainLayout, "#FFFFFF", "🔷 Le haut de la carte",
-            "• La pastille ronde, en haut à gauche : le nombre de lettres du mot. «\u00A0Waasser\u00A0» " +
-                    "en compte 7, autant qu'il faudra en taper pour le réviser.\n\n" +
-                    "• La plaque du nom : le mot tel que vous l'avez rencontré dans le jeu, avec " +
-                    "sa majuscule s'il s'agit d'un nom.\n\n" +
-                    "• L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
-                    "territoire, économie, temps et mesure…), et son motif est tracé à partir des " +
-                    "lettres du mot, si bien qu'un même mot donne toujours la même image. Environ " +
-                    "quatre cartes sur cent portent en plus un petit dessin.\n\n" +
-                    "• Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
+            "1. Le mot, tel que vous l'avez rencontré dans le jeu, avec sa majuscule s'il " +
+                    "s'agit d'un nom.\n\n" +
+                    "2. La pastille ronde : le nombre de lettres du mot. « Waasser » en " +
+                    "compte 7, autant qu'il faudra en taper pour le réviser.\n\n" +
+                    "3. L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
+                    "territoire, économie, temps et mesure…), et son motif est tiré des lettres " +
+                    "du mot, si bien qu'un même mot donne toujours la même image. Quelques " +
+                    "cartes, comme celle-ci, portent en plus un dessin.\n\n" +
+                    "4. Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
                     "Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la " +
                     "fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont " +
                     "communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, " +
                     "c'est la difficulté de leur orthographe qui compte."
         )
 
+        addGuideImage(mainLayout, R.drawable.guide_carte_texte, "Le texte de la carte")
         addGuideSection(
             mainLayout, "#FFF3E0", "📜 Le texte de la carte",
-            "• La ligne de nature, sous l'illustration : ce qu'est le mot selon le " +
-                    "dictionnaire officiel du ZLS («\u00A0Nom neutre\u00A0», «\u00A0Verbe\u00A0», «\u00A0Adjectif\u00A0»…), " +
-                    "puis le jeu où vous l'avez gagné. Pour «\u00A0Waasser\u00A0» : «\u00A0Nom neutre · gagné à " +
-                    "Wuertplaz\u00A0».\n\n" +
-                    "• Le sens, en gras : la traduction française du mot.\n\n" +
-                    "• La phrase en italique : un exemple du mot en situation, tiré du " +
+            "5. La ligne de nature : ce qu'est le mot selon le dictionnaire officiel du " +
+                    "ZLS (« Nom neutre », « Verbe », « Adjectif »…), " +
+                    "puis le jeu où vous l'avez gagné.\n\n" +
+                    "6. Le sens, en gras : la traduction française du mot.\n\n" +
+                    "7. La phrase en italique : un exemple du mot en situation, tiré du " +
                     "dictionnaire officiel. Pour un nombre, c'est sa décomposition.\n\n" +
-                    "• La ligne plus petite dessous : la traduction française de cette phrase, " +
+                    "8. La ligne plus petite : la traduction française de cette phrase, " +
                     "seulement quand le ZLS l'a publiée. Sinon, la carte affiche à la place " +
-                    "«\u00A0Même famille :\u00A0» et les autres formes du mot (pluriel, conjugaisons…)."
+                    "« Même famille : » et les autres formes du mot (pluriel, conjugaisons…)."
         )
 
+        addGuideImage(mainLayout, R.drawable.guide_carte_bas, "Le bas de la carte")
         addGuideSection(
             mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
-            "• L'écu VUES, à gauche : combien de fois vous avez gagné ce mot, tous jeux " +
-                    "confondus.\n\n" +
-                    "• L'écu NIVEAU, à droite : le casier de la Boîte de Leitner où se trouve la " +
-                    "carte, de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
+            "9. L'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n" +
+                    "10. Le joyau central : la rareté encore, par sa couleur (gris, vert, bleu, " +
+                    "violet). Il grossit avec le palier.\n\n" +
+                    "11. L'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, " +
+                    "de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
                     "est acquis.\n\n" +
-                    "• La ligne de série, tout en bas à gauche : le numéro de la carte dans votre " +
-                    "collection, le sigle du jeu qui l'a donnée (WP pour Wuertplaz, KW pour " +
-                    "Kräizwuert…) et la date où vous l'avez gagnée.\n\n" +
-                    "• À droite de cette ligne : le rang du mot parmi les plus fréquents de la " +
-                    "langue (par exemple «\u00A0812ᵉ\u00A0»), ou «\u00A0hors corpus\u00A0» s'il n'y figure pas.\n\n" +
-                    "Dans la grille du carnet, la petite carte ne garde que l'essentiel : le mot, " +
-                    "l'emoji du ou des jeux, le début du sens, et six petits traits qui se " +
-                    "remplissent à mesure que la carte monte de casier."
+                    "12. La ligne de série : le numéro de la carte dans votre collection, le " +
+                    "sigle du jeu qui l'a donnée (WP pour Wuertplaz, KW pour Kräizwuert…) et la " +
+                    "date où vous l'avez gagnée.\n\n" +
+                    "13. Le rang : la place du mot parmi les plus fréquents de la langue " +
+                    "(« 856ᵉ » pour « Waasser »), ou « hors corpus » " +
+                    "s'il n'y figure pas."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_vignette, "La petite carte, dans la grille du carnet")
+        addGuideSection(
+            mainLayout, "#FFF3E0", "🗂️ Dans la grille du carnet",
+            "La petite carte ne garde que l'essentiel pour choisir laquelle ouvrir :\n\n" +
+                    "A. Le mot.\n\n" +
+                    "B. L'emoji du ou des jeux où vous l'avez gagné, puis le début du sens.\n\n" +
+                    "C. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à " +
+                    "mesure que la carte progresse. Ici, « Aarbecht » en a franchi cinq."
         )
 
         addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
             "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
-                    "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
-                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
+                    "« Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, " +
+                    "🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner " +
+                    "et 🧙 Sproochenmeeschter."
         )
 
         val faqCard = createCard("#FFF8E1")
