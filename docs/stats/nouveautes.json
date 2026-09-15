@@ -1,264 +1,33 @@
 {
- "genere_le": "2026-09-12",
- "derniere_version": "22.0.1",
- "derniere_date": "2026-09-12",
+ "genere_le": "2026-09-15",
+ "derniere_version": "22.10.0",
+ "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "22.0.1",
-   "date": "2026-09-12",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrigé",
-     "points": [
-      {
-       "titre": "Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6",
-       "texte": "Le calcul du jour de révision appelait <code>Math.floorDiv</code>, apparu avec l'API 24 alors que l'application descend à l'API 21 et n'active pas le désucrage des bibliothèques : sur ces appareils, ouvrir le carnet levait un <code>NoSuchMethodError</code>. C'était la seule API Java 8 de tout le dépôt, et lint ne la signale pas en <code>lintVital</code>. La division plancher est désormais écrite à la main, et un test la vérifie de part et d'autre de 1970."
-      },
-      {
-       "titre": "« Presque juste » ne fait plus monter la carte d'une boîte",
-       "texte": "Comme la 22.0.0 l'annonçait sans le faire. Une réponse juste à un accent ou à une majuscule près compte comme réussie et la différence est montrée — mais la carte reste dans sa boîte et revient à son rythme. Le verdict était bien calculé à trois niveaux et bien affiché, puis réduit à un simple « réussi ou raté » une ligne avant d'être enregistré, si bien que <code>greng</code> valait <code>gréng</code>. C'est le seul endroit de l'application où l'accent et la majuscule sont la question et non un détail de rendu."
-      },
-      {
-       "titre": "La phrase à trous réclame le mot qu'elle a retiré",
-       "texte": "Les phrases du dictionnaire officiel sont rangées par famille : celle d'une carte <code>Haus</code> peut illustrer <code>Haiser</code>. Le trou était creusé sur la forme de la famille mais la réponse attendue restait celle de la carte — le joueur devait écrire un mot que la phrase ne veut pas, et <code>Haiser</code>, seule réponse qui complète la phrase, était comptée fausse. Mesuré sur les actifs livrés, 38,6 % des cartes illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme, celle de la carte quand la phrase la contient, et la question dit lorsqu'elle réclame une autre forme de la même famille."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.0.0",
-   "date": "2026-09-12",
+   "version": "22.10.0",
+   "date": "2026-09-15",
    "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Ajouté",
+     "titre": "Nouveautés",
      "points": [
       {
-       "titre": "La révision espacée des cartes du carnet",
-       "texte": "Six boîtes, aux intervalles fixes de 1, 3, 7, 16, 35 et 90 jours, puis la carte est acquise et ne revient plus. Une bonne réponse fait monter la carte d'une boîte, une mauvaise la ramène au départ. Un bouton « Réviser N cartes » ouvre la session en tête du carnet, et la bannière de l'onglet Spiller annonce ce qui est dû du jour."
+       "titre": "Un tiroir de la Boîte de Leitner s'ouvre en éventail",
+       "texte": "Toucher un casier fait sortir ses cartes de la pile et les étale en main : on glisse pour les parcourir, on touche la carte du centre pour la lire en grand, on touche ailleurs pour les ranger. La grille de vignettes sur fond blanc est supprimée."
       },
       {
-       "titre": "C'est la boîte qui décide de la question, jamais le joueur",
-       "texte": "Dans les deux premières, la carte se retourne et l'on s'autonote : reconnaître suffit. À partir de la troisième, il faut <strong>produire l'orthographe</strong>, dans la phrase du dictionnaire officiel dont le mot a été retiré, ou à défaut depuis le sens français. Mesuré sur les actifs livrés : 93,3 % des mots que les jeux versent au carnet ont une phrase où le mot se retrouve, donc la forme forte de la question est presque toujours celle qui est posée."
+       "titre": "Les cartes de la boîte portent leur recto",
+       "texte": "Celui du carnet (cadre de rareté, illustration, mot). Les cartes à réviser sortent de leur fente, penchées et cerclées de violet."
       },
       {
-       "titre": "Le mot se tape sur un pavé dans la disposition du clavier",
-       "texte": "Celui de Kräizwuert, avec une touche majuscule de plus à la place exacte qu'elle occupe sur le clavier. Kräizwuert laissait cet emplacement vide, sa grille étant tout en capitales ; ici la majuscule du substantif est l'objet de la question, donc il faut pouvoir la produire."
+       "titre": "Chaque casier a sa légende",
+       "texte": "Gravée dans le bois : le nombre de cartes et le délai de retour (« 1 jour », « 1 sem. », « ★ acquis »). Une phrase rappelle la règle : une bonne réponse fait avancer la carte."
       },
       {
-       "titre": "Juste à un accent ou à une majuscule près compte comme réussi",
-       "texte": "La différence est montrée, et la carte ne monte pas de boîte. C'est le seul endroit de l'application où l'accent et la majuscule sont la question et non un détail d'affichage."
-      },
-      {
-       "titre": "Une réponse juste que le jeu n'attendait pas est acceptée",
-       "texte": "Sur une question posée depuis le sens français, toute carte du paquet portant ce sens vaut réponse : 36,2 % des familles glosées partagent leur premier sens, et neuf mots se glosent « présenter ». Répondre <code>Akkord</code> là où la carte disait <code>Accord</code> n'est pas une erreur."
-      },
-      {
-       "titre": "Le clavier est l'examen",
-       "texte": "Une carte dont le compteur d'usage a monté depuis la dernière session monte d'une boîte <strong>sans que la question soit posée</strong> : avoir écrit le mot dans un vrai message est une preuve de mémoire plus forte qu'une carte retournée. Le bilan de session le dit en clair."
-      },
-      {
-       "titre": "Une barre de six segments",
-       "texte": "Sous chaque vignette, et une ligne sur la carte ouverte, disent où en est sa révision. Une barre et non une couleur : la couleur du cadre appartient déjà à la rareté."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": "Rien de nouveau n'est collecté, et la frontière de stockage est tenue",
-       "texte": "Les compteurs de frappe vivent dans <code>filesDir</code>, que les deux règles de sauvegarde excluent, et la référence dont la révision se sert pour savoir qu'un mot a été écrit reste dans ce même domaine. Le carnet, lui, est sauvegardé dans le nuage, et ne reçoit qu'une date d'échéance : une échéance repoussée par le clavier est indiscernable d'une échéance repoussée par une carte réussie."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Un carnet déjà rempli n'est pas rendu entièrement dû le jour de la mise à jour",
-       "texte": "Les cartes sans échéance sont étalées par paquets de douze sur les jours suivants, dans leur ordre de capture : la collection revient au rythme où elle a été faite. Sans cela, la première ouverture présentait un mur de deux cents cartes, et un mur ne s'ouvre jamais."
-      },
-      {
-       "titre": "Une session est plafonnée à douze cartes",
-       "texte": "Les plus anciennement dues d'abord, puis les boîtes les plus basses. Un échec repasse une fois en fin de session, pour ne pas quitter sur un mot qu'on n'a pas retrouvé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧪",
-     "titre": "Tests",
-     "points": [
-      {
-       "titre": null,
-       "texte": "36 tests de plus, 314 en tout. <code>WidderhuelenPlanTest</code> gèle le calendrier (les boîtes, la coupure de quatre heures, l'horloge reculée qui ne doit pas verrouiller le paquet, le plafond, l'étalement), <code>WidderhuelenSessionTest</code> les règles de la session et de la notation, et <code>CarnetRevisionAssetTest</code> rejoue le troage sur les phrases réelles : une régénération qui perdrait les phrases d'exemple ferait basculer toutes les cartes de production sur le repli français sans rien casser de visible."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📄",
-     "titre": "Documentation",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>REVISION-CARNET.md</code> à la racine du dépôt : la note de conception, ses mesures et ce qui reste à trancher."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "21.0.0",
-   "date": "2026-09-12",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Le carnet devient commun aux sept jeux",
-       "texte": "Il était né dans Wuertplaz et n'y gardait que les mots verrouillés ; ce qu'il réparait — une récompense qui disparaît avec la grille — n'avait pourtant rien de propre à ce jeu. Chaque mot trouvé dans Wuertsich, remis dans l'ordre dans Wuertmix, deviné dans Wuertriet, retrouvé dans la phrase de Wuertlück, bien orthographié dans Zuelwuert ou écrit dans Kräizwuert devient désormais une carte."
-      },
-      {
-       "titre": "Le carnet est en tête de l'écran des jeux",
-       "texte": "Pleine largeur, au-dessus des sept cartes. Il fallait auparavant choisir Wuertplaz <em>puis</em> finir une grille pour découvrir qu'une collection existait. La bannière porte le total et les emojis des jeux qui ont déjà donné une carte, comme une carte de progression."
-      },
-      {
-       "titre": "Chaque jeu porte sa pastille « 📔 Carnet »",
-       "texte": "Dans son en-tête, avec le total acquis, et l'ouvre d'une touche — même quand rien n'a encore été gagné."
-      },
-      {
-       "titre": "La pochette s'ouvre à la fin de chaque partie",
-       "texte": "Et plus seulement au bout d'une grille de Wuertplaz : fin de manche dans Wuertmix, Wuertlück et Zuelwuert, grille complète dans Wuertsich et Kräizwuert, mot trouvé dans Wuertriet. Elle prend la couleur et l'emoji du jeu qu'on vient de quitter, et passe <strong>avant</strong> le bilan chiffré, qui est une fenêtre à part et la recouvrirait."
-      },
-      {
-       "titre": "Une carte dit d'où elle vient",
-       "texte": "L'emoji du jeu sur la vignette, l'étiquette entière sur la carte ouverte. Un mot gagné dans deux jeux reste une seule carte et porte les deux — ce sont les mêmes mots, en faire deux cartes doublerait la collection sans rien lui apprendre."
-      },
-      {
-       "titre": "Le carnet se filtre par jeu",
-       "texte": "Les filtres n'apparaissent qu'à mesure que les jeux donnent des cartes, et la ligne reste cachée tant qu'un seul jeu est représenté : un unique filtre et un bouton « Tous » diraient la même chose."
-      },
-      {
-       "titre": "Les numéraux de Zuelwuert ont leur propre lecture de la rareté",
-       "texte": "Mesuré sur l'actif livré, 86 des 101 nombres de 0 à 100 sont absents du corpus de fréquences, et les quinze présents sautent de <code>zwee</code> (rang 105) à <code>fofzeg</code> (36 954) : la lecture par rang aurait rendu « très rares » cinq cartes sur six. Leur rareté suit donc ce que leur orthographe demande — forme isolée, dizaine ronde, composé à liaison <code>an</code>, puis composé où la règle d'Eifel fait tomber le n, celle qu'on n'invente pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Une carte ne se gagne nulle part sans avoir été trouvée : un mot passé dans Wuertmix, une réponse fausse dans Wuertlück ou Zuelwuert, un Wuertriet perdu et une grille dont on a demandé la solution ne versent rien au carnet et n'ouvrent aucune pochette. C'était déjà la règle de Wuertplaz ; elle vaut maintenant pour les sept."
-      },
-      {
-       "titre": null,
-       "texte": "Le carnet a sa couleur propre, qui n'est celle d'aucun jeu : il ne porte plus le vert-bleu de Wuertplaz, dont il n'est plus la collection."
-      },
-      {
-       "titre": null,
-       "texte": "La liste des mots de Wuertsich traduit désormais la forme du dictionnaire et non sa graphie de grille, tout en capitales — les substantifs y retrouvent leur glose."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Vie privée",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Les cartes déjà collectées sont reprises telles quelles : le carnet change de domaine de préférences, la reprise est faite une fois à la première lecture, et l'ancien domaine est effacé derrière elle. Rien de nouveau n'est stocké hormis le jeu d'origine de chaque carte."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "20.6.0",
-   "date": "2026-09-09",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Une pochette de cartes s'ouvre à la fin d'une grille",
-       "texte": "Les mots gagnés se retournent un par un, chacun montrant sa carte, puis un bilan dit ce que la grille a rapporté et propose d'aller voir le carnet. Le carnet conservait déjà, mais il fallait y aller ; la pochette, elle, paie la grille au moment où elle se termine."
-      },
-      {
-       "titre": "La pochette rend toutes les cartes de la grille, pas seulement les inédites",
-       "texte": "N'ouvrir que les nouveautés aurait vidé la récompense dès que le joueur commence à connaître le vocabulaire, c'est-à-dire précisément quand il progresse ; les cartes jamais rencontrées passent devant et sont signalées."
-      },
-      {
-       "titre": null,
-       "texte": "Une carte se retourne d'elle-même et un appui passe à la suivante, « Passer » restant offert dès la première : c'est un cadeau, pas un passage obligé avant la grille suivante. Une grille dont on a demandé la solution n'en ouvre aucune, puisqu'elle ne rapporte rien."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_pochette.png",
-   "image_alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
-   "image_legende": "Une grille terminée verse sa pochette : les mots gagnés se retournent un par un, ceux que le carnet n'avait jamais vus portant une étiquette. « Passer » est offert dès la première carte — c'est un cadeau, pas un passage obligé. Le bilan compte ce que la grille a rapporté et ouvre sur la collection. Une grille dont on a demandé la solution n'en verse aucune, puisqu'elle ne rapporte rien."
-  },
-  {
-   "version": "20.5.0",
-   "date": "2026-09-09",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Ajouté",
-     "points": [
-      {
-       "titre": "Un carnet de cartes à collectionner",
-       "texte": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui, elle, ne repart pas de zéro à la grille suivante. On l'ouvre depuis le jeu, à l'endroit exact où la liste des sens gagnés vivait déjà. Une carte porte le mot, sa nature quand la majuscule la donne, une illustration, le sens français, une phrase d'exemple du dictionnaire officiel, les autres formes de sa famille, et son rang dans la collection."
-      },
-      {
-       "titre": "La rareté d'une carte est la fréquence du mot",
-       "texte": "Et rien d'autre. Le dictionnaire est trié par fréquence décroissante : le rang d'une forme <em>est</em> sa rareté, sans qu'il faille inventer la moindre statistique — poser des « points de vie » sur une vraie langue aurait appris quelque chose de faux. Les quatre paliers sont mesurés sur le vivier réel du jeu : 37 % de communs, 34 % de peu communs, 20 % de rares, 8 % de très rares."
-      },
-      {
-       "titre": "Les illustrations sont dessinées à partir du mot lui-même",
-       "texte": "Sans aucune image dans l'application : teinte, anneaux et filigrane sont dérivés de ses lettres, si bien que la même forme donne toujours la même carte. Un tableau mot → emoji a été mesuré puis écarté — le vocabulaire du jeu compte 1 453 premiers sens distincts pour 1 963 formes, dont les plus partagés sont « devoir », « marcher », « pouvoir »."
-      },
-      {
-       "titre": "Le carnet distingue ce qui est neuf de ce qui est revu",
-       "texte": "Une carte jamais rencontrée est signalée dans la partie, et le bouton porte le total acquis depuis toujours."
-      },
-      {
-       "titre": null,
-       "texte": "La collection est rangée avec les préférences, donc <strong>sauvegardée et transférée d'un téléphone à l'autre</strong> comme les réglages du clavier. Ce sont des mots de dictionnaire, déjà filtrés à l'ouverture des grilles."
+       "titre": "La plaque « Réviser » est un vrai bouton",
+       "texte": "Plus grande, en laiton lisible, et quand rien n'est dû elle dit quand revenir (« Tout est à jour · 4 cartes demain »)."
       }
      ],
      "texte": "",
@@ -266,58 +35,314 @@
     },
     {
      "emoji": "🐛",
-     "titre": "Corrigé",
+     "titre": "Corrections",
      "points": [
       {
-       "titre": "Une carte pouvait montrer le sens d'un autre mot de sa famille",
-       "texte": "La fiche prenait la traduction du représentant, si bien que le substantif « Notze » (utilité) s'affichait sous celle du verbe « notzen » (profiter de) — le même piège que « rout », qui est rouge et non « se reposer ». Le sens de la forme rencontrée l'emporte désormais ; le repli sur la famille ne sert plus qu'aux flexions que le dictionnaire ne traduit pas seules."
+       "titre": null,
+       "texte": "Le bouton retour depuis un casier ouvert faisait quitter la boîte. Il remonte maintenant d'un cran à la fois : carte, éventail, boîte, liste des jeux."
+      },
+      {
+       "titre": null,
+       "texte": "La plaque annonçait toutes les cartes en retard alors qu'une session s'arrête à 12 ; elle annonce maintenant la session."
+      },
+      {
+       "titre": null,
+       "texte": "La plaque était peinte à 25 % d'opacité, d'où son aspect terne."
+      },
+      {
+       "titre": null,
+       "texte": "Toucher un casier plein lançait la révision de sa première carte au lieu d'en montrer le contenu."
+      },
+      {
+       "titre": null,
+       "texte": "Le casier ouvert n'affichait que les cartes de la session du jour, pas tout son contenu."
+      },
+      {
+       "titre": null,
+       "texte": "L'écran restait blanc plusieurs secondes à l'ouverture de la boîte ; le contenu des cartes se charge maintenant en arrière-plan."
+      },
+      {
+       "titre": null,
+       "texte": "La boîte et le casier ouvert annonçaient le même délai de deux façons (« 2 sem. » et « tous les 16 jours ») ; ils utilisent maintenant le même arrondi."
+      },
+      {
+       "titre": null,
+       "texte": "L'ombre sous la boîte se lisait comme une barre grise ; c'est désormais un fondu sans arête."
       }
      ],
-     "texte": "",
+     "texte": "Cette version reprend aussi la correction publiée sous l'étiquette v22.9.2 (la boîte grandit avec l'espace disponible), qui n'avait pas d'entrée ici.",
      "tableau": null
     }
    ],
-   "image": "Screenshots/lux_carnet.png",
-   "image_alt": "Deux écrans du carnet. À gauche, l'en-tête « Mäi Carnet », la ligne « 30 mots » suivie du compte par rareté, trois tris (Récent, A → Z, Rareté) et une grille de cartes à deux colonnes : Fans, Stëmme, geparkten, virgelies, sechs, Artikele, chacune avec son illustration, son mot en vert, son symbole de rareté et son sens français. À droite, la carte « virgelies » ouverte par-dessus la grille assombrie : badge violet « Très rare », « 9 lettres », le sens « lire à haute voix (à) », une phrase d'exemple, la même famille, et « n° 27 · 9958ᵉ mot le plus fréquent ».",
-   "image_legende": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui ne repart plus de zéro à la grille suivante. La rareté n'est pas inventée : c'est le rang du mot dans le dictionnaire de fréquences, ce qui rend « virgelies » aussi rare que le corpus le dit. Les illustrations sont dessinées à partir des lettres du mot, si bien que la même forme donne toujours la même carte."
+   "image": "Screenshots/lux_eventail.png",
+   "image_alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
+   "image_legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
   },
   {
-   "version": "20.4.0",
-   "date": "2026-09-08",
+   "version": "22.9.1",
+   "date": "2026-09-14",
    "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Ajouté",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Wuertplaz fête un mot débloqué",
-       "texte": "Un joueur a signalé que le verrouillage d'un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son, alors que c'est le seul moment où ce jeu enseigne. Le verrouillage se ponctue maintenant — les lettres du mot s'allument en vert vif l'une après l'autre, une carte verte entre en scène avec le sens français, et un retour haptique accompagne le tout."
-      },
-      {
-       "titre": "Le coup double a sa fête à lui",
-       "texte": "Verrouiller plusieurs mots d'une seule pose est l'événement le plus gratifiant de la partie : carte orange « 🔥 N mots d'un coup ! », balayages en cascade, retour haptique plus appuyé. Le détail des sens gagnés reste, comme avant, dans « Ce que vous avez gagné »."
-      },
-      {
-       "titre": "La collection compte et s'anime",
-       "texte": "Le bandeau « Ce que vous avez gagné » porte le nombre de mots appris et fait un rebond quand il monte ; chaque sens nouvellement acquis entre en glissant."
-      },
-      {
-       "titre": "La fin de grille lâche des confettis",
-       "texte": "Et affiche une note en trois paliers, tous félicitants — ⭐⭐⭐ « sans une seule reprise » à ⭐ « grille bouclée » — calée sur les mots repris en cours de partie, pas sur le temps."
-      },
-      {
-       "titre": null,
-       "texte": "Toutes ces animations sont sautées quand l'utilisateur a coupé les animations du système ; le retour haptique, lui, suit le réglage haptique d'Android et ne demande aucune permission."
+       "titre": "La Boîte de Leitner occupe maintenant tout l'écran",
+       "texte": "Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant <code>weight=1f</code> pour s'étendre, et <code>BoiteLeitner.onMeasure()</code> accepte la hauteur disponible au lieu de rester figée à 176dp."
       }
      ],
      "texte": "",
      "tableau": null
     }
-   ],
-   "image": "Screenshots/lux_recompense_verrouillage.png",
-   "image_alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
-   "image_legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
+   ]
+  },
+  {
+   "version": "22.9.0",
+   "date": "2026-09-13",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La pochette de fin de partie restait bloquée sur sa première carte",
+       "texte": "Le compteur annonçait « 1 / 7 », et il n'y avait aucun moyen d'atteindre la deuxième."
+      }
+     ],
+     "texte": "La cause est un conflit de toucher, pas un oubli. Le passage d'une carte à la suivante tenait à un <code>setOnClickListener</code> posé sur le voile (<code>Booster.ouvrir</code>), tandis que la carte ouverte vit dans un <code>ScrollView</code> — il lui faut pouvoir faire défiler une glose plus haute que l'écran. Or <code>ScrollView.onTouchEvent</code> retourne <code>true</code> dès <code>ACTION_DOWN</code>, <strong>même quand il n'a rien à faire défiler</strong>, et n'appelle jamais <code>performClick()</code>. L'appui était donc consommé par la carte et n'arrivait pas au voile. La carte occupant la quasi-totalité de la scène, les seuls appuis qui passaient encore étaient ceux qui tombaient dans les quelques millimètres de marge autour d'elle — autant dire aucun. Ce n'était pas un défaut de découvrabilité : le geste documenté existait et ne fonctionnait pas.",
+     "tableau": null
+    },
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "La pochette se parcourt au doigt, dans les deux sens",
+       "texte": "On glisse vers la gauche pour avancer, vers la droite pour revenir. Le bilan de fin est devenu la dernière page du paquet au lieu d'un écran à part, ce qui permet d'en ressortir vers la dernière carte : un bilan posé à côté du paquet était un cul-de-sac, et c'était la moitié du problème."
+      },
+      {
+       "titre": "Une carte rare part en feux d'artifice quand elle se pose",
+       "texte": "Trois gerbes pour une <em>Rare</em>, cinq pour une <em>Très rare</em>, décalées dans le temps, avec pesanteur et traînées ; elles s'éteignent en <code>(1 - t)²</code>, donc bien avant d'atteindre le bord — ce qu'on est venu voir, c'est le mot."
+      }
+     ],
+     "texte": "Une carte déjà retournée se retrouve telle qu'on l'a laissée. La cérémonie — le dos, le halo qui monte, le retournement — appartient à la découverte ; la rejouer à chaque aller-retour aurait transformé la consultation en attente. Aux deux bouts du paquet, le glissement résiste au tiers de la course : la carte suit encore le doigt, mais dit qu'il n'y a rien derrière sans avoir à l'écrire. L'appui simple reste ce qu'il était, et marche de nouveau. Le compteur porte désormais la mention du geste, faute de quoi il n'y aurait toujours rien pour l'apprendre. Elles partent <strong>à chaque fois que la carte arrive à l'écran</strong>, au retournement qui la découvre comme au glissement qui y revient : la rareté n'est pas une nouvelle qu'on annonce une fois, c'est une propriété que la carte garde, et c'est ce qui donne une raison de parcourir sa pochette. Le tirage des gerbes est fixé par la forme du mot (<code>graine = forme.hashCode()</code>). Revenir sur une carte redonne exactement son bouquet, et deux cartes voisines n'en donnent jamais deux pareils : le hasard sert la variété, jamais l'instabilité. C'est la règle d'<code>EclatCarte</code> appliquée dans l'autre sens — lui garde des angles réguliers parce qu'il est bref, elles peuvent se permettre du désordre parce qu'il ne varie pas d'une fois sur l'autre. Les deux cohabitent sur une très rare, la gerbe reprenant là où l'éclat s'éteint.",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Détails d'implémentation",
+     "points": [
+      {
+       "titre": "<code>ScenePochette</code>",
+       "texte": "(nouveau, <code>Booster.kt</code>) : la scène lit le geste avant ses enfants. Elle intercepte le glissement horizontal dès qu'il se déclare (<code>|dx| &gt; slop</code> et <code>|dx| &gt; 1,2·|dy|</code> — les diagonales vont au défilement, une carte qu'on voulait lire et qui s'en va valant bien pire qu'un glissement à refaire), et reconnaît l'appui simple <strong>sans jamais l'intercepter</strong>, dans <code>onInterceptTouchEvent</code>, qui reçoit tous les événements du geste tant qu'elle laisse faire. Les deux chemins sont exclusifs — si un enfant prend le geste, seul <code>onInterceptTouchEvent</code> voit le relâchement ; sinon la scène l'a consommé dès l'appui — donc un appui ne peut pas compter deux fois. Coordonnées lues en <code>raw</code> : la page glisse sous le doigt, des coordonnées locales mesureraient ce déplacement au lieu de celui de la main. Et quand le <code>ScrollView</code> se met à défiler, il demande lui-même qu'on ne l'interrompe plus : le défilement gagne."
+      },
+      {
+       "titre": "<code>performClick()</code>",
+       "texte": "Est surchargée et porte l'appui, plutôt que d'appeler le rappel depuis <code>onTouchEvent</code> : les services d'accessibilité déclenchent un clic sans jamais produire de <code>MotionEvent</code>, et la pochette n'aurait sinon pas eu de carte suivante sous TalkBack."
+      },
+      {
+       "titre": "<code>FeuxArtifice</code>",
+       "texte": "(nouveau, <code>Booster.kt</code>) : une vue pilotée par un unique <code>avancement</code> de 0 à 1, comme <code>EclatCarte</code>. Rayon en <code>1 - (1-t)²</code>, chute en <code>t²</code>, traînée proportionnelle à la vitesse restante ; une étoile sur deux part à 72 % du rayon, sans quoi la gerbe se lirait comme un anneau. Les positions sont en fractions de la vue, jamais en pixels : le tirage a lieu à la construction, avant qu'on connaisse la taille."
+      },
+      {
+       "titre": "Chaque page vit dans son propre <code>FrameLayout</code>",
+       "texte": "Ajouté à la scène et retiré à la fin de sa sortie. Les rappels différés de la cérémonie s'arrêtent sur <code>page.parent == null</code>, ce qui suffit à abandonner proprement un retournement que le joueur a interrompu d'un glissement."
+      },
+      {
+       "titre": "<code>Passer</code> devient <code>Fermer</code> — et « 📔 Mon carnet » apparaît — dès que toutes les cartes ont été vues",
+       "texte": "Où qu'on se trouve dans le paquet, et non plus sur la seule page de bilan. Le bouton n'était caché que pour ne pas inviter à partir avant d'avoir ouvert ; une fois tout ouvert, la raison tombe."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.8.0",
+   "date": "2026-09-13",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Quarante-cinq cartes de plus portent un meuble",
+       "texte": "120 des 2 798 emplacements du carnet sont enluminés, contre 75, soit 4,3 % au lieu de 2,7 %. Les nouveaux sujets sont l'hôpital, la banque, l'immeuble, la prison, le mur, la gare, le parking, le restaurant ; le bus, le tram, le train, le camion, l'ambulance, la moto, la rue, le panneau de danger, la pompe et la valise ; le journal, le document, le dossier, le film, l'ordinateur et la note ; la règle, la balance, la seringue, la pièce et la robe ; le globe, le cercle d'étoiles, la tour Eiffel, l'île, la forêt, le flocon et le virus. Trois mots de plus tombent sur des dessins qui existaient déjà — <code>Zäit</code> sur l'horloge d'<code>Auer</code>, <code>Nuecht</code> sur la lune de <code>Mound</code>, <code>Telefon</code> sur le téléphone de <code>Handy</code> — et <code>Café</code> sur la tasse de <code>Kaffi</code>, sans un trait de plus."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔎",
+     "titre": "Ce que l'emoji a servi à faire, et ce qu'il ne pouvait pas faire",
+     "points": [
+      {
+       "titre": "Le gisement est réel",
+       "texte": "Sur les 1 160 substantifs monosémiques encore sans meuble, un échantillon de 160 en donne 19 % à qui l'on attribuerait un emoji sans hésiter, soit environ 220 cartes."
+      },
+      {
+       "titre": "Mais l'emoji ne pouvait pas être livré",
+       "texte": "Il apporte sa propre palette, qui concurrence la teinte — or la teinte porte le champ, et c'est le seul canal de couleur qui signifie quelque chose sur une carte. Désaturé pour s'y soumettre, il perd la moitié des siens : le journal devient un rectangle blanc, le panneau P un carré, l'œuf un ovale, et le drapeau suisse perd le rouge qui <em>est</em> la Suisse. En pochoir alpha — la vraie gravure — cinq candidats sur douze survivent. En petit, dans un coin, aucun ne se lit."
+      },
+      {
+       "titre": "Il a donc servi de crible et de croquis",
+       "texte": "Là où le glyphe existe, le concept a déjà un pictogramme conventionnel : c'est exactement ce qui rend une silhouette lisible. La liste a été triée par rang de fréquence, pour que l'effort de dessin tombe sur des cartes que les joueurs voient."
+      }
+     ],
+     "texte": "La piste de départ était le poinçon : frapper l'emoji dans la fenêtre quand le mot est explicite. Elle a été mesurée puis rendue avant d'être tranchée.",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le croissant de <code>lune</code> était faux, et il était en production",
+       "texte": "Il était fait de deux disques posés l'un sur l'autre en comptant sur la règle pair-impair pour les soustraire. Deux disques ne se soustraient pas : la part du second qui sort du premier n'est recouverte qu'une fois, donc elle se remplit. La carte portait un lobe plein, débordant de huit unités hors du carré de tracé. Le croissant est désormais un seul contour à deux arcs."
+      },
+      {
+       "titre": "Les trois lingots d'<code>or</code> se recouvraient",
+       "texte": "Et un recouvrement se creuse : ils sont maintenant empilés et aboutés."
+      },
+      {
+       "titre": null,
+       "texte": "Deux unités de rognage retirées à l'auréole d'<code>ange</code> et aux ondes d'<code>antenne</code>."
+      },
+      {
+       "titre": null,
+       "texte": "Sept des quarante nouveaux dessins ont été refaits après première épreuve — dont une gare qui, avec sa grande arche sous une horloge ronde, se lisait comme une tête au-dessus d'un corps."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Détails d'implémentation",
+     "points": [
+      {
+       "titre": null,
+       "texte": "<code>Meubles.kt</code> passe de 74 à 111 silhouettes. Trois noms de la nouvelle vague entraient en collision avec des dessins existants (<code>horloge</code>, <code>lune</code>, <code>telephone</code>) : en Kotlin le dernier d'un <code>mapOf</code> gagne en silence, et les anciens auraient été masqués sans erreur. Les nouveaux ont été retirés, les anciens réattribués."
+      },
+      {
+       "titre": null,
+       "texte": "<code>apercu_meubles.py</code> mesure désormais la boîte réelle de chaque tracé, courbes échantillonnées par de Casteljau plutôt qu'approchées par leurs points de contrôle, et signale tout dépassement du carré de cent. C'est ce contrôle qui a trouvé <code>lune</code>, <code>or</code>, <code>ange</code> et <code>antenne</code>."
+      },
+      {
+       "titre": null,
+       "texte": "L'actif reste à 52 ko : quarante-cinq attributions de plus n'y pèsent rien."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.7.0",
+   "date": "2026-09-13",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Une carte a désormais un champ, et le carnet cesse d'être un nuancier",
+       "texte": "Jusqu'ici la teinte d'une carte venait de ses trois premières lettres : deux cartes voisines dans un tiroir n'avaient aucune raison d'aller ensemble, et feuilleter la collection ne rangeait rien. Chaque lemme est maintenant classé dans l'un de <strong>huit champs de sens</strong> — Mouvement, Temps et mesure, Territoire, Économie, Savoir et parole, Chose publique, Société, Vie et corps — et c'est le champ qui donne la couleur de la face, de la gemme et de la fenêtre."
+      },
+      {
+       "titre": "La partition divise le champ, et elle ne coûte rien du tout",
+       "texte": "L'héraldique divise l'écu avant d'y poser quoi que ce soit ; la fenêtre fait maintenant pareil — chevron pour un substantif, coupé pour un verbe, tranché pour le reste. L'information est lue <strong>sur la forme du mot</strong> : en luxembourgeois la majuscule <em>est</em> l'étiquette du substantif, et l'infinitif se termine en <code>-en</code>. Pas un octet d'actif."
+      },
+      {
+       "titre": "Soixante-quinze cartes portent une enluminure",
+       "texte": "Une silhouette gravée remplace le tracé sur les mots qu'on sait bien dessiner : <code>Haus</code>, <code>Kaz</code>, <code>Brout</code>, <code>Léiw</code>, <code>Helikopter</code>, <code>Fändel</code>… Soixante-quatorze dessins pour soixante-quinze mots, à peu près <strong>trois cartes sur cent</strong>. L'enluminure ne suit pas la rareté — celle-là est fixée par le rang de fréquence et n'est pas négociable — c'est un second axe de désirabilité, qui peut échoir à une commune comme à une très rare."
+      }
+     ],
+     "texte": "Huit et non quatorze : au-delà, deux teintes voisines ne se séparent plus sur une vignette de 160 dp. À l'intérieur d'un champ, la carte garde un écart de ±12°, tiré du même condensé de trois lettres que l'ancienne teinte — les cartes d'un même domaine se ressemblent sans se confondre, et <code>Woch</code>, <code>Wochen</code> et <code>Woche</code> restent exactement sur la même couleur. Douze degrés, c'est moins de la moitié du plus petit intervalle entre deux champs (34°) : deux domaines ne peuvent donc jamais se recouvrir. Le classement couvre <strong>71 % des 2 798 emplacements</strong> du carnet. Les 29 % restants ne sont pas un chantier inachevé : ce sont des mots-outils — pronoms, déterminants, adverbes — qui n'ont pas de domaine et qu'il serait faux de ranger de force. Ils gardent la teinte de leurs lettres, c'est-à-dire exactement l'état de la 22.6.0. Elle rend un service qu'on n'attendait pas d'elle : huit teintes sur une face désaturée se confondent, et une forme qui double la couleur rétablit la lecture — y compris en deutéranopie. C'est le raisonnement des insignes de rareté, qui comptent des symboles au lieu de se fier au vert et au bleu-gris. La règle verbale est approchée, et il faut le chiffrer plutôt que le taire : sur les 502 mots qu'elle appelle verbe, une quinzaine sont des déterminants (<code>sengem</code>, <code>hirem</code>, <code>deenen</code>), soit 3 %. Les irréguliers en <code>-nn</code> sont rattrapés — <code>sinn</code>, <code>ginn</code>, <code>hunn</code>, <code>gesinn</code> et leurs douze composés — moins les trois adverbes qui portent la même finale.",
+     "tableau": null
+    },
+    {
+     "emoji": "🧭",
+     "titre": "Ce que la mesure a démoli, et ce qui a survécu",
+     "points": [],
+     "texte": "La 22.6.0 disait que l'illustration cessait d'être une cible de couverture. Voici le chiffre qui l'a décidé, parce qu'il contredisait ce que j'avais moi- même recommandé. L'argument était : « un meuble sert des dizaines de mots, une maison vaut pour <code>Haus</code>, <code>Wunneng</code>, <code>Duerf</code>, <code>Dier</code> ; on ne dessine pas 2 801 images, on dessine cent vingt silhouettes ». Mesuré sur les 1 690 substantifs glosés du carnet : <strong>1 504 têtes de glose distinctes</strong>, soit <strong>1,12 mot par dessin</strong>, et <strong>89 %</strong> des têtes ne concernent qu'un seul mot. La courbe de couverture colle à la diagonale — il n'y a pas de Pareto. Cent vingt silhouettes couvriraient 16 % des substantifs et 5 % du carnet. D'où venait l'erreur : j'avais raisonné sur les huit mots concrets d'une planche de démonstration, en oubliant que je les avais choisis <strong>parce qu'ils étaient illustrables</strong>. Le biais de sélection sous sa forme la plus banale, et la seule protection contre lui est de compter. Le corpus le dit d'ailleurs autrement : ses mots les plus tirés ne sont pas <em>chat</em> et <em>pain</em> mais <em>fin</em>, <em>question</em>, <em>cas</em>, <em>partie</em> — ce carnet n'est pas un imagier, c'est une salle de rédaction, et <code>Apel</code>, <code>Kou</code>, <code>Zopp</code> n'y figurent même pas. Un second obstacle, plus dur que le coût : <strong>le meuble choisit un sens que la carte ne choisit pas.</strong> La carte affiche toute la glose — « Wee : chemin, sens, moyen » — et un dessin n'en illustre qu'un. Sur la face réponse d'un outil de révision, une image qui tranche une polysémie est activement fausse. Le coût de dessin, on peut le payer ; un sens faux, non. C'est ce qui interdit toute attribution automatique, même par un bon classifieur. D'où le renversement : on ne dessine plus ce qu'il faudrait couvrir, <strong>on n'attribue que là où c'est juste</strong>. <code>Feier</code> est « feu, incendie, <em>fête</em> », <code>Bierg</code> « montagne, côte, <em>garant</em> », <code>Nol</code> « clou, <em>ongle</em>, <em>aiguille</em> » — aucun des trois n'est enluminé, et chaque entrée du tableau a été relue contre la glose entière. Ce qu'il faut accepter en échange, et le dire en face : la fenêtre ne dit pas le sens sur la grande majorité des cartes. Le reste reçoit un rangement, pas un portrait.",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Détails d'implémentation",
+     "points": [
+      {
+       "titre": null,
+       "texte": "<code>Dictionnaires/generate_blasons.py</code> produit <code>luxemburgish_blasons.json</code> (52 ko, 2 064 lemmes). Le classement se fait en deux passes : un lexique français cherché dans la glose entière — le premier sens comptant triple, puisque c'est celui que la carte met en tête — puis une table écrite à la main qui gagne toujours. Le lexique a été écrit en trois vagues, chacune en relisant ce que la précédente laissait dehors : 23 %, puis 44 %, puis 71 %. Une dernière règle vaut une soixantaine de cartes : <strong>un nom propre est un lieu</strong>, appliquée en dernier recours, quand les gentilés ont déjà été pris par le lexique et qu'il ne reste que de la géographie."
+      },
+      {
+       "titre": null,
+       "texte": "<code>carnet/Blason.kt</code> — les huit champs, la nature, et l'armorial qui lit l'actif. La clé est le <strong>représentant</strong> de la famille, pas la forme rencontrée : le joueur a gagné « Männer », c'est le rangement de « Mann » qui vaut, et <code>ContenuCarte</code> avait déjà ce représentant sous la main."
+      },
+      {
+       "titre": null,
+       "texte": "<code>carnet/Meubles.kt</code> — les 74 silhouettes, chacune dans un carré de cent unités, remplies en <code>EVEN_ODD</code> pour que la porte d'une maison soit un trou et non un second contour."
+      },
+      {
+       "titre": null,
+       "texte": "<code>Motif</code> prend un troisième participant. Il assemblait une matière (le palier) et un sujet (le mot) ; il assemble maintenant matière, <strong>partition</strong> (la nature) et sujet, et le sujet est le meuble s'il y en a un, le tracé sinon."
+      },
+      {
+       "titre": null,
+       "texte": "Les numéraux de Zuelwuert, que le corpus de fréquences ne connaît pas et qu'aucune grille ne contient, reçoivent le champ <em>Temps et mesure</em> : leur domaine ne fait aucun doute, et leurs cartes cessent d'être un semis."
+      },
+      {
+       "titre": null,
+       "texte": "<code>BlasonsAssetTest</code> garde quatre régressions muettes : un champ inconnu, un meuble non dessiné, un meuble attribué à un mot qu'aucun jeu ne donne, et l'effondrement de la couverture. Aucune ne fait planter — <code>Armorial</code> avale exprès toute erreur de lecture pour qu'un actif abîmé n'éteigne pas le carnet."
+      },
+      {
+       "titre": null,
+       "texte": "<code>Dictionnaires/apercu_meubles.py</code> transpose les 74 <code>Path</code> en SVG et en tire une planche de contrôle dans un navigateur, sans émulateur. Elle n'est pas un ornement : au premier tirage elle a renvoyé <strong>dix-huit dessins sur soixante-quatorze</strong>. Six têtes d'animaux avaient les oreilles, cornes ou bois posés <em>par-dessus</em> le crâne et s'y creusaient — <code>EVEN_ODD</code> perce là où deux pleins se chevauchent — une main avait ses doigts au travers de la paume, un banc ses pieds au travers de l'assise ; et une dizaine d'objets étaient simplement illisibles. Rien de tout cela ne se voit en relisant des coordonnées, et rien ne se serait vu avant l'installation."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.6.1",
+   "date": "2026-09-13",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🎨",
+     "titre": "Ajustements",
+     "points": [
+      {
+       "titre": "La ligne de série passe dans la marge",
+       "texte": "Elle traversait les volutes d'angle : à <code>bord = 18</code>, les spirales du bas sont centrées en (23, 417) et (277, 417) sur 22 unités, et l'or en pose deux secondes en x = 39 et x = 261 — soit quatre spirales sous un texte qui allait de 30 à 270, avec l'exposant du rang rendu illisible à droite. Ce n'était pas un manque de place, c'était une superposition."
+      },
+      {
+       "titre": "Le corps de la ligne descend de 9 à 7,5",
+       "texte": "La bande ne fait plus que neuf unités et demie, et une boîte de ligne à 9 en demande dix et demie. 7,5 est celui des libellés gravés dans les écus, pas une taille inventée pour l'occasion. Le rétrécissement est réel et assumé : il requalifie la ligne en petits caractères, ce qu'elle est."
+      },
+      {
+       "titre": "La couleur ne change pas, contrairement à ce que le raisonnement laissait attendre",
+       "texte": "Le bandeau étant plus sombre que le plateau, le réflexe était de passer le texte de <code>trait</code> à <code>hi</code>. La mesure dit l'inverse : au bas du bandeau le dégradé est à 63 % de <code>lo</code> vers <code>mid</code>, où le sombre tient 4,4:1 sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 pour le clair."
+      },
+      {
+       "titre": "Le relief perd un cran",
+       "texte": "<code>aretes</code> posait une marche au partage des deux moitiés de la ligne ; dans la marge le métal est lisse, et <code>bord</code> y est déjà la seule marche que le doigt trouve."
+      }
+     ],
+     "texte": "La bande est désormais <strong>428 → 437,5</strong>, la même sur les quatre paliers parce qu'elle est ancrée au bord bas et non à la marge, qui varie de 12 à 18 selon la rareté. Ces deux bornes sont mesurées : une volute a perdu 62 % de son rayon quand elle passe à l'aplomb de son centre, donc aucune ne descend plus bas que ~427 ; et le filet de contour extérieur commence à 437,5. En x, la ligne peut s'élargir de 30–270 à 22–278, plus rien ne la gênant à cette hauteur. C'est aussi l'endroit où ce genre de mention vit sur une carte imprimée — numéro, jeu, date, rang : de l'administratif, qui n'a pas à disputer sa place au contenu. Treize unités se libèrent en 408–421. Elles ne profiteront au panneau que si les écus (375–410) descendent aussi : c'est une cascade de trois emplacements, laissée pour une prochaine fois.",
+     "tableau": null
+    }
+   ]
   }
  ]
 }

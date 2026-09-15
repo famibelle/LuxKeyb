@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.10.0": {
+    "image": "Screenshots/lux_eventail.png",
+    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
+    "legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
+  },
   "20.6.0": {
     "image": "Screenshots/lux_pochette.png",
     "alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
