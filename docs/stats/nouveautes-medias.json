@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.12.4": {
+    "image": "Screenshots/lux_contre_pivot.png",
+    "alt": "Deux fois la carte « Duerf » ouverte depuis la Boîte de Leitner, chacune surmontée d'un téléphone penché et d'une flèche orange courbe. À gauche, le téléphone penche vers la gauche, et la carte montre sa tranche claire le long de son bord gauche. À droite, le téléphone penche vers la droite, et la tranche apparaît le long du bord droit.",
+    "legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
+  },
   "22.12.3": {
     "image": "Screenshots/lux_glisse_lateral.png",
     "alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",

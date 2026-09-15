@@ -1,9 +1,47 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.3",
+ "derniere_version": "22.12.4",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.4",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Une carte ouverte pivote enfin à contre-mouvement",
+       "texte": "Quand on penche le téléphone, la carte devait résister au geste comme un objet posé qui garde son aplomb : bord droit du téléphone qui descend, bord droit de la carte qui vient vers soi. Elle faisait l'inverse et suivait le téléphone, ce qui écrasait l'effet de profondeur. Même chose d'avant en arrière."
+      },
+      {
+       "titre": "La tranche et le reflet suivent la carte",
+       "texte": "Un téléphone tenu penché gardait sa tranche visible alors que la carte s'était remise d'aplomb, et en paysage la tranche apparaissait du mauvais côté."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La carte ouverte depuis la Boîte de Leitner suit la main",
+       "texte": "Comme celle du carnet : elle pivote avec l'inclinaison du téléphone et s'enfonce légèrement sous le doigt."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_contre_pivot.png",
+   "image_alt": "Deux fois la carte « Duerf » ouverte depuis la Boîte de Leitner, chacune surmontée d'un téléphone penché et d'une flèche orange courbe. À gauche, le téléphone penche vers la gauche, et la carte montre sa tranche claire le long de son bord gauche. À droite, le téléphone penche vers la droite, et la tranche apparaît le long du bord droit.",
+   "image_legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
+  },
   {
    "version": "22.12.3",
    "date": "2026-09-15",
@@ -126,48 +164,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "22.11.0",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les phrases d'exemple sont traduites en français",
-       "texte": "Sous la phrase luxembourgeoise d'une carte du carnet ou d'une fiche du Wierderbuch s'affiche maintenant sa traduction. Elle vient du corpus de traduction du Zenter fir d'Lëtzebuerger Sprooch : ce sont les traductions officielles, faites par des traducteurs professionnels."
-      },
-      {
-       "titre": "Pas de traduction plutôt qu'une traduction approchée",
-       "texte": "Une phrase n'est traduite que si le ZLS l'a traduite telle quelle ; sinon, elle s'affiche seule, sans mention. Environ une carte sur quatre a aujourd'hui sa traduction, et la part grandira avec les prochaines publications du corpus."
-      },
-      {
-       "titre": "La phrase choisie illustre le sens principal du mot",
-       "texte": "Une phrase traduite ne passe devant les autres que si elle illustre le premier sens : « Hond » reste un chien, et non un voyou."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Sur une carte, le guillemet fermant d'une phrase d'exemple pouvait partir seul à la ligne."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_exemple_traduit.png",
-   "image_alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
-   "image_legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
   }
  ]
 }
