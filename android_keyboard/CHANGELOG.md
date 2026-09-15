@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.2] - 2026-09-15
+
+### 📖 Guide
+
+- **Le guide explique les cartes du carnet, image à l'appui.** Trois illustrations fléchées et numérotées détaillent la carte « Waasser » : le mot, sa longueur, l'illustration et le cadre ; la nature, le sens, l'exemple et sa traduction ; les écus VUES et NIVEAU, le joyau de rareté, la ligne de série et le rang. Une quatrième montre ce que garde la petite carte de la grille.
+- La section des jeux présente les sept jeux et la Boîte de Leitner, là où elle n'en citait que cinq.
+- La progression nomme les huit niveaux luxembourgeois, d'Ufänker à Sproochenmeeschter.
+
 ## [22.12.1] - 2026-09-15
 
 ### ✨ Améliorations
