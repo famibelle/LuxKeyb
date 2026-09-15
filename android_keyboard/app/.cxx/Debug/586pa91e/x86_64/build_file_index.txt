@@ -1,8 +1,0 @@
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/CMakeLists.txt
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/CMakeLists.txt
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/cmake/build-info.cmake
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/cmake/whisper-config.cmake.in
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/ggml/CMakeLists.txt
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/ggml/src/CMakeLists.txt
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/ggml/src/ggml-cpu/CMakeLists.txt
-/home/medhi/SourceCode/LuxKeyb/android_keyboard/app/src/main/cpp/whisper.cpp/src/CMakeLists.txt

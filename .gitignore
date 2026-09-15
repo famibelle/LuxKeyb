@@ -7,6 +7,12 @@ android_keyboard/build/
 android_keyboard/local.properties
 android_keyboard/.idea/
 android_keyboard/*.iml
+# Cache CMake/ninja du module natif STT : un `git add` large l'a fait entrer
+# dans la release 22.12.3 (337 fichiers), avec le gitlink whisper.cpp qui va
+# avec — cassant le build Pages, qui clone les sous-modules et ne trouve pas
+# de .gitmodules sur main (le sous-module n'existe que sur feat/speech-to-text-lb).
+android_keyboard/app/.cxx/
+android_keyboard/app/src/main/cpp/whisper.cpp/
 
 # APK files (distribués via GitHub Releases)
 *.apk
@@ -241,3 +247,6 @@ CLAUDE.md
 luxkeyb-release.jks
 *.jks
 Dictionnaires/zls_data/
+
+# Bytecode compilé Python, entré par le même `git add` large que ci-dessus
+stt/bench/__pycache__/
