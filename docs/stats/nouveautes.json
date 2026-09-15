@@ -1,9 +1,51 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.10.0",
+ "derniere_version": "22.11.0",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.11.0",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les phrases d'exemple sont traduites en français",
+       "texte": "Sous la phrase luxembourgeoise d'une carte du carnet ou d'une fiche du Wierderbuch s'affiche maintenant sa traduction. Elle vient du corpus de traduction du Zenter fir d'Lëtzebuerger Sprooch : ce sont les traductions officielles, faites par des traducteurs professionnels."
+      },
+      {
+       "titre": "Pas de traduction plutôt qu'une traduction approchée",
+       "texte": "Une phrase n'est traduite que si le ZLS l'a traduite telle quelle ; sinon, elle s'affiche seule, sans mention. Environ une carte sur quatre a aujourd'hui sa traduction, et la part grandira avec les prochaines publications du corpus."
+      },
+      {
+       "titre": "La phrase choisie illustre le sens principal du mot",
+       "texte": "Une phrase traduite ne passe devant les autres que si elle illustre le premier sens : « Hond » reste un chien, et non un voyou."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Sur une carte, le guillemet fermant d'une phrase d'exemple pouvait partir seul à la ligne."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_exemple_traduit.png",
+   "image_alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
+   "image_legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
+  },
   {
    "version": "22.10.0",
    "date": "2026-09-15",
@@ -309,37 +351,6 @@
       }
      ],
      "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.6.1",
-   "date": "2026-09-13",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🎨",
-     "titre": "Ajustements",
-     "points": [
-      {
-       "titre": "La ligne de série passe dans la marge",
-       "texte": "Elle traversait les volutes d'angle : à <code>bord = 18</code>, les spirales du bas sont centrées en (23, 417) et (277, 417) sur 22 unités, et l'or en pose deux secondes en x = 39 et x = 261 — soit quatre spirales sous un texte qui allait de 30 à 270, avec l'exposant du rang rendu illisible à droite. Ce n'était pas un manque de place, c'était une superposition."
-      },
-      {
-       "titre": "Le corps de la ligne descend de 9 à 7,5",
-       "texte": "La bande ne fait plus que neuf unités et demie, et une boîte de ligne à 9 en demande dix et demie. 7,5 est celui des libellés gravés dans les écus, pas une taille inventée pour l'occasion. Le rétrécissement est réel et assumé : il requalifie la ligne en petits caractères, ce qu'elle est."
-      },
-      {
-       "titre": "La couleur ne change pas, contrairement à ce que le raisonnement laissait attendre",
-       "texte": "Le bandeau étant plus sombre que le plateau, le réflexe était de passer le texte de <code>trait</code> à <code>hi</code>. La mesure dit l'inverse : au bas du bandeau le dégradé est à 63 % de <code>lo</code> vers <code>mid</code>, où le sombre tient 4,4:1 sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 pour le clair."
-      },
-      {
-       "titre": "Le relief perd un cran",
-       "texte": "<code>aretes</code> posait une marche au partage des deux moitiés de la ligne ; dans la marge le métal est lisse, et <code>bord</code> y est déjà la seule marche que le doigt trouve."
-      }
-     ],
-     "texte": "La bande est désormais <strong>428 → 437,5</strong>, la même sur les quatre paliers parce qu'elle est ancrée au bord bas et non à la marge, qui varie de 12 à 18 selon la rareté. Ces deux bornes sont mesurées : une volute a perdu 62 % de son rayon quand elle passe à l'aplomb de son centre, donc aucune ne descend plus bas que ~427 ; et le filet de contour extérieur commence à 437,5. En x, la ligne peut s'élargir de 30–270 à 22–278, plus rien ne la gênant à cette hauteur. C'est aussi l'endroit où ce genre de mention vit sur une carte imprimée — numéro, jeu, date, rang : de l'administratif, qui n'a pas à disputer sa place au contenu. Treize unités se libèrent en 408–421. Elles ne profiteront au panneau que si les écus (375–410) descendent aussi : c'est une cascade de trois emplacements, laissée pour une prochaine fois.",
      "tableau": null
     }
    ]

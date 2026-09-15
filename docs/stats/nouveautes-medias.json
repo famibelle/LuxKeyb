@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.11.0": {
+    "image": "Screenshots/lux_exemple_traduit.png",
+    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
+    "legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
+  },
   "22.10.0": {
     "image": "Screenshots/lux_eventail.png",
     "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
