@@ -74,6 +74,7 @@ CHEMIN_TRAD = RACINE_ASSETS / "luxemburgish_translations.json"
 CHEMIN_FAMILLES = RACINE_ASSETS / "luxemburgish_familles.json"
 CHEMIN_EXEMPLES = RACINE_ASSETS / "luxemburgish_exemples.json"
 CHEMIN_LOD_IDS = RACINE_ASSETS / "luxemburgish_lod_ids.json"
+CHEMIN_CATEGORIES = RACINE_ASSETS / "luxemburgish_categories.json"
 CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
@@ -165,6 +166,36 @@ def lire_traductions(xml_articles, verbeux=True):
         print(f"   📖 {len(par_article)} articles glosés en français "
               f"(dont {propres} noms propres)")
     return par_article
+
+
+# Les catégories du LOD que la carte sait nommer. Deux étiquettes parasites du
+# fichier, « (bei Pronominaladverben) » et « (mat enger Prepositioun) », sont
+# des précisions rédactionnelles et non des catégories.
+CATEGORIES_CONNUES = {"SUBST", "VRB", "ADJ", "NP", "ADV", "NB", "PRON",
+                      "PRONADV", "INTERJ", "PREP", "CONJ", "VRBPART", "PART",
+                      "ART"}
+
+
+def lire_categories(xml_articles, verbeux=True):
+    """id d'article → catégorie, suivie du genre pour un nom commun.
+
+    Chaque article du LOD porte une seule catégorie (33 913 sur 33 941, les
+    28 autres n'en portent aucune) : elle vaut donc pour toutes ses formes.
+    """
+    categories = {}
+    for _, entree in ET.iterparse(io.BytesIO(xml_articles), events=("end",)):
+        if entree.tag != "entry":
+            continue
+        identifiant = entree.get("id")
+        noeud = entree.find(".//partOfSpeech")
+        code = (noeud.text or "").strip() if noeud is not None else ""
+        if identifiant and code in CATEGORIES_CONNUES:
+            genre = noeud.get("gen") if code == "SUBST" else None
+            categories[identifiant] = f"{code} {genre}" if genre else code
+        entree.clear()
+    if verbeux:
+        print(f"   🏷️ {len(categories)} articles catégorisés")
+    return categories
 
 
 def _phrase(texte):
@@ -608,7 +639,21 @@ def main():
         if representant not in articles:
             articles[representant] = identifiant
 
+    # La catégorie de chaque mot, pour la ligne de type des cartes du carnet.
+    # Même clé et même règle que les identifiants : la catégorie est celle de
+    # l'article dont la carte montre la glose.
+    categories_article = lire_categories(xml_articles)
+    categories = OrderedDict()
+    for identifiant, representant in representant_de_article.items():
+        if representant not in categories and identifiant in categories_article:
+            categories[representant] = categories_article[identifiant]
+    print(f"   🏷️ {len(categories)} mots affichés portent une catégorie")
+
     if arguments.strict:
+        if len(categories) < 20000:
+            print(f"❌ --strict : seulement {len(categories)} mots catégorisés, "
+                  "les cartes perdraient leur catégorie")
+            return 1
         if len(familles) < 10000:
             print(f"❌ --strict : seulement {len(familles)} familles, "
                   "le regroupement du Wierderbuch serait inopérant")
@@ -720,6 +765,25 @@ def main():
         encoding="utf-8")
     taille = CHEMIN_LOD_IDS.stat().st_size / 1024
     print(f"💾 {CHEMIN_LOD_IDS.name} — {taille:.0f} Ko")
+
+    # Cinquième actif séparé : les cartes du carnet le lisent, la recherche et
+    # les jeux jamais.
+    contenu_categories = {
+        "version": contenu["version"],
+        "generated": contenu["generated"],
+        "source": contenu["source"],
+        "licence": contenu["licence"],
+        "attribution": ATTRIBUTION,
+        "count": len(categories),
+        "categories": categories,
+    }
+    sauvegarder_precedent(CHEMIN_CATEGORIES)
+    CHEMIN_CATEGORIES.write_text(
+        json.dumps(contenu_categories, ensure_ascii=False, indent=None,
+                   separators=(",", ":")),
+        encoding="utf-8")
+    taille = CHEMIN_CATEGORIES.stat().st_size / 1024
+    print(f"💾 {CHEMIN_CATEGORIES.name} — {taille:.0f} Ko")
     print("✅ Terminé")
     return 0
 

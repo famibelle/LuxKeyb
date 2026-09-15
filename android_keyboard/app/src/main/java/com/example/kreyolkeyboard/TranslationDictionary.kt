@@ -34,6 +34,7 @@ object TranslationDictionary {
     private const val ASSET_FAMILLES = "luxemburgish_familles.json"
     private const val ASSET_EXEMPLES = "luxemburgish_exemples.json"
     private const val ASSET_LOD_IDS = "luxemburgish_lod_ids.json"
+    private const val ASSET_CATEGORIES = "luxemburgish_categories.json"
     private const val TAG = "TranslationDictionary"
 
     /** Forme telle que livrée par le dictionnaire → glose française. */
@@ -131,6 +132,16 @@ object TranslationDictionary {
     private var articlesLod: Map<String, String> = emptyMap()
     private var articlesCharges = false
     private val verrouArticles = Any()
+
+    /**
+     * Forme affichée → catégorie du LOD, code et genre (`"SUBST F"`, `"VRB"`),
+     * pour la ligne de type des cartes du carnet. Lue dans l'article qui
+     * fournit la glose, si bien que la catégorie dit toujours la nature du
+     * sens affiché. Verrou propre, pour la même raison que les exemples.
+     */
+    private var categoriesLod: Map<String, String> = emptyMap()
+    private var categoriesChargees = false
+    private val verrouCategories = Any()
 
     /**
      * Formes pliées que l'application peut proposer d'elle-même, calculées une
@@ -364,6 +375,72 @@ object TranslationDictionary {
     fun articleLod(context: Context, mot: String): String? {
         chargerArticles(context)
         return articlesLod[mot]
+    }
+
+    /** Charge la table des catégories. Sans effet si elle l'est déjà. */
+    fun chargerCategories(context: Context) {
+        synchronized(verrouCategories) {
+            if (categoriesChargees) return
+            categoriesChargees = true
+
+            try {
+                val contenu = BufferedReader(
+                    InputStreamReader(context.assets.open(ASSET_CATEGORIES))
+                ).use { it.readText() }
+
+                val table = JSONObject(contenu).getJSONObject("categories")
+                val lues = HashMap<String, String>(table.length())
+                val cles = table.keys()
+                while (cles.hasNext()) {
+                    val mot = cles.next()
+                    lues[mot] = table.getString(mot)
+                }
+                categoriesLod = lues
+            } catch (e: Exception) {
+                // Sans la table, la carte retombe sur la majuscule du nom.
+                Log.e(TAG, "Actif $ASSET_CATEGORIES illisible: ${e.message}", e)
+                categoriesLod = emptyMap()
+            }
+        }
+    }
+
+    /**
+     * Catégorie en clair du [mot] affiché par une fiche (« Nom féminin »,
+     * « Verbe »), ou `null` si le LOD ne la donne pas.
+     */
+    fun categorie(context: Context, mot: String): String? {
+        chargerCategories(context)
+        return categoriesLod[mot]?.let { libelleCategorie(it) }
+    }
+
+    /** `"SUBST F"` → « Nom féminin ». `null` pour un code inconnu. */
+    fun libelleCategorie(code: String): String? {
+        val parties = code.split(" ")
+        return when (parties[0]) {
+            "SUBST" -> when (parties.getOrNull(1)) {
+                "F" -> "Nom féminin"
+                "M" -> "Nom masculin"
+                "N" -> "Nom neutre"
+                "MF" -> "Nom masculin ou féminin"
+                "MN" -> "Nom masculin ou neutre"
+                "FN" -> "Nom féminin ou neutre"
+                else -> "Nom"
+            }
+            "NP" -> "Nom propre"
+            "VRB" -> "Verbe"
+            "ADJ" -> "Adjectif"
+            "ADV" -> "Adverbe"
+            "NB" -> "Nombre"
+            "PRON" -> "Pronom"
+            "PRONADV" -> "Adverbe pronominal"
+            "INTERJ" -> "Interjection"
+            "PREP" -> "Préposition"
+            "CONJ" -> "Conjonction"
+            "VRBPART" -> "Particule verbale"
+            "PART" -> "Particule"
+            "ART" -> "Article"
+            else -> null
+        }
     }
 
     /**

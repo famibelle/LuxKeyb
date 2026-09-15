@@ -32,7 +32,9 @@ data class ContenuCarte(
     val exemple: String?,
     val blason: Blasonnement = Blasonnement.AUCUN,
     /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
-    val traductionExemple: String? = null
+    val traductionExemple: String? = null,
+    /** La catégorie du LOD en clair (« Nom féminin », « Verbe »), ou `null`. */
+    val categorie: String? = null
 )
 
 /**
@@ -121,7 +123,8 @@ object CarteCarnet {
             // a gagné « Männer », c'est le rangement de « Mann » qui vaut. La
             // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
             blason = Armorial.pour(context, fiche.mot, carte.forme),
-            traductionExemple = exemple?.traduction
+            traductionExemple = exemple?.traduction,
+            categorie = TranslationDictionary.categorie(context, fiche.mot)
         )
     }
 
@@ -195,14 +198,21 @@ object CarteCarnet {
 
         // Chaque moitié dit ce qu'elle est : « Substantif · Wuertplaz » se
         // lisait comme si le jeu était un substantif.
+        // La catégorie du LOD d'abord ; un mot qu'il ignore (« RTL », « Bettel »)
+        // garde la seule déduction sûre, la majuscule du nom.
         val nature = when {
             c.carte.nombre != null -> "Nombre"
+            c.categorie != null -> c.categorie
             c.carte.forme.first().isUpperCase() -> "Nom"
             else -> null
         }
         val typeLigne = nature?.let { "$it · gagné à ${jeu.nom}" } ?: "Gagné à ${jeu.nom}"
+        // La plaque tient environ 34 caractères en corps 12 ; au-delà
+        // (« Nom masculin ou neutre · gagné à Kräizwuert ») le corps diminue
+        // plutôt que de couper le libellé.
+        val corps = if (typeLigne.length <= 34) 12f else (12f * 34 / typeLigne.length).coerceAtLeast(9f)
         carte.posee(
-            ligne(context, typeLigne, taille = 12f, couleur = ENCRE, gras = true),
+            ligne(context, typeLigne, taille = corps, couleur = ENCRE, gras = true),
             Ornement.TYPE
         )
 
