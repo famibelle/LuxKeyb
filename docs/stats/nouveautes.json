@@ -1,9 +1,31 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.2",
+ "derniere_version": "22.12.3",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.3",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Une carte ouverte se referme par glissé latéral",
+       "texte": "Vers la gauche ou vers la droite, elle suit le doigt et sort de l'écran, et l'on retrouve l'éventail du casier au même endroit. Un geste trop court la remet en place."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_glisse_lateral.png",
+   "image_alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
+   "image_legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
+  },
   {
    "version": "22.12.2",
    "date": "2026-09-15",
@@ -146,80 +168,6 @@
    "image": "Screenshots/lux_exemple_traduit.png",
    "image_alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
    "image_legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
-  },
-  {
-   "version": "22.10.0",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Un tiroir de la Boîte de Leitner s'ouvre en éventail",
-       "texte": "Toucher un casier fait sortir ses cartes de la pile et les étale en main : on glisse pour les parcourir, on touche la carte du centre pour la lire en grand, on touche ailleurs pour les ranger. La grille de vignettes sur fond blanc est supprimée."
-      },
-      {
-       "titre": "Les cartes de la boîte portent leur recto",
-       "texte": "Celui du carnet (cadre de rareté, illustration, mot). Les cartes à réviser sortent de leur fente, penchées et cerclées de violet."
-      },
-      {
-       "titre": "Chaque casier a sa légende",
-       "texte": "Gravée dans le bois : le nombre de cartes et le délai de retour (« 1 jour », « 1 sem. », « ★ acquis »). Une phrase rappelle la règle : une bonne réponse fait avancer la carte."
-      },
-      {
-       "titre": "La plaque « Réviser » est un vrai bouton",
-       "texte": "Plus grande, en laiton lisible, et quand rien n'est dû elle dit quand revenir (« Tout est à jour · 4 cartes demain »)."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Le bouton retour depuis un casier ouvert faisait quitter la boîte. Il remonte maintenant d'un cran à la fois : carte, éventail, boîte, liste des jeux."
-      },
-      {
-       "titre": null,
-       "texte": "La plaque annonçait toutes les cartes en retard alors qu'une session s'arrête à 12 ; elle annonce maintenant la session."
-      },
-      {
-       "titre": null,
-       "texte": "La plaque était peinte à 25 % d'opacité, d'où son aspect terne."
-      },
-      {
-       "titre": null,
-       "texte": "Toucher un casier plein lançait la révision de sa première carte au lieu d'en montrer le contenu."
-      },
-      {
-       "titre": null,
-       "texte": "Le casier ouvert n'affichait que les cartes de la session du jour, pas tout son contenu."
-      },
-      {
-       "titre": null,
-       "texte": "L'écran restait blanc plusieurs secondes à l'ouverture de la boîte ; le contenu des cartes se charge maintenant en arrière-plan."
-      },
-      {
-       "titre": null,
-       "texte": "La boîte et le casier ouvert annonçaient le même délai de deux façons (« 2 sem. » et « tous les 16 jours ») ; ils utilisent maintenant le même arrondi."
-      },
-      {
-       "titre": null,
-       "texte": "L'ombre sous la boîte se lisait comme une barre grise ; c'est désormais un fondu sans arête."
-      }
-     ],
-     "texte": "Cette version reprend aussi la correction publiée sous l'étiquette v22.9.2 (la boîte grandit avec l'espace disponible), qui n'avait pas d'entrée ici.",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_eventail.png",
-   "image_alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
-   "image_legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
   }
  ]
 }
