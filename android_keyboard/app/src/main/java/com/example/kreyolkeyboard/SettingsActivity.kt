@@ -209,9 +209,9 @@ class SettingsActivity : AppCompatActivity() {
         // du ViewPager déclenche onPageSelected(), qui réécrit currentTab à 0
         // avant que le post{} plus bas ne le lise. Sans cette copie, l'onglet
         // demandé est systématiquement perdu entre les deux.
-        val requestedTab = savedInstanceState?.getInt("currentTab", 2)
-            ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 2)
-            ?: 2
+        val requestedTab = savedInstanceState?.getInt("currentTab", 0)
+            ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 0)
+            ?: 0
         currentTab = requestedTab
         
         // Masquer la barre d'action (bandeau noir)
