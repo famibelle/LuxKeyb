@@ -96,7 +96,7 @@ object Inclinaison {
      * tenue penchée finisse par se remettre d'aplomb sans que le
      * mouvement se voie.
      */
-    private const val RAPPEL = 0.006f
+    internal const val RAPPEL = 0.006f
 
     /** La distance de caméra par défaut d'Android, en densités. */
     private const val CAMERA_DEFAUT = 1280f
@@ -219,11 +219,7 @@ object Inclinaison {
     ) : SensorEventListener, View.OnAttachStateChangeListener {
 
         private var arme = false
-        private var cale = false
-        private var reposX = 0f
-        private var reposY = 0f
-        private var roulis = 0f
-        private var tangage = 0f
+        private val posture = Posture(vue, LISSAGE)
 
         fun armer() {
             if (arme) return
@@ -237,9 +233,7 @@ object Inclinaison {
             arme = false
             // Le repos est perdu avec le capteur : une carte qui revient à
             // l'écran doit reprendre la posture du moment, pas celle d'avant.
-            cale = false
-            roulis = 0f
-            tangage = 0f
+            posture.oublier()
         }
 
         override fun onViewAttachedToWindow(v: View) = armer()
@@ -261,46 +255,90 @@ object Inclinaison {
         override fun onAccuracyChanged(lequel: Sensor?, precision: Int) = Unit
 
         override fun onSensorChanged(evenement: SensorEvent) {
-            if (evenement.values.size < 2) return
-
-            // Le capteur parle dans le repère de l'appareil, pas dans celui de
-            // l'écran : en paysage, ses deux axes sont échangés.
-            val brutX = evenement.values[0]
-            val brutY = evenement.values[1]
-            var x = brutX
-            var y = brutY
-            when (rotationEcran()) {
-                Surface.ROTATION_90 -> { x = -brutY; y = brutX }
-                Surface.ROTATION_180 -> { x = -brutX; y = -brutY }
-                Surface.ROTATION_270 -> { x = brutY; y = -brutX }
-            }
-
-            if (!cale) {
-                reposX = x
-                reposY = y
-                cale = true
-            }
-
-            val g = SensorManager.GRAVITY_EARTH
-            val cibleRoulis = ((reposX - x) / g).coerceIn(-1f, 1f)
-            val cibleTangage = ((reposY - y) / g).coerceIn(-1f, 1f)
-            roulis += (cibleRoulis - roulis) * LISSAGE
-            tangage += (cibleTangage - tangage) * LISSAGE
-            reposX += (x - reposX) * RAPPEL
-            reposY += (y - reposY) * RAPPEL
+            posture.echantillon(evenement.values)
 
             // Deux écritures de propriété, pas un seul ordre de tracé : la
             // carte n'est pas redessinée, elle est recomposée.
             val e = etat(vue)
-            e[0] = tangage * AMPLITUDE
-            e[1] = roulis * AMPLITUDE
+            e[0] = posture.tangage * AMPLITUDE
+            e[1] = posture.roulis * AMPLITUDE
             appliquer(vue, e)
         }
+    }
+}
 
-        @Suppress("DEPRECATION")
-        private fun rotationEcran(): Int {
-            val fenetres = vue.context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
-            return fenetres?.defaultDisplay?.rotation ?: Surface.ROTATION_0
+/**
+ * La posture du téléphone telle que la carte doit la rendre : un roulis et un
+ * tangage dans [-1, 1], comptés depuis le repos et dans le repère de l'écran.
+ *
+ * ## Pourquoi une seule posture
+ *
+ * [Inclinaison] fait pivoter la carte, [Carton] dessine sa tranche et son
+ * reflet, et chacun lisait le capteur à sa façon. Le pivot partait du repos et
+ * suivait la rotation de l'écran ; la tranche lisait l'inclinaison absolue,
+ * dans le repère de l'appareil. Un téléphone tenu penché gardait donc sa
+ * tranche alors que la carte s'était remise d'aplomb, et en paysage la tranche
+ * se trompait de côté. Les deux lisent maintenant la même posture.
+ *
+ * ## Le signe
+ *
+ * C'est celui du contre-pivot. Bord droit du téléphone qui descend : x
+ * diminue, le roulis est négatif, et un `rotationY` négatif amène le bord
+ * droit de la carte vers le joueur. Haut qui monte : y augmente, le tangage
+ * est positif, et le haut de la carte recule. L'écart `repos - x` d'origine
+ * faisait suivre le téléphone à la carte.
+ */
+internal class Posture(private val vue: View, private val lissage: Float) {
+
+    private var cale = false
+    private var reposX = 0f
+    private var reposY = 0f
+
+    var roulis = 0f
+        private set
+    var tangage = 0f
+        private set
+
+    fun echantillon(valeurs: FloatArray) {
+        if (valeurs.size < 2) return
+
+        // Le capteur parle dans le repère de l'appareil, pas dans celui de
+        // l'écran : en paysage, ses deux axes sont échangés.
+        val brutX = valeurs[0]
+        val brutY = valeurs[1]
+        var x = brutX
+        var y = brutY
+        when (rotationEcran()) {
+            Surface.ROTATION_90 -> { x = -brutY; y = brutX }
+            Surface.ROTATION_180 -> { x = -brutX; y = -brutY }
+            Surface.ROTATION_270 -> { x = brutY; y = -brutX }
         }
+
+        if (!cale) {
+            reposX = x
+            reposY = y
+            cale = true
+        }
+
+        val g = SensorManager.GRAVITY_EARTH
+        val cibleRoulis = ((x - reposX) / g).coerceIn(-1f, 1f)
+        val cibleTangage = ((y - reposY) / g).coerceIn(-1f, 1f)
+        roulis += (cibleRoulis - roulis) * lissage
+        tangage += (cibleTangage - tangage) * lissage
+        reposX += (x - reposX) * Inclinaison.RAPPEL
+        reposY += (y - reposY) * Inclinaison.RAPPEL
+    }
+
+    /** Le repos est perdu avec le capteur : la carte reprendra la posture du moment. */
+    fun oublier() {
+        cale = false
+        roulis = 0f
+        tangage = 0f
+    }
+
+    @Suppress("DEPRECATION")
+    private fun rotationEcran(): Int {
+        val fenetres = vue.context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
+        return fenetres?.defaultDisplay?.rotation ?: Surface.ROTATION_0
     }
 }

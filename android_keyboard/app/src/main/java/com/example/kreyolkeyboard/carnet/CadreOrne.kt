@@ -1210,8 +1210,11 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
 
     private var capteurs: SensorManager? = null
 
-    /** Le roulis de l'appareil, dans [-1, 1]. */
+    /** Le roulis de l'appareil depuis le repos, dans [-1, 1], tel que dessiné. */
     private var pesanteur = 0f
+
+    /** La même posture que celle qui fait pivoter la carte, voir [Posture]. */
+    private val posture = Posture(this, LISSAGE)
 
     /** Le roulis que dicte le doigt, dans [-1, 1]. */
     private var doigt = 0f
@@ -1289,6 +1292,8 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     override fun onDetachedFromWindow() {
         capteurs?.unregisterListener(this)
         capteurs = null
+        posture.oublier()
+        pesanteur = 0f
         // Un carton qui reviendrait à l'écran encore enfoncé se lirait comme
         // un bogue : l'appui appartient au geste, pas à la vue. Le test évite
         // au passage de fabriquer un état pour chacune des vignettes d'une
@@ -1332,10 +1337,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * trois cents ordres de tracé pour un dixième de degré.
      */
     override fun onSensorChanged(evenement: SensorEvent) {
-        if (evenement.values.isEmpty()) return
-        val cible = (-evenement.values[0] / SensorManager.GRAVITY_EARTH).coerceIn(-1f, 1f)
-        if (abs(cible - pesanteur) < SEUIL) return
-        pesanteur += (cible - pesanteur) * LISSAGE
+        posture.echantillon(evenement.values)
+        if (abs(posture.roulis - pesanteur) < SEUIL) return
+        pesanteur = posture.roulis
         invalidate()
     }
 
@@ -1479,7 +1483,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private companion object {
         /** Le lissage du roulis du capteur, et le seuil sous lequel on l'ignore. */
         const val LISSAGE = 0.20f
-        const val SEUIL = 0.04f
+        // Sur le roulis déjà lissé, qui avance d'un cinquième de l'écart par
+        // échantillon : 0,04 sur la cible d'avant vaut 0,008 ici.
+        const val SEUIL = 0.008f
 
         /** L'enfoncement maximum, en degrés, au bord du carton. */
         const val APPUI = 2.6f

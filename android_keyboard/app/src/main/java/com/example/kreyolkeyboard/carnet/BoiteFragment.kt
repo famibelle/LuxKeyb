@@ -340,6 +340,14 @@ class BoiteFragment : Fragment() {
                 if (contenu.rarete.distinguee) OvershootInterpolator(1.4f)
                 else DecelerateInterpolator()
             )
+            // Comme dans le carnet : la carte suit la main une fois retournée,
+            // pas avant, pour ne pas écrire dans `rotationY` pendant le
+            // retournement. Le voile reprend le geste dès qu'il devient un
+            // glissé, et le carton reçoit alors un `CANCEL` qui le relève.
+            .withEndAction {
+                Inclinaison.suivre(carte)
+                (carte as? Carton)?.sensibleAuDoigt = true
+            }
             .start()
     }
 
