@@ -1,9 +1,51 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.11.0",
+ "derniere_version": "22.12.0",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.0",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Chaque carte du carnet dit la nature de son mot",
+       "texte": "La ligne sous l'illustration nomme sa catégorie telle que le dictionnaire officiel du ZLS la donne : « Nom féminin · gagné à Wuertplaz », « Verbe », « Adjectif », « Préposition »… Pour un nom, le genre est indiqué, c'est lui qui décide entre <em>de</em>, <em>d'</em> et <em>dat</em>."
+      },
+      {
+       "titre": null,
+       "texte": "Un mot absent du dictionnaire officiel, comme un sigle, garde l'ancienne règle : « Nom » s'il porte une majuscule, rien sinon."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "22.11.1",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Le libellé d'une carte du carnet « Substantif · Wuertplaz » se lisait comme si le jeu était un substantif. Il dit maintenant « Nom · gagné à Wuertplaz », qui classe clairement le mot et son origine."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "22.11.0",
    "date": "2026-09-15",
@@ -195,159 +237,6 @@
       {
        "titre": "<code>Passer</code> devient <code>Fermer</code> — et « 📔 Mon carnet » apparaît — dès que toutes les cartes ont été vues",
        "texte": "Où qu'on se trouve dans le paquet, et non plus sur la seule page de bilan. Le bouton n'était caché que pour ne pas inviter à partir avant d'avoir ouvert ; une fois tout ouvert, la raison tombe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.8.0",
-   "date": "2026-09-13",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Quarante-cinq cartes de plus portent un meuble",
-       "texte": "120 des 2 798 emplacements du carnet sont enluminés, contre 75, soit 4,3 % au lieu de 2,7 %. Les nouveaux sujets sont l'hôpital, la banque, l'immeuble, la prison, le mur, la gare, le parking, le restaurant ; le bus, le tram, le train, le camion, l'ambulance, la moto, la rue, le panneau de danger, la pompe et la valise ; le journal, le document, le dossier, le film, l'ordinateur et la note ; la règle, la balance, la seringue, la pièce et la robe ; le globe, le cercle d'étoiles, la tour Eiffel, l'île, la forêt, le flocon et le virus. Trois mots de plus tombent sur des dessins qui existaient déjà — <code>Zäit</code> sur l'horloge d'<code>Auer</code>, <code>Nuecht</code> sur la lune de <code>Mound</code>, <code>Telefon</code> sur le téléphone de <code>Handy</code> — et <code>Café</code> sur la tasse de <code>Kaffi</code>, sans un trait de plus."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔎",
-     "titre": "Ce que l'emoji a servi à faire, et ce qu'il ne pouvait pas faire",
-     "points": [
-      {
-       "titre": "Le gisement est réel",
-       "texte": "Sur les 1 160 substantifs monosémiques encore sans meuble, un échantillon de 160 en donne 19 % à qui l'on attribuerait un emoji sans hésiter, soit environ 220 cartes."
-      },
-      {
-       "titre": "Mais l'emoji ne pouvait pas être livré",
-       "texte": "Il apporte sa propre palette, qui concurrence la teinte — or la teinte porte le champ, et c'est le seul canal de couleur qui signifie quelque chose sur une carte. Désaturé pour s'y soumettre, il perd la moitié des siens : le journal devient un rectangle blanc, le panneau P un carré, l'œuf un ovale, et le drapeau suisse perd le rouge qui <em>est</em> la Suisse. En pochoir alpha — la vraie gravure — cinq candidats sur douze survivent. En petit, dans un coin, aucun ne se lit."
-      },
-      {
-       "titre": "Il a donc servi de crible et de croquis",
-       "texte": "Là où le glyphe existe, le concept a déjà un pictogramme conventionnel : c'est exactement ce qui rend une silhouette lisible. La liste a été triée par rang de fréquence, pour que l'effort de dessin tombe sur des cartes que les joueurs voient."
-      }
-     ],
-     "texte": "La piste de départ était le poinçon : frapper l'emoji dans la fenêtre quand le mot est explicite. Elle a été mesurée puis rendue avant d'être tranchée.",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le croissant de <code>lune</code> était faux, et il était en production",
-       "texte": "Il était fait de deux disques posés l'un sur l'autre en comptant sur la règle pair-impair pour les soustraire. Deux disques ne se soustraient pas : la part du second qui sort du premier n'est recouverte qu'une fois, donc elle se remplit. La carte portait un lobe plein, débordant de huit unités hors du carré de tracé. Le croissant est désormais un seul contour à deux arcs."
-      },
-      {
-       "titre": "Les trois lingots d'<code>or</code> se recouvraient",
-       "texte": "Et un recouvrement se creuse : ils sont maintenant empilés et aboutés."
-      },
-      {
-       "titre": null,
-       "texte": "Deux unités de rognage retirées à l'auréole d'<code>ange</code> et aux ondes d'<code>antenne</code>."
-      },
-      {
-       "titre": null,
-       "texte": "Sept des quarante nouveaux dessins ont été refaits après première épreuve — dont une gare qui, avec sa grande arche sous une horloge ronde, se lisait comme une tête au-dessus d'un corps."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Détails d'implémentation",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>Meubles.kt</code> passe de 74 à 111 silhouettes. Trois noms de la nouvelle vague entraient en collision avec des dessins existants (<code>horloge</code>, <code>lune</code>, <code>telephone</code>) : en Kotlin le dernier d'un <code>mapOf</code> gagne en silence, et les anciens auraient été masqués sans erreur. Les nouveaux ont été retirés, les anciens réattribués."
-      },
-      {
-       "titre": null,
-       "texte": "<code>apercu_meubles.py</code> mesure désormais la boîte réelle de chaque tracé, courbes échantillonnées par de Casteljau plutôt qu'approchées par leurs points de contrôle, et signale tout dépassement du carré de cent. C'est ce contrôle qui a trouvé <code>lune</code>, <code>or</code>, <code>ange</code> et <code>antenne</code>."
-      },
-      {
-       "titre": null,
-       "texte": "L'actif reste à 52 ko : quarante-cinq attributions de plus n'y pèsent rien."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.7.0",
-   "date": "2026-09-13",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Une carte a désormais un champ, et le carnet cesse d'être un nuancier",
-       "texte": "Jusqu'ici la teinte d'une carte venait de ses trois premières lettres : deux cartes voisines dans un tiroir n'avaient aucune raison d'aller ensemble, et feuilleter la collection ne rangeait rien. Chaque lemme est maintenant classé dans l'un de <strong>huit champs de sens</strong> — Mouvement, Temps et mesure, Territoire, Économie, Savoir et parole, Chose publique, Société, Vie et corps — et c'est le champ qui donne la couleur de la face, de la gemme et de la fenêtre."
-      },
-      {
-       "titre": "La partition divise le champ, et elle ne coûte rien du tout",
-       "texte": "L'héraldique divise l'écu avant d'y poser quoi que ce soit ; la fenêtre fait maintenant pareil — chevron pour un substantif, coupé pour un verbe, tranché pour le reste. L'information est lue <strong>sur la forme du mot</strong> : en luxembourgeois la majuscule <em>est</em> l'étiquette du substantif, et l'infinitif se termine en <code>-en</code>. Pas un octet d'actif."
-      },
-      {
-       "titre": "Soixante-quinze cartes portent une enluminure",
-       "texte": "Une silhouette gravée remplace le tracé sur les mots qu'on sait bien dessiner : <code>Haus</code>, <code>Kaz</code>, <code>Brout</code>, <code>Léiw</code>, <code>Helikopter</code>, <code>Fändel</code>… Soixante-quatorze dessins pour soixante-quinze mots, à peu près <strong>trois cartes sur cent</strong>. L'enluminure ne suit pas la rareté — celle-là est fixée par le rang de fréquence et n'est pas négociable — c'est un second axe de désirabilité, qui peut échoir à une commune comme à une très rare."
-      }
-     ],
-     "texte": "Huit et non quatorze : au-delà, deux teintes voisines ne se séparent plus sur une vignette de 160 dp. À l'intérieur d'un champ, la carte garde un écart de ±12°, tiré du même condensé de trois lettres que l'ancienne teinte — les cartes d'un même domaine se ressemblent sans se confondre, et <code>Woch</code>, <code>Wochen</code> et <code>Woche</code> restent exactement sur la même couleur. Douze degrés, c'est moins de la moitié du plus petit intervalle entre deux champs (34°) : deux domaines ne peuvent donc jamais se recouvrir. Le classement couvre <strong>71 % des 2 798 emplacements</strong> du carnet. Les 29 % restants ne sont pas un chantier inachevé : ce sont des mots-outils — pronoms, déterminants, adverbes — qui n'ont pas de domaine et qu'il serait faux de ranger de force. Ils gardent la teinte de leurs lettres, c'est-à-dire exactement l'état de la 22.6.0. Elle rend un service qu'on n'attendait pas d'elle : huit teintes sur une face désaturée se confondent, et une forme qui double la couleur rétablit la lecture — y compris en deutéranopie. C'est le raisonnement des insignes de rareté, qui comptent des symboles au lieu de se fier au vert et au bleu-gris. La règle verbale est approchée, et il faut le chiffrer plutôt que le taire : sur les 502 mots qu'elle appelle verbe, une quinzaine sont des déterminants (<code>sengem</code>, <code>hirem</code>, <code>deenen</code>), soit 3 %. Les irréguliers en <code>-nn</code> sont rattrapés — <code>sinn</code>, <code>ginn</code>, <code>hunn</code>, <code>gesinn</code> et leurs douze composés — moins les trois adverbes qui portent la même finale.",
-     "tableau": null
-    },
-    {
-     "emoji": "🧭",
-     "titre": "Ce que la mesure a démoli, et ce qui a survécu",
-     "points": [],
-     "texte": "La 22.6.0 disait que l'illustration cessait d'être une cible de couverture. Voici le chiffre qui l'a décidé, parce qu'il contredisait ce que j'avais moi- même recommandé. L'argument était : « un meuble sert des dizaines de mots, une maison vaut pour <code>Haus</code>, <code>Wunneng</code>, <code>Duerf</code>, <code>Dier</code> ; on ne dessine pas 2 801 images, on dessine cent vingt silhouettes ». Mesuré sur les 1 690 substantifs glosés du carnet : <strong>1 504 têtes de glose distinctes</strong>, soit <strong>1,12 mot par dessin</strong>, et <strong>89 %</strong> des têtes ne concernent qu'un seul mot. La courbe de couverture colle à la diagonale — il n'y a pas de Pareto. Cent vingt silhouettes couvriraient 16 % des substantifs et 5 % du carnet. D'où venait l'erreur : j'avais raisonné sur les huit mots concrets d'une planche de démonstration, en oubliant que je les avais choisis <strong>parce qu'ils étaient illustrables</strong>. Le biais de sélection sous sa forme la plus banale, et la seule protection contre lui est de compter. Le corpus le dit d'ailleurs autrement : ses mots les plus tirés ne sont pas <em>chat</em> et <em>pain</em> mais <em>fin</em>, <em>question</em>, <em>cas</em>, <em>partie</em> — ce carnet n'est pas un imagier, c'est une salle de rédaction, et <code>Apel</code>, <code>Kou</code>, <code>Zopp</code> n'y figurent même pas. Un second obstacle, plus dur que le coût : <strong>le meuble choisit un sens que la carte ne choisit pas.</strong> La carte affiche toute la glose — « Wee : chemin, sens, moyen » — et un dessin n'en illustre qu'un. Sur la face réponse d'un outil de révision, une image qui tranche une polysémie est activement fausse. Le coût de dessin, on peut le payer ; un sens faux, non. C'est ce qui interdit toute attribution automatique, même par un bon classifieur. D'où le renversement : on ne dessine plus ce qu'il faudrait couvrir, <strong>on n'attribue que là où c'est juste</strong>. <code>Feier</code> est « feu, incendie, <em>fête</em> », <code>Bierg</code> « montagne, côte, <em>garant</em> », <code>Nol</code> « clou, <em>ongle</em>, <em>aiguille</em> » — aucun des trois n'est enluminé, et chaque entrée du tableau a été relue contre la glose entière. Ce qu'il faut accepter en échange, et le dire en face : la fenêtre ne dit pas le sens sur la grande majorité des cartes. Le reste reçoit un rangement, pas un portrait.",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Détails d'implémentation",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>Dictionnaires/generate_blasons.py</code> produit <code>luxemburgish_blasons.json</code> (52 ko, 2 064 lemmes). Le classement se fait en deux passes : un lexique français cherché dans la glose entière — le premier sens comptant triple, puisque c'est celui que la carte met en tête — puis une table écrite à la main qui gagne toujours. Le lexique a été écrit en trois vagues, chacune en relisant ce que la précédente laissait dehors : 23 %, puis 44 %, puis 71 %. Une dernière règle vaut une soixantaine de cartes : <strong>un nom propre est un lieu</strong>, appliquée en dernier recours, quand les gentilés ont déjà été pris par le lexique et qu'il ne reste que de la géographie."
-      },
-      {
-       "titre": null,
-       "texte": "<code>carnet/Blason.kt</code> — les huit champs, la nature, et l'armorial qui lit l'actif. La clé est le <strong>représentant</strong> de la famille, pas la forme rencontrée : le joueur a gagné « Männer », c'est le rangement de « Mann » qui vaut, et <code>ContenuCarte</code> avait déjà ce représentant sous la main."
-      },
-      {
-       "titre": null,
-       "texte": "<code>carnet/Meubles.kt</code> — les 74 silhouettes, chacune dans un carré de cent unités, remplies en <code>EVEN_ODD</code> pour que la porte d'une maison soit un trou et non un second contour."
-      },
-      {
-       "titre": null,
-       "texte": "<code>Motif</code> prend un troisième participant. Il assemblait une matière (le palier) et un sujet (le mot) ; il assemble maintenant matière, <strong>partition</strong> (la nature) et sujet, et le sujet est le meuble s'il y en a un, le tracé sinon."
-      },
-      {
-       "titre": null,
-       "texte": "Les numéraux de Zuelwuert, que le corpus de fréquences ne connaît pas et qu'aucune grille ne contient, reçoivent le champ <em>Temps et mesure</em> : leur domaine ne fait aucun doute, et leurs cartes cessent d'être un semis."
-      },
-      {
-       "titre": null,
-       "texte": "<code>BlasonsAssetTest</code> garde quatre régressions muettes : un champ inconnu, un meuble non dessiné, un meuble attribué à un mot qu'aucun jeu ne donne, et l'effondrement de la couverture. Aucune ne fait planter — <code>Armorial</code> avale exprès toute erreur de lecture pour qu'un actif abîmé n'éteigne pas le carnet."
-      },
-      {
-       "titre": null,
-       "texte": "<code>Dictionnaires/apercu_meubles.py</code> transpose les 74 <code>Path</code> en SVG et en tire une planche de contrôle dans un navigateur, sans émulateur. Elle n'est pas un ornement : au premier tirage elle a renvoyé <strong>dix-huit dessins sur soixante-quatorze</strong>. Six têtes d'animaux avaient les oreilles, cornes ou bois posés <em>par-dessus</em> le crâne et s'y creusaient — <code>EVEN_ODD</code> perce là où deux pleins se chevauchent — une main avait ses doigts au travers de la paume, un banc ses pieds au travers de l'assise ; et une dizaine d'objets étaient simplement illisibles. Rien de tout cela ne se voit en relisant des coordonnées, et rien ne se serait vu avant l'installation."
       }
      ],
      "texte": "",
