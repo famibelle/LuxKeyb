@@ -84,8 +84,8 @@ class BoiteFragment : Fragment() {
     private fun chargerEnFond() {
         val ctx = requireContext().applicationContext
         Thread {
-            val file = Carnet.file(ctx)
-            val contenus = file.map { CarteCarnet.contenu(ctx, it) }
+            val cartes = Carnet.cartes(ctx)
+            val contenus = cartes.map { CarteCarnet.contenu(ctx, it) }
             val aujourd = Widderhuelen.aujourdHui()
             activity?.runOnUiThread {
                 if (!isAdded) return@runOnUiThread

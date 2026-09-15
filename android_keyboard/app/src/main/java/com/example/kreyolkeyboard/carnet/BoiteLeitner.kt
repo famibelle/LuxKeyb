@@ -155,18 +155,17 @@ internal class BoiteLeitner(context: Context) : View(context) {
         invalidate()
     }
 
+    // La boîte prend toute la hauteur que son parent lui donne : ouverte depuis
+    // Spiller, elle est seule à l'écran. [HAUTEUR] ne sert plus que de plancher,
+    // et de taille quand rien ne la borne (un ScrollView mesure en UNSPECIFIED).
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
-        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        val measuredHeight = when {
-            heightMode == MeasureSpec.EXACTLY -> heightSize
-            heightMode == MeasureSpec.AT_MOST -> heightSize
-            else -> heightSize
+        val plancher = px(HAUTEUR).toInt()
+        val taille = MeasureSpec.getSize(heightMeasureSpec)
+        val hauteur = when (MeasureSpec.getMode(heightMeasureSpec)) {
+            MeasureSpec.UNSPECIFIED -> plancher
+            else -> maxOf(taille, plancher)
         }
-        setMeasuredDimension(
-            MeasureSpec.getSize(widthMeasureSpec),
-            measuredHeight
-        )
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), hauteur)
     }
 
     override fun onSizeChanged(l: Int, h: Int, ancienL: Int, ancienH: Int) {
@@ -175,12 +174,18 @@ internal class BoiteLeitner(context: Context) : View(context) {
         xAvD = l.toFloat()
         xArG = fuite
         xArD = l - fuite
+        // Le mur et l'ombre gardent leur épaisseur ; c'est la profondeur du
+        // dessus qui absorbe la hauteur disponible, donc les fentes s'allongent.
+        yMur = h - px(HAUTEUR - MUR_BAS)
+        yAv = yMur - px(MUR_BAS - DESSUS_AVANT)
         yAr = px(DESSUS_ARRIERE)
-        yAv = px(DESSUS_AVANT)
-        yMur = px(MUR_BAS)
+        echelle = (yAv - yAr) / px(DESSUS_AVANT - DESSUS_ARRIERE)
         plaque.set(l * 0.26f, yAv + px(5f), l * 0.74f, yMur - px(5f))
         decouperCasiers()
     }
+
+    /** La profondeur du dessus rapportée à celle de la boîte compacte d'origine. */
+    private var echelle = 1f
 
     /**
      * Les sept casiers en coordonnées de surface.
@@ -362,8 +367,10 @@ internal class BoiteLeitner(context: Context) : View(context) {
         val g = sx(u0 + marge, vBase)
         val dr = sx(u1 - marge, vBase)
         val bas = sy(vBase)
-        val tranche = px(4.6f)
-        val hauteur = px(15f)
+        // Mises à l'échelle de la fente : sinon, dans une boîte plein écran, la
+        // pile resterait un liseré au ras de l'avant et la fente se lirait vide.
+        val tranche = px(4.6f) * echelle
+        val hauteur = px(15f) * echelle
 
         canvas.save()
         canvas.clipPath(fente)
@@ -372,7 +379,7 @@ internal class BoiteLeitner(context: Context) : View(context) {
         // de « voilà ce que vous devez ». Dessinées d'abord parce qu'elles sont
         // les plus hautes, donc les plus au fond.
         for (j in soulevees - 1 downTo 0) {
-            carte(canvas, g, dr, bas - (normales + j) * tranche - px(10f), hauteur, true)
+            carte(canvas, g, dr, bas - (normales + j) * tranche - px(10f) * echelle, hauteur, true)
         }
         for (j in normales - 1 downTo 0) {
             carte(canvas, g, dr, bas - j * tranche, hauteur, false)
