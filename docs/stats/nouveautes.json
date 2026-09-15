@@ -1,9 +1,39 @@
 {
  "genere_le": "2026-09-15",
- "derniere_version": "22.12.1",
+ "derniere_version": "22.12.2",
  "derniere_date": "2026-09-15",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "22.12.2",
+   "date": "2026-09-15",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "📖",
+     "titre": "Guide",
+     "points": [
+      {
+       "titre": "Le guide explique les cartes du carnet, image à l'appui",
+       "texte": "Trois illustrations fléchées et numérotées détaillent la carte « Waasser » : le mot, sa longueur, l'illustration et le cadre ; la nature, le sens, l'exemple et sa traduction ; les écus VUES et NIVEAU, le joyau de rareté, la ligne de série et le rang. Une quatrième montre ce que garde la petite carte de la grille."
+      },
+      {
+       "titre": null,
+       "texte": "La section des jeux présente les sept jeux et la Boîte de Leitner, là où elle n'en citait que cinq."
+      },
+      {
+       "titre": null,
+       "texte": "La progression nomme les huit niveaux luxembourgeois, d'Ufänker à Sproochenmeeschter."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_guide_cartes.png",
+   "image_alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
+   "image_legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
+  },
   {
    "version": "22.12.1",
    "date": "2026-09-15",
@@ -190,25 +220,6 @@
    "image": "Screenshots/lux_eventail.png",
    "image_alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
    "image_legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
-  },
-  {
-   "version": "22.9.1",
-   "date": "2026-09-14",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La Boîte de Leitner occupe maintenant tout l'écran",
-       "texte": "Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant <code>weight=1f</code> pour s'étendre, et <code>BoiteLeitner.onMeasure()</code> accepte la hauteur disponible au lieu de rester figée à 176dp."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

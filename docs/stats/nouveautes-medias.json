@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.12.2": {
+    "image": "Screenshots/lux_guide_cartes.png",
+    "alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
+    "legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
+  },
   "22.12.1": {
     "image": "Screenshots/lux_carte_glissee.png",
     "alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
