@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.11.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Les phrases d'exemple sont traduites en français.** Sous la phrase luxembourgeoise d'une carte du carnet ou d'une fiche du Wierderbuch s'affiche maintenant sa traduction. Elle vient du corpus de traduction du Zenter fir d'Lëtzebuerger Sprooch : ce sont les traductions officielles, faites par des traducteurs professionnels.
+- **Pas de traduction plutôt qu'une traduction approchée.** Une phrase n'est traduite que si le ZLS l'a traduite telle quelle ; sinon, elle s'affiche seule, sans mention. Environ une carte sur quatre a aujourd'hui sa traduction, et la part grandira avec les prochaines publications du corpus.
+- **La phrase choisie illustre le sens principal du mot.** Une phrase traduite ne passe devant les autres que si elle illustre le premier sens : « Hond » reste un chien, et non un voyou.
+
+### 🐛 Corrections
+
+- Sur une carte, le guillemet fermant d'une phrase d'exemple pouvait partir seul à la ligne.
+
 ## [22.10.0] - 2026-09-15
 
 ### ✨ Nouveautés
