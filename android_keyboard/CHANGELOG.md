@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.6] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La plaque de nom s'arrête à l'aplomb de la fenêtre sur tous les paliers.** Commun, Peu commun et Rare la traçaient jusqu'à 276, sept unités au-delà de la pointe de la ligne de type, là où la très rare s'arrêtait déjà à 269,4. Elle s'y arrête maintenant partout, et le nom qui ne tient pas au centre suit ce même tracé.
+
 ## [22.12.5] - 2026-09-15
 
 ### 🐛 Corrections
