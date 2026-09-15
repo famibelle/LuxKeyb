@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.9] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Le carnet s'adapte au paysage.** La grille du carnet gardait deux colonnes quelle que soit l'orientation, calculées sur la seule largeur de l'écran : à l'italienne sur un téléphone, les vignettes devenaient démesurées et débordaient de la hauteur disponible, masquant jusqu'au nom du mot sans un défilement. Le nombre de colonnes s'adapte maintenant à la largeur disponible.
+
 ## [22.12.8] - 2026-09-15
 
 ### ✨ Améliorations
