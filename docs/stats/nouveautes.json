@@ -51,7 +51,10 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "image": "Screenshots/lux_categories.png",
+   "image_alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
+   "image_legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
   },
   {
    "version": "22.11.1",
