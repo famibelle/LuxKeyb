@@ -91,7 +91,7 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = phrases à trous, 6 = guide, 7 = à propos
+    private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
@@ -123,7 +123,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
-        const val TAB_STATS = 1
+        const val TAB_STATS = 3
 
         /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
         private const val REQUEST_NOTIFICATIONS = 4201
@@ -669,23 +669,23 @@ class SettingsActivity : AppCompatActivity() {
             val startTab = createTab(0, "🚀", "Démarrage")
             tabContainer.addView(startTab)
             Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
-            
-            // Tab Statistiques  
-            val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
-            tabContainer.addView(statsTab)
-            Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
-            
+
             // Tab Spiller : tous les jeux derrière une seule destination.
             // Ils occupaient quatre onglets sur neuf, soit 44 % de la barre,
             // pour une activité que l'on choisit une fois par session.
-            val gamesTab = createTab(2, "🎮", "Spiller")
+            val gamesTab = createTab(1, "🎮", "Spiller")
             tabContainer.addView(gamesTab)
             Log.d("SettingsActivity", "Onglet Spiller créé et ajouté")
 
             // Tab Wierderbuch
-            val dictionaryTab = createTab(3, "📚", "Wierderbuch")
+            val dictionaryTab = createTab(2, "📚", "Wierderbuch")
             tabContainer.addView(dictionaryTab)
             Log.d("SettingsActivity", "Onglet Wierderbuch créé et ajouté")
+
+            // Tab Statistiques (en dernier, sur demande du propriétaire — 2026-09-15)
+            val statsTab = createTab(3, "📊", "Mäi Lëtzebuergesch")
+            tabContainer.addView(statsTab)
+            Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
 
             // Guide et À Propos ne sont plus des onglets : ce sont des pages de
             // référence que l'on lit une fois, pas des destinations
@@ -4261,9 +4261,9 @@ class SettingsActivity : AppCompatActivity() {
             val realPosition = position % REAL_COUNT
             return when (realPosition) {
                 0 -> OnboardingFragment()
-                1 -> StatsFragment()
-                2 -> GamesFragment()
-                3 -> DictionaryFragment()
+                1 -> GamesFragment()
+                2 -> DictionaryFragment()
+                3 -> StatsFragment()
                 else -> OnboardingFragment()
             }
         }
