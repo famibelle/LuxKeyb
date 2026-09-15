@@ -2881,6 +2881,62 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         addGuideSection(
+            mainLayout, "#FFF3E0", "🃏 Les cartes du carnet",
+            "Chaque mot gagné dans un jeu devient une carte, rangée dans «\u00A0Mäi Carnet\u00A0» " +
+                    "(onglet Spiller). Touchez une carte pour l'ouvrir en grand ; touchez à côté, " +
+                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer. Voici ce " +
+                    "que dit chaque partie d'une carte, avec l'exemple de «\u00A0Waasser\u00A0» (l'eau)."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🔷 Le haut de la carte",
+            "• La pastille ronde, en haut à gauche : le nombre de lettres du mot. «\u00A0Waasser\u00A0» " +
+                    "en compte 7, autant qu'il faudra en taper pour le réviser.\n\n" +
+                    "• La plaque du nom : le mot tel que vous l'avez rencontré dans le jeu, avec " +
+                    "sa majuscule s'il s'agit d'un nom.\n\n" +
+                    "• L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
+                    "territoire, économie, temps et mesure…), et son motif est tracé à partir des " +
+                    "lettres du mot, si bien qu'un même mot donne toujours la même image. Environ " +
+                    "quatre cartes sur cent portent en plus un petit dessin.\n\n" +
+                    "• Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
+                    "Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la " +
+                    "fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont " +
+                    "communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, " +
+                    "c'est la difficulté de leur orthographe qui compte."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFF3E0", "📜 Le texte de la carte",
+            "• La ligne de nature, sous l'illustration : ce qu'est le mot selon le " +
+                    "dictionnaire officiel du ZLS («\u00A0Nom neutre\u00A0», «\u00A0Verbe\u00A0», «\u00A0Adjectif\u00A0»…), " +
+                    "puis le jeu où vous l'avez gagné. Pour «\u00A0Waasser\u00A0» : «\u00A0Nom neutre · gagné à " +
+                    "Wuertplaz\u00A0».\n\n" +
+                    "• Le sens, en gras : la traduction française du mot.\n\n" +
+                    "• La phrase en italique : un exemple du mot en situation, tiré du " +
+                    "dictionnaire officiel. Pour un nombre, c'est sa décomposition.\n\n" +
+                    "• La ligne plus petite dessous : la traduction française de cette phrase, " +
+                    "seulement quand le ZLS l'a publiée. Sinon, la carte affiche à la place " +
+                    "«\u00A0Même famille :\u00A0» et les autres formes du mot (pluriel, conjugaisons…)."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
+            "• L'écu VUES, à gauche : combien de fois vous avez gagné ce mot, tous jeux " +
+                    "confondus.\n\n" +
+                    "• L'écu NIVEAU, à droite : le casier de la Boîte de Leitner où se trouve la " +
+                    "carte, de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
+                    "est acquis.\n\n" +
+                    "• La ligne de série, tout en bas à gauche : le numéro de la carte dans votre " +
+                    "collection, le sigle du jeu qui l'a donnée (WP pour Wuertplaz, KW pour " +
+                    "Kräizwuert…) et la date où vous l'avez gagnée.\n\n" +
+                    "• À droite de cette ligne : le rang du mot parmi les plus fréquents de la " +
+                    "langue (par exemple «\u00A0812ᵉ\u00A0»), ou «\u00A0hors corpus\u00A0» s'il n'y figure pas.\n\n" +
+                    "Dans la grille du carnet, la petite carte ne garde que l'essentiel : le mot, " +
+                    "l'emoji du ou des jeux, le début du sens, et six petits traits qui se " +
+                    "remplissent à mesure que la carte monte de casier."
+        )
+
+        addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
             "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
                     "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
