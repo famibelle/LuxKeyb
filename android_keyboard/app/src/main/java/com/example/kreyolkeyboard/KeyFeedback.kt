@@ -139,6 +139,18 @@ object KeyFeedback {
         }
     }
 
+    /**
+     * Retour d'une carte qui passe au centre de l'éventail d'un casier
+     * (v22.12.1) : vibration seule, le même cran que [onCursorStep], car
+     * parcourir un casier de deux cents cartes est un défilement cranté.
+     */
+    fun onFanStep(view: View) {
+        val context = view.context
+        if (hapticEnabled ?: KeyboardPreferences.hapticEnabled(context).also { hapticEnabled = it }) {
+            vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
+        }
+    }
+
     private fun vibrate(view: View, effect: Int = HapticFeedbackConstants.KEYBOARD_TAP) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

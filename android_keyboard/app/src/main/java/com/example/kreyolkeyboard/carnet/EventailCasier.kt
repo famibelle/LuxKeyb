@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import com.example.kreyolkeyboard.KeyFeedback
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
@@ -117,6 +118,9 @@ internal class EventailCasier(
     private var glisse = false
     private var suivi: VelocityTracker? = null
 
+    /** La carte au centre lors du dernier cran senti. */
+    private var rangSenti = -1
+
     init {
         isClickable = true
         contentDescription = "$titre, $sousTitre"
@@ -189,6 +193,7 @@ internal class EventailCasier(
         // qu'un toucher ouvre.
         decalage = if (liste.size <= 5) ((liste.size - 1).coerceAtLeast(0) / 2).toFloat()
         else min(2f, liste.size - 1f)
+        rangSenti = decalage.roundToInt()
         // Rendues avant la première image : sinon la première trame de
         // l'animation porterait le coût de toutes, et c'est elle qu'on voit.
         visibles(liste).forEach { image(liste[it]) }
@@ -358,6 +363,7 @@ internal class EventailCasier(
                 if (!glisse && abs(dx) > seuil) glisse = true
                 if (glisse && n > 1) {
                     decalage = (decalage0 - dx / pasPixels).coerceIn(-0.45f, n - 1 + 0.45f)
+                    sentirCran(n)
                     invalidate()
                 }
             }
@@ -386,7 +392,25 @@ internal class EventailCasier(
     override fun performClick(): Boolean = super.performClick()
 
     private fun allerA(i: Int) {
-        animDecalage = animer(decalage, i.toFloat(), 260, DecelerateInterpolator()) { decalage = it }
+        val n = cartes?.size ?: 0
+        animDecalage = animer(decalage, i.toFloat(), 260, DecelerateInterpolator()) {
+            decalage = it
+            sentirCran(n)
+        }
+    }
+
+    /**
+     * Un cran chaque fois qu'une autre carte prend le centre, pendant le glissé
+     * comme pendant le calage. Borné aux vraies cartes : le débord élastique
+     * au-delà des extrémités ne donne pas de cran, puisqu'il n'y a rien derrière.
+     */
+    private fun sentirCran(n: Int) {
+        if (n < 2) return
+        val rang = decalage.roundToInt().coerceIn(0, n - 1)
+        if (rang != rangSenti) {
+            rangSenti = rang
+            KeyFeedback.onFanStep(this)
+        }
     }
 
     /** Du dessus vers le dessous : la carte touchée est la plus haute sous le doigt. */
