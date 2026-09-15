@@ -14,7 +14,6 @@ import android.graphics.Path
 import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
-import android.graphics.SweepGradient
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -195,6 +194,8 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+    /** Le joyau de rareté, ses satellites et ses volutes, entre les écus. */
+    val JOYAU_CENTRAL = RectF(102f, 386f, 198f, 412f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
     val GLOSE_VIGNETTE = RectF(20f, 249f, 280f, 269f)
     val BOITE_VIGNETTE = RectF(30f, 277f, 270f, 281f)
@@ -202,14 +203,33 @@ object Ornement {
     // ----------------------------------------------------------- primitives
 
     /**
-     * Une volute : spirale logarithmique dont le trait s'affine en
-     * s'enroulant. Une courbe paramétrée plutôt qu'un chemin recopié — c'est
-     * ce qui permet de la redimensionner sans qu'elle s'épaississe.
+     * Une volute **gravée** : un sillon creusé dans la matière, pas un trait
+     * posé dessus.
+     *
+     * La lumière du cadre vient d'en haut à gauche (son dégradé va de `hi` à
+     * `lo`). Un creux y montre donc sa paroi haute dans l'ombre et sa lèvre
+     * basse dans la lumière ; l'inverse se lit comme un relief. Le fond est
+     * translucide pour que la matière, métal ou face teintée, reste visible
+     * au fond du sillon. Chaque passe va dans sa propre couche : des segments
+     * translucides aux bouts ronds se superposeraient en chapelet aux jointures.
      */
     private fun volute(
         c: Canvas, p: Paint, x: Float, y: Float, taille: Float,
-        sx: Float, sy: Float, tours: Float, epais: Float, couleur: Int
+        sx: Float, sy: Float, tours: Float, epais: Float, m: Metal
     ) {
+        val marge = epais + 2f
+        val cadre = RectF(x - taille - marge, y - taille - marge, x + taille + marge, y + taille + marge)
+        passe(c, p, cadre, 0x9E, Color.WHITE, x + 0.45f, y + 0.85f, taille, sx, sy, tours, epais)
+        passe(c, p, cadre, 0x6B, Color.BLACK, x, y, taille, sx, sy, tours, epais * 0.8f)
+        passe(c, p, cadre, 0x5C, m.trait, x - 0.25f, y - 0.45f, taille, sx, sy, tours, epais * 0.35f)
+    }
+
+    /** Une passe de [volute], opaque dans une couche rendue à [alpha]. */
+    private fun passe(
+        c: Canvas, p: Paint, cadre: RectF, alpha: Int, couleur: Int,
+        x: Float, y: Float, taille: Float, sx: Float, sy: Float, tours: Float, epais: Float
+    ) {
+        c.saveLayerAlpha(cadre, alpha)
         p.style = Paint.Style.STROKE
         p.strokeCap = Paint.Cap.ROUND
         p.color = couleur
@@ -228,22 +248,32 @@ object Ornement {
             px = nx
             py = ny
         }
+        c.restore()
     }
 
-    /** Une feuille d'acanthe : une goutte, posée le long des filets. */
-    private fun feuille(c: Canvas, p: Paint, x: Float, y: Float, l: Float, angle: Float, couleur: Int) {
-        c.save()
-        c.translate(x, y)
-        c.rotate(angle)
-        p.style = Paint.Style.FILL
-        p.color = couleur
-        p.shader = null
+    /**
+     * Une feuille d'acanthe **gravée** dans la bande de métal, comme les
+     * volutes : lèvre claire en bas à droite, creux sombre. Posée en aplat
+     * pâle à cheval sur le bord du cadre, elle se lisait comme une tache.
+     */
+    private fun feuille(c: Canvas, p: Paint, x: Float, y: Float, l: Float, angle: Float) {
         val chemin = Path()
         chemin.moveTo(0f, 0f)
         chemin.quadTo(l * 0.45f, -l * 0.38f, l, 0f)
         chemin.quadTo(l * 0.45f, l * 0.38f, 0f, 0f)
-        c.drawPath(chemin, p)
-        c.restore()
+        p.style = Paint.Style.FILL
+        p.shader = null
+        for ((dx, dy, couleur) in arrayOf(
+            Triple(0.45f, 0.85f, 0x8CFFFFFF.toInt()),
+            Triple(0f, 0f, 0x4D000000)
+        )) {
+            c.save()
+            c.translate(x + dx, y + dy)
+            c.rotate(angle)
+            p.color = couleur
+            c.drawPath(chemin, p)
+            c.restore()
+        }
     }
 
     /** Un joyau serti : facette claire en haut à gauche, creux sombre en bas. */
@@ -308,7 +338,9 @@ object Ornement {
     private fun bandeau(c: Canvas, p: Paint, r: RectF, pointes: Boolean, m: Metal) {
         val chemin = Path()
         if (pointes) {
-            val q = r.height() * 0.55f
+            // La pointe s'arrête avant le filet extérieur : à 22 unités, celle
+            // de la plaque venait buter contre le bord de la carte (298 sur 300).
+            val q = min(r.height() * 0.55f, min(r.left, LARGEUR - r.right) - 9f)
             chemin.moveTo(r.left - q, r.centerY())
             chemin.lineTo(r.left, r.top)
             chemin.lineTo(r.right, r.top)
@@ -320,6 +352,7 @@ object Ornement {
             chemin.addRoundRect(r, 3f, 3f, Path.Direction.CW)
         }
         p.style = Paint.Style.FILL
+        p.color = Color.BLACK
         p.shader = LinearGradient(
             0f, r.top, 0f, r.bottom,
             intArrayOf(m.hi, m.mid, m.lo), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
@@ -341,6 +374,10 @@ object Ornement {
         chemin.quadTo(r.centerX(), r.bottom + r.height() * 0.16f, r.left, r.top + r.height() * 0.5f)
         chemin.close()
         p.style = Paint.Style.FILL
+        // Un dégradé est multiplié par l'alpha du pinceau : sans ce retour à
+        // l'opaque, l'écu héritait du filet tracé juste avant et devenait
+        // transparent (16 % à gauche, 50 % à droite).
+        p.color = Color.BLACK
         p.shader = LinearGradient(
             0f, r.top, 0f, r.bottom,
             intArrayOf(m.hi, m.mid, m.lo), floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
@@ -516,17 +553,29 @@ object Ornement {
         }
 
         // 4. Les volutes d'angle : aucune, puis deux, quatre, huit.
+        //
+        // Sur la grande carte, les angles du haut appartiennent à la gemme et
+        // à la pointe de la plaque, peintes par-dessus : la volute n'y montrait
+        // que des bouts de spirale. Seuls les angles du bas en reçoivent, plus
+        // petites et logées dans le coin, sous la courbe des écus, au-dessus
+        // de la ligne de série (428). Le nombre visible par palier est inchangé.
         val volutes = intArrayOf(0, 2, 4, 8)[palier]
         if (volutes > 0) {
-            val taille = 13f + palier * 3f
-            val coins = arrayOf(
+            val coins = if (vignette) arrayOf(
                 floatArrayOf(bord + 5f, bord + 5f, 1f, 1f),
                 floatArrayOf(LARGEUR - bord - 5f, bord + 5f, -1f, 1f),
                 floatArrayOf(bord + 5f, haut - bord - 5f, 1f, -1f),
                 floatArrayOf(LARGEUR - bord - 5f, haut - bord - 5f, -1f, -1f)
+            ) else arrayOf(
+                floatArrayOf(0f, 0f, 0f, 0f),
+                floatArrayOf(0f, 0f, 0f, 0f),
+                floatArrayOf(bord + 5f, haut - bord - 3f, 1f, -1f),
+                floatArrayOf(LARGEUR - bord - 5f, haut - bord - 3f, -1f, -1f)
             )
+            val taille = (13f + palier * 3f) * (if (vignette) 1f else 0.65f)
             for (i in 0 until volutes) {
                 val coin = coins[i % 4]
+                if (coin[2] == 0f) continue
                 val x = coin[0]
                 val y = coin[1]
                 val sx = coin[2]
@@ -538,8 +587,7 @@ object Ornement {
                 val dx = if (seconde) sx * 16f else 0f
                 val dy = if (seconde) sy * 3f else 0f
                 val t = if (seconde) taille * 0.6f else taille
-                volute(c, p, x + dx, y + dy, t, sx, sy, 1.35f, 3.2f, m.hi)
-                volute(c, p, x + dx, y + dy + 1f, t, sx, sy, 1.35f, 1.4f, m.trait)
+                volute(c, p, x + dx, y + dy, t, sx, sy, 1.35f, if (vignette) 3.2f else 2.6f, m)
             }
         }
 
@@ -549,8 +597,8 @@ object Ornement {
             val pas = (haut - depart - 80f) / 5f
             for (i in 0 until 5) {
                 val y = depart + i * pas
-                feuille(c, p, bord + 2f, y, 9f, -28f, m.hi)
-                feuille(c, p, LARGEUR - bord - 2f, y, 9f, 208f, m.hi)
+                feuille(c, p, bord / 2f - 3f, y, 9f, -28f)
+                feuille(c, p, LARGEUR - bord / 2f + 3f, y, 9f, 208f)
             }
         }
 
@@ -796,7 +844,7 @@ object Ornement {
         if (palier < 3) return
         for (s in intArrayOf(-1, 1)) {
             joyau(c, p, LARGEUR / 2f + s * 22f, 399f, 4.5f, m.joyau, 6)
-            volute(c, p, LARGEUR / 2f + s * 34f, 399f, 11f, s.toFloat(), 1f, 1.2f, 2f, m.hi)
+            volute(c, p, LARGEUR / 2f + s * 34f, 399f, 11f, s.toFloat(), 1f, 1.2f, 2f, m)
         }
     }
 
@@ -812,13 +860,42 @@ object Ornement {
         val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
         var g = mot.fold(7919) { acc, ch -> acc * 31 + ch.code }
         val n = if (vignette) 7 else 11
-        for (i in 0 until n) {
+        // Le semis est peint après le métal : tiré sur toute la carte, il
+        // tombait sur le cadre. Il reste dans la face, rayon maximal compris.
+        val marge = 12f + rarete.ordinal * 2f + 7f
+        // Ni sur le texte ni sur le métal posé sur la face : une étincelle y
+        // passe pour un défaut d'impression. On retire, au même générateur.
+        val interdits = if (vignette) arrayOf(NOM_VIGNETTE, GLOSE_VIGNETTE, BOITE_VIGNETTE)
+        else arrayOf(GEMME, PLAQUE, TYPE, PANNEAU, ECU_G, ECU_D, JOYAU_CENTRAL)
+        var poses = 0
+        var essais = 0
+        while (poses < n && essais < n * 8) {
+            essais++
             g = g * 1103515245 + 12345
-            val x = ((g ushr 8) % 1000) / 1000f * LARGEUR
-            val y = ((g ushr 18) % 1000) / 1000f * haut
+            val x = marge + ((g ushr 8) % 1000) / 1000f * (LARGEUR - 2f * marge)
+            val y = marge + ((g ushr 18) % 1000) / 1000f * (haut - 2f * marge)
             val r = 2.5f + ((g ushr 4) % 5)
+            if (interdits.any { x > it.left - r && x < it.right + r && y > it.top - r && y < it.bottom + r }) continue
+            // Ni sur la sertissure de la fenêtre : dedans ou dehors, pas à cheval.
+            val m = r + 5f
+            val f = if (vignette) FENETRE_VIGNETTE else FENETRE
+            val dehors = !dansArche(x, y, RectF(f.left - m, f.top - m, f.right + m, f.bottom + m))
+            val dedans = dansArche(x, y, RectF(f.left + m, f.top + m, f.right - m, f.bottom - m))
+            if (!dehors && !dedans) continue
             etincelle(c, p, x, y, r, 90 + ((g ushr 12) % 100))
+            poses++
         }
+    }
+
+    /** Le point est-il dans l'ouverture en plein cintre de [cheminFenetre] ? */
+    private fun dansArche(x: Float, y: Float, r: RectF): Boolean {
+        if (x < r.left || x > r.right || y > r.bottom) return false
+        val fleche = r.width() * 0.30f
+        val base = r.top + fleche
+        if (y >= base) return true
+        val dx = (x - r.centerX()) / (r.width() / 2f)
+        val dy = (y - base) / fleche
+        return dx * dx + dy * dy <= 1f
     }
 
     /**
@@ -1795,7 +1872,7 @@ private class Matiere(private val rarete: Rarete, private val zone: RectF, teint
     private val fond: LinearGradient
     private val hachures = Path()
     private val halo: RadialGradient?
-    private val iris: SweepGradient?
+    private val iris: Bitmap?
     private val brillance: LinearGradient?
     private val matrice = Matrix()
 
@@ -1835,13 +1912,23 @@ private class Matiere(private val rarete: Rarete, private val zone: RectF, teint
         ) else null
 
         if (rarete == Rarete.TRES_RARE) {
-            // Un tour complet du cercle depuis la teinte du mot. La dernière
-            // reprend la première, sinon le dégradé montre sa couture ; la
-            // saturation reste basse, sinon l'arc-en-ciel mange le mot.
-            val teintes = IntArray(8) { i ->
-                Color.HSVToColor(floatArrayOf((teinte + 360f * (i % 7) / 7f) % 360f, 0.45f, 1f))
+            // Un tour complet du cercle depuis la teinte du mot, saturation
+            // basse, sinon l'arc-en-ciel mange le mot. Calculé pixel par pixel
+            // et non en SweepGradient : sa couture laissait une rangée de
+            // pixels corrompus, un trait jaune du centre vers le bord.
+            val cote = 96
+            val demi = cote / 2f
+            val pixels = IntArray(cote * cote)
+            val hsv = floatArrayOf(0f, 0.45f, 1f)
+            for (y in 0 until cote) {
+                for (x in 0 until cote) {
+                    val angle = Math.atan2((y + 0.5f - demi).toDouble(), (x + 0.5f - demi).toDouble())
+                    val tour = ((angle / (2.0 * Math.PI)) + 1.0) % 1.0
+                    hsv[0] = ((teinte + 360f * tour.toFloat()) % 360f + 360f) % 360f
+                    pixels[y * cote + x] = Color.HSVToColor(hsv)
+                }
             }
-            iris = SweepGradient(zone.centerX(), zone.centerY(), teintes, null)
+            iris = Bitmap.createBitmap(pixels, cote, cote, Bitmap.Config.ARGB_8888)
             brillance = LinearGradient(
                 zone.left, zone.bottom, zone.right, zone.top,
                 intArrayOf(Color.TRANSPARENT, Color.argb(96, 255, 255, 255), Color.TRANSPARENT),
@@ -1882,14 +1969,21 @@ private class Matiere(private val rarete: Rarete, private val zone: RectF, teint
     /** Ce qui glisse par-dessus le sujet quand l'appareil tourne. */
     fun dessus(c: Canvas, p: Paint, roulis: Float) {
         iris?.let {
-            matrice.setRotate(roulis * 55f, zone.centerX(), zone.centerY())
-            it.setLocalMatrix(matrice)
-            p.style = Paint.Style.FILL
-            p.shader = it
-            p.alpha = 52
-            c.drawRect(zone, p)
-            p.alpha = 255
+            val rayon = Math.hypot(zone.width() / 2.0, zone.height() / 2.0).toFloat()
+            c.save()
+            c.clipRect(zone)
+            c.rotate(roulis * 55f, zone.centerX(), zone.centerY())
             p.shader = null
+            p.alpha = 52
+            p.isFilterBitmap = true
+            c.drawBitmap(
+                it, null,
+                RectF(zone.centerX() - rayon, zone.centerY() - rayon, zone.centerX() + rayon, zone.centerY() + rayon),
+                p
+            )
+            p.isFilterBitmap = false
+            p.alpha = 255
+            c.restore()
         }
         brillance?.let {
             matrice.setTranslate(roulis * zone.width() * 0.45f, 0f)

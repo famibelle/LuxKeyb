@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.RectF
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.Gravity
@@ -216,7 +217,15 @@ object CarteCarnet {
             Ornement.TYPE
         )
 
-        carte.posee(panneau(context, c), Ornement.PANNEAU_TEXTE)
+        // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
+        // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
+        carte.posee(
+            panneau(context, c),
+            RectF(
+                Ornement.PANNEAU_TEXTE.left, Ornement.PANNEAU_TEXTE.top,
+                Ornement.PANNEAU_TEXTE.right, Ornement.ECU_G.top - 3f
+            )
+        )
 
         carte.posee(
             ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),
@@ -261,8 +270,10 @@ object CarteCarnet {
      * peut pas pousser les écus hors du cadre.
      */
     private fun panneau(context: Context, c: ContenuCarte): View =
-        LinearLayout(context).apply {
+        PanneauTexte(context).apply {
             orientation = LinearLayout.VERTICAL
+            // Un texte court se centre plutôt que de laisser une bande vide en bas.
+            gravity = Gravity.CENTER_VERTICAL
 
             // La traduction de la phrase n'existe que si le ZLS l'a publiée ;
             // sinon rien ne la remplace, pas même une mention.
@@ -284,14 +295,14 @@ object CarteCarnet {
                 // insécables à l'intérieur, sinon le « » » fermant part seul
                 // à la ligne.
                 val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
-                addView(bloc(context, texte, 12f, ENCRE_DOUCE, 4f).apply {
+                addView(bloc(context, texte, 12f, ENCRE_DOUCE, 2f).apply {
                     setTypeface(null, Typeface.ITALIC)
                     maxLines = 2
                 })
             }
 
             if (traduction != null) {
-                addView(bloc(context, traduction, 10f, ENCRE_PALE, 1f).apply { maxLines = 2 })
+                addView(bloc(context, traduction, 9f, ENCRE_PALE, 0f).apply { maxLines = 2 })
             } else if (c.autresFormes.isNotEmpty()) {
                 addView(
                     bloc(
@@ -327,6 +338,36 @@ object CarteCarnet {
         ellipsize = TextUtils.TruncateAt.END
         includeFontPadding = false
         tag = floatArrayOf(taille, 0f)
+    }
+
+    /**
+     * Le panneau retire ses dernières lignes quand elles ne tiennent pas.
+     *
+     * Un `LinearLayout` écrase le dernier enfant dans la place restante, qui
+     * se retrouve coupé à mi-hauteur. La hauteur réelle d'une ligne dépend de
+     * la police du téléphone : mieux vaut perdre la famille (ou la traduction)
+     * entière qu'en montrer une demi-ligne.
+     */
+    private class PanneauTexte(context: Context) : LinearLayout(context) {
+        override fun onMeasure(largeurSpec: Int, hauteurSpec: Int) {
+            val plafond = MeasureSpec.getSize(hauteurSpec)
+            val largeur = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(largeurSpec), MeasureSpec.EXACTLY)
+            val libre = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            var total = 0
+            var deborde = false
+            for (i in 0 until childCount) {
+                val vue = getChildAt(i)
+                if (vue.visibility == GONE) continue
+                vue.measure(largeur, libre)
+                if (deborde || (i > 0 && total + vue.measuredHeight > plafond)) {
+                    deborde = true
+                    vue.visibility = GONE
+                } else {
+                    total += vue.measuredHeight
+                }
+            }
+            super.onMeasure(largeurSpec, hauteurSpec)
+        }
     }
 
     /** Une ligne du panneau de texte : elle, a le droit de revenir à la ligne. */
