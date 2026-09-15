@@ -30,7 +30,9 @@ data class ContenuCarte(
     val glose: String,
     val autresFormes: List<String>,
     val exemple: String?,
-    val blason: Blasonnement = Blasonnement.AUCUN
+    val blason: Blasonnement = Blasonnement.AUCUN,
+    /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
+    val traductionExemple: String? = null
 )
 
 /**
@@ -105,7 +107,7 @@ object CarteCarnet {
             )
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
-        val exemple = TranslationDictionary.exemples(context, fiche).firstOrNull()
+        val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
         return ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
@@ -114,11 +116,12 @@ object CarteCarnet {
             autresFormes = (listOf(fiche.mot) + fiche.formes)
                 .distinct()
                 .filter { it != carte.forme },
-            exemple = exemple,
+            exemple = exemple?.phrase,
             // Le blason se lit sur le représentant, comme la glose : le joueur
             // a gagné « Männer », c'est le rangement de « Mann » qui vaut. La
             // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
-            blason = Armorial.pour(context, fiche.mot, carte.forme)
+            blason = Armorial.pour(context, fiche.mot, carte.forme),
+            traductionExemple = exemple?.traduction
         )
     }
 
@@ -248,22 +251,35 @@ object CarteCarnet {
         LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
 
+            // La traduction de la phrase n'existe que si le ZLS l'a publiée ;
+            // sinon rien ne la remplace, pas même une mention.
+            val traduction = c.traductionExemple?.takeIf { c.exemple != null }
+
+            // Le panneau a une hauteur fixe, déjà remplie par la glose sur deux
+            // lignes, la phrase et la famille. Quand la traduction s'ajoute, la
+            // glose se contente d'une ligne et la famille cède sa place : la
+            // phrase traduite dit le sens mieux qu'une seconde ligne de glose,
+            // et la famille reste lisible dans la fiche du Wierderbuch.
             addView(bloc(context, c.glose.ifEmpty { "sens non répertorié" }, 15f, ENCRE, 0f).apply {
                 setTypeface(null, Typeface.BOLD)
-                maxLines = 2
+                maxLines = if (traduction != null) 1 else 2
             })
 
             c.exemple?.let { phrase ->
                 // La décomposition d'un numéral est une explication, pas une
-                // citation : elle ne prend pas les guillemets.
-                val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
+                // citation : elle ne prend pas les guillemets. Espaces
+                // insécables à l'intérieur, sinon le « » » fermant part seul
+                // à la ligne.
+                val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
                 addView(bloc(context, texte, 12f, ENCRE_DOUCE, 4f).apply {
                     setTypeface(null, Typeface.ITALIC)
                     maxLines = 2
                 })
             }
 
-            if (c.autresFormes.isNotEmpty()) {
+            if (traduction != null) {
+                addView(bloc(context, traduction, 10f, ENCRE_PALE, 1f).apply { maxLines = 2 })
+            } else if (c.autresFormes.isNotEmpty()) {
                 addView(
                     bloc(
                         context,

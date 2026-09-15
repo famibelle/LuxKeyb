@@ -59,6 +59,8 @@ from datetime import datetime
 from pathlib import Path
 
 from lod_source import ATTRIBUTION, telecharger_source
+import zls_source
+from zls_source import cle_de_comparaison
 
 if sys.platform.startswith('win'):
     import codecs
@@ -192,8 +194,8 @@ def _phrase(texte):
     return "".join(morceaux)
 
 
-def lire_exemples(xml_articles, verbeux=True):
-    """id d'article → phrases d'exemple, dans l'ordre des acceptions.
+def lire_exemples(xml_articles, traduction_de=None, verbeux=True):
+    """id d'article → [(phrase, traduction ou None)], dans l'ordre des acceptions.
 
     Le LOD porte 58 962 phrases d'exemple, écrites par le ZLS pour illustrer
     l'emploi de chaque mot : c'est ce qu'une glose ne donne jamais. « Haus =
@@ -205,7 +207,24 @@ def lire_exemples(xml_articles, verbeux=True):
     sont sautées, et les autres remises dans l'ordre de leur `<number>`, que le
     fichier ne respecte pas. Sans ce second tri la fiche de « gutt »
     illustrerait « huppé » pendant que sa glose annonce « bon ».
+
+    La traduction vient de `traduction_de` (clé de comparaison → français),
+    c'est-à-dire du corpus de traduction du ZLS : une phrase n'est traduite
+    que si elle y figure telle quelle. **Jamais de traduction approchée** —
+    une carte sans traduction vaut mieux qu'une traduction fausse, que
+    l'apprenant mémoriserait.
+
+    Une phrase traduite passe devant les autres, mais seulement si elle
+    illustre le premier sens : aller chercher la seule phrase traduite de
+    l'article dans un sens secondaire ferait illustrer « huppé » sous « bon »,
+    le défaut que le tri par `<number>` corrige justement. Une phrase d'un
+    autre sens affiché (les `MAX_GLOSES` premiers qui portent un français)
+    garde sa traduction si elle est retenue à son rang. Mesuré sur les 3 246
+    formes du carnet : 21 % de premiers exemples traduits en gardant l'ordre,
+    23 % avec cette règle, 30 % en promouvant tous les sens affichés, ce qui a
+    été rejeté pour la raison donnée plus bas.
     """
+    traduction_de = traduction_de or {}
     par_article = {}
     for _, entree in ET.iterparse(io.BytesIO(xml_articles), events=("end",)):
         if entree.tag != "entry":
@@ -213,6 +232,7 @@ def lire_exemples(xml_articles, verbeux=True):
         identifiant = entree.get("id")
 
         phrases = []
+        rangs_gloses = []
         for sens in entree.iter("meaning"):
             if sens.find("secondaryHeadword") is not None:
                 continue
@@ -220,6 +240,10 @@ def lire_exemples(xml_articles, verbeux=True):
                 rang = int(sens.findtext("number") or 0)
             except ValueError:
                 rang = 0
+            if any(c.get("lang") == "fr" and
+                   0 < len((c.findtext("translation") or "").strip()) <= LONGUEUR_MAX_GLOSE
+                   for c in sens.findall("targetLanguage")):
+                rangs_gloses.append(rang)
             for exemple in sens.iter("example"):
                 texte = exemple.find("text")
                 if texte is None:
@@ -232,12 +256,22 @@ def lire_exemples(xml_articles, verbeux=True):
                 if LONGUEUR_MIN_EXEMPLE <= len(phrase) <= LONGUEUR_MAX_EXEMPLE:
                     phrases.append((rang, phrase))
 
-        retenues = []
-        for _, phrase in sorted(phrases, key=lambda p: p[0]):
-            if phrase not in retenues:
-                retenues.append(phrase)
-            if len(retenues) >= MAX_EXEMPLES:
-                break
+        affiches = set(sorted(rangs_gloses)[:MAX_GLOSES])
+        premier_sens = min(affiches) if affiches else None
+        candidates = []
+        for rang, phrase in sorted(phrases, key=lambda p: p[0]):
+            if all(phrase != p for _, p, _ in candidates):
+                traduction = traduction_de.get(cle_de_comparaison(phrase))
+                candidates.append((rang, phrase, traduction))
+        # Seule une phrase traduite du PREMIER sens passe devant. Promouvoir
+        # celles de tous les sens affichés a été essayé et rejeté : « Hond »
+        # s'illustrait par « dee falschen Hond » (voyou), « Zuch » par une
+        # partie d'échecs, « Waasser » par la rétention d'eau. La carte montre
+        # la première phrase, elle doit illustrer le sens premier.
+        # Tri stable : l'ordre des acceptions tient à l'intérieur de chaque groupe.
+        candidates.sort(key=lambda c: 0 if c[2] and c[0] == premier_sens else 1)
+        retenues = [(phrase, traduction if rang in affiches else None)
+                    for rang, phrase, traduction in candidates[:MAX_EXEMPLES]]
         if identifiant and retenues:
             par_article[identifiant] = retenues
         entree.clear()
@@ -387,8 +421,37 @@ def main():
         print(f"❌ LOD indisponible : {erreur}")
         return 1
 
+    # Les traductions françaises des phrases d'exemple : celles du corpus de
+    # traduction du ZLS, qui reprend une partie des exemples du LOD traduits
+    # par des professionnels. Rien d'autre — ni LuxAlign, aligné
+    # automatiquement sur de la presse, ni traduction machine. Une phrase
+    # absente du corpus reste sans traduction.
+    #
+    # Seul le côté français sert, et seulement à l'affichage : le corpus reste
+    # le jeu d'évaluation de la prédiction, rien n'en entre dans le modèle.
+    print("\n🔎 Corpus de traduction du ZLS")
+    traduction_de = {}
+    try:
+        conflits = 0
+        for segment in zls_source.segments(arguments.hors_ligne):
+            francais = (segment.get("fr") or "").strip()
+            if not francais or not segment.get("lb"):
+                continue
+            cle = cle_de_comparaison(segment["lb"])
+            if cle in traduction_de and traduction_de[cle] != francais:
+                conflits += 1
+                continue
+            traduction_de[cle] = francais
+        print(f"   🇫🇷 {len(traduction_de)} segments traduits "
+              f"({conflits} doublons divergents, premier gardé)")
+    except Exception as erreur:
+        if arguments.strict:
+            print(f"❌ --strict : corpus du ZLS indisponible : {erreur}")
+            return 1
+        print(f"   ⚠️ corpus du ZLS indisponible ({erreur}) — exemples sans traduction")
+
     par_article = lire_traductions(xml_articles)
-    exemples_par_article = lire_exemples(xml_articles)
+    exemples_par_article = lire_exemples(xml_articles, traduction_de)
     par_graphie = lire_graphies(xml_index)
     par_graphie_min = {}
     for forme, identifiants in par_graphie.items():
@@ -506,14 +569,26 @@ def main():
     # « Haiser », « Haus », « Haus' » triplerait l'actif pour un contenu
     # identique, alors que la recherche remonte déjà de la flexion au
     # représentant.
+    #
+    # Les traductions sont rangées à part, sous la même clé et dans le même
+    # ordre que les phrases, et seulement pour les mots qui en ont au moins
+    # une ; une chaîne vide marque une phrase sans traduction. Le tableau des
+    # phrases garde ainsi exactement la forme que ses lecteurs attendent.
     exemples = OrderedDict()
+    traductions_exemples = OrderedDict()
     for identifiant, representant in representant_de_article.items():
-        phrases = exemples_par_article.get(identifiant)
-        if phrases and representant not in exemples:
-            exemples[representant] = phrases
+        paires = exemples_par_article.get(identifiant)
+        if paires and representant not in exemples:
+            exemples[representant] = [phrase for phrase, _ in paires]
+            if any(traduction for _, traduction in paires):
+                traductions_exemples[representant] = [
+                    traduction or "" for _, traduction in paires]
     couverture = 100 * len(exemples) / max(1, len(representant_de_article))
     print(f"   💬 {len(exemples)} mots illustrés d'au moins une phrase "
           f"({couverture:.1f} % des articles atteints)")
+    part_traduits = 100 * len(traductions_exemples) / max(1, len(exemples))
+    print(f"   🇫🇷 {len(traductions_exemples)} mots dont un exemple est traduit "
+          f"par le ZLS ({part_traduits:.1f} % des mots illustrés)")
 
     # L'identifiant d'article du LOD, pour le bouton « Voir sur le
     # dictionnaire officiel ». Il faut l'embarquer parce que lod.lu ne peut
@@ -544,6 +619,11 @@ def main():
         if len(exemples) < 10000:
             print(f"❌ --strict : seulement {len(exemples)} mots illustrés, "
                   "les fiches du Wierderbuch seraient sans exemple")
+            return 1
+        if len(traductions_exemples) < 2000:
+            print(f"❌ --strict : seulement {len(traductions_exemples)} mots "
+                  "dont un exemple est traduit, l'appariement avec le corpus "
+                  "du ZLS ne fonctionne plus")
             return 1
         if len(articles) < 20000:
             print(f"❌ --strict : seulement {len(articles)} identifiants "
@@ -605,9 +685,13 @@ def main():
         "generated": contenu["generated"],
         "source": contenu["source"],
         "licence": contenu["licence"],
-        "attribution": ATTRIBUTION,
+        "attribution": ATTRIBUTION + [zls_source.ATTRIBUTION],
         "count": len(exemples),
         "exemples": exemples,
+        "traductions_source": "Méisproochegen Iwwersetzungskorpus fir "
+                              "d'Lëtzebuergescht (ZLS), CC0-1.0",
+        "traductions_count": len(traductions_exemples),
+        "traductions": traductions_exemples,
     }
     sauvegarder_precedent(CHEMIN_EXEMPLES)
     CHEMIN_EXEMPLES.write_text(

@@ -2399,6 +2399,10 @@ class SettingsActivity : AppCompatActivity() {
                     "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
                     "traductions françaises et 85 000 formes que la presse " +
                     "n'écrit jamais.\n\n" +
+                    "🇱🇺 Corpus de traduction du Zenter fir d'Lëtzebuerger " +
+                    "Sprooch (data.public.lu). Licence CC0 1.0. Il apporte " +
+                    "les traductions françaises des phrases d'exemple, faites " +
+                    "par des traducteurs professionnels.\n\n" +
                     "🇫🇷 Lexique 3.83 : base lexicale du français de Boris New " +
                     "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
                     "Elle apporte les 125 000 formes de la seconde rangée de " +
@@ -9301,7 +9305,8 @@ class SettingsActivity : AppCompatActivity() {
             colonne.addView(TextView(activity).apply {
                 text = "Traductions et exemples issus du Lëtzebuerger Online " +
                         "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
-                        "Sprooch, CC0."
+                        "Sprooch, CC0. Exemples traduits par le corpus de " +
+                        "traduction du même Zenter, CC0."
                 textSize = 12f
                 setTextColor(Color.parseColor("#AAAAAA"))
                 setLineSpacing(0f, 1.2f)
@@ -9480,7 +9485,12 @@ class SettingsActivity : AppCompatActivity() {
             // Un mot sur cinq n'en a pas — noms propres, formes que le ZLS n'a
             // pas illustrées. La section disparaît alors, plutôt que de poser
             // un titre sur du vide.
-            val exemples = TranslationDictionary.exemples(activity, resultat)
+            //
+            // Sous la phrase, sa traduction française quand le ZLS en a publié
+            // une, et rien sinon : pas de traduction approchée, pas de mention
+            // « traduction indisponible » qui ferait paraître deux fiches sur
+            // trois inachevées.
+            val exemples = TranslationDictionary.exemplesTraduits(activity, resultat)
             if (exemples.isNotEmpty()) {
                 colonne.addView(titreSection(
                     activity,
@@ -9491,9 +9501,20 @@ class SettingsActivity : AppCompatActivity() {
                 // pixels l'une de l'autre et sur le blanc de la fiche, les deux
                 // phrases se lisaient comme un seul paragraphe, et la seconde
                 // paraissait continuer la première.
-                exemples.forEachIndexed { rang, phrase ->
+                exemples.forEachIndexed { rang, exemple ->
                     colonne.addView(TextView(activity).apply {
-                        text = phraseIllustree(phrase, resultat)
+                        text = SpannableStringBuilder(phraseIllustree(exemple.phrase, resultat)).apply {
+                            exemple.traduction?.let { francais ->
+                                append("\n")
+                                val debut = length
+                                append(francais)
+                                setSpan(RelativeSizeSpan(0.85f), debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                setSpan(
+                                    ForegroundColorSpan(Color.parseColor("#777777")),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                            }
+                        }
                         textSize = 16f
                         setTextColor(Color.parseColor("#333333"))
                         setLineSpacing(0f, 1.25f)

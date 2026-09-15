@@ -345,6 +345,17 @@ jobs:
           exit 1
         fi
 
+        # Les traductions des exemples viennent du corpus de traduction du
+        # ZLS, apparié phrase à phrase. Si l'appariement casse (corpus
+        # introuvable, normalisation modifiée), les phrases s'affichent
+        # simplement sans traduction et rien ne le signale.
+        TR_COUNT=$(jq '.traductions // {} | length' "$A/luxemburgish_exemples.json")
+        echo "🇫🇷 Mots dont un exemple est traduit : $TR_COUNT"
+        if [ "$TR_COUNT" -lt 2000 ]; then
+          echo "::error::Seulement $TR_COUNT mots dont un exemple est traduit : l'appariement avec le corpus du ZLS ne fonctionne plus."
+          exit 1
+        fi
+
         # Sans la table des identifiants, le bouton « Voir sur le
         # dictionnaire officiel » retombe sur la recherche de lod.lu — qui ne
         # répond pas à une ouverture à froid et propose d'ajouter le mot au

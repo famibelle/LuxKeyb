@@ -106,6 +106,17 @@ object TranslationDictionary {
      * de saisie se figerait le temps d'une frappe.
      */
     private var exemples: Map<String, List<String>> = emptyMap()
+
+    /**
+     * Traduction française de chaque phrase, alignée sur [exemples] : `null`
+     * quand la phrase n'en a pas.
+     *
+     * Elles viennent du corpus de traduction du ZLS, et d'aucune autre source :
+     * une phrase du LOD n'est traduite que si le ZLS l'a traduite telle
+     * quelle. Deux cartes sur trois n'ont donc pas de traduction, et c'est
+     * voulu — pas de traduction plutôt qu'une traduction approchée.
+     */
+    private var traductionsExemples: Map<String, List<String?>> = emptyMap()
     private var exemplesCharges = false
     private val verrouExemples = Any()
 
@@ -263,7 +274,8 @@ object TranslationDictionary {
                     InputStreamReader(context.assets.open(ASSET_EXEMPLES))
                 ).use { it.readText() }
 
-                val table = JSONObject(contenu).getJSONObject("exemples")
+                val racine = JSONObject(contenu)
+                val table = racine.getJSONObject("exemples")
                 val lues = HashMap<String, List<String>>(table.length())
 
                 val cles = table.keys()
@@ -273,13 +285,28 @@ object TranslationDictionary {
                     lues[mot] = (0 until phrases.length()).map { phrases.getString(it) }
                 }
 
+                // Facultatives : un actif antérieur n'en porte pas, et les
+                // phrases s'affichent alors seules, comme avant.
+                val traduites = HashMap<String, List<String?>>()
+                racine.optJSONObject("traductions")?.let { t ->
+                    val motsTraduits = t.keys()
+                    while (motsTraduits.hasNext()) {
+                        val mot = motsTraduits.next()
+                        val francais = t.getJSONArray(mot)
+                        traduites[mot] = (0 until francais.length())
+                            .map { francais.getString(it).ifEmpty { null } }
+                    }
+                }
+
                 exemples = lues
-                Log.d(TAG, "${lues.size} mots illustrés")
+                traductionsExemples = traduites
+                Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
             } catch (e: Exception) {
                 // Sans exemples la fiche garde son sens et ses formes : la
                 // section disparaît, rien d'autre ne change.
                 Log.e(TAG, "Actif $ASSET_EXEMPLES illisible: ${e.message}", e)
                 exemples = emptyMap()
+                traductionsExemples = emptyMap()
             }
         }
     }
@@ -355,18 +382,31 @@ object TranslationDictionary {
      * divers priverait « Police » ou « Accident » de leur exemple, alors que
      * c'est justement l'emploi de ces mots-là qu'il s'agit de montrer.
      */
-    fun exemples(context: Context, resultat: Resultat): List<String> {
+    fun exemples(context: Context, resultat: Resultat): List<String> =
+        exemplesTraduits(context, resultat).map { it.phrase }
+
+    /**
+     * Les mêmes phrases que [exemples], chacune avec sa traduction française
+     * quand le ZLS en a publié une. Le filtre de neutralité porte sur la
+     * phrase luxembourgeoise ; sa traduction part ou reste avec elle.
+     */
+    fun exemplesTraduits(context: Context, resultat: Resultat): List<Exemple> {
         chargerExemples(context)
         val phrases = exemples[resultat.mot] ?: return emptyList()
+        val traductions = traductionsExemples[resultat.mot]
         val duMot = (resultat.formes + resultat.mot)
             .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
-        return phrases.filter { phrase ->
-            decouperEnMots(phrase).none { mot ->
+        return phrases.mapIndexedNotNull { rang, phrase ->
+            val ecartee = decouperEnMots(phrase).any { mot ->
                 AccentTolerantMatcher.normalize(mot) !in duMot &&
                     MotsEcartes.estEcarte(mot)
             }
+            if (ecartee) null else Exemple(phrase, traductions?.getOrNull(rang))
         }
     }
+
+    /** Une phrase d'exemple du LOD, et sa traduction officielle s'il y en a une. */
+    data class Exemple(val phrase: String, val traduction: String?)
 
     /** Les mots d'une phrase, la ponctuation et les élisions retirées. */
     fun decouperEnMots(phrase: String): List<String> =
