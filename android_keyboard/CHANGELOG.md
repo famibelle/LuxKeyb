@@ -9,6 +9,28 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.10.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Un tiroir de la Boîte de Leitner s'ouvre en éventail.** Toucher un casier fait sortir ses cartes de la pile et les étale en main : on glisse pour les parcourir, on touche la carte du centre pour la lire en grand, on touche ailleurs pour les ranger. La grille de vignettes sur fond blanc est supprimée.
+- **Les cartes de la boîte portent leur recto**, celui du carnet (cadre de rareté, illustration, mot). Les cartes à réviser sortent de leur fente, penchées et cerclées de violet.
+- **Chaque casier a sa légende** gravée dans le bois : le nombre de cartes et le délai de retour (« 1 jour », « 1 sem. », « ★ acquis »). Une phrase rappelle la règle : une bonne réponse fait avancer la carte.
+- **La plaque « Réviser » est un vrai bouton.** Plus grande, en laiton lisible, et quand rien n'est dû elle dit quand revenir (« Tout est à jour · 4 cartes demain »).
+
+### 🐛 Corrections
+
+- Le bouton retour depuis un casier ouvert faisait quitter la boîte. Il remonte maintenant d'un cran à la fois : carte, éventail, boîte, liste des jeux.
+- La plaque annonçait toutes les cartes en retard alors qu'une session s'arrête à 12 ; elle annonce maintenant la session.
+- La plaque était peinte à 25 % d'opacité, d'où son aspect terne.
+- Toucher un casier plein lançait la révision de sa première carte au lieu d'en montrer le contenu.
+- Le casier ouvert n'affichait que les cartes de la session du jour, pas tout son contenu.
+- L'écran restait blanc plusieurs secondes à l'ouverture de la boîte ; le contenu des cartes se charge maintenant en arrière-plan.
+- La boîte et le casier ouvert annonçaient le même délai de deux façons (« 2 sem. » et « tous les 16 jours ») ; ils utilisent maintenant le même arrondi.
+- L'ombre sous la boîte se lisait comme une barre grise ; c'est désormais un fondu sans arête.
+
+Cette version reprend aussi la correction publiée sous l'étiquette v22.9.2 (la boîte grandit avec l'espace disponible), qui n'avait pas d'entrée ici.
+
 ## [22.9.1] - 2026-09-14
 
 ### ✨ Améliorations
