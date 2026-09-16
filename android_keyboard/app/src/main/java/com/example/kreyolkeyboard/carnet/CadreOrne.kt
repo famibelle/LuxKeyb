@@ -330,6 +330,20 @@ object Ornement {
         p.strokeWidth = 1.2f
         p.color = m.trait
         c.drawPath(chemin, p)
+
+        // Les plis : deux traits du sommet vers les coins qu'il a quittés,
+        // pour lire une pointe qui replie le ruban plutôt qu'une flèche.
+        if (pointes) {
+            val q = r.height() * 0.55f
+            p.strokeWidth = 1f
+            p.color = m.lo
+            p.alpha = 130
+            c.drawLine(r.left - q, r.centerY(), r.left, r.top, p)
+            c.drawLine(r.left - q, r.centerY(), r.left, r.bottom, p)
+            c.drawLine(r.right + q, r.centerY(), r.right, r.top, p)
+            c.drawLine(r.right + q, r.centerY(), r.right, r.bottom, p)
+            p.alpha = 255
+        }
     }
 
     /** L'écu d'une statistique : un blason à base arrondie. */
@@ -776,6 +790,15 @@ object Ornement {
         p.shader = degrade
         c.drawCircle(gx, gy, gr, p)
         p.shader = null
+
+        // Le filet interne, plus sombre que la sertissure : sans lui le
+        // dégradé s'arrête à plat sur le métal au lieu de sembler taillé.
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.1f
+        p.color = 0x40000000
+        c.drawCircle(gx, gy, gr - 0.6f, p)
+
+        p.style = Paint.Style.FILL
         p.color = 0x80FFFFFF.toInt()
         c.save()
         c.rotate(-28f, gx - gr * 0.28f, gy - gr * 0.38f)
@@ -786,6 +809,10 @@ object Ornement {
             ), p
         )
         c.restore()
+
+        // Le point de lumière : une facette taillée, posée sur le halo.
+        p.color = 0xE6FFFFFF.toInt()
+        c.drawCircle(gx - gr * 0.42f, gy - gr * 0.48f, gr * 0.11f, p)
     }
 
     /** Le joyau de rareté, entre les deux écus. */
