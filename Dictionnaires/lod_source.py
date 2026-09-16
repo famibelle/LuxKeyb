@@ -36,8 +36,10 @@ DOSSIER_CACHE = Path(__file__).resolve().parent / "luxemburgish_data" / "lod"
 
 API_DATASETS = "https://data.public.lu/api/1/datasets/{slug}/"
 
-# Les deux jeux de données du ZLS dont on a besoin. Le premier porte les
-# traductions, le second la liste des graphies qui mènent à chaque article.
+# Les trois jeux de données du ZLS dont on a besoin. Le premier porte les
+# traductions, le second la liste des graphies qui mènent à chaque article, le
+# troisième les tables de flexion — et avec elles les étiquettes grammaticales
+# que les articles ne donnent pas.
 SOURCES_LOD = {
     "art": {
         "slug": "letzebuerger-online-dictionnaire-lod-linguistesch-daten",
@@ -48,6 +50,11 @@ SOURCES_LOD = {
         "slug": "letzebuerger-online-dictionnaire-lod-index-vun-der-sich-funktioun",
         "fichier": "new_lod-search.xml",
         "libelle": "LOD — Index vun der Sich-Funktioun (graphies)",
+    },
+    "tab": {
+        "slug": "letzebuerger-online-dictionnaire-lod-flexiounstabellen",
+        "fichier": "new_lod-tab.xml",
+        "libelle": "LOD — Flexiounstabellen (tables de flexion)",
     },
 }
 
