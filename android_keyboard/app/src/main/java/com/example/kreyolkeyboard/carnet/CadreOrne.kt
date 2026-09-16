@@ -57,7 +57,8 @@ import kotlin.math.sin
  *   nue, aucun des trois autres paliers ne se verrait.
  * - **Peu commun** — bronze, rivets sertis, filet clair sur l'ouverture.
  * - **Rare** — argent, ouverture **en arche**, rayons en éventail, volutes
- *   aux quatre angles, bandeaux à pointes, couronne de griffes, double filet.
+ *   aux quatre angles, pastilles de type à filet clair, couronne de griffes,
+ *   double filet.
  * - **Très rare** — or, clef de voûte sertie, huit volutes, feuilles
  *   d'acanthe sur les flancs, joyaux satellites, semis d'étincelles, et un
  *   reflet spéculaire qui suit l'inclinaison du téléphone.
@@ -155,7 +156,34 @@ object Ornement {
     val FENETRE_VIGNETTE = RectF(26f, 26f, 274f, 212f)
     val PLAQUE = RectF(62f, 18f, 276f, 58f)
     val GEMME = RectF(11f, 17f, 65f, 71f)
-    val TYPE = RectF(46f, 256f, 254f, 284f)
+    /**
+     * La ligne de type, en **deux pastilles** : ce qu'est le mot, et où il a
+     * été gagné.
+     *
+     * Une seule bande portait « Substantif · Wuertsich », deux informations
+     * qui n'ont ni la même source ni la même durée de vie — la nature vient du
+     * mot, la provenance de la partie qui l'a donné — séparées par un point
+     * médian qui ne disait pas laquelle est laquelle. Deux capsules le disent
+     * sans ponctuation.
+     *
+     * Les largeurs sont inégales parce que les textes le sont : « Numéral »
+     * fait sept caractères, « gagné à Kräizwuert » dix-huit. Des pastilles
+     * égales couperaient la seconde ou laisseraient la première à moitié vide.
+     * Elles couvrent ensemble la largeur du panneau de texte, dont elles sont
+     * l'annonce.
+     */
+    val TYPE_NATURE = RectF(38f, 256f, 112f, 284f)
+    val TYPE_JEU = RectF(120f, 256f, 262f, 284f)
+    /**
+     * Le texte, en retrait des bouts ronds de la capsule.
+     *
+     * Les 124 unités de la seconde ne sont pas une marge confortable : elles
+     * sont mesurées sur « gagné à Kräizwuert », le plus long des sept jeux, en
+     * gras et au corps de la pastille. Raccourcir la pastille de quatre unités
+     * ou grossir le texte d'un demi-point le fait couper.
+     */
+    val TYPE_NATURE_TEXTE = RectF(46f, 256f, 104f, 284f)
+    val TYPE_JEU_TEXTE = RectF(129f, 256f, 253f, 284f)
     val PANNEAU = RectF(38f, 289f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
     val PANNEAU_TEXTE = RectF(48f, 297f, 252f, 378f)
@@ -343,6 +371,35 @@ object Ornement {
             c.drawLine(r.right + q, r.centerY(), r.right, r.top, p)
             c.drawLine(r.right + q, r.centerY(), r.right, r.bottom, p)
             p.alpha = 255
+        }
+    }
+
+    /**
+     * Une pastille : la capsule des deux étiquettes de la ligne de type.
+     *
+     * Elle n'a pas de pointes, et ce n'est pas un oubli : deux pastilles
+     * séparées de huit unités se toucheraient par leurs pointes dès que le
+     * palier les fait pousser. L'échelle passe donc ici par le filet clair,
+     * celui que l'ouverture reçoit déjà à *Peu commun*.
+     */
+    private fun pastille(c: Canvas, p: Paint, r: RectF, filet: Boolean, m: Metal) {
+        val rayon = r.height() / 2f
+        p.style = Paint.Style.FILL
+        p.shader = LinearGradient(
+            0f, r.top, 0f, r.bottom,
+            intArrayOf(m.hi, m.mid, m.lo), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        c.drawRoundRect(r, rayon, rayon, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.2f
+        p.color = m.trait
+        c.drawRoundRect(r, rayon, rayon, p)
+        if (filet) {
+            p.strokeWidth = 0.9f
+            p.color = 0x8CFFFFFF.toInt()
+            val dedans = RectF(r.left + 2.5f, r.top + 2.5f, r.right - 2.5f, r.bottom - 2.5f)
+            c.drawRoundRect(dedans, rayon - 2.5f, rayon - 2.5f, p)
         }
     }
 
@@ -603,8 +660,9 @@ object Ornement {
             }
         }
 
-        // 9. La ligne de type.
-        bandeau(c, p, TYPE, palier >= 2, m)
+        // 9. Les deux pastilles de la ligne de type.
+        pastille(c, p, TYPE_NATURE, palier >= 2, m)
+        pastille(c, p, TYPE_JEU, palier >= 2, m)
 
         // 10. Le panneau de texte.
         p.style = Paint.Style.FILL
@@ -967,7 +1025,8 @@ object Ornement {
         dansLaBande(brut, y, GEMME, GEMME.left + 4f, GEMME.right - 4f)
         dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
         dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
-        dansLaBande(brut, y, TYPE, TYPE.left, TYPE.right)
+        dansLaBande(brut, y, TYPE_NATURE, TYPE_NATURE.left, TYPE_NATURE.right)
+        dansLaBande(brut, y, TYPE_JEU, TYPE_JEU.left, TYPE_JEU.right)
         dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
         dansLaBande(brut, y, ECU_G, ECU_G.left, ECU_G.right)
         dansLaBande(brut, y, ECU_D, ECU_D.left, ECU_D.right)

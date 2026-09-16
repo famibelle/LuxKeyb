@@ -50,10 +50,10 @@ data class ContenuCarte(
  * ## La carte est une carte à jouer, et son ornement monte avec la rareté
  *
  * La disposition suit celle d'une carte de collection, et elle est **fixe** :
- * gemme de coût en débord, plaque de nom, ouverture d'illustration, ligne de
- * type, panneau de texte, deux écus et une ligne de série. Rien ne descend
- * quand une phrase du LOD prend trois lignes — c'est ce qui permet de lire une
- * grille de cartes sans en lire aucune. Les emplacements sont dans
+ * gemme de coût en débord, plaque de nom, ouverture d'illustration, deux
+ * pastilles de type, panneau de texte, deux écus et une ligne de série. Rien
+ * ne descend quand une phrase du LOD prend trois lignes — c'est ce qui permet
+ * de lire une grille de cartes sans en lire aucune. Les emplacements sont dans
  * [Ornement] et le tracé dans [CarteOrnee] ; ce fichier ne fait plus que
  * choisir *quoi* poser dans chaque case.
  *
@@ -168,9 +168,13 @@ object CarteCarnet {
      * - la **gemme de coût**, c'est la longueur du mot — le seul chiffre qui
      *   mesure un effort réel, celui qu'il faudra taper lettre à lettre quand
      *   la carte passera en production ;
-     * - la **ligne de type** ne nomme la nature que lorsqu'elle se déduit sans
-     *   étiquetage grammatical, c'est-à-dire la majuscule du substantif et le
-     *   numéral. Pour tout le reste elle se tait et ne porte que le jeu ;
+     * - la **ligne de type** porte deux pastilles, la nature du mot et la
+     *   partie qui l'a donné. Elle nommait « Substantif · Wuertsich » d'un
+     *   seul trait, et le point médian laissait deviner lequel des deux mots
+     *   disait quoi. La nature vient de [Blasonnement.nature], qui se déduit
+     *   toujours sans étiquetage grammatical — la majuscule du substantif, la
+     *   finale du verbe — et retombe sur « Mot » quand aucune des deux ne
+     *   tranche, plutôt que de laisser une pastille vide ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
      *   d'entrée, le sigle du jeu, le jour de la capture, et le rang de
@@ -190,14 +194,25 @@ object CarteCarnet {
             Ornement.PLAQUE
         )
 
+        // La nature n'est pas redérivée ici : [Blasonnement.nature] la porte
+        // déjà, et elle connaît la finale verbale que la majuscule seule
+        // ignorait — « gesicht » était un mot sans nature, c'est un verbe.
         val nature = when {
-            c.carte.nombre != null -> "Numéral · "
-            c.carte.forme.first().isUpperCase() -> "Substantif · "
-            else -> ""
+            c.carte.nombre != null -> "Numéral"
+            c.blason.nature == Nature.NOM -> "Nom"
+            c.blason.nature == Nature.VERBE -> "Verbe"
+            // Ni majuscule ni finale verbale : adjectifs, adverbes, mots-outils.
+            // Le carnet n'a pas d'étiquetage grammatical pour trancher entre
+            // eux, et « Mot » est le seul libellé qui ne mente sur aucun.
+            else -> "Mot"
         }
         carte.posee(
-            ligne(context, "$nature${jeu.nom}", taille = 12f, couleur = ENCRE, gras = true),
-            Ornement.TYPE
+            ligne(context, nature, taille = 11f, couleur = ENCRE, gras = true),
+            Ornement.TYPE_NATURE_TEXTE
+        )
+        carte.posee(
+            ligne(context, "gagné à ${jeu.nom}", taille = 11f, couleur = ENCRE, gras = true),
+            Ornement.TYPE_JEU_TEXTE
         )
 
         carte.posee(panneau(context, c), Ornement.PANNEAU_TEXTE)
