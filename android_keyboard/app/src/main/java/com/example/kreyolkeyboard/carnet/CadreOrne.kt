@@ -289,39 +289,48 @@ object Ornement {
      */
     const val CREUX_AGRAFE = 3f
     /**
-     * La ligne de type, en **deux pastilles** : ce qu'est le mot, et où il a
-     * été gagné.
+     * Ce qu'est le mot : sous la plaque, sur l'axe de la carte.
      *
      * Une seule bande portait « Substantif · Wuertsich », deux informations
      * qui n'ont ni la même source ni la même durée de vie — la nature vient du
      * mot, la provenance de la partie qui l'a donné — séparées par un point
      * médian qui ne disait pas laquelle est laquelle. Deux capsules le disent
-     * sans ponctuation.
+     * sans ponctuation, et elles ont fini par se séparer aussi dans l'espace :
+     * la nature est une propriété du mot, elle reste sous lui ; la provenance
+     * est une mention d'inventaire, elle est descendue entre les écus, avec le
+     * reste de ce que le carnet sait de la partie. Voir [PROVENANCE].
      *
-     * Les largeurs sont inégales parce que les textes le sont, et elles ont
-     * changé le jour où la nature a cessé d'être devinée. « Nom » tenait dans
-     * 58 unités ; « Nom masculin », que le LOD donne maintenant, en demande
-     * 80. Les deux boîtes se partagent donc les 184 unités de texte de la
-     * rangée au prorata de ce qu'elles ont à dire — 77 et 107 — et le corps
-     * commun de [CarteCarnet] rattrape ce qui dépasse encore.
-     *
-     * Elles couvrent ensemble la largeur du panneau de texte, dont elles sont
-     * l'annonce.
+     * Centrée, donc, et non plus calée à gauche d'une rangée : elle prolonge
+     * l'aplomb de la clef de voûte, de la plaque et de l'agrafe. Ses 92 unités
+     * de texte tiennent « Nom masculin », le plus large des libellés du LOD
+     * une fois les trois genres composés abrégés.
      */
-    val TYPE_NATURE = RectF(38f, 254f, 131f, 282f)
-    val TYPE_JEU = RectF(139f, 254f, 262f, 282f)
+    val NATURE = RectF(96f, 254f, 204f, 282f)
     /**
-     * Le texte, en retrait des bouts ronds de la capsule.
+     * Où le mot a été gagné : dans le bas de carte, entre les écus.
      *
-     * Ce ne sont pas des marges confortables : à onze points, « Nom masculin »
-     * demande 80 unités et « gagné à Kräizwuert » 112, pour 77 et 107
-     * disponibles. Les deux cas les plus courants débordent donc de peu, et
-     * c'est exactement ce que le corps commun est là pour absorber ; les
-     * élargir davantage prendrait sur l'autre pastille, qui n'a pas plus de
-     * place à donner.
+     * Elle était à droite de la nature, et la rangée ne pouvait pas tenir les
+     * deux : « Nom masculin » et « gagné à Kräizwuert » demandent ensemble 192
+     * unités de texte là où 184 étaient disponibles, et chaque libellé que le
+     * LOD allonge prenait sur l'autre. Le bas de carte, lui, avait 144 unités
+     * inoccupées entre les écus — soit plus que la pastille n'en a jamais
+     * demandé — et c'est là que la mention appartient : le numéro d'entrée, le
+     * sigle du jeu et la date sont sur la ligne juste en dessous.
+     *
+     * Elle prend la place du joyau de rareté, retiré : sa couleur répétait ce
+     * que le métal du cadre et la matière de la plaque disaient déjà deux fois
+     * plus fort, et la carte portait alors trois pierres pour deux idées.
+     *
+     * Centrée sur les écus (392) et non sur la bande qu'ils laissent libre :
+     * elle mord donc sur le bas du panneau exactement comme eux. Posée quatre
+     * unités plus bas, sous leur axe, elle se lisait comme une quatrième
+     * rangée là où il n'y en a qu'une.
      */
-    val TYPE_NATURE_TEXTE = RectF(46f, 254f, 123f, 282f)
-    val TYPE_JEU_TEXTE = RectF(147f, 254f, 254f, 282f)
+    val PROVENANCE = RectF(84f, 380f, 216f, 408f)
+
+    /** Le texte, en retrait des bouts ronds des capsules. */
+    val NATURE_TEXTE = RectF(104f, 254f, 196f, 282f)
+    val PROVENANCE_TEXTE = RectF(92f, 380f, 208f, 408f)
     val PANNEAU = RectF(38f, 288f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
     val PANNEAU_TEXTE = RectF(48f, 296f, 252f, 378f)
@@ -372,8 +381,6 @@ object Ornement {
      * marcheraient dessus : l'énoncé s'arrête donc où la consigne commence.
      */
     val ENONCE_DOS = RectF(38f, 42f, 262f, 178f)
-    /** Le joyau de rareté, ses satellites et ses volutes, entre les écus. */
-    val JOYAU_CENTRAL = RectF(102f, 386f, 198f, 412f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
     val GLOSE_VIGNETTE = RectF(20f, 249f, 280f, 269f)
     val BOITE_VIGNETTE = RectF(30f, 277f, 270f, 281f)
@@ -937,9 +944,10 @@ object Ornement {
         sertissure(c, p, GEMME, m, if (palier >= 2) 8 else 0)
         sertissure(c, p, GEMME_CENTRE, m, if (palier >= 3) 6 else 0)
 
-        // 9. Les deux pastilles de la ligne de type.
-        pastille(c, p, TYPE_NATURE, palier >= 2, m)
-        pastille(c, p, TYPE_JEU, palier >= 2, m)
+        // 9. Les deux pastilles : la nature sous la plaque, la provenance en
+        //    bas de carte.
+        pastille(c, p, NATURE, palier >= 2, m)
+        pastille(c, p, PROVENANCE, palier >= 2, m)
 
         // 10. Le panneau de texte.
         p.style = Paint.Style.FILL
@@ -1164,17 +1172,6 @@ object Ornement {
         c.restore()
     }
 
-    /** Le joyau de rareté, entre les deux écus. */
-    fun dessinerJoyauRarete(c: Canvas, p: Paint, rarete: Rarete) {
-        val palier = rarete.ordinal
-        val m = metal(rarete)
-        joyau(c, p, LARGEUR / 2f, 399f, 8f + palier, rarete.couleur, if (palier >= 2) 6 else 0)
-        if (palier < 3) return
-        for (s in intArrayOf(-1, 1)) {
-            joyau(c, p, LARGEUR / 2f + s * 22f, 399f, 4.5f, m.joyau, 6)
-            volute(c, p, LARGEUR / 2f + s * 34f, 399f, 11f, s.toFloat(), 1f, 1.2f, 2f, m)
-        }
-    }
 
     /**
      * Le semis d'étincelles d'une très rare.
@@ -1195,8 +1192,7 @@ object Ornement {
         // passe pour un défaut d'impression. On retire, au même générateur.
         val interdits = if (vignette) arrayOf(NOM_VIGNETTE, GLOSE_VIGNETTE, BOITE_VIGNETTE)
         else arrayOf(
-            GEMME, PLAQUE, GEMME_CENTRE, TYPE_NATURE, TYPE_JEU,
-            PANNEAU, ECU_G, ECU_D, JOYAU_CENTRAL
+            GEMME, PLAQUE, GEMME_CENTRE, NATURE, PANNEAU, ECU_G, ECU_D, PROVENANCE
         )
         var poses = 0
         var essais = 0
@@ -1349,16 +1345,11 @@ object Ornement {
         dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
         dansLaBande(brut, y, GEMME_CENTRE, GEMME_CENTRE.left, GEMME_CENTRE.right)
         dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
-        dansLaBande(brut, y, TYPE_NATURE, TYPE_NATURE.left, TYPE_NATURE.right)
-        dansLaBande(brut, y, TYPE_JEU, TYPE_JEU.left, TYPE_JEU.right)
+        dansLaBande(brut, y, NATURE, NATURE.left, NATURE.right)
+        dansLaBande(brut, y, PROVENANCE, PROVENANCE.left, PROVENANCE.right)
         dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
         dansLaBande(brut, y, ECU_G, ECU_G.left, ECU_G.right)
         dansLaBande(brut, y, ECU_D, ECU_D.left, ECU_D.right)
-        if (y > ECU_G.top && y < ECU_G.bottom) {
-            val r = 8f + palier
-            brut.add(LARGEUR / 2f - r)
-            brut.add(LARGEUR / 2f + r)
-        }
         // Rien pour la ligne de série : elle est passée dans la marge, où le
         // métal est lisse et où `bord` est déjà la seule marche du doigt.
         return crans(brut)
@@ -2027,7 +2018,6 @@ class CarteOrnee(
             Ornement.dessinerGemme(
                 canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE
             )
-            Ornement.dessinerJoyauRarete(canvas, pinceau, rarete)
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         // La tranche par-dessus le métal : c'est le bord du carton, et le

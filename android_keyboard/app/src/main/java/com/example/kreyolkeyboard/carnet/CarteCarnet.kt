@@ -56,8 +56,10 @@ data class ContenuCarte(
  *
  * La disposition suit celle d'une carte de collection, et elle est **fixe** :
  * gemme de coût en débord sur l'angle de l'ouverture, illustration en haut,
- * **plaque du nom en travers du milieu**, agrafe sertie dessous, deux
- * pastilles de type, panneau de texte, deux écus et une ligne de série. Rien
+ * **plaque du nom en travers du milieu**, agrafe sertie dessous, pastille de
+ * nature, panneau de texte, puis un bas de carte qui rassemble ce que le
+ * carnet sait de la partie : deux écus, la pastille de provenance et la ligne
+ * de série. Rien
  * ne descend quand une phrase du LOD prend trois lignes — c'est ce qui permet
  * de lire une grille de cartes sans en lire aucune.
  *
@@ -188,14 +190,17 @@ object CarteCarnet {
      * - la **gemme de coût**, c'est la longueur du mot — le seul chiffre qui
      *   mesure un effort réel, celui qu'il faudra taper lettre à lettre quand
      *   la carte passera en production ;
-     * - la **ligne de type** porte deux pastilles, la nature du mot et la
-     *   partie qui l'a donné. Elle nommait « Substantif · Wuertsich » d'un
-     *   seul trait, et le point médian laissait deviner lequel des deux mots
-     *   disait quoi. La nature est celle du LOD — « Nom féminin », « Verbe »,
-     *   genre compris — et retombe sur [Blasonnement.nature] pour les mots
-     *   qu'il ignore, puis sur « Mot », plutôt que de laisser une pastille
-     *   vide. Les deux étiquettes partagent un corps, qui cède quand l'une
-     *   d'elles déborde : voir [corpsDeLaLigne] ;
+     * - la **pastille de nature**, sous la plaque, dit ce qu'est le mot. Elle
+     *   nommait « Substantif · Wuertsich » d'un seul trait avec la provenance,
+     *   et le point médian laissait deviner lequel des deux mots disait quoi.
+     *   Le libellé est celui du LOD — « Nom féminin », « Verbe », genre
+     *   compris — et retombe sur [Blasonnement.nature] pour les mots qu'il
+     *   ignore, puis sur « Mot », plutôt que de rester vide ;
+     * - la **pastille de provenance**, entre les écus, dit la partie qui a
+     *   donné la carte. Elle est descendue là parce que c'est une mention
+     *   d'inventaire, comme le numéro et la date de la ligne juste dessous, et
+     *   parce qu'une seule rangée ne pouvait plus tenir les deux libellés.
+     *   Les deux étiquettes partagent un corps : voir [corpsDesEtiquettes] ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
      *   d'entrée, le sigle du jeu, le jour de la capture, et le rang de
@@ -236,10 +241,10 @@ object CarteCarnet {
         )
         val vueNature = ligne(context, nature, TYPE_CORPS, ENCRE, gras = true)
         val vueJeu = ligne(context, "gagné à ${jeu.nom}", TYPE_CORPS, ENCRE, gras = true)
-        val corps = corpsDeLaLigne(vueNature, vueJeu)
+        val corps = corpsDesEtiquettes(vueNature, vueJeu)
         for (vue in arrayOf(vueNature, vueJeu)) vue.tag = floatArrayOf(corps, 0f)
-        carte.posee(vueNature, Ornement.TYPE_NATURE_TEXTE)
-        carte.posee(vueJeu, Ornement.TYPE_JEU_TEXTE)
+        carte.posee(vueNature, Ornement.NATURE_TEXTE)
+        carte.posee(vueJeu, Ornement.PROVENANCE_TEXTE)
 
         // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
         // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
@@ -305,23 +310,22 @@ object CarteCarnet {
     }
 
     /**
-     * Le corps des deux étiquettes de type : onze, et moins si l'une déborde.
+     * Le corps des deux étiquettes de capsule : onze, et moins si l'une déborde.
      *
-     * **Le même pour les deux**, et c'est tout l'intérêt. Mesurée pastille par
-     * pastille, « Verbe » resterait à onze pendant que « gagné à Kräizwuert »
-     * tomberait à dix : deux tailles de texte côte à côte sur une même rangée
-     * se lisent comme une erreur de mise en page, jamais comme un ajustement.
+     * **Le même pour les deux**, bien qu'elles ne se touchent plus. Elles se
+     * lisent l'une après l'autre en descendant la carte et disent deux moitiés
+     * de la même chose ; une pastille à onze et l'autre à dix se liraient comme
+     * une erreur de mise en page, pas comme un ajustement.
      *
-     * Il descend parce que la nature vient du LOD depuis qu'il la publie, et
-     * qu'elle a grandi en conséquence : « Nom » tenait partout, « Nom masculin »
-     * dépasse de trois unités et « gagné à Kräizwuert » de cinq. Un demi-point
-     * suffit donc aux deux cas les plus courants, et le plancher ne sert qu'à
-     * garantir qu'aucune langue de jeu à venir ne rende la ligne illisible —
-     * les trois libellés qui l'auraient touché sont abrégés en amont, par
+     * Depuis qu'elles ont chacune leur rangée, il ne descend plus qu'en marge
+     * de sûreté : 92 unités pour « Nom masculin », qui en demande 80, et 116
+     * pour « gagné à Kräizwuert », qui en demande 112. Le plancher garantit
+     * qu'un nom de jeu plus long ne rendra pas la ligne illisible — les trois
+     * libellés du LOD qui l'auraient touché sont abrégés en amont, par
      * [abrege].
      */
-    private fun corpsDeLaLigne(vararg vues: TextView): Float {
-        val boites = arrayOf(Ornement.TYPE_NATURE_TEXTE, Ornement.TYPE_JEU_TEXTE)
+    private fun corpsDesEtiquettes(vararg vues: TextView): Float {
+        val boites = arrayOf(Ornement.NATURE_TEXTE, Ornement.PROVENANCE_TEXTE)
         var corps = TYPE_CORPS
         for ((i, vue) in vues.withIndex()) {
             // Le pinceau de la vue elle-même, et non un neuf : les tailles sont
