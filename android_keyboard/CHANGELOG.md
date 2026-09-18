@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [25.0.0] - 2026-09-18
+
+L'harmonie visuelle de la carte et les gestes de révision.
+
+### ✨ Améliorations
+
+- **La traduction s'aère.** Elle prenait trois unités d'air sous la phrase ; collée à elle, elle se lisait comme sa troisième ligne.
+- **Les écus s'alignent.** À 26 et 274 unités, ils paraissaient décalés par rapport à la plaque ; ils sont passés à 28 et 272, ses bords propres, à égale distance du médaillon.
+- **La légende du médaillon est nette.** Elle était posée au clavier ; ses chasses s'arrondissaient au pixel, puis s'agrandissaient trois fois à l'écran, ouvrant un trou devant le « É » de « GAGNÉ ». Elle est maintenant posée lettre par lettre, en texte linéaire sans arrondi sous-pixel.
+- **Le médaillon est accessible.** Une vue invisible « gagné à Wuertplaz » la double pour les lecteurs d'écran, qui ne lisent pas une légende dessinée.
+- **La ligne de série s'allège.** Elle affichait « n° 011 · KW · 04.09.25 » ; elle n'en garde que « n° 011 · 04.09.25 ». Le sigle était redondant avec le médaillon et son nom.
+- **La carte se retourne d'un balayage.** En plus de l'appui et du bouton, un geste franc et horizontal (30 % de la largeur de la carte, deux fois plus en largeur qu'en hauteur) la retourne. Le carton garde le geste dès que le doigt se pose : l'application ne peut donc plus changer d'onglet en glissant sur la carte pendant la révision.
+
 ## [24.0.0] - 2026-09-18
 
 La révision du carnet redevient une flashcard, pour toutes les cartes. Le numéro majeur marque ce changement de mécanique ; les cartes et leurs boîtes sont conservées telles quelles.
