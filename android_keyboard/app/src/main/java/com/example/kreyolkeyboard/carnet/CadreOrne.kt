@@ -51,15 +51,24 @@ import kotlin.math.sin
  * nommés. C'est une liste, pas une impression, et c'est ce qui rend l'écart
  * lisible même quand deux cartes ne sont pas côte à côte :
  *
- * - **Commun** — cadre d'étain, ouverture rectangulaire, plaque de nom,
- *   gemme de coût, panneau de texte, écus. Volontairement nu : sans commune
- *   nue, aucun des trois autres paliers ne se verrait.
- * - **Peu commun** — bronze, rivets sertis, filet clair sur l'ouverture.
- * - **Rare** — argent, ouverture **en arche**, rayons en éventail, volutes
- *   aux quatre angles, bandeaux à pointes, couronne de griffes, double filet.
- * - **Très rare** — or, clef de voûte sertie, huit volutes, feuilles
- *   d'acanthe sur les flancs, joyaux satellites, semis d'étincelles, et un
- *   reflet spéculaire qui suit l'inclinaison du téléphone.
+ * - **Commun** — cadre d'étain, ouverture rectangulaire, **plaque de nom en
+ *   bois** en travers du milieu, gemme de coût, agrafe sertie, panneau de
+ *   texte, écus. Volontairement nu : sans commune nue, aucun des trois autres
+ *   paliers ne se verrait.
+ * - **Peu commun** — bronze, **plaque de parchemin**, rivets sertis, filet
+ *   clair sur l'ouverture.
+ * - **Rare** — argent, **plaque d'argent à filet réglé**, ouverture **en
+ *   arche**, rayons en éventail, volutes aux quatre angles, pastilles de type
+ *   à filet clair, couronne de griffes autour de la gemme de coût, double
+ *   filet.
+ * - **Très rare** — or, **plaque d'or aux pans repliés**, clef de voûte
+ *   sertie, griffes à l'agrafe, huit volutes, feuilles d'acanthe sur les
+ *   flancs, joyaux satellites, semis d'étincelles, et un reflet spéculaire qui
+ *   suit l'inclinaison du téléphone.
+ *
+ * La **plaque de nom** est la marche la plus lourde des quatre, et c'est
+ * délibéré : elle est au centre, elle porte le mot, et sa matière se nomme
+ * d'un regard. Voir [Support].
  *
  * ## Ce que l'ornement n'a pas le droit de faire
  *
@@ -106,6 +115,21 @@ object Ornement {
     /** Le cœur du carton, que l'impression ne recouvre pas. */
     private const val TRANCHE = 0xFFFBF6EA.toInt()
 
+    /**
+     * Le parchemin : la deuxième marche du nom, et le fond du panneau.
+     *
+     * La plaque d'une peu commune le prend en plein ; le panneau de texte, sur
+     * les quatre paliers, en garde une version délavée. L'un porte un mot de
+     * vingt et un points, l'autre trois lignes de douze, et la même valeur
+     * sous les deux aurait fait du panneau un second titre.
+     */
+    private const val PARCHEMIN_HAUT = 0xFFFBF1D8.toInt()
+    private const val PARCHEMIN_MI = 0xFFF0E1BB.toInt()
+    private const val PARCHEMIN_BAS = 0xFFDCC69B.toInt()
+
+    /** Le pli d'une pointe : de l'encre diluée, pas une arête de métal. */
+    private const val PARCHEMIN_PLI = 0x66705B2E
+
     /** La ligne où la face s'arrête sur la tranche. */
     private const val TRANCHE_FIL = 0xFF6E6559.toInt()
 
@@ -141,6 +165,55 @@ object Ornement {
 
     fun metal(rarete: Rarete): Metal = METAUX[rarete.ordinal]
 
+    /**
+     * Le support du nom : ce sur quoi le mot est écrit, palier par palier.
+     *
+     * L'échelle d'ornement faisait pousser le cadre, les angles et les
+     * joyaux ; elle ne disait rien de la pièce que l'œil lit en premier.
+     * Depuis que le nom est au centre, c'est la plus grosse omission de la
+     * carte : on pouvait poser une commune et une très rare côte à côte sans
+     * qu'il se passe quoi que ce soit là où les deux se regardent.
+     *
+     * Le nom monte donc lui aussi, et il monte en **matière** plutôt qu'en
+     * décor — une planche, une feuille, une plaque d'argent, une plaque d'or.
+     * C'est la seule échelle qui se lise sans comparer : personne n'a besoin
+     * d'une seconde carte pour savoir que ce qu'il tient est en or.
+     *
+     * Les deux paliers hauts reprennent le métal du cadre ([METAUX]) ; les
+     * deux bas ne le peuvent pas. Une plaque d'étain sur un cadre d'étain
+     * n'apprend rien, et surtout le bas d'une échelle doit rester humble pour
+     * que le haut se voie : le bois et le parchemin ne sont pas des métaux
+     * ratés, ce sont les deux marches qui rendent l'or lisible comme de l'or.
+     *
+     * L'encre est celle du support et non du palier — elle sert au fil du
+     * bois, aux plis des pans et au filet réglé, et un trait clair sur du
+     * chêne ou sombre sur de l'or ne se verrait ni l'un ni l'autre.
+     */
+    class Support(val hi: Int, val mi: Int, val lo: Int, val encre: Int, val fil: Boolean)
+
+    private val SUPPORTS = arrayOf(
+        // Chêne clair : la planche d'un établi, pas un meuble de salon.
+        Support(0xFFD9C098.toInt(), 0xFFC2A67A.toInt(), 0xFF9A7C52.toInt(), 0x59513A1E, true),
+        // Le parchemin, un cran plus haut : une feuille, faite pour l'encre.
+        Support(PARCHEMIN_HAUT, PARCHEMIN_MI, PARCHEMIN_BAS, PARCHEMIN_PLI, false),
+        // Argent, puis or : le métal du palier, celui-là même que le cadre.
+        Support(METAUX[2].hi, METAUX[2].mid, METAUX[2].lo, 0x8C3D474F.toInt(), false),
+        Support(METAUX[3].hi, METAUX[3].mid, METAUX[3].lo, 0x8C4A3208.toInt(), false)
+    )
+
+    fun support(rarete: Rarete): Support = SUPPORTS[rarete.ordinal]
+
+    /**
+     * Le fil du bois : hauteur dans la planche, puis départ et arrivée en
+     * largeurs de plaque. Trois traits inégaux — trois traits centrés
+     * feraient une grille, et une grille n'est pas du bois.
+     */
+    private val FILS = arrayOf(
+        floatArrayOf(0.30f, 0.06f, 0.72f),
+        floatArrayOf(0.52f, 0.22f, 0.94f),
+        floatArrayOf(0.74f, 0.10f, 0.63f)
+    )
+
     // ---------------------------------------------------------------- slots
 
     /**
@@ -150,31 +223,108 @@ object Ornement {
      * texte doivent lire les mêmes nombres, sinon un bandeau finit décalé
      * d'un pixel sous son libellé et personne ne comprend pourquoi.
      */
-    val FENETRE = RectF(32f, 74f, 268f, 250f)
+    val FENETRE = RectF(32f, 36f, 268f, 208f)
     val FENETRE_VIGNETTE = RectF(26f, 26f, 274f, 212f)
-    val PLAQUE = RectF(62f, 18f, 276f, 58f)
-    /** Centrée sur la plaque (y = 38) et à 11 unités des deux bords de l'angle. */
+    /**
+     * La plaque de nom, **posée en travers du milieu**.
+     *
+     * Elle était une barre de métal dans le bandeau du haut, à côté de la
+     * gemme de coût, et le mot y passait pour une étiquette. C'est l'inverse
+     * de ce qu'une carte doit faire : le mot **est** la pièce, tout le reste
+     * la décrit. Le porter au centre, sur la seule surface écrite de la carte
+     * avec le panneau, le remet au milieu du regard — c'est la disposition de
+     * toutes les cartes à collectionner, et elle ne coûte rien puisque le haut
+     * n'avait besoin de rien d'autre que l'illustration et la gemme.
+     *
+     * Trois conséquences, toutes voulues :
+     *
+     * - **Sa matière monte avec la rareté** : bois, parchemin, argent, or.
+     *   C'est l'échelle la plus visible de la carte, et la seule qui se lise
+     *   sans en poser une seconde à côté. Voir [Support].
+     * - **Elle mord sur l'ouverture** de 24 unités. C'est ce recouvrement qui
+     *   la pose *sur* la carte au lieu de la ranger dans une bande de plus, et
+     *   c'est lui qui vaut l'ombre portée de [plaque].
+     * - **Elle est plus large que l'ouverture**, de six unités de chaque côté.
+     *   À deux unités près de la même largeur, ses bords tombaient juste en
+     *   dedans de ceux de la fenêtre et la carte devenait ambiguë : on ne
+     *   voyait plus une plaque posée devant une ouverture, mais une ouverture
+     *   dont le bas manquait. Un ruban ne passe devant que s'il dépasse.
+     * - **Ses pointes débordent du cadre**, à 9,5 et 290,5. Elles le faisaient
+     *   déjà en haut, mais d'un seul côté — l'autre disparaissait sous la
+     *   gemme de coût, et un ruban qui ne dépasse qu'à droite se lit comme un
+     *   défaut de calage. Au centre, les deux pans sortent de la même
+     *   longueur, et le débord redevient ce qu'il est sur un vrai ruban.
+     */
+    val PLAQUE = RectF(28f, 184f, 272f, 228f)
+    /**
+     * La gemme de coût, à 11 unités des deux bords de l'angle.
+     *
+     * Elle y était centrée sur la plaque de nom, qui occupait le bandeau du
+     * haut ; la plaque est partie au milieu, le calage reste. Il ne dépendait
+     * en réalité que de l'angle, et c'est le seul repère qui ne bouge pas
+     * quand la marge du cadre passe de 12 à 18 selon le palier.
+     */
     val GEMME = RectF(11f, 11f, 65f, 65f)
-    val TYPE = RectF(46f, 256f, 254f, 284f)
+    /**
+     * La gemme sertie sous le nom : l'agrafe qui tient la plaque.
+     *
+     * Elle ne compte rien et n'ouvre rien — c'est une pièce d'orfèvrerie, au
+     * même titre que les rivets des flancs ou les volutes des angles, et elle
+     * a le droit d'exister pour la même raison : le carnet n'a jamais dit que
+     * l'ornement devait porter une donnée, seulement qu'il ne devait pas en
+     * **inventer** une. Elle prend donc la teinte du mot, comme la face et la
+     * gemme de coût, plutôt qu'une couleur à elle : deux pierres de la même
+     * eau aux deux bouts de l'illustration, et rien de neuf à apprendre.
+     *
+     * Ovale et non ronde, pour ne pas se lire comme une petite gemme de coût,
+     * et calée dans les 26 unités qui séparent la plaque des pastilles :
+     * elle touche les deux, ce qui est la définition d'une agrafe.
+     */
+    val GEMME_CENTRE = RectF(141f, 227f, 159f, 253f)
 
     /**
-     * Où poser le nom, selon sa largeur en unités de carte.
-     *
-     * Sur l'axe de la carte tant qu'il tient entre la gemme et son symétrique :
-     * la clef de voûte, l'arche, la ligne de type et le joyau y sont tous, et
-     * un nom centré sur la seule plaque tombait 19 unités à droite d'eux. Un
-     * nom trop long pour cet espace reprend toute la plaque, jusqu'avant sa pointe.
+     * L'épaisseur du chaton de l'agrafe, contre quatre pour la gemme de coût.
+     * Le même creux sur une pierre de treize unités de haut ne lui aurait plus
+     * laissé qu'un noyau : une sertissure se mesure à sa pierre.
      */
-    fun emplacementNom(rarete: Rarete, largeur: Float): RectF {
-        val gauche = GEMME.right
-        val droite = if (largeur <= LARGEUR - 2f * gauche - 4f) LARGEUR - gauche
-        else if (rarete.ordinal >= 3) plaqueTracee(rarete.ordinal).right + 15f
-        else plaqueTracee(rarete.ordinal).right
-        return RectF(gauche, PLAQUE.top, droite, PLAQUE.bottom)
-    }
-    val PANNEAU = RectF(38f, 289f, 262f, 384f)
+    const val CREUX_AGRAFE = 3f
+    /**
+     * La ligne de type, en **deux pastilles** : ce qu'est le mot, et où il a
+     * été gagné.
+     *
+     * Une seule bande portait « Substantif · Wuertsich », deux informations
+     * qui n'ont ni la même source ni la même durée de vie — la nature vient du
+     * mot, la provenance de la partie qui l'a donné — séparées par un point
+     * médian qui ne disait pas laquelle est laquelle. Deux capsules le disent
+     * sans ponctuation.
+     *
+     * Les largeurs sont inégales parce que les textes le sont, et elles ont
+     * changé le jour où la nature a cessé d'être devinée. « Nom » tenait dans
+     * 58 unités ; « Nom masculin », que le LOD donne maintenant, en demande
+     * 80. Les deux boîtes se partagent donc les 184 unités de texte de la
+     * rangée au prorata de ce qu'elles ont à dire — 77 et 107 — et le corps
+     * commun de [CarteCarnet] rattrape ce qui dépasse encore.
+     *
+     * Elles couvrent ensemble la largeur du panneau de texte, dont elles sont
+     * l'annonce.
+     */
+    val TYPE_NATURE = RectF(38f, 254f, 131f, 282f)
+    val TYPE_JEU = RectF(139f, 254f, 262f, 282f)
+    /**
+     * Le texte, en retrait des bouts ronds de la capsule.
+     *
+     * Ce ne sont pas des marges confortables : à onze points, « Nom masculin »
+     * demande 80 unités et « gagné à Kräizwuert » 112, pour 77 et 107
+     * disponibles. Les deux cas les plus courants débordent donc de peu, et
+     * c'est exactement ce que le corps commun est là pour absorber ; les
+     * élargir davantage prendrait sur l'autre pastille, qui n'a pas plus de
+     * place à donner.
+     */
+    val TYPE_NATURE_TEXTE = RectF(46f, 254f, 123f, 282f)
+    val TYPE_JEU_TEXTE = RectF(147f, 254f, 254f, 282f)
+    val PANNEAU = RectF(38f, 288f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
-    val PANNEAU_TEXTE = RectF(48f, 297f, 252f, 378f)
+    val PANNEAU_TEXTE = RectF(48f, 296f, 252f, 378f)
     val ECU_G = RectF(26f, 375f, 78f, 410f)
     val ECU_D = RectF(222f, 375f, 274f, 410f)
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
@@ -211,6 +361,17 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+    /**
+     * L'énoncé d'une question, sur le dos de révision.
+     *
+     * Le dos pose son texte dans les emplacements de la face — c'est ce qui
+     * fait que l'ardoise apparaît exactement là où le sens attend le joueur de
+     * l'autre côté. Mais [FENETRE] et [PLAQUE] se **recouvrent** depuis que le
+     * plaque est au milieu, et ce recouvrement n'est lisible que sur la
+     * face, où la plaque est opaque. Sur le dos, deux textes s'y
+     * marcheraient dessus : l'énoncé s'arrête donc où la consigne commence.
+     */
+    val ENONCE_DOS = RectF(38f, 42f, 262f, 178f)
     /** Le joyau de rareté, ses satellites et ses volutes, entre les écus. */
     val JOYAU_CENTRAL = RectF(102f, 386f, 198f, 412f)
     val NOM_VIGNETTE = RectF(20f, 218f, 280f, 248f)
@@ -348,19 +509,32 @@ object Ornement {
     }
 
     /**
-     * Un bandeau : plat, à pointes, selon le palier.
+     * La plaque de nom, dans la matière de son palier.
      *
-     * Les pointes n'arrivent qu'à *Rare*. C'est le genre de détail qui ne se
-     * remarque jamais seul et qui fait toute la différence en série : quatre
-     * cartes alignées, deux à bords droits et deux à pointes, et l'échelle se
-     * lit sans lire un mot.
+     * Elle prend tout ce que [Support] lui donne — le bois, le parchemin,
+     * l'argent, l'or — et n'ajoute que ce qui dépend de la forme : l'ombre
+     * qu'elle porte sur l'illustration qu'elle recouvre, le fil du bois quand
+     * c'en est, les plis de ses pans, et le filet réglé des deux paliers
+     * hauts. Rien ici ne décide de la matière, et c'est voulu : l'échelle est
+     * une table, pas une suite de `if`.
+     *
+     * Les pointes n'arrivent qu'à *Très rare*. C'est le genre de détail qui ne
+     * se remarque jamais seul et qui fait toute la différence en série : quatre
+     * cartes alignées, deux à bords droits et deux à pans repliés, et l'échelle
+     * se lit sans lire un mot.
      */
-    private fun bandeau(c: Canvas, p: Paint, r: RectF, pointes: Boolean, m: Metal) {
+    private fun plaque(c: Canvas, p: Paint, r: RectF, rarete: Rarete) {
+        val palier = rarete.ordinal
+        val s = support(rarete)
+        val m = metal(rarete)
+        val pointes = palier >= 3
+        // Le pan s'arrête avant le filet extérieur : à 0,55 hauteur, celui
+        // d'une plaque large venait buter contre le bord de la carte. La règle
+        // est « neuf unités du bord », pas un rapport accordé à une largeur —
+        // elle survit donc à la prochaine plaque qu'on élargira.
+        val q = min(r.height() * 0.55f, min(r.left, LARGEUR - r.right) - 9f)
         val chemin = Path()
         if (pointes) {
-            // La pointe s'arrête avant le filet extérieur : à 22 unités, celle
-            // de la plaque venait buter contre le bord de la carte (298 sur 300).
-            val q = min(r.height() * 0.55f, min(r.left, LARGEUR - r.right) - 9f)
             chemin.moveTo(r.left - q, r.centerY())
             chemin.lineTo(r.left, r.top)
             chemin.lineTo(r.right, r.top)
@@ -371,11 +545,23 @@ object Ornement {
         } else {
             chemin.addRoundRect(r, 3f, 3f, Path.Direction.CW)
         }
+        // L'ombre portée. La plaque mord sur l'ouverture de vingt-quatre
+        // unités, et sans elle ce recouvrement se lirait comme une découpe
+        // dans l'illustration plutôt que comme une plaque posée dessus.
         p.style = Paint.Style.FILL
+        p.shader = null
+        p.color = 0x38000000
+        c.save()
+        c.translate(1.5f, 2.5f)
+        c.drawPath(chemin, p)
+        c.restore()
+
+        // Opaque avant le dégradé : celui-ci est multiplié par l'alpha du
+        // pinceau, que l'ombre vient de descendre à 22 %.
         p.color = Color.BLACK
         p.shader = LinearGradient(
             0f, r.top, 0f, r.bottom,
-            intArrayOf(m.hi, m.mid, m.lo), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+            intArrayOf(s.hi, s.mi, s.lo), floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
         )
         c.drawPath(chemin, p)
         p.shader = null
@@ -383,25 +569,115 @@ object Ornement {
         p.strokeWidth = 1.2f
         p.color = m.trait
         c.drawPath(chemin, p)
+
+        // Le fil du bois, dans le sens de la planche. Trois traits suffisent,
+        // et ils ne sont pas décoratifs : sans eux la matière se lit comme du
+        // cuir ou de la terre cuite, et l'échelle commence sur rien.
+        if (s.fil) {
+            p.strokeWidth = 1f
+            p.color = s.encre
+            for (fil in FILS) {
+                val y = r.top + r.height() * fil[0]
+                c.drawLine(r.left + r.width() * fil[1], y, r.left + r.width() * fil[2], y, p)
+            }
+        }
+
+        // Les plis : deux traits du sommet vers les coins qu'il a quittés,
+        // pour lire une pointe qui replie la plaque plutôt qu'une flèche.
+        if (pointes) {
+            p.strokeWidth = 1f
+            p.color = s.encre
+            c.drawLine(r.left - q, r.centerY(), r.left, r.top, p)
+            c.drawLine(r.left - q, r.centerY(), r.left, r.bottom, p)
+            c.drawLine(r.right + q, r.centerY(), r.right, r.top, p)
+            c.drawLine(r.right + q, r.centerY(), r.right, r.bottom, p)
+        }
+
+        // Le filet réglé, à partir de *Rare*. Depuis que le mot est au centre,
+        // la plaque est la première chose que l'œil lit : la laisser
+        // rigoureusement identique sur les quatre paliers revenait à retirer
+        // l'échelle d'ornement de l'endroit le plus regardé de la carte. Il ne
+        // court que sur le corps, jamais sur les pans — une règle tracée
+        // suit le bord de la feuille, pas ses plis.
+        if (palier >= 2) {
+            p.strokeWidth = 0.8f
+            p.color = s.encre
+            c.drawRoundRect(
+                RectF(r.left + 3.5f, r.top + 3.5f, r.right - 3.5f, r.bottom - 3.5f), 2f, 2f, p
+            )
+        }
     }
 
     /**
-     * La plaque telle qu'elle est tracée, et non telle que le nom s'y centre.
+     * Une pastille : la capsule des deux étiquettes de la ligne de type.
      *
-     * À pointes (Très rare), sa pointe a l'angle de celles de la ligne de type
-     * et tombe à l'aplomb de leur pointe droite (269,4), entièrement dans la
-     * face. Entrée dans le métal, elle s'arrêtait au milieu de la bande, deux
-     * fois plus émoussée que les pointes du dessous. Côté gauche, elle part du
-     * centre de la gemme, qui la recouvre.
-     *
-     * Sans pointes, son bout droit tombe au même aplomb : à 276 il dépassait
-     * la fenêtre et la ligne de type de 7 unités, alors que la gemme, à
-     * gauche, reste dans le cadre.
+     * Elle n'a pas de pointes, et ce n'est pas un oubli : deux pastilles
+     * séparées de huit unités se toucheraient par leurs pointes dès que le
+     * palier les fait pousser. L'échelle passe donc ici par le filet clair,
+     * celui que l'ouverture reçoit déjà à *Peu commun*.
      */
-    private fun plaqueTracee(palier: Int): RectF {
-        val pointe = TYPE.right + TYPE.height() * 0.55f
-        if (palier < 3) return RectF(PLAQUE.left, PLAQUE.top, pointe, PLAQUE.bottom)
-        return RectF(GEMME.centerX(), PLAQUE.top, pointe - PLAQUE.height() * 0.55f, PLAQUE.bottom)
+    private fun pastille(c: Canvas, p: Paint, r: RectF, filet: Boolean, m: Metal) {
+        val rayon = r.height() / 2f
+        p.style = Paint.Style.FILL
+        // Opaque d'abord : les griffes de la sertissure précédente ont laissé
+        // leur liseré à 55 % dans le pinceau.
+        p.color = Color.BLACK
+        p.shader = LinearGradient(
+            0f, r.top, 0f, r.bottom,
+            intArrayOf(m.hi, m.mid, m.lo), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        c.drawRoundRect(r, rayon, rayon, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.2f
+        p.color = m.trait
+        c.drawRoundRect(r, rayon, rayon, p)
+        if (filet) {
+            p.strokeWidth = 0.9f
+            p.color = 0x8CFFFFFF.toInt()
+            val dedans = RectF(r.left + 2.5f, r.top + 2.5f, r.right - 2.5f, r.bottom - 2.5f)
+            c.drawRoundRect(dedans, rayon - 2.5f, rayon - 2.5f, p)
+        }
+    }
+
+    /**
+     * La sertissure d'une pierre : le chaton de métal qui la tient.
+     *
+     * Elle est tracée avec le cadre et non avec la pierre, parce qu'elle ne
+     * dépend pas du mot — c'est ce qui laisse trente cartes d'un même palier
+     * partager un seul bitmap. La pierre, elle, est peinte par-dessus en
+     * direct, à la teinte du mot : voir [dessinerGemme].
+     *
+     * L'ovale passe par une mise à l'échelle autour du centre plutôt que par
+     * un `drawOval` : le même code tient alors les deux pierres — la ronde du
+     * coût et l'ovale de l'agrafe — et les griffes tombent sur le contour réel
+     * au lieu d'un cercle circonscrit.
+     */
+    private fun sertissure(c: Canvas, p: Paint, r: RectF, m: Metal, griffes: Int) {
+        val cx = r.centerX()
+        val cy = r.centerY()
+        val ry = r.height() / 2f
+        c.save()
+        c.scale(r.width() / r.height(), 1f, cx, cy)
+        p.style = Paint.Style.FILL
+        // Opaque d'abord, comme [joyau] : l'encre de la plaque ou le liseré
+        // d'une griffe laissent un alpha partiel au pinceau, et un dégradé en
+        // est multiplié.
+        p.color = Color.BLACK
+        p.shader = LinearGradient(cx, cy - ry, cx, cy + ry, m.hi, m.lo, Shader.TileMode.CLAMP)
+        c.drawCircle(cx, cy, ry, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.4f
+        p.color = m.trait
+        c.drawCircle(cx, cy, ry, p)
+        // Une couronne de griffes : c'est ce qui fait « serti » plutôt
+        // que « posé ».
+        for (i in 0 until griffes) {
+            val a = i / griffes.toFloat() * 2f * Math.PI.toFloat()
+            joyau(c, p, cx + cos(a) * ry, cy + sin(a) * ry, ry * 0.09f, m.hi, 0)
+        }
+        c.restore()
     }
 
     /** L'écu d'une statistique : un blason à base arrondie. */
@@ -518,7 +794,7 @@ object Ornement {
 
     /**
      * Tout ce qui ne dépend que du palier : le plateau, la sertissure de
-     * l'ouverture, les volutes, les bandeaux, les écus, les joyaux.
+     * l'ouverture, les volutes, la plaque, les pastilles, les écus.
      *
      * Le centre reste transparent — la face teintée et l'illustration sont
      * peintes dessous, en direct, par [CarteOrnee].
@@ -653,35 +929,23 @@ object Ornement {
 
         if (vignette) return
 
-        // 7. La plaque de nom.
-        bandeau(c, p, plaqueTracee(palier), palier >= 3, m)
+        // 7. La plaque de nom, en travers du milieu.
+        plaque(c, p, PLAQUE, rarete)
 
-        // 8. La sertissure de la gemme de coût, en débord sur la plaque.
-        val gx = GEMME.centerX()
-        val gy = GEMME.centerY()
-        val gr = GEMME.width() / 2f
-        p.style = Paint.Style.FILL
-        p.shader = LinearGradient(gx, gy - gr, gx, gy + gr, m.hi, m.lo, Shader.TileMode.CLAMP)
-        c.drawCircle(gx, gy, gr, p)
-        p.shader = null
-        p.style = Paint.Style.STROKE
-        p.strokeWidth = 1.4f
-        p.color = m.trait
-        c.drawCircle(gx, gy, gr, p)
-        if (palier >= 2) {
-            // Une couronne de griffes : c'est ce qui fait « serti » plutôt
-            // que « posé ».
-            for (i in 0 until 8) {
-                val a = i / 8f * 2f * Math.PI.toFloat()
-                joyau(c, p, gx + cos(a) * gr, gy + sin(a) * gr, 2.4f, m.hi, 0)
-            }
-        }
+        // 8. Les deux sertissures : la gemme de coût sur l'angle de
+        //    l'ouverture, et l'agrafe qui pend sous la plaque.
+        sertissure(c, p, GEMME, m, if (palier >= 2) 8 else 0)
+        sertissure(c, p, GEMME_CENTRE, m, if (palier >= 3) 6 else 0)
 
-        // 9. La ligne de type.
-        bandeau(c, p, TYPE, palier >= 2, m)
+        // 9. Les deux pastilles de la ligne de type.
+        pastille(c, p, TYPE_NATURE, palier >= 2, m)
+        pastille(c, p, TYPE_JEU, palier >= 2, m)
 
         // 10. Le panneau de texte.
         p.style = Paint.Style.FILL
+        // Opaque d'abord : le filet clair de la seconde pastille vient de
+        // laisser 55 % d'alpha au pinceau.
+        p.color = Color.BLACK
         p.shader = LinearGradient(
             0f, PANNEAU.top, 0f, PANNEAU.bottom,
             0xF7FFFCF2.toInt(), 0xF7F0EADA.toInt(), Shader.TileMode.CLAMP
@@ -836,15 +1100,18 @@ object Ornement {
     }
 
     /**
-     * La gemme de coût : la teinte du mot, taillée.
+     * Une pierre taillée : la teinte du mot, dans son chaton.
      *
-     * Elle est en débord sur la plaque de nom, comme la gemme de mana d'une
-     * carte de jeu — c'est ce débord qui donne l'impression d'épaisseur.
+     * Deux l'appellent. La **gemme de coût** mord sur l'angle de l'ouverture,
+     * comme la gemme de mana d'une carte de jeu — c'est ce débord qui donne
+     * l'impression d'épaisseur ; elle le prenait sur la plaque de nom tant que
+     * celle-ci était en haut. L'**agrafe** pend sous la plaque, en plus
+     * petit, en ovale, et avec un chaton plus mince : voir [CREUX_AGRAFE].
      */
-    fun degradeGemme(teinte: Float): RadialGradient {
-        val gx = GEMME.centerX()
-        val gy = GEMME.centerY()
-        val gr = GEMME.width() / 2f - 4f
+    fun degradeGemme(teinte: Float, r: RectF = GEMME, creux: Float = 4f): RadialGradient {
+        val gx = r.centerX()
+        val gy = r.centerY()
+        val gr = r.height() / 2f - creux
         return RadialGradient(
             gx - gr * 0.3f, gy - gr * 0.35f, gr * 1.4f,
             intArrayOf(
@@ -856,14 +1123,30 @@ object Ornement {
         )
     }
 
-    fun dessinerGemme(c: Canvas, p: Paint, degrade: RadialGradient) {
-        val gx = GEMME.centerX()
-        val gy = GEMME.centerY()
-        val gr = GEMME.width() / 2f - 4f
+    fun dessinerGemme(
+        c: Canvas, p: Paint, degrade: RadialGradient, r: RectF = GEMME, creux: Float = 4f
+    ) {
+        val gx = r.centerX()
+        val gy = r.centerY()
+        val gr = r.height() / 2f - creux
+        c.save()
+        c.scale(r.width() / r.height(), 1f, gx, gy)
         p.style = Paint.Style.FILL
+        // Deux pierres par trame : la seconde héritait du point de lumière de
+        // la première, à 90 % d'alpha, et son dégradé s'en trouvait délavé.
+        p.color = Color.BLACK
         p.shader = degrade
         c.drawCircle(gx, gy, gr, p)
         p.shader = null
+
+        // Le filet interne, plus sombre que la sertissure : sans lui le
+        // dégradé s'arrête à plat sur le métal au lieu de sembler taillé.
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.1f
+        p.color = 0x40000000
+        c.drawCircle(gx, gy, gr - 0.6f, p)
+
+        p.style = Paint.Style.FILL
         p.color = 0x80FFFFFF.toInt()
         c.save()
         c.rotate(-28f, gx - gr * 0.28f, gy - gr * 0.38f)
@@ -873,6 +1156,11 @@ object Ornement {
                 gx + gr * 0.18f, gy - gr * 0.10f
             ), p
         )
+        c.restore()
+
+        // Le point de lumière : une facette taillée, posée sur le halo.
+        p.color = 0xE6FFFFFF.toInt()
+        c.drawCircle(gx - gr * 0.42f, gy - gr * 0.48f, gr * 0.11f, p)
         c.restore()
     }
 
@@ -906,7 +1194,10 @@ object Ornement {
         // Ni sur le texte ni sur le métal posé sur la face : une étincelle y
         // passe pour un défaut d'impression. On retire, au même générateur.
         val interdits = if (vignette) arrayOf(NOM_VIGNETTE, GLOSE_VIGNETTE, BOITE_VIGNETTE)
-        else arrayOf(GEMME, PLAQUE, TYPE, PANNEAU, ECU_G, ECU_D, JOYAU_CENTRAL)
+        else arrayOf(
+            GEMME, PLAQUE, GEMME_CENTRE, TYPE_NATURE, TYPE_JEU,
+            PANNEAU, ECU_G, ECU_D, JOYAU_CENTRAL
+        )
         var poses = 0
         var essais = 0
         while (poses < n && essais < n * 8) {
@@ -1055,10 +1346,11 @@ object Ornement {
         brut.add(bord)
         brut.add(LARGEUR - bord)
         dansLaBande(brut, y, GEMME, GEMME.left + 4f, GEMME.right - 4f)
-        val plaque = plaqueTracee(palier)
-        dansLaBande(brut, y, plaque, plaque.left, plaque.right)
+        dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
+        dansLaBande(brut, y, GEMME_CENTRE, GEMME_CENTRE.left, GEMME_CENTRE.right)
         dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
-        dansLaBande(brut, y, TYPE, TYPE.left, TYPE.right)
+        dansLaBande(brut, y, TYPE_NATURE, TYPE_NATURE.left, TYPE_NATURE.right)
+        dansLaBande(brut, y, TYPE_JEU, TYPE_JEU.left, TYPE_JEU.right)
         dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
         dansLaBande(brut, y, ECU_G, ECU_G.left, ECU_G.right)
         dansLaBande(brut, y, ECU_D, ECU_D.left, ECU_D.right)
@@ -1083,10 +1375,10 @@ object Ornement {
     /**
      * Trie des arêtes et fond celles qui se touchent.
      *
-     * La gemme de coût et la plaque de nom se croisent en hauteur, et leurs
-     * flancs finissent à une unité l'un de l'autre : deux vibrations séparées
-     * par un cinquième de millimètre ne se sentent pas comme deux marches,
-     * elles se sentent comme un défaut.
+     * La plaque de nom et l'ouverture se croisent en hauteur, et leurs flancs
+     * finissent à deux unités l'un de l'autre : deux vibrations séparées par
+     * un demi-millimètre ne se sentent pas comme deux marches, elles se
+     * sentent comme un défaut.
      */
     fun crans(brut: MutableList<Float>): FloatArray {
         brut.sort()
@@ -1669,6 +1961,7 @@ class CarteOrnee(
     private val decoupe = Ornement.cheminFenetre(fenetre, rarete.ordinal >= 2)
     private val degradeFace: android.graphics.LinearGradient
     private val degradeGemme: android.graphics.RadialGradient
+    private val degradeAgrafe: android.graphics.RadialGradient
     private val motif: Motif
 
     init {
@@ -1678,6 +1971,7 @@ class CarteOrnee(
         teinte = Ornement.teinteDe(mot, blason.champ)
         degradeFace = Ornement.degradeFace(teinte, rarete, vignette)
         degradeGemme = Ornement.degradeGemme(teinte)
+        degradeAgrafe = Ornement.degradeGemme(teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE)
         motif = Motif(mot, rarete, fenetre, blason)
         setWillNotDraw(false)
         clipChildren = false
@@ -1730,6 +2024,9 @@ class CarteOrnee(
             Ornement.dessinerBoite(canvas, pinceau, boite)
         } else {
             Ornement.dessinerGemme(canvas, pinceau, degradeGemme)
+            Ornement.dessinerGemme(
+                canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE
+            )
             Ornement.dessinerJoyauRarete(canvas, pinceau, rarete)
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
