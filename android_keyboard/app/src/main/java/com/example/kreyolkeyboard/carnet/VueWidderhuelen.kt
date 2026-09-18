@@ -206,9 +206,9 @@ class VueWidderhuelen(
      * la consigne sur la plaque de nom — au milieu du carton depuis qu'elle y
      * est passée sur la face —, l'énoncé au-dessus d'elle, et, pour les deux
      * formes tapées, l'ardoise dans le panneau de texte. L'énoncé s'arrête à
-     * [Ornement.ENONCE_DOS] et non au bas de la fenêtre : sur la face, le
-     * parchemin recouvre l'ouverture ; ici, il n'y a rien pour cacher deux
-     * textes l'un sur l'autre.
+     * [Ornement.ENONCE_DOS] et non au bas de la fenêtre : sur la face, la
+     * plaque recouvre l'ouverture ; ici, rien ne cache deux textes l'un sur
+     * l'autre.
      */
     private fun afficherQuestion() {
         val q = session.courante ?: return afficherBilan()

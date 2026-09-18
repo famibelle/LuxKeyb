@@ -51,16 +51,18 @@ data class ContenuCarte(
  *
  * La disposition suit celle d'une carte de collection, et elle est **fixe** :
  * gemme de coût en débord sur l'angle de l'ouverture, illustration en haut,
- * **parchemin du nom en travers du milieu**, agrafe sertie dessous, deux
+ * **plaque du nom en travers du milieu**, agrafe sertie dessous, deux
  * pastilles de type, panneau de texte, deux écus et une ligne de série. Rien
  * ne descend quand une phrase du LOD prend trois lignes — c'est ce qui permet
  * de lire une grille de cartes sans en lire aucune.
  *
  * Le mot a mis du temps à trouver sa place. Il a d'abord été une étiquette de
  * métal dans le bandeau du haut, ce qui en faisait la légende de la carte ;
- * il en est le **sujet**. Au milieu, sur un parchemin qui mord sur
+ * il en est le **sujet**. Au milieu, sur une plaque qui mord sur
  * l'illustration, il redevient ce que le joueur a gagné, et tout ce qui
- * l'entoure redevient ce que c'était — une description. Les emplacements sont dans
+ * l'entoure redevient ce que c'était — une description. Et comme c'est la
+ * pièce que l'œil trouve en premier, c'est elle qui porte l'échelle de
+ * rareté la plus franche : sa matière, du bois à l'or. Les emplacements sont dans
  * [Ornement] et le tracé dans [CarteOrnee] ; ce fichier ne fait plus que
  * choisir *quoi* poser dans chaque case.
  *
