@@ -203,8 +203,12 @@ class VueWidderhuelen(
      * La question, écrite sur le dos du carton.
      *
      * Les trois formes partagent la même carte et les mêmes emplacements :
-     * la consigne sur la plaque de nom, l'énoncé dans la fenêtre, et — pour
-     * les deux formes tapées — l'ardoise dans le panneau de texte.
+     * la consigne sur la plaque de nom — au milieu du carton depuis qu'elle y
+     * est passée sur la face —, l'énoncé au-dessus d'elle, et, pour les deux
+     * formes tapées, l'ardoise dans le panneau de texte. L'énoncé s'arrête à
+     * [Ornement.ENONCE_DOS] et non au bas de la fenêtre : sur la face, le
+     * parchemin recouvre l'ouverture ; ici, il n'y a rien pour cacher deux
+     * textes l'un sur l'autre.
      */
     private fun afficherQuestion() {
         val q = session.courante ?: return afficherBilan()
@@ -228,7 +232,7 @@ class VueWidderhuelen(
             ),
             Ornement.PLAQUE
         )
-        carton.posee(enonce(q), Ornement.FENETRE)
+        carton.posee(enonce(q), Ornement.ENONCE_DOS)
 
         if (tapee) {
             val vue = bloc("…", 22f, Carnet.COULEUR, gras = true).apply { maxLines = 2 }
