@@ -266,7 +266,9 @@ object Ornement {
      */
     val GEMME = RectF(11f, 11f, 65f, 65f)
     /**
-     * La gemme sertie sous le nom : l'agrafe qui tient la plaque.
+     * La gemme sertie sur la clef de voûte, au sommet de l'arche : elle
+     * tenait la plaque sous le nom avant de monter prendre la place du petit
+     * joyau de la clef.
      *
      * Elle ne compte rien et n'ouvre rien — c'est une pièce d'orfèvrerie, au
      * même titre que les rivets des flancs ou les volutes des angles, et elle
@@ -277,10 +279,10 @@ object Ornement {
      * eau aux deux bouts de l'illustration, et rien de neuf à apprendre.
      *
      * Ovale et non ronde, pour ne pas se lire comme une petite gemme de coût,
-     * et calée dans les 26 unités qui séparent la plaque des pastilles :
-     * elle touche les deux, ce qui est la définition d'une agrafe.
+     * et centrée sur l'axe de la carte à hauteur de la clef de voûte
+     * (`FENETRE.top + 2`), dont le métal est dessiné pour l'accueillir.
      */
-    val GEMME_CENTRE = RectF(141f, 227f, 159f, 253f)
+    val GEMME_CENTRE = RectF(141f, 27f, 159f, 53f)
 
     /**
      * L'épaisseur du chaton de l'agrafe, contre quatre pour la gemme de coût.
@@ -288,6 +290,11 @@ object Ornement {
      * laissé qu'un noyau : une sertissure se mesure à sa pierre.
      */
     const val CREUX_AGRAFE = 3f
+
+    /** Le disque du médaillon, l'émail qu'il tient, et le corps de sa légende. */
+    private const val R_MEDAILLON = 23f
+    private const val R_EMAIL = 13f
+    private const val TAILLE_LEGENDE = 5.6f
     /**
      * Ce qu'est le mot : sous la plaque, sur l'axe de la carte.
      *
@@ -307,30 +314,30 @@ object Ornement {
      */
     val NATURE = RectF(96f, 254f, 204f, 282f)
     /**
-     * Où le mot a été gagné : dans le bas de carte, entre les écus.
+     * Où le mot a été gagné : un **médaillon** dans le bas de carte, entre les
+     * écus.
      *
-     * Elle était à droite de la nature, et la rangée ne pouvait pas tenir les
-     * deux : « Nom masculin » et « gagné à Kräizwuert » demandent ensemble 192
-     * unités de texte là où 184 étaient disponibles, et chaque libellé que le
-     * LOD allonge prenait sur l'autre. Le bas de carte, lui, avait 144 unités
-     * inoccupées entre les écus — soit plus que la pastille n'en a jamais
-     * demandé — et c'est là que la mention appartient : le numéro d'entrée, le
-     * sigle du jeu et la date sont sur la ligne juste en dessous.
+     * C'était une capsule, « gagné à Kräizwuert », et la rangée de la nature
+     * ne pouvait pas la tenir : les deux libellés demandaient ensemble 192
+     * unités de texte là où 184 étaient disponibles. Le bas de carte avait 144
+     * unités inoccupées entre les écus, et c'est là que la mention est allée.
      *
-     * Elle prend la place du joyau de rareté, retiré : sa couleur répétait ce
-     * que le métal du cadre et la matière de la plaque disaient déjà deux fois
-     * plus fort, et la carte portait alors trois pierres pour deux idées.
+     * Elle y est devenue un sceau : le jeu s'y reconnaît à son **emblème** sur
+     * un émail de sa couleur, et le libellé passe en légende sur le pourtour,
+     * « GAGNÉ À » au-dessus et le nom du jeu au-dessous. Le disque est du
+     * métal de la carte, donc du bitmap partagé ; l'émail, l'emblème et la
+     * légende dépendent du jeu et se tracent en direct : voir
+     * [dessinerMedaillon].
      *
-     * Centrée sur les écus (392) et non sur la bande qu'ils laissent libre :
-     * elle mord donc sur le bas du panneau exactement comme eux. Posée quatre
-     * unités plus bas, sous leur axe, elle se lisait comme une quatrième
-     * rangée là où il n'y en a qu'une.
+     * Centré sur les écus (392) et non sur la bande qu'ils laissent libre :
+     * il mord donc sur le bas du panneau exactement comme eux. Le rectangle
+     * est le carré qui circonscrit le disque, pour le semis d'étincelles et
+     * les arêtes.
      */
-    val PROVENANCE = RectF(84f, 380f, 216f, 408f)
+    val PROVENANCE = RectF(127f, 369f, 173f, 415f)
 
-    /** Le texte, en retrait des bouts ronds des capsules. */
+    /** Le texte de la nature, en retrait des bouts ronds de la capsule. */
     val NATURE_TEXTE = RectF(104f, 254f, 196f, 282f)
-    val PROVENANCE_TEXTE = RectF(92f, 380f, 208f, 408f)
     val PANNEAU = RectF(38f, 288f, 262f, 384f)
     /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
     val PANNEAU_TEXTE = RectF(48f, 296f, 252f, 378f)
@@ -858,21 +865,23 @@ object Ornement {
             val kx = fenetre.centerX()
             val ky = fenetre.top + 2f
             val clef = Path()
-            clef.moveTo(kx - 15f, ky + 12f)
-            clef.lineTo(kx - 9f, ky - 8f)
-            clef.lineTo(kx + 9f, ky - 8f)
-            clef.lineTo(kx + 15f, ky + 12f)
+            clef.moveTo(kx - 18f, ky + 16f)
+            clef.lineTo(kx - 11f, ky - 11f)
+            clef.lineTo(kx + 11f, ky - 11f)
+            clef.lineTo(kx + 18f, ky + 16f)
             clef.close()
             p.style = Paint.Style.FILL
             p.color = Color.BLACK
-            p.shader = LinearGradient(0f, ky - 8f, 0f, ky + 12f, m.hi, m.lo, Shader.TileMode.CLAMP)
+            p.shader = LinearGradient(0f, ky - 11f, 0f, ky + 16f, m.hi, m.lo, Shader.TileMode.CLAMP)
             c.drawPath(clef, p)
             p.shader = null
             p.style = Paint.Style.STROKE
             p.strokeWidth = 1.2f
             p.color = m.trait
             c.drawPath(clef, p)
-            joyau(c, p, kx, ky + 2f, 5.5f, m.joyau, 6)
+            // La pierre de la clef est [GEMME_CENTRE], peinte par-dessus ; la
+            // vignette, qui n'a pas de gemme teintée, garde son petit joyau.
+            if (vignette) joyau(c, p, kx, ky + 2f, 5.5f, m.joyau, 6)
         }
 
         // 4. Les volutes d'angle : aucune, puis deux, quatre, huit.
@@ -940,14 +949,12 @@ object Ornement {
         plaque(c, p, PLAQUE, rarete)
 
         // 8. Les deux sertissures : la gemme de coût sur l'angle de
-        //    l'ouverture, et l'agrafe qui pend sous la plaque.
+        //    l'ouverture, et la gemme de la clef de voûte.
         sertissure(c, p, GEMME, m, if (palier >= 2) 8 else 0)
         sertissure(c, p, GEMME_CENTRE, m, if (palier >= 3) 6 else 0)
 
-        // 9. Les deux pastilles : la nature sous la plaque, la provenance en
-        //    bas de carte.
+        // 9. La pastille de nature, sous la plaque.
         pastille(c, p, NATURE, palier >= 2, m)
-        pastille(c, p, PROVENANCE, palier >= 2, m)
 
         // 10. Le panneau de texte.
         p.style = Paint.Style.FILL
@@ -997,6 +1004,189 @@ object Ornement {
         c.drawText("VUES", ECU_G.centerX(), ECU_G.top + 9f, p)
         c.drawText("NIVEAU", ECU_D.centerX(), ECU_D.top + 9f, p)
         p.alpha = 255
+
+        // 12. Le disque du médaillon de provenance, par-dessus le panneau
+        //     qu'il mord, entre les deux écus.
+        disqueMedaillon(c, p, palier, m)
+    }
+
+    /**
+     * Le disque du médaillon : du métal, plus clair en haut qu'en bas, avec
+     * la lunette sombre qui tient l'émail.
+     *
+     * Le dégradé s'arrête à `mid` et n'atteint pas `lo` : la légende y est
+     * gravée en `trait`, et sur le ton le plus sombre du métal elle aurait
+     * disparu au bas du disque.
+     */
+    private fun disqueMedaillon(c: Canvas, p: Paint, palier: Int, m: Metal) {
+        val cx = PROVENANCE.centerX()
+        val cy = PROVENANCE.centerY()
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        p.shader = LinearGradient(0f, cy - R_MEDAILLON, 0f, cy + R_MEDAILLON, m.hi, m.mid, Shader.TileMode.CLAMP)
+        c.drawCircle(cx, cy, R_MEDAILLON, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.4f
+        p.color = m.trait
+        c.drawCircle(cx, cy, R_MEDAILLON, p)
+        // La lunette de l'émail : un anneau plein, plus épais que le contour.
+        p.strokeWidth = 1.6f
+        c.drawCircle(cx, cy, R_EMAIL + 0.8f, p)
+        if (palier >= 2) {
+            p.strokeWidth = 0.9f
+            p.color = 0x8CFFFFFF.toInt()
+            c.drawCircle(cx, cy, R_MEDAILLON - 1.7f, p)
+        }
+        if (palier >= 3) {
+            // Le grènetis d'une pièce : des perles sur le bord.
+            for (i in 0 until 24) {
+                val a = i / 24f * 2f * Math.PI.toFloat()
+                joyau(c, p, cx + cos(a) * (R_MEDAILLON - 0.6f), cy + sin(a) * (R_MEDAILLON - 0.6f), 0.8f, m.hi, 0)
+            }
+        }
+    }
+
+    /**
+     * Le médaillon de provenance, sa partie vivante : l'émail à la couleur du
+     * jeu, son emblème, et la légende en arc.
+     *
+     * L'emblème dit le jeu sans le nommer, la légende le nomme — et les deux
+     * sont des faits que le carnet possède, pas de la décoration : l'ornement
+     * n'a jamais eu le droit d'inventer une donnée. La couleur du mot reste
+     * aux gemmes ; l'émail prend celle du **jeu**, pour que les deux ne se
+     * confondent pas.
+     */
+    fun dessinerMedaillon(c: Canvas, p: Paint, jeu: JeuCarte, m: Metal) {
+        val cx = PROVENANCE.centerX()
+        val cy = PROVENANCE.centerY()
+        val hsv = FloatArray(3)
+        Color.colorToHSV(jeu.couleur, hsv)
+        val clair = Color.HSVToColor(floatArrayOf(hsv[0], hsv[1] * 0.55f, min(1f, hsv[2] + 0.25f)))
+        val sombre = Color.HSVToColor(floatArrayOf(hsv[0], min(1f, hsv[1] + 0.1f), hsv[2] * 0.55f))
+
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        p.shader = RadialGradient(
+            cx - R_EMAIL * 0.3f, cy - R_EMAIL * 0.35f, R_EMAIL * 1.5f,
+            intArrayOf(clair, jeu.couleur, sombre), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        c.drawCircle(cx, cy, R_EMAIL, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1f
+        p.color = 0x40000000
+        c.drawCircle(cx, cy, R_EMAIL - 0.5f, p)
+
+        emblemeDuJeu(c, p, jeu, cx, cy)
+
+        // La légende : sur le disque, entre l'émail et le bord.
+        p.style = Paint.Style.FILL
+        p.color = m.trait
+        p.typeface = android.graphics.Typeface.create(
+            android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
+        )
+        p.letterSpacing = 0.06f
+        texteSurArc(c, p, "GAGNÉ À", cx, cy, R_EMAIL + 2.2f, true)
+        texteSurArc(c, p, jeu.nom.uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
+        p.letterSpacing = 0f
+        p.typeface = android.graphics.Typeface.DEFAULT
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+    }
+
+    /**
+     * Un texte suivant l'arc du haut ou du bas du disque, centré.
+     *
+     * En haut le chemin va de gauche à droite et les lettres se dressent vers
+     * l'extérieur ; en bas il va aussi de gauche à droite, mais sous le centre,
+     * où « vers le haut » veut dire vers le centre — d'où les deux rayons
+     * différents : c'est la ligne de base qu'on donne, et le texte pousse
+     * de son côté. Trop long, il se serre plutôt que de sortir de son demi-cercle.
+     */
+    private fun texteSurArc(c: Canvas, p: Paint, texte: String, cx: Float, cy: Float, rayon: Float, haut: Boolean) {
+        p.textSize = TAILLE_LEGENDE
+        val arc = Path()
+        val ovale = RectF(cx - rayon, cy - rayon, cx + rayon, cy + rayon)
+        if (haut) arc.addArc(ovale, 180f, 180f) else arc.addArc(ovale, 180f, -180f)
+        val longueur = Math.PI.toFloat() * rayon
+        var largeur = p.measureText(texte)
+        val dispo = longueur * 0.9f
+        if (largeur > dispo) {
+            p.textSize = TAILLE_LEGENDE * dispo / largeur
+            largeur = dispo
+        }
+        c.drawTextOnPath(texte, arc, (longueur - largeur) / 2f, 0f, p)
+    }
+
+    /** L'emblème d'un jeu, en blanc, dans un rayon de huit unités. */
+    private fun emblemeDuJeu(c: Canvas, p: Paint, jeu: JeuCarte, cx: Float, cy: Float) {
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.5f
+        p.strokeCap = Paint.Cap.ROUND
+        p.strokeJoin = Paint.Join.ROUND
+        p.color = 0xF2FFFFFF.toInt()
+        fun trait(x1: Float, y1: Float, x2: Float, y2: Float) = c.drawLine(cx + x1, cy + y1, cx + x2, cy + y2, p)
+        fun carre(x: Float, y: Float, t: Float, plein: Boolean) {
+            p.style = if (plein) Paint.Style.FILL else Paint.Style.STROKE
+            c.drawRect(cx + x, cy + y, cx + x + t, cy + y + t, p)
+        }
+        fun fleche(x1: Float, y1: Float, x2: Float, y2: Float) {
+            trait(x1, y1, x2, y2)
+            val a = Math.atan2((y2 - y1).toDouble(), (x2 - x1).toDouble()).toFloat()
+            for (d in floatArrayOf(2.5f, -2.5f)) {
+                trait(x2, y2, x2 + cos(a + Math.PI.toFloat() + d * 0.35f) * 3f, y2 + sin(a + Math.PI.toFloat() + d * 0.35f) * 3f)
+            }
+        }
+        when (jeu) {
+            // Une loupe.
+            JeuCarte.WUERTSICH -> {
+                c.drawCircle(cx - 1.6f, cy - 1.6f, 4.4f, p)
+                trait(1.6f, 1.6f, 6.4f, 6.4f)
+            }
+            // Deux flèches qui se croisent : le mélange.
+            JeuCarte.WUERTMIX -> {
+                fleche(-6f, -3.8f, 6f, 3.8f)
+                fleche(-6f, 3.8f, 6f, -3.8f)
+            }
+            // Une grille d'essais : la dernière rangée pleine.
+            JeuCarte.WUERTRIET -> {
+                p.strokeWidth = 1f
+                for (i in 0 until 3) carre(-6.4f + i * 4.6f, -4.6f, 3.6f, i == 0)
+                for (i in 0 until 3) carre(-6.4f + i * 4.6f, 0.4f, 3.6f, true)
+            }
+            // Une ligne de texte avec sa case vide.
+            JeuCarte.WUERTLUECK -> {
+                p.strokeWidth = 1.3f
+                trait(-7f, -4.5f, 7f, -4.5f)
+                trait(-7f, 1.5f, -3.6f, 1.5f)
+                trait(3.6f, 1.5f, 7f, 1.5f)
+                p.strokeWidth = 1f
+                carre(-2f, -1.2f, 4f, false)
+            }
+            // Le signe de la multiplication.
+            JeuCarte.ZUELWUERT -> {
+                p.strokeWidth = 2f
+                trait(-4.6f, -4.6f, 4.6f, 4.6f)
+                trait(-4.6f, 4.6f, 4.6f, -4.6f)
+            }
+            // Une grille de mots croisés, trois cases noires.
+            JeuCarte.KRAIZWUERT -> {
+                p.strokeWidth = 0.9f
+                for (i in 0 until 3) for (j in 0 until 3) {
+                    carre(-6f + i * 4f, -6f + j * 4f, 4f, (i == 0 && j == 0) || (i == 2 && j == 1) || (i == 1 && j == 2))
+                }
+            }
+            // Des mots placés en croix : la case commune pleine.
+            JeuCarte.WUERTPLAZ -> {
+                p.strokeWidth = 1f
+                for (i in -1..1) carre(-1.9f + i * 4.2f, -1.9f, 3.8f, i == 0)
+                carre(-1.9f, -1.9f - 4.2f, 3.8f, false)
+                carre(-1.9f, -1.9f + 4.2f, 3.8f, false)
+            }
+        }
+        p.style = Paint.Style.FILL
     }
 
     // -------------------------------------------------------------- le vif
@@ -1917,7 +2107,8 @@ class CarteOrnee(
     private val mot: String,
     private val rarete: Rarete,
     private val vignette: Boolean,
-    private val blason: Blasonnement = Blasonnement.AUCUN
+    private val blason: Blasonnement = Blasonnement.AUCUN,
+    private val jeu: JeuCarte? = null
 ) : Carton(context) {
 
     override val hauteurUnites: Float =
@@ -2018,6 +2209,7 @@ class CarteOrnee(
             Ornement.dessinerGemme(
                 canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE
             )
+            jeu?.let { Ornement.dessinerMedaillon(canvas, pinceau, it, Ornement.metal(rarete)) }
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         // La tranche par-dessus le métal : c'est le bord du carton, et le

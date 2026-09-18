@@ -196,11 +196,12 @@ object CarteCarnet {
      *   Le libellé est celui du LOD — « Nom féminin », « Verbe », genre
      *   compris — et retombe sur [Blasonnement.nature] pour les mots qu'il
      *   ignore, puis sur « Mot », plutôt que de rester vide ;
-     * - la **pastille de provenance**, entre les écus, dit la partie qui a
-     *   donné la carte. Elle est descendue là parce que c'est une mention
-     *   d'inventaire, comme le numéro et la date de la ligne juste dessous, et
-     *   parce qu'une seule rangée ne pouvait plus tenir les deux libellés.
-     *   Les deux étiquettes partagent un corps : voir [corpsDesEtiquettes] ;
+     * - le **médaillon de provenance**, entre les écus, dit la partie qui a
+     *   donné la carte : l'emblème du jeu sur un émail de sa couleur, « gagné
+     *   à » et son nom en légende. C'est une mention d'inventaire, comme le
+     *   numéro et la date de la ligne juste dessous. Il est tracé par la carte
+     *   elle-même (voir [Ornement.dessinerMedaillon]), pas posé comme une vue.
+     *   Le corps de l'étiquette de nature s'ajuste : voir [corpsDeLEtiquette] ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
      *   d'entrée, le sigle du jeu, le jour de la capture, et le rang de
@@ -209,7 +210,7 @@ object CarteCarnet {
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)
-        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = false, blason = c.blason)
+        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = false, blason = c.blason, jeu = jeu)
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),
@@ -240,11 +241,10 @@ object CarteCarnet {
             }
         )
         val vueNature = ligne(context, nature, TYPE_CORPS, ENCRE, gras = true)
-        val vueJeu = ligne(context, "gagné à ${jeu.nom}", TYPE_CORPS, ENCRE, gras = true)
-        val corps = corpsDesEtiquettes(vueNature, vueJeu)
-        for (vue in arrayOf(vueNature, vueJeu)) vue.tag = floatArrayOf(corps, 0f)
+        vueNature.tag = floatArrayOf(corpsDeLEtiquette(vueNature), 0f)
         carte.posee(vueNature, Ornement.NATURE_TEXTE)
-        carte.posee(vueJeu, Ornement.PROVENANCE_TEXTE)
+        // La provenance n'est pas une vue : c'est le médaillon, tracé par la
+        // carte elle-même à partir du jeu.
 
         // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
         // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
@@ -310,33 +310,24 @@ object CarteCarnet {
     }
 
     /**
-     * Le corps des deux étiquettes de capsule : onze, et moins si l'une déborde.
+     * Le corps de l'étiquette de nature : onze, et moins si elle déborde.
      *
-     * **Le même pour les deux**, bien qu'elles ne se touchent plus. Elles se
-     * lisent l'une après l'autre en descendant la carte et disent deux moitiés
-     * de la même chose ; une pastille à onze et l'autre à dix se liraient comme
-     * une erreur de mise en page, pas comme un ajustement.
-     *
-     * Depuis qu'elles ont chacune leur rangée, il ne descend plus qu'en marge
-     * de sûreté : 92 unités pour « Nom masculin », qui en demande 80, et 116
-     * pour « gagné à Kräizwuert », qui en demande 112. Le plancher garantit
-     * qu'un nom de jeu plus long ne rendra pas la ligne illisible — les trois
-     * libellés du LOD qui l'auraient touché sont abrégés en amont, par
-     * [abrege].
+     * Elle avait une sœur, « gagné à Kräizwuert », avec qui elle partageait
+     * son corps pour ne pas se lire comme une erreur de mise en page ; la
+     * provenance est passée en légende de médaillon et le corps n'a plus à
+     * s'accorder avec personne. Il descend encore en marge de sûreté (92
+     * unités pour « Nom masculin », qui en demande 80), et le plancher
+     * garantit qu'un libellé du LOD plus long ne rendra pas la ligne
+     * illisible — les trois plus longs sont abrégés en amont, par [abrege].
      */
-    private fun corpsDesEtiquettes(vararg vues: TextView): Float {
-        val boites = arrayOf(Ornement.NATURE_TEXTE, Ornement.PROVENANCE_TEXTE)
-        var corps = TYPE_CORPS
-        for ((i, vue) in vues.withIndex()) {
-            // Le pinceau de la vue elle-même, et non un neuf : les tailles sont
-            // en unités de carte, donc la largeur mesurée l'est aussi.
-            val large = android.text.TextPaint(vue.paint)
-                .apply { textSize = TYPE_CORPS }
-                .measureText(vue.text.toString())
-            if (large > boites[i].width()) {
-                corps = minOf(corps, TYPE_CORPS * boites[i].width() / large)
-            }
-        }
+    private fun corpsDeLEtiquette(vue: TextView): Float {
+        // Le pinceau de la vue elle-même, et non un neuf : les tailles sont
+        // en unités de carte, donc la largeur mesurée l'est aussi.
+        val large = android.text.TextPaint(vue.paint)
+            .apply { textSize = TYPE_CORPS }
+            .measureText(vue.text.toString())
+        val boite = Ornement.NATURE_TEXTE.width()
+        val corps = if (large > boite) TYPE_CORPS * boite / large else TYPE_CORPS
         return corps.coerceAtLeast(TYPE_CORPS_MIN)
     }
 
