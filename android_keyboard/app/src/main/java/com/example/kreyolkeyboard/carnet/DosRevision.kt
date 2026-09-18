@@ -135,12 +135,17 @@ class DosRevision(context: Context) : Carton(context) {
      * à la main : un dos dont le nombre de crans suivrait la rareté dirait
      * « ce mot est difficile » par le pouce au lieu de le dire par la
      * couleur, ce qui serait la même fuite déguisée en autre sens.
+     *
+     * Le dos est imprimé à plat : le bord du carton est sa seule marche, et
+     * les filets ne sont que des **accrocs**, une montée et sa descente
+     * fondues en un cran par [Ornement.crans], qu'on sent dans les deux sens
+     * de la même façon.
      */
-    override fun aretes(y: Float): FloatArray {
+    override fun aretes(y: Float): Ornement.Relief {
         val l = Ornement.LARGEUR
-        val brut = ArrayList<Float>(10)
-        brut.add(Ornement.BORD_CARTE)
-        brut.add(l - Ornement.BORD_CARTE)
+        val brut = ArrayList<Ornement.Arete>(12)
+        brut.add(Ornement.Arete(Ornement.BORD_CARTE, Ornement.Z_FACE))
+        brut.add(Ornement.Arete(l - Ornement.BORD_CARTE, -Ornement.Z_FACE))
         obliqueHaute(brut, y, ANGLE_HAUT, ANGLE_BAS)
         obliqueHaute(brut, y, ANGLE_HAUT - RETRAIT_X, ANGLE_BAS - RETRAIT_Y)
         obliqueBasse(brut, y, ANGLE_HAUT, ANGLE_BAS)
@@ -148,17 +153,23 @@ class DosRevision(context: Context) : Carton(context) {
         return Ornement.crans(brut)
     }
 
+    /** Un filet imprimé : une montée et sa descente, fondues en accroc. */
+    private fun filet(brut: MutableList<Ornement.Arete>, x: Float) {
+        brut.add(Ornement.Arete(x - 1f, Z_FILET))
+        brut.add(Ornement.Arete(x + 1f, -Z_FILET))
+    }
+
     /** Où l'oblique de l'angle haut-gauche coupe la hauteur [y]. */
-    private fun obliqueHaute(brut: MutableList<Float>, y: Float, x0: Float, y0: Float) {
+    private fun obliqueHaute(brut: MutableList<Ornement.Arete>, y: Float, x0: Float, y0: Float) {
         if (y < 0f || y >= y0) return
-        brut.add(x0 * (1f - y / y0))
+        filet(brut, x0 * (1f - y / y0))
     }
 
     /** La même, pour l'angle bas-droit, qui est son symétrique. */
-    private fun obliqueBasse(brut: MutableList<Float>, y: Float, x0: Float, y0: Float) {
+    private fun obliqueBasse(brut: MutableList<Ornement.Arete>, y: Float, x0: Float, y0: Float) {
         val depuisLeBas = Ornement.HAUTEUR - y
         if (depuisLeBas < 0f || depuisLeBas >= y0) return
-        brut.add(Ornement.LARGEUR - x0 * (1f - depuisLeBas / y0))
+        filet(brut, Ornement.LARGEUR - x0 * (1f - depuisLeBas / y0))
     }
 
     /**
@@ -270,6 +281,9 @@ class DosRevision(context: Context) : Carton(context) {
          */
         private const val RETRAIT_X = 26f
         private const val RETRAIT_Y = 38f
+
+        /** L'épaisseur d'encre d'un filet, pour le doigt : un accroc léger. */
+        private const val Z_FILET = 0.3f
 
         /** L'opacité du filigrane, sur 255. Voir la note de classe. */
         private const val FILIGRANE = 34
