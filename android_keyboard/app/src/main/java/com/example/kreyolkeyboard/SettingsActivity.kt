@@ -2407,7 +2407,10 @@ class SettingsActivity : AppCompatActivity() {
                     "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
                     "Elle apporte les 125 000 formes de la seconde rangée de " +
                     "suggestions, et évite au correcteur de souligner du " +
-                    "français correct."
+                    "français correct.\n\n" +
+                    "🔤 Les noms des cartes du carnet sont composés en Lora, " +
+                    "Cormorant Garamond et EB Garamond, trois polices libres " +
+                    "sous licence SIL Open Font License 1.1."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)

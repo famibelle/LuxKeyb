@@ -220,8 +220,13 @@ object CarteCarnet {
         // l'axe de la carte, comme la clef de voûte, l'agrafe et le joyau de
         // rareté. C'est le décalage de 19 unités de l'ancienne plaque du haut
         // qui demandait un emplacement calculé.
+        // La police monte avec la rareté, comme la matière de la plaque : voir
+        // [PolicesCarnet].
         carte.posee(
-            ligne(context, c.carte.forme, taille = 21f, couleur = ENCRE, gras = true),
+            ligne(
+                context, c.carte.forme, taille = 21f * PolicesCarnet.echelle(c.rarete),
+                couleur = ENCRE, gras = true
+            ).apply { setTypeface(PolicesCarnet.pour(context, c.rarete), Typeface.NORMAL) },
             Ornement.PLAQUE
         )
 
@@ -318,7 +323,7 @@ object CarteCarnet {
      * s'accorder avec personne. Il descend encore en marge de sûreté (92
      * unités pour « Nom masculin », qui en demande 80), et le plancher
      * garantit qu'un libellé du LOD plus long ne rendra pas la ligne
-     * illisible — les trois plus longs sont abrégés en amont, par [abrege].
+     * illisible ; les trois plus longs sont abrégés en amont, par [abrege].
      */
     private fun corpsDeLEtiquette(vue: TextView): Float {
         // Le pinceau de la vue elle-même, et non un neuf : les tailles sont

@@ -1051,7 +1051,7 @@ object Ornement {
      * Le médaillon de provenance, sa partie vivante : l'émail à la couleur du
      * jeu, son emblème, et la légende en arc.
      *
-     * L'emblème dit le jeu sans le nommer, la légende le nomme — et les deux
+     * L'emblème dit le jeu sans le nommer, la légende le nomme, et les deux
      * sont des faits que le carnet possède, pas de la décoration : l'ornement
      * n'a jamais eu le droit d'inventer une donnée. La couleur du mot reste
      * aux gemmes ; l'émail prend celle du **jeu**, pour que les deux ne se
@@ -1100,7 +1100,7 @@ object Ornement {
      *
      * En haut le chemin va de gauche à droite et les lettres se dressent vers
      * l'extérieur ; en bas il va aussi de gauche à droite, mais sous le centre,
-     * où « vers le haut » veut dire vers le centre — d'où les deux rayons
+     * où « vers le haut » veut dire vers le centre : d'où les deux rayons
      * différents : c'est la ligne de base qu'on donne, et le texte pousse
      * de son côté. Trop long, il se serre plutôt que de sortir de son demi-cercle.
      */
