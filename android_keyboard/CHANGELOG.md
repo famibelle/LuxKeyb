@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [24.0.0] - 2026-09-18
+
+La révision du carnet redevient une flashcard, pour toutes les cartes. Le numéro majeur marque ce changement de mécanique ; les cartes et leurs boîtes sont conservées telles quelles.
+
+### 🔄 Changé
+
+- **Réviser, c'est retourner une carte.** Le dos montre le mot ; on retourne la carte d'un appui ou avec le bouton, puis on répond « Je savais » ou « Pas su », et la carte avance ou revient au début de la Boîte de Leitner. Depuis la 22.0.0, les cartes de la troisième boîte et au-delà demandaient de taper le mot dans une phrase à trous : cette saisie est retirée.
+
+### ✨ Améliorations
+
+- **La pastille de nature se pose sur le panneau.** Elle flottait entre la plaque du nom et le panneau de texte, plus près de l'un que de l'autre ; elle en devient l'onglet, comme le médaillon de provenance en bas, et le panneau gagne de la hauteur pour le texte.
+
+### 🐛 Corrections
+
+- **La révision s'affichait sans carte.** En 23.0.0, une carte à taper n'affichait que le pavé de lettres, sans la carte ni le bouton pour valider. Sans objet depuis le retour à la flashcard, et corrigé à la racine.
+
 ## [23.0.0] - 2026-09-18
 
 La carte du carnet change de visage : le nom prend la police de son palier, la gemme monte sur la clef de voûte et la provenance devient un sceau. Le numéro majeur marque ce changement de ce que la carte montre, sans rupture de données : les cartes déjà gagnées se lisent telles quelles.
