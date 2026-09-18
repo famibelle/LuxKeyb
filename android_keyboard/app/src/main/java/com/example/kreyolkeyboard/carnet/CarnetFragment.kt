@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +44,12 @@ import com.example.kreyolkeyboard.TranslationDictionary
  *   retourne pour arriver. La vignette fait la collection, la carte fait la
  *   leçon ; tout mettre dans la vignette rendrait la grille illisible, tout
  *   mettre dans la carte supprimerait la collection.
+ * - **La méthode est un objet, pas une pastille.** [BoiteLeitner] remplace le
+ *   bouton « Réviser N cartes », qui disait le compte et rien d'autre : sept
+ *   casiers de bois, les cartes dues soulevées dans leur fente, et le compte
+ *   gravé sur une plaque de laiton. Les casiers se **consultent** ; la révision
+ *   reste une cible unique, décidée par l'échéance. Laisser choisir son casier
+ *   ferait réviser des cartes pas encore dues et fausserait le calendrier.
  * - **Un filtre par jeu, et seulement sur les jeux déjà joués.** Depuis que les
  *   sept alimentent le carnet, « d'où vient cette carte » est une vraie
  *   question ; mais afficher sept filtres à qui n'a joué qu'à un seul jeu
@@ -51,16 +59,43 @@ import com.example.kreyolkeyboard.TranslationDictionary
  */
 class CarnetFragment : DialogFragment() {
 
+    companion object {
+        /**
+         * Largeur visée pour une vignette, en dp — celle mesurée en portrait
+         * sur un téléphone (deux colonnes sur ~393dp de large). Le nombre de
+         * colonnes en dérive plutôt que de rester figé à deux : à l'italienne
+         * la largeur disponible triple sans que la hauteur d'écran suive, et
+         * des vignettes toujours carrées sur deux colonnes débordent en bas
+         * de l'écran avant même de montrer le nom du mot.
+         */
+        private const val LARGEUR_CIBLE_VIGNETTE_DP = 165f
+    }
+
+    /**
+     * Les quatre façons de regarder la collection.
+     *
+     * [ETAGERE] n'est pas un tri mais une disposition : elle range les cartes
+     * par boîte de Leitner, casier par casier, avec les casiers vides. C'est le
+     * seul endroit où la méthode se voit — la vignette porte déjà la boîte
+     * d'*une* carte en six pastilles, mais rien ne disait où en était la
+     * collection, ni combien de mots attendaient dans chaque casier.
+     *
+     * Elle recoupe désormais [BoiteLeitner], qui ouvre un casier à la fois, et
+     * la redondance est voulue : l'étagère déplie les sept casiers d'un seul
+     * tenant pour qu'on les compare, la boîte en ouvre un pour qu'on le lise.
+     * Ce ne sont pas deux chemins vers le même écran mais deux questions,
+     * « où en suis-je » et « qu'y a-t-il là-dedans ».
+     */
     private enum class Tri(val libelle: String) {
-        RECENT("Récent"), ALPHA("A → Z"), RARETE("Rareté")
+        RECENT("Récent"), ALPHA("A → Z"), RARETE("Rareté"), ETAGERE("Étagère")
     }
 
     private var tri = Tri.RECENT
     private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
-    private var aRevoir = 0
 
-    private lateinit var boutonReviser: TextView
+    /** La carte entière ouverte, s'il y en a une : elle passe avant le casier. */
+    private var voileCarte: View? = null
 
     private lateinit var racine: FrameLayout
     private lateinit var conteneurGrille: LinearLayout
@@ -130,29 +165,6 @@ class CarnetFragment : DialogFragment() {
         }
         colonne.addView(tvResume)
 
-        // La révision, au-dessus de la collection et non au fond : c'est ce
-        // qu'on vient faire quand des cartes sont dues, et la grille est ce
-        // qu'on vient regarder le reste du temps. Caché tant qu'il n'y a rien
-        // à revoir, pour ne pas promettre une session vide.
-        boutonReviser = TextView(ctx).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(dp(16f), dp(6f), dp(16f), dp(10f)) }
-            textSize = 15f
-            gravity = Gravity.CENTER
-            setTypeface(null, Typeface.BOLD)
-            setTextColor(Color.WHITE)
-            setPadding(dp(16f), dp(13f), dp(16f), dp(13f))
-            background = GradientDrawable().apply {
-                cornerRadius = 24f * d
-                setColor(accent)
-            }
-            visibility = View.GONE
-            isClickable = true
-            setOnClickListener { lancerRevision() }
-        }
-        colonne.addView(boutonReviser)
 
         // Le filtre par jeu défile : sept jeux et un « Tous » ne tiennent pas
         // sur la largeur d'un téléphone, et une ligne qui se replie en deux
@@ -192,7 +204,14 @@ class CarnetFragment : DialogFragment() {
                 }
             })
         }
-        colonne.addView(ligneTri)
+        // La ligne de tri défile comme celle des jeux : « Étagère » est le
+        // quatrième bouton, et quatre puces dépassent la largeur d'un petit
+        // téléphone. Le `ScrollView` se replie tout seul quand `ligneTri` passe
+        // en `GONE`, il n'y a donc rien de plus à piloter.
+        colonne.addView(HorizontalScrollView(ctx).apply {
+            isHorizontalScrollBarEnabled = false
+            addView(ligneTri)
+        })
 
         conteneurGrille = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
@@ -241,13 +260,10 @@ class CarnetFragment : DialogFragment() {
             // capture : c'est ce qui étale un carnet déjà rempli au lieu de le
             // rendre entièrement dû le même jour. Voir [Carnet.planifier].
             Carnet.planifier(ctx)
-            val dues = Carnet.aRevoir(ctx)
             val prets = Carnet.cartes(ctx).map { CarteCarnet.contenu(ctx, it) }
             principal.post {
                 if (!isAdded) return@post
                 contenus = prets
-                aRevoir = dues
-                majBoutonReviser()
                 ligneTri.visibility = if (prets.isEmpty()) View.GONE else View.VISIBLE
                 construireFiltres()
                 surlignerTri()
@@ -256,49 +272,15 @@ class CarnetFragment : DialogFragment() {
         }.start()
     }
 
-    private fun majBoutonReviser() {
-        boutonReviser.visibility = if (aRevoir == 0) View.GONE else View.VISIBLE
-        boutonReviser.text = if (aRevoir == 1) "🔁  Réviser 1 carte"
-        else "🔁  Réviser $aRevoir cartes"
-    }
-
     /**
-     * Lance une session.
+     * L'état du carnet, remis dans la boîte.
      *
-     * Tout ce qui lit un fichier est fait en fond : les rangs de fréquence, les
-     * phrases d'exemple, et surtout les compteurs de frappe de
-     * [PreuveDeFrappe], qui vivent dans `filesDir`. Les cartes que le joueur a
-     * écrites lui-même montent d'une boîte **sans passer par une question**, et
-     * le bilan de la session est le seul endroit qui le dit.
+     * La boîte compte elle-même ce qui est dû, à partir des cartes qu'elle
+     * affiche : c'est le seul moyen que sa plaque et ses cartes soulevées ne se
+     * contredisent jamais. Un second décompte tiré de [Carnet.aRevoir]
+     * annoncerait un jour quatre cartes là où aucun casier n'en soulève, et ce
+     * serait lu comme un bogue et non comme une échéance.
      */
-    private fun lancerRevision() {
-        val ctx = requireContext().applicationContext
-        val principal = Handler(Looper.getMainLooper())
-        boutonReviser.isEnabled = false
-        Thread {
-            TranslationDictionary.charger(ctx)
-            TranslationDictionary.chargerExemples(ctx)
-            Carnet.planifier(ctx)
-            val file = Carnet.file(ctx)
-            val ecrites = PreuveDeFrappe.ecritesDepuisLaDerniereFois(ctx, file.map { it.forme })
-            // Un mot écrit dans un vrai message vaut une réponse exacte : c'est
-            // une preuve d'orthographe, pas seulement de mémoire.
-            ecrites.forEach { Carnet.noter(ctx, it, Verdict.EXACT) }
-            val aDemander = file.filter { it.forme !in ecrites }
-                .map { CarteCarnet.contenu(ctx, it) }
-            principal.post {
-                if (!isAdded) return@post
-                boutonReviser.isEnabled = true
-                VueWidderhuelen(
-                    hote = racine,
-                    paquet = aDemander,
-                    monteesParLeClavier = ecrites.toList(),
-                    surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
-                    surFin = { if (isAdded) chargerEnFond() }
-                ).ouvrir()
-            }
-        }.start()
-    }
 
     /**
      * Les filtres, un par jeu qui a déjà donné une carte, plus « Tous ».
@@ -420,38 +402,125 @@ class CarnetFragment : DialogFragment() {
             )
         }
 
+        // Largeur calculée, colonnes adaptées à ce qu'elle laisse : les
+        // vignettes visent LARGEUR_CIBLE_VIGNETTE_DP et restent carrées à la
+        // marge près, sinon leurs illustrations n'ont pas la même hauteur
+        // d'une ligne à l'autre et la grille ondule. Fixer les colonnes à
+        // deux, comme avant, grossissait les vignettes avec la largeur de
+        // l'écran plutôt que d'en tenir compte : à l'italienne, sur un
+        // téléphone, elles débordaient de la hauteur disponible et
+        // masquaient jusqu'au nom du mot sans un défilement.
+        val gouttiere = (10 * d).toInt()
+        val dispo = resources.displayMetrics.widthPixels - (24 * d).toInt() * 2
+        val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
+        val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
+        val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
+
+        if (tri == Tri.ETAGERE) {
+            // Le résumé change de sujet avec la disposition : par casiers, ce
+            // qui compte n'est plus la rareté mais l'avancement, et le prix à
+            // payer pour une carte acquise est ce qu'aucun écran ne disait.
+            val acquises = visibles.count { it.carte.acquise }
+            tvResume.text = "$acquises acquis sur ${visibles.size} — six " +
+                "révisions réussies par carte, étalées sur cinq mois."
+            remplirEtagere(ctx, visibles, cote, colonnes)
+            return
+        }
+
         val ordonnes = when (tri) {
-            Tri.RECENT -> visibles.sortedByDescending { it.carte.numero }
             Tri.ALPHA -> visibles.sortedBy { it.carte.forme.lowercase() }
             Tri.RARETE -> visibles.sortedWith(
                 compareByDescending<ContenuCarte> { it.rarete.ordinal }
                     .thenBy { it.carte.forme.lowercase() }
             )
+            else -> visibles.sortedByDescending { it.carte.numero }
         }
+        emettreVignettes(ctx, ordonnes, cote, colonnes)
+    }
 
-        // Deux colonnes, largeur calculée : les vignettes sont carrées à la
-        // marge près, sinon leurs illustrations n'ont pas la même hauteur d'une
-        // ligne à l'autre et la grille ondule.
-        val dispo = resources.displayMetrics.widthPixels - (24 * d).toInt() * 2
-        val cote = (dispo - (10 * d).toInt()) / 2
+    /**
+     * La collection rangée par casier, casiers vides compris.
+     *
+     * Les sept casiers sont posés même quand ils sont vides, et c'est tout
+     * l'intérêt : un casier vide est encore un casier, il montre le chemin qui
+     * reste. Les masquer donnerait une liste de trois lignes qui ne dit plus
+     * qu'il y a une échelle.
+     *
+     * À l'intérieur d'un casier, l'ordre est alphabétique. Ni la capture ni la
+     * rareté n'ont de sens ici — le casier *est* déjà l'ordre, celui de la
+     * mémoire, et on vient y chercher un mot précis.
+     */
+    private fun remplirEtagere(
+        ctx: Context,
+        visibles: List<ContenuCarte>,
+        cote: Int,
+        colonnes: Int
+    ) {
+        val aujourdHui = Widderhuelen.aujourdHui()
+        val parCasier = visibles.groupBy {
+            it.carte.boite.coerceIn(0, Widderhuelen.BOITE_ACQUISE)
+        }
+        for (boite in 0..Widderhuelen.BOITE_ACQUISE) {
+            val dedans = parCasier[boite].orEmpty()
+                .sortedBy { it.carte.forme.lowercase() }
+            val dues = dedans.count {
+                Widderhuelen.estDue(it.carte.boite, it.carte.jourEcheance, aujourdHui)
+            }
+            conteneurGrille.addView(etiquetteCasier(ctx, boite, dedans.size, dues))
+            emettreVignettes(ctx, dedans, cote, colonnes)
+        }
+    }
 
+    /**
+     * L'étiquette d'un casier, et sa planche.
+     *
+     * Le libellé dit le **rythme**, jamais le numéro de boîte : « revu chaque
+     * semaine » se comprend sans rien savoir de Leitner, « boîte 2 » demande
+     * qu'on ait lu la documentation. La planche, elle, est la barre de six
+     * segments que chaque vignette porte déjà sur son cadre (voir
+     * [Ornement.dessinerBoite]) — le casier et les cartes qu'on y trouve
+     * disent donc la même chose de la même façon, ce qui est la seule raison de
+     * ne pas avoir inventé un autre indicateur ici.
+     */
+
+
+    /** Referme la carte ouverte. Rend `false` s'il n'y en avait aucune. */
+    private fun fermerCarte(): Boolean {
+        val voile = voileCarte ?: return false
+        voileCarte = null
+        voile.animate().alpha(0f).setDuration(160)
+            .withEndAction { racine.removeView(voile) }.start()
+        return true
+    }
+
+    /** Les vignettes d'une liste, deux par ligne, dans [hote]. */
+    private fun emettreVignettes(
+        ctx: Context,
+        liste: List<ContenuCarte>,
+        cote: Int,
+        colonnes: Int,
+        hote: LinearLayout = conteneurGrille
+    ) {
+        val d = resources.displayMetrics.density
+        val gouttiere = (10 * d).toInt()
         var ligne: LinearLayout? = null
-        ordonnes.forEachIndexed { i, c ->
-            if (i % 2 == 0) {
+        liste.forEachIndexed { i, c ->
+            val posColonne = i % colonnes
+            if (posColonne == 0) {
                 ligne = LinearLayout(ctx).apply {
                     orientation = LinearLayout.HORIZONTAL
                     clipChildren = false
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { bottomMargin = (10 * d).toInt() }
+                    ).apply { bottomMargin = gouttiere }
                 }
-                conteneurGrille.addView(ligne)
+                hote.addView(ligne)
             }
             ligne?.addView(CarteCarnet.vignette(ctx, c, cote).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     cote, LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { if (i % 2 == 0) rightMargin = (10 * d).toInt() }
+                ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
                 isClickable = true
                 setOnClickListener { montrerCarte(c) }
             })
@@ -488,14 +557,11 @@ class CarnetFragment : DialogFragment() {
         defilement.addView(carte)
         voile.addView(defilement)
 
-        val fermer = { ->
-            voile.animate().alpha(0f).setDuration(160)
-                .withEndAction { racine.removeView(voile) }.start()
-        }
-        voile.setOnClickListener { fermer() }
+        voile.setOnClickListener { fermerCarte() }
         // La carte ne ferme pas : on peut la lire et la faire défiler.
         carte.isClickable = true
 
+        voileCarte = voile
         racine.addView(voile)
         voile.alpha = 0f
         voile.animate().alpha(1f).setDuration(160).start()
@@ -533,5 +599,26 @@ class CarnetFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+        // Le bouton Retour dépile : la carte ouverte, puis le casier ouvert,
+        // puis le carnet. Il fermait le dialogue entier depuis n'importe quelle
+        // profondeur, ce qui passait tant que le carnet n'avait aucune
+        // navigation et devient faux depuis que la boîte en a une.
+        //
+        // Les deux actions sont consommées, pas seulement `ACTION_UP` :
+        // `Dialog` annule sur la levée mais retient la descente, et ne
+        // consommer que l'une des deux laisse un retour fantôme au prochain
+        // appui.
+        dialog?.setOnKeyListener { _, code, evenement ->
+            when {
+                code != KeyEvent.KEYCODE_BACK -> false
+                voileCarte == null -> false
+                else -> {
+                    if (evenement.action == KeyEvent.ACTION_UP) {
+                        fermerCarte()
+                    }
+                    true
+                }
+            }
+        }
     }
 }

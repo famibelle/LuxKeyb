@@ -66,6 +66,7 @@ import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
 import com.example.kreyolkeyboard.carnet.Carnet
 import com.example.kreyolkeyboard.carnet.CarnetFragment
+import com.example.kreyolkeyboard.carnet.BoiteFragment
 import com.example.kreyolkeyboard.carnet.JeuCarte
 import com.example.kreyolkeyboard.carnet.Pochette
 import com.example.kreyolkeyboard.zuelen.ZuelenData
@@ -90,7 +91,7 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = phrases à trous, 6 = guide, 7 = à propos
+    private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
@@ -122,7 +123,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
-        const val TAB_STATS = 1
+        const val TAB_STATS = 3
 
         /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
         private const val REQUEST_NOTIFICATIONS = 4201
@@ -668,23 +669,23 @@ class SettingsActivity : AppCompatActivity() {
             val startTab = createTab(0, "🚀", "Démarrage")
             tabContainer.addView(startTab)
             Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
-            
-            // Tab Statistiques  
-            val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
-            tabContainer.addView(statsTab)
-            Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
-            
+
             // Tab Spiller : tous les jeux derrière une seule destination.
             // Ils occupaient quatre onglets sur neuf, soit 44 % de la barre,
             // pour une activité que l'on choisit une fois par session.
-            val gamesTab = createTab(2, "🎮", "Spiller")
+            val gamesTab = createTab(1, "🎮", "Spiller")
             tabContainer.addView(gamesTab)
             Log.d("SettingsActivity", "Onglet Spiller créé et ajouté")
 
             // Tab Wierderbuch
-            val dictionaryTab = createTab(3, "📚", "Wierderbuch")
+            val dictionaryTab = createTab(2, "📚", "Wierderbuch")
             tabContainer.addView(dictionaryTab)
             Log.d("SettingsActivity", "Onglet Wierderbuch créé et ajouté")
+
+            // Tab Statistiques (en dernier, sur demande du propriétaire — 2026-09-15)
+            val statsTab = createTab(3, "📊", "Mäi Lëtzebuergesch")
+            tabContainer.addView(statsTab)
+            Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
 
             // Guide et À Propos ne sont plus des onglets : ce sont des pages de
             // référence que l'on lit une fois, pas des destinations
@@ -2398,6 +2399,10 @@ class SettingsActivity : AppCompatActivity() {
                     "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
                     "traductions françaises et 85 000 formes que la presse " +
                     "n'écrit jamais.\n\n" +
+                    "🇱🇺 Corpus de traduction du Zenter fir d'Lëtzebuerger " +
+                    "Sprooch (data.public.lu). Licence CC0 1.0. Il apporte " +
+                    "les traductions françaises des phrases d'exemple, faites " +
+                    "par des traducteurs professionnels.\n\n" +
                     "🇫🇷 Lexique 3.83 : base lexicale du français de Boris New " +
                     "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
                     "Elle apporte les 125 000 formes de la seconde rangée de " +
@@ -2866,20 +2871,94 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Quatre jeux aident à mémoriser du vocabulaire luxembourgeois en s'amusant, " +
-                    "à partir des mots déjà présents dans le dictionnaire du clavier : « Wuertsich » " +
-                    "(mots mêlés), « Wuertmix » (lettres à remettre dans l'ordre), « Wuertriet » " +
-                    "(un mot de 5 lettres à deviner) et « Wuertlück », où il manque un mot à une " +
-                    "vraie phrase luxembourgeoise. Un cinquième, « Zuelwuert », ne porte pas sur " +
-                    "le vocabulaire mais sur l'écriture des nombres : une multiplication, et " +
-                    "quatre orthographes de son résultat dont une seule est correcte."
+            "Sept jeux, réunis dans l'onglet Spiller, font travailler le luxembourgeois en " +
+                    "s'amusant :\n\n" +
+                    "• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n" +
+                    "• 🔤 Wuertmix : remettre les lettres d'un mot dans l'ordre.\n" +
+                    "• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n" +
+                    "• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n" +
+                    "• 🔢 Zuelwuert : écrire en lettres le résultat d'une multiplication.\n" +
+                    "• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n" +
+                    "• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, " +
+                    "sans aucune définition.\n\n" +
+                    "Chaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait " +
+                    "réviser à intervalles de plus en plus longs, jusqu'à ce qu'il soit acquis."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFF3E0", "🃏 Les cartes du carnet",
+            "Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » " +
+                    "(onglet Spiller). Touchez une carte pour l'ouvrir en grand ; touchez à côté, " +
+                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer.\n\n" +
+                    "Les images ci-dessous détaillent la carte « Waasser » (l'eau), partie " +
+                    "par partie : chaque numéro renvoie à l'explication qui suit l'image."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_haut, "Le haut de la carte")
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🔷 Le haut de la carte",
+            "1. Le mot, tel que vous l'avez rencontré dans le jeu, avec sa majuscule s'il " +
+                    "s'agit d'un nom.\n\n" +
+                    "2. La pastille ronde : le nombre de lettres du mot. « Waasser » en " +
+                    "compte 7, autant qu'il faudra en taper pour le réviser.\n\n" +
+                    "3. L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
+                    "territoire, économie, temps et mesure…), et son motif est tiré des lettres " +
+                    "du mot, si bien qu'un même mot donne toujours la même image. Quelques " +
+                    "cartes, comme celle-ci, portent en plus un dessin.\n\n" +
+                    "4. Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
+                    "Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la " +
+                    "fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont " +
+                    "communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, " +
+                    "c'est la difficulté de leur orthographe qui compte."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_texte, "Le texte de la carte")
+        addGuideSection(
+            mainLayout, "#FFF3E0", "📜 Le texte de la carte",
+            "5. La ligne de nature : ce qu'est le mot selon le dictionnaire officiel du " +
+                    "ZLS (« Nom neutre », « Verbe », « Adjectif »…), " +
+                    "puis le jeu où vous l'avez gagné.\n\n" +
+                    "6. Le sens, en gras : la traduction française du mot.\n\n" +
+                    "7. La phrase en italique : un exemple du mot en situation, tiré du " +
+                    "dictionnaire officiel. Pour un nombre, c'est sa décomposition.\n\n" +
+                    "8. La ligne plus petite : la traduction française de cette phrase, " +
+                    "seulement quand le ZLS l'a publiée. Sinon, la carte affiche à la place " +
+                    "« Même famille : » et les autres formes du mot (pluriel, conjugaisons…)."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_bas, "Le bas de la carte")
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
+            "9. L'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n" +
+                    "10. Le joyau central : la rareté encore, par sa couleur (gris, vert, bleu, " +
+                    "violet). Il grossit avec le palier.\n\n" +
+                    "11. L'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, " +
+                    "de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
+                    "est acquis.\n\n" +
+                    "12. La ligne de série : le numéro de la carte dans votre collection, le " +
+                    "sigle du jeu qui l'a donnée (WP pour Wuertplaz, KW pour Kräizwuert…) et la " +
+                    "date où vous l'avez gagnée.\n\n" +
+                    "13. Le rang : la place du mot parmi les plus fréquents de la langue " +
+                    "(« 856ᵉ » pour « Waasser »), ou « hors corpus » " +
+                    "s'il n'y figure pas."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_vignette, "La petite carte, dans la grille du carnet")
+        addGuideSection(
+            mainLayout, "#FFF3E0", "🗂️ Dans la grille du carnet",
+            "La petite carte ne garde que l'essentiel pour choisir laquelle ouvrir :\n\n" +
+                    "A. Le mot.\n\n" +
+                    "B. L'emoji du ou des jeux où vous l'avez gagné, puis le début du sens.\n\n" +
+                    "C. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à " +
+                    "mesure que la carte progresse. Ici, « Aarbecht » en a franchi cinq."
         )
 
         addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
             "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
-                    "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
-                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
+                    "« Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, " +
+                    "🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner " +
+                    "et 🧙 Sproochenmeeschter."
         )
 
         val faqCard = createCard("#FFF8E1")
@@ -4182,9 +4261,9 @@ class SettingsActivity : AppCompatActivity() {
             val realPosition = position % REAL_COUNT
             return when (realPosition) {
                 0 -> OnboardingFragment()
-                1 -> StatsFragment()
-                2 -> GamesFragment()
-                3 -> DictionaryFragment()
+                1 -> GamesFragment()
+                2 -> DictionaryFragment()
+                3 -> StatsFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -9300,7 +9379,8 @@ class SettingsActivity : AppCompatActivity() {
             colonne.addView(TextView(activity).apply {
                 text = "Traductions et exemples issus du Lëtzebuerger Online " +
                         "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
-                        "Sprooch, CC0."
+                        "Sprooch, CC0. Exemples traduits par le corpus de " +
+                        "traduction du même Zenter, CC0."
                 textSize = 12f
                 setTextColor(Color.parseColor("#AAAAAA"))
                 setLineSpacing(0f, 1.2f)
@@ -9479,7 +9559,12 @@ class SettingsActivity : AppCompatActivity() {
             // Un mot sur cinq n'en a pas — noms propres, formes que le ZLS n'a
             // pas illustrées. La section disparaît alors, plutôt que de poser
             // un titre sur du vide.
-            val exemples = TranslationDictionary.exemples(activity, resultat)
+            //
+            // Sous la phrase, sa traduction française quand le ZLS en a publié
+            // une, et rien sinon : pas de traduction approchée, pas de mention
+            // « traduction indisponible » qui ferait paraître deux fiches sur
+            // trois inachevées.
+            val exemples = TranslationDictionary.exemplesTraduits(activity, resultat)
             if (exemples.isNotEmpty()) {
                 colonne.addView(titreSection(
                     activity,
@@ -9490,9 +9575,20 @@ class SettingsActivity : AppCompatActivity() {
                 // pixels l'une de l'autre et sur le blanc de la fiche, les deux
                 // phrases se lisaient comme un seul paragraphe, et la seconde
                 // paraissait continuer la première.
-                exemples.forEachIndexed { rang, phrase ->
+                exemples.forEachIndexed { rang, exemple ->
                     colonne.addView(TextView(activity).apply {
-                        text = phraseIllustree(phrase, resultat)
+                        text = SpannableStringBuilder(phraseIllustree(exemple.phrase, resultat)).apply {
+                            exemple.traduction?.let { francais ->
+                                append("\n")
+                                val debut = length
+                                append(francais)
+                                setSpan(RelativeSizeSpan(0.85f), debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                setSpan(
+                                    ForegroundColorSpan(Color.parseColor("#777777")),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                            }
+                        }
                         textSize = 16f
                         setTextColor(Color.parseColor("#333333"))
                         setLineSpacing(0f, 1.25f)
@@ -9742,6 +9838,8 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         private val jeux = listOf(
+            Jeu("📚", "Boîte de Leitner", "Révisez vos cartes à intervalle régulier",
+                "#8B4513") { BoiteFragment() },
             Jeu("🎲", "Wuertsich", "Retrouvez les mots cachés dans la grille",
                 "#9C27B0") { WordSearchFragment() },
             Jeu("🔤", "Wuertmix", "Remettez les lettres dans l'ordre",
@@ -9786,7 +9884,8 @@ class SettingsActivity : AppCompatActivity() {
                 visibility = View.GONE
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
+                    0,
+                    1f
                 )
             }
             colonne.addView(conteneurJeu)
@@ -9836,7 +9935,8 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(4, 0, 4, 6)
             })
             colonne.addView(TextView(activity).apply {
-                text = "Sept façons de travailler son luxembourgeois. Les jeux " +
+                text = "Huit façons de travailler son luxembourgeois. La Boîte " +
+                        "de Leitner donne accès à vos cartes étudiées. Les jeux " +
                         "de vocabulaire donnent la traduction française des " +
                         "mots, au moment où elle ne livre pas la réponse ; " +
                         "Zuelwuert porte sur l'écriture des nombres, " +

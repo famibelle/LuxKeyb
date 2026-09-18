@@ -273,6 +273,25 @@ bruit statistique au lieu de ±0,8.
 L'échange serait mauvais : quelques formes thématiques contre l'instrument qui
 mesure tout le reste.
 
+### Ce qu'il apporte à l'écran : la traduction des phrases d'exemple
+
+Depuis le 2026-09-15, son **côté français** sert aussi à l'affichage.
+Le corpus reprend une partie des exemples du LOD. Quand une phrase d'exemple
+du LOD y figure mot pour mot (même clé que `cle_de_comparaison`), sa traduction
+professionnelle s'affiche dessous, sur la carte du carnet et dans la fiche du
+Wierderbuch. `generate_translations.py` fait l'appariement et range ces
+traductions dans `luxemburgish_exemples.json`, à côté des phrases.
+
+La règle est de n'afficher que la traduction officielle, ou rien : pas
+d'alignement automatique (LuxAlign), pas de traduction machine. 5 483 phrases du
+LOD figurent dans le corpus. Une phrase traduite ne passe devant les autres que
+si elle illustre le premier sens du mot. Au total, 3 677 mots ont un exemple
+traduit, et 23 % des cartes du carnet ont leur premier exemple traduit.
+
+Cela ne touche pas au rôle de jeu d'évaluation : aucune phrase du corpus
+n'entre dans le dictionnaire ni dans les n-grammes, et seules des phrases du LOD
+sont affichées.
+
 ### Ce qu'il mesure
 
 Les deux jeux sont évalués côte à côte par `docs/scripts/generate_corpus_stats.py` :

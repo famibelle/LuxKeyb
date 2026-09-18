@@ -107,7 +107,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json luxemburgish_categories.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -345,6 +345,17 @@ jobs:
           exit 1
         fi
 
+        # Les traductions des exemples viennent du corpus de traduction du
+        # ZLS, apparié phrase à phrase. Si l'appariement casse (corpus
+        # introuvable, normalisation modifiée), les phrases s'affichent
+        # simplement sans traduction et rien ne le signale.
+        TR_COUNT=$(jq '.traductions // {} | length' "$A/luxemburgish_exemples.json")
+        echo "🇫🇷 Mots dont un exemple est traduit : $TR_COUNT"
+        if [ "$TR_COUNT" -lt 2000 ]; then
+          echo "::error::Seulement $TR_COUNT mots dont un exemple est traduit : l'appariement avec le corpus du ZLS ne fonctionne plus."
+          exit 1
+        fi
+
         # Sans la table des identifiants, le bouton « Voir sur le
         # dictionnaire officiel » retombe sur la recherche de lod.lu — qui ne
         # répond pas à une ouverture à froid et propose d'ajouter le mot au
@@ -354,6 +365,13 @@ jobs:
         echo "🔗 Articles du LOD indexés : $ID_COUNT"
         if [ "$ID_COUNT" -lt 20000 ]; then
           echo "::error::Seulement $ID_COUNT identifiants d'article : le bouton lod.lu ne mènerait plus à l'article."
+          exit 1
+        fi
+
+        CAT_COUNT=$(jq '.categories | length' "$A/luxemburgish_categories.json")
+        echo "🏷️ Mots catégorisés : $CAT_COUNT"
+        if [ "$CAT_COUNT" -lt 20000 ]; then
+          echo "::error::Seulement $CAT_COUNT mots catégorisés : les cartes du carnet perdraient leur catégorie."
           exit 1
         fi
 
@@ -461,6 +479,7 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_familles.json
           android_keyboard/app/src/main/assets/luxemburgish_exemples.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_ids.json
+          android_keyboard/app/src/main/assets/luxemburgish_categories.json
         retention-days: 1
 
   # 🧪 ÉTAPE 1 bis : TESTS UNITAIRES

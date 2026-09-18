@@ -1,12 +1,15 @@
 package com.example.kreyolkeyboard.carnet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -14,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.kreyolkeyboard.crossword.CrosswordData
+import kotlin.math.hypot
 
 /**
  * L'écran d'une session de révision.
@@ -252,9 +256,65 @@ class VueWidderhuelen(
 
         bas.removeAllViews()
         if (tapee) construireSaisie(q) else {
-            bas.addView(bouton("Retourner la carte", Carnet.COULEUR) {
-                revelation(q, verdict = null)
-            })
+            val retourner = { revelation(q, verdict = null) }
+            bas.addView(bouton("Retourner la carte", Carnet.COULEUR) { retourner() })
+            retournementAuPouce(carton, retourner)
+        }
+    }
+
+    /**
+     * Le retournement au pouce, sur le carton lui-même.
+     *
+     * Le bouton reste — il nomme le geste, il est la cible d'un lecteur
+     * d'écran, et c'est lui qu'on trouve sans rien savoir. Mais une carte
+     * qu'on ne peut retourner qu'en visant un bouton posé sous elle n'est pas
+     * tout à fait une carte : le pouce est déjà dessus, il en suit le relief
+     * et en déplace la lumière, et le seul geste qu'il ne pouvait pas faire
+     * était celui qu'on fait à une carte.
+     *
+     * Trois choses le tiennent à l'écart de ce que le carton fait déjà :
+     *
+     * - **L'écouteur rend toujours la main** (`false`). Un `OnTouchListener`
+     *   qui consommerait le geste couperait [Carton.onTouchEvent], c'est-à-dire
+     *   l'appui, la tranche et le reflet sous le doigt — on retournerait la
+     *   carte au prix de tout ce qui la rend touchable.
+     * - **Un appui bref, pas un balayage.** Le pouce qui traverse le carton
+     *   promène la lumière, et un pouce posé la retient : ni l'un ni l'autre ne
+     *   sont une demande. Au-delà du `scaledTouchSlop` ou du délai d'appui
+     *   long, le geste appartient donc à la surface, pas à la question. Sans ce
+     *   partage, admirer le dos retournerait la carte.
+     * - **Un seul retournement.** `dos` est lâché dès l'entrée de [revelation],
+     *   pour la raison qui y est écrite ; le comparer ici suffit à ce qu'un
+     *   deuxième appui pendant l'animation ne relance rien.
+     *
+     * Le geste n'est armé que sur une question de reconnaissance. Sur une
+     * question tapée, le carton porte l'ardoise et la réponse se juge : un
+     * appui qui révélerait la carte n'y serait pas un retournement mais un
+     * abandon, et il arriverait sous le pouce qui vise le pavé.
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun retournementAuPouce(carton: DosRevision, action: () -> Unit) {
+        val ecart = ViewConfiguration.get(ctx).scaledTouchSlop
+        val delaiLong = ViewConfiguration.getLongPressTimeout()
+        var departX = 0f
+        var departY = 0f
+        var promene = false
+        carton.setOnTouchListener { _, e ->
+            when (e.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    departX = e.x
+                    departY = e.y
+                    promene = false
+                }
+                MotionEvent.ACTION_MOVE ->
+                    if (hypot(e.x - departX, e.y - departY) > ecart) promene = true
+                MotionEvent.ACTION_UP ->
+                    if (!promene &&
+                        e.eventTime - e.downTime < delaiLong &&
+                        dos === carton
+                    ) action()
+            }
+            false
         }
     }
 

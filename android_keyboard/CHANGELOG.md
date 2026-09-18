@@ -9,6 +9,123 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [22.12.9] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Le carnet s'adapte au paysage.** La grille du carnet gardait deux colonnes quelle que soit l'orientation, calculées sur la seule largeur de l'écran : à l'italienne sur un téléphone, les vignettes devenaient démesurées et débordaient de la hauteur disponible, masquant jusqu'au nom du mot sans un défilement. Le nombre de colonnes s'adapte maintenant à la largeur disponible.
+
+## [22.12.8] - 2026-09-15
+
+### ✨ Améliorations
+
+- **La carte ouverte s'incline deux fois plus.** Quand on penche le téléphone, elle pivote maintenant jusqu'à vingt degrés au lieu de dix.
+- **La carte s'incline aussi de haut en bas, à contre-mouvement.** Quand on bascule le téléphone vers l'avant ou vers l'arrière, la carte résiste au geste comme elle le fait déjà de gauche à droite. Ce mouvement existait, mais un téléphone tenu presque debout le rendait imperceptible.
+
+## [22.12.7] - 2026-09-15
+
+### 🔄 Changé
+
+- **« Mäi Lëtzebuergesch » passe en dernier onglet.** Ordre désormais Démarrage · Spiller · Wierderbuch · Mäi Lëtzebuergesch.
+
+## [22.12.6] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La plaque de nom s'arrête à l'aplomb de la fenêtre sur tous les paliers.** Commun, Peu commun et Rare la traçaient jusqu'à 276, sept unités au-delà de la pointe de la ligne de type, là où la très rare s'arrêtait déjà à 269,4. Elle s'y arrête maintenant partout, et le nom qui ne tient pas au centre suit ce même tracé.
+
+## [22.12.5] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La clef de voûte, les griffes et les rivets sont opaques.** Ils héritaient de l'alpha du liseré du joyau précédent et laissaient voir à travers eux. Même correction sur tous les joyaux de la carte.
+- **La plaque du nom ne laisse plus de triangle au-dessus de la pastille.** Elle rentre maintenant dans le métal jusqu'au bord du cadre sur les très rares, sans laisser de marge.
+
+## [22.12.4] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Une carte ouverte pivote enfin à contre-mouvement.** Quand on penche le téléphone, la carte devait résister au geste comme un objet posé qui garde son aplomb : bord droit du téléphone qui descend, bord droit de la carte qui vient vers soi. Elle faisait l'inverse et suivait le téléphone, ce qui écrasait l'effet de profondeur. Même chose d'avant en arrière.
+- **La tranche et le reflet suivent la carte.** Un téléphone tenu penché gardait sa tranche visible alors que la carte s'était remise d'aplomb, et en paysage la tranche apparaissait du mauvais côté.
+
+### ✨ Améliorations
+
+- **La carte ouverte depuis la Boîte de Leitner suit la main**, comme celle du carnet : elle pivote avec l'inclinaison du téléphone et s'enfonce légèrement sous le doigt.
+
+## [22.12.3] - 2026-09-15
+
+### ✨ Améliorations
+
+- **Une carte ouverte se referme par glissé latéral.** Vers la gauche ou vers la droite, elle suit le doigt et sort de l'écran, et l'on retrouve l'éventail du casier au même endroit. Un geste trop court la remet en place.
+
+## [22.12.2] - 2026-09-15
+
+### 📖 Guide
+
+- **Le guide explique les cartes du carnet, image à l'appui.** Trois illustrations fléchées et numérotées détaillent la carte « Waasser » : le mot, sa longueur, l'illustration et le cadre ; la nature, le sens, l'exemple et sa traduction ; les écus VUES et NIVEAU, le joyau de rareté, la ligne de série et le rang. Une quatrième montre ce que garde la petite carte de la grille.
+- La section des jeux présente les sept jeux et la Boîte de Leitner, là où elle n'en citait que cinq.
+- La progression nomme les huit niveaux luxembourgeois, d'Ufänker à Sproochenmeeschter.
+
+## [22.12.1] - 2026-09-15
+
+### ✨ Améliorations
+
+- **L'éventail d'un casier se sent sous le doigt.** Chaque carte qui passe au centre donne un léger cran de vibration, pendant le glissé comme quand l'éventail se cale : on compte les cartes sans les regarder. Aucun cran au-delà de la première ou de la dernière carte. Le retour suit le réglage « Vibration à la frappe » du clavier.
+- **Une carte ouverte depuis l'éventail se chasse d'un glissé.** Vers le haut ou vers le bas, elle sort de l'écran et l'on retrouve l'éventail là où on l'avait laissé. Une carte plus haute que l'écran se lit d'abord jusqu'au bout : c'est le glissé suivant qui la renvoie. Toucher à côté ou le bouton retour la referment toujours.
+
+## [22.12.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Chaque carte du carnet dit la nature de son mot.** La ligne sous l'illustration nomme sa catégorie telle que le dictionnaire officiel du ZLS la donne : « Nom féminin · gagné à Wuertplaz », « Verbe », « Adjectif », « Préposition »… Pour un nom, le genre est indiqué, c'est lui qui décide entre *de*, *d'* et *dat*.
+- Un mot absent du dictionnaire officiel, comme un sigle, garde l'ancienne règle : « Nom » s'il porte une majuscule, rien sinon.
+
+## [22.11.1] - 2026-09-15
+
+### 🐛 Corrections
+
+- Le libellé d'une carte du carnet « Substantif · Wuertplaz » se lisait comme si le jeu était un substantif. Il dit maintenant « Nom · gagné à Wuertplaz », qui classe clairement le mot et son origine.
+
+## [22.11.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Les phrases d'exemple sont traduites en français.** Sous la phrase luxembourgeoise d'une carte du carnet ou d'une fiche du Wierderbuch s'affiche maintenant sa traduction. Elle vient du corpus de traduction du Zenter fir d'Lëtzebuerger Sprooch : ce sont les traductions officielles, faites par des traducteurs professionnels.
+- **Pas de traduction plutôt qu'une traduction approchée.** Une phrase n'est traduite que si le ZLS l'a traduite telle quelle ; sinon, elle s'affiche seule, sans mention. Environ une carte sur quatre a aujourd'hui sa traduction, et la part grandira avec les prochaines publications du corpus.
+- **La phrase choisie illustre le sens principal du mot.** Une phrase traduite ne passe devant les autres que si elle illustre le premier sens : « Hond » reste un chien, et non un voyou.
+
+### 🐛 Corrections
+
+- Sur une carte, le guillemet fermant d'une phrase d'exemple pouvait partir seul à la ligne.
+
+## [22.10.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Un tiroir de la Boîte de Leitner s'ouvre en éventail.** Toucher un casier fait sortir ses cartes de la pile et les étale en main : on glisse pour les parcourir, on touche la carte du centre pour la lire en grand, on touche ailleurs pour les ranger. La grille de vignettes sur fond blanc est supprimée.
+- **Les cartes de la boîte portent leur recto**, celui du carnet (cadre de rareté, illustration, mot). Les cartes à réviser sortent de leur fente, penchées et cerclées de violet.
+- **Chaque casier a sa légende** gravée dans le bois : le nombre de cartes et le délai de retour (« 1 jour », « 1 sem. », « ★ acquis »). Une phrase rappelle la règle : une bonne réponse fait avancer la carte.
+- **La plaque « Réviser » est un vrai bouton.** Plus grande, en laiton lisible, et quand rien n'est dû elle dit quand revenir (« Tout est à jour · 4 cartes demain »).
+
+### 🐛 Corrections
+
+- Le bouton retour depuis un casier ouvert faisait quitter la boîte. Il remonte maintenant d'un cran à la fois : carte, éventail, boîte, liste des jeux.
+- La plaque annonçait toutes les cartes en retard alors qu'une session s'arrête à 12 ; elle annonce maintenant la session.
+- La plaque était peinte à 25 % d'opacité, d'où son aspect terne.
+- Toucher un casier plein lançait la révision de sa première carte au lieu d'en montrer le contenu.
+- Le casier ouvert n'affichait que les cartes de la session du jour, pas tout son contenu.
+- L'écran restait blanc plusieurs secondes à l'ouverture de la boîte ; le contenu des cartes se charge maintenant en arrière-plan.
+- La boîte et le casier ouvert annonçaient le même délai de deux façons (« 2 sem. » et « tous les 16 jours ») ; ils utilisent maintenant le même arrondi.
+- L'ombre sous la boîte se lisait comme une barre grise ; c'est désormais un fondu sans arête.
+
+Cette version reprend aussi la correction publiée sous l'étiquette v22.9.2 (la boîte grandit avec l'espace disponible), qui n'avait pas d'entrée ici.
+
+## [22.9.1] - 2026-09-14
+
+### ✨ Améliorations
+
+- **La Boîte de Leitner occupe maintenant tout l'écran.** Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant `weight=1f` pour s'étendre, et `BoiteLeitner.onMeasure()` accepte la hauteur disponible au lieu de rester figée à 176dp.
+
 ## [22.9.0] - 2026-09-13
 
 ### 🐛 Corrections

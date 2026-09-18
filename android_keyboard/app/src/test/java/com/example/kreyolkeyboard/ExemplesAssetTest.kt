@@ -123,6 +123,47 @@ class ExemplesAssetTest {
     }
 
     /**
+     * Les traductions viennent du corpus du ZLS, rangées à part et alignées
+     * sur les phrases. Deux régressions muettes : un appariement cassé vide
+     * la table (les phrases s'affichent seules), et un décalage d'alignement
+     * poserait sous une phrase la traduction de sa voisine.
+     */
+    @Test
+    fun lesTraductionsSontAligneesSurLeursPhrases() {
+        val racine = JSONObject(File("src/main/assets/luxemburgish_exemples.json").readText())
+        val exemples = racine.getJSONObject("exemples")
+        val traductions = racine.optJSONObject("traductions")
+        assertTrue("luxemburgish_exemples.json ne porte plus de traductions", traductions != null)
+        assertTrue(
+            "Seulement ${traductions!!.length()} mots dont un exemple est traduit : " +
+                "l'appariement avec le corpus du ZLS ne fonctionne plus",
+            traductions.length() >= 2_000
+        )
+
+        val cles = traductions.keys()
+        while (cles.hasNext()) {
+            val mot = cles.next()
+            assertTrue("« $mot » a des traductions mais pas de phrases", exemples.has(mot))
+            val phrases = exemples.getJSONArray(mot)
+            val francais = traductions.getJSONArray(mot)
+            assertTrue(
+                "« $mot » : ${francais.length()} traductions pour ${phrases.length()} phrases",
+                francais.length() == phrases.length()
+            )
+            assertTrue(
+                "« $mot » figure parmi les traductions sans en avoir aucune",
+                (0 until francais.length()).any { francais.getString(it).isNotEmpty() }
+            )
+            for (i in 0 until francais.length()) {
+                assertTrue(
+                    "« $mot » : la traduction recopie la phrase luxembourgeoise",
+                    francais.getString(i) != phrases.getString(i)
+                )
+            }
+        }
+    }
+
+    /**
      * Le cas qui a motivé la fonction : lire « Haus = maison » n'apprend pas à
      * employer le mot, et une phrase du LOD, elle, l'emploie.
      */

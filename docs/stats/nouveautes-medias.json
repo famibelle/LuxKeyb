@@ -1,5 +1,45 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "22.12.8": {
+    "image": "Screenshots/lux_inclinaison_deux_axes.gif",
+    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
+    "legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
+  },
+  "22.12.4": {
+    "image": "Screenshots/lux_contre_pivot.gif",
+    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
+    "legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
+  },
+  "22.12.3": {
+    "image": "Screenshots/lux_glisse_lateral.png",
+    "alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
+    "legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
+  },
+  "22.12.2": {
+    "image": "Screenshots/lux_guide_cartes.png",
+    "alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
+    "legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
+  },
+  "22.12.1": {
+    "image": "Screenshots/lux_carte_glissee.png",
+    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
+    "legende": "Une carte ouverte depuis l'éventail se chasse d'un glissé vers le haut ou vers le bas, et l'on retrouve l'éventail sur la carte qu'on lisait. En parcourant l'éventail, chaque carte qui passe au centre donne un léger cran de vibration."
+  },
+  "22.12.0": {
+    "image": "Screenshots/lux_categories.png",
+    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
+    "legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
+  },
+  "22.11.0": {
+    "image": "Screenshots/lux_exemple_traduit.png",
+    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
+    "legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
+  },
+  "22.10.0": {
+    "image": "Screenshots/lux_eventail.png",
+    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
+    "legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
+  },
   "20.6.0": {
     "image": "Screenshots/lux_pochette.png",
     "alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",

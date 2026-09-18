@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.RectF
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.Gravity
@@ -30,7 +31,11 @@ data class ContenuCarte(
     val glose: String,
     val autresFormes: List<String>,
     val exemple: String?,
-    val blason: Blasonnement = Blasonnement.AUCUN
+    val blason: Blasonnement = Blasonnement.AUCUN,
+    /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
+    val traductionExemple: String? = null,
+    /** La catégorie du LOD en clair (« Nom féminin », « Verbe »), ou `null`. */
+    val categorie: String? = null
 )
 
 /**
@@ -95,6 +100,10 @@ object CarteCarnet {
     private const val ENCRE_DOUCE = 0xFF4A4234.toInt()
     private const val ENCRE_PALE = 0xFF7A7160.toInt()
 
+    /** Le corps des étiquettes de type, et le plancher où il cesse de céder. */
+    private const val TYPE_CORPS = 11f
+    private const val TYPE_CORPS_MIN = 9f
+
     fun contenu(context: Context, carte: CarteMot): ContenuCarte {
         // Un numéral n'a pas de fiche au dictionnaire : sa leçon est sa
         // décomposition, qui est exactement ce que Zuelwuert enseigne.
@@ -114,7 +123,7 @@ object CarteCarnet {
             )
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
-        val exemple = TranslationDictionary.exemples(context, fiche).firstOrNull()
+        val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
         return ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
@@ -123,11 +132,13 @@ object CarteCarnet {
             autresFormes = (listOf(fiche.mot) + fiche.formes)
                 .distinct()
                 .filter { it != carte.forme },
-            exemple = exemple,
+            exemple = exemple?.phrase,
             // Le blason se lit sur le représentant, comme la glose : le joueur
             // a gagné « Männer », c'est le rangement de « Mann » qui vaut. La
             // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
-            blason = Armorial.pour(context, fiche.mot, carte.forme)
+            blason = Armorial.pour(context, fiche.mot, carte.forme),
+            traductionExemple = exemple?.traduction,
+            categorie = TranslationDictionary.categorie(context, fiche.mot)
         )
     }
 
@@ -180,10 +191,11 @@ object CarteCarnet {
      * - la **ligne de type** porte deux pastilles, la nature du mot et la
      *   partie qui l'a donné. Elle nommait « Substantif · Wuertsich » d'un
      *   seul trait, et le point médian laissait deviner lequel des deux mots
-     *   disait quoi. La nature vient de [Blasonnement.nature], qui se déduit
-     *   toujours sans étiquetage grammatical — la majuscule du substantif, la
-     *   finale du verbe — et retombe sur « Mot » quand aucune des deux ne
-     *   tranche, plutôt que de laisser une pastille vide ;
+     *   disait quoi. La nature est celle du LOD — « Nom féminin », « Verbe »,
+     *   genre compris — et retombe sur [Blasonnement.nature] pour les mots
+     *   qu'il ignore, puis sur « Mot », plutôt que de laisser une pastille
+     *   vide. Les deux étiquettes partagent un corps, qui cède quand l'une
+     *   d'elles déborde : voir [corpsDeLaLigne] ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
      *   d'entrée, le sigle du jeu, le jour de la capture, et le rang de
@@ -198,33 +210,46 @@ object CarteCarnet {
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),
             Ornement.GEMME
         )
+        // Le nom prend toute la plaque, sans rattrapage : elle est centrée sur
+        // l'axe de la carte, comme la clef de voûte, l'agrafe et le joyau de
+        // rareté. C'est le décalage de 19 unités de l'ancienne plaque du haut
+        // qui demandait un emplacement calculé.
         carte.posee(
             ligne(context, c.carte.forme, taille = 21f, couleur = ENCRE, gras = true),
             Ornement.PLAQUE
         )
 
-        // La nature n'est pas redérivée ici : [Blasonnement.nature] la porte
-        // déjà, et elle connaît la finale verbale que la majuscule seule
-        // ignorait — « gesicht » était un mot sans nature, c'est un verbe.
-        val nature = when {
-            c.carte.nombre != null -> "Numéral"
-            c.blason.nature == Nature.NOM -> "Nom"
-            c.blason.nature == Nature.VERBE -> "Verbe"
-            // Ni majuscule ni finale verbale : adjectifs, adverbes, mots-outils.
-            // Le carnet n'a pas d'étiquetage grammatical pour trancher entre
-            // eux, et « Mot » est le seul libellé qui ne mente sur aucun.
-            else -> "Mot"
-        }
-        carte.posee(
-            ligne(context, nature, taille = 11f, couleur = ENCRE, gras = true),
-            Ornement.TYPE_NATURE_TEXTE
+        // La catégorie du LOD d'abord : c'est lui qui porte le genre, que le
+        // carnet ne pouvait pas deviner. Un mot qu'il ignore (« RTL »,
+        // « Bettel ») retombe sur [Blasonnement.nature], qui connaît la
+        // majuscule du substantif et la finale du verbe — « gesicht » était un
+        // mot sans nature, c'est un verbe —, et « Mot » ferme la liste plutôt
+        // que de laisser une pastille vide.
+        val nature = abrege(
+            when {
+                c.carte.nombre != null -> "Nombre"
+                c.categorie != null -> c.categorie
+                c.blason.nature == Nature.NOM -> "Nom"
+                c.blason.nature == Nature.VERBE -> "Verbe"
+                else -> "Mot"
+            }
         )
-        carte.posee(
-            ligne(context, "gagné à ${jeu.nom}", taille = 11f, couleur = ENCRE, gras = true),
-            Ornement.TYPE_JEU_TEXTE
-        )
+        val vueNature = ligne(context, nature, TYPE_CORPS, ENCRE, gras = true)
+        val vueJeu = ligne(context, "gagné à ${jeu.nom}", TYPE_CORPS, ENCRE, gras = true)
+        val corps = corpsDeLaLigne(vueNature, vueJeu)
+        for (vue in arrayOf(vueNature, vueJeu)) vue.tag = floatArrayOf(corps, 0f)
+        carte.posee(vueNature, Ornement.TYPE_NATURE_TEXTE)
+        carte.posee(vueJeu, Ornement.TYPE_JEU_TEXTE)
 
-        carte.posee(panneau(context, c), Ornement.PANNEAU_TEXTE)
+        // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
+        // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
+        carte.posee(
+            panneau(context, c),
+            RectF(
+                Ornement.PANNEAU_TEXTE.left, Ornement.PANNEAU_TEXTE.top,
+                Ornement.PANNEAU_TEXTE.right, Ornement.ECU_G.top - 3f
+            )
+        )
 
         carte.posee(
             ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),
@@ -260,6 +285,58 @@ object CarteCarnet {
     }
 
     /**
+     * Les trois genres composés, à la longueur d'une capsule.
+     *
+     * « Nom masculin ou féminin » demande 145 unités là où la pastille en
+     * offre 77 : même descendu au plancher, le libellé y serait coupé. Aucune
+     * autre des dix-huit catégories du LOD n'en approche — ces trois-là
+     * touchent 284 mots sur 26 241, et c'est pour eux seuls que la ligne de
+     * type aurait cessé de tenir.
+     *
+     * L'abréviation est celle des dictionnaires, et elle s'arrête à la carte :
+     * `TranslationDictionary.libelleCategorie` garde ses libellés entiers pour
+     * qui aura la place de les écrire.
+     */
+    private fun abrege(nature: String): String = when (nature) {
+        "Nom masculin ou féminin" -> "Nom m. ou f."
+        "Nom masculin ou neutre" -> "Nom m. ou n."
+        "Nom féminin ou neutre" -> "Nom f. ou n."
+        else -> nature
+    }
+
+    /**
+     * Le corps des deux étiquettes de type : onze, et moins si l'une déborde.
+     *
+     * **Le même pour les deux**, et c'est tout l'intérêt. Mesurée pastille par
+     * pastille, « Verbe » resterait à onze pendant que « gagné à Kräizwuert »
+     * tomberait à dix : deux tailles de texte côte à côte sur une même rangée
+     * se lisent comme une erreur de mise en page, jamais comme un ajustement.
+     *
+     * Il descend parce que la nature vient du LOD depuis qu'il la publie, et
+     * qu'elle a grandi en conséquence : « Nom » tenait partout, « Nom masculin »
+     * dépasse de trois unités et « gagné à Kräizwuert » de cinq. Un demi-point
+     * suffit donc aux deux cas les plus courants, et le plancher ne sert qu'à
+     * garantir qu'aucune langue de jeu à venir ne rende la ligne illisible —
+     * les trois libellés qui l'auraient touché sont abrégés en amont, par
+     * [abrege].
+     */
+    private fun corpsDeLaLigne(vararg vues: TextView): Float {
+        val boites = arrayOf(Ornement.TYPE_NATURE_TEXTE, Ornement.TYPE_JEU_TEXTE)
+        var corps = TYPE_CORPS
+        for ((i, vue) in vues.withIndex()) {
+            // Le pinceau de la vue elle-même, et non un neuf : les tailles sont
+            // en unités de carte, donc la largeur mesurée l'est aussi.
+            val large = android.text.TextPaint(vue.paint)
+                .apply { textSize = TYPE_CORPS }
+                .measureText(vue.text.toString())
+            if (large > boites[i].width()) {
+                corps = minOf(corps, TYPE_CORPS * boites[i].width() / large)
+            }
+        }
+        return corps.coerceAtLeast(TYPE_CORPS_MIN)
+    }
+
+    /**
      * Le panneau de texte : le sens, la phrase du LOD, la famille.
      *
      * C'est la boîte de texte d'une carte à jouer, et c'est le cœur de
@@ -269,25 +346,40 @@ object CarteCarnet {
      * peut pas pousser les écus hors du cadre.
      */
     private fun panneau(context: Context, c: ContenuCarte): View =
-        LinearLayout(context).apply {
+        PanneauTexte(context).apply {
             orientation = LinearLayout.VERTICAL
+            // Un texte court se centre plutôt que de laisser une bande vide en bas.
+            gravity = Gravity.CENTER_VERTICAL
 
+            // La traduction de la phrase n'existe que si le ZLS l'a publiée ;
+            // sinon rien ne la remplace, pas même une mention.
+            val traduction = c.traductionExemple?.takeIf { c.exemple != null }
+
+            // Le panneau a une hauteur fixe, déjà remplie par la glose sur deux
+            // lignes, la phrase et la famille. Quand la traduction s'ajoute, la
+            // glose se contente d'une ligne et la famille cède sa place : la
+            // phrase traduite dit le sens mieux qu'une seconde ligne de glose,
+            // et la famille reste lisible dans la fiche du Wierderbuch.
             addView(bloc(context, c.glose.ifEmpty { "sens non répertorié" }, 15f, ENCRE, 0f).apply {
                 setTypeface(null, Typeface.BOLD)
-                maxLines = 2
+                maxLines = if (traduction != null) 1 else 2
             })
 
             c.exemple?.let { phrase ->
                 // La décomposition d'un numéral est une explication, pas une
-                // citation : elle ne prend pas les guillemets.
-                val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
-                addView(bloc(context, texte, 12f, ENCRE_DOUCE, 4f).apply {
+                // citation : elle ne prend pas les guillemets. Espaces
+                // insécables à l'intérieur, sinon le « » » fermant part seul
+                // à la ligne.
+                val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
+                addView(bloc(context, texte, 12f, ENCRE_DOUCE, 2f).apply {
                     setTypeface(null, Typeface.ITALIC)
                     maxLines = 2
                 })
             }
 
-            if (c.autresFormes.isNotEmpty()) {
+            if (traduction != null) {
+                addView(bloc(context, traduction, 9f, ENCRE_PALE, 0f).apply { maxLines = 2 })
+            } else if (c.autresFormes.isNotEmpty()) {
                 addView(
                     bloc(
                         context,
@@ -322,6 +414,36 @@ object CarteCarnet {
         ellipsize = TextUtils.TruncateAt.END
         includeFontPadding = false
         tag = floatArrayOf(taille, 0f)
+    }
+
+    /**
+     * Le panneau retire ses dernières lignes quand elles ne tiennent pas.
+     *
+     * Un `LinearLayout` écrase le dernier enfant dans la place restante, qui
+     * se retrouve coupé à mi-hauteur. La hauteur réelle d'une ligne dépend de
+     * la police du téléphone : mieux vaut perdre la famille (ou la traduction)
+     * entière qu'en montrer une demi-ligne.
+     */
+    private class PanneauTexte(context: Context) : LinearLayout(context) {
+        override fun onMeasure(largeurSpec: Int, hauteurSpec: Int) {
+            val plafond = MeasureSpec.getSize(hauteurSpec)
+            val largeur = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(largeurSpec), MeasureSpec.EXACTLY)
+            val libre = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            var total = 0
+            var deborde = false
+            for (i in 0 until childCount) {
+                val vue = getChildAt(i)
+                if (vue.visibility == GONE) continue
+                vue.measure(largeur, libre)
+                if (deborde || (i > 0 && total + vue.measuredHeight > plafond)) {
+                    deborde = true
+                    vue.visibility = GONE
+                } else {
+                    total += vue.measuredHeight
+                }
+            }
+            super.onMeasure(largeurSpec, hauteurSpec)
+        }
     }
 
     /** Une ligne du panneau de texte : elle, a le droit de revenir à la ligne. */
