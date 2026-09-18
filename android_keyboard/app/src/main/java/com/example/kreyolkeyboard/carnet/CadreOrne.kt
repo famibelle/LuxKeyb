@@ -296,7 +296,8 @@ object Ornement {
     private const val R_EMAIL = 13f
     private const val TAILLE_LEGENDE = 5.6f
     /**
-     * Ce qu'est le mot : sous la plaque, sur l'axe de la carte.
+     * Ce qu'est le mot : un **onglet** posé sur le bord haut du panneau, sur
+     * l'axe de la carte.
      *
      * Une seule bande portait « Substantif · Wuertsich », deux informations
      * qui n'ont ni la même source ni la même durée de vie — la nature vient du
@@ -308,11 +309,18 @@ object Ornement {
      * reste de ce que le carnet sait de la partie. Voir [PROVENANCE].
      *
      * Centrée, donc, et non plus calée à gauche d'une rangée : elle prolonge
-     * l'aplomb de la clef de voûte, de la plaque et de l'agrafe. Ses 92 unités
-     * de texte tiennent « Nom masculin », le plus large des libellés du LOD
-     * une fois les trois genres composés abrégés.
+     * l'aplomb de la clef de voûte et de la plaque. Ses 92 unités de texte
+     * tiennent « Nom masculin », le plus large des libellés du LOD une fois
+     * les trois genres composés abrégés.
+     *
+     * Elle mord de 10 unités sur le panneau, comme le médaillon mord sur son
+     * bord bas : le panneau est tenu par deux pièces, l'une en haut qui dit ce
+     * qu'est le mot, l'autre en bas qui dit d'où il vient. Elle flottait
+     * auparavant à 26 unités de la plaque et 6 du panneau, dans la bande que
+     * la gemme avait quittée ; le panneau a remonté d'autant, et gagné 21
+     * unités de texte.
      */
-    val NATURE = RectF(96f, 254f, 204f, 282f)
+    val NATURE = RectF(96f, 244f, 204f, 272f)
     /**
      * Où le mot a été gagné : un **médaillon** dans le bas de carte, entre les
      * écus.
@@ -337,10 +345,15 @@ object Ornement {
     val PROVENANCE = RectF(127f, 369f, 173f, 415f)
 
     /** Le texte de la nature, en retrait des bouts ronds de la capsule. */
-    val NATURE_TEXTE = RectF(104f, 254f, 196f, 282f)
-    val PANNEAU = RectF(38f, 288f, 262f, 384f)
-    /** Le texte, en retrait du panneau : le double filet passe entre les deux. */
-    val PANNEAU_TEXTE = RectF(48f, 296f, 252f, 378f)
+    val NATURE_TEXTE = RectF(104f, 244f, 196f, 272f)
+    val PANNEAU = RectF(38f, 262f, 262f, 384f)
+    /**
+     * Le texte, en retrait du panneau : le double filet passe entre les deux.
+     * Il commence sous l'onglet de nature (bas à 272), à 5 unités de lui ; sur
+     * le dos de révision, où l'ardoise réutilise ce rectangle, l'onglet n'existe
+     * pas et le texte s'y centre simplement.
+     */
+    val PANNEAU_TEXTE = RectF(48f, 277f, 252f, 378f)
     val ECU_G = RectF(26f, 375f, 78f, 410f)
     val ECU_D = RectF(222f, 375f, 274f, 410f)
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
@@ -953,13 +966,10 @@ object Ornement {
         sertissure(c, p, GEMME, m, if (palier >= 2) 8 else 0)
         sertissure(c, p, GEMME_CENTRE, m, if (palier >= 3) 6 else 0)
 
-        // 9. La pastille de nature, sous la plaque.
-        pastille(c, p, NATURE, palier >= 2, m)
-
-        // 10. Le panneau de texte.
+        // 9. Le panneau de texte.
         p.style = Paint.Style.FILL
-        // Opaque d'abord : le filet clair de la seconde pastille vient de
-        // laisser 55 % d'alpha au pinceau.
+        // Opaque d'abord : les griffes de la sertissure précédente ont laissé
+        // leur liseré à 55 % dans le pinceau.
         p.color = Color.BLACK
         p.shader = LinearGradient(
             0f, PANNEAU.top, 0f, PANNEAU.bottom,
@@ -984,6 +994,9 @@ object Ornement {
                 5f, 5f, p
             )
         }
+
+        // 10. L'onglet de nature, par-dessus le bord haut du panneau qu'il mord.
+        pastille(c, p, NATURE, palier >= 2, m)
 
         // 11. Les deux écus, et leur libellé gravé.
         //
