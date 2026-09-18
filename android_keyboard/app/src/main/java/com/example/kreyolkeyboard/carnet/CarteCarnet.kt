@@ -203,8 +203,8 @@ object CarteCarnet {
      *   Le corps de l'étiquette de nature s'ajuste : voir [corpsDeLEtiquette] ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
-     *   d'entrée, le sigle du jeu, le jour de la capture, et le rang de
-     *   fréquence qui a décidé de sa rareté.
+     *   d'entrée, le jour de la capture, et le rang de fréquence qui a
+     *   décidé de sa rareté.
      */
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
@@ -253,7 +253,15 @@ object CarteCarnet {
         vueNature.tag = floatArrayOf(corpsDeLEtiquette(vueNature), 0f)
         carte.posee(vueNature, Ornement.NATURE_TEXTE)
         // La provenance n'est pas une vue : c'est le médaillon, tracé par la
-        // carte elle-même à partir du jeu.
+        // carte elle-même à partir du jeu. Une vue vide le double pour les
+        // lecteurs d'écran, qui ne lisent pas une légende dessinée.
+        carte.posee(
+            View(context).apply {
+                contentDescription = "gagné à ${jeu.nom}"
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            },
+            Ornement.PROVENANCE
+        )
 
         // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
         // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
@@ -280,8 +288,10 @@ object CarteCarnet {
 
         // Le corps de 7,5 est imposé par la bande, qui vit maintenant dans la
         // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
-        val serie = "n° %03d · %s · %s".format(
-            Locale.FRENCH, c.carte.numero, jeu.sigle, FORMAT_DATE.format(Date(c.carte.premiereFois))
+        // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
+        // et son nom.
+        val serie = "n° %03d · %s".format(
+            Locale.FRENCH, c.carte.numero, FORMAT_DATE.format(Date(c.carte.premiereFois))
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
@@ -382,7 +392,9 @@ object CarteCarnet {
             }
 
             if (traduction != null) {
-                addView(bloc(context, traduction, 9f, ENCRE_PALE, 0f).apply { maxLines = 2 })
+                // Trois unités d'air : collée à la phrase, la traduction se
+                // lisait comme sa troisième ligne.
+                addView(bloc(context, traduction, 9f, ENCRE_PALE, 3f).apply { maxLines = 2 })
             } else if (c.autresFormes.isNotEmpty()) {
                 addView(
                     bloc(

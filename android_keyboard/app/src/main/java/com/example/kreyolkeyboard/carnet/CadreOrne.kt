@@ -295,6 +295,7 @@ object Ornement {
     private const val R_MEDAILLON = 23f
     private const val R_EMAIL = 13f
     private const val TAILLE_LEGENDE = 5.6f
+    private const val INTERLETTRAGE = 0.06f
     /**
      * Ce qu'est le mot : un **onglet** posé sur le bord haut du panneau, sur
      * l'axe de la carte.
@@ -354,14 +355,19 @@ object Ornement {
      * pas et le texte s'y centre simplement.
      */
     val PANNEAU_TEXTE = RectF(48f, 277f, 252f, 378f)
-    val ECU_G = RectF(26f, 375f, 78f, 410f)
-    val ECU_D = RectF(222f, 375f, 274f, 410f)
+    /**
+     * Les écus, alignés sur les bords de la plaque (28 et 272) : à 26 et 274,
+     * deux unités de décalage se lisaient comme une erreur plutôt que comme un
+     * choix.
+     */
+    val ECU_G = RectF(28f, 375f, 80f, 410f)
+    val ECU_D = RectF(220f, 375f, 272f, 410f)
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
-    val ECU_G_TEXTE = RectF(26f, 382f, 78f, 408f)
-    val ECU_D_TEXTE = RectF(222f, 382f, 274f, 408f)
+    val ECU_G_TEXTE = RectF(28f, 382f, 80f, 408f)
+    val ECU_D_TEXTE = RectF(220f, 382f, 272f, 408f)
     /**
      * La ligne de série est passée **dans la marge**, où ce genre de mention
-     * vit sur une carte imprimée : numéro, jeu, date, rang — de
+     * vit sur une carte imprimée : numéro, date, rang — de
      * l'administratif, qui n'a pas à disputer sa place au contenu.
      *
      * Sur le plateau elle ne manquait pas seulement d'air, elle **traversait
@@ -1099,37 +1105,66 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        p.letterSpacing = 0.06f
         texteSurArc(c, p, "GAGNÉ À", cx, cy, R_EMAIL + 2.2f, true)
         texteSurArc(c, p, jeu.nom.uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
-        p.letterSpacing = 0f
         p.typeface = android.graphics.Typeface.DEFAULT
         p.strokeCap = Paint.Cap.BUTT
         p.strokeJoin = Paint.Join.MITER
     }
 
     /**
-     * Un texte suivant l'arc du haut ou du bas du disque, centré.
+     * Un texte suivant l'arc du haut ou du bas du disque, centré, **lettre par
+     * lettre**.
      *
-     * En haut le chemin va de gauche à droite et les lettres se dressent vers
-     * l'extérieur ; en bas il va aussi de gauche à droite, mais sous le centre,
-     * où « vers le haut » veut dire vers le centre : d'où les deux rayons
-     * différents : c'est la ligne de base qu'on donne, et le texte pousse
-     * de son côté. Trop long, il se serre plutôt que de sortir de son demi-cercle.
+     * En haut les lettres se dressent vers l'extérieur ; en bas, sous le
+     * centre, elles se dressent vers le centre, pour se lire à l'endroit : d'où
+     * les deux rayons différents, qui sont ceux de la ligne de base.
+     *
+     * Chaque lettre est posée à la main, à l'angle que lui donne la somme des
+     * chasses qui la précèdent. L'interlettrage est ajouté ici plutôt que par
+     * `letterSpacing`, dont l'effet sur un texte sur chemin n'est pas garanti.
+     * Trop long, le texte se serre plutôt que de sortir de son demi-cercle.
      */
     private fun texteSurArc(c: Canvas, p: Paint, texte: String, cx: Float, cy: Float, rayon: Float, haut: Boolean) {
+        // La légende est tracée à 5,6 unités sur un canvas agrandi trois fois :
+        // sans texte linéaire, les chasses sont arrondies au pixel à 5,6 px puis
+        // agrandies, et l'arrondi devient un trou visible (devant le « É » de
+        // « GAGNÉ »).
+        val lineaire = p.isLinearText
+        val sousPixel = p.isSubpixelText
+        p.isLinearText = true
+        p.isSubpixelText = true
         p.textSize = TAILLE_LEGENDE
-        val arc = Path()
-        val ovale = RectF(cx - rayon, cy - rayon, cx + rayon, cy + rayon)
-        if (haut) arc.addArc(ovale, 180f, 180f) else arc.addArc(ovale, 180f, -180f)
-        val longueur = Math.PI.toFloat() * rayon
-        var largeur = p.measureText(texte)
-        val dispo = longueur * 0.9f
-        if (largeur > dispo) {
-            p.textSize = TAILLE_LEGENDE * dispo / largeur
-            largeur = dispo
+        p.textAlign = Paint.Align.CENTER
+        val chasses = FloatArray(texte.length)
+        fun mesurer(): Float {
+            p.getTextWidths(texte, chasses)
+            val espace = p.textSize * INTERLETTRAGE
+            for (k in chasses.indices) chasses[k] += espace
+            return chasses.sum() - espace
         }
-        c.drawTextOnPath(texte, arc, (longueur - largeur) / 2f, 0f, p)
+        var largeur = mesurer()
+        val dispo = Math.PI.toFloat() * rayon * 0.9f
+        if (largeur > dispo) {
+            p.textSize *= dispo / largeur
+            largeur = mesurer()
+        }
+        // Angles en radians, 0 à droite, sens horaire (l'axe y descend).
+        val centre = if (haut) -Math.PI.toFloat() / 2f else Math.PI.toFloat() / 2f
+        val sens = if (haut) 1f else -1f
+        var parcouru = 0f
+        for (k in texte.indices) {
+            val a = centre + sens * ((parcouru + chasses[k] / 2f) - largeur / 2f) / rayon
+            c.save()
+            c.translate(cx + cos(a) * rayon, cy + sin(a) * rayon)
+            c.rotate(Math.toDegrees(a.toDouble()).toFloat() + if (haut) 90f else -90f)
+            c.drawText(texte[k].toString(), 0f, 0f, p)
+            c.restore()
+            parcouru += chasses[k]
+        }
+        p.textAlign = Paint.Align.LEFT
+        p.isLinearText = lineaire
+        p.isSubpixelText = sousPixel
     }
 
     /** L'emblème d'un jeu, en blanc, dans un rayon de huit unités. */

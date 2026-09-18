@@ -16,6 +16,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import kotlin.math.abs
 import kotlin.math.hypot
 
 /**
@@ -47,8 +48,8 @@ import kotlin.math.hypot
  *
  * ## Une flashcard, pour toutes les boîtes
  *
- * Le dos porte le mot seul ; on retourne la carte, d'un appui sur elle ou par
- * le bouton, et on se note « Je savais » ou « Pas su ». De la 22.0.0 à la
+ * Le dos porte le mot seul ; on retourne la carte d'un appui ou d'un balayage
+ * sur elle, ou par le bouton, et on se note « Je savais » ou « Pas su ». De la 22.0.0 à la
  * 23.0.0, les boîtes 2 et plus faisaient taper le mot sur un pavé, dans la
  * phrase du LOD trouée : c'est retiré, la révision reste une flashcard.
  *
@@ -220,17 +221,24 @@ class VueWidderhuelen(
      * et en déplace la lumière, et le seul geste qu'il ne pouvait pas faire
      * était celui qu'on fait à une carte.
      *
-     * Trois choses le tiennent à l'écart de ce que le carton fait déjà :
+     * Quatre choses le tiennent à l'écart de ce que le carton fait déjà :
      *
      * - **L'écouteur rend toujours la main** (`false`). Un `OnTouchListener`
      *   qui consommerait le geste couperait [Carton.onTouchEvent], c'est-à-dire
      *   l'appui, la tranche et le reflet sous le doigt — on retournerait la
      *   carte au prix de tout ce qui la rend touchable.
-     * - **Un appui bref, pas un balayage.** Le pouce qui traverse le carton
-     *   promène la lumière, et un pouce posé la retient : ni l'un ni l'autre ne
-     *   sont une demande. Au-delà du `scaledTouchSlop` ou du délai d'appui
-     *   long, le geste appartient donc à la surface, pas à la question. Sans ce
-     *   partage, admirer le dos retournerait la carte.
+     * - **Un appui bref, ou un balayage franc et horizontal.** Le pouce qui
+     *   se promène sur le carton en déplace la lumière, et un pouce posé la
+     *   retient : ni l'un ni l'autre ne sont une demande. Un appui compte donc
+     *   s'il reste sous le `scaledTouchSlop` et le délai d'appui long ; un
+     *   balayage compte s'il parcourt au moins [PART_BALAYAGE] de la largeur de
+     *   la carte, deux fois plus en largeur qu'en hauteur. Entre les deux, le
+     *   geste appartient à la surface : sans ce partage, admirer le dos
+     *   retournerait la carte.
+     * - **Le glissement appartient à la carte.** Le pager des onglets de
+     *   l'application intercepte tout glissement horizontal ; le carton le lui
+     *   interdit dès que le doigt se pose, sans quoi le balayage n'arrivait
+     *   jamais qu'en `ACTION_CANCEL`.
      * - **Un seul retournement.** `dos` est lâché dès l'entrée de [revelation],
      *   pour la raison qui y est écrite ; le comparer ici suffit à ce qu'un
      *   deuxième appui pendant l'animation ne relance rien.
@@ -245,17 +253,25 @@ class VueWidderhuelen(
         carton.setOnTouchListener { _, e ->
             when (e.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    departX = e.x
-                    departY = e.y
+                    departX = e.rawX
+                    departY = e.rawY
                     promene = false
+                    // Le pager des onglets intercepte sinon tout glissement
+                    // horizontal pour changer d'onglet, et le carton ne reçoit
+                    // qu'un ACTION_CANCEL.
+                    carton.parent?.requestDisallowInterceptTouchEvent(true)
                 }
                 MotionEvent.ACTION_MOVE ->
-                    if (hypot(e.x - departX, e.y - departY) > ecart) promene = true
-                MotionEvent.ACTION_UP ->
-                    if (!promene &&
-                        e.eventTime - e.downTime < delaiLong &&
-                        dos === carton
-                    ) action()
+                    if (hypot(e.rawX - departX, e.rawY - departY) > ecart) promene = true
+                MotionEvent.ACTION_UP -> {
+                    // En coordonnées d'écran : le carton s'incline sous le doigt,
+                    // et ses coordonnées à lui passent par cette perspective.
+                    val dx = abs(e.rawX - departX)
+                    val dy = abs(e.rawY - departY)
+                    val appui = !promene && e.eventTime - e.downTime < delaiLong
+                    val balayage = dx > carton.width * PART_BALAYAGE && dx > 2f * dy
+                    if ((appui || balayage) && dos === carton) action()
+                }
             }
             false
         }
@@ -466,5 +482,8 @@ class VueWidderhuelen(
 
     private companion object {
         const val ENCRE = 0xFF1B1610.toInt()
+
+        /** La part de la largeur de la carte qu'un balayage doit parcourir. */
+        const val PART_BALAYAGE = 0.3f
     }
 }

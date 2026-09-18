@@ -2933,13 +2933,12 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
             "9. L'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n" +
-                    "10. Le joyau central : la rareté encore, par sa couleur (gris, vert, bleu, " +
-                    "violet). Il grossit avec le palier.\n\n" +
+                    "10. Le médaillon : le jeu qui vous a donné la carte, reconnaissable à son " +
+                    "emblème et à sa couleur, et nommé sur le pourtour.\n\n" +
                     "11. L'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, " +
                     "de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
                     "est acquis.\n\n" +
-                    "12. La ligne de série : le numéro de la carte dans votre collection, le " +
-                    "sigle du jeu qui l'a donnée (WP pour Wuertplaz, KW pour Kräizwuert…) et la " +
+                    "12. La ligne de série : le numéro de la carte dans votre collection et la " +
                     "date où vous l'avez gagnée.\n\n" +
                     "13. Le rang : la place du mot parmi les plus fréquents de la langue " +
                     "(« 856ᵉ » pour « Waasser »), ou « hors corpus » " +
