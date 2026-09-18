@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [23.0.0] - 2026-09-18
+
+La carte du carnet change de visage : le nom prend la police de son palier, la gemme monte sur la clef de voûte et la provenance devient un sceau. Le numéro majeur marque ce changement de ce que la carte montre, sans rupture de données : les cartes déjà gagnées se lisent telles quelles.
+
+### ✨ Améliorations
+
+- **Le nom sur la plaque monte avec la rareté.** Commun garde la police du système ; Peu commun passe en Lora, Rare en Cormorant Garamond, Très rare en EB Garamond, qui garde la casse là où une police de capitales aurait écrasé la majuscule du substantif. Trois polices libres (SIL Open Font License), 50 Ko de plus dans l'APK, citées dans la carte « Sources » des réglages.
+- **La provenance devient un médaillon.** La capsule « gagné à Kräizwuert » est remplacée, entre les écus, par un sceau : l'emblème du jeu sur un émail de sa couleur, « GAGNÉ À » et le nom du jeu en légende sur le pourtour. Filet clair dès Rare, grènetis de perles sur l'or.
+- **L'éclat de la gemme suit le rang du mot.** Les quatre paliers ne distinguaient pas le 9 000ᵉ mot du 30 000ᵉ ; la gemme de coût et celle de la clef de voûte gagnent en saturation et en éclat à mesure que le mot est rare, sans changer de teinte, qui reste celle du champ du mot.
+- **La gemme ovale monte sur la clef de voûte.** Elle prend la place du petit joyau, et la clef s'agrandit pour la porter.
+- **La provenance descend en bas de carte**, entre les écus, et le joyau de rareté s'en va : sa couleur répétait ce que le métal et la plaque disaient déjà.
+
 ## [22.12.9] - 2026-09-15
 
 ### 🐛 Corrections
