@@ -1,65 +1,20 @@
 package com.example.kreyolkeyboard.carnet
 
-import com.example.kreyolkeyboard.AccentTolerantMatcher
-
 /**
- * Ce qu'une carte demande, et c'est **la boîte qui en décide**, pas le joueur.
+ * Une question posée : une carte, montrée par son mot seul.
  *
- * L'ordre suit celui que la mémoire supporte : reconnaître avant de produire.
- * Choisir soi-même reviendrait à choisir la question facile, ce qui est
- * exactement ce qu'une révision ne doit pas permettre.
+ * La révision est une **flashcard**, pour toutes les boîtes : le dos porte le
+ * mot, on retourne la carte, on se note « Je savais » ou « Pas su ». Choix du
+ * propriétaire, le 18 septembre 2026 : de la 22.0.0 à la 23.0.0, les boîtes 2
+ * et plus faisaient taper le mot dans une phrase trouée, et c'est retiré.
  */
-enum class FormeQuestion {
-    /** Boîtes 0 et 1 : la forme seule, on retourne la carte, on s'autonote. */
-    RECONNAISSANCE,
-
-    /** Boîtes 2 et plus : la phrase du LOD avec le mot en cases, à taper. */
-    PHRASE_A_TROUS,
-
-    /** Repli de production : la glose française, le mot à taper. */
-    GLOSE
+data class QuestionRevision(val contenu: ContenuCarte) {
+    /** Le mot écrit au dos, et qui identifie la carte dans le carnet. */
+    val mot: String get() = contenu.carte.forme
 }
 
-/** Une question posée : la carte, sa forme, et la phrase trouée s'il y en a une. */
-/**
- * Une question posée.
- *
- * [motAttendu] est **le mot que la question réclame**, et il n'est pas toujours
- * celui de la carte : une phrase du LOD est rangée sous le représentant de la
- * famille, donc elle peut illustrer `Haiser` là où le joueur a gagné `Haus`.
- * Creuser le trou à `Haiser` en attendant `Haus` demandait au joueur d'écrire
- * un mot que la phrase ne veut pas, et refusait celui qu'elle veut. Le trou et
- * la réponse désignent désormais la même forme.
- *
- * La **carte**, elle, reste identifiée par `contenu.carte.forme` : c'est elle
- * qui monte de boîte, quelle que soit la forme de sa famille que la phrase a
- * fait écrire.
- */
-data class QuestionRevision(
-    val contenu: ContenuCarte,
-    val forme: FormeQuestion,
-    val phraseTrouee: String? = null,
-    val motAttendu: String = contenu.carte.forme
-) {
-    val tapee: Boolean get() = forme != FormeQuestion.RECONNAISSANCE
-
-    /** Vrai quand la phrase réclame une forme sœur plutôt que celle de la carte. */
-    val demandeUneAutreForme: Boolean get() = motAttendu != contenu.carte.forme
-}
-
-/** Une phrase dont un mot a été retiré, et le mot qui a été retiré. */
-data class PhraseTrouee(val texte: String, val motMasque: String)
-
-/**
- * Le résultat d'une réponse tapée.
- *
- * [DETAIL] est le cœur de la leçon : juste à un accent ou à la majuscule près
- * compte comme réussi, mais **ne fait pas monter la carte de boîte**. C'est le
- * seul endroit de l'application où la majuscule de substantif et l'accent sont
- * l'objet de la question plutôt qu'un détail de rendu, et laisser passer
- * `greng` pour `gréng` enseignerait la faute que le jeu existe pour corriger.
- */
-enum class Verdict { EXACT, DETAIL, FAUX }
+/** Ce que le joueur a répondu à une carte. */
+enum class Verdict { EXACT, FAUX }
 
 /**
  * Une session de révision : la file, la question courante, et le sort de chaque
@@ -82,7 +37,7 @@ enum class Verdict { EXACT, DETAIL, FAUX }
  */
 class SessionWidderhuelen(file: List<ContenuCarte>) {
 
-    private val restantes: ArrayDeque<QuestionRevision> = ArrayDeque(file.map { question(it) })
+    private val restantes: ArrayDeque<QuestionRevision> = ArrayDeque(file.map { QuestionRevision(it) })
     private val dejaRepassees = HashSet<String>()
 
     /** Cartes prévues au départ, repassages non comptés. */
@@ -110,10 +65,7 @@ class SessionWidderhuelen(file: List<ContenuCarte>) {
      */
     fun repondre(reussi: Boolean): Boolean {
         val q = courante ?: return false
-        // L'identité est celle de la carte, jamais le mot demandé : deux cartes
-        // d'une même famille peuvent réclamer la même forme sœur, et le
-        // repassage comme le score se compteraient alors sur la mauvaise.
-        val forme = q.contenu.carte.forme
+        val forme = q.mot
         val repassage = forme in dejaRepassees
 
         if (!repassage) {
@@ -128,140 +80,5 @@ class SessionWidderhuelen(file: List<ContenuCarte>) {
 
         courante = restantes.removeFirstOrNull()
         return !repassage
-    }
-
-    /**
-     * La question d'une carte : la boîte décide, la phrase disponible arbitre.
-     *
-     * Une carte de production dont la phrase ne peut pas être trouée (aucun
-     * mot de la phrase ne correspond à la forme ni à sa famille) retombe sur la
-     * glose : mesuré sur les actifs livrés, 99,3 % des formes ont une phrase,
-     * mais rien ne garantit qu'elle contienne la forme telle que le joueur l'a
-     * rencontrée.
-     */
-    private fun question(contenu: ContenuCarte): QuestionRevision {
-        if (contenu.carte.boite < BOITE_PRODUCTION) {
-            return QuestionRevision(contenu, FormeQuestion.RECONNAISSANCE)
-        }
-        val trouee = contenu.exemple?.let {
-            phraseATrous(it, contenu.carte.forme, contenu.autresFormes)
-        }
-        return if (trouee != null) {
-            QuestionRevision(
-                contenu, FormeQuestion.PHRASE_A_TROUS, trouee.texte, trouee.motMasque
-            )
-        } else {
-            QuestionRevision(contenu, FormeQuestion.GLOSE)
-        }
-    }
-
-    companion object {
-
-        /** Première boîte où l'on produit l'orthographe au lieu de la reconnaître. */
-        const val BOITE_PRODUCTION = 2
-
-        /** Ce qui remplace le mot dans une phrase trouée. */
-        const val TROU = "……"
-
-        /**
-         * Retire de [phrase] une forme, et dit laquelle.
-         *
-         * **Une seule forme est masquée**, et c'est ce qui a changé : la version
-         * précédente creusait un trou sur n'importe quelle forme de la famille
-         * tout en attendant celle de la carte. Mesuré sur les actifs livrés,
-         * 38,6 % des cartes dont le premier exemple existe sont dans ce cas — le
-         * joueur devait alors écrire un mot que la phrase ne veut pas, et la
-         * seule réponse correcte pour la phrase était comptée fausse.
-         *
-         * La forme de la carte est préférée quand la phrase la porte ; sinon on
-         * prend la première forme de la famille qu'elle porte, et c'est elle que
-         * la question réclame. Toutes ses occurrences sont trouées — une phrase
-         * qui répète son mot ne doit pas en laisser une copie en clair, et
-         * `CarnetRevisionAssetTest` le vérifie sur les phrases réelles.
-         *
-         * La comparaison se fait mot par mot, jamais par `replace` sur la
-         * chaîne : `an` est un mot très fréquent, et le chercher dans `Land`
-         * trouerait un mot qui n'est pas celui-là.
-         */
-        fun phraseATrous(
-            phrase: String,
-            forme: String,
-            autresFormes: List<String>
-        ): PhraseTrouee? {
-            val presents = HashSet<String>()
-            parcourir(phrase) { mot, _, _ ->
-                presents.add(AccentTolerantMatcher.normalize(mot))
-            }
-
-            val cible = when {
-                AccentTolerantMatcher.normalize(forme) in presents -> forme
-                else -> autresFormes.firstOrNull {
-                    AccentTolerantMatcher.normalize(it) in presents
-                }
-            } ?: return null
-
-            val cibleNormalisee = AccentTolerantMatcher.normalize(cible)
-            val sortie = StringBuilder(phrase.length)
-            var precedent = 0
-            parcourir(phrase) { mot, debut, fin ->
-                if (AccentTolerantMatcher.normalize(mot) == cibleNormalisee) {
-                    sortie.append(phrase, precedent, debut).append(TROU)
-                    precedent = fin
-                }
-            }
-            sortie.append(phrase, precedent, phrase.length)
-            return PhraseTrouee(sortie.toString(), cible)
-        }
-
-        /** Appelle [action] sur chaque mot de [phrase], avec ses bornes. */
-        private inline fun parcourir(phrase: String, action: (String, Int, Int) -> Unit) {
-            var i = 0
-            while (i < phrase.length) {
-                if (!phrase[i].isLetter()) {
-                    i++
-                    continue
-                }
-                var fin = i
-                while (fin < phrase.length && phrase[fin].isLetter()) fin++
-                action(phrase.substring(i, fin), i, fin)
-                i = fin
-            }
-        }
-
-        /**
-         * Le verdict d'une réponse tapée.
-         *
-         * [acceptees] porte les autres réponses justes : sur une question à la
-         * glose, toute carte du paquet portant la glose affichée. Mesuré sur la
-         * réunion des viviers, 36,2 % des familles glosées partagent leur
-         * premier sens (neuf mots se glosent « présenter »), donc comparer à une
-         * seule chaîne refuserait une réponse juste. La phrase trouée, elle,
-         * désigne son mot : elle n'accepte que lui.
-         */
-        fun verdict(saisie: String, attendue: String, acceptees: Set<String> = emptySet()): Verdict {
-            val propre = saisie.trim()
-            if (propre.isEmpty()) return Verdict.FAUX
-            if (propre == attendue || propre in acceptees) return Verdict.EXACT
-            val plie = AccentTolerantMatcher.normalize(propre)
-            if (plie == AccentTolerantMatcher.normalize(attendue)) return Verdict.DETAIL
-            if (acceptees.any { plie == AccentTolerantMatcher.normalize(it) }) return Verdict.DETAIL
-            return Verdict.FAUX
-        }
-
-        /**
-         * Les autres réponses justes d'une question, prises dans le paquet du
-         * joueur.
-         *
-         * Le paquet, et non le dictionnaire : accepter n'importe quel synonyme
-         * de la langue demanderait une table de sens que nous n'avons pas, alors
-         * qu'une carte du carnet portant la même glose est, elle, une réponse que
-         * le joueur avait toute raison de donner.
-         */
-        fun acceptees(question: QuestionRevision, paquet: List<ContenuCarte>): Set<String> {
-            if (question.forme != FormeQuestion.GLOSE) return emptySet()
-            val glose = question.contenu.glose
-            if (glose.isEmpty()) return emptySet()
-            return paquet.filterTo(HashSet()) { it.glose == glose }.mapTo(HashSet()) { it.carte.forme }
-        }
     }
 }

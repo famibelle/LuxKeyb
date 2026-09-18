@@ -26,8 +26,7 @@ import kotlin.math.abs
  * manquait pas un décor, il manquait **la première moitié du geste**.
  *
  * Ce dos-ci est donc la face question. « Verso » n'y veut pas dire « caché » :
- * en [FormeQuestion.RECONNAISSANCE], le dos porte le mot luxembourgeois et le
- * recto son sens.
+ * le dos porte le mot luxembourgeois et le recto son sens.
  *
  * ## Ce qu'un dos de révision n'a pas le droit de dire
  *
@@ -86,9 +85,6 @@ class DosRevision(context: Context) : Carton(context) {
     private val angleBleu: Path
     private val fond: LinearGradient
 
-    /** Le panneau de saisie n'est tracé que si quelque chose s'y écrit. */
-    var avecArdoise = false
-
     init {
         setWillNotDraw(false)
         angleRouge = angleHautGauche()
@@ -139,10 +135,6 @@ class DosRevision(context: Context) : Carton(context) {
      * à la main : un dos dont le nombre de crans suivrait la rareté dirait
      * « ce mot est difficile » par le pouce au lieu de le dire par la
      * couleur, ce qui serait la même fuite déguisée en autre sens.
-     *
-     * L'ardoise ne compte que si elle est tracée : une question de
-     * reconnaissance n'a pas de panneau, et le doigt n'a donc rien à y
-     * trouver. Ça ne trahit rien — la forme de la question est déjà lisible.
      */
     override fun aretes(y: Float): FloatArray {
         val l = Ornement.LARGEUR
@@ -153,10 +145,6 @@ class DosRevision(context: Context) : Carton(context) {
         obliqueHaute(brut, y, ANGLE_HAUT - RETRAIT_X, ANGLE_BAS - RETRAIT_Y)
         obliqueBasse(brut, y, ANGLE_HAUT, ANGLE_BAS)
         obliqueBasse(brut, y, ANGLE_HAUT - RETRAIT_X, ANGLE_BAS - RETRAIT_Y)
-        if (avecArdoise && y > Ornement.PANNEAU.top && y < Ornement.PANNEAU.bottom) {
-            brut.add(Ornement.PANNEAU.left)
-            brut.add(Ornement.PANNEAU.right)
-        }
         return Ornement.crans(brut)
     }
 
@@ -241,21 +229,6 @@ class DosRevision(context: Context) : Carton(context) {
                 marque, null, RectF(gauche, haut, gauche + cote, haut + cote), pinceau
             )
             pinceau.alpha = 255
-        }
-
-        if (avecArdoise) {
-            // L'ardoise est creusée à l'emplacement du panneau de texte du
-            // recto : ce que le joueur tape apparaît exactement là où le sens
-            // du mot l'attend de l'autre côté.
-            pinceau.style = Paint.Style.FILL
-            pinceau.color = BLANC
-            pinceau.alpha = 235
-            canvas.drawRoundRect(Ornement.PANNEAU, 9f, 9f, pinceau)
-            pinceau.alpha = 255
-            pinceau.style = Paint.Style.STROKE
-            pinceau.strokeWidth = 1.4f
-            pinceau.color = OR
-            canvas.drawRoundRect(Ornement.PANNEAU, 9f, 9f, pinceau)
         }
 
         // Le bord, au même retrait que celui de la face.

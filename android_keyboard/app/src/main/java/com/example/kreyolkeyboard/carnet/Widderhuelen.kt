@@ -104,25 +104,9 @@ object Widderhuelen {
      */
     fun apresEchec(boite: Int): Int = 0
 
-    /**
-     * La boîte d'une carte selon le verdict, et c'est ici que se tient la règle
-     * de l'accent.
-     *
-     * [Verdict.DETAIL] — juste à un accent ou à une majuscule près — compte
-     * comme réussi mais **ne promeut pas** : le mot était su, son orthographe
-     * ne l'était pas, et la carte revient au rythme de sa boîte actuelle. C'est
-     * le seul endroit de l'application où l'accent et la majuscule sont l'objet
-     * de la question plutôt qu'un détail de rendu ; les laisser promouvoir
-     * enseignerait la faute que le jeu existe pour corriger.
-     *
-     * Cette fonction existe pour que le verdict à trois valeurs atteigne le
-     * modèle. Il était calculé, affiché, puis réduit à un booléen une ligne
-     * avant d'être enregistré — si bien que `greng` pour `gréng` faisait monter
-     * la carte, à l'inverse de ce que le journal des versions annonçait.
-     */
+    /** La boîte d'une carte selon ce que le joueur a répondu. */
     fun apresVerdict(boite: Int, verdict: Verdict): Int = when (verdict) {
         Verdict.EXACT -> apresReussite(boite)
-        Verdict.DETAIL -> boite.coerceAtMost(BOITE_ACQUISE)
         Verdict.FAUX -> apresEchec(boite)
     }
 

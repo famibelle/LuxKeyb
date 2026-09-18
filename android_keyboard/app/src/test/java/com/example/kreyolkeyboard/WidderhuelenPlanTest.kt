@@ -120,41 +120,12 @@ class WidderhuelenPlanTest {
     }
 
     @Test
-    fun `presque juste ne fait pas monter la carte`() {
-        // La règle que le journal des versions annonce : une réponse juste à un
-        // accent ou à une majuscule près compte comme réussie, la différence est
-        // montrée, **et la carte ne monte pas de boîte**. C'est le seul endroit
-        // de l'application où l'accent et la majuscule sont l'objet de la
-        // question ; les laisser promouvoir enseignerait la faute que le jeu
-        // existe pour corriger.
-        //
-        // Le verdict était calculé et affiché, puis réduit à un booléen une
-        // ligne avant d'atteindre le carnet : « presque » promouvait donc comme
-        // « exact ». Ce test gèle les trois issues.
+    fun `le verdict fait monter ou retomber la carte`() {
         assertEquals(3, Widderhuelen.apresVerdict(2, Verdict.EXACT))
-        assertEquals(2, Widderhuelen.apresVerdict(2, Verdict.DETAIL))
         assertEquals(0, Widderhuelen.apresVerdict(2, Verdict.FAUX))
-
-        // « Presque » ne descend pas non plus : le mot était su.
-        assertEquals(0, Widderhuelen.apresVerdict(0, Verdict.DETAIL))
-
-        // Et il n'acquiert jamais une carte par la bande, même au sommet.
-        val sommet = Widderhuelen.BOITE_ACQUISE - 1
-        assertEquals(sommet, Widderhuelen.apresVerdict(sommet, Verdict.DETAIL))
         assertEquals(
             Widderhuelen.BOITE_ACQUISE,
-            Widderhuelen.apresVerdict(sommet, Verdict.EXACT)
-        )
-    }
-
-    @Test
-    fun `presque fait revenir la carte au rythme de sa boite`() {
-        // Ni punie ni promue : elle revient quand sa boîte actuelle le veut.
-        val boite = 3
-        val apres = Widderhuelen.apresVerdict(boite, Verdict.DETAIL)
-        assertEquals(
-            100 + Widderhuelen.INTERVALLES[boite],
-            Widderhuelen.echeance(100, apres)
+            Widderhuelen.apresVerdict(Widderhuelen.BOITE_ACQUISE - 1, Verdict.EXACT)
         )
     }
 

@@ -1,6 +1,5 @@
 package com.example.kreyolkeyboard
 
-import com.example.kreyolkeyboard.carnet.SessionWidderhuelen
 import org.json.JSONObject
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -9,19 +8,17 @@ import java.io.File
 /**
  * Une carte du carnet peut-elle devenir une carte de révision ?
  *
- * La révision ne lit aucun actif à elle : elle se sert de ce que le carnet
- * affiche déjà, la glose de `luxemburgish_translations.json` et la phrase de
+ * La révision ne lit aucun actif à elle : la carte qu'elle révèle affiche la
+ * glose de `luxemburgish_translations.json` et la phrase de
  * `luxemburgish_exemples.json`. C'est précisément ce qui la rend fragile en
- * silence. Une régénération qui perdrait les phrases d'exemple ferait basculer
- * **toutes** les cartes de production sur le repli français sans rien casser :
- * l'application tournerait, les sessions se joueraient, et la seule forme de
- * question qui fait produire l'orthographe aurait disparu.
+ * silence : une régénération qui perdrait l'une ou l'autre retournerait des
+ * cartes muettes sans rien casser.
  *
  * Les seuils sont sous les valeurs mesurées le 12 septembre 2026 sur les trois
  * viviers de contenu (3 246 formes des grilles de Kräizwuert et de Wuertplaz, et
  * des réponses de Wuertlück) : 97,3 % glosées, 89,1 % à glose instructive,
- * 97,2 % illustrées, 93,3 % dont la phrase peut être trouée. Ils laissent de la
- * marge à une régénération normale et ne survivent pas à un effondrement.
+ * 97,2 % illustrées. Ils laissent de la marge à une régénération normale et ne
+ * survivent pas à un effondrement.
  */
 class CarnetRevisionAssetTest {
 
@@ -74,11 +71,6 @@ class CarnetRevisionAssetTest {
         fun representant(mot: String): String =
             representantDe[mot] ?: representantDe[mot.lowercase()] ?: mot
 
-        fun autresFormes(mot: String): List<String> {
-            val rep = representant(mot)
-            return (listOf(rep) + (formesDe[rep] ?: emptyList())).distinct().filter { it != mot }
-        }
-
         fun premierExemple(mot: String): String? {
             val rep = representant(mot)
             return (exemples[rep] ?: exemples[mot])?.firstOrNull()
@@ -124,34 +116,13 @@ class CarnetRevisionAssetTest {
         var glosees = 0
         var instructives = 0
         var illustrees = 0
-        var trouables = 0
-        var surLaFormeMeme = 0
         formes.forEach { forme ->
             val glose = dico.glose(forme)
             if (glose.isNotEmpty()) {
                 glosees++
                 if (instructive(forme, glose)) instructives++
             }
-            val phrase = dico.premierExemple(forme)
-            if (phrase != null) {
-                illustrees++
-                // La vraie question n'est pas « y a-t-il une phrase » mais
-                // « peut-on la trouer » : c'est la fonction livrée qui répond,
-                // rejouée ici sur les phrases réelles.
-                val trouee = SessionWidderhuelen.phraseATrous(
-                    phrase, forme, dico.autresFormes(forme)
-                )
-                if (trouee != null) {
-                    trouables++
-                    // Et la question la plus utile : le trou porte-t-il sur le
-                    // mot de la carte, ou sur une forme sœur ? Le second cas
-                    // reste une vraie question — la phrase réclame alors la
-                    // forme qu'elle porte — mais il est bien plus fréquent que
-                    // le taux de « trouables » ne le laisse croire, et c'est ce
-                    // que ce compteur garde sous les yeux.
-                    if (trouee.motMasque == forme) surLaFormeMeme++
-                }
-            }
+            if (dico.premierExemple(forme) != null) illustrees++
         }
 
         val n = formes.size
@@ -159,38 +130,5 @@ class CarnetRevisionAssetTest {
         assertTrue("glosées : ${part(glosees)} %", part(glosees) >= 93.0)
         assertTrue("gloses instructives : ${part(instructives)} %", part(instructives) >= 85.0)
         assertTrue("illustrées : ${part(illustrees)} %", part(illustrees) >= 93.0)
-        assertTrue("phrases trouables : ${part(trouables)} %", part(trouables) >= 88.0)
-        // Mesuré à l'écriture : 57 % des formes voient leur premier exemple
-        // porter leur propre graphie ; pour le reste, la phrase illustre une
-        // forme sœur et c'est elle que la question réclame. Le seuil est bas
-        // exprès — il n'est pas là pour exiger mieux, mais pour signaler si la
-        // proportion s'effondrait, auquel cas presque toutes les questions
-        // porteraient sur un autre mot que celui de la carte.
-        assertTrue(
-            "trous portant sur la forme de la carte : ${part(surLaFormeMeme)} %",
-            part(surLaFormeMeme) >= 45.0
-        )
-    }
-
-    @Test
-    fun `une phrase trouee ne laisse jamais le mot en clair`() {
-        // Le défaut qu'un troage raté produirait : une question dont la réponse
-        // est écrite dedans. Vérifié sur les phrases réelles des grilles, où
-        // les répétitions et les mots composés sont fréquents.
-        val dico = dictionnaire()
-        val formes = formesDeGrilles("luxemburgish_crossword.json").take(400)
-        var verifiees = 0
-        formes.forEach { forme ->
-            val phrase = dico.premierExemple(forme) ?: return@forEach
-            val trouee = SessionWidderhuelen.phraseATrous(phrase, forme, emptyList())
-                ?: return@forEach
-            verifiees++
-            val motsRestants = trouee.texte.split(Regex("[^\\p{L}]+")).filter { it.isNotEmpty() }
-            assertTrue(
-                "« $forme » reste en clair dans « ${trouee.texte} »",
-                motsRestants.none { AccentTolerantMatcher.normalize(it) == AccentTolerantMatcher.normalize(forme) }
-            )
-        }
-        assertTrue("aucune phrase vérifiée", verifiees > 100)
     }
 }

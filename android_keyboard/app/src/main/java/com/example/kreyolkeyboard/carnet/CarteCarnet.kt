@@ -188,8 +188,7 @@ object CarteCarnet {
      * chose que le carnet connaissait déjà :
      *
      * - la **gemme de coût**, c'est la longueur du mot — le seul chiffre qui
-     *   mesure un effort réel, celui qu'il faudra taper lettre à lettre quand
-     *   la carte passera en production ;
+     *   mesure un effort réel ;
      * - la **pastille de nature**, sous la plaque, dit ce qu'est le mot. Elle
      *   nommait « Substantif · Wuertsich » d'un seul trait avec la provenance,
      *   et le point médian laissait deviner lequel des deux mots disait quoi.

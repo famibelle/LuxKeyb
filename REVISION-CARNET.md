@@ -104,6 +104,13 @@ Pourquoi pas mieux :
 
 ## 4. La question : la boîte décide, pas le joueur
 
+> **Abandonné le 18 septembre 2026.** La révision est une flashcard
+> pour toutes les boîtes : le dos porte le mot, on retourne la carte, on se note
+> « Je savais » ou « Pas su ». La saisie des boîtes 2 et plus, décrite ci-dessous,
+> a été retirée à la demande du propriétaire : le carnet est une mécanique de
+> flashcards, pas un exercice d'écriture. La section est gardée comme trace de
+> ce qui a été essayé.
+
 Trois formes, dans l'ordre où la mémoire les supporte (reconnaître avant
 produire) :
 

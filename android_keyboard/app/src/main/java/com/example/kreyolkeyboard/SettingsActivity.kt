@@ -2903,7 +2903,7 @@ class SettingsActivity : AppCompatActivity() {
             "1. Le mot, tel que vous l'avez rencontré dans le jeu, avec sa majuscule s'il " +
                     "s'agit d'un nom.\n\n" +
                     "2. La pastille ronde : le nombre de lettres du mot. « Waasser » en " +
-                    "compte 7, autant qu'il faudra en taper pour le réviser.\n\n" +
+                    "compte 7.\n\n" +
                     "3. L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
                     "territoire, économie, temps et mesure…), et son motif est tiré des lettres " +
                     "du mot, si bien qu'un même mot donne toujours la même image. Quelques " +

@@ -1709,8 +1709,8 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * carnet, la pochette : là, la largeur commande et la hauteur suit, et
      * c'est le défilement qui absorbe le reste.
      *
-     * Vrai en révision, où le carton partage l'écran avec un pavé de touches
-     * et doit se contenter de ce qui reste. C'est une option et non la règle
+     * Vrai en révision, où le carton partage l'écran avec ses boutons et doit
+     * se contenter de ce qui reste. C'est une option et non la règle
      * parce qu'un carton qui rétrécirait partout rétrécirait aussi dans un
      * `ScrollView`, dont la hauteur proposée ne veut rien dire.
      */

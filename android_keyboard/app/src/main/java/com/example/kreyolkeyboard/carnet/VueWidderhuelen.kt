@@ -16,7 +16,6 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.example.kreyolkeyboard.crossword.CrosswordData
 import kotlin.math.hypot
 
 /**
@@ -41,33 +40,22 @@ import kotlin.math.hypot
  *
  * - l'en-tête, fixe ;
  * - **la scène**, qui prend tout ce qui reste et ne contient que le carton ;
- * - **le bas**, qui porte ce qui n'est pas la carte : le pavé, les boutons.
+ * - **le bas**, qui porte ce qui n'est pas la carte : les boutons.
  *
  * C'est la scène qui décide de la taille du carton, via
- * [Carton.ajusteALaHauteur] : une question tapée laisse moins de place qu'une
- * question de reconnaissance, et une carte révélée, dont le pavé a disparu,
- * en retrouve. Le carton grandit donc au moment où il est de profil, c'est-
- * à-dire invisible — même rapport, même rayon, même ombre, seulement vu de
- * plus près.
+ * [Carton.ajusteALaHauteur].
  *
- * ## Trois choix d'écran qui ne vont pas de soi
+ * ## Une flashcard, pour toutes les boîtes
  *
- * - **Le pavé est celui de Kräizwuert, avec une touche `⇧` en plus.** Kräizwuert
- *   laisse volontairement vide l'emplacement de la majuscule, sa grille étant
- *   tout en capitales ; ici la majuscule de substantif est **l'objet de la
- *   question**, donc elle doit pouvoir être produite. La touche reprend
- *   exactement la place qu'elle occupe sur le clavier, et les rangées gardent
- *   leur alignement. Voir [CrosswordData.RANGEES] pour le reste du
- *   raisonnement, qui vaut ici mot pour mot : le jeu entraîne les positions de
- *   doigts dont on se sert en écrivant un message.
- * - **L'ardoise est sur la carte**, à l'emplacement du panneau de texte du
- *   recto ([Ornement.PANNEAU_TEXTE]). Ce que le joueur tape apparaît donc
- *   exactement là où le sens du mot l'attend de l'autre côté du carton — et
- *   ça libère du même coup la hauteur qu'une ardoise séparée prenait au pavé.
- * - **La carte révélée est celle du carnet** ([CarteCarnet.complete]), pas un
- *   recto écrit pour l'occasion. C'est la même carte que le joueur a gagnée,
- *   avec sa glose, sa phrase, sa famille et sa rareté : la révision montre la
- *   collection, elle ne la double pas.
+ * Le dos porte le mot seul ; on retourne la carte, d'un appui sur elle ou par
+ * le bouton, et on se note « Je savais » ou « Pas su ». De la 22.0.0 à la
+ * 23.0.0, les boîtes 2 et plus faisaient taper le mot sur un pavé, dans la
+ * phrase du LOD trouée : c'est retiré, la révision reste une flashcard.
+ *
+ * La carte révélée est celle du carnet ([CarteCarnet.complete]), pas un recto
+ * écrit pour l'occasion. C'est la même carte que le joueur a gagnée, avec sa
+ * glose, sa phrase, sa famille et sa rareté : la révision montre la
+ * collection, elle ne la double pas.
  */
 class VueWidderhuelen(
     private val hote: ViewGroup,
@@ -107,24 +95,9 @@ class VueWidderhuelen(
     }
     private lateinit var tvProgres: TextView
 
-    private var saisie = StringBuilder()
-    private var majuscule = false
-    private var ardoise: TextView? = null
     private var dos: DosRevision? = null
 
     private fun dp(v: Float) = (v * d).toInt()
-
-    /**
-     * La hauteur des touches, selon ce que l'écran peut céder.
-     *
-     * Le carton et un pavé de quatre rangées se disputent la même colonne, et
-     * c'est le carton qui perd : il prend ce qui reste. Sous 620 dp de haut,
-     * ce reste devient trop petit pour que la question s'y lise, et quatre
-     * millimètres pris à chaque rangée valent mieux qu'un énoncé de six
-     * pixels. Au-dessus, rien ne change.
-     */
-    private val hauteurTouche =
-        if (ctx.resources.displayMetrics.heightPixels / d < 620f) 5f else 9f
 
     /**
      * Ouvre la session.
@@ -204,47 +177,24 @@ class VueWidderhuelen(
     // ------------------------------------------------------------------ états
 
     /**
-     * La question, écrite sur le dos du carton.
-     *
-     * Les trois formes partagent la même carte et les mêmes emplacements :
-     * la consigne sur la plaque de nom — au milieu du carton depuis qu'elle y
-     * est passée sur la face —, l'énoncé au-dessus d'elle, et, pour les deux
-     * formes tapées, l'ardoise dans le panneau de texte. L'énoncé s'arrête à
-     * [Ornement.ENONCE_DOS] et non au bas de la fenêtre : sur la face, la
-     * plaque recouvre l'ouverture ; ici, rien ne cache deux textes l'un sur
-     * l'autre.
+     * La question, écrite sur le dos du carton : la consigne sur la plaque de
+     * nom, le mot au-dessus d'elle.
      */
     private fun afficherQuestion() {
         val q = session.courante ?: return afficherBilan()
-        saisie = StringBuilder()
-        // La majuscule n'est jamais préarmée, même pour un substantif : la
-        // produire fait partie de la question.
-        majuscule = false
         tvProgres.text = "${session.rang} / ${session.total}"
 
-        val tapee = q.forme != FormeQuestion.RECONNAISSANCE
-        val carton = DosRevision(ctx).apply { avecArdoise = tapee }
-
+        val carton = DosRevision(ctx)
         carton.posee(
-            ligne(
-                when (q.forme) {
-                    FormeQuestion.RECONNAISSANCE -> "Vous souvenez-vous ?"
-                    FormeQuestion.PHRASE_A_TROUS -> "Quel mot manque ?"
-                    FormeQuestion.GLOSE -> "Comment l'écrit-on ?"
-                },
-                taille = 13f, couleur = ENCRE, gras = true
-            ),
+            ligne("Vous souvenez-vous ?", taille = 13f, couleur = ENCRE, gras = true),
             Ornement.PLAQUE
         )
-        carton.posee(enonce(q), Ornement.ENONCE_DOS)
-
-        if (tapee) {
-            val vue = bloc("…", 22f, Carnet.COULEUR, gras = true).apply { maxLines = 2 }
-            ardoise = vue
-            carton.posee(vue, Ornement.PANNEAU_TEXTE)
-        } else {
-            ardoise = null
-        }
+        // Le mot ne prend **pas** la couleur de son jeu : sur un dos, elle
+        // trahirait la provenance de la carte, et le paquet mélange les sept.
+        carton.posee(
+            bloc(q.mot, 32f, ENCRE, gras = true).apply { maxLines = 2 },
+            Ornement.ENONCE_DOS
+        )
 
         poserCarton(carton)
         // Le dos entre sans animation : rien n'écrit dans sa rotation, il
@@ -255,11 +205,9 @@ class VueWidderhuelen(
         dos = carton
 
         bas.removeAllViews()
-        if (tapee) construireSaisie(q) else {
-            val retourner = { revelation(q, verdict = null) }
-            bas.addView(bouton("Retourner la carte", Carnet.COULEUR) { retourner() })
-            retournementAuPouce(carton, retourner)
-        }
+        val retourner = { revelation(q) }
+        bas.addView(bouton("Retourner la carte", Carnet.COULEUR) { retourner() })
+        retournementAuPouce(carton, retourner)
     }
 
     /**
@@ -286,11 +234,6 @@ class VueWidderhuelen(
      * - **Un seul retournement.** `dos` est lâché dès l'entrée de [revelation],
      *   pour la raison qui y est écrite ; le comparer ici suffit à ce qu'un
      *   deuxième appui pendant l'animation ne relance rien.
-     *
-     * Le geste n'est armé que sur une question de reconnaissance. Sur une
-     * question tapée, le carton porte l'ardoise et la réponse se juge : un
-     * appui qui révélerait la carte n'y serait pas un retournement mais un
-     * abandon, et il arriverait sous le pouce qui vise le pavé.
      */
     @SuppressLint("ClickableViewAccessibility")
     private fun retournementAuPouce(carton: DosRevision, action: () -> Unit) {
@@ -318,85 +261,11 @@ class VueWidderhuelen(
         }
     }
 
-    /**
-     * L'énoncé, dans l'ouverture d'illustration.
-     *
-     * Le mot d'une question de reconnaissance ne prend **pas** la couleur de
-     * son jeu, contrairement à ce que faisait l'ancien écran. Sur un dos, une
-     * couleur de jeu trahit la provenance de la carte, et le paquet mélange
-     * les sept : le joueur y lirait un indice avant d'avoir cherché.
-     */
-    private fun enonce(q: QuestionRevision): View = LinearLayout(ctx).apply {
-        orientation = LinearLayout.VERTICAL
-        gravity = Gravity.CENTER
-        when (q.forme) {
-            FormeQuestion.RECONNAISSANCE ->
-                addView(bloc(q.motAttendu, 32f, ENCRE, gras = true).apply { maxLines = 2 })
-            FormeQuestion.GLOSE ->
-                addView(bloc(q.contenu.glose, 20f, ENCRE, gras = true).apply { maxLines = 4 })
-            FormeQuestion.PHRASE_A_TROUS -> {
-                addView(
-                    bloc("« ${q.phraseTrouee ?: ""} »", 15f, ENCRE, gras = false).apply {
-                        setTypeface(null, Typeface.ITALIC)
-                        maxLines = 5
-                    }
-                )
-                // Quand la phrase réclame une forme sœur, le dire : sans cela
-                // le joueur cherche le mot de sa carte et se trompe sans
-                // comprendre pourquoi.
-                if (q.demandeUneAutreForme) {
-                    addView(
-                        bloc(
-                            "une forme de « ${q.contenu.carte.forme} »",
-                            11f, ENCRE_PALE, gras = false, margeHaute = 8f
-                        ).apply { maxLines = 2 }
-                    )
-                }
-            }
-        }
-    }
-
-    /** Le pavé et le bouton de validation, sous la carte. */
-    private fun construireSaisie(q: QuestionRevision) {
-        val pave = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
-        bas.addView(pave)
-
-        val valider = bouton("Valider", Carnet.COULEUR) {
-            val verdict = SessionWidderhuelen.verdict(
-                saisie.toString(),
-                q.motAttendu,
-                SessionWidderhuelen.acceptees(q, paquet)
-            )
-            revelation(q, verdict)
-        }.apply { (layoutParams as LinearLayout.LayoutParams).topMargin = dp(8f) }
-        bas.addView(valider)
-
-        fun rafraichir() {
-            ardoise?.text = if (saisie.isEmpty()) "…" else saisie.toString()
-            valider.isEnabled = saisie.isNotEmpty()
-            valider.alpha = if (saisie.isEmpty()) 0.4f else 1f
-        }
-        construirePave(pave) { rafraichir() }
-        rafraichir()
-    }
-
-    /**
-     * La carte révélée, et ce que la réponse valait.
-     *
-     * En reconnaissance, le joueur se note lui-même après avoir vu la carte.
-     * En production, le verdict est déjà connu, et c'est la carte qui explique
-     * ce qui manquait.
-     */
-    private fun revelation(q: QuestionRevision, verdict: Verdict?) {
+    /** La carte révélée : le joueur se note lui-même après l'avoir vue. */
+    private fun revelation(q: QuestionRevision) {
         val poser = {
             bas.removeAllViews()
-            verdict?.let {
-                bas.addView(bandeauVerdict(it, q).apply {
-                    (layoutParams as LinearLayout.LayoutParams).bottomMargin = dp(10f)
-                })
-            }
-            if (verdict == null) {
-                bas.addView(LinearLayout(ctx).apply {
+            bas.addView(LinearLayout(ctx).apply {
                     orientation = LinearLayout.HORIZONTAL
                     layoutParams = pleineLargeur()
                     addView(bouton("Pas su", 0xFFB0575E.toInt()) { noter(q, Verdict.FAUX) }.apply {
@@ -410,18 +279,13 @@ class VueWidderhuelen(
                         }
                     })
                 })
-            } else {
-                bas.addView(bouton("Suivant", Carnet.COULEUR) { noter(q, verdict) })
-            }
 
             val recto = CarteCarnet.complete(ctx, q.contenu)
             poserCarton(recto)
             val armer = { (recto as? Carton)?.sensibleAuDoigt = true }
             if (recto is Carton && !Pochette.animationsReduites(ctx)) {
                 recto.rotationY = -90f
-                // Le second temps n'est lancé qu'une fois la scène remesurée :
-                // le pavé vient de disparaître, et c'est cette mesure-là qui
-                // donne au recto la largeur que le dos n'avait pas.
+                // Le second temps n'est lancé qu'une fois la scène remesurée.
                 recto.post {
                     recto.animate().rotationY(0f).setDuration(220)
                         .setInterpolator(DecelerateInterpolator())
@@ -431,8 +295,8 @@ class VueWidderhuelen(
             } else armer()
         }
 
-        // Lâché tout de suite : un second appui sur « Valider » pendant le
-        // retournement relancerait sinon un deuxième geste sur la même vue.
+        // Lâché tout de suite : un second appui pendant le retournement
+        // relancerait sinon un deuxième geste sur la même vue.
         val sortant = dos
         dos = null
         if (sortant == null || Pochette.animationsReduites(ctx)) {
@@ -463,68 +327,10 @@ class VueWidderhuelen(
         ))
     }
 
-    /**
-     * Le bandeau de verdict.
-     *
-     * [Verdict.DETAIL] porte la seule chose qu'il faut dire : la forme exacte,
-     * en face de ce qui a été tapé. La carte ne monte pas de boîte, et le dire
-     * évite de faire passer pour une brimade ce qui est la leçon.
-     */
-    private fun bandeauVerdict(verdict: Verdict, q: QuestionRevision): View {
-        val (couleur, titre, detail) = when (verdict) {
-            Verdict.EXACT -> Triple(0xFF2E7D32.toInt(), "Exact", null)
-            Verdict.DETAIL -> Triple(
-                0xFFEF6C00.toInt(), "Presque",
-                "Vous avez écrit « ${saisie} », le mot s'écrit « ${q.motAttendu} ». " +
-                    "La carte reste dans sa boîte."
-            )
-            Verdict.FAUX -> Triple(
-                0xFFB0575E.toInt(), "Pas cette fois",
-                "Le mot était « ${q.motAttendu} »."
-            )
-        }
-        return LinearLayout(ctx).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = pleineLargeur()
-            setPadding(dp(14f), dp(10f), dp(14f), dp(10f))
-            background = GradientDrawable().apply {
-                cornerRadius = 12f * d
-                setColor(Color.WHITE)
-                setStroke(dp(2f), couleur)
-            }
-            addView(TextView(ctx).apply {
-                text = titre
-                textSize = 16f
-                setTypeface(null, Typeface.BOLD)
-                setTextColor(couleur)
-            })
-            detail?.let {
-                addView(TextView(ctx).apply {
-                    layoutParams = pleineLargeur().apply { topMargin = dp(4f) }
-                    text = it
-                    textSize = 13f
-                    setTextColor(Color.parseColor("#424242"))
-                    setLineSpacing(0f, 1.2f)
-                })
-            }
-        }
-    }
-
-    /**
-     * Enregistre la réponse.
-     *
-     * La session ne compte que réussi ou raté — c'est le score de la manche, et
-     * un « presque » y est une réussite. Le carnet, lui, reçoit le **verdict
-     * entier** : c'est de lui que dépend la boîte, et c'est là que
-     * [Verdict.DETAIL] cesse de promouvoir.
-     *
-     * La carte est identifiée par sa forme à elle, jamais par le mot demandé :
-     * une phrase trouée peut réclamer une autre forme de la famille, et
-     * l'enregistrement doit retomber sur la bonne carte.
-     */
+    /** Enregistre la réponse, et passe à la carte suivante. */
     private fun noter(q: QuestionRevision, verdict: Verdict) {
-        if (session.repondre(verdict != Verdict.FAUX)) {
-            surNotation(q.contenu.carte.forme, verdict)
+        if (session.repondre(verdict == Verdict.EXACT)) {
+            surNotation(q.mot, verdict)
         }
         afficherQuestion()
     }
@@ -590,100 +396,6 @@ class VueWidderhuelen(
         bas.addView(bouton("Fermer", Carnet.COULEUR) { fermer() })
     }
 
-    // ------------------------------------------------------------------- pavé
-
-    /**
-     * Le pavé, dans la disposition du clavier, avec `⇧` à sa place.
-     *
-     * Chaque rangée pèse dix unités comme celles du clavier, ce qui aligne les
-     * touches d'une rangée à l'autre : la troisième porte sept lettres entre
-     * `⇧` et `⌫`, tous deux d'une unité et demie, et la quatrième porte les
-     * quatre voyelles infléchies en touches doubles, centrées.
-     */
-    private fun construirePave(hote: LinearLayout, apresSaisie: () -> Unit) {
-        hote.removeAllViews()
-        val touchesLettres = ArrayList<Pair<TextView, Char>>()
-
-        fun majuscules(actif: Boolean) {
-            majuscule = actif
-            touchesLettres.forEach { (vue, lettre) ->
-                vue.text = (if (actif) lettre.uppercaseChar() else lettre.lowercaseChar()).toString()
-            }
-        }
-
-        CrosswordData.RANGEES.forEachIndexed { rang, rangee ->
-            val ligne = LinearLayout(ctx).apply {
-                layoutParams = pleineLargeur().apply { bottomMargin = dp(5f) }
-                orientation = LinearLayout.HORIZONTAL
-            }
-            val poids = if (rang == CrosswordData.RANGEE_ACCENTS) 2f else 1f
-
-            if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                ligne.addView(touche("⇧", 1.5f) {
-                    majuscules(!majuscule)
-                })
-            } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                ligne.addView(espaceur(1f))
-            }
-
-            rangee.forEach { lettre ->
-                val vue = touche(lettre.lowercaseChar().toString(), poids) {
-                    saisie.append(if (majuscule) lettre.uppercaseChar() else lettre.lowercaseChar())
-                    // Une majuscule ne vaut que pour la lettre suivante, comme
-                    // sur le clavier.
-                    if (majuscule) majuscules(false)
-                    apresSaisie()
-                }
-                touchesLettres.add(vue to lettre)
-                ligne.addView(vue)
-            }
-
-            if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                ligne.addView(touche("⌫", 1.5f) {
-                    if (saisie.isNotEmpty()) saisie.deleteCharAt(saisie.length - 1)
-                    apresSaisie()
-                })
-            } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                ligne.addView(espaceur(1f))
-            }
-
-            hote.addView(ligne)
-        }
-        majuscules(false)
-    }
-
-    private fun touche(libelle: String, poids: Float, action: () -> Unit) = TextView(ctx).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            0, LinearLayout.LayoutParams.WRAP_CONTENT, poids
-        ).apply { setMargins(dp(1.5f), 0, dp(1.5f), 0) }
-        text = libelle
-        textSize = 16f
-        gravity = Gravity.CENTER
-        setPadding(0, dp(hauteurTouche), 0, dp(hauteurTouche))
-        setTypeface(null, Typeface.BOLD)
-        setTextColor(Color.parseColor("#212121"))
-        background = GradientDrawable().apply {
-            cornerRadius = 8f * d
-            setColor(Color.WHITE)
-            setStroke(dp(1f), Color.parseColor("#D0D0D0"))
-        }
-        isClickable = true
-        setOnClickListener { action() }
-    }
-
-    /**
-     * Une cale de largeur, sans hauteur.
-     *
-     * Hauteur nulle et non `WRAP_CONTENT` : une `View` nue n'a pas de contenu à
-     * envelopper et prend toute la hauteur que son parent lui propose. Les deux
-     * cales de la rangée des voyelles infléchies gonflaient ainsi le pavé à
-     * 1 600 px, écrasaient la carte de la question à zéro et poussaient
-     * « Valider » hors de l'écran.
-     */
-    private fun espaceur(poids: Float) = View(ctx).apply {
-        layoutParams = LinearLayout.LayoutParams(0, 0, poids)
-    }
-
     // ------------------------------------------------------------- fabriques
 
     private fun pleineLargeur() = LinearLayout.LayoutParams(
@@ -720,8 +432,7 @@ class VueWidderhuelen(
         contenu: String,
         taille: Float,
         couleur: Int,
-        gras: Boolean,
-        margeHaute: Float = 0f
+        gras: Boolean
     ): TextView = TextView(ctx).apply {
         text = contenu
         setTextColor(couleur)
@@ -734,7 +445,7 @@ class VueWidderhuelen(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        tag = floatArrayOf(taille, margeHaute)
+        tag = floatArrayOf(taille, 0f)
     }
 
     private fun bouton(libelle: String, couleur: Int, action: () -> Unit) = TextView(ctx).apply {
@@ -755,6 +466,5 @@ class VueWidderhuelen(
 
     private companion object {
         const val ENCRE = 0xFF1B1610.toInt()
-        const val ENCRE_PALE = 0xFF7A7160.toInt()
     }
 }
