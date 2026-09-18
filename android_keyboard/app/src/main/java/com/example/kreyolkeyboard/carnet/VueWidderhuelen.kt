@@ -671,10 +671,17 @@ class VueWidderhuelen(
         setOnClickListener { action() }
     }
 
+    /**
+     * Une cale de largeur, sans hauteur.
+     *
+     * Hauteur nulle et non `WRAP_CONTENT` : une `View` nue n'a pas de contenu à
+     * envelopper et prend toute la hauteur que son parent lui propose. Les deux
+     * cales de la rangée des voyelles infléchies gonflaient ainsi le pavé à
+     * 1 600 px, écrasaient la carte de la question à zéro et poussaient
+     * « Valider » hors de l'écran.
+     */
     private fun espaceur(poids: Float) = View(ctx).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            0, LinearLayout.LayoutParams.WRAP_CONTENT, poids
-        )
+        layoutParams = LinearLayout.LayoutParams(0, 0, poids)
     }
 
     // ------------------------------------------------------------- fabriques
