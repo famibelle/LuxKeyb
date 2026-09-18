@@ -507,6 +507,46 @@ enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
         const val SEUIL_PEU_COMMUN = 6500
         const val SEUIL_RARE = 9000
 
+        /**
+         * L'intensité de la gemme d'un mot, de 0 (fréquent) à 1 (rare).
+         *
+         * Le palier est discret, quatre valeurs, alors que le rang est continu :
+         * le plus haut palier va du 9 000ᵉ mot aux hors-corpus, et seul le petit
+         * numéro du bas de carte distingue le 9 000ᵉ du 30 000ᵉ. La gemme
+         * comble ce trou sans rien inventer : la teinte reste celle du champ
+         * du mot, et seuls la saturation et l'éclat suivent le rang.
+         *
+         * La courbe est **monotone à travers les paliers** : un mot à 8 999 n'est
+         * jamais plus vif qu'un mot à 9 000, sinon la gemme contredirait le
+         * métal. Elle est affine par morceaux, avec un nœud à chaque seuil, donc
+         * un palier occupe toujours la même plage de vivacité. Au-delà de 30 000
+         * et hors corpus, la gemme est à son maximum.
+         */
+        fun intensitePourRang(rang: Int?): Float {
+            if (rang == null) return 1f
+            for (i in 1 until NOEUDS_RANG.size) {
+                if (rang < NOEUDS_RANG[i]) {
+                    val t = (rang - NOEUDS_RANG[i - 1]).toFloat() / (NOEUDS_RANG[i] - NOEUDS_RANG[i - 1])
+                    return NOEUDS_INTENSITE[i - 1] + t * (NOEUDS_INTENSITE[i] - NOEUDS_INTENSITE[i - 1])
+                }
+            }
+            return 1f
+        }
+
+        /**
+         * L'intensité d'un numéral, qui n'a pas de rang : la moyenne de son
+         * palier, lu sur la même échelle que [intensitePourRang].
+         */
+        fun intensitePourPalier(rarete: Rarete): Float = when (rarete) {
+            COMMUN -> 0.15f
+            PEU_COMMUN -> 0.42f
+            RARE -> 0.65f
+            TRES_RARE -> 0.9f
+        }
+
+        private val NOEUDS_RANG = intArrayOf(0, SEUIL_COMMUN, SEUIL_PEU_COMMUN, SEUIL_RARE, 30_000)
+        private val NOEUDS_INTENSITE = floatArrayOf(0f, 0.30f, 0.55f, 0.75f, 1f)
+
         fun pourRang(rang: Int?): Rarete = when {
             rang == null -> TRES_RARE
             rang < SEUIL_COMMUN -> COMMUN

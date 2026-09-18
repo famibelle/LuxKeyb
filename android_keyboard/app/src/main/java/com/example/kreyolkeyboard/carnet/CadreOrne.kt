@@ -1306,23 +1306,31 @@ object Ornement {
      * celle-ci était en haut. L'**agrafe** pend sous la plaque, en plus
      * petit, en ovale, et avec un chaton plus mince : voir [CREUX_AGRAFE].
      */
-    fun degradeGemme(teinte: Float, r: RectF = GEMME, creux: Float = 4f): RadialGradient {
+    fun degradeGemme(
+        teinte: Float, r: RectF = GEMME, creux: Float = 4f, intensite: Float = 0.5f
+    ): RadialGradient {
         val gx = r.centerX()
         val gy = r.centerY()
         val gr = r.height() / 2f - creux
+        // L'intensité ne touche que la saturation, jamais la teinte (c'est celle
+        // du champ) ni la valeur : le chiffre blanc du coût est posé sur le ton
+        // moyen, et une pierre plus claire le lirait mal.
         return RadialGradient(
             gx - gr * 0.3f, gy - gr * 0.35f, gr * 1.4f,
             intArrayOf(
-                Color.HSVToColor(floatArrayOf(teinte, 0.30f, 1f)),
-                Color.HSVToColor(floatArrayOf(teinte, 0.70f, 0.72f)),
-                Color.HSVToColor(floatArrayOf(teinte, 0.85f, 0.34f))
+                Color.HSVToColor(floatArrayOf(teinte, lerp(0.18f, 0.34f, intensite), 1f)),
+                Color.HSVToColor(floatArrayOf(teinte, lerp(0.50f, 0.88f, intensite), 0.72f)),
+                Color.HSVToColor(floatArrayOf(teinte, lerp(0.70f, 0.95f, intensite), 0.34f))
             ),
             floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
         )
     }
 
+    private fun lerp(a: Float, b: Float, t: Float) = a + (b - a) * t.coerceIn(0f, 1f)
+
     fun dessinerGemme(
-        c: Canvas, p: Paint, degrade: RadialGradient, r: RectF = GEMME, creux: Float = 4f
+        c: Canvas, p: Paint, degrade: RadialGradient, r: RectF = GEMME, creux: Float = 4f,
+        intensite: Float = 0.5f
     ) {
         val gx = r.centerX()
         val gy = r.centerY()
@@ -1345,7 +1353,8 @@ object Ornement {
         c.drawCircle(gx, gy, gr - 0.6f, p)
 
         p.style = Paint.Style.FILL
-        p.color = 0x80FFFFFF.toInt()
+        // Le point de lumière suit l'intensité : une pierre rare brille plus.
+        p.color = (lerp(0x58.toFloat(), 0xC0.toFloat(), intensite).toInt() shl 24) or 0xFFFFFF
         c.save()
         c.rotate(-28f, gx - gr * 0.28f, gy - gr * 0.38f)
         c.drawOval(
@@ -2108,7 +2117,9 @@ class CarteOrnee(
     private val rarete: Rarete,
     private val vignette: Boolean,
     private val blason: Blasonnement = Blasonnement.AUCUN,
-    private val jeu: JeuCarte? = null
+    private val jeu: JeuCarte? = null,
+    /** De 0 (mot fréquent) à 1 (mot rare) : voir [Rarete.intensitePourRang]. */
+    private val intensite: Float = 0.5f
 ) : Carton(context) {
 
     override val hauteurUnites: Float =
@@ -2152,8 +2163,10 @@ class CarteOrnee(
         // un rangement et non comme un nuancier. Sans champ, rien ne change.
         teinte = Ornement.teinteDe(mot, blason.champ)
         degradeFace = Ornement.degradeFace(teinte, rarete, vignette)
-        degradeGemme = Ornement.degradeGemme(teinte)
-        degradeAgrafe = Ornement.degradeGemme(teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE)
+        degradeGemme = Ornement.degradeGemme(teinte, intensite = intensite)
+        degradeAgrafe = Ornement.degradeGemme(
+            teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE, intensite
+        )
         motif = Motif(mot, rarete, fenetre, blason)
         setWillNotDraw(false)
         clipChildren = false
@@ -2205,9 +2218,10 @@ class CarteOrnee(
         if (vignette) {
             Ornement.dessinerBoite(canvas, pinceau, boite)
         } else {
-            Ornement.dessinerGemme(canvas, pinceau, degradeGemme)
+            Ornement.dessinerGemme(canvas, pinceau, degradeGemme, intensite = intensite)
             Ornement.dessinerGemme(
-                canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE
+                canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE,
+                intensite
             )
             jeu?.let { Ornement.dessinerMedaillon(canvas, pinceau, it, Ornement.metal(rarete)) }
         }

@@ -210,7 +210,12 @@ object CarteCarnet {
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)
-        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = false, blason = c.blason, jeu = jeu)
+        val carte = CarteOrnee(
+            context, c.carte.forme, c.rarete, vignette = false, blason = c.blason, jeu = jeu,
+            // Un numéral n'a pas de rang : son palier lit l'orthographe.
+            intensite = if (c.carte.nombre != null) Rarete.intensitePourPalier(c.rarete)
+            else Rarete.intensitePourRang(c.rang)
+        )
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),

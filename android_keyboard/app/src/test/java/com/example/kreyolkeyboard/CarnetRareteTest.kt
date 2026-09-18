@@ -320,4 +320,40 @@ class CarnetRareteTest {
             Rarete.values().filter { it.distinguee }
         )
     }
+
+    @Test
+    fun `l'intensite de la gemme croit avec le rang, a travers les paliers`() {
+        val rangs = intArrayOf(0, 1, 500, 2999, 3000, 5000, 6499, 6500, 8999, 9000, 15_000, 29_999, 30_000, 38_000)
+        var precedent = -1f
+        for (r in rangs) {
+            val v = Rarete.intensitePourRang(r)
+            assertTrue("intensité hors de [0, 1] au rang $r : $v", v in 0f..1f)
+            assertTrue("l'intensité recule au rang $r : $v < $precedent", v >= precedent)
+            precedent = v
+        }
+        assertEquals(0f, Rarete.intensitePourRang(0), 1e-6f)
+        assertEquals(1f, Rarete.intensitePourRang(30_000), 1e-6f)
+        assertEquals("hors corpus", 1f, Rarete.intensitePourRang(null), 1e-6f)
+    }
+
+    @Test
+    fun `chaque palier occupe sa plage d'intensite`() {
+        // Un mot juste sous le seuil d'un palier n'est jamais plus vif qu'un mot
+        // juste au-dessus : la gemme ne doit pas contredire le métal.
+        for (seuil in intArrayOf(Rarete.SEUIL_COMMUN, Rarete.SEUIL_PEU_COMMUN, Rarete.SEUIL_RARE)) {
+            assertTrue(
+                Rarete.intensitePourRang(seuil - 1) <= Rarete.intensitePourRang(seuil)
+            )
+        }
+    }
+
+    @Test
+    fun `l'intensite d'un numeral suit son palier`() {
+        var precedent = -1f
+        for (r in Rarete.values()) {
+            val v = Rarete.intensitePourPalier(r)
+            assertTrue(v > precedent)
+            precedent = v
+        }
+    }
 }
