@@ -38,10 +38,23 @@ import java.util.concurrent.TimeUnit
  * l'accord de LuxASR — leur site demande explicitement qu'on les contacte avant
  * toute intégration — et une politique de confidentialité réécrite.
  *
- * Protocole, relevé dans leur client `scriptrt.js` v2.1.0 et vérifié contre le
- * service v2.3.0 : PCM 16 bits little-endian, 16 kHz mono, en trames binaires ;
- * messages de contrôle en JSON ; le serveur découpe lui-même sur les silences et
- * gère le contexte inter-segments.
+ * Protocole : PCM 16 bits little-endian, 16 kHz mono, en trames binaires ;
+ * messages de contrôle en JSON. Depuis le 16 septembre 2026 le service tourne
+ * le moteur « à tampon croissant » publié dans `PeterGilles/LuxASRlive`
+ * (réponses `engine: "whisperlive_buffer"`) : il re-décode tout l'énoncé non
+ * engagé toutes les 0,5 à 1 s, n'**engage** un mot qu'après l'avoir vu à la
+ * même place dans trois hypothèses de suite, et renvoie la queue encore
+ * instable à part. `accumulated_text` ne fait donc plus que grandir, et
+ * `partial_text` est ce qui peut encore bouger.
+ *
+ * Ce que ce moteur a changé, mesuré le 19 septembre 2026 sur les 22 énoncés de
+ * 8 à 22 s du banc du 1er septembre (même audio, même WER infixe) :
+ *
+ *     WebSocket   38,3 % → 25,4 %   texte final 0,23 s après l'arrêt (1,87 s)
+ *     API /asr2   26,8 % → 26,9 %   texte final 1,30 s après l'arrêt
+ *
+ * Le flux a rattrapé l'API par lots, et il affiche le premier aperçu 1,1 s
+ * après le début de la parole, là où l'API ne montre rien avant la fin.
  */
 class LuxAsrSession(
     private val listener: SttSession.Listener
@@ -61,7 +74,10 @@ class LuxAsrSession(
 
     @Volatile private var socket: WebSocket? = null
     @Volatile private var state = SttSession.State.IDLE
-    @Volatile private var accumulated = ""
+    /** Texte engagé par le service : il ne fait que grandir. */
+    @Volatile private var engage = ""
+    /** Queue encore instable, remplacée à chaque passe. */
+    @Volatile private var queue = ""
     @Volatile private var startedAt = 0L
     private var generation = 0
 
@@ -69,14 +85,6 @@ class LuxAsrSession(
     @Volatile private var heardSpeech = false
     @Volatile private var lastSpeechAt = 0L
     @Volatile private var noiseFloor = 0.0
-
-    // Robinet audio (voir robinet) : ouvert pendant la parole, fermé pendant
-    // les pauses. `amorce` retient les derniers blocs non émis pour que la
-    // reprise ne coupe pas l'attaque du mot suivant.
-    private var robinetOuvert = false
-    private var robinetForce = false
-    private val amorce = ArrayDeque<ByteArray>()
-    private var amorceOctets = 0
 
     override val isActive: Boolean
         get() = state == SttSession.State.LISTENING || state == SttSession.State.LOADING
@@ -86,14 +94,11 @@ class LuxAsrSession(
     override fun start() {
         if (isBusy) return
         val gen = ++generation
-        accumulated = ""
+        engage = ""
+        queue = ""
         heardSpeech = false
         lastSpeechAt = 0L
         noiseFloor = 0.0
-        robinetOuvert = false
-        robinetForce = false
-        amorce.clear()
-        amorceOctets = 0
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -103,14 +108,12 @@ class LuxAsrSession(
                 if (gen != generation) { ws.close(1000, null); return }
                 // Réglages envoyés avant la première trame : le serveur applique
                 // la configuration à ce qu'il reçoit ensuite, pas à ce qu'il a
-                // déjà mis de côté.
+                // déjà mis de côté. La langue est le seul réglage qui nous
+                // concerne ; l'ancien `chunk_params` n'est plus lu depuis que
+                // le service ne découpe plus en morceaux.
                 ws.send(JSONObject()
                     .put("type", "config")
                     .put("language", "lb")
-                    .put("chunk_params", JSONObject()
-                        .put("periodic_send_interval", CHUNK_INTERVAL_S)
-                        .put("silence_threshold", CHUNK_SILENCE_S)
-                        .put("max_chunk_duration", CHUNK_MAX_S))
                     .toString())
                 // Le micro n'est ouvert qu'une fois la connexion établie :
                 // l'inverse capturerait une amorce que le serveur ne verrait
@@ -166,7 +169,8 @@ class LuxAsrSession(
         recorder.stop()
         socket?.close(1000, null)
         socket = null
-        accumulated = ""
+        engage = ""
+        queue = ""
         setState(SttSession.State.IDLE)
     }
 
@@ -198,10 +202,15 @@ class LuxAsrSession(
         val level = Math.sqrt((rms / LEVEL_FULL_SCALE).coerceIn(0.0, 1.0)).toFloat()
         main.post { listener.onLevel(level) }
 
-        val now = SystemClock.elapsedRealtime()
-        val parle = estParole(rms)
-        for (trame in robinet(parle, now, pcm)) ws.send(trame.toByteString())
-        detecterFinDEnonce(parle, now)
+        // Tout part, silences compris. Le service a désormais sa propre
+        // détection de parole (Silero) et s'appuie sur les pauses qu'il reçoit
+        // pour engager le texte : les lui cacher, comme le faisait l'ancien
+        // robinet, retarderait l'engagement sans rien protéger. Vérifié le
+        // 19 septembre sur 8 énoncés suivis de 5 s de bruit de fond, soit
+        // exactement ce que voit le service avant l'arrêt automatique : aucun
+        // mot inventé, WER égal ou meilleur, texte final 0,02 s après l'arrêt.
+        ws.send(pcm.toByteString())
+        detecterFinDEnonce(estParole(rms), SystemClock.elapsedRealtime())
     }
 
     /**
@@ -219,97 +228,20 @@ class LuxAsrSession(
     }
 
     /**
-     * Décide ce qui part sur le réseau. Pendant une pause, on cesse d'émettre
-     * sans fermer la session : le silence n'est jamais donné au modèle, et le
-     * contexte de la dictée est conservé.
-     *
-     * Ce que ça achète, mesuré sur banc (`stt/bench/probe_gap.py`, 3 fichiers
-     * × 5 conditions × 2 passages, 1er septembre 2026) : le découpage du service
-     * suit les échantillons reçus, pas l'horloge — sur la même fenêtre, 8 s de
-     * silence émis produisent 3 hypothèses, 8 s de flux suspendu n'en produisent
-     * aucune. Suspendre ne perd pas le contexte (36,6 % de WER contre 37,0 % en
-     * émettant le silence) et **place la frontière sur une vraie pause du
-     * locuteur**, ce qui vaut 3,5 points contre une frontière arbitraire
-     * (36,6 % contre 40,1 % sans pause). Le banc de parole enchaînée
-     * (`bench_continu.py`, 22 énoncés de 8 à 22 s) montre l'autre moitié : sur
-     * ce format, couper la session pour obtenir cette frontière ne gagnait rien
-     * en exactitude et interrompait 9 % des énoncés en pleine phrase. Le robinet
-     * donne la frontière sans l'interruption.
-     *
-     * Deux détails sans lesquels ça se retourne :
-     *
-     * - On continue d'émettre [TAP_HANGOVER_MS] après la dernière parole. Il en
-     *   faut plus que [CHUNK_SILENCE_S] pour que le service voie lui-même la
-     *   pause et close son morceau ; sans ça il garderait le dernier fragment en
-     *   attente, et les consonnes finales seraient rognées.
-     * - On garde [AMORCE_MS] d'audio non émis sous le coude. L'attaque d'un mot
-     *   passe sous le seuil avant de le franchir ; reprendre l'émission au bloc
-     *   qui déclenche coûterait la première consonne.
-     */
-    private fun robinet(parle: Boolean, now: Long, pcm: ByteArray): List<ByteArray> {
-        // Filet de sécurité : le seuil de parole n'était jusqu'ici qu'une
-        // heuristique d'arrêt, une erreur coûtait un mot ; il commande
-        // désormais l'émission, et une erreur coûterait toute la dictée. Si
-        // rien n'a franchi le seuil au bout de [FAIL_OPEN_MS] — voix faible
-        // dans une pièce bruyante, micro au gain inhabituel — on ouvre en
-        // grand pour le reste de la session : un texte imparfait vaut mieux
-        // qu'un blanc.
-        if (!robinetForce && !robinetOuvert && !heardSpeech && !parle &&
-            startedAt != 0L && now - startedAt >= FAIL_OPEN_MS) {
-            Log.w(TAG, "🚰 aucune parole détectée en $FAIL_OPEN_MS ms — robinet forcé")
-            robinetForce = true
-        }
-        if (robinetForce) return listOf(pcm)
-
-        if (parle) {
-            if (robinetOuvert) return listOf(pcm)
-            robinetOuvert = true
-            val reprise = amorce.toMutableList()
-            reprise.add(pcm)
-            amorce.clear()
-            amorceOctets = 0
-            return reprise
-        }
-
-        if (robinetOuvert) {
-            if (now - lastSpeechAt < TAP_HANGOVER_MS) return listOf(pcm)
-            robinetOuvert = false
-            Log.i(TAG, "🚰 robinet fermé, la session reste ouverte")
-            return emptyList()
-        }
-
-        amorce.addLast(pcm)
-        amorceOctets += pcm.size
-        while (amorceOctets > AMORCE_MS * OCTETS_PAR_MS) {
-            amorceOctets -= amorce.removeFirst().size
-        }
-        return emptyList()
-    }
-
-    /**
      * Termine l'énoncé quand la parole s'arrête, plutôt que d'attendre que
      * l'utilisateur pense à appuyer sur stop.
      *
-     * Ce seuil ne protège plus de l'hallucination — c'est le robinet qui s'en
-     * charge, en n'envoyant pas le silence. Il ne répond plus qu'à une question
-     * d'usage : à partir de quand considère-t-on que la personne a fini. D'où un
-     * délai bien plus long qu'avant, où il fallait couper vite sous peine de
-     * laisser le service broder sur le blanc.
+     * Ce seuil ne répond qu'à une question d'usage : à partir de quand
+     * considère-t-on que la personne a fini. Il ne protège pas de
+     * l'hallucination ; le service s'en charge lui-même depuis son moteur du
+     * 16 septembre 2026, qui ne décode pas le silence.
      *
-     * Pour mémoire, ce que coûtait l'ancien réglage, mesuré sur téléphone le
-     * 29 août 2026 sur le même extrait rejoué au haut-parleur : couper deux
-     * secondes après la fin de la parole tronque le dernier segment (18,5 % de
-     * WER, « gestëmmt » perdu) ; laisser tourner dix secondes de silence fait
-     * **inventer** le service, qui re-segmente le blanc — « A wat dat bedo - déi
-     * Motioun gestëmmt. -6 -0, Marie -Cole. » sur un extrait qui n'en contient
-     * rien. 14,8 % de WER sur le texte utile, 40,7 % en comptant cette queue.
-     * Il n'y avait pas de bon réglage entre les deux ; il y avait un robinet.
-     *
-     * Filtrer la queue après coup n'est toujours pas possible proprement : le
-     * service renvoie `accumulated_text`, l'énoncé entier réécrit à chaque
-     * passe, et non un segment ajouté. Refuser un suffixe supposerait de
-     * diffuser le texte par fragments et de les recoller — exactement ce que ce
-     * client évite.
+     * Pour mémoire, l'ancien moteur, lui, brodait sur le blanc : mesuré sur
+     * téléphone le 29 août 2026, dix secondes de silence lui faisaient écrire
+     * « A wat dat bedo - déi Motioun gestëmmt. -6 -0, Marie -Cole. » sur un
+     * extrait qui n'en contient rien. D'où un robinet qui cessait d'émettre
+     * pendant les pauses, retiré le 19 septembre avec la mesure qui le rendait
+     * inutile (voir [onAudioChunk]).
      */
     private fun detecterFinDEnonce(parle: Boolean, now: Long) {
         // Garde-fou de durée : si le seuil ne se déclenche jamais — pièce
@@ -344,19 +276,19 @@ class LuxAsrSession(
                 "· service v${json.optString("version")}")
 
             "transcription" -> {
-                // `accumulated_text` porte tout l'énoncé depuis le début ; c'est
-                // exactement la sémantique du texte en composition d'un IME, qui
-                // remplace en bloc plutôt que de recoller des fragments.
-                accumulated = json.optString("accumulated_text", accumulated)
-                    .ifEmpty { accumulated }
+                // Deux champs, deux natures : `accumulated_text` est engagé et
+                // ne fait que grandir, `partial_text` est la queue que la passe
+                // suivante peut encore réécrire. Le texte de composition de
+                // l'IME les montre ensemble, puisqu'il est remplacé en bloc.
+                engage = json.optString("accumulated_text", engage).ifEmpty { engage }
+                queue = json.optString("partial_text", "")
                 val ms = SystemClock.elapsedRealtime() - startedAt
                 val proc = json.optJSONObject("metrics")?.optDouble("processing_time", 0.0) ?: 0.0
                 // Le texte livré est filtré, celui qu'on retient ne l'est pas :
-                // le service réécrit `accumulated_text` en entier à chaque
-                // passe, et une passe ultérieure peut très bien lever
+                // la queue d'une passe ultérieure peut très bien lever
                 // l'ambiguïté d'une boucle naissante. Filtrer au stockage
                 // ferait diverger notre état du sien.
-                val propre = RepetitionTrimmer.trim(accumulated)
+                val propre = RepetitionTrimmer.trim(texteVisible())
                 main.post {
                     listener.onPassTiming((ms / 1000f), (proc * 1000).toLong(), true)
                     if (propre.isNotEmpty()) listener.onPartial(propre)
@@ -368,9 +300,16 @@ class LuxAsrSession(
         }
     }
 
+    /** Engagé puis instable, ce que l'utilisateur doit voir à cet instant. */
+    private fun texteVisible(): String =
+        if (queue.isBlank()) engage else "$engage ${queue.trim()}".trim()
+
     private fun finish() {
         if (state == SttSession.State.IDLE) return
-        val text = RepetitionTrimmer.trim(accumulated)
+        // Après `stop`, le service engage toute la queue avant de répondre
+        // `recording_stopped`, qui n'en laisse donc plus. Si c'est le délai de
+        // grâce qui conclut, on garde la queue : c'est ce qui était affiché.
+        val text = RepetitionTrimmer.trim(texteVisible())
         setState(SttSession.State.IDLE)
         main.post { listener.onFinal(text) }
     }
@@ -384,8 +323,7 @@ class LuxAsrSession(
 
     /**
      * Réglages de la détection de parole. Publics parce que
-     * [LuxAsrApiSession], qui est aujourd'hui le chemin en ligne retenu, s'en
-     * sert aussi : ce sont les mêmes seuils, calibrés sur les mêmes mesures, et
+     * [LuxAsrApiSession], l'autre chemin en ligne, s'en sert aussi : ce sont les mêmes seuils, calibrés sur les mêmes mesures, et
      * les dupliquer garantirait qu'ils divergent au premier réglage.
      */
     companion object {
@@ -402,92 +340,14 @@ class LuxAsrSession(
         const val FINAL_GRACE_MS = 4_000L
 
         /**
-         * Cadence à laquelle le service transcrit ce qu'il a reçu.
-         *
-         * Le grain de la dictée n'est pas chez nous : `accumulated_text` arrive
-         * quand le serveur décide de décoder, et par défaut il ne décode que
-         * toutes les 5 s d'audio ou sur une pause de 0,8 s. Sur des énoncés de
-         * longueur clavier — 6 s — cela ne fait qu'une seule passe, donc aucun
-         * mot ne s'affiche avant la fin : mesuré le 29 août, du texte
-         * apparaissait avant la fin de la parole dans 11 énoncés sur 20
-         * seulement.
-         *
-         * Ces paramètres sont réglables, ce que leur propre client web n'utilise
-         * pas : il n'envoie que `language`, `use_context` et les options de
-         * traduction. Le serveur accepte pourtant `chunk_params` dans un message
-         * `config` et le réémet en accusé — mais **uniquement sous cette forme
-         * imbriquée** ; les mêmes clés à plat sont ignorées en silence. C'est
-         * donc hors du protocole documenté, sur une API déjà non authentifiée :
-         * si un jour le serveur cesse de les lire, on retombe simplement sur son
-         * défaut, sans rien casser.
-         *
-         * Ce que ça coûte, mesuré le 30 août sur dix tranches, même audio et
-         * mêmes références, WER par alignement d'infixe :
-         *
-         *     défaut 5,0 / 0,8   WER 30,3 %   1er texte 7,25 s   14 passes
-         *     2,0 / 0,5          WER 37,3 %   1er texte 4,47 s   22 passes
-         *     1,2 / 0,3          WER 38,6 %   1er texte 4,46 s   28 passes
-         *
-         * Environ 2,8 s gagnées sur le premier mot contre 7 points de WER —
-         * whisper décode une fenêtre et un morceau de 2 s lui laisse moins de
-         * contexte, que le recouvrement et les 80 tokens de contexte du service
-         * ne rattrapent qu'en partie. Descendre sous 2 s n'achète plus de
-         * latence, le plancher étant le temps de décodage, mais coûte encore en
-         * exactitude : d'où 2,0 et pas moins.
-         *
-         * Vérifié le même jour sur le téléphone, deux passages dos à dos sur les
-         * mêmes 19 tranches, seul l'APK changeant : le texte arrive avant la fin
-         * de la parole dans 13 énoncés sur 19 au lieu de 6, le premier texte
-         * tombe à 4,32 s au lieu de 6,53 s, et le nombre de mises à jour passe
-         * de 34 à 49 — sur un énoncé de 15 s, 7 au lieu de 3. Le prix y est plus
-         * doux qu'en laboratoire : l'écart apparié a une **médiane nulle**, la
-         * moyenne perdant 4,9 points parce que quelques tranches se dégradent
-         * franchement quand la coupure tombe au milieu d'un mot. C'est la forme
-         * de l'arbitrage : la dictée devient vivante, et de temps en temps plus
-         * fausse.
-         */
-        const val CHUNK_INTERVAL_S = 2.0
-
-        /** Pause qui déclenche une transcription anticipée. */
-        const val CHUNK_SILENCE_S = 0.5
-
-        /** Plafond d'un morceau, laissé au défaut du service. */
-        const val CHUNK_MAX_S = 30.0
-
-        /**
-         * Silence qui termine la dictée. Cinq secondes, là où il fallait couper
-         * à 1,5 s avant le robinet : le silence n'étant plus émis, l'attendre ne
-         * coûte plus rien au texte. Le banc de parole enchaînée du
+         * Silence qui termine la dictée. Cinq secondes : le service ne décodant
+         * pas le silence, l'attendre ne coûte rien au texte (mesuré le
+         * 19 septembre 2026 avec exactement ces 5 s). Le banc de parole enchaînée du
          * 1er septembre 2026 montrait qu'à 1,5 s, 9 % des énoncés de une à trois
          * phrases étaient coupés en pleine phrase — sans le moindre gain
          * d'exactitude en échange.
          */
         const val SILENCE_HANGOVER_MS = 5_000L
-
-        /**
-         * Émission maintenue après la dernière parole, avant de fermer le
-         * robinet. Doit dépasser [CHUNK_SILENCE_S] pour que le service voie
-         * lui-même la pause et close son morceau plutôt que de retenir le
-         * dernier fragment.
-         */
-        const val TAP_HANGOVER_MS = 700L
-
-        /**
-         * Audio retenu pendant que le robinet est fermé, réémis à la reprise :
-         * l'attaque d'un mot passe sous le seuil avant de le franchir.
-         */
-        const val AMORCE_MS = 400L
-
-        /**
-         * Délai au bout duquel un robinet qui n'a jamais vu de parole s'ouvre
-         * en grand. Plus long que le temps de réaction d'un utilisateur qui
-         * vient d'appuyer sur le micro, sinon le filet se déclencherait à
-         * chaque hésitation.
-         */
-        const val FAIL_OPEN_MS = 4_000L
-
-        /** PCM 16 bits à 16 kHz : deux octets par échantillon. */
-        const val OCTETS_PAR_MS = 32
 
         /**
          * Plancher absolu sous lequel aucune énergie n'est prise pour de la

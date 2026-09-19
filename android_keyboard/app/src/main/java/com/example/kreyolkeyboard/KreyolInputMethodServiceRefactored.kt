@@ -984,17 +984,20 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * mesurés pour le modèle embarqué contre 25 % pour le service, avec
      * ponctuation et capitalisation.
      *
-     * Le chemin en ligne est l'API par lots `/asr2`, et non le WebSocket : à
-     * qualité et à délai final mesurés équivalents, elle décode l'énoncé d'un
-     * seul tenant et supprime toute la segmentation. Voir [LuxAsrApiSession]
-     * pour les chiffres ; [LuxAsrSession] reste sur la branche en repli.
+     * Le chemin en ligne est le WebSocket ([LuxAsrSession]). Du 1er au
+     * 19 septembre 2026 c'était l'API par lots `/asr2`, parce que l'ancien
+     * moteur temps réel du service perdait 11,5 points de WER sur des énoncés
+     * de une à trois phrases. Le moteur du 16 septembre a comblé l'écart
+     * (25,4 % contre 26,9 % sur les mêmes 22 énoncés) et rend le texte final en
+     * 0,23 s au lieu de 1,30 s, avec un aperçu pendant qu'on parle.
+     * [LuxAsrApiSession] reste sur la branche en repli.
      *
      * [USE_LUXASR_ONLINE] n'est vrai que sur la branche de démonstration
      * préparée pour le rendez-vous avec l'Université du Luxembourg, dont le
      * service demande explicitement qu'on les contacte avant toute intégration.
      */
     private fun newDictationSession(): com.example.kreyolkeyboard.stt.DictationSession =
-        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrApiSession(dictationListener)
+        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener)
         else SttSession(this, dictationListener)
 
     private val dictationListener = object : SttSession.Listener {
@@ -1007,10 +1010,12 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          */
         override fun onPartial(text: String) {
             val ic = currentInputConnection ?: return
-            stopDictationSpinner()
             dictationPartial = text
             dictationComposing = true
-            ic.setComposingText(text, 1)
+            // Si le tracé du micro ou le témoin tourne, c'est lui qui pose le
+            // texte, suivi de son glyphe, à l'image suivante : l'arrêter ici
+            // ferait disparaître le « je t'entends » au premier mot reconnu.
+            if (spinnerRunnable == null) ic.setComposingText(text, 1)
         }
 
         override fun onFinal(text: String) {
@@ -1112,10 +1117,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * Petit indicateur de travail posé **dans le champ de saisie**, en texte de
      * composition, pendant que la transcription se calcule.
      *
-     * Il existe parce que l'API par lots ne rend rien avant la fin : entre
-     * l'arrêt du micro et le texte il s'écoule 1,7 s en médiane (mesuré sur
+     * Il est né avec l'API par lots, qui ne rend rien avant la fin : entre
+     * l'arrêt du micro et le texte il s'écoulait 1,7 s en médiane (mesuré sur
      * 62 énoncés, 1,8 s au pire), pendant lesquelles le champ resterait vide et
-     * le clavier muet. Sans repère, l'utilisateur croit que son appui n'a pas
+     * le clavier muet. Avec le flux, l'attente tombe à 0,2 s et il ne fait plus
+     * que passer ; il reste pour la dictée embarquée et pour un réseau lent. Sans repère, l'utilisateur croit que son appui n'a pas
      * été pris — c'est le même raisonnement que le bandeau « préparation », à
      * ceci près que le regard est sur le curseur, pas sur le clavier.
      *
@@ -1164,7 +1170,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     val i = (n.coerceIn(0f, 1f) * (METER_GLYPHS.size - 1)).toInt()
                     trace.append(METER_GLYPHS[i])
                 }
-                conn.setComposingText("$MIC_GLYPH $trace", 1)
+                // Derrière le texte déjà reconnu, comme le témoin de fin :
+                // le tracé reste du côté du curseur, là où le mot suivant
+                // va atterrir.
+                val prefixe = if (dictationPartial.isEmpty()) "" else "$dictationPartial "
+                conn.setComposingText("$prefixe$MIC_GLYPH $trace", 1)
                 dictationComposing = true
                 spinnerHandler.postDelayed(this, METER_PERIOD_MS)
             }

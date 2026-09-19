@@ -1,0 +1,51 @@
+{
+ "date": "2026-09-19",
+ "objet": "moteur live LuxASR du 2026-09-16 (tampon croissant, LocalAgreement-3) contre l'API par lots /asr2",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "aucune licence déclarée sur le dépôt HF : audio et transcriptions jamais versionnés, seuls les agrégats le sont",
+ "service.flux": "wss://luxasr.uni.lu/prod/ws/transcribe, engine=whisperlive_buffer (github.com/PeterGilles/LuxASRlive, commit 1bccffd)",
+ "enonces_8_22s": {
+  "n": 22,
+  "jeu": "identique au 2026-09-01 (graine 1729, 6 fichiers, fenêtres 8-22 s, WER infixe)",
+  "websocket": {
+   "wer_pondere": 0.2539,
+   "wer_median": 0.2426,
+   "au_2026_09_01": 0.383
+  },
+  "api": {
+   "wer_pondere": 0.2689,
+   "wer_median": 0.2529,
+   "au_2026_09_01": 0.268
+  },
+  "apparie": {
+   "ws_meilleur": 6,
+   "api_meilleure": 11,
+   "egaux": 5
+  },
+  "delai_final_apres_arret_s": {
+   "websocket_median": 0.23,
+   "websocket_max": 1.68,
+   "api_median": 1.29,
+   "api_max": 3.31
+  },
+  "websocket_premier_apercu_s": 1.12,
+  "websocket_premier_mot_engage_s": 2.64
+ },
+ "fichiers_60s": {
+  "n": 8,
+  "mots": 1214,
+  "notation": "WER plein, normalisation de wer.py",
+  "websocket": 0.2059,
+  "api": 0.1812
+ },
+ "queue_de_silence": {
+  "n": 8,
+  "protocole": "énoncé seul contre énoncé + 5 s de bruit gaussien à 0,003 RMS, soit ce que reçoit le service avant l'arrêt automatique (SILENCE_HANGOVER_MS)",
+  "mots_inventes": 0,
+  "wer": "égal sur 5, meilleur sur 3",
+  "delai_final_s": 0.02
+ },
+ "bruit_de_mesure": "le moteur live n'est pas déterministe : le même énoncé est passé de 32,1 % à 50,0 % entre deux passages le même jour. 22 énoncés ne départagent pas 1,5 point.",
+ "lecture": "le flux a rattrapé l'API dans le régime clavier (38,3 → 25,4 %, contre 26,9 %), rend le texte final 5 fois plus vite et montre un aperçu 1,1 s après le début de la parole. Le silence ne le fait plus inventer, le robinet côté client n'a plus d'objet.",
+ "decision": "chemin en ligne = WebSocket, API par lots en repli."
+}
