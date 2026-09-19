@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.0.1] - 2026-09-19
+
+### 🐛 Corrections
+
+- **La carte vibre aussi sur les téléphones au vibreur simple.** Sur certains Samsung (constaté sur un Galaxy A21s), le petit « tic » demandé au téléphone n'existe pas, et le système l'ignorait sans rien dire : passer le doigt sur une carte ne donnait aucune sensation, alors que les touches du clavier vibraient normalement. Ces téléphones reçoivent maintenant une impulsion brève, qu'ils savent rendre. On y sent chaque arête de la carte, mais pas encore leur hauteur : leur moteur ne sait pas varier sa force.
+- **La glisse sur la barre d'espace et le feuilletage d'un casier vibrent à nouveau** sur ces mêmes téléphones, pour la même raison.
+
 ## [26.0.0] - 2026-09-19
 
 La carte se lit au doigt, creux et reliefs compris.
