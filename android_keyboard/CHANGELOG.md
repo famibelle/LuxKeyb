@@ -15,7 +15,7 @@ La carte se lit au doigt, creux et reliefs compris.
 
 ### ✨ Améliorations
 
-- **Le relief est signé.** Les yeux fermés, en passant le doigt sur une carte, on sent maintenant la creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche.
+- **Le relief est signé.** Les yeux fermés, en passant le doigt sur une carte, on sent maintenant le creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche.
 - **L'ombre de contact.** Un disque sombre sous la pulpe paraît quand on touche une carte, et s'efface avec l'autorité du doigt. C'est la physique : un vrai doigt bouche la lumière.
 - **Les pierres tournent.** Rivets, griffes et gemmes font pivoter leur lumière vers le doigt sans qu'on le demande, en lisant le même modèle de hauteurs que le vibreur. L'illusion n'existe que si le doigt et l'œil sont d'accord : ils lisent la même géométrie.
 - **La permission VIBRATE est ajoutée.** Elle est normale (sans invite) mais visible sur la fiche Play. Le clavier lui-même n'en a pas besoin : seule la carte du carnet s'en sert, pour que le relief se sente vraiment.
