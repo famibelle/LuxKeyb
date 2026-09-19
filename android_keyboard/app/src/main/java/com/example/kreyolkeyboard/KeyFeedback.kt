@@ -96,6 +96,21 @@ object KeyFeedback {
      * borne haute.
      */
     private const val DUREE_IMPULSION = 40L
+
+    /**
+     * La plus longue impulsion, pour une marche de [DENIVELE_PLEIN] ou plus.
+     *
+     * Sur un moteur à balourd, la durée **est** la force : il n'atteint sa
+     * vitesse qu'au bout de plusieurs dizaines de millisecondes, et une
+     * impulsion plus longue se sent plus forte, pas seulement plus longue.
+     * C'est le seul moyen qu'a le Galaxy A21s de dire « grande marche » plutôt
+     * que « petite ». Le principe vient des retours tactiles d'accessibilité
+     * (TalkBack, VoiceOver), qui distinguent leurs signaux par le rythme et
+     * la durée, jamais par l'intensité, que beaucoup de moteurs ne savent pas
+     * faire varier. Le signe, lui, reste muet ici : monter et descendre d'une
+     * même marche durent pareil.
+     */
+    private const val DUREE_IMPULSION_MAX = 80L
     private const val FENETRE_IMPULSION = 55L
 
     // Conservé entre les frappes : le service de son se cherche une fois, pas à
@@ -427,7 +442,7 @@ object KeyFeedback {
                 vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
             }
             NiveauTactile.IMPULSION -> try {
-                vibrerCompose(impulsion)
+                vibrerCompose(impulsionPour(denivele))
             } catch (e: Exception) {
                 Log.d(TAG, "Impulsion refusée: ${e.message}")
                 niveau = NiveauTactile.CANNED
@@ -439,9 +454,24 @@ object KeyFeedback {
         }
     }
 
-    /** Toujours la même, donc construite une fois. API 26+, garanti par [sonder]. */
-    private val impulsion: VibrationEffect by lazy {
-        VibrationEffect.createOneShot(DUREE_IMPULSION, VibrationEffect.DEFAULT_AMPLITUDE)
+    /** Le simple contact, les tics de la barre d'espace et de l'éventail. API 26+, garanti par [sonder]. */
+    private val impulsion: VibrationEffect by lazy { impulsionPour(0f) }
+
+    /** Les impulsions, par échelon de dénivelé : un pouce qui traverse une carte ne doit rien allouer. */
+    private val impulsions = arrayOfNulls<VibrationEffect>(ECHELONS + 1)
+
+    /**
+     * L'impulsion d'une marche : de [DUREE_IMPULSION] pour un accroc ou le
+     * contact, à [DUREE_IMPULSION_MAX] pour une marche de [DENIVELE_PLEIN].
+     * Sur la face, la plaque du nom vue depuis l'ouverture (1,8) tombe vers
+     * 70 ms, un rivet ou une griffe vers 45.
+     */
+    private fun impulsionPour(denivele: Float): VibrationEffect {
+        val echelon = (min(abs(denivele) / DENIVELE_PLEIN, 1f) * ECHELONS).roundToInt()
+        impulsions[echelon]?.let { return it }
+        val duree = DUREE_IMPULSION + (DUREE_IMPULSION_MAX - DUREE_IMPULSION) * echelon / ECHELONS
+        return VibrationEffect.createOneShot(duree, VibrationEffect.DEFAULT_AMPLITUDE)
+            .also { impulsions[echelon] = it }
     }
 
     /**

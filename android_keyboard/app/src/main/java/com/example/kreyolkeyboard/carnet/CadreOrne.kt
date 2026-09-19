@@ -1592,8 +1592,12 @@ object Ornement {
      * - La face, 1 ; le panneau de texte à fleur, 1,1.
      * - L'ouverture, 0,4 : une **découpe**, que le dessin creuse déjà par
      *   son ombre. On y descend en entrant, on en remonte en sortant.
-     * - La capsule de nature, 1,6 ; la plaque et le disque du médaillon, 1,8 ;
-     *   les écus, 2 : des pièces de métal posées, pas toutes de même épaisseur.
+     * - La capsule de nature, 1,6 ; le disque du médaillon, 1,8 ; les écus, 2 :
+     *   des pièces de métal posées, pas toutes de même épaisseur.
+     * - La plaque du nom, 2,2 : la plus épaisse des pièces posées, juste sous
+     *   les pierres. C'est là qu'est le mot, et c'est ce que le doigt doit
+     *   trouver le plus nettement (relevée de 1,8 le 2026-09-19, à la demande
+     *   du propriétaire, qui la cherchait les yeux fermés).
      * - Les pierres dépassent davantage que tout ce qui est posé à plat :
      *   l'agrafe 2,4, la gemme de coût 2,8. Les rivets, 2,4.
      * - Une griffe tient sa pierre par-dessus : 0,3 de plus qu'elle.
@@ -1603,7 +1607,7 @@ object Ornement {
     const val Z_FACE = 1f
     private const val Z_PANNEAU = 1.1f
     private const val Z_PASTILLE = 1.6f
-    private const val Z_PLAQUE = 1.8f
+    private const val Z_PLAQUE = 2.2f
     private const val Z_MEDAILLON = 1.8f
     private const val Z_ECU = 2f
     private const val Z_PLATEAU = 2f
@@ -1665,7 +1669,9 @@ object Ornement {
      * plaque, que l'ancienne liste de positions faisait sentir au travers.
      */
     fun cote(rarete: Rarete, bosses: FloatArray, x: Float, y: Float): Float {
-        if (x < BORD_CARTE || x > LARGEUR - BORD_CARTE || y < 0f || y > HAUTEUR) return Z_HORS
+        if (x < BORD_CARTE || x > LARGEUR - BORD_CARTE ||
+            y < BORD_CARTE || y > HAUTEUR - BORD_CARTE
+        ) return Z_HORS
         var i = 0
         while (i < bosses.size) {
             if (dansOvale(x, y, bosses[i], bosses[i + 1], bosses[i + 2], bosses[i + 3])) {
@@ -1740,7 +1746,34 @@ object Ornement {
         return crans(brut)
     }
 
-    /** Une marche : où elle est, et de combien on monte en la franchissant de gauche à droite. */
+    /**
+     * Les crans que le pouce franchit à l'abscisse [x], en descendant : la
+     * même chose que [aretes], tournée d'un quart de tour.
+     *
+     * Une rangée ne voit que ce qu'on franchit en balayant de côté. Or la
+     * plaque du nom est plus large que le cadre : de gauche à droite, le doigt
+     * entre dessus depuis la table et n'en sort qu'à l'autre bord, sans jamais
+     * sentir qu'elle dépasse de la face. Son volume ne se lit qu'en venant
+     * d'au-dessus ou d'en dessous, et c'est ce que les yeux fermés font
+     * d'abord. [Relief.x] y est une ordonnée ; le sens +1 est vers le bas.
+     */
+    fun aretesColonne(rarete: Rarete, bosses: FloatArray, x: Float): Relief {
+        val brut = ArrayList<Arete>(24)
+        var avant = cote(rarete, bosses, x, 0.5f)
+        var y = 1.5f
+        while (y < HAUTEUR) {
+            val ici = cote(rarete, bosses, x, y)
+            if (ici != avant) brut.add(Arete(y - 0.5f, ici - avant))
+            avant = ici
+            y += 1f
+        }
+        return crans(brut)
+    }
+
+    /**
+     * Une marche : où elle est, et de combien on monte en la franchissant de
+     * gauche à droite (de haut en bas, dans une colonne).
+     */
     class Arete(val x: Float, val denivele: Float)
 
     /**
@@ -2083,6 +2116,11 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private var hauteurDuRelief = 0f
     private var derniereX = 0f
 
+    /** La même chose en colonne, pour ce que le doigt franchit en montant ou en descendant. */
+    private var colonne: Ornement.Relief = Ornement.Relief.LISSE
+    private var abscisseDeColonne = 0f
+    private var derniereY = 0f
+
     /**
      * Où est le doigt, en unités de carte : ce que lisent l'ombre de contact et
      * le pivot des points en relief.
@@ -2134,6 +2172,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * une face qu'on ajouterait sans lui dessiner de gravure.
      */
     protected open fun aretes(y: Float): Ornement.Relief = Ornement.Relief.LISSE
+
+    /** Le relief à l'abscisse [x], parcouru de haut en bas. Lisse par défaut, pour la même raison. */
+    protected open fun aretesColonne(x: Float): Ornement.Relief = Ornement.Relief.LISSE
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -2249,6 +2290,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         relief = aretes(doigtY)
         hauteurDuRelief = doigtY
         derniereX = doigtX
+        colonne = aretesColonne(doigtX)
+        abscisseDeColonne = doigtX
+        derniereY = doigtY
         report = 0f
         // Le contact lui-même. Un carton posé ne claque pas quand on le
         // touche, mais un écran qui ne répond pas à un doigt posé n'a rien
@@ -2289,34 +2333,59 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private fun glisser(x: Float, y: Float) {
         if (width <= 0) return
         val u = Ornement.LARGEUR / width
-        val ou = x * u
-        doigtX = ou
-        doigtY = y * u
+        val ouX = x * u
+        val ouY = y * u
+        doigtX = ouX
+        doigtY = ouY
         if (abs(doigtY - hauteurDuRelief) > Ornement.ECART_MIN) {
             relief = aretes(doigtY)
             hauteurDuRelief = doigtY
         }
-        if (abs(ou - derniereX) >= PAS_MIN) {
-            val sens = if (ou > derniereX) 1f else -1f
-            val bas = min(derniereX, ou)
-            val haut = max(derniereX, ou)
-            derniereX = ou
-            var franchi = 0f
-            var dernier = 0f
-            var touche = false
-            for (i in 0 until relief.taille) {
-                val c = relief.x(i)
-                if (c > bas && c <= haut) {
-                    dernier = relief.ressenti(i, sens)
-                    franchi += dernier
-                    touche = true
-                }
-            }
-            if (touche) emettre(if (abs(franchi) < Ornement.DENIVELE_MIN) dernier else franchi)
+        if (abs(doigtX - abscisseDeColonne) > Ornement.ECART_MIN) {
+            colonne = aretesColonne(doigtX)
+            abscisseDeColonne = doigtX
         }
+        franchi = 0f
+        dernier = 0f
+        touche = false
+        if (abs(ouX - derniereX) >= PAS_MIN) {
+            franchir(relief, derniereX, ouX)
+            derniereX = ouX
+        }
+        if (abs(ouY - derniereY) >= PAS_MIN) {
+            franchir(colonne, derniereY, ouY)
+            derniereY = ouY
+        }
+        if (touche) emettre(if (abs(franchi) < Ornement.DENIVELE_MIN) dernier else franchi)
         if (Pochette.animationsReduites(context)) return
         doigt = lumiereEn(x)
         invalidate()
+    }
+
+    // Ce que [franchir] a relevé pendant l'événement en cours. Des champs et
+    // non un résultat, pour ne rien allouer à chaque `ACTION_MOVE`.
+    private var franchi = 0f
+    private var dernier = 0f
+    private var touche = false
+
+    /**
+     * Les crans de [crans] situés entre [de] et [vers], sommés dans le sens
+     * de la marche. Une rangée et une colonne passent par ici : un doigt en
+     * diagonale peut franchir les deux dans le même événement, et n'en reçoit
+     * toujours qu'une vibration.
+     */
+    private fun franchir(crans: Ornement.Relief, de: Float, vers: Float) {
+        val sens = if (vers > de) 1f else -1f
+        val bas = min(de, vers)
+        val haut = max(de, vers)
+        for (i in 0 until crans.taille) {
+            val c = crans.x(i)
+            if (c > bas && c <= haut) {
+                dernier = crans.ressenti(i, sens)
+                franchi += dernier
+                touche = true
+            }
+        }
     }
 
     /**
@@ -2348,6 +2417,7 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
 
     private fun lacher() {
         relief = Ornement.Relief.LISSE
+        colonne = Ornement.Relief.LISSE
         report = 0f
         if (Pochette.animationsReduites(context)) return
         // Le dépassement est tout l'intérêt : le carton remonte, passe son
@@ -2498,6 +2568,9 @@ class CarteOrnee(
      */
     override fun aretes(y: Float): Ornement.Relief =
         if (vignette) Ornement.Relief.LISSE else Ornement.aretes(rarete, bosses, y)
+
+    override fun aretesColonne(x: Float): Ornement.Relief =
+        if (vignette) Ornement.Relief.LISSE else Ornement.aretesColonne(rarete, bosses, x)
 
     /** Les rivets et les griffes : ceux que le doigt sent et ceux qu'il fait tourner. */
     private val bosses = if (vignette) FloatArray(0) else Ornement.bosses(rarete)
