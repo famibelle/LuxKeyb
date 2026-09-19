@@ -83,6 +83,16 @@ object KeyFeedback {
 
     private const val CRAN_INCONNU = 40L
 
+    /**
+     * Le cran d'un moteur qui ne sait que tourner : assez long pour qu'un
+     * moteur à balourd ait le temps de démarrer, assez court pour que deux
+     * arêtes voisines ne fondent pas en un bourdonnement. La fenêtre de
+     * [Carton] qui tait un cran trop proche du précédent est un peu plus
+     * large, pour laisser le moteur retomber.
+     */
+    private const val DUREE_IMPULSION = 20L
+    private const val FENETRE_IMPULSION = 35L
+
     // Conservé entre les frappes : le service de son se cherche une fois, pas à
     // chaque touche. Le contexte d'application est utilisé pour ne pas retenir une
     // vue ni la fenêtre de saisie.
@@ -125,6 +135,21 @@ object KeyFeedback {
          * relief signé existe vraiment.
          */
         COMPOSITION,
+        /**
+         * Une impulsion brève de `Vibrator.vibrate()`, toujours la même : un
+         * timbre, sans amplitude ni signe.
+         *
+         * Existe pour les téléphones dont l'actionneur ne connaît **aucun**
+         * effet précalculé. Constaté sur un Galaxy A21s (Android 12) le
+         * 2026-09-19 : `dumpsys vibrator_manager` y déclare
+         * `mSupportedEffects=[]`, `EFFECT_TICK` y est rejeté
+         * `ignored_unsupported`, et `performHapticFeedback(CLOCK_TICK)` ne
+         * parvient même pas au service. La carte y était muette depuis la
+         * 22.5.1, pendant que les touches du clavier, sur `KEYBOARD_TAP`,
+         * vibraient normalement. Une impulsion brute, elle, passe partout où
+         * il y a un moteur.
+         */
+        IMPULSION,
         /** `performHapticFeedback(CLOCK_TICK)` : un timbre, et le seul qui survive
          *  au retour tactile du système éteint. */
         CANNED,
@@ -154,8 +179,9 @@ object KeyFeedback {
      * l'autre, soit ~50 ms pour un pouce qui explore. [Carton] s'en sert pour
      * éclaircir sa partition plutôt que de la brouiller.
      *
-     * Zéro hors [NiveauTactile.COMPOSITION] : aux autres niveaux, la carte doit
-     * se sentir exactement comme avant, et la cadence d'avant n'en avait pas.
+     * Zéro au niveau [NiveauTactile.CANNED] : la carte doit s'y sentir
+     * exactement comme avant, et la cadence d'avant n'en avait pas. Au niveau
+     * [NiveauTactile.IMPULSION], la durée de l'impulsion et de sa retombée.
      * Quarante millisecondes quand l'appareil compose sans dire en combien de
      * temps (Android 11, ou une durée que le pilote laisse à zéro) : la valeur
      * prudente, qui perd du détail sur un bon moteur plutôt que du rythme sur
@@ -206,6 +232,9 @@ object KeyFeedback {
                         VibrationEffect.Composition.PRIMITIVE_CLICK,
                         VibrationEffect.Composition.PRIMITIVE_TICK
                     ) -> NiveauTactile.COMPOSITION
+                // L'effet que `CLOCK_TICK` demande n'existe pas ici : ce que
+                // le système en ferait est au mieux un repli, au pire rien.
+                !tickSupporte(v) -> NiveauTactile.IMPULSION
                 else -> NiveauTactile.CANNED
             }
         } catch (e: Exception) {
@@ -213,7 +242,11 @@ object KeyFeedback {
             NiveauTactile.CANNED
         }
         niveau = trouve
-        dureeCran = if (trouve == NiveauTactile.COMPOSITION) mesurerCran(v) else 0L
+        dureeCran = when (trouve) {
+            NiveauTactile.COMPOSITION -> mesurerCran(v)
+            NiveauTactile.IMPULSION -> FENETRE_IMPULSION
+            else -> 0L
+        }
         crans.fill(null)
         return trouve
     }
@@ -236,6 +269,20 @@ object KeyFeedback {
         return Settings.System.getInt(
             app.contentResolver, Settings.System.HAPTIC_FEEDBACK_ENABLED, 0
         ) == 1
+    }
+
+    /**
+     * Le moteur sait-il jouer `EFFECT_TICK` ? Avant Android 11 la question ne
+     * se pose pas publiquement, et on garde la route d'avant.
+     *
+     * `VIBRATION_EFFECT_SUPPORT_UNKNOWN` compte comme un oui : c'est ce que
+     * répondent les pilotes qui ne déclarent rien, et beaucoup d'entre eux
+     * jouent l'effet très bien. Seul un non explicite fait quitter `CLOCK_TICK`.
+     */
+    private fun tickSupporte(v: Vibrator): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return true
+        return v.areEffectsSupported(VibrationEffect.EFFECT_TICK).firstOrNull() !=
+            Vibrator.VIBRATION_EFFECT_SUPPORT_NO
     }
 
     private fun mesurerCran(v: Vibrator?): Long {
@@ -317,7 +364,7 @@ object KeyFeedback {
     fun onCursorStep(view: View) {
         val context = view.context
         if (hapticEnabled ?: KeyboardPreferences.hapticEnabled(context).also { hapticEnabled = it }) {
-            vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
+            tic(view)
         }
     }
 
@@ -367,9 +414,22 @@ object KeyFeedback {
                 dureeCran = 0L
                 vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
             }
+            NiveauTactile.IMPULSION -> try {
+                vibrerCompose(impulsion)
+            } catch (e: Exception) {
+                Log.d(TAG, "Impulsion refusée: ${e.message}")
+                niveau = NiveauTactile.CANNED
+                dureeCran = 0L
+                vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
+            }
             NiveauTactile.CANNED -> vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
             NiveauTactile.AUCUN -> Unit
         }
+    }
+
+    /** Toujours la même, donc construite une fois. API 26+, garanti par [sonder]. */
+    private val impulsion: VibrationEffect by lazy {
+        VibrationEffect.createOneShot(DUREE_IMPULSION, VibrationEffect.DEFAULT_AMPLITUDE)
     }
 
     /**
@@ -380,8 +440,29 @@ object KeyFeedback {
     fun onFanStep(view: View) {
         val context = view.context
         if (hapticEnabled ?: KeyboardPreferences.hapticEnabled(context).also { hapticEnabled = it }) {
-            vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
+            tic(view)
         }
+    }
+
+    /**
+     * Le cran le plus court que ce téléphone sache vraiment rendre.
+     *
+     * `CLOCK_TICK` partout où il existe, l'impulsion brève là où il n'existe
+     * pas : sur le Galaxy A21s, la glisse de la barre d'espace et l'éventail
+     * d'un casier étaient muets pour la même raison que la carte (voir
+     * [NiveauTactile.IMPULSION]). Le niveau COMPOSITION garde `CLOCK_TICK`,
+     * que ces appareils rendent très bien.
+     */
+    private fun tic(view: View) {
+        if (niveauTactile(view.context) == NiveauTactile.IMPULSION) {
+            try {
+                vibrerCompose(impulsion)
+                return
+            } catch (e: Exception) {
+                Log.d(TAG, "Impulsion refusée: ${e.message}")
+            }
+        }
+        vibrate(view, HapticFeedbackConstants.CLOCK_TICK)
     }
 
     private fun vibrate(view: View, effect: Int = HapticFeedbackConstants.KEYBOARD_TAP) {
