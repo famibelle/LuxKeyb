@@ -89,9 +89,14 @@ object KeyFeedback {
      * arêtes voisines ne fondent pas en un bourdonnement. La fenêtre de
      * [Carton] qui tait un cran trop proche du précédent est un peu plus
      * large, pour laisser le moteur retomber.
+     *
+     * Réglé au pouce sur un Galaxy A21s, intensité tactile à 3 sur 5,
+     * le 2026-09-19 : 20 et 30 ms ne se sentent pas, 40 ms se sent à chaque
+     * fois. Les touches du clavier, que le système y joue en 50 ms, sont la
+     * borne haute.
      */
-    private const val DUREE_IMPULSION = 20L
-    private const val FENETRE_IMPULSION = 35L
+    private const val DUREE_IMPULSION = 40L
+    private const val FENETRE_IMPULSION = 55L
 
     // Conservé entre les frappes : le service de son se cherche une fois, pas à
     // chaque touche. Le contexte d'application est utilisé pour ne pas retenir une
@@ -275,14 +280,21 @@ object KeyFeedback {
      * Le moteur sait-il jouer `EFFECT_TICK` ? Avant Android 11 la question ne
      * se pose pas publiquement, et on garde la route d'avant.
      *
-     * `VIBRATION_EFFECT_SUPPORT_UNKNOWN` compte comme un oui : c'est ce que
-     * répondent les pilotes qui ne déclarent rien, et beaucoup d'entre eux
-     * jouent l'effet très bien. Seul un non explicite fait quitter `CLOCK_TICK`.
+     * Un non explicite suffit. Mais le Galaxy A21s, qui rejette l'effet
+     * `ignored_unsupported`, répond `VIBRATION_EFFECT_SUPPORT_UNKNOWN`
+     * (mesuré le 2026-09-19, 26.0.1) : se fier au seul non l'y laissait muet.
+     * « Je ne sais pas » compte donc aussi comme un non quand le moteur ne sait
+     * pas varier sa force, signe d'un moteur à balourd sans effets
+     * précalculés. Un actionneur qui module son amplitude et ne dit rien garde
+     * `CLOCK_TICK`, qu'il rend en général très bien.
      */
     private fun tickSupporte(v: Vibrator): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return true
-        return v.areEffectsSupported(VibrationEffect.EFFECT_TICK).firstOrNull() !=
-            Vibrator.VIBRATION_EFFECT_SUPPORT_NO
+        return when (v.areEffectsSupported(VibrationEffect.EFFECT_TICK).firstOrNull()) {
+            Vibrator.VIBRATION_EFFECT_SUPPORT_YES -> true
+            Vibrator.VIBRATION_EFFECT_SUPPORT_NO -> false
+            else -> v.hasAmplitudeControl()
+        }
     }
 
     private fun mesurerCran(v: Vibrator?): Long {
