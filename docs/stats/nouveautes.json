@@ -1,9 +1,166 @@
 {
- "genere_le": "2026-09-15",
- "derniere_version": "22.12.9",
- "derniere_date": "2026-09-15",
+ "genere_le": "2026-09-19",
+ "derniere_version": "26.0.0",
+ "derniere_date": "2026-09-19",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "26.0.0",
+   "date": "2026-09-19",
+   "intro": "La carte se lit au doigt, creux et reliefs compris.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le relief est signé",
+       "texte": "Les yeux fermés, en passant le doigt sur une carte, on sent maintenant le creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche."
+      },
+      {
+       "titre": "L'ombre de contact",
+       "texte": "Un disque sombre sous la pulpe paraît quand on touche une carte, et s'efface avec l'autorité du doigt. C'est la physique : un vrai doigt bouche la lumière."
+      },
+      {
+       "titre": "Les pierres tournent",
+       "texte": "Rivets, griffes et gemmes font pivoter leur lumière vers le doigt sans qu'on le demande, en lisant le même modèle de hauteurs que le vibreur. L'illusion n'existe que si le doigt et l'œil sont d'accord : ils lisent la même géométrie."
+      },
+      {
+       "titre": "La permission VIBRATE est ajoutée",
+       "texte": "Elle est normale (sans invite) mais visible sur la fiche Play. Le clavier lui-même n'en a pas besoin : seule la carte du carnet s'en sert, pour que le relief se sente vraiment."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_relief_doigt.png",
+   "image_alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+   "image_legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+  },
+  {
+   "version": "25.0.0",
+   "date": "2026-09-18",
+   "intro": "L'harmonie visuelle de la carte et les gestes de révision.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La traduction s'aère",
+       "texte": "Elle prenait trois unités d'air sous la phrase ; collée à elle, elle se lisait comme sa troisième ligne."
+      },
+      {
+       "titre": "Les écus s'alignent",
+       "texte": "À 26 et 274 unités, ils paraissaient décalés par rapport à la plaque ; ils sont passés à 28 et 272, ses bords propres, à égale distance du médaillon."
+      },
+      {
+       "titre": "La légende du médaillon est nette",
+       "texte": "Elle était posée au clavier ; ses chasses s'arrondissaient au pixel, puis s'agrandissaient trois fois à l'écran, ouvrant un trou devant le « É » de « GAGNÉ ». Elle est maintenant posée lettre par lettre, en texte linéaire sans arrondi sous-pixel."
+      },
+      {
+       "titre": "Le médaillon est accessible",
+       "texte": "Une vue invisible « gagné à Wuertplaz » la double pour les lecteurs d'écran, qui ne lisent pas une légende dessinée."
+      },
+      {
+       "titre": "La ligne de série s'allège",
+       "texte": "Elle affichait « n° 011 · KW · 04.09.25 » ; elle n'en garde que « n° 011 · 04.09.25 ». Le sigle était redondant avec le médaillon et son nom."
+      },
+      {
+       "titre": "La carte se retourne d'un balayage",
+       "texte": "En plus de l'appui et du bouton, un geste franc et horizontal (30 % de la largeur de la carte, deux fois plus en largeur qu'en hauteur) la retourne. Le carton garde le geste dès que le doigt se pose : l'application ne peut donc plus changer d'onglet en glissant sur la carte pendant la révision."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_carte_stad.png",
+   "image_alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
+   "image_legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
+  },
+  {
+   "version": "24.0.0",
+   "date": "2026-09-18",
+   "intro": "La révision du carnet redevient une flashcard, pour toutes les cartes. Le numéro majeur marque ce changement de mécanique ; les cartes et leurs boîtes sont conservées telles quelles.",
+   "sections": [
+    {
+     "emoji": "🔄",
+     "titre": "Changé",
+     "points": [
+      {
+       "titre": "Réviser, c'est retourner une carte",
+       "texte": "Le dos montre le mot ; on retourne la carte d'un appui ou avec le bouton, puis on répond « Je savais » ou « Pas su », et la carte avance ou revient au début de la Boîte de Leitner. Depuis la 22.0.0, les cartes de la troisième boîte et au-delà demandaient de taper le mot dans une phrase à trous : cette saisie est retirée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La pastille de nature se pose sur le panneau",
+       "texte": "Elle flottait entre la plaque du nom et le panneau de texte, plus près de l'un que de l'autre ; elle en devient l'onglet, comme le médaillon de provenance en bas, et le panneau gagne de la hauteur pour le texte."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La révision s'affichait sans carte",
+       "texte": "En 23.0.0, une carte à taper n'affichait que le pavé de lettres, sans la carte ni le bouton pour valider. Sans objet depuis le retour à la flashcard, et corrigé à la racine."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "23.0.0",
+   "date": "2026-09-18",
+   "intro": "La carte du carnet change de visage : le nom prend la police de son palier, la gemme monte sur la clef de voûte et la provenance devient un sceau. Le numéro majeur marque ce changement de ce que la carte montre, sans rupture de données : les cartes déjà gagnées se lisent telles quelles.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le nom sur la plaque monte avec la rareté",
+       "texte": "Commun garde la police du système ; Peu commun passe en Lora, Rare en Cormorant Garamond, Très rare en EB Garamond, qui garde la casse là où une police de capitales aurait écrasé la majuscule du substantif. Trois polices libres (SIL Open Font License), 50 Ko de plus dans l'APK, citées dans la carte « Sources » des réglages."
+      },
+      {
+       "titre": "La provenance devient un médaillon",
+       "texte": "La capsule « gagné à Kräizwuert » est remplacée, entre les écus, par un sceau : l'emblème du jeu sur un émail de sa couleur, « GAGNÉ À » et le nom du jeu en légende sur le pourtour. Filet clair dès Rare, grènetis de perles sur l'or."
+      },
+      {
+       "titre": "L'éclat de la gemme suit le rang du mot",
+       "texte": "Les quatre paliers ne distinguaient pas le 9 000ᵉ mot du 30 000ᵉ ; la gemme de coût et celle de la clef de voûte gagnent en saturation et en éclat à mesure que le mot est rare, sans changer de teinte, qui reste celle du champ du mot."
+      },
+      {
+       "titre": "La gemme ovale monte sur la clef de voûte",
+       "texte": "Elle prend la place du petit joyau, et la clef s'agrandit pour la porter."
+      },
+      {
+       "titre": "La provenance descend en bas de carte",
+       "texte": "Entre les écus, et le joyau de rareté s'en va : sa couleur répétait ce que le métal et la plaque disaient déjà."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_carte_tres_rare.png",
+   "image_alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
+   "image_legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
+  },
   {
    "version": "22.12.9",
    "date": "2026-09-15",
@@ -48,105 +205,6 @@
    "image": "Screenshots/lux_inclinaison_deux_axes.gif",
    "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
    "image_legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
-  },
-  {
-   "version": "22.12.7",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🔄",
-     "titre": "Changé",
-     "points": [
-      {
-       "titre": "« Mäi Lëtzebuergesch » passe en dernier onglet",
-       "texte": "Ordre désormais Démarrage · Spiller · Wierderbuch · Mäi Lëtzebuergesch."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.12.6",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La plaque de nom s'arrête à l'aplomb de la fenêtre sur tous les paliers",
-       "texte": "Commun, Peu commun et Rare la traçaient jusqu'à 276, sept unités au-delà de la pointe de la ligne de type, là où la très rare s'arrêtait déjà à 269,4. Elle s'y arrête maintenant partout, et le nom qui ne tient pas au centre suit ce même tracé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.12.5",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La clef de voûte, les griffes et les rivets sont opaques",
-       "texte": "Ils héritaient de l'alpha du liseré du joyau précédent et laissaient voir à travers eux. Même correction sur tous les joyaux de la carte."
-      },
-      {
-       "titre": "La plaque du nom ne laisse plus de triangle au-dessus de la pastille",
-       "texte": "Elle rentre maintenant dans le métal jusqu'au bord du cadre sur les très rares, sans laisser de marge."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.12.4",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Une carte ouverte pivote enfin à contre-mouvement",
-       "texte": "Quand on penche le téléphone, la carte devait résister au geste comme un objet posé qui garde son aplomb : bord droit du téléphone qui descend, bord droit de la carte qui vient vers soi. Elle faisait l'inverse et suivait le téléphone, ce qui écrasait l'effet de profondeur. Même chose d'avant en arrière."
-      },
-      {
-       "titre": "La tranche et le reflet suivent la carte",
-       "texte": "Un téléphone tenu penché gardait sa tranche visible alors que la carte s'était remise d'aplomb, et en paysage la tranche apparaissait du mauvais côté."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La carte ouverte depuis la Boîte de Leitner suit la main",
-       "texte": "Comme celle du carnet : elle pivote avec l'inclinaison du téléphone et s'enfonce légèrement sous le doigt."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_contre_pivot.gif",
-   "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
-   "image_legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
   }
  ]
 }

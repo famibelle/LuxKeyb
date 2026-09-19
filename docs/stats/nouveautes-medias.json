@@ -1,5 +1,20 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "26.0.0": {
+    "image": "Screenshots/lux_relief_doigt.png",
+    "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+    "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+  },
+  "25.0.0": {
+    "image": "Screenshots/lux_carte_stad.png",
+    "alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
+    "legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
+  },
+  "23.0.0": {
+    "image": "Screenshots/lux_carte_tres_rare.png",
+    "alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
+    "legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
+  },
   "22.12.8": {
     "image": "Screenshots/lux_inclinaison_deux_axes.gif",
     "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
