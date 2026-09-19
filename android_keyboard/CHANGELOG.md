@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.0.2] - 2026-09-19
+
+### 🔒 Confidentialité
+
+- **Seuls les réglages partent dans la sauvegarde Google.** La politique de confidentialité promet que votre progression, votre carnet et ce qui vient de votre frappe ne quittent jamais le téléphone. Or la sauvegarde Android emportait jusqu'ici tous les fichiers de l'application : le carnet, le dernier niveau fêté, la date de votre premier mot et vos emojis récents. Désormais, seuls la vibration, le son, le thème et la majuscule automatique sont sauvegardés, et transférés vers un nouveau téléphone.
+- **Ce que cela change pour vous :** sur un nouveau téléphone, ou après une réinstallation, le carnet repart de zéro, comme le niveau le faisait déjà. Rien ne change sur le téléphone que vous utilisez.
+
 ## [26.0.1] - 2026-09-19
 
 ### 🐛 Corrections
