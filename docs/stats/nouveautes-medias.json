@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "26.2.0": {
+    "image": "Screenshots/lux_plaque_rivetee.png",
+    "alt": "La carte « Éierepromotioun », très rare, au cadre doré, ouverte en grand. Le nom est creusé dans une plaque dorée aux pointes repliées, tenue à ses quatre angles par des rivets bombés. En haut à droite, dans l'angle au-dessus de l'arche, un ornement de fer forgé doré : une grande spirale liée par un collier, une crosse qui s'enroule vers le coin et une branche qui suit l'arche, avec une perle au cœur de chaque spirale.",
+    "legende": "Le nom est gravé dans sa plaque, avec l'ombre et la lumière d'un vrai sillon, et quatre rivets la tiennent. En haut à droite, une ferronnerie remplace les petites spirales des angles. Rivets et ferronnerie s'enrichissent avec la rareté : ici, une carte très rare. Les rivets se sentent aussi sous le doigt."
+  },
   "26.0.0": {
     "image": "Screenshots/lux_relief_doigt.png",
     "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",

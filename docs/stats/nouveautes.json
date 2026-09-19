@@ -1,9 +1,131 @@
 {
  "genere_le": "2026-09-19",
- "derniere_version": "26.0.0",
+ "derniere_version": "26.2.0",
  "derniere_date": "2026-09-19",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "26.2.0",
+   "date": "2026-09-19",
+   "intro": "La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La plaque du mot est rivetée",
+       "texte": "Quatre rivets tiennent ses angles, et ils montent avec la rareté : petites têtes de clou sur une carte commune, rivets bombés posés sur une rondelle sur une rare, puis plus gros encore sur une très rare. Ils se sentent aussi sous le doigt, et d'autant plus que la carte est rare."
+      },
+      {
+       "titre": "Le mot est gravé dans la plaque",
+       "texte": "Il n'est plus imprimé dessus : ses lettres sont creusées dans la matière, bois brûlé dans le chêne, argent ou or bruni dans le métal, avec l'ombre et la lumière d'un vrai sillon."
+      },
+      {
+       "titre": "Une ferronnerie orne l'angle en haut à droite",
+       "texte": "Les petites spirales des angles du bas, fines comme des cheveux, disparaissent. À leur place, un ornement de fer forgé en relief, dans le métal de la carte, qui s'enrichit avec la rareté : un simple coin à deux crosses, puis une grande volute liée par un collier, puis une branche qui suit l'arche et des perles au cœur des spirales."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "image": "Screenshots/lux_plaque_rivetee.png",
+   "image_alt": "La carte « Éierepromotioun », très rare, au cadre doré, ouverte en grand. Le nom est creusé dans une plaque dorée aux pointes repliées, tenue à ses quatre angles par des rivets bombés. En haut à droite, dans l'angle au-dessus de l'arche, un ornement de fer forgé doré : une grande spirale liée par un collier, une crosse qui s'enroule vers le coin et une branche qui suit l'arche, avec une perle au cœur de chaque spirale.",
+   "image_legende": "Le nom est gravé dans sa plaque, avec l'ombre et la lumière d'un vrai sillon, et quatre rivets la tiennent. En haut à droite, une ferronnerie remplace les petites spirales des angles. Rivets et ferronnerie s'enrichissent avec la rareté : ici, une carte très rare. Les rivets se sentent aussi sous le doigt."
+  },
+  {
+   "version": "26.1.0",
+   "date": "2026-09-19",
+   "intro": "La carte se lit dans tous les sens, et la plaque du mot se sent davantage.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le relief se sent aussi de haut en bas et de bas en haut",
+       "texte": "Jusqu'ici, seul un doigt qui balayait de côté sentait les marches de la carte. Or la plaque du mot déborde du cadre : de gauche à droite, on montait dessus depuis la table et on n'en descendait qu'à l'autre bord, sans jamais sentir qu'elle dépasse de la carte. En descendant, on sent maintenant l'ouverture se creuser, puis la plaque monter, puis retomber sur le panneau."
+      },
+      {
+       "titre": "La plaque du mot est plus épaisse",
+       "texte": "Elle devient la plus haute des pièces posées sur la carte, juste sous les pierres : c'est là qu'est le mot, c'est ce que le doigt doit trouver le plus nettement."
+      },
+      {
+       "titre": "Sur les téléphones au vibreur simple, une grande marche vibre plus longtemps",
+       "texte": "Leur moteur ne sait pas varier sa force, mais une impulsion plus longue s'y sent plus forte : de 40 millisecondes pour une petite bosse à 80 pour la plus grande marche. C'est le principe des retours tactiles d'accessibilité, qui distinguent leurs signaux par la durée et le rythme."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "26.0.3",
+   "date": "2026-09-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La carte vibre enfin sur les Samsung au vibreur simple",
+       "texte": "La 26.0.1 n'y changeait rien : interrogé, le téléphone répondait « je ne sais pas » au lieu de « non », et la carte restait sur l'ancienne vibration, qu'il ignore. Il reçoit maintenant l'impulsion, et elle dure 40 millisecondes au lieu de 20 : réglée au doigt sur un Galaxy A21s, où 20 et 30 ne se sentaient pas. Même correction pour la glisse sur la barre d'espace et le feuilletage d'un casier."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "26.0.2",
+   "date": "2026-09-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🔒",
+     "titre": "Confidentialité",
+     "points": [
+      {
+       "titre": "Seuls les réglages partent dans la sauvegarde Google",
+       "texte": "La politique de confidentialité promet que votre progression, votre carnet et ce qui vient de votre frappe ne quittent jamais le téléphone. Or la sauvegarde Android emportait jusqu'ici tous les fichiers de l'application : le carnet, le dernier niveau fêté, la date de votre premier mot et vos emojis récents. Désormais, seuls la vibration, le son, le thème et la majuscule automatique sont sauvegardés, et transférés vers un nouveau téléphone."
+      },
+      {
+       "titre": "Ce que cela change pour vous ",
+       "texte": "Sur un nouveau téléphone, ou après une réinstallation, le carnet repart de zéro, comme le niveau le faisait déjà. Rien ne change sur le téléphone que vous utilisez."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "26.0.1",
+   "date": "2026-09-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La carte vibre aussi sur les téléphones au vibreur simple",
+       "texte": "Sur certains Samsung (constaté sur un Galaxy A21s), le petit « tic » demandé au téléphone n'existe pas, et le système l'ignorait sans rien dire : passer le doigt sur une carte ne donnait aucune sensation, alors que les touches du clavier vibraient normalement. Ces téléphones reçoivent maintenant une impulsion brève, qu'ils savent rendre. On y sent chaque arête de la carte, mais pas encore leur hauteur : leur moteur ne sait pas varier sa force."
+      },
+      {
+       "titre": "La glisse sur la barre d'espace et le feuilletage d'un casier vibrent à nouveau",
+       "texte": "Sur ces mêmes téléphones, pour la même raison."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "26.0.0",
    "date": "2026-09-19",
@@ -37,174 +159,6 @@
    "image": "Screenshots/lux_relief_doigt.png",
    "image_alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
    "image_legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
-  },
-  {
-   "version": "25.0.0",
-   "date": "2026-09-18",
-   "intro": "L'harmonie visuelle de la carte et les gestes de révision.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La traduction s'aère",
-       "texte": "Elle prenait trois unités d'air sous la phrase ; collée à elle, elle se lisait comme sa troisième ligne."
-      },
-      {
-       "titre": "Les écus s'alignent",
-       "texte": "À 26 et 274 unités, ils paraissaient décalés par rapport à la plaque ; ils sont passés à 28 et 272, ses bords propres, à égale distance du médaillon."
-      },
-      {
-       "titre": "La légende du médaillon est nette",
-       "texte": "Elle était posée au clavier ; ses chasses s'arrondissaient au pixel, puis s'agrandissaient trois fois à l'écran, ouvrant un trou devant le « É » de « GAGNÉ ». Elle est maintenant posée lettre par lettre, en texte linéaire sans arrondi sous-pixel."
-      },
-      {
-       "titre": "Le médaillon est accessible",
-       "texte": "Une vue invisible « gagné à Wuertplaz » la double pour les lecteurs d'écran, qui ne lisent pas une légende dessinée."
-      },
-      {
-       "titre": "La ligne de série s'allège",
-       "texte": "Elle affichait « n° 011 · KW · 04.09.25 » ; elle n'en garde que « n° 011 · 04.09.25 ». Le sigle était redondant avec le médaillon et son nom."
-      },
-      {
-       "titre": "La carte se retourne d'un balayage",
-       "texte": "En plus de l'appui et du bouton, un geste franc et horizontal (30 % de la largeur de la carte, deux fois plus en largeur qu'en hauteur) la retourne. Le carton garde le geste dès que le doigt se pose : l'application ne peut donc plus changer d'onglet en glissant sur la carte pendant la révision."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_carte_stad.png",
-   "image_alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
-   "image_legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
-  },
-  {
-   "version": "24.0.0",
-   "date": "2026-09-18",
-   "intro": "La révision du carnet redevient une flashcard, pour toutes les cartes. Le numéro majeur marque ce changement de mécanique ; les cartes et leurs boîtes sont conservées telles quelles.",
-   "sections": [
-    {
-     "emoji": "🔄",
-     "titre": "Changé",
-     "points": [
-      {
-       "titre": "Réviser, c'est retourner une carte",
-       "texte": "Le dos montre le mot ; on retourne la carte d'un appui ou avec le bouton, puis on répond « Je savais » ou « Pas su », et la carte avance ou revient au début de la Boîte de Leitner. Depuis la 22.0.0, les cartes de la troisième boîte et au-delà demandaient de taper le mot dans une phrase à trous : cette saisie est retirée."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La pastille de nature se pose sur le panneau",
-       "texte": "Elle flottait entre la plaque du nom et le panneau de texte, plus près de l'un que de l'autre ; elle en devient l'onglet, comme le médaillon de provenance en bas, et le panneau gagne de la hauteur pour le texte."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La révision s'affichait sans carte",
-       "texte": "En 23.0.0, une carte à taper n'affichait que le pavé de lettres, sans la carte ni le bouton pour valider. Sans objet depuis le retour à la flashcard, et corrigé à la racine."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "23.0.0",
-   "date": "2026-09-18",
-   "intro": "La carte du carnet change de visage : le nom prend la police de son palier, la gemme monte sur la clef de voûte et la provenance devient un sceau. Le numéro majeur marque ce changement de ce que la carte montre, sans rupture de données : les cartes déjà gagnées se lisent telles quelles.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le nom sur la plaque monte avec la rareté",
-       "texte": "Commun garde la police du système ; Peu commun passe en Lora, Rare en Cormorant Garamond, Très rare en EB Garamond, qui garde la casse là où une police de capitales aurait écrasé la majuscule du substantif. Trois polices libres (SIL Open Font License), 50 Ko de plus dans l'APK, citées dans la carte « Sources » des réglages."
-      },
-      {
-       "titre": "La provenance devient un médaillon",
-       "texte": "La capsule « gagné à Kräizwuert » est remplacée, entre les écus, par un sceau : l'emblème du jeu sur un émail de sa couleur, « GAGNÉ À » et le nom du jeu en légende sur le pourtour. Filet clair dès Rare, grènetis de perles sur l'or."
-      },
-      {
-       "titre": "L'éclat de la gemme suit le rang du mot",
-       "texte": "Les quatre paliers ne distinguaient pas le 9 000ᵉ mot du 30 000ᵉ ; la gemme de coût et celle de la clef de voûte gagnent en saturation et en éclat à mesure que le mot est rare, sans changer de teinte, qui reste celle du champ du mot."
-      },
-      {
-       "titre": "La gemme ovale monte sur la clef de voûte",
-       "texte": "Elle prend la place du petit joyau, et la clef s'agrandit pour la porter."
-      },
-      {
-       "titre": "La provenance descend en bas de carte",
-       "texte": "Entre les écus, et le joyau de rareté s'en va : sa couleur répétait ce que le métal et la plaque disaient déjà."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_carte_tres_rare.png",
-   "image_alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
-   "image_legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
-  },
-  {
-   "version": "22.12.9",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le carnet s'adapte au paysage",
-       "texte": "La grille du carnet gardait deux colonnes quelle que soit l'orientation, calculées sur la seule largeur de l'écran : à l'italienne sur un téléphone, les vignettes devenaient démesurées et débordaient de la hauteur disponible, masquant jusqu'au nom du mot sans un défilement. Le nombre de colonnes s'adapte maintenant à la largeur disponible."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "22.12.8",
-   "date": "2026-09-15",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La carte ouverte s'incline deux fois plus",
-       "texte": "Quand on penche le téléphone, elle pivote maintenant jusqu'à vingt degrés au lieu de dix."
-      },
-      {
-       "titre": "La carte s'incline aussi de haut en bas, à contre-mouvement",
-       "texte": "Quand on bascule le téléphone vers l'avant ou vers l'arrière, la carte résiste au geste comme elle le fait déjà de gauche à droite. Ce mouvement existait, mais un téléphone tenu presque debout le rendait imperceptible."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "image": "Screenshots/lux_inclinaison_deux_axes.gif",
-   "image_alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
-   "image_legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
   }
  ]
 }
