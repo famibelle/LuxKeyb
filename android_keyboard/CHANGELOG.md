@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.2.0] - 2026-09-19
+
+La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.
+
+### ✨ Améliorations
+
+- **La plaque du mot est rivetée.** Quatre rivets tiennent ses angles, et ils montent avec la rareté : petites têtes de clou sur une carte commune, rivets bombés posés sur une rondelle sur une rare, puis plus gros encore sur une très rare. Ils se sentent aussi sous le doigt, et d'autant plus que la carte est rare.
+- **Le mot est gravé dans la plaque.** Il n'est plus imprimé dessus : ses lettres sont creusées dans la matière, bois brûlé dans le chêne, argent ou or bruni dans le métal, avec l'ombre et la lumière d'un vrai sillon.
+- **Une ferronnerie orne l'angle en haut à droite.** Les petites spirales des angles du bas, fines comme des cheveux, disparaissent. À leur place, un ornement de fer forgé en relief, dans le métal de la carte, qui s'enrichit avec la rareté : un simple coin à deux crosses, puis une grande volute liée par un collier, puis une branche qui suit l'arche et des perles au cœur des spirales.
+
 ## [26.1.0] - 2026-09-19
 
 La carte se lit dans tous les sens, et la plaque du mot se sent davantage.
