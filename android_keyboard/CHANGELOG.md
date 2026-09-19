@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.1.0] - 2026-09-19
+
+La carte se lit dans tous les sens, et la plaque du mot se sent davantage.
+
+### ✨ Améliorations
+
+- **Le relief se sent aussi de haut en bas et de bas en haut.** Jusqu'ici, seul un doigt qui balayait de côté sentait les marches de la carte. Or la plaque du mot déborde du cadre : de gauche à droite, on montait dessus depuis la table et on n'en descendait qu'à l'autre bord, sans jamais sentir qu'elle dépasse de la carte. En descendant, on sent maintenant l'ouverture se creuser, puis la plaque monter, puis retomber sur le panneau.
+- **La plaque du mot est plus épaisse.** Elle devient la plus haute des pièces posées sur la carte, juste sous les pierres : c'est là qu'est le mot, c'est ce que le doigt doit trouver le plus nettement.
+- **Sur les téléphones au vibreur simple, une grande marche vibre plus longtemps.** Leur moteur ne sait pas varier sa force, mais une impulsion plus longue s'y sent plus forte : de 40 millisecondes pour une petite bosse à 80 pour la plus grande marche. C'est le principe des retours tactiles d'accessibilité, qui distinguent leurs signaux par la durée et le rythme.
+
 ## [26.0.3] - 2026-09-19
 
 ### 🐛 Corrections
