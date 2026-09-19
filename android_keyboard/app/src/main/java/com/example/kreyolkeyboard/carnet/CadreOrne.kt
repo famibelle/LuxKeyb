@@ -438,52 +438,278 @@ object Ornement {
     // ----------------------------------------------------------- primitives
 
     /**
-     * Une volute **gravée** : un sillon creusé dans la matière, pas un trait
-     * posé dessus.
+     * Une barre de fer forgé : le ruban [chemin], d'épaisseur constante
+     * [trait], en relief dans le métal [m], avec son éventuelle pièce pleine
+     * [plein]. Rend le dégradé, pour que les pièces rapportées (feuille,
+     * collier) prennent la même lumière.
      *
-     * La lumière du cadre vient d'en haut à gauche (son dégradé va de `hi` à
-     * `lo`). Un creux y montre donc sa paroi haute dans l'ombre et sa lèvre
-     * basse dans la lumière ; l'inverse se lit comme un relief. Le fond est
-     * translucide pour que la matière, métal ou face teintée, reste visible
-     * au fond du sillon. Chaque passe va dans sa propre couche : des segments
-     * translucides aux bouts ronds se superposeraient en chapelet aux jointures.
+     * Le dessin se fait à l'écran et la lumière vient d'en haut, entre
+     * [haut] et [bas] : c'est celle du cadre et des rivets. L'ombre portée
+     * d'abord, comme la plaque : sans elle le métal se lirait peint sur la
+     * face, pas posé dessus. Puis le contour, que le métal recouvre en
+     * laissant déborder sa moitié de chaque côté, et un filet de reflet.
      */
-    private fun volute(
-        c: Canvas, p: Paint, x: Float, y: Float, taille: Float,
-        sx: Float, sy: Float, tours: Float, epais: Float, m: Metal
-    ) {
-        val marge = epais + 2f
-        val cadre = RectF(x - taille - marge, y - taille - marge, x + taille + marge, y + taille + marge)
-        passe(c, p, cadre, 0x9E, Color.WHITE, x + 0.45f, y + 0.85f, taille, sx, sy, tours, epais)
-        passe(c, p, cadre, 0x6B, Color.BLACK, x, y, taille, sx, sy, tours, epais * 0.8f)
-        passe(c, p, cadre, 0x5C, m.trait, x - 0.25f, y - 0.45f, taille, sx, sy, tours, epais * 0.35f)
+    private fun barre(
+        c: Canvas, p: Paint, chemin: Path, trait: Float, m: Metal,
+        haut: Float, bas: Float, plein: Path? = null
+    ): Shader {
+        val lumiere = LinearGradient(
+            0f, haut, 0f, bas, intArrayOf(m.hi, m.mid, m.lo),
+            floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        p.strokeCap = Paint.Cap.ROUND
+        p.strokeJoin = Paint.Join.ROUND
+        c.save()
+        c.translate(0.8f, 1.2f)
+        p.shader = null
+        p.color = 0x38000000
+        if (plein != null) {
+            p.style = Paint.Style.FILL
+            c.drawPath(plein, p)
+        }
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = trait + 0.6f
+        c.drawPath(chemin, p)
+        c.restore()
+
+        p.color = m.trait
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = trait + 1.4f
+        c.drawPath(chemin, p)
+        if (plein != null) {
+            p.strokeWidth = 1.2f
+            c.drawPath(plein, p)
+        }
+        p.color = Color.BLACK
+        p.shader = lumiere
+        if (plein != null) {
+            p.style = Paint.Style.FILL
+            c.drawPath(plein, p)
+            p.style = Paint.Style.STROKE
+        }
+        p.strokeWidth = trait
+        c.drawPath(chemin, p)
+        p.shader = null
+
+        c.save()
+        c.translate(-0.25f, -0.45f)
+        p.color = 0x8CFFFFFF.toInt()
+        p.strokeWidth = trait * 0.3f
+        c.drawPath(chemin, p)
+        c.restore()
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+        p.style = Paint.Style.FILL
+        return lumiere
     }
 
-    /** Une passe de [volute], opaque dans une couche rendue à [alpha]. */
-    private fun passe(
-        c: Canvas, p: Paint, cadre: RectF, alpha: Int, couleur: Int,
-        x: Float, y: Float, taille: Float, sx: Float, sy: Float, tours: Float, epais: Float
+    /**
+     * Une spirale ajoutée à [chemin], de l'angle [de] à l'angle [a] (en
+     * degrés, sens de l'écran), le rayon passant de [r0] à [r1].
+     *
+     * Échantillonnée tous les dix degrés : un arc de cercle ne sait pas
+     * resserrer, et c'est le resserrement qui fait la volute.
+     */
+    private fun spirale(
+        chemin: Path, cx: Float, cy: Float, r0: Float, r1: Float, de: Float, a: Float
     ) {
-        c.saveLayerAlpha(cadre, alpha)
-        p.style = Paint.Style.STROKE
-        p.strokeCap = Paint.Cap.ROUND
-        p.color = couleur
-        p.shader = null
-        var px = taille
-        var py = 0f
-        val n = 40
-        for (i in 1..n) {
+        val n = max(2, (abs(a - de) / 10f).toInt())
+        for (i in 0..n) {
             val t = i / n.toFloat()
-            val ang = t * tours * 2f * Math.PI.toFloat()
-            val r = taille * exp(-1.75f * t)
-            val nx = cos(ang) * r
-            val ny = sin(ang) * r
-            p.strokeWidth = epais * (1f - t * 0.8f)
-            c.drawLine(x + px * sx, y + py * sy, x + nx * sx, y + ny * sy, p)
-            px = nx
-            py = ny
+            val ang = Math.toRadians((de + (a - de) * t).toDouble())
+            val r = r0 + (r1 - r0) * t
+            chemin.lineTo(cx + r * cos(ang).toFloat(), cy + r * sin(ang).toFloat())
         }
+    }
+
+    /**
+     * La ferronnerie de l'écoinçon haut droit, sur les cartes à arche.
+     *
+     * Le vocabulaire est celui du fer forgé (référence donnée par le
+     * propriétaire, un panneau de volutes de décoferforge) : une barre
+     * d'épaisseur constante, des spirales qui se resserrent jusqu'à leur
+     * œil, des crosses secondaires qui naissent de la principale, et des
+     * **colliers** qui lient deux barres là où elles se touchent. C'est le
+     * collier qui fait « forgé » plutôt que « dessiné » : il dit que les
+     * pièces sont assemblées.
+     *
+     * - *Rare* : la tige principale, qui monte le long du cadre depuis une
+     *   petite crosse et s'enroule en une grande volute ; une crosse d'angle
+     *   liée à elle par un collier.
+     * - *Très rare* : en plus, une branche qui suit l'arche vers la clef de
+     *   voûte, un second collier, et des perles à l'œil des volutes.
+     *
+     * Toutes les cotes sont en unités de carte et tiennent entre l'arche,
+     * son jonc compris, et le cadre des deux paliers (bord 16 et 18) : la
+     * crosse du bas passe à 1 unité du jonc à hauteur 92, c'est la plus
+     * serrée. Qui déplace l'arche doit revoir ces nombres.
+     */
+    private fun ferronnerie(c: Canvas, p: Paint, palier: Int, m: Metal) {
+        val trait = if (palier >= 3) 2.6f else 2.4f
+
+        // La tige : la crosse du bas, contre le cadre, puis la montée le long
+        // du bord droit, puis la grande volute qui s'enroule sous l'angle.
+        val tige = Path()
+        tige.moveTo(277f + 1f, 93f)
+        spirale(tige, 277f, 93f, 1f, 3.5f, -360f, 180f)
+        tige.cubicTo(273.5f, 80f, 261f, 64f, 265f, 44f)
+        spirale(tige, 250f, 44f, 15f, 2.5f, 0f, -540f)
+
+        // La crosse d'angle, qui naît de la volute et part vers le coin.
+        val crosse = Path()
+        crosse.moveTo(262f, 35f)
+        crosse.cubicTo(266f, 32f, 270f, 30f, 270f, 26f)
+        spirale(crosse, 275f, 26f, 5f, 1.2f, 180f, 630f)
+
+        val barres = Path()
+        barres.addPath(tige)
+        barres.addPath(crosse)
+
+        // La branche de l'arche : de la volute vers la clef de voûte, où elle
+        // s'enroule à son tour.
+        if (palier >= 3) {
+            val branche = Path()
+            branche.moveTo(203f, 29f)
+            spirale(branche, 203f, 30f, 1f, 5.5f, 630f, 90f)
+            branche.cubicTo(220f, 37f, 234f, 34f, 243.7f, 30.4f)
+            barres.addPath(branche)
+        }
+
+        val lumiere = barre(c, p, barres, trait, m, 18f, 100f)
+
+        // Les colliers : une bague de métal en travers des deux barres.
+        collier(c, p, 262f, 35f, -53f, trait, m, lumiere)
+        if (palier >= 3) collier(c, p, 243.7f, 30.4f, -20f, trait, m, lumiere)
+
+        // L'œil des volutes, à Très rare : une perle du même métal.
+        if (palier >= 3) {
+            val perle = trait * 0.8f
+            joyau(c, p, 250f, 44f, perle, m.hi, 0)
+            joyau(c, p, 275f, 26f, perle * 0.8f, m.hi, 0)
+            joyau(c, p, 203f, 30f, perle * 0.8f, m.hi, 0)
+        }
+    }
+
+    /** Un collier de fer forgé, centré en ([x], [y]), en travers d'une barre orientée à [angle]. */
+    private fun collier(
+        c: Canvas, p: Paint, x: Float, y: Float, angle: Float, trait: Float, m: Metal,
+        lumiere: Shader
+    ) {
+        val bague = RectF(-1.1f, -trait * 1.25f, 1.1f, trait * 1.25f)
+        c.save()
+        c.translate(x, y)
+        c.rotate(angle)
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        p.shader = lumiere
+        c.drawRoundRect(bague, 0.5f, 0.5f, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.8f
+        p.color = m.trait
+        c.drawRoundRect(bague, 0.5f, 0.5f, p)
         c.restore()
+        p.style = Paint.Style.FILL
+    }
+
+    /**
+     * Un écoinçon : le coin de métal qui tient l'angle de la face, et les
+     * deux volutes qui en partent le long des bords.
+     *
+     * Tout est construit dans le repère de l'angle — `u` le long d'un bord,
+     * `v` vers l'intérieur — puis ramené à l'écran par une matrice : la
+     * seconde volute est la première réfléchie sur la diagonale, ce qui
+     * garantit la symétrie au lieu de l'approcher. Le dessin, lui, se fait à
+     * l'écran, pour que la lumière vienne d'en haut quel que soit l'angle :
+     * un dégradé tracé dans le repère local s'inverserait dans les coins du
+     * bas et creuserait ce qui doit être en relief.
+     *
+     * L'échelle de rareté ne multiplie pas les spirales, elle enrichit la
+     * pièce : deux crosses nues à *Peu commun*, un œil perlé au bout de chacune
+     * à *Rare*, une feuille d'acanthe sur la diagonale à *Très rare* — celle
+     * des flancs, qui fait écho.
+     */
+    private fun ecoincon(
+        c: Canvas, p: Paint, x: Float, y: Float, sx: Float, sy: Float,
+        echelle: Float, palier: Int, m: Metal
+    ) {
+        val w = floatArrayOf(0f, 2.2f, 2.6f, 3f)[palier]
+        val l = floatArrayOf(0f, 13f, 16f, 18f)[palier]
+        val r = floatArrayOf(0f, 3.4f, 4f, 4.5f)[palier]
+        val k = floatArrayOf(0f, 8f, 10f, 12f)[palier]
+        val e = w / 2f + 0.6f
+
+        val versEcran = Matrix()
+        versEcran.setScale(sx * echelle, sy * echelle)
+        versEcran.postTranslate(x, y)
+        val diagonale = Matrix()
+        diagonale.setValues(floatArrayOf(0f, 1f, 0f, 1f, 0f, 0f, 0f, 0f, 1f))
+
+        // Une crosse : le long du bord, puis une vraie spirale — deux
+        // demi-tours de rayon décroissant, qui finissent en son centre. Une
+        // boucle de rayon constant se lisait comme une lettre (« P », « b ») ;
+        // c'est l'enroulement qui resserre qui fait la volute.
+        val r2 = r * 0.5f
+        val bras = Path()
+        bras.moveTo(k * 0.55f, e)
+        bras.lineTo(l, e)
+        bras.arcTo(RectF(l - r, e, l + r, e + 2f * r), -90f, 180f)
+        bras.arcTo(RectF(l - r2, e + 2f * r - 2f * r2, l + r2, e + 2f * r), 90f, 180f)
+        val deux = Path(bras)
+        deux.transform(diagonale)
+        bras.addPath(deux)
+        bras.transform(versEcran)
+
+        // Le coin : un triangle aux côtés creusés, qui remplit l'arrondi de
+        // la face et d'où les deux crosses semblent sortir.
+        val ancre = Path()
+        ancre.moveTo(0f, 0f)
+        ancre.lineTo(k, 0f)
+        ancre.quadTo(k * 0.28f, k * 0.28f, 0f, k)
+        ancre.close()
+        ancre.transform(versEcran)
+
+        val trait = w * echelle
+        val lumiere = barre(c, p, bras, trait, m, min(y, y + sy * (l + r) * echelle),
+            max(y, y + sy * (l + r) * echelle), ancre)
+
+        // L'œil de chaque volute, à Rare : une perle du même métal, au centre
+        // de la spirale, là où elle finit. C'est le point le plus épais, pas
+        // le plus fin.
+        if (palier >= 2) {
+            val bouts = floatArrayOf(l, e + r, e + r, l)
+            versEcran.mapPoints(bouts)
+            val perle = (w * 0.85f) * echelle
+            joyau(c, p, bouts[0], bouts[1], perle, m.hi, 0)
+            joyau(c, p, bouts[2], bouts[3], perle, m.hi, 0)
+        }
+
+        // La feuille d'acanthe sur la diagonale, à Très rare.
+        if (palier >= 3) {
+            val f = Path()
+            val d = k * 0.5f
+            val lf = 11f
+            f.moveTo(d, d)
+            f.quadTo(d + lf * 0.62f, d + lf * 0.08f, d + lf * 0.71f, d + lf * 0.71f)
+            f.quadTo(d + lf * 0.08f, d + lf * 0.62f, d, d)
+            f.close()
+            f.transform(versEcran)
+            p.style = Paint.Style.FILL
+            p.color = Color.BLACK
+            p.shader = lumiere
+            c.drawPath(f, p)
+            p.shader = null
+            p.style = Paint.Style.STROKE
+            p.strokeWidth = 0.9f
+            p.color = m.trait
+            c.drawPath(f, p)
+            // La nervure.
+            val n = floatArrayOf(d, d, d + lf * 0.6f, d + lf * 0.6f)
+            versEcran.mapPoints(n)
+            p.strokeWidth = 0.6f
+            c.drawLine(n[0], n[1], n[2], n[3], p)
+        }
+        p.style = Paint.Style.FILL
     }
 
     /**
@@ -949,42 +1175,30 @@ object Ornement {
             if (vignette) joyau(c, p, kx, ky + 2f, 5.5f, m.joyau, 6)
         }
 
-        // 4. Les volutes d'angle : aucune, puis deux, quatre, huit.
+        // 4. L'écoinçon, en haut à droite, à partir de Peu commun.
         //
-        // Sur la grande carte, les angles du haut appartiennent à la gemme et
-        // à la pointe de la plaque, peintes par-dessus : la volute n'y montrait
-        // que des bouts de spirale. Seuls les angles du bas en reçoivent, plus
-        // petites et logées dans le coin, sous la courbe des écus, au-dessus
-        // de la ligne de série (428). Le nombre visible par palier est inchangé.
-        val volutes = intArrayOf(0, 2, 4, 8)[palier]
-        if (volutes > 0) {
-            val coins = if (vignette) arrayOf(
-                floatArrayOf(bord + 5f, bord + 5f, 1f, 1f),
-                floatArrayOf(LARGEUR - bord - 5f, bord + 5f, -1f, 1f),
-                floatArrayOf(bord + 5f, haut - bord - 5f, 1f, -1f),
-                floatArrayOf(LARGEUR - bord - 5f, haut - bord - 5f, -1f, -1f)
-            ) else arrayOf(
-                floatArrayOf(0f, 0f, 0f, 0f),
-                floatArrayOf(0f, 0f, 0f, 0f),
-                floatArrayOf(bord + 5f, haut - bord - 3f, 1f, -1f),
-                floatArrayOf(LARGEUR - bord - 5f, haut - bord - 3f, -1f, -1f)
-            )
-            val taille = (13f + palier * 3f) * (if (vignette) 1f else 0.65f)
-            for (i in 0 until volutes) {
-                val coin = coins[i % 4]
-                if (coin[2] == 0f) continue
-                val x = coin[0]
-                val y = coin[1]
-                val sx = coin[2]
-                val sy = coin[3]
-                // Au-delà de quatre, la seconde volute d'un angle se pose en
-                // retrait sur le flanc : deux spirales concentriques feraient
-                // une tache, deux spirales décalées font une frise.
-                val seconde = i >= 4
-                val dx = if (seconde) sx * 16f else 0f
-                val dy = if (seconde) sy * 3f else 0f
-                val t = if (seconde) taille * 0.6f else taille
-                volute(c, p, x + dx, y + dy, t, sx, sy, 1.35f, if (vignette) 3.2f else 2.6f, m)
+        // Il remplace (2026-09-19) des spirales gravées, fines et
+        // translucides, qui flottaient dans les angles du bas sans rien
+        // toucher : à la taille de la carte, une courbe qui s'amincit jusqu'à
+        // rien se lisait comme un cheveu ou une poussière. Ce qui les
+        // remplace est l'inverse sur quatre points : ancré dans le cadre,
+        // d'épaisseur constante, fait du métal du palier, en relief.
+        //
+        // Un seul angle, et c'est celui-là : le haut à gauche appartient à la
+        // gemme de coût, et l'ornement lui répond en diagonale au lieu de lui
+        // disputer la place. À partir de *Rare*, l'arche ouvre au-dessus
+        // d'elle le vrai écoinçon d'architecte — le triangle courbe entre
+        // l'arc et l'angle du cadre —, assez grand pour une ferronnerie :
+        // voir [ferronnerie]. La vignette, trop petite pour la lire, garde le
+        // coin simple à tous les paliers.
+        if (palier >= 1) {
+            if (vignette || palier == 1) {
+                ecoincon(
+                    c, p, LARGEUR - bord, bord, -1f, 1f,
+                    if (vignette) 0.8f else 1f, if (vignette) palier else 1, m
+                )
+            } else {
+                ferronnerie(c, p, palier, m)
             }
         }
 
