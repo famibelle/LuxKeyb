@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.0.3] - 2026-09-19
+
+### 🐛 Corrections
+
+- **La carte vibre enfin sur les Samsung au vibreur simple.** La 26.0.1 n'y changeait rien : interrogé, le téléphone répondait « je ne sais pas » au lieu de « non », et la carte restait sur l'ancienne vibration, qu'il ignore. Il reçoit maintenant l'impulsion, et elle dure 40 millisecondes au lieu de 20 : réglée au doigt sur un Galaxy A21s, où 20 et 30 ne se sentaient pas. Même correction pour la glisse sur la barre d'espace et le feuilletage d'un casier.
+
 ## [26.0.2] - 2026-09-19
 
 ### 🔒 Confidentialité
