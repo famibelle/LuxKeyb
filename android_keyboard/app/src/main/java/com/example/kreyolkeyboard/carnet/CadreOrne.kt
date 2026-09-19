@@ -259,6 +259,21 @@ object Ornement {
      */
     val PLAQUE = RectF(28f, 184f, 272f, 228f)
     /**
+     * Les quatre rivets de la plaque, dans ses angles : une plaque rivetée,
+     * pas une étiquette collée (demande du propriétaire, 2026-09-19).
+     *
+     * Ils tiennent dans les deux bandes que le mot laisse libres au-dessus et
+     * au-dessous de lui : le nom prend toute la largeur de la plaque, mais sa
+     * hauteur d'encre reste sous 20 unités même dans la police de *Rare*, soit
+     * entre 196 et 216, quand les rivets s'arrêtent à 194,4 et reprennent à
+     * 217,6.
+     * Plus gros, ou plus près du centre, ils mordraient sur les lettres d'un
+     * mot long.
+     */
+    const val RIVET_PLAQUE_DX = 9f
+    const val RIVET_PLAQUE_DY = 7f
+    const val RIVET_PLAQUE_R = 3.4f
+    /**
      * La gemme de coût, à 11 unités des deux bords de l'angle.
      *
      * Elle y était centrée sur la plaque de nom, qui occupait le bandeau du
@@ -640,6 +655,16 @@ object Ornement {
             c.drawRoundRect(
                 RectF(r.left + 3.5f, r.top + 3.5f, r.right - 3.5f, r.bottom - 3.5f), 2f, 2f, p
             )
+        }
+
+        // Les rivets, par-dessus le filet : c'est lui qui passe dessous, comme
+        // la règle tracée avant que la plaque soit fixée. Ils sont du métal du
+        // cadre et non de la matière de la plaque : une planche se cloue au
+        // fer, pas au bois. Mêmes positions que [bosses], qui les fait sentir.
+        for (x in floatArrayOf(r.left + RIVET_PLAQUE_DX, r.right - RIVET_PLAQUE_DX)) {
+            for (y in floatArrayOf(r.top + RIVET_PLAQUE_DY, r.bottom - RIVET_PLAQUE_DY)) {
+                joyau(c, p, x, y, RIVET_PLAQUE_R, m.hi, 0)
+            }
         }
     }
 
@@ -1599,7 +1624,8 @@ object Ornement {
      *   trouver le plus nettement (relevée de 1,8 le 2026-09-19, à la demande
      *   du propriétaire, qui la cherchait les yeux fermés).
      * - Les pierres dépassent davantage que tout ce qui est posé à plat :
-     *   l'agrafe 2,4, la gemme de coût 2,8. Les rivets, 2,4.
+     *   l'agrafe 2,4, la gemme de coût 2,8. Les rivets, 2,4 ; ceux de la
+     *   plaque, 2,6, puisqu'ils la traversent et dépassent de sa face.
      * - Une griffe tient sa pierre par-dessus : 0,3 de plus qu'elle.
      */
     private const val Z_HORS = 0f
@@ -1613,6 +1639,7 @@ object Ornement {
     private const val Z_PLATEAU = 2f
     private const val Z_AGRAFE = 2.4f
     private const val Z_RIVET = 2.4f
+    private const val Z_RIVET_PLAQUE = Z_PLAQUE + 0.4f
     private const val Z_GEMME = 2.8f
     private const val Z_GRIFFE = 0.3f
 
@@ -1631,7 +1658,7 @@ object Ornement {
     fun bosses(rarete: Rarete): FloatArray {
         val palier = rarete.ordinal
         val bord = 12f + palier * 2f
-        val v = ArrayList<Float>(5 * 18)
+        val v = ArrayList<Float>(5 * 22)
         fun bosse(cx: Float, cy: Float, rx: Float, ry: Float, z: Float) {
             v.add(cx); v.add(cy); v.add(rx); v.add(ry); v.add(z)
         }
@@ -1639,6 +1666,11 @@ object Ornement {
             for (y in floatArrayOf(HAUTEUR * 0.42f, HAUTEUR * 0.70f)) {
                 bosse(bord + 6f, y, 3.2f, 3.2f, Z_RIVET)
                 bosse(LARGEUR - bord - 6f, y, 3.2f, 3.2f, Z_RIVET)
+            }
+        }
+        for (x in floatArrayOf(PLAQUE.left + RIVET_PLAQUE_DX, PLAQUE.right - RIVET_PLAQUE_DX)) {
+            for (y in floatArrayOf(PLAQUE.top + RIVET_PLAQUE_DY, PLAQUE.bottom - RIVET_PLAQUE_DY)) {
+                bosse(x, y, RIVET_PLAQUE_R, RIVET_PLAQUE_R, Z_RIVET_PLAQUE)
             }
         }
         griffes(GEMME, if (palier >= 2) 8 else 0, Z_GEMME + Z_GRIFFE, ::bosse)
