@@ -1,9 +1,9 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
   "26.2.0": {
-    "image": "Screenshots/lux_plaque_rivetee.png",
-    "alt": "La carte « Éierepromotioun », très rare, au cadre doré, ouverte en grand. Le nom est creusé dans une plaque dorée aux pointes repliées, tenue à ses quatre angles par des rivets bombés. En haut à droite, dans l'angle au-dessus de l'arche, un ornement de fer forgé doré : une grande spirale liée par un collier, une crosse qui s'enroule vers le coin et une branche qui suit l'arche, avec une perle au cœur de chaque spirale.",
-    "legende": "Le nom est gravé dans sa plaque, avec l'ombre et la lumière d'un vrai sillon, et quatre rivets la tiennent. En haut à droite, une ferronnerie remplace les petites spirales des angles. Rivets et ferronnerie s'enrichissent avec la rareté : ici, une carte très rare. Les rivets se sentent aussi sous le doigt."
+    "image": "Screenshots/lux_plaque_trois_raretes.png",
+    "alt": "Trois hauts de cartes côte à côte, légendés « Commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la carte rare, argentée, les rivets sont bombés et posés sur une rondelle, et une ferronnerie occupe l'angle : une grande spirale tenue par un collier et une crosse enroulée. Sur la carte très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et la ferronnerie ajoute une branche qui suit l'arche avec une perle au cœur de chaque spirale.",
+    "legende": "Le même détail sur trois paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et la ferronnerie de l'angle haut droit s'enrichit : rien sur une carte commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
   },
   "26.0.0": {
     "image": "Screenshots/lux_relief_doigt.png",
