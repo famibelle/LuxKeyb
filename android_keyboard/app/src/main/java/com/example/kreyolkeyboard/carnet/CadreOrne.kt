@@ -18,6 +18,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.SystemClock
 import android.util.LruCache
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -34,6 +35,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * Le cadre d'une carte du carnet, et **l'échelle d'ornement** qui le fait
@@ -1376,9 +1378,24 @@ object Ornement {
 
     private fun lerp(a: Float, b: Float, t: Float) = a + (b - a) * t.coerceIn(0f, 1f)
 
+    /**
+     * D'où vient la lumière cuite dans le métal, normalisée : en haut à gauche,
+     * celle du `RadialGradient` de [joyau]. C'est la direction de repos de
+     * tout ce qui tourne vers le doigt, pour qu'une carte non touchée reste
+     * exactement celle d'avant.
+     */
+    const val CUITE_X = -0.66f
+    const val CUITE_Y = -0.75f
+
+    /**
+     * [lumX], [lumY] : d'où vient la lumière sur cette pierre, normalisé. Seul
+     * le point spéculaire la suit ; le dégradé est construit une fois par carte
+     * et ne bouge pas, ce qui suffit à faire tourner la pierre et évite d'en
+     * refaire un par trame.
+     */
     fun dessinerGemme(
         c: Canvas, p: Paint, degrade: RadialGradient, r: RectF = GEMME, creux: Float = 4f,
-        intensite: Float = 0.5f
+        intensite: Float = 0.5f, lumX: Float = CUITE_X, lumY: Float = CUITE_Y
     ) {
         val gx = r.centerX()
         val gy = r.centerY()
@@ -1415,7 +1432,7 @@ object Ornement {
 
         // Le point de lumière : une facette taillée, posée sur le halo.
         p.color = 0xE6FFFFFF.toInt()
-        c.drawCircle(gx - gr * 0.42f, gy - gr * 0.48f, gr * 0.11f, p)
+        c.drawCircle(gx + lumX * gr * 0.64f, gy + lumY * gr * 0.64f, gr * 0.11f, p)
         c.restore()
     }
 
@@ -1557,19 +1574,151 @@ object Ornement {
         p.alpha = 255
     }
 
+    // ------------------------------------------------------------ les cotes
+
+    /*
+     * Le modèle de hauteurs de la face, en unités de carte.
+     *
+     * Ce sont des cotes **relatives**, pas des millimètres : ce qui compte est
+     * leur ordre et leurs écarts, que le vibreur lit comme des amplitudes et
+     * le pinceau comme des bosses. Chacune doit rester d'accord avec ce que le
+     * dessin montre déjà, sinon le doigt et l'œil décrivent deux objets.
+     *
+     * - Hors carte, la table : zéro.
+     * - Le plateau de métal, 2 : c'est le carton plus son cadre, et c'est la
+     *   première marche. La seconde est sa lèvre intérieure, à `bord`, qui
+     *   redescend sur la face : 12 unités à Commun, 18 à Très rare. L'échelle
+     *   de rareté a donc déjà une composante tactile, et elle est juste.
+     * - La face, 1 ; le panneau de texte à fleur, 1,1.
+     * - L'ouverture, 0,4 : une **découpe**, que le dessin creuse déjà par
+     *   son ombre. On y descend en entrant, on en remonte en sortant.
+     * - La capsule de nature, 1,6 ; la plaque et le disque du médaillon, 1,8 ;
+     *   les écus, 2 : des pièces de métal posées, pas toutes de même épaisseur.
+     * - Les pierres dépassent davantage que tout ce qui est posé à plat :
+     *   l'agrafe 2,4, la gemme de coût 2,8. Les rivets, 2,4.
+     * - Une griffe tient sa pierre par-dessus : 0,3 de plus qu'elle.
+     */
+    private const val Z_HORS = 0f
+    private const val Z_OUVERTURE = 0.4f
+    const val Z_FACE = 1f
+    private const val Z_PANNEAU = 1.1f
+    private const val Z_PASTILLE = 1.6f
+    private const val Z_PLAQUE = 1.8f
+    private const val Z_MEDAILLON = 1.8f
+    private const val Z_ECU = 2f
+    private const val Z_PLATEAU = 2f
+    private const val Z_AGRAFE = 2.4f
+    private const val Z_RIVET = 2.4f
+    private const val Z_GEMME = 2.8f
+    private const val Z_GRIFFE = 0.3f
+
+    /** Le rayon du chaton de la gemme de coût, celui de [sertissure]. */
+    private val R_GEMME get() = GEMME.height() / 2f
+
     /**
-     * Les arêtes que le pouce franchit à la hauteur [y], en unités de carte.
+     * Les points en relief de la face : rivets et griffes, par palier.
+     *
+     * Quintuplets `cx, cy, rx, ry, z`. C'est **la** liste : [cote] la lit pour
+     * le doigt, `CarteOrnee` pour faire tourner leur lumière vers lui. Les
+     * positions sont celles que [dessinerMetal] et [sertissure] tracent ; qui
+     * déplace un rivet là-bas doit le déplacer ici, et c'est pourquoi les deux
+     * lisent les mêmes constantes plutôt que de recopier des nombres.
+     */
+    fun bosses(rarete: Rarete): FloatArray {
+        val palier = rarete.ordinal
+        val bord = 12f + palier * 2f
+        val v = ArrayList<Float>(5 * 18)
+        fun bosse(cx: Float, cy: Float, rx: Float, ry: Float, z: Float) {
+            v.add(cx); v.add(cy); v.add(rx); v.add(ry); v.add(z)
+        }
+        if (palier >= 1) {
+            for (y in floatArrayOf(HAUTEUR * 0.42f, HAUTEUR * 0.70f)) {
+                bosse(bord + 6f, y, 3.2f, 3.2f, Z_RIVET)
+                bosse(LARGEUR - bord - 6f, y, 3.2f, 3.2f, Z_RIVET)
+            }
+        }
+        griffes(GEMME, if (palier >= 2) 8 else 0, Z_GEMME + Z_GRIFFE, ::bosse)
+        griffes(GEMME_CENTRE, if (palier >= 3) 6 else 0, Z_AGRAFE + Z_GRIFFE, ::bosse)
+        return v.toFloatArray()
+    }
+
+    private fun griffes(
+        r: RectF, n: Int, z: Float, bosse: (Float, Float, Float, Float, Float) -> Unit
+    ) {
+        val ry = r.height() / 2f
+        val sx = r.width() / r.height()
+        for (i in 0 until n) {
+            val a = i / n.toFloat() * 2f * Math.PI.toFloat()
+            bosse(
+                r.centerX() + cos(a) * ry * sx, r.centerY() + sin(a) * ry,
+                ry * 0.09f * sx, ry * 0.09f, z
+            )
+        }
+    }
+
+    /**
+     * La hauteur de la face en ([x], [y]), dans le modèle ci-dessus.
+     *
+     * L'ordre des tests est celui de l'empilement, du plus haut au plus bas :
+     * une pièce posée cache ce qu'elle recouvre, au doigt comme à l'œil. C'est
+     * ce qui fait disparaître d'eux-mêmes les flancs de l'ouverture sous la
+     * plaque, que l'ancienne liste de positions faisait sentir au travers.
+     */
+    fun cote(rarete: Rarete, bosses: FloatArray, x: Float, y: Float): Float {
+        if (x < BORD_CARTE || x > LARGEUR - BORD_CARTE || y < 0f || y > HAUTEUR) return Z_HORS
+        var i = 0
+        while (i < bosses.size) {
+            if (dansOvale(x, y, bosses[i], bosses[i + 1], bosses[i + 2], bosses[i + 3])) {
+                return bosses[i + 4]
+            }
+            i += 5
+        }
+        if (dansOvale(x, y, GEMME.centerX(), GEMME.centerY(), R_GEMME, R_GEMME)) return Z_GEMME
+        if (dansOvale(
+                x, y, GEMME_CENTRE.centerX(), GEMME_CENTRE.centerY(),
+                GEMME_CENTRE.width() / 2f, GEMME_CENTRE.height() / 2f
+            )
+        ) return Z_AGRAFE
+        if (dansOvale(
+                x, y, PROVENANCE.centerX(), PROVENANCE.centerY(), R_MEDAILLON, R_MEDAILLON
+            )
+        ) return Z_MEDAILLON
+        if (ECU_G.contains(x, y) || ECU_D.contains(x, y)) return Z_ECU
+        if (NATURE.contains(x, y)) return Z_PASTILLE
+        if (PLAQUE.contains(x, y)) return Z_PLAQUE
+        val bord = 12f + rarete.ordinal * 2f
+        if (x < bord || x > LARGEUR - bord || y < bord || y > HAUTEUR - bord) return Z_PLATEAU
+        if (PANNEAU.contains(x, y)) return Z_PANNEAU
+        val dansFenetre = if (rarete.ordinal >= 2) dansArche(x, y, FENETRE)
+        else FENETRE.contains(x, y)
+        return if (dansFenetre) Z_OUVERTURE else Z_FACE
+    }
+
+    private fun dansOvale(x: Float, y: Float, cx: Float, cy: Float, rx: Float, ry: Float): Boolean {
+        val dx = (x - cx) / rx
+        val dy = (y - cy) / ry
+        return dx * dx + dy * dy <= 1f
+    }
+
+    /**
+     * Les crans que le pouce franchit à la hauteur [y] : où, et de combien.
      *
      * ## Ce que le doigt est censé sentir
      *
      * Une carte de collection est gravée : le cadre est en relief sur la
      * face, l'ouverture est creusée dedans, les écus dépassent. Un pouce qui
      * la traverse franchit donc une poignée de marches, et leur **rythme**
-     * dépend de la hauteur à laquelle il passe — à mi-carte il ne rencontre
-     * que le cadre et les flancs de l'ouverture, en bas il traverse les deux
-     * écus et le joyau. C'est cette différence-là qui distingue une surface
-     * gravée d'un curseur à crans, et c'est pour elle que la liste est
-     * calculée à partir d'un `y`.
+     * dépend de la hauteur à laquelle il passe. Mais le rythme seul ne dit
+     * pas le volume : monter sur la plaque et en redescendre donnaient deux
+     * tics identiques, une perle et une capsule aussi. Chaque cran porte donc
+     * le dénivelé franchi, et c'est lui qui laisse un doigt aveugle dire « là
+     * c'est creux, là il y a une petite bosse ».
+     *
+     * La rangée est **échantillonnée** sur [cote] à l'unité, plutôt que
+     * reconstruite à partir des bords des rectangles : une seule source de
+     * vérité, et les formes rondes (pierres, médaillon, arche) y sont rondes
+     * sans une ligne de géométrie de plus. Trois cents appels par changement
+     * de bande, jamais par trame.
      *
      * ## Pourquoi la rareté a le droit d'y être
      *
@@ -1578,36 +1727,48 @@ object Ornement {
      * c'est pourquoi [DosRevision] ne passe pas par ici mais donne sa propre
      * géométrie, la même pour les douze cartes d'une session.
      */
-    fun aretes(rarete: Rarete, y: Float): FloatArray {
-        val palier = rarete.ordinal
-        val bord = 12f + palier * 2f
-        val brut = ArrayList<Float>(14)
-        // Le bord du carton, puis celui du plateau : les deux seules marches
-        // que le doigt trouve à n'importe quelle hauteur.
-        brut.add(BORD_CARTE)
-        brut.add(LARGEUR - BORD_CARTE)
-        brut.add(bord)
-        brut.add(LARGEUR - bord)
-        dansLaBande(brut, y, GEMME, GEMME.left + 4f, GEMME.right - 4f)
-        dansLaBande(brut, y, PLAQUE, PLAQUE.left, PLAQUE.right)
-        dansLaBande(brut, y, GEMME_CENTRE, GEMME_CENTRE.left, GEMME_CENTRE.right)
-        dansLaBande(brut, y, FENETRE, FENETRE.left, FENETRE.right)
-        dansLaBande(brut, y, NATURE, NATURE.left, NATURE.right)
-        dansLaBande(brut, y, PROVENANCE, PROVENANCE.left, PROVENANCE.right)
-        dansLaBande(brut, y, PANNEAU, PANNEAU.left, PANNEAU.right)
-        dansLaBande(brut, y, ECU_G, ECU_G.left, ECU_G.right)
-        dansLaBande(brut, y, ECU_D, ECU_D.left, ECU_D.right)
-        // Rien pour la ligne de série : elle est passée dans la marge, où le
-        // métal est lisse et où `bord` est déjà la seule marche du doigt.
+    fun aretes(rarete: Rarete, bosses: FloatArray, y: Float): Relief {
+        val brut = ArrayList<Arete>(24)
+        var avant = cote(rarete, bosses, 0.5f, y)
+        var x = 1.5f
+        while (x < LARGEUR) {
+            val ici = cote(rarete, bosses, x, y)
+            if (ici != avant) brut.add(Arete(x - 0.5f, ici - avant))
+            avant = ici
+            x += 1f
+        }
         return crans(brut)
     }
 
-    private fun dansLaBande(
-        brut: MutableList<Float>, y: Float, bande: RectF, gauche: Float, droite: Float
-    ) {
-        if (y <= bande.top || y >= bande.bottom) return
-        brut.add(gauche)
-        brut.add(droite)
+    /** Une marche : où elle est, et de combien on monte en la franchissant de gauche à droite. */
+    class Arete(val x: Float, val denivele: Float)
+
+    /**
+     * Les crans d'une rangée, triés : `x`, dénivelé net, amplitude, par triplet.
+     *
+     * Un seul tableau et non deux, pour qu'une position ne puisse jamais se
+     * retrouver avec le dénivelé d'une autre. L'amplitude existe pour les
+     * arêtes fines : une bosse plus étroite que le doigt monte puis descend
+     * dans le même cran, son net est nul, et pourtant le doigt l'accroche.
+     */
+    class Relief internal constructor(private val v: FloatArray) {
+        val taille: Int get() = v.size / 3
+        fun x(i: Int): Float = v[3 * i]
+
+        /**
+         * Ce que ressent un doigt qui franchit le cran [i] dans le [sens]
+         * donné (+1 vers la droite). Une marche change de signe avec lui ;
+         * un accroc, non : on le sent comme une montée dans les deux sens.
+         */
+        fun ressenti(i: Int, sens: Float): Float {
+            val net = v[3 * i + 1]
+            return if (abs(net) < DENIVELE_MIN) v[3 * i + 2] else net * sens
+        }
+
+        companion object {
+            /** Un carton lisse. Partagé : il est vide et personne n'y écrit. */
+            val LISSE = Relief(FloatArray(0))
+        }
     }
 
     /**
@@ -1617,21 +1778,42 @@ object Ornement {
      * finissent à deux unités l'un de l'autre : deux vibrations séparées par
      * un demi-millimètre ne se sentent pas comme deux marches, elles se
      * sentent comme un défaut.
+     *
+     * Deux arêtes fondues **somment** leurs dénivelés : deux marches d'un
+     * millimètre à un demi-millimètre l'une de l'autre, c'est une marche de
+     * deux. Une montée suivie de sa descente s'annule, et devient l'accroc de
+     * [Relief], d'amplitude sa plus forte composante.
      */
-    fun crans(brut: MutableList<Float>): FloatArray {
-        brut.sort()
-        val net = ArrayList<Float>(brut.size)
-        for (x in brut) {
-            if (net.isEmpty() || x - net[net.size - 1] >= ECART_MIN) net.add(x)
+    fun crans(brut: MutableList<Arete>): Relief {
+        if (brut.isEmpty()) return Relief.LISSE
+        brut.sortBy { it.x }
+        val net = ArrayList<Float>(brut.size * 3)
+        var debut = brut[0].x
+        var somme = 0f
+        var plusFort = 0f
+        fun clore() {
+            if (abs(somme) < DENIVELE_MIN && plusFort < DENIVELE_MIN) return
+            net.add(debut); net.add(somme); net.add(max(abs(somme), plusFort))
         }
-        return net.toFloatArray()
+        for (a in brut) {
+            if (a.x - debut >= ECART_MIN) {
+                clore()
+                debut = a.x
+                somme = 0f
+                plusFort = 0f
+            }
+            somme += a.denivele
+            plusFort = max(plusFort, abs(a.denivele))
+        }
+        clore()
+        return Relief(net.toFloatArray())
     }
 
-    /** En deçà, deux arêtes n'en font qu'une sous le doigt. */
-    private const val ECART_MIN = 6f
+    /** En deçà, deux arêtes n'en font qu'une sous le doigt (≈ 1,2 mm à l'écran). */
+    const val ECART_MIN = 6f
 
-    /** Un carton lisse. Partagé : il est vide et personne n'y écrit. */
-    val SANS_ARETE = FloatArray(0)
+    /** Sous ce dénivelé, un cran n'a plus de sens de marche : c'est un accroc. */
+    const val DENIVELE_MIN = 0.05f
 
     /**
      * Où se trouve le bord du carton pour le doigt.
@@ -1853,7 +2035,13 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     var sensibleAuDoigt = false
         set(valeur) {
             field = valeur
-            if (valeur) Inclinaison.perspective(this)
+            if (valeur) {
+                Inclinaison.perspective(this)
+                // Le retour tactile du système a pu changer depuis la dernière
+                // sonde, et c'est lui qui décide si la voie riche sera jetée.
+                // Une fois par carte ouverte, jamais par geste.
+                KeyFeedback.refresh(context)
+            }
         }
 
     private var capteurs: SensorManager? = null
@@ -1879,17 +2067,42 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private var fonduAppui: ValueAnimator? = null
 
     /**
-     * Les arêtes que le doigt franchira pendant ce geste-ci, en unités de
-     * carte, triées.
+     * Les crans de la rangée où passe le doigt, en unités de carte.
      *
-     * Calculées à la pose du doigt et gardées pour tout le geste : un pouce
-     * qui traverse une carte suit une horizontale, sa hauteur ne change
-     * pratiquement pas, et refaire la liste à chaque `ACTION_MOVE` coûterait
-     * une allocation par trame pour un résultat identique. Le rythme reste
-     * ainsi stable d'un bord à l'autre d'un même balayage.
+     * Recalculés quand le doigt **change de bande**, pas à chaque
+     * `ACTION_MOVE`. Ils étaient gelés à la pose pour tout le geste, au motif
+     * qu'un pouce qui traverse une carte suit une horizontale. Les yeux ouverts,
+     * à peu près ; les yeux fermés, personne ne balaie droit, et un balayage
+     * en diagonale faisait sentir la rangée de départ d'un bout à l'autre, ce
+     * qui est un mensonge sur la carte. Le seuil est [Ornement.ECART_MIN], le
+     * pouvoir séparateur du doigt : en dessous, la nouvelle rangée serait la
+     * même, et on ne refait pas une liste par trame pour un balayage
+     * horizontal où la hauteur ne bouge pratiquement pas.
      */
-    private var relief: FloatArray = Ornement.SANS_ARETE
+    private var relief: Ornement.Relief = Ornement.Relief.LISSE
+    private var hauteurDuRelief = 0f
     private var derniereX = 0f
+
+    /**
+     * Où est le doigt, en unités de carte : ce que lisent l'ombre de contact et
+     * le pivot des points en relief.
+     *
+     * Ils ne retombent pas à zéro au lâcher, et c'est voulu : l'ombre et les
+     * reflets s'effacent avec [emprise] pendant [RETOUR], et doivent le faire
+     * **là où était le pouce**. Remis au coin de la carte, ils y sauteraient
+     * pour s'y éteindre. Ce qui dit qu'il n'y a plus de doigt, c'est [emprise].
+     */
+    protected var doigtX = 0f
+        private set
+    protected var doigtY = 0f
+        private set
+
+    /** L'autorité du doigt, 0..1 : la même que celle qui déplace la lumière. */
+    protected val emprise: Float get() = main
+
+    /** Quand est parti le dernier cran, et ce qu'on a dû taire depuis. */
+    private var dernierCran = 0L
+    private var report = 0f
 
     /**
      * Où tombe la lumière, dans [-1, 1].
@@ -1920,7 +2133,7 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * — qui d'ailleurs ne reçoit jamais de doigt — et le seul honnête pour
      * une face qu'on ajouterait sans lui dessiner de gravure.
      */
-    protected open fun aretes(y: Float): FloatArray = Ornement.SANS_ARETE
+    protected open fun aretes(y: Float): Ornement.Relief = Ornement.Relief.LISSE
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -1970,7 +2183,8 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         appuiY = 0f
         scaleX = 1f
         scaleY = 1f
-        relief = Ornement.SANS_ARETE
+        relief = Ornement.Relief.LISSE
+        report = 0f
         Inclinaison.appui(this, 0f, 0f)
         invalidate()
     }
@@ -2015,7 +2229,7 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
-                glisser(event.x)
+                glisser(event.x, event.y)
                 return true
             }
             // Le `CANCEL` compte autant que le `UP` : dans la fiche du carnet,
@@ -2030,12 +2244,17 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     private fun saisir(x: Float, y: Float) {
         if (width <= 0 || height <= 0) return
         val u = Ornement.LARGEUR / width
-        relief = aretes(y * u)
-        derniereX = x * u
+        doigtX = x * u
+        doigtY = y * u
+        relief = aretes(doigtY)
+        hauteurDuRelief = doigtY
+        derniereX = doigtX
+        report = 0f
         // Le contact lui-même. Un carton posé ne claque pas quand on le
         // touche, mais un écran qui ne répond pas à un doigt posé n'a rien
         // touché du tout.
         KeyFeedback.onCardRidge(this)
+        dernierCran = SystemClock.uptimeMillis()
         if (Pochette.animationsReduites(context)) return
         doigt = lumiereEn(x)
         // La lumière arrive sous le pouce dans le temps que met le carton à
@@ -2062,23 +2281,74 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * arrivent plus serrés que les arêtes, un balayage rapide donne un
      * frottement. Le pas minimum, lui, empêche un pouce immobile posé
      * exactement sur une arête de la franchir cent fois par tremblement.
+     *
+     * Les crans franchis d'un coup **somment** leur dénivelé, dans le sens de
+     * la marche : monter puis redescendre dans le même événement ne vaut rien
+     * de net, et c'est alors le dernier franchi qui parle.
      */
-    private fun glisser(x: Float) {
+    private fun glisser(x: Float, y: Float) {
+        if (width <= 0) return
         val u = Ornement.LARGEUR / width
         val ou = x * u
+        doigtX = ou
+        doigtY = y * u
+        if (abs(doigtY - hauteurDuRelief) > Ornement.ECART_MIN) {
+            relief = aretes(doigtY)
+            hauteurDuRelief = doigtY
+        }
         if (abs(ou - derniereX) >= PAS_MIN) {
+            val sens = if (ou > derniereX) 1f else -1f
             val bas = min(derniereX, ou)
             val haut = max(derniereX, ou)
             derniereX = ou
-            if (relief.any { it > bas && it <= haut }) KeyFeedback.onCardRidge(this)
+            var franchi = 0f
+            var dernier = 0f
+            var touche = false
+            for (i in 0 until relief.taille) {
+                val c = relief.x(i)
+                if (c > bas && c <= haut) {
+                    dernier = relief.ressenti(i, sens)
+                    franchi += dernier
+                    touche = true
+                }
+            }
+            if (touche) emettre(if (abs(franchi) < Ornement.DENIVELE_MIN) dernier else franchi)
         }
         if (Pochette.animationsReduites(context)) return
         doigt = lumiereEn(x)
         invalidate()
     }
 
+    /**
+     * Demande un cran, sauf s'il arriverait avant la fin du précédent.
+     *
+     * Sur une pastille ou un moteur lent, un cran dure plus longtemps que le
+     * trajet d'une arête à la suivante sur la rangée des écus ; les enchaîner
+     * donne une bouillie où plus rien ne se distingue. La carte éclaircit
+     * donc sa partition : un cran qui tombe dans la fenêtre du précédent est
+     * tu, et son dénivelé **reporté** sur le suivant. Le perdre ferait mentir
+     * la carte sur sa hauteur cumulée : on aurait monté trois marches et n'en
+     * redescendrait qu'une. On perd du détail, on garde le rythme et la
+     * cohérence des volumes. Sur un bon moteur, la fenêtre est plus courte
+     * que le trajet et rien ne change.
+     */
+    private fun emettre(franchi: Float) {
+        val maintenant = SystemClock.uptimeMillis()
+        val total = report + franchi
+        if (maintenant - dernierCran < KeyFeedback.dureeDuCran(context)) {
+            report = total
+            return
+        }
+        report = 0f
+        dernierCran = maintenant
+        // Un report qui annule ce cran-ci : il reste qu'on a franchi quelque
+        // chose, et ce cran-là le dit mieux que rien.
+        KeyFeedback.onCardRidge(this, if (abs(total) < Ornement.DENIVELE_MIN) franchi else total)
+    }
+
     private fun lacher() {
-        relief = Ornement.SANS_ARETE
+        relief = Ornement.Relief.LISSE
+        report = 0f
         if (Pochette.animationsReduites(context)) return
         // Le dépassement est tout l'intérêt : le carton remonte, passe son
         // aplomb et revient. C'est la seule chose de la liste qui se lise
@@ -2226,8 +2496,163 @@ class CarteOrnee(
      * Une vignette n'en a pas : elle ne reçoit jamais de doigt, et à 160 dp
      * ses arêtes seraient plus serrées que le seuil de perception.
      */
-    override fun aretes(y: Float): FloatArray =
-        if (vignette) Ornement.SANS_ARETE else Ornement.aretes(rarete, y)
+    override fun aretes(y: Float): Ornement.Relief =
+        if (vignette) Ornement.Relief.LISSE else Ornement.aretes(rarete, bosses, y)
+
+    /** Les rivets et les griffes : ceux que le doigt sent et ceux qu'il fait tourner. */
+    private val bosses = if (vignette) FloatArray(0) else Ornement.bosses(rarete)
+
+    // Tout ce que l'ombre et le pivot tracent à chaque trame est fabriqué ici,
+    // une fois : des dégradés de rayon 1 qu'on place par leur matrice locale.
+    private val ombre = RadialGradient(
+        0f, 0f, RAYON_OMBRE, 0x38000000, 0x00000000, Shader.TileMode.CLAMP
+    )
+    private val eclat = RadialGradient(
+        0f, 0f, 1f, 0x99FFFFFF.toInt(), 0x00FFFFFF, Shader.TileMode.CLAMP
+    )
+    private val sombre = RadialGradient(
+        0f, 0f, 1f, 0x66000000, 0x00000000, Shader.TileMode.CLAMP
+    )
+    private val place = Matrix()
+    private val ovale = RectF()
+
+    /** La direction calculée par [orienter], sans allouer de paire. */
+    private var dirX = Ornement.CUITE_X
+    private var dirY = Ornement.CUITE_Y
+
+    /**
+     * Vers où tourne la lumière d'un point en relief en ([px], [py]), et avec
+     * quelle force : rend l'influence du doigt, 0..1, et pose [dirX]/[dirY].
+     *
+     * ## Le cratère
+     *
+     * Si la lumière passe sous l'horizon d'un point, le préjugé « la lumière
+     * vient d'en haut » retourne la bosse en trou (la photo de cratère qui
+     * devient un dôme). Il est plus fort que la logique, et le doigt dirait
+     * « bosse » au même instant : la direction est donc bridée à l'hémisphère
+     * haut **avant** d'être renormalisée (y croît vers le bas), quelle que
+     * soit la place du pouce.
+     *
+     * ## La portée
+     *
+     * Seuls les points proches du doigt tournent. Sans cette atténuation la
+     * carte entière pivote d'un bloc, ce qui se relit aussitôt comme une image
+     * qu'on fait glisser.
+     */
+    private fun orienter(px: Float, py: Float): Float {
+        val dx = doigtX - px
+        val dy = doigtY - py
+        val distance = sqrt(dx * dx + dy * dy)
+        val infl = (1f - distance / PORTEE).coerceIn(0f, 1f) * emprise
+        var nx = Ornement.CUITE_X
+        var ny = Ornement.CUITE_Y
+        if (distance > 0.5f) {
+            nx = dx / distance
+            ny = min(dy / distance, BRIDE)
+            val n = sqrt(nx * nx + ny * ny)
+            nx /= n
+            ny /= n
+        }
+        val mx = Ornement.CUITE_X + (nx - Ornement.CUITE_X) * infl
+        val my = Ornement.CUITE_Y + (ny - Ornement.CUITE_Y) * infl
+        // Les deux vecteurs sont dans l'hémisphère haut : leur mélange ne
+        // s'annule jamais, my reste sous -0,25.
+        val m = sqrt(mx * mx + my * my)
+        dirX = mx / m
+        dirY = my / m
+        return infl
+    }
+
+    /**
+     * Les points en relief tournent vers le doigt.
+     *
+     * Ils lisent [bosses], la liste que [Ornement.cote] lit aussi pour le
+     * vibreur : une seule source, et c'est la condition de l'effet. Ce qui fait
+     * l'objet est la congruence entre ce qu'on sent et ce qu'on voit, pas la
+     * qualité de l'un des deux ; qu'ils divergent et l'illusion meurt.
+     *
+     * ## 0,30 contre 0,55
+     *
+     * C'est le cœur de l'effet, ne pas les égaliser. Sur une sphère, le point
+     * brillant suit le vecteur médian entre la lumière et l'œil : il se déplace
+     * de moitié, quand la frontière d'ombre suit la lumière en entier. S'ils
+     * glissent ensemble, le cerveau lit une texture qui coulisse ; désolidarisés,
+     * il lit une surface courbe et vernie.
+     *
+     * Rien n'est tracé quand le doigt n'a pas d'influence : la lumière du
+     * repos est déjà cuite dans le bitmap du métal, et une carte non touchée
+     * doit rester exactement celle d'avant. Ce qui est tracé ici passe par
+     * dessus ce bitmap et n'y entre jamais : il est partagé par trente cartes.
+     */
+    private fun pivoterLesBosses(c: Canvas, p: Paint) {
+        var i = 0
+        while (i < bosses.size) {
+            val cx = bosses[i]
+            val cy = bosses[i + 1]
+            val rx = bosses[i + 2]
+            val ry = bosses[i + 3]
+            i += 5
+            val infl = orienter(cx, cy)
+            if (infl < 0.01f) continue
+            // Ici la multiplication d'un dégradé par l'alpha du pinceau est
+            // voulue : c'est le fondu, porté par `emprise` au travers d'infl.
+            val alpha = (infl * 255f).toInt()
+            ovale.set(cx - rx, cy - ry, cx + rx, cy + ry)
+            p.style = Paint.Style.FILL
+            val ox = dirX * rx * DECALAGE_OMBRE
+            val oy = dirY * ry * DECALAGE_OMBRE
+            eclairer(c, p, eclat, cx + ox, cy + oy, rx, ry, alpha)
+            eclairer(c, p, sombre, cx - ox, cy - oy, rx, ry, alpha)
+            p.color = Color.WHITE
+            p.alpha = alpha
+            c.drawCircle(
+                cx + dirX * rx * DECALAGE_BRILLANT, cy + dirY * ry * DECALAGE_BRILLANT,
+                min(rx, ry) * 0.22f, p
+            )
+        }
+        p.shader = null
+        p.color = Color.BLACK
+    }
+
+    private fun eclairer(
+        c: Canvas, p: Paint, degrade: RadialGradient, x: Float, y: Float,
+        rx: Float, ry: Float, alpha: Int
+    ) {
+        place.setScale(rx, ry)
+        place.postTranslate(x, y)
+        degrade.setLocalMatrix(place)
+        p.color = Color.BLACK
+        p.alpha = alpha
+        p.shader = degrade
+        c.drawOval(ovale, p)
+        p.shader = null
+    }
+
+    /**
+     * L'ombre de contact : un disque sombre et flou sous la pulpe.
+     *
+     * Le doigt **ajoutait** de la lumière, ce qui est l'inverse de la
+     * physique, et c'est pourquoi il pouvait se lire comme une lueur plutôt
+     * que comme un contact : un vrai doigt bouche la lumière. Elle apparaît et
+     * s'efface avec [emprise], sans fondu à elle.
+     *
+     * Elle passe **sous** le texte : `onDraw` précède les enfants. Par-dessus
+     * serait plus juste, et coûterait de la lisibilité au mot, qui est le sujet.
+     */
+    private fun ombreDeContact(c: Canvas, p: Paint) {
+        val e = emprise
+        if (e < 0.01f) return
+        c.save()
+        c.translate(doigtX, doigtY)
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        p.alpha = (e * 255f).toInt()
+        p.shader = ombre
+        c.drawCircle(0f, 0f, RAYON_OMBRE, p)
+        p.shader = null
+        p.color = Color.BLACK
+        c.restore()
+    }
 
     fun avecBoite(valeur: Int): CarteOrnee {
         boite = valeur
@@ -2266,14 +2691,22 @@ class CarteOrnee(
         if (vignette) {
             Ornement.dessinerBoite(canvas, pinceau, boite)
         } else {
-            Ornement.dessinerGemme(canvas, pinceau, degradeGemme, intensite = intensite)
+            val gemme = Ornement.GEMME
+            orienter(gemme.centerX(), gemme.centerY())
             Ornement.dessinerGemme(
-                canvas, pinceau, degradeAgrafe, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE,
-                intensite
+                canvas, pinceau, degradeGemme, intensite = intensite, lumX = dirX, lumY = dirY
+            )
+            val agrafe = Ornement.GEMME_CENTRE
+            orienter(agrafe.centerX(), agrafe.centerY())
+            Ornement.dessinerGemme(
+                canvas, pinceau, degradeAgrafe, agrafe, Ornement.CREUX_AGRAFE,
+                intensite, dirX, dirY
             )
             jeu?.let { Ornement.dessinerMedaillon(canvas, pinceau, it, Ornement.metal(rarete)) }
+            pivoterLesBosses(canvas, pinceau)
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
+        if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
         // cadre s'arrête dessus comme l'impression s'arrête sur la coupe.
         Ornement.dessinerTranche(canvas, pinceau, assiette, hauteurUnites)
@@ -2281,6 +2714,24 @@ class CarteOrnee(
         canvas.restore()
     }
 
+    /*
+     * Points de départ, à régler au pouce sur un appareil : aucun n'a encore
+     * été vérifié ailleurs qu'à l'œil sur le papier.
+     */
+    private companion object {
+        /** Le rayon de l'ombre sous la pulpe, en unités de carte (~5 mm). */
+        const val RAYON_OMBRE = 26f
+
+        /** Jusqu'où un point en relief sent le doigt, en unités de carte. */
+        const val PORTEE = 70f
+
+        /** La composante verticale la plus basse qu'on laisse à la lumière. */
+        const val BRIDE = -0.25f
+
+        /** Où tombent l'éclat et l'ombre d'un point, en rayons ; puis le brillant. */
+        const val DECALAGE_OMBRE = 0.55f
+        const val DECALAGE_BRILLANT = 0.30f
+    }
 }
 
 /**
