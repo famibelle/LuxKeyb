@@ -30,9 +30,9 @@
      "tableau": null
     }
    ],
-   "image": "Screenshots/lux_plaque_trois_raretes.png",
-   "image_alt": "Trois hauts de cartes côte à côte, légendés « Commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la carte rare, argentée, les rivets sont bombés et posés sur une rondelle, et une ferronnerie occupe l'angle : une grande spirale tenue par un collier et une crosse enroulée. Sur la carte très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et la ferronnerie ajoute une branche qui suit l'arche avec une perle au cœur de chaque spirale.",
-   "image_legende": "Le même détail sur trois paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et la ferronnerie de l'angle haut droit s'enrichit : rien sur une carte commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+   "image": "Screenshots/lux_plaque_quatre_raretes.png",
+   "image_alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+   "image_legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
   },
   {
    "version": "26.1.0",
