@@ -265,10 +265,10 @@ prédiction du mot suivant.
 |---|---|---|---|---|---|---|
 | Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Oui, vérifié sur le S24 Ultra | Oui, liste officielle Microsoft | Oui, dictionnaire à ajouter | Oui, pack séparé |
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 691 | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Disposition propre à la langue | **Oui**, QWERTZ avec `é` `ä` `ë` en touches pleines | — | Non, QWERTZ générique | — | — | — |
+| Disposition propre à la langue | **Oui**, QWERTZ avec `é` `ä` `ë` en touches pleines | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | — | — |
 | Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
-| Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | — | 17,6 % | — | — | — |
+| Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | 13,4 % | 17,7 % | — | — | — |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — | — |
@@ -288,12 +288,13 @@ langues du Clavier Samsung livré sur le Galaxy S24 Ultra (One UI 7, build
 <code>S928BXXS4BYEC</code>) ; le dictionnaire luxembourgeois des claviers libres
 provient du
 <a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.
-La ligne « prédiction mesurée » vient d'un banc de frappe du 8 septembre 2026 sur
-un Galaxy A21s : 341 frontières de mots de phrases du corpus ZLS, le mot suivant
-doit figurer dans les trois suggestions affichées sans qu'une seule de ses
-lettres ait été tapée. L'écart de 2,6 points avec le Clavier Samsung n'est pas
-statistiquement significatif : sur la prédiction pure, les deux font jeu égal. Méthode, relevés bruts et limites dans
-<a href="comparatif.html#les-deux-claviers-mesurés-côte-à-côte-sur-un-galaxy">le comparatif</a>.</p>
+La ligne « prédiction mesurée » vient de bancs de frappe sur un Galaxy A21s
+(notre clavier et Samsung le 8 septembre 2026, Gboard 18.2.4 le 20) : 322 frontières
+de mots de phrases du corpus ZLS, le mot suivant doit figurer dans les trois
+suggestions affichées sans qu'une seule de ses lettres ait été tapée. L'écart avec le
+Clavier Samsung n'est pas statistiquement significatif : sur la prédiction pure, les
+deux font jeu égal, et Gboard fait moins bien que l'un et l'autre. Méthode, relevés bruts et limites dans
+<a href="comparatif.html#les-trois-claviers-mesurés-sur-le-même-galaxy">le comparatif</a>.</p>
 
 Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
