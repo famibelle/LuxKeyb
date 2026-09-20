@@ -277,7 +277,7 @@ prédiction du mot suivant.
 | Code ouvert | **Oui**, MIT | Non | Non | Non | Oui | Oui |
 | Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
-| Dictée vocale | Non | Oui | Oui | Oui | Non | Non |
+| Dictée vocale en luxembourgeois | Non, en essai | Non | Non | — | Non | Non |
 | Thème sombre | Non | Oui | Oui | Oui | Oui | Oui |
 
 </div>

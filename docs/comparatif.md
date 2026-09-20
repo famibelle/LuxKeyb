@@ -57,7 +57,8 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
 | 🔒 **Vos textes restent chez vous** | ⭐⭐⭐<br>aucun accès à Internet | ❌<br>peut se connecter à Internet | ❌<br>peut se connecter à Internet |
 | 📖 **Un dictionnaire luxembourgeois-français dedans** | ⭐⭐⭐ | ❌ | ❌ |
 | 🎮 **Des jeux pour apprendre des mots** | ⭐⭐⭐ | ❌ | ❌ |
-| 🎤 **Dicter à voix haute, écrire en glissant le doigt** | ❌<br>pas encore | ⭐⭐⭐ | ⭐⭐⭐ |
+| ✋ **Écrire en glissant le doigt sur les lettres** | ❌<br>pas encore | ⭐⭐⭐ | ⭐⭐⭐ |
+| 🎤 **Dicter à voix haute en luxembourgeois** | ❌<br>pas encore, en essai | ❌<br>pas en luxembourgeois | ❌<br>pas en luxembourgeois |
 
 </div>
 
@@ -67,7 +68,9 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
   changer à votre place, garder vos textes chez vous, tenir dans presque rien sur le
   téléphone, et vous aider à apprendre la langue avec un dictionnaire et des jeux.
 - 😕 **Ce qu'il fait moins bien :** mettre la majuscule aux noms, où Samsung et Gboard sont
-  bien meilleurs, et il n'a pas la dictée à voix haute ni l'écriture en glissant le doigt.
+  bien meilleurs, et il n'a pas l'écriture en glissant le doigt.
+- 🎤 **La dictée à voix haute en luxembourgeois n'existe sur aucun des trois** : ni chez nous,
+  ni chez Samsung, ni chez Gboard. Elle marche en français ou en allemand, pas dans notre langue.
 - 🤝 **Samsung et Gboard** sont des claviers très complets, faits pour toutes les langues du
   monde. Le nôtre est fait pour une seule : la vôtre.
 
@@ -103,7 +106,8 @@ Chaque ligne est un constat, détaillé plus bas avec sa source.
 | Vos données restent sur le téléphone | ⭐⭐⭐ aucune permission réseau | ✕ il accède à Internet | ✕ il accède à Internet | frappe embarquée |
 | Un dictionnaire luxembourgeois-français dans l'application | ⭐⭐⭐ | ✕ | ✕ | ✕ |
 | Des jeux et un carnet pour apprendre des mots | ⭐⭐⭐ | ✕ | ✕ | ✕ |
-| Écrire en glissant le doigt, dictée, presse-papiers, écriture à la main | ✕ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ en partie |
+| Écrire en glissant le doigt, presse-papiers, écriture à la main | ✕ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ en partie |
+| Dicter à voix haute en luxembourgeois <sup>6</sup> | ✕ en essai, voir Labs | ✕ | ✕ | non vérifié |
 
 </div>
 
@@ -143,6 +147,15 @@ change dans la même image que la lettre ; chez Samsung et Gboard, dans 40 et 41
 <sup>5</sup> Temps processeur du clavier pendant 60 appuis enchaînés, moyenne de quatre
 séries. La dispersion est grande chez nous (24 à 58 ms) et chez Samsung (22 à 53 ms),
 faible chez Gboard (19 à 27 ms).
+<sup>6</sup> La liste des langues de la
+<a href="https://support.google.com/docs/answer/4492226">saisie vocale de Google</a>
+(la même reconnaissance vocale) ne contient pas le luxembourgeois ; l'aide de Gboard précise
+seulement que la
+<a href="https://support.google.com/gboard/answer/2781851?hl=fr">saisie vocale ne fonctionne
+pas avec toutes les langues</a>, sans liste. Nous n'avons trouvé aucune liste de langues pour
+la saisie vocale du clavier Samsung. Google propose une reconnaissance du luxembourgeois à
+ses clients développeurs (Cloud Speech-to-Text, code <code>lb-LU</code>), mais pas dans la dictée
+des claviers. Relevé le 20 septembre 2026.
 </p>
 
 ## Le tableau complet
@@ -175,7 +188,8 @@ faible chez Gboard (19 à 27 ms).
 | Code ouvert | **Oui**, MIT | Non | Non | Non |
 | Jeux et progression | **Oui**, 7 jeux et 8 niveaux | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui |
-| Dictée vocale | Non (celle du système reste accessible) | Oui | Oui | Oui |
+| Dictée vocale **en luxembourgeois** <sup>6</sup> | Non (en essai dans le canal Labs) | **Non** | **Non** | — |
+| Dictée vocale dans d'autres langues (français, allemand) | Non (celle du système reste accessible) | Oui | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
 | Thèmes et personnalisation | Palette luxembourgeoise | Étendus | Très étendus | Très limités |
 | Plateformes | Android 5.0 et plus | Galaxy uniquement | Android et iOS | iOS et iPadOS |
@@ -240,14 +254,15 @@ chacun. Il y a là une marge que nous n'avons pas encore exploitée.
 Sur le coût processeur d'une frappe, Gboard est aussi plus sobre (23 ms contre 40).
 
 Gboard gagne sur la surface fonctionnelle, et largement : saisie glissée, dictée
-vocale, traduction intégrée, presse-papiers, écriture manuscrite, thèmes, GIF et
+vocale dans les langues qu'elle connaît (le luxembourgeois n'en fait pas partie),
+traduction intégrée, presse-papiers, écriture manuscrite, thèmes, GIF et
 autocollants, et une correction affinée par des milliards de frappes. Le clavier
 Apple gagne sur l'intégration au système. Le Lëtzebuergesch Clavier ne cherche
 pas à les rattraper sur ce terrain.
 
-La dictée est le seul de ces manques sur lequel quelque chose est en cours : une
-reconnaissance vocale luxembourgeoise s'essaie dans le canal
-[Labs](labs.html), sans date de sortie ni promesse de qualité.
+Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est le seul manque
+commun sur lequel quelque chose est en cours : une reconnaissance vocale luxembourgeoise
+s'essaie dans le canal [Labs](labs.html), sans date de sortie ni promesse de qualité.
 
 Dernier point, et c'est une bonne nouvelle pour la langue : **iOS 27 ajoutera le
 luxembourgeois**, annoncé en juin 2026. Cela laisse toutefois Android sans
