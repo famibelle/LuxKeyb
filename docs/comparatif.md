@@ -475,6 +475,33 @@ SwiftKey, HeliBoard et AnySoftKeyboard acceptent eux aussi le luxembourgeois,
 avec d'autres compromis — la page d'accueil en donne
 [le tableau complet](index.html#face-aux-autres-claviers).
 
+## 🏁 Conclusion
+
+**Pour écrire en luxembourgeois sur un téléphone Android, le Lëtzebuergesch Clavier est un
+très bon choix. Samsung et Gboard restent de bons claviers pour tout le reste.**
+
+- 🥇 **Deviner vos mots :** nous et Samsung faisons jeu égal (20 fois sur 100 contre 18), et
+  Gboard fait moins bien (13 fois sur 100). C'est l'essentiel d'un clavier.
+- ✅ **Nos points forts :** nous ne changeons jamais un mot à votre place, vos textes restent
+  sur le téléphone, le clavier ne pèse que 9 Mo (contre plus de 100 pour les deux autres), et
+  il vous aide à apprendre la langue avec un dictionnaire, des jeux et un carnet de mots.
+- 😕 **Nos deux points faibles, mesurés :** la majuscule des noms, que nous mettons dans un
+  cas sur cinq quand Samsung et Gboard la mettent dans plus de quatre cas sur cinq, et le
+  travail demandé au processeur à chaque frappe, plus élevé chez nous que chez eux. Ce sont
+  les deux chantiers que ces mesures nous désignent.
+- 🎤 **La dictée à voix haute :** en luxembourgeois, aucun de ces claviers ne la propose. Elle
+  marche en français ou en allemand chez Samsung et chez Gboard. Chez nous, elle est en cours
+  de test dans le canal Labs, sans date de sortie.
+- 🤝 **Notre conseil :** écrivez en luxembourgeois avec le Lëtzebuergesch Clavier. Gardez
+  Samsung ou Gboard sous la main pour écrire en glissant le doigt ou pour dicter en français ou
+  en allemand : les claviers se changent d'un seul geste, et rien n'oblige à en choisir un seul.
+
+Ces mesures viennent d'un seul téléphone de test, avec des frappes simulées par ordinateur : elles
+donnent un ordre de grandeur solide, pas une garantie pour chaque personne. Les scripts, les
+relevés et les limites sont publics dans le
+[dépôt du projet](https://github.com/famibelle/LuxKeyb/blob/main/BANC-CLAVIERS.md), pour que chacun
+puisse les rejouer et nous corriger.
+
 <div align="center" style="margin: 24px 0;">
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest"
      style="display:inline-block;padding:14px 28px;background:#ED2939;color:#fff;
