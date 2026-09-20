@@ -69,8 +69,12 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
   téléphone, et vous aider à apprendre la langue avec un dictionnaire et des jeux.
 - 😕 **Ce qu'il fait moins bien :** mettre la majuscule aux noms, où Samsung et Gboard sont
   bien meilleurs, et il n'a pas l'écriture en glissant le doigt.
-- 🎤 **La dictée à voix haute en luxembourgeois n'existe sur aucun des trois** : ni chez nous,
-  ni chez Samsung, ni chez Gboard. Elle marche en français ou en allemand, pas dans notre langue.
+- 🎤 **La dictée à voix haute en luxembourgeois n'existe chez aucun des trois claviers** :
+  ni chez Samsung, ni chez Gboard, ni chez nous. Elle marche en français ou en allemand, pas
+  dans notre langue.
+- 🔬 **Chez nous, elle est en cours de test** : une dictée luxembourgeoise s'essaie sur notre
+  clavier, dans une version d'essai (le canal Labs), pour que le luxembourgeois soit enfin
+  dicté dans sa propre langue.
 - 🤝 **Samsung et Gboard** sont des claviers très complets, faits pour toutes les langues du
   monde. Le nôtre est fait pour une seule : la vôtre.
 
@@ -107,7 +111,7 @@ Chaque ligne est un constat, détaillé plus bas avec sa source.
 | Un dictionnaire luxembourgeois-français dans l'application | ⭐⭐⭐ | ✕ | ✕ | ✕ |
 | Des jeux et un carnet pour apprendre des mots | ⭐⭐⭐ | ✕ | ✕ | ✕ |
 | Écrire en glissant le doigt, presse-papiers, écriture à la main | ✕ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ en partie |
-| Dicter à voix haute en luxembourgeois <sup>6</sup> | ✕ en essai, voir Labs | ✕ | ✕ | non vérifié |
+| Dicter à voix haute en luxembourgeois <sup>6</sup> | 🔬 en cours de test (Labs) | ✕ | ✕ | ✕ |
 
 </div>
 
@@ -147,15 +151,18 @@ change dans la même image que la lettre ; chez Samsung et Gboard, dans 40 et 41
 <sup>5</sup> Temps processeur du clavier pendant 60 appuis enchaînés, moyenne de quatre
 séries. La dispersion est grande chez nous (24 à 58 ms) et chez Samsung (22 à 53 ms),
 faible chez Gboard (19 à 27 ms).
-<sup>6</sup> La liste des langues de la
+<sup>6</sup> Nous nous concentrons sur le luxembourgeois : sans source qui l'annonce
+explicitement, nous concluons que la dictée n'existe pas dans cette langue. Aucune source ne
+l'annonce pour ces claviers. La liste des langues de la
 <a href="https://support.google.com/docs/answer/4492226">saisie vocale de Google</a>
 (la même reconnaissance vocale) ne contient pas le luxembourgeois ; l'aide de Gboard précise
-seulement que la
+que la
 <a href="https://support.google.com/gboard/answer/2781851?hl=fr">saisie vocale ne fonctionne
-pas avec toutes les langues</a>, sans liste. Nous n'avons trouvé aucune liste de langues pour
-la saisie vocale du clavier Samsung. Google propose une reconnaissance du luxembourgeois à
-ses clients développeurs (Cloud Speech-to-Text, code <code>lb-LU</code>), mais pas dans la dictée
-des claviers. Relevé le 20 septembre 2026.
+pas avec toutes les langues</a>, sans le citer ; aucune liste n'existe pour la saisie vocale du
+clavier Samsung. Google propose une reconnaissance du luxembourgeois à ses clients
+développeurs (Cloud Speech-to-Text, code <code>lb-LU</code>), mais pas dans la dictée des
+claviers. Relevé le 20 septembre 2026. Chez nous, la dictée est en cours de test dans le
+canal <a href="labs.html">Labs</a>, sans date de sortie.
 </p>
 
 ## Le tableau complet
@@ -188,7 +195,7 @@ des claviers. Relevé le 20 septembre 2026.
 | Code ouvert | **Oui**, MIT | Non | Non | Non |
 | Jeux et progression | **Oui**, 7 jeux et 8 niveaux | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui |
-| Dictée vocale **en luxembourgeois** <sup>6</sup> | Non (en essai dans le canal Labs) | **Non** | **Non** | — |
+| Dictée vocale **en luxembourgeois** <sup>6</sup> | **En cours de test** (canal Labs) | **Non** | **Non** | **Non** |
 | Dictée vocale dans d'autres langues (français, allemand) | Non (celle du système reste accessible) | Oui | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
 | Thèmes et personnalisation | Palette luxembourgeoise | Étendus | Très étendus | Très limités |
