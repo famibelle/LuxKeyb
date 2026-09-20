@@ -228,16 +228,22 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
     var body = el('div', 'body');
     if (v.intro) body.appendChild(el('p', 'intro', v.intro));
 
-    if (v.image) {
+    // Une version peut porter plusieurs captures. « images » est la liste ;
+    // les champs « image » restent lus pour les fichiers produits avant elle.
+    var vues = v.images;
+    if (!vues && v.image) {
+      vues = [{ image: v.image, alt: v.image_alt, legende: v.image_legende }];
+    }
+    (vues || []).forEach(function (vue) {
       var fig = el('figure', 'shot');
       var img = el('img');
-      img.src = v.image;
-      img.alt = v.image_alt || '';
+      img.src = vue.image;
+      img.alt = vue.alt || '';
       img.loading = 'lazy';
       fig.appendChild(img);
-      if (v.image_legende) fig.appendChild(el('figcaption', null, v.image_legende));
+      if (vue.legende) fig.appendChild(el('figcaption', null, vue.legende));
       body.appendChild(fig);
-    }
+    });
 
     v.sections.forEach(function (sec) {
       var g = el('div', 'grp');

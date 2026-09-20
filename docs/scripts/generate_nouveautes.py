@@ -178,10 +178,27 @@ def main():
         medias = {k: v for k, v in brut.items() if not k.startswith("_")}
     for v in versions:
         m = medias.get(v["version"])
-        if m and m.get("image"):
-            v["image"] = m["image"]
-            v["image_alt"] = m.get("alt", "")
-            v["image_legende"] = m.get("legende", "")
+        if not m:
+            continue
+        # Une version peut porter plusieurs illustrations : « images » est une
+        # liste, « image » la forme courte d'une seule. Les deux se ramènent à
+        # la liste, et la première reste recopiée dans les anciens champs pour
+        # que la page rende encore si son script n'a pas suivi.
+        vues = m.get("images") or ([m] if m.get("image") else [])
+        vues = [
+            {
+                "image": x["image"],
+                "alt": x.get("alt", ""),
+                "legende": x.get("legende", ""),
+            }
+            for x in vues if x.get("image")
+        ]
+        if not vues:
+            continue
+        v["images"] = vues
+        v["image"] = vues[0]["image"]
+        v["image_alt"] = vues[0]["alt"]
+        v["image_legende"] = vues[0]["legende"]
 
     for v in versions:
         for s in v["sections"]:

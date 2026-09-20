@@ -30,6 +30,18 @@
      "tableau": null
     }
    ],
+   "images": [
+    {
+     "image": "Screenshots/lux_plaque_quatre_raretes.png",
+     "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+     "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+    },
+    {
+     "image": "Screenshots/lux_plaque_gravee.png",
+     "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
+     "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
+    }
+   ],
    "image": "Screenshots/lux_plaque_quatre_raretes.png",
    "image_alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
    "image_legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
@@ -154,6 +166,13 @@
      ],
      "texte": "",
      "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_relief_doigt.png",
+     "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+     "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
     }
    ],
    "image": "Screenshots/lux_relief_doigt.png",
