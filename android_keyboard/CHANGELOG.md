@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.3.0] - 2026-09-21
+
+Une carte de bienvenue récompense la fin de l'installation.
+
+### ✨ Améliorations
+
+- **La carte « Moien » est offerte quand le clavier est prêt.** Dès que le clavier est activé et sélectionné, une pochette s'ouvre avec votre première carte du carnet : « Moien », « bonjour », avec une phrase d'exemple et sa traduction. Le dialogue de partage vient ensuite, comme avant, et rappelle que la carte est dans votre carnet.
+- **Une provenance « Bienvenue ».** La carte porte un médaillon à part, avec une bulle de parole aux couleurs du drapeau, et ne compte pas parmi les sept jeux.
+- **Le clavier se baisse pendant la pochette.** Sinon la carte était coupée sous la plaque du mot et son sens restait caché.
+- **Une seule fois.** La pochette n'apparaît qu'une fois par installation. Si votre clavier était déjà configuré avant cette version, vous la recevrez à la prochaine ouverture de l'application.
+
 ## [26.2.0] - 2026-09-19
 
 La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.
