@@ -409,6 +409,10 @@ class SettingsActivity : AppCompatActivity() {
 
     // Appelé par l'onboarding quand la configuration vient d'aboutir :
     // pose le flag et révèle la navigation avec un léger fondu
+    /** Vrai tant que la pochette de bienvenue est à l'écran : le clavier reste baissé. */
+    var pochetteAccueilOuverte = false
+        private set
+
     fun onOnboardingCompleted() {
         val prefs = onboardingPrefs()
         if (!prefs.getBoolean("onboarding_completed", false)) {
@@ -449,6 +453,14 @@ class SettingsActivity : AppCompatActivity() {
         if (prefs.getBoolean("activation_success_card_shown", false)) return
         prefs.edit().putBoolean("activation_success_card_shown", true).apply()
 
+        // L'onboarding lève le clavier sur le champ d'essai dès que le clavier
+        // est sélectionné, et la fenêtre rétrécie coupait la carte sous la
+        // plaque du nom : le sens, qui est ce qu'on offre, restait caché.
+        pochetteAccueilOuverte = true
+        currentFocus?.clearFocus()
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(window.decorView.windowToken, 0)
+
         val ctx = applicationContext
         Thread {
             val neuve = CarteAccueil.offrir(ctx)
@@ -459,6 +471,7 @@ class SettingsActivity : AppCompatActivity() {
             runOnUiThread {
                 if (isFinishing || isDestroyed) return@runOnUiThread
                 if (contenu == null) {
+                    pochetteAccueilOuverte = false
                     showActivationShareDialog(carteOfferte = false)
                     return@runOnUiThread
                 }
@@ -469,7 +482,10 @@ class SettingsActivity : AppCompatActivity() {
                     nouvelles = if (neuve) setOf(CarteAccueil.FORME) else emptySet(),
                     animations = !Pochette.animationsReduites(ctx),
                     surCarnet = { CarnetFragment().show(supportFragmentManager, "carnet") },
-                    surFin = { if (!isFinishing && !isDestroyed) showActivationShareDialog(carteOfferte = true) }
+                    surFin = {
+                        pochetteAccueilOuverte = false
+                        if (!isFinishing && !isDestroyed) showActivationShareDialog(carteOfferte = true)
+                    }
                 )
             }
         }.start()
@@ -4434,6 +4450,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun focusTestField() {
+            if ((activity as? SettingsActivity)?.pochetteAccueilOuverte == true) return
             val field = rootView?.findViewWithTag<EditText>("onboarding_test_field") ?: return
             field.requestFocus()
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
