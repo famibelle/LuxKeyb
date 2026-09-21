@@ -65,6 +65,9 @@ import com.example.kreyolkeyboard.crossword.CrosswordSession
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
 import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
 import com.example.kreyolkeyboard.carnet.Carnet
+import com.example.kreyolkeyboard.carnet.Booster
+import com.example.kreyolkeyboard.carnet.CarteAccueil
+import com.example.kreyolkeyboard.carnet.CarteCarnet
 import com.example.kreyolkeyboard.carnet.CarnetFragment
 import com.example.kreyolkeyboard.carnet.BoiteFragment
 import com.example.kreyolkeyboard.carnet.JeuCarte
@@ -436,7 +439,9 @@ class SettingsActivity : AppCompatActivity() {
 
     // Récompense l'utilisateur juste après un parcours d'activation identifié
     // comme un point de friction (interstitiel + réglages système) : un seul
-    // affichage, jamais reposé même si l'onboarding se rejoue. Le message
+    // affichage, jamais reposé même si l'onboarding se rejoue. La récompense
+    // est la carte « Moien », versée au carnet et ouverte comme une pochette ;
+    // le partage vient ensuite, une fois la pochette refermée. Le message
     // proposé au partage est fixe, écrit avant que l'utilisateur ait tapé
     // quoi que ce soit avec le clavier — aucun contenu personnel n'est lu.
     private fun maybeShowActivationSuccessCard() {
@@ -444,9 +449,37 @@ class SettingsActivity : AppCompatActivity() {
         if (prefs.getBoolean("activation_success_card_shown", false)) return
         prefs.edit().putBoolean("activation_success_card_shown", true).apply()
 
+        val ctx = applicationContext
+        Thread {
+            val neuve = CarteAccueil.offrir(ctx)
+            TranslationDictionary.charger(ctx)
+            TranslationDictionary.chargerExemples(ctx)
+            val contenu = Carnet.cartes(ctx).firstOrNull { it.forme == CarteAccueil.FORME }
+                ?.let { CarteCarnet.contenu(ctx, it) }
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                if (contenu == null) {
+                    showActivationShareDialog(carteOfferte = false)
+                    return@runOnUiThread
+                }
+                Booster.ouvrir(
+                    hote = findViewById(android.R.id.content),
+                    jeu = JeuCarte.ACCUEIL,
+                    contenus = listOf(contenu),
+                    nouvelles = if (neuve) setOf(CarteAccueil.FORME) else emptySet(),
+                    animations = !Pochette.animationsReduites(ctx),
+                    surCarnet = { CarnetFragment().show(supportFragmentManager, "carnet") },
+                    surFin = { if (!isFinishing && !isDestroyed) showActivationShareDialog(carteOfferte = true) }
+                )
+            }
+        }.start()
+    }
+
+    private fun showActivationShareDialog(carteOfferte: Boolean) {
+        val bravo = "Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications."
         AlertDialog.Builder(this)
             .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
-            .setMessage("Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications.")
+            .setMessage(if (carteOfferte) "$bravo\n\nLa carte « Moien » est dans votre carnet." else bravo)
             .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
             .setNegativeButton("Plus tard", null)
             .setCancelable(true)
@@ -10118,7 +10151,7 @@ class SettingsActivity : AppCompatActivity() {
                     // collection se lit d'un coup d'œil comme une carte de
                     // progression, sans compter ni classer.
                     text = jeux.joinToString(" ") { it.emoji } +
-                        "   ${jeux.size}/${JeuCarte.values().size} jeux"
+                        "   ${jeux.size}/${JeuCarte.JEUX.size} jeux"
                     setTextColor(0xFFE8E0FF.toInt())
                 }
             }

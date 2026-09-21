@@ -1493,6 +1493,13 @@ object Ornement {
                 carre(-1.9f, -1.9f - 4.2f, 3.8f, false)
                 carre(-1.9f, -1.9f + 4.2f, 3.8f, false)
             }
+            // Une bulle de parole : on dit bonjour.
+            JeuCarte.ACCUEIL -> {
+                p.strokeWidth = 1.3f
+                c.drawRoundRect(cx - 6.5f, cy - 5.5f, cx + 6.5f, cy + 3.5f, 3f, 3f, p)
+                trait(-2.5f, 3.5f, -4.5f, 7f)
+                trait(-4.5f, 7f, 0.5f, 3.5f)
+            }
         }
         p.style = Paint.Style.FILL
     }

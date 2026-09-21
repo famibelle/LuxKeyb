@@ -32,11 +32,17 @@ enum class JeuCarte(
     WUERTLUECK("wl", "Wuertlück", "📝", 0xFFFF8C00.toInt()),
     ZUELWUERT("zw", "Zuelwuert", "🔢", 0xFF00897B.toInt()),
     KRAIZWUERT("kw", "Kräizwuert", "🧩", 0xFFC2185B.toInt()),
-    WUERTPLAZ("wp", "Wuertplaz", "🔡", 0xFF00796B.toInt());
+    WUERTPLAZ("wp", "Wuertplaz", "🔡", 0xFF00796B.toInt()),
+
+    /** Pas un jeu : la provenance de la carte offerte à la fin de l'installation. */
+    ACCUEIL("ac", "Bienvenue", "👋", 0xFFED2939.toInt());
 
     companion object {
         private val PAR_ID = values().associateBy { it.id }
         fun parId(id: String): JeuCarte? = PAR_ID[id]
+
+        /** Les sept vrais jeux, dans l'ordre du hub : tout compteur de jeux part d'ici. */
+        val JEUX: List<JeuCarte> = values().filter { it != ACCUEIL }
     }
 }
 
@@ -242,7 +248,7 @@ object Carnet {
     fun jeuxRepresentes(context: Context): List<JeuCarte> {
         charger(context)
         val vus = cartes.flatMapTo(HashSet()) { it.jeux }
-        return JeuCarte.values().filter { it in vus }
+        return JeuCarte.JEUX.filter { it in vus }
     }
 
     /**

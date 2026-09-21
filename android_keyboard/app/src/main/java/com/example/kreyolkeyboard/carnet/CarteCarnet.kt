@@ -126,7 +126,7 @@ object CarteCarnet {
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return ContenuCarte(
+        return CarteAccueil.corriger(ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
@@ -141,7 +141,7 @@ object CarteCarnet {
             blason = Armorial.pour(context, fiche.mot, carte.forme),
             traductionExemple = exemple?.traduction,
             categorie = TranslationDictionary.categorie(context, fiche.mot)
-        )
+        ))
     }
 
     /**
