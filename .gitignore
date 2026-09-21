@@ -250,3 +250,14 @@ Dictionnaires/zls_data/
 
 # Bytecode compilé Python, entré par le même `git add` large que ci-dessus
 stt/bench/__pycache__/
+
+# iOS : le projet Xcode et les Info.plist sont générés par XcodeGen
+# (ios_keyboard/project.yml) ; certificats et profils ne sont jamais versionnés.
+ios_keyboard/*.xcodeproj/
+ios_keyboard/App/Info.plist
+ios_keyboard/Keyboard/Info.plist
+ios_keyboard/build/
+DerivedData/
+*.mobileprovision
+*.p8
+*.cer

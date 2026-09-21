@@ -1,0 +1,80 @@
+# Le .xcodeproj n'est pas versionné : XcodeGen le produit à partir de ce fichier
+# (`brew install xcodegen && xcodegen`, ce que fait codemagic.yaml). On ne peut
+# pas éditer un .xcodeproj sous Linux, et il fusionnerait mal.
+#
+# Identifiants : l'extension DOIT être préfixée par celui de l'app, sinon Apple
+# refuse l'embarquement. Changer la base ici suffit, codemagic.yaml la relit.
+name: LuxKeyb
+
+options:
+  bundleIdPrefix: com.potomitan
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"   # écrasé par Codemagic (--archive-flags)
+    TARGETED_DEVICE_FAMILY: "1,2"
+
+targets:
+  LuxKeyb:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.potomitan.luxkeyboard
+        PRODUCT_NAME: LuxKeyb
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Lëtzebuergesch Clavier
+        UILaunchScreen: {}
+        ITSAppUsesNonExemptEncryption: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    dependencies:
+      - target: LuxKeyboardExtension
+        embed: true
+
+  LuxKeyboardExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Keyboard
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.potomitan.luxkeyboard.keyboard
+        PRODUCT_NAME: LuxKeyboard
+        SKIP_INSTALL: YES
+        GENERATE_INFOPLIST_FILE: NO
+    info:
+      path: Keyboard/Info.plist
+      properties:
+        CFBundleDisplayName: Lëtzebuergesch
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            IsASCIICapable: true
+            PrefersRightToLeft: false
+            PrimaryLanguage: lb-LU
+            # false = clavier 100 % hors ligne, sans conteneur partagé : c'est
+            # ce que promet la politique de confidentialité. Le passer à true
+            # (App Group, réseau) en change la portée : décision du propriétaire.
+            RequestsOpenAccess: false
+
+schemes:
+  LuxKeyb:
+    build:
+      targets:
+        LuxKeyb: all
+        LuxKeyboardExtension: all
+    archive:
+      config: Release

@@ -1,0 +1,56 @@
+# Compilation iOS du clavier (ios_keyboard/). Le dépôt n'a pas de .xcodeproj :
+# XcodeGen le produit depuis ios_keyboard/project.yml sur la machine Codemagic.
+#
+# Pas de bloc `triggering` : le workflow se lance à la main depuis l'interface
+# Codemagic tant que la chaîne n'est pas validée, pour ne pas brûler de minutes
+# macOS à chaque push sur main (l'essentiel du dépôt est Android).
+#
+# Prérequis côté Codemagic / Apple, à faire une fois (voir ios_keyboard/README.md) :
+#   1. clé API App Store Connect enregistrée dans Codemagic (Teams > Integrations)
+#      sous le nom repris dans `integrations.app_store_connect` ci-dessous ;
+#   2. fiche d'app créée dans App Store Connect pour le bundle id de l'app, sans
+#      quoi l'envoi sur TestFlight est refusé.
+workflows:
+  ios-testflight:
+    name: iOS clavier > TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    integrations:
+      app_store_connect: LuxKeyb
+    environment:
+      xcode: latest
+      vars:
+        BUNDLE_ID: com.potomitan.luxkeyboard
+        EXTENSION_BUNDLE_ID: com.potomitan.luxkeyboard.keyboard
+        SCHEME: LuxKeyb
+    scripts:
+      - name: Générer le projet Xcode
+        script: |
+          brew install xcodegen
+          cd ios_keyboard && xcodegen generate
+      - name: Préparer le trousseau
+        script: keychain initialize
+      - name: Récupérer certificats et profils (app + extension)
+        # Deux cibles = deux profils. `ios_signing` de Codemagic n'en gère qu'un
+        # par bundle id, d'où l'appel explicite pour chacune.
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE --create
+          app-store-connect fetch-signing-files "$EXTENSION_BUNDLE_ID" \
+            --type IOS_APP_STORE --create
+          keychain add-certificates
+      - name: Appliquer les profils au projet
+        script: xcode-project use-profiles
+      - name: Construire l'IPA
+        script: |
+          xcode-project build-ipa \
+            --project "ios_keyboard/LuxKeyb.xcodeproj" \
+            --scheme "$SCHEME" \
+            --archive-flags="CURRENT_PROJECT_VERSION=$BUILD_NUMBER"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
