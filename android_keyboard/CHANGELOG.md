@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [26.3.1] - 2026-09-22
+
+Trois captures du guide refaites.
+
+### 🐛 Corrections
+
+- **Les captures d'accents, de suggestions et du mode chiffres du guide étaient antérieures à la cuvette de suggestions (12.0.0).** Elles montraient encore l'ancienne barre sur fond blanc plutôt que le plateau creusé dans le clavier. Refaites sur émulateur.
+
 ## [26.3.0] - 2026-09-21
 
 Une carte de bienvenue récompense la fin de l'installation.
