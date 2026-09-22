@@ -288,8 +288,9 @@ passage en production, pas un premier envoi.
 
 1. ~~**Douze testeurs pendant quatorze jours consécutifs.**~~ Fait. Palier
    atteint le 2026-09-09 (`docs/stats/testeurs.json`, tenu à la main, il
-   n'existe pas d'API publique pour ce chiffre) ; sortie publique programmée au
-   2026-09-23.
+   n'existe pas d'API publique pour ce chiffre), donc les quatorze jours acquis
+   dès le 23 ; sortie publique programmée au 2026-09-28, cinq jours de marge
+   ajoutés le 2026-09-22 au-delà du minimum Google.
 
 2. **Écrire à <ai@rtl.lu> avant la publication ouverte.** `luxemburgish_cloze.json`
    redistribue 1 600 phrases entières de RTL.lu, mot pour mot : ce n'est plus une

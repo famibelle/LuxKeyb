@@ -78,7 +78,7 @@ touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
   <script defer src="assets/countdown.js"></script>
 
   <p class="sortie__eyebrow">Google Play · sortie publique</p>
-  <p class="sortie__titre">🗓️ Ouvert à tout le monde le 23 septembre 2026</p>
+  <p class="sortie__titre">🗓️ Ouvert à tout le monde le 28 septembre 2026</p>
   <p class="sortie__date">
     D'ici là, la page qui s'ouvre vous demande d'abord d'appuyer sur
     <strong>Devenir testeur</strong>, puis vous renvoie vers Google Play.
@@ -362,10 +362,10 @@ change la façon d'installer, pas l'application.
 <p class="note">Pourquoi un test fermé ? Google demande
 qu'une nouvelle application soit testée par au moins douze personnes pendant
 quatorze jours avant d'autoriser sa publication à tout le monde. Les douze sont
-réunis depuis le 9 septembre 2026 ; ce sont les quatorze jours qui courent
-maintenant, et c'est ce qui date la sortie publique au
-<strong>23 septembre 2026</strong>. Rejoindre le test d'ici là, c'est aider à
-les tenir : le compte doit rester à douze sans que personne ne quitte le
+réunis depuis le 9 septembre 2026, ce qui rend l'application éligible dès le
+23 ; la sortie publique est programmée un peu après, au
+<strong>28 septembre 2026</strong>. Rejoindre le test d'ici là, c'est aider à
+tenir le palier : le compte doit rester à douze sans que personne ne quitte le
 programme.</p>
 
 ## En avant-première : la dictée vocale 🔬

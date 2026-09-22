@@ -55,8 +55,9 @@ google-chrome --headless --disable-gpu --no-sandbox --no-pdf-header-footer \
 ## État
 
 L'application est **en test fermé**, le palier des douze testeurs est atteint
-depuis le 2026-09-09, et la sortie publique est programmée au 2026-09-23
-(`docs/stats/testeurs.json`). Les textes sont prêts à coller, les images
+depuis le 2026-09-09 (quatorze jours consécutifs acquis le 23), et la sortie
+publique est programmée au 2026-09-28, cinq jours de marge ajoutés au-delà du
+minimum Google (`docs/stats/testeurs.json`). Les textes sont prêts à coller, les images
 prêtes à envoyer. Ce qui reste à faire est listé en fin de
 `texts/fichePlayStore.md` (avant le passage en production) et de
 `texts/aso_pack_10.14.0.md` (après) ; le point encore ouvert dans le premier
