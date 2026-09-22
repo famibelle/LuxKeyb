@@ -7,13 +7,13 @@
     python3 build_graphics.py shots      # captures téléphone seules
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
-Produit, dans `feature-graphic/`, les huit fichiers à envoyer à la Play
+Produit, dans `feature-graphic/`, les dix fichiers à envoyer à la Play
 Console. Chacun porte le nom de l'emplacement du formulaire où il va, pour
 qu'il n'y ait rien à retrouver au moment de l'envoi :
 
   Icône de l'application.png              depuis Logos/luxembourg-logo-hd.png
   Image de présentation.png               depuis feature_graphic_source.html
-  Captures d'écran pour téléphone 1-6.png depuis docs/Screenshots/lux_*.png
+  Captures d'écran pour téléphone 1-8.png depuis docs/Screenshots/lux_*.png
 
 Le numéro des captures est leur ordre d'envoi ; le tableau `SPECS` dit lequel
 montre quoi.
@@ -21,16 +21,20 @@ montre quoi.
 Contraintes de la Console, toutes vérifiables avec `check` :
 icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
 15 Mo ; 2 à 8 captures en 16:9 ou 9:16, chaque côté entre 320 et 3840 px et
-moins de 8 Mo. Les six captures font 1080x1920, donc au-dessus du 1080x1080
+moins de 8 Mo. Les huit captures font 1080x1920, donc au-dessus du 1080x1080
 exigé pour que l'application soit promouvable — il en faut au moins quatre.
 
 Les captures sources sont natives 1080 px de large (recapturées sur émulateur
-1080x2340 le 2026-09-03, sous la 11.3.0) : rien n'est agrandi ici. Les trois
-captures de clavier sont prises dans Messages et recadrées sur champ de saisie
-+ barre de suggestions + clavier ; les trois autres sont des écrans entiers de
-l'application. À refaire à chaque changement visible : celles d'août
-annonçaient encore sept onglets, « 8792 mots » et une rangée française qui ne
-propose plus les mêmes mots.
+1080x2340 le 2026-09-22, sous la 26.3.0) : rien n'est agrandi ici. Les deux
+captures de clavier (suggestions, accents) et celle du clavier numérique sont
+prises dans Messages et recadrées sur champ de saisie + barre de suggestions +
+clavier (partagées avec les captures du guide intégré,
+`res/drawable-nodpi/guide_screenshot_*.png`) ; les cinq autres sont des écrans
+entiers de l'application, dont deux ouvrent une fiche ou une carte en feuille
+du bas (arrière-plan assombri, c'est l'état réel de l'application). À refaire
+à chaque changement visible : celles de septembre montraient encore l'ancien
+ordre des onglets et l'ancienne barre de suggestions sur fond blanc,
+antérieure à la cuvette (12.0.0).
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -72,20 +76,26 @@ ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 SPECS = [
     ("Captures d'écran pour téléphone 1", "lux_suggestions.png", None, "Suggestions",
      "Il vous souffle les mots",
-     "Le luxembourgeois d'abord, le français pour les emprunts — sans changer de clavier."),
-    ("Captures d'écran pour téléphone 2", "lux_accents.png", None, "Diacritiques",
+     "Le luxembourgeois d'abord, le français pour les emprunts, sans changer de clavier."),
+    ("Captures d'écran pour téléphone 2", "lux_carte_moien.png", None, "Carnet",
+     "Chaque mot appris devient une carte",
+     "Sens, phrase d'exemple et traduction officielle, sur une carte à collectionner."),
+    ("Captures d'écran pour téléphone 3", "lux_spiller.png", None, "Jeux",
+     "Sept jeux pour élargir son vocabulaire",
+     "Tous les jeux versent leurs mots dans le même carnet, révisable à intervalle régulier."),
+    ("Captures d'écran pour téléphone 4", "lux_fiche_haus.png", None, "Wierderbuch",
+     "Un dictionnaire dans le clavier",
+     "Près de 89 000 mots, luxembourgeois et français, avec des phrases d'exemple officielles."),
+    ("Captures d'écran pour téléphone 5", "lux_accents.png", None, "Diacritiques",
      "ë ä é ont leur propre touche",
      "Les autres accents (ü, è, à, ê, ö) restent sous un appui long."),
-    ("Captures d'écran pour téléphone 3", "lux_niveaux.png", None, "Progression",
+    ("Captures d'écran pour téléphone 6", "lux_niveaux.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("Captures d'écran pour téléphone 4", "lux_spiller.png", None, "Jeux",
-     "Cinq jeux pour élargir son vocabulaire",
-     "Quatre tirent leurs mots du dictionnaire du clavier ; le cinquième porte sur l'écriture des nombres."),
-    ("Captures d'écran pour téléphone 5", "lux_onboarding.png", None, "Installation",
+    ("Captures d'écran pour téléphone 7", "lux_onboarding.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ("Captures d'écran pour téléphone 6", "lux_numerique.png", None, "Clavier numérique",
+    ("Captures d'écran pour téléphone 8", "lux_numerique.png", None, "Clavier numérique",
      "Chiffres, symboles et ponctuation",
      "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
 ]

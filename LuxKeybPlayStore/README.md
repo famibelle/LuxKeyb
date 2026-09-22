@@ -15,7 +15,7 @@ texts/
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
-  feature-graphic/        les 8 fichiers à envoyer, chacun nommé d'après
+  feature-graphic/        les 10 fichiers à envoyer, chacun nommé d'après
                           l'emplacement de la Console où il va, + la source
                           HTML de l'image de présentation
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
@@ -54,15 +54,18 @@ google-chrome --headless --disable-gpu --no-sandbox --no-pdf-header-footer \
 
 ## État
 
-L'application **n'est pas publiée**. Les textes sont prêts à coller, les images
-prêtes à envoyer, mais rien n'a encore été mesuré. Ce qui reste à faire est
-listé en fin de `texts/fichePlayStore.md` (avant le premier envoi) et de
-`texts/aso_pack_10.14.0.md` (après).
+L'application est **en test fermé**, le palier des douze testeurs est atteint
+depuis le 2026-09-09, et la sortie publique est programmée au 2026-09-23
+(`docs/stats/testeurs.json`). Les textes sont prêts à coller, les images
+prêtes à envoyer. Ce qui reste à faire est listé en fin de
+`texts/fichePlayStore.md` (avant le passage en production) et de
+`texts/aso_pack_10.14.0.md` (après) ; le point encore ouvert dans le premier
+est l'e-mail à RTL.lu sur la redistribution des phrases de Wuertlück.
 
 Une réserve connue : les brèves descriptions luxembourgeoise et allemande
 doivent être relues par un locuteur natif avant publication.
 
 Les captures sources (`docs/Screenshots/lux_*.png`) ont été reprises le
-2026-08-25 sur un émulateur 1080 × 2340 sous la 10.14.0 : elles sont natives,
-rien n'est agrandi. Après un changement d'interface, les recapturer au même
-endroit puis relancer `python3 build_graphics.py shots`.
+2026-09-22 sur l'émulateur `kreyol_test` (1080 × 2340) sous la 26.3.0 : elles
+sont natives, rien n'est agrandi. Après un changement d'interface, les
+recapturer au même endroit puis relancer `python3 build_graphics.py shots`.
