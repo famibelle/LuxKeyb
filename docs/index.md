@@ -13,11 +13,12 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
-# Lëtzebuergesch Clavier, le clavier luxembourgeois
+# Osez le lëtzebuergesch
 
-<p class="chapo">Vous écrivez en luxembourgeois sur votre téléphone ? Ce clavier
-vous propose les mots pendant que vous tapez, met les accents et les majuscules
-à votre place, et vos mots luxembourgeois cessent d'être soulignés en rouge dans
+<p class="chapo"><strong>Ce n'est pas vous qui écrivez mal le luxembourgeois :
+c'est votre clavier qui ne le connaît pas.</strong> Lëtzebuergesch Clavier vous
+propose les mots pendant que vous tapez, met les accents et les majuscules à
+votre place, et vos mots luxembourgeois cessent d'être soulignés en rouge dans
 vos messages.</p>
 
 <p class="chapo-note">Gratuit · sans publicité · rien de ce que vous tapez ne
@@ -27,15 +28,43 @@ sort de votre téléphone</p>
 navigateur</a>, sans rien installer. Pour vous en servir dans vos messages,
 installez ensuite l'application Android.</p>
 
-Lëtzebuergesch Clavier est un clavier **gratuit, open source, sans publicité et
-entièrement hors ligne**, qui propose des suggestions de mots en luxembourgeois
-pendant la frappe. Il tourne dans le navigateur pour l'essai, et s'installe sur
-Android pour l'usage de tous les jours.
+## Ce qui vous retenait, et ce qui a changé
+
+<table class="objections">
+  <tr>
+    <td>🤔 <strong>« Mon téléphone corrige mon luxembourgeois en allemand »</strong></td>
+    <td>Il ne le fait plus. Ce clavier ne remplace jamais un mot par un autre :
+    vos lettres restent les vôtres. Et son correcteur, une fois activé, arrête
+    de souligner vos mots en rouge dans Messages, dans vos notes et dans votre
+    messagerie.</td>
+  </tr>
+  <tr>
+    <td>😬 <strong>« Je ne suis jamais sûr de l'orthographe »</strong></td>
+    <td>Le clavier vous propose les formes du <em>Lëtzebuerger Online
+    Dictionnaire</em>, le dictionnaire officiel de la langue : 123 297 mots
+    reconnus. Vous n'inventez rien, vous choisissez.</td>
+  </tr>
+  <tr>
+    <td>😤 <strong>« Le ë est caché dans un menu »</strong></td>
+    <td>Plus ici. Les trois diacritiques qui portent la langue, <strong>é</strong>,
+    <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
+    l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
+    Tapez « letzebuergesch » tout court : le clavier vous propose
+    « lëtzebuergesch ».</td>
+  </tr>
+  <tr>
+    <td>🤷 <strong>« De toute façon, ça ne s'écrit pas »</strong></td>
+    <td>Si : langue nationale depuis 1984, orthographe fixée par le Zenter fir
+    d'Lëtzebuerger Sprooch, dictionnaire d'État en ligne. Ce clavier est
+    construit sur 186 204 phrases réellement écrites en luxembourgeois, et
+    <a href="corpus.html">dit lesquelles</a>.</td>
+  </tr>
+</table>
 
 Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
-Luxembourg. Plus besoin de chercher un `ë` dans un menu d'accents : les trois
-diacritiques qui portent la langue, **é**, **ä** et **ë**, ont chacune leur
-touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
+Luxembourg. Le clavier est **gratuit, open source, sans publicité et entièrement
+hors ligne** : il tourne dans le navigateur pour l'essai, et s'installe sur
+Android pour l'usage de tous les jours.
 
 <div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
             flex-wrap:wrap;margin:28px 0 12px;">
@@ -48,9 +77,8 @@ touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
     </p>
     <p class="rassurance">
       Android affichera un avertissement au moment d'activer le clavier. Il
-      s'affiche pour <strong>tous</strong> les claviers, et celui-ci n'a aucun
-      accès à Internet : rien de ce que vous tapez ne peut sortir de votre
-      téléphone.
+      s'affiche pour <strong>tous</strong> les claviers, sans exception, et
+      celui-ci n'a aucune permission réseau.
     </p>
   </div>
   <figure style="margin:0;text-align:center;">
@@ -65,6 +93,18 @@ touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
       Ou scannez ce code avec votre téléphone
     </figcaption>
   </figure>
+</div>
+
+<div class="promesse" markdown="1">
+
+🔒 **Ce que vous tapez ne quitte pas votre téléphone.** Pas de compte, pas de
+serveur, aucune permission réseau : l'application est techniquement incapable
+d'envoyer quoi que ce soit. La sauvegarde Android elle-même ne remonte que vos
+réglages, vibration, son et thème, ni vos mots ni votre progression. Le code est
+public et vérifiable, et la
+[politique de confidentialité](privacy/privacy-policy.html) le dit en toutes
+lettres.
+
 </div>
 
 <div class="sortie" data-sortie>
@@ -104,7 +144,7 @@ touche, et l'apostrophe de l'élision (*d'Land*, *s'Kanner*) la sienne.
       <div class="sortie__sortie">
         <p class="sortie__pied" style="margin-top:0">
           C'est fait : le clavier est ouvert à tout le monde sur
-          <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard">Google Play</a>,
+          <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">Google Play</a>,
           et s'installe désormais sans passer par le test.
         </p>
       </div>
@@ -175,6 +215,23 @@ Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
 rouge pour ce qui agit (Entrée, changement de mode) et le bleu ciel pour la
 barre d'espace et la ponctuation.
 
+## Vérifiez tout de suite, sans rien installer
+
+Tapez un mot dans ce clavier d'essai : c'est le vrai dictionnaire et les vraies
+suggestions de l'application, chargés dans votre navigateur. Commencez par
+« lëtz », ou par « op der » suivi d'un espace pour voir arriver la suite de la
+phrase.
+
+<div class="essai">
+  <iframe src="simulateur.html?embed=1" width="380" height="620" loading="lazy"
+          title="Clavier d'essai Lëtzebuergesch Clavier"
+          style="border:0;max-width:100%;"></iframe>
+</div>
+
+<p class="note" style="text-align:center;">Le clavier d'essai a sa
+<a href="simulateur.html">page complète</a>, avec la démonstration automatique
+et le compteur de frappes économisées.</p>
+
 ## Ce qu'il sait faire
 
 ### Il vous souffle les mots
@@ -205,6 +262,11 @@ luxembourgeois cessent d'être soulignés en rouge dans Messages, Notes ou votre
 messagerie.
 
 ### Il vous fait progresser
+
+**Les jeux ne sont pas un gadget posé à côté du clavier : ils donnent une raison
+d'écrire encore du luxembourgeois.** Chaque partie fait rencontrer un mot qu'on
+n'aurait pas cherché, et chaque mot gagné vient grossir un carnet qui se révise
+tout seul.
 
 Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
 **Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
@@ -238,6 +300,46 @@ mots à y caser.
     <figcaption>Wuertriet · mot en six essais</figcaption>
   </figure>
 </div>
+
+### Les mots gagnés vous restent
+
+Un mot trouvé dans l'un des sept jeux ne disparaît pas avec la partie : il
+devient une **carte** dans **Mäi Carnet**. Chaque carte porte le sens du mot en
+français, une phrase d'exemple tirée du dictionnaire officiel avec sa traduction
+quand l'État l'a publiée, les autres formes de la même famille, et sa rareté,
+c'est-à-dire son rang réel dans le corpus. Le carnet ne fait que grandir.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:520px;text-align:center;">
+    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
+         alt="Deux écrans du carnet : à gauche la grille de cartes à deux colonnes avec leur illustration, leur mot et leur symbole de rareté ; à droite la carte « virgelies » ouverte, badge « Très rare », son sens, une phrase d'exemple et sa famille">
+    <figcaption>Trente mots gagnés, et la carte « virgelies » ouverte</figcaption>
+  </figure>
+</div>
+
+Ces cartes reviennent ensuite d'elles-mêmes, par **Widderhuelen** : six casiers,
+un jour, trois jours, une semaine, deux semaines, un mois, trois mois, puis le
+mot est acquis et sort de la file. Vous retournez la carte, vous vous notez, et
+elle avance ou redescend d'un casier.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_eventail.png" style="width:100%;border-radius:8px;"
+         alt="Deux écrans de la révision : à gauche la boîte à sept casiers, de « 1 jour » à « acquis », avec le bouton Réviser 12 cartes ; à droite les cartes d'un casier déployées en éventail">
+    <figcaption>La boîte, casier par casier</figcaption>
+  </figure>
+  <figure style="margin:0;flex:0 0 auto;max-width:190px;text-align:center;">
+    <img src="Screenshots/lux_revision.gif" style="width:100%;border-radius:8px;"
+         alt="Animation : une carte du carnet est retournée, on se note, et elle passe du casier « 1 jour » au casier « 3 jours »">
+    <figcaption>Une carte qu'on savait</figcaption>
+  </figure>
+</div>
+
+**Et le clavier sert d'examen.** Si vous avez réécrit le mot dans vos messages
+depuis la dernière révision, la carte monte d'un casier sans qu'on vous demande
+quoi que ce soit : la langue écrite pour de vrai compte plus que la langue
+récitée. Ce décompte reste sur le téléphone, dans un fichier que même la
+sauvegarde Android n'emporte pas.
 
 ### Il ne sait rien de vous
 
@@ -448,4 +550,9 @@ grâce à ces signalements.
 sont des marques de Google LLC ; cette application n'est ni éditée ni approuvée
 par Google.</p>
 
-<p align="center"><em>Fait au Luxembourg avec ❤️ · « Mir wëlle bleiwe wat mir sinn »</em></p>
+<p class="devise">Mir wëlle bleiwe wat mir sinn.</p>
+
+<p class="devise-note">« Nous voulons rester ce que nous sommes. »<br>
+C'est ce que vous rejoignez en l'installant.</p>
+
+<p align="center"><em>Fait au Luxembourg avec ❤️</em></p>

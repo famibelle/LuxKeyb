@@ -243,6 +243,71 @@ nav.site strong { color: var(--ink); }
   text-align: left;
 }
 
+/* Le tableau des objections : le doute du lecteur à gauche, la réponse à
+   droite. Pas d'en-tête, il n'aurait rien à dire ; sur téléphone les deux
+   cellules s'empilent en fiche, parce qu'à 360 px une réponse de trois lignes
+   dans une demi-colonne devient une colonne de mots. */
+.markdown-body table.objections {
+  display: table;
+  width: 100%;
+  margin: 18px 0 26px;
+}
+.markdown-body table.objections td { vertical-align: top; }
+.markdown-body table.objections td:first-child { width: 38%; }
+
+@media (max-width: 640px) {
+  .markdown-body table.objections,
+  .markdown-body table.objections tbody,
+  .markdown-body table.objections tr,
+  .markdown-body table.objections td { display: block; width: auto; }
+  .markdown-body table.objections tr {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .markdown-body table.objections td { border: 0; padding: 0; }
+  .markdown-body table.objections td:first-child { width: auto; padding-bottom: 6px; }
+}
+
+/* Le clavier d'essai, posé dans la page : simulateur.html?embed=1 n'y montre
+   que la coque du téléphone et les touches. Chargé en `loading="lazy"`, il ne
+   télécharge son dictionnaire que si le lecteur descend jusqu'ici. */
+.markdown-body .essai {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 8px;
+}
+
+/* La promesse de confidentialité, posée là où le doute naît : juste sous le
+   bouton d'installation, et non à mi-page. */
+.markdown-body .promesse {
+  margin: 22px 0;
+  padding: 14px 18px;
+  border-left: 4px solid var(--hibiscus);
+  background: var(--hibiscus-soft);
+  border-radius: 0 10px 10px 0;
+}
+.markdown-body .promesse p:last-child { margin-bottom: 0; }
+
+/* La devise nationale en clausule : elle fermait la page en italique grise de
+   pied de page, là où elle porte l'argument entier. */
+.markdown-body .devise {
+  text-align: center;
+  font-size: 26px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--hibiscus);
+  margin: 34px 0 6px;
+}
+.markdown-body .devise-note {
+  text-align: center;
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin: 0 0 26px;
+}
+
 /* Les destinations sorties de la barre du haut, réunies en pied de page. */
 .markdown-body .liens-secondaires {
   line-height: 2.4;
