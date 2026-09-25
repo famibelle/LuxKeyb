@@ -7,6 +7,8 @@ import android.animation.ValueAnimator
 import android.app.Dialog
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import com.example.kreyolkeyboard.gamification.LuxLevels
@@ -10399,11 +10401,26 @@ internal fun bandeauEnHaut(ancre: View, message: String, longue: Boolean) {
         elevation = 6 * densite
         alpha = 0f
     }
+    // Bord à bord (Android 15+) : le contenu commence sous la barre d'état, le
+    // bandeau doit s'en écarter pour ne pas recouvrir l'heure. Les encarts de la
+    // fenêtre comptent la barre d'état même quand le système a déjà écarté le
+    // contenu (avant Android 15), d'où la soustraction de sa position réelle.
+    val barres = ViewCompat.getRootWindowInsets(ancre)?.getInsets(
+        WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+    )
+    val position = IntArray(2).also { racine.getLocationInWindow(it) }
     racine.addView(bandeau, FrameLayout.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT,
         Gravity.TOP
-    ).apply { setMargins(marge, marge, marge, marge) })
+    ).apply {
+        setMargins(
+            marge + maxOf(0, (barres?.left ?: 0) - position[0]),
+            marge + maxOf(0, (barres?.top ?: 0) - position[1]),
+            marge + maxOf(0, (barres?.right ?: 0) - (racine.rootView.width - position[0] - racine.width)),
+            marge
+        )
+    })
     bandeau.animate().alpha(1f).setDuration(150).start()
     bandeau.postDelayed({
         bandeau.animate().alpha(0f).setDuration(150).withEndAction {
