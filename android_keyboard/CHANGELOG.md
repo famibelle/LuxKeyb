@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.0.0] - 2026-09-25
+
+Les messages des jeux ne recouvrent plus l'heure.
+
+### 🐛 Corrections
+
+- **Sous Android 15 et plus, les messages de Wuertsich et Wuertriet** (« Dëst Wuert ass net am Wierderbuch », « Mot trouvé ») s'affichaient par-dessus la barre d'état et masquaient l'heure. Ils apparaissent maintenant juste en dessous, et contournent l'encoche de la caméra en paysage.
+
 ## [28.0.0] - 2026-09-25
 
 L'application s'affiche correctement en bord à bord, imposé par Android 15.
