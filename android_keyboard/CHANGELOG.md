@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [28.0.0] - 2026-09-25
+
+L'application s'affiche correctement en bord à bord, imposé par Android 15.
+
+### 🐛 Corrections
+
+- **Sous Android 15 et plus, le haut de l'écran passait sous la barre d'état.** Le titre chevauchait l'heure et les icônes système. Le bandeau bleu se prolonge désormais sous la barre d'état, et le contenu commence en dessous.
+- **Le bas de l'écran s'écarte de la barre de navigation**, bandeau « Installez-le » compris.
+- **Le contenu remonte au-dessus du clavier** dans le Wierderbuch et les jeux : en bord à bord, Android ne le fait plus de lui-même.
+- Même traitement pour l'écran des réglages du clavier, le Guide et la page À propos.
+
 ## [27.0.0] - 2026-09-25
 
 L'application n'utilise plus d'API d'affichage obsolètes depuis Android 15.
