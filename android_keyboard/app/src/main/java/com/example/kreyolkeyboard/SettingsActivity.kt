@@ -269,6 +269,9 @@ class SettingsActivity : AppCompatActivity() {
         // du contenu en dessous)
         bottomInstallBanner = createBottomInstallBanner()
         val rootLayout = FrameLayout(this).apply {
+            // Visible sous la barre de navigation en bord à bord (Android 15+) :
+            // sans fond, c'est celui du thème AppCompat, sombre, qui s'y montre.
+            setBackgroundColor(Color.parseColor("#F5F5F5"))
             addView(mainLayout, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -280,6 +283,12 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setContentView(rootLayout)
+        // Bord à bord : la bande sous la barre d'état est peinte du bleu du
+        // bandeau. La marge va sur mainLayout, pas sur le bandeau lui-même :
+        // updateTabBar() reconstruit ce dernier à chaque changement d'onglet, et
+        // la barre d'onglets est masquée au premier lancement. Le bas, bandeau
+        // d'installation compris, s'écarte de la navigation et du clavier.
+        BordABord.appliquer(rootLayout, haut = mainLayout, couleurHaut = Color.parseColor("#0080FF"))
 
         recordFunnelStep("funnel_first_open")
         applyFirstRunMode()
@@ -9708,9 +9717,11 @@ class SettingsActivity : AppCompatActivity() {
                 // Affichage bord à bord (Android 15) : la fenêtre passe sous la
                 // barre de navigation, le bas de la fiche doit la contourner.
                 clipToPadding = false
-                setOnApplyWindowInsetsListener { vue, insets ->
-                    @Suppress("DEPRECATION")
-                    vue.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(this) { vue, insets ->
+                    val barres = insets.getInsets(
+                        androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                    )
+                    vue.setPadding(0, 0, 0, barres.bottom)
                     insets
                 }
             }
@@ -10335,6 +10346,8 @@ class SettingsActivity : AppCompatActivity() {
                 )
             }
             colonne.addView(hote)
+            // Fenêtre plein écran : bord à bord comme l'activité sous Android 15.
+            BordABord.appliquer(colonne, haut = colonne.getChildAt(0))
 
             if (savedInstanceState == null) {
                 childFragmentManager.beginTransaction()

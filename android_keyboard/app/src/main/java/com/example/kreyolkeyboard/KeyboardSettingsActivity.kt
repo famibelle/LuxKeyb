@@ -60,6 +60,8 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             addView(contenu())
         })
         setContentView(racine)
+        // Bord à bord sous Android 15 : le bandeau bleu passe sous la barre d'état.
+        BordABord.appliquer(racine, haut = racine.getChildAt(0))
     }
 
     /** Bandeau bleu avec la flèche de retour, repris de l'écran principal. */
