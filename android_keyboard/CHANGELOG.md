@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.0.0] - 2026-09-25
+
+Le paysage et la rotation, soignés.
+
+### 🐛 Corrections
+
+- **Tourner le téléphone ne ferme plus le jeu en cours.** On revenait au choix des jeux ; on reste désormais dans le même jeu. La partie repart de zéro, parce que chaque grille est calculée pour la taille de l'écran.
+- **En paysage, plus de bande grise du côté de la caméra.** Le bandeau bleu et la barre d'onglets vont jusqu'au bord de l'écran ; seul leur contenu s'écarte de l'encoche. Même chose dans les réglages du clavier, le Guide et la page À propos.
+
 ## [29.0.0] - 2026-09-25
 
 Les messages des jeux ne recouvrent plus l'heure.
