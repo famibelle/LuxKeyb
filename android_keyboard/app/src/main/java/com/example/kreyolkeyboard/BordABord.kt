@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.util.WeakHashMap
 
 /**
  * Affichage bord à bord, imposé par Android 15 aux applis qui ciblent le SDK 35.
@@ -24,14 +25,28 @@ import androidx.core.view.WindowInsetsCompat
  */
 object BordABord {
 
+    /** Marges latérales d'origine des vues de `lateraux`, pour ne pas les cumuler. */
+    private val margesLaterales = WeakHashMap<View, Pair<Int, Int>>()
+
     /**
      * [haut] reçoit la hauteur de la barre d'état en marge intérieure, pour que
      * son fond se prolonge dessous ; avec [couleurHaut], cette bande est peinte
      * de cette couleur plutôt que du fond de [haut]. [bas] reçoit la hauteur de
-     * la barre de navigation, ou du clavier quand il est ouvert. [racine]
-     * reçoit les encoches latérales, en paysage.
+     * la barre de navigation, ou du clavier quand il est ouvert.
+     *
+     * Les encoches latérales, en paysage, vont par défaut sur [racine], ce qui
+     * laisse une bande de son fond du côté de la caméra. Avec [lateraux], elles
+     * vont sur ces vues-là : chacune garde son fond jusqu'au bord de l'écran et
+     * seul son contenu s'écarte. Une vue reconstruite ensuite passe par
+     * [ecarterLateralement].
      */
-    fun appliquer(racine: View, haut: View, bas: View = racine, couleurHaut: Int? = null) {
+    fun appliquer(
+        racine: View,
+        haut: View,
+        bas: View = racine,
+        couleurHaut: Int? = null,
+        lateraux: (() -> List<View>)? = null
+    ) {
         val hautInitial = haut.paddingTop
         val basInitial = bas.paddingBottom
         val fondInitial: Drawable? = haut.background
@@ -40,7 +55,11 @@ object BordABord {
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
             val clavier = insets.getInsets(WindowInsetsCompat.Type.ime())
-            racine.setPadding(barres.left, racine.paddingTop, barres.right, racine.paddingBottom)
+            if (lateraux == null) {
+                racine.setPadding(barres.left, racine.paddingTop, barres.right, racine.paddingBottom)
+            } else {
+                ecarter(lateraux(), barres.left, barres.right)
+            }
             haut.setPadding(haut.paddingLeft, hautInitial + barres.top, haut.paddingRight, haut.paddingBottom)
             if (couleurHaut != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 haut.background = if (barres.top == 0) fondInitial else
@@ -54,6 +73,26 @@ object BordABord {
                 basInitial + maxOf(barres.bottom, clavier.bottom)
             )
             insets
+        }
+    }
+
+    /**
+     * Donne à [vues], reconstruites après coup, l'écart latéral que
+     * [appliquer] leur aurait donné. Redemander un passage des encarts ne
+     * suffit pas : mesuré sur API 36, il n'arrive pas quand la reconstruction a
+     * lieu pendant la première mise en page.
+     */
+    fun ecarterLateralement(vues: List<View>) {
+        val barres = vues.firstOrNull()?.let { ViewCompat.getRootWindowInsets(it) }?.getInsets(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+        ) ?: return
+        ecarter(vues, barres.left, barres.right)
+    }
+
+    private fun ecarter(vues: List<View>, gauche: Int, droite: Int) {
+        vues.forEach { vue ->
+            val (g, d) = margesLaterales.getOrPut(vue) { vue.paddingLeft to vue.paddingRight }
+            vue.setPadding(g + gauche, vue.paddingTop, d + droite, vue.paddingBottom)
         }
     }
 }

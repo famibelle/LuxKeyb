@@ -96,6 +96,17 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
+    /**
+     * Le jeu ouvert dans l'onglet Spiller (rang dans `GamesFragment.jeux`), ou -1.
+     *
+     * Tenu par l'activité et non par le fragment : c'est elle qui sauvegarde
+     * son état à la rotation, et le fragment de l'onglet est recréé à neuf par
+     * le pager. Sans cela, tourner le téléphone ramenait au choix des jeux. La
+     * partie elle-même repart de zéro : chaque jeu calcule sa grille d'après
+     * l'écran à l'ouverture, et une grille de portrait ne tient pas en paysage.
+     */
+    internal var jeuOuvert = -1
+
     private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
@@ -218,6 +229,7 @@ class SettingsActivity : AppCompatActivity() {
             ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 0)
             ?: 0
         currentTab = requestedTab
+        jeuOuvert = savedInstanceState?.getInt("jeuOuvert", -1) ?: -1
         
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
@@ -290,7 +302,13 @@ class SettingsActivity : AppCompatActivity() {
         // updateTabBar() reconstruit ce dernier à chaque changement d'onglet, et
         // la barre d'onglets est masquée au premier lancement. Le bas, bandeau
         // d'installation compris, s'écarte de la navigation et du clavier.
-        BordABord.appliquer(rootLayout, haut = mainLayout, couleurHaut = Color.parseColor("#0080FF"))
+        // En paysage, le bandeau et les onglets s'étendent sous l'encoche et
+        // seul leur contenu s'en écarte ; sinon une bande grise longe l'écran
+        // du côté de la caméra.
+        BordABord.appliquer(
+            rootLayout, haut = mainLayout, couleurHaut = Color.parseColor("#0080FF"),
+            lateraux = { (0 until tabBar.childCount).map { tabBar.getChildAt(it) } + viewPager }
+        )
 
         recordFunnelStep("funnel_first_open")
         applyFirstRunMode()
@@ -588,6 +606,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
         outState.putInt("currentTab", currentTab)
+        outState.putInt("jeuOuvert", jeuOuvert)
         Log.d("SettingsActivity", "💾 Sauvegarde de l'onglet actif: $currentTab")
     }
     
@@ -925,6 +944,8 @@ class SettingsActivity : AppCompatActivity() {
         val enfants = (0 until fraiche.childCount).map { fraiche.getChildAt(it) }
         fraiche.removeAllViews() // une vue ne peut pas avoir deux parents
         enfants.forEach { tabBar.addView(it) }
+        // Les enfants neufs n'ont pas encore l'écart de l'encoche (paysage).
+        BordABord.ecarterLateralement(enfants)
     }
 
     // Onglet 1 : Démarrage / Onboarding
@@ -9964,6 +9985,8 @@ class SettingsActivity : AppCompatActivity() {
                 .addCallback(viewLifecycleOwner, retourAuChoix)
 
             rootView = colonne
+            // Après une rotation, on rouvre le jeu qui était ouvert.
+            activity.jeuOuvert.takeIf { it in jeux.indices }?.let { ouvrirLeJeu(jeux[it]) }
             return colonne
         }
 
@@ -10241,9 +10264,13 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun ouvrirLeJeu(jeu: Jeu) {
             val conteneur = conteneurJeu ?: return
-            childFragmentManager.beginTransaction()
-                .replace(conteneur.id, jeu.fabrique())
-                .commit()
+            (activity as? SettingsActivity)?.jeuOuvert = jeux.indexOf(jeu)
+            childFragmentManager.beginTransaction().apply {
+                // Un jeu restauré par le système après une rotation visait
+                // l'ancien conteneur : on repart d'un seul jeu, neuf.
+                childFragmentManager.fragments.forEach { remove(it) }
+                add(conteneur.id, jeu.fabrique())
+            }.commit()
             grilleChoix?.visibility = View.GONE
             conteneur.visibility = View.VISIBLE
             barreRetour?.visibility = View.VISIBLE
@@ -10252,6 +10279,7 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun fermerLeJeu() {
             val conteneur = conteneurJeu ?: return
+            (activity as? SettingsActivity)?.jeuOuvert = -1
             // Le hub redevient visible sans repasser par onResume : la
             // bannière se remettrait à jour au prochain onglet, c'est-à-dire
             // trop tard pour la partie qu'on vient de finir.
@@ -10342,6 +10370,9 @@ class SettingsActivity : AppCompatActivity() {
 
             val hote = FrameLayout(activity).apply {
                 id = View.generateViewId()
+                // Le fond des deux pages : en paysage, la bande de l'encoche
+                // est ce fond-là, et une bande blanche longeait le gris.
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT
@@ -10349,7 +10380,10 @@ class SettingsActivity : AppCompatActivity() {
             }
             colonne.addView(hote)
             // Fenêtre plein écran : bord à bord comme l'activité sous Android 15.
-            BordABord.appliquer(colonne, haut = colonne.getChildAt(0))
+            BordABord.appliquer(
+                colonne, haut = colonne.getChildAt(0),
+                lateraux = { listOf(colonne.getChildAt(0), colonne.getChildAt(1)) }
+            )
 
             if (savedInstanceState == null) {
                 childFragmentManager.beginTransaction()
