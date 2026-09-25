@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [27.0.0] - 2026-09-25
+
+L'application n'utilise plus d'API d'affichage obsolètes depuis Android 15.
+
+### 🐛 Corrections
+
+- **La Play Console signalait `Window.setStatusBarColor` et `setNavigationBarColor`, obsolètes depuis Android 15.** Ces appels ne venaient pas de notre code mais de la bibliothèque Material, que nous n'utilisions que pour deux composants. Elle est retirée : l'APK publié n'en contient plus aucune trace.
+- **La fiche d'un mot du Wierderbuch** s'ouvre désormais dans une fenêtre simple ancrée en bas de l'écran, qui laisse la place à la barre de navigation.
+- **Les messages des jeux Wuertsich et Wuertriet** (« Mot trouvé », etc.) restent affichés en haut de l'écran, avec un bandeau à nous au lieu de celui de Material.
+
 ## [26.3.1] - 2026-09-22
 
 Trois captures du guide refaites.
