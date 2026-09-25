@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.ClipData
 import android.content.Context
 import android.animation.ValueAnimator
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
+import android.view.Window
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import com.example.kreyolkeyboard.gamification.LuxLevels
@@ -43,9 +46,6 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
 import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
 import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
@@ -5038,20 +5038,14 @@ class SettingsActivity : AppCompatActivity() {
             
             // Vérifier si tous les mots sont trouvés
             // Toast.setGravity() est ignoré par le système depuis Android 11 : on utilise
-            // une Snackbar (vue applicative, pas une fenêtre système) pour l'ancrer en haut
+            // un bandeau (vue applicative, pas une fenêtre système) pour l'ancrer en haut
             // et éviter qu'elle ne recouvre le mot qui vient de passer en vert dans la liste.
             val message = if (wordsFound == currentPuzzle?.words?.size) {
                 "🎉 Félicitations ! Tous les mots trouvés !"
             } else {
                 "✅ Mot trouvé : $word (+$points pts)"
             }
-            val duration = if (wordsFound == currentPuzzle?.words?.size) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            Snackbar.make(requireView(), message, duration).apply {
-                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
-                    it.gravity = Gravity.TOP
-                    view.layoutParams = it
-                }
-            }.show()
+            bandeauEnHaut(requireView(), message, longue = wordsFound == currentPuzzle?.words?.size)
 
             if (wordsFound == currentPuzzle?.words?.size) ouvrirPochette()
         }
@@ -6019,15 +6013,11 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut via Snackbar
-        // pour ne pas se faire masquer par le clavier virtuel (même piste que WordSearchFragment).
+        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut par un
+        // bandeau pour ne pas se faire masquer par le clavier virtuel (même piste
+        // que WordSearchFragment).
         private fun showTopMessage(message: String) {
-            Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).apply {
-                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
-                    it.gravity = Gravity.TOP
-                    view.layoutParams = it
-                }
-            }.show()
+            bandeauEnHaut(requireView(), message, longue = false)
         }
 
         private fun updateLegend(guess: String, states: List<LetterState>) {
@@ -9552,25 +9542,30 @@ class SettingsActivity : AppCompatActivity() {
             activity: SettingsActivity,
             resultat: TranslationDictionary.Resultat
         ) {
-            val dialogue = BottomSheetDialog(activity)
+            // Une Dialog ordinaire ancrée en bas, et non un BottomSheetDialog :
+            // Material 1.12 et 1.13 y appellent Window.setStatusBarColor et
+            // setNavigationBarColor, obsolètes depuis Android 15, et la Play
+            // Console le signale. Ce n'était qu'un usage sur toute l'appli. Le
+            // contenu défile déjà dans un ScrollView, qui prend la hauteur de
+            // l'écran s'il la dépasse : plus de position repliée à gérer.
+            val dialogue = Dialog(activity)
+            dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialogue.setContentView(contenuFiche(activity, resultat, dialogue))
-            // Déployée d'emblée, et pas de position repliée du tout.
-            // Une feuille inférieure s'ouvre par défaut à une hauteur de repli
-            // calculée sur l'écran : tant que la fiche tient dedans on ne voit
-            // rien, mais sur un petit écran — ou avec une police système
-            // agrandie, ce qui revient au même — elle s'ouvre en cachant les
-            // deux boutons, sans que rien n'indique qu'il faut la tirer. Le
-            // contenu défile désormais dans une feuille pleine hauteur au lieu
-            // d'être coupé.
-            dialogue.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            dialogue.behavior.skipCollapsed = true
+            dialogue.window?.apply {
+                setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                setGravity(Gravity.BOTTOM)
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
             dialogue.show()
         }
 
         private fun contenuFiche(
             activity: SettingsActivity,
             resultat: TranslationDictionary.Resultat,
-            dialogue: BottomSheetDialog
+            dialogue: Dialog
         ): View {
             val colonne = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL
@@ -9708,7 +9703,17 @@ class SettingsActivity : AppCompatActivity() {
                 })
             })
 
-            return ScrollView(activity).apply { addView(colonne) }
+            return ScrollView(activity).apply {
+                addView(colonne)
+                // Affichage bord à bord (Android 15) : la fenêtre passe sous la
+                // barre de navigation, le bas de la fiche doit la contourner.
+                clipToPadding = false
+                setOnApplyWindowInsetsListener { vue, insets ->
+                    @Suppress("DEPRECATION")
+                    vue.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                    insets
+                }
+            }
         }
 
         /**
@@ -10354,4 +10359,42 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
     }
+}
+
+/**
+ * Message bref ancré en haut de l'écran, à la place de la Snackbar de Material.
+ *
+ * La bibliothèque Material a été retirée en 27.0.0 : même inutilisés, ses
+ * composants restaient dans le dex (R8 garde `MaterialDatePicker` par un layout
+ * interne) et y laissaient `Window.setStatusBarColor` / `setNavigationBarColor`,
+ * obsolètes depuis Android 15, que la Play Console signale. Ce bandeau est une
+ * simple vue posée dans le contenu de l'activité, comme l'était la Snackbar.
+ */
+internal fun bandeauEnHaut(ancre: View, message: String, longue: Boolean) {
+    val racine = ancre.rootView.findViewById<ViewGroup>(android.R.id.content) as? FrameLayout ?: return
+    val densite = ancre.resources.displayMetrics.density
+    val marge = (8 * densite).toInt()
+    val bandeau = TextView(ancre.context).apply {
+        text = message
+        textSize = 14f
+        setTextColor(Color.WHITE)
+        setPadding((16 * densite).toInt(), (14 * densite).toInt(), (16 * densite).toInt(), (14 * densite).toInt())
+        background = GradientDrawable().apply {
+            setColor(Color.parseColor("#323232"))
+            cornerRadius = 4 * densite
+        }
+        elevation = 6 * densite
+        alpha = 0f
+    }
+    racine.addView(bandeau, FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        Gravity.TOP
+    ).apply { setMargins(marge, marge, marge, marge) })
+    bandeau.animate().alpha(1f).setDuration(150).start()
+    bandeau.postDelayed({
+        bandeau.animate().alpha(0f).setDuration(150).withEndAction {
+            racine.removeView(bandeau)
+        }.start()
+    }, if (longue) 2750L else 1500L)
 }
