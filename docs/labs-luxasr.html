@@ -127,38 +127,14 @@ td.good{color:var(--ink);}
   color:var(--sun);font-weight:700;min-width:150px;}
 .sim-hint{font-size:13.5px;color:var(--ink-soft);margin:12px 0 0;}
 
-/* La vraie démonstration (asr-*) : même vocabulaire visuel que la simulation
-   canevas ci-dessus (l'anneau du micro, en particulier), mais un micro qui
-   fonctionne pour de vrai, et deux panneaux au lieu d'un seul champ. */
-.asr-demo p:last-of-type{margin-bottom:0;}
-.asr-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
-.asr-mic{position:relative;width:46px;height:46px;flex:0 0 auto;border:0;padding:0;
-  border-radius:50%;background:transparent;cursor:pointer;font-size:21px;
-  color:var(--ink-soft);opacity:.65;transition:opacity .2s,color .2s,transform .08s linear;
-  transform:scale(calc(1 + 0.18 * var(--niveau, 0)));}
-.asr-mic.actif{opacity:1;color:var(--sea);}
-.asr-mic.attente{opacity:1;color:var(--sun);}
-.asr-mic::before{content:"";position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(currentColor 0deg 100deg,transparent 100deg 360deg);
-  -webkit-mask:radial-gradient(closest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));
-  mask:radial-gradient(closest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));
-  opacity:0;transition:opacity .2s;}
-.asr-mic.actif::before{opacity:1;animation:sim-spin 1.4s linear infinite;}
-.asr-bandeau{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
-  color:var(--ink-soft);}
-.asr-bandeau.vif{color:var(--sun);font-weight:700;}
-.asr-pane{border:1px solid var(--line);border-radius:9px;background:var(--paper);
-  padding:12px 14px;margin-bottom:10px;}
-.asr-pane:last-of-type{margin-bottom:12px;}
-.asr-tag{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
-  text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;}
-.asr-texte{margin:0;font-size:15.5px;line-height:1.5;}
-.asr-texte.vide{color:var(--ink-soft);}
-.asr-texte.partiel{text-decoration:underline dotted;text-underline-offset:4px;}
-.asr-erreur{margin-top:10px;}
+/* Le clavier en action, embarqué : même origine que la carte « Intégrer ce
+   simulateur ailleurs » de simulateur.html, mais avec la dictée déjà armée
+   dans l'adresse (?asr=1). C'est le clavier réel qui tourne dans l'iframe,
+   pas une imitation posée sur cette page. */
+.asr-embed{border:0;width:100%;max-width:400px;height:900px;display:block;margin:0 auto;}
+
 @media (prefers-reduced-motion: reduce){
   .sim-mic[data-on="1"]::before{animation:none;}
-  .asr-mic.actif::before{animation:none;}
 }
 
 footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
@@ -251,6 +227,22 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </section>
 
 <section>
+  <h2>Le clavier, avec cette dictée-là</h2>
+  <p>
+    Pas une imitation posée sur cette page : le clavier ci-dessous est celui
+    du <a href="simulateur.html">simulateur</a>, avec la dictée déjà armée. Le
+    micro transcrit en luxembourgeois <strong>en temps réel</strong>, dans
+    l'écran, exactement comme pendant qu'on parle sur le téléphone ; en
+    dessous, un second panneau affiche ce que le service <strong>traduit en
+    français</strong>, phrase par phrase, dès qu'il en a fini une.
+  </p>
+  <iframe class="asr-embed"
+          src="simulateur.html?asr=1&amp;embed=1"
+          title="Clavier Lëtzebuergesch, dictée LuxASR avec traduction"
+          loading="lazy"></iframe>
+</section>
+
+<section>
   <h2>Installer la démonstration</h2>
 
   <div class="status">
@@ -318,45 +310,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     n'a pas de repli hors ligne, volontairement, pour que la démonstration
     montre bien ce qu'elle prétend montrer.
   </p>
-</section>
-
-<section>
-  <h2>Ou l'essayer ici, sans rien installer</h2>
-  <p>
-    Le service transcrit et <strong>traduit en français</strong>, phrase par
-    phrase, et les deux s'affichent ci-dessous au fur et à mesure. Ce n'est
-    pas ce que fait le clavier — la traduction est une capacité du service, le
-    clavier n'écrit que du luxembourgeois — mais c'est ce que ce service sait
-    faire, et cette page existe pour le montrer.
-  </p>
-
-  <div class="card asr-demo" id="asr-gate">
-    <p>
-      Comme dans l'application : la voix quitte le navigateur pour
-      <code>luxasr.uni.lu</code> dès que vous relâchez le micro. N'y dictez
-      rien de confidentiel.
-    </p>
-    <button type="button" class="btn primary" id="asr-consent">🎙️ Activer le micro</button>
-  </div>
-
-  <div class="card asr-demo" id="asr-live" hidden>
-    <div class="asr-row">
-      <button type="button" class="asr-mic" id="asr-micro"
-              aria-pressed="false" aria-label="Démarrer la dictée">🎙️</button>
-      <span class="asr-bandeau" id="asr-bandeau">Prêt, touchez le micro et parlez en luxembourgeois</span>
-    </div>
-    <div class="asr-pane">
-      <span class="asr-tag">🇱🇺 Lëtzebuergesch</span>
-      <p class="asr-texte vide" id="asr-texte">Le texte reconnu s'affichera ici.</p>
-    </div>
-    <div class="asr-pane">
-      <span class="asr-tag">🇫🇷 Français</span>
-      <p class="asr-texte vide" id="asr-traduction">La traduction arrive phrase par phrase, ici.</p>
-    </div>
-    <p class="sim-hint" id="asr-chrono"></p>
-    <p class="muted asr-erreur" id="asr-erreur" hidden></p>
-    <button type="button" class="btn" id="asr-effacer" hidden>Effacer</button>
-  </div>
 </section>
 
 <section>
@@ -794,9 +747,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   });
 })();
 </script>
-
-<script src="assets/luxasr-client.js"></script>
-<script src="assets/luxasr-demo.js"></script>
 
 <script>
 // Même mécanique que la page Labs, sur le tag « labs-luxasr » : la page annonce
