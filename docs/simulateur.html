@@ -303,6 +303,17 @@
   .asr-avis .btn { font-size: 13.5px; padding: 8px 14px; }
   .asr-note { margin: 0; color: var(--ink-soft); font-size: 12.5px; }
 
+  /* Le panneau français : même largeur que le téléphone au-dessus, pour
+     qu'il lise comme son prolongement plutôt que comme un élément à part. */
+  .asr-trad { max-width: 362px; margin: 0 auto 12px; }
+  .asr-trad .asr-tag {
+    display: block; font-family: var(--mono); font-size: 11.5px;
+    letter-spacing: .05em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 6px;
+  }
+  .asr-trad .asr-texte { margin: 0; font-size: 14.5px; line-height: 1.5; }
+  .asr-trad .asr-texte.vide { color: var(--ink-soft); }
+
   .mic-btn {
     flex: none;
     width: 40px; height: 40px;
@@ -775,16 +786,17 @@
 
   <div class="asr-avis" id="asr-avis" hidden>
     <p>
-      <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier enregistre votre
-      énoncé et l'envoie d'un seul bloc, à la fin, au service de l'Université du
-      Luxembourg. Rien n'est reconnu sur votre appareil, et rien ne passe par
-      nous. N'y dictez rien de confidentiel.
+      <strong>🌐 Dictée LuxASR.</strong> Le micro de ce clavier envoie votre voix
+      en continu au service de l'Université du Luxembourg, qui la transcrit et
+      la traduit en français au fur et à mesure. Rien n'est reconnu sur votre
+      appareil, et rien ne passe par nous. N'y dictez rien de confidentiel.
       <a href="labs-luxasr.html">Ce que fait cette démonstration</a>.
     </p>
     <button type="button" class="btn primary" id="asr-activer">🎙️ Activer le micro</button>
     <p class="asr-note" id="asr-note" hidden>
       Touchez le micro à droite des suggestions pour dicter. Un aperçu se
-      construit pendant qu'on parle, souligné tant qu'il peut encore changer.
+      construit pendant qu'on parle, souligné tant qu'il peut encore changer,
+      et sa traduction française apparaît sous le téléphone, phrase par phrase.
       La dictée se termine d'elle-même après cinq secondes de silence.
     </p>
   </div>
@@ -839,6 +851,14 @@
       <button type="button" class="demo-stop" id="demo-stop">■ Arrêter</button>
     </div>
     <p class="status-line" id="status-line">Chargement du dictionnaire…</p>
+  </div>
+
+  <!-- Traduction en direct : une capacité du service, pas du clavier. Masquée
+       tant que le micro n'est pas armé (cf. asr-avis), donc absente en dehors
+       de ?asr=1 et jamais montrée comme si l'application la faisait. -->
+  <div class="card asr-trad" id="asr-trad" hidden>
+    <span class="asr-tag">🇫🇷 Traduction en direct</span>
+    <p class="asr-texte vide" id="asr-trad-texte">La traduction arrive phrase par phrase, ici.</p>
   </div>
 
   <div class="card demo-section" id="demo-section">

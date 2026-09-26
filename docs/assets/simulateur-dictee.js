@@ -18,6 +18,15 @@
  * premier mot engagé (≈ 1,1 s), et le cercle qui tourne ne sert plus qu'au
  * bref silence entre l'arrêt et `recording_stopped` — ou, avec `?voie=api`,
  * à toute l'attente puisque les lots ne rendent rien avant la fin.
+ *
+ * **Un panneau français, sous le téléphone**, alimenté par
+ * `{ traduction: true }` passé à `LuxAsrClient` : le service traduit lui-même,
+ * une phrase entière à la fois (`onTraduction`), avec un délai qui lui est
+ * propre — vérifié en direct le 26 septembre 2026, 0,7 à 2,2 s après que la
+ * phrase luxembourgeoise s'est engagée. Ce n'est pas ce que fait l'application
+ * (elle n'écrit que du luxembourgeois) ; c'est ce que le service sait faire,
+ * et cette page le montre à côté du clavier, sans prétendre que le clavier le
+ * ferait.
  */
 (function () {
   'use strict';
@@ -90,7 +99,8 @@
 
     var els = {
       avis: id('asr-avis'), activer: id('asr-activer'), note: id('asr-note'),
-      micro: id('mic-btn'), bandeau: id('sugg-banner'), rangees: id('sugg-stack')
+      micro: id('mic-btn'), bandeau: id('sugg-banner'), rangees: id('sugg-stack'),
+      tradPanel: id('asr-trad'), tradTexte: id('asr-trad-texte')
     };
     if (!els.micro || !els.avis) return;
 
@@ -155,6 +165,18 @@
 
     function arreterBoucle() {
       if (boucle) { clearInterval(boucle); boucle = null; }
+    }
+
+    /**
+     * Le panneau français, sous le téléphone. Indépendant du champ de saisie :
+     * le service traduit une phrase entière à la fois, quelques secondes après
+     * l'avoir engagée, jamais mot à mot comme l'aperçu luxembourgeois — il peut
+     * donc rester vide un moment après que la dictée a commencé.
+     */
+    function afficherTraduction(texte) {
+      if (!els.tradTexte) return;
+      els.tradTexte.textContent = texte || 'La traduction arrive phrase par phrase, ici.';
+      els.tradTexte.classList.toggle('vide', !texte);
     }
 
     /**
@@ -248,6 +270,8 @@
         sim.setDictationText(texte);
       },
 
+      onTraduction: function (texte) { afficherTraduction(texte); },
+
       onFinal: function (texte) {
         arreterBoucle();
         var garde = texte || dernierPartiel;
@@ -272,7 +296,7 @@
           // confondre les deux fait accuser le téléphone à tort.
           : 'Service LuxASR injoignable');
       }
-    });
+    }, { traduction: true, langueCible: 'fr' });
 
     // Une frappe pendant la dictée la termine, sans écrire la touche : cf.
     // KeyboardSimulator.processKey().
@@ -288,6 +312,7 @@
       // dictée dont le texte se mélangerait à la première.
       if (client.occupe) { client.stop(); return; }
       chronoPasse = '';
+      afficherTraduction('');
       client.start();
     });
 
@@ -296,6 +321,7 @@
       els.activer.hidden = true;
       els.note.hidden = false;
       els.micro.hidden = false;
+      if (els.tradPanel) els.tradPanel.hidden = false;
       client.start();   // le clic est le geste utilisateur qu'exigent micro et audio
     });
 
