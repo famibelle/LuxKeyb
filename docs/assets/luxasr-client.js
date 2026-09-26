@@ -37,8 +37,23 @@
  *
  * ---------------------------------------------------------------------------
  *
+ * **Le service traduit aussi, nativement, sur la voie du flux.** Repéré dans
+ * leur propre client (`rt.js`, capté depuis `luxasr.uni.lu` le
+ * 19 septembre 2026), qui envoie `translation_enabled`/`translation_target`
+ * dans le `config` et affiche le résultat dans un second panneau. Vérifié en
+ * direct le 26 septembre 2026 : de vraies traductions françaises reviennent,
+ * une phrase entière à la fois, dans des messages `type: "translation"`
+ * séparés — le `translation` que portent les messages `transcription` n'est
+ * qu'un état (`enabled`, `pending_source`), jamais le texte. Rien de tout ceci
+ * n'existe côté Android : c'est une capacité du service, pas du protocole que
+ * `LuxAsrSession.kt` utilise, et elle est **désactivée par défaut** ici aussi
+ * (`options.traduction`) pour ne pas faire payer à leur service un aller-
+ * retour que la plupart des appelants n'utilisent pas.
+ *
+ * ---------------------------------------------------------------------------
+ *
  * Ne dessine rien : il rend les mêmes évènements que `SttSession.Listener`
- * côté Android.
+ * côté Android, plus `onTraduction` qui n'a pas d'équivalent là-bas.
  *
  * Ce qui ne se transpose pas du téléphone :
  *
@@ -192,12 +207,25 @@
    * Une session de dictée. [ecouteur] reçoit, comme SttSession.Listener :
    * `onEtat(etat)` parmi IDLE / LOADING / LISTENING / FINALIZING,
    * `onNiveau(0..1)`, `onPartiel(texte)`, `onFinal(texte)`,
-   * `onPasse(secondesAudio, msService)`, `onErreur('MIC' | 'SERVICE')`.
+   * `onPasse(secondesAudio, msService)`, `onErreur('MIC' | 'SERVICE')`,
+   * `onTraduction(texteAccumule)`.
    *
    * `onPartiel` ne se produit que sur la voie du flux : par lots, il n'y a
-   * qu'un `onFinal`.
+   * qu'un `onFinal`. `onTraduction` de même, et seulement si `options.traduction`
+   * est vrai : le service traduit une phrase à la fois, quelques secondes
+   * après l'avoir engagée (0,7 à 2,2 s mesurés le 26 septembre 2026), jamais
+   * mot à mot — c'est un second flux, pas un sous-titrage de l'aperçu.
+   *
+   * [options.traduction] active la traduction en direct (désactivée par
+   * défaut : elle ajoute un aller-retour côté service que la plupart des
+   * sessions n'utilisent pas). [options.langueCible] choisit la langue
+   * (`'fr'` par défaut) parmi celles que le service accepte.
    */
-  function LuxAsrClient(ecouteur) {
+  function LuxAsrClient(ecouteur, options) {
+    options = options || {};
+    var traductionActive = !!options.traduction;
+    var langueCible = options.langueCible || 'fr';
+
     var ws = null, ctx = null, flux = null, source = null, noeud = null, puits = null;
     var moduleCharge = false;
     var etat = 'IDLE', generation = 0, debutMs = 0, minuteurFinal = null;
@@ -205,6 +233,8 @@
     var accumule = '';
     /** Queue encore instable du flux, remplacée à chaque passe. */
     var attente = '';
+    /** Traduction accumulée, phrase par phrase (voie du flux, si demandée). */
+    var traduction = '';
     /** Un essai en lots déjà retombé sur le flux une fois pour cette dictée. */
     var essayeFlux = false;
     var parle = false, dernierSonMs = 0, plancherBruit = 0, resteEchantillon = 0;
@@ -469,10 +499,18 @@
     // --- Voie du flux -----------------------------------------------------
 
     function config() {
-      // La langue est le seul réglage qui nous concerne ; l'ancien
+      // La langue est le seul réglage qui nous concerne toujours ; l'ancien
       // `chunk_params` n'est plus lu depuis que le service ne découpe plus
-      // en morceaux (moteur du 16 septembre 2026).
-      return JSON.stringify({ type: 'config', language: 'lb' });
+      // en morceaux (moteur du 16 septembre 2026). `translation_enabled` et
+      // `translation_target` sont ceux de leur propre client (`rt.js`, capté
+      // le 19 septembre 2026) : vérifiés en direct le 26 septembre 2026,
+      // ils traduisent réellement, phrase par phrase.
+      var c = { type: 'config', language: 'lb' };
+      if (traductionActive) {
+        c.translation_enabled = true;
+        c.translation_target = langueCible;
+      }
+      return JSON.stringify(c);
     }
 
     /**
@@ -511,7 +549,7 @@
      * arrive au même découpage qu'une émission en temps réel.
      */
     function rejouerSurFlux(gen, audio) {
-      accumule = ''; attente = '';
+      accumule = ''; attente = ''; traduction = '';
       ouvrirSocket(gen, function () {
         var pas = Math.round(RATE * BLOC_MS / 1000), i = 0;
         (function pousser() {
@@ -561,6 +599,16 @@
         prevenir('onPasse', (Date.now() - debutMs) / 1000, Math.round((proc || 0) * 1000));
         var propre = couperBoucle(texteVisible());
         if (propre) prevenir('onPartiel', propre);
+      } else if (m.type === 'translation') {
+        // Un message à part, indépendant des passes de `transcription` : le
+        // champ `translation` qu'elles portent n'est qu'un état
+        // (`enabled`, `pending_source`), jamais le texte traduit lui-même.
+        // Émis phrase par phrase, avec un délai propre (0,7 à 2,2 s mesurés) :
+        // ce n'est pas un sous-titrage synchrone de l'aperçu.
+        if (m.success === false) return;
+        traduction = typeof m.accumulated_translation === 'string'
+          ? m.accumulated_translation : traduction;
+        if (traduction) prevenir('onTraduction', traduction);
       } else if (m.type === 'recording_stopped') {
         conclure();
       } else if (m.type === 'error') {
@@ -601,7 +649,7 @@
         // l'aperçu qui se construit pendant qu'on parle. Les lots ne restent
         // joignables que sur demande explicite, pour comparer.
         enLots = demandee === 'api';
-        accumule = ''; attente = ''; essayeFlux = false;
+        accumule = ''; attente = ''; traduction = ''; essayeFlux = false;
         parle = false; dernierSonMs = 0; plancherBruit = 0; debutMs = 0;
         blocs = []; echantillons = 0; premierSon = -1; dernierSon = -1;
         setEtat('LOADING');
@@ -663,7 +711,7 @@
         clearTimeout(minuteurFinal);
         debrancher();
         try { if (ws) ws.close(1000); } catch (e) {}
-        ws = null; accumule = ''; attente = ''; blocs = []; echantillons = 0;
+        ws = null; accumule = ''; attente = ''; traduction = ''; blocs = []; echantillons = 0;
         setEtat('IDLE');
       }
     };
