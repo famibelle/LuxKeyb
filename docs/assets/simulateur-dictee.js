@@ -11,11 +11,13 @@
  * demande `?asr=1` dans l'adresse, et un consentement explicite avant que le
  * micro ne s'ouvre. Cf. `docs/labs-luxasr.html`, qui la présente.
  *
- * **Rien ne s'affiche pendant qu'on parle**, parce que l'énoncé part d'un seul
- * bloc à la fin : c'est ce que fait l'API par lots, et c'est ce qui lui vaut
- * onze points et demi de justesse sur le flux. Le champ n'est pas laissé vide
- * pour autant — les deux témoins ci-dessous l'occupent, aux deux temps de la
- * dictée.
+ * **Un mot s'affiche dès qu'il est engagé**, depuis que le flux est la voie
+ * par défaut de `luxasr-client.js` (moteur du 16 septembre 2026) : le champ
+ * montre l'aperçu qui se construit pendant qu'on parle, `onPartiel` ci-dessous,
+ * et non plus seulement le tracé de niveau. Le tracé reste affiché avant le
+ * premier mot engagé (≈ 1,1 s), et le cercle qui tourne ne sert plus qu'au
+ * bref silence entre l'arrêt et `recording_stopped` — ou, avec `?voie=api`,
+ * à toute l'attente puisque les lots ne rendent rien avant la fin.
  */
 (function () {
   'use strict';

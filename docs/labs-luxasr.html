@@ -96,10 +96,11 @@ td.good{color:var(--ink);}
 
 /* Simulation de la dictée : elle rejoue les trois temps que décrit le déroulé
    ci-dessous, avec les cadences réelles de l'application : 110 ms par image du
-   tracé de niveau, 140 ms par image du témoin, et l'attente de 1,3 s mesurée
-   entre la fin de la parole et le texte. Seule la durée de la parole est
-   raccourcie : une dictée réelle dure une douzaine de secondes, et personne ne
-   regarde une démonstration aussi longtemps. */
+   tracé de niveau avant le premier mot, un aperçu qui se construit à partir de
+   1,1 s de parole, et l'attente de 0,23 s mesurée entre la fin de la parole et
+   le texte engagé. Seule la durée de la parole est raccourcie : une dictée
+   réelle dure une douzaine de secondes, et personne ne regarde une
+   démonstration aussi longtemps. */
 .sim{border:1px solid var(--line);border-radius:12px;background:var(--card);
   padding:18px;margin:0 0 16px;}
 .sim-field{border:1px solid var(--line);border-radius:9px;background:var(--paper);
@@ -274,7 +275,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <strong>🌐 LuxASR</strong> : c'est le signe que la reconnaissance se
         fait à distance et non dans le téléphone. Inutile de retoucher le
         micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
-        une seconde et demie après la fin de la phrase. Le déroulé complet est
+        cinq secondes après la fin de la phrase. Le déroulé complet est
         décrit <a href="#deroule">juste en dessous</a>.
       </li>
     </ol>
@@ -307,9 +308,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <span class="sim-state" id="sim-state">au repos</span>
     </div>
     <p class="sim-hint">
-      Les cadences sont celles de l'application, et l'attente de 1,3 s est la
-      valeur mesurée. Seule la durée de la parole est raccourcie : une dictée
-      réelle en dure une douzaine.
+      Les cadences sont celles de l'application : premier aperçu à 1,1 s,
+      engagement final à 0,23 s, valeurs mesurées toutes les deux. Seule la
+      durée de la parole est raccourcie : une dictée réelle en dure une
+      douzaine.
     </p>
   </div>
 
@@ -331,27 +333,35 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       </span>
     </li>
     <li>
+      <span class="t">1,1 s</span>
+      <span class="d">
+        <strong>Un premier aperçu apparaît, encore incertain</strong>
+        <p>
+          Jusque-là le champ montrait un micro suivi de six barres qui
+          défilent au rythme de ce qui est réellement capté — pas décoratif :
+          une voix trop lointaine, une main sur le micro, une autre application
+          qui l'a réquisitionné se voient sur-le-champ, à l'endroit même où
+          l'on regarde. Le service redécode ensuite l'énoncé en cours toutes
+          les demi-secondes à une seconde, et le premier bout de texte
+          apparaît, souligné comme le reste d'une composition : il peut encore
+          changer.
+        </p>
+      </span>
+    </li>
+    <li>
       <span class="t">pendant</span>
       <span class="d">
-        <strong>Un micro et un tracé de niveau, à la place du texte</strong>
+        <strong>Le texte grandit, un mot n'est acquis qu'après confirmation</strong>
         <p>
-          C'est le changement principal de cette version : l'énoncé n'est plus
-          découpé et envoyé au fil de la parole, il est enregistré en entier
-          puis transcrit d'un seul tenant. Aucun mot ne peut donc s'afficher
-          avant la fin.
-        </p>
-        <p>
-          À la place, le champ montre un micro suivi de six barres qui défilent
-          au rythme de ce qui est réellement capté. Ce n'est pas décoratif : une
-          voix trop lointaine, une main sur le micro, une autre application qui
-          l'a réquisitionné se voient sur-le-champ, à l'endroit même où l'on
-          regarde.
-        </p>
-        <p>
-          On perd le texte qui se construit sous les yeux. On gagne
-          <strong>onze points et demi de justesse</strong>, 26,8 % de mots
-          erronés contre 38,3 %, parce que le modèle voit la phrase complète au
-          lieu de deviner à chaque morceau où elle se coupe.
+          Un mot n'est engagé, et cesse de bouger, qu'après avoir été vu à la
+          même place dans trois hypothèses de suite ; la fin de l'énoncé reste
+          en aperçu, remplacée à chaque passe. C'est ce découpage en direct
+          qu'une version antérieure faisait moins bien : mesuré sur les mêmes
+          vingt-deux énoncés, il rendait alors <strong>38,3 % de mots
+          erronés</strong> contre 26,8 % en attendant la phrase complète. Le
+          service qui tourne depuis le 16 septembre 2026 a comblé cet écart et
+          le referme désormais dans l'autre sens : <strong>25,4 %</strong>
+          contre 26,9 %, en gardant l'aperçu.
         </p>
       </span>
     </li>
@@ -361,25 +371,27 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <strong>La dictée se ferme d'elle-même</strong>
         <p>
           Cinq secondes de silence suffisent, et le seuil s'adapte au bruit de la
-          pièce. Retoucher le micro fait la même chose immédiatement. Le silence
-          qui entoure la phrase n'est pas envoyé : les modèles de cette famille
-          inventent du texte quand on leur donne du blanc.
+          pièce. Retoucher le micro fait la même chose immédiatement. Le
+          silence n'est plus retenu à l'envoi comme dans une version
+          antérieure : le service a sa propre détection de parole et ne décode
+          plus le blanc, ce qui rendait ce filtrage inutile sans rien protéger
+          de plus.
         </p>
       </span>
     </li>
     <li>
-      <span class="t">+ 1,3 s</span>
+      <span class="t">+ 0,23 s</span>
       <span class="d">
-        <strong>Un petit cercle tourne dans le champ, puis le texte le remplace</strong>
+        <strong>Le dernier mot s'engage, presque tout de suite</strong>
         <p>
-          Le témoin est posé là où le texte va atterrir, souligné comme lui : il
-          dit que quelque chose travaille. Une seconde et trois dixièmes en
-          médiane, deux et un dixième au pire, sur vingt-deux énoncés.
+          Contrairement à l'attente d'une seconde et trois dixièmes que prenait
+          la version qui rendait tout d'un bloc, il ne reste ici que la queue
+          des trois dernières hypothèses à confirmer. Deux dixièmes de seconde
+          en médiane, un et sept dixièmes au pire, sur vingt-deux énoncés.
         </p>
         <p>
-          Ce délai ne s'allonge pas avec la longueur de la dictée : il vaut
-          environ un dixième de la durée de ce qu'on a dit. Puis le texte perd
-          son soulignement, il est acquis, et les suggestions reviennent.
+          Puis le texte perd son soulignement, il est acquis, et les
+          suggestions reviennent.
         </p>
       </span>
     </li>
@@ -388,11 +400,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="card">
     <h3>Trois choses qui surprennent</h3>
     <p>
-      <strong>Aucun mot ne s'affiche pendant qu'on parle.</strong> C'est
-      déroutant quand on vient d'un clavier qui écrit au fil de la voix, et
-      c'est assumé : la version qui affichait en direct se trompait d'un tiers
-      plus souvent. Le tracé de niveau est là pour que l'attente ne ressemble
-      pas à une panne.
+      <strong>Le texte affiché pendant qu'on parle peut encore changer.</strong>
+      Il est souligné, comme un mot en cours de composition ailleurs dans le
+      clavier, tant qu'il n'a pas été vu trois fois de suite à la même place.
+      Ce n'est qu'une fois la phrase finie, ou le silence revenu, que le
+      soulignement disparaît pour de bon.
     </p>
     <p>
       <strong>Les énoncés très courts peuvent ne rien rendre.</strong> Une phrase
@@ -451,7 +463,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <tr>
           <th scope="row">Justesse</th>
           <td>72 % de mots erronés sur notre corpus d'essai</td>
-          <td class="good">26,8 % de mots erronés sur des dictées d'une à trois
+          <td class="good">25,4 % de mots erronés sur des dictées d'une à trois
             phrases, en interrogeant le service directement, et 11 % à 15 % sur
             un extrait lu proprement</td>
         </tr>
@@ -464,9 +476,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <th scope="row">Délai</th>
           <td>≈ 6 s par passe sur un téléphone ancien,
             quelle que soit la longueur de la phrase</td>
-          <td class="good">Rien pendant qu'on parle, puis le texte entier
-            ≈ 1,3 s après la dernière syllabe, 2,1 s au pire, et le délai ne
-            grandit pas avec la longueur de la dictée</td>
+          <td class="good">Premier aperçu ≈ 1,1 s après le début de la parole,
+            texte engagé ≈ 0,23 s après la dernière syllabe, 1,7 s au pire, et
+            le délai ne grandit pas avec la longueur de la dictée</td>
         </tr>
         <tr>
           <th scope="row">Taille de l'application</th>
@@ -490,16 +502,22 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </p>
 
   <p class="muted">
-    Les chiffres en regard viennent d'un banc passé le 1<sup>er</sup> septembre
-    2026 sur vingt-deux dictées d'une à trois phrases, découpées aux pauses du
-    locuteur, huit à vingt et une secondes. Interrogé directement, sans micro ni
-    haut-parleur, le service se trompe sur <strong>26,8 % des mots</strong>. La
-    même mesure sur la version qui transcrivait au fil de la parole donnait
-    <strong>38,3 %</strong> : l'écart est le prix du découpage, pas celui du
-    service. Un banc antérieur, sur des tranches plus courtes, a montré que
-    rejouer au haut-parleur devant le micro d'un téléphone coûte encore quatre
-    points en médiane, la chaîne acoustique, cette fois. La mesure équivalente
-    sur cette version reste à faire.
+    Les chiffres en regard viennent d'un banc repassé le 19 septembre 2026,
+    après un changement de moteur côté service, sur les mêmes vingt-deux
+    dictées mesurées le 1<sup>er</sup> septembre 2026 : d'une à trois phrases,
+    découpées aux pauses du locuteur, huit à vingt et une secondes. Interrogé
+    en flux, sans micro ni haut-parleur, le service se trompe sur
+    <strong>25,4 % des mots</strong>. Le 1<sup>er</sup> septembre, la même
+    mesure donnait <strong>38,3 %</strong>, contre 26,8 % en attendant la
+    phrase complète : le flux devinait alors à chaque morceau où la phrase se
+    coupait, et se trompait plus souvent pour ça. Le moteur du 16 septembre
+    2026 a comblé cet écart en ne décidant plus au fil de l'eau mais en
+    confirmant chaque mot sur plusieurs passes, et referme la mesure dans
+    l'autre sens : le flux vaut désormais 25,4 % contre 26,9 % en attendant la
+    phrase complète. Un banc antérieur, sur des tranches plus courtes, a montré
+    que rejouer au haut-parleur devant le micro d'un téléphone coûte encore
+    quatre points en médiane, la chaîne acoustique, cette fois. La mesure
+    équivalente sur cette version reste à faire.
   </p>
 
   <p class="muted">
@@ -517,40 +535,51 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="card">
     <h3>Comment ça marche, techniquement</h3>
     <p>
-      L'application enregistre l'énoncé en PCM 16 bits à 16 kHz, rogne le silence
-      qui l'entoure, puis l'envoie d'un bloc au service, qui le met en file et le
-      transcrit. Le clavier interroge le travail cinq fois par seconde et insère
-      le texte quand il arrive. Aucun enregistrement n'est conservé sur le
-      téléphone.
+      L'application pousse l'audio en continu sur une connexion WebSocket, en
+      PCM 16 bits à 16 kHz, silences compris. Le service, depuis son moteur du
+      16 septembre 2026, redécode l'énoncé non encore engagé toutes les demi-
+      seconde à une seconde et n'engage un mot que lorsqu'il l'a vu à la même
+      place dans trois hypothèses de suite ; la queue encore instable revient à
+      part et remplace l'aperçu affiché jusque-là. Aucun enregistrement n'est
+      conservé sur le téléphone.
     </p>
     <p>
-      Une version précédente poussait l'audio en continu sur une connexion
-      WebSocket et réécrivait le texte à chaque hypothèse reçue. Elle a été
-      abandonnée pour une raison mesurée. Les deux points d'entrée servent le
-      même modèle : sur soixante-deux énoncés, quarante-trois transcriptions sont
-      identiques au caractère près. Mais le découpage en direct oblige à décider
-      où la phrase s'arrête, et une pause n'est pas une fin de phrase. Sur des
-      dictées d'une à trois phrases, décider vaut onze points et demi de mots
-      erronés. Le délai final, lui, ne change pas.
+      Une version précédente envoyait l'énoncé entier d'un bloc à l'API par
+      lots, une fois la parole terminée, plutôt qu'en continu. C'était alors le
+      choix mesuré : sur soixante-deux énoncés, quarante-trois transcriptions
+      étaient déjà identiques au caractère près entre les deux points d'entrée,
+      mais l'ancien moteur du flux décidait où la phrase se coupait à chaque
+      morceau reçu, et se trompait onze points et demi plus souvent pour ça sur
+      des dictées d'une à trois phrases. Le moteur actuel ne décide plus rien
+      en direct, il confirme ; l'écart de justesse a disparu et s'est même
+      inversé, et le délai final, qui était déjà équivalent, est devenu
+      nettement plus court puisqu'il ne reste que la queue à confirmer, jamais
+      la phrase entière à décoder. L'API par lots reste jouable pour comparer,
+      à l'adresse <code>?voie=api</code> du simulateur.
     </p>
     <p>
-      Le silence n'est pas envoyé, et ce n'est pas une économie de données : les
-      modèles de cette famille inventent du texte quand on leur en donne. Un
-      énoncé laissé tourner quatre-vingt-dix secondes, dont trente de salle
-      vide, a rendu deux cent soixante-dix mots pour cent quatre-vingt-douze
-      réellement prononcés.
+      Le silence n'est plus filtré à l'envoi. Une version antérieure du moteur
+      inventait du texte quand on lui en donnait — un énoncé laissé tourner
+      quatre-vingt-dix secondes, dont trente de salle vide, avait rendu deux
+      cent soixante-dix mots pour cent quatre-vingt-douze réellement prononcés
+      — et le silence était alors coupé côté client pour s'en protéger. Le
+      moteur actuel a sa propre détection de parole et ne décode plus le blanc,
+      ce qui rendait ce filtrage inutile sans plus rien protéger : vérifié le
+      19 septembre 2026 sur huit énoncés suivis de cinq secondes de bruit de
+      fond, exactement ce que voit le service avant l'arrêt automatique, sans
+      qu'aucun mot ne soit inventé.
     </p>
     <p>
       <strong>Le simulateur de cette page fait la même chose</strong>, à une
-      réserve près, qui ne tient pas à nous : depuis un navigateur, la
-      soumission est soumise à la politique d'origine croisée, et la réponse qui
-      porte le numéro du travail n'en déclare pas. Le navigateur la bloque donc,
-      alors que l'application, elle, passe sans difficulté. Quand cela arrive, la
-      page ne fait pas reparler l'utilisateur : elle rejoue sur l'ancienne
-      connexion WebSocket l'énoncé qu'elle a déjà enregistré, et le texte arrive
-      quand même, avec la justesse moindre du découpage en direct. Une seule
-      entête ajoutée côté service ferait basculer la page sur l'API sans qu'on y
-      touche.
+      réserve près qui ne tient pas à nous et qui ne touche plus que la
+      comparaison par lots : depuis un navigateur, la soumission à l'API est
+      soumise à la politique d'origine croisée, et la réponse qui porte le
+      numéro du travail n'en déclare pas. Le navigateur la bloque donc, alors
+      que l'application, elle, passe sans difficulté. Cela ne concerne plus la
+      visite par défaut, qui passe par le flux comme l'application ; seul un
+      essai explicite en lots qui échoue rejoue l'audio déjà enregistré sur le
+      flux plutôt que de faire reparler l'utilisateur. Une seule entête ajoutée
+      côté service ferait disparaître jusqu'à cette réserve.
     </p>
   </div>
 </section>
@@ -582,14 +611,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </div>
 
 <script>
-// Simulation de la dictée, à l'identique de ce que fait l'application : un
-// tracé de niveau pendant la parole, un témoin qui tourne pendant la
-// transcription, puis le texte qui remplace le tout d'un bloc. Les trois
+// Simulation de la dictée, à l'identique de ce que fait l'application depuis
+// le moteur du 16 septembre 2026 : un tracé de niveau avant le premier
+// aperçu, un aperçu qui grandit mot à mot pendant qu'on parle, souligné tant
+// qu'il peut encore être réécrit, puis le dernier mot qui s'engage. Les trois
 // s'écrivent au même endroit, comme le texte en composition du clavier.
 //
-// Les glyphes et les cadences sont ceux du code Android : barres U+2581 à 2587
-// toutes les 110 ms, quarts de cercle toutes les 140 ms, pour que la page
-// montre le produit et non une interprétation.
+// Les glyphes et la cadence du tracé sont ceux du code Android : barres
+// U+2581 à 2587 toutes les 110 ms. Les délais (premier aperçu, engagement
+// final) sont les valeurs mesurées, pour que la page montre le produit et non
+// une interprétation.
 (function () {
   var champ = document.getElementById('sim-txt');
   var repos = document.getElementById('sim-ph');
@@ -597,11 +628,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   var etat  = document.getElementById('sim-state');
   if (!champ || !micro) return;
 
-  var BARRES  = ['▁', '▂', '▃', '▄', '▅', '▆', '▇'];
-  var CERCLES = ['◐', '◓', '◑', '◒'];
-  var PHRASE  = 'Ech kommen haut e bësse méi spéit heem.';
-  var PAROLE_MS = 4200;     // raccourci : une vraie dictée en dure ~12 000
-  var ATTENTE_MS = 1300;    // mesuré, lui : médiane sur 22 énoncés
+  var BARRES = ['▁', '▂', '▃', '▄', '▅', '▆', '▇'];
+  var PHRASE = 'Ech kommen haut e bësse méi spéit heem.';
+  var MOTS = PHRASE.split(' ');
+  var PAROLE_MS = 4200;         // raccourci : une vraie dictée en dure ~12 000
+  var PREMIER_APERCU_MS = 1100; // mesuré : médiane sur 22 énoncés
+  var ATTENTE_MS = 230;         // mesuré, lui aussi : médiane sur 22 énoncés
 
   var sobre = window.matchMedia &&
               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -629,17 +661,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     if (sobre) {
       // Animations désactivées : on montre l'état final, comme l'application
       // fige son anneau plutôt que de le faire tourner.
-      etat.textContent = 'transcription rendue';
+      etat.textContent = 'texte rendu';
       ecrire(PHRASE, false);
       micro.dataset.on = '0';
       enCours = false;
       return;
     }
 
-    // 1. la parole : les barres suivent une enveloppe qui monte, retombe entre
-    //    deux mots et repart, pour ressembler à une phrase plutôt qu'à du bruit.
+    var t0 = Date.now();
+
+    // 1. avant le premier aperçu : les barres suivent une enveloppe qui
+    //    monte, retombe entre deux mots et repart, pour ressembler à une
+    //    phrase plutôt qu'à du bruit.
     etat.textContent = '🎤 écoute…';
-    var niveaux = [], t0 = Date.now();
+    var niveaux = [];
     minuteurs.push(setInterval(function () {
       var t = (Date.now() - t0) / PAROLE_MS;
       var env = Math.max(0, Math.sin(t * Math.PI * 3.2)) * (1 - t * 0.25);
@@ -653,25 +688,30 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       ecrire('🎤 ' + trace, true);
     }, 110));
 
-    // 2. la transcription : le témoin remplace le tracé, au même endroit.
+    // 2. l'aperçu : un mot de plus à chaque passe, souligné tant qu'il peut
+    //    encore être réécrit par l'hypothèse suivante — c'est le service qui
+    //    redécode l'énoncé non engagé toutes les demi-secondes à une seconde.
+    minuteurs.push(setTimeout(function () {
+      nettoyer();
+      etat.textContent = '💬 aperçu…';
+      minuteurs.push(setInterval(function () {
+        var t = (Date.now() - t0 - PREMIER_APERCU_MS) / (PAROLE_MS - PREMIER_APERCU_MS);
+        var n = Math.min(MOTS.length, Math.max(1, Math.ceil(MOTS.length * t)));
+        ecrire(MOTS.slice(0, n).join(' '), true);
+      }, 220));
+    }, PREMIER_APERCU_MS));
+
+    // 3. la parole s'arrête : le dernier mot s'engage après un bref délai,
+    //    puis le texte perd son soulignement, il est acquis.
     minuteurs.push(setTimeout(function () {
       nettoyer();
       micro.dataset.on = '0';
-      etat.textContent = 'transcription…';
-      var k = 0;
-      minuteurs.push(setInterval(function () {
-        ecrire(CERCLES[k++ % CERCLES.length], true);
-      }, 140));
-
-      // 3. le texte, qui remplace le témoin puis perd son soulignement.
+      etat.textContent = 'engagement…';
+      ecrire(PHRASE, true);
       minuteurs.push(setTimeout(function () {
-        nettoyer();
         etat.textContent = 'texte rendu';
-        ecrire(PHRASE, true);
-        minuteurs.push(setTimeout(function () {
-          ecrire(PHRASE, false);
-          enCours = false;
-        }, 420));
+        ecrire(PHRASE, false);
+        enCours = false;
       }, ATTENTE_MS));
     }, PAROLE_MS));
   }

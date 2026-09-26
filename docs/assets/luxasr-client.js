@@ -1,48 +1,39 @@
 /*
- * Client LuxASR pour navigateur — portage de LuxAsrApiSession.kt, avec
- * LuxAsrSession.kt gardé en repli, exactement comme sur la branche Android.
+ * Client LuxASR pour navigateur — portage de LuxAsrSession.kt : le flux est
+ * désormais la voie par défaut, les lots ne servent plus qu'à comparer
+ * (`?voie=api`).
  *
- * **La voie normale est l'API par lots** : on enregistre l'énoncé entier, on
- * l'envoie d'un bloc à `POST /asr2`, on interroge le travail jusqu'à son terme,
- * on insère le texte. Pas de flux, pas d'hypothèses intermédiaires. C'est le
- * point d'entrée que l'Université documente et soutient ; le WebSocket est
- * déprécié chez eux.
+ * **Le service a changé de moteur le 16 septembre 2026** (`PeterGilles/LuxASRlive`,
+ * réponses `engine: "whisperlive_buffer"`) : il redécode l'énoncé non engagé
+ * toutes les 0,5 à 1 s et n'engage un mot qu'après l'avoir vu à la même place
+ * dans trois hypothèses de suite. `accumulated_text` ne fait donc plus que
+ * grandir, et la queue encore instable arrive à part dans `partial_text`.
  *
- * Pourquoi : les deux servent le même modèle — sur 62 énoncés mesurés le
- * 1er septembre 2026, 43 transcriptions sont identiques au caractère près —
- * mais l'API décode l'énoncé **d'un seul tenant**, ce qui vaut 26,8 % de mots
- * erronés contre 38,3 % sur les énoncés de 8 à 22 s, le régime que vise un
- * clavier. Le délai final est équivalent, avec un plafond bien plus serré.
+ * Mesuré le 19 septembre 2026 sur les 22 énoncés de 8 à 22 s du banc du
+ * 1er septembre (même audio, même WER infixe) :
  *
- * Ce qu'on perd : l'aperçu pendant qu'on parle. Le champ reste vide jusqu'au
- * bout, d'où les témoins que `simulateur-dictee.js` y pose — un tracé de
- * niveau pendant la parole, un cercle qui tourne pendant la transcription.
+ *     flux (WS)     38,3 % → 25,4 %   texte final 0,23 s après l'arrêt
+ *     lots (/asr2)  26,8 % → 26,9 %   texte final 1,30 s après l'arrêt
+ *
+ * Le flux a rattrapé les lots et les dépasse maintenant sur la vitesse, tout
+ * en gardant l'aperçu qui se construit pendant qu'on parle — premier aperçu
+ * 1,1 s en médiane, là où les lots ne montrent rien avant la fin. C'est
+ * pourquoi il est la voie par défaut depuis le 19 septembre 2026 ; l'API par
+ * lots reste jouable via `?voie=api`, pour comparer les deux sur la même page.
  *
  * ---------------------------------------------------------------------------
  *
- * **Ce que le navigateur impose et que le téléphone ignore : CORS.** Mesuré le
- * 2 septembre 2026 depuis `https://famibelle.github.io` :
+ * **CORS ne concerne plus que la comparaison par lots.** Mesuré le
+ * 2 septembre 2026 depuis `https://famibelle.github.io` : les réponses
+ * `202 ACCEPTED` de `POST /asr2` ne portent aucun `Access-Control-Allow-Origin`,
+ * contrairement aux `200 OK` qui en portent un — le navigateur bloque donc la
+ * lecture du `job_id`. C'est resté vrai, mais cela ne touche plus la visite
+ * par défaut : le flux passe par un WebSocket, que cette politique ne limite
+ * pas. Un essai explicite en lots (`?voie=api`) qui échoue rejoue l'audio déjà
+ * enregistré sur le flux plutôt que de faire reparler l'utilisateur.
  *
- * - le préflight `OPTIONS /asr2` répond bien `Access-Control-Allow-Origin: *`,
- *   mais **n'autorise que `Content-Type` et `Authorization`** en entêtes. Le
- *   `X-Filename` que posent l'APK et l'interface de l'Université est donc
- *   impossible ici. Il n'est pas requis : la soumission passe sans lui.
- * - surtout, les réponses **`202 ACCEPTED` ne portent aucun
- *   `Access-Control-Allow-Origin`**, alors que les `200 OK` en portent un. Or
- *   `POST /asr2` répond précisément 202. Le navigateur bloque donc la lecture
- *   de la réponse et le `job_id` n'est jamais lisible — vérifié dans Chrome
- *   contre un serveur qui rejoue ces entêtes à l'octet près : ajouter cette
- *   seule entête au 202 suffit à tout débloquer.
- *
- * Il n'y a rien à faire de notre côté : c'est une entête à ajouter chez eux, ou
- * un serveur à nous, que GitHub Pages ne peut pas être. En attendant, quand la
- * soumission est bloquée, on **rejoue l'audio déjà enregistré sur le
- * WebSocket** au lieu de faire reparler l'utilisateur, et la voie du flux est
- * retenue pour le reste de la visite. Le jour où l'entête apparaît, la page
- * repasse à l'API sans qu'on y touche.
- *
- * `?voie=api` force l'API sans repli, `?voie=ws` force le flux : de quoi
- * comparer les deux sur la même page.
+ * `?voie=ws` force le flux sans ambiguïté ; c'est déjà le comportement par
+ * défaut, l'option existe pour l'exclusion mutuelle avec `?voie=api`.
  *
  * ---------------------------------------------------------------------------
  *
@@ -59,10 +50,11 @@
  * - **Les taux d'erreur publiés ne s'y appliquent pas.** Ils ont été mesurés à
  *   travers la chaîne acoustique d'un téléphone.
  *
- * Ce qui est identique et doit le rester : le silence de 5 s termine l'énoncé,
- * le blanc qui l'entoure n'est jamais envoyé — whisper invente du texte quand
- * on lui donne du silence —, un énoncé est plafonné à 90 s, et la queue
- * répétitive de whisper est coupée à l'affichage.
+ * Ce qui est identique et doit le rester : le silence de 5 s termine l'énoncé
+ * côté client — le service, lui, ne décode plus le silence depuis son moteur
+ * du 16 septembre et n'a plus besoin qu'on le lui cache —, un énoncé est
+ * plafonné à 90 s, et la queue répétitive de whisper est coupée à l'affichage,
+ * jamais dans l'état conservé.
  */
 (function () {
   'use strict';
@@ -98,13 +90,6 @@
   /** Marge gardée de part et d'autre de la parole avant l'envoi (MARGE_MS). */
   var MARGE_MS = 300;
 
-  /* Réglages du découpage côté serveur, pour la voie du flux seulement. Le
-     serveur ne les lit que sous cette forme imbriquée ; à plat, il les ignore
-     en silence. */
-  var CHUNK_INTERVAL_S = 2.0;
-  var CHUNK_SILENCE_S = 0.5;
-  var CHUNK_MAX_S = 30.0;
-
   var BLOC_MS = 160;              // taille d'un bloc audio, comme AudioRecorder
   var FINAL_GRACE_MS = 4000;      // attente du dernier segment après « stop »
   var SILENCE_HANGOVER_MS = 5000; // silence qui termine l'énoncé
@@ -113,13 +98,6 @@
   var NOISE_RISE = 0.02;          // vitesse de remontée du plancher de bruit
   var MAX_UTTERANCE_MS = 90000;   // garde-fou si le silence n'arrive jamais
   var LEVEL_FULL_SCALE = 0.18;    // même échelle que le micro du clavier
-
-  /**
-   * Voie retenue pour la visite. Passe à `'ws'` dès qu'une soumission par lots
-   * est bloquée, pour ne pas refaire enregistrer un travail que le navigateur
-   * ne pourra pas lire — et pour ne pas encombrer leur file avec.
-   */
-  var voieRetenue = null;
 
   function voieDemandee() {
     var v = new URLSearchParams(location.search).get('voie');
@@ -222,7 +200,13 @@
   function LuxAsrClient(ecouteur) {
     var ws = null, ctx = null, flux = null, source = null, noeud = null, puits = null;
     var moduleCharge = false;
-    var etat = 'IDLE', accumule = '', generation = 0, debutMs = 0, minuteurFinal = null;
+    var etat = 'IDLE', generation = 0, debutMs = 0, minuteurFinal = null;
+    /** Texte engagé par le service (flux) : il ne fait que grandir. */
+    var accumule = '';
+    /** Queue encore instable du flux, remplacée à chaque passe. */
+    var attente = '';
+    /** Un essai en lots déjà retombé sur le flux une fois pour cette dictée. */
+    var essayeFlux = false;
     var parle = false, dernierSonMs = 0, plancherBruit = 0, resteEchantillon = 0;
 
     /** Voie de la session en cours, figée à `start()`. */
@@ -439,10 +423,12 @@
         setEtat('IDLE');
       }).catch(function (e) {
         if (gen !== generation) return;
-        // Soumission bloquée : plutôt que de faire reparler l'utilisateur, on
-        // rejoue sur le flux ce qui est déjà enregistré, et on retient la voie.
-        if (voieDemandee() === 'auto' && voieRetenue !== 'ws') {
-          voieRetenue = 'ws';
+        // Soumission bloquée (typiquement CORS sur le 202) : plutôt que de
+        // faire reparler l'utilisateur, on rejoue une seule fois sur le flux
+        // ce qui est déjà enregistré. Ne se produit qu'avec `?voie=api`
+        // explicite, puisque le flux est désormais la voie par défaut.
+        if (!essayeFlux) {
+          essayeFlux = true;
           enLots = false;
           rejouerSurFlux(gen, audio);
           return;
@@ -483,14 +469,10 @@
     // --- Voie du flux -----------------------------------------------------
 
     function config() {
-      return JSON.stringify({
-        type: 'config', language: 'lb',
-        chunk_params: {
-          periodic_send_interval: CHUNK_INTERVAL_S,
-          silence_threshold: CHUNK_SILENCE_S,
-          max_chunk_duration: CHUNK_MAX_S
-        }
-      });
+      // La langue est le seul réglage qui nous concerne ; l'ancien
+      // `chunk_params` n'est plus lu depuis que le service ne découpe plus
+      // en morceaux (moteur du 16 septembre 2026).
+      return JSON.stringify({ type: 'config', language: 'lb' });
     }
 
     /**
@@ -529,7 +511,7 @@
      * arrive au même découpage qu'une émission en temps réel.
      */
     function rejouerSurFlux(gen, audio) {
-      accumule = '';
+      accumule = ''; attente = '';
       ouvrirSocket(gen, function () {
         var pas = Math.round(RATE * BLOC_MS / 1000), i = 0;
         (function pousser() {
@@ -559,17 +541,25 @@
       prevenir('onErreur', 'SERVICE');
     }
 
+    /** Engagé puis instable, ce que l'utilisateur doit voir à cet instant. */
+    function texteVisible() {
+      return attente ? (accumule + ' ' + attente).trim() : accumule;
+    }
+
     function traiter(brut) {
       var m; try { m = JSON.parse(brut); } catch (e) { return; }
       if (m.type === 'transcription') {
-        // `accumulated_text` porte tout l'énoncé depuis le début : on remplace
-        // en bloc, on ne recolle jamais de fragments. Le texte retenu n'est pas
-        // filtré, seulement celui qui est livré — une passe ultérieure peut
-        // lever l'ambiguïté d'une boucle naissante.
+        // Deux champs, deux natures : `accumulated_text` est engagé et ne fait
+        // que grandir, `partial_text` est la queue que la passe suivante peut
+        // encore réécrire. On les montre ensemble, remplacés en bloc. Le texte
+        // livré est filtré, celui qu'on retient ne l'est pas — la queue d'une
+        // passe ultérieure peut très bien lever l'ambiguïté d'une boucle
+        // naissante.
         accumule = m.accumulated_text || accumule;
+        attente = m.partial_text || '';
         var proc = m.metrics && m.metrics.processing_time;
         prevenir('onPasse', (Date.now() - debutMs) / 1000, Math.round((proc || 0) * 1000));
-        var propre = couperBoucle(accumule);
+        var propre = couperBoucle(texteVisible());
         if (propre) prevenir('onPartiel', propre);
       } else if (m.type === 'recording_stopped') {
         conclure();
@@ -581,7 +571,10 @@
     function conclure() {
       if (etat === 'IDLE') return;
       clearTimeout(minuteurFinal);
-      var texte = couperBoucle(accumule);
+      // Après « stop », le service engage toute la queue avant de répondre
+      // `recording_stopped`, qui n'en laisse donc plus. Si c'est le délai de
+      // grâce qui conclut, on garde la queue : c'est ce qui était affiché.
+      var texte = couperBoucle(texteVisible());
       var duree = debutMs ? (Date.now() - debutMs) / 1000 : 0;
       debrancher();
       try { if (ws) ws.close(1000); } catch (e) {}
@@ -603,8 +596,13 @@
         if (etat !== 'IDLE') return;
         var gen = ++generation;
         var demandee = voieDemandee();
-        enLots = demandee === 'api' || (demandee === 'auto' && voieRetenue !== 'ws');
-        accumule = ''; parle = false; dernierSonMs = 0; plancherBruit = 0; debutMs = 0;
+        // Le flux est la voie par défaut depuis le 19 septembre 2026 : il
+        // égale ou dépasse les lots en justesse et en délai, et donne en plus
+        // l'aperçu qui se construit pendant qu'on parle. Les lots ne restent
+        // joignables que sur demande explicite, pour comparer.
+        enLots = demandee === 'api';
+        accumule = ''; attente = ''; essayeFlux = false;
+        parle = false; dernierSonMs = 0; plancherBruit = 0; debutMs = 0;
         blocs = []; echantillons = 0; premierSon = -1; dernierSon = -1;
         setEtat('LOADING');
 
@@ -665,7 +663,7 @@
         clearTimeout(minuteurFinal);
         debrancher();
         try { if (ws) ws.close(1000); } catch (e) {}
-        ws = null; accumule = ''; blocs = []; echantillons = 0;
+        ws = null; accumule = ''; attente = ''; blocs = []; echantillons = 0;
         setEtat('IDLE');
       }
     };
