@@ -78,4 +78,73 @@ class SimulatorMirrorTest {
             SuggestionEngine.NGRAM_CONTEXT_WEIGHT, poids, 0.0
         )
     }
+
+    // ---- ce que le simulateur a appris à faire depuis, et qui peut dériver ----
+
+    private fun sourceKotlin(nom: String): String {
+        val fichier = File("src/main/java/com/example/kreyolkeyboard/$nom")
+        assertTrue("$nom introuvable (${fichier.absolutePath})", fichier.exists())
+        return fichier.readText()
+    }
+
+    @Test
+    fun `le simulateur retient autant de candidats par prefixe que l'application`() {
+        val chezNous = constante(
+            sourceKotlin("SuggestionEngine.kt"),
+            Regex("""CANDIDATE_POOL_SIZE\s*=\s*(\d+)"""),
+            "CANDIDATE_POOL_SIZE (Kotlin)"
+        )
+        val chezLui = constante(
+            sourceDuSimulateur(),
+            Regex("""const CANDIDATE_POOL_SIZE\s*=\s*(\d+)"""),
+            "CANDIDATE_POOL_SIZE (simulateur)"
+        )
+        assertEquals(
+            "La fenêtre de candidats du simulateur diffère de celle de l'application : " +
+                "le contexte n-gramme et les bonus n'y départageraient pas les mêmes mots.",
+            chezNous, chezLui, 0.0
+        )
+    }
+
+    @Test
+    fun `le simulateur donne aux formes du LOD la meme frequence que l'application`() {
+        val chezLui = constante(
+            sourceDuSimulateur(),
+            Regex("""const LOD_FREQUENCY\s*=\s*(\d+)"""),
+            "LOD_FREQUENCY (simulateur)"
+        )
+        assertEquals(
+            "Les formes du LOD ne se rangent plus en queue du classement par fréquence " +
+                "dans le simulateur : la fenêtre de candidats cesserait de coïncider.",
+            SuggestionEngine.LOD_FREQUENCY.toDouble(), chezLui, 0.0
+        )
+    }
+
+    /**
+     * La liste des grossièretés est recopiée à la main dans le simulateur, faute de
+     * pouvoir la lire depuis Kotlin. Elle ne doit pas dériver : le simulateur
+     * proposerait à un visiteur ce que l'application se refuse à mettre dans sa
+     * bouche, et l'inverse serait une censure que le clavier ne pratique pas.
+     */
+    @Test
+    fun `le simulateur ecarte les memes grossieretes que l'application`() {
+        val kotlin = Regex("""private val GROSSIERETES = listOf\((.*?)\n    \)""", RegexOption.DOT_MATCHES_ALL)
+            .find(sourceKotlin("MotsEcartes.kt"))
+        assertTrue("liste GROSSIERETES introuvable dans MotsEcartes.kt", kotlin != null)
+        val attendues = Regex("\"([^\"]+)\"").findAll(kotlin!!.groupValues[1])
+            .map { it.groupValues[1] }.toSet()
+
+        val js = Regex("""const GROSSIERETES = \[(.*?)\n  \];""", RegexOption.DOT_MATCHES_ALL)
+            .find(sourceDuSimulateur())
+        assertTrue("liste GROSSIERETES introuvable dans simulateur-engine.js", js != null)
+        val livrees = Regex("\"([^\"]+)\"").findAll(js!!.groupValues[1])
+            .map { it.groupValues[1] }.toSet()
+
+        assertTrue("la liste de l'application est vide : l'extraction a échoué", attendues.size > 100)
+        assertEquals(
+            "Le simulateur n'écarte pas les mêmes formes que MotsEcartes.GROSSIERETES. " +
+                "Manquantes : ${attendues - livrees} ; en trop : ${livrees - attendues}",
+            attendues, livrees
+        )
+    }
 }
