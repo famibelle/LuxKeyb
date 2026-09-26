@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.2.0] - 2026-09-26
+
+Le clavier d'essai du site ressemble au clavier de l'application. L'application elle-même ne change pas.
+
+### ✨ Améliorations
+
+- **Sur le site, la barre de suggestions est un plateau creusé dans le clavier**, comme sur le téléphone : fond plus sombre que les touches, deux rangées réservées, puces aux couleurs du drapeau. Le clavier prend toute la largeur du téléphone dessiné, et ⇧ et ⌫ retrouvent leur largeur de 1,5.
+- **Les gestes du téléphone y sont aussi.** Glisser le doigt sur la barre d'espace déplace le curseur, toucher le texte le pose, rester appuyé sur ⌫ efface mot par mot, et ⌫ défait la majuscule imposée d'office ou retire un emoji en entier.
+- **Le panneau emoji du site a ses récents, ses tons de peau et son balayage** entre catégories. Les récents ne sont gardés qu'en mémoire : rien n'est écrit dans le navigateur.
+- **Les suggestions du site suivent le moteur de l'application** : mêmes candidats retenus, grossièretés écartées, pas de correction sur un mot français reconnu, et les 84 855 formes du dictionnaire officiel chargées en arrière-plan, soit 123 297 mots reconnus comme sur l'accueil.
+
 ## [29.1.0] - 2026-09-25
 
 Le paysage et la rotation, soignés.
