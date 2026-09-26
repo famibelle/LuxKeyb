@@ -15,6 +15,18 @@
   const MAX_SUGGESTIONS = 5; // 3 lëtzebuergesch + 2 français, comme SuggestionEngine.MAX_SUGGESTIONS
   const MIN_WORD_LENGTH = 1;
 
+  // Nombre de correspondances par préfixe retenues avant scoring
+  // (SuggestionEngine.CANDIDATE_POOL_SIZE). Le dictionnaire est parcouru par
+  // fréquence décroissante : une fenêtre trop étroite écarterait un mot rare
+  // du corpus avant que le contexte n-gramme ou le bonus d'accent puisse le
+  // faire remonter. Le simulateur la prenait à 10 (MAX_SUGGESTIONS × 2).
+  const CANDIDATE_POOL_SIZE = 40;
+
+  // Fréquence d'une forme venue du LOD (SuggestionEngine.LOD_FREQUENCY). Le
+  // corpus ne retient rien sous 3 : la valeur 1 est un marqueur autant qu'un
+  // poids, et range ces formes après tous les mots du corpus.
+  const LOD_FREQUENCY = 1;
+
   // ---- AccentTolerantMatcher ----
 
   const NORMALIZATION_MAP = {};
@@ -51,56 +63,145 @@
 
   // ---- LevenshteinDistance ----
 
-  function levenshtein(s1, s2) {
+  // Miroir de LevenshteinDistance.calculateBounded() : deux rangées au lieu de
+  // la matrice entière, casse repliée une fois par chaîne, et abandon dès que
+  // le minimum d'une rangée dépasse déjà la borne. Avec les ~123 000 formes que
+  // le LOD ajoute au dictionnaire, le repli orthographique parcourt tout : la
+  // version à matrice complète, qui réallouait (m+1)×(n+1) cases par mot
+  // comparé, y coûtait plusieurs centaines de millisecondes par frappe.
+  function levenshteinBounded(s1, s2, maxDistance) {
     const len1 = s1.length;
     const len2 = s2.length;
     if (len1 === 0) return len2;
     if (len2 === 0) return len1;
+    if (Math.abs(len1 - len2) > maxDistance) return maxDistance + 1;
 
-    const dp = [];
-    for (let i = 0; i <= len1; i++) dp.push(new Array(len2 + 1).fill(0));
-    for (let i = 0; i <= len1; i++) dp[i][0] = i;
-    for (let j = 0; j <= len2; j++) dp[0][j] = j;
+    const a = s1.toLowerCase();
+    const b = s2.toLowerCase();
+
+    let precedente = new Array(len2 + 1);
+    let courante = new Array(len2 + 1);
+    for (let j = 0; j <= len2; j++) precedente[j] = j;
 
     for (let i = 1; i <= len1; i++) {
+      courante[0] = i;
+      let minimumLigne = i;
+      const ca = a.charCodeAt(i - 1);
       for (let j = 1; j <= len2; j++) {
-        const cost = s1[i - 1].toLowerCase() === s2[j - 1].toLowerCase() ? 0 : 1;
-        dp[i][j] = Math.min(
-          dp[i - 1][j] + 1,
-          dp[i][j - 1] + 1,
-          dp[i - 1][j - 1] + cost
+        const cout = ca === b.charCodeAt(j - 1) ? 0 : 1;
+        const v = Math.min(
+          precedente[j] + 1,          // suppression
+          courante[j - 1] + 1,        // insertion
+          precedente[j - 1] + cout    // substitution
         );
+        courante[j] = v;
+        if (v < minimumLigne) minimumLigne = v;
       }
+      if (minimumLigne > maxDistance) return maxDistance + 1;
+      const echange = precedente;
+      precedente = courante;
+      courante = echange;
     }
-    return dp[len1][len2];
+    return precedente[len2];
+  }
+
+  function levenshtein(s1, s2) {
+    return levenshteinBounded(s1, s2, Infinity);
+  }
+
+  // Tri de LevenshteinDistance : distance croissante, puis fréquence
+  // décroissante. Stable, comme sortedWith() côté Kotlin.
+  function classerCorrections(matches, maxResults) {
+    return matches
+      .sort((a, b) => a[2] - b[2] || b[1] - a[1])
+      .slice(0, maxResults);
   }
 
   // dictionary: [[word, freq], ...] → [[word, freq, distance], ...]
   function findClosestMatches(input, dictionary, maxDistance, maxResults, lengthTolerance) {
     if (!input) return [];
     const inputLength = input.length;
-    const candidates = dictionary.filter(
-      ([word]) => Math.abs(word.length - inputLength) <= lengthTolerance
-    );
-    return candidates
-      .map(([word, freq]) => [word, freq, levenshtein(input, word)])
-      .filter(([, , d]) => d <= maxDistance)
-      .sort((a, b) => a[2] - b[2] || b[1] - a[1])
-      .slice(0, maxResults);
+    const matches = [];
+    for (const [word, freq] of dictionary) {
+      if (Math.abs(word.length - inputLength) > lengthTolerance) continue;
+      const distance = levenshteinBounded(input, word, maxDistance);
+      if (distance <= maxDistance) matches.push([word, freq, distance]);
+    }
+    return classerCorrections(matches, maxResults);
   }
 
-  function findClosestMatchesNormalized(input, dictionary, normalizer, maxDistance, maxResults) {
+  // `normalizedWords` : les formes du dictionnaire déjà repliées, alignées
+  // index à index. Les recalculer ici (le normaliseur passait deux fois par mot,
+  // avant même le filtre de longueur) reconstruisait tout le dictionnaire
+  // replié à chaque frappe.
+  function findClosestMatchesNormalized(input, dictionary, normalizedWords, normalizer, maxDistance, maxResults) {
     if (!input) return [];
     const normalizedInput = normalizer(input);
     const inputLength = normalizedInput.length;
-    const candidates = dictionary.filter(
-      ([word]) => Math.abs(normalizer(word).length - inputLength) <= 2
-    );
-    return candidates
-      .map(([word, freq]) => [word, freq, levenshtein(normalizedInput, normalizer(word))])
-      .filter(([, , d]) => d <= maxDistance)
-      .sort((a, b) => a[2] - b[2] || b[1] - a[1])
-      .slice(0, maxResults);
+    const matches = [];
+    const n = Math.min(dictionary.length, normalizedWords.length);
+    for (let i = 0; i < n; i++) {
+      const normalizedWord = normalizedWords[i];
+      if (Math.abs(normalizedWord.length - inputLength) > maxDistance) continue;
+      const distance = levenshteinBounded(normalizedInput, normalizedWord, maxDistance);
+      if (distance <= maxDistance) {
+        matches.push([dictionary[i][0], dictionary[i][1], distance]);
+      }
+    }
+    return classerCorrections(matches, maxResults);
+  }
+
+  // ---- MotsEcartes.GROSSIERETES ----
+
+  // Le clavier ne propose jamais ces mots, ni en complétion, ni en correction,
+  // ni en prédiction du mot suivant : ce n'est pas un refus de saisie, qui veut
+  // les écrire les écrit lettre à lettre. Liste recopiée de MotsEcartes.kt, et
+  // verrouillée contre elle par SimulatorMirrorTest : elle ne doit pas diverger,
+  // sans quoi le simulateur proposerait à un visiteur ce que l'application se
+  // refuse à mettre dans sa bouche.
+  const GROSSIERETES = [
+    "Aarsch", "Aarschkrécher", "Aarschkréchesch", "Aarschkréchesche",
+    "Aarschkrécheschen", "Aarschlach", "Aarschlächer", "Aasch",
+    "Aaschkrécher", "Aaschkréchesch", "Aaschkréchesche", "Aaschkrécheschen",
+    "Aaschlach", "Aaschlächer", "Bepisstes", "Beseechtes", "Bordell",
+    "Bordelle", "Bordellen", "Drecksak", "Drecksäck", "Eesch", "Emmerdeur",
+    "Emmerdeure", "Emmerdeuren", "Emmerdeuse", "Emmerdeusen", "Emmerdeusë",
+    "Emmerdéiertes", "Fatzert", "Fatzerte", "Fatzerten", "Fotz", "Fotze",
+    "Fotzen", "Gefécktes", "Houer", "Houere", "Houeren", "Hourebud",
+    "Hourebude", "Hourebuden", "Klut", "Klute", "Kluten", "Knaschtert",
+    "Knaschterte", "Knaschterten", "Knaschtsak", "Knaschtsäck", "Louder",
+    "Loudere", "Louderen", "Merd", "Nenn", "Piss", "Puff", "Puffe", "Puffen",
+    "Schläimschësser", "Schläimschëssesch", "Schläimschësseschen", "Schäiss",
+    "Schäissdreck", "Schäisserei", "Schäissereie", "Schäissereien",
+    "Schäisshaiser", "Schäisshaus", "Schäisspabeier", "Seech", "Säckdréier",
+    "Tëtt", "Tëtten", "Veraaschtes", "Vullemätti", "Vullemättie",
+    "Vullemättien", "bepiss", "bepisse", "bepissen", "bepissend", "bepisst",
+    "bepisste", "bepisstem", "bepissten", "bepisstene", "bepisstenem",
+    "bepisstenen", "bepisstener", "bepisstent", "bepisster", "beschass",
+    "beschäiss", "beschäisse", "beschäissen", "beschäissend", "beschäisst",
+    "beseech", "beseeche", "beseechen", "beseechend", "beseechs", "beseecht",
+    "beseechte", "beseechtem", "beseechten", "beseechtene", "beseechtenem",
+    "beseechtenen", "beseechtener", "beseechtent", "beseechter",
+    "emmerdéier", "emmerdéiere", "emmerdéieren", "emmerdéierend",
+    "emmerdéiers", "emmerdéiert", "emmerdéierte", "emmerdéiertem",
+    "emmerdéierten", "emmerdéiertene", "emmerdéiertenem", "emmerdéiertenen",
+    "emmerdéiertener", "emmerdéiertent", "emmerdéierter", "freck", "fuck",
+    "féck", "fécke", "fécken", "féckend", "fécks", "féckt", "geféckt",
+    "geféckte", "gefécktem", "geféckten", "gefécktene", "gefécktenem",
+    "gefécktenen", "gefécktener", "gefécktent", "geféckter", "gehouert",
+    "gepisst", "geschass", "geseecht", "houer", "houere", "houeren",
+    "houerend", "houers", "houert", "piss", "pisse", "pissen", "pissend",
+    "pisst", "schäiss", "schäisse", "schäissegal", "schäissen", "schäissend",
+    "schäisst", "seech", "seeche", "seechen", "seechend", "seechs", "seecht",
+    "shit", "veraasch", "veraasche", "veraaschen", "veraaschend",
+    "veraaschs", "veraascht", "veraaschte", "veraaschtem", "veraaschten",
+    "veraaschtene", "veraaschtenem", "veraaschtenen", "veraaschtener",
+    "veraaschtent", "veraaschter", "vreck", "Äersch"
+  ];
+  const GROSSIER = new Set(GROSSIERETES.map((mot) => AccentTolerantMatcher.normalize(mot)));
+
+  function estGrossier(mot) {
+    return GROSSIER.has(AccentTolerantMatcher.normalize(mot));
   }
 
   // ---- casing / scoring (SuggestionEngine companion) ----
@@ -209,6 +310,22 @@
     luxOnlyMode: false
   };
 
+  /**
+   * Faut-il chercher une correction luxembourgeoise pour ce mot ? Miroir de
+   * SuggestionEngine.devraitCorriger().
+   *
+   * Non s'il est trop court, la distance de Levenshtein sur deux lettres
+   * rapprochant n'importe quoi de n'importe quoi. Et non, surtout, si le mot est
+   * du français reconnu : le repli parcourt toutes les formes luxembourgeoises
+   * pour proposer de corriger un mot sans aucune faute, et dans la mauvaise
+   * langue. Le contrôle porte sur le mot ENTIER : tant qu'on tape « déche », le
+   * français ne le reconnaît pas encore et le repli garde sa place.
+   */
+  function devraitCorriger(input, estFrancaisConnu) {
+    if (input.length < 3) return false;
+    return !estFrancaisConnu;
+  }
+
   // ---- SuggestionEngine ----
 
   class SuggestionEngine {
@@ -217,6 +334,7 @@
       this.normalizedWords = [];
       this.ngramModel = {}; // { word: [{word, probability}, ...] }
       this.frenchWords = []; // [[word, freq], ...]
+      this.frenchSet = new Set(); // mêmes formes, pour reconnaître un mot entier
       this.wordHistory = [];
       this.bilingualConfig = { ...DEFAULT_BILINGUAL_CONFIG };
     }
@@ -228,12 +346,46 @@
       list.sort((a, b) => b[1] - a[1]);
       this.dictionary = list;
       this.normalizedWords = list.map(([word]) => AccentTolerantMatcher.normalize(word));
+      this.corpusSize = list.length;
+    }
+
+    /**
+     * Ajoute les formes que le corpus ne peut pas donner (le LOD : « Läffelen »,
+     * « sprang », « denks »), après tous les mots du corpus et à la fréquence 1.
+     * Miroir de la fin de SuggestionEngine.loadDictionary().
+     *
+     * Elles se rangent en queue du classement par fréquence, là où la fenêtre
+     * CANDIDATE_POOL_SIZE ne va les chercher que si moins de quarante mots du
+     * corpus partagent le préfixe tapé : elles complètent les préfixes rares
+     * sans rien changer à la frappe courante. Sans elles, taper « Läffelen »
+     * proposait des corrections vers d'autres mots, le corpus journalistique
+     * n'ayant jamais eu à l'écrire.
+     *
+     * Appelable après coup : le clavier répond dès que le corpus est chargé, le
+     * LOD arrive ensuite sans bloquer la page.
+     */
+    addLodForms(formes) {
+      if (!formes || !formes.length) return;
+      const corpus = this.dictionary.slice(0, this.corpusSize || this.dictionary.length);
+      const normCorpus = this.normalizedWords.slice(0, corpus.length);
+      const lod = [];
+      const normLod = [];
+      for (const forme of formes) {
+        const mot = String(forme);
+        if (!mot) continue;
+        lod.push([mot, LOD_FREQUENCY]);
+        normLod.push(AccentTolerantMatcher.normalize(mot));
+      }
+      this.dictionary = corpus.concat(lod);
+      this.normalizedWords = normCorpus.concat(normLod);
+      this.lodCount = lod.length;
     }
 
     loadFrenchDictionary(raw) {
       const list = (raw.words || []).map(([word, freq]) => [String(word).toLowerCase(), freq || 1]);
       list.sort((a, b) => b[1] - a[1]);
       this.frenchWords = list;
+      this.frenchSet = new Set(list.map(([word]) => word));
     }
 
     loadNgramModel(raw) {
@@ -271,14 +423,23 @@
       for (let i = 0; i < this.dictionary.length; i++) {
         if (this.normalizedWords[i].startsWith(normalizedInput)) {
           matches.push([this.dictionary[i][0], this.dictionary[i][1], 0]);
-          if (matches.length >= MAX_SUGGESTIONS * 2) break;
+          if (matches.length >= CANDIDATE_POOL_SIZE) break;
         }
       }
 
-      if (matches.length === 0 && input.length >= 3) {
+      // Pas de prédiction par préfixe : correction orthographique, sauf si le
+      // mot entier est du français reconnu (devraitCorriger).
+      if (matches.length === 0 && devraitCorriger(input, this.isFrenchWord(input))) {
         return this.getSpellCorrectionSuggestions(input);
       }
       return matches;
+    }
+
+    // FrenchDictionary.containsWord(). Le simulateur n'a que le petit lexique de
+    // démonstration : la reconnaissance y est donc plus étroite que sur le
+    // téléphone, mais la règle est la même.
+    isFrenchWord(mot) {
+      return this.frenchSet.has(mot.toLowerCase());
     }
 
     getSpellCorrectionSuggestions(input) {
@@ -287,6 +448,7 @@
       const normalizedMatches = findClosestMatchesNormalized(
         input,
         this.dictionary,
+        this.normalizedWords,
         (str) => AccentTolerantMatcher.normalize(str),
         2,
         MAX_SUGGESTIONS
@@ -460,13 +622,15 @@
       if (input.length < MIN_WORD_LENGTH) return [];
       const lux = this.getLuxSuggestions(input);
       const french = this.shouldActivateFrench(input) ? this.getFrenchSuggestions(input) : [];
-      return this.mergeSuggestionsLuxFirst(lux, french);
+      // sansGrossieretesBilingues() : le filtre passe après la fusion, sans
+      // rien mettre à la place du mot retiré.
+      return this.mergeSuggestionsLuxFirst(lux, french).filter((s) => !estGrossier(s.word));
     }
 
     // Prédictions contextuelles n-gram (mode après espace) — luxembourgeois uniquement
     generateContextualSuggestions() {
       if (this.wordHistory.length === 0 || Object.keys(this.ngramModel).length === 0) return [];
-      return this.getNgramSuggestions();
+      return this.getNgramSuggestions().filter((mot) => !estGrossier(mot));
     }
   }
 
@@ -474,6 +638,10 @@
     SuggestionEngine,
     AccentTolerantMatcher,
     levenshtein,
+    levenshteinBounded,
+    estGrossier,
+    devraitCorriger,
+    GROSSIERETES,
     applyCasingPattern,
     pickContextualCapitalization,
     calculateDictionaryScore

@@ -108,28 +108,69 @@
   // rangée d'accueil), l'aperçu met donc en avant celles qui n'ont pas d'autre
   // porte d'entrée.
   const CORNER_HINTS = { a: ['à', 'â'], e: ['è', 'ê'] };
-  const LETTER_RE = /^[a-zA-Zàáâãäåèéêëìíîïòóôõöøùúûüýÿñç]$/;
+
+  // Ce qui appartient à un mot, comme InputProcessor.isWordCharacter() :
+  // Character.isLetter(), donc toute lettre, majuscules accentuées comprises.
+  // La liste explicite qu'on avait ici ne connaissait que les minuscules
+  // accentuées : « É » en début de phrase coupait le mot en cours.
+  const isWordString = (s) => s.length > 0 && Array.from(s).every((c) => /\p{L}/u.test(c));
+
+  // Gestes et délais, repris de l'application.
+  const ACCENT_LONG_PRESS_MS = 500;      // AccentHandler.LONG_PRESS_DELAY
+  const BACKSPACE_LONG_PRESS_MS = 400;   // ViewConfiguration.getLongPressTimeout()
+  const SPACE_SLOP_PX = 8;               // scaledTouchSlop : 8 dp
+  const SPACE_CURSOR_STEP_PX = 10;       // SPACE_CURSOR_STEP_DP
+  const SYNC_CURSEUR_MS = 120;           // DELAI_SYNC_CURSEUR
+  const EMOJI_RECENTS_MAX = 30;          // EmojiRecents.CAPACITE
+  const SWIPE_MIN_PX = 40;               // le balayage entre catégories d'emoji
+  const HAPTIC_MS = 10;                  // une impulsion brève par frappe
+  const TICK_MS = 4;                     // un cran de curseur
 
   class KeyboardSimulator {
     constructor(engine, els) {
       this.engine = engine;
       this.els = els;
 
-      this.screenText = '';
+      // Le texte du champ et la position du curseur : l'éditeur d'Android, que
+      // le clavier n'écrit jamais qu'à travers l'InputConnection. Le simulateur
+      // n'ajoutait qu'au bout ; le curseur mobile est ce qui permet le
+      // glissement sur la barre d'espace et l'appui dans le texte.
+      this._text = '';
+      this.cursor = 0;
       this.currentWord = '';
       this.isCapitalMode = false;
       this.isCapsLock = false;
       this.isNumericMode = false;
       this.isEmojiMode = false;
+
+      // Dernière capitalisation appliquée d'office : { origine, corrige }. Une
+      // seule touche Retour arrière la défait, comme le veut la convention de
+      // toute correction automatique (InputProcessor.lastAutoCapitalization).
+      this.lastAutoCapitalization = null;
+
       // Le jeu d'emojis (~1900) n'est chargé qu'à la première ouverture du
       // panneau : la page n'a pas à payer 48 ko pour un mode qu'on n'ouvre pas.
       this.emojiData = null;
       this.emojiLoading = false;
       this.emojiCategory = 0;
+      // Les catégories affichées : celles du jeu, précédées des emojis récents
+      // quand il y en a. Figées à l'ouverture du panneau et non tenues à jour
+      // pendant qu'il est ouvert : réordonner la grille sous le doigt de qui
+      // enchaîne trois emojis lui ferait manquer le troisième.
+      this.emojiCategories = null;
+      // Récents (EmojiRecents) : en mémoire seulement. L'application les garde
+      // dans ses préférences ; le simulateur, lui, ne laisse rien dans le
+      // navigateur de qui l'essaie.
+      this.recentEmojis = [];
 
       this.currentPopup = null;
       this._popupOutsideHandler = null;
       this._contextualTimer = null;
+      this._syncTimer = null;
+      this._signature = null;
+      this._toucher = false;
+      this._balayage = false;
+      this._suppression = { debut: null, repetition: null };
 
       // Texte dicté en cours : longueur de la composition et texte qui la
       // précède. `null` tant qu'aucune dictée n'est ouverte — cf.
@@ -142,12 +183,15 @@
 
       this.els.caret = document.createElement('span');
       this.els.caret.className = 'phone-caret';
+      this._avant = null;
+      this._apres = null;
 
       this.renderKeyboard();
       this.renderScreen();
       this.updateSuggestions([], false);
 
       this.els.resetBtn?.addEventListener('click', () => this.reset());
+      this.els.screen?.addEventListener('click', (e) => this.placeCaretFromClick(e));
       this.bindPhysicalKeyboard();
 
       // La taille des libellés dépend de la largeur réelle des touches, qui
@@ -156,6 +200,112 @@
       if (window.ResizeObserver) {
         new ResizeObserver(() => this.sizeKeyLabels()).observe(this.els.keyboard);
       }
+    }
+
+    // ---- le champ : texte, curseur ----
+
+    // Écrit tel quel par le rejeu des exemples (simulateur-demo.js). Le curseur
+    // reste à la fin quand il y était, ce qui est le cas de toute frappe.
+    get screenText() { return this._text; }
+    set screenText(valeur) {
+      const alaFin = this.cursor >= this._text.length;
+      this._text = valeur;
+      this.cursor = alaFin ? valeur.length : Math.min(this.cursor, valeur.length);
+    }
+
+    textBefore(n) {
+      return this._text.slice(Math.max(0, this.cursor - n), this.cursor);
+    }
+
+    textAfter(n) {
+      return this._text.slice(this.cursor, this.cursor + n);
+    }
+
+    /** commitText(texte, 1) : écrit au curseur et le pose après. */
+    insertText(texte) {
+      this._text = this._text.slice(0, this.cursor) + texte + this._text.slice(this.cursor);
+      this.cursor += texte.length;
+    }
+
+    /** deleteSurroundingText(avant, apres). */
+    deleteAround(avant, apres) {
+      const debut = Math.max(0, this.cursor - avant);
+      this._text = this._text.slice(0, debut) + this._text.slice(this.cursor + apres);
+      this.cursor = debut;
+    }
+
+    /**
+     * Déplace le curseur de `pas` caractères, négatif vers la gauche
+     * (InputProcessor.moveCursorBy). On passe d'une paire de substituts à la
+     * suivante d'un seul cran : un emoji est un caractère pour l'œil.
+     */
+    moveCursorBy(pas) {
+      const texte = this._text;
+      let c = this.cursor;
+      for (let i = 0; i < Math.abs(pas); i++) {
+        if (pas > 0) {
+          if (c >= texte.length) break;
+          const haut = texte.charCodeAt(c);
+          c += haut >= 0xD800 && haut <= 0xDBFF && c + 1 < texte.length ? 2 : 1;
+        } else {
+          if (c <= 0) break;
+          const bas = texte.charCodeAt(c - 1);
+          c -= bas >= 0xDC00 && bas <= 0xDFFF && c - 2 >= 0 ? 2 : 1;
+        }
+      }
+      if (c === this.cursor) return;
+      this.cursor = c;
+      this.renderScreen();
+    }
+
+    /**
+     * Resynchronise le mot courant avec le texte réellement présent avant le
+     * curseur (InputProcessor.syncWordWithCursor). `currentWord` n'est alimenté
+     * que par les frappes : sans cette remise à niveau il divergerait du texte
+     * dès que le curseur bouge autrement qu'en tapant — retour arrière qui
+     * remonte dans un mot déjà validé, appui dans le texte, glissement sur
+     * l'espace — et les suggestions travailleraient sur un préfixe périmé.
+     */
+    syncWordWithCursor() {
+      const trouve = this.textBefore(64).match(/\p{L}+$/u);
+      const mot = trouve ? trouve[0] : '';
+      if (mot === this.currentWord) return;
+      this.currentWord = mot;
+      this.onWordChanged();
+    }
+
+    // Comme l'application, qui attend 120 ms (DELAI_SYNC_CURSEUR) : traverser
+    // une phrase du doigt ne doit pas recalculer trente fois les suggestions,
+    // la seule position qui compte est celle où le doigt s'arrête.
+    planSync() {
+      clearTimeout(this._syncTimer);
+      this._syncTimer = setTimeout(() => this.syncWordWithCursor(), SYNC_CURSEUR_MS);
+    }
+
+    /** Un appui dans le texte y pose le curseur, comme dans n'importe quel champ. */
+    placeCaretFromClick(e) {
+      if (this.composingLength || this.dictationBase !== null) return;
+      const index = this.offsetFromPoint(e.clientX, e.clientY);
+      this.cursor = index === null ? this._text.length : index;
+      this.renderScreen();
+      clearTimeout(this._syncTimer);
+      this.syncWordWithCursor();
+    }
+
+    offsetFromPoint(x, y) {
+      let noeud = null;
+      let decalage = 0;
+      if (document.caretPositionFromPoint) {
+        const pos = document.caretPositionFromPoint(x, y);
+        if (pos) { noeud = pos.offsetNode; decalage = pos.offset; }
+      } else if (document.caretRangeFromPoint) {
+        const rng = document.caretRangeFromPoint(x, y);
+        if (rng) { noeud = rng.startContainer; decalage = rng.startOffset; }
+      }
+      if (!noeud) return null;
+      if (noeud === this._avant) return Math.min(decalage, this.cursor);
+      if (noeud === this._apres) return this.cursor + Math.min(decalage, this._text.length - this.cursor);
+      return null;
     }
 
     // ---- clavier physique (confort desktop, en plus du clavier tactile) ----
@@ -182,6 +332,13 @@
         if (e.key === ' ') {
           e.preventDefault(); // sinon défilement de la page
           this.processKey(' ');
+          return;
+        }
+        // Les flèches font ce que fait le glissement sur la barre d'espace.
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          this.moveCursorBy(e.key === 'ArrowLeft' ? -1 : 1);
+          this.planSync();
           return;
         }
         if (e.key === 'Escape') {
@@ -212,27 +369,44 @@
     // le bon caractère dans e.key.
     insertPhysicalChar(character) {
       if (this.dictationInterrupter && this.dictationInterrupter()) return;
-      if (LETTER_RE.test(character)) {
+      if (isWordString(character)) {
         this.currentWord += character;
+        this.lastAutoCapitalization = null;
         this.onWordChanged();
       } else {
         this.finalizeCurrentWord();
       }
-      this.screenText += character;
+      this.insertText(character);
       this.renderScreen();
       this.handleAutoCapitalization();
       this.renderKeyboard();
     }
 
+    // Retour tactile : l'application vibre à chaque touche par défaut
+    // (KeyFeedback). Seulement pour un doigt — une souris n'a rien à sentir —
+    // et là où le navigateur le permet ; un iframe d'un autre site le refuse
+    // sans rien casser.
+    buzz(ms) {
+      if (!this._toucher || !navigator.vibrate) return;
+      try { navigator.vibrate(ms || HAPTIC_MS); } catch (e) { /* refusé : sans suite */ }
+    }
+
     // ---- helpers de touche ----
 
     hasAccents(key) {
-      return Object.prototype.hasOwnProperty.call(ACCENT_MAP, key.toLowerCase());
+      return Object.prototype.hasOwnProperty.call(ACCENT_MAP, key.toLowerCase()) ||
+        Boolean(this.emojiData && this.emojiData.skinTones && this.emojiData.skinTones[key]);
+    }
+
+    /** Les variantes d'une touche : accents d'une lettre, ou tons de peau d'un emoji. */
+    accentsFor(key) {
+      return ACCENT_MAP[key.toLowerCase()] ||
+        (this.emojiData && this.emojiData.skinTones && this.emojiData.skinTones[key]) || null;
     }
 
     cornerHints(key) {
       const k = key.toLowerCase();
-      if (!this.hasAccents(k)) return [];
+      if (!Object.prototype.hasOwnProperty.call(ACCENT_MAP, k)) return [];
       return CORNER_HINTS[k] || ACCENT_MAP[k];
     }
 
@@ -263,15 +437,33 @@
 
     keyWeight(key) {
       if (key === ' ') return 4;
-      // KeyboardLayoutManager.getKeyWeight() : 1,25 depuis que l'apostrophe a
-      // rejoint la rangée du bas.
-      if (key === '⇧' || key === '⌫') return 1.25;
+      // KeyboardLayoutManager.getKeyWeight() : 1,5 et non 1,25. C'est ce qui
+      // pose la rangée 3 à exactement 10 unités (1,5 + 7 lettres + 1,5), donc à
+      // la même largeur de touche que les rangées 1 et 2. Le 1,25 datait du
+      // temps où l'apostrophe vivait en rangée 3 ; elle est en rangée 4
+      // depuis, et la réduction laissait la rangée à 9,5 unités, ses lettres
+      // 5 % plus larges que celles du dessus.
+      if (key === '⇧' || key === '⌫') return 1.5;
       return 1;
     }
 
     // ---- rendu clavier ----
 
-    renderKeyboard() {
+    /**
+     * Reconstruit les touches, mais seulement quand ce qui se voit a changé :
+     * mode, majuscule, catégorie d'emoji. Les reconstruire à chaque frappe
+     * remplaçait la touche sous le doigt par une neuve, ce qui coupait net son
+     * animation d'appui et, pour la barre d'espace, la capture du pointeur qui
+     * porte le glissement.
+     */
+    renderKeyboard(force) {
+      const signature = [
+        this.isNumericMode, this.isEmojiMode, this.isCapitalMode, this.isCapsLock,
+        this.emojiCategory, Boolean(this.emojiData), this.emojiLoading
+      ].join('|');
+      if (!force && signature === this._signature && this.els.keyboard.firstChild) return;
+      this._signature = signature;
+
       this.els.keyboard.innerHTML = '';
       if (this.isEmojiMode) {
         this.els.keyboard.appendChild(this.createEmojiPanel());
@@ -364,45 +556,8 @@
           : key
       );
 
-      let holdTimer = null;
-      let longPressed = false;
-
-      const startHold = (ev) => {
-        ev.preventDefault();
-        longPressed = false;
-        btn.classList.add('kb-key-active');
-        if (this.hasAccents(key)) {
-          holdTimer = setTimeout(() => {
-            longPressed = true;
-            this.showAccentPopup(key, btn);
-          }, 500);
-        }
-      };
-      const endHold = (ev) => {
-        ev.preventDefault();
-        btn.classList.remove('kb-key-active');
-        if (holdTimer) {
-          clearTimeout(holdTimer);
-          holdTimer = null;
-        }
-        if (!longPressed) {
-          this.processKey(key);
-        }
-        longPressed = false;
-      };
-      const cancelHold = () => {
-        btn.classList.remove('kb-key-active');
-        if (holdTimer) {
-          clearTimeout(holdTimer);
-          holdTimer = null;
-        }
-        longPressed = false;
-      };
-
-      btn.addEventListener('pointerdown', startHold);
-      btn.addEventListener('pointerup', endHold);
-      btn.addEventListener('pointerleave', cancelHold);
-      btn.addEventListener('pointercancel', cancelHold);
+      if (key === ' ') this.bindSpaceKey(btn);
+      else this.bindKey(btn, key);
       btn.addEventListener('contextmenu', (e) => e.preventDefault());
 
       wrap.appendChild(btn);
@@ -430,6 +585,123 @@
       return wrap;
     }
 
+    /**
+     * Une touche ordinaire : appui court, ou appui long de 500 ms (accents
+     * d'une lettre) — sauf Retour arrière, dont l'appui long efface par mots
+     * (KreyolInputMethodServiceRefactored.onLongPress).
+     *
+     * Le caractère part au relâchement, comme un clic Android : glisser hors de
+     * la touche avant de lever le doigt annule la frappe.
+     */
+    bindKey(btn, key) {
+      let holdTimer = null;
+      let longPressed = false;
+
+      const arreter = () => {
+        btn.classList.remove('kb-key-active');
+        if (holdTimer) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+        this.stopWordDeletion();
+      };
+      const startHold = (ev) => {
+        ev.preventDefault();
+        this._toucher = ev.pointerType === 'touch';
+        longPressed = false;
+        btn.classList.add('kb-key-active');
+        this.buzz();
+        if (key === '⌫') {
+          holdTimer = setTimeout(() => {
+            longPressed = true;
+            this.startWordDeletion();
+          }, BACKSPACE_LONG_PRESS_MS);
+        } else if (this.hasAccents(key)) {
+          holdTimer = setTimeout(() => {
+            longPressed = true;
+            this.showAccentPopup(key, btn);
+          }, ACCENT_LONG_PRESS_MS);
+        }
+      };
+      const endHold = (ev) => {
+        ev.preventDefault();
+        const etait = longPressed;
+        arreter();
+        longPressed = false;
+        if (!etait) this.processKey(key);
+      };
+      const cancelHold = () => {
+        arreter();
+        longPressed = false;
+      };
+
+      btn.addEventListener('pointerdown', startHold);
+      btn.addEventListener('pointerup', endHold);
+      btn.addEventListener('pointerleave', cancelHold);
+      btn.addEventListener('pointercancel', cancelHold);
+    }
+
+    /**
+     * La barre d'espace : appui court, ou glissement horizontal qui déplace le
+     * curseur (KeyboardLayoutManager.setupSpaceLongPress, v14.0.0).
+     *
+     * Passé le seuil de glissement, le relâchement n'insère plus d'espace :
+     * poser le curseur en traversant un mot ne doit pas laisser un espace
+     * derrière soi. Le pointeur est capturé, et le geste garde donc le doigt
+     * sur toute la largeur de la page plutôt que sur la seule barre. Le mot
+     * courant n'est resynchronisé qu'une fois le doigt levé.
+     *
+     * L'appui long d'une seconde (sélecteur de claviers du système) n'a pas
+     * d'équivalent dans un navigateur.
+     */
+    bindSpaceKey(btn) {
+      let actif = false;
+      let glisse = false;
+      let ancre = 0;
+
+      const fin = (annule) => {
+        if (!actif) return;
+        actif = false;
+        btn.classList.remove('kb-key-active');
+        if (glisse) this.planSync();
+        else if (!annule) this.processKey(' ');
+        glisse = false;
+      };
+
+      btn.addEventListener('pointerdown', (ev) => {
+        ev.preventDefault();
+        this._toucher = ev.pointerType === 'touch';
+        actif = true;
+        glisse = false;
+        ancre = ev.clientX;
+        try { btn.setPointerCapture(ev.pointerId); } catch (e) { /* sans capture : glissement borné à la touche */ }
+        btn.classList.add('kb-key-active');
+        this.buzz();
+      });
+      btn.addEventListener('pointermove', (ev) => {
+        if (!actif) return;
+        if (!glisse) {
+          if (Math.abs(ev.clientX - ancre) > SPACE_SLOP_PX) {
+            glisse = true;
+            ancre = ev.clientX;
+            btn.classList.remove('kb-key-active');
+          }
+          return;
+        }
+        // Troncature vers zéro des deux côtés : un demi-cran ne déplace rien,
+        // ni à gauche ni à droite. Un arrondi au plus proche avancerait d'un
+        // caractère à mi-course et reculerait au retour.
+        const pas = Math.trunc((ev.clientX - ancre) / SPACE_CURSOR_STEP_PX);
+        if (pas !== 0) {
+          ancre += pas * SPACE_CURSOR_STEP_PX;
+          this.buzz(TICK_MS);
+          this.moveCursorBy(pas);
+        }
+      });
+      btn.addEventListener('pointerup', (ev) => { ev.preventDefault(); fin(false); });
+      btn.addEventListener('pointercancel', () => fin(true));
+    }
+
     createHint(text, vPos) {
       const span = document.createElement('span');
       span.className = `kb-hint kb-hint-${vPos} kb-hint-end`;
@@ -437,7 +709,51 @@
       return span;
     }
 
+    // ---- suppression par mots (appui long sur ⌫) ----
+
+    // Première suppression immédiate, puis une toutes les 300 ms après 500 ms
+    // d'attente (startWordDeletion) : effacer une ligne d'un doigt.
+    startWordDeletion() {
+      if (this.dictationInterrupter && this.dictationInterrupter()) return;
+      if (this._suppression.debut !== null || this._suppression.repetition !== null) return;
+      this.deleteWordBeforeCursor();
+      this._suppression.debut = setTimeout(() => {
+        this._suppression.debut = null;
+        this._suppression.repetition = setInterval(() => this.deleteWordBeforeCursor(), 300);
+      }, 500);
+    }
+
+    stopWordDeletion() {
+      clearTimeout(this._suppression.debut);
+      clearInterval(this._suppression.repetition);
+      this._suppression.debut = null;
+      this._suppression.repetition = null;
+    }
+
+    /** Le mot précédent, espaces de fin compris (deleteWordBeforeCursor). */
+    deleteWordBeforeCursor() {
+      const avant = this.textBefore(100);
+      if (!avant) return;
+      let i = avant.length - 1;
+      let compte = 0;
+      while (i >= 0 && /\s/.test(avant[i])) { compte++; i--; }
+      while (i >= 0 && !/\s/.test(avant[i])) { compte++; i--; }
+      if (compte === 0) return;
+      this.deleteAround(compte, 0);
+      this.lastAutoCapitalization = null;
+      this.renderScreen();
+      this.syncWordWithCursor();
+    }
+
     // ---- panneau emoji (EmojiPickerView.kt) ----
+
+    /** Les catégories, avec « Récents » en tête quand il y a de quoi la remplir. */
+    figerCategories() {
+      const categories = this.emojiData.categories;
+      this.emojiCategories = this.recentEmojis.length
+        ? [{ name: 'Récents', icon: '🕒', emojis: this.recentEmojis.slice() }].concat(categories)
+        : categories;
+    }
 
     createEmojiPanel() {
       const panel = document.createElement('div');
@@ -451,10 +767,13 @@
         panel.appendChild(message);
         return panel;
       }
+      if (!this.emojiCategories) this.figerCategories();
+      const categories = this.emojiCategories;
+      if (this.emojiCategory >= categories.length) this.emojiCategory = 0;
 
       const tabs = document.createElement('div');
       tabs.className = 'kb-emoji-tabs';
-      this.emojiData.categories.forEach((categorie, index) => {
+      categories.forEach((categorie, index) => {
         const tab = document.createElement('button');
         tab.type = 'button';
         tab.className = 'kb-emoji-tab' + (index === this.emojiCategory ? ' is-active' : '');
@@ -470,17 +789,88 @@
 
       const grid = document.createElement('div');
       grid.className = 'kb-emoji-grid';
-      this.emojiData.categories[this.emojiCategory].emojis.forEach((emoji) => {
-        const cell = document.createElement('button');
-        cell.type = 'button';
-        cell.className = 'kb-emoji-cell';
-        cell.textContent = emoji;
-        cell.addEventListener('click', () => this.processKey(emoji));
-        grid.appendChild(cell);
-      });
+      categories[this.emojiCategory].emojis.forEach((emoji) => grid.appendChild(this.createEmojiCell(emoji)));
+      this.bindEmojiSwipe(grid, categories.length);
       panel.appendChild(grid);
 
       return panel;
+    }
+
+    createEmojiCell(emoji) {
+      const cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'kb-emoji-cell';
+      cell.textContent = emoji;
+
+      // Même délai que les touches à appui long du clavier : un emoji à ton de
+      // peau ouvre ses cinq variantes (AccentHandler.emojiSkinTones).
+      let timer = null;
+      let longPressed = false;
+      const arreter = () => {
+        clearTimeout(timer);
+        timer = null;
+      };
+      cell.addEventListener('pointerdown', (ev) => {
+        this._toucher = ev.pointerType === 'touch';
+        longPressed = false;
+        if (this.hasAccents(emoji)) {
+          timer = setTimeout(() => {
+            longPressed = true;
+            this.showAccentPopup(emoji, cell);
+          }, ACCENT_LONG_PRESS_MS);
+        }
+      });
+      cell.addEventListener('pointerup', arreter);
+      cell.addEventListener('pointerleave', arreter);
+      cell.addEventListener('pointercancel', arreter);
+      cell.addEventListener('contextmenu', (e) => e.preventDefault());
+      cell.addEventListener('click', () => {
+        // Un balayage qui finit sur la cellule d'où il est parti, ou un appui
+        // long qui vient d'ouvrir les tons, n'est pas une sélection.
+        if (longPressed || this._balayage) {
+          longPressed = false;
+          return;
+        }
+        this.buzz();
+        this.chooseEmoji(emoji);
+      });
+      return cell;
+    }
+
+    /**
+     * Le balayage horizontal change de catégorie (ViewPager2 côté application) ;
+     * le vertical défile dans la grille. Les deux gestes sont orthogonaux.
+     */
+    bindEmojiSwipe(grid, total) {
+      let depart = null;
+      grid.addEventListener('pointerdown', (ev) => {
+        depart = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
+        this._balayage = false;
+      });
+      grid.addEventListener('pointerup', (ev) => {
+        if (!depart || depart.id !== ev.pointerId) return;
+        const dx = ev.clientX - depart.x;
+        const dy = ev.clientY - depart.y;
+        depart = null;
+        if (Math.abs(dx) < SWIPE_MIN_PX || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+        this._balayage = true;
+        const suivante = this.emojiCategory + (dx < 0 ? 1 : -1);
+        if (suivante < 0 || suivante >= total) return;
+        this.emojiCategory = suivante;
+        this.renderKeyboard();
+      });
+      grid.addEventListener('pointercancel', () => { depart = null; });
+    }
+
+    /** EmojiRecents.fusionner : en tête, sans doublon, trente au plus. */
+    rememberEmoji(emoji) {
+      this.recentEmojis = [emoji].concat(this.recentEmojis.filter((e) => e !== emoji))
+        .slice(0, EMOJI_RECENTS_MAX);
+    }
+
+    chooseEmoji(emoji) {
+      this.rememberEmoji(emoji);
+      this.processKey(emoji);
     }
 
     loadEmojiData() {
@@ -501,7 +891,7 @@
         .catch((err) => {
           this.emojiLoading = false;
           console.error(err);
-          if (this.isEmojiMode) this.renderKeyboard();
+          if (this.isEmojiMode) this.renderKeyboard(true);
         });
     }
 
@@ -509,7 +899,7 @@
 
     showAccentPopup(baseKey, anchorEl) {
       this.dismissAccentPopup();
-      const accents = ACCENT_MAP[baseKey.toLowerCase()];
+      const accents = this.accentsFor(baseKey);
       if (!accents) return;
 
       const popup = document.createElement('div');
@@ -556,16 +946,26 @@
       }
     }
 
-    // Sélection d'un accent (ou de la touche de base depuis le popup) : ajoutée
-    // directement, sans régénérer les suggestions — comme onAccentSelected()
-    // côté Android, qui met à jour le mot courant "silencieusement".
+    // Sélection d'un accent (ou de la touche de base depuis le popup), comme
+    // onAccentSelected() côté Android : la variante est écrite au curseur ; si
+    // c'est une lettre elle rejoint le mot en cours et les suggestions se
+    // régénèrent, exactement comme pour une lettre tapée. Un emoji, lui, n'est
+    // pas une lettre : il ne doit pas polluer le mot suivi (« 🥭ka »), il est
+    // retenu dans les récents et clôt le mot.
     selectAccent(accent) {
       const upper = this.isCapitalMode || this.isCapsLock;
       const finalAccent = upper ? accent.toUpperCase() : accent;
-      this.screenText += finalAccent;
-      this.currentWord += finalAccent;
-      this.renderScreen();
       this.dismissAccentPopup();
+      if (this.dictationInterrupter && this.dictationInterrupter()) return;
+      this.insertText(finalAccent);
+      if (isWordString(finalAccent)) {
+        this.currentWord += finalAccent;
+        this.onWordChanged();
+      } else {
+        this.rememberEmoji(finalAccent);
+        this.finalizeCurrentWord();
+      }
+      this.renderScreen();
     }
 
     // ---- logique de saisie (InputProcessor.kt) ----
@@ -605,30 +1005,53 @@
 
     handleCharacter(key) {
       const character = this.shouldCapitalize() ? key.toUpperCase() : key.toLowerCase();
-      if (LETTER_RE.test(character)) {
+      if (isWordString(character)) {
         this.currentWord += character;
+        this.lastAutoCapitalization = null;
         this.onWordChanged();
       } else {
         this.finalizeCurrentWord();
       }
-      this.screenText += character;
+      this.insertText(character);
       this.renderScreen();
       this.handleAutoCapitalization();
     }
 
+    /**
+     * Combien d'unités UTF-16 retirer pour ôter un seul glyphe : un caractère
+     * normal, un emoji hors plan de base (paire de substituts), ou un emoji et
+     * son modificateur de ton de peau (deux points de code). Supprimer une
+     * seule unité laisserait un demi-caractère orphelin, affiché comme un glyphe
+     * cassé (InputProcessor.calculateBackspaceLength).
+     */
+    backspaceLength(avant) {
+      if (!avant) return 1;
+      const points = Array.from(avant);
+      const dernier = points[points.length - 1];
+      const ton = dernier.codePointAt(0) >= 0x1F3FB && dernier.codePointAt(0) <= 0x1F3FF;
+      if (ton && points.length > 1) return dernier.length + points[points.length - 2].length;
+      return dernier.length;
+    }
+
     handleBackspace() {
-      if (!this.screenText.length) return;
-      this.screenText = this.screenText.slice(0, -1);
+      // Une majuscule imposée d'office se défait au premier Retour arrière.
+      if (this.revertAutoCapitalization()) {
+        this.renderScreen();
+        return;
+      }
+      if (this.cursor > 0) this.deleteAround(this.backspaceLength(this.textBefore(4)), 0);
       if (this.currentWord.length) {
         this.currentWord = this.currentWord.slice(0, -1);
         this.onWordChanged();
       }
       this.renderScreen();
+      // Remonter dans un mot déjà validé le rend de nouveau « courant ».
+      this.syncWordWithCursor();
     }
 
     handleEnter() {
       this.finalizeCurrentWord();
-      this.screenText += '\n';
+      this.insertText('\n');
       this.renderScreen();
     }
 
@@ -659,9 +1082,13 @@
       }
     }
 
+    // Le panneau est reconstruit à chaque ouverture : « Récents » s'y remet à
+    // jour, et il s'ouvre sur la première catégorie.
     handleEmojiSwitch() {
       this.isEmojiMode = true;
       this.isNumericMode = false;
+      this.emojiCategories = null;
+      this.emojiCategory = 0;
     }
 
     // Réécrit le mot courant avec la majuscule que le contexte atteste, avant
@@ -669,27 +1096,53 @@
     // appelle applyContextualCapitalization() avant finalizeCurrentWord() : à ce
     // moment l'historique porte les mots précédents, pas celui qu'on valide.
     applyContextualCapitalization() {
+      this.lastAutoCapitalization = null;
       const mot = this.currentWord;
       if (!mot) return;
       const corrige = this.engine.contextualCapitalization(mot);
       if (!corrige || corrige === mot) return;
-      // Ne réécrire que si ce qui précède est bien le mot courant.
-      if (this.screenText.slice(-mot.length) !== mot) return;
-      this.screenText = this.screenText.slice(0, -mot.length) + corrige;
+      // Le curseur peut avoir été déplacé au milieu du mot : on ne réécrit que
+      // si ce qui précède est bien le mot courant, sinon on abîmerait le texte
+      // au lieu de le corriger.
+      if (this.textBefore(mot.length) !== mot) return;
+      this.deleteAround(mot.length, 0);
+      this.insertText(corrige);
       this.currentWord = corrige;
+      this.lastAutoCapitalization = { origine: mot, corrige };
       this.renderScreen();
+    }
+
+    /**
+     * Défait la capitalisation qui vient d'être imposée, si le Retour arrière
+     * suit immédiatement. L'espace est conservé : l'utilisateur voulait annuler
+     * la majuscule, pas revenir en arrière dans sa phrase. Un second Retour
+     * arrière se comporte normalement.
+     */
+    revertAutoCapitalization() {
+      const dernier = this.lastAutoCapitalization;
+      if (!dernier) return false;
+      this.lastAutoCapitalization = null;
+      const attendu = dernier.corrige + ' ';
+      if (this.textBefore(attendu.length) !== attendu) return false;
+      this.deleteAround(attendu.length, 0);
+      this.insertText(dernier.origine + ' ');
+      return true;
     }
 
     handleSpace() {
       this.applyContextualCapitalization();
       this.finalizeCurrentWord();
-      this.screenText += ' ';
+      this.insertText(' ');
       this.renderScreen();
       this.handleAutoCapitalization();
     }
 
     onWordChanged() {
       if (this.currentWord) {
+        // Un mot repris en cours de frappe l'emporte sur les prédictions du mot
+        // précédent, dont le minuteur de 100 ms pourrait sinon arriver après la
+        // première lettre et recouvrir les propositions qu'elle vient de faire.
+        clearTimeout(this._contextualTimer);
         const suggestions = this.engine.generateBilingualSuggestions(this.currentWord);
         this.updateSuggestions(suggestions, true);
       } else {
@@ -704,6 +1157,9 @@
       }
       this.engine.addWordToHistory(this.currentWord);
       this.currentWord = '';
+      // La barre se vide tout de suite (onWordChanged("")), puis les prédictions
+      // du mot suivant arrivent 100 ms plus tard.
+      this.updateSuggestions([], false);
       clearTimeout(this._contextualTimer);
       this._contextualTimer = setTimeout(() => {
         const preds = this.engine.generateContextualSuggestions();
@@ -714,11 +1170,15 @@
       }, 100);
     }
 
+    // processSuggestionSelection : le mot en cours est remplacé, et sa fin avec
+    // lui quand le curseur est au milieu (« bon|jou » + « bonjou » ne doit pas
+    // donner « bonjoujou »), puis une espace est posée.
     selectSuggestion(word) {
       if (this.currentWord) {
-        this.screenText = this.screenText.slice(0, -this.currentWord.length);
+        const suite = this.textAfter(64).match(/^\p{L}*/u);
+        this.deleteAround(this.currentWord.length, suite ? suite[0].length : 0);
       }
-      this.screenText += word + ' ';
+      this.insertText(word + ' ');
       this.currentWord = word;
       this.finalizeCurrentWord();
       this.renderScreen();
@@ -727,7 +1187,7 @@
     }
 
     shouldAutoCapitalize() {
-      const text = this.screenText;
+      const text = this.textBefore(100);
       if (!text || !text.trim()) return true;
       let lastIdx = -1;
       for (let i = text.length - 1; i >= 0; i--) {
@@ -758,22 +1218,51 @@
     // ---- rendu écran / suggestions ----
 
     renderScreen() {
-      const composing = Math.min(this.composingLength, this.screenText.length);
+      const el = this.els.screenText;
+      el.textContent = '';
+      const composing = Math.min(this.composingLength, this._text.length);
       if (composing) {
         // Le texte en composition est souligné et remplaçable en bloc, comme
         // celui que l'IME passe à setComposingText() : chaque passe de la
         // dictée rend une phrase entière qui annule et remplace la précédente.
-        this.els.screenText.textContent = this.screenText.slice(0, -composing);
+        this._avant = null;
+        this._apres = null;
+        el.appendChild(document.createTextNode(this._text.slice(0, -composing)));
         const span = document.createElement('span');
         span.className = 'phone-composing';
-        span.textContent = this.screenText.slice(-composing);
-        this.els.screenText.appendChild(span);
+        span.textContent = this._text.slice(-composing);
+        el.appendChild(span);
+        el.appendChild(this.els.caret);
       } else {
-        this.els.screenText.textContent = this.screenText;
+        // Deux nœuds de texte de part et d'autre du curseur : c'est ce qui
+        // permet de retrouver, depuis un appui, la position où le poser.
+        this._avant = document.createTextNode(this._text.slice(0, this.cursor));
+        this._apres = document.createTextNode(this._text.slice(this.cursor));
+        el.appendChild(this._avant);
+        el.appendChild(this.els.caret);
+        el.appendChild(this._apres);
       }
-      this.els.screenText.appendChild(this.els.caret);
-      this.els.placeholder.style.display = this.screenText ? 'none' : 'block';
-      this.els.screen.scrollTop = this.els.screen.scrollHeight;
+      this.els.placeholder.style.display = this._text ? 'none' : 'block';
+      this.keepCaretVisible();
+    }
+
+    // Le champ défile : le curseur reste dans la fenêtre, où qu'il aille, et pas
+    // seulement au bas du texte comme quand on ne faisait qu'écrire au bout.
+    keepCaretVisible() {
+      const zone = this.els.screen;
+      const caret = this.els.caret;
+      if (!zone || !caret) return;
+      if (this.cursor >= this._text.length) {
+        zone.scrollTop = zone.scrollHeight;
+        return;
+      }
+      // Le bas de la fenêtre porte 36 px de réserve sous le texte, pour le
+      // bouton « Effacer » : le curseur ne doit pas s'y glisser.
+      const haut = caret.offsetTop;
+      const bas = haut + caret.offsetHeight;
+      const visibleBas = zone.scrollTop + zone.clientHeight - 36;
+      if (haut < zone.scrollTop) zone.scrollTop = Math.max(0, haut - 8);
+      else if (bas > visibleBas) zone.scrollTop = bas - zone.clientHeight + 36;
     }
 
     updateSuggestions(list, labeled) {
@@ -798,7 +1287,13 @@
         btn.type = 'button';
         btn.className = 'chip chip-' + s.language.toLowerCase();
         btn.textContent = s.word;
-        btn.addEventListener('click', () => this.selectSuggestion(s.word));
+        // Au clic et non au toucher, comme la puce Android : glisser hors d'une
+        // puce avant de relâcher annule la sélection.
+        btn.addEventListener('pointerdown', (ev) => { this._toucher = ev.pointerType === 'touch'; });
+        btn.addEventListener('click', () => {
+          this.buzz();
+          this.selectSuggestion(s.word);
+        });
         container.appendChild(btn);
       });
     }
@@ -813,13 +1308,17 @@
     setDictationText(texte) {
       if (this.dictationBase === null) {
         this.finalizeCurrentWord();
-        let base = this.screenText;
+        // La dictée s'écrit au bout du champ : le curseur y est ramené, la
+        // composition n'ayant pas d'autre position que la fin.
+        this.cursor = this._text.length;
+        let base = this._text;
         // La dictée reprend une phrase entière : elle ne se colle pas au mot
         // précédent.
         if (base && !/\s$/.test(base)) base += ' ';
         this.dictationBase = base;
       }
       this.screenText = this.dictationBase + texte;
+      this.cursor = this._text.length;
       this.composingLength = texte.length;
       this.renderScreen();
     }
@@ -838,7 +1337,7 @@
      */
     finishDictation(texte) {
       if (texte) this.setDictationText(texte);
-      const dicte = this.composingLength ? this.screenText.slice(-this.composingLength) : '';
+      const dicte = this.composingLength ? this._text.slice(-this.composingLength) : '';
       this.composingLength = 0;
       this.dictationBase = null;
       this.currentWord = '';
@@ -858,6 +1357,7 @@
     cancelDictation() {
       if (this.dictationBase === null) return;
       this.screenText = this.dictationBase;
+      this.cursor = this._text.length;
       this.composingLength = 0;
       this.dictationBase = null;
       this.renderScreen();
@@ -866,12 +1366,18 @@
     reset() {
       this.composingLength = 0;
       this.dictationBase = null;
-      this.screenText = '';
+      this._text = '';
+      this.cursor = 0;
       this.currentWord = '';
       this.isCapitalMode = false;
       this.isCapsLock = false;
       this.isNumericMode = false;
       this.isEmojiMode = false;
+      this.lastAutoCapitalization = null;
+      this.emojiCategories = null;
+      this.emojiCategory = 0;
+      this.stopWordDeletion();
+      clearTimeout(this._syncTimer);
       this.engine.clearHistory();
       this.dismissAccentPopup();
       this.updateSuggestions([], false);
