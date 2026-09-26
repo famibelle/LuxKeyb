@@ -159,6 +159,84 @@
   opacity: .88;
 }
 
+/* Les étapes de la publication, telles que la console Google Play les
+   présente : quatre faites, une en cours. Le décompte vit dans la dernière,
+   parce que c'est elle qui dure une semaine.
+
+   Le trait qui relie les pastilles et le cerclage sont en bleu ciel, le rôle
+   que la charte lui donne : il ne porte aucune lettre, la coche est blanche. */
+.sortie__etapes {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+}
+
+.sortie__etapes li {
+  position: relative;
+  padding: 0 0 14px 38px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #fff;
+}
+
+/* Le fil entre deux pastilles. */
+.sortie__etapes li::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 26px;
+  bottom: 0;
+  width: 2px;
+  background: #00A1DE;
+  opacity: .55;
+}
+.sortie__etapes li:last-child { padding-bottom: 0; }
+.sortie__etapes li:last-child::before { display: none; }
+
+/* La pastille : pleine et cochée quand l'étape est faite, creuse quand elle
+   est en cours. */
+.sortie__etapes li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  border: 2px solid #00A1DE;
+  border-radius: 50%;
+}
+.sortie__etapes li.fait::after {
+  background: #00A1DE
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z' fill='%23003876'/%3E%3C/svg%3E")
+    center / 16px no-repeat;
+}
+
+.sortie__etape-titre {
+  display: block;
+  font-family: "Fredoka", -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.25;
+}
+.sortie__etape-detail {
+  display: block;
+  margin-top: 2px;
+  opacity: .88;
+}
+
+/* Le décompte, sous l'étape qu'il compte, aligné sur son texte. */
+.sortie__etapes li .sortie__corps { margin-top: 12px; }
+
+/* La date passée, la dernière étape est faite comme les autres : le détail
+   qui annonçait une semaine d'attente n'a plus lieu d'être. */
+.sortie[data-etat="sortie"] .sortie__etapes li.en-cours::after {
+  background: #00A1DE
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z' fill='%23003876'/%3E%3C/svg%3E")
+    center / 16px no-repeat;
+}
+.sortie[data-etat="sortie"] .sortie__etape-detail { display: none; }
+
 /* Une fois la date passée, le décompte n'a plus rien à compter : il cède la
    place à l'annonce, sans qu'il reste une ligne de zéros à l'écran. */
 .sortie__sortie { display: none; }

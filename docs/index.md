@@ -125,31 +125,44 @@ lettres.
     C'est la seule différence, et elle a maintenant une date de fin.
   </p>
 
-  <div class="sortie__corps">
-    <div class="sortie__compteur">
-      <div class="sortie__attente">
-        <div class="sortie__cells" aria-hidden="true">
-          <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
-          <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
-          <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
-          <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
-        </div>
-        <p class="sortie__pied">
-          Rien ne vous oblige à attendre : le test fermé installe exactement le
-          même clavier, avec les mêmes mises à jour automatiques.
-          <a href="#devenir-testeur">Les trois étapes sont expliquées plus bas.</a>
-        </p>
-      </div>
+  <!-- Les étapes de Google Play, dans l'ordre où la console les présente. Le
+       décompte est rattaché à la dernière, celle qui dure une semaine : c'est
+       elle qu'il compte, et non « la sortie » en général. -->
+  <ol class="sortie__etapes" aria-label="Où en est la publication sur Google Play">
+    <li class="fait">Choix des pays et des régions</li>
+    <li class="fait">Création de la version</li>
+    <li class="fait">Prévisualisation et confirmation de la version</li>
+    <li class="fait">Envoi de la version à Google pour examen</li>
+    <li class="en-cours" aria-current="step">
+      <span class="sortie__etape-titre">Publication sur Google Play</span>
+      <span class="sortie__etape-detail">Dernière étape : elle dure une semaine.</span>
+      <div class="sortie__corps">
+        <div class="sortie__compteur">
+          <div class="sortie__attente">
+            <div class="sortie__cells" aria-hidden="true">
+              <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
+            </div>
+            <p class="sortie__pied">
+              Rien ne vous oblige à attendre : le test fermé installe exactement le
+              même clavier, avec les mêmes mises à jour automatiques.
+              <a href="#devenir-testeur">Les trois étapes sont expliquées plus bas.</a>
+            </p>
+          </div>
 
-      <div class="sortie__sortie">
-        <p class="sortie__pied" style="margin-top:0">
-          C'est fait : le clavier est ouvert à tout le monde sur
-          <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">Google Play</a>,
-          et s'installe désormais sans passer par le test.
-        </p>
+          <div class="sortie__sortie">
+            <p class="sortie__pied" style="margin-top:0">
+              C'est fait : le clavier est ouvert à tout le monde sur
+              <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">Google Play</a>,
+              et s'installe désormais sans passer par le test.
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </li>
+  </ol>
 </div>
 
 <details>
