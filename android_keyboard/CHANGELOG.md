@@ -9,7 +9,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
-## [30.0.0] - 2026-09-25
+## [29.1.0] - 2026-09-25
 
 Le paysage et la rotation, soignés.
 
