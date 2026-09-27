@@ -845,11 +845,18 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     }
   }
 
+  /** ?lang=en dans l'adresse, pour partager un lien qui ouvre en anglais. */
+  function langueDepuisAdresse() {
+    var m = /[?&]lang=(en|fr)\b/i.exec(location.search);
+    return m ? m[1].toLowerCase() : null;
+  }
+
   function init() {
     capturerFrancais();
+    var demandee = langueDepuisAdresse();
     var enregistree = 'fr';
     try { enregistree = localStorage.getItem('labs-luxasr-lang') || 'fr'; } catch (e) {}
-    appliquer(enregistree === 'en' ? 'en' : 'fr');
+    appliquer((demandee || enregistree) === 'en' ? 'en' : 'fr');
 
     var bouton = document.getElementById('lang-toggle');
     if (bouton) {
