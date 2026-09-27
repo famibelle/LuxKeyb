@@ -133,6 +133,12 @@ td.good{color:var(--ink);}
    pas une imitation posée sur cette page. */
 .asr-embed{border:0;width:100%;max-width:400px;height:900px;display:block;margin:0 auto;}
 
+.asr-capture{margin:18px auto 0;max-width:400px;text-align:center;}
+.asr-capture img{width:100%;height:auto;display:block;border:1px solid var(--line);
+  border-radius:10px;background:var(--card);}
+.asr-capture figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);
+  line-height:1.4;text-align:left;}
+
 @media (prefers-reduced-motion: reduce){
   .sim-mic[data-on="1"]::before{animation:none;}
 }
@@ -240,6 +246,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           src="simulateur.html?asr=1&amp;embed=1"
           title="Clavier Lëtzebuergesch, dictée LuxASR avec traduction"
           loading="lazy"></iframe>
+
+  <figure class="asr-capture">
+    <img src="Screenshots/lux_dictee_luxasr.gif"
+         alt="Le clavier sur un émulateur Android : appui sur le micro, bandeau « 🌐 LuxASR · Schwätzt… », anneau qui tourne pendant l'écoute, puis retour au repos"
+         loading="lazy" width="640" height="513">
+    <figcaption>
+      Capturé sur émulateur Android, pas mis en scène : le micro s'arme, le
+      bandeau <strong>🌐 LuxASR</strong> prend la place des suggestions, l'anneau
+      tourne pendant l'écoute. Cet environnement de capture n'a pas de
+      microphone réel à lui donner : aucune parole n'y est captée, donc aucun
+      texte reconnu n'apparaît dans ce GIF. Pour voir le texte, parlez au
+      clavier ci-dessus.
+    </figcaption>
+  </figure>
 </section>
 
 <section>
