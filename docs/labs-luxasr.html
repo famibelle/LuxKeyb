@@ -147,7 +147,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   font-size:14px;color:var(--ink-soft);}
 
 /* Le switch de langue : même style que le bouton de thème, à côté de lui. */
-.lang-toggle{font-family:var(--mono);font-weight:700;font-size:12px;}
+/* Copié de .theme-toggle plutôt que d'en partager la classe : theme.js
+   repeint *tout* élément .theme-toggle qu'il trouve (querySelectorAll),
+   un bouton de langue qui la porterait se ferait donc écraser en « 🌙 Fond
+   sombre » comme l'autre — deux sélecteurs de fond, plus aucun de langue. */
+.lang-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:34px;height:34px;padding:0 12px;
+  border-radius:999px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);
+  font-family:var(--mono);font-weight:700;font-size:12px;line-height:1;
+  cursor:pointer;
+}
+.lang-toggle:hover{border-color:var(--sea);}
+.lang-toggle:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
 </style>
 </head>
 <body>
@@ -168,7 +181,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
   <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
-  <button type="button" class="theme-toggle lang-toggle" id="lang-toggle" aria-label="Switch language / changer de langue">EN</button>
+  <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / changer de langue">EN</button>
 </nav>
 
 <header class="page">
