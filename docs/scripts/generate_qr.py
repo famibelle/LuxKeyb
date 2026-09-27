@@ -37,6 +37,27 @@ CODES = {
         # et du bleu de l'APK stable.
         "#0E6E76",
     ),
+    "qr-luxkeyb-site.png": (
+        # Le QR des supports imprimés (tract, affiche, triptyque). Il vise la
+        # page d'accueil et non le test fermé : un tract est ramassé par
+        # n'importe qui, et le test fermé répondrait à la plupart des scanneurs
+        # que le programme n'est pas ouvert à leur compte. L'accueil, lui,
+        # propose les deux chemins et les explique.
+        #
+        # Noir d'encre, à la différence des quatre autres : celui-ci finit sur
+        # du papier, parfois photocopié en niveaux de gris, où une couleur
+        # claire perd le contraste dont la lecture optique a besoin.
+        "https://famibelle.github.io/LuxKeyb/",
+        "#1C2624",
+    ),
+    "qr-luxkeyb-ambassadeurs.png": (
+        # Le seul QR qui mène à une page et non à un téléchargement : il finit
+        # sur une diapositive ou un stand, là où l'on montre le kit à quelqu'un
+        # qui va relayer. D'où une couleur hors des quatre autres, qui sont
+        # toutes celles d'une installation.
+        "https://famibelle.github.io/LuxKeyb/ambassadeurs.html",
+        "#4A3B8C",
+    ),
     "qr-luxkeyb-luxasr.png": (
         # Directement sur l'APK, comme les trois autres : en démonstration, le
         # téléchargement doit partir dès le scan, et c'est le présentateur qui

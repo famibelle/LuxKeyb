@@ -1,0 +1,3313 @@
+[
+ {
+  "phrase": 0,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "schéinen",
+  "image": "00_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 2,
+  "contexte": "dee schéinen",
+  "attendu": "ale",
+  "image": "00_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 3,
+  "contexte": "dee schéinen ale",
+  "attendu": "Bam",
+  "image": "00_03.png",
+  "suggestions": [
+   "Mann",
+   "Letzebuerger",
+   "Rekord"
+  ],
+  "top3": [
+   "Mann",
+   "Letzebuerger",
+   "Rekord"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 4,
+  "contexte": "dee schéinen ale Bam",
+  "attendu": "gouf",
+  "image": "00_04.png",
+  "suggestions": [
+   "gerannt",
+   "ze",
+   "op",
+   "gestr"
+  ],
+  "top3": [
+   "gerannt",
+   "ze",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 5,
+  "contexte": "dee schéinen ale Bam gouf",
+  "attendu": "vum",
+  "image": "00_05.png",
+  "suggestions": [
+   "et",
+   "an",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "et",
+   "an",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 6,
+  "contexte": "dee schéinen ale Bam gouf vum",
+  "attendu": "Blëtz",
+  "image": "00_06.png",
+  "suggestions": [
+   "Parquet",
+   "Ministere",
+   "Geriicht",
+   "Sal"
+  ],
+  "top3": [
+   "Parquet",
+   "Ministere",
+   "Geriicht"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 7,
+  "contexte": "dee schéinen ale Bam gouf vum Blëtz",
+  "attendu": "getraff",
+  "image": "00_07.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 1,
+  "contexte": "Méi",
+  "attendu": "Klimaschutz",
+  "image": "01_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 2,
+  "contexte": "Méi Klimaschutz",
+  "attendu": "bedeit",
+  "image": "01_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 3,
+  "contexte": "Méi Klimaschutz bedeit",
+  "attendu": "och",
+  "image": "01_03.png",
+  "suggestions": [
+   "dat",
+   "datt",
+   "dass",
+   "fir"
+  ],
+  "top3": [
+   "dat",
+   "datt",
+   "dass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 4,
+  "contexte": "Méi Klimaschutz bedeit och",
+  "attendu": "zousätzlech",
+  "image": "01_04.png",
+  "suggestions": [
+   "d",
+   "de",
+   "nach",
+   "eng"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "nach"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 5,
+  "contexte": "Méi Klimaschutz bedeit och zousätzlech",
+  "attendu": "Investitiounen",
+  "image": "01_05.png",
+  "suggestions": [
+   "Klimaschutz",
+   "Klimaschutzgesetz"
+  ],
+  "top3": [
+   "Klimaschutz",
+   "Klimaschutzgesetz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 6,
+  "contexte": "Méi Klimaschutz bedeit och zousätzlech Investitiounen",
+  "attendu": "a",
+  "image": "01_06.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 7,
+  "contexte": "Méi Klimaschutz bedeit och zousätzlech Investitiounen a",
+  "attendu": "finanziell",
+  "image": "01_07.png",
+  "suggestions": [
+   "Richtung",
+   "vun",
+   "fir",
+   "Fran"
+  ],
+  "top3": [
+   "Richtung",
+   "vun",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 8,
+  "contexte": "Méi Klimaschutz bedeit och zousätzlech Investitiounen a finanziell",
+  "attendu": "Ënnerstëtzung",
+  "image": "01_08.png",
+  "suggestions": [
+   "Schwieregkeete",
+   "Froen",
+   "Situatiour"
+  ],
+  "top3": [
+   "Schwieregkeete",
+   "Froen",
+   "Situatiour"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "schécken",
+  "image": "02_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 2,
+  "contexte": "ech schécken",
+  "attendu": "der",
+  "image": "02_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 3,
+  "contexte": "ech schécken der",
+  "attendu": "d’Adress",
+  "image": "02_03.png",
+  "suggestions": [
+   "Stad",
+   "Police",
+   "Rue",
+   "Cham"
+  ],
+  "top3": [
+   "Stad",
+   "Police",
+   "Rue"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 4,
+  "contexte": "ech schécken der d’Adress",
+  "attendu": "vun",
+  "image": "02_04.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 5,
+  "contexte": "ech schécken der d’Adress vun",
+  "attendu": "engem",
+  "image": "02_05.png",
+  "suggestions": [
+   "der",
+   "de",
+   "den",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 6,
+  "contexte": "ech schécken der d’Adress vun engem",
+  "attendu": "lëschtege",
+  "image": "02_06.png",
+  "suggestions": [
+   "Auto",
+   "Joer",
+   "Haus",
+   "neie"
+  ],
+  "top3": [
+   "Auto",
+   "Joer",
+   "Haus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 7,
+  "contexte": "ech schécken der d’Adress vun engem lëschtege",
+  "attendu": "Site",
+  "image": "02_07.png",
+  "suggestions": [
+   "Accident",
+   "Auto",
+   "Communique"
+  ],
+  "top3": [
+   "Accident",
+   "Auto",
+   "Communique"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "hunn",
+  "image": "03_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 2,
+  "contexte": "ech hunn",
+  "attendu": "dee",
+  "image": "03_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 3,
+  "contexte": "ech hunn dee",
+  "attendu": "Stouss",
+  "image": "03_03.png",
+  "suggestions": [
+   "sech",
+   "vun",
+   "mat",
+   "Mom"
+  ],
+  "top3": [
+   "sech",
+   "vun",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 4,
+  "contexte": "ech hunn dee Stouss",
+  "attendu": "Dossieren",
+  "image": "03_04.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 5,
+  "contexte": "ech hunn dee Stouss Dossieren",
+  "attendu": "elo",
+  "image": "03_05.png",
+  "suggestions": [
+   "déi",
+   "an",
+   "ze",
+   "opgei"
+  ],
+  "top3": [
+   "déi",
+   "an",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 6,
+  "contexte": "ech hunn dee Stouss Dossieren elo",
+  "attendu": "just",
+  "image": "03_06.png",
+  "suggestions": [
+   "nach",
+   "an",
+   "och",
+   "op"
+  ],
+  "top3": [
+   "nach",
+   "an",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 7,
+  "contexte": "ech hunn dee Stouss Dossieren elo just",
+  "attendu": "gesënnert",
+  "image": "03_07.png",
+  "suggestions": [
+   "nach",
+   "eng",
+   "iwwerliewen"
+  ],
+  "top3": [
+   "nach",
+   "eng",
+   "iwwerliewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 1,
+  "contexte": "Domadder",
+  "attendu": "huet",
+  "image": "04_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 2,
+  "contexte": "Domadder huet",
+  "attendu": "d’CSV",
+  "image": "04_02.png",
+  "suggestions": [
+   "d",
+   "de",
+   "sech",
+   "den"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 3,
+  "contexte": "Domadder huet d’CSV",
+  "attendu": "awer",
+  "image": "04_03.png",
+  "suggestions": [
+   "an",
+   "huet",
+   "ass",
+   "d"
+  ],
+  "top3": [
+   "an",
+   "huet",
+   "ass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 4,
+  "contexte": "Domadder huet d’CSV awer",
+  "attendu": "de",
+  "image": "04_04.png",
+  "suggestions": [
+   "och",
+   "net",
+   "nach",
+   "keng"
+  ],
+  "top3": [
+   "och",
+   "net",
+   "nach"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 5,
+  "contexte": "Domadder huet d’CSV awer de",
+  "attendu": "Principe",
+  "image": "04_05.png",
+  "suggestions": [
+   "Fait",
+   "Fall",
+   "Rappell",
+   "Fuhre"
+  ],
+  "top3": [
+   "Fait",
+   "Fall",
+   "Rappell"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 6,
+  "contexte": "Domadder huet d’CSV awer de Principe",
+  "attendu": "même",
+  "image": "04_06.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 7,
+  "contexte": "Domadder huet d’CSV awer de Principe même",
+  "attendu": "vun",
+  "image": "04_07.png",
+  "suggestions": [
+   "huet",
+   "hunn",
+   "hat"
+  ],
+  "top3": [
+   "huet",
+   "hunn",
+   "hat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 8,
+  "contexte": "Domadder huet d’CSV awer de Principe même vun",
+  "attendu": "der",
+  "image": "04_08.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 9,
+  "contexte": "Domadder huet d’CSV awer de Principe même vun der",
+  "attendu": "Euthanasie",
+  "image": "04_09.png",
+  "suggestions": [
+   "Stad",
+   "Police",
+   "Rue",
+   "Cham"
+  ],
+  "top3": [
+   "Stad",
+   "Police",
+   "Rue"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 10,
+  "contexte": "Domadder huet d’CSV awer de Principe même vun der Euthanasie",
+  "attendu": "unerkannt",
+  "image": "04_10.png",
+  "suggestions": [
+   "ze",
+   "selwer",
+   "oder",
+   "a"
+  ],
+  "top3": [
+   "ze",
+   "selwer",
+   "oder"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "menger",
+  "image": "05_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 2,
+  "contexte": "no menger",
+  "attendu": "laanger",
+  "image": "05_02.png",
+  "suggestions": [
+   "Meenung",
+   "Siicht",
+   "Partei",
+   "Ma"
+  ],
+  "top3": [
+   "Meenung",
+   "Siicht",
+   "Partei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 3,
+  "contexte": "no menger laanger",
+  "attendu": "Sortie",
+  "image": "05_03.png",
+  "suggestions": [
+   "Zait",
+   "Krankheet",
+   "Karriar",
+   "Pri"
+  ],
+  "top3": [
+   "Zait",
+   "Krankheet",
+   "Karriar"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 4,
+  "contexte": "no menger laanger Sortie",
+  "attendu": "krut",
+  "image": "05_04.png",
+  "suggestions": [
+   "vun",
+   "vum",
+   "Sandweiler"
+  ],
+  "top3": [
+   "vun",
+   "vum",
+   "Sandweiler"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 5,
+  "contexte": "no menger laanger Sortie krut",
+  "attendu": "ech",
+  "image": "05_05.png",
+  "suggestions": [
+   "d",
+   "de",
+   "e",
+   "eng"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "e"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 6,
+  "contexte": "no menger laanger Sortie krut ech",
+  "attendu": "vu",
+  "image": "05_06.png",
+  "suggestions": [
+   "en",
+   "elo",
+   "gesot",
+   "op"
+  ],
+  "top3": [
+   "en",
+   "elo",
+   "gesot"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 7,
+  "contexte": "no menger laanger Sortie krut ech vu",
+  "attendu": "menger",
+  "image": "05_07.png",
+  "suggestions": [
+   "Letzebuerg",
+   "sengem",
+   "Joer"
+  ],
+  "top3": [
+   "Letzebuerg",
+   "sengem",
+   "Joer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 8,
+  "contexte": "no menger laanger Sortie krut ech vu menger",
+  "attendu": "Fra",
+  "image": "05_08.png",
+  "suggestions": [
+   "Box",
+   "Partei",
+   "Giedel",
+   "Fra"
+  ],
+  "top3": [
+   "Box",
+   "Partei",
+   "Giedel"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 9,
+  "contexte": "no menger laanger Sortie krut ech vu menger Fra",
+  "attendu": "de",
+  "image": "05_09.png",
+  "suggestions": [
+   "an",
+   "déi",
+   "vum",
+   "hue"
+  ],
+  "top3": [
+   "an",
+   "déi",
+   "vum"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 10,
+  "contexte": "no menger laanger Sortie krut ech vu menger Fra de",
+  "attendu": "Baart",
+  "image": "05_10.png",
+  "suggestions": [
+   "Mann",
+   "Moien",
+   "Letzebuerger"
+  ],
+  "top3": [
+   "Mann",
+   "Moien",
+   "Letzebuerger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 11,
+  "contexte": "no menger laanger Sortie krut ech vu menger Fra de Baart",
+  "attendu": "gemaach",
+  "image": "05_11.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "sengem",
+  "image": "06_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 2,
+  "contexte": "no sengem",
+  "attendu": "Ausrutscher",
+  "image": "06_02.png",
+  "suggestions": [
+   "Gefier",
+   "Auto",
+   "Won",
+   "Avis"
+  ],
+  "top3": [
+   "Gefier",
+   "Auto",
+   "Won"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 3,
+  "contexte": "no sengem Ausrutscher",
+  "attendu": "ass",
+  "image": "06_03.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 4,
+  "contexte": "no sengem Ausrutscher ass",
+  "attendu": "de",
+  "image": "06_04.png",
+  "suggestions": [
+   "et",
+   "d",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "et",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 6,
+  "position": 5,
+  "contexte": "no sengem Ausrutscher ass de",
+  "attendu": "President",
+  "image": "06_05.png",
+  "suggestions": [
+   "Mann",
+   "Beamten",
+   "Letzebuerger"
+  ],
+  "top3": [
+   "Mann",
+   "Beamten",
+   "Letzebuerger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 6,
+  "contexte": "no sengem Ausrutscher ass de President",
+  "attendu": "vun",
+  "image": "06_06.png",
+  "suggestions": [
+   "vun",
+   "vum",
+   "vu",
+   "Patri"
+  ],
+  "top3": [
+   "vun",
+   "vum",
+   "vu"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 6,
+  "position": 7,
+  "contexte": "no sengem Ausrutscher ass de President vun",
+  "attendu": "alle",
+  "image": "06_07.png",
+  "suggestions": [
+   "der",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 8,
+  "contexte": "no sengem Ausrutscher ass de President vun alle",
+  "attendu": "Säiten",
+  "image": "06_08.png",
+  "suggestions": [
+   "Leit",
+   "Letzebuerger",
+   "Saiten"
+  ],
+  "top3": [
+   "Leit",
+   "Letzebuerger",
+   "Saiten"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 6,
+  "position": 9,
+  "contexte": "no sengem Ausrutscher ass de President vun alle Säiten",
+  "attendu": "hefteg",
+  "image": "06_09.png",
+  "suggestions": [
+   "et",
+   "d",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "et",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 10,
+  "contexte": "no sengem Ausrutscher ass de President vun alle Säiten hefteg",
+  "attendu": "attackéiert",
+  "image": "06_10.png",
+  "suggestions": [
+   "datt",
+   "an",
+   "dass",
+   "Kriti"
+  ],
+  "top3": [
+   "datt",
+   "an",
+   "dass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 11,
+  "contexte": "no sengem Ausrutscher ass de President vun alle Säiten hefteg attackéiert",
+  "attendu": "ginn",
+  "image": "06_11.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 1,
+  "contexte": "géint",
+  "attendu": "den",
+  "image": "07_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 2,
+  "contexte": "géint den",
+  "attendu": "Ekzeema",
+  "image": "07_02.png",
+  "suggestions": [
+   "Owend",
+   "Ament",
+   "Auto"
+  ],
+  "top3": [
+   "Owend",
+   "Ament",
+   "Auto"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 3,
+  "contexte": "géint den Ekzeema",
+  "attendu": "verschreiwen",
+  "image": "07_03.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 4,
+  "contexte": "géint den Ekzeema verschreiwen",
+  "attendu": "ech",
+  "image": "07_04.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 5,
+  "contexte": "géint den Ekzeema verschreiwen ech",
+  "attendu": "Iech",
+  "image": "07_05.png",
+  "suggestions": [
+   "hunn",
+   "mengen",
+   "hu",
+   "sin"
+  ],
+  "top3": [
+   "hunn",
+   "mengen",
+   "hu"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 6,
+  "contexte": "géint den Ekzeema verschreiwen ech Iech",
+  "attendu": "eng",
+  "image": "07_06.png",
+  "suggestions": [
+   "d",
+   "bei",
+   "fir",
+   "an"
+  ],
+  "top3": [
+   "d",
+   "bei",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 7,
+  "contexte": "géint den Ekzeema verschreiwen ech Iech eng",
+  "attendu": "Crème",
+  "image": "07_07.png",
+  "suggestions": [
+   "Persoun",
+   "Kéier",
+   "ganz",
+   "ne"
+  ],
+  "top3": [
+   "Persoun",
+   "Kéier",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 8,
+  "contexte": "géint den Ekzeema verschreiwen ech Iech eng Crème",
+  "attendu": "mat",
+  "image": "07_08.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 9,
+  "contexte": "géint den Ekzeema verschreiwen ech Iech eng Crème mat",
+  "attendu": "Kortison",
+  "image": "07_09.png",
+  "suggestions": [
+   "der",
+   "engem",
+   "de",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "engem",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 1,
+  "contexte": "den",
+  "attendu": "Abroch",
+  "image": "08_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 2,
+  "contexte": "den Abroch",
+  "attendu": "an",
+  "image": "08_02.png",
+  "suggestions": [
+   "an",
+   "gouf",
+   "a",
+   "zu"
+  ],
+  "top3": [
+   "an",
+   "gouf",
+   "a"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 8,
+  "position": 3,
+  "contexte": "den Abroch an",
+  "attendu": "hiert",
+  "image": "08_03.png",
+  "suggestions": [
+   "en",
+   "der",
+   "e",
+   "eng"
+  ],
+  "top3": [
+   "en",
+   "der",
+   "e"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 4,
+  "contexte": "den Abroch an hiert",
+  "attendu": "Haus",
+  "image": "08_04.png",
+  "suggestions": [
+   "Land",
+   "Heemechtsland",
+   "Heft"
+  ],
+  "top3": [
+   "Land",
+   "Heemechtsland",
+   "Heft"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 5,
+  "contexte": "den Abroch an hiert Haus",
+  "attendu": "war",
+  "image": "08_05.png",
+  "suggestions": [
+   "an",
+   "zu",
+   "vum",
+   "ze"
+  ],
+  "top3": [
+   "an",
+   "zu",
+   "vum"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 6,
+  "contexte": "den Abroch an hiert Haus war",
+  "attendu": "fir",
+  "image": "08_06.png",
+  "suggestions": [
+   "et",
+   "de",
+   "d",
+   "an"
+  ],
+  "top3": [
+   "et",
+   "de",
+   "d"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 7,
+  "contexte": "den Abroch an hiert Haus war fir",
+  "attendu": "eis",
+  "image": "08_07.png",
+  "suggestions": [
+   "d",
+   "de",
+   "den",
+   "déi"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 8,
+  "contexte": "den Abroch an hiert Haus war fir eis",
+  "attendu": "Noperen",
+  "image": "08_08.png",
+  "suggestions": [
+   "ass",
+   "all",
+   "Gesellschaft"
+  ],
+  "top3": [
+   "ass",
+   "all",
+   "Gesellschaft"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 9,
+  "contexte": "den Abroch an hiert Haus war fir eis Noperen",
+  "attendu": "en",
+  "image": "08_09.png",
+  "suggestions": [
+   "an",
+   "hunn",
+   "a",
+   "hate"
+  ],
+  "top3": [
+   "an",
+   "hunn",
+   "a"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 10,
+  "contexte": "den Abroch an hiert Haus war fir eis Noperen en",
+  "attendu": "desagreabelt",
+  "image": "08_10.png",
+  "suggestions": [
+   "Denschdeg",
+   "Donneschdeg",
+   "Auto"
+  ],
+  "top3": [
+   "Denschdeg",
+   "Donneschdeg",
+   "Auto"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 11,
+  "contexte": "den Abroch an hiert Haus war fir eis Noperen en desagreabelt",
+  "attendu": "Erliefnes",
+  "image": "08_11.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 1,
+  "contexte": "däi",
+  "attendu": "Mann",
+  "image": "09_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 2,
+  "contexte": "däi Mann",
+  "attendu": "huet",
+  "image": "09_02.png",
+  "suggestions": [
+   "deen",
+   "huet",
+   "an",
+   "vun"
+  ],
+  "top3": [
+   "deen",
+   "huet",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 3,
+  "contexte": "däi Mann huet",
+  "attendu": "eng",
+  "image": "09_03.png",
+  "suggestions": [
+   "sech",
+   "d",
+   "eng",
+   "och"
+  ],
+  "top3": [
+   "sech",
+   "d",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 4,
+  "contexte": "däi Mann huet eng",
+  "attendu": "déck",
+  "image": "09_04.png",
+  "suggestions": [
+   "Enquete",
+   "Persoun",
+   "ganz",
+   "Fr"
+  ],
+  "top3": [
+   "Enquete",
+   "Persoun",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 5,
+  "contexte": "däi Mann huet eng déck",
+  "attendu": "Plaz",
+  "image": "09_05.png",
+  "suggestions": [
+   "Zwou",
+   "op",
+   "Loft",
+   "zefrid"
+  ],
+  "top3": [
+   "Zwou",
+   "op",
+   "Loft"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 6,
+  "contexte": "däi Mann huet eng déck Plaz",
+  "attendu": "an",
+  "image": "09_06.png",
+  "suggestions": [
+   "waren",
+   "fir",
+   "an",
+   "wai"
+  ],
+  "top3": [
+   "waren",
+   "fir",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 7,
+  "contexte": "däi Mann huet eng déck Plaz an",
+  "attendu": "deemno",
+  "image": "09_07.png",
+  "suggestions": [
+   "der",
+   "d",
+   "huet",
+   "huni"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 8,
+  "contexte": "däi Mann huet eng déck Plaz an deemno",
+  "attendu": "och",
+  "image": "09_08.png",
+  "suggestions": [
+   "och",
+   "net",
+   "d",
+   "wéi"
+  ],
+  "top3": [
+   "och",
+   "net",
+   "d"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 9,
+  "position": 9,
+  "contexte": "däi Mann huet eng déck Plaz an deemno och",
+  "attendu": "eng",
+  "image": "09_09.png",
+  "suggestions": [
+   "net",
+   "mat",
+   "kee",
+   "manr"
+  ],
+  "top3": [
+   "net",
+   "mat",
+   "kee"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 10,
+  "contexte": "däi Mann huet eng déck Plaz an deemno och eng",
+  "attendu": "déck",
+  "image": "09_10.png",
+  "suggestions": [
+   "Partie",
+   "Rei",
+   "ganz",
+   "nei"
+  ],
+  "top3": [
+   "Partie",
+   "Rei",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 11,
+  "contexte": "däi Mann huet eng déck Plaz an deemno och eng déck",
+  "attendu": "Pai",
+  "image": "09_11.png",
+  "suggestions": [
+   "huet",
+   "huelen",
+   "hues"
+  ],
+  "top3": [
+   "huet",
+   "huelen",
+   "hues"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 1,
+  "contexte": "am",
+  "attendu": "Gruef",
+  "image": "10_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 2,
+  "contexte": "am Gruef",
+  "attendu": "louch",
+  "image": "10_02.png",
+  "suggestions": [
+   "gelant",
+   "geroden",
+   "gaangen",
+   "ger"
+  ],
+  "top3": [
+   "gelant",
+   "geroden",
+   "gaangen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 3,
+  "contexte": "am Gruef louch",
+  "attendu": "de",
+  "image": "10_03.png",
+  "suggestions": [
+   "den",
+   "bei",
+   "de",
+   "d"
+  ],
+  "top3": [
+   "den",
+   "bei",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 10,
+  "position": 4,
+  "contexte": "am Gruef louch de",
+  "attendu": "Kadaver",
+  "image": "10_04.png",
+  "suggestions": [
+   "Prais",
+   "Montant",
+   "Loyer",
+   "Fok"
+  ],
+  "top3": [
+   "Prais",
+   "Montant",
+   "Loyer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 5,
+  "contexte": "am Gruef louch de Kadaver",
+  "attendu": "vun",
+  "image": "10_05.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 6,
+  "contexte": "am Gruef louch de Kadaver vun",
+  "attendu": "engem",
+  "image": "10_06.png",
+  "suggestions": [
+   "der",
+   "de",
+   "den",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 7,
+  "contexte": "am Gruef louch de Kadaver vun engem",
+  "attendu": "Hond",
+  "image": "10_07.png",
+  "suggestions": [
+   "Auto",
+   "Joer",
+   "Haus",
+   "neie"
+  ],
+  "top3": [
+   "Auto",
+   "Joer",
+   "Haus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 1,
+  "contexte": "Mëttlerweil",
+  "attendu": "gi",
+  "image": "11_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 2,
+  "contexte": "Mëttlerweil gi",
+  "attendu": "sou",
+  "image": "11_02.png",
+  "suggestions": [
+   "war",
+   "sinn",
+   "wier",
+   "fir"
+  ],
+  "top3": [
+   "war",
+   "sinn",
+   "wier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 3,
+  "contexte": "Mëttlerweil gi sou",
+  "attendu": "Netzer",
+  "image": "11_03.png",
+  "suggestions": [
+   "de",
+   "d",
+   "den",
+   "wéi"
+  ],
+  "top3": [
+   "de",
+   "d",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 4,
+  "contexte": "Mëttlerweil gi sou Netzer",
+  "attendu": "moderniséiert",
+  "image": "11_04.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 5,
+  "contexte": "Mëttlerweil gi sou Netzer moderniséiert",
+  "attendu": "an",
+  "image": "11_05.png",
+  "suggestions": [
+   "ginn",
+   "an",
+   "gett",
+   "dei"
+  ],
+  "top3": [
+   "ginn",
+   "an",
+   "gett"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 11,
+  "position": 6,
+  "contexte": "Mëttlerweil gi sou Netzer moderniséiert an",
+  "attendu": "oft",
+  "image": "11_06.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 7,
+  "contexte": "Mëttlerweil gi sou Netzer moderniséiert an oft",
+  "attendu": "op",
+  "image": "11_07.png",
+  "suggestions": [
+   "an",
+   "mat",
+   "net",
+   "de"
+  ],
+  "top3": [
+   "an",
+   "mat",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 8,
+  "contexte": "Mëttlerweil gi sou Netzer moderniséiert an oft op",
+  "attendu": "Biomass",
+  "image": "11_08.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 9,
+  "contexte": "Mëttlerweil gi sou Netzer moderniséiert an oft op Biomass",
+  "attendu": "ëmgerëscht",
+  "image": "11_09.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 1,
+  "contexte": "Och",
+  "attendu": "dësen",
+  "image": "12_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 2,
+  "contexte": "Och dësen",
+  "attendu": "Amendement",
+  "image": "12_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 3,
+  "contexte": "Och dësen Amendement",
+  "attendu": "vun",
+  "image": "12_03.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 4,
+  "contexte": "Och dësen Amendement vun",
+  "attendu": "ons",
+  "image": "12_04.png",
+  "suggestions": [
+   "der",
+   "de",
+   "den",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 5,
+  "contexte": "Och dësen Amendement vun ons",
+  "attendu": "gouf",
+  "image": "12_05.png",
+  "suggestions": [
+   "Stad",
+   "op",
+   "den",
+   "all"
+  ],
+  "top3": [
+   "Stad",
+   "op",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 6,
+  "contexte": "Och dësen Amendement vun ons gouf",
+  "attendu": "net",
+  "image": "12_06.png",
+  "suggestions": [
+   "et",
+   "an",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "et",
+   "an",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 7,
+  "contexte": "Och dësen Amendement vun ons gouf net",
+  "attendu": "zréckbehalen",
+  "image": "12_07.png",
+  "suggestions": [
+   "blesseiert",
+   "méi",
+   "verwonnt",
+   "g"
+  ],
+  "top3": [
+   "blesseiert",
+   "méi",
+   "verwonnt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 1,
+  "contexte": "mir",
+  "attendu": "hunn",
+  "image": "13_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 2,
+  "contexte": "mir hunn",
+  "attendu": "all",
+  "image": "13_02.png",
+  "suggestions": [
+   "d",
+   "déi",
+   "an",
+   "de"
+  ],
+  "top3": [
+   "d",
+   "déi",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 3,
+  "contexte": "mir hunn all",
+  "attendu": "Joer",
+  "image": "13_03.png",
+  "suggestions": [
+   "d",
+   "déi",
+   "Dag",
+   "Joe"
+  ],
+  "top3": [
+   "d",
+   "déi",
+   "Dag"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 4,
+  "contexte": "mir hunn all Joer",
+  "attendu": "e",
+  "image": "13_04.png",
+  "suggestions": [
+   "ginn",
+   "eng",
+   "op",
+   "iwwe"
+  ],
+  "top3": [
+   "ginn",
+   "eng",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 5,
+  "contexte": "mir hunn all Joer e",
+  "attendu": "puer",
+  "image": "13_05.png",
+  "suggestions": [
+   "besse",
+   "Projet",
+   "puer",
+   "Fuerv"
+  ],
+  "top3": [
+   "besse",
+   "Projet",
+   "puer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 13,
+  "position": 6,
+  "contexte": "mir hunn all Joer e puer",
+  "attendu": "Reien",
+  "image": "13_06.png",
+  "suggestions": [
+   "mol",
+   "Deeg",
+   "Méint",
+   "Joe"
+  ],
+  "top3": [
+   "mol",
+   "Deeg",
+   "Méint"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 7,
+  "contexte": "mir hunn all Joer e puer Reien",
+  "attendu": "Zwiwwele",
+  "image": "13_07.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 8,
+  "contexte": "mir hunn all Joer e puer Reien Zwiwwele",
+  "attendu": "gesat",
+  "image": "13_08.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 1,
+  "contexte": "de",
+  "attendu": "grousse",
+  "image": "14_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 2,
+  "contexte": "de grousse",
+  "attendu": "Brudder",
+  "image": "14_02.png",
+  "suggestions": [
+   "Succes",
+   "Problem",
+   "Projet",
+   "Gan"
+  ],
+  "top3": [
+   "Succes",
+   "Problem",
+   "Projet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 3,
+  "contexte": "de grousse Brudder",
+  "attendu": "huet",
+  "image": "14_03.png",
+  "suggestions": [
+   "vum",
+   "vun",
+   "ass",
+   "hue"
+  ],
+  "top3": [
+   "vum",
+   "vun",
+   "ass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 4,
+  "contexte": "de grousse Brudder huet",
+  "attendu": "op",
+  "image": "14_04.png",
+  "suggestions": [
+   "d",
+   "de",
+   "sech",
+   "den"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 5,
+  "contexte": "de grousse Brudder huet op",
+  "attendu": "seng",
+  "image": "14_05.png",
+  "suggestions": [
+   "der",
+   "d",
+   "Nofro",
+   "de"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "Nofro"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 6,
+  "contexte": "de grousse Brudder huet op seng",
+  "attendu": "kleng",
+  "image": "14_06.png",
+  "suggestions": [
+   "Aarbecht",
+   "nei",
+   "parlamentaresch"
+  ],
+  "top3": [
+   "Aarbecht",
+   "nei",
+   "parlamentaresch"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 7,
+  "contexte": "de grousse Brudder huet op seng kleng",
+  "attendu": "Geschwëster",
+  "image": "14_07.png",
+  "suggestions": [
+   "a",
+   "Quantiteit",
+   "ass",
+   "Ka"
+  ],
+  "top3": [
+   "a",
+   "Quantiteit",
+   "ass"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 8,
+  "contexte": "de grousse Brudder huet op seng kleng Geschwëster",
+  "attendu": "opgepasst",
+  "image": "14_08.png",
+  "suggestions": [
+   "Bei",
+   "Bis",
+   "Beim"
+  ],
+  "top3": [
+   "Bei",
+   "Bis",
+   "Beim"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 1,
+  "contexte": "de",
+  "attendu": "Weekend",
+  "image": "15_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 2,
+  "contexte": "de Weekend",
+  "attendu": "war",
+  "image": "15_02.png",
+  "suggestions": [
+   "vum",
+   "iwwer",
+   "an",
+   "am"
+  ],
+  "top3": [
+   "vum",
+   "iwwer",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 3,
+  "contexte": "de Weekend war",
+  "attendu": "ech",
+  "image": "15_03.png",
+  "suggestions": [
+   "et",
+   "de",
+   "d",
+   "an"
+  ],
+  "top3": [
+   "et",
+   "de",
+   "d"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 4,
+  "contexte": "de Weekend war ech",
+  "attendu": "an",
+  "image": "15_04.png",
+  "suggestions": [
+   "hunn",
+   "mengen",
+   "hu",
+   "sin"
+  ],
+  "top3": [
+   "hunn",
+   "mengen",
+   "hu"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 5,
+  "contexte": "de Weekend war ech an",
+  "attendu": "de",
+  "image": "15_05.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 15,
+  "position": 6,
+  "contexte": "de Weekend war ech an de",
+  "attendu": "Mudam",
+  "image": "15_06.png",
+  "suggestions": [
+   "leschte",
+   "leschten",
+   "Schoulen",
+   "Sa"
+  ],
+  "top3": [
+   "leschte",
+   "leschten",
+   "Schoulen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 7,
+  "contexte": "de Weekend war ech an de Mudam",
+  "attendu": "eng",
+  "image": "15_07.png",
+  "suggestions": [
+   "an",
+   "net",
+   "hat",
+   "nac"
+  ],
+  "top3": [
+   "an",
+   "net",
+   "hat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 8,
+  "contexte": "de Weekend war ech an de Mudam eng",
+  "attendu": "flott",
+  "image": "15_08.png",
+  "suggestions": [
+   "Persoun",
+   "Kéier",
+   "ganz",
+   "ne"
+  ],
+  "top3": [
+   "Persoun",
+   "Kéier",
+   "ganz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 9,
+  "contexte": "de Weekend war ech an de Mudam eng flott",
+  "attendu": "Expo",
+  "image": "15_09.png",
+  "suggestions": [
+   "vu",
+   "Iddi",
+   "vun",
+   "a"
+  ],
+  "top3": [
+   "vu",
+   "Iddi",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 10,
+  "contexte": "de Weekend war ech an de Mudam eng flott Expo",
+  "attendu": "iwwer",
+  "image": "15_10.png",
+  "suggestions": [
+   "zu",
+   "am",
+   "an",
+   "Duba"
+  ],
+  "top3": [
+   "zu",
+   "am",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 11,
+  "contexte": "de Weekend war ech an de Mudam eng flott Expo iwwer",
+  "attendu": "Design",
+  "image": "15_11.png",
+  "suggestions": [
+   "d",
+   "Joer",
+   "déi",
+   "de"
+  ],
+  "top3": [
+   "d",
+   "Joer",
+   "déi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 12,
+  "contexte": "de Weekend war ech an de Mudam eng flott Expo iwwer Design",
+  "attendu": "kucken",
+  "image": "15_12.png",
+  "suggestions": [
+   "an",
+   "Award",
+   "aus",
+   "d"
+  ],
+  "top3": [
+   "an",
+   "Award",
+   "aus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "Rucksak",
+  "image": "16_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 2,
+  "contexte": "dee Rucksak",
+  "attendu": "gëtt",
+  "image": "16_02.png",
+  "suggestions": [
+   "geklaut",
+   "mat",
+   "a",
+   "fonr"
+  ],
+  "top3": [
+   "geklaut",
+   "mat",
+   "a"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 3,
+  "contexte": "dee Rucksak gëtt",
+  "attendu": "et",
+  "image": "16_03.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 4,
+  "contexte": "dee Rucksak gëtt et",
+  "attendu": "an",
+  "image": "16_04.png",
+  "suggestions": [
+   "ass",
+   "wier",
+   "an",
+   "gett"
+  ],
+  "top3": [
+   "ass",
+   "wier",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 5,
+  "contexte": "dee Rucksak gëtt et an",
+  "attendu": "dräi",
+  "image": "16_05.png",
+  "suggestions": [
+   "der",
+   "engem",
+   "de",
+   "deer"
+  ],
+  "top3": [
+   "der",
+   "engem",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 6,
+  "contexte": "dee Rucksak gëtt et an dräi",
+  "attendu": "verschiddene",
+  "image": "16_06.png",
+  "suggestions": [
+   "Joer",
+   "Méint",
+   "Manner",
+   "Dee"
+  ],
+  "top3": [
+   "Joer",
+   "Méint",
+   "Manner"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 7,
+  "contexte": "dee Rucksak gëtt et an dräi verschiddene",
+  "attendu": "Faarwen",
+  "image": "16_07.png",
+  "suggestions": [
+   "Lanner",
+   "Plazen",
+   "Fall",
+   "Berai"
+  ],
+  "top3": [
+   "Lanner",
+   "Plazen",
+   "Fall"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 1,
+  "contexte": "an",
+  "attendu": "dëser",
+  "image": "17_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 2,
+  "contexte": "an dëser",
+  "attendu": "Strooss",
+  "image": "17_02.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 3,
+  "contexte": "an dëser Strooss",
+  "attendu": "passéiert",
+  "image": "17_03.png",
+  "suggestions": [
+   "an",
+   "zu",
+   "ofkomm",
+   "gou"
+  ],
+  "top3": [
+   "an",
+   "zu",
+   "ofkomm"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 4,
+  "contexte": "an dëser Strooss passéiert",
+  "attendu": "de",
+  "image": "17_04.png",
+  "suggestions": [
+   "ass",
+   "sinn",
+   "an",
+   "wie"
+  ],
+  "top3": [
+   "ass",
+   "sinn",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 5,
+  "contexte": "an dëser Strooss passéiert de",
+  "attendu": "Pechert",
+  "image": "17_05.png",
+  "suggestions": [
+   "Mann",
+   "Moien",
+   "Letzebuerger"
+  ],
+  "top3": [
+   "Mann",
+   "Moien",
+   "Letzebuerger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 6,
+  "contexte": "an dëser Strooss passéiert de Pechert",
+  "attendu": "zweemol",
+  "image": "17_06.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 7,
+  "contexte": "an dëser Strooss passéiert de Pechert zweemol",
+  "attendu": "den",
+  "image": "17_07.png",
+  "suggestions": [
+   "an",
+   "op",
+   "zu",
+   "eng"
+  ],
+  "top3": [
+   "an",
+   "op",
+   "zu"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 8,
+  "contexte": "an dëser Strooss passéiert de Pechert zweemol den",
+  "attendu": "Dag",
+  "image": "17_08.png",
+  "suggestions": [
+   "Owend",
+   "Ament",
+   "Auto"
+  ],
+  "top3": [
+   "Owend",
+   "Ament",
+   "Auto"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 1,
+  "contexte": "Mee",
+  "attendu": "och",
+  "image": "18_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 2,
+  "contexte": "Mee och",
+  "attendu": "aus",
+  "image": "18_02.png",
+  "suggestions": [
+   "d",
+   "de",
+   "nach",
+   "eng"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "nach"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 3,
+  "contexte": "Mee och aus",
+  "attendu": "anere",
+  "image": "18_03.png",
+  "suggestions": [
+   "dem",
+   "der",
+   "enger",
+   "de"
+  ],
+  "top3": [
+   "dem",
+   "der",
+   "enger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 4,
+  "contexte": "Mee och aus anere",
+  "attendu": "Beräicher",
+  "image": "18_04.png",
+  "suggestions": [
+   "Lanner",
+   "lycéesklasse",
+   "Spideeler"
+  ],
+  "top3": [
+   "Lanner",
+   "lycéesklasse",
+   "Spideeler"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 5,
+  "contexte": "Mee och aus anere Beräicher",
+  "attendu": "wäerten",
+  "image": "18_05.png",
+  "suggestions": [
+   "vun",
+   "an",
+   "wei",
+   "WOU"
+  ],
+  "top3": [
+   "vun",
+   "an",
+   "wei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 6,
+  "contexte": "Mee och aus anere Beräicher wäerten",
+  "attendu": "Organisatiounen",
+  "image": "18_06.png",
+  "suggestions": [
+   "aus",
+   "Ausland",
+   "Ausseminister"
+  ],
+  "top3": [
+   "aus",
+   "Ausland",
+   "Ausseminister"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 7,
+  "contexte": "Mee och aus anere Beräicher wäerten Organisatiounen",
+  "attendu": "a",
+  "image": "18_07.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 8,
+  "contexte": "Mee och aus anere Beräicher wäerten Organisatiounen a",
+  "attendu": "Gruppen",
+  "image": "18_08.png",
+  "suggestions": [
+   "Richtung",
+   "vun",
+   "fir",
+   "Fran"
+  ],
+  "top3": [
+   "Richtung",
+   "vun",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 9,
+  "contexte": "Mee och aus anere Beräicher wäerten Organisatiounen a Gruppen",
+  "attendu": "op",
+  "image": "18_09.png",
+  "suggestions": [
+   "an",
+   "déi",
+   "ze",
+   "op"
+  ],
+  "top3": [
+   "an",
+   "déi",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 10,
+  "contexte": "Mee och aus anere Beräicher wäerten Organisatiounen a Gruppen op",
+  "attendu": "Budapest",
+  "image": "18_10.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 11,
+  "contexte": "Mee och aus anere Beräicher wäerten Organisatiounen a Gruppen op Budapest",
+  "attendu": "reesen",
+  "image": "18_11.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 1,
+  "contexte": "Dës",
+  "attendu": "Maueren",
+  "image": "19_01.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 2,
+  "contexte": "Dës Maueren",
+  "attendu": "an",
+  "image": "19_02.png",
+  "suggestions": [
+   "an",
+   "opgeriicht",
+   "op",
+   "op"
+  ],
+  "top3": [
+   "an",
+   "opgeriicht",
+   "op"
+  ],
+  "vide": false,
+  "top1": true,
+  "top3_ok": true
+ },
+ {
+  "phrase": 19,
+  "position": 3,
+  "contexte": "Dës Maueren an",
+  "attendu": "d’Fondatioune",
+  "image": "19_03.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 4,
+  "contexte": "Dës Maueren an d’Fondatioune",
+  "attendu": "gi",
+  "image": "19_04.png",
+  "suggestions": [
+   "Maueren"
+  ],
+  "top3": [
+   "Maueren"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 5,
+  "contexte": "Dës Maueren an d’Fondatioune gi",
+  "attendu": "mat",
+  "image": "19_05.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 6,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat",
+  "attendu": "Injektioune",
+  "image": "19_06.png",
+  "suggestions": [
+   "der",
+   "engem",
+   "de",
+   "enge"
+  ],
+  "top3": [
+   "der",
+   "engem",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 7,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune",
+  "attendu": "stabiliséiert",
+  "image": "19_07.png",
+  "suggestions": [],
+  "top3": [],
+  "vide": true,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 8,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune stabiliséiert",
+  "attendu": "an",
+  "image": "19_08.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 9,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune stabiliséiert an",
+  "attendu": "och",
+  "image": "19_09.png",
+  "suggestions": [
+   "der",
+   "d",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "der",
+   "d",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 10,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune stabiliséiert an och",
+  "attendu": "deelweis",
+  "image": "19_10.png",
+  "suggestions": [
+   "d",
+   "de",
+   "net",
+   "an"
+  ],
+  "top3": [
+   "d",
+   "de",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 11,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune stabiliséiert an och deelweis",
+  "attendu": "nei",
+  "image": "19_11.png",
+  "suggestions": [
+   "op",
+   "och",
+   "Sursis",
+   "gesp"
+  ],
+  "top3": [
+   "op",
+   "och",
+   "Sursis"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 12,
+  "contexte": "Dës Maueren an d’Fondatioune gi mat Injektioune stabiliséiert an och deelweis nei",
+  "attendu": "gebaut",
+  "image": "19_12.png",
+  "suggestions": [
+   "Regierung",
+   "ze",
+   "an"
+  ],
+  "top3": [
+   "Regierung",
+   "ze",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ }
+]

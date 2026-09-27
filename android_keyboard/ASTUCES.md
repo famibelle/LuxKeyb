@@ -6,7 +6,7 @@ Contenu de la carte « Astuce de la semaine », affichée dans l'onglet
 
 ## Fonctionnement
 
-- Les 36 astuces vivent dans `WEEKLY_TIPS` (`SettingsActivity.kt:89`), et nulle
+- Les 39 astuces vivent dans `WEEKLY_TIPS` (`SettingsActivity.kt:89`), et nulle
   part ailleurs : ce fichier documente et source cette liste, il n'est pas lu
   par l'application.
 - `getTipOfTheWeek()` (`SettingsActivity.kt:3516`) prend le numéro de semaine
@@ -14,7 +14,7 @@ Contenu de la carte « Astuce de la semaine », affichée dans l'onglet
   seedé sur la date (contrairement à `getWordOfTheDay()`,
   `SettingsActivity.kt:3525`) : la liste est parcourue en entier et deux
   semaines de suite ne retombent jamais sur la même astuce. Le cycle complet
-  dure donc 36 semaines, soit un peu plus de huit mois.
+  dure donc 39 semaines, soit neuf mois.
 - Le décalage de fuseau est ajouté au timestamp pour que le changement d'astuce
   ait lieu à minuit local, pas à minuit UTC. Le `+3` du calcul cale la bascule
   sur le lundi, le jour 0 de l'ère Unix étant un jeudi.
@@ -35,7 +35,7 @@ onglets) sont repris tels quels de l'application ou du dictionnaire.
 
 ---
 
-## Les 36 astuces
+## Les 39 astuces
 
 Les numéros correspondent à l'ordre dans `WEEKLY_TIPS`, donc à l'ordre de
 passage : l'astuce n° 1 s'affiche la semaine où le compteur repart à zéro, puis
@@ -51,11 +51,13 @@ une par semaine dans cet ordre.
 | 21 | Digraphes en appui long : ch sous c, dj sous d, tj sous t, ng et ny sous n. | `accentMap` (`AccentHandler.kt:63`), digraphes GEREC documentés juste au-dessus |
 | 11 | Appui long sur la virgule (`;` `:` `'`), sur le point (`!` `?` `…`). | `accentMap` (`AccentHandler.kt:63`), entrées `","` et `"."` |
 | 3 | Appui long d'une seconde sur la barre d'espace (le petit 🌐) pour changer de clavier. | `SPACE_LONG_PRESS_DELAY = 1000L` (`KeyboardLayoutManager.kt:35`), indice 🌐 (`KeyboardLayoutManager.kt:306`), `processSpaceLongPress()` (`InputProcessor.kt:365`) |
+| 38 | Glisser le doigt le long de la barre d'espace promène le curseur, une lettre par cran de 10 dp, sur toute la largeur de l'écran. | `OnTouchListener` unique de la barre d'espace : passé `scaledTouchSlop` le compte à rebours du sélecteur de claviers est annulé et le relâchement n'insère plus d'espace ; le curseur bouge par touches directionnelles (`InputProcessor`), les suggestions ne sont resynchronisées qu'au relâchement. `SpaceCursorGestureTest`, plan dans `SWIPE-ESPACE.md` |
 | 9 | Majuscule à trois états : une majuscule, verrouillage, retour au normal. | `handleShift()` (`InputProcessor.kt:292`) |
 | 32 | Première lettre de chaque phrase en majuscule automatique. | `shouldAutoCapitalize()` (`InputProcessor.kt:483`) |
 | 13 | Bouton « 123 » pour chiffres et symboles, euro compris ; « ABC » pour revenir. | `handleModeSwitch()` (`InputProcessor.kt:321`), rangée numérique avec `€` (`KeyboardLayoutManager.kt:131`) |
 | 15 | Touche emoji en bas à droite, près de 1900 emojis classés par catégories. | Layout emoji (`KeyboardLayoutManager.kt:142`), `EmojiData.categories` (`EmojiData.kt:28`), asset `emoji_data.json` |
 | 18 | Appui long sur un emoji de personne pour choisir la couleur de peau. | `emojiSkinTones` / `loadEmojiSkinTones()` (`AccentHandler.kt:104`), `EmojiData.skinTones` (`EmojiData.kt:29`) |
+| 39 | Le panneau emoji s'ouvre sur les 30 derniers emojis employés, dans un onglet « Récents » en tête. | `EmojiRecents` (capacité 30, `filesDir`, jamais depuis un champ sensible), onglet ajouté en tête dans `EmojiPickerView`, purge dans `KeyboardSettingsActivity`. `EmojiRecentsTest` |
 | 29 | Le retour arrière efface un emoji en entier, couleur de peau comprise. | `calculateBackspaceLength()` (`InputProcessor.kt:191`) : paires de surrogates + modificateur de ton |
 | 27 | La touche Entrée s'adapte au champ : Rechercher, Envoyer, ou retour à la ligne. | `handleEnter()` (`InputProcessor.kt:209`) |
 
@@ -90,6 +92,7 @@ une par semaine dans cet ordre.
 |---|--------|--------|
 | 8 | Mo an Karénaj : 5 lettres, 6 essais, vert bien placé / jaune mal placé. | `WORD_LENGTH = 5`, `MAX_ATTEMPTS = 6` (`mokarenaj/MoKarenajModels.kt:31`), `evaluateGuess()` (`mokarenaj/MoKarenajModels.kt:79`), couleurs `LetterState.color()` (`mokarenaj/MoKarenajModels.kt:17`). Le mot est tiré au hasard à chaque partie (`pickRandomWord()`), d'où l'absence de « mot du jour » dans le texte |
 | 17 | Mots Mélangés : 10 mots chronométrés, bouton Indice. | `take(10)` (`wordscramble/WordScrambleModels.kt:76`), `getTimeForDifficulty()` 45/30/20 s (`wordscramble/WordScrambleModels.kt:91`), bouton « 💡 Indice » (`SettingsActivity.kt:4120`) |
+| 37 | Wuertlück : une vraie phrase à laquelle il manque un mot, quatre propositions, une seule écrite par l'auteur. | Actif `luxemburgish_cloze.json` produit par `Dictionnaires/generate_cloze.py` ; `ClozeData.newRound()` (`cloze/ClozeModels.kt`) tire 10 questions et mélange les propositions, `ClozeFragment.onOptionChosen()` (`SettingsActivity.kt`) les fige après le choix. Les trois leurres viennent du modèle n-grammes du même contexte, d'où « une seule est celle qu'a écrite l'auteur » plutôt que « une seule est correcte » |
 | 23 | Mots Mêlés : diagonales et mots à l'envers selon la difficulté. | `WordSearchDifficulty` (`wordsearch/WordSearchModels.kt:63`), `WordDirection` (`wordsearch/WordSearchModels.kt:52`) |
 
 ### Correcteur, confidentialité, aide

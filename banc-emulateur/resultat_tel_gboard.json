@@ -1,0 +1,7526 @@
+[
+ {
+  "phrase": 0,
+  "position": 1,
+  "contexte": "eis",
+  "attendu": "Ekipp",
+  "image": "00_01.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "apps",
+   "ekipp",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "apps",
+   "ekipp"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 2,
+  "contexte": "eis Ekipp",
+  "attendu": "ass",
+  "image": "00_02.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "der",
+   "an",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 3,
+  "contexte": "eis Ekipp ass",
+  "attendu": "schonn",
+  "image": "00_03.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "eng",
+   "scsonn",
+   "en"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "scsonn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 0,
+  "position": 4,
+  "contexte": "eis Ekipp ass schonn",
+  "attendu": "an",
+  "image": "00_04.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "an",
+   "erstallt",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "erstallt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 5,
+  "contexte": "eis Ekipp ass schonn an",
+  "attendu": "der",
+  "image": "00_05.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 6,
+  "contexte": "eis Ekipp ass schonn an der",
+  "attendu": "zweeter",
+  "image": "00_06.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "zweeter",
+   "Gemeng",
+   "Stad"
+  ],
+  "top3": [
+   "88",
+   "zweeter",
+   "Gemeng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 7,
+  "contexte": "eis Ekipp ass schonn an der zweeter",
+  "attendu": "Ronn",
+  "image": "00_07.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "ronn",
+   "Hallschent",
+   "Fra"
+  ],
+  "top3": [
+   "88",
+   "ronn",
+   "Hallschent"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 0,
+  "position": 8,
+  "contexte": "eis Ekipp ass schonn an der zweeter Ronn",
+  "attendu": "ausgescheet",
+  "image": "00_08.png",
+  "champ_final": "eis ekipp ass schonn an der zweeter ronn ",
+  "suggestions": [
+   "88",
+   "mat",
+   "op",
+   "huet"
+  ],
+  "top3": [
+   "88",
+   "mat",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 1,
+  "contexte": "wat",
+  "attendu": "bretzt",
+  "image": "01_01.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "ech",
+   "fir",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "ech",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 2,
+  "contexte": "wat bretzt",
+  "attendu": "deen",
+  "image": "01_02.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "der",
+   "an",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 3,
+  "contexte": "wat bretzt deen",
+  "attendu": "sech",
+  "image": "01_03.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "an",
+   "et",
+   "am"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 4,
+  "contexte": "wat bretzt deen sech",
+  "attendu": "mat",
+  "image": "01_04.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "zesum...setzt",
+   "aus",
+   "doduerch"
+  ],
+  "top3": [
+   "88",
+   "zesum...setzt",
+   "aus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 5,
+  "contexte": "wat bretzt deen sech mat",
+  "attendu": "senger",
+  "image": "01_05.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 6,
+  "contexte": "wat bretzt deen sech mat senger",
+  "attendu": "neier",
+  "image": "01_06.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "Famill",
+   "Fra",
+   "Mamm"
+  ],
+  "top3": [
+   "88",
+   "Famill",
+   "Fra"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 1,
+  "position": 7,
+  "contexte": "wat bretzt deen sech mat senger neier",
+  "attendu": "Gromper",
+  "image": "01_07.png",
+  "champ_final": "wat bretzt deen sech mat senger neier ",
+  "suggestions": [
+   "88",
+   "an",
+   "Funktioun",
+   "Bréck"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "Funktioun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "ass",
+  "image": "02_01.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "heescht",
+   "net",
+   "an",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "heescht",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 2,
+  "contexte": "Dat ass",
+  "attendu": "op",
+  "image": "02_02.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "eng",
+   "scsonn",
+   "schonn"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "scsonn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 3,
+  "contexte": "Dat ass op",
+  "attendu": "en",
+  "image": "02_03.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "dar",
+   "de",
+   "d'mannst"
+  ],
+  "top3": [
+   "88",
+   "dar",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 4,
+  "contexte": "Dat ass op en",
+  "attendu": "negativen",
+  "image": "02_04.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "Neits",
+   "Enn",
+   "Neies"
+  ],
+  "top3": [
+   "88",
+   "Neits",
+   "Enn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 5,
+  "contexte": "Dat ass op en negativen",
+  "attendu": "Avis",
+  "image": "02_05.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "Avis",
+   "Impakt",
+   "Afloss",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Avis",
+   "Impakt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 2,
+  "position": 6,
+  "contexte": "Dat ass op en negativen Avis",
+  "attendu": "getraff",
+  "image": "02_06.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "aux",
+   "de",
+   "sur"
+  ],
+  "top3": [
+   "88",
+   "aux",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 7,
+  "contexte": "Dat ass op en negativen Avis getraff",
+  "attendu": "vum",
+  "image": "02_07.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "an",
+   "fir",
+   "ginn"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 2,
+  "position": 8,
+  "contexte": "Dat ass op en negativen Avis getraff vum",
+  "attendu": "Staatsrot",
+  "image": "02_08.png",
+  "champ_final": "dat ass op en negativen avis getraff vum ",
+  "suggestions": [
+   "88",
+   "Land",
+   "Dag",
+   "Letzebuerger",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Land",
+   "Dag"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 1,
+  "contexte": "huel",
+  "attendu": "der",
+  "image": "03_01.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "Bamstamm",
+   "dai",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "Bamstamm",
+   "dai"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 2,
+  "contexte": "huel der",
+  "attendu": "e",
+  "image": "03_02.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "Gemeng",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 3,
+  "contexte": "huel der e",
+  "attendu": "Stull",
+  "image": "03_03.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "ex",
+   "Ex",
+   "Expo"
+  ],
+  "top3": [
+   "88",
+   "ex",
+   "Ex"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 4,
+  "contexte": "huel der e Stull",
+  "attendu": "a",
+  "image": "03_04.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 5,
+  "contexte": "huel der e Stull a",
+  "attendu": "setz",
+  "image": "03_05.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "vun",
+   "gestuerwen",
+   "gouf"
+  ],
+  "top3": [
+   "88",
+   "vun",
+   "gestuerwen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 6,
+  "contexte": "huel der e Stull a setz",
+  "attendu": "dech",
+  "image": "03_06.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "an",
+   "se",
+   "dech"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "se"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 7,
+  "contexte": "huel der e Stull a setz dech",
+  "attendu": "bei",
+  "image": "03_07.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "an",
+   "net",
+   "ze"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 3,
+  "position": 8,
+  "contexte": "huel der e Stull a setz dech bei",
+  "attendu": "eis",
+  "image": "03_08.png",
+  "champ_final": "huel der exstull a setz dech bei ",
+  "suggestions": [
+   "88",
+   "der",
+   "eis",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "eis"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 4,
+  "position": 1,
+  "contexte": "ouni",
+  "attendu": "gudden",
+  "image": "04_01.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "den",
+   "Zweiwel",
+   "datt"
+  ],
+  "top3": [
+   "88",
+   "den",
+   "Zweiwel"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 2,
+  "contexte": "ouni gudden",
+  "attendu": "Affekot",
+  "image": "04_02.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "8",
+   "Zoustand",
+   "Zweck",
+   "Deel",
+   "0"
+  ],
+  "top3": [
+   "8",
+   "Zoustand",
+   "Zweck"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 3,
+  "contexte": "ouni gudden Affekot",
+  "attendu": "kanns",
+  "image": "04_03.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "der",
+   "an",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 4,
+  "contexte": "ouni gudden Affekot kanns",
+  "attendu": "de",
+  "image": "04_04.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "du",
+   "de",
+   "dech"
+  ],
+  "top3": [
+   "88",
+   "du",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 4,
+  "position": 5,
+  "contexte": "ouni gudden Affekot kanns de",
+  "attendu": "dee",
+  "image": "04_05.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "claves",
+   "rhythmus",
+   "mer"
+  ],
+  "top3": [
+   "88",
+   "claves",
+   "rhythmus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 6,
+  "contexte": "ouni gudden Affekot kanns de dee",
+  "attendu": "Prozess",
+  "image": "04_06.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "an",
+   "ganze",
+   "sech"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "ganze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 7,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess",
+  "attendu": "do",
+  "image": "04_07.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "der",
+   "an",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 8,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess do",
+  "attendu": "ni",
+  "image": "04_08.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "wou",
+   "gestuerwen",
+   "huet"
+  ],
+  "top3": [
+   "88",
+   "wou",
+   "gestuerwen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 4,
+  "position": 9,
+  "contexte": "ouni gudden Affekot kanns de dee Prozess do ni",
+  "attendu": "gewannen",
+  "image": "04_09.png",
+  "champ_final": "ouni gudden affekot kanns de dee prozess do ni ",
+  "suggestions": [
+   "88",
+   "eng",
+   "mei",
+   "eppes"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "mei"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "der",
+  "image": "05_01.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "engem",
+   "der",
+   "enger"
+  ],
+  "top3": [
+   "88",
+   "engem",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 5,
+  "position": 2,
+  "contexte": "no der",
+  "attendu": "Vakanz",
+  "image": "05_02.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "Gebuert"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 3,
+  "contexte": "no der Vakanz",
+  "attendu": "hate",
+  "image": "05_03.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 4,
+  "contexte": "no der Vakanz hate",
+  "attendu": "mer",
+  "image": "05_04.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 5,
+  "contexte": "no der Vakanz hate mer",
+  "attendu": "all",
+  "image": "05_05.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "och",
+   "eis",
+   "net"
+  ],
+  "top3": [
+   "88",
+   "och",
+   "eis"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 6,
+  "contexte": "no der Vakanz hate mer all",
+  "attendu": "eng",
+  "image": "05_06.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "wessen",
+   "zesummen",
+   "eis"
+  ],
+  "top3": [
+   "88",
+   "wessen",
+   "zesummen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 7,
+  "contexte": "no der Vakanz hate mer all eng",
+  "attendu": "gesond",
+  "image": "05_07.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "pertinent",
+   "super",
+   "kéier"
+  ],
+  "top3": [
+   "88",
+   "pertinent",
+   "super"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 5,
+  "position": 8,
+  "contexte": "no der Vakanz hate mer all eng gesond",
+  "attendu": "Faarf",
+  "image": "05_08.png",
+  "champ_final": "no der vakanz hate mer all eng gesond ",
+  "suggestions": [
+   "88",
+   "Autoriteit",
+   "Mettespaus",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "Autoriteit",
+   "Mettespaus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 1,
+  "contexte": "am",
+  "attendu": "Gruef",
+  "image": "06_01.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "Ufank",
+   "Joer",
+   "Kader",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Ufank",
+   "Joer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 2,
+  "contexte": "am Gruef",
+  "attendu": "louch",
+  "image": "06_02.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 3,
+  "contexte": "am Gruef louch",
+  "attendu": "de",
+  "image": "06_03.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 4,
+  "contexte": "am Gruef louch de",
+  "attendu": "Kadaver",
+  "image": "06_04.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "Luxembourg",
+   "la",
+   "en"
+  ],
+  "top3": [
+   "88",
+   "Luxembourg",
+   "la"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 5,
+  "contexte": "am Gruef louch de Kadaver",
+  "attendu": "vun",
+  "image": "06_05.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 6,
+  "contexte": "am Gruef louch de Kadaver vun",
+  "attendu": "engem",
+  "image": "06_06.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 6,
+  "position": 7,
+  "contexte": "am Gruef louch de Kadaver vun engem",
+  "attendu": "Hond",
+  "image": "06_07.png",
+  "champ_final": "am gruef louch de kadaver vun engem ",
+  "suggestions": [
+   "88",
+   "Stär",
+   "Dag",
+   "anere"
+  ],
+  "top3": [
+   "88",
+   "Stär",
+   "Dag"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 1,
+  "contexte": "fuer",
+  "attendu": "der",
+  "image": "07_01.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "roueg",
+   "duer",
+   "emol"
+  ],
+  "top3": [
+   "88",
+   "roueg",
+   "duer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 2,
+  "contexte": "fuer der",
+  "attendu": "net",
+  "image": "07_02.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "Gemeng",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 3,
+  "contexte": "fuer der net",
+  "attendu": "mat",
+  "image": "07_03.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "méi",
+   "vill",
+   "zevill"
+  ],
+  "top3": [
+   "88",
+   "méi",
+   "vill"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 4,
+  "contexte": "fuer der net mat",
+  "attendu": "deene",
+  "image": "07_04.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "derbai",
+   "senger",
+   "bloussem"
+  ],
+  "top3": [
+   "88",
+   "derbai",
+   "senger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 5,
+  "contexte": "fuer der net mat deene",
+  "attendu": "knaschtege",
+  "image": "07_05.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "vum",
+   "vun",
+   "si"
+  ],
+  "top3": [
+   "88",
+   "vum",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 6,
+  "contexte": "fuer der net mat deene knaschtege",
+  "attendu": "Fangeren",
+  "image": "07_06.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 7,
+  "contexte": "fuer der net mat deene knaschtege Fangeren",
+  "attendu": "an",
+  "image": "07_07.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 7,
+  "position": 8,
+  "contexte": "fuer der net mat deene knaschtege Fangeren an",
+  "attendu": "de",
+  "image": "07_08.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 7,
+  "position": 9,
+  "contexte": "fuer der net mat deene knaschtege Fangeren an de",
+  "attendu": "Mond",
+  "image": "07_09.png",
+  "champ_final": "fuer der net mat deene knaschtege fangeren an de ",
+  "suggestions": [
+   "88",
+   "leschte",
+   "Joren",
+   "Prisong",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "leschte",
+   "Joren"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "muss",
+  "image": "08_01.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "hunn"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 2,
+  "contexte": "ech muss",
+  "attendu": "heiansdo",
+  "image": "08_02.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "mech",
+   "soen",
+   "iech"
+  ],
+  "top3": [
+   "88",
+   "mech",
+   "soen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 3,
+  "contexte": "ech muss heiansdo",
+  "attendu": "sonndes",
+  "image": "08_03.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "gett",
+   "och",
+   "als"
+  ],
+  "top3": [
+   "88",
+   "gett",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 4,
+  "contexte": "ech muss heiansdo sonndes",
+  "attendu": "oder",
+  "image": "08_04.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "den",
+   "vun",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "den",
+   "vun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 5,
+  "contexte": "ech muss heiansdo sonndes oder",
+  "attendu": "op",
+  "image": "08_05.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "net",
+   "och",
+   "eng"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 6,
+  "contexte": "ech muss heiansdo sonndes oder op",
+  "attendu": "engem",
+  "image": "08_06.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "de",
+   "en",
+   "d'mannst"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "en"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 7,
+  "contexte": "ech muss heiansdo sonndes oder op engem",
+  "attendu": "Feierdag",
+  "image": "08_07.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "Hiwwel",
+   "Plang",
+   "Terrain"
+  ],
+  "top3": [
+   "88",
+   "Hiwwel",
+   "Plang"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 8,
+  "position": 8,
+  "contexte": "ech muss heiansdo sonndes oder op engem Feierdag",
+  "attendu": "schaffen",
+  "image": "08_08.png",
+  "champ_final": "ech muss heiansdo sonndes oder op engem feierdag ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 1,
+  "contexte": "mir",
+  "attendu": "hu",
+  "image": "09_01.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "iech",
+   "eis",
+   "weg"
+  ],
+  "top3": [
+   "88",
+   "iech",
+   "eis"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 2,
+  "contexte": "mir hu",
+  "attendu": "muer",
+  "image": "09_02.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "verstan",
+   "fir",
+   "prompt"
+  ],
+  "top3": [
+   "88",
+   "verstan",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 3,
+  "contexte": "mir hu muer",
+  "attendu": "eng",
+  "image": "09_03.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "op",
+   "Besuch",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "op",
+   "Besuch"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 4,
+  "contexte": "mir hu muer eng",
+  "attendu": "grouss",
+  "image": "09_04.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "Keier",
+   "keier",
+   "vun"
+  ],
+  "top3": [
+   "88",
+   "Keier",
+   "keier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 5,
+  "contexte": "mir hu muer eng grouss",
+  "attendu": "Etapp",
+  "image": "09_05.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "Zuel",
+   "Roll",
+   "Partie"
+  ],
+  "top3": [
+   "88",
+   "Zuel",
+   "Roll"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 6,
+  "contexte": "mir hu muer eng grouss Etapp",
+  "attendu": "virun",
+  "image": "09_06.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "vun",
+   "vum",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "vun",
+   "vum"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 9,
+  "position": 7,
+  "contexte": "mir hu muer eng grouss Etapp virun",
+  "attendu": "eis",
+  "image": "09_07.png",
+  "champ_final": "mir hu muer eng grouss etapp virun ",
+  "suggestions": [
+   "88",
+   "der",
+   "allem",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "allem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "hu",
+  "image": "10_01.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "muss"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 2,
+  "contexte": "ech hu",
+  "attendu": "mech",
+  "image": "10_02.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "muer",
+   "mech",
+   "keng"
+  ],
+  "top3": [
+   "88",
+   "muer",
+   "mech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 10,
+  "position": 3,
+  "contexte": "ech hu mech",
+  "attendu": "zu",
+  "image": "10_03.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "agedroen",
+   "decideiert",
+   "emol"
+  ],
+  "top3": [
+   "88",
+   "agedroen",
+   "decideiert"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 4,
+  "contexte": "ech hu mech zu",
+  "attendu": "Doud",
+  "image": "10_04.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "denger",
+   "are",
+   "kontakteieren"
+  ],
+  "top3": [
+   "88",
+   "denger",
+   "are"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 5,
+  "contexte": "ech hu mech zu Doud",
+  "attendu": "bei",
+  "image": "10_05.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "an",
+   "koum",
+   "der"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "koum"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 6,
+  "contexte": "ech hu mech zu Doud bei",
+  "attendu": "deem",
+  "image": "10_06.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "den",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "den",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 7,
+  "contexte": "ech hu mech zu Doud bei deem",
+  "attendu": "Film",
+  "image": "10_07.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "et",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "88",
+   "et",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 10,
+  "position": 8,
+  "contexte": "ech hu mech zu Doud bei deem Film",
+  "attendu": "gelangweilt",
+  "image": "10_08.png",
+  "champ_final": "ech hu mech zu doud bei deem film ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 1,
+  "contexte": "Fir",
+  "attendu": "dat",
+  "image": "11_01.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "de",
+   "den",
+   "eng"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "den"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 2,
+  "contexte": "Fir dat",
+  "attendu": "alles",
+  "image": "11_02.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "wat",
+   "ze",
+   "neit"
+  ],
+  "top3": [
+   "88",
+   "wat",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 3,
+  "contexte": "Fir dat alles",
+  "attendu": "hu",
+  "image": "11_03.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "packen",
+   "net",
+   "onheemlech"
+  ],
+  "top3": [
+   "88",
+   "packen",
+   "net"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 4,
+  "contexte": "Fir dat alles hu",
+  "attendu": "mer",
+  "image": "11_04.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "mech",
+   "sech",
+   "muer"
+  ],
+  "top3": [
+   "88",
+   "mech",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 5,
+  "contexte": "Fir dat alles hu mer",
+  "attendu": "keen",
+  "image": "11_05.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "eng",
+   "all",
+   "nach"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "all"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 6,
+  "contexte": "Fir dat alles hu mer keen",
+  "attendu": "Accord",
+  "image": "11_06.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "Redakter",
+   "Desch",
+   "Artikel"
+  ],
+  "top3": [
+   "88",
+   "Redakter",
+   "Desch"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 7,
+  "contexte": "Fir dat alles hu mer keen Accord",
+  "attendu": "fonnt",
+  "image": "11_07.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "oder",
+   "sidd",
+   "wieren"
+  ],
+  "top3": [
+   "88",
+   "oder",
+   "sidd"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 8,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt",
+  "attendu": "mat",
+  "image": "11_08.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "huet",
+   "ginn",
+   "hunn"
+  ],
+  "top3": [
+   "88",
+   "huet",
+   "ginn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 9,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt mat",
+  "attendu": "de",
+  "image": "11_09.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "senger",
+   "live",
+   "deene"
+  ],
+  "top3": [
+   "88",
+   "senger",
+   "live"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 11,
+  "position": 10,
+  "contexte": "Fir dat alles hu mer keen Accord fonnt mat de",
+  "attendu": "Gewerkschaften",
+  "image": "11_10.png",
+  "champ_final": "fir dat alles hu mer keen accord fonnt mat de ",
+  "suggestions": [
+   "88",
+   "Gemenge",
+   "Kanner",
+   "Leit",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Gemenge",
+   "Kanner"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 1,
+  "contexte": "no",
+  "attendu": "mengem",
+  "image": "12_01.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "engem",
+   "der",
+   "enger"
+  ],
+  "top3": [
+   "88",
+   "engem",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 2,
+  "contexte": "no mengem",
+  "attendu": "Regimm",
+  "image": "12_02.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "Apple",
+   "leschten",
+   "doud"
+  ],
+  "top3": [
+   "88",
+   "Apple",
+   "leschten"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 3,
+  "contexte": "no mengem Regimm",
+  "attendu": "hu",
+  "image": "12_03.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 4,
+  "contexte": "no mengem Regimm hu",
+  "attendu": "meng",
+  "image": "12_04.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "mer",
+   "sech",
+   "mech"
+  ],
+  "top3": [
+   "88",
+   "mer",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 5,
+  "contexte": "no mengem Regimm hu meng",
+  "attendu": "Kleeder",
+  "image": "12_05.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "oder",
+   "Kleeder",
+   "lascht"
+  ],
+  "top3": [
+   "88",
+   "oder",
+   "Kleeder"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 12,
+  "position": 6,
+  "contexte": "no mengem Regimm hu meng Kleeder",
+  "attendu": "missen",
+  "image": "12_06.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 7,
+  "contexte": "no mengem Regimm hu meng Kleeder missen",
+  "attendu": "ageholl",
+  "image": "12_07.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "an",
+   "op",
+   "eng"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 12,
+  "position": 8,
+  "contexte": "no mengem Regimm hu meng Kleeder missen ageholl",
+  "attendu": "ginn",
+  "image": "12_08.png",
+  "champ_final": "no mengem regimm hu meng kleeder missen ageholl ",
+  "suggestions": [
+   "88",
+   "huet",
+   "an",
+   "ginn"
+  ],
+  "top3": [
+   "88",
+   "huet",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "hu",
+  "image": "13_01.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "hu"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 2,
+  "contexte": "ech hu",
+  "attendu": "meng",
+  "image": "13_02.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "keng",
+   "mech",
+   "meng"
+  ],
+  "top3": [
+   "88",
+   "keng",
+   "mech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 3,
+  "contexte": "ech hu meng",
+  "attendu": "rout",
+  "image": "13_03.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "oder",
+   "Kleeder",
+   "lascht"
+  ],
+  "top3": [
+   "88",
+   "oder",
+   "Kleeder"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 4,
+  "contexte": "ech hu meng rout",
+  "attendu": "Hoer",
+  "image": "13_04.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "a",
+   "Kraiz",
+   "Risen"
+  ],
+  "top3": [
+   "88",
+   "a",
+   "Kraiz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 5,
+  "contexte": "ech hu meng rout Hoer",
+  "attendu": "vu",
+  "image": "13_05.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 6,
+  "contexte": "ech hu meng rout Hoer vu",
+  "attendu": "mengem",
+  "image": "13_06.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "sengem",
+   "Letzebuerg",
+   "senger"
+  ],
+  "top3": [
+   "88",
+   "sengem",
+   "Letzebuerg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 7,
+  "contexte": "ech hu meng rout Hoer vu mengem",
+  "attendu": "Papp",
+  "image": "13_07.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "Extrait",
+   "Microsoft",
+   "Bestietnes"
+  ],
+  "top3": [
+   "88",
+   "Extrait",
+   "Microsoft"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 13,
+  "position": 8,
+  "contexte": "ech hu meng rout Hoer vu mengem Papp",
+  "attendu": "geierft",
+  "image": "13_08.png",
+  "champ_final": "ech hu meng rout hoer vu mengem papp ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 1,
+  "contexte": "mat",
+  "attendu": "der",
+  "image": "14_01.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "senger",
+   "der",
+   "deene"
+  ],
+  "top3": [
+   "88",
+   "senger",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 14,
+  "position": 2,
+  "contexte": "mat der",
+  "attendu": "neier",
+  "image": "14_02.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "net",
+   "zweeter",
+   "de",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 3,
+  "contexte": "mat der neier",
+  "attendu": "Ausriichtung",
+  "image": "14_03.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "Kierch",
+   "Bréck",
+   "Gemeng",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Kierch",
+   "Bréck"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 4,
+  "contexte": "mat der neier Ausriichtung",
+  "attendu": "vun",
+  "image": "14_04.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 5,
+  "contexte": "mat der neier Ausriichtung vun",
+  "attendu": "der",
+  "image": "14_05.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 14,
+  "position": 6,
+  "contexte": "mat der neier Ausriichtung vun der",
+  "attendu": "Antenn",
+  "image": "14_06.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "net",
+   "zweeter",
+   "neier"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 7,
+  "contexte": "mat der neier Ausriichtung vun der Antenn",
+  "attendu": "ass",
+  "image": "14_07.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 8,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass",
+  "attendu": "den",
+  "image": "14_08.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "eng",
+   "scsonn",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "scsonn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 9,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass den",
+  "attendu": "Empfang",
+  "image": "14_09.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "hellege",
+   "Numm",
+   "Auteur"
+  ],
+  "top3": [
+   "88",
+   "hellege",
+   "Numm"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 14,
+  "position": 10,
+  "contexte": "mat der neier Ausriichtung vun der Antenn ass den Empfang",
+  "attendu": "besser",
+  "image": "14_10.png",
+  "champ_final": "mat der neier ausriichtung vun der antenn ass den empfang ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 1,
+  "contexte": "menger",
+  "attendu": "Mamm",
+  "image": "15_01.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "Mamm",
+   "Meenung",
+   "Frendin"
+  ],
+  "top3": [
+   "88",
+   "Mamm",
+   "Meenung"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 15,
+  "position": 2,
+  "contexte": "menger Mamm",
+  "attendu": "hir",
+  "image": "15_02.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 3,
+  "contexte": "menger Mamm hir",
+  "attendu": "Posche",
+  "image": "15_03.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "Quell",
+   "éischt",
+   "eege"
+  ],
+  "top3": [
+   "88",
+   "Quell",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 4,
+  "contexte": "menger Mamm hir Posche",
+  "attendu": "sinn",
+  "image": "15_04.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 5,
+  "contexte": "menger Mamm hir Posche sinn",
+  "attendu": "all",
+  "image": "15_05.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "op",
+   "an",
+   "déi"
+  ],
+  "top3": [
+   "88",
+   "op",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 6,
+  "contexte": "menger Mamm hir Posche sinn all",
+  "attendu": "aus",
+  "image": "15_06.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "déi",
+   "eng",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "déi",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 15,
+  "position": 7,
+  "contexte": "menger Mamm hir Posche sinn all aus",
+  "attendu": "Lieder",
+  "image": "15_07.png",
+  "champ_final": "menger mamm hir posche sinn all aus ",
+  "suggestions": [
+   "88",
+   "der",
+   "enger",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "enger"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 1,
+  "contexte": "elo",
+  "attendu": "hunn",
+  "image": "16_01.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "ginn",
+   "un",
+   "och"
+  ],
+  "top3": [
+   "88",
+   "ginn",
+   "un"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 2,
+  "contexte": "elo hunn",
+  "attendu": "ech",
+  "image": "16_02.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "der",
+   "ech",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "ech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 3,
+  "contexte": "elo hunn ech",
+  "attendu": "de",
+  "image": "16_03.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "muss",
+   "spillen",
+   "hu"
+  ],
+  "top3": [
+   "88",
+   "muss",
+   "spillen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 4,
+  "contexte": "elo hunn ech de",
+  "attendu": "Kaffi",
+  "image": "16_04.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "ganze",
+   "Link",
+   "Senn"
+  ],
+  "top3": [
+   "88",
+   "ganze",
+   "Link"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 5,
+  "contexte": "elo hunn ech de Kaffi",
+  "attendu": "an",
+  "image": "16_05.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 16,
+  "position": 6,
+  "contexte": "elo hunn ech de Kaffi an",
+  "attendu": "dat",
+  "image": "16_06.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 7,
+  "contexte": "elo hunn ech de Kaffi an dat",
+  "attendu": "falscht",
+  "image": "16_07.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "mat",
+   "alles",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "mat",
+   "alles"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 8,
+  "contexte": "elo hunn ech de Kaffi an dat falscht",
+  "attendu": "Lach",
+  "image": "16_08.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "Bild",
+   "Passwuert",
+   "Spill"
+  ],
+  "top3": [
+   "88",
+   "Bild",
+   "Passwuert"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 16,
+  "position": 9,
+  "contexte": "elo hunn ech de Kaffi an dat falscht Lach",
+  "attendu": "kritt",
+  "image": "16_09.png",
+  "champ_final": "elo hunn ech de kaffi an dat falscht lach ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "muss",
+  "image": "17_01.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "alles",
+   "falscht",
+   "net"
+  ],
+  "top3": [
+   "88",
+   "alles",
+   "falscht"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 2,
+  "contexte": "Dat muss",
+  "attendu": "ee",
+  "image": "17_02.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "einfach",
+   "heiansdo",
+   "der",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "einfach",
+   "heiansdo"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 3,
+  "contexte": "Dat muss ee",
+  "attendu": "sech",
+  "image": "17_03.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "just",
+   "sech",
+   "jo"
+  ],
+  "top3": [
+   "88",
+   "just",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 17,
+  "position": 4,
+  "contexte": "Dat muss ee sech",
+  "attendu": "emol",
+  "image": "17_04.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "net",
+   "mat",
+   "dat"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 5,
+  "contexte": "Dat muss ee sech emol",
+  "attendu": "op",
+  "image": "17_05.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "virstellen",
+   "alles",
+   "Gedanken"
+  ],
+  "top3": [
+   "88",
+   "virstellen",
+   "alles"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 6,
+  "contexte": "Dat muss ee sech emol op",
+  "attendu": "der",
+  "image": "17_06.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "en",
+   "engem",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "en",
+   "engem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 7,
+  "contexte": "Dat muss ee sech emol op der",
+  "attendu": "Zong",
+  "image": "17_07.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "net",
+   "zweeter",
+   "neier"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 8,
+  "contexte": "Dat muss ee sech emol op der Zong",
+  "attendu": "zergoe",
+  "image": "17_08.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 17,
+  "position": 9,
+  "contexte": "Dat muss ee sech emol op der Zong zergoe",
+  "attendu": "loossen",
+  "image": "17_09.png",
+  "champ_final": "dat muss ee sech emol op der zong zergoe ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 1,
+  "contexte": "eis",
+  "attendu": "Heck",
+  "image": "18_01.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "apps",
+   "ekipp",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "apps",
+   "ekipp"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 2,
+  "contexte": "eis Heck",
+  "attendu": "besteet",
+  "image": "18_02.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 3,
+  "contexte": "eis Heck besteet",
+  "attendu": "aus",
+  "image": "18_03.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "an",
+   "aus",
+   "doran"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "aus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 18,
+  "position": 4,
+  "contexte": "eis Heck besteet aus",
+  "attendu": "Hielenner",
+  "image": "18_04.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "enger",
+   "engem",
+   "drai"
+  ],
+  "top3": [
+   "88",
+   "enger",
+   "engem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 5,
+  "contexte": "eis Heck besteet aus Hielenner",
+  "attendu": "an",
+  "image": "18_05.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 18,
+  "position": 6,
+  "contexte": "eis Heck besteet aus Hielenner an",
+  "attendu": "aus",
+  "image": "18_06.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "dat"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 18,
+  "position": 7,
+  "contexte": "eis Heck besteet aus Hielenner an aus",
+  "attendu": "Hieselter",
+  "image": "18_07.png",
+  "champ_final": "eis heck besteet aus hielenner an aus ",
+  "suggestions": [
+   "88",
+   "hielenner",
+   "der",
+   "deem"
+  ],
+  "top3": [
+   "88",
+   "hielenner",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "souz",
+  "image": "19_01.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "hu"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 2,
+  "contexte": "ech souz",
+  "attendu": "de",
+  "image": "19_02.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "do",
+   "an",
+   "ech"
+  ],
+  "top3": [
+   "88",
+   "do",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 3,
+  "contexte": "ech souz de",
+  "attendu": "ganze",
+  "image": "19_03.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "Luxembourg",
+   "la",
+   "en"
+  ],
+  "top3": [
+   "88",
+   "Luxembourg",
+   "la"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 4,
+  "contexte": "ech souz de ganze",
+  "attendu": "Weekend",
+  "image": "19_04.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "Wee",
+   "System",
+   "Planéit",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Wee",
+   "System"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 5,
+  "contexte": "ech souz de ganze Weekend",
+  "attendu": "am",
+  "image": "19_05.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 6,
+  "contexte": "ech souz de ganze Weekend am",
+  "attendu": "Gaart",
+  "image": "19_06.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "Departement",
+   "Joer",
+   "Kader"
+  ],
+  "top3": [
+   "88",
+   "Departement",
+   "Joer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 7,
+  "contexte": "ech souz de ganze Weekend am Gaart",
+  "attendu": "op",
+  "image": "19_07.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 8,
+  "contexte": "ech souz de ganze Weekend am Gaart op",
+  "attendu": "der",
+  "image": "19_08.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "engem",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "engem",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 19,
+  "position": 9,
+  "contexte": "ech souz de ganze Weekend am Gaart op der",
+  "attendu": "Klunsch",
+  "image": "19_09.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "Letzebuerger",
+   "zweeter",
+   "Universiteit"
+  ],
+  "top3": [
+   "88",
+   "Letzebuerger",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 10,
+  "contexte": "ech souz de ganze Weekend am Gaart op der Klunsch",
+  "attendu": "ze",
+  "image": "19_10.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 19,
+  "position": 11,
+  "contexte": "ech souz de ganze Weekend am Gaart op der Klunsch ze",
+  "attendu": "liesen",
+  "image": "19_11.png",
+  "champ_final": "ech souz de ganze weekend am gaart op der klunsch ze ",
+  "suggestions": [
+   "88",
+   "ginn",
+   "maachen",
+   "gesinn"
+  ],
+  "top3": [
+   "88",
+   "ginn",
+   "maachen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 20,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "spillen",
+  "image": "20_01.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "hu"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 2,
+  "contexte": "ech spillen",
+  "attendu": "der",
+  "image": "20_02.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "a"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 3,
+  "contexte": "ech spillen der",
+  "attendu": "de",
+  "image": "20_03.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "Gemeng",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 4,
+  "contexte": "ech spillen der de",
+  "attendu": "Rhythmus",
+  "image": "20_04.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "Menu",
+   "rhythmus",
+   "Fesch"
+  ],
+  "top3": [
+   "88",
+   "Menu",
+   "rhythmus"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 5,
+  "contexte": "ech spillen der de Rhythmus",
+  "attendu": "eng",
+  "image": "20_05.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "der",
+   "eng",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 6,
+  "contexte": "ech spillen der de Rhythmus eng",
+  "attendu": "Kéier",
+  "image": "20_06.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "grouss",
+   "kéier",
+   "Keier"
+  ],
+  "top3": [
+   "88",
+   "grouss",
+   "kéier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 7,
+  "contexte": "ech spillen der de Rhythmus eng Kéier",
+  "attendu": "kuerz",
+  "image": "20_07.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "eng",
+   "kuerz",
+   "déi"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "kuerz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 8,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz",
+  "attendu": "op",
+  "image": "20_08.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "op",
+   "drop",
+   "duerno"
+  ],
+  "top3": [
+   "88",
+   "op",
+   "drop"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 9,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op",
+  "attendu": "de",
+  "image": "20_09.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "engem"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 10,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op de",
+  "attendu": "Claves",
+  "image": "20_10.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "Wee",
+   "claves",
+   "rhythmus"
+  ],
+  "top3": [
+   "88",
+   "Wee",
+   "claves"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 20,
+  "position": 11,
+  "contexte": "ech spillen der de Rhythmus eng Kéier kuerz op de Claves",
+  "attendu": "vir",
+  "image": "20_11.png",
+  "champ_final": "ech spillen der de rhythmus eng kéier kuerz op de claves ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 1,
+  "contexte": "meng",
+  "attendu": "Mamm",
+  "image": "21_01.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "rout",
+   "läscht",
+   "Lokali..erung"
+  ],
+  "top3": [
+   "88",
+   "rout",
+   "läscht"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 2,
+  "contexte": "meng Mamm",
+  "attendu": "kacht",
+  "image": "21_02.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "der",
+   "hir",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "hir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 3,
+  "contexte": "meng Mamm kacht",
+  "attendu": "all",
+  "image": "21_03.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "a",
+   "fir",
+   "mussen"
+  ],
+  "top3": [
+   "88",
+   "a",
+   "fir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 4,
+  "contexte": "meng Mamm kacht all",
+  "attendu": "Summer",
+  "image": "21_04.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "Artikel",
+   "eng",
+   "Joer"
+  ],
+  "top3": [
+   "88",
+   "Artikel",
+   "eng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 5,
+  "contexte": "meng Mamm kacht all Summer",
+  "attendu": "Gebeess",
+  "image": "21_05.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 6,
+  "contexte": "meng Mamm kacht all Summer Gebeess",
+  "attendu": "mat",
+  "image": "21_06.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 7,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat",
+  "attendu": "de",
+  "image": "21_07.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "senger",
+   "der",
+   "deene",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "senger",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 8,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de",
+  "attendu": "Schwaarze",
+  "image": "21_08.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "Kanner",
+   "ganze",
+   "Gemenge"
+  ],
+  "top3": [
+   "88",
+   "Kanner",
+   "ganze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 9,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze",
+  "attendu": "Kréischelen",
+  "image": "21_09.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "Lach",
+   "Mier",
+   "Prenz"
+  ],
+  "top3": [
+   "88",
+   "Lach",
+   "Mier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 10,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen",
+  "attendu": "aus",
+  "image": "21_10.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 11,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen aus",
+  "attendu": "eisem",
+  "image": "21_11.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "der",
+   "dem",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "dem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 21,
+  "position": 12,
+  "contexte": "meng Mamm kacht all Summer Gebeess mat de Schwaarze Kréischelen aus eisem",
+  "attendu": "Gaart",
+  "image": "21_12.png",
+  "champ_final": "meng mamm kacht all summer gebeess mat de schwaarze kréischelen aus eisem ",
+  "suggestions": [
+   "88",
+   "normale",
+   "klengen",
+   "Partenariat"
+  ],
+  "top3": [
+   "88",
+   "normale",
+   "klengen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 22,
+  "position": 1,
+  "contexte": "haut",
+  "attendu": "de",
+  "image": "22_01.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "als",
+   "nach",
+   "ZU"
+  ],
+  "top3": [
+   "88",
+   "als",
+   "nach"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 22,
+  "position": 2,
+  "contexte": "haut de",
+  "attendu": "Mëtteg",
+  "image": "22_02.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "ganze",
+   "schwaarze",
+   "Moien"
+  ],
+  "top3": [
+   "88",
+   "ganze",
+   "schwaarze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 22,
+  "position": 3,
+  "contexte": "haut de Mëtteg",
+  "attendu": "gëtt",
+  "image": "22_03.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 22,
+  "position": 4,
+  "contexte": "haut de Mëtteg gëtt",
+  "attendu": "et",
+  "image": "22_04.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "an",
+   "et",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 22,
+  "position": 5,
+  "contexte": "haut de Mëtteg gëtt et",
+  "attendu": "Bulletten",
+  "image": "22_05.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "eng",
+   "och",
+   "nach"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 22,
+  "position": 6,
+  "contexte": "haut de Mëtteg gëtt et Bulletten",
+  "attendu": "an",
+  "image": "22_06.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 22,
+  "position": 7,
+  "contexte": "haut de Mëtteg gëtt et Bulletten an",
+  "attendu": "der",
+  "image": "22_07.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "dat"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 22,
+  "position": 8,
+  "contexte": "haut de Mëtteg gëtt et Bulletten an der",
+  "attendu": "Kantin",
+  "image": "22_08.png",
+  "champ_final": "haut de mëtteg gëtt et bulletten an der ",
+  "suggestions": [
+   "88",
+   "zweeter",
+   "Gemeng",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "zweeter",
+   "Gemeng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 1,
+  "contexte": "kënnt",
+  "attendu": "ee",
+  "image": "23_01.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "dir",
+   "Dir",
+   "der"
+  ],
+  "top3": [
+   "88",
+   "dir",
+   "Dir"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 2,
+  "contexte": "kënnt ee",
+  "attendu": "mam",
+  "image": "23_02.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "sech",
+   "mat",
+   "vu"
+  ],
+  "top3": [
+   "88",
+   "sech",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 3,
+  "contexte": "kënnt ee mam",
+  "attendu": "Zuch",
+  "image": "23_03.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "Mound",
+   "Auto",
+   "Chauffer"
+  ],
+  "top3": [
+   "88",
+   "Mound",
+   "Auto"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 4,
+  "contexte": "kënnt ee mam Zuch",
+  "attendu": "vun",
+  "image": "23_04.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 5,
+  "contexte": "kënnt ee mam Zuch vun",
+  "attendu": "Amsterdam",
+  "image": "23_05.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 6,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam",
+  "attendu": "op",
+  "image": "23_06.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 7,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam op",
+  "attendu": "Den",
+  "image": "23_07.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "der",
+   "de",
+   "engem"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 23,
+  "position": 8,
+  "contexte": "kënnt ee mam Zuch vun Amsterdam op Den",
+  "attendu": "Haag",
+  "image": "23_08.png",
+  "champ_final": "kënnt ee mam zuch vun amsterdam op den ",
+  "suggestions": [
+   "88",
+   "Troun",
+   "Olympesche",
+   "Berg"
+  ],
+  "top3": [
+   "88",
+   "Troun",
+   "Olympesche"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 1,
+  "contexte": "deng",
+  "attendu": "nei",
+  "image": "24_01.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "Spiller",
+   "équipe",
+   "Frenn"
+  ],
+  "top3": [
+   "88",
+   "Spiller",
+   "équipe"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 2,
+  "contexte": "deng nei",
+  "attendu": "Tallekeschong",
+  "image": "24_02.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "Kierch",
+   "Immobilien",
+   "Gesellschaft"
+  ],
+  "top3": [
+   "88",
+   "Kierch",
+   "Immobilien"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 3,
+  "contexte": "deng nei Tallekeschong",
+  "attendu": "maachen",
+  "image": "24_03.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 4,
+  "contexte": "deng nei Tallekeschong maachen",
+  "attendu": "der",
+  "image": "24_04.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "a",
+   "an",
+   "ech"
+  ],
+  "top3": [
+   "88",
+   "a",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 5,
+  "contexte": "deng nei Tallekeschong maachen der",
+  "attendu": "schéi",
+  "image": "24_05.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "net"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 6,
+  "contexte": "deng nei Tallekeschong maachen der schéi",
+  "attendu": "laang",
+  "image": "24_06.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "Vue",
+   "Feierdeeg",
+   "Biller"
+  ],
+  "top3": [
+   "88",
+   "Vue",
+   "Feierdeeg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 24,
+  "position": 7,
+  "contexte": "deng nei Tallekeschong maachen der schéi laang",
+  "attendu": "Been",
+  "image": "24_07.png",
+  "champ_final": "deng nei tallekeschong maachen der schéi laang ",
+  "suggestions": [
+   "88",
+   "an",
+   "Zait",
+   "net"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "Zait"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 1,
+  "contexte": "zwee",
+  "attendu": "Punkte",
+  "image": "25_01.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "vun",
+   "Joer",
+   "mol"
+  ],
+  "top3": [
+   "88",
+   "vun",
+   "Joer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 2,
+  "contexte": "zwee Punkte",
+  "attendu": "kënnen",
+  "image": "25_02.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 3,
+  "contexte": "zwee Punkte kënnen",
+  "attendu": "duerch",
+  "image": "25_03.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "och",
+   "ze",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "och",
+   "ze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 4,
+  "contexte": "zwee Punkte kënnen duerch",
+  "attendu": "e",
+  "image": "25_04.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "den",
+   "de",
+   "eng"
+  ],
+  "top3": [
+   "88",
+   "den",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 5,
+  "contexte": "zwee Punkte kënnen duerch e",
+  "attendu": "riichte",
+  "image": "25_05.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 6,
+  "contexte": "zwee Punkte kënnen duerch e riichte",
+  "attendu": "Stréch",
+  "image": "25_06.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "mir",
+   "sech",
+   "léiwer"
+  ],
+  "top3": [
+   "88",
+   "mir",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 7,
+  "contexte": "zwee Punkte kënnen duerch e riichte Stréch",
+  "attendu": "verbonne",
+  "image": "25_07.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 25,
+  "position": 8,
+  "contexte": "zwee Punkte kënnen duerch e riichte Stréch verbonne",
+  "attendu": "ginn",
+  "image": "25_08.png",
+  "champ_final": "zwee punkte kënnen duerch e riichte stréch verbonne ",
+  "suggestions": [
+   "88",
+   "sinn",
+   "mat",
+   "war"
+  ],
+  "top3": [
+   "88",
+   "sinn",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 1,
+  "contexte": "wéi",
+  "attendu": "kann",
+  "image": "26_01.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "eng",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 2,
+  "contexte": "wéi kann",
+  "attendu": "ech",
+  "image": "26_02.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "een",
+   "ech",
+   "ee"
+  ],
+  "top3": [
+   "88",
+   "een",
+   "ech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 26,
+  "position": 3,
+  "contexte": "wéi kann ech",
+  "attendu": "déi",
+  "image": "26_03.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "SOuz",
+   "spillen",
+   "muss"
+  ],
+  "top3": [
+   "88",
+   "SOuz",
+   "spillen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 4,
+  "contexte": "wéi kann ech déi",
+  "attendu": "Donnéeën",
+  "image": "26_04.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "neideg",
+   "zwee",
+   "vergaangen"
+  ],
+  "top3": [
+   "88",
+   "neideg",
+   "zwee"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 5,
+  "contexte": "wéi kann ech déi Donnéeën",
+  "attendu": "an",
+  "image": "26_05.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 26,
+  "position": 6,
+  "contexte": "wéi kann ech déi Donnéeën an",
+  "attendu": "eis",
+  "image": "26_06.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "dat"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 7,
+  "contexte": "wéi kann ech déi Donnéeën an eis",
+  "attendu": "Datebank",
+  "image": "26_07.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "Zait",
+   "ekipp",
+   "Bierger",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Zait",
+   "ekipp"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 26,
+  "position": 8,
+  "contexte": "wéi kann ech déi Donnéeën an eis Datebank",
+  "attendu": "importéieren",
+  "image": "26_08.png",
+  "champ_final": "wéi kann ech déi donnéeën an eis datebank ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "Fatzbeidel",
+  "image": "27_01.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "vun",
+   "sech",
+   "vum"
+  ],
+  "top3": [
+   "88",
+   "vun",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 2,
+  "contexte": "dee Fatzbeidel",
+  "attendu": "beduckst",
+  "image": "27_02.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 3,
+  "contexte": "dee Fatzbeidel beduckst",
+  "attendu": "déi",
+  "image": "27_03.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 4,
+  "contexte": "dee Fatzbeidel beduckst déi",
+  "attendu": "aner",
+  "image": "27_04.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "vun",
+   "éischt",
+   "sech"
+  ],
+  "top3": [
+   "88",
+   "vun",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 5,
+  "contexte": "dee Fatzbeidel beduckst déi aner",
+  "attendu": "Leit",
+  "image": "27_05.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "Leit",
+   "Sait",
+   "drai"
+  ],
+  "top3": [
+   "88",
+   "Leit",
+   "Sait"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 27,
+  "position": 6,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit",
+  "attendu": "drop",
+  "image": "27_06.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 7,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit drop",
+  "attendu": "an",
+  "image": "27_07.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "ze",
+   "huet",
+   "gouf"
+  ],
+  "top3": [
+   "88",
+   "ze",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 27,
+  "position": 8,
+  "contexte": "dee Fatzbeidel beduckst déi aner Leit drop an",
+  "attendu": "derwidder",
+  "image": "27_08.png",
+  "champ_final": "dee fatzbeidel beduckst déi aner leit drop an ",
+  "suggestions": [
+   "88",
+   "www",
+   "der",
+   "eis"
+  ],
+  "top3": [
+   "88",
+   "www",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 1,
+  "contexte": "am",
+  "attendu": "Mëttelalter",
+  "image": "28_01.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "Ufank",
+   "Joer",
+   "Kader",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Ufank",
+   "Joer"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 2,
+  "contexte": "am Mëttelalter",
+  "attendu": "si",
+  "image": "28_02.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 3,
+  "contexte": "am Mëttelalter si",
+  "attendu": "vill",
+  "image": "28_03.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "sech",
+   "huet",
+   "war"
+  ],
+  "top3": [
+   "88",
+   "sech",
+   "huet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 4,
+  "contexte": "am Mëttelalter si vill",
+  "attendu": "Fraen",
+  "image": "28_04.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "Uertschaften",
+   "am",
+   "Lanner"
+  ],
+  "top3": [
+   "88",
+   "Uertschaften",
+   "am"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 5,
+  "contexte": "am Mëttelalter si vill Fraen",
+  "attendu": "als",
+  "image": "28_05.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 6,
+  "contexte": "am Mëttelalter si vill Fraen als",
+  "attendu": "Hex",
+  "image": "28_06.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "eng",
+   "éischt",
+   "ee"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 7,
+  "contexte": "am Mëttelalter si vill Fraen als Hex",
+  "attendu": "verbrannt",
+  "image": "28_07.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 28,
+  "position": 8,
+  "contexte": "am Mëttelalter si vill Fraen als Hex verbrannt",
+  "attendu": "ginn",
+  "image": "28_08.png",
+  "champ_final": "am mëttelalter si vill fraen als hex verbrannt ",
+  "suggestions": [
+   "88",
+   "an",
+   "ginn",
+   "gouf"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "ginn"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 29,
+  "position": 1,
+  "contexte": "Dat",
+  "attendu": "hat",
+  "image": "29_01.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "falscht",
+   "muss",
+   "alles"
+  ],
+  "top3": [
+   "88",
+   "falscht",
+   "muss"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 2,
+  "contexte": "Dat hat",
+  "attendu": "de",
+  "image": "29_02.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "hien",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "hien",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 29,
+  "position": 3,
+  "contexte": "Dat hat de",
+  "attendu": "franséische",
+  "image": "29_03.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "ganze",
+   "schwaarze",
+   "Komeit"
+  ],
+  "top3": [
+   "88",
+   "ganze",
+   "schwaarze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 4,
+  "contexte": "Dat hat de franséische",
+  "attendu": "President",
+  "image": "29_04.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "Staat",
+   "Kinnek",
+   "Singlecharts"
+  ],
+  "top3": [
+   "88",
+   "Staat",
+   "Kinnek"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 5,
+  "contexte": "Dat hat de franséische President",
+  "attendu": "Emmanuel",
+  "image": "29_05.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 6,
+  "contexte": "Dat hat de franséische President Emmanuel",
+  "attendu": "Macron",
+  "image": "29_06.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 7,
+  "contexte": "Dat hat de franséische President Emmanuel Macron",
+  "attendu": "déi",
+  "image": "29_07.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 8,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi",
+  "attendu": "lescht",
+  "image": "29_08.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "éischt",
+   "aner",
+   "vun"
+  ],
+  "top3": [
+   "88",
+   "éischt",
+   "aner"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 9,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi lescht",
+  "attendu": "Woch",
+  "image": "29_09.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "Nummer",
+   "Bedeckung",
+   "Joer",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "Nummer",
+   "Bedeckung"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 29,
+  "position": 10,
+  "contexte": "Dat hat de franséische President Emmanuel Macron déi lescht Woch",
+  "attendu": "annoncéiert",
+  "image": "29_10.png",
+  "champ_final": "dat hat de franséische president emmanuel macron déi lescht woch ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 1,
+  "contexte": "an",
+  "attendu": "der",
+  "image": "30_01.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "dat",
+   "der",
+   "www"
+  ],
+  "top3": [
+   "88",
+   "dat",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 30,
+  "position": 2,
+  "contexte": "an der",
+  "attendu": "indescher",
+  "image": "30_02.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "zweeter",
+   "Gemeng",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "zweeter",
+   "Gemeng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 3,
+  "contexte": "an der indescher",
+  "attendu": "Kiche",
+  "image": "30_03.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "Firma",
+   "Ofstamung",
+   "Kultur"
+  ],
+  "top3": [
+   "88",
+   "Firma",
+   "Ofstamung"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 4,
+  "contexte": "an der indescher Kiche",
+  "attendu": "gëtt",
+  "image": "30_04.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 5,
+  "contexte": "an der indescher Kiche gëtt",
+  "attendu": "vill",
+  "image": "30_05.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "an",
+   "et",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 6,
+  "contexte": "an der indescher Kiche gëtt vill",
+  "attendu": "mat",
+  "image": "30_06.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "manner",
+   "an",
+   "Maneiere"
+  ],
+  "top3": [
+   "88",
+   "manner",
+   "an"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 7,
+  "contexte": "an der indescher Kiche gëtt vill mat",
+  "attendu": "Koriander",
+  "image": "30_07.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "senger",
+   "deene",
+   "der",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "senger",
+   "deene"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 30,
+  "position": 8,
+  "contexte": "an der indescher Kiche gëtt vill mat Koriander",
+  "attendu": "gekacht",
+  "image": "30_08.png",
+  "champ_final": "an der indescher kiche gëtt vill mat koriander ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 1,
+  "contexte": "du",
+  "attendu": "muss",
+  "image": "31_01.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "bass",
+   "hues",
+   "kanns"
+  ],
+  "top3": [
+   "88",
+   "bass",
+   "hues"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 2,
+  "contexte": "du muss",
+  "attendu": "deng",
+  "image": "31_02.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "ee",
+   "heiansdo",
+   "dru"
+  ],
+  "top3": [
+   "88",
+   "ee",
+   "heiansdo"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 3,
+  "contexte": "du muss deng",
+  "attendu": "Blummen",
+  "image": "31_03.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "nei",
+   "Opstellung",
+   "grouss",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "nei",
+   "Opstellung"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 4,
+  "contexte": "du muss deng Blummen",
+  "attendu": "a",
+  "image": "31_04.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 5,
+  "contexte": "du muss deng Blummen a",
+  "attendu": "méi",
+  "image": "31_05.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "gestuerwen",
+   "setz",
+   "vun"
+  ],
+  "top3": [
+   "88",
+   "gestuerwen",
+   "setz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 6,
+  "contexte": "du muss deng Blummen a méi",
+  "attendu": "grouss",
+  "image": "31_06.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "spéit",
+   "wéi",
+   "seier"
+  ],
+  "top3": [
+   "88",
+   "spéit",
+   "wéi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 7,
+  "contexte": "du muss deng Blummen a méi grouss",
+  "attendu": "Kiwwele",
+  "image": "31_07.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "etapp",
+   "wéi",
+   "ginn"
+  ],
+  "top3": [
+   "88",
+   "etapp",
+   "wéi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 31,
+  "position": 8,
+  "contexte": "du muss deng Blummen a méi grouss Kiwwele",
+  "attendu": "setzen",
+  "image": "31_08.png",
+  "champ_final": "du muss deng blummen a méi grouss kiwwele ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 1,
+  "contexte": "déi",
+  "attendu": "problematesch",
+  "image": "32_01.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "lescht",
+   "aner",
+   "éischt"
+  ],
+  "top3": [
+   "88",
+   "lescht",
+   "aner"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 2,
+  "contexte": "déi problematesch",
+  "attendu": "Situatioun",
+  "image": "32_02.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "der",
+   "well",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "well"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 3,
+  "contexte": "déi problematesch Situatioun",
+  "attendu": "soll",
+  "image": "32_03.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 4,
+  "contexte": "déi problematesch Situatioun soll",
+  "attendu": "esou",
+  "image": "32_04.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "sinn",
+   "een",
+   "ech"
+  ],
+  "top3": [
+   "88",
+   "sinn",
+   "een"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 5,
+  "contexte": "déi problematesch Situatioun soll esou",
+  "attendu": "séier",
+  "image": "32_05.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "eng",
+   "wéi",
+   "vill"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "wéi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 6,
+  "contexte": "déi problematesch Situatioun soll esou séier",
+  "attendu": "ewéi",
+  "image": "32_06.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "ewéi",
+   "wéi",
+   "et"
+  ],
+  "top3": [
+   "88",
+   "ewéi",
+   "wéi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 32,
+  "position": 7,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi",
+  "attendu": "méiglech",
+  "image": "32_07.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "ech",
+   "meiglech",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "ech",
+   "meiglech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 32,
+  "position": 8,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi méiglech",
+  "attendu": "berengegt",
+  "image": "32_08.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "op",
+   "weisen",
+   "Donneeen"
+  ],
+  "top3": [
+   "88",
+   "op",
+   "weisen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 32,
+  "position": 9,
+  "contexte": "déi problematesch Situatioun soll esou séier ewéi méiglech berengegt",
+  "attendu": "ginn",
+  "image": "32_09.png",
+  "champ_final": "déi problematesch situatioun soll esou séier ewéi méiglech berengegt ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 1,
+  "contexte": "an",
+  "attendu": "Amerika",
+  "image": "33_01.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "den",
+   "der",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "den",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 2,
+  "contexte": "an Amerika",
+  "attendu": "gëtt",
+  "image": "33_02.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 3,
+  "contexte": "an Amerika gëtt",
+  "attendu": "haut",
+  "image": "33_03.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "vill",
+   "et",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "vill",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 4,
+  "contexte": "an Amerika gëtt haut",
+  "attendu": "en",
+  "image": "33_04.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "ZU",
+   "als",
+   "de"
+  ],
+  "top3": [
+   "88",
+   "ZU",
+   "als"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 5,
+  "contexte": "an Amerika gëtt haut en",
+  "attendu": "neie",
+  "image": "33_05.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "Net",
+   "Restaurant",
+   "Don"
+  ],
+  "top3": [
+   "88",
+   "Net",
+   "Restaurant"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 6,
+  "contexte": "an Amerika gëtt haut en neie",
+  "attendu": "President",
+  "image": "33_06.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "Stadion",
+   "Rekord",
+   "Kontext"
+  ],
+  "top3": [
+   "88",
+   "Stadion",
+   "Rekord"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 33,
+  "position": 7,
+  "contexte": "an Amerika gëtt haut en neie President",
+  "attendu": "gewielt",
+  "image": "33_07.png",
+  "champ_final": "an amerika gëtt haut en neie president ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 1,
+  "contexte": "Den",
+  "attendu": "individuellen",
+  "image": "34_01.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "europ...schen",
+   "folgenden",
+   "Numm"
+  ],
+  "top3": [
+   "88",
+   "europ...schen",
+   "folgenden"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 2,
+  "contexte": "Den individuellen",
+  "attendu": "Impakt",
+  "image": "34_02.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "Rapport",
+   "Uerder",
+   "Uweisunge"
+  ],
+  "top3": [
+   "88",
+   "Rapport",
+   "Uerder"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 3,
+  "contexte": "Den individuellen Impakt",
+  "attendu": "vun",
+  "image": "34_03.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 4,
+  "contexte": "Den individuellen Impakt vun",
+  "attendu": "all",
+  "image": "34_04.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 5,
+  "contexte": "Den individuellen Impakt vun all",
+  "attendu": "Projet",
+  "image": "34_05.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "eng",
+   "de",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 6,
+  "contexte": "Den individuellen Impakt vun all Projet",
+  "attendu": "gëtt",
+  "image": "34_06.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "est",
+   "de",
+   "en"
+  ],
+  "top3": [
+   "88",
+   "est",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 7,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt",
+  "attendu": "no",
+  "image": "34_07.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "vill",
+   "et",
+   "haut"
+  ],
+  "top3": [
+   "88",
+   "vill",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 8,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no",
+  "attendu": "den",
+  "image": "34_08.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "der",
+   "mengem",
+   "dengen"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "mengem"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 9,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den",
+  "attendu": "uewe",
+  "image": "34_09.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "Uschlei",
+   "individuellen",
+   "USA"
+  ],
+  "top3": [
+   "88",
+   "Uschlei",
+   "individuellen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 10,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe",
+  "attendu": "genannte",
+  "image": "34_10.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "genannte",
+   "genannten",
+   "beschr...enen"
+  ],
+  "top3": [
+   "88",
+   "genannte",
+   "genannten"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 34,
+  "position": 11,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe genannte",
+  "attendu": "Prinzippien",
+  "image": "34_11.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "Beraicher",
+   "Versioun",
+   "Froe"
+  ],
+  "top3": [
+   "88",
+   "Beraicher",
+   "Versioun"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 34,
+  "position": 12,
+  "contexte": "Den individuellen Impakt vun all Projet gëtt no den uewe genannte Prinzippien",
+  "attendu": "evaluéiert",
+  "image": "34_12.png",
+  "champ_final": "den individuellen impakt vun all projet gëtt no den uewe genannte prinzippien ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 1,
+  "contexte": "den",
+  "attendu": "Owend",
+  "image": "35_01.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "8",
+   "individuellen",
+   "uewe",
+   "folgenden"
+  ],
+  "top3": [
+   "8",
+   "individuellen",
+   "uewe"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 2,
+  "contexte": "den Owend",
+  "attendu": "gëtt",
+  "image": "35_02.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "um",
+   "zU",
+   "mat"
+  ],
+  "top3": [
+   "88",
+   "um",
+   "zU"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 3,
+  "contexte": "den Owend gëtt",
+  "attendu": "et",
+  "image": "35_03.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "vill",
+   "et",
+   "no"
+  ],
+  "top3": [
+   "88",
+   "vill",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 35,
+  "position": 4,
+  "contexte": "den Owend gëtt et",
+  "attendu": "eng",
+  "image": "35_04.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "eng",
+   "och",
+   "nach"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "och"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 35,
+  "position": 5,
+  "contexte": "den Owend gëtt et eng",
+  "attendu": "Lasagne",
+  "image": "35_05.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "grouss",
+   "kéier",
+   "ganz"
+  ],
+  "top3": [
+   "88",
+   "grouss",
+   "kéier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 6,
+  "contexte": "den Owend gëtt et eng Lasagne",
+  "attendu": "mat",
+  "image": "35_06.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 7,
+  "contexte": "den Owend gëtt et eng Lasagne mat",
+  "attendu": "Spinat",
+  "image": "35_07.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "senger"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 8,
+  "contexte": "den Owend gëtt et eng Lasagne mat Spinat",
+  "attendu": "a",
+  "image": "35_08.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 35,
+  "position": 9,
+  "contexte": "den Owend gëtt et eng Lasagne mat Spinat a",
+  "attendu": "Ricotta",
+  "image": "35_09.png",
+  "champ_final": "den owend gëtt et eng lasagne mat spinat a ",
+  "suggestions": [
+   "88",
+   "mei",
+   "setz",
+   "gestuerwen"
+  ],
+  "top3": [
+   "88",
+   "mei",
+   "setz"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 1,
+  "contexte": "Et",
+  "attendu": "géif",
+  "image": "36_01.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "eng",
+   "gett",
+   "war"
+  ],
+  "top3": [
+   "88",
+   "eng",
+   "gett"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 2,
+  "contexte": "Et géif",
+  "attendu": "awer",
+  "image": "36_02.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "een",
+   "mech",
+   "geife"
+  ],
+  "top3": [
+   "88",
+   "een",
+   "mech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 3,
+  "contexte": "Et géif awer",
+  "attendu": "net",
+  "image": "36_03.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "an",
+   "déi",
+   "der"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "déi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 4,
+  "contexte": "Et géif awer net",
+  "attendu": "nëmmen",
+  "image": "36_04.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "just",
+   "mat",
+   "nemmen",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "just",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 5,
+  "contexte": "Et géif awer net nëmmen",
+  "attendu": "un",
+  "image": "36_05.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "de",
+   "op",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "op"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 6,
+  "contexte": "Et géif awer net nëmmen un",
+  "attendu": "der",
+  "image": "36_06.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "ee",
+   "Feierdeeg",
+   "är"
+  ],
+  "top3": [
+   "88",
+   "ee",
+   "Feierdeeg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 7,
+  "contexte": "Et géif awer net nëmmen un der",
+  "attendu": "Infrastruktur",
+  "image": "36_07.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "de",
+   "zweeter",
+   "schéi"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "zweeter"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 36,
+  "position": 8,
+  "contexte": "Et géif awer net nëmmen un der Infrastruktur",
+  "attendu": "leien",
+  "image": "36_08.png",
+  "champ_final": "et géif awer net nëmmen un der infrastruktur ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 1,
+  "contexte": "eng",
+  "attendu": "zolidd",
+  "image": "37_01.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "grouss",
+   "kéier",
+   "Datei"
+  ],
+  "top3": [
+   "88",
+   "grouss",
+   "kéier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 2,
+  "contexte": "eng zolidd",
+  "attendu": "Well",
+  "image": "37_02.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "an",
+   "Fellement",
+   "Bildung"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "Fellement"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 3,
+  "contexte": "eng zolidd Well",
+  "attendu": "huet",
+  "image": "37_03.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "se",
+   "et",
+   "ech"
+  ],
+  "top3": [
+   "88",
+   "se",
+   "et"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 4,
+  "contexte": "eng zolidd Well huet",
+  "attendu": "de",
+  "image": "37_04.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "hien",
+   "de",
+   "sech"
+  ],
+  "top3": [
+   "88",
+   "hien",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 37,
+  "position": 5,
+  "contexte": "eng zolidd Well huet de",
+  "attendu": "Kanner",
+  "image": "37_05.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "ganze",
+   "schwaarze",
+   "franseische"
+  ],
+  "top3": [
+   "88",
+   "ganze",
+   "schwaarze"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 6,
+  "contexte": "eng zolidd Well huet de Kanner",
+  "attendu": "hir",
+  "image": "37_06.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 7,
+  "contexte": "eng zolidd Well huet de Kanner hir",
+  "attendu": "schéi",
+  "image": "37_07.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "Quell",
+   "éischt",
+   "eege"
+  ],
+  "top3": [
+   "88",
+   "Quell",
+   "éischt"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 8,
+  "contexte": "eng zolidd Well huet de Kanner hir schéi",
+  "attendu": "Sandbuerg",
+  "image": "37_08.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "Vue",
+   "Feierdeeg",
+   "Biller"
+  ],
+  "top3": [
+   "88",
+   "Vue",
+   "Feierdeeg"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 37,
+  "position": 9,
+  "contexte": "eng zolidd Well huet de Kanner hir schéi Sandbuerg",
+  "attendu": "ewechgespullt",
+  "image": "37_09.png",
+  "champ_final": "eng zolidd well huet de kanner hir schéi sandbuerg ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 1,
+  "contexte": "eisen",
+  "attendu": "Noper",
+  "image": "38_01.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 2,
+  "contexte": "eisen Noper",
+  "attendu": "huet",
+  "image": "38_02.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 3,
+  "contexte": "eisen Noper huet",
+  "attendu": "sech",
+  "image": "38_03.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "hien",
+   "de",
+   "sech"
+  ],
+  "top3": [
+   "88",
+   "hien",
+   "de"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 4,
+  "contexte": "eisen Noper huet sech",
+  "attendu": "eng",
+  "image": "38_04.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "emol",
+   "mat",
+   "den"
+  ],
+  "top3": [
+   "88",
+   "emol",
+   "mat"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 5,
+  "contexte": "eisen Noper huet sech eng",
+  "attendu": "schéin",
+  "image": "38_05.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "zolidd",
+   "kéier",
+   "grouss"
+  ],
+  "top3": [
+   "88",
+   "zolidd",
+   "kéier"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 6,
+  "contexte": "eisen Noper huet sech eng schéin",
+  "attendu": "Tromm",
+  "image": "38_06.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "an",
+   "Tombola",
+   "Foto",
+   "0"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "Tombola"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 38,
+  "position": 7,
+  "contexte": "eisen Noper huet sech eng schéin Tromm",
+  "attendu": "gezillt",
+  "image": "38_07.png",
+  "champ_final": "eisen noper huet sech eng schéin tromm ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "mësche",
+  "image": "39_01.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "spillen",
+   "liewen",
+   "hu"
+  ],
+  "top3": [
+   "88",
+   "spillen",
+   "liewen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 2,
+  "contexte": "ech mësche",
+  "attendu": "mech",
+  "image": "39_02.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "Polarkreis",
+   "sech",
+   "der"
+  ],
+  "top3": [
+   "88",
+   "Polarkreis",
+   "sech"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 3,
+  "contexte": "ech mësche mech",
+  "attendu": "prinzipiell",
+  "image": "39_03.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "ZU",
+   "meng",
+   "erem"
+  ],
+  "top3": [
+   "88",
+   "ZU",
+   "meng"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 4,
+  "contexte": "ech mësche mech prinzipiell",
+  "attendu": "net",
+  "image": "39_04.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "net",
+   "Glaichheet",
+   "nach"
+  ],
+  "top3": [
+   "88",
+   "net",
+   "Glaichheet"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ },
+ {
+  "phrase": 39,
+  "position": 5,
+  "contexte": "ech mësche mech prinzipiell net",
+  "attendu": "an",
+  "image": "39_05.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "mat",
+   "nemmen",
+   "méi"
+  ],
+  "top3": [
+   "88",
+   "mat",
+   "nemmen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 6,
+  "contexte": "ech mësche mech prinzipiell net an",
+  "attendu": "anere",
+  "image": "39_06.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "de",
+   "der",
+   "www"
+  ],
+  "top3": [
+   "88",
+   "de",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 7,
+  "contexte": "ech mësche mech prinzipiell net an anere",
+  "attendu": "Leit",
+  "image": "39_07.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "Lanner",
+   "Sproochen",
+   "Wierder"
+  ],
+  "top3": [
+   "88",
+   "Lanner",
+   "Sproochen"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 8,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit",
+  "attendu": "hir",
+  "image": "39_08.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "der",
+   "drop",
+   "an"
+  ],
+  "top3": [
+   "88",
+   "der",
+   "drop"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 9,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit hir",
+  "attendu": "Saachen",
+  "image": "39_09.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "éischt",
+   "schéi",
+   "Quell"
+  ],
+  "top3": [
+   "88",
+   "éischt",
+   "schéi"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": false
+ },
+ {
+  "phrase": 39,
+  "position": 10,
+  "contexte": "ech mësche mech prinzipiell net an anere Leit hir Saachen",
+  "attendu": "an",
+  "image": "39_10.png",
+  "champ_final": "ech mësche mech prinzipiell net an anere leit hir saachen ",
+  "suggestions": [
+   "88",
+   "an",
+   "der",
+   "op"
+  ],
+  "top3": [
+   "88",
+   "an",
+   "der"
+  ],
+  "vide": false,
+  "top1": false,
+  "top3_ok": true
+ }
+]

@@ -1,0 +1,1227 @@
+[
+ {
+  "phrase": 0,
+  "position": 1,
+  "contexte": "a",
+  "attendu": "sengem",
+  "image": "00_01.png"
+ },
+ {
+  "phrase": 0,
+  "position": 2,
+  "contexte": "a sengem",
+  "attendu": "Artikel",
+  "image": "00_02.png"
+ },
+ {
+  "phrase": 0,
+  "position": 3,
+  "contexte": "a sengem Artikel",
+  "attendu": "huet",
+  "image": "00_03.png"
+ },
+ {
+  "phrase": 0,
+  "position": 4,
+  "contexte": "a sengem Artikel huet",
+  "attendu": "de",
+  "image": "00_04.png"
+ },
+ {
+  "phrase": 0,
+  "position": 5,
+  "contexte": "a sengem Artikel huet de",
+  "attendu": "Journalist",
+  "image": "00_05.png"
+ },
+ {
+  "phrase": 0,
+  "position": 6,
+  "contexte": "a sengem Artikel huet de Journalist",
+  "attendu": "der",
+  "image": "00_06.png"
+ },
+ {
+  "phrase": 0,
+  "position": 7,
+  "contexte": "a sengem Artikel huet de Journalist der",
+  "attendu": "Politikerin",
+  "image": "00_07.png"
+ },
+ {
+  "phrase": 0,
+  "position": 8,
+  "contexte": "a sengem Artikel huet de Journalist der Politikerin",
+  "attendu": "hir",
+  "image": "00_08.png"
+ },
+ {
+  "phrase": 0,
+  "position": 9,
+  "contexte": "a sengem Artikel huet de Journalist der Politikerin hir",
+  "attendu": "Ausso",
+  "image": "00_09.png"
+ },
+ {
+  "phrase": 0,
+  "position": 10,
+  "contexte": "a sengem Artikel huet de Journalist der Politikerin hir Ausso",
+  "attendu": "ganz",
+  "image": "00_10.png"
+ },
+ {
+  "phrase": 0,
+  "position": 11,
+  "contexte": "a sengem Artikel huet de Journalist der Politikerin hir Ausso ganz",
+  "attendu": "ironesch",
+  "image": "00_11.png"
+ },
+ {
+  "phrase": 0,
+  "position": 12,
+  "contexte": "a sengem Artikel huet de Journalist der Politikerin hir Ausso ganz ironesch",
+  "attendu": "kommentéiert",
+  "image": "00_12.png"
+ },
+ {
+  "phrase": 1,
+  "position": 1,
+  "contexte": "huel",
+  "attendu": "der",
+  "image": "01_01.png"
+ },
+ {
+  "phrase": 1,
+  "position": 2,
+  "contexte": "huel der",
+  "attendu": "e",
+  "image": "01_02.png"
+ },
+ {
+  "phrase": 1,
+  "position": 3,
+  "contexte": "huel der e",
+  "attendu": "Stull",
+  "image": "01_03.png"
+ },
+ {
+  "phrase": 1,
+  "position": 4,
+  "contexte": "huel der e Stull",
+  "attendu": "a",
+  "image": "01_04.png"
+ },
+ {
+  "phrase": 1,
+  "position": 5,
+  "contexte": "huel der e Stull a",
+  "attendu": "setz",
+  "image": "01_05.png"
+ },
+ {
+  "phrase": 1,
+  "position": 6,
+  "contexte": "huel der e Stull a setz",
+  "attendu": "dech",
+  "image": "01_06.png"
+ },
+ {
+  "phrase": 1,
+  "position": 7,
+  "contexte": "huel der e Stull a setz dech",
+  "attendu": "bei",
+  "image": "01_07.png"
+ },
+ {
+  "phrase": 1,
+  "position": 8,
+  "contexte": "huel der e Stull a setz dech bei",
+  "attendu": "eis",
+  "image": "01_08.png"
+ },
+ {
+  "phrase": 2,
+  "position": 1,
+  "contexte": "ouni",
+  "attendu": "gudden",
+  "image": "02_01.png"
+ },
+ {
+  "phrase": 2,
+  "position": 2,
+  "contexte": "ouni gudden",
+  "attendu": "Ofschloss",
+  "image": "02_02.png"
+ },
+ {
+  "phrase": 2,
+  "position": 3,
+  "contexte": "ouni gudden Ofschloss",
+  "attendu": "kriss",
+  "image": "02_03.png"
+ },
+ {
+  "phrase": 2,
+  "position": 4,
+  "contexte": "ouni gudden Ofschloss kriss",
+  "attendu": "de",
+  "image": "02_04.png"
+ },
+ {
+  "phrase": 2,
+  "position": 5,
+  "contexte": "ouni gudden Ofschloss kriss de",
+  "attendu": "keng",
+  "image": "02_05.png"
+ },
+ {
+  "phrase": 2,
+  "position": 6,
+  "contexte": "ouni gudden Ofschloss kriss de keng",
+  "attendu": "anstänneg",
+  "image": "02_06.png"
+ },
+ {
+  "phrase": 2,
+  "position": 7,
+  "contexte": "ouni gudden Ofschloss kriss de keng anstänneg",
+  "attendu": "Aarbecht",
+  "image": "02_07.png"
+ },
+ {
+  "phrase": 3,
+  "position": 1,
+  "contexte": "verschidde",
+  "attendu": "Gemenge",
+  "image": "03_01.png"
+ },
+ {
+  "phrase": 3,
+  "position": 2,
+  "contexte": "verschidde Gemenge",
+  "attendu": "gi",
+  "image": "03_02.png"
+ },
+ {
+  "phrase": 3,
+  "position": 3,
+  "contexte": "verschidde Gemenge gi",
+  "attendu": "Subside",
+  "image": "03_03.png"
+ },
+ {
+  "phrase": 3,
+  "position": 4,
+  "contexte": "verschidde Gemenge gi Subside",
+  "attendu": "fir",
+  "image": "03_04.png"
+ },
+ {
+  "phrase": 3,
+  "position": 5,
+  "contexte": "verschidde Gemenge gi Subside fir",
+  "attendu": "elektresch",
+  "image": "03_05.png"
+ },
+ {
+  "phrase": 3,
+  "position": 6,
+  "contexte": "verschidde Gemenge gi Subside fir elektresch",
+  "attendu": "Apparater",
+  "image": "03_06.png"
+ },
+ {
+  "phrase": 3,
+  "position": 7,
+  "contexte": "verschidde Gemenge gi Subside fir elektresch Apparater",
+  "attendu": "mat",
+  "image": "03_07.png"
+ },
+ {
+  "phrase": 3,
+  "position": 8,
+  "contexte": "verschidde Gemenge gi Subside fir elektresch Apparater mat",
+  "attendu": "enger",
+  "image": "03_08.png"
+ },
+ {
+  "phrase": 3,
+  "position": 9,
+  "contexte": "verschidde Gemenge gi Subside fir elektresch Apparater mat enger",
+  "attendu": "gudder",
+  "image": "03_09.png"
+ },
+ {
+  "phrase": 3,
+  "position": 10,
+  "contexte": "verschidde Gemenge gi Subside fir elektresch Apparater mat enger gudder",
+  "attendu": "Energieklass",
+  "image": "03_10.png"
+ },
+ {
+  "phrase": 4,
+  "position": 1,
+  "contexte": "Déi",
+  "attendu": "Leit",
+  "image": "04_01.png"
+ },
+ {
+  "phrase": 4,
+  "position": 2,
+  "contexte": "Déi Leit",
+  "attendu": "sti",
+  "image": "04_02.png"
+ },
+ {
+  "phrase": 4,
+  "position": 3,
+  "contexte": "Déi Leit sti",
+  "attendu": "virun",
+  "image": "04_03.png"
+ },
+ {
+  "phrase": 4,
+  "position": 4,
+  "contexte": "Déi Leit sti virun",
+  "attendu": "de",
+  "image": "04_04.png"
+ },
+ {
+  "phrase": 4,
+  "position": 5,
+  "contexte": "Déi Leit sti virun de",
+  "attendu": "Schierbele",
+  "image": "04_05.png"
+ },
+ {
+  "phrase": 4,
+  "position": 6,
+  "contexte": "Déi Leit sti virun de Schierbele",
+  "attendu": "vun",
+  "image": "04_06.png"
+ },
+ {
+  "phrase": 4,
+  "position": 7,
+  "contexte": "Déi Leit sti virun de Schierbele vun",
+  "attendu": "hirem",
+  "image": "04_07.png"
+ },
+ {
+  "phrase": 4,
+  "position": 8,
+  "contexte": "Déi Leit sti virun de Schierbele vun hirem",
+  "attendu": "Dram",
+  "image": "04_08.png"
+ },
+ {
+  "phrase": 4,
+  "position": 9,
+  "contexte": "Déi Leit sti virun de Schierbele vun hirem Dram",
+  "attendu": "a",
+  "image": "04_09.png"
+ },
+ {
+  "phrase": 4,
+  "position": 10,
+  "contexte": "Déi Leit sti virun de Schierbele vun hirem Dram a",
+  "attendu": "vun",
+  "image": "04_10.png"
+ },
+ {
+  "phrase": 4,
+  "position": 11,
+  "contexte": "Déi Leit sti virun de Schierbele vun hirem Dram a vun",
+  "attendu": "hirer",
+  "image": "04_11.png"
+ },
+ {
+  "phrase": 4,
+  "position": 12,
+  "contexte": "Déi Leit sti virun de Schierbele vun hirem Dram a vun hirer",
+  "attendu": "Existenz",
+  "image": "04_12.png"
+ },
+ {
+  "phrase": 5,
+  "position": 1,
+  "contexte": "de",
+  "attendu": "Mecanicien",
+  "image": "05_01.png"
+ },
+ {
+  "phrase": 5,
+  "position": 2,
+  "contexte": "de Mecanicien",
+  "attendu": "huet",
+  "image": "05_02.png"
+ },
+ {
+  "phrase": 5,
+  "position": 3,
+  "contexte": "de Mecanicien huet",
+  "attendu": "de",
+  "image": "05_03.png"
+ },
+ {
+  "phrase": 5,
+  "position": 4,
+  "contexte": "de Mecanicien huet de",
+  "attendu": "Motor",
+  "image": "05_04.png"
+ },
+ {
+  "phrase": 5,
+  "position": 5,
+  "contexte": "de Mecanicien huet de Motor",
+  "attendu": "ganz",
+  "image": "05_05.png"
+ },
+ {
+  "phrase": 5,
+  "position": 6,
+  "contexte": "de Mecanicien huet de Motor ganz",
+  "attendu": "zerluecht",
+  "image": "05_06.png"
+ },
+ {
+  "phrase": 5,
+  "position": 7,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht",
+  "attendu": "a",
+  "image": "05_07.png"
+ },
+ {
+  "phrase": 5,
+  "position": 8,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht a",
+  "attendu": "krut",
+  "image": "05_08.png"
+ },
+ {
+  "phrase": 5,
+  "position": 9,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht a krut",
+  "attendu": "en",
+  "image": "05_09.png"
+ },
+ {
+  "phrase": 5,
+  "position": 10,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht a krut en",
+  "attendu": "net",
+  "image": "05_10.png"
+ },
+ {
+  "phrase": 5,
+  "position": 11,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht a krut en net",
+  "attendu": "méi",
+  "image": "05_11.png"
+ },
+ {
+  "phrase": 5,
+  "position": 12,
+  "contexte": "de Mecanicien huet de Motor ganz zerluecht a krut en net méi",
+  "attendu": "zesummen",
+  "image": "05_12.png"
+ },
+ {
+  "phrase": 6,
+  "position": 1,
+  "contexte": "fir",
+  "attendu": "meng",
+  "image": "06_01.png"
+ },
+ {
+  "phrase": 6,
+  "position": 2,
+  "contexte": "fir meng",
+  "attendu": "Taarte",
+  "image": "06_02.png"
+ },
+ {
+  "phrase": 6,
+  "position": 3,
+  "contexte": "fir meng Taarte",
+  "attendu": "kafen",
+  "image": "06_03.png"
+ },
+ {
+  "phrase": 6,
+  "position": 4,
+  "contexte": "fir meng Taarte kafen",
+  "attendu": "ech",
+  "image": "06_04.png"
+ },
+ {
+  "phrase": 6,
+  "position": 5,
+  "contexte": "fir meng Taarte kafen ech",
+  "attendu": "ëmmer",
+  "image": "06_05.png"
+ },
+ {
+  "phrase": 6,
+  "position": 6,
+  "contexte": "fir meng Taarte kafen ech ëmmer",
+  "attendu": "gefruerene",
+  "image": "06_06.png"
+ },
+ {
+  "phrase": 6,
+  "position": 7,
+  "contexte": "fir meng Taarte kafen ech ëmmer gefruerene",
+  "attendu": "Bliederdeeg",
+  "image": "06_07.png"
+ },
+ {
+  "phrase": 7,
+  "position": 1,
+  "contexte": "vun",
+  "attendu": "der",
+  "image": "07_01.png"
+ },
+ {
+  "phrase": 7,
+  "position": 2,
+  "contexte": "vun der",
+  "attendu": "nächster",
+  "image": "07_02.png"
+ },
+ {
+  "phrase": 7,
+  "position": 3,
+  "contexte": "vun der nächster",
+  "attendu": "Saison",
+  "image": "07_03.png"
+ },
+ {
+  "phrase": 7,
+  "position": 4,
+  "contexte": "vun der nächster Saison",
+  "attendu": "un",
+  "image": "07_04.png"
+ },
+ {
+  "phrase": 7,
+  "position": 5,
+  "contexte": "vun der nächster Saison un",
+  "attendu": "huet",
+  "image": "07_05.png"
+ },
+ {
+  "phrase": 7,
+  "position": 6,
+  "contexte": "vun der nächster Saison un huet",
+  "attendu": "de",
+  "image": "07_06.png"
+ },
+ {
+  "phrase": 7,
+  "position": 7,
+  "contexte": "vun der nächster Saison un huet de",
+  "attendu": "Sinfonieorchester",
+  "image": "07_07.png"
+ },
+ {
+  "phrase": 7,
+  "position": 8,
+  "contexte": "vun der nächster Saison un huet de Sinfonieorchester",
+  "attendu": "en",
+  "image": "07_08.png"
+ },
+ {
+  "phrase": 7,
+  "position": 9,
+  "contexte": "vun der nächster Saison un huet de Sinfonieorchester en",
+  "attendu": "neien",
+  "image": "07_09.png"
+ },
+ {
+  "phrase": 7,
+  "position": 10,
+  "contexte": "vun der nächster Saison un huet de Sinfonieorchester en neien",
+  "attendu": "Dirigent",
+  "image": "07_10.png"
+ },
+ {
+  "phrase": 8,
+  "position": 1,
+  "contexte": "dat",
+  "attendu": "fannt",
+  "image": "08_01.png"
+ },
+ {
+  "phrase": 8,
+  "position": 2,
+  "contexte": "dat fannt",
+  "attendu": "Dir",
+  "image": "08_02.png"
+ },
+ {
+  "phrase": 8,
+  "position": 3,
+  "contexte": "dat fannt Dir",
+  "attendu": "am",
+  "image": "08_03.png"
+ },
+ {
+  "phrase": 8,
+  "position": 4,
+  "contexte": "dat fannt Dir am",
+  "attendu": "Rayon",
+  "image": "08_04.png"
+ },
+ {
+  "phrase": 8,
+  "position": 5,
+  "contexte": "dat fannt Dir am Rayon",
+  "attendu": "vun",
+  "image": "08_05.png"
+ },
+ {
+  "phrase": 8,
+  "position": 6,
+  "contexte": "dat fannt Dir am Rayon vun",
+  "attendu": "den",
+  "image": "08_06.png"
+ },
+ {
+  "phrase": 8,
+  "position": 7,
+  "contexte": "dat fannt Dir am Rayon vun den",
+  "attendu": "Accessoiren",
+  "image": "08_07.png"
+ },
+ {
+  "phrase": 9,
+  "position": 1,
+  "contexte": "déi",
+  "attendu": "bordeauxrout",
+  "image": "09_01.png"
+ },
+ {
+  "phrase": 9,
+  "position": 2,
+  "contexte": "déi bordeauxrout",
+  "attendu": "Schong",
+  "image": "09_02.png"
+ },
+ {
+  "phrase": 9,
+  "position": 3,
+  "contexte": "déi bordeauxrout Schong",
+  "attendu": "passe",
+  "image": "09_03.png"
+ },
+ {
+  "phrase": 9,
+  "position": 4,
+  "contexte": "déi bordeauxrout Schong passe",
+  "attendu": "gutt",
+  "image": "09_04.png"
+ },
+ {
+  "phrase": 9,
+  "position": 5,
+  "contexte": "déi bordeauxrout Schong passe gutt",
+  "attendu": "bei",
+  "image": "09_05.png"
+ },
+ {
+  "phrase": 9,
+  "position": 6,
+  "contexte": "déi bordeauxrout Schong passe gutt bei",
+  "attendu": "däin",
+  "image": "09_06.png"
+ },
+ {
+  "phrase": 9,
+  "position": 7,
+  "contexte": "déi bordeauxrout Schong passe gutt bei däin",
+  "attendu": "Tailleur",
+  "image": "09_07.png"
+ },
+ {
+  "phrase": 10,
+  "position": 1,
+  "contexte": "Dausende",
+  "attendu": "vu",
+  "image": "10_01.png"
+ },
+ {
+  "phrase": 10,
+  "position": 2,
+  "contexte": "Dausende vu",
+  "attendu": "Leit",
+  "image": "10_02.png"
+ },
+ {
+  "phrase": 10,
+  "position": 3,
+  "contexte": "Dausende vu Leit",
+  "attendu": "sinn",
+  "image": "10_03.png"
+ },
+ {
+  "phrase": 10,
+  "position": 4,
+  "contexte": "Dausende vu Leit sinn",
+  "attendu": "an",
+  "image": "10_04.png"
+ },
+ {
+  "phrase": 10,
+  "position": 5,
+  "contexte": "Dausende vu Leit sinn an",
+  "attendu": "de",
+  "image": "10_05.png"
+ },
+ {
+  "phrase": 10,
+  "position": 6,
+  "contexte": "Dausende vu Leit sinn an de",
+  "attendu": "leschten",
+  "image": "10_06.png"
+ },
+ {
+  "phrase": 10,
+  "position": 7,
+  "contexte": "Dausende vu Leit sinn an de leschten",
+  "attendu": "Deeg",
+  "image": "10_07.png"
+ },
+ {
+  "phrase": 10,
+  "position": 8,
+  "contexte": "Dausende vu Leit sinn an de leschten Deeg",
+  "attendu": "aus",
+  "image": "10_08.png"
+ },
+ {
+  "phrase": 10,
+  "position": 9,
+  "contexte": "Dausende vu Leit sinn an de leschten Deeg aus",
+  "attendu": "dem",
+  "image": "10_09.png"
+ },
+ {
+  "phrase": 10,
+  "position": 10,
+  "contexte": "Dausende vu Leit sinn an de leschten Deeg aus dem",
+  "attendu": "Krichsgebitt",
+  "image": "10_10.png"
+ },
+ {
+  "phrase": 10,
+  "position": 11,
+  "contexte": "Dausende vu Leit sinn an de leschten Deeg aus dem Krichsgebitt",
+  "attendu": "fortgelaf",
+  "image": "10_11.png"
+ },
+ {
+  "phrase": 11,
+  "position": 1,
+  "contexte": "eis",
+  "attendu": "Ekipp",
+  "image": "11_01.png"
+ },
+ {
+  "phrase": 11,
+  "position": 2,
+  "contexte": "eis Ekipp",
+  "attendu": "gouf",
+  "image": "11_02.png"
+ },
+ {
+  "phrase": 11,
+  "position": 3,
+  "contexte": "eis Ekipp gouf",
+  "attendu": "schonn",
+  "image": "11_03.png"
+ },
+ {
+  "phrase": 11,
+  "position": 4,
+  "contexte": "eis Ekipp gouf schonn",
+  "attendu": "an",
+  "image": "11_04.png"
+ },
+ {
+  "phrase": 11,
+  "position": 5,
+  "contexte": "eis Ekipp gouf schonn an",
+  "attendu": "der",
+  "image": "11_05.png"
+ },
+ {
+  "phrase": 11,
+  "position": 6,
+  "contexte": "eis Ekipp gouf schonn an der",
+  "attendu": "Qualifikatioun",
+  "image": "11_06.png"
+ },
+ {
+  "phrase": 11,
+  "position": 7,
+  "contexte": "eis Ekipp gouf schonn an der Qualifikatioun",
+  "attendu": "eliminéiert",
+  "image": "11_07.png"
+ },
+ {
+  "phrase": 12,
+  "position": 1,
+  "contexte": "kuerz",
+  "attendu": "viru",
+  "image": "12_01.png"
+ },
+ {
+  "phrase": 12,
+  "position": 2,
+  "contexte": "kuerz viru",
+  "attendu": "Chrëschtdag",
+  "image": "12_02.png"
+ },
+ {
+  "phrase": 12,
+  "position": 3,
+  "contexte": "kuerz viru Chrëschtdag",
+  "attendu": "sinn",
+  "image": "12_03.png"
+ },
+ {
+  "phrase": 12,
+  "position": 4,
+  "contexte": "kuerz viru Chrëschtdag sinn",
+  "attendu": "déi",
+  "image": "12_04.png"
+ },
+ {
+  "phrase": 12,
+  "position": 5,
+  "contexte": "kuerz viru Chrëschtdag sinn déi",
+  "attendu": "éischt",
+  "image": "12_05.png"
+ },
+ {
+  "phrase": 12,
+  "position": 6,
+  "contexte": "kuerz viru Chrëschtdag sinn déi éischt",
+  "attendu": "Schnéiflacke",
+  "image": "12_06.png"
+ },
+ {
+  "phrase": 12,
+  "position": 7,
+  "contexte": "kuerz viru Chrëschtdag sinn déi éischt Schnéiflacke",
+  "attendu": "gefall",
+  "image": "12_07.png"
+ },
+ {
+  "phrase": 13,
+  "position": 1,
+  "contexte": "den",
+  "attendu": "Historiker",
+  "image": "13_01.png"
+ },
+ {
+  "phrase": 13,
+  "position": 2,
+  "contexte": "den Historiker",
+  "attendu": "huet",
+  "image": "13_02.png"
+ },
+ {
+  "phrase": 13,
+  "position": 3,
+  "contexte": "den Historiker huet",
+  "attendu": "fir",
+  "image": "13_03.png"
+ },
+ {
+  "phrase": 13,
+  "position": 4,
+  "contexte": "den Historiker huet fir",
+  "attendu": "seng",
+  "image": "13_04.png"
+ },
+ {
+  "phrase": 13,
+  "position": 5,
+  "contexte": "den Historiker huet fir seng",
+  "attendu": "Dokteraarbecht",
+  "image": "13_05.png"
+ },
+ {
+  "phrase": 13,
+  "position": 6,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht",
+  "attendu": "eng",
+  "image": "13_06.png"
+ },
+ {
+  "phrase": 13,
+  "position": 7,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht eng",
+  "attendu": "ganz",
+  "image": "13_07.png"
+ },
+ {
+  "phrase": 13,
+  "position": 8,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht eng ganz",
+  "attendu": "Rei",
+  "image": "13_08.png"
+ },
+ {
+  "phrase": 13,
+  "position": 9,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht eng ganz Rei",
+  "attendu": "mëttelalterlech",
+  "image": "13_09.png"
+ },
+ {
+  "phrase": 13,
+  "position": 10,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht eng ganz Rei mëttelalterlech",
+  "attendu": "Akten",
+  "image": "13_10.png"
+ },
+ {
+  "phrase": 13,
+  "position": 11,
+  "contexte": "den Historiker huet fir seng Dokteraarbecht eng ganz Rei mëttelalterlech Akten",
+  "attendu": "analyséiert",
+  "image": "13_11.png"
+ },
+ {
+  "phrase": 14,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "Bus",
+  "image": "14_01.png"
+ },
+ {
+  "phrase": 14,
+  "position": 2,
+  "contexte": "dee Bus",
+  "attendu": "huet",
+  "image": "14_02.png"
+ },
+ {
+  "phrase": 14,
+  "position": 3,
+  "contexte": "dee Bus huet",
+  "attendu": "eng",
+  "image": "14_03.png"
+ },
+ {
+  "phrase": 14,
+  "position": 4,
+  "contexte": "dee Bus huet eng",
+  "attendu": "Eegemass",
+  "image": "14_04.png"
+ },
+ {
+  "phrase": 14,
+  "position": 5,
+  "contexte": "dee Bus huet eng Eegemass",
+  "attendu": "vu",
+  "image": "14_05.png"
+ },
+ {
+  "phrase": 14,
+  "position": 6,
+  "contexte": "dee Bus huet eng Eegemass vu",
+  "attendu": "véier",
+  "image": "14_06.png"
+ },
+ {
+  "phrase": 14,
+  "position": 7,
+  "contexte": "dee Bus huet eng Eegemass vu véier",
+  "attendu": "Tonnen",
+  "image": "14_07.png"
+ },
+ {
+  "phrase": 15,
+  "position": 1,
+  "contexte": "dee",
+  "attendu": "Mann",
+  "image": "15_01.png"
+ },
+ {
+  "phrase": 15,
+  "position": 2,
+  "contexte": "dee Mann",
+  "attendu": "do",
+  "image": "15_02.png"
+ },
+ {
+  "phrase": 15,
+  "position": 3,
+  "contexte": "dee Mann do",
+  "attendu": "huet",
+  "image": "15_03.png"
+ },
+ {
+  "phrase": 15,
+  "position": 4,
+  "contexte": "dee Mann do huet",
+  "attendu": "awer",
+  "image": "15_04.png"
+ },
+ {
+  "phrase": 15,
+  "position": 5,
+  "contexte": "dee Mann do huet awer",
+  "attendu": "e",
+  "image": "15_05.png"
+ },
+ {
+  "phrase": 15,
+  "position": 6,
+  "contexte": "dee Mann do huet awer e",
+  "attendu": "grousse",
+  "image": "15_06.png"
+ },
+ {
+  "phrase": 15,
+  "position": 7,
+  "contexte": "dee Mann do huet awer e grousse",
+  "attendu": "Kenki",
+  "image": "15_07.png"
+ },
+ {
+  "phrase": 16,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "muss",
+  "image": "16_01.png"
+ },
+ {
+  "phrase": 16,
+  "position": 2,
+  "contexte": "ech muss",
+  "attendu": "nach",
+  "image": "16_02.png"
+ },
+ {
+  "phrase": 16,
+  "position": 3,
+  "contexte": "ech muss nach",
+  "attendu": "e",
+  "image": "16_03.png"
+ },
+ {
+  "phrase": 16,
+  "position": 4,
+  "contexte": "ech muss nach e",
+  "attendu": "puer",
+  "image": "16_04.png"
+ },
+ {
+  "phrase": 16,
+  "position": 5,
+  "contexte": "ech muss nach e puer",
+  "attendu": "Programmer",
+  "image": "16_05.png"
+ },
+ {
+  "phrase": 16,
+  "position": 6,
+  "contexte": "ech muss nach e puer Programmer",
+  "attendu": "op",
+  "image": "16_06.png"
+ },
+ {
+  "phrase": 16,
+  "position": 7,
+  "contexte": "ech muss nach e puer Programmer op",
+  "attendu": "mengem",
+  "image": "16_07.png"
+ },
+ {
+  "phrase": 16,
+  "position": 8,
+  "contexte": "ech muss nach e puer Programmer op mengem",
+  "attendu": "Computer",
+  "image": "16_08.png"
+ },
+ {
+  "phrase": 16,
+  "position": 9,
+  "contexte": "ech muss nach e puer Programmer op mengem Computer",
+  "attendu": "updaten",
+  "image": "16_09.png"
+ },
+ {
+  "phrase": 17,
+  "position": 1,
+  "contexte": "ech",
+  "attendu": "wunne",
+  "image": "17_01.png"
+ },
+ {
+  "phrase": 17,
+  "position": 2,
+  "contexte": "ech wunne",
+  "attendu": "léiwer",
+  "image": "17_02.png"
+ },
+ {
+  "phrase": 17,
+  "position": 3,
+  "contexte": "ech wunne léiwer",
+  "attendu": "an",
+  "image": "17_03.png"
+ },
+ {
+  "phrase": 17,
+  "position": 4,
+  "contexte": "ech wunne léiwer an",
+  "attendu": "der",
+  "image": "17_04.png"
+ },
+ {
+  "phrase": 17,
+  "position": 5,
+  "contexte": "ech wunne léiwer an der",
+  "attendu": "Stad",
+  "image": "17_05.png"
+ },
+ {
+  "phrase": 17,
+  "position": 6,
+  "contexte": "ech wunne léiwer an der Stad",
+  "attendu": "ewéi",
+  "image": "17_06.png"
+ },
+ {
+  "phrase": 17,
+  "position": 7,
+  "contexte": "ech wunne léiwer an der Stad ewéi",
+  "attendu": "an",
+  "image": "17_07.png"
+ },
+ {
+  "phrase": 17,
+  "position": 8,
+  "contexte": "ech wunne léiwer an der Stad ewéi an",
+  "attendu": "deem",
+  "image": "17_08.png"
+ },
+ {
+  "phrase": 17,
+  "position": 9,
+  "contexte": "ech wunne léiwer an der Stad ewéi an deem",
+  "attendu": "Nascht",
+  "image": "17_09.png"
+ },
+ {
+  "phrase": 18,
+  "position": 1,
+  "contexte": "Den",
+  "attendu": "Handelssträit",
+  "image": "18_01.png"
+ },
+ {
+  "phrase": 18,
+  "position": 2,
+  "contexte": "Den Handelssträit",
+  "attendu": "tëschent",
+  "image": "18_02.png"
+ },
+ {
+  "phrase": 18,
+  "position": 3,
+  "contexte": "Den Handelssträit tëschent",
+  "attendu": "China",
+  "image": "18_03.png"
+ },
+ {
+  "phrase": 18,
+  "position": 4,
+  "contexte": "Den Handelssträit tëschent China",
+  "attendu": "an",
+  "image": "18_04.png"
+ },
+ {
+  "phrase": 18,
+  "position": 5,
+  "contexte": "Den Handelssträit tëschent China an",
+  "attendu": "den",
+  "image": "18_05.png"
+ },
+ {
+  "phrase": 18,
+  "position": 6,
+  "contexte": "Den Handelssträit tëschent China an den",
+  "attendu": "USA",
+  "image": "18_06.png"
+ },
+ {
+  "phrase": 18,
+  "position": 7,
+  "contexte": "Den Handelssträit tëschent China an den USA",
+  "attendu": "geet",
+  "image": "18_07.png"
+ },
+ {
+  "phrase": 18,
+  "position": 8,
+  "contexte": "Den Handelssträit tëschent China an den USA geet",
+  "attendu": "virun",
+  "image": "18_08.png"
+ },
+ {
+  "phrase": 19,
+  "position": 1,
+  "contexte": "den",
+  "attendu": "Entreprener",
+  "image": "19_01.png"
+ },
+ {
+  "phrase": 19,
+  "position": 2,
+  "contexte": "den Entreprener",
+  "attendu": "huet",
+  "image": "19_02.png"
+ },
+ {
+  "phrase": 19,
+  "position": 3,
+  "contexte": "den Entreprener huet",
+  "attendu": "seng",
+  "image": "19_03.png"
+ },
+ {
+  "phrase": 19,
+  "position": 4,
+  "contexte": "den Entreprener huet seng",
+  "attendu": "Maschinne",
+  "image": "19_04.png"
+ },
+ {
+  "phrase": 19,
+  "position": 5,
+  "contexte": "den Entreprener huet seng Maschinne",
+  "attendu": "bal",
+  "image": "19_05.png"
+ },
+ {
+  "phrase": 19,
+  "position": 6,
+  "contexte": "den Entreprener huet seng Maschinne bal",
+  "attendu": "alleguer",
+  "image": "19_06.png"
+ },
+ {
+  "phrase": 19,
+  "position": 7,
+  "contexte": "den Entreprener huet seng Maschinne bal alleguer",
+  "attendu": "geleaset",
+  "image": "19_07.png"
+ }
+]

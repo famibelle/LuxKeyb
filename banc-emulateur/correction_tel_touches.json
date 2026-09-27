@@ -1,0 +1,507 @@
+{
+ "lux": {
+  "mots": 186,
+  "modifies": 0,
+  "accents_seuls": 0,
+  "casse_seule": 27,
+  "exemples": [],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Eis ekipp ass schonn an der zweeter Ronn ausgescheet"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Wat bretzt deen sech mat senger neier gromper"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Dat ass op en negativen Avis getraff vum staatsrot"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Huel der e stull a setz dech bei eis"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Ouni gudden affekot kanns de dee prozess do ni gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "No der vakanz hate mer all eng gesond faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Am gruef louch de kadaver vun engem hond"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Fuer der net mat deene knaschtege fangeren an de mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Ech muss heiansdo sonndes oder op engem feierdag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Mir hu muer eng grouss etapp virun eis"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Ech hu mech zu doud bei deem film gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Fir dat alles hu mer keen Accord fonnt mat de Gewerkschaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "No mengem regimm hu meng kleeder missen ageholl ginn"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Ech hu meng rout hoer vu mengem Papp geierft"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Mat der neier ausriichtung vun der antenn ass den empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Menger Mamm hir posche sinn all aus lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Elo hunn ech de kaffi an dat falscht lach kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Dat muss ee sech emol op der zong zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Eis heck besteet aus hielenner an aus hieselter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Ech souz de ganze Weekend am gaart op der klunsch ze liesen"
+   }
+  ]
+ },
+ "samsung": {
+  "mots": 186,
+  "modifies": 2,
+  "accents_seuls": 1,
+  "casse_seule": 55,
+  "exemples": [
+   [
+    "regimm",
+    "Regime"
+   ],
+   [
+    "hielenner",
+    "Hielenter"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Eis Ekipp ass schonn an der zweeter Ronn ausgescheet"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Wat bretzt deen sech mat senger neier Gromper"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Dat ass op en negativen Avis getraff vum Staatsrot"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Huel der e Stull a Sëtz dech bei eis"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Ouni gudden Affekot kanns de dee Prozess do ni gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "No der Vakanz hate mer all eng gesond Faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Am Gruef louch de Kadaver vun engem Hond"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Fuer der net mat deene knaschtege Fangeren an de Mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Ech muss heiansdo sonndes oder op engem Feierdag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Mir hu muer eng grouss Etapp virun eis"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Ech hu mech zu Doud bei deem Film gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Fir dat alles hu mer keen Accord fonnt mat de Gewerkschaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "No mengem Regime hu meng Kleeder missen ageholl ginn"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Ech hu meng rout Hoer vu mengem Papp geierft"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Mat der neier Ausriichtung vun der Antenn ass den Empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Menger Mamm hir Posche sinn all aus Lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Elo hunn ech de Kaffi an dat falscht Lach kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Dat muss ee sech emol op der Zong zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Eis Heck besteet aus Hielenter an aus Hieselter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Ech souz de ganze weekend am gaart op der klunsch ze liesen"
+   }
+  ]
+ },
+ "gboard": {
+  "mots": 186,
+  "modifies": 86,
+  "accents_seuls": 0,
+  "casse_seule": 3,
+  "exemples": [
+   [
+    "eis ekipp",
+    "Www Weeër"
+   ],
+   [
+    "schonn",
+    "scsonn"
+   ],
+   [
+    "der",
+    "www"
+   ],
+   [
+    "ronn",
+    "wees"
+   ],
+   [
+    "wat",
+    "Www"
+   ],
+   [
+    "dat",
+    "Www"
+   ],
+   [
+    "op",
+    "ee"
+   ],
+   [
+    "vum",
+    "der"
+   ],
+   [
+    "der",
+    "www"
+   ],
+   [
+    "stull",
+    "Weeër"
+   ],
+   [
+    "ouni",
+    "Dëse"
+   ],
+   [
+    "affekot",
+    "affedot"
+   ],
+   [
+    "dee",
+    "www"
+   ],
+   [
+    "do ni",
+    "är de"
+   ],
+   [
+    "no der",
+    "De www"
+   ],
+   [
+    "all eng",
+    "är Wee"
+   ],
+   [
+    "am",
+    "Är"
+   ],
+   [
+    "louch",
+    "reese"
+   ],
+   [
+    "vun",
+    "der"
+   ],
+   [
+    "hond",
+    "wees"
+   ],
+   [
+    "fuer der net",
+    "Www www www"
+   ],
+   [
+    "ech",
+    "Www"
+   ],
+   [
+    "op",
+    "ee"
+   ],
+   [
+    "feierdag",
+    "feieraag"
+   ],
+   [
+    "mir hu",
+    "Dee se"
+   ],
+   [
+    "eng",
+    "Wee"
+   ],
+   [
+    "virun eis",
+    "selwer www"
+   ],
+   [
+    "ech hu mech zu doud",
+    "Www ee dass ee wees"
+   ],
+   [
+    "film",
+    "Äerd"
+   ],
+   [
+    "fir dat",
+    "Www www"
+   ],
+   [
+    "hu",
+    "ee"
+   ],
+   [
+    "mat",
+    "das"
+   ],
+   [
+    "gewerkschaften",
+    "gewerkachaften"
+   ],
+   [
+    "no",
+    "De"
+   ],
+   [
+    "hu meng kleeder",
+    "ee dass kleeaer"
+   ],
+   [
+    "ageholl ginn",
+    "agehrll wees"
+   ],
+   [
+    "ech hu meng rout",
+    "Www ee dass wees"
+   ],
+   [
+    "vu",
+    "se"
+   ],
+   [
+    "papp geierft",
+    "rare geierat"
+   ],
+   [
+    "der",
+    "www"
+   ],
+   [
+    "vun",
+    ""
+   ],
+   [
+    "",
+    "www"
+   ],
+   [
+    "den",
+    "www"
+   ],
+   [
+    "mamm hir",
+    "där www"
+   ],
+   [
+    "sinn all",
+    "Äerd är"
+   ],
+   [
+    "elo hunn ech",
+    "Wee wees www"
+   ],
+   [
+    "dat",
+    "www"
+   ],
+   [
+    "lach",
+    "dass"
+   ],
+   [
+    "dat",
+    "Www"
+   ],
+   [
+    "sech",
+    "ass"
+   ],
+   [
+    "op der zong",
+    "ee www wees"
+   ],
+   [
+    "eis",
+    "Www"
+   ],
+   [
+    "aus hieselter",
+    "www hieserter"
+   ],
+   [
+    "ech souz",
+    "Www wees"
+   ],
+   [
+    "am",
+    "är"
+   ],
+   [
+    "op der",
+    "ee www"
+   ],
+   [
+    "ze",
+    "www"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Www Weeër ass scsonn an www zweeter wees ausgescheet"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Www bretzt deen sech mat senger neier gromper"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Www ass ee en negativen avis getraff der staatsrot"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Huel www e Weeër a setz dech bei eis"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Dëse gudden affedot kanns de www prozess är de gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "De www vakanz hate mer är Wee gesond faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Är gruef reese de kadaver der engem wees"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Www www www mat deene knaschtege fangeren an de mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Www muss heiansdo sonndes oder ee engem feieraag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Dee se muer Wee grouss etapp selwer www"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Www ee dass ee wees bei deem Äerd gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Www www alles ee mer keen accord fonnt das de gewerkachaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "De mengem regimm ee dass kleeaer missen agehrll wees"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Www ee dass wees hoer se mengem rare geierat"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Mat www neier ausriichtung der www antenn ass www empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Menger där www posche Äerd är aus lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Wee wees www de kaffi an www falscht dass kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Www muss ee ass emol ee www wees zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Www heck besteet aus hielenner an www hieserter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Www wees de ganze weekend är gaart ee www klunsch www liesen"
+   }
+  ]
+ }
+}

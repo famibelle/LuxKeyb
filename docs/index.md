@@ -1,74 +1,192 @@
 ---
-title: "Lëtzebuergesch Clavier : le clavier luxembourgeois pour Android"
-description: "Clavier Android gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité."
+title: "Lëtzebuergesch Clavier : le clavier luxembourgeois, en ligne et sur Android"
+description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité. À essayer dans le navigateur, à installer sur Android."
 lang: fr
 ---
 
 <nav class="site">
   <strong>🏠 Accueil</strong> ·
-  <a href="guide.html">📘 Guide</a> ·
+  <a href="#installer">📲 Installer</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
-  <a href="corpus.html">📚 Les corpus</a> ·
-  <a href="nouveautes.html">🎁 Nouveautés</a> ·
-  <a href="labs.html">🔬 Labs</a> ·
-  <a href="comparatif.html">⚖️ Comparatif</a> ·
-  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
-  <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="#devenir-testeur">🧪 Testeur</a> ·
-  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
-  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
-  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ Aide</a> ·
+  <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
-# Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android
+# Osez le lëtzebuergesch
 
-**Écrire en lëtzebuergesch sur son téléphone, sans se battre contre le clavier.**
-Lëtzebuergesch Clavier est un clavier Android **gratuit, open source, sans
-publicité et entièrement hors ligne**, qui propose des suggestions de mots en
-luxembourgeois pendant la frappe.
+<p class="chapo"><strong>Ce n'est pas vous qui écrivez mal le luxembourgeois :
+c'est votre clavier qui ne le connaît pas.</strong> Lëtzebuergesch Clavier vous
+propose les mots pendant que vous tapez, met les accents et les majuscules à
+votre place, et vos mots luxembourgeois cessent d'être soulignés en rouge dans
+vos messages.</p>
+
+<p class="chapo-note">Gratuit · sans publicité · rien de ce que vous tapez ne
+sort de votre téléphone</p>
+
+<p class="chapo-note"><a href="simulateur.html">Essayez-le d'abord dans votre
+navigateur</a>, sans rien installer. Pour vous en servir dans vos messages,
+installez ensuite l'application Android.</p>
+
+## Ce qui vous retenait, et ce qui a changé
+
+<table class="objections">
+  <tr>
+    <td>🤔 <strong>« Mon téléphone corrige mon luxembourgeois en allemand »</strong></td>
+    <td>Il ne le fait plus. Ce clavier ne remplace jamais un mot par un autre :
+    vos lettres restent les vôtres. Et son correcteur, une fois activé, arrête
+    de souligner vos mots en rouge dans Messages, dans vos notes et dans votre
+    messagerie.</td>
+  </tr>
+  <tr>
+    <td>😬 <strong>« Je ne suis jamais sûr de l'orthographe »</strong></td>
+    <td>Le clavier vous propose les formes du <em>Lëtzebuerger Online
+    Dictionnaire</em>, le dictionnaire officiel de la langue : 123 297 mots
+    reconnus. Vous n'inventez rien, vous choisissez.</td>
+  </tr>
+  <tr>
+    <td>😤 <strong>« Le ë est caché dans un menu »</strong></td>
+    <td>Plus ici. Les trois diacritiques qui portent la langue, <strong>é</strong>,
+    <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
+    l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
+    Tapez « letzebuergesch » tout court : le clavier vous propose
+    « lëtzebuergesch ».</td>
+  </tr>
+  <tr>
+    <td>🤷 <strong>« De toute façon, ça ne s'écrit pas »</strong></td>
+    <td>Si : langue nationale depuis 1984, orthographe fixée par le Zenter fir
+    d'Lëtzebuerger Sprooch, dictionnaire d'État en ligne. Ce clavier est
+    construit sur 186 204 phrases réellement écrites en luxembourgeois, et
+    <a href="corpus.html">dit lesquelles</a>.</td>
+  </tr>
+</table>
 
 Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
-Luxembourg. Plus besoin de chercher un `ë` dans un menu d'accents : les trois
-diacritiques qui portent la langue — **é**, **ä** et **ë** — ont chacune leur
-touche, et l'apostrophe de l'élision — *d'Land*, *s'Kanner* — la sienne.
+Luxembourg. Le clavier est **gratuit, open source, sans publicité et entièrement
+hors ligne** : il tourne dans le navigateur pour l'essai, et s'installe sur
+Android pour l'usage de tous les jours.
 
-<div style="display:flex;justify-content:center;align-items:center;gap:36px;
+<div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
             flex-wrap:wrap;margin:28px 0 12px;">
-  <div style="text-align:center;flex:1 1 320px;max-width:400px;">
+  <div style="text-align:center;flex:1 1 340px;max-width:430px;">
     <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
-       style="display:inline-block;padding:16px 30px;background:#ED2939;color:#fff;
-              border-radius:10px;font-weight:bold;text-decoration:none;font-size:1.15em;">
-      🧪 Devenir testeur sur Google Play
-    </a>
-    <p style="margin:14px 0 0;font-size:0.95em;opacity:0.85;">
-      L'application est en <strong>test fermé</strong>. Une fois inscrit, elle
-      s'installe et se met à jour comme n'importe quelle autre — sans passer par
-      les « sources inconnues ».
-    </p>
+       class="btn-installer">📲 Installer sur mon téléphone</a>
     <p style="margin:16px 0 0;">
-      <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk"
-         class="btn">📲 Ou télécharger la dernière version de l'APK</a>
+      L'application s'installe depuis Google&nbsp;Play, comme n'importe quelle
+      autre : en un geste, avec les mises à jour automatiques.
     </p>
-    <p style="margin:10px 0 0;font-size:0.85em;opacity:0.75;">
-      Android 5.0 ou plus récent · environ 3 Mo · aucune permission réseau
+    <p class="rassurance">
+      Android affichera un avertissement au moment d'activer le clavier. Il
+      s'affiche pour <strong>tous</strong> les claviers, sans exception, et
+      celui-ci n'a aucune permission réseau.
     </p>
   </div>
   <figure style="margin:0;text-align:center;">
     <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
       <img src="assets/qr-luxkeyb-test-ferme.png"
-           alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
+           alt="QR code ouvrant la page d'installation de Lëtzebuergesch Clavier sur Google Play"
            width="176" height="176"
            style="display:block;width:176px;height:176px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">
     </a>
-    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
-      Scannez : la page d'inscription s'ouvre
+    <figcaption>
+      Ou scannez ce code avec votre téléphone
     </figcaption>
   </figure>
 </div>
 
-<p align="center"><em>Le test est réservé à une liste de comptes ;
-<a href="#devenir-testeur">comment y être ajouté</a>.</em></p>
+<div class="promesse" markdown="1">
+
+🔒 **Ce que vous tapez ne quitte pas votre téléphone.** Pas de compte, pas de
+serveur, aucune permission réseau : l'application est techniquement incapable
+d'envoyer quoi que ce soit. La sauvegarde Android elle-même ne remonte que vos
+réglages, vibration, son et thème, ni vos mots ni votre progression. Le code est
+public et vérifiable, et la
+[politique de confidentialité](privacy/privacy-policy.html) le dit en toutes
+lettres.
+
+</div>
+
+<div class="sortie" data-sortie>
+  <!-- Fredoka et le décompte ne servent qu'à ce bloc : chargés ici plutôt que
+       dans _includes/head-custom.html, qui les imposerait à toutes les pages
+       Markdown du site pour les 140 Ko de la police embarquée. Déclarés dans
+       le bloc et non avant lui : kramdown ne reconnaît pas <link> comme un
+       élément de bloc et l'envelopperait dans un paragraphe. -->
+  <link rel="stylesheet" href="assets/fredoka-embed.css">
+  <link rel="stylesheet" href="assets/countdown.css">
+  <script defer src="assets/countdown.js"></script>
+
+  <p class="sortie__eyebrow">Google Play · sortie publique</p>
+  <p class="sortie__titre">🗓️ Ouvert à tout le monde le 5 octobre 2026</p>
+  <p class="sortie__date">
+    D'ici là, la page qui s'ouvre vous demande d'abord d'appuyer sur
+    <strong>Devenir testeur</strong>, puis vous renvoie vers Google Play.
+    C'est la seule différence, et elle a maintenant une date de fin.
+  </p>
+
+  <!-- Les étapes de Google Play, dans l'ordre où la console les présente. Le
+       décompte est rattaché à la dernière, celle qui dure une semaine : c'est
+       elle qu'il compte, et non « la sortie » en général. -->
+  <ol class="sortie__etapes" aria-label="Où en est la publication sur Google Play">
+    <li class="fait">Choix des pays et des régions</li>
+    <li class="fait">Création de la version</li>
+    <li class="fait">Prévisualisation et confirmation de la version</li>
+    <li class="fait">Envoi de la version à Google pour examen</li>
+    <li class="en-cours" aria-current="step">
+      <span class="sortie__etape-titre">Publication sur Google Play</span>
+      <span class="sortie__etape-detail">Dernière étape : elle dure une semaine.</span>
+      <div class="sortie__corps">
+        <div class="sortie__compteur">
+          <div class="sortie__attente">
+            <div class="sortie__cells" aria-hidden="true">
+              <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
+              <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
+            </div>
+            <p class="sortie__pied">
+              Rien ne vous oblige à attendre : le test fermé installe exactement le
+              même clavier, avec les mêmes mises à jour automatiques.
+              <a href="#devenir-testeur">Les trois étapes sont expliquées plus bas.</a>
+            </p>
+          </div>
+
+          <div class="sortie__sortie">
+            <p class="sortie__pied" style="margin-top:0">
+              C'est fait : le clavier est ouvert à tout le monde sur
+              <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">Google Play</a>,
+              et s'installe désormais sans passer par le test.
+            </p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ol>
+</div>
+
+<details>
+  <summary>Installer sans passer par Google Play</summary>
+  <p>C'est possible, en installant le fichier à la main :
+  <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
+  Android 5.0 ou plus récent · environ 7 Mo · aucune permission réseau.</p>
+</details>
+
+## Une fois installée, il se passe quoi ?
+
+1. **L'application s'ouvre** et vous accueille.
+2. **Elle vous guide pas à pas** pour activer le clavier, puis le choisir comme
+   clavier de votre téléphone. Chaque étape se coche quand elle est faite.
+3. **Vous l'essayez sur place**, dans un champ prévu pour ça, avant de vous en
+   servir dans vos messages.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:260px;text-align:center;">
+    <img src="Screenshots/lux_onboarding.png" style="width:100%;border-radius:6px;"
+         alt="Parcours d'installation de l'application : étapes cochées et champ d'essai du clavier">
+    <figcaption>Les trois étapes guidées, dans l'application</figcaption>
+  </figure>
+</div>
 
 <p align="center"><em>Envie de l'essayer d'abord ? Le clavier tourne aussi
 <a href="simulateur.html">dans votre navigateur</a>, avec son vrai dictionnaire
@@ -79,10 +197,11 @@ et ses vraies suggestions.</em></p>
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_clavier_demo.gif" style="width:100%;border-radius:8px;"
-         alt="Animation : saisie de « Moien wéi geet et ». Un cercle marque chaque appui du doigt — sur les touches, sur la touche e maintenue pour ouvrir le choix é ë è ê, et sur les suggestions choisies dans la barre">
-    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
-      « Moien wéi geet et » : suggestions pendant la frappe, accents par appui
-      long, puis prédiction du mot suivant
+         alt="Animation : la phrase « Ech hunn op der Schueberfouer Gromperekichelcher giess » tapée sur le clavier QWERTZ. Un cercle bleu suit le doigt. Après « op der » la barre propose des mots pour continuer, et « Schueberfouer », « Gromperekichelcher » puis « giess » sont complétés en un appui depuis la barre de suggestions.">
+    <figcaption>
+      « Ech hunn op der Schueberfouer Gromperekichelcher giess »
+      (j'ai mangé des galettes de pommes de terre à la Schueberfouer) : la barre
+      propose la suite après « op der », puis complète les mots longs en un appui.
     </figcaption>
   </figure>
 </div>
@@ -91,43 +210,60 @@ et ses vraies suggestions.</em></p>
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_suggestions.png" style="width:100%;border-radius:6px;"
          alt="Barre de suggestions : trois mots luxembourgeois en rouge, deux mots français en bleu, pendant la frappe de « Moi »">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Suggestions bilingues</figcaption>
+    <figcaption>Suggestions bilingues</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_accents.png" style="width:100%;border-radius:6px;"
          alt="Appui long sur la touche e affichant le choix é, ë, è et ê">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Accents par appui long</figcaption>
+    <figcaption>Accents par appui long</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_numerique.png" style="width:100%;border-radius:6px;"
          alt="Mode chiffres et symboles du clavier">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Chiffres et symboles</figcaption>
+    <figcaption>Chiffres et symboles</figcaption>
   </figure>
 </div>
 
 Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
-rouge pour ce qui agit — Entrée, changement de mode — et le bleu ciel pour la
+rouge pour ce qui agit (Entrée, changement de mode) et le bleu ciel pour la
 barre d'espace et la ponctuation.
+
+## Vérifiez tout de suite, sans rien installer
+
+Tapez un mot dans ce clavier d'essai : c'est le vrai dictionnaire et les vraies
+suggestions de l'application, chargés dans votre navigateur. Commencez par
+« lëtz », ou par « op der » suivi d'un espace pour voir arriver la suite de la
+phrase.
+
+<div class="essai">
+  <iframe src="simulateur.html?embed=1" width="380" height="620" loading="lazy"
+          title="Clavier d'essai Lëtzebuergesch Clavier"
+          style="border:0;max-width:100%;"></iframe>
+</div>
+
+<p class="note" style="text-align:center;">Le clavier d'essai a sa
+<a href="simulateur.html">page complète</a>, avec la démonstration automatique
+et le compteur de frappes économisées.</p>
 
 ## Ce qu'il sait faire
 
 ### Il vous souffle les mots
 
-Le dictionnaire compte **37 734 mots** et **26 172 contextes** de prédiction.
+Le clavier reconnaît **123 297 formes** et **27 746 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
 Les suggestions luxembourgeoises passent en premier ; le français prend le
 relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
 Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
-luxembourgeoise — « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
+luxembourgeoise : « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
 Le côté français se limite volontairement aux mots les plus courants : il est là
 pour les emprunts, pas pour rédiger en français.
 
 ### Il pardonne les fautes de frappe
 
 Une lettre oubliée, une lettre en trop, une touche voisine : les suggestions
-arrivent quand même. Et vous pouvez écrire sans diacritiques — tapez
+arrivent quand même. Et vous pouvez écrire sans diacritiques : tapez
 « letzebuergesch », le clavier vous propose « lëtzebuergesch ».
 
 La casse est respectée, et les mots que vous employez souvent remontent d'eux-mêmes.
@@ -140,34 +276,83 @@ messagerie.
 
 ### Il vous fait progresser
 
+**Les jeux ne sont pas un gadget posé à côté du clavier : ils donnent une raison
+d'écrire encore du luxembourgeois.** Chaque partie fait rencontrer un mot qu'on
+n'aurait pas cherché, et chaque mot gagné vient grossir un carnet qui se révise
+tout seul.
+
 Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
 **Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
-utilisée. Trois jeux de vocabulaire complètent le parcours : **Wuertsich**
-(mots mêlés), **Wuertmix** (mots mélangés) et **Wuertriet**, où il faut deviner
-un mot de cinq lettres en six essais.
+utilisée. Sept jeux complètent le parcours : **Wuertsich** (mots mêlés),
+**Wuertmix** (mots mélangés), **Wuertriet**, où il faut deviner un mot de cinq
+lettres en six essais, **Wuertlück**, une phrase luxembourgeoise authentique à
+laquelle il manque un mot, **Zuelwuert**, où l'on écrit en toutes lettres le
+résultat d'une multiplication, **Kräizwuert**, des mots croisés dont les
+définitions sont en français, et **Wuertplaz**, une grille vide et une liste de
+mots à y caser.
 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
          alt="Écran de progression : niveau Ufänker, 0,5 % du dictionnaire découvert, mot du jour et mots à découvrir">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Progression et mot du jour</figcaption>
+    <figcaption>Progression et mot du jour</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertsich : le doigt trace EINIGE, GEWËNN puis BEWISEN dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertsich · mots mêlés</figcaption>
+         alt="Animation Wuertsich : le doigt trace KORREKT à l'horizontale puis BRAUCHT en diagonale dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
+    <figcaption>Wuertsich · mots mêlés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « bestoen », dont la première et la dernière lettre sont données">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertmix · mots mélangés</figcaption>
+         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « Rulle » (roulette, rouleau), dont la première et la dernière lettre sont données, puis la réponse est validée">
+    <figcaption>Wuertmix · mots mélangés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertriet.gif" style="width:100%;border-radius:6px;"
          alt="Animation Wuertriet : deux mots tapés au clavier luxembourgeois puis validés ; les lettres se colorent en vert, orange ou gris selon leur position">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Wuertriet · mot en six essais</figcaption>
+    <figcaption>Wuertriet · mot en six essais</figcaption>
   </figure>
 </div>
+
+### Les mots gagnés vous restent
+
+Un mot trouvé dans l'un des sept jeux ne disparaît pas avec la partie : il
+devient une **carte** dans **Mäi Carnet**. Chaque carte porte le sens du mot en
+français, une phrase d'exemple tirée du dictionnaire officiel avec sa traduction
+quand l'État l'a publiée, les autres formes de la même famille, et sa rareté,
+c'est-à-dire son rang réel dans le corpus. Le carnet ne fait que grandir.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:520px;text-align:center;">
+    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
+         alt="Deux écrans du carnet : à gauche la grille de cartes à deux colonnes avec leur illustration, leur mot et leur symbole de rareté ; à droite la carte « virgelies » ouverte, badge « Très rare », son sens, une phrase d'exemple et sa famille">
+    <figcaption>Trente mots gagnés, et la carte « virgelies » ouverte</figcaption>
+  </figure>
+</div>
+
+Ces cartes reviennent ensuite d'elles-mêmes, par **Widderhuelen** : six casiers,
+un jour, trois jours, une semaine, deux semaines, un mois, trois mois, puis le
+mot est acquis et sort de la file. Vous retournez la carte, vous vous notez, et
+elle avance ou redescend d'un casier.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_eventail.png" style="width:100%;border-radius:8px;"
+         alt="Deux écrans de la révision : à gauche la boîte à sept casiers, de « 1 jour » à « acquis », avec le bouton Réviser 12 cartes ; à droite les cartes d'un casier déployées en éventail">
+    <figcaption>La boîte, casier par casier</figcaption>
+  </figure>
+  <figure style="margin:0;flex:0 0 auto;max-width:190px;text-align:center;">
+    <img src="Screenshots/lux_revision.gif" style="width:100%;border-radius:8px;"
+         alt="Animation : une carte du carnet est retournée, on se note, et elle passe du casier « 1 jour » au casier « 3 jours »">
+    <figcaption>Une carte qu'on savait</figcaption>
+  </figure>
+</div>
+
+**Et le clavier sert d'examen.** Si vous avez réécrit le mot dans vos messages
+depuis la dernière révision, la carte monte d'un casier sans qu'on vous demande
+quoi que ce soit : la langue écrite pour de vrai compte plus que la langue
+récitée. Ce décompte reste sur le téléphone, dans un fichier que même la
+sauvegarde Android n'emporte pas.
 
 ### Il ne sait rien de vous
 
@@ -181,34 +366,50 @@ champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-
 
 ## Face aux autres claviers
 
-Le luxembourgeois n'est absent d'aucun grand clavier : Gboard comme SwiftKey le
-proposent. Mais aucun n'est **construit** pour lui, et les claviers libres qui
-acceptent un dictionnaire luxembourgeois s'appuient sur une liste de mots figée
-depuis 2013, sans prédiction du mot suivant.
+Le luxembourgeois n'est absent d'aucun grand clavier : Gboard, SwiftKey et le
+clavier Samsung le proposent tous les trois, vérifié dans les applications
+elles-mêmes. Mais aucun n'est **construit** pour lui : chez Samsung, `lb` est
+l'une des 691 langues du catalogue, servie par le QWERTZ générique et sans
+dictionnaire publié. Et les claviers libres qui acceptent un dictionnaire
+luxembourgeois s'appuient sur une liste de mots figée depuis 2013, sans
+prédiction du mot suivant.
 
 <div class="table-scroll" markdown="1">
 
-| | **Lëtzebuergesch Clavier** | Gboard | SwiftKey | HeliBoard | AnySoftKeyboard |
-|---|---|---|---|---|---|
-| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Dictionnaire luxembourgeois | **37 734 mots**, corpus 2026 | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 26 172 contextes | Oui | Oui | Non, en luxembourgeois | Basique |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
-| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui |
-| Écriture sans diacritiques | **Oui** | — | — | — | — |
-| Correcteur système (lb) | **Oui** | Oui | — | Non | Non |
-| Aucun accès à Internet | **Oui** | Non | Non | Oui | Oui |
-| Code ouvert | **Oui**, MIT | Non | Non | Oui | Oui |
-| Jeux et progression | **Oui**, 3 jeux, 8 niveaux | Non | Non | Non | Non |
-| Saisie glissée | Non | Oui | Oui | Bibliothèque à ajouter | Gestes |
-| Dictée vocale | Non | Oui | Oui | Non | Non |
-| Thème sombre | Non | Oui | Oui | Oui | Oui |
+| | **Lëtzebuergesch Clavier** | Gboard | Clavier Samsung | SwiftKey | HeliBoard | AnySoftKeyboard |
+|---|---|---|---|---|---|---|
+| Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Oui, vérifié sur le S24 Ultra | Oui, liste officielle Microsoft | Oui, dictionnaire à ajouter | Oui, pack séparé |
+| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 691 | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
+| Disposition propre à la langue | **Oui**, QWERTZ avec `é` `ä` `ë` en touches pleines | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | — | — |
+| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
+| Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | 13,4 % | 17,7 % | — | — | — |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
+| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
+| Écriture sans diacritiques | **Oui** | — | — | — | — | — |
+| Correcteur système (lb) | **Oui** | Oui | Dans le clavier | — | Non | Non |
+| Aucun accès à Internet | **Oui** | Non | Non | Non | Oui | Oui |
+| Code ouvert | **Oui**, MIT | Non | Non | Non | Oui | Oui |
+| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
+| Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
+| Dictée vocale en luxembourgeois | En cours de test | Non | Non | Non | Non | Non |
+| Thème sombre | Non | Oui | Oui | Oui | Oui | Oui |
 
 </div>
 
-<p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Chiffres relevés en
-août 2026 ; le dictionnaire luxembourgeois des claviers libres provient du
-<a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.</p>
+<p class="note">« — » : non vérifié. Chiffres relevés en
+août 2026 ; colonne Samsung relevée en septembre 2026 dans le catalogue de
+langues du Clavier Samsung livré sur le Galaxy S24 Ultra (One UI 7, build
+<code>S928BXXS4BYEC</code>) ; le dictionnaire luxembourgeois des claviers libres
+provient du
+<a href="https://codeberg.org/Helium314/aosp-dictionaries">dépôt de dictionnaires AOSP</a>.
+La ligne « prédiction mesurée » vient de bancs de frappe sur un Galaxy A21s
+(notre clavier et Samsung le 8 septembre 2026, Gboard 18.2.4 le 20) : 322 frontières
+de mots de phrases du corpus ZLS, le mot suivant doit figurer dans les trois
+suggestions affichées sans qu'une seule de ses lettres ait été tapée. L'écart avec le
+Clavier Samsung n'est pas statistiquement significatif : sur la prédiction pure, les
+deux font jeu égal, et Gboard fait moins bien que l'un et l'autre. Méthode, relevés bruts et limites dans
+<a href="comparatif.html#les-trois-claviers-mesurés-sur-le-même-galaxy">le comparatif</a>.</p>
 
 Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
@@ -259,7 +460,7 @@ mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
            style="display:block;width:160px;height:160px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">
     </a>
-    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
+    <figcaption>
       Le même QR code qu'en haut de page
     </figcaption>
   </figure>
@@ -273,11 +474,14 @@ Vous quittez le programme quand vous voulez, depuis la même page. L'APK de cett
 page, lui, reste disponible et contient exactement le même code : le test fermé
 change la façon d'installer, pas l'application.
 
-<p style="font-size:0.9em;opacity:0.8;">Pourquoi un test fermé ? Google demande
+<p class="note">Pourquoi un test fermé ? Google demande
 qu'une nouvelle application soit testée par au moins douze personnes pendant
-quatorze jours avant d'autoriser sa publication à tout le monde. C'est cette
-étape-là qui est en cours : chaque testeur rapproche le clavier d'une
-publication ouverte.</p>
+quatorze jours avant d'autoriser sa publication à tout le monde. Les douze sont
+réunis depuis le 9 septembre 2026, ce qui rend l'application éligible dès le
+23 ; la sortie publique est programmée plus tard, au
+<strong>5 octobre 2026</strong>. Rejoindre le test d'ici là, c'est aider à
+tenir le palier : le compte doit rester à douze sans que personne ne quitte le
+programme.</p>
 
 ## En avant-première : la dictée vocale 🔬
 
@@ -285,18 +489,19 @@ publication ouverte.</p>
 avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
 vous parlez, le clavier écrit.
 
-La reconnaissance tourne **entièrement sur le téléphone** — aucun son n'est
+La reconnaissance tourne **entièrement sur le téléphone**, aucun son n'est
 envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
-contrepartie, elle pèse 38 Mo au lieu de 4,5, et sa précision n'est pas encore
+contrepartie, elle pèse 38 Mo au lieu de 7, et sa précision n'est pas encore
 mesurée : c'est justement ce que ces essais servent à établir.
 
-<p style="margin:18px 0;">
+<p style="margin:22px 0;">
   <a href="labs.html" class="btn">🔬 Découvrir la version Labs</a>
 </p>
 
-## Installer
+## Installer sans passer par Google Play
 
-Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
+Si vous préférez ne pas passer par Google Play, le fichier d'installation
+(l'« APK ») se pose à la main.
 
 <div style="display:flex;justify-content:center;align-items:center;gap:28px;
             flex-wrap:wrap;margin:24px 0;">
@@ -310,31 +515,22 @@ Si vous préférez ne pas passer par Google Play, l'APK s'installe à la main.
            style="display:block;width:150px;height:150px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">
     </a>
-    <figcaption style="margin-top:8px;font-size:0.9em;opacity:0.8;">
+    <figcaption>
       Scannez : le téléchargement démarre
     </figcaption>
   </figure>
 </div>
 
-1. Téléchargez l'APK par le bouton ou le QR code ci-dessus : dans les deux cas
-   le téléchargement démarre directement. Toutes les versions restent listées
-   sur la [page des releases](https://github.com/famibelle/LuxKeyb/releases).
+1. Téléchargez le fichier par le bouton ou le QR code ci-dessus : dans les deux
+   cas le téléchargement démarre directement. Toutes les versions restent
+   listées sur la [page des releases](https://github.com/famibelle/LuxKeyb/releases).
 2. Autorisez l'installation depuis cette source, si Android le demande.
-3. Ouvrez l'application : elle vous guide en trois étapes pour activer le
-   clavier, le sélectionner, puis l'essayer.
+3. Ouvrez l'application : elle vous guide comme ci-dessus.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:220px;text-align:center;">
-    <img src="Screenshots/lux_onboarding.png" style="width:100%;border-radius:6px;"
-         alt="Parcours d'installation de l'application : étapes cochées et champ d'essai du clavier">
-    <figcaption style="margin-top:6px;font-size:0.9em;opacity:0.8;">Les trois étapes guidées, dans l'application</figcaption>
-  </figure>
-</div>
-
-Android affiche au passage un avertissement générique, montré pour **tout**
-clavier tiers, sur la capture éventuelle de ce que vous tapez. Il est normal, et
-l'onglet Guide de l'application explique pourquoi ce clavier-ci ne peut rien
-envoyer nulle part.
+Là aussi, Android affiche un avertissement générique, montré pour **tout**
+clavier, sur la capture éventuelle de ce que vous tapez. Il est normal, et le
+guide de l'application, au bas de l'onglet Démarrage, explique pourquoi
+celui-ci ne peut rien envoyer nulle part.
 
 ## Contribuer
 
@@ -347,8 +543,29 @@ grâce à ces signalements.
 
 ---
 
-<p align="center" style="font-size:0.85em;opacity:0.7;">Android et Google Play
+## Pour aller plus loin
+
+<p class="liens-secondaires">
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="corpus.html">📚 D'où viennent les mots</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
+  <a href="comparatif.html">⚖️ Comparatif détaillé</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Nous écrire</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a>
+</p>
+
+---
+
+<p align="center" class="note">Android et Google Play
 sont des marques de Google LLC ; cette application n'est ni éditée ni approuvée
 par Google.</p>
 
-<p align="center"><em>Fait au Luxembourg avec ❤️ — « Mir wëlle bleiwe wat mir sinn »</em></p>
+<p class="devise">Mir wëlle bleiwe wat mir sinn.</p>
+
+<p class="devise-note">« Nous voulons rester ce que nous sommes. »<br>
+C'est ce que vous rejoignez en l'installant.</p>
+
+<p align="center"><em>Fait au Luxembourg avec ❤️</em></p>

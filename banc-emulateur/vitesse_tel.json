@@ -1,0 +1,194 @@
+[
+ {
+  "clavier": "lux",
+  "series": [
+   {
+    "total_s": 3.758647879003547,
+    "base_s": 3.009396148030646,
+    "traitement_ms_par_appui": 12.48752884954835,
+    "cpu_ms_par_appui": 33.5,
+    "images": 26.0,
+    "ratees_pct": 61.54,
+    "p50_ms": 25.0,
+    "p90_ms": 32.0,
+    "p99_ms": 65.0,
+    "latence_entree_elevee": 1.0
+   },
+   {
+    "total_s": 3.7065837340196595,
+    "base_s": 3.026149089972023,
+    "traitement_ms_par_appui": 11.340577400793942,
+    "cpu_ms_par_appui": 45.333333333333336,
+    "images": 29.0,
+    "ratees_pct": 65.52,
+    "p50_ms": 28.0,
+    "p90_ms": 65.0,
+    "p99_ms": 97.0,
+    "latence_entree_elevee": 0.0
+   }
+  ],
+  "cpu_repos_ms_30s": 20,
+  "pss_mo": 205.0,
+  "passe": 1
+ },
+ {
+  "clavier": "samsung",
+  "series": [
+   {
+    "total_s": 2.877148370957002,
+    "base_s": 3.000761325994972,
+    "traitement_ms_par_appui": -2.0602159172995016,
+    "cpu_ms_par_appui": 21.5,
+    "images": 15.0,
+    "ratees_pct": 93.33,
+    "p50_ms": 48.0,
+    "p90_ms": 150.0,
+    "p99_ms": 150.0,
+    "latence_entree_elevee": 5.0
+   },
+   {
+    "total_s": 2.9287525649997406,
+    "base_s": 2.9881078049656935,
+    "traitement_ms_par_appui": -0.9892539994325489,
+    "cpu_ms_par_appui": 23.833333333333332,
+    "images": 15.0,
+    "ratees_pct": 86.67,
+    "p50_ms": 42.0,
+    "p90_ms": 109.0,
+    "p99_ms": 150.0,
+    "latence_entree_elevee": 4.0
+   }
+  ],
+  "cpu_repos_ms_30s": 230,
+  "pss_mo": 129.3,
+  "passe": 1
+ },
+ {
+  "clavier": "gboard",
+  "series": [
+   {
+    "total_s": 3.1998711460037157,
+    "base_s": 3.0050891650025733,
+    "traitement_ms_par_appui": 3.24636635001904,
+    "cpu_ms_par_appui": 23.5,
+    "images": 14.0,
+    "ratees_pct": 100.0,
+    "p50_ms": 77.0,
+    "p90_ms": 85.0,
+    "p99_ms": 117.0,
+    "latence_entree_elevee": 2.0
+   },
+   {
+    "total_s": 3.1219737590290606,
+    "base_s": 2.985835364961531,
+    "traitement_ms_par_appui": 2.2689732344588265,
+    "cpu_ms_par_appui": 19.166666666666668,
+    "images": 15.0,
+    "ratees_pct": 100.0,
+    "p50_ms": 65.0,
+    "p90_ms": 89.0,
+    "p99_ms": 97.0,
+    "latence_entree_elevee": 2.0
+   }
+  ],
+  "cpu_repos_ms_30s": 80,
+  "pss_mo": 118.3,
+  "passe": 1
+ },
+ {
+  "clavier": "gboard",
+  "series": [
+   {
+    "total_s": 3.147691902995575,
+    "base_s": 3.012538383016363,
+    "traitement_ms_par_appui": 2.252558666320207,
+    "cpu_ms_par_appui": 26.666666666666668,
+    "images": 15.0,
+    "ratees_pct": 100.0,
+    "p50_ms": 81.0,
+    "p90_ms": 97.0,
+    "p99_ms": 101.0,
+    "latence_entree_elevee": 2.0
+   },
+   {
+    "total_s": 3.072384933999274,
+    "base_s": 3.0670943569857627,
+    "traitement_ms_par_appui": 0.08817628355852018,
+    "cpu_ms_par_appui": 23.166666666666668,
+    "images": 11.0,
+    "ratees_pct": 100.0,
+    "p50_ms": 65.0,
+    "p90_ms": 97.0,
+    "p99_ms": 97.0,
+    "latence_entree_elevee": 2.0
+   }
+  ],
+  "cpu_repos_ms_30s": 40,
+  "pss_mo": 119.6,
+  "passe": 2
+ },
+ {
+  "clavier": "samsung",
+  "series": [
+   {
+    "total_s": 4.1153436099994,
+    "base_s": 3.018603178963531,
+    "traitement_ms_par_appui": 18.279007183931146,
+    "cpu_ms_par_appui": 52.833333333333336,
+    "images": 86.0,
+    "ratees_pct": 22.09,
+    "p50_ms": 14.0,
+    "p90_ms": 65.0,
+    "p99_ms": 300.0,
+    "latence_entree_elevee": 32.0
+   },
+   {
+    "total_s": 2.9880507239722647,
+    "base_s": 2.9664389139506966,
+    "traitement_ms_par_appui": 0.3601968336928015,
+    "cpu_ms_par_appui": 27.0,
+    "images": 31.0,
+    "ratees_pct": 45.16,
+    "p50_ms": 17.0,
+    "p90_ms": 133.0,
+    "p99_ms": 150.0,
+    "latence_entree_elevee": 35.0
+   }
+  ],
+  "cpu_repos_ms_30s": 250,
+  "pss_mo": 133.6,
+  "passe": 2
+ },
+ {
+  "clavier": "lux",
+  "series": [
+   {
+    "total_s": 3.346985656011384,
+    "base_s": 3.0058383470168337,
+    "traitement_ms_par_appui": 5.685788483242504,
+    "cpu_ms_par_appui": 57.666666666666664,
+    "images": 43.0,
+    "ratees_pct": 32.56,
+    "p50_ms": 13.0,
+    "p90_ms": 25.0,
+    "p99_ms": 42.0,
+    "latence_entree_elevee": 2.0
+   },
+   {
+    "total_s": 3.7626770900096744,
+    "base_s": 2.9861761610372923,
+    "traitement_ms_par_appui": 12.941682149539702,
+    "cpu_ms_par_appui": 23.666666666666668,
+    "images": 26.0,
+    "ratees_pct": 61.54,
+    "p50_ms": 26.0,
+    "p90_ms": 44.0,
+    "p99_ms": 97.0,
+    "latence_entree_elevee": 0.0
+   }
+  ],
+  "cpu_repos_ms_30s": 20,
+  "pss_mo": 207.5,
+  "passe": 2
+ }
+]

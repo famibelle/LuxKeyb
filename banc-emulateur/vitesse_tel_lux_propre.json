@@ -1,0 +1,34 @@
+[
+ {
+  "clavier": "lux",
+  "series": [
+   {
+    "total_s": 3.4800676919985563,
+    "base_s": 2.970297382969875,
+    "traitement_ms_par_appui": 8.49617181714469,
+    "cpu_ms_par_appui": 42.5,
+    "images": 41.0,
+    "ratees_pct": 26.83,
+    "p50_ms": 13.0,
+    "p90_ms": 26.0,
+    "p99_ms": 32.0,
+    "latence_entree_elevee": 0.0
+   },
+   {
+    "total_s": 3.6660586100188084,
+    "base_s": 2.9415272739715874,
+    "traitement_ms_par_appui": 12.075522267453684,
+    "cpu_ms_par_appui": 41.5,
+    "images": 26.0,
+    "ratees_pct": 57.69,
+    "p50_ms": 21.0,
+    "p90_ms": 46.0,
+    "p99_ms": 117.0,
+    "latence_entree_elevee": 2.0
+   }
+  ],
+  "cpu_repos_ms_30s": 10,
+  "pss_mo": 123.9,
+  "passe": 1
+ }
+]

@@ -25,6 +25,10 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[2]
 CHANGELOG = RACINE / "android_keyboard" / "CHANGELOG.md"
 SORTIE = RACINE / "docs" / "stats" / "nouveautes.json"
+# Illustrations tenues à la main, par version : le CHANGELOG ne porte pas
+# d'images (il est aussi lu tel quel sur GitHub), donc la capture d'une
+# nouveauté vit à côté et se fusionne ici. Absent ou incomplet, on s'en passe.
+MEDIAS = RACINE / "docs" / "stats" / "nouveautes-medias.json"
 
 VERSIONS_AFFICHEES = 6
 
@@ -57,12 +61,22 @@ def separer_puce(brut):
     Le CHANGELOG ouvre presque toutes ses puces par un segment en gras qui
     résume le point ; c'est lui qui sert de titre à la carte. Une puce sans
     gras initial n'a pas de titre, et son texte est rendu tel quel.
+
+    Le gras n'est pas toujours une phrase entière : « **L'appui long copie le
+    mot**, sans passer par la fiche » laisse un corps qui commence par une
+    virgule, et la carte affichait « , sans passer par la fiche ». La
+    ponctuation de liaison est donc retirée et la phrase remise sur ses pieds —
+    seulement quand elle commence par une lettre, pour ne pas capitaliser un
+    guillemet ou un nom de code.
     """
     m = re.match(r'^\*\*(.+?)\*\*[  ]*(.*)$', brut, re.S)
     if not m:
         return None, en_html(brut.strip())
     titre = m.group(1).strip().rstrip(':').rstrip('.')
-    return en_html(titre), en_html(m.group(2).strip())
+    corps = m.group(2).strip().lstrip(',;:').strip()
+    if corps[:1].isalpha():
+        corps = corps[0].upper() + corps[1:]
+    return en_html(titre), en_html(corps)
 
 
 def lire_versions(lignes):
@@ -157,6 +171,35 @@ def main():
         sys.exit(f"CHANGELOG introuvable : {CHANGELOG}")
 
     versions = lire_versions(CHANGELOG.read_text("utf-8").splitlines())
+
+    medias = {}
+    if MEDIAS.exists():
+        brut = json.loads(MEDIAS.read_text("utf-8"))
+        medias = {k: v for k, v in brut.items() if not k.startswith("_")}
+    for v in versions:
+        m = medias.get(v["version"])
+        if not m:
+            continue
+        # Une version peut porter plusieurs illustrations : « images » est une
+        # liste, « image » la forme courte d'une seule. Les deux se ramènent à
+        # la liste, et la première reste recopiée dans les anciens champs pour
+        # que la page rende encore si son script n'a pas suivi.
+        vues = m.get("images") or ([m] if m.get("image") else [])
+        vues = [
+            {
+                "image": x["image"],
+                "alt": x.get("alt", ""),
+                "legende": x.get("legende", ""),
+            }
+            for x in vues if x.get("image")
+        ]
+        if not vues:
+            continue
+        v["images"] = vues
+        v["image"] = vues[0]["image"]
+        v["image_alt"] = vues[0]["alt"]
+        v["image_legende"] = vues[0]["legende"]
+
     for v in versions:
         for s in v["sections"]:
             s["texte"] = en_html(" ".join(s["texte"]).strip())

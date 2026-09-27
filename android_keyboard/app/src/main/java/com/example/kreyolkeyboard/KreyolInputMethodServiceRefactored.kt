@@ -200,6 +200,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             if (dispo) cercles else listOf("·", "··", "···", "··")
         }
         private const val SUGGESTION_CHIP_MIN_WIDTH_DP = 88
+
+        /**
+         * Encastrement latéral du plateau de suggestions.
+         *
+         * C'est lui qui fait la margelle : le fond du clavier apparaît de chaque
+         * côté, et sans ce rebord visible rien ne porterait l'ombre interne,
+         * donc rien ne se lirait comme un creux. Latéral seulement : une marge
+         * haute ou basse s'ajouterait à la hauteur consommée sans que
+         * [computeAvailableRowsHeight] la voie, et la dernière rangée de touches
+         * se ferait rogner d'autant.
+         */
+        private const val SUGGESTION_BAR_INSET_DP = 8
         private const val ONBOARDING_PREFS = "lux_onboarding_prefs"
         private const val PREF_FIRST_REAL_USE_TIP_SHOWN = "first_real_use_tip_shown"
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
@@ -228,6 +240,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         const val KEYBOARD_PREFS_NAME = "lux_keyboard_prefs"
         const val PREF_AUTO_CAPITALIZE = "auto_capitalize_nouns"
         private const val PREF_LAST_NOTIFIED_LEVEL = "last_notified_level_index"
+
+        /**
+         * Temps d'immobilité au bout duquel un glissement de curseur est
+         * considéré terminé, et le mot suivi resynchronisé (v14.0.0).
+         *
+         * Assez long pour couvrir le vol des derniers `onUpdateSelection`
+         * provoqués par les touches directionnelles, assez court pour que les
+         * suggestions du mot d'arrivée soient déjà là quand le doigt revient
+         * frapper. Un caractère tapé pendant ce délai resynchronise de toute
+         * façon par le chemin normal.
+         */
+        private const val DELAI_SYNC_CURSEUR = 120L
 
         /**
          * Saisie dont le contenu ne doit jamais être conservé, statistiques de
@@ -359,6 +383,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var deleteTimer: Timer? = null
     private var deleteHandler = Handler(Looper.getMainLooper())
     private var isDeleteLongPressActive = false
+
+    // Glissement du curseur sur la barre d'espace (v14.0.0)
+    private val handlerCurseur = Handler(Looper.getMainLooper())
+    private var syncCurseurEnAttente: Runnable? = null
+    private var glissementCurseur = false
+
+    // Dernière position de curseur rapportée par le framework, conservée pour
+    // que la resynchronisation différée d'un glissement travaille sur la
+    // position d'arrivée et non sur celle du départ.
+    private var dernierSelStart = 0
+    private var dernierSelEnd = 0
     
     override fun onCreate() {
         super.onCreate()
@@ -648,8 +683,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setBackgroundColor(KeyboardTheme.palette().fondSuggestions)
+            ).apply {
+                // Voir SUGGESTION_BAR_INSET_DP : latéral seulement, la hauteur
+                // consommée doit rester celle que le budget vertical prévoit.
+                marginStart = dpToPx(SUGGESTION_BAR_INSET_DP)
+                marginEnd = dpToPx(SUGGESTION_BAR_INSET_DP)
+            }
+            // Plateau creusé dans le clavier : fond plus sombre que les touches,
+            // ombre interne au bord haut, liséré clair au bord bas. Le fond du
+            // clavier (posé sur mainLayout) lui sert de margelle.
+            background = KeyboardTheme.cuvetteSuggestions(this@KreyolInputMethodServiceRefactored)
         }
 
         val luxScroll = HorizontalScrollView(this).apply {
@@ -657,6 +700,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 rowHeightPx
             )
+            // Sans cela, Android dessine sa barre de défilement DANS la vue et
+            // par-dessus le contenu (SCROLLBARS_INSIDE_OVERLAY, le défaut d'un
+            // HorizontalScrollView). Sur une rangée haute d'une seule puce, elle
+            // tombe en travers des mots, exactement pendant qu'on les lit pour
+            // choisir — un trait clair sur une puce rouge se lit comme un mot
+            // barré. La passer en OUTSIDE n'est pas une option : la cuvette a un
+            // budget vertical fixe, et il faudrait le prendre aux touches.
+            // L'indice de défilement reste porté par la puce coupée au bord.
+            isHorizontalScrollBarEnabled = false
             // Le padding bas porte la moitié de l'intervalle qui sépare une puce
             // kréyòl de la puce française juste en dessous, l'autre moitié venant du
             // padding haut de la rangée française. En paysage cette rangée n'existe
@@ -722,6 +774,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     rowHeightPx
                 )
+                // Même raison que pour luxScroll, ci-dessus.
+                isHorizontalScrollBarEnabled = false
                 // Moitié haute de l'intervalle entre les deux rangées, cf. luxScroll.
                 setPadding(
                     dpToPx(8),
@@ -1370,6 +1424,51 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Arrêter les accents
         accentHandler.cancelLongPress()
     }
+
+    /**
+     * Le doigt glisse sur la barre d'espace : le curseur suit, caractère par
+     * caractère (v14.0.0).
+     */
+    override fun onSpaceCursorMove(steps: Int) {
+        glissementCurseur = true
+        inputProcessor.moveCursorBy(steps)
+    }
+
+    /**
+     * Le doigt se lève : on resynchronise le mot suivi une seule fois, sur la
+     * position d'arrivée.
+     *
+     * Le rappel est différé plutôt qu'immédiat parce que les événements de
+     * touche directionnelle émis par [InputProcessor.moveCursorBy] sont
+     * asynchrones : au moment où le doigt se lève, le dernier `onUpdateSelection`
+     * du glissement est encore en vol, et resynchroniser tout de suite prendrait
+     * l'avant-dernière position.
+     */
+    override fun onSpaceCursorEnd() {
+        planifierSyncCurseur()
+    }
+
+    /**
+     * Programme l'unique resynchronisation qui clôt un glissement, en écrasant
+     * celle éventuellement en attente.
+     *
+     * Sans cette temporisation, chaque caractère franchi relançait un calcul de
+     * suggestions : traverser une phrase en faisait défiler trente, et la barre
+     * clignotait pendant tout le geste alors que la seule position qui compte
+     * est celle où le doigt s'arrête.
+     */
+    private fun planifierSyncCurseur() {
+        syncCurseurEnAttente?.let { handlerCurseur.removeCallbacks(it) }
+        val tache = Runnable {
+            syncCurseurEnAttente = null
+            glissementCurseur = false
+            if (::inputProcessor.isInitialized) {
+                inputProcessor.syncWordWithCursor(dernierSelStart, dernierSelEnd)
+            }
+        }
+        syncCurseurEnAttente = tache
+        handlerCurseur.postDelayed(tache, DELAI_SYNC_CURSEUR)
+    }
     
     // ===== IMPLÉMENTATION SuggestionListener =====
     
@@ -1434,6 +1533,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 inputProcessor.setCurrentWord(updatedWord)
                 Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
             } else {
+                // Un emoji, donc un ton de peau choisi en appui long dans le
+                // panneau : il ne passe pas par onEmojiSelected, il faut le
+                // retenir ici sans quoi la variante choisie ne rejoindrait
+                // jamais les récents, seule la variante par défaut le ferait.
+                EmojiRecents.enregistrer(this, accent)
                 inputProcessor.finalizeCurrentWordFromEmoji()
             }
             
@@ -1671,25 +1775,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
-     * Actualise le layout du clavier en préservant le conteneur avec padding
+     * Applique le mode courant (alpha / numérique / emoji) au clavier déjà en
+     * place : bascule la visibilité des panneaux préconstruits au lieu de
+     * reconstruire toutes les touches. Sur A21s la bascule « 123 » passe ainsi de
+     * 3 ou 4 frames perdues à une seule (voir android_keyboard/PERF_CLAVIER.md).
      */
     private fun refreshKeyboardLayout() {
-        mainKeyboardView?.let { containerView ->
-            // mainKeyboardView est le conteneur avec padding, pas le clavier directement
-            if (containerView is LinearLayout && containerView.childCount > 0) {
-                // Retirer l'ancien clavier du conteneur
-                val oldKeyboard = containerView.getChildAt(0)
-                containerView.removeView(oldKeyboard)
-                
-                // Créer et ajouter le nouveau clavier dans le même conteneur
-                val newKeyboard = keyboardLayoutManager.createKeyboardLayout()
-                containerView.addView(newKeyboard)
-                
-                Log.d(TAG, "🔄 Clavier actualisé (padding préservé: ${containerView.paddingBottom}px)")
-            } else {
-                Log.w(TAG, "⚠️ mainKeyboardView n'est pas un conteneur LinearLayout valide")
-            }
-        }
+        keyboardLayoutManager.applyMode()
     }
     
     // ===== MÉTHODES DE CYCLE DE VIE =====
@@ -1739,6 +1831,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         )
 
         if (!::inputProcessor.isInitialized) return
+
+        dernierSelStart = newSelStart
+        dernierSelEnd = newSelEnd
+
+        // Pendant un glissement sur la barre d'espace, chaque caractère franchi
+        // passe par ici. On laisse la position filer et on ne resynchronise
+        // qu'une fois le doigt arrêté : voir planifierSyncCurseur().
+        if (glissementCurseur) {
+            planifierSyncCurseur()
+            return
+        }
+
         inputProcessor.syncWordWithCursor(newSelStart, newSelEnd)
     }
 
@@ -1750,6 +1854,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // survit au passage dans l'écran de l'application, donc un interrupteur
         // changé là-bas doit s'appliquer dès le retour dans un champ de saisie.
         KeyFeedback.refresh(this)
+
+        // Même moment, même raison, pour les emojis récents : un mot de passe
+        // ne doit pas laisser d'emoji derrière lui, exactement comme il ne
+        // laisse pas de mot dans les statistiques de vocabulaire.
+        EmojiRecents.setEnregistrementAutorise(!isSensitiveField())
 
         // Le thème se relit au même moment et pour la même raison, mais lui ne
         // suffit pas à se relire : les couleurs sont posées sur les vues à leur
@@ -1772,6 +1881,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!restarting) {
             keyboardLayoutManager.forceAlphabeticMode()
             keyboardLayoutManager.updateKeyboardDisplay()
+            // Depuis que les panneaux sont préconstruits et seulement masqués,
+            // remettre les drapeaux à l'alpha ne suffit plus : il faut rendre le
+            // bon panneau visible si l'on revient sur un champ en ayant quitté le
+            // précédent en mode 123 ou emoji.
+            keyboardLayoutManager.applyMode()
             Log.d(TAG, "✅ Mode alphabétique garanti lors du démarrage de la saisie")
         }
 
@@ -1837,7 +1951,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
             Toast.makeText(
                 this,
-                getString(R.string.first_use_accent_tip),
+                "Appui long sur une lettre pour ses accents : a → ä à â, e → é ë è ê",
                 Toast.LENGTH_LONG
             ).show()
             prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
@@ -2023,6 +2137,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // thread de travail.
             sttSession?.shutdown()
             sttSession = null
+
+            // Une resynchronisation de curseur encore en attente s'exécuterait
+            // sur un service détruit
+            syncCurseurEnAttente?.let { handlerCurseur.removeCallbacks(it) }
+            syncCurseurEnAttente = null
             
             // Nettoyage des composants dans l'ordre inverse de création
             accentHandler.cleanup()

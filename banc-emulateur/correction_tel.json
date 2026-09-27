@@ -1,0 +1,57 @@
+{
+ "lux": {
+  "mots": 186,
+  "remplaces": 0,
+  "accents_seuls": 0,
+  "casse_seule": 7,
+  "exemples": []
+ },
+ "samsung": {
+  "mots": 186,
+  "remplaces": 12,
+  "accents_seuls": 0,
+  "casse_seule": 0,
+  "exemples": [
+   [
+    "",
+    "gaart op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "liesen"
+   ]
+  ]
+ },
+ "gboard": {
+  "mots": 186,
+  "remplaces": 18,
+  "accents_seuls": 0,
+  "casse_seule": 20,
+  "exemples": [
+   [
+    "",
+    "gaart op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "klunsch ze liesen"
+   ],
+   [
+    "e stull",
+    "exstull"
+   ],
+   [
+    "",
+    "ze liesen"
+   ]
+  ]
+ }
+}

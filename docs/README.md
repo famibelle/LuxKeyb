@@ -1,16 +1,28 @@
-**📱Lëtzebuergesch Clavier** est un clavier Android intelligent conçu pour répondre à un besoin fondamental : permettre aux Luxembourgeois d'écrire facilement en **Lëtzebuergesch** sur leur smartphone, avec fluidité, authenticité et fierté.
+**Lëtzebuergesch Clavier** est un clavier intelligent qui répond à un besoin
+simple : écrire facilement en **Lëtzebuergesch**, avec fluidité, authenticité et
+fierté.
 
 - 🛠️ Si votre luxembourgeois est très rouillé...
 - 😤 Que vous galériez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
 - 🤔 Que vous doutez de l'orthographe à chaque message...
 - ➡️ Klaviatur Lëtzebuergesch est fait pour vous !
 
+## ⌨️ L'essayer tout de suite
+
+**[Ouvrir le clavier dans votre navigateur](simulateur.html)** : rien à
+installer, rien à autoriser. C'est le vrai clavier, avec sa disposition QWERTZ,
+ses touches `é` `ä` `ë` et ses suggestions luxembourgeoises.
+
+Pour écrire partout sur votre téléphone, dans WhatsApp, dans vos SMS, dans vos
+notes, il faut ensuite l'installer : l'application Android est plus bas, et la
+marche à suivre est détaillée pas à pas.
+
 ## 📱 Aperçu
 
 <div align="center" style="display: flex; justify-content: center; gap: 10px;">
-  <img src="Screenshots\Screenshot_1761490896.png" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots\Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
-  <img src="Screenshots\Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761490896.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761256181.png" alt="Clavier luxembourgeois en Action" width="25%">
+  <img src="Screenshots/Screenshot_1761256232.png" alt="Clavier luxembourgeois en Action" width="25%">
 </div>
 
 ## 🎮 Système de progression et de gamification
@@ -131,20 +143,19 @@ L'application s'ouvre automatiquement et vous guide :
 2. **Appuyez dans la zone de texte** pour faire apparaître le clavier
 3. En bas du clavier, vous verrez une **icône de globe 🌐** ou **d'engrenage ⚙️**
 4. **Appuyez longuement** sur cette icône
-5. **Choisissez "Klavyé Kréyòl Karukera"** dans la liste
-6. C'est parti ! Vous pouvez maintenant écrire en kréyòl ! 🎉
+5. **Choisissez "Lëtzebuergesch Clavier"** dans la liste
+6. C'est parti ! Vous pouvez maintenant écrire en luxembourgeois ! 🎉
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.
 
 
 ## 🔒 Déclaration de confidentialité
 
-Consultez notre [Déclaration de confidentialité](https://famibelle.github.io/KreyolKeyb/privacy/) pour en savoir plus sur la manière dont vos données sont traitées.
+Consultez notre [Déclaration de confidentialité](privacy/privacy-policy.html) pour en savoir plus sur la manière dont vos données sont traitées.
 
 TL;DR zero data collectée
 
 ## 📧 Contact
 
 **Développeur :** Médhi Famibelle  
-**Email :** medhi@potomitan.io  
-**Organisation :** Potomitan™
+**Email :** medhi.famibelle@gmail.com

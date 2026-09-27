@@ -26,7 +26,15 @@ resolveNgramContext() retrouverait à l'identique. Ils ne sont que 229 sur
 
     python docs/scripts/build_simulateur_ngrams.py
 
-Écrit docs/assets/simulateur-ngrams.json.
+Écrit docs/assets/simulateur-ngrams.json, puis docs/assets/simulateur-lod.json.
+
+Le second est le niveau de couverture du LOD (`luxemburgish_lod_forms.json`),
+réduit à ce que le simulateur en lit : le tableau `suggest`, les 84 855 formes
+que le clavier propose et que le corpus journalistique ne peut pas donner
+(« Läffelen », « sprang », « denks »). Le simulateur ne corrige rien dans le
+système, il n'a donc besoin ni du tableau `spellcheck` ni du filtre de Bloom de
+reconnaissance, qui font le reste des 1,8 Mo de l'actif. Il le charge après le
+corpus, sans bloquer le clavier : voir addLodForms() dans simulateur-engine.js.
 """
 
 import json
@@ -36,6 +44,8 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[2]
 SOURCE = RACINE / "android_keyboard" / "app" / "src" / "main" / "assets" / "luxemburgish_ngrams.json"
 SORTIE = RACINE / "docs" / "assets" / "simulateur-ngrams.json"
+SOURCE_LOD = RACINE / "android_keyboard" / "app" / "src" / "main" / "assets" / "luxemburgish_lod_forms.json"
+SORTIE_LOD = RACINE / "docs" / "assets" / "simulateur-lod.json"
 
 
 def main():
@@ -72,6 +82,28 @@ def main():
               file=sys.stderr)
     print(f"{avant/1e6:.2f} Mo → {apres/1e6:.2f} Mo "
           f"(−{100*(avant-apres)/avant:.0f} %)", file=sys.stderr)
+
+    ecrire_lod()
+
+
+def ecrire_lod():
+    """Ne garde du LOD que les formes proposables, dans l'ordre de l'actif."""
+    if not SOURCE_LOD.exists():
+        sys.exit(f"Formes LOD introuvables : {SOURCE_LOD}\n"
+                 f"Lancez d'abord Dictionnaires/generate_lod_forms.py --strict.")
+
+    lod = json.loads(SOURCE_LOD.read_text("utf-8"))
+    formes = [f for f in lod.get("suggest", []) if f]
+    if not formes:
+        sys.exit("Aucune forme `suggest` dans luxemburgish_lod_forms.json : "
+                 "le simulateur perdrait tout le niveau LOD sans le dire.")
+
+    SORTIE_LOD.write_text(
+        json.dumps(formes, ensure_ascii=False, separators=(",", ":")), "utf-8")
+    avant = SOURCE_LOD.stat().st_size
+    apres = SORTIE_LOD.stat().st_size
+    print(f"{len(formes)} formes LOD, "
+          f"{avant/1e6:.2f} Mo → {apres/1e6:.2f} Mo", file=sys.stderr)
 
 
 if __name__ == "__main__":

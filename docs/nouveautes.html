@@ -48,6 +48,10 @@ p{margin:0 0 12px;}
 .version .intro{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px;}
 .badge-new{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);color:var(--ink);border-radius:999px;padding:2px 9px;}
 
+.version .shot{margin:0 0 20px;}
+.version .shot img{width:100%;border:1px solid var(--line);border-radius:10px;display:block;}
+.version .shot figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+
 .grp{margin-top:18px;}
 .grp:first-child{margin-top:0;}
 .grp h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px;font-weight:700;}
@@ -96,11 +100,14 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
 <nav class="site">
   <a href="index.html">🏠 Accueil</a> ·
   <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
   <strong>🎁 Nouveautés</strong> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
@@ -113,7 +120,7 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
   <h1>Ce qui vient d'arriver 🎁</h1>
   <p class="lead">
     Le clavier évolue vite. Voici ce que les dernières versions ont changé,
-    dans l'ordre, et comment les installer dès maintenant — chaque version est
+    dans l'ordre, et comment les installer dès maintenant : chaque version est
     téléchargeable le jour où elle sort.
   </p>
 </header>
@@ -149,7 +156,7 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
       💡 L'APK publié est construit par l'intégration continue à partir du code
       de ce dépôt, et signé avec la clé de production. Rien d'autre n'y est
       ajouté : pas de publicité, pas de traceur, aucune donnée qui sorte de
-      l'appareil. Vous pouvez le vérifier — <a href="https://github.com/famibelle/LuxKeyb">tout le code est ouvert</a>.
+      l'appareil. Vous pouvez le vérifier, <a href="https://github.com/famibelle/LuxKeyb">tout le code est ouvert</a>.
     </p>
   </div>
   <div class="actions">
@@ -160,11 +167,11 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
 
 <footer class="page">
   <p>
-    Une question ? Écrivez à <a href="mailto:contact@potomitan.io">contact@potomitan.io</a>.<br>
+    Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
     Journal complet des versions :
     <a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG.md</a>
   </p>
-  <p>Potomitan™ · Lëtzebuergesch Clavier</p>
+  <p>Lëtzebuergesch Clavier</p>
 </footer>
 
 </div>
@@ -221,6 +228,23 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
     var body = el('div', 'body');
     if (v.intro) body.appendChild(el('p', 'intro', v.intro));
 
+    // Une version peut porter plusieurs captures. « images » est la liste ;
+    // les champs « image » restent lus pour les fichiers produits avant elle.
+    var vues = v.images;
+    if (!vues && v.image) {
+      vues = [{ image: v.image, alt: v.image_alt, legende: v.image_legende }];
+    }
+    (vues || []).forEach(function (vue) {
+      var fig = el('figure', 'shot');
+      var img = el('img');
+      img.src = vue.image;
+      img.alt = vue.alt || '';
+      img.loading = 'lazy';
+      fig.appendChild(img);
+      if (vue.legende) fig.appendChild(el('figcaption', null, vue.legende));
+      body.appendChild(fig);
+    });
+
     v.sections.forEach(function (sec) {
       var g = el('div', 'grp');
       var h = el('h3');
@@ -266,7 +290,7 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
     })
     .catch(function () {
       $('nv-liste').innerHTML =
-        '<div class="card"><p class="loading">Nouveautés indisponibles — ' +
+        '<div class="card"><p class="loading">Nouveautés indisponibles, ' +
         'consultez le <a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG</a>.</p></div>';
     });
 })();

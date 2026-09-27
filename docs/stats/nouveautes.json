@@ -1,183 +1,71 @@
 {
- "genere_le": "2026-08-30",
- "derniere_version": "10.19.0",
- "derniere_date": "2026-08-30",
+ "genere_le": "2026-09-20",
+ "derniere_version": "26.2.0",
+ "derniere_date": "2026-09-19",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "10.19.0",
-   "date": "2026-08-30",
-   "intro": "Le clavier rétablit la majuscule des substantifs pendant que vous écrivez. <code>an der rue</code> devient <code>an der Rue</code> dès que le mot est validé. C'est la première fois que le clavier modifie ce que vous avez tapé — d'où les précautions qui suivent.",
+   "version": "26.2.0",
+   "date": "2026-09-19",
+   "intro": "La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.",
    "sections": [
     {
-     "emoji": "🔠",
-     "titre": "La Groussschreiwung se corrige toute seule",
+     "emoji": "✨",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Seulement quand la phrase le réclame",
-       "texte": "Le clavier ne capitalise pas tout mot dont il connaît la forme majuscule : il ne rétablit la majuscule que lorsqu'il a réellement vu ce mot écrit ainsi <strong>après le mot qui précède</strong>. <code>an der</code> appelle <code>Rue</code> ; <code>la</code> n'appelle rien."
+       "titre": "La plaque du mot est rivetée",
+       "texte": "Quatre rivets tiennent ses angles, et ils montent avec la rareté : petites têtes de clou sur une carte commune, rivets bombés posés sur une rondelle sur une rare, puis plus gros encore sur une très rare. Ils se sentent aussi sous le doigt, et d'autant plus que la carte est rare."
       },
       {
-       "titre": "Ce que vous écrivez en français reste intact",
-       "texte": "C'est la raison d'être de cette prudence : 161 des 662 mots du dictionnaire français de secours portent une majuscule en luxembourgeois — <code>rue</code>, <code>moment</code>, <code>partie</code>, <code>centre</code>, <code>chambre</code>, <code>route</code>, <code>santé</code>, <code>marché</code>, <code>café</code>. Une correction fondée sur le seul dictionnaire aurait capitalisé un mot sur quatre dans un message en français. Le clavier n'a pas de détecteur de langue ; c'est le contexte qui fait le tri."
+       "titre": "Le mot est gravé dans la plaque",
+       "texte": "Il n'est plus imprimé dessus : ses lettres sont creusées dans la matière, bois brûlé dans le chêne, argent ou or bruni dans le métal, avec l'ombre et la lumière d'un vrai sillon."
       },
       {
-       "titre": "Vos majuscules à vous sont intouchables",
-       "texte": "Dès que le mot tapé contient la moindre majuscule, la correction se tait."
-      },
-      {
-       "titre": "Une touche Retour arrière l'annule",
-       "texte": ", en gardant l'espace. Le second retour arrière se comporte normalement."
-      },
-      {
-       "titre": "Un interrupteur la coupe",
-       "texte": ", dans les réglages, à côté du correcteur orthographique. Elle est active par défaut : elle n'a d'intérêt que si elle agit sans qu'on la cherche."
-      },
-      {
-       "titre": "Jamais dans un champ de mot de passe",
-       "texte": ""
+       "titre": "Une ferronnerie orne l'angle en haut à droite",
+       "texte": "Les petites spirales des angles du bas, fines comme des cheveux, disparaissent. À leur place, un ornement de fer forgé en relief, dans le métal de la carte, qui s'enrichit avec la rareté : un simple coin à deux crosses, puis une grande volute liée par un collier, puis une branche qui suit l'arche et des perles au cœur des spirales."
       }
      ],
      "texte": "",
      "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_plaque_quatre_raretes.png",
+     "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+     "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
     },
     {
-     "emoji": "📏",
-     "titre": "Ce que ça donne, mesuré",
-     "points": [],
-     "texte": "Sur ParaLux, jeu de phrases dont aucune ne figure dans le corpus qui a servi à construire le dictionnaire, en simulant deux façons d'écrire : À titre de comparaison, capitaliser d'après le seul dictionnaire aurait abîmé <strong>3,5 %</strong> des phrases correctement écrites. 818 majuscules manquantes n'ont pas été rétablies, faute de contexte attesté. C'est assumé : une majuscule oubliée ne coûte presque rien, une majuscule imposée à tort oblige à revenir en arrière et à se battre avec son clavier. Ces chiffres portent sur 312 phrases. Ils ne prouvent pas un taux d'erreur nul, ils le bornent — et cette version est la première à toucher au texte de l'utilisateur, donc les retours sont particulièrement bienvenus.",
-     "tableau": {
-      "entetes": [
-       "",
-       "mots retouchés",
-       "à tort",
-       "phrases abîmées"
-      ],
-      "lignes": [
-       [
-        "vous mettez vos majuscules",
-        "<strong>0</strong>",
-        "0",
-        "0 %"
-       ],
-       [
-        "vous tapez tout en minuscules",
-        "126 rétablies",
-        "<strong>0</strong>",
-        "<strong>0 %</strong>"
-       ]
-      ]
-     }
+     "image": "Screenshots/lux_plaque_gravee.png",
+     "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
+     "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
     }
-   ]
+   ],
+   "image": "Screenshots/lux_plaque_quatre_raretes.png",
+   "image_alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+   "image_legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
   },
   {
-   "version": "10.18.0",
-   "date": "2026-08-29",
-   "intro": "Le clavier tient enfin compte de ce que vous venez d'écrire. Trois constantes qui pilotent le classement des suggestions avaient cessé de fonctionner en silence quand le corpus a changé d'échelle : le contexte ne réordonnait plus rien, et la personnalisation mettait vingt frappes à se voir.",
+   "version": "26.1.0",
+   "date": "2026-09-19",
+   "intro": "La carte se lit dans tous les sens, et la plaque du mot se sent davantage.",
    "sections": [
     {
-     "emoji": "🎯",
-     "titre": "Le contexte compte à nouveau dans le classement",
+     "emoji": "✨",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Le bonus de contexte valait 50, face à des fréquences qui montent à 100 105",
-       "texte": "Le score d'une suggestion additionne la fréquence du mot dans le corpus et quelques bonus ; à cette échelle, 50 ne déplaçait rien. Le classement se réduisait à « trier par fréquence », et les n-grammes — tout le travail de la pipeline pour les produire, les 5 Mo qu'ils pèsent dans l'application — ne servaient plus qu'au mode prédiction pure, quand rien n'est encore tapé. Vérifié en le ramenant à zéro : le résultat ne bougeait pratiquement pas."
+       "titre": "Le relief se sent aussi de haut en bas et de bas en haut",
+       "texte": "Jusqu'ici, seul un doigt qui balayait de côté sentait les marches de la carte. Or la plaque du mot déborde du cadre : de gauche à droite, on montait dessus depuis la table et on n'en descendait qu'à l'autre bord, sans jamais sentir qu'elle dépasse de la carte. En descendant, on sent maintenant l'ouverture se creuser, puis la plaque monter, puis retomber sur le panneau."
       },
       {
-       "titre": "Concrètement",
-       "texte": "Après <code>an der</code>, taper <code>r</code> propose <code>Rue · Regierung · ronn</code> au lieu de <code>Regierung · ronn · Rue</code>. Après <code>ech</code>, taper <code>m</code> propose <code>mengen · mat · méi</code> au lieu de <code>mat · méi · mam</code>."
+       "titre": "La plaque du mot est plus épaisse",
+       "texte": "Elle devient la plus haute des pièces posées sur la carte, juste sous les pierres : c'est là qu'est le mot, c'est ce que le doigt doit trouver le plus nettement."
       },
       {
-       "titre": null,
-       "texte": "Le bonus ne s'applique qu'aux mots correspondant déjà à ce qui est tapé : il réordonne des suggestions que le clavier proposait de toute façon, il n'en invente aucune. Et il reste très en dessous du poids d'une correction orthographique, qui continue de primer."
-      }
-     ],
-     "texte": "<em>Part des mots proposés dans les trois premières suggestions, mesurée sur 1 755 mots de ParaLux — un jeu dont aucune phrase ne figure dans le corpus qui a servi à construire le dictionnaire.</em>",
-     "tableau": {
-      "entetes": [
-       "après k frappes",
-       "avant",
-       "après"
-      ],
-      "lignes": [
-       [
-        "1 frappe",
-        "13,0 %",
-        "<strong>22,2 %</strong>"
-       ],
-       [
-        "2 frappes",
-        "31,4 %",
-        "<strong>35,7 %</strong>"
-       ],
-       [
-        "3 frappes",
-        "55,8 %",
-        "<strong>57,4 %</strong>"
-       ]
-      ]
-     }
-    },
-    {
-     "emoji": "🔠",
-     "titre": "Le contexte choisit aussi la casse",
-     "points": [
-      {
-       "titre": "<code>déi Gréng</code> et <code>als nei gréng</code> ne s'écrivent pas pareil",
-       "texte": ", et le clavier le sait désormais. La casse de chaque mot était élue sur l'ensemble du corpus, ce qui donnait toujours la forme majoritaire : <code>Froen</code> le substantif, jamais <code>froen</code> le verbe, même après <code>mir</code>. Chaque prédiction reçoit maintenant la casse réellement observée après le mot qui la précède."
-      },
-      {
-       "titre": "59 homographes ont désormais leurs deux orthographes accessibles",
-       "texte": ", contre zéro auparavant : <code>Froen</code>/<code>froen</code>, <code>Liewen</code>/<code>liewen</code>, <code>Gréng</code>/<code>gréng</code>. Ils étaient livrés en double depuis la 10.17.0, mais le clavier ne pouvait en proposer qu'un."
-      },
-      {
-       "titre": null,
-       "texte": "La décision demande une évidence nette — trois observations et 70 % de majorité — faute de quoi la casse générale reprend la main. Un contexte vu deux fois ne dit rien de la casse d'un mot."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "👤",
-     "titre": "Les mots que vous employez remontent plus vite",
-     "points": [
-      {
-       "titre": "Un mot validé vingt fois n'entrait toujours pas dans les suggestions",
-       "texte": "depuis le rang 20 dans 58 % des cas. Le bonus d'usage plafonnait à +100, une valeur calibrée quand le dictionnaire culminait à 15 519 occurrences ; il en compte aujourd'hui 100 105. Le compteur alimenté par la progression existait, mais son effet restait sous le seuil du perceptible."
-      },
-      {
-       "titre": null,
-       "texte": "Le poids passe de 5 à 20 par utilisation, plafond inchangé : vingt validations valent maintenant +400, et le rang 20 devient accessible dans trois cas sur quatre au lieu de deux sur cinq."
-      },
-      {
-       "titre": "Trois frappes ne délogent toujours pas un mot nettement plus fréquent",
-       "texte": "C'était une règle explicite du projet, et elle a décidé de la valeur retenue : le signal personnel doit se confirmer avant de peser."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧪",
-     "titre": "Un banc d'essai qui mesure les frappes économisées",
-     "points": [
-      {
-       "titre": "Les trois régressions ci-dessus sont passées à travers 138 tests verts et tous les contrôles de l'intégration continue",
-       "texte": ", parce qu'aucun ne mesurait ce que l'utilisateur ressent. Un dictionnaire bien formé, du bon type, de la bonne taille peut parfaitement être mal classé."
-      },
-      {
-       "titre": null,
-       "texte": "Un banc mesure désormais, à chaque construction, la part des mots proposés après une, deux et trois frappes, sur des phrases inédites, et <strong>échoue sous un plancher</strong>. Le bonus de contexte remis à son ancienne valeur le fait tomber en échec."
-      },
-      {
-       "titre": null,
-       "texte": "Le simulateur du site rejouait un défaut corrigé dans l'application deux jours plus tôt : un test verrouille désormais l'égalité des constantes entre les deux moteurs."
-      },
-      {
-       "titre": null,
-       "texte": "Le test de correction orthographique retombait sur un échantillon de quarante mots dès que le dictionnaire manquait, et faisait de même sur une erreur de format — laissant la suite entièrement verte. Un garde-fou qui se désarme quand ce qu'il garde disparaît ne garde rien."
+       "titre": "Sur les téléphones au vibreur simple, une grande marche vibre plus longtemps",
+       "texte": "Leur moteur ne sait pas varier sa force, mais une impulsion plus longue s'y sent plus forte : de 40 millisecondes pour une petite bosse à 80 pour la plus grande marche. C'est le principe des retours tactiles d'accessibilité, qui distinguent leurs signaux par la durée et le rythme."
       }
      ],
      "texte": "",
@@ -186,199 +74,17 @@
    ]
   },
   {
-   "version": "10.17.0",
-   "date": "2026-08-29",
-   "intro": "Les majuscules du luxembourgeois. Le clavier propose désormais <code>Haus</code>, <code>Joer</code> ou <code>Kand</code> avec la majuscule que la langue exige, même tapés en minuscules — la casse de chaque mot est apprise du corpus au lieu d'être ignorée.",
+   "version": "26.0.3",
+   "date": "2026-09-19",
+   "intro": "",
    "sections": [
-    {
-     "emoji": "🔠",
-     "titre": "Groussschreiwung : le clavier propose enfin les majuscules",
-     "points": [
-      {
-       "titre": "La casse est apprise du corpus, pas devinée",
-       "texte": "Le pipeline comptait tout en minuscules ; il élit désormais une casse canonique par forme, en ne retenant <strong>que les occurrences situées ailleurs qu'en tête de phrase</strong> — une majuscule de début de phrase ne dit rien du mot, et la compter classerait <code>an</code> et <code>ech</code> parmi les substantifs. Sur les 37 734 formes retenues : 25 165 substantifs capitalisés, 680 acronymes (<code>RTL</code>, <code>CFL</code>), 12 565 mots en minuscules."
-      },
-      {
-       "titre": "Les vrais homographes sont livrés dans les deux casses",
-       "texte": ", avec leurs fréquences réparties : <code>Froen</code> (les questions) et <code>froen</code> (demander), <code>Gréng</code> (le parti) et <code>gréng</code> (la couleur), <code>Liewen</code> et <code>liewen</code>. 676 paires, soit +1,8 % d'entrées."
-      },
-      {
-       "titre": "Le moteur ne détruit plus la majuscule",
-       "texte": "<code>applyCasingPattern</code> recopiait la casse de la frappe sur la suggestion : taper <code>hau</code> rendait <code>haus</code>. La règle est inversée — un signal explicite de l'utilisateur l'emporte (tout en capitales, ou majuscule initiale), sinon la forme du dictionnaire fait foi. Une frappe en minuscules n'est pas une demande de minuscules, c'est l'absence de signal."
-      },
-      {
-       "titre": "Les prédictions contextuelles suivent",
-       "texte": ": après <code>an der</code>, le clavier propose <code>Rue</code>, <code>Stad</code>, <code>Nuecht</code>, <code>Chamber</code>. Les clés de contexte restent en minuscules, seuls les mots proposés portent la casse."
-      },
-      {
-       "titre": "Mesure sur un texte inédit",
-       "texte": ": 99,5 % de casse correcte sur 2 384 mots de ParaLux, jeu d'évaluation dont aucune phrase ne figure dans le corpus d'entraînement. Les onze erreurs restantes sont presque toutes des adjectifs substantivés (<code>den Däischteren</code>, <code>de Schlëmmsten</code>), que seule la phrase permet de trancher."
-      }
-     ],
-     "texte": "Le luxembourgeois capitalise tous les substantifs, comme l'allemand. La majuscule y est porteuse de sens, pas un accident de saisie — et le clavier l'ignorait complètement : il ne proposait jamais <code>Joer</code>, <code>Haus</code> ni <code>Kand</code> autrement qu'en minuscules, alors que la dictée, elle, rend déjà du texte capitalisé. Ce qui n'est pas encore résolu : la barre de suggestions n'affiche qu'une seule casse par mot, donc <code>froe</code> propose <code>Froen</code> mais jamais <code>froen</code> ; un substantif minoritaire face à son homographe verbal reste inatteignable (<code>Wäert</code>) ; et le correcteur orthographique ne signale pas une majuscule manquante.",
-     "tableau": {
-      "entetes": [
-       "tapé",
-       "avant",
-       "après"
-      ],
-      "lignes": [
-       [
-        "<code>hau</code>",
-        "haut · haus · hausse",
-        "haut · <strong>Haus</strong> · <strong>Hausse</strong>"
-       ],
-       [
-        "<code>jo</code>",
-        "joer · jo · jonk",
-        "<strong>Joer</strong> · jo · jonk"
-       ],
-       [
-        "<code>rt</code>",
-        "rtl · rtl-interview",
-        "<strong>RTL</strong> · <strong>RTL-Interview</strong>"
-       ],
-       [
-        "<code>kan</code>",
-        "kann · kanner · kand",
-        "kann · <strong>Kanner</strong> · <strong>Kand</strong>"
-       ],
-       [
-        "<code>an</code>",
-        "an · aner · anerem",
-        "an · aner · anerem"
-       ]
-      ]
-     }
-    },
-    {
-     "emoji": "🎮",
-     "titre": "Le comptage des mots aurait cessé en silence",
-     "points": [],
-     "texte": "Corrigé avant d'être visible, mais la panne aurait été totale et muette. <code>CreoleDictionaryWithUsage</code> construisait son fichier de comptage avec la clé brute du dictionnaire (<code>Haus</code>) alors que toutes ses lectures normalisent en minuscules (<code>haus</code>). Avec le dictionnaire capitalisé, <strong>les 25 845 substantifs auraient cessé d'être comptés</strong> : plus de progression, plus de couverture, aucune erreur affichée. La clé est désormais repliée, et la fréquence la plus haute conservée quand les deux variantes d'un homographe retombent sur la même.",
-     "tableau": null
-    },
-    {
-     "emoji": "✅",
-     "titre": "Vérifications",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Suite de tests portée à 138 (11 nouveaux sur la casse), dont un contrôle négatif : replier le dictionnaire en minuscules fait bien échouer cinq des six tests de <code>GroussschreiwungTest</code>."
-      },
-      {
-       "titre": null,
-       "texte": "L'intégration continue refuse désormais un dictionnaire de moins de 15 000 entrées capitalisées, et des n-grammes de moins de 10 000 candidats capitalisés — sans ce garde-fou, un retour au repli en minuscules produirait un fichier du bon type, de la bonne taille, parfaitement valide, et un clavier muet sur les majuscules."
-      },
-      {
-       "titre": null,
-       "texte": "Le simulateur du site rejoue le même moteur et a été mis à jour avec lui."
-      },
-      {
-       "titre": null,
-       "texte": "Vérifié sur émulateur Android 14 : <code>hau</code> puis <code>jo</code> puis <code>kan</code>, tapés en minuscules et validés depuis la barre, donnent <code>Haus Joer Kand</code> dans le champ."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "10.16.0",
-   "date": "2026-08-27",
-   "intro": "Changement de corpus. Le dictionnaire et les prédictions sont désormais construits sur deux jeux de données luxembourgeois ouverts au lieu d'un, cent fois plus gros et bien plus propres que le précédent.",
-   "sections": [
-    {
-     "emoji": "📚",
-     "titre": "Deux corpus à la place d'un",
-     "points": [
-      {
-       "titre": "LuxAlign v3",
-       "texte": "(RTL.lu, 180 342 phrases, ~3,1 M de mots) apporte le vocabulaire et l'enchaînement des mots. C'est la première source du projet avec de la prose suivie : les phrases y font 17 mots en moyenne, contre des exemples isolés jusqu'ici."
-      },
-      {
-       "titre": "LETZ",
-       "texte": "(Lëtzebuerger Online Dictionnaire, 5 862 phrases) apporte la langue de tous les jours. Soixante fois plus petit, mais seul endroit où « dech », « däin », « hues » ou « mamm » apparaissent en quantité — soit ce qu'on tape sur un téléphone et que la presse n'écrit jamais."
-      },
-      {
-       "titre": null,
-       "texte": "Les deux sont sous licence Creative Commons et <strong>exigent la citation de leurs auteurs</strong> : elle figure dans l'onglet « À propos » de l'application et dans <code>Dictionnaires/CORPUS.md</code>. LuxAlign porte en plus une clause NonCommercial, qui s'applique aux fichiers de dictionnaire livrés — le code, lui, garde sa propre licence."
-      },
-      {
-       "titre": "Retrait du corpus de conférences de presse gouvernementales",
-       "texte": "Les ministres passaient régulièrement à l'allemand en pleine réponse, et le dictionnaire livré contenait 42 mots allemands sans ambiguïté : « und » 372 occurrences, « wir » 352, « auch » 324, « ich » 124. Sur un préfixe « au », le clavier proposait « auch ». Ils tombent respectivement à 53, 8, 5 et 8, résidus de citations dans de vrais articles."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📈",
-     "titre": "Ce que ça change en pratique",
-     "points": [],
-     "texte": "L'APK passe de 7,6 à 8,4 Mo.",
-     "tableau": {
-      "entetes": [
-       "",
-       "avant",
-       "après"
-      ],
-      "lignes": [
-       [
-        "Mots au dictionnaire",
-        "8 792",
-        "<strong>37 734</strong>"
-       ],
-       [
-        "Contextes de prédiction",
-        "23 169",
-        "<strong>26 172</strong>"
-       ],
-       [
-        "Mots reconnus dans un texte inédit",
-        "80 %",
-        "<strong>97 %</strong>"
-       ],
-       [
-        "Bon mot proposé dans les trois premiers",
-        "7 %",
-        "<strong>24 %</strong>"
-       ]
-      ]
-     }
-    },
     {
      "emoji": "🐛",
      "titre": "Corrections",
      "points": [
       {
-       "titre": "La distance d'édition reprend le pas sur la fréquence",
-       "texte": "Le score d'une suggestion additionne la fréquence du mot et un poids lié au nombre de corrections nécessaires ; ce poids valait 100 000, calibré pour un dictionnaire plafonnant à 15 500. Le nouveau corpus monte à 100 105 pour « an », si bien qu'une correction à deux lettres près vers « an » repassait devant toute correction à une lettre près d'un mot moins fréquent que 105. Le poids passe à 1 000 000, et un test le vérifie désormais contre le dictionnaire réellement livré, pas contre des valeurs écrites en dur."
-      },
-      {
-       "titre": "Les fréquences du dictionnaire sont enfin les vraies",
-       "texte": "Chaque régénération additionnait le corpus entier au total précédent au lieu de le remplacer : les fréquences livrées valaient environ 5,8 fois les réelles et montaient à chaque passage de l'intégration continue. Pire, les mots disparus du corpus survivaient indéfiniment — 49 % du dictionnaire venait d'un corpus COVID hors service depuis longtemps (« geimpft », « covidcheck », « astrazeneca »)."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Interne",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>HF_TOKEN</code> n'est plus nécessaire : les deux corpus sont publics."
-      },
-      {
-       "titre": null,
-       "texte": "Garde-fous d'intégration continue relevés : 20 000 mots et 15 000 contextes minimum, plus un contrôle de présence du fichier d'attribution."
-      },
-      {
-       "titre": null,
-       "texte": "Suite de tests : 127 tests."
+       "titre": "La carte vibre enfin sur les Samsung au vibreur simple",
+       "texte": "La 26.0.1 n'y changeait rien : interrogé, le téléphone répondait « je ne sais pas » au lieu de « non », et la carte restait sur l'ancienne vibration, qu'il ignore. Il reçoit maintenant l'impulsion, et elle dure 40 millisecondes au lieu de 20 : réglée au doigt sur un Galaxy A21s, où 20 et 30 ne se sentaient pas. Même correction pour la glisse sur la barre d'espace et le feuilletage d'un casier."
       }
      ],
      "texte": "",
@@ -387,65 +93,21 @@
    ]
   },
   {
-   "version": "10.15.0",
-   "date": "2026-08-27",
-   "intro": "Synchronisation avec la base commune KreyolKeyb, arrêtée à sa 10.14.8. Est repris ici le travail mené en amont sur l'écran de démarrage entre les 10.14.1 et 10.14.8 ; l'identité luxembourgeoise — QWERTZ, palette du drapeau, libellés, niveaux, dictionnaire — est conservée telle quelle.",
+   "version": "26.0.2",
+   "date": "2026-09-19",
+   "intro": "",
    "sections": [
     {
-     "emoji": "🚀",
-     "titre": "L'écran de démarrage tient dans un écran",
+     "emoji": "🔒",
+     "titre": "Confidentialité",
      "points": [
       {
-       "titre": "Une carte « Configuration rapide »",
-       "texte": "remplace les trois cartes d'étapes empilées. Une ligne compacte par étape, un anneau de progression, et une seule étape dépliée à la fois : celle qui reste à faire, sauf si l'utilisateur en ouvre une autre. Les trois étapes faites, la carte se replie sur son en-tête et rend la place au reste de l'onglet."
+       "titre": "Seuls les réglages partent dans la sauvegarde Google",
+       "texte": "La politique de confidentialité promet que votre progression, votre carnet et ce qui vient de votre frappe ne quittent jamais le téléphone. Or la sauvegarde Android emportait jusqu'ici tous les fichiers de l'application : le carnet, le dernier niveau fêté, la date de votre premier mot et vos emojis récents. Désormais, seuls la vibration, le son, le thème et la majuscule automatique sont sauvegardés, et transférés vers un nouveau téléphone."
       },
       {
-       "titre": "Le repli reste piloté par l'état, jamais systématique",
-       "texte": "La description de l'étape en cours, l'avertissement Android et le rappel des deux validations successives sont ce qui fait passer l'utilisateur à travers les réglages système ; les réduire à un chevron ferait gagner de la place là où le tunnel se joue."
-      },
-      {
-       "titre": "La troisième étape se coche sur un vrai mot écrit",
-       "texte": ", au jalon posé par le service de saisie — donc pas sur un texte collé ni tapé avec un autre clavier. Elle se coche pendant la frappe, sans reconstruire la carte, qui ferait perdre le focus et refermerait le clavier au premier mot."
-      },
-      {
-       "titre": "Le clavier d'essai passe sous la carte de configuration",
-       "texte": "En tête d'onglet, il occupait toute la hauteur visible et repoussait sous la ligne de flottaison le bouton qui ouvre les réglages Android."
-      },
-      {
-       "titre": "La carte du correcteur orthographique se touche, sans bouton",
-       "texte": ", et son bénéfice s'énonce par ce qu'il apporte plutôt que par ce qu'il supprime. Le détail de ce qu'Android va demander se déplie à la demande."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Réglages et affichage",
-     "points": [
-      {
-       "titre": "L'engrenage des réglages est une icône vectorielle blanche",
-       "texte": "et non plus l'emoji ⚙️, que la police système dessine en gris bleuté — une teinte que le bandeau bleu avalait. Le contraste ne dépend plus de la police du téléphone."
-      },
-      {
-       "titre": "Le manifeste documente sa permission unique",
-       "texte": ": <code>POST_NOTIFICATIONS</code>, la seule que le code exerce."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧹",
-     "titre": "Cuisine interne",
-     "points": [
-      {
-       "titre": "Le second écrivain du fichier de compteurs disparaît",
-       "texte": "— un cache de mots en attente, avec son exécuteur et sa sauvegarde différée, que plus aucune ligne n'appelait depuis que <code>CreoleDictionaryWithUsage</code> est seul à écrire ce fichier."
-      },
-      {
-       "titre": "La table de décision du thème passe sous tests",
-       "texte": "<code>KeyboardTheme.resoudre()</code> prend désormais le mode et l'état du système en paramètres au lieu de lire le <code>Context</code> : les six cases se vérifient hors appareil. <code>KeyboardThemeTest</code> reprend et complète l'ancien <code>KeyboardThemeModeTest</code>, qui est retiré."
+       "titre": "Ce que cela change pour vous ",
+       "texte": "Sur un nouveau téléphone, ou après une réinstallation, le carnet repart de zéro, comme le niveau le faisait déjà. Rien ne change sur le téléphone que vous utilisez."
       }
      ],
      "texte": "",
@@ -454,39 +116,68 @@
    ]
   },
   {
-   "version": "10.14.0",
-   "date": "2026-08-24",
-   "intro": "Le clavier se met en clair ou en sombre, au choix de l'utilisateur.",
+   "version": "26.0.1",
+   "date": "2026-09-19",
+   "intro": "",
    "sections": [
     {
-     "emoji": "🌗",
-     "titre": "Thème du clavier",
+     "emoji": "🐛",
+     "titre": "Corrections",
      "points": [
       {
-       "titre": "Trois positions dans les réglages du clavier",
-       "texte": "— « Comme le téléphone » (par défaut), « Toujours clair », « Toujours sombre ». Un choix explicite et pas seulement le suivi du système, pour la raison qui avait déjà justifié les interrupteurs de vibration et de son : sur plusieurs surcouches, le réglage jour/nuit du téléphone ne descend pas jusqu'aux claviers tiers."
+       "titre": "La carte vibre aussi sur les téléphones au vibreur simple",
+       "texte": "Sur certains Samsung (constaté sur un Galaxy A21s), le petit « tic » demandé au téléphone n'existe pas, et le système l'ignorait sans rien dire : passer le doigt sur une carte ne donnait aucune sensation, alors que les touches du clavier vibraient normalement. Ces téléphones reçoivent maintenant une impulsion brève, qu'ils savent rendre. On y sent chaque arête de la carte, mais pas encore leur hauteur : leur moteur ne sait pas varier sa force."
       },
       {
-       "titre": "Le drapeau ne s'inverse pas",
-       "texte": "Le rouge Pantone 032 et le bleu ciel Pantone 299 sont identiques dans les deux thèmes — ce sont eux qui rendent ce clavier reconnaissable, et leurs contrastes (4,22:1 et 5,93:1) ne dépendent pas de ce qui les entoure. Seul le blanc des touches de lettres passe en anthracite, et avec lui l'encre, la bordure, le fond du clavier et la popup d'appui long."
-      },
-      {
-       "titre": "Chaque valeur sombre égale ou dépasse son homologue claire",
-       "texte": ": lettre sur sa touche 12,42:1, majuscule enclenchée 4,62:1, aperçu d'appui long 5,16:1 — contre 17,40, 4,35 et 3,45 en clair. Le tableau complet est dans la documentation de <code>KeyboardTheme</code>."
-      },
-      {
-       "titre": "Le thème clair ne change pas d'un pixel",
-       "texte": ": il reprend une à une les constantes qui existaient avant."
-      },
-      {
-       "titre": null,
-       "texte": "Les quatre surfaces concernées — touches, barre de suggestions, popup d'appui long, panneau emoji — écrivaient leurs couleurs en littéral à leur point d'usage, ce qui rendait tout thème impossible. Elles lisent désormais <code>KeyboardTheme</code>."
+       "titre": "La glisse sur la barre d'espace et le feuilletage d'un casier vibrent à nouveau",
+       "texte": "Sur ces mêmes téléphones, pour la même raison."
       }
      ],
      "texte": "",
      "tableau": null
     }
    ]
+  },
+  {
+   "version": "26.0.0",
+   "date": "2026-09-19",
+   "intro": "La carte se lit au doigt, creux et reliefs compris.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le relief est signé",
+       "texte": "Les yeux fermés, en passant le doigt sur une carte, on sent maintenant le creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche."
+      },
+      {
+       "titre": "L'ombre de contact",
+       "texte": "Un disque sombre sous la pulpe paraît quand on touche une carte, et s'efface avec l'autorité du doigt. C'est la physique : un vrai doigt bouche la lumière."
+      },
+      {
+       "titre": "Les pierres tournent",
+       "texte": "Rivets, griffes et gemmes font pivoter leur lumière vers le doigt sans qu'on le demande, en lisant le même modèle de hauteurs que le vibreur. L'illusion n'existe que si le doigt et l'œil sont d'accord : ils lisent la même géométrie."
+      },
+      {
+       "titre": "La permission VIBRATE est ajoutée",
+       "texte": "Elle est normale (sans invite) mais visible sur la fiche Play. Le clavier lui-même n'en a pas besoin : seule la carte du carnet s'en sert, pour que le relief se sente vraiment."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_relief_doigt.png",
+     "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+     "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+    }
+   ],
+   "image": "Screenshots/lux_relief_doigt.png",
+   "image_alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+   "image_legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
   }
  ]
 }

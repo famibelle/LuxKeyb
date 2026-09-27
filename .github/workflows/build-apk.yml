@@ -60,6 +60,46 @@ jobs:
         # reconstruire les n-grammes sur quinze phrases.
         python LuxembourgishComplet.py --strict
 
+        # Les formes du LOD complètent le dictionnaire de fréquences là où le
+        # corpus ne peut rien : LuxAlign est du journalisme RTL, qui n'écrit
+        # jamais « Läffelen », « sprang » ni « denks ». L'actif est SÉPARÉ de
+        # luxemburgish_dict.json — voir generate_lod_forms.py — et doit être
+        # produit avant generate_translations.py, qui glose aussi ces formes.
+        python generate_lod_forms.py --strict
+
+        # Le jeu de phrases à trous se dérive du dictionnaire et des n-grammes
+        # qui viennent d'être écrits : il choisit le mot masqué parmi les formes
+        # retenues et tire ses leurres du modèle de contexte. Le régénérer ici
+        # n'est pas un confort — la version committée référencerait des mots
+        # qu'un corpus rafraîchi peut avoir fait passer sous le seuil de
+        # fréquence, et ClozeAssetTest le verrait échouer.
+        python generate_cloze.py --strict
+
+        # La table des traductions se dérive elle aussi du dictionnaire qui
+        # vient d'être écrit : elle ne glose que des formes qui y figurent.
+        # La régénérer ici évite qu'un corpus rafraîchi laisse sans traduction
+        # les mots qu'il vient d'introduire — les jeux tirent leurs mots parmi
+        # les formes glosées, donc une table périmée rétrécit leur réserve en
+        # silence. La source (LOD, data.public.lu) est publique et sans jeton.
+        python generate_translations.py --strict
+
+        # Les grilles de mots croisés se dérivent des DEUX actifs précédents :
+        # les mots viennent du dictionnaire de fréquences, les définitions de la
+        # table des traductions. Elles passent donc en dernier. Ne pas les
+        # régénérer laisserait des grilles dont un mot a pu quitter le
+        # dictionnaire ou perdre sa glose, et CrosswordAssetTest le verrait
+        # échouer.
+        python generate_crossword.py --strict
+
+        # Les grilles de chassé-croisé se dérivent des mêmes deux actifs et
+        # réutilisent le moteur de placement du script précédent — les mots
+        # viennent du dictionnaire, la glose de récompense de la table des
+        # traductions. Elles passent donc après. La contrainte propre à ce jeu
+        # est l'unicité de la solution : une grille qui en admet deux s'affiche
+        # normalement et refuse pourtant une réponse juste, ce que seul le
+        # générateur (puis ChasseCroiseAssetTest) sait voir.
+        python generate_chassecroise.py --strict
+
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
 
@@ -67,7 +107,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json luxemburgish_categories.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -144,6 +184,242 @@ jobs:
           exit 1
         fi
 
+
+        # Garde-fou du jeu de phrases à trous. Une question dont la réponse ne
+        # figure pas dans ses propositions, ou dont la phrase a perdu son
+        # marqueur, se joue sans être gagnable : le fichier reste du JSON
+        # valide et l'écran s'affiche normalement.
+        CLOZE_COUNT=$(jq '.items | length' "$A/luxemburgish_cloze.json")
+        if [ "$CLOZE_COUNT" -lt 1000 ]; then
+          echo "::error::Jeu de phrases à trous anormalement petit ($CLOZE_COUNT questions, moins de 1000)."
+          exit 1
+        fi
+
+        CLOZE_CASSEES=$(jq '[.items[] | select((.s | test("___")) | not)] | length' "$A/luxemburgish_cloze.json")
+        if [ "$CLOZE_CASSEES" -ne 0 ]; then
+          echo "::error::$CLOZE_CASSEES phrases à trous sans marqueur ___ : elles s'afficheraient sans trou."
+          exit 1
+        fi
+
+        # L'attribution voyage dans l'actif lui-même, et le jeu l'affiche :
+        # les phrases livrées sont des extraits de corpus CC BY-NC et CC BY.
+        if ! jq -e '.sources | length >= 2' "$A/luxemburgish_cloze.json" > /dev/null; then
+          echo "::error::luxemburgish_cloze.json ne porte pas l'attribution de ses corpus sources."
+          exit 1
+        fi
+
+        # Garde-fou des grilles de mots croisés. Une grille dont un mot n'est
+        # plus dans le dictionnaire, dont une définition contient sa réponse ou
+        # dont deux mots se collent en fabriquant une suite de lettres que
+        # personne n'a écrite reste du JSON valide et s'affiche normalement :
+        # c'est le joueur qui découvre que la grille est insoluble.
+        # CrosswordAssetTest vérifie tout cela mot à mot ; ici on ne garde que
+        # ce que jq peut dire vite, à savoir le volume et l'attribution.
+        GRILLES=$(jq '.grilles | length' "$A/luxemburgish_crossword.json")
+        echo "🧩 Grilles de mots croisés : $GRILLES"
+        # 300 en production, et le filtre de neutralité en retire une quinzaine
+        # au chargement : 250 laisse la marge sans tolérer un effondrement.
+        if [ "$GRILLES" -lt 250 ]; then
+          echo "::error::Seulement $GRILLES grilles de mots croisés (attendu ~300). Le vivier de mots glosés s'est probablement effondré."
+          exit 1
+        fi
+
+        # Chaque niveau doit garder de quoi jouer : une réserve vide fait
+        # resservir les mêmes grilles sans que rien n'échoue.
+        for NIVEAU in 1 2 3; do
+          COMPTE=$(jq --argjson n "$NIVEAU" '[.grilles[] | select(.l == $n)] | length' "$A/luxemburgish_crossword.json")
+          if [ "$COMPTE" -lt 80 ]; then
+            echo "::error::Difficulté $NIVEAU : $COMPTE grilles seulement (attendu ~100)."
+            exit 1
+          fi
+        done
+
+        # Le jeu affiche ces crédits : les définitions viennent du LOD, les mots
+        # des deux corpus sous Creative Commons.
+        if ! jq -e '.attribution | length >= 3' "$A/luxemburgish_crossword.json" > /dev/null; then
+          echo "::error::luxemburgish_crossword.json ne porte pas l'attribution de ses sources."
+          exit 1
+        fi
+
+        # Garde-fou des grilles de chassé-croisé. Même logique que ci-dessus :
+        # jq juge le volume et l'attribution, ChasseCroiseAssetTest juge la
+        # géométrie et surtout l'unicité de la solution, que rien d'autre ne
+        # peut voir.
+        PLACES=$(jq '.grilles | length' "$A/luxemburgish_chassecroise.json")
+        echo "🔡 Grilles de chassé-croisé : $PLACES"
+        if [ "$PLACES" -lt 250 ]; then
+          echo "::error::Seulement $PLACES grilles de chassé-croisé (attendu ~300)."
+          exit 1
+        fi
+
+        for NIVEAU in 1 2 3; do
+          COMPTE=$(jq --argjson n "$NIVEAU" '[.grilles[] | select(.l == $n)] | length' "$A/luxemburgish_chassecroise.json")
+          if [ "$COMPTE" -lt 80 ]; then
+            echo "::error::Chassé-croisé, difficulté $NIVEAU : $COMPTE grilles seulement (attendu ~100)."
+            exit 1
+          fi
+        done
+
+        # Chaque mot posé doit porter sa glose : c'est la récompense du jeu, et
+        # un mot muet romprait la promesse pour toute la grille.
+        SANS_GLOSE=$(jq '[.grilles[].mots[] | select((.g | length) == 0)] | length' "$A/luxemburgish_chassecroise.json")
+        if [ "$SANS_GLOSE" -ne 0 ]; then
+          echo "::error::$SANS_GLOSE mots de chassé-croisé sans glose de récompense."
+          exit 1
+        fi
+
+        if ! jq -e '.attribution | length >= 3' "$A/luxemburgish_chassecroise.json" > /dev/null; then
+          echo "::error::luxemburgish_chassecroise.json ne porte pas l'attribution de ses sources."
+          exit 1
+        fi
+
+        # Garde-fou des formes LOD. Leur absence ne casse rien de visible :
+        # SuggestionEngine journalise et retombe sur la couverture du corpus,
+        # l'APK s'installe, les suggestions marchent — elles connaissent
+        # simplement trois fois moins de mots, ce qui est le défaut qu'on
+        # corrigeait. Mesuré à 84 855 / 26 424 le 2026-09-02.
+        LOD_SUGGEST=$(jq '.suggest | length' "$A/luxemburgish_lod_forms.json")
+        LOD_SPELL=$(jq '.spellcheck | length' "$A/luxemburgish_lod_forms.json")
+        if [ "$LOD_SUGGEST" -lt 40000 ]; then
+          echo "::error::Seulement $LOD_SUGGEST formes LOD proposables (attendu >= 40000). L'index de recherche du LOD a probablement changé de structure."
+          exit 1
+        fi
+        if [ "$LOD_SPELL" -lt 10000 ]; then
+          echo "::error::Seulement $LOD_SPELL variantes de la règle d'Eifel : le correcteur soulignerait des formes correctes."
+          exit 1
+        fi
+
+        # Les deux paliers doivent rester disjoints, et disjoints du
+        # dictionnaire : un doublon ferait charger deux fois la même forme et
+        # afficher deux fois la même suggestion.
+        # L'appartenance passe par un objet et non par `index` : sur 123 000
+        # formes contre 38 000, la recherche linéaire ne finit pas.
+        DOUBLONS=$(jq -n --slurpfile d "$A/luxemburgish_dict.json" --slurpfile l "$A/luxemburgish_lod_forms.json" \
+          '($d[0] | map({(.[0] | ascii_downcase): 1}) | add) as $c
+           | [($l[0].suggest + $l[0].spellcheck)[] | ascii_downcase | select($c[.])]
+           | length')
+        if [ "$DOUBLONS" -ne 0 ]; then
+          echo "::error::$DOUBLONS formes LOD sont déjà dans luxemburgish_dict.json : les deux actifs ont été régénérés séparément."
+          exit 1
+        fi
+
+        # Garde-fou des traductions. Les trois jeux qui tirent un mot ne le
+        # tirent que parmi les formes glosées : une table effondrée ne fait
+        # rien planter, elle fait retomber les jeux sur leur repli et le mot à
+        # trouver redevient muet — exactement le défaut que la table corrige.
+        TRAD_COUNT=$(jq '.translations | length' "$A/luxemburgish_translations.json")
+        if [ "$TRAD_COUNT" -lt 15000 ]; then
+          echo "::error::Table de traductions anormalement petite ($TRAD_COUNT formes, moins de 15000). L'appariement avec le LOD a probablement échoué."
+          exit 1
+        fi
+
+        # Wuertriet est la réserve la plus étroite du lot : cinq lettres, une
+        # seule longueur. C'est elle qui se vide en premier si la couverture
+        # baisse, et c'est donc elle qu'on compte.
+        TRAD_CINQ=$(jq '[.translations | keys[] | select(length == 5)] | length' "$A/luxemburgish_translations.json")
+        if [ "$TRAD_CINQ" -lt 300 ]; then
+          echo "::error::Seulement $TRAD_CINQ mots de 5 lettres traduits : Wuertriet n'aurait plus de réserve."
+          exit 1
+        fi
+
+        # Le LOD est en CC0 et n'impose donc rien, mais on cite le ZLS :
+        # l'attribution voyage dans l'actif et l'écran « À propos » l'affiche.
+        # Les familles regroupent les flexions d'un même mot dans le
+        # Wierderbuch. Effondrées, la recherche fonctionne toujours — elle
+        # répète simplement les flexions comme avant, sans rien signaler.
+        FAM_COUNT=$(jq '.familles | length' "$A/luxemburgish_familles.json")
+        echo "👪 Familles de formes : $FAM_COUNT"
+        if [ "$FAM_COUNT" -lt 10000 ]; then
+          echo "::error::Seulement $FAM_COUNT familles : le regroupement du Wierderbuch serait inopérant."
+          exit 1
+        fi
+
+        # Les exemples sont ce qui distingue une fiche d'une ligne de
+        # traduction : sans eux le Wierderbuch dit ce qu'un mot veut dire, mais
+        # plus comment il s'emploie. Effondrés, la fiche s'affiche sans sa
+        # section et rien ne le signale.
+        EX_COUNT=$(jq '.exemples | length' "$A/luxemburgish_exemples.json")
+        echo "💬 Mots illustrés : $EX_COUNT"
+        if [ "$EX_COUNT" -lt 10000 ]; then
+          echo "::error::Seulement $EX_COUNT mots illustrés : les fiches du Wierderbuch seraient sans exemple."
+          exit 1
+        fi
+
+        # Les traductions des exemples viennent du corpus de traduction du
+        # ZLS, apparié phrase à phrase. Si l'appariement casse (corpus
+        # introuvable, normalisation modifiée), les phrases s'affichent
+        # simplement sans traduction et rien ne le signale.
+        TR_COUNT=$(jq '.traductions // {} | length' "$A/luxemburgish_exemples.json")
+        echo "🇫🇷 Mots dont un exemple est traduit : $TR_COUNT"
+        if [ "$TR_COUNT" -lt 2000 ]; then
+          echo "::error::Seulement $TR_COUNT mots dont un exemple est traduit : l'appariement avec le corpus du ZLS ne fonctionne plus."
+          exit 1
+        fi
+
+        # Sans la table des identifiants, le bouton « Voir sur le
+        # dictionnaire officiel » retombe sur la recherche de lod.lu — qui ne
+        # répond pas à une ouverture à froid et propose d'ajouter le mot au
+        # dictionnaire, même pour « Haus ». Le bouton reste alors affiché et
+        # ne mène plus nulle part.
+        ID_COUNT=$(jq '.articles | length' "$A/luxemburgish_lod_ids.json")
+        echo "🔗 Articles du LOD indexés : $ID_COUNT"
+        if [ "$ID_COUNT" -lt 20000 ]; then
+          echo "::error::Seulement $ID_COUNT identifiants d'article : le bouton lod.lu ne mènerait plus à l'article."
+          exit 1
+        fi
+
+        CAT_COUNT=$(jq '.categories | length' "$A/luxemburgish_categories.json")
+        echo "🏷️ Mots catégorisés : $CAT_COUNT"
+        if [ "$CAT_COUNT" -lt 20000 ]; then
+          echo "::error::Seulement $CAT_COUNT mots catégorisés : les cartes du carnet perdraient leur catégorie."
+          exit 1
+        fi
+
+        if ! jq -e '.attribution | length >= 1' "$A/luxemburgish_translations.json" > /dev/null; then
+          echo "::error::luxemburgish_translations.json ne porte pas le crédit du LOD."
+          exit 1
+        fi
+        # Le dictionnaire français n'est pas régénéré par CI : Lexique 3.83
+        # est une version figée, et la retélécharger à chaque exécution
+        # ajouterait 26 Mo et une dépendance à lexique.org pour un fichier qui
+        # ne change pas. Il est donc suivi en git — et c'est précisément ce qui
+        # rend une régression silencieuse possible, comme les 662 mots aux
+        # fréquences inventées qu'il a portés pendant toute la vie du projet.
+        #
+        # L'enjeu n'est pas la seconde rangée de suggestions mais le correcteur
+        # orthographique : kreyol_spellchecker.xml déclare la locale `fr`, donc
+        # le clavier remplace le correcteur français du système. Trop maigre,
+        # il souligne du français correct dans toutes les applications.
+        FR_SUGG=$(jq '.suggest_mots | length' "$A/french_simple_dict.json")
+        FR_COUNT=$(jq '.word_count' "$A/french_simple_dict.json")
+        FR_BLOOM=$(jq -r '.bloom | length' "$A/french_simple_dict.json")
+        echo "🇫🇷 Formes françaises : $FR_COUNT ($FR_SUGG proposables, filtre de Bloom de $FR_BLOOM caractères)"
+        # Le correcteur ne lit plus une liste de mots mais un filtre de Bloom :
+        # vide ou tronqué, il rejetterait tout et le français redeviendrait
+        # souligné partout, sans que le compte des formes bouge.
+        if [ "$FR_BLOOM" -lt 100000 ]; then
+          echo "::error::Filtre de Bloom français absent ou tronqué ($FR_BLOOM caractères)."
+          exit 1
+        fi
+        if [ "$FR_COUNT" -lt 60000 ]; then
+          echo "::error::Seulement $FR_COUNT formes françaises : le correcteur soulignerait du français correct. Lancez Dictionnaires/generate_french_dict.py"
+          exit 1
+        fi
+        # Le partage entre paliers est grammatical : un bug de catégorisation
+        # viderait la rangée bleue sans faire bouger le total.
+        if [ "$FR_SUGG" -lt 40000 ]; then
+          echo "::error::Seulement $FR_SUGG formes françaises proposables : la rangée bleue se viderait."
+          exit 1
+        fi
+
+        # Lexique est en CC BY-SA 4.0 : l'attribution est une obligation de
+        # licence, et le partage à l'identique porte sur l'actif dérivé.
+        if ! jq -e '.attribution | test("Lexique")' "$A/french_simple_dict.json" > /dev/null; then
+          echo "::error::french_simple_dict.json ne porte pas l'attribution de Lexique (CC BY-SA 4.0)."
+          exit 1
+        fi
+
+
         # LuxAlign impose l'attribution de ses auteurs (CC BY-NC 4.0), LETZ
         # aussi (CC BY 4.0). Le fichier qui porte cette obligation est suivi
         # en git : s'il disparaît, l'APK n'est plus distribuable en l'état.
@@ -195,6 +471,15 @@ jobs:
         path: |
           android_keyboard/app/src/main/assets/luxemburgish_dict.json
           android_keyboard/app/src/main/assets/luxemburgish_ngrams.json
+          android_keyboard/app/src/main/assets/luxemburgish_cloze.json
+          android_keyboard/app/src/main/assets/luxemburgish_crossword.json
+          android_keyboard/app/src/main/assets/luxemburgish_chassecroise.json
+          android_keyboard/app/src/main/assets/luxemburgish_translations.json
+          android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
+          android_keyboard/app/src/main/assets/luxemburgish_familles.json
+          android_keyboard/app/src/main/assets/luxemburgish_exemples.json
+          android_keyboard/app/src/main/assets/luxemburgish_lod_ids.json
+          android_keyboard/app/src/main/assets/luxemburgish_categories.json
         retention-days: 1
 
   # 🎙️ ÉTAPE 1 ter : MODÈLE DE DICTÉE VOCALE
@@ -901,45 +1186,17 @@ jobs:
         # Ajouter le commentaire à la release existante
         gh release edit "${{ github.ref_name }}" --notes-file /tmp/release-notes.md --notes "$STATS_COMMENT" || echo "⚠️ Impossible d'ajouter les statistiques (release peut-être déjà complète)"
 
-    - name: 📝 Update docs/index.md with New Version
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo "📝 Mise à jour de docs/index.md avec la nouvelle version..."
-        
-        # Extraire la version du tag (sans le 'v' prefix)
-        TAG_VERSION="${GITHUB_REF_NAME#v}"
-        echo "🏷️  Version: $TAG_VERSION"
-        
-        # Vérifier que le fichier docs/index.md existe
-        if [ ! -f "docs/index.md" ]; then
-          echo "❌ docs/index.md non trouvé"
-          exit 1
-        fi
-        
-        # Mettre à jour la version dans le fichier (ligne avec "version X.Y.Z")
-        sed -i "s/📲 Télécharger l'APK (version [0-9]*\.[0-9]*\.[0-9]*)/📲 Télécharger l'APK (version $TAG_VERSION)/g" docs/index.md
-        
-        # Vérifier que le remplacement a fonctionné
-        if grep -q "📲 Télécharger l'APK (version $TAG_VERSION)" docs/index.md; then
-          echo "✅ Version mise à jour dans docs/index.md"
-        else
-          echo "❌ Échec de la mise à jour de la version dans docs/index.md"
-          echo "Contenu actuel :"
-          grep "Télécharger l'APK" docs/index.md || echo "Ligne non trouvée"
-          exit 1
-        fi
-        
-        # Configurer git
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        
-        # Commit et push des modifications
-        git add docs/index.md
-        git commit -m "docs: mise à jour version APK vers $TAG_VERSION [skip ci]"
-        
-        # Utiliser le token GitHub pour l'authentification
-        git remote set-url origin "https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-        git push origin main
-        
-        echo "✅ Commit et push effectués avec succès"
+    # L'étape « Update docs/index.md with New Version » vivait ici : elle
+    # réécrivait « 📲 Télécharger l'APK (version X.Y.Z) » dans docs/index.md à
+    # chaque tag, puis committait et poussait sur main depuis la CI.
+    #
+    # Elle est retirée parce que 811915ea a délibérément supprimé ce numéro du
+    # site — le bouton pointe désormais sur `releases/latest/download/`, qui
+    # sert toujours la dernière version sans que personne ait à la recopier.
+    # L'étape a donc continué à exiger une ligne qui n'existait plus, et a fait
+    # échouer la publication de la v10.20.0 alors que la Release et ses cinq
+    # artefacts étaient déjà créés : un rouge sans objet, qui masquerait un vrai
+    # échec la fois suivante.
+    #
+    # Ne pas la remettre sans remettre d'abord un numéro de version figé dans
+    # docs/index.md, ce que le site ne veut plus.

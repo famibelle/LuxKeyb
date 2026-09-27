@@ -192,6 +192,2047 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 - La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
   est trop lent pour être représentatif.
 
+## [29.2.0] - 2026-09-26
+
+Le clavier d'essai du site ressemble au clavier de l'application. L'application elle-même ne change pas.
+
+### ✨ Améliorations
+
+- **Sur le site, la barre de suggestions est un plateau creusé dans le clavier**, comme sur le téléphone : fond plus sombre que les touches, deux rangées réservées, puces aux couleurs du drapeau. Le clavier prend toute la largeur du téléphone dessiné, et ⇧ et ⌫ retrouvent leur largeur de 1,5.
+- **Les gestes du téléphone y sont aussi.** Glisser le doigt sur la barre d'espace déplace le curseur, toucher le texte le pose, rester appuyé sur ⌫ efface mot par mot, et ⌫ défait la majuscule imposée d'office ou retire un emoji en entier.
+- **Le panneau emoji du site a ses récents, ses tons de peau et son balayage** entre catégories. Les récents ne sont gardés qu'en mémoire : rien n'est écrit dans le navigateur.
+- **Les suggestions du site suivent le moteur de l'application** : mêmes candidats retenus, grossièretés écartées, pas de correction sur un mot français reconnu, et les 84 855 formes du dictionnaire officiel chargées en arrière-plan, soit 123 297 mots reconnus comme sur l'accueil.
+
+## [29.1.0] - 2026-09-25
+
+Le paysage et la rotation, soignés.
+
+### 🐛 Corrections
+
+- **Tourner le téléphone ne ferme plus le jeu en cours.** On revenait au choix des jeux ; on reste désormais dans le même jeu. La partie repart de zéro, parce que chaque grille est calculée pour la taille de l'écran.
+- **En paysage, plus de bande grise du côté de la caméra.** Le bandeau bleu et la barre d'onglets vont jusqu'au bord de l'écran ; seul leur contenu s'écarte de l'encoche. Même chose dans les réglages du clavier, le Guide et la page À propos.
+
+## [29.0.0] - 2026-09-25
+
+Les messages des jeux ne recouvrent plus l'heure.
+
+### 🐛 Corrections
+
+- **Sous Android 15 et plus, les messages de Wuertsich et Wuertriet** (« Dëst Wuert ass net am Wierderbuch », « Mot trouvé ») s'affichaient par-dessus la barre d'état et masquaient l'heure. Ils apparaissent maintenant juste en dessous, et contournent l'encoche de la caméra en paysage.
+
+## [28.0.0] - 2026-09-25
+
+L'application s'affiche correctement en bord à bord, imposé par Android 15.
+
+### 🐛 Corrections
+
+- **Sous Android 15 et plus, le haut de l'écran passait sous la barre d'état.** Le titre chevauchait l'heure et les icônes système. Le bandeau bleu se prolonge désormais sous la barre d'état, et le contenu commence en dessous.
+- **Le bas de l'écran s'écarte de la barre de navigation**, bandeau « Installez-le » compris.
+- **Le contenu remonte au-dessus du clavier** dans le Wierderbuch et les jeux : en bord à bord, Android ne le fait plus de lui-même.
+- Même traitement pour l'écran des réglages du clavier, le Guide et la page À propos.
+
+## [27.0.0] - 2026-09-25
+
+L'application n'utilise plus d'API d'affichage obsolètes depuis Android 15.
+
+### 🐛 Corrections
+
+- **La Play Console signalait `Window.setStatusBarColor` et `setNavigationBarColor`, obsolètes depuis Android 15.** Ces appels ne venaient pas de notre code mais de la bibliothèque Material, que nous n'utilisions que pour deux composants. Elle est retirée : l'APK publié n'en contient plus aucune trace.
+- **La fiche d'un mot du Wierderbuch** s'ouvre désormais dans une fenêtre simple ancrée en bas de l'écran, qui laisse la place à la barre de navigation.
+- **Les messages des jeux Wuertsich et Wuertriet** (« Mot trouvé », etc.) restent affichés en haut de l'écran, avec un bandeau à nous au lieu de celui de Material.
+
+## [26.3.1] - 2026-09-22
+
+Trois captures du guide refaites.
+
+### 🐛 Corrections
+
+- **Les captures d'accents, de suggestions et du mode chiffres du guide étaient antérieures à la cuvette de suggestions (12.0.0).** Elles montraient encore l'ancienne barre sur fond blanc plutôt que le plateau creusé dans le clavier. Refaites sur émulateur.
+
+## [26.3.0] - 2026-09-21
+
+Une carte de bienvenue récompense la fin de l'installation.
+
+### ✨ Améliorations
+
+- **La carte « Moien » est offerte quand le clavier est prêt.** Dès que le clavier est activé et sélectionné, une pochette s'ouvre avec votre première carte du carnet : « Moien », « bonjour », avec une phrase d'exemple et sa traduction. Le dialogue de partage vient ensuite, comme avant, et rappelle que la carte est dans votre carnet.
+- **Une provenance « Bienvenue ».** La carte porte un médaillon à part, avec une bulle de parole aux couleurs du drapeau, et ne compte pas parmi les sept jeux.
+- **Le clavier se baisse pendant la pochette.** Sinon la carte était coupée sous la plaque du mot et son sens restait caché.
+- **Une seule fois.** La pochette n'apparaît qu'une fois par installation. Si votre clavier était déjà configuré avant cette version, vous la recevrez à la prochaine ouverture de l'application.
+
+## [26.2.0] - 2026-09-19
+
+La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.
+
+### ✨ Améliorations
+
+- **La plaque du mot est rivetée.** Quatre rivets tiennent ses angles, et ils montent avec la rareté : petites têtes de clou sur une carte commune, rivets bombés posés sur une rondelle sur une rare, puis plus gros encore sur une très rare. Ils se sentent aussi sous le doigt, et d'autant plus que la carte est rare.
+- **Le mot est gravé dans la plaque.** Il n'est plus imprimé dessus : ses lettres sont creusées dans la matière, bois brûlé dans le chêne, argent ou or bruni dans le métal, avec l'ombre et la lumière d'un vrai sillon.
+- **Une ferronnerie orne l'angle en haut à droite.** Les petites spirales des angles du bas, fines comme des cheveux, disparaissent. À leur place, un ornement de fer forgé en relief, dans le métal de la carte, qui s'enrichit avec la rareté : un simple coin à deux crosses, puis une grande volute liée par un collier, puis une branche qui suit l'arche et des perles au cœur des spirales.
+
+## [26.1.0] - 2026-09-19
+
+La carte se lit dans tous les sens, et la plaque du mot se sent davantage.
+
+### ✨ Améliorations
+
+- **Le relief se sent aussi de haut en bas et de bas en haut.** Jusqu'ici, seul un doigt qui balayait de côté sentait les marches de la carte. Or la plaque du mot déborde du cadre : de gauche à droite, on montait dessus depuis la table et on n'en descendait qu'à l'autre bord, sans jamais sentir qu'elle dépasse de la carte. En descendant, on sent maintenant l'ouverture se creuser, puis la plaque monter, puis retomber sur le panneau.
+- **La plaque du mot est plus épaisse.** Elle devient la plus haute des pièces posées sur la carte, juste sous les pierres : c'est là qu'est le mot, c'est ce que le doigt doit trouver le plus nettement.
+- **Sur les téléphones au vibreur simple, une grande marche vibre plus longtemps.** Leur moteur ne sait pas varier sa force, mais une impulsion plus longue s'y sent plus forte : de 40 millisecondes pour une petite bosse à 80 pour la plus grande marche. C'est le principe des retours tactiles d'accessibilité, qui distinguent leurs signaux par la durée et le rythme.
+
+## [26.0.3] - 2026-09-19
+
+### 🐛 Corrections
+
+- **La carte vibre enfin sur les Samsung au vibreur simple.** La 26.0.1 n'y changeait rien : interrogé, le téléphone répondait « je ne sais pas » au lieu de « non », et la carte restait sur l'ancienne vibration, qu'il ignore. Il reçoit maintenant l'impulsion, et elle dure 40 millisecondes au lieu de 20 : réglée au doigt sur un Galaxy A21s, où 20 et 30 ne se sentaient pas. Même correction pour la glisse sur la barre d'espace et le feuilletage d'un casier.
+
+## [26.0.2] - 2026-09-19
+
+### 🔒 Confidentialité
+
+- **Seuls les réglages partent dans la sauvegarde Google.** La politique de confidentialité promet que votre progression, votre carnet et ce qui vient de votre frappe ne quittent jamais le téléphone. Or la sauvegarde Android emportait jusqu'ici tous les fichiers de l'application : le carnet, le dernier niveau fêté, la date de votre premier mot et vos emojis récents. Désormais, seuls la vibration, le son, le thème et la majuscule automatique sont sauvegardés, et transférés vers un nouveau téléphone.
+- **Ce que cela change pour vous :** sur un nouveau téléphone, ou après une réinstallation, le carnet repart de zéro, comme le niveau le faisait déjà. Rien ne change sur le téléphone que vous utilisez.
+
+## [26.0.1] - 2026-09-19
+
+### 🐛 Corrections
+
+- **La carte vibre aussi sur les téléphones au vibreur simple.** Sur certains Samsung (constaté sur un Galaxy A21s), le petit « tic » demandé au téléphone n'existe pas, et le système l'ignorait sans rien dire : passer le doigt sur une carte ne donnait aucune sensation, alors que les touches du clavier vibraient normalement. Ces téléphones reçoivent maintenant une impulsion brève, qu'ils savent rendre. On y sent chaque arête de la carte, mais pas encore leur hauteur : leur moteur ne sait pas varier sa force.
+- **La glisse sur la barre d'espace et le feuilletage d'un casier vibrent à nouveau** sur ces mêmes téléphones, pour la même raison.
+
+## [26.0.0] - 2026-09-19
+
+La carte se lit au doigt, creux et reliefs compris.
+
+### ✨ Améliorations
+
+- **Le relief est signé.** Les yeux fermés, en passant le doigt sur une carte, on sent maintenant le creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche.
+- **L'ombre de contact.** Un disque sombre sous la pulpe paraît quand on touche une carte, et s'efface avec l'autorité du doigt. C'est la physique : un vrai doigt bouche la lumière.
+- **Les pierres tournent.** Rivets, griffes et gemmes font pivoter leur lumière vers le doigt sans qu'on le demande, en lisant le même modèle de hauteurs que le vibreur. L'illusion n'existe que si le doigt et l'œil sont d'accord : ils lisent la même géométrie.
+- **La permission VIBRATE est ajoutée.** Elle est normale (sans invite) mais visible sur la fiche Play. Le clavier lui-même n'en a pas besoin : seule la carte du carnet s'en sert, pour que le relief se sente vraiment.
+
+## [25.0.0] - 2026-09-18
+
+L'harmonie visuelle de la carte et les gestes de révision.
+
+### ✨ Améliorations
+
+- **La traduction s'aère.** Elle prenait trois unités d'air sous la phrase ; collée à elle, elle se lisait comme sa troisième ligne.
+- **Les écus s'alignent.** À 26 et 274 unités, ils paraissaient décalés par rapport à la plaque ; ils sont passés à 28 et 272, ses bords propres, à égale distance du médaillon.
+- **La légende du médaillon est nette.** Elle était posée au clavier ; ses chasses s'arrondissaient au pixel, puis s'agrandissaient trois fois à l'écran, ouvrant un trou devant le « É » de « GAGNÉ ». Elle est maintenant posée lettre par lettre, en texte linéaire sans arrondi sous-pixel.
+- **Le médaillon est accessible.** Une vue invisible « gagné à Wuertplaz » la double pour les lecteurs d'écran, qui ne lisent pas une légende dessinée.
+- **La ligne de série s'allège.** Elle affichait « n° 011 · KW · 04.09.25 » ; elle n'en garde que « n° 011 · 04.09.25 ». Le sigle était redondant avec le médaillon et son nom.
+- **La carte se retourne d'un balayage.** En plus de l'appui et du bouton, un geste franc et horizontal (30 % de la largeur de la carte, deux fois plus en largeur qu'en hauteur) la retourne. Le carton garde le geste dès que le doigt se pose : l'application ne peut donc plus changer d'onglet en glissant sur la carte pendant la révision.
+
+## [24.0.0] - 2026-09-18
+
+La révision du carnet redevient une flashcard, pour toutes les cartes. Le numéro majeur marque ce changement de mécanique ; les cartes et leurs boîtes sont conservées telles quelles.
+
+### 🔄 Changé
+
+- **Réviser, c'est retourner une carte.** Le dos montre le mot ; on retourne la carte d'un appui ou avec le bouton, puis on répond « Je savais » ou « Pas su », et la carte avance ou revient au début de la Boîte de Leitner. Depuis la 22.0.0, les cartes de la troisième boîte et au-delà demandaient de taper le mot dans une phrase à trous : cette saisie est retirée.
+
+### ✨ Améliorations
+
+- **La pastille de nature se pose sur le panneau.** Elle flottait entre la plaque du nom et le panneau de texte, plus près de l'un que de l'autre ; elle en devient l'onglet, comme le médaillon de provenance en bas, et le panneau gagne de la hauteur pour le texte.
+
+### 🐛 Corrections
+
+- **La révision s'affichait sans carte.** En 23.0.0, une carte à taper n'affichait que le pavé de lettres, sans la carte ni le bouton pour valider. Sans objet depuis le retour à la flashcard, et corrigé à la racine.
+
+## [23.0.0] - 2026-09-18
+
+La carte du carnet change de visage : le nom prend la police de son palier, la gemme monte sur la clef de voûte et la provenance devient un sceau. Le numéro majeur marque ce changement de ce que la carte montre, sans rupture de données : les cartes déjà gagnées se lisent telles quelles.
+
+### ✨ Améliorations
+
+- **Le nom sur la plaque monte avec la rareté.** Commun garde la police du système ; Peu commun passe en Lora, Rare en Cormorant Garamond, Très rare en EB Garamond, qui garde la casse là où une police de capitales aurait écrasé la majuscule du substantif. Trois polices libres (SIL Open Font License), 50 Ko de plus dans l'APK, citées dans la carte « Sources » des réglages.
+- **La provenance devient un médaillon.** La capsule « gagné à Kräizwuert » est remplacée, entre les écus, par un sceau : l'emblème du jeu sur un émail de sa couleur, « GAGNÉ À » et le nom du jeu en légende sur le pourtour. Filet clair dès Rare, grènetis de perles sur l'or.
+- **L'éclat de la gemme suit le rang du mot.** Les quatre paliers ne distinguaient pas le 9 000ᵉ mot du 30 000ᵉ ; la gemme de coût et celle de la clef de voûte gagnent en saturation et en éclat à mesure que le mot est rare, sans changer de teinte, qui reste celle du champ du mot.
+- **La gemme ovale monte sur la clef de voûte.** Elle prend la place du petit joyau, et la clef s'agrandit pour la porter.
+- **La provenance descend en bas de carte**, entre les écus, et le joyau de rareté s'en va : sa couleur répétait ce que le métal et la plaque disaient déjà.
+
+## [22.12.9] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Le carnet s'adapte au paysage.** La grille du carnet gardait deux colonnes quelle que soit l'orientation, calculées sur la seule largeur de l'écran : à l'italienne sur un téléphone, les vignettes devenaient démesurées et débordaient de la hauteur disponible, masquant jusqu'au nom du mot sans un défilement. Le nombre de colonnes s'adapte maintenant à la largeur disponible.
+
+## [22.12.8] - 2026-09-15
+
+### ✨ Améliorations
+
+- **La carte ouverte s'incline deux fois plus.** Quand on penche le téléphone, elle pivote maintenant jusqu'à vingt degrés au lieu de dix.
+- **La carte s'incline aussi de haut en bas, à contre-mouvement.** Quand on bascule le téléphone vers l'avant ou vers l'arrière, la carte résiste au geste comme elle le fait déjà de gauche à droite. Ce mouvement existait, mais un téléphone tenu presque debout le rendait imperceptible.
+
+## [22.12.7] - 2026-09-15
+
+### 🔄 Changé
+
+- **« Mäi Lëtzebuergesch » passe en dernier onglet.** Ordre désormais Démarrage · Spiller · Wierderbuch · Mäi Lëtzebuergesch.
+
+## [22.12.6] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La plaque de nom s'arrête à l'aplomb de la fenêtre sur tous les paliers.** Commun, Peu commun et Rare la traçaient jusqu'à 276, sept unités au-delà de la pointe de la ligne de type, là où la très rare s'arrêtait déjà à 269,4. Elle s'y arrête maintenant partout, et le nom qui ne tient pas au centre suit ce même tracé.
+
+## [22.12.5] - 2026-09-15
+
+### 🐛 Corrections
+
+- **La clef de voûte, les griffes et les rivets sont opaques.** Ils héritaient de l'alpha du liseré du joyau précédent et laissaient voir à travers eux. Même correction sur tous les joyaux de la carte.
+- **La plaque du nom ne laisse plus de triangle au-dessus de la pastille.** Elle rentre maintenant dans le métal jusqu'au bord du cadre sur les très rares, sans laisser de marge.
+
+## [22.12.4] - 2026-09-15
+
+### 🐛 Corrections
+
+- **Une carte ouverte pivote enfin à contre-mouvement.** Quand on penche le téléphone, la carte devait résister au geste comme un objet posé qui garde son aplomb : bord droit du téléphone qui descend, bord droit de la carte qui vient vers soi. Elle faisait l'inverse et suivait le téléphone, ce qui écrasait l'effet de profondeur. Même chose d'avant en arrière.
+- **La tranche et le reflet suivent la carte.** Un téléphone tenu penché gardait sa tranche visible alors que la carte s'était remise d'aplomb, et en paysage la tranche apparaissait du mauvais côté.
+
+### ✨ Améliorations
+
+- **La carte ouverte depuis la Boîte de Leitner suit la main**, comme celle du carnet : elle pivote avec l'inclinaison du téléphone et s'enfonce légèrement sous le doigt.
+
+## [22.12.3] - 2026-09-15
+
+### ✨ Améliorations
+
+- **Une carte ouverte se referme par glissé latéral.** Vers la gauche ou vers la droite, elle suit le doigt et sort de l'écran, et l'on retrouve l'éventail du casier au même endroit. Un geste trop court la remet en place.
+
+## [22.12.2] - 2026-09-15
+
+### 📖 Guide
+
+- **Le guide explique les cartes du carnet, image à l'appui.** Trois illustrations fléchées et numérotées détaillent la carte « Waasser » : le mot, sa longueur, l'illustration et le cadre ; la nature, le sens, l'exemple et sa traduction ; les écus VUES et NIVEAU, le joyau de rareté, la ligne de série et le rang. Une quatrième montre ce que garde la petite carte de la grille.
+- La section des jeux présente les sept jeux et la Boîte de Leitner, là où elle n'en citait que cinq.
+- La progression nomme les huit niveaux luxembourgeois, d'Ufänker à Sproochenmeeschter.
+
+## [22.12.1] - 2026-09-15
+
+### ✨ Améliorations
+
+- **L'éventail d'un casier se sent sous le doigt.** Chaque carte qui passe au centre donne un léger cran de vibration, pendant le glissé comme quand l'éventail se cale : on compte les cartes sans les regarder. Aucun cran au-delà de la première ou de la dernière carte. Le retour suit le réglage « Vibration à la frappe » du clavier.
+- **Une carte ouverte depuis l'éventail se chasse d'un glissé.** Vers le haut ou vers le bas, elle sort de l'écran et l'on retrouve l'éventail là où on l'avait laissé. Une carte plus haute que l'écran se lit d'abord jusqu'au bout : c'est le glissé suivant qui la renvoie. Toucher à côté ou le bouton retour la referment toujours.
+
+## [22.12.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Chaque carte du carnet dit la nature de son mot.** La ligne sous l'illustration nomme sa catégorie telle que le dictionnaire officiel du ZLS la donne : « Nom féminin · gagné à Wuertplaz », « Verbe », « Adjectif », « Préposition »… Pour un nom, le genre est indiqué, c'est lui qui décide entre *de*, *d'* et *dat*.
+- Un mot absent du dictionnaire officiel, comme un sigle, garde l'ancienne règle : « Nom » s'il porte une majuscule, rien sinon.
+
+## [22.11.1] - 2026-09-15
+
+### 🐛 Corrections
+
+- Le libellé d'une carte du carnet « Substantif · Wuertplaz » se lisait comme si le jeu était un substantif. Il dit maintenant « Nom · gagné à Wuertplaz », qui classe clairement le mot et son origine.
+
+## [22.11.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Les phrases d'exemple sont traduites en français.** Sous la phrase luxembourgeoise d'une carte du carnet ou d'une fiche du Wierderbuch s'affiche maintenant sa traduction. Elle vient du corpus de traduction du Zenter fir d'Lëtzebuerger Sprooch : ce sont les traductions officielles, faites par des traducteurs professionnels.
+- **Pas de traduction plutôt qu'une traduction approchée.** Une phrase n'est traduite que si le ZLS l'a traduite telle quelle ; sinon, elle s'affiche seule, sans mention. Environ une carte sur quatre a aujourd'hui sa traduction, et la part grandira avec les prochaines publications du corpus.
+- **La phrase choisie illustre le sens principal du mot.** Une phrase traduite ne passe devant les autres que si elle illustre le premier sens : « Hond » reste un chien, et non un voyou.
+
+### 🐛 Corrections
+
+- Sur une carte, le guillemet fermant d'une phrase d'exemple pouvait partir seul à la ligne.
+
+## [22.10.0] - 2026-09-15
+
+### ✨ Nouveautés
+
+- **Un tiroir de la Boîte de Leitner s'ouvre en éventail.** Toucher un casier fait sortir ses cartes de la pile et les étale en main : on glisse pour les parcourir, on touche la carte du centre pour la lire en grand, on touche ailleurs pour les ranger. La grille de vignettes sur fond blanc est supprimée.
+- **Les cartes de la boîte portent leur recto**, celui du carnet (cadre de rareté, illustration, mot). Les cartes à réviser sortent de leur fente, penchées et cerclées de violet.
+- **Chaque casier a sa légende** gravée dans le bois : le nombre de cartes et le délai de retour (« 1 jour », « 1 sem. », « ★ acquis »). Une phrase rappelle la règle : une bonne réponse fait avancer la carte.
+- **La plaque « Réviser » est un vrai bouton.** Plus grande, en laiton lisible, et quand rien n'est dû elle dit quand revenir (« Tout est à jour · 4 cartes demain »).
+
+### 🐛 Corrections
+
+- Le bouton retour depuis un casier ouvert faisait quitter la boîte. Il remonte maintenant d'un cran à la fois : carte, éventail, boîte, liste des jeux.
+- La plaque annonçait toutes les cartes en retard alors qu'une session s'arrête à 12 ; elle annonce maintenant la session.
+- La plaque était peinte à 25 % d'opacité, d'où son aspect terne.
+- Toucher un casier plein lançait la révision de sa première carte au lieu d'en montrer le contenu.
+- Le casier ouvert n'affichait que les cartes de la session du jour, pas tout son contenu.
+- L'écran restait blanc plusieurs secondes à l'ouverture de la boîte ; le contenu des cartes se charge maintenant en arrière-plan.
+- La boîte et le casier ouvert annonçaient le même délai de deux façons (« 2 sem. » et « tous les 16 jours ») ; ils utilisent maintenant le même arrondi.
+- L'ombre sous la boîte se lisait comme une barre grise ; c'est désormais un fondu sans arête.
+
+Cette version reprend aussi la correction publiée sous l'étiquette v22.9.2 (la boîte grandit avec l'espace disponible), qui n'avait pas d'entrée ici.
+
+## [22.9.1] - 2026-09-14
+
+### ✨ Améliorations
+
+- **La Boîte de Leitner occupe maintenant tout l'écran.** Elle était affichée à taille fixe et n'occupait qu'un quart de l'espace en mode fullscreen, laissant des zones blanches inutiles. Le conteneur des jeux a maintenant `weight=1f` pour s'étendre, et `BoiteLeitner.onMeasure()` accepte la hauteur disponible au lieu de rester figée à 176dp.
+
+## [22.9.0] - 2026-09-13
+
+### 🐛 Corrections
+
+- **La pochette de fin de partie restait bloquée sur sa première carte.** Le
+  compteur annonçait « 1 / 7 », et il n'y avait aucun moyen d'atteindre la
+  deuxième.
+
+  La cause est un conflit de toucher, pas un oubli. Le passage d'une carte à
+  la suivante tenait à un `setOnClickListener` posé sur le voile
+  (`Booster.ouvrir`), tandis que la carte ouverte vit dans un `ScrollView` —
+  il lui faut pouvoir faire défiler une glose plus haute que l'écran. Or
+  `ScrollView.onTouchEvent` retourne `true` dès `ACTION_DOWN`, **même quand il
+  n'a rien à faire défiler**, et n'appelle jamais `performClick()`. L'appui
+  était donc consommé par la carte et n'arrivait pas au voile. La carte
+  occupant la quasi-totalité de la scène, les seuls appuis qui passaient
+  encore étaient ceux qui tombaient dans les quelques millimètres de marge
+  autour d'elle — autant dire aucun.
+
+  Ce n'était pas un défaut de découvrabilité : le geste documenté existait et
+  ne fonctionnait pas.
+
+### ✨ Nouveautés
+
+- **La pochette se parcourt au doigt, dans les deux sens.** On glisse vers la
+  gauche pour avancer, vers la droite pour revenir. Le bilan de fin est
+  devenu la dernière page du paquet au lieu d'un écran à part, ce qui permet
+  d'en ressortir vers la dernière carte : un bilan posé à côté du paquet
+  était un cul-de-sac, et c'était la moitié du problème.
+
+  Une carte déjà retournée se retrouve telle qu'on l'a laissée. La cérémonie
+  — le dos, le halo qui monte, le retournement — appartient à la découverte ;
+  la rejouer à chaque aller-retour aurait transformé la consultation en
+  attente. Aux deux bouts du paquet, le glissement résiste au tiers de la
+  course : la carte suit encore le doigt, mais dit qu'il n'y a rien derrière
+  sans avoir à l'écrire.
+
+  L'appui simple reste ce qu'il était, et marche de nouveau. Le compteur
+  porte désormais la mention du geste, faute de quoi il n'y aurait toujours
+  rien pour l'apprendre.
+
+- **Une carte rare part en feux d'artifice quand elle se pose.** Trois gerbes
+  pour une *Rare*, cinq pour une *Très rare*, décalées dans le temps, avec
+  pesanteur et traînées ; elles s'éteignent en `(1 - t)²`, donc bien avant
+  d'atteindre le bord — ce qu'on est venu voir, c'est le mot.
+
+  Elles partent **à chaque fois que la carte arrive à l'écran**, au
+  retournement qui la découvre comme au glissement qui y revient : la rareté
+  n'est pas une nouvelle qu'on annonce une fois, c'est une propriété que la
+  carte garde, et c'est ce qui donne une raison de parcourir sa pochette.
+
+  Le tirage des gerbes est fixé par la forme du mot (`graine =
+  forme.hashCode()`). Revenir sur une carte redonne exactement son bouquet, et
+  deux cartes voisines n'en donnent jamais deux pareils : le hasard sert la
+  variété, jamais l'instabilité. C'est la règle d'`EclatCarte` appliquée dans
+  l'autre sens — lui garde des angles réguliers parce qu'il est bref, elles
+  peuvent se permettre du désordre parce qu'il ne varie pas d'une fois sur
+  l'autre. Les deux cohabitent sur une très rare, la gerbe reprenant là où
+  l'éclat s'éteint.
+
+### 🔧 Détails d'implémentation
+
+- **`ScenePochette`** (nouveau, `Booster.kt`) : la scène lit le geste avant
+  ses enfants. Elle intercepte le glissement horizontal dès qu'il se déclare
+  (`|dx| > slop` et `|dx| > 1,2·|dy|` — les diagonales vont au défilement,
+  une carte qu'on voulait lire et qui s'en va valant bien pire qu'un
+  glissement à refaire), et reconnaît l'appui simple **sans jamais
+  l'intercepter**, dans `onInterceptTouchEvent`, qui reçoit tous les
+  événements du geste tant qu'elle laisse faire. Les deux chemins sont
+  exclusifs — si un enfant prend le geste, seul `onInterceptTouchEvent` voit
+  le relâchement ; sinon la scène l'a consommé dès l'appui — donc un appui ne
+  peut pas compter deux fois. Coordonnées lues en `raw` : la page glisse sous
+  le doigt, des coordonnées locales mesureraient ce déplacement au lieu de
+  celui de la main. Et quand le `ScrollView` se met à défiler, il demande
+  lui-même qu'on ne l'interrompe plus : le défilement gagne.
+- **`performClick()`** est surchargée et porte l'appui, plutôt que d'appeler
+  le rappel depuis `onTouchEvent` : les services d'accessibilité déclenchent
+  un clic sans jamais produire de `MotionEvent`, et la pochette n'aurait
+  sinon pas eu de carte suivante sous TalkBack.
+- **`FeuxArtifice`** (nouveau, `Booster.kt`) : une vue pilotée par un unique
+  `avancement` de 0 à 1, comme `EclatCarte`. Rayon en `1 - (1-t)²`, chute en
+  `t²`, traînée proportionnelle à la vitesse restante ; une étoile sur deux
+  part à 72 % du rayon, sans quoi la gerbe se lirait comme un anneau. Les
+  positions sont en fractions de la vue, jamais en pixels : le tirage a lieu
+  à la construction, avant qu'on connaisse la taille.
+- **Chaque page vit dans son propre `FrameLayout`**, ajouté à la scène et
+  retiré à la fin de sa sortie. Les rappels différés de la cérémonie
+  s'arrêtent sur `page.parent == null`, ce qui suffit à abandonner
+  proprement un retournement que le joueur a interrompu d'un glissement.
+- **`Passer` devient `Fermer` — et « 📔 Mon carnet » apparaît — dès que
+  toutes les cartes ont été vues**, où qu'on se trouve dans le paquet, et non
+  plus sur la seule page de bilan. Le bouton n'était caché que pour ne pas
+  inviter à partir avant d'avoir ouvert ; une fois tout ouvert, la raison
+  tombe.
+
+## [22.8.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **Quarante-cinq cartes de plus portent un meuble** : 120 des 2 798
+  emplacements du carnet sont enluminés, contre 75, soit 4,3 % au lieu de
+  2,7 %. Les nouveaux sujets sont l'hôpital, la banque, l'immeuble, la prison,
+  le mur, la gare, le parking, le restaurant ; le bus, le tram, le train, le
+  camion, l'ambulance, la moto, la rue, le panneau de danger, la pompe et la
+  valise ; le journal, le document, le dossier, le film, l'ordinateur et la
+  note ; la règle, la balance, la seringue, la pièce et la robe ; le globe, le
+  cercle d'étoiles, la tour Eiffel, l'île, la forêt, le flocon et le virus.
+  Trois mots de plus tombent sur des dessins qui existaient déjà — `Zäit` sur
+  l'horloge d'`Auer`, `Nuecht` sur la lune de `Mound`, `Telefon` sur le
+  téléphone de `Handy` — et `Café` sur la tasse de `Kaffi`, sans un trait de
+  plus.
+
+### 🔎 Ce que l'emoji a servi à faire, et ce qu'il ne pouvait pas faire
+
+La piste de départ était le poinçon : frapper l'emoji dans la fenêtre quand le
+mot est explicite. Elle a été mesurée puis rendue avant d'être tranchée.
+
+- **Le gisement est réel** : sur les 1 160 substantifs monosémiques encore sans
+  meuble, un échantillon de 160 en donne 19 % à qui l'on attribuerait un emoji
+  sans hésiter, soit environ 220 cartes.
+- **Mais l'emoji ne pouvait pas être livré.** Il apporte sa propre palette, qui
+  concurrence la teinte — or la teinte porte le champ, et c'est le seul canal
+  de couleur qui signifie quelque chose sur une carte. Désaturé pour s'y
+  soumettre, il perd la moitié des siens : le journal devient un rectangle
+  blanc, le panneau P un carré, l'œuf un ovale, et le drapeau suisse perd le
+  rouge qui *est* la Suisse. En pochoir alpha — la vraie gravure — cinq
+  candidats sur douze survivent. En petit, dans un coin, aucun ne se lit.
+- **Il a donc servi de crible et de croquis.** Là où le glyphe existe, le
+  concept a déjà un pictogramme conventionnel : c'est exactement ce qui rend
+  une silhouette lisible. La liste a été triée par rang de fréquence, pour que
+  l'effort de dessin tombe sur des cartes que les joueurs voient.
+
+### 🐛 Corrections
+
+- **Le croissant de `lune` était faux, et il était en production.** Il était
+  fait de deux disques posés l'un sur l'autre en comptant sur la règle
+  pair-impair pour les soustraire. Deux disques ne se soustraient pas : la part
+  du second qui sort du premier n'est recouverte qu'une fois, donc elle se
+  remplit. La carte portait un lobe plein, débordant de huit unités hors du
+  carré de tracé. Le croissant est désormais un seul contour à deux arcs.
+- **Les trois lingots d'`or` se recouvraient**, et un recouvrement se creuse :
+  ils sont maintenant empilés et aboutés.
+- Deux unités de rognage retirées à l'auréole d'`ange` et aux ondes
+  d'`antenne`.
+- Sept des quarante nouveaux dessins ont été refaits après première épreuve —
+  dont une gare qui, avec sa grande arche sous une horloge ronde, se lisait
+  comme une tête au-dessus d'un corps.
+
+### 🔧 Détails d'implémentation
+
+- `Meubles.kt` passe de 74 à 111 silhouettes. Trois noms de la nouvelle vague
+  entraient en collision avec des dessins existants (`horloge`, `lune`,
+  `telephone`) : en Kotlin le dernier d'un `mapOf` gagne en silence, et les
+  anciens auraient été masqués sans erreur. Les nouveaux ont été retirés, les
+  anciens réattribués.
+- `apercu_meubles.py` mesure désormais la boîte réelle de chaque tracé, courbes
+  échantillonnées par de Casteljau plutôt qu'approchées par leurs points de
+  contrôle, et signale tout dépassement du carré de cent. C'est ce contrôle qui
+  a trouvé `lune`, `or`, `ange` et `antenne`.
+- L'actif reste à 52 ko : quarante-cinq attributions de plus n'y pèsent rien.
+
+## [22.7.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **Une carte a désormais un champ, et le carnet cesse d'être un nuancier.**
+  Jusqu'ici la teinte d'une carte venait de ses trois premières lettres : deux
+  cartes voisines dans un tiroir n'avaient aucune raison d'aller ensemble, et
+  feuilleter la collection ne rangeait rien. Chaque lemme est maintenant classé
+  dans l'un de **huit champs de sens** — Mouvement, Temps et mesure,
+  Territoire, Économie, Savoir et parole, Chose publique, Société, Vie et
+  corps — et c'est le champ qui donne la couleur de la face, de la gemme et de
+  la fenêtre.
+
+  Huit et non quatorze : au-delà, deux teintes voisines ne se séparent plus sur
+  une vignette de 160 dp. À l'intérieur d'un champ, la carte garde un écart de
+  ±12°, tiré du même condensé de trois lettres que l'ancienne teinte — les
+  cartes d'un même domaine se ressemblent sans se confondre, et `Woch`,
+  `Wochen` et `Woche` restent exactement sur la même couleur. Douze degrés,
+  c'est moins de la moitié du plus petit intervalle entre deux champs (34°) :
+  deux domaines ne peuvent donc jamais se recouvrir.
+
+  Le classement couvre **71 % des 2 798 emplacements** du carnet. Les 29 %
+  restants ne sont pas un chantier inachevé : ce sont des mots-outils —
+  pronoms, déterminants, adverbes — qui n'ont pas de domaine et qu'il serait
+  faux de ranger de force. Ils gardent la teinte de leurs lettres, c'est-à-dire
+  exactement l'état de la 22.6.0.
+
+- **La partition divise le champ, et elle ne coûte rien du tout.** L'héraldique
+  divise l'écu avant d'y poser quoi que ce soit ; la fenêtre fait maintenant
+  pareil — chevron pour un substantif, coupé pour un verbe, tranché pour le
+  reste. L'information est lue **sur la forme du mot** : en luxembourgeois la
+  majuscule *est* l'étiquette du substantif, et l'infinitif se termine en `-en`.
+  Pas un octet d'actif.
+
+  Elle rend un service qu'on n'attendait pas d'elle : huit teintes sur une face
+  désaturée se confondent, et une forme qui double la couleur rétablit la
+  lecture — y compris en deutéranopie. C'est le raisonnement des insignes de
+  rareté, qui comptent des symboles au lieu de se fier au vert et au bleu-gris.
+
+  La règle verbale est approchée, et il faut le chiffrer plutôt que le taire :
+  sur les 502 mots qu'elle appelle verbe, une quinzaine sont des déterminants
+  (`sengem`, `hirem`, `deenen`), soit 3 %. Les irréguliers en `-nn` sont
+  rattrapés — `sinn`, `ginn`, `hunn`, `gesinn` et leurs douze composés — moins
+  les trois adverbes qui portent la même finale.
+
+- **Soixante-quinze cartes portent une enluminure.** Une silhouette gravée
+  remplace le tracé sur les mots qu'on sait bien dessiner : `Haus`, `Kaz`,
+  `Brout`, `Léiw`, `Helikopter`, `Fändel`… Soixante-quatorze dessins pour
+  soixante-quinze mots, à peu près **trois cartes sur cent**. L'enluminure ne
+  suit pas la rareté — celle-là est fixée par le rang de fréquence et n'est pas
+  négociable — c'est un second axe de désirabilité, qui peut échoir à une
+  commune comme à une très rare.
+
+### 🧭 Ce que la mesure a démoli, et ce qui a survécu
+
+La 22.6.0 disait que l'illustration cessait d'être une cible de couverture.
+Voici le chiffre qui l'a décidé, parce qu'il contredisait ce que j'avais moi-
+même recommandé.
+
+L'argument était : « un meuble sert des dizaines de mots, une maison vaut pour
+`Haus`, `Wunneng`, `Duerf`, `Dier` ; on ne dessine pas 2 801 images, on dessine
+cent vingt silhouettes ». Mesuré sur les 1 690 substantifs glosés du carnet :
+**1 504 têtes de glose distinctes**, soit **1,12 mot par dessin**, et **89 %**
+des têtes ne concernent qu'un seul mot. La courbe de couverture colle à la
+diagonale — il n'y a pas de Pareto. Cent vingt silhouettes couvriraient 16 %
+des substantifs et 5 % du carnet.
+
+D'où venait l'erreur : j'avais raisonné sur les huit mots concrets d'une
+planche de démonstration, en oubliant que je les avais choisis **parce qu'ils
+étaient illustrables**. Le biais de sélection sous sa forme la plus banale, et
+la seule protection contre lui est de compter. Le corpus le dit d'ailleurs
+autrement : ses mots les plus tirés ne sont pas *chat* et *pain* mais *fin*,
+*question*, *cas*, *partie* — ce carnet n'est pas un imagier, c'est une salle
+de rédaction, et `Apel`, `Kou`, `Zopp` n'y figurent même pas.
+
+Un second obstacle, plus dur que le coût : **le meuble choisit un sens que la
+carte ne choisit pas.** La carte affiche toute la glose — « Wee : chemin, sens,
+moyen » — et un dessin n'en illustre qu'un. Sur la face réponse d'un outil de
+révision, une image qui tranche une polysémie est activement fausse. Le coût de
+dessin, on peut le payer ; un sens faux, non. C'est ce qui interdit toute
+attribution automatique, même par un bon classifieur.
+
+D'où le renversement : on ne dessine plus ce qu'il faudrait couvrir, **on
+n'attribue que là où c'est juste**. `Feier` est « feu, incendie, *fête* »,
+`Bierg` « montagne, côte, *garant* », `Nol` « clou, *ongle*, *aiguille* » —
+aucun des trois n'est enluminé, et chaque entrée du tableau a été relue contre
+la glose entière. Ce qu'il faut accepter en échange, et le dire en face : la
+fenêtre ne dit pas le sens sur la grande majorité des cartes. Le reste reçoit
+un rangement, pas un portrait.
+
+### 🔧 Détails d'implémentation
+
+- `Dictionnaires/generate_blasons.py` produit `luxemburgish_blasons.json`
+  (52 ko, 2 064 lemmes). Le classement se fait en deux passes : un lexique
+  français cherché dans la glose entière — le premier sens comptant triple,
+  puisque c'est celui que la carte met en tête — puis une table écrite à la
+  main qui gagne toujours. Le lexique a été écrit en trois vagues, chacune en
+  relisant ce que la précédente laissait dehors : 23 %, puis 44 %, puis 71 %.
+  Une dernière règle vaut une soixantaine de cartes : **un nom propre est un
+  lieu**, appliquée en dernier recours, quand les gentilés ont déjà été pris
+  par le lexique et qu'il ne reste que de la géographie.
+- `carnet/Blason.kt` — les huit champs, la nature, et l'armorial qui lit
+  l'actif. La clé est le **représentant** de la famille, pas la forme
+  rencontrée : le joueur a gagné « Männer », c'est le rangement de « Mann » qui
+  vaut, et `ContenuCarte` avait déjà ce représentant sous la main.
+- `carnet/Meubles.kt` — les 74 silhouettes, chacune dans un carré de cent
+  unités, remplies en `EVEN_ODD` pour que la porte d'une maison soit un trou et
+  non un second contour.
+- `Motif` prend un troisième participant. Il assemblait une matière (le palier)
+  et un sujet (le mot) ; il assemble maintenant matière, **partition** (la
+  nature) et sujet, et le sujet est le meuble s'il y en a un, le tracé sinon.
+- Les numéraux de Zuelwuert, que le corpus de fréquences ne connaît pas et
+  qu'aucune grille ne contient, reçoivent le champ *Temps et mesure* : leur
+  domaine ne fait aucun doute, et leurs cartes cessent d'être un semis.
+- `BlasonsAssetTest` garde quatre régressions muettes : un champ inconnu, un
+  meuble non dessiné, un meuble attribué à un mot qu'aucun jeu ne donne, et
+  l'effondrement de la couverture. Aucune ne fait planter — `Armorial` avale
+  exprès toute erreur de lecture pour qu'un actif abîmé n'éteigne pas le carnet.
+- `Dictionnaires/apercu_meubles.py` transpose les 74 `Path` en SVG et en tire
+  une planche de contrôle dans un navigateur, sans émulateur. Elle n'est pas
+  un ornement : au premier tirage elle a renvoyé **dix-huit dessins sur
+  soixante-quatorze**. Six têtes d'animaux avaient les oreilles, cornes ou bois
+  posés *par-dessus* le crâne et s'y creusaient — `EVEN_ODD` perce là où deux
+  pleins se chevauchent — une main avait ses doigts au travers de la paume, un
+  banc ses pieds au travers de l'assise ; et une dizaine d'objets étaient
+  simplement illisibles. Rien de tout cela ne se voit en relisant des
+  coordonnées, et rien ne se serait vu avant l'installation.
+
+## [22.6.1] - 2026-09-13
+
+### 🎨 Ajustements
+
+- **La ligne de série passe dans la marge.** Elle traversait les volutes
+  d'angle : à `bord = 18`, les spirales du bas sont centrées en (23, 417) et
+  (277, 417) sur 22 unités, et l'or en pose deux secondes en x = 39 et
+  x = 261 — soit quatre spirales sous un texte qui allait de 30 à 270, avec
+  l'exposant du rang rendu illisible à droite. Ce n'était pas un manque de
+  place, c'était une superposition.
+
+  La bande est désormais **428 → 437,5**, la même sur les quatre paliers
+  parce qu'elle est ancrée au bord bas et non à la marge, qui varie de 12 à
+  18 selon la rareté. Ces deux bornes sont mesurées : une volute a perdu 62 %
+  de son rayon quand elle passe à l'aplomb de son centre, donc aucune ne
+  descend plus bas que ~427 ; et le filet de contour extérieur commence à
+  437,5. En x, la ligne peut s'élargir de 30–270 à 22–278, plus rien ne la
+  gênant à cette hauteur.
+
+  C'est aussi l'endroit où ce genre de mention vit sur une carte imprimée —
+  numéro, jeu, date, rang : de l'administratif, qui n'a pas à disputer sa
+  place au contenu.
+
+- **Le corps de la ligne descend de 9 à 7,5.** La bande ne fait plus que neuf
+  unités et demie, et une boîte de ligne à 9 en demande dix et demie. 7,5 est
+  celui des libellés gravés dans les écus, pas une taille inventée pour
+  l'occasion. Le rétrécissement est réel et assumé : il requalifie la ligne en
+  petits caractères, ce qu'elle est.
+
+- **La couleur ne change pas, contrairement à ce que le raisonnement laissait
+  attendre.** Le bandeau étant plus sombre que le plateau, le réflexe était de
+  passer le texte de `trait` à `hi`. La mesure dit l'inverse : au bas du
+  bandeau le dégradé est à 63 % de `lo` vers `mid`, où le sombre tient 4,4:1
+  sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 pour le clair.
+
+- **Le relief perd un cran.** `aretes` posait une marche au partage des deux
+  moitiés de la ligne ; dans la marge le métal est lisse, et `bord` y est déjà
+  la seule marche que le doigt trouve.
+
+Treize unités se libèrent en 408–421. Elles ne profiteront au panneau que si
+les écus (375–410) descendent aussi : c'est une cascade de trois emplacements,
+laissée pour une prochaine fois.
+
+## [22.6.0] - 2026-09-13
+
+### ✨ Nouveautés
+
+- **La fenêtre d'une carte montre enfin le mot, et non un bruit stable.**
+  L'illustration était un anneau par lettre, posé à des coordonnées tirées du
+  code des caractères, plus l'initiale en filigrane. C'était unique par mot et
+  reproductible, mais rien n'y disait le mot : deux formes d'un même lemme n'y
+  avaient aucun air de famille, et l'initiale doublait la plaque qui porte
+  déjà le mot en toutes lettres.
+
+  À la place, le **tracé** : voyelle en haut, consonne en bas, la hauteur
+  affinée par le caractère, un nœud sur chaque voyelle. Le pas est constant et
+  calé à gauche — jamais étiré sur la largeur — et c'est ce détail qui porte
+  tout le bénéfice : deux formes qui partagent leur début partagent leurs
+  points *exactement*. `Woch`, `Wochen` et `Woche` se lisent désormais comme
+  un seul mot à trois états. Un mot long resserre son pas et maigrit d'autant,
+  sinon ses nœuds se recouvriraient au-delà de sept lettres.
+
+- **La teinte d'un mot se lit sur ses trois premières lettres**
+  ([`Ornement.teinteDe`]), et non plus sur le mot entier. Même raison : le mot
+  entier donnait trois couleurs sans rapport aux trois formes ci-dessus, alors
+  qu'un carnet de vocabulaire devrait précisément montrer qu'elles n'en font
+  qu'une. Le préfixe suffit à les réunir sans consulter le moindre lemme, donc
+  il vaut aussi pour les 647 formes que `luxemburgish_familles.json` ne
+  rattache à rien. Le prix — `Stad` et `Statist` tombent sur la même teinte —
+  est sans conséquence : une teinte n'identifie pas une carte, la plaque le
+  fait.
+
+  La face, la gemme et le motif la partagent maintenant depuis **un seul
+  endroit**, au lieu de recalculer chacun son condensé. Le semis d'étincelles
+  des très rares garde, lui, le condensé du mot entier : deux formes voisines
+  ne doivent pas avoir des étincelles superposées.
+
+### ♻️ Remaniements
+
+- **`Motif` se scinde en `Matiere` et `Sujet`.** Le grain du bronze et
+  l'initiale du mot étaient tracés dans la même méthode, à quelques lignes
+  d'écart : on ne pouvait toucher à l'un sans relire l'autre. La fenêtre dit
+  pourtant deux choses distinctes — ce que vaut la carte (le palier) et quel
+  mot elle porte — qui n'ont ni la même source ni la même durée de vie.
+  `Motif` n'est plus que leur assemblage : la matière dessous, le sujet au
+  milieu, ce que la matière pose par-dessus.
+
+  Aucun changement visible de ce fait seul : grain, halo, irisation et
+  brillance sont repris trait pour trait. L'intérêt est de pouvoir essayer un
+  autre sujet — un meuble héraldique, un poinçon — sans rouvrir des réglages
+  mesurés de longue date.
+
+### 📐 Mesures qui ont décidé de ce découpage
+
+Le carnet complet fait **3 732 formes**, soit 2 801 images à l'échelle du
+lemme — et non les 38 442 du dictionnaire de fréquences, puisqu'une carte ne
+naît que d'un mot gagné. Sur les 1 690 substantifs glosés, on compte **1 504
+têtes de glose distinctes**, dont 89 % ne servent qu'un seul mot : une
+bibliothèque de silhouettes amortirait **1,12 mot par dessin**. C'est ce
+chiffre qui écarte l'illustration sémantique comme cible de couverture, et qui
+fait du tracé — gratuit, universel, motivé par le mot — le bon socle.
+
+## [22.5.4] - 2026-09-13
+
+### 🐛 Correctifs
+
+- **Un import inexistant empêchait toute compilation.** `DosRevision.kt`
+  demandait `kotlin.math.minOf`, adresse à laquelle ce symbole n'a jamais
+  existé : `kotlin.math` fournit `min` et `max`, tandis que `minOf` est déclaré
+  dans le paquet `kotlin`, importé d'office. Les quatre jobs de build de la
+  22.5.3 sont tombés dessus, debug comme release, et le tag correspondant n'a
+  produit aucun artefact.
+- La preuve tenait dans le fichier lui-même : `maxOf`, employé quinze lignes
+  plus haut, n'a **aucun import** et se résolvait déjà. Le correctif est donc la
+  suppression de la ligne parasite, sans toucher à l'appel.
+
+## [22.5.3] - 2026-09-13
+
+### 🐛 Correctifs
+
+- **Ligne de série : la marge manquante.** Le correctif 22.5.2 l'avait remontée à
+  `y 413 → 426`, ce qui suffisait aux deux paliers bas mais pas aux deux hauts :
+  le plateau intérieur se referme à `12 + palier * 2` du bord, soit **422 pour
+  l'or et 424 pour l'argent**, et les jambages du texte affleuraient encore le
+  métal du cadre. Le créneau passe à `y 408 → 421` : les glyphes occupent
+  410 → 419, avec trois unités de garde sous le palier le plus orné.
+- La bande 404 → 422 était libre depuis que les écus sont remontés en 22.5.2 —
+  la pointe réelle d'un écu tombe à 404, le point de contrôle à 415,6 n'étant
+  pas atteint par la quadratique. La série n'entre donc en collision ni avec les
+  blasons, ni avec le joyau de rareté, dont le bas s'arrête à 410.
+- La contrainte est désormais **écrite au-dessus du créneau** : c'est le genre de
+  nombre qu'on rétablit sans le savoir en croyant recentrer.
+
+### 🔍 Inchangé
+
+- Relief tactile : `aretes()` lit `SERIE_G.right`, les crans suivent le
+  déplacement sans qu'une ligne les concerne.
+- Aucun autre emplacement, rayon ou dégradé n'est touché.
+
+## [22.5.2] - 2026-09-13
+
+### ✨ Enrichissement
+
+- **Verso enrichi : dégradés des angles.** Les deux angles du logo (rouge/bleu)
+  passent d'aplats pleins à dégradés radials — clair au centre, plein aux bords.
+  Crée une sensation de **relief optique** sans changer la neutralité (aucune fuite
+  de rareté). Le verso passe de « aplat épuré » à « volume épuré ». Relief tactile
+  inchangé.
+
+### 🐛 Correctifs
+
+- **Débordements des ornements (recto).** La ligne de série se coupait aux coins arrondis
+  bas de la carte, les écus débordaient du plateau intérieur, la gemme de coût
+  était asymétriquement serti. Repositionnement des emplacements pour des marges
+  saines (SERIE +8 unités, ECU -12 unités, GEMME alignée).
+- **Harmonisation des coins arrondis.** Les fenêtres, panneaux (recto & verso) et écus
+  avaient des rayons disparates (8/7/custom). Cascade hiérarchique (18 > 11 > 10 > 9 > 4)
+  pour une sensation d'élégance unifiée.
+- **Tranche.** Réduction de la largeur d'ombre (34→28 unités) pour éviter le
+  débordement sur les coins lors de l'inclinaison forte de l'appareil.
+
+## [22.5.1] - 2026-09-13
+
+> La 22.5.0 a donné à la carte une épaisseur, une lumière qui suit le pouce et
+> un enfoncement. Les trois se voient. Aucune ne se sent.
+>
+> Le pouce sent maintenant la gravure : le bord du carton, la marche du cadre,
+> les flancs de l'ouverture, les écus. C'est le seul retour du carnet qui
+> fonctionne les yeux fermés, donc le seul qui prouve vraiment que la carte est
+> un objet et pas une lumière.
+
+### ✨ Ajouté
+
+- **Les crans du relief.** Un pouce qui traverse une carte franchit une poignée
+  d'arêtes, et chacune donne une vibration très courte — la même que celle d'un
+  cran de curseur sur la barre d'espace, qui est l'effet le plus bref du
+  catalogue. Le rythme dépend de la **hauteur** à laquelle le doigt passe : à
+  mi-carte il ne rencontre que le cadre et les flancs de l'ouverture, en bas il
+  traverse les deux écus et le joyau de rareté. C'est cette différence-là qui
+  distingue une surface gravée d'un curseur à crans.
+- **Le contact.** Poser le doigt sur une carte donne une vibration, avant même
+  de bouger. Un carton posé ne claque pas quand on le touche, mais un écran qui
+  ne répond pas à un doigt posé n'a rien touché du tout.
+- **Le dos a son propre relief**, tiré de sa géométrie à lui : le bord, les deux
+  hypoténuses, les deux filets d'or en retrait, et l'ardoise quand il y en a
+  une. Il est rigoureusement le même pour les douze cartes d'une session — un
+  dos dont le nombre de crans suivrait la rareté dirait « ce mot est difficile »
+  par le pouce au lieu de le dire par la couleur, ce qui serait la même fuite
+  déguisée en autre sens. Sur la face, en revanche, la rareté a le droit de se
+  sentir : le palier y est déjà sous les yeux.
+
+### ♻️ Modifié
+
+- **Les animations réduites ne coupent plus le retour tactile.** Elles coupent
+  ce qui bouge, ce qui est leur rôle ; le retour tactile, lui, n'occupe pas
+  l'écran, et pour qui coupe les animations c'est précisément le seul retour qui
+  reste. Le supprimer avec elles aurait été l'exact contraire de ce que ce
+  réglage demande.
+- **Le retour tactile des cartes suit l'interrupteur du clavier**, comme la
+  frappe et les crans du curseur : un seul réglage, celui de l'application, et
+  pas celui du téléphone.
+- **Deux nombres écrits en clair sont devenus des noms** — le retrait des filets
+  d'or du dos, et le bord sensible du carton. Un cran qui ne tomberait pas
+  exactement sur son filet se sentirait comme un défaut de l'écran, pas comme
+  une gravure.
+
+## [22.5.0] - 2026-09-13
+
+> Le carton répondait au téléphone, pas à la main. On pouvait passer le pouce
+> sur une carte pendant dix secondes sans que rien n'arrive — ce qui suffisait
+> à la ranger parmi les images, puisqu'un objet réel réagit d'abord à ce qui le
+> touche.
+>
+> Trois choses le sortent de là : une épaisseur, une lumière qui suit le pouce,
+> et un carton qui s'enfonce sous l'appui puis remonte en dépassant son
+> aplomb. Aucune n'invente de dessin nouveau ; elles branchent la main sur ce
+> que la carte savait déjà faire.
+
+### ✨ Ajouté
+
+- **La tranche.** Une carte inclinée montre son épaisseur. C'est la chose qu'on
+  ne remarque jamais consciemment et qui décide pourtant, à elle seule, si le
+  cerveau range ce qu'il voit dans les objets ou dans les images. Le bord qui
+  s'approche découvre le cœur du carton, celui qui s'éloigne tombe dans
+  l'ombre — et c'est bien le bord qui s'approche, car c'est sa face latérale
+  qui tourne vers l'œil. Elle vaut pour les quatre paliers : le reflet est un
+  privilège de rareté, pas l'épaisseur.
+- **Le pouce prend la lumière.** Tant que le doigt est posé sur une carte, c'est
+  lui et non la pesanteur qui dit où tombe le reflet, et la tache le suit
+  exactement — l'irisation de l'illustration d'une rare glisse avec. Au
+  relâchement, la pesanteur reprend la main en une seconde plutôt que de la
+  récupérer d'un coup.
+- **L'appui.** Le carton s'enfonce du côté pressé — le point touché part en
+  arrière, la carte perd un centième et demi de sa taille — puis remonte en
+  dépassant légèrement son aplomb. C'est ce dépassement, et non l'enfoncement,
+  qui se lit comme de la masse.
+
+### ♻️ Modifié
+
+- **La carte ouverte du carnet et les deux faces de la révision répondent au
+  doigt.** Pas la pochette : le voile y prend l'appui pour passer à la carte
+  suivante, et un carton qui consommerait le geste supprimerait cette
+  navigation. Pas la grille non plus, pour la même raison que l'inclinaison —
+  une vignette de 160 dp n'a la place de rien, et un appui capté par chaque
+  carte se battrait avec le défilement. Dans la fiche du carnet, le
+  `ScrollView` reprend le geste dès qu'il part vers le haut ou le bas : le
+  défilement d'une fiche haute n'est pas sacrifié à la lumière.
+- **Toute carte ouverte suit désormais la pesanteur**, et plus seulement les
+  deux paliers hauts, puisque la tranche concerne aussi les communes.
+- **Le suivi du capteur a quitté les deux faces pour le carton dont elles
+  héritent.** Le recto et le verso en avaient chacun une copie, au mot près,
+  avec deux abonnements au capteur pour un même objet et deux filtres qui
+  devaient se ressembler sans que rien ne l'impose. Il n'y en a plus qu'un.
+- **`Inclinaison` est le seul écrivain de la rotation d'une vue.** La pesanteur
+  et l'appui du doigt visaient la même propriété, et la dernière servie
+  gagnait — soixante fois par seconde, ce qui se voit comme un tremblement et
+  non comme un appui. Les deux sont maintenant rangées séparément et
+  additionnées au moment d'écrire.
+
+### 🐛 Corrigé
+
+- **Le rebond de l'appui ne se dispute plus le retournement.** Le doigt pouvait
+  quitter la carte moins de trois cents millisecondes avant un appui sur
+  « Valider » : le rebond et le retournement écrivaient alors tous deux dans la
+  rotation. Le carton rend sa rotation avant que le geste ne commence.
+
+## [22.4.0] - 2026-09-12
+
+> La révision retournait déjà ses cartes — sauf qu'il n'y avait rien à
+> retourner. La carte partait de profil et surgissait du néant, pendant que la
+> question flottait sur un aplat gris. Il ne manquait pas un décor : il
+> manquait la première moitié du geste.
+>
+> Les cartes de révision ont maintenant un verso, tiré de la composition du
+> logo, et la question y est écrite. Le retournement se joue en deux temps,
+> comme celui de la pochette.
+
+### ✨ Ajouté
+
+- **Le verso des cartes de révision.** La question est désormais écrite sur le
+  dos d'un carton, et non plus posée sur un fond gris : la consigne sur la
+  plaque de nom, l'énoncé dans l'ouverture d'illustration, et ce que le joueur
+  tape dans le panneau de texte — c'est-à-dire exactement là où le sens du mot
+  l'attend de l'autre côté. Le mot demandé et le mot révélé occupent le même
+  rectangle : l'œil ne se déplace pas, il traverse.
+- **Le motif du dos vient du logo.** Pas une vignette collée sur un fond, mais
+  la composition du logo portée à l'échelle du carton : les deux angles qui se
+  répondent en diagonale, rouge en haut à gauche, bleu clair en bas à droite,
+  la bande claire entre les deux, un liseré blanc et un filet d'or en retrait.
+  Le lion n'y figure qu'en filigrane très effacé.
+- **Le dos accroche la lumière.** Le reflet spéculaire, jusqu'ici réservé aux
+  deux paliers hauts, balaie aussi le verso — qui est le même pour toutes les
+  cartes du paquet, donc l'effet se voit à chaque question et non plus sur les
+  seules cartes rares. Le carton entier suit par ailleurs l'inclinaison de
+  l'appareil, comme la carte ouverte du carnet depuis la 22.3.0.
+
+### ♻️ Modifié
+
+- **Le retournement est devenu vrai.** Il se joue en deux temps — le dos se met
+  de profil, le recto revient de l'autre côté — au lieu d'une carte qui
+  apparaissait à −85° sans que rien n'occupe ces −85°.
+- **L'écran de révision est bâti autour de la carte.** Trois bandes : l'en-tête,
+  la scène qui ne contient que le carton, et le bas qui porte le pavé et les
+  boutons. Le défilement a disparu ; c'est la scène qui donne au carton la
+  taille de ce qui reste. Une question tapée laisse moins de place qu'une
+  question de reconnaissance, et une carte révélée, dont le pavé a disparu, en
+  retrouve : le carton change donc de taille au moment où il est de profil,
+  c'est-à-dire invisible.
+- **L'ardoise a rejoint la carte.** Ce qui est tapé s'inscrit dans le panneau
+  de texte du carton, ce qui libère du même coup la hauteur qu'une ardoise
+  séparée prenait au pavé. Sur un écran de moins de 620 dp de haut, les touches
+  se resserrent plutôt que de laisser le carton devenir illisible.
+- **La géométrie du carton est commune aux deux faces.** La mesure, la mise à
+  l'échelle en unités de carte et la pose du texte ont quitté la face pour un
+  socle partagé : deux faces qui ne s'arrondissent pas au même rayon se
+  retournent comme deux objets qui se remplacent, pas comme un carton. Le rayon
+  des coins, écrit en clair à trois endroits, est devenu une constante.
+
+### 🐛 Corrigé
+
+- **Le mot d'une question de reconnaissance ne prend plus la couleur de son
+  jeu.** Le paquet de révision mélange les sept jeux, et la couleur trahissait
+  la provenance de la carte avant que le joueur ait cherché. Pour la même
+  raison, le verso ne porte ni teinte tirée du mot ni liseré de rareté : il est
+  rigoureusement identique pour les douze cartes d'une session.
+
+## [22.3.0] - 2026-09-12
+
+> La 22.2.0 a donné aux cartes un cadre qui s'enrichit avec leur rareté, et à
+> la plus rare un reflet qui suit l'inclinaison du téléphone. Restait que la
+> carte, elle, ne bougeait pas : la lumière glissait sur une surface immobile.
+> Elle pivote maintenant avec la main.
+>
+> Cette version emporte aussi trois correctifs de la révision espacée, dont un
+> plantage à l'ouverture du carnet sous Android 5 et 6.
+
+### ✨ Ajouté
+
+- **La carte ouverte suit l'inclinaison de l'appareil.** Elle pivote de
+  quelques degrés quand on penche le téléphone, et le reflet spéculaire d'une
+  carte distinguée a enfin une surface qui lui donne raison. Le repos est pris
+  à l'ouverture de la carte et non à l'horizontale — personne ne tient son
+  téléphone à plat, et une carte calée sur l'orientation absolue serait penchée
+  en permanence — puis un rappel très lent la remet d'aplomb quand la posture
+  change. Le débattement reste volontairement petit : au-delà, les filets d'or
+  d'un pixel scintillent et la typographie du bord qui s'éloigne devient
+  illisible. L'effet vaut pour **toutes** les raretés : l'ornement est une
+  récompense, la physique n'en est pas une, et une commune qui ne répondrait
+  pas à la main se lirait comme un défaut. Jamais dans la grille, où des
+  vignettes qui s'inclinent à l'unisson se battraient contre le défilement, et
+  jamais si les animations du système sont coupées.
+
+### ♻️ Modifié
+
+- **Le suivi d'orientation passe au capteur de pesanteur fusionné.**
+  L'accéléromètre brut mélange la pesanteur et l'accélération linéaire, si bien
+  que marcher suffisait à faire trembler le reflet d'une carte rare. Le repli
+  sur l'accéléromètre reste en place pour les appareils dépourvus du capteur
+  fusionné.
+
+### ⚡ Performance
+
+- **L'inclinaison ne redessine rien.** Elle n'écrit que deux propriétés de
+  transformation, appliquées par le processeur graphique au moment de composer
+  l'image : la carte est recomposée, jamais repeinte. C'est moins cher que le
+  reflet, qui lui invalide la vue et rejoue son tracé.
+
+### 🐛 Corrigé
+
+- **Le carnet ne s'ouvre plus sur un plantage sous Android 5 et 6.** Le calcul
+  du jour de révision appelait `Math.floorDiv`, apparu avec l'API 24 alors que
+  l'application descend à l'API 21 et n'active pas le désucrage des
+  bibliothèques : sur ces appareils, ouvrir le carnet levait un
+  `NoSuchMethodError`. C'était la seule API Java 8 de tout le dépôt, et lint ne
+  la signale pas en `lintVital`. La division plancher est désormais écrite à la
+  main, et un test la vérifie de part et d'autre de 1970.
+- **« Presque juste » ne fait plus monter la carte d'une boîte**, comme la
+  22.0.0 l'annonçait sans le faire. Une réponse juste à un accent ou à une
+  majuscule près compte comme réussie et la différence est montrée — mais la
+  carte reste dans sa boîte et revient à son rythme. Le verdict était bien
+  calculé à trois niveaux et bien affiché, puis réduit à un simple « réussi ou
+  raté » une ligne avant d'être enregistré, si bien que `greng` valait `gréng`.
+  C'est le seul endroit de l'application où l'accent et la majuscule sont la
+  question et non un détail de rendu.
+- **La phrase à trous réclame le mot qu'elle a retiré.** Les phrases du
+  dictionnaire officiel sont rangées par famille : celle d'une carte `Haus` peut
+  illustrer `Haiser`. Le trou était creusé sur la forme de la famille mais la
+  réponse attendue restait celle de la carte — le joueur devait écrire un mot
+  que la phrase ne veut pas, et `Haiser`, seule réponse qui complète la phrase,
+  était comptée fausse. Mesuré sur les actifs livrés, 38,6 % des cartes
+  illustrées étaient dans ce cas. Le trou porte désormais sur une seule forme,
+  celle de la carte quand la phrase la contient, et la question dit lorsqu'elle
+  réclame une autre forme de la même famille.
+
+## [22.2.0] - 2026-09-12
+
+> Une carte du carnet devient une pièce d'orfèvrerie. Son ornementation monte
+> avec sa rareté, de l'aplat mat jusqu'à l'irisation complète ; son cadre gagne
+> du relief et du coin coupé ; une ombre portée, une lueur d'attente, un éclat
+> à l'arrivée font de chaque tirage un moment. La grille elle-même raconte la
+> collection avant que le joueur ouvre une seule carte.
+
+### 🎨 Modifié
+
+- **L'illustration d'une carte du carnet.** Le code du rendu monte à 1 120
+  lignes et se concentre dans `CadreOrne.kt`, où tous les effets d'orfèvrerie
+  convergeant sur la rareté font leur calcul. `CarteCarnet.kt` ne parle plus que
+  de l'arborescence des vues.
+
+### 📄 Documentation
+
+- Deux sections de design au `README.md` du carnet : `REVISION-CARNET.md`
+  documenting le système de révision spécialisé, `REVISION-CHASSE-CROISE.md`
+  portant sur les grilles du jeu Wuertplaz.
+
+## [22.1.0] - 2026-09-12
+
+> Une carte très rare et une carte commune se ressemblaient : même cadre à la
+> couleur près, même illustration, même arrivée. La rareté était écrite sur la
+> carte, elle n'était pas visible. Elle passe désormais par ce qu'une couleur de
+> plus ne pouvait pas dire — la matière du panneau, le relief du cadre, et le
+> temps que met une carte à se retourner.
+
+### ✨ Ajouté
+
+- **Quatre matières pour quatre paliers.** L'illustration d'une carte est
+  dessinée à partir du mot, et sa teinte lui appartient : c'est donc la matière
+  du panneau qui dit la rareté. Une **commune** reçoit un aplat mat, aux anneaux
+  presque effacés ; une **peu commune**, un grain de hachures obliques ; une
+  **rare**, un halo clair derrière son initiale ; une **très rare**, une
+  irisation complète — un dégradé circulaire de teintes voisines traversé d'une
+  bande de brillance.
+- **L'irisation d'une très rare suit l'inclinaison du téléphone.** Le reflet
+  tourne et la bande glisse quand on penche l'appareil, comme sur une carte
+  brillante qu'on incline vers la lumière. L'accéléromètre n'est écouté que
+  pendant qu'une telle carte est **ouverte** : jamais dans la grille, jamais pour
+  un autre palier, et jamais si les animations du système sont coupées.
+- **Un coin coupé** aux couleurs du palier, à partir de *Rare*. C'est la marque
+  qui survit à la taille d'une vignette, là où le liseré blanc ne se voyait
+  pratiquement plus.
+- **Le cadre gagne du relief.** Une rare reçoit un second filet clair en retrait
+  du premier ; une très rare échange le filet uni contre un dégradé circulaire,
+  et sa bordure cesse de se lire comme un trait pour se lire comme une matière.
+- **Une ombre portée**, teintée du palier là où Android le permet, décolle les
+  cartes rares de la grille : la très rare se soulève, la rare effleure, les
+  autres restent posées.
+- **La lueur qui précède une carte rare.** Dans la pochette de fin de partie, le
+  dos d'une carte rare s'allume et son halo monte pendant que l'attente
+  s'allonge — 900 ms pour une très rare contre 380 pour une commune. C'est le
+  seul endroit du carnet où la rareté se sait avant d'être vue, et c'est voulu :
+  l'attente est ce qui transforme un retournement en événement.
+- **Un éclat à l'arrivée d'une très rare** : douze rais et un anneau qui
+  s'ouvrent puis s'effacent, une demi-seconde en tout.
+- **L'insigne compte les paliers** : ●, ◆◆, ★★★, ✦✦✦✦. La rareté se lit
+  désormais sans recourir à la couleur, et les deux paliers hauts la portent sur
+  une pastille pleine jusque dans la grille.
+
+### 🔧 Modifié
+
+- **Les cartes communes sont plus sobres qu'avant** : dégradé resserré, anneaux
+  ramenés de 48 à 30 d'opacité. Un palier ne se voit que par contraste, et
+  enrichir les rares sans appauvrir les communes n'aurait déplacé que la moitié
+  de l'écart.
+- **Une carte rare se retourne plus lentement**, et dépasse légèrement son
+  aplomb avant de se poser, dans la pochette comme dans le carnet. La durée d'une
+  animation ne sait dire qu'une chose, et elle la dit sans un mot.
+
+### ♿ Accessibilité
+
+- **La rareté ne dépend plus de la couleur seule.** Le vert de *Peu commun* et
+  le bleu-gris de *Commun* se confondent en deutéranopie ; le nombre de symboles
+  de l'insigne, lui, se compte sans couleur.
+- **Animations réduites respectées.** Sans elles, la carte rare arrive face
+  visible mais sur son halo, et l'irisation reste en place sans suivre le
+  téléphone : le réglage système dit « pas de mouvement », pas « pas de
+  couleur ».
+
+### 🧪 Tests
+
+- 2 tests de plus, 316 en tout. `CarnetRareteTest` fige le décompte de l'insigne
+  et vérifie que **toutes** les marques de rareté s'allument au même palier : le
+  coin, le double filet, l'ombre, le halo et l'éclat passent tous par
+  `Rarete.distinguee`, et une carte qui gagnerait le coin sans le halo se lirait
+  comme un bug plutôt que comme une distinction.
+
+### ⚙️ Rendu
+
+- Tous les dégradés et tous les chemins se construisent au changement de taille,
+  jamais à chaque trame : la grille peut afficher plusieurs centaines de
+  vignettes. L'irisation se pose en aplat translucide plutôt qu'en
+  `PorterDuff.SCREEN`, ce qui évite le calque hors écran qu'un mode de fusion
+  impose sur un canevas matériel.
+
+## [22.0.0] - 2026-09-12
+
+> Le carnet gardait les mots gagnés, mais rien n'obligeait à rouvrir une carte :
+> une étagère à trophées là où il fallait un paquet qui revient vous voir. Il
+> devient une méthode. Le changement de majeur marque ce déplacement : la
+> collection cesse d'être un souvenir de partie pour devenir ce qui fait tenir le
+> vocabulaire, et le clavier lui-même se met à y contribuer.
+
+### ✨ Ajouté
+
+- **La révision espacée des cartes du carnet.** Six boîtes, aux intervalles fixes
+  de 1, 3, 7, 16, 35 et 90 jours, puis la carte est acquise et ne revient plus.
+  Une bonne réponse fait monter la carte d'une boîte, une mauvaise la ramène au
+  départ. Un bouton « Réviser N cartes » ouvre la session en tête du carnet, et
+  la bannière de l'onglet Spiller annonce ce qui est dû du jour.
+- **C'est la boîte qui décide de la question, jamais le joueur.** Dans les deux
+  premières, la carte se retourne et l'on s'autonote : reconnaître suffit. À
+  partir de la troisième, il faut **produire l'orthographe**, dans la phrase du
+  dictionnaire officiel dont le mot a été retiré, ou à défaut depuis le sens
+  français. Mesuré sur les actifs livrés : 93,3 % des mots que les jeux versent
+  au carnet ont une phrase où le mot se retrouve, donc la forme forte de la
+  question est presque toujours celle qui est posée.
+- **Le mot se tape sur un pavé dans la disposition du clavier**, celui de
+  Kräizwuert, avec une touche majuscule de plus à la place exacte qu'elle occupe
+  sur le clavier. Kräizwuert laissait cet emplacement vide, sa grille étant tout
+  en capitales ; ici la majuscule du substantif est l'objet de la question, donc
+  il faut pouvoir la produire.
+- **Juste à un accent ou à une majuscule près compte comme réussi**, la
+  différence est montrée, et la carte ne monte pas de boîte. C'est le seul
+  endroit de l'application où l'accent et la majuscule sont la question et non un
+  détail d'affichage.
+- **Une réponse juste que le jeu n'attendait pas est acceptée.** Sur une question
+  posée depuis le sens français, toute carte du paquet portant ce sens vaut
+  réponse : 36,2 % des familles glosées partagent leur premier sens, et neuf mots
+  se glosent « présenter ». Répondre `Akkord` là où la carte disait `Accord` n'est
+  pas une erreur.
+- **Le clavier est l'examen.** Une carte dont le compteur d'usage a monté depuis
+  la dernière session monte d'une boîte **sans que la question soit posée** :
+  avoir écrit le mot dans un vrai message est une preuve de mémoire plus forte
+  qu'une carte retournée. Le bilan de session le dit en clair.
+- **Une barre de six segments** sous chaque vignette, et une ligne sur la carte
+  ouverte, disent où en est sa révision. Une barre et non une couleur : la
+  couleur du cadre appartient déjà à la rareté.
+
+### 🔒 Confidentialité
+
+- **Rien de nouveau n'est collecté, et la frontière de stockage est tenue.** Les
+  compteurs de frappe vivent dans `filesDir`, que les deux règles de sauvegarde
+  excluent, et la référence dont la révision se sert pour savoir qu'un mot a été
+  écrit reste dans ce même domaine. Le carnet, lui, est sauvegardé dans le nuage,
+  et ne reçoit qu'une date d'échéance : une échéance repoussée par le clavier est
+  indiscernable d'une échéance repoussée par une carte réussie.
+
+### 🔧 Modifié
+
+- **Un carnet déjà rempli n'est pas rendu entièrement dû le jour de la mise à
+  jour.** Les cartes sans échéance sont étalées par paquets de douze sur les
+  jours suivants, dans leur ordre de capture : la collection revient au rythme où
+  elle a été faite. Sans cela, la première ouverture présentait un mur de deux
+  cents cartes, et un mur ne s'ouvre jamais.
+- **Une session est plafonnée à douze cartes**, les plus anciennement dues
+  d'abord, puis les boîtes les plus basses. Un échec repasse une fois en fin de
+  session, pour ne pas quitter sur un mot qu'on n'a pas retrouvé.
+
+### 🧪 Tests
+
+- 36 tests de plus, 314 en tout. `WidderhuelenPlanTest` gèle le calendrier (les
+  boîtes, la coupure de quatre heures, l'horloge reculée qui ne doit pas
+  verrouiller le paquet, le plafond, l'étalement), `WidderhuelenSessionTest` les
+  règles de la session et de la notation, et `CarnetRevisionAssetTest` rejoue le
+  troage sur les phrases réelles : une régénération qui perdrait les phrases
+  d'exemple ferait basculer toutes les cartes de production sur le repli français
+  sans rien casser de visible.
+
+### 📄 Documentation
+
+- `REVISION-CARNET.md` à la racine du dépôt : la note de conception, ses mesures
+  et ce qui reste à trancher.
+
+## [21.0.0] - 2026-09-12
+
+> Le carnet de cartes n'est plus une récompense de Wuertplaz : il traverse les
+> sept jeux, ouvre l'onglet Spiller et devient ce qui reste d'une partie quand
+> la grille est effacée. Le changement de majeur marque ce déplacement — une
+> collection commune là où il n'y avait que des scores séparés.
+
+### ✨ Ajouté
+
+- **Le carnet devient commun aux sept jeux.** Il était né dans Wuertplaz et n'y
+  gardait que les mots verrouillés ; ce qu'il réparait — une récompense qui
+  disparaît avec la grille — n'avait pourtant rien de propre à ce jeu. Chaque
+  mot trouvé dans Wuertsich, remis dans l'ordre dans Wuertmix, deviné dans
+  Wuertriet, retrouvé dans la phrase de Wuertlück, bien orthographié dans
+  Zuelwuert ou écrit dans Kräizwuert devient désormais une carte.
+- **Le carnet est en tête de l'écran des jeux**, pleine largeur, au-dessus des
+  sept cartes. Il fallait auparavant choisir Wuertplaz *puis* finir une grille
+  pour découvrir qu'une collection existait. La bannière porte le total et les
+  emojis des jeux qui ont déjà donné une carte, comme une carte de progression.
+- **Chaque jeu porte sa pastille « 📔 Carnet »** dans son en-tête, avec le total
+  acquis, et l'ouvre d'une touche — même quand rien n'a encore été gagné.
+- **La pochette s'ouvre à la fin de chaque partie**, et plus seulement au bout
+  d'une grille de Wuertplaz : fin de manche dans Wuertmix, Wuertlück et
+  Zuelwuert, grille complète dans Wuertsich et Kräizwuert, mot trouvé dans
+  Wuertriet. Elle prend la couleur et l'emoji du jeu qu'on vient de quitter, et
+  passe **avant** le bilan chiffré, qui est une fenêtre à part et la
+  recouvrirait.
+- **Une carte dit d'où elle vient** : l'emoji du jeu sur la vignette,
+  l'étiquette entière sur la carte ouverte. Un mot gagné dans deux jeux reste
+  une seule carte et porte les deux — ce sont les mêmes mots, en faire deux
+  cartes doublerait la collection sans rien lui apprendre.
+- **Le carnet se filtre par jeu.** Les filtres n'apparaissent qu'à mesure que
+  les jeux donnent des cartes, et la ligne reste cachée tant qu'un seul jeu est
+  représenté : un unique filtre et un bouton « Tous » diraient la même chose.
+- **Les numéraux de Zuelwuert ont leur propre lecture de la rareté.** Mesuré sur
+  l'actif livré, 86 des 101 nombres de 0 à 100 sont absents du corpus de
+  fréquences, et les quinze présents sautent de `zwee` (rang 105) à `fofzeg`
+  (36 954) : la lecture par rang aurait rendu « très rares » cinq cartes sur
+  six. Leur rareté suit donc ce que leur orthographe demande — forme isolée,
+  dizaine ronde, composé à liaison `an`, puis composé où la règle d'Eifel fait
+  tomber le n, celle qu'on n'invente pas.
+
+### 🔧 Modifié
+
+- Une carte ne se gagne nulle part sans avoir été trouvée : un mot passé dans
+  Wuertmix, une réponse fausse dans Wuertlück ou Zuelwuert, un Wuertriet perdu
+  et une grille dont on a demandé la solution ne versent rien au carnet et
+  n'ouvrent aucune pochette. C'était déjà la règle de Wuertplaz ; elle vaut
+  maintenant pour les sept.
+- Le carnet a sa couleur propre, qui n'est celle d'aucun jeu : il ne porte plus
+  le vert-bleu de Wuertplaz, dont il n'est plus la collection.
+- La liste des mots de Wuertsich traduit désormais la forme du dictionnaire et
+  non sa graphie de grille, tout en capitales — les substantifs y retrouvent
+  leur glose.
+
+### 🔒 Vie privée
+
+- Les cartes déjà collectées sont reprises telles quelles : le carnet change de
+  domaine de préférences, la reprise est faite une fois à la première lecture,
+  et l'ancien domaine est effacé derrière elle. Rien de nouveau n'est stocké
+  hormis le jeu d'origine de chaque carte.
+
+## [20.6.0] - 2026-09-09
+
+### ✨ Ajouté
+
+- **Une pochette de cartes s'ouvre à la fin d'une grille.** Les mots gagnés se
+  retournent un par un, chacun montrant sa carte, puis un bilan dit ce que la
+  grille a rapporté et propose d'aller voir le carnet. Le carnet conservait
+  déjà, mais il fallait y aller ; la pochette, elle, paie la grille au moment
+  où elle se termine.
+- **La pochette rend toutes les cartes de la grille, pas seulement les
+  inédites.** N'ouvrir que les nouveautés aurait vidé la récompense dès que le
+  joueur commence à connaître le vocabulaire, c'est-à-dire précisément quand il
+  progresse ; les cartes jamais rencontrées passent devant et sont signalées.
+- Une carte se retourne d'elle-même et un appui passe à la suivante, « Passer »
+  restant offert dès la première : c'est un cadeau, pas un passage obligé avant
+  la grille suivante. Une grille dont on a demandé la solution n'en ouvre
+  aucune, puisqu'elle ne rapporte rien.
+
+## [20.5.0] - 2026-09-09
+
+### ✨ Ajouté
+
+- **Un carnet de cartes à collectionner.** Chaque mot verrouillé dans
+  Wuertplaz devient une carte et rejoint une collection qui, elle, ne repart
+  pas de zéro à la grille suivante. On l'ouvre depuis le jeu, à l'endroit
+  exact où la liste des sens gagnés vivait déjà. Une carte porte le mot, sa
+  nature quand la majuscule la donne, une illustration, le sens français, une
+  phrase d'exemple du dictionnaire officiel, les autres formes de sa famille,
+  et son rang dans la collection.
+- **La rareté d'une carte est la fréquence du mot**, et rien d'autre. Le
+  dictionnaire est trié par fréquence décroissante : le rang d'une forme *est*
+  sa rareté, sans qu'il faille inventer la moindre statistique — poser des
+  « points de vie » sur une vraie langue aurait appris quelque chose de faux.
+  Les quatre paliers sont mesurés sur le vivier réel du jeu : 37 % de communs,
+  34 % de peu communs, 20 % de rares, 8 % de très rares.
+- **Les illustrations sont dessinées à partir du mot lui-même**, sans aucune
+  image dans l'application : teinte, anneaux et filigrane sont dérivés de ses
+  lettres, si bien que la même forme donne toujours la même carte. Un tableau
+  mot → emoji a été mesuré puis écarté — le vocabulaire du jeu compte 1 453
+  premiers sens distincts pour 1 963 formes, dont les plus partagés sont
+  « devoir », « marcher », « pouvoir ».
+- **Le carnet distingue ce qui est neuf de ce qui est revu** : une carte
+  jamais rencontrée est signalée dans la partie, et le bouton porte le total
+  acquis depuis toujours.
+- La collection est rangée avec les préférences, donc **sauvegardée et
+  transférée d'un téléphone à l'autre** comme les réglages du clavier. Ce sont
+  des mots de dictionnaire, déjà filtrés à l'ouverture des grilles.
+
+### 🐛 Corrigé
+
+- **Une carte pouvait montrer le sens d'un autre mot de sa famille.** La fiche
+  prenait la traduction du représentant, si bien que le substantif « Notze »
+  (utilité) s'affichait sous celle du verbe « notzen » (profiter de) — le même
+  piège que « rout », qui est rouge et non « se reposer ». Le sens de la forme
+  rencontrée l'emporte désormais ; le repli sur la famille ne sert plus qu'aux
+  flexions que le dictionnaire ne traduit pas seules.
+
+## [20.4.0] - 2026-09-08
+
+### ✨ Ajouté
+
+- **Wuertplaz fête un mot débloqué.** Un joueur a signalé que le verrouillage
+  d'un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre,
+  sans mouvement ni son, alors que c'est le seul moment où ce jeu enseigne. Le
+  verrouillage se ponctue maintenant — les lettres du mot s'allument en vert
+  vif l'une après l'autre, une carte verte entre en scène avec le sens
+  français, et un retour haptique accompagne le tout.
+- **Le coup double a sa fête à lui.** Verrouiller plusieurs mots d'une seule
+  pose est l'événement le plus gratifiant de la partie : carte orange
+  « 🔥 N mots d'un coup ! », balayages en cascade, retour haptique plus
+  appuyé. Le détail des sens gagnés reste, comme avant, dans « Ce que vous
+  avez gagné ».
+- **La collection compte et s'anime.** Le bandeau « Ce que vous avez gagné »
+  porte le nombre de mots appris et fait un rebond quand il monte ; chaque
+  sens nouvellement acquis entre en glissant.
+- **La fin de grille lâche des confettis** et affiche une note en trois
+  paliers, tous félicitants — ⭐⭐⭐ « sans une seule reprise » à ⭐ « grille
+  bouclée » — calée sur les mots repris en cours de partie, pas sur le temps.
+- Toutes ces animations sont sautées quand l'utilisateur a coupé les
+  animations du système ; le retour haptique, lui, suit le réglage haptique
+  d'Android et ne demande aucune permission.
+
+## [20.3.0] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **Les grilles casaient des communes, des pays et des prénoms.** Wuertplaz en
+  portait 115 sur 1 954 formes, Kräizwuert 54 sur 1 527, jusqu'à demander
+  « CAFÉ » sous la définition « Eschweiler-Halte ». Les deux générateurs
+  affirmaient que les noms propres n'avaient pas besoin d'être détectés, au
+  motif que le dictionnaire officiel ne traduit ni « Bettel », ni « RTL », ni
+  « Esch » : c'est vrai de ceux-là et faux en général, puisqu'il consacre un
+  article à l'essentiel des communes du pays et des pays d'Europe. Ils sont
+  maintenant reconnus au fait que toutes leurs traductions commencent par une
+  majuscule, le français réservant la minuscule aux noms communs. Il n'en reste
+  aucun dans les deux jeux, et un contrôle automatique refuse leur retour.
+- **Une traduction ne traîne plus de nom propre derrière elle.** Le
+  dictionnaire signale parfois, après le sens courant, l'emploi du mot dans un
+  nom propre : « Stad : ville, Luxembourg-ville », « Fra : femme, Gëlle Fra »,
+  « Papp : père, Dieu le Père ». 68 mots étaient dans ce cas et montraient au
+  joueur une moitié de ligne inutilisable. Seul le sens commun reste.
+- **Wuertsich, Wuertmix et Wuertriet tiraient eux aussi des noms propres.** Le
+  même défaut, par un autre chemin : le filtre de ces trois jeux ne rejetait
+  qu'un mot traduit par lui-même, donc il attrapait « Käerjeng » mais laissait
+  passer « Beetebuerg », dont la traduction « Bettembourg » s'écrit autrement.
+  757 formes sur 19 350, et Wuertriet pouvait demander « Athen » ou « Basel »
+  comme mot de cinq lettres à deviner. Le mot du jour et « Mots à découvrir »
+  passent par le même point et en profitent.
+- **« Viol » est apparu dans une grille.** Le filtre de neutralité existait
+  mais n'avait relevé que la moitié germanique du registre écarté :
+  « Vergewaltegung » en était, « Viol » non, et de même « Ofdreiwung » sans
+  « Avortement », « Selbstmord » sans « Suicide », « Kokain » sans
+  « Cannabis » ni « Haschisch ». Un mot filtré dont le synonyme emprunté ne
+  l'est pas ne filtre rien. Les deux moitiés y sont désormais.
+
+### 🔄 Modifié
+
+- **Un mot gagné ne se retire plus, dans Wuertplaz.** Ses croisements l'ont
+  prouvé, le jeu a versé sa traduction et l'a inscrite dans les sens acquis :
+  le rendre à la liste rouvrirait un emplacement dont la réponse est déjà
+  connue. Il passe au vert dans la liste des mots, et le toucher dans la grille
+  répond qu'il reste en place au lieu de ne rien faire. Un mot seulement posé,
+  lui, se reprend toujours, et un mot gagné le reste même si son voisin s'en
+  va.
+- **Wuertplaz ne répète plus « un substantif : hors de la grille, il garde sa
+  majuscule ».** La phrase revenait à chaque mot gagné pour dire ce que la
+  liste des mots à caser montrait déjà. Elle demeure dans Kräizwuert, où le
+  joueur écrit lui-même le mot sans jamais en voir la forme.
+
+## [20.2.2] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **Six traductions sur dix n'étaient jamais montrées dans Wuertplaz.** Le
+  bandeau d'annonce ne portait qu'un mot à la fois, alors que plusieurs se
+  verrouillent souvent ensemble : les autres se réduisaient à un « (+2) » entre
+  parenthèses, et leur sens n'apparaissait nulle part. Le message « Grille
+  terminée » recouvrait en outre le dernier lot, c'est-à-dire justement celui
+  qui en compte le plus. Mesuré sur les 284 grilles livrées, vingt ordres de
+  pose chacune, soit 52 420 mots posés : 58,8 % ne montraient jamais leur
+  traduction. C'était grave pour ce jeu en particulier, dont le sens gagné est
+  la seule chose qui s'apprend.
+
+### ✨ Ajouté
+
+- **Une liste « Ce que vous avez gagné », sous les mots à caser.** Chaque mot
+  verrouillé y inscrit sa forme véritable et son sens, dans l'ordre où il a été
+  trouvé. La récompense cesse d'être fugace : rien ne peut être manqué, la
+  grille se double d'un petit lexique à mesure qu'on la remplit, et la liste
+  enseigne au passage la majuscule des substantifs en montrant côte à côte
+  « Houwald » et « gestach ». Elle grandit vers le bas, sous les pastilles,
+  donc elle ne déplace ni la grille ni les mots que l'on s'apprête à toucher.
+
+## [20.2.1] - 2026-09-07
+
+### 🐛 Corrigé
+
+- **La septième carte de jeu était inatteignable.** L'écran de choix des jeux
+  n'avait jamais eu besoin de défiler : six cartes tenaient exactement dans un
+  écran de téléphone. La septième, Wuertplaz, tombait sous le bord, et rien ne
+  le signalait puisque la carte existait bel et bien. L'écran défile
+  désormais.
+- **La ligne de récompense de Wuertplaz ne décale plus la grille.** Elle ne
+  réservait qu'une ligne alors que son message en occupe presque toujours deux,
+  portant le mot, son sens et parfois le rappel de la majuscule des
+  substantifs. La grille descendait donc d'un cran au moment précis où le
+  joueur visait la case suivante, et l'appui tombait à côté. La hauteur du plus
+  long message est maintenant réservée d'avance.
+
+## [20.2.0] - 2026-09-07
+
+### ✨ Ajouté
+
+- **Wuertplaz, un chassé-croisé luxembourgeois.** Septième jeu de l'onglet
+  Spiller, et le premier **jouable sans connaître un mot de luxembourgeois** :
+  les six autres supposent une compréhension préalable, ne serait-ce que pour
+  lire une définition. Ici la grille est vide, tous les mots vous sont donnés,
+  et il s'agit de trouver leur place. La déduction porte sur les longueurs et
+  sur les croisements, pas sur le sens. On touche un mot de la liste, puis une
+  case : les emplacements où il peut aller s'éclairent. Un mot qui contredirait
+  une lettre déjà écrite ne se pose pas, comme au crayon on n'écrit pas deux
+  lettres dans la même case.
+- **La traduction française devient la récompense.** Elle n'apparaît qu'au
+  moment où un mot se verrouille, c'est-à-dire quand tous ses croisements sont
+  posés. La montrer au dépôt ferait résoudre la grille par sondage (poser,
+  regarder si la glose s'allume, retirer), alors qu'ainsi elle se mérite. C'est
+  l'inverse de Kräizwuert, où le sens est la question : ici on rencontre le mot
+  d'abord et on apprend ce qu'il veut dire ensuite, ce qui est le sens dans
+  lequel on aborde une langue qu'on ne connaît pas encore. Chaque mot gagné
+  rappelle aussi son orthographe véritable, la grille en capitales effaçant la
+  majuscule des substantifs.
+- **300 grilles livrées, cent par difficulté**, construites et vérifiées hors de
+  l'appareil par `Dictionnaires/generate_chassecroise.py`, qui réutilise le
+  moteur de placement de Kräizwuert. Chacune est garantie **à solution unique**.
+  Une grille où deux mots peuvent s'échanger sans contredire un croisement
+  s'affiche normalement et refuse pourtant une réponse juste, ce que le joueur
+  lit comme sa propre erreur. Le générateur les écarte, et
+  `ChasseCroiseAssetTest` rejoue la vérification sur l'actif livré.
+- **La difficulté porte sur la géométrie, pas sur la rareté du vocabulaire.**
+  Les mots étant affichés, leur fréquence ne fait plus la difficulté : ce qui la
+  fait est la taille de la grille et le nombre de mots partageant une même
+  longueur, puisqu'une longueur unique désigne son emplacement toute seule. Un
+  seul plancher de fréquence suffit donc, ce qui porte le vivier à 6 001 mots
+  aux trois niveaux, là où le niveau Facile de Kräizwuert plafonne à 227.
+
+## [20.1.1] - 2026-09-06
+
+### 🐛 Corrigé
+
+- **La barre de défilement ne barre plus les mots proposés.** Quand la barre de
+  suggestions contenait plus de mots qu'elle n'en pouvait montrer, faire
+  défiler la rangée faisait apparaître un trait en travers des puces, et
+  précisément pendant qu'on les lisait pour choisir. Android dessine la barre
+  de défilement à l'intérieur de la vue et par-dessus son contenu ; sur une
+  rangée haute d'une seule puce, elle tombe sur les mots, et un trait clair sur
+  une puce rouge se lit comme un mot barré. Elle est retirée : l'indication
+  qu'il reste des mots à droite était déjà portée par la puce coupée au bord.
+  La ligne des lettres déjà jouées de Wuertriet avait le même défaut, pour la
+  même raison, et est corrigée avec elle.
+
+## [20.1.0] - 2026-09-06
+
+### 🎨 Modifié
+
+- **Le pavé de Kräizwuert reprend la disposition du clavier.** Il était
+  alphabétique, et c'était une erreur : cette application existe pour qu'on
+  écrive le luxembourgeois sur son clavier à elle, en QWERTZ. Chercher les
+  lettres dans un ordre qu'on ne retrouvera nulle part ensuite n'apprend rien ;
+  aux mêmes places que sur le clavier, le jeu travaille les positions de doigts
+  dont on se sert en écrivant un message, et il en devient l'entraînement. Les
+  trois rangées de lettres sont identiques à celles du clavier, `é` compris, et
+  l'effacement ferme la troisième rangée là où le pouce le cherche. Une seule
+  infidélité, volontaire : `ö` et `ü` n'existent sur le clavier que derrière un
+  appui long, et `ä`/`ë` vivent autour de la barre d'espace : les reproduire
+  ainsi cacherait deux des cinq voyelles infléchies dont le jeu a besoin. La
+  rangée de la barre d'espace est donc remplacée par `Ä Ë Ö Ü`, en touches
+  larges.
+- **La grille cède quelques pixels au pavé plutôt que l'inverse.** Une grille
+  haute poussait le pavé hors de l'écran en commençant par sa rangée
+  d'accents, c'est-à-dire par les cinq touches pour lesquelles ce pavé existe.
+  La taille des cases est maintenant bornée par la hauteur disponible autant
+  que par la largeur : grille, pavé et boutons tiennent ensemble à l'écran,
+  jusqu'à la grille de onze colonnes du niveau Difficile.
+
+## [20.0.0] - 2026-09-06
+
+> Le saut de 12.1 à 20.0 est un repère, pas une rupture : il remet le numéro
+> au-dessus de celui du Klavyé Kréyòl Karukéra, avec qui ce dépôt partage sa
+> base de code, pour que les deux lignes restent distinguables d'un coup d'œil.
+
+### ✨ Ajouté
+
+- **Kräizwuert, des mots croisés français → luxembourgeois.** Sixième jeu de
+  l'onglet Spiller, et le seul où l'on **écrit** le luxembourgeois au lieu de le
+  reconnaître : les cinq autres montrent le mot, ici la case est vide. Chaque
+  définition est le sens français tiré du LOD, et à vous d'écrire le mot dans la
+  grille, accents compris — Ä, Ë, É, Ö et Ü sont sur le pavé du jeu, qui ne
+  dépend donc pas du clavier actif de l'appareil. Une faute ne se signale
+  qu'une fois le mot entièrement écrit, pour ne pas dicter la réponse lettre
+  par lettre ; chaque mot trouvé rappelle son orthographe véritable, puisque la
+  grille en capitales efface justement la majuscule des substantifs. 300 grilles
+  livrées, cent par difficulté, construites et vérifiées hors de l'appareil par
+  `Dictionnaires/generate_crossword.py`. La difficulté porte sur la rareté du
+  vocabulaire, pas sur la taille de la grille.
+
+## [12.0.0] - 2026-09-06
+
+### 🎨 Modifié
+
+- **La barre de suggestions est creusée dans le clavier.** Elle avait le même
+  fond que le reste et flottait au-dessus des touches sans jamais s'y rattacher.
+  Elle forme maintenant un léger renfoncement : fond un peu plus sombre que les
+  touches, ombre le long du bord haut, filet clair le long du bord bas, et le
+  fond du clavier qui réapparaît de chaque côté. Les touches y gagnent leur
+  relief, et la barre se lit comme une partie du clavier. Rien ne bouge de
+  place : le creux tient dans l'espace qui séparait déjà les puces du bord, il
+  ne coûte pas un pixel de hauteur aux rangées de touches. Le rouge du
+  luxembourgeois et le bleu du français ressortent mieux sur ce fond.
+
+## [11.7.0] - 2026-09-06
+
+### ✨ Ajouté
+
+- **Le curseur se promène en glissant le doigt sur la barre d'espace.** Poser
+  un curseur entre deux lettres est le geste le plus raté de la saisie mobile :
+  la cible fait deux millimètres et le doigt en couvre dix. Le doigt part de la
+  barre d'espace et le curseur suit, une lettre à la fois, avec une courte
+  vibration à chaque caractère franchi. Le geste ne s'arrête pas au bord de la
+  touche : il court sur toute la largeur de l'écran, de quoi traverser une
+  phrase sans lever le doigt. Les deux gestes que la barre d'espace portait
+  déjà sont intacts : l'appui long ouvre toujours le sélecteur de claviers, et
+  placer le curseur au milieu d'un mot ne laisse pas d'espace derrière soi.
+- **Le panneau emoji s'ouvre sur ceux que vous venez d'employer.** Il en
+  propose près de 1 900 en neuf catégories quand chacun en emploie une
+  poignée : le même envoi recommençait par la même descente dans la grille. Un
+  onglet « Récents » ouvre désormais la liste, et le panneau s'ouvre dessus. Il
+  retient les trente derniers, soit exactement la page visible. Une couleur de
+  peau choisie en appui long y rejoint la liste telle qu'elle a été employée.
+- **« Vider les emojis récents »**, dans les réglages du clavier, sous les
+  interrupteurs de vibration et de son.
+
+### 🐛 Corrigé
+
+- **La touche « 123 » ne fige plus le clavier.** Chaque passage entre les
+  lettres, les chiffres et les emojis reconstruisait tout l'arbre de touches,
+  trente-quatre boutons neufs d'un seul bloc sur le fil principal. Mesuré sur un
+  Galaxy A21s, cela bloquait l'écran quatre à cinq images à chaque appui, soit
+  le petit délai que l'on sentait. Désormais les pavés alphabétique et numérique
+  sont montés une seule fois et la bascule ne fait que changer lequel est
+  visible : la même mesure tombe à une ou deux images.
+- **Fuite mémoire sur les changements de mode.** La liste interne des touches
+  n'était jamais vidée tant que le clavier vivait : elle grossissait d'une
+  trentaine d'entrées à chaque bascule, pour toute la durée du processus. Elle
+  est maintenant remise à zéro à chaque reconstruction.
+
+### 🔧 Modifié
+
+- Les suggestions ne clignotent plus pendant un déplacement de curseur : elles
+  ne sont recalculées qu'une fois le doigt arrêté, sur la position d'arrivée.
+- Le rendu logiciel forcé sur chaque touche, ajouté pour un défaut d'affichage
+  propre aux ROM Honor et Huawei, n'est plus appliqué ailleurs, où il ne
+  servait qu'à ralentir chaque redessin. L'ombre portée des libellés ne change
+  pas.
+
+### 🔒 Confidentialité
+
+- La liste des emojis récents ne retient que des identifiants pris dans un
+  ensemble fermé et public, jamais du texte libre. Elle est bornée à trente
+  entrées, sans horodatage ni compteur. Elle obéit à la même exclusion que les
+  statistiques de vocabulaire : rien n'y est ajouté depuis un champ de mot de
+  passe. Elle ne quitte pas l'appareil, et l'onglet « Récents » n'apparaît pas
+  tant que rien n'a été employé.
+
+## [11.6.0] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Le clavier occupe près de 6 Mo de mémoire en moins.** Il gardait la liste
+  complète des 150 000 formes qu'il sait reconnaître, uniquement pour décider
+  s'il doit souligner un mot. Une structure compacte suffit à répondre à cette
+  question. Rien ne change à l'écran, mais le clavier se fait moins souvent
+  mettre de côté par le téléphone — et il revient plus vite quand il l'a été.
+
+## [11.5.2] - 2026-09-04
+
+### 🐛 Corrigé
+
+- **L'application repasse de 38 à 8 Mo.** Les versions 11.5.0 et 11.5.1
+  embarquaient par erreur un modèle de reconnaissance vocale de 32 Mo, qui ne
+  sert à aucune fonction du clavier. Rien d'autre ne change.
+
+## [11.5.1] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Plus d'attente quand vous écrivez un mot que le clavier ne connaît pas.**
+  Un mot allemand, un nom propre, un mot composé : le clavier cherchait alors
+  une correction en parcourant tout son dictionnaire, et il y passait près
+  d'une seconde sur un téléphone d'entrée de gamme. C'est désormais cinq fois
+  plus rapide, et les propositions sont les mêmes.
+
+## [11.5.0] - 2026-09-04
+
+### 🎨 Amélioré
+
+- **Le clavier propose plus souvent le mot suivant, et se tait moins.** Les mots
+  d'une seule lettre — `d'` de « d'Leit », `a`, `e` — étaient absents du
+  dictionnaire : le programme qui le fabrique les jetait. Or `d'` est le mot le
+  plus fréquent de la langue. Il est maintenant connu, comme les autres : après
+  lui, le clavier sait de nouveau quoi proposer.
+- Les prédictions passent de 17,1 % à **20,8 %** de bonnes réponses en trois
+  propositions, mesurées sur des phrases que le dictionnaire n'a jamais vues.
+  Et la barre de suggestions reste vide **12 % du temps au lieu de 16 %**.
+
+## [11.4.1] - 2026-09-04
+
+### 🐛 Corrigé
+
+- **Écrire un mot français ne fait plus apparaître de mots luxembourgeois sans
+  rapport.** En tapant « déchet », le clavier proposait « Bechet », « Deche » et
+  « Dechen » avant le bon mot : il cherchait à corriger une faute là où il n'y en
+  avait pas. Ces propositions disparaissent, et le mot juste passe en tête.
+
+### 🎨 Amélioré
+
+- **La frappe redevient instantanée dans ce cas.** La recherche de correction
+  parcourait tout le dictionnaire luxembourgeois : mesuré sur un téléphone
+  d'entrée de gamme, la dernière lettre de « déchet » prenait 914 ms, contre
+  50 ms maintenant.
+
+## [11.4.0] - 2026-09-03
+
+### 🎨 Amélioré
+
+- **Le clavier consomme nettement moins de mémoire.** Le dictionnaire français
+  ajouté à la version précédente pesait lourd dans un clavier, qu'Android arrête
+  quand il grossit — il faut alors le recharger, et vous voyez un blanc avant
+  qu'il n'apparaisse. Il occupe maintenant environ 12 Mo de moins, sans que rien
+  ne change à l'écran : les mêmes mots vous sont proposés, et le correcteur
+  reconnaît toujours les 125 348 formes du français.
+
+## [11.3.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Le français du clavier devient un vrai dictionnaire.** La seconde rangée de
+  suggestions, en bleu sous les propositions luxembourgeoises, s'appuyait sur
+  662 mots ; elle en connaît maintenant 125 348, formes conjuguées et accordées
+  comprises. Tapez « cepe » et « cependant » vous est proposé.
+
+### 🐛 Corrigé
+
+- **Le correcteur ne souligne plus le français correct.** Le clavier remplace le
+  correcteur français du téléphone : avec 662 mots connus, il signalait comme
+  fautes presque tous les mots français écrits, dans toutes les applications.
+
+Source : Lexique 3.83, la base lexicale du français de Boris New et Christophe
+Pallier (lexique.org), sous licence CC BY-SA 4.0. Elle est créditée dans la
+carte « Sources » de l'application.
+
+## [11.2.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Un bouton pour revenir au clavier luxembourgeois.** Quand un autre clavier
+  a pris la main, l'onglet Démarrage l'annonce en tête d'écran et propose de
+  rechoisir le luxembourgeois en un appui. Le clavier n'est ni désinstallé ni
+  désactivé dans ce cas, et le message le dit : il n'y a qu'à le rechoisir.
+  Le second chemin est rappelé juste en dessous — la petite icône de clavier
+  en bas de l'écran, pendant que vous écrivez, ouvre le même choix sans quitter
+  l'application où vous êtes.
+
+### 🎨 Amélioré
+
+- La carte « Configuration rapide » n'annonce plus une mise à jour du téléphone
+  quand le clavier a simplement changé : elle dit ce qui est, sans en supposer
+  la cause.
+
+## [11.1.2] - 2026-09-03
+
+### 🐛 Corrigé
+
+- **« Voir sur le dictionnaire officiel » ouvre enfin le mot.** Depuis la fiche
+  du Wierderbuch, le bouton menait à une page de lod.lu qui proposait d'ajouter
+  le mot au dictionnaire, comme s'il n'y figurait pas — y compris pour des mots
+  aussi courants que « Haus ». Le lien passe désormais directement par la fiche
+  du mot sur lod.lu, qui s'affiche tout de suite.
+
+## [11.1.1] - 2026-09-03
+
+### 🐛 Corrigé
+
+- **La fiche d'un mot s'ouvre entière.** Sur un petit écran, ou avec une police
+  système agrandie, elle pouvait s'ouvrir en cachant ses deux boutons sans que
+  rien n'indique qu'il fallait la tirer vers le haut.
+- **Toutes les formes d'un mot sont montrées.** « sinn » en affichait dix suivies
+  de « … », et les douze autres n'étaient atteignables nulle part.
+- **Les deux phrases d'exemple se distinguent l'une de l'autre** : elles se
+  lisaient comme un seul paragraphe.
+- **« léieren » (apprendre) et « nennen » (nommer) sont revenus.** Deux mots très
+  courants avaient disparu des suggestions, des jeux et du mot du jour : ils
+  s'écrivent, à l'accent ou au pluriel près, comme deux mots que l'application
+  met de côté.
+
+## [11.1.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Chaque mot du dictionnaire montre comment il s'emploie.** Sa fiche porte
+  maintenant une ou deux phrases d'exemple, le mot en gras : « Haus » n'est plus
+  seulement « maison », c'est aussi « mir hunn nach vill Aarbecht ronderëm eist
+  neit Haus ». Les phrases viennent du dictionnaire officiel (LOD), qui les
+  écrit pour cela ; 26 148 mots en ont une.
+
+### 🔧 Modifié
+
+- **Le clavier ne propose plus de grossièretés.** Ni en complétion, ni en
+  correction, ni en suggestion du mot suivant, et le dictionnaire ne les remonte
+  plus quand on cherche par le sens français. Elles restent saisissables et
+  trouvables : le correcteur ne les souligne pas, et les taper les trouve.
+
+## [11.0.0] - 2026-09-03
+
+### 🔧 Modifié
+
+- **Le dictionnaire ne répète plus les formes d'un même mot.** Chercher
+  « manger » donnait quarante lignes pour neuf mots : « iessen », « iesse »,
+  « giess », « ësst » se suivaient, tous traduits pareil. Chaque mot n'a plus
+  qu'une entrée, et sa fiche montre ses autres formes — « Forschett » avec son
+  pluriel « Forschetten », le verbe « sinn » avec toute sa conjugaison.
+- **Les mots courts trouvent enfin quelque chose.** « eau » renvoyait
+  « beaucoup », « nouveau », « de nouveau » — le mot cherché n'était qu'un
+  morceau d'un autre. Il donne maintenant « Waasser », « Drëpp » (eau-de-vie),
+  « Quell » (source d'eau). Même chose pour « chat », qui parlait d'achats et
+  de châtaignes, et qui commence désormais par « Kaz ».
+
+## [10.27.0] - 2026-09-03
+
+### ✨ Ajouté
+
+- **Chaque mot du Wierderbuch a maintenant sa fiche.** La liste de résultats ne
+  réagissait à rien : ni clic, ni retour visuel. Un tap ouvre désormais le mot en
+  grand, ses acceptions une par une au lieu d'être serrées sur une ligne, et deux
+  actions — copier le mot, ou l'ouvrir sur le dictionnaire officiel du Zenter fir
+  d'Lëtzebuerger Sprooch, qui en donne la prononciation et des exemples.
+- **L'appui long copie le mot directement**, sans passer par la fiche : coller un
+  mot ailleurs reste un seul geste.
+
+### 🔧 Modifié
+
+- **Le dictionnaire et les jeux s'ouvrent sans attendre l'installation du
+  clavier.** Tant que le clavier n'avait jamais été entièrement configuré,
+  l'application se réduisait à son écran de configuration. Or ces deux onglets ne
+  demandent rien d'installé. Les onglets reviennent dès que le clavier a été
+  activé une fois, et ne repartent plus — même si une mise à jour du téléphone
+  le désélectionne plus tard, ou si l'on essaie un autre clavier entre-temps.
+- **La liste de résultats a été allégée.** Chaque ligne portait un bouton
+  « lod.lu » ; quarante fois la même étiquette se lisait comme du bruit et
+  rognait la place des traductions à plusieurs sens. Les lignes ne portent plus
+  que le mot et sa traduction, et les traductions longues tiennent enfin
+  entières.
+
+## [10.26.0] - 2026-09-02
+
+### ✨ Ajouté
+
+- **Le clavier connaît 123 265 formes au lieu de 38 410.** Des locuteurs
+  luxembourgeois ont signalé des mots manquants : ils avaient raison, et la
+  cause était structurelle. Le corpus est fait d'articles de RTL.lu, qui
+  n'écrivent jamais ce qu'on tape sur un téléphone — « Läffelen »,
+  « Forschetten », « Telleren », « Mounden », « sprang », « denks »,
+  « schaffesch » n'y figuraient pas. Le Lëtzebuerger Online Dictionnaire, lui,
+  les atteste : ses 84 855 formes absentes du corpus complètent désormais la
+  saisie.
+- **Le correcteur reconnaît en plus 26 424 variantes de la règle d'Eifel**
+  (« Ae » pour « Aen » devant consonne). Elles sont correctes en contexte : les
+  souligner en rouge était un défaut. Elles ne sont jamais proposées pour
+  autant.
+- **L'onglet Wierderbuch cherche dans 88 852 mots au lieu de 20 604.** Les
+  formes apportées par le LOD sont glosées comme les autres.
+
+### 🔧 Modifié
+
+- **Les jeux et la progression ne bougent pas.** Les formes du LOD vivent dans
+  un actif séparé du dictionnaire de fréquences : les trois jeux gardent
+  exactement les mêmes réserves, et les huit paliers de « Mäi Lëtzebuergesch »
+  restent calculés sur le vocabulaire du corpus — personne ne recule d'un rang.
+- **Le correcteur orthographique répond en temps constant.** Il parcourait la
+  liste entière des formes pour chaque mot examiné ; la correction
+  orthographique, elle, allouait deux copies du dictionnaire par recours.
+
+## [10.25.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **Wuertlück ne sert plus de phrases de faits divers.** Ses phrases viennent de
+  dépêches, et une sur dix racontait un accident, un cambriolage ou un verdict —
+  le mot à trouver, lui, était souvent anodin. Soixante-treize formes désignent
+  désormais ce registre : police et secours, justice, vols, accidents et
+  victimes. Le jeu conserve 1 373 phrases sur 1 600, réparties 316 / 583 / 474
+  sur les trois niveaux.
+- **Ces mots-là restent proposés comme vocabulaire.** « Police », « Accident »,
+  « Geriicht », « Prisong », « Affer » sont des mots utiles, et les jeux
+  continuent de les tirer : c'est la phrase qui est écartée, jamais le mot. La
+  liste des mots jamais proposés, elle, ne bouge pas.
+
+## [10.24.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **La neutralité s'étend aux partis et au registre qui choque.** Aux
+  quatre-vingt-quinze formes religieuses de la 10.23.0 s'ajoutent les sigles et
+  les étiquettes idéologiques (CSV, LSAP, DP, ADR, Piraten, racisme, fascisme,
+  extrémisme, populisme, antisémitisme) et un registre que l'application n'a pas
+  à proposer dans un jeu : avortement, viol, prostitution, pédophilie, drogues
+  dures, meurtre, suicide, terrorisme. Cent quatre-vingt-deux formes en tout,
+  soit 0,29 % des occurrences du corpus.
+- **Le critère est la posture, pas le thème.** Est écarté ce qui prend parti ou
+  ce qui choque, pas ce qui parle du monde : « Regierung », « Minister »,
+  « Chamber », « Wahlen », « Partei », « Police », « Geriicht », « Prisong »,
+  « Krich », « Waff », « Doud », « Spidol », « Kriibs » restent proposés. Ce
+  sont des mots dont un apprenant a besoin, et les retirer aurait vidé les jeux
+  sans rien régler.
+- **Les phrases de Wuertlück profitent de la même liste.** Une phrase de dépêche
+  parle souvent d'autre chose que du mot à trouver, et une sur trois nommait un
+  député par son parti. Le jeu conserve 1 529 phrases sur 1 600, réparties
+  372 / 647 / 510 sur les trois niveaux.
+- **Rien de tout cela ne touche la saisie**, comme en 10.23.0 : ces mots restent
+  dans le dictionnaire, dans les suggestions, dans le correcteur et dans la
+  recherche du Wierderbuch.
+
+## [10.23.0] - 2026-09-02
+
+### 🔧 Modifié
+
+- **L'application ne propose plus de vocabulaire religieux d'elle-même.** Le
+  corpus est fait de dépêches : « Ramadan », « Poopst » ou « Moschee » y
+  figurent comme n'importe quel mot de l'actualité, et le tirage aléatoire les
+  remontait tels quels — dans les mots à découvrir, le mot du jour et les jeux.
+  Quatre-vingt-quinze formes sont désormais tenues à l'écart de tout ce que
+  l'application choisit de montrer sans qu'on le lui demande, phrases de
+  Wuertlück comprises.
+- **Ces mots restent entièrement disponibles à la saisie.** Ils sont toujours
+  dans le dictionnaire, dans les suggestions, dans le correcteur et dans la
+  recherche du Wierderbuch : qui veut écrire « Kierch » l'écrit, qui en cherche
+  le sens le trouve. Un clavier qui refuse des mots n'est pas neutre, il est
+  cassé.
+- **Les fêtes du calendrier civil sont conservées.** « Chrëschtdag »,
+  « Ouschteren », « Kleeschen » et « Oktav » sont des jours fériés et des
+  repères de l'année luxembourgeoise avant d'être des fêtes religieuses. Sont
+  conservés de même les mots dont le sens courant n'est pas le sens religieux :
+  « Här » (monsieur), « Mass » (masse), « Kräiz » (croix), « Wonner »
+  (merveille), « Sënn » (sens).
+
+### 🐛 Corrigé
+
+- **Les mots à découvrir sont enfin des mots à découvrir.** Ils étaient tirés
+  dans le dictionnaire entier sans le moindre filtre : d'où les noms de
+  localités sans traduction (« Ierpeldeng-Sauer », « Lux-Hennecke »). Ils sont
+  maintenant tirés parmi les mots dont la traduction apprend quelque chose, ce
+  qui écarte du même coup l'essentiel des noms propres. Le seuil « peu employé »
+  ne filtrait rien non plus, pour la même raison que le compteur du mot du jour.
+
+## [10.22.1] - 2026-09-02
+
+### 🐛 Corrigé
+
+- **Le mot du jour s'affiche à nouveau avec sa traduction française.** Il est
+  tiré parmi les mots déjà connus de l'appareil, pas dans le dictionnaire
+  livré : quand ce fichier vient d'une installation plus ancienne — Android le
+  restaure d'une sauvegarde après une réinstallation — les vingt tirages
+  successifs pouvaient tous tomber sur un mot que la table du LOD ne glose pas,
+  et le dernier était affiché tel quel. La ligne de traduction disparaissait
+  alors sans rien dire : une carte d'apparence normale, simplement sans
+  traduction. Le tirage parcourt désormais la liste jusqu'à un mot glosé au
+  lieu d'abandonner.
+- **Un mot du jour glosé par lui-même ne sort plus.** Le luxembourgeois
+  emprunte assez au français pour que 1 278 formes se traduisent par
+  elles-mêmes — « Accident » → accident, « Budget » → budget. La traduction
+  était exacte et n'apprenait rien ; c'était le cas 17 jours par an.
+- **Le compteur d'usage du mot du jour lisait le mauvais format.** Un mot
+  employé cent fois s'annonçait quand même « nouveau mot à découvrir ».
+
+### 🔧 Modifié
+
+- **La traduction du mot du jour est annoncée**, « en français : profil », au
+  lieu d'être posée en gris entre le mot et sa ligne d'usage, où elle se lisait
+  comme un sous-titre de plus.
+
+## [10.22.0] - 2026-09-02
+
+### ✨ Ajouté
+
+- **« Zuelwuert », un cinquième jeu : écrire les nombres.** Le jeu pose une
+  multiplication simple — 7 × 8 = 56 — et propose quatre orthographes de son
+  résultat, dont une seule est du luxembourgeois correct. L'exercice est un
+  transcodage : passer du chiffre à la lettre. `Zuelwuert` est le mot du LOD
+  pour « numéral », littéralement le mot-nombre.
+- **Les leurres sont les fautes qu'on fait vraiment.** Le jeu dit laquelle
+  après coup, plutôt que d'afficher un carré rouge : l'allemand
+  (« sechsundfünfzig »), les chiffres lus à l'envers (« sechsandrësseg », qui
+  vaut 36), le trait d'union et l'espace (« sechsa-fofzeg », « sechs a
+  fofzeg »), la finale -ig de l'allemand là où le luxembourgeois écrit -eg, un
+  accent manquant, et surtout la **règle d'Eifel** : le n de la liaison tombe
+  devant f, s, v… et se maintient devant d, t, z, n, h et les voyelles, d'où
+  « sechsafofzeg » pour 56 mais « sechsandrësseg » pour 36. Une bonne réponse
+  affiche la décomposition, « 56 = sechs + a + fofzeg ».
+- **Trois niveaux.** En Facile les leurres sont grossiers et les petits nombres
+  sont tirés ; en Normal seuls les nombres composés sortent ; en Difficile les
+  leurres deviennent des paires minimales et **le produit n'est plus affiché**,
+  il faut le calculer avant de l'écrire.
+- **Les 101 orthographes ont été vérifiées une à une contre le LOD.**
+  Lëtzebuerger Online Dictionnaire, ZLS, CC0 — dans les deux sens : aucune
+  forme produite par le jeu n'est absente des graphies que le LOD suggère, et
+  aucune graphie composée que le LOD suggère n'échappe à la liste des variantes
+  acceptées — celle qui interdit de proposer « siechzeg » en face de
+  « sechzeg », ce qui donnerait deux bonnes réponses. `ZuelenSpellerTest` fige
+  ce résultat en neuf tests.
+
+### 🔄 Modifié
+
+- L'onglet « Spiller » présente désormais cinq cartes. Le cinquième jeu occupe
+  toute la largeur de sa ligne, ce qui le rend le plus visible — c'est le
+  nouveau.
+- Le Zuelwuert ne dépend d'aucun actif et ne lit pas le dictionnaire : ses mots
+  se calculent. Il n'ajoute donc rien au poids de l'application, ni au temps de
+  chargement de l'onglet.
+
+## [10.21.1] - 2026-09-01
+
+### 🔄 Modifié
+
+- **Barre d'onglets ramenée de neuf à quatre.** À neuf, chaque onglet disposait
+  de 80 px sur un écran de 720 : les libellés se coupaient en plein milieu d'un
+  mot (« Wuertsic / h »), et il avait fallu descendre la police à 8sp pour
+  limiter les dégâts. Les quatre destinations restantes — Démarrage, Mäi
+  Lëtzebuergesch, Spiller, Wierderbuch — disposent de 180 px, et la police
+  remonte à 11sp.
+- **Les quatre jeux passent derrière un onglet « Spiller ».** Ils occupaient
+  quatre onglets sur neuf, soit 44 % de la barre, pour une activité que l'on
+  choisit une fois par session. L'onglet présente quatre cartes ; le jeu choisi
+  s'installe dans le même onglet, avec une barre « ‹ Tous les jeux » pour
+  revenir. Le bouton Retour d'Android ramène lui aussi au choix, via un
+  `OnBackPressedCallback` actif seulement pendant qu'un jeu est ouvert — partout
+  ailleurs il quitte l'application comme avant.
+- **Guide et À Propos quittent la barre** pour le pied de l'onglet Démarrage,
+  d'où ils s'ouvrent en plein écran. Ce sont des pages de référence que l'on lit
+  une fois ; elles coûtaient deux neuvièmes de la largeur à chaque ouverture de
+  l'application. Les deux astuces qui les désignaient comme des onglets ont été
+  réécrites.
+
+### 🐛 Corrigé
+
+- **Couleurs translucides fausses.** Concaténer l'opacité à une couleur —
+  `"$couleur20"` — ne produit pas une transparence : `Color.parseColor` lit huit
+  chiffres comme `#AARRGGBB`, si bien que `"#4CAF50" + "20"` devenait un alpha
+  de 0x4C sur le brun `#AF5020`. Les pastilles de mots de l'onglet Mäi
+  Lëtzebuergesch s'affichaient donc en brun sur fond vert annoncé. Remplacé par
+  `avecOpacite()`, qui compose la valeur.
+- **Raccourci « Découvrez vos statistiques ».** Il posait `currentItem = 1`,
+  c'est-à-dire le bord gauche de la plage virtuelle du pager cyclique : le bon
+  contenu s'affichait, mais on atterrissait là où plus rien ne se balaye vers la
+  gauche. Il vise désormais la position la plus proche du bon onglet.
+
+## [10.21.0] - 2026-09-01
+
+### ✨ Ajouté
+
+- **Traduction française des mots dans les quatre jeux.** Un utilisateur a
+  signalé que les jeux faisaient chercher des mots luxembourgeois sans jamais
+  dire ce qu'ils voulaient dire : on y exerçait son orthographe, jamais son
+  vocabulaire. Chaque jeu affiche désormais la glose française, au moment où
+  elle ne donne pas la réponse — la liste des mots à trouver de Wuertsich, en
+  indice sous les lettres mélangées de Wuertmix, à la fin de la partie de
+  Wuertriet, et après avoir tranché la question de Wuertlück.
+- **Nouvel actif `luxemburgish_translations.json`** (609 Ko), produit par
+  `Dictionnaires/generate_translations.py` à partir du **Lëtzebuerger Online
+  Dictionnaire** (LOD), le dictionnaire officiel publié en CC0 par le Zenter
+  fir d'Lëtzebuerger Sprooch. 20 604 des 38 410 formes du dictionnaire y sont
+  glosées, soit 53,6 % des formes et 87,8 % des occurrences. Le clavier lui-même
+  ne le charge pas : seul l'écran des jeux en a l'usage.
+
+- **Onglet « Wierderbuch » (9ᵉ onglet).** Un champ de recherche et une liste :
+  on tape un mot et on lit sa traduction. La recherche **fonctionne dans les
+  deux sens** — « Haus » comme « maison » — et le sens de la requête est déduit
+  plutôt que demandé : si un mot du dictionnaire se glose exactement par ce qui
+  est tapé, c'est du français, et les mots dont c'est le sens passent devant.
+  Sans cette déduction, chercher « maison » remontait d'abord `Maison`, emprunt
+  luxembourgeois glosé « maison médicale de garde », et reléguait `Haus`.
+- **Traductions dans l'onglet « Mäi Lëtzebuergesch ».** Le mot du jour porte sa
+  glose sous le mot, et n'est plus tiré que parmi les mots traduisibles. Les
+  mots à découvrir, les mots découverts et le classement des mots les plus
+  utilisés portent la leur à côté du mot.
+
+### 🔄 Modifié
+
+- **Les trois jeux qui tirent un mot ne le tirent plus que parmi les formes dont
+  la traduction apprend quelque chose.** Sont écartés d'une part les mots que le
+  LOD n'a aucune raison de gloser — noms propres, « Esch », « Bettel », « RTL »,
+  « Jean-Claude » — d'autre part les 1 278 formes glosées par elles-mêmes, le
+  luxembourgeois empruntant massivement au français : demander de retrouver
+  « ACCIDENT » en indiquant « accident » fait passer le jeu pour cassé. Les
+  réserves restent larges : 8 740 mots pour Wuertsich, 12 825 pour Wuertmix,
+  1 330 pour Wuertriet. La table complète, elle, garde ces mots : croisés par un
+  autre chemin (une réponse de Wuertlück), ils affichent toujours leur glose. Une
+  proposition du joueur dans Wuertriet reste acceptée dès lors qu'elle est au
+  dictionnaire, traduite ou non.
+- **Crédit du LOD** ajouté à la carte « Sources » de l'onglet « À propos » et au
+  pied de l'onglet Wierderbuch. CC0 n'impose aucune attribution ; on cite le ZLS
+  quand même, et un test échoue si la mention disparaît.
+- **Libellés d'onglets à 8sp au lieu de 9.** Le neuvième onglet faisait passer
+  « Wuertsich », « Wuertmix » et « Wuertriet » sur deux lignes, coupés en plein
+  milieu d'un mot ; un point de moins les ramène sur une seule.
+
+### 🐛 Corrigé
+
+- **Fin de partie de Wuertriet en créole.** La boîte de dialogue annonçait
+  encore « Ou touvé mo-a an 3 èsèy » et « Mo la té », hérités du clavier
+  guadeloupéen. Elle est en français, et donne la traduction du mot cherché.
+
+## [10.20.1] - 2026-09-01
+
+### 🐛 Corrigé
+
+- **Alignement des rangées de clavier.** Les touches Shift et Retour arrière
+  pesaient 1,25 unité depuis la v10.11.4, où elles finançaient l'apostrophe
+  alors en rangée 3. Celle-ci vit désormais en rangée 4, mais la réduction
+  était restée, posant la rangée 3 à 9,5 unités au lieu de 10, soit 5,3 % plus
+  larges que les rangées 1 et 2. Rétabli à 1,5 pour aligner les trois rangées
+  de lettres.
+
+## [10.20.0] - 2026-09-01
+
+Un quatrième jeu rejoint les trois autres : **Wuertlück**, le jeu de phrases à
+trous. Une phrase luxembourgeoise authentique s'affiche, un mot lui manque, et
+quatre propositions sont offertes — une seule est celle qu'a écrite l'auteur.
+
+### 📝 Wuertlück, l'onglet des phrases à trous
+
+- **1 600 phrases réelles**, tirées des mêmes corpus que le dictionnaire :
+  articles de RTL.lu pour la langue publique, phrases d'exemple du Lëtzebuerger
+  Online Dictionnaire pour le registre quotidien, qui pèse un quart du total.
+  Aucune phrase n'a été écrite pour le jeu.
+- **Les leurres viennent du modèle de prédiction du clavier.** Les trois
+  mauvaises propositions sont des mots que le corpus atteste réellement à cet
+  endroit-là, après les mêmes mots. Ils sonnent donc juste tant qu'on n'a pas
+  lu la phrase entière — c'est ce qui distingue le jeu d'un tirage au sort.
+- **Trois difficultés**, réglées sur la fréquence du mot manquant : courant en
+  « Facile », rare en « Difficile ». Une manche fait dix questions.
+- **La bonne réponse s'affiche toujours**, en vert dans la phrase reconstituée,
+  qu'on l'ait trouvée ou non : voir la phrase complète compte autant que
+  marquer le point.
+
+### 🔤 Ce que le jeu ne fait pas
+
+- **Aucun nom propre en réponse.** Les patronymes des députés et les noms
+  d'organisations sont écartés à la génération : retrouver « Spautz » après
+  « Marc » ne s'apprend pas, cela se sait ou non.
+- **Aucune phrase à chiffres, ni incise, ni citation coupée.** Les dépêches de
+  résultats et de budgets ne se lisent pas hors de leur article ; 73 000
+  phrases ont été écartées pour cette seule raison.
+- **Pas de repli de secours.** Si les phrases ne se chargent pas, l'écran le
+  dit au lieu de proposer une partie de dépannage qui masquerait la panne.
+
+### 🐛 Corrigé
+
+- **Toucher un onglet éloigné n'ouvre plus le mauvais écran.** La barre
+  d'onglets demandait un défilement animé quelle que soit la distance ;
+  au-delà d'un onglet voisin, ViewPager2 s'arrêtait en chemin, et l'onglet
+  s'affichait en surbrillance alors que le contenu était celui d'un autre.
+  Depuis l'accueil, « Wuertmix » ouvrait « Wuertsich » et « Wuertlück »
+  ouvrait « À Propos ». Le saut est désormais direct dès qu'il dépasse un
+  onglet.
+
+### 📚 Attribution
+
+Le jeu affiche la source de chaque phrase et les crédits des deux corpus sous
+les règles. Les phrases sont des extraits sous licence Creative Commons
+(CC BY-NC 4.0 pour LuxAlign, CC BY 4.0 pour LETZ) : cette mention est une
+obligation de licence, détaillée dans `Dictionnaires/CORPUS.md`.
+
 ## [10.19.0] - 2026-08-30
 
 Le clavier rétablit la majuscule des substantifs pendant que vous écrivez.

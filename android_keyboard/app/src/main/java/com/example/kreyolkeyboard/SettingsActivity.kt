@@ -3,6 +3,12 @@ package com.example.kreyolkeyboard
 import android.Manifest
 import android.content.ClipData
 import android.content.Context
+import android.animation.ValueAnimator
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
+import android.view.Window
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import com.example.kreyolkeyboard.gamification.LuxLevels
@@ -18,9 +24,11 @@ import android.os.Looper
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -40,7 +48,6 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 import kotlin.random.Random
 import com.example.kreyolkeyboard.wordsearch.WordSearchGenerator
-import com.google.android.material.snackbar.Snackbar
 import com.example.kreyolkeyboard.wordsearch.WordSearchPuzzle
 import com.example.kreyolkeyboard.wordsearch.WordSearchWord
 import com.example.kreyolkeyboard.wordsearch.WordSearchDifficulty
@@ -50,6 +57,32 @@ import com.example.kreyolkeyboard.wuertriet.WuertrietData
 import com.example.kreyolkeyboard.wuertriet.WuertrietRow
 import com.example.kreyolkeyboard.wuertriet.LetterState
 import com.example.kreyolkeyboard.wuertriet.color
+import com.example.kreyolkeyboard.cloze.ClozeData
+import com.example.kreyolkeyboard.cloze.ClozeDifficulty
+import com.example.kreyolkeyboard.cloze.ClozeQuestion
+import com.example.kreyolkeyboard.crossword.CrosswordData
+import com.example.kreyolkeyboard.crossword.CrosswordDifficulty
+import com.example.kreyolkeyboard.crossword.CrosswordGrid
+import com.example.kreyolkeyboard.crossword.CrosswordSession
+import com.example.kreyolkeyboard.chassecroise.ChasseCroiseData
+import com.example.kreyolkeyboard.chassecroise.ChasseCroiseSession
+import com.example.kreyolkeyboard.carnet.Carnet
+import com.example.kreyolkeyboard.carnet.Booster
+import com.example.kreyolkeyboard.carnet.CarteAccueil
+import com.example.kreyolkeyboard.carnet.CarteCarnet
+import com.example.kreyolkeyboard.carnet.CarnetFragment
+import com.example.kreyolkeyboard.carnet.BoiteFragment
+import com.example.kreyolkeyboard.carnet.JeuCarte
+import com.example.kreyolkeyboard.carnet.Pochette
+import com.example.kreyolkeyboard.zuelen.ZuelenData
+import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
+import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import com.google.android.play.core.review.ReviewManagerFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -63,7 +96,18 @@ import android.widget.GridView
 import android.widget.ScrollView
 
 class SettingsActivity : AppCompatActivity() {
-    private var currentTab = 0 // 0 = démarrage, 1 = stats, 2 = mots mêlés, 3 = mots mélangés, 4 = worldle, 5 = guide, 6 = à propos
+    /**
+     * Le jeu ouvert dans l'onglet Spiller (rang dans `GamesFragment.jeux`), ou -1.
+     *
+     * Tenu par l'activité et non par le fragment : c'est elle qui sauvegarde
+     * son état à la rotation, et le fragment de l'onglet est recréé à neuf par
+     * le pager. Sans cela, tourner le téléphone ramenait au choix des jeux. La
+     * partie elle-même repart de zéro : chaque jeu calcule sa grille d'après
+     * l'écran à l'ouverture, et une grille de portrait ne tient pas en paysage.
+     */
+    internal var jeuOuvert = -1
+
+    private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
     private lateinit var bottomInstallBanner: LinearLayout
@@ -95,7 +139,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
-        const val TAB_STATS = 1
+        const val TAB_STATS = 3
 
         /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
         private const val REQUEST_NOTIFICATIONS = 4201
@@ -158,12 +202,16 @@ class SettingsActivity : AppCompatActivity() {
             "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
             "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
             "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
-            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, notamment les transcriptions des conférences de presse du gouvernement, détaillé dans l'onglet « À Propos ».",
+            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l'onglet Démarrage.",
             "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
             "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
-            "L'onglet « Guide » reprend toutes les étapes en images, suivies des questions fréquentes."
+            "Le guide, en bas de l'onglet Démarrage, reprend toutes les étapes en images, suivies des questions fréquentes.",
+            "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur.",
+            "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça.",
+            "Glissez le doigt le long de la barre d'espace pour promener le curseur lettre par lettre : plus besoin de viser entre deux caractères pour corriger un mot.",
+            "Le panneau emoji s'ouvre sur ceux que vous venez d'employer : les 30 derniers vous attendent dans le premier onglet."
         )
     }
     
@@ -181,6 +229,7 @@ class SettingsActivity : AppCompatActivity() {
             ?: intent?.getIntExtra(EXTRA_OPEN_TAB, 0)
             ?: 0
         currentTab = requestedTab
+        jeuOuvert = savedInstanceState?.getInt("jeuOuvert", -1) ?: -1
         
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
@@ -215,6 +264,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Calculer la position réelle (0, 1 ou 2) avec modulo
                     currentTab = position % SettingsPagerAdapter.REAL_COUNT
                     updateTabBar()
+                    majBandeauInstallation()
                 }
             })
             
@@ -233,6 +283,9 @@ class SettingsActivity : AppCompatActivity() {
         // du contenu en dessous)
         bottomInstallBanner = createBottomInstallBanner()
         val rootLayout = FrameLayout(this).apply {
+            // Visible sous la barre de navigation en bord à bord (Android 15+) :
+            // sans fond, c'est celui du thème AppCompat, sombre, qui s'y montre.
+            setBackgroundColor(Color.parseColor("#F5F5F5"))
             addView(mainLayout, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -244,6 +297,18 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setContentView(rootLayout)
+        // Bord à bord : la bande sous la barre d'état est peinte du bleu du
+        // bandeau. La marge va sur mainLayout, pas sur le bandeau lui-même :
+        // updateTabBar() reconstruit ce dernier à chaque changement d'onglet, et
+        // la barre d'onglets est masquée au premier lancement. Le bas, bandeau
+        // d'installation compris, s'écarte de la navigation et du clavier.
+        // En paysage, le bandeau et les onglets s'étendent sous l'encoche et
+        // seul leur contenu s'en écarte ; sinon une bande grise longe l'écran
+        // du côté de la caméra.
+        BordABord.appliquer(
+            rootLayout, haut = mainLayout, couleurHaut = Color.parseColor("#0080FF"),
+            lateraux = { (0 until tabBar.childCount).map { tabBar.getChildAt(it) } + viewPager }
+        )
 
         recordFunnelStep("funnel_first_open")
         applyFirstRunMode()
@@ -281,12 +346,18 @@ class SettingsActivity : AppCompatActivity() {
         requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATIONS)
     }
 
-    // Mode « première ouverture » : tant que le clavier n'a jamais été
-    // entièrement configuré, la barre d'onglets et le swipe sont masqués pour
-    // concentrer l'utilisateur sur la configuration (jeux, stats et guide
-    // n'ont pas de valeur avant l'activation). Le flag ne se pose qu'une
-    // fois : un utilisateur configuré qui désélectionne plus tard le clavier
-    // garde l'accès à tous les onglets.
+    // Mode « première ouverture » : tant que le clavier n'a jamais été activé,
+    // la barre d'onglets et le swipe sont masqués pour concentrer sur la
+    // configuration. Le flag ne se pose qu'une fois : un utilisateur configuré
+    // qui désélectionne plus tard le clavier garde l'accès à tout.
+    //
+    // Le mode restreint s'arrêtait auparavant à la configuration *complète* —
+    // clavier activé **et** sélectionné comme clavier courant. C'était trop
+    // tard : quelqu'un qui a activé le clavier puis essayé un autre, ou qu'une
+    // mise à jour système a désélectionné, se retrouvait renvoyé dans le
+    // tunnel, sans Wierderbuch ni jeux, alors qu'il connaît déjà l'application.
+    // Or ces deux-là ne dépendent que des assets et marchent sans clavier
+    // installé. La barre revient donc dès l'activation, et ne repart plus.
     private fun onboardingPrefs() =
         getSharedPreferences("lux_onboarding_prefs", Context.MODE_PRIVATE)
 
@@ -310,13 +381,67 @@ class SettingsActivity : AppCompatActivity() {
             onboardingPrefs().edit().putBoolean("onboarding_completed", true).apply()
             return
         }
-        tabBar.visibility = View.GONE
-        viewPager.isUserInputEnabled = false
-        bottomInstallBanner.visibility = View.VISIBLE
+        if (!aDejaActiveLeClavier()) {
+            tabBar.visibility = View.GONE
+            viewPager.isUserInputEnabled = false
+        }
+        majBandeauInstallation()
+    }
+
+    /**
+     * Le clavier a-t-il déjà été activé, maintenant ou par le passé ?
+     *
+     * `funnel_keyboard_enabled` est horodaté une seule fois, au premier passage
+     * à l'état activé : il survit donc à une désactivation, à une mise à jour
+     * système qui désélectionne le clavier, ou au détour par un autre clavier.
+     */
+    private fun aDejaActiveLeClavier(): Boolean =
+        isKeyboardEnabled() || onboardingPrefs().contains("funnel_keyboard_enabled")
+
+    /**
+     * Rend la navigation dès l'activation, sans attendre la sélection.
+     *
+     * [onOnboardingCompleted] ne se déclenche qu'à la configuration complète ;
+     * sans ce complément, quelqu'un qui active le clavier puis referme le
+     * sélecteur système resterait enfermé jusqu'à sa prochaine ouverture de
+     * l'application, alors que la condition d'accès est déjà remplie.
+     */
+    fun revelerNavigationSiClavierActive() {
+        if (tabBar.visibility == View.VISIBLE) return
+        if (!aDejaActiveLeClavier()) return
+        tabBar.visibility = View.VISIBLE
+        tabBar.alpha = 0f
+        tabBar.animate().alpha(1f).setDuration(400).start()
+        viewPager.isUserInputEnabled = true
+    }
+
+    /**
+     * Le bandeau d'installation ne paraît que sur Démarrage, et seulement tant
+     * que le clavier n'a jamais été configuré.
+     *
+     * Il était posé une fois pour toutes, ce qui suffisait quand Démarrage
+     * était le seul onglet atteignable avant configuration. Maintenant que les
+     * quatre le sont, il se superposerait au bas de la grille de Wuertsich et
+     * de la liste du Wierderbuch — un rappel permanent qui mangerait le
+     * contenu qu'il est censé faire découvrir.
+     */
+    private fun majBandeauInstallation() {
+        if (!::bottomInstallBanner.isInitialized) return
+        val aConfigurer = !onboardingPrefs().getBoolean("onboarding_completed", false)
+        if (aConfigurer && currentTab == 0) {
+            bottomInstallBanner.alpha = 1f
+            bottomInstallBanner.visibility = View.VISIBLE
+        } else {
+            bottomInstallBanner.visibility = View.GONE
+        }
     }
 
     // Appelé par l'onboarding quand la configuration vient d'aboutir :
     // pose le flag et révèle la navigation avec un léger fondu
+    /** Vrai tant que la pochette de bienvenue est à l'écran : le clavier reste baissé. */
+    var pochetteAccueilOuverte = false
+        private set
+
     fun onOnboardingCompleted() {
         val prefs = onboardingPrefs()
         if (!prefs.getBoolean("onboarding_completed", false)) {
@@ -347,7 +472,9 @@ class SettingsActivity : AppCompatActivity() {
 
     // Récompense l'utilisateur juste après un parcours d'activation identifié
     // comme un point de friction (interstitiel + réglages système) : un seul
-    // affichage, jamais reposé même si l'onboarding se rejoue. Le message
+    // affichage, jamais reposé même si l'onboarding se rejoue. La récompense
+    // est la carte « Moien », versée au carnet et ouverte comme une pochette ;
+    // le partage vient ensuite, une fois la pochette refermée. Le message
     // proposé au partage est fixe, écrit avant que l'utilisateur ait tapé
     // quoi que ce soit avec le clavier — aucun contenu personnel n'est lu.
     private fun maybeShowActivationSuccessCard() {
@@ -355,9 +482,49 @@ class SettingsActivity : AppCompatActivity() {
         if (prefs.getBoolean("activation_success_card_shown", false)) return
         prefs.edit().putBoolean("activation_success_card_shown", true).apply()
 
+        // L'onboarding lève le clavier sur le champ d'essai dès que le clavier
+        // est sélectionné, et la fenêtre rétrécie coupait la carte sous la
+        // plaque du nom : le sens, qui est ce qu'on offre, restait caché.
+        pochetteAccueilOuverte = true
+        currentFocus?.clearFocus()
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(window.decorView.windowToken, 0)
+
+        val ctx = applicationContext
+        Thread {
+            val neuve = CarteAccueil.offrir(ctx)
+            TranslationDictionary.charger(ctx)
+            TranslationDictionary.chargerExemples(ctx)
+            val contenu = Carnet.cartes(ctx).firstOrNull { it.forme == CarteAccueil.FORME }
+                ?.let { CarteCarnet.contenu(ctx, it) }
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                if (contenu == null) {
+                    pochetteAccueilOuverte = false
+                    showActivationShareDialog(carteOfferte = false)
+                    return@runOnUiThread
+                }
+                Booster.ouvrir(
+                    hote = findViewById(android.R.id.content),
+                    jeu = JeuCarte.ACCUEIL,
+                    contenus = listOf(contenu),
+                    nouvelles = if (neuve) setOf(CarteAccueil.FORME) else emptySet(),
+                    animations = !Pochette.animationsReduites(ctx),
+                    surCarnet = { CarnetFragment().show(supportFragmentManager, "carnet") },
+                    surFin = {
+                        pochetteAccueilOuverte = false
+                        if (!isFinishing && !isDestroyed) showActivationShareDialog(carteOfferte = true)
+                    }
+                )
+            }
+        }.start()
+    }
+
+    private fun showActivationShareDialog(carteOfferte: Boolean) {
+        val bravo = "Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications."
         AlertDialog.Builder(this)
             .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
-            .setMessage("Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications.")
+            .setMessage(if (carteOfferte) "$bravo\n\nLa carte « Moien » est dans votre carnet." else bravo)
             .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
             .setNegativeButton("Plus tard", null)
             .setCancelable(true)
@@ -439,6 +606,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
         outState.putInt("currentTab", currentTab)
+        outState.putInt("jeuOuvert", jeuOuvert)
         Log.d("SettingsActivity", "💾 Sauvegarde de l'onglet actif: $currentTab")
     }
     
@@ -580,36 +748,28 @@ class SettingsActivity : AppCompatActivity() {
             val startTab = createTab(0, "🚀", "Démarrage")
             tabContainer.addView(startTab)
             Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
-            
-            // Tab Statistiques  
-            val statsTab = createTab(1, "📊", "Mäi Lëtzebuergesch")
+
+            // Tab Spiller : tous les jeux derrière une seule destination.
+            // Ils occupaient quatre onglets sur neuf, soit 44 % de la barre,
+            // pour une activité que l'on choisit une fois par session.
+            val gamesTab = createTab(1, "🎮", "Spiller")
+            tabContainer.addView(gamesTab)
+            Log.d("SettingsActivity", "Onglet Spiller créé et ajouté")
+
+            // Tab Wierderbuch
+            val dictionaryTab = createTab(2, "📚", "Wierderbuch")
+            tabContainer.addView(dictionaryTab)
+            Log.d("SettingsActivity", "Onglet Wierderbuch créé et ajouté")
+
+            // Tab Statistiques (en dernier, sur demande du propriétaire — 2026-09-15)
+            val statsTab = createTab(3, "📊", "Mäi Lëtzebuergesch")
             tabContainer.addView(statsTab)
             Log.d("SettingsActivity", "Onglet Statistiques créé et ajouté")
-            
-            // Tab Wuertsich
-            val wordSearchTab = createTab(2, "🎲", "Wuertsich")
-            tabContainer.addView(wordSearchTab)
-            Log.d("SettingsActivity", "Onglet Wuertsich créé et ajouté")
-            
-            // Tab Wuertmix
-            val wordScrambleTab = createTab(3, "🔤", "Wuertmix")
-            tabContainer.addView(wordScrambleTab)
-            Log.d("SettingsActivity", "Onglet Wuertmix créé et ajouté")
 
-            // Tab Wuertriet
-            val wuertrietTab = createTab(4, "🟩", "Wuertriet")
-            tabContainer.addView(wuertrietTab)
-            Log.d("SettingsActivity", "Onglet Wuertriet créé et ajouté")
-
-            // Tab Guide
-            val guideTab = createTab(5, "📖", "Guide")
-            tabContainer.addView(guideTab)
-            Log.d("SettingsActivity", "Onglet Guide créé et ajouté")
-
-            // Tab À Propos
-            val aboutTab = createTab(6, "ℹ️", "À Propos")
-            tabContainer.addView(aboutTab)
-            Log.d("SettingsActivity", "Onglet À Propos créé et ajouté")
+            // Guide et À Propos ne sont plus des onglets : ce sont des pages de
+            // référence que l'on lit une fois, pas des destinations
+            // quotidiennes. Elles s'ouvrent depuis le pied de l'onglet
+            // Démarrage, en plein écran (voir SheetFragment).
 
             // Ligne de séparation en bas (fine)
             val separator = View(this@SettingsActivity).apply {
@@ -639,9 +799,7 @@ class SettingsActivity : AppCompatActivity() {
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            // Padding horizontal resserré : sur sept onglets, 24 px de chaque
-            // côté retiraient au libellé le tiers de sa largeur.
-            setPadding(4, 10, 4, 8)
+            setPadding(8, 10, 8, 8)
             layoutParams = LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -674,12 +832,14 @@ class SettingsActivity : AppCompatActivity() {
             // Label du tab
             val labelView = TextView(this@SettingsActivity).apply {
                 text = label
-                textSize = 9f
+                // 11sp : quatre onglets se partagent la largeur au lieu de
+                // neuf, et « Wierderbuch », le plus long, tient largement.
+                textSize = 11f
                 gravity = Gravity.CENTER
                 setPadding(0, 0, 0, 2)
-                // Sept onglets se partagent la largeur : un libellé long y tient sur
-                // deux lignes, et se termine par des points de suspension au delà,
-                // plutôt que de déborder ou de repousser ses voisins.
+                // Garde-fou conservé bien que quatre onglets laissent la place :
+                // un libellé plus long qu'attendu doit passer à la ligne ou se
+                // terminer en points de suspension, jamais repousser ses voisins.
                 maxLines = 2
                 ellipsize = android.text.TextUtils.TruncateAt.END
                 setTextColor(
@@ -746,13 +906,24 @@ class SettingsActivity : AppCompatActivity() {
                 val backwardDistance = (currentRealTab - targetRealTab + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
                 
                 // Choisir la direction la plus courte
+                val distance = minOf(forwardDistance, backwardDistance)
                 val targetPosition = if (forwardDistance <= backwardDistance) {
                     currentPosition + forwardDistance
                 } else {
                     currentPosition - backwardDistance
                 }
-                
-                viewPager.setCurrentItem(targetPosition, true)
+
+                // Défilement animé pour un onglet voisin seulement. Au-delà,
+                // ViewPager2 s'arrête en chemin : un saut de trois pages
+                // atterrissait une ou deux pages trop tôt, la barre d'onglets
+                // affichant pourtant l'onglet demandé — `onPageSelected` reçoit
+                // bien la position visée, c'est le défilement qui n'y arrive
+                // pas. Constaté sur émulateur pour 0 → 3 (on atterrit sur
+                // Wuertsich) et 0 → 5 (on atterrit sur À Propos). Le défaut
+                // vaut pour toute distance ≥ 2 et ne dépend pas du nombre
+                // d'onglets ; il devient simplement visible depuis l'accueil
+                // avec un huitième onglet.
+                viewPager.setCurrentItem(targetPosition, distance <= 1)
             }
         }
     }
@@ -773,6 +944,8 @@ class SettingsActivity : AppCompatActivity() {
         val enfants = (0 until fraiche.childCount).map { fraiche.getChildAt(it) }
         fraiche.removeAllViews() // une vue ne peut pas avoir deux parents
         enfants.forEach { tabBar.addView(it) }
+        // Les enfants neufs n'ont pas encore l'écart de l'encoche (paysage).
+        BordABord.ecarterLateralement(enfants)
     }
 
     // Onglet 1 : Démarrage / Onboarding
@@ -818,6 +991,24 @@ class SettingsActivity : AppCompatActivity() {
         }
         val showIncompleteNudge = !isEnabled && settingsVisitAt != 0L
         if (showIncompleteNudge) recordFunnelStep("funnel_settings_return_no_enable")
+
+        // Retour au clavier après un détour : l'utilisateur a déjà configuré
+        // l'application, le clavier est toujours installé, mais ce n'est plus
+        // lui qui s'ouvre. C'est l'état où l'on se retrouve après un appui
+        // long sur la barre d'espace suivi d'un choix dans le sélecteur
+        // système — et l'observation de terrain qui a motivé cette carte est
+        // que personne n'en revient tout seul.
+        //
+        // Android interdit à un clavier de se remettre en service lui-même :
+        // un IME peut demander à partir (showInputMethodPicker), jamais à
+        // revenir. Une fois l'autre clavier actif, il n'y a plus rien à
+        // chercher dans le clavier, et le seul chemin de retour passe par
+        // l'application ou par la petite icône de la barre de navigation. La
+        // carte est donc placée en tête, avant même la configuration rapide.
+        if (hasCompletedBefore && isEnabled && !isSelected) {
+            mainLayout.addView(createRetourClavierCard())
+            mainLayout.addView(createSpacing(16))
+        }
 
         // Bandeau de réussite : le clavier est utilisable dès qu'il est
         // activé et sélectionné, avant même que l'utilisateur ait écrit quoi
@@ -1060,17 +1251,125 @@ class SettingsActivity : AppCompatActivity() {
             
             statsLinkCard.addView(statsLinkLayout)
             statsLinkCard.setOnClickListener {
-                viewPager.currentItem = 1 // Naviguer vers l'onglet Stats
+                // Et non `currentItem = 1` : le pager est cyclique, et la
+                // position absolue 1 est le bord gauche de la plage virtuelle.
+                // Le contenu affiché était bien celui des statistiques, mais on
+                // atterrissait là où il n'y a plus rien à balayer vers la
+                // gauche. On vise la position la plus proche du bon onglet.
+                allerAOnglet(TAB_STATS)
             }
             
             mainLayout.addView(statsLinkCard)
         }
-        
+
+        // Guide et À Propos ont quitté la barre d'onglets : ce sont des pages
+        // qu'on lit une fois, et elles y coûtaient deux neuvièmes de la largeur
+        // à chaque ouverture de l'application. Elles atterrissent ici, en pied
+        // de l'écran de configuration, qui est déjà l'endroit où l'on vient
+        // quand on cherche à comprendre plutôt qu'à jouer.
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
+            "📖", "Guide d'utilisation",
+            "Réglages, correcteur, astuces de saisie",
+            SheetFragment.PAGE_GUIDE
+        ))
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
+            "ℹ️", "À propos",
+            "Version, sources des données, licences",
+            SheetFragment.PAGE_A_PROPOS
+        ))
+        mainLayout.addView(createSpacing(16))
+
         return mainLayout
     }
+
+    /**
+     * Ligne d'accès à une page de référence, ouverte en plein écran.
+     *
+     * Volontairement plus discrète que les cartes de configuration au-dessus :
+     * ces deux pages ne demandent aucune action, elles répondent à une question
+     * que l'utilisateur ne se pose pas encore.
+     */
+    private fun createReferenceLink(
+        emoji: String,
+        titre: String,
+        resume: String,
+        page: String
+    ): LinearLayout = LinearLayout(this).apply {
+        orientation = LinearLayout.HORIZONTAL
+        gravity = Gravity.CENTER_VERTICAL
+        setBackgroundColor(Color.WHITE)
+        setPadding(20, 18, 20, 18)
+        isClickable = true
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        addView(TextView(this@SettingsActivity).apply {
+            text = emoji
+            textSize = 22f
+            setPadding(0, 0, 18, 0)
+        })
+        addView(LinearLayout(this@SettingsActivity).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+            )
+            addView(TextView(this@SettingsActivity).apply {
+                text = titre
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+            })
+            addView(TextView(this@SettingsActivity).apply {
+                text = resume
+                textSize = 13f
+                setTextColor(Color.parseColor("#888888"))
+            })
+        })
+        addView(TextView(this@SettingsActivity).apply {
+            text = "›"
+            textSize = 24f
+            setTextColor(Color.parseColor("#BBBBBB"))
+        })
+
+        setOnClickListener {
+            SheetFragment.pour(page).show(supportFragmentManager, "sheet_$page")
+        }
+    }
     
+    /**
+     * Amène le pager sur un onglet, en restant dans le cycle courant.
+     *
+     * Le ViewPager répète les onglets sur une longue plage virtuelle pour que
+     * le balayage puisse tourner dans les deux sens indéfiniment ; une position
+     * absolue n'a donc de sens que relativement à celle où l'on se trouve.
+     */
+    private fun allerAOnglet(onglet: Int) {
+        val position = viewPager.currentItem
+        val actuel = position % SettingsPagerAdapter.REAL_COUNT
+        val avant = (onglet - actuel + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+        val arriere = (actuel - onglet + SettingsPagerAdapter.REAL_COUNT) % SettingsPagerAdapter.REAL_COUNT
+        val cible = if (avant <= arriere) position + avant else position - arriere
+        viewPager.setCurrentItem(cible, avant.coerceAtMost(arriere) <= 1)
+    }
+
     /** Conversion en pixels d'une dimension exprimée en dp. */
     private fun enDp(valeur: Int): Int = (valeur * resources.displayMetrics.density).toInt()
+
+    /**
+     * Une couleur `#RRGGBB` reprise avec l'opacité demandée.
+     *
+     * Concaténer les deux chaînes — `"$couleur20"` — ne donne pas ce qu'on
+     * croit : `Color.parseColor` lit huit chiffres comme `#AARRGGBB`, si bien
+     * que `"#4CAF50" + "20"` devient un alpha de 0x4C sur le brun `#AF5020`.
+     * L'astuce se lit comme un ajout de transparence et produit une autre
+     * teinte, opaque.
+     */
+    fun avecOpacite(couleur: String, alpha: Int): Int =
+        (alpha shl 24) or (Color.parseColor(couleur) and 0x00FFFFFF)
 
     /**
      * Un mot a-t-il déjà été écrit avec le clavier ? Le jalon est posé par le
@@ -1187,6 +1486,83 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
+     * Carte « Revenir au clavier luxembourgeois », en tête de l'onglet
+     * Démarrage quand le clavier est installé mais qu'un autre est en service.
+     *
+     * Elle existe parce qu'Android ne laisse pas un clavier se réactiver
+     * lui-même : `showInputMethodPicker()` ne fonctionne que depuis le clavier
+     * courant ou depuis une activité au premier plan. Une fois parti, le
+     * clavier ne peut plus rien pour l'utilisateur ; seule l'application le
+     * peut, et encore faut-il qu'elle le propose au lieu de rejouer un tunnel
+     * de configuration en trois étapes à quelqu'un qui a tout configuré.
+     *
+     * Le clavier n'est ni désinstallé ni désactivé dans cet état, et le texte
+     * le dit : la seule chose à faire est de le rechoisir. Un seul bouton,
+     * pleine largeur, et l'autre chemin — l'icône de la barre de navigation —
+     * rappelé en dessous pour la fois d'après, puisque c'est celui qui marche
+     * sans quitter l'application où l'on écrit.
+     *
+     * Rien à rafraîchir à la main : [OnboardingFragment] observe
+     * `DEFAULT_INPUT_METHOD` et reconstruit l'onglet dès que le choix est fait,
+     * ce qui fait disparaître la carte et apparaître le bandeau de réussite.
+     *
+     * Les tailles de texte sont au-dessus de celles des autres cartes de
+     * l'onglet : c'est l'écran que lit quelqu'un qui a perdu son clavier et qui
+     * ne sait pas pourquoi, et rien d'utile n'y descend sous 16 sp.
+     */
+    private fun createRetourClavierCard(): LinearLayout {
+        val card = createRoundedCard("#FFF3E0")
+
+        val titre = TextView(this).apply {
+            text = "⌨️ Revenir au clavier luxembourgeois"
+            textSize = 19f
+            setTextColor(Color.parseColor("#E65100"))
+            setTypeface(null, Typeface.BOLD)
+            setLineSpacing(0f, 1.25f)
+            setPadding(0, 0, 0, enDp(10))
+        }
+
+        val explication = TextView(this).apply {
+            text = "En ce moment, c'est un autre clavier qui s'ouvre quand vous écrivez. " +
+                    "Le clavier luxembourgeois est toujours installé sur votre téléphone : " +
+                    "il suffit de le rechoisir."
+            textSize = 16f
+            setTextColor(Color.parseColor("#5D4037"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, 0, 0, enDp(16))
+        }
+
+        val bouton = Button(this).apply {
+            text = "Choisir le clavier luxembourgeois"
+            textSize = 17f
+            setBackgroundColor(Color.parseColor("#0080FF"))
+            setTextColor(Color.WHITE)
+            minHeight = enDp(56)
+            setPadding(enDp(16), enDp(14), enDp(16), enDp(14))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener { openInputMethodPicker() }
+        }
+
+        val autreChemin = TextView(this).apply {
+            text = "Sans passer par ici : pendant que vous écrivez, touchez la petite icône de " +
+                    "clavier en bas de l'écran, dans la barre de navigation. Le même choix s'ouvre."
+            textSize = 16f
+            setTextColor(Color.parseColor("#795548"))
+            setLineSpacing(0f, 1.35f)
+            setPadding(0, enDp(14), 0, 0)
+        }
+
+        card.addView(titre)
+        card.addView(explication)
+        card.addView(bouton)
+        card.addView(autreChemin)
+        return card
+    }
+
+    /**
      * (Re)construit la carte de configuration dans son conteneur. Passer par le
      * conteneur plutôt que par un rafraîchissement complet de l'onglet évite de
      * reconstruire le clavier d'essai à chaque fois qu'une étape se déplie.
@@ -1252,8 +1628,12 @@ class SettingsActivity : AppCompatActivity() {
             text = when {
                 toutFait -> "Les 3 étapes sont faites."
                 isEnabled && isSelected -> "Plus qu'à l'essayer."
-                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus sélectionné, sans doute après une mise à jour."
-                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif, sans doute après une mise à jour."
+                // Sans « sans doute après une mise à jour » : la cause la plus
+                // fréquente est un détour volontaire par un autre clavier, et
+                // annoncer un incident système à quelqu'un qui a simplement
+                // changé de clavier l'envoie chercher au mauvais endroit.
+                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus celui qui s'affiche quand vous écrivez."
+                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif sur ce téléphone."
                 isEnabled -> "Plus qu'une étape."
                 else -> "3 étapes pour taper en lëtzebuergesch partout."
             }
@@ -2079,21 +2459,39 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 12)
         }
         
-        // Attribution des corpus. Les deux jeux de données sont sous licence
-        // Creative Commons et exigent la citation de leurs auteurs : cette
-        // carte n'est pas décorative, elle remplit l'obligation « BY ».
-        // LuxAlign porte en plus une clause NonCommercial. Détail complet et
-        // références bibliographiques dans Dictionnaires/CORPUS.md.
+        // Attribution des sources. Trois des quatre exigent la citation de
+        // leurs auteurs : cette carte n'est pas décorative, elle remplit
+        // l'obligation « BY ». LuxAlign porte en plus une clause
+        // NonCommercial, et Lexique un partage à l'identique qui porte sur
+        // l'actif français dérivé. Seul le LOD, en CC0, n'impose rien — il est
+        // cité quand même. Détail complet et références bibliographiques dans
+        // Dictionnaires/CORPUS.md.
         val sourcesText = TextView(this).apply {
             text = "Les suggestions de mots sont construites sur deux corpus " +
                     "ouverts de luxembourgeois contemporain :\n\n" +
-                    "📰 LuxAlign — phrases d'articles de RTL.lu, réunies par " +
+                    "📰 LuxAlign : phrases d'articles de RTL.lu, réunies par " +
                     "Fred Philippy et coll. (COLING 2025). Licence CC BY-NC 4.0.\n\n" +
-                    "📖 LETZ — phrases d'exemple du Lëtzebuerger Online " +
+                    "📖 LETZ : phrases d'exemple du Lëtzebuerger Online " +
                     "Dictionnaire (lod.lu), réunies par Fred Philippy et coll. " +
                     "(SIGUL 2024). Licence CC BY 4.0.\n\n" +
                     "Le premier apporte le vocabulaire et l'enchaînement des " +
-                    "mots, le second la langue de tous les jours."
+                    "mots, le second la langue de tous les jours.\n\n" +
+                    "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir " +
+                    "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
+                    "traductions françaises et 85 000 formes que la presse " +
+                    "n'écrit jamais.\n\n" +
+                    "🇱🇺 Corpus de traduction du Zenter fir d'Lëtzebuerger " +
+                    "Sprooch (data.public.lu). Licence CC0 1.0. Il apporte " +
+                    "les traductions françaises des phrases d'exemple, faites " +
+                    "par des traducteurs professionnels.\n\n" +
+                    "🇫🇷 Lexique 3.83 : base lexicale du français de Boris New " +
+                    "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
+                    "Elle apporte les 125 000 formes de la seconde rangée de " +
+                    "suggestions, et évite au correcteur de souligner du " +
+                    "français correct.\n\n" +
+                    "🔤 Les noms des cartes du carnet sont composés en Lora, " +
+                    "Cormorant Garamond et EB Garamond, trois polices libres " +
+                    "sous licence SIL Open Font License 1.1."
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -2357,13 +2755,11 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     "123", "ABC" -> {
                         manager.switchKeyboardMode()
-                        keyboardContainer.removeAllViews()
-                        keyboardContainer.addView(manager.createKeyboardLayout())
+                        manager.applyMode()
                     }
                     "EMOJI" -> {
                         manager.switchToEmojiMode()
-                        keyboardContainer.removeAllViews()
-                        keyboardContainer.addView(manager.createKeyboardLayout())
+                        manager.applyMode()
                     }
                     else -> {
                         insertText(if (demoCapital || demoCapsLock) key.uppercase() else key)
@@ -2559,15 +2955,93 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Deux jeux (onglets « Wuertsich » et « Wuertmix ») aident à mémoriser du vocabulaire " +
-                    "luxembourgeois en s'amusant, à partir des mots déjà présents dans le dictionnaire du clavier."
+            "Sept jeux, réunis dans l'onglet Spiller, font travailler le luxembourgeois en " +
+                    "s'amusant :\n\n" +
+                    "• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n" +
+                    "• 🔤 Wuertmix : remettre les lettres d'un mot dans l'ordre.\n" +
+                    "• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n" +
+                    "• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n" +
+                    "• 🔢 Zuelwuert : écrire en lettres le résultat d'une multiplication.\n" +
+                    "• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n" +
+                    "• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, " +
+                    "sans aucune définition.\n\n" +
+                    "Chaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait " +
+                    "réviser à intervalles de plus en plus longs, jusqu'à ce qu'il soit acquis."
+        )
+
+        addGuideSection(
+            mainLayout, "#FFF3E0", "🃏 Les cartes du carnet",
+            "Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » " +
+                    "(onglet Spiller). Touchez une carte pour l'ouvrir en grand ; touchez à côté, " +
+                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer.\n\n" +
+                    "Les images ci-dessous détaillent la carte « Waasser » (l'eau), partie " +
+                    "par partie : chaque numéro renvoie à l'explication qui suit l'image."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_haut, "Le haut de la carte")
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🔷 Le haut de la carte",
+            "1. Le mot, tel que vous l'avez rencontré dans le jeu, avec sa majuscule s'il " +
+                    "s'agit d'un nom.\n\n" +
+                    "2. La pastille ronde : le nombre de lettres du mot. « Waasser » en " +
+                    "compte 7.\n\n" +
+                    "3. L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
+                    "territoire, économie, temps et mesure…), et son motif est tiré des lettres " +
+                    "du mot, si bien qu'un même mot donne toujours la même image. Quelques " +
+                    "cartes, comme celle-ci, portent en plus un dessin.\n\n" +
+                    "4. Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
+                    "Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la " +
+                    "fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont " +
+                    "communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, " +
+                    "c'est la difficulté de leur orthographe qui compte."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_texte, "Le texte de la carte")
+        addGuideSection(
+            mainLayout, "#FFF3E0", "📜 Le texte de la carte",
+            "5. La ligne de nature : ce qu'est le mot selon le dictionnaire officiel du " +
+                    "ZLS (« Nom neutre », « Verbe », « Adjectif »…), " +
+                    "puis le jeu où vous l'avez gagné.\n\n" +
+                    "6. Le sens, en gras : la traduction française du mot.\n\n" +
+                    "7. La phrase en italique : un exemple du mot en situation, tiré du " +
+                    "dictionnaire officiel. Pour un nombre, c'est sa décomposition.\n\n" +
+                    "8. La ligne plus petite : la traduction française de cette phrase, " +
+                    "seulement quand le ZLS l'a publiée. Sinon, la carte affiche à la place " +
+                    "« Même famille : » et les autres formes du mot (pluriel, conjugaisons…)."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_bas, "Le bas de la carte")
+        addGuideSection(
+            mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
+            "9. L'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n" +
+                    "10. Le médaillon : le jeu qui vous a donné la carte, reconnaissable à son " +
+                    "emblème et à sa couleur, et nommé sur le pourtour.\n\n" +
+                    "11. L'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, " +
+                    "de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
+                    "est acquis.\n\n" +
+                    "12. La ligne de série : le numéro de la carte dans votre collection et la " +
+                    "date où vous l'avez gagnée.\n\n" +
+                    "13. Le rang : la place du mot parmi les plus fréquents de la langue " +
+                    "(« 856ᵉ » pour « Waasser »), ou « hors corpus » " +
+                    "s'il n'y figure pas."
+        )
+
+        addGuideImage(mainLayout, R.drawable.guide_carte_vignette, "La petite carte, dans la grille du carnet")
+        addGuideSection(
+            mainLayout, "#FFF3E0", "🗂️ Dans la grille du carnet",
+            "La petite carte ne garde que l'essentiel pour choisir laquelle ouvrir :\n\n" +
+                    "A. Le mot.\n\n" +
+                    "B. L'emoji du ou des jeux où vous l'avez gagné, puis le début du sens.\n\n" +
+                    "C. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à " +
+                    "mesure que la carte progresse. Ici, « Aarbecht » en a franchi cinq."
         )
 
         addGuideSection(
             mainLayout, "#FFFFFF", "🏆 Progression",
             "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
-                    "« Mäi Lëtzebuergesch ». Huit niveaux culturels jalonnent le parcours : Pipirit, Ti moun, " +
-                    "Débrouya, An mitan, Kompè Lapen, Kompè Zamba, Potomitan, Benzo."
+                    "« Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, " +
+                    "🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner " +
+                    "et 🧙 Sproochenmeeschter."
         )
 
         val faqCard = createCard("#FFF8E1")
@@ -3168,6 +3642,30 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 16)
         }
         
+        // Sans sa traduction, le mot du jour est une suite de lettres qu'on
+        // regarde une seconde et qu'on oublie. C'est la seule chose qui en fait
+        // un mot du jour plutôt qu'un tirage au sort.
+        //
+        // La glose est annoncée, pas seulement posée sous le mot : entre le mot
+        // en 48sp et la ligne d'usage en gris, une ligne grise de plus se lit
+        // comme un sous-titre quelconque. « en français : » lève l'ambiguïté en
+        // trois mots, et le sens lui-même est repris en plus sombre.
+        val glose = TranslationDictionary.traduire(this@SettingsActivity, wordOfDay)
+        val wordGloss = TextView(this).apply {
+            text = if (glose == null) "" else SpannableStringBuilder("en français : ").apply {
+                setSpan(ForegroundColorSpan(Color.parseColor("#999999")),
+                    0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                val debut = length
+                append(glose)
+                setSpan(ForegroundColorSpan(Color.parseColor("#333333")),
+                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            textSize = 18f
+            gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 12)
+            visibility = if (glose == null) View.GONE else View.VISIBLE
+        }
+
         val wordUsage = TextView(this).apply {
             text = if (usageCount > 0) "utilisé $usageCount fois" else "nouveau mot à découvrir"
             textSize = 14f
@@ -3177,6 +3675,7 @@ class SettingsActivity : AppCompatActivity() {
         
         wordContainer.addView(wordLabel)
         wordContainer.addView(wordText)
+        wordContainer.addView(wordGloss)
         wordContainer.addView(wordUsage)
         
         // === Top 5 - Liste simple ===
@@ -3210,7 +3709,17 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val wordName = TextView(this).apply {
-                text = word.first
+                val glose = TranslationDictionary.traduire(this@SettingsActivity, word.first)
+                text = if (glose != null) {
+                    SpannableStringBuilder(word.first).apply {
+                        val debut = length
+                        append("  ").append(glose)
+                        setSpan(ForegroundColorSpan(Color.parseColor("#999999")),
+                            debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        setSpan(RelativeSizeSpan(0.7f),
+                            debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                } else word.first
                 textSize = 20f
                 setTextColor(Color.parseColor("#1C1C1C"))
                 layoutParams = LinearLayout.LayoutParams(
@@ -3378,14 +3887,37 @@ class SettingsActivity : AppCompatActivity() {
                 val screenWidth = resources.displayMetrics.widthPixels - 96
                 
                 words.forEach { word ->
-                    // Créer le chip du mot
+                    // Créer le chip du mot, suivi de sa traduction quand on la
+                    // connaît. Le chip mesure sa propre largeur juste après,
+                    // donc l'ajout de la glose est absorbé par le passage à la
+                    // ligne : rien d'autre n'est à ajuster.
                     val wordChip = TextView(this@SettingsActivity).apply {
-                        text = word
+                        // Une seule acception sur un chip : « Aarbechtsmaart ·
+                        // marché du travail, marché de l'emploi » déborde de la
+                        // largeur de l'écran. Le sens complet est dans l'onglet
+                        // Wierderbuch.
+                        val glose = TranslationDictionary.traduire(this@SettingsActivity, word)
+                            ?.substringBefore(",")
+                        text = if (glose != null) {
+                            SpannableStringBuilder(word).apply {
+                                val debut = length
+                                append(" · ").append(glose)
+                                setSpan(ForegroundColorSpan(Color.parseColor("#8A8A8A")),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                setSpan(RelativeSizeSpan(0.75f),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            }
+                        } else word
                         textSize = 19.5f  // Augmenté de 1.5x (13f * 1.5)
                         setTextColor(Color.parseColor(accentColor))
                         setPadding(15, 7, 15, 7)  // Augmenté de 1.5x (10, 5, 10, 5)
-                        setBackgroundColor(Color.parseColor("${accentColor}20"))
+                        setBackgroundColor(avecOpacite(accentColor, 0x20))
                         setSingleLine(true)
+                        // Filet de sécurité : un mot composé suivi de sa glose
+                        // peut dépasser la largeur de l'écran, et le calcul de
+                        // passage à la ligne ne saurait alors où le couper.
+                        maxWidth = screenWidth
+                        ellipsize = android.text.TextUtils.TruncateAt.END
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -3504,11 +4036,28 @@ class SettingsActivity : AppCompatActivity() {
                 val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
                 val coverage = if (totalDictWords > 0) (wordsDiscovered.toFloat() / totalDictWords * 100) else 0f
                 
-                // Générer les mots à découvrir (utilisations <= 2 et longueur >= 3)
-                val wordsToDiscoverCandidates = jsonObject.keys().asSequence().toList().filter { word ->
-                    val count = jsonObject.optInt(word, 0)
-                    count <= 2 && word.length >= 3
-                }
+                // Les mots à découvrir : peu ou pas employés, et proposables.
+                //
+                // Ils étaient tirés dans le dictionnaire entier, sans filtre :
+                // d'où les noms de localités sans glose (« Ierpeldeng-Sauer »)
+                // et le vocabulaire d'actualité que le corpus de dépêches
+                // charrie — c'est ainsi que « Ramadan » se retrouvait proposé.
+                // estProposable() exige une glose qui apprenne quelque chose et
+                // écarte le confessionnel ; il écarte aussi, par la seule
+                // exigence de glose, l'essentiel des noms propres, personnalités
+                // politiques comprises.
+                //
+                // Le compteur se lit comme plus haut : optInt() ne reconnaît que
+                // l'entier nu des premières versions, si bien que le seuil ne
+                // filtrait rien du tout.
+                val dejaEmploye = wordUsages.toMap()
+                val wordsToDiscoverCandidates = jsonObject.keys().asSequence()
+                    .filter { word ->
+                        word.length >= 3 &&
+                            (dejaEmploye[word] ?: 0) <= 2 &&
+                            TranslationDictionary.estProposable(this, word)
+                    }
+                    .toList()
                 val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
                 
                 return VocabularyStats(
@@ -3783,7 +4332,7 @@ class SettingsActivity : AppCompatActivity() {
     // Adapter pour ViewPager2 avec swipe cyclique
     private class SettingsPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         companion object {
-            const val REAL_COUNT = 7 // Nombre réel d'onglets (ajout du Wuertriet)
+            const val REAL_COUNT = 4 // Nombre réel d'onglets (jeux regroupés)
             const val VIRTUAL_COUNT = Int.MAX_VALUE // Nombre virtuel pour simuler l'infini
             const val START_POSITION = VIRTUAL_COUNT / 2 // Position de départ au milieu
         }
@@ -3795,12 +4344,9 @@ class SettingsActivity : AppCompatActivity() {
             val realPosition = position % REAL_COUNT
             return when (realPosition) {
                 0 -> OnboardingFragment()
-                1 -> StatsFragment()
-                2 -> WordSearchFragment()
-                3 -> WordScrambleFragment()
-                4 -> WuertrietFragment()
-                5 -> GuideFragment()
-                6 -> AboutFragment()
+                1 -> GamesFragment()
+                2 -> DictionaryFragment()
+                3 -> StatsFragment()
                 else -> OnboardingFragment()
             }
         }
@@ -3892,6 +4438,10 @@ class SettingsActivity : AppCompatActivity() {
             if (lastKnownEnabled && lastKnownSelected) {
                 // Configuration aboutie : révéler la navigation (idempotent)
                 activity.onOnboardingCompleted()
+            } else {
+                // Activé mais pas encore sélectionné : la navigation revient
+                // quand même, elle ne dépend que de l'activation.
+                activity.revelerNavigationSiClavierActive()
             }
             Log.d("SettingsActivity", "🔄 Contenu de l'onboarding rafraîchi (enabled=$lastKnownEnabled, selected=$lastKnownSelected, spellChecker=$lastKnownSpellCheckerOn)")
         }
@@ -3932,6 +4482,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun focusTestField() {
+            if ((activity as? SettingsActivity)?.pochetteAccueilOuverte == true) return
             val field = rootView?.findViewWithTag<EditText>("onboarding_test_field") ?: return
             field.requestFocus()
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -4054,6 +4605,48 @@ class SettingsActivity : AppCompatActivity() {
         return WEEKLY_TIPS[(weekIndex % WEEKLY_TIPS.size).toInt()]
     }
 
+    /**
+     * Tire un mot du jour que l'application peut proposer — glose instructive,
+     * et pas une forme mise à l'écart — en gardant le tirage déterministe pour
+     * la journée.
+     *
+     * On ne filtre pas la liste avant de tirer : la construire coûterait un
+     * parcours de 38 000 formes à chaque ouverture de l'onglet, pour une chance
+     * sur deux de tomber juste du premier coup. Quelques essais successifs sur
+     * le même générateur suffisent dans l'immense majorité des cas.
+     *
+     * Deux garde-fous, parce qu'un mot du jour sans glose ne se signale par
+     * rien — la ligne de traduction passe en `GONE` et l'écran a l'air normal,
+     * seulement moins utile :
+     *
+     * - le critère est [TranslationDictionary.estProposable] et non la simple
+     *   présence d'une glose. Le luxembourgeois a emprunté assez de mots au
+     *   français pour que 1 278 formes se glosent par elles-mêmes
+     *   (« Accident » → accident) : la traduction est là, elle n'apprend rien,
+     *   et [MotsEcartes] retire au passage le vocabulaire confessionnel que le
+     *   corpus de dépêches charrie ;
+     * - si les vingt tirages échouent — table absente, ou malchance — on
+     *   parcourt la liste au lieu de rendre le dernier tirage tel quel. Le
+     *   parcours part de l'index tiré et reste donc déterministe : le mot du
+     *   jour ne change pas d'un affichage à l'autre dans la journée.
+     */
+    private fun tirerMotTraduisible(mots: List<String>, random: Random): String {
+        var index = random.nextInt(mots.size)
+        repeat(20) {
+            if (TranslationDictionary.estProposable(this, mots[index])) {
+                return mots[index]
+            }
+            index = random.nextInt(mots.size)
+        }
+        for (decalage in mots.indices) {
+            val candidat = mots[(index + decalage) % mots.size]
+            if (TranslationDictionary.estProposable(this, candidat)) return candidat
+        }
+        // Aucune glose nulle part : l'actif manque. Un mot sans traduction vaut
+        // mieux qu'un écran vide.
+        return mots[index]
+    }
+
     private fun getWordOfTheDay(): Pair<String, Int> {
         return try {
             val usageFile = File(filesDir, "luxemburgish_dict_with_usage.json")
@@ -4079,9 +4672,17 @@ class SettingsActivity : AppCompatActivity() {
                 val seed = dateString.hashCode().toLong()
                 val random = Random(seed)
                 
-                val selectedWord = allWords[random.nextInt(allWords.size)]
-                // Lire directement l'entier
-                usageCount = jsonObject.optInt(selectedWord, 0)
+                val selectedWord = tirerMotTraduisible(allWords, random)
+                // Le fichier d'usage porte deux formats : l'objet
+                // {"frequency", "user_count"} qu'écrit CreoleDictionaryWithUsage,
+                // et l'entier nu des toutes premières versions. optInt() ne lit
+                // que le second, si bien qu'un mot déjà employé cent fois
+                // s'annonçait quand même « nouveau mot à découvrir ».
+                usageCount = when (val brut = jsonObject.opt(selectedWord)) {
+                    is Int -> brut
+                    is JSONObject -> brut.optInt("user_count", 0)
+                    else -> 0
+                }
                 
                 return Pair(selectedWord, usageCount)
             } else {
@@ -4108,7 +4709,7 @@ class SettingsActivity : AppCompatActivity() {
                 val seed = dateString.hashCode().toLong()
                 val random = Random(seed)
                 
-                val selectedWord = allWords[random.nextInt(allWords.size)]
+                val selectedWord = tirerMotTraduisible(allWords, random)
                 
                 return Pair(selectedWord, 0)
             }
@@ -4191,6 +4792,16 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var wordsListContainer: LinearLayout
         private lateinit var tvTheme: TextView
         private lateinit var tvScore: TextView
+        private lateinit var boutonCarnet: TextView
+
+        /** Les formes gagnées dans la grille en cours, dans l'ordre du tracé. */
+        private val gagnes = mutableListOf<String>()
+
+        /** Celles que le carnet n'avait jamais vues. */
+        private val neuves = mutableSetOf<String>()
+
+        /** La pochette de fin de grille, posée au-dessus de tout. */
+        private var pochette: View? = null
         
         override fun onCreateView(
             inflater: android.view.LayoutInflater,
@@ -4238,6 +4849,22 @@ class SettingsActivity : AppCompatActivity() {
                             gravity = Gravity.END
                         }
                         addView(tvScore)
+
+                        // L'entrée du carnet, dans l'en-tête de chaque jeu.
+                        // Elle reste visible même quand rien n'a été gagné :
+                        // un joueur qui revient doit retrouver sa collection
+                        // sans avoir à finir une grille d'abord.
+                        boutonCarnet = Pochette.bouton(
+                            this@WordSearchFragment,
+                            Color.parseColor("#9C27B0"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { leftMargin = 12 }
+                        }
+                        addView(boutonCarnet)
                     }
                     addView(headerLayout)
                     
@@ -4358,6 +4985,10 @@ class SettingsActivity : AppCompatActivity() {
                 // Réinitialiser
                 startTime = System.currentTimeMillis()
                 wordsFound = 0
+                gagnes.clear()
+                neuves.clear()
+                enleverPochette()
+                Pochette.rafraichir(boutonCarnet, activity)
                 updateScore(0)
 
                 Log.d("WordSearchFragment", "Nouvelle grille générée: ${currentPuzzle?.words?.size} mots")
@@ -4394,7 +5025,26 @@ class SettingsActivity : AppCompatActivity() {
             
             words.forEach { word ->
                 val wordView = TextView(activity).apply {
-                    text = if (word.isFound) "✅ ${word.word.uppercase()}" else "📝 ${word.word.uppercase()}"
+                    // Le mot est déjà donné : afficher sa traduction n'aide pas
+                    // à le trouver dans la grille, mais c'est la seule chose
+                    // qui distingue une grille de vocabulaire d'un exercice de
+                    // repérage de lettres.
+                    val puce = if (word.isFound) "✅ " else "📝 "
+                    val glose = TranslationDictionary.traduire(activity, word.canonical)
+                    val ligne = SpannableStringBuilder(puce).append(word.word.uppercase())
+                    if (glose != null) {
+                        val debut = ligne.length
+                        ligne.append("  ").append(glose)
+                        ligne.setSpan(
+                            ForegroundColorSpan(Color.parseColor("#777777")),
+                            debut, ligne.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        ligne.setSpan(
+                            RelativeSizeSpan(0.85f),
+                            debut, ligne.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                    text = ligne
                     textSize = 14f
                     setPadding(12, 8, 12, 8)
                     setTextColor(if (word.isFound) Color.parseColor("#4CAF50") else Color.parseColor("#333333"))
@@ -4408,8 +5058,11 @@ class SettingsActivity : AppCompatActivity() {
             wordsFound++
             
             // Mettre à jour la liste
-            currentPuzzle?.words?.find { it.word.equals(word, ignoreCase = true) }?.isFound = true
+            val trouve = currentPuzzle?.words?.find { it.word.equals(word, ignoreCase = true) }
+            trouve?.isFound = true
             displayWordsList(currentPuzzle?.words ?: emptyList())
+
+            encarter(trouve?.canonical)
             
             // Calculer les points
             val points = word.length * 10
@@ -4417,20 +5070,55 @@ class SettingsActivity : AppCompatActivity() {
             
             // Vérifier si tous les mots sont trouvés
             // Toast.setGravity() est ignoré par le système depuis Android 11 : on utilise
-            // une Snackbar (vue applicative, pas une fenêtre système) pour l'ancrer en haut
+            // un bandeau (vue applicative, pas une fenêtre système) pour l'ancrer en haut
             // et éviter qu'elle ne recouvre le mot qui vient de passer en vert dans la liste.
             val message = if (wordsFound == currentPuzzle?.words?.size) {
                 "🎉 Félicitations ! Tous les mots trouvés !"
             } else {
                 "✅ Mot trouvé : $word (+$points pts)"
             }
-            val duration = if (wordsFound == currentPuzzle?.words?.size) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            Snackbar.make(requireView(), message, duration).apply {
-                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
-                    it.gravity = Gravity.TOP
-                    view.layoutParams = it
-                }
-            }.show()
+            bandeauEnHaut(requireView(), message, longue = wordsFound == currentPuzzle?.words?.size)
+
+            if (wordsFound == currentPuzzle?.words?.size) ouvrirPochette()
+        }
+
+        /**
+         * Verse au carnet un mot **trouvé dans la grille**.
+         *
+         * Le mot était donné d'avance ici : ce qui se gagne n'est pas sa
+         * traduction mais sa graphie, repérée lettre à lettre. C'est tout de
+         * même une rencontre, et le carnet les garde toutes.
+         */
+        private fun encarter(forme: String?) {
+            val ctx = context ?: return
+            if (forme.isNullOrBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTSICH)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette, une fois la grille complète. */
+        private fun ouvrirPochette() {
+            val grille = currentPuzzle ?: return
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTSICH,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { currentPuzzle === grille },
+                surVue = { pochette = it }
+            )
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverPochette()
         }
         
         private fun updateScore(points: Int) {
@@ -4446,6 +5134,7 @@ class SettingsActivity : AppCompatActivity() {
         
         private lateinit var tvScore: TextView
         private lateinit var tvWordNumber: TextView
+        private lateinit var tvTranslation: TextView
         private lateinit var gridScrambled: GridView
         private lateinit var gridAnswer: GridView
         private lateinit var btnValidate: Button
@@ -4467,6 +5156,13 @@ class SettingsActivity : AppCompatActivity() {
         private var wordsCorrect = 0
         private var score = 0
         private var difficulty = com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty.NORMAL
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Les mots remis dans l'ordre pendant la manche. Un mot passé n'y est pas. */
+        private val gagnes = mutableListOf<String>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
         
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -4505,6 +5201,9 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
                         
                         tvScore = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
                             text = "Score: 0"
                             textSize = 24f
                             setTypeface(null, Typeface.BOLD)
@@ -4512,6 +5211,13 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(Color.parseColor("#4CAF50"))
                         }
                         addView(tvScore)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@WordScrambleFragment,
+                            Color.parseColor("#1976D2"),
+                            petit = true
+                        )
+                        addView(boutonCarnet)
                     }
                     addView(headerLayout)
                     
@@ -4559,6 +5265,23 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
                     }
                     addView(title)
+
+                    // Traduction du mot caché. Contrairement aux autres jeux
+                    // ce n'est pas un simple rappel de vocabulaire mais la
+                    // consigne elle-même : sans elle, remettre des lettres
+                    // dans l'ordre se joue par permutations, pas par le sens.
+                    tvTranslation = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        textSize = 16f
+                        gravity = Gravity.CENTER
+                        setTextColor(Color.parseColor("#555555"))
+                        (layoutParams as LinearLayout.LayoutParams).bottomMargin = 24
+                        visibility = View.GONE
+                    }
+                    addView(tvTranslation)
                     
                     // Label lettres disponibles
                     val labelScrambled = TextView(activity).apply {
@@ -4717,6 +5440,10 @@ class SettingsActivity : AppCompatActivity() {
             score = 0
             currentWordIndex = 0
             wordsCorrect = 0
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, requireContext())
             
             gameWords = com.example.kreyolkeyboard.wordscramble.WordScrambleData.loadWords(requireContext(), difficulty)
             
@@ -4783,6 +5510,16 @@ class SettingsActivity : AppCompatActivity() {
             tvWordNumber.text = "Mot ${currentWordIndex + 1}/${gameWords.size}"
             tvScore.text = "Score: $score"
             progressBar.progress = currentWordIndex
+
+            val glose = TranslationDictionary.traduire(requireContext(), currentWord)
+            if (glose != null) {
+                tvTranslation.text = "💡 $glose"
+                tvTranslation.visibility = View.VISIBLE
+            } else {
+                // Le tirage ne propose normalement que des mots traduits ; ce
+                // cas ne survient qu'en repli, table des gloses absente.
+                tvTranslation.visibility = View.GONE
+            }
         }
 
         
@@ -4834,6 +5571,7 @@ class SettingsActivity : AppCompatActivity() {
                 
                 Toast.makeText(requireContext(), "✅ Correct! +100 pts", Toast.LENGTH_SHORT).show()
 
+                encarter(currentWord)
                 wordsCorrect++
                 currentWordIndex++
                 loadNextWord()
@@ -4844,7 +5582,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         private fun skipWord() {
-            Toast.makeText(requireContext(), "Le mot était: $currentWord", Toast.LENGTH_SHORT).show()
+            val glose = TranslationDictionary.traduire(requireContext(), currentWord)
+            val revelation = if (glose != null) "Le mot était : $currentWord ($glose)"
+                             else "Le mot était : $currentWord"
+            Toast.makeText(requireContext(), revelation, Toast.LENGTH_SHORT).show()
             currentWordIndex++
             loadNextWord()
         }
@@ -4885,7 +5626,28 @@ class SettingsActivity : AppCompatActivity() {
             btnValidate.isEnabled = false
         }
         
+        /**
+         * La fin de manche : la pochette d'abord, le bilan ensuite.
+         *
+         * L'`AlertDialog` est une fenêtre à part : ouvert en même temps que la
+         * pochette, il la recouvrirait. Les cartes se regardent, puis le score
+         * se lit.
+         */
         private fun endGame() {
+            val manche = gameWords
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTMIX,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { gameWords === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && gameWords === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
             AlertDialog.Builder(requireContext())
                 .setTitle("🎉 Partie terminée!")
                 .setMessage("Score final: $score\nMots réussis: $wordsCorrect/${gameWords.size}")
@@ -4895,9 +5657,28 @@ class SettingsActivity : AppCompatActivity() {
                 .setNegativeButton("OK", null)
                 .show()
         }
+
+        /**
+         * Verse au carnet un mot **remis dans l'ordre**.
+         *
+         * Un mot passé ne compte pas : sa réponse a été montrée, pas trouvée.
+         */
+        private fun encarter(forme: String) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTMIX)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
         
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             rootView = null
         }
     }
@@ -4917,6 +5698,9 @@ class SettingsActivity : AppCompatActivity() {
         private var gameOver = false
         private val rows = mutableListOf<WuertrietRow>()
         private val letterBestState = mutableMapOf<Char, LetterState>()
+
+        private lateinit var boutonCarnet: TextView
+        private var pochette: View? = null
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -4962,6 +5746,18 @@ class SettingsActivity : AppCompatActivity() {
                             setTextColor(Color.parseColor("#1976D2"))
                         }
                         addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@WuertrietFragment,
+                            Color.parseColor("#4CAF50"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
 
                         tvAttempts = TextView(activity).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -5022,6 +5818,10 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             )
+                            // Même défaut que la barre de suggestions du clavier :
+                            // la barre de défilement se dessine par-dessus le
+                            // contenu, et cette rangée n'est haute que d'une puce.
+                            isHorizontalScrollBarEnabled = false
                             addView(legendContainer)
                         }
                         addView(legendScroll)
@@ -5188,6 +5988,8 @@ class SettingsActivity : AppCompatActivity() {
             currentAttempt = 0
             gameOver = false
             letterBestState.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
             rows.clear()
             repeat(WuertrietData.MAX_ATTEMPTS) {
                 rows.add(
@@ -5211,7 +6013,7 @@ class SettingsActivity : AppCompatActivity() {
             val guess = editGuess.text.toString().trim().lowercase()
 
             if (guess.length != WuertrietData.WORD_LENGTH) {
-                showTopMessage("Mo la dwèt ni ${WuertrietData.WORD_LENGTH} lèt")
+                showTopMessage("D'Wuert muss ${WuertrietData.WORD_LENGTH} Buschtawen hunn")
                 return
             }
             if (!WuertrietData.isValidWord(activity, guess)) {
@@ -5243,15 +6045,11 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut via Snackbar
-        // pour ne pas se faire masquer par le clavier virtuel (même piste que WordSearchFragment).
+        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut par un
+        // bandeau pour ne pas se faire masquer par le clavier virtuel (même piste
+        // que WordSearchFragment).
         private fun showTopMessage(message: String) {
-            Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).apply {
-                (view.layoutParams as? FrameLayout.LayoutParams)?.let {
-                    it.gravity = Gravity.TOP
-                    view.layoutParams = it
-                }
-            }.show()
+            bandeauEnHaut(requireView(), message, longue = false)
         }
 
         private fun updateLegend(guess: String, states: List<LetterState>) {
@@ -5289,24 +6087,4378 @@ class SettingsActivity : AppCompatActivity() {
             LetterState.EMPTY -> 0
         }
 
+        /**
+         * La fin de partie.
+         *
+         * **Une seule carte est en jeu, et elle ne se gagne qu'en trouvant.**
+         * Un mot perdu a été montré, pas deviné : il donne sa traduction — ce
+         * que le jeu enseigne — mais pas sa carte. C'est la même règle que la
+         * « Solution » de Kräizwuert.
+         */
         private fun endGame(won: Boolean) {
             editGuess.isEnabled = false
             btnSubmit.isEnabled = false
 
+            val mot = targetWord
+            val neuve = won && Carnet.ajouter(requireContext(), mot, JeuCarte.WUERTRIET)
+            if (won) Pochette.rafraichir(boutonCarnet, requireContext())
+
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTRIET,
+                formes = if (won) listOf(mot) else emptyList(),
+                neuves = if (neuve) setOf(mot) else emptySet(),
+                encoreValide = { targetWord == mot },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && targetWord == mot) montrerLeBilan(won) }
+            )
+        }
+
+        private fun montrerLeBilan(won: Boolean) {
+            // Le mot n'a été montré à personne pendant la partie : la fin est
+            // le seul moment où sa traduction peut être donnée sans livrer la
+            // réponse. C'est là que le jeu apprend quelque chose.
+            val glose = TranslationDictionary.traduire(requireContext(), targetWord)
+            val motEtGlose = targetWord.uppercase() + (glose?.let { "\n« $it »" } ?: "")
+
             AlertDialog.Builder(requireContext())
                 .setTitle(if (won) "🎉 Bravo !" else "😔 Domaj !")
                 .setMessage(
-                    if (won) "Ou touvé mo-a an $currentAttempt èsèy : ${targetWord.uppercase()}"
-                    else "Mo la té : ${targetWord.uppercase()}"
+                    if (won) "Trouvé en $currentAttempt essai(s) : $motEtGlose"
+                    else "Le mot était : $motEtGlose"
                 )
                 .setPositiveButton("Rejouer") { _, _ -> startNewGame() }
                 .setNegativeButton("OK", null)
                 .show()
         }
 
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
         override fun onDestroyView() {
             super.onDestroyView()
+            enleverPochette()
             rootView = null
         }
     }
+
+    // Fragment pour le Wuertlück : une phrase authentique dont un mot manque,
+    // et quatre propositions. Les phrases, la réponse et les leurres viennent
+    // tels quels de l'actif ; ce fragment ne fait que présenter et compter.
+    class ClozeFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var tvScore: TextView
+        private lateinit var tvProgress: TextView
+        private lateinit var progressBar: ProgressBar
+        private lateinit var tvSentence: TextView
+        private lateinit var tvSource: TextView
+        private lateinit var tvFeedback: TextView
+        private lateinit var optionsContainer: LinearLayout
+        private lateinit var btnNext: Button
+        private lateinit var difficultyRow: LinearLayout
+
+        private val optionButtons = mutableListOf<Button>()
+
+        private var round: List<ClozeQuestion> = emptyList()
+        private var questionIndex = 0
+        private var score = 0
+        private var answered = false
+        private var difficulty = ClozeDifficulty.NORMALE
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Les mots retrouvés dans la phrase pendant la manche. */
+        private val gagnes = mutableListOf<String>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
+
+        private val couleurNeutre = Color.parseColor("#1976D2")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    // Titre et score sur une ligne : la phrase à trous a besoin
+                    // de toute la hauteur qu'on peut lui laisser.
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 12 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "📝 Wuertlück"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        }
+                        addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@ClozeFragment,
+                            Color.parseColor("#FF8C00"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
+
+                        tvScore = TextView(activity).apply {
+                            text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerRow)
+
+                    // Choix de la difficulté : elle porte sur la fréquence du
+                    // mot masqué, pas sur le nombre de propositions.
+                    difficultyRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    ClozeDifficulty.values().forEach { niveau ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulty = niveau
+                                startNewRound()
+                            }
+                        }
+                        difficultyRow.addView(bouton)
+                    }
+                    addView(difficultyRow)
+
+                    tvProgress = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 6 }
+                        text = "Question 1 / ${ClozeData.QUESTIONS_PER_ROUND}"
+                        textSize = 13f
+                        setTextColor(Color.parseColor("#666666"))
+                    }
+                    addView(tvProgress)
+
+                    progressBar = ProgressBar(
+                        activity, null, android.R.attr.progressBarStyleHorizontal
+                    ).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        max = ClozeData.QUESTIONS_PER_ROUND
+                        progress = 0
+                    }
+                    addView(progressBar)
+
+                    // Carte de la phrase
+                    val sentenceCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 20 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(28, 28, 28, 24)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        tvSentence = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            textSize = 18f
+                            setLineSpacing(0f, 1.25f)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        addView(tvSentence)
+
+                        // La source est affichée par phrase : les deux corpus
+                        // sont sous licence Creative Commons et exigent la
+                        // citation de leurs auteurs.
+                        tvSource = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 14 }
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#9E9E9E"))
+                        }
+                        addView(tvSource)
+                    }
+                    addView(sentenceCard)
+
+                    // Les quatre propositions, une par ligne : les mots
+                    // luxembourgeois composés sont longs, deux colonnes les
+                    // couperaient.
+                    optionsContainer = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    repeat(4) { position ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 12 }
+                            textSize = 16f
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            isAllCaps = false
+                            setOnClickListener { onOptionChosen(position) }
+                        }
+                        optionButtons.add(bouton)
+                        optionsContainer.addView(bouton)
+                    }
+                    addView(optionsContainer)
+
+                    tvFeedback = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4; bottomMargin = 8 }
+                        textSize = 14f
+                        setTypeface(null, Typeface.BOLD)
+                        gravity = Gravity.CENTER
+                        visibility = View.GONE
+                    }
+                    addView(tvFeedback)
+
+                    btnNext = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4 }
+                        text = "➡️ Question suivante"
+                        setBackgroundColor(couleurNeutre)
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        visibility = View.INVISIBLE
+                        setOnClickListener { goToNextQuestion() }
+                    }
+                    addView(btnNext)
+
+                    val btnRestart = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        text = "🔄 Nouvelle partie"
+                        textSize = 14f
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        setOnClickListener { startNewRound() }
+                    }
+                    addView(btnRestart)
+
+                    // Règles + crédits des corpus
+                    val rulesCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        val rulesTitle = TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        }
+                        addView(rulesTitle)
+
+                        val rulesText = TextView(activity).apply {
+                            text = "Chaque phrase est une phrase luxembourgeoise réelle, " +
+                                "à laquelle il manque un mot. Parmi les quatre propositions, " +
+                                "une seule est celle qu'a écrite l'auteur : les trois autres " +
+                                "sont des mots que le corpus atteste au même endroit, elles " +
+                                "sonnent donc juste tant qu'on ne lit pas toute la phrase.\n\n" +
+                                "La difficulté porte sur la fréquence du mot manquant : " +
+                                "courant en « Facile », rare en « Difficile »."
+                            textSize = 14f
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(rulesText)
+
+                        val creditsText = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Phrases extraites des corpus :\n" +
+                                ClozeData.attribution(activity)
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        }
+                        addView(creditsText)
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) {
+                        startNewRound()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun startNewRound() {
+            val activity = requireActivity()
+            round = ClozeData.newRound(activity, difficulty)
+            questionIndex = 0
+            score = 0
+            answered = false
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
+            tvScore.text = "0 / ${ClozeData.QUESTIONS_PER_ROUND}"
+            progressBar.max = maxOf(1, round.size)
+            progressBar.progress = 0
+            highlightDifficulty()
+
+            if (round.isEmpty()) {
+                showMissingAsset()
+                return
+            }
+            renderQuestion()
+        }
+
+        private fun highlightDifficulty() {
+            for (i in 0 until difficultyRow.childCount) {
+                val bouton = difficultyRow.getChildAt(i) as Button
+                val actif = bouton.tag == difficulty
+                bouton.setBackgroundColor(if (actif) couleurNeutre else couleurInerte)
+            }
+        }
+
+        /**
+         * Sans l'actif, le jeu ne se rabat pas sur des phrases de secours : il
+         * le dit. Un jeu de dépannage jouable masquerait une livraison cassée.
+         */
+        private fun showMissingAsset() {
+            tvSentence.text = "Les phrases du Wuertlück n'ont pas pu être chargées."
+            tvSource.text = ""
+            tvProgress.text = ""
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+            optionButtons.forEach {
+                it.visibility = View.GONE
+            }
+        }
+
+        private fun renderQuestion() {
+            val question = round[questionIndex]
+            answered = false
+
+            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
+            tvSource.text = "Phrase du corpus ${question.source}"
+            tvSentence.text = sentenceWithBlank(question)
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+
+            optionButtons.forEachIndexed { position, bouton ->
+                val proposition = question.options.getOrNull(position)
+                if (proposition == null) {
+                    bouton.visibility = View.GONE
+                } else {
+                    bouton.visibility = View.VISIBLE
+                    bouton.text = proposition
+                    bouton.isEnabled = true
+                    bouton.setBackgroundColor(couleurNeutre)
+                }
+            }
+        }
+
+        /** La phrase avec son trou matérialisé, en gras et en couleur. */
+        private fun sentenceWithBlank(question: ClozeQuestion): CharSequence {
+            val trou = "_____"
+            val texte = question.before + trou + question.after
+            return SpannableString(texte).apply {
+                val debut = question.before.length
+                setSpan(
+                    ForegroundColorSpan(couleurNeutre),
+                    debut, debut + trou.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    debut, debut + trou.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+
+        /** La phrase complétée, le mot retrouvé mis en évidence. */
+        private fun sentenceWithAnswer(question: ClozeQuestion): CharSequence {
+            val texte = question.completed
+            return SpannableString(texte).apply {
+                val debut = question.before.length
+                setSpan(
+                    ForegroundColorSpan(couleurJuste),
+                    debut, debut + question.answer.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    debut, debut + question.answer.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+
+        private fun onOptionChosen(position: Int) {
+            if (answered || round.isEmpty()) return
+            val question = round[questionIndex]
+            val choix = question.options.getOrNull(position) ?: return
+            answered = true
+
+            val juste = choix == question.answer
+            if (juste) {
+                score++
+                tvScore.text = "$score / ${round.size}"
+                encarter(question.answer)
+            }
+
+            // Toutes les propositions se figent : la bonne en vert, celle qu'on
+            // a touchée en rouge si elle était fausse. Voir la bonne réponse
+            // compte autant que marquer le point.
+            optionButtons.forEachIndexed { i, bouton ->
+                val proposition = question.options.getOrNull(i)
+                bouton.isEnabled = false
+                bouton.setBackgroundColor(
+                    when {
+                        proposition == question.answer -> couleurJuste
+                        i == position -> couleurFausse
+                        else -> couleurInerte
+                    }
+                )
+            }
+
+            tvSentence.text = sentenceWithAnswer(question)
+            // La glose ne s'affiche qu'une fois la question tranchée : donnée
+            // avant, elle désignerait la bonne case. Les mots masqués sont des
+            // mots pleins, donc le LOD en glose la plupart — mais pas tous, et
+            // une réponse sans traduction se contente du verdict.
+            val glose = TranslationDictionary.traduire(requireContext(), question.answer)
+            val gloseAffichee = glose?.let { " (${question.answer} : $it)" } ?: ""
+            tvFeedback.apply {
+                text = if (juste) "✅ Richteg !$gloseAffichee"
+                       else "❌ La phrase disait « ${question.answer} »" +
+                            (glose?.let { " : $it" } ?: "")
+                setTextColor(if (juste) couleurJuste else couleurFausse)
+                visibility = View.VISIBLE
+            }
+
+            progressBar.progress = questionIndex + 1
+            btnNext.visibility = View.VISIBLE
+            btnNext.text =
+                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
+                else "➡️ Question suivante"
+        }
+
+        private fun goToNextQuestion() {
+            if (questionIndex + 1 >= round.size) {
+                endRound()
+                return
+            }
+            questionIndex++
+            renderQuestion()
+        }
+
+        /**
+         * Verse au carnet le mot **retrouvé dans la phrase**.
+         *
+         * Une réponse fausse ne donne rien : la bonne proposition s'affiche
+         * alors en vert, mais elle a été montrée, pas trouvée.
+         */
+        private fun encarter(forme: String) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTLUECK)) neuves.add(forme)
+            gagnes.add(forme)
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette d'abord, le bilan de manche ensuite. */
+        private fun endRound() {
+            val manche = round
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTLUECK,
+                formes = gagnes.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { round === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && round === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
+            val total = round.size
+            val message = when {
+                score == total -> "Sans faute : $score sur $total !"
+                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
+                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
+                score * 2 >= total -> "$score bonnes réponses sur $total."
+                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+            }
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setMessage(message)
+                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverPochette()
+            optionButtons.clear()
+            rootView = null
+        }
+    }
+
+    /**
+     * Fragment « Zuelwuert » : une multiplication, quatre orthographes de son
+     * résultat.
+     *
+     * Le seul jeu qui ne tire rien du dictionnaire : ses mots se calculent
+     * (voir [ZuelenSpeller]). Il n'affiche donc pas de glose française — le
+     * chiffre est déjà à l'écran, il est sa propre traduction.
+     */
+    class ZuelenFragment : Fragment() {
+        private var rootView: ScrollView? = null
+
+        private lateinit var tvScore: TextView
+        private lateinit var tvProgress: TextView
+        private lateinit var progressBar: ProgressBar
+        private lateinit var tvOperation: TextView
+        private lateinit var tvConsigne: TextView
+        private lateinit var tvFeedback: TextView
+        private lateinit var optionsContainer: LinearLayout
+        private lateinit var btnNext: Button
+        private lateinit var difficultyRow: LinearLayout
+
+        private val optionButtons = mutableListOf<Button>()
+
+        private var round: List<ZuelenQuestion> = emptyList()
+        private var questionIndex = 0
+        private var score = 0
+        private var answered = false
+        private var difficulty = ZuelenDifficulty.NORMALE
+
+        private lateinit var boutonCarnet: TextView
+
+        /**
+         * Les numéraux bien orthographiés de la manche, avec leur valeur.
+         *
+         * La valeur suit la forme jusqu'au carnet : elle est la seule manière
+         * de lire la rareté d'un composé, que le corpus ne contient pas.
+         */
+        private val gagnes = LinkedHashMap<String, Int>()
+        private val neuves = mutableSetOf<String>()
+        private var pochette: View? = null
+
+        private val couleurNeutre = Color.parseColor("#00897B")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val mainLayout = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(32, 16, 32, 16)
+
+                    val headerRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 12 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        val title = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "🔢 Zuelwuert"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        }
+                        addView(title)
+
+                        boutonCarnet = Pochette.bouton(
+                            this@ZuelenFragment,
+                            couleurNeutre,
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
+
+                        tvScore = TextView(activity).apply {
+                            text = "0 / ${ZuelenData.QUESTIONS_PER_ROUND}"
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvScore)
+                    }
+                    addView(headerRow)
+
+                    // La difficulté porte sur les tables tirées, sur la finesse
+                    // des leurres, et — au niveau le plus dur — sur le fait que
+                    // le produit n'est plus donné.
+                    difficultyRow = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    ZuelenDifficulty.values().forEach { niveau ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulty = niveau
+                                startNewRound()
+                            }
+                        }
+                        difficultyRow.addView(bouton)
+                    }
+                    addView(difficultyRow)
+
+                    tvProgress = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 6 }
+                        text = "Question 1 / ${ZuelenData.QUESTIONS_PER_ROUND}"
+                        textSize = 13f
+                        setTextColor(Color.parseColor("#666666"))
+                    }
+                    addView(tvProgress)
+
+                    progressBar = ProgressBar(
+                        activity, null, android.R.attr.progressBarStyleHorizontal
+                    ).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        max = ZuelenData.QUESTIONS_PER_ROUND
+                        progress = 0
+                    }
+                    addView(progressBar)
+
+                    // Carte de l'opération
+                    val operationCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 20 }
+                        orientation = LinearLayout.VERTICAL
+                        gravity = Gravity.CENTER_HORIZONTAL
+                        setPadding(28, 28, 28, 24)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        tvOperation = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            textSize = 34f
+                            gravity = Gravity.CENTER
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        addView(tvOperation)
+
+                        tvConsigne = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 10 }
+                            textSize = 13f
+                            gravity = Gravity.CENTER
+                            setTextColor(Color.parseColor("#9E9E9E"))
+                        }
+                        addView(tvConsigne)
+                    }
+                    addView(operationCard)
+
+                    // Une proposition par ligne : « fënnefasiwwenzeg » et son
+                    // leurre allemand ne tiennent pas côte à côte.
+                    optionsContainer = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    repeat(ZuelenData.OPTIONS_PER_QUESTION) { position ->
+                        val bouton = Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 12 }
+                            textSize = 16f
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            isAllCaps = false
+                            setOnClickListener { onOptionChosen(position) }
+                        }
+                        optionButtons.add(bouton)
+                        optionsContainer.addView(bouton)
+                    }
+                    addView(optionsContainer)
+
+                    tvFeedback = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4; bottomMargin = 8 }
+                        textSize = 14f
+                        setLineSpacing(0f, 1.2f)
+                        gravity = Gravity.CENTER
+                        visibility = View.GONE
+                    }
+                    addView(tvFeedback)
+
+                    btnNext = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 4 }
+                        text = "➡️ Question suivante"
+                        setBackgroundColor(couleurNeutre)
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        visibility = View.INVISIBLE
+                        setOnClickListener { goToNextQuestion() }
+                    }
+                    addView(btnNext)
+
+                    val btnRestart = Button(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 8) }
+                        text = "🔄 Nouvelle partie"
+                        textSize = 14f
+                        setBackgroundColor(Color.parseColor("#9C27B0"))
+                        setTextColor(Color.WHITE)
+                        setTypeface(null, Typeface.BOLD)
+                        isAllCaps = false
+                        setOnClickListener { startNewRound() }
+                    }
+                    addView(btnRestart)
+
+                    val rulesCard = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { topMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        addView(TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        })
+
+                        addView(TextView(activity).apply {
+                            text = "Une multiplication, et quatre façons d'écrire " +
+                                "son résultat : une seule est du luxembourgeois " +
+                                "correct. Les autres sont les fautes qu'on fait " +
+                                "vraiment : l'allemand, les chiffres inversés, le " +
+                                "trait d'union, la règle d'Eifel, la finale -ig. " +
+                                "Quand vous vous trompez, le jeu dit laquelle.\n\n" +
+                                "Deux règles suffisent à écrire tous les nombres " +
+                                "jusqu'à cent. L'unité se dit avant la dizaine : 56, " +
+                                "c'est six-et-cinquante, « sechsafofzeg ». Et le n de " +
+                                "la liaison « an » tombe devant f, s, v, m…, mais se " +
+                                "maintient devant d, t, z, n, h et les voyelles, " +
+                                "c'est la règle d'Eifel, d'où « sechsafofzeg » (56) " +
+                                "mais « sechsandrësseg » (36).\n\n" +
+                                "En « Difficile », le produit n'est plus affiché : " +
+                                "il faut le calculer avant de l'écrire."
+                            textSize = 14f
+                            setLineSpacing(0f, 1.2f)
+                            setTextColor(Color.parseColor("#333333"))
+                        })
+
+                        // Les orthographes ne sont pas de nous : elles ont été
+                        // vérifiées une à une contre le dictionnaire officiel.
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Orthographes vérifiées contre le Lëtzebuerger " +
+                                "Online Dictionnaire (LOD), Zenter fir d'Lëtzebuerger " +
+                                "Sprooch, data.public.lu, CC0."
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        })
+                    }
+                    addView(rulesCard)
+                }
+
+                addView(mainLayout)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) {
+                        startNewRound()
+                    }
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun startNewRound() {
+            round = ZuelenData.newRound(difficulty)
+            questionIndex = 0
+            score = 0
+            answered = false
+            gagnes.clear()
+            neuves.clear()
+            enleverPochette()
+            context?.let { Pochette.rafraichir(boutonCarnet, it) }
+            tvScore.text = "0 / ${round.size.coerceAtLeast(1)}"
+            progressBar.max = maxOf(1, round.size)
+            progressBar.progress = 0
+            highlightDifficulty()
+            if (round.isNotEmpty()) renderQuestion()
+        }
+
+        private fun highlightDifficulty() {
+            for (i in 0 until difficultyRow.childCount) {
+                val bouton = difficultyRow.getChildAt(i) as Button
+                val actif = bouton.tag == difficulty
+                bouton.setBackgroundColor(if (actif) couleurNeutre else couleurInerte)
+            }
+        }
+
+        private fun renderQuestion() {
+            val question = round[questionIndex]
+            answered = false
+
+            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
+            tvOperation.text = question.enonce
+            tvConsigne.text = if (question.montreLeProduit)
+                "Comment s'écrit ce nombre ?"
+            else
+                "Calculez, puis choisissez l'orthographe."
+            tvFeedback.visibility = View.GONE
+            btnNext.visibility = View.INVISIBLE
+
+            optionButtons.forEachIndexed { position, bouton ->
+                val proposition = question.options.getOrNull(position)
+                if (proposition == null) {
+                    bouton.visibility = View.GONE
+                } else {
+                    bouton.visibility = View.VISIBLE
+                    bouton.text = proposition.texte
+                    bouton.isEnabled = true
+                    bouton.setBackgroundColor(couleurNeutre)
+                }
+            }
+        }
+
+        private fun onOptionChosen(position: Int) {
+            if (answered || round.isEmpty()) return
+            val question = round[questionIndex]
+            val choix = question.options.getOrNull(position) ?: return
+            answered = true
+
+            if (choix.juste) {
+                score++
+                tvScore.text = "$score / ${round.size}"
+                encarter(choix.texte, question.produit)
+            }
+
+            optionButtons.forEachIndexed { i, bouton ->
+                val proposition = question.options.getOrNull(i)
+                bouton.isEnabled = false
+                bouton.setBackgroundColor(
+                    when {
+                        proposition?.juste == true -> couleurJuste
+                        i == position -> couleurFausse
+                        else -> couleurInerte
+                    }
+                )
+            }
+
+            // Le produit reste caché pendant la question au niveau difficile ;
+            // une fois répondu il n'y a plus de raison de le taire.
+            tvOperation.text = "${question.gauche} × ${question.droite} = ${question.produit}"
+
+            // C'est ici que le jeu enseigne : la raison de la faute commise,
+            // pas seulement le verdict. Une bonne réponse rappelle la forme.
+            tvFeedback.apply {
+                text = if (choix.juste)
+                    "✅ Richteg ! ${choix.raison}"
+                else
+                    "❌ ${choix.raison}\nLa bonne réponse était « ${question.reponse} »."
+                setTextColor(if (choix.juste) couleurJuste else couleurFausse)
+                visibility = View.VISIBLE
+            }
+
+            progressBar.progress = questionIndex + 1
+            btnNext.visibility = View.VISIBLE
+            btnNext.text =
+                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
+                else "➡️ Question suivante"
+        }
+
+        private fun goToNextQuestion() {
+            if (questionIndex + 1 >= round.size) {
+                endRound()
+                return
+            }
+            questionIndex++
+            renderQuestion()
+        }
+
+        /**
+         * Verse au carnet le numéral **bien orthographié**.
+         *
+         * Une réponse fausse ne donne rien : la bonne forme s'affiche alors en
+         * vert, mais elle a été montrée, pas écrite. Et une même manche ne tire
+         * jamais deux fois le même produit, donc jamais deux fois la même
+         * carte.
+         */
+        private fun encarter(forme: String, valeur: Int) {
+            val ctx = context ?: return
+            if (forme.isBlank()) return
+            if (Carnet.ajouter(ctx, forme, JeuCarte.ZUELWUERT, valeur)) neuves.add(forme)
+            gagnes[forme] = valeur
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette d'abord, le bilan de manche ensuite. */
+        private fun endRound() {
+            val manche = round
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.ZUELWUERT,
+                formes = gagnes.keys.toList(),
+                neuves = HashSet(neuves),
+                encoreValide = { round === manche },
+                surVue = { pochette = it },
+                surFin = { if (isAdded && round === manche) montrerLeBilan() }
+            )
+        }
+
+        private fun montrerLeBilan() {
+            val total = round.size
+            val message = when {
+                score == total -> "Sans faute : $score sur $total !"
+                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
+                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
+                score * 2 >= total -> "$score bonnes réponses sur $total."
+                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+            }
+            AlertDialog.Builder(requireContext())
+                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setMessage(message)
+                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
+                .setNegativeButton("OK", null)
+                .show()
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverPochette()
+            optionButtons.clear()
+            rootView = null
+        }
+    }
+
+    /**
+     * Fragment « Kräizwuert » : une grille de mots croisés numérotée, ses
+     * définitions en français, et un pavé de lettres pour y répondre.
+     *
+     * C'est le seul jeu qui demande d'**écrire** le luxembourgeois. Trois
+     * conséquences sur l'écran :
+     *
+     * - Le pavé de lettres est fourni par le jeu et non par le clavier système.
+     *   Il porte Ä Ë É Ö Ü, que le clavier actif de l'appareil n'a aucune raison
+     *   d'offrir — et si le joueur ne peut pas écrire « gréng », la seule chose
+     *   que le jeu lui apprend est de laisser tomber l'accent.
+     * - La grille est en capitales, comme toute grille de mots croisés, mais la
+     *   forme canonique est rappelée à chaque mot trouvé : la capitale efface
+     *   justement la majuscule des substantifs, qui est une règle de la langue.
+     * - Rien n'est corrigé lettre à lettre. Une case fausse ne se signale
+     *   qu'une fois son mot entièrement rempli, sinon le jeu dicte la réponse.
+     */
+    class CrosswordFragment : Fragment() {
+
+        private var rootView: ScrollView? = null
+
+        private lateinit var tvProgres: TextView
+        private lateinit var tvDefinition: TextView
+        private lateinit var tvNumero: TextView
+        private lateinit var tvRetour: TextView
+        private lateinit var conteneurGrille: LinearLayout
+        private lateinit var conteneurPave: LinearLayout
+        private lateinit var conteneurHorizontal: LinearLayout
+        private lateinit var conteneurVertical: LinearLayout
+        private lateinit var ligneDifficulte: LinearLayout
+
+        private var session: CrosswordSession? = null
+        private var difficulte = CrosswordDifficulty.NORMALE
+
+        /** Fond de chaque case jouable, indexé par ligne × largeur + colonne. */
+        private val fondsCase = mutableMapOf<Int, GradientDrawable>()
+        private val lettresCase = mutableMapOf<Int, TextView>()
+        private val lignesDefinition = mutableMapOf<Int, TextView>()
+
+        /** Mots déjà trouvés, pour ne féliciter qu'une fois. */
+        private val resolus = mutableSetOf<Int>()
+
+        private lateinit var boutonCarnet: TextView
+
+        /** Emplacements dont le mot est entré au carnet pour la première fois. */
+        private val cartesNeuves = mutableSetOf<Int>()
+
+        /** La pochette de fin de grille, posée au-dessus de tout. */
+        private var pochette: View? = null
+
+        /**
+         * Vrai dès que « Solution » a été touché.
+         *
+         * Une grille révélée ne verse rien au carnet et n'ouvre pas de
+         * pochette : la récompense suit ce qui a été trouvé, pas ce qui a été
+         * montré. Les mots déjà gagnés avant la révélation, eux, restent
+         * acquis — ils l'ont été.
+         */
+        private var solutionMontree = false
+
+        private val couleurNeutre = Color.parseColor("#1976D2")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+        private val fondCase = Color.WHITE
+        private val fondMotChoisi = Color.parseColor("#E3F2FD")
+        private val fondCaseChoisie = Color.parseColor("#90CAF9")
+        private val fondJuste = Color.parseColor("#C8E6C9")
+        private val fondJusteChoisi = Color.parseColor("#A5D6A7")
+        private val fondFaux = Color.parseColor("#FFCDD2")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val colonne = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    // Marges serrées, et elles ne sont pas décoratives : la
+                    // grille et le pavé doivent tenir ensemble sous la barre
+                    // d'onglets, sinon il faut faire défiler l'écran entre
+                    // chaque lettre.
+                    setPadding(24, 10, 24, 16)
+
+                    val entete = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 8 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "🧩 Kräizwuert"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        })
+
+                        boutonCarnet = Pochette.bouton(
+                            this@CrosswordFragment,
+                            Color.parseColor("#C2185B"),
+                            petit = true
+                        ).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { rightMargin = 12 }
+                        }
+                        addView(boutonCarnet)
+
+                        tvProgres = TextView(activity).apply {
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvProgres)
+                    }
+                    addView(entete)
+
+                    ligneDifficulte = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 10 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    CrosswordDifficulty.values().forEach { niveau ->
+                        ligneDifficulte.addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            minHeight = 0
+                            minimumHeight = 0
+                            setPadding(0, 14, 0, 14)
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulte = niveau
+                                nouvelleGrille()
+                            }
+                        })
+                    }
+                    addView(ligneDifficulte)
+
+                    // La définition du mot sélectionné, en grand et au-dessus de
+                    // la grille. C'est le choix qui remplace les cases-flèches :
+                    // une définition écrite dans une case de trente pixels ne se
+                    // lit pas, et la reléguer sous la grille obligerait à faire
+                    // défiler l'écran entre chaque lettre.
+                    val carteDefinition = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 10 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        setPadding(20, 14, 20, 14)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        tvNumero = TextView(activity).apply {
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 14, 0)
+                        }
+                        addView(tvNumero)
+
+                        tvDefinition = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            textSize = 16f
+                            setLineSpacing(0f, 1.2f)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        addView(tvDefinition)
+                    }
+                    addView(carteDefinition)
+
+                    // La grille, ligne par ligne. Un LinearLayout et non une
+                    // GridView : celle-ci vole le geste de défilement vertical
+                    // à la ScrollView parente, même en lecture seule (même
+                    // piège que Wuertriet et Wuertsich).
+                    conteneurGrille = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { gravity = Gravity.CENTER_HORIZONTAL; bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurGrille)
+
+                    tvRetour = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 10 }
+                        textSize = 14f
+                        gravity = Gravity.CENTER
+                        setTypeface(null, Typeface.BOLD)
+                        setLineSpacing(0f, 1.2f)
+                        visibility = View.INVISIBLE
+                        // La ligne garde sa place même vide : sans cela, la
+                        // grille et le pavé sautent d'un cran à chaque mot
+                        // trouvé, et le doigt tombe à côté de la touche visée.
+                        text = " "
+                    }
+                    addView(tvRetour)
+
+                    conteneurPave = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurPave)
+                    construirePave(activity)
+
+                    val ligneBoutons = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+
+                        addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { rightMargin = 8 }
+                            text = "🔄 Nouvelle grille"
+                            textSize = 13f
+                            isAllCaps = false
+                            setBackgroundColor(Color.parseColor("#9C27B0"))
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { nouvelleGrille() }
+                        })
+                        addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "💡 Solution"
+                            textSize = 13f
+                            isAllCaps = false
+                            setBackgroundColor(couleurInerte)
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { montrerLaSolution() }
+                        })
+                    }
+                    addView(ligneBoutons)
+
+                    val carteDefinitions = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        addView(TextView(activity).apply {
+                            text = "➡️ Horizontalement"
+                            textSize = 15f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 8)
+                        })
+                        conteneurHorizontal = LinearLayout(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 14 }
+                            orientation = LinearLayout.VERTICAL
+                        }
+                        addView(conteneurHorizontal)
+
+                        addView(TextView(activity).apply {
+                            text = "⬇️ Verticalement"
+                            textSize = 15f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 8)
+                        })
+                        conteneurVertical = LinearLayout(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            orientation = LinearLayout.VERTICAL
+                        }
+                        addView(conteneurVertical)
+                    }
+                    addView(carteDefinitions)
+
+                    val carteRegles = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        addView(TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        })
+                        addView(TextView(activity).apply {
+                            text = "Chaque définition est le sens français d'un mot " +
+                                "luxembourgeois : à vous de l'écrire dans la grille, " +
+                                "lettre par lettre et accents compris. Le pavé " +
+                                "reprend la disposition du clavier luxembourgeois, " +
+                                "et Ä, Ë, É, Ö et Ü y sont en clair — sans appui " +
+                                "long.\n\n" +
+                                "Touchez une case pour choisir un mot, touchez-la de " +
+                                "nouveau pour passer à l'autre sens. Une faute ne se " +
+                                "voit qu'une fois le mot entièrement écrit.\n\n" +
+                                "La grille est en capitales, comme toutes les grilles " +
+                                "de mots croisés. Chaque mot trouvé rappelle son " +
+                                "orthographe véritable : en luxembourgeois, les " +
+                                "substantifs gardent leur majuscule.\n\n" +
+                                "La difficulté porte sur la rareté des mots, pas sur " +
+                                "la taille de la grille."
+                            textSize = 14f
+                            setLineSpacing(0f, 1.2f)
+                            setTextColor(Color.parseColor("#333333"))
+                        })
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Définitions et vocabulaire :\n" +
+                                CrosswordData.attribution(activity)
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        })
+                    }
+                    addView(carteRegles)
+                }
+
+                addView(colonne)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) nouvelleGrille()
+                }
+            }
+
+            return rootView!!
+        }
+
+        /**
+         * Le pavé de saisie, dans la disposition du clavier — voir
+         * [CrosswordData.RANGEES] pour le raisonnement.
+         *
+         * Chaque rangée pèse dix unités, comme les rangées du clavier, et c'est
+         * ce qui aligne les touches d'une rangée à l'autre : la troisième porte
+         * sept lettres entre l'emplacement vide de `⇧` et `⌫`, tous deux d'une
+         * unité et demie ; la quatrième porte quatre voyelles infléchies en
+         * touches doubles, centrées.
+         *
+         * Construit une fois pour toutes — il ne dépend pas de la grille.
+         */
+        private fun construirePave(activity: SettingsActivity) {
+            CrosswordData.RANGEES.forEachIndexed { rang, rangee ->
+                val ligne = LinearLayout(activity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 5 }
+                    orientation = LinearLayout.HORIZONTAL
+                }
+
+                val poidsLettre = if (rang == CrosswordData.RANGEE_ACCENTS) 2f else 1f
+                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
+                    // L'emplacement de la touche majuscule reste vide : la
+                    // grille est tout en capitales, mais retirer la place
+                    // décalerait la rangée par rapport aux deux du dessus.
+                    ligne.addView(espaceurDuPave(activity, 1.5f))
+                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
+                    ligne.addView(espaceurDuPave(activity, 1f))
+                }
+
+                rangee.forEach { lettre ->
+                    ligne.addView(toucheDuPave(activity, lettre.toString(), poidsLettre) {
+                        session?.ecrire(lettre)
+                        apresSaisie()
+                    })
+                }
+
+                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
+                    ligne.addView(toucheDuPave(activity, "⌫", poids = 1.5f) {
+                        session?.effacer()
+                        apresSaisie()
+                    })
+                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
+                    ligne.addView(espaceurDuPave(activity, 1f))
+                }
+
+                conteneurPave.addView(ligne)
+            }
+        }
+
+        /** Place réservée dans une rangée du pavé, sans touche dessous. */
+        private fun espaceurDuPave(activity: SettingsActivity, poids: Float) =
+            View(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, poids
+                )
+            }
+
+        private fun toucheDuPave(
+            activity: SettingsActivity,
+            libelle: String,
+            poids: Float = 1f,
+            action: () -> Unit
+        ) = TextView(activity).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, poids
+            ).apply { setMargins(3, 0, 3, 0) }
+            text = libelle
+            textSize = 16f
+            gravity = Gravity.CENTER
+            setPadding(0, 9, 0, 9)
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#212121"))
+            background = GradientDrawable().apply {
+                cornerRadius = 8f * resources.displayMetrics.density
+                setColor(Color.WHITE)
+                setStroke(
+                    (1f * resources.displayMetrics.density).toInt(),
+                    Color.parseColor("#D0D0D0")
+                )
+            }
+            isClickable = true
+            setOnClickListener { action() }
+        }
+
+        private fun nouvelleGrille() {
+            val activity = requireActivity()
+            val grille = CrosswordData.newGrid(activity, difficulte)
+            resolus.clear()
+            cartesNeuves.clear()
+            solutionMontree = false
+            enleverPochette()
+            Pochette.rafraichir(boutonCarnet, activity)
+            surlignerDifficulte()
+            // Sans cela « Solution affichée — cette grille ne compte pas »
+            // survit au changement de grille et accuse la suivante.
+            tvRetour.visibility = View.INVISIBLE
+
+            if (grille == null) {
+                session = null
+                conteneurGrille.removeAllViews()
+                conteneurHorizontal.removeAllViews()
+                conteneurVertical.removeAllViews()
+                tvProgres.text = ""
+                tvNumero.text = ""
+                tvDefinition.text = "Aucune grille disponible : l'actif " +
+                    "luxemburgish_crossword.json manque à l'application."
+                return
+            }
+
+            val nouvelle = CrosswordSession(grille)
+            session = nouvelle
+            // On commence sur le 1, pas sur le premier mot du fichier : celui-ci
+            // est le mot d'amorce du générateur, qui peut porter n'importe quel
+            // numéro et laisse croire que la grille commence au milieu.
+            nouvelle.selectionnerMot(maxOf(0, grille.numeros.indexOf(1)))
+            construireGrille(requireActivity() as SettingsActivity, grille)
+            construireDefinitions(requireActivity() as SettingsActivity, grille)
+            rafraichir()
+        }
+
+        private fun surlignerDifficulte() {
+            for (i in 0 until ligneDifficulte.childCount) {
+                val bouton = ligneDifficulte.getChildAt(i) as Button
+                bouton.setBackgroundColor(
+                    if (bouton.tag == difficulte) couleurNeutre else couleurInerte
+                )
+            }
+        }
+
+        /**
+         * Dessine la grille.
+         *
+         * Le côté d'une case se déduit de la largeur de l'écran et du nombre de
+         * colonnes : une taille fixe déborderait sur les grilles de onze
+         * colonnes, et laisserait la moitié de l'écran vide sur celles de neuf.
+         */
+        private fun construireGrille(activity: SettingsActivity, grille: CrosswordGrid) {
+            conteneurGrille.removeAllViews()
+            fondsCase.clear()
+            lettresCase.clear()
+
+            val densite = resources.displayMetrics.density
+            val disponible = resources.displayMetrics.widthPixels - (48 * 2)
+            // Trois bornes, et la troisième est celle qui compte : une grille
+            // haute chassait le pavé hors de l'écran, en commençant par sa
+            // rangée d'accents — c'est-à-dire par les cinq touches pour
+            // lesquelles ce pavé existe. La grille cède donc quelques pixels
+            // plutôt que le pavé, qui est le seul des deux dont on ne peut pas
+            // se passer sans faire défiler l'écran à chaque lettre.
+            val budgetHauteur = (resources.displayMetrics.heightPixels * 0.40f).toInt()
+            val cote = minOf(
+                disponible / grille.width,
+                budgetHauteur / grille.height,
+                (44 * densite).toInt()
+            )
+
+            for (r in 0 until grille.height) {
+                val ligne = LinearLayout(activity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.HORIZONTAL
+                }
+
+                for (c in 0 until grille.width) {
+                    val cadre = FrameLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(cote, cote).apply {
+                            setMargins(1, 1, 1, 1)
+                        }
+                    }
+
+                    if (grille.estCaseJouable(r, c)) {
+                        val fond = GradientDrawable().apply {
+                            cornerRadius = 3f * densite
+                            setColor(fondCase)
+                            setStroke((1f * densite).toInt(), Color.parseColor("#9E9E9E"))
+                        }
+                        cadre.background = fond
+
+                        grille.numerosParCase[r * grille.width + c]?.let { numero ->
+                            cadre.addView(TextView(activity).apply {
+                                layoutParams = FrameLayout.LayoutParams(
+                                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                                    FrameLayout.LayoutParams.WRAP_CONTENT
+                                ).apply { gravity = Gravity.START or Gravity.TOP }
+                                text = numero.toString()
+                                textSize = 8f
+                                setPadding((2 * densite).toInt(), 0, 0, 0)
+                                setTextColor(Color.parseColor("#757575"))
+                            })
+                        }
+
+                        val lettre = TextView(activity).apply {
+                            layoutParams = FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT
+                            )
+                            gravity = Gravity.CENTER
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        cadre.addView(lettre)
+
+                        cadre.isClickable = true
+                        cadre.setOnClickListener {
+                            session?.selectionner(r, c)
+                            rafraichir()
+                        }
+
+                        fondsCase[r * grille.width + c] = fond
+                        lettresCase[r * grille.width + c] = lettre
+                    }
+
+                    ligne.addView(cadre)
+                }
+                conteneurGrille.addView(ligne)
+            }
+        }
+
+        private fun construireDefinitions(activity: SettingsActivity, grille: CrosswordGrid) {
+            conteneurHorizontal.removeAllViews()
+            conteneurVertical.removeAllViews()
+            lignesDefinition.clear()
+
+            listOf(true to conteneurHorizontal, false to conteneurVertical)
+                .forEach { (horizontal, conteneur) ->
+                    grille.definitions(horizontal).forEach { index ->
+                        val mot = grille.words[index]
+                        val vue = TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { bottomMargin = 8 }
+                            text = "${grille.numeros[index]}. ${mot.clue} " +
+                                "(${mot.length} lettres)"
+                            textSize = 14f
+                            setLineSpacing(0f, 1.15f)
+                            isClickable = true
+                            setOnClickListener {
+                                session?.selectionnerMot(index)
+                                rafraichir()
+                            }
+                        }
+                        lignesDefinition[index] = vue
+                        conteneur.addView(vue)
+                    }
+                }
+        }
+
+        /**
+         * Appelé après chaque touche du pavé : rafraîchit, puis dit ce qui vient
+         * d'être trouvé.
+         *
+         * Le message n'apparaît qu'au moment où un mot devient juste, et il
+         * rappelle la forme canonique — c'est la seule chose que la grille, tout
+         * en capitales, ne peut pas montrer.
+         */
+        private fun apresSaisie() {
+            val partie = session ?: return
+            val grille = partie.grid
+
+            val nouveaux = grille.words.indices.filter {
+                it !in resolus && partie.motJuste(it)
+            }
+            resolus.addAll(nouveaux)
+            encarter(nouveaux)
+            // Un mot achevé rend la main au suivant : sans cela le pavé continue
+            // d'écrire dans un mot déjà juste, et le joueur doit viser une case
+            // pour repartir.
+            if (partie.motSelectionne in resolus && !partie.termine()) {
+                avancerAuMotSuivant(partie)
+            }
+            rafraichir()
+
+            when {
+                partie.termine() -> {
+                    tvRetour.text = "🎉 Grille terminée — ${grille.words.size} mots sur " +
+                        "${grille.words.size} !"
+                    tvRetour.setTextColor(couleurJuste)
+                    tvRetour.visibility = View.VISIBLE
+                    if (!solutionMontree) ouvrirPochette()
+                }
+                nouveaux.isNotEmpty() -> {
+                    val mot = grille.words[nouveaux.first()]
+                    tvRetour.text = if (mot.enseigneUneMajuscule) {
+                        "✅ ${mot.canonical} — un substantif : hors de la grille, " +
+                            "il garde sa majuscule."
+                    } else {
+                        "✅ ${mot.canonical} — s'écrit en minuscules."
+                    }
+                    tvRetour.setTextColor(couleurJuste)
+                    tvRetour.visibility = View.VISIBLE
+                }
+                else -> {
+                    val choisi = partie.motSelectionne
+                    if (choisi >= 0 && partie.motRempli(choisi) && !partie.motJuste(choisi)) {
+                        tvRetour.text = "❌ Ce n'est pas le mot attendu — effacez et " +
+                            "reprenez."
+                        tvRetour.setTextColor(couleurFausse)
+                        tvRetour.visibility = View.VISIBLE
+                    } else {
+                        tvRetour.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }
+
+        /**
+         * Verse au carnet les mots qui viennent d'être écrits.
+         *
+         * Kräizwuert est le seul jeu où le joueur **écrit** le mot lui-même, à
+         * partir de sa seule définition : la carte s'y mérite plus qu'ailleurs.
+         * Elle se prend sur la forme canonique — la grille, elle, est tout en
+         * capitales, et la majuscule des substantifs y disparaît.
+         *
+         * Une grille révélée ne verse rien : `reveler()` remplit les cases
+         * sans que personne les ait trouvées, et [apresSaisie] n'est de toute
+         * façon plus appelé à ce moment-là.
+         */
+        private fun encarter(nouveaux: List<Int>) {
+            if (nouveaux.isEmpty() || solutionMontree) return
+            val ctx = context ?: return
+            val grille = session?.grid ?: return
+            nouveaux.forEach { emplacement ->
+                val forme = grille.words[emplacement].canonical
+                if (Carnet.ajouter(ctx, forme, JeuCarte.KRAIZWUERT)) {
+                    cartesNeuves.add(emplacement)
+                }
+            }
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        /** La pochette, une fois la grille entièrement trouvée. */
+        private fun ouvrirPochette() {
+            val partie = session ?: return
+            val grille = partie.grid
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.KRAIZWUERT,
+                formes = resolus.sorted().map { grille.words[it].canonical },
+                neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical },
+                encoreValide = { session === partie },
+                surVue = { pochette = it }
+            )
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        /**
+         * Passe au premier mot encore faux, dans l'ordre des numéros. Le tour
+         * est circulaire : après le dernier on revient au début, parce que les
+         * mots trouvés ne le sont pas dans l'ordre de la grille.
+         */
+        private fun avancerAuMotSuivant(partie: CrosswordSession) {
+            val grille = partie.grid
+            val ordre = grille.words.indices.sortedWith(
+                compareBy({ grille.numeros[it] }, { !grille.words[it].across })
+            )
+            val depuis = ordre.indexOf(partie.motSelectionne)
+            for (pas in 1..ordre.size) {
+                val candidat = ordre[(depuis + pas) % ordre.size]
+                if (!partie.motJuste(candidat)) {
+                    partie.selectionnerMot(candidat)
+                    return
+                }
+            }
+        }
+
+        private fun montrerLaSolution() {
+            val partie = session ?: return
+            solutionMontree = true
+            partie.reveler()
+            resolus.addAll(partie.grid.words.indices)
+            rafraichir()
+            tvRetour.text = "💡 Solution affichée — cette grille ne compte pas."
+            tvRetour.setTextColor(Color.parseColor("#757575"))
+            tvRetour.visibility = View.VISIBLE
+        }
+
+        /** Repeint la grille, la définition courante et les listes. */
+        private fun rafraichir() {
+            val partie = session ?: return
+            val grille = partie.grid
+
+            val choisi = partie.motSelectionne
+            val mot = grille.words.getOrNull(choisi)
+
+            for (r in 0 until grille.height) {
+                for (c in 0 until grille.width) {
+                    val cle = r * grille.width + c
+                    val fond = fondsCase[cle] ?: continue
+                    val vue = lettresCase[cle] ?: continue
+
+                    val lettre = partie.lettreAt(r, c)
+                    vue.text = lettre?.toString() ?: ""
+
+                    val dansLeMot = mot != null && mot.indexOf(r, c) >= 0
+                    val caseCourante = dansLeMot &&
+                        mot!!.indexOf(r, c) == partie.caseSelectionnee
+                    // Une faute ne se montre qu'une fois le mot rempli : le
+                    // signaler à la frappe reviendrait à dicter la réponse
+                    // lettre par lettre.
+                    val revelee = grille.motsSur(r, c).any { partie.motRempli(it) }
+                    val fausse = revelee && partie.caseFausse(r, c)
+                    val juste = grille.motsSur(r, c).any {
+                        partie.motRempli(it) && partie.motJuste(it)
+                    }
+
+                    // Un mot trouvé reste vert de bout en bout, curseur compris :
+                    // laisser la dernière case en bleu donnait un mot vert à
+                    // une case près, qu'on lit comme une faute.
+                    fond.setColor(
+                        when {
+                            fausse -> fondFaux
+                            juste && caseCourante -> fondJusteChoisi
+                            juste -> fondJuste
+                            caseCourante -> fondCaseChoisie
+                            dansLeMot -> fondMotChoisi
+                            else -> fondCase
+                        }
+                    )
+                    vue.setTextColor(
+                        if (fausse) couleurFausse else Color.parseColor("#212121")
+                    )
+                }
+            }
+
+            if (mot != null) {
+                tvNumero.text = "${grille.numeros[choisi]} " +
+                    if (mot.across) "➡️" else "⬇️"
+                tvDefinition.text = "${mot.clue}  ·  ${mot.length} lettres"
+            }
+
+            lignesDefinition.forEach { (index, vue) ->
+                val trouve = index in resolus
+                vue.setTextColor(
+                    when {
+                        trouve -> Color.parseColor("#9E9E9E")
+                        index == choisi -> couleurNeutre
+                        else -> Color.parseColor("#333333")
+                    }
+                )
+                vue.setTypeface(null, if (index == choisi) Typeface.BOLD else Typeface.NORMAL)
+            }
+
+            tvProgres.text = "${partie.motsJustes()} / ${grille.words.size} mots"
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverPochette()
+            fondsCase.clear()
+            lettresCase.clear()
+            lignesDefinition.clear()
+            session = null
+            rootView = null
+        }
+    }
+
+    /**
+     * Fragment « Wuertplaz » : une grille vide, la liste des mots à y caser, et
+     * pas une seule définition.
+     *
+     * C'est le seul jeu **jouable sans connaître un mot de luxembourgeois**.
+     * Les six autres supposent une compréhension préalable, ne serait-ce que
+     * pour lire une définition ; ici la déduction est géométrique — une
+     * longueur, des croisements — et la langue s'apprend en récompense.
+     *
+     * Trois conséquences sur l'écran :
+     *
+     * - **La glose française n'apparaît qu'au verrouillage d'un mot**, c'est-à-
+     *   dire quand tous ses croisements sont posés. La montrer au dépôt ferait
+     *   résoudre la grille par sondage — poser, regarder si la glose s'allume,
+     *   retirer. Même discipline que Kräizwuert, qui ne signale une lettre
+     *   fausse qu'une fois son mot entièrement écrit.
+     * - **Un mot incompatible ne se pose pas.** Ce n'est pas une correction,
+     *   c'est le crayon : on n'écrit pas deux lettres dans la même case. Ce qui
+     *   reste faux est un mot compatible mais mal placé, et celui-là attend
+     *   d'être confronté à tous ses croisements pour se signaler.
+     * - **Les mots sont groupés par longueur** dans la liste, parce que c'est
+     *   ainsi qu'on joue : on cherche d'abord ce qui a la bonne taille. Les
+     *   ranger dans le désordre obligerait à recompter chaque mot à chaque
+     *   essai, ce qui n'apprend rien.
+     */
+    class ChasseCroiseFragment : Fragment() {
+
+        private var rootView: ScrollView? = null
+
+        // Les confettis de fin de grille sont posés dans le cadre de contenu de
+        // l'activité (android.R.id.content), au-dessus de tout : ils ne
+        // défilent pas et ne décalent rien. Suivi ici pour être retirés.
+        private var confetti: ConfettiView? = null
+
+        /** La pochette de fin de grille, posée au même endroit. */
+        private var pochette: View? = null
+
+        private lateinit var tvProgres: TextView
+        private lateinit var tvRetour: TextView
+        private lateinit var conteneurGrille: LinearLayout
+        private lateinit var conteneurMots: LinearLayout
+        private lateinit var titreGagnes: TextView
+        private lateinit var boutonCarnet: TextView
+        private lateinit var conteneurGagnes: LinearLayout
+        private lateinit var ligneDifficulte: LinearLayout
+
+        private var session: ChasseCroiseSession? = null
+        private var difficulte = CrosswordDifficulty.NORMALE
+
+        private val fondsCase = mutableMapOf<Int, GradientDrawable>()
+        private val lettresCase = mutableMapOf<Int, TextView>()
+        private val chipsParMot = mutableMapOf<Int, TextView>()
+
+        /** Mots déjà verrouillés, pour ne récompenser qu'une fois. */
+        private val resolus = mutableSetOf<Int>()
+
+        /**
+         * Lignes de « Ce que vous avez gagné » déjà portées à l'écran : sert à
+         * n'animer l'entrée que des nouvelles, la liste étant reconstruite en
+         * entier à chaque rafraîchissement.
+         */
+        private val gagnesAffiches = mutableSetOf<Int>()
+
+        /**
+         * Nombre de mots repris de la grille dans la partie en cours. Un mot
+         * gagné ne se reprend plus, donc ceci ne compte que les tâtonnements —
+         * c'est la note de fin de grille.
+         */
+        private var retraits = 0
+
+        /**
+         * Emplacements dont le mot est entré au carnet pour la première fois
+         * — jamais rencontré dans aucune partie précédente. C'est ce qui
+         * distingue « nouveau » de « revu » dans la liste des sens gagnés, et
+         * c'est le seul frisson que la collection ait à offrir.
+         */
+        private val cartesNeuves = mutableSetOf<Int>()
+
+        private val couleurNeutre = Color.parseColor("#00796B")
+        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurFausse = Color.parseColor("#E53935")
+        private val couleurInerte = Color.parseColor("#BDBDBD")
+        private val fondCase = Color.WHITE
+        private val fondPose = Color.parseColor("#E0F2F1")
+        private val fondPossible = Color.parseColor("#B2DFDB")
+        private val fondJuste = Color.parseColor("#C8E6C9")
+        private val fondFaux = Color.parseColor("#FFCDD2")
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            rootView = ScrollView(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+
+                val colonne = LinearLayout(activity).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.VERTICAL
+                    setPadding(24, 10, 24, 16)
+
+                    val entete = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 8 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "🔡 Wuertplaz"
+                            textSize = 18f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                        })
+
+                        tvProgres = TextView(activity).apply {
+                            textSize = 14f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#333333"))
+                        }
+                        addView(tvProgres)
+                    }
+                    addView(entete)
+
+                    ligneDifficulte = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 10 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                    }
+                    CrosswordDifficulty.values().forEach { niveau ->
+                        ligneDifficulte.addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { setMargins(4, 0, 4, 0) }
+                            text = niveau.label
+                            textSize = 12f
+                            isAllCaps = false
+                            minHeight = 0
+                            minimumHeight = 0
+                            setPadding(0, 14, 0, 14)
+                            setTextColor(Color.WHITE)
+                            tag = niveau
+                            setOnClickListener {
+                                difficulte = niveau
+                                nouvelleGrille()
+                            }
+                        })
+                    }
+                    addView(ligneDifficulte)
+
+                    // La ligne de récompense, au-dessus de la grille : c'est ce
+                    // que le joueur gagne, et c'est la seule chose que ce jeu
+                    // enseigne. Elle garde sa place même vide, sinon la grille
+                    // saute d'un cran à chaque mot verrouillé et le doigt tombe
+                    // à côté de la case visée.
+                    //
+                    // Hauteur figée à deux lignes — minLines ET maxLines — pour
+                    // que la carte ne change jamais la mise en page, quel que
+                    // soit le message : « 🔥 3 mots d'un coup ! » tient sur une
+                    // ligne, les formes sur la seconde, et une glose trop
+                    // longue est tronquée plutôt que de pousser la grille (sans
+                    // quoi c'est l'appui suivant qui paie le décalage et tombe
+                    // sur la mauvaise case). Le texte complet des sens gagnés
+                    // reste lisible dans « Ce que vous avez gagné ».
+                    tvRetour = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 10 }
+                        textSize = 15f
+                        gravity = Gravity.CENTER
+                        setTypeface(null, Typeface.BOLD)
+                        setLineSpacing(0f, 1.2f)
+                        setPadding(16, 14, 16, 14)
+                        minLines = 2
+                        maxLines = 2
+                        ellipsize = android.text.TextUtils.TruncateAt.END
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+                        visibility = View.INVISIBLE
+                        text = " "
+                    }
+                    addView(tvRetour)
+
+                    // Un LinearLayout et non une GridView : celle-ci vole le
+                    // geste de défilement vertical à la ScrollView parente,
+                    // même en lecture seule (même piège que Kräizwuert).
+                    conteneurGrille = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { gravity = Gravity.CENTER_HORIZONTAL; bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurGrille)
+
+                    conteneurMots = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurMots)
+
+                    // Les sens gagnés, qui s'accumulent au lieu de passer.
+                    //
+                    // Le bandeau du haut annonce, il ne conserve pas : plusieurs
+                    // mots se verrouillent souvent d'un coup, et « Grille
+                    // terminée » recouvrait le dernier lot. Mesuré sur les 284
+                    // grilles livrées, vingt ordres de pose chacune : 58,8 % des
+                    // mots ne montraient jamais leur traduction. Or c'est la
+                    // seule chose que ce jeu enseigne, donc la récompense doit
+                    // rester lisible après coup. La liste grandit vers le bas,
+                    // sous les pastilles : elle ne déplace ni la grille ni les
+                    // mots à poser, dont les appuis suivants dépendent.
+                    //
+                    // La ligne porte aussi l'entrée du carnet, et c'est
+                    // délibérément là : le bouton dit « cette liste a une
+                    // maison permanente » à l'endroit exact où la liste vit.
+                    // Il reste visible même quand rien n'a encore été gagné,
+                    // pour qu'un joueur qui revient retrouve sa collection
+                    // sans avoir à finir une grille d'abord.
+                    titreGagnes = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                        )
+                        text = "📖 Ce que vous avez gagné"
+                        textSize = 15f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(couleurNeutre)
+                        visibility = View.INVISIBLE
+                    }
+
+                    boutonCarnet = TextView(activity).apply {
+                        text = "📔 Carnet"
+                        textSize = 13f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.WHITE)
+                        setPadding(20, 10, 20, 10)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 20f * resources.displayMetrics.density
+                            setColor(couleurNeutre)
+                        }
+                        isClickable = true
+                        setOnClickListener { ouvrirCarnet() }
+                    }
+
+                    addView(LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 8 }
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        addView(titreGagnes)
+                        addView(boutonCarnet)
+                    })
+
+                    conteneurGagnes = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 14 }
+                        orientation = LinearLayout.VERTICAL
+                    }
+                    addView(conteneurGagnes)
+
+                    val ligneBoutons = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        orientation = LinearLayout.HORIZONTAL
+
+                        addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            ).apply { rightMargin = 8 }
+                            text = "🔄 Nouvelle grille"
+                            textSize = 13f
+                            isAllCaps = false
+                            setBackgroundColor(Color.parseColor("#00796B"))
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { nouvelleGrille() }
+                        })
+                        addView(Button(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            text = "💡 Solution"
+                            textSize = 13f
+                            isAllCaps = false
+                            setBackgroundColor(couleurInerte)
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                            setOnClickListener { montrerLaSolution() }
+                        })
+                    }
+                    addView(ligneBoutons)
+
+                    val carteRegles = LinearLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.WHITE)
+                        }
+
+                        addView(TextView(activity).apply {
+                            text = "📜 Règles du jeu"
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(couleurNeutre)
+                            setPadding(0, 0, 0, 12)
+                        })
+                        addView(TextView(activity).apply {
+                            text = "Tous les mots vous sont donnés : il s'agit de " +
+                                "trouver leur place. Touchez un mot de la liste, " +
+                                "puis une case de la grille : les emplacements où " +
+                                "il peut aller s'éclairent. Touchez un mot déjà " +
+                                "posé pour le reprendre.\n\n" +
+                                "Un mot qui contredirait une lettre déjà écrite ne " +
+                                "se pose pas : c'est le crayon, pas une correction.\n\n" +
+                                "Quand tous les croisements d'un mot sont posés, il " +
+                                "se verrouille et vous donne son sens en français. " +
+                                "C'est la récompense, et c'est pourquoi elle " +
+                                "n'arrive qu'à ce moment-là. Un mot gagné passe au " +
+                                "vert et ne se reprend plus ; son sens reste " +
+                                "lisible sous la liste des mots.\n\n" +
+                                "Aucune connaissance du luxembourgeois n'est " +
+                                "nécessaire pour jouer : la déduction porte sur les " +
+                                "longueurs et les croisements. La difficulté suit la " +
+                                "taille de la grille et le nombre de mots qui " +
+                                "partagent une même longueur."
+                            textSize = 14f
+                            setLineSpacing(0f, 1.2f)
+                            setTextColor(Color.parseColor("#333333"))
+                        })
+                        addView(TextView(activity).apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { topMargin = 16 }
+                            text = "Traductions et vocabulaire :\n" +
+                                ChasseCroiseData.attribution(activity)
+                            textSize = 11f
+                            setTextColor(Color.parseColor("#757575"))
+                        })
+                    }
+                    addView(carteRegles)
+                }
+
+                addView(colonne)
+
+                post {
+                    // Même précaution que les autres jeux : ce post() peut
+                    // s'exécuter après un changement d'onglet.
+                    if (isAdded) nouvelleGrille()
+                }
+            }
+
+            return rootView!!
+        }
+
+        private fun nouvelleGrille() {
+            val activity = requireActivity() as SettingsActivity
+            val grille = ChasseCroiseData.newGrid(activity, difficulte)
+            resolus.clear()
+            gagnesAffiches.clear()
+            cartesNeuves.clear()
+            retraits = 0
+            enleverConfettis()
+            enleverPochette()
+            surlignerDifficulte()
+            majBoutonCarnet()
+            titreGagnes.animate().cancel()
+            titreGagnes.scaleX = 1f
+            titreGagnes.scaleY = 1f
+            tvRetour.animate().cancel()
+            tvRetour.alpha = 1f
+            tvRetour.translationY = 0f
+            tvRetour.scaleX = 1f
+            tvRetour.scaleY = 1f
+            tvRetour.visibility = View.INVISIBLE
+
+            if (grille == null) {
+                session = null
+                conteneurGrille.removeAllViews()
+                conteneurMots.removeAllViews()
+                conteneurGagnes.removeAllViews()
+                titreGagnes.visibility = View.GONE
+                tvProgres.text = ""
+                annoncer(
+                    "Aucune grille disponible : l'actif " +
+                        "luxemburgish_chassecroise.json manque à l'application.",
+                    couleurFausse
+                )
+                return
+            }
+
+            session = ChasseCroiseSession(grille) { it.shuffled() }
+            construireGrille(activity, grille)
+            construireListe(activity, session!!)
+            rafraichir()
+        }
+
+        private fun surlignerDifficulte() {
+            for (i in 0 until ligneDifficulte.childCount) {
+                val bouton = ligneDifficulte.getChildAt(i) as Button
+                bouton.setBackgroundColor(
+                    if (bouton.tag == difficulte) couleurNeutre else couleurInerte
+                )
+            }
+        }
+
+        /**
+         * Dessine la grille.
+         *
+         * Le côté d'une case se déduit de la largeur de l'écran et du nombre de
+         * colonnes, borné aussi par une part de la hauteur : sans cette
+         * troisième borne, une grille de onze lignes pousse la liste des mots
+         * hors de l'écran — et sans la liste, ce jeu n'existe pas.
+         */
+        private fun construireGrille(activity: SettingsActivity, grille: CrosswordGrid) {
+            conteneurGrille.removeAllViews()
+            fondsCase.clear()
+            lettresCase.clear()
+
+            // Le balayage de verrouillage fait légèrement grossir une case
+            // au-delà de sa ligne : sans cela elle serait rognée en haut et
+            // en bas. Purement visuel, aucun effet sur la mise en page.
+            conteneurGrille.clipChildren = false
+            conteneurGrille.clipToPadding = false
+
+            val densite = resources.displayMetrics.density
+            val disponible = resources.displayMetrics.widthPixels - (48 * 2)
+            val budgetHauteur = (resources.displayMetrics.heightPixels * 0.38f).toInt()
+            val cote = minOf(
+                disponible / grille.width,
+                budgetHauteur / grille.height,
+                (44 * densite).toInt()
+            )
+
+            for (r in 0 until grille.height) {
+                val ligne = LinearLayout(activity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    orientation = LinearLayout.HORIZONTAL
+                }
+
+                for (c in 0 until grille.width) {
+                    val cadre = FrameLayout(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(cote, cote).apply {
+                            setMargins(1, 1, 1, 1)
+                        }
+                    }
+
+                    if (grille.estCaseJouable(r, c)) {
+                        val fond = GradientDrawable().apply {
+                            cornerRadius = 3f * densite
+                            setColor(fondCase)
+                            setStroke((1f * densite).toInt(), Color.parseColor("#9E9E9E"))
+                        }
+                        cadre.background = fond
+
+                        val lettre = TextView(activity).apply {
+                            layoutParams = FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT
+                            )
+                            gravity = Gravity.CENTER
+                            textSize = 16f
+                            setTypeface(null, Typeface.BOLD)
+                            setTextColor(Color.parseColor("#212121"))
+                        }
+                        cadre.addView(lettre)
+
+                        cadre.isClickable = true
+                        cadre.setOnClickListener { toucherCase(r, c) }
+
+                        fondsCase[r * grille.width + c] = fond
+                        lettresCase[r * grille.width + c] = lettre
+                    }
+
+                    ligne.addView(cadre)
+                }
+                ligne.clipChildren = false
+                ligne.clipToPadding = false
+                conteneurGrille.addView(ligne)
+            }
+        }
+
+        /**
+         * La liste des mots, groupée par longueur et rangée par longueur
+         * croissante — c'est ainsi qu'on joue : on cherche d'abord ce qui a la
+         * bonne taille.
+         *
+         * Le retour à la ligne est calculé à la mesure du texte plutôt que sur
+         * un nombre fixe de pastilles : « ASS » et « MËTTELPUNKT » n'occupent
+         * pas la même largeur, et trois par ligne laisserait la moitié de
+         * l'écran vide sur les mots courts.
+         */
+        private fun construireListe(activity: SettingsActivity, partie: ChasseCroiseSession) {
+            conteneurMots.removeAllViews()
+            chipsParMot.clear()
+
+            val grille = partie.grid
+            val densite = resources.displayMetrics.density
+            val largeurDispo = resources.displayMetrics.widthPixels - (48 * 2)
+            val ecart = (8 * densite).toInt()
+
+            partie.liste
+                .groupBy { grille.words[it].length }
+                .toSortedMap()
+                .forEach { (longueur, mots) ->
+                    conteneurMots.addView(TextView(activity).apply {
+                        text = "$longueur lettres"
+                        textSize = 12f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.parseColor("#757575"))
+                        setPadding(2, 4, 0, 6)
+                    })
+
+                    var ligne = ligneDeMots(activity)
+                    var reste = largeurDispo
+                    mots.forEach { index ->
+                        val texte = grille.words[index].answer
+                        val chip = chipMot(activity, texte, index)
+                        val largeur =
+                            (chip.paint.measureText(texte) + 40 * densite).toInt()
+                        if (largeur > reste && ligne.childCount > 0) {
+                            conteneurMots.addView(ligne)
+                            ligne = ligneDeMots(activity)
+                            reste = largeurDispo
+                        }
+                        ligne.addView(chip)
+                        reste -= largeur + ecart
+                        chipsParMot[index] = chip
+                    }
+                    if (ligne.childCount > 0) conteneurMots.addView(ligne)
+                }
+        }
+
+        private fun ligneDeMots(activity: SettingsActivity) = LinearLayout(activity).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            orientation = LinearLayout.HORIZONTAL
+        }
+
+        private fun chipMot(activity: SettingsActivity, texte: String, index: Int) =
+            TextView(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { rightMargin = 8; bottomMargin = 8 }
+                text = texte
+                textSize = 15f
+                setTypeface(null, Typeface.BOLD)
+                gravity = Gravity.CENTER
+                setPadding(22, 12, 22, 12)
+                setTextColor(Color.parseColor("#212121"))
+                background = GradientDrawable().apply {
+                    cornerRadius = 8f * resources.displayMetrics.density
+                    setColor(Color.WHITE)
+                    setStroke(
+                        (1f * resources.displayMetrics.density).toInt(),
+                        Color.parseColor("#D0D0D0")
+                    )
+                }
+                isClickable = true
+                setOnClickListener {
+                    val partie = session ?: return@setOnClickListener
+                    if (partie.estPose(index)) return@setOnClickListener
+                    partie.choisir(index)
+                    tvRetour.visibility = View.INVISIBLE
+                    rafraichir()
+                }
+            }
+
+        /**
+         * Une case touchée : on pose le mot choisi, ou on retire celui qui est
+         * là.
+         *
+         * Une case peut appartenir à deux emplacements, l'horizontal et le
+         * vertical. On prend le premier qui accepte le mot choisi — l'ambiguïté
+         * est rare, parce qu'elle demande que les deux emplacements aient la
+         * même longueur *et* acceptent le même mot, et le joueur la lève en
+         * touchant une autre case du mot visé.
+         *
+         * Un mot gagné ne se retire plus : le geste est refusé et dit
+         * pourquoi, plutôt que de ne rien faire — un appui sans effet se lit
+         * comme une panne.
+         */
+        private fun toucherCase(r: Int, c: Int) {
+            val partie = session ?: return
+            val emplacements = partie.grid.motsSur(r, c)
+
+            if (partie.motChoisi >= 0) {
+                val cible = emplacements.firstOrNull {
+                    partie.peutPoser(it, partie.motChoisi)
+                }
+                if (cible == null) {
+                    annoncer("Ce mot ne peut pas se poser ici.", couleurFausse)
+                    return
+                }
+                partie.poser(cible)
+                apresCoup()
+                return
+            }
+
+            val occupe = emplacements.firstOrNull { it in partie.occupes } ?: return
+            if (partie.retirer(occupe)) {
+                retraits++
+                tvRetour.visibility = View.INVISIBLE
+                rafraichir()
+            } else {
+                annoncer(
+                    "🔒 ${partie.grid.words[occupe].canonical} est gagné : " +
+                        "il reste en place.",
+                    couleurNeutre
+                )
+            }
+        }
+
+        /**
+         * Appelé après chaque pose : rafraîchit, puis dit ce qui vient d'être
+         * gagné.
+         *
+         * La glose n'apparaît qu'ici, au verrouillage, et le mot est rappelé
+         * sous sa forme canonique parce que la grille est tout en capitales.
+         *
+         * Le rappel s'arrête là. Kräizwuert ajoute « un substantif : hors de
+         * la grille, il garde sa majuscule », et c'est justifié là-bas : le
+         * joueur a produit l'orthographe lui-même, sans jamais voir la forme
+         * écrite. Ici les mots sont donnés dans la liste, déjà casés comme il
+         * faut — la phrase ne dit alors que ce que l'écran montre déjà, et
+         * elle le répète à chaque mot gagné.
+         */
+        private fun apresCoup() {
+            val partie = session ?: return
+            val grille = partie.grid
+
+            val nouveaux = grille.words.indices.filter {
+                it !in resolus && partie.verrouille(it)
+            }
+            resolus.addAll(nouveaux)
+            encarter(nouveaux)
+            rafraichir()
+
+            when {
+                partie.termine() -> {
+                    balayerMots(nouveaux)
+                    retourHaptique(fort = true)
+                    // Une note douce : trois paliers, tous félicitants. Elle
+                    // suit les tâtonnements ([retraits]), pas le chrono — le
+                    // jeu n'est pas contre la montre.
+                    val (etoiles, mention) = when {
+                        retraits == 0 -> 3 to "sans une seule reprise"
+                        retraits <= 2 -> 2 to "bien joué"
+                        else -> 1 to "grille bouclée"
+                    }
+                    annoncerCarte(
+                        "🎉 Grille terminée — ${grille.words.size} mots\n" +
+                            "⭐".repeat(etoiles) + "  $mention",
+                        couleurJuste
+                    )
+                    lancerConfettis()
+                    ouvrirPochette()
+                    annoncerA11y(
+                        "Grille terminée, ${grille.words.size} mots placés, " +
+                            "$etoiles étoiles sur 3."
+                    )
+                }
+                nouveaux.isNotEmpty() -> celebrerGains(nouveaux)
+                grille.words.indices.any { partie.fautif(it) } -> {
+                    annoncer(
+                        "❌ Un mot est à la mauvaise place. Retirez-le et " +
+                            "reprenez.",
+                        couleurFausse
+                    )
+                }
+                else -> tvRetour.visibility = View.INVISIBLE
+            }
+        }
+
+        /**
+         * Verse au carnet les mots qui viennent d'être gagnés.
+         *
+         * C'est le seul point d'entrée de la collection permanente : un mot
+         * n'y entre qu'une fois **verrouillé**, c'est-à-dire prouvé par ses
+         * croisements. Un mot simplement posé, ou posé puis repris, ne compte
+         * pas — la carte se gagne comme la glose se gagne.
+         *
+         * La forme versée est la forme canonique, celle que le joueur lit dans
+         * la liste et que la table des gloses sait traduire ; la grille, elle,
+         * est tout en capitales.
+         */
+        private fun encarter(nouveaux: List<Int>) {
+            if (nouveaux.isEmpty()) return
+            val ctx = context ?: return
+            val grille = session?.grid ?: return
+            nouveaux.forEach { emplacement ->
+                val forme = grille.words[emplacement].canonical
+                if (Carnet.ajouter(ctx, forme, JeuCarte.WUERTPLAZ)) {
+                    cartesNeuves.add(emplacement)
+                }
+            }
+            majBoutonCarnet()
+        }
+
+        private fun majBoutonCarnet() {
+            val ctx = context ?: return
+            Pochette.rafraichir(boutonCarnet, ctx)
+        }
+
+        private fun ouvrirCarnet() = Pochette.montrerLeCarnet(this)
+
+        /**
+         * La pochette de fin de grille.
+         *
+         * Elle n'arrive qu'après une grille **gagnée** : « Solution » ne passe
+         * pas par ici, ne verse rien au carnet, et n'ouvre donc pas de
+         * pochette. Le reste — le chargement en fond, le délai plancher, la
+         * vue hôte — appartient à [Pochette], qui le fait pour les sept jeux.
+         */
+        private fun ouvrirPochette() {
+            val partie = session ?: return
+            val grille = partie.grid
+            enleverPochette()
+            Pochette.ouvrir(
+                fragment = this,
+                jeu = JeuCarte.WUERTPLAZ,
+                formes = resolus.map { grille.words[it].canonical },
+                neuves = cartesNeuves.mapTo(HashSet()) { grille.words[it].canonical },
+                delai = Pochette.DELAI,
+                encoreValide = { session === partie },
+                surVue = { pochette = it }
+            )
+        }
+
+        private fun enleverPochette() {
+            pochette?.let { (it.parent as? ViewGroup)?.removeView(it) }
+            pochette = null
+        }
+
+        /**
+         * La récompense d'un ou plusieurs mots verrouillés d'un coup.
+         *
+         * Le verrouillage est le seul moment où ce jeu enseigne, et un joueur a
+         * signalé qu'il passait inaperçu : les cases changeaient d'un vert pâle
+         * à un autre, sans mouvement ni son. Ici on le ponctue — balayage des
+         * cases du mot, retour haptique, carte qui entre en scène — et on
+         * distingue le coup double : plusieurs mots d'un coup est l'événement
+         * le plus gratifiant de la partie, il mérite une carte à part (orange)
+         * et un retour haptique plus appuyé. Le détail des sens va, comme
+         * avant, dans « Ce que vous avez gagné » ; la carte ne fait que fêter.
+         */
+        private fun celebrerGains(nouveaux: List<Int>) {
+            val grille = session?.grid ?: return
+            val combo = nouveaux.size > 1
+            balayerMots(nouveaux)
+            retourHaptique(fort = combo)
+
+            if (combo) {
+                val formes = nouveaux.take(3)
+                    .joinToString(" · ") { grille.words[it].canonical }
+                val suite = if (nouveaux.size > 3) " +${nouveaux.size - 3}" else ""
+                annoncerCarte(
+                    "🔥 ${nouveaux.size} mots d'un coup !\n$formes$suite",
+                    Color.parseColor("#FB8C00")
+                )
+                annoncerA11y(
+                    nouveaux.size.toString() + " mots gagnés : " +
+                        nouveaux.joinToString(", ") {
+                            "${grille.words[it].canonical}, ${grille.words[it].clue}"
+                        }
+                )
+            } else {
+                val mot = grille.words[nouveaux.first()]
+                annoncerCarte("✅ ${mot.canonical} : ${mot.clue}", couleurJuste)
+                annoncerA11y("Mot gagné : ${mot.canonical}, ${mot.clue}")
+            }
+        }
+
+        /**
+         * Balaye les cases des mots donnés : chaque case s'allume en vert vif
+         * avec un léger rebond, l'une après l'autre dans le sens du mot, et les
+         * mots s'enchaînent. On lit un courant qui parcourt le mot.
+         *
+         * Purement visuel : aucune vue n'est ajoutée ni retirée, seules la
+         * couleur du fond et l'échelle de la case bougent, et un unique
+         * `rafraichir()` en fin de course remet chaque case à sa couleur
+         * d'état réelle. Sauté quand les animations système sont coupées.
+         */
+        private fun balayerMots(emplacements: List<Int>) {
+            val partie = session ?: return
+            val grille = partie.grid
+            if (emplacements.isEmpty() || animationsReduites()) return
+            val vif = Color.parseColor("#69F0AE")
+            var pas = 0L
+            emplacements.forEach { emplacement ->
+                val mot = grille.words.getOrNull(emplacement) ?: return@forEach
+                for (i in 0 until mot.length) {
+                    val cle = mot.rowAt(i) * grille.width + mot.colAt(i)
+                    val fond = fondsCase[cle] ?: continue
+                    val cadre = lettresCase[cle]?.parent as? View ?: continue
+                    tvRetour.postDelayed({
+                        if (!isAdded || session !== partie) return@postDelayed
+                        fond.setColor(vif)
+                        cadre.scaleX = 0.8f
+                        cadre.scaleY = 0.8f
+                        cadre.animate()
+                            .scaleX(1f).scaleY(1f)
+                            .setInterpolator(OvershootInterpolator(2.5f))
+                            .setDuration(280)
+                            .start()
+                    }, pas)
+                    pas += 45L
+                }
+                pas += 120L
+            }
+            tvRetour.postDelayed(
+                { if (isAdded && session === partie) rafraichir() },
+                pas + 260L
+            )
+        }
+
+        /**
+         * Un retour haptique sur le verrouillage. `fort` (coup double, grille
+         * terminée) rejoue l'impulsion deux fois de plus. Passe par
+         * `performHapticFeedback`, qui ne demande aucune permission et suit le
+         * réglage haptique du système ; rien à faire pour le désactiver.
+         */
+        private fun retourHaptique(fort: Boolean) {
+            val v = rootView ?: return
+            val effet = if (Build.VERSION.SDK_INT >= 30)
+                HapticFeedbackConstants.CONFIRM
+            else
+                HapticFeedbackConstants.LONG_PRESS
+            v.performHapticFeedback(effet)
+            if (fort) {
+                v.postDelayed({ v.performHapticFeedback(effet) }, 85)
+                v.postDelayed({ v.performHapticFeedback(effet) }, 170)
+            }
+        }
+
+        /**
+         * La carte de récompense : fond plein de la couleur donnée, texte
+         * blanc, et une entrée en scène (fondu + léger rebond) pour qu'on la
+         * voie apparaître. `annoncer` reste pour les messages neutres, sur
+         * fond blanc et sans animation.
+         */
+        private fun annoncerCarte(texte: String, couleurFond: Int) {
+            tvRetour.animate().cancel()
+            tvRetour.text = texte
+            tvRetour.setTextColor(Color.WHITE)
+            (tvRetour.background as? GradientDrawable)?.setColor(couleurFond)
+            tvRetour.visibility = View.VISIBLE
+            if (animationsReduites()) {
+                tvRetour.alpha = 1f
+                tvRetour.translationY = 0f
+                tvRetour.scaleX = 1f
+                tvRetour.scaleY = 1f
+                return
+            }
+            tvRetour.alpha = 0f
+            tvRetour.translationY = 14f
+            tvRetour.scaleX = 0.96f
+            tvRetour.scaleY = 0.96f
+            tvRetour.animate()
+                .alpha(1f).translationY(0f).scaleX(1f).scaleY(1f)
+                .setInterpolator(OvershootInterpolator(1.7f))
+                .setDuration(300)
+                .start()
+        }
+
+        private fun annoncerA11y(texte: String) {
+            rootView?.announceForAccessibility(texte)
+        }
+
+        /** Vrai si l'utilisateur a coupé les animations système. */
+        private fun animationsReduites(): Boolean = try {
+            Settings.Global.getFloat(
+                requireContext().contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                1f
+            ) == 0f
+        } catch (e: Exception) {
+            false
+        }
+
+        /** Un petit rebond d'échelle, pour attirer l'œil sur un compteur qui bouge. */
+        private fun pop(v: View) {
+            v.animate().cancel()
+            v.scaleX = 1f
+            v.scaleY = 1f
+            v.animate().scaleX(1.14f).scaleY(1.14f).setDuration(110)
+                .withEndAction {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(170)
+                        .setInterpolator(OvershootInterpolator(3f)).start()
+                }.start()
+        }
+
+        /**
+         * L'entrée d'une ligne fraîchement gagnée dans « Ce que vous avez
+         * gagné » : elle glisse depuis la gauche et un fond vert s'éteint sur
+         * elle, le temps qu'on la repère.
+         */
+        private fun animerEntreeLigne(v: TextView) {
+            v.alpha = 0f
+            v.translationX = -24f
+            v.animate().alpha(1f).translationX(0f).setDuration(300)
+                .setInterpolator(OvershootInterpolator(1.4f)).start()
+
+            val surligne = Color.parseColor("#B2DFDB")
+            val fond = GradientDrawable().apply {
+                cornerRadius = 8f * resources.displayMetrics.density
+                setColor(surligne)
+            }
+            v.background = fond
+            v.setPadding(10, 6, 10, 6)
+            ValueAnimator.ofArgb(surligne, Color.TRANSPARENT).apply {
+                duration = 1100
+                startDelay = 220
+                addUpdateListener { fond.setColor(it.animatedValue as Int) }
+                addListener(object : android.animation.AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: android.animation.Animator) {
+                        v.background = null
+                        v.setPadding(0, 0, 0, 0)
+                    }
+                })
+                start()
+            }
+        }
+
+        /**
+         * Les confettis de fin de grille : posés dans le cadre de contenu de
+         * l'activité, au-dessus de tout, sans défilement ni décalage. Sautés
+         * quand les animations système sont coupées.
+         */
+        private fun lancerConfettis() {
+            if (animationsReduites()) return
+            val hote = activity?.findViewById<ViewGroup>(android.R.id.content)
+                ?: return
+            enleverConfettis()
+            val vue = ConfettiView(hote.context)
+            vue.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            vue.isClickable = false
+            confetti = vue
+            hote.addView(vue)
+            vue.demarrer { enleverConfettis() }
+        }
+
+        private fun enleverConfettis() {
+            confetti?.let {
+                it.stopper()
+                (it.parent as? ViewGroup)?.removeView(it)
+            }
+            confetti = null
+        }
+
+        private fun annoncer(texte: String, couleur: Int) {
+            tvRetour.animate().cancel()
+            tvRetour.alpha = 1f
+            tvRetour.translationY = 0f
+            tvRetour.scaleX = 1f
+            tvRetour.scaleY = 1f
+            (tvRetour.background as? GradientDrawable)?.setColor(Color.WHITE)
+            tvRetour.text = texte
+            tvRetour.setTextColor(couleur)
+            tvRetour.visibility = View.VISIBLE
+        }
+
+        private fun montrerLaSolution() {
+            val partie = session ?: return
+            partie.reveler()
+            resolus.addAll(partie.grid.words.indices)
+            rafraichir()
+            annoncer(
+                "💡 Solution affichée : cette grille ne compte pas.",
+                Color.parseColor("#757575")
+            )
+        }
+
+        /** Repeint la grille, les pastilles et le compteur. */
+        private fun rafraichir() {
+            val partie = session ?: return
+            val grille = partie.grid
+
+            fun casesDe(emplacement: Int): List<Int> {
+                val mot = grille.words[emplacement]
+                return (0 until mot.length).map {
+                    mot.rowAt(it) * grille.width + mot.colAt(it)
+                }
+            }
+
+            val gagnees = grille.words.indices
+                .filter { partie.verrouille(it) }.flatMap { casesDe(it) }.toSet()
+            val fautives = grille.words.indices
+                .filter { partie.fautif(it) }.flatMap { casesDe(it) }.toSet()
+            // Les emplacements où le mot choisi pourrait aller. C'est ce qui
+            // rend le geste « toucher un mot puis une case » lisible : sans
+            // cela, le joueur vise à l'aveugle et le refus lui paraît
+            // arbitraire.
+            val possibles = if (partie.motChoisi >= 0)
+                partie.emplacementsPossibles(partie.motChoisi)
+                    .flatMap { casesDe(it) }.toSet()
+            else emptySet()
+
+            for (r in 0 until grille.height) {
+                for (c in 0 until grille.width) {
+                    val cle = r * grille.width + c
+                    val fond = fondsCase[cle] ?: continue
+                    val vue = lettresCase[cle] ?: continue
+
+                    val lettre = partie.lettreAt(r, c)
+                    vue.text = lettre?.toString() ?: ""
+
+                    fond.setColor(
+                        when {
+                            cle in fautives -> fondFaux
+                            cle in gagnees -> fondJuste
+                            cle in possibles -> fondPossible
+                            lettre != null -> fondPose
+                            else -> fondCase
+                        }
+                    )
+                    vue.setTextColor(
+                        if (cle in fautives) couleurFausse
+                        else Color.parseColor("#212121")
+                    )
+                }
+            }
+
+            chipsParMot.forEach { (index, chip) ->
+                val pose = partie.estPose(index)
+                val choisi = index == partie.motChoisi
+                // Un mot gagné se distingue d'un mot seulement posé : le
+                // premier est acquis et ne bougera plus, le second peut
+                // encore être repris. Les deux étaient gris, donc rien ne
+                // disait lesquels étaient encore en jeu.
+                val gagne = partie.grid.words.indices.any {
+                    partie.motDe(it) == index && partie.verrouille(it)
+                }
+                (chip.background as? GradientDrawable)?.apply {
+                    setColor(
+                        when {
+                            gagne -> fondJuste
+                            pose -> Color.parseColor("#EEEEEE")
+                            choisi -> fondPossible
+                            else -> Color.WHITE
+                        }
+                    )
+                    setStroke(
+                        ((if (choisi) 2f else 1f) * resources.displayMetrics.density).toInt(),
+                        if (choisi) couleurNeutre else Color.parseColor("#D0D0D0")
+                    )
+                }
+                chip.setTextColor(
+                    when {
+                        gagne -> couleurNeutre
+                        pose -> Color.parseColor("#9E9E9E")
+                        else -> Color.parseColor("#212121")
+                    }
+                )
+                chip.paintFlags = if (pose) {
+                    chip.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                } else {
+                    chip.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
+            }
+
+            tvProgres.text = "${partie.motsJustes()} / ${grille.words.size} mots"
+            rafraichirGagnes(partie)
+        }
+
+        /**
+         * Reconstruit la liste des sens gagnés.
+         *
+         * L'ordre est celui des verrouillages, que [resolus] conserve puisque
+         * `mutableSetOf` est un LinkedHashSet : l'ordre d'obtention raconte la
+         * partie, là où l'ordre de la grille ne dit rien. C'est aussi pourquoi
+         * l'ordre vit ici et non dans la partie, dont l'ensemble des gagnés est
+         * un HashSet.
+         *
+         * La liste ne perd jamais une ligne : un mot gagné ne se retire plus
+         * (voir `ChasseCroiseSession.retirer`), donc ce qui est versé est
+         * acquis. Elle est tout de même reconstruite à chaque rafraîchissement
+         * plutôt que tenue par ajouts, pour que l'affichage n'ait qu'une seule
+         * source de vérité.
+         */
+        private fun rafraichirGagnes(partie: ChasseCroiseSession) {
+            val ctx = context ?: return
+            conteneurGagnes.removeAllViews()
+
+            val n = resolus.size
+            // INVISIBLE et non GONE : le bouton du carnet partage sa ligne, et
+            // la ligne ne doit pas se replier quand le titre s'efface.
+            titreGagnes.visibility = if (n == 0) View.INVISIBLE else View.VISIBLE
+            // Le compteur vit dans le titre : c'est là que l'œil va quand la
+            // liste grandit, et il n'ajoute aucune vue à la mise en page.
+            titreGagnes.text = "📖 Ce que vous avez gagné · $n"
+
+            var duNeuf = false
+            resolus.forEach { index ->
+                val mot = partie.grid.words[index]
+                val nouveau = index !in gagnesAffiches
+                if (nouveau) {
+                    gagnesAffiches.add(index)
+                    duNeuf = true
+                }
+                // « ✨ » signale une carte que le carnet n'avait jamais vue,
+                // toutes parties confondues. Sans ce repère, la vingtième
+                // rencontre de « Haus » se lit comme la première.
+                val marque = if (index in cartesNeuves) "✨ " else ""
+                val ligne = SpannableString("$marque${mot.canonical} : ${mot.clue}")
+                ligne.setSpan(
+                    StyleSpan(Typeface.BOLD), marque.length,
+                    marque.length + mot.canonical.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                ligne.setSpan(
+                    ForegroundColorSpan(couleurNeutre), marque.length,
+                    marque.length + mot.canonical.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                val tv = TextView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 7 }
+                    text = ligne
+                    textSize = 14f
+                    setLineSpacing(0f, 1.15f)
+                    setTextColor(Color.parseColor("#333333"))
+                }
+                conteneurGagnes.addView(tv)
+                if (nouveau && !animationsReduites()) animerEntreeLigne(tv)
+            }
+            if (duNeuf && !animationsReduites()) pop(titreGagnes)
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            enleverConfettis()
+            enleverPochette()
+            fondsCase.clear()
+            lettresCase.clear()
+            chipsParMot.clear()
+            session = null
+            rootView = null
+        }
+
+        /**
+         * Les confettis de fin de grille.
+         *
+         * Un `ValueAnimator` fait tomber une quarantaine de rectangles pendant
+         * ~1,8 s, chacun avec sa vitesse, sa dérive et sa rotation, en
+         * s'effaçant sur la fin. Aucune dépendance, aucune image : `onDraw`
+         * seul. La vue se retire d'elle-même à la fin (voir [demarrer]).
+         */
+        private class ConfettiView(context: Context) : View(context) {
+
+            private class Bout(
+                val x0: Float, val vx: Float,
+                val vy: Float, val delai: Float,
+                val rot0: Float, val vrot: Float,
+                val cote: Float, val couleur: Int
+            )
+
+            private val bouts = ArrayList<Bout>()
+            private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+            private var t = 0f
+            private var anim: ValueAnimator? = null
+
+            private val palette = intArrayOf(
+                Color.parseColor("#00796B"), Color.parseColor("#4CAF50"),
+                Color.parseColor("#80CBC4"), Color.parseColor("#FFB74D"),
+                Color.parseColor("#A5D6A7"), Color.parseColor("#26A69A")
+            )
+
+            fun demarrer(surFin: () -> Unit) {
+                val d = resources.displayMetrics.density
+                val w = if (width > 0) width
+                    else resources.displayMetrics.widthPixels
+                val alea = java.util.Random()
+                bouts.clear()
+                repeat(42) {
+                    bouts.add(
+                        Bout(
+                            x0 = alea.nextFloat() * w,
+                            vx = (alea.nextFloat() - 0.5f) * 240f * d,
+                            vy = (900f + alea.nextFloat() * 700f) * d,
+                            delai = alea.nextFloat() * 0.35f,
+                            rot0 = alea.nextFloat() * 360f,
+                            vrot = (alea.nextFloat() - 0.5f) * 900f,
+                            cote = (5f + alea.nextFloat() * 6f) * d,
+                            couleur = palette[alea.nextInt(palette.size)]
+                        )
+                    )
+                }
+                anim?.cancel()
+                anim = ValueAnimator.ofFloat(0f, 1.8f).apply {
+                    duration = 1800
+                    addUpdateListener { t = it.animatedValue as Float; invalidate() }
+                    addListener(object : android.animation.AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: android.animation.Animator) {
+                            surFin()
+                        }
+                    })
+                    start()
+                }
+            }
+
+            fun stopper() {
+                anim?.cancel()
+                anim = null
+            }
+
+            override fun onDraw(canvas: Canvas) {
+                val h = height.toFloat()
+                for (b in bouts) {
+                    val u = (t - b.delai).coerceAtLeast(0f)
+                    if (u <= 0f) continue
+                    val x = b.x0 + b.vx * u
+                    val y = 0.5f * b.vy * u * u          // chute accélérée
+                    if (y - b.cote > h) continue
+                    pinceau.color = b.couleur
+                    pinceau.alpha =
+                        (255 * (1f - (t / 1.8f)).coerceIn(0f, 1f)).toInt()
+                    canvas.save()
+                    canvas.rotate(b.rot0 + b.vrot * u, x, y)
+                    canvas.drawRect(
+                        x - b.cote / 2, y - b.cote / 2,
+                        x + b.cote / 2, y + b.cote / 2, pinceau
+                    )
+                    canvas.restore()
+                }
+            }
+        }
+    }
+
+    // Fragment « Wierderbuch » : un champ de saisie et une liste de résultats.
+    // C'est le seul onglet qui ne joue à rien — on y cherche un mot, dans un
+    // sens ou dans l'autre, et on lit sa traduction.
+    class DictionaryFragment : Fragment() {
+
+        private var rootView: ScrollView? = null
+        private lateinit var champRecherche: EditText
+        private lateinit var conteneurResultats: LinearLayout
+        private lateinit var tvEtat: TextView
+
+        // La recherche parcourt 20 000 entrées : à la vitesse de frappe, c'est
+        // une dizaine de parcours par mot tapé. On attend 200 ms de silence
+        // avant de chercher, ce qui ramène cela à un seul.
+        private val delaiRecherche = Handler(Looper.getMainLooper())
+        private var rechercheEnAttente: Runnable? = null
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            val racine = ScrollView(activity).apply {
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                isFillViewport = true
+            }
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(24, 24, 24, 24)
+            }
+
+            colonne.addView(TextView(activity).apply {
+                text = "📚 Wierderbuch"
+                textSize = 22f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1976D2"))
+                setPadding(0, 0, 0, 8)
+            })
+
+            // Le chargement reste ici, seul le compteur s'en va : c'est lui qui
+            // évite d'analyser 2,7 Mo de JSON dans la première recherche, où
+            // l'attente se verrait entre la frappe et les résultats.
+            TranslationDictionary.charger(activity)
+
+            // Les exemples, eux, partent sur un fil de fond : la fiche est le
+            // seul écran qui en montre, et les charger à son ouverture ferait
+            // attendre 2,6 Mo d'analyse au moment précis où elle doit
+            // apparaître. Le contexte de l'application, jamais le fragment :
+            // le fil survit à l'onglet. Rien à synchroniser au retour — la
+            // table est lue par un accès protégé, et la fiche qui la
+            // demanderait trop tôt attend simplement la fin de l'analyse.
+            val applicatif = activity.applicationContext
+            Thread {
+                TranslationDictionary.chargerExemples(applicatif)
+                TranslationDictionary.chargerArticles(applicatif)
+            }.start()
+
+            colonne.addView(TextView(activity).apply {
+                text = "Tapez un mot luxembourgeois ou français : la recherche " +
+                        "fonctionne dans les deux sens.\n" +
+                        "Touchez un mot pour ouvrir sa fiche : sens, exemples " +
+                        "et autres formes ; appui long pour le copier."
+                textSize = 14f
+                setTextColor(Color.parseColor("#666666"))
+                setLineSpacing(0f, 1.2f)
+                setPadding(0, 0, 0, 20)
+            })
+
+            champRecherche = EditText(activity).apply {
+                hint = "Haus, maison, Kaz, chat…"
+                textSize = 18f
+                // Couleurs explicites : sur fond blanc imposé, la couleur de
+                // texte héritée du thème est elle-même claire, et le champ
+                // paraissait vide alors qu'il contenait la requête.
+                setTextColor(Color.parseColor("#1C1C1C"))
+                setHintTextColor(Color.parseColor("#BBBBBB"))
+                setSingleLine(true)
+                imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+                setPadding(24, 20, 24, 20)
+                setBackgroundColor(Color.WHITE)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                addTextChangedListener(object : android.text.TextWatcher {
+                    override fun afterTextChanged(s: android.text.Editable?) {
+                        rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
+                        val requete = s?.toString() ?: ""
+                        val tache = Runnable { if (isAdded) afficherResultats(requete) }
+                        rechercheEnAttente = tache
+                        delaiRecherche.postDelayed(tache, 200)
+                    }
+
+                    override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                    override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+                })
+            }
+            colonne.addView(champRecherche)
+
+            tvEtat = TextView(activity).apply {
+                textSize = 15f
+                setTextColor(Color.parseColor("#999999"))
+                setPadding(4, 20, 4, 8)
+                setLineSpacing(0f, 1.25f)
+            }
+            colonne.addView(tvEtat)
+
+            conteneurResultats = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(0, 0, 0, 0)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            colonne.addView(conteneurResultats)
+
+            // La source est en CC0 : la citation n'est pas due, elle est rendue.
+            // C'est aussi ce qui dit à l'utilisateur d'où sort la traduction
+            // qu'il lit, et donc jusqu'où il peut lui faire confiance.
+            colonne.addView(TextView(activity).apply {
+                text = "Traductions et exemples issus du Lëtzebuerger Online " +
+                        "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
+                        "Sprooch, CC0. Exemples traduits par le corpus de " +
+                        "traduction du même Zenter, CC0."
+                textSize = 12f
+                setTextColor(Color.parseColor("#AAAAAA"))
+                setLineSpacing(0f, 1.2f)
+                setPadding(4, 28, 4, 8)
+            })
+
+            racine.addView(colonne)
+            rootView = racine
+
+            afficherResultats("")
+            return racine
+        }
+
+        /**
+         * Affiche les résultats d'une requête, ou l'invite quand elle est vide.
+         *
+         * Le cas « rien trouvé » mérite une explication plutôt qu'un vide :
+         * près de la moitié des formes du dictionnaire de saisie n'ont pas de
+         * traduction, et ce sont massivement des noms propres. Sans ce message,
+         * l'utilisateur qui cherche « Bettel » croit l'application cassée.
+         */
+        private fun afficherResultats(requete: String) {
+            val activity = activity as? SettingsActivity ?: return
+            conteneurResultats.removeAllViews()
+
+            if (requete.trim().length < 2) {
+                tvEtat.text = "Entrez au moins deux lettres."
+                return
+            }
+
+            val resultats = TranslationDictionary.rechercher(activity, requete)
+            if (resultats.isEmpty()) {
+                tvEtat.text = "Aucun résultat pour « ${requete.trim()} ».\n" +
+                        "Les noms propres et les noms de lieux n'ont pas de " +
+                        "traduction dans le dictionnaire officiel."
+                return
+            }
+
+            tvEtat.text = if (resultats.size == 1) "1 résultat"
+                          else "${resultats.size} résultats"
+
+            resultats.forEachIndexed { rang, resultat ->
+                conteneurResultats.addView(ligneResultat(activity, resultat, rang))
+            }
+        }
+
+        private fun ligneResultat(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat,
+            rang: Int
+        ): View = LinearLayout(activity).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(20, 16, 20, 16)
+            // Une ligne sur deux légèrement teintée : la liste peut compter
+            // quarante entrées, et rien d'autre ne sépare une glose du mot
+            // suivant.
+            setBackgroundColor(
+                if (rang % 2 == 0) Color.WHITE else Color.parseColor("#FAFAFA")
+            )
+            isClickable = true
+            setOnClickListener { ouvrirFiche(activity, resultat) }
+            // L'appui long garde la copie à un seul geste : c'est l'action
+            // courante, et la faire passer par la fiche coûterait deux taps à
+            // qui veut seulement coller un mot ailleurs.
+            setOnLongClickListener { copierMot(activity, resultat.mot); true }
+
+            addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                )
+                addView(TextView(activity).apply {
+                    text = resultat.mot
+                    textSize = 19f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.parseColor("#1C1C1C"))
+                })
+                addView(TextView(activity).apply {
+                    text = resultat.glose
+                    textSize = 16f
+                    setTextColor(Color.parseColor("#555555"))
+                    setPadding(0, 4, 0, 0)
+                })
+            })
+
+            // Le chevron de [createReferenceLink] plutôt qu'une puce d'action :
+            // c'est déjà, ailleurs dans l'application, ce qui annonce qu'une
+            // ligne ouvre quelque chose, et quarante chevrons se lisent comme
+            // une colonne là où quarante puces bleues se lisaient comme du
+            // bruit — en prenant la largeur des gloses à trois sens, qui sont
+            // justement les plus utiles.
+            addView(TextView(activity).apply {
+                text = "›"
+                textSize = 22f
+                setTextColor(Color.parseColor("#BBBBBB"))
+                setPadding(20, 0, 0, 0)
+            })
+        }
+
+        /**
+         * Fiche d'un mot : ses sens un par un, et les actions.
+         *
+         * La liste ne porte plus que du contenu. Une puce « lod.lu » par ligne
+         * répétait quarante fois la même étiquette, et toute action ajoutée
+         * ensuite — prononciation, favori — aurait ajouté une puce de plus.
+         * Ici elles ont la place de porter un vrai libellé.
+         *
+         * La fiche a d'abord annoncé la provenance du mot — « mot du corpus,
+         * 65 occurrences » contre « forme du LOD ». C'était une confidence de
+         * pipeline : elle décrit d'où vient notre fichier, pas le mot que la
+         * personne cherche, et personne n'ouvre un dictionnaire pour lire un
+         * décompte d'occurrences. Retirée, avec la table de fréquences qui
+         * n'existait que pour elle.
+         */
+        private fun ouvrirFiche(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat
+        ) {
+            // Une Dialog ordinaire ancrée en bas, et non un BottomSheetDialog :
+            // Material 1.12 et 1.13 y appellent Window.setStatusBarColor et
+            // setNavigationBarColor, obsolètes depuis Android 15, et la Play
+            // Console le signale. Ce n'était qu'un usage sur toute l'appli. Le
+            // contenu défile déjà dans un ScrollView, qui prend la hauteur de
+            // l'écran s'il la dépasse : plus de position repliée à gérer.
+            val dialogue = Dialog(activity)
+            dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogue.setContentView(contenuFiche(activity, resultat, dialogue))
+            dialogue.window?.apply {
+                setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                setGravity(Gravity.BOTTOM)
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            dialogue.show()
+        }
+
+        private fun contenuFiche(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat,
+            dialogue: Dialog
+        ): View {
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(40, 36, 40, 44)
+            }
+
+            colonne.addView(TextView(activity).apply {
+                text = resultat.mot
+                textSize = 30f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+            })
+
+            colonne.addView(titreSection(activity, "EN FRANÇAIS", 30))
+
+            // Le générateur assemble les acceptions avec « , » ; rien ne lui
+            // interdit d'en produire une qui contienne elle-même une virgule.
+            // Découper là est donc une heuristique : au pire une acception
+            // s'affiche sur deux lignes, jamais aucune n'est perdue.
+            resultat.glose.split(", ").filter { it.isNotBlank() }.forEach { sens ->
+                colonne.addView(TextView(activity).apply {
+                    text = "•  $sens"
+                    textSize = 17f
+                    setTextColor(Color.parseColor("#333333"))
+                    setPadding(0, 0, 0, 8)
+                    setLineSpacing(0f, 1.15f)
+                })
+            }
+
+            // Les phrases du LOD, après le sens et avant la morphologie : elles
+            // illustrent ce qu'on vient de lire. Une glose dit ce que le mot
+            // veut dire, jamais comment il s'emploie — « Haus = maison » ne
+            // fait pas deviner « ech ginn heem ». Le mot cherché est mis en
+            // gras dans la phrase, comme le LOD le balise lui-même : c'est ce
+            // qui fait lire une illustration plutôt qu'une phrase de plus.
+            //
+            // Un mot sur cinq n'en a pas — noms propres, formes que le ZLS n'a
+            // pas illustrées. La section disparaît alors, plutôt que de poser
+            // un titre sur du vide.
+            //
+            // Sous la phrase, sa traduction française quand le ZLS en a publié
+            // une, et rien sinon : pas de traduction approchée, pas de mention
+            // « traduction indisponible » qui ferait paraître deux fiches sur
+            // trois inachevées.
+            val exemples = TranslationDictionary.exemplesTraduits(activity, resultat)
+            if (exemples.isNotEmpty()) {
+                colonne.addView(titreSection(
+                    activity,
+                    if (exemples.size == 1) "EXEMPLE" else "EXEMPLES",
+                    26
+                ))
+                // Chacune sur son fond, séparées d'un vrai intervalle : à dix
+                // pixels l'une de l'autre et sur le blanc de la fiche, les deux
+                // phrases se lisaient comme un seul paragraphe, et la seconde
+                // paraissait continuer la première.
+                exemples.forEachIndexed { rang, exemple ->
+                    colonne.addView(TextView(activity).apply {
+                        text = SpannableStringBuilder(phraseIllustree(exemple.phrase, resultat)).apply {
+                            exemple.traduction?.let { francais ->
+                                append("\n")
+                                val debut = length
+                                append(francais)
+                                setSpan(RelativeSizeSpan(0.85f), debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                setSpan(
+                                    ForegroundColorSpan(Color.parseColor("#777777")),
+                                    debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                            }
+                        }
+                        textSize = 16f
+                        setTextColor(Color.parseColor("#333333"))
+                        setLineSpacing(0f, 1.25f)
+                        setPadding(24, 20, 24, 20)
+                        background = GradientDrawable().apply {
+                            cornerRadius = 12f
+                            setColor(Color.parseColor("#F6F7F8"))
+                        }
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            if (rang < exemples.size - 1) bottomMargin = 14
+                        }
+                    })
+                }
+            }
+
+            // L'une sous l'autre, en pleine largeur : côte à côte, la seconde
+            // n'avait la place que d'un nom de domaine, « lod.lu ↗ », qui
+            // suppose de savoir déjà ce qu'est le LOD. Le libellé dit
+            // maintenant où l'on va ; l'attribution, elle, reste en pied
+            // d'onglet.
+            // Les autres formes du même mot, après le sens : on vient chercher
+            // ce que le mot veut dire, la morphologie est un second temps.
+            // C'est aussi ce qui rend le regroupement lisible — la liste ne
+            // montre plus « Forschett » et « Forschetten » l'un sous l'autre,
+            // la fiche dit qu'ils sont le même mot.
+            if (resultat.formes.isNotEmpty()) {
+                colonne.addView(titreSection(activity, "AUTRES FORMES", 26))
+                colonne.addView(TextView(activity).apply {
+                    // Toutes, désormais. Elles étaient plafonnées à dix pour que
+                    // « sinn » et ses vingt-deux formes ne poussent pas les
+                    // boutons hors de l'écran ; le « … » qui suivait annonçait
+                    // qu'il en manquait douze sans donner aucun moyen de les
+                    // voir. La feuille s'ouvrant maintenant déployée, le
+                    // contenu défile au lieu d'être coupé.
+                    text = resultat.formes.joinToString(" · ")
+                    textSize = 16f
+                    setTextColor(Color.parseColor("#555555"))
+                    setLineSpacing(0f, 1.2f)
+                })
+            }
+
+            colonne.addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(0, 30, 0, 0)
+
+                addView(boutonFiche(
+                    activity, "Copier le mot",
+                    Color.parseColor("#1976D2"), Color.WHITE, null
+                ) {
+                    copierMot(activity, resultat.mot)
+                    dialogue.dismiss()
+                }.apply {
+                    (layoutParams as LinearLayout.LayoutParams).bottomMargin = 20
+                })
+
+                addView(boutonFiche(
+                    activity, "Voir sur le dictionnaire officiel ↗",
+                    Color.WHITE, Color.parseColor("#2C7A8C"), Color.parseColor("#B9D6DD")
+                ) {
+                    ouvrirLod(activity, resultat.mot)
+                    dialogue.dismiss()
+                })
+            })
+
+            return ScrollView(activity).apply {
+                addView(colonne)
+                // Affichage bord à bord (Android 15) : la fenêtre passe sous la
+                // barre de navigation, le bas de la fiche doit la contourner.
+                clipToPadding = false
+                androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(this) { vue, insets ->
+                    val barres = insets.getInsets(
+                        androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                    )
+                    vue.setPadding(0, 0, 0, barres.bottom)
+                    insets
+                }
+            }
+        }
+
+        /**
+         * Intitulé d'une section de la fiche. Les trois se ressemblent au
+         * pixel près ; seul l'espace au-dessus du premier diffère, la fiche
+         * ouvrant sur le mot en 30sp.
+         */
+        private fun titreSection(
+            activity: SettingsActivity,
+            libelle: String,
+            marge: Int
+        ): TextView = TextView(activity).apply {
+            text = libelle
+            textSize = 11f
+            letterSpacing = 0.12f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#AAAAAA"))
+            setPadding(0, marge, 0, 10)
+        }
+
+        /**
+         * La phrase d'exemple, le mot cherché en gras.
+         *
+         * On met en gras toute forme de la famille : la phrase du LOD emploie
+         * le mot fléchi (« déi Blus passt gutt bei deng blo **Aen** »), et
+         * chercher la seule forme affichée n'en surlignerait presque jamais
+         * aucune. Une flexion que le LOD n'a pas glosée n'est pas dans la
+         * famille : la phrase s'affiche alors sans gras, ce qui reste lisible.
+         */
+        private fun phraseIllustree(
+            phrase: String,
+            resultat: TranslationDictionary.Resultat
+        ): CharSequence {
+            val formes = (resultat.formes + resultat.mot)
+                .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
+            val rendu = SpannableString(phrase)
+            var depuis = 0
+            for (mot in TranslationDictionary.decouperEnMots(phrase)) {
+                val debut = phrase.indexOf(mot, depuis)
+                if (debut < 0) continue
+                depuis = debut + mot.length
+                if (AccentTolerantMatcher.normalize(mot) in formes) {
+                    rendu.setSpan(
+                        StyleSpan(Typeface.BOLD), debut, depuis,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+            return rendu
+        }
+
+        private fun boutonFiche(
+            activity: SettingsActivity,
+            libelle: String,
+            fond: Int,
+            encre: Int,
+            bordure: Int?,
+            action: () -> Unit
+        ): TextView = TextView(activity).apply {
+            text = libelle
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(encre)
+            setPadding(20, 32, 20, 32)
+            background = GradientDrawable().apply {
+                cornerRadius = 14f
+                setColor(fond)
+                if (bordure != null) setStroke(3, bordure)
+            }
+            isClickable = true
+            setOnClickListener { action() }
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        /**
+         * Copie le mot dans le presse-papiers.
+         *
+         * Le Toast se tait à partir d'Android 13 : le système affiche lui-même
+         * une confirmation de copie, et les deux se superposaient.
+         */
+        private fun copierMot(activity: SettingsActivity, mot: String) {
+            val presse = activity.getSystemService(Context.CLIPBOARD_SERVICE)
+                    as? android.content.ClipboardManager ?: return
+            presse.setPrimaryClip(ClipData.newPlainText("Wierderbuch", mot))
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                Toast.makeText(activity, "« $mot » copié", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        /**
+         * Ouvre la fiche LOD du mot dans le navigateur.
+         *
+         * **Par l'identifiant d'article, jamais par la recherche.** La route
+         * `/sich/<langue>/<mot>` du LOD paraissait le lien naturel — c'est
+         * celui que le site fabrique lui-même — mais elle ne fonctionne pas
+         * quand on y arrive de l'extérieur : le composant qui la sert émet sa
+         * requête sur un bus d'événements dans son `mounted()`, et à
+         * l'ouverture à froid d'un onglet neuf l'écouteur n'est pas encore là.
+         * La recherche se perd, et la page propose d'ajouter le mot au
+         * dictionnaire — y compris pour « Haus ». Vérifié au navigateur le
+         * 2026-09-03 ; c'est un défaut de leur côté, pas du nôtre.
+         *
+         * `/artikel/<id>` est rendue par leur serveur et arrive directement
+         * sur l'article, ce qui vaut mieux qu'une liste de résultats de toute
+         * façon. Les identifiants viennent de `luxemburgish_lod_ids.json`,
+         * indexé par la forme que la fiche affiche.
+         *
+         * Le repli sur la recherche reste là pour les mots hors table — noms
+         * propres, formes que l'index du LOD ne rattache à rien. Il ne mènera
+         * à rien tant que leur défaut dure, mais c'est déjà ce que donnait
+         * l'ancienne adresse.
+         */
+        private fun ouvrirLod(activity: SettingsActivity, mot: String) {
+            val article = TranslationDictionary.articleLod(activity, mot)
+            val url = if (article != null) LOD_ARTICLE + Uri.encode(article)
+                      else LOD_RECHERCHE + Uri.encode(mot)
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (e: Exception) {
+                Log.e("DictionaryFragment", "Ouverture de lod.lu impossible", e)
+                Toast.makeText(activity, "Impossible d'ouvrir lod.lu", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        companion object {
+            private const val LOD_ARTICLE = "https://lod.lu/artikel/"
+            private const val LOD_RECHERCHE = "https://lod.lu/sich/lb/"
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
+            rechercheEnAttente = null
+            rootView = null
+        }
+    }
+
+    /**
+     * Onglet « Spiller » : le choix du jeu, puis le jeu choisi.
+     *
+     * Ce fragment ne joue à rien lui-même. Il montre quatre cartes et, au tap,
+     * installe le fragment du jeu dans son propre conteneur. Aucun pager
+     * imbriqué : les jeux comportent des grilles qui se manipulent au doigt
+     * (le glissé de Wuertsich, notamment), et un second ViewPager leur aurait
+     * disputé chaque geste horizontal.
+     *
+     * Le retour au choix passe par [OnBackPressedCallback] plutôt que par
+     * l'override d'`onBackPressed` de l'activité : le rappel n'est actif que
+     * pendant qu'un jeu est ouvert, si bien que le bouton Retour continue de
+     * quitter l'application partout ailleurs, sans que l'activité ait à savoir
+     * ce que ses onglets contiennent.
+     */
+    class GamesFragment : Fragment() {
+
+        private var rootView: LinearLayout? = null
+        private var conteneurJeu: FrameLayout? = null
+        private var barreRetour: LinearLayout? = null
+        private var grilleChoix: View? = null
+
+        /** La bannière du carnet, en tête du hub, remise à jour au retour. */
+        private var tvCarnetTotal: TextView? = null
+        private var tvCarnetDetail: TextView? = null
+        private var tvCarnetRevision: TextView? = null
+
+        private val retourAuChoix = object : androidx.activity.OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() = fermerLeJeu()
+        }
+
+        private data class Jeu(
+            val emoji: String,
+            val nom: String,
+            val resume: String,
+            val couleur: String,
+            val fabrique: () -> Fragment
+        )
+
+        private val jeux = listOf(
+            Jeu("📚", "Boîte de Leitner", "Révisez vos cartes à intervalle régulier",
+                "#8B4513") { BoiteFragment() },
+            Jeu("🎲", "Wuertsich", "Retrouvez les mots cachés dans la grille",
+                "#9C27B0") { WordSearchFragment() },
+            Jeu("🔤", "Wuertmix", "Remettez les lettres dans l'ordre",
+                "#1976D2") { WordScrambleFragment() },
+            Jeu("🟩", "Wuertriet", "Devinez le mot de 5 lettres en 6 essais",
+                "#4CAF50") { WuertrietFragment() },
+            Jeu("📝", "Wuertlück", "Complétez la phrase à laquelle il manque un mot",
+                "#FF8C00") { ClozeFragment() },
+            Jeu("🔢", "Zuelwuert", "Écrivez en lettres le résultat d'une multiplication",
+                "#00897B") { ZuelenFragment() },
+            Jeu("🧩", "Kräizwuert", "Écrivez les mots dans la grille, d'après leur sens",
+                "#C2185B") { CrosswordFragment() },
+            Jeu("🔡", "Wuertplaz", "Casez les mots donnés dans la grille vide",
+                "#00796B") { ChasseCroiseFragment() }
+        )
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+
+            barreRetour = construireBarreRetour(activity).also {
+                it.visibility = View.GONE
+                colonne.addView(it)
+            }
+
+            grilleChoix = construireGrilleChoix(activity).also { colonne.addView(it) }
+
+            conteneurJeu = FrameLayout(activity).apply {
+                id = View.generateViewId()
+                visibility = View.GONE
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    1f
+                )
+            }
+            colonne.addView(conteneurJeu)
+
+            requireActivity().onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, retourAuChoix)
+
+            rootView = colonne
+            // Après une rotation, on rouvre le jeu qui était ouvert.
+            activity.jeuOuvert.takeIf { it in jeux.indices }?.let { ouvrirLeJeu(jeux[it]) }
+            return colonne
+        }
+
+        private fun construireBarreRetour(activity: SettingsActivity) =
+            LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setBackgroundColor(Color.WHITE)
+                setPadding(16, 12, 16, 12)
+                isClickable = true
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                addView(TextView(activity).apply {
+                    text = "‹  Tous les jeux"
+                    textSize = 16f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.parseColor("#1976D2"))
+                })
+                setOnClickListener { fermerLeJeu() }
+            }
+
+        private fun construireGrilleChoix(activity: SettingsActivity): View {
+            val colonne = LinearLayout(activity).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                orientation = LinearLayout.VERTICAL
+                setPadding(20, 24, 20, 24)
+            }
+
+            colonne.addView(TextView(activity).apply {
+                text = "🎮 Spiller"
+                textSize = 22f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#1C1C1C"))
+                setPadding(4, 0, 4, 6)
+            })
+            colonne.addView(TextView(activity).apply {
+                text = "Huit façons de travailler son luxembourgeois. La Boîte " +
+                        "de Leitner donne accès à vos cartes étudiées. Les jeux " +
+                        "de vocabulaire donnent la traduction française des " +
+                        "mots, au moment où elle ne livre pas la réponse ; " +
+                        "Zuelwuert porte sur l'écriture des nombres, " +
+                        "Kräizwuert est le seul où l'on écrit soi-même les " +
+                        "mots, et Wuertplaz le seul qui se joue sans connaître " +
+                        "la langue. Tous versent au même carnet."
+                textSize = 14f
+                setTextColor(Color.parseColor("#666666"))
+                setLineSpacing(0f, 1.25f)
+                setPadding(4, 0, 4, 20)
+            })
+
+            colonne.addView(banniereCarnet(activity))
+
+            // Deux cartes par ligne : une carte pleine largeur par jeu aurait
+            // poussé les derniers hors de l'écran, là où on ne les découvre
+            // plus. Un nombre impair de jeux laisse le dernier occuper toute
+            // la ligne — c'est voulu, il est ainsi le plus visible.
+            jeux.chunked(2).forEach { paire ->
+                colonne.addView(LinearLayout(activity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { bottomMargin = 16 }
+                    paire.forEachIndexed { rang, jeu ->
+                        addView(carteJeu(activity, jeu, marginDroite = rang == 0))
+                    }
+                })
+            }
+
+            // Le choix défile depuis la septième carte. Six tenaient dans un
+            // écran de téléphone, si bien que le hub n'avait jamais eu besoin
+            // de défiler ; la septième tombait sous le bord, et rien ne le
+            // signalait : la carte existait, elle était simplement
+            // inatteignable. Le poids fait prendre à la vue la hauteur restante
+            // sous la barre de retour, et jamais plus, sinon les cartes se
+            // centrent au lieu de commencer en haut.
+            return ScrollView(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+                )
+                addView(colonne)
+            }
+        }
+
+        /**
+         * La bannière du carnet, au-dessus des sept jeux.
+         *
+         * Le carnet était une pastille au fond d'un seul jeu : pour le
+         * découvrir il fallait avoir choisi Wuertplaz, puis avoir fini une
+         * grille. C'était l'inverse de ce qu'il est — la chose qui relie les
+         * sept parties entre elles, et la seule qui reste quand la partie est
+         * finie. Il est donc en tête du hub, pleine largeur, au-dessus des jeux
+         * plutôt qu'à côté d'eux.
+         *
+         * Elle n'affiche que ce qui se lit **sans toucher aux actifs** : le
+         * total et les jeux représentés sortent des préférences. Les raretés
+         * demanderaient le balayage de `luxemburgish_dict.json` (1,27 Mo), qui
+         * n'a rien à faire sur le fil principal à l'ouverture d'un onglet —
+         * elles sont dans le carnet lui-même, à une touche d'ici.
+         */
+        private fun banniereCarnet(activity: SettingsActivity): View {
+            val d = resources.displayMetrics.density
+            fun dp(v: Float) = (v * d).toInt()
+            val accent = Carnet.COULEUR
+
+            return LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(dp(16f), dp(16f), dp(16f), dp(16f))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = dp(18f) }
+                background = GradientDrawable().apply {
+                    cornerRadius = 16f * d
+                    setColor(accent)
+                }
+
+                addView(TextView(activity).apply {
+                    text = "📔"
+                    textSize = 34f
+                    setPadding(0, 0, dp(14f), 0)
+                })
+
+                addView(LinearLayout(activity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
+                    addView(TextView(activity).apply {
+                        text = "Mäi Carnet"
+                        textSize = 18f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.WHITE)
+                    })
+                    tvCarnetTotal = TextView(activity).apply {
+                        textSize = 13f
+                        setTextColor(0xFFE8E0FF.toInt())
+                        setLineSpacing(0f, 1.2f)
+                    }
+                    addView(tvCarnetTotal)
+                    // Ce qui est dû aujourd'hui, sous le total. Se lit dans les
+                    // préférences comme le reste de la bannière : la règle
+                    // tient, rien ici ne touche aux actifs.
+                    tvCarnetRevision = TextView(activity).apply {
+                        textSize = 13f
+                        setTypeface(null, Typeface.BOLD)
+                        setPadding(0, dp(4f), 0, 0)
+                    }
+                    addView(tvCarnetRevision)
+                    tvCarnetDetail = TextView(activity).apply {
+                        textSize = 13f
+                        setPadding(0, dp(4f), 0, 0)
+                    }
+                    addView(tvCarnetDetail)
+                })
+
+                addView(TextView(activity).apply {
+                    text = "Ouvrir  ›"
+                    textSize = 14f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(accent)
+                    setPadding(dp(14f), dp(8f), dp(14f), dp(8f))
+                    background = GradientDrawable().apply {
+                        cornerRadius = 20f * d
+                        setColor(Color.WHITE)
+                    }
+                })
+
+                isClickable = true
+                setOnClickListener {
+                    CarnetFragment().show(parentFragmentManager, "carnet")
+                }
+                majBanniereCarnet()
+            }
+        }
+
+        /**
+         * Remet la bannière à jour.
+         *
+         * Appelée à la construction et à chaque retour sur le hub : une partie
+         * qui vient de se finir a presque toujours changé le total, et une
+         * bannière figée ferait mentir la seule chose qu'elle affiche.
+         */
+        private fun majBanniereCarnet() {
+            val ctx = context ?: return
+            val total = Carnet.taille(ctx)
+            tvCarnetTotal?.text = when (total) {
+                0 -> "Les mots que vous gagnez deviennent des cartes."
+                1 -> "1 carte collectée"
+                else -> "$total cartes collectées"
+            }
+            // Le décompte est celui de la file, donc plafonné : la bannière
+            // annonce ce que la prochaine session contient, jamais l'arriéré.
+            // Promettre « 213 cartes à revoir » est la façon de n'en faire
+            // réviser aucune.
+            val dues = Carnet.aRevoir(ctx)
+            tvCarnetRevision?.apply {
+                if (dues == 0) {
+                    visibility = View.GONE
+                } else {
+                    visibility = View.VISIBLE
+                    text = if (dues == 1) "🔁  1 carte à revoir aujourd'hui"
+                    else "🔁  $dues cartes à revoir aujourd'hui"
+                    setTextColor(Color.WHITE)
+                }
+            }
+            val jeux = Carnet.jeuxRepresentes(ctx)
+            tvCarnetDetail?.apply {
+                if (jeux.isEmpty()) {
+                    text = "Les sept jeux y versent."
+                    setTextColor(0xFFCFC2F0.toInt())
+                } else {
+                    // Les emojis des jeux qui ont déjà donné une carte : la
+                    // collection se lit d'un coup d'œil comme une carte de
+                    // progression, sans compter ni classer.
+                    text = jeux.joinToString(" ") { it.emoji } +
+                        "   ${jeux.size}/${JeuCarte.JEUX.size} jeux"
+                    setTextColor(0xFFE8E0FF.toInt())
+                }
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            majBanniereCarnet()
+        }
+
+        private fun carteJeu(activity: SettingsActivity, jeu: Jeu, marginDroite: Boolean) =
+            LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER_HORIZONTAL
+                setPadding(16, 24, 16, 24)
+                background = GradientDrawable().apply {
+                    setColor(Color.WHITE)
+                    cornerRadius = 16f * resources.displayMetrics.density
+                    setStroke(
+                        (1.5f * resources.displayMetrics.density).toInt(),
+                        activity.avecOpacite(jeu.couleur, 0x55)
+                    )
+                }
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                ).apply { if (marginDroite) rightMargin = 16 }
+
+                addView(TextView(activity).apply {
+                    text = jeu.emoji
+                    textSize = 40f
+                    gravity = Gravity.CENTER
+                })
+                addView(TextView(activity).apply {
+                    text = jeu.nom
+                    textSize = 17f
+                    setTypeface(null, Typeface.BOLD)
+                    gravity = Gravity.CENTER
+                    setTextColor(Color.parseColor(jeu.couleur))
+                    setPadding(0, 8, 0, 4)
+                })
+                addView(TextView(activity).apply {
+                    text = jeu.resume
+                    textSize = 12f
+                    gravity = Gravity.CENTER
+                    setTextColor(Color.parseColor("#777777"))
+                    setLineSpacing(0f, 1.2f)
+                })
+
+                isClickable = true
+                setOnClickListener { ouvrirLeJeu(jeu) }
+            }
+
+        private fun ouvrirLeJeu(jeu: Jeu) {
+            val conteneur = conteneurJeu ?: return
+            (activity as? SettingsActivity)?.jeuOuvert = jeux.indexOf(jeu)
+            childFragmentManager.beginTransaction().apply {
+                // Un jeu restauré par le système après une rotation visait
+                // l'ancien conteneur : on repart d'un seul jeu, neuf.
+                childFragmentManager.fragments.forEach { remove(it) }
+                add(conteneur.id, jeu.fabrique())
+            }.commit()
+            grilleChoix?.visibility = View.GONE
+            conteneur.visibility = View.VISIBLE
+            barreRetour?.visibility = View.VISIBLE
+            retourAuChoix.isEnabled = true
+        }
+
+        private fun fermerLeJeu() {
+            val conteneur = conteneurJeu ?: return
+            (activity as? SettingsActivity)?.jeuOuvert = -1
+            // Le hub redevient visible sans repasser par onResume : la
+            // bannière se remettrait à jour au prochain onglet, c'est-à-dire
+            // trop tard pour la partie qu'on vient de finir.
+            majBanniereCarnet()
+            childFragmentManager.findFragmentById(conteneur.id)?.let {
+                childFragmentManager.beginTransaction().remove(it).commit()
+            }
+            conteneur.visibility = View.GONE
+            barreRetour?.visibility = View.GONE
+            grilleChoix?.visibility = View.VISIBLE
+            retourAuChoix.isEnabled = false
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            rootView = null
+            conteneurJeu = null
+            barreRetour = null
+            grilleChoix = null
+            tvCarnetTotal = null
+            tvCarnetDetail = null
+            tvCarnetRevision = null
+        }
+    }
+
+    /**
+     * Enveloppe plein écran pour les pages de référence — Guide, À Propos —
+     * sorties de la barre d'onglets.
+     *
+     * Un [DialogFragment] plutôt qu'une Activity : les deux pages existent déjà
+     * sous forme de Fragment, et les héberger ici évite deux déclarations de
+     * manifeste et deux cycles de vie de plus pour un contenu qu'on ouvre et
+     * qu'on referme.
+     */
+    class SheetFragment : androidx.fragment.app.DialogFragment() {
+
+        companion object {
+            private const val ARG_PAGE = "page"
+            const val PAGE_GUIDE = "guide"
+            const val PAGE_A_PROPOS = "a_propos"
+
+            fun pour(page: String) = SheetFragment().apply {
+                arguments = android.os.Bundle().apply { putString(ARG_PAGE, page) }
+            }
+        }
+
+        override fun onCreate(savedInstanceState: android.os.Bundle?) {
+            super.onCreate(savedInstanceState)
+            setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
+        }
+
+        override fun onCreateView(
+            inflater: android.view.LayoutInflater,
+            container: android.view.ViewGroup?,
+            savedInstanceState: android.os.Bundle?
+        ): View {
+            val activity = requireActivity() as SettingsActivity
+            val page = arguments?.getString(ARG_PAGE) ?: PAGE_GUIDE
+
+            val colonne = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setBackgroundColor(Color.WHITE)
+            }
+
+            colonne.addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setBackgroundColor(Color.parseColor("#2196F3"))
+                setPadding(16, 14, 16, 14)
+                addView(TextView(activity).apply {
+                    text = if (page == PAGE_GUIDE) "📖  Guide" else "ℹ️  À propos"
+                    textSize = 18f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(Color.WHITE)
+                    layoutParams = LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                    )
+                })
+                addView(TextView(activity).apply {
+                    text = "✕"
+                    textSize = 22f
+                    setTextColor(Color.WHITE)
+                    setPadding(20, 0, 8, 0)
+                    isClickable = true
+                    setOnClickListener { dismiss() }
+                })
+            })
+
+            val hote = FrameLayout(activity).apply {
+                id = View.generateViewId()
+                // Le fond des deux pages : en paysage, la bande de l'encoche
+                // est ce fond-là, et une bande blanche longeait le gris.
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            }
+            colonne.addView(hote)
+            // Fenêtre plein écran : bord à bord comme l'activité sous Android 15.
+            BordABord.appliquer(
+                colonne, haut = colonne.getChildAt(0),
+                lateraux = { listOf(colonne.getChildAt(0), colonne.getChildAt(1)) }
+            )
+
+            if (savedInstanceState == null) {
+                childFragmentManager.beginTransaction()
+                    .replace(
+                        hote.id,
+                        if (page == PAGE_GUIDE) GuideFragment() else AboutFragment()
+                    )
+                    .commit()
+            }
+
+            return colonne
+        }
+
+        override fun onStart() {
+            super.onStart()
+            // Sans cela le dialogue s'ajuste à son contenu et laisse le fond de
+            // l'activité visible sur les bords : ces deux pages sont de la
+            // lecture longue, elles méritent tout l'écran.
+            dialog?.window?.setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+    }
+}
+
+/**
+ * Message bref ancré en haut de l'écran, à la place de la Snackbar de Material.
+ *
+ * La bibliothèque Material a été retirée en 27.0.0 : même inutilisés, ses
+ * composants restaient dans le dex (R8 garde `MaterialDatePicker` par un layout
+ * interne) et y laissaient `Window.setStatusBarColor` / `setNavigationBarColor`,
+ * obsolètes depuis Android 15, que la Play Console signale. Ce bandeau est une
+ * simple vue posée dans le contenu de l'activité, comme l'était la Snackbar.
+ */
+internal fun bandeauEnHaut(ancre: View, message: String, longue: Boolean) {
+    val racine = ancre.rootView.findViewById<ViewGroup>(android.R.id.content) as? FrameLayout ?: return
+    val densite = ancre.resources.displayMetrics.density
+    val marge = (8 * densite).toInt()
+    val bandeau = TextView(ancre.context).apply {
+        text = message
+        textSize = 14f
+        setTextColor(Color.WHITE)
+        setPadding((16 * densite).toInt(), (14 * densite).toInt(), (16 * densite).toInt(), (14 * densite).toInt())
+        background = GradientDrawable().apply {
+            setColor(Color.parseColor("#323232"))
+            cornerRadius = 4 * densite
+        }
+        elevation = 6 * densite
+        alpha = 0f
+    }
+    // Bord à bord (Android 15+) : le contenu commence sous la barre d'état, le
+    // bandeau doit s'en écarter pour ne pas recouvrir l'heure. Les encarts de la
+    // fenêtre comptent la barre d'état même quand le système a déjà écarté le
+    // contenu (avant Android 15), d'où la soustraction de sa position réelle.
+    val barres = ViewCompat.getRootWindowInsets(ancre)?.getInsets(
+        WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+    )
+    val position = IntArray(2).also { racine.getLocationInWindow(it) }
+    racine.addView(bandeau, FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        Gravity.TOP
+    ).apply {
+        setMargins(
+            marge + maxOf(0, (barres?.left ?: 0) - position[0]),
+            marge + maxOf(0, (barres?.top ?: 0) - position[1]),
+            marge + maxOf(0, (barres?.right ?: 0) - (racine.rootView.width - position[0] - racine.width)),
+            marge
+        )
+    })
+    bandeau.animate().alpha(1f).setDuration(150).start()
+    bandeau.postDelayed({
+        bandeau.animate().alpha(0f).setDuration(150).withEndAction {
+            racine.removeView(bandeau)
+        }.start()
+    }, if (longue) 2750L else 1500L)
 }

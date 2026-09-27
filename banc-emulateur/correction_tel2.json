@@ -1,0 +1,214 @@
+{
+ "samsung": {
+  "mots": 186,
+  "remplaces": 12,
+  "accents_seuls": 0,
+  "casse_seule": 0,
+  "exemples": [
+   [
+    "",
+    "gaart op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "liesen"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "eis ekipp ass schonn an der zweeter ronn ausgescheet  gaart op der klunsch ze liesen"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "wat bretzt deen sech mat senger neier gromper  op der klunsch ze liesen"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "dat ass op en negativen avis getraff vum staatsrot  liesen"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "huel der e stull a setz dech bei eis"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "ouni gudden affekot kanns de dee prozess do ni gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "no der vakanz hate mer all eng gesond faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "am gruef louch de kadaver vun engem hond"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "fuer der net mat deene knaschtege fangeren an de mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "ech muss heiansdo sonndes oder op engem feierdag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "mir hu muer eng grouss etapp virun eis"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "ech hu mech zu doud bei deem film gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "no mengem regimm hu meng kleeder missen ageholl ginn"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "ech hu meng rout hoer vu mengem papp geierft"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "mat der neier ausriichtung vun der antenn ass den empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "menger mamm hir posche sinn all aus lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "elo hunn ech de kaffi an dat falscht lach kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "dat muss ee sech emol op der zong zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "eis heck besteet aus hielenner an aus hieselter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "ech souz de ganze weekend am gaart op der klunsch ze liesen"
+   }
+  ]
+ },
+ "gboard": {
+  "mots": 186,
+  "remplaces": 18,
+  "accents_seuls": 0,
+  "casse_seule": 20,
+  "exemples": [
+   [
+    "",
+    "gaart op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "op der klunsch ze liesen"
+   ],
+   [
+    "",
+    "klunsch ze liesen"
+   ],
+   [
+    "e stull",
+    "exstull"
+   ],
+   [
+    "",
+    "ze liesen"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Eis ekipp ass schonn an der zweeter ronn ausgescheet  gaart op der klunsch ze liesen"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Wat bretzt deen sech mat senger neier gromper  op der klunsch ze liesen"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Dat ass op en negativen avis getraff vum staatsrot  klunsch ze liesen"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Huel der exstull a setz dech bei eis  ze liesen"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Ouni gudden affekot kanns de dee prozess do ni gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "No der vakanz hate mer all eng gesond faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Am gruef louch de kadaver vun engem hond"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Fuer der net mat deene knaschtege fangeren an de mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Ech muss heiansdo sonndes oder op engem feierdag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Mir hu muer eng grouss etapp virun eis"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Ech hu mech zu doud bei deem film gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Fir dat alles hu mer keen accord fonnt mat de gewerkschaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "No mengem regimm hu meng kleeder missen ageholl ginn"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Ech hu meng rout hoer vu mengem papp geierft"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Mat der neier ausriichtung vun der antenn ass den empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Menger mamm hir posche sinn all aus lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Elo hunn ech de kaffi an dat falscht lach kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Dat muss ee sech emol op der zong zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Eis heck besteet aus hielenner an aus hieselter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Ech souz de ganze weekend am gaart op der klunsch ze liesen"
+   }
+  ]
+ }
+}

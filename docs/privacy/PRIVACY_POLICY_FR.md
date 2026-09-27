@@ -254,6 +254,15 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 **Contrôle utilisateur :** Peut être refusée à l'invite système ou révoquée dans Infos app > Notifications ; la gamification continue de fonctionner sans  
 **Emplacement des données :** Aucune - rien n'est stocké ni transmis
 
+### 3️⃣ VIBRATE (Automatique, sans invite)
+
+**Ce qu'elle fait :** Permet de faire vibrer le téléphone avec une force et un timbre choisis  
+**Pourquoi nous en avons besoin :** Pour qu'on sente le relief d'une carte du carnet en y passant le doigt : une montée et une descente ne vibrent pas de la même façon. Le clavier lui-même n'en a pas besoin et ne s'en sert pas  
+**Impact sur la vie privée :** Aucun - elle ne donne accès à aucune donnée  
+**Ce qu'elle NE PEUT PAS faire :** Ne peut rien lire ni rien transmettre ; elle ne fait que commander le vibreur  
+**Contrôle utilisateur :** Le réglage « Vibration à la frappe » de l'application coupe toute vibration, clavier et carnet compris  
+**Emplacement des données :** Aucune - rien n'est stocké ni transmis
+
 ### ❌ Autorisations que Nous NE Demandons PAS :
 
 Nous ne demandons **intentionnellement pas** les autorisations courantes suivantes :
@@ -610,7 +619,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 **Version 2.1 (25 août 2026) :**
 - Identité du développeur : Famibelle Médhi, établi au Luxembourg
-- Retrait de la marque et des coordonnées Potomitan
+- Retrait de la marque et des coordonnées de l'ancien éditeur
 - Autorité de contrôle et juridiction alignées sur le Luxembourg (CNPD)
 - Mise à jour des niveaux de gamification (8 rangs luxembourgeois)
 - Retrait du dictionnaire utilisateur : la fonctionnalité n'existe plus

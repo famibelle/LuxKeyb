@@ -193,6 +193,10 @@ class LevenshteinDistanceTest {
         val matches = LevenshteinDistance.findClosestMatchesNormalized(
             input = "kreyol",
             dictionary = dictionary,
+            // Le moteur passe les formes normalisées qu'il a précalculées au
+            // chargement ; ici on les construit, le dictionnaire est un
+            // échantillon.
+            normalizedWords = dictionary.map { normalizer(it.first) },
             normalizer = normalizer,
             maxDistance = 1,
             maxResults = 3

@@ -124,6 +124,38 @@ class SuggestionEngine(private val context: Context) {
          */
         internal const val NGRAM_CONTEXT_WEIGHT = 150_000.0
 
+        /**
+         * Formes attestées par le LOD et absentes du relevé de fréquences.
+         *
+         * Le corpus est du journalisme RTL : il n'écrit jamais ce qu'on tape
+         * sur un téléphone. « Läffelen », « Forschetten », « sprang »,
+         * « denks », « schaffesch » manquaient tous, alors que le
+         * Lëtzebuerger Online Dictionnaire les atteste. L'actif apporte
+         * ~85 000 formes proposables et ~26 000 connues du seul correcteur,
+         * soit 38 410 → 123 265 formes reconnues à la frappe.
+         *
+         * Il est délibérément SÉPARÉ de luxemburgish_dict.json, qui reste un
+         * relevé de fréquences corpus : les jeux, le mot du jour et surtout
+         * LuxLevels — qui calcule ses huit paliers en pourcentage de la taille
+         * du dictionnaire — le lisent et feraient reculer d'un cran tous les
+         * joueurs si on y versait trois fois plus de formes sans fréquence.
+         * Voir Dictionnaires/generate_lod_forms.py.
+         */
+        private const val LOD_FORMS_ASSET = "luxemburgish_lod_forms.json"
+
+        /**
+         * Fréquence attribuée à une forme venue du LOD.
+         *
+         * Le corpus, lui, ne retient rien sous SEUIL_FREQUENCE_DICO = 3 : la
+         * valeur 1 est donc un marqueur sans ambiguïté autant qu'un poids. Ces
+         * formes se rangent en queue du classement par fréquence, là où
+         * getDictionarySuggestions() ne va les chercher que si moins de
+         * CANDIDATE_POOL_SIZE mots du corpus partagent le préfixe tapé —
+         * autrement dit elles complètent les préfixes rares sans rien changer
+         * à la frappe courante.
+         */
+        internal const val LOD_FREQUENCY = 1
+
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
@@ -319,7 +351,38 @@ class SuggestionEngine(private val context: Context) {
             return if (attendu == word) null else attendu
         }
 
-        internal fun isWordKnown(word: String, normalizedWords: List<String>): Boolean {
+        // `Collection` et non `List` : le moteur passe désormais un Set, dont
+        // le `contains` est en temps constant. Avec 123 265 formes chargées, le
+        // parcours linéaire d'une List coûtait au correcteur un balayage
+        // complet du dictionnaire par mot examiné.
+        /**
+         * Faut-il chercher une correction luxembourgeoise pour ce mot ?
+         *
+         * Non s'il est trop court — la distance de Levenshtein sur deux lettres
+         * rapproche n'importe quoi de n'importe quoi. Et non, surtout, **si le
+         * mot est du français reconnu** : le repli parcourt alors deux fois les
+         * 38 410 formes luxembourgeoises pour proposer de corriger un mot qui
+         * n'a aucune faute, et dans la mauvaise langue. Mesuré sur un Galaxy
+         * A21s, ce parcours coûte ~700 ms là où une frappe ordinaire en prend
+         * 60 : c'est le chemin le plus lent du clavier, et il se déclenchait
+         * exactement quand on insère un mot français dans du luxembourgeois.
+         *
+         * L'aide n'est pas perdue : la rangée bleue propose déjà le mot, elle
+         * l'a trouvé par préfixe. Ce qui disparaît, ce sont les trois
+         * propositions luxembourgeoises sans rapport qui la surplombaient —
+         * `Bechet`, `Deche`, `Mécht` face à `déchet`.
+         *
+         * Le contrôle porte sur le mot **entier** : tant qu'on tape `déche`,
+         * le français ne le reconnaît pas encore et le repli garde sa place,
+         * ce qui laisse intacte la correction d'une vraie faute de frappe
+         * luxembourgeoise.
+         */
+        internal fun devraitCorriger(input: String, estFrancaisConnu: Boolean): Boolean {
+            if (input.length < 3) return false
+            return !estFrancaisConnu
+        }
+
+        internal fun isWordKnown(word: String, normalizedWords: Collection<String>): Boolean {
             if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
             return normalizedWords.contains(AccentTolerantMatcher.normalize(word))
         }
@@ -330,6 +393,21 @@ class SuggestionEngine(private val context: Context) {
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
+    // Même contenu que `normalizedWords`, en table de hachage : le correcteur
+    // orthographique interroge forme par forme et ne peut pas balayer une liste
+    // de 123 000 entrées à chaque mot.
+    private var normalizedWordSet: Set<String> = emptySet()
+    // Formes correctes que le clavier ne PROPOSE pas mais ne doit pas souligner :
+    // les variantes de la règle d'Eifel du LOD (« Ae » pour « Aen » devant
+    // consonne). Elles n'entrent pas dans `dictionary`, donc ni dans la
+    // complétion ni dans les corrections offertes.
+    private var extraKnownForms: Set<String> = emptySet()
+
+    // Filtre de Bloom de toutes les formes reconnues, repliées. Remplace les
+    // deux ensembles ci-dessus quand l'actif le fournit.
+    private var bloomFormes: ByteArray = ByteArray(0)
+    private var bloomBits: Long = 0
+    private var bloomHachages: Int = 0
     private var ngramModel: Map<String, List<Map<String, Any>>> = emptyMap()
     private val wordHistory = mutableListOf<String>()
 
@@ -475,14 +553,43 @@ class SuggestionEngine(private val context: Context) {
             }
             
             // Appliquer la casse de l'input aux suggestions
-            val casedSuggestions = suggestions.map { applyCasingPattern(input, it) }
-            
+            val casedSuggestions = sansGrossieretes(
+                suggestions.map { applyCasingPattern(input, it) }
+            )
+
             suggestionListener?.onSuggestionsReady(casedSuggestions)
         }
     }
     
 
     
+    /**
+     * Retire les grossièretés d'une liste de suggestions.
+     *
+     * Signalé par l'usage : « salope » est apparu comme traduction d'un mot du
+     * Wierderbuch. Le clavier ne les propose donc plus — ni en complétion, ni
+     * en correction, ni en prédiction de mot suivant.
+     *
+     * **Ce n'est pas un refus de saisie**, et la nuance est toute la
+     * différence : ces mots restent dans le dictionnaire, [isKnownWord] les
+     * reconnaît toujours et le correcteur ne les souligne donc pas ; qui veut
+     * les écrire les écrit, lettre à lettre. Le clavier s'abstient seulement de
+     * les mettre dans la bouche de quelqu'un qui ne les a pas demandés — c'est
+     * ce que fait tout clavier du marché.
+     *
+     * Le prix, assumé : taper « Schäis » ne corrigera pas en « Schäiss ».
+     *
+     * Voir [MotsEcartes.estGrossier] pour la liste et la manière dont elle a
+     * été relevée.
+     */
+    private fun sansGrossieretes(mots: List<String>): List<String> =
+        mots.filterNot { MotsEcartes.estGrossier(it) }
+
+    private fun sansGrossieretesBilingues(
+        suggestions: List<BilingualSuggestion>
+    ): List<BilingualSuggestion> =
+        suggestions.filterNot { MotsEcartes.estGrossier(it.word) }
+
     /**
      * 🎯 Active le support bilingue Lëtzebuergesch + Français
      */
@@ -509,9 +616,11 @@ class SuggestionEngine(private val context: Context) {
             }
             
             // Appliquer la casse de l'input aux suggestions
-            val casedSuggestions = suggestions.map { suggestion ->
-                suggestion.copy(word = applyCasingPattern(input, suggestion.word))
-            }
+            val casedSuggestions = sansGrossieretesBilingues(
+                suggestions.map { suggestion ->
+                    suggestion.copy(word = applyCasingPattern(input, suggestion.word))
+                }
+            )
             
             // Notifier avec les deux formats pour compatibilité
             val simpleWords = casedSuggestions.map { it.word }
@@ -678,7 +787,7 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Suggestions dictionnaire: $suggestions")
-            suggestionListener?.onSuggestionsReady(suggestions)
+            suggestionListener?.onSuggestionsReady(sansGrossieretes(suggestions))
         }
     }
     
@@ -698,7 +807,7 @@ class SuggestionEngine(private val context: Context) {
             }
             
             Log.d(TAG, "Prédictions contextuelles: $predictions")
-            suggestionListener?.onSuggestionsReady(predictions)
+            suggestionListener?.onSuggestionsReady(sansGrossieretes(predictions))
         }
     }
     
@@ -783,13 +892,30 @@ class SuggestionEngine(private val context: Context) {
     }
 
     /**
+     * Ce mot est-il du français reconnu ? Interroge le seul palier français,
+     * là où [isKnownWord] réunit les deux langues.
+     *
+     * Sert à ne pas déclencher le repli Levenshtein luxembourgeois sur un mot
+     * français correct — voir [devraitCorriger].
+     */
+    private fun isFrenchWord(word: String): Boolean =
+        ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
+
+    /**
      * Correspondance EXACTE (insensible aux accents) dans le dictionnaire créole OU
      * français — contrairement à getDictionarySuggestions() qui fait une recherche par
      * préfixe. Utilisé par KreyolSpellCheckerService pour décider si un mot doit être
      * souligné comme faute par le correcteur orthographique système.
      */
     fun isKnownWord(word: String): Boolean {
-        if (isWordKnown(word, normalizedWords)) return true
+        if (word.isBlank()) return true // ponctuation/chiffres isolés : ne pas souligner
+        val replie = AccentTolerantMatcher.normalize(word)
+        if (bloomFormes.isNotEmpty()) {
+            if (BloomFilter.contient(replie, bloomFormes, bloomBits, bloomHachages)) return true
+        } else {
+            if (isWordKnown(word, normalizedWordSet)) return true
+            if (extraKnownForms.contains(replie)) return true
+        }
         return ::frenchDictionary.isInitialized && frenchDictionary.containsWord(word)
     }
 
@@ -799,9 +925,15 @@ class SuggestionEngine(private val context: Context) {
      * `word` est reportée sur chaque suggestion, comme pour la frappe normale.
      */
     fun getSpellingSuggestions(word: String, maxResults: Int = MAX_SUGGESTIONS): List<String> {
-        return getSpellCorrectionSuggestions(word)
-            .take(maxResults)
-            .map { applyCasingPattern(word, it.first) }
+        // Filtré comme les suggestions du clavier : le correcteur système
+        // propose, lui aussi. Ce qu'il ne fait pas, et ne doit pas faire, c'est
+        // souligner ces mots — cela passe par [isKnownWord], qui les reconnaît
+        // toujours.
+        return sansGrossieretes(
+            getSpellCorrectionSuggestions(word)
+                .take(maxResults)
+                .map { applyCasingPattern(word, it.first) }
+        )
     }
 
     /**
@@ -824,15 +956,45 @@ class SuggestionEngine(private val context: Context) {
                 loadedDictionary.add(Pair(word, frequency))
             }
             
-            // Trier par fréquence décroissante
-            dictionary = loadedDictionary.sortedByDescending { it.second }
+            // Trier par fréquence décroissante. Les formes du LOD arrivent
+            // ensuite, à LOD_FREQUENCY = 1 : elles se rangent donc toutes après
+            // les mots du corpus, dont aucun ne descend sous 3
+            // (SEUIL_FREQUENCE_DICO). Le classement reste strictement
+            // décroissant, ce dont dépend la fenêtre CANDIDATE_POOL_SIZE de
+            // getDictionarySuggestions().
+            val corpusWords = loadedDictionary.sortedByDescending { it.second }
+            val lodForms = loadLodForms()
+
+            dictionary = corpusWords + lodForms.proposables.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+            // `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
+            // (26 000 chaînes qui n'existaient que pour elle) sont remplacés
+            // par un filtre de Bloom livré avec l'actif : 171 Ko contre
+            // plusieurs Mo. Voir [BloomFilter] pour pourquoi l'approximation
+            // est acceptable ici et seulement ici.
+            bloomFormes = lodForms.bloom
+            bloomBits = lodForms.bits
+            bloomHachages = lodForms.hachages
+            if (bloomFormes.isEmpty()) {
+                // Filtre absent : on retombe sur l'ensemble exact plutôt que
+                // de ne plus rien reconnaître et de tout souligner.
+                Log.w(TAG, "Filtre de reconnaissance absent : repli sur l'ensemble complet")
+                normalizedWordSet = normalizedWords.toHashSet()
+                extraKnownForms = lodForms.connuesSeules.mapTo(
+                    HashSet(lodForms.connuesSeules.size)
+                ) { AccentTolerantMatcher.normalize(it) }
+            }
 
             withContext(Dispatchers.Main) {
-                suggestionListener?.onDictionaryLoaded(dictionary.size)
+                // Le compte annoncé reste celui du corpus : c'est lui que
+                // LuxLevels utilise comme dénominateur des paliers, et un
+                // dictionnaire qui triple ferait reculer tous les joueurs.
+                suggestionListener?.onDictionaryLoaded(corpusWords.size)
             }
             
-            Log.d(TAG, "Dictionnaire chargé: ${dictionary.size} mots")
+            Log.d(TAG, "Dictionnaire chargé: ${corpusWords.size} mots du corpus "
+                    + "+ ${lodForms.proposables.size} formes LOD proposables "
+                    + "+ ${lodForms.connuesSeules.size} connues du seul correcteur")
 
         } catch (e: Exception) {
             // Pas seulement IOException : un format inattendu (ex. objet {mot: fréquence}
@@ -843,6 +1005,50 @@ class SuggestionEngine(private val context: Context) {
         }
     }
     
+    /**
+     * Lit [LOD_FORMS_ASSET] : (formes proposables, formes seulement connues).
+     *
+     * L'actif manquant n'est pas une erreur — le clavier retombe simplement sur
+     * la couverture du corpus, comme avant. On journalise et on continue,
+     * plutôt que de laisser une exception vider le dictionnaire entier.
+     */
+    /** Formes proposables, formes connues du seul correcteur, et leur filtre. */
+    private data class FormesLod(
+        val proposables: List<String>,
+        val connuesSeules: List<String>,
+        val bloom: ByteArray = ByteArray(0),
+        val bits: Long = 0,
+        val hachages: Int = 0
+    )
+
+    private fun loadLodForms(): FormesLod {
+        return try {
+            val jsonString = context.assets.open(LOD_FORMS_ASSET)
+                .bufferedReader().use { it.readText() }
+            val racine = JSONObject(jsonString)
+            FormesLod(
+                lireTableau(racine, "suggest"),
+                lireTableau(racine, "spellcheck"),
+                BloomFilter.decoderBase64(racine.optString("bloom", "")),
+                racine.optLong("bloom_bits", 0),
+                racine.optInt("bloom_hachages", 0)
+            )
+        } catch (e: Exception) {
+            Log.w(TAG, "Formes LOD indisponibles (${e.message}) : "
+                    + "couverture limitée au corpus")
+            FormesLod(emptyList(), emptyList())
+        }
+    }
+
+    private fun lireTableau(racine: JSONObject, cle: String): List<String> {
+        val tableau = racine.optJSONArray(cle) ?: return emptyList()
+        val formes = ArrayList<String>(tableau.length())
+        for (i in 0 until tableau.length()) {
+            tableau.optString(i, "").takeIf { it.isNotEmpty() }?.let { formes.add(it) }
+        }
+        return formes
+    }
+
     /**
      * Charge le modèle N-gram depuis les assets
      */
@@ -913,8 +1119,9 @@ class SuggestionEngine(private val context: Context) {
             }
         }
 
-        // ✨ Si aucune correspondance par préfixe, essayer la correction orthographique
-        if (matches.isEmpty() && input.length >= 3) {
+        // ✨ Si aucune correspondance par préfixe, essayer la correction
+        // orthographique — sauf si le mot tapé est du français reconnu.
+        if (matches.isEmpty() && devraitCorriger(input, isFrenchWord(input))) {
             return getSpellCorrectionSuggestions(input)
         }
 
@@ -941,6 +1148,7 @@ class SuggestionEngine(private val context: Context) {
         val normalizedMatches = LevenshteinDistance.findClosestMatchesNormalized(
             input = input,
             dictionary = dictionary,
+            normalizedWords = normalizedWords,
             normalizer = { str -> AccentTolerantMatcher.normalize(str) },
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS

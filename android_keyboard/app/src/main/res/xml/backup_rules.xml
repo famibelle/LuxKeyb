@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+    Sauvegarde Android jusqu'à Android 11 (au-delà, voir data_extraction_rules.xml,
+    qui doit dire exactement la même chose).
+
+    Liste blanche : seuls les réglages quittent le téléphone. La politique de
+    confidentialité publiée promet que la progression, le carnet et tout ce qui
+    vient de la frappe « ne quittent jamais votre appareil ». Une règle
+    include path="." envoyait tout le reste aussi, dont les emojis récents,
+    qui sont une trace de frappe. Ne rien ajouter ici qui ne soit pas un
+    réglage choisi par l'utilisateur ; BackupRulesTest le vérifie.
 -->
 <full-backup-content>
-    <!-- Inclure les préférences du clavier -->
-    <include domain="sharedpref" path="kreyol_keyboard_prefs.xml"/>
-    <include domain="sharedpref" path="."/>
-    
-    <!-- Exclure les données sensibles -->
-    <exclude domain="sharedpref" path="device.xml"/>
+    <!-- Vibration, son, thème (KeyboardPreferences). -->
+    <include domain="sharedpref" path="kreyol_clavier_prefs.xml"/>
+    <!-- Majuscule automatique (KreyolInputMethodServiceRefactored.KEYBOARD_PREFS_NAME). -->
+    <include domain="sharedpref" path="lux_keyboard_prefs.xml"/>
 </full-backup-content>

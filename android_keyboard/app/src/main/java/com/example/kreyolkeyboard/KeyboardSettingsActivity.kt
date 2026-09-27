@@ -8,12 +8,14 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -58,6 +60,11 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             addView(contenu())
         })
         setContentView(racine)
+        // Bord à bord sous Android 15 : le bandeau bleu passe sous la barre d'état.
+        BordABord.appliquer(
+            racine, haut = racine.getChildAt(0),
+            lateraux = { listOf(racine.getChildAt(0), racine.getChildAt(1)) }
+        )
     }
 
     /** Bandeau bleu avec la flèche de retour, repris de l'écran principal. */
@@ -141,7 +148,48 @@ class KeyboardSettingsActivity : AppCompatActivity() {
                         "toucher ne gouverne que le clavier du constructeur."
             ))
         })
+        addView(espacement())
+
+        addView(carte().apply {
+            addView(titreSection("Emojis récents"))
+            addView(explication(
+                "Le panneau emoji place en tête les 30 derniers emojis que vous " +
+                        "avez employés. Cette liste ne quitte pas le téléphone, et rien " +
+                        "n'y est ajouté depuis un champ de mot de passe."
+            ))
+            addView(boutonSecondaire("Vider les emojis récents") {
+                EmojiRecents.vider(this@KeyboardSettingsActivity)
+                Toast.makeText(
+                    this@KeyboardSettingsActivity,
+                    "Emojis récents effacés",
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
+        })
     }
+
+    /**
+     * Un bouton d'action discret, sur le modèle des interrupteurs voisins :
+     * couleurs posées à la main pour ne pas dépendre du thème AppCompat, qui
+     * rendrait le libellé presque invisible sur la carte blanche.
+     */
+    private fun boutonSecondaire(libelle: String, onClick: () -> Unit): View =
+        Button(this).apply {
+            text = libelle
+            textSize = 15f
+            isAllCaps = false
+            setTextColor(Color.parseColor(BLEU))
+            setBackgroundColor(Color.parseColor("#F1F5F9"))
+            setPadding(dp(16), dp(12), dp(16), dp(12))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = dp(8) }
+            setOnClickListener {
+                onClick()
+                Log.d(TAG, "Action « $libelle » déclenchée")
+            }
+        }
 
     /**
      * Les trois positions du thème, en boutons radio.

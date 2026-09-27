@@ -95,6 +95,20 @@ CORPUS_SOURCES = [
     },
 ]
 
+# Le corpus de traduction du ZLS (`zls_source.py`) n'est **pas** ici, et c'est
+# mesuré. L'y verser apporte 1 719 formes et 1 099 contextes, mais sur ParaLux
+# — le seul jeu indépendant des deux — le top-3 passe de 20,8 % à 20,9 % et la
+# couverture de 94,5 % à 94,7 % : trois événements sur 2 703, soit le bruit.
+# Les formes gagnées sont thématiques (Kryptowärung, Palliativmedezin,
+# Atomprogramm) ou des noms propres, 66 % capitalisées, et 1 189 des 1 719
+# n'apparaissent que trois fois dans 153 000 mots.
+#
+# En regard, garder ce corpus hors de l'entraînement en fait le seul grand jeu
+# inédit du projet : 10 068 segments et 135 388 événements après retrait des
+# 6,84 % de recouvrement, contre 312 phrases et 2 703 événements pour ParaLux.
+# Cinquante fois plus de matière, donc ±0,1 point de bruit au lieu de ±0,8.
+# L'échange serait mauvais : voir `docs/scripts/generate_corpus_stats.py`.
+
 # Seuil de fréquence pour retenir un mot dans le dictionnaire livré.
 #
 # Sur 3,17 M d'occurrences, 52 % des formes sont des hapax : noms propres,
@@ -165,8 +179,15 @@ SEUIL_CASSE_ACRONYME = 0.50
 # Motif de découpage en mots, partagé par le dictionnaire et les n-grammes.
 # Il accepte les deux casses : c'est ce qui permet de compter les formes de
 # surface telles qu'elles sont écrites.
+# {1,} et non {2,} : le luxembourgeois a des mots d'une seule lettre, et ils
+# sont parmi les plus fréquents. `d'` (l'article élidé de `d'Leit`), `a` (la
+# forme de `an` devant consonne par la règle d'Eifel) et `e` (l'article
+# indéfini) étaient jusqu'ici jetés à la tokenisation, donc absents du
+# dictionnaire ET du modèle n-grammes. Conséquence mesurée sur les conférences
+# de presse du gouvernement : après l'un de ces mots, le clavier n'avait plus
+# aucune prédiction à offrir — 1 220 des 5 053 barres vides, soit un quart.
 PATTERN_MOT = re.compile(
-    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{2,}\b'
+    r'\b[a-zA-ZàáâäèéêëìíîïòóôöùúûüçñÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÇÑäëéöü\-]{1,}\b'
 )
 
 # Caractères qui peuvent séparer une fin de phrase du mot suivant sans rompre
@@ -182,7 +203,7 @@ def tokeniser(texte):
     tokens = []
     for correspondance in PATTERN_MOT.finditer(texte):
         mot = correspondance.group(0).strip('-')
-        if len(mot) < 2:
+        if not mot:
             continue
         i = correspondance.start() - 1
         while i >= 0 and texte[i] in _CARACTERES_TRANSPARENTS:
@@ -357,6 +378,27 @@ class LuxembourgishPipelineUnique:
             phrases_source = 0
             doublons_source = 0
 
+            if source.get("loader") == "zls":
+                try:
+                    import zls_source
+                    for segment in zls_source.segments():
+                        texte = (segment.get(champ) or "").strip()
+                        if not texte or texte in vues:
+                            doublons_source += texte in vues
+                            continue
+                        vues.add(texte)
+                        self.textes_luxembourgeois.append(
+                            {"Texte": texte, "Source": nom})
+                        phrases_source += 1
+                    print(f"   ✅ {phrases_source} segments")
+                except Exception as e:
+                    print(f"   ❌ corpus ZLS indisponible: {e}")
+                if phrases_source:
+                    sources_ok += 1
+                    print(f"   📊 {phrases_source} phrases retenues, "
+                          f"{doublons_source} doublons écartés")
+                continue
+
             for config in source["configs"]:
                 try:
                     ds = load_dataset(nom, config)
@@ -401,8 +443,9 @@ class LuxembourgishPipelineUnique:
         # Une seule source sur deux, c'est un dictionnaire amputé de la moitié
         # de son vocabulaire ou de tout son registre familier selon celle qui
         # manque — et rien dans les contrôles de format de la CI ne le verrait.
-        if sources_ok < len(CORPUS_SOURCES):
-            print(f"\n⚠️ Seulement {sources_ok}/{len(CORPUS_SOURCES)} corpus chargés.")
+        obligatoires = sum(1 for s in CORPUS_SOURCES if not s.get("optionnelle"))
+        if sources_ok < obligatoires:
+            print(f"\n⚠️ Seulement {sources_ok} corpus chargés sur {obligatoires} obligatoires.")
             if self.strict:
                 print("   Mode strict : arrêt, le dictionnaire serait déséquilibré.")
                 return False

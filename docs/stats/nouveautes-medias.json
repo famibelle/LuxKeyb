@@ -1,0 +1,117 @@
+{
+  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "26.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_plaque_quatre_raretes.png",
+        "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+        "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+      },
+      {
+        "image": "Screenshots/lux_plaque_gravee.png",
+        "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
+        "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
+      }
+    ]
+  },
+  "26.0.0": {
+    "image": "Screenshots/lux_relief_doigt.png",
+    "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+    "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+  },
+  "25.0.0": {
+    "image": "Screenshots/lux_carte_stad.png",
+    "alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
+    "legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
+  },
+  "23.0.0": {
+    "image": "Screenshots/lux_carte_tres_rare.png",
+    "alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
+    "legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
+  },
+  "22.12.8": {
+    "image": "Screenshots/lux_inclinaison_deux_axes.gif",
+    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
+    "legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
+  },
+  "22.12.4": {
+    "image": "Screenshots/lux_contre_pivot.gif",
+    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
+    "legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
+  },
+  "22.12.3": {
+    "image": "Screenshots/lux_glisse_lateral.png",
+    "alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
+    "legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
+  },
+  "22.12.2": {
+    "image": "Screenshots/lux_guide_cartes.png",
+    "alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
+    "legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
+  },
+  "22.12.1": {
+    "image": "Screenshots/lux_carte_glissee.png",
+    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
+    "legende": "Une carte ouverte depuis l'éventail se chasse d'un glissé vers le haut ou vers le bas, et l'on retrouve l'éventail sur la carte qu'on lisait. En parcourant l'éventail, chaque carte qui passe au centre donne un léger cran de vibration."
+  },
+  "22.12.0": {
+    "image": "Screenshots/lux_categories.png",
+    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
+    "legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
+  },
+  "22.11.0": {
+    "image": "Screenshots/lux_exemple_traduit.png",
+    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
+    "legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
+  },
+  "22.10.0": {
+    "image": "Screenshots/lux_eventail.png",
+    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
+    "legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
+  },
+  "20.6.0": {
+    "image": "Screenshots/lux_pochette.png",
+    "alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
+    "legende": "Une grille terminée verse sa pochette : les mots gagnés se retournent un par un, ceux que le carnet n'avait jamais vus portant une étiquette. « Passer » est offert dès la première carte — c'est un cadeau, pas un passage obligé. Le bilan compte ce que la grille a rapporté et ouvre sur la collection. Une grille dont on a demandé la solution n'en verse aucune, puisqu'elle ne rapporte rien."
+  },
+  "20.5.0": {
+    "image": "Screenshots/lux_carnet.png",
+    "alt": "Deux écrans du carnet. À gauche, l'en-tête « Mäi Carnet », la ligne « 30 mots » suivie du compte par rareté, trois tris (Récent, A → Z, Rareté) et une grille de cartes à deux colonnes : Fans, Stëmme, geparkten, virgelies, sechs, Artikele, chacune avec son illustration, son mot en vert, son symbole de rareté et son sens français. À droite, la carte « virgelies » ouverte par-dessus la grille assombrie : badge violet « Très rare », « 9 lettres », le sens « lire à haute voix (à) », une phrase d'exemple, la même famille, et « n° 27 · 9958ᵉ mot le plus fréquent ».",
+    "legende": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui ne repart plus de zéro à la grille suivante. La rareté n'est pas inventée : c'est le rang du mot dans le dictionnaire de fréquences, ce qui rend « virgelies » aussi rare que le corpus le dit. Les illustrations sont dessinées à partir des lettres du mot, si bien que la même forme donne toujours la même carte."
+  },
+  "20.4.0": {
+    "image": "Screenshots/lux_recompense_verrouillage.png",
+    "alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
+    "legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
+  },
+  "20.3.0": {
+    "image": "Screenshots/lux_wuertplaz_gagne.png",
+    "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
+    "legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
+  },
+  "20.2.2": {
+    "image": "Screenshots/lux_wuertplaz_sens.png",
+    "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
+    "legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
+  },
+  "20.2.0": {
+    "image": "Screenshots/lux_wuertplaz.png",
+    "alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
+    "legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
+  },
+  "20.1.0": {
+    "image": "Screenshots/lux_kraizwuert_pave.png",
+    "alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
+    "legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
+  },
+  "20.0.0": {
+    "image": "Screenshots/lux_kraizwuert.png",
+    "alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
+    "legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille, ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
+  },
+  "12.0.0": {
+    "image": "Screenshots/lux_cuvette.png",
+    "alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
+    "legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
+  }
+}

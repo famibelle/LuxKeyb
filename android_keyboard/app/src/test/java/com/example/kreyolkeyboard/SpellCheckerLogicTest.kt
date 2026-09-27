@@ -77,3 +77,53 @@ class SpellCheckerLogicTest {
         assertFalse(SuggestionEngine.isWordKnown("bonjou", emptyList()))
     }
 }
+
+/**
+ * Contrôles du garde-fou qui empêche le repli Levenshtein luxembourgeois de se
+ * déclencher sur un mot français correct.
+ *
+ * Ce repli parcourt deux fois les 38 410 formes du dictionnaire luxembourgeois.
+ * Mesuré sur un Galaxy A21s : ~700 ms, contre 60 ms pour une frappe qui trouve
+ * un préfixe — le chemin le plus lent du clavier. Il se déclenchait exactement
+ * quand on insère un mot français dans une phrase luxembourgeoise, pour
+ * proposer de corriger un mot sans faute, et dans la mauvaise langue.
+ */
+class RepliCorrectionTest {
+
+    @Test
+    fun unMotFrancaisReconnuNeDeclenchePasLaCorrection() {
+        assertFalse(
+            "« déchet » est du français correct : proposer Bechet ou Mécht n'aide personne",
+            SuggestionEngine.devraitCorriger("déchet", estFrancaisConnu = true)
+        )
+    }
+
+    @Test
+    fun unMotInconnuDesDeuxLanguesDeclencheLaCorrection() {
+        assertTrue(
+            "Une vraie faute de frappe doit toujours être corrigée",
+            SuggestionEngine.devraitCorriger("Lëtzebuerhg", estFrancaisConnu = false)
+        )
+    }
+
+    /**
+     * Le contrôle porte sur le mot entier : un préfixe de mot français n'est
+     * pas encore du français, et la correction luxembourgeoise garde sa place.
+     */
+    @Test
+    fun unPrefixeNestPasEncoreDuFrancais() {
+        assertTrue(
+            SuggestionEngine.devraitCorriger("déche", estFrancaisConnu = false)
+        )
+    }
+
+    /**
+     * Sous trois lettres la distance de Levenshtein rapproche n'importe quoi de
+     * n'importe quoi : le seuil existait déjà, il est seulement déplacé.
+     */
+    @Test
+    fun troisLettresRestentLeSeuil() {
+        assertFalse(SuggestionEngine.devraitCorriger("dé", estFrancaisConnu = false))
+        assertTrue(SuggestionEngine.devraitCorriger("déc", estFrancaisConnu = false))
+    }
+}

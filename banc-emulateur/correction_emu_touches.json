@@ -1,0 +1,278 @@
+{
+ "lux": {
+  "mots": 186,
+  "modifies": 186,
+  "accents_seuls": 0,
+  "casse_seule": 0,
+  "exemples": [
+   [
+    "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "Eieippoerzweeterroueeet"
+   ],
+   [
+    "wat bretzt deen sech mat senger neier gromper",
+    "Wtretzteeeteereierroper"
+   ],
+   [
+    "dat ass op en negativen avis getraff vum staatsrot",
+    "Topeetieietruttrot"
+   ],
+   [
+    "huel der e stull a setz dech bei eis",
+    "Ueeretuetzeeiei"
+   ],
+   [
+    "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "Ouiueeoteeeprozeoiewe"
+   ],
+   [
+    "no der vakanz hate mer all eng gesond faarf",
+    "Oerzteereeor"
+   ],
+   [
+    "am gruef louch de kadaver vun engem hond",
+    "Rueoueerueeo"
+   ],
+   [
+    "fuer der net mat deene knaschtege fangeren an de mond",
+    "Uereretteeeteeereeo"
+   ],
+   [
+    "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "Eueiooeoeropeeeiere"
+   ],
+   [
+    "mir hu muer eng grouss etapp virun eis",
+    "Iruuererouetppiruei"
+   ],
+   [
+    "ech hu mech zu doud bei deem film gelangweilt",
+    "Euezuoueieeieweit"
+   ],
+   [
+    "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "Irteuereeorotteewerte"
+   ],
+   [
+    "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "Oeereiueeeerieeoi"
+   ],
+   [
+    "ech hu meng rout hoer vu mengem papp geierft",
+    "Eueroutoerueepppeiert"
+   ],
+   [
+    "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "Tereieruriituuerteeepeer"
+   ],
+   [
+    "menger mamm hir posche sinn all aus lieder",
+    "Eerirpoeiuieer"
+   ],
+   [
+    "elo hunn ech de kaffi an dat falscht lach kritt",
+    "Eoueeittritt"
+   ],
+   [
+    "dat muss ee sech emol op der zong zergoe loossen",
+    "Tueeeeooperzozeroeooe"
+   ],
+   [
+    "eis heck besteet aus hielenner an aus hieselter",
+    "Eieeteetuieeeruieeter"
+   ],
+   [
+    "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "Eouzezeweeertoperuzeiee"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Eieippoerzweeterroueeet"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Wtretzteeeteereierroper"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Topeetieietruttrot"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Ueeretuetzeeiei"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Ouiueeoteeeprozeoiewe"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "Oerzteereeor"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Rueoueerueeo"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Uereretteeeteeereeo"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Eueiooeoeropeeeiere"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Iruuererouetppiruei"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Euezuoueieeieweit"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Irteuereeorotteewerte"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "Oeereiueeeerieeoi"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Eueroutoerueepppeiert"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Tereieruriituuerteeepeer"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Eerirpoeiuieer"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Eoueeittritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Tueeeeooperzozeroeooe"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Eieeteetuieeeruieeter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Eouzezeweeertoperuzeiee"
+   }
+  ]
+ },
+ "gboard18": {
+  "mots": 186,
+  "modifies": 7,
+  "accents_seuls": 0,
+  "casse_seule": 51,
+  "exemples": [
+   [
+    "eis ekipp ass schonn",
+    "Eouzezeweeertoperuzchonn"
+   ],
+   [
+    "",
+    "eiee"
+   ],
+   [
+    "hate",
+    "haten"
+   ],
+   [
+    "knaschtege",
+    "knaschteg"
+   ]
+  ],
+  "phrases": [
+   {
+    "tape": "eis ekipp ass schonn an der zweeter ronn ausgescheet",
+    "final": "Eouzezeweeertoperuzchonn an der zweeter ronn ausgescheet eiee"
+   },
+   {
+    "tape": "wat bretzt deen sech mat senger neier gromper",
+    "final": "Wat bretzt deen sech mat senger neier Gromper"
+   },
+   {
+    "tape": "dat ass op en negativen avis getraff vum staatsrot",
+    "final": "Dat ass op en negativen Avis getraff vum Staatsrot"
+   },
+   {
+    "tape": "huel der e stull a setz dech bei eis",
+    "final": "Huel der e Stull a setz dech bei eis"
+   },
+   {
+    "tape": "ouni gudden affekot kanns de dee prozess do ni gewannen",
+    "final": "Ouni gudden Affekot kanns de dee Prozess do ni gewannen"
+   },
+   {
+    "tape": "no der vakanz hate mer all eng gesond faarf",
+    "final": "No der Vakanz haten mer all eng gesond Faarf"
+   },
+   {
+    "tape": "am gruef louch de kadaver vun engem hond",
+    "final": "Am Gruef Louch de kadaver vun engem Hond"
+   },
+   {
+    "tape": "fuer der net mat deene knaschtege fangeren an de mond",
+    "final": "Fuer der net mat deene knaschteg Fangeren an de Mond"
+   },
+   {
+    "tape": "ech muss heiansdo sonndes oder op engem feierdag schaffen",
+    "final": "Ech muss heiansdo sonndes oder op engem Feierdag schaffen"
+   },
+   {
+    "tape": "mir hu muer eng grouss etapp virun eis",
+    "final": "Mir hu muer eng grouss etapp virun eis"
+   },
+   {
+    "tape": "ech hu mech zu doud bei deem film gelangweilt",
+    "final": "Ech hu mech zu doud bei deem Film gelangweilt"
+   },
+   {
+    "tape": "fir dat alles hu mer keen accord fonnt mat de gewerkschaften",
+    "final": "Fir dat alles hu mer keen Accord fonnt mat de Gewerkschaften"
+   },
+   {
+    "tape": "no mengem regimm hu meng kleeder missen ageholl ginn",
+    "final": "No mengem regimm hu meng Kleeder missen ageholl ginn"
+   },
+   {
+    "tape": "ech hu meng rout hoer vu mengem papp geierft",
+    "final": "Ech hu meng rout Hoer vu mengem Papp geierft"
+   },
+   {
+    "tape": "mat der neier ausriichtung vun der antenn ass den empfang besser",
+    "final": "Mat der neier Ausriichtung vun der Antenn ass den Empfang besser"
+   },
+   {
+    "tape": "menger mamm hir posche sinn all aus lieder",
+    "final": "Menger Mamm hir posche sinn all aus Lieder"
+   },
+   {
+    "tape": "elo hunn ech de kaffi an dat falscht lach kritt",
+    "final": "Elo hunn ech de Kaffi an dat falscht Lach kritt"
+   },
+   {
+    "tape": "dat muss ee sech emol op der zong zergoe loossen",
+    "final": "Dat muss ee sech emol op der Zong zergoe loossen"
+   },
+   {
+    "tape": "eis heck besteet aus hielenner an aus hieselter",
+    "final": "Eis Heck besteet aus hielenner an aus Hieselter"
+   },
+   {
+    "tape": "ech souz de ganze weekend am gaart op der klunsch ze liesen",
+    "final": "Ech souz de ganze Weekend am Gaart op der klunsch ze liesen"
+   }
+  ]
+ }
+}

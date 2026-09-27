@@ -14,7 +14,18 @@ python KreyolComplet.py
 ### Pipeline Luxembourgeois (Nouveau)
 ```bash
 python LuxembourgishComplet.py
+python generate_lod_forms.py    # formes du LOD, APRÈS le pipeline
+python generate_cloze.py        # jeu « Wuertlück », APRÈS le pipeline
+python generate_translations.py # gloses, APRÈS generate_lod_forms.py
 ```
+
+Les trois derniers ne reconstruisent rien : ils **lisent** les actifs que le
+pipeline vient d'écrire. `generate_cloze.py` en tire 1 600 phrases à trous
+(`luxemburgish_cloze.json`) ; le lancer avant produirait un jeu calé sur
+l'ancien modèle. `generate_lod_forms.py` en soustrait les 85 000 formes que le
+LOD atteste et que le corpus ignore (`luxemburgish_lod_forms.json`), et
+`generate_translations.py` glose les deux ensembles — d'où son rang. Tous
+acceptent `--strict`, que la CI utilise.
 
 C'est tout ! Le pipeline fait **TOUT** automatiquement :
 
@@ -83,6 +94,10 @@ Les fichiers générés sont **directement prêts** pour l'app Android :
 Dictionnaires/
 ├── KreyolComplet.py          # ⭐ PIPELINE CRÉOLE
 ├── LuxembourgishComplet.py   # ⭐ PIPELINE LUXEMBOURGEOIS
+├── generate_cloze.py         # Jeu de phrases à trous (dérive des assets ci-dessus)
+├── generate_lod_forms.py     # Formes du LOD absentes du corpus
+├── generate_translations.py  # Gloses françaises (LOD)
+├── lod_source.py             # Accès partagé au LOD (URL, cache, index)
 ├── README.md                 # Documentation
 ├── README_Luxemburgish.md    # Documentation luxembourgeoise
 ├── requirements.txt          # Dépendances créoles

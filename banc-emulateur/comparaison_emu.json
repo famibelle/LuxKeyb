@@ -1,0 +1,69 @@
+{
+ "positions": 341,
+ "ensemble": {
+  "Lëtzebuergesch Clavier": {
+   "nom": "Lëtzebuergesch Clavier",
+   "n": 341,
+   "vide": 38,
+   "top1": 34,
+   "top3": 69
+  },
+  "Gboard luxembourgeois": {
+   "nom": "Gboard luxembourgeois",
+   "n": 341,
+   "vide": 0,
+   "top1": 15,
+   "top3": 46
+  },
+  "apparie": {
+   "les_deux": 30,
+   "nous": 39,
+   "gboard": 16,
+   "khi2": 8.8
+  }
+ },
+ "sans diacritique": {
+  "Lëtzebuergesch Clavier": {
+   "nom": "Lëtzebuergesch Clavier",
+   "n": 166,
+   "vide": 15,
+   "top1": 18,
+   "top3": 35
+  },
+  "Gboard luxembourgeois": {
+   "nom": "Gboard luxembourgeois",
+   "n": 166,
+   "vide": 0,
+   "top1": 7,
+   "top3": 26
+  },
+  "apparie": {
+   "les_deux": 16,
+   "nous": 19,
+   "gboard": 10,
+   "khi2": 2.21
+  }
+ },
+ "accentuée": {
+  "Lëtzebuergesch Clavier": {
+   "nom": "Lëtzebuergesch Clavier",
+   "n": 175,
+   "vide": 23,
+   "top1": 16,
+   "top3": 34
+  },
+  "Gboard luxembourgeois": {
+   "nom": "Gboard luxembourgeois",
+   "n": 175,
+   "vide": 0,
+   "top1": 8,
+   "top3": 20
+  },
+  "apparie": {
+   "les_deux": 14,
+   "nous": 20,
+   "gboard": 6,
+   "khi2": 6.5
+  }
+ }
+}
