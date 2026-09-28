@@ -342,6 +342,15 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 body[data-print-mode="recto"] #face-verso{ display:none; }
 body[data-print-mode="verso"] #face-recto{ display:none; }
+/* Refonte 2026-09-28. */
+.gp-badge{display:block;height:auto;}
+/* Le badge vit à côté du QR, il ne doit pas hériter de son carré. */
+.cover .cta .txt img.gp-badge{width:36mm;height:auto;border-radius:0;margin:1mm 0 0;}
+.panel-cta img.gp-badge{width:34mm;height:auto;padding:0;background:none;border-radius:0;}
+/* Volet 2 : les deux captures remplissent le volet au lieu d'y flotter. */
+.mini-shots.large{width:84mm;height:56mm;margin:auto;}
+.mini-shots.large img.s1,.mini-shots.large img.s2{top:6mm;}
+.mini-shots.large img{width:44mm;}
 </style>
 </head>
 <body>
@@ -422,7 +431,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <div><span>Web</span> famibelle.github.io/LuxKeyb</div>
           <div><span>Kontakt</span> Formulaire de retours sur le site</div>
         </div>
-        <div class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</div>
+        <div class="promises">Gratuit · Sans publicité · Sans compte · 100&nbsp;% hors ligne</div>
         <div class="legal">Lëtzebuergesch Clavier est un projet citoyen publié par Médhi Famibelle. Aucune collecte de données personnelles : l'application n'a aucune permission réseau et le clavier fonctionne entièrement sur l'appareil.</div>
         <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg" style="height:3.6mm;vertical-align:-0.4mm;"> · famibelle.github.io/LuxKeyb</div>
       </div>
@@ -439,7 +448,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span><b>Ce clavier est fait pour vous.</b></span></li>
       </ul>
       <div class="mini-shots large">
-        <img class="s1" src="Screenshots/lux_suggestions.png" alt="Le clavier pendant la frappe : suggestions luxembourgeoises en rouge, françaises en bleu">
+        <img class="s1" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
         <img class="s2" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê s'ouvre">
       </div>
       <div class="callout">À l'intérieur : les diacritiques en accès direct, un correcteur qui vaut pour toutes vos applications, sept jeux avec leur carnet de cartes, et huit niveaux de progression. Retournez le dépliant.</div>
@@ -454,17 +463,17 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         </div>
         <h1 class="h">Enfin écrire en lëtzebuergesch<br>sans se battre&nbsp;!</h1>
         <div class="press-cards">
-          <div class="press-card"><span class="src">123 297 formes</span><span class="txt">un dictionnaire luxembourgeois régénéré à partir de sources publiques, pas une liste figée</span></div>
+          <div class="press-card"><span class="src">120 000 mots</span><span class="txt">luxembourgeois proposés pendant la frappe, tirés de la presse et du dictionnaire officiel</span></div>
           <div class="press-card"><span class="src">QWERTZ</span><span class="txt">la disposition des claviers physiques du pays, avec é, ä, ë et l'apostrophe en accès direct</span></div>
           <div class="press-card"><span class="src">0 réseau</span><span class="txt">aucune permission Internet : rien de ce que vous tapez ne quitte le téléphone</span></div>
         </div>
       </div>
       <div class="hero-card">
-        <img src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois pendant la frappe d'un SMS">
+        <img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
       </div>
       <div class="cta">
         <img src="assets/qr-luxkeyb-store.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
-        <div class="txt"><b>Flashez le code</b>Disponible sur Google Play<span class="free">100&nbsp;% gratuit</span></div>
+        <div class="txt"><b>Flashez le code</b><img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play"><span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -507,7 +516,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <img class="s1" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens, sa phrase d'exemple et sa rareté">
         <img class="s2" src="Screenshots/lux_carte_tres_rare.png" alt="Une carte très rare du carnet, avec sa phrase d'exemple du dictionnaire officiel">
       </div>
-      <div class="callout">La prédiction du mot suivant s'appuie sur 27 746 contextes : après un espace, le clavier propose la suite d'après les deux mots précédents, pas seulement le dernier.</div>
+      <div class="callout">Il devine aussi le mot suivant&nbsp;: après «&nbsp;op der&nbsp;», il propose déjà «&nbsp;Stad&nbsp;», «&nbsp;Police&nbsp;», «&nbsp;Rue&nbsp;». Moins de lettres à taper, moins de fautes.</div>
     </div>
 
     <!-- P6 : progression -->
@@ -528,8 +537,8 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
       <div class="shot tall"><img src="Screenshots/lux_niveaux.png" alt="Écran de progression : niveau atteint, part du dictionnaire découverte, mot du jour"></div>
       <div class="panel-cta">
-        <img src="assets/qr-luxkeyb-store.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
-        <div class="txt"><b>Installez maintenant</b>Disponible sur Google Play<span class="free">100&nbsp;% gratuit</span></div>
+        <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
+        <div class="txt"><b>Installez maintenant</b>Cherchez «&nbsp;Lëtzebuergesch Clavier&nbsp;»<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>

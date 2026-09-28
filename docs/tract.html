@@ -455,6 +455,13 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   @page{size:A4;margin:0;}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
 }
+/* Refonte 2026-09-28 : la carte seule (et non un écran de téléphone où
+   elle se perdait), la frappe « Schueb » → « Schueberfouer », le badge
+   Google Play officiel sous les captures. */
+.shots img.s1{top:0;left:2mm;width:36mm;transform:rotate(-6deg);}
+.shots img.s2{top:14mm;width:58mm;}
+.gp-badge{display:block;width:40mm;height:auto;margin-top:2mm;}
+.fact .num{min-width:20mm;}
 </style>
 </head>
 <body>
@@ -514,26 +521,26 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           </ul>
           <p class="answer">Ce clavier est fait pour vous.</p>
           <div class="facts">
-            <div class="fact"><span class="num">123 297</span><span class="txt">formes luxembourgeoises, du corpus public et du dictionnaire officiel</span></div>
-            <div class="fact"><span class="num">QWERTZ</span><span class="txt">é, ä, ë et l'apostrophe ont chacun leur touche</span></div>
-            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien ne sort du téléphone</span></div>
-            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour retenir le vocabulaire</span></div>
+            <div class="fact"><span class="num">120 000</span><span class="txt">mots luxembourgeois proposés pendant que vous tapez</span></div>
+            <div class="fact"><span class="num">ë · ä · é</span><span class="txt">chacun sa touche, sur le clavier QWERTZ du pays</span></div>
+            <div class="fact"><span class="num">0 donnée</span><span class="txt">envoyée&nbsp;: rien de ce que vous tapez ne quitte le téléphone</span></div>
+            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour apprendre des mots</span></div>
           </div>
         </div>
         <div class="col-right">
           <div class="shots">
-            <img class="s1" src="Screenshots/lux_carte_moien.png" alt="Une carte du carnet : le mot Moien, son sens, sa phrase d'exemple et sa rareté">
-            <img class="s2" src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois : suggestions LB en rouge, FR en bleu, pendant la frappe">
+            <img class="s1" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens en français et une phrase du dictionnaire officiel">
+            <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
           </div>
-          <div class="qr-label">Disponible sur Google Play</div>
+          <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
         </div>
       </div>
       <p class="slogan-band">«&nbsp;Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.&nbsp;»</p>
       <div class="bottom-row">
         <div class="cta-block">
-          <span class="cta"><span class="cta-ico">📲</span><span>Flashez le code pour l'installer, c'est gratuit</span></span>
+          <span class="cta"><span class="cta-ico">📲</span><span>Flashez, installez, écrivez</span></span>
           <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
-          <p class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</p>
+          <p class="promises">Sans publicité · Sans compte · 100&nbsp;% hors ligne</p>
         </div>
         <div class="stamp">
           <span class="big">100&nbsp;%<br>gratuit</span>
@@ -562,26 +569,26 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           </ul>
           <p class="answer">Ce clavier est fait pour vous.</p>
           <div class="facts">
-            <div class="fact"><span class="num">123 297</span><span class="txt">formes luxembourgeoises, du corpus public et du dictionnaire officiel</span></div>
-            <div class="fact"><span class="num">QWERTZ</span><span class="txt">é, ä, ë et l'apostrophe ont chacun leur touche</span></div>
-            <div class="fact"><span class="num">0</span><span class="txt">permission réseau&nbsp;: rien ne sort du téléphone</span></div>
-            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour retenir le vocabulaire</span></div>
+            <div class="fact"><span class="num">120 000</span><span class="txt">mots luxembourgeois proposés pendant que vous tapez</span></div>
+            <div class="fact"><span class="num">ë · ä · é</span><span class="txt">chacun sa touche, sur le clavier QWERTZ du pays</span></div>
+            <div class="fact"><span class="num">0 donnée</span><span class="txt">envoyée&nbsp;: rien de ce que vous tapez ne quitte le téléphone</span></div>
+            <div class="fact"><span class="num">7 jeux</span><span class="txt">et un carnet de cartes pour apprendre des mots</span></div>
           </div>
         </div>
         <div class="col-right">
           <div class="shots">
-            <img class="s1" src="Screenshots/lux_carte_moien.png" alt="Une carte du carnet : le mot Moien, son sens, sa phrase d'exemple et sa rareté">
-            <img class="s2" src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois : suggestions LB en rouge, FR en bleu, pendant la frappe">
+            <img class="s1" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens en français et une phrase du dictionnaire officiel">
+            <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
           </div>
-          <div class="qr-label">Disponible sur Google Play</div>
+          <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
         </div>
       </div>
       <p class="slogan-band">«&nbsp;Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.&nbsp;»</p>
       <div class="bottom-row">
         <div class="cta-block">
-          <span class="cta"><span class="cta-ico">📲</span><span>Flashez le code pour l'installer, c'est gratuit</span></span>
+          <span class="cta"><span class="cta-ico">📲</span><span>Flashez, installez, écrivez</span></span>
           <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
-          <p class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</p>
+          <p class="promises">Sans publicité · Sans compte · 100&nbsp;% hors ligne</p>
         </div>
         <div class="stamp">
           <span class="big">100&nbsp;%<br>gratuit</span>
