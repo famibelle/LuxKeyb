@@ -11,12 +11,13 @@ Produit, dans `feature-graphic/`, les dix fichiers à envoyer à la Play
 Console. Chacun porte le nom de l'emplacement du formulaire où il va, pour
 qu'il n'y ait rien à retrouver au moment de l'envoi :
 
-  Icône de l'application.png              depuis Logos/luxembourg-logo-hd.png
-  Image de présentation.png               depuis feature_graphic_source.html
-  Captures d'écran pour téléphone 1-8.png depuis docs/Screenshots/lux_*.png
+  Icône de l'application.png                        depuis Logos/luxembourg-logo-hd.png
+  Image de présentation.png                          depuis feature_graphic_source.html
+  Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Clavier numérique).png
+                                                      depuis captures-emulateur-pixel9/
 
-Le numéro des captures est leur ordre d'envoi ; le tableau `SPECS` dit lequel
-montre quoi.
+Le numéro des captures est leur ordre d'envoi ; le nom dit aussi ce que chacune
+montre, en un mot (le même que le tableau `SPECS` ci-dessous).
 
 Contraintes de la Console, toutes vérifiables avec `check` :
 icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
@@ -24,17 +25,15 @@ icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
 moins de 8 Mo. Les huit captures font 1080x1920, donc au-dessus du 1080x1080
 exigé pour que l'application soit promouvable — il en faut au moins quatre.
 
-Les captures sources sont natives 1080 px de large (recapturées sur émulateur
-1080x2340 le 2026-09-22, sous la 26.3.0) : rien n'est agrandi ici. Les deux
-captures de clavier (suggestions, accents) et celle du clavier numérique sont
-prises dans Messages et recadrées sur champ de saisie + barre de suggestions +
-clavier (partagées avec les captures du guide intégré,
-`res/drawable-nodpi/guide_screenshot_*.png`) ; les cinq autres sont des écrans
-entiers de l'application, dont deux ouvrent une fiche ou une carte en feuille
-du bas (arrière-plan assombri, c'est l'état réel de l'application). À refaire
-à chaque changement visible : celles de septembre montraient encore l'ancien
-ordre des onglets et l'ancienne barre de suggestions sur fond blanc,
-antérieure à la cuvette (12.0.0).
+Les captures sources sont dans `captures-emulateur-pixel9/`, natives 1080 px de
+large (émulateur Pixel 9, 1080x2424, sous la 29.2.0) : rien n'est agrandi ici.
+Leur nom dit ce qu'elles montrent, dans l'ordre d'envoi. Les trois captures de
+clavier (suggestions, accents, numérique) sont prises dans le champ d'essai de
+l'onglet Démarrage puis recadrées (`-recadre`, 1080x1026) sur champ de saisie +
+barre de suggestions + clavier ; l'original plein écran reste à côté. Les cinq
+autres sont des écrans entiers, dont deux ouvrent une fiche ou une carte en
+feuille du bas (arrière-plan assombri, c'est l'état réel de l'application). À
+refaire à chaque changement visible.
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -62,7 +61,7 @@ import tempfile
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
-SHOTS = REPO / "docs" / "Screenshots"
+SHOTS = HERE / "captures-emulateur-pixel9"
 LOGO = REPO / "Logos" / "luxembourg-logo-hd.png"
 OUT = HERE / "feature-graphic"
 ICON = OUT / "Icône de l'application.png"
@@ -73,29 +72,31 @@ CHROME_GUTTER = 200
 ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 
 # (sortie, source, index de frame si GIF, kicker, titre, sous-titre)
+# Le nom de sortie porte le kicker entre parenthèses : la Console lit le
+# numéro (ordre d'envoi), quiconque parcourt le dossier lit le kicker.
 SPECS = [
-    ("Captures d'écran pour téléphone 1", "lux_suggestions.png", None, "Suggestions",
+    ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png", None, "Suggestions",
      "Il vous souffle les mots",
      "Le luxembourgeois d'abord, le français pour les emprunts, sans changer de clavier."),
-    ("Captures d'écran pour téléphone 2", "lux_carte_moien.png", None, "Carnet",
+    ("Captures d'écran pour téléphone 2 (Carnet)", "07-carnet-carte-moien.png", None, "Carnet",
      "Chaque mot appris devient une carte",
      "Sens, phrase d'exemple et traduction officielle, sur une carte à collectionner."),
-    ("Captures d'écran pour téléphone 3", "lux_spiller.png", None, "Jeux",
+    ("Captures d'écran pour téléphone 3 (Jeux)", "02-jeux-onglet-spiller.png", None, "Jeux",
      "Sept jeux pour élargir son vocabulaire",
      "Tous les jeux versent leurs mots dans le même carnet, révisable à intervalle régulier."),
-    ("Captures d'écran pour téléphone 4", "lux_fiche_haus.png", None, "Wierderbuch",
+    ("Captures d'écran pour téléphone 4 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png", None, "Wierderbuch",
      "Un dictionnaire dans le clavier",
      "Près de 89 000 mots, luxembourgeois et français, avec des phrases d'exemple officielles."),
-    ("Captures d'écran pour téléphone 5", "lux_accents.png", None, "Diacritiques",
+    ("Captures d'écran pour téléphone 5 (Diacritiques)", "09-clavier-diacritiques-appui-long-recadre.png", None, "Diacritiques",
      "ë ä é ont leur propre touche",
      "Les autres accents (ü, è, à, ê, ö) restent sous un appui long."),
-    ("Captures d'écran pour téléphone 6", "lux_niveaux.png", None, "Progression",
+    ("Captures d'écran pour téléphone 6 (Progression)", "04-progression-onglet-mai-letzebuergesch.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("Captures d'écran pour téléphone 7", "lux_onboarding.png", None, "Installation",
+    ("Captures d'écran pour téléphone 7 (Installation)", "01-installation-onglet-demarrage.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ("Captures d'écran pour téléphone 8", "lux_numerique.png", None, "Clavier numérique",
+    ("Captures d'écran pour téléphone 8 (Clavier numérique)", "10-clavier-numerique-symboles-recadre.png", None, "Clavier numérique",
      "Chiffres, symboles et ponctuation",
      "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
 ]

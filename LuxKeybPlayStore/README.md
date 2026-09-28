@@ -16,8 +16,10 @@ texts/
 graphics/
   build_graphics.py       fabrique tout ce qui suit
   feature-graphic/        les 10 fichiers à envoyer, chacun nommé d'après
-                          l'emplacement de la Console où il va, + la source
-                          HTML de l'image de présentation
+                          l'emplacement de la Console où il va (les captures
+                          portent aussi ce qu'elles montrent, entre
+                          parenthèses), + la source HTML de l'image de
+                          présentation
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
 ```
 
@@ -31,7 +33,7 @@ python3 build_graphics.py check        # vérifie sans rien refabriquer
 ```
 
 Demande `google-chrome` et ImageMagick (`convert`). Les sources sont
-`Logos/luxembourg-logo-hd.png` et les captures réelles de `docs/Screenshots/`.
+`Logos/luxembourg-logo-hd.png` et les captures réelles de `graphics/captures-emulateur-pixel9/`.
 
 Le flyer n'est pas géré par ce script : c'est un HTML autonome qui s'édite à la
 main, images comprises (embarquées en base64). Pour le PDF :
@@ -66,7 +68,8 @@ est l'e-mail à RTL.lu sur la redistribution des phrases de Wuertlück.
 Une réserve connue : les brèves descriptions luxembourgeoise et allemande
 doivent être relues par un locuteur natif avant publication.
 
-Les captures sources (`docs/Screenshots/lux_*.png`) ont été reprises le
-2026-09-22 sur l'émulateur `kreyol_test` (1080 × 2340) sous la 26.3.0 : elles
-sont natives, rien n'est agrandi. Après un changement d'interface, les
-recapturer au même endroit puis relancer `python3 build_graphics.py shots`.
+Les captures sources (`graphics/captures-emulateur-pixel9/`, noms explicites) ont
+été reprises le 2026-09-28 sur l'émulateur `pixel9` (1080 × 2424) sous la
+29.2.0 : elles sont natives, rien n'est agrandi. Après un changement
+d'interface, les recapturer au même endroit puis relancer
+`python3 build_graphics.py shots`.
