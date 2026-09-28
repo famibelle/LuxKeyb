@@ -532,6 +532,7 @@ grâce à ces signalements.
   <a href="comparatif.html">⚖️ Comparatif détaillé</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Nous écrire</a> ·
   <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a>

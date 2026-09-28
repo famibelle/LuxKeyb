@@ -15,6 +15,7 @@ lang: fr
   <a href="labs.html">🔬 Labs</a> ·
   <strong>⚖️ Comparatif</strong> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="index.html#devenir-testeur">📲 Installer</a> ·
