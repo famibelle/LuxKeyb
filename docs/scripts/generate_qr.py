@@ -22,7 +22,19 @@ TAILLE = 980
 # pas. Les deux premières sont celles des fichiers déjà en place.
 CODES = {
     "qr-luxkeyb-test-ferme.png": (
+        # Gardé après l'ouverture publique (2026-09-28, validée par Google en
+        # avance sur ticket) : le bloc compte à rebours de l'accueil et de la
+        # page ambassadeurs embarque encore ce QR le temps que ce bloc-là soit
+        # retouché à part, et il ne faut pas casser son image sous ses pieds.
         "https://play.google.com/apps/testing/com.potomitan.luxkeyboard",
+        "#ED2939",
+    ),
+    "qr-luxkeyb-store.png": (
+        # La fiche publique, pour tous les autres supports (accueil hors
+        # compteur, ambassadeurs, README, guide, etc.) depuis l'ouverture du
+        # 2026-09-28. Même rouge que l'ancien QR de test fermé : c'est le même
+        # geste, installer, seule la destination a changé.
+        "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard",
         "#ED2939",
     ),
     "qr-luxkeyb-apk.png": (

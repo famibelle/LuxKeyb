@@ -365,11 +365,12 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
     pour une publication ordinaire, sans budget : c'est même l'usage prévu aujourd'hui.
   </p>
   <div class="note">
-    <b>Aucun badge « Disponible sur Google Play » sur ces visuels, et c'est
-    volontaire.</b> L'application est en test fermé : elle n'a pas encore de
-    fiche publique, et le badge serait faux. Le lien de destination est celui du
-    site, qui explique les deux chemins : rejoindre le test, ou installer l'APK.
-    Le jour où la fiche sera ouverte, le badge reviendra et cette note sautera.
+    <b>Aucun badge « Disponible sur Google Play » sur ces visuels — pas encore
+    remis en place.</b> La fiche est publique depuis le 28 septembre 2026
+    (validée par Google en avance sur un ticket), donc le badge n'est plus
+    faux : il reste à le rajouter et à régénérer les visuels
+    (<code>python3 docs/assets/ads/generate.py</code>). Le lien de destination
+    reste celui du site, qui laisse essayer le clavier avant d'installer.
   </div>
   <div class="note">
     Les PNG se régénèrent depuis cette page&nbsp;:
@@ -400,7 +401,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
   <p class="lead" style="margin-top:18px">
     Lien de destination&nbsp;:
     <code>https://famibelle.github.io/LuxKeyb/</code>, la page d'accueil, qui
-    mène au test fermé comme à l'APK et laisse essayer le clavier dans le
+    mène à Google Play comme à l'APK et laisse essayer le clavier dans le
     navigateur avant toute installation. Pas de paramètre de suivi&nbsp;: le
     site est hébergé sur GitHub&nbsp;Pages, qui n'expose aucune statistique de
     visite, et un <code>utm_source</code> n'y serait lu par personne.
@@ -444,10 +445,10 @@ const CREA = {
 
 const CARTE = 'assets/drapeau-luxembourg-arrondi.svg';
 const LOGO  = 'assets/logo/luxkeyb-logo-192.png';
-// Pas de badge de magasin : l'application est en test fermé, elle n'a pas
-// encore de fiche publique sur Google Play, et un badge « Disponible sur
-// Google Play » serait faux. Le visuel renvoie au site, qui explique les deux
-// chemins d'installation.
+// Pas de badge de magasin pour l'instant : la fiche est publique depuis le
+// 28 septembre 2026, donc un badge « Disponible sur Google Play » serait
+// maintenant vrai — il reste à le rajouter (voir la note en haut de page). Le
+// visuel renvoie au site, qui laisse essayer le clavier avant d'installer.
 const SITE  = 'famibelle.github.io/LuxKeyb';
 const SHOT  = 'Screenshots/lux_suggestions.png';
 

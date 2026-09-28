@@ -21,7 +21,7 @@ meilleur, en cinq minutes.*
 ## Installation en 3 étapes
 
 Installez d'abord l'application. Le plus simple est de passer par
-[Google Play](https://play.google.com/apps/testing/com.potomitan.luxkeyboard) :
+[Google Play](https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard) :
 elle s'y installe et s'y met à jour comme n'importe quelle autre. Si vous
 préférez le fichier d'installation, il est sur la
 [page d'accueil](index.html#installer-sans-passer-par-google-play), et Android
@@ -444,7 +444,7 @@ Une question qui n'est pas couverte ici ? Passez par le
 [issue](https://github.com/famibelle/LuxKeyb/issues).
 
 <div align="center" style="margin: 24px 0;">
-  <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard"
      class="btn-installer">📲 Installer sur mon téléphone</a>
 </div>
 

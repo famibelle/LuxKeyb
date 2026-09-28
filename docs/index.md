@@ -69,7 +69,7 @@ Android pour l'usage de tous les jours.
 <div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
             flex-wrap:wrap;margin:28px 0 12px;">
   <div style="text-align:center;flex:1 1 340px;max-width:430px;">
-    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller"
        class="btn-installer">📲 Installer sur mon téléphone</a>
     <p style="margin:16px 0 0;">
       L'application s'installe depuis Google&nbsp;Play, comme n'importe quelle
@@ -82,8 +82,8 @@ Android pour l'usage de tous les jours.
     </p>
   </div>
   <figure style="margin:0;text-align:center;">
-    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
-      <img src="assets/qr-luxkeyb-test-ferme.png"
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
+      <img src="assets/qr-luxkeyb-store.png"
            alt="QR code ouvrant la page d'installation de Lëtzebuergesch Clavier sur Google Play"
            width="176" height="176"
            style="display:block;width:176px;height:176px;background:#fff;
@@ -432,30 +432,25 @@ suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
 Le détail des corpus, des mesures et des citations est sur la
 [page des corpus](corpus.html).
 
-## Devenir testeur
+<a id="devenir-testeur"></a>
 
-L'application est en **test fermé sur Google Play**. Rejoindre le test, c'est
-la recevoir comme n'importe quelle autre application : installation en un geste,
-mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
+## Installer
 
-1. Depuis votre téléphone, ouvrez la
-   [page d'inscription au test](https://play.google.com/apps/testing/com.potomitan.luxkeyboard)
-   avec le compte Google que vous utilisez sur le Play Store.
-2. Appuyez sur **Devenir testeur**.
-3. Suivez le lien vers Google Play qui apparaît ensuite : la fiche s'ouvre,
-   signalée comme version de test, et l'installation se fait normalement.
+L'application est disponible sur Google Play, comme n'importe quelle autre :
+installation en un geste, mises à jour automatiques, sans avoir à autoriser les
+« sources inconnues ».
 
 <div style="display:flex;justify-content:center;align-items:center;gap:28px;
             flex-wrap:wrap;margin:24px 0;">
-  <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller"
      style="display:inline-block;padding:15px 28px;background:#ED2939;color:#fff;
             border-radius:10px;font-weight:bold;text-decoration:none;font-size:1.1em;">
-    🧪 Ouvrir la page d'inscription
+    📲 Ouvrir la fiche Google Play
   </a>
   <figure style="margin:0;text-align:center;">
-    <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
-      <img src="assets/qr-luxkeyb-test-ferme.png"
-           alt="QR code ouvrant la page d'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play"
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
+      <img src="assets/qr-luxkeyb-store.png"
+           alt="QR code ouvrant la fiche de Lëtzebuergesch Clavier sur Google Play"
            width="160" height="160"
            style="display:block;width:160px;height:160px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">
@@ -466,22 +461,7 @@ mises à jour automatiques, sans avoir à autoriser les « sources inconnues ».
   </figure>
 </div>
 
-Le test est réservé à une liste de comptes. Si la page vous répond que le
-programme n'est pas ouvert au vôtre, indiquez l'adresse Google concernée dans le
-[formulaire de retours](feedbacks_form.html) et elle y sera ajoutée.
-
-Vous quittez le programme quand vous voulez, depuis la même page. L'APK de cette
-page, lui, reste disponible et contient exactement le même code : le test fermé
-change la façon d'installer, pas l'application.
-
-<p class="note">Pourquoi un test fermé ? Google demande
-qu'une nouvelle application soit testée par au moins douze personnes pendant
-quatorze jours avant d'autoriser sa publication à tout le monde. Les douze sont
-réunis depuis le 9 septembre 2026, ce qui rend l'application éligible dès le
-23 ; la sortie publique est programmée plus tard, au
-<strong>5 octobre 2026</strong>. Rejoindre le test d'ici là, c'est aider à
-tenir le palier : le compte doit rester à douze sans que personne ne quitte le
-programme.</p>
+L'APK de cette page reste disponible et contient exactement le même code.
 
 ## En avant-première : la dictée vocale 🔬
 
