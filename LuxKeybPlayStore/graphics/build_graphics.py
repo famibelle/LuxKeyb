@@ -5,6 +5,7 @@
     python3 build_graphics.py icon       # icône 512 seule
     python3 build_graphics.py feature    # image mise en avant seule
     python3 build_graphics.py shots      # captures téléphone seules
+    python3 build_graphics.py jeux       # un visuel par jeu (hors des 8 de la Console)
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les dix fichiers à envoyer à la Play
@@ -101,6 +102,32 @@ SPECS = [
      "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
 ]
 
+# Hors des huit emplacements de la Console (limite de 8) : un visuel par jeu,
+# pour le site, les réseaux et la fiche complète. Même gabarit, même format.
+JEUX = [
+    ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich-mots-caches.png", None, "Jeu",
+     "Retrouvez les mots cachés",
+     "Une grille de lettres, des mots à faire glisser du doigt, avec leur traduction française."),
+    ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix-lettres-dans-l-ordre.png", None, "Jeu",
+     "Remettez les lettres dans l'ordre",
+     "La première et la dernière lettre sont données, le sens en français sert d'indice."),
+    ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet-mot-de-5-lettres.png", None, "Jeu",
+     "Devinez le mot en six essais",
+     "Cinq lettres, trois couleurs, et un mot qui doit exister dans le dictionnaire luxembourgeois."),
+    ("Jeu 4 (Wuertlück)", "14-jeu-wuertlueck-phrase-a-trou.png", None, "Jeu",
+     "Complétez la vraie phrase",
+     "Une phrase réelle du corpus, un mot manquant, quatre propositions dont une seule est de l'auteur."),
+    ("Jeu 5 (Zuelwuert)", "15-jeu-zuelwuert-nombre-en-lettres.png", None, "Jeu",
+     "Écrivez le résultat en toutes lettres",
+     "Une multiplication, quatre orthographes : la règle d'Eifel fait toute la difficulté."),
+    ("Jeu 6 (Kräizwuert)", "16-jeu-kraizwuert-mots-croises.png", None, "Jeu",
+     "Des mots croisés à écrire soi-même",
+     "Définitions en français, accents et majuscules s'apprennent en les écrivant."),
+    ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz-mots-a-placer.png", None, "Jeu",
+     "Placez les mots dans la grille",
+     "Aucune définition : les longueurs et les croisements suffisent, le sens se révèle une fois le mot placé."),
+]
+
 SHOT_TEMPLATE = """<meta charset="utf-8">
 <style>
   *{{ box-sizing:border-box; margin:0; padding:0; }}
@@ -183,7 +210,8 @@ def build_feature() -> None:
     print(f"{out.relative_to(HERE)}  ok")
 
 
-def build_shots() -> None:
+def build_shots(specs=None) -> None:
+    specs = SPECS if specs is None else specs
     out_dir = OUT
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -192,7 +220,7 @@ def build_shots() -> None:
         magick(str(ICON), "-resize", "104x104", str(small_icon))
         icon = b64(small_icon)
 
-        for index, (name, src, frame, kicker, title, sub) in enumerate(SPECS, 1):
+        for index, (name, src, frame, kicker, title, sub) in enumerate(specs, 1):
             source = SHOTS / src
             if not source.exists():
                 sys.exit(f"source manquante : {source}")
@@ -220,6 +248,10 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
         sys.exit(f"{path.name} : ce n'est pas un PNG")
     width, height = struct.unpack(">II", head[16:24])
     return width, height, head[25] in (4, 6)
+
+
+def build_games() -> None:
+    build_shots(JEUX)
 
 
 def build_check() -> None:
@@ -261,23 +293,30 @@ def build_check() -> None:
         problems.append(f"{promouvables} captures au moins 1080x1080, il en faut 4 "
                         "pour que l'application soit promouvable")
 
+    for name, *_ in JEUX:
+        path = OUT / f"{name}.png"
+        if not path.exists():
+            problems.append(f"{path.name} : absent")
+        elif png_header(path)[:2] != (1080, 1920):
+            problems.append(f"{path.name} : pas en 1080x1920")
+
     for problem in problems:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok — icône, image de présentation et {len(shots)} captures conformes")
+    print(f"check  ok — icône, image de présentation, {len(shots)} captures et {len(JEUX)} visuels de jeux conformes")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "check"]
     known = {"icon": build_icon, "feature": build_feature,
-             "shots": build_shots, "check": build_check}
+             "shots": build_shots, "jeux": build_games, "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | check)")
         known[target]()
     return 0
 
