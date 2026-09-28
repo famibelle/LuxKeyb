@@ -6,6 +6,7 @@
     python3 build_graphics.py feature    # image mise en avant seule
     python3 build_graphics.py shots      # captures téléphone seules
     python3 build_graphics.py jeux       # un visuel par jeu (hors des 8 de la Console)
+    python3 build_graphics.py carnet     # boîte de Leitner et éventail de cartes
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les dix fichiers à envoyer à la Play
@@ -126,6 +127,16 @@ JEUX = [
     ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz-mots-a-placer.png", None, "Jeu",
      "Placez les mots dans la grille",
      "Aucune définition : les longueurs et les croisements suffisent, le sens se révèle une fois le mot placé."),
+]
+
+# La révision espacée du carnet : la boîte, puis les cartes d'un casier.
+CARNET = [
+    ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner-sept-casiers.png", None, "Boîte de Leitner",
+     "Sept casiers, d'un jour à acquis",
+     "Une bonne réponse fait avancer la carte : elle revient de plus en plus tard, jusqu'à être acquise."),
+    ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail-de-cartes.png", None, "Éventail de cartes",
+     "Les cartes d'un casier en éventail",
+     "Glissez pour parcourir, touchez une carte pour la lire : sens, phrase d'exemple et traduction."),
 ]
 
 SHOT_TEMPLATE = """<meta charset="utf-8">
@@ -254,6 +265,10 @@ def build_games() -> None:
     build_shots(JEUX)
 
 
+def build_carnet() -> None:
+    build_shots(CARNET)
+
+
 def build_check() -> None:
     """Confronte les fichiers produits aux contraintes de la Play Console."""
     shots = [OUT / f"{name}.png" for name, *_ in SPECS]
@@ -293,7 +308,7 @@ def build_check() -> None:
         problems.append(f"{promouvables} captures au moins 1080x1080, il en faut 4 "
                         "pour que l'application soit promouvable")
 
-    for name, *_ in JEUX:
+    for name, *_ in JEUX + CARNET:
         path = OUT / f"{name}.png"
         if not path.exists():
             problems.append(f"{path.name} : absent")
@@ -304,19 +319,19 @@ def build_check() -> None:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok — icône, image de présentation, {len(shots)} captures et {len(JEUX)} visuels de jeux conformes")
+    print(f"check  ok — icône, image de présentation, {len(shots)} captures et {len(JEUX) + len(CARNET)} visuels de jeux et de carnet conformes")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "carnet", "check"]
     known = {"icon": build_icon, "feature": build_feature,
-             "shots": build_shots, "jeux": build_games, "check": build_check}
+             "shots": build_shots, "jeux": build_games, "carnet": build_carnet, "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | carnet | check)")
         known[target]()
     return 0
 
