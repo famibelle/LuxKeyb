@@ -9,6 +9,26 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.3.0] - 2026-09-29
+
+Le clavier suit le champ où l'on tape, et la ponctuation se colle au mot.
+
+### ✨ Améliorations
+
+- **Un point après une suggestion se colle au mot.** Toucher « Gromper » puis « . » donnait « Gromper . » ; l'espace ajoutée par la suggestion disparaît maintenant devant . , ? ! : ; ) … et l'apostrophe, pour écrire « d'Land » sans retour arrière.
+- **Le clavier s'ouvre sur les chiffres dans un champ de chiffres** : code PIN, code reçu par SMS, montant, numéro de téléphone, date.
+- **La touche Entrée montre ce qu'elle va faire** : une loupe pour chercher, une flèche d'envoi, une flèche pour passer au champ suivant, une coche pour terminer.
+- **Dans une adresse e-mail ou web**, plus de majuscule d'office ni d'espace après une suggestion : l'adresse reste juste.
+- **De nouveaux symboles sur la page 123.** « % » a sa touche, à la place de « & », qui passe dessous. En restant appuyé : « _ » sous le tiret, « $ £ ¥ » sous l'euro, « ° » sous le 0 et l'étoile, crochets et accolades sous les parenthèses, « « » » sous les guillemets, « \ | » sous la barre oblique, « ± × ÷ » sous le plus, « ≠ ~ ^ » sous le égal.
+- **« Mäi Lëtzebuergesch » encourage au lieu de décourager.** Le niveau vient en premier, avec une barre jusqu'au palier suivant et « Encore 567 mots avant Klengen », à la place d'un « 0.0% » en très gros. Le mot du jour et les listes de mots gardent la majuscule des noms : « Brauereien », « Apdikte ».
+
+### 🐛 Corrections
+
+- **Dans un champ de mot de passe, la barre de suggestions reste vide.** Elle affichait le début du mot de passe en grosses lettres.
+- **Le Wierderbuch ignore la ponctuation autour du mot cherché** : « Gromper. » trouve « Gromper ».
+- **Un signe choisi en restant appuyé** (« ? » sous le point, « ’ » sous l'apostrophe) n'apparaît plus dans les emojis récents.
+- **La touche « 123 » répond du premier coup** en arrivant dans un champ quitté en mode chiffres.
+
 ## [29.2.0] - 2026-09-26
 
 Le clavier d'essai du site ressemble au clavier de l'application. L'application elle-même ne change pas.
