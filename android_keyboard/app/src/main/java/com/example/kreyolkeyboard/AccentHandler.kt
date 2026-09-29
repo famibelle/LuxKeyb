@@ -72,7 +72,24 @@ class AccentHandler(private val context: Context) {
         // popup. Suivent les guillemets courbes “ ” (41 et 38 occurrences), qui
         // dominent nettement les allemands „ (12) et n'étaient atteignables
         // nulle part ailleurs sur le clavier.
-        "'" to listOf("’", "“", "”", "\"")
+        "'" to listOf("’", "“", "”", "\""),
+        // Page 123 (v29.3.0). C'est la seule page de symboles du clavier, et il
+        // y manquait de quoi écrire une adresse (« _ »), une température (« ° »),
+        // un prix en dollars ou en livres, des crochets. Rangés en appui long
+        // sous la touche la plus proche par la forme ou le sens, plutôt que sur
+        // une seconde page : l'aperçu en coin les rend visibles sans rien
+        // retirer aux touches existantes.
+        "-" to listOf("_", "–"),
+        "/" to listOf("\\", "|"),
+        "(" to listOf("[", "{", "<"),
+        ")" to listOf("]", "}", ">"),
+        "€" to listOf("$", "£", "¥"),
+        "%" to listOf("&", "‰"),
+        "\"" to listOf("«", "»", "„"),
+        "=" to listOf("≠", "~", "^"),
+        "+" to listOf("±", "×", "÷"),
+        "*" to listOf("°", "•"),
+        "0" to listOf("°")
     )
 
     // Ordre d'affichage des aperçus en coin, quand il doit différer du popup.

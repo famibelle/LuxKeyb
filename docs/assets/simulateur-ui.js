@@ -25,9 +25,14 @@
     ['123', ',', 'ä', ' ', 'ë', "'", '.', 'EMOJI', '⏎']
   ];
 
+  // InputProcessor.PONCTUATION_COLLEE : les signes devant lesquels l'espace
+  // posée par une suggestion disparaît. Ni « - » ni « % ».
+  const PONCTUATION_COLLEE = new Set(['.', ',', '?', '!', ':', ';', ')', '…', "'", '’', '”']);
+
   const NUMERIC_ROWS = [
     ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
-    ['-', '/', ':', ';', '(', ')', '€', '&', '@', '"'],
+    // « % » à la place de « & » (v29.3.0), qui passe dessous en appui long.
+    ['-', '/', ':', ';', '(', ')', '€', '%', '@', '"'],
     ['=', '.', ',', '?', '!', "'", '+', '*', '#', '⌫'],
     ['ABC', 'EMOJI', ' ', '⏎']
   ];
@@ -101,7 +106,19 @@
     // L'ASCII ' reste sur la touche — seule forme sûre en adresse, identifiant ou
     // mot de passe — et l'apostrophe typographique ’, que le corpus emploie 2,6×
     // plus, ouvre le popup ; suivent les guillemets courbes.
-    "'": ['’', '“', '”', '"']
+    "'": ['’', '“', '”', '"'],
+    // Page 123 (v29.3.0) : les symboles qu'une page unique n'avait pas.
+    '-': ['_', '–'],
+    '/': ['\\', '|'],
+    '(': ['[', '{', '<'],
+    ')': [']', '}', '>'],
+    '€': ['$', '£', '¥'],
+    '%': ['&', '‰'],
+    '"': ['«', '»', '„'],
+    '=': ['≠', '~', '^'],
+    '+': ['±', '×', '÷'],
+    '*': ['°', '•'],
+    '0': ['°']
   };
   // AccentHandler.cornerHintOverrides : « a » et « e » ont leurs diacritiques les
   // plus fréquentes déjà visibles ailleurs (ä et ë en rangée 4, é en fin de
@@ -957,12 +974,15 @@
       const finalAccent = upper ? accent.toUpperCase() : accent;
       this.dismissAccentPopup();
       if (this.dictationInterrupter && this.dictationInterrupter()) return;
+      this.preparerInsertion(finalAccent);
       this.insertText(finalAccent);
       if (isWordString(finalAccent)) {
         this.currentWord += finalAccent;
         this.onWordChanged();
       } else {
-        this.rememberEmoji(finalAccent);
+        // Un ton de peau rejoint les récents ; un signe (« ? », « % », « ° »)
+        // clôt seulement le mot, comme onAccentSelected() côté Android.
+        if (finalAccent.codePointAt(0) >= 0x2600) this.rememberEmoji(finalAccent);
         this.finalizeCurrentWord();
       }
       this.renderScreen();
@@ -977,6 +997,7 @@
       // la dictée et n'écrit rien, comme le clavier coupe la dictée quand le
       // champ de saisie change.
       if (this.dictationInterrupter && this.dictationInterrupter()) return;
+      this.preparerInsertion(key);
       switch (key) {
         case '⌫':
           this.handleBackspace();
@@ -1001,6 +1022,17 @@
           this.handleCharacter(key);
       }
       this.renderKeyboard();
+    }
+
+    // InputProcessor.preparerInsertion : un signe qui se colle au mot retire
+    // l'espace qu'une suggestion vient de poser (« Gromper . » → « Gromper. »),
+    // à condition que le texte avant le curseur soit encore celui qu'elle a écrit.
+    preparerInsertion(texte) {
+      const attendu = this.espaceAutoApres;
+      if (!attendu) return;
+      this.espaceAutoApres = null;
+      if (!PONCTUATION_COLLEE.has(texte)) return;
+      if (this.textBefore(attendu.length) === attendu) this.deleteAround(1, 0);
     }
 
     handleCharacter(key) {
@@ -1179,6 +1211,7 @@
         this.deleteAround(this.currentWord.length, suite ? suite[0].length : 0);
       }
       this.insertText(word + ' ');
+      this.espaceAutoApres = word + ' ';
       this.currentWord = word;
       this.finalizeCurrentWord();
       this.renderScreen();
