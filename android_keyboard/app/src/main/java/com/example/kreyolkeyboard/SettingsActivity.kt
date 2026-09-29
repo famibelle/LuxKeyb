@@ -1359,6 +1359,10 @@ class SettingsActivity : AppCompatActivity() {
     /** Conversion en pixels d'une dimension exprimée en dp. */
     private fun enDp(valeur: Int): Int = (valeur * resources.displayMetrics.density).toInt()
 
+    /** Entier avec l'espace des milliers : « 38 442 » et non « 38442 ». */
+    private fun nombre(n: Int): String =
+        java.text.NumberFormat.getIntegerInstance(java.util.Locale.FRANCE).format(n)
+
     /**
      * Une couleur `#RRGGBB` reprise avec l'opacité demandée.
      *
@@ -3517,24 +3521,86 @@ class SettingsActivity : AppCompatActivity() {
             gravity = Gravity.CENTER
             setPadding(24, 24, 24, 40)
         }
-        
-        // Message de progression vers le niveau suivant
-        val progressMessage = TextView(this).apply {
-            text = if (wordsRemaining > 0) {
-                "Votre niveau actuel est $levelName, plus que $wordsRemaining mot${if (wordsRemaining > 1) "s" else ""} restant${if (wordsRemaining > 1) "s" else ""} à découvrir pour passer au niveau suivant ($nextLevelName)"
-            } else if (levelName == "Benzo") {
-                "Vous avez atteint le niveau maximum : $levelName ! 👑"
-            } else {
-                "Votre niveau actuel est $levelName"
+
+        // v29.3.0 : l'écran s'ouvrait sur « 0.0% » en très gros et « 7 mots
+        // découverts sur les 38442 mots » : pour qui débute, lire qu'il ne sait
+        // rien. On montre d'abord le niveau, puis le chemin jusqu'au palier
+        // suivant, seul objectif à portée ; la part du dictionnaire entier
+        // passe en petit, sans pourcentage tant qu'il ne dépasse pas 1 %.
+        val levelBadge = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            setPadding(24, 16, 24, 16)
+        }
+
+        val levelEmojiText = TextView(this).apply {
+            text = levelEmoji
+            textSize = 48f
+            setPadding(0, 0, 16, 0)
+        }
+
+        val levelNameText = TextView(this).apply {
+            text = levelName
+            textSize = 28f
+            setTextColor(Color.parseColor("#1C1C1C"))
+            setTypeface(null, Typeface.BOLD)
+        }
+
+        levelBadge.addView(levelEmojiText)
+        levelBadge.addView(levelNameText)
+        levelContainer.addView(levelBadge)
+
+        val totalWords = getTotalDictionaryWords()
+        val levelIndex = getCurrentLevelIndex(stats.wordsDiscovered)
+        val auSommet = levelIndex == LuxLevels.MAX_INDEX
+        val seuils = calculateGaussianThresholds()
+
+        if (!auSommet) {
+            val depuis = seuils[levelIndex]
+            val vers = seuils[levelIndex + 1]
+            val fait = (stats.wordsDiscovered - depuis).coerceAtLeast(0)
+            val etape = (vers - depuis).coerceAtLeast(1)
+
+            val barre = android.widget.ProgressBar(
+                this, null, android.R.attr.progressBarStyleHorizontal
+            ).apply {
+                max = etape
+                progress = fait.coerceAtMost(etape)
+                progressTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#0E6E76"))
+                progressBackgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#DDE6E7"))
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, enDp(10)
+                ).apply { setMargins(enDp(24), enDp(8), enDp(24), enDp(8)) }
+                contentDescription = "$fait mots sur ${nombre(etape)} vers $nextLevelName"
             }
-            textSize = 16f
-            setTextColor(Color.parseColor("#666666"))
+            levelContainer.addView(barre)
+        }
+
+        val progressMessage = TextView(this).apply {
+            text = if (auSommet) {
+                "Vous avez atteint le plus haut niveau. 👑"
+            } else {
+                "Encore ${nombre(wordsRemaining)} mot${if (wordsRemaining > 1) "s" else ""} avant $nextLevelName"
+            }
+            textSize = 17f
+            setTextColor(Color.parseColor("#1C1C1C"))
+            gravity = Gravity.CENTER
+            setPadding(16, 8, 16, 8)
+        }
+        levelContainer.addView(progressMessage)
+
+        val part = if (totalWords > 0) stats.wordsDiscovered * 100.0 / totalWords else 0.0
+        val percentageLabel = TextView(this).apply {
+            val mots = "${nombre(stats.wordsDiscovered)} mot${if (stats.wordsDiscovered > 1) "s" else ""} " +
+                "découvert${if (stats.wordsDiscovered > 1) "s" else ""} " +
+                "sur les ${nombre(totalWords)} du dictionnaire"
+            text = if (part >= 1.0) "$mots (${part.toInt()} %)" else mots
+            textSize = 14f
+            setTextColor(Color.parseColor("#777777"))
             gravity = Gravity.CENTER
             setPadding(16, 0, 16, 24)
-            setLineSpacing(6f, 1f)
         }
-        
-        levelContainer.addView(progressMessage)
+        levelContainer.addView(percentageLabel)
 
         // Partage permanent de la carte de niveau. Jusqu'ici, shareLevelCard()
         // n'était atteignable que par le bouton de la boîte de célébration :
@@ -3542,6 +3608,7 @@ class SettingsActivity : AppCompatActivity() {
         // palier était déjà marqué comme célébré et que la boîte ne
         // réapparaissait jamais. L'astuce qui promet de partager sa carte
         // « depuis Mäi Lëtzebuergesch » décrit désormais quelque chose qui existe.
+        // Placé après le niveau : on partage ce qu'on vient de lire.
         val shareLevelButton = Button(this).apply {
             text = "📤 Partager ma carte de niveau"
             textSize = 15f
@@ -3552,7 +3619,7 @@ class SettingsActivity : AppCompatActivity() {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { bottomMargin = 24 }
+            )
             setOnClickListener {
                 try {
                     shareLevelCard(
@@ -3571,48 +3638,6 @@ class SettingsActivity : AppCompatActivity() {
         }
         levelContainer.addView(shareLevelButton)
 
-        val levelBadge = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER
-            setPadding(24, 16, 24, 16)
-        }
-        
-        val levelEmojiText = TextView(this).apply {
-            text = levelEmoji
-            textSize = 48f
-            setPadding(0, 0, 16, 0)
-        }
-        
-        val levelNameText = TextView(this).apply {
-            text = levelName
-            textSize = 28f
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setTypeface(null, Typeface.BOLD)
-        }
-        
-        levelBadge.addView(levelEmojiText)
-        levelBadge.addView(levelNameText)
-        
-        val percentageText = TextView(this).apply {
-            text = "${String.format("%.1f", stats.coveragePercentage)}%"
-            textSize = 32f
-            setTextColor(Color.parseColor("#1C1C1C"))
-            setTypeface(null, Typeface.BOLD)
-            gravity = Gravity.CENTER
-            setPadding(0, 16, 0, 8)
-        }
-        
-        val percentageLabel = TextView(this).apply {
-            text = "${stats.wordsDiscovered} mots découverts sur les ${stats.totalWords} mots du dictionnaire luxembourgeois"
-            textSize = 14f
-            setTextColor(Color.parseColor("#999999"))
-            gravity = Gravity.CENTER
-        }
-        
-        levelContainer.addView(levelBadge)
-        levelContainer.addView(percentageText)
-        levelContainer.addView(percentageLabel)
-        
         // === Mot du Jour - Design épuré ===
         val (wordOfDay, usageCount) = getWordOfTheDay()
         
@@ -3634,7 +3659,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val wordText = TextView(this).apply {
-            text = wordOfDay
+            // Forme du dictionnaire et non clé du fichier d'usage, qui est en
+            // minuscules : « Brauereien », pas « brauereien ». L'appli enseigne
+            // la majuscule des noms dans ses jeux, elle ne l'efface pas ici.
+            text = formeAffichee(wordOfDay)
             textSize = 48f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
@@ -4034,6 +4062,7 @@ class SettingsActivity : AppCompatActivity() {
                 Log.d("SettingsActivity", "Total: $totalDictWords mots, Usage: $totalUsages, Découverts: $wordsDiscovered")
                 
                 val topWords = wordUsages.filter { it.first.length >= 3 }.sortedByDescending { it.second }.take(5)
+                    .map { formeAffichee(it.first) to it.second }
                 val coverage = if (totalDictWords > 0) (wordsDiscovered.toFloat() / totalDictWords * 100) else 0f
                 
                 // Les mots à découvrir : peu ou pas employés, et proposables.
@@ -4058,7 +4087,7 @@ class SettingsActivity : AppCompatActivity() {
                             TranslationDictionary.estProposable(this, word)
                     }
                     .toList()
-                val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5)
+                val wordsToDiscoverList = wordsToDiscoverCandidates.shuffled().take(5).map { formeAffichee(it) }
                 
                 return VocabularyStats(
                     totalDictWords,
@@ -4066,7 +4095,7 @@ class SettingsActivity : AppCompatActivity() {
                     totalUsages,
                     topWords,
                     coverage,
-                    discoveredWords.sorted(),
+                    discoveredWords.map { formeAffichee(it) }.sortedBy { it.lowercase() },
                     wordsToDiscoverList
                 )
             }
@@ -4305,6 +4334,16 @@ class SettingsActivity : AppCompatActivity() {
      * Utilise un cache pour éviter de relire le fichier à chaque fois
      */
     private var cachedTotalWords: Int? = null
+    private var formesCanoniques: Map<String, String> = emptyMap()
+
+    /**
+     * Forme d'un mot telle que le dictionnaire l'écrit, majuscule des noms
+     * comprise. Repli sur le mot lui-même si le dictionnaire ne le connaît pas.
+     */
+    private fun formeAffichee(mot: String): String {
+        getTotalDictionaryWords()
+        return formesCanoniques[mot.lowercase()] ?: mot
+    }
     
     private fun getTotalDictionaryWords(): Int {
         // Retourner depuis le cache si disponible
@@ -4316,7 +4355,18 @@ class SettingsActivity : AppCompatActivity() {
             val jsonString = assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
             val jsonArray = org.json.JSONArray(jsonString)
             val count = jsonArray.length()
-            
+
+            // Même lecture, pour la casse : les clés du fichier d'usage sont en
+            // minuscules, le dictionnaire porte la forme à afficher. Il est trié
+            // par fréquence décroissante, donc pour un homographe (« Froen » /
+            // « froen ») la première rencontrée est la plus courante.
+            val formes = HashMap<String, String>(count * 2)
+            for (i in 0 until count) {
+                val forme = jsonArray.optJSONArray(i)?.optString(0).orEmpty()
+                if (forme.isNotEmpty()) formes.putIfAbsent(forme.lowercase(), forme)
+            }
+            formesCanoniques = formes
+
             cachedTotalWords = count
             Log.d("SettingsActivity", "📊 Total mots dictionnaire: $count")
             count
@@ -9480,14 +9530,15 @@ class SettingsActivity : AppCompatActivity() {
             val activity = activity as? SettingsActivity ?: return
             conteneurResultats.removeAllViews()
 
-            if (requete.trim().length < 2) {
+            val nettoyee = TranslationDictionary.nettoyerRequete(requete)
+            if (nettoyee.length < 2) {
                 tvEtat.text = "Entrez au moins deux lettres."
                 return
             }
 
-            val resultats = TranslationDictionary.rechercher(activity, requete)
+            val resultats = TranslationDictionary.rechercher(activity, nettoyee)
             if (resultats.isEmpty()) {
-                tvEtat.text = "Aucun résultat pour « ${requete.trim()} ».\n" +
+                tvEtat.text = "Aucun résultat pour « $nettoyee ».\n" +
                         "Les noms propres et les noms de lieux n'ont pas de " +
                         "traduction dans le dictionnaire officiel."
                 return

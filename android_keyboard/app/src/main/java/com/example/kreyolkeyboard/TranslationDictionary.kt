@@ -540,10 +540,20 @@ object TranslationDictionary {
      * Les résultats sont enfin **regroupés par famille** : une ligne par mot du
      * LOD, portant le représentant, et non une ligne par flexion.
      */
+    /**
+     * Requête débarrassée de ce que le clavier ou le doigt ajoutent autour du
+     * mot : espace posée après une suggestion, point, virgule, guillemets.
+     * « Gromper . » cherchait « gromper . » et ne trouvait rien. L'intérieur
+     * est gardé tel quel, espaces réduites à une : les gloses françaises en
+     * ont (« pomme de terre », « tape-à-l'œil »).
+     */
+    internal fun nettoyerRequete(requete: String): String =
+        requete.trim { !it.isLetterOrDigit() }.replace(Regex("\\s+"), " ")
+
     fun rechercher(context: Context, requete: String, maximum: Int = 40): List<Resultat> {
         charger(context)
         chargerFamilles(context)
-        val pliee = AccentTolerantMatcher.normalize(requete.trim())
+        val pliee = AccentTolerantMatcher.normalize(nettoyerRequete(requete))
         if (pliee.isEmpty()) return emptyList()
 
         val index = indexRecherche()
