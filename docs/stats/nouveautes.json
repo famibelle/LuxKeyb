@@ -1,9 +1,28 @@
 {
  "genere_le": "2026-09-29",
- "derniere_version": "29.4.0",
+ "derniere_version": "29.4.1",
  "derniere_date": "2026-09-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "29.4.1",
+   "date": "2026-09-29",
+   "intro": "Le clavier porte le même nom partout.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Dans la liste des claviers du téléphone, il s'appelle « Lëtzebuergesch Clavier »",
+       "texte": "Et non plus « Lëtzebuergesch Clavier Luxembourg ». C'est le nom que l'application vous demande de choisir, et celui de son icône."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "29.4.0",
    "date": "2026-09-29",
@@ -206,25 +225,6 @@
       {
        "titre": "En paysage, plus de bande grise du côté de la caméra",
        "texte": "Le bandeau bleu et la barre d'onglets vont jusqu'au bord de l'écran ; seul leur contenu s'écarte de l'encoche. Même chose dans les réglages du clavier, le Guide et la page À propos."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "29.0.0",
-   "date": "2026-09-25",
-   "intro": "Les messages des jeux ne recouvrent plus l'heure.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Sous Android 15 et plus, les messages de Wuertsich et Wuertriet",
-       "texte": "(« Dëst Wuert ass net am Wierderbuch », « Mot trouvé ») s'affichaient par-dessus la barre d'état et masquaient l'heure. Ils apparaissent maintenant juste en dessous, et contournent l'encoche de la caméra en paysage."
       }
      ],
      "texte": "",
