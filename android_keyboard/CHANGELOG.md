@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.4.1] - 2026-09-29
+
+Le clavier porte le même nom partout.
+
+### 🐛 Corrections
+
+- **Dans la liste des claviers du téléphone, il s'appelle « Lëtzebuergesch Clavier »**, et non plus « Lëtzebuergesch Clavier Luxembourg ». C'est le nom que l'application vous demande de choisir, et celui de son icône.
+
 ## [29.4.0] - 2026-09-29
 
 L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.
