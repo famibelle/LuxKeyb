@@ -1225,9 +1225,20 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // L'écran de réglages partage ce processus : au moment du clic il a déjà
         // rafraîchi la palette globale, si bien qu'un tel booléen serait toujours
         // faux ici et que le clavier garderait ses anciennes couleurs.
+        // Un champ d'adresse a sa propre rangée du bas (« @ » ou « / », et
+        // « .lu ») : passer d'un tel champ à un autre reconstruit la vue, ce
+        // qui n'arrive qu'à ce changement-là, pas à chaque champ.
+        val inputType = info?.inputType ?: 0
+        val champAdresse = when {
+            InputProcessor.estChampWeb(inputType) -> KeyboardLayoutManager.ChampAdresse.WEB
+            InputProcessor.estChampAdresse(inputType) -> KeyboardLayoutManager.ChampAdresse.EMAIL
+            else -> KeyboardLayoutManager.ChampAdresse.AUCUN
+        }
+        val rangeeChangee = keyboardLayoutManager.definirChampAdresse(champAdresse)
+
         KeyboardTheme.refresh(this)
-        if (paletteDeLaVue !== KeyboardTheme.palette()) {
-            Log.d(TAG, "Thème changé : reconstruction de la vue d'entrée")
+        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee) {
+            Log.d(TAG, "Thème ou rangée d'adresse changés : reconstruction de la vue d'entrée")
             setInputView(onCreateInputView())
         }
 
@@ -1252,6 +1263,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             keyboardLayoutManager.applyMode()
             Log.d(TAG, "✅ Mode alphabétique garanti lors du démarrage de la saisie")
         }
+
+        // Maj allumée d'entrée quand le champ commence par une majuscule
+        // (texte vide, prénom…) : la touche et les lettres le montrent avant la
+        // première frappe, pas après. Hors du bloc ci-dessus : beaucoup
+        // d'applications (Contacts, Chrome) relancent la saisie sur le même
+        // champ, et onStartInput() vient d'éteindre la majuscule dans ce cas
+        // aussi. Le calcul part du texte réel, il ne l'allume qu'à bon escient.
+        if (!keyboardLayoutManager.isNumericMode()) inputProcessor.rafraichirMajuscule()
 
         maybeShowFirstRealUseTip(info)
     }

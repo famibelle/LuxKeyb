@@ -374,7 +374,14 @@ class KeyboardLayoutManager(private val context: Context) {
         // coupe les mots dessus. Le trait d'union reste donc en appui long sur
         // "." — 143 occurrences ici contre 21,7 % des mots en créole, où il
         // avait une touche à lui.
-        val row4 = arrayOf("123", ",", "ä", " ", "ë", "'", ".", "EMOJI", "⏎")
+        val row4 = when (champAdresse) {
+            // v29.3.1 : dans une adresse, la virgule et l'apostrophe ne servent
+            // à rien et « @ », « / », « .lu » obligeaient à passer par la page
+            // 123. Ils prennent leurs places, sans toucher à la largeur de rien.
+            ChampAdresse.EMAIL -> arrayOf("123", "@", "ä", " ", "ë", ".lu", ".", "EMOJI", "⏎")
+            ChampAdresse.WEB -> arrayOf("123", "/", "ä", " ", "ë", ".lu", ".", "EMOJI", "⏎")
+            ChampAdresse.AUCUN -> arrayOf("123", ",", "ä", " ", "ë", "'", ".", "EMOJI", "⏎")
+        }
 
         mainLayout.addView(createKeyboardRow(row1))
         mainLayout.addView(createKeyboardRow(row2))
@@ -582,7 +589,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 // tiennent plus sur une seule ligne dans une touche étroite.
                 val labelRatio = when (key) {
                     " " -> SPACE_LABEL_TEXT_RATIO
-                    "123", "ABC" -> WIDE_LABEL_TEXT_RATIO
+                    "123", "ABC", ".lu" -> WIDE_LABEL_TEXT_RATIO
                     else -> KEY_TEXT_HEIGHT_RATIO
                 }
                 val widthRatio = if (key == "EMOJI") EMOJI_WIDTH_RATIO else LABEL_WIDTH_RATIO
@@ -798,7 +805,7 @@ class KeyboardLayoutManager(private val context: Context) {
         val p = KeyboardTheme.palette()
         return when (key) {
             "⏎", "123", "ABC", "EMOJI" -> p.accent
-            " ", ",", ".", "'" -> p.secondaire
+            " ", ",", ".", "'", "@", "/", ".lu" -> p.secondaire
             "⇧" -> if (isCapsLock || isCapitalMode) p.toucheActive else p.touche
             else -> p.touche
         }
@@ -1035,6 +1042,22 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Met à jour les états internes du clavier
      */
+    enum class ChampAdresse { AUCUN, EMAIL, WEB }
+
+    /** Genre d'adresse du champ courant, qui décide de la rangée du bas. */
+    private var champAdresse = ChampAdresse.AUCUN
+
+    /**
+     * Retient le genre d'adresse du champ ; `true` quand il change, auquel cas
+     * le service doit reconstruire la vue, la rangée du bas étant posée à la
+     * construction du panneau des lettres.
+     */
+    fun definirChampAdresse(champ: ChampAdresse): Boolean {
+        if (champ == champAdresse) return false
+        champAdresse = champ
+        return true
+    }
+
     /**
      * Action de la touche Entrée dans le champ courant, telle que la calcule
      * [InputProcessor.actionEntree] ; `null` pour un retour à la ligne.
@@ -1264,6 +1287,7 @@ class KeyboardLayoutManager(private val context: Context) {
             // gré du shift, un état qui ne la concerne pas.
             "ABC" -> "ABC"
             "EMOJI" -> "😀"
+            ".lu" -> ".lu"
             // Caractères accentués créoles - respecter le mode majuscule/minuscule
             "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
             else -> if (isCapitalMode) key.uppercase() else key.lowercase()

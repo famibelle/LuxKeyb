@@ -95,4 +95,44 @@ class ChampDeSaisieTest {
             assertFalse("« $it » ne doit pas se coller", InputProcessor.colleAuMotPrecedent(it))
         }
     }
+
+    @Test
+    fun lesAdressesWebSontDistingueesDesEmails() {
+        assertTrue(InputProcessor.estChampWeb(texteVariation(InputType.TYPE_TEXT_VARIATION_URI)))
+        assertFalse(InputProcessor.estChampWeb(texteVariation(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)))
+        assertFalse(InputProcessor.estChampWeb(texte))
+    }
+
+    @Test
+    fun laMajusculeEstAttendueEnDebutDeChampEtDePhrase() {
+        assertTrue(InputProcessor.majusculeAttendue(texte, ""))
+        assertTrue(InputProcessor.majusculeAttendue(texte, "Moien. "))
+        assertTrue(InputProcessor.majusculeAttendue(texte, "Wéi geet et? "))
+        assertFalse(InputProcessor.majusculeAttendue(texte, "Moien "))
+        assertFalse(InputProcessor.majusculeAttendue(
+            texteVariation(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS), ""))
+        assertFalse(InputProcessor.majusculeAttendue(InputType.TYPE_CLASS_NUMBER, ""))
+    }
+
+    @Test
+    fun unChampDeNomMetUneMajusculeAChaqueMot() {
+        val nom = texteVariation(InputType.TYPE_TEXT_VARIATION_PERSON_NAME) or
+            InputType.TYPE_TEXT_FLAG_CAP_WORDS
+        assertTrue(InputProcessor.majusculeAttendue(nom, "Jean "))
+        assertFalse(InputProcessor.majusculeAttendue(nom, "Jean"))
+        // Sans le drapeau, une espace ne suffit pas
+        assertFalse(InputProcessor.majusculeAttendue(texte, "Jean "))
+        assertTrue(InputProcessor.majusculeAttendue(
+            texte or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS, "ab"))
+    }
+
+    @Test
+    fun unChampSansClasseMaisAvecDesDrapeauxDeTexteEstDuTexte() {
+        // Le prénom de Google Contacts, relevé sur l'émulateur : 0x2060
+        val prenomContacts = 0x2060
+        assertTrue(InputProcessor.majusculeAttendue(prenomContacts, ""))
+        assertTrue(InputProcessor.majusculeAttendue(prenomContacts, "Jean "))
+        // Un champ vraiment nu (terminal) ne prend pas de majuscule
+        assertFalse(InputProcessor.majusculeAttendue(InputType.TYPE_NULL, ""))
+    }
 }

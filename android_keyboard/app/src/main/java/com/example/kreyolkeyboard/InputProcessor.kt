@@ -91,8 +91,24 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
          * une suggestion, ni Groussschreiwung. Une espace ou une majuscule y
          * rendent l'adresse fausse, et l'utilisateur ne le voit qu'à l'envoi.
          */
+        /**
+         * Classe du champ, en lisant comme du texte un champ qui porte des
+         * variations ou des drapeaux de texte sans déclarer de classe. Contacts
+         * déclare ainsi son prénom `0x2060` (nom + majuscule à chaque mot, classe
+         * 0) : lu à la lettre, ce ne serait pas du texte et il perdrait sa
+         * majuscule. Seul un champ à 0, sans rien (un terminal), reste TYPE_NULL.
+         */
+        private fun classeDe(inputType: Int): Int {
+            val classe = inputType and InputType.TYPE_MASK_CLASS
+            return if (classe == InputType.TYPE_NULL && inputType != 0) InputType.TYPE_CLASS_TEXT else classe
+        }
+
+        internal fun estChampWeb(inputType: Int): Boolean =
+            classeDe(inputType) == InputType.TYPE_CLASS_TEXT &&
+                inputType and InputType.TYPE_MASK_VARIATION == InputType.TYPE_TEXT_VARIATION_URI
+
         internal fun estChampAdresse(inputType: Int): Boolean {
-            if (inputType and InputType.TYPE_MASK_CLASS != InputType.TYPE_CLASS_TEXT) return false
+            if (classeDe(inputType) != InputType.TYPE_CLASS_TEXT) return false
             return when (inputType and InputType.TYPE_MASK_VARIATION) {
                 InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
                 InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,
@@ -111,7 +127,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
          * laissait passer.
          */
         internal fun accepteLaMajusculeAuto(inputType: Int): Boolean {
-            if (inputType and InputType.TYPE_MASK_CLASS != InputType.TYPE_CLASS_TEXT) return false
+            if (classeDe(inputType) != InputType.TYPE_CLASS_TEXT) return false
             if (estChampAdresse(inputType)) return false
             return when (inputType and InputType.TYPE_MASK_VARIATION) {
                 InputType.TYPE_TEXT_VARIATION_PASSWORD,
@@ -122,6 +138,25 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
                 InputType.TYPE_TEXT_VARIATION_PHONETIC -> false
                 else -> true
             }
+        }
+
+        /**
+         * La lettre suivante doit-elle être une majuscule, vu le champ et le
+         * texte qui précède le curseur ?
+         *
+         * Début de texte et fin de phrase pour tout champ de texte courant ;
+         * en plus, début de chaque mot quand le champ le demande (nom, prénom,
+         * ville : TYPE_TEXT_FLAG_CAP_WORDS), et toujours quand il veut des
+         * capitales (TYPE_TEXT_FLAG_CAP_CHARACTERS, une plaque, un code).
+         */
+        internal fun majusculeAttendue(inputType: Int, textBefore: String): Boolean {
+            if (!accepteLaMajusculeAuto(inputType)) return false
+            if (inputType and InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS != 0) return true
+            if (textBefore.isBlank()) return true
+            if (inputType and InputType.TYPE_TEXT_FLAG_CAP_WORDS != 0 &&
+                textBefore.last().isWhitespace()) return true
+            val finDePhrase = textBefore.indexOfLast { it in ".!?" }
+            return finDePhrase != -1 && textBefore.substring(finDePhrase + 1).isBlank()
         }
 
         /**
@@ -267,10 +302,11 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite l'entrée d'un caractère normal
      */
     private fun handleCharacterInput(key: String, inputConnection: InputConnection): Boolean {
-        val character = if (shouldCapitalize()) {
-            key.uppercase()
-        } else {
-            key.lowercase()
+        val character = when {
+            // Touche de plusieurs caractères (« .lu ») : écrite telle quelle
+            key.length > 1 -> key
+            shouldCapitalize() -> key.uppercase()
+            else -> key.lowercase()
         }
         
         // Ajouter le caractère au mot courant
@@ -649,35 +685,23 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         val editorInfo = inputMethodService.currentInputEditorInfo ?: return false
         val inputType = editorInfo.inputType
         
-        // Pas de capitalisation automatique hors du texte courant : mot de
-        // passe, chiffres, adresse e-mail ou web (voir accepteLaMajusculeAuto)
-        if (!accepteLaMajusculeAuto(inputType)) return false
-        
-        // Obtenir le texte précédent pour détecter le début de phrase
-        try {
+        return try {
             val textBefore = inputConnection.getTextBeforeCursor(100, 0)?.toString() ?: ""
-            
-            // Capitaliser au début du texte
-            if (textBefore.isEmpty() || textBefore.isBlank()) {
-                return true
-            }
-            
-            // Capitaliser après un point, un point d'exclamation ou d'interrogation
-            val lastSentenceEnd = textBefore.indexOfLast { it in ".!?" }
-            if (lastSentenceEnd != -1) {
-                val afterPunctuation = textBefore.substring(lastSentenceEnd + 1)
-                if (afterPunctuation.isBlank()) {
-                    return true
-                }
-            }
-            
+            majusculeAttendue(inputType, textBefore)
         } catch (e: Exception) {
             Log.w(TAG, "Erreur lors de la vérification de la capitalisation automatique: ${e.message}")
+            false
         }
-        
-        return false
     }
-    
+
+    /**
+     * Allume la majuscule si le champ l'attend à cet endroit. Appelé par le
+     * service à l'ouverture d'un champ : jusqu'ici la première lettre sortait
+     * bien en majuscule, mais la touche Maj restait éteinte et les lettres
+     * affichées en minuscules, si bien qu'on ne le savait qu'après coup.
+     */
+    fun rafraichirMajuscule() = handleAutoCapitalization()
+
     /**
      * Gère la capitalisation automatique après certains événements
      */
