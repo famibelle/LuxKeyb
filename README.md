@@ -95,10 +95,13 @@ serait l'interface, pas la langue.
 - Sept jeux de vocabulaire : **Wuertsich** (mots mêlés), **Wuertmix** (anagrammes), **Wuertriet** (six essais), **Wuertlück** (texte à trou), **Zuelwuert** (les nombres en toutes lettres), **Kräizwuert** (mots croisés) et **Wuertplaz** (mots à placer)
 
 ### 🔒 **Vie privée**
-Le clavier fonctionne **entièrement hors ligne** : il n'a aucun accès à Internet.
+La version publiée du clavier fonctionne **entièrement hors ligne** : il n'a aucun accès à Internet.
 Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
 progression, si bien que mots de passe et termes personnels ne sont jamais
-enregistrés, et rien ne quitte l'appareil.
+enregistrés, et rien ne quitte l'appareil. La dictée vocale expérimentale de
+[Labs](#-labs--la-dictée-vocale-en-avant-première) est à part : sa variante en
+ligne envoie le son du micro à un service tiers, et n'est pas distribuée par le
+Play Store.
 
 ### 📚 **Corpus des suggestions**
 Le dictionnaire et les n-grammes sont produits à partir de deux corpus publics
@@ -117,6 +120,100 @@ et ParaLux. Citations et détail dans
 Gboard gère le luxembourgeois parmi 900 autres langues, et Apple ne l'ajoutera
 qu'avec iOS 27 : voir le **[comparatif détaillé](COMPARATIF.md)**, disposition,
 dictionnaire, vie privée, et ce que les autres font mieux.
+
+## 🔬 Labs : la dictée vocale, en avant-première
+
+**Labs** est le canal des versions expérimentales : un APK construit à partir
+d'une branche de travail, pour la faire essayer avant qu'elle n'atteigne la
+version stable. La dictée vocale en luxembourgeois y vit depuis août 2026. Elle
+**n'est pas sur `main`, ni sur Google Play**, et ce n'est pas un oubli.
+
+Un bouton micro s'affiche à droite de la barre de suggestions : un appui
+l'allume, le texte s'écrit pendant qu'on parle (souligné tant qu'il n'est pas
+confirmé), un second appui fige le résultat, et la dictée s'arrête d'elle-même
+après un silence. Elle reste désactivée dans les champs de mot de passe.
+
+### Deux variantes, deux compromis
+
+Les deux versions sont le même clavier, à un détail près : d'où vient le texte
+quand on parle.
+
+| | **Modèle embarqué** | **Démonstration LuxASR en ligne** |
+|---|---|---|
+| Reconnaissance | `whisper-tiny` dans le téléphone, dérivé du modèle [`unilux/whisper-tiny-v1-luxembourgish`](https://huggingface.co/unilux/whisper-tiny-v1-luxembourgish) de l'Université du Luxembourg (licence open-mdw) | Service [LuxASR](https://luxasr.uni.lu) de l'Université du Luxembourg |
+| Où va la voix | **Nulle part** : aucune permission réseau | **À `luxasr.uni.lu`**, en continu pendant la dictée |
+| Sans connexion | Oui, avion et tunnel compris | Non, pas de repli hors ligne, volontairement |
+| Mots erronés | **72 %** sur 161 énoncés de conférences de presse : trop pour être utile | **25,4 %** sur 22 dictées d'une à trois phrases, 11 à 15 % sur un extrait lu proprement |
+| Délai | ≈ 6 s par passe sur un téléphone ancien | premier aperçu ≈ 1,1 s, texte engagé ≈ 0,23 s après la dernière syllabe |
+| Taille de l'APK | ≈ 38 Mo, dont 31 pour le modèle | ≈ 6 Mo |
+| Branche | `feat/speech-to-text-lb` | `feat/luxasr-online` |
+
+Au-delà d'environ 25 % de mots erronés, corriger coûte plus cher que taper :
+c'est pourquoi le modèle embarqué, malgré son avantage de confidentialité, n'est
+pas proposé comme une fonction. Les chiffres, leurs conditions de mesure et
+leurs limites sont détaillés sur la page
+[Labs · LuxASR](https://famibelle.github.io/LuxKeyb/labs-luxasr.html).
+
+### Pourquoi ce n'est pas dans la version stable
+
+- **La politique de confidentialité publiée décrit une application qui
+  n'envoie rien.** La dictée en ligne la contredit : la version stable ne
+  l'intégrera pas avant que la politique ait été réécrite.
+- **Une dictée en ligne supposerait l'accord formel du service appelé.** Le
+  traitement des enregistrements par ce service ne relève pas de ce projet.
+- **Les deux services publics de la parole n'ont pas le même propriétaire.**
+  LuxASR est celui de l'Université du Luxembourg, le seul appelé ici. La
+  *Sproochmaschinn* et la *Schreifmaschinn* relèvent du Zenter fir d'Lëtzebuerger
+  Sprooch (ministère de la Culture) : le clavier ne les appelle pas.
+
+### Installer une version Labs
+
+1. Téléchargez l'APK depuis la [préversion `labs`](https://github.com/famibelle/LuxKeyb/releases/tag/labs) (ou depuis la page [Labs](https://famibelle.github.io/LuxKeyb/labs.html) du site, qui affiche le build réellement disponible)
+2. Autorisez l'installation depuis cette source, puis installez l'APK
+3. Activez le clavier dans Paramètres → Système → Claviers, choisissez-le comme clavier courant
+4. Ouvrez un champ de texte, touchez le micro et autorisez l'accès au microphone au premier usage
+
+L'APK Labs est **signé avec la clé de production** : il remplace l'application
+installée, y compris celle reçue depuis Google Play, et se réinstalle par-dessus
+la version stable sans rien désinstaller. Réglages et progression sont conservés.
+Son icône porte la mention **LABS** pour qu'on sache laquelle des deux est
+installée. Ce n'est pas la version stable : elle est reconstruite à chaque
+amélioration et peut changer d'un jour à l'autre.
+
+### Comment c'est construit
+
+Le workflow [`.github/workflows/labs.yml`](.github/workflows/labs.yml)
+régénère le dictionnaire et le modèle, lance les tests, construit un APK release
+signé et le publie comme **préversion GitHub sous le tag roulant `labs`** : une
+adresse de téléchargement qui ne change jamais. Quatre choix délibérés :
+
+- la préversion n'est **jamais** marquée « latest », sinon le lien de téléchargement du simulateur servirait un build de laboratoire aux visiteurs ordinaires ;
+- la publication automatique est **épinglée à une seule branche** : deux expériences ne peuvent pas se disputer le même tag ;
+- **pas de repli sur une clé de debug** : un APK Labs signé debug ne s'installerait pas par-dessus une version stable, et on ne le découvrirait qu'à l'installation ;
+- l'APK est **inspecté**, pas supposé : bibliothèque native présente pour les deux architectures ARM, modèle présent et non compressé, signature valide.
+
+**Modèle embarqué** (détail dans [`stt/README.md`](stt/README.md)) : moteur
+[whisper.cpp](https://github.com/ggml-org/whisper.cpp) en JNI. Whisper n'a pas de
+mode flux : le temps réel consiste à retranscrire l'énoncé entier toutes les
+900 ms et à remplacer le texte en cours, dans une fenêtre de 30 s au plus. Le
+modèle pèse 31 Mo et n'est **pas versionné** (l'historique git est définitif) :
+la CI le convertit depuis Hugging Face avec `stt/convert_model.py`. Il n'est
+chargé qu'au premier appui sur le micro et libéré à la sortie du champ, le
+calcul réclamant environ 165 Mo de mémoire.
+
+**Démonstration en ligne** : l'application pousse l'audio en PCM 16 bits à
+16 kHz sur une connexion WebSocket vers `luxasr.uni.lu`. Le service redécode
+l'énoncé en cours toutes les demi-secondes à une seconde et n'engage un mot
+qu'après l'avoir vu à la même place dans trois hypothèses de suite ; la fin
+encore instable revient à part et s'affiche en aperçu. Aucun enregistrement
+n'est conservé sur le téléphone.
+
+### Un retour à nous faire
+
+Le plus utile est un cas précis : le modèle de téléphone, ce que vous avez dit,
+et ce qui s'est écrit. Passez par le
+[formulaire de retours](https://famibelle.github.io/LuxKeyb/feedbacks_form.html)
+ou ouvrez une [issue](https://github.com/famibelle/LuxKeyb/issues).
 
 ## 📦 Téléchargements
 
