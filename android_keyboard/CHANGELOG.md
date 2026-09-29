@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.3.1] - 2026-09-29
+
+Le clavier suit mieux encore le champ où l'on tape.
+
+### ✨ Améliorations
+
+- **Dans une adresse e-mail, « @ » et « .lu » sont sur la rangée du bas**, à la place de la virgule et de l'apostrophe. Dans une adresse web, c'est « / » et « .lu ». En restant appuyé sur « .lu » : « .com », « .fr », « .de », « .be », « .eu », toujours en minuscules.
+- **Dans un champ de nom, chaque mot prend sa majuscule** (« Jean Paul »), et un champ qui demande des capitales les met partout.
+
+### 🐛 Corrections
+
+- **La touche Maj s'allume dès l'ouverture d'un champ** qui commence par une majuscule. La première lettre sortait déjà en majuscule, mais le clavier affichait des minuscules jusque-là.
+- **Le prénom de Google Contacts et les champs du même genre** retrouvent leur majuscule : ils se déclarent d'une façon que le clavier ne reconnaissait pas comme du texte.
+
 ## [29.3.0] - 2026-09-29
 
 Le clavier suit le champ où l'on tape, et la ponctuation se colle au mot.
