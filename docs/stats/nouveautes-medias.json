@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "29.4.0": {
+    "image": "Screenshots/lux_accueil_haut.png",
+    "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
+    "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
+  },
   "26.2.0": {
     "images": [
       {

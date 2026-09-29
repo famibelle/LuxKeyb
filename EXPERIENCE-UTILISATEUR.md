@@ -149,6 +149,8 @@ Luxembourg.
 
 ### 2.1 L'accueil reste un écran d'installation pour toujours (constaté)
 
+**Fait en 29.4.0** : onglet « Haut », révision lancée directement, mot du jour vers le Wierderbuch, dernier jeu, progression, configuration repliée.
+
 Une fois les trois étapes faites, l'onglet Démarrage affiche encore, dans
 l'ordre : « Tout est prêt ! », la configuration 3/3, deux réglages, un long
 texte sur le changement de clavier, l'astuce, un lien vers les statistiques.

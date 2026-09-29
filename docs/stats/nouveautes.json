@@ -1,29 +1,45 @@
 {
- "genere_le": "2026-09-20",
- "derniere_version": "26.2.0",
- "derniere_date": "2026-09-19",
+ "genere_le": "2026-09-29",
+ "derniere_version": "29.4.0",
+ "derniere_date": "2026-09-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "26.2.0",
-   "date": "2026-09-19",
-   "intro": "La plaque du mot devient une pièce d'orfèvrerie, et l'angle de la carte reçoit une ferronnerie.",
+   "version": "29.4.0",
+   "date": "2026-09-29",
+   "intro": "L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.",
    "sections": [
     {
      "emoji": "✨",
      "titre": "Améliorations",
      "points": [
       {
-       "titre": "La plaque du mot est rivetée",
-       "texte": "Quatre rivets tiennent ses angles, et ils montent avec la rareté : petites têtes de clou sur une carte commune, rivets bombés posés sur une rondelle sur une rare, puis plus gros encore sur une très rare. Ils se sentent aussi sous le doigt, et d'autant plus que la carte est rare."
+       "titre": "Une fois le clavier installé, l'application s'ouvre sur votre journée",
+       "texte": "Au lieu de l'écran d'installation : les cartes à revoir, le mot du jour, votre dernier jeu et votre progression, dans cet ordre."
       },
       {
-       "titre": "Le mot est gravé dans la plaque",
-       "texte": "Il n'est plus imprimé dessus : ses lettres sont creusées dans la matière, bois brûlé dans le chêne, argent ou or bruni dans le métal, avec l'ombre et la lumière d'un vrai sillon."
+       "titre": "« Réviser maintenant » lance la révision tout de suite",
+       "texte": "La première carte apparaît sans passer par la boîte ; en fermant la séance, on retrouve la Boîte de Leitner. Quand rien n'est à revoir, la carte le dit, et propose de jouer pour gagner d'autres cartes."
       },
       {
-       "titre": "Une ferronnerie orne l'angle en haut à droite",
-       "texte": "Les petites spirales des angles du bas, fines comme des cheveux, disparaissent. À leur place, un ornement de fer forgé en relief, dans le métal de la carte, qui s'enrichit avec la rareté : un simple coin à deux crosses, puis une grande volute liée par un collier, puis une branche qui suit l'arche et des perles au cœur des spirales."
+       "titre": "Le mot du jour s'ouvre dans le Wierderbuch",
+       "texte": "D'un toucher, la recherche déjà faite."
+      },
+      {
+       "titre": "« Rejouer à Wuertmix »",
+       "texte": "Relance le dernier jeu ouvert, quel qu'il soit."
+      },
+      {
+       "titre": "La progression tient en une carte",
+       "texte": "Votre niveau, la barre jusqu'au palier suivant et le nombre de mots qui restent."
+      },
+      {
+       "titre": "La configuration se replie sous une seule ligne",
+       "texte": "« Clavier installé » : un toucher la déplie, avec les réglages des majuscules, le correcteur et la façon de changer de clavier."
+      },
+      {
+       "titre": "L'onglet s'appelle « Haut »",
+       "texte": "Aujourd'hui en luxembourgeois, comme Spiller et Wierderbuch."
       }
      ],
      "texte": "",
@@ -32,105 +48,110 @@
    ],
    "images": [
     {
-     "image": "Screenshots/lux_plaque_quatre_raretes.png",
-     "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
-     "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+     "image": "Screenshots/lux_accueil_haut.png",
+     "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
+     "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
+    }
+   ],
+   "image": "Screenshots/lux_accueil_haut.png",
+   "image_alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
+   "image_legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
+  },
+  {
+   "version": "29.3.1",
+   "date": "2026-09-29",
+   "intro": "Le clavier suit mieux encore le champ où l'on tape.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Dans une adresse e-mail, « @ » et « .lu » sont sur la rangée du bas",
+       "texte": "À la place de la virgule et de l'apostrophe. Dans une adresse web, c'est « / » et « .lu ». En restant appuyé sur « .lu » : « .com », « .fr », « .de », « .be », « .eu », toujours en minuscules."
+      },
+      {
+       "titre": "Dans un champ de nom, chaque mot prend sa majuscule",
+       "texte": "(« Jean Paul »), et un champ qui demande des capitales les met partout."
+      }
+     ],
+     "texte": "",
+     "tableau": null
     },
     {
-     "image": "Screenshots/lux_plaque_gravee.png",
-     "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
-     "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La touche Maj s'allume dès l'ouverture d'un champ",
+       "texte": "Qui commence par une majuscule. La première lettre sortait déjà en majuscule, mais le clavier affichait des minuscules jusque-là."
+      },
+      {
+       "titre": "Le prénom de Google Contacts et les champs du même genre",
+       "texte": "Retrouvent leur majuscule : ils se déclarent d'une façon que le clavier ne reconnaissait pas comme du texte."
+      }
+     ],
+     "texte": "",
+     "tableau": null
     }
-   ],
-   "image": "Screenshots/lux_plaque_quatre_raretes.png",
-   "image_alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
-   "image_legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+   ]
   },
   {
-   "version": "26.1.0",
-   "date": "2026-09-19",
-   "intro": "La carte se lit dans tous les sens, et la plaque du mot se sent davantage.",
+   "version": "29.3.0",
+   "date": "2026-09-29",
+   "intro": "Le clavier suit le champ où l'on tape, et la ponctuation se colle au mot.",
    "sections": [
     {
      "emoji": "✨",
      "titre": "Améliorations",
      "points": [
       {
-       "titre": "Le relief se sent aussi de haut en bas et de bas en haut",
-       "texte": "Jusqu'ici, seul un doigt qui balayait de côté sentait les marches de la carte. Or la plaque du mot déborde du cadre : de gauche à droite, on montait dessus depuis la table et on n'en descendait qu'à l'autre bord, sans jamais sentir qu'elle dépasse de la carte. En descendant, on sent maintenant l'ouverture se creuser, puis la plaque monter, puis retomber sur le panneau."
+       "titre": "Un point après une suggestion se colle au mot",
+       "texte": "Toucher « Gromper » puis « . » donnait « Gromper . » ; l'espace ajoutée par la suggestion disparaît maintenant devant . , ? ! : ; ) … et l'apostrophe, pour écrire « d'Land » sans retour arrière."
       },
       {
-       "titre": "La plaque du mot est plus épaisse",
-       "texte": "Elle devient la plus haute des pièces posées sur la carte, juste sous les pierres : c'est là qu'est le mot, c'est ce que le doigt doit trouver le plus nettement."
+       "titre": "Le clavier s'ouvre sur les chiffres dans un champ de chiffres",
+       "texte": "Code PIN, code reçu par SMS, montant, numéro de téléphone, date."
       },
       {
-       "titre": "Sur les téléphones au vibreur simple, une grande marche vibre plus longtemps",
-       "texte": "Leur moteur ne sait pas varier sa force, mais une impulsion plus longue s'y sent plus forte : de 40 millisecondes pour une petite bosse à 80 pour la plus grande marche. C'est le principe des retours tactiles d'accessibilité, qui distinguent leurs signaux par la durée et le rythme."
+       "titre": "La touche Entrée montre ce qu'elle va faire",
+       "texte": "Une loupe pour chercher, une flèche d'envoi, une flèche pour passer au champ suivant, une coche pour terminer."
+      },
+      {
+       "titre": "Dans une adresse e-mail ou web",
+       "texte": "Plus de majuscule d'office ni d'espace après une suggestion : l'adresse reste juste."
+      },
+      {
+       "titre": "De nouveaux symboles sur la page 123",
+       "texte": "« % » a sa touche, à la place de « &amp; », qui passe dessous. En restant appuyé : « _ » sous le tiret, « $ £ ¥ » sous l'euro, « ° » sous le 0 et l'étoile, crochets et accolades sous les parenthèses, « « » » sous les guillemets, « \\ | » sous la barre oblique, « ± × ÷ » sous le plus, « ≠ ~ ^ » sous le égal."
+      },
+      {
+       "titre": "« Mäi Lëtzebuergesch » encourage au lieu de décourager",
+       "texte": "Le niveau vient en premier, avec une barre jusqu'au palier suivant et « Encore 567 mots avant Klengen », à la place d'un « 0.0% » en très gros. Le mot du jour et les listes de mots gardent la majuscule des noms : « Brauereien », « Apdikte »."
       }
      ],
      "texte": "",
      "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "26.0.3",
-   "date": "2026-09-19",
-   "intro": "",
-   "sections": [
+    },
     {
      "emoji": "🐛",
      "titre": "Corrections",
      "points": [
       {
-       "titre": "La carte vibre enfin sur les Samsung au vibreur simple",
-       "texte": "La 26.0.1 n'y changeait rien : interrogé, le téléphone répondait « je ne sais pas » au lieu de « non », et la carte restait sur l'ancienne vibration, qu'il ignore. Il reçoit maintenant l'impulsion, et elle dure 40 millisecondes au lieu de 20 : réglée au doigt sur un Galaxy A21s, où 20 et 30 ne se sentaient pas. Même correction pour la glisse sur la barre d'espace et le feuilletage d'un casier."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "26.0.2",
-   "date": "2026-09-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": "Seuls les réglages partent dans la sauvegarde Google",
-       "texte": "La politique de confidentialité promet que votre progression, votre carnet et ce qui vient de votre frappe ne quittent jamais le téléphone. Or la sauvegarde Android emportait jusqu'ici tous les fichiers de l'application : le carnet, le dernier niveau fêté, la date de votre premier mot et vos emojis récents. Désormais, seuls la vibration, le son, le thème et la majuscule automatique sont sauvegardés, et transférés vers un nouveau téléphone."
+       "titre": "Dans un champ de mot de passe, la barre de suggestions reste vide",
+       "texte": "Elle affichait le début du mot de passe en grosses lettres."
       },
       {
-       "titre": "Ce que cela change pour vous ",
-       "texte": "Sur un nouveau téléphone, ou après une réinstallation, le carnet repart de zéro, comme le niveau le faisait déjà. Rien ne change sur le téléphone que vous utilisez."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "26.0.1",
-   "date": "2026-09-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La carte vibre aussi sur les téléphones au vibreur simple",
-       "texte": "Sur certains Samsung (constaté sur un Galaxy A21s), le petit « tic » demandé au téléphone n'existe pas, et le système l'ignorait sans rien dire : passer le doigt sur une carte ne donnait aucune sensation, alors que les touches du clavier vibraient normalement. Ces téléphones reçoivent maintenant une impulsion brève, qu'ils savent rendre. On y sent chaque arête de la carte, mais pas encore leur hauteur : leur moteur ne sait pas varier sa force."
+       "titre": "Le Wierderbuch ignore la ponctuation autour du mot cherché",
+       "texte": "« Gromper. » trouve « Gromper »."
       },
       {
-       "titre": "La glisse sur la barre d'espace et le feuilletage d'un casier vibrent à nouveau",
-       "texte": "Sur ces mêmes téléphones, pour la même raison."
+       "titre": "Un signe choisi en restant appuyé",
+       "texte": "(« ? » sous le point, « ’ » sous l'apostrophe) n'apparaît plus dans les emojis récents."
+      },
+      {
+       "titre": "La touche « 123 » répond du premier coup",
+       "texte": "En arrivant dans un champ quitté en mode chiffres."
       }
      ],
      "texte": "",
@@ -139,45 +160,77 @@
    ]
   },
   {
-   "version": "26.0.0",
-   "date": "2026-09-19",
-   "intro": "La carte se lit au doigt, creux et reliefs compris.",
+   "version": "29.2.0",
+   "date": "2026-09-26",
+   "intro": "Le clavier d'essai du site ressemble au clavier de l'application. L'application elle-même ne change pas.",
    "sections": [
     {
      "emoji": "✨",
      "titre": "Améliorations",
      "points": [
       {
-       "titre": "Le relief est signé",
-       "texte": "Les yeux fermés, en passant le doigt sur une carte, on sent maintenant le creux de l'ouverture, les marches des écus, les pierres qui dépassent. Chaque arête porte le dénivelé franchi : monter sur la plaque et en redescendre ne sont plus deux tics identiques. Le vibreur compose ses vibrations là où l'appareil en est capable, avec une force qui suit l'amplitude de la marche."
+       "titre": "Sur le site, la barre de suggestions est un plateau creusé dans le clavier",
+       "texte": "Comme sur le téléphone : fond plus sombre que les touches, deux rangées réservées, puces aux couleurs du drapeau. Le clavier prend toute la largeur du téléphone dessiné, et ⇧ et ⌫ retrouvent leur largeur de 1,5."
       },
       {
-       "titre": "L'ombre de contact",
-       "texte": "Un disque sombre sous la pulpe paraît quand on touche une carte, et s'efface avec l'autorité du doigt. C'est la physique : un vrai doigt bouche la lumière."
+       "titre": "Les gestes du téléphone y sont aussi",
+       "texte": "Glisser le doigt sur la barre d'espace déplace le curseur, toucher le texte le pose, rester appuyé sur ⌫ efface mot par mot, et ⌫ défait la majuscule imposée d'office ou retire un emoji en entier."
       },
       {
-       "titre": "Les pierres tournent",
-       "texte": "Rivets, griffes et gemmes font pivoter leur lumière vers le doigt sans qu'on le demande, en lisant le même modèle de hauteurs que le vibreur. L'illusion n'existe que si le doigt et l'œil sont d'accord : ils lisent la même géométrie."
+       "titre": "Le panneau emoji du site a ses récents, ses tons de peau et son balayage",
+       "texte": "Entre catégories. Les récents ne sont gardés qu'en mémoire : rien n'est écrit dans le navigateur."
       },
       {
-       "titre": "La permission VIBRATE est ajoutée",
-       "texte": "Elle est normale (sans invite) mais visible sur la fiche Play. Le clavier lui-même n'en a pas besoin : seule la carte du carnet s'en sert, pour que le relief se sente vraiment."
+       "titre": "Les suggestions du site suivent le moteur de l'application",
+       "texte": "Mêmes candidats retenus, grossièretés écartées, pas de correction sur un mot français reconnu, et les 84 855 formes du dictionnaire officiel chargées en arrière-plan, soit 123 297 mots reconnus comme sur l'accueil."
       }
      ],
      "texte": "",
      "tableau": null
     }
-   ],
-   "images": [
+   ]
+  },
+  {
+   "version": "29.1.0",
+   "date": "2026-09-25",
+   "intro": "Le paysage et la rotation, soignés.",
+   "sections": [
     {
-     "image": "Screenshots/lux_relief_doigt.png",
-     "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
-     "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Tourner le téléphone ne ferme plus le jeu en cours",
+       "texte": "On revenait au choix des jeux ; on reste désormais dans le même jeu. La partie repart de zéro, parce que chaque grille est calculée pour la taille de l'écran."
+      },
+      {
+       "titre": "En paysage, plus de bande grise du côté de la caméra",
+       "texte": "Le bandeau bleu et la barre d'onglets vont jusqu'au bord de l'écran ; seul leur contenu s'écarte de l'encoche. Même chose dans les réglages du clavier, le Guide et la page À propos."
+      }
+     ],
+     "texte": "",
+     "tableau": null
     }
-   ],
-   "image": "Screenshots/lux_relief_doigt.png",
-   "image_alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
-   "image_legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+   ]
+  },
+  {
+   "version": "29.0.0",
+   "date": "2026-09-25",
+   "intro": "Les messages des jeux ne recouvrent plus l'heure.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Sous Android 15 et plus, les messages de Wuertsich et Wuertriet",
+       "texte": "(« Dëst Wuert ass net am Wierderbuch », « Mot trouvé ») s'affichaient par-dessus la barre d'état et masquaient l'heure. Ils apparaissent maintenant juste en dessous, et contournent l'encoche de la caméra en paysage."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
   }
  ]
 }
