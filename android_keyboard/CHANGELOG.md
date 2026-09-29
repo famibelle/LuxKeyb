@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.4.0] - 2026-09-29
+
+L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.
+
+### ✨ Améliorations
+
+- **Une fois le clavier installé, l'application s'ouvre sur votre journée** au lieu de l'écran d'installation : les cartes à revoir, le mot du jour, votre dernier jeu et votre progression, dans cet ordre.
+- **« Réviser maintenant » lance la révision tout de suite.** La première carte apparaît sans passer par la boîte ; en fermant la séance, on retrouve la Boîte de Leitner. Quand rien n'est à revoir, la carte le dit, et propose de jouer pour gagner d'autres cartes.
+- **Le mot du jour s'ouvre dans le Wierderbuch** d'un toucher, la recherche déjà faite.
+- **« Rejouer à Wuertmix »** relance le dernier jeu ouvert, quel qu'il soit.
+- **La progression tient en une carte** : votre niveau, la barre jusqu'au palier suivant et le nombre de mots qui restent.
+- **La configuration se replie sous une seule ligne**, « Clavier installé » : un toucher la déplie, avec les réglages des majuscules, le correcteur et la façon de changer de clavier.
+- **L'onglet s'appelle « Haut »**, aujourd'hui en luxembourgeois, comme Spiller et Wierderbuch.
+
 ## [29.3.1] - 2026-09-29
 
 Le clavier suit mieux encore le champ où l'on tape.
