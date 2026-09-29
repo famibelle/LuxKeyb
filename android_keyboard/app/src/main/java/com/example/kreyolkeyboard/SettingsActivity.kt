@@ -107,6 +107,17 @@ class SettingsActivity : AppCompatActivity() {
      */
     internal var jeuOuvert = -1
 
+    /**
+     * Demandes faites depuis l'accueil « Aujourd'hui » à un autre onglet : le
+     * jeu à ouvrir dans Spiller (par son nom), le mot à chercher dans le
+     * Wierderbuch. Consommées par l'onglet visé à son onResume(), qui est
+     * appelé quand il devient l'onglet courant, qu'il existe déjà ou non.
+     */
+    internal var jeuDemande: String? = null
+    /** Avec [jeuDemande] = la Boîte de Leitner : lancer la séance dès l'ouverture. */
+    internal var revisionDemandee = false
+    internal var rechercheDemandee: String? = null
+
     private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
@@ -140,6 +151,14 @@ class SettingsActivity : AppCompatActivity() {
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
         const val TAB_STATS = 3
+        private const val TAB_SPILLER = 1
+        private const val TAB_WIERDERBUCH = 2
+
+        private const val ACCUEIL_PREFS = "lux_accueil_prefs"
+        private const val PREF_DERNIER_JEU_NOM = "dernier_jeu_nom"
+        private const val PREF_DERNIER_JEU_EMOJI = "dernier_jeu_emoji"
+        /** Nom de la Boîte de Leitner dans GamesFragment.jeux : le bouton « Réviser » l'ouvre. */
+        private const val JEU_LEITNER = "Boîte de Leitner"
 
         /** Code de la demande de permission POST_NOTIFICATIONS (pastille de niveau). */
         private const val REQUEST_NOTIFICATIONS = 4201
@@ -183,7 +202,7 @@ class SettingsActivity : AppCompatActivity() {
             "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
             "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
             "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
-            "Activez le correcteur luxembourgeois (onglet Démarrage, étape 4) pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.",
+            "Activez le correcteur luxembourgeois (onglet Haut, « Clavier installé ») pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.",
             "Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.",
             "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
             "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
@@ -202,12 +221,12 @@ class SettingsActivity : AppCompatActivity() {
             "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
             "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
             "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
-            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l'onglet Démarrage.",
+            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l'onglet Haut.",
             "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
             "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
             "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
             "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
-            "Le guide, en bas de l'onglet Démarrage, reprend toutes les étapes en images, suivies des questions fréquentes.",
+            "Le guide, en bas de l'onglet Haut, reprend toutes les étapes en images, suivies des questions fréquentes.",
             "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur.",
             "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça.",
             "Glissez le doigt le long de la barre d'espace pour promener le curseur lettre par lettre : plus besoin de viser entre deux caractères pour corriger un mot.",
@@ -745,7 +764,10 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             // Tab Démarrage
-            val startTab = createTab(0, "🚀", "Démarrage")
+            // v29.4.0 : « Haut » (aujourd'hui) et non plus « Démarrage ». Une fois le
+            // clavier installé, l'onglet montre le jour (cartes à revoir, mot du
+            // jour, dernier jeu) ; le nom luxembourgeois suit Spiller et Wierderbuch.
+            val startTab = createTab(0, "🏠", "Haut")
             tabContainer.addView(startTab)
             Log.d("SettingsActivity", "Onglet Démarrage créé et ajouté")
 
@@ -1010,13 +1032,33 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout.addView(createSpacing(16))
         }
 
+        // Accueil « Aujourd'hui » (v29.4.0). Une fois le clavier installé et
+        // l'installation déjà menée à terme une fois, l'onglet ne s'ouvre plus
+        // sur la configuration, faite pour de bon, mais sur ce qui fait revenir :
+        // les cartes à revoir, le mot du jour, le dernier jeu, la progression.
+        // Tout ce qui concerne la configuration passe dans un volet replié, sous
+        // une seule ligne. Tant que le clavier n'est pas actif, rien ne change.
+        val modeAujourdhui = hasCompletedBefore && isEnabled && isSelected
+        val cible: LinearLayout = if (!modeAujourdhui) mainLayout else LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            visibility = View.GONE
+            setPadding(0, enDp(12), 0, 0)
+        }
+        if (modeAujourdhui) {
+            mainLayout.addView(creerAujourdhui())
+            mainLayout.addView(createSpacing(8))
+            mainLayout.addView(ligneConfiguration(cible))
+            mainLayout.addView(cible)
+            mainLayout.addView(createSpacing(16))
+        }
+
         // Bandeau de réussite : le clavier est utilisable dès qu'il est
         // activé et sélectionné, avant même que l'utilisateur ait écrit quoi
         // que ce soit. Son texte le dit alors sans prétendre que la
         // configuration est terminée, sinon il contredirait l'anneau 2/3.
         if (isEnabled && isSelected) {
-            mainLayout.addView(createReadyBanner(aEcritUnMot()))
-            mainLayout.addView(createSpacing(12))
+            cible.addView(createReadyBanner(aEcritUnMot()))
+            cible.addView(createSpacing(12))
         }
 
         // Carte de configuration, isolée dans son propre conteneur : déplier
@@ -1031,8 +1073,8 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
         remplirCarteConfig(conteneurConfig, isEnabled, isSelected, hasCompletedBefore, showIncompleteNudge)
-        mainLayout.addView(conteneurConfig)
-        mainLayout.addView(createSpacing(24))
+        cible.addView(conteneurConfig)
+        cible.addView(createSpacing(24))
 
         // Essai du clavier : un vrai clavier interactif avec suggestions
         // bilingues, à essayer sans rien installer. Il ouvrait l'onglet, pour
@@ -1044,8 +1086,8 @@ class SettingsActivity : AppCompatActivity() {
         // l'on rencontre en descendant. Inutile pour un utilisateur qui
         // revient après une désélection : il connaît déjà.
         if ((!isEnabled || !isSelected) && !hasCompletedBefore) {
-            mainLayout.addView(createDemoKeyboardCard())
-            mainLayout.addView(createSpacing(24))
+            cible.addView(createDemoKeyboardCard())
+            cible.addView(createSpacing(24))
         }
 
         // Correcteur orthographique : fonctionnalité indépendante des 3 étapes
@@ -1059,12 +1101,12 @@ class SettingsActivity : AppCompatActivity() {
             setTypeface(null, Typeface.BOLD)
             setPadding(0, 0, 0, 12)
         }
-        mainLayout.addView(extrasTitle)
+        cible.addView(extrasTitle)
 
-        mainLayout.addView(createGroussschreiwungCard())
-        mainLayout.addView(createSpacing(16))
-        mainLayout.addView(createSpellCheckerCard())
-        mainLayout.addView(createSpacing(24))
+        cible.addView(createGroussschreiwungCard())
+        cible.addView(createSpacing(16))
+        cible.addView(createSpellCheckerCard())
+        cible.addView(createSpacing(24))
 
         // Bascule d'un clavier à l'autre : l'aller et le retour n'utilisent
         // pas le même geste (chemins vérifiés à l'émulateur), et c'est le
@@ -1157,8 +1199,8 @@ class SettingsActivity : AppCompatActivity() {
             switchCard.addView(switchNote)
             switchCard.addView(switchButton)
 
-            mainLayout.addView(switchCard)
-            mainLayout.addView(createSpacing(16))
+            cible.addView(switchCard)
+            cible.addView(createSpacing(16))
         }
 
         // Section "Astuce" si tout est configuré
@@ -1259,7 +1301,7 @@ class SettingsActivity : AppCompatActivity() {
                 allerAOnglet(TAB_STATS)
             }
             
-            mainLayout.addView(statsLinkCard)
+            if (!modeAujourdhui) mainLayout.addView(statsLinkCard)
         }
 
         // Guide et À Propos ont quitté la barre d'onglets : ce sont des pages
@@ -1282,6 +1324,269 @@ class SettingsActivity : AppCompatActivity() {
         mainLayout.addView(createSpacing(16))
 
         return mainLayout
+    }
+
+    // ===== Accueil « Aujourd'hui » =====
+
+    private fun accueilPrefs() = getSharedPreferences(ACCUEIL_PREFS, Context.MODE_PRIVATE)
+
+    /**
+     * Retient le dernier jeu ouvert, pour la carte « Reprendre » de l'accueil.
+     * Un fichier de préférences à part, hors de la liste de sauvegarde Android :
+     * c'est une trace d'usage, elle ne quitte pas le téléphone.
+     */
+    internal fun retenirDernierJeu(emoji: String, nom: String) {
+        accueilPrefs().edit()
+            .putString(PREF_DERNIER_JEU_NOM, nom)
+            .putString(PREF_DERNIER_JEU_EMOJI, emoji)
+            .apply()
+    }
+
+    /** Ouvre l'onglet Spiller, et le jeu [nom] dedans s'il est donné. */
+    private fun ouvrirSpiller(nom: String? = null) {
+        jeuDemande = nom
+        revisionDemandee = false
+        allerAOnglet(TAB_SPILLER)
+    }
+
+    /** Ouvre la Boîte de Leitner avec sa séance de révision déjà lancée. */
+    private fun lancerRevisionDepuisAccueil() {
+        jeuDemande = JEU_LEITNER
+        revisionDemandee = true
+        allerAOnglet(TAB_SPILLER)
+    }
+
+    private fun carteAccueil(fond: Int): LinearLayout = LinearLayout(this).apply {
+        orientation = LinearLayout.VERTICAL
+        setPadding(enDp(18), enDp(16), enDp(18), enDp(16))
+        background = GradientDrawable().apply {
+            cornerRadius = enDp(16).toFloat()
+            setColor(fond)
+        }
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { bottomMargin = enDp(12) }
+        isClickable = true
+        isFocusable = true
+    }
+
+    private fun texteAccueil(texte: CharSequence, taille: Float, couleur: Int, gras: Boolean = false) =
+        TextView(this).apply {
+            text = texte
+            textSize = taille
+            setTextColor(couleur)
+            if (gras) setTypeface(null, Typeface.BOLD)
+            setLineSpacing(0f, 1.15f)
+        }
+
+    private fun boutonAccueil(libelle: String, fond: Int, encre: Int, action: () -> Unit) =
+        Button(this).apply {
+            text = libelle
+            textSize = 15f
+            isAllCaps = false
+            setTextColor(encre)
+            background = GradientDrawable().apply {
+                cornerRadius = enDp(22).toFloat()
+                setColor(fond)
+            }
+            setPadding(enDp(20), enDp(8), enDp(20), enDp(8))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = enDp(12) }
+            setOnClickListener { action() }
+        }
+
+    /**
+     * L'accueil d'un utilisateur installé : quatre cartes, de la plus urgente
+     * à la plus lointaine. Les cartes à revoir d'abord, parce que la
+     * répétition espacée ne marche que si l'on revient le jour dit ; le mot du
+     * jour ensuite ; le dernier jeu ; la progression, qui se regarde plutôt
+     * qu'elle ne s'agit.
+     *
+     * Le mot du jour et la progression lisent le fichier d'usage, soit
+     * plusieurs dizaines de milliers d'entrées : ils se remplissent sur un fil
+     * à part pour ne pas figer l'onglet à chaque retour, qui le reconstruit.
+     */
+    private fun creerAujourdhui(): LinearLayout {
+        val colonne = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        val encre = Color.parseColor("#1C1C1C")
+        val gris = Color.parseColor("#6B6B6B")
+
+        colonne.addView(texteAccueil("Moien ! 👋", 24f, encre, gras = true))
+        colonne.addView(texteAccueil(
+            java.text.SimpleDateFormat("EEEE d MMMM", java.util.Locale.FRENCH)
+                .format(java.util.Date()).replaceFirstChar { it.uppercase() },
+            14f, gris
+        ).apply { setPadding(0, 0, 0, enDp(14)) })
+
+        // 1. Les cartes à revoir. Le nombre est celui de la file du jour,
+        // plafonnée comme dans Spiller : jamais l'arriéré (voir majBanniereCarnet).
+        val total = Carnet.taille(this)
+        val dues = Carnet.aRevoir(this)
+        val violet = Carnet.COULEUR
+        colonne.addView(carteAccueil(violet).apply {
+            val blanc = Color.WHITE
+            val pale = Color.parseColor("#E8E0FF")
+            when {
+                dues > 0 -> {
+                    addView(texteAccueil(
+                        if (dues == 1) "🔁  1 carte à revoir" else "🔁  $dues cartes à revoir",
+                        20f, blanc, gras = true))
+                    addView(texteAccueil("Quelques minutes suffisent.", 14f, pale))
+                    addView(boutonAccueil("Réviser maintenant", blanc, violet) {
+                        lancerRevisionDepuisAccueil()
+                    })
+                    setOnClickListener { lancerRevisionDepuisAccueil() }
+                }
+                total > 0 -> {
+                    addView(texteAccueil("✅  Rien à revoir aujourd'hui", 20f, blanc, gras = true))
+                    addView(texteAccueil(
+                        if (total == 1) "1 carte dans votre carnet." else "$total cartes dans votre carnet.",
+                        14f, pale))
+                    addView(boutonAccueil("Gagner d'autres cartes", blanc, violet) { ouvrirSpiller() })
+                    setOnClickListener { ouvrirSpiller() }
+                }
+                else -> {
+                    addView(texteAccueil("📚  Votre carnet est vide", 20f, blanc, gras = true))
+                    addView(texteAccueil(
+                        "Chaque mot trouvé dans un jeu devient une carte à revoir.", 14f, pale))
+                    addView(boutonAccueil("Jouer", blanc, violet) { ouvrirSpiller() })
+                    setOnClickListener { ouvrirSpiller() }
+                }
+            }
+        })
+
+        // 2. Le mot du jour, rempli en arrière-plan
+        val tvMot = texteAccueil("…", 30f, encre, gras = true)
+        val tvGlose = texteAccueil("", 16f, gris).apply { visibility = View.GONE }
+        val carteMot = carteAccueil(Color.WHITE).apply {
+            addView(texteAccueil("MOT DU JOUR", 12f, Color.parseColor("#FF8C00"), gras = true).apply {
+                letterSpacing = 0.1f
+                setPadding(0, 0, 0, enDp(4))
+            })
+            addView(tvMot)
+            addView(tvGlose)
+            addView(texteAccueil("Voir dans le Wierderbuch ›", 14f, Color.parseColor("#1976D2")).apply {
+                setPadding(0, enDp(8), 0, 0)
+            })
+        }
+        colonne.addView(carteMot)
+
+        // 3. Le dernier jeu. « Rejouer » et non « Reprendre » : le jeu repart
+        // d'une partie neuve, chaque grille étant calculée pour l'écran.
+        val nomJeu = accueilPrefs().getString(PREF_DERNIER_JEU_NOM, null)
+        val emojiJeu = accueilPrefs().getString(PREF_DERNIER_JEU_EMOJI, null)
+        colonne.addView(carteAccueil(Color.WHITE).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(texteAccueil(emojiJeu ?: "🎮", 30f, encre).apply {
+                setPadding(0, 0, enDp(14), 0)
+            })
+            addView(LinearLayout(this@SettingsActivity).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                if (nomJeu != null) {
+                    addView(texteAccueil("Rejouer à $nomJeu", 18f, encre, gras = true))
+                    addView(texteAccueil("Votre dernier jeu", 14f, gris))
+                } else {
+                    addView(texteAccueil("Choisir un jeu", 18f, encre, gras = true))
+                    addView(texteAccueil("Sept jeux pour apprendre les mots", 14f, gris))
+                }
+            })
+            addView(texteAccueil("›", 26f, gris))
+            setOnClickListener { ouvrirSpiller(nomJeu) }
+        })
+
+        // 4. La progression, remplie en arrière-plan
+        val tvNiveau = texteAccueil("…", 18f, encre, gras = true)
+        val tvReste = texteAccueil("", 14f, gris)
+        val zoneBarre = FrameLayout(this)
+        colonne.addView(carteAccueil(Color.WHITE).apply {
+            addView(tvNiveau)
+            addView(zoneBarre)
+            addView(tvReste)
+            setOnClickListener { allerAOnglet(TAB_STATS) }
+        })
+
+        Thread {
+            val (mot, _) = getWordOfTheDay()
+            val forme = formeAffichee(mot)
+            val glose = TranslationDictionary.traduire(this, mot)
+            val decouverts = loadVocabularyStats().wordsDiscovered
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                tvMot.text = forme
+                if (glose != null) {
+                    tvGlose.text = "en français : $glose"
+                    tvGlose.visibility = View.VISIBLE
+                }
+                carteMot.setOnClickListener {
+                    rechercheDemandee = forme
+                    allerAOnglet(TAB_WIERDERBUCH)
+                }
+
+                val niveau = LuxLevels.LEVELS[getCurrentLevelIndex(decouverts)]
+                tvNiveau.text = "${niveau.emoji}  ${niveau.name}"
+                creerBarreNiveau(decouverts)?.let { zoneBarre.addView(it) }
+                val (suivant, reste) = getNextLevelInfo(decouverts)
+                tvReste.text = if (reste <= 0) "Vous avez atteint le plus haut niveau. 👑"
+                    else "Encore ${nombre(reste)} mot${if (reste > 1) "s" else ""} avant $suivant ›"
+            }
+        }.start()
+
+        return colonne
+    }
+
+    /**
+     * Barre de progression vers le palier suivant, ou `null` au plus haut
+     * niveau. Partagée par l'accueil et « Mäi Lëtzebuergesch », qui doivent
+     * montrer la même chose.
+     */
+    private fun creerBarreNiveau(motsDecouverts: Int): View? {
+        val index = getCurrentLevelIndex(motsDecouverts)
+        if (index == LuxLevels.MAX_INDEX) return null
+        val seuils = calculateGaussianThresholds()
+        val depuis = seuils[index]
+        val etape = (seuils[index + 1] - depuis).coerceAtLeast(1)
+        val fait = (motsDecouverts - depuis).coerceIn(0, etape)
+        return android.widget.ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
+            max = etape
+            progress = fait
+            progressTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#0E6E76"))
+            progressBackgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#DDE6E7"))
+            layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, enDp(10)).apply {
+                topMargin = enDp(8); bottomMargin = enDp(8)
+            }
+            contentDescription = "$fait mots sur ${nombre(etape)} jusqu'au niveau suivant"
+        }
+    }
+
+    /**
+     * La ligne qui remplace, en mode « Aujourd'hui », toute la configuration :
+     * elle la déplie et la replie sur place.
+     */
+    private fun ligneConfiguration(volet: LinearLayout): LinearLayout {
+        val fleche = texteAccueil("›", 22f, Color.parseColor("#6B6B6B"))
+        return carteAccueil(Color.WHITE).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(texteAccueil("✅", 20f, Color.BLACK).apply { setPadding(0, 0, enDp(12), 0) })
+            addView(LinearLayout(this@SettingsActivity).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                addView(texteAccueil("Clavier installé", 16f, Color.parseColor("#1C1C1C"), gras = true))
+                addView(texteAccueil("Configuration, réglages, changer de clavier", 13f,
+                    Color.parseColor("#6B6B6B")))
+            })
+            addView(fleche)
+            setOnClickListener {
+                val ouvrir = volet.visibility != View.VISIBLE
+                volet.visibility = if (ouvrir) View.VISIBLE else View.GONE
+                fleche.rotation = if (ouvrir) 90f else 0f
+            }
+        }
     }
 
     /**
@@ -2883,12 +3188,12 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout, "#E3F2FD", "📲 Installation et activation",
             "Le clavier doit être activé puis sélectionné avant de pouvoir l'utiliser, comme " +
                     "n'importe quel clavier tiers sur Android. Ces étapes interactives sont aussi " +
-                    "disponibles dans l'onglet « Démarrage » ; voici à quoi elles ressemblent."
+                    "disponibles dans l'onglet « Haut » ; voici à quoi elles ressemblent."
         )
 
         addGuideSection(
             mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
-            "Depuis l'onglet Démarrage, le bouton « Ouvrir les paramètres » mène directement à " +
+            "Depuis l'onglet Haut, le bouton « Ouvrir les paramètres » mène directement à " +
                     "l'écran système « Clavier à l'écran », où « Lëtzebuergesch Clavier » apparaît " +
                     "à côté des autres claviers installés, interrupteur éteint."
         )
@@ -2914,7 +3219,7 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Configuration terminée",
             "Les deux étapes cochées, le clavier luxembourgeois s'affiche partout où vous tapez, y compris " +
-                    "dans le champ d'essai de l'onglet Démarrage. Un appui long sur la barre d'espace " +
+                    "dans le champ d'essai de l'onglet Haut. Un appui long sur la barre d'espace " +
                     "permet de rebasculer vers un autre clavier à tout moment."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, "Les trois étapes cochées, clavier actif dans le champ d'essai")
@@ -2944,7 +3249,7 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "✅ Correction orthographique partout",
-            "Activez le correcteur luxembourgeois dans les paramètres système (onglet Démarrage, étape 4) " +
+            "Activez le correcteur luxembourgeois dans les paramètres système (onglet Haut, « Clavier installé ») " +
                     "pour que vos mots luxembourgeois et français ne soient plus soulignés en rouge dans Messages, " +
                     "Notes et les autres applications."
         )
@@ -3058,8 +3363,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         val faqText = TextView(this).apply {
             text = "Le clavier luxembourgeois n'apparaît pas quand je tape ?\n" +
-                    "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Démarrage, " +
-                    "étape 2, ou touchez l'icône de clavier de la barre de navigation, en bas de " +
+                    "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Haut, " +
+                    "« Clavier installé », étape 2, ou touchez l'icône de clavier de la barre de navigation, en bas de " +
                     "l'écran, pendant que vous écrivez.\n\n" +
                     "Comment revenir à un autre clavier ponctuellement ?\n" +
                     "→ Appui long sur la barre d'espace du clavier luxembourgeois, puis choisissez un autre " +
@@ -3551,29 +3856,13 @@ class SettingsActivity : AppCompatActivity() {
         levelContainer.addView(levelBadge)
 
         val totalWords = getTotalDictionaryWords()
-        val levelIndex = getCurrentLevelIndex(stats.wordsDiscovered)
-        val auSommet = levelIndex == LuxLevels.MAX_INDEX
-        val seuils = calculateGaussianThresholds()
+        val auSommet = getCurrentLevelIndex(stats.wordsDiscovered) == LuxLevels.MAX_INDEX
 
-        if (!auSommet) {
-            val depuis = seuils[levelIndex]
-            val vers = seuils[levelIndex + 1]
-            val fait = (stats.wordsDiscovered - depuis).coerceAtLeast(0)
-            val etape = (vers - depuis).coerceAtLeast(1)
-
-            val barre = android.widget.ProgressBar(
-                this, null, android.R.attr.progressBarStyleHorizontal
-            ).apply {
-                max = etape
-                progress = fait.coerceAtMost(etape)
-                progressTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#0E6E76"))
-                progressBackgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#DDE6E7"))
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, enDp(10)
-                ).apply { setMargins(enDp(24), enDp(8), enDp(24), enDp(8)) }
-                contentDescription = "$fait mots sur ${nombre(etape)} vers $nextLevelName"
-            }
-            levelContainer.addView(barre)
+        creerBarreNiveau(stats.wordsDiscovered)?.let { barre ->
+            levelContainer.addView(FrameLayout(this).apply {
+                setPadding(enDp(24), 0, enDp(24), 0)
+                addView(barre)
+            })
         }
 
         val progressMessage = TextView(this).apply {
@@ -9518,6 +9807,18 @@ class SettingsActivity : AppCompatActivity() {
             return racine
         }
 
+        override fun onResume() {
+            super.onResume()
+            // Un mot demandé depuis l'accueil (le mot du jour) : le champ le
+            // reçoit, la recherche part comme si on l'avait tapé.
+            val activite = activity as? SettingsActivity ?: return
+            activite.rechercheDemandee?.let { mot ->
+                activite.rechercheDemandee = null
+                champRecherche.setText(mot)
+                champRecherche.setSelection(mot.length)
+            }
+        }
+
         /**
          * Affiche les résultats d'une requête, ou l'invite quand elle est vide.
          *
@@ -10269,6 +10570,17 @@ class SettingsActivity : AppCompatActivity() {
         override fun onResume() {
             super.onResume()
             majBanniereCarnet()
+            // Un jeu demandé depuis l'accueil (« Reprendre », « Réviser »)
+            val activite = activity as? SettingsActivity ?: return
+            activite.jeuDemande?.let { nom ->
+                val revision = activite.revisionDemandee
+                activite.jeuDemande = null
+                activite.revisionDemandee = false
+                jeux.firstOrNull { it.nom == nom }?.let { jeu ->
+                    if (revision && nom == JEU_LEITNER) ouvrirLeJeu(jeu, BoiteFragment.pourRevision())
+                    else ouvrirLeJeu(jeu)
+                }
+            }
         }
 
         private fun carteJeu(activity: SettingsActivity, jeu: Jeu, marginDroite: Boolean) =
@@ -10313,14 +10625,16 @@ class SettingsActivity : AppCompatActivity() {
                 setOnClickListener { ouvrirLeJeu(jeu) }
             }
 
-        private fun ouvrirLeJeu(jeu: Jeu) {
+        private fun ouvrirLeJeu(jeu: Jeu, fragment: Fragment = jeu.fabrique()) {
             val conteneur = conteneurJeu ?: return
             (activity as? SettingsActivity)?.jeuOuvert = jeux.indexOf(jeu)
+            // La Boîte de Leitner a sa propre carte sur l'accueil
+            if (jeu.nom != JEU_LEITNER) (activity as? SettingsActivity)?.retenirDernierJeu(jeu.emoji, jeu.nom)
             childFragmentManager.beginTransaction().apply {
                 // Un jeu restauré par le système après une rotation visait
                 // l'ancien conteneur : on repart d'un seul jeu, neuf.
                 childFragmentManager.fragments.forEach { remove(it) }
-                add(conteneur.id, jeu.fabrique())
+                add(conteneur.id, fragment)
             }.commit()
             grilleChoix?.visibility = View.GONE
             conteneur.visibility = View.VISIBLE
