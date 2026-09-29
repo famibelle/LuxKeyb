@@ -354,6 +354,19 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .mini-shots.large{width:84mm;height:56mm;margin:auto;}
 .mini-shots.large img.s1,.mini-shots.large img.s2{top:6mm;}
 .mini-shots.large img{width:44mm;}
+/* Refonte 2026-09-29 : le volet 5 ne parle plus que du clavier, le volet 6
+   devient « Apprendre en tapant » (jeux, carnet, dictionnaire). L'ordre de
+   lecture dit ce qui est premier : on écrit, et les mots qu'on tape font
+   apprendre. */
+.shot.clavier{flex:1 1 auto;margin:2mm 0;}
+.shot.clavier img{max-height:72mm;}
+.bloc{font-size:12px;line-height:1.4;color:#1C2624;background:rgba(255,255,255,.7);border-radius:8px;padding:2mm 3mm;margin-bottom:2mm;}
+.bloc b{display:block;color:#003876;font-size:13px;}
+.trio{display:flex;gap:2mm;justify-content:center;margin:1mm 0 3mm;}
+.trio figure{margin:0;width:27mm;text-align:center;}
+.trio img{width:27mm;height:30mm;object-fit:cover;object-position:top;border-radius:6px;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.trio figure:last-child img{object-position:left top;}
+.trio figcaption{font-size:9px;font-weight:700;color:#003876;margin-top:1mm;text-transform:uppercase;letter-spacing:.05em;}
 </style>
 </head>
 <body>
@@ -512,21 +525,23 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span><b>é, ä, ë</b> ont leur touche, et les autres diacritiques viennent par appui long</span></li>
         <li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;lëtzebuergesch&nbsp;»</span></li>
         <li><span>Un <b>correcteur système</b> : vos mots cessent d'être soulignés en rouge dans vos autres applications</span></li>
-        <li><span><b>Sept jeux</b>&nbsp;: mots mêlés, anagrammes, mot en six essais, phrase à trous, nombres en lettres, mots croisés et mots casés</span></li>
-        <li><span><b>Un carnet de cartes</b>&nbsp;: chaque mot gagné en devient une, avec son sens et une phrase du dictionnaire officiel, et revient vous voir jusqu'à ce qu'il soit su</span></li>
       </ul>
-      <div class="mini-shots cartes">
-        <img class="s1" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens, sa phrase d'exemple et sa rareté">
-        <img class="s2" src="Screenshots/lux_carte_tres_rare.png" alt="Une carte très rare du carnet, avec sa phrase d'exemple du dictionnaire officiel">
-      </div>
+      <div class="shot clavier"><img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »"></div>
       <div class="callout">Il devine aussi le mot suivant&nbsp;: après «&nbsp;op der&nbsp;», il propose déjà «&nbsp;Stad&nbsp;», «&nbsp;Police&nbsp;», «&nbsp;Rue&nbsp;». Moins de lettres à taper, moins de fautes.</div>
     </div>
 
     <!-- P6 : progression -->
     <div class="panel light rang-4">
-      <div class="kicker">Motivation</div>
-      <h2>Suivez votre progression</h2>
-      <p>Chaque mot que vous employez fait avancer votre niveau, selon la part du dictionnaire que vous avez déjà utilisée, d'<b>Ufänker</b> à <b>Sproochenmeeschter</b>. Seuls les mots déjà présents dans le dictionnaire sont comptés : un mot de passe ou un nom propre n'y figure pas, et n'est donc jamais enregistré.</p>
+      <div class="kicker">Et pour apprendre</div>
+      <h2>Apprendre en tapant</h2>
+      <div class="bloc"><b>🎮 Sept jeux</b> mots mêlés, anagrammes, mot en six essais, phrase à trous, nombres, mots croisés, mots casés.</div>
+      <div class="bloc"><b>🃏 Un carnet de cartes</b> chaque mot gagné devient une carte, et les mots que vous tapez la font avancer.</div>
+      <div class="bloc"><b>📖 Un dictionnaire FR ↔ LB</b> un mot vous échappe&nbsp;? Il le traduit dans les deux sens, sans réseau.</div>
+      <div class="trio">
+        <figure><img src="Screenshots/lux_wuertsich_trouves.png" alt="Le jeu Wuertsich : trois mots trouvés dans la grille, chacun avec sa traduction"><figcaption>Jeux</figcaption></figure>
+        <figure><img src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens et une phrase du dictionnaire officiel"><figcaption>Carnet</figcaption></figure>
+        <figure><img src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="La fiche Gromperekichelchen du dictionnaire : galette de pommes de terre, une phrase d'exemple et ses autres formes"><figcaption>Dictionnaire</figcaption></figure>
+      </div>
       <div class="levels">
         <div class="level-step h1"><span>🌍</span></div>
         <div class="level-step h2"><span>🌱</span></div>
@@ -538,7 +553,6 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <div class="level-step h8"><span>🧙</span></div>
       </div>
       <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
-      <div class="shot tall"><img src="Screenshots/lux_niveaux.png" alt="Écran de progression : niveau atteint, part du dictionnaire découverte, mot du jour"></div>
       <div class="panel-cta">
         <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
         <div class="txt"><b>Installez maintenant</b>Cherchez «&nbsp;Lëtzebuergesch Clavier&nbsp;»<span class="free">100&nbsp;% gratuit</span></div>
