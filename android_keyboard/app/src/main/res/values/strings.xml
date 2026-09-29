@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Lëtzebuergesch Clavier</string>
     <string name="app_name_full">Lëtzebuergesch Clavier • Luxembourg</string>
-    <string name="keyboard_name">Lëtzebuergesch Clavier Luxembourg</string>
+    <!-- Le nom de la liste des claviers d'Android : celui que les consignes de
+         l'application demandent de choisir, mot pour mot (v29.4.1). -->
+    <string name="keyboard_name">Lëtzebuergesch Clavier</string>
     <string name="keyboard_description">Clavier luxembourgeois avec suggestions de mots et accents</string>
     <string name="settings_title">Paramètres Lëtzebuergesch Clavier</string>
     <string name="spell_checker_name">Correcteur Lëtzebuergesch</string>
