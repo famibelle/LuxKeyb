@@ -37,6 +37,16 @@ CODES = {
         "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard",
         "#ED2939",
     ),
+    "qr-luxkeyb-store-bleu.png": (
+        # Même destination que le QR rouge, pour les supports imprimés (tract,
+        # affiche, triptyque, et leurs versions éco). Bleu profond du drapeau :
+        # 11,49:1 avec le blanc contre 4,22:1 pour le rouge, que certaines
+        # imprimantes de bureau tirent vers l'orangé. Ce n'est PAS le bleu ciel
+        # #00A1DE, à 2,94:1, trop clair pour la lecture optique. Même teinte que
+        # le QR de l'APK, mais les deux ne figurent jamais sur le même support.
+        "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard",
+        "#003876",
+    ),
     "qr-luxkeyb-apk.png": (
         "https://github.com/famibelle/LuxKeyb/releases/latest/download/"
         "LetzebuergeschClavier-latest.apk",
