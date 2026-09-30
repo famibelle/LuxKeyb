@@ -1,0 +1,21 @@
+{
+ "date": "2026-09-30",
+ "objet": "dictée hors ligne mesurée sur le téléphone lui-même : whisper.cpp v1.7.4 compilé pour arm64 (lux_bench, paramètres de l'APK), modèles unilux en q5_1",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "appareil": "Samsung SM-A217F (Galaxy A21s), Exynos 850 (8 × Cortex-A55), 2,7 Go de RAM, Android 12",
+ "protocole": "53 tranches (300 s d'audio) des fichiers 001 à 005, une passe par tranche, 7 threads (ce que SttEngine choisit pour la passe finale sur 8 cœurs), NDK 27, -O3 -ffast-math, binaire lancé par adb shell hors de l'application",
+ "notation": "tranches recollées contre la référence de chaque fichier de 60 s (WER du pipeline) ; ces 5 fichiers sont plus durs que la moyenne des 15",
+ "modeles": {
+  "tiny":  {"taille_mo": 31,  "wer": 0.559, "wer_poste_memes_tranches": 0.566, "passe_mediane_s": 4.4,  "passe_enonce_court_s": 4.2,  "passe_enonce_10s_plus_s": 5.5,  "pic_memoire_mo": 168, "chargement_ms": 278},
+  "base":  {"taille_mo": 60,  "wer": 0.397, "wer_poste_memes_tranches": 0.402, "passe_mediane_s": 9.4,  "passe_enonce_court_s": 8.9,  "passe_enonce_10s_plus_s": 12.2, "pic_memoire_mo": 240, "chargement_ms": 465},
+  "small": {"taille_mo": 190, "wer": 0.388, "wer_poste_memes_tranches": 0.385, "passe_mediane_s": 32.4, "passe_enonce_court_s": 31.7, "passe_enonce_10s_plus_s": 38.3, "pic_memoire_mo": 478, "chargement_ms": 1343,
+            "note": "pic mémoire relevé sur la sonde de 3 tranches : le relevé du passage complet a été perdu avec une coupure de la liaison adb"}
+ },
+ "reperes_memes_tranches": {
+  "service_en_ligne_luxasr": {"wer": 0.338, "sans_hesitations": 0.327, "texte_final_apres_arret_ms_median": 213},
+  "turbo_zls_sur_poste_gpu": {"wer": 0.407, "sans_hesitations": 0.352, "note": "non exécutable sur le téléphone : format CTranslate2, et ~1,5 min de CPU par énoncé estimé"}
+ },
+ "chauffe": "aucun ralentissement mesurable sur 20 min de calcul continu (small : 33,0 s pour les 10 premières passes, 31,4 s pour les 10 dernières) ; batterie de 28,8 à 31,0 °C",
+ "lecture": "Le téléphone reproduit la qualité du poste à moins d'un point. Mais le seul modèle qui approche le service en ligne en qualité, base, fait attendre 9 s après chaque phrase sur ce téléphone, pour 6 points d'erreurs de plus ; small ne gagne qu'un point de plus pour 32 s d'attente. Sur un téléphone de cette gamme, une dictée hors ligne n'est pas utilisable."
+}
