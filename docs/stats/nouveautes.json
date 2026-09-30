@@ -1,9 +1,32 @@
 {
- "genere_le": "2026-09-29",
- "derniere_version": "29.4.1",
- "derniere_date": "2026-09-29",
+ "genere_le": "2026-09-30",
+ "derniere_version": "29.4.2",
+ "derniere_date": "2026-09-30",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "29.4.2",
+   "date": "2026-09-30",
+   "intro": "Les majuscules fonctionnent enfin dans le navigateur.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Dans Chrome et les pages web, la première lettre d'une phrase prend la majuscule",
+       "texte": "Et chaque mot d'un champ de nom (« Jean Paul »). Le clavier ignorait tous les champs web, quoi que demande la page ; il suit maintenant sa demande, et respecte une page qui désactive les majuscules."
+      },
+      {
+       "titre": "Les touches « @ » et « / » ne sont plus bleues sur la page des chiffres",
+       "texte": "Ce bleu n'était voulu que sur la rangée du bas des champs d'adresse, où elles remplacent la virgule et l'apostrophe."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "29.4.1",
    "date": "2026-09-29",
@@ -202,29 +225,6 @@
       {
        "titre": "Les suggestions du site suivent le moteur de l'application",
        "texte": "Mêmes candidats retenus, grossièretés écartées, pas de correction sur un mot français reconnu, et les 84 855 formes du dictionnaire officiel chargées en arrière-plan, soit 123 297 mots reconnus comme sur l'accueil."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "29.1.0",
-   "date": "2026-09-25",
-   "intro": "Le paysage et la rotation, soignés.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Tourner le téléphone ne ferme plus le jeu en cours",
-       "texte": "On revenait au choix des jeux ; on reste désormais dans le même jeu. La partie repart de zéro, parce que chaque grille est calculée pour la taille de l'écran."
-      },
-      {
-       "titre": "En paysage, plus de bande grise du côté de la caméra",
-       "texte": "Le bandeau bleu et la barre d'onglets vont jusqu'au bord de l'écran ; seul leur contenu s'écarte de l'encoche. Même chose dans les réglages du clavier, le Guide et la page À propos."
       }
      ],
      "texte": "",
