@@ -124,6 +124,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border:3px solid #FFFFFF; box-shadow:0 6px 16px rgba(0,0,0,.35);
   transform:rotate(-4deg);
 }
+/* 2026-09-30 : une carte du carnet dépasse de derrière le clavier, comme sur
+   l'affiche et le tract. La plus petite image de la couverture et sous le
+   clavier : elle dit que les mots se collectionnent, le clavier reste le
+   sujet. */
+.cover .hero-card:has(.hero-carte){ overflow:visible; }
+.cover .hero-card img.hero-clavier{ position:relative; z-index:2; }
+.cover .hero-card img.hero-carte{
+  position:absolute; right:-1mm; top:-5mm; z-index:1;
+  width:20mm; height:auto; max-width:none; margin:0;
+  border-radius:6px; border:2.5px solid #FFFFFF; box-shadow:0 6px 16px rgba(0,0,0,.3);
+  transform:rotate(8deg);
+}
 .cover .hero-caption{
   position:absolute; top:5mm; left:6mm; right:6mm; z-index:2; text-align:center;
   font-family:"Fredoka",sans-serif; font-weight:700; font-size:16px; color:#fff;
@@ -485,7 +497,8 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         </div>
       </div>
       <div class="hero-card">
-        <img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
+        <img class="hero-carte" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens et une phrase du dictionnaire officiel">
+        <img class="hero-clavier" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
       </div>
       <div class="cta">
         <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
