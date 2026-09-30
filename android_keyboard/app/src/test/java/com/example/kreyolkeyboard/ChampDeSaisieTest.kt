@@ -135,4 +135,18 @@ class ChampDeSaisieTest {
         // Un champ vraiment nu (terminal) ne prend pas de majuscule
         assertFalse(InputProcessor.majusculeAttendue(InputType.TYPE_NULL, ""))
     }
+
+    @Test
+    fun lesChampsDuNavigateurSuiventLaDemandeDeLaPage() {
+        // Relevés sur Chrome (émulateur, 2026-09-29)
+        val textarea = 0x2c0a1      // multiligne + phrases
+        val parDefaut = 0xc0a1      // <input> : phrases
+        val mots = 0xa0a1           // autocapitalize=words
+        val sans = 0x80a1           // autocapitalize=off
+        assertTrue(InputProcessor.majusculeAttendue(textarea, ""))
+        assertTrue(InputProcessor.majusculeAttendue(parDefaut, "Moien. "))
+        assertFalse(InputProcessor.majusculeAttendue(parDefaut, "Moien "))
+        assertTrue(InputProcessor.majusculeAttendue(mots, "Jean "))
+        assertFalse(InputProcessor.majusculeAttendue(sans, ""))
+    }
 }

@@ -805,7 +805,11 @@ class KeyboardLayoutManager(private val context: Context) {
         val p = KeyboardTheme.palette()
         return when (key) {
             "⏎", "123", "ABC", "EMOJI" -> p.accent
-            " ", ",", ".", "'", "@", "/", ".lu" -> p.secondaire
+            " ", ",", ".", "'", ".lu" -> p.secondaire
+            // Bleus seulement là où ils remplacent la virgule et l'apostrophe,
+            // sur la rangée du bas d'un champ d'adresse. Sur la page 123 d'un
+            // champ ordinaire, ils restent des touches comme leurs voisines.
+            "@", "/" -> if (champAdresse != ChampAdresse.AUCUN) p.secondaire else p.touche
             "⇧" -> if (isCapsLock || isCapitalMode) p.toucheActive else p.touche
             else -> p.touche
         }

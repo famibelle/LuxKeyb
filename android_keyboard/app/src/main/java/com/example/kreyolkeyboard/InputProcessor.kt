@@ -133,9 +133,18 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
                 InputType.TYPE_TEXT_VARIATION_PASSWORD,
                 InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
                 InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
-                InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT,
                 InputType.TYPE_TEXT_VARIATION_FILTER,
                 InputType.TYPE_TEXT_VARIATION_PHONETIC -> false
+                // Chrome et les WebView déclarent tous leurs champs ainsi : le
+                // type ne dit rien, ce sont les drapeaux qui portent la demande
+                // de la page (autocapitalize). Relevé sur Chrome : 0xc0a1 par
+                // défaut (phrases), 0xa0a1 pour « words », 0x80a1 pour « off ».
+                // Exclus en bloc jusqu'en 29.4.1 : aucune majuscule d'office
+                // dans le navigateur, même là où la page la demandait.
+                InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT ->
+                    inputType and (InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
+                        InputType.TYPE_TEXT_FLAG_CAP_WORDS or
+                        InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS) != 0
                 else -> true
             }
         }
