@@ -1,0 +1,88 @@
+{
+ "date": "2026-09-30",
+ "objet": "août contre aujourd'hui, mêmes tranches : ancien moteur LuxASR (v2.3.0) contre moteur à tampon croissant (v3.0.0-stream, engine whisperlive_buffer, PeterGilles/LuxASRlive)",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "service": "LuxASR (Uni.lu) v3.0.0-stream, wss://luxasr.uni.lu/prod/ws/transcribe",
+ "appareil": "Samsung SM-A217F (Galaxy A21s), Android 12, APK debug 29.4.2 de feat/luxasr-flux-v3 (d7a935a4 : fermeture du micro sur silence_commit + 2,5 s)",
+ "protocole": {
+  "tranches": "les 62 tranches du 30 août (même découpage, mêmes identifiants) ; téléphone sur les 19 tranches de 002 et 006, comme le passage « defaut_5s_0s8 » de 2026-08-30-luxasr-grain.json",
+  "notation": "alignement d'infixe contre la référence du fichier de 60 s (optimiste, appliqué des deux côtés)",
+  "banc_telephone": "bench_device.py corrigé le 2026-09-30 : attente de la fermeture de la dictée, indicateur du micro retiré du texte noté, volume par cmd media_session"
+ },
+ "service_seul": {
+  "aout": {
+   "tranches": 62,
+   "wer_pondere": 0.26373626373626374,
+   "wer_median": 0.23443223443223443,
+   "finale_ms_median": 588.187712502986,
+   "muettes": 1
+  },
+  "aujourdhui": {
+   "tranches": 62,
+   "wer_pondere": 0.2797,
+   "wer_median": 0.231,
+   "finale_ms_median": 216,
+   "muettes": 1
+  }
+ },
+ "telephone_002_006": {
+  "aout": {
+   "tranches": 19,
+   "muettes": 1,
+   "wer_pondere": 0.3170731707317073,
+   "wer_median": 0.2792207792207792,
+   "t_premier_median": 6.5265,
+   "t_final_apres_audio_median": 1.5114999999999998
+  },
+  "aujourdhui": {
+   "tranches": 19,
+   "muettes": 1,
+   "wer_pondere": 0.3472,
+   "wer_median": 0.3,
+   "t_premier_median": 1.761,
+   "t_final_apres_audio_median": 1.072,
+   "t_fermeture_micro_apres_audio_median": 3.553
+  }
+ },
+ "wer_pipeline_par_fichier": {
+  "service_aout": {
+   "001_839ff4ad": 0.22916666666666666,
+   "002_b754b913": 0.3333333333333333,
+   "003_bc3df29c": 0.24770642201834864,
+   "004_5c83e2b0": 0.195,
+   "005_f1795896": 0.45714285714285713,
+   "006_3b62a239": 0.29591836734693877
+  },
+  "service_aujourdhui": {
+   "001_839ff4ad": 0.224,
+   "002_b754b913": 0.354,
+   "003_bc3df29c": 0.321,
+   "004_5c83e2b0": 0.19,
+   "005_f1795896": 0.52,
+   "006_3b62a239": 0.316
+  },
+  "telephone_aout": {
+   "002_b754b913": 0.4444444444444444,
+   "006_3b62a239": 0.42857142857142855
+  },
+  "telephone_aujourdhui": {
+   "002_b754b913": 0.41,
+   "006_3b62a239": 0.561
+  }
+ },
+ "bruit_de_mesure": {
+  "telephone_002_deux_passages_le_meme_jour": [
+   0.3354,
+   0.3235
+  ]
+ },
+ "tranche_aberrante": {
+  "id": "006_3b62a239_05",
+  "dur": 15.0,
+  "service": 0.458,
+  "telephone": 0.75,
+  "cause": "boucle du service à l'intérieur d'un mot (« Effektivitéivitéivité… »), que RepetitionTrimmer ne coupe pas"
+ },
+ "lecture": "Exactitude inchangée aux erreurs de mesure près (+1,6 pt côté service, +3 pt sur 19 tranches téléphone, pour ~1 pt d'écart entre deux passages identiques). Ce qui a changé est la réactivité : premier texte 6,5 s → 1,8 s après le début de la parole, texte final côté service 588 → 216 ms après l'arrêt. Le 33,8 % mesuré plus tôt le même jour était un artefact du banc (texte d'une tranche tombé dans la suivante) et ne doit pas être cité."
+}
