@@ -1,0 +1,78 @@
+{
+ "date": "2026-09-30",
+ "objet": "modèles candidats à une dictée hors ligne, même protocole que le banc du 28 août, avec le service en ligne pour repère",
+ "corpus": "Akabi/Luxemburgish_Press_Conferences_Gov",
+ "corpus_licence": "non déclarée — audio et transcriptions non redistribués",
+ "jeu": "50 fichiers de 60 s ; 161 tranches de 15 d'entre eux (prepare_dataset.py --files 50 --slice-files 15)",
+ "notation": {
+  "wer_fichiers_60s": "une passe par fichier de 60 s",
+  "wer_enonces_recolles": "une passe par tranche, tranches recollées contre la référence du fichier (WER du pipeline d'analyze_stream.py)",
+  "sans_hesitations": "mêmes chiffres après retrait des « ë », « äh »… de l'hypothèse : le modèle du ZLS transcrit mot à mot, la référence non"
+ },
+ "modeles": {
+  "tiny": {
+   "source": "ggml-lb-tiny-q5_1.bin",
+   "taille_octets": 32152690,
+   "wer_fichiers_60s": 0.4872,
+   "wer_enonces_recolles": 0.7206,
+   "boucles_enonces": 4,
+   "temoin_28_aout": {
+    "wer_fichiers_60s": 0.4872,
+    "wer_enonces": 0.7206
+   }
+  },
+  "base": {
+   "source": "ggml-lb-base-q5_1.bin",
+   "taille_octets": 59707642,
+   "wer_fichiers_60s": 0.3656,
+   "wer_enonces_recolles": 0.3601,
+   "boucles_enonces": 0,
+   "temoin_28_aout": {
+    "wer_fichiers_60s": 0.3656,
+    "wer_enonces": 0.3601
+   }
+  },
+  "small": {
+   "source": "ggml-lb-small-q5_1.bin",
+   "taille_octets": 190085504,
+   "wer_fichiers_60s": 0.35,
+   "wer_enonces_recolles": 0.3647,
+   "boucles_enonces": 0,
+   "sans_hesitations": {
+    "wer_fichiers_60s": 0.35,
+    "wer_enonces_recolles": 0.364
+   },
+   "licence": "non déclarée sur Hugging Face"
+  },
+  "turbo_zls": {
+   "source": "ZLSCompLing/Whisper-Large-V3-Turbo-Luxembourgish (CTranslate2, licence MIT)",
+   "moteur": "faster-whisper, glouton, température 0, langue forcée",
+   "taille_octets_ct2": 3100000000,
+   "wer_fichiers_60s": 0.438,
+   "wer_enonces_recolles": 0.4239,
+   "boucles_enonces": 2,
+   "sans_hesitations": {
+    "wer_fichiers_60s": 0.364,
+    "wer_enonces_recolles": 0.347
+   },
+   "decomposition_fichiers": {
+    "substitutions": 0.2,
+    "insertions": 0.189,
+    "suppressions": 0.049
+   },
+   "sonde_cpu": {
+    "int8_threads": 3,
+    "tranches_4_8s": 5,
+    "ms_median": 12781
+   }
+  }
+ },
+ "repere_service_en_ligne": {
+  "service": "LuxASR v3.0.0-stream",
+  "wer_enonces_recolles": 0.315,
+  "sans_hesitations": 0.305,
+  "muettes": 1
+ },
+ "temps": "durées de passe sur le poste prises pendant que d'autres bancs tournaient : non publiables. Seule la sonde CPU du turbo (poste x86) donne un ordre de grandeur.",
+ "lecture": "Aucun modèle embarquable ne fait mieux que base. small (190 Mo) : 35,0 / 36,5 % contre 36,6 / 36,0 % pour base (60 Mo). Turbo ZLS hors hésitations : 36,4 / 34,7 %, au niveau de base, à 4 points du service en ligne (30,5 %), pour 12,8 s de CPU par énoncé sur le poste."
+}
