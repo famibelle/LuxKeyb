@@ -25,7 +25,17 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_clavier_arobase_slash.png",
+     "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
+     "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
+    }
+   ],
+   "image": "Screenshots/lux_clavier_arobase_slash.png",
+   "image_alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
+   "image_legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
   },
   {
    "version": "29.4.1",
@@ -136,7 +146,17 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_clavier_champ_nom_email.png",
+     "alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
+     "legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
+    }
+   ],
+   "image": "Screenshots/lux_clavier_champ_nom_email.png",
+   "image_alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
+   "image_legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
   },
   {
    "version": "29.3.0",
@@ -199,7 +219,17 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_clavier_page_123.png",
+     "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
+     "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
+    }
+   ],
+   "image": "Screenshots/lux_clavier_page_123.png",
+   "image_alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
+   "image_legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
   },
   {
    "version": "29.2.0",
