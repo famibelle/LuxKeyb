@@ -85,6 +85,12 @@ class LuxAsrSession(
     @Volatile private var heardSpeech = false
     @Volatile private var lastSpeechAt = 0L
     @Volatile private var noiseFloor = 0.0
+    /**
+     * Vrai quand le service a déclaré la phrase finie (`silence_commit`) et
+     * que personne n'a reparlé depuis. Remis à faux par toute parole, qu'elle
+     * soit entendue ici ou transcrite là-bas.
+     */
+    @Volatile private var phraseClose = false
 
     override val isActive: Boolean
         get() = state == SttSession.State.LISTENING || state == SttSession.State.LOADING
@@ -99,6 +105,7 @@ class LuxAsrSession(
         heardSpeech = false
         lastSpeechAt = 0L
         noiseFloor = 0.0
+        phraseClose = false
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -231,6 +238,15 @@ class LuxAsrSession(
      * Termine l'énoncé quand la parole s'arrête, plutôt que d'attendre que
      * l'utilisateur pense à appuyer sur stop.
      *
+     * Deux règles, et c'est le service qui tranche d'abord. Son moteur découpe
+     * lui-même les phrases : après 0,8 s de silence selon son détecteur de
+     * parole (Silero, bien plus fiable que notre seuil d'énergie), il engage
+     * toute la queue et le signale par `send_reason: "silence_commit"`. Quand
+     * ce signal est arrivé et que le micro n'a rien entendu depuis
+     * [SILENCE_APRES_PHRASE_MS], la dictée se ferme. Sans ce signal — pièce
+     * bruyante où il n'entend jamais de pause, service qui changerait son
+     * protocole — on retombe sur [SILENCE_HANGOVER_MS], la règle d'avant.
+     *
      * Ce seuil ne répond qu'à une question d'usage : à partir de quand
      * considère-t-on que la personne a fini. Il ne protège pas de
      * l'hallucination ; le service s'en charge lui-même depuis son moteur du
@@ -256,14 +272,20 @@ class LuxAsrSession(
         if (parle) {
             heardSpeech = true
             lastSpeechAt = now
+            phraseClose = false
             return
         }
 
         // Rien n'a encore été dit : on laisse à l'utilisateur le temps de
         // commencer, sans quoi le micro se refermerait aussitôt ouvert.
-        if (!heardSpeech || now - lastSpeechAt < SILENCE_HANGOVER_MS) return
-
-        Log.i(TAG, "🔇 fin d'énoncé après ${SILENCE_HANGOVER_MS} ms de silence")
+        if (!heardSpeech) return
+        val silence = now - lastSpeechAt
+        val raison = when {
+            phraseClose && silence >= SILENCE_APRES_PHRASE_MS -> "phrase close par le service"
+            silence >= SILENCE_HANGOVER_MS -> "silence local, sans signal du service"
+            else -> return
+        }
+        Log.i(TAG, "🔇 fin d'énoncé après $silence ms de silence ($raison)")
         main.post { if (state == SttSession.State.LISTENING) stop() }
     }
 
@@ -282,6 +304,14 @@ class LuxAsrSession(
                 // l'IME les montre ensemble, puisqu'il est remplacé en bloc.
                 engage = json.optString("accumulated_text", engage).ifEmpty { engage }
                 queue = json.optString("partial_text", "")
+                // Une phrase close par le service a sa queue vide. Toute autre
+                // réponse veut dire qu'il entend de nouveau parler, même si
+                // notre seuil d'énergie, lui, ne l'a pas vu.
+                phraseClose = json.optString("send_reason") == "silence_commit" && queue.isBlank()
+                if (!phraseClose) {
+                    heardSpeech = true
+                    lastSpeechAt = SystemClock.elapsedRealtime()
+                }
                 val ms = SystemClock.elapsedRealtime() - startedAt
                 val proc = json.optJSONObject("metrics")?.optDouble("processing_time", 0.0) ?: 0.0
                 // Le texte livré est filtré, celui qu'on retient ne l'est pas :
@@ -340,7 +370,19 @@ class LuxAsrSession(
         const val FINAL_GRACE_MS = 4_000L
 
         /**
-         * Silence qui termine la dictée. Cinq secondes : le service ne décodant
+         * Silence qui termine la dictée une fois que le service a déclaré la
+         * phrase finie. Le service a déjà attendu 0,8 s de son côté ; ces 2,5 s
+         * comptées depuis la dernière parole laissent le temps de reprendre
+         * une phrase après une hésitation, sans garder le micro ouvert 5 s
+         * sur un énoncé que le service tient pour terminé. Choix d'usage, à
+         * confirmer au banc de parole enchaînée (`bench_device_continu.py`).
+         */
+        const val SILENCE_APRES_PHRASE_MS = 2_500L
+
+        /**
+         * Silence qui termine la dictée quand le service n'a signalé aucune fin
+         * de phrase (voir [detecterFinDEnonce]), et seule règle du chemin par
+         * lots [LuxAsrApiSession]. Cinq secondes : le service ne décodant
          * pas le silence, l'attendre ne coûte rien au texte (mesuré le
          * 19 septembre 2026 avec exactement ces 5 s). Le banc de parole enchaînée du
          * 1er septembre 2026 montrait qu'à 1,5 s, 9 % des énoncés de une à trois

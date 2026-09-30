@@ -89,7 +89,7 @@ def prepare_phone(dev, work, fichiers):
     subprocess.run(["adb", "-s", dev, "reverse", f"tcp:{bd.PORT}", f"tcp:{bd.PORT}"],
                    capture_output=True)
 
-    bd.adb(dev, "shell", "media", "volume", "--stream", "3", "--set", "15")
+    bd.volume_max(dev)
     bd.adb(dev, "shell", "settings", "put", "system", "screen_off_timeout", "1800000")
     bd.adb(dev, "shell", "am", "start", "-a", "android.intent.action.VIEW",
            "-d", f"http://localhost:{bd.PORT}/",

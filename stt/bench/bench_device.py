@@ -194,6 +194,33 @@ def bornes_micro(dev):
     return (x1 + x2) // 2, (y1 + y2) // 2
 
 
+# Ce que l'IME écrit dans le champ tant que le micro écoute : un pictogramme
+# suivi d'un vumètre. Ce n'est pas du texte dicté ; sa disparition dit en
+# revanche que la dictée est close.
+INDICATEUR = re.compile(r"\s*🎤[\s▁▂▃▄▅▆▇█]*")
+
+
+def texte_dicte(v):
+    return INDICATEUR.sub(" ", v or "").strip()
+
+
+def volume_max(dev):
+    """Volume média au maximum.
+
+    `media volume` n'existe pas sur tous les appareils (absent du Galaxy A21s
+    sous One UI 4) et y échoue en silence : le banc rejouait alors ses
+    tranches à volume nul et mesurait du silence. `cmd media_session` est
+    essayé d'abord, et le volume relu pour s'en assurer.
+    """
+    for cmd in (["cmd", "media_session"], ["media"]):
+        adb(dev, "shell", *cmd, "volume", "--stream", "3", "--set", "15")
+        lu = adb(dev, "shell", *cmd, "volume", "--stream", "3", "--get")
+        if "volume is 15" in lu:
+            return
+    raise SystemExit("❌ impossible de régler le volume média : le banc "
+                     "mesurerait du silence")
+
+
 def ecrire_wav(f32_path, dst, gain=1.0):
     a = np.fromfile(f32_path, dtype="<f4") * gain
     pcm = (np.clip(a, -1, 1) * 32767).astype("<i2")
@@ -249,7 +276,7 @@ def main():
 
     print(f"📱 {dev} — {len(choix)} tranches, "
           f"{sum(s['dur'] for s in choix):.0f} s d'audio")
-    adb(dev, "shell", "media", "volume", "--stream", "3", "--set", "15")
+    volume_max(dev)
     adb(dev, "shell", "settings", "put", "system", "screen_off_timeout", "1800000")
     adb(dev, "shell", "am", "start", "-a", "android.intent.action.VIEW",
         "-d", f"http://localhost:{PORT}/",
@@ -301,8 +328,7 @@ def main():
         ETAT.envoyer("play", url=f"/{s['id']}.wav", clip=s["id"])
 
         debut = fin = None          # estampilles page (horloge du téléphone)
-        t_fin_hote = None           # même instant, vu du poste
-        n_textes, t_dernier_texte = 0, time.time()
+        close = False
         limite = time.time() + args.attente_max
         while time.time() < limite:
             if debut is None:
@@ -312,27 +338,49 @@ def main():
             if fin is None:
                 e = ETAT.depuis(marque, "audio_end")
                 if e:
-                    fin, t_fin_hote = e[0]["t"], time.time()
+                    fin = e[0]["t"]
+            # On attend que la dictée soit **close**, pas seulement que le
+            # texte se taise : c'est l'application qui décide de la fin
+            # d'énoncé, et enchaîner avant elle fait tomber le texte final de
+            # cette tranche dans le champ de la suivante. Constaté le
+            # 2026-09-30 sur 10 tranches sur 20, avec un repos de 3 s calé sur
+            # l'ancien seuil de 1,5 s. Close = l'indicateur du micro, vu
+            # pendant l'écoute, a disparu du champ.
             textes = ETAT.depuis(marque, "texte")
-            if len(textes) != n_textes:
-                n_textes, t_dernier_texte = len(textes), time.time()
-            # Le VAD coupe à 1,5 s de silence, le service rend ensuite sa passe
-            # finale : on laisse passer 5 s après l'audio, puis on conclut dès
-            # que le texte s'est tu pendant 3 s.
-            if t_fin_hote and time.time() - t_fin_hote > 5.0 \
-                    and time.time() - t_dernier_texte > 3.0:
+            vu_micro = any("🎤" in (e.get("v") or "") for e in textes)
+            if fin is not None and vu_micro and textes \
+                    and "🎤" not in (textes[-1].get("v") or ""):
+                close = True
+                time.sleep(0.8)       # l'insertion finale peut suivre de peu
                 break
             time.sleep(0.2)
+        if not close:
+            print(f"  ⚠️  dictée toujours ouverte après {args.attente_max:.0f} s")
 
-        textes = [e for e in ETAT.depuis(marque, "texte") if e.get("v")]
-        hyp = textes[-1]["v"].strip() if textes else ""
+        textes = [dict(e, v=texte_dicte(e.get("v")))
+                  for e in ETAT.depuis(marque, "texte")]
+        textes = [e for e in textes if e["v"]]
+        hyp = textes[-1]["v"] if textes else ""
         premier = (textes[0]["t"] - debut) / 1000 if textes and debut else None
+        # Dernière fois que les mots ont changé, et instant où le micro s'est
+        # fermé : deux choses distinctes depuis que le service clôt les phrases
+        # de lui-même, bien avant que l'application ne rende le micro.
+        t_mots, precedent = None, None
+        for e in textes:
+            if e["v"] != precedent:
+                t_mots, precedent = e["t"], e["v"]
+        bruts = ETAT.depuis(marque, "texte")
+        dernier_micro = max((i for i, e in enumerate(bruts)
+                             if "🎤" in (e.get("v") or "")), default=None)
+        fermeture = bruts[dernier_micro + 1]["t"] \
+            if close and dernier_micro is not None and dernier_micro + 1 < len(bruts) else None
         w, mots = wer_infixe(refs[s["parent"]], hyp) if hyp else (1.0, 0)
         lignes.append({
             "id": s["id"], "dur": s["dur"], "wer": w, "mots": mots,
             "hyp": hyp, "passes": len(textes),
             "t_premier_texte": premier,
-            "t_final_apres_audio": (textes[-1]["t"] - fin) / 1000 if textes and fin else None,
+            "t_final_apres_audio": (t_mots - fin) / 1000 if t_mots and fin else None,
+            "t_fermeture_apres_audio": (fermeture - fin) / 1000 if fermeture and fin else None,
         })
         etat = f"WER {w*100:5.1f} %" if hyp else "AUCUN TEXTE"
         print(f"  [{n:2d}/{len(choix)}] {s['id']} {s['dur']:4.1f}s  {etat}  "
