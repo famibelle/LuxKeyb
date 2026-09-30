@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [29.4.2] - 2026-09-30
+
+Les majuscules fonctionnent enfin dans le navigateur.
+
+### 🐛 Corrections
+
+- **Dans Chrome et les pages web, la première lettre d'une phrase prend la majuscule**, et chaque mot d'un champ de nom (« Jean Paul »). Le clavier ignorait tous les champs web, quoi que demande la page ; il suit maintenant sa demande, et respecte une page qui désactive les majuscules.
+- **Les touches « @ » et « / » ne sont plus bleues sur la page des chiffres.** Ce bleu n'était voulu que sur la rangée du bas des champs d'adresse, où elles remplacent la virgule et l'apostrophe.
+
 ## [29.4.1] - 2026-09-29
 
 Le clavier porte le même nom partout.
