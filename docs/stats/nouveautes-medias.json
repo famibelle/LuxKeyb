@@ -1,5 +1,10 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "29.4.0": {
+    "image": "Screenshots/lux_accueil_haut.png",
+    "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
+    "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
+  },
   "26.2.0": {
     "images": [
       {
@@ -113,5 +118,20 @@
     "image": "Screenshots/lux_cuvette.png",
     "alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
     "legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
+  },
+  "29.4.2": {
+    "image": "Screenshots/lux_clavier_arobase_slash.png",
+    "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
+    "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
+  },
+  "29.3.1": {
+    "image": "Screenshots/lux_clavier_champ_nom_email.png",
+    "alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
+    "legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
+  },
+  "29.3.0": {
+    "image": "Screenshots/lux_clavier_page_123.png",
+    "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
+    "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
   }
 }

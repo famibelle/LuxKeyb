@@ -15,9 +15,10 @@ lang: fr
   <a href="labs.html">🔬 Labs</a> ·
   <strong>⚖️ Comparatif</strong> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
-  <a href="index.html#devenir-testeur">🧪 Testeur</a> ·
+  <a href="index.html#devenir-testeur">📲 Installer</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
   <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>

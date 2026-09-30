@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supports de communication · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Tract, affiche et dépliant du clavier luxembourgeois, à imprimer ou à télécharger en PDF, en couleur ou en version éco encre. Tous portent le QR code de la fiche Google Play.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<!-- Fredoka porte les chiffres mis en avant du décompte, comme sur les supports
+     imprimés : c'est le seul endroit de la page qui en ait besoin. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<!-- Cette page est faite pour être collée dans WhatsApp ou sur Facebook :
+     sans ces balises, l'aperçu n'affiche que l'URL brute. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Supports de communication · Lëtzebuergesch Clavier">
+<meta property="og:description" content="Tract, affiche et dépliant à imprimer, avec le QR code de la fiche Google Play.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/supports-communication.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/Screenshots/lux_suggestions.png">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:700px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 4px;letter-spacing:-0.01em;}
+section{margin-top:40px;}
+p{margin:0 0 12px;}
+a{color:var(--sea);}
+.section-sub{font-size:14.5px;color:var(--ink-soft);margin:4px 0 18px;max-width:60ch;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin:0 0 4px;font-size:16px;}
+.card .meta{font-size:13px;color:var(--ink-soft);margin:0 0 12px;}
+.card p{font-size:14.5px;color:var(--ink-soft);}
+.actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* Le texte à copier : reconnaissable au premier coup d'œil comme « ceci n'est
+   pas la page qui parle, c'est ce que vous allez envoyer ». */
+.script{
+  background:color-mix(in srgb, var(--sea) 5%, transparent);
+  border:1px dashed var(--line);border-radius:9px;
+  padding:13px 15px;font-size:14px;white-space:pre-wrap;margin:0 0 12px;color:var(--ink);
+}
+.script .lb{display:block;}
+
+.btn.copied{background:var(--sun);border-color:var(--sun);color:var(--paper);}
+
+/* Le lien de la page, en évidence : c'est l'objet même de cette page, elle est
+   faite pour être envoyée telle quelle dans un groupe. */
+.share-card{background:var(--sea-soft);border:1px solid color-mix(in srgb, var(--sea) 30%, transparent);border-radius:12px;padding:18px;margin-top:22px;}
+.share-card h2{margin-bottom:8px;}
+.url{
+  display:block;background:var(--card);border:1px dashed var(--line);border-radius:9px;
+  padding:12px 14px;font-family:var(--mono);font-size:13.5px;color:var(--ink);
+  margin:0 0 12px;word-break:break-all;
+}
+
+/* Le décompte jusqu'à la sortie publique a remplacé la jauge des douze
+   testeurs, atteinte le 9 septembre 2026 : il vit dans assets/countdown.css,
+   partagé avec l'accueil pour que la nouvelle ait la même tête aux deux
+   endroits. */
+
+.links{list-style:none;padding:0;margin:0;}
+.links li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
+.links li:last-child{border-bottom:0;}
+.links a{font-weight:700;}
+.links span{color:var(--ink-soft);}
+
+.qr-grid{display:flex;gap:16px;flex-wrap:wrap;}
+.qr-grid figure{margin:0;flex:1 1 150px;max-width:190px;text-align:center;}
+.qr-grid img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--line);
+  border-radius:10px;padding:7px;box-sizing:border-box;}
+.qr-grid figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+
+.note{background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-top:18px;}
+.note p:last-child{margin-bottom:0;}
+
+.rules{list-style:none;padding:0;margin:0;}
+.rules li{padding:9px 0 9px 26px;position:relative;font-size:14.5px;color:var(--ink-soft);}
+.rules li::before{content:"·";position:absolute;left:8px;top:6px;font-weight:800;color:var(--hibiscus);font-size:18px;}
+.rules b{color:var(--ink);}
+.legal{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);}
+
+.support{display:flex;gap:16px;align-items:flex-start;}
+.support img{flex:0 0 150px;width:150px;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff;}
+.support.paysage img{flex-basis:210px;width:210px;}
+.support .body{flex:1 1 auto;min-width:0;}
+@media (max-width:520px){.support{flex-direction:column;}.support img,.support.paysage img{width:100%;max-width:280px;flex:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <strong>🖨️ Supports de communication</strong> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit ambassadeur</p>
+  <h1>Supports de communication 🖨️</h1>
+  <p class="lead">
+    Le tract, l'affiche et le dépliant, prêts à imprimer ou à télécharger en
+    PDF. Chacun existe en couleur pour un tirage soigné, et en version
+    <b>éco encre</b> sur fond blanc pour une imprimante de bureau. Tous portent
+    le QR code de la fiche Google Play : on le scanne, on installe.
+  </p>
+</header>
+
+<section>
+  <div class="card">
+    <div class="support">
+      <img src="assets/supports-tract-1.jpg" alt="Aperçu : le tract A5" loading="lazy">
+      <div class="body">
+        <h3>🪧 Tract A5</h3>
+        <p class="meta">2 tracts par feuille A4, à découper · comptoir de boulangerie, café, maison des jeunes</p>
+        <div class="actions">
+          <a class="btn primary" href="tract.html">Voir et imprimer</a>
+          <a class="btn" href="assets/tract-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+          <a class="btn" href="tract-eco.html">💧 Version éco encre</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="support">
+      <img src="assets/supports-affiche-1.jpg" alt="Aperçu : l'affiche A4" loading="lazy">
+      <div class="body">
+        <h3>🎨 Affiche A4</h3>
+        <p class="meta">Hall d'association, école, maison des jeunes, vitrine · lisible réduite en A5</p>
+        <div class="actions">
+          <a class="btn primary" href="affiche.html">Voir et imprimer</a>
+          <a class="btn" href="assets/affiche-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+          <a class="btn" href="affiche-eco.html">💧 Version éco encre</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="support paysage">
+      <img src="assets/supports-triptyque-1.jpg" alt="Aperçu : le dépliant trois volets" loading="lazy">
+      <div class="body">
+        <h3>📖 Dépliant trois volets</h3>
+        <p class="meta">A4 paysage recto-verso · pourquoi, installation pas à pas, fonctions, progression, et comment aider</p>
+        <div class="actions">
+          <a class="btn primary" href="triptyque.html">Voir et imprimer</a>
+          <a class="btn" href="assets/triptyque-letzebuergesch-clavier-A4.pdf" download>📄 PDF</a>
+          <a class="btn" href="triptyque-eco.html">💧 Version éco encre</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>Pour imprimer : format A4, « Aucune marge », en-têtes et pieds de page
+    désactivés. Les supports sont des pages web, pas des maquettes : le PDF se
+    refait à tout moment. Pour fabriquer le vôtre, la
+    <a href="charte-graphique.html">charte graphique</a> donne les couleurs et
+    la police. Le reste du kit (messages prêts à envoyer, codes à scanner) est
+    dans l'<a href="ambassadeurs.html">espace ambassadeurs</a>.</p>
+  </div>
+</section>
+
+<div class="legal">Lëtzebuergesch Clavier est un projet citoyen publié par Médhi Famibelle.</div>
+</div>
+</body>
+</html>

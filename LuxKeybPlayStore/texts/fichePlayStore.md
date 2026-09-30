@@ -229,10 +229,11 @@ s'affiche par défaut, ce qui n'est pas bloquant.
 Les dix fichiers à envoyer sont dans
 [`../graphics/feature-graphic/`](../graphics/feature-graphic/). Chacun porte le
 nom de l'emplacement du formulaire de la Console où il va, il n'y a donc rien à
-retrouver au moment de l'envoi. Tous sont fabriqués par
+retrouver au moment de l'envoi ; les captures portent en plus, entre
+parenthèses, ce qu'elles montrent. Tous sont fabriqués par
 [`../graphics/build_graphics.py`](../graphics/build_graphics.py) à partir des
 sources du dépôt (le logo de `Logos/`, les captures réelles de
-`docs/Screenshots/`) ; `python3 build_graphics.py check` les reconfronte aux
+`graphics/captures-emulateur-pixel9/`) ; `python3 build_graphics.py check` les reconfronte aux
 contraintes ci-dessous sans rien refabriquer. Les graphiques créoles dont ils
 reprennent le gabarit ne sont plus dans le dépôt.
 
@@ -240,7 +241,7 @@ reprennent le gabarit ne sont plus dans le dépôt.
 |---|---|---|
 | Icône de l'application | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `Icône de l'application.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
 | Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
-| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1-8.png`, 1080 × 1920, de 227 à 301 Ko, légende incrustée |
+| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Clavier numérique).png`, 1080 × 1920, de 227 à 301 Ko, légende incrustée |
 | Captures tablette | facultatif | Non prévu |
 | Vidéo YouTube | facultatif | Aucune. `docs/Screenshots/lux_clavier_demo.gif` n'est pas utilisable : le Store ne prend **pas** les GIF |
 
@@ -258,9 +259,11 @@ que voit la plupart des visiteurs :
 7. l'installation guidée, configuration terminée
 8. chiffres et symboles
 
-Les noms ne disent plus ce que montre chaque capture, c'est le prix des noms
-d'emplacement ; la liste ci-dessus et le tableau `SPECS` de
-[`../graphics/build_graphics.py`](../graphics/build_graphics.py) le disent.
+Le nom de chaque capture porte maintenant aussi, entre parenthèses, ce qu'elle
+montre (le kicker affiché sur l'image elle-même). La liste ci-dessus et le
+tableau `SPECS` de
+[`../graphics/build_graphics.py`](../graphics/build_graphics.py) restent la
+référence si le contenu d'une capture change sans que son nom soit mis à jour.
 
 La légende est incrustée dans l'image parce que la Play Console n'en fournit
 pas, et qu'elle aide beaucoup sur ce type d'application, où la valeur n'est
@@ -273,7 +276,7 @@ reprises le 2026-09-22 sur l'émulateur `kreyol_test` (1080 × 2340) sous la
 le même émulateur ; rien n'est agrandi. Les trois premières sont partagées
 avec le guide intégré (`res/drawable-nodpi/guide_screenshot_*.png`) : les
 refaire là-bas d'abord, puis les recopier ici. Refaire l'ensemble après tout
-changement d'interface visible : recapturer dans `docs/Screenshots/lux_*.png`,
+changement d'interface visible : recapturer dans `graphics/captures-emulateur-pixel9/`,
 puis `python3 build_graphics.py shots`.
 
 Le flyer triptyque A4 (`graphics/flyer-triptyque/`) ne sert pas à la Play

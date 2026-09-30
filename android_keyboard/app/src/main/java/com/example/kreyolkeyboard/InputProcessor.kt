@@ -54,6 +54,140 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
          */
         internal fun trailingWordLength(textAfterCursor: String): Int =
             textAfterCursor.takeWhile { isWordCharacter(it) }.length
+
+        /**
+         * Signes qui se collent au mot qui les précède, et devant lesquels
+         * l'espace posée d'office après une suggestion doit disparaître :
+         * toucher `Gromper` puis `.` donnait `Gromper .`.
+         *
+         * L'apostrophe en est, et c'est le cas le plus luxembourgeois de la
+         * liste : `d` est le mot le plus fréquent du corpus, souvent proposé
+         * par le contexte, et `d'` s'écrit sans espace. Le tiret n'en est pas :
+         * après une espace il ouvre plus souvent une incise qu'il ne soude un
+         * composé. Le `%` non plus, qui prend une espace en luxembourgeois
+         * comme en français.
+         */
+        private val PONCTUATION_COLLEE = setOf(
+            ".", ",", "?", "!", ":", ";", ")", "…", "'", "’", "”"
+        )
+
+        internal fun colleAuMotPrecedent(texte: String): Boolean = texte in PONCTUATION_COLLEE
+
+        /**
+         * Champs où l'on tape des chiffres : code PIN, code reçu par SMS,
+         * montant, numéro de téléphone, date. Le clavier s'y ouvre sur la page
+         * 123 au lieu des lettres.
+         */
+        internal fun ouvreLePaveNumerique(inputType: Int): Boolean =
+            when (inputType and InputType.TYPE_MASK_CLASS) {
+                InputType.TYPE_CLASS_NUMBER,
+                InputType.TYPE_CLASS_PHONE,
+                InputType.TYPE_CLASS_DATETIME -> true
+                else -> false
+            }
+
+        /**
+         * Adresse e-mail ou adresse web : ni majuscule d'office, ni espace après
+         * une suggestion, ni Groussschreiwung. Une espace ou une majuscule y
+         * rendent l'adresse fausse, et l'utilisateur ne le voit qu'à l'envoi.
+         */
+        /**
+         * Classe du champ, en lisant comme du texte un champ qui porte des
+         * variations ou des drapeaux de texte sans déclarer de classe. Contacts
+         * déclare ainsi son prénom `0x2060` (nom + majuscule à chaque mot, classe
+         * 0) : lu à la lettre, ce ne serait pas du texte et il perdrait sa
+         * majuscule. Seul un champ à 0, sans rien (un terminal), reste TYPE_NULL.
+         */
+        private fun classeDe(inputType: Int): Int {
+            val classe = inputType and InputType.TYPE_MASK_CLASS
+            return if (classe == InputType.TYPE_NULL && inputType != 0) InputType.TYPE_CLASS_TEXT else classe
+        }
+
+        internal fun estChampWeb(inputType: Int): Boolean =
+            classeDe(inputType) == InputType.TYPE_CLASS_TEXT &&
+                inputType and InputType.TYPE_MASK_VARIATION == InputType.TYPE_TEXT_VARIATION_URI
+
+        internal fun estChampAdresse(inputType: Int): Boolean {
+            if (classeDe(inputType) != InputType.TYPE_CLASS_TEXT) return false
+            return when (inputType and InputType.TYPE_MASK_VARIATION) {
+                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,
+                InputType.TYPE_TEXT_VARIATION_URI -> true
+                else -> false
+            }
+        }
+
+        /**
+         * La majuscule de début de phrase ne vaut que pour du texte courant.
+         *
+         * Reprend les exclusions de l'ancien test `inputType and
+         * TYPE_TEXT_VARIATION_PASSWORD != 0`, qui visait les mots de passe mais
+         * attrapait par son bit toutes les variations au-delà de 0x80 (champ web,
+         * filtre, phonétique, e-mail web), et y ajoute les adresses, qu'il
+         * laissait passer.
+         */
+        internal fun accepteLaMajusculeAuto(inputType: Int): Boolean {
+            if (classeDe(inputType) != InputType.TYPE_CLASS_TEXT) return false
+            if (estChampAdresse(inputType)) return false
+            return when (inputType and InputType.TYPE_MASK_VARIATION) {
+                InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
+                InputType.TYPE_TEXT_VARIATION_FILTER,
+                InputType.TYPE_TEXT_VARIATION_PHONETIC -> false
+                // Chrome et les WebView déclarent tous leurs champs ainsi : le
+                // type ne dit rien, ce sont les drapeaux qui portent la demande
+                // de la page (autocapitalize). Relevé sur Chrome : 0xc0a1 par
+                // défaut (phrases), 0xa0a1 pour « words », 0x80a1 pour « off ».
+                // Exclus en bloc jusqu'en 29.4.1 : aucune majuscule d'office
+                // dans le navigateur, même là où la page la demandait.
+                InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT ->
+                    inputType and (InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
+                        InputType.TYPE_TEXT_FLAG_CAP_WORDS or
+                        InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS) != 0
+                else -> true
+            }
+        }
+
+        /**
+         * La lettre suivante doit-elle être une majuscule, vu le champ et le
+         * texte qui précède le curseur ?
+         *
+         * Début de texte et fin de phrase pour tout champ de texte courant ;
+         * en plus, début de chaque mot quand le champ le demande (nom, prénom,
+         * ville : TYPE_TEXT_FLAG_CAP_WORDS), et toujours quand il veut des
+         * capitales (TYPE_TEXT_FLAG_CAP_CHARACTERS, une plaque, un code).
+         */
+        internal fun majusculeAttendue(inputType: Int, textBefore: String): Boolean {
+            if (!accepteLaMajusculeAuto(inputType)) return false
+            if (inputType and InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS != 0) return true
+            if (textBefore.isBlank()) return true
+            if (inputType and InputType.TYPE_TEXT_FLAG_CAP_WORDS != 0 &&
+                textBefore.last().isWhitespace()) return true
+            val finDePhrase = textBefore.indexOfLast { it in ".!?" }
+            return finDePhrase != -1 && textBefore.substring(finDePhrase + 1).isBlank()
+        }
+
+        /**
+         * Action que la touche Entrée exécute dans ce champ, ou `null` quand
+         * elle doit aller à la ligne. Partagée par [handleEnter], qui l'exécute,
+         * et par le clavier, qui en dessine l'icône : les deux ne peuvent pas
+         * diverger, sinon la loupe s'afficherait sur une touche qui va à la ligne.
+         */
+        internal fun actionEntree(inputType: Int, imeOptions: Int): Int? {
+            if (imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION != 0) return null
+            val action = imeOptions and EditorInfo.IME_MASK_ACTION
+            val multiligne = inputType and InputType.TYPE_TEXT_FLAG_MULTI_LINE != 0
+            if (multiligne && action == EditorInfo.IME_ACTION_UNSPECIFIED) return null
+            return when (action) {
+                EditorInfo.IME_ACTION_SEND,
+                EditorInfo.IME_ACTION_SEARCH,
+                EditorInfo.IME_ACTION_GO,
+                EditorInfo.IME_ACTION_NEXT,
+                EditorInfo.IME_ACTION_DONE -> action
+                else -> null
+            }
+        }
     }
     
     // État du processeur
@@ -90,7 +224,16 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * elle serait subie. Remise à `null` dès qu'autre chose est frappé.
      */
     private var lastAutoCapitalization: Pair<String, String>? = null
-    
+
+    /**
+     * Texte écrit par la dernière suggestion touchée, espace finale comprise,
+     * tant que rien d'autre n'a été frappé. Sert à retirer cette espace si un
+     * signe qui se colle au mot suit ([colleAuMotPrecedent]). On compare au
+     * texte réellement présent avant le curseur, comme pour la majuscule : si
+     * le curseur a bougé entre-temps, rien n'est effacé.
+     */
+    private var espaceAutoApres: String? = null
+
     fun setInputProcessorListener(listener: InputProcessorListener) {
         this.processorListener = listener
     }
@@ -112,7 +255,9 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     fun processKeyPress(key: String): Boolean {
         Log.d(TAG, "processKeyPress appelé avec: '$key'")
         val inputConnection = inputMethodService.currentInputConnection ?: return false
-        
+
+        preparerInsertion(key, inputConnection)
+
         return when (key) {
             "⌫" -> {
                 Log.d(TAG, "Handling backspace")
@@ -146,13 +291,31 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
     }
     
     /**
+     * À appeler avant d'écrire [texte] : retire l'espace posée par une
+     * suggestion si [texte] se colle au mot, et oublie cette espace dans tous
+     * les cas. Publique pour le service, qui écrit lui-même les signes choisis
+     * en appui long (`?` sous le point, `’` sous l'apostrophe).
+     */
+    fun preparerInsertion(texte: String, inputConnection: InputConnection? = inputMethodService.currentInputConnection) {
+        val attendu = espaceAutoApres ?: return
+        espaceAutoApres = null
+        if (!colleAuMotPrecedent(texte) || inputConnection == null) return
+        val avant = inputConnection.getTextBeforeCursor(attendu.length, 0)?.toString()
+        if (avant == attendu) {
+            inputConnection.deleteSurroundingText(1, 0)
+            Log.d(TAG, "Espace automatique retirée devant '$texte'")
+        }
+    }
+
+    /**
      * Traite l'entrée d'un caractère normal
      */
     private fun handleCharacterInput(key: String, inputConnection: InputConnection): Boolean {
-        val character = if (shouldCapitalize()) {
-            key.uppercase()
-        } else {
-            key.lowercase()
+        val character = when {
+            // Touche de plusieurs caractères (« .lu ») : écrite telle quelle
+            key.length > 1 -> key
+            shouldCapitalize() -> key.uppercase()
+            else -> key.lowercase()
         }
         
         // Ajouter le caractère au mot courant
@@ -232,82 +395,21 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      * Traite la touche Entrée
      */
     private fun handleEnter(inputConnection: InputConnection): Boolean {
-        Log.d(TAG, "🔵 === DEBUT handleEnter() ===")
         finalizeCurrentWord()
-        Log.d(TAG, "🔵 Mot finalisé")
-        
-        // Déterminer le type d'action selon le contexte
+
         val editorInfo = inputMethodService.currentInputEditorInfo
-        val imeOptions = editorInfo?.imeOptions ?: 0
-        val imeAction = imeOptions and EditorInfo.IME_MASK_ACTION
-        
-        Log.d(TAG, "🔵 EditorInfo: $editorInfo")
-        Log.d(TAG, "🔵 IME Options: $imeOptions")
-        Log.d(TAG, "🔵 IME Action détectée: $imeAction")
-        
-        // 🔧 QUICK FIX: Vérifier si l'action ENTER est explicitement désactivée
-        val noEnterAction = (imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
-        
-        if (noEnterAction) {
-            Log.d(TAG, "🔵 ⚠️ Flag IME_FLAG_NO_ENTER_ACTION détecté - Action ENTER désactivée")
-            Log.d(TAG, "🔵 → Insertion nouvelle ligne au lieu d'exécuter l'action")
+        val action = actionEntree(editorInfo?.inputType ?: 0, editorInfo?.imeOptions ?: 0)
+
+        if (action == null) {
+            // Champ multiligne sans action, action explicitement désactivée
+            // (IME_FLAG_NO_ENTER_ACTION), ou aucune action connue : nouvelle ligne
             inputConnection.commitText("\n", 1)
-            processorListener?.onSpecialKeyPressed("⏎")
-            Log.d(TAG, "🔵 === FIN handleEnter() (action désactivée) ===")
-            return true
+        } else {
+            inputConnection.performEditorAction(action)
         }
-        
-        // 🔧 AMÉLIORATION: Détecter les champs multilignes
-        val inputType = editorInfo?.inputType ?: 0
-        val isMultiline = (inputType and InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0
-        
-        if (isMultiline && imeAction == EditorInfo.IME_ACTION_UNSPECIFIED) {
-            Log.d(TAG, "🔵 📝 Champ multiligne détecté - Insertion nouvelle ligne")
-            inputConnection.commitText("\n", 1)
-            processorListener?.onSpecialKeyPressed("⏎")
-            Log.d(TAG, "🔵 === FIN handleEnter() (multiligne) ===")
-            return true
-        }
-        
-        Log.d(TAG, "🔵 🎯 Exécution de l'action IME selon le contexte")
-        
-        when (imeAction) {
-            EditorInfo.IME_ACTION_SEND -> {
-                Log.d(TAG, "🔵 → Action SEND - Envoi du message")
-                inputConnection.performEditorAction(EditorInfo.IME_ACTION_SEND)
-                Log.d(TAG, "🔵 → performEditorAction(SEND) exécuté")
-            }
-            EditorInfo.IME_ACTION_SEARCH -> {
-                Log.d(TAG, "🔵 → Action SEARCH - Recherche")
-                inputConnection.performEditorAction(EditorInfo.IME_ACTION_SEARCH)
-                Log.d(TAG, "🔵 → performEditorAction(SEARCH) exécuté")
-            }
-            EditorInfo.IME_ACTION_GO -> {
-                Log.d(TAG, "🔵 → Action GO")
-                inputConnection.performEditorAction(EditorInfo.IME_ACTION_GO)
-                Log.d(TAG, "🔵 → performEditorAction(GO) exécuté")
-            }
-            EditorInfo.IME_ACTION_NEXT -> {
-                Log.d(TAG, "🔵 → Action NEXT - Champ suivant")
-                inputConnection.performEditorAction(EditorInfo.IME_ACTION_NEXT)
-                Log.d(TAG, "🔵 → performEditorAction(NEXT) exécuté")
-            }
-            EditorInfo.IME_ACTION_DONE -> {
-                Log.d(TAG, "🔵 → Action DONE - Terminé")
-                inputConnection.performEditorAction(EditorInfo.IME_ACTION_DONE)
-                Log.d(TAG, "🔵 → performEditorAction(DONE) exécuté")
-            }
-            else -> {
-                Log.d(TAG, "🔵 → Action PAR DÉFAUT - Nouvelle ligne")
-                // Action par défaut - nouvelle ligne
-                inputConnection.commitText("\n", 1)
-                Log.d(TAG, "🔵 → Nouvelle ligne insérée")
-            }
-        }
-        
-        Log.d(TAG, "🔵 Notification listener touche spéciale")
+        Log.d(TAG, "Entrée : ${action?.let { "action $it" } ?: "nouvelle ligne"}")
+
         processorListener?.onSpecialKeyPressed("⏎")
-        Log.d(TAG, "🔵 === FIN handleEnter() ===")
         return true
     }
     
@@ -461,6 +563,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      */
     fun moveCursorBy(steps: Int) {
         if (steps == 0) return
+        espaceAutoApres = null
 
         val keyCode = if (steps > 0) KeyEvent.KEYCODE_DPAD_RIGHT else KeyEvent.KEYCODE_DPAD_LEFT
         repeat(kotlin.math.abs(steps)) {
@@ -524,8 +627,13 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         // ✅ La suggestion arrive déjà avec la bonne casse depuis SuggestionEngine
         Log.d(TAG, "Suggestion avec casse préservée: '$currentWord' -> '$suggestion'")
         
-        // Insérer la suggestion avec un espace automatique
-        inputConnection.commitText("$suggestion ", 1)
+        // Insérer la suggestion avec une espace automatique, sauf dans une
+        // adresse e-mail ou web, où elle casserait l'adresse
+        val editorInfo = inputMethodService.currentInputEditorInfo
+        val avecEspace = !estChampAdresse(editorInfo?.inputType ?: 0)
+        val ecrit = if (avecEspace) "$suggestion " else suggestion
+        inputConnection.commitText(ecrit, 1)
+        espaceAutoApres = if (avecEspace) ecrit else null
         
         // Finaliser le mot (le tracking se fera dans finalizeCurrentWord)
         currentWord = suggestion
@@ -586,37 +694,23 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         val editorInfo = inputMethodService.currentInputEditorInfo ?: return false
         val inputType = editorInfo.inputType
         
-        // Pas de capitalisation automatique en mode mot de passe ou numérique
-        if (inputType and InputType.TYPE_TEXT_VARIATION_PASSWORD != 0 ||
-            inputType and InputType.TYPE_CLASS_NUMBER != 0) {
-            return false
-        }
-        
-        // Obtenir le texte précédent pour détecter le début de phrase
-        try {
+        return try {
             val textBefore = inputConnection.getTextBeforeCursor(100, 0)?.toString() ?: ""
-            
-            // Capitaliser au début du texte
-            if (textBefore.isEmpty() || textBefore.isBlank()) {
-                return true
-            }
-            
-            // Capitaliser après un point, un point d'exclamation ou d'interrogation
-            val lastSentenceEnd = textBefore.indexOfLast { it in ".!?" }
-            if (lastSentenceEnd != -1) {
-                val afterPunctuation = textBefore.substring(lastSentenceEnd + 1)
-                if (afterPunctuation.isBlank()) {
-                    return true
-                }
-            }
-            
+            majusculeAttendue(inputType, textBefore)
         } catch (e: Exception) {
             Log.w(TAG, "Erreur lors de la vérification de la capitalisation automatique: ${e.message}")
+            false
         }
-        
-        return false
     }
-    
+
+    /**
+     * Allume la majuscule si le champ l'attend à cet endroit. Appelé par le
+     * service à l'ouverture d'un champ : jusqu'ici la première lettre sortait
+     * bien en majuscule, mais la touche Maj restait éteinte et les lettres
+     * affichées en minuscules, si bien qu'on ne le savait qu'après coup.
+     */
+    fun rafraichirMajuscule() = handleAutoCapitalization()
+
     /**
      * Gère la capitalisation automatique après certains événements
      */
@@ -657,6 +751,7 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
      */
     fun resetState() {
         currentWord = ""
+        espaceAutoApres = null
         isCapitalMode = false
         isCapsLock = false
         // Ne pas réinitialiser isNumericMode pour conserver le mode choisi
@@ -667,6 +762,18 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         processorListener?.onModeChanged(isNumericMode, isEmojiMode, isCapitalMode, isCapsLock)
     }
     
+    /**
+     * Mode du clavier à l'ouverture d'un champ : la page 123 pour un champ de
+     * chiffres, les lettres sinon. Le service met le clavier dans le même état
+     * juste après ; sans cette remise à niveau, ce processeur gardait le mode
+     * numérique du champ précédent alors que le clavier revenait aux lettres,
+     * et le premier appui sur « 123 » ne faisait rien de visible.
+     */
+    fun definirModeDeDepart(numerique: Boolean) {
+        isNumericMode = numerique
+        isEmojiMode = false
+    }
+
     /**
      * Met à jour le mot courant (utilisé par les suggestions)
      */

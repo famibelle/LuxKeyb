@@ -123,6 +123,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   border:3px solid #FFFFFF; box-shadow:0 6px 16px rgba(0,0,0,.35);
   transform:rotate(-4deg);
 }
+/* 2026-09-30 : une carte du carnet dépasse de derrière le clavier, comme sur
+   l'affiche et le tract. La plus petite image de la couverture et sous le
+   clavier : elle dit que les mots se collectionnent, le clavier reste le
+   sujet. */
+.cover .hero-card:has(.hero-carte){ overflow:visible; }
+.cover .hero-card img.hero-clavier{ position:relative; z-index:2; }
+.cover .hero-card img.hero-carte{
+  position:absolute; right:-1mm; top:-5mm; z-index:1;
+  width:20mm; height:auto; max-width:none; margin:0;
+  border-radius:6px; border:1.4px solid rgba(28,38,36,.18); box-shadow:0 6px 14px rgba(0,0,0,.14);
+  transform:rotate(8deg);
+}
 .cover .hero-caption{
   position:absolute; top:5mm; left:6mm; right:6mm; z-index:2; text-align:center;
   font-family:"Fredoka",sans-serif; font-weight:700; font-size:16px; color:#003876;
@@ -261,6 +273,9 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .mini-shots img.s2{ left:50%; transform:translateX(-1%) rotate(4deg); z-index:2; }
 .mini-shots.large{ width:84mm; height:56mm; }
 .mini-shots.large img{ width:42mm; }
+/* Deux cartes du carnet, en portrait : 36 mm de large font 52 mm de haut. */
+.mini-shots.cartes{ width:80mm; height:54mm; }
+.mini-shots.cartes img{ width:36mm; }
 
 .shot{ text-align:center; margin-top:auto; flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
 .shot img{
@@ -268,7 +283,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   box-shadow:0 4px 16px rgba(0,0,0,.25); border:4px solid #FFFFFF;
   outline:1px solid rgba(28,38,36,.13);
 }
-.shot.tall img{ max-height:94mm; }
+/* 94 mm faisait déborder la capture sur l'échelle des niveaux et sur le QR :
+   le volet mesure 210 mm et le reste (texte, marches, QR) en prend déjà 140. */
+.shot.tall{ flex:0 1 auto; margin-top:2mm; }
+.shot.tall img{ max-height:62mm; }
 
 .callout{
   margin-top:auto; background:#FFFFFF; border:1px solid rgba(28,38,36,.13);
@@ -336,6 +354,28 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 }
 body[data-print-mode="recto"] #face-verso{ display:none; }
 body[data-print-mode="verso"] #face-recto{ display:none; }
+/* Refonte 2026-09-28. */
+.gp-badge{display:block;height:auto;}
+/* Le badge vit à côté du QR, il ne doit pas hériter de son carré. */
+.cover .cta .txt img.gp-badge{width:36mm;height:auto;border-radius:0;margin:1mm 0 0;}
+.panel-cta img.gp-badge{width:34mm;height:auto;padding:0;background:none;border-radius:0;}
+/* Volet 2 : les deux captures remplissent le volet au lieu d'y flotter. */
+.mini-shots.large{width:84mm;height:56mm;margin:auto;}
+.mini-shots.large img.s1,.mini-shots.large img.s2{top:6mm;}
+.mini-shots.large img{width:44mm;}
+/* Refonte 2026-09-29 : le volet 5 ne parle plus que du clavier, le volet 6
+   devient « Apprendre en tapant » (jeux, carnet, dictionnaire). L'ordre de
+   lecture dit ce qui est premier : on écrit, et les mots qu'on tape font
+   apprendre. */
+.shot.clavier{flex:1 1 auto;margin:2mm 0;}
+.shot.clavier img{max-height:72mm;}
+.bloc{font-size:12px;line-height:1.4;color:#1C2624;background:rgba(255,255,255,.7);border-radius:8px;padding:2mm 3mm;margin-bottom:2mm;}
+.bloc b{display:block;color:#003876;font-size:13px;}
+.trio{display:flex;gap:2mm;justify-content:center;margin:1mm 0 3mm;}
+.trio figure{margin:0;width:27mm;text-align:center;}
+.trio img{width:27mm;height:30mm;object-fit:cover;object-position:top;border-radius:6px;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.trio figure:last-child img{object-position:left top;}
+.trio figcaption{font-size:9px;font-weight:700;color:#003876;margin-top:1mm;text-transform:uppercase;letter-spacing:.05em;}
 </style>
 </head>
 <body>
@@ -351,6 +391,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   <a href="labs.html">🔬 Labs</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
   <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
   <a href="feedbacks_form.html">💬 Retours</a> ·
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
@@ -394,7 +435,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </div>
       <div class="promo-row">
         <div class="qr-box">
-          <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
+          <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
           <div class="qr-label">Flashez le code</div>
         </div>
         <div class="stamp">
@@ -405,7 +446,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div>
         <div class="help-title">Comment nous aider</div>
         <ul class="help-list">
-          <li>Rejoignez le test sur Google Play</li>
+          <li>Notez-le sur Google Play</li>
           <li>Parlez-en autour de vous</li>
           <li>Signalez un mot qui manque</li>
         </ul>
@@ -415,7 +456,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
           <div><span>Web</span> famibelle.github.io/LuxKeyb</div>
           <div><span>Kontakt</span> Formulaire de retours sur le site</div>
         </div>
-        <div class="promises">Gratuit · Open source (MIT) · Zéro publicité · 100&nbsp;% hors ligne</div>
+        <div class="promises">Gratuit · Sans publicité · Sans compte · 100&nbsp;% hors ligne</div>
         <div class="legal">Lëtzebuergesch Clavier est un projet citoyen publié par Médhi Famibelle. Aucune collecte de données personnelles : l'application n'a aucune permission réseau et le clavier fonctionne entièrement sur l'appareil.</div>
         <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg" style="height:3.6mm;vertical-align:-0.4mm;"> · famibelle.github.io/LuxKeyb</div>
       </div>
@@ -432,7 +473,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span><b>Ce clavier est fait pour vous.</b></span></li>
       </ul>
       <div class="mini-shots large">
-        <img class="s1" src="Screenshots/lux_suggestions.png" alt="Le clavier pendant la frappe : suggestions luxembourgeoises en rouge, françaises en bleu">
+        <img class="s1" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
         <img class="s2" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê s'ouvre">
       </div>
       <div class="callout">À l'intérieur : les diacritiques en accès direct, un correcteur qui vaut pour toutes vos applications, sept jeux avec leur carnet de cartes, et huit niveaux de progression. Retournez le dépliant.</div>
@@ -447,17 +488,18 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         </div>
         <h1 class="h">Enfin écrire en lëtzebuergesch<br>sans se battre&nbsp;!</h1>
         <div class="press-cards">
-          <div class="press-card"><span class="src">123 297 formes</span><span class="txt">un dictionnaire luxembourgeois régénéré à partir de sources publiques, pas une liste figée</span></div>
+          <div class="press-card"><span class="src">120 000 mots</span><span class="txt">luxembourgeois proposés pendant la frappe, tirés de la presse et du dictionnaire officiel</span></div>
           <div class="press-card"><span class="src">QWERTZ</span><span class="txt">la disposition des claviers physiques du pays, avec é, ä, ë et l'apostrophe en accès direct</span></div>
           <div class="press-card"><span class="src">0 réseau</span><span class="txt">aucune permission Internet : rien de ce que vous tapez ne quitte le téléphone</span></div>
         </div>
       </div>
       <div class="hero-card">
-        <img src="Screenshots/lux_suggestions.png" alt="Le clavier QWERTZ luxembourgeois pendant la frappe d'un SMS">
+        <img class="hero-carte" src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens et une phrase du dictionnaire officiel">
+        <img class="hero-clavier" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
       </div>
       <div class="cta">
-        <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
-        <div class="txt"><b>Flashez le code</b>Essayez-le d'abord dans le navigateur<span class="free">100&nbsp;% gratuit</span></div>
+        <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
+        <div class="txt"><b>Flashez le code</b><img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play"><span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>
@@ -471,13 +513,13 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <h2>Installation en 4 étapes</h2>
       <ol class="steps">
         <li>
-          <b>Ouvrez le site, c'est gratuit</b>
+          <b>Ouvrez la fiche Google Play, c'est gratuit</b>
           <div class="dl-row">
-            <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
-            <span class="dl-txt"><b>Flashez ce code</b>Visez-le avec l'appareil photo : le site s'ouvre et le clavier s'essaie dans le navigateur, sans rien installer</span>
+            <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
+            <span class="dl-txt"><b>Flashez ce code</b>Visez-le avec l'appareil photo : la fiche Google Play s'ouvre, il ne reste qu'à toucher Installer</span>
           </div>
         </li>
-        <li><b>Installez l'application</b>Deux chemins depuis le site : rejoindre le test sur Google Play (installation et mises à jour comme n'importe quelle autre application) ou télécharger l'APK directement.</li>
+        <li><b>Installez l'application</b>Depuis Google Play, comme n'importe quelle autre application : installation et mises à jour automatiques.</li>
         <li><b>Activez le clavier dans les réglages</b>Un bouton de l'application mène droit au bon écran Android. Le système affiche alors un avertissement sur la saisie : il est générique, Android le montre pour <i>tout</i> clavier tiers, et celui-ci n'a aucune permission réseau pour envoyer quoi que ce soit.</li>
         <li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez Lëtzebuergesch Clavier et tapez votre premier mot.</li>
       </ol>
@@ -493,21 +535,23 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <li><span><b>é, ä, ë</b> ont leur touche, et les autres diacritiques viennent par appui long</span></li>
         <li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;lëtzebuergesch&nbsp;»</span></li>
         <li><span>Un <b>correcteur système</b> : vos mots cessent d'être soulignés en rouge dans vos autres applications</span></li>
-        <li><span><b>Sept jeux</b>&nbsp;: mots mêlés, anagrammes, mot en six essais, phrase à trous, nombres en lettres, mots croisés et mots casés</span></li>
-        <li><span><b>Un carnet de cartes</b>&nbsp;: chaque mot gagné en devient une, avec son sens et une phrase du dictionnaire officiel, et revient vous voir jusqu'à ce qu'il soit su</span></li>
       </ul>
-      <div class="mini-shots">
-        <img class="s1" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê">
-        <img class="s2" src="Screenshots/lux_numerique.png" alt="Le mode chiffres et symboles du clavier">
-      </div>
-      <div class="callout">La prédiction du mot suivant s'appuie sur 27 746 contextes : après un espace, le clavier propose la suite d'après les deux mots précédents, pas seulement le dernier.</div>
+      <div class="shot clavier"><img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »"></div>
+      <div class="callout">Il devine aussi le mot suivant&nbsp;: après «&nbsp;op der&nbsp;», il propose déjà «&nbsp;Stad&nbsp;», «&nbsp;Police&nbsp;», «&nbsp;Rue&nbsp;». Moins de lettres à taper, moins de fautes.</div>
     </div>
 
     <!-- P6 : progression -->
     <div class="panel light rang-4">
-      <div class="kicker">Motivation</div>
-      <h2>Suivez votre progression</h2>
-      <p>Chaque mot que vous employez fait avancer votre niveau, selon la part du dictionnaire que vous avez déjà utilisée, d'<b>Ufänker</b> à <b>Sproochenmeeschter</b>. Seuls les mots déjà présents dans le dictionnaire sont comptés : un mot de passe ou un nom propre n'y figure pas, et n'est donc jamais enregistré.</p>
+      <div class="kicker">Et pour apprendre</div>
+      <h2>Apprendre en tapant</h2>
+      <div class="bloc"><b>🎮 Sept jeux</b> mots mêlés, anagrammes, mot en six essais, phrase à trous, nombres, mots croisés, mots casés.</div>
+      <div class="bloc"><b>🃏 Un carnet de cartes</b> chaque mot gagné devient une carte, et les mots que vous tapez la font avancer.</div>
+      <div class="bloc"><b>📖 Un dictionnaire FR ↔ LB</b> un mot vous échappe&nbsp;? Il le traduit dans les deux sens, sans réseau.</div>
+      <div class="trio">
+        <figure><img src="Screenshots/lux_wuertsich_trouves.png" alt="Le jeu Wuertsich : trois mots trouvés dans la grille, chacun avec sa traduction"><figcaption>Jeux</figcaption></figure>
+        <figure><img src="Screenshots/lux_carte_stad.png" alt="Une carte du carnet : le mot Stad, son sens et une phrase du dictionnaire officiel"><figcaption>Carnet</figcaption></figure>
+        <figure><img src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="La fiche Gromperekichelchen du dictionnaire : galette de pommes de terre, une phrase d'exemple et ses autres formes"><figcaption>Dictionnaire</figcaption></figure>
+      </div>
       <div class="levels">
         <div class="level-step h1"><span>🌍</span></div>
         <div class="level-step h2"><span>🌱</span></div>
@@ -519,10 +563,9 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <div class="level-step h8"><span>🧙</span></div>
       </div>
       <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
-      <div class="shot tall"><img src="Screenshots/lux_niveaux.png" alt="Écran de progression : niveau atteint, part du dictionnaire découverte, mot du jour"></div>
       <div class="panel-cta">
-        <img src="assets/qr-luxkeyb-site.png" alt="QR code vers le site du Lëtzebuergesch Clavier">
-        <div class="txt"><b>Installez maintenant</b>Chaque testeur rapproche le clavier de sa sortie publique<span class="free">100&nbsp;% gratuit</span></div>
+        <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
+        <div class="txt"><b>Installez maintenant</b>Cherchez «&nbsp;Lëtzebuergesch Clavier&nbsp;»<span class="free">100&nbsp;% gratuit</span></div>
       </div>
     </div>
   </div>

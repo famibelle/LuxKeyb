@@ -191,6 +191,70 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
   son propre service. Attendez-vous à des erreurs.
 - La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
   est trop lent pour être représentatif.
+## [29.4.2] - 2026-09-30
+
+Les majuscules fonctionnent enfin dans le navigateur.
+
+### 🐛 Corrections
+
+- **Dans Chrome et les pages web, la première lettre d'une phrase prend la majuscule**, et chaque mot d'un champ de nom (« Jean Paul »). Le clavier ignorait tous les champs web, quoi que demande la page ; il suit maintenant sa demande, et respecte une page qui désactive les majuscules.
+- **Les touches « @ » et « / » ne sont plus bleues sur la page des chiffres.** Ce bleu n'était voulu que sur la rangée du bas des champs d'adresse, où elles remplacent la virgule et l'apostrophe.
+
+## [29.4.1] - 2026-09-29
+
+Le clavier porte le même nom partout.
+
+### 🐛 Corrections
+
+- **Dans la liste des claviers du téléphone, il s'appelle « Lëtzebuergesch Clavier »**, et non plus « Lëtzebuergesch Clavier Luxembourg ». C'est le nom que l'application vous demande de choisir, et celui de son icône.
+
+## [29.4.0] - 2026-09-29
+
+L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.
+
+### ✨ Améliorations
+
+- **Une fois le clavier installé, l'application s'ouvre sur votre journée** au lieu de l'écran d'installation : les cartes à revoir, le mot du jour, votre dernier jeu et votre progression, dans cet ordre.
+- **« Réviser maintenant » lance la révision tout de suite.** La première carte apparaît sans passer par la boîte ; en fermant la séance, on retrouve la Boîte de Leitner. Quand rien n'est à revoir, la carte le dit, et propose de jouer pour gagner d'autres cartes.
+- **Le mot du jour s'ouvre dans le Wierderbuch** d'un toucher, la recherche déjà faite.
+- **« Rejouer à Wuertmix »** relance le dernier jeu ouvert, quel qu'il soit.
+- **La progression tient en une carte** : votre niveau, la barre jusqu'au palier suivant et le nombre de mots qui restent.
+- **La configuration se replie sous une seule ligne**, « Clavier installé » : un toucher la déplie, avec les réglages des majuscules, le correcteur et la façon de changer de clavier.
+- **L'onglet s'appelle « Haut »**, aujourd'hui en luxembourgeois, comme Spiller et Wierderbuch.
+
+## [29.3.1] - 2026-09-29
+
+Le clavier suit mieux encore le champ où l'on tape.
+
+### ✨ Améliorations
+
+- **Dans une adresse e-mail, « @ » et « .lu » sont sur la rangée du bas**, à la place de la virgule et de l'apostrophe. Dans une adresse web, c'est « / » et « .lu ». En restant appuyé sur « .lu » : « .com », « .fr », « .de », « .be », « .eu », toujours en minuscules.
+- **Dans un champ de nom, chaque mot prend sa majuscule** (« Jean Paul »), et un champ qui demande des capitales les met partout.
+
+### 🐛 Corrections
+
+- **La touche Maj s'allume dès l'ouverture d'un champ** qui commence par une majuscule. La première lettre sortait déjà en majuscule, mais le clavier affichait des minuscules jusque-là.
+- **Le prénom de Google Contacts et les champs du même genre** retrouvent leur majuscule : ils se déclarent d'une façon que le clavier ne reconnaissait pas comme du texte.
+
+## [29.3.0] - 2026-09-29
+
+Le clavier suit le champ où l'on tape, et la ponctuation se colle au mot.
+
+### ✨ Améliorations
+
+- **Un point après une suggestion se colle au mot.** Toucher « Gromper » puis « . » donnait « Gromper . » ; l'espace ajoutée par la suggestion disparaît maintenant devant . , ? ! : ; ) … et l'apostrophe, pour écrire « d'Land » sans retour arrière.
+- **Le clavier s'ouvre sur les chiffres dans un champ de chiffres** : code PIN, code reçu par SMS, montant, numéro de téléphone, date.
+- **La touche Entrée montre ce qu'elle va faire** : une loupe pour chercher, une flèche d'envoi, une flèche pour passer au champ suivant, une coche pour terminer.
+- **Dans une adresse e-mail ou web**, plus de majuscule d'office ni d'espace après une suggestion : l'adresse reste juste.
+- **De nouveaux symboles sur la page 123.** « % » a sa touche, à la place de « & », qui passe dessous. En restant appuyé : « _ » sous le tiret, « $ £ ¥ » sous l'euro, « ° » sous le 0 et l'étoile, crochets et accolades sous les parenthèses, « « » » sous les guillemets, « \ | » sous la barre oblique, « ± × ÷ » sous le plus, « ≠ ~ ^ » sous le égal.
+- **« Mäi Lëtzebuergesch » encourage au lieu de décourager.** Le niveau vient en premier, avec une barre jusqu'au palier suivant et « Encore 567 mots avant Klengen », à la place d'un « 0.0% » en très gros. Le mot du jour et les listes de mots gardent la majuscule des noms : « Brauereien », « Apdikte ».
+
+### 🐛 Corrections
+
+- **Dans un champ de mot de passe, la barre de suggestions reste vide.** Elle affichait le début du mot de passe en grosses lettres.
+- **Le Wierderbuch ignore la ponctuation autour du mot cherché** : « Gromper. » trouve « Gromper ».
+- **Un signe choisi en restant appuyé** (« ? » sous le point, « ’ » sous l'apostrophe) n'apparaît plus dans les emojis récents.
+- **La touche « 123 » répond du premier coup** en arrivant dans un champ quitté en mode chiffres.
 
 ## [29.2.0] - 2026-09-26
 

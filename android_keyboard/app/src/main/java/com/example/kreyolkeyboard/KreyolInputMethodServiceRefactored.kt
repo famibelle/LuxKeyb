@@ -52,6 +52,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     companion object {
         private const val TAG = "LuxIME-Potomitan™"
+        // Tout ce que la popup d'appui long propose sous ce point de code est
+        // ponctuation ou symbole ; les tons de peau, eux, sont tous au-dessus
+        // (☝ U+261D est le plus bas). Voir onAccentSelected().
+        private const val PREMIER_POINT_DE_CODE_EMOJI = 0x2600
         private const val MAX_SUGGESTIONS = 5  // 3 Lëtzebuergesch + 2 Français (mode bilingue)
         // Hauteur d'une rangée de suggestions : ce que le clavier consomme en
         // hauteur en dehors des rangées de touches elles-mêmes. Le padding
@@ -523,7 +527,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // capitalisés (« rue », « moment », « centre »…), et un message en
         // français en ressortirait défiguré.
         inputProcessor.setCapitalizationProvider { mot ->
-            if (!capitalisationAutomatiqueActive() || isSensitiveField()) null
+            if (!capitalisationAutomatiqueActive() || isSensitiveField() || isAddressField()) null
             else suggestionEngine.contextualCapitalization(mot)
         }
 
@@ -1510,6 +1514,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             val textBefore = inputConnection.getTextBeforeCursor(10, 0)?.toString() ?: ""
             Log.d(TAG, "📝 Texte avant accent: '$textBefore'")
             
+            // Un signe choisi en appui long (« ? » sous le point, « ’ » sous
+            // l'apostrophe) retire l'espace qu'une suggestion vient de poser,
+            // exactement comme s'il avait été tapé sur sa propre touche
+            inputProcessor.preparerInsertion(accent, inputConnection)
+
             // ✅ BUG FIX CORRECT: Ajouter l'accent directement 
             // Le caractère de base n'a pas été ajouté à cause de l'appui long
             inputConnection.commitText(accent, 1)
@@ -1532,12 +1541,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 // "ch"...) n'obtenait jamais de propositions.
                 inputProcessor.setCurrentWord(updatedWord)
                 Log.d(TAG, "✅ Mot mis à jour: '$currentWord' + '$accent' → '$updatedWord'")
-            } else {
+            } else if (accent.codePointAt(0) >= PREMIER_POINT_DE_CODE_EMOJI) {
                 // Un emoji, donc un ton de peau choisi en appui long dans le
                 // panneau : il ne passe pas par onEmojiSelected, il faut le
                 // retenir ici sans quoi la variante choisie ne rejoindrait
                 // jamais les récents, seule la variante par défaut le ferait.
                 EmojiRecents.enregistrer(this, accent)
+                inputProcessor.finalizeCurrentWordFromEmoji()
+            } else {
+                // Ponctuation ou symbole (« ? », « % », « ° »…) : il clôt le mot
+                // comme sur sa propre touche, et n'a rien à faire dans les
+                // emojis récents, où il atterrissait jusqu'ici.
                 inputProcessor.finalizeCurrentWordFromEmoji()
             }
             
@@ -1561,7 +1575,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onWordChanged(word: String) {
         Log.d(TAG, "onWordChanged appelé avec: '$word'")
-        if (word.isNotEmpty() && isInitialized) {
+        // Dans un champ de mot de passe, la barre reste vide : les puces
+        // afficheraient le début du mot de passe en gros, lisible par-dessus
+        // l'épaule, alors que le champ lui-même le masque.
+        if (word.isNotEmpty() && isInitialized && !isSensitiveField()) {
             Log.d(TAG, "� Génération suggestions SIMPLES pour: '$word'")
             suggestionEngine.setSuggestionMode(SuggestionEngine.SuggestionMode.DICTIONARY)
             suggestionEngine.generateDictionarySuggestions(word)  // Retour méthode simple
@@ -1572,6 +1589,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
     
     override fun onWordCompleted(word: String) {
+        // Même règle que pour le comptage des mots : rien d'un champ sensible
+        // n'entre dans l'historique qui sert de contexte aux prédictions
+        if (isSensitiveField()) return
         Log.d(TAG, "Mot complété: '$word' - Ajout à l'historique")
         suggestionEngine.addWordToHistory(word)
         
@@ -1792,6 +1812,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * numériques), et champs que l'application déclare non mémorisables via
      * IME_FLAG_NO_PERSONALIZED_LEARNING.
      */
+    private fun isAddressField(): Boolean =
+        InputProcessor.estChampAdresse(currentInputEditorInfo?.inputType ?: 0)
+
     private fun isSensitiveField(): Boolean {
         val editorInfo = currentInputEditorInfo ?: return true
         return isSensitiveInput(editorInfo.inputType, editorInfo.imeOptions)
@@ -1871,15 +1894,36 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // L'écran de réglages partage ce processus : au moment du clic il a déjà
         // rafraîchi la palette globale, si bien qu'un tel booléen serait toujours
         // faux ici et que le clavier garderait ses anciennes couleurs.
+        // Un champ d'adresse a sa propre rangée du bas (« @ » ou « / », et
+        // « .lu ») : passer d'un tel champ à un autre reconstruit la vue, ce
+        // qui n'arrive qu'à ce changement-là, pas à chaque champ.
+        val inputType = info?.inputType ?: 0
+        val champAdresse = when {
+            InputProcessor.estChampWeb(inputType) -> KeyboardLayoutManager.ChampAdresse.WEB
+            InputProcessor.estChampAdresse(inputType) -> KeyboardLayoutManager.ChampAdresse.EMAIL
+            else -> KeyboardLayoutManager.ChampAdresse.AUCUN
+        }
+        val rangeeChangee = keyboardLayoutManager.definirChampAdresse(champAdresse)
+
         KeyboardTheme.refresh(this)
-        if (paletteDeLaVue !== KeyboardTheme.palette()) {
-            Log.d(TAG, "Thème changé : reconstruction de la vue d'entrée")
+        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee) {
+            Log.d(TAG, "Thème ou rangée d'adresse changés : reconstruction de la vue d'entrée")
             setInputView(onCreateInputView())
         }
 
-        // 🅰️ S'ASSURER QUE LE MODE ALPHABÉTIQUE EST ACTIF À CHAQUE FOIS
+        // La touche Entrée dessine ce qu'elle fera dans ce champ : loupe,
+        // envoi, flèche, coche, ou retour à la ligne
+        keyboardLayoutManager.definirActionEntree(
+            InputProcessor.actionEntree(info?.inputType ?: 0, info?.imeOptions ?: 0)
+        )
+
+        // 🅰️ Lettres à chaque nouveau champ, sauf un champ de chiffres (code
+        // PIN, code SMS, montant, téléphone), qui s'ouvre sur la page 123
         if (!restarting) {
+            val numerique = InputProcessor.ouvreLePaveNumerique(info?.inputType ?: 0)
+            inputProcessor.definirModeDeDepart(numerique)
             keyboardLayoutManager.forceAlphabeticMode()
+            if (numerique) keyboardLayoutManager.updateKeyboardStates(true, false, false, false)
             keyboardLayoutManager.updateKeyboardDisplay()
             // Depuis que les panneaux sont préconstruits et seulement masqués,
             // remettre les drapeaux à l'alpha ne suffit plus : il faut rendre le
@@ -1888,6 +1932,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             keyboardLayoutManager.applyMode()
             Log.d(TAG, "✅ Mode alphabétique garanti lors du démarrage de la saisie")
         }
+
+        // Maj allumée d'entrée quand le champ commence par une majuscule
+        // (texte vide, prénom…) : la touche et les lettres le montrent avant la
+        // première frappe, pas après. Hors du bloc ci-dessus : beaucoup
+        // d'applications (Contacts, Chrome) relancent la saisie sur le même
+        // champ, et onStartInput() vient d'éteindre la majuscule dans ce cas
+        // aussi. Le calcul part du texte réel, il ne l'allume qu'à bon escient.
+        if (!keyboardLayoutManager.isNumericMode()) inputProcessor.rafraichirMajuscule()
 
         maybeShowFirstRealUseTip(info)
     }

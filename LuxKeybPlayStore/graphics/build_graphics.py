@@ -5,18 +5,21 @@
     python3 build_graphics.py icon       # icône 512 seule
     python3 build_graphics.py feature    # image mise en avant seule
     python3 build_graphics.py shots      # captures téléphone seules
+    python3 build_graphics.py jeux       # un visuel par jeu (hors des 8 de la Console)
+    python3 build_graphics.py carnet     # boîte de Leitner et éventail de cartes
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les dix fichiers à envoyer à la Play
 Console. Chacun porte le nom de l'emplacement du formulaire où il va, pour
 qu'il n'y ait rien à retrouver au moment de l'envoi :
 
-  Icône de l'application.png              depuis Logos/luxembourg-logo-hd.png
-  Image de présentation.png               depuis feature_graphic_source.html
-  Captures d'écran pour téléphone 1-8.png depuis docs/Screenshots/lux_*.png
+  Icône de l'application.png                        depuis Logos/luxembourg-logo-hd.png
+  Image de présentation.png                          depuis feature_graphic_source.html
+  Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Clavier numérique).png
+                                                      depuis captures-emulateur-pixel9/
 
-Le numéro des captures est leur ordre d'envoi ; le tableau `SPECS` dit lequel
-montre quoi.
+Le numéro des captures est leur ordre d'envoi ; le nom dit aussi ce que chacune
+montre, en un mot (le même que le tableau `SPECS` ci-dessous).
 
 Contraintes de la Console, toutes vérifiables avec `check` :
 icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
@@ -24,17 +27,15 @@ icône 512x512 et moins de 1 Mo ; image de présentation 1024x500 et moins de
 moins de 8 Mo. Les huit captures font 1080x1920, donc au-dessus du 1080x1080
 exigé pour que l'application soit promouvable — il en faut au moins quatre.
 
-Les captures sources sont natives 1080 px de large (recapturées sur émulateur
-1080x2340 le 2026-09-22, sous la 26.3.0) : rien n'est agrandi ici. Les deux
-captures de clavier (suggestions, accents) et celle du clavier numérique sont
-prises dans Messages et recadrées sur champ de saisie + barre de suggestions +
-clavier (partagées avec les captures du guide intégré,
-`res/drawable-nodpi/guide_screenshot_*.png`) ; les cinq autres sont des écrans
-entiers de l'application, dont deux ouvrent une fiche ou une carte en feuille
-du bas (arrière-plan assombri, c'est l'état réel de l'application). À refaire
-à chaque changement visible : celles de septembre montraient encore l'ancien
-ordre des onglets et l'ancienne barre de suggestions sur fond blanc,
-antérieure à la cuvette (12.0.0).
+Les captures sources sont dans `captures-emulateur-pixel9/`, natives 1080 px de
+large (émulateur Pixel 9, 1080x2424, sous la 29.2.0) : rien n'est agrandi ici.
+Leur nom dit ce qu'elles montrent, dans l'ordre d'envoi. Les trois captures de
+clavier (suggestions, accents, numérique) sont prises dans le champ d'essai de
+l'onglet Démarrage puis recadrées (`-recadre`, 1080x1026) sur champ de saisie +
+barre de suggestions + clavier ; l'original plein écran reste à côté. Les cinq
+autres sont des écrans entiers, dont deux ouvrent une fiche ou une carte en
+feuille du bas (arrière-plan assombri, c'est l'état réel de l'application). À
+refaire à chaque changement visible.
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -62,7 +63,7 @@ import tempfile
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
-SHOTS = REPO / "docs" / "Screenshots"
+SHOTS = HERE / "captures-emulateur-pixel9"
 LOGO = REPO / "Logos" / "luxembourg-logo-hd.png"
 OUT = HERE / "feature-graphic"
 ICON = OUT / "Icône de l'application.png"
@@ -73,31 +74,69 @@ CHROME_GUTTER = 200
 ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 
 # (sortie, source, index de frame si GIF, kicker, titre, sous-titre)
+# Le nom de sortie porte le kicker entre parenthèses : la Console lit le
+# numéro (ordre d'envoi), quiconque parcourt le dossier lit le kicker.
 SPECS = [
-    ("Captures d'écran pour téléphone 1", "lux_suggestions.png", None, "Suggestions",
+    ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png", None, "Suggestions",
      "Il vous souffle les mots",
      "Le luxembourgeois d'abord, le français pour les emprunts, sans changer de clavier."),
-    ("Captures d'écran pour téléphone 2", "lux_carte_moien.png", None, "Carnet",
+    ("Captures d'écran pour téléphone 2 (Carnet)", "07-carnet-carte-moien.png", None, "Carnet",
      "Chaque mot appris devient une carte",
      "Sens, phrase d'exemple et traduction officielle, sur une carte à collectionner."),
-    ("Captures d'écran pour téléphone 3", "lux_spiller.png", None, "Jeux",
+    ("Captures d'écran pour téléphone 3 (Jeux)", "02-jeux-onglet-spiller.png", None, "Jeux",
      "Sept jeux pour élargir son vocabulaire",
      "Tous les jeux versent leurs mots dans le même carnet, révisable à intervalle régulier."),
-    ("Captures d'écran pour téléphone 4", "lux_fiche_haus.png", None, "Wierderbuch",
+    ("Captures d'écran pour téléphone 4 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png", None, "Wierderbuch",
      "Un dictionnaire dans le clavier",
      "Près de 89 000 mots, luxembourgeois et français, avec des phrases d'exemple officielles."),
-    ("Captures d'écran pour téléphone 5", "lux_accents.png", None, "Diacritiques",
+    ("Captures d'écran pour téléphone 5 (Diacritiques)", "09-clavier-diacritiques-appui-long-recadre.png", None, "Diacritiques",
      "ë ä é ont leur propre touche",
      "Les autres accents (ü, è, à, ê, ö) restent sous un appui long."),
-    ("Captures d'écran pour téléphone 6", "lux_niveaux.png", None, "Progression",
+    ("Captures d'écran pour téléphone 6 (Progression)", "04-progression-onglet-mai-letzebuergesch.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("Captures d'écran pour téléphone 7", "lux_onboarding.png", None, "Installation",
+    ("Captures d'écran pour téléphone 7 (Installation)", "01-installation-onglet-demarrage.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ("Captures d'écran pour téléphone 8", "lux_numerique.png", None, "Clavier numérique",
+    ("Captures d'écran pour téléphone 8 (Clavier numérique)", "10-clavier-numerique-symboles-recadre.png", None, "Clavier numérique",
      "Chiffres, symboles et ponctuation",
      "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
+]
+
+# Hors des huit emplacements de la Console (limite de 8) : un visuel par jeu,
+# pour le site, les réseaux et la fiche complète. Même gabarit, même format.
+JEUX = [
+    ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich-mots-caches.png", None, "Jeu",
+     "Retrouvez les mots cachés",
+     "Une grille de lettres, des mots à faire glisser du doigt, avec leur traduction française."),
+    ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix-lettres-dans-l-ordre.png", None, "Jeu",
+     "Remettez les lettres dans l'ordre",
+     "La première et la dernière lettre sont données, le sens en français sert d'indice."),
+    ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet-mot-de-5-lettres.png", None, "Jeu",
+     "Devinez le mot en six essais",
+     "Cinq lettres, trois couleurs, et un mot qui doit exister dans le dictionnaire luxembourgeois."),
+    ("Jeu 4 (Wuertlück)", "14-jeu-wuertlueck-phrase-a-trou.png", None, "Jeu",
+     "Complétez la vraie phrase",
+     "Une phrase réelle du corpus, un mot manquant, quatre propositions dont une seule est de l'auteur."),
+    ("Jeu 5 (Zuelwuert)", "15-jeu-zuelwuert-nombre-en-lettres.png", None, "Jeu",
+     "Écrivez le résultat en toutes lettres",
+     "Une multiplication, quatre orthographes : la règle d'Eifel fait toute la difficulté."),
+    ("Jeu 6 (Kräizwuert)", "16-jeu-kraizwuert-mots-croises.png", None, "Jeu",
+     "Des mots croisés à écrire soi-même",
+     "Définitions en français, accents et majuscules s'apprennent en les écrivant."),
+    ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz-mots-a-placer.png", None, "Jeu",
+     "Placez les mots dans la grille",
+     "Aucune définition : les longueurs et les croisements suffisent, le sens se révèle une fois le mot placé."),
+]
+
+# La révision espacée du carnet : la boîte, puis les cartes d'un casier.
+CARNET = [
+    ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner-sept-casiers.png", None, "Boîte de Leitner",
+     "Sept casiers, d'un jour à acquis",
+     "Une bonne réponse fait avancer la carte : elle revient de plus en plus tard, jusqu'à être acquise."),
+    ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail-de-cartes.png", None, "Éventail de cartes",
+     "Les cartes d'un casier en éventail",
+     "Glissez pour parcourir, touchez une carte pour la lire : sens, phrase d'exemple et traduction."),
 ]
 
 SHOT_TEMPLATE = """<meta charset="utf-8">
@@ -182,7 +221,8 @@ def build_feature() -> None:
     print(f"{out.relative_to(HERE)}  ok")
 
 
-def build_shots() -> None:
+def build_shots(specs=None) -> None:
+    specs = SPECS if specs is None else specs
     out_dir = OUT
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -191,7 +231,7 @@ def build_shots() -> None:
         magick(str(ICON), "-resize", "104x104", str(small_icon))
         icon = b64(small_icon)
 
-        for index, (name, src, frame, kicker, title, sub) in enumerate(SPECS, 1):
+        for index, (name, src, frame, kicker, title, sub) in enumerate(specs, 1):
             source = SHOTS / src
             if not source.exists():
                 sys.exit(f"source manquante : {source}")
@@ -219,6 +259,14 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
         sys.exit(f"{path.name} : ce n'est pas un PNG")
     width, height = struct.unpack(">II", head[16:24])
     return width, height, head[25] in (4, 6)
+
+
+def build_games() -> None:
+    build_shots(JEUX)
+
+
+def build_carnet() -> None:
+    build_shots(CARNET)
 
 
 def build_check() -> None:
@@ -260,23 +308,30 @@ def build_check() -> None:
         problems.append(f"{promouvables} captures au moins 1080x1080, il en faut 4 "
                         "pour que l'application soit promouvable")
 
+    for name, *_ in JEUX + CARNET:
+        path = OUT / f"{name}.png"
+        if not path.exists():
+            problems.append(f"{path.name} : absent")
+        elif png_header(path)[:2] != (1080, 1920):
+            problems.append(f"{path.name} : pas en 1080x1920")
+
     for problem in problems:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok — icône, image de présentation et {len(shots)} captures conformes")
+    print(f"check  ok — icône, image de présentation, {len(shots)} captures et {len(JEUX) + len(CARNET)} visuels de jeux et de carnet conformes")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "carnet", "check"]
     known = {"icon": build_icon, "feature": build_feature,
-             "shots": build_shots, "check": build_check}
+             "shots": build_shots, "jeux": build_games, "carnet": build_carnet, "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | carnet | check)")
         known[target]()
     return 0
 
