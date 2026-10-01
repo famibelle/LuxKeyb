@@ -72,9 +72,10 @@ serait l'interface, pas la langue.
 
 ### ⌨️ **Écrire en lëtzebuergesch**
 - Disposition **QWERTZ**, celle des claviers physiques au Luxembourg
-- **é, ä et ë** ont chacune leur touche dédiée, les trois diacritiques les plus fréquentes de la langue
-- Les plus rares (ü, ö, à, â...) sont en appui long, avec un aperçu dans le coin de la touche
-- Disposition **Suisse allemand** au choix dans les réglages : ü, ö et ä à droite, comme sur le clavier physique, é et ë près de l'espace
+- Par défaut, la disposition **Suisse allemand** : ü, ö et ä à droite, comme sur le clavier physique, é et ë près de l'espace
+- **é, ä et ë**, les trois diacritiques les plus fréquentes de la langue, ont leur touche dédiée dans les deux dispositions
+- Les plus rares (è, à, â...) sont en appui long, avec un aperçu dans le coin de la touche
+- Disposition **Luxembourg** au choix dans les réglages : dix touches par rangée au lieu de onze, é à droite du l, ü et ö en appui long
 - L'apostrophe de l'élision (*d'Land*, *s'Kanner*) a sa propre touche
 - Panneau **emoji** complet, tons de peau compris
 - **Correcteur orthographique système** : les mots luxembourgeois ne sont plus soulignés en rouge dans Messages ou Notes
@@ -309,12 +310,13 @@ chiffres mesurés sur la
 Appui long sur une lettre : un popup s'affiche (a → ä à â, e → é ë è ê,
 u → ü û ù, o → ô ö). Glissez le doigt vers l'accent voulu, puis relâchez.
 
-Les trois diacritiques les plus fréquentes, **é**, **ä** et **ë**, ont leur
-propre touche, sans appui long.
+Par défaut, la disposition **Suisse allemand** donne en touches directes
+**ü**, **ö** et **ä** à droite (ü à droite du p, ö et ä à droite du l), et
+**é** et **ë** autour de la barre d'espace : onze touches par rangée.
 
-La disposition **Suisse allemand** (Réglages du clavier → Disposition) y ajoute
-**ü** et **ö** : onze touches par rangée, ü à droite du p, ö et ä à droite
-du l, é et ë autour de la barre d'espace.
+La disposition **Luxembourg** (Réglages du clavier → Disposition) garde dix
+touches par rangée, plus larges : **é** à droite du l, **ä** et **ë** autour de
+la barre d'espace, ü et ö en appui long.
 
 ### Suggestions
 Commencez à taper : les suggestions apparaissent au-dessus des touches, le

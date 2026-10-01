@@ -132,9 +132,11 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             ))
             addView(choixDisposition())
             addView(explication(
-                "« Suisse allemand » reprend le clavier physique du même nom : " +
-                        "ü, ö et ä à droite, é et ë près de l'espace. Les touches y " +
-                        "sont un peu plus étroites, onze par rangée au lieu de dix."
+                "« Suisse allemand », le réglage par défaut, reprend le clavier " +
+                        "physique du même nom : ü, ö et ä à droite, é et ë près de " +
+                        "l'espace. « Luxembourg » a des touches un peu plus larges, " +
+                        "dix par rangée au lieu de onze : é à droite, ä et ë près " +
+                        "de l'espace, ü et ö en appui long."
             ))
         })
         addView(espacement())
@@ -169,7 +171,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             addView(titreSection("Appui long"))
             addView(explication(
                 "Le temps qu'il faut maintenir une touche pour ouvrir ses accents " +
-                        "et ses symboles (ü sous u, ö sous o, ? sous le point…)."
+                        "et ses symboles (è sous e, à sous a, ? sous le point…)."
             ))
             addView(choixDelaiAppuiLong())
             addView(explication(

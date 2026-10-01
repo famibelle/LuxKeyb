@@ -23,7 +23,31 @@ import com.example.kreyolkeyboard.KeyboardLayoutManager.ChampAdresse
 enum class DispositionClavier(val cle: String, val libelle: String) {
 
     /**
-     * Le clavier d'origine, dix touches par rangée.
+     * Le suisse allemand, onze touches par rangée comme Gboard en allemand :
+     * « ü » à droite du « p », « ö » et « ä » à droite du « l ».
+     *
+     * « é » et « ë » prennent alors, autour de la barre d'espace, les places que
+     * « ä » et « ë » occupent sur la disposition luxembourgeoise. Les trois
+     * diacritiques les plus fréquentes du luxembourgeois (é, ë, ä) restent en
+     * touches directes, « ü » et « ö » s'y ajoutent : ce clavier ne sacrifie
+     * rien de luxembourgeois à l'allemand.
+     */
+    SUISSE_ALLEMAND("suisse_allemand", "Suisse allemand (ü, ö et ä à droite)") {
+        override fun rangeesLettres(champ: ChampAdresse): List<Array<String>> = listOf(
+            arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü"),
+            arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"),
+            arrayOf("⇧", "y", "x", "c", "v", "b", "n", "m", "⌫"),
+            rangeeDuBas(champ, gauche = "é", droite = "ë")
+        )
+
+        // 2 + 7 lettres + 2 = 11 unités, la largeur des rangées 1 et 2 : les
+        // lettres des trois rangées gardent la même largeur.
+        override val poidsShiftEtEffacement = 2.0f
+    },
+
+    /**
+     * Le clavier d'origine, dix touches par rangée. Il a été le défaut jusqu'à
+     * la v29.5.0 ; il reste au choix pour qui préfère des touches plus larges.
      *
      * « é » occupe la case immédiatement à droite du « l », exactement là où le
      * QWERTZ suisse-français la place : c'est la diacritique n°1 du
@@ -59,29 +83,6 @@ enum class DispositionClavier(val cle: String, val libelle: String) {
         // rangée, là où la visée du pouce est la plus mauvaise : les garder les
         // plus larges de leur rangée sert aussi à ça.
         override val poidsShiftEtEffacement = 1.5f
-    },
-
-    /**
-     * Le suisse allemand, onze touches par rangée comme Gboard en allemand :
-     * « ü » à droite du « p », « ö » et « ä » à droite du « l ».
-     *
-     * « é » et « ë » prennent alors, autour de la barre d'espace, les places que
-     * « ä » et « ë » occupent sur la disposition luxembourgeoise. Les trois
-     * diacritiques les plus fréquentes du luxembourgeois (é, ë, ä) restent en
-     * touches directes, « ü » et « ö » s'y ajoutent : ce clavier ne sacrifie
-     * rien de luxembourgeois à l'allemand.
-     */
-    SUISSE_ALLEMAND("suisse_allemand", "Suisse allemand (ü, ö et ä à droite)") {
-        override fun rangeesLettres(champ: ChampAdresse): List<Array<String>> = listOf(
-            arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü"),
-            arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"),
-            arrayOf("⇧", "y", "x", "c", "v", "b", "n", "m", "⌫"),
-            rangeeDuBas(champ, gauche = "é", droite = "ë")
-        )
-
-        // 2 + 7 lettres + 2 = 11 unités, la largeur des rangées 1 et 2 : les
-        // lettres des trois rangées gardent la même largeur.
-        override val poidsShiftEtEffacement = 2.0f
     };
 
     /** Les quatre rangées de la page des lettres, la dernière selon le champ. */
@@ -107,7 +108,8 @@ enum class DispositionClavier(val cle: String, val libelle: String) {
     }
 
     companion object {
-        val DEFAUT = LUXEMBOURG
+        /** Suisse allemand depuis la v29.5.0, pour tous, mises à jour comprises. */
+        val DEFAUT = SUISSE_ALLEMAND
 
         /** Tolérante : une clé inconnue retombe sur le défaut plutôt que de jeter. */
         fun depuisCle(cle: String?): DispositionClavier =

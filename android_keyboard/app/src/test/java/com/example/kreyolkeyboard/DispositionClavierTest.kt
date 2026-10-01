@@ -23,10 +23,22 @@ class DispositionClavierTest {
         rangee.sumOf { disposition.poidsTouche(it).toDouble() }.toFloat()
 
     @Test
-    fun `le defaut reste la disposition luxembourgeoise`() {
-        assertEquals(luxembourg, DispositionClavier.DEFAUT)
-        assertEquals(luxembourg, DispositionClavier.depuisCle(null))
-        assertEquals(luxembourg, DispositionClavier.depuisCle("azerty"))
+    fun `le defaut est le suisse allemand`() {
+        assertEquals(suisse, DispositionClavier.DEFAUT)
+        // Aucun choix enregistré : c'est le cas de toutes les installations
+        // antérieures à la v29.5.0, qui passent donc au suisse allemand.
+        assertEquals(suisse, DispositionClavier.depuisCle(null))
+        assertEquals(suisse, DispositionClavier.depuisCle("azerty"))
+    }
+
+    @Test
+    fun `le defaut est propose en premier dans les reglages`() {
+        assertEquals(DispositionClavier.DEFAUT, DispositionClavier.entries.first())
+    }
+
+    @Test
+    fun `un choix luxembourgeois enregistre est respecte`() {
+        assertEquals(luxembourg, DispositionClavier.depuisCle("luxembourg"))
     }
 
     @Test
