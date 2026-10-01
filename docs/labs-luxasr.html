@@ -201,11 +201,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="warn">
     <h2 data-i18n="warn-h2">⚠️ Votre voix quitte le téléphone</h2>
     <p data-i18n="warn-p1">
-      C'est l'inverse exact de la <a href="labs.html">version Labs</a>, dont
-      tout l'argument est que rien ne sort de l'appareil. Ici, l'application
-      demande la permission <strong>Internet</strong> et envoie à
-      <code>luxasr.uni.lu</code> l'enregistrement de ce que vous venez de dire,
-      dès que vous avez fini de parler.
+      C'est l'inverse de la version stable, qui n'envoie rien nulle part. Ici,
+      l'application demande la permission <strong>Internet</strong> et envoie à
+      <code>luxasr.uni.lu</code> le son du micro au fil de la dictée, tant que
+      celle-ci est ouverte.
     </p>
     <p data-i18n="warn-p2">
       N'y dictez donc rien de confidentiel. Le traitement des enregistrements
@@ -340,7 +339,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <strong>🌐 LuxASR</strong> : c'est le signe que la reconnaissance se
         fait à distance et non dans le téléphone. Inutile de retoucher le
         micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
-        cinq secondes après la fin de la phrase. Le déroulé complet est
+        deux à trois secondes après la fin de la phrase. Le déroulé complet est
         décrit <a href="#deroule">juste en dessous</a>.
       </li>
     </ol>
@@ -435,8 +434,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <span class="d" data-i18n="tl4-d">
         <strong>La dictée se ferme d'elle-même</strong>
         <p>
-          Cinq secondes de silence suffisent, et le seuil s'adapte au bruit de la
-          pièce. Retoucher le micro fait la même chose immédiatement. Le
+          C'est le service qui décide que la phrase est finie : il le signale
+          après un peu moins d'une seconde de silence, et le micro se ferme
+          deux secondes et demie après le dernier mot entendu. Si rien ne lui
+          parvient de sa part, le clavier ferme de lui-même après cinq secondes
+          de silence. Retoucher le micro fait la même chose immédiatement. Le
           silence n'est plus retenu à l'envoi comme dans une version
           antérieure : le service a sa propre détection de parole et ne décode
           plus le blanc, ce qui rendait ce filtrage inutile sans rien protéger
@@ -693,7 +695,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'status-date': 'rebuilt on every change',
     'status-size': 'about 6 MB',
     'warn-h2': '⚠️ Your voice leaves the phone',
-    'warn-p1': 'This is the exact opposite of the <a href="labs.html">Labs version</a>, whose whole point is that nothing leaves the device. Here, the app requests the <strong>Internet</strong> permission and sends what you just said to <code>luxasr.uni.lu</code> as soon as you stop speaking.',
+    'warn-p1': 'This is the opposite of the stable version, which sends nothing anywhere. Here, the app requests the <strong>Internet</strong> permission and streams the microphone audio to <code>luxasr.uni.lu</code> while dictation is open.',
     'warn-p2': "So don't dictate anything confidential here. How this service handles the recordings is not up to us, and isn't covered by our <a href=\"privacy/privacy-policy.html\">privacy policy</a>, which describes the published version of the keyboard.",
     'warn-p3': "<strong>This version is not meant to be distributed.</strong> It's a demonstration aid. For online dictation to ever reach the stable version would take two preconditions that aren't met yet: the called service's formal agreement, and a rewritten <a href=\"privacy/privacy-policy.html\">privacy policy</a> — the published one describes an app that sends nothing at all. Until then, this version isn't offered from the <a href=\"index.html\">home page</a> or on the Play Store.",
     'services-h2': 'Two public services, only one called here',
@@ -712,7 +714,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'step1': '<strong>Download</strong> the APK file. The QR code starts it on its own; otherwise, the button above.',
     'step2': "<strong>Open it.</strong> Android will ask to allow installing from this source: normal for an app that doesn't come from the Play Store.",
     'step3': '<strong>Enable the keyboard</strong> under <code>Settings › System › Keyboards › On-screen keyboard</code>, then pick it as the current keyboard, if needed, through the keyboard icon that appears at the bottom of the screen when a text field is open.',
-    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, and allow microphone access. The banner shows <strong>🌐 LuxASR</strong>: the sign that recognition is happening remotely, not on the phone. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> five seconds after the sentence ends. The full sequence is described <a href="#deroule">just below</a>.',
+    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, and allow microphone access. The banner shows <strong>🌐 LuxASR</strong>: the sign that recognition is happening remotely, not on the phone. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends. The full sequence is described <a href="#deroule">just below</a>.',
     'install-footer': "The phone needs a connection for step 4, not just for the download. Without a network, the microphone produces nothing: this version deliberately has no offline fallback, so the demo actually shows what it claims to show.",
     'deroule-h2': 'What happens when you tap the microphone',
     'deroule-p': "The sequence below isn't an intention: it's measured on twenty-two utterances from a press-conference corpus, one to three sentences long, eight to twenty-one seconds.",
@@ -727,7 +729,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tl3-t': 'while speaking',
     'tl3-d': '<strong>The text grows; a word is only locked in once confirmed</strong><p>A word is only committed, and stops moving, once it has been seen in the same place in three hypotheses in a row; the tail of the utterance stays a preview, replaced on every pass. This live segmentation is what an earlier version did less well: measured on the same twenty-two utterances, it then produced <strong>38.3% word error</strong> against 26.8% when waiting for the complete sentence. The engine running since 16 September 2026 has closed that gap and now reverses it: <strong>25.4%</strong> against 26.9%, while still keeping the preview.</p>',
     'tl4-t': 'on silence',
-    'tl4-d': "<strong>Dictation closes on its own</strong><p>Five seconds of silence are enough, and the threshold adapts to the room's background noise. Tapping the microphone again does the same thing immediately. Silence is no longer withheld on send as in an earlier version: the service has its own speech detection and no longer decodes blank audio, which made that filtering pointless without protecting anything further.</p>",
+    'tl4-d': "<strong>Dictation closes on its own</strong><p>The service decides the sentence is over: it signals it after a little under a second of silence, and the microphone closes two and a half seconds after the last word heard. If no such signal arrives, the keyboard closes on its own after five seconds of silence. Tapping the microphone again does the same thing immediately. Silence is no longer withheld on send as in an earlier version: the service has its own speech detection and no longer decodes blank audio, which made that filtering pointless without protecting anything further.</p>",
     'tl5-t': '+ 0.23 s',
     'tl5-d': "<strong>The last word locks in, almost instantly</strong><p>Unlike the 1.3-second wait that the version delivering everything in one block used to take, only the tail of the last three hypotheses is left to confirm here. Two tenths of a second at the median, one and seven tenths at worst, over twenty-two utterances.</p><p>Then the text loses its underline, it's confirmed, and the suggestions come back.</p>",
     'surprises-h3': 'Three things that catch people off guard',

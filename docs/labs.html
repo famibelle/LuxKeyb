@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Labs · la dictée vocale luxembourgeoise en avant-première</title>
-<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. Reconnaissance entièrement hors ligne, aucun son ne quitte le téléphone.">
+<title>Labs · la dictée luxembourgeoise en avant-première</title>
+<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. La reconnaissance est confiée au service LuxASR de l'Université du Luxembourg.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -116,34 +116,34 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <p class="lead">
     Labs est l'atelier du clavier : des versions expérimentales, en avance sur
     la version stable, que vous pouvez essayer avant tout le monde. Celle-ci
-    ajoute la <strong>dictée vocale luxembourgeoise</strong>, et elle
-    fonctionne <strong>sans connexion</strong>.
+    ajoute la <strong>dictée vocale luxembourgeoise</strong>, confiée au service
+    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg.
   </p>
 </header>
 
 <section>
   <div class="status">
     <span class="v" id="lab-version">version en cours</span>
-    <span id="lab-date">publiée automatiquement à chaque amélioration</span>
-    <span id="lab-size">environ 38 Mo</span>
+    <span id="lab-date">reconstruite à chaque amélioration</span>
+    <span id="lab-size">environ 10 Mo</span>
   </div>
 
   <div class="get">
     <div class="get-main">
       <p class="cta">
         <a class="btn primary"
-           href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
+           href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk">
           📲 Télécharger la version Labs
         </a>
       </p>
       <p class="muted">
         Android 5.0 ou plus récent · fichier APK à installer à la main ·
-        aucune permission réseau
+        demande les permissions micro et Internet
       </p>
     </div>
     <figure class="qr">
-      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
-        <img src="assets/qr-luxkeyb-labs.png"
+      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk">
+        <img src="assets/qr-luxkeyb-luxasr.png"
              alt="Code QR téléchargeant directement l'APK de la version Labs du Lëtzebuergesch Clavier"
              width="160" height="160" loading="lazy">
       </a>
@@ -157,10 +157,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   <p>
     Un bouton micro apparaît à droite de la barre de suggestions. Vous le
-    touchez, vous parlez, et le texte s'écrit au fil de votre phrase : il se
-    corrige tout seul à mesure que le clavier comprend la suite. Un second
-    appui fige le résultat ; sinon la dictée s'arrête d'elle-même après un
-    silence.
+    touchez, vous parlez, et le texte s'écrit au fil de votre phrase : les
+    premiers mots apparaissent au bout de deux secondes environ, et la fin de
+    la phrase se corrige encore tant que vous parlez. Quand vous vous taisez,
+    la dictée s'arrête d'elle-même, deux à trois secondes après votre dernier
+    mot. Un second appui sur le micro l'arrête tout de suite.
   </p>
 
   <figure class="shots">
@@ -175,33 +176,15 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <img src="Screenshots/stt-micro-ecoute.png"
            alt="Le même clavier, micro passé au rouge : la dictée est en cours d'écoute."
            width="1080" height="990" loading="lazy">
-      <figcaption><strong>En écoute.</strong> Un appui l'allume en rouge ; un
-        second fige le texte.</figcaption>
+      <figcaption><strong>En écoute.</strong> Un appui l'allume en rouge ; la
+        dictée s'arrête seule quand vous vous taisez.</figcaption>
     </div>
   </figure>
 
-  <div class="card">
-    <h3>🔒 Aucun son ne quitte votre téléphone</h3>
-    <p>
-      C'est la différence de fond avec la dictée des autres claviers, qui
-      envoient votre voix à un serveur. Ici, le modèle de reconnaissance est
-      <strong>embarqué dans l'application</strong> et le calcul se fait sur
-      l'appareil. L'application ne demande d'ailleurs
-      <strong>aucune permission réseau</strong> : elle ne peut techniquement
-      rien envoyer nulle part. La dictée fonctionne donc aussi en avion, dans
-      un tunnel, ou sans forfait.
-    </p>
-    <p class="muted">
-      Elle reste désactivée dans les champs de mot de passe, comme le reste des
-      traitements du clavier.
-    </p>
-  </div>
-
   <p class="muted">
-    Le modèle de reconnaissance vient du projet
-    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg,
-    publié sous licence ouverte. Merci à son équipe : sans elle, cette
-    fonction n'existerait pas.
+    La reconnaissance est l'œuvre du projet
+    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg.
+    Merci à son équipe : sans elle, cette fonction n'existerait pas.
   </p>
 </section>
 
@@ -209,20 +192,22 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="warn">
     <h2>⚠️ À lire avant de télécharger</h2>
     <p>
-      <strong>La qualité de la reconnaissance n'est pas encore mesurée.</strong>
-      Le modèle embarqué est le plus petit de sa famille, celui qui tient dans
-      un téléphone. Il se trompe, et il se trompe davantage en milieu bruyant,
-      loin du micro, ou sur des noms propres. C'est précisément ce que cette
-      version sert à découvrir.
+      <strong>Votre voix quitte le téléphone.</strong> Pendant la dictée, le son
+      du micro est envoyé au service LuxASR de l'Université du Luxembourg, qui
+      renvoie le texte. N'y dictez rien de confidentiel. Le traitement des
+      enregistrements par ce service ne relève pas de nous et n'est pas couvert
+      par notre <a href="privacy/privacy-policy.html">politique de
+      confidentialité</a>, qui décrit la version stable : celle-là n'envoie rien.
+      La dictée reste coupée dans les champs de mot de passe.
     </p>
     <p>
-      <strong>L'application passe de 4,5 à 38 Mo</strong> : le modèle en occupe
-      31 à lui seul. C'est le prix d'une reconnaissance qui ne dépend d'aucun
-      serveur.
+      <strong>Il faut une connexion.</strong> Sans réseau, le micro ne rend rien.
     </p>
     <p>
       <strong>Ce n'est pas la version stable.</strong> Elle est reconstruite à
-      chaque amélioration et peut changer d'un jour à l'autre. Si vous
+      chaque amélioration et peut changer d'un jour à l'autre. Qu'une dictée en
+      ligne rejoigne un jour la version stable supposerait l'accord formel du
+      service appelé et une politique de confidentialité réécrite. Si vous
       cherchez simplement un bon clavier luxembourgeois, prenez plutôt la
       <a href="index.html">version normale</a>.
     </p>
@@ -233,6 +218,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2>Installer et essayer</h2>
   <div class="card">
     <ol class="steps">
+      <li>
+        <strong>Si le clavier vous vient du Play Store, désinstallez-le
+        d'abord.</strong> Android refuse de le remplacer par un fichier venu
+        d'ailleurs. Votre carnet de mots et votre progression partent avec lui.
+      </li>
       <li>Téléchargez le fichier APK avec le bouton ci-dessus.</li>
       <li>
         Ouvrez-le. Android demandera d'autoriser l'installation depuis cette
@@ -247,48 +237,42 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <li>
         Ouvrez n'importe quel champ de texte, touchez le <strong>micro</strong>
         à droite des suggestions, et autorisez l'accès au microphone au premier
-        usage.
+        usage. Le bandeau affiche <strong>🌐 LuxASR</strong> pendant l'écoute.
       </li>
     </ol>
   </div>
 
+  <p>
+    Une fois installée, son icône porte la mention <strong>LABS</strong> sur
+    l'écran d'accueil : elle vous dit d'un coup d'œil que c'est la version
+    d'essai qui est sur le téléphone, et non la version normale. Les deux ne
+    peuvent pas cohabiter.
+  </p>
+
   <h3>Revenir à la version stable</h3>
   <p>
-    Réinstallez simplement la
+    Si vous aviez pris la version normale sur cette page ou sur GitHub,
+    réinstallez simplement la
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version
-    normale</a> par-dessus : elle est signée avec la même clé, donc elle
-    s'installe sans désinstaller quoi que ce soit, et vos réglages comme votre
-    progression de vocabulaire sont conservés.
-  </p>
-  <p class="muted">
-    À noter : la version Labs remplace l'application installée, y compris celle
-    reçue depuis Google Play. Les deux ne peuvent pas cohabiter,
-    c'est pourquoi son icône porte la mention <strong>LABS</strong> sur
-    l'écran d'accueil : elle vous dit d'un coup d'œil laquelle des deux est
-    installée.
+    normale</a> par-dessus : elle est signée avec la même clé, et vos réglages
+    comme votre progression sont conservés. Pour revenir à la version du Play
+    Store, il faut désinstaller la version Labs, puis réinstaller depuis le
+    Play Store.
   </p>
 </section>
 
 <section>
-  <h2>Une variante pour comparer 🌐</h2>
+  <h2>Et sans connexion ?</h2>
   <p>
-    Il existe une seconde version, qui ne sert pas le même but : au lieu du
-    modèle embarqué, elle confie la dictée au service en ligne
-    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg.
-    La reconnaissance y est nettement meilleure, mais <strong>le son du micro
-    quitte le téléphone</strong>, ce qui est exactement ce que la version
-    ci-dessus refuse de faire.
+    Nous avons essayé de faire tenir la reconnaissance dans le téléphone, pour
+    que rien n'en sorte. Mesuré sur un téléphone de milieu de gamme, le
+    meilleur modèle qui y tient fait attendre une dizaine de secondes après
+    chaque phrase, et se trompe nettement plus souvent que le service en
+    ligne. Ce n'est pas encore une dictée qui fait gagner du temps : cette
+    piste est mise de côté, pas abandonnée.
   </p>
   <p>
-    C'est un support de démonstration technique, pas une application à
-    installer durablement : qu'une dictée en ligne rejoigne un jour la version
-    stable supposerait l'accord formel du service appelé, et une politique de
-    confidentialité réécrite, celle-ci décrivant aujourd'hui une application qui
-    n'envoie rien. Elle est décrite en détail, avec ce qu'elle implique, sur sa
-    propre page.
-  </p>
-  <p>
-    <a class="btn" href="labs-luxasr.html">🌐 La démonstration LuxASR</a>
+    <a class="btn" href="labs-luxasr.html">🌐 Tout le détail de la dictée LuxASR</a>
   </p>
 </section>
 
@@ -310,10 +294,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2>En résumé</h2>
   <ul class="facts">
     <li><span class="k">Ce que ça ajoute</span><span class="v">La dictée vocale en luxembourgeois</span></li>
-    <li><span class="k">Connexion nécessaire</span><span class="v">Aucune, la reconnaissance est locale</span></li>
-    <li><span class="k">Où va votre voix</span><span class="v">Nulle part : elle ne sort pas du téléphone</span></li>
-    <li><span class="k">Taille</span><span class="v">38 Mo, contre 7 Mo pour la version stable</span></li>
-    <li><span class="k">Qualité</span><span class="v">Non mesurée à ce jour, des erreurs sont attendues</span></li>
+    <li><span class="k">Qui reconnaît la voix</span><span class="v">Le service LuxASR de l'Université du Luxembourg</span></li>
+    <li><span class="k">Connexion nécessaire</span><span class="v">Oui, pendant la dictée</span></li>
+    <li><span class="k">Où va votre voix</span><span class="v">À l'Université du Luxembourg, le temps de la transcrire</span></li>
+    <li><span class="k">Icône</span><span class="v">Marquée LABS sur l'écran d'accueil</span></li>
     <li><span class="k">Installation</span><span class="v">APK manuel, hors Play Store</span></li>
     <li><span class="k">Mise à jour</span><span class="v">À retélécharger depuis cette page</span></li>
   </ul>
@@ -330,7 +314,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </div>
 
 <script>
-// Le bandeau d'état se renseigne depuis la préversion « labs » publiée par
+// Le bandeau d'état se renseigne depuis la préversion « labs-luxasr » publiée par
 // GitHub Actions : la page annonce ainsi le build réellement téléchargeable,
 // sans qu'il faille la modifier à chaque amélioration.
 //
@@ -343,10 +327,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     if (n && txt) n.textContent = txt;
   };
 
-  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs')
+  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs-luxasr')
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {
-      // Le nom de la release contient « (10.16.0+sha) » : on n'en garde que la
+      // Le nom de la release contient « (29.4.2+sha) » : on n'en garde que la
       // parenthèse, le reste étant déjà dit par le titre de la page.
       var m = /\(([^)]+)\)/.exec(d.name || '');
       if (m) set('lab-version', m[1]);
@@ -357,7 +341,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       }
 
       var apk = (d.assets || []).filter(function (a) {
-        return a.name === 'LetzebuergeschClavier-Labs.apk';
+        return a.name === 'LetzebuergeschClavier-LuxASR-Demo.apk';
       })[0];
       if (apk) set('lab-size', Math.round(apk.size / 1e6) + ' Mo');
     })
