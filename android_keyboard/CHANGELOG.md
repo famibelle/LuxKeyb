@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.1.0] - 2026-10-01
+
+Les propositions en français deviennent facultatives.
+
+### ✨ Améliorations
+
+- **Les propositions en français se coupent** dans Réglages du clavier › Suggestions › « Propositions en français ». Elles restent activées par défaut.
+- **Sans elles, le clavier prend moins de place.** La rangée bleue disparaît entièrement et le clavier raccourcit d'autant, sans laisser de bande vide. Les touches gardent leur taille.
+- **Le correcteur orthographique reconnaît toujours le français.** Seules les pastilles bleues disparaissent : un mot français bien écrit n'est pas souligné.
+
 ## [29.5.0] - 2026-10-01
 
 Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.
