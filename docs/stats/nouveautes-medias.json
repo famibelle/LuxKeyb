@@ -133,5 +133,19 @@
     "image": "Screenshots/lux_clavier_page_123.png",
     "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
     "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
+  },
+  "29.5.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
+        "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
+        "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
+      },
+      {
+        "image": "Screenshots/lux_appui_long_reglage.png",
+        "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
+        "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
+      }
+    ]
   }
 }

@@ -197,7 +197,7 @@ class SettingsActivity : AppCompatActivity() {
             "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Mäi Lëtzebuergesch ».",
             "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
             "Tapez sans vous soucier des accents : « letzebuergesch » vous propose quand même « lëtzebuergesch ».",
-            "« é », « ä » et « ë » ont chacune leur propre touche en bas du clavier : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.",
+            "« é », « ä » et « ë » ont chacune leur propre touche : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.",
             "Wuertriet : un mot luxembourgeois de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
             "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
             "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
@@ -211,7 +211,7 @@ class SettingsActivity : AppCompatActivity() {
             "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
             "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
             "L'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.",
-            "Les diacritiques les plus rares sont en appui long : « ü » et « û » sous le u, « ö » et « ô » sous le o, « à » et « â » sous le a.",
+            "Les diacritiques les plus rares sont en appui long : « è » et « ê » sous le e, « à » et « â » sous le a, « û » sous le u, « ô » sous le o.",
             "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
             "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
             "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
@@ -3035,6 +3035,8 @@ class SettingsActivity : AppCompatActivity() {
 
         demoKeyboardManager?.cleanup()
         val manager = KeyboardLayoutManager(this)
+        // La démonstration montre le clavier tel que l'utilisateur l'aura.
+        manager.definirDisposition(KeyboardPreferences.disposition(this))
         demoKeyboardManager = manager
         // Mirroir local de l'état shift (le manager n'expose pas de getter) :
         // cycle minuscules → majuscule ponctuelle → verrouillage → minuscules

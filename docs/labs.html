@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Labs · la dictée vocale luxembourgeoise en avant-première</title>
-<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. Reconnaissance entièrement hors ligne, aucun son ne quitte le téléphone.">
+<title data-i18n="title">Labs · la dictée luxembourgeoise en avant-première</title>
+<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. La reconnaissance est assurée par le service LuxASR de l'Université du Luxembourg." data-i18n-content="meta-desc">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -30,7 +30,13 @@ p{margin:0 0 12px;}
 .muted{color:var(--ink-soft);font-size:14px;}
 a{color:var(--sea);}
 
-/* Bandeau d'état du build publié, renseigné depuis l'API GitHub. */
+/* L'avertissement suit de près le bouton : il prévient d'un envoi de la voix
+   à un tiers, et doit se lire avant d'installer. */
+.warn{border:1px solid var(--line);border-left:4px solid var(--sun);
+  background:var(--sun-soft);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+.warn h2{margin-top:0;}
+.warn p:last-child{margin-bottom:0;}
+
 .status{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;
   font-size:13.5px;color:var(--ink-soft);
   border:1px solid var(--line);border-radius:12px;background:var(--card);
@@ -41,40 +47,44 @@ a{color:var(--sea);}
 .cta{margin:0 0 10px;}
 .cta .btn{font-size:15.5px;padding:13px 20px;}
 
-/* Bouton et code QR côte à côte, empilés sous 520 px. Le QR sert au cas le
-   plus courant : on lit la page sur un ordinateur, on installe sur le
-   téléphone, sans avoir à retaper une URL de release GitHub. */
 .get{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center;}
 .get-main{flex:1 1 300px;min-width:0;}
 .qr{margin:0;text-align:center;flex:0 0 auto;}
-.qr img{display:block;width:160px;height:160px;background:#fff;
+.qr img{display:block;width:170px;height:170px;background:#fff;
   border-radius:10px;padding:7px;box-sizing:border-box;border:1px solid var(--line);}
 .qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
-
-/* Encart d'avertissement : ton posé, pas alarmiste, mais visuellement distinct
-   du reste : c'est ce que le lecteur doit avoir lu avant de télécharger. */
-.warn{border:1px solid var(--line);border-left:4px solid var(--sun);
-  background:var(--sun-soft);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
-.warn h2{margin-top:0;}
-.warn p:last-child{margin-bottom:0;}
-
-/* Deux captures côte à côte, empilées sur téléphone. Les images font
-   1080 × 990 : on les laisse se réduire librement plutôt que de les figer,
-   pour qu'elles restent nettes sur écran dense. */
-.shots{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 22px;padding:0;}
-.shot{flex:1 1 260px;min-width:0;margin:0;}
-.shot img{display:block;width:100%;height:auto;border:1px solid var(--line);
-  border-radius:10px;background:var(--card);}
-.shot figcaption{margin-top:8px;font-size:13px;color:var(--ink-soft);line-height:1.45;}
-
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
 .card h3{margin-top:0;}
 .card p:last-child{margin-bottom:0;}
 
 ol.steps{margin:0;padding-left:22px;}
-ol.steps li{margin-bottom:10px;}
+ol.steps li{margin-bottom:12px;}
 ol.steps code{font-family:var(--mono);font-size:13px;background:var(--stripe);
   padding:1px 5px;border-radius:4px;}
+
+.tablewrap{overflow-x:auto;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:14.5px;}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-soft);font-family:var(--mono);font-weight:700;}
+tbody th{font-weight:700;width:34%;}
+td{color:var(--ink-soft);}
+td.good{color:var(--ink);}
+
+/* Déroulé de la dictée : les repères temporels tiennent une colonne à gauche,
+   pour que l'ordre des événements se lise avant leur description. */
+.tl{list-style:none;margin:0;padding:0;}
+.tl li{display:flex;flex-wrap:wrap;gap:2px 16px;padding:13px 0;
+  border-bottom:1px solid var(--line);}
+.tl li:last-child{border-bottom:0;}
+.tl .t{font-family:var(--mono);font-size:12.5px;font-weight:700;
+  letter-spacing:.04em;color:var(--sun);min-width:92px;padding-top:3px;
+  font-variant-numeric:tabular-nums;}
+.tl .d{flex:1 1 300px;min-width:0;}
+.tl .d strong{display:block;margin-bottom:3px;color:var(--ink);}
+.tl .d p strong{display:inline;margin:0;}
+.tl .d p{margin:0;color:var(--ink-soft);font-size:14.5px;}
+.tl .d p + p{margin-top:7px;}
 
 .facts{list-style:none;margin:0;padding:0;}
 .facts li{padding:9px 0;border-bottom:1px solid var(--line);
@@ -83,8 +93,86 @@ ol.steps code{font-family:var(--mono);font-size:13px;background:var(--stripe);
 .facts .k{font-weight:700;min-width:180px;}
 .facts .v{color:var(--ink-soft);flex:1 1 220px;}
 
+/* Simulation de la dictée : elle rejoue les trois temps que décrit le déroulé
+   ci-dessous, avec les cadences réelles de l'application : 110 ms par image du
+   tracé de niveau avant le premier mot, un aperçu qui se construit à partir de
+   1,1 s de parole, et l'attente de 0,23 s mesurée entre la fin de la parole et
+   le texte engagé. Seule la durée de la parole est raccourcie : une dictée
+   réelle dure une douzaine de secondes, et personne ne regarde une
+   démonstration aussi longtemps. */
+.sim{border:1px solid var(--line);border-radius:12px;background:var(--card);
+  padding:18px;margin:0 0 16px;}
+.sim-field{border:1px solid var(--line);border-radius:9px;background:var(--paper);
+  padding:14px 15px;min-height:74px;font-size:16px;line-height:1.5;
+  display:flex;align-items:center;}
+.sim-field .txt{font-variant-numeric:tabular-nums;}
+.sim-field .txt.compose{text-decoration:underline dotted;text-underline-offset:4px;}
+.sim-field .ph{color:var(--ink-soft);}
+.sim-bar{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap;}
+.sim-mic{position:relative;width:46px;height:46px;flex:0 0 auto;border:0;padding:0;
+  border-radius:50%;background:transparent;cursor:pointer;font-size:21px;
+  color:var(--ink-soft);opacity:.65;transition:opacity .2s,color .2s;}
+.sim-mic[data-on="1"]{opacity:1;color:var(--sea);}
+/* L'anneau : un arc en dégradé conique, masqué en son centre pour n'en garder
+   que le trait. Même rôle que celui du bouton micro de l'application. */
+.sim-mic::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(currentColor 0deg 100deg,transparent 100deg 360deg);
+  -webkit-mask:radial-gradient(closest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));
+  mask:radial-gradient(closest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2.5px));
+  opacity:0;transition:opacity .2s;}
+.sim-mic[data-on="1"]::before{opacity:1;animation:sim-spin 1.4s linear infinite;}
+@keyframes sim-spin{to{transform:rotate(360deg);}}
+.sim-state{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+  color:var(--sun);font-weight:700;min-width:150px;}
+.sim-hint{font-size:13.5px;color:var(--ink-soft);margin:12px 0 0;}
+
+/* Le clavier en action, embarqué : même origine que la carte « Intégrer ce
+   simulateur ailleurs » de simulateur.html, mais avec la dictée déjà armée
+   dans l'adresse (?asr=1). C'est le clavier réel qui tourne dans l'iframe,
+   pas une imitation posée sur cette page. */
+.asr-embed{border:0;width:100%;max-width:400px;height:900px;display:block;margin:0 auto;}
+
+.asr-capture{margin:18px auto 0;max-width:400px;text-align:center;}
+.asr-capture img{width:100%;height:auto;display:block;border:1px solid var(--line);
+  border-radius:10px;background:var(--card);}
+.asr-capture figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);
+  line-height:1.4;text-align:left;}
+
+@media (prefers-reduced-motion: reduce){
+  .sim-mic[data-on="1"]::before{animation:none;}
+}
+
 footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   font-size:14px;color:var(--ink-soft);}
+
+/* Le switch de langue : même style que le bouton de thème, à côté de lui. */
+/* Copié de .theme-toggle plutôt que d'en partager la classe : theme.js
+   repeint *tout* élément .theme-toggle qu'il trouve (querySelectorAll),
+   un bouton de langue qui la porterait se ferait donc écraser en « 🌙 Fond
+   sombre » comme l'autre — deux sélecteurs de fond, plus aucun de langue. */
+.lang-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:34px;height:34px;padding:0 12px;
+  border-radius:999px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);
+  font-family:var(--mono);font-weight:700;font-size:12px;line-height:1;
+  cursor:pointer;
+}
+.lang-toggle:hover{border-color:var(--sea);}
+.lang-toggle:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+
+/* Remerciement à l'Université : en tête de page, pas en note. La dictée est
+   leur travail ; le clavier ne fait que transporter le son et le texte. */
+.thanks{border:1px solid var(--line);border-left:4px solid var(--sea);
+  background:var(--card);border-radius:10px;padding:16px 18px;}
+.thanks h2{margin-top:0;}
+.thanks p:last-child{margin-bottom:0;}
+
+/* La partie technique est pliée : elle sert aux partenaires et aux curieux,
+   pas à la personne qui veut seulement dicter. */
+details.tech summary{cursor:pointer;font-weight:700;font-size:15.5px;}
+details.tech[open] summary{margin-bottom:10px;}
+details.tech p{color:var(--ink-soft);font-size:14.5px;}
 </style>
 </head>
 <body>
@@ -99,7 +187,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <a href="dossier.html">📄 Dossier</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
   <strong>🔬 Labs</strong> ·
-  <a href="labs-luxasr.html">🌐 Démo LuxASR</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
   <a href="supports-communication.html">🖨️ Supports de communication</a> ·
@@ -108,219 +195,429 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
   <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / changer de langue">EN</button>
 </nav>
 
 <header class="page">
-  <p class="eyebrow">Lëtzebuergesch Clavier · Labs</p>
-  <h1>Parlez, le clavier écrit 🔬</h1>
-  <p class="lead">
+  <p class="eyebrow" data-i18n="eyebrow">Lëtzebuergesch Clavier · Labs</p>
+  <h1 data-i18n="h1">Parlez, le clavier écrit 🔬</h1>
+  <p class="lead" data-i18n="lead">
     Labs est l'atelier du clavier : des versions expérimentales, en avance sur
     la version stable, que vous pouvez essayer avant tout le monde. Celle-ci
-    ajoute la <strong>dictée vocale luxembourgeoise</strong>, et elle
-    fonctionne <strong>sans connexion</strong>.
+    ajoute la <strong>dictée vocale luxembourgeoise</strong> : vous parlez, et
+    le texte s'écrit au fil de votre phrase.
   </p>
 </header>
 
 <section>
+  <div class="thanks">
+    <h2 data-i18n="thanks-h2">🎓 Une dictée signée Université du Luxembourg</h2>
+    <p data-i18n="thanks-p1">
+      La reconnaissance de la voix est assurée par
+      <a href="https://luxasr.uni.lu/">LuxASR</a>, le service de reconnaissance
+      automatique de la parole luxembourgeoise de
+      l'<strong>Université du Luxembourg</strong>. Son moteur temps réel est
+      publié en logiciel libre,
+      <a href="https://github.com/PeterGilles/LuxASRlive">LuxASRlive</a>, sous
+      licence Apache 2.0.
+    </p>
+    <p data-i18n="thanks-p2">
+      Le clavier ne fait qu'envoyer le son et afficher ce qui revient : la
+      qualité de la dictée, c'est leur travail. Merci à leur équipe, sans qui
+      cette fonction n'existerait pas.
+    </p>
+  </div>
+</section>
+
+<section>
   <div class="status">
-    <span class="v" id="lab-version">version en cours</span>
-    <span id="lab-date">publiée automatiquement à chaque amélioration</span>
-    <span id="lab-size">environ 38 Mo</span>
+    <span class="v" id="lab-version" data-i18n="status-version">version en cours</span>
+    <span id="lab-date" data-i18n="status-date">reconstruite à chaque amélioration</span>
+    <span id="lab-size" data-i18n="status-size">environ 10 Mo</span>
   </div>
 
   <div class="get">
     <div class="get-main">
       <p class="cta">
         <a class="btn primary"
-           href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
+           href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk"
+           data-i18n="install-cta">
           📲 Télécharger la version Labs
         </a>
       </p>
-      <p class="muted">
+      <p class="muted" data-i18n="install-muted">
         Android 5.0 ou plus récent · fichier APK à installer à la main ·
-        aucune permission réseau
+        demande les permissions <strong>micro</strong> et <strong>Internet</strong>
       </p>
     </div>
     <figure class="qr">
-      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs/LetzebuergeschClavier-Labs.apk">
-        <img src="assets/qr-luxkeyb-labs.png"
+      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk">
+        <img src="assets/qr-luxkeyb-luxasr.png"
              alt="Code QR téléchargeant directement l'APK de la version Labs du Lëtzebuergesch Clavier"
-             width="160" height="160" loading="lazy">
+             data-i18n-alt="qr-alt"
+             width="170" height="170">
       </a>
-      <figcaption>Scannez pour télécharger<br>directement sur le téléphone</figcaption>
+      <figcaption data-i18n="qr-figcaption">Scannez pour télécharger<br>directement sur le téléphone</figcaption>
     </figure>
   </div>
 </section>
 
 <section>
-  <h2>Ce que la dictée sait faire</h2>
-
-  <p>
-    Un bouton micro apparaît à droite de la barre de suggestions. Vous le
-    touchez, vous parlez, et le texte s'écrit au fil de votre phrase : il se
-    corrige tout seul à mesure que le clavier comprend la suite. Un second
-    appui fige le résultat ; sinon la dictée s'arrête d'elle-même après un
-    silence.
+  <h2 data-i18n="keyboard-h2">Le clavier, avec sa dictée</h2>
+  <p data-i18n="keyboard-p">
+    Pas une imitation posée sur cette page : le clavier ci-dessous est celui
+    du <a href="simulateur.html">simulateur</a>, avec la dictée déjà armée. Le
+    micro transcrit en luxembourgeois <strong>en temps réel</strong>, comme sur
+    le téléphone ; en dessous, un second panneau affiche ce que le service
+    <strong>traduit en français</strong>, phrase par phrase.
   </p>
+  <iframe class="asr-embed"
+          src="simulateur.html?asr=1&amp;embed=1"
+          title="Clavier Lëtzebuergesch, dictée LuxASR avec traduction"
+          data-i18n-title="iframe-title"
+          loading="lazy"></iframe>
 
-  <figure class="shots">
-    <div class="shot">
-      <img src="Screenshots/stt-micro-repos.png"
-           alt="Le clavier luxembourgeois ouvert dans une application de messagerie : le bouton micro, en gris, est à droite de la barre de suggestions."
-           width="1080" height="990" loading="lazy">
-      <figcaption><strong>Au repos.</strong> Le micro se tient à droite de la
-        barre de suggestions, au-dessus des touches.</figcaption>
-    </div>
-    <div class="shot">
-      <img src="Screenshots/stt-micro-ecoute.png"
-           alt="Le même clavier, micro passé au rouge : la dictée est en cours d'écoute."
-           width="1080" height="990" loading="lazy">
-      <figcaption><strong>En écoute.</strong> Un appui l'allume en rouge ; un
-        second fige le texte.</figcaption>
-    </div>
+  <figure class="asr-capture">
+    <img src="Screenshots/lux_dictee_telephone.gif"
+         alt="Téléphone entier sur émulateur Android, dictée dans un SMS : le texte luxembourgeois s'écrit dans la bulle au fur et à mesure, souligné tant qu'il peut encore changer, jusqu'à la phrase complète"
+         data-i18n-alt="capture-alt"
+         loading="lazy" width="420" height="910">
+    <figcaption data-i18n="capture-figcaption">
+      Capturé sur émulateur Android, dans l'appli Messages : le texte grandit
+      dans la bulle pendant qu'on parle, souligné tant qu'il n'est pas encore
+      acquis, avec le bandeau <strong>🌐 LuxASR</strong>. La voix a été injectée
+      dans le micro virtuel de l'émulateur ; le texte affiché est la vraie
+      réponse du service, mot pour mot.
+    </figcaption>
   </figure>
-
-  <div class="card">
-    <h3>🔒 Aucun son ne quitte votre téléphone</h3>
-    <p>
-      C'est la différence de fond avec la dictée des autres claviers, qui
-      envoient votre voix à un serveur. Ici, le modèle de reconnaissance est
-      <strong>embarqué dans l'application</strong> et le calcul se fait sur
-      l'appareil. L'application ne demande d'ailleurs
-      <strong>aucune permission réseau</strong> : elle ne peut techniquement
-      rien envoyer nulle part. La dictée fonctionne donc aussi en avion, dans
-      un tunnel, ou sans forfait.
-    </p>
-    <p class="muted">
-      Elle reste désactivée dans les champs de mot de passe, comme le reste des
-      traitements du clavier.
-    </p>
-  </div>
-
-  <p class="muted">
-    Le modèle de reconnaissance vient du projet
-    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg,
-    publié sous licence ouverte. Merci à son équipe : sans elle, cette
-    fonction n'existerait pas.
-  </p>
 </section>
 
 <section>
   <div class="warn">
-    <h2>⚠️ À lire avant de télécharger</h2>
-    <p>
-      <strong>La qualité de la reconnaissance n'est pas encore mesurée.</strong>
-      Le modèle embarqué est le plus petit de sa famille, celui qui tient dans
-      un téléphone. Il se trompe, et il se trompe davantage en milieu bruyant,
-      loin du micro, ou sur des noms propres. C'est précisément ce que cette
-      version sert à découvrir.
+    <h2 data-i18n="warn-h2">⚠️ À lire avant de télécharger</h2>
+    <p data-i18n="warn-p1">
+      <strong>Votre voix quitte le téléphone.</strong> Pendant la dictée, et
+      seulement pendant, le son du micro est envoyé à
+      <code>luxasr.uni.lu</code>, qui renvoie le texte. N'y dictez rien de
+      confidentiel. Le traitement des enregistrements par ce service ne relève
+      pas de nous et n'est pas couvert par notre
+      <a href="privacy/privacy-policy.html">politique de confidentialité</a>,
+      qui décrit la version stable : celle-là n'envoie rien.
     </p>
-    <p>
-      <strong>L'application passe de 4,5 à 38 Mo</strong> : le modèle en occupe
-      31 à lui seul. C'est le prix d'une reconnaissance qui ne dépend d'aucun
-      serveur.
+    <p data-i18n="warn-p2">
+      <strong>Il faut une connexion.</strong> Sans réseau, le micro ne rend rien :
+      cette version n'a pas de repli hors ligne.
     </p>
-    <p>
-      <strong>Ce n'est pas la version stable.</strong> Elle est reconstruite à
-      chaque amélioration et peut changer d'un jour à l'autre. Si vous
-      cherchez simplement un bon clavier luxembourgeois, prenez plutôt la
-      <a href="index.html">version normale</a>.
+    <p data-i18n="warn-p3">
+      <strong>C'est une version d'essai.</strong> Elle n'est ni sur le Play
+      Store ni sur la page d'accueil, et elle est reconstruite à chaque
+      amélioration. Qu'une dictée en ligne rejoigne un jour la version stable
+      supposerait l'accord formel du service appelé et une
+      <a href="privacy/privacy-policy.html">politique de confidentialité</a>
+      réécrite. Si vous cherchez simplement un bon clavier luxembourgeois,
+      prenez plutôt la <a href="index.html">version normale</a>.
     </p>
   </div>
 </section>
 
 <section>
-  <h2>Installer et essayer</h2>
+  <h2 data-i18n="install-h2">Installer et essayer</h2>
   <div class="card">
     <ol class="steps">
-      <li>Téléchargez le fichier APK avec le bouton ci-dessus.</li>
-      <li>
-        Ouvrez-le. Android demandera d'autoriser l'installation depuis cette
-        source : c'est normal pour une application qui ne vient pas du Play
-        Store.
+      <li data-i18n="step0">
+        <strong>Si le clavier vous vient du Play Store, désinstallez-le
+        d'abord.</strong> Android refuse de le remplacer par un fichier venu
+        d'ailleurs. Votre carnet de mots et votre progression partent avec lui.
       </li>
-      <li>
-        Activez le clavier dans
-        <code>Paramètres › Système › Claviers</code>, puis choisissez-le comme
-        clavier courant.
+      <li data-i18n="step1">
+        <strong>Téléchargez</strong> le fichier APK. Le code QR le fait partir
+        tout seul ; sinon, le bouton ci-dessus.
       </li>
-      <li>
-        Ouvrez n'importe quel champ de texte, touchez le <strong>micro</strong>
-        à droite des suggestions, et autorisez l'accès au microphone au premier
-        usage.
+      <li data-i18n="step2">
+        <strong>Ouvrez-le.</strong> Android demandera d'autoriser l'installation
+        depuis cette source : c'est normal pour une application qui ne vient pas
+        du Play Store.
+      </li>
+      <li data-i18n="step3">
+        <strong>Activez le clavier</strong> dans
+        <code>Paramètres › Système › Claviers › Claviers à l'écran</code>, puis
+        choisissez-le comme clavier courant, au besoin via l'icône de clavier
+        qui apparaît en bas de l'écran quand un champ de texte est ouvert.
+      </li>
+      <li data-i18n="step4">
+        <strong>Dictez.</strong> Ouvrez n'importe quel champ de texte, touchez
+        le <strong>micro</strong> à droite de la barre de suggestions, et
+        autorisez l'accès au microphone. Le bandeau affiche
+        <strong>🌐 LuxASR</strong> pendant l'écoute. Inutile de retoucher le
+        micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
+        deux à trois secondes après la fin de la phrase.
       </li>
     </ol>
   </div>
 
-  <h3>Revenir à la version stable</h3>
-  <p>
-    Réinstallez simplement la
+  <p data-i18n="icon-p">
+    Une fois installée, son icône porte la mention <strong>LABS</strong> sur
+    l'écran d'accueil : elle vous dit d'un coup d'œil que c'est la version
+    d'essai qui est sur le téléphone, et non la version normale. Les deux ne
+    peuvent pas cohabiter.
+  </p>
+
+  <h3 data-i18n="back-h3">Revenir à la version stable</h3>
+  <p data-i18n="back-p">
+    Si vous aviez pris la version normale sur GitHub, réinstallez simplement la
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version
-    normale</a> par-dessus : elle est signée avec la même clé, donc elle
-    s'installe sans désinstaller quoi que ce soit, et vos réglages comme votre
-    progression de vocabulaire sont conservés.
-  </p>
-  <p class="muted">
-    À noter : la version Labs remplace l'application installée, y compris celle
-    reçue depuis Google Play. Les deux ne peuvent pas cohabiter,
-    c'est pourquoi son icône porte la mention <strong>LABS</strong> sur
-    l'écran d'accueil : elle vous dit d'un coup d'œil laquelle des deux est
-    installée.
+    normale</a> par-dessus : elle est signée avec la même clé, et vos réglages
+    comme votre progression sont conservés. Pour revenir à la version du Play
+    Store, désinstallez la version Labs, puis réinstallez depuis le Play Store.
   </p>
 </section>
 
 <section>
-  <h2>Une variante pour comparer 🌐</h2>
-  <p>
-    Il existe une seconde version, qui ne sert pas le même but : au lieu du
-    modèle embarqué, elle confie la dictée au service en ligne
-    <a href="https://luxasr.uni.lu/">LuxASR</a> de l'Université du Luxembourg.
-    La reconnaissance y est nettement meilleure, mais <strong>le son du micro
-    quitte le téléphone</strong>, ce qui est exactement ce que la version
-    ci-dessus refuse de faire.
+  <h2 id="deroule" data-i18n="deroule-h2">Ce qui se passe quand on appuie sur le micro</h2>
+
+  <p data-i18n="deroule-p">
+    Le déroulé ci-dessous n'est pas une intention : il est mesuré, sur des
+    dictées d'une à trois phrases tirées de conférences de presse.
   </p>
-  <p>
-    C'est un support de démonstration technique, pas une application à
-    installer durablement : qu'une dictée en ligne rejoigne un jour la version
-    stable supposerait l'accord formel du service appelé, et une politique de
-    confidentialité réécrite, celle-ci décrivant aujourd'hui une application qui
-    n'envoie rien. Elle est décrite en détail, avec ce qu'elle implique, sur sa
-    propre page.
+
+  <div class="sim">
+    <div class="sim-field">
+      <span class="txt" id="sim-txt"></span><span class="ph" id="sim-ph" data-i18n="sim-placeholder">Appuyez sur le micro</span>
+    </div>
+    <div class="sim-bar">
+      <button type="button" class="sim-mic" id="sim-mic" data-on="0"
+              aria-label="Rejouer la dictée" data-i18n-aria="sim-mic-aria">🎙</button>
+      <span class="sim-state" id="sim-state" data-i18n="sim-state-idle">au repos</span>
+    </div>
+    <p class="sim-hint" data-i18n="sim-hint">
+      Les cadences sont celles du service : premier aperçu à 1,1 s, dernier mot
+      confirmé 0,23 s après la fin de la parole. Seule la durée de la parole est
+      raccourcie : une dictée réelle en dure une douzaine de secondes.
+    </p>
+  </div>
+
+  <ol class="tl">
+    <li>
+      <span class="t" data-i18n="tl1-t">à l'appui</span>
+      <span class="d" data-i18n="tl1-d">
+        <strong>Le micro s'ouvre</strong>
+        <p>
+          La barre de suggestions laisse place à un bandeau
+          <strong>🌐 LuxASR · Schwätzt…</strong>, « parlez ». Le micro change de
+          couleur, un anneau tourne autour de lui, et le champ montre six barres
+          qui suivent votre voix : une voix trop lointaine ou une main sur le
+          micro se voient tout de suite.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t" data-i18n="tl2-t">vers 1,5 s</span>
+      <span class="d" data-i18n="tl2-d">
+        <strong>Un premier aperçu apparaît, encore incertain</strong>
+        <p>
+          Le service relit la phrase en cours toutes les demi-secondes, et le
+          premier bout de texte apparaît, souligné : il peut encore changer.
+          Mesuré sur un téléphone de milieu de gamme, micro et haut-parleur
+          compris, il arrive 1,8 s après le début de la parole.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t" data-i18n="tl3-t">pendant</span>
+      <span class="d" data-i18n="tl3-d">
+        <strong>Le texte grandit, un mot n'est acquis qu'après confirmation</strong>
+        <p>
+          Un mot cesse de bouger quand le service l'a vu à la même place trois
+          fois de suite ; la fin de la phrase reste en aperçu et se corrige à
+          chaque passage.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t" data-i18n="tl4-t">on se tait</span>
+      <span class="d" data-i18n="tl4-d">
+        <strong>Le dernier mot se confirme, presque tout de suite</strong>
+        <p>
+          Il ne reste que la fin de la phrase à confirmer : deux dixièmes de
+          seconde en médiane. Le texte perd son soulignement, il est acquis.
+        </p>
+      </span>
+    </li>
+    <li>
+      <span class="t" data-i18n="tl5-t">+ 2,5 s</span>
+      <span class="d" data-i18n="tl5-d">
+        <strong>La dictée se ferme d'elle-même</strong>
+        <p>
+          C'est le service qui décide que la phrase est finie : il le signale
+          après un peu moins d'une seconde de silence, et le micro se ferme deux
+          secondes et demie après le dernier mot entendu. Si vous reprenez la
+          parole avant, la dictée continue. Retoucher le micro la ferme
+          immédiatement, et les suggestions reviennent.
+        </p>
+      </span>
+    </li>
+  </ol>
+
+  <div class="card">
+    <h3 data-i18n="surprises-h3">Bon à savoir</h3>
+    <p data-i18n="surprises-p1">
+      <strong>Le texte affiché pendant qu'on parle peut encore changer.</strong>
+      Il est souligné tant qu'il n'est pas confirmé ; le soulignement disparaît
+      une fois la phrase finie.
+    </p>
+    <p data-i18n="surprises-p2">
+      <strong>Les phrases très courtes peuvent ne rien rendre.</strong> Trois
+      mots jetés au micro ne suffisent pas toujours.
+    </p>
+    <p data-i18n="surprises-p3">
+      <strong>Des chiffres s'affichent dans le bandeau</strong>, du genre
+      <code>7.2 s → 330 ms</code> : c'est un instrument de mesure laissé en
+      place pour cette version d'essai, pas un défaut d'affichage.
+    </p>
+    <p data-i18n="nothing-p1">
+      <strong>Dans un champ de mot de passe</strong>, le micro refuse de
+      démarrer et le dit : rien n'est envoyé.
+    </p>
+    <p data-i18n="nothing-p2">
+      <strong>Si l'accès au micro est refusé, ou si le service est
+      injoignable</strong>, le bandeau dit lequel des deux est en cause.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2 data-i18n="services-h2">Deux services publics, un seul appelé ici</h2>
+  <p data-i18n="services-p1">
+    Le luxembourgeois dispose de deux services publics de traitement de la
+    parole, et ils n'ont pas le même propriétaire.
+    <a href="https://luxasr.uni.lu/">LuxASR</a> est un service de
+    l'<b>Université du Luxembourg</b>, établissement public : c'est celui que
+    cette version appelle, et le seul. La
+    <a href="https://sproochmaschinn.lu/">Sproochmaschinn</a> et sa
+    <i>Schreifmaschinn</i> sont un service du <b>Zenter fir d'Lëtzebuerger
+    Sprooch</b>, sous tutelle du ministère de la Culture, et le clavier ne
+    l'appelle pas, ni ici ni ailleurs.
   </p>
-  <p>
-    <a class="btn" href="labs-luxasr.html">🌐 La démonstration LuxASR</a>
+  <p data-i18n="services-p2">
+    La distinction n'est pas un détail administratif. Cette version montre que
+    le clavier sait déjà confier sa dictée à un service distant, donc qu'il
+    saurait la confier à l'un comme à l'autre. Ce choix ne s'écrit pas dans le
+    code : il appartient à ceux qui tiennent ces services.
   </p>
 </section>
 
 <section>
-  <h2>Dites-nous ce que ça donne</h2>
-  <p>
+  <h2 data-i18n="offline-h2">Et sans connexion ?</h2>
+  <p data-i18n="offline-p1">
+    Nous avons essayé de faire tenir la reconnaissance dans le téléphone, pour
+    que rien n'en sorte. Les modèles luxembourgeois que publie l'Université
+    existent en plusieurs tailles ; nous avons fait tourner les plus légers
+    directement sur un téléphone de milieu de gamme (Galaxy A21s), sur les mêmes
+    extraits de conférences de presse que le service en ligne.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th scope="col"></th><th scope="col" data-i18n="th-online">En ligne (cette version)</th><th scope="col" data-i18n="th-base">Dans le téléphone, modèle moyen</th><th scope="col" data-i18n="th-small">Dans le téléphone, grand modèle</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" data-i18n="row1-th">Mots erronés</th>
+          <td class="good">34 %</td><td>40 %</td><td>39 %</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="row2-th">Attente après la phrase</th>
+          <td class="good" data-i18n="row2-td1">0,2 s</td><td data-i18n="row2-td2">9 s</td><td data-i18n="row2-td3">32 s</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="row3-th">Place prise dans le téléphone</th>
+          <td class="good" data-i18n="row3-td1">rien</td><td data-i18n="row3-td2">60 Mo</td><td data-i18n="row3-td3">190 Mo</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="row4-th">Où va la voix</th>
+          <td data-i18n="row4-td1">à l'Université du Luxembourg</td><td class="good" data-i18n="row4-td2">nulle part</td><td class="good" data-i18n="row4-td3">nulle part</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p data-i18n="offline-p2">
+    Ces extraits sont des conférences de presse, plus difficiles qu'une phrase
+    dictée au calme : tous les chiffres y sont plus élevés qu'en usage courant.
+    Ce qui compte est l'écart. Dans le téléphone, il faut attendre une dizaine
+    de secondes après chaque phrase pour un texte moins juste : ce n'est pas
+    encore une dictée qui fait gagner du temps. Cette piste est mise de côté,
+    pas abandonnée.
+  </p>
+</section>
+
+<section>
+  <details class="card tech">
+    <summary data-i18n="tech-h3">Pour les curieux : comment ça marche</summary>
+    <p data-i18n="tech-p1">
+      L'application envoie l'audio en continu sur une connexion WebSocket, en
+      PCM 16 bits à 16 kHz, silences compris. Le service relit la partie de
+      l'énoncé pas encore confirmée toutes les demi-secondes à une seconde, et
+      ne confirme un mot que lorsqu'il l'a vu à la même place dans trois
+      hypothèses de suite ; la fin encore instable revient à part et remplace
+      l'aperçu affiché. Aucun enregistrement n'est conservé sur le téléphone.
+    </p>
+    <p data-i18n="tech-p2">
+      Après un peu moins d'une seconde de silence, le service confirme toute la
+      phrase en attente et le signale. Le clavier ferme alors le micro dès que
+      deux secondes et demie se sont écoulées depuis la dernière parole
+      entendue ; si le service ne signale rien, par exemple dans une pièce
+      bruyante, il le ferme après cinq secondes de silence.
+    </p>
+    <p data-i18n="tech-p3">
+      <strong>Justesse.</strong> Sur vingt-deux dictées d'une à trois phrases,
+      envoyées directement au service, il se trompe sur 25,4 % des mots. Rejouées
+      au haut-parleur devant le micro d'un téléphone, vingt extraits plus courts
+      donnent 26,2 %, au niveau du service seul : le passage par le micro ne
+      coûte presque rien. Ces valeurs sont pessimistes, les transcriptions de
+      référence omettant parfois ce que l'orateur a vraiment dit ; sur un
+      extrait lu proprement, le service descend entre 11 % et 15 %.
+    </p>
+    <p data-i18n="tech-p4">
+      Le tableau « Et sans connexion ? » compare cinq conférences de presse
+      (53 extraits) transcrits sur le téléphone même, avec le moteur whisper.cpp
+      de l'application et les modèles <code>base</code> et <code>small</code>
+      publiés par l'Université, contre le service en ligne sur les mêmes
+      extraits.
+    </p>
+  </details>
+</section>
+
+<section>
+  <h2 data-i18n="feedback-h2">Dites-nous ce que ça donne</h2>
+  <p data-i18n="feedback-p">
     C'est tout l'intérêt de Labs : vos retours décident de ce qui atteindra la
     version stable. Le plus utile à nous transmettre, c'est un cas précis :
     <strong>le modèle de téléphone, ce que vous avez dit, et ce qui s'est
     écrit</strong>.
   </p>
   <p>
-    <a class="btn" href="feedbacks_form.html">💬 Formulaire de retour</a>
-    <a class="btn" href="https://github.com/famibelle/LuxKeyb/issues">🐛 Signaler sur GitHub</a>
+    <a class="btn" href="feedbacks_form.html" data-i18n="feedback-form">💬 Formulaire de retour</a>
+    <a class="btn" href="https://github.com/famibelle/LuxKeyb/issues" data-i18n="feedback-gh">🐛 Signaler sur GitHub</a>
   </p>
 </section>
 
 <section>
-  <h2>En résumé</h2>
+  <h2 data-i18n="resume-h2">En résumé</h2>
   <ul class="facts">
-    <li><span class="k">Ce que ça ajoute</span><span class="v">La dictée vocale en luxembourgeois</span></li>
-    <li><span class="k">Connexion nécessaire</span><span class="v">Aucune, la reconnaissance est locale</span></li>
-    <li><span class="k">Où va votre voix</span><span class="v">Nulle part : elle ne sort pas du téléphone</span></li>
-    <li><span class="k">Taille</span><span class="v">38 Mo, contre 7 Mo pour la version stable</span></li>
-    <li><span class="k">Qualité</span><span class="v">Non mesurée à ce jour, des erreurs sont attendues</span></li>
-    <li><span class="k">Installation</span><span class="v">APK manuel, hors Play Store</span></li>
-    <li><span class="k">Mise à jour</span><span class="v">À retélécharger depuis cette page</span></li>
+    <li><span class="k" data-i18n="facts-k1">Ce que ça ajoute</span><span class="v" data-i18n="facts-v1">La dictée vocale en luxembourgeois</span></li>
+    <li><span class="k" data-i18n="facts-k2">Reconnaissance</span><span class="v" data-i18n="facts-v2">Service LuxASR, Université du Luxembourg</span></li>
+    <li><span class="k" data-i18n="facts-k3">Où va votre voix</span><span class="v" data-i18n="facts-v3">À l'Université du Luxembourg, pendant la dictée</span></li>
+    <li><span class="k" data-i18n="facts-k4">Connexion</span><span class="v" data-i18n="facts-v4">Indispensable pour dicter</span></li>
+    <li><span class="k" data-i18n="facts-k5">Icône</span><span class="v" data-i18n="facts-v5">Marquée LABS sur l'écran d'accueil</span></li>
+    <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">APK manuel, hors Play Store ; désinstaller d'abord la version du Play Store</span></li>
+    <li><span class="k" data-i18n="facts-k7">Mise à jour</span><span class="v" data-i18n="facts-v7">À retélécharger depuis cette page</span></li>
   </ul>
 </section>
 
 <footer class="page">
-  <p>
+  <p data-i18n="footer-p1">
     Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
     Les versions stables sont sur la page <a href="nouveautes.html">Nouveautés</a>.
   </p>
@@ -330,36 +627,364 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </div>
 
 <script>
-// Le bandeau d'état se renseigne depuis la préversion « labs » publiée par
-// GitHub Actions : la page annonce ainsi le build réellement téléchargeable,
-// sans qu'il faille la modifier à chaque amélioration.
+// Traductions de la page. Le français est celui déjà écrit dans le HTML ;
+// permuter revient à réécrire innerHTML/attributs à partir d'ici, jamais
+// l'inverse — rien n'est retenu depuis le DOM, donc un rechargement retombe
+// toujours sur un français propre.
+(function () {
+  'use strict';
+
+  var EN = {
+    'title': 'Labs · Luxembourgish dictation, early access',
+    'meta-desc': "Experimental build of the Lëtzebuergesch Clavier keyboard with Luxembourgish voice dictation: speak, the keyboard writes. Recognition is provided by the University of Luxembourg's LuxASR service.",
+    'eyebrow': 'Lëtzebuergesch Clavier · Labs',
+    'h1': 'Speak, the keyboard writes 🔬',
+    'lead': "Labs is the keyboard's workshop: experimental builds, ahead of the stable version, that you can try before everyone else. This one adds <strong>Luxembourgish voice dictation</strong>: you speak, and the text writes itself as your sentence goes.",
+    'thanks-h2': '🎓 Dictation by the University of Luxembourg',
+    'thanks-p1': 'Speech recognition is provided by <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish automatic speech recognition service of the <strong>University of Luxembourg</strong>. Its real-time engine is published as open source, <a href="https://github.com/PeterGilles/LuxASRlive">LuxASRlive</a>, under the Apache 2.0 licence.',
+    'thanks-p2': "The keyboard only sends the sound and shows what comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist.",
+    'status-version': 'current version',
+    'status-date': 'rebuilt on every improvement',
+    'status-size': 'about 10 MB',
+    'install-cta': '📲 Download the Labs version',
+    'install-muted': 'Android 5.0 or later · APK file, manual install · requests the <strong>microphone</strong> and <strong>Internet</strong> permissions',
+    'qr-alt': 'QR code that downloads the Labs version of the Lëtzebuergesch Clavier APK directly',
+    'qr-figcaption': 'Scan to download<br>straight to your phone',
+    'keyboard-h2': 'The keyboard, with its dictation',
+    'keyboard-p': "Not an imitation dropped onto this page: the keyboard below is the <a href=\"simulateur.html\">simulator</a>'s, with dictation already armed. The microphone transcribes Luxembourgish <strong>in real time</strong>, as on the phone; below it, a second panel shows what the service <strong>translates into French</strong>, sentence by sentence.",
+    'iframe-title': 'Lëtzebuergesch keyboard, LuxASR dictation with translation',
+    'capture-alt': 'Whole phone screen on an Android emulator, dictating into a text message: the Luxembourgish text is written into the bubble as it goes, underlined while it can still change, up to the complete sentence',
+    'capture-figcaption': "Captured on an Android emulator, in the Messages app: the text grows in the bubble as you speak, underlined until it's confirmed, with the <strong>🌐 LuxASR</strong> banner. The voice was injected into the emulator's virtual microphone; the text shown is the service's real answer, word for word.",
+    'warn-h2': '⚠️ Read before downloading',
+    'warn-p1': "<strong>Your voice leaves the phone.</strong> During dictation, and only then, the microphone audio is sent to <code>luxasr.uni.lu</code>, which sends the text back. Don't dictate anything confidential. How this service handles the recordings is not up to us and isn't covered by our <a href=\"privacy/privacy-policy.html\">privacy policy</a>, which describes the stable version: that one sends nothing.",
+    'warn-p2': '<strong>A connection is required.</strong> Without a network, the microphone produces nothing: this version has no offline fallback.',
+    'warn-p3': "<strong>This is a trial version.</strong> It's neither on the Play Store nor on the home page, and it's rebuilt on every improvement. For online dictation to ever reach the stable version would take the called service's formal agreement and a rewritten <a href=\"privacy/privacy-policy.html\">privacy policy</a>. If you're simply looking for a good Luxembourgish keyboard, take the <a href=\"index.html\">regular version</a> instead.",
+    'install-h2': 'Install and try it',
+    'step0': '<strong>If your keyboard came from the Play Store, uninstall it first.</strong> Android refuses to replace it with a file from elsewhere. Your word notebook and your progress go with it.',
+    'step1': '<strong>Download</strong> the APK file. The QR code starts it on its own; otherwise, the button above.',
+    'step2': "<strong>Open it.</strong> Android will ask to allow installing from this source: normal for an app that doesn't come from the Play Store.",
+    'step3': '<strong>Enable the keyboard</strong> under <code>Settings › System › Keyboards › On-screen keyboard</code>, then pick it as the current keyboard, if needed through the keyboard icon that appears at the bottom of the screen when a text field is open.',
+    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, and allow microphone access. The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
+    'icon-p': "Once installed, its icon carries the word <strong>LABS</strong> on the home screen: it tells you at a glance that the trial version is on the phone, not the regular one. The two can't coexist.",
+    'back-h3': 'Going back to the stable version',
+    'back-p': 'If you had taken the regular version from GitHub, simply reinstall the <a href="https://github.com/famibelle/LuxKeyb/releases/latest">regular version</a> over it: it is signed with the same key, and your settings and progress are kept. To go back to the Play Store version, uninstall the Labs version, then reinstall from the Play Store.',
+    'deroule-h2': 'What happens when you tap the microphone',
+    'deroule-p': "The sequence below isn't an intention: it's measured, on one-to-three-sentence dictations drawn from press conferences.",
+    'sim-placeholder': 'Tap the microphone',
+    'sim-mic-aria': 'Replay the dictation',
+    'sim-state-idle': 'idle',
+    'sim-hint': "The pacing is the service's own: first preview at 1.1 s, last word confirmed 0.23 s after speech ends. Only the length of the speech is shortened: a real dictation runs about a dozen seconds.",
+    'tl1-t': 'on tap',
+    'tl1-d': '<strong>The microphone opens</strong><p>The suggestion bar gives way to a banner reading <strong>🌐 LuxASR · Schwätzt…</strong>, Luxembourgish for “speak”. The microphone changes colour, a ring turns around it, and the field shows six bars following your voice: a voice too far away or a hand over the microphone shows up right away.</p>',
+    'tl2-t': 'around 1.5 s',
+    'tl2-d': '<strong>A first preview appears, still uncertain</strong><p>The service rereads the sentence in progress every half-second, and the first bit of text appears, underlined: it can still change. Measured on a mid-range phone, microphone and speaker included, it arrives 1.8 s after speech starts.</p>',
+    'tl3-t': 'while speaking',
+    'tl3-d': "<strong>The text grows; a word is only locked in once confirmed</strong><p>A word stops moving once the service has seen it in the same place three times in a row; the end of the sentence stays a preview and gets corrected on every pass.</p>",
+    'tl4-t': 'on silence',
+    'tl4-d': '<strong>The last word is confirmed, almost instantly</strong><p>Only the end of the sentence is left to confirm: two tenths of a second at the median. The text loses its underline, it is confirmed.</p>',
+    'tl5-t': '+ 2.5 s',
+    'tl5-d': "<strong>Dictation closes on its own</strong><p>The service decides the sentence is over: it signals it after a little under a second of silence, and the microphone closes two and a half seconds after the last word heard. If you start speaking again before that, dictation carries on. Tapping the microphone again closes it immediately, and the suggestions come back.</p>",
+    'surprises-h3': 'Good to know',
+    'surprises-p1': "<strong>The text shown while you're speaking can still change.</strong> It's underlined until confirmed; the underline goes away once the sentence is finished.",
+    'surprises-p2': "<strong>Very short sentences can come back empty.</strong> Three words thrown at the microphone aren't always enough.",
+    'surprises-p3': "<strong>Numbers show up in the banner</strong>, something like <code>7.2 s → 330 ms</code>: it's a measuring instrument left in place for this trial version, not a display glitch.",
+    'nothing-p1': '<strong>In a password field</strong>, the microphone refuses to start and says so: nothing is sent.',
+    'nothing-p2': '<strong>If microphone access is denied, or the service is unreachable</strong>, the banner says which of the two is at fault.',
+    'services-h2': 'Two public services, only one called here',
+    'services-p1': 'Luxembourgish has two public speech-processing services, and they don’t share an owner. <a href="https://luxasr.uni.lu/">LuxASR</a> is a service of the <b>University of Luxembourg</b>, a public institution: it’s the one this version calls, and the only one. The <a href="https://sproochmaschinn.lu/">Sproochmaschinn</a> and its <i>Schreifmaschinn</i> are a service of the <b>Zenter fir d’Lëtzebuerger Sprooch</b>, under the Ministry of Culture, and the keyboard never calls it, here or anywhere else.',
+    'services-p2': "The distinction isn't an administrative detail. This version shows that the keyboard already knows how to hand its dictation off to a remote service, so it could hand it off to either one. That choice doesn't get made in code: it belongs to whoever runs these services.",
+    'offline-h2': 'And without a connection?',
+    'offline-p1': 'We tried to fit recognition inside the phone, so that nothing leaves it. The Luxembourgish models the University publishes come in several sizes; we ran the lightest ones directly on a mid-range phone (Galaxy A21s), on the same press-conference excerpts as the online service.',
+    'th-online': 'Online (this version)',
+    'th-base': 'On the phone, medium model',
+    'th-small': 'On the phone, larger model',
+    'row1-th': 'Words wrong',
+    'row2-th': 'Wait after the sentence',
+    'row2-td1': '0.2 s', 'row2-td2': '9 s', 'row2-td3': '32 s',
+    'row3-th': 'Space taken on the phone',
+    'row3-td1': 'none', 'row3-td2': '60 MB', 'row3-td3': '190 MB',
+    'row4-th': 'Where the voice goes',
+    'row4-td1': 'to the University of Luxembourg', 'row4-td2': 'nowhere', 'row4-td3': 'nowhere',
+    'offline-p2': "These excerpts are press conferences, harder than a sentence dictated in a quiet room: every figure is higher than in everyday use. What matters is the gap. On the phone, you wait about ten seconds after each sentence for a less accurate text: that's not yet a dictation that saves time. This path is set aside, not abandoned.",
+    'tech-h3': 'For the curious: how it works',
+    'tech-p1': 'The app streams audio continuously over a WebSocket connection, as 16-bit PCM at 16 kHz, silence included. The service rereads the not-yet-confirmed part of the utterance every half-second to a second, and only confirms a word once it has seen it in the same place in three hypotheses in a row; the still-unstable end comes back separately and replaces the preview shown. No recording is kept on the phone.',
+    'tech-p2': "After a little under a second of silence, the service confirms the whole pending sentence and signals it. The keyboard then closes the microphone once two and a half seconds have passed since the last speech heard; if the service signals nothing, for instance in a noisy room, it closes it after five seconds of silence.",
+    'tech-p3': "<strong>Accuracy.</strong> On twenty-two one-to-three-sentence dictations, sent straight to the service, it gets 25.4% of words wrong. Replayed through a speaker in front of a phone's microphone, twenty shorter excerpts give 26.2%, on par with the service alone: going through the microphone costs almost nothing. These values are pessimistic, since the reference transcriptions sometimes leave out what the speaker actually said; on a cleanly read excerpt, the service goes down to between 11% and 15%.",
+    'tech-p4': 'The “And without a connection?” table compares five press conferences (53 excerpts) transcribed on the phone itself, with the app’s whisper.cpp engine and the <code>base</code> and <code>small</code> models published by the University, against the online service on the same excerpts.',
+    'feedback-h2': 'Tell us how it goes',
+    'feedback-p': 'That is the whole point of Labs: your feedback decides what reaches the stable version. The most useful thing to send us is a precise case: <strong>the phone model, what you said, and what got written</strong>.',
+    'feedback-form': '💬 Feedback form',
+    'feedback-gh': '🐛 Report on GitHub',
+    'resume-h2': 'In short',
+    'facts-k1': 'What it adds', 'facts-v1': 'Voice dictation in Luxembourgish',
+    'facts-k2': 'Recognition', 'facts-v2': 'LuxASR service, University of Luxembourg',
+    'facts-k3': 'Where your voice goes', 'facts-v3': 'To the University of Luxembourg, during dictation',
+    'facts-k4': 'Connection', 'facts-v4': 'Required to dictate',
+    'facts-k5': 'Icon', 'facts-v5': 'Marked LABS on the home screen',
+    'facts-k6': 'Installation', 'facts-v6': 'Manual APK, outside the Play Store; uninstall the Play Store version first',
+    'facts-k7': 'Updates', 'facts-v7': 'Download again from this page',
+    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>Stable versions are on the <a href="nouveautes.html">What’s new</a> page.'
+  };
+
+  var FR = {}; // rempli au premier appel, à partir du HTML tel qu'écrit
+  var courant = 'fr';
+
+  function tousLesNoeuds(attr) {
+    return Array.prototype.slice.call(document.querySelectorAll('[' + attr + ']'));
+  }
+
+  function capturerFrancais() {
+    tousLesNoeuds('data-i18n').forEach(function (el) {
+      FR[el.getAttribute('data-i18n')] = el.innerHTML;
+    });
+    tousLesNoeuds('data-i18n-alt').forEach(function (el) {
+      FR['alt:' + el.getAttribute('data-i18n-alt')] = el.getAttribute('alt');
+    });
+    tousLesNoeuds('data-i18n-title').forEach(function (el) {
+      FR['title:' + el.getAttribute('data-i18n-title')] = el.getAttribute('title');
+    });
+    tousLesNoeuds('data-i18n-aria').forEach(function (el) {
+      FR['aria:' + el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label');
+    });
+    var meta = document.querySelector('meta[data-i18n-content]');
+    if (meta) FR['meta:' + meta.getAttribute('data-i18n-content')] = meta.getAttribute('content');
+    FR['title'] = document.title;
+  }
+
+  function appliquer(langue) {
+    var dict = langue === 'en' ? EN : FR;
+
+    document.title = dict['title'] || FR['title'];
+    var meta = document.querySelector('meta[data-i18n-content]');
+    if (meta) {
+      var mk = 'meta:' + meta.getAttribute('data-i18n-content');
+      meta.setAttribute('content', (langue === 'en' ? EN['meta-desc'] : FR[mk]) || FR[mk]);
+    }
+
+    tousLesNoeuds('data-i18n').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      el.innerHTML = (langue === 'en' ? EN[k] : FR[k]) || FR[k];
+    });
+    tousLesNoeuds('data-i18n-alt').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-alt');
+      el.setAttribute('alt', (langue === 'en' ? EN[k] : FR['alt:' + k]) || FR['alt:' + k]);
+    });
+    tousLesNoeuds('data-i18n-title').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      el.setAttribute('title', (langue === 'en' ? EN[k] : FR['title:' + k]) || FR['title:' + k]);
+    });
+    tousLesNoeuds('data-i18n-aria').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-aria');
+      el.setAttribute('aria-label', (langue === 'en' ? EN[k] : FR['aria:' + k]) || FR['aria:' + k]);
+    });
+
+    document.documentElement.lang = langue;
+    courant = langue;
+    window.__labsLang = langue;
+    try { localStorage.setItem('labs-luxasr-lang', langue); } catch (e) {}
+
+    var bouton = document.getElementById('lang-toggle');
+    if (bouton) {
+      bouton.textContent = langue === 'fr' ? 'EN' : 'FR';
+      bouton.setAttribute('lang', langue === 'fr' ? 'en' : 'fr');
+    }
+  }
+
+  /** ?lang=en dans l'adresse, pour partager un lien qui ouvre en anglais. */
+  function langueDepuisAdresse() {
+    var m = /[?&]lang=(en|fr)\b/i.exec(location.search);
+    return m ? m[1].toLowerCase() : null;
+  }
+
+  function init() {
+    capturerFrancais();
+    var demandee = langueDepuisAdresse();
+    var enregistree = 'fr';
+    try { enregistree = localStorage.getItem('labs-luxasr-lang') || 'fr'; } catch (e) {}
+    appliquer((demandee || enregistree) === 'en' ? 'en' : 'fr');
+
+    var bouton = document.getElementById('lang-toggle');
+    if (bouton) {
+      bouton.addEventListener('click', function () {
+        appliquer(courant === 'fr' ? 'en' : 'fr');
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+})();
+</script>
+
+<script>
+// Simulation de la dictée, à l'identique de ce que fait l'application depuis
+// le moteur du 16 septembre 2026 : un tracé de niveau avant le premier
+// aperçu, un aperçu qui grandit mot à mot pendant qu'on parle, souligné tant
+// qu'il peut encore être réécrit, puis le dernier mot qui s'engage. Les trois
+// s'écrivent au même endroit, comme le texte en composition du clavier.
 //
-// L'échec est silencieux et sans conséquence : le HTML porte déjà un texte
-// d'attente correct, et le lien de téléchargement, lui, ne dépend pas de ce
-// script.
+// Les glyphes et la cadence du tracé sont ceux du code Android : barres
+// U+2581 à 2587 toutes les 110 ms. Les délais (premier aperçu, engagement
+// final) sont les valeurs mesurées, pour que la page montre le produit et non
+// une interprétation.
+//
+// La phrase rejouée reste luxembourgeoise quelle que soit la langue de la
+// page : c'est l'objet de la démonstration, pas son habillage. Seuls les
+// états du bandeau ('sim-state') suivent la langue courante.
+(function () {
+  var champ = document.getElementById('sim-txt');
+  var repos = document.getElementById('sim-ph');
+  var micro = document.getElementById('sim-mic');
+  var etat  = document.getElementById('sim-state');
+  if (!champ || !micro) return;
+
+  var ETATS = {
+    fr: { repos: 'au repos', ecoute: '🎤 écoute…', apercu: '💬 aperçu…', engagement: 'engagement…', rendu: 'texte rendu' },
+    en: { repos: 'idle', ecoute: '🎤 listening…', apercu: '💬 preview…', engagement: 'committing…', rendu: 'text delivered' }
+  };
+  function langue() { return window.__labsLang === 'en' ? 'en' : 'fr'; }
+  function motEtat(cle) { return ETATS[langue()][cle]; }
+
+  var BARRES = ['▁', '▂', '▃', '▄', '▅', '▆', '▇'];
+  var PHRASE = 'Ech kommen haut e bësse méi spéit heem.';
+  var MOTS = PHRASE.split(' ');
+  var PAROLE_MS = 4200;         // raccourci : une vraie dictée en dure ~12 000
+  var PREMIER_APERCU_MS = 1100; // mesuré : médiane sur 22 énoncés
+  var ATTENTE_MS = 230;         // mesuré, lui aussi : médiane sur 22 énoncés
+
+  var sobre = window.matchMedia &&
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var minuteurs = [];
+  var enCours = false;
+
+  function nettoyer() {
+    minuteurs.forEach(clearInterval);
+    minuteurs.forEach(clearTimeout);
+    minuteurs = [];
+  }
+
+  function ecrire(texte, compose) {
+    champ.textContent = texte;
+    champ.className = 'txt' + (compose ? ' compose' : '');
+    repos.style.display = texte ? 'none' : '';
+  }
+
+  function jouer() {
+    if (enCours) return;
+    enCours = true;
+    nettoyer();
+    micro.dataset.on = '1';
+
+    if (sobre) {
+      // Animations désactivées : on montre l'état final, comme l'application
+      // fige son anneau plutôt que de le faire tourner.
+      etat.textContent = motEtat('rendu');
+      ecrire(PHRASE, false);
+      micro.dataset.on = '0';
+      enCours = false;
+      return;
+    }
+
+    var t0 = Date.now();
+
+    // 1. avant le premier aperçu : les barres suivent une enveloppe qui
+    //    monte, retombe entre deux mots et repart, pour ressembler à une
+    //    phrase plutôt qu'à du bruit.
+    etat.textContent = motEtat('ecoute');
+    var niveaux = [];
+    minuteurs.push(setInterval(function () {
+      var t = (Date.now() - t0) / PAROLE_MS;
+      var env = Math.max(0, Math.sin(t * Math.PI * 3.2)) * (1 - t * 0.25);
+      niveaux.push(Math.min(1, Math.max(0, env * (0.55 + Math.random() * 0.45))));
+      while (niveaux.length > 6) niveaux.shift();
+      var trace = '';
+      for (var i = 0; i < 6 - niveaux.length; i++) trace += BARRES[0];
+      niveaux.forEach(function (n) {
+        trace += BARRES[Math.round(n * (BARRES.length - 1))];
+      });
+      ecrire('🎤 ' + trace, true);
+    }, 110));
+
+    // 2. l'aperçu : un mot de plus à chaque passe, souligné tant qu'il peut
+    //    encore être réécrit par l'hypothèse suivante — c'est le service qui
+    //    redécode l'énoncé non engagé toutes les demi-secondes à une seconde.
+    minuteurs.push(setTimeout(function () {
+      nettoyer();
+      etat.textContent = motEtat('apercu');
+      minuteurs.push(setInterval(function () {
+        var t = (Date.now() - t0 - PREMIER_APERCU_MS) / (PAROLE_MS - PREMIER_APERCU_MS);
+        var n = Math.min(MOTS.length, Math.max(1, Math.ceil(MOTS.length * t)));
+        ecrire(MOTS.slice(0, n).join(' '), true);
+      }, 220));
+    }, PREMIER_APERCU_MS));
+
+    // 3. la parole s'arrête : le dernier mot s'engage après un bref délai,
+    //    puis le texte perd son soulignement, il est acquis.
+    minuteurs.push(setTimeout(function () {
+      nettoyer();
+      micro.dataset.on = '0';
+      etat.textContent = motEtat('engagement');
+      ecrire(PHRASE, true);
+      minuteurs.push(setTimeout(function () {
+        etat.textContent = motEtat('rendu');
+        ecrire(PHRASE, false);
+        enCours = false;
+      }, ATTENTE_MS));
+    }, PAROLE_MS));
+  }
+
+  micro.addEventListener('click', function () {
+    if (enCours) return;
+    if (champ.textContent) { nettoyer(); ecrire('', false);
+                             etat.textContent = motEtat('repos'); }
+    jouer();
+  });
+})();
+</script>
+
+<script>
+// Le bandeau d'état se renseigne depuis la préversion « labs-luxasr » : la page annonce
+// le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
+// silencieux : le HTML porte déjà un texte d'attente correct et le lien de
+// téléchargement ne dépend pas de ce script.
+//
+// Le texte généré ('publiée le …', l'unité de taille) suit la langue de la
+// page, lue directement dans localStorage : ce script peut s'exécuter avant
+// ou après celui qui gère le switch, peu importe l'ordre.
 (function () {
   var set = function (id, txt) {
     var n = document.getElementById(id);
     if (n && txt) n.textContent = txt;
   };
 
-  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs')
+  var langue = 'fr';
+  try { langue = localStorage.getItem('labs-luxasr-lang') === 'en' ? 'en' : 'fr'; } catch (e) {}
+
+  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs-luxasr')
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {
-      // Le nom de la release contient « (10.16.0+sha) » : on n'en garde que la
-      // parenthèse, le reste étant déjà dit par le titre de la page.
       var m = /\(([^)]+)\)/.exec(d.name || '');
       if (m) set('lab-version', m[1]);
 
       if (d.published_at) {
-        set('lab-date', 'publiée le ' + new Date(d.published_at)
-          .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }));
+        var date = new Date(d.published_at);
+        if (langue === 'en') {
+          set('lab-date', 'published ' + date
+            .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }));
+        } else {
+          set('lab-date', 'publiée le ' + date
+            .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }));
+        }
       }
 
       var apk = (d.assets || []).filter(function (a) {
-        return a.name === 'LetzebuergeschClavier-Labs.apk';
+        return a.name === 'LetzebuergeschClavier-LuxASR-Demo.apk';
       })[0];
-      if (apk) set('lab-size', Math.round(apk.size / 1e6) + ' Mo');
+      if (apk) {
+        var taille = Math.round(apk.size / 1e6);
+        set('lab-size', langue === 'en' ? taille + ' MB' : taille + ' Mo');
+      }
     })
     .catch(function () { /* le texte statique reste affiché */ });
 })();

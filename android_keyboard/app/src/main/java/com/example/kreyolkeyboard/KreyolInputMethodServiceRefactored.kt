@@ -680,6 +680,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // Créer le clavier principal, dimensionné pour la place que la fenêtre
         // IME accordera réellement (voir availableRowsHeightPx)
         keyboardLayoutManager.setAvailableRowsHeight(computeAvailableRowsHeight())
+        keyboardLayoutManager.definirDisposition(KeyboardPreferences.disposition(this))
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
@@ -1499,9 +1500,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
             }
             else -> {
-                // Gestion des accents pour les autres touches
+                // Le délai d'appui long est déjà écoulé (KeyboardLayoutManager) :
+                // la popup d'accents s'ouvre tout de suite.
                 if (accentHandler.hasAccents(key)) {
-                    accentHandler.startLongPressTimer(key, button)
+                    accentHandler.ouvrirPopupAppuiLong(key, button)
                 }
             }
         }
@@ -1998,10 +2000,15 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             else -> KeyboardLayoutManager.ChampAdresse.AUCUN
         }
         val rangeeChangee = keyboardLayoutManager.definirChampAdresse(champAdresse)
+        // La disposition choisie dans les réglages, relue au même moment : elle
+        // aussi est posée à la construction des touches.
+        val dispositionChangee = keyboardLayoutManager.definirDisposition(
+            KeyboardPreferences.disposition(this)
+        )
 
         KeyboardTheme.refresh(this)
-        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee) {
-            Log.d(TAG, "Thème ou rangée d'adresse changés : reconstruction de la vue d'entrée")
+        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee || dispositionChangee) {
+            Log.d(TAG, "Thème, disposition ou rangée d'adresse changés : reconstruction de la vue d'entrée")
             setInputView(onCreateInputView())
         }
 

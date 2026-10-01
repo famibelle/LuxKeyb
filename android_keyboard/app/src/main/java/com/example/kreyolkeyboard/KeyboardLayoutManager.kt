@@ -18,6 +18,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
 /**
  * Gestionnaire responsable de la création et du stylisme des layouts de clavier
@@ -165,6 +167,17 @@ class KeyboardLayoutManager(private val context: Context) {
     private val spaceLongPressHandler = Handler(Looper.getMainLooper())
     private var spaceLongPressRunnable: Runnable? = null
     private var isSpaceLongPressTriggered = false
+
+    // Appui long des touches à accents (v29.5.0). Un seul délai, compté depuis
+    // l'instant où le doigt se pose et réglable (KeyboardPreferences), au lieu
+    // du long-clic natif d'Android suivi des 500 ms d'AccentHandler : près
+    // d'une seconde avant de voir « ü », jugé trop long par les utilisateurs.
+    // Un seul appui long à la fois : une autre touche posée entre-temps (frappe
+    // roulée) annule celui qui était en attente.
+    private val appuiLongHandler = Handler(Looper.getMainLooper())
+    private var appuiLongEnAttente: Runnable? = null
+    private var appuiLongVue: View? = null
+    private var appuiLongDeclenche = false
 
     // Glissement horizontal sur la barre d'espace (v14.0.0). L'ancre n'est pas
     // le point de départ du geste mais le dernier cran franchi : elle avance
@@ -341,52 +354,13 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Crée le layout alphabétique (QWERTZ luxembourgeois)
+     * Crée le layout alphabétique, dans la disposition choisie dans les
+     * réglages (voir [DispositionClavier]).
      */
     private fun createAlphabeticLayout(mainLayout: LinearLayout) {
-        // QWERTZ et non AZERTY : c'est la disposition des claviers physiques au
-        // Luxembourg (suisse-français) et celle que partagent l'allemand et le
-        // luxembourgeois écrit. L'AZERTY était un héritage créole, pas un choix
-        // luxembourgeois — remplacé sans repli, l'application n'étant pas encore
-        // publiée.
-        val row1 = arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p")
-        // "é" occupe la case immédiatement à droite du "l", exactement là où le
-        // QWERTZ suisse-français la place : c'est la diacritique n°1 du
-        // luxembourgeois et cette position complète la rangée d'accueil à 10
-        // touches, alignée sur les rangées 1 et 3.
-        val row2 = arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "é")
-        val row3 = arrayOf("⇧", "y", "x", "c", "v", "b", "n", "m", "⌫")
-        // Les deux autres diacritiques porteuses gardent leur touche dédiée.
-        // Comptages sur le corpus brut POTOMITAN/luxembourgish-corpus (158
-        // documents, 204 366 caractères) et non sur luxemburgish_dict.json,
-        // dont les fréquences sont cumulées d'une régénération à l'autre :
-        //   é 2596 · ë 1251 · ä 1004 | ü 155 · à 55 · ö 48 · ê 48 · è 33
-        // Le décrochage après ä (4× moins fréquent que ü) est ce qui justifie
-        // trois touches dédiées et pas quatre ; ü et les suivantes restent en
-        // appui long sur "u", "a", "o" et "e".
-        //
-        // L'apostrophe gagne la touche dédiée que réclamaient les retours
-        // utilisateurs, et le corpus le confirme : 649 occurrences (469 en ’
-        // typographique, 180 en ' ASCII), soit plus que ü et 4,5× le trait
-        // d'union (143). L'élision est structurelle en luxembourgeois — d'Land,
-        // s'Kanner, hunn's. Attention, luxemburgish_dict.json l'affiche à zéro
-        // et ce zéro ne veut rien dire : le tokenizer de LuxembourgishComplet.py
-        // coupe les mots dessus. Le trait d'union reste donc en appui long sur
-        // "." — 143 occurrences ici contre 21,7 % des mots en créole, où il
-        // avait une touche à lui.
-        val row4 = when (champAdresse) {
-            // v29.3.1 : dans une adresse, la virgule et l'apostrophe ne servent
-            // à rien et « @ », « / », « .lu » obligeaient à passer par la page
-            // 123. Ils prennent leurs places, sans toucher à la largeur de rien.
-            ChampAdresse.EMAIL -> arrayOf("123", "@", "ä", " ", "ë", ".lu", ".", "EMOJI", "⏎")
-            ChampAdresse.WEB -> arrayOf("123", "/", "ä", " ", "ë", ".lu", ".", "EMOJI", "⏎")
-            ChampAdresse.AUCUN -> arrayOf("123", ",", "ä", " ", "ë", "'", ".", "EMOJI", "⏎")
+        disposition.rangeesLettres(champAdresse).forEach { rangee ->
+            mainLayout.addView(createKeyboardRow(rangee, disposition::poidsTouche))
         }
-
-        mainLayout.addView(createKeyboardRow(row1))
-        mainLayout.addView(createKeyboardRow(row2))
-        mainLayout.addView(createKeyboardRow(row3))
-        mainLayout.addView(createKeyboardRow(row4))
     }
     
     /**
@@ -444,9 +418,16 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
-     * Crée une rangée de touches
+     * Une rangée de touches, chacune de largeur [poids] relative à la rangée.
+     *
+     * Le poids par défaut est celui de la disposition luxembourgeoise : les
+     * pages 123 et emoji ne changent pas avec la disposition des lettres, et
+     * leur « ⌫ » garde sa largeur quel que soit le choix fait dans les réglages.
      */
-    private fun createKeyboardRow(keys: Array<String>): LinearLayout {
+    private fun createKeyboardRow(
+        keys: Array<String>,
+        poids: (String) -> Float = DispositionClavier.LUXEMBOURG::poidsTouche
+    ): LinearLayout {
         val rowLayout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             // Un LinearLayout horizontal aligne par défaut ses enfants sur la
@@ -464,13 +445,13 @@ class KeyboardLayoutManager(private val context: Context) {
             }
         }
         
-        val totalWeight = calculateRowWeight(keys)
+        val totalWeight = keys.sumOf { poids(it).toDouble() }.toFloat()
         
         for (key in keys) {
             // createKeyButton() alimente déjà keyboardButtons avec la touche
             // interactive brute (avant l'éventuel enrobage des indices de coin) ;
             // un second ajout ici dupliquait chaque touche dans la liste.
-            val button = createKeyButton(key, totalWeight)
+            val button = createKeyButton(key, poids(key), totalWeight)
             rowLayout.addView(button)
         }
         
@@ -480,7 +461,7 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Crée un bouton de touche individuel (Button ou ImageButton selon le type)
      */
-    private fun createKeyButton(key: String, totalWeight: Float): View {
+    private fun createKeyButton(key: String, weight: Float, totalWeight: Float): View {
         // Déterminer si on utilise une icône Material Design
         val useIcon = key in listOf("⌫", "⏎", "⇧")
         
@@ -543,8 +524,6 @@ class KeyboardLayoutManager(private val context: Context) {
                 // Stocker la clé dans le tag pour identification
                 tag = key
                 
-                // Calcul du poids selon le type de touche
-                val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
                     keyHeightPx(),
@@ -595,7 +574,7 @@ class KeyboardLayoutManager(private val context: Context) {
                 val widthRatio = if (key == "EMOJI") EMOJI_WIDTH_RATIO else LABEL_WIDTH_RATIO
                 val taillePx = minOf(
                     keyHeightPx() * labelRatio,
-                    keyWidthPx(getKeyWeight(key), totalWeight) * widthRatio
+                    keyWidthPx(weight, totalWeight) * widthRatio
                 )
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, taillePx)
                 // Même raison que pour les puces de suggestion : la réserve de
@@ -620,8 +599,6 @@ class KeyboardLayoutManager(private val context: Context) {
                 minHeight = 0
                 minWidth = 0
                 
-                // Calcul du poids selon le type de touche
-                val weight = getKeyWeight(key)
                 layoutParams = LinearLayout.LayoutParams(
                     0,
                     keyHeightPx(),
@@ -645,7 +622,8 @@ class KeyboardLayoutManager(private val context: Context) {
         setupButtonInteractions(button, key)
 
         // Aperçu des options d'appui long dans les coins de la touche (v8.3.0)
-        val hints = accentHandler?.takeIf { it.hasAccents(key) }?.getCornerHintsForKey(key)
+        val hints = accentHandler?.takeIf { it.hasAccents(key) }
+            ?.getCornerHintsForKey(key, exclure = disposition.touchesDirectes)
         if (!hints.isNullOrEmpty()) {
             return wrapWithLongPressHints(button, hints, key)
         }
@@ -867,6 +845,24 @@ class KeyboardLayoutManager(private val context: Context) {
             // le clic natif se déclenchait aussi) → double espace inséré à chaque frappe.
             button.setOnLongClickListener(null) // Désactiver le listener par défaut
             setupSpaceLongPress(button, key)
+        } else if (accentHandler?.hasAccents(key) == true) {
+            button.setOnClickListener {
+                interactionListener?.onKeyPress(key)
+            }
+            // Pas de long-clic natif : son délai, fixé par le système, s'ajoutait
+            // au nôtre. Le minuteur vit dans addAccentKeyTouch.
+            button.isLongClickable = false
+            addAccentKeyTouch(button, key)
+            // Sans long-clic natif, TalkBack perdrait son action « appui long »
+            // sur ces touches : elle est redéclarée ici, et ouvre la popup.
+            ViewCompat.replaceAccessibilityAction(
+                button,
+                AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_LONG_CLICK,
+                "Autres caractères"
+            ) { vue, _ ->
+                interactionListener?.onLongPress(key, vue)
+                true
+            }
         } else {
             button.setOnClickListener {
                 interactionListener?.onKeyPress(key)
@@ -903,6 +899,7 @@ class KeyboardLayoutManager(private val context: Context) {
         button.setOnTouchListener { view, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
+                    annulerAppuiLongEnAttente()
                     isSpaceLongPressTriggered = false
                     isSpaceCursorMode = false
                     spaceCursorAnchorX = event.x
@@ -1011,6 +1008,8 @@ class KeyboardLayoutManager(private val context: Context) {
         view.setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
+                    annulerAppuiLongEnAttente()
+
                     // Animation d'appui (100ms comme l'original)
                     v.animate()
                         .scaleX(0.95f)
@@ -1040,6 +1039,93 @@ class KeyboardLayoutManager(private val context: Context) {
     }
     
     /**
+     * Gestes d'une touche à accents : appui court, ou appui long qui ouvre la
+     * popup d'accents (v29.5.0).
+     *
+     * Le minuteur part sur ACTION_DOWN, avec le délai choisi dans les réglages
+     * (0,3 s par défaut). Il est abandonné si le doigt se lève avant, s'il sort
+     * de la touche, ou si une autre touche est posée entre-temps.
+     *
+     * Quand la popup s'est ouverte, le relâchement ne doit pas écrire en plus
+     * la lettre de base. Le long-clic natif s'en chargeait en consommant le
+     * geste ; ici, le relâchement est converti en ACTION_CANCEL pour la touche,
+     * qui perd son état enfoncé sans déclencher son clic.
+     */
+    private fun addAccentKeyTouch(view: View, key: String) {
+        val slopPx = android.view.ViewConfiguration.get(context).scaledTouchSlop
+
+        view.setOnTouchListener { v, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    annulerAppuiLongEnAttente()
+
+                    v.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .setDuration(100)
+                        .start()
+
+                    KeyFeedback.onKeyPress(v, key)
+
+                    appuiLongVue = v
+                    appuiLongDeclenche = false
+                    val tache = Runnable {
+                        appuiLongEnAttente = null
+                        appuiLongDeclenche = true
+                        KeyFeedback.onLongPress(v)
+                        interactionListener?.onLongPress(key, v)
+                    }
+                    appuiLongEnAttente = tache
+                    appuiLongHandler.postDelayed(
+                        tache, KeyboardPreferences.delaiAppuiLong(context).ms
+                    )
+                    false
+                }
+                android.view.MotionEvent.ACTION_MOVE -> {
+                    // Même tolérance que le long-clic natif : la touche, plus la
+                    // marge sous laquelle Android tient un doigt pour immobile.
+                    val horsDeLaTouche = event.x < -slopPx || event.y < -slopPx ||
+                            event.x > v.width + slopPx || event.y > v.height + slopPx
+                    if (appuiLongVue === v && horsDeLaTouche) {
+                        annulerAppuiLongEnAttente()
+                    }
+                    false
+                }
+                android.view.MotionEvent.ACTION_UP,
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    releaseKeyScale(v)
+
+                    val popupOuverte = appuiLongVue === v && appuiLongDeclenche
+                    if (appuiLongVue === v) {
+                        annulerAppuiLongEnAttente()
+                        appuiLongVue = null
+                        appuiLongDeclenche = false
+                    }
+                    interactionListener?.onKeyRelease()
+
+                    if (popupOuverte && event.action == android.view.MotionEvent.ACTION_UP) {
+                        val annulation = android.view.MotionEvent.obtain(event).apply {
+                            action = android.view.MotionEvent.ACTION_CANCEL
+                        }
+                        v.onTouchEvent(annulation)
+                        annulation.recycle()
+                        true
+                    } else {
+                        false
+                    }
+                }
+                else -> false
+            }
+        }
+    }
+
+    /** Abandonne l'appui long en attente, sans toucher à une popup déjà ouverte. */
+    private fun annulerAppuiLongEnAttente() {
+        appuiLongEnAttente?.let { appuiLongHandler.removeCallbacks(it) }
+        appuiLongEnAttente = null
+    }
+
+    /**
      * Met à jour l'affichage du clavier selon l'état actuel
      */
     
@@ -1047,6 +1133,19 @@ class KeyboardLayoutManager(private val context: Context) {
      * Met à jour les états internes du clavier
      */
     enum class ChampAdresse { AUCUN, EMAIL, WEB }
+
+    /** Disposition de la page des lettres, choisie dans les réglages. */
+    private var disposition = DispositionClavier.DEFAUT
+
+    /**
+     * Retient la disposition choisie ; `true` quand elle change, auquel cas le
+     * service doit reconstruire la vue, comme pour [definirChampAdresse].
+     */
+    fun definirDisposition(nouvelle: DispositionClavier): Boolean {
+        if (nouvelle == disposition) return false
+        disposition = nouvelle
+        return true
+    }
 
     /** Genre d'adresse du champ courant, qui décide de la rangée du bas. */
     private var champAdresse = ChampAdresse.AUCUN
@@ -1264,6 +1363,8 @@ class KeyboardLayoutManager(private val context: Context) {
      * Nettoie les ressources
      */
     fun cleanup() {
+        annulerAppuiLongEnAttente()
+        appuiLongVue = null
         keyboardButtons.forEach { button ->
             cleanupView(button)
         }
@@ -1296,28 +1397,6 @@ class KeyboardLayoutManager(private val context: Context) {
             "à", "è", "ò", "é", "ù", "ì", "ç" -> if (isCapitalMode) key.uppercase() else key
             else -> if (isCapitalMode) key.uppercase() else key.lowercase()
         }
-    }
-    
-    private fun getKeyWeight(key: String): Float {
-        return when (key) {
-            " " -> 4.0f      // Barre d'espace plus large
-            // 1,5 et non 1,25 : c'est ce qui pose la rangée 3 à exactement 10 unités
-            // (1,5 + 7 lettres + 1,5), donc à la même largeur de touche que les
-            // rangées 1 et 2, qui en comptent dix. La v10.11.4 les avait réduites à
-            // 1,25 pour financer l'apostrophe alors ajoutée en rangée 3 ; celle-ci
-            // vit désormais en rangée 4, mais la réduction était restée et laissait
-            // la rangée 3 à 9,5 unités — ses lettres 5,3 % plus larges que celles
-            // des rangées du dessus, soit l'inverse du désalignement qu'on voulait
-            // éviter. Ces deux touches sont par ailleurs aux extrémités de la
-            // rangée, là où la visée du pouce est la plus mauvaise : les garder les
-            // plus larges de leur rangée sert aussi à ça.
-            "⇧", "⌫" -> 1.5f
-            else -> 1.0f     // Touches normales
-        }
-    }
-    
-    private fun calculateRowWeight(keys: Array<String>): Float {
-        return keys.sumOf { getKeyWeight(it).toDouble() }.toFloat()
     }
     
     /**

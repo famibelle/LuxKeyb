@@ -219,6 +219,19 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
   son propre service. Attendez-vous à des erreurs.
 - La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
   est trop lent pour être représentatif.
+
+## [29.5.0] - 2026-10-01
+
+Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.
+
+### ✨ Améliorations
+
+- **Nouvelle disposition par défaut : Suisse allemand.** Comme sur le clavier physique du même nom, « ü » est à droite du « p », « ö » et « ä » à droite du « l », et « é » et « ë » encadrent la barre d'espace. Les rangées comptent onze touches au lieu de dix. Ce changement s'applique aussi à la mise à jour.
+- **L'ancienne disposition reste au choix** dans Réglages du clavier › Disposition, sous le nom « Luxembourg » : dix touches par rangée, un peu plus larges, « é » à droite du « l », « ü » et « ö » en appui long.
+- **Les accents s'ouvrent en 0,3 seconde.** Il fallait jusqu'ici près d'une seconde de pression pour obtenir « ü ».
+- **Le délai d'appui long se règle** dans Réglages du clavier › Appui long : court (0,3 s, par défaut), moyen (0,5 s), long (0,8 s) ou très long (1,2 s). Les délais longs servent à qui relâche lentement le doigt et voit les accents s'ouvrir sans le vouloir.
+- **Les couleurs de peau des emojis s'ouvrent plus vite.** Il suffit de rester appuyé sur l'emoji, sans la demi-seconde d'attente qui s'y ajoutait.
+
 ## [29.4.2] - 2026-09-30
 
 Les majuscules fonctionnent enfin dans le navigateur.

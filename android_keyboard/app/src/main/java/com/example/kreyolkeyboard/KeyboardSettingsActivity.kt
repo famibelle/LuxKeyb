@@ -125,6 +125,23 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         addView(espacement())
 
         addView(carte().apply {
+            addView(titreSection("Disposition"))
+            addView(explication(
+                "Les deux sont en QWERTZ. Elles ne diffèrent que par les lettres " +
+                        "accentuées qui ont leur propre touche."
+            ))
+            addView(choixDisposition())
+            addView(explication(
+                "« Suisse allemand », le réglage par défaut, reprend le clavier " +
+                        "physique du même nom : ü, ö et ä à droite, é et ë près de " +
+                        "l'espace. « Luxembourg » a des touches un peu plus larges, " +
+                        "dix par rangée au lieu de onze : é à droite, ä et ë près " +
+                        "de l'espace, ü et ö en appui long."
+            ))
+        })
+        addView(espacement())
+
+        addView(carte().apply {
             addView(titreSection("Retour de frappe"))
             addView(explication(
                 "Ce que le clavier fait à chaque appui. Le choix s'applique dès le " +
@@ -146,6 +163,20 @@ class KeyboardSettingsActivity : AppCompatActivity() {
                 "Ces deux réglages sont dans l'application et non dans ceux du " +
                         "téléphone : sur beaucoup d'appareils, le réglage de vibration au " +
                         "toucher ne gouverne que le clavier du constructeur."
+            ))
+        })
+        addView(espacement())
+
+        addView(carte().apply {
+            addView(titreSection("Appui long"))
+            addView(explication(
+                "Le temps qu'il faut maintenir une touche pour ouvrir ses accents " +
+                        "et ses symboles (è sous e, à sous a, ? sous le point…)."
+            ))
+            addView(choixDelaiAppuiLong())
+            addView(explication(
+                "Si les accents s'ouvrent alors que vous vouliez seulement taper la " +
+                        "lettre, choisissez un délai plus long."
             ))
         })
         addView(espacement())
@@ -197,43 +228,78 @@ class KeyboardSettingsActivity : AppCompatActivity() {
      * Un groupe radio et non un interrupteur : trois états, dont un, « comme le
      * téléphone », n'est ni l'un ni l'autre des deux autres et se perdrait dans
      * une bascule à deux positions.
+     */
+    private fun choixTheme(): View = groupeRadio(
+        options = KeyboardTheme.Mode.entries,
+        actuel = KeyboardPreferences.themeMode(this),
+        libelle = { it.libelle }
+    ) { mode ->
+        KeyboardPreferences.setThemeMode(this, mode)
+        Log.d(TAG, "Thème du clavier : ${mode.cle}")
+    }
+
+    /** Les deux dispositions de la page des lettres (v29.5.0). */
+    private fun choixDisposition(): View = groupeRadio(
+        options = DispositionClavier.entries,
+        actuel = KeyboardPreferences.disposition(this),
+        libelle = { it.libelle }
+    ) { disposition ->
+        KeyboardPreferences.setDisposition(this, disposition)
+        Log.d(TAG, "Disposition du clavier : ${disposition.cle}")
+    }
+
+    /**
+     * Les crans du délai d'appui long (v29.5.0), en boutons radio comme le
+     * thème : quatre durées nommées se lisent mieux qu'un curseur, et chacune
+     * se retrouve à l'identique d'un téléphone à l'autre.
+     */
+    private fun choixDelaiAppuiLong(): View = groupeRadio(
+        options = KeyboardPreferences.DelaiAppuiLong.entries,
+        actuel = KeyboardPreferences.delaiAppuiLong(this),
+        libelle = { it.libelle }
+    ) { delai ->
+        KeyboardPreferences.setDelaiAppuiLong(this, delai)
+        Log.d(TAG, "Délai d'appui long : ${delai.ms} ms")
+    }
+
+    /**
+     * Un choix exclusif parmi [options], en boutons radio verticaux.
      *
      * Les couleurs sont posées à la main pour la même raison que sur les
      * interrupteurs voisins : l'état non coché du thème est un gris presque blanc,
      * invisible sur une carte blanche.
      */
-    private fun choixTheme(): View {
-        val actuel = KeyboardPreferences.themeMode(this)
-        return RadioGroup(this).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            KeyboardTheme.Mode.entries.forEach { mode ->
-                addView(RadioButton(this@KeyboardSettingsActivity).apply {
-                    id = View.generateViewId()
-                    tag = mode
-                    text = mode.libelle
-                    textSize = 16f
-                    setTextColor(Color.parseColor(ENCRE))
-                    isChecked = mode == actuel
-                    setPadding(dp(8), dp(12), 0, dp(12))
-                    buttonTintList = ColorStateList(
-                        arrayOf(
-                            intArrayOf(android.R.attr.state_checked),
-                            intArrayOf(-android.R.attr.state_checked)
-                        ),
-                        intArrayOf(Color.parseColor(BLEU), Color.parseColor("#757575"))
-                    )
-                })
-            }
-            setOnCheckedChangeListener { groupe, idCoche ->
-                val mode = groupe.findViewById<View>(idCoche)?.tag as? KeyboardTheme.Mode
-                    ?: return@setOnCheckedChangeListener
-                KeyboardPreferences.setThemeMode(this@KeyboardSettingsActivity, mode)
-                Log.d(TAG, "Thème du clavier : ${mode.cle}")
-            }
+    private fun <T : Any> groupeRadio(
+        options: List<T>,
+        actuel: T,
+        libelle: (T) -> String,
+        onChoix: (T) -> Unit
+    ): View = RadioGroup(this).apply {
+        orientation = LinearLayout.VERTICAL
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        options.forEach { option ->
+            addView(RadioButton(this@KeyboardSettingsActivity).apply {
+                id = View.generateViewId()
+                text = libelle(option)
+                textSize = 16f
+                setTextColor(Color.parseColor(ENCRE))
+                isChecked = option == actuel
+                setPadding(dp(8), dp(12), 0, dp(12))
+                buttonTintList = ColorStateList(
+                    arrayOf(
+                        intArrayOf(android.R.attr.state_checked),
+                        intArrayOf(-android.R.attr.state_checked)
+                    ),
+                    intArrayOf(Color.parseColor(BLEU), Color.parseColor("#757575"))
+                )
+            })
+        }
+        setOnCheckedChangeListener { groupe, idCoche ->
+            val rang = groupe.indexOfChild(groupe.findViewById<View>(idCoche))
+            options.getOrNull(rang)?.let(onChoix)
         }
     }
 
