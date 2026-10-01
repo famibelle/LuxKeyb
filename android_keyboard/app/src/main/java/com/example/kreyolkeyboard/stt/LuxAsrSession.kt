@@ -12,7 +12,11 @@ import okhttp3.WebSocketListener
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
 import org.json.JSONObject
+import java.net.InetAddress
+import java.net.Socket
+import java.net.SocketException
 import java.util.concurrent.TimeUnit
+import javax.net.SocketFactory
 
 /**
  * Dictée par le service en ligne LuxASR de l'Université du Luxembourg.
@@ -57,7 +61,12 @@ import java.util.concurrent.TimeUnit
  * après le début de la parole, là où l'API ne montre rien avant la fin.
  */
 class LuxAsrSession(
-    private val listener: SttSession.Listener
+    private val listener: SttSession.Listener,
+    /**
+     * Y a-t-il un réseau ? Consulté seulement après un échec, pour dire à
+     * l'utilisateur si c'est sa connexion ou le service qui manque.
+     */
+    private val reseauDisponible: () -> Boolean = { true }
 ) : DictationSession {
 
     private val recorder = AudioRecorder()
@@ -68,11 +77,24 @@ class LuxAsrSession(
         // les intermédiaires réseau la coupent en silence, et l'échec ne se
         // découvre qu'au premier appui sur le micro.
         .pingInterval(20, TimeUnit.SECONDS)
-        .connectTimeout(10, TimeUnit.SECONDS)
+        // Le service répond en une fraction de seconde : au-delà de cinq, le
+        // réseau ne portera de toute façon pas la dictée, et l'utilisateur a
+        // assez attendu devant « LuxASR verbannen… ».
+        .connectTimeout(5, TimeUnit.SECONDS)
         .readTimeout(0, TimeUnit.MILLISECONDS)
+        // Petit tampon d'envoi TCP, pour que l'audio en retard reste visible
+        // dans la file d'OkHttp au lieu de disparaître dans celle du système
+        // (voir RetardEnvoi).
+        .socketFactory(PetitTamponSocketFactory())
         .build()
 
     @Volatile private var socket: WebSocket? = null
+    /** La connexion a abouti : un échec ensuite est une coupure, pas une absence. */
+    @Volatile private var ouverte = false
+    /** L'audio s'empile faute de réseau (voir [RetardEnvoi]). */
+    @Volatile private var lent = false
+    /** La dictée a été arrêtée parce que le réseau ne suivait plus. */
+    @Volatile private var abandonneeTropLent = false
     @Volatile private var state = SttSession.State.IDLE
     /** Texte engagé par le service : il ne fait que grandir. */
     @Volatile private var engage = ""
@@ -106,6 +128,9 @@ class LuxAsrSession(
         lastSpeechAt = 0L
         noiseFloor = 0.0
         phraseClose = false
+        ouverte = false
+        lent = false
+        abandonneeTropLent = false
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -113,6 +138,7 @@ class LuxAsrSession(
 
             override fun onOpen(ws: WebSocket, response: Response) {
                 if (gen != generation) { ws.close(1000, null); return }
+                ouverte = true
                 // Réglages envoyés avant la première trame : le serveur applique
                 // la configuration à ce qu'il reçoit ensuite, pas à ce qu'il a
                 // déjà mis de côté. La langue est le seul réglage qui nous
@@ -142,10 +168,19 @@ class LuxAsrSession(
 
             override fun onFailure(ws: WebSocket, t: Throwable, response: Response?) {
                 Log.e(TAG, "❌ WebSocket: ${t.message}", t)
-                if (gen != generation) return
+                // Une dictée déjà conclue (délai de grâce, abandon pour lenteur)
+                // a rendu son texte et dit pourquoi : rien à ajouter.
+                if (gen != generation || state == SttSession.State.IDLE) return
                 recorder.stop()
                 setState(SttSession.State.IDLE)
-                main.post { listener.onError(SttSession.Error.SERVICE_UNREACHABLE) }
+                // Trois causes, trois messages : l'utilisateur ne peut agir que
+                // s'il sait si c'est sa connexion ou le service qui manque.
+                val cause = when {
+                    ouverte -> SttSession.Error.CONNECTION_LOST
+                    !reseauDisponible() -> SttSession.Error.NO_NETWORK
+                    else -> SttSession.Error.SERVICE_UNREACHABLE
+                }
+                main.post { listener.onError(cause) }
             }
 
             override fun onClosed(ws: WebSocket, code: Int, reason: String) {
@@ -153,6 +188,18 @@ class LuxAsrSession(
                 finish()
             }
         })
+
+        // OkHttp borne la connexion TCP et TLS, mais pas la réponse à la
+        // demande de passage en WebSocket : sans lecture bornée (il faut
+        // laisser la connexion ouverte entre deux phrases), un serveur qui
+        // accepte et ne répond pas laisserait « LuxASR verbannen… » à l'écran
+        // indéfiniment. L'annulation passe par onFailure, qui dit pourquoi.
+        main.postDelayed({
+            if (gen == generation && state == SttSession.State.LOADING) {
+                Log.w(TAG, "⏱️ connexion trop longue, abandon")
+                socket?.cancel()
+            }
+        }, CONNEXION_MAX_MS)
     }
 
     /** Termine la dictée : le serveur vide ce qu'il retenait, puis on conclut. */
@@ -168,6 +215,24 @@ class LuxAsrSession(
         // texte partiel qu'un bandeau figé.
         main.postDelayed({ if (state == SttSession.State.FINALIZING) finish() },
                          FINAL_GRACE_MS)
+    }
+
+    /**
+     * Arrêt pour réseau trop lent. Pas de [stop] ici : le « stop » partirait
+     * derrière des secondes d'audio en souffrance, et l'utilisateur fixerait le
+     * témoin de transcription pendant tout le délai de grâce pour un texte qui
+     * n'arrivera pas. On garde ce que le service a déjà rendu, on coupe, et on
+     * dit pourquoi.
+     */
+    private fun abandonnerTropLent() {
+        if (state != SttSession.State.LISTENING) return
+        recorder.stop()
+        val ws = socket
+        socket = null
+        finish()
+        // Après finish() : la session est au repos, onFailure n'ajoutera rien.
+        ws?.cancel()
+        main.post { listener.onError(SttSession.Error.NETWORK_TOO_SLOW) }
     }
 
     override fun cancel() {
@@ -217,7 +282,32 @@ class LuxAsrSession(
         // exactement ce que voit le service avant l'arrêt automatique : aucun
         // mot inventé, WER égal ou meilleur, texte final 0,02 s après l'arrêt.
         ws.send(pcm.toByteString())
+        surveillerRetard(ws.queueSize())
         detecterFinDEnonce(estParole(rms), SystemClock.elapsedRealtime())
+    }
+
+    /**
+     * Prévient quand l'audio s'empile, et arrête quand l'utilisateur parle
+     * depuis trop longtemps dans le vide (voir [RetardEnvoi]).
+     */
+    private fun surveillerRetard(enAttente: Long) {
+        when (RetardEnvoi.juger(enAttente, lent)) {
+            RetardEnvoi.Verdict.ABANDON -> {
+                if (abandonneeTropLent) return
+                abandonneeTropLent = true
+                Log.w(TAG, "🐢 ${enAttente / RetardEnvoi.OCTETS_PAR_SECONDE} s d'audio en souffrance, arrêt")
+                main.post { abandonnerTropLent() }
+            }
+            RetardEnvoi.Verdict.LENT -> if (!lent) {
+                lent = true
+                Log.i(TAG, "🐢 réseau lent : $enAttente octets en attente")
+                main.post { listener.onNetworkSlow(true) }
+            }
+            RetardEnvoi.Verdict.FLUIDE -> if (lent) {
+                lent = false
+                main.post { listener.onNetworkSlow(false) }
+            }
+        }
     }
 
     /**
@@ -370,6 +460,13 @@ class LuxAsrSession(
         const val FINAL_GRACE_MS = 4_000L
 
         /**
+         * Attente maximale de la connexion, passage en WebSocket compris. Un
+         * peu au-delà du délai TCP (5 s), pour qu'OkHttp ait le premier mot
+         * quand c'est lui qui sait pourquoi.
+         */
+        const val CONNEXION_MAX_MS = 6_000L
+
+        /**
          * Silence qui termine la dictée une fois que le service a déclaré la
          * phrase finie. Le service a déjà attendu 0,8 s de son côté ; ces 2,5 s
          * comptées depuis la dernière parole laissent le temps de reprendre
@@ -411,4 +508,28 @@ class LuxAsrSession(
         /** Même échelle que SttSession, pour que le micro respire pareil. */
         const val LEVEL_FULL_SCALE = 0.18
     }
+}
+
+/**
+ * Sockets au tampon d'envoi réduit à [RetardEnvoi.TAMPON_SYSTEME_OCTETS].
+ * OkHttp n'appelle que la forme sans argument puis connecte lui-même ; les
+ * autres délèguent pour respecter le contrat de [SocketFactory].
+ */
+private class PetitTamponSocketFactory(
+    private val base: SocketFactory = SocketFactory.getDefault()
+) : SocketFactory() {
+
+    private fun regle(s: Socket): Socket = s.apply {
+        try { sendBufferSize = RetardEnvoi.TAMPON_SYSTEME_OCTETS } catch (_: SocketException) {}
+    }
+
+    override fun createSocket(): Socket = regle(base.createSocket())
+    override fun createSocket(host: String?, port: Int): Socket =
+        regle(base.createSocket(host, port))
+    override fun createSocket(host: String?, port: Int, localHost: InetAddress?, localPort: Int): Socket =
+        regle(base.createSocket(host, port, localHost, localPort))
+    override fun createSocket(host: InetAddress?, port: Int): Socket =
+        regle(base.createSocket(host, port))
+    override fun createSocket(address: InetAddress?, port: Int, localAddress: InetAddress?, localPort: Int): Socket =
+        regle(base.createSocket(address, port, localAddress, localPort))
 }

@@ -33,6 +33,9 @@
     <string name="stt_online_connecting">🌐 LuxASR verbannen…</string>
     <string name="stt_online_listening">🌐 LuxASR · Schwätzt…</string>
     <string name="stt_online_transcribing">🌐 LuxASR · Transkriptioun…</string>
+    <!-- Remplace « Schwätzt… » quand l'audio s'empile faute de réseau : le texte
+         arrivera en retard. À faire relire par un locuteur. -->
+    <string name="stt_online_slow">🐢 LuxASR · lues Verbindung…</string>
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>
@@ -40,6 +43,13 @@
          incapacité de l'appareil. Réutiliser stt_model_unavailable, comme
          c'était le cas, faisait accuser le téléphone alors que le service ou
          le réseau étaient en cause — constaté sur un vrai téléphone. -->
-    <string name="stt_service_unreachable">Service LuxASR injoignable — vérifiez le réseau</string>
+    <!-- Le réseau est là, le service ne répond pas : ce n'est ni le téléphone
+         ni la connexion de l'utilisateur. -->
+    <string name="stt_service_unreachable">Service LuxASR indisponible, réessayez plus tard</string>
+    <!-- Dictée en ligne, trois autres causes, trois messages : l'utilisateur ne
+         peut agir que s'il sait laquelle. Le texte déjà dicté est toujours gardé. -->
+    <string name="stt_no_network">Dictée : pas de connexion Internet</string>
+    <string name="stt_connection_lost">Connexion perdue pendant la dictée</string>
+    <string name="stt_network_too_slow">Connexion trop lente pour la dictée</string>
     <string name="stt_not_in_password">Dictée désactivée dans les champs de mot de passe</string>
 </resources>

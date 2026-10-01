@@ -15,6 +15,31 @@ Sur la branche `feat/luxasr-online` **uniquement**. Support de démonstration
 pour un rendez-vous avec le projet LuxASR de l'Université du Luxembourg ; ne
 doit pas être fusionné.
 
+### 📶 Sans réseau ou réseau trop lent : la dictée le dit
+
+- **Sans réseau, le micro est barré** et plus pâle, et le reste tant que le
+  clavier est affiché ; il redevient normal dès que le réseau revient. L'appui
+  dit « Dictée : pas de connexion Internet » sans rien tenter, au lieu de
+  laisser « LuxASR verbannen… » à l'écran jusqu'à l'échec.
+- **Trois causes, trois messages** au lieu d'un seul « injoignable » : pas de
+  connexion, connexion perdue pendant la dictée, service LuxASR indisponible
+  (le réseau va bien, l'Université ne répond pas). Le texte déjà dicté est
+  toujours gardé.
+- **Réseau trop lent** : la dictée envoie 256 kbit/s. Quand l'audio s'empile
+  (plus d'une seconde en attente d'envoi), le bandeau passe à « 🐢 LuxASR ·
+  lues Verbindung… » ; au-delà de six secondes, la dictée s'arrête, garde ce
+  qui est arrivé et dit « Connexion trop lente pour la dictée ». Le tampon
+  d'envoi TCP est réduit pour que ce retard se voie au lieu de se cacher dans
+  celui du système.
+- Connexion bornée à 5 s (10 s avant), passage en WebSocket compris : un
+  serveur qui accepte sans répondre laissait le bandeau de connexion à vie.
+- **Les messages de la dictée passent du Toast au bandeau du clavier.**
+  Android supprime les toasts d'une application dont on a bloqué les
+  notifications, et l'application ne les demande que pour les montées de
+  niveau : qui les refusait ne voyait aucune explication de la dictée.
+- Aucune autorisation nouvelle : `ACCESS_NETWORK_STATE`, déjà déclarée, est
+  accordée à l'installation sans rien demander. Aucun test de débit.
+
 ### 🌐 Dictée déléguée au service luxasr.uni.lu
 
 - Nouveau `LuxAsrSession` : client WebSocket vers `wss://luxasr.uni.lu/prod/ws/transcribe`,

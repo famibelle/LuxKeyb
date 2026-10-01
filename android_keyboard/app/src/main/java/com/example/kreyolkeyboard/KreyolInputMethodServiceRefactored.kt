@@ -156,6 +156,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          */
         private const val USE_LUXASR_ONLINE = true
 
+        /** Durée d'affichage d'une explication de la dictée dans le bandeau. */
+        private const val DICTATION_MESSAGE_MS = 3_500L
+
         /** Durée d'affichage du chronométrage final, une fois la dictée finie. */
         private const val FINAL_TIMING_HOLD_MS = 4000L
 
@@ -318,6 +321,22 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     @Volatile private var dictationLevel = 0f
     private var micRing: MicRingDrawable? = null
     private var micRingAnimator: android.animation.ValueAnimator? = null
+
+    /**
+     * Présence d'un réseau, pour la dictée en ligne seulement : le micro barré
+     * dit d'avance qu'il ne servira à rien, au lieu de le laisser découvrir
+     * après l'appui. Null avec la dictée embarquée, qui n'en a pas besoin.
+     */
+    private val reseauDictee: com.example.kreyolkeyboard.stt.ReseauDictee? by lazy {
+        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.ReseauDictee(this) { present ->
+            reseauPresent = present
+            if (sttSession?.isBusy != true) applyMicTint(listening = false)
+        } else null
+    }
+    private var reseauPresent = true
+
+    /** L'audio de la dictée en cours s'empile faute de réseau. */
+    private var reseauLent = false
 
     /**
      * Bandeau d'état de la dictée, affiché à la place des suggestions.
@@ -852,6 +871,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             setPadding(dpToPx(12), 0, dpToPx(8), 0)
             textSize = SUGGESTION_TEXT_SIZE_SP - 2f
             maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.END
             visibility = View.GONE
         }
         dictationStatusView = view
@@ -859,15 +879,27 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
-     * Le micro n'a que deux états visuels, et ils doivent se distinguer sans
+     * Le micro a deux états visuels, et ils doivent se distinguer sans
      * couleur : l'opacité change en même temps que la teinte, pour rester
      * lisible en cas de daltonisme comme sur un écran délavé au soleil.
+     *
+     * La dictée en ligne en ajoute un troisième, sans réseau : le micro barré,
+     * plus pâle encore. Il reste à sa place et reste cliquable — le retirer
+     * décalerait la rangée de suggestions, et l'appui explique pourquoi il ne
+     * marche pas. Le dessin barré dit la chose sans couleur, comme les deux
+     * autres états.
      */
     private fun applyMicTint(listening: Boolean) {
         val palette = paletteDeLaVue ?: KeyboardTheme.palette()
+        val horsReseau = !listening && USE_LUXASR_ONLINE && !reseauPresent
         micButton?.apply {
+            setImageResource(if (horsReseau) R.drawable.ic_mic_off else R.drawable.ic_mic)
             setColorFilter(if (listening) palette.accent else palette.encreAttenuee)
-            alpha = if (listening) 1.0f else 0.65f
+            alpha = when {
+                listening -> 1.0f
+                horsReseau -> 0.4f
+                else -> 0.65f
+            }
             if (!listening) {
                 scaleX = 1f
                 scaleY = 1f
@@ -1015,6 +1047,18 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             return
         }
 
+        // Relu à l'appui, pas seulement suivi : avant Android 7 il n'y a pas de
+        // suivi, et un rappel peut arriver après le doigt. Sans réseau, rien
+        // n'est tenté — pas même la demande d'accès au micro, qui ne servirait
+        // à rien.
+        reseauDictee?.let { reseau ->
+            reseauPresent = reseau.disponible()
+            if (!reseauPresent) {
+                showDictationMessage(R.string.stt_no_network)
+                return
+            }
+        }
+
         if (!MicPermissionActivity.hasPermission(this)) {
             MicPermissionActivity.request(this) { granted ->
                 if (granted) startDictation()
@@ -1027,6 +1071,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     private fun startDictation() {
+        dictationStatusView?.removeCallbacks(hideDictationMessage)
         val session = sttSession ?: newDictationSession().also { sttSession = it }
         dictationComposing = false
         session.start()
@@ -1055,8 +1100,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * service demande explicitement qu'on les contacte avant toute intégration.
      */
     private fun newDictationSession(): com.example.kreyolkeyboard.stt.DictationSession =
-        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener)
+        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener) {
+            reseauDictee?.disponible() ?: true
+        }
         else SttSession(this, dictationListener)
+
+    /** Bandeau d'écoute : le réseau qui ne suit plus se signale à la place. */
+    private fun listeningLabel(): Int = when {
+        !USE_LUXASR_ONLINE -> R.string.stt_listening
+        reseauLent -> R.string.stt_online_slow
+        else -> R.string.stt_online_listening
+    }
 
     private val dictationListener = object : SttSession.Listener {
 
@@ -1110,10 +1164,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 // Rafraîchit le bandeau en place, sans le faire réapparaître
                 // s'il a déjà été retiré.
                 if (dictationStatusView?.visibility == View.VISIBLE) {
-                    showDictationStatus(
-                        if (USE_LUXASR_ONLINE) R.string.stt_online_listening
-                        else R.string.stt_listening
-                    )
+                    showDictationStatus(listeningLabel())
                 }
             } else {
                 // La passe finale est le chiffre qui compte — le délai entre le
@@ -1125,6 +1176,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
 
         override fun onStateChanged(state: SttSession.State) {
+            if (state == SttSession.State.LOADING || state == SttSession.State.IDLE) reseauLent = false
             applyMicTint(listening = state == SttSession.State.LISTENING)
             when (state) {
                 SttSession.State.LISTENING -> startDictationMeter()
@@ -1144,9 +1196,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     SttSession.State.LOADING ->
                         if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
                         else R.string.stt_preparing
-                    SttSession.State.LISTENING ->
-                        if (USE_LUXASR_ONLINE) R.string.stt_online_listening
-                        else R.string.stt_listening
+                    SttSession.State.LISTENING -> listeningLabel()
                     SttSession.State.FINALIZING ->
                         if (USE_LUXASR_ONLINE) R.string.stt_online_transcribing
                         else R.string.stt_transcribing
@@ -1166,8 +1216,21 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                     SttSession.Error.MIC_UNAVAILABLE -> R.string.stt_mic_unavailable
                     SttSession.Error.MODEL_UNAVAILABLE -> R.string.stt_model_unavailable
                     SttSession.Error.SERVICE_UNREACHABLE -> R.string.stt_service_unreachable
+                    SttSession.Error.NO_NETWORK -> R.string.stt_no_network
+                    SttSession.Error.CONNECTION_LOST -> R.string.stt_connection_lost
+                    SttSession.Error.NETWORK_TOO_SLOW -> R.string.stt_network_too_slow
                 }
             )
+            // Une coupure en pleine dictée est souvent le réseau qui part : le
+            // micro doit le dire tout de suite, sans attendre le rappel système.
+            reseauDictee?.let { reseauPresent = it.disponible(); applyMicTint(listening = false) }
+        }
+
+        override fun onNetworkSlow(slow: Boolean) {
+            reseauLent = slow
+            if (sttSession?.isActive == true && dictationStatusView?.visibility == View.VISIBLE) {
+                showDictationStatus(listeningLabel())
+            }
         }
     }
 
@@ -1270,10 +1333,33 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         spinnerRunnable = null
     }
 
+    /**
+     * Dit pourquoi la dictée n'a pas lieu, dans le bandeau, à la place des
+     * suggestions, pendant [DICTATION_MESSAGE_MS].
+     *
+     * C'était un Toast, et il n'arrivait pas toujours : Android supprime les
+     * toasts d'une application dont l'utilisateur a bloqué les notifications
+     * (« Suppressing toast … by user request », constaté sur l'émulateur
+     * Android 16). Or l'application ne demande les notifications que pour les
+     * montées de niveau, que beaucoup refusent : ils perdaient sans le savoir
+     * toutes les explications de la dictée. Le bandeau est dans le clavier, au
+     * bout du doigt, et ne dépend d'aucune autorisation.
+     */
     private fun showDictationMessage(resId: Int) {
         applyMicTint(listening = false)
-        showDictationStatus(null)
-        Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show()
+        val status = dictationStatusView
+        if (status == null) {
+            Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show()
+            return
+        }
+        showDictationStatus(resId)
+        status.text = getString(resId)
+        status.removeCallbacks(hideDictationMessage)
+        status.postDelayed(hideDictationMessage, DICTATION_MESSAGE_MS)
+    }
+
+    private val hideDictationMessage = Runnable {
+        if (sttSession?.isBusy != true) showDictationStatus(null)
     }
 
     /**
@@ -1873,6 +1959,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onStartInputView(info, restarting)
         Log.d(TAG, "onStartInputView - restarting: $restarting")
 
+        // Dictée en ligne : l'état du réseau est relu à chaque affichage, puis
+        // suivi tant que le clavier reste à l'écran.
+        reseauDictee?.let {
+            it.ecouter()
+            reseauPresent = it.disponible()
+            if (sttSession?.isBusy != true) applyMicTint(listening = false)
+        }
+
         // Réglages du retour de frappe relus à chaque prise de focus : le service
         // survit au passage dans l'écran de l'application, donc un interrupteur
         // changé là-bas doit s'appliquer dès le retour dans un champ de saisie.
@@ -2088,6 +2182,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onFinishInput()
         Log.d(TAG, "onFinishInput")
 
+        // Plus de clavier à l'écran, plus rien à montrer : inutile de réveiller
+        // le processus à chaque changement de réseau.
+        reseauDictee?.arreter()
+
         accentHandler.dismissAccentPopup()
         inputProcessor.resetState()
 
@@ -2180,6 +2278,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // 🔧 FIX SAMSUNG A21S: Arrêter monitoring et annuler coroutines
             memoryMonitoringJob?.cancel()
             serviceScope.cancel()
+            reseauDictee?.arreter()
             Log.d(TAG, "✅ Monitoring mémoire et coroutines annulés pour A21s")
             
             // Arrêter la suppression par mots si active

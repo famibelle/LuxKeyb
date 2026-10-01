@@ -55,6 +55,11 @@ class SttSession(
         fun onPassTiming(audioSeconds: Float, ms: Long, partial: Boolean)
         fun onStateChanged(state: State)
         fun onError(error: Error)
+        /**
+         * Dictée en ligne : l'audio s'empile faute de réseau ([slow] vrai), ou
+         * repart normalement. La dictée embarquée ne l'appelle jamais.
+         */
+        fun onNetworkSlow(slow: Boolean) {}
     }
 
     enum class State { IDLE, LOADING, LISTENING, FINALIZING }
@@ -64,8 +69,14 @@ class SttSession(
         MODEL_UNAVAILABLE,
         /** Permission refusée, micro déjà pris, format refusé. */
         MIC_UNAVAILABLE,
-        /** Dictée en ligne seulement : réseau absent ou service muet. */
-        SERVICE_UNREACHABLE
+        /** Dictée en ligne : le réseau est là, mais le service ne répond pas. */
+        SERVICE_UNREACHABLE,
+        /** Dictée en ligne : aucun réseau, rien n'a été tenté. */
+        NO_NETWORK,
+        /** Dictée en ligne : la connexion est tombée en cours de dictée. */
+        CONNECTION_LOST,
+        /** Dictée en ligne : le réseau ne suivait plus, la dictée a été arrêtée. */
+        NETWORK_TOO_SLOW
     }
 
     private val engine = SttEngine()
