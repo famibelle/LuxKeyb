@@ -220,6 +220,16 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 - La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
   est trop lent pour être représentatif.
 
+## [30.1.0] - 2026-10-01
+
+Les propositions en français deviennent facultatives.
+
+### ✨ Améliorations
+
+- **Les propositions en français se coupent** dans Réglages du clavier › Suggestions › « Propositions en français ». Elles restent activées par défaut.
+- **Sans elles, le clavier prend moins de place.** La rangée bleue disparaît entièrement et le clavier raccourcit d'autant, sans laisser de bande vide. Les touches gardent leur taille.
+- **Le correcteur orthographique reconnaît toujours le français.** Seules les pastilles bleues disparaissent : un mot français bien écrit n'est pas souligné.
+
 ## [29.5.0] - 2026-10-01
 
 Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.

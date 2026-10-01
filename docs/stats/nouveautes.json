@@ -1,9 +1,46 @@
 {
  "genere_le": "2026-10-01",
- "derniere_version": "29.5.0",
+ "derniere_version": "30.1.0",
  "derniere_date": "2026-10-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "30.1.0",
+   "date": "2026-10-01",
+   "intro": "Les propositions en français deviennent facultatives.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Les propositions en français se coupent",
+       "texte": "Dans Réglages du clavier › Suggestions › « Propositions en français ». Elles restent activées par défaut."
+      },
+      {
+       "titre": "Sans elles, le clavier prend moins de place",
+       "texte": "La rangée bleue disparaît entièrement et le clavier raccourcit d'autant, sans laisser de bande vide. Les touches gardent leur taille."
+      },
+      {
+       "titre": "Le correcteur orthographique reconnaît toujours le français",
+       "texte": "Seules les pastilles bleues disparaissent : un mot français bien écrit n'est pas souligné."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_propositions_francais.png",
+     "alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
+     "legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
+    }
+   ],
+   "image": "Screenshots/lux_propositions_francais.png",
+   "image_alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
+   "image_legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
+  },
   {
    "version": "29.5.0",
    "date": "2026-10-01",
@@ -207,79 +244,6 @@
    "image": "Screenshots/lux_clavier_champ_nom_email.png",
    "image_alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
    "image_legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
-  },
-  {
-   "version": "29.3.0",
-   "date": "2026-09-29",
-   "intro": "Le clavier suit le champ où l'on tape, et la ponctuation se colle au mot.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Un point après une suggestion se colle au mot",
-       "texte": "Toucher « Gromper » puis « . » donnait « Gromper . » ; l'espace ajoutée par la suggestion disparaît maintenant devant . , ? ! : ; ) … et l'apostrophe, pour écrire « d'Land » sans retour arrière."
-      },
-      {
-       "titre": "Le clavier s'ouvre sur les chiffres dans un champ de chiffres",
-       "texte": "Code PIN, code reçu par SMS, montant, numéro de téléphone, date."
-      },
-      {
-       "titre": "La touche Entrée montre ce qu'elle va faire",
-       "texte": "Une loupe pour chercher, une flèche d'envoi, une flèche pour passer au champ suivant, une coche pour terminer."
-      },
-      {
-       "titre": "Dans une adresse e-mail ou web",
-       "texte": "Plus de majuscule d'office ni d'espace après une suggestion : l'adresse reste juste."
-      },
-      {
-       "titre": "De nouveaux symboles sur la page 123",
-       "texte": "« % » a sa touche, à la place de « &amp; », qui passe dessous. En restant appuyé : « _ » sous le tiret, « $ £ ¥ » sous l'euro, « ° » sous le 0 et l'étoile, crochets et accolades sous les parenthèses, « « » » sous les guillemets, « \\ | » sous la barre oblique, « ± × ÷ » sous le plus, « ≠ ~ ^ » sous le égal."
-      },
-      {
-       "titre": "« Mäi Lëtzebuergesch » encourage au lieu de décourager",
-       "texte": "Le niveau vient en premier, avec une barre jusqu'au palier suivant et « Encore 567 mots avant Klengen », à la place d'un « 0.0% » en très gros. Le mot du jour et les listes de mots gardent la majuscule des noms : « Brauereien », « Apdikte »."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Dans un champ de mot de passe, la barre de suggestions reste vide",
-       "texte": "Elle affichait le début du mot de passe en grosses lettres."
-      },
-      {
-       "titre": "Le Wierderbuch ignore la ponctuation autour du mot cherché",
-       "texte": "« Gromper. » trouve « Gromper »."
-      },
-      {
-       "titre": "Un signe choisi en restant appuyé",
-       "texte": "(« ? » sous le point, « ’ » sous l'apostrophe) n'apparaît plus dans les emojis récents."
-      },
-      {
-       "titre": "La touche « 123 » répond du premier coup",
-       "texte": "En arrivant dans un champ quitté en mode chiffres."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_clavier_page_123.png",
-     "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
-     "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
-    }
-   ],
-   "image": "Screenshots/lux_clavier_page_123.png",
-   "image_alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
-   "image_legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
   }
  ]
 }

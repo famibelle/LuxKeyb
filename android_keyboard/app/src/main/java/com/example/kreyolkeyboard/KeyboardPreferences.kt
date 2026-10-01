@@ -37,6 +37,7 @@ object KeyboardPreferences {
     private const val KEY_THEME_MODE = "theme_mode"
     private const val KEY_LONG_PRESS_DELAY = "long_press_delay_ms"
     private const val KEY_DISPOSITION = "disposition"
+    private const val KEY_FRENCH_SUGGESTIONS = "french_suggestions_enabled"
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
@@ -114,13 +115,30 @@ object KeyboardPreferences {
     }
 
     /**
-     * Disposition de la page des lettres (v29.5.0). Luxembourg par défaut,
-     * celle que tous les utilisateurs avaient jusque-là.
+     * Disposition de la page des lettres (v29.5.0). Suisse allemand par défaut,
+     * voir [DispositionClavier.DEFAUT].
      */
     fun disposition(context: Context): DispositionClavier =
         DispositionClavier.depuisCle(prefs(context).getString(KEY_DISPOSITION, null))
 
     fun setDisposition(context: Context, disposition: DispositionClavier) {
         prefs(context).edit().putString(KEY_DISPOSITION, disposition.cle).apply()
+    }
+
+    /**
+     * Rangée bleue des propositions en français (v30.1.0). Active par défaut :
+     * un utilisateur l'a trouvée inutile, d'autres s'en servent pour glisser un
+     * mot français dans une phrase luxembourgeoise.
+     *
+     * Ce réglage ne cache que les propositions. La reconnaissance du français
+     * reste entière : le correcteur orthographique remplace celui du téléphone
+     * pour le français, et sans elle il soulignerait tout le français écrit
+     * dans les autres applications.
+     */
+    fun propositionsFrancais(context: Context): Boolean =
+        prefs(context).getBoolean(KEY_FRENCH_SUGGESTIONS, DEFAULT_ENABLED)
+
+    fun setPropositionsFrancais(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean(KEY_FRENCH_SUGGESTIONS, enabled).apply()
     }
 }
