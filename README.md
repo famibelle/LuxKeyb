@@ -152,7 +152,7 @@ Au-delà d'environ 25 % de mots erronés, corriger coûte plus cher que taper :
 c'est pourquoi le modèle embarqué, malgré son avantage de confidentialité, n'est
 pas proposé comme une fonction. Les chiffres, leurs conditions de mesure et
 leurs limites sont détaillés sur la page
-[Labs · LuxASR](https://famibelle.github.io/LuxKeyb/labs-luxasr.html).
+[Labs](https://famibelle.github.io/LuxKeyb/labs.html).
 
 ### Pourquoi ce n'est pas dans la version stable
 
