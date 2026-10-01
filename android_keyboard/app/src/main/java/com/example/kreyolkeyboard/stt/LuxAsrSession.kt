@@ -515,7 +515,7 @@ class LuxAsrSession(
  * OkHttp n'appelle que la forme sans argument puis connecte lui-même ; les
  * autres délèguent pour respecter le contrat de [SocketFactory].
  */
-private class PetitTamponSocketFactory(
+internal class PetitTamponSocketFactory(
     private val base: SocketFactory = SocketFactory.getDefault()
 ) : SocketFactory() {
 

@@ -30,7 +30,10 @@ doit pas être fusionné.
   lues Verbindung… » ; au-delà de six secondes, la dictée s'arrête, garde ce
   qui est arrivé et dit « Connexion trop lente pour la dictée ». Le tampon
   d'envoi TCP est réduit pour que ce retard se voie au lieu de se cacher dans
-  celui du système.
+  celui du système : face à un pair qui ne lit plus, l'alerte vient après
+  2,7 s d'audio, contre 58 s avec le tampon par défaut (`FileEnvoiReseauTest`).
+  Ni l'émulateur ni `adb reverse` ne permettent de le voir sur un appareil :
+  tous deux accusent réception de tout puis brident en aval.
 - Connexion bornée à 5 s (10 s avant), passage en WebSocket compris : un
   serveur qui accepte sans répondre laissait le bandeau de connexion à vie.
 - **Les messages de la dictée passent du Toast au bandeau du clavier.**
