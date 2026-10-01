@@ -19,7 +19,7 @@ Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus 
 - **L'ancienne disposition reste au choix** dans Réglages du clavier › Disposition, sous le nom « Luxembourg » : dix touches par rangée, un peu plus larges, « é » à droite du « l », « ü » et « ö » en appui long.
 - **Les accents s'ouvrent en 0,3 seconde.** Il fallait jusqu'ici près d'une seconde de pression pour obtenir « ü ».
 - **Le délai d'appui long se règle** dans Réglages du clavier › Appui long : court (0,3 s, par défaut), moyen (0,5 s), long (0,8 s) ou très long (1,2 s). Les délais longs servent à qui relâche lentement le doigt et voit les accents s'ouvrir sans le vouloir.
-- **Les couleurs de peau des emojis** s'ouvrent elles aussi plus vite.
+- **Les couleurs de peau des emojis s'ouvrent plus vite.** Il suffit de rester appuyé sur l'emoji, sans la demi-seconde d'attente qui s'y ajoutait.
 
 ## [29.4.2] - 2026-09-30
 
