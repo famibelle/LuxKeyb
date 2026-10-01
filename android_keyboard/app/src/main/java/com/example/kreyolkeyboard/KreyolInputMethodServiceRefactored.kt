@@ -744,9 +744,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
             }
             else -> {
-                // Gestion des accents pour les autres touches
+                // Le délai d'appui long est déjà écoulé (KeyboardLayoutManager) :
+                // la popup d'accents s'ouvre tout de suite.
                 if (accentHandler.hasAccents(key)) {
-                    accentHandler.startLongPressTimer(key, button)
+                    accentHandler.ouvrirPopupAppuiLong(key, button)
                 }
             }
         }
