@@ -1,0 +1,111 @@
+{
+ "date": "2026-10-01",
+ "appareil": "Galaxy A21s, Android 12, Wi-Fi",
+ "apk": "Labs 29.5.0+9cdbb4d (build de production : pas de journaux, d'où les captures)",
+ "montage": "proxy_debit.c sur le téléphone, débit montant relu toutes les 200 ms ; bench_debit.py ; 30 s du fichier 001_839ff4ad rejouées au haut-parleur",
+ "lecture": "temps comptés depuis l'appui sur le micro ; alerte et arrêt lus sur les captures du bandeau, prises toutes les ~2,7 s",
+ "scenarios": [
+  {
+   "scenario": "illimité",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ]
+   ],
+   "attendu": "aucune alerte",
+   "alerte_lente": "pas d'alerte",
+   "arret": null,
+   "duree_dictee_s": 37.3,
+   "mots_rendus": 99,
+   "wer_infixe": 0.283
+  },
+  {
+   "scenario": "48 Ko/s (384 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     48000
+    ]
+   ],
+   "attendu": "aucune alerte : 1,5 × le besoin",
+   "alerte_lente": "pas d'alerte",
+   "arret": null,
+   "duree_dictee_s": 37.5,
+   "mots_rendus": 102,
+   "wer_infixe": 0.255
+  },
+  {
+   "scenario": "24 Ko/s (192 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     24000
+    ]
+   ],
+   "attendu": "alerte lente vers 10-15 s, pas d'arrêt",
+   "alerte_lente": "alerte entre 9,1 et 11,9 s",
+   "arret": "arrêt vers 30 s (avant la fin de l'audio, 31,6 s)",
+   "duree_dictee_s": 30.1,
+   "mots_rendus": 69,
+   "wer_infixe": 0.217
+  },
+  {
+   "scenario": "12 Ko/s (96 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     12000
+    ]
+   ],
+   "attendu": "alerte vers 4 s, arrêt vers 13 s",
+   "alerte_lente": "alerte entre 3,5 et 6,1 s",
+   "arret": "« Connexion trop lente » entre 11,5 et 14,1 s",
+   "duree_dictee_s": 14.8,
+   "mots_rendus": 16,
+   "wer_infixe": 0.25
+  },
+  {
+   "scenario": "trou de 10 s à 8 Ko/s",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ],
+    [
+     8,
+     8000
+    ],
+    [
+     18,
+     0
+    ]
+   ],
+   "attendu": "alerte puis retour à la normale, pas d'arrêt",
+   "alerte_lente": "alerte entre 8,9 et 11,6 s",
+   "arret": "arrêt à 18,6 s, 0,6 s après le retour du débit",
+   "duree_dictee_s": 18.6,
+   "mots_rendus": 28,
+   "wer_infixe": 0.286
+  },
+  {
+   "scenario": "zone blanche après 8 s",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ],
+    [
+     8,
+     1
+    ]
+   ],
+   "attendu": "arrêt vers 8 + 8 s, texte d'avant gardé",
+   "alerte_lente": "alerte entre 9,0 et 11,7 s",
+   "arret": "« Connexion trop lente » entre 14,3 et 17,0 s",
+   "duree_dictee_s": 16.8,
+   "mots_rendus": 21,
+   "wer_infixe": 0.286
+  }
+ ]
+}
