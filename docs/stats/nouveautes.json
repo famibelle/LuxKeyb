@@ -1,9 +1,59 @@
 {
- "genere_le": "2026-09-30",
- "derniere_version": "29.4.2",
- "derniere_date": "2026-09-30",
+ "genere_le": "2026-10-01",
+ "derniere_version": "29.5.0",
+ "derniere_date": "2026-10-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "29.5.0",
+   "date": "2026-10-01",
+   "intro": "Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Nouvelle disposition par défaut : Suisse allemand",
+       "texte": "Comme sur le clavier physique du même nom, « ü » est à droite du « p », « ö » et « ä » à droite du « l », et « é » et « ë » encadrent la barre d'espace. Les rangées comptent onze touches au lieu de dix. Ce changement s'applique aussi à la mise à jour."
+      },
+      {
+       "titre": "L'ancienne disposition reste au choix",
+       "texte": "Dans Réglages du clavier › Disposition, sous le nom « Luxembourg » : dix touches par rangée, un peu plus larges, « é » à droite du « l », « ü » et « ö » en appui long."
+      },
+      {
+       "titre": "Les accents s'ouvrent en 0,3 seconde",
+       "texte": "Il fallait jusqu'ici près d'une seconde de pression pour obtenir « ü »."
+      },
+      {
+       "titre": "Le délai d'appui long se règle",
+       "texte": "Dans Réglages du clavier › Appui long : court (0,3 s, par défaut), moyen (0,5 s), long (0,8 s) ou très long (1,2 s). Les délais longs servent à qui relâche lentement le doigt et voit les accents s'ouvrir sans le vouloir."
+      },
+      {
+       "titre": "Les couleurs de peau des emojis s'ouvrent plus vite",
+       "texte": "Il suffit de rester appuyé sur l'emoji, sans la demi-seconde d'attente qui s'y ajoutait."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
+     "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
+     "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
+    },
+    {
+     "image": "Screenshots/lux_appui_long_reglage.png",
+     "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
+     "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
+    }
+   ],
+   "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
+   "image_alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
+   "image_legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
+  },
   {
    "version": "29.4.2",
    "date": "2026-09-30",
@@ -230,37 +280,6 @@
    "image": "Screenshots/lux_clavier_page_123.png",
    "image_alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
    "image_legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
-  },
-  {
-   "version": "29.2.0",
-   "date": "2026-09-26",
-   "intro": "Le clavier d'essai du site ressemble au clavier de l'application. L'application elle-même ne change pas.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Sur le site, la barre de suggestions est un plateau creusé dans le clavier",
-       "texte": "Comme sur le téléphone : fond plus sombre que les touches, deux rangées réservées, puces aux couleurs du drapeau. Le clavier prend toute la largeur du téléphone dessiné, et ⇧ et ⌫ retrouvent leur largeur de 1,5."
-      },
-      {
-       "titre": "Les gestes du téléphone y sont aussi",
-       "texte": "Glisser le doigt sur la barre d'espace déplace le curseur, toucher le texte le pose, rester appuyé sur ⌫ efface mot par mot, et ⌫ défait la majuscule imposée d'office ou retire un emoji en entier."
-      },
-      {
-       "titre": "Le panneau emoji du site a ses récents, ses tons de peau et son balayage",
-       "texte": "Entre catégories. Les récents ne sont gardés qu'en mémoire : rien n'est écrit dans le navigateur."
-      },
-      {
-       "titre": "Les suggestions du site suivent le moteur de l'application",
-       "texte": "Mêmes candidats retenus, grossièretés écartées, pas de correction sur un mot français reconnu, et les 84 855 formes du dictionnaire officiel chargées en arrière-plan, soit 123 297 mots reconnus comme sur l'accueil."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }
