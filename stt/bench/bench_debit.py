@@ -90,6 +90,7 @@ def main():
                     help="secondes d'audio rejouées par scénario")
     ap.add_argument("--fichier", default="", help="id du fichier de 60 s à rejouer")
     ap.add_argument("--captures", type=Path, help="dossier des captures du bandeau")
+    ap.add_argument("--scenarios", default="", help="numéros à jouer, ex. 3,5 (tous par défaut)")
     args = ap.parse_args()
     # Interrompu, le banc doit quand même retirer le proxy du téléphone (finally).
     signal.signal(signal.SIGTERM, lambda *a: sys.exit(1))
@@ -153,7 +154,8 @@ def main():
 
     resultats = []
     try:
-        for nom, plan, attendu in SCENARIOS:
+        choix = [int(x) for x in args.scenarios.split(",")] if args.scenarios else range(len(SCENARIOS))
+        for nom, plan, attendu in (SCENARIOS[i] for i in choix):
             print(f"\n▶ {nom} — attendu : {attendu}", flush=True)
             regler_debit(dev, plan[0][1])
             bd.ETAT.envoyer("clear")
@@ -177,12 +179,19 @@ def main():
                     return
                 args.captures.mkdir(parents=True, exist_ok=True)
                 i = 0
-                while not arret.is_set():
+                def une():
                     png = subprocess.run(["adb", "-s", dev, "exec-out", "screencap", "-p"],
                                          capture_output=True).stdout
                     (args.captures / f"{len(resultats)}_{time.time() - t0:05.1f}.png").write_bytes(png)
+                while not arret.is_set():
+                    une()
                     i += 1
                     arret.wait(2.0)
+                # Le message qui dit pourquoi la dictée s'est fermée s'affiche
+                # juste après la fermeture : on le capture aussi.
+                une()
+                time.sleep(1.0)
+                une()
 
             threads = [threading.Thread(target=appliquer, daemon=True),
                        threading.Thread(target=capturer, daemon=True)]
