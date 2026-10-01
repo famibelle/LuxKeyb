@@ -125,6 +125,21 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         addView(espacement())
 
         addView(carte().apply {
+            addView(titreSection("Disposition"))
+            addView(explication(
+                "Les deux sont en QWERTZ. Elles ne diffèrent que par les lettres " +
+                        "accentuées qui ont leur propre touche."
+            ))
+            addView(choixDisposition())
+            addView(explication(
+                "« Suisse allemand » reprend le clavier physique du même nom : " +
+                        "ü, ö et ä à droite, é et ë près de l'espace. Les touches y " +
+                        "sont un peu plus étroites, onze par rangée au lieu de dix."
+            ))
+        })
+        addView(espacement())
+
+        addView(carte().apply {
             addView(titreSection("Retour de frappe"))
             addView(explication(
                 "Ce que le clavier fait à chaque appui. Le choix s'applique dès le " +
@@ -219,6 +234,16 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     ) { mode ->
         KeyboardPreferences.setThemeMode(this, mode)
         Log.d(TAG, "Thème du clavier : ${mode.cle}")
+    }
+
+    /** Les deux dispositions de la page des lettres (v29.5.0). */
+    private fun choixDisposition(): View = groupeRadio(
+        options = DispositionClavier.entries,
+        actuel = KeyboardPreferences.disposition(this),
+        libelle = { it.libelle }
+    ) { disposition ->
+        KeyboardPreferences.setDisposition(this, disposition)
+        Log.d(TAG, "Disposition du clavier : ${disposition.cle}")
     }
 
     /**

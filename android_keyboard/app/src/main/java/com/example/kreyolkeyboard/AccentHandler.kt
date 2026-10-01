@@ -407,8 +407,9 @@ class AccentHandler(private val context: Context) {
      * dans l'ordre haut-droit puis bas-droit (peut différer de l'ordre du
      * popup d'appui long, voir cornerHintOverrides)
      */
-    fun getCornerHintsForKey(key: String): List<String> {
-        return cornerHintOverrides[key.lowercase()] ?: getAccentsForKey(key)
+    fun getCornerHintsForKey(key: String, exclure: Set<String> = emptySet()): List<String> {
+        val apercus = cornerHintOverrides[key.lowercase()] ?: getAccentsForKey(key)
+        return apercus.filterNot { it in exclure }
     }
 
     /**

@@ -36,6 +36,7 @@ object KeyboardPreferences {
     private const val KEY_SOUND_ENABLED = "sound_enabled"
     private const val KEY_THEME_MODE = "theme_mode"
     private const val KEY_LONG_PRESS_DELAY = "long_press_delay_ms"
+    private const val KEY_DISPOSITION = "disposition"
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
@@ -110,5 +111,16 @@ object KeyboardPreferences {
 
     fun setDelaiAppuiLong(context: Context, delai: DelaiAppuiLong) {
         prefs(context).edit().putLong(KEY_LONG_PRESS_DELAY, delai.ms).apply()
+    }
+
+    /**
+     * Disposition de la page des lettres (v29.5.0). Luxembourg par défaut,
+     * celle que tous les utilisateurs avaient jusque-là.
+     */
+    fun disposition(context: Context): DispositionClavier =
+        DispositionClavier.depuisCle(prefs(context).getString(KEY_DISPOSITION, null))
+
+    fun setDisposition(context: Context, disposition: DispositionClavier) {
+        prefs(context).edit().putString(KEY_DISPOSITION, disposition.cle).apply()
     }
 }

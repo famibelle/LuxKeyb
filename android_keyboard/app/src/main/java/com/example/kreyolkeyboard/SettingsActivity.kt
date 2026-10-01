@@ -3035,6 +3035,8 @@ class SettingsActivity : AppCompatActivity() {
 
         demoKeyboardManager?.cleanup()
         val manager = KeyboardLayoutManager(this)
+        // La démonstration montre le clavier tel que l'utilisateur l'aura.
+        manager.definirDisposition(KeyboardPreferences.disposition(this))
         demoKeyboardManager = manager
         // Mirroir local de l'état shift (le manager n'expose pas de getter) :
         // cycle minuscules → majuscule ponctuelle → verrouillage → minuscules

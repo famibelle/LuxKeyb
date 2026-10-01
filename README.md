@@ -74,6 +74,7 @@ serait l'interface, pas la langue.
 - Disposition **QWERTZ**, celle des claviers physiques au Luxembourg
 - **é, ä et ë** ont chacune leur touche dédiée, les trois diacritiques les plus fréquentes de la langue
 - Les plus rares (ü, ö, à, â...) sont en appui long, avec un aperçu dans le coin de la touche
+- Disposition **Suisse allemand** au choix dans les réglages : ü, ö et ä à droite, comme sur le clavier physique, é et ë près de l'espace
 - L'apostrophe de l'élision (*d'Land*, *s'Kanner*) a sa propre touche
 - Panneau **emoji** complet, tons de peau compris
 - **Correcteur orthographique système** : les mots luxembourgeois ne sont plus soulignés en rouge dans Messages ou Notes
@@ -310,6 +311,10 @@ u → ü û ù, o → ô ö). Glissez le doigt vers l'accent voulu, puis relâch
 
 Les trois diacritiques les plus fréquentes, **é**, **ä** et **ë**, ont leur
 propre touche, sans appui long.
+
+La disposition **Suisse allemand** (Réglages du clavier → Disposition) y ajoute
+**ü** et **ö** : onze touches par rangée, ü à droite du p, ö et ä à droite
+du l, é et ë autour de la barre d'espace.
 
 ### Suggestions
 Commencez à taper : les suggestions apparaissent au-dessus des touches, le
