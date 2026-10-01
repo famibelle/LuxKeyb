@@ -134,20 +134,48 @@ object RetardEnvoi {
     const val RETABLI_OCTETS = OCTETS_PAR_SECONDE / 4
 
     /**
-     * Six secondes de retard, en plus des deux que peut tenir le tampon
-     * système : l'utilisateur parle depuis longtemps dans le vide. On arrête et
-     * on garde ce qui est arrivé, plutôt que de laisser une file grossir
-     * jusqu'à ce qu'OkHttp ferme la connexion de lui-même, à 16 Mo, soit plus
-     * de huit minutes de parole.
+     * Huit secondes de retard, en plus des deux que peut tenir le tampon
+     * système : on coupe le micro, sans rien abandonner. Ce qui attend finit
+     * de partir (voir [FINALISATION_MAX_MS]) et le texte arrive en entier, en
+     * retard.
+     *
+     * C'était six secondes et un abandon pur jusqu'au 2 octobre 2026. Mesuré
+     * sur téléphone la veille, avec un débit bridé : un creux de 10 s à
+     * 64 kbit/s — un tunnel — coupait la dictée 0,6 s avant le retour du
+     * réseau, et à 192 kbit/s la fin de l'extrait était perdue (69 mots sur
+     * 99), alors que le réseau était lent mais vivant. Huit secondes laissent
+     * passer ce creux ; couper le micro sans abandonner sauve le texte.
      */
-    const val ABANDON_OCTETS = 6 * OCTETS_PAR_SECONDE
+    const val COUPER_MICRO_OCTETS = 8 * OCTETS_PAR_SECONDE
 
-    enum class Verdict { FLUIDE, LENT, ABANDON }
+    /**
+     * Plus rien ne part depuis cinq secondes alors que de l'audio attend :
+     * le réseau n'est plus lent, il est bloqué (zone blanche, wifi sans
+     * Internet). Là seulement on abandonne, en gardant le texte déjà rendu.
+     */
+    const val BLOCAGE_MS = 5_000L
+
+    /**
+     * Temps laissé, une fois le micro fermé, pour finir d'envoyer ce qui
+     * attend. Au-delà, on rend ce qu'on a : à 96 kbit/s, huit secondes de
+     * retard se vident en un peu moins de trente secondes.
+     */
+    const val FINALISATION_MAX_MS = 30_000L
+
+    enum class Verdict { FLUIDE, LENT, COUPER_MICRO }
 
     fun juger(enAttente: Long, etaitLent: Boolean): Verdict = when {
-        enAttente >= ABANDON_OCTETS -> Verdict.ABANDON
+        enAttente >= COUPER_MICRO_OCTETS -> Verdict.COUPER_MICRO
         enAttente >= LENT_OCTETS -> Verdict.LENT
         etaitLent && enAttente > RETABLI_OCTETS -> Verdict.LENT
         else -> Verdict.FLUIDE
     }
+
+    /**
+     * Lent ou bloqué ? Lent, l'audio part, moins vite qu'on ne parle. Bloqué,
+     * plus un octet ne part depuis [BLOCAGE_MS]. Une file vide n'est jamais
+     * bloquée : il n'y a rien à envoyer.
+     */
+    fun bloque(enAttente: Long, depuisDernierEnvoiMs: Long): Boolean =
+        enAttente > 0 && depuisDernierEnvoiMs >= BLOCAGE_MS
 }

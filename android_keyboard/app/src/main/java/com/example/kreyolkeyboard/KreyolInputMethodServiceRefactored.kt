@@ -1206,9 +1206,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                         if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
                         else R.string.stt_preparing
                     SttSession.State.LISTENING -> listeningLabel()
-                    SttSession.State.FINALIZING ->
-                        if (USE_LUXASR_ONLINE) R.string.stt_online_transcribing
-                        else R.string.stt_transcribing
+                    // Micro coupé pour lenteur : ce qui attend finit de partir,
+                    // et c'est la connexion qu'on attend, pas la transcription.
+                    SttSession.State.FINALIZING -> when {
+                        !USE_LUXASR_ONLINE -> R.string.stt_transcribing
+                        reseauLent -> R.string.stt_online_slow
+                        else -> R.string.stt_online_transcribing
+                    }
                     SttSession.State.IDLE -> null
                 }
             )

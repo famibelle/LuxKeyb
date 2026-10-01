@@ -27,13 +27,22 @@ doit pas être fusionné.
   toujours gardé.
 - **Réseau trop lent** : la dictée envoie 256 kbit/s. Quand l'audio s'empile
   (plus d'une seconde en attente d'envoi), le bandeau passe à « 🐢 LuxASR ·
-  lues Verbindung… » ; au-delà de six secondes, la dictée s'arrête, garde ce
-  qui est arrivé et dit « Connexion trop lente pour la dictée ». Le tampon
+  lues Verbindung… ». Le tampon
   d'envoi TCP est réduit pour que ce retard se voie au lieu de se cacher dans
   celui du système : face à un pair qui ne lit plus, l'alerte vient après
   2,7 s d'audio, contre 58 s avec le tampon par défaut (`FileEnvoiReseauTest`).
   Ni l'émulateur ni `adb reverse` ne permettent de le voir sur un appareil :
   tous deux accusent réception de tout puis brident en aval.
+- **Lent n'est pas bloqué.** Un réseau lent mais vivant ne fait plus perdre de
+  texte : à huit secondes de retard, le micro se coupe mais ce qui attend finit
+  de partir (jusqu'à 30 s), puis « Connexion trop lente pour la dictée » dit
+  pourquoi le micro s'est fermé. Seul un réseau **bloqué** (plus un octet ne
+  part depuis 5 s) fait abandonner, avec « Connexion perdue pendant la
+  dictée » et le texte déjà rendu. En fin de dictée normale, l'attente du texte
+  final court depuis que tout l'audio est parti, et non plus depuis l'arrêt.
+  Mesuré la veille sur téléphone (`bench_debit.py`) : l'ancien seuil de 6 s
+  coupait un creux de 10 s à 64 kbit/s 0,6 s avant le retour du réseau, et à
+  192 kbit/s la fin de l'extrait était perdue (69 mots sur 99).
 - Connexion bornée à 5 s (10 s avant), passage en WebSocket compris : un
   serveur qui accepte sans répondre laissait le bandeau de connexion à vie.
 - **Les messages de la dictée passent du Toast au bandeau du clavier.**

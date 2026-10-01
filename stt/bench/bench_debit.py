@@ -40,13 +40,25 @@ ILLIMITE = 0
 SCENARIOS = [
     ("illimité", [(0, ILLIMITE)], "aucune alerte"),
     ("48 Ko/s (384 kbit/s)", [(0, 48_000)], "aucune alerte : 1,5 × le besoin"),
-    ("24 Ko/s (192 kbit/s)", [(0, 24_000)], "alerte lente vers 10-15 s, pas d'arrêt"),
-    ("12 Ko/s (96 kbit/s)", [(0, 12_000)], "alerte vers 4 s, arrêt vers 13 s"),
+    ("24 Ko/s (192 kbit/s)", [(0, 24_000)],
+     "alerte vers 10 s, micro jamais coupé, texte complet après l'envoi du reste"),
+    ("12 Ko/s (96 kbit/s)", [(0, 12_000)],
+     "alerte vers 5 s, micro coupé vers 16 s, le reste part, « trop lente »"),
     ("trou de 10 s à 8 Ko/s", [(0, ILLIMITE), (8, 8_000), (18, ILLIMITE)],
-     "alerte puis retour à la normale, pas d'arrêt"),
+     "alerte puis retour à la normale, micro jamais coupé, texte complet"),
     ("zone blanche après 8 s", [(0, ILLIMITE), (8, 1)],
-     "arrêt vers 8 + 8 s, texte d'avant gardé"),
+     "abandon vers 15 s, « connexion perdue », texte d'avant gardé"),
 ]
+
+# Ce que le champ montre tant que la dictée n'est pas close : le micro et son
+# vumètre pendant l'écoute, puis un cercle qui tourne pendant que le reste
+# part et que le service conclut. Depuis que la dictée finit d'envoyer après
+# avoir coupé le micro, cette seconde phase peut durer près de 30 s.
+EN_COURS = re.compile(r"[🎤◐◓◑◒]")
+
+
+def texte_propre(v):
+    return re.sub(r"\s*[◐◓◑◒]\s*$", "", bd.texte_dicte(v)).strip()
 
 
 def journal_proxy(dev):
@@ -187,7 +199,7 @@ def main():
                     fin = time.time()
                 textes = bd.ETAT.depuis(marque, "texte")
                 vu = any("🎤" in (x.get("v") or "") for x in textes)
-                if vu and textes and "🎤" not in (textes[-1].get("v") or ""):
+                if vu and textes and not EN_COURS.search(textes[-1].get("v") or ""):
                     close = True
                     time.sleep(1.0)
                     break
@@ -202,7 +214,7 @@ def main():
                     fin = time.time()
                 time.sleep(0.2)
 
-            textes = [bd.texte_dicte(x.get("v")) for x in bd.ETAT.depuis(marque, "texte")]
+            textes = [texte_propre(x.get("v")) for x in bd.ETAT.depuis(marque, "texte")]
             hyp = next((t for t in reversed(textes) if t), "")
             w, mots = wer_infixe(e["reference"], hyp) if hyp else (1.0, 0)
             ev = evenements_app(dev)
@@ -218,15 +230,16 @@ def main():
                 "scenario": nom, "plan": plan, "attendu": attendu,
                 "close": close, "duree_dictee_s": round(t_fin_dictee, 1),
                 "t_alerte_lente_s": quand("réseau lent"),
-                "t_arret_lenteur_s": quand("en souffrance, arrêt"),
+                "t_micro_coupe_s": quand("micro coupé"),
+                "t_abandon_s": quand("abandon"),
                 "erreur": next((m for _, m in ev if m.startswith("❌")), None),
                 "mots_rendus": len(hyp.split()),
                 "wer_infixe": round(w, 3) if hyp else None,
                 "hyp": hyp,
             }
             resultats.append(r)
-            print(f"   alerte lente : {r['t_alerte_lente_s']} s · arrêt : {r['t_arret_lenteur_s']} s · "
-                  f"erreur : {r['erreur']}", flush=True)
+            print(f"   dictée close à {r['duree_dictee_s']} s · alerte : {r['t_alerte_lente_s']} · "
+                  f"micro coupé : {r['t_micro_coupe_s']} · abandon : {r['t_abandon_s']}", flush=True)
             print(f"   {r['mots_rendus']} mots, WER {w*100:.1f} %  « {hyp[:70]} »", flush=True)
             time.sleep(2)
     finally:

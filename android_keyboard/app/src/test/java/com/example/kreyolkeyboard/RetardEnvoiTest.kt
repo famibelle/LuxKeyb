@@ -3,6 +3,7 @@ package com.example.kreyolkeyboard
 import com.example.kreyolkeyboard.stt.RetardEnvoi
 import com.example.kreyolkeyboard.stt.RetardEnvoi.Verdict
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -40,10 +41,37 @@ class RetardEnvoiTest {
     }
 
     @Test
-    fun sixSecondesEnSouffranceArretentLaDictee() {
-        assertEquals(Verdict.LENT, RetardEnvoi.juger(6 * seconde - 1, etaitLent = true))
-        assertEquals(Verdict.ABANDON, RetardEnvoi.juger(6 * seconde, etaitLent = true))
-        assertEquals(Verdict.ABANDON, RetardEnvoi.juger(6 * seconde, etaitLent = false))
+    fun huitSecondesEnAttenteCoupentLeMicro() {
+        assertEquals(Verdict.LENT, RetardEnvoi.juger(8 * seconde - 1, etaitLent = true))
+        assertEquals(Verdict.COUPER_MICRO, RetardEnvoi.juger(8 * seconde, etaitLent = true))
+        assertEquals(Verdict.COUPER_MICRO, RetardEnvoi.juger(8 * seconde, etaitLent = false))
+    }
+
+    @Test
+    fun unCreuxDeDixSecondesAUnQuartDuBesoinNeCoupePasLeMicro() {
+        // Le tunnel du banc du 1er octobre 2026 : 10 s à 8 000 o/s. Le retard
+        // monte de 24 000 o/s, dont 64 Ko absorbés par le tampon système.
+        val retard = 10 * (seconde - 8_000) - 2 * RetardEnvoi.TAMPON_SYSTEME_OCTETS
+        assertEquals(Verdict.LENT, RetardEnvoi.juger(retard, etaitLent = true))
+    }
+
+    @Test
+    fun lentNEstPasBloque() {
+        // De l'audio attend, mais il en est parti il y a moins de 5 s.
+        assertFalse(RetardEnvoi.bloque(10 * seconde, RetardEnvoi.BLOCAGE_MS - 1))
+        assertTrue(RetardEnvoi.bloque(10 * seconde, RetardEnvoi.BLOCAGE_MS))
+    }
+
+    @Test
+    fun uneFileVideNEstJamaisBloquee() {
+        assertFalse(RetardEnvoi.bloque(0, 60_000))
+    }
+
+    @Test
+    fun leRetardQuiCoupeLeMicroSeVideDansLeTempsLaisse() {
+        // À 96 kbit/s (12 000 o/s), le pire cas mesuré qui reste utilisable.
+        val aVider = RetardEnvoi.COUPER_MICRO_OCTETS + 2 * RetardEnvoi.TAMPON_SYSTEME_OCTETS
+        assertTrue(aVider * 1000 / 12_000 <= RetardEnvoi.FINALISATION_MAX_MS)
     }
 
     @Test

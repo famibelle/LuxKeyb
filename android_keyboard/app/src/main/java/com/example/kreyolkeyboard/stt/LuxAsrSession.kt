@@ -93,8 +93,18 @@ class LuxAsrSession(
     @Volatile private var ouverte = false
     /** L'audio s'empile faute de réseau (voir [RetardEnvoi]). */
     @Volatile private var lent = false
-    /** La dictée a été arrêtée parce que le réseau ne suivait plus. */
-    @Volatile private var abandonneeTropLent = false
+    /**
+     * Le micro a été coupé parce que le retard devenait trop grand. La dictée
+     * finit d'envoyer ce qui attend, et le dit une fois le texte rendu.
+     */
+    @Volatile private var coupeeParLenteur = false
+    /** Octets d'audio confiés à OkHttp depuis l'ouverture. */
+    @Volatile private var enfile = 0L
+    // Suivi de l'envoi (voir surveiller), lu et écrit sur le fil principal.
+    private var partisVus = 0L
+    private var dernierProgresAt = 0L
+    private var arreteAt = 0L
+    private var videDepuis = 0L
     @Volatile private var state = SttSession.State.IDLE
     /** Texte engagé par le service : il ne fait que grandir. */
     @Volatile private var engage = ""
@@ -130,7 +140,8 @@ class LuxAsrSession(
         phraseClose = false
         ouverte = false
         lent = false
-        abandonneeTropLent = false
+        coupeeParLenteur = false
+        enfile = 0L
         setState(SttSession.State.LOADING)
 
         val request = Request.Builder().url(ENDPOINT).build()
@@ -159,6 +170,12 @@ class LuxAsrSession(
                 }
                 startedAt = SystemClock.elapsedRealtime()
                 setState(SttSession.State.LISTENING)
+                main.post {
+                    partisVus = 0L
+                    dernierProgresAt = SystemClock.elapsedRealtime()
+                    main.removeCallbacks(surveillance)
+                    main.postDelayed(surveillance, SURVEILLANCE_MS)
+                }
             }
 
             override fun onMessage(ws: WebSocket, text: String) {
@@ -202,41 +219,103 @@ class LuxAsrSession(
         }, CONNEXION_MAX_MS)
     }
 
-    /** Termine la dictée : le serveur vide ce qu'il retenait, puis on conclut. */
+    /**
+     * Termine la dictée : le micro se ferme, ce qui attend finit de partir, le
+     * serveur vide ce qu'il retenait, puis on conclut.
+     *
+     * Le délai de grâce ne court plus depuis l'appui : il court depuis que
+     * tout l'audio est parti (voir [surveiller]). Avec un délai fixe de 4 s,
+     * un réseau lent mais vivant perdait la fin de la dictée — le « stop »
+     * partait derrière plusieurs secondes d'audio en attente, et la session se
+     * concluait avant que le service ait pu les transcrire. Mesuré sur
+     * téléphone le 1er octobre 2026 : 69 mots rendus sur 99 à 192 kbit/s.
+     */
     override fun stop() {
         if (!isBusy) return
         recorder.stop()
-        setState(SttSession.State.FINALIZING)
         val ws = socket
-        if (ws == null) { finish(); return }
+        if (state == SttSession.State.LOADING || ws == null) {
+            // Rien n'a encore été dicté : il n'y a rien à attendre.
+            socket = null
+            finish()
+            ws?.cancel()
+            return
+        }
+        setState(SttSession.State.FINALIZING)
         ws.send(JSONObject().put("type", "stop").toString())
-        // Le serveur répond par un dernier segment puis `recording_stopped`. Si
-        // rien n'arrive, on rend quand même ce qui a été accumulé : mieux vaut un
-        // texte partiel qu'un bandeau figé.
-        main.postDelayed({ if (state == SttSession.State.FINALIZING) finish() },
-                         FINAL_GRACE_MS)
+        main.post {
+            arreteAt = SystemClock.elapsedRealtime()
+            videDepuis = 0L
+        }
     }
 
     /**
-     * Arrêt pour réseau trop lent. Pas de [stop] ici : le « stop » partirait
-     * derrière des secondes d'audio en souffrance, et l'utilisateur fixerait le
-     * témoin de transcription pendant tout le délai de grâce pour un texte qui
-     * n'arrivera pas. On garde ce que le service a déjà rendu, on coupe, et on
-     * dit pourquoi.
+     * Plus rien ne part : on garde ce que le service a déjà rendu, on coupe, et
+     * on dit pourquoi. Pas de « stop » : il ne partirait pas non plus.
      */
-    private fun abandonnerTropLent() {
-        if (state != SttSession.State.LISTENING) return
+    private fun abandonner(cause: SttSession.Error) {
+        if (state == SttSession.State.IDLE) return
+        Log.w(TAG, "📵 abandon : $cause")
         recorder.stop()
+        coupeeParLenteur = false
         val ws = socket
         socket = null
         finish()
         // Après finish() : la session est au repos, onFailure n'ajoutera rien.
         ws?.cancel()
-        main.post { listener.onError(SttSession.Error.NETWORK_TOO_SLOW) }
+        main.post { listener.onError(cause) }
+    }
+
+    /**
+     * Suit l'envoi toutes les [SURVEILLANCE_MS], sur le fil principal, tant que
+     * la dictée écoute ou finit.
+     *
+     * Elle sépare deux situations que la seule taille de la file confondait :
+     * un réseau **lent** — l'audio part, moins vite qu'on ne parle — et un
+     * réseau **bloqué** — plus rien ne part du tout. Le premier mérite qu'on
+     * attende, puisque tout finira par arriver ; le second non. C'est le
+     * progrès des octets partis qui les distingue, pas leur nombre.
+     */
+    private val surveillance = object : Runnable {
+        override fun run() {
+            if (state != SttSession.State.LISTENING && state != SttSession.State.FINALIZING) return
+            surveiller(SystemClock.elapsedRealtime())
+            if (state == SttSession.State.LISTENING || state == SttSession.State.FINALIZING) {
+                main.postDelayed(this, SURVEILLANCE_MS)
+            }
+        }
+    }
+
+    private fun surveiller(now: Long) {
+        val ws = socket ?: return
+        val enAttente = ws.queueSize()
+        val partis = enfile - enAttente
+        if (partis > partisVus || enAttente == 0L) {
+            partisVus = partis
+            dernierProgresAt = now
+        }
+        if (RetardEnvoi.bloque(enAttente, now - dernierProgresAt)) {
+            abandonner(SttSession.Error.CONNECTION_LOST)
+            return
+        }
+        if (state != SttSession.State.FINALIZING) return
+        if (enAttente == 0L) {
+            if (videDepuis == 0L) videDepuis = now
+            // Tout est parti et le service n'a pas conclu : on rend ce qu'on a.
+            if (now - videDepuis >= FINAL_GRACE_MS) finish()
+        } else {
+            videDepuis = 0L
+        }
+        // Un réseau très lent mais vivant pourrait faire attendre des minutes.
+        if (state == SttSession.State.FINALIZING && now - arreteAt >= RetardEnvoi.FINALISATION_MAX_MS) {
+            Log.w(TAG, "⏱️ envoi du reste trop long, on rend ce qu'on a")
+            finish()
+        }
     }
 
     override fun cancel() {
         if (state == SttSession.State.IDLE) return
+        main.removeCallbacks(surveillance)
         generation++
         recorder.stop()
         socket?.close(1000, null)
@@ -282,21 +361,24 @@ class LuxAsrSession(
         // exactement ce que voit le service avant l'arrêt automatique : aucun
         // mot inventé, WER égal ou meilleur, texte final 0,02 s après l'arrêt.
         ws.send(pcm.toByteString())
+        enfile += pcm.size
         surveillerRetard(ws.queueSize())
         detecterFinDEnonce(estParole(rms), SystemClock.elapsedRealtime())
     }
 
     /**
-     * Prévient quand l'audio s'empile, et arrête quand l'utilisateur parle
-     * depuis trop longtemps dans le vide (voir [RetardEnvoi]).
+     * Prévient quand l'audio s'empile, et coupe le micro quand le retard
+     * devient trop grand (voir [RetardEnvoi]). Couper le micro n'est pas
+     * abandonner : [stop] laisse partir ce qui attend, et le texte arrive en
+     * entier, en retard.
      */
     private fun surveillerRetard(enAttente: Long) {
         when (RetardEnvoi.juger(enAttente, lent)) {
-            RetardEnvoi.Verdict.ABANDON -> {
-                if (abandonneeTropLent) return
-                abandonneeTropLent = true
-                Log.w(TAG, "🐢 ${enAttente / RetardEnvoi.OCTETS_PAR_SECONDE} s d'audio en souffrance, arrêt")
-                main.post { abandonnerTropLent() }
+            RetardEnvoi.Verdict.COUPER_MICRO -> {
+                if (coupeeParLenteur) return
+                coupeeParLenteur = true
+                Log.w(TAG, "🐢 ${enAttente / RetardEnvoi.OCTETS_PAR_SECONDE} s d'audio en attente, micro coupé")
+                main.post { if (state == SttSession.State.LISTENING) stop() }
             }
             RetardEnvoi.Verdict.LENT -> if (!lent) {
                 lent = true
@@ -430,8 +512,15 @@ class LuxAsrSession(
         // `recording_stopped`, qui n'en laisse donc plus. Si c'est le délai de
         // grâce qui conclut, on garde la queue : c'est ce qui était affiché.
         val text = RepetitionTrimmer.trim(texteVisible())
+        main.removeCallbacks(surveillance)
         setState(SttSession.State.IDLE)
         main.post { listener.onFinal(text) }
+        // Le micro s'est fermé avant que l'utilisateur ait fini : il doit
+        // savoir pourquoi, même si tout son texte est arrivé.
+        if (coupeeParLenteur) {
+            coupeeParLenteur = false
+            main.post { listener.onError(SttSession.Error.NETWORK_TOO_SLOW) }
+        }
     }
 
     private fun setState(next: SttSession.State) {
@@ -456,7 +545,10 @@ class LuxAsrSession(
          */
         const val ENDPOINT = "wss://luxasr.uni.lu/prod/ws/transcribe"
 
-        /** Attente maximale du dernier segment après « stop ». */
+        /**
+         * Attente maximale du dernier segment une fois **tout l'audio parti**,
+         * et non plus depuis l'appui sur stop (voir [stop]).
+         */
         const val FINAL_GRACE_MS = 4_000L
 
         /**
@@ -465,6 +557,9 @@ class LuxAsrSession(
          * quand c'est lui qui sait pourquoi.
          */
         const val CONNEXION_MAX_MS = 6_000L
+
+        /** Période du suivi de l'envoi. */
+        const val SURVEILLANCE_MS = 500L
 
         /**
          * Silence qui termine la dictée une fois que le service a déclaré la
