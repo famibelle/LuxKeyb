@@ -233,35 +233,20 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
 </section>
 
 <section>
-  <div class="status">
-    <span class="v" id="lab-version" data-i18n="status-version">version en cours</span>
-    <span id="lab-date" data-i18n="status-date">reconstruite à chaque amélioration</span>
-    <span id="lab-size" data-i18n="status-size">environ 10 Mo</span>
-  </div>
-
   <div class="get">
     <div class="get-main">
       <p class="cta">
         <a class="btn primary"
-           href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk"
+           href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard"
            data-i18n="install-cta">
-          📲 Télécharger la version Labs
+          📲 Essayer sur Google Play
         </a>
       </p>
       <p class="muted" data-i18n="install-muted">
-        Android 5.0 ou plus récent · fichier APK à installer à la main ·
+        Android 5.0 ou plus récent · installation par Google Play ·
         demande les permissions <strong>micro</strong> et <strong>Internet</strong>
       </p>
     </div>
-    <figure class="qr">
-      <a href="https://github.com/famibelle/LuxKeyb/releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk">
-        <img src="assets/qr-luxkeyb-luxasr.png"
-             alt="Code QR téléchargeant directement l'APK de la version Labs du Lëtzebuergesch Clavier"
-             data-i18n-alt="qr-alt"
-             width="170" height="170">
-      </a>
-      <figcaption data-i18n="qr-figcaption">Scannez pour télécharger<br>directement sur le téléphone</figcaption>
-    </figure>
   </div>
 </section>
 
@@ -299,19 +284,9 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
   <h2 data-i18n="install-h2">Installer et essayer</h2>
   <div class="card">
     <ol class="steps">
-      <li data-i18n="step0">
-        <strong>Si le clavier vous vient du Play Store, désinstallez-le
-        d'abord.</strong> Android refuse de le remplacer par un fichier venu
-        d'ailleurs. Votre carnet de mots et votre progression partent avec lui.
-      </li>
       <li data-i18n="step1">
-        <strong>Téléchargez</strong> le fichier APK. Le code QR le fait partir
-        tout seul ; sinon, le bouton ci-dessus.
-      </li>
-      <li data-i18n="step2">
-        <strong>Ouvrez-le.</strong> Android demandera d'autoriser l'installation
-        depuis cette source : c'est normal pour une application qui ne vient pas
-        du Play Store.
+        <strong>Ouvrez la page Google Play</strong> du clavier avec le bouton
+        ci-dessus, depuis le téléphone, et installez-le ou mettez-le à jour.
       </li>
       <li data-i18n="step3">
         <strong>Activez le clavier</strong> dans
@@ -331,22 +306,6 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
       </li>
     </ol>
   </div>
-
-  <p data-i18n="icon-p">
-    Une fois installée, son icône porte la mention <strong>LABS</strong> sur
-    l'écran d'accueil : elle vous dit d'un coup d'œil que c'est la version
-    d'essai qui est sur le téléphone, et non la version normale. Les deux ne
-    peuvent pas cohabiter.
-  </p>
-
-  <h3 data-i18n="back-h3">Revenir à la version stable</h3>
-  <p data-i18n="back-p">
-    Si vous aviez pris la version normale sur GitHub, réinstallez simplement la
-    <a href="https://github.com/famibelle/LuxKeyb/releases/latest">version
-    normale</a> par-dessus : elle est signée avec la même clé, et vos réglages
-    comme votre progression sont conservés. Pour revenir à la version du Play
-    Store, désinstallez la version Labs, puis réinstallez depuis le Play Store.
-  </p>
 </section>
 
 <section>
@@ -604,8 +563,8 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <li><span class="k" data-i18n="facts-k3">Où va votre voix</span><span class="v" data-i18n="facts-v3">À l'Université du Luxembourg, pendant la dictée</span></li>
     <li><span class="k" data-i18n="facts-k4">Connexion</span><span class="v" data-i18n="facts-v4">Indispensable pour dicter ; le micro barré signale son absence</span></li>
     <li><span class="k" data-i18n="facts-k5">Icône</span><span class="v" data-i18n="facts-v5">Marquée LABS sur l'écran d'accueil</span></li>
-    <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">APK manuel, hors Play Store ; désinstaller d'abord la version du Play Store</span></li>
-    <li><span class="k" data-i18n="facts-k7">Mise à jour</span><span class="v" data-i18n="facts-v7">À retélécharger depuis cette page</span></li>
+    <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">Google Play, à partir du lien de cette page</span></li>
+    <li><span class="k" data-i18n="facts-k7">Mise à jour</span><span class="v" data-i18n="facts-v7">Par Google Play, comme toute application</span></li>
   </ul>
 </section>
 
@@ -636,27 +595,17 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'thanks-h2': '🎓 Dictation by the University of Luxembourg',
     'thanks-p1': 'Speech recognition is provided by <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish automatic speech recognition service of the <strong>University of Luxembourg</strong>. Its real-time engine is published as open source, <a href="https://github.com/PeterGilles/LuxASRlive">LuxASRlive</a>, under the Apache 2.0 licence.',
     'thanks-p2': "The keyboard only sends the sound and shows what comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist. During dictation, the sound is processed by their service: the <a href=\"https://luxasr.uni.lu/\">University's data protection policy</a> applies to that part.",
-    'status-version': 'current version',
-    'status-date': 'rebuilt on every improvement',
-    'status-size': 'about 10 MB',
-    'install-cta': '📲 Download the Labs version',
-    'install-muted': 'Android 5.0 or later · APK file, manual install · requests the <strong>microphone</strong> and <strong>Internet</strong> permissions',
-    'qr-alt': 'QR code that downloads the Labs version of the Lëtzebuergesch Clavier APK directly',
-    'qr-figcaption': 'Scan to download<br>straight to your phone',
+    'install-cta': '📲 Try it on Google Play',
+    'install-muted': 'Android 5.0 or later · installed through Google Play · requests the <strong>microphone</strong> and <strong>Internet</strong> permissions',
     'keyboard-h2': 'The keyboard, with its dictation',
     'keyboard-p': "Not an imitation dropped onto this page: the keyboard below is the <a href=\"simulateur.html\">simulator</a>'s, with dictation already armed. The microphone transcribes Luxembourgish <strong>in real time</strong>, as on the phone; below it, a second panel shows what the service <strong>translates into French</strong>, sentence by sentence.",
     'iframe-title': 'Lëtzebuergesch keyboard, LuxASR dictation with translation',
     'capture-alt': 'Whole phone screen on an Android emulator, dictating into a text message: the Luxembourgish text is written into the bubble as it goes, underlined while it can still change, up to the complete sentence',
     'capture-figcaption': "Captured on an Android emulator, in the Messages app: the text grows in the bubble as you speak, underlined until it's confirmed, with the <strong>🌐 LuxASR</strong> banner. The voice was injected into the emulator's virtual microphone; the text shown is the service's real answer, word for word.",
     'install-h2': 'Install and try it',
-    'step0': '<strong>If your keyboard came from the Play Store, uninstall it first.</strong> Android refuses to replace it with a file from elsewhere. Your word notebook and your progress go with it.',
-    'step1': '<strong>Download</strong> the APK file. The QR code starts it on its own; otherwise, the button above.',
-    'step2': "<strong>Open it.</strong> Android will ask to allow installing from this source: normal for an app that doesn't come from the Play Store.",
+    'step1': '<strong>Open the keyboard\'s Google Play page</strong> with the button above, from your phone, and install or update it.',
     'step3': '<strong>Enable the keyboard</strong> under <code>Settings › System › Keyboards › On-screen keyboard</code>, then pick it as the current keyboard, if needed through the keyboard icon that appears at the bottom of the screen when a text field is open.',
-    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, the first time, a screen explains that your voice goes to the University: tap <strong>I agree</strong>, then allow microphone access (“No thanks” starts nothing and sends nothing). The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
-    'icon-p': "Once installed, its icon carries the word <strong>LABS</strong> on the home screen: it tells you at a glance that the trial version is on the phone, not the regular one. The two can't coexist.",
-    'back-h3': 'Going back to the stable version',
-    'back-p': 'If you had taken the regular version from GitHub, simply reinstall the <a href="https://github.com/famibelle/LuxKeyb/releases/latest">regular version</a> over it: it is signed with the same key, and your settings and progress are kept. To go back to the Play Store version, uninstall the Labs version, then reinstall from the Play Store.',
+    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar. The first time, a screen explains that your voice goes to the University: tap <strong>I agree</strong>, then allow microphone access (“No thanks” starts nothing and sends nothing). The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
     'deroule-h2': 'What happens when you tap the microphone',
     'deroule-p': "The sequence below isn't an intention: it's measured, on one-to-three-sentence dictations drawn from press conferences.",
     'sim-placeholder': 'Tap the microphone',
@@ -711,8 +660,8 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'facts-k3': 'Where your voice goes', 'facts-v3': 'To the University of Luxembourg, during dictation',
     'facts-k4': 'Connection', 'facts-v4': 'Required to dictate; the crossed-out microphone signals its absence',
     'facts-k5': 'Icon', 'facts-v5': 'Marked LABS on the home screen',
-    'facts-k6': 'Installation', 'facts-v6': 'Manual APK, outside the Play Store; uninstall the Play Store version first',
-    'facts-k7': 'Updates', 'facts-v7': 'Download again from this page',
+    'facts-k6': 'Installation', 'facts-v6': 'Google Play, from the link on this page',
+    'facts-k7': 'Updates', 'facts-v7': 'Through Google Play, like any app',
     'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>Stable versions are on the <a href="nouveautes.html">What’s new</a> page.'
   };
 
@@ -933,51 +882,5 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
 })();
 </script>
 
-<script>
-// Le bandeau d'état se renseigne depuis la préversion « labs-luxasr » : la page annonce
-// le build réellement téléchargeable sans qu'il faille la modifier. L'échec est
-// silencieux : le HTML porte déjà un texte d'attente correct et le lien de
-// téléchargement ne dépend pas de ce script.
-//
-// Le texte généré ('publiée le …', l'unité de taille) suit la langue de la
-// page, lue directement dans localStorage : ce script peut s'exécuter avant
-// ou après celui qui gère le switch, peu importe l'ordre.
-(function () {
-  var set = function (id, txt) {
-    var n = document.getElementById(id);
-    if (n && txt) n.textContent = txt;
-  };
-
-  var langue = 'fr';
-  try { langue = localStorage.getItem('labs-luxasr-lang') === 'en' ? 'en' : 'fr'; } catch (e) {}
-
-  fetch('https://api.github.com/repos/famibelle/LuxKeyb/releases/tags/labs-luxasr')
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (d) {
-      var m = /\(([^)]+)\)/.exec(d.name || '');
-      if (m) set('lab-version', m[1]);
-
-      if (d.published_at) {
-        var date = new Date(d.published_at);
-        if (langue === 'en') {
-          set('lab-date', 'published ' + date
-            .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }));
-        } else {
-          set('lab-date', 'publiée le ' + date
-            .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }));
-        }
-      }
-
-      var apk = (d.assets || []).filter(function (a) {
-        return a.name === 'LetzebuergeschClavier-LuxASR-Demo.apk';
-      })[0];
-      if (apk) {
-        var taille = Math.round(apk.size / 1e6);
-        set('lab-size', langue === 'en' ? taille + ' MB' : taille + ' Mo');
-      }
-    })
-    .catch(function () { /* le texte statique reste affiché */ });
-})();
-</script>
 </body>
 </html>
