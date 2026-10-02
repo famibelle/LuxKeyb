@@ -1114,6 +1114,28 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
         else SttSession(this, dictationListener)
 
+    /** État de la dictée tel que le dernier rappel l'a annoncé. */
+    private var etatDictee = SttSession.State.IDLE
+
+    /** Libellé du bandeau pour un état de la dictée, null au repos. */
+    private fun statusLabel(state: SttSession.State): Int? = when (state) {
+        // Le chargement du modèle prend jusqu'à une seconde au premier appui :
+        // sans message, l'utilisateur croit que son appui n'a pas été pris et
+        // appuie une seconde fois.
+        SttSession.State.LOADING ->
+            if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
+            else R.string.stt_preparing
+        SttSession.State.LISTENING -> listeningLabel()
+        // Micro coupé pour lenteur : ce qui attend finit de partir, et c'est
+        // la connexion qu'on attend, pas la transcription.
+        SttSession.State.FINALIZING -> when {
+            !USE_LUXASR_ONLINE -> R.string.stt_transcribing
+            reseauLent -> R.string.stt_online_slow
+            else -> R.string.stt_online_transcribing
+        }
+        SttSession.State.IDLE -> null
+    }
+
     /** Bandeau d'écoute : le réseau qui ne suit plus se signale à la place. */
     private fun listeningLabel(): Int = when {
         !USE_LUXASR_ONLINE -> R.string.stt_listening
@@ -1171,9 +1193,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             lastPassTiming = "%.1f s → %d ms".format(audioSeconds, ms)
             if (partial) {
                 // Rafraîchit le bandeau en place, sans le faire réapparaître
-                // s'il a déjà été retiré.
+                // s'il a déjà été retiré, et sans changer son libellé : une
+                // réponse qui arrive pendant l'envoi du reste ne doit pas
+                // remettre « Schwätzt… » sous un micro déjà coupé.
                 if (dictationStatusView?.visibility == View.VISIBLE) {
-                    showDictationStatus(listeningLabel())
+                    statusLabel(etatDictee)?.let { showDictationStatus(it) }
                 }
             } else {
                 // La passe finale est le chiffre qui compte — le délai entre le
@@ -1185,6 +1209,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         }
 
         override fun onStateChanged(state: SttSession.State) {
+            etatDictee = state
             if (state == SttSession.State.LOADING || state == SttSession.State.IDLE) reseauLent = false
             applyMicTint(listening = state == SttSession.State.LISTENING)
             when (state) {
@@ -1197,25 +1222,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
                 }
                 else -> stopDictationSpinner()
             }
-            showDictationStatus(
-                when (state) {
-                    // Le chargement du modèle prend jusqu'à une seconde au
-                    // premier appui : sans message, l'utilisateur croit que
-                    // son appui n'a pas été pris et appuie une seconde fois.
-                    SttSession.State.LOADING ->
-                        if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
-                        else R.string.stt_preparing
-                    SttSession.State.LISTENING -> listeningLabel()
-                    // Micro coupé pour lenteur : ce qui attend finit de partir,
-                    // et c'est la connexion qu'on attend, pas la transcription.
-                    SttSession.State.FINALIZING -> when {
-                        !USE_LUXASR_ONLINE -> R.string.stt_transcribing
-                        reseauLent -> R.string.stt_online_slow
-                        else -> R.string.stt_online_transcribing
-                    }
-                    SttSession.State.IDLE -> null
-                }
-            )
+            showDictationStatus(statusLabel(state))
             if (state == SttSession.State.IDLE) holdFinalTiming()
         }
 
@@ -1241,8 +1248,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
         override fun onNetworkSlow(slow: Boolean) {
             reseauLent = slow
-            if (sttSession?.isActive == true && dictationStatusView?.visibility == View.VISIBLE) {
-                showDictationStatus(listeningLabel())
+            if (sttSession?.isBusy == true && dictationStatusView?.visibility == View.VISIBLE) {
+                statusLabel(etatDictee)?.let { showDictationStatus(it) }
             }
         }
     }

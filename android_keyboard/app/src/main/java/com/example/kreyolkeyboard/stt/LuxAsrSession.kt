@@ -241,12 +241,14 @@ class LuxAsrSession(
             ws?.cancel()
             return
         }
+        // Avant le changement d'état, et pas dans un main.post : le suivi
+        // tourne sur le même fil et, passé entre les deux, il lisait un arrêt
+        // « à l'instant zéro » et concluait aussitôt (constaté sur téléphone
+        // le 2 octobre 2026, dictée close 1,8 s après la coupure du micro).
+        arreteAt = SystemClock.elapsedRealtime()
+        videDepuis = 0L
         setState(SttSession.State.FINALIZING)
         ws.send(JSONObject().put("type", "stop").toString())
-        main.post {
-            arreteAt = SystemClock.elapsedRealtime()
-            videDepuis = 0L
-        }
     }
 
     /**
@@ -470,6 +472,9 @@ class LuxAsrSession(
                 "· service v${json.optString("version")}")
 
             "transcription" -> {
+                // Une dictée conclue ne bouge plus : une réponse tardive ne
+                // doit ni réécrire le champ ni rallumer le bandeau.
+                if (state == SttSession.State.IDLE) return
                 // Deux champs, deux natures : `accumulated_text` est engagé et
                 // ne fait que grandir, `partial_text` est la queue que la passe
                 // suivante peut encore réécrire. Le texte de composition de
@@ -514,6 +519,14 @@ class LuxAsrSession(
         val text = RepetitionTrimmer.trim(texteVisible())
         main.removeCallbacks(surveillance)
         setState(SttSession.State.IDLE)
+        // Rien ne part plus une fois la dictée conclue. Si de l'audio attendait
+        // encore (délai dépassé sur un réseau lent), il est jeté plutôt que
+        // d'être livré au service après coup : on ne lui envoie pas une voix
+        // dont on n'attend plus rien.
+        socket?.let { ws ->
+            socket = null
+            if (ws.queueSize() > 0) ws.cancel() else ws.close(1000, null)
+        }
         main.post { listener.onFinal(text) }
         // Le micro s'est fermé avant que l'utilisateur ait fini : il doit
         // savoir pourquoi, même si tout son texte est arrivé.
