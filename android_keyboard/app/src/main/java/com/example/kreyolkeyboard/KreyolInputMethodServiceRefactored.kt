@@ -143,7 +143,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          * clavier ni le throttling. Le seul chiffre juste se lit ici. À
          * repasser à false une fois la mesure faite.
          */
-        private const val SHOW_PASS_TIMING = true
+        private const val SHOW_PASS_TIMING = false
 
         /** Durée d'affichage d'une explication de la dictée dans le bandeau. */
         private const val DICTATION_MESSAGE_MS = 3_500L
@@ -1056,10 +1056,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             }
         }
 
-        if (!MicPermissionActivity.hasPermission(this)) {
+        // Au premier usage, l'écran d'information sur la voix (exigé par
+        // Google Play avant toute demande d'accès au micro), puis la
+        // permission ; ensuite, plus rien ne s'intercale.
+        if (!MicPermissionActivity.pret(this)) {
             MicPermissionActivity.request(this) { granted ->
-                if (granted) startDictation()
-                else showDictationMessage(R.string.stt_permission_denied)
+                when {
+                    granted -> startDictation()
+                    !MicPermissionActivity.accordDonne(this) ->
+                        showDictationMessage(R.string.stt_info_refusee)
+                    else -> showDictationMessage(R.string.stt_permission_denied)
+                }
             }
             return
         }

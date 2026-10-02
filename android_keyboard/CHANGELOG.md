@@ -9,11 +9,38 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
-## [Non publié] — démonstration LuxASR en ligne
+## [31.0.0] - 2026-10-02
 
-Sur la branche `feat/luxasr-online` **uniquement**. Support de démonstration
-pour un rendez-vous avec le projet LuxASR de l'Université du Luxembourg ; ne
-doit pas être fusionné.
+Le clavier dicte en luxembourgeois. Version destinée au **test ouvert** du
+Play Store, construite depuis la branche `feat/luxasr-online` : elle n'est pas
+fusionnée dans `main` tant que l'accord de l'Université du Luxembourg n'est
+pas écrit, et n'est pas publiée en release GitHub.
+
+### ✨ Nouveautés
+
+- **Dictée vocale en luxembourgeois.** Un micro à droite de la barre de
+  suggestions : on parle, le texte s'écrit pendant qu'on parle, ponctué et avec
+  les majuscules, et le micro se referme seul quand on se tait. La
+  reconnaissance est assurée par LuxASR, le service de l'Université du
+  Luxembourg.
+- **Un écran explique, avant la première dictée, où part la voix** : vers
+  l'Université du Luxembourg, pendant la dictée seulement, transcrite sans être
+  conservée. Rien n'est envoyé avant « J'accepte ». Cet écran précède la
+  demande d'accès au micro d'Android, comme l'exige Google Play.
+- **Sans réseau, le micro est barré ; sur un réseau lent, le clavier le dit**,
+  coupe le micro si le retard devient trop grand, et finit d'envoyer ce qui
+  attend : le texte arrive en entier.
+- **Ce que vous tapez ne quitte toujours jamais le téléphone.** La dictée ne
+  s'ouvre pas dans les champs de mot de passe.
+
+### 🔒 Confidentialité
+
+- Nouvelles autorisations, toutes réservées à la dictée : micro, Internet,
+  état du réseau.
+- Politique de confidentialité 3.0 (section « La dictée vocale ») ; public de
+  16 ans et plus.
+
+### 🛠️ Le détail, version par version de la branche
 
 ### 🧹 La dictée embarquée quitte la branche
 
@@ -173,7 +200,10 @@ Pourquoi : en démonstration, un message qui désigne le mauvais coupable coûte
 plus cher que pas de message du tout — on cherche du côté du téléphone pendant
 que le problème est le réseau de la salle.
 
-## [Non publié] — dictée vocale
+## [Non publié, abandonné] — dictée vocale embarquée
+
+Branche `feat/speech-to-text-lb`. Retirée de la 31.0.0 au profit de LuxASR ;
+gardée ici pour l'historique des mesures.
 
 Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
 `feat/speech-to-text-lb`, pas encore dans une version publiée.

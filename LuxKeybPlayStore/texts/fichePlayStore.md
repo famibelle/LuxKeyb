@@ -223,7 +223,8 @@ seule** catégorie passe à oui ; toutes les autres restent à **non**.
   n'existent que pour la dictée ; la politique de confidentialité (v3.0) les
   documente une par une. La Console exige en plus, pour l'audio, un écran
   d'information **dans l'application**, montré avant la demande d'accès au
-  micro : il reste à faire avant l'envoi.
+  micro : c'est `MicPermissionActivity`, depuis la 31.0.0 (« J'accepte » /
+  « Non merci », rien n'est envoyé avant l'accord).
 - Le compteur de progression écrit dans `filesDir`, sur l'appareil, et ne
   compte que des mots déjà présents dans le dictionnaire livré : ni les mots
   de passe, ni les noms propres, ni les numéros n'y entrent. C'est ce point

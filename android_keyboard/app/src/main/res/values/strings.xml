@@ -32,6 +32,14 @@
     <!-- Remplace « Schwätzt… » quand l'audio s'empile faute de réseau : le texte
          arrivera en retard. À faire relire par un locuteur. -->
     <string name="stt_online_slow">🐢 LuxASR · lues Verbindung…</string>
+    <!-- Écran d'information montré avant la première dictée, exigé par Google
+         Play avant la demande d'accès au micro. Même contenu que la section
+         « La dictée vocale » de la politique de confidentialité. -->
+    <string name="stt_info_titre">Dictée vocale</string>
+    <string name="stt_info_texte">Pour écrire ce que vous dites, le clavier envoie votre voix au service LuxASR de l\'Université du Luxembourg, pendant la dictée seulement.\n\nL\'Université la transforme en texte sans la conserver, et sans s\'en servir pour entraîner ses modèles. Comme tout site, elle note l\'heure et l\'adresse IP de la connexion.\n\nCe que vous tapez, lui, ne quitte jamais votre téléphone.\n\nEn savoir plus : https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
+    <string name="stt_info_accepter">J\'accepte</string>
+    <string name="stt_info_refuser">Non merci</string>
+    <string name="stt_info_refusee">Dictée non activée : rien n\'a été envoyé</string>
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <!-- Le réseau est là, le service ne répond pas : ce n'est ni le téléphone

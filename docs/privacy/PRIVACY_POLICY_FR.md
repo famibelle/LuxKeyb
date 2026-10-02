@@ -170,6 +170,7 @@ La dictée est la seule fonction de l'application qui envoie quelque chose hors 
 ### Quand
 
 - **Seulement après un appui sur le micro** du clavier. Avant cet appui, le micro n'est pas ouvert et rien ne part.
+- **Au premier appui, un écran explique où part votre voix**, avant même qu'Android ne demande l'accès au micro. Tant que vous n'avez pas répondu « J'accepte », rien n'est envoyé.
 - **Jamais dans un champ de mot de passe :** le micro y refuse de s'ouvrir.
 - Le micro se ferme de lui-même quand vous vous arrêtez de parler, ou quand vous appuyez à nouveau dessus. Une dictée dure au plus 90 secondes.
 - Pendant toute la dictée, le clavier affiche « 🌐 LuxASR » : vous savez toujours quand votre voix est envoyée.
@@ -195,6 +196,7 @@ Sur votre téléphone, le clavier ne garde **ni le son ni une copie du texte** :
 ### Comment ne pas utiliser la dictée
 
 - **Ne touchez pas au micro :** rien n'est envoyé, le clavier reste entièrement hors ligne.
+- **Répondez « Non merci »** à l'écran d'information du premier appui : rien n'est envoyé.
 - **Refusez l'accès au micro** quand Android le demande au premier appui, ou retirez-le plus tard dans Paramètres > Applications > Lëtzebuergesch Clavier > Autorisations. Le clavier fonctionne alors exactement pareil, sans dictée.
 
 ### Vos droits sur la dictée
