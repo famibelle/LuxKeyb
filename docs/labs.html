@@ -224,7 +224,10 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <p data-i18n="thanks-p2">
       Le clavier ne fait qu'envoyer le son et afficher ce qui revient : la
       qualité de la dictée, c'est leur travail. Merci à leur équipe, sans qui
-      cette fonction n'existerait pas.
+      cette fonction n'existerait pas. Pendant la dictée, le son est traité par
+      leur service : c'est la
+      <a href="https://luxasr.uni.lu/">politique de protection des données de
+      l'Université</a> qui s'applique à cette partie.
     </p>
   </div>
 </section>
@@ -293,34 +296,6 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
 </section>
 
 <section>
-  <div class="warn">
-    <h2 data-i18n="warn-h2">⚠️ À lire avant de télécharger</h2>
-    <p data-i18n="warn-p1">
-      <strong>Votre voix quitte le téléphone.</strong> Pendant la dictée, et
-      seulement pendant, le son du micro est envoyé à
-      <code>luxasr.uni.lu</code>, qui renvoie le texte. N'y dictez rien de
-      confidentiel. Le traitement des enregistrements par ce service ne relève
-      pas de nous et n'est pas couvert par notre
-      <a href="privacy/privacy-policy.html">politique de confidentialité</a>,
-      qui décrit la version stable : celle-là n'envoie rien.
-    </p>
-    <p data-i18n="warn-p2">
-      <strong>Il faut une connexion.</strong> Sans réseau, le micro ne rend rien :
-      cette version n'a pas de repli hors ligne.
-    </p>
-    <p data-i18n="warn-p3">
-      <strong>C'est une version d'essai.</strong> Elle n'est ni sur le Play
-      Store ni sur la page d'accueil, et elle est reconstruite à chaque
-      amélioration. Qu'une dictée en ligne rejoigne un jour la version stable
-      supposerait l'accord formel du service appelé et une
-      <a href="privacy/privacy-policy.html">politique de confidentialité</a>
-      réécrite. Si vous cherchez simplement un bon clavier luxembourgeois,
-      prenez plutôt la <a href="index.html">version normale</a>.
-    </p>
-  </div>
-</section>
-
-<section>
   <h2 data-i18n="install-h2">Installer et essayer</h2>
   <div class="card">
     <ol class="steps">
@@ -346,8 +321,10 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
       </li>
       <li data-i18n="step4">
         <strong>Dictez.</strong> Ouvrez n'importe quel champ de texte, touchez
-        le <strong>micro</strong> à droite de la barre de suggestions, et
-        autorisez l'accès au microphone. Le bandeau affiche
+        le <strong>micro</strong> à droite de la barre de suggestions. La
+        première fois, un écran explique que la voix part à l'Université :
+        <strong>J'accepte</strong>, puis autorisez l'accès au microphone
+        (« Non merci » ne démarre rien et n'envoie rien). Le bandeau affiche
         <strong>🌐 LuxASR</strong> pendant l'écoute. Inutile de retoucher le
         micro pour terminer : <strong>la dictée s'arrête d'elle-même</strong>
         deux à trois secondes après la fin de la phrase.
@@ -470,17 +447,21 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
       mots jetés au micro ne suffisent pas toujours.
     </p>
     <p data-i18n="surprises-p3">
-      <strong>Des chiffres s'affichent dans le bandeau</strong>, du genre
-      <code>7.2 s → 330 ms</code> : c'est un instrument de mesure laissé en
-      place pour cette version d'essai, pas un défaut d'affichage.
+      <strong>Quand le réseau faiblit</strong>, le bandeau passe à
+      <strong>🐢 LuxASR · lues Verbindung…</strong> : le son part plus
+      lentement qu'on ne parle. La dictée continue ; si le retard s'accumule
+      trop, le micro se coupe, ce qui a déjà été envoyé est rendu, et le
+      bandeau dit que la connexion est trop lente.
     </p>
     <p data-i18n="nothing-p1">
       <strong>Dans un champ de mot de passe</strong>, le micro refuse de
       démarrer et le dit : rien n'est envoyé.
     </p>
     <p data-i18n="nothing-p2">
-      <strong>Si l'accès au micro est refusé, ou si le service est
-      injoignable</strong>, le bandeau dit lequel des deux est en cause.
+      <strong>Si la dictée ne peut pas se faire</strong> (accès au micro
+      refusé, pas de connexion, service injoignable, connexion perdue ou trop
+      lente), le bandeau dit laquelle de ces causes est en jeu, et le texte déjà
+      écrit reste en place.
     </p>
   </div>
 </section>
@@ -513,7 +494,9 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     que rien n'en sorte. Les modèles luxembourgeois que publie l'Université
     existent en plusieurs tailles ; nous avons fait tourner les plus légers
     directement sur un téléphone de milieu de gamme (Galaxy A21s), sur les mêmes
-    extraits de conférences de presse que le service en ligne.
+    extraits de conférences de presse que le service en ligne. Le résultat ne
+    nous a pas convaincus : <strong>cette dictée embarquée a été retirée de
+    l'application</strong>, qui n'embarque plus aucun modèle.
   </p>
 
   <div class="tablewrap">
@@ -570,6 +553,16 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
       entendue ; si le service ne signale rien, par exemple dans une pièce
       bruyante, il le ferme après cinq secondes de silence.
     </p>
+    <p data-i18n="tech-p5">
+      <strong>Réseau lent ou coupé.</strong> Le clavier mesure l'audio qui
+      attend d'être envoyé. Au-delà d'une seconde de retard, il le signale ;
+      au-delà de huit secondes, il coupe le micro et laisse partir ce qui reste
+      (trente secondes au plus). Si plus rien ne part pendant cinq secondes, la
+      dictée est abandonnée et le texte déjà écrit est gardé. Une connexion qui
+      ne s'établit pas en cinq secondes est abandonnée aussi. Le clavier lit
+      pour cela l'état du réseau, sans permission de plus que l'accès Internet
+      déjà demandé.
+    </p>
     <p data-i18n="tech-p3">
       <strong>Justesse.</strong> Sur vingt-deux dictées d'une à trois phrases,
       envoyées directement au service, il se trompe sur 25,4 % des mots. Rejouées
@@ -582,7 +575,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <p data-i18n="tech-p4">
       Le tableau « Et sans connexion ? » compare cinq conférences de presse
       (53 extraits) transcrits sur le téléphone même, avec le moteur whisper.cpp
-      de l'application et les modèles <code>base</code> et <code>small</code>
+      que l'application embarquait alors, et les modèles <code>base</code> et <code>small</code>
       publiés par l'Université, contre le service en ligne sur les mêmes
       extraits.
     </p>
@@ -609,7 +602,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <li><span class="k" data-i18n="facts-k1">Ce que ça ajoute</span><span class="v" data-i18n="facts-v1">La dictée vocale en luxembourgeois</span></li>
     <li><span class="k" data-i18n="facts-k2">Reconnaissance</span><span class="v" data-i18n="facts-v2">Service LuxASR, Université du Luxembourg</span></li>
     <li><span class="k" data-i18n="facts-k3">Où va votre voix</span><span class="v" data-i18n="facts-v3">À l'Université du Luxembourg, pendant la dictée</span></li>
-    <li><span class="k" data-i18n="facts-k4">Connexion</span><span class="v" data-i18n="facts-v4">Indispensable pour dicter</span></li>
+    <li><span class="k" data-i18n="facts-k4">Connexion</span><span class="v" data-i18n="facts-v4">Indispensable pour dicter ; le micro barré signale son absence</span></li>
     <li><span class="k" data-i18n="facts-k5">Icône</span><span class="v" data-i18n="facts-v5">Marquée LABS sur l'écran d'accueil</span></li>
     <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">APK manuel, hors Play Store ; désinstaller d'abord la version du Play Store</span></li>
     <li><span class="k" data-i18n="facts-k7">Mise à jour</span><span class="v" data-i18n="facts-v7">À retélécharger depuis cette page</span></li>
@@ -642,7 +635,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'lead': "Labs is the keyboard's workshop: experimental builds, ahead of the stable version, that you can try before everyone else. This one adds <strong>Luxembourgish voice dictation</strong>: you speak, and the text writes itself as your sentence goes.",
     'thanks-h2': '🎓 Dictation by the University of Luxembourg',
     'thanks-p1': 'Speech recognition is provided by <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish automatic speech recognition service of the <strong>University of Luxembourg</strong>. Its real-time engine is published as open source, <a href="https://github.com/PeterGilles/LuxASRlive">LuxASRlive</a>, under the Apache 2.0 licence.',
-    'thanks-p2': "The keyboard only sends the sound and shows what comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist.",
+    'thanks-p2': "The keyboard only sends the sound and shows what comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist. During dictation, the sound is processed by their service: the <a href=\"https://luxasr.uni.lu/\">University's data protection policy</a> applies to that part.",
     'status-version': 'current version',
     'status-date': 'rebuilt on every improvement',
     'status-size': 'about 10 MB',
@@ -655,16 +648,12 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'iframe-title': 'Lëtzebuergesch keyboard, LuxASR dictation with translation',
     'capture-alt': 'Whole phone screen on an Android emulator, dictating into a text message: the Luxembourgish text is written into the bubble as it goes, underlined while it can still change, up to the complete sentence',
     'capture-figcaption': "Captured on an Android emulator, in the Messages app: the text grows in the bubble as you speak, underlined until it's confirmed, with the <strong>🌐 LuxASR</strong> banner. The voice was injected into the emulator's virtual microphone; the text shown is the service's real answer, word for word.",
-    'warn-h2': '⚠️ Read before downloading',
-    'warn-p1': "<strong>Your voice leaves the phone.</strong> During dictation, and only then, the microphone audio is sent to <code>luxasr.uni.lu</code>, which sends the text back. Don't dictate anything confidential. How this service handles the recordings is not up to us and isn't covered by our <a href=\"privacy/privacy-policy.html\">privacy policy</a>, which describes the stable version: that one sends nothing.",
-    'warn-p2': '<strong>A connection is required.</strong> Without a network, the microphone produces nothing: this version has no offline fallback.',
-    'warn-p3': "<strong>This is a trial version.</strong> It's neither on the Play Store nor on the home page, and it's rebuilt on every improvement. For online dictation to ever reach the stable version would take the called service's formal agreement and a rewritten <a href=\"privacy/privacy-policy.html\">privacy policy</a>. If you're simply looking for a good Luxembourgish keyboard, take the <a href=\"index.html\">regular version</a> instead.",
     'install-h2': 'Install and try it',
     'step0': '<strong>If your keyboard came from the Play Store, uninstall it first.</strong> Android refuses to replace it with a file from elsewhere. Your word notebook and your progress go with it.',
     'step1': '<strong>Download</strong> the APK file. The QR code starts it on its own; otherwise, the button above.',
     'step2': "<strong>Open it.</strong> Android will ask to allow installing from this source: normal for an app that doesn't come from the Play Store.",
     'step3': '<strong>Enable the keyboard</strong> under <code>Settings › System › Keyboards › On-screen keyboard</code>, then pick it as the current keyboard, if needed through the keyboard icon that appears at the bottom of the screen when a text field is open.',
-    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, and allow microphone access. The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
+    'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar, the first time, a screen explains that your voice goes to the University: tap <strong>I agree</strong>, then allow microphone access (“No thanks” starts nothing and sends nothing). The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
     'icon-p': "Once installed, its icon carries the word <strong>LABS</strong> on the home screen: it tells you at a glance that the trial version is on the phone, not the regular one. The two can't coexist.",
     'back-h3': 'Going back to the stable version',
     'back-p': 'If you had taken the regular version from GitHub, simply reinstall the <a href="https://github.com/famibelle/LuxKeyb/releases/latest">regular version</a> over it: it is signed with the same key, and your settings and progress are kept. To go back to the Play Store version, uninstall the Labs version, then reinstall from the Play Store.',
@@ -687,14 +676,14 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'surprises-h3': 'Good to know',
     'surprises-p1': "<strong>The text shown while you're speaking can still change.</strong> It's underlined until confirmed; the underline goes away once the sentence is finished.",
     'surprises-p2': "<strong>Very short sentences can come back empty.</strong> Three words thrown at the microphone aren't always enough.",
-    'surprises-p3': "<strong>Numbers show up in the banner</strong>, something like <code>7.2 s → 330 ms</code>: it's a measuring instrument left in place for this trial version, not a display glitch.",
+    'surprises-p3': "<strong>When the network weakens</strong>, the banner switches to <strong>🐢 LuxASR · lues Verbindung…</strong> (“slow connection”): the sound leaves more slowly than you speak. Dictation carries on; if the delay builds up too far, the microphone cuts, what was already sent is delivered, and the banner says the connection is too slow.",
     'nothing-p1': '<strong>In a password field</strong>, the microphone refuses to start and says so: nothing is sent.',
-    'nothing-p2': '<strong>If microphone access is denied, or the service is unreachable</strong>, the banner says which of the two is at fault.',
+    'nothing-p2': '<strong>If dictation cannot happen</strong> (microphone access denied, no connection, service unreachable, connection lost or too slow), the banner says which of these it is, and the text already written stays in place.',
     'services-h2': 'Two public services, only one called here',
     'services-p1': 'Luxembourgish has two public speech-processing services, and they don’t share an owner. <a href="https://luxasr.uni.lu/">LuxASR</a> is a service of the <b>University of Luxembourg</b>, a public institution: it’s the one this version calls, and the only one. The <a href="https://sproochmaschinn.lu/">Sproochmaschinn</a> and its <i>Schreifmaschinn</i> are a service of the <b>Zenter fir d’Lëtzebuerger Sprooch</b>, under the Ministry of Culture, and the keyboard never calls it, here or anywhere else.',
     'services-p2': "The distinction isn't an administrative detail. This version shows that the keyboard already knows how to hand its dictation off to a remote service, so it could hand it off to either one. That choice doesn't get made in code: it belongs to whoever runs these services.",
     'offline-h2': 'And without a connection?',
-    'offline-p1': 'We tried to fit recognition inside the phone, so that nothing leaves it. The Luxembourgish models the University publishes come in several sizes; we ran the lightest ones directly on a mid-range phone (Galaxy A21s), on the same press-conference excerpts as the online service.',
+    'offline-p1': 'We tried to fit recognition inside the phone, so that nothing leaves it. The Luxembourgish models the University publishes come in several sizes; we ran the lightest ones directly on a mid-range phone (Galaxy A21s), on the same press-conference excerpts as the online service. The result didn’t convince us: <strong>this embedded dictation has been removed from the app</strong>, which no longer ships any model.',
     'th-online': 'Online (this version)',
     'th-base': 'On the phone, medium model',
     'th-small': 'On the phone, larger model',
@@ -710,7 +699,8 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'tech-p1': 'The app streams audio continuously over a WebSocket connection, as 16-bit PCM at 16 kHz, silence included. The service rereads the not-yet-confirmed part of the utterance every half-second to a second, and only confirms a word once it has seen it in the same place in three hypotheses in a row; the still-unstable end comes back separately and replaces the preview shown. No recording is kept on the phone.',
     'tech-p2': "After a little under a second of silence, the service confirms the whole pending sentence and signals it. The keyboard then closes the microphone once two and a half seconds have passed since the last speech heard; if the service signals nothing, for instance in a noisy room, it closes it after five seconds of silence.",
     'tech-p3': "<strong>Accuracy.</strong> On twenty-two one-to-three-sentence dictations, sent straight to the service, it gets 25.4% of words wrong. Replayed through a speaker in front of a phone's microphone, twenty shorter excerpts give 26.2%, on par with the service alone: going through the microphone costs almost nothing. These values are pessimistic, since the reference transcriptions sometimes leave out what the speaker actually said; on a cleanly read excerpt, the service goes down to between 11% and 15%.",
-    'tech-p4': 'The “And without a connection?” table compares five press conferences (53 excerpts) transcribed on the phone itself, with the app’s whisper.cpp engine and the <code>base</code> and <code>small</code> models published by the University, against the online service on the same excerpts.',
+    'tech-p5': "<strong>Slow or dropped network.</strong> The keyboard measures the audio waiting to be sent. Past one second behind, it signals it; past eight seconds, it cuts the microphone and lets what remains go out (thirty seconds at most). If nothing leaves for five seconds, dictation is abandoned and the text already written is kept. A connection that doesn't come up within five seconds is abandoned too. To do this the keyboard reads the network state, with no permission beyond the Internet access it already requests.",
+    'tech-p4': 'The “And without a connection?” table compares five press conferences (53 excerpts) transcribed on the phone itself, with the whisper.cpp engine the app shipped at the time and the <code>base</code> and <code>small</code> models published by the University, against the online service on the same excerpts.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'That is the whole point of Labs: your feedback decides what reaches the stable version. The most useful thing to send us is a precise case: <strong>the phone model, what you said, and what got written</strong>.',
     'feedback-form': '💬 Feedback form',
@@ -719,7 +709,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'facts-k1': 'What it adds', 'facts-v1': 'Voice dictation in Luxembourgish',
     'facts-k2': 'Recognition', 'facts-v2': 'LuxASR service, University of Luxembourg',
     'facts-k3': 'Where your voice goes', 'facts-v3': 'To the University of Luxembourg, during dictation',
-    'facts-k4': 'Connection', 'facts-v4': 'Required to dictate',
+    'facts-k4': 'Connection', 'facts-v4': 'Required to dictate; the crossed-out microphone signals its absence',
     'facts-k5': 'Icon', 'facts-v5': 'Marked LABS on the home screen',
     'facts-k6': 'Installation', 'facts-v6': 'Manual APK, outside the Play Store; uninstall the Play Store version first',
     'facts-k7': 'Updates', 'facts-v7': 'Download again from this page',
