@@ -1,6 +1,6 @@
 ---
 title: "Lëtzebuergesch Clavier : le clavier luxembourgeois, en ligne et sur Android"
-description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité. À essayer dans le navigateur, à installer sur Android."
+description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é ö ü, correcteur orthographique, 100 % hors ligne et sans publicité. À essayer dans le navigateur, à installer sur Android."
 lang: fr
 ---
 
@@ -46,9 +46,10 @@ installez ensuite l'application Android.</p>
   </tr>
   <tr>
     <td>😤 <strong>« Le ë est caché dans un menu »</strong></td>
-    <td>Plus ici. Les trois diacritiques qui portent la langue, <strong>é</strong>,
-    <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
+    <td>Plus ici. <strong>é</strong>, <strong>ë</strong>, <strong>ä</strong>,
+    <strong>ö</strong> et <strong>ü</strong> ont chacune leur touche, et
     l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
+    Les autres accents s'ouvrent d'un appui long de 0,3 seconde.
     Tapez « letzebuergesch » tout court : le clavier vous propose
     « lëtzebuergesch ».</td>
   </tr>
@@ -61,8 +62,11 @@ installez ensuite l'application Android.</p>
   </tr>
 </table>
 
-Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
-Luxembourg. Le clavier est **gratuit, open source, sans publicité et entièrement
+Les lettres suivent la disposition **Suisse allemand**, celle du clavier
+physique du même nom : QWERTZ, onze touches par rangée, « ü » à droite du « p »,
+« ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre
+d'espace. La disposition **Luxembourg**, à dix touches plus larges, reste au
+choix dans les réglages. Le clavier est **gratuit, open source, sans publicité et entièrement
 hors ligne** : il tourne dans le navigateur pour l'essai, et s'installe sur
 Android pour l'usage de tous les jours.
 
@@ -169,7 +173,7 @@ lettres.
   <summary>Installer sans passer par Google Play</summary>
   <p>C'est possible, en installant le fichier à la main :
   <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
-  Android 5.0 ou plus récent · environ 7 Mo · aucune permission réseau.</p>
+  Android 5.0 ou plus récent · environ 8 Mo · aucune permission réseau.</p>
 </details>
 
 ## Une fois installée, il se passe quoi ?
@@ -243,9 +247,25 @@ phrase.
 
 <p class="note" style="text-align:center;">Le clavier d'essai a sa
 <a href="simulateur.html">page complète</a>, avec la démonstration automatique
-et le compteur de frappes économisées.</p>
+et le compteur de frappes économisées. Il est en disposition Luxembourg, celle
+que l'application propose au choix.</p>
 
 ## Ce qu'il sait faire
+
+### Il se règle à votre main
+
+Dans **Réglages du clavier**, vous choisissez la disposition (Suisse allemand
+ou Luxembourg), le délai de l'appui long qui ouvre les accents (de 0,3 à
+1,2 seconde), les propositions en français, la vibration, le son, et le thème : clair, sombre
+ou comme le téléphone.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:560px;text-align:center;">
+    <img src="Screenshots/lux_dispositions_suisse_luxembourg.png" style="width:100%;border-radius:8px;"
+         alt="Les deux dispositions côte à côte : à gauche Suisse allemand, onze touches par rangée avec ü, ö et ä en bout de rangée et é à gauche de la barre d'espace ; à droite Luxembourg, dix touches par rangée avec é en bout de rangée et ä à gauche de la barre d'espace">
+    <figcaption>Suisse allemand, par défaut, et Luxembourg, au choix</figcaption>
+  </figure>
+</div>
 
 ### Il vous souffle les mots
 
@@ -258,7 +278,9 @@ relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
 Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
 luxembourgeoise : « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
 Le côté français se limite volontairement aux mots les plus courants : il est là
-pour les emprunts, pas pour rédiger en français.
+pour les emprunts, pas pour rédiger en français. Si vous n'en voulez pas, la
+rangée bleue se coupe dans les réglages et le clavier raccourcit d'autant ; le
+correcteur continue de reconnaître vos mots français.
 
 ### Il pardonne les fautes de frappe
 
@@ -380,11 +402,11 @@ prédiction du mot suivant.
 |---|---|---|---|---|---|---|
 | Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Oui, vérifié sur le S24 Ultra | Oui, liste officielle Microsoft | Oui, dictionnaire à ajouter | Oui, pack séparé |
 | Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 691 | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Disposition propre à la langue | **Oui**, QWERTZ avec `é` `ä` `ë` en touches pleines | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | — | — |
+| Disposition propre à la langue | **Oui**, Suisse allemand avec `é` `ë` `ä` `ö` `ü` en touches pleines, ou Luxembourg au choix | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | — | — |
 | Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
 | Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
 | Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | 13,4 % | 17,7 % | — | — | — |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées, la seconde facultative | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — | — |
 | Correcteur système (lb) | **Oui** | Oui | Dans le clavier | — | Non | Non |
@@ -415,9 +437,9 @@ Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
 [comparatif détaillé face à Gboard et à Apple](comparatif.html).
 
-**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, et pas
-de dictionnaire allemand à côté du français. Ces manques
-sont réels et connus ; ils sont en tête de la liste des choses à faire.
+**Ce qu'il ne fait pas encore.** Pas de saisie glissée, et pas de dictionnaire
+allemand à côté du français. Ces manques sont réels et connus ; ils sont en tête
+de la liste des choses à faire. La dictée vocale est en test, voir plus bas.
 
 ## D'où viennent les suggestions
 
@@ -465,15 +487,15 @@ L'APK de cette page reste disponible et contient exactement le même code.
 
 ## En avant-première : la dictée vocale 🔬
 
-À côté de la version stable, **Labs** propose des versions expérimentales, en
-avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
-vous parlez, le clavier écrit.
+La version 31.0.0, en **test ouvert sur Google Play**, ajoute la **dictée vocale
+luxembourgeoise** : vous parlez, le clavier écrit.
 
 La reconnaissance est assurée par **LuxASR**, le service de l'Université du
 Luxembourg : pendant la dictée, et seulement pendant la dictée, votre voix est
-envoyée à son serveur, qui la transforme en texte. C'est une version d'essai, à
-installer à part : la version stable, celle du Play Store, n'a toujours aucune
-permission réseau, et rien de ce que vous y tapez ne quitte le téléphone.
+envoyée à son serveur, qui la transforme en texte. En rejoignant le test, votre
+téléphone reçoit cette version à la place de la version publique. La version
+publique, elle, n'a aucune permission réseau, et rien de ce que vous y tapez ne
+quitte le téléphone.
 
 <p style="margin:22px 0;">
   <a href="labs.html" class="btn">🔬 Découvrir la version Labs</a>
