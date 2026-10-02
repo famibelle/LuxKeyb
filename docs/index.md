@@ -390,7 +390,7 @@ champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-
 
 Le luxembourgeois n'est absent d'aucun grand clavier : Gboard, SwiftKey et le
 clavier Samsung le proposent tous les trois, vérifié dans les applications
-elles-mêmes. Mais aucun n'est **construit** pour lui : chez Samsung, `lb` est
+elles-mêmes, et l'iPhone le propose depuis iOS 27, sorti en septembre 2026. Mais aucun n'est **construit** pour lui : chez Samsung, `lb` est
 l'une des 691 langues du catalogue, servie par le QWERTZ générique et sans
 dictionnaire publié. Et les claviers libres qui acceptent un dictionnaire
 luxembourgeois s'appuient sur une liste de mots figée depuis 2013, sans
@@ -398,24 +398,24 @@ prédiction du mot suivant.
 
 <div class="table-scroll" markdown="1">
 
-| | **Lëtzebuergesch Clavier** | Gboard | Clavier Samsung | SwiftKey | HeliBoard | AnySoftKeyboard |
-|---|---|---|---|---|---|---|
-| Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Oui, vérifié sur le S24 Ultra | Oui, liste officielle Microsoft | Oui, dictionnaire à ajouter | Oui, pack séparé |
-| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 691 | Une langue parmi 700+ | Dictionnaire à ajouter | Pack séparé à installer |
-| Disposition propre à la langue | **Oui**, Suisse allemand avec `é` `ë` `ä` `ö` `ü` en touches pleines, ou Luxembourg au choix | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | — | — |
-| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
-| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Basique |
-| Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | 13,4 % | 17,7 % | — | — | — |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées, la seconde facultative | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | 1 langue secondaire, à activer | — |
-| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
-| Écriture sans diacritiques | **Oui** | — | — | — | — | — |
-| Correcteur système (lb) | **Oui** | Oui | Dans le clavier | — | Non | Non |
-| Aucun accès à Internet | **Oui** | Non | Non | Non | Oui | Oui |
-| Code ouvert | **Oui**, MIT | Non | Non | Non | Oui | Oui |
-| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
-| Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
-| Dictée vocale en luxembourgeois | En cours de test | Non | Non | Non | Non | Non |
-| Thème sombre | **Oui** | Oui | Oui | Oui | Oui | Oui |
+| | **Lëtzebuergesch Clavier** | Gboard | Clavier Samsung | SwiftKey | Clavier Apple (iOS 27) | HeliBoard | AnySoftKeyboard |
+|---|---|---|---|---|---|---|---|
+| Luxembourgeois disponible | **Oui** | Oui, vérifié dans l'application | Oui, vérifié sur le S24 Ultra | Oui, liste officielle Microsoft | Oui, depuis iOS 27 (septembre 2026) | Oui, dictionnaire à ajouter | Oui, pack séparé |
+| Conçu pour le luxembourgeois | **Oui**, c'est sa seule raison d'être | Une langue parmi 100+ | Une langue parmi 691 | Une langue parmi 700+ | Une disposition parmi 245 | Dictionnaire à ajouter | Pack séparé à installer |
+| Disposition propre à la langue | **Oui**, Suisse allemand avec `é` `ë` `ä` `ö` `ü` en touches pleines, ou Luxembourg au choix | Oui, `é` `ä` `ë` en touches pleines | Non, QWERTZ générique | — | Oui, disposition `lb` | — | — |
+| Dictionnaire luxembourgeois | **123 297 formes**, corpus 2026 + LOD | Non communiqué | Non communiqué | Non communiqué | Non communiqué | 71 255 mots, figés en 2013 | Non communiqué |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes | Oui | Oui | Oui | Non, en luxembourgeois | Non, en luxembourgeois | Basique |
+| Prédiction mesurée sur un Galaxy A21s | 20,2 % de mots justes dans les 3 | 13,4 % | 17,7 % | — | — | — | — |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` simultanées, la seconde facultative | Jusqu'à 3 langues, à activer | Plusieurs langues, à activer | Jusqu'à 5 langues, à activer | Saisie multilingue, sans le luxembourgeois | 1 langue secondaire, à activer | — |
+| Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Non, en luxembourgeois | Oui | Oui |
+| Écriture sans diacritiques | **Oui** | — | — | — | — | — | — |
+| Correcteur système (lb) | **Oui** | Oui | Dans le clavier | — | Non | Non | Non |
+| Aucun accès à Internet | **Oui** | Non | Non | Non | Frappe embarquée | Oui | Oui |
+| Code ouvert | **Oui**, MIT | Non | Non | Non | Non | Oui | Oui |
+| Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non | Non |
+| Saisie glissée | Non | Oui | Oui | Oui | Non, en luxembourgeois | Bibliothèque à ajouter | Gestes |
+| Dictée vocale en luxembourgeois | En cours de test | Non | Non | Non | Non | Non | Non |
+| Thème sombre | **Oui** | Oui | Oui | Oui | Oui | Oui | Oui |
 
 </div>
 
@@ -433,9 +433,11 @@ Clavier Samsung n'est pas statistiquement significatif : sur la prédiction pure
 deux font jeu égal, et Gboard fait moins bien que l'un et l'autre. Méthode, relevés bruts et limites dans
 <a href="comparatif.html#les-trois-claviers-mesurés-sur-le-même-galaxy">le comparatif</a>.</p>
 
-Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
-pas encore le luxembourgeois : voir le
-[comparatif détaillé face à Gboard et à Apple](comparatif.html).
+La colonne Apple vient de la <a href="https://www.apple.com/ios/feature-availability/">page de disponibilité des fonctions d'iOS</a>,
+relevée le 3 octobre 2026 : le luxembourgeois y figure parmi les dispositions de
+clavier, et dans aucune des listes de la correction automatique, de la
+prédiction, de la saisie multilingue, de la saisie glissée ni de la dictée. Voir
+le [comparatif détaillé face à Gboard et à Apple](comparatif.html).
 
 **Ce qu'il ne fait pas encore.** Pas de saisie glissée, et pas de dictionnaire
 allemand à côté du français. Ces manques sont réels et connus ; ils sont en tête

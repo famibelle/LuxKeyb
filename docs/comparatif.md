@@ -97,12 +97,12 @@ Chaque ligne est un constat, détaillé plus bas avec sa source.
 
 | | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS 27) |
 |---|---|---|---|---|
-| Le luxembourgeois est proposé | ⭐⭐⭐ sa seule langue | ⭐⭐ une langue du catalogue, sur un QWERTZ générique | ⭐⭐⭐ une disposition luxembourgeoise dédiée | ✕ absent jusqu'à iOS 26, annoncé dans iOS 27 |
-| Il propose des mots luxembourgeois pendant la frappe | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | non vérifié |
-| Le bon mot figure dans les trois suggestions <sup>1</sup> | ⭐⭐⭐ 20,2 % | ⭐⭐⭐ 17,7 % | ⭐⭐ 13,4 % | non vérifié |
+| Le luxembourgeois est proposé | ⭐⭐⭐ sa seule langue | ⭐⭐ une langue du catalogue, sur un QWERTZ générique | ⭐⭐⭐ une disposition luxembourgeoise dédiée | ⭐⭐ une disposition dédiée depuis iOS 27 (septembre 2026) |
+| Il propose des mots luxembourgeois pendant la frappe | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ✕ pas de prédiction en luxembourgeois |
+| Le bon mot figure dans les trois suggestions <sup>1</sup> | ⭐⭐⭐ 20,2 % | ⭐⭐⭐ 17,7 % | ⭐⭐ 13,4 % | ✕ pas de prédiction en luxembourgeois |
 | Il ne remplace jamais un mot juste par un autre <sup>2</sup> | ⭐⭐⭐ 0 mot sur 186 | ⭐⭐⭐ 2 mots sur 186 | ⭐⭐ 2 mots sur 177 en configuration propre, 86 sur 186 sur notre téléphone de test | non vérifié |
 | Il met la majuscule des noms (*Groussschreiwung*) <sup>3</sup> | ⭐ 7 noms sur 40 | ⭐⭐⭐ 37 sur 40 | ⭐⭐⭐ 31 sur 38 | non vérifié |
-| Les lettres é ä ë sont faciles à écrire | ⭐⭐⭐ touches dédiées | ⭐⭐ appui long puis glissement, 1,2 s | ⭐⭐⭐ touches dédiées | ⭐⭐ appui long sur la voyelle |
+| Les lettres é ä ë sont faciles à écrire | ⭐⭐⭐ touches dédiées, ö et ü aussi | ⭐⭐ appui long puis glissement, 1,2 s | ⭐⭐⭐ touches dédiées | non vérifié sur la disposition luxembourgeoise |
 | La barre de suggestions suit la lettre sans délai <sup>4</sup> | ⭐⭐⭐ 0 ms | ⭐⭐⭐ 41 ms | ⭐⭐⭐ 34 ms | non mesuré |
 | Léger à installer | ⭐⭐⭐ 9,4 Mo | ⭐ 110,1 Mo | ⭐ 130,5 Mo | non mesuré |
 | Mémoire vive pendant la saisie | ⭐⭐ 124 Mo | ⭐⭐ 131 Mo | ⭐⭐ 119 Mo | non mesuré |
@@ -170,13 +170,13 @@ canal <a href="labs.html">Labs</a>, sans date de sortie.
 
 <div class="table-scroll" markdown="1">
 
-| | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS) |
+| | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS 27) |
 |---|---|---|---|---|
-| Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, une langue parmi 377 | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 |
-| Disposition | **QWERTZ luxembourgeois**, celle des claviers physiques du pays | QWERTZ générique, partagé avec des dizaines de langues | QWERTZ luxembourgeois dédié | Allemand ou français ; disposition lb avec iOS 27 |
-| Touches diacritiques | **`é` `ä` `ë` et l'apostrophe ont leur propre touche** | Appui long puis glissement, 1,2 s par accent | **`é` `ä` `ë` ont leur propre touche** (constaté sur Gboard 18.2.4) | Appui long sur la voyelle |
+| Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, une langue parmi 377 | Oui, parmi plus de 900 variétés de langues | **Oui** depuis iOS 27 (septembre 2026), parmi 245 dispositions |
+| Disposition | **QWERTZ Suisse allemand** par défaut, ou Luxembourg au choix | QWERTZ générique, partagé avec des dizaines de langues | QWERTZ luxembourgeois dédié | Disposition `lb` depuis iOS 27 |
+| Touches diacritiques | **`é` `ë` `ä` `ö` `ü` et l'apostrophe ont leur propre touche** | Appui long puis glissement, 1,2 s par accent | **`é` `ä` `ë` ont leur propre touche** (constaté sur Gboard 18.2.4) | Non vérifié sur la disposition luxembourgeoise |
 | Dictionnaire | **123 297 formes**, corpus public et dictionnaire officiel, l'un et l'autre vérifiables | Non communiqué | Modèle propriétaire, non consultable | Modèle propriétaire, non consultable |
-| Prédiction du mot suivant | **Oui**, 27 746 contextes (bigrammes et trigrammes) | Oui | Oui, réseaux de neurones et apprentissage fédéré | Oui, modèle embarqué |
+| Prédiction du mot suivant | **Oui**, 27 746 contextes (bigrammes et trigrammes) | Oui | Oui, réseaux de neurones et apprentissage fédéré | **Non** en luxembourgeois |
 | **Mot juste dans les 3 suggestions** *(mesuré)* | **20,2 %** | 17,7 % | 13,4 % | — |
 | **Mot juste en 1ʳᵉ position** *(mesuré)* | **10,2 %** | 8,1 % | 6,2 % (case du centre) | — |
 | **Barre laissée vide faute de contexte** *(mesuré)* | 11,5 % | 0,0 %, remplie par *de · an · der* | 0,0 %, toujours remplie | — |
@@ -186,16 +186,16 @@ canal <a href="labs.html">Labs</a>, sans date de sortie.
 | **Processeur au repos, sur 30 s** *(mesuré)* | **10 à 20 ms** | 230 à 250 ms | 40 à 80 ms | — |
 | **Processeur par appui** *(mesuré)* | 40 ms | 31 ms | **23 ms** | — |
 | **Mots remplacés par la correction automatique** *(mesuré)* | **0 sur 186** | 2 sur 186 | 2 sur 177, configuration propre <sup>2</sup> | — |
-| Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui | Oui |
+| Pardonne les fautes de frappe | **Oui**, distance de Levenshtein | Oui | Oui | **Non** en luxembourgeois (pas de correction automatique) |
 | Écriture sans diacritiques | **Oui**, `Letzebuergesch` retrouve `Lëtzebuergesch` | — | — | — |
 | Majuscules des noms (*Groussschreiwung*) | Oui, **mais prudente** : rétablies seulement d'après le contexte, 7 noms sur 40, désactivable | **Oui** : 37 noms sur 40 | **Oui** : 31 noms sur 38 | — |
-| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Plusieurs langues, à activer | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues), à activer |
-| Correcteur système en luxembourgeois | **Oui** (et en français) | Non déclaré pour le lb sur cette version | Intégré au clavier | Intégré, mais pas en lb avant iOS 27 |
+| Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Plusieurs langues, à activer | Jusqu'à 3 langues, à activer | Saisie multilingue, sans le luxembourgeois |
+| Correcteur système en luxembourgeois | **Oui** (et en français) | Non déclaré pour le lb sur cette version | Intégré au clavier | **Non** en luxembourgeois |
 | Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Non | Frappe embarquée |
 | Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Apprentissage personnalisé annoncé par l'éditeur | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
 | Code ouvert | **Oui**, MIT | Non | Non | Non |
 | Jeux et progression | **Oui**, 7 jeux et 8 niveaux | Non | Non | Non |
-| Saisie glissée | Non | Oui | Oui | Oui |
+| Saisie glissée | Non | Oui | Oui | **Non** en luxembourgeois |
 | Dictée vocale **en luxembourgeois** <sup>6</sup> | **En cours de test** (canal Labs) | **Non** | **Non** | **Non** |
 | Dictée vocale dans d'autres langues (français, allemand) | Non (celle du système reste accessible) | Oui | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
@@ -205,8 +205,11 @@ canal <a href="labs.html">Labs</a>, sans date de sortie.
 
 </div>
 
-<p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Colonne Apple relevée en
-août 2026 ; le nombre de langues de Samsung est lu dans le catalogue embarqué. Les
+<p style="font-size:0.9em;opacity:0.8;">« — » : non vérifié. Colonne Apple relevée le
+3 octobre 2026 sur la <a href="https://www.apple.com/ios/feature-availability/">page de disponibilité des fonctions d'iOS</a> :
+le luxembourgeois figure parmi les dispositions de clavier, et dans aucune des
+listes de la correction automatique, de la prédiction, de la saisie multilingue,
+de la saisie glissée ni de la dictée ; le nombre de langues de Samsung est lu dans le catalogue embarqué. Les
 lignes <em>(mesuré)</em> viennent des bancs décrits
 <a href="#les-trois-claviers-mesurés-sur-le-même-galaxy">plus bas</a>, sur un même
 Galaxy A21s (Android 12) : Clavier Samsung 5.4.85.4, Gboard 18.2.4, et notre clavier
@@ -272,10 +275,11 @@ Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est le seul 
 commun sur lequel quelque chose est en cours : une reconnaissance vocale luxembourgeoise
 s'essaie dans le canal [Labs](labs.html), sans date de sortie ni promesse de qualité.
 
-Dernier point, et c'est une bonne nouvelle pour la langue : **iOS 27 ajoutera le
-luxembourgeois**, annoncé en juin 2026. Cela laisse toutefois Android sans
-clavier pensé pour le lëtzebuergesch, et ne répond ni à la question du
-dictionnaire vérifiable, ni à celle de l'apprentissage.
+Dernier point, et c'est une bonne nouvelle pour la langue : **iOS 27 a ajouté une
+disposition luxembourgeoise** en septembre 2026. D'après Apple, elle vient sans
+correction automatique, prédiction, saisie glissée ni dictée dans cette langue,
+et elle ne répond ni à la question du dictionnaire vérifiable, ni à celle de
+l'apprentissage.
 
 ## Et le clavier Samsung ?
 
