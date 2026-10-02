@@ -285,11 +285,11 @@ jobs:
       if: github.ref_name == 'feat/luxasr-online'
       run: |
         cat > /tmp/labs-notes.md <<'NOTES'
-        # 🌐 Démonstration — dictée en ligne LuxASR
+        # 🌐 Labs — dictée en ligne LuxASR
 
-        Build de **démonstration**, préparé pour un rendez-vous avec le projet
-        LuxASR de l'Université du Luxembourg. Ce n'est ni une version stable, ni
-        une préversion destinée aux testeurs.
+        Version d'essai du laboratoire : la dictée vocale en luxembourgeois,
+        assurée par le service LuxASR de l'Université du Luxembourg. Ce n'est
+        pas la version stable.
 
         ## ⚠️ L'audio quitte le téléphone
 
@@ -298,10 +298,8 @@ jobs:
         le faire transcrire. Le bandeau de dictée l'indique à l'écran (🌐 LuxASR)
         pendant toute la durée de l'enregistrement.
 
-        La politique de confidentialité publiée du clavier affirme le contraire :
-        elle décrit la dictée embarquée, hors ligne, qui reste ce que livrent les
-        versions stables et la préversion `labs`. **Cette démonstration ne doit
-        pas être diffusée** au-delà de son objet.
+        Un écran d'information l'explique au premier appui sur le micro, et
+        rien n'est envoyé sans accord. La version stable, elle, n'envoie rien.
 
         ## Pourquoi elle existe
 
@@ -327,11 +325,6 @@ jobs:
         dicter, et pas seulement pour installer ; sans réseau, le micro apparaît
         barré.
 
-        ## Statut
-
-        Le site de LuxASR demande que toute intégration dans une autre
-        application fasse l'objet d'un accord préalable. Cette démonstration est
-        le support de cette demande, pas son contournement.
         NOTES
 
     - name: 📝 Notes de version — dictée embarquée
