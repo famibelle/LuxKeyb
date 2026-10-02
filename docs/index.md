@@ -393,7 +393,7 @@ prédiction du mot suivant.
 | Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
 | Dictée vocale en luxembourgeois | En cours de test | Non | Non | Non | Non | Non |
-| Thème sombre | Non | Oui | Oui | Oui | Oui | Oui |
+| Thème sombre | **Oui** | Oui | Oui | Oui | Oui | Oui |
 
 </div>
 
@@ -415,8 +415,8 @@ Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
 [comparatif détaillé face à Gboard et à Apple](comparatif.html).
 
-**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, pas de
-thème sombre, et pas de dictionnaire allemand à côté du français. Ces manques
+**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, et pas
+de dictionnaire allemand à côté du français. Ces manques
 sont réels et connus ; ils sont en tête de la liste des choses à faire.
 
 ## D'où viennent les suggestions
@@ -469,10 +469,11 @@ L'APK de cette page reste disponible et contient exactement le même code.
 avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
 vous parlez, le clavier écrit.
 
-La reconnaissance tourne **entièrement sur le téléphone**, aucun son n'est
-envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
-contrepartie, elle pèse 38 Mo au lieu de 7, et sa précision n'est pas encore
-mesurée : c'est justement ce que ces essais servent à établir.
+La reconnaissance est assurée par **LuxASR**, le service de l'Université du
+Luxembourg : pendant la dictée, et seulement pendant la dictée, votre voix est
+envoyée à son serveur, qui la transforme en texte. C'est une version d'essai, à
+installer à part : la version stable, celle du Play Store, n'a toujours aucune
+permission réseau, et rien de ce que vous y tapez ne quitte le téléphone.
 
 <p style="margin:22px 0;">
   <a href="labs.html" class="btn">🔬 Découvrir la version Labs</a>

@@ -116,13 +116,13 @@ Pas de saisie glissée, pas de dictée vocale : manques connus et prioritaires.
 
 Régénéré à chaque version depuis un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste figée. Un mot manque ? Signalez-le : github.com/famibelle/LuxKeyb
 
-🗣️ Potomitan™
 « Mir wëlle bleiwe wat mir sinn »
 ```
 
-3960 unités UTF-16 sur 4 000 — c'est ainsi que compte la Play Console,
-les drapeaux et quelques émojis valant 2 chacun. Il reste **40 caractères
-de marge** : tout ajout suppose d'en retirer autant.
+3945 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console,
+les drapeaux et quelques émojis valant 2 chacun). Il reste **55 caractères
+de marge** : tout ajout suppose d'en retirer autant. La signature « Potomitan™ »
+a été retirée le 2 octobre 2026 : LuxKeyb n'a aucun lien avec cette marque.
 
 Les chiffres cités sont ceux de la version livrée et sont vérifiables dans les
 actifs : `luxemburgish_dict.json` + `luxemburgish_lod_forms.json` pour les

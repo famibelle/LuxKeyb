@@ -25,7 +25,7 @@
 
 ### Fonctionnalités principales :
 - Clavier virtuel optimisé pour le luxembourgeois
-- Suggestions de mots basées sur un dictionnaire luxembourgeois (6 342 mots)
+- Suggestions de mots basées sur un dictionnaire luxembourgeois (38 442 mots tirés du corpus, 123 297 formes reconnues avec le dictionnaire officiel LOD)
 - Corrections orthographiques automatiques
 - Support des diacritiques luxembourgeoises (ë, ä, é, ü, ö)
 - Interface en français et luxembourgeois
