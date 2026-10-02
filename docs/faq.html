@@ -46,7 +46,7 @@
       "name": "Faut-il une connexion internet ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Uniquement pour le télécharger. Ensuite tout se passe dans le téléphone : les suggestions, les accents, le correcteur et les jeux fonctionnent en avion, dans une zone sans réseau, sans forfait data. L'application ne demande d'ailleurs même pas la permission d'accéder à internet."
+        "text": "Pour le télécharger, puis seulement pour la dictée vocale. Tout le reste se passe dans le téléphone : les suggestions, les accents, le correcteur et les jeux fonctionnent en avion, dans une zone sans réseau, sans forfait data. Sans connexion, le micro de la dictée apparaît simplement barré."
       }
     },
     {
@@ -94,7 +94,7 @@
       "name": "Android m'affiche un avertissement inquiétant au moment d'activer le clavier. C'est normal ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Oui. Android affiche ce message pour tous les claviers, Gboard compris, parce qu'un clavier voit par construction ce qui est tapé. La question utile est donc ce que le clavier fait de ce texte : ici, rien ne sort du téléphone, et l'application n'a pas la permission d'accéder à internet."
+        "text": "Oui. Android affiche ce message pour tous les claviers, Gboard compris, parce qu'un clavier voit par construction ce qui est tapé. La question utile est donc ce que le clavier fait de ce texte : ici, rien de ce que vous tapez ne sort du téléphone. La seule chose qui part est votre voix, quand vous utilisez la dictée, et seulement vers l'Université du Luxembourg."
       }
     },
     {
@@ -190,7 +190,7 @@
       "name": "Y a-t-il la dictée vocale ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Pas dans la version stable. Une reconnaissance vocale luxembourgeoise est en essai dans le canal Labs, et elle n'ira pas plus loin tant que sa qualité et son cadre juridique ne seront pas réglés. La dictée du système, elle, reste accessible normalement, avec les langues qu'elle connaît."
+        "text": "Oui. Appuyez sur le micro, à droite de la barre de suggestions, et parlez : le texte s'écrit, ponctué. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg ; il faut donc une connexion Internet. Votre voix n'est envoyée que pendant la dictée, et l'Université la transforme en texte sans la conserver."
       }
     },
     {
@@ -206,7 +206,7 @@
       "name": "Ce que je tape part-il quelque part ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Non. Rien n'est envoyé, ni à nous ni à un tiers : il n'y a ni serveur, ni compte, ni statistique d'usage collectée. Ce n'est pas seulement une promesse d'intention, c'est vérifiable : l'application ne déclare pas la permission internet, donc le système Android l'empêcherait d'émettre quoi que ce soit même si elle essayait."
+        "text": "Non. Ce que vous tapez n'est envoyé ni à nous ni à un tiers : il n'y a ni serveur, ni compte, ni statistique d'usage collectée. La seule chose qui quitte le téléphone est votre voix, quand vous appuyez sur le micro pour dicter : elle va directement à l'Université du Luxembourg pour être transcrite, sans être conservée. C'est vérifiable : tant que vous ne dictez pas, la consommation de données de l'application reste à zéro dans les réglages d'Android."
       }
     },
     {
@@ -214,7 +214,7 @@
       "name": "Quelles permissions l'application demande-t-elle ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Une seule : afficher une notification, pour signaler un nouveau niveau de vocabulaire atteint. Refusez-la, le clavier fonctionne à l'identique. Ni internet, ni contacts, ni localisation, ni micro, ni accès à vos fichiers. Le code source est public si vous voulez le vérifier vous-même."
+        "text": "Trois, chacune pour une seule chose : afficher une notification, pour signaler un nouveau niveau de vocabulaire atteint ; le micro, demandé au premier appui sur le bouton de dictée ; Internet, pour la dictée seulement. Refusez la notification ou le micro, le clavier fonctionne à l'identique, sans dictée dans le second cas. Ni contacts, ni localisation, ni accès à vos fichiers. Le code source est public si vous voulez le vérifier vous-même."
       }
     },
     {
@@ -423,11 +423,11 @@ footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);fo
     <summary>Faut-il une connexion internet ?</summary>
     <div class="a">
       <p>
-        Uniquement pour le télécharger. Ensuite tout se passe dans le
-        téléphone : les suggestions, les accents, le correcteur et les jeux
-        fonctionnent en avion, dans une zone sans réseau, sans forfait data.
-        L'application ne demande d'ailleurs même pas la permission d'accéder à
-        internet.
+        Pour le télécharger, puis seulement pour la dictée vocale. Tout le
+        reste se passe dans le téléphone : les suggestions, les accents, le
+        correcteur et les jeux fonctionnent en avion, dans une zone sans
+        réseau, sans forfait data. Sans connexion, le micro de la dictée
+        apparaît simplement barré.
       </p>
     </div>
   </details>
@@ -531,8 +531,9 @@ footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);fo
         Oui. Android affiche ce message pour <em>tous</em> les claviers, Gboard
         compris, parce qu'un clavier voit par construction ce qui est tapé. La
         question utile est donc ce que le clavier fait de ce texte : ici, rien
-        ne sort du téléphone, et l'application n'a pas la permission d'accéder
-        à internet. Voir la
+        de ce que vous tapez ne sort du téléphone. La seule chose qui part est
+        votre voix, quand vous utilisez la dictée, et seulement vers
+        l'Université du Luxembourg. Voir la
         <a href="privacy/privacy-policy.html">politique de confidentialité</a>.
       </p>
     </div>
@@ -712,11 +713,13 @@ footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);fo
     <summary>Y a-t-il la dictée vocale ?</summary>
     <div class="a">
       <p>
-        Pas dans la version stable. Une reconnaissance vocale luxembourgeoise
-        est en essai dans le canal <a href="labs.html">Labs</a>, et elle n'ira
-        pas plus loin tant que sa qualité et son cadre juridique ne seront pas
-        réglés. La dictée du système, elle, reste accessible normalement, avec
-        les langues qu'elle connaît.
+        Oui. Appuyez sur le micro, à droite de la barre de suggestions, et
+        parlez : le texte s'écrit, ponctué. La reconnaissance est assurée par
+        <a href="https://luxasr.uni.lu">LuxASR</a>, le service de l'Université
+        du Luxembourg ; il faut donc une connexion Internet. Votre voix n'est
+        envoyée que pendant la dictée, et l'Université la transforme en texte
+        sans la conserver. Les détails sont dans la
+        <a href="privacy/privacy-policy.html#dictee-vocale">politique de confidentialité</a>.
       </p>
     </div>
   </details>
@@ -761,11 +764,13 @@ footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);fo
     <summary>Ce que je tape part-il quelque part ?</summary>
     <div class="a">
       <p>
-        Non. Rien n'est envoyé, ni à nous ni à un tiers : il n'y a ni serveur,
-        ni compte, ni statistique d'usage collectée. Ce n'est pas seulement une
-        promesse d'intention, c'est vérifiable : l'application ne déclare pas
-        la permission internet, donc le système Android l'empêcherait
-        d'émettre quoi que ce soit même si elle essayait.
+        Non. Ce que vous tapez n'est envoyé ni à nous ni à un tiers : il n'y a
+        ni serveur, ni compte, ni statistique d'usage collectée. La seule chose
+        qui quitte le téléphone est votre voix, quand vous appuyez sur le micro
+        pour dicter : elle va directement à l'Université du Luxembourg pour être
+        transcrite, sans être conservée. C'est vérifiable : tant que vous ne
+        dictez pas, la consommation de données de l'application reste à zéro
+        dans les réglages d'Android.
       </p>
     </div>
   </details>
@@ -774,10 +779,13 @@ footer.page{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);fo
     <summary>Quelles permissions l'application demande-t-elle ?</summary>
     <div class="a">
       <p>
-        Une seule : <strong>afficher une notification</strong>, pour signaler
-        un nouveau niveau de vocabulaire atteint. Refusez-la, le clavier
-        fonctionne à l'identique. Ni internet, ni contacts, ni localisation, ni
-        micro, ni accès à vos fichiers.
+        Trois, chacune pour une seule chose : <strong>afficher une
+        notification</strong>, pour signaler un nouveau niveau de vocabulaire
+        atteint ; <strong>le micro</strong>, demandé au premier appui sur le
+        bouton de dictée ; <strong>Internet</strong>, pour la dictée
+        seulement. Refusez la notification ou le micro, le clavier fonctionne à
+        l'identique, sans dictée dans le second cas. Ni contacts, ni
+        localisation, ni accès à vos fichiers.
       </p>
       <p>
         Le <a href="https://github.com/famibelle/LuxKeyb">code source</a> est

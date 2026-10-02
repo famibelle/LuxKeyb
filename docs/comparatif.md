@@ -55,7 +55,8 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
 | 🚫 **Il ne change pas vos mots par erreur** | ⭐⭐⭐<br>jamais vu | ⭐⭐⭐<br>presque jamais | ⭐⭐<br>cela peut arriver |
 | ⚡ **Il réagit tout de suite** | ⭐⭐⭐<br>instantané | ⭐⭐⭐<br>instantané | ⭐⭐⭐<br>instantané |
 | 🪶 **Il prend peu de place sur le téléphone** | ⭐⭐⭐<br>très léger, 9 Mo | ⭐<br>lourd, 110 Mo | ⭐<br>lourd, 130 Mo |
-| 🔒 **Vos textes restent chez vous** | ⭐⭐⭐<br>aucun accès à Internet | ❌<br>peut se connecter à Internet | ❌<br>peut se connecter à Internet |
+| 🔒 **Vos textes restent chez vous** | ⭐⭐⭐<br>la frappe ne va jamais sur Internet | ❌<br>peut se connecter à Internet | ❌<br>peut se connecter à Internet |
+| 🎤 **Il dicte en luxembourgeois** | ⭐⭐⭐<br>avec LuxASR, de l'Université du Luxembourg | ❌ | ❌ |
 | 📖 **Un dictionnaire luxembourgeois-français dedans** | ⭐⭐⭐ | ❌ | ❌ |
 | 🎮 **Des jeux pour apprendre des mots** | ⭐⭐⭐ | ❌ | ❌ |
 | ✋ **Écrire en glissant le doigt sur les lettres** | ❌<br>pas encore | ⭐⭐⭐ | ⭐⭐⭐ |
@@ -70,12 +71,10 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
   téléphone, et vous aider à apprendre la langue avec un dictionnaire et des jeux.
 - 😕 **Ce qu'il fait moins bien :** mettre la majuscule aux noms, où Samsung et Gboard sont
   bien meilleurs, et il n'a pas l'écriture en glissant le doigt.
-- 🎤 **La dictée à voix haute en luxembourgeois n'existe chez aucun des trois claviers** :
-  ni chez Samsung, ni chez Gboard, ni chez nous. Elle marche en français ou en allemand, pas
-  dans notre langue.
-- 🔬 **Chez nous, elle est en cours de test** : une dictée luxembourgeoise s'essaie sur notre
-  clavier, dans une version d'essai (le canal Labs), pour que le luxembourgeois soit enfin
-  dicté dans sa propre langue.
+- 🎤 **La dictée à voix haute en luxembourgeois n'existe que chez nous** : Samsung et Gboard
+  dictent en français ou en allemand, pas dans notre langue. Chez nous, un appui sur le micro
+  et la parole s'écrit, grâce à LuxASR, le service de l'Université du Luxembourg. Il faut une
+  connexion, et seule la voix part, pendant la dictée.
 - 🤝 **Samsung et Gboard** sont des claviers très complets, faits pour toutes les langues du
   monde. Le nôtre est fait pour une seule : la vôtre.
 
@@ -108,11 +107,11 @@ Chaque ligne est un constat, détaillé plus bas avec sa source.
 | Mémoire vive pendant la saisie | ⭐⭐ 124 Mo | ⭐⭐ 131 Mo | ⭐⭐ 119 Mo | non mesuré |
 | Il ne travaille pas quand on ne tape pas | ⭐⭐⭐ 10 à 20 ms sur 30 s | ⭐ 230 à 250 ms | ⭐⭐ 40 à 80 ms | non mesuré |
 | Il consomme peu de processeur à chaque frappe <sup>5</sup> | ⭐ 40 ms par appui | ⭐⭐ 31 ms | ⭐⭐⭐ 23 ms | non mesuré |
-| Vos données restent sur le téléphone | ⭐⭐⭐ aucune permission réseau | ✕ il accède à Internet | ✕ il accède à Internet | frappe embarquée |
+| Vos données restent sur le téléphone | ⭐⭐⭐ la frappe ne va jamais sur Internet | ✕ il accède à Internet | ✕ il accède à Internet | frappe embarquée |
 | Un dictionnaire luxembourgeois-français dans l'application | ⭐⭐⭐ | ✕ | ✕ | ✕ |
 | Des jeux et un carnet pour apprendre des mots | ⭐⭐⭐ | ✕ | ✕ | ✕ |
 | Écrire en glissant le doigt, presse-papiers, écriture à la main | ✕ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ en partie |
-| Dicter à voix haute en luxembourgeois <sup>6</sup> | 🔬 en cours de test (Labs) | ✕ | ✕ | ✕ |
+| Dicter à voix haute en luxembourgeois <sup>6</sup> | ⭐⭐⭐ avec LuxASR, de l'Université du Luxembourg | ✕ | ✕ | ✕ |
 
 </div>
 
@@ -162,8 +161,9 @@ que la
 pas avec toutes les langues</a>, sans le citer ; aucune liste n'existe pour la saisie vocale du
 clavier Samsung. Google propose une reconnaissance du luxembourgeois à ses clients
 développeurs (Cloud Speech-to-Text, code <code>lb-LU</code>), mais pas dans la dictée des
-claviers. Relevé le 20 septembre 2026. Chez nous, la dictée est en cours de test dans le
-canal <a href="labs.html">Labs</a>, sans date de sortie.
+claviers. Relevé le 20 septembre 2026. Chez nous, la dictée passe par
+<a href="https://luxasr.uni.lu">LuxASR</a>, le service de reconnaissance vocale de
+l'Université du Luxembourg, et demande une connexion.
 </p>
 
 ## Le tableau complet
@@ -191,12 +191,12 @@ canal <a href="labs.html">Labs</a>, sans date de sortie.
 | Majuscules des noms (*Groussschreiwung*) | Oui, **mais prudente** : rétablies seulement d'après le contexte, 7 noms sur 40, désactivable | **Oui** : 37 noms sur 40 | **Oui** : 31 noms sur 38 | — |
 | Deux langues sans rien régler | **Oui**, deux rangées `LB` et `FR` en même temps, sans réglage | Plusieurs langues, à activer | Jusqu'à 3 langues, à activer | Saisie multilingue limitée (≈31 langues), à activer |
 | Correcteur système en luxembourgeois | **Oui** (et en français) | Non déclaré pour le lb sur cette version | Intégré au clavier | Intégré, mais pas en lb avant iOS 27 |
-| Aucun accès à Internet | **Oui**, hors ligne intégral | Non | Non | Frappe embarquée |
+| Accès à Internet | **Pour la dictée seulement**, la frappe reste hors ligne | Oui | Oui | Frappe embarquée |
 | Données de frappe | **Seuls les mots du dictionnaire sont comptés, en local** | Apprentissage personnalisé annoncé par l'éditeur | Embarqué + apprentissage fédéré, compte Google | Embarqué, confidentialité différentielle |
 | Code ouvert | **Oui**, MIT | Non | Non | Non |
 | Jeux et progression | **Oui**, 7 jeux et 8 niveaux | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui |
-| Dictée vocale **en luxembourgeois** <sup>6</sup> | **En cours de test** (canal Labs) | **Non** | **Non** | **Non** |
+| Dictée vocale **en luxembourgeois** <sup>6</sup> | **Oui**, par LuxASR (Université du Luxembourg), avec une connexion | **Non** | **Non** | **Non** |
 | Dictée vocale dans d'autres langues (français, allemand) | Non (celle du système reste accessible) | Oui | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
 | Thèmes et personnalisation | Palette luxembourgeoise | Étendus | Très étendus | Très limités |
@@ -268,9 +268,10 @@ autocollants, et une correction affinée par des milliards de frappes. Le clavie
 Apple gagne sur l'intégration au système. Le Lëtzebuergesch Clavier ne cherche
 pas à les rattraper sur ce terrain.
 
-Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est le seul manque
-commun sur lequel quelque chose est en cours : une reconnaissance vocale luxembourgeoise
-s'essaie dans le canal [Labs](labs.html), sans date de sortie ni promesse de qualité.
+Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est là que le
+Lëtzebuergesch Clavier les devance : il dicte en luxembourgeois grâce à
+[LuxASR](https://luxasr.uni.lu), le service de l'Université du Luxembourg. Il faut une
+connexion, et la dictée n'est pas infaillible : on relit avant d'envoyer.
 
 Dernier point, et c'est une bonne nouvelle pour la langue : **iOS 27 ajoutera le
 luxembourgeois**, annoncé en juin 2026. Cela laisse toutefois Android sans
@@ -480,7 +481,7 @@ avec d'autres compromis — la page d'accueil en donne
 
 **Verdict :** pour écrire en luxembourgeois sur Android, le Lëtzebuergesch Clavier est un très
 bon choix. Samsung et Gboard restent de bons claviers pour tout le reste. Le Lëtzebuergesch
-Clavier respecte la confidentialité des données, la dictée vocale est en cours de test chez nous,
+Clavier respecte la confidentialité des données, il est le seul à dicter en luxembourgeois,
 le clavier pèse 9 Mo, et il y a un dictionnaire, des jeux et un carnet de mots.
 
 <div align="center" style="margin: 24px 0;">

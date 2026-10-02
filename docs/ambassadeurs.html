@@ -212,7 +212,7 @@ a{color:var(--sea);}
   <div class="card">
     <h3>💬 Le message, en luxembourgeois</h3>
     <p class="meta">Pour un message privé, un groupe familial, un groupe de collègues</p>
-    <div class="script" id="msg-lb">Moien! Ech hunn e Clavier fonnt fir op Lëtzebuergesch ze schreiwen: hie schléit d'Wierder vir wärend ech tippen, an é, ä an ë hunn all hir eege Tast. Gratis, ouni Reklamm, an alles bleift um Telefon, näischt gëtt verschéckt. Probéier en direkt am Browser: https://famibelle.github.io/LuxKeyb/simulateur.html</div>
+    <div class="script" id="msg-lb">Moien! Ech hunn e Clavier fonnt fir op Lëtzebuergesch ze schreiwen: hie schléit d'Wierder vir wärend ech tippen, an é, ä an ë hunn all hir eege Tast. Gratis, ouni Reklamm, an alles wat ee tippt, bleift um Telefon. Probéier en direkt am Browser: https://famibelle.github.io/LuxKeyb/simulateur.html</div>
     <div class="actions">
       <button class="btn primary" data-copy="msg-lb">📋 Copier le message</button>
       <a class="btn" href="simulateur.html">Voir le simulateur</a>
@@ -222,7 +222,7 @@ a{color:var(--sea);}
   <div class="card">
     <h3>💬 Le même, en français</h3>
     <p class="meta">Pour les proches qui lisent le luxembourgeois sans l'écrire</p>
-    <div class="script" id="msg-fr">Je suis tombé sur un clavier Android fait uniquement pour le luxembourgeois : il propose les mots pendant qu'on tape, et é, ä et ë ont chacun leur touche au lieu d'être planqués dans un menu. Gratuit, sans pub, et rien de ce qu'on écrit ne quitte le téléphone. On peut l'essayer dans le navigateur avant d'installer quoi que ce soit : https://famibelle.github.io/LuxKeyb/simulateur.html</div>
+    <div class="script" id="msg-fr">Je suis tombé sur un clavier Android fait uniquement pour le luxembourgeois : il propose les mots pendant qu'on tape, et é, ä et ë ont chacun leur touche au lieu d'être planqués dans un menu. Gratuit, sans pub, rien de ce qu'on tape ne quitte le téléphone, et il dicte même en luxembourgeois. On peut l'essayer dans le navigateur avant d'installer quoi que ce soit : https://famibelle.github.io/LuxKeyb/simulateur.html</div>
     <div class="actions">
       <button class="btn primary" data-copy="msg-fr">📋 Copier le message</button>
     </div>
@@ -282,7 +282,7 @@ Je vous signale un clavier Android gratuit et open source entièrement dédié a
 
 Disposition QWERTZ, touches é, ä et ë en accès direct, apostrophe d'élision sur sa propre touche (d'Land, s'Kanner). 123 297 formes luxembourgeoises reconnues et prédiction du mot suivant sur 27 746 contextes, régénérés à partir de deux corpus publics (LuxAlign et LETZ, ce dernier étant constitué des phrases d'exemple du Lëtzebuerger Online Dictionnaire). Il tolère les fautes de frappe et l'écriture sans diacritiques : « letzebuergesch » propose « lëtzebuergesch ».
 
-Deux points qui peuvent vous intéresser en contexte scolaire : l'application n'a aucune permission réseau, donc rien de ce qui est tapé ne quitte l'appareil ; et elle comporte sept jeux, un carnet de vocabulaire et une progression par niveaux : quatre jeux de vocabulaire construits sur le même dictionnaire, un jeu d'écriture des nombres, des mots croisés dont les définitions sont en français et les cases à remplir en luxembourgeois, et une grille à compléter avec les mots donnés. Les mots gagnés deviennent des cartes que l'application fait revoir à intervalles croissants.
+Deux points qui peuvent vous intéresser en contexte scolaire : rien de ce qui est tapé ne quitte l'appareil (seule la dictée vocale, si on l'utilise, envoie la voix à l'Université du Luxembourg pour la transcrire, et refuser au clavier l'accès au micro suffit à s'en passer) ; et elle comporte sept jeux, un carnet de vocabulaire et une progression par niveaux : quatre jeux de vocabulaire construits sur le même dictionnaire, un jeu d'écriture des nombres, des mots croisés dont les définitions sont en français et les cases à remplir en luxembourgeois, et une grille à compléter avec les mots donnés. Les mots gagnés deviennent des cartes que l'application fait revoir à intervalles croissants.
 
 Il s'essaie sans rien installer, directement dans le navigateur :
 https://famibelle.github.io/LuxKeyb/simulateur.html
@@ -305,13 +305,13 @@ Cordialement,</div>
     <p class="meta">RTL Lëtzebuerg, Radio 100,7, Tageblatt, Luxemburger Wort, Paperjam, Reporter.lu, associations de promotion de la langue</p>
     <div class="script" id="msg-media">Bonjour,
 
-Un clavier Android entièrement dédié au lëtzebuergesch vient d'arriver, et il est gratuit, open source (licence MIT), sans publicité et sans aucune permission réseau.
+Un clavier Android entièrement dédié au lëtzebuergesch vient d'arriver, et il est gratuit, open source (licence MIT), sans publicité, rien de ce qu'on y tape ne quitte le téléphone, et il dicte en luxembourgeois.
 
 Ce qu'il fait : disposition QWERTZ comme les claviers physiques du pays, touches é, ä et ë en accès direct, 123 297 formes luxembourgeoises reconnues, prédiction du mot suivant sur 27 746 contextes, correcteur orthographique système qui cesse de souligner le luxembourgeois en rouge dans les autres applications.
 
 Ce qui le distingue des grands claviers : le luxembourgeois n'y est pas une langue parmi des centaines, et le dictionnaire est régénéré à partir de corpus publics à chaque publication, au lieu d'être une liste figée.
 
-Le projet publie ses mesures plutôt que des promesses : 18,8 % de mot juste dans les trois propositions, mesuré sur ParaLux, un jeu d'évaluation extérieur au corpus d'entraînement. Il dit aussi ce qui manque encore : pas de saisie glissée, pas de thème sombre, et la dictée vocale est encore au stade des essais.
+Le projet publie ses mesures plutôt que des promesses : 18,8 % de mot juste dans les trois propositions, mesuré sur ParaLux, un jeu d'évaluation extérieur au corpus d'entraînement. Il dit aussi ce qui manque encore : pas de saisie glissée, et pas de dictée sans connexion. Car il dicte en luxembourgeois, grâce à LuxASR, le service de reconnaissance vocale de l'Université du Luxembourg.
 
 À essayer dans le navigateur, avec le vrai dictionnaire :
 https://famibelle.github.io/LuxKeyb/simulateur.html
@@ -341,10 +341,10 @@ Bien à vous,</div>
     <li><a href="simulateur.html">Le simulateur</a> : <span>« Ça marche vraiment ? » Le clavier tourne dans le navigateur, avec le dictionnaire et les suggestions de l'application. Rien à installer.</span></li>
     <li><a href="comparatif.html">Le comparatif</a> : <span>« Gboard le fait déjà. » Le face-à-face avec Gboard et le clavier d'Apple, y compris ce que les autres font mieux.</span></li>
     <li><a href="corpus.html">Les corpus en chiffres</a> : <span>« Les mots viennent d'où ? » Les deux jeux de données, leurs licences, et la qualité de prédiction mesurée sur un jeu externe.</span></li>
-    <li><a href="privacy/privacy-policy.html">La confidentialité</a> : <span>« Un clavier voit tout ce que je tape. » Aucune permission réseau, désactivation automatique dans les champs de mot de passe.</span></li>
+    <li><a href="privacy/privacy-policy.html">La confidentialité</a> : <span>« Un clavier voit tout ce que je tape. » Ce qu'on tape ne quitte jamais le téléphone, seule la dictée envoie la voix, à l'Université du Luxembourg ; désactivation automatique dans les champs de mot de passe.</span></li>
     <li><a href="guide.html">Le guide</a> : <span>« Je ne saurai pas l'installer. » L'installation et l'activation, étape par étape.</span></li>
     <li><a href="nouveautes.html">Les nouveautés</a> : <span>« C'est encore vivant ? » Ce qui a changé à chaque version, en clair.</span></li>
-    <li><a href="labs.html">Labs</a> : <span>« Et la dictée ? » Les versions expérimentales, à présenter comme des essais et rien de plus.</span></li>
+    <li><a href="labs.html">Labs</a> : <span>« Et après ? » Les versions expérimentales, à présenter comme des essais et rien de plus.</span></li>
   </ul>
 </section>
 
@@ -372,8 +372,8 @@ Bien à vous,</div>
         <figcaption><strong>APK stable</strong><br>le téléchargement démarre au scan</figcaption>
       </figure>
       <figure>
-        <a href="assets/qr-luxkeyb-luxasr.png" download><img src="assets/qr-luxkeyb-luxasr.png" alt="QR code téléchargeant l'APK de la version Labs, avec la dictée vocale"></a>
-        <figcaption><strong>Labs</strong><br>la dictée vocale, en version d'essai</figcaption>
+        <a href="assets/qr-luxkeyb-luxasr.png" download><img src="assets/qr-luxkeyb-luxasr.png" alt="QR code téléchargeant l'APK de la version Labs"></a>
+        <figcaption><strong>Labs</strong><br>la version d'essai</figcaption>
       </figure>
       <figure>
         <a href="assets/qr-luxkeyb-site.png" download><img src="assets/qr-luxkeyb-site.png" alt="QR code ouvrant la page d'accueil du site"></a>
@@ -480,7 +480,7 @@ Bien à vous,</div>
     <ul class="rules">
       <li><b>Pas de faux avis, pas de notes gonflées.</b> Une note de complaisance se repère, et elle discrédite le projet plus sûrement qu'une absence de note.</li>
       <li><b>Pas d'envoi en masse.</b> Trois messages à des personnes qui écrivent vraiment en luxembourgeois valent mieux que trois cents dans des groupes au hasard.</li>
-      <li><b>Dites ce qui manque.</b> Pas de saisie glissée, pas de thème sombre, pas de dictionnaire allemand, et la dictée de Labs est un essai dont la précision n'est pas au niveau de la frappe. Annoncer ces manques évite la déception qui fait désinstaller.</li>
+      <li><b>Dites ce qui manque.</b> Pas de saisie glissée, pas de dictionnaire allemand, et la dictée demande une connexion et se trompe parfois : on relit avant d'envoyer. Annoncer ces manques évite la déception qui fait désinstaller.</li>
       <li><b>Ne vous présentez pas comme l'éditeur.</b> Vous êtes utilisateur du clavier ; pour les questions techniques ou institutionnelles, renvoyez vers le dépôt.</li>
     </ul>
   </div>

@@ -97,13 +97,14 @@ serait l'interface, pas la langue.
 - Sept jeux de vocabulaire : **Wuertsich** (mots mêlés), **Wuertmix** (anagrammes), **Wuertriet** (six essais), **Wuertlück** (texte à trou), **Zuelwuert** (les nombres en toutes lettres), **Kräizwuert** (mots croisés) et **Wuertplaz** (mots à placer)
 
 ### 🔒 **Vie privée**
-La version publiée du clavier fonctionne **entièrement hors ligne** : il n'a aucun accès à Internet.
-Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
-progression, si bien que mots de passe et termes personnels ne sont jamais
-enregistrés, et rien ne quitte l'appareil. La dictée vocale expérimentale de
-[Labs](#-labs--la-dictée-vocale-en-avant-première) est à part : sa variante en
-ligne envoie le son du micro à un service tiers, et n'est pas distribuée par le
-Play Store.
+**Ce que vous tapez ne quitte jamais l'appareil** : la frappe, les suggestions,
+le correcteur et les jeux fonctionnent entièrement hors ligne. Seuls les mots
+déjà présents dans le dictionnaire sont comptés pour la progression, si bien que
+mots de passe et termes personnels ne sont jamais enregistrés. La seule donnée
+qui sort est la **voix, pendant une [dictée](#-dictée-vocale)** : elle part,
+chiffrée, vers le service LuxASR de l'Université du Luxembourg, qui la transcrit
+sans la conserver. Sans appui sur le micro, aucune connexion n'est ouverte.
+Détails dans la [politique de confidentialité](https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html).
 
 ### 📚 **Corpus des suggestions**
 Le dictionnaire et les n-grammes sont produits à partir de deux corpus publics
@@ -123,50 +124,57 @@ Gboard gère le luxembourgeois parmi 900 autres langues, et Apple ne l'ajoutera
 qu'avec iOS 27 : voir le **[comparatif détaillé](COMPARATIF.md)**, disposition,
 dictionnaire, vie privée, et ce que les autres font mieux.
 
-## 🔬 Labs : la dictée vocale, en avant-première
-
-**Labs** est le canal des versions expérimentales : un APK construit à partir
-d'une branche de travail, pour la faire essayer avant qu'elle n'atteigne la
-version stable. La dictée vocale en luxembourgeois y vit depuis août 2026. Elle
-**n'est pas sur `main`, ni sur Google Play**, et ce n'est pas un oubli.
+## 🎙️ Dictée vocale
 
 Un bouton micro s'affiche à droite de la barre de suggestions : un appui
 l'allume, le texte s'écrit pendant qu'on parle (souligné tant qu'il n'est pas
-confirmé), un second appui fige le résultat, et la dictée s'arrête d'elle-même
-après un silence. Elle reste désactivée dans les champs de mot de passe.
+confirmé), et la dictée s'arrête d'elle-même quand on se tait, ou au second
+appui. Elle reste désactivée dans les champs de mot de passe.
 
-### Deux variantes, deux compromis
+La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
+service de l'Université du Luxembourg, dont le moteur temps réel est publié sous
+le nom [LuxASRlive](https://github.com/PeterGilles/LuxASRlive) (Apache 2.0). Le
+son part en flux chiffré (`wss://luxasr.uni.lu`) pendant la dictée, et pendant
+la dictée seulement ; l'Université en est responsable de traitement, le
+transcrit sur le moment et ne le conserve pas.
 
-Les deux versions sont le même clavier, à un détail près : d'où vient le texte
-quand on parle.
+Ce que le clavier fait du réseau :
 
-| | **Modèle embarqué** | **Démonstration LuxASR en ligne** |
+- **sans réseau**, le micro apparaît barré et rien n'est tenté ;
+- **réseau lent** : au-delà d'une seconde d'audio en attente d'envoi, le bandeau
+  le signale ; à huit secondes, le micro se coupe mais ce qui attend finit de
+  partir, et le texte arrive en entier ;
+- **réseau bloqué** (plus rien ne part depuis 5 s) : la dictée s'arrête et garde
+  le texte déjà reçu.
+
+### Pourquoi en ligne, et pas dans le téléphone
+
+Une dictée entièrement embarquée a été essayée et mesurée, avec le même clavier :
+
+| | **Modèle embarqué** | **LuxASR en ligne** |
 |---|---|---|
 | Reconnaissance | `whisper-tiny` dans le téléphone, dérivé du modèle [`unilux/whisper-tiny-v1-luxembourgish`](https://huggingface.co/unilux/whisper-tiny-v1-luxembourgish) de l'Université du Luxembourg (licence open-mdw) | Service [LuxASR](https://luxasr.uni.lu) de l'Université du Luxembourg |
-| Où va la voix | **Nulle part** : aucune permission réseau | **À `luxasr.uni.lu`**, en continu pendant la dictée |
-| Sans connexion | Oui, avion et tunnel compris | Non, pas de repli hors ligne, volontairement |
+| Où va la voix | Nulle part | À `luxasr.uni.lu`, pendant la dictée |
+| Sans connexion | Oui, avion et tunnel compris | Non |
 | Mots erronés | **72 %** sur 161 énoncés de conférences de presse : trop pour être utile | **25,4 %** sur 22 dictées d'une à trois phrases, 11 à 15 % sur un extrait lu proprement |
 | Délai | ≈ 6 s par passe sur un téléphone ancien | premier aperçu ≈ 1,1 s, texte engagé ≈ 0,23 s après la dernière syllabe |
 | Taille de l'APK | ≈ 38 Mo, dont 31 pour le modèle | ≈ 6 Mo |
-| Branche | `feat/speech-to-text-lb` | `feat/luxasr-online` |
 
-Au-delà d'environ 25 % de mots erronés, corriger coûte plus cher que taper :
-c'est pourquoi le modèle embarqué, malgré son avantage de confidentialité, n'est
-pas proposé comme une fonction. Les chiffres, leurs conditions de mesure et
-leurs limites sont détaillés sur la page
+Au-delà d'environ 25 % de mots erronés, corriger coûte plus cher que taper. Des
+modèles plus gros (`base`, `small`) ont aussi été mesurés sur un Galaxy A21s : 9
+à 32 s d'attente par phrase, pour une précision encore inférieure au service.
+
+Les deux services publics de la parole n'ont pas le même propriétaire : LuxASR
+est celui de l'Université du Luxembourg, le seul appelé ici. La
+*Sproochmaschinn* et la *Schreifmaschinn* relèvent du Zenter fir d'Lëtzebuerger
+Sprooch (ministère de la Culture) : le clavier ne les appelle pas.
+
+## 🔬 Labs : les versions d'essai
+
+**Labs** est le canal des versions expérimentales : un APK construit à partir
+d'une branche de travail, pour la faire essayer avant qu'elle n'atteigne la
+version stable. Le détail des essais en cours est sur la page
 [Labs](https://famibelle.github.io/LuxKeyb/labs.html).
-
-### Pourquoi ce n'est pas dans la version stable
-
-- **La politique de confidentialité publiée décrit une application qui
-  n'envoie rien.** La dictée en ligne la contredit : la version stable ne
-  l'intégrera pas avant que la politique ait été réécrite.
-- **Une dictée en ligne supposerait l'accord formel du service appelé.** Le
-  traitement des enregistrements par ce service ne relève pas de ce projet.
-- **Les deux services publics de la parole n'ont pas le même propriétaire.**
-  LuxASR est celui de l'Université du Luxembourg, le seul appelé ici. La
-  *Sproochmaschinn* et la *Schreifmaschinn* relèvent du Zenter fir d'Lëtzebuerger
-  Sprooch (ministère de la Culture) : le clavier ne les appelle pas.
 
 ### Installer une version Labs
 

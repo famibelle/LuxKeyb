@@ -1,6 +1,6 @@
 ---
 title: "Lëtzebuergesch Clavier : le clavier luxembourgeois, en ligne et sur Android"
-description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, 100 % hors ligne et sans publicité. À essayer dans le navigateur, à installer sur Android."
+description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, dictée vocale, sans publicité. À essayer dans le navigateur, à installer sur Android."
 lang: fr
 ---
 
@@ -62,9 +62,9 @@ installez ensuite l'application Android.</p>
 </table>
 
 Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
-Luxembourg. Le clavier est **gratuit, open source, sans publicité et entièrement
-hors ligne** : il tourne dans le navigateur pour l'essai, et s'installe sur
-Android pour l'usage de tous les jours.
+Luxembourg. Le clavier est **gratuit, open source et sans publicité**, et la
+frappe fonctionne entièrement hors ligne : il tourne dans le navigateur pour
+l'essai, et s'installe sur Android pour l'usage de tous les jours.
 
 <div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
             flex-wrap:wrap;margin:28px 0 12px;">
@@ -78,7 +78,7 @@ Android pour l'usage de tous les jours.
     <p class="rassurance">
       Android affichera un avertissement au moment d'activer le clavier. Il
       s'affiche pour <strong>tous</strong> les claviers, sans exception, et
-      celui-ci n'a aucune permission réseau.
+      celui-ci n'envoie rien de ce que vous tapez.
     </p>
   </div>
   <figure style="margin:0;text-align:center;">
@@ -98,12 +98,14 @@ Android pour l'usage de tous les jours.
 <div class="promesse" markdown="1">
 
 🔒 **Ce que vous tapez ne quitte pas votre téléphone.** Pas de compte, pas de
-serveur, aucune permission réseau : l'application est techniquement incapable
-d'envoyer quoi que ce soit. La sauvegarde Android elle-même ne remonte que vos
-réglages, vibration, son et thème, ni vos mots ni votre progression. Le code est
-public et vérifiable, et la
-[politique de confidentialité](privacy/privacy-policy.html) le dit en toutes
-lettres.
+serveur à nous : la frappe, les suggestions, le correcteur et les jeux
+fonctionnent sans réseau. Une seule exception, et elle se voit : la **dictée
+vocale**. Quand vous appuyez sur le micro, votre voix part à l'Université du
+Luxembourg, qui la transforme en texte sans la conserver ; sans cet appui, rien
+ne part. La sauvegarde Android elle-même ne remonte que vos réglages, vibration,
+son et thème, ni vos mots ni votre progression. Le code est public et
+vérifiable, et la [politique de confidentialité](privacy/privacy-policy.html)
+le dit en toutes lettres.
 
 </div>
 
@@ -169,7 +171,7 @@ lettres.
   <summary>Installer sans passer par Google Play</summary>
   <p>C'est possible, en installant le fichier à la main :
   <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
-  Android 5.0 ou plus récent · environ 7 Mo · aucune permission réseau.</p>
+  Android 5.0 ou plus récent · environ 7 Mo · la frappe ne quitte pas le téléphone.</p>
 </details>
 
 ## Une fois installée, il se passe quoi ?
@@ -356,8 +358,9 @@ sauvegarde Android n'emporte pas.
 
 ### Il ne sait rien de vous
 
-Le clavier **n'a aucun accès à Internet**. Rien de ce que vous tapez ne quitte
-votre téléphone.
+Rien de ce que vous tapez ne quitte votre téléphone. Le clavier ne se sert
+d'Internet que pour la **dictée vocale**, et seulement quand vous appuyez sur le
+micro.
 
 Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
 progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et ne
@@ -388,12 +391,12 @@ prédiction du mot suivant.
 | Pardonne les fautes de frappe | **Oui** | Oui | Oui | Oui | Oui | Oui |
 | Écriture sans diacritiques | **Oui** | — | — | — | — | — |
 | Correcteur système (lb) | **Oui** | Oui | Dans le clavier | — | Non | Non |
-| Aucun accès à Internet | **Oui** | Non | Non | Non | Oui | Oui |
+| Accès à Internet | **Pour la dictée seulement**, la frappe reste sur le téléphone | Oui | Oui | Oui | Non | Non |
 | Code ouvert | **Oui**, MIT | Non | Non | Non | Oui | Oui |
 | Jeux et progression | **Oui**, 7 jeux, 8 niveaux | Non | Non | Non | Non | Non |
 | Saisie glissée | Non | Oui | Oui | Oui | Bibliothèque à ajouter | Gestes |
-| Dictée vocale en luxembourgeois | En cours de test | Non | Non | Non | Non | Non |
-| Thème sombre | Non | Oui | Oui | Oui | Oui | Oui |
+| Dictée vocale en luxembourgeois | **Oui**, par LuxASR (Université du Luxembourg), avec une connexion | Non | Non | Non | Non | Non |
+| Thème sombre | **Oui** | Oui | Oui | Oui | Oui | Oui |
 
 </div>
 
@@ -415,9 +418,9 @@ Le clavier d'Apple n'apparaît pas dans ce tableau parce qu'il ne propose
 pas encore le luxembourgeois : voir le
 [comparatif détaillé face à Gboard et à Apple](comparatif.html).
 
-**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée, pas de
-thème sombre, et pas de dictionnaire allemand à côté du français. Ces manques
-sont réels et connus ; ils sont en tête de la liste des choses à faire.
+**Ce qu'il ne fait pas encore.** Pas de saisie glissée, pas de dictée sans
+connexion, et pas de dictionnaire allemand à côté du français. Ces manques sont
+réels et connus ; ils sont en tête de la liste des choses à faire.
 
 ## D'où viennent les suggestions
 
@@ -463,20 +466,29 @@ installation en un geste, mises à jour automatiques, sans avoir à autoriser le
 
 L'APK de cette page reste disponible et contient exactement le même code.
 
-## En avant-première : la dictée vocale 🔬
+## La dictée vocale 🎙️
 
-À côté de la version stable, **Labs** propose des versions expérimentales, en
-avance sur elle. Celle du moment ajoute la **dictée vocale luxembourgeoise** :
-vous parlez, le clavier écrit.
+Appuyez sur le micro, à droite de la barre de suggestions, et parlez : le texte
+s'écrit pendant que vous parlez, ponctué et avec les majuscules. Le micro se
+referme de lui-même quand vous vous arrêtez.
 
-La reconnaissance tourne **entièrement sur le téléphone**, aucun son n'est
-envoyé nulle part, et l'application n'a toujours aucune permission réseau. En
-contrepartie, elle pèse 38 Mo au lieu de 7, et sa précision n'est pas encore
-mesurée : c'est justement ce que ces essais servent à établir.
+<img src="Screenshots/lux_suggestions.png" style="width:100%;max-width:430px;border-radius:6px;"
+     alt="Le clavier, avec le micro de la dictée à droite de la barre de suggestions">
 
-<p style="margin:22px 0;">
-  <a href="labs.html" class="btn">🔬 Découvrir la version Labs</a>
-</p>
+La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
+service de reconnaissance vocale de l'**Université du Luxembourg**. Il faut donc
+une connexion Internet :
+
+- votre voix ne part **que pendant la dictée**, après un appui sur le micro, et
+  jamais dans un champ de mot de passe ;
+- elle va directement à l'Université, au Luxembourg, qui la transforme en texte
+  sans la conserver ni s'en servir pour entraîner ses modèles ;
+- sans réseau, le micro apparaît barré ; sur un réseau trop lent, le clavier
+  vous prévient au lieu de vous laisser parler dans le vide.
+
+Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
+[politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et les
+essais en cours sur la page [Labs](labs.html).
 
 ## Installer sans passer par Google Play
 

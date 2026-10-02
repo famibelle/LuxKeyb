@@ -44,8 +44,9 @@ selon les téléphones). Activez l'interrupteur en face de
 
 Android affiche alors un avertissement standard, rappelant qu'un clavier peut
 lire le texte saisi. C'est le **même message pour tous les claviers**, Gboard
-compris. Celui-ci fonctionne entièrement hors ligne et n'a aucun accès réseau —
-voir la [politique de confidentialité](privacy/privacy-policy.html).
+compris. Ce que vous tapez avec celui-ci ne quitte jamais le téléphone ; seule
+la dictée vocale, quand vous appuyez sur le micro, passe par Internet. Voir la
+[politique de confidentialité](privacy/privacy-policy.html).
 
 Un second message prévient qu'après un redémarrage, le clavier ne sera
 disponible qu'une fois le téléphone déverrouillé. C'est également normal.
@@ -401,7 +402,9 @@ Appui long d'une seconde sur la barre d'espace, puis choisissez-en un autre dans
 la liste.
 
 **Mes données partent-elles quelque part ?**
-Non. Le clavier n'a aucun accès à Internet. Seuls les mots déjà présents dans le
+Ce que vous tapez, non : la frappe n'utilise jamais Internet. Seule la voix part,
+quand vous dictez : elle va à l'Université du Luxembourg, qui la transcrit sans
+la conserver. Seuls les mots déjà présents dans le
 dictionnaire sont comptés pour la progression : un mot de passe ou un nom propre
 n'y figure pas et n'est donc jamais enregistré. Le clavier se désactive de
 lui-même dans les champs de mot de passe. Voir la

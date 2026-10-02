@@ -38,8 +38,8 @@
   <p class="lead">
 Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     bat contre son propre téléphone. Ce dossier présente un clavier qui
-    travaille pour lui : gratuit, hors ligne, et adossé au dictionnaire
-    officiel de la langue.
+    travaille pour lui : gratuit, respectueux de ce qu'on écrit, et adossé au
+    dictionnaire officiel de la langue.
   </p>
   <p class="dest">
     Document public · septembre 2026 · version 26.2.0 de l'application<br>
@@ -247,7 +247,8 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     deux politiques qui se croisent rarement</strong>. Il sert le plan d'action
     pour la langue, côté Culture, et il répond, côté Digitalisation, aux
     critères du numérique public : open source, sans dépendance à un
-    fournisseur, sans aucune donnée collectée.
+    fournisseur, sans aucune donnée collectée, et une dictée confiée à
+    l'Université du Luxembourg plutôt qu'à un géant du numérique.
   </p>
 
   <h3>Ce que cela veut dire pour les gens</h3>
@@ -276,16 +277,17 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     <div class="card">
       <h3>🧩 Continuité avec l'existant</h3>
       <p>Le clavier ne double aucun outil du ZLS : il les prolonge. Il affiche
-      le LOD, applique l'orthographe de l'Orthotrainer, et pourrait à terme
-      appeler la Schreifmaschinn pour la dictée. C'est le point d'entrée mobile
-      de tout ce qui a déjà été construit.</p>
+      le LOD, applique l'orthographe de l'Orthotrainer, et dicte grâce à
+      LuxASR, la reconnaissance vocale de l'Université du Luxembourg. C'est le
+      point d'entrée mobile de tout ce qui a déjà été construit.</p>
     </div>
     <div class="card">
       <h3>🎓 Usage scolaire et intégration</h3>
-      <p>Gratuit, sans compte, sans connexion, sans donnée à déclarer : aucun
-      obstacle à l'introduction dans une classe ou dans un cours de langue pour
-      adultes. Les 70 000 apprenants du LLO écrivent, eux aussi, sur un
-      téléphone.</p>
+      <p>Gratuit, sans compte, et sans connexion pour écrire : aucun obstacle à
+      l'introduction dans une classe ou dans un cours de langue pour adultes.
+      La dictée, elle, passe par le serveur de l'Université du Luxembourg ;
+      retirer au clavier l'accès au micro suffit à s'en passer. Les 70 000
+      apprenants du LLO écrivent, eux aussi, sur un téléphone.</p>
     </div>
     <div class="card">
       <h3>♿ Accessibilité</h3>
@@ -300,9 +302,10 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
   <h2>3. Un clavier qui répond à ce besoin existe déjà</h2>
   <p>
     Le <strong>Lëtzebuergesch Clavier</strong> est un clavier Android publié,
-    gratuit, sans publicité et entièrement hors ligne. Il propose les mots
-    luxembourgeois pendant la frappe, place les accents et les majuscules, et
-    cesse de souligner la langue en rouge dans les autres applications.
+    gratuit et sans publicité, dont la frappe fonctionne entièrement hors
+    ligne. Il propose les mots luxembourgeois pendant la frappe, place les
+    accents et les majuscules, cesse de souligner la langue en rouge dans les
+    autres applications, et dicte en luxembourgeois.
   </p>
   <p>
     Les mots qu'il propose ne sortent pas de nulle part, et c'est ce qui le
@@ -348,7 +351,7 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
   <p class="muted" style="margin-top:14px;">
     Les cinq autres jeux du ZLS ne sont pas utilisés, et la raison est
     documentée dans le dépôt : l'API publique est écartée par conception
-    (le clavier n'a aucune permission réseau), les deux jeux de reconnaissance
+    (la frappe n'utilise jamais le réseau), les deux jeux de reconnaissance
     vocale sont hors périmètre, et les deux jeux « hackathon » ne déclarent
     aucune licence.
   </p>
@@ -529,13 +532,14 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
 
   <div class="qa">
     <p class="q">Un clavier voit tout ce que l'utilisateur tape. Quel risque ?</p>
-    <p>L'application ne demande <b>aucune permission réseau</b> : techniquement,
-    rien ne peut sortir de l'appareil, et cela se vérifie dans le code publié.
-    Seuls les mots déjà présents dans le dictionnaire alimentent le compteur de
-    progression, et les champs de saisie sensibles désactivent complètement ce
-    suivi. Aucun compte, aucun serveur, aucune télémétrie : le traitement de
-    données personnelles est nul, ce qui simplifie considérablement toute
-    introduction dans une administration ou un établissement scolaire.</p>
+    <p><b>Ce qui est tapé ne quitte jamais l'appareil</b>, et cela se vérifie
+    dans le code publié : la frappe n'a aucun accès au réseau. Seuls les mots
+    déjà présents dans le dictionnaire alimentent le compteur de progression,
+    et les champs de saisie sensibles désactivent complètement ce suivi. Aucun
+    compte, aucun serveur, aucune télémétrie. La seule donnée qui part est la
+    voix, pendant une dictée, vers l'Université du Luxembourg, responsable de
+    ce traitement, qui la transcrit sans la conserver ; un établissement qui
+    n'en veut pas retire au clavier l'accès au micro.</p>
   </div>
 
   <div class="qa">
@@ -587,7 +591,7 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
         <tr><td>Plateforme</td><td>Android 5.0 et plus. Portage iOS proposé en chantier 3, les deux plateformes sont à parité au Luxembourg</td></tr>
         <tr><td>Prix</td><td>Gratuit, sans publicité, sans achat intégré</td></tr>
         <tr><td>Licence du code</td><td>MIT, <a href="https://github.com/famibelle/LuxKeyb">github.com/famibelle/LuxKeyb</a></td></tr>
-        <tr><td>Données personnelles</td><td>Aucune collecte, aucune permission réseau, <a href="privacy/privacy-policy.html">politique de confidentialité</a></td></tr>
+        <tr><td>Données personnelles</td><td>Aucune collecte ; la frappe reste sur l'appareil, seule la voix dictée part, vers l'Université du Luxembourg ; <a href="privacy/privacy-policy.html">politique de confidentialité</a></td></tr>
         <tr><td>Sources de données</td><td>LOD et corpus de traduction du ZLS (CC0) ; LuxAlign et LETZ (Université du Luxembourg) ; Lexique 3.83 pour le français</td></tr>
         <tr><td>Dictionnaire</td><td>123 297 formes luxembourgeoises, 88 883 traduites, plus 125 348 formes françaises</td></tr>
         <tr><td>Modèle de prédiction</td><td>27 746 contextes, dont 17 798 à deux mots</td></tr>

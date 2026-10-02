@@ -21,12 +21,12 @@ lëtzebuergesch comme une langue à part entière.
 | **Bilingue lb + fr** | **Par défaut, sans réglage** : deux rangées de suggestions simultanées, étiquetées `LB` et `FR` et distinguées par couleur ; le luxembourgeois passe devant (score ×1,5 contre ×0,8), le français s'ajoute dès 3 lettres | Multilingue simultané (jusqu'à 3 langues), à activer | Saisie multilingue limitée (≈31 langues), à activer |
 | **Correcteur orthographique système** | Oui, service dédié déclaré en `lb` **et** `fr` | Intégré au clavier | Intégré au système |
 | **Saisie gestuelle (glissé)** | Non | Oui | Oui (QuickPath) |
-| **Dictée vocale** | Non (celle du système reste accessible) | Oui, selon la langue | Oui, selon la langue |
+| **Dictée vocale** | **En luxembourgeois**, par LuxASR (Université du Luxembourg), avec une connexion ; seule la voix part, pendant la dictée | Oui, selon la langue, pas en luxembourgeois | Oui, selon la langue, pas en luxembourgeois |
 | **Emoji** | Panneau complet, tons de peau par appui long | Panneau + recherche, GIF, autocollants, Emoji Kitchen | Panneau + recherche, autocollants |
 | **Presse-papiers, traduction, écriture manuscrite** | Non | Oui | Partiellement |
 | **Thèmes et personnalisation** | Palette aux couleurs luxembourgeoises, réglages dédiés | Très étendus | Très limités |
 | **Progression et jeux** | **8 niveaux** (Ufänker → Sproochenmeeschter) et 3 jeux de vocabulaire (Wuertsich, Wuertmix, Wuertriet) | Aucun | Aucun |
-| **Fonctionne hors ligne** | Intégralement — aucune requête réseau à la frappe | Oui pour la frappe ; certaines fonctions demandent le réseau | Oui pour la frappe |
+| **Fonctionne hors ligne** | Oui pour la frappe, aucune requête réseau ; la dictée demande le réseau | Oui pour la frappe ; certaines fonctions demandent le réseau | Oui pour la frappe |
 | **Données de frappe** | **Seuls les mots déjà présents au dictionnaire sont comptés**, en local ; les champs sensibles sont exclus ; rien ne quitte l'appareil | Traitement embarqué + apprentissage fédéré, compte Google | Traitement embarqué, confidentialité différentielle |
 | **Code source** | Public, MIT — vérifiable ligne à ligne | Fermé | Fermé |
 | **Plateformes** | Android 5.0 et plus | Android et iOS | iOS et iPadOS uniquement |
@@ -61,7 +61,7 @@ dictée vocale, traduction intégrée, presse-papiers, écriture manuscrite, th�
 autocollants, et un correcteur affiné par des milliards de frappes. Le clavier Apple gagne
 sur l'intégration système. Clavier Lëtzebuergesch ne cherche pas à les rattraper sur ce
 terrain : il fait une chose qu'aucun des deux ne fait, écrire du lëtzebuergesch comme
-langue première, hors ligne et sans boîte noire.
+langue première, sans boîte noire, et le dicter dans sa propre langue.
 
 À noter enfin : l'arrivée du luxembourgeois dans iOS 27 est une bonne nouvelle pour la
 langue. Elle laisse toutefois Android sans clavier pensé pour le lëtzebuergesch, et ne
