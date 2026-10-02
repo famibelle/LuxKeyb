@@ -212,7 +212,7 @@ class SettingsActivity : AppCompatActivity() {
             "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
             "L'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.",
             "Les diacritiques les plus rares sont en appui long : « è » et « ê » sous le e, « à » et « â » sous le a, « û » sous le u, « ô » sous le o.",
-            "Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.",
+            "Ce que vous tapez ne quitte jamais votre téléphone. Seule la dictée, quand vous appuyez sur le micro, envoie votre voix à l'Université du Luxembourg pour l'écrire.",
             "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
             "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
             "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Mäi Lëtzebuergesch ».",
@@ -2052,7 +2052,7 @@ class SettingsActivity : AppCompatActivity() {
                     "l'autre : s'arrêter au premier annule l'activation."))
                 !isEnabled -> addView(encart("#FFF8E1", "#5D4037",
                     "ℹ️ Android affiche un avertissement de sécurité standard, montré pour " +
-                    "tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée."))
+                    "tous les claviers tiers. Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez."))
             }
             if (!isEnabled) {
                 addView(TextView(this@SettingsActivity).apply {
@@ -2850,8 +2850,12 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val privacyText = TextView(this).apply {
-            text = "Zéro collecte de données personnelles : ce clavier fonctionne entièrement " +
-                    "en local, rien de ce que vous tapez ne quitte votre téléphone."
+            // Depuis la dictée en ligne, la promesse porte sur la frappe : la
+            // voix, elle, part à l'Université du Luxembourg quand on appuie
+            // sur le micro, et le texte doit le dire au lieu de le taire.
+            text = "Zéro collecte de données personnelles : ce que vous tapez reste sur " +
+                    "votre téléphone. Seule la dictée, quand vous appuyez sur le micro, " +
+                    "envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver."
             textSize = 14f
             setTextColor(Color.parseColor("#5D4037"))
             setLineSpacing(0f, 1.3f)
@@ -3205,7 +3209,7 @@ class SettingsActivity : AppCompatActivity() {
             mainLayout, "#FFF8E1", "2️⃣ Valider les avertissements Android",
             "En activant l'interrupteur, Android affiche un avertissement générique montré pour " +
                     "tous les claviers tiers, suivi d'une seconde note sur le redémarrage du téléphone. " +
-                    "Lëtzebuergesch Clavier ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, " +
+                    "Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez : appuyez sur OK aux deux pour continuer, " +
                     "puis revenez à l'application avec le bouton retour."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, "Avertissement système affiché pour tout clavier tiers")
@@ -3644,7 +3648,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val reassuranceText = TextView(this).apply {
-            text = "Lëtzebuergesch Clavier n'a pas accès à Internet : rien ne quitte votre téléphone."
+            text = "Ce que vous tapez ne quitte jamais votre téléphone. " +
+                    "Seule la dictée, quand vous appuyez sur le micro, passe par Internet."
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)

@@ -102,7 +102,7 @@ une par semaine dans cet ordre.
 | 12 | Activer le correcteur pour supprimer le soulignement rouge. | `KreyolSpellCheckerService.kt`, étape 4 de l'onboarding (`SettingsActivity.kt:1128`) |
 | 34 | Il se choisit sous « Clavier », pas sous « Langues ». | `openSpellCheckerSettings()` (`SettingsActivity.kt:2277`), chemin système documenté dans `CLAUDE.md` |
 | 35 | Après une mise à jour, il peut rester muet jusqu'au redémarrage du téléphone. | Comportement Android vérifié sur émulateur (`dumpsys textservices` : `mSpellChecker=null` après réinstallation), documenté dans `CLAUDE.md` |
-| 22 | Fonctionnement entièrement hors ligne. | Carte « 🔒 Confidentialité » (`SettingsActivity.kt:1627`), aucune permission réseau au manifeste |
+| 22 | La frappe ne quitte jamais le téléphone ; seule la dictée, au micro, envoie la voix à l'Université du Luxembourg. | Carte « 🔒 Confidentialité » (`SettingsActivity.kt`) ; `INTERNET` n'est déclarée que pour la dictée (`LuxAsrSession`), branche `feat/luxasr-online` |
 | 36 | Onglet Guide : étapes en images et questions fréquentes. | `createGuideContent()` (`SettingsActivity.kt:1941`) |
 
 ---
