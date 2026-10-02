@@ -31,12 +31,14 @@ qu'un titre à rallonge est tronqué dans les listes de résultats.
 *80 caractères maximum. C'est la seule ligne visible avant « Plus ».*
 
 ```
-Clavier luxembourgeois : suggestions de mots, touches ë ä é, 100 % hors ligne
+Clavier luxembourgeois : suggestions de mots, touches ë ä é, dictée vocale
 ```
 
-77 caractères. « Clavier luxembourgeois » est en tête, c'est la partie qui
-survit à la troncature sur petits écrans ; « hors ligne » sert à la fois
-d'argument de confidentialité et de mot-clé.
+74 caractères. « Clavier luxembourgeois » est en tête, c'est la partie qui
+survit à la troncature sur petits écrans. « 100 % hors ligne » a laissé sa
+place à « dictée vocale » avec l'arrivée de la dictée LuxASR : il n'est plus
+vrai de l'application entière, seulement de la frappe, et la dictée est à la
+fois la nouveauté et un mot-clé recherché.
 
 ## Description complète
 
@@ -45,7 +47,7 @@ d'argument de confidentialité et de mot-clé.
 ```
 Schreift Lëtzebuergesch op Ärem Telefon — endlech ouni Kampf.
 
-Lëtzebuergesch Clavier est un clavier Android gratuit, sans publicité et entièrement hors ligne, conçu pour une seule langue : le lëtzebuergesch.
+Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, conçu pour une seule langue : le lëtzebuergesch.
 
 🛠️ Votre luxembourgeois est un peu rouillé ?
 😤 Votre téléphone souligne en rouge tous vos mots ?
@@ -68,7 +70,11 @@ Le luxembourgeois passe en premier, le français prend le relais sur une seconde
 
 📖 UN DICTIONNAIRE DANS L'APPLICATION
 
-L'onglet Wierderbuch traduit 88 883 mots dans les deux sens, luxembourgeois et français, avec des phrases d'exemple du dictionnaire officiel et leur traduction française quand elle existe. Hors ligne, comme le reste.
+L'onglet Wierderbuch traduit 88 883 mots dans les deux sens, luxembourgeois et français, avec des phrases d'exemple du dictionnaire officiel et leur traduction française quand elle existe. Hors ligne.
+
+🎙️ DICTEZ EN LUXEMBOURGEOIS
+
+Appuyez sur le micro et parlez : le texte s'écrit, ponctué. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg. Il faut une connexion Internet.
 
 ✍️ IL PARDONNE LES FAUTES DE FRAPPE
 
@@ -88,7 +94,8 @@ Chaque mot gagné devient une carte : sens, exemple et traduction officielle, av
 
 🔒 IL NE SAIT RIEN DE VOUS
 
-• Aucun accès à Internet : rien de ce que vous tapez ne quitte votre téléphone
+• Ce que vous tapez ne quitte jamais votre téléphone
+• Seule la dictée, quand vous appuyez sur le micro, envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver
 • Aucune collecte, aucun compte, aucune publicité
 • Seuls les mots déjà présents dans le dictionnaire comptent pour la progression : mot de passe, nom propre ou numéro n'y figurent jamais
 • Le clavier se désactive de lui-même dans les champs de mot de passe
@@ -100,29 +107,23 @@ Chaque mot gagné devient une carte : sens, exemple et traduction officielle, av
 • Thème clair ou sombre, au choix ou d'après le réglage du téléphone
 • Fonctionne dans toutes les applications : WhatsApp, SMS, e-mail, réseaux sociaux
 • Installation guidée en trois étapes, avec un clavier d'essai dans l'application
-• Android affiche l'avertissement générique de tout clavier tiers : c'est normal, l'onglet Guide explique pourquoi celui-ci ne peut rien envoyer nulle part
+• Android affiche l'avertissement générique de tout clavier tiers : c'est normal, l'onglet Guide l'explique
 
 🙋 CE QU'IL NE FAIT PAS ENCORE
 
-Pas de saisie glissée, pas de dictée vocale : manques connus et prioritaires.
-
-🎯 POUR QUI ?
-
-• Celles et ceux qui écrivent en lëtzebuergesch tous les jours
-• Les résidents qui apprennent la langue et les familles qui la transmettent
-• Tous ceux qui en ont assez de corriger leur langue à la main
+Pas de saisie glissée : manque connu et prioritaire. La dictée ne fonctionne pas sans connexion.
 
 📈 UN DICTIONNAIRE QUI BOUGE
 
 Régénéré à chaque version depuis un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste figée. Un mot manque ? Signalez-le : github.com/famibelle/LuxKeyb
-
-🗣️ Potomitan™
-« Mir wëlle bleiwe wat mir sinn »
 ```
 
-3960 unités UTF-16 sur 4 000 — c'est ainsi que compte la Play Console,
-les drapeaux et quelques émojis valant 2 chacun. Il reste **40 caractères
-de marge** : tout ajout suppose d'en retirer autant.
+3933 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console,
+les drapeaux et quelques émojis valant 2 chacun). Il reste **67 caractères
+de marge** : tout ajout suppose d'en retirer autant. Pour faire place à la
+dictée, la section « Pour qui ? » et la signature « Potomitan™ » ont été
+retirées : la première redisait le reste du texte, la seconde nommait une
+marque avec laquelle LuxKeyb n'a aucun lien.
 
 Les chiffres cités sont ceux de la version livrée et sont vérifiables dans les
 actifs : `luxemburgish_dict.json` + `luxemburgish_lod_forms.json` pour les
@@ -143,13 +144,25 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
   concernent l'autre application et seraient trompeuses ici ;
 - **aucune liste d'auteurs**, le corpus luxembourgeois étant un jeu de données
   agrégé et non une anthologie d'auteurs identifiés ;
-- **aucune promesse de saisie glissée ni de dictée vocale** : la section
-  « ce qu'il ne fait pas encore » évite les avis 1 étoile de déception, qui
-  pèsent lourd sur une fiche à faible volume ;
+- **aucune promesse de saisie glissée** : la section « ce qu'il ne fait pas
+  encore » évite les avis 1 étoile de déception, qui pèsent lourd sur une
+  fiche à faible volume. Elle dit aussi que la dictée exige une connexion,
+  pour la même raison ;
 - **aucun « MIT » sans qualificatif.** Le code l'est, les dictionnaires non :
   ils dérivent de corpus en CC BY-NC et CC BY-SA. Voir `NOTICE.md`.
 
 ## Nouveautés de cette version
+
+*Brouillon pour la version qui apportera la dictée (à publier seulement après
+l'accord écrit de l'Université et l'écran d'information sur l'audio) :*
+
+```
+🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit, ponctué. La reconnaissance vocale est assurée par LuxASR, de l'Université du Luxembourg.
+🔒 Ce que vous tapez ne quitte toujours pas votre téléphone. Seule la dictée envoie votre voix, et seulement quand vous appuyez sur le micro.
+📶 Sans connexion, le micro se barre ; sur un réseau lent, le clavier vous prévient.
+```
+
+*Texte en vigueur, à garder pour les versions sans dictée :*
 
 *500 caractères maximum. Version de référence : 26.3.1, premier envoi en
 production — résume l'été (12.0.0 à 26.3.1) plutôt qu'un seul correctif,
@@ -186,15 +199,31 @@ git de ce fichier.
 | Politique de confidentialité | https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html |
 | Langue par défaut de la fiche | Français (France) — l'interface de l'application est en français |
 | Pays de diffusion | Luxembourg, Belgique, France, Allemagne, et diaspora (aucune raison de restreindre) |
-| Contenu | Tout public — le questionnaire IARC ne déclenche rien : pas d'achat, pas de pub, pas de contenu généré par l'utilisateur, pas de partage de localisation |
+| Contenu | Classification IARC : tout public (PEGI 3) ; le questionnaire ne déclenche rien : pas d'achat, pas de pub, pas de contenu généré par l'utilisateur, pas de partage de localisation |
+| Public cible | **16 ans et plus** (décision du 1er octobre 2026). Avec des moins de 13 ans dans le public cible, le règlement Familles s'appliquerait à la dictée, qui envoie la voix à un tiers ; 16 ans est l'âge du consentement numérique retenu par le Luxembourg (article 8 du RGPD). À changer dans une mise à jour à part, avant celle qui apporte la dictée |
 
 ### Sécurité des données
 
-Le formulaire attend une réponse par catégorie. Ici tout est **non** :
+Le formulaire attend une réponse par catégorie. Depuis la dictée vocale, **une
+seule** catégorie passe à oui ; toutes les autres restent à **non**.
 
-- **Aucune donnée collectée**, aucune donnée partagée avec des tiers.
-- L'application ne demande **aucune permission réseau** — vérifiable dans le
-  manifeste, ce qui rend la déclaration défendable en cas de contrôle.
+| Question de la Console | Réponse |
+|---|---|
+| Audio › Enregistrements vocaux : collectés ? | **Oui** (au sens de Google, toute donnée qui quitte l'appareil est « collectée », même si elle ne nous parvient jamais) |
+| Partagés ? | **Oui**, avec l'Université du Luxembourg (service LuxASR), qui en est responsable de traitement : ce n'est pas un prestataire agissant pour notre compte |
+| Traités de façon éphémère ? | **Oui** : transcrits sur le moment, puis effacés |
+| Obligatoires ou facultatifs ? | **Facultatifs** : seulement quand l'utilisateur appuie sur le micro |
+| Finalité | Fonctionnalité de l'application |
+| Chiffrés en transit ? | **Oui** (TLS, `wss://luxasr.uni.lu`) |
+| Suppression sur demande ? | Sans objet : rien n'est conservé ; la politique renvoie au DPO de l'Université |
+
+- Mieux vaut déclarer trop que pas assez : une déclaration contredite par
+  l'application est la première cause de refus d'une mise à jour.
+- Les permissions `RECORD_AUDIO`, `INTERNET` et `ACCESS_NETWORK_STATE`
+  n'existent que pour la dictée ; la politique de confidentialité (v3.0) les
+  documente une par une. La Console exige en plus, pour l'audio, un écran
+  d'information **dans l'application**, montré avant la demande d'accès au
+  micro : il reste à faire avant l'envoi.
 - Le compteur de progression écrit dans `filesDir`, sur l'appareil, et ne
   compte que des mots déjà présents dans le dictionnaire livré : ni les mots
   de passe, ni les noms propres, ni les numéros n'y entrent. C'est ce point
@@ -210,9 +239,9 @@ de rendement :
 
 | Langue | Nom | Brève description |
 |---|---|---|
-| Luxembourgeois (lb) | `Lëtzebuergesch Clavier` | `Lëtzebuergesch Tastatur: Wuertvirschléi, ë ä é Tasten, 100 % offline` |
-| Allemand (de) | `Lëtzebuergesch Clavier` | `Luxemburgische Tastatur: Wortvorschläge, ë ä é Tasten, 100 % offline` |
-| Anglais (en) | `Lëtzebuergesch Clavier` | `Luxembourgish keyboard: word suggestions, ë ä é keys, 100 % offline` |
+| Luxembourgeois (lb) | `Lëtzebuergesch Clavier` | `Lëtzebuergesch Tastatur: Wuertvirschléi, ë ä é Tasten, Spriechdiktat` |
+| Allemand (de) | `Lëtzebuergesch Clavier` | `Luxemburgische Tastatur: Wortvorschläge, ë ä é Tasten, Sprachdiktat` |
+| Anglais (en) | `Lëtzebuergesch Clavier` | `Luxembourgish keyboard: word suggestions, ë ä é keys, voice typing` |
 
 Le nom ne change pas d'une langue à l'autre : c'est le nom de l'application.
 

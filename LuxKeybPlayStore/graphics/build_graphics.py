@@ -28,7 +28,10 @@ moins de 8 Mo. Les huit captures font 1080x1920, donc au-dessus du 1080x1080
 exigé pour que l'application soit promouvable — il en faut au moins quatre.
 
 Les captures sources sont dans `captures-emulateur-pixel9/`, natives 1080 px de
-large (émulateur Pixel 9, 1080x2424, sous la 29.2.0) : rien n'est agrandi ici.
+large (émulateur Pixel 9, 1080x2424, sous la 29.2.0). Exception sur la branche
+de la dictée : les trois recadrages de clavier viennent du Galaxy A21s (720 px,
+Labs 30.1.0 avec le micro), agrandis 1,5 fois, l'émulateur étant alors occupé
+par une autre session.
 Leur nom dit ce qu'elles montrent, dans l'ordre d'envoi. Les trois captures de
 clavier (suggestions, accents, numérique) sont prises dans le champ d'essai de
 l'onglet Démarrage puis recadrées (`-recadre`, 1080x1026) sur champ de saisie +
@@ -183,7 +186,7 @@ SHOT_TEMPLATE = """<meta charset="utf-8">
   <div class="sub">{sub}</div>
 </header>
 <div class="stage"><img src="data:image/png;base64,{shot}"></div>
-<footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · gratuit, hors ligne</footer>
+<footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · gratuit, sans publicité</footer>
 """
 
 

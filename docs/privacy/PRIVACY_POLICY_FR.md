@@ -1,8 +1,8 @@
 # Politique de Confidentialité - Lëtzebuergesch Clavier
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 25 août 2026  
-**Version :** 2.1  
+**Dernière mise à jour :** 2 octobre 2026  
+**Version :** 3.0 (dictée vocale)  
 **Application :** Lëtzebuergesch Clavier  
 **Nom du package :** com.potomitan.luxkeyboard
 
@@ -23,17 +23,20 @@
 
 **Lëtzebuergesch Clavier** est un clavier virtuel pour appareils Android qui permet de saisir du texte en luxembourgeois avec des suggestions intelligentes et des corrections automatiques.
 
+> **En une phrase :** ce que vous tapez ne quitte jamais votre téléphone. La seule exception est la **dictée vocale** : quand vous appuyez sur le micro, votre voix est envoyée au service **LuxASR de l'Université du Luxembourg**, qui la transforme en texte sans la conserver. Si vous n'appuyez jamais sur le micro, rien ne part. Tous les détails sont dans la section [🎙️ La dictée vocale](#dictee-vocale).
+
 ### Fonctionnalités principales :
 - Clavier virtuel optimisé pour le luxembourgeois
-- Suggestions de mots basées sur un dictionnaire luxembourgeois (6 342 mots)
+- Suggestions de mots basées sur un dictionnaire luxembourgeois (38 442 mots tirés du corpus, 123 297 formes reconnues avec le dictionnaire officiel LOD)
 - Corrections orthographiques automatiques
 - Support des diacritiques luxembourgeoises (ë, ä, é, ü, ö)
 - Interface en français et luxembourgeois
+- Dictée vocale en luxembourgeois, facultative, assurée par le service LuxASR de l'Université du Luxembourg
 - Système de gamification avec 8 niveaux pour encourager l'apprentissage
 - **100% gratuit :** Aucune fonctionnalité premium, aucun achat intégré
 - **Open Source :** Code source disponible sur GitHub
 - **Éducatif :** Promotion de la langue luxembourgeoise
-- **Respect de la vie privée :** Aucune collecte de données, fonctionnement 100% hors ligne
+- **Respect de la vie privée :** Aucune collecte de données. Le clavier fonctionne hors ligne ; seule la dictée vocale a besoin d'Internet
 
 ---
 
@@ -43,7 +46,7 @@
 
 ### ✅ Résumé de la Collecte de Données
 
-**Nous collectons ZÉRO donnée personnelle. Cette application ne collecte, ne partage ni ne transmet aucune information utilisateur.**
+**Nous, éditeur de l'application, ne recevons aucune donnée personnelle.** Ce que vous tapez n'est ni collecté, ni partagé, ni transmis. **Une seule donnée quitte le téléphone : votre voix, quand vous utilisez la dictée.** Elle part directement vers l'Université du Luxembourg pour être transcrite, sans passer par nous (voir [🎙️ La dictée vocale](#dictee-vocale)).
 
 | Catégorie de Données | Collectée ? | Partagée ? | Objectif | Détails |
 |----------------------|-------------|------------|----------|---------|
@@ -53,7 +56,7 @@
 | **Santé et Fitness** | ❌ Non | ❌ Non | S.O. | Aucune donnée de santé |
 | **Messages** | ❌ Non | ❌ Non | S.O. | Le clavier ne stocke ni ne transmet le contenu tapé |
 | **Photos et Vidéos** | ❌ Non | ❌ Non | S.O. | Aucun accès aux médias |
-| **Fichiers audio** | ❌ Non | ❌ Non | S.O. | Aucun enregistrement audio |
+| **Audio : enregistrements vocaux** | ⚠️ Seulement quand vous dictez | ⚠️ Université du Luxembourg | Fonctionnalité de l'app (dictée) | Envoyée en direct, chiffrée, traitée sur le moment et non conservée ; jamais reçue par nous |
 | **Fichiers et Documents** | ❌ Non | ❌ Non | S.O. | Aucun accès aux fichiers |
 | **Calendrier** | ❌ Non | ❌ Non | S.O. | Aucun accès au calendrier |
 | **Contacts** | ❌ Non | ❌ Non | S.O. | Aucun accès aux contacts |
@@ -66,19 +69,19 @@
 
 ### 🔐 Pratiques de Sécurité des Données
 
-- **Chiffrement en transit :** Non applicable (aucune transmission de données vers des serveurs externes)
+- **Chiffrement en transit :** Oui pour la seule transmission existante : la voix dictée part en connexion chiffrée (TLS) vers `luxasr.uni.lu`
 - **Chiffrement au repos :** Non applicable (aucun stockage de données sur nos serveurs)
 - **Suppression des données :** Non applicable (aucune donnée collectée à supprimer)
 - **Privacy by Design :** L'architecture de l'app empêche toute collecte de données par conception
-- **Fonctionnement hors ligne :** Traitement 100% local, aucune connexion Internet requise
+- **Fonctionnement hors ligne :** La frappe, les suggestions, le correcteur et les jeux fonctionnent entièrement sans Internet. Seule la dictée vocale en a besoin
 - **Aucun suivi tiers :** Pas d'analytics, pas de SDK publicitaires
-- **Aucun serveur backend :** Aucune infrastructure collectant ou stockant des données utilisateur
+- **Aucun serveur backend :** Nous n'avons aucune infrastructure collectant ou stockant des données utilisateur. La dictée est traitée par le serveur de l'Université du Luxembourg, pas par un serveur à nous
 - **Sandbox Android :** L'app fonctionne dans le bac à sable Android avec permissions restreintes
 - **Audit du code :** Code open source disponible pour examen de sécurité
 
 ### 🛡️ Services et SDK Tiers
 
-**Nous n'utilisons AUCUN service tiers qui collecte des données utilisateur.** Spécifiquement :
+**Nous n'utilisons qu'un seul service tiers, et uniquement pour la dictée vocale : LuxASR, de l'Université du Luxembourg.** Il ne reçoit que votre voix, et seulement quand vous appuyez sur le micro. Aucun autre service tiers n'est utilisé. Spécifiquement :
 
 - ❌ Pas de services d'analytics (Google Analytics, Firebase Analytics, etc.)
 - ❌ Pas de réseaux publicitaires (AdMob, Facebook Audience Network, etc.)
@@ -89,11 +92,11 @@
 - ❌ Pas de SDK de traitement de paiement
 - ❌ Pas de services de localisation
 
-**La seule interaction tierce est avec Google Play Services pour :**
-- Distribution et mises à jour de l'application
-- Rapports de plantage automatiques (anonymes, gérés par Google)
+**Les seules interactions tierces sont :**
+- **LuxASR (Université du Luxembourg)**, pour transcrire votre voix quand vous dictez
+- **Google Play Services**, pour la distribution et les mises à jour de l'application, et les rapports de plantage automatiques (anonymes, gérés par Google)
 
-C'est standard pour toutes les applications Google Play et échappe à notre contrôle.
+Les rapports de plantage sont standard pour toutes les applications Google Play et échappent à notre contrôle.
 
 ### 👤 Contrôle et Droits de l'Utilisateur
 
@@ -104,8 +107,9 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 - **Réinitialisation des paramètres :** Peut effacer toutes les préférences via les paramètres Android
 - **Aucun compte requis :** Aucune création de compte, connexion ou inscription nécessaire
 - **Désinstaller = Suppression complète :** La désinstallation supprime toutes les données de l'app de l'appareil
-- **Pas de sync cloud :** Les données ne quittent jamais votre appareil, rien n'est stocké à distance
-- **Mode hors ligne :** L'app fonctionne 100% hors ligne, Internet non requis
+- **Pas de sync cloud :** Vos données de frappe, réglages et progression ne quittent jamais votre appareil, rien n'est stocké à distance
+- **Mode hors ligne :** Le clavier fonctionne sans Internet ; seule la dictée vocale en a besoin
+- **Dictée sous votre contrôle :** Rien n'est envoyé tant que vous n'appuyez pas sur le micro. Vous pouvez refuser l'accès au micro à Android, le clavier fonctionne alors exactement pareil, sans dictée
 
 ---
 
@@ -113,7 +117,7 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 **Lëtzebuergesch Clavier** respecte absolument votre vie privée. Nous croyons que :
 
-1. **Vos données vous appartiennent :** Ce que vous tapez vous appartient et reste sur votre appareil
+1. **Vos données vous appartiennent :** Ce que vous tapez vous appartient et reste sur votre appareil. Votre voix ne part que si vous choisissez de dicter
 2. **Aucune surveillance :** Nous ne suivons, ne surveillons ni n'analysons votre comportement de frappe
 3. **Pas de monétisation des données :** Nous ne vendons pas de données (car nous n'en collectons aucune)
 4. **Transparence :** Le code open source permet une vérification indépendante de nos affirmations
@@ -123,7 +127,7 @@ Les utilisateurs ont un contrôle total sur l'application et leurs données :
 
 **Principe fondamental : Nous ne collectons AUCUNE donnée personnelle.**
 
-Ce n'est pas qu'une politique - c'est ainsi que nous avons construit l'application. Pas de serveurs, pas de bases de données, pas d'infrastructure de suivi.
+Ce n'est pas qu'une politique - c'est ainsi que nous avons construit l'application. Pas de serveurs, pas de bases de données, pas d'infrastructure de suivi. La dictée vocale ne fait pas exception : votre voix va directement de votre téléphone à l'Université du Luxembourg, jamais chez nous.
 
 ---
 
@@ -142,7 +146,7 @@ Nous voulons être parfaitement clairs sur ce que nous **ne collectons pas** :
 - **❌ Aucun contact :** Pas d'accès à vos contacts, carnet d'adresses ou numéros de téléphone
 - **❌ Aucune photo/média :** Pas d'accès aux photos, vidéos, musique ou autres fichiers média
 - **❌ Aucune donnée de navigation :** Pas de sites web visités, requêtes de recherche ou activité Internet
-- **❌ Aucune donnée biométrique :** Pas d'empreintes digitales, scans faciaux, enregistrements vocaux ou autres informations biométriques
+- **❌ Aucune donnée biométrique :** Pas d'empreintes digitales ni de scans faciaux. Votre voix n'est jamais enregistrée ni conservée par l'application ; quand vous dictez, elle est transmise en direct à l'Université du Luxembourg pour être transcrite (voir [🎙️ La dictée vocale](#dictee-vocale))
 - **❌ Aucune information de paiement :** Pas de cartes de crédit, comptes bancaires, PayPal ou données financières
 - **❌ Aucune donnée de réseaux sociaux :** Pas de Facebook, Twitter, Instagram ou autres comptes sociaux
 - **❌ Aucune donnée du presse-papiers :** Nous ne surveillons ni ne collectons le contenu du presse-papiers
@@ -150,6 +154,52 @@ Nous voulons être parfaitement clairs sur ce que nous **ne collectons pas** :
 - **❌ Aucun ID publicitaire :** Pas de Google Advertising ID ou identifiants de suivi similaires
 
 **En bref : Nous ne collectons RIEN qui vous identifie ou suit votre comportement.**
+
+---
+
+<a id="dictee-vocale"></a>
+## 🎙️ La dictée vocale (LuxASR, Université du Luxembourg)
+
+La dictée est la seule fonction de l'application qui envoie quelque chose hors du téléphone. Voici exactement quoi, quand, à qui, et ce qu'il en advient.
+
+### Ce qui est envoyé
+
+- **Uniquement votre voix**, sous forme de son (16 000 échantillons par seconde), pendant que le micro est ouvert.
+- **Rien d'autre :** ni ce que vous avez tapé, ni le texte du champ, ni l'application dans laquelle vous écrivez, ni vos contacts, ni un identifiant de votre téléphone ou de votre compte.
+
+### Quand
+
+- **Seulement après un appui sur le micro** du clavier. Avant cet appui, le micro n'est pas ouvert et rien ne part.
+- **Jamais dans un champ de mot de passe :** le micro y refuse de s'ouvrir.
+- Le micro se ferme de lui-même quand vous vous arrêtez de parler, ou quand vous appuyez à nouveau dessus. Une dictée dure au plus 90 secondes.
+- Pendant toute la dictée, le clavier affiche « 🌐 LuxASR » : vous savez toujours quand votre voix est envoyée.
+- Sans connexion Internet, le micro apparaît barré et rien n'est tenté.
+
+### À qui
+
+- Au service **LuxASR** de l'**Université du Luxembourg** (https://luxasr.uni.lu), qui transforme la parole luxembourgeoise en texte.
+- **L'Université du Luxembourg est responsable de ce traitement.** Elle l'effectue dans le cadre de sa mission d'intérêt public (article 6, paragraphe 1, point e) du RGPD), sur un serveur situé dans son centre de calcul, au Luxembourg.
+- La voix part **directement** de votre téléphone vers l'Université, en connexion chiffrée. **Nous ne la recevons jamais**, et le texte transcrit revient directement dans votre clavier.
+
+### Ce qu'il en advient
+
+Selon la notice d'information de l'Université du Luxembourg (https://luxasr.uni.lu) :
+
+- l'audio est **traité sur le moment puis effacé** automatiquement, aucun fichier n'est conservé ;
+- il n'est **pas utilisé pour entraîner** des modèles d'intelligence artificielle ;
+- il n'est **transmis à aucun tiers** ;
+- comme pour tout visiteur de ses services, la **date, l'heure et l'adresse IP** de la connexion sont journalisées par le service informatique de l'Université.
+
+Sur votre téléphone, le clavier ne garde **ni le son ni une copie du texte** : le texte transcrit est simplement inséré dans le champ où vous écrivez, comme si vous l'aviez tapé.
+
+### Comment ne pas utiliser la dictée
+
+- **Ne touchez pas au micro :** rien n'est envoyé, le clavier reste entièrement hors ligne.
+- **Refusez l'accès au micro** quand Android le demande au premier appui, ou retirez-le plus tard dans Paramètres > Applications > Lëtzebuergesch Clavier > Autorisations. Le clavier fonctionne alors exactement pareil, sans dictée.
+
+### Vos droits sur la dictée
+
+Comme l'Université du Luxembourg est responsable du traitement de la voix, c'est auprès d'elle que s'exercent les droits qui le concernent : déléguée à la protection des données de l'Université du Luxembourg, **dpo@uni.lu**, Maison du Savoir, 2, place de l'Université, L-4365 Esch-sur-Alzette. Nous restons joignables pour toute question : medhi.famibelle@gmail.com.
 
 ### 📱 Ce qui Reste sur Votre Appareil (Local Uniquement) :
 
@@ -177,7 +227,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
    - Statistiques locales pour affichage dans l'app (ex: "Vous avez appris 250 mots !")
    - Jamais envoyées nulle part
 
-**Toutes ces données sont automatiquement supprimées lorsque vous désinstallez l'app.** Il n'y a pas de données résiduelles sur nos serveurs car nous n'avons pas de serveurs.
+**Toutes ces données sont automatiquement supprimées lorsque vous désinstallez l'app.** Il n'y a pas de données résiduelles sur nos serveurs car nous n'avons pas de serveurs. Aucune donnée de dictée n'est gardée sur le téléphone.
 
 ---
 
@@ -185,20 +235,20 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 ### Comment Nous Protégeons Votre Vie Privée :
 
-1. **Aucune Connexion Internet Requise :**
-   - L'app fonctionne 100% hors ligne - vous pouvez l'utiliser en mode avion
-   - Aucune requête réseau n'est faite vers des serveurs externes
-   - Aucune transmission de données à des tiers
-   - Vous pouvez vérifier ceci avec des outils de surveillance réseau Android
+1. **Internet Seulement pour la Dictée :**
+   - Le clavier fonctionne hors ligne - vous pouvez taper en mode avion
+   - La seule connexion réseau de l'application est celle de la dictée, vers `luxasr.uni.lu`, ouverte quand vous appuyez sur le micro et fermée à la fin de la dictée
+   - Aucune autre transmission de données à des tiers
+   - Vous pouvez le vérifier : dans Paramètres > Applications > Lëtzebuergesch Clavier > Données mobiles et Wi-Fi, la consommation reste à zéro tant que vous ne dictez pas (le nom exact du menu varie selon les téléphones)
 
 2. **Aucune Infrastructure Backend :**
    - Nous n'avons pas de serveurs pour stocker des données
    - Pas de bases de données collectant des informations
    - Pas de comptes de stockage cloud
-   - Pas de points d'API recevant des données
+   - Pas de points d'API à nous recevant des données
 
 3. **Traitement Local Uniquement :**
-   - Toutes les suggestions de mots sont générées localement sur votre appareil
+   - Toutes les suggestions de mots sont générées localement sur votre appareil (seule la dictée est transcrite à distance, par l'Université du Luxembourg)
    - Le dictionnaire est stocké dans les ressources de l'app (intégré dans l'APK)
    - Les algorithmes d'autocorrection s'exécutent sur l'appareil
    - Aucun appel API externe pour les prédictions
@@ -207,7 +257,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
    - L'app fonctionne dans le bac à sable de sécurité Android (isolée des autres apps)
    - Suit les meilleures pratiques de sécurité Android
    - Mises à jour de sécurité régulières via Google Play
-   - Aucune permission personnalisée au-delà des exigences standard des claviers
+   - Aucune permission au-delà de ce qu'exigent le clavier et la dictée (voir ci-dessous)
 
 5. **Transparence Open Source :**
    - Code source disponible sur GitHub : https://github.com/famibelle/LuxKeyb
@@ -224,7 +274,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 **Période de conservation : 0 jour**
 
-Puisque nous ne collectons aucune donnée au départ, il n'y a rien à conserver sur nos serveurs.
+Puisque nous ne collectons aucune donnée au départ, il n'y a rien à conserver sur nos serveurs. La voix dictée, elle, est effacée par l'Université du Luxembourg après transcription.
 
 **Conservation des Données Locales :**
 - Préférences de l'app : Persistent jusqu'à effacement des données de l'app ou désinstallation
@@ -263,14 +313,30 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 **Contrôle utilisateur :** Le réglage « Vibration à la frappe » de l'application coupe toute vibration, clavier et carnet compris  
 **Emplacement des données :** Aucune - rien n'est stocké ni transmis
 
+### 4️⃣ RECORD_AUDIO (Demandée au premier appui sur le micro)
+
+**Ce qu'elle fait :** Permet d'entendre votre voix pendant la dictée  
+**Pourquoi nous en avons besoin :** Pour la dictée vocale, et pour rien d'autre  
+**Impact sur la vie privée :** Le micro ne s'ouvre qu'après un appui sur le bouton micro du clavier, jamais dans un champ de mot de passe, et se referme à la fin de la dictée. Depuis Android 12, le système affiche en plus son propre témoin vert tant que le micro est ouvert  
+**Ce qu'elle NE PEUT PAS faire :** Écouter en arrière-plan : le clavier n'ouvre le micro que pendant une dictée que vous avez lancée  
+**Contrôle utilisateur :** Refusez-la à l'invite, ou retirez-la dans Infos app > Autorisations ; le clavier fonctionne alors sans dictée  
+**Emplacement des données :** La voix est envoyée en direct à l'Université du Luxembourg pour transcription, jamais stockée sur le téléphone
+
+### 5️⃣ INTERNET et ACCESS_NETWORK_STATE (Automatiques, sans invite)
+
+**Ce qu'elles font :** INTERNET permet d'ouvrir la connexion de la dictée ; ACCESS_NETWORK_STATE permet de savoir si un réseau est disponible  
+**Pourquoi nous en avons besoin :** Uniquement pour la dictée vocale. Sans réseau, le micro apparaît barré au lieu de vous faire attendre pour rien  
+**Impact sur la vie privée :** La seule connexion ouverte est celle de la dictée, vers `luxasr.uni.lu`, quand vous appuyez sur le micro. Ni la frappe, ni les suggestions, ni le correcteur, ni les jeux n'utilisent le réseau  
+**Ce qu'elles NE PEUVENT PAS faire :** Envoyer ce que vous tapez : le code qui gère la frappe ne contient aucun envoi réseau, ce que le code source public permet de vérifier  
+**Contrôle utilisateur :** Ne pas utiliser la dictée suffit : aucune connexion n'est alors ouverte  
+**Emplacement des données :** Aucune donnée n'est envoyée en dehors de la voix dictée
+
 ### ❌ Autorisations que Nous NE Demandons PAS :
 
 Nous ne demandons **intentionnellement pas** les autorisations courantes suivantes :
 
-- **INTERNET :** Pas nécessaire (l'app fonctionne hors ligne)
 - **ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION :** Pas de suivi de localisation
 - **CAMERA :** Pas de capture photo/vidéo
-- **RECORD_AUDIO / MICROPHONE :** Pas d'enregistrement vocal
 - **WRITE_USER_DICTIONARY :** Pas d'écriture dans le dictionnaire personnel Android
 - **READ_CONTACTS / WRITE_CONTACTS :** Pas d'accès aux contacts
 - **READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE :** Pas d'accès aux fichiers
@@ -280,7 +346,7 @@ Nous ne demandons **intentionnellement pas** les autorisations courantes suivant
 - **READ_CALL_LOG :** Pas d'historique d'appels
 - **BLUETOOTH / NFC :** Pas de collecte de données sans fil
 
-**L'absence de l'autorisation INTERNET est particulièrement significative** - cela signifie que l'app ne peut pas envoyer de données même si elle le voulait.
+**À propos de l'autorisation INTERNET :** les versions précédentes ne la demandaient pas du tout. Elle n'est arrivée qu'avec la dictée vocale, et ne sert qu'à elle : ce que vous tapez ne passe jamais par le réseau.
 
 ---
 
@@ -288,7 +354,7 @@ Nous ne demandons **intentionnellement pas** les autorisations courantes suivant
 
 ### Partage avec des Tiers :
 
-**Nous partageons ZÉRO donnée avec des tiers** car nous collectons zéro donnée.
+**Nous partageons ZÉRO donnée avec des tiers** car nous collectons zéro donnée. La seule chose qui quitte votre téléphone est votre voix, quand vous dictez, et elle va directement à l'Université du Luxembourg pour être transcrite (voir [🎙️ La dictée vocale](#dictee-vocale)).
 
 Soyons explicites sur ce que nous **ne faisons pas** :
 
@@ -299,7 +365,7 @@ Soyons explicites sur ce que nous **ne faisons pas** :
 - ❌ **Aucune donnée envoyée à des services cloud** (pas de Firebase, AWS, etc.)
 - ❌ **Aucune donnée partagée avec d'autres apps** sur votre appareil
 - ❌ **Aucune donnée partagée avec une société mère** (nous sommes indépendants)
-- ❌ **Aucune donnée partagée à des fins de recherche**
+- ❌ **Aucune donnée partagée à des fins de recherche** (l'Université du Luxembourg déclare ne pas utiliser les voix dictées pour entraîner ses modèles)
 - ❌ **Aucune donnée agrégée/anonymisée partagée** (nous n'avons pas de données à agréger)
 
 ### Transferts d'Entreprise :
@@ -316,58 +382,48 @@ Dans le cas improbable où l&#39;application serait cédée à une autre organis
 - Assignations gouvernementales : Nous n'avons pas de données utilisateur à remettre
 - Ordonnances judiciaires : Nous ne pouvons pas fournir ce que nous ne collectons pas
 - Demandes des forces de l'ordre : Aucune donnée utilisateur n'existe dans nos systèmes
+- La voix dictée n'est pas conservée par l'Université du Luxembourg ; ses journaux de connexion relèvent de sa propre politique
 
 Nous notifierions les utilisateurs si nous changions un jour cette architecture (ce que nous ne prévoyons pas de faire).
 
 ---
 
-## 👶 Vie Privée des Enfants (Conformité COPPA)
+## 👶 Âge Minimum et Vie Privée des Mineurs
 
-**Lëtzebuergesch Clavier** est sûr pour les utilisateurs de tous âges, y compris les enfants de moins de 13 ans.
+**Lëtzebuergesch Clavier s'adresse aux personnes de 16 ans et plus.**
 
-### Pourquoi c'est sûr pour les enfants :
+La raison tient à la dictée vocale : quand on l'utilise, la voix est transmise à un tiers, l'Université du Luxembourg. Seize ans est l'âge à partir duquel la loi luxembourgeoise permet à un mineur de consentir seul à un service en ligne (article 8 du RGPD). Le reste de l'application ne collecte rien, à aucun âge.
 
-- **Aucune collecte de données :** Les informations des enfants ne sont jamais collectées, stockées ou partagées
-- **Aucune interaction en ligne :** L'app est 100% hors ligne sans chat, forums ou fonctionnalités sociales
 - **Aucune publicité :** Pas de pubs, pas de marketing ciblé, pas de profilage comportemental
-- **Contenu éducatif :** Promotion de l'apprentissage de la langue et de la sensibilisation culturelle
 - **Aucun achat intégré :** Complètement gratuit sans invite de paiement
 - **Aucune création de compte :** Pas d'email, nom d'utilisateur ou mot de passe requis
-- **Aucun contenu tiers :** Tout le contenu est sélectionné et approprié
-- **Conforme COPPA :** Entièrement conforme à la loi américaine de protection de la vie privée des enfants en ligne
-- **Conforme RGPD-K :** Répond aux normes plus strictes de l'UE pour la vie privée des enfants
-- **Adapté à l'âge :** Conçu pour un usage éducatif dans les écoles
+- **Aucune fonction sociale :** Pas de chat, de forum ni de classement en ligne
 
 ### Pour les Parents :
 
-Les parents et éducateurs peuvent en toute confiance permettre aux enfants d'utiliser ce clavier sans aucune préoccupation de vie privée. Nous recommandons :
-- Examiner les fonctionnalités de gamification avec les enfants
-- Utiliser les contrôles parentaux sur l'appareil pour la sécurité Internet générale
-- Expliquer que le clavier est pour apprendre le luxembourgeois
-
-**Aucun consentement parental requis** car nous ne collectons aucune donnée des enfants (ou de quiconque).
+Si un mineur de moins de 16 ans utilise le téléphone, vous pouvez lui laisser le clavier en retirant l'accès au micro dans Paramètres > Applications > Lëtzebuergesch Clavier > Autorisations : la dictée est alors impossible et plus rien ne quitte le téléphone.
 
 ---
 
 ## 🌍 Transferts Internationaux de Données
 
-**Non applicable :** Puisque nous ne collectons aucune donnée, il n'y a pas de transferts internationaux de données.
+**Aucun transfert hors de l'Union européenne.** Nous ne collectons aucune donnée. La voix dictée est traitée par l'Université du Luxembourg sur son propre serveur, au Luxembourg.
 
 Pour la transparence légale :
 - **Localisation du développeur :** Luxembourg (État membre de l'Union européenne, le RGPD s'applique)  
 - **Public visé :** Luxembourg (Union européenne)
 - **App distribuée via :** Google Play Store (distribution mondiale)
-- **Localisation des données utilisateur :** Uniquement sur l'appareil de l'utilisateur (pas transférées nulle part)
+- **Localisation des données utilisateur :** Uniquement sur l'appareil de l'utilisateur ; la voix dictée est traitée au Luxembourg, puis effacée
 - **Conformité RGPD :** Entièrement conforme au Règlement Général sur la Protection des Données de l'UE
 - **Conformité CCPA :** Entièrement conforme à la loi californienne sur la protection de la vie privée des consommateurs
 - **Autres réglementations :** Conforme aux lois de confidentialité dans le monde (LGPD, PIPEDA, POPIA, PDPA, etc.)
 
-Si nous implémentions un jour des fonctionnalités cloud (ce que nous ne prévoyons pas de faire), nous :
-- Notifierions les utilisateurs à l'avance
-- Mettrions à jour cette politique de confidentialité
-- Obtiendrions le consentement explicite de l'utilisateur
-- Utiliserions des serveurs basés dans l'UE avec conformité RGPD
-- Implémerions un chiffrement fort
+La dictée vocale est la seule fonction qui passe par un serveur. Elle a été introduite avec les engagements que cette politique prenait d'avance :
+- Les utilisateurs en sont informés, ici et dans l'application
+- Cette politique de confidentialité a été mise à jour avant sa publication
+- Rien n'est envoyé sans un geste de votre part (l'appui sur le micro)
+- Le serveur est dans l'Union européenne, au Luxembourg, chez un établissement public soumis au RGPD
+- La connexion est chiffrée
 
 ---
 
@@ -378,6 +434,8 @@ Si nous implémentions un jour des fonctionnalités cloud (ce que nous ne prévo
 **Nous ne conservons pas les données utilisateur**
 
 Puisqu'aucune donnée n'est collectée sur nos serveurs, il n'y a rien à conserver, sauvegarder ou archiver.
+
+**Dictée vocale :** la voix est effacée par l'Université du Luxembourg aussitôt transcrite. La date, l'heure et l'adresse IP de la connexion figurent dans les journaux de son service informatique, selon ses propres règles de conservation.
 
 ### Données Locales sur Votre Appareil :
 
@@ -416,7 +474,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 
 ## 🛡️ Vos Droits (RGPD, CCPA et Autres Lois sur la Vie Privée)
 
-Même si nous ne collectons aucune donnée, nous respectons tous les droits à la vie privée et voulons que vous sachiez ce qu'ils sont :
+Même si nous ne collectons aucune donnée, nous respectons tous les droits à la vie privée et voulons que vous sachiez ce qu'ils sont. **Pour la voix dictée, dont l'Université du Luxembourg est responsable, ces droits s'exercent auprès de sa déléguée à la protection des données : dpo@uni.lu.**
 
 ### Selon le RGPD (Règlement Général sur la Protection des Données de l'UE) :
 
@@ -597,7 +655,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 ### Contrôle de Version :
 
-1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **2.0**)
+1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **3.0**)
 2. **Date d'Entrée en Vigueur :** Mise à jour en haut de ce document
 3. **Historique des Changements :** Disponible sur notre dépôt GitHub
 4. **Changements Importants :** Seront mis en évidence dans les annonces de mise à jour
@@ -616,6 +674,14 @@ Nous pouvons mettre à jour cette politique pour refléter :
 - Option de réviser les changements avant d'accepter
 
 ### Historique des Changements :
+
+**Version 3.0 (2 octobre 2026) :**
+- Arrivée de la dictée vocale en luxembourgeois, assurée par le service LuxASR de l'Université du Luxembourg
+- Nouvelle section « La dictée vocale » : ce qui est envoyé, quand, à qui, ce qu'il en advient, comment s'en passer
+- Nouvelles autorisations documentées : RECORD_AUDIO, INTERNET, ACCESS_NETWORK_STATE, toutes réservées à la dictée
+- Tableau Data Safety : enregistrements vocaux, transmis à l'Université du Luxembourg seulement pendant une dictée
+- Âge minimum fixé à 16 ans
+- La promesse est précisée : ce que vous tapez ne quitte jamais le téléphone ; seule la voix dictée part, et seulement quand vous dictez
 
 **Version 2.1 (25 août 2026) :**
 - Identité du développeur : Famibelle Médhi, établi au Luxembourg
@@ -713,7 +779,7 @@ Cette politique de confidentialité et tout litige en découlant sont régis par
 
 Dans la mesure permise par la loi :
 - Nous ne sommes pas responsables des violations de données (nous n'avons pas de données à violer)
-- Nous ne sommes pas responsables des actions de tiers (nous n'utilisons pas de tiers)
+- Le traitement de la voix dictée relève de l'Université du Luxembourg, qui en est responsable
 - Responsabilité maximale limitée au montant payé pour l'app (0€, car gratuite)
 
 Cela n'affecte pas vos droits statutaires en tant que consommateur.
@@ -728,7 +794,6 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 
 - ✅ **Conforme RGPD** (Règlement Général sur la Protection des Données de l'UE)
 - ✅ **Conforme CCPA** (California Consumer Privacy Act)
-- ✅ **Conforme COPPA** (Children's Online Privacy Protection Act)
 - ✅ **Conforme LGPD** (loi brésilienne de protection des données)
 - ✅ Principes de **Privacy by Design**
 - ✅ Implémentation **Privacy by Default**
@@ -759,13 +824,15 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 
 ### Les Bases :
 - 🔒 **Zéro collecte de données :** Nous ne collectons, ne stockons ni ne partageons AUCUNE donnée personnelle
-- 📱 **100% hors ligne :** L'app fonctionne sans Internet, aucune transmission de données
+- 📱 **Frappe 100% hors ligne :** Ce que vous tapez ne quitte jamais votre téléphone
+- 🎙️ **Dictée vocale facultative :** Quand vous appuyez sur le micro, votre voix part à l'Université du Luxembourg pour être transcrite, puis est effacée
 - 🚫 **Aucun suivi :** Pas d'analytics, pas de pubs, pas de SDK tiers
 - 🎓 **App éducative :** Construite pour promouvoir l'apprentissage du luxembourgeois
 - 🆓 **Complètement gratuite :** Pas d'achats intégrés, pas de fonctionnalités premium
 
 ### Ce Qui Arrive à Vos Données :
 - ✅ **Ce que vous tapez :** Reste sur votre appareil, jamais envoyé
+- ✅ **Votre voix :** Envoyée seulement quand vous dictez, transcrite par l'Université du Luxembourg, jamais conservée
 - ✅ **Vos paramètres :** Stockés localement, jamais synchronisés
 - ✅ **Votre progression :** Suivie localement pour la gamification, jamais partagée
 
@@ -777,7 +844,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 ### Conformité Légale :
 - ✅ **Conforme RGPD** (loi de confidentialité UE)
 - ✅ **Conforme CCPA** (loi de confidentialité Californie)
-- ✅ **Conforme COPPA** (sûr pour les enfants)
+- ✅ **Âge minimum :** 16 ans
 - ✅ **Open source :** Code publiquement vérifiable
 
 ### Contact :
@@ -821,7 +888,7 @@ En installant et utilisant **Lëtzebuergesch Clavier**, vous reconnaissez que :
 
 1. Vous avez lu et compris cette Politique de Confidentialité
 2. Vous consentez aux pratiques décrites ici (qui sont essentiellement : nous ne faisons rien avec vos données)
-3. Vous comprenez que l'app fonctionne hors ligne et ne collecte aucune donnée personnelle
+3. Vous comprenez que le clavier fonctionne hors ligne et ne collecte aucune donnée personnelle, et que la dictée vocale, quand vous l'utilisez, envoie votre voix à l'Université du Luxembourg pour la transcrire
 4. Vous pouvez révoquer les autorisations ou désinstaller à tout moment
 5. Vous comprenez que cette politique peut être mise à jour, et vous serez notifié des changements importants
 
@@ -834,6 +901,7 @@ En installant et utilisant **Lëtzebuergesch Clavier**, vous reconnaissez que :
 Nous avons construit **Lëtzebuergesch Clavier** parce que nous aimons notre langue et notre culture - pas pour gagner de l'argent avec vos données.
 
 **Notre engagement :**
+- Ce que vous tapez ne quittera **JAMAIS** votre téléphone
 - Nous ne collecterons **JAMAIS** vos données personnelles
 - Nous ne vendrons **JAMAIS** de données utilisateur
 - Nous n'ajouterons **JAMAIS** de publicités intrusives
