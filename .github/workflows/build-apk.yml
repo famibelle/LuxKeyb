@@ -858,6 +858,20 @@ jobs:
         echo ""
         echo "✅ AAB signé en production, prêt pour la Play Console"
 
+    # La branche de la dictée en ligne livre un AAB pour le test ouvert du
+    # Play Store : son nom le dit, pour qu'on ne le confonde pas avec celui
+    # d'une version stable une fois téléchargé. Après la vérification, qui
+    # attend le nom produit par Gradle ; les builds de main ne sont pas touchés.
+    - name: 🏷️ Nommer l'AAB de la branche ASR
+      if: github.ref_name == 'feat/luxasr-online'
+      run: |
+        set -euo pipefail
+        cd android_keyboard
+        VERSION=$(grep -m1 'versionName "' app/build.gradle | sed -E 's/.*versionName "([^"]+)".*/\1/')
+        CIBLE="app/build/outputs/bundle/release/Letzebuergesch_Clavier_v${VERSION}_labs_asr_release_$(date -u +%Y-%m-%d).aab"
+        mv app/build/outputs/bundle/release/app-release.aab "$CIBLE"
+        echo "📦 $(basename "$CIBLE")"
+
     - name: Upload Release AAB
       uses: actions/upload-artifact@v6
       with:
