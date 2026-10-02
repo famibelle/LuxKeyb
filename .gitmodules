@@ -1,3 +1,0 @@
-[submodule "android_keyboard/app/src/main/cpp/whisper.cpp"]
-	path = android_keyboard/app/src/main/cpp/whisper.cpp
-	url = https://github.com/ggerganov/whisper.cpp.git

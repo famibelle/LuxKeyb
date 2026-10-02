@@ -24,18 +24,16 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- Dictée vocale luxembourgeoise (10.17.0). Appelant réel : AudioRecorder,
-         via MicPermissionActivity — un IME ne peut pas demander de permission
-         d'exécution depuis sa vue de saisie. L'audio ne quitte jamais
-         l'appareil : le modèle whisper est embarqué dans l'APK et l'inférence
-         est locale, aucune permission réseau n'est déclarée ici. C'est ce qui
-         permet à la politique de confidentialité de rester inchangée. -->
+    <!-- Dictée vocale luxembourgeoise. Appelant réel : AudioRecorder, via
+         MicPermissionActivity (un IME ne peut pas demander de permission
+         d'exécution depuis sa vue de saisie). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!-- Dictée en ligne LuxASR (branche de démonstration uniquement). L'audio
-         quitte l'appareil, ce qui contredit la politique de confidentialité
-         publiée : à ne pas fusionner sans l'accord de LuxASR et une politique
-         réécrite. -->
+    <!-- Dictée en ligne LuxASR, et elle seule : la voix part vers
+         luxasr.uni.lu pendant la dictée (LuxAsrSession), et l'état du réseau
+         sert à barrer le micro hors connexion (ReseauDictee). La frappe ne
+         s'en sert pas. Documentées dans la politique de confidentialité 3.0 ;
+         à ne pas fusionner sur main sans l'accord écrit de LuxASR. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 

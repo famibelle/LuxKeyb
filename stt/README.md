@@ -1,12 +1,17 @@
 # Dictée vocale luxembourgeoise
 
 > ⚠️ **Sur cette branche (`feat/luxasr-online`), la reconnaissance est
-> distante.** L'audio quitte l'appareil, le modèle whisper est exclu de l'APK,
-> et cette branche est un support de démonstration qui ne doit pas être
-> fusionnée. Voir [« La dictée en ligne »](#la-dictée-en-ligne--cette-branche)
-> juste en dessous. Tout le reste de ce fichier décrit la dictée **embarquée**,
-> celle de `feat/speech-to-text-lb` : le code en est toujours là, compilé et
-> empaqueté, mais inerte faute de modèle à charger.
+> distante.** La voix part vers le service LuxASR de l'Université du Luxembourg
+> pendant la dictée. Voir [« La dictée en ligne »](#la-dictée-en-ligne--cette-branche)
+> juste en dessous.
+>
+> **La dictée embarquée a été retirée de l'application le 2 octobre 2026** :
+> `SttEngine`, le pont JNI, la configuration CMake et le sous-module
+> `whisper.cpp` n'existent plus sur cette branche, ni le job de CI qui
+> convertissait le modèle. Tout le reste de ce fichier décrit cette dictée
+> embarquée, celle de `feat/speech-to-text-lb`, et vaut comme historique. Les
+> outils de `stt/bench` restent utilisables : ils téléchargent whisper.cpp
+> v1.7.4 eux-mêmes (`stt/bench/CMakeLists.txt`).
 
 Reconnaissance vocale embarquée, **entièrement hors ligne**. L'audio ne quitte
 jamais l'appareil : c'est ce qui laisse la politique de confidentialité publiée

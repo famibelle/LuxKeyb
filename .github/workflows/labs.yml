@@ -9,10 +9,11 @@ name: 🧪 Labs — build expérimental installable
 # conversion du modèle whisper.
 #
 # Cette copie du workflow est celle de la branche `feat/luxasr-online` : la
-# reconnaissance y passe par le service de l'Uni.lu, donc le job qui convertit
-# le modèle whisper (pip install torch, ~2 minutes) a été retiré et la
-# vérification de l'APK est inversée — le modèle doit en être ABSENT. La branche
-# de la dictée embarquée garde sa propre copie, où le modèle reste obligatoire.
+# reconnaissance y passe par le service de l'Uni.lu. Depuis le 2 octobre 2026
+# la dictée embarquée (whisper.cpp, sous-module, bibliothèque native) a été
+# retirée de la branche : plus de NDK, plus de sous-module, et la vérification
+# de l'APK s'assure qu'il n'en reste rien. La branche de la dictée embarquée
+# garde sa propre copie.
 # GitHub Actions exécute toujours le fichier du ref poussé : les deux ne se
 # marchent pas dessus.
 #
@@ -122,10 +123,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v5
-      with:
-        # whisper.cpp est un sous-module : sans lui la configuration CMake de la
-        # dictée échoue et emporte tout le build Gradle.
-        submodules: recursive
 
     - uses: actions/setup-java@v5
       with:
@@ -179,25 +176,19 @@ jobs:
         APK=$(ls app/build/outputs/apk/labs/*.apk | head -1)
         echo "📦 $APK"
 
-        # Tout l'intérêt de ce canal est de livrer la dictée : on vérifie ce
-        # qu'on annonce plutôt que de l'espérer. Chacun de ces trois points
-        # peut manquer sans faire échouer le build.
+        # On vérifie ce qu'on annonce plutôt que de l'espérer : chacun de ces
+        # points peut manquer sans faire échouer le build.
 
-        # 1. La bibliothèque native, sur les deux ABI de production.
-        for ABI in arm64-v8a armeabi-v7a; do
-          unzip -l "$APK" | grep -q "lib/$ABI/libluxstt.so" \
-            || { echo "::error::libluxstt.so absent pour $ABI"; exit 1; }
-        done
-
-        # 2. Le modèle whisper doit être ABSENT — c'est l'inverse de ce que
-        #    vérifie la branche de la dictée embarquée. La reconnaissance passe
-        #    ici par luxasr.uni.lu ; un modèle réempaqueté par accident ferait
-        #    un APK de 38 Mo au lieu de 6,2, sans que rien ne s'en aperçoive
-        #    puisqu'il ne serait jamais chargé.
+        # 1. Plus rien de la dictée embarquée : ni bibliothèque native, qui
+        #    pesait 3,7 Mo sans jamais servir, ni modèle whisper. La
+        #    reconnaissance passe par luxasr.uni.lu ; un reste réempaqueté par
+        #    accident alourdirait l'APK sans que rien ne s'en aperçoive.
+        ! unzip -l "$APK" | grep -q 'lib/.*/lib\(luxstt\|whisper\|ggml\)' \
+          || { echo "::error::une bibliothèque de la dictée embarquée est dans l'APK"; exit 1; }
         ! unzip -l "$APK" | grep -q 'assets/ggml-.*\.bin' \
           || { echo "::error::le modèle whisper est dans l'APK alors que cette branche l'exclut"; exit 1; }
 
-        # 2 bis. Et le dictionnaire, lui, doit y être : sans lui la vérification
+        # 2. Et le dictionnaire, lui, doit y être : sans lui la vérification
         #    ci-dessus passerait tout aussi bien sur un APK aux assets vides.
         unzip -l "$APK" | grep -q 'assets/luxemburgish_dict.json' \
           || { echo "::error::dictionnaire absent de l'APK"; exit 1; }
@@ -226,7 +217,7 @@ jobs:
         ! grep -q "CN=Android Debug" /tmp/apk-verify.txt \
           || { echo "::error::APK signé avec la clé debug, pas avec celle de production"; exit 1; }
 
-        echo "✅ libluxstt.so (2 ABI), aucun modèle embarqué, dictionnaire présent, signature de production"
+        echo "✅ aucune dictée embarquée, dictionnaire présent, signature de production"
 
     - name: 🏷️ Nommer l'artefact
       id: rename
@@ -329,12 +320,12 @@ jobs:
         ## Installation
 
         Page d'installation, avec flashcode et marche à suivre :
-        <https://famibelle.github.io/LuxKeyb/labs-luxasr.html>
+        <https://famibelle.github.io/LuxKeyb/labs.html>
 
-        L'APK pèse ~6 Mo : le modèle whisper de 31 Mo est **exclu du paquet**,
-        n'ayant rien à y faire dès lors que la reconnaissance est distante. Le
-        téléphone a besoin d'une connexion pour dicter, et pas seulement pour
-        installer — il n'y a pas de repli hors ligne.
+        L'APK ne contient plus aucune reconnaissance embarquée : la dictée passe
+        entièrement par le service. Le téléphone a besoin d'une connexion pour
+        dicter, et pas seulement pour installer ; sans réseau, le micro apparaît
+        barré.
 
         ## Statut
 

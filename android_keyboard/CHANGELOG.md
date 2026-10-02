@@ -15,6 +15,21 @@ Sur la branche `feat/luxasr-online` **uniquement**. Support de démonstration
 pour un rendez-vous avec le projet LuxASR de l'Université du Luxembourg ; ne
 doit pas être fusionné.
 
+### 🧹 La dictée embarquée quitte la branche
+
+- Retirés : `SttEngine`, le pont JNI `whisper_jni.cpp`, la configuration CMake,
+  le sous-module `whisper.cpp`, le repli par lots `LuxAsrApiSession`, et dans la
+  CI le job qui convertissait le modèle whisper avec PyTorch à chaque build.
+  `SttSession` ne garde que les types partagés (écouteur, états, erreurs).
+- La bibliothèque native qu'on livrait sans jamais s'en servir pesait 3,7 Mo
+  dans l'APK Labs : l'APK de debug passe de 15,3 à 12,6 Mo et ne contient plus
+  aucun `.so`. `labs.yml` vérifie désormais qu'il n'en reste rien.
+- `build.gradle`, ProGuard et `build-apk.yml` redeviennent identiques à main,
+  à OkHttp et au type de build Labs près : fusionnée, la branche n'apportera
+  plus à main ni NDK ni sous-module.
+- Le banc `stt/bench` télécharge whisper.cpp v1.7.4 lui-même et reste capable
+  de mesurer un modèle hors ligne.
+
 ### 📶 Sans réseau ou réseau trop lent : la dictée le dit
 
 - **Sans réseau, le micro est barré** et plus pâle, et le reste tant que le

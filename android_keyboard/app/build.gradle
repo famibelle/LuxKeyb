@@ -6,11 +6,6 @@ android {
     compileSdk = 36
     namespace 'com.example.kreyolkeyboard'
 
-    // Épinglé : AGP réclame sinon la version NDK qu'il considère par défaut,
-    // qui n'est pas forcément celle installée, et l'erreur ne se voit qu'au
-    // premier build touchant au C++ (dictée vocale).
-    ndkVersion '27.0.12077973'
-
     signingConfigs {
         debug {
             // Configuration debug par défaut (automatique)
@@ -87,15 +82,6 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
 
-        // Dictée vocale : whisper.cpp compilé pour les deux ABI ci-dessus.
-        externalNativeBuild {
-            cmake {
-                // STL statique : le .so de la dictée est le seul consommateur de
-                // la libc++ du projet, l'embarquer évite un second .so par ABI.
-                arguments '-DANDROID_STL=c++_static'
-                cppFlags '-O3', '-ffast-math', '-fno-finite-math-only'
-            }
-        }
     }
 
     // Configuration pour Android App Bundle (AAB)
@@ -152,58 +138,9 @@ android {
             minifyEnabled = false
             shrinkResources = false
 
-            // x86_64 uniquement en debug, pour que la dictée vocale soit
-            // testable sur émulateur : les AVD courants sont x86_64, et sans
-            // cette ABI libluxstt.so est absent de l'APK, donc la dictée
-            // s'annonce indisponible sans qu'on puisse rien observer. Les
-            // artefacts de release restent strictement ARM.
-            ndk {
-                abiFilters 'x86_64'
-            }
         }
     }
     
-    externalNativeBuild {
-        cmake {
-            path 'src/main/cpp/CMakeLists.txt'
-            version '3.22.1'
-        }
-    }
-
-    androidResources {
-        // Sans effet sur cette branche, où aucun .bin n'est empaqueté (voir
-        // l'exclusion du modèle ci-dessous) : conservé tel quel pour que la
-        // branche de la dictée embarquée reste diffable ligne à ligne.
-        //
-        // Là-bas, le modèle ggml doit rester NON compressé dans l'APK : c'est
-        // ce qui permet à AAsset_getBuffer() de renvoyer un pointeur mmap'é sur
-        // la région de l'APK au lieu de décompresser 31 Mo en RAM à chaque
-        // ouverture du micro.
-        noCompress 'bin'
-
-        // Branche de démonstration : la reconnaissance passe par luxasr.uni.lu,
-        // jamais par whisper embarqué. Le modèle de 31 Mo n'a donc rien à faire
-        // dans l'APK — il en ferait un de 38 Mo au lieu de 6,2, à télécharger
-        // sur le wifi d'une salle de réunion pendant que tout le monde attend.
-        //
-        // Exclu ici plutôt que simplement « pas généré par la CI » : un
-        // développeur qui a converti le modèle pour l'autre branche l'a dans ses
-        // assets, et rien ne l'empêcherait de le réempaqueter sans s'en
-        // apercevoir. La CI vérifie ensuite son absence de l'APK produit —
-        // l'exclusion est le moyen, la vérification est la preuve.
-        //
-        // sourceSets.main.assets.filter.exclude ne fonctionne pas ici : le
-        // filtre est ignoré par la tâche de fusion des assets, vérifié en
-        // construisant l'APK.
-        //
-        // Le motif REMPLACE celui d'aapt au lieu de s'y ajouter : les entrées
-        // par défaut sont donc recopiées telles quelles avant la nôtre, faute
-        // de quoi un .DS_Store ou un fichier ~ déposé un jour dans assets/
-        // finirait dans l'APK.
-        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:' +
-                            '!thumbs.db:!picasa.ini:!*~:!ggml-lb-tiny-q5_1.bin'
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -256,29 +193,6 @@ tasks.matching {
             )
         }
     }
-}
-
-// La dictée de cette branche passe par le service en ligne de l'Uni.lu : le
-// modèle whisper embarqué n'y est jamais chargé, et il est exclu du paquet
-// (voir androidResources.ignoreAssetsPattern plus haut). Le garde-fou de la
-// branche `feat/speech-to-text-lb` — qui refuse une release sans modèle — est
-// remplacé par son inverse : on signale un modèle présent dans les assets,
-// pour que personne ne s'étonne de ne pas le retrouver dans l'APK.
-//
-// La bibliothèque native, elle, reste compilée et empaquetée, et c'est un choix
-// discutable : libwhisper et les trois libggml pèsent 3,73 Mo dans l'APK Labs
-// publié, pour les deux ABI de production — soit 60 % de ses 6,22 Mo une fois
-// le modèle parti. Elles ne peuvent rien faire ici, faute de modèle à charger.
-//
-// Elles restent parce que 6,22 Mo se téléchargent déjà en quelques secondes,
-// alors que retirer externalNativeBuild ferait diverger la configuration CMake,
-// la CI (qui n'aurait plus besoin du sous-module) et les vérifications d'APK,
-// sur une branche dont tout l'intérêt est d'être jetable. Le jour où la taille
-// compte vraiment, c'est le premier endroit où couper.
-def sttModel = file('src/main/assets/ggml-lb-tiny-q5_1.bin')
-if (sttModel.exists()) {
-    println "ℹ️  Modèle de dictée présent dans les assets (${String.format('%.1f', sttModel.length() / 1e6)} Mo) : " +
-            "exclu de l'APK sur cette branche, qui délègue la reconnaissance à luxasr.uni.lu."
 }
 
 dependencies {

@@ -33,7 +33,7 @@ class AudioRecorder {
         if (running) return true
 
         val minBuffer = AudioRecord.getMinBufferSize(
-            SttEngine.SAMPLE_RATE,
+            SttSession.SAMPLE_RATE,
             AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT
         )
@@ -54,7 +54,7 @@ class AudioRecorder {
                 // l'AGC ni la réduction de bruit agressive du mode téléphonie,
                 // qui abîment les fricatives dont whisper a besoin.
                 MediaRecorder.AudioSource.VOICE_RECOGNITION,
-                SttEngine.SAMPLE_RATE,
+                SttSession.SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 bufferSize

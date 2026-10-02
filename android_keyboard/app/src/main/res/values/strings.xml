@@ -18,18 +18,14 @@
          long donne réellement ici — é, ä et ë ont leur propre touche. -->
     <string name="first_use_accent_tip">Appui long sur une lettre pour ses accents (è, ê, ü, ö…)</string>
 
-    <!-- Dictée vocale luxembourgeoise (whisper tiny embarqué, hors ligne) -->
+    <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du
+         Luxembourg -->
     <string name="stt_mic_description">Dictée vocale</string>
-    <!-- Bandeau affiché à la place des suggestions pendant la dictée.
-         En luxembourgeois : il s'adresse à quelqu'un qui est en train de
-         parler sa langue, et il doit tenir sur une rangée de clavier. -->
-    <string name="stt_preparing">🎙️ Moment…</string>
-    <string name="stt_listening">🎙️ Schwätzt…</string>
-    <string name="stt_transcribing">✍️ Transkriptioun…</string>
-
-    <!-- Bandeau de la dictée EN LIGNE (branche de démonstration LuxASR). Le globe
-         et la mention du service sont là pour qu'on ne puisse pas confondre avec
-         la dictée embarquée : l'audio part sur un serveur tiers. -->
+    <!-- Bandeau affiché à la place des suggestions pendant la dictée. En
+         luxembourgeois : il s'adresse à quelqu'un qui est en train de parler sa
+         langue, et il doit tenir sur une rangée de clavier. Le globe et le nom
+         du service disent, pendant toute la dictée, que la voix part en
+         ligne. -->
     <string name="stt_online_connecting">🌐 LuxASR verbannen…</string>
     <string name="stt_online_listening">🌐 LuxASR · Schwätzt…</string>
     <string name="stt_online_transcribing">🌐 LuxASR · Transkriptioun…</string>
@@ -38,11 +34,6 @@
     <string name="stt_online_slow">🐢 LuxASR · lues Verbindung…</string>
     <string name="stt_permission_denied">Dictée impossible sans accès au micro</string>
     <string name="stt_mic_unavailable">Micro indisponible</string>
-    <string name="stt_model_unavailable">Dictée indisponible sur cet appareil</string>
-    <!-- Branche de démonstration : un échec de connexion n'est PAS une
-         incapacité de l'appareil. Réutiliser stt_model_unavailable, comme
-         c'était le cas, faisait accuser le téléphone alors que le service ou
-         le réseau étaient en cause — constaté sur un vrai téléphone. -->
     <!-- Le réseau est là, le service ne répond pas : ce n'est ni le téléphone
          ni la connexion de l'utilisateur. -->
     <string name="stt_service_unreachable">Service LuxASR indisponible, réessayez plus tard</string>

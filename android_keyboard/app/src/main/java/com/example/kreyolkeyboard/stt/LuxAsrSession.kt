@@ -327,9 +327,6 @@ class LuxAsrSession(
         setState(SttSession.State.IDLE)
     }
 
-    /** Rien à libérer : le modèle est chez eux, pas chez nous. */
-    override fun releaseModel() = Unit
-
     override fun shutdown() {
         cancel()
         http.dispatcher.executorService.shutdown()
@@ -544,9 +541,9 @@ class LuxAsrSession(
     }
 
     /**
-     * Réglages de la détection de parole. Publics parce que
-     * [LuxAsrApiSession], l'autre chemin en ligne, s'en sert aussi : ce sont les mêmes seuils, calibrés sur les mêmes mesures, et
-     * les dupliquer garantirait qu'ils divergent au premier réglage.
+     * Réglages de la session : détection de parole, délais, point d'accès.
+     * Publics pour que les tests et les bancs les lisent au lieu de les
+     * recopier.
      */
     companion object {
         const val TAG = "LuxAsrSession"
@@ -586,8 +583,7 @@ class LuxAsrSession(
 
         /**
          * Silence qui termine la dictée quand le service n'a signalé aucune fin
-         * de phrase (voir [detecterFinDEnonce]), et seule règle du chemin par
-         * lots [LuxAsrApiSession]. Cinq secondes : le service ne décodant
+         * de phrase (voir [detecterFinDEnonce]). Cinq secondes : le service ne décodant
          * pas le silence, l'attendre ne coûte rien au texte (mesuré le
          * 19 septembre 2026 avec exactement ces 5 s). Le banc de parole enchaînée du
          * 1er septembre 2026 montrait qu'à 1,5 s, 9 % des énoncés de une à trois

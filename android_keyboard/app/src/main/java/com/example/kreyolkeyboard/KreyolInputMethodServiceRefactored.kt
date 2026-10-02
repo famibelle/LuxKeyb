@@ -133,7 +133,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val MIC_RING_PERIOD_MS = 1400L
 
         /**
-         * Affiche la durée de chaque passe whisper dans le bandeau de dictée.
+         * Affiche le chronométrage de chaque réponse du service dans le
+         * bandeau de dictée.
          *
          * Diagnostic du canal Labs. La latence de la dictée n'a jamais été
          * mesurée sur un appareil réel : le banc d'essai de `stt/bench` tourne
@@ -143,18 +144,6 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
          * repasser à false une fois la mesure faite.
          */
         private const val SHOW_PASS_TIMING = true
-
-        /**
-         * Délègue la dictée au service en ligne LuxASR plutôt qu'au modèle
-         * embarqué. **L'audio quitte alors l'appareil.**
-         *
-         * Vrai uniquement sur `feat/luxasr-online`, la branche de démonstration
-         * du rendez-vous avec l'Université du Luxembourg. Ne doit pas atteindre
-         * une version publiée avant, dans cet ordre : l'accord de LuxASR, et une
-         * politique de confidentialité réécrite — celle qui est en ligne
-         * aujourd'hui affirme le contraire.
-         */
-        private const val USE_LUXASR_ONLINE = true
 
         /** Durée d'affichage d'une explication de la dictée dans le bandeau. */
         private const val DICTATION_MESSAGE_MS = 3_500L
@@ -313,8 +302,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     /**
      * Dictée vocale. Construite paresseusement au premier appui sur le micro :
-     * whisper alloue ~165 Mo de tampons de calcul, qu'il serait absurde de
-     * réserver dans le processus IME pour un utilisateur qui ne dicte jamais.
+     * un utilisateur qui ne dicte jamais n'ouvre jamais de client réseau.
      */
     private var sttSession: com.example.kreyolkeyboard.stt.DictationSession? = null
     private var micButton: ImageView? = null
@@ -328,10 +316,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      * après l'appui. Null avec la dictée embarquée, qui n'en a pas besoin.
      */
     private val reseauDictee: com.example.kreyolkeyboard.stt.ReseauDictee? by lazy {
-        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.ReseauDictee(this) { present ->
+        com.example.kreyolkeyboard.stt.ReseauDictee(this) { present ->
             reseauPresent = present
             if (sttSession?.isBusy != true) applyMicTint(listening = false)
-        } else null
+        }
     }
     private var reseauPresent = true
 
@@ -839,9 +827,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // =========================================================================
     // DICTÉE VOCALE
     //
-    // Modèle whisper tiny affiné pour le luxembourgeois (unilux/LuxASR),
-    // embarqué dans l'APK et exécuté localement : aucun octet d'audio ne quitte
-    // l'appareil, ce qui laisse la politique de confidentialité inchangée.
+    // La voix part, pendant la dictée seulement, vers le service LuxASR de
+    // l'Université du Luxembourg (voir LuxAsrSession et la politique de
+    // confidentialité, section « La dictée vocale »).
     // =========================================================================
 
     /**
@@ -900,7 +888,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
      */
     private fun applyMicTint(listening: Boolean) {
         val palette = paletteDeLaVue ?: KeyboardTheme.palette()
-        val horsReseau = !listening && USE_LUXASR_ONLINE && !reseauPresent
+        val horsReseau = !listening && !reseauPresent
         micButton?.apply {
             setImageResource(if (horsReseau) R.drawable.ic_mic_off else R.drawable.ic_mic)
             setColorFilter(if (listening) palette.accent else palette.encreAttenuee)
@@ -1022,7 +1010,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     /**
      * Fait respirer le micro au rythme de la voix captée. C'est le seul retour
-     * réellement immédiat : la première hypothèse de whisper n'arrive qu'après
+     * réellement immédiat : la première hypothèse du service n'arrive qu'après
      * une seconde ou deux, pendant lesquelles rien ne distinguait un micro qui
      * enregistre d'un micro muet.
      */
@@ -1087,49 +1075,32 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     }
 
     /**
-     * Choisit entre la dictée embarquée et le service en ligne LuxASR.
+     * La dictée passe par le service en ligne LuxASR ([LuxAsrSession]), en
+     * WebSocket : aperçu pendant qu'on parle, texte final 0,23 s après
+     * l'arrêt, 25 % de mots erronés sur des énoncés d'une à trois phrases.
      *
-     * Ce n'est pas un réglage d'implémentation. La dictée embarquée garantit que
-     * l'audio ne quitte jamais l'appareil, ce sur quoi repose la politique de
-     * confidentialité publiée ; le service en ligne rompt cette garantie en
-     * échange d'une qualité que le matériel mobile ne permet pas — 72 % de WER
-     * mesurés pour le modèle embarqué contre 25 % pour le service, avec
-     * ponctuation et capitalisation.
-     *
-     * Le chemin en ligne est le WebSocket ([LuxAsrSession]). Du 1er au
-     * 19 septembre 2026 c'était l'API par lots `/asr2`, parce que l'ancien
-     * moteur temps réel du service perdait 11,5 points de WER sur des énoncés
-     * de une à trois phrases. Le moteur du 16 septembre a comblé l'écart
-     * (25,4 % contre 26,9 % sur les mêmes 22 énoncés) et rend le texte final en
-     * 0,23 s au lieu de 1,30 s, avec un aperçu pendant qu'on parle.
-     * [LuxAsrApiSession] reste sur la branche en repli.
-     *
-     * [USE_LUXASR_ONLINE] n'est vrai que sur la branche de démonstration
-     * préparée pour le rendez-vous avec l'Université du Luxembourg, dont le
-     * service demande explicitement qu'on les contacte avant toute intégration.
+     * Une dictée embarquée a existé jusqu'au 2 octobre 2026 et a été retirée :
+     * 72 % de mots erronés pour whisper-tiny dans le téléphone, et des modèles
+     * plus gros trop lents sur un téléphone ancien (voir SttSession).
      */
     private fun newDictationSession(): com.example.kreyolkeyboard.stt.DictationSession =
-        if (USE_LUXASR_ONLINE) com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener) {
+        com.example.kreyolkeyboard.stt.LuxAsrSession(dictationListener) {
             reseauDictee?.disponible() ?: true
         }
-        else SttSession(this, dictationListener)
 
     /** État de la dictée tel que le dernier rappel l'a annoncé. */
     private var etatDictee = SttSession.State.IDLE
 
     /** Libellé du bandeau pour un état de la dictée, null au repos. */
     private fun statusLabel(state: SttSession.State): Int? = when (state) {
-        // Le chargement du modèle prend jusqu'à une seconde au premier appui :
-        // sans message, l'utilisateur croit que son appui n'a pas été pris et
+        // La connexion prend une fraction de seconde, parfois plus : sans
+        // message, l'utilisateur croit que son appui n'a pas été pris et
         // appuie une seconde fois.
-        SttSession.State.LOADING ->
-            if (USE_LUXASR_ONLINE) R.string.stt_online_connecting
-            else R.string.stt_preparing
+        SttSession.State.LOADING -> R.string.stt_online_connecting
         SttSession.State.LISTENING -> listeningLabel()
         // Micro coupé pour lenteur : ce qui attend finit de partir, et c'est
         // la connexion qu'on attend, pas la transcription.
         SttSession.State.FINALIZING -> when {
-            !USE_LUXASR_ONLINE -> R.string.stt_transcribing
             reseauLent -> R.string.stt_online_slow
             else -> R.string.stt_online_transcribing
         }
@@ -1138,7 +1109,6 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     /** Bandeau d'écoute : le réseau qui ne suit plus se signale à la place. */
     private fun listeningLabel(): Int = when {
-        !USE_LUXASR_ONLINE -> R.string.stt_listening
         reseauLent -> R.string.stt_online_slow
         else -> R.string.stt_online_listening
     }
@@ -1234,7 +1204,6 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             showDictationMessage(
                 when (error) {
                     SttSession.Error.MIC_UNAVAILABLE -> R.string.stt_mic_unavailable
-                    SttSession.Error.MODEL_UNAVAILABLE -> R.string.stt_model_unavailable
                     SttSession.Error.SERVICE_UNREACHABLE -> R.string.stt_service_unreachable
                     SttSession.Error.NO_NETWORK -> R.string.stt_no_network
                     SttSession.Error.CONNECTION_LOST -> R.string.stt_connection_lost
@@ -2229,12 +2198,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         inputProcessor.resetState()
 
         // Le champ de saisie change : la dictée en cours n'a plus de
-        // destinataire. On rend aussi les ~165 Mo de tampons de whisper, que
-        // rien ne justifie de garder pendant que l'utilisateur est ailleurs —
-        // c'est précisément ce qui ferait du processus IME une cible du tueur
-        // de mémoire.
+        // destinataire.
         cancelDictation()
-        sttSession?.releaseModel()
     }
     
     /**
@@ -2323,8 +2288,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             // Arrêter la suppression par mots si active
             stopWordDeletion()
 
-            // Dictée : coupe le micro, libère le contexte whisper et arrête son
-            // thread de travail.
+            // Dictée : coupe le micro et ferme la connexion.
             sttSession?.shutdown()
             sttSession = null
 
