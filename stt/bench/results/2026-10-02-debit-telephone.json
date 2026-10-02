@@ -1,0 +1,158 @@
+{
+ "date": "2026-10-02",
+ "appareil": "Galaxy A21s, Android 12, Wi-Fi",
+ "apk": "Labs 30.1.0+dbc058f : micro coupé à 8 s de retard puis envoi du reste (30 s au plus), abandon seulement si rien ne part pendant 5 s",
+ "comparer_a": "2026-10-01-debit-telephone.json (ancienne règle : abandon pur à 6 s)",
+ "montage": "proxy_debit.c sur le téléphone ; bench_debit.py ; 30 s du fichier 001_839ff4ad au haut-parleur ; bandeau lu sur captures",
+ "constat": "Le réglage rend le texte complet à 192 kbit/s (102 mots contre 69) et dans un creux de 10 s (100 contre 28). La qualité varie d'un passage à l'autre côté service, y compris sans bridage.",
+ "passage_1": [
+  {
+   "scenario": "illimité",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ]
+   ],
+   "attendu": "aucune alerte",
+   "observe": "pas d'alerte",
+   "duree_dictee_s": 38.1,
+   "mots_rendus": 102,
+   "wer_infixe": 0.216
+  },
+  {
+   "scenario": "48 Ko/s (384 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     48000
+    ]
+   ],
+   "attendu": "aucune alerte : 1,5 × le besoin",
+   "observe": "pas d'alerte",
+   "duree_dictee_s": 37.5,
+   "mots_rendus": 102,
+   "wer_infixe": 0.255
+  },
+  {
+   "scenario": "24 Ko/s (192 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     24000
+    ]
+   ],
+   "attendu": "alerte vers 10 s, micro jamais coupé, texte complet après l'envoi du reste",
+   "observe": "alerte vers 11 s, micro jamais coupé, envoi du reste jusqu'à 46 s, texte complet",
+   "duree_dictee_s": 46.5,
+   "mots_rendus": 102,
+   "wer_infixe": 0.245
+  },
+  {
+   "scenario": "12 Ko/s (96 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     12000
+    ]
+   ],
+   "attendu": "alerte vers 5 s, micro coupé vers 16 s, le reste part, « trop lente »",
+   "observe": "alerte vers 6 s, micro coupé vers 16 s, envoi du reste jusqu'à 43 s ; début de l'extrait transcrit deux fois par le service",
+   "duree_dictee_s": 43.3,
+   "mots_rendus": 57,
+   "wer_infixe": 0.561
+  },
+  {
+   "scenario": "trou de 10 s à 8 Ko/s",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ],
+    [
+     8,
+     8000
+    ],
+    [
+     18,
+     0
+    ]
+   ],
+   "attendu": "alerte puis retour à la normale, micro jamais coupé, texte complet",
+   "observe": "alerte puis retour à « Schwätzt… », micro jamais coupé ; trous au milieu du texte (variabilité du service, voir 2e passage)",
+   "duree_dictee_s": 37.1,
+   "mots_rendus": 72,
+   "wer_infixe": 0.611
+  },
+  {
+   "scenario": "zone blanche après 8 s",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ],
+    [
+     8,
+     1
+    ]
+   ],
+   "attendu": "abandon vers 15 s, « connexion perdue », texte d'avant gardé",
+   "observe": "abandon à 16 s, « Connexion perdue pendant la dictée »",
+   "duree_dictee_s": 16.2,
+   "mots_rendus": 23,
+   "wer_infixe": 0.348
+  }
+ ],
+ "passage_2": [
+  {
+   "scenario": "12 Ko/s (96 kbit/s)",
+   "plan_octets_par_s": [
+    [
+     0,
+     12000
+    ]
+   ],
+   "attendu": "alerte vers 5 s, micro coupé vers 16 s, le reste part, « trop lente »",
+   "observe": "alerte à 6 s, micro coupé vers 16 s, envoi du reste jusqu'à 41,7 s, « Connexion trop lente pour la dictée » affiché à 42,4 s",
+   "duree_dictee_s": 41.7,
+   "mots_rendus": 48,
+   "wer_infixe": 0.271
+  },
+  {
+   "scenario": "trou de 10 s à 8 Ko/s",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ],
+    [
+     8,
+     8000
+    ],
+    [
+     18,
+     0
+    ]
+   ],
+   "attendu": "alerte puis retour à la normale, micro jamais coupé, texte complet",
+   "observe": "alerte puis retour à la normale, micro jamais coupé, texte complet",
+   "duree_dictee_s": 37.7,
+   "mots_rendus": 100,
+   "wer_infixe": 0.28
+  },
+  {
+   "scenario": "illimité",
+   "plan_octets_par_s": [
+    [
+     0,
+     0
+    ]
+   ],
+   "attendu": "aucune alerte",
+   "observe": "pas d'alerte ; un morceau du milieu perdu par le service sans aucun bridage",
+   "duree_dictee_s": 40.3,
+   "mots_rendus": 81,
+   "wer_infixe": 0.457
+  }
+ ]
+}

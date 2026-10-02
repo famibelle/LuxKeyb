@@ -174,6 +174,8 @@ def main():
                     regler_debit(dev, d)
                     print(f"   {t:4.0f} s : débit → {d or 'illimité'}", flush=True)
 
+            numero = len(resultats)   # figé ici : le résultat est ajouté avant les dernières captures
+
             def capturer():
                 if not args.captures:
                     return
@@ -182,7 +184,7 @@ def main():
                 def une():
                     png = subprocess.run(["adb", "-s", dev, "exec-out", "screencap", "-p"],
                                          capture_output=True).stdout
-                    (args.captures / f"{len(resultats)}_{time.time() - t0:05.1f}.png").write_bytes(png)
+                    (args.captures / f"{numero}_{time.time() - t0:05.1f}.png").write_bytes(png)
                 while not arret.is_set():
                     une()
                     i += 1
