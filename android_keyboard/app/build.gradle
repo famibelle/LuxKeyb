@@ -141,6 +141,16 @@ android {
         }
     }
     
+    // Test ouvert de la dictée sur le Play Store : l'AAB de release construit
+    // par la CI depuis la branche ASR porte l'icône du canal Labs, avec son
+    // bandeau « LABS », pour qu'un testeur sache qu'il a la version d'essai et
+    // non la stable. La condition porte sur la branche de la CI, pas sur un
+    // fichier : fusionnée dans main, la release retrouve d'elle-même l'icône
+    // normale, et un build local garde l'icône normale.
+    if (System.getenv('GITHUB_REF_NAME') == 'feat/luxasr-online') {
+        sourceSets.release.res.srcDirs += 'src/labs/res'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
