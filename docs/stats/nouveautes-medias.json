@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "30.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_correcteur_accueil.png",
+        "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+        "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
+      }
+    ]
+  },
   "30.1.0": {
     "images": [
       {
