@@ -209,8 +209,38 @@ def definition_de(mot, glose):
     return ", ".join(retenues[:ACCEPTIONS_MAX])
 
 
+_NOMS_PROPRES = None
+
+
+def est_nom_propre_lod(forme):
+    """Vrai si le LOD tient la forme pour un nom propre.
+
+    La liste vient de l'actif des traductions (`noms_propres`), calculée par
+    `generate_translations.py:est_nom_propre_lod` : une forme dont **tous** les
+    articles qui la glosent sont marqués `NP`. C'est le premier filtre du
+    vivier depuis le 2026-10-03, et il remplace [est_nom_propre] sur la glose
+    source, qui ne valait qu'en français. Il rend au vivier les pertes
+    légitimes listées ci-dessous (`Fransous`, `Staat`, `Internet`…) et garde
+    les homographes communs (`Stroossen`, rues).
+
+    [est_nom_propre] reste pour la définition retenue : « Café », glosé
+    « café, Eschweiler-Halte », n'est pas un nom propre, mais une fois
+    l'acception qui répète le mot retirée il ne reste que le lieu-dit.
+    """
+    global _NOMS_PROPRES
+    if _NOMS_PROPRES is None:
+        with open(CHEMIN_TRADUCTIONS, "r", encoding="utf-8") as f:
+            _NOMS_PROPRES = set(json.load(f).get("noms_propres", []))
+    return forme in _NOMS_PROPRES
+
+
 def est_nom_propre(glose):
     """Vrai si toutes les acceptions commencent par une majuscule.
+
+    **Depuis le 2026-10-03, ne sert plus qu'à la définition retenue** : le
+    filtre de la glose source est [est_nom_propre_lod]. Cette règle ne vaut
+    qu'en français, où un nom commun s'écrit en minuscules ; l'historique
+    qui suit explique pourquoi les noms propres doivent être écartés.
 
     Le repérage des noms propres, et il tient en une ligne parce que le LOD
     écrit ses gloses en français : un nom commun français est en minuscules,
@@ -305,12 +335,13 @@ def construire_vivier(dico, table):
             rejets["hors alphabet"] += 1
             continue
 
-        glose = table.get(mot) or table.get(mot.lower())
+        cle = mot if mot in table else mot.lower()
+        glose = table.get(cle)
         if not glose:
             rejets["sans glose"] += 1
             continue
 
-        if est_nom_propre(glose):
+        if est_nom_propre_lod(cle):
             rejets["nom propre"] += 1
             continue
 

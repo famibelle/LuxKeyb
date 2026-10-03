@@ -93,7 +93,7 @@ from generate_crossword import (
     _suites,
     charger_actifs,
     sans_noms_propres,
-    est_nom_propre,
+    est_nom_propre_lod,
 )
 
 if sys.platform.startswith('win'):
@@ -180,7 +180,7 @@ def construire_vivier(dico, table):
     nom propre — moins l'exigence que la glose ne contienne pas le mot, plus un
     plancher de fréquence unique.
 
-    Le refus des noms propres passe par [est_nom_propre], partagé avec
+    Le refus des noms propres passe par [est_nom_propre_lod], partagé avec
     Kräizwuert : c'est le même défaut des deux côtés, et la livraison du
     2026-09-07 casait ici 115 communes, pays et prénoms. Un chassé-croisé de
     noms de localités n'apprend rien — le mot est donné, et la récompense
@@ -217,12 +217,13 @@ def construire_vivier(dico, table):
             rejets["hors alphabet"] += 1
             continue
 
-        glose = table.get(mot) or table.get(mot.lower())
+        cle = mot if mot in table else mot.lower()
+        glose = table.get(cle)
         if not glose:
             rejets["sans glose"] += 1
             continue
 
-        if est_nom_propre(glose):
+        if est_nom_propre_lod(cle):
             rejets["nom propre"] += 1
             continue
 

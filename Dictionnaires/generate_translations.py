@@ -395,6 +395,30 @@ def gloser(forme, par_graphie, par_graphie_min, par_article):
     return gloses or None
 
 
+def est_nom_propre_lod(forme, par_graphie, par_graphie_min, par_article):
+    """Vrai si **tous** les articles glosés qu'atteint la forme sont des noms propres.
+
+    C'est le repérage des noms propres depuis le 2026-10-03, et il remplace la
+    règle « toutes les acceptions commencent par une majuscule », qui ne tenait
+    qu'en français : l'allemand capitalise tous ses noms (« Joer » → Jahr
+    passait pour un nom propre, 9 905 formes sur 20 640), l'anglais ses jours,
+    ses mois et « I ». Le drapeau `NP` du LOD, lui, ne dépend d'aucune langue.
+
+    « Tous » et non « le premier » : « Stroossen » mène à la commune de
+    Strassen, dont c'est le lemme, et à « Strooss » (rue), dont c'est le
+    pluriel ; « Polen » à la Pologne et à « Pol » (pôle). Le premier article ne
+    dirait que la commune et le pays.
+
+    Mesuré sur le français, contre l'ancienne règle : 778 formes contre 923,
+    758 en commun. Elle rend au jeu « Staat », « Internet », « Fransous »,
+    « Amerikaner », que l'ancienne écartait à tort, et attrape en plus
+    « Mëttelmier » ou « Kongo », qu'elle laissait passer.
+    """
+    identifiants = [i for i in articles_tries(forme, par_graphie, par_graphie_min, par_article)
+                    if i in par_article]
+    return bool(identifiants) and all(par_article[i][1] for i in identifiants)
+
+
 def _plier(texte):
     """Minuscules sans diacritiques. Miroir de `AccentTolerantMatcher.normalize`."""
     decompose = unicodedata.normalize("NFD", texte.lower())
@@ -537,6 +561,10 @@ def main():
         print(f"   ✅ {glosees_lod} formes LOD glosées en plus "
               f"(sur {len(formes_lod)} apportées au clavier)")
 
+    noms_propres = sorted(f for f in table
+                          if est_nom_propre_lod(f, par_graphie, par_graphie_min, par_article))
+    print(f"   🏛️ {len(noms_propres)} formes glosées sont des noms propres pour le LOD")
+
     # Les jeux ne tirent que parmi les formes dont la glose apprend quelque
     # chose : si l'une de ces réserves se vide, le jeu correspondant se
     # retrouve sans mots et l'échec est silencieux à l'écran. On les compte
@@ -544,8 +572,10 @@ def main():
     # `TranslationDictionary.gloseInstructive`, sinon le chiffre annoncé ne
     # serait pas celui que le jeu voit.
     formes_dictionnaire = {forme for forme, _ in dictionnaire}
+    ensemble_propres = set(noms_propres)
     instructives = [f for f, glose in table.items()
-                    if f in formes_dictionnaire and _instructive(f, glose)]
+                    if f in formes_dictionnaire and _instructive(f, glose)
+                    and f not in ensemble_propres]
     glosees_dico = sum(1 for f in table if f in formes_dictionnaire)
     print(f"   💡 {len(instructives)} formes du dictionnaire dont la glose ne répète "
           f"pas le mot ({glosees_dico - len(instructives)} emprunts ou toponymes "
@@ -688,6 +718,9 @@ def main():
         "attribution": ATTRIBUTION,
         "count": len(table),
         "translations": table,
+        # Les formes que les jeux ne tirent pas : voir est_nom_propre_lod. La
+        # table garde leur glose, un mot croisé ailleurs reste traduit.
+        "noms_propres": noms_propres,
     }
 
     sauvegarder_precedent(arguments.sortie)
