@@ -1,9 +1,32 @@
 {
  "genere_le": "2026-10-03",
- "derniere_version": "30.2.0",
+ "derniere_version": "30.2.1",
  "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "30.2.1",
+   "date": "2026-10-03",
+   "intro": "Les fautes de frappe se corrigent plus vite.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Performances",
+     "points": [
+      {
+       "titre": "Les corrections arrivent presque trois fois plus vite",
+       "texte": "Quand le début du mot tapé n'existe pas, par exemple « Freidg » pour « Freideg ». Sur un téléphone modeste, la petite saccade de la barre de suggestions disparaît. Les corrections proposées restent les mêmes."
+      },
+      {
+       "titre": "Taper vite ne ralentit plus le clavier",
+       "texte": "Une recherche rendue inutile par la lettre suivante s'arrête aussitôt."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "30.2.0",
    "date": "2026-10-03",
@@ -191,59 +214,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "29.4.0",
-   "date": "2026-09-29",
-   "intro": "L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Une fois le clavier installé, l'application s'ouvre sur votre journée",
-       "texte": "Au lieu de l'écran d'installation : les cartes à revoir, le mot du jour, votre dernier jeu et votre progression, dans cet ordre."
-      },
-      {
-       "titre": "« Réviser maintenant » lance la révision tout de suite",
-       "texte": "La première carte apparaît sans passer par la boîte ; en fermant la séance, on retrouve la Boîte de Leitner. Quand rien n'est à revoir, la carte le dit, et propose de jouer pour gagner d'autres cartes."
-      },
-      {
-       "titre": "Le mot du jour s'ouvre dans le Wierderbuch",
-       "texte": "D'un toucher, la recherche déjà faite."
-      },
-      {
-       "titre": "« Rejouer à Wuertmix »",
-       "texte": "Relance le dernier jeu ouvert, quel qu'il soit."
-      },
-      {
-       "titre": "La progression tient en une carte",
-       "texte": "Votre niveau, la barre jusqu'au palier suivant et le nombre de mots qui restent."
-      },
-      {
-       "titre": "La configuration se replie sous une seule ligne",
-       "texte": "« Clavier installé » : un toucher la déplie, avec les réglages des majuscules, le correcteur et la façon de changer de clavier."
-      },
-      {
-       "titre": "L'onglet s'appelle « Haut »",
-       "texte": "Aujourd'hui en luxembourgeois, comme Spiller et Wierderbuch."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_accueil_haut.png",
-     "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
-     "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
-    }
-   ],
-   "image": "Screenshots/lux_accueil_haut.png",
-   "image_alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
-   "image_legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
   }
  ]
 }
