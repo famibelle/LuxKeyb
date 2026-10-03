@@ -89,6 +89,73 @@ object LevenshteinDistance {
     }
     
     /**
+     * Distance bornée pour le balayage du dictionnaire : même résultat que
+     * [calculateBounded] (exact jusqu'à [maxDistance], `maxDistance + 1`
+     * au-delà), sans rien allouer par mot.
+     *
+     * Le repli compare la saisie à des dizaines de milliers de formes par
+     * frappe. [calculateBounded] allouait quatre tableaux à chacune : sur un
+     * téléphone modeste, ce sont ces centaines de milliers d'allocations qui
+     * coûtaient, plus que le calcul. Ici :
+     *
+     * - la saisie est repliée en minuscules **une fois** par recherche
+     *   ([entree]) et les deux lignes de travail sont fournies par l'appelant ;
+     * - seule la **bande diagonale** de largeur `2 × maxDistance + 1` est
+     *   calculée (Ukkonen) : hors d'elle, toute cellule dépasse déjà le seuil.
+     *   Pour un seuil de 2, cinq cellules par ligne au lieu de toute la ligne.
+     */
+    internal fun distanceBornee(
+        entree: CharArray,
+        mot: String,
+        maxDistance: Int,
+        precedente: IntArray,
+        courante: IntArray
+    ): Int {
+        val n = entree.size
+        val m = mot.length
+        val horsSeuil = maxDistance + 1
+        if (kotlin.math.abs(n - m) > maxDistance) return horsSeuil
+        if (m == 0) return n
+        if (n == 0) return m
+
+        var prec = precedente
+        var cour = courante
+        for (j in 0..n) prec[j] = if (j <= maxDistance) j else horsSeuil
+
+        for (i in 1..m) {
+            val c = mot[i - 1].lowercaseChar()
+            val debut = maxOf(1, i - maxDistance)
+            val fin = minOf(n, i + maxDistance)
+            var minimumLigne = horsSeuil
+            if (debut == 1) {
+                cour[0] = if (i <= maxDistance) i else horsSeuil
+                minimumLigne = cour[0]
+            } else {
+                cour[debut - 1] = horsSeuil
+            }
+            for (j in debut..fin) {
+                var v = prec[j - 1] + (if (entree[j - 1] == c) 0 else 1)
+                val suppression = prec[j] + 1
+                if (suppression < v) v = suppression
+                val insertion = cour[j - 1] + 1
+                if (insertion < v) v = insertion
+                if (v > horsSeuil) v = horsSeuil
+                cour[j] = v
+                if (v < minimumLigne) minimumLigne = v
+            }
+            if (fin < n) cour[fin + 1] = horsSeuil
+            if (minimumLigne > maxDistance) return horsSeuil
+            val echange = prec
+            prec = cour
+            cour = echange
+        }
+        return prec[n]
+    }
+
+    /** Une forme sur [PAS_ANNULATION] seulement interroge l'annulation. */
+    private const val PAS_ANNULATION = 4096
+
+    /**
      * Calculates Levenshtein distance with accent normalization.
      * This combines spell correction with accent-tolerant matching.
      * 
@@ -128,12 +195,16 @@ object LevenshteinDistance {
         dictionary: List<Pair<String, Int>>,
         maxDistance: Int = 2,
         maxResults: Int = 5,
-        lengthTolerance: Int = 2
+        lengthTolerance: Int = 2,
+        estAnnule: () -> Boolean = { false }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
         
         val inputLength = input.length
+        val entree = CharArray(inputLength) { input[it].lowercaseChar() }
+        val precedente = IntArray(inputLength + 1)
+        val courante = IntArray(inputLength + 1)
         
         // Un seul parcours, sans liste intermédiaire : le filtre par longueur
         // puis le calcul de distance allouaient chacun une copie du
@@ -143,10 +214,12 @@ object LevenshteinDistance {
         // préfixe ne correspond.
         val matches = ArrayList<Triple<String, Int, Int>>()
         var examined = 0
-        for ((word, freq) in dictionary) {
+        for ((indice, entreeDico) in dictionary.withIndex()) {
+            if (indice % PAS_ANNULATION == 0 && estAnnule()) return emptyList()
+            val (word, freq) = entreeDico
             if (kotlin.math.abs(word.length - inputLength) > lengthTolerance) continue
             examined++
-            val distance = calculateBounded(input, word, maxDistance)
+            val distance = distanceBornee(entree, word, maxDistance, precedente, courante)
             if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
         }
         
@@ -185,13 +258,17 @@ object LevenshteinDistance {
         normalizedWords: List<String>,
         normalizer: (String) -> String,
         maxDistance: Int = 2,
-        maxResults: Int = 5
+        maxResults: Int = 5,
+        estAnnule: () -> Boolean = { false }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
         
         val normalizedInput = normalizer(input)
         val inputLength = normalizedInput.length
+        val entree = CharArray(inputLength) { normalizedInput[it].lowercaseChar() }
+        val precedente = IntArray(inputLength + 1)
+        val courante = IntArray(inputLength + 1)
 
         // `normalizedWords` est la liste précalculée au chargement du moteur,
         // alignée indice à indice avec `dictionary`. Sans elle, cette boucle
@@ -206,9 +283,12 @@ object LevenshteinDistance {
         val matches = ArrayList<Triple<String, Int, Int>>()
         val n = minOf(dictionary.size, normalizedWords.size)
         for (i in 0 until n) {
+            // Une frappe plus récente a rendu cette recherche inutile : on la
+            // laisse tomber au lieu de lui disputer le processeur.
+            if (i % PAS_ANNULATION == 0 && estAnnule()) return emptyList()
             val normalizedWord = normalizedWords[i]
             if (kotlin.math.abs(normalizedWord.length - inputLength) > maxDistance) continue
-            val distance = calculateBounded(normalizedInput, normalizedWord, maxDistance)
+            val distance = distanceBornee(entree, normalizedWord, maxDistance, precedente, courante)
             if (distance <= maxDistance) {
                 val (word, freq) = dictionary[i]
                 matches.add(Triple(word, freq, distance))
