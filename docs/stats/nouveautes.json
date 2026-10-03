@@ -131,304 +131,6 @@
    "image_legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
   },
   {
-   "version": "31.0.0",
-   "date": "2026-10-02",
-   "intro": "Le clavier dicte en luxembourgeois. Version destinée au <strong>test ouvert</strong> du Play Store, construite depuis la branche <code>feat/luxasr-online</code> : elle n'est pas fusionnée dans <code>main</code> tant que l'accord de l'Université du Luxembourg n'est pas écrit, et n'est pas publiée en release GitHub.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Dictée vocale en luxembourgeois",
-       "texte": "Un micro à droite de la barre de suggestions : on parle, le texte s'écrit pendant qu'on parle, ponctué et avec les majuscules, et le micro se referme seul quand on se tait. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg."
-      },
-      {
-       "titre": "Un écran explique, avant la première dictée, où part la voix",
-       "texte": "Vers l'Université du Luxembourg, pendant la dictée seulement, transcrite sans être conservée. Rien n'est envoyé avant « J'accepte ». Cet écran précède la demande d'accès au micro d'Android, comme l'exige Google Play."
-      },
-      {
-       "titre": "Sans réseau, le micro est barré ; sur un réseau lent, le clavier le dit",
-       "texte": "Coupe le micro si le retard devient trop grand, et finit d'envoyer ce qui attend : le texte arrive en entier."
-      },
-      {
-       "titre": "Ce que vous tapez ne quitte toujours jamais le téléphone",
-       "texte": "La dictée ne s'ouvre pas dans les champs de mot de passe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Nouvelles autorisations, toutes réservées à la dictée : micro, Internet, état du réseau."
-      },
-      {
-       "titre": null,
-       "texte": "Politique de confidentialité 3.0 (section « La dictée vocale ») ; public de 16 ans et plus."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🧹",
-     "titre": "La dictée embarquée quitte la branche",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Retirés : <code>SttEngine</code>, le pont JNI <code>whisper_jni.cpp</code>, la configuration CMake, le sous-module <code>whisper.cpp</code>, le repli par lots <code>LuxAsrApiSession</code>, et dans la CI le job qui convertissait le modèle whisper avec PyTorch à chaque build. <code>SttSession</code> ne garde que les types partagés (écouteur, états, erreurs)."
-      },
-      {
-       "titre": null,
-       "texte": "La bibliothèque native qu'on livrait sans jamais s'en servir pesait 3,7 Mo dans l'APK Labs : l'APK de debug passe de 15,3 à 12,6 Mo et ne contient plus aucun <code>.so</code>. <code>labs.yml</code> vérifie désormais qu'il n'en reste rien."
-      },
-      {
-       "titre": null,
-       "texte": "<code>build.gradle</code>, ProGuard et <code>build-apk.yml</code> redeviennent identiques à main, à OkHttp et au type de build Labs près : fusionnée, la branche n'apportera plus à main ni NDK ni sous-module."
-      },
-      {
-       "titre": null,
-       "texte": "Le banc <code>stt/bench</code> télécharge whisper.cpp v1.7.4 lui-même et reste capable de mesurer un modèle hors ligne."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📶",
-     "titre": "Sans réseau ou réseau trop lent : la dictée le dit",
-     "points": [
-      {
-       "titre": "Sans réseau, le micro est barré",
-       "texte": "Et plus pâle, et le reste tant que le clavier est affiché ; il redevient normal dès que le réseau revient. L'appui dit « Dictée : pas de connexion Internet » sans rien tenter, au lieu de laisser « LuxASR verbannen… » à l'écran jusqu'à l'échec."
-      },
-      {
-       "titre": "Trois causes, trois messages",
-       "texte": "Au lieu d'un seul « injoignable » : pas de connexion, connexion perdue pendant la dictée, service LuxASR indisponible (le réseau va bien, l'Université ne répond pas). Le texte déjà dicté est toujours gardé."
-      },
-      {
-       "titre": "Réseau trop lent",
-       "texte": "La dictée envoie 256 kbit/s. Quand l'audio s'empile (plus d'une seconde en attente d'envoi), le bandeau passe à « 🐢 LuxASR · lues Verbindung… ». Le tampon d'envoi TCP est réduit pour que ce retard se voie au lieu de se cacher dans celui du système : face à un pair qui ne lit plus, l'alerte vient après 2,7 s d'audio, contre 58 s avec le tampon par défaut (<code>FileEnvoiReseauTest</code>). Ni l'émulateur ni <code>adb reverse</code> ne permettent de le voir sur un appareil : tous deux accusent réception de tout puis brident en aval."
-      },
-      {
-       "titre": "Lent n'est pas bloqué",
-       "texte": "Un réseau lent mais vivant ne fait plus perdre de texte : à huit secondes de retard, le micro se coupe mais ce qui attend finit de partir (jusqu'à 30 s), puis « Connexion trop lente pour la dictée » dit pourquoi le micro s'est fermé. Seul un réseau <strong>bloqué</strong> (plus un octet ne part depuis 5 s) fait abandonner, avec « Connexion perdue pendant la dictée » et le texte déjà rendu. En fin de dictée normale, l'attente du texte final court depuis que tout l'audio est parti, et non plus depuis l'arrêt. Mesuré la veille sur téléphone (<code>bench_debit.py</code>) : l'ancien seuil de 6 s coupait un creux de 10 s à 64 kbit/s 0,6 s avant le retour du réseau, et à 192 kbit/s la fin de l'extrait était perdue (69 mots sur 99)."
-      },
-      {
-       "titre": null,
-       "texte": "Connexion bornée à 5 s (10 s avant), passage en WebSocket compris : un serveur qui accepte sans répondre laissait le bandeau de connexion à vie."
-      },
-      {
-       "titre": "Les messages de la dictée passent du Toast au bandeau du clavier",
-       "texte": "Android supprime les toasts d'une application dont on a bloqué les notifications, et l'application ne les demande que pour les montées de niveau : qui les refusait ne voyait aucune explication de la dictée."
-      },
-      {
-       "titre": null,
-       "texte": "Aucune autorisation nouvelle : <code>ACCESS_NETWORK_STATE</code>, déjà déclarée, est accordée à l'installation sans rien demander. Aucun test de débit."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🌐",
-     "titre": "Dictée déléguée au service luxasr.uni.lu",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Nouveau <code>LuxAsrSession</code> : client WebSocket vers <code>wss://luxasr.uni.lu/prod/ws/transcribe</code>, PCM 16 bits 16 kHz mono en trames binaires, contrôle en JSON. Le serveur découpe lui-même sur les silences et gère le contexte inter-segments — ce que notre découpage local perd."
-      },
-      {
-       "titre": null,
-       "texte": "<code>DictationSession</code> abstrait ce que l'IME attend d'une dictée ; <code>SttSession</code> et <code>LuxAsrSession</code> l'implémentent. L'interface existe pour que l'arbitrage tienne en une ligne au point de construction, pas pour laisser croire que les deux se valent."
-      },
-      {
-       "titre": "L'audio quitte l'appareil",
-       "texte": "Ce que la politique de confidentialité publiée affirme ne jamais arriver. Le bandeau affiche 🌐 LuxASR pendant toute la dictée, la préversion est publiée sous un tag distinct (<code>labs-luxasr</code>) avec son propre nom de fichier, et le flashcode du site continue de servir la version hors ligne."
-      },
-      {
-       "titre": null,
-       "texte": "Le site de LuxASR demande un accord préalable pour toute intégration : cette branche est le support de cette demande, pas son contournement."
-      }
-     ],
-     "texte": "Pourquoi : la dictée embarquée mesurée le 28 août rend 72 % de WER avec le modèle embarqué et 36 % avec <code>base</code>, quand il en faudrait moins de 15 %. Le même énoncé revient de LuxASR correct, ponctué et capitalisé, en ~270 ms de traitement serveur.",
-     "tableau": null
-    },
-    {
-     "emoji": "🔐",
-     "titre": "La racine TLS de l'Uni.lu manque à Android 12 — dictée impossible",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Le certificat de <code>*.uni.lu</code> remonte à <strong>HARICA TLS RSA Root CA 2021</strong>, racine créée en 2021 et ajoutée au magasin système d'Android bien plus tard. Cet appareil en compte 125 ; celle-là n'y est pas. La poignée de main TLS d'OkHttp échoue donc, le WebSocket rend <code>onFailure</code>, et l'utilisateur lit un message qui accuse son réseau."
-      },
-      {
-       "titre": "Chrome ne le voit pas",
-       "texte": "Il embarque son propre magasin de racines depuis 2023 et ouvre le même WebSocket en 0,27 s sur le même téléphone. Vérifier « le site s'affiche, donc le réseau marche » mène donc exactement à côté. Ce qui a tranché : la connexion TCP vers <code>[2001:a18:a:c5::99]:443</code> s'établit dans <code>/proc/net/tcp6</code> puis retombe aussitôt — l'échec est postérieur au TCP."
-      },
-      {
-       "titre": null,
-       "texte": "La racine est désormais empaquetée (<code>res/raw/</code>) et déclarée dans <code>res/xml/network_security_config.xml</code> <strong>pour le seul domaine <code>luxasr.uni.lu</code></strong>, en plus du magasin système : rien n'est affaibli ailleurs, et le jour où Android rattrape son retard la configuration devient redondante sans devenir fausse."
-      },
-      {
-       "titre": null,
-       "texte": "Vérifié sur l'appareil après correction : <code>✅ session ws_… · service v2.3.0</code>, puis une transcription correcte d'un extrait de conférence de presse gouvernementale rejoué au haut-parleur — « Souwäit ech mech elo erënnere ka vu virun enger hallwer Stonn huet d'Majoritéit vun den Deputéierte géint gestëmmt » — capitalisation et ponctuation comprises."
-      }
-     ],
-     "texte": "Constaté sur un Galaxy A21s sous Android 12, le téléphone de démonstration : tout appui sur le micro rendait « Service LuxASR injoignable — vérifiez le réseau », alors que le réseau allait très bien. Les journaux étant supprimés en release (<code>-assumenosideeffects</code> sur <code>android.util.Log</code>), rien de tout ceci n'apparaît dans l'APK Labs : le diagnostic est passé par <code>/proc/net/tcp6</code>, la chaîne TLS relevée depuis l'hôte et un test WebSocket servi au téléphone par <code>adb reverse</code>.",
-     "tableau": null
-    },
-    {
-     "emoji": "🇱🇺",
-     "titre": "La première astuce affichée n'était pas dans la bonne langue",
-     "points": [],
-     "texte": "<code>maybeShowFirstRealUseTip</code> montrait « Apiyé lontan asi on lèt pou wè aksan la (é, è, ò...) », en créole guadeloupéen, avec les accents du créole. C'est le tout premier message qu'un nouvel utilisateur voit, une seule fois, au premier usage réel du clavier — donc exactement ce que verrait quelqu'un qui installe l'APK de démonstration. Passée en ressource <code>first_use_accent_tip</code>, avec les accents que l'appui long donne réellement ici (<code>è, ê, ü, ö</code> ; <code>é</code>, <code>ä</code> et <code>ë</code> ont leur propre touche).",
-     "tableau": null
-    },
-    {
-     "emoji": "📦",
-     "titre": "Le modèle whisper sort du paquet — 38,4 Mo → 6,22 Mo",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>ignoreAssetsPattern</code> exclut <code>ggml-lb-tiny-q5_1.bin</code> de l'APK : la reconnaissance étant distante, les 31 Mo n'y servaient qu'à faire attendre celui qui installe. L'exclusion agit même si le fichier traîne dans les assets d'un développeur qui a travaillé sur l'autre branche — le motif d'aapt étant <em>remplacé</em> et non complété, ses entrées par défaut (<code>.ds_store</code>, <code>*~</code>, …) sont recopiées avant la nôtre."
-      },
-      {
-       "titre": null,
-       "texte": "<code>sourceSets.main.assets.filter.exclude</code> a été essayé d'abord et <strong>ne fonctionne pas</strong> : la tâche de fusion des assets ignore le filtre, ce que seul l'examen de l'APK produit a révélé. Noté ici pour que personne n'y retourne."
-      },
-      {
-       "titre": null,
-       "texte": "Le garde-fou de release est inversé : la branche embarquée refuse de publier <em>sans</em> modèle, celle-ci signale un modèle présent dans les assets, et la CI vérifie son absence de l'APK — plus une vérification que le dictionnaire, lui, y est bien, faute de quoi un APK aux assets vides passerait le test."
-      },
-      {
-       "titre": null,
-       "texte": "Le job CI de conversion du modèle (installation de torch comprise) disparaît de cette branche. Les deux branches ont leur propre copie de <code>labs.yml</code> et GitHub exécute celle du ref poussé : elles ne se marchent pas dessus."
-      },
-      {
-       "titre": null,
-       "texte": "La bibliothèque native reste, elle : <code>libwhisper</code> et les trois <code>libggml</code> pèsent 3,73 Mo dans l'APK publié, pour les deux ABI de production, soit 60 % de ce qui reste. Elles ne peuvent rien faire sans modèle, mais les retirer ferait diverger CMake, la CI et les vérifications d'APK pour gagner quelques secondes de téléchargement. C'est le premier endroit où couper si la taille devient un sujet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🩺",
-     "titre": "Un échec réseau ne s'accuse plus l'appareil",
-     "points": [
-      {
-       "titre": null,
-       "texte": "<code>LuxAsrSession.onFailure</code> rendait <code>MODEL_UNAVAILABLE</code>, dont le libellé est « Dictée indisponible sur cet appareil ». Sur la branche en ligne, cette erreur signifie en pratique « je n'ai pas pu joindre luxasr.uni.lu » : le message accusait le téléphone d'une incapacité qu'il n'a pas. Constaté sur un vrai téléphone pendant la préparation du rendez-vous."
-      },
-      {
-       "titre": null,
-       "texte": "Nouvelle erreur <code>SERVICE_UNREACHABLE</code>, distincte, et sa chaîne : « Service LuxASR injoignable — vérifiez le réseau ». Vérifié sur l'émulateur Wi-Fi et données coupées ; le journal donne la cause exacte (<code>Unable to resolve host \"luxasr.uni.lu\"</code>) et le bandeau la bonne phrase."
-      }
-     ],
-     "texte": "Pourquoi : en démonstration, un message qui désigne le mauvais coupable coûte plus cher que pas de message du tout — on cherche du côté du téléphone pendant que le problème est le réseau de la salle. ## [Non publié, abandonné] — dictée vocale embarquée Branche <code>feat/speech-to-text-lb</code>. Retirée de la 31.0.0 au profit de LuxASR ; gardée ici pour l'historique des mesures. Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche <code>feat/speech-to-text-lb</code>, pas encore dans une version publiée.",
-     "tableau": null
-    },
-    {
-     "emoji": "🔬",
-     "titre": "Chronomètre à l'écran (diagnostic Labs)",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Le bandeau de dictée affiche la durée de chaque passe whisper — <code>🎙️ Schwätzt… 3,6 s → 940 ms</code> pendant l'écoute, puis <code>✅ 3,6 s → 886 ms</code> pendant quatre secondes une fois le texte rendu. C'est la latence réelle sur l'appareil, la seule qui compte : le banc d'essai tourne sur un hôte x86 dont les temps ne disent rien d'un ARM, et un binaire déporté par adb mesurerait un processus isolé, sans le rendu du clavier ni le throttling thermique."
-      },
-      {
-       "titre": null,
-       "texte": "Diagnostic temporaire, pas une fonctionnalité : <code>SHOW_PASS_TIMING</code> à false suffit à le retirer."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "📊",
-     "titre": "Qualité et latence enfin chiffrées",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Banc d'essai complet dans <code>stt/bench/</code> : le modèle mesuré seul, puis le pipeline temps réel rejoué énoncé par énoncé sur une horloge virtuelle, avec les paramètres de décodage recopiés à l'identique depuis <code>whisper_jni.cpp</code>. Corpus : 50 min de conférences de presse gouvernementales luxembourgeoises, 161 énoncés découpés aux silences."
-      },
-      {
-       "titre": "<code>tiny</code> ne tient pas le régime d'un clavier",
-       "texte": "48,7 % de WER sur 60 s de parole continue, mais <strong>72,1 % sur des énoncés de quelques secondes</strong> : privé de contexte, il s'effondre. <code>base</code> passe de 32,9 % à 36,0 % seulement, soit 3,1 points de perte contre 22,9 — trente-six points d'écart entre les deux modèles dans le régime réel, pour +27,5 Mo d'asset et ×1,9 de calcul."
-      },
-      {
-       "titre": null,
-       "texte": "Chronologie mesurée : première hypothèse à 1,55 s avec <code>tiny</code>, 2,54 s avec <code>base</code> ; texte définitif à +0,87 s et +1,79 s. Aucun des 161 énoncés ne reste sans hypothèse avec <code>tiny</code> ; <code>base</code> en laisse 13, c'est-à-dire presque plus de marge. Sur hôte x86 — jamais mesuré sur un téléphone."
-      },
-      {
-       "titre": "Correction d'une affirmation fausse du README",
-       "texte": "Le coût d'une passe ne croît pas avec la durée de l'énoncé. 824 ms sur 0–2 s d'audio, 1 030 ms sur 10–16 s — l'audio ×8, le coût ×1,25. L'encodeur travaille toujours sur 30 s et pèse 80 à 95 % d'une passe. Le seul vrai levier de latence est donc <code>audio_ctx</code>, jamais essayé."
-      },
-      {
-       "titre": null,
-       "texte": "<code>convert_model.py</code> accepte <code>--repo</code> et <code>--quant</code> pour comparer d'autres tailles de modèle hors de l'APK ; les valeurs par défaut reproduisent l'asset embarqué à l'identique."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🎙️",
-     "titre": "Dictée vocale embarquée",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Nouveau bouton micro, au bord droit de la barre de suggestions. Un appui démarre la dictée, un second la fige ; elle s'arrête aussi seule après 1,6 s de silence ou 30 s de parole."
-      },
-      {
-       "titre": null,
-       "texte": "Le texte s'écrit <strong>au fil de la parole</strong> : dès qu'une hypothèse est prête, la suivante est relancée sur tout ce qui a été dit depuis le début, et remplace la précédente en texte de composition, jusqu'à la transcription définitive."
-      },
-      {
-       "titre": null,
-       "texte": "Pendant la dictée, la barre de suggestions cède la place à un bandeau d'état — préparation, écoute, transcription — et le micro bat au rythme de la voix captée : de quoi savoir que le clavier écoute avant même le premier mot affiché."
-      },
-      {
-       "titre": "Rien ne quitte le téléphone",
-       "texte": "Le modèle est embarqué dans l'application et la reconnaissance tourne localement. Aucune permission réseau n'a été ajoutée, et la politique de confidentialité est inchangée."
-      },
-      {
-       "titre": null,
-       "texte": "La dictée est refusée dans les champs de mot de passe, comme le reste des traitements du clavier."
-      },
-      {
-       "titre": null,
-       "texte": "Modèle : <code>unilux/whisper-tiny-v1-luxembourgish</code>, projet <strong>LuxASR</strong> de l'Université du Luxembourg, sous licence open-mdw. Quantifié en q5_1, il pèse 31 Mo — l'application passe donc de 9 à 41 Mo. Le fichier n'est pas versionné : la CI le régénère à chaque build, comme le dictionnaire."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚠️",
-     "titre": "Ce qui n'est pas encore vérifié",
-     "points": [
-      {
-       "titre": null,
-       "texte": "La <strong>précision en luxembourgeois n'est pas mesurée</strong>. Aucun WER n'est publié pour ce modèle, et LuxASR utilise un modèle bien plus gros, non diffusé, pour son propre service. Attendez-vous à des erreurs."
-      },
-      {
-       "titre": null,
-       "texte": "La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible est trop lent pour être représentatif."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
    "version": "30.3.0",
    "date": "2026-10-03",
    "intro": "Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.",
@@ -512,6 +214,55 @@
      "tableau": null
     }
    ]
+  },
+  {
+   "version": "30.2.0",
+   "date": "2026-10-03",
+   "intro": "Le correcteur orthographique se trouve dès l'accueil.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le correcteur se propose sur l'accueil",
+       "texte": "Tant qu'il n'est pas choisi, une carte « Fini le trait rouge sous vos mots » ouvre directement le bon écran d'Android. Android ne permet à aucune application de se choisir elle-même comme correcteur : c'est à vous de le faire, en trois touches. « Plus tard » retire la carte."
+      },
+      {
+       "titre": "L'avertissement d'Android est annoncé",
+       "texte": "Il parle de mots de passe et de cartes bancaires, comme pour tout correcteur. Le nôtre ne conserve rien et n'envoie rien."
+      },
+      {
+       "titre": "Un message confirme que c'est fait",
+       "texte": "Quand vous revenez dans l'application."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La correction orthographique coupée dans Android est reconnue",
+       "texte": "L'application annonçait le correcteur actif alors qu'il ne soulignait rien. Elle propose maintenant de la rallumer."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_correcteur_accueil.png",
+     "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+     "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
+    }
+   ],
+   "image": "Screenshots/lux_correcteur_accueil.png",
+   "image_alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+   "image_legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
   }
  ]
 }

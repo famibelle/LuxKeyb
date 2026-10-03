@@ -32,6 +32,13 @@ MEDIAS = RACINE / "docs" / "stats" / "nouveautes-medias.json"
 
 VERSIONS_AFFICHEES = 6
 
+# Versions du journal qui n'ont jamais été publiées sur GitHub et n'ont donc
+# rien à faire sur la page : la 31.0.0 était le test ouvert de la dictée sur le
+# Play Store, et son entrée garde l'historique technique de la branche (modèle
+# embarqué, certificats, chronomètre de diagnostic). Ce qu'elle apportait aux
+# utilisateurs est repris dans la 32.1.0.
+VERSIONS_NON_PUBLIEES = {"31.0.0"}
+
 EN_TETE_VERSION = re.compile(r'^## \[([0-9]+\.[0-9]+\.[0-9]+)\](?: — .*?)? - (\d{4}-\d{2}-\d{2})\s*$')
 EN_TETE_SECTION = re.compile(r'^### (.+)$')
 PUCE = re.compile(r'^- (.*)$')
@@ -206,7 +213,8 @@ def main():
         # Une section sans puce, sans texte et sans tableau n'a rien à afficher.
         v["sections"] = [s for s in v["sections"]
                          if s["points"] or s["texte"] or s["tableau"]]
-    versions = [v for v in versions if v["sections"]][:VERSIONS_AFFICHEES]
+    versions = [v for v in versions
+                if v["sections"] and v["version"] not in VERSIONS_NON_PUBLIEES][:VERSIONS_AFFICHEES]
     if not versions:
         sys.exit("Aucune version exploitable dans le CHANGELOG.")
 
