@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.3.0] - 2026-10-03
+
+Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.
+
+### 🔧 Modifié
+
+- **Les propositions en français sont coupées par défaut.** La seconde rangée, en bleu, s'allume dans Réglages du clavier › Suggestions › « Propositions en français ». Sans elle, le clavier est moins haut d'une rangée et laisse plus de place à l'écran. Si vous aviez déjà réglé cet interrupteur, votre choix est conservé. Le correcteur orthographique continue de reconnaître le français.
+
 ## [30.2.2] - 2026-10-03
 
 Kräizwuert et le guide suivent la disposition de votre clavier.
