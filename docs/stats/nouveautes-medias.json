@@ -3,9 +3,9 @@
   "33.0.0": {
     "images": [
       {
-        "image": "Screenshots/lux_dictee_telephone.gif",
-        "alt": "Le clavier pendant une dictée : on parle, le texte luxembourgeois s'écrit dans le champ, le micro rouge à droite de la barre de suggestions.",
-        "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
+        "image": "Screenshots/lux_dictee_reconstituee.gif",
+        "alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Moien, mir treffen eis muer um zwou Auer op der Schueberfouer. » apparaît en trois temps.",
+        "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez. (Animation reconstituée : la phrase a été ajoutée pour l'illustration.)"
       }
     ]
   },
