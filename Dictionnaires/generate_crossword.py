@@ -230,7 +230,11 @@ def est_nom_propre_lod(forme):
     global _NOMS_PROPRES
     if _NOMS_PROPRES is None:
         with open(CHEMIN_TRADUCTIONS, "r", encoding="utf-8") as f:
-            _NOMS_PROPRES = set(json.load(f).get("noms_propres", []))
+            actif = json.load(f)
+        # Les morceaux de locution (« Sophie » de « Kaalt Sophie », glosé
+        # « Sainte Sophie ») suivent le même chemin : leur glose est celle de
+        # la locution, pas du mot. Voir generate_translations.est_fragment_lod.
+        _NOMS_PROPRES = set(actif.get("noms_propres", [])) | set(actif.get("fragments", []))
     return forme in _NOMS_PROPRES
 
 

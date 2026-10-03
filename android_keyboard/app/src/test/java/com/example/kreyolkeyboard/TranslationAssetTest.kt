@@ -79,10 +79,16 @@ class TranslationAssetTest {
         return glose.split(",").any { AccentTolerantMatcher.normalize(it.trim()) != motPlie }
     }
 
-    /** Les noms propres que l'actif livre, ceux que TranslationDictionary retire du tirage. */
+    /**
+     * Ce que TranslationDictionary retire du tirage : les noms propres et les
+     * morceaux de locution (« vum » de « vum selwen »), deux listes de l'actif.
+     */
     private fun nomsPropres(): Set<String> {
-        val liste = charger().getJSONArray("noms_propres")
-        return (0 until liste.length()).map { liste.getString(it) }.toHashSet()
+        val racine = charger()
+        return listOf("noms_propres", "fragments").flatMap { cle ->
+            val liste = racine.getJSONArray(cle)
+            (0 until liste.length()).map { liste.getString(it) }
+        }.toHashSet()
     }
 
     /**
@@ -111,7 +117,8 @@ class TranslationAssetTest {
         }
 
         val propresLivres = nomsPropres()
-        for (attendu in listOf("Beetebuerg", "Houwald", "Miersch", "Frankräich", "José", "York")) {
+        for (attendu in listOf("Beetebuerg", "Houwald", "Miersch", "Frankräich", "José", "York",
+                               "vum", "Sophie", "Gréngen")) {
             if (!table.has(attendu)) continue
             assertTrue("« $attendu » devrait être vu comme un nom propre", attendu in propresLivres)
         }
@@ -241,7 +248,7 @@ class TranslationAssetTest {
                 val mots = grilles.getJSONObject(i).getJSONArray("mots")
                 for (j in 0 until mots.length()) {
                     val forme = mots.getJSONObject(j).getString("f")
-                    if (forme in propres || forme.lowercase() in propres) fautifs.add(forme)
+                    if (forme in propres) fautifs.add(forme)
                 }
             }
             assertTrue("$actif case des noms propres : $fautifs", fautifs.isEmpty())

@@ -624,4 +624,7 @@
     <string name="wuertplaz_combo">🔥 %1$d mots d\'un coup !</string>
     <string name="carte_ecu_vues">VUES</string>
     <string name="carte_ecu_niveau">NIVEAU</string>
+    <string name="langue_traductions">fr</string>
+    <string name="accueil_glose">bonjour</string>
+    <string name="accueil_traduction">Bonjour, comment ça va ?</string>
 </resources>

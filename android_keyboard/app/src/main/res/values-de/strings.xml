@@ -234,7 +234,7 @@
     <string name="sa_votre_dernier_jeu">Ihr letztes Spiel</string>
     <string name="sa_choisir_un_jeu">Ein Spiel wählen</string>
     <string name="sa_sept_jeux_pour_apprendre_les">Sieben Spiele, um Wörter zu lernen</string>
-    <string name="sa_en_francais_3">auf Französisch: %1$s</string>
+    <string name="sa_en_francais_3">auf Deutsch: %1$s</string>
     <string name="sa_fini_le_trait_rouge_sous">"🔤  Schluss mit roten Linien unter Ihren Wörtern"</string>
     <string name="sa_la_correction_orthographique_est_coupee">Die Rechtschreibprüfung ist in Android ausgeschaltet. Schalten Sie sie wieder ein, damit Ihre luxemburgischen Wörter überall erkannt werden.</string>
     <string name="sa_android_souligne_vos_mots_luxembourgeois">Android unterstreicht Ihre luxemburgischen Wörter in Messages, Notizen und anderswo. Wählen Sie unsere Rechtschreibprüfung, damit sie erkannt werden.</string>
@@ -299,7 +299,7 @@
     <string name="sa_partager_application">📤 App teilen</string>
     <string name="sa_noter_application">⭐ App bewerten</string>
     <string name="sa_sources_litteraires">📚 Quellen</string>
-    <string name="sa_les_suggestions_de_mots_sont">Die Wortvorschläge beruhen auf zwei offenen Korpora des heutigen Luxemburgischen:\n\n📰 LuxAlign: Sätze aus Artikeln von RTL.lu, zusammengestellt von Fred Philippy u. a. (COLING 2025). Lizenz CC BY-NC 4.0.\n\n📖 LETZ: Beispielsätze aus dem Lëtzebuerger Online Dictionnaire (lod.lu), zusammengestellt von Fred Philippy u. a. (SIGUL 2024). Lizenz CC BY 4.0.\n\nDas erste liefert den Wortschatz und die Abfolge der Wörter, das zweite die Alltagssprache.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Lizenz CC0 1.0. Er liefert die französischen Übersetzungen und 85.000 Formen, die die Presse nie schreibt.\n\n🇱🇺 Übersetzungskorpus des Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Lizenz CC0 1.0. Er liefert die französischen Übersetzungen der Beispielsätze, angefertigt von professionellen Übersetzern.\n\n🇫🇷 Lexique 3.83: lexikalische Datenbank des Französischen von Boris New und Christophe Pallier (lexique.org). Lizenz CC BY-SA 4.0. Sie liefert die 125.000 Formen der zweiten Vorschlagsreihe und verhindert, dass die Rechtschreibprüfung korrektes Französisch unterstreicht.\n\n🔤 Die Wörter der Sammelkarten sind in Lora, Cormorant Garamond und EB Garamond gesetzt, drei freien Schriften unter der SIL Open Font License 1.1.</string>
+    <string name="sa_les_suggestions_de_mots_sont">Die Wortvorschläge beruhen auf zwei offenen Korpora des heutigen Luxemburgischen:\n\n📰 LuxAlign: Sätze aus Artikeln von RTL.lu, zusammengestellt von Fred Philippy u. a. (COLING 2025). Lizenz CC BY-NC 4.0.\n\n📖 LETZ: Beispielsätze aus dem Lëtzebuerger Online Dictionnaire (lod.lu), zusammengestellt von Fred Philippy u. a. (SIGUL 2024). Lizenz CC BY 4.0.\n\nDas erste liefert den Wortschatz und die Abfolge der Wörter, das zweite die Alltagssprache.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Lizenz CC0 1.0. Er liefert die Übersetzungen der Wörter ins Deutsche, Französische, Englische und Portugiesische und 85.000 Formen, die die Presse nie schreibt.\n\n🇱🇺 Übersetzungskorpus des Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Lizenz CC0 1.0. Er liefert die deutschen, französischen und englischen Übersetzungen der Beispielsätze, angefertigt von professionellen Übersetzern.\n\n🇫🇷 Lexique 3.83: lexikalische Datenbank des Französischen von Boris New und Christophe Pallier (lexique.org). Lizenz CC BY-SA 4.0. Sie liefert die 125.000 Formen der zweiten Vorschlagsreihe und verhindert, dass die Rechtschreibprüfung korrektes Französisch unterstreicht.\n\n🔤 Die Wörter der Sammelkarten sind in Lora, Cormorant Garamond und EB Garamond gesetzt, drei freien Schriften unter der SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Informationen</string>
     <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Version: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nMit ❤️ in Luxemburg gemacht\nBewahren wir Lëtzebuergesch für kommende Generationen!</string>
     <string name="sa_confidentialite">🔒 Datenschutz</string>
@@ -359,7 +359,7 @@
     <string name="sa_le_mot_tel_que_vous">1. Das Wort, so wie Sie ihm im Spiel begegnet sind, großgeschrieben, wenn es ein Substantiv ist.\n\n2. Der runde Punkt: die Anzahl der Buchstaben des Wortes. „Waasser“ hat 7.\n\n3. Die Illustration: Ihre Farbe zeigt das Bedeutungsfeld (Leben und Körper, Gebiet, Wirtschaft, Zeit und Maß…), und ihr Muster wird aus den Buchstaben des Wortes erzeugt, sodass dasselbe Wort immer dasselbe Bild ergibt. Einige Karten, wie diese, tragen zusätzlich eine Zeichnung.\n\n4. Der Rahmen: Sein Metall zeigt die Seltenheit des Wortes. Zinn für Häufig, Bronze für Ungewöhnlich, Silber für Selten, Gold für Sehr selten. Die Seltenheit ergibt sich aus der Häufigkeit des Wortes im Luxemburgischen: Die 3.000 häufigsten Wörter sind häufig, die jenseits von Rang 9.000 sehr selten. Bei den Zahlen aus Zuelwuert zählt, wie schwer sie zu schreiben sind.</string>
     <string name="sa_le_texte_de_la_carte_2">Der Text der Karte</string>
     <string name="sa_le_texte_de_la_carte">📜 Der Text der Karte</string>
-    <string name="sa_la_ligne_de_nature_ce">5. Die Wortartzeile: was das Wort laut dem offiziellen Wörterbuch des ZLS ist („Neutrum“, „Verb“, „Adjektiv“…), dann das Spiel, in dem Sie es gewonnen haben.\n\n6. Die Bedeutung, fett: die französische Übersetzung des Wortes.\n\n7. Der kursive Satz: ein Beispiel für das Wort im Gebrauch, aus dem offiziellen Wörterbuch. Bei einer Zahl ist es ihre Zerlegung.\n\n8. Die kleinere Zeile: die französische Übersetzung dieses Satzes, nur wenn der ZLS eine veröffentlicht hat. Sonst zeigt die Karte stattdessen „Gleiche Familie:“ und die anderen Formen des Wortes (Plural, Konjugationen…).</string>
+    <string name="sa_la_ligne_de_nature_ce">5. Die Wortartzeile: was das Wort laut dem offiziellen Wörterbuch des ZLS ist („Neutrum“, „Verb“, „Adjektiv“…), dann das Spiel, in dem Sie es gewonnen haben.\n\n6. Die Bedeutung, fett: die deutsche Übersetzung des Wortes.\n\n7. Der kursive Satz: ein Beispiel für das Wort im Gebrauch, aus dem offiziellen Wörterbuch. Bei einer Zahl ist es ihre Zerlegung.\n\n8. Die kleinere Zeile: die deutsche Übersetzung dieses Satzes, nur wenn der ZLS eine veröffentlicht hat. Sonst zeigt die Karte stattdessen „Gleiche Familie:“ und die anderen Formen des Wortes (Plural, Konjugationen…).</string>
     <string name="sa_le_bas_de_la_carte_2">Der untere Teil der Karte</string>
     <string name="sa_le_bas_de_la_carte">🛡️ Der untere Teil der Karte</string>
     <string name="sa_ecu_vues_combien_de_fois">9. Das Wappen GESEHEN: wie oft Sie dieses Wort gewonnen haben, über alle Spiele hinweg.\n\n10. Das Medaillon: das Spiel, das Ihnen die Karte gegeben hat, erkennbar an seinem Emblem und seiner Farbe und am Rand benannt.\n\n11. Das Wappen STUFE: das Fach der Lernkartei, in dem sich die Karte befindet, von 1 bis 6. Es steigt mit jeder erfolgreichen Wiederholung und wird zu ✓, wenn das Wort gelernt ist.\n\n12. Die Serienzeile: die Nummer der Karte in Ihrer Sammlung und das Datum, an dem Sie sie gewonnen haben.\n\n13. Der Rang: die Stelle des Wortes unter den häufigsten Wörtern der Sprache („856.“ für „Waasser“), oder „nicht im Korpus“, wenn es dort nicht vorkommt.</string>
@@ -387,7 +387,7 @@
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Meine Stufenkarte teilen</string>
     <string name="sa_impossible_de_partager_pour_le">Teilen ist im Moment nicht möglich</string>
     <string name="sa_mot_du_jour">WORT DES TAGES</string>
-    <string name="sa_en_francais_2">"auf Französisch: "</string>
+    <string name="sa_en_francais_2">"auf Deutsch: "</string>
     <string name="sa_nouveau_mot_decouvrir">neues Wort zum Entdecken</string>
     <string name="sa_mots_les_plus_utilises">Meistverwendete Wörter</string>
     <string name="sa_statistiques_globales">Gesamtstatistik</string>
@@ -487,12 +487,12 @@
     <string name="sa_solution_affichee_cette_grille_ne">💡 Lösung angezeigt: Dieses Raster zählt nicht.</string>
     <string name="sa_mots">%1$s / %2$s Wörter</string>
     <string name="sa_ce_que_vous_avez_gagne">📖 Was Sie gewonnen haben · %1$s</string>
-    <string name="sa_tapez_un_mot_luxembourgeois_ou">Geben Sie ein luxemburgisches oder französisches Wort ein: Die Suche funktioniert in beide Richtungen.\nTippen Sie auf ein Wort, um seinen Eintrag zu öffnen: Bedeutung, Beispiele und andere Formen; lange drücken zum Kopieren.</string>
-    <string name="sa_haus_maison_kaz_chat">Haus, maison, Kaz, chat…</string>
+    <string name="sa_tapez_un_mot_luxembourgeois_ou">Geben Sie ein luxemburgisches oder deutsches Wort ein: Die Suche funktioniert in beide Richtungen.\nTippen Sie auf ein Wort, um seinen Eintrag zu öffnen: Bedeutung, Beispiele und andere Formen; lange drücken zum Kopieren.</string>
+    <string name="sa_haus_maison_kaz_chat">Kaz, Katze, Schoul, Schule…</string>
     <string name="sa_traductions_et_exemples_issus_du">Übersetzungen und Beispiele aus dem Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Übersetzungen der Beispiele aus dem Übersetzungskorpus desselben Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Geben Sie mindestens zwei Buchstaben ein.</string>
     <string name="sa_aucun_resultat_pour_les_noms">Keine Ergebnisse für „%1$s“.\nEigennamen und Ortsnamen haben im offiziellen Wörterbuch keine Übersetzung.</string>
-    <string name="sa_en_francais">AUF FRANZÖSISCH</string>
+    <string name="sa_en_francais">AUF DEUTSCH</string>
     <string name="sa_autres_formes">ANDERE FORMEN</string>
     <string name="sa_copier_le_mot">Wort kopieren</string>
     <string name="sa_voir_sur_le_dictionnaire_officiel">Im offiziellen Wörterbuch ansehen ↗</string>
@@ -507,7 +507,7 @@
     <string name="sa_ecrivez_les_mots_dans_la">Schreiben Sie die Wörter anhand ihrer Bedeutung ins Raster</string>
     <string name="sa_casez_les_mots_donnes_dans">Setzen Sie die vorgegebenen Wörter ins leere Raster</string>
     <string name="sa_tous_les_jeux">"‹  Alle Spiele"</string>
-    <string name="sa_huit_facons_de_travailler_son">Acht Arten, Ihr Luxemburgisch zu trainieren. Die Lernkartei öffnet Ihre gelernten Karten. Die Wortschatzspiele geben die französische Übersetzung der Wörter, in dem Moment, in dem sie die Antwort nicht verrät; Zuelwuert dreht sich um das Schreiben von Zahlen, Kräizwuert ist das einzige, in dem man die Wörter selbst schreibt, und Wuertplaz das einzige, das man ohne Kenntnis der Sprache spielen kann. Alle füllen dieselbe Sammlung.</string>
+    <string name="sa_huit_facons_de_travailler_son">Acht Arten, Ihr Luxemburgisch zu trainieren. Die Lernkartei öffnet Ihre gelernten Karten. Die Wortschatzspiele geben die Übersetzung der Wörter, in dem Moment, in dem sie die Antwort nicht verrät; Zuelwuert dreht sich um das Schreiben von Zahlen, Kräizwuert ist das einzige, in dem man die Wörter selbst schreibt, und Wuertplaz das einzige, das man ohne Kenntnis der Sprache spielen kann. Alle füllen dieselbe Sammlung.</string>
     <string name="sa_ouvrir">"Öffnen  ›"</string>
     <string name="sa_les_mots_que_vous_gagnez">Die Wörter, die Sie gewinnen, werden zu Karten.</string>
     <string name="sa_les_sept_jeux_versent">Alle sieben Spiele füllen sie.</string>
@@ -624,4 +624,7 @@
     <string name="wuertplaz_combo">🔥 %1$d Wörter auf einmal!</string>
     <string name="carte_ecu_vues">GESEHEN</string>
     <string name="carte_ecu_niveau">STUFE</string>
+    <string name="langue_traductions">de</string>
+    <string name="accueil_glose">hallo</string>
+    <string name="accueil_traduction">Hallo, wie geht\'s?</string>
 </resources>

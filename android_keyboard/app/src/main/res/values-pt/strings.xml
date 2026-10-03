@@ -234,7 +234,7 @@
     <string name="sa_votre_dernier_jeu">O seu último jogo</string>
     <string name="sa_choisir_un_jeu">Escolher um jogo</string>
     <string name="sa_sept_jeux_pour_apprendre_les">Sete jogos para aprender palavras</string>
-    <string name="sa_en_francais_3">em francês: %1$s</string>
+    <string name="sa_en_francais_3">em português: %1$s</string>
     <string name="sa_fini_le_trait_rouge_sous">"🔤  Acabou o traço vermelho debaixo das suas palavras"</string>
     <string name="sa_la_correction_orthographique_est_coupee">A correção ortográfica está desligada no Android. Volte a ligá-la para que as suas palavras luxemburguesas sejam reconhecidas em todo o lado.</string>
     <string name="sa_android_souligne_vos_mots_luxembourgeois">O Android sublinha as suas palavras luxemburguesas nas Mensagens, nas Notas e noutros sítios. Escolha o nosso corretor para que as reconheça.</string>
@@ -299,7 +299,7 @@
     <string name="sa_partager_application">📤 Partilhar a aplicação</string>
     <string name="sa_noter_application">⭐ Avaliar a aplicação</string>
     <string name="sa_sources_litteraires">📚 Fontes</string>
-    <string name="sa_les_suggestions_de_mots_sont">As sugestões de palavras são construídas a partir de dois corpora abertos de luxemburguês contemporâneo:\n\n📰 LuxAlign: frases de artigos do RTL.lu, reunidas por Fred Philippy et al. (COLING 2025). Licença CC BY-NC 4.0.\n\n📖 LETZ: frases de exemplo do Lëtzebuerger Online Dictionnaire (lod.lu), reunidas por Fred Philippy et al. (SIGUL 2024). Licença CC BY 4.0.\n\nO primeiro fornece o vocabulário e a sequência das palavras, o segundo a língua do dia a dia.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Licença CC0 1.0. Fornece as traduções francesas e 85 000 formas que a imprensa nunca escreve.\n\n🇱🇺 Corpus de tradução do Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Licença CC0 1.0. Fornece as traduções francesas das frases de exemplo, feitas por tradutores profissionais.\n\n🇫🇷 Lexique 3.83: base lexical do francês de Boris New e Christophe Pallier (lexique.org). Licença CC BY-SA 4.0. Fornece as 125 000 formas da segunda fila de sugestões e evita que o corretor sublinhe francês correto.\n\n🔤 As palavras das cartas da coleção estão compostas em Lora, Cormorant Garamond e EB Garamond, três tipos de letra livres sob a licença SIL Open Font License 1.1.</string>
+    <string name="sa_les_suggestions_de_mots_sont">As sugestões de palavras são construídas a partir de dois corpora abertos de luxemburguês contemporâneo:\n\n📰 LuxAlign: frases de artigos do RTL.lu, reunidas por Fred Philippy et al. (COLING 2025). Licença CC BY-NC 4.0.\n\n📖 LETZ: frases de exemplo do Lëtzebuerger Online Dictionnaire (lod.lu), reunidas por Fred Philippy et al. (SIGUL 2024). Licença CC BY 4.0.\n\nO primeiro fornece o vocabulário e a sequência das palavras, o segundo a língua do dia a dia.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Licença CC0 1.0. Fornece as traduções das palavras em português, francês, alemão e inglês, e 85 000 formas que a imprensa nunca escreve.\n\n🇱🇺 Corpus de tradução do Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Licença CC0 1.0. Fornece as traduções francesas, alemãs e inglesas das frases de exemplo, feitas por tradutores profissionais. Não as há em português.\n\n🇫🇷 Lexique 3.83: base lexical do francês de Boris New e Christophe Pallier (lexique.org). Licença CC BY-SA 4.0. Fornece as 125 000 formas da segunda fila de sugestões e evita que o corretor sublinhe francês correto.\n\n🔤 As palavras das cartas da coleção estão compostas em Lora, Cormorant Garamond e EB Garamond, três tipos de letra livres sob a licença SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Informações</string>
     <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versão: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nFeito no Luxemburgo com ❤️\nPreservemos o lëtzebuergesch para as gerações futuras!</string>
     <string name="sa_confidentialite">🔒 Privacidade</string>
@@ -359,7 +359,7 @@
     <string name="sa_le_mot_tel_que_vous">1. A palavra, tal como a encontrou no jogo, com maiúscula se for um nome.\n\n2. O círculo: o número de letras da palavra. «Waasser» tem 7.\n\n3. A ilustração: a cor indica o campo do sentido (vida e corpo, território, economia, tempo e medida…), e o padrão é tirado das letras da palavra, de modo que a mesma palavra dá sempre a mesma imagem. Algumas cartas, como esta, têm também um desenho.\n\n4. A moldura: o metal indica a raridade da palavra. Estanho para Comum, bronze para Pouco comum, prata para Rara, ouro para Muito rara. A raridade vem da frequência da palavra em luxemburguês: as 3000 palavras mais correntes são comuns, as que estão para lá da 9000.ª muito raras. Para os números de Zuelwuert, conta a dificuldade da sua ortografia.</string>
     <string name="sa_le_texte_de_la_carte_2">O texto da carta</string>
     <string name="sa_le_texte_de_la_carte">📜 O texto da carta</string>
-    <string name="sa_la_ligne_de_nature_ce">5. A linha da classe: o que a palavra é segundo o dicionário oficial do ZLS («Nome neutro», «Verbo», «Adjetivo»…), e depois o jogo onde a ganhou.\n\n6. O sentido, a negrito: a tradução francesa da palavra.\n\n7. A frase em itálico: um exemplo da palavra em uso, tirado do dicionário oficial. Para um número, é a sua decomposição.\n\n8. A linha mais pequena: a tradução francesa dessa frase, só quando o ZLS a publicou. Caso contrário, a carta mostra «Mesma família:» e as outras formas da palavra (plural, conjugações…).</string>
+    <string name="sa_la_ligne_de_nature_ce">5. A linha da classe: o que a palavra é segundo o dicionário oficial do ZLS («Nome neutro», «Verbo», «Adjetivo»…), e depois o jogo onde a ganhou.\n\n6. O sentido, a negrito: a tradução portuguesa da palavra.\n\n7. A frase em itálico: um exemplo da palavra em uso, tirado do dicionário oficial. Para um número, é a sua decomposição.\n\n8. A linha mais pequena: a tradução dessa frase, quando o ZLS a publicou, o que nunca acontece em português. A carta mostra então «Mesma família:» e as outras formas da palavra (plural, conjugações…).</string>
     <string name="sa_le_bas_de_la_carte_2">A parte de baixo da carta</string>
     <string name="sa_le_bas_de_la_carte">🛡️ A parte de baixo da carta</string>
     <string name="sa_ecu_vues_combien_de_fois">9. O escudo VISTA: quantas vezes ganhou esta palavra, em todos os jogos.\n\n10. O medalhão: o jogo que lhe deu a carta, reconhecível pelo emblema e pela cor, e com o nome à volta.\n\n11. O escudo NÍVEL: o compartimento da Caixa de Leitner onde está a carta, de 1 a 6. Sobe a cada revisão certa e passa a ✓ quando a palavra está aprendida.\n\n12. A linha de série: o número da carta na sua coleção e a data em que a ganhou.\n\n13. A posição: o lugar da palavra entre as mais frequentes da língua («856ª» para «Waasser»), ou «fora do corpus» se não estiver lá.</string>
@@ -387,7 +387,7 @@
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Partilhar o meu cartão de nível</string>
     <string name="sa_impossible_de_partager_pour_le">Não é possível partilhar de momento</string>
     <string name="sa_mot_du_jour">PALAVRA DO DIA</string>
-    <string name="sa_en_francais_2">"em francês: "</string>
+    <string name="sa_en_francais_2">"em português: "</string>
     <string name="sa_nouveau_mot_decouvrir">nova palavra para descobrir</string>
     <string name="sa_mots_les_plus_utilises">Palavras mais usadas</string>
     <string name="sa_statistiques_globales">Estatísticas gerais</string>
@@ -487,12 +487,12 @@
     <string name="sa_solution_affichee_cette_grille_ne">💡 Solução mostrada: esta grelha não conta.</string>
     <string name="sa_mots">%1$s / %2$s palavras</string>
     <string name="sa_ce_que_vous_avez_gagne">📖 O que ganhou · %1$s</string>
-    <string name="sa_tapez_un_mot_luxembourgeois_ou">Escreva uma palavra luxemburguesa ou francesa: a pesquisa funciona nos dois sentidos.\nToque numa palavra para abrir a sua ficha: sentido, exemplos e outras formas; toque longo para a copiar.</string>
-    <string name="sa_haus_maison_kaz_chat">Haus, maison, Kaz, chat…</string>
+    <string name="sa_tapez_un_mot_luxembourgeois_ou">Escreva uma palavra luxemburguesa ou portuguesa: a pesquisa funciona nos dois sentidos.\nToque numa palavra para abrir a sua ficha: sentido, exemplos e outras formas; toque longo para a copiar.</string>
+    <string name="sa_haus_maison_kaz_chat">Haus, casa, Kaz, gato…</string>
     <string name="sa_traductions_et_exemples_issus_du">Traduções e exemplos do Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Traduções dos exemplos do corpus de tradução do mesmo Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Escreva pelo menos duas letras.</string>
     <string name="sa_aucun_resultat_pour_les_noms">Nenhum resultado para «%1$s».\nOs nomes próprios e os nomes de lugares não têm tradução no dicionário oficial.</string>
-    <string name="sa_en_francais">EM FRANCÊS</string>
+    <string name="sa_en_francais">EM PORTUGUÊS</string>
     <string name="sa_autres_formes">OUTRAS FORMAS</string>
     <string name="sa_copier_le_mot">Copiar a palavra</string>
     <string name="sa_voir_sur_le_dictionnaire_officiel">Ver no dicionário oficial ↗</string>
@@ -507,7 +507,7 @@
     <string name="sa_ecrivez_les_mots_dans_la">Escreva as palavras na grelha, a partir do sentido</string>
     <string name="sa_casez_les_mots_donnes_dans">Encaixe as palavras dadas na grelha vazia</string>
     <string name="sa_tous_les_jeux">"‹  Todos os jogos"</string>
-    <string name="sa_huit_facons_de_travailler_son">Oito maneiras de praticar o seu luxemburguês. A Caixa de Leitner dá acesso às cartas que estudou. Os jogos de vocabulário dão a tradução francesa das palavras, no momento em que ela não revela a resposta; o Zuelwuert trata da escrita dos números, o Kräizwuert é o único em que se escrevem as palavras, e o Wuertplaz o único que se joga sem saber a língua. Todos alimentam a mesma coleção.</string>
+    <string name="sa_huit_facons_de_travailler_son">Oito maneiras de praticar o seu luxemburguês. A Caixa de Leitner dá acesso às cartas que estudou. Os jogos de vocabulário dão a tradução das palavras, no momento em que ela não revela a resposta; o Zuelwuert trata da escrita dos números, o Kräizwuert é o único em que se escrevem as palavras, e o Wuertplaz o único que se joga sem saber a língua. Todos alimentam a mesma coleção.</string>
     <string name="sa_ouvrir">"Abrir  ›"</string>
     <string name="sa_les_mots_que_vous_gagnez">As palavras que ganha tornam-se cartas.</string>
     <string name="sa_les_sept_jeux_versent">Os sete jogos alimentam-na.</string>
@@ -624,4 +624,7 @@
     <string name="wuertplaz_combo">🔥 %1$d palavras de uma vez!</string>
     <string name="carte_ecu_vues">VISTA</string>
     <string name="carte_ecu_niveau">NÍVEL</string>
+    <string name="langue_traductions">pt</string>
+    <string name="accueil_glose">olá</string>
+    <string name="accueil_traduction">Olá, como está?</string>
 </resources>

@@ -238,7 +238,7 @@
     <string name="sa_votre_dernier_jeu">Your last game</string>
     <string name="sa_choisir_un_jeu">Choose a game</string>
     <string name="sa_sept_jeux_pour_apprendre_les">Seven games to learn words</string>
-    <string name="sa_en_francais_3">in French: %1$s</string>
+    <string name="sa_en_francais_3">in English: %1$s</string>
     <string name="sa_fini_le_trait_rouge_sous">"🔤  No more red lines under your words"</string>
     <string name="sa_la_correction_orthographique_est_coupee">Spell checking is turned off in Android. Turn it back on so your Luxembourgish words are recognised everywhere.</string>
     <string name="sa_android_souligne_vos_mots_luxembourgeois">Android underlines your Luxembourgish words in Messages, Notes and elsewhere. Choose our spell checker so it recognises them.</string>
@@ -303,7 +303,7 @@
     <string name="sa_partager_application">📤 Share the app</string>
     <string name="sa_noter_application">⭐ Rate the app</string>
     <string name="sa_sources_litteraires">📚 Sources</string>
-    <string name="sa_les_suggestions_de_mots_sont">Word suggestions are built on two open corpora of contemporary Luxembourgish:\n\n📰 LuxAlign: sentences from RTL.lu articles, collected by Fred Philippy et al. (COLING 2025). CC BY-NC 4.0 licence.\n\n📖 LETZ: example sentences from the Lëtzebuerger Online Dictionnaire (lod.lu), collected by Fred Philippy et al. (SIGUL 2024). CC BY 4.0 licence.\n\nThe first provides the vocabulary and how words follow each other, the second everyday language.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. CC0 1.0 licence. It provides the French translations and 85,000 forms the press never writes.\n\n🇱🇺 Translation corpus of the Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). CC0 1.0 licence. It provides the French translations of the example sentences, made by professional translators.\n\n🇫🇷 Lexique 3.83: a French lexical database by Boris New and Christophe Pallier (lexique.org). CC BY-SA 4.0 licence. It provides the 125,000 forms of the second suggestion row, and keeps the spell checker from underlining correct French.\n\n🔤 The words on the collection cards are set in Lora, Cormorant Garamond and EB Garamond, three free typefaces under the SIL Open Font License 1.1.</string>
+    <string name="sa_les_suggestions_de_mots_sont">Word suggestions are built on two open corpora of contemporary Luxembourgish:\n\n📰 LuxAlign: sentences from RTL.lu articles, collected by Fred Philippy et al. (COLING 2025). CC BY-NC 4.0 licence.\n\n📖 LETZ: example sentences from the Lëtzebuerger Online Dictionnaire (lod.lu), collected by Fred Philippy et al. (SIGUL 2024). CC BY 4.0 licence.\n\nThe first provides the vocabulary and how words follow each other, the second everyday language.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. CC0 1.0 licence. It provides the translations of the words into English, French, German and Portuguese, and 85,000 forms the press never writes.\n\n🇱🇺 Translation corpus of the Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). CC0 1.0 licence. It provides the English, French and German translations of the example sentences, made by professional translators.\n\n🇫🇷 Lexique 3.83: a French lexical database by Boris New and Christophe Pallier (lexique.org). CC BY-SA 4.0 licence. It provides the 125,000 forms of the second suggestion row, and keeps the spell checker from underlining correct French.\n\n🔤 The words on the collection cards are set in Lora, Cormorant Garamond and EB Garamond, three free typefaces under the SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Information</string>
     <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Version: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nMade in Luxembourg with ❤️\nLet\'s keep Lëtzebuergesch alive for future generations!</string>
     <string name="sa_confidentialite">🔒 Privacy</string>
@@ -363,7 +363,7 @@
     <string name="sa_le_mot_tel_que_vous">1. The word, as you met it in the game, with its capital if it is a noun.\n\n2. The round badge: the number of letters in the word. “Waasser” has 7.\n\n3. The illustration: its colour shows the field of meaning (life and body, territory, economy, time and measure…), and its pattern is drawn from the letters of the word, so the same word always gives the same picture. A few cards, like this one, also carry a drawing.\n\n4. The frame: its metal tells the rarity of the word. Pewter for Common, bronze for Uncommon, silver for Rare, gold for Very rare. Rarity comes from how often the word is used in Luxembourgish: the 3,000 most common words are common, those beyond number 9,000 very rare. For Zuelwuert numbers, what counts is how hard they are to spell.</string>
     <string name="sa_le_texte_de_la_carte_2">The text of the card</string>
     <string name="sa_le_texte_de_la_carte">📜 The text of the card</string>
-    <string name="sa_la_ligne_de_nature_ce">5. The word-class line: what the word is according to the official ZLS dictionary (“Neuter noun”, “Verb”, “Adjective”…), then the game where you won it.\n\n6. The meaning, in bold: the French translation of the word.\n\n7. The sentence in italics: an example of the word in use, taken from the official dictionary. For a number, it is how the number is built.\n\n8. The smaller line: the French translation of that sentence, only when the ZLS has published one. Otherwise, the card shows “Same family:” and the other forms of the word (plural, conjugations…).</string>
+    <string name="sa_la_ligne_de_nature_ce">5. The word-class line: what the word is according to the official ZLS dictionary (“Neuter noun”, “Verb”, “Adjective”…), then the game where you won it.\n\n6. The meaning, in bold: the English translation of the word.\n\n7. The sentence in italics: an example of the word in use, taken from the official dictionary. For a number, it is how the number is built.\n\n8. The smaller line: the English translation of that sentence, only when the ZLS has published one. Otherwise, the card shows “Same family:” and the other forms of the word (plural, conjugations…).</string>
     <string name="sa_le_bas_de_la_carte_2">The bottom of the card</string>
     <string name="sa_le_bas_de_la_carte">🛡️ The bottom of the card</string>
     <string name="sa_ecu_vues_combien_de_fois">9. The SEEN shield: how many times you have won this word, across all games.\n\n10. The medallion: the game that gave you the card, recognisable by its emblem and colour, and named around the edge.\n\n11. The LEVEL shield: the Leitner box compartment the card is in, from 1 to 6. It goes up with each successful review, and turns into ✓ when the word is learnt.\n\n12. The serial line: the card\'s number in your collection and the date you won it.\n\n13. The rank: the word\'s place among the most frequent words of the language (“#856” for “Waasser”), or “not in corpus” if it does not appear there.</string>
@@ -391,7 +391,7 @@
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Share my level card</string>
     <string name="sa_impossible_de_partager_pour_le">Can\'t share right now</string>
     <string name="sa_mot_du_jour">WORD OF THE DAY</string>
-    <string name="sa_en_francais_2">"in French: "</string>
+    <string name="sa_en_francais_2">"in English: "</string>
     <string name="sa_nouveau_mot_decouvrir">new word to discover</string>
     <string name="sa_mots_les_plus_utilises">Most used words</string>
     <string name="sa_statistiques_globales">Overall statistics</string>
@@ -491,12 +491,12 @@
     <string name="sa_solution_affichee_cette_grille_ne">💡 Solution shown: this grid doesn\'t count.</string>
     <string name="sa_mots">%1$s / %2$s words</string>
     <string name="sa_ce_que_vous_avez_gagne">📖 What you\'ve won · %1$s</string>
-    <string name="sa_tapez_un_mot_luxembourgeois_ou">Type a Luxembourgish or French word: the search works both ways.\nTap a word to open its entry: meaning, examples and other forms; long press to copy it.</string>
-    <string name="sa_haus_maison_kaz_chat">Haus, maison, Kaz, chat…</string>
+    <string name="sa_tapez_un_mot_luxembourgeois_ou">Type a Luxembourgish or English word: the search works both ways.\nTap a word to open its entry: meaning, examples and other forms; long press to copy it.</string>
+    <string name="sa_haus_maison_kaz_chat">Haus, house, Kaz, cat…</string>
     <string name="sa_traductions_et_exemples_issus_du">Translations and examples from the Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Example translations from the translation corpus of the same Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Enter at least two letters.</string>
     <string name="sa_aucun_resultat_pour_les_noms">No results for “%1$s”.\nProper names and place names have no translation in the official dictionary.</string>
-    <string name="sa_en_francais">IN FRENCH</string>
+    <string name="sa_en_francais">IN ENGLISH</string>
     <string name="sa_autres_formes">OTHER FORMS</string>
     <string name="sa_copier_le_mot">Copy the word</string>
     <string name="sa_voir_sur_le_dictionnaire_officiel">See in the official dictionary ↗</string>
@@ -511,7 +511,7 @@
     <string name="sa_ecrivez_les_mots_dans_la">Write the words in the grid, from their meaning</string>
     <string name="sa_casez_les_mots_donnes_dans">Fit the given words into the empty grid</string>
     <string name="sa_tous_les_jeux">"‹  All games"</string>
-    <string name="sa_huit_facons_de_travailler_son">Eight ways to practise your Luxembourgish. The Leitner box gives you access to the cards you\'ve studied. The vocabulary games give you the French translation of the words, at a moment when it doesn\'t give the answer away; Zuelwuert is about spelling numbers, Kräizwuert is the only one where you write the words yourself, and Wuertplaz the only one you can play without knowing the language. They all feed the same collection.</string>
+    <string name="sa_huit_facons_de_travailler_son">Eight ways to practise your Luxembourgish. The Leitner box gives you access to the cards you\'ve studied. The vocabulary games give you the translation of the words, at a moment when it doesn\'t give the answer away; Zuelwuert is about spelling numbers, Kräizwuert is the only one where you write the words yourself, and Wuertplaz the only one you can play without knowing the language. They all feed the same collection.</string>
     <string name="sa_ouvrir">"Open  ›"</string>
     <string name="sa_les_mots_que_vous_gagnez">The words you win become cards.</string>
     <string name="sa_les_sept_jeux_versent">All seven games feed into it.</string>
@@ -628,4 +628,7 @@
     <string name="wuertplaz_combo">🔥 %1$d words at once!</string>
     <string name="carte_ecu_vues">SEEN</string>
     <string name="carte_ecu_niveau">LEVEL</string>
+    <string name="langue_traductions">en</string>
+    <string name="accueil_glose">hello</string>
+    <string name="accueil_traduction">Hello, how are you?</string>
 </resources>

@@ -53,6 +53,30 @@ object TranslationDictionary {
     private var estCharge = false
 
     /**
+     * La langue des gloses chargées : celle de l'interface, telle que la
+     * ressource `langue_traductions` la résout (« fr », « de », « en », « pt » ;
+     * l'interface luxembourgeoise glose en français, faute de dictionnaire
+     * luxembourgeois-luxembourgeois). Passer par une ressource plutôt que par
+     * `Locale.getDefault()` garantit que gloses et interface parlent toujours la
+     * même langue, y compris quand le téléphone est dans une langue que l'app
+     * ne traduit pas et qu'Android retombe sur l'anglais.
+     */
+    private var langueChargee: String? = null
+
+    /**
+     * Les traductions d'exemples dans une autre langue que le français, lues
+     * dans l'actif de la langue ; `null` en français, où elles viennent de
+     * luxemburgish_exemples.json. Voir [chargerExemples].
+     */
+    private var traductionsExemplesLangue: Map<String, List<String?>>? = null
+
+    private fun langueDemandee(context: Context): String =
+        context.getString(R.string.langue_traductions)
+
+    private fun actifDe(langue: String): String =
+        if (langue == "fr") ASSET else "luxemburgish_translations_$langue.json"
+
+    /**
      * Index de recherche : une entrée par forme, avec ses deux versions pliées
      * (casse et accents retirés) déjà calculées.
      *
@@ -157,13 +181,25 @@ object TranslationDictionary {
 
     @Synchronized
     fun charger(context: Context) {
-        if (estCharge) return
+        val langue = langueDemandee(context)
+        if (estCharge && langue == langueChargee) return
         estCharge = true
+        langueChargee = langue
+        // Une autre langue que la précédente : la fiche doit relire ses
+        // traductions d'exemples.
+        synchronized(verrouExemples) { exemplesCharges = false }
 
         try {
-            val contenu = BufferedReader(
-                InputStreamReader(context.assets.open(ASSET))
-            ).use { it.readText() }
+            val contenu = try {
+                BufferedReader(
+                    InputStreamReader(context.assets.open(actifDe(langue)))
+                ).use { it.readText() }
+            } catch (e: java.io.IOException) {
+                // Un actif de langue absent retombe sur le français plutôt que
+                // de laisser les jeux sans aucune glose.
+                Log.e(TAG, "Actif ${actifDe(langue)} absent, repli sur le français", e)
+                BufferedReader(InputStreamReader(context.assets.open(ASSET))).use { it.readText() }
+            }
 
             val racine = JSONObject(contenu)
             val table = racine.getJSONObject("translations")
@@ -196,9 +232,14 @@ object TranslationDictionary {
             // aussi les gentilés (« Fransous ») hors du tirage. Un actif sans la
             // liste ne retire rien : les jeux tirent alors aussi des toponymes,
             // ce que TranslationAssetTest interdit.
+            // Les morceaux de locution (`fragments`) suivent le même chemin :
+            // « vum » n'atteint le LOD que par « vum selwen » et se glosait
+            // « de soi-même ». Voir generate_translations.py:est_fragment_lod.
             val nomsPropres = HashSet<String>()
-            racine.optJSONArray("noms_propres")?.let { liste ->
-                for (i in 0 until liste.length()) nomsPropres.add(liste.getString(i))
+            for (cle in listOf("noms_propres", "fragments")) {
+                racine.optJSONArray(cle)?.let { liste ->
+                    for (i in 0 until liste.length()) nomsPropres.add(liste.getString(i))
+                }
             }
 
             proposables = exactes.asSequence()
@@ -208,6 +249,17 @@ object TranslationDictionary {
                         !MotsEcartes.estEcarte(forme)
                 }
                 .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it.key) }
+
+            traductionsExemplesLangue = racine.optJSONObject("exemples_traductions")?.let { t ->
+                val lues = HashMap<String, List<String?>>(t.length())
+                val mots = t.keys()
+                while (mots.hasNext()) {
+                    val mot = mots.next()
+                    val liste = t.getJSONArray(mot)
+                    lues[mot] = (0 until liste.length()).map { liste.getString(it).ifEmpty { null } }
+                }
+                lues
+            } ?: if (langue == "fr") null else emptyMap()
 
             val sources = racine.optJSONArray("attribution")
             attribution = if (sources == null) "" else
@@ -290,6 +342,7 @@ object TranslationDictionary {
      * où la fiche doit s'afficher.
      */
     fun chargerExemples(context: Context) {
+        charger(context)
         synchronized(verrouExemples) {
             if (exemplesCharges) return
             exemplesCharges = true
@@ -324,7 +377,10 @@ object TranslationDictionary {
                 }
 
                 exemples = lues
-                traductionsExemples = traduites
+                // Dans une autre langue, les phrases restent celles-ci (elles
+                // sont choisies une fois, sur le français) et seules leurs
+                // traductions viennent de l'actif de la langue.
+                traductionsExemples = traductionsExemplesLangue ?: traduites
                 Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
             } catch (e: Exception) {
                 // Sans exemples la fiche garde son sens et ses formes : la

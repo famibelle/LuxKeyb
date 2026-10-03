@@ -377,31 +377,36 @@ class ChasseCroiseAssetTest {
      * vrai de `Bettel` et de `RTL`, que le LOD ne glose pas, faux des 1 736
      * articles qu'il marque `NP`.
      *
-     * Le repérage tient à ce que le LOD écrit ses gloses en français : un nom
-     * commun français est en minuscules. Une glose dont **toutes** les
-     * acceptions commencent par une majuscule désigne donc un nom propre. La
-     * règle vit dans `generate_crossword.py` ; ce test la rejoue sur l'actif,
-     * parce qu'un vivier reconstruit sans elle repasserait sans rien casser.
+     * Le repérage suit le LOD depuis le 2026-10-03 : les listes
+     * `noms_propres` et `fragments` de l'actif des traductions, que lit
+     * `generate_crossword.py:est_nom_propre_lod`. La règle des majuscules
+     * qu'elle remplace écartait aussi les gentilés (« Fransous » → Français),
+     * qui sont de bons mots à caser. Ce test la rejoue sur l'actif, parce
+     * qu'un vivier reconstruit sans elle repasserait sans rien casser.
      */
     @Test
     fun `aucun mot n'est un nom propre`() {
+        val traductions = org.json.JSONObject(
+            java.io.File("src/main/assets/luxemburgish_translations.json").readText()
+        )
+        val exclus = listOf("noms_propres", "fragments").flatMap { cle ->
+            val liste = traductions.getJSONArray(cle)
+            (0 until liste.length()).map { liste.getString(it) }
+        }.toSet()
+        assertTrue("listes d'exclusion quasi vides", exclus.size >= 1000)
         val grilles = grilles()
         val fautifs = mutableSetOf<String>()
         for (i in 0 until grilles.length()) {
             val mots = grilles.getJSONObject(i).getJSONArray("mots")
             for (j in 0 until mots.length()) {
                 val mot = mots.getJSONObject(j)
-                val acceptions = mot.getString("g").split(",")
-                    .map { it.trim() }.filter { it.isNotEmpty() }
-                if (acceptions.isNotEmpty() &&
-                    acceptions.all { it.first().isUpperCase() }
-                ) {
+                if (mot.getString("f") in exclus) {
                     fautifs.add("${mot.getString("f")} : ${mot.getString("g")}")
                 }
             }
         }
         assertTrue(
-            "gloses entièrement capitalisées, donc noms propres : " +
+            "noms propres ou morceaux de locution pour le LOD : " +
                 fautifs.sorted().joinToString(" · "),
             fautifs.isEmpty()
         )

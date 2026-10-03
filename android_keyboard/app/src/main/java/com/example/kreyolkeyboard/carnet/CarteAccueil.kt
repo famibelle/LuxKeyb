@@ -17,22 +17,31 @@ import com.example.kreyolkeyboard.R
 object CarteAccueil {
 
     const val FORME = "Moien"
-    const val GLOSE = "bonjour"
     val CATEGORIE = R.string.cat_salutation
     const val EXEMPLE = "Moien, wéi geet et?"
-    const val TRADUCTION = "Bonjour, comment ça va ?"
 
     /** Verse la carte au carnet. `true` seulement si elle n'y était pas encore. */
     fun offrir(context: Context): Boolean =
         Carnet.ajouter(context, FORME, JeuCarte.ACCUEIL)
 
-    /** Le contenu de [carte], corrigé s'il s'agit de la carte offerte. */
-    fun corriger(contenu: ContenuCarte): ContenuCarte =
+    /**
+     * Le contenu de [carte], corrigé s'il s'agit de la carte offerte. Son sens
+     * et la traduction de sa phrase sont dans la langue de l'interface, comme
+     * les gloses du LOD des autres cartes.
+     */
+    fun corriger(context: Context, contenu: ContenuCarte): ContenuCarte = corriger(
+        contenu,
+        context.getString(R.string.accueil_glose),
+        context.getString(R.string.accueil_traduction)
+    )
+
+    /** La règle seule, sans ressources : testable hors appareil. */
+    fun corriger(contenu: ContenuCarte, glose: String, traduction: String): ContenuCarte =
         if (contenu.carte.forme == FORME && JeuCarte.ACCUEIL in contenu.carte.jeux) {
             contenu.copy(
-                glose = GLOSE,
+                glose = glose,
                 exemple = EXEMPLE,
-                traductionExemple = TRADUCTION,
+                traductionExemple = traduction,
                 categorie = CATEGORIE
             )
         } else contenu

@@ -128,7 +128,7 @@ object CarteCarnet {
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return CarteAccueil.corriger(ContenuCarte(
+        return CarteAccueil.corriger(context, ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
