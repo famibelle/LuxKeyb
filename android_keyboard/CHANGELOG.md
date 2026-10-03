@@ -9,6 +9,23 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [32.1.0] - 2026-10-03
+
+Le clavier dicte en luxembourgeois.
+
+### ✨ Nouveautés
+
+- **Dictée vocale en luxembourgeois.** Un micro à droite de la barre de suggestions : vous parlez, le texte s'écrit pendant que vous parlez, ponctué et avec les majuscules, et le micro se referme seul quand vous vous taisez. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg.
+- **Un écran explique, avant la première dictée, où part votre voix** : vers l'Université du Luxembourg, pendant la dictée seulement, transcrite sans être conservée. Rien n'est envoyé avant « J'accepte ».
+- **Sans réseau, le micro est barré ; sur un réseau lent, le clavier le dit** et finit d'envoyer ce qui attend : le texte arrive en entier.
+- **Ce que vous tapez ne quitte toujours jamais votre téléphone.** La dictée ne s'ouvre pas dans les champs de mot de passe.
+- La dictée suit la langue de l'application : son écran d'information et ses messages existent dans les cinq langues.
+
+### 🔒 Confidentialité
+
+- Nouvelles autorisations, toutes réservées à la dictée : micro, Internet, état du réseau.
+- Politique de confidentialité 3.0, avec une section « La dictée vocale ». L'application s'adresse aux personnes de 16 ans et plus.
+
 ## [32.0.0] - 2026-10-03
 
 L'application parle anglais, français, allemand, portugais et luxembourgeois.
