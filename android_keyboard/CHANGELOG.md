@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.2.0] - 2026-10-03
+
+Le correcteur orthographique se trouve dès l'accueil.
+
+### ✨ Améliorations
+
+- **Le correcteur se propose sur l'accueil.** Tant qu'il n'est pas choisi, une carte « Fini le trait rouge sous vos mots » ouvre directement le bon écran d'Android. Android ne permet à aucune application de se choisir elle-même comme correcteur : c'est à vous de le faire, en trois touches. « Plus tard » retire la carte.
+- **L'avertissement d'Android est annoncé.** Il parle de mots de passe et de cartes bancaires, comme pour tout correcteur. Le nôtre ne conserve rien et n'envoie rien.
+- **Un message confirme que c'est fait** quand vous revenez dans l'application.
+
+### 🐛 Corrections
+
+- **La correction orthographique coupée dans Android est reconnue.** L'application annonçait le correcteur actif alors qu'il ne soulignait rien. Elle propose maintenant de la rallumer.
+
 ## [30.1.0] - 2026-10-01
 
 Les propositions en français deviennent facultatives.
