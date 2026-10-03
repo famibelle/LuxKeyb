@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.2.2] - 2026-10-03
+
+Kräizwuert et le guide suivent la disposition de votre clavier.
+
+### 🐛 Corrections
+
+- **Le clavier de Kräizwuert reprend votre disposition.** Avec « Suisse allemand », la disposition par défaut, il gardait les rangées « Luxembourg » : « é » à droite du « l », là où votre clavier met « ö » et « ä ». Il suit maintenant celle que vous avez choisie dans les réglages du clavier, même si vous en changez en cours de partie.
+- **Le guide montre le clavier tel que vous le voyez.** Ses images sont refaites avec la disposition « Suisse allemand », et il ne dit plus qu'il faut un appui long pour « ë », « ä », « é », « ü » ou « ö » : ces lettres ont leur propre touche.
+
 ## [30.2.1] - 2026-10-03
 
 Les fautes de frappe se corrigent plus vite.
