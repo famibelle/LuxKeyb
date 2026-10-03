@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.annotation.StringRes
 
 /**
  * Palette du clavier, en clair et en sombre.
@@ -48,10 +49,10 @@ object KeyboardTheme {
     private const val TAG = "KeyboardTheme"
 
     /** Ce que l'utilisateur choisit dans l'écran de réglages. */
-    enum class Mode(val cle: String, val libelle: String) {
-        SYSTEME("systeme", "Comme le téléphone"),
-        CLAIR("clair", "Toujours clair"),
-        SOMBRE("sombre", "Toujours sombre");
+    enum class Mode(val cle: String, @StringRes val libelle: Int) {
+        SYSTEME("systeme", R.string.theme_systeme),
+        CLAIR("clair", R.string.theme_clair),
+        SOMBRE("sombre", R.string.theme_sombre);
 
         companion object {
             /** Tolérante : une clé inconnue (préférence d'une version future,

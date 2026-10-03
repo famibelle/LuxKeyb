@@ -68,10 +68,10 @@ class CategoriesAssetTest {
     fun desMotsConnusOntLeurCategorie() {
         val categories = categories()
         for ((mot, attendu) in listOf(
-            "Aarbecht" to "Nom féminin",
-            "Stad" to "Nom féminin",
-            "Haus" to "Nom neutre",
-            "gutt" to "Adjectif"
+            "Aarbecht" to R.string.cat_nom_f,
+            "Stad" to R.string.cat_nom_f,
+            "Haus" to R.string.cat_nom_n,
+            "gutt" to R.string.cat_adjectif
         )) {
             assertTrue("« $mot » n'a plus de catégorie", categories.has(mot))
             assertEquals(
@@ -84,9 +84,9 @@ class CategoriesAssetTest {
 
     @Test
     fun lesLibellesSontEnClair() {
-        assertEquals("Nom masculin", TranslationDictionary.libelleCategorie("SUBST M"))
-        assertEquals("Nom", TranslationDictionary.libelleCategorie("SUBST"))
-        assertEquals("Verbe", TranslationDictionary.libelleCategorie("VRB"))
+        assertEquals(R.string.cat_nom_m, TranslationDictionary.libelleCategorie("SUBST M"))
+        assertEquals(R.string.cat_nom, TranslationDictionary.libelleCategorie("SUBST"))
+        assertEquals(R.string.cat_verbe, TranslationDictionary.libelleCategorie("VRB"))
         assertEquals(null, TranslationDictionary.libelleCategorie("(bei Pronominaladverben)"))
     }
 }

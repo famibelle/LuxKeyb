@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import androidx.annotation.StringRes
 import android.util.Log
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -405,40 +406,42 @@ object TranslationDictionary {
     }
 
     /**
-     * Catégorie en clair du [mot] affiché par une fiche (« Nom féminin »,
-     * « Verbe »), ou `null` si le LOD ne la donne pas.
+     * Catégorie du [mot] affiché par une fiche (« Nom féminin », « Verbe »),
+     * en ressource à traduire, ou `null` si le LOD ne la donne pas.
      */
-    fun categorie(context: Context, mot: String): String? {
+    @StringRes
+    fun categorie(context: Context, mot: String): Int? {
         chargerCategories(context)
         return categoriesLod[mot]?.let { libelleCategorie(it) }
     }
 
     /** `"SUBST F"` → « Nom féminin ». `null` pour un code inconnu. */
-    fun libelleCategorie(code: String): String? {
+    @StringRes
+    fun libelleCategorie(code: String): Int? {
         val parties = code.split(" ")
         return when (parties[0]) {
             "SUBST" -> when (parties.getOrNull(1)) {
-                "F" -> "Nom féminin"
-                "M" -> "Nom masculin"
-                "N" -> "Nom neutre"
-                "MF" -> "Nom masculin ou féminin"
-                "MN" -> "Nom masculin ou neutre"
-                "FN" -> "Nom féminin ou neutre"
-                else -> "Nom"
+                "F" -> R.string.cat_nom_f
+                "M" -> R.string.cat_nom_m
+                "N" -> R.string.cat_nom_n
+                "MF" -> R.string.cat_nom_mf
+                "MN" -> R.string.cat_nom_mn
+                "FN" -> R.string.cat_nom_fn
+                else -> R.string.cat_nom
             }
-            "NP" -> "Nom propre"
-            "VRB" -> "Verbe"
-            "ADJ" -> "Adjectif"
-            "ADV" -> "Adverbe"
-            "NB" -> "Nombre"
-            "PRON" -> "Pronom"
-            "PRONADV" -> "Adverbe pronominal"
-            "INTERJ" -> "Interjection"
-            "PREP" -> "Préposition"
-            "CONJ" -> "Conjonction"
-            "VRBPART" -> "Particule verbale"
-            "PART" -> "Particule"
-            "ART" -> "Article"
+            "NP" -> R.string.cat_nom_propre
+            "VRB" -> R.string.cat_verbe
+            "ADJ" -> R.string.cat_adjectif
+            "ADV" -> R.string.cat_adverbe
+            "NB" -> R.string.cat_nombre
+            "PRON" -> R.string.cat_pronom
+            "PRONADV" -> R.string.cat_adverbe_pronominal
+            "INTERJ" -> R.string.cat_interjection
+            "PREP" -> R.string.cat_preposition
+            "CONJ" -> R.string.cat_conjonction
+            "VRBPART" -> R.string.cat_particule_verbale
+            "PART" -> R.string.cat_particule
+            "ART" -> R.string.cat_article
             else -> null
         }
     }

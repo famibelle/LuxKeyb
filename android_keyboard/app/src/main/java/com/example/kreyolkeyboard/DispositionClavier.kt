@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard
 
+import androidx.annotation.StringRes
 import com.example.kreyolkeyboard.KeyboardLayoutManager.ChampAdresse
 
 /**
@@ -20,7 +21,7 @@ import com.example.kreyolkeyboard.KeyboardLayoutManager.ChampAdresse
  * Données pures, sans vue : les rangées et les largeurs se vérifient hors
  * appareil (DispositionClavierTest).
  */
-enum class DispositionClavier(val cle: String, val libelle: String) {
+enum class DispositionClavier(val cle: String, @StringRes val libelle: Int) {
 
     /**
      * Le suisse allemand, onze touches par rangée comme Gboard en allemand :
@@ -32,7 +33,7 @@ enum class DispositionClavier(val cle: String, val libelle: String) {
      * touches directes, « ü » et « ö » s'y ajoutent : ce clavier ne sacrifie
      * rien de luxembourgeois à l'allemand.
      */
-    SUISSE_ALLEMAND("suisse_allemand", "Suisse allemand (ü, ö et ä à droite)") {
+    SUISSE_ALLEMAND("suisse_allemand", R.string.disposition_suisse_allemand) {
         override fun rangeesLettres(champ: ChampAdresse): List<Array<String>> = listOf(
             arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü"),
             arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"),
@@ -64,7 +65,7 @@ enum class DispositionClavier(val cle: String, val libelle: String) {
      * touches dédiées et pas quatre ; ü et les suivantes restent en appui long
      * sur « u », « a », « o » et « e ».
      */
-    LUXEMBOURG("luxembourg", "Luxembourg (é, ä et ë en touches)") {
+    LUXEMBOURG("luxembourg", R.string.disposition_luxembourg) {
         override fun rangeesLettres(champ: ChampAdresse): List<Array<String>> = listOf(
             arrayOf("q", "w", "e", "r", "t", "z", "u", "i", "o", "p"),
             arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "é"),

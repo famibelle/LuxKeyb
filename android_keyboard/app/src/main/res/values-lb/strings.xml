@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Luxembourgeois, à faire relire par un locuteur natif -->
+    <string name="keyboard_description">Lëtzebuerger Tastatur mat Wuertvirschléi an Akzenter</string>
+    <string name="settings_title">Astellunge vum Lëtzebuergesch Clavier</string>
+    <string name="spell_checker_name">Korrektur Lëtzebuergesch</string>
+    <string name="spellchecker_name">Korrektur Lëtzebuergesch • Lëtzebuerg</string>
+    <string name="subtype_kreyol">Lëtzebuergesch Clavier Lëtzebuerg</string>
+    <string name="disposition_suisse_allemand">Schwäizerdäitsch (ü, ö an ä riets)</string>
+    <string name="disposition_luxembourg">Lëtzebuerg (é, ä an ë als Tasten)</string>
+    <string name="theme_systeme">Wéi den Handy</string>
+    <string name="theme_clair">Ëmmer hell</string>
+    <string name="theme_sombre">Ëmmer donkel</string>
+    <string name="delai_court">Kuerz (0,3 s)</string>
+    <string name="delai_moyen">Mëttel (0,5 s)</string>
+    <string name="delai_long">Laang (0,8 s)</string>
+    <string name="delai_tres_long">Ganz laang (1,2 s)</string>
+    <string name="retour">Zréck</string>
+    <string name="ks_titre">Astellunge vun der Tastatur</string>
+    <string name="ks_apparence">Ausgesinn</string>
+    <string name="ks_apparence_intro">D\'Faarf vun den Tasten. D\'Rout an d\'Blo vum Fändel änneren net: Just d\'Wäiss vun de Buschtawe gëtt anthrazit.</string>
+    <string name="ks_apparence_note">„Wéi den Handy“ follegt dem donkele Modus vum System. Déi zwou aner Optioune ginn et, well dee Modus op e puer Uewerflächen vun de Fabrikanten net bis bei d\'Tastature vun aneren Ubidder kënnt.</string>
+    <string name="ks_disposition">Disposition</string>
+    <string name="ks_disposition_intro">Allebéid sinn QWERTZ. Si ënnerscheede sech just doduerch, wéi eng Buschtawe mat Akzent eng eegen Tast hunn.</string>
+    <string name="ks_disposition_note">„Schwäizerdäitsch“, d\'Standardastellung, hält sech un déi kierperlech Tastatur mam selwechten Numm: ü, ö an ä riets, é an ë nieft der Espace-Tast. „Lëtzebuerg“ huet e bësse méi breet Tasten, zéng pro Rei amplaz eelef: é riets, ä an ë nieft der Espace-Tast, ü an ö mat laangem Drécken.</string>
+    <string name="ks_suggestions">Virschléi</string>
+    <string name="ks_suggestions_intro">Lëtzebuergesch Wierder ginn a rout virgeschloen. Aktivéiert d\'Optioun hei ënnendrënner, fir datt eng zweet Rei a blo vum drëtte Buschtaf un och franséisch Wierder virschléit.</string>
+    <string name="ks_propositions_francais">Franséisch Virschléi</string>
+    <string name="ks_suggestions_note">Ouni si behält d\'Tastatur just eng Rei Virschléi a léisst e bësse méi Plaz um Bildschierm. D\'Korrektur erkennt d\'Franséischt weiderhin.</string>
+    <string name="ks_retour_frappe">Reaktioun beim Tippen</string>
+    <string name="ks_retour_frappe_intro">Wat d\'Tastatur bei all Drock mécht. Är Wiel gëllt, soubal Dir zréck an engem Textfeld sidd.</string>
+    <string name="ks_vibration">Vibratioun beim Tippen</string>
+    <string name="ks_son">Toun beim Tippen</string>
+    <string name="ks_retour_frappe_note">Dës zwou Astellunge sinn an der App an net an deene vum Handy: Op ville Geräter steiert d\'Vibratiounsastellung vum Handy just d\'Tastatur vum Fabrikant.</string>
+    <string name="ks_appui_long">Laang drécken</string>
+    <string name="ks_appui_long_intro">Wéi laang Dir eng Tast gedréckt halt, fir hir Akzenter a Symboler opzemaachen (è ënner e, à ënner a, ? ënner dem Punkt…).</string>
+    <string name="ks_appui_long_note">Wann d\'Akzenter opginn, obwuel Dir just de Buschtaf tippe wollt, wielt eng méi laang Zäit.</string>
+    <string name="ks_emojis">Lescht Emojien</string>
+    <string name="ks_emojis_intro">D\'Emoji-Panel weist als éischt déi lescht 30 Emojien, déi Dir benotzt hutt. Dës Lëscht verléisst den Handy net, an aus engem Passwuertfeld kënnt näischt dobäi.</string>
+    <string name="ks_emojis_vider">Lescht Emojien eidelmaachen</string>
+    <string name="ks_emojis_effaces">Lescht Emojien geläscht</string>
+    <string name="ime_astuce_accents">Laang op e Buschtaf drécken fir seng Akzenter: a → ä à â, e → é ë è ê</string>
+    <string name="ime_partager">📤 Engem Frënd e Wuert schécken</string>
+    <string name="touche_supprimer">Läschen</string>
+    <string name="touche_majuscule">Grouss Buschtawen</string>
+    <string name="touche_autres_caracteres">Aner Zeechen</string>
+    <string name="entree_rechercher">Sichen</string>
+    <string name="entree_envoyer">Schécken</string>
+    <string name="entree_aller">Lass</string>
+    <string name="entree_suivant">Weider</string>
+    <string name="entree_termine">Fäerdeg</string>
+    <string name="entree">Entrée</string>
+    <string name="cat_nom_f">Weiblecht Substantiv</string>
+    <string name="cat_nom_m">Männlecht Substantiv</string>
+    <string name="cat_nom_n">Sächlecht Substantiv</string>
+    <string name="cat_nom_mf">Männlecht oder weiblecht Substantiv</string>
+    <string name="cat_nom_mn">Männlecht oder sächlecht Substantiv</string>
+    <string name="cat_nom_fn">Weiblecht oder sächlecht Substantiv</string>
+    <string name="cat_nom">Substantiv</string>
+    <string name="cat_nom_propre">Eegennumm</string>
+    <string name="cat_verbe">Verb</string>
+    <string name="cat_adjectif">Adjektiv</string>
+    <string name="cat_adverbe">Adverb</string>
+    <string name="cat_nombre">Zuel</string>
+    <string name="cat_pronom">Pronomen</string>
+    <string name="cat_adverbe_pronominal">Pronominaladverb</string>
+    <string name="cat_interjection">Interjektioun</string>
+    <string name="cat_preposition">Preposition</string>
+    <string name="cat_conjonction">Konjunktioun</string>
+    <string name="cat_particule_verbale">Verbpartikel</string>
+    <string name="cat_particule">Partikel</string>
+    <string name="cat_article">Artikel</string>
+    <string name="cat_nom_mf_court">Subst. m. oder f.</string>
+    <string name="cat_nom_mn_court">Subst. m. oder n.</string>
+    <string name="cat_nom_fn_court">Subst. f. oder n.</string>
+    <string name="cat_mot">Wuert</string>
+    <string name="cat_salutation">Begréissung</string>
+    <string name="boite_description">Widderhuelungskëscht, siwe Fächer, %1$s</string>
+    <string name="boite_tout_acquis">Alles geléiert</string>
+    <string name="boite_a_jour">Alles erlidegt</string>
+    <string name="boite_demain">muer</string>
+    <string name="boite_apres_demain">iwwermuer</string>
+    <string name="boite_prochaine">%1$s %2$s</string>
+    <string name="boite_acquis_court">★ geléiert</string>
+    <string name="boite_regle">"Richteg Äntwert: D\'Kaart rëtscht weider a kënnt méi spéit erëm  →"</string>
+    <string name="boite_acquis">Geléiert</string>
+    <string name="boite_revient_dans">Kënnt erëm an %1$s</string>
+    <string name="boite_a_revoir">%1$s · %2$d ze widderhuelen</string>
+    <plurals name="cartes">
+        <item quantity="one">%d Kaart</item>
+        <item quantity="other">%d Kaarten</item>
+    </plurals>
+    <plurals name="reviser_cartes">
+        <item quantity="one">%d Kaart widderhuelen</item>
+        <item quantity="other">%d Kaarte widderhuelen</item>
+    </plurals>
+    <plurals name="boite_dans_jours">
+        <item quantity="one">an %d Dag</item>
+        <item quantity="other">an %d Deeg</item>
+    </plurals>
+    <plurals name="rythme_jours">
+        <item quantity="one">%d Dag</item>
+        <item quantity="other">%d Deeg</item>
+    </plurals>
+    <plurals name="rythme_semaines">
+        <item quantity="one">%d Woch</item>
+        <item quantity="other">%d Wochen</item>
+    </plurals>
+    <plurals name="rythme_mois">
+        <item quantity="one">%d Mount</item>
+        <item quantity="other">%d Méint</item>
+    </plurals>
+    <plurals name="rythme_jours_court">
+        <item quantity="one">%d Dag</item>
+        <item quantity="other">%d Deeg</item>
+    </plurals>
+    <plurals name="rythme_semaines_court">
+        <item quantity="one">%d Woch</item>
+        <item quantity="other">%d Wo.</item>
+    </plurals>
+    <plurals name="rythme_mois_court">
+        <item quantity="one">%d Mount</item>
+        <item quantity="other">%d Méint</item>
+    </plurals>
+    <string name="casier_aucune_carte">Keng Kaarten</string>
+    <string name="casier_vide_acquis">Nach keng Kaart ass geléiert. Eng Kaart kënnt heihinner no sechs gelongene Widderhuelungen, déi lescht dräi Méint no der viregter.</string>
+    <string name="casier_vide_premier">Dëst Fach ass fir de Moment eidel. Kaarten, déi Dir an de Spiller gewannt, kommen heihinner, a komme no engem Feeler och heihinner zréck.</string>
+    <string name="casier_vide_suivant">Dëst Fach ass fir de Moment eidel. D\'Kaarte klammen aus dem viregte Fach heihinner, eng gelongen Widderhuelung no där anerer.</string>
+    <string name="jeu_accueil">Wëllkomm</string>
+    <string name="rarete_commun">Heefeg</string>
+    <string name="rarete_peu_commun">Net sou heefeg</string>
+    <string name="rarete_rare">Seelen</string>
+    <string name="rarete_tres_rare">Ganz seelen</string>
+    <string name="tri_recent">Neiste</string>
+    <string name="tri_alpha">A → Z</string>
+    <string name="tri_rarete">Seelenheet</string>
+    <string name="tri_etagere">Regal</string>
+    <string name="carnet_ouverture">De Carnet geet op…</string>
+    <string name="carnet_tous">All</string>
+    <string name="carnet_vide">De Carnet ass eidel.</string>
+    <string name="carnet_vide_explication">All Wuert, dat Dir an engem vun de siwe Spiller gewannt, gëtt eng Kaart a kënnt heihinner. E Wuert fannen, eent roden, eent schreiwen: Déi éischt Kaart ass just ee Spill ewech.</string>
+    <string name="carnet_mots_dans">%1$s an %2$s</string>
+    <plurals name="mots">
+        <item quantity="one">%d Wuert</item>
+        <item quantity="other">%d Wierder</item>
+    </plurals>
+    <plurals name="carnet_acquis_sur">
+        <item quantity="one">%1$d vun %2$d geléiert. Sechs gelongen Widderhuelunge pro Kaart, verdeelt op fënnef Méint.</item>
+        <item quantity="other">%1$d vun %2$d geléiert. Sechs gelongen Widderhuelunge pro Kaart, verdeelt op fënnef Méint.</item>
+    </plurals>
+    <string name="fermer">Zoumaachen</string>
+    <string name="pochette_titre">🎁 Äre Kaartepak: %1$s</string>
+    <string name="pochette_nouvelle_carte">"✨  NEI KAART"</string>
+    <string name="pochette_passer">Iwwersprangen</string>
+    <string name="pochette_mon_carnet">📔 Mäi Carnet</string>
+    <string name="pochette_revoir">‹ no riets wëschen, fir Är Kaarten nach eng Kéier ze gesinn</string>
+    <string name="pochette_parcourir">wëschen, fir ze bliederen ›</string>
+    <string name="pochette_bilan_neuves">Si sinn elo an Ärem Carnet.</string>
+    <string name="pochette_bilan_deja">Dir hat se schonn all: Si bleiwen an Ärem Carnet.</string>
+    <plurals name="pochette_nouvelles">
+        <item quantity="one">%d nei</item>
+        <item quantity="other">%d nei</item>
+    </plurals>
+    <string name="carte_gagne_a_medaillon">GEWONNEN AN</string>
+    <string name="carte_glose_nombre">d\'Zuel %1$d</string>
+    <string name="carte_gagne_a">gewonnen an %1$s</string>
+    <string name="carte_rang">%1$d.</string>
+    <string name="carte_hors_corpus">net am Korpus</string>
+    <string name="carte_sens_inconnu">Bedeitung net verzeechent</string>
+    <string name="citation">„%1$s“</string>
+    <string name="carte_meme_famille">Selwecht Famill: %1$s</string>
+    <string name="eventail_parcourir">Wëscht, fir duerch d\'Kaarten ze bliederen.</string>
+    <string name="eventail_preparation">D\'Kaarte ginn op d\'Rei gesat…</string>
+    <string name="eventail_refermer">Tippt, fir zouzemaachen</string>
+    <string name="eventail_aide_plusieurs">Wëschen, fir ze bliederen · op eng Kaart tippen, fir se ze liesen</string>
+    <string name="eventail_ranger">Niewendrun tippen, fir ewechzeraumen</string>
+    <string name="eventail_aide_une">Op d\'Kaart tippen, fir se ze liesen</string>
+    <string name="carnet_bouton">📔 Carnet</string>
+    <string name="carnet_bouton_total">📔 Carnet · %1$d</string>
+    <string name="revision_souvenez">Wësst Dir et nach?</string>
+    <string name="revision_retourner">Kaart ëmdréinen</string>
+    <string name="revision_pas_su">Net gewosst</string>
+    <string name="revision_je_savais">Gewosst</string>
+    <string name="revision_terminee">Ronn fäerdeg</string>
+    <string name="revision_score">%1$d vun %2$d gewosst.</string>
+    <string name="revision_a_revoir">Muer ze widderhuelen: %1$s</string>
+    <string name="revision_ecrits">Dir hutt %1$s zënter dem leschte Mol selwer geschriwwen: Dës Kaarten haten näischt méi ze beweisen.</string>
+    <string name="zuelen_secrit">%1$d schreift een „%2$s“.</string>
+    <string name="zuelen_decomposition">%1$d = %2$s + %3$s + %4$s, d\'Eenheet fir d\'éischt.</string>
+    <string name="zuelen_cest">„%1$s“ ass %2$d.</string>
+    <string name="zuelen_inversion">„%1$s“ ass %2$d: Op Lëtzebuergesch kënnt d\'Eenheet virun der Zéngerzuel, wéi op Däitsch.</string>
+    <string name="zuelen_allemand">„%1$s“ ass Däitsch, net Lëtzebuergesch.</string>
+    <string name="zuelen_trait_union">Zuele ginn an engem Wuert geschriwwen, ouni Bindestréch.</string>
+    <string name="zuelen_espaces">Zuele ginn an engem Wuert geschriwwen, ouni Espace.</string>
+    <string name="zuelen_eifel_maintient">Eifeler Regel: Den n vum Bindewuert bleift virun „%1$s“, also „%2$s“.</string>
+    <string name="zuelen_eifel_tombe">Eifeler Regel: Den n vum Bindewuert fält virun „%1$s“ ewech, also „%2$s“.</string>
+    <string name="zuelen_finale_ig">Déi lëtzebuergesch Endung ass -eg; -ig ass déi däitsch.</string>
+    <string name="zuelen_accent">Et feelt en Akzent: „%1$s“.</string>
+    <string name="zuelen_juste">✅ Richteg! %1$s</string>
+    <string name="zuelen_faux">❌ %1$s\nDéi richteg Äntwert war „%2$s“.</string>
+    <string name="niveau_facile">Liicht</string>
+    <string name="niveau_normal">Normal</string>
+    <string name="niveau_difficile">Schwéier</string>
+    <string name="notif_niveau_description">Seet Iech Bescheed, wann Dir en neien Niveau am Wuertschatz erreecht.</string>
+    <string name="sa_bravo_et_ass_geschafft_le">Bravo, et ass geschafft! D\'Tastatur ass prett, fir an all Ären Appen op Lëtzebuergesch ze schreiwen.</string>
+    <string name="sa_la_carte_moien_est_dans">%1$s\n\nD\'Kaart „Moien“ ass an Ärem Carnet.</string>
+    <string name="sa_partager_la_nouvelle">D\'Neiegkeet deelen</string>
+    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ech hunn de Lëtzebuergesch Clavier aktivéiert 🎉\nEng gratis Android-Tastatur, déi Wierder op Lëtzebuergesch virschléit.\n\nLued se gratis erof:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_pour_aller_plus_loin_optionnel">🚀 Fir méi wäit ze goen (fakultativ)</string>
+    <string name="sa_passer_du_francais_au_luxembourgeois">🔄 Tëscht dem Lëtzebuergeschen an Ärer anerer Tastatur wiesselen</string>
+    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">De Lëtzebuergesch Clavier ersetzt Är aner Tastaturen net: E kënnt op d\'Lëscht derbäi, an Dir wiesselt an zwou Sekonnen vun där enger op déi aner, sou dacks wéi Dir wëllt.</string>
+    <string name="sa_quitter_le_luxembourgeois">➡️ D\'Lëtzebuergescht verloossen</string>
+    <string name="sa_appuyez_une_seconde_sur_la">Dréckt eng Sekonn op d\'Espace-Tast vun der lëtzebuergescher Tastatur; dee klengen 🌐 am Eck erënnert Iech drun. D\'Auswiel vun Android geet op: Tippt op Gboard, Samsung Keyboard oder déi, déi Dir wëllt.</string>
+    <string name="sa_revenir_au_luxembourgeois">⬅️ Zréck op Lëtzebuergesch</string>
+    <string name="sa_le_geste_est_pas_symetrique">D\'Geste funktionéiert net an déi zwou Richtungen: Op Gboard an op deene meeschten anere Tastaturen ännert laang Drécken op d\'Espace-Tast just hir eege Sprooch. Tippt amplaz op d\'Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt, déi ze gesinn ass, soulaang eng Tastatur op ass: D\'Auswiel kënnt erëm, an do waart de „Lëtzebuergesch Clavier“.</string>
+    <string name="sa_le_choix_vaut_pour_toutes">D\'Wiel gëllt fir all Är Appen a bleift och no engem Neistart. Wann ënnen keng Tastatur-Ikon ze gesinn ass, mécht de Knäppchen hei ënnendrënner déiselwecht Auswiel op.</string>
+    <string name="sa_ouvrir_le_selecteur_de_claviers_2">Tastaturauswiel opmaachen</string>
+    <string name="sa_astuce_de_la_semaine">Tipp vun der Woch</string>
+    <string name="sa_decouvrez_vos_statistiques">Entdeckt Är Statistiken</string>
+    <string name="sa_suivez_votre_progression_et_montez">Verfollegt Äre Fortschrëtt a klammt am Niveau!</string>
+    <string name="sa_guide_utilisation">Gebrauchsufank</string>
+    <string name="sa_reglages_correcteur_astuces_de_saisie">Astellungen, Korrektur, Tipps fir d\'Tippen</string>
+    <string name="sa_propos_2">Iwwer d\'App</string>
+    <string name="sa_version_sources_des_donnees_licences">Versioun, Quelle vun den Donnéeën, Lizenzen</string>
+    <string name="sa_quelques_minutes_suffisent">E puer Minutte genügen.</string>
+    <string name="sa_reviser_maintenant">Elo widderhuelen</string>
+    <string name="sa_rien_revoir_aujourd_hui">"✅  Haut näischt ze widderhuelen"</string>
+    <string name="sa_gagner_autres_cartes">Aner Kaarte gewannen</string>
+    <string name="sa_votre_carnet_est_vide">"📚  Äre Carnet ass eidel"</string>
+    <string name="sa_chaque_mot_trouve_dans_un">All Wuert, dat Dir an engem Spill fannt, gëtt eng Kaart zum Widderhuelen.</string>
+    <string name="sa_jouer">Spillen</string>
+    <string name="sa_voir_dans_le_wierderbuch">Am Wierderbuch kucken ›</string>
+    <string name="sa_rejouer_2">Nach eng Kéier %1$s spillen</string>
+    <string name="sa_votre_dernier_jeu">Äert lescht Spill</string>
+    <string name="sa_choisir_un_jeu">E Spill wielen</string>
+    <string name="sa_sept_jeux_pour_apprendre_les">Siwe Spiller, fir d\'Wierder ze léieren</string>
+    <string name="sa_en_francais_3">op Franséisch: %1$s</string>
+    <string name="sa_fini_le_trait_rouge_sous">"🔤  Schluss mam roude Stréch ënner Äre Wierder"</string>
+    <string name="sa_la_correction_orthographique_est_coupee">D\'Rechtschreifkorrektur ass an Android ausgeschalt. Maacht se erëm un, fir datt Är lëtzebuergesch Wierder iwwerall erkannt ginn.</string>
+    <string name="sa_android_souligne_vos_mots_luxembourgeois">Android ënnerstreecht Är lëtzebuergesch Wierder a Messages, an den Notizen an anzwousch anescht. Wielt eis Korrektur, fir datt se erkannt ginn.</string>
+    <string name="sa_android_affichera_un_avertissement_comme">Android weist eng Warnung, wéi bei all Korrektur. Eis späichert näischt a schéckt näischt.</string>
+    <string name="sa_rallumer">Erëm umaachen</string>
+    <string name="sa_activer">Aktivéieren</string>
+    <string name="sa_clavier_installe">Tastatur installéiert</string>
+    <string name="sa_configuration_reglages_changer_de_clavier">Ariichten, Astellungen, Tastatur wiesselen</string>
+    <string name="sa_tout_est_pret">Alles ass prett!</string>
+    <string name="sa_clavier_en_place">Tastatur ageriicht!</string>
+    <string name="sa_vous_pouvez_taper_en_letzebuergesch">Dir kënnt iwwerall op Lëtzebuergesch tippen.</string>
+    <string name="sa_ecrivez_un_mot_pour_terminer">Schreift e Wuert, fir d\'Ariichten ofzeschléissen.</string>
+    <string name="sa_revenir_au_clavier_luxembourgeois">⌨️ Zréck op déi lëtzebuergesch Tastatur</string>
+    <string name="sa_en_ce_moment_est_un">Am Moment geet eng aner Tastatur op, wann Dir schreift. Déi lëtzebuergesch Tastatur ass nach ëmmer op Ärem Handy installéiert: Dir musst se just erëm auswielen.</string>
+    <string name="sa_choisir_le_clavier_luxembourgeois">Déi lëtzebuergesch Tastatur wielen</string>
+    <string name="sa_sans_passer_par_ici_pendant">Och ouni iwwer hei ze goen: Tippt beim Schreiwen op déi kleng Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt. Déiselwecht Auswiel geet op.</string>
+    <string name="sa_configuration_rapide">Séier Ariichten</string>
+    <string name="sa_plus_qu_essayer">Elo just nach ausprobéieren.</string>
+    <string name="sa_le_clavier_luxembourgeois_est_plus_2">Déi lëtzebuergesch Tastatur ass net méi déi, déi beim Schreiwen opgeet.</string>
+    <string name="sa_le_clavier_luxembourgeois_est_plus">Déi lëtzebuergesch Tastatur ass op dësem Handy net méi aktiv.</string>
+    <string name="sa_plus_qu_une_etape">Just nach ee Schrëtt.</string>
+    <string name="sa_etapes_pour_taper_en_letzebuergesch">3 Schrëtt, fir iwwerall op Lëtzebuergesch ze tippen.</string>
+    <string name="sa_voir_les_etapes">D\'3 Schrëtt kucken</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „Lëtzebuergesch Clavier“ um Bildschierm, deen opgeet, maacht de Schalter un a kommt dann heihinner zréck.</string>
+    <string name="sa_presque_validez_bien_les_avertissements">💡 Bal! Confirméiert déi 2 Android-Warnungen eng no där anerer: Wann Dir bei der éischter ophalt, gëtt d\'Aktivéierung ofgebrach.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng normal Sécherheetswarnung, déi bei allen Tastature vun aneren Ubidder kënnt. De Lëtzebuergesch Clavier sammelt keng Donnéeën.</string>
+    <string name="sa_rouvrir_les_reglages_android">Android-Astellungen nach eng Kéier opmaachen ↗</string>
+    <string name="sa_ouvrir_les_reglages_android">Android-Astellungen opmaachen ↗</string>
+    <string name="sa_activer_le_clavier">Tastatur aktivéieren</string>
+    <string name="sa_le_clavier_est_active">D\'Tastatur ass aktivéiert.</string>
+    <string name="sa_dans_les_reglages_android">An den Android-Astellungen.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wielt „Lëtzebuergesch Clavier“ an der Lëscht vun den Tastaturen, déi erschéngt. Är aner Tastature bleiwen installéiert.</string>
+    <string name="sa_ouvrir_le_selecteur_de_claviers">Tastaturauswiel opmaachen ↗</string>
+    <string name="sa_selectionner_le_clavier_2">Tastatur auswielen</string>
+    <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuergesch Clavier ass ausgewielt.</string>
+    <string name="sa_terminez_abord_etape">Maacht fir d\'éischt de Schrëtt 1 fäerdeg.</string>
+    <string name="sa_choisissez_le_dans_la_liste">Wielt se an der Lëscht aus.</string>
+    <string name="sa_schreift_op_letzebuergesch_ecrivez_en">Schreift op Lëtzebuergesch...</string>
+    <string name="sa_ecrivez_moien_alleguer_et_regardez">Schreift „Moien alleguer“ a kuckt, wéi d\'Virschléi Iech hëllefen.</string>
+    <string name="sa_essayer_le_clavier">D\'Tastatur ausprobéieren</string>
+    <string name="sa_vous_avez_ecrit_vos_premiers">Dir hutt Är éischt Wierder geschriwwen.</string>
+    <string name="sa_terminez_les_etapes_et">Maacht d\'Schrëtt 1 an 2 fäerdeg.</string>
+    <string name="sa_ecrivez_un_mot_pour_verifier">Schreift e Wuert, fir ze kontrolléieren.</string>
+    <string name="sa_les_etapes_sont_faites">D\'3 Schrëtt si gemaach.</string>
+    <string name="sa_masquer_le_detail">Detailer verstoppen</string>
+    <string name="sa_etape_terminee">%1$s, Schrëtt gemaach</string>
+    <string name="sa_etape_verrouillee">%1$s, Schrëtt gespaart</string>
+    <string name="sa_majuscules_automatiques">Automatesch grouss Buschtawen</string>
+    <string name="sa_retablit_la_majuscule_des_substantifs">Setzt bei Substantiven de grousse Buschtaf, wann de Saz et verlaangt: „an der rue“ gëtt „an der Rue“. D\'Tastatur verbessert just dat, wat se wierklech esou geschriwwe gesinn huet, an een Drock op d\'Läschtast mécht d\'Verbesserung réckgängeg.</string>
+    <string name="sa_corriger_orthographe_partout">Iwwerall d\'Rechtschreiwung verbesseren</string>
+    <string name="sa_vos_mots_luxembourgeois_sont_reconnus">Är lëtzebuergesch Wierder ginn a Messages, an den Notizen an anzwousch anescht erkannt, ouni roude Stréch drënner.</string>
+    <string name="sa_le_correcteur_luxembourgeois_est_bien">Déi lëtzebuergesch Korrektur ass ausgewielt, mä d\'Rechtschreifkorrektur ass an Android ausgeschalt. Tippt hei, fir se erëm unzemaachen.</string>
+    <string name="sa_faites_reconnaitre_vos_mots_luxembourgeois">Loosst Är lëtzebuergesch Wierder a Messages, an den Notizen an anzwousch anescht erkennen, ouni roude Stréch drënner.</string>
+    <string name="sa_android_vous_previendra_qu_un">Android warnt Iech, datt eng Korrektur den Text liese kann, deen Dir agitt. Eis vergläicht en mam Dictionnaire vun der App, ouni eppes ze späicheren oder ze schécken.</string>
+    <string name="sa_dans_ecran_qui_ouvre_allumez_2">Maacht um Bildschierm, deen opgeet, de Schalter vun der Rechtschreifkorrektur un.</string>
+    <string name="sa_dans_ecran_qui_ouvre_allumez">Um Bildschierm, deen opgeet:\n1. d\'Rechtschreifkorrektur umaachen, wann se aus ass\n2. op d\'Standardkorrektur tippen\n3. „Korrektur Lëtzebuergesch“ wielen\n4. d\'Warnung vun Android confirméieren</string>
+    <string name="sa_ce_qu_android_va_vous">"ⓘ  Wat Android Iech freet"</string>
+    <string name="sa_masquer">"▲  Verstoppen"</string>
+    <string name="sa_notre_mission">🌟 Eis Missioun</string>
+    <string name="sa_ce_clavier_ete_specialement_concu">Dës Tastatur gouf entwéckelt, fir d\'Lëtzebuergescht ze erhalen an ze fërderen. Si gëtt jidderengem e modernt Geschir, fir all Dag an der Sprooch vum Land ze schreiwen:\n\n💡 Wuertvirschléi op Lëtzebuergesch\n🔡 D\'Zeechen ë, ä an é direkt op der Tastatur\n🇱🇺 En Design an de Faarwe vu Lëtzebuerg</string>
+    <string name="sa_ce_clavier_grandit_grace_au">Dës Tastatur wiisst duerch Mond-zu-Mond-Propaganda. Deelt se mat Ärer Famill an Äre Frënn: All Deele hëlleft dem Lëtzebuergeschen, e bësse méi op den Handyen ze existéieren.</string>
+    <string name="sa_partager_application">📤 D\'App deelen</string>
+    <string name="sa_noter_application">⭐ D\'App bewäerten</string>
+    <string name="sa_sources_litteraires">📚 Quellen</string>
+    <string name="sa_les_suggestions_de_mots_sont">D\'Wuertvirschléi baue op zwee oppene Korpora vum haitege Lëtzebuergesch op:\n\n📰 LuxAlign: Sätz aus Artikele vu RTL.lu, zesummegedroe vum Fred Philippy a Co. (COLING 2025). Lizenz CC BY-NC 4.0.\n\n📖 LETZ: Beispillsätz aus dem Lëtzebuerger Online Dictionnaire (lod.lu), zesummegedroe vum Fred Philippy a Co. (SIGUL 2024). Lizenz CC BY 4.0.\n\nDen éischte bréngt de Wuertschatz an d\'Reiefolleg vun de Wierder, deen zweeten d\'Sprooch vum Alldag.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Lizenz CC0 1.0. Hie bréngt déi franséisch Iwwersetzungen an 85.000 Formen, déi d\'Press ni schreift.\n\n🇱🇺 Iwwersetzungskorpus vum Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Lizenz CC0 1.0. Hie bréngt déi franséisch Iwwersetzunge vun de Beispillsätz, gemaach vu professionellen Iwwersetzer.\n\n🇫🇷 Lexique 3.83: lexikalesch Datebank vum Franséischen, vum Boris New an vum Christophe Pallier (lexique.org). Lizenz CC BY-SA 4.0. Si bréngt déi 125.000 Forme vun der zweeter Rei Virschléi a verhënnert, datt d\'Korrektur richtegt Franséisch ënnerstreecht.\n\n🔤 D\'Wierder op de Kaarte vum Carnet sinn a Lora, Cormorant Garamond an EB Garamond gesat, dräi fräi Schrëften ënner der SIL Open Font License 1.1.</string>
+    <string name="sa_informations">ℹ️ Informatiounen</string>
+    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versioun: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nMat ❤️ zu Lëtzebuerg gemaach\nLoosst eis d\'Lëtzebuergescht fir déi nächst Generatiounen erhalen!</string>
+    <string name="sa_confidentialite">🔒 Dateschutz</string>
+    <string name="sa_zero_collecte_de_donnees_personnelles">Guer keng perséinlech Donnéeë gesammelt: Dës Tastatur funktionéiert komplett um Apparat, näischt vun deem, wat Dir tippt, verléisst Ären Handy.</string>
+    <string name="sa_essayez_le_tout_de_suite">🎹 Probéiert et direkt!</string>
+    <string name="sa_tapez_moien_et_touchez_une">Tippt „moien“ an dann op e Virschlag: Fir et ze probéieren, musst Dir näischt installéieren</string>
+    <string name="sa_probeiert_et_hei_essayez_ici">Probéiert et hei...</string>
+    <string name="sa_ca_vous_plait_installez_le">Gefält et Iech? Installéiert et →</string>
+    <string name="sa_diagnostic_activation">🔎 Diagnos vun der Aktivéierung</string>
+    <string name="sa_pas_encore">%1$s: nach net</string>
+    <string name="sa_moins_une_minute_apres_ouverture">manner wéi eng Minutt nom Opmaachen</string>
+    <string name="sa_min_apres_ouverture">%1$s Min. nom Opmaachen</string>
+    <string name="sa_apres_ouverture_2">%1$s St. nom Opmaachen</string>
+    <string name="sa_apres_ouverture">%1$s D. nom Opmaachen</string>
+    <string name="sa_premiere_ouverture_pas_encore">Éischt Opmaachen: nach net</string>
+    <string name="sa_premiere_ouverture">Éischt Opmaachen: %1$s</string>
+    <string name="sa_premier_essai_clavier_de_demo">Éischte Versuch (Demo-Tastatur)</string>
+    <string name="sa_clavier_active">Tastatur aktivéiert</string>
+    <string name="sa_retour_sans_avoir_active">Zréck ouni Aktivéierung</string>
+    <string name="sa_clavier_selectionne">Tastatur ausgewielt</string>
+    <string name="sa_premier_mot_tape">Éischt Wuert getippt</string>
+    <string name="sa_ces_horodatages_restent_sur_votre">Dës Zäitstempele bleiwen op Ärem Handy.</string>
+    <string name="sa_guide_de_utilisateur">📖 Gebrauchsufank</string>
+    <string name="sa_installation_et_activation">📲 Installatioun an Aktivéierung</string>
+    <string name="sa_le_clavier_doit_etre_active">D\'Tastatur muss aktivéiert an duerno ausgewielt ginn, ier Dir se benotze kënnt, wéi all Tastatur vun aneren Ubidder op Android. Dës interaktiv Schrëtt fannt Dir och am Tab „Haut“; esou gesi se aus.</string>
+    <string name="sa_ouvrir_les_parametres_de_clavier">1️⃣ D\'Tastaturastellungen opmaachen</string>
+    <string name="sa_depuis_onglet_haut_le_bouton">Am Tab Haut féiert de Knäppchen „Astellungen opmaachen“ direkt op de System-Bildschierm vun de Bildschiermtastaturen, wou „Lëtzebuergesch Clavier“ nieft deenen aneren installéierten Tastaturen ze gesinn ass, mam Schalter op aus.</string>
+    <string name="sa_ecran_systeme_listant_les_claviers">System-Bildschierm mat der Lëscht vun den Tastaturen, Schalter fir unzemaachen</string>
+    <string name="sa_valider_les_avertissements_android">2️⃣ D\'Android-Warnunge confirméieren</string>
+    <string name="sa_en_activant_interrupteur_android_affiche">Wann Dir de Schalter umaacht, weist Android eng allgemeng Warnung, déi bei allen Tastature vun aneren Ubidder kënnt, an duerno e weidere Hiweis zum Neistart vum Handy. De Lëtzebuergesch Clavier sammelt keng Donnéeën: Tippt bei allebéid op OK, fir weiderzefueren, a kommt dann mam Zréck-Knäppchen an d\'App zréck.</string>
+    <string name="sa_avertissement_systeme_affiche_pour_tout">System-Warnung, déi bei all Tastatur vun aneren Ubidder kënnt</string>
+    <string name="sa_selectionner_le_clavier">3️⃣ D\'Tastatur auswielen</string>
+    <string name="sa_de_retour_dans_application_etape">Zréck an der App, gëtt de Schrëtt 1 automatesch ofgehaakt an de Schrëtt 2 fräigeschalt. De Knäppchen „Auswiel opmaachen“ weist d\'Lëscht vun den aktiven Tastaturen: Tippt op „Lëtzebuergesch Clavier“, fir datt et déi benotzt Tastatur gëtt.</string>
+    <string name="sa_selecteur_systeme_de_mode_de">System-Auswiel vun der Agabmethod</string>
+    <string name="sa_configuration_terminee">✅ Ariichten ofgeschloss</string>
+    <string name="sa_les_deux_etapes_cochees_le">Wann déi zwee Schrëtt ofgehaakt sinn, erschéngt déi lëtzebuergesch Tastatur iwwerall, wou Dir tippt, och am Testfeld am Tab Haut. Mat laangem Drécken op d\'Espace-Tast kënnt Dir zu all Moment op eng aner Tastatur wiesselen.</string>
+    <string name="sa_les_trois_etapes_cochees_clavier">All dräi Schrëtt ofgehaakt, Tastatur am Testfeld aktiv</string>
+    <string name="sa_ecrire_en_letzebuergesch">✍️ Op Lëtzebuergesch schreiwen</string>
+    <string name="sa_le_clavier_demarre_en_mode">D\'Tastatur fänkt am Buschtawemodus un. Den éischte Buschtaf vun all Message gëtt automatesch grouss geschriwwen, wéi bei enger gewéinlecher Tastatur.</string>
+    <string name="sa_accents_et_caracteres_speciaux">🔤 Akzenter a Sonnerzeechen</string>
+    <string name="sa_les_lettres_du_luxembourgeois_ont">D\'Buschtawe vum Lëtzebuergeschen hunn hir eegen Tast: é, ë an ä, an och ü an ö mat der Disposition „Schwäizerdäitsch“ (Astellunge vun der Tastatur → Disposition). Fir déi aner Akzenter (è, ê, à, ç...) dréckt laang op de Buschtaf, rëtscht mam Fanger op den Akzent, deen Dir wëllt, a loosst lass.</string>
+    <string name="sa_popup_accents_sur_la_lettre">Akzent-Fënster um Buschtaf e</string>
+    <string name="sa_suggestions_et_autocompletion">💡 Virschléi an automatescht Ergänzen</string>
+    <string name="sa_une_barre_de_suggestions_apparait">Eng Läischt mat Virschléi erschéngt iwwer der Tastatur, soubal Dir tippt. Lëtzebuergesch Wierder hunn de Virrang; d\'Franséischt iwwerhëlt vum drëtte Buschtaf un, wann kee lëtzebuergescht Wuert passt. Tippt op e virgeschloent Wuert, fir et direkt ze ergänzen, Espace mat derbäi.</string>
+    <string name="sa_barre_de_suggestions_active">Aktiv Läischt mat Virschléi</string>
+    <string name="sa_correction_orthographique_partout">✅ Iwwerall Rechtschreifkorrektur</string>
+    <string name="sa_activez_le_correcteur_luxembourgeois_dans">Aktivéiert déi lëtzebuergesch Korrektur an de System-Astellungen (Tab Haut, „Tastatur installéiert“), fir datt Är lëtzebuergesch a franséisch Wierder a Messages, an den Notizen an an deenen aneren Appen net méi rout ënnerstrach ginn.</string>
+    <string name="sa_chiffres_et_symboles">🔢 Zifferen a Symboler</string>
+    <string name="sa_le_bouton_en_bas_gauche">De Knäppchen „123“ ënne lénks op der Tastatur wiesselt op d\'Zifferen an déi üblech Symboler. Déi wichtegst Zeechesetzung (Komma, Punkt, Apostroph) bleift direkt op der Buschtawetastatur.</string>
+    <string name="sa_mode_chiffres_et_symboles">Modus Zifferen a Symboler</string>
+    <string name="sa_jeux_de_vocabulaire">🎮 Wuertschatzspiller</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Siwe Spiller am Tab Spiller loossen Iech d\'Lëtzebuergescht op eng lëschteg Manéier trainéieren:\n\n• 🎲 Wuertsich: d\'Wierder fannen, déi an engem Gitter verstoppt sinn.\n• 🔤 Wuertmix: d\'Buschtawe vun engem Wuert an déi richteg Reiefolleg bréngen.\n• 🟩 Wuertriet: e Wuert mat 5 Buschtawen a 6 Versich roden.\n• 📝 Wuertlück: e richtege Saz ergänzen, an deem e Wuert feelt.\n• 🔢 Zuelwuert: d\'Resultat vun enger Multiplikatioun a Buschtawe schreiwen.\n• 🧩 Kräizwuert: e Kräizwuerträtsel, mat den Definitiounen op Franséisch.\n• 🔡 Wuertplaz: déi Wierder vun enger Lëscht an en eidelt Gitter setzen, ganz ouni Definitioun.\n\nAll gewonnent Wuert kënnt an Äre Carnet, an d\'📚 Leitner-Këscht léisst Iech et a méi a méi laangen Ofstänn widderhuelen, bis Dir et kënnt.</string>
+    <string name="sa_les_cartes_du_carnet">🃏 D\'Kaarte vum Carnet</string>
+    <string name="sa_chaque_mot_gagne_dans_un">All Wuert, dat Dir an engem Spill gewannt, gëtt eng Kaart a kënnt an „Mäi Carnet“ (Tab Spiller). Tippt op eng Kaart, fir se grouss opzemaachen; tippt niewendrun oder wëscht se no uewen oder no ënnen ewech, fir se zouzemaachen.\n\nD\'Biller hei ënnendrënner erklären d\'Kaart „Waasser“ Stéck fir Stéck: All Nummer verweist op d\'Erklärung nom Bild.</string>
+    <string name="sa_le_haut_de_la_carte_2">Den ieweschten Deel vun der Kaart</string>
+    <string name="sa_le_haut_de_la_carte">🔷 Den ieweschten Deel vun der Kaart</string>
+    <string name="sa_le_mot_tel_que_vous">1. D\'Wuert, sou wéi Dir et am Spill begéint hutt, mat sengem grousse Buschtaf, wann et e Substantiv ass.\n\n2. De ronnen Tëppel: d\'Zuel vun de Buschtawe vum Wuert. „Waasser“ huet der 7.\n\n3. D\'Illustratioun: Hir Faarf weist d\'Bedeitungsfeld (Liewen a Kierper, Territoire, Economie, Zäit a Mooss…), an hire Muster gëtt aus de Buschtawe vum Wuert gemaach, sou datt dat selwecht Wuert ëmmer dat selwecht Bild gëtt. E puer Kaarten, wéi dës, hunn och nach eng Zeechnung.\n\n4. De Kader: Säi Metall weist, wéi seelen d\'Wuert ass. Zinn fir Heefeg, Bronze fir Net sou heefeg, Sëlwer fir Seelen, Gold fir Ganz seelen. D\'Seelenheet kënnt dovun, wéi dacks d\'Wuert am Lëtzebuergesche gebraucht gëtt: Déi 3.000 heefegst Wierder sinn heefeg, déi no der Plaz 9.000 ganz seelen. Bei den Zuelen aus Zuelwuert zielt, wéi schwéier se ze schreiwe sinn.</string>
+    <string name="sa_le_texte_de_la_carte_2">Den Text vun der Kaart</string>
+    <string name="sa_le_texte_de_la_carte">📜 Den Text vun der Kaart</string>
+    <string name="sa_la_ligne_de_nature_ce">5. D\'Zeil mat der Wuertaart: wat d\'Wuert laut dem offiziellen Dictionnaire vum ZLS ass („Sächlecht Substantiv“, „Verb“, „Adjektiv“…), an duerno d\'Spill, an deem Dir et gewonnen hutt.\n\n6. D\'Bedeitung, fett: déi franséisch Iwwersetzung vum Wuert.\n\n7. De Saz an Italic: e Beispill fir d\'Wuert am Gebrauch, aus dem offizielle Dictionnaire. Bei enger Zuel ass et hir Zerleeung.\n\n8. Déi méi kleng Zeil: déi franséisch Iwwersetzung vun deem Saz, just wann den ZLS eng publizéiert huet. Soss weist d\'Kaart amplaz „Selwecht Famill:“ an déi aner Forme vum Wuert (Plural, Konjugatiounen…).</string>
+    <string name="sa_le_bas_de_la_carte_2">Den ënneschten Deel vun der Kaart</string>
+    <string name="sa_le_bas_de_la_carte">🛡️ Den ënneschten Deel vun der Kaart</string>
+    <string name="sa_ecu_vues_combien_de_fois">9. D\'Wope GESINN: wéi dacks Dir dëst Wuert gewonnen hutt, iwwer all Spiller.\n\n10. De Medaillon: d\'Spill, dat Iech d\'Kaart ginn huet, un hirem Emblem an hirer Faarf ze erkennen, an hiren Numm ronderëm.\n\n11. D\'Wope NIVEAU: d\'Fach vun der Leitner-Këscht, an deem d\'Kaart ass, vun 1 bis 6. Et klëmmt mat all gelongener Widderhuelung a gëtt ✓, wann d\'Wuert geléiert ass.\n\n12. D\'Seriezeil: d\'Nummer vun der Kaart an Ärer Sammlung an den Datum, wou Dir se gewonnen hutt.\n\n13. De Rang: d\'Plaz vum Wuert ënner deenen heefegste Wierder vun der Sprooch („856.“ fir „Waasser“), oder „net am Korpus“, wann et do net virkënnt.</string>
+    <string name="sa_la_petite_carte_dans_la">Déi kleng Kaart, am Gitter vum Carnet</string>
+    <string name="sa_dans_la_grille_du_carnet">🗂️ Am Gitter vum Carnet</string>
+    <string name="sa_la_petite_carte_ne_garde">Déi kleng Kaart weist just dat Wichtegst, fir ze wielen, wéi eng een opmécht:\n\nA. D\'Wuert.\n\nB. D\'Emoji vum Spill oder vun de Spiller, an deenen Dir et gewonnen hutt, an duerno den Ufank vun der Bedeitung.\n\nC. Sechs Stréch, ee pro Fach vun der Leitner-Këscht: Si fëllen sech, sou wéi d\'Kaart weiderkënnt. Hei huet „Aarbecht“ der fënnef hannert sech.</string>
+    <string name="sa_progression">🏆 Fortschrëtt</string>
+    <string name="sa_chaque_mot_que_vous_tapez">All Wuert, dat Dir tippt, bréngt Är Beherrschung vum Lëtzebuergesche weider, ze gesinn am Tab „Mäi Lëtzebuergesch“. Aacht Niveauen markéieren de Wee: 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner an 🧙 Sproochenmeeschter.</string>
+    <string name="sa_questions_frequentes">❓ Heefeg Froen</string>
+    <string name="sa_le_clavier_luxembourgeois_apparait_pas">Déi lëtzebuergesch Tastatur erschéngt net, wann ech tippen?\n→ Kontrolléiert, ob se ausgewielt ass (net just aktivéiert): Tab Haut, „Tastatur installéiert“, Schrëtt 2, oder tippt beim Schreiwen op d\'Tastatur-Ikon an der Navigatiounsläischt ënnen um Bildschierm.\n\nWéi wiesselen ech fir e Moment op eng aner Tastatur?\n→ Laang op d\'Espace-Tast vun der lëtzebuergescher Tastatur drécken an dann eng aner Tastatur an der Lëscht wielen. Zréck op Lëtzebuergesch geet et iwwer d\'Tastatur-Ikon an der Navigatiounsläischt: Op aneren Tastaturen ännert laang Drécken op d\'Espace-Tast just hir eege Sprooch.\n\nGi meng Donnéeën iergendwouhi geschéckt?\n→ Nee: D\'Tastatur funktionéiert komplett um Apparat.</string>
+    <string name="sa_lire_la_politique_de_confidentialite">D\'Dateschutzerklärung liesen</string>
+    <string name="sa_dans_langues_et_saisie_ouvrez">Maacht an de Sproochen- an Agabastellungen d\'Rechtschreifkorrektur op a wielt „Korrektur Lëtzebuergesch“</string>
+    <string name="sa_appuyez_sur_ok_est_normal">👆 Tippt op OK: Dat ass bei allen Tastature vun aneren Ubidder normal</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">De Lëtzebuergesch Clavier huet keen Zougang zum Internet: Näischt verléisst Ären Handy.</string>
+    <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Tippt duerno op Zréck: Dir kommt automatesch heihinner zréck</string>
+    <string name="sa_avant_de_continuer">Ier et weidergeet</string>
+    <string name="sa_ai_compris_on_va">Verstanen, lass geet et</string>
+    <string name="sa_impossible_ouvrir_les_parametres">D\'Astellunge konnten net opgemaach ginn</string>
+    <string name="sa_impossible_ouvrir_la_politique_de">D\'Dateschutzerklärung konnt net opgemaach ginn</string>
+    <string name="sa_play_store_indisponible">Play Store net disponibel</string>
+    <string name="sa_ech_schreiwen_op_letzebuergesch_op">Ech schreiwen op Lëtzebuergesch op mengem Telefon!\nEng gratis Android-Tastatur, déi Wierder op Lëtzebuergesch virschléit.\n\nLued se gratis erof:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Din_app_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_partager_le_letzebuergesch_clavier">De Lëtzebuergesch Clavier deelen</string>
+    <string name="sa_impossible_ouvrir_le_selecteur_touchez">D\'Auswiel konnt net opgemaach ginn. Tippt beim Schreiwen op d\'Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt.</string>
+    <string name="sa_vous_avez_atteint_le_plus">Dir hutt den héchsten Niveau erreecht. 👑</string>
+    <string name="sa_partager_ma_carte_de_niveau_2">📤 Meng Niveaukaart deelen</string>
+    <string name="sa_impossible_de_partager_pour_le">Deele geet de Moment net</string>
+    <string name="sa_mot_du_jour">WUERT VUM DAG</string>
+    <string name="sa_en_francais_2">"op Franséisch: "</string>
+    <string name="sa_nouveau_mot_decouvrir">neit Wuert fir z\'entdecken</string>
+    <string name="sa_mots_les_plus_utilises">Meescht benotzt Wierder</string>
+    <string name="sa_statistiques_globales">Allgemeng Statistiken</string>
+    <string name="sa_mots_decouverts_2">Entdeckt Wierder</string>
+    <string name="sa_utilisations">Benotzungen</string>
+    <string name="sa_mots_decouvrir">🌟 Wierder fir z\'entdecken</string>
+    <string name="sa_mots_decouverts">🔍 Entdeckt Wierder (%1$s)</string>
+    <string name="sa_aucun_mot_dans_cette_categorie">Nach keng Wierder an dëser Kategorie</string>
+    <string name="sa_dir_hutt_den_niveau_erreecht">Dir hutt den Niveau %1$s erreecht! Deelt Är Kaart, fir ze weisen, wou Dir drun sidd.</string>
+    <string name="sa_partager">Deelen 📤</string>
+    <string name="sa_plus_tard">Méi spéit</string>
+    <string name="sa_mots_luxembourgeois_decouverts">%1$s lëtzebuergesch Wierder entdeckt!</string>
+    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuergesch Clavier! A du, wéi wäit bass du?\n\nLued en gratis erof:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_partager_ma_carte_de_niveau">Meng Niveaukaart deelen</string>
+    <string name="sa_impossible_de_partager_la_carte">D\'Kaart konnt net gedeelt ginn</string>
+    <string name="sa_correcteur_active_vos_mots_luxembourgeois">✓ Korrektur aktivéiert: Är lëtzebuergesch Wierder ginn iwwerall erkannt.</string>
+    <string name="sa_actualisation_des_statistiques">D\'Statistike ginn aktualiséiert...</string>
+    <string name="sa_chargement">⏳ Gëtt gelueden...</string>
+    <string name="sa_nouvelle_grille_2">🔄 Neit Gitter</string>
+    <string name="sa_mots_trouver">📝 Wierder fir ze fannen:</string>
+    <string name="sa_erreur_lors_de_la_generation">Feeler beim Maache vum Gitter</string>
+    <string name="sa_mots_luxembourgeois">🎯 Lëtzebuergesch Wierder</string>
+    <string name="sa_felicitations_tous_les_mots_trouves">🎉 Gratulatioun! All d\'Wierder fonnt!</string>
+    <string name="sa_mot_trouve_pts">✅ Wuert fonnt: %1$s (+%2$s Pkt.)</string>
+    <string name="sa_score_2">Punkten: 0</string>
+    <string name="sa_mot_2">Wuert 1/10</string>
+    <string name="sa_remets_les_lettres_dans_ordre">🔤 Bréng d\'Buschtawen an déi richteg Reiefolleg!</string>
+    <string name="sa_lettres_disponibles">Disponibel Buschtawen:</string>
+    <string name="sa_ta_reponse">Deng Äntwert:</string>
+    <string name="sa_effacer">🔄 Läschen</string>
+    <string name="sa_indice">💡 Hiweis</string>
+    <string name="sa_passer">⏭️ Iwwersprangen</string>
+    <string name="sa_erreur_de_chargement">Feeler beim Lueden</string>
+    <string name="sa_mot">Wuert %1$s/%2$s</string>
+    <string name="sa_correct_pts">✅ Richteg! +100 Pkt.</string>
+    <string name="sa_essaie_encore">❌ Probéier nach eng Kéier!</string>
+    <string name="sa_le_mot_etait_2">D\'Wuert war: %1$s (%2$s)</string>
+    <string name="sa_score">Punkten: %1$s</string>
+    <string name="sa_indice_pts">Hiweis (-20 Pkt.)</string>
+    <string name="sa_partie_terminee">🎉 Spill fäerdeg!</string>
+    <string name="sa_score_final_mots_reussis">Schlussstand: %1$s\nGeléist Wierder: %2$s/%3$s</string>
+    <string name="sa_essai_2">Versuch 1/%1$s</string>
+    <string name="sa_lettres_deja_jouees">Scho gespillt Buschtawen:</string>
+    <string name="sa_votre_mot_de_lettres">Äert Wuert mat %1$s Buschtawen</string>
+    <string name="sa_valider">✅ Kontrolléieren</string>
+    <string name="sa_devine_le_mot_luxembourgeois_de">Rot dat lëtzebuergescht Wuert mat %1$s Buschtawen a maximal %2$s Versich.\n\nNo all Versuch weist d\'Faarf vun de Buschtawen dir:\n🟩 Gréng: richtege Buschtaf, richteg Plaz\n🟨 Orange: De Buschtaf ass am Wuert, mä op der falscher Plaz\n⬜ Gro: De Buschtaf ass net am Wuert\n\nDat Wuert, dat s du virschléis, muss am lëtzebuergeschen Dictionnaire stoen.</string>
+    <string name="sa_essai">Versuch %1$s/%2$s</string>
+    <string name="sa_domaj">😔 Domaj!</string>
+    <string name="sa_le_mot_etait">D\'Wuert war: %1$s</string>
+    <string name="sa_chaque_phrase_est_une_phrase">All Saz ass e richtege lëtzebuergesche Saz, an deem e Wuert feelt. Vun de véier Virschléi ass just een dee vum Auteur: Déi aner dräi si Wierder, déi de Korpus op där selwechter Plaz kennt, si klénge also richteg, soulaang een net de ganze Saz liest.\n\nD\'Schwieregkeet hänkt dovun of, wéi heefeg dat Wuert ass, dat feelt: heefeg bei „Liicht“, seelen bei „Schwéier“.</string>
+    <string name="sa_phrases_extraites_des_corpus">Sätz aus de Korpora:\n</string>
+    <string name="sa_les_phrases_du_wuertluck_ont">D\'Sätz vum Wuertlück konnten net geluede ginn.</string>
+    <string name="sa_phrase_du_corpus">Saz aus dem Korpus %1$s</string>
+    <string name="sa_richteg">✅ Richteg!%1$s</string>
+    <string name="sa_la_phrase_disait">❌ Am Saz stoung „%1$s“</string>
+    <string name="sa_question_2">Fro 1 / %1$s</string>
+    <string name="sa_nouvelle_partie">🔄 Neit Spill</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Eng Multiplikatioun a véier Manéieren, hiert Resultat ze schreiwen: Just eng ass richtegt Lëtzebuergesch. Déi aner sinn d\'Feeler, déi een tatsächlech mécht: Däitsch, verdreinte Zifferen, de Bindestréch, d\'Eifeler Regel, d\'Endung -ig. Wann Dir Iech iert, seet d\'Spill Iech, wéi een et war.\n\nZwou Regele genügen, fir all Zuele bis honnert ze schreiwen. D\'Eenheet kënnt virun der Zéngerzuel: 56 ass sechs-a-fofzeg, „sechsafofzeg“. An den n vum Bindewuert „an“ fält virun f, s, v, m… ewech, bleift awer virun d, t, z, n, h an de Vokaler. Dat ass d\'Eifeler Regel, dofir „sechsafofzeg“ (56) awer „sechsandrësseg“ (36).\n\nBei „Schwéier“ gëtt de Produit net méi gewisen: Dir musst e rechnen, ier Dir e schreift.</string>
+    <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Schreifweisen nogekuckt am Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
+    <string name="sa_question">Fro %1$s / %2$s</string>
+    <string name="sa_comment_ecrit_ce_nombre">Wéi schreift een dës Zuel?</string>
+    <string name="sa_calculez_puis_choisissez_orthographe">Rechent, a wielt dann d\'Schreifweis.</string>
+    <string name="sa_voir_le_resultat">🏁 D\'Resultat kucken</string>
+    <string name="sa_question_suivante">➡️ Nächst Fro</string>
+    <string name="sa_bravo">🎉 Bravo!</string>
+    <string name="sa_encore_un_effort">💪 Nach e bëssen</string>
+    <string name="sa_rejouer">Nach eng Kéier spillen</string>
+    <string name="sa_ok">OK</string>
+    <string name="sa_horizontalement">➡️ Horizontal</string>
+    <string name="sa_verticalement">⬇️ Vertikal</string>
+    <string name="sa_chaque_definition_est_le_sens">All Definitioun ass déi franséisch Bedeitung vun engem lëtzebuergesche Wuert: Schreift et Buschtaf fir Buschtaf an d\'Gitter, mat den Akzenter. D\'Tastatur vum Spill hält sech un d\'Disposition vun der lëtzebuergescher Tastatur, an Ä, Ë, É, Ö an Ü sinn direkt ze gesinn, ouni laang Drécken.\n\nTippt op e Feld, fir e Wuert ze wielen, an nach eng Kéier, fir d\'Richtung ze wiesselen. E Feeler gesäit een eréischt, wann d\'Wuert ganz geschriwwen ass.\n\nD\'Gitter ass a grousse Buschtawen, wéi all Kräizwuerträtsel. All fonnt Wuert erënnert un seng richteg Schreifweis: Am Lëtzebuergesche behalen d\'Substantiven hire grousse Buschtaf.\n\nD\'Schwieregkeet hänkt dovun of, wéi seelen d\'Wierder sinn, net vun der Gréisst vum Gitter.</string>
+    <string name="sa_definitions_et_vocabulaire">Definitiounen a Wuertschatz:\n</string>
+    <string name="sa_aucune_grille_disponible_actif_luxemburgish_2">Kee Gitter disponibel: De Fichier luxemburgish_crossword.json feelt an der App.</string>
+    <string name="sa_lettres_3">%1$s. %2$s (%3$s Buschtawen)</string>
+    <string name="sa_grille_terminee_mots_sur">🎉 Gitter fäerdeg: %1$s vun %1$s Wierder!</string>
+    <string name="sa_un_substantif_hors_de_la">✅ %1$s: e Substantiv, baussent dem Gitter behält et säi grousse Buschtaf.</string>
+    <string name="sa_ecrit_en_minuscules">✅ %1$s: gëtt kleng geschriwwen.</string>
+    <string name="sa_ce_est_pas_le_mot">❌ Dat ass net dat gesichte Wuert. Läscht et a probéiert nach eng Kéier.</string>
+    <string name="sa_solution_affichee_cette_grille_ne_2">💡 Léisung gewisen: Dëst Gitter zielt net.</string>
+    <string name="sa_lettres_2">"%1$s  ·  %2$s Buschtawen"</string>
+    <string name="sa_ce_que_vous_avez_gagne_2">📖 Wat Dir gewonnen hutt</string>
+    <string name="sa_nouvelle_grille">🔄 Neit Gitter</string>
+    <string name="sa_solution">💡 Léisung</string>
+    <string name="sa_regles_du_jeu">📜 Spillreegelen</string>
+    <string name="sa_tous_les_mots_vous_sont">All d\'Wierder si virginn: Et geet drëm, hir Plaz ze fannen. Tippt op e Wuert an der Lëscht an dann op e Feld am Gitter: D\'Plazen, wou et higoe kann, liichten op. Tippt op e Wuert, dat schonn do ass, fir et zréckzehuelen.\n\nE Wuert, dat engem Buschtaf widdersprécht, deen schonn do steet, kann net gesat ginn: Dat ass de Bläistëft, keng Verbesserung.\n\nSoubal all d\'Kräizunge vun engem Wuert besat sinn, gëtt et gespaart a verréit Iech seng Bedeitung op Franséisch. Dat ass d\'Belounung, an dofir kënnt se eréischt an deem Moment. E gewonnent Wuert gëtt gréng a kann net méi zréckgeholl ginn; seng Bedeitung bleift ënner der Wierderlëscht ze liesen.\n\nFir ze spillen, braucht Dir kee Lëtzebuergesch ze kënnen: Et geet ëm Längten a Kräizungen. D\'Schwieregkeet hänkt vun der Gréisst vum Gitter of an dovun, wéi vill Wierder déiselwecht Längt hunn.</string>
+    <string name="sa_traductions_et_vocabulaire">Iwwersetzungen a Wuertschatz:\n</string>
+    <string name="sa_aucune_grille_disponible_actif_luxemburgish">Kee Gitter disponibel: De Fichier luxemburgish_chassecroise.json feelt an der App.</string>
+    <string name="sa_lettres">%1$s Buschtawen</string>
+    <string name="sa_ce_mot_ne_peut_pas">Dëst Wuert passt net heihinner.</string>
+    <string name="sa_est_gagne_il_reste_en">🔒 %1$s ass gewonnen: Et bleift op senger Plaz.</string>
+    <string name="sa_sans_une_seule_reprise">ouni eng eenzeg Verbesserung</string>
+    <string name="sa_bien_joue">gutt gespillt</string>
+    <string name="sa_grille_bouclee">Gitter fäerdeg</string>
+    <string name="sa_grille_terminee_mots">🎉 Gitter fäerdeg: %1$s Wierder\n⭐</string>
+    <string name="sa_un_mot_est_la_mauvaise">❌ E Wuert ass op der falscher Plaz. Huelt et eraus a probéiert nach eng Kéier.</string>
+    <string name="sa_mot_gagne">Wuert gewonnen: %1$s, %2$s</string>
+    <string name="sa_solution_affichee_cette_grille_ne">💡 Léisung gewisen: Dëst Gitter zielt net.</string>
+    <string name="sa_mots">%1$s / %2$s Wierder</string>
+    <string name="sa_ce_que_vous_avez_gagne">📖 Wat Dir gewonnen hutt · %1$s</string>
+    <string name="sa_tapez_un_mot_luxembourgeois_ou">Tippt e lëtzebuergescht oder e franséischt Wuert: D\'Sich funktionéiert an déi zwou Richtungen.\nTippt op e Wuert, fir seng Fiche opzemaachen: Bedeitung, Beispiller an aner Formen; laang drécken, fir et ze kopéieren.</string>
+    <string name="sa_haus_maison_kaz_chat">Haus, maison, Kaz, chat…</string>
+    <string name="sa_traductions_et_exemples_issus_du">Iwwersetzungen a Beispiller aus dem Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Iwwersetzunge vun de Beispiller aus dem Iwwersetzungskorpus vum selwechten Zenter, CC0.</string>
+    <string name="sa_entrez_au_moins_deux_lettres">Gitt mindestens zwee Buschtawen an.</string>
+    <string name="sa_aucun_resultat_pour_les_noms">Keng Resultater fir „%1$s“.\nEegennimm an Uertschaftsnimm hunn am offiziellen Dictionnaire keng Iwwersetzung.</string>
+    <string name="sa_en_francais">OP FRANSÉISCH</string>
+    <string name="sa_autres_formes">ANER FORMEN</string>
+    <string name="sa_copier_le_mot">D\'Wuert kopéieren</string>
+    <string name="sa_voir_sur_le_dictionnaire_officiel">Am offiziellen Dictionnaire kucken ↗</string>
+    <string name="sa_copie">„%1$s“ kopéiert</string>
+    <string name="sa_impossible_ouvrir_lod_lu">lod.lu konnt net opgemaach ginn</string>
+    <string name="sa_revisez_vos_cartes_intervalle_regulier">Widderhuelt Är Kaarten a reegelméissegen Ofstänn</string>
+    <string name="sa_retrouvez_les_mots_caches_dans">Fannt d\'Wierder, déi am Gitter verstoppt sinn</string>
+    <string name="sa_remettez_les_lettres_dans_ordre">Bréngt d\'Buschtawen an déi richteg Reiefolleg</string>
+    <string name="sa_devinez_le_mot_de_lettres">Rot d\'Wuert mat 5 Buschtawen a 6 Versich</string>
+    <string name="sa_completez_la_phrase_laquelle_il">Ergänzt de Saz, an deem e Wuert feelt</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Schreift d\'Resultat vun enger Multiplikatioun a Buschtawen</string>
+    <string name="sa_ecrivez_les_mots_dans_la">Schreift d\'Wierder no hirer Bedeitung an d\'Gitter</string>
+    <string name="sa_casez_les_mots_donnes_dans">Setzt déi virginn Wierder an dat eidelt Gitter</string>
+    <string name="sa_tous_les_jeux">"‹  All d\'Spiller"</string>
+    <string name="sa_huit_facons_de_travailler_son">Aacht Manéieren, Äert Lëtzebuergesch ze trainéieren. D\'Leitner-Këscht mécht Är geléiert Kaarten op. D\'Wuertschatzspiller ginn déi franséisch Iwwersetzung vun de Wierder, am Moment, wou se d\'Äntwert net verréit; Zuelwuert dréint sech ëm d\'Schreiwe vun Zuelen, Kräizwuert ass dat eenzegt, an deem een d\'Wierder selwer schreift, a Wuertplaz dat eenzegt, dat een ouni d\'Sprooch ze kënne spille kann. All fëllen deeselwechte Carnet.</string>
+    <string name="sa_ouvrir">"Opmaachen  ›"</string>
+    <string name="sa_les_mots_que_vous_gagnez">D\'Wierder, déi Dir gewannt, gi Kaarten.</string>
+    <string name="sa_les_sept_jeux_versent">All siwe Spiller fëllen en.</string>
+    <string name="sa_jeux">"   %1$s/%2$s Spiller"</string>
+    <string name="sa_guide">"📖  Ufank"</string>
+    <string name="sa_propos">"ℹ️  Iwwer d\'App"</string>
+    <string-array name="astuces_semaine">
+        <item>Dréckt laang op e Buschtaf, fir op déi aner Akzenter ze kommen (è, ê, à, ç asw.). Rëtscht mam Fanger op deen, deen Dir wëllt, a loosst lass.</item>
+        <item>Tippt op e Wuert an der Läischt mat de Virschléi, fir et op eemol ze ergänzen: Den Espace gëtt automatesch derbäigesat.</item>
+        <item>Dréckt eng Sekonn op d\'Espace-Tast (dee klengen 🌐): Dir wiesselt op eng aner Tastatur, ouni Äre Message ze verloossen.</item>
+        <item>All Wuert, dat Dir tippt, bréngt Ären Niveau am Tab „Mäi Lëtzebuergesch“ weider.</item>
+        <item>Déi kleng Akzenter am Eck vun enger Tast weisen, wat hanner dem laangen Drécken verstoppt ass.</item>
+        <item>Tippt, ouni Iech ëm d\'Akzenter ze këmmeren: „letzebuergesch“ schléit trotzdeem „lëtzebuergesch“ vir.</item>
+        <item>„é“, „ä“ an „ë“ hunn all eng eegen Tast: Et sinn déi dräi heefegst Akzenter vum Lëtzebuergeschen.</item>
+        <item>Wuertriet: e lëtzebuergescht Wuert mat 5 Buschtawen a 6 Versich roden. Gréng: De Buschtaf ass op der richteger Plaz; giel: E steet am Wuert, mä soss anzwousch.</item>
+        <item>D\'Tast fir grouss Buschtawen huet dräi Zoustänn: eemol tippe fir ee grousse Buschtaf, zweemol fir se ze spären, dräimol fir zréck op normal.</item>
+        <item>E vergiessene Buschtaf, een ze vill oder een, deen niewendru getippt ass, hält d\'Virschléi net op: D\'Tastatur verzeit Tippfeeler.</item>
+        <item>Laang op d\'Komma drécken: Strëchpunkt, Doppelpunkt, Apostroph. Laang op de Punkt drécken: Ausrufzeechen, Frozeechen, dräi Punkten.</item>
+        <item>Aktivéiert déi lëtzebuergesch Korrektur (Tab Haut, „Tastatur installéiert“), fir datt Är Wierder a Messages oder an den Notizen net méi rout ënnerstrach ginn.</item>
+        <item>De Knäppchen „123“ mécht d\'Zifferen an d\'Symboler op, den Euro mat derbäi. De Knäppchen „ABC“ bréngt Iech zréck bei d\'Buschtawen.</item>
+        <item>No engem Espace schléit d\'Tastatur dat Wuert vir, dat warscheinlech als nächst a Ärem Saz kënnt, no deenen zwee Wierder, déi Dir grad geschriwwen hutt.</item>
+        <item>D\'Emoji-Tast ënne riets mécht e Panel mat bal 1.900 Emojien op, no Kategorien opgedeelt.</item>
+        <item>Wat Dir e Wuert méi dacks benotzt, wat et an de Virschléi méi no uewe klëmmt: D\'Tastatur passt sech un Är Manéier vu schreiwen un.</item>
+        <item>„Wuertmix“ gëtt Iech 10 Wierder, där hir Buschtawen Dir géint d\'Auer an d\'Rei bréngt, mat engem Knäppchen „Hiweis“, wann Dir hänke bleift.</item>
+        <item>Dréckt laang op en Emoji mat enger Persoun, fir d\'Hautfaarf ze wielen.</item>
+        <item>De Virschlag respektéiert grouss a kleng Buschtawen: Fänkt d\'Wuert mat engem grousse Buschtaf un, an de Virschlag mécht et och.</item>
+        <item>Den Tab „Mäi Lëtzebuergesch“ weist Iech, wéi een Deel vum lëtzebuergeschen Dictionnaire Dir scho benotzt hutt.</item>
+        <item>Déi méi seelen Akzenter sinn ënner dem laangen Drécken: „è“ an „ê“ ënner dem e, „à“ an „â“ ënner dem a, „û“ ënner dem u, „ô“ ënner dem o.</item>
+        <item>D\'Tastatur funktionéiert komplett offline: Näischt vun deem, wat Dir tippt, verléisst Ären Handy.</item>
+        <item>„Wuertsich“: Jee no der Schwieregkeet, déi Dir wielt, verstoppe sech d\'Wierder och diagonal an hannerzeg.</item>
+        <item>Fir e Wuert ze iwwerschaffen, dat Dir scho geschriwwen hutt, setzt einfach de Cursor dran: D\'Virschléi fänke vun deem Wuert erëm un.</item>
+        <item>E „Wuert vum Dag“ waart all Dag uewen am Tab „Mäi Lëtzebuergesch“ op Iech.</item>
+        <item>Lëtzebuergesch Wierder kommen an de Virschléi als éischt. D\'Franséischt iwwerhëlt vum drëtte Buschtaf un, wann kee lëtzebuergescht Wuert passt.</item>
+        <item>D\'Entrée-Tast passt sech dem Feld un, an deem Dir schreift: „Sichen“, „Schécken“ oder einfach eng nei Zeil.</item>
+        <item>D\'Lëscht vun Äre meescht benotzte Wierder fannt Dir am Tab „Mäi Lëtzebuergesch“.</item>
+        <item>D\'Läschtast läscht e ganzen Emoji, Hautfaarf mat derbäi: Kee futtist Zeechen bleift méi zréck.</item>
+        <item>Siwen Niveaue markéieren Äre Wee, vum Ufänker bis zum Sproochenkënner. Et gëtt en aachten: Entdeckt en selwer.</item>
+        <item>D\'Virschléi baue op engem Korpus vum haitege Lëtzebuergesch op, beschriwwen ënner „Iwwer d\'App“, ënnen am Tab Haut.</item>
+        <item>Den éischte Buschtaf vun all Saz gëtt automatesch grouss geschriwwen, wéi bei enger gewéinlecher Tastatur.</item>
+        <item>Deelt aus „Mäi Lëtzebuergesch“ Är Niveaukaart mat Ärer Famill an Äre Frënn.</item>
+        <item>D\'Korrektur wielt een an den Android-Astellungen ënner „Tastatur“, an net ënner „Sproochen“. De Knäppchen vum Schrëtt 4 féiert Iech direkt dohin.</item>
+        <item>No engem Update vun der App kann d\'Korrektur stomm bleiwen, bis den Handy nei start: Dat kënnt vun Android, net vun der Tastatur.</item>
+        <item>D\'Gebrauchsufank ënnen am Tab Haut weist all d\'Schrëtt a Biller, mat den heefegste Froen hannendrun.</item>
+        <item>„Wuertlück“ weist Iech e richtege lëtzebuergesche Saz, an deem e Wuert feelt: Vun de véier Virschléi ass just een dee vum Auteur.</item>
+        <item>Op Lëtzebuergesch kënnt d\'Eenheet virun der Zéngerzuel: 56 ass „sechsafofzeg“. D\'Spill „Zuelwuert“ trainéiert dat.</item>
+        <item>Rëtscht mam Fanger iwwer d\'Espace-Tast, fir de Cursor Buschtaf fir Buschtaf ze beweegen: Dir musst net méi tëscht zwee Zeechen zilen, fir e Wuert ze verbesseren.</item>
+        <item>D\'Emoji-Panel geet mat deenen op, déi Dir grad benotzt hutt: Déi lescht 30 waarden am éischten Tab op Iech.</item>
+    </string-array>
+    <string name="jeu_leitner">Leitner-Këscht</string>
+    <string name="score_sans_faute">Ouni Feeler: %1$d vun %2$d!</string>
+    <string name="score_aucune">Dës Kéier keng richteg Äntwert. Nach eng Ronn?</string>
+    <string name="wuertplaz_terminee_a11y">Gitter fäerdeg, %1$d Wierder gesat, %2$s.</string>
+    <string name="wuertplaz_mots_gagnes_a11y">%1$d Wierder gewonnen: %2$s</string>
+    <plurals name="accueil_cartes_a_revoir">
+        <item quantity="one">"🔁  %d Kaart ze widderhuelen"</item>
+        <item quantity="other">"🔁  %d Kaarten ze widderhuelen"</item>
+    </plurals>
+    <plurals name="accueil_cartes_carnet">
+        <item quantity="one">%d Kaart an Ärem Carnet.</item>
+        <item quantity="other">%d Kaarten an Ärem Carnet.</item>
+    </plurals>
+    <plurals name="encore_mots_avant">
+        <item quantity="one">Nach %1$s Wuert bis %2$s</item>
+        <item quantity="other">Nach %1$s Wierder bis %2$s</item>
+    </plurals>
+    <plurals name="mots_jusqu_au_niveau">
+        <item quantity="one">%1$d vun %2$s Wierder bis zum nächsten Niveau</item>
+        <item quantity="other">%1$d vun %2$s Wierder bis zum nächsten Niveau</item>
+    </plurals>
+    <plurals name="etapes_terminees">
+        <item quantity="one">%d vun 3 Schrëtt gemaach</item>
+        <item quantity="other">%d vun 3 Schrëtt gemaach</item>
+    </plurals>
+    <plurals name="mots_decouverts_sur">
+        <item quantity="one">%1$s Wuert entdeckt vun den %2$s am Dictionnaire</item>
+        <item quantity="other">%1$s Wierder entdeckt vun den %2$s am Dictionnaire</item>
+    </plurals>
+    <plurals name="utilise_fois">
+        <item quantity="one">%d Kéier benotzt</item>
+        <item quantity="other">%d Mol benotzt</item>
+    </plurals>
+    <plurals name="trouve_en_essais">
+        <item quantity="one">Fonnt an %1$d Versuch: %2$s</item>
+        <item quantity="other">Fonnt an %1$d Versich: %2$s</item>
+    </plurals>
+    <plurals name="score_bonnes_reponses">
+        <item quantity="one">%1$d richteg Äntwert vun %2$d.</item>
+        <item quantity="other">%1$d richteg Äntwerte vun %2$d.</item>
+    </plurals>
+    <plurals name="score_bonnes_reponses_relance">
+        <item quantity="one">%1$d richteg Äntwert vun %2$d. Nach eng Ronn?</item>
+        <item quantity="other">%1$d richteg Äntwerte vun %2$d. Nach eng Ronn?</item>
+    </plurals>
+    <plurals name="etoiles_sur_3">
+        <item quantity="one">%d Stär vun 3</item>
+        <item quantity="other">%d Stäre vun 3</item>
+    </plurals>
+    <plurals name="resultats">
+        <item quantity="one">%d Resultat</item>
+        <item quantity="other">%d Resultater</item>
+    </plurals>
+    <plurals name="fiche_exemples">
+        <item quantity="one">BEISPILL</item>
+        <item quantity="other">BEISPILLER</item>
+    </plurals>
+    <plurals name="cartes_collectees">
+        <item quantity="one">%d Kaart gesammelt</item>
+        <item quantity="other">%d Kaarte gesammelt</item>
+    </plurals>
+    <plurals name="cartes_a_revoir_aujourdhui">
+        <item quantity="one">"🔁  %d Kaart fir haut ze widderhuelen"</item>
+        <item quantity="other">"🔁  %d Kaarte fir haut ze widderhuelen"</item>
+    </plurals>
+    <string name="wuertplaz_combo">🔥 %1$d Wierder op eemol!</string>
+    <string name="carte_ecu_vues">GESINN</string>
+    <string name="carte_ecu_niveau">NIVEAU</string>
+</resources>

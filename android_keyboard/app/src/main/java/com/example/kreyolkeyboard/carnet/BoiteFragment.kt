@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -196,19 +197,17 @@ class BoiteFragment : Fragment() {
         val n = boite.combienDans(i)
         val dues = boite.duesDans(i)
         val acquis = i >= Widderhuelen.BOITE_ACQUISE
-        val titre = if (acquis) "Acquis" else "Revient dans ${rythmeLong(Widderhuelen.INTERVALLES[i])}"
+        val titre = if (acquis) getString(R.string.boite_acquis)
+        else getString(R.string.boite_revient_dans, rythmeLong(ctx, Widderhuelen.INTERVALLES[i]))
         val sousTitre = when {
-            n == 0 -> "Aucune carte"
-            dues > 0 -> "${if (n == 1) "1 carte" else "$n cartes"} · $dues à revoir"
-            else -> if (n == 1) "1 carte" else "$n cartes"
+            n == 0 -> getString(R.string.casier_aucune_carte)
+            dues > 0 -> getString(R.string.boite_a_revoir, resources.getQuantityString(R.plurals.cartes, n, n), dues)
+            else -> resources.getQuantityString(R.plurals.cartes, n, n)
         }
         val vide = when {
-            acquis -> "Aucune carte n'est encore acquise. Une carte arrive ici après " +
-                "six révisions réussies, la dernière à trois mois d'intervalle."
-            i == 0 -> "Ce casier est vide pour le moment. Les cartes gagnées dans " +
-                "les jeux arrivent ici, et y reviennent après une erreur."
-            else -> "Ce casier est vide pour le moment. Les cartes y montent depuis " +
-                "le casier précédent, une révision réussie à la fois."
+            acquis -> getString(R.string.casier_vide_acquis)
+            i == 0 -> getString(R.string.casier_vide_premier)
+            else -> getString(R.string.casier_vide_suivant)
         }
 
         // La face avant de la pile, ramenée dans les coordonnées de la racine :

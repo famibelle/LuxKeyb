@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import androidx.annotation.StringRes
 
 /**
  * Réglages de comportement du clavier, partagés entre l'écran de l'application
@@ -94,11 +95,11 @@ object KeyboardPreferences {
      * Les crans longs restent pour qui relâche lentement (ACCESSIBILITE.md,
      * point 4) : une popup ouverte sans le vouloir coûte un appui de plus.
      */
-    enum class DelaiAppuiLong(val ms: Long, val libelle: String) {
-        COURT(300L, "Court (0,3 s)"),
-        MOYEN(500L, "Moyen (0,5 s)"),
-        LONG(800L, "Long (0,8 s)"),
-        TRES_LONG(1200L, "Très long (1,2 s)");
+    enum class DelaiAppuiLong(val ms: Long, @StringRes val libelle: Int) {
+        COURT(300L, R.string.delai_court),
+        MOYEN(500L, R.string.delai_moyen),
+        LONG(800L, R.string.delai_long),
+        TRES_LONG(1200L, R.string.delai_tres_long);
 
         companion object {
             val DEFAUT = COURT

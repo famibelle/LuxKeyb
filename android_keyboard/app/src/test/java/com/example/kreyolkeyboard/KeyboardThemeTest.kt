@@ -90,6 +90,6 @@ class KeyboardThemeTest {
         assertEquals(3, modes.size)
         assertEquals(modes.size, modes.map { it.cle }.distinct().size)
         assertEquals(modes.size, modes.map { it.libelle }.distinct().size)
-        assertTrue(modes.all { it.cle.isNotBlank() && it.libelle.isNotBlank() })
+        assertTrue(modes.all { it.cle.isNotBlank() && it.libelle != 0 })
     }
 }

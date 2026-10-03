@@ -1,5 +1,8 @@
 package com.example.kreyolkeyboard.zuelen
 
+import com.example.kreyolkeyboard.R
+import com.example.kreyolkeyboard.TexteRessource
+
 /**
  * Écriture des nombres en toutes lettres, en luxembourgeois.
  *
@@ -128,16 +131,16 @@ object ZuelenSpeller {
      * en cas de réussite n'est pas décoratif : la décomposition est ce qui se
      * retient, la forme entière ne se retient qu'une fois.
      */
-    fun decomposition(nombre: Int): String {
+    fun decomposition(nombre: Int): TexteRessource? {
         val retenue = enLettres(nombre)
-        if (retenue.isEmpty()) return ""
+        if (retenue.isEmpty()) return null
         if (nombre !in 21..99 || nombre % 10 == 0) {
-            return "$nombre s'écrit « $retenue »."
+            return TexteRessource(R.string.zuelen_secrit, nombre, retenue)
         }
         val dizaine = enLettres((nombre / 10) * 10)
         val liaison = liaison(dizaine)
         val unite = retenue.dropLast(dizaine.length + liaison.length)
-        return "$nombre = $unite + $liaison + $dizaine, l'unité d'abord."
+        return TexteRessource(R.string.zuelen_decomposition, nombre, unite, liaison, dizaine)
     }
 
     /**

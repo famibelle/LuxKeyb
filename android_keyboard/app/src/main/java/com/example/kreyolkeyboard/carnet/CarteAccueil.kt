@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
+import com.example.kreyolkeyboard.R
 
 /**
  * La carte offerte à la fin de l'installation : « Moien ».
@@ -17,7 +18,7 @@ object CarteAccueil {
 
     const val FORME = "Moien"
     const val GLOSE = "bonjour"
-    const val CATEGORIE = "Salutation"
+    val CATEGORIE = R.string.cat_salutation
     const val EXEMPLE = "Moien, wéi geet et?"
     const val TRADUCTION = "Bonjour, comment ça va ?"
 
