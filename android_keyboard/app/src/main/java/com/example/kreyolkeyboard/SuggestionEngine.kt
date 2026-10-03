@@ -368,7 +368,8 @@ class SuggestionEngine(private val context: Context) {
          * exactement quand on insère un mot français dans du luxembourgeois.
          *
          * L'aide n'est pas perdue : la rangée bleue propose déjà le mot, elle
-         * l'a trouvé par préfixe. Ce qui disparaît, ce sont les trois
+         * l'a trouvé par préfixe (et, rangée coupée, une barre vide vaut mieux
+         * qu'une barre fausse). Ce qui disparaît, ce sont les trois
          * propositions luxembourgeoises sans rapport qui la surplombaient —
          * `Bechet`, `Deche`, `Mécht` face à `déchet`.
          *

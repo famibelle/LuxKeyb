@@ -144,8 +144,9 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         addView(carte().apply {
             addView(titreSection("Suggestions"))
             addView(explication(
-                "Les mots luxembourgeois sont proposés en rouge. À partir de trois " +
-                        "lettres, une seconde rangée en bleu propose aussi des mots français."
+                "Les mots luxembourgeois sont proposés en rouge. Activez l'option " +
+                        "ci-dessous pour qu'une seconde rangée, en bleu, propose aussi " +
+                        "des mots français à partir de trois lettres."
             ))
             addView(interrupteur(
                 "Propositions en français",
