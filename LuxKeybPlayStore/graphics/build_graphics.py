@@ -15,7 +15,7 @@ qu'il n'y ait rien à retrouver au moment de l'envoi :
 
   Icône de l'application.png                        depuis Logos/luxembourg-logo-hd.png
   Image de présentation.png                          depuis feature_graphic_source.html
-  Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Clavier numérique).png
+  Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Installation).png
                                                       depuis captures-emulateur-pixel9/
 
 Le numéro des captures est leur ordre d'envoi ; le nom dit aussi ce que chacune
@@ -30,7 +30,12 @@ exigé pour que l'application soit promouvable — il en faut au moins quatre.
 Les captures sources sont dans `captures-emulateur-pixel9/`, natives 1080 px de
 large (émulateur Pixel 9, 1080x2424, sous la 29.2.0) : rien n'est agrandi ici.
 Sur la branche de la dictée, les trois captures de clavier ont été refaites
-le 2 octobre 2026 sous la 30.1.0 avec le micro, dans Messages.
+le 2 octobre 2026 sous la 30.1.0 avec le micro, dans Messages. La capture de
+la dictée (`20-clavier-dictee-luxasr`, 3 octobre, 33.0.0) assemble deux
+écrans réels : le bandeau LuxASR et le micro d'une dictée en cours, et la
+phrase de la bulle, l'émulateur ne pouvant pas entendre de voix. Depuis la
+33.0.0 elle prend la deuxième place et le clavier numérique sort des huit
+emplacements : la Console n'en accepte pas plus.
 Leur nom dit ce qu'elles montrent, dans l'ordre d'envoi. Les trois captures de
 clavier (suggestions, accents, numérique) sont prises dans le champ d'essai de
 l'onglet Démarrage puis recadrées (`-recadre`, 1080x1026) sur champ de saisie +
@@ -82,27 +87,27 @@ SPECS = [
     ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png", None, "Suggestions",
      "Il vous souffle les mots",
      "Le luxembourgeois d'abord, le français pour les emprunts, sans changer de clavier."),
-    ("Captures d'écran pour téléphone 2 (Carnet)", "07-carnet-carte-moien.png", None, "Carnet",
+    ("Captures d'écran pour téléphone 2 (Dictée)", "20-clavier-dictee-luxasr-recadre.png", None, "Dictée",
+     "Parlez, il écrit en luxembourgeois",
+     "Votre voix part à LuxASR, Université du Luxembourg, seulement quand vous touchez le micro."),
+    ("Captures d'écran pour téléphone 3 (Carnet)", "07-carnet-carte-moien.png", None, "Carnet",
      "Chaque mot appris devient une carte",
      "Sens, phrase d'exemple et traduction officielle, sur une carte à collectionner."),
-    ("Captures d'écran pour téléphone 3 (Jeux)", "02-jeux-onglet-spiller.png", None, "Jeux",
+    ("Captures d'écran pour téléphone 4 (Jeux)", "02-jeux-onglet-spiller.png", None, "Jeux",
      "Sept jeux pour élargir son vocabulaire",
      "Tous les jeux versent leurs mots dans le même carnet, révisable à intervalle régulier."),
-    ("Captures d'écran pour téléphone 4 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png", None, "Wierderbuch",
+    ("Captures d'écran pour téléphone 5 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png", None, "Wierderbuch",
      "Un dictionnaire dans le clavier",
      "Près de 89 000 mots, luxembourgeois et français, avec des phrases d'exemple officielles."),
-    ("Captures d'écran pour téléphone 5 (Diacritiques)", "09-clavier-diacritiques-appui-long-recadre.png", None, "Diacritiques",
+    ("Captures d'écran pour téléphone 6 (Diacritiques)", "09-clavier-diacritiques-appui-long-recadre.png", None, "Diacritiques",
      "ë ä é ont leur propre touche",
      "Les autres accents (ü, è, à, ê, ö) restent sous un appui long."),
-    ("Captures d'écran pour téléphone 6 (Progression)", "04-progression-onglet-mai-letzebuergesch.png", None, "Progression",
+    ("Captures d'écran pour téléphone 7 (Progression)", "04-progression-onglet-mai-letzebuergesch.png", None, "Progression",
      "Chaque mot fait monter votre niveau",
      "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
-    ("Captures d'écran pour téléphone 7 (Installation)", "01-installation-onglet-demarrage.png", None, "Installation",
+    ("Captures d'écran pour téléphone 8 (Installation)", "01-installation-onglet-demarrage.png", None, "Installation",
      "Trois étapes, un clavier d'essai",
      "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ("Captures d'écran pour téléphone 8 (Clavier numérique)", "10-clavier-numerique-symboles-recadre.png", None, "Clavier numérique",
-     "Chiffres, symboles et ponctuation",
-     "La ponctuation la plus fréquente du corpus est déjà sur le clavier de lettres."),
 ]
 
 # Hors des huit emplacements de la Console (limite de 8) : un visuel par jeu,

@@ -1,8 +1,8 @@
 # Fiche Play Store — Lëtzebuergesch Clavier
 
 Textes à coller tels quels dans la Play Console (Développer la présence →
-Fiche Play Store principale). Version de référence : **26.3.1**
-(`versionCode` 260301), `applicationId` `com.potomitan.luxkeyboard`.
+Fiche Play Store principale). Version de référence : **33.0.0**
+(`versionCode` 330000), la première qui embarque la dictée vocale, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -153,8 +153,10 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
 
 ## Nouveautés de cette version
 
-*Brouillon pour la version qui apportera la dictée (à publier seulement après
-l'accord écrit de l'Université et l'écran d'information sur l'audio) :*
+*Texte en vigueur depuis la 33.0.0, la version qui apporte la dictée. C'est
+une évolution majeure de la promesse : jusque-là rien ne quittait le
+téléphone, désormais la voix part à l'Université du Luxembourg quand on dicte.
+Le texte le dit donc en deuxième ligne, pas en petits caractères :*
 
 ```
 🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit, ponctué. La reconnaissance vocale est assurée par LuxASR, de l'Université du Luxembourg.
@@ -162,7 +164,7 @@ l'accord écrit de l'Université et l'écran d'information sur l'audio) :*
 📶 Sans connexion, le micro se barre ; sur un réseau lent, le clavier vous prévient.
 ```
 
-*Texte en vigueur, à garder pour les versions sans dictée :*
+*Texte précédent, celui de la 26.3.1, gardé pour mémoire :*
 
 *500 caractères maximum. Version de référence : 26.3.1, premier envoi en
 production — résume l'été (12.0.0 à 26.3.1) plutôt qu'un seul correctif,
@@ -271,7 +273,7 @@ reprennent le gabarit ne sont plus dans le dépôt.
 |---|---|---|
 | Icône de l'application | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `Icône de l'application.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
 | Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
-| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Clavier numérique).png`, 1080 × 1920, de 227 à 301 Ko, légende incrustée |
+| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Installation).png`, 1080 × 1920, de 227 à 301 Ko, légende incrustée |
 | Captures tablette | facultatif | Non prévu |
 | Vidéo YouTube | facultatif | Aucune. `docs/Screenshots/lux_clavier_demo.gif` n'est pas utilisable : le Store ne prend **pas** les GIF |
 
@@ -281,13 +283,18 @@ promouvable. Leur numéro est leur ordre d'envoi ; le premier écran est le seul
 que voit la plupart des visiteurs :
 
 1. la barre de suggestions bilingue en cours de frappe (la cuvette, 12.0.0)
-2. une carte du carnet ouverte : plaque gravée, rareté, exemple traduit
-3. le hub Spiller : sept jeux et le carnet, sur la barre à quatre onglets
-4. la fiche Wierderbuch d'un mot : sens, exemples traduits, autres formes
-5. l'appui long sur `e`
-6. la progression et le mot du jour, avec sa traduction
-7. l'installation guidée, configuration terminée
-8. chiffres et symboles
+2. la dictée en cours dans Messages, bandeau « 🌐 LuxASR » ; la légende dit
+   où part la voix et quand (33.0.0)
+3. une carte du carnet ouverte : plaque gravée, rareté, exemple traduit
+4. le hub Spiller : sept jeux et le carnet, sur la barre à quatre onglets
+5. la fiche Wierderbuch d'un mot : sens, exemples traduits, autres formes
+6. l'appui long sur `e`
+7. la progression et le mot du jour, avec sa traduction
+8. l'installation guidée, configuration terminée
+
+Chiffres et symboles ont quitté les huit emplacements à la 33.0.0 pour faire
+place à la dictée : la Console n'en accepte pas plus, et c'était l'écran qui
+apprenait le moins sur l'application.
 
 Le nom de chaque capture porte maintenant aussi, entre parenthèses, ce qu'elle
 montre (le kicker affiché sur l'image elle-même). La liste ci-dessus et le

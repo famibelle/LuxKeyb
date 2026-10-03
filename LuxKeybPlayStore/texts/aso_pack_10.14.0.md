@@ -40,9 +40,11 @@ Search Console de Play montrera du volume sur « Tastatur ».
 ## Brève description
 
 Voir `fichePlayStore.md` pour les quatre langues. Le principe : « Clavier
-luxembourgeois » ou son équivalent en tête de phrase — c'est la partie qui
-survit à la troncature — et « 100 % hors ligne » en fin, qui sert à la fois
-d'argument de confidentialité et de mot-clé.
+luxembourgeois » ou son équivalent en tête de phrase (c'est la partie qui
+survit à la troncature), et « dictée vocale » en fin, depuis la 33.0.0. C'était
+« 100 % hors ligne », qui servait à la fois d'argument de confidentialité et de
+mot-clé ; depuis la dictée il n'est plus vrai que de la frappe, et une brève
+description qui le garderait mentirait sur la seule donnée qui part.
 
 ## Liens UTM par canal
 
@@ -136,8 +138,9 @@ convaincus. À 0 avis, cinq avis 5 étoiles déplacent la fiche ; à 500, non.
 2. Les fiches lb / de / en sont-elles bien créées avec leur brève description
    relue par un locuteur natif — la fiche française reste servie par défaut
    tant qu'elles manquent ;
-3. La déclaration « Sécurité des données » est-elle bien à *aucune donnée
-   collectée* (voir `fichePlayStore.md`) ;
+3. La déclaration « Sécurité des données » ne déclare-t-elle bien que
+   l'audio, collecté et partagé avec l'Université du Luxembourg pour la
+   dictée, tout le reste à non (voir `fichePlayStore.md`) ;
 4. Le flux In-App Review est-il réellement servi (il ne l'est que sur une
    installation venant du Store) ;
 5. Les liens UTM remontent-ils dans Acquisition → Analyse des conversions ?
