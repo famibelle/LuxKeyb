@@ -111,11 +111,11 @@ son appui long : inutile de deviner.
 
 ### Suggestions
 
-La barre de suggestions apparaît dès les premières lettres. Les mots
-luxembourgeois passent en premier, en rouge ; le français prend le relais à
-partir de trois lettres, en bleu sur une seconde rangée. Cette rangée française
-se coupe dans Réglages du clavier › Suggestions › « Propositions en français » :
-le clavier perd alors une rangée de hauteur.
+La barre de suggestions apparaît dès les premières lettres, avec les mots
+luxembourgeois en rouge. Pour glisser des mots français dans vos phrases,
+allumez Réglages du clavier › Suggestions › « Propositions en français » : une
+seconde rangée, en bleu, les propose à partir de trois lettres, et le clavier
+gagne une rangée de hauteur.
 Touchez une suggestion pour la compléter d'un coup, espace inclus.
 
 Vous pouvez taper sans diacritiques : « letzebuergesch » propose bien

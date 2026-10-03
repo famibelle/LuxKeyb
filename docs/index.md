@@ -274,14 +274,13 @@ Le clavier reconnaît **123 297 formes** et **27 746 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
-Les suggestions luxembourgeoises passent en premier ; le français prend le
-relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
-Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
-luxembourgeoise : « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
-Le côté français se limite volontairement aux mots les plus courants : il est là
-pour les emprunts, pas pour rédiger en français. Si vous n'en voulez pas, la
-rangée bleue se coupe dans les réglages et le clavier raccourcit d'autant ; le
-correcteur continue de reconnaître vos mots français.
+Les suggestions sont en luxembourgeois. Si des mots français s'invitent souvent
+dans vos phrases, allumez « Propositions en français » dans les réglages du
+clavier : une seconde rangée, en bleu, les propose à partir de trois lettres, et
+« ech hunn eng réunion muer » s'écrit sans changer de clavier. Le côté français
+se limite volontairement aux mots les plus courants : il est là pour les
+emprunts, pas pour rédiger en français. Allumée ou non, le correcteur reconnaît
+vos mots français.
 
 ### Il pardonne les fautes de frappe
 

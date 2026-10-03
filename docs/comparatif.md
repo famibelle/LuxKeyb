@@ -242,9 +242,9 @@ d'équivalent pour le lëtzebuergesch.
 
 **Le bilinguisme comme situation normale**, et non comme réglage à activer.
 Au Luxembourg on écrit rarement dans une seule langue, et le clavier est
-construit là-dessus : il affiche **deux rangées de suggestions à la fois**, une
-`LB` au rouge du drapeau et une `FR` au bleu ciel, chaque mot proposé sachant de
-quelle langue il vient. Le luxembourgeois garde la priorité — son score est
+construit là-dessus : une option des réglages lui fait afficher **deux rangées
+de suggestions à la fois**, une `LB` au rouge du drapeau et une `FR` au bleu
+ciel, chaque mot proposé sachant de quelle langue il vient. Le luxembourgeois garde la priorité — son score est
 majoré de moitié, celui du français réduit d'un cinquième, et il ne peut jamais
 y avoir plus de deux mots français en face de trois luxembourgeois. Le français
 n'apparaît qu'à partir de trois lettres, sur les 662 mots les plus courants :
