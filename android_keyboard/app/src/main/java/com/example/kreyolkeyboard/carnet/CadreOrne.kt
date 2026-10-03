@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -1055,8 +1056,17 @@ object Ornement {
         override fun sizeOf(cle: String, valeur: Bitmap): Int = valeur.byteCount
     }
 
-    fun metal(rarete: Rarete, largeurPx: Int, vignette: Boolean): Bitmap? =
-        couche("m", rarete, largeurPx, vignette) { c -> dessinerMetal(c, rarete, vignette) }
+    /**
+     * Les deux écus portent un libellé (« VUES », « NIVEAU ») : il entre dans
+     * la clef du cache, sinon un changement de langue garderait l'ancien.
+     */
+    fun metal(context: Context, rarete: Rarete, largeurPx: Int, vignette: Boolean): Bitmap? {
+        val vues = context.getString(R.string.carte_ecu_vues)
+        val niveau = context.getString(R.string.carte_ecu_niveau)
+        return couche("m$vues$niveau", rarete, largeurPx, vignette) { c ->
+            dessinerMetal(c, rarete, vignette, vues, niveau)
+        }
+    }
 
     /**
      * Les rayons en éventail, à partir de *Rare*.
@@ -1104,7 +1114,7 @@ object Ornement {
      * Le centre reste transparent — la face teintée et l'illustration sont
      * peintes dessous, en direct, par [CarteOrnee].
      */
-    private fun dessinerMetal(c: Canvas, rarete: Rarete, vignette: Boolean) {
+    private fun dessinerMetal(c: Canvas, rarete: Rarete, vignette: Boolean, vues: String, niveau: String) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG)
         val palier = rarete.ordinal
         val m = metal(rarete)
@@ -1280,8 +1290,8 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        c.drawText("VUES", ECU_G.centerX(), ECU_G.top + 9f, p)
-        c.drawText("NIVEAU", ECU_D.centerX(), ECU_D.top + 9f, p)
+        c.drawText(vues, ECU_G.centerX(), ECU_G.top + 9f, p)
+        c.drawText(niveau, ECU_D.centerX(), ECU_D.top + 9f, p)
         p.alpha = 255
 
         // 12. Le disque du médaillon de provenance, par-dessus le panneau
@@ -1336,7 +1346,7 @@ object Ornement {
      * aux gemmes ; l'émail prend celle du **jeu**, pour que les deux ne se
      * confondent pas.
      */
-    fun dessinerMedaillon(c: Canvas, p: Paint, jeu: JeuCarte, m: Metal) {
+    fun dessinerMedaillon(context: Context, c: Canvas, p: Paint, jeu: JeuCarte, m: Metal) {
         val cx = PROVENANCE.centerX()
         val cy = PROVENANCE.centerY()
         val hsv = FloatArray(3)
@@ -1365,8 +1375,8 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        texteSurArc(c, p, "GAGNÉ À", cx, cy, R_EMAIL + 2.2f, true)
-        texteSurArc(c, p, jeu.nom.uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
+        texteSurArc(c, p, context.getString(R.string.carte_gagne_a_medaillon), cx, cy, R_EMAIL + 2.2f, true)
+        texteSurArc(c, p, jeu.libelle(context).uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
         p.typeface = android.graphics.Typeface.DEFAULT
         p.strokeCap = Paint.Cap.BUTT
         p.strokeJoin = Paint.Join.MITER
@@ -3039,7 +3049,7 @@ class CarteOrnee(
         motif.peindre(canvas, pinceau, roulis, decoupe)
         canvas.restore()
 
-        Ornement.metal(rarete, width, vignette)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
+        Ornement.metal(context, rarete, width, vignette)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
 
         canvas.save()
         canvas.scale(u, u)
@@ -3057,7 +3067,7 @@ class CarteOrnee(
                 canvas, pinceau, degradeAgrafe, agrafe, Ornement.CREUX_AGRAFE,
                 intensite, dirX, dirY
             )
-            jeu?.let { Ornement.dessinerMedaillon(canvas, pinceau, it, Ornement.metal(rarete)) }
+            jeu?.let { Ornement.dessinerMedaillon(context, canvas, pinceau, it, Ornement.metal(rarete)) }
             pivoterLesBosses(canvas, pinceau)
         }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)

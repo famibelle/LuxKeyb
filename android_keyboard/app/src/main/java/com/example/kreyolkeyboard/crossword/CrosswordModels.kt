@@ -1,7 +1,11 @@
 package com.example.kreyolkeyboard.crossword
 
+import com.example.kreyolkeyboard.R
+import androidx.annotation.StringRes
 import android.content.Context
 import android.util.Log
+import com.example.kreyolkeyboard.DispositionClavier
+import com.example.kreyolkeyboard.KeyboardLayoutManager
 import com.example.kreyolkeyboard.MotsEcartes
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -22,10 +26,10 @@ import java.io.InputStreamReader
  * but.
  */
 
-enum class CrosswordDifficulty(val level: Int, val label: String) {
-    FACILE(1, "Facile"),
-    NORMALE(2, "Normal"),
-    DIFFICILE(3, "Difficile");
+enum class CrosswordDifficulty(val level: Int, @StringRes val label: Int) {
+    FACILE(1, R.string.niveau_facile),
+    NORMALE(2, R.string.niveau_normal),
+    DIFFICILE(3, R.string.niveau_difficile);
 
     companion object {
         fun fromLevel(level: Int): CrosswordDifficulty =
@@ -241,51 +245,68 @@ object CrosswordData {
     private const val TAG = "CrosswordData"
 
     /**
-     * Les rangées du pavé de saisie, **dans la disposition du clavier**.
+     * Le pavé de saisie, **dans la disposition que l'utilisateur a choisie pour
+     * son clavier**.
      *
-     * Alphabétiques dans la première version, et c'était une erreur : cette
+     * Alphabétique dans la première version, et c'était une erreur : cette
      * application existe pour qu'on écrive le luxembourgeois sur son clavier à
      * elle, en QWERTZ. Un pavé alphabétique fait chercher les lettres dans un
-     * ordre que le joueur ne retrouvera nulle part ensuite ; en QWERTZ, le jeu
-     * travaille les positions de doigts dont il se servira en écrivant un
-     * message. Le jeu cesse d'être à côté du clavier, il en devient
-     * l'entraînement.
+     * ordre que le joueur ne retrouvera nulle part ensuite ; dans la
+     * disposition du clavier, le jeu travaille les positions de doigts dont il
+     * se servira en écrivant un message. Le jeu cesse d'être à côté du clavier,
+     * il en devient l'entraînement.
+     *
+     * Le pavé a d'abord recopié les rangées « Luxembourg » en dur, et il les a
+     * gardées quand « Suisse allemand » est devenu le défaut (v29.5.0) : le jeu
+     * enseignait alors un « é » à droite du « l » à des joueurs dont le clavier
+     * y met « ö » et « ä ». Il se dérive maintenant de [DispositionClavier], qui
+     * est la seule source des rangées.
      *
      * Trois fidélités et une infidélité :
      *
-     * - Les trois rangées de lettres sont celles de `createAlphabeticLayout()`,
-     *   `é` compris, qui reste en bout de rangée du milieu là où le QWERTZ
-     *   suisse-français le met.
-     * - `⌫` ferme la troisième rangée, à la place exacte qu'il occupe sur le
-     *   clavier ; l'emplacement de `⇧`, inutile dans une grille tout en
-     *   capitales, reste vide pour que les rangées gardent leur alignement.
-     * - **L'appui long n'est pas repris.** Sur le clavier, `ö` et `ü` n'existent
-     *   que derrière un appui long sur `o` et `u` (voir `accentMap`), et
-     *   `ä`/`ë` vivent autour de la barre d'espace. Les reproduire ainsi
-     *   cacherait deux des cinq voyelles infléchies dont le jeu a besoin —
-     *   exactement le défaut que ce pavé existe pour éviter. La rangée de la
-     *   barre d'espace est donc remplacée par `Ä Ë Ö Ü`, en touches larges.
+     * - Les trois rangées de lettres sont celles de la disposition, diacritiques
+     *   directes comprises, à leur place.
+     * - `⌫` ferme la troisième rangée, à la place et à la largeur exactes qu'il
+     *   a sur le clavier ; l'emplacement de `⇧`, inutile dans une grille tout
+     *   en capitales, reste vide pour que les rangées gardent leur alignement.
+     * - La dernière rangée commence par les diacritiques que la disposition met
+     *   autour de la barre d'espace, dans le même ordre.
+     * - **L'appui long n'est pas repris.** Les voyelles infléchies que la
+     *   disposition n'offre qu'en appui long (`ö` et `ü` sur « Luxembourg »)
+     *   rejoignent la dernière rangée en touches directes : les cacher
+     *   priverait le joueur de lettres dont la grille a besoin, exactement le
+     *   défaut que ce pavé existe pour éviter.
      *
      * `generate_crossword.py` ne retient que des mots qui s'écrivent avec ces
-     * trente et une lettres ; `CrosswordAssetTest` vérifie que le pavé les
-     * porte toutes, car une lettre oubliée ici rendrait des grilles
-     * inachevables sans rien casser d'autre.
+     * trente et une lettres ; `CrosswordAssetTest` vérifie que le pavé de
+     * chaque disposition les porte toutes, car une lettre oubliée rendrait des
+     * grilles inachevables sans rien casser d'autre.
      */
-    val RANGEES: List<String> = listOf(
-        "QWERTZUIOP",
-        "ASDFGHJKLÉ",
-        "YXCVBNM",
-        "ÄËÖÜ"
-    )
+    fun pave(disposition: DispositionClavier): PaveSaisie {
+        val rangees = disposition.rangeesLettres(KeyboardLayoutManager.ChampAdresse.AUCUN)
+        fun lettresDe(rangee: Array<String>) = rangee
+            .filter { it.length == 1 && it[0].isLetter() }
+            .joinToString("") { it.uppercase() }
 
-    /** Rang de la rangée que `⌫` ferme, comme sur le clavier. */
-    const val RANGEE_EFFACEMENT = 2
+        val lettres = rangees.take(3).map(::lettresDe)
+        val presentes = lettres.joinToString("").toSet()
+        val autourDeLEspace = lettresDe(rangees[3])
+        val manquantes = DIACRITIQUES.filter { it !in presentes && it !in autourDeLEspace }
 
-    /** Rang de la rangée des voyelles infléchies, en touches larges. */
-    const val RANGEE_ACCENTS = 3
+        return PaveSaisie(
+            lettres = lettres,
+            accents = autourDeLEspace + manquantes,
+            largeur = lettres[0].length.toFloat(),
+            poidsEffacement = disposition.poidsTouche("⌫")
+        )
+    }
+
+    /** Les cinq lettres accentuées que les grilles emploient, hors A–Z. */
+    private const val DIACRITIQUES = "ÄËÉÖÜ"
 
     private var cachedGrids: List<CrosswordGrid>? = null
     private var cachedAttribution: String? = null
+    private var cachedLangue: String? = null
 
     /**
      * Charge et met en cache les grilles livrées.
@@ -301,12 +322,24 @@ object CrosswordData {
      * main serait jouable, donc un actif manquant passerait inaperçu.
      */
     fun loadGrids(context: Context): List<CrosswordGrid> {
-        cachedGrids?.let { return it }
+        // Une série de grilles par langue de l'interface : la glose est le
+        // cœur de la grille (définition ou récompense), et les mots retenus
+        // dépendent de la langue de leur glose. La ressource langue_traductions
+        // désigne la même langue que les traductions du reste de l'app.
+        val langue = context.getString(R.string.langue_traductions)
+        if (langue == cachedLangue) cachedGrids?.let { return it }
+        cachedLangue = langue
+        val actif = if (langue == "fr") ASSET else ASSET.replace(".json", "_$langue.json")
 
         val grilles = try {
-            val contenu = BufferedReader(
-                InputStreamReader(context.assets.open(ASSET))
-            ).use { it.readText() }
+            val contenu = try {
+                BufferedReader(InputStreamReader(context.assets.open(actif))).use { it.readText() }
+            } catch (e: java.io.IOException) {
+                // Une langue sans grilles retombe sur le français plutôt que
+                // de laisser le jeu vide.
+                Log.e(TAG, "Actif $actif absent, repli sur $ASSET", e)
+                BufferedReader(InputStreamReader(context.assets.open(ASSET))).use { it.readText() }
+            }
 
             val racine = JSONObject(contenu)
             val credits = racine.optJSONArray("attribution")
@@ -381,4 +414,23 @@ object CrosswordData {
         loadGrids(context)
         return cachedAttribution ?: ""
     }
+}
+
+/**
+ * Le pavé de Kräizwuert pour une disposition, voir [CrosswordData.pave].
+ *
+ * [lettres] : les trois rangées de lettres, en capitales ; la troisième est
+ * encadrée par l'emplacement vide de `⇧` et par `⌫`, larges de
+ * [poidsEffacement]. [accents] : la rangée du bas, en touches doubles,
+ * centrées. Toutes les rangées pèsent [largeur] unités, une lettre valant 1,
+ * comme sur le clavier.
+ */
+data class PaveSaisie(
+    val lettres: List<String>,
+    val accents: String,
+    val largeur: Float,
+    val poidsEffacement: Float
+) {
+    /** Toutes les lettres que le pavé permet d'écrire. */
+    val touches: Set<Char> get() = (lettres.joinToString("") + accents).toSet()
 }

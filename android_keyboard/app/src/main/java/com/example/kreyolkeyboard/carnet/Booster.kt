@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -122,7 +123,7 @@ object Booster {
         }
 
         val titre = TextView(ctx).apply {
-            text = "🎁 Votre pochette — ${jeu.nom}"
+            text = ctx.getString(R.string.pochette_titre, jeu.libelle(ctx))
             textSize = 19f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.WHITE)
@@ -144,7 +145,7 @@ object Booster {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply { bottomMargin = dp(8f) }
-            text = "✨  NOUVELLE CARTE"
+            text = ctx.getString(R.string.pochette_nouvelle_carte)
             textSize = 12f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.WHITE)
@@ -175,7 +176,7 @@ object Booster {
             gravity = Gravity.CENTER
         }
         val passer = TextView(ctx).apply {
-            text = "Passer"
+            text = ctx.getString(R.string.pochette_passer)
             textSize = 14f
             setTypeface(null, Typeface.BOLD)
             setTextColor(0xFFB0BEC5.toInt())
@@ -192,7 +193,7 @@ object Booster {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply { leftMargin = dp(10f) }
-            text = "📔 Mon carnet"
+            text = ctx.getString(R.string.pochette_mon_carnet)
             textSize = 14f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.WHITE)
@@ -252,22 +253,21 @@ object Booster {
             val neuves = contenus.count { it.carte.forme in nouvelles }
             if (index >= ordre.size) {
                 progres.text = if (ordre.size > 1)
-                    "‹ glissez à droite pour revoir vos cartes" else ""
-                titre.text = "🎁 " + contenus.size + " carte" +
-                    (if (contenus.size > 1) "s" else "") +
-                    (if (neuves > 0) " · $neuves nouvelle" +
-                        (if (neuves > 1) "s" else "") else "")
+                    ctx.getString(R.string.pochette_revoir) else ""
+                val res = ctx.resources
+                titre.text = "🎁 " + res.getQuantityString(R.plurals.cartes, contenus.size, contenus.size) +
+                    (if (neuves > 0) " · " + res.getQuantityString(R.plurals.pochette_nouvelles, neuves, neuves) else "")
             } else {
                 progres.text = "${index + 1} / ${ordre.size}" +
-                    (if (ordre.size > 1) "   ·   glissez pour parcourir ›" else "")
-                titre.text = "🎁 Votre pochette — ${jeu.nom}"
+                    (if (ordre.size > 1) "   ·   " + ctx.getString(R.string.pochette_parcourir) else "")
+                titre.text = ctx.getString(R.string.pochette_titre, jeu.libelle(ctx))
             }
             // « Fermer » dès que tout a été vu, où qu'on soit dans le paquet :
             // « Passer » ne veut plus rien dire quand il ne reste rien à
             // passer. Même bascule pour la sortie vers le carnet, qui n'était
             // cachée que pour ne pas inviter à partir avant d'avoir ouvert.
             val tout = vues.size >= ordre.size
-            passer.text = if (tout) "Fermer" else "Passer"
+            passer.text = ctx.getString(if (tout) R.string.fermer else R.string.pochette_passer)
             passer.setTextColor(if (tout) Color.WHITE else 0xFFB0BEC5.toInt())
             versCarnet.visibility = if (tout) View.VISIBLE else View.GONE
         }
@@ -281,10 +281,10 @@ object Booster {
                     FrameLayout.LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER
                 )
-                text = if (neuves > 0)
-                    "Elles sont rangées dans votre carnet."
-                else
-                    "Vous les aviez déjà toutes : elles restent dans votre carnet."
+                text = ctx.getString(
+                    if (neuves > 0) R.string.pochette_bilan_neuves
+                    else R.string.pochette_bilan_deja
+                )
                 textSize = 15f
                 gravity = Gravity.CENTER
                 setLineSpacing(0f, 1.25f)

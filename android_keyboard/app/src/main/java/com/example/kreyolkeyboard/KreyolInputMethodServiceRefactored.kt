@@ -2112,7 +2112,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         if (!prefs.getBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, false)) {
             Toast.makeText(
                 this,
-                "Appui long sur une lettre pour ses accents : a → ä à â, e → é ë è ê",
+                getString(R.string.ime_astuce_accents),
                 Toast.LENGTH_LONG
             ).show()
             prefs.edit().putBoolean(PREF_FIRST_REAL_USE_TIP_SHOWN, true).apply()
@@ -2148,7 +2148,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val container = luxRow ?: return
         lateinit var chip: Button
         chip = Button(this).apply {
-            text = "📤 Envoyer un mot à un ami"
+            text = getString(R.string.ime_partager)
             textSize = 14f
             setTextColor(KeyboardColors.CHIP_TEXT_ON_RED)
             background = GradientDrawable().apply {

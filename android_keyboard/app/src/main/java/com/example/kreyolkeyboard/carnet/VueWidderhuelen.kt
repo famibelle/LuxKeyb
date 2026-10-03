@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -187,7 +188,7 @@ class VueWidderhuelen(
 
         val carton = DosRevision(ctx)
         carton.posee(
-            ligne("Vous souvenez-vous ?", taille = 13f, couleur = ENCRE, gras = true),
+            ligne(ctx.getString(R.string.revision_souvenez), taille = 13f, couleur = ENCRE, gras = true),
             Ornement.PLAQUE
         )
         // Le mot ne prend **pas** la couleur de son jeu : sur un dos, elle
@@ -207,7 +208,7 @@ class VueWidderhuelen(
 
         bas.removeAllViews()
         val retourner = { revelation(q) }
-        bas.addView(bouton("Retourner la carte", Carnet.COULEUR) { retourner() })
+        bas.addView(bouton(ctx.getString(R.string.revision_retourner), Carnet.COULEUR) { retourner() })
         retournementAuPouce(carton, retourner)
     }
 
@@ -284,12 +285,12 @@ class VueWidderhuelen(
             bas.addView(LinearLayout(ctx).apply {
                     orientation = LinearLayout.HORIZONTAL
                     layoutParams = pleineLargeur()
-                    addView(bouton("Pas su", 0xFFB0575E.toInt()) { noter(q, Verdict.FAUX) }.apply {
+                    addView(bouton(ctx.getString(R.string.revision_pas_su), 0xFFB0575E.toInt()) { noter(q, Verdict.FAUX) }.apply {
                         (layoutParams as LinearLayout.LayoutParams).apply {
                             width = 0; weight = 1f; rightMargin = dp(6f)
                         }
                     })
-                    addView(bouton("Je savais", 0xFF2E7D32.toInt()) { noter(q, Verdict.EXACT) }.apply {
+                    addView(bouton(ctx.getString(R.string.revision_je_savais), 0xFF2E7D32.toInt()) { noter(q, Verdict.EXACT) }.apply {
                         (layoutParams as LinearLayout.LayoutParams).apply {
                             width = 0; weight = 1f; leftMargin = dp(6f)
                         }
@@ -368,7 +369,7 @@ class VueWidderhuelen(
             orientation = LinearLayout.VERTICAL
             addView(TextView(ctx).apply {
                 layoutParams = pleineLargeur()
-                text = "Session terminée"
+                text = ctx.getString(R.string.revision_terminee)
                 textSize = 22f
                 gravity = Gravity.CENTER
                 setTypeface(null, Typeface.BOLD)
@@ -376,7 +377,7 @@ class VueWidderhuelen(
             })
             addView(TextView(ctx).apply {
                 layoutParams = pleineLargeur().apply { topMargin = dp(10f) }
-                text = "${session.reussies.size} sur ${session.total} retrouvés."
+                text = ctx.getString(R.string.revision_score, session.reussies.size, session.total)
                 textSize = 16f
                 gravity = Gravity.CENTER
                 setTextColor(Color.parseColor("#424242"))
@@ -384,7 +385,7 @@ class VueWidderhuelen(
             if (session.ratees.isNotEmpty()) {
                 addView(TextView(ctx).apply {
                     layoutParams = pleineLargeur().apply { topMargin = dp(14f) }
-                    text = "À revoir demain : " + session.ratees.joinToString(", ")
+                    text = ctx.getString(R.string.revision_a_revoir, session.ratees.joinToString(", "))
                     textSize = 14f
                     gravity = Gravity.CENTER
                     setTextColor(Color.parseColor("#757575"))
@@ -394,9 +395,7 @@ class VueWidderhuelen(
             if (monteesParLeClavier.isNotEmpty()) {
                 addView(TextView(ctx).apply {
                     layoutParams = pleineLargeur().apply { topMargin = dp(18f) }
-                    text = "Vous avez écrit vous-même " +
-                        monteesParLeClavier.joinToString(", ") +
-                        " depuis la dernière fois : ces cartes n'avaient rien à prouver."
+                    text = ctx.getString(R.string.revision_ecrits, monteesParLeClavier.joinToString(", "))
                     textSize = 14f
                     gravity = Gravity.CENTER
                     setTextColor(0xFF2E7D32.toInt())
@@ -409,7 +408,7 @@ class VueWidderhuelen(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             Gravity.CENTER
         ))
-        bas.addView(bouton("Fermer", Carnet.COULEUR) { fermer() })
+        bas.addView(bouton(ctx.getString(R.string.fermer), Carnet.COULEUR) { fermer() })
     }
 
     // ------------------------------------------------------------- fabriques

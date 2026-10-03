@@ -1,5 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
+import androidx.annotation.StringRes
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -36,6 +38,13 @@ enum class JeuCarte(
 
     /** Pas un jeu : la provenance de la carte offerte à la fin de l'installation. */
     ACCUEIL("ac", "Bienvenue", "👋", 0xFFED2939.toInt());
+
+    /**
+     * Le nom affiché. Les sept jeux gardent leur nom luxembourgeois dans toutes
+     * les langues ; seule la carte de bienvenue, qui n'est pas un jeu, se traduit.
+     */
+    fun libelle(context: Context): String =
+        if (this == ACCUEIL) context.getString(R.string.jeu_accueil) else nom
 
     companion object {
         private val PAR_ID = values().associateBy { it.id }
@@ -473,11 +482,11 @@ data class CarteMot(
  * comme le plus rare : c'est la lecture juste, une forme que le corpus ne
  * connaît pas est plus rare que tout ce qu'il connaît.
  */
-enum class Rarete(val libelle: String, val symbole: String, val couleur: Int) {
-    COMMUN("Commun", "●", 0xFF78909C.toInt()),
-    PEU_COMMUN("Peu commun", "◆", 0xFF43A047.toInt()),
-    RARE("Rare", "★", 0xFF1E88E5.toInt()),
-    TRES_RARE("Très rare", "✦", 0xFF8E24AA.toInt());
+enum class Rarete(@StringRes val libelle: Int, val symbole: String, val couleur: Int) {
+    COMMUN(R.string.rarete_commun, "●", 0xFF78909C.toInt()),
+    PEU_COMMUN(R.string.rarete_peu_commun, "◆", 0xFF43A047.toInt()),
+    RARE(R.string.rarete_rare, "★", 0xFF1E88E5.toInt()),
+    TRES_RARE(R.string.rarete_tres_rare, "✦", 0xFF8E24AA.toInt());
 
     /**
      * Le symbole, répété autant de fois que le palier est haut.

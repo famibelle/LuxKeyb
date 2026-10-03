@@ -66,7 +66,7 @@ ce même sélecteur — le petit 🌐 affiché sur la barre le rappelle.
 apparaître. Si des mots luxembourgeois vous sont proposés, tout fonctionne.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/lux_suggestions.png" alt="Barre de suggestions affichant des mots luxembourgeois en rouge et français en bleu" width="32%">
+  <img src="Screenshots/lux_suggestions.png" alt="Barre de suggestions pendant la frappe de « Moi » : Moien, Moie et Moies, en rouge" width="32%">
 </div>
 
 ### Étape 4 (facultative) : le correcteur orthographique
@@ -112,9 +112,11 @@ son appui long : inutile de deviner.
 
 ### Suggestions
 
-La barre de suggestions apparaît dès les premières lettres. Les mots
-luxembourgeois passent en premier, en rouge ; le français prend le relais à
-partir de trois lettres, en bleu, si aucun mot luxembourgeois ne correspond.
+La barre de suggestions apparaît dès les premières lettres, avec les mots
+luxembourgeois en rouge. Pour glisser des mots français dans vos phrases,
+allumez Réglages du clavier › Suggestions › « Propositions en français » : une
+seconde rangée, en bleu, les propose à partir de trois lettres, et le clavier
+gagne une rangée de hauteur.
 Touchez une suggestion pour la compléter d'un coup, espace inclus.
 
 Vous pouvez taper sans diacritiques : « letzebuergesch » propose bien

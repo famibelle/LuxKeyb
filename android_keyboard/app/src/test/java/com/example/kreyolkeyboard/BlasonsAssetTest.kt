@@ -51,7 +51,7 @@ class BlasonsAssetTest {
      * grille et n'arrivent que par un texte à trous, ce qui en fait des cartes
      * aussi valables que les autres.
      */
-    private fun lemmesJouables(): Set<String> {
+    private fun lemmesJouables(avecTirages: Boolean = false): Set<String> {
         val representant = HashMap<String, String>()
         val familles = actif("luxemburgish_familles.json").getJSONObject("familles")
         for (tete in familles.keys()) {
@@ -71,6 +71,28 @@ class BlasonsAssetTest {
                 }
             }
         }
+        // Wuertsich, Wuertmix et Wuertriet tirent leurs mots parmi les formes
+        // glosées du dictionnaire (TranslationDictionary.filtrerMotsTraduits),
+        // de 3 à 10 lettres à eux trois. « Kamera » n'est dans aucune grille
+        // depuis la régénération du 2026-10-03, mais Wuertsich le donne.
+        if (avecTirages) {
+        val traductions = actif("luxemburgish_translations.json")
+        val table = traductions.getJSONObject("translations")
+        val exclus = listOf("noms_propres", "fragments").flatMap { cle ->
+            val liste = traductions.getJSONArray(cle)
+            (0 until liste.length()).map { liste.getString(it) }
+        }.toSet()
+        val dico = org.json.JSONArray(java.io.File("src/main/assets/luxemburgish_dict.json").readText())
+        for (i in 0 until dico.length()) {
+            val forme = dico.getJSONArray(i).getString(0)
+            if (forme.length !in 3..10 || forme in exclus || !table.has(forme)) continue
+            val plie = AccentTolerantMatcher.normalize(forme)
+            val glose = table.getString(forme)
+            if (glose.split(",").none { AccentTolerantMatcher.normalize(it.trim()) != plie }) continue
+            lemmes.add(representant[forme] ?: forme)
+        }
+        }
+
         val items = actif("luxemburgish_cloze.json").getJSONArray("items")
         for (i in 0 until items.length()) {
             val item = items.getJSONObject(i)
@@ -125,7 +147,7 @@ class BlasonsAssetTest {
     @Test
     fun `tout meuble attribué peut réellement sortir d'un jeu`() {
         val blasons = blasons()
-        val jouables = lemmesJouables()
+        val jouables = lemmesJouables(avecTirages = true)
         for (lemme in blasons.keys()) {
             if (blasons.getJSONObject(lemme).optString("m").isEmpty()) continue
             assertTrue(

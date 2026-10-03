@@ -16,6 +16,7 @@ import android.widget.ScrollView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -86,14 +87,14 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             // Cible confortable : cette flèche est le seul moyen de sortir.
             minWidth = dp(48)
             minHeight = dp(48)
-            contentDescription = "Retour"
+            contentDescription = getString(R.string.retour)
             isClickable = true
             isFocusable = true
             setOnClickListener { finish() }
         })
 
         addView(TextView(this@KeyboardSettingsActivity).apply {
-            text = "Réglages du clavier"
+            text = getString(R.string.ks_titre)
             textSize = 20f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
@@ -110,110 +111,70 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         setPadding(dp(16), dp(16), dp(16), dp(24))
 
         addView(carte().apply {
-            addView(titreSection("Apparence"))
-            addView(explication(
-                "La couleur des touches. Le rouge et le bleu du drapeau ne changent " +
-                        "pas : seul le blanc des lettres passe en anthracite."
-            ))
+            addView(titreSection(R.string.ks_apparence))
+            addView(explication(R.string.ks_apparence_intro))
             addView(choixTheme())
-            addView(explication(
-                "« Comme le téléphone » suit le mode sombre du système. Les deux " +
-                        "autres positions existent parce que sur plusieurs surcouches ce " +
-                        "mode ne descend pas jusqu'aux claviers tiers."
-            ))
+            addView(explication(R.string.ks_apparence_note))
         })
         addView(espacement())
 
         addView(carte().apply {
-            addView(titreSection("Disposition"))
-            addView(explication(
-                "Les deux sont en QWERTZ. Elles ne diffèrent que par les lettres " +
-                        "accentuées qui ont leur propre touche."
-            ))
+            addView(titreSection(R.string.ks_disposition))
+            addView(explication(R.string.ks_disposition_intro))
             addView(choixDisposition())
-            addView(explication(
-                "« Suisse allemand », le réglage par défaut, reprend le clavier " +
-                        "physique du même nom : ü, ö et ä à droite, é et ë près de " +
-                        "l'espace. « Luxembourg » a des touches un peu plus larges, " +
-                        "dix par rangée au lieu de onze : é à droite, ä et ë près " +
-                        "de l'espace, ü et ö en appui long."
-            ))
+            addView(explication(R.string.ks_disposition_note))
         })
         addView(espacement())
 
         addView(carte().apply {
-            addView(titreSection("Suggestions"))
-            addView(explication(
-                "Les mots luxembourgeois sont proposés en rouge. À partir de trois " +
-                        "lettres, une seconde rangée en bleu propose aussi des mots français."
-            ))
+            addView(titreSection(R.string.ks_suggestions))
+            addView(explication(R.string.ks_suggestions_intro))
             addView(interrupteur(
-                "Propositions en français",
+                R.string.ks_propositions_francais,
                 KeyboardPreferences.propositionsFrancais(this@KeyboardSettingsActivity)
             ) { actif ->
                 KeyboardPreferences.setPropositionsFrancais(this@KeyboardSettingsActivity, actif)
                 Log.d(TAG, "Propositions en français : $actif")
             })
-            addView(explication(
-                "Sans elles, le clavier garde une seule rangée de suggestions et " +
-                        "laisse un peu plus de place à l'écran. Le correcteur " +
-                        "orthographique continue de reconnaître le français."
-            ))
+            addView(explication(R.string.ks_suggestions_note))
         })
         addView(espacement())
 
         addView(carte().apply {
-            addView(titreSection("Retour de frappe"))
-            addView(explication(
-                "Ce que le clavier fait à chaque appui. Le choix s'applique dès le " +
-                        "retour dans un champ de saisie."
-            ))
+            addView(titreSection(R.string.ks_retour_frappe))
+            addView(explication(R.string.ks_retour_frappe_intro))
             addView(interrupteur(
-                "Vibration à la frappe",
+                R.string.ks_vibration,
                 KeyboardPreferences.hapticEnabled(this@KeyboardSettingsActivity)
             ) { actif ->
                 KeyboardPreferences.setHapticEnabled(this@KeyboardSettingsActivity, actif)
             })
             addView(interrupteur(
-                "Son de frappe",
+                R.string.ks_son,
                 KeyboardPreferences.soundEnabled(this@KeyboardSettingsActivity)
             ) { actif ->
                 KeyboardPreferences.setSoundEnabled(this@KeyboardSettingsActivity, actif)
             })
-            addView(explication(
-                "Ces deux réglages sont dans l'application et non dans ceux du " +
-                        "téléphone : sur beaucoup d'appareils, le réglage de vibration au " +
-                        "toucher ne gouverne que le clavier du constructeur."
-            ))
+            addView(explication(R.string.ks_retour_frappe_note))
         })
         addView(espacement())
 
         addView(carte().apply {
-            addView(titreSection("Appui long"))
-            addView(explication(
-                "Le temps qu'il faut maintenir une touche pour ouvrir ses accents " +
-                        "et ses symboles (è sous e, à sous a, ? sous le point…)."
-            ))
+            addView(titreSection(R.string.ks_appui_long))
+            addView(explication(R.string.ks_appui_long_intro))
             addView(choixDelaiAppuiLong())
-            addView(explication(
-                "Si les accents s'ouvrent alors que vous vouliez seulement taper la " +
-                        "lettre, choisissez un délai plus long."
-            ))
+            addView(explication(R.string.ks_appui_long_note))
         })
         addView(espacement())
 
         addView(carte().apply {
-            addView(titreSection("Emojis récents"))
-            addView(explication(
-                "Le panneau emoji place en tête les 30 derniers emojis que vous " +
-                        "avez employés. Cette liste ne quitte pas le téléphone, et rien " +
-                        "n'y est ajouté depuis un champ de mot de passe."
-            ))
-            addView(boutonSecondaire("Vider les emojis récents") {
+            addView(titreSection(R.string.ks_emojis))
+            addView(explication(R.string.ks_emojis_intro))
+            addView(boutonSecondaire(R.string.ks_emojis_vider) {
                 EmojiRecents.vider(this@KeyboardSettingsActivity)
                 Toast.makeText(
                     this@KeyboardSettingsActivity,
-                    "Emojis récents effacés",
+                    getString(R.string.ks_emojis_effaces),
                     Toast.LENGTH_SHORT
                 ).show()
             })
@@ -225,8 +186,9 @@ class KeyboardSettingsActivity : AppCompatActivity() {
      * couleurs posées à la main pour ne pas dépendre du thème AppCompat, qui
      * rendrait le libellé presque invisible sur la carte blanche.
      */
-    private fun boutonSecondaire(libelle: String, onClick: () -> Unit): View =
+    private fun boutonSecondaire(@StringRes libelleRes: Int, onClick: () -> Unit): View =
         Button(this).apply {
+            val libelle = getString(libelleRes)
             text = libelle
             textSize = 15f
             isAllCaps = false
@@ -253,7 +215,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     private fun choixTheme(): View = groupeRadio(
         options = KeyboardTheme.Mode.entries,
         actuel = KeyboardPreferences.themeMode(this),
-        libelle = { it.libelle }
+        libelle = { getString(it.libelle) }
     ) { mode ->
         KeyboardPreferences.setThemeMode(this, mode)
         Log.d(TAG, "Thème du clavier : ${mode.cle}")
@@ -263,7 +225,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     private fun choixDisposition(): View = groupeRadio(
         options = DispositionClavier.entries,
         actuel = KeyboardPreferences.disposition(this),
-        libelle = { it.libelle }
+        libelle = { getString(it.libelle) }
     ) { disposition ->
         KeyboardPreferences.setDisposition(this, disposition)
         Log.d(TAG, "Disposition du clavier : ${disposition.cle}")
@@ -277,7 +239,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     private fun choixDelaiAppuiLong(): View = groupeRadio(
         options = KeyboardPreferences.DelaiAppuiLong.entries,
         actuel = KeyboardPreferences.delaiAppuiLong(this),
-        libelle = { it.libelle }
+        libelle = { getString(it.libelle) }
     ) { delai ->
         KeyboardPreferences.setDelaiAppuiLong(this, delai)
         Log.d(TAG, "Délai d'appui long : ${delai.ms} ms")
@@ -340,16 +302,16 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         )
     }
 
-    private fun titreSection(texte: String): TextView = TextView(this).apply {
-        text = texte
+    private fun titreSection(@StringRes texte: Int): TextView = TextView(this).apply {
+        setText(texte)
         textSize = 17f
         setTextColor(Color.parseColor(BLEU))
         setTypeface(null, Typeface.BOLD)
         setPadding(0, 0, 0, dp(4))
     }
 
-    private fun explication(texte: String): TextView = TextView(this).apply {
-        text = texte
+    private fun explication(@StringRes texte: Int): TextView = TextView(this).apply {
+        setText(texte)
         textSize = 14f
         setTextColor(Color.parseColor(ENCRE_DOUCE))
         setLineSpacing(0f, 1.3f)
@@ -364,10 +326,11 @@ class KeyboardSettingsActivity : AppCompatActivity() {
      * disparaître des boutons radio d'un premier essai de cet écran.
      */
     private fun interrupteur(
-        libelle: String,
+        @StringRes libelleRes: Int,
         actifAuDepart: Boolean,
         onChange: (Boolean) -> Unit
     ): View = Switch(this).apply {
+        val libelle = getString(libelleRes)
         text = libelle
         textSize = 16f
         setTextColor(Color.parseColor(ENCRE))

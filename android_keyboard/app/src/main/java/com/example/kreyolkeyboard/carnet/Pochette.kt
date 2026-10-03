@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -152,7 +153,7 @@ object Pochette {
     /** Remet le total à jour sur une pastille créée par [bouton]. */
     fun rafraichir(bouton: TextView, context: Context) {
         val total = Carnet.taille(context)
-        bouton.text = if (total == 0) "📔 Carnet" else "📔 Carnet · $total"
+        bouton.text = if (total == 0) context.getString(R.string.carnet_bouton) else context.getString(R.string.carnet_bouton_total, total)
     }
 
     /**

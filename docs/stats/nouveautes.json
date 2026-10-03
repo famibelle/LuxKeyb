@@ -1,9 +1,208 @@
 {
- "genere_le": "2026-10-01",
- "derniere_version": "30.1.0",
- "derniere_date": "2026-10-01",
+ "genere_le": "2026-10-03",
+ "derniere_version": "32.0.0",
+ "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "32.0.0",
+   "date": "2026-10-03",
+   "intro": "L'application parle anglais, français, allemand, portugais et luxembourgeois.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "L'application suit la langue du téléphone",
+       "texte": "Écrans, réglages, guide, jeux et carnet s'affichent en anglais, en français, en allemand, en portugais ou en luxembourgeois. Sur un téléphone réglé dans une autre langue, l'application passe en anglais. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois."
+      },
+      {
+       "titre": "Le luxembourgeois, même si le téléphone ne le propose pas",
+       "texte": "Depuis Android 13, Paramètres › Applications › Lëtzebuergesch Clavier › Langue permet de choisir la langue de l'application sans changer celle du téléphone."
+      },
+      {
+       "titre": "Les traductions des mots dans votre langue",
+       "texte": "Le carnet, le Wierderbuch, le mot du jour et les jeux traduisent les mots luxembourgeois en anglais, en allemand ou en portugais, d'après le dictionnaire officiel du luxembourgeois (lod.lu). Les phrases d'exemple sont aussi traduites en anglais et en allemand quand le Zenter fir d'Lëtzebuerger Sprooch les a publiées. Avec l'application en luxembourgeois, les traductions restent en français."
+      },
+      {
+       "titre": "Kräizwuert et Wuertplaz dans votre langue",
+       "texte": "Chaque langue a ses propres grilles : les définitions de Kräizwuert et les sens gagnés dans Wuertplaz sont dans la langue de l'application. En allemand, les définitions trop proches du mot cherché sont écartées, pour que la grille ne se remplisse pas toute seule."
+      },
+      {
+       "titre": "La recherche du Wierderbuch marche dans votre langue",
+       "texte": "Tapez « house », « Katze » ou « casa » pour trouver le mot luxembourgeois."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Les jeux ne proposent plus de mots mal traduits",
+       "texte": "Certains mots ne figurent dans le dictionnaire officiel que dans une expression, et recevaient la traduction de toute l'expression : « vum » se traduisait « de soi-même », « dout » (mort) « tuer ». Ils ne sont plus tirés dans les jeux."
+      },
+      {
+       "titre": "Des mots ordinaires reviennent dans Wuertplaz",
+       "texte": "Comme « Fransous », « Staat » ou « Premier », que l'application prenait à tort pour des noms propres."
+      },
+      {
+       "titre": "« À propos » ne parle plus d'« amis créolophones »",
+       "texte": "Un reste de l'application dont ce clavier est issu."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_langues.png",
+     "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+     "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+    }
+   ],
+   "image": "Screenshots/lux_langues.png",
+   "image_alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+   "image_legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+  },
+  {
+   "version": "30.3.0",
+   "date": "2026-10-03",
+   "intro": "Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Les propositions en français sont coupées par défaut",
+       "texte": "La seconde rangée, en bleu, s'allume dans Réglages du clavier › Suggestions › « Propositions en français ». Sans elle, le clavier est moins haut d'une rangée et laisse plus de place à l'écran. Si vous aviez déjà réglé cet interrupteur, votre choix est conservé. Le correcteur orthographique continue de reconnaître le français."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_suggestions.png",
+     "alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+     "legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+    }
+   ],
+   "image": "Screenshots/lux_suggestions.png",
+   "image_alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+   "image_legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+  },
+  {
+   "version": "30.2.2",
+   "date": "2026-10-03",
+   "intro": "Kräizwuert et le guide suivent la disposition de votre clavier.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le clavier de Kräizwuert reprend votre disposition",
+       "texte": "Avec « Suisse allemand », la disposition par défaut, il gardait les rangées « Luxembourg » : « é » à droite du « l », là où votre clavier met « ö » et « ä ». Il suit maintenant celle que vous avez choisie dans les réglages du clavier, même si vous en changez en cours de partie."
+      },
+      {
+       "titre": "Le guide montre le clavier tel que vous le voyez",
+       "texte": "Ses images sont refaites avec la disposition « Suisse allemand », et il ne dit plus qu'il faut un appui long pour « ë », « ä », « é », « ü » ou « ö » : ces lettres ont leur propre touche."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+     "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+     "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+    }
+   ],
+   "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+   "image_alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+   "image_legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+  },
+  {
+   "version": "30.2.1",
+   "date": "2026-10-03",
+   "intro": "Les fautes de frappe se corrigent plus vite.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Performances",
+     "points": [
+      {
+       "titre": "Les corrections arrivent presque trois fois plus vite",
+       "texte": "Quand le début du mot tapé n'existe pas, par exemple « Freidg » pour « Freideg ». Sur un téléphone modeste, la petite saccade de la barre de suggestions disparaît. Les corrections proposées restent les mêmes."
+      },
+      {
+       "titre": "Taper vite ne ralentit plus le clavier",
+       "texte": "Une recherche rendue inutile par la lettre suivante s'arrête aussitôt."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "30.2.0",
+   "date": "2026-10-03",
+   "intro": "Le correcteur orthographique se trouve dès l'accueil.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le correcteur se propose sur l'accueil",
+       "texte": "Tant qu'il n'est pas choisi, une carte « Fini le trait rouge sous vos mots » ouvre directement le bon écran d'Android. Android ne permet à aucune application de se choisir elle-même comme correcteur : c'est à vous de le faire, en trois touches. « Plus tard » retire la carte."
+      },
+      {
+       "titre": "L'avertissement d'Android est annoncé",
+       "texte": "Il parle de mots de passe et de cartes bancaires, comme pour tout correcteur. Le nôtre ne conserve rien et n'envoie rien."
+      },
+      {
+       "titre": "Un message confirme que c'est fait",
+       "texte": "Quand vous revenez dans l'application."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La correction orthographique coupée dans Android est reconnue",
+       "texte": "L'application annonçait le correcteur actif alors qu'il ne soulignait rien. Elle propose maintenant de la rallumer."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_correcteur_accueil.png",
+     "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+     "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
+    }
+   ],
+   "image": "Screenshots/lux_correcteur_accueil.png",
+   "image_alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+   "image_legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
+  },
   {
    "version": "30.1.0",
    "date": "2026-10-01",
@@ -40,210 +239,6 @@
    "image": "Screenshots/lux_propositions_francais.png",
    "image_alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
    "image_legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
-  },
-  {
-   "version": "29.5.0",
-   "date": "2026-10-01",
-   "intro": "Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Nouvelle disposition par défaut : Suisse allemand",
-       "texte": "Comme sur le clavier physique du même nom, « ü » est à droite du « p », « ö » et « ä » à droite du « l », et « é » et « ë » encadrent la barre d'espace. Les rangées comptent onze touches au lieu de dix. Ce changement s'applique aussi à la mise à jour."
-      },
-      {
-       "titre": "L'ancienne disposition reste au choix",
-       "texte": "Dans Réglages du clavier › Disposition, sous le nom « Luxembourg » : dix touches par rangée, un peu plus larges, « é » à droite du « l », « ü » et « ö » en appui long."
-      },
-      {
-       "titre": "Les accents s'ouvrent en 0,3 seconde",
-       "texte": "Il fallait jusqu'ici près d'une seconde de pression pour obtenir « ü »."
-      },
-      {
-       "titre": "Le délai d'appui long se règle",
-       "texte": "Dans Réglages du clavier › Appui long : court (0,3 s, par défaut), moyen (0,5 s), long (0,8 s) ou très long (1,2 s). Les délais longs servent à qui relâche lentement le doigt et voit les accents s'ouvrir sans le vouloir."
-      },
-      {
-       "titre": "Les couleurs de peau des emojis s'ouvrent plus vite",
-       "texte": "Il suffit de rester appuyé sur l'emoji, sans la demi-seconde d'attente qui s'y ajoutait."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
-     "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
-     "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
-    },
-    {
-     "image": "Screenshots/lux_appui_long_reglage.png",
-     "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
-     "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
-    }
-   ],
-   "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
-   "image_alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
-   "image_legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
-  },
-  {
-   "version": "29.4.2",
-   "date": "2026-09-30",
-   "intro": "Les majuscules fonctionnent enfin dans le navigateur.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Dans Chrome et les pages web, la première lettre d'une phrase prend la majuscule",
-       "texte": "Et chaque mot d'un champ de nom (« Jean Paul »). Le clavier ignorait tous les champs web, quoi que demande la page ; il suit maintenant sa demande, et respecte une page qui désactive les majuscules."
-      },
-      {
-       "titre": "Les touches « @ » et « / » ne sont plus bleues sur la page des chiffres",
-       "texte": "Ce bleu n'était voulu que sur la rangée du bas des champs d'adresse, où elles remplacent la virgule et l'apostrophe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_clavier_arobase_slash.png",
-     "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
-     "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
-    }
-   ],
-   "image": "Screenshots/lux_clavier_arobase_slash.png",
-   "image_alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
-   "image_legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
-  },
-  {
-   "version": "29.4.1",
-   "date": "2026-09-29",
-   "intro": "Le clavier porte le même nom partout.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Dans la liste des claviers du téléphone, il s'appelle « Lëtzebuergesch Clavier »",
-       "texte": "Et non plus « Lëtzebuergesch Clavier Luxembourg ». C'est le nom que l'application vous demande de choisir, et celui de son icône."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "29.4.0",
-   "date": "2026-09-29",
-   "intro": "L'onglet d'accueil devient « Haut » : ce qui vous attend aujourd'hui.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Une fois le clavier installé, l'application s'ouvre sur votre journée",
-       "texte": "Au lieu de l'écran d'installation : les cartes à revoir, le mot du jour, votre dernier jeu et votre progression, dans cet ordre."
-      },
-      {
-       "titre": "« Réviser maintenant » lance la révision tout de suite",
-       "texte": "La première carte apparaît sans passer par la boîte ; en fermant la séance, on retrouve la Boîte de Leitner. Quand rien n'est à revoir, la carte le dit, et propose de jouer pour gagner d'autres cartes."
-      },
-      {
-       "titre": "Le mot du jour s'ouvre dans le Wierderbuch",
-       "texte": "D'un toucher, la recherche déjà faite."
-      },
-      {
-       "titre": "« Rejouer à Wuertmix »",
-       "texte": "Relance le dernier jeu ouvert, quel qu'il soit."
-      },
-      {
-       "titre": "La progression tient en une carte",
-       "texte": "Votre niveau, la barre jusqu'au palier suivant et le nombre de mots qui restent."
-      },
-      {
-       "titre": "La configuration se replie sous une seule ligne",
-       "texte": "« Clavier installé » : un toucher la déplie, avec les réglages des majuscules, le correcteur et la façon de changer de clavier."
-      },
-      {
-       "titre": "L'onglet s'appelle « Haut »",
-       "texte": "Aujourd'hui en luxembourgeois, comme Spiller et Wierderbuch."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_accueil_haut.png",
-     "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
-     "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
-    }
-   ],
-   "image": "Screenshots/lux_accueil_haut.png",
-   "image_alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
-   "image_legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
-  },
-  {
-   "version": "29.3.1",
-   "date": "2026-09-29",
-   "intro": "Le clavier suit mieux encore le champ où l'on tape.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Dans une adresse e-mail, « @ » et « .lu » sont sur la rangée du bas",
-       "texte": "À la place de la virgule et de l'apostrophe. Dans une adresse web, c'est « / » et « .lu ». En restant appuyé sur « .lu » : « .com », « .fr », « .de », « .be », « .eu », toujours en minuscules."
-      },
-      {
-       "titre": "Dans un champ de nom, chaque mot prend sa majuscule",
-       "texte": "(« Jean Paul »), et un champ qui demande des capitales les met partout."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La touche Maj s'allume dès l'ouverture d'un champ",
-       "texte": "Qui commence par une majuscule. La première lettre sortait déjà en majuscule, mais le clavier affichait des minuscules jusque-là."
-      },
-      {
-       "titre": "Le prénom de Google Contacts et les champs du même genre",
-       "texte": "Retrouvent leur majuscule : ils se déclarent d'une façon que le clavier ne reconnaissait pas comme du texte."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_clavier_champ_nom_email.png",
-     "alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
-     "legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
-    }
-   ],
-   "image": "Screenshots/lux_clavier_champ_nom_email.png",
-   "image_alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
-   "image_legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
   }
  ]
 }

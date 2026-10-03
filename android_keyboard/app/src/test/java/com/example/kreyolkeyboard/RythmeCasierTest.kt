@@ -1,8 +1,8 @@
 package com.example.kreyolkeyboard
 
+import com.example.kreyolkeyboard.carnet.UniteRythme
 import com.example.kreyolkeyboard.carnet.Widderhuelen
-import com.example.kreyolkeyboard.carnet.rythmeCourt
-import com.example.kreyolkeyboard.carnet.rythmeLong
+import com.example.kreyolkeyboard.carnet.arrondiRythme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -11,31 +11,28 @@ import org.junit.Test
  * Les légendes gravées sous les casiers de la boîte.
  *
  * Elles sont dérivées des intervalles, donc une suite retouchée les change sans
- * rien casser : ce test fige ce que lit le joueur, et qu'aucune ne soit trop
- * longue pour tenir sous une fente.
+ * rien casser : ce test fige l'arrondi que lit le joueur. Les mots eux-mêmes
+ * (« 1 sem. », « 3 mois ») vivent dans les ressources, une par langue, et
+ * leur longueur sous une fente est vérifiée par TraductionsTest.
  */
 class RythmeCasierTest {
 
     @Test
-    fun lesIntervallesLivresSeDisentEnMotsCourts() {
+    fun lesIntervallesLivresSArrondissentALaBonneUnite() {
         assertEquals(
-            listOf("1 jour", "3 jours", "1 sem.", "2 sem.", "1 mois", "3 mois"),
-            Widderhuelen.INTERVALLES.map { rythmeCourt(it) }
+            listOf(
+                1 to UniteRythme.JOUR, 3 to UniteRythme.JOUR,
+                1 to UniteRythme.SEMAINE, 2 to UniteRythme.SEMAINE,
+                1 to UniteRythme.MOIS, 3 to UniteRythme.MOIS
+            ),
+            Widderhuelen.INTERVALLES.map { arrondiRythme(it) }
         )
     }
 
     @Test
-    fun laFormeLongueDitLeMemeDelaiQueLaCourte() {
-        assertEquals(
-            listOf("1 jour", "3 jours", "1 semaine", "2 semaines", "1 mois", "3 mois"),
-            Widderhuelen.INTERVALLES.map { rythmeLong(it) }
-        )
-    }
-
-    @Test
-    fun aucuneLegendeNeDepasseSeptSignes() {
+    fun aucunArrondiNeDepasseDeuxChiffres() {
         for (jours in 1..400) {
-            assertTrue("$jours → ${rythmeCourt(jours)}", rythmeCourt(jours).length <= 7)
+            assertTrue("$jours → ${arrondiRythme(jours)}", arrondiRythme(jours).first in 1..99)
         }
     }
 }

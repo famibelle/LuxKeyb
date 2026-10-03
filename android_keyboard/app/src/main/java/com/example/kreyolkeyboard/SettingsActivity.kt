@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard
 
+import androidx.annotation.StringRes
 import android.Manifest
 import android.content.ClipData
 import android.content.Context
@@ -156,6 +157,7 @@ class SettingsActivity : AppCompatActivity() {
 
         private const val ACCUEIL_PREFS = "lux_accueil_prefs"
         private const val PREF_DERNIER_JEU_NOM = "dernier_jeu_nom"
+        private const val PREF_CORRECTEUR_ACCUEIL_MASQUE = "correcteur_accueil_masque"
         private const val PREF_DERNIER_JEU_EMOJI = "dernier_jeu_emoji"
         /** Nom de la Boîte de Leitner dans GamesFragment.jeux : le bouton « Réviser » l'ouvre. */
         private const val JEU_LEITNER = "Boîte de Leitner"
@@ -181,57 +183,14 @@ class SettingsActivity : AppCompatActivity() {
          */
         const val SHARE_HASHTAG = "#LëtzebuergeschClavier"
 
-        // Astuces de la carte « Astuce de la semaine ». Chaque entrée décrit
-        // une fonctionnalité réellement présente dans l'application : ne rien y
-        // ajouter qui ne soit pas vérifiable dans le clavier ou les onglets.
+        // Les astuces de la carte « Astuce de la semaine » vivent dans les
+        // ressources (`astuces_semaine`), une liste par langue. Chaque entrée
+        // décrit une fonctionnalité réellement présente dans l'application :
         // ASTUCES.md donne, pour chacune, le code qui la justifie ; toute
-        // astuce ajoutée ici doit y être sourcée, et toute astuce dont la
-        // source disparaît doit être retirée des deux côtés.
-        // Les thèmes (saisie, suggestions, jeux, progression, correcteur) sont
-        // volontairement entrelacés : l'index avance d'un cran par semaine,
-        // donc deux astuces voisines dans la liste se suivent à l'écran.
-        private val WEEKLY_TIPS = listOf(
-            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (ë, ä, é, ü, ö, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
-            "Touchez un mot de la barre de suggestions pour le compléter d'un coup : l'espace est ajouté automatiquement.",
-            "Appui long d'une seconde sur la barre d'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.",
-            "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Mäi Lëtzebuergesch ».",
-            "Les petits accents affichés dans le coin d'une touche annoncent ce que cache son appui long.",
-            "Tapez sans vous soucier des accents : « letzebuergesch » vous propose quand même « lëtzebuergesch ».",
-            "« é », « ä » et « ë » ont chacune leur propre touche : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.",
-            "Wuertriet : un mot luxembourgeois de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.",
-            "La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.",
-            "Une lettre oubliée, en trop ou tapée à côté n'empêche pas les suggestions d'arriver : le clavier tolère les fautes de frappe.",
-            "Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d'exclamation, point d'interrogation, points de suspension.",
-            "Activez le correcteur luxembourgeois (onglet Haut, « Clavier installé ») pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.",
-            "Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.",
-            "Après un espace, le clavier vous propose la suite probable de votre phrase, d'après les deux mots que vous venez d'écrire.",
-            "La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.",
-            "Plus vous employez un mot, plus il remonte dans vos suggestions : le clavier s'ajuste à votre façon d'écrire.",
-            "« Wuertmix » vous donne 10 mots à remettre dans l'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.",
-            "Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.",
-            "La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.",
-            "L'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.",
-            "Les diacritiques les plus rares sont en appui long : « è » et « ê » sous le e, « à » et « â » sous le a, « û » sous le u, « ô » sous le o.",
-            "Ce que vous tapez ne quitte jamais votre téléphone. Seule la dictée, quand vous appuyez sur le micro, envoie votre voix à l'Université du Luxembourg pour l'écrire.",
-            "« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l'envers.",
-            "Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.",
-            "Un « Mot du jour » vous attend chaque jour en haut de l'onglet « Mäi Lëtzebuergesch ».",
-            "Les mots luxembourgeois passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot luxembourgeois ne correspond.",
-            "La touche Entrée s'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.",
-            "Le classement de vos mots les plus utilisés se trouve dans l'onglet « Mäi Lëtzebuergesch ».",
-            "Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.",
-            "Sept niveaux jalonnent votre parcours, d'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.",
-            "Les suggestions s'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l'onglet Haut.",
-            "La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.",
-            "Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.",
-            "Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l'étape 4 vous y mène directement.",
-            "Après une mise à jour de l'application, le correcteur peut rester muet jusqu'au redémarrage du téléphone : cela vient d'Android, pas du clavier.",
-            "Le guide, en bas de l'onglet Haut, reprend toutes les étapes en images, suivies des questions fréquentes.",
-            "« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu'a écrite l'auteur.",
-            "En luxembourgeois l'unité se dit avant la dizaine : 56, c'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça.",
-            "Glissez le doigt le long de la barre d'espace pour promener le curseur lettre par lettre : plus besoin de viser entre deux caractères pour corriger un mot.",
-            "Le panneau emoji s'ouvre sur ceux que vous venez d'employer : les 30 derniers vous attendent dans le premier onglet."
-        )
+        // astuce ajoutée doit y être sourcée, et toute astuce dont la source
+        // disparaît doit être retirée des deux côtés, dans toutes les langues.
+        // Les thèmes sont volontairement entrelacés : l'index avance d'un cran
+        // par semaine, donc deux astuces voisines se suivent à l'écran.
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -540,12 +499,12 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun showActivationShareDialog(carteOfferte: Boolean) {
-        val bravo = "Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications."
+        val bravo = getString(R.string.sa_bravo_et_ass_geschafft_le)
         AlertDialog.Builder(this)
             .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
-            .setMessage(if (carteOfferte) "$bravo\n\nLa carte « Moien » est dans votre carnet." else bravo)
-            .setPositiveButton("Partager la nouvelle") { _, _ -> shareActivationSuccess() }
-            .setNegativeButton("Plus tard", null)
+            .setMessage(if (carteOfferte) getString(R.string.sa_la_carte_moien_est_dans, bravo) else bravo)
+            .setPositiveButton(getString(R.string.sa_partager_la_nouvelle)) { _, _ -> shareActivationSuccess() }
+            .setNegativeButton(getString(R.string.sa_plus_tard), null)
             .setCancelable(true)
             .show()
     }
@@ -553,21 +512,17 @@ class SettingsActivity : AppCompatActivity() {
     // Partage natif (chooser Android), message pré-rédigé et fixe : célèbre
     // l'activation, pas un contenu écrit par l'utilisateur
     private fun shareActivationSuccess() {
-        val message = "Ech schreiwen elo op Lëtzebuergesch ! J'ai activé le Lëtzebuergesch Clavier 🎉\n" +
-            "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
-            "Télécharge-le gratuitement :\n" +
-            "https://play.google.com/store/apps/details?id=$packageName" +
-            "&referrer=utm_source%3Dactivation_share%26utm_campaign%3Dlaunch_lu\n\n" +
+        val message = getString(R.string.sa_ech_schreiwen_elo_op_letzebuergesch, packageName) +
             SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
+            startActivity(Intent.createChooser(intent, getString(R.string.sa_partager_le_letzebuergesch_clavier)))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage activation: ${e.message}")
-            Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.sa_impossible_de_partager_pour_le), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -664,7 +619,7 @@ class SettingsActivity : AppCompatActivity() {
             setOnClickListener { showPreSettingsWarningDialog() }
 
             val label = TextView(this@SettingsActivity).apply {
-                text = "Ça vous plaît ? Installez-le →"
+                text = getString(R.string.sa_ca_vous_plait_installez_le)
                 textSize = 15f
                 setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
@@ -724,7 +679,7 @@ class SettingsActivity : AppCompatActivity() {
             val settingsButton = ImageView(this@SettingsActivity).apply {
                 setImageResource(R.drawable.ic_settings_gear)
                 scaleType = ImageView.ScaleType.CENTER_INSIDE
-                contentDescription = "Réglages du clavier"
+                contentDescription = getString(R.string.ks_titre)
                 // 48 dp de zone tactile, icône dessinée à 26 dp au centre : c'est
                 // l'encombrement qu'avait déjà le TextView, la hauteur du bandeau
                 // ne bouge donc pas.
@@ -1046,6 +1001,15 @@ class SettingsActivity : AppCompatActivity() {
         }
         if (modeAujourdhui) {
             mainLayout.addView(creerAujourdhui())
+            // Le correcteur était rangé dans le volet replié ci-dessous, que
+            // personne ne rouvre une fois le clavier installé : un utilisateur
+            // configuré ne le découvrait jamais. Android interdit de le choisir
+            // à sa place, donc on le lui propose ici, jusqu'à ce qu'il le fasse
+            // ou qu'il dise « plus tard ».
+            if (!isSpellCheckerSelected() &&
+                !onboardingPrefs().getBoolean(PREF_CORRECTEUR_ACCUEIL_MASQUE, false)) {
+                mainLayout.addView(carteCorrecteurAccueil())
+            }
             mainLayout.addView(createSpacing(8))
             mainLayout.addView(ligneConfiguration(cible))
             mainLayout.addView(cible)
@@ -1095,7 +1059,7 @@ class SettingsActivity : AppCompatActivity() {
         // sortie du parcours numéroté pour ne pas laisser croire à une
         // "étape 4" alors que la barre de progression annonce 3 étapes
         val extrasTitle = TextView(this).apply {
-            text = "🚀 Pour aller plus loin (optionnel)"
+            text = getString(R.string.sa_pour_aller_plus_loin_optionnel)
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setTypeface(null, Typeface.BOLD)
@@ -1118,7 +1082,7 @@ class SettingsActivity : AppCompatActivity() {
             val switchCard = createRoundedCard("#E3F2FD")
 
             val switchTitle = TextView(this).apply {
-                text = "🔄 Passer du français au luxembourgeois, et l'inverse"
+                text = getString(R.string.sa_passer_du_francais_au_luxembourgeois)
                 textSize = 18f
                 setTextColor(Color.parseColor("#0D47A1"))
                 setTypeface(null, Typeface.BOLD)
@@ -1126,8 +1090,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchIntro = TextView(this).apply {
-                text = "Lëtzebuergesch Clavier ne remplace pas vos autres claviers : il s'ajoute à la liste, " +
-                        "et vous basculez de l'un à l'autre en deux secondes, aussi souvent que vous voulez."
+                text = getString(R.string.sa_letzebuergesch_clavier_ne_remplace_pas)
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -1135,7 +1098,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchAwayTitle = TextView(this).apply {
-                text = "➡️ Quitter le luxembourgeois"
+                text = getString(R.string.sa_quitter_le_luxembourgeois)
                 textSize = 15f
                 setTextColor(Color.parseColor("#0D47A1"))
                 setTypeface(null, Typeface.BOLD)
@@ -1143,9 +1106,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchAway = TextView(this).apply {
-                text = "Appuyez une seconde sur la barre d'espace du clavier luxembourgeois ; le petit 🌐 " +
-                        "dans son coin est là pour vous le rappeler. Le sélecteur Android s'ouvre : " +
-                        "touchez Gboard, Samsung Keyboard ou celui que vous voulez."
+                text = getString(R.string.sa_appuyez_une_seconde_sur_la)
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -1153,7 +1114,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchBackTitle = TextView(this).apply {
-                text = "⬅️ Revenir au luxembourgeois"
+                text = getString(R.string.sa_revenir_au_luxembourgeois)
                 textSize = 15f
                 setTextColor(Color.parseColor("#0D47A1"))
                 setTypeface(null, Typeface.BOLD)
@@ -1161,11 +1122,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchBack = TextView(this).apply {
-                text = "Le geste n'est pas symétrique : sur Gboard et la plupart des autres claviers, " +
-                        "l'appui long sur la barre d'espace ne change que leur propre langue. " +
-                        "Touchez plutôt l'icône de clavier en bas de l'écran, dans la barre de " +
-                        "navigation, affichée tant qu'un clavier est ouvert : le sélecteur revient, " +
-                        "et « Lëtzebuergesch Clavier » y attend."
+                text = getString(R.string.sa_le_geste_est_pas_symetrique)
                 textSize = 14f
                 setTextColor(Color.parseColor("#1565C0"))
                 setLineSpacing(0f, 1.3f)
@@ -1173,8 +1130,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchNote = TextView(this).apply {
-                text = "Le choix vaut pour toutes vos applications et survit au redémarrage. " +
-                        "Sans icône de clavier en bas, le bouton ci-dessous ouvre le même sélecteur."
+                text = getString(R.string.sa_le_choix_vaut_pour_toutes)
                 textSize = 13f
                 setTextColor(Color.parseColor("#5C6BC0"))
                 setLineSpacing(0f, 1.3f)
@@ -1182,7 +1138,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val switchButton = Button(this).apply {
-                text = "Ouvrir le sélecteur de claviers"
+                text = getString(R.string.sa_ouvrir_le_selecteur_de_claviers_2)
                 textSize = 15f
                 setBackgroundColor(Color.parseColor("#0080FF"))
                 setTextColor(Color.WHITE)
@@ -1220,7 +1176,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val tipTitle = TextView(this).apply {
-                text = "Astuce de la semaine"
+                text = getString(R.string.sa_astuce_de_la_semaine)
                 textSize = 16f
                 setTextColor(Color.parseColor("#F57C00"))
                 setTypeface(null, Typeface.BOLD)
@@ -1266,14 +1222,14 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val statsTitle = TextView(this).apply {
-                text = "Découvrez vos statistiques"
+                text = getString(R.string.sa_decouvrez_vos_statistiques)
                 textSize = 16f
                 setTextColor(Color.parseColor("#2E7D32"))
                 setTypeface(null, Typeface.BOLD)
             }
             
             val statsDesc = TextView(this).apply {
-                text = "Suivez votre progression et montez en niveau !"
+                text = getString(R.string.sa_suivez_votre_progression_et_montez)
                 textSize = 13f
                 setTextColor(Color.parseColor("#558B2F"))
             }
@@ -1311,14 +1267,14 @@ class SettingsActivity : AppCompatActivity() {
         // quand on cherche à comprendre plutôt qu'à jouer.
         mainLayout.addView(createSpacing(8))
         mainLayout.addView(createReferenceLink(
-            "📖", "Guide d'utilisation",
-            "Réglages, correcteur, astuces de saisie",
+            "📖", getString(R.string.sa_guide_utilisation),
+            getString(R.string.sa_reglages_correcteur_astuces_de_saisie),
             SheetFragment.PAGE_GUIDE
         ))
         mainLayout.addView(createSpacing(8))
         mainLayout.addView(createReferenceLink(
-            "ℹ️", "À propos",
-            "Version, sources des données, licences",
+            "ℹ️", getString(R.string.sa_propos_2),
+            getString(R.string.sa_version_sources_des_donnees_licences),
             SheetFragment.PAGE_A_PROPOS
         ))
         mainLayout.addView(createSpacing(16))
@@ -1416,8 +1372,14 @@ class SettingsActivity : AppCompatActivity() {
 
         colonne.addView(texteAccueil("Moien ! 👋", 24f, encre, gras = true))
         colonne.addView(texteAccueil(
-            java.text.SimpleDateFormat("EEEE d MMMM", java.util.Locale.FRENCH)
-                .format(java.util.Date()).replaceFirstChar { it.uppercase() },
+            java.util.Locale.getDefault().let { langue ->
+                // L'ordre du jour et du mois suit la langue du téléphone :
+                // « samedi 3 octobre », « Saturday, October 3 ».
+                java.text.SimpleDateFormat(
+                    android.text.format.DateFormat.getBestDateTimePattern(langue, "EEEEdMMMM"),
+                    langue
+                ).format(java.util.Date()).replaceFirstChar { it.titlecase(langue) }
+            },
             14f, gris
         ).apply { setPadding(0, 0, 0, enDp(14)) })
 
@@ -1432,27 +1394,27 @@ class SettingsActivity : AppCompatActivity() {
             when {
                 dues > 0 -> {
                     addView(texteAccueil(
-                        if (dues == 1) "🔁  1 carte à revoir" else "🔁  $dues cartes à revoir",
+                        resources.getQuantityString(R.plurals.accueil_cartes_a_revoir, dues, dues),
                         20f, blanc, gras = true))
-                    addView(texteAccueil("Quelques minutes suffisent.", 14f, pale))
-                    addView(boutonAccueil("Réviser maintenant", blanc, violet) {
+                    addView(texteAccueil(getString(R.string.sa_quelques_minutes_suffisent), 14f, pale))
+                    addView(boutonAccueil(getString(R.string.sa_reviser_maintenant), blanc, violet) {
                         lancerRevisionDepuisAccueil()
                     })
                     setOnClickListener { lancerRevisionDepuisAccueil() }
                 }
                 total > 0 -> {
-                    addView(texteAccueil("✅  Rien à revoir aujourd'hui", 20f, blanc, gras = true))
+                    addView(texteAccueil(getString(R.string.sa_rien_revoir_aujourd_hui), 20f, blanc, gras = true))
                     addView(texteAccueil(
-                        if (total == 1) "1 carte dans votre carnet." else "$total cartes dans votre carnet.",
+                        resources.getQuantityString(R.plurals.accueil_cartes_carnet, total, total),
                         14f, pale))
-                    addView(boutonAccueil("Gagner d'autres cartes", blanc, violet) { ouvrirSpiller() })
+                    addView(boutonAccueil(getString(R.string.sa_gagner_autres_cartes), blanc, violet) { ouvrirSpiller() })
                     setOnClickListener { ouvrirSpiller() }
                 }
                 else -> {
-                    addView(texteAccueil("📚  Votre carnet est vide", 20f, blanc, gras = true))
+                    addView(texteAccueil(getString(R.string.sa_votre_carnet_est_vide), 20f, blanc, gras = true))
                     addView(texteAccueil(
-                        "Chaque mot trouvé dans un jeu devient une carte à revoir.", 14f, pale))
-                    addView(boutonAccueil("Jouer", blanc, violet) { ouvrirSpiller() })
+                        getString(R.string.sa_chaque_mot_trouve_dans_un), 14f, pale))
+                    addView(boutonAccueil(getString(R.string.sa_jouer), blanc, violet) { ouvrirSpiller() })
                     setOnClickListener { ouvrirSpiller() }
                 }
             }
@@ -1462,13 +1424,13 @@ class SettingsActivity : AppCompatActivity() {
         val tvMot = texteAccueil("…", 30f, encre, gras = true)
         val tvGlose = texteAccueil("", 16f, gris).apply { visibility = View.GONE }
         val carteMot = carteAccueil(Color.WHITE).apply {
-            addView(texteAccueil("MOT DU JOUR", 12f, Color.parseColor("#FF8C00"), gras = true).apply {
+            addView(texteAccueil(getString(R.string.sa_mot_du_jour), 12f, Color.parseColor("#FF8C00"), gras = true).apply {
                 letterSpacing = 0.1f
                 setPadding(0, 0, 0, enDp(4))
             })
             addView(tvMot)
             addView(tvGlose)
-            addView(texteAccueil("Voir dans le Wierderbuch ›", 14f, Color.parseColor("#1976D2")).apply {
+            addView(texteAccueil(getString(R.string.sa_voir_dans_le_wierderbuch), 14f, Color.parseColor("#1976D2")).apply {
                 setPadding(0, enDp(8), 0, 0)
             })
         }
@@ -1488,11 +1450,11 @@ class SettingsActivity : AppCompatActivity() {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                 if (nomJeu != null) {
-                    addView(texteAccueil("Rejouer à $nomJeu", 18f, encre, gras = true))
-                    addView(texteAccueil("Votre dernier jeu", 14f, gris))
+                    addView(texteAccueil(getString(R.string.sa_rejouer_2, nomJeu), 18f, encre, gras = true))
+                    addView(texteAccueil(getString(R.string.sa_votre_dernier_jeu), 14f, gris))
                 } else {
-                    addView(texteAccueil("Choisir un jeu", 18f, encre, gras = true))
-                    addView(texteAccueil("Sept jeux pour apprendre les mots", 14f, gris))
+                    addView(texteAccueil(getString(R.string.sa_choisir_un_jeu), 18f, encre, gras = true))
+                    addView(texteAccueil(getString(R.string.sa_sept_jeux_pour_apprendre_les), 14f, gris))
                 }
             })
             addView(texteAccueil("›", 26f, gris))
@@ -1519,7 +1481,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (isFinishing || isDestroyed) return@runOnUiThread
                 tvMot.text = forme
                 if (glose != null) {
-                    tvGlose.text = "en français : $glose"
+                    tvGlose.text = getString(R.string.sa_en_francais_3, glose)
                     tvGlose.visibility = View.VISIBLE
                 }
                 carteMot.setOnClickListener {
@@ -1531,8 +1493,8 @@ class SettingsActivity : AppCompatActivity() {
                 tvNiveau.text = "${niveau.emoji}  ${niveau.name}"
                 creerBarreNiveau(decouverts)?.let { zoneBarre.addView(it) }
                 val (suivant, reste) = getNextLevelInfo(decouverts)
-                tvReste.text = if (reste <= 0) "Vous avez atteint le plus haut niveau. 👑"
-                    else "Encore ${nombre(reste)} mot${if (reste > 1) "s" else ""} avant $suivant ›"
+                tvReste.text = if (reste <= 0) getString(R.string.sa_vous_avez_atteint_le_plus)
+                    else resources.getQuantityString(R.plurals.encore_mots_avant, reste, nombre(reste), suivant) + " ›"
             }
         }.start()
 
@@ -1559,7 +1521,50 @@ class SettingsActivity : AppCompatActivity() {
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, enDp(10)).apply {
                 topMargin = enDp(8); bottomMargin = enDp(8)
             }
-            contentDescription = "$fait mots sur ${nombre(etape)} jusqu'au niveau suivant"
+            contentDescription = resources.getQuantityString(R.plurals.mots_jusqu_au_niveau, fait, fait, nombre(etape))
+        }
+    }
+
+    /**
+     * Invitation au correcteur sur l'accueil, pour qui a installé le clavier
+     * sans jamais ouvrir le volet de configuration. Un toucher ouvre
+     * directement le bon écran d'Android ; « Plus tard » la retire de
+     * l'accueil, la carte complète restant dans le volet.
+     */
+    private fun carteCorrecteurAccueil(): LinearLayout {
+        val encre = Color.parseColor("#1C1C1C")
+        val gris = Color.parseColor("#6B6B6B")
+        val bleu = Color.parseColor("#0080FF")
+        val coupe = isSpellCheckerChosenButOff()
+        val carte = carteAccueil(Color.WHITE)
+        return carte.apply {
+            addView(texteAccueil(getString(R.string.sa_fini_le_trait_rouge_sous), 18f, encre, gras = true))
+            addView(texteAccueil(
+                if (coupe) getString(R.string.sa_la_correction_orthographique_est_coupee)
+                else getString(R.string.sa_android_souligne_vos_mots_luxembourgeois),
+                14f, gris).apply { setPadding(0, enDp(4), 0, 0) })
+            // L'avertissement d'Android parle de mots de passe et de cartes
+            // bancaires : dit d'avance, il fait moins peur.
+            if (!coupe) addView(texteAccueil(
+                getString(R.string.sa_android_affichera_un_avertissement_comme),
+                12f, Color.parseColor("#9E9E9E")).apply { setPadding(0, enDp(6), 0, 0) })
+            addView(LinearLayout(this@SettingsActivity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(0, enDp(12), 0, 0)
+                addView(boutonAccueil(if (coupe) getString(R.string.sa_rallumer) else getString(R.string.sa_activer), bleu, Color.WHITE) {
+                    openSpellCheckerSettings()
+                }.apply { (layoutParams as LinearLayout.LayoutParams).topMargin = 0 })
+                addView(texteAccueil(getString(R.string.sa_plus_tard), 15f, gris).apply {
+                    setPadding(enDp(20), enDp(12), enDp(20), enDp(12))
+                    setOnClickListener {
+                        onboardingPrefs().edit()
+                            .putBoolean(PREF_CORRECTEUR_ACCUEIL_MASQUE, true).apply()
+                        (carte.parent as? ViewGroup)?.removeView(carte)
+                    }
+                })
+            })
+            setOnClickListener { openSpellCheckerSettings() }
         }
     }
 
@@ -1576,8 +1581,8 @@ class SettingsActivity : AppCompatActivity() {
             addView(LinearLayout(this@SettingsActivity).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                addView(texteAccueil("Clavier installé", 16f, Color.parseColor("#1C1C1C"), gras = true))
-                addView(texteAccueil("Configuration, réglages, changer de clavier", 13f,
+                addView(texteAccueil(getString(R.string.sa_clavier_installe), 16f, Color.parseColor("#1C1C1C"), gras = true))
+                addView(texteAccueil(getString(R.string.sa_configuration_reglages_changer_de_clavier), 13f,
                     Color.parseColor("#6B6B6B")))
             })
             addView(fleche)
@@ -1773,15 +1778,15 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val titre = TextView(this).apply {
-            text = if (aDejaEcrit) "Tout est prêt !" else "Clavier en place !"
+            text = if (aDejaEcrit) getString(R.string.sa_tout_est_pret) else getString(R.string.sa_clavier_en_place)
             textSize = 17f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
         }
 
         val sousTitre = TextView(this).apply {
-            text = if (aDejaEcrit) "Vous pouvez taper en lëtzebuergesch partout."
-                   else "Écrivez un mot pour terminer la configuration."
+            text = if (aDejaEcrit) getString(R.string.sa_vous_pouvez_taper_en_letzebuergesch)
+                   else getString(R.string.sa_ecrivez_un_mot_pour_terminer)
             textSize = 13f
             setTextColor(Color.parseColor("#E8F5E9"))
             setPadding(0, enDp(2), 0, 0)
@@ -1823,7 +1828,7 @@ class SettingsActivity : AppCompatActivity() {
         val card = createRoundedCard("#FFF3E0")
 
         val titre = TextView(this).apply {
-            text = "⌨️ Revenir au clavier luxembourgeois"
+            text = getString(R.string.sa_revenir_au_clavier_luxembourgeois)
             textSize = 19f
             setTextColor(Color.parseColor("#E65100"))
             setTypeface(null, Typeface.BOLD)
@@ -1832,9 +1837,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val explication = TextView(this).apply {
-            text = "En ce moment, c'est un autre clavier qui s'ouvre quand vous écrivez. " +
-                    "Le clavier luxembourgeois est toujours installé sur votre téléphone : " +
-                    "il suffit de le rechoisir."
+            text = getString(R.string.sa_en_ce_moment_est_un)
             textSize = 16f
             setTextColor(Color.parseColor("#5D4037"))
             setLineSpacing(0f, 1.35f)
@@ -1842,7 +1845,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val bouton = Button(this).apply {
-            text = "Choisir le clavier luxembourgeois"
+            text = getString(R.string.sa_choisir_le_clavier_luxembourgeois)
             textSize = 17f
             setBackgroundColor(Color.parseColor("#0080FF"))
             setTextColor(Color.WHITE)
@@ -1856,8 +1859,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val autreChemin = TextView(this).apply {
-            text = "Sans passer par ici : pendant que vous écrivez, touchez la petite icône de " +
-                    "clavier en bas de l'écran, dans la barre de navigation. Le même choix s'ouvre."
+            text = getString(R.string.sa_sans_passer_par_ici_pendant)
             textSize = 16f
             setTextColor(Color.parseColor("#795548"))
             setLineSpacing(0f, 1.35f)
@@ -1927,7 +1929,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val titre = TextView(this).apply {
-            text = "Configuration rapide"
+            text = getString(R.string.sa_configuration_rapide)
             textSize = 18f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
@@ -1935,16 +1937,16 @@ class SettingsActivity : AppCompatActivity() {
 
         val sousTitre = TextView(this).apply {
             text = when {
-                toutFait -> "Les 3 étapes sont faites."
-                isEnabled && isSelected -> "Plus qu'à l'essayer."
+                toutFait -> getString(R.string.sa_les_etapes_sont_faites)
+                isEnabled && isSelected -> getString(R.string.sa_plus_qu_essayer)
                 // Sans « sans doute après une mise à jour » : la cause la plus
                 // fréquente est un détour volontaire par un autre clavier, et
                 // annoncer un incident système à quelqu'un qui a simplement
                 // changé de clavier l'envoie chercher au mauvais endroit.
-                hasCompletedBefore && isEnabled -> "Le clavier luxembourgeois n'est plus celui qui s'affiche quand vous écrivez."
-                hasCompletedBefore -> "Le clavier luxembourgeois n'est plus actif sur ce téléphone."
-                isEnabled -> "Plus qu'une étape."
-                else -> "3 étapes pour taper en lëtzebuergesch partout."
+                hasCompletedBefore && isEnabled -> getString(R.string.sa_le_clavier_luxembourgeois_est_plus_2)
+                hasCompletedBefore -> getString(R.string.sa_le_clavier_luxembourgeois_est_plus)
+                isEnabled -> getString(R.string.sa_plus_qu_une_etape)
+                else -> getString(R.string.sa_etapes_pour_taper_en_letzebuergesch)
             }
             textSize = 13f
             setTextColor(Color.parseColor("#666666"))
@@ -1954,7 +1956,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val anneau = ProgressRingView(this, 3).apply {
             done = faites
-            contentDescription = "$faites étapes sur 3 terminées"
+            contentDescription = resources.getQuantityString(R.plurals.etapes_terminees, faites, faites)
             layoutParams = LinearLayout.LayoutParams(enDp(52), enDp(52))
         }
 
@@ -1970,7 +1972,7 @@ class SettingsActivity : AppCompatActivity() {
         // pour toujours.
         if (toutFait && !detailsConfigDeplies) {
             card.addView(TextView(this).apply {
-                text = "Voir les 3 étapes"
+                text = getString(R.string.sa_voir_les_etapes)
                 textSize = 14f
                 setTextColor(Color.parseColor("#0080FF"))
                 setTypeface(null, Typeface.BOLD)
@@ -2044,19 +2046,16 @@ class SettingsActivity : AppCompatActivity() {
 
         // === Étape 1 : activer le clavier ===
         val corps1 = corps().apply {
-            addView(texte("Trouvez « Lëtzebuergesch Clavier » dans l'écran qui s'ouvre, " +
-                    "activez l'interrupteur, puis revenez ici."))
+            addView(texte(getString(R.string.sa_trouvez_letzebuergesch_clavier_dans_ecran)))
             when {
                 showIncompleteNudge -> addView(encart("#FFF3E0", "#BF360C",
-                    "💡 Presque ! Validez bien les 2 avertissements Android l'un après " +
-                    "l'autre : s'arrêter au premier annule l'activation."))
+                    getString(R.string.sa_presque_validez_bien_les_avertissements)))
                 !isEnabled -> addView(encart("#FFF8E1", "#5D4037",
-                    "ℹ️ Android affiche un avertissement de sécurité standard, montré pour " +
-                    "tous les claviers tiers. Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez."))
+                    getString(R.string.sa_android_affiche_un_avertissement_de)))
             }
             if (!isEnabled) {
                 addView(TextView(this@SettingsActivity).apply {
-                    text = "Lire la politique de confidentialité"
+                    text = getString(R.string.sa_lire_la_politique_de_confidentialite)
                     textSize = 13f
                     setTextColor(Color.parseColor("#0080FF"))
                     setTypeface(null, Typeface.BOLD)
@@ -2068,7 +2067,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             addView(createSpacing(12))
             addView(bouton(
-                if (isEnabled) "Rouvrir les réglages Android ↗" else "Ouvrir les réglages Android ↗"
+                if (isEnabled) getString(R.string.sa_rouvrir_les_reglages_android) else getString(R.string.sa_ouvrir_les_reglages_android)
             ) { showPreSettingsWarningDialog() })
         }
 
@@ -2076,8 +2075,8 @@ class SettingsActivity : AppCompatActivity() {
             numero = 1,
             faite = isEnabled,
             verrouillee = false,
-            titre = "Activer le clavier",
-            sousTitre = if (isEnabled) "Le clavier est activé." else "Dans les réglages Android.",
+            titre = getString(R.string.sa_activer_le_clavier),
+            sousTitre = if (isEnabled) getString(R.string.sa_le_clavier_est_active) else getString(R.string.sa_dans_les_reglages_android),
             ouverte = ouverte == 0,
             contenu = corps1,
             onToggle = basculer(0)
@@ -2085,20 +2084,19 @@ class SettingsActivity : AppCompatActivity() {
 
         // === Étape 2 : sélectionner le clavier ===
         val corps2 = corps().apply {
-            addView(texte("Choisissez « Lëtzebuergesch Clavier » dans la liste des claviers " +
-                    "qui s'affiche. Vos autres claviers restent installés."))
-            addView(bouton("Ouvrir le sélecteur de claviers ↗") { openInputMethodPicker() })
+            addView(texte(getString(R.string.sa_choisissez_letzebuergesch_clavier_dans_la)))
+            addView(bouton(getString(R.string.sa_ouvrir_le_selecteur_de_claviers)) { openInputMethodPicker() })
         }
 
         val ligne2 = createSetupRow(
             numero = 2,
             faite = isSelected,
             verrouillee = !isEnabled,
-            titre = "Sélectionner le clavier",
+            titre = getString(R.string.sa_selectionner_le_clavier_2),
             sousTitre = when {
-                isSelected -> "Lëtzebuergesch Clavier est sélectionné."
-                !isEnabled -> "Terminez d'abord l'étape 1."
-                else -> "Choisissez-le dans la liste."
+                isSelected -> getString(R.string.sa_letzebuergesch_clavier_est_selectionne)
+                !isEnabled -> getString(R.string.sa_terminez_abord_etape)
+                else -> getString(R.string.sa_choisissez_le_dans_la_liste)
             },
             ouverte = ouverte == 1,
             contenu = corps2,
@@ -2108,7 +2106,7 @@ class SettingsActivity : AppCompatActivity() {
         // === Étape 3 : essayer le clavier ===
         val champTest = EditText(this).apply {
             tag = "onboarding_test_field"
-            hint = "Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)"
+            hint = getString(R.string.sa_schreift_op_letzebuergesch_ecrivez_en)
             textSize = 16f
             setPadding(enDp(14), enDp(14), enDp(14), enDp(14))
             minHeight = enDp(56)
@@ -2132,7 +2130,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val corps3 = corps().apply {
-            addView(texte("Écrivez « Moien alleguer » et regardez les suggestions vous aider."))
+            addView(texte(getString(R.string.sa_ecrivez_moien_alleguer_et_regardez)))
             addView(champTest)
         }
 
@@ -2140,11 +2138,11 @@ class SettingsActivity : AppCompatActivity() {
             numero = 3,
             faite = etape3Faite,
             verrouillee = !isEnabled || !isSelected,
-            titre = "Essayer le clavier",
+            titre = getString(R.string.sa_essayer_le_clavier),
             sousTitre = when {
-                etape3Faite -> "Vous avez écrit vos premiers mots."
-                !isEnabled || !isSelected -> "Terminez les étapes 1 et 2."
-                else -> "Écrivez un mot pour vérifier."
+                etape3Faite -> getString(R.string.sa_vous_avez_ecrit_vos_premiers)
+                !isEnabled || !isSelected -> getString(R.string.sa_terminez_les_etapes_et)
+                else -> getString(R.string.sa_ecrivez_un_mot_pour_verifier)
             },
             ouverte = ouverte == 2,
             contenu = corps3,
@@ -2164,7 +2162,7 @@ class SettingsActivity : AppCompatActivity() {
                     if (s.isNullOrEmpty() || !aEcritUnMot()) return
                     marquerEtapeFaite(ligne3)
                     anneau.done = 3
-                    sousTitre.text = "Les 3 étapes sont faites."
+                    sousTitre.text = getString(R.string.sa_les_etapes_sont_faites)
                 }
             })
         }
@@ -2178,7 +2176,7 @@ class SettingsActivity : AppCompatActivity() {
 
         if (toutFait) {
             card.addView(TextView(this).apply {
-                text = "Masquer le détail"
+                text = getString(R.string.sa_masquer_le_detail)
                 textSize = 14f
                 setTextColor(Color.parseColor("#0080FF"))
                 setTypeface(null, Typeface.BOLD)
@@ -2227,8 +2225,8 @@ class SettingsActivity : AppCompatActivity() {
             minimumHeight = enDp(56)
             setPadding(0, enDp(12), 0, enDp(12))
             contentDescription = when {
-                faite -> "$titre, étape terminée"
-                verrouillee -> "$titre, étape verrouillée"
+                faite -> getString(R.string.sa_etape_terminee, titre)
+                verrouillee -> getString(R.string.sa_etape_verrouillee, titre)
                 else -> titre
             }
             if (!verrouillee) {
@@ -2365,7 +2363,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val titleText = TextView(this).apply {
-            text = "Majuscules automatiques"
+            text = getString(R.string.sa_majuscules_automatiques)
             textSize = 18f
             setTextColor(Color.parseColor("#333333"))
             setTypeface(null, Typeface.BOLD)
@@ -2395,10 +2393,7 @@ class SettingsActivity : AppCompatActivity() {
         header.addView(interrupteur)
 
         val description = TextView(this).apply {
-            text = "Rétablit la majuscule des substantifs quand la phrase la " +
-                "réclame : « an der rue » devient « an der Rue ». Le clavier ne " +
-                "corrige que ce qu'il a réellement vu écrit ainsi, et une touche " +
-                "Retour arrière annule la correction."
+            text = getString(R.string.sa_retablit_la_majuscule_des_substantifs)
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 10, 0, 0)
@@ -2411,6 +2406,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun createSpellCheckerCard(): LinearLayout {
         val estActif = isSpellCheckerSelected()
+        val coupe = isSpellCheckerChosenButOff()
         val card = createRoundedCard("#FFFFFF")
 
         val header = LinearLayout(this).apply {
@@ -2435,7 +2431,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val titleText = TextView(this).apply {
-            text = "Corriger l'orthographe partout"
+            text = getString(R.string.sa_corriger_orthographe_partout)
             textSize = 18f
             setTextColor(Color.parseColor("#333333"))
             setTypeface(null, Typeface.BOLD)
@@ -2464,11 +2460,11 @@ class SettingsActivity : AppCompatActivity() {
             // supprime, mais le trait rouge reste nommé : c'est à lui que
             // l'utilisateur reconnaît la gêne qu'il subit tous les jours.
             text = if (estActif) {
-                "Vos mots luxembourgeois sont reconnus dans Messages, Notes et ailleurs, " +
-                    "sans trait rouge dessous."
+                getString(R.string.sa_vos_mots_luxembourgeois_sont_reconnus)
+            } else if (coupe) {
+                getString(R.string.sa_le_correcteur_luxembourgeois_est_bien)
             } else {
-                "Faites reconnaître vos mots luxembourgeois dans Messages, Notes et " +
-                    "ailleurs, sans trait rouge dessous."
+                getString(R.string.sa_faites_reconnaitre_vos_mots_luxembourgeois)
             }
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
@@ -2482,21 +2478,17 @@ class SettingsActivity : AppCompatActivity() {
         if (estActif) return card
 
         val avertissement = TextView(this).apply {
-            text = "Android vous préviendra qu'un correcteur peut lire le texte saisi. " +
-                "Le nôtre le compare au dictionnaire de l'application, sans rien " +
-                "conserver ni rien envoyer."
+            text = getString(R.string.sa_android_vous_previendra_qu_un)
             textSize = 13f
             setTextColor(Color.parseColor("#9E9E9E"))
             setLineSpacing(0f, 1.3f)
             setPadding(0, 0, 0, 12)
         }
-        card.addView(avertissement)
+        // Déjà choisi et seulement coupé : Android ne repose pas la question.
+        if (!coupe) card.addView(avertissement)
 
         val details = TextView(this).apply {
-            text = "Dans l'écran qui s'ouvre :\n" +
-                "1. touchez « Correcteur par défaut »\n" +
-                "2. choisissez « Correcteur Lëtzebuergesch »\n" +
-                "3. confirmez l'avertissement d'Android"
+            text = if (coupe) getString(R.string.sa_dans_ecran_qui_ouvre_allumez_2) else getString(R.string.sa_dans_ecran_qui_ouvre_allumez)
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             setLineSpacing(0f, 1.35f)
@@ -2505,7 +2497,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val lien = TextView(this).apply {
-            text = "ⓘ  Ce qu'Android va vous demander"
+            text = getString(R.string.sa_ce_qu_android_va_vous)
             textSize = 14f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -2514,7 +2506,7 @@ class SettingsActivity : AppCompatActivity() {
             setOnClickListener {
                 val ouvert = details.visibility == View.VISIBLE
                 details.visibility = if (ouvert) View.GONE else View.VISIBLE
-                text = if (ouvert) "ⓘ  Ce qu'Android va vous demander" else "▲  Masquer"
+                text = if (ouvert) getString(R.string.sa_ce_qu_android_va_vous) else getString(R.string.sa_masquer)
             }
         }
 
@@ -2675,7 +2667,7 @@ class SettingsActivity : AppCompatActivity() {
         val missionCard = createCard("#FFFFFF")
         
         val missionTitle = TextView(this).apply {
-            text = "🌟 Notre Mission"
+            text = getString(R.string.sa_notre_mission)
             textSize = 20f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -2684,11 +2676,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val missionText = TextView(this).apply {
-            text = "Ce clavier a été spécialement conçu pour préserver et promouvoir le lëtzebuergesch. " +
-                    "Il met à disposition de tous un outil moderne pour écrire au quotidien dans la langue du pays :\n\n" +
-                    "💡 Suggestions de mots en lëtzebuergesch\n" +
-                    "🔡 Diacritiques ë, ä et é directement au clavier\n" +
-                    "🇱🇺 Design aux couleurs du Luxembourg"
+            text = getString(R.string.sa_ce_clavier_ete_specialement_concu)
             textSize = 16f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.3f)
@@ -2711,9 +2699,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val shareText = TextView(this).apply {
-            text = "Ce clavier grandit grâce au bouche-à-oreille. Partage-le avec ta famille " +
-                    "et tes amis créolophones : chaque partage aide notre langue à exister davantage " +
-                    "sur les téléphones."
+            text = getString(R.string.sa_ce_clavier_grandit_grace_au)
             textSize = 14f
             setTextColor(Color.parseColor("#333333"))
             setLineSpacing(0f, 1.3f)
@@ -2721,7 +2707,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val shareButton = Button(this).apply {
-            text = "📤 Partager l'application"
+            text = getString(R.string.sa_partager_application)
             textSize = 15f
             setBackgroundColor(Color.parseColor("#0080FF"))
             setTextColor(Color.WHITE)
@@ -2730,7 +2716,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val rateButton = Button(this).apply {
-            text = "⭐ Noter l'application"
+            text = getString(R.string.sa_noter_application)
             textSize = 15f
             setBackgroundColor(Color.parseColor("#FFB300"))
             setTextColor(Color.parseColor("#333333"))
@@ -2761,7 +2747,7 @@ class SettingsActivity : AppCompatActivity() {
         val sourcesCard = createCard("#F0F8E8")
         
         val sourcesTitle = TextView(this).apply {
-            text = "📚 Sources littéraires"
+            text = getString(R.string.sa_sources_litteraires)
             textSize = 18f
             setTextColor(Color.parseColor("#228B22"))
             setTypeface(null, Typeface.BOLD)
@@ -2776,31 +2762,7 @@ class SettingsActivity : AppCompatActivity() {
         // cité quand même. Détail complet et références bibliographiques dans
         // Dictionnaires/CORPUS.md.
         val sourcesText = TextView(this).apply {
-            text = "Les suggestions de mots sont construites sur deux corpus " +
-                    "ouverts de luxembourgeois contemporain :\n\n" +
-                    "📰 LuxAlign : phrases d'articles de RTL.lu, réunies par " +
-                    "Fred Philippy et coll. (COLING 2025). Licence CC BY-NC 4.0.\n\n" +
-                    "📖 LETZ : phrases d'exemple du Lëtzebuerger Online " +
-                    "Dictionnaire (lod.lu), réunies par Fred Philippy et coll. " +
-                    "(SIGUL 2024). Licence CC BY 4.0.\n\n" +
-                    "Le premier apporte le vocabulaire et l'enchaînement des " +
-                    "mots, le second la langue de tous les jours.\n\n" +
-                    "🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir " +
-                    "d'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les " +
-                    "traductions françaises et 85 000 formes que la presse " +
-                    "n'écrit jamais.\n\n" +
-                    "🇱🇺 Corpus de traduction du Zenter fir d'Lëtzebuerger " +
-                    "Sprooch (data.public.lu). Licence CC0 1.0. Il apporte " +
-                    "les traductions françaises des phrases d'exemple, faites " +
-                    "par des traducteurs professionnels.\n\n" +
-                    "🇫🇷 Lexique 3.83 : base lexicale du français de Boris New " +
-                    "et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. " +
-                    "Elle apporte les 125 000 formes de la seconde rangée de " +
-                    "suggestions, et évite au correcteur de souligner du " +
-                    "français correct.\n\n" +
-                    "🔤 Les noms des cartes du carnet sont composés en Lora, " +
-                    "Cormorant Garamond et EB Garamond, trois polices libres " +
-                    "sous licence SIL Open Font License 1.1."
+            text = getString(R.string.sa_les_suggestions_de_mots_sont)
             textSize = 14f
             setTextColor(Color.parseColor("#2F5233"))
             setLineSpacing(0f, 1.3f)
@@ -2815,7 +2777,7 @@ class SettingsActivity : AppCompatActivity() {
         val infoCard = createCard("#F8F9FA")
         
         val infoTitle = TextView(this).apply {
-            text = "ℹ️ Informations"
+            text = getString(R.string.sa_informations)
             textSize = 18f
             setTypeface(typeface, Typeface.BOLD)
             setTextColor(Color.parseColor("#333333"))
@@ -2823,10 +2785,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val versionText = TextView(this).apply {
-            text = "Version : ${BuildConfig.VERSION_NAME}\n" +
-                    "© Potomitan™ - Lëtzebuergesch Clavier\n\n" +
-                    "Fait au Luxembourg avec ❤️\n" +
-                    "Préservons le lëtzebuergesch pour les générations futures !"
+            text = getString(R.string.sa_version_potomitantm_letzebuergesch_clavier_fait, BuildConfig.VERSION_NAME)
             textSize = 14f
             setTextColor(Color.parseColor("#666666"))
             setLineSpacing(0f, 1.3f)
@@ -2842,7 +2801,7 @@ class SettingsActivity : AppCompatActivity() {
         val privacyCard = createCard("#FFF8E1")
 
         val privacyTitle = TextView(this).apply {
-            text = "🔒 Confidentialité"
+            text = getString(R.string.sa_confidentialite)
             textSize = 18f
             setTextColor(Color.parseColor("#5D4037"))
             setTypeface(null, Typeface.BOLD)
@@ -2850,19 +2809,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val privacyText = TextView(this).apply {
-            // Depuis la dictée en ligne, la promesse porte sur la frappe : la
-            // voix, elle, part à l'Université du Luxembourg quand on appuie
-            // sur le micro, et le texte doit le dire au lieu de le taire.
-            text = "Zéro collecte de données personnelles : ce que vous tapez reste sur " +
-                    "votre téléphone. Seule la dictée, quand vous appuyez sur le micro, " +
-                    "envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver."
+            text = getString(R.string.sa_zero_collecte_de_donnees_personnelles)
             textSize = 14f
             setTextColor(Color.parseColor("#5D4037"))
             setLineSpacing(0f, 1.3f)
         }
 
         val privacyLink = TextView(this).apply {
-            text = "Lire la politique de confidentialité"
+            text = getString(R.string.sa_lire_la_politique_de_confidentialite)
             textSize = 14f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -2896,21 +2850,21 @@ class SettingsActivity : AppCompatActivity() {
         val card = createRoundedCard("#FFFFFF")
 
         val title = TextView(this).apply {
-            text = "🎹 Essayez-le tout de suite !"
+            text = getString(R.string.sa_essayez_le_tout_de_suite)
             textSize = 18f
             setTextColor(Color.parseColor("#333333"))
             setTypeface(null, Typeface.BOLD)
             setPadding(0, 0, 0, 4)
         }
         val caption = TextView(this).apply {
-            text = "Tapez « moien » et touchez une suggestion : rien à installer pour essayer"
+            text = getString(R.string.sa_tapez_moien_et_touchez_une)
             textSize = 13f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)
         }
 
         val demoField = EditText(this).apply {
-            hint = "Probéiert et hei... (essayez ici)"
+            hint = getString(R.string.sa_probeiert_et_hei_essayez_ici)
             // Ne jamais ouvrir le clavier système (Gboard) sur ce champ :
             // c'est le clavier d'essai ci-dessous qui écrit dedans
             showSoftInputOnFocus = false
@@ -2939,7 +2893,7 @@ class SettingsActivity : AppCompatActivity() {
         // pressée) et enchaîne directement vers l'activation système
         var installCtaShown = false
         val installCta = Button(this).apply {
-            text = "Ça vous plaît ? Installez-le →"
+            text = getString(R.string.sa_ca_vous_plait_installez_le)
             textSize = 15f
             isAllCaps = false
             setBackgroundColor(Color.parseColor("#0080FF"))
@@ -3111,7 +3065,7 @@ class SettingsActivity : AppCompatActivity() {
         val card = createCard("#F8F9FA")
 
         val title = TextView(this).apply {
-            text = "🔎 Diagnostic d'activation"
+            text = getString(R.string.sa_diagnostic_activation)
             textSize = 18f
             setTextColor(Color.parseColor("#333333"))
             setTypeface(null, Typeface.BOLD)
@@ -3126,15 +3080,15 @@ class SettingsActivity : AppCompatActivity() {
         fun funnelLine(label: String, key: String): String {
             val ts = prefs.getLong(key, 0L)
             return when {
-                ts == 0L -> "$label : pas encore"
+                ts == 0L -> getString(R.string.sa_pas_encore, label)
                 firstOpen == 0L || ts <= firstOpen -> "$label : ${dateFormat.format(Date(ts))}"
                 else -> {
                     val minutes = (ts - firstOpen) / 60000
                     val delta = when {
-                        minutes < 1 -> "moins d'une minute après l'ouverture"
-                        minutes < 60 -> "$minutes min après l'ouverture"
-                        minutes < 1440 -> "${minutes / 60} h après l'ouverture"
-                        else -> "${minutes / 1440} j après l'ouverture"
+                        minutes < 1 -> getString(R.string.sa_moins_une_minute_apres_ouverture)
+                        minutes < 60 -> getString(R.string.sa_min_apres_ouverture, minutes)
+                        minutes < 1440 -> getString(R.string.sa_apres_ouverture_2, minutes / 60)
+                        else -> getString(R.string.sa_apres_ouverture, minutes / 1440)
                     }
                     "$label : $delta"
                 }
@@ -3143,13 +3097,13 @@ class SettingsActivity : AppCompatActivity() {
 
         val lines = TextView(this).apply {
             text = listOf(
-                if (firstOpen == 0L) "Première ouverture : pas encore"
-                else "Première ouverture : ${dateFormat.format(Date(firstOpen))}",
-                funnelLine("Premier essai (clavier de démo)", "funnel_demo_first_key"),
-                funnelLine("Clavier activé", "funnel_keyboard_enabled"),
-                funnelLine("Retour sans avoir activé", "funnel_settings_return_no_enable"),
-                funnelLine("Clavier sélectionné", "funnel_keyboard_selected"),
-                funnelLine("Premier mot tapé", "funnel_first_word")
+                if (firstOpen == 0L) getString(R.string.sa_premiere_ouverture_pas_encore)
+                else getString(R.string.sa_premiere_ouverture, dateFormat.format(Date(firstOpen))),
+                funnelLine(getString(R.string.sa_premier_essai_clavier_de_demo), "funnel_demo_first_key"),
+                funnelLine(getString(R.string.sa_clavier_active), "funnel_keyboard_enabled"),
+                funnelLine(getString(R.string.sa_retour_sans_avoir_active), "funnel_settings_return_no_enable"),
+                funnelLine(getString(R.string.sa_clavier_selectionne), "funnel_keyboard_selected"),
+                funnelLine(getString(R.string.sa_premier_mot_tape), "funnel_first_word")
             ).joinToString("\n")
             textSize = 14f
             setTextColor(Color.parseColor("#333333"))
@@ -3158,7 +3112,7 @@ class SettingsActivity : AppCompatActivity() {
         card.addView(lines)
 
         val note = TextView(this).apply {
-            text = "Ces horodatages restent sur votre téléphone."
+            text = getString(R.string.sa_ces_horodatages_restent_sur_votre)
             textSize = 12f
             setTextColor(Color.parseColor("#888888"))
             setPadding(0, 8, 0, 0)
@@ -3180,7 +3134,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val guideTitle = TextView(this).apply {
-            text = "📖 Guide de l'utilisateur"
+            text = getString(R.string.sa_guide_de_utilisateur)
             textSize = 20f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -3191,200 +3145,117 @@ class SettingsActivity : AppCompatActivity() {
         mainLayout.addView(createSpacing(8))
 
         addGuideSection(
-            mainLayout, "#E3F2FD", "📲 Installation et activation",
-            "Le clavier doit être activé puis sélectionné avant de pouvoir l'utiliser, comme " +
-                    "n'importe quel clavier tiers sur Android. Ces étapes interactives sont aussi " +
-                    "disponibles dans l'onglet « Haut » ; voici à quoi elles ressemblent."
+            mainLayout, "#E3F2FD", getString(R.string.sa_installation_et_activation),
+            getString(R.string.sa_le_clavier_doit_etre_active)
         )
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "1️⃣ Ouvrir les paramètres de clavier",
-            "Depuis l'onglet Haut, le bouton « Ouvrir les paramètres » mène directement à " +
-                    "l'écran système « Clavier à l'écran », où « Lëtzebuergesch Clavier » apparaît " +
-                    "à côté des autres claviers installés, interrupteur éteint."
+            mainLayout, "#FFFFFF", getString(R.string.sa_ouvrir_les_parametres_de_clavier),
+            getString(R.string.sa_depuis_onglet_haut_le_bouton)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, "Écran système listant les claviers, interrupteur à activer")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_settings, getString(R.string.sa_ecran_systeme_listant_les_claviers))
 
         addGuideSection(
-            mainLayout, "#FFF8E1", "2️⃣ Valider les avertissements Android",
-            "En activant l'interrupteur, Android affiche un avertissement générique montré pour " +
-                    "tous les claviers tiers, suivi d'une seconde note sur le redémarrage du téléphone. " +
-                    "Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez : appuyez sur OK aux deux pour continuer, " +
-                    "puis revenez à l'application avec le bouton retour."
+            mainLayout, "#FFF8E1", getString(R.string.sa_valider_les_avertissements_android),
+            getString(R.string.sa_en_activant_interrupteur_android_affiche)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, "Avertissement système affiché pour tout clavier tiers")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_warning, getString(R.string.sa_avertissement_systeme_affiche_pour_tout))
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "3️⃣ Sélectionner le clavier",
-            "De retour dans l'application, l'étape 1 est cochée automatiquement et l'étape 2 se " +
-                    "débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : " +
-                    "touchez « Lëtzebuergesch Clavier » pour en faire le clavier utilisé."
+            mainLayout, "#FFFFFF", getString(R.string.sa_selectionner_le_clavier),
+            getString(R.string.sa_de_retour_dans_application_etape)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, "Sélecteur système de mode de saisie")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_picker, getString(R.string.sa_selecteur_systeme_de_mode_de))
 
         addGuideSection(
-            mainLayout, "#F0F8E8", "✅ Configuration terminée",
-            "Les deux étapes cochées, le clavier luxembourgeois s'affiche partout où vous tapez, y compris " +
-                    "dans le champ d'essai de l'onglet Haut. Un appui long sur la barre d'espace " +
-                    "permet de rebasculer vers un autre clavier à tout moment."
+            mainLayout, "#F0F8E8", getString(R.string.sa_configuration_terminee),
+            getString(R.string.sa_les_deux_etapes_cochees_le)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, "Les trois étapes cochées, clavier actif dans le champ d'essai")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_install_done, getString(R.string.sa_les_trois_etapes_cochees_clavier))
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "✍️ Écrire en lëtzebuergesch",
-            "Le clavier démarre en mode alphabétique. La première lettre de chaque " +
-                    "message prend automatiquement une majuscule, comme sur un clavier classique."
+            mainLayout, "#FFFFFF", getString(R.string.sa_ecrire_en_letzebuergesch),
+            getString(R.string.sa_le_clavier_demarre_en_mode)
         )
 
         addGuideSection(
-            mainLayout, "#F0F8E8", "🔤 Accents et caractères spéciaux",
-            "Appuyez longuement sur une lettre pour faire apparaître ses variantes accentuées " +
-                    "(ë, ä, é, ü, ö...) propres au luxembourgeois. Glissez le doigt vers l'accent voulu " +
-                    "puis relâchez."
+            mainLayout, "#F0F8E8", getString(R.string.sa_accents_et_caracteres_speciaux),
+            getString(R.string.sa_les_lettres_du_luxembourgeois_ont)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, "Popup d'accents sur la lettre e")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, getString(R.string.sa_popup_accents_sur_la_lettre))
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "💡 Suggestions et autocomplétion",
-            "Une barre de suggestions apparaît au-dessus du clavier dès que vous tapez. " +
-                    "Les mots luxembourgeois sont prioritaires ; le français prend le relais à partir de " +
-                    "3 lettres si aucun mot luxembourgeois ne correspond. Touchez un mot suggéré pour le compléter " +
-                    "instantanément, espace inclus."
+            mainLayout, "#FFFFFF", getString(R.string.sa_suggestions_et_autocompletion),
+            getString(R.string.sa_une_barre_de_suggestions_apparait)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_suggestions, "Barre de suggestions active")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_suggestions, getString(R.string.sa_barre_de_suggestions_active))
 
         addGuideSection(
-            mainLayout, "#F0F8E8", "✅ Correction orthographique partout",
-            "Activez le correcteur luxembourgeois dans les paramètres système (onglet Haut, « Clavier installé ») " +
-                    "pour que vos mots luxembourgeois et français ne soient plus soulignés en rouge dans Messages, " +
-                    "Notes et les autres applications."
+            mainLayout, "#F0F8E8", getString(R.string.sa_correction_orthographique_partout),
+            getString(R.string.sa_activez_le_correcteur_luxembourgeois_dans)
         )
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "🔢 Chiffres et symboles",
-            "Le bouton « 123 » en bas à gauche du clavier bascule vers les chiffres et symboles usuels. " +
-                    "La ponctuation de base (virgule, point, apostrophe) reste accessible directement " +
-                    "sur le clavier alphabétique."
+            mainLayout, "#FFFFFF", getString(R.string.sa_chiffres_et_symboles),
+            getString(R.string.sa_le_bouton_en_bas_gauche)
         )
-        addGuideImage(mainLayout, R.drawable.guide_screenshot_numeric, "Mode chiffres et symboles")
+        addGuideImage(mainLayout, R.drawable.guide_screenshot_numeric, getString(R.string.sa_mode_chiffres_et_symboles))
 
         addGuideSection(
-            mainLayout, "#F0F8E8", "🎮 Jeux de vocabulaire",
-            "Sept jeux, réunis dans l'onglet Spiller, font travailler le luxembourgeois en " +
-                    "s'amusant :\n\n" +
-                    "• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n" +
-                    "• 🔤 Wuertmix : remettre les lettres d'un mot dans l'ordre.\n" +
-                    "• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n" +
-                    "• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n" +
-                    "• 🔢 Zuelwuert : écrire en lettres le résultat d'une multiplication.\n" +
-                    "• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n" +
-                    "• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, " +
-                    "sans aucune définition.\n\n" +
-                    "Chaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait " +
-                    "réviser à intervalles de plus en plus longs, jusqu'à ce qu'il soit acquis."
+            mainLayout, "#F0F8E8", getString(R.string.sa_jeux_de_vocabulaire),
+            getString(R.string.sa_sept_jeux_reunis_dans_onglet)
         )
 
         addGuideSection(
-            mainLayout, "#FFF3E0", "🃏 Les cartes du carnet",
-            "Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » " +
-                    "(onglet Spiller). Touchez une carte pour l'ouvrir en grand ; touchez à côté, " +
-                    "ou chassez-la d'un glissé vers le haut ou le bas, pour la refermer.\n\n" +
-                    "Les images ci-dessous détaillent la carte « Waasser » (l'eau), partie " +
-                    "par partie : chaque numéro renvoie à l'explication qui suit l'image."
+            mainLayout, "#FFF3E0", getString(R.string.sa_les_cartes_du_carnet),
+            getString(R.string.sa_chaque_mot_gagne_dans_un)
         )
 
-        addGuideImage(mainLayout, R.drawable.guide_carte_haut, "Le haut de la carte")
+        addGuideImage(mainLayout, R.drawable.guide_carte_haut, getString(R.string.sa_le_haut_de_la_carte_2))
         addGuideSection(
-            mainLayout, "#FFFFFF", "🔷 Le haut de la carte",
-            "1. Le mot, tel que vous l'avez rencontré dans le jeu, avec sa majuscule s'il " +
-                    "s'agit d'un nom.\n\n" +
-                    "2. La pastille ronde : le nombre de lettres du mot. « Waasser » en " +
-                    "compte 7.\n\n" +
-                    "3. L'illustration : sa couleur indique le domaine du sens (vie et corps, " +
-                    "territoire, économie, temps et mesure…), et son motif est tiré des lettres " +
-                    "du mot, si bien qu'un même mot donne toujours la même image. Quelques " +
-                    "cartes, comme celle-ci, portent en plus un dessin.\n\n" +
-                    "4. Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour " +
-                    "Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la " +
-                    "fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont " +
-                    "communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, " +
-                    "c'est la difficulté de leur orthographe qui compte."
+            mainLayout, "#FFFFFF", getString(R.string.sa_le_haut_de_la_carte),
+            getString(R.string.sa_le_mot_tel_que_vous)
         )
 
-        addGuideImage(mainLayout, R.drawable.guide_carte_texte, "Le texte de la carte")
+        addGuideImage(mainLayout, R.drawable.guide_carte_texte, getString(R.string.sa_le_texte_de_la_carte_2))
         addGuideSection(
-            mainLayout, "#FFF3E0", "📜 Le texte de la carte",
-            "5. La ligne de nature : ce qu'est le mot selon le dictionnaire officiel du " +
-                    "ZLS (« Nom neutre », « Verbe », « Adjectif »…), " +
-                    "puis le jeu où vous l'avez gagné.\n\n" +
-                    "6. Le sens, en gras : la traduction française du mot.\n\n" +
-                    "7. La phrase en italique : un exemple du mot en situation, tiré du " +
-                    "dictionnaire officiel. Pour un nombre, c'est sa décomposition.\n\n" +
-                    "8. La ligne plus petite : la traduction française de cette phrase, " +
-                    "seulement quand le ZLS l'a publiée. Sinon, la carte affiche à la place " +
-                    "« Même famille : » et les autres formes du mot (pluriel, conjugaisons…)."
+            mainLayout, "#FFF3E0", getString(R.string.sa_le_texte_de_la_carte),
+            getString(R.string.sa_la_ligne_de_nature_ce)
         )
 
-        addGuideImage(mainLayout, R.drawable.guide_carte_bas, "Le bas de la carte")
+        addGuideImage(mainLayout, R.drawable.guide_carte_bas, getString(R.string.sa_le_bas_de_la_carte_2))
         addGuideSection(
-            mainLayout, "#FFFFFF", "🛡️ Le bas de la carte",
-            "9. L'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n" +
-                    "10. Le médaillon : le jeu qui vous a donné la carte, reconnaissable à son " +
-                    "emblème et à sa couleur, et nommé sur le pourtour.\n\n" +
-                    "11. L'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, " +
-                    "de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot " +
-                    "est acquis.\n\n" +
-                    "12. La ligne de série : le numéro de la carte dans votre collection et la " +
-                    "date où vous l'avez gagnée.\n\n" +
-                    "13. Le rang : la place du mot parmi les plus fréquents de la langue " +
-                    "(« 856ᵉ » pour « Waasser »), ou « hors corpus » " +
-                    "s'il n'y figure pas."
+            mainLayout, "#FFFFFF", getString(R.string.sa_le_bas_de_la_carte),
+            getString(R.string.sa_ecu_vues_combien_de_fois)
         )
 
-        addGuideImage(mainLayout, R.drawable.guide_carte_vignette, "La petite carte, dans la grille du carnet")
+        addGuideImage(mainLayout, R.drawable.guide_carte_vignette, getString(R.string.sa_la_petite_carte_dans_la))
         addGuideSection(
-            mainLayout, "#FFF3E0", "🗂️ Dans la grille du carnet",
-            "La petite carte ne garde que l'essentiel pour choisir laquelle ouvrir :\n\n" +
-                    "A. Le mot.\n\n" +
-                    "B. L'emoji du ou des jeux où vous l'avez gagné, puis le début du sens.\n\n" +
-                    "C. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à " +
-                    "mesure que la carte progresse. Ici, « Aarbecht » en a franchi cinq."
+            mainLayout, "#FFF3E0", getString(R.string.sa_dans_la_grille_du_carnet),
+            getString(R.string.sa_la_petite_carte_ne_garde)
         )
 
         addGuideSection(
-            mainLayout, "#FFFFFF", "🏆 Progression",
-            "Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l'onglet " +
-                    "« Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, " +
-                    "🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner " +
-                    "et 🧙 Sproochenmeeschter."
+            mainLayout, "#FFFFFF", getString(R.string.sa_progression),
+            getString(R.string.sa_chaque_mot_que_vous_tapez)
         )
 
         val faqCard = createCard("#FFF8E1")
         val faqTitle = TextView(this).apply {
-            text = "❓ Questions fréquentes"
+            text = getString(R.string.sa_questions_frequentes)
             textSize = 18f
             setTextColor(Color.parseColor("#5D4037"))
             setTypeface(null, Typeface.BOLD)
             setPadding(0, 0, 0, 12)
         }
         val faqText = TextView(this).apply {
-            text = "Le clavier luxembourgeois n'apparaît pas quand je tape ?\n" +
-                    "→ Vérifiez qu'il est bien sélectionné (pas seulement activé) : onglet Haut, " +
-                    "« Clavier installé », étape 2, ou touchez l'icône de clavier de la barre de navigation, en bas de " +
-                    "l'écran, pendant que vous écrivez.\n\n" +
-                    "Comment revenir à un autre clavier ponctuellement ?\n" +
-                    "→ Appui long sur la barre d'espace du clavier luxembourgeois, puis choisissez un autre " +
-                    "clavier dans la liste. Le retour au luxembourgeois passe par l'icône de clavier de la " +
-                    "barre de navigation : sur les autres claviers, l'appui long sur la barre " +
-                    "d'espace ne change que leur propre langue.\n\n" +
-                    "Mes données sont-elles envoyées quelque part ?\n" +
-                    "→ Non : le clavier fonctionne entièrement en local."
+            text = getString(R.string.sa_le_clavier_luxembourgeois_apparait_pas)
             textSize = 14f
             setTextColor(Color.parseColor("#5D4037"))
             setLineSpacing(0f, 1.3f)
         }
         val faqPrivacyLink = TextView(this).apply {
-            text = "Lire la politique de confidentialité"
+            text = getString(R.string.sa_lire_la_politique_de_confidentialite)
             textSize = 14f
             setTextColor(Color.parseColor("#0080FF"))
             setTypeface(null, Typeface.BOLD)
@@ -3574,8 +3445,12 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    // Fonction pour vérifier si notre correcteur orthographique est sélectionné
-    fun isSpellCheckerSelected(): Boolean {
+    // Notre correcteur travaille-t-il vraiment ? Il faut qu'il soit choisi ET
+    // que l'interrupteur général « Utiliser le correcteur » soit allumé : choisi
+    // mais coupé, il ne souligne rien, et la carte annonçait pourtant « actif ».
+    fun isSpellCheckerSelected(): Boolean = isSpellCheckerChosen() && isSpellCheckingOn()
+
+    private fun isSpellCheckerChosen(): Boolean {
         return try {
             val current = Settings.Secure.getString(contentResolver, "selected_spell_checker")
             current?.contains(packageName) == true
@@ -3584,6 +3459,16 @@ class SettingsActivity : AppCompatActivity() {
             false
         }
     }
+
+    // Absent sur une installation neuve : Android le considère alors allumé.
+    private fun isSpellCheckingOn(): Boolean = try {
+        Settings.Secure.getString(contentResolver, "spell_checker_enabled") != "0"
+    } catch (e: Exception) {
+        true
+    }
+
+    /** Choisi, mais l'interrupteur général l'empêche de travailler. */
+    fun isSpellCheckerChosenButOff(): Boolean = isSpellCheckerChosen() && !isSpellCheckingOn()
 
     // Fonction pour ouvrir les paramètres où choisir le correcteur orthographique
     private fun openSpellCheckerSettings() {
@@ -3607,14 +3492,14 @@ class SettingsActivity : AppCompatActivity() {
                 // repli n'est pas celui attendu, la carte de l'étape 4 ne
                 // décrit donc pas ce que l'utilisateur a sous les yeux
                 Toast.makeText(this,
-                    "Dans 'Langues et saisie', ouvrez 'Vérification orthographique' et choisissez 'Correcteur Lëtzebuergesch'",
+                    getString(R.string.sa_dans_langues_et_saisie_ouvrez),
                     Toast.LENGTH_LONG
                 ).show()
             } catch (ex: Exception) {
                 try {
                     startActivity(Intent(Settings.ACTION_SETTINGS))
                 } catch (ex2: Exception) {
-                    Toast.makeText(this, "Impossible d'ouvrir les paramètres", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.sa_impossible_ouvrir_les_parametres), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -3639,7 +3524,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val annotationText = TextView(this).apply {
-            text = "👆 Appuyez sur OK : c'est normal pour tous les claviers tiers"
+            text = getString(R.string.sa_appuyez_sur_ok_est_normal)
             textSize = 16f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.parseColor("#333333"))
@@ -3648,8 +3533,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val reassuranceText = TextView(this).apply {
-            text = "Ce que vous tapez ne quitte jamais votre téléphone. " +
-                    "Seule la dictée, quand vous appuyez sur le micro, passe par Internet."
+            text = getString(R.string.sa_letzebuergesch_clavier_pas_acces_internet)
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setPadding(0, 0, 0, 12)
@@ -3657,7 +3541,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val returnHintText = TextView(this).apply {
-            text = "◀ Ensuite, appuyez sur Retour : vous revenez ici automatiquement"
+            text = getString(R.string.sa_ensuite_appuyez_sur_retour_vous)
             textSize = 16f
             setTextColor(Color.parseColor("#666666"))
             setLineSpacing(0f, 1.2f)
@@ -3671,10 +3555,10 @@ class SettingsActivity : AppCompatActivity() {
         val scrollView = ScrollView(this).apply { addView(dialogLayout) }
 
         AlertDialog.Builder(this)
-            .setTitle("Avant de continuer")
+            .setTitle(getString(R.string.sa_avant_de_continuer))
             .setView(scrollView)
             .setCancelable(true)
-            .setPositiveButton("J'ai compris, on y va") { _, _ -> openKeyboardSettings() }
+            .setPositiveButton(getString(R.string.sa_ai_compris_on_va)) { _, _ -> openKeyboardSettings() }
             .show()
     }
 
@@ -3707,7 +3591,7 @@ class SettingsActivity : AppCompatActivity() {
                 val intent = Intent(Settings.ACTION_SETTINGS)
                 startActivity(intent)
             } catch (ex: Exception) {
-                Toast.makeText(this, "Impossible d'ouvrir les paramètres", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.sa_impossible_ouvrir_les_parametres), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -3717,7 +3601,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_URL)))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture politique de confidentialité: ${e.message}")
-            Toast.makeText(this, "Impossible d'ouvrir la politique de confidentialité", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.sa_impossible_ouvrir_la_politique_de), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -3731,28 +3615,24 @@ class SettingsActivity : AppCompatActivity() {
                     Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
             } catch (ex: Exception) {
                 Log.e("SettingsActivity", "Erreur ouverture fiche Play Store: ${ex.message}")
-                Toast.makeText(this, "Play Store indisponible", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.sa_play_store_indisponible), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     // Fonction pour partager l'application (bouche-à-oreille)
     private fun shareApp() {
-        val message = "Ech schreiwen op Lëtzebuergesch op mengem Telefon !\n" +
-                "Un clavier Android gratuit qui suggère des mots en luxembourgeois.\n\n" +
-                "Télécharge-le gratuitement :\n" +
-                "https://play.google.com/store/apps/details?id=$packageName" +
-                "&referrer=utm_source%3Din_app_share%26utm_campaign%3Dlaunch_lu\n\n" +
+        val message = getString(R.string.sa_ech_schreiwen_op_letzebuergesch_op, packageName) +
                 SHARE_HASHTAG
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Partager le Lëtzebuergesch Clavier"))
+            startActivity(Intent.createChooser(intent, getString(R.string.sa_partager_le_letzebuergesch_clavier)))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage application: ${e.message}")
-            Toast.makeText(this, "Impossible de partager pour le moment", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.sa_impossible_de_partager_pour_le), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -3768,8 +3648,7 @@ class SettingsActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture sélecteur clavier: ${e.message}")
             Toast.makeText(this, 
-                "Impossible d'ouvrir le sélecteur. Touchez l'icône de clavier en bas de l'écran, " +
-                    "dans la barre de navigation, pendant que vous écrivez.", 
+                getString(R.string.sa_impossible_ouvrir_le_selecteur_touchez), 
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -3874,9 +3753,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val progressMessage = TextView(this).apply {
             text = if (auSommet) {
-                "Vous avez atteint le plus haut niveau. 👑"
+                getString(R.string.sa_vous_avez_atteint_le_plus)
             } else {
-                "Encore ${nombre(wordsRemaining)} mot${if (wordsRemaining > 1) "s" else ""} avant $nextLevelName"
+                resources.getQuantityString(R.plurals.encore_mots_avant, wordsRemaining, nombre(wordsRemaining), nextLevelName)
             }
             textSize = 17f
             setTextColor(Color.parseColor("#1C1C1C"))
@@ -3887,9 +3766,10 @@ class SettingsActivity : AppCompatActivity() {
 
         val part = if (totalWords > 0) stats.wordsDiscovered * 100.0 / totalWords else 0.0
         val percentageLabel = TextView(this).apply {
-            val mots = "${nombre(stats.wordsDiscovered)} mot${if (stats.wordsDiscovered > 1) "s" else ""} " +
-                "découvert${if (stats.wordsDiscovered > 1) "s" else ""} " +
-                "sur les ${nombre(totalWords)} du dictionnaire"
+            val mots = resources.getQuantityString(
+                R.plurals.mots_decouverts_sur, stats.wordsDiscovered,
+                nombre(stats.wordsDiscovered), nombre(totalWords)
+            )
             text = if (part >= 1.0) "$mots (${part.toInt()} %)" else mots
             textSize = 14f
             setTextColor(Color.parseColor("#777777"))
@@ -3906,7 +3786,7 @@ class SettingsActivity : AppCompatActivity() {
         // « depuis Mäi Lëtzebuergesch » décrit désormais quelque chose qui existe.
         // Placé après le niveau : on partage ce qu'on vient de lire.
         val shareLevelButton = Button(this).apply {
-            text = "📤 Partager ma carte de niveau"
+            text = getString(R.string.sa_partager_ma_carte_de_niveau_2)
             textSize = 15f
             isAllCaps = false
             setTextColor(Color.WHITE)
@@ -3926,7 +3806,7 @@ class SettingsActivity : AppCompatActivity() {
                     Log.e("SettingsActivity", "Erreur partage carte de niveau: ${e.message}")
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Impossible de partager pour le moment",
+                        getString(R.string.sa_impossible_de_partager_pour_le),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -3945,7 +3825,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val wordLabel = TextView(this).apply {
-            text = "MOT DU JOUR"
+            text = getString(R.string.sa_mot_du_jour)
             textSize = 12f
             setTextColor(Color.parseColor("#FF8C00"))
             setTypeface(null, Typeface.BOLD)
@@ -3976,7 +3856,7 @@ class SettingsActivity : AppCompatActivity() {
         // trois mots, et le sens lui-même est repris en plus sombre.
         val glose = TranslationDictionary.traduire(this@SettingsActivity, wordOfDay)
         val wordGloss = TextView(this).apply {
-            text = if (glose == null) "" else SpannableStringBuilder("en français : ").apply {
+            text = if (glose == null) "" else SpannableStringBuilder(getString(R.string.sa_en_francais_2)).apply {
                 setSpan(ForegroundColorSpan(Color.parseColor("#999999")),
                     0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 val debut = length
@@ -3991,7 +3871,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val wordUsage = TextView(this).apply {
-            text = if (usageCount > 0) "utilisé $usageCount fois" else "nouveau mot à découvrir"
+            text = if (usageCount > 0) resources.getQuantityString(R.plurals.utilise_fois, usageCount, usageCount) else getString(R.string.sa_nouveau_mot_decouvrir)
             textSize = 14f
             setTextColor(Color.parseColor("#999999"))
             gravity = Gravity.CENTER
@@ -4009,7 +3889,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val top5Title = TextView(this).apply {
-            text = "Mots les plus utilisés"
+            text = getString(R.string.sa_mots_les_plus_utilises)
             textSize = 16f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
@@ -4073,7 +3953,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         val statsGridTitle = TextView(this).apply {
-            text = "Statistiques globales"
+            text = getString(R.string.sa_statistiques_globales)
             textSize = 16f
             setTextColor(Color.parseColor("#1C1C1C"))
             setTypeface(null, Typeface.BOLD)
@@ -4088,21 +3968,21 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 0, 0, 32)
         }
         
-        statsRow.addView(createStatBlock("${stats.wordsDiscovered}", "Mots découverts"))
-        statsRow.addView(createStatBlock("${stats.totalUsages}", "Utilisations"))
+        statsRow.addView(createStatBlock("${stats.wordsDiscovered}", getString(R.string.sa_mots_decouverts_2)))
+        statsRow.addView(createStatBlock("${stats.totalUsages}", getString(R.string.sa_utilisations)))
         
         statsGridContainer.addView(statsRow)
         
         // === Mots à Découvrir ===
         val wordsToDiscoverContainer = createWordListSection(
-            "🌟 Mots à Découvrir",
+            getString(R.string.sa_mots_decouvrir),
             stats.wordsToDiscover,
             "#2196F3"
         )
         
         // === Mots Découverts ===
         val discoveredWordsContainer = createWordListSection(
-            "🔍 Mots Découverts (${stats.discoveredWordsList.size})",
+            getString(R.string.sa_mots_decouverts, stats.discoveredWordsList.size),
             stats.discoveredWordsList,
             "#4CAF50"
         )
@@ -4169,7 +4049,7 @@ class SettingsActivity : AppCompatActivity() {
             if (words.isEmpty()) {
                 // Message si aucun mot
                 val emptyMessage = TextView(this@SettingsActivity).apply {
-                    text = "Aucun mot dans cette catégorie pour le moment"
+                    text = getString(R.string.sa_aucun_mot_dans_cette_categorie)
                     textSize = 21f  // Augmenté de 1.5x (14f * 1.5)
                     setTextColor(Color.parseColor("#999999"))
                     setTypeface(null, Typeface.ITALIC)
@@ -4463,10 +4343,10 @@ class SettingsActivity : AppCompatActivity() {
 
             AlertDialog.Builder(this)
                 .setTitle("🎉 Bravo ! Dir sidd virugaangen !")
-                .setMessage("Dir hutt den Niveau $levelName erreecht ! Partagez votre carte pour montrer où vous en êtes.")
+                .setMessage(getString(R.string.sa_dir_hutt_den_niveau_erreecht, levelName))
                 .setView(preview)
-                .setPositiveButton("Partager 📤") { _, _ -> shareLevelCard(cardBitmap, levelName) }
-                .setNegativeButton("Plus tard", null)
+                .setPositiveButton(getString(R.string.sa_partager)) { _, _ -> shareLevelCard(cardBitmap, levelName) }
+                .setNegativeButton(getString(R.string.sa_plus_tard), null)
                 .show()
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur célébration de niveau: ${e.message}")
@@ -4531,7 +4411,7 @@ class SettingsActivity : AppCompatActivity() {
             textSize = 54f
             textAlign = Paint.Align.CENTER
         }
-        canvas.drawText("$wordsDiscovered mots luxembourgeois découverts !", cx, 900f, statsPaint)
+        canvas.drawText(getString(R.string.sa_mots_luxembourgeois_decouverts, wordsDiscovered), cx, 900f, statsPaint)
 
         // Séparateur
         val linePaint = Paint().apply { color = Color.parseColor("#33FFFFFF"); strokeWidth = 3f }
@@ -4569,11 +4449,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
 
-            val message = "Ech sinn um Niveau $levelName am Lëtzebuergesch Clavier ! A du, wéi wäit bass du ?\n" +
-                    "J'ai atteint le niveau $levelName du clavier luxembourgeois.\n\n" +
-                    "Télécharge-le gratuitement :\n" +
-                    "https://play.google.com/store/apps/details?id=$packageName" +
-                    "&referrer=utm_source%3Dlevel_share%26utm_campaign%3Dlaunch_lu\n\n" +
+            val message = getString(R.string.sa_ech_sinn_um_niveau_am, levelName, packageName) +
                     SHARE_HASHTAG
 
             val intent = Intent(Intent.ACTION_SEND).apply {
@@ -4589,10 +4465,10 @@ class SettingsActivity : AppCompatActivity() {
                 clipData = ClipData.newUri(contentResolver, "niveau_lux.png", uri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            startActivity(Intent.createChooser(intent, "Partager ma carte de niveau"))
+            startActivity(Intent.createChooser(intent, getString(R.string.sa_partager_ma_carte_de_niveau)))
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur partage carte de niveau: ${e.message}")
-            Toast.makeText(this, "Impossible de partager la carte", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.sa_impossible_de_partager_la_carte), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -4720,6 +4596,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (changed) {
                     refreshContent()
                     chainNextStep(wasEnabled, wasSelected)
+                    confirmerCorrecteurSiActive()
                 }
             }
         }
@@ -4747,6 +4624,7 @@ class SettingsActivity : AppCompatActivity() {
             val wasSelected = lastKnownSelected
             refreshContent()
             chainNextStep(wasEnabled, wasSelected)
+            confirmerCorrecteurSiActive()
 
             val resolver = requireContext().contentResolver
             resolver.registerContentObserver(
@@ -4755,6 +4633,8 @@ class SettingsActivity : AppCompatActivity() {
                 Settings.Secure.getUriFor(Settings.Secure.ENABLED_INPUT_METHODS), false, settingsObserver)
             resolver.registerContentObserver(
                 Settings.Secure.getUriFor("selected_spell_checker"), false, settingsObserver)
+            resolver.registerContentObserver(
+                Settings.Secure.getUriFor("spell_checker_enabled"), false, settingsObserver)
         }
 
         override fun onPause() {
@@ -4765,6 +4645,26 @@ class SettingsActivity : AppCompatActivity() {
         private var lastKnownEnabled = false
         private var lastKnownSelected = false
         private var lastKnownSpellCheckerOn = false
+
+        // État du correcteur au dernier passage, null avant le premier : sans
+        // cela, ouvrir l'application avec un correcteur déjà actif afficherait
+        // la confirmation à chaque fois.
+        private var correcteurConnu: Boolean? = null
+
+        /**
+         * Dit « c'est bon » quand le correcteur vient de passer actif, en
+         * général au retour de l'écran système où l'utilisateur l'a choisi.
+         * Sans ce mot, il revient sans savoir si sa manipulation a marché.
+         */
+        private fun confirmerCorrecteurSiActive() {
+            val avant = correcteurConnu
+            correcteurConnu = lastKnownSpellCheckerOn
+            if (avant == false && lastKnownSpellCheckerOn) {
+                Toast.makeText(requireContext(),
+                    getString(R.string.sa_correcteur_active_vos_mots_luxembourgeois),
+                    Toast.LENGTH_LONG).show()
+            }
+        }
 
         private fun shouldRefresh(currentEnabled: Boolean, currentSelected: Boolean, currentSpellCheckerOn: Boolean): Boolean {
             val hasChanged = currentEnabled != lastKnownEnabled || currentSelected != lastKnownSelected || currentSpellCheckerOn != lastKnownSpellCheckerOn
@@ -4890,7 +4790,7 @@ class SettingsActivity : AppCompatActivity() {
                     Log.d("SettingsActivity", "🔄 Pull-to-Refresh déclenché")
 
                     // Afficher un message
-                    Toast.makeText(activity, "Actualisation des statistiques...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, getString(R.string.sa_actualisation_des_statistiques), Toast.LENGTH_SHORT).show()
 
                     // Attendre un peu puis recréer l'activité
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
@@ -4948,7 +4848,8 @@ class SettingsActivity : AppCompatActivity() {
                 calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)
         val dayIndex = TimeUnit.MILLISECONDS.toDays(localMillis)
         val weekIndex = (dayIndex + 3) / 7
-        return WEEKLY_TIPS[(weekIndex % WEEKLY_TIPS.size).toInt()]
+        val astuces = resources.getStringArray(R.array.astuces_semaine)
+        return astuces[(weekIndex % astuces.size).toInt()]
     }
 
     /**
@@ -5175,7 +5076,7 @@ class SettingsActivity : AppCompatActivity() {
                         gravity = Gravity.CENTER_VERTICAL
                         
                         tvTheme = TextView(activity).apply {
-                            text = "⏳ Chargement..."
+                            text = getString(R.string.sa_chargement)
                             textSize = 16f
                             setTextColor(Color.parseColor("#9C27B0"))
                             setTypeface(null, Typeface.BOLD)
@@ -5263,7 +5164,7 @@ class SettingsActivity : AppCompatActivity() {
                     
                     // Bouton nouvelle grille
                     val btnNewGame = Button(activity).apply {
-                        text = "🔄 Nouvelle Grille"
+                        text = getString(R.string.sa_nouvelle_grille_2)
                         textSize = 14f
                         setTextColor(Color.WHITE)
                         setBackgroundColor(Color.parseColor("#9C27B0"))
@@ -5283,7 +5184,7 @@ class SettingsActivity : AppCompatActivity() {
                     
                     // Liste des mots à trouver
                     val wordsTitle = TextView(activity).apply {
-                        text = "📝 Mots à trouver :"
+                        text = getString(R.string.sa_mots_trouver)
                         textSize = 14f // Réduction de 16 à 14
                         setTextColor(Color.parseColor("#333333"))
                         setTypeface(null, Typeface.BOLD)
@@ -5343,7 +5244,7 @@ class SettingsActivity : AppCompatActivity() {
                 Log.e("WordSearchFragment", "Erreur génération: ${e.message}", e)
                 // context (nullable) au lieu de requireContext() : si le fragment vient
                 // justement d'être détaché, ce bloc catch ne doit pas planter à son tour.
-                context?.let { Toast.makeText(it, "Erreur lors de la génération", Toast.LENGTH_SHORT).show() }
+                context?.let { Toast.makeText(it, getString(R.string.sa_erreur_lors_de_la_generation), Toast.LENGTH_SHORT).show() }
             }
         }
         
@@ -5359,7 +5260,7 @@ class SettingsActivity : AppCompatActivity() {
             gridView.numColumns = puzzle.gridSize
             
             // Afficher le titre simple sans thème
-            tvTheme.text = "🎯 Mots luxembourgeois"
+            tvTheme.text = getString(R.string.sa_mots_luxembourgeois)
             
             // Afficher la liste des mots
             displayWordsList(puzzle.words)
@@ -5419,9 +5320,9 @@ class SettingsActivity : AppCompatActivity() {
             // un bandeau (vue applicative, pas une fenêtre système) pour l'ancrer en haut
             // et éviter qu'elle ne recouvre le mot qui vient de passer en vert dans la liste.
             val message = if (wordsFound == currentPuzzle?.words?.size) {
-                "🎉 Félicitations ! Tous les mots trouvés !"
+                getString(R.string.sa_felicitations_tous_les_mots_trouves)
             } else {
-                "✅ Mot trouvé : $word (+$points pts)"
+                getString(R.string.sa_mot_trouve_pts, word, points)
             }
             bandeauEnHaut(requireView(), message, longue = wordsFound == currentPuzzle?.words?.size)
 
@@ -5550,7 +5451,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             )
-                            text = "Score: 0"
+                            text = getString(R.string.sa_score_2)
                             textSize = 24f
                             setTypeface(null, Typeface.BOLD)
                             gravity = Gravity.CENTER
@@ -5577,7 +5478,7 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 32
                         
                         tvWordNumber = TextView(activity).apply {
-                            text = "Mot 1/10"
+                            text = getString(R.string.sa_mot_2)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#333333"))
@@ -5603,7 +5504,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
-                        text = "🔤 Remets les lettres dans l'ordre !"
+                        text = getString(R.string.sa_remets_les_lettres_dans_ordre)
                         textSize = 18f
                         setTypeface(null, Typeface.BOLD)
                         gravity = Gravity.CENTER
@@ -5631,7 +5532,7 @@ class SettingsActivity : AppCompatActivity() {
                     
                     // Label lettres disponibles
                     val labelScrambled = TextView(activity).apply {
-                        text = "Lettres disponibles :"
+                        text = getString(R.string.sa_lettres_disponibles)
                         textSize = 14f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(Color.parseColor("#333333"))
@@ -5662,7 +5563,7 @@ class SettingsActivity : AppCompatActivity() {
                     
                     // Label réponse
                     val labelAnswer = TextView(activity).apply {
-                        text = "Ta réponse :"
+                        text = getString(R.string.sa_ta_reponse)
                         textSize = 14f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(Color.parseColor("#333333"))
@@ -5705,7 +5606,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
-                            text = "🔄 Effacer"
+                            text = getString(R.string.sa_effacer)
                             setBackgroundColor(Color.parseColor("#FF9800"))
                             setTextColor(Color.WHITE)
                             setOnClickListener { clearAnswer() }
@@ -5718,7 +5619,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
-                            text = "💡 Indice"
+                            text = getString(R.string.sa_indice)
                             setBackgroundColor(Color.parseColor("#FFC107"))
                             setTextColor(Color.WHITE)
                             setOnClickListener { showHint() }
@@ -5742,7 +5643,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
-                            text = "✅ Valider"
+                            text = getString(R.string.sa_valider)
                             setBackgroundColor(Color.parseColor("#4CAF50"))
                             setTextColor(Color.WHITE)
                             setTypeface(null, Typeface.BOLD)
@@ -5757,7 +5658,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
-                            text = "⏭️ Passer"
+                            text = getString(R.string.sa_passer)
                             setBackgroundColor(Color.parseColor("#9E9E9E"))
                             setTextColor(Color.WHITE)
                             setOnClickListener { skipWord() }
@@ -5794,7 +5695,7 @@ class SettingsActivity : AppCompatActivity() {
             gameWords = com.example.kreyolkeyboard.wordscramble.WordScrambleData.loadWords(requireContext(), difficulty)
             
             if (gameWords.isEmpty()) {
-                Toast.makeText(requireContext(), "Erreur de chargement", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.sa_erreur_de_chargement), Toast.LENGTH_SHORT).show()
                 return
             }
             
@@ -5853,8 +5754,8 @@ class SettingsActivity : AppCompatActivity() {
             gridScrambled.layoutParams.height = numRowsScrambled * 136 // 120 + 16 spacing
             gridAnswer.layoutParams.height = numRowsAnswer * 136
             
-            tvWordNumber.text = "Mot ${currentWordIndex + 1}/${gameWords.size}"
-            tvScore.text = "Score: $score"
+            tvWordNumber.text = getString(R.string.sa_mot, currentWordIndex + 1, gameWords.size)
+            tvScore.text = getString(R.string.sa_score, score)
             progressBar.progress = currentWordIndex
 
             val glose = TranslationDictionary.traduire(requireContext(), currentWord)
@@ -5915,22 +5816,22 @@ class SettingsActivity : AppCompatActivity() {
             if (answer.equals(currentWord, ignoreCase = true)) {
                 score += 100
                 
-                Toast.makeText(requireContext(), "✅ Correct! +100 pts", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.sa_correct_pts), Toast.LENGTH_SHORT).show()
 
                 encarter(currentWord)
                 wordsCorrect++
                 currentWordIndex++
                 loadNextWord()
             } else {
-                Toast.makeText(requireContext(), "❌ Essaie encore!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.sa_essaie_encore), Toast.LENGTH_SHORT).show()
                 clearAnswer()
             }
         }
         
         private fun skipWord() {
             val glose = TranslationDictionary.traduire(requireContext(), currentWord)
-            val revelation = if (glose != null) "Le mot était : $currentWord ($glose)"
-                             else "Le mot était : $currentWord"
+            val revelation = if (glose != null) getString(R.string.sa_le_mot_etait_2, currentWord, glose)
+                             else getString(R.string.sa_le_mot_etait, currentWord)
             Toast.makeText(requireContext(), revelation, Toast.LENGTH_SHORT).show()
             currentWordIndex++
             loadNextWord()
@@ -5948,8 +5849,8 @@ class SettingsActivity : AppCompatActivity() {
                 if (posInScrambled != -1) {
                     addLetterToAnswer(posInScrambled)
                     score -= 20
-                    tvScore.text = "Score: $score"
-                    Toast.makeText(requireContext(), "Indice (-20 pts)", Toast.LENGTH_SHORT).show()
+                    tvScore.text = getString(R.string.sa_score, score)
+                    Toast.makeText(requireContext(), getString(R.string.sa_indice_pts), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -5995,12 +5896,12 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun montrerLeBilan() {
             AlertDialog.Builder(requireContext())
-                .setTitle("🎉 Partie terminée!")
-                .setMessage("Score final: $score\nMots réussis: $wordsCorrect/${gameWords.size}")
-                .setPositiveButton("Rejouer") { _, _ ->
+                .setTitle(getString(R.string.sa_partie_terminee))
+                .setMessage(getString(R.string.sa_score_final_mots_reussis, score, wordsCorrect, gameWords.size))
+                .setPositiveButton(getString(R.string.sa_rejouer)) { _, _ ->
                     startNewGame()
                 }
-                .setNegativeButton("OK", null)
+                .setNegativeButton(getString(R.string.sa_ok), null)
                 .show()
         }
 
@@ -6110,7 +6011,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             )
-                            text = "Essai 1/${WuertrietData.MAX_ATTEMPTS}"
+                            text = getString(R.string.sa_essai_2, WuertrietData.MAX_ATTEMPTS)
                             textSize = 14f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#333333"))
@@ -6143,7 +6044,7 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
 
                         val legendTitle = TextView(activity).apply {
-                            text = "Lettres déjà jouées :"
+                            text = getString(R.string.sa_lettres_deja_jouees)
                             textSize = 14f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#333333"))
@@ -6190,7 +6091,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 1f
                             ).apply { setMargins(0, 0, 16, 0) }
-                            hint = "Votre mot de ${WuertrietData.WORD_LENGTH} lettres"
+                            hint = getString(R.string.sa_votre_mot_de_lettres, WuertrietData.WORD_LENGTH)
                             setHintTextColor(Color.parseColor("#9E9E9E"))
                             textSize = 18f
                             setTextColor(Color.parseColor("#212121"))
@@ -6221,7 +6122,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.MATCH_PARENT
                             )
-                            text = "✅ Valider"
+                            text = getString(R.string.sa_valider)
                             setBackgroundColor(Color.parseColor("#4CAF50"))
                             setTextColor(Color.WHITE)
                             setTypeface(null, Typeface.BOLD)
@@ -6233,7 +6134,7 @@ class SettingsActivity : AppCompatActivity() {
 
                     // Bouton nouvelle partie
                     val btnNewGame = Button(activity).apply {
-                        text = "🔄 Nouvelle partie"
+                        text = getString(R.string.sa_nouvelle_partie)
                         textSize = 14f
                         setTextColor(Color.WHITE)
                         setBackgroundColor(Color.parseColor("#9C27B0"))
@@ -6261,7 +6162,7 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         val rulesTitle = TextView(activity).apply {
-                            text = "📜 Règles du jeu"
+                            text = getString(R.string.sa_regles_du_jeu)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(Color.parseColor("#1976D2"))
@@ -6270,12 +6171,7 @@ class SettingsActivity : AppCompatActivity() {
                         addView(rulesTitle)
 
                         val rulesText = TextView(activity).apply {
-                            text = "Devine le mot luxembourgeois de ${WuertrietData.WORD_LENGTH} lettres en ${WuertrietData.MAX_ATTEMPTS} essais maximum.\n\n" +
-                                "Après chaque essai, la couleur des lettres t'indique :\n" +
-                                "🟩 Vert : bonne lettre, bonne position\n" +
-                                "🟨 Orange : la lettre est dans le mot, mais mal placée\n" +
-                                "⬜ Gris : la lettre n'est pas dans le mot\n\n" +
-                                "Le mot proposé doit exister dans le dictionnaire luxembourgeois."
+                            text = getString(R.string.sa_devine_le_mot_luxembourgeois_de, WuertrietData.WORD_LENGTH, WuertrietData.MAX_ATTEMPTS)
                             textSize = 14f
                             setTextColor(Color.parseColor("#333333"))
                         }
@@ -6349,7 +6245,7 @@ class SettingsActivity : AppCompatActivity() {
             editGuess.setText("")
             editGuess.isEnabled = true
             btnSubmit.isEnabled = true
-            tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
+            tvAttempts.text = getString(R.string.sa_essai, currentAttempt + 1, WuertrietData.MAX_ATTEMPTS)
             legendContainer.removeAllViews()
         }
 
@@ -6386,7 +6282,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 else -> {
                     editGuess.setText("")
-                    tvAttempts.text = "Essai ${currentAttempt + 1}/${WuertrietData.MAX_ATTEMPTS}"
+                    tvAttempts.text = getString(R.string.sa_essai, currentAttempt + 1, WuertrietData.MAX_ATTEMPTS)
                 }
             }
         }
@@ -6469,13 +6365,13 @@ class SettingsActivity : AppCompatActivity() {
             val motEtGlose = targetWord.uppercase() + (glose?.let { "\n« $it »" } ?: "")
 
             AlertDialog.Builder(requireContext())
-                .setTitle(if (won) "🎉 Bravo !" else "😔 Domaj !")
+                .setTitle(if (won) getString(R.string.sa_bravo) else getString(R.string.sa_domaj))
                 .setMessage(
-                    if (won) "Trouvé en $currentAttempt essai(s) : $motEtGlose"
-                    else "Le mot était : $motEtGlose"
+                    if (won) resources.getQuantityString(R.plurals.trouve_en_essais, currentAttempt, currentAttempt, motEtGlose)
+                    else getString(R.string.sa_le_mot_etait, motEtGlose)
                 )
-                .setPositiveButton("Rejouer") { _, _ -> startNewGame() }
-                .setNegativeButton("OK", null)
+                .setPositiveButton(getString(R.string.sa_rejouer)) { _, _ -> startNewGame() }
+                .setNegativeButton(getString(R.string.sa_ok), null)
                 .show()
         }
 
@@ -6607,7 +6503,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { setMargins(4, 0, 4, 0) }
-                            text = niveau.label
+                            setText(niveau.label)
                             textSize = 12f
                             isAllCaps = false
                             setTextColor(Color.WHITE)
@@ -6626,7 +6522,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { bottomMargin = 6 }
-                        text = "Question 1 / ${ClozeData.QUESTIONS_PER_ROUND}"
+                        text = getString(R.string.sa_question_2, ClozeData.QUESTIONS_PER_ROUND)
                         textSize = 13f
                         setTextColor(Color.parseColor("#666666"))
                     }
@@ -6727,7 +6623,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { topMargin = 4 }
-                        text = "➡️ Question suivante"
+                        text = getString(R.string.sa_question_suivante)
                         setBackgroundColor(couleurNeutre)
                         setTextColor(Color.WHITE)
                         setTypeface(null, Typeface.BOLD)
@@ -6742,7 +6638,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { setMargins(0, 16, 0, 8) }
-                        text = "🔄 Nouvelle partie"
+                        text = getString(R.string.sa_nouvelle_partie)
                         textSize = 14f
                         setBackgroundColor(Color.parseColor("#9C27B0"))
                         setTextColor(Color.WHITE)
@@ -6766,7 +6662,7 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         val rulesTitle = TextView(activity).apply {
-                            text = "📜 Règles du jeu"
+                            text = getString(R.string.sa_regles_du_jeu)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
@@ -6775,13 +6671,7 @@ class SettingsActivity : AppCompatActivity() {
                         addView(rulesTitle)
 
                         val rulesText = TextView(activity).apply {
-                            text = "Chaque phrase est une phrase luxembourgeoise réelle, " +
-                                "à laquelle il manque un mot. Parmi les quatre propositions, " +
-                                "une seule est celle qu'a écrite l'auteur : les trois autres " +
-                                "sont des mots que le corpus atteste au même endroit, elles " +
-                                "sonnent donc juste tant qu'on ne lit pas toute la phrase.\n\n" +
-                                "La difficulté porte sur la fréquence du mot manquant : " +
-                                "courant en « Facile », rare en « Difficile »."
+                            text = getString(R.string.sa_chaque_phrase_est_une_phrase)
                             textSize = 14f
                             setTextColor(Color.parseColor("#333333"))
                         }
@@ -6792,7 +6682,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply { topMargin = 16 }
-                            text = "Phrases extraites des corpus :\n" +
+                            text = getString(R.string.sa_phrases_extraites_des_corpus) +
                                 ClozeData.attribution(activity)
                             textSize = 11f
                             setTextColor(Color.parseColor("#757575"))
@@ -6851,7 +6741,7 @@ class SettingsActivity : AppCompatActivity() {
          * le dit. Un jeu de dépannage jouable masquerait une livraison cassée.
          */
         private fun showMissingAsset() {
-            tvSentence.text = "Les phrases du Wuertlück n'ont pas pu être chargées."
+            tvSentence.text = getString(R.string.sa_les_phrases_du_wuertluck_ont)
             tvSource.text = ""
             tvProgress.text = ""
             tvFeedback.visibility = View.GONE
@@ -6865,8 +6755,8 @@ class SettingsActivity : AppCompatActivity() {
             val question = round[questionIndex]
             answered = false
 
-            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
-            tvSource.text = "Phrase du corpus ${question.source}"
+            tvProgress.text = getString(R.string.sa_question, questionIndex + 1, round.size)
+            tvSource.text = getString(R.string.sa_phrase_du_corpus, question.source)
             tvSentence.text = sentenceWithBlank(question)
             tvFeedback.visibility = View.GONE
             btnNext.visibility = View.INVISIBLE
@@ -6955,8 +6845,8 @@ class SettingsActivity : AppCompatActivity() {
             val glose = TranslationDictionary.traduire(requireContext(), question.answer)
             val gloseAffichee = glose?.let { " (${question.answer} : $it)" } ?: ""
             tvFeedback.apply {
-                text = if (juste) "✅ Richteg !$gloseAffichee"
-                       else "❌ La phrase disait « ${question.answer} »" +
+                text = if (juste) getString(R.string.sa_richteg, gloseAffichee)
+                       else getString(R.string.sa_la_phrase_disait, question.answer) +
                             (glose?.let { " : $it" } ?: "")
                 setTextColor(if (juste) couleurJuste else couleurFausse)
                 visibility = View.VISIBLE
@@ -6965,8 +6855,8 @@ class SettingsActivity : AppCompatActivity() {
             progressBar.progress = questionIndex + 1
             btnNext.visibility = View.VISIBLE
             btnNext.text =
-                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
-                else "➡️ Question suivante"
+                if (questionIndex + 1 >= round.size) getString(R.string.sa_voir_le_resultat)
+                else getString(R.string.sa_question_suivante)
         }
 
         private fun goToNextQuestion() {
@@ -7010,17 +6900,16 @@ class SettingsActivity : AppCompatActivity() {
         private fun montrerLeBilan() {
             val total = round.size
             val message = when {
-                score == total -> "Sans faute : $score sur $total !"
-                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
-                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
-                score * 2 >= total -> "$score bonnes réponses sur $total."
-                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+                score == total -> getString(R.string.score_sans_faute, score, total)
+                score == 0 -> getString(R.string.score_aucune)
+                score * 2 >= total -> resources.getQuantityString(R.plurals.score_bonnes_reponses, score, score, total)
+                else -> resources.getQuantityString(R.plurals.score_bonnes_reponses_relance, score, score, total)
             }
             AlertDialog.Builder(requireContext())
-                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setTitle(if (score * 2 >= total) getString(R.string.sa_bravo) else getString(R.string.sa_encore_un_effort))
                 .setMessage(message)
-                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
-                .setNegativeButton("OK", null)
+                .setPositiveButton(getString(R.string.sa_rejouer)) { _, _ -> startNewRound() }
+                .setNegativeButton(getString(R.string.sa_ok), null)
                 .show()
         }
 
@@ -7162,7 +7051,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { setMargins(4, 0, 4, 0) }
-                            text = niveau.label
+                            setText(niveau.label)
                             textSize = 12f
                             isAllCaps = false
                             setTextColor(Color.WHITE)
@@ -7181,7 +7070,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { bottomMargin = 6 }
-                        text = "Question 1 / ${ZuelenData.QUESTIONS_PER_ROUND}"
+                        text = getString(R.string.sa_question_2, ZuelenData.QUESTIONS_PER_ROUND)
                         textSize = 13f
                         setTextColor(Color.parseColor("#666666"))
                     }
@@ -7281,7 +7170,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { topMargin = 4 }
-                        text = "➡️ Question suivante"
+                        text = getString(R.string.sa_question_suivante)
                         setBackgroundColor(couleurNeutre)
                         setTextColor(Color.WHITE)
                         setTypeface(null, Typeface.BOLD)
@@ -7296,7 +7185,7 @@ class SettingsActivity : AppCompatActivity() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply { setMargins(0, 16, 0, 8) }
-                        text = "🔄 Nouvelle partie"
+                        text = getString(R.string.sa_nouvelle_partie)
                         textSize = 14f
                         setBackgroundColor(Color.parseColor("#9C27B0"))
                         setTextColor(Color.WHITE)
@@ -7319,7 +7208,7 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         addView(TextView(activity).apply {
-                            text = "📜 Règles du jeu"
+                            text = getString(R.string.sa_regles_du_jeu)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
@@ -7327,21 +7216,7 @@ class SettingsActivity : AppCompatActivity() {
                         })
 
                         addView(TextView(activity).apply {
-                            text = "Une multiplication, et quatre façons d'écrire " +
-                                "son résultat : une seule est du luxembourgeois " +
-                                "correct. Les autres sont les fautes qu'on fait " +
-                                "vraiment : l'allemand, les chiffres inversés, le " +
-                                "trait d'union, la règle d'Eifel, la finale -ig. " +
-                                "Quand vous vous trompez, le jeu dit laquelle.\n\n" +
-                                "Deux règles suffisent à écrire tous les nombres " +
-                                "jusqu'à cent. L'unité se dit avant la dizaine : 56, " +
-                                "c'est six-et-cinquante, « sechsafofzeg ». Et le n de " +
-                                "la liaison « an » tombe devant f, s, v, m…, mais se " +
-                                "maintient devant d, t, z, n, h et les voyelles, " +
-                                "c'est la règle d'Eifel, d'où « sechsafofzeg » (56) " +
-                                "mais « sechsandrësseg » (36).\n\n" +
-                                "En « Difficile », le produit n'est plus affiché : " +
-                                "il faut le calculer avant de l'écrire."
+                            text = getString(R.string.sa_une_multiplication_et_quatre_facons)
                             textSize = 14f
                             setLineSpacing(0f, 1.2f)
                             setTextColor(Color.parseColor("#333333"))
@@ -7354,9 +7229,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply { topMargin = 16 }
-                            text = "Orthographes vérifiées contre le Lëtzebuerger " +
-                                "Online Dictionnaire (LOD), Zenter fir d'Lëtzebuerger " +
-                                "Sprooch, data.public.lu, CC0."
+                            text = getString(R.string.sa_orthographes_verifiees_contre_le_letzebuerger)
                             textSize = 11f
                             setTextColor(Color.parseColor("#757575"))
                         })
@@ -7406,12 +7279,12 @@ class SettingsActivity : AppCompatActivity() {
             val question = round[questionIndex]
             answered = false
 
-            tvProgress.text = "Question ${questionIndex + 1} / ${round.size}"
+            tvProgress.text = getString(R.string.sa_question, questionIndex + 1, round.size)
             tvOperation.text = question.enonce
             tvConsigne.text = if (question.montreLeProduit)
-                "Comment s'écrit ce nombre ?"
+                getString(R.string.sa_comment_ecrit_ce_nombre)
             else
-                "Calculez, puis choisissez l'orthographe."
+                getString(R.string.sa_calculez_puis_choisissez_orthographe)
             tvFeedback.visibility = View.GONE
             btnNext.visibility = View.INVISIBLE
 
@@ -7459,10 +7332,11 @@ class SettingsActivity : AppCompatActivity() {
             // C'est ici que le jeu enseigne : la raison de la faute commise,
             // pas seulement le verdict. Une bonne réponse rappelle la forme.
             tvFeedback.apply {
+                val raison = choix.raison.texte(requireContext())
                 text = if (choix.juste)
-                    "✅ Richteg ! ${choix.raison}"
+                    getString(R.string.zuelen_juste, raison)
                 else
-                    "❌ ${choix.raison}\nLa bonne réponse était « ${question.reponse} »."
+                    getString(R.string.zuelen_faux, raison, question.reponse)
                 setTextColor(if (choix.juste) couleurJuste else couleurFausse)
                 visibility = View.VISIBLE
             }
@@ -7470,8 +7344,8 @@ class SettingsActivity : AppCompatActivity() {
             progressBar.progress = questionIndex + 1
             btnNext.visibility = View.VISIBLE
             btnNext.text =
-                if (questionIndex + 1 >= round.size) "🏁 Voir le résultat"
-                else "➡️ Question suivante"
+                if (questionIndex + 1 >= round.size) getString(R.string.sa_voir_le_resultat)
+                else getString(R.string.sa_question_suivante)
         }
 
         private fun goToNextQuestion() {
@@ -7517,17 +7391,16 @@ class SettingsActivity : AppCompatActivity() {
         private fun montrerLeBilan() {
             val total = round.size
             val message = when {
-                score == total -> "Sans faute : $score sur $total !"
-                score == 0 -> "Aucune bonne réponse cette fois. Une autre manche ?"
-                score == 1 -> "1 bonne réponse sur $total. Une autre manche ?"
-                score * 2 >= total -> "$score bonnes réponses sur $total."
-                else -> "$score bonnes réponses sur $total. Une autre manche ?"
+                score == total -> getString(R.string.score_sans_faute, score, total)
+                score == 0 -> getString(R.string.score_aucune)
+                score * 2 >= total -> resources.getQuantityString(R.plurals.score_bonnes_reponses, score, score, total)
+                else -> resources.getQuantityString(R.plurals.score_bonnes_reponses_relance, score, score, total)
             }
             AlertDialog.Builder(requireContext())
-                .setTitle(if (score * 2 >= total) "🎉 Bravo !" else "💪 Encore un effort")
+                .setTitle(if (score * 2 >= total) getString(R.string.sa_bravo) else getString(R.string.sa_encore_un_effort))
                 .setMessage(message)
-                .setPositiveButton("Rejouer") { _, _ -> startNewRound() }
-                .setNegativeButton("OK", null)
+                .setPositiveButton(getString(R.string.sa_rejouer)) { _, _ -> startNewRound() }
+                .setNegativeButton(getString(R.string.sa_ok), null)
                 .show()
         }
 
@@ -7693,7 +7566,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { setMargins(4, 0, 4, 0) }
-                            text = niveau.label
+                            setText(niveau.label)
                             textSize = 12f
                             isAllCaps = false
                             minHeight = 0
@@ -7798,7 +7671,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { rightMargin = 8 }
-                            text = "🔄 Nouvelle grille"
+                            text = getString(R.string.sa_nouvelle_grille)
                             textSize = 13f
                             isAllCaps = false
                             setBackgroundColor(Color.parseColor("#9C27B0"))
@@ -7810,7 +7683,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             )
-                            text = "💡 Solution"
+                            text = getString(R.string.sa_solution)
                             textSize = 13f
                             isAllCaps = false
                             setBackgroundColor(couleurInerte)
@@ -7834,7 +7707,7 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         addView(TextView(activity).apply {
-                            text = "➡️ Horizontalement"
+                            text = getString(R.string.sa_horizontalement)
                             textSize = 15f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
@@ -7850,7 +7723,7 @@ class SettingsActivity : AppCompatActivity() {
                         addView(conteneurHorizontal)
 
                         addView(TextView(activity).apply {
-                            text = "⬇️ Verticalement"
+                            text = getString(R.string.sa_verticalement)
                             textSize = 15f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
@@ -7880,28 +7753,14 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         addView(TextView(activity).apply {
-                            text = "📜 Règles du jeu"
+                            text = getString(R.string.sa_regles_du_jeu)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
                             setPadding(0, 0, 0, 12)
                         })
                         addView(TextView(activity).apply {
-                            text = "Chaque définition est le sens français d'un mot " +
-                                "luxembourgeois : à vous de l'écrire dans la grille, " +
-                                "lettre par lettre et accents compris. Le pavé " +
-                                "reprend la disposition du clavier luxembourgeois, " +
-                                "et Ä, Ë, É, Ö et Ü y sont en clair — sans appui " +
-                                "long.\n\n" +
-                                "Touchez une case pour choisir un mot, touchez-la de " +
-                                "nouveau pour passer à l'autre sens. Une faute ne se " +
-                                "voit qu'une fois le mot entièrement écrit.\n\n" +
-                                "La grille est en capitales, comme toutes les grilles " +
-                                "de mots croisés. Chaque mot trouvé rappelle son " +
-                                "orthographe véritable : en luxembourgeois, les " +
-                                "substantifs gardent leur majuscule.\n\n" +
-                                "La difficulté porte sur la rareté des mots, pas sur " +
-                                "la taille de la grille."
+                            text = getString(R.string.sa_chaque_definition_est_le_sens)
                             textSize = 14f
                             setLineSpacing(0f, 1.2f)
                             setTextColor(Color.parseColor("#333333"))
@@ -7911,7 +7770,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply { topMargin = 16 }
-                            text = "Définitions et vocabulaire :\n" +
+                            text = getString(R.string.sa_definitions_et_vocabulaire) +
                                 CrosswordData.attribution(activity)
                             textSize = 11f
                             setTextColor(Color.parseColor("#757575"))
@@ -7933,54 +7792,80 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /**
-         * Le pavé de saisie, dans la disposition du clavier — voir
-         * [CrosswordData.RANGEES] pour le raisonnement.
+         * Le pavé de saisie, dans la disposition choisie pour le clavier : voir
+         * [CrosswordData.pave] pour le raisonnement.
          *
-         * Chaque rangée pèse dix unités, comme les rangées du clavier, et c'est
-         * ce qui aligne les touches d'une rangée à l'autre : la troisième porte
-         * sept lettres entre l'emplacement vide de `⇧` et `⌫`, tous deux d'une
-         * unité et demie ; la quatrième porte quatre voyelles infléchies en
-         * touches doubles, centrées.
+         * Chaque rangée pèse autant d'unités que les rangées du clavier (dix
+         * sur « Luxembourg », onze sur « Suisse allemand »), et c'est ce qui
+         * aligne les touches d'une rangée à l'autre : la troisième porte sept
+         * lettres entre l'emplacement vide de `⇧` et `⌫`, à leur largeur du
+         * clavier ; la quatrième porte les diacritiques restantes en touches
+         * doubles, centrées.
          *
-         * Construit une fois pour toutes — il ne dépend pas de la grille.
+         * Il ne dépend pas de la grille ; il est refait seulement quand la
+         * disposition a changé entre-temps (voir [onResume]).
          */
         private fun construirePave(activity: SettingsActivity) {
-            CrosswordData.RANGEES.forEachIndexed { rang, rangee ->
-                val ligne = LinearLayout(activity).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { bottomMargin = 5 }
-                    orientation = LinearLayout.HORIZONTAL
-                }
+            val disposition = KeyboardPreferences.disposition(activity)
+            dispositionDuPave = disposition
+            conteneurPave.removeAllViews()
+            val pave = CrosswordData.pave(disposition)
 
-                val poidsLettre = if (rang == CrosswordData.RANGEE_ACCENTS) 2f else 1f
-                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                    // L'emplacement de la touche majuscule reste vide : la
-                    // grille est tout en capitales, mais retirer la place
-                    // décalerait la rangée par rapport aux deux du dessus.
-                    ligne.addView(espaceurDuPave(activity, 1.5f))
-                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                    ligne.addView(espaceurDuPave(activity, 1f))
-                }
-
-                rangee.forEach { lettre ->
-                    ligne.addView(toucheDuPave(activity, lettre.toString(), poidsLettre) {
+            fun nouvelleLigne() = LinearLayout(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = 5 }
+                orientation = LinearLayout.HORIZONTAL
+                weightSum = pave.largeur
+            }
+            fun ajouterLettres(ligne: LinearLayout, lettres: String, poids: Float) =
+                lettres.forEach { lettre ->
+                    ligne.addView(toucheDuPave(activity, lettre.toString(), poids) {
                         session?.ecrire(lettre)
                         apresSaisie()
                     })
                 }
 
-                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                    ligne.addView(toucheDuPave(activity, "⌫", poids = 1.5f) {
+            pave.lettres.forEachIndexed { rang, lettres ->
+                val ligne = nouvelleLigne()
+                val derniere = rang == pave.lettres.lastIndex
+                if (derniere) {
+                    // L'emplacement de la touche majuscule reste vide : la
+                    // grille est tout en capitales, mais retirer la place
+                    // décalerait la rangée par rapport aux deux du dessus.
+                    ligne.addView(espaceurDuPave(activity, pave.poidsEffacement))
+                }
+                ajouterLettres(ligne, lettres, 1f)
+                if (derniere) {
+                    ligne.addView(toucheDuPave(activity, "⌫", pave.poidsEffacement) {
                         session?.effacer()
                         apresSaisie()
                     })
-                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                    ligne.addView(espaceurDuPave(activity, 1f))
                 }
-
                 conteneurPave.addView(ligne)
+            }
+
+            val ligneAccents = nouvelleLigne()
+            val marge = (pave.largeur - 2f * pave.accents.length) / 2f
+            ligneAccents.addView(espaceurDuPave(activity, marge))
+            ajouterLettres(ligneAccents, pave.accents, 2f)
+            ligneAccents.addView(espaceurDuPave(activity, marge))
+            conteneurPave.addView(ligneAccents)
+        }
+
+        /** La disposition du pavé affiché, pour le refaire si elle a changé. */
+        private var dispositionDuPave: DispositionClavier? = null
+
+        override fun onResume() {
+            super.onResume()
+            // Les réglages du clavier s'ouvrent par-dessus cet écran : au
+            // retour, le pavé suit la disposition qu'on vient d'y choisir.
+            val activity = activity as? SettingsActivity ?: return
+            if (::conteneurPave.isInitialized &&
+                dispositionDuPave != KeyboardPreferences.disposition(activity)
+            ) {
+                construirePave(activity)
             }
         }
 
@@ -8039,8 +7924,7 @@ class SettingsActivity : AppCompatActivity() {
                 conteneurVertical.removeAllViews()
                 tvProgres.text = ""
                 tvNumero.text = ""
-                tvDefinition.text = "Aucune grille disponible : l'actif " +
-                    "luxemburgish_crossword.json manque à l'application."
+                tvDefinition.text = getString(R.string.sa_aucune_grille_disponible_actif_luxemburgish_2)
                 return
             }
 
@@ -8170,8 +8054,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply { bottomMargin = 8 }
-                            text = "${grille.numeros[index]}. ${mot.clue} " +
-                                "(${mot.length} lettres)"
+                            text = getString(R.string.sa_lettres_3, grille.numeros[index], mot.clue, mot.length)
                             textSize = 14f
                             setLineSpacing(0f, 1.15f)
                             isClickable = true
@@ -8213,8 +8096,7 @@ class SettingsActivity : AppCompatActivity() {
 
             when {
                 partie.termine() -> {
-                    tvRetour.text = "🎉 Grille terminée — ${grille.words.size} mots sur " +
-                        "${grille.words.size} !"
+                    tvRetour.text = getString(R.string.sa_grille_terminee_mots_sur, grille.words.size)
                     tvRetour.setTextColor(couleurJuste)
                     tvRetour.visibility = View.VISIBLE
                     if (!solutionMontree) ouvrirPochette()
@@ -8222,10 +8104,9 @@ class SettingsActivity : AppCompatActivity() {
                 nouveaux.isNotEmpty() -> {
                     val mot = grille.words[nouveaux.first()]
                     tvRetour.text = if (mot.enseigneUneMajuscule) {
-                        "✅ ${mot.canonical} — un substantif : hors de la grille, " +
-                            "il garde sa majuscule."
+                        getString(R.string.sa_un_substantif_hors_de_la, mot.canonical)
                     } else {
-                        "✅ ${mot.canonical} — s'écrit en minuscules."
+                        getString(R.string.sa_ecrit_en_minuscules, mot.canonical)
                     }
                     tvRetour.setTextColor(couleurJuste)
                     tvRetour.visibility = View.VISIBLE
@@ -8233,8 +8114,7 @@ class SettingsActivity : AppCompatActivity() {
                 else -> {
                     val choisi = partie.motSelectionne
                     if (choisi >= 0 && partie.motRempli(choisi) && !partie.motJuste(choisi)) {
-                        tvRetour.text = "❌ Ce n'est pas le mot attendu — effacez et " +
-                            "reprenez."
+                        tvRetour.text = getString(R.string.sa_ce_est_pas_le_mot)
                         tvRetour.setTextColor(couleurFausse)
                         tvRetour.visibility = View.VISIBLE
                     } else {
@@ -8315,7 +8195,7 @@ class SettingsActivity : AppCompatActivity() {
             partie.reveler()
             resolus.addAll(partie.grid.words.indices)
             rafraichir()
-            tvRetour.text = "💡 Solution affichée — cette grille ne compte pas."
+            tvRetour.text = getString(R.string.sa_solution_affichee_cette_grille_ne_2)
             tvRetour.setTextColor(Color.parseColor("#757575"))
             tvRetour.visibility = View.VISIBLE
         }
@@ -8371,7 +8251,7 @@ class SettingsActivity : AppCompatActivity() {
             if (mot != null) {
                 tvNumero.text = "${grille.numeros[choisi]} " +
                     if (mot.across) "➡️" else "⬇️"
-                tvDefinition.text = "${mot.clue}  ·  ${mot.length} lettres"
+                tvDefinition.text = getString(R.string.sa_lettres_2, mot.clue, mot.length)
             }
 
             lignesDefinition.forEach { (index, vue) ->
@@ -8386,7 +8266,7 @@ class SettingsActivity : AppCompatActivity() {
                 vue.setTypeface(null, if (index == choisi) Typeface.BOLD else Typeface.NORMAL)
             }
 
-            tvProgres.text = "${partie.motsJustes()} / ${grille.words.size} mots"
+            tvProgres.text = getString(R.string.sa_mots, partie.motsJustes(), grille.words.size)
         }
 
         override fun onDestroyView() {
@@ -8550,7 +8430,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { setMargins(4, 0, 4, 0) }
-                            text = niveau.label
+                            setText(niveau.label)
                             textSize = 12f
                             isAllCaps = false
                             minHeight = 0
@@ -8645,7 +8525,7 @@ class SettingsActivity : AppCompatActivity() {
                         layoutParams = LinearLayout.LayoutParams(
                             0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                         )
-                        text = "📖 Ce que vous avez gagné"
+                        text = getString(R.string.sa_ce_que_vous_avez_gagne_2)
                         textSize = 15f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(couleurNeutre)
@@ -8653,7 +8533,7 @@ class SettingsActivity : AppCompatActivity() {
                     }
 
                     boutonCarnet = TextView(activity).apply {
-                        text = "📔 Carnet"
+                        text = getString(R.string.carnet_bouton)
                         textSize = 13f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(Color.WHITE)
@@ -8697,7 +8577,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             ).apply { rightMargin = 8 }
-                            text = "🔄 Nouvelle grille"
+                            text = getString(R.string.sa_nouvelle_grille)
                             textSize = 13f
                             isAllCaps = false
                             setBackgroundColor(Color.parseColor("#00796B"))
@@ -8709,7 +8589,7 @@ class SettingsActivity : AppCompatActivity() {
                             layoutParams = LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                             )
-                            text = "💡 Solution"
+                            text = getString(R.string.sa_solution)
                             textSize = 13f
                             isAllCaps = false
                             setBackgroundColor(couleurInerte)
@@ -8733,31 +8613,14 @@ class SettingsActivity : AppCompatActivity() {
                         }
 
                         addView(TextView(activity).apply {
-                            text = "📜 Règles du jeu"
+                            text = getString(R.string.sa_regles_du_jeu)
                             textSize = 16f
                             setTypeface(null, Typeface.BOLD)
                             setTextColor(couleurNeutre)
                             setPadding(0, 0, 0, 12)
                         })
                         addView(TextView(activity).apply {
-                            text = "Tous les mots vous sont donnés : il s'agit de " +
-                                "trouver leur place. Touchez un mot de la liste, " +
-                                "puis une case de la grille : les emplacements où " +
-                                "il peut aller s'éclairent. Touchez un mot déjà " +
-                                "posé pour le reprendre.\n\n" +
-                                "Un mot qui contredirait une lettre déjà écrite ne " +
-                                "se pose pas : c'est le crayon, pas une correction.\n\n" +
-                                "Quand tous les croisements d'un mot sont posés, il " +
-                                "se verrouille et vous donne son sens en français. " +
-                                "C'est la récompense, et c'est pourquoi elle " +
-                                "n'arrive qu'à ce moment-là. Un mot gagné passe au " +
-                                "vert et ne se reprend plus ; son sens reste " +
-                                "lisible sous la liste des mots.\n\n" +
-                                "Aucune connaissance du luxembourgeois n'est " +
-                                "nécessaire pour jouer : la déduction porte sur les " +
-                                "longueurs et les croisements. La difficulté suit la " +
-                                "taille de la grille et le nombre de mots qui " +
-                                "partagent une même longueur."
+                            text = getString(R.string.sa_tous_les_mots_vous_sont)
                             textSize = 14f
                             setLineSpacing(0f, 1.2f)
                             setTextColor(Color.parseColor("#333333"))
@@ -8767,7 +8630,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                             ).apply { topMargin = 16 }
-                            text = "Traductions et vocabulaire :\n" +
+                            text = getString(R.string.sa_traductions_et_vocabulaire) +
                                 ChasseCroiseData.attribution(activity)
                             textSize = 11f
                             setTextColor(Color.parseColor("#757575"))
@@ -8817,8 +8680,7 @@ class SettingsActivity : AppCompatActivity() {
                 titreGagnes.visibility = View.GONE
                 tvProgres.text = ""
                 annoncer(
-                    "Aucune grille disponible : l'actif " +
-                        "luxemburgish_chassecroise.json manque à l'application.",
+                    getString(R.string.sa_aucune_grille_disponible_actif_luxemburgish),
                     couleurFausse
                 )
                 return
@@ -8942,7 +8804,7 @@ class SettingsActivity : AppCompatActivity() {
                 .toSortedMap()
                 .forEach { (longueur, mots) ->
                     conteneurMots.addView(TextView(activity).apply {
-                        text = "$longueur lettres"
+                        text = getString(R.string.sa_lettres, longueur)
                         textSize = 12f
                         setTypeface(null, Typeface.BOLD)
                         setTextColor(Color.parseColor("#757575"))
@@ -9030,7 +8892,7 @@ class SettingsActivity : AppCompatActivity() {
                     partie.peutPoser(it, partie.motChoisi)
                 }
                 if (cible == null) {
-                    annoncer("Ce mot ne peut pas se poser ici.", couleurFausse)
+                    annoncer(getString(R.string.sa_ce_mot_ne_peut_pas), couleurFausse)
                     return
                 }
                 partie.poser(cible)
@@ -9045,8 +8907,7 @@ class SettingsActivity : AppCompatActivity() {
                 rafraichir()
             } else {
                 annoncer(
-                    "🔒 ${partie.grid.words[occupe].canonical} est gagné : " +
-                        "il reste en place.",
+                    getString(R.string.sa_est_gagne_il_reste_en, partie.grid.words[occupe].canonical),
                     couleurNeutre
                 )
             }
@@ -9085,27 +8946,25 @@ class SettingsActivity : AppCompatActivity() {
                     // suit les tâtonnements ([retraits]), pas le chrono — le
                     // jeu n'est pas contre la montre.
                     val (etoiles, mention) = when {
-                        retraits == 0 -> 3 to "sans une seule reprise"
-                        retraits <= 2 -> 2 to "bien joué"
-                        else -> 1 to "grille bouclée"
+                        retraits == 0 -> 3 to getString(R.string.sa_sans_une_seule_reprise)
+                        retraits <= 2 -> 2 to getString(R.string.sa_bien_joue)
+                        else -> 1 to getString(R.string.sa_grille_bouclee)
                     }
                     annoncerCarte(
-                        "🎉 Grille terminée — ${grille.words.size} mots\n" +
-                            "⭐".repeat(etoiles) + "  $mention",
+                        getString(R.string.sa_grille_terminee_mots, grille.words.size).repeat(etoiles) + "  $mention",
                         couleurJuste
                     )
                     lancerConfettis()
                     ouvrirPochette()
                     annoncerA11y(
-                        "Grille terminée, ${grille.words.size} mots placés, " +
-                            "$etoiles étoiles sur 3."
+                        getString(R.string.wuertplaz_terminee_a11y, grille.words.size,
+                            resources.getQuantityString(R.plurals.etoiles_sur_3, etoiles, etoiles))
                     )
                 }
                 nouveaux.isNotEmpty() -> celebrerGains(nouveaux)
                 grille.words.indices.any { partie.fautif(it) } -> {
                     annoncer(
-                        "❌ Un mot est à la mauvaise place. Retirez-le et " +
-                            "reprenez.",
+                        getString(R.string.sa_un_mot_est_la_mauvaise),
                         couleurFausse
                     )
                 }
@@ -9196,19 +9055,19 @@ class SettingsActivity : AppCompatActivity() {
                     .joinToString(" · ") { grille.words[it].canonical }
                 val suite = if (nouveaux.size > 3) " +${nouveaux.size - 3}" else ""
                 annoncerCarte(
-                    "🔥 ${nouveaux.size} mots d'un coup !\n$formes$suite",
+                    getString(R.string.wuertplaz_combo, nouveaux.size) + "\n$formes$suite",
                     Color.parseColor("#FB8C00")
                 )
                 annoncerA11y(
-                    nouveaux.size.toString() + " mots gagnés : " +
+                    getString(R.string.wuertplaz_mots_gagnes_a11y, nouveaux.size,
                         nouveaux.joinToString(", ") {
                             "${grille.words[it].canonical}, ${grille.words[it].clue}"
-                        }
+                        })
                 )
             } else {
                 val mot = grille.words[nouveaux.first()]
                 annoncerCarte("✅ ${mot.canonical} : ${mot.clue}", couleurJuste)
-                annoncerA11y("Mot gagné : ${mot.canonical}, ${mot.clue}")
+                annoncerA11y(getString(R.string.sa_mot_gagne, mot.canonical, mot.clue))
             }
         }
 
@@ -9410,7 +9269,7 @@ class SettingsActivity : AppCompatActivity() {
             resolus.addAll(partie.grid.words.indices)
             rafraichir()
             annoncer(
-                "💡 Solution affichée : cette grille ne compte pas.",
+                getString(R.string.sa_solution_affichee_cette_grille_ne),
                 Color.parseColor("#757575")
             )
         }
@@ -9503,7 +9362,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
 
-            tvProgres.text = "${partie.motsJustes()} / ${grille.words.size} mots"
+            tvProgres.text = getString(R.string.sa_mots, partie.motsJustes(), grille.words.size)
             rafraichirGagnes(partie)
         }
 
@@ -9532,7 +9391,7 @@ class SettingsActivity : AppCompatActivity() {
             titreGagnes.visibility = if (n == 0) View.INVISIBLE else View.VISIBLE
             // Le compteur vit dans le titre : c'est là que l'œil va quand la
             // liste grandit, et il n'ajoute aucune vue à la mise en page.
-            titreGagnes.text = "📖 Ce que vous avez gagné · $n"
+            titreGagnes.text = getString(R.string.sa_ce_que_vous_avez_gagne, n)
 
             var duNeuf = false
             resolus.forEach { index ->
@@ -9733,10 +9592,7 @@ class SettingsActivity : AppCompatActivity() {
             }.start()
 
             colonne.addView(TextView(activity).apply {
-                text = "Tapez un mot luxembourgeois ou français : la recherche " +
-                        "fonctionne dans les deux sens.\n" +
-                        "Touchez un mot pour ouvrir sa fiche : sens, exemples " +
-                        "et autres formes ; appui long pour le copier."
+                text = getString(R.string.sa_tapez_un_mot_luxembourgeois_ou)
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.2f)
@@ -9744,7 +9600,7 @@ class SettingsActivity : AppCompatActivity() {
             })
 
             champRecherche = EditText(activity).apply {
-                hint = "Haus, maison, Kaz, chat…"
+                hint = getString(R.string.sa_haus_maison_kaz_chat)
                 textSize = 18f
                 // Couleurs explicites : sur fond blanc imposé, la couleur de
                 // texte héritée du thème est elle-même claire, et le champ
@@ -9797,10 +9653,7 @@ class SettingsActivity : AppCompatActivity() {
             // C'est aussi ce qui dit à l'utilisateur d'où sort la traduction
             // qu'il lit, et donc jusqu'où il peut lui faire confiance.
             colonne.addView(TextView(activity).apply {
-                text = "Traductions et exemples issus du Lëtzebuerger Online " +
-                        "Dictionnaire (lod.lu), Zenter fir d'Lëtzebuerger " +
-                        "Sprooch, CC0. Exemples traduits par le corpus de " +
-                        "traduction du même Zenter, CC0."
+                text = getString(R.string.sa_traductions_et_exemples_issus_du)
                 textSize = 12f
                 setTextColor(Color.parseColor("#AAAAAA"))
                 setLineSpacing(0f, 1.2f)
@@ -9840,20 +9693,17 @@ class SettingsActivity : AppCompatActivity() {
 
             val nettoyee = TranslationDictionary.nettoyerRequete(requete)
             if (nettoyee.length < 2) {
-                tvEtat.text = "Entrez au moins deux lettres."
+                tvEtat.text = getString(R.string.sa_entrez_au_moins_deux_lettres)
                 return
             }
 
             val resultats = TranslationDictionary.rechercher(activity, nettoyee)
             if (resultats.isEmpty()) {
-                tvEtat.text = "Aucun résultat pour « $nettoyee ».\n" +
-                        "Les noms propres et les noms de lieux n'ont pas de " +
-                        "traduction dans le dictionnaire officiel."
+                tvEtat.text = getString(R.string.sa_aucun_resultat_pour_les_noms, nettoyee)
                 return
             }
 
-            tvEtat.text = if (resultats.size == 1) "1 résultat"
-                          else "${resultats.size} résultats"
+            tvEtat.text = resources.getQuantityString(R.plurals.resultats, resultats.size, resultats.size)
 
             resultats.forEachIndexed { rang, resultat ->
                 conteneurResultats.addView(ligneResultat(activity, resultat, rang))
@@ -9971,7 +9821,7 @@ class SettingsActivity : AppCompatActivity() {
                 setTextColor(Color.parseColor("#1C1C1C"))
             })
 
-            colonne.addView(titreSection(activity, "EN FRANÇAIS", 30))
+            colonne.addView(titreSection(activity, getString(R.string.sa_en_francais), 30))
 
             // Le générateur assemble les acceptions avec « , » ; rien ne lui
             // interdit d'en produire une qui contienne elle-même une virgule.
@@ -10006,7 +9856,7 @@ class SettingsActivity : AppCompatActivity() {
             if (exemples.isNotEmpty()) {
                 colonne.addView(titreSection(
                     activity,
-                    if (exemples.size == 1) "EXEMPLE" else "EXEMPLES",
+                    resources.getQuantityString(R.plurals.fiche_exemples, exemples.size),
                     26
                 ))
                 // Chacune sur son fond, séparées d'un vrai intervalle : à dix
@@ -10056,7 +9906,7 @@ class SettingsActivity : AppCompatActivity() {
             // montre plus « Forschett » et « Forschetten » l'un sous l'autre,
             // la fiche dit qu'ils sont le même mot.
             if (resultat.formes.isNotEmpty()) {
-                colonne.addView(titreSection(activity, "AUTRES FORMES", 26))
+                colonne.addView(titreSection(activity, getString(R.string.sa_autres_formes), 26))
                 colonne.addView(TextView(activity).apply {
                     // Toutes, désormais. Elles étaient plafonnées à dix pour que
                     // « sinn » et ses vingt-deux formes ne poussent pas les
@@ -10076,7 +9926,7 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(0, 30, 0, 0)
 
                 addView(boutonFiche(
-                    activity, "Copier le mot",
+                    activity, getString(R.string.sa_copier_le_mot),
                     Color.parseColor("#1976D2"), Color.WHITE, null
                 ) {
                     copierMot(activity, resultat.mot)
@@ -10086,7 +9936,7 @@ class SettingsActivity : AppCompatActivity() {
                 })
 
                 addView(boutonFiche(
-                    activity, "Voir sur le dictionnaire officiel ↗",
+                    activity, getString(R.string.sa_voir_sur_le_dictionnaire_officiel),
                     Color.WHITE, Color.parseColor("#2C7A8C"), Color.parseColor("#B9D6DD")
                 ) {
                     ouvrirLod(activity, resultat.mot)
@@ -10196,7 +10046,7 @@ class SettingsActivity : AppCompatActivity() {
                     as? android.content.ClipboardManager ?: return
             presse.setPrimaryClip(ClipData.newPlainText("Wierderbuch", mot))
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                Toast.makeText(activity, "« $mot » copié", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.sa_copie, mot), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -10231,7 +10081,7 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             } catch (e: Exception) {
                 Log.e("DictionaryFragment", "Ouverture de lod.lu impossible", e)
-                Toast.makeText(activity, "Impossible d'ouvrir lod.lu", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.sa_impossible_ouvrir_lod_lu), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -10279,30 +10129,36 @@ class SettingsActivity : AppCompatActivity() {
             override fun handleOnBackPressed() = fermerLeJeu()
         }
 
+        /**
+         * [nom] identifie le jeu (il est retenu pour « Rejouer à … ») et reste le
+         * même dans toutes les langues : les sept jeux portent un nom
+         * luxembourgeois. Seule la Boîte de Leitner a un [titre] traduit.
+         */
         private data class Jeu(
             val emoji: String,
             val nom: String,
-            val resume: String,
+            @StringRes val resume: Int,
             val couleur: String,
+            @StringRes val titre: Int? = null,
             val fabrique: () -> Fragment
         )
 
         private val jeux = listOf(
-            Jeu("📚", "Boîte de Leitner", "Révisez vos cartes à intervalle régulier",
-                "#8B4513") { BoiteFragment() },
-            Jeu("🎲", "Wuertsich", "Retrouvez les mots cachés dans la grille",
+            Jeu("📚", "Boîte de Leitner", R.string.sa_revisez_vos_cartes_intervalle_regulier,
+                "#8B4513", titre = R.string.jeu_leitner) { BoiteFragment() },
+            Jeu("🎲", "Wuertsich", R.string.sa_retrouvez_les_mots_caches_dans,
                 "#9C27B0") { WordSearchFragment() },
-            Jeu("🔤", "Wuertmix", "Remettez les lettres dans l'ordre",
+            Jeu("🔤", "Wuertmix", R.string.sa_remettez_les_lettres_dans_ordre,
                 "#1976D2") { WordScrambleFragment() },
-            Jeu("🟩", "Wuertriet", "Devinez le mot de 5 lettres en 6 essais",
+            Jeu("🟩", "Wuertriet", R.string.sa_devinez_le_mot_de_lettres,
                 "#4CAF50") { WuertrietFragment() },
-            Jeu("📝", "Wuertlück", "Complétez la phrase à laquelle il manque un mot",
+            Jeu("📝", "Wuertlück", R.string.sa_completez_la_phrase_laquelle_il,
                 "#FF8C00") { ClozeFragment() },
-            Jeu("🔢", "Zuelwuert", "Écrivez en lettres le résultat d'une multiplication",
+            Jeu("🔢", "Zuelwuert", R.string.sa_ecrivez_en_lettres_le_resultat,
                 "#00897B") { ZuelenFragment() },
-            Jeu("🧩", "Kräizwuert", "Écrivez les mots dans la grille, d'après leur sens",
+            Jeu("🧩", "Kräizwuert", R.string.sa_ecrivez_les_mots_dans_la,
                 "#C2185B") { CrosswordFragment() },
-            Jeu("🔡", "Wuertplaz", "Casez les mots donnés dans la grille vide",
+            Jeu("🔡", "Wuertplaz", R.string.sa_casez_les_mots_donnes_dans,
                 "#00796B") { ChasseCroiseFragment() }
         )
 
@@ -10361,7 +10217,7 @@ class SettingsActivity : AppCompatActivity() {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                 addView(TextView(activity).apply {
-                    text = "‹  Tous les jeux"
+                    text = getString(R.string.sa_tous_les_jeux)
                     textSize = 16f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(Color.parseColor("#1976D2"))
@@ -10387,14 +10243,7 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(4, 0, 4, 6)
             })
             colonne.addView(TextView(activity).apply {
-                text = "Huit façons de travailler son luxembourgeois. La Boîte " +
-                        "de Leitner donne accès à vos cartes étudiées. Les jeux " +
-                        "de vocabulaire donnent la traduction française des " +
-                        "mots, au moment où elle ne livre pas la réponse ; " +
-                        "Zuelwuert porte sur l'écriture des nombres, " +
-                        "Kräizwuert est le seul où l'on écrit soi-même les " +
-                        "mots, et Wuertplaz le seul qui se joue sans connaître " +
-                        "la langue. Tous versent au même carnet."
+                text = getString(R.string.sa_huit_facons_de_travailler_son)
                 textSize = 14f
                 setTextColor(Color.parseColor("#666666"))
                 setLineSpacing(0f, 1.25f)
@@ -10509,7 +10358,7 @@ class SettingsActivity : AppCompatActivity() {
                 })
 
                 addView(TextView(activity).apply {
-                    text = "Ouvrir  ›"
+                    text = getString(R.string.sa_ouvrir)
                     textSize = 14f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(accent)
@@ -10539,9 +10388,8 @@ class SettingsActivity : AppCompatActivity() {
             val ctx = context ?: return
             val total = Carnet.taille(ctx)
             tvCarnetTotal?.text = when (total) {
-                0 -> "Les mots que vous gagnez deviennent des cartes."
-                1 -> "1 carte collectée"
-                else -> "$total cartes collectées"
+                0 -> getString(R.string.sa_les_mots_que_vous_gagnez)
+                else -> resources.getQuantityString(R.plurals.cartes_collectees, total, total)
             }
             // Le décompte est celui de la file, donc plafonné : la bannière
             // annonce ce que la prochaine session contient, jamais l'arriéré.
@@ -10553,22 +10401,21 @@ class SettingsActivity : AppCompatActivity() {
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
-                    text = if (dues == 1) "🔁  1 carte à revoir aujourd'hui"
-                    else "🔁  $dues cartes à revoir aujourd'hui"
+                    text = resources.getQuantityString(R.plurals.cartes_a_revoir_aujourdhui, dues, dues)
                     setTextColor(Color.WHITE)
                 }
             }
             val jeux = Carnet.jeuxRepresentes(ctx)
             tvCarnetDetail?.apply {
                 if (jeux.isEmpty()) {
-                    text = "Les sept jeux y versent."
+                    text = getString(R.string.sa_les_sept_jeux_versent)
                     setTextColor(0xFFCFC2F0.toInt())
                 } else {
                     // Les emojis des jeux qui ont déjà donné une carte : la
                     // collection se lit d'un coup d'œil comme une carte de
                     // progression, sans compter ni classer.
                     text = jeux.joinToString(" ") { it.emoji } +
-                        "   ${jeux.size}/${JeuCarte.JEUX.size} jeux"
+                        getString(R.string.sa_jeux, jeux.size, JeuCarte.JEUX.size)
                     setTextColor(0xFFE8E0FF.toInt())
                 }
             }
@@ -10613,7 +10460,7 @@ class SettingsActivity : AppCompatActivity() {
                     gravity = Gravity.CENTER
                 })
                 addView(TextView(activity).apply {
-                    text = jeu.nom
+                    text = jeu.titre?.let { activity.getString(it) } ?: jeu.nom
                     textSize = 17f
                     setTypeface(null, Typeface.BOLD)
                     gravity = Gravity.CENTER
@@ -10621,7 +10468,7 @@ class SettingsActivity : AppCompatActivity() {
                     setPadding(0, 8, 0, 4)
                 })
                 addView(TextView(activity).apply {
-                    text = jeu.resume
+                    setText(jeu.resume)
                     textSize = 12f
                     gravity = Gravity.CENTER
                     setTextColor(Color.parseColor("#777777"))
@@ -10722,7 +10569,7 @@ class SettingsActivity : AppCompatActivity() {
                 setBackgroundColor(Color.parseColor("#2196F3"))
                 setPadding(16, 14, 16, 14)
                 addView(TextView(activity).apply {
-                    text = if (page == PAGE_GUIDE) "📖  Guide" else "ℹ️  À propos"
+                    text = if (page == PAGE_GUIDE) getString(R.string.sa_guide) else getString(R.string.sa_propos)
                     textSize = 18f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(Color.WHITE)

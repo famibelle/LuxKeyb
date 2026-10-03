@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import androidx.annotation.StringRes
 
 /**
  * Réglages de comportement du clavier, partagés entre l'écran de l'application
@@ -41,6 +42,9 @@ object KeyboardPreferences {
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
+
+    /** La rangée française est coupée par défaut depuis la 30.3.0. */
+    private const val DEFAULT_FRENCH_SUGGESTIONS = false
 
     private fun prefs(context: Context) =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -91,11 +95,11 @@ object KeyboardPreferences {
      * Les crans longs restent pour qui relâche lentement (ACCESSIBILITE.md,
      * point 4) : une popup ouverte sans le vouloir coûte un appui de plus.
      */
-    enum class DelaiAppuiLong(val ms: Long, val libelle: String) {
-        COURT(300L, "Court (0,3 s)"),
-        MOYEN(500L, "Moyen (0,5 s)"),
-        LONG(800L, "Long (0,8 s)"),
-        TRES_LONG(1200L, "Très long (1,2 s)");
+    enum class DelaiAppuiLong(val ms: Long, @StringRes val libelle: Int) {
+        COURT(300L, R.string.delai_court),
+        MOYEN(500L, R.string.delai_moyen),
+        LONG(800L, R.string.delai_long),
+        TRES_LONG(1200L, R.string.delai_tres_long);
 
         companion object {
             val DEFAUT = COURT
@@ -126,9 +130,12 @@ object KeyboardPreferences {
     }
 
     /**
-     * Rangée bleue des propositions en français (v30.1.0). Active par défaut :
-     * un utilisateur l'a trouvée inutile, d'autres s'en servent pour glisser un
-     * mot français dans une phrase luxembourgeoise.
+     * Rangée bleue des propositions en français (v30.1.0). Coupée par défaut
+     * depuis la 30.3.0 (décision du propriétaire, 2026-10-03) : un utilisateur
+     * l'a trouvée inutile, et le clavier y gagne une rangée de hauteur. Qui
+     * glisse des mots français dans ses phrases la rallume dans les réglages.
+     * Le changement vaut aussi pour les installations existantes qui n'ont
+     * jamais touché l'interrupteur, comme pour la disposition en 29.5.0.
      *
      * Ce réglage ne cache que les propositions. La reconnaissance du français
      * reste entière : le correcteur orthographique remplace celui du téléphone
@@ -136,7 +143,7 @@ object KeyboardPreferences {
      * dans les autres applications.
      */
     fun propositionsFrancais(context: Context): Boolean =
-        prefs(context).getBoolean(KEY_FRENCH_SUGGESTIONS, DEFAULT_ENABLED)
+        prefs(context).getBoolean(KEY_FRENCH_SUGGESTIONS, DEFAULT_FRENCH_SUGGESTIONS)
 
     fun setPropositionsFrancais(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_FRENCH_SUGGESTIONS, enabled).apply()

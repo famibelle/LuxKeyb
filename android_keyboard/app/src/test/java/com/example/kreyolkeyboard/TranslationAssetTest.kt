@@ -79,9 +79,16 @@ class TranslationAssetTest {
         return glose.split(",").any { AccentTolerantMatcher.normalize(it.trim()) != motPlie }
     }
 
-    private fun nomPropre(glose: String): Boolean {
-        val acceptions = glose.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        return acceptions.isNotEmpty() && acceptions.all { it.first().isUpperCase() }
+    /**
+     * Ce que TranslationDictionary retire du tirage : les noms propres et les
+     * morceaux de locution (« vum » de « vum selwen »), deux listes de l'actif.
+     */
+    private fun nomsPropres(): Set<String> {
+        val racine = charger()
+        return listOf("noms_propres", "fragments").flatMap { cle ->
+            val liste = racine.getJSONArray(cle)
+            (0 until liste.length()).map { liste.getString(it) }
+        }.toHashSet()
     }
 
     /**
@@ -94,8 +101,11 @@ class TranslationAssetTest {
      * tirables étaient dans ce cas au 2026-09-07, et Wuertriet pouvait
      * demander « Athen » ou « Basel ».
      *
-     * Le critère est celui des générateurs de grilles : le LOD glose en
-     * français, et le français réserve la minuscule aux noms communs.
+     * Le critère est le drapeau `NP` du LOD, porté par l'actif depuis le
+     * 2026-10-03 : un mot est un nom propre quand **tous** les articles qui le
+     * glosent en sont. Il a remplacé « toutes les acceptions en majuscule »,
+     * qui ne valait qu'en français et écartait aussi « Fransous » ou « Staat ».
+     * Les homographes restent : « Stroossen » est aussi le pluriel de rue.
      */
     @Test
     fun `les jeux ne tirent pas de noms propres`() {
@@ -106,15 +116,16 @@ class TranslationAssetTest {
                 .toHashSet()
         }
 
-        for (attendu in listOf("Beetebuerg", "Houwald", "Miersch", "Frankräich")) {
-            val glose = table.optString(attendu, "")
-            if (glose.isEmpty()) continue
-            assertTrue("« $attendu » devrait être vu comme un nom propre", nomPropre(glose))
+        val propresLivres = nomsPropres()
+        for (attendu in listOf("Beetebuerg", "Houwald", "Miersch", "Frankräich", "José", "York",
+                               "vum", "Sophie", "Gréngen")) {
+            if (!table.has(attendu)) continue
+            assertTrue("« $attendu » devrait être vu comme un nom propre", attendu in propresLivres)
         }
-        for (garde in listOf("Haus", "Brout", "Aarbecht", "schaffen")) {
-            val glose = table.optString(garde, "")
-            if (glose.isEmpty()) continue
-            assertFalse("« $garde » n'est pas un nom propre", nomPropre(glose))
+        for (garde in listOf("Haus", "Brout", "Aarbecht", "schaffen",
+                             "Fransous", "Staat", "Internet", "Stroossen", "Polen")) {
+            if (!table.has(garde)) continue
+            assertFalse("« $garde » n'est pas un nom propre", garde in propresLivres)
         }
 
         var tirables = 0
@@ -124,7 +135,7 @@ class TranslationAssetTest {
             val glose = table.getString(forme)
             if (!instructive(forme, glose)) continue
             tirables++
-            if (nomPropre(glose)) propres++
+            if (forme in propresLivres) propres++
         }
         // Le filtre vit dans TranslationDictionary, pas dans l'actif : la table
         // garde ses noms propres, un mot croisé ailleurs affiche toujours sa
@@ -155,13 +166,14 @@ class TranslationAssetTest {
                 .toHashSet()
         }
 
+        val propresLivres = nomsPropres()
         var wuertsich = 0   // grille 8x8 : 3 à 8 lettres
         var wuertmix = 0    // lettres mélangées : 4 à 10 lettres
         var wuertriet = 0   // wordle luxembourgeois : exactement 5 lettres
         for (forme in table.keys()) {
             if (forme !in duDictionnaire) continue
             if (!instructive(forme, table.getString(forme))) continue
-            if (nomPropre(table.getString(forme))) continue
+            if (forme in propresLivres) continue
             if (forme.length in 3..8) wuertsich++
             if (forme.length in 4..10) wuertmix++
             if (forme.length == 5 && forme.all { it.isLetter() }) wuertriet++
@@ -215,5 +227,31 @@ class TranslationAssetTest {
             "seules $gloses des ${cent.size} formes les plus fréquentes sont glosées",
             gloses >= cent.size / 2
         )
+    }
+
+    /**
+     * Les deux jeux à grilles n'y casent aucun nom propre du LOD.
+     *
+     * Les grilles sont construites hors ligne par `generate_crossword.py` et
+     * `generate_chassecroise.py`, qui lisent la même liste `noms_propres` que
+     * l'application. Une grille régénérée avec un actif qui l'aurait perdue
+     * passerait tous les autres tests et caserait de nouveau des communes.
+     */
+    @Test
+    fun `aucune grille ne case un nom propre du LOD`() {
+        val propres = nomsPropres()
+        assertTrue("liste des noms propres quasi vide : ${propres.size}", propres.size >= 1000)
+        for (actif in listOf("luxemburgish_crossword.json", "luxemburgish_chassecroise.json")) {
+            val grilles = JSONObject(File("src/main/assets/$actif").readText()).getJSONArray("grilles")
+            val fautifs = sortedSetOf<String>()
+            for (i in 0 until grilles.length()) {
+                val mots = grilles.getJSONObject(i).getJSONArray("mots")
+                for (j in 0 until mots.length()) {
+                    val forme = mots.getJSONObject(j).getString("f")
+                    if (forme in propres) fautifs.add(forme)
+                }
+            }
+            assertTrue("$actif case des noms propres : $fautifs", fautifs.isEmpty())
+        }
     }
 }

@@ -1,5 +1,8 @@
 package com.example.kreyolkeyboard.zuelen
 
+import androidx.annotation.StringRes
+import com.example.kreyolkeyboard.R
+import com.example.kreyolkeyboard.TexteRessource
 import kotlin.random.Random
 
 /**
@@ -20,7 +23,7 @@ import kotlin.random.Random
 
 enum class ZuelenDifficulty(
     val level: Int,
-    val label: String,
+    @StringRes val label: Int,
     /** Tables tirées, des deux côtés du signe ×. */
     val tables: IntRange,
     /**
@@ -39,15 +42,15 @@ enum class ZuelenDifficulty(
     val leurres: List<String>
 ) {
     FACILE(
-        1, "Facile", 2..10, false, true,
+        1, R.string.niveau_facile, 2..10, false, true,
         listOf("voisin", "allemand", "traitDUnion", "espaces")
     ),
     NORMALE(
-        2, "Normal", 2..10, true, true,
+        2, R.string.niveau_normal, 2..10, true, true,
         listOf("inversion", "allemand", "traitDUnion", "espaces", "finaleIg")
     ),
     DIFFICILE(
-        3, "Difficile", 2..10, true, false,
+        3, R.string.niveau_difficile, 2..10, true, false,
         listOf("eifel", "finaleIg", "accent", "inversion", "allemand")
     );
 
@@ -64,7 +67,7 @@ enum class ZuelenDifficulty(
 data class ZuelenOption(
     val texte: String,
     val juste: Boolean,
-    val raison: String
+    val raison: TexteRessource
 )
 
 data class ZuelenQuestion(
@@ -160,12 +163,12 @@ object ZuelenData {
                 if (options.size >= OPTIONS_PER_QUESTION - 1) break
                 val texte = ZuelenSpeller.enLettres(voisin)
                 if (texte.isEmpty() || !interdits.add(texte)) continue
-                options.add(ZuelenOption(texte, false, "« $texte », c'est $voisin."))
+                options.add(ZuelenOption(texte, false, TexteRessource(R.string.zuelen_cest, texte, voisin)))
             }
         }
 
         options.add(
-            ZuelenOption(juste, true, ZuelenSpeller.decomposition(produit))
+            ZuelenOption(juste, true, ZuelenSpeller.decomposition(produit)!!)
         )
         return ZuelenQuestion(
             gauche, droite, produit, difficulty.montreLeProduit,
@@ -209,22 +212,21 @@ object ZuelenData {
                 if (texte.isEmpty()) return null
                 ZuelenOption(
                     texte, false,
-                    "« $texte », c'est $inverse : en luxembourgeois l'unité " +
-                        "se dit avant la dizaine, comme en allemand."
+                    TexteRessource(R.string.zuelen_inversion, texte, inverse)
                 )
             }
 
             "allemand" -> {
                 val texte = ZuelenSpeller.enAllemand(produit)
                 if (texte.isEmpty() || texte == juste) return null
-                ZuelenOption(texte, false, "« $texte » est l'allemand, pas le luxembourgeois.")
+                ZuelenOption(texte, false, TexteRessource(R.string.zuelen_allemand, texte))
             }
 
             "traitDUnion" -> {
                 if (!compose) return null
                 ZuelenOption(
                     "$tete$liaison-$dizaine", false,
-                    "Les nombres s'écrivent d'un seul tenant, sans trait d'union."
+                    TexteRessource(R.string.zuelen_trait_union)
                 )
             }
 
@@ -232,7 +234,7 @@ object ZuelenData {
                 if (!compose) return null
                 ZuelenOption(
                     "$tete $liaison $dizaine", false,
-                    "Les nombres s'écrivent d'un seul tenant, sans espace."
+                    TexteRessource(R.string.zuelen_espaces)
                 )
             }
 
@@ -244,9 +246,10 @@ object ZuelenData {
                 val fautive = if (liaison == "an") "a" else "an"
                 ZuelenOption(
                     "$tete$fautive$dizaine", false,
-                    "Règle d'Eifel : le n de la liaison " +
-                        (if (liaison == "an") "se maintient" else "tombe") +
-                        " devant « ${dizaine.first()} », donc « $juste »."
+                    TexteRessource(
+                        if (liaison == "an") R.string.zuelen_eifel_maintient else R.string.zuelen_eifel_tombe,
+                        dizaine.first().toString(), juste
+                    )
                 )
             }
 
@@ -257,7 +260,7 @@ object ZuelenData {
                 if (texte == ZuelenSpeller.enAllemand(produit)) return null
                 ZuelenOption(
                     texte, false,
-                    "La finale luxembourgeoise est -eg ; -ig est celle de l'allemand."
+                    TexteRessource(R.string.zuelen_finale_ig)
                 )
             }
 
@@ -268,7 +271,7 @@ object ZuelenData {
                     juste.contains("ä") -> juste.replaceFirst("ä", "a")
                     else -> return null
                 }
-                ZuelenOption(texte, false, "Un accent manque : « $juste ».")
+                ZuelenOption(texte, false, TexteRessource(R.string.zuelen_accent, juste))
             }
 
             "voisin" -> {
@@ -278,7 +281,7 @@ object ZuelenData {
                     if (candidat !in 0..ZuelenSpeller.MAXIMUM) continue
                     val texte = ZuelenSpeller.enLettres(candidat)
                     if (texte.isEmpty()) continue
-                    return ZuelenOption(texte, false, "« $texte », c'est $candidat.")
+                    return ZuelenOption(texte, false, TexteRessource(R.string.zuelen_cest, texte, candidat))
                 }
                 null
             }

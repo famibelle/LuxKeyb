@@ -9,6 +9,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [32.0.0] - 2026-10-03
+
+L'application parle anglais, français, allemand, portugais et luxembourgeois.
+
+### ✨ Nouveautés
+
+- **L'application suit la langue du téléphone.** Écrans, réglages, guide, jeux et carnet s'affichent en anglais, en français, en allemand, en portugais ou en luxembourgeois. Sur un téléphone réglé dans une autre langue, l'application passe en anglais. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois.
+- **Le luxembourgeois, même si le téléphone ne le propose pas.** Depuis Android 13, Paramètres › Applications › Lëtzebuergesch Clavier › Langue permet de choisir la langue de l'application sans changer celle du téléphone.
+- **Les traductions des mots dans votre langue.** Le carnet, le Wierderbuch, le mot du jour et les jeux traduisent les mots luxembourgeois en anglais, en allemand ou en portugais, d'après le dictionnaire officiel du luxembourgeois (lod.lu). Les phrases d'exemple sont aussi traduites en anglais et en allemand quand le Zenter fir d'Lëtzebuerger Sprooch les a publiées. Avec l'application en luxembourgeois, les traductions restent en français.
+- **Kräizwuert et Wuertplaz dans votre langue.** Chaque langue a ses propres grilles : les définitions de Kräizwuert et les sens gagnés dans Wuertplaz sont dans la langue de l'application. En allemand, les définitions trop proches du mot cherché sont écartées, pour que la grille ne se remplisse pas toute seule.
+- **La recherche du Wierderbuch marche dans votre langue** : tapez « house », « Katze » ou « casa » pour trouver le mot luxembourgeois.
+
+### 🐛 Corrections
+
+- **Les jeux ne proposent plus de mots mal traduits.** Certains mots ne figurent dans le dictionnaire officiel que dans une expression, et recevaient la traduction de toute l'expression : « vum » se traduisait « de soi-même », « dout » (mort) « tuer ». Ils ne sont plus tirés dans les jeux.
+- **Des mots ordinaires reviennent dans Wuertplaz**, comme « Fransous », « Staat » ou « Premier », que l'application prenait à tort pour des noms propres.
+- **« À propos » ne parle plus d'« amis créolophones »**, un reste de l'application dont ce clavier est issu.
+
 ## [31.0.0] - 2026-10-02
 
 Le clavier dicte en luxembourgeois. Version destinée au **test ouvert** du
@@ -273,6 +291,45 @@ Première brique de la reconnaissance vocale luxembourgeoise. Sur la branche
   son propre service. Attendez-vous à des erreurs.
 - La latence réelle sur téléphone n'a pas été mesurée : l'émulateur disponible
   est trop lent pour être représentatif.
+## [30.3.0] - 2026-10-03
+
+Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.
+
+### 🔧 Modifié
+
+- **Les propositions en français sont coupées par défaut.** La seconde rangée, en bleu, s'allume dans Réglages du clavier › Suggestions › « Propositions en français ». Sans elle, le clavier est moins haut d'une rangée et laisse plus de place à l'écran. Si vous aviez déjà réglé cet interrupteur, votre choix est conservé. Le correcteur orthographique continue de reconnaître le français.
+
+## [30.2.2] - 2026-10-03
+
+Kräizwuert et le guide suivent la disposition de votre clavier.
+
+### 🐛 Corrections
+
+- **Le clavier de Kräizwuert reprend votre disposition.** Avec « Suisse allemand », la disposition par défaut, il gardait les rangées « Luxembourg » : « é » à droite du « l », là où votre clavier met « ö » et « ä ». Il suit maintenant celle que vous avez choisie dans les réglages du clavier, même si vous en changez en cours de partie.
+- **Le guide montre le clavier tel que vous le voyez.** Ses images sont refaites avec la disposition « Suisse allemand », et il ne dit plus qu'il faut un appui long pour « ë », « ä », « é », « ü » ou « ö » : ces lettres ont leur propre touche.
+
+## [30.2.1] - 2026-10-03
+
+Les fautes de frappe se corrigent plus vite.
+
+### ⚡ Performances
+
+- **Les corrections arrivent presque trois fois plus vite** quand le début du mot tapé n'existe pas, par exemple « Freidg » pour « Freideg ». Sur un téléphone modeste, la petite saccade de la barre de suggestions disparaît. Les corrections proposées restent les mêmes.
+- **Taper vite ne ralentit plus le clavier.** Une recherche rendue inutile par la lettre suivante s'arrête aussitôt.
+
+## [30.2.0] - 2026-10-03
+
+Le correcteur orthographique se trouve dès l'accueil.
+
+### ✨ Améliorations
+
+- **Le correcteur se propose sur l'accueil.** Tant qu'il n'est pas choisi, une carte « Fini le trait rouge sous vos mots » ouvre directement le bon écran d'Android. Android ne permet à aucune application de se choisir elle-même comme correcteur : c'est à vous de le faire, en trois touches. « Plus tard » retire la carte.
+- **L'avertissement d'Android est annoncé.** Il parle de mots de passe et de cartes bancaires, comme pour tout correcteur. Le nôtre ne conserve rien et n'envoie rien.
+- **Un message confirme que c'est fait** quand vous revenez dans l'application.
+
+### 🐛 Corrections
+
+- **La correction orthographique coupée dans Android est reconnue.** L'application annonçait le correcteur actif alors qu'il ne soulignait rien. Elle propose maintenant de la rallumer.
 
 ## [30.1.0] - 2026-10-01
 

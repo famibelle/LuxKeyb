@@ -368,7 +368,8 @@ class SuggestionEngine(private val context: Context) {
          * exactement quand on insère un mot français dans du luxembourgeois.
          *
          * L'aide n'est pas perdue : la rangée bleue propose déjà le mot, elle
-         * l'a trouvé par préfixe. Ce qui disparaît, ce sont les trois
+         * l'a trouvé par préfixe (et, rangée coupée, une barre vide vaut mieux
+         * qu'une barre fausse). Ce qui disparaît, ce sont les trois
          * propositions luxembourgeoises sans rapport qui la surplombaient —
          * `Bechet`, `Deche`, `Mécht` face à `déchet`.
          *
@@ -393,6 +394,12 @@ class SuggestionEngine(private val context: Context) {
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
+    // Vrai si une forme du dictionnaire contient « ß » : seul cas où le second
+    // passage de la correction orthographique peut servir. Aucune aujourd'hui.
+    private var dictionnaireAvecEszett = false
+    // Incrémenté à chaque nouvelle demande de suggestions : une recherche
+    // lancée sous un numéro plus ancien sait qu'elle ne sera pas affichée.
+    @Volatile private var generationFrappe = 0
     // Même contenu que `normalizedWords`, en table de hachage : le correcteur
     // orthographique interroge forme par forme et ne peut pas balayer une liste
     // de 123 000 entrées à chaque mot.
@@ -543,6 +550,7 @@ class SuggestionEngine(private val context: Context) {
         }
         
         suggestionJob?.cancel()
+        generationFrappe++
         suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
                 val dictionarySuggestions = getDictionarySuggestions(input)
@@ -610,6 +618,7 @@ class SuggestionEngine(private val context: Context) {
         }
         
         suggestionJob?.cancel()
+        generationFrappe++
         suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
                 createBilingualSuggestions(input)
@@ -772,6 +781,7 @@ class SuggestionEngine(private val context: Context) {
         }
         
         suggestionJob?.cancel()
+        generationFrappe++
         suggestionJob = suggestionScope.launch {
             val suggestions = withContext(Dispatchers.Default) {
                 val dictionaryMatches = getDictionarySuggestions(input)
@@ -797,6 +807,7 @@ class SuggestionEngine(private val context: Context) {
      */
     fun generateContextualSuggestions() {
         suggestionJob?.cancel()
+        generationFrappe++
         suggestionJob = suggestionScope.launch {
             val predictions = withContext(Dispatchers.Default) {
                 if (wordHistory.isEmpty() || ngramModel.isEmpty()) {
@@ -967,6 +978,7 @@ class SuggestionEngine(private val context: Context) {
 
             dictionary = corpusWords + lodForms.proposables.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+            dictionnaireAvecEszett = dictionary.any { 'ß' in it.first }
             // `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
             // (26 000 chaînes qui n'existaient que pour elle) sont remplacés
             // par un filtre de Bloom livré avec l'actif : 171 Ko contre
@@ -1121,8 +1133,13 @@ class SuggestionEngine(private val context: Context) {
 
         // ✨ Si aucune correspondance par préfixe, essayer la correction
         // orthographique — sauf si le mot tapé est du français reconnu.
+        // La recherche s'abandonne dès qu'une frappe plus récente l'a rendue
+        // inutile : `cancel()` sur la coroutine ne l'interromprait pas, la
+        // boucle ne suspend jamais, et en tapant vite les balayages périmés
+        // s'empilaient sur le processeur derrière celui qui compte.
         if (matches.isEmpty() && devraitCorriger(input, isFrenchWord(input))) {
-            return getSpellCorrectionSuggestions(input)
+            val frappe = generationFrappe
+            return getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
         }
 
         return matches
@@ -1141,7 +1158,10 @@ class SuggestionEngine(private val context: Context) {
      * @param input Le mot saisi par l'utilisateur (potentiellement mal orthographié)
      * @return Liste de (mot, fréquence, distance) triée par pertinence (distance + fréquence)
      */
-    private fun getSpellCorrectionSuggestions(input: String): List<Triple<String, Int, Int>> {
+    private fun getSpellCorrectionSuggestions(
+        input: String,
+        estAnnule: () -> Boolean = { false }
+    ): List<Triple<String, Int, Int>> {
         if (input.length < 3) return emptyList()
         
         // Essayer d'abord avec la normalisation des accents (combinaison puissante)
@@ -1151,7 +1171,8 @@ class SuggestionEngine(private val context: Context) {
             normalizedWords = normalizedWords,
             normalizer = { str -> AccentTolerantMatcher.normalize(str) },
             maxDistance = 2,
-            maxResults = MAX_SUGGESTIONS
+            maxResults = MAX_SUGGESTIONS,
+            estAnnule = estAnnule
         )
         
         // Si on trouve des correspondances normalisées, les retourner
@@ -1159,13 +1180,23 @@ class SuggestionEngine(private val context: Context) {
             Log.d(TAG, "✓ Correction orthographique (normalisée) pour '$input': ${normalizedMatches.take(3).map { it.first }}")
             return normalizedMatches
         }
-        
-        // Sinon, essayer sans normalisation (peut détecter d'autres types d'erreurs)
+
+        // Le passage sans normalisation ne peut rien trouver de plus. La
+        // normalisation remplace chaque caractère par un seul autre (é → e) :
+        // elle ne peut que rapprocher deux mots, jamais les éloigner, donc
+        // rien n'est à distance 2 en brut qui ne le soit aussi une fois replié.
+        // Seul « ß », qui devient deux lettres, échappe à ce raisonnement, et
+        // le dictionnaire n'en contient aucun. Ce second balayage complet
+        // doublait le temps de toutes les frappes sans correction possible :
+        // un nom propre, un mot étranger, un mot en cours.
+        if ('ß' !in input && !dictionnaireAvecEszett) return emptyList()
+
         val directMatches = LevenshteinDistance.findClosestMatches(
             input = input,
             dictionary = dictionary,
             maxDistance = 2,
-            maxResults = MAX_SUGGESTIONS
+            maxResults = MAX_SUGGESTIONS,
+            estAnnule = estAnnule
         )
         
         if (directMatches.isNotEmpty()) {

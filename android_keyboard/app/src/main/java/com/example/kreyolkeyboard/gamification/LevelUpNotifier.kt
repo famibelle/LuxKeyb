@@ -50,7 +50,7 @@ object LevelUpNotifier {
             "Niveau op Lëtzebuergesch",
             NotificationManager.IMPORTANCE_LOW  // silencieux, sans bandeau
         ).apply {
-            description = "Vous prévient quand vous atteignez un nouveau niveau de vocabulaire."
+            description = context.getString(R.string.notif_niveau_description)
             setShowBadge(true)  // c'est cette ligne qui autorise la pastille d'icône
             enableVibration(false)
         }
