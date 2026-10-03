@@ -60,7 +60,6 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
 | 📖 **Un dictionnaire luxembourgeois-français dedans** | ⭐⭐⭐ | ❌ | ❌ |
 | 🎮 **Des jeux pour apprendre des mots** | ⭐⭐⭐ | ❌ | ❌ |
 | ✋ **Écrire en glissant le doigt sur les lettres** | ❌<br>pas encore | ⭐⭐⭐ | ⭐⭐⭐ |
-| 🎤 **Dicter à voix haute en luxembourgeois** | ❌<br>pas encore, en essai | ❌<br>pas en luxembourgeois | ❌<br>pas en luxembourgeois |
 
 </div>
 

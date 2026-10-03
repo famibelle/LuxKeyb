@@ -173,12 +173,14 @@ Sprooch (ministère de la Culture) : le clavier ne les appelle pas.
 
 **Labs** est le canal des versions expérimentales : un APK construit à partir
 d'une branche de travail, pour la faire essayer avant qu'elle n'atteigne la
-version stable. Le détail des essais en cours est sur la page
-[Labs](https://famibelle.github.io/LuxKeyb/labs.html).
+version stable. La dictée vocale y a été essayée avant d'entrer dans la
+version stable avec la 33.0.0 ; la page
+[Labs](https://famibelle.github.io/LuxKeyb/labs.html) raconte désormais son
+fonctionnement.
 
 ### Installer une version Labs
 
-1. Téléchargez l'APK depuis la [préversion `labs`](https://github.com/famibelle/LuxKeyb/releases/tag/labs) (ou depuis la page [Labs](https://famibelle.github.io/LuxKeyb/labs.html) du site, qui affiche le build réellement disponible)
+1. Téléchargez l'APK depuis la [préversion `labs`](https://github.com/famibelle/LuxKeyb/releases/tag/labs) 
 2. Autorisez l'installation depuis cette source, puis installez l'APK
 3. Activez le clavier dans Paramètres → Système → Claviers, choisissez-le comme clavier courant
 4. Ouvrez un champ de texte, touchez le micro et autorisez l'accès au microphone au premier usage

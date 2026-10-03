@@ -6,8 +6,8 @@
  * au-dessus de `luxasr-client.js`, qui porte le protocole.
  *
  * **La voix quitte l'appareil.** C'est le service LuxASR de l'Université du
- * Luxembourg qui transcrit, et non un modèle embarqué comme dans la version
- * publiée du clavier. La dictée n'est donc pas branchée par défaut : elle
+ * Luxembourg qui transcrit, comme dans le clavier publié depuis la 33.0.0.
+ * La dictée n'est donc pas branchée par défaut : elle
  * demande `?asr=1` dans l'adresse, et un consentement explicite avant que le
  * micro ne s'ouvre. Cf. `docs/labs.html`, qui la présente.
  *

@@ -487,8 +487,8 @@ une connexion Internet :
   vous prévient au lieu de vous laisser parler dans le vide.
 
 Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
-[politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et les
-essais en cours sur la page [Labs](labs.html).
+[politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et son
+fonctionnement pas à pas sur la page [Labs](labs.html).
 
 ## Installer sans passer par Google Play
 

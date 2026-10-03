@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title data-i18n="title">Labs · la dictée luxembourgeoise en avant-première</title>
-<meta name="description" content="Version expérimentale du Lëtzebuergesch Clavier avec la dictée vocale luxembourgeoise : parlez, le clavier écrit. La reconnaissance est assurée par le service LuxASR de l'Université du Luxembourg." data-i18n-content="meta-desc">
+<title data-i18n="title">Labs · la dictée luxembourgeoise</title>
+<meta name="description" content="La dictée vocale luxembourgeoise du Lëtzebuergesch Clavier, dans la version stable depuis la 33.0.0 : parlez, le clavier écrit. La reconnaissance est assurée par le service LuxASR de l'Université du Luxembourg." data-i18n-content="meta-desc">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -202,10 +202,11 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
   <p class="eyebrow" data-i18n="eyebrow">Lëtzebuergesch Clavier · Labs</p>
   <h1 data-i18n="h1">Parlez, le clavier écrit 🔬</h1>
   <p class="lead" data-i18n="lead">
-    Labs est l'atelier du clavier : des versions expérimentales, en avance sur
-    la version stable, que vous pouvez essayer avant tout le monde. Celle-ci
-    ajoute la <strong>dictée vocale luxembourgeoise</strong> : vous parlez, et
-    le texte s'écrit au fil de votre phrase.
+    La <strong>dictée vocale luxembourgeoise</strong> est sortie de l'atelier :
+    depuis la version 33.0.0, elle est dans le clavier que tout le monde
+    installe. Vous parlez, et le texte s'écrit au fil de votre phrase. Cette
+    page raconte comment elle marche, où part votre voix, et ce qu'elle vaut,
+    mesuré.
   </p>
 </header>
 
@@ -237,13 +238,13 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <div class="get-main">
       <p class="cta">
         <a class="btn primary"
-           href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard"
+           href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dlabs%26utm_campaign%3Ddictee"
            data-i18n="install-cta">
-          📲 Rejoindre le test sur Google Play
+          📲 Installer depuis Google Play
         </a>
       </p>
       <p class="muted" data-i18n="install-muted">
-        Android 5.0 ou plus récent · test ouvert sur Google Play ·
+        Android 5.0 ou plus récent · version 33.0.0 ou ultérieure ·
         demande les permissions <strong>micro</strong>, <strong>Internet</strong>
         et <strong>état du réseau</strong>
       </p>
@@ -283,9 +284,9 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
   <div class="card">
     <ol class="steps">
       <li data-i18n="step1">
-        <strong>Rejoignez le test</strong> avec le bouton ci-dessus, depuis le
-        téléphone (compte Google requis), puis installez le clavier ou mettez-le
-        à jour depuis Google Play.
+        <strong>Installez le clavier</strong> avec le bouton ci-dessus, depuis
+        le téléphone, ou mettez-le à jour depuis Google Play : la dictée arrive
+        avec la version 33.0.0.
       </li>
       <li data-i18n="step3">
         <strong>Activez le clavier</strong> dans
@@ -540,8 +541,8 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     <li><span class="k" data-i18n="facts-k2">Reconnaissance</span><span class="v" data-i18n="facts-v2">Service LuxASR, Université du Luxembourg</span></li>
     <li><span class="k" data-i18n="facts-k3">Où va votre voix</span><span class="v" data-i18n="facts-v3">À l'Université du Luxembourg, pendant la dictée</span></li>
     <li><span class="k" data-i18n="facts-k4">Connexion</span><span class="v" data-i18n="facts-v4">Indispensable pour dicter ; le micro barré signale son absence</span></li>
-    <li><span class="k" data-i18n="facts-k5">Icône</span><span class="v" data-i18n="facts-v5">Marquée LABS sur l'écran d'accueil</span></li>
-    <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">Test ouvert Google Play, à partir du lien de cette page</span></li>
+    <li><span class="k" data-i18n="facts-k5">Icône</span><span class="v" data-i18n="facts-v5">Celle du clavier, sans marque LABS : c'est la version stable</span></li>
+    <li><span class="k" data-i18n="facts-k6">Installation</span><span class="v" data-i18n="facts-v6">Google Play, version 33.0.0 ou ultérieure</span></li>
     <li><span class="k" data-i18n="facts-k7">Mise à jour</span><span class="v" data-i18n="facts-v7">Par Google Play, comme toute application</span></li>
   </ul>
 </section>
@@ -549,7 +550,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
 <footer class="page">
   <p data-i18n="footer-p1">
     Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
-    Les versions stables sont sur la page <a href="nouveautes.html">Nouveautés</a>.
+    Ce qui change à chaque version est sur la page <a href="nouveautes.html">Nouveautés</a>.
   </p>
   <p>Lëtzebuergesch Clavier</p>
 </footer>
@@ -565,23 +566,23 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
   'use strict';
 
   var EN = {
-    'title': 'Labs · Luxembourgish dictation, early access',
-    'meta-desc': "Experimental build of the Lëtzebuergesch Clavier keyboard with Luxembourgish voice dictation: speak, the keyboard writes. Recognition is provided by the University of Luxembourg's LuxASR service.",
+    'title': 'Labs · Luxembourgish dictation',
+    'meta-desc': "Luxembourgish voice dictation in the Lëtzebuergesch Clavier keyboard, in the stable version since 33.0.0: speak, the keyboard writes. Recognition is provided by the University of Luxembourg's LuxASR service.",
     'eyebrow': 'Lëtzebuergesch Clavier · Labs',
     'h1': 'Speak, the keyboard writes 🔬',
-    'lead': "Labs is the keyboard's workshop: experimental builds, ahead of the stable version, that you can try before everyone else. This one adds <strong>Luxembourgish voice dictation</strong>: you speak, and the text writes itself as your sentence goes.",
+    'lead': "<strong>Luxembourgish voice dictation</strong> has left the workshop: since version 33.0.0 it is in the keyboard everyone installs. You speak, and the text writes itself as your sentence goes. This page tells how it works, where your voice goes, and what it is worth, measured.",
     'thanks-h2': '🎓 Dictation by the University of Luxembourg',
     'thanks-p1': 'Speech recognition is provided by <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish automatic speech recognition service of the <strong>University of Luxembourg</strong>. Its real-time engine is published as open source, <a href="https://github.com/PeterGilles/LuxASRlive">LuxASRlive</a>, under the Apache 2.0 licence.',
     'thanks-p2': "The keyboard sends the sound and shows the text that comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist. During dictation, the sound is processed by their service: the <a href=\"https://luxasr.uni.lu/\">University's data protection policy</a> applies to that part.",
-    'install-cta': '📲 Join the test on Google Play',
-    'install-muted': 'Android 5.0 or later · open test on Google Play · requests the <strong>microphone</strong>, <strong>Internet</strong> and <strong>network state</strong> permissions',
+    'install-cta': '📲 Install from Google Play',
+    'install-muted': 'Android 5.0 or later · version 33.0.0 or later · requests the <strong>microphone</strong>, <strong>Internet</strong> and <strong>network state</strong> permissions',
     'keyboard-h2': 'The keyboard, with its dictation',
     'keyboard-p': "The keyboard below is the <a href=\"simulateur.html\">simulator</a>'s, with dictation already armed. The microphone transcribes Luxembourgish <strong>in real time</strong>, as on the phone; below it, a second panel shows what the service <strong>translates into French</strong>, sentence by sentence.",
     'iframe-title': 'Lëtzebuergesch keyboard, LuxASR dictation with translation',
     'capture-alt': 'Whole phone screen on an Android emulator, dictating into a text message: under the LuxASR banner, the sentence « Moien, mir treffen eis muer um zwou Auer op der Schueberfouer. » appears in three steps, then the microphone closes',
     'capture-figcaption': "On an Android emulator, in the Messages app: the text is written into the bubble as you speak, under the <strong>🌐 LuxASR</strong> banner.",
     'install-h2': 'Install and try it',
-    'step1': '<strong>Join the test</strong> with the button above, from your phone (Google account required), then install or update the keyboard from Google Play.',
+    'step1': '<strong>Install the keyboard</strong> with the button above, from your phone, or update it from Google Play: dictation comes with version 33.0.0.',
     'step3': '<strong>Enable the keyboard</strong> under <code>Settings › System › Keyboards › On-screen keyboard</code>, then pick it as the current keyboard, if needed through the keyboard icon that appears at the bottom of the screen when a text field is open.',
     'step4': '<strong>Dictate.</strong> Open any text field, tap the <strong>microphone</strong> to the right of the suggestion bar. The first time, a screen explains that your voice goes to the University: tap <strong>I agree</strong>, then allow microphone access (“No thanks” leaves dictation switched off). The banner shows <strong>🌐 LuxASR</strong> while listening. No need to tap the microphone again to finish: <strong>dictation stops on its own</strong> two to three seconds after the sentence ends.',
     'deroule-h2': 'What happens when you tap the microphone',
@@ -634,10 +635,10 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'facts-k2': 'Recognition', 'facts-v2': 'LuxASR service, University of Luxembourg',
     'facts-k3': 'Where your voice goes', 'facts-v3': 'To the University of Luxembourg, during dictation',
     'facts-k4': 'Connection', 'facts-v4': 'Required to dictate; the crossed-out microphone signals its absence',
-    'facts-k5': 'Icon', 'facts-v5': 'Marked LABS on the home screen',
-    'facts-k6': 'Installation', 'facts-v6': 'Open test on Google Play, from the link on this page',
+    'facts-k5': 'Icon', 'facts-v5': 'The keyboard’s own, no LABS mark: this is the stable version',
+    'facts-k6': 'Installation', 'facts-v6': 'Google Play, version 33.0.0 or later',
     'facts-k7': 'Updates', 'facts-v7': 'Through Google Play, like any app',
-    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>Stable versions are on the <a href="nouveautes.html">What’s new</a> page.'
+    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>What changes with each version is on the <a href="nouveautes.html">What’s new</a> page.'
   };
 
   var FR = {}; // rempli au premier appel, à partir du HTML tel qu'écrit

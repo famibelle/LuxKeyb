@@ -684,6 +684,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 - Tableau Data Safety : enregistrements vocaux, transmis à l'Université du Luxembourg seulement pendant une dictée
 - Âge minimum fixé à 16 ans
 - La promesse est précisée : ce que vous tapez ne quitte jamais le téléphone ; seule la voix dictée part, et seulement quand vous dictez
+- S'applique à l'application depuis la version 33.0.0, la première version publique à embarquer la dictée
 
 **Version 2.1 (25 août 2026) :**
 - Identité du développeur : Famibelle Médhi, établi au Luxembourg
