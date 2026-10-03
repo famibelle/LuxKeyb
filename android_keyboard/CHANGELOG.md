@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [30.2.1] - 2026-10-03
+
+Les fautes de frappe se corrigent plus vite.
+
+### ⚡ Performances
+
+- **Les corrections arrivent presque trois fois plus vite** quand le début du mot tapé n'existe pas, par exemple « Freidg » pour « Freideg ». Sur un téléphone modeste, la petite saccade de la barre de suggestions disparaît. Les corrections proposées restent les mêmes.
+- **Taper vite ne ralentit plus le clavier.** Une recherche rendue inutile par la lettre suivante s'arrête aussitôt.
+
 ## [30.2.0] - 2026-10-03
 
 Le correcteur orthographique se trouve dès l'accueil.
