@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "30.3.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_suggestions.png",
+        "alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+        "legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+      }
+    ]
+  },
   "30.2.2": {
     "images": [
       {

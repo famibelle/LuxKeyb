@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-03",
- "derniere_version": "30.2.2",
+ "derniere_version": "30.3.0",
  "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "30.3.0",
+   "date": "2026-10-03",
+   "intro": "Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.",
+   "sections": [
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Les propositions en français sont coupées par défaut",
+       "texte": "La seconde rangée, en bleu, s'allume dans Réglages du clavier › Suggestions › « Propositions en français ». Sans elle, le clavier est moins haut d'une rangée et laisse plus de place à l'écran. Si vous aviez déjà réglé cet interrupteur, votre choix est conservé. Le correcteur orthographique continue de reconnaître le français."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_suggestions.png",
+     "alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+     "legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+    }
+   ],
+   "image": "Screenshots/lux_suggestions.png",
+   "image_alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+   "image_legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+  },
   {
    "version": "30.2.2",
    "date": "2026-10-03",
@@ -195,39 +224,6 @@
    "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
    "image_alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
    "image_legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
-  },
-  {
-   "version": "29.4.2",
-   "date": "2026-09-30",
-   "intro": "Les majuscules fonctionnent enfin dans le navigateur.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Dans Chrome et les pages web, la première lettre d'une phrase prend la majuscule",
-       "texte": "Et chaque mot d'un champ de nom (« Jean Paul »). Le clavier ignorait tous les champs web, quoi que demande la page ; il suit maintenant sa demande, et respecte une page qui désactive les majuscules."
-      },
-      {
-       "titre": "Les touches « @ » et « / » ne sont plus bleues sur la page des chiffres",
-       "texte": "Ce bleu n'était voulu que sur la rangée du bas des champs d'adresse, où elles remplacent la virgule et l'apostrophe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_clavier_arobase_slash.png",
-     "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
-     "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
-    }
-   ],
-   "image": "Screenshots/lux_clavier_arobase_slash.png",
-   "image_alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
-   "image_legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
   }
  ]
 }
