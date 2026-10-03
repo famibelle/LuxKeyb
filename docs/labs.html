@@ -53,8 +53,6 @@ a{color:var(--sea);}
 .qr img{display:block;width:170px;height:170px;background:#fff;
   border-radius:10px;padding:7px;box-sizing:border-box;border:1px solid var(--line);}
 .qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
-/* Sur téléphone, on ne scanne pas son propre écran : le bouton suffit. */
-@media (max-width:640px){.qr{display:none;}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
 .card h3{margin-top:0;}
 .card p:last-child{margin-bottom:0;}
@@ -257,8 +255,8 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
              data-i18n-alt="qr-alt">
       </a>
       <figcaption data-i18n="qr-figcaption">
-        <strong>Sur ordinateur ?</strong> Scannez avec votre<br>
-        téléphone Android pour rejoindre le test
+        <strong>Scannez avec un téléphone Android</strong><br>
+        pour rejoindre le test
       </figcaption>
     </figure>
   </div>
@@ -591,7 +589,7 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'thanks-p2': "The keyboard sends the sound and shows the text that comes back: the quality of the dictation is their work. Thanks to their team, without whom this feature wouldn't exist. During dictation, the sound is processed by their service: the <a href=\"https://luxasr.uni.lu/\">University's data protection policy</a> applies to that part.",
     'install-cta': '📲 Join the test on Google Play',
     'qr-alt': 'QR code opening the Lëtzebuergesch Clavier test sign-up on Google Play',
-    'qr-figcaption': '<strong>On a computer?</strong> Scan with your<br>Android phone to join the test',
+    'qr-figcaption': '<strong>Scan with an Android phone</strong><br>to join the test',
     'install-muted': 'Android 5.0 or later · open test on Google Play · requests the <strong>microphone</strong>, <strong>Internet</strong> and <strong>network state</strong> permissions',
     'keyboard-h2': 'The keyboard, with its dictation',
     'keyboard-p': "The keyboard below is the <a href=\"simulateur.html\">simulator</a>'s, with dictation already armed. The microphone transcribes Luxembourgish <strong>in real time</strong>, as on the phone; below it, a second panel shows what the service <strong>translates into French</strong>, sentence by sentence.",
