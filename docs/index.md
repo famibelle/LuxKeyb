@@ -1,5 +1,5 @@
 ---
-title: "Votre téléphone parle enfin luxembourgeois 🇱🇺"
+title: "Votre téléphone écrit enfin en luxembourgeois 🇱🇺"
 description: "Ce n'est pas vous qui écrivez mal le luxembourgeois : c'est votre clavier."
 image: /assets/og/partage.png
 lang: fr
