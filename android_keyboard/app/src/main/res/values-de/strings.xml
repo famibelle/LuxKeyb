@@ -627,4 +627,5 @@
     <string name="langue_traductions">de</string>
     <string name="accueil_glose">hallo</string>
     <string name="accueil_traduction">Hallo, wie geht\'s?</string>
+    <string name="carte_serie">Nr. %1$s · %2$s</string>
 </resources>

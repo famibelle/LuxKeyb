@@ -631,4 +631,5 @@
     <string name="langue_traductions">en</string>
     <string name="accueil_glose">hello</string>
     <string name="accueil_traduction">Hello, how are you?</string>
+    <string name="carte_serie">No. %1$s · %2$s</string>
 </resources>

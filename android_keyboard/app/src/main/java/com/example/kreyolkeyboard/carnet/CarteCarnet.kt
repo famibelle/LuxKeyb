@@ -293,8 +293,10 @@ object CarteCarnet {
         // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
         // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
         // et son nom.
-        val serie = "n° %03d · %s".format(
-            Locale.FRENCH, c.carte.numero, FORMAT_DATE.format(Date(c.carte.premiereFois))
+        val serie = context.getString(
+            R.string.carte_serie,
+            "%03d".format(Locale.ROOT, c.carte.numero),
+            FORMAT_DATE.format(Date(c.carte.premiereFois))
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),

@@ -627,4 +627,5 @@
     <string name="langue_traductions">pt</string>
     <string name="accueil_glose">olá</string>
     <string name="accueil_traduction">Olá, como está?</string>
+    <string name="carte_serie">n.º %1$s · %2$s</string>
 </resources>
