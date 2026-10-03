@@ -214,8 +214,8 @@ et ses vraies suggestions.</em></p>
 <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_suggestions.png" style="width:100%;border-radius:6px;"
-         alt="Barre de suggestions : trois mots luxembourgeois en rouge, deux mots français en bleu, pendant la frappe de « Moi »">
-    <figcaption>Suggestions bilingues</figcaption>
+         alt="Barre de suggestions pendant la frappe de « Moi » : trois mots luxembourgeois en rouge, Moien, Moie et Moies">
+    <figcaption>Suggestions en luxembourgeois</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_accents.png" style="width:100%;border-radius:6px;"
