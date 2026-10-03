@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "32.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_langues.png",
+        "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+        "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+      }
+    ]
+  },
   "30.3.0": {
     "images": [
       {

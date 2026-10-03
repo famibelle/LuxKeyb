@@ -1,9 +1,74 @@
 {
  "genere_le": "2026-10-03",
- "derniere_version": "30.3.0",
+ "derniere_version": "32.0.0",
  "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "32.0.0",
+   "date": "2026-10-03",
+   "intro": "L'application parle anglais, français, allemand, portugais et luxembourgeois.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "L'application suit la langue du téléphone",
+       "texte": "Écrans, réglages, guide, jeux et carnet s'affichent en anglais, en français, en allemand, en portugais ou en luxembourgeois. Sur un téléphone réglé dans une autre langue, l'application passe en anglais. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois."
+      },
+      {
+       "titre": "Le luxembourgeois, même si le téléphone ne le propose pas",
+       "texte": "Depuis Android 13, Paramètres › Applications › Lëtzebuergesch Clavier › Langue permet de choisir la langue de l'application sans changer celle du téléphone."
+      },
+      {
+       "titre": "Les traductions des mots dans votre langue",
+       "texte": "Le carnet, le Wierderbuch, le mot du jour et les jeux traduisent les mots luxembourgeois en anglais, en allemand ou en portugais, d'après le dictionnaire officiel du luxembourgeois (lod.lu). Les phrases d'exemple sont aussi traduites en anglais et en allemand quand le Zenter fir d'Lëtzebuerger Sprooch les a publiées. Avec l'application en luxembourgeois, les traductions restent en français."
+      },
+      {
+       "titre": "Kräizwuert et Wuertplaz dans votre langue",
+       "texte": "Chaque langue a ses propres grilles : les définitions de Kräizwuert et les sens gagnés dans Wuertplaz sont dans la langue de l'application. En allemand, les définitions trop proches du mot cherché sont écartées, pour que la grille ne se remplisse pas toute seule."
+      },
+      {
+       "titre": "La recherche du Wierderbuch marche dans votre langue",
+       "texte": "Tapez « house », « Katze » ou « casa » pour trouver le mot luxembourgeois."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Les jeux ne proposent plus de mots mal traduits",
+       "texte": "Certains mots ne figurent dans le dictionnaire officiel que dans une expression, et recevaient la traduction de toute l'expression : « vum » se traduisait « de soi-même », « dout » (mort) « tuer ». Ils ne sont plus tirés dans les jeux."
+      },
+      {
+       "titre": "Des mots ordinaires reviennent dans Wuertplaz",
+       "texte": "Comme « Fransous », « Staat » ou « Premier », que l'application prenait à tort pour des noms propres."
+      },
+      {
+       "titre": "« À propos » ne parle plus d'« amis créolophones »",
+       "texte": "Un reste de l'application dont ce clavier est issu."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_langues.png",
+     "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+     "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+    }
+   ],
+   "image": "Screenshots/lux_langues.png",
+   "image_alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+   "image_legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+  },
   {
    "version": "30.3.0",
    "date": "2026-10-03",
@@ -174,56 +239,6 @@
    "image": "Screenshots/lux_propositions_francais.png",
    "image_alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
    "image_legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
-  },
-  {
-   "version": "29.5.0",
-   "date": "2026-10-01",
-   "intro": "Le clavier s'ouvre en disposition Suisse allemand, et les accents arrivent plus vite.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Nouvelle disposition par défaut : Suisse allemand",
-       "texte": "Comme sur le clavier physique du même nom, « ü » est à droite du « p », « ö » et « ä » à droite du « l », et « é » et « ë » encadrent la barre d'espace. Les rangées comptent onze touches au lieu de dix. Ce changement s'applique aussi à la mise à jour."
-      },
-      {
-       "titre": "L'ancienne disposition reste au choix",
-       "texte": "Dans Réglages du clavier › Disposition, sous le nom « Luxembourg » : dix touches par rangée, un peu plus larges, « é » à droite du « l », « ü » et « ö » en appui long."
-      },
-      {
-       "titre": "Les accents s'ouvrent en 0,3 seconde",
-       "texte": "Il fallait jusqu'ici près d'une seconde de pression pour obtenir « ü »."
-      },
-      {
-       "titre": "Le délai d'appui long se règle",
-       "texte": "Dans Réglages du clavier › Appui long : court (0,3 s, par défaut), moyen (0,5 s), long (0,8 s) ou très long (1,2 s). Les délais longs servent à qui relâche lentement le doigt et voit les accents s'ouvrir sans le vouloir."
-      },
-      {
-       "titre": "Les couleurs de peau des emojis s'ouvrent plus vite",
-       "texte": "Il suffit de rester appuyé sur l'emoji, sans la demi-seconde d'attente qui s'y ajoutait."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
-     "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
-     "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
-    },
-    {
-     "image": "Screenshots/lux_appui_long_reglage.png",
-     "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
-     "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
-    }
-   ],
-   "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
-   "image_alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
-   "image_legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
   }
  ]
 }
