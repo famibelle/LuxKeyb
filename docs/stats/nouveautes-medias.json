@@ -1,6 +1,6 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
-  "32.1.0": {
+  "33.0.0": {
     "images": [
       {
         "image": "Screenshots/lux_dictee_telephone.gif",

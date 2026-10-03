@@ -1,13 +1,13 @@
 {
  "genere_le": "2026-10-03",
- "derniere_version": "32.1.0",
+ "derniere_version": "33.0.0",
  "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "32.1.0",
+   "version": "33.0.0",
    "date": "2026-10-03",
-   "intro": "Le clavier dicte en luxembourgeois.",
+   "intro": "Le clavier dicte en luxembourgeois : une version majeure pour la dictée vocale.",
    "sections": [
     {
      "emoji": "✨",
