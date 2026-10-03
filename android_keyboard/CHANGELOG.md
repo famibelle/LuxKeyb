@@ -9,6 +9,24 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [32.0.0] - 2026-10-03
+
+L'application parle anglais, français, allemand, portugais et luxembourgeois.
+
+### ✨ Nouveautés
+
+- **L'application suit la langue du téléphone.** Écrans, réglages, guide, jeux et carnet s'affichent en anglais, en français, en allemand, en portugais ou en luxembourgeois. Sur un téléphone réglé dans une autre langue, l'application passe en anglais. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois.
+- **Le luxembourgeois, même si le téléphone ne le propose pas.** Depuis Android 13, Paramètres › Applications › Lëtzebuergesch Clavier › Langue permet de choisir la langue de l'application sans changer celle du téléphone.
+- **Les traductions des mots dans votre langue.** Le carnet, le Wierderbuch, le mot du jour et les jeux traduisent les mots luxembourgeois en anglais, en allemand ou en portugais, d'après le dictionnaire officiel du luxembourgeois (lod.lu). Les phrases d'exemple sont aussi traduites en anglais et en allemand quand le Zenter fir d'Lëtzebuerger Sprooch les a publiées. Avec l'application en luxembourgeois, les traductions restent en français.
+- **Kräizwuert et Wuertplaz dans votre langue.** Chaque langue a ses propres grilles : les définitions de Kräizwuert et les sens gagnés dans Wuertplaz sont dans la langue de l'application. En allemand, les définitions trop proches du mot cherché sont écartées, pour que la grille ne se remplisse pas toute seule.
+- **La recherche du Wierderbuch marche dans votre langue** : tapez « house », « Katze » ou « casa » pour trouver le mot luxembourgeois.
+
+### 🐛 Corrections
+
+- **Les jeux ne proposent plus de mots mal traduits.** Certains mots ne figurent dans le dictionnaire officiel que dans une expression, et recevaient la traduction de toute l'expression : « vum » se traduisait « de soi-même », « dout » (mort) « tuer ». Ils ne sont plus tirés dans les jeux.
+- **Des mots ordinaires reviennent dans Wuertplaz**, comme « Fransous », « Staat » ou « Premier », que l'application prenait à tort pour des noms propres.
+- **« À propos » ne parle plus d'« amis créolophones »**, un reste de l'application dont ce clavier est issu.
+
 ## [30.3.0] - 2026-10-03
 
 Le clavier s'ouvre avec une seule rangée de suggestions, en luxembourgeois.
