@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapShader
@@ -183,8 +184,8 @@ internal class BoiteLeitner(context: Context) : View(context) {
             pileParCasier[i].addAll(r)
         }
         contentDescription = buildString {
-            append("Boîte de révision, sept casiers, $total carte")
-            if (total > 1) append("s")
+            append(context.getString(R.string.boite_description,
+                context.resources.getQuantityString(R.plurals.cartes, total, total)))
             append(". ")
             append(
                 if (aRevoir > 0) "${libelleRevision()}."
@@ -254,11 +255,11 @@ internal class BoiteLeitner(context: Context) : View(context) {
      */
     private fun libelleRevision(): String {
         val n = minOf(aRevoir, Widderhuelen.PLAFOND_SESSION)
-        return if (n == 1) "Réviser 1 carte" else "Réviser $n cartes"
+        return context.resources.getQuantityString(R.plurals.reviser_cartes, n, n)
     }
 
     private fun libelleAJour(): String =
-        if (prochainDans < 0) "Tout est acquis" else "Tout est à jour"
+        context.getString(if (prochainDans < 0) R.string.boite_tout_acquis else R.string.boite_a_jour)
 
     /**
      * Quand revenir. Une plaque « rien à revoir » sans date est un bouton mort :
@@ -267,12 +268,12 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private fun libelleProchaine(): String? {
         if (prochainDans < 0) return null
         val quand = when (prochainDans) {
-            1 -> "demain"
-            2 -> "après-demain"
-            else -> "dans $prochainDans jours"
+            1 -> context.getString(R.string.boite_demain)
+            2 -> context.getString(R.string.boite_apres_demain)
+            else -> context.resources.getQuantityString(R.plurals.boite_dans_jours, prochainDans, prochainDans)
         }
-        val cartes = if (prochainCombien == 1) "1 carte" else "$prochainCombien cartes"
-        return "$cartes $quand"
+        val cartes = context.resources.getQuantityString(R.plurals.cartes, prochainCombien, prochainCombien)
+        return context.getString(R.string.boite_prochaine, cartes, quand)
     }
 
     // La boîte prend toute la hauteur que son parent lui donne : ouverte depuis
@@ -627,8 +628,8 @@ internal class BoiteLeitner(context: Context) : View(context) {
         val pas = sx(uCasier[1][0], vAvant / 2f) - sx(uCasier[0][0], vAvant / 2f)
 
         val rythmes = Array(CASIERS) { i ->
-            if (i >= Widderhuelen.BOITE_ACQUISE) "★ acquis"
-            else rythmeCourt(Widderhuelen.INTERVALLES[i])
+            if (i >= Widderhuelen.BOITE_ACQUISE) context.getString(R.string.boite_acquis_court)
+            else rythmeCourt(context, Widderhuelen.INTERVALLES[i])
         }
         legende.typeface = Typeface.DEFAULT
         ajuster(legende, minOf(px(11f), bandeau * 0.26f), rythmes.toList(), pas * 0.94f)
@@ -649,7 +650,7 @@ internal class BoiteLeitner(context: Context) : View(context) {
         val fond = sy(V_ARRIERE)
         val hautFond = fond - yAr
         val largeurFond = sx(1f, 1f) - sx(0f, 1f)
-        val regle = "Bonne réponse : la carte avance et revient plus tard  →"
+        val regle = context.getString(R.string.boite_regle)
         legende.typeface = Typeface.DEFAULT_BOLD
         ajuster(legende, minOf(px(12.5f), hautFond * 0.5f), listOf(regle), largeurFond * 0.9f)
         val cy = yAr + hautFond / 2f - (legende.descent() + legende.ascent()) / 2f
@@ -957,8 +958,8 @@ internal fun etiquetteCasier(ctx: Context, boite: Int, combien: Int, dues: Int):
             layoutParams = LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
             )
-            text = if (acquis) "Acquis"
-            else "Revient dans ${rythmeLong(Widderhuelen.INTERVALLES[boite])}"
+            text = if (acquis) ctx.getString(R.string.boite_acquis)
+            else ctx.getString(R.string.boite_revient_dans, rythmeLong(ctx, Widderhuelen.INTERVALLES[boite]))
             textSize = 14f
             setTypeface(null, Typeface.BOLD)
             setTextColor(if (vide) Color.parseColor("#9E9E9E") else accent)
@@ -966,7 +967,7 @@ internal fun etiquetteCasier(ctx: Context, boite: Int, combien: Int, dues: Int):
         addView(TextView(ctx).apply {
             text = when {
                 vide -> "—"
-                dues > 0 -> "$combien · $dues à revoir"
+                dues > 0 -> ctx.getString(R.string.boite_a_revoir, combien.toString(), dues)
                 else -> "$combien"
             }
             textSize = 13f
@@ -1009,13 +1010,13 @@ internal fun etiquetteCasier(ctx: Context, boite: Int, combien: Int, dues: Int):
  * d'intervalles retouchée laisserait sinon sept libellés qui mentent, sans rien
  * casser au passage.
  */
-internal fun rythmeLong(jours: Int): String {
+internal fun rythmeLong(context: Context, jours: Int): String {
     val (n, unite) = arrondiRythme(jours)
-    return when (unite) {
-        UniteRythme.JOUR -> if (n == 1) "1 jour" else "$n jours"
-        UniteRythme.SEMAINE -> if (n == 1) "1 semaine" else "$n semaines"
-        UniteRythme.MOIS -> "$n mois"
-    }
+    return context.resources.getQuantityString(when (unite) {
+        UniteRythme.JOUR -> R.plurals.rythme_jours
+        UniteRythme.SEMAINE -> R.plurals.rythme_semaines
+        UniteRythme.MOIS -> R.plurals.rythme_mois
+    }, n, n)
 }
 
 /**
@@ -1027,19 +1028,19 @@ internal fun rythmeLong(jours: Int): String {
  * ouvert : deux chiffres pour le même casier, dont le joueur ne peut deviner
  * qu'ils désignent la même chose.
  */
-internal fun rythmeCourt(jours: Int): String {
+internal fun rythmeCourt(context: Context, jours: Int): String {
     val (n, unite) = arrondiRythme(jours)
-    return when (unite) {
-        UniteRythme.JOUR -> if (n == 1) "1 jour" else "$n jours"
-        UniteRythme.SEMAINE -> "$n sem."
-        UniteRythme.MOIS -> "$n mois"
-    }
+    return context.resources.getQuantityString(when (unite) {
+        UniteRythme.JOUR -> R.plurals.rythme_jours_court
+        UniteRythme.SEMAINE -> R.plurals.rythme_semaines_court
+        UniteRythme.MOIS -> R.plurals.rythme_mois_court
+    }, n, n)
 }
 
-private enum class UniteRythme { JOUR, SEMAINE, MOIS }
+internal enum class UniteRythme { JOUR, SEMAINE, MOIS }
 
 /** Arrondi à la semaine ou au mois : « 2 semaines » pour seize jours dit le rythme, et le rythme est tout ce qu'on lit là. */
-private fun arrondiRythme(jours: Int): Pair<Int, UniteRythme> = when {
+internal fun arrondiRythme(jours: Int): Pair<Int, UniteRythme> = when {
     jours <= 1 -> 1 to UniteRythme.JOUR
     jours < 7 -> jours to UniteRythme.JOUR
     jours < 30 -> (jours + 3) / 7 to UniteRythme.SEMAINE

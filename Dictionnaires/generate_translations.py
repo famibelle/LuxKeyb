@@ -76,6 +76,18 @@ CHEMIN_EXEMPLES = RACINE_ASSETS / "luxemburgish_exemples.json"
 CHEMIN_LOD_IDS = RACINE_ASSETS / "luxemburgish_lod_ids.json"
 CHEMIN_CATEGORIES = RACINE_ASSETS / "luxemburgish_categories.json"
 CHEMIN_FORMES = RACINE_ASSETS / "luxemburgish_lod_forms.json"
+
+# Les autres langues de l'interface. Le français garde les actifs historiques
+# (luxemburgish_translations.json, et les traductions d'exemples dans
+# luxemburgish_exemples.json) ; chacune de celles-ci a son propre fichier, que
+# l'application ne charge que si c'est la langue du téléphone. Le LOD glose
+# ces trois langues pour 98 à 99,7 % de ses sens (l'anglais 95 %), le corpus
+# du ZLS traduit ses phrases en allemand et en anglais, pas en portugais.
+LANGUES_SUPPLEMENTAIRES = ("de", "en", "pt")
+
+
+def chemin_traductions(langue):
+    return RACINE_ASSETS / f"luxemburgish_translations_{langue}.json"
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
 # Nombre maximal d'acceptions gardées par mot. Une seule glose ampute
@@ -118,8 +130,8 @@ LONGUEUR_MIN_EXEMPLE = 15
 MARQUES_ECARTEES = {"EGS", "VULG", "PEJ"}
 
 
-def lire_traductions(xml_articles, verbeux=True):
-    """id d'article → (lemme, nom propre ?, gloses françaises).
+def lire_traductions(xml_articles, verbeux=True, langue="fr"):
+    """id d'article → (lemme, nom propre ?, gloses dans [langue], le français par défaut).
 
     Deux tris qui changent ce que le joueur lira en premier :
 
@@ -147,7 +159,7 @@ def lire_traductions(xml_articles, verbeux=True):
             except ValueError:
                 rang = 0
             for cible in sens.findall("targetLanguage"):
-                if cible.get("lang") != "fr":
+                if cible.get("lang") != langue:
                     continue
                 glose = (cible.findtext("translation") or "").strip()
                 if glose and len(glose) <= LONGUEUR_MAX_GLOSE:
@@ -163,7 +175,7 @@ def lire_traductions(xml_articles, verbeux=True):
 
     if verbeux:
         propres = sum(1 for _, propre, _ in par_article.values() if propre)
-        print(f"   📖 {len(par_article)} articles glosés en français "
+        print(f"   📖 {len(par_article)} articles glosés ({langue}) "
               f"(dont {propres} noms propres)")
     return par_article
 
@@ -395,6 +407,51 @@ def gloser(forme, par_graphie, par_graphie_min, par_article):
     return gloses or None
 
 
+def est_nom_propre_lod(forme, par_graphie, par_graphie_min, par_article):
+    """Vrai si **tous** les articles glosés qu'atteint la forme sont des noms propres.
+
+    C'est le repérage des noms propres depuis le 2026-10-03, et il remplace la
+    règle « toutes les acceptions commencent par une majuscule », qui ne tenait
+    qu'en français : l'allemand capitalise tous ses noms (« Joer » → Jahr
+    passait pour un nom propre, 9 905 formes sur 20 640), l'anglais ses jours,
+    ses mois et « I ». Le drapeau `NP` du LOD, lui, ne dépend d'aucune langue.
+
+    « Tous » et non « le premier » : « Stroossen » mène à la commune de
+    Strassen, dont c'est le lemme, et à « Strooss » (rue), dont c'est le
+    pluriel ; « Polen » à la Pologne et à « Pol » (pôle). Le premier article ne
+    dirait que la commune et le pays.
+
+    Mesuré sur le français, contre l'ancienne règle : 778 formes contre 923,
+    758 en commun. Elle rend au jeu « Staat », « Internet », « Fransous »,
+    « Amerikaner », que l'ancienne écartait à tort, et attrape en plus
+    « Mëttelmier » ou « Kongo », qu'elle laissait passer.
+    """
+    identifiants = [i for i in articles_tries(forme, par_graphie, par_graphie_min, par_article)
+                    if i in par_article]
+    return bool(identifiants) and all(par_article[i][1] for i in identifiants)
+
+
+def est_fragment_lod(forme, par_graphie, par_graphie_min, par_article):
+    """Vrai si la forme n'atteint le LOD que comme morceau d'une locution.
+
+    Le LOD indexe sous « vum » l'article « vum selwen », sous « dout »
+    « dout maachen », sous « Gréngen » « Gréngen Zeisel » : la glose de la
+    forme est alors celle de la locution, et elle est fausse pour le mot seul
+    — « vum » se glosait « de soi-même », « dout » (mort) « tuer », « Gréngen »
+    « tarin des aulnes ». 189 formes du dictionnaire sont dans ce cas.
+
+    La glose reste dans la table : un mot croisé ailleurs l'affiche toujours,
+    et c'est bien le sens de la locution. Les jeux, eux, ne tirent pas ces
+    formes. Les noms propres sont exclus d'ici, ils ont leur propre liste.
+    """
+    identifiants = [i for i in articles_tries(forme, par_graphie, par_graphie_min, par_article)
+                    if i in par_article]
+    return (bool(identifiants)
+            and all(" " in par_article[i][0] and par_article[i][0] != forme
+                    for i in identifiants)
+            and not all(par_article[i][1] for i in identifiants))
+
+
 def _plier(texte):
     """Minuscules sans diacritiques. Miroir de `AccentTolerantMatcher.normalize`."""
     decompose = unicodedata.normalize("NFD", texte.lower())
@@ -462,6 +519,10 @@ def main():
     # le jeu d'évaluation de la prédiction, rien n'en entre dans le modèle.
     print("\n🔎 Corpus de traduction du ZLS")
     traduction_de = {}
+    # Le même segment dans les autres langues du corpus : les phrases
+    # retenues pour la fiche sont choisies une fois, sur le français, et
+    # chaque langue y cherche ensuite sa propre traduction.
+    traductions_zls = {"de": {}, "en": {}}
     try:
         conflits = 0
         for segment in zls_source.segments(arguments.hors_ligne):
@@ -473,6 +534,10 @@ def main():
                 conflits += 1
                 continue
             traduction_de[cle] = francais
+            for langue, table_zls in traductions_zls.items():
+                autre = (segment.get(langue) or "").strip()
+                if autre:
+                    table_zls.setdefault(cle, autre)
         print(f"   🇫🇷 {len(traduction_de)} segments traduits "
               f"({conflits} doublons divergents, premier gardé)")
     except Exception as erreur:
@@ -537,6 +602,13 @@ def main():
         print(f"   ✅ {glosees_lod} formes LOD glosées en plus "
               f"(sur {len(formes_lod)} apportées au clavier)")
 
+    noms_propres = sorted(f for f in table
+                          if est_nom_propre_lod(f, par_graphie, par_graphie_min, par_article))
+    print(f"   🏛️ {len(noms_propres)} formes glosées sont des noms propres pour le LOD")
+    fragments = sorted(f for f in table
+                       if est_fragment_lod(f, par_graphie, par_graphie_min, par_article))
+    print(f"   🧩 {len(fragments)} formes ne sont que des morceaux de locution")
+
     # Les jeux ne tirent que parmi les formes dont la glose apprend quelque
     # chose : si l'une de ces réserves se vide, le jeu correspondant se
     # retrouve sans mots et l'échec est silencieux à l'écran. On les compte
@@ -544,8 +616,10 @@ def main():
     # `TranslationDictionary.gloseInstructive`, sinon le chiffre annoncé ne
     # serait pas celui que le jeu voit.
     formes_dictionnaire = {forme for forme, _ in dictionnaire}
+    ensemble_propres = set(noms_propres) | set(fragments)
     instructives = [f for f, glose in table.items()
-                    if f in formes_dictionnaire and _instructive(f, glose)]
+                    if f in formes_dictionnaire and _instructive(f, glose)
+                    and f not in ensemble_propres]
     glosees_dico = sum(1 for f in table if f in formes_dictionnaire)
     print(f"   💡 {len(instructives)} formes du dictionnaire dont la glose ne répète "
           f"pas le mot ({glosees_dico - len(instructives)} emprunts ou toponymes "
@@ -688,6 +762,12 @@ def main():
         "attribution": ATTRIBUTION,
         "count": len(table),
         "translations": table,
+        # Les formes que les jeux ne tirent pas : voir est_nom_propre_lod. La
+        # table garde leur glose, un mot croisé ailleurs reste traduit.
+        "noms_propres": noms_propres,
+        # Les formes que le LOD ne connaît que dans une locution : voir
+        # est_fragment_lod. Même traitement que les noms propres.
+        "fragments": fragments,
     }
 
     sauvegarder_precedent(arguments.sortie)
@@ -784,6 +864,74 @@ def main():
         encoding="utf-8")
     taille = CHEMIN_CATEGORIES.stat().st_size / 1024
     print(f"💾 {CHEMIN_CATEGORIES.name} — {taille:.0f} Ko")
+
+    # Les autres langues de l'interface : même appariement, même ordre, mêmes
+    # formes, seules les gloses changent. Les familles, les phrases d'exemple,
+    # les identifiants d'article et les catégories restent ceux du français :
+    # ils ne dépendent pas de la langue de la glose.
+    for langue in LANGUES_SUPPLEMENTAIRES:
+        print(f"\n🌍 Gloses en {langue}")
+        par_article_l = lire_traductions(xml_articles, langue=langue)
+        table_l = OrderedDict()
+        for forme in [f for f, _ in dictionnaire] + formes_lod:
+            gloses = gloser(forme, par_graphie, par_graphie_min, par_article_l)
+            if gloses:
+                table_l[forme] = ", ".join(gloses)
+        propres_l = sorted(f for f in table_l if est_nom_propre_lod(
+            f, par_graphie, par_graphie_min, par_article_l))
+        fragments_l = sorted(f for f in table_l if est_fragment_lod(
+            f, par_graphie, par_graphie_min, par_article_l))
+        dico_l = sum(1 for f in table_l if f in formes_dictionnaire)
+        print(f"   ✅ {len(table_l)} formes glosées, dont {dico_l} du dictionnaire "
+              f"({100 * dico_l / max(1, len(dictionnaire)):.1f} %) ; "
+              f"{len(propres_l)} noms propres")
+
+        # Les traductions d'exemples : celles du ZLS dans cette langue, pour
+        # exactement les phrases dont le français est affiché. Même règle
+        # d'affichage que le français (voir lire_exemples), et rien d'autre :
+        # le portugais, que le corpus ne traduit pas, n'en a aucune, et la
+        # carte n'affiche alors pas de traduction plutôt qu'une traduction
+        # dans une autre langue que celle de l'interface.
+        table_zls = traductions_zls.get(langue, {})
+        exemples_l = OrderedDict()
+        for mot, phrases in exemples.items():
+            francaises = traductions_exemples.get(mot)
+            if not francaises:
+                continue
+            alignees = [table_zls.get(cle_de_comparaison(phrase), "") if fr else ""
+                        for phrase, fr in zip(phrases, francaises)]
+            if any(alignees):
+                exemples_l[mot] = alignees
+        print(f"   💬 {len(exemples_l)} mots dont un exemple est traduit")
+
+        if arguments.strict and dico_l < 15000:
+            print(f"❌ --strict : seulement {dico_l} formes du dictionnaire glosées en {langue}")
+            return 1
+        if arguments.strict and langue in traductions_zls and len(exemples_l) < 2000:
+            print(f"❌ --strict : seulement {len(exemples_l)} exemples traduits en {langue}")
+            return 1
+
+        contenu_l = {
+            "version": contenu["version"],
+            "generated": contenu["generated"],
+            "source": contenu["source"],
+            "licence": contenu["licence"],
+            "attribution": ATTRIBUTION + ([zls_source.ATTRIBUTION] if exemples_l else []),
+            "langue": langue,
+            "count": len(table_l),
+            "translations": table_l,
+            "noms_propres": propres_l,
+            "fragments": fragments_l,
+            "exemples_traductions": exemples_l,
+        }
+        chemin = chemin_traductions(langue)
+        sauvegarder_precedent(chemin)
+        chemin.write_text(
+            json.dumps(contenu_l, ensure_ascii=False, indent=None,
+                       separators=(",", ":")),
+            encoding="utf-8")
+        print(f"💾 {chemin.name} — {chemin.stat().st_size / 1024:.0f} Ko")
+
     print("✅ Terminé")
     return 0
 

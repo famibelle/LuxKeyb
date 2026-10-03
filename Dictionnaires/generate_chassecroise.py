@@ -76,6 +76,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from LuxembourgishComplet import _classe_de_casse
+import generate_crossword
 from generate_crossword import (
     ALPHABET,
     ESSAIS_PAR_GRILLE,
@@ -93,7 +94,7 @@ from generate_crossword import (
     _suites,
     charger_actifs,
     sans_noms_propres,
-    est_nom_propre,
+    est_nom_propre_lod,
 )
 
 if sys.platform.startswith('win'):
@@ -180,7 +181,7 @@ def construire_vivier(dico, table):
     nom propre — moins l'exigence que la glose ne contienne pas le mot, plus un
     plancher de fréquence unique.
 
-    Le refus des noms propres passe par [est_nom_propre], partagé avec
+    Le refus des noms propres passe par [est_nom_propre_lod], partagé avec
     Kräizwuert : c'est le même défaut des deux côtés, et la livraison du
     2026-09-07 casait ici 115 communes, pays et prénoms. Un chassé-croisé de
     noms de localités n'apprend rien — le mot est donné, et la récompense
@@ -217,12 +218,13 @@ def construire_vivier(dico, table):
             rejets["hors alphabet"] += 1
             continue
 
-        glose = table.get(mot) or table.get(mot.lower())
+        cle = mot if mot in table else mot.lower()
+        glose = table.get(cle)
         if not glose:
             rejets["sans glose"] += 1
             continue
 
-        if est_nom_propre(glose):
+        if est_nom_propre_lod(cle):
             rejets["nom propre"] += 1
             continue
 
@@ -509,7 +511,16 @@ def sauvegarder(grilles, attribution_lod):
 
 
 def main():
+    global CHEMIN_GRILLES
     strict = "--strict" in sys.argv
+    # Même langue que Kräizwuert : la récompense est la glose de cette langue,
+    # et les noms propres sont ceux du LOD dans cette langue. Les grilles
+    # dépendent donc de la langue, puisque leur vivier en dépend.
+    langue = generate_crossword.langue_demandee()
+    generate_crossword.regler_langue(langue)
+    if langue != "fr":
+        CHEMIN_GRILLES = RACINE_ASSETS / f"luxemburgish_chassecroise_{langue}.json"
+    print(f"Langue des récompenses : {langue}")
 
     print("🇱🇺 WUERTPLAZ — GÉNÉRATION DES GRILLES DE CHASSÉ-CROISÉ 🇱🇺")
     print("=" * 70)

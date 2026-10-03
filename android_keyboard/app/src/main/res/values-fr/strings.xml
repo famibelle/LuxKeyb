@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Français -->
+    <string name="keyboard_description">Clavier luxembourgeois avec suggestions de mots et accents</string>
+    <string name="settings_title">Paramètres Lëtzebuergesch Clavier</string>
+    <string name="spell_checker_name">Correcteur Lëtzebuergesch</string>
+    <string name="spellchecker_name">Correcteur Lëtzebuergesch • Luxembourg</string>
+    <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxembourg</string>
+    <string name="disposition_suisse_allemand">Suisse allemand (ü, ö et ä à droite)</string>
+    <string name="disposition_luxembourg">Luxembourg (é, ä et ë en touches)</string>
+    <string name="theme_systeme">Comme le téléphone</string>
+    <string name="theme_clair">Toujours clair</string>
+    <string name="theme_sombre">Toujours sombre</string>
+    <string name="delai_court">Court (0,3 s)</string>
+    <string name="delai_moyen">Moyen (0,5 s)</string>
+    <string name="delai_long">Long (0,8 s)</string>
+    <string name="delai_tres_long">Très long (1,2 s)</string>
+    <string name="retour">Retour</string>
+    <string name="ks_titre">Réglages du clavier</string>
+    <string name="ks_apparence">Apparence</string>
+    <string name="ks_apparence_intro">La couleur des touches. Le rouge et le bleu du drapeau ne changent pas : seul le blanc des lettres passe en anthracite.</string>
+    <string name="ks_apparence_note">« Comme le téléphone » suit le mode sombre du système. Les deux autres positions existent parce que sur plusieurs surcouches ce mode ne descend pas jusqu\'aux claviers tiers.</string>
+    <string name="ks_disposition">Disposition</string>
+    <string name="ks_disposition_intro">Les deux sont en QWERTZ. Elles ne diffèrent que par les lettres accentuées qui ont leur propre touche.</string>
+    <string name="ks_disposition_note">« Suisse allemand », le réglage par défaut, reprend le clavier physique du même nom : ü, ö et ä à droite, é et ë près de l\'espace. « Luxembourg » a des touches un peu plus larges, dix par rangée au lieu de onze : é à droite, ä et ë près de l\'espace, ü et ö en appui long.</string>
+    <string name="ks_suggestions">Suggestions</string>
+    <string name="ks_suggestions_intro">Les mots luxembourgeois sont proposés en rouge. Activez l\'option ci-dessous pour qu\'une seconde rangée, en bleu, propose aussi des mots français à partir de trois lettres.</string>
+    <string name="ks_propositions_francais">Propositions en français</string>
+    <string name="ks_suggestions_note">Sans elles, le clavier garde une seule rangée de suggestions et laisse un peu plus de place à l\'écran. Le correcteur orthographique continue de reconnaître le français.</string>
+    <string name="ks_retour_frappe">Retour de frappe</string>
+    <string name="ks_retour_frappe_intro">Ce que le clavier fait à chaque appui. Le choix s\'applique dès le retour dans un champ de saisie.</string>
+    <string name="ks_vibration">Vibration à la frappe</string>
+    <string name="ks_son">Son de frappe</string>
+    <string name="ks_retour_frappe_note">Ces deux réglages sont dans l\'application et non dans ceux du téléphone : sur beaucoup d\'appareils, le réglage de vibration au toucher ne gouverne que le clavier du constructeur.</string>
+    <string name="ks_appui_long">Appui long</string>
+    <string name="ks_appui_long_intro">Le temps qu\'il faut maintenir une touche pour ouvrir ses accents et ses symboles (è sous e, à sous a, ? sous le point…).</string>
+    <string name="ks_appui_long_note">Si les accents s\'ouvrent alors que vous vouliez seulement taper la lettre, choisissez un délai plus long.</string>
+    <string name="ks_emojis">Emojis récents</string>
+    <string name="ks_emojis_intro">Le panneau emoji place en tête les 30 derniers emojis que vous avez employés. Cette liste ne quitte pas le téléphone, et rien n\'y est ajouté depuis un champ de mot de passe.</string>
+    <string name="ks_emojis_vider">Vider les emojis récents</string>
+    <string name="ks_emojis_effaces">Emojis récents effacés</string>
+    <string name="ime_astuce_accents">Appui long sur une lettre pour ses accents : a → ä à â, e → é ë è ê</string>
+    <string name="ime_partager">📤 Envoyer un mot à un ami</string>
+    <string name="touche_supprimer">Supprimer</string>
+    <string name="touche_majuscule">Majuscule</string>
+    <string name="touche_autres_caracteres">Autres caractères</string>
+    <string name="entree_rechercher">Rechercher</string>
+    <string name="entree_envoyer">Envoyer</string>
+    <string name="entree_aller">Aller</string>
+    <string name="entree_suivant">Suivant</string>
+    <string name="entree_termine">Terminé</string>
+    <string name="entree">Entrée</string>
+    <string name="cat_nom_f">Nom féminin</string>
+    <string name="cat_nom_m">Nom masculin</string>
+    <string name="cat_nom_n">Nom neutre</string>
+    <string name="cat_nom_mf">Nom masculin ou féminin</string>
+    <string name="cat_nom_mn">Nom masculin ou neutre</string>
+    <string name="cat_nom_fn">Nom féminin ou neutre</string>
+    <string name="cat_nom">Nom</string>
+    <string name="cat_nom_propre">Nom propre</string>
+    <string name="cat_verbe">Verbe</string>
+    <string name="cat_adjectif">Adjectif</string>
+    <string name="cat_adverbe">Adverbe</string>
+    <string name="cat_nombre">Nombre</string>
+    <string name="cat_pronom">Pronom</string>
+    <string name="cat_adverbe_pronominal">Adverbe pronominal</string>
+    <string name="cat_interjection">Interjection</string>
+    <string name="cat_preposition">Préposition</string>
+    <string name="cat_conjonction">Conjonction</string>
+    <string name="cat_particule_verbale">Particule verbale</string>
+    <string name="cat_particule">Particule</string>
+    <string name="cat_article">Article</string>
+    <string name="cat_nom_mf_court">Nom m. ou f.</string>
+    <string name="cat_nom_mn_court">Nom m. ou n.</string>
+    <string name="cat_nom_fn_court">Nom f. ou n.</string>
+    <string name="cat_mot">Mot</string>
+    <string name="cat_salutation">Salutation</string>
+    <string name="boite_description">Boîte de révision, sept casiers, %1$s</string>
+    <string name="boite_tout_acquis">Tout est acquis</string>
+    <string name="boite_a_jour">Tout est à jour</string>
+    <string name="boite_demain">demain</string>
+    <string name="boite_apres_demain">après-demain</string>
+    <string name="boite_prochaine">%1$s %2$s</string>
+    <string name="boite_acquis_court">★ acquis</string>
+    <string name="boite_regle">"Bonne réponse : la carte avance et revient plus tard  →"</string>
+    <string name="boite_acquis">Acquis</string>
+    <string name="boite_revient_dans">Revient dans %1$s</string>
+    <string name="boite_a_revoir">%1$s · %2$d à revoir</string>
+    <plurals name="cartes">
+        <item quantity="one">%d carte</item>
+        <item quantity="other">%d cartes</item>
+    </plurals>
+    <plurals name="reviser_cartes">
+        <item quantity="one">Réviser %d carte</item>
+        <item quantity="other">Réviser %d cartes</item>
+    </plurals>
+    <plurals name="boite_dans_jours">
+        <item quantity="one">dans %d jour</item>
+        <item quantity="other">dans %d jours</item>
+    </plurals>
+    <plurals name="rythme_jours">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="rythme_semaines">
+        <item quantity="one">%d semaine</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+    <plurals name="rythme_mois">
+        <item quantity="one">%d mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+    <plurals name="rythme_jours_court">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="rythme_semaines_court">
+        <item quantity="one">%d sem.</item>
+        <item quantity="other">%d sem.</item>
+    </plurals>
+    <plurals name="rythme_mois_court">
+        <item quantity="one">%d mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+    <string name="casier_aucune_carte">Aucune carte</string>
+    <string name="casier_vide_acquis">Aucune carte n\'est encore acquise. Une carte arrive ici après six révisions réussies, la dernière à trois mois d\'intervalle.</string>
+    <string name="casier_vide_premier">Ce casier est vide pour le moment. Les cartes gagnées dans les jeux arrivent ici, et y reviennent après une erreur.</string>
+    <string name="casier_vide_suivant">Ce casier est vide pour le moment. Les cartes y montent depuis le casier précédent, une révision réussie à la fois.</string>
+    <string name="jeu_accueil">Bienvenue</string>
+    <string name="rarete_commun">Commun</string>
+    <string name="rarete_peu_commun">Peu commun</string>
+    <string name="rarete_rare">Rare</string>
+    <string name="rarete_tres_rare">Très rare</string>
+    <string name="tri_recent">Récent</string>
+    <string name="tri_alpha">A → Z</string>
+    <string name="tri_rarete">Rareté</string>
+    <string name="tri_etagere">Étagère</string>
+    <string name="carnet_ouverture">Ouverture du carnet…</string>
+    <string name="carnet_tous">Tous</string>
+    <string name="carnet_vide">Le carnet est vide.</string>
+    <string name="carnet_vide_explication">Chaque mot gagné dans l\'un des sept jeux devient une carte et vient s\'ajouter ici. Trouvez un mot, devinez-en un, écrivez-en un : la première carte est à une partie d\'ici.</string>
+    <string name="carnet_mots_dans">%1$s dans %2$s</string>
+    <plurals name="mots">
+        <item quantity="one">%d mot</item>
+        <item quantity="other">%d mots</item>
+    </plurals>
+    <plurals name="carnet_acquis_sur">
+        <item quantity="one">%1$d acquis sur %2$d. Six révisions réussies par carte, étalées sur cinq mois.</item>
+        <item quantity="other">%1$d acquis sur %2$d. Six révisions réussies par carte, étalées sur cinq mois.</item>
+    </plurals>
+    <string name="fermer">Fermer</string>
+    <string name="pochette_titre">🎁 Votre pochette : %1$s</string>
+    <string name="pochette_nouvelle_carte">"✨  NOUVELLE CARTE"</string>
+    <string name="pochette_passer">Passer</string>
+    <string name="pochette_mon_carnet">📔 Mon carnet</string>
+    <string name="pochette_revoir">‹ glissez à droite pour revoir vos cartes</string>
+    <string name="pochette_parcourir">glissez pour parcourir ›</string>
+    <string name="pochette_bilan_neuves">Elles sont rangées dans votre carnet.</string>
+    <string name="pochette_bilan_deja">Vous les aviez déjà toutes : elles restent dans votre carnet.</string>
+    <plurals name="pochette_nouvelles">
+        <item quantity="one">%d nouvelle</item>
+        <item quantity="other">%d nouvelles</item>
+    </plurals>
+    <string name="carte_gagne_a_medaillon">GAGNÉ À</string>
+    <string name="carte_glose_nombre">le nombre %1$d</string>
+    <string name="carte_gagne_a">gagné à %1$s</string>
+    <string name="carte_rang">%1$dᵉ</string>
+    <string name="carte_hors_corpus">hors corpus</string>
+    <string name="carte_sens_inconnu">sens non répertorié</string>
+    <string name="citation">« %1$s »</string>
+    <string name="carte_meme_famille">Même famille : %1$s</string>
+    <string name="eventail_parcourir">Glissez pour parcourir les cartes.</string>
+    <string name="eventail_preparation">Préparation des cartes…</string>
+    <string name="eventail_refermer">Touchez pour refermer</string>
+    <string name="eventail_aide_plusieurs">Glissez pour parcourir · touchez une carte pour la lire</string>
+    <string name="eventail_ranger">Touchez ailleurs pour ranger</string>
+    <string name="eventail_aide_une">Touchez la carte pour la lire</string>
+    <string name="carnet_bouton">📔 Carnet</string>
+    <string name="carnet_bouton_total">📔 Carnet · %1$d</string>
+    <string name="revision_souvenez">Vous souvenez-vous ?</string>
+    <string name="revision_retourner">Retourner la carte</string>
+    <string name="revision_pas_su">Pas su</string>
+    <string name="revision_je_savais">Je savais</string>
+    <string name="revision_terminee">Session terminée</string>
+    <string name="revision_score">%1$d sur %2$d retrouvés.</string>
+    <string name="revision_a_revoir">À revoir demain : %1$s</string>
+    <string name="revision_ecrits">Vous avez écrit vous-même %1$s depuis la dernière fois : ces cartes n\'avaient rien à prouver.</string>
+    <string name="zuelen_secrit">%1$d s\'écrit « %2$s ».</string>
+    <string name="zuelen_decomposition">%1$d = %2$s + %3$s + %4$s, l\'unité d\'abord.</string>
+    <string name="zuelen_cest">« %1$s », c\'est %2$d.</string>
+    <string name="zuelen_inversion">« %1$s », c\'est %2$d : en luxembourgeois l\'unité se dit avant la dizaine, comme en allemand.</string>
+    <string name="zuelen_allemand">« %1$s » est l\'allemand, pas le luxembourgeois.</string>
+    <string name="zuelen_trait_union">Les nombres s\'écrivent d\'un seul tenant, sans trait d\'union.</string>
+    <string name="zuelen_espaces">Les nombres s\'écrivent d\'un seul tenant, sans espace.</string>
+    <string name="zuelen_eifel_maintient">Règle d\'Eifel : le n de la liaison se maintient devant « %1$s », donc « %2$s ».</string>
+    <string name="zuelen_eifel_tombe">Règle d\'Eifel : le n de la liaison tombe devant « %1$s », donc « %2$s ».</string>
+    <string name="zuelen_finale_ig">La finale luxembourgeoise est -eg ; -ig est celle de l\'allemand.</string>
+    <string name="zuelen_accent">Un accent manque : « %1$s ».</string>
+    <string name="zuelen_juste">✅ Richteg ! %1$s</string>
+    <string name="zuelen_faux">❌ %1$s\nLa bonne réponse était « %2$s ».</string>
+    <string name="niveau_facile">Facile</string>
+    <string name="niveau_normal">Normal</string>
+    <string name="niveau_difficile">Difficile</string>
+    <string name="notif_niveau_description">Vous prévient quand vous atteignez un nouveau niveau de vocabulaire.</string>
+    <string name="sa_bravo_et_ass_geschafft_le">Bravo, et ass geschafft ! Le clavier est prêt à écrire en lëtzebuergesch dans toutes vos applications.</string>
+    <string name="sa_la_carte_moien_est_dans">%1$s\n\nLa carte « Moien » est dans votre carnet.</string>
+    <string name="sa_partager_la_nouvelle">Partager la nouvelle</string>
+    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch ! J\'ai activé le Lëtzebuergesch Clavier 🎉\nUn clavier Android gratuit qui suggère des mots en luxembourgeois.\n\nTélécharge-le gratuitement :\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_pour_aller_plus_loin_optionnel">🚀 Pour aller plus loin (optionnel)</string>
+    <string name="sa_passer_du_francais_au_luxembourgeois">🔄 Passer du français au luxembourgeois, et l\'inverse</string>
+    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">Lëtzebuergesch Clavier ne remplace pas vos autres claviers : il s\'ajoute à la liste, et vous basculez de l\'un à l\'autre en deux secondes, aussi souvent que vous voulez.</string>
+    <string name="sa_quitter_le_luxembourgeois">➡️ Quitter le luxembourgeois</string>
+    <string name="sa_appuyez_une_seconde_sur_la">Appuyez une seconde sur la barre d\'espace du clavier luxembourgeois ; le petit 🌐 dans son coin est là pour vous le rappeler. Le sélecteur Android s\'ouvre : touchez Gboard, Samsung Keyboard ou celui que vous voulez.</string>
+    <string name="sa_revenir_au_luxembourgeois">⬅️ Revenir au luxembourgeois</string>
+    <string name="sa_le_geste_est_pas_symetrique">Le geste n\'est pas symétrique : sur Gboard et la plupart des autres claviers, l\'appui long sur la barre d\'espace ne change que leur propre langue. Touchez plutôt l\'icône de clavier en bas de l\'écran, dans la barre de navigation, affichée tant qu\'un clavier est ouvert : le sélecteur revient, et « Lëtzebuergesch Clavier » y attend.</string>
+    <string name="sa_le_choix_vaut_pour_toutes">Le choix vaut pour toutes vos applications et survit au redémarrage. Sans icône de clavier en bas, le bouton ci-dessous ouvre le même sélecteur.</string>
+    <string name="sa_ouvrir_le_selecteur_de_claviers_2">Ouvrir le sélecteur de claviers</string>
+    <string name="sa_astuce_de_la_semaine">Astuce de la semaine</string>
+    <string name="sa_decouvrez_vos_statistiques">Découvrez vos statistiques</string>
+    <string name="sa_suivez_votre_progression_et_montez">Suivez votre progression et montez en niveau !</string>
+    <string name="sa_guide_utilisation">Guide d\'utilisation</string>
+    <string name="sa_reglages_correcteur_astuces_de_saisie">Réglages, correcteur, astuces de saisie</string>
+    <string name="sa_propos_2">À propos</string>
+    <string name="sa_version_sources_des_donnees_licences">Version, sources des données, licences</string>
+    <string name="sa_quelques_minutes_suffisent">Quelques minutes suffisent.</string>
+    <string name="sa_reviser_maintenant">Réviser maintenant</string>
+    <string name="sa_rien_revoir_aujourd_hui">"✅  Rien à revoir aujourd\'hui"</string>
+    <string name="sa_gagner_autres_cartes">Gagner d\'autres cartes</string>
+    <string name="sa_votre_carnet_est_vide">"📚  Votre carnet est vide"</string>
+    <string name="sa_chaque_mot_trouve_dans_un">Chaque mot trouvé dans un jeu devient une carte à revoir.</string>
+    <string name="sa_jouer">Jouer</string>
+    <string name="sa_voir_dans_le_wierderbuch">Voir dans le Wierderbuch ›</string>
+    <string name="sa_rejouer_2">Rejouer à %1$s</string>
+    <string name="sa_votre_dernier_jeu">Votre dernier jeu</string>
+    <string name="sa_choisir_un_jeu">Choisir un jeu</string>
+    <string name="sa_sept_jeux_pour_apprendre_les">Sept jeux pour apprendre les mots</string>
+    <string name="sa_en_francais_3">en français : %1$s</string>
+    <string name="sa_fini_le_trait_rouge_sous">"🔤  Fini le trait rouge sous vos mots"</string>
+    <string name="sa_la_correction_orthographique_est_coupee">La correction orthographique est coupée dans Android. Rallumez-la pour que vos mots luxembourgeois soient reconnus partout.</string>
+    <string name="sa_android_souligne_vos_mots_luxembourgeois">Android souligne vos mots luxembourgeois dans Messages, Notes et ailleurs. Choisissez notre correcteur pour qu\'il les reconnaisse.</string>
+    <string name="sa_android_affichera_un_avertissement_comme">Android affichera un avertissement, comme pour tout correcteur. Le nôtre ne conserve rien et n\'envoie rien.</string>
+    <string name="sa_rallumer">Rallumer</string>
+    <string name="sa_activer">Activer</string>
+    <string name="sa_clavier_installe">Clavier installé</string>
+    <string name="sa_configuration_reglages_changer_de_clavier">Configuration, réglages, changer de clavier</string>
+    <string name="sa_tout_est_pret">Tout est prêt !</string>
+    <string name="sa_clavier_en_place">Clavier en place !</string>
+    <string name="sa_vous_pouvez_taper_en_letzebuergesch">Vous pouvez taper en lëtzebuergesch partout.</string>
+    <string name="sa_ecrivez_un_mot_pour_terminer">Écrivez un mot pour terminer la configuration.</string>
+    <string name="sa_revenir_au_clavier_luxembourgeois">⌨️ Revenir au clavier luxembourgeois</string>
+    <string name="sa_en_ce_moment_est_un">En ce moment, c\'est un autre clavier qui s\'ouvre quand vous écrivez. Le clavier luxembourgeois est toujours installé sur votre téléphone : il suffit de le rechoisir.</string>
+    <string name="sa_choisir_le_clavier_luxembourgeois">Choisir le clavier luxembourgeois</string>
+    <string name="sa_sans_passer_par_ici_pendant">Sans passer par ici : pendant que vous écrivez, touchez la petite icône de clavier en bas de l\'écran, dans la barre de navigation. Le même choix s\'ouvre.</string>
+    <string name="sa_configuration_rapide">Configuration rapide</string>
+    <string name="sa_plus_qu_essayer">Plus qu\'à l\'essayer.</string>
+    <string name="sa_le_clavier_luxembourgeois_est_plus_2">Le clavier luxembourgeois n\'est plus celui qui s\'affiche quand vous écrivez.</string>
+    <string name="sa_le_clavier_luxembourgeois_est_plus">Le clavier luxembourgeois n\'est plus actif sur ce téléphone.</string>
+    <string name="sa_plus_qu_une_etape">Plus qu\'une étape.</string>
+    <string name="sa_etapes_pour_taper_en_letzebuergesch">3 étapes pour taper en lëtzebuergesch partout.</string>
+    <string name="sa_voir_les_etapes">Voir les 3 étapes</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Trouvez « Lëtzebuergesch Clavier » dans l\'écran qui s\'ouvre, activez l\'interrupteur, puis revenez ici.</string>
+    <string name="sa_presque_validez_bien_les_avertissements">💡 Presque ! Validez bien les 2 avertissements Android l\'un après l\'autre : s\'arrêter au premier annule l\'activation.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android affiche un avertissement de sécurité standard, montré pour tous les claviers tiers. Lëtzebuergesch Clavier ne collecte aucune donnée.</string>
+    <string name="sa_rouvrir_les_reglages_android">Rouvrir les réglages Android ↗</string>
+    <string name="sa_ouvrir_les_reglages_android">Ouvrir les réglages Android ↗</string>
+    <string name="sa_activer_le_clavier">Activer le clavier</string>
+    <string name="sa_le_clavier_est_active">Le clavier est activé.</string>
+    <string name="sa_dans_les_reglages_android">Dans les réglages Android.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Choisissez « Lëtzebuergesch Clavier » dans la liste des claviers qui s\'affiche. Vos autres claviers restent installés.</string>
+    <string name="sa_ouvrir_le_selecteur_de_claviers">Ouvrir le sélecteur de claviers ↗</string>
+    <string name="sa_selectionner_le_clavier_2">Sélectionner le clavier</string>
+    <string name="sa_letzebuergesch_clavier_est_selectionne">Lëtzebuergesch Clavier est sélectionné.</string>
+    <string name="sa_terminez_abord_etape">Terminez d\'abord l\'étape 1.</string>
+    <string name="sa_choisissez_le_dans_la_liste">Choisissez-le dans la liste.</string>
+    <string name="sa_schreift_op_letzebuergesch_ecrivez_en">Schreift op Lëtzebuergesch... (écrivez en luxembourgeois)</string>
+    <string name="sa_ecrivez_moien_alleguer_et_regardez">Écrivez « Moien alleguer » et regardez les suggestions vous aider.</string>
+    <string name="sa_essayer_le_clavier">Essayer le clavier</string>
+    <string name="sa_vous_avez_ecrit_vos_premiers">Vous avez écrit vos premiers mots.</string>
+    <string name="sa_terminez_les_etapes_et">Terminez les étapes 1 et 2.</string>
+    <string name="sa_ecrivez_un_mot_pour_verifier">Écrivez un mot pour vérifier.</string>
+    <string name="sa_les_etapes_sont_faites">Les 3 étapes sont faites.</string>
+    <string name="sa_masquer_le_detail">Masquer le détail</string>
+    <string name="sa_etape_terminee">%1$s, étape terminée</string>
+    <string name="sa_etape_verrouillee">%1$s, étape verrouillée</string>
+    <string name="sa_majuscules_automatiques">Majuscules automatiques</string>
+    <string name="sa_retablit_la_majuscule_des_substantifs">Rétablit la majuscule des substantifs quand la phrase la réclame : « an der rue » devient « an der Rue ». Le clavier ne corrige que ce qu\'il a réellement vu écrit ainsi, et une touche Retour arrière annule la correction.</string>
+    <string name="sa_corriger_orthographe_partout">Corriger l\'orthographe partout</string>
+    <string name="sa_vos_mots_luxembourgeois_sont_reconnus">Vos mots luxembourgeois sont reconnus dans Messages, Notes et ailleurs, sans trait rouge dessous.</string>
+    <string name="sa_le_correcteur_luxembourgeois_est_bien">Le correcteur luxembourgeois est bien choisi, mais la correction orthographique est coupée dans Android. Touchez ici pour la rallumer.</string>
+    <string name="sa_faites_reconnaitre_vos_mots_luxembourgeois">Faites reconnaître vos mots luxembourgeois dans Messages, Notes et ailleurs, sans trait rouge dessous.</string>
+    <string name="sa_android_vous_previendra_qu_un">Android vous préviendra qu\'un correcteur peut lire le texte saisi. Le nôtre le compare au dictionnaire de l\'application, sans rien conserver ni rien envoyer.</string>
+    <string name="sa_dans_ecran_qui_ouvre_allumez_2">Dans l\'écran qui s\'ouvre, allumez l\'interrupteur « Utiliser le correcteur orthographique ».</string>
+    <string name="sa_dans_ecran_qui_ouvre_allumez">Dans l\'écran qui s\'ouvre :\n1. allumez « Utiliser le correcteur orthographique » s\'il est éteint\n2. touchez « Correcteur par défaut »\n3. choisissez « Correcteur Lëtzebuergesch »\n4. confirmez l\'avertissement d\'Android</string>
+    <string name="sa_ce_qu_android_va_vous">"ⓘ  Ce qu\'Android va vous demander"</string>
+    <string name="sa_masquer">"▲  Masquer"</string>
+    <string name="sa_notre_mission">🌟 Notre Mission</string>
+    <string name="sa_ce_clavier_ete_specialement_concu">Ce clavier a été spécialement conçu pour préserver et promouvoir le lëtzebuergesch. Il met à disposition de tous un outil moderne pour écrire au quotidien dans la langue du pays :\n\n💡 Suggestions de mots en lëtzebuergesch\n🔡 Diacritiques ë, ä et é directement au clavier\n🇱🇺 Design aux couleurs du Luxembourg</string>
+    <string name="sa_ce_clavier_grandit_grace_au">Ce clavier grandit grâce au bouche-à-oreille. Partagez-le avec votre famille et vos amis : chaque partage aide le luxembourgeois à exister davantage sur les téléphones.</string>
+    <string name="sa_partager_application">📤 Partager l\'application</string>
+    <string name="sa_noter_application">⭐ Noter l\'application</string>
+    <string name="sa_sources_litteraires">📚 Sources littéraires</string>
+    <string name="sa_les_suggestions_de_mots_sont">Les suggestions de mots sont construites sur deux corpus ouverts de luxembourgeois contemporain :\n\n📰 LuxAlign : phrases d\'articles de RTL.lu, réunies par Fred Philippy et coll. (COLING 2025). Licence CC BY-NC 4.0.\n\n📖 LETZ : phrases d\'exemple du Lëtzebuerger Online Dictionnaire (lod.lu), réunies par Fred Philippy et coll. (SIGUL 2024). Licence CC BY 4.0.\n\nLe premier apporte le vocabulaire et l\'enchaînement des mots, le second la langue de tous les jours.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Licence CC0 1.0. Il apporte les traductions françaises et 85 000 formes que la presse n\'écrit jamais.\n\n🇱🇺 Corpus de traduction du Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Licence CC0 1.0. Il apporte les traductions françaises des phrases d\'exemple, faites par des traducteurs professionnels.\n\n🇫🇷 Lexique 3.83 : base lexicale du français de Boris New et Christophe Pallier (lexique.org). Licence CC BY-SA 4.0. Elle apporte les 125 000 formes de la seconde rangée de suggestions, et évite au correcteur de souligner du français correct.\n\n🔤 Les noms des cartes du carnet sont composés en Lora, Cormorant Garamond et EB Garamond, trois polices libres sous licence SIL Open Font License 1.1.</string>
+    <string name="sa_informations">ℹ️ Informations</string>
+    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Version : %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nFait au Luxembourg avec ❤️\nPréservons le lëtzebuergesch pour les générations futures !</string>
+    <string name="sa_confidentialite">🔒 Confidentialité</string>
+    <string name="sa_zero_collecte_de_donnees_personnelles">Zéro collecte de données personnelles : ce clavier fonctionne entièrement en local, rien de ce que vous tapez ne quitte votre téléphone.</string>
+    <string name="sa_essayez_le_tout_de_suite">🎹 Essayez-le tout de suite !</string>
+    <string name="sa_tapez_moien_et_touchez_une">Tapez « moien » et touchez une suggestion : rien à installer pour essayer</string>
+    <string name="sa_probeiert_et_hei_essayez_ici">Probéiert et hei... (essayez ici)</string>
+    <string name="sa_ca_vous_plait_installez_le">Ça vous plaît ? Installez-le →</string>
+    <string name="sa_diagnostic_activation">🔎 Diagnostic d\'activation</string>
+    <string name="sa_pas_encore">%1$s : pas encore</string>
+    <string name="sa_moins_une_minute_apres_ouverture">moins d\'une minute après l\'ouverture</string>
+    <string name="sa_min_apres_ouverture">%1$s min après l\'ouverture</string>
+    <string name="sa_apres_ouverture_2">%1$s h après l\'ouverture</string>
+    <string name="sa_apres_ouverture">%1$s j après l\'ouverture</string>
+    <string name="sa_premiere_ouverture_pas_encore">Première ouverture : pas encore</string>
+    <string name="sa_premiere_ouverture">Première ouverture : %1$s</string>
+    <string name="sa_premier_essai_clavier_de_demo">Premier essai (clavier de démo)</string>
+    <string name="sa_clavier_active">Clavier activé</string>
+    <string name="sa_retour_sans_avoir_active">Retour sans avoir activé</string>
+    <string name="sa_clavier_selectionne">Clavier sélectionné</string>
+    <string name="sa_premier_mot_tape">Premier mot tapé</string>
+    <string name="sa_ces_horodatages_restent_sur_votre">Ces horodatages restent sur votre téléphone.</string>
+    <string name="sa_guide_de_utilisateur">📖 Guide de l\'utilisateur</string>
+    <string name="sa_installation_et_activation">📲 Installation et activation</string>
+    <string name="sa_le_clavier_doit_etre_active">Le clavier doit être activé puis sélectionné avant de pouvoir l\'utiliser, comme n\'importe quel clavier tiers sur Android. Ces étapes interactives sont aussi disponibles dans l\'onglet « Haut » ; voici à quoi elles ressemblent.</string>
+    <string name="sa_ouvrir_les_parametres_de_clavier">1️⃣ Ouvrir les paramètres de clavier</string>
+    <string name="sa_depuis_onglet_haut_le_bouton">Depuis l\'onglet Haut, le bouton « Ouvrir les paramètres » mène directement à l\'écran système « Clavier à l\'écran », où « Lëtzebuergesch Clavier » apparaît à côté des autres claviers installés, interrupteur éteint.</string>
+    <string name="sa_ecran_systeme_listant_les_claviers">Écran système listant les claviers, interrupteur à activer</string>
+    <string name="sa_valider_les_avertissements_android">2️⃣ Valider les avertissements Android</string>
+    <string name="sa_en_activant_interrupteur_android_affiche">En activant l\'interrupteur, Android affiche un avertissement générique montré pour tous les claviers tiers, suivi d\'une seconde note sur le redémarrage du téléphone. Lëtzebuergesch Clavier ne collecte aucune donnée : appuyez sur OK aux deux pour continuer, puis revenez à l\'application avec le bouton retour.</string>
+    <string name="sa_avertissement_systeme_affiche_pour_tout">Avertissement système affiché pour tout clavier tiers</string>
+    <string name="sa_selectionner_le_clavier">3️⃣ Sélectionner le clavier</string>
+    <string name="sa_de_retour_dans_application_etape">De retour dans l\'application, l\'étape 1 est cochée automatiquement et l\'étape 2 se débloque. Le bouton « Ouvrir le sélecteur » ouvre la liste des claviers actifs : touchez « Lëtzebuergesch Clavier » pour en faire le clavier utilisé.</string>
+    <string name="sa_selecteur_systeme_de_mode_de">Sélecteur système de mode de saisie</string>
+    <string name="sa_configuration_terminee">✅ Configuration terminée</string>
+    <string name="sa_les_deux_etapes_cochees_le">Les deux étapes cochées, le clavier luxembourgeois s\'affiche partout où vous tapez, y compris dans le champ d\'essai de l\'onglet Haut. Un appui long sur la barre d\'espace permet de rebasculer vers un autre clavier à tout moment.</string>
+    <string name="sa_les_trois_etapes_cochees_clavier">Les trois étapes cochées, clavier actif dans le champ d\'essai</string>
+    <string name="sa_ecrire_en_letzebuergesch">✍️ Écrire en lëtzebuergesch</string>
+    <string name="sa_le_clavier_demarre_en_mode">Le clavier démarre en mode alphabétique. La première lettre de chaque message prend automatiquement une majuscule, comme sur un clavier classique.</string>
+    <string name="sa_accents_et_caracteres_speciaux">🔤 Accents et caractères spéciaux</string>
+    <string name="sa_les_lettres_du_luxembourgeois_ont">Les lettres du luxembourgeois ont leur propre touche : é, ë et ä, et aussi ü et ö avec la disposition « Suisse allemand » (Réglages du clavier → Disposition). Pour les autres accents (è, ê, à, ç...), appuyez longuement sur la lettre, glissez le doigt vers l\'accent voulu puis relâchez.</string>
+    <string name="sa_popup_accents_sur_la_lettre">Popup d\'accents sur la lettre e</string>
+    <string name="sa_suggestions_et_autocompletion">💡 Suggestions et autocomplétion</string>
+    <string name="sa_une_barre_de_suggestions_apparait">Une barre de suggestions apparaît au-dessus du clavier dès que vous tapez. Les mots luxembourgeois sont prioritaires ; le français prend le relais à partir de 3 lettres si aucun mot luxembourgeois ne correspond. Touchez un mot suggéré pour le compléter instantanément, espace inclus.</string>
+    <string name="sa_barre_de_suggestions_active">Barre de suggestions active</string>
+    <string name="sa_correction_orthographique_partout">✅ Correction orthographique partout</string>
+    <string name="sa_activez_le_correcteur_luxembourgeois_dans">Activez le correcteur luxembourgeois dans les paramètres système (onglet Haut, « Clavier installé ») pour que vos mots luxembourgeois et français ne soient plus soulignés en rouge dans Messages, Notes et les autres applications.</string>
+    <string name="sa_chiffres_et_symboles">🔢 Chiffres et symboles</string>
+    <string name="sa_le_bouton_en_bas_gauche">Le bouton « 123 » en bas à gauche du clavier bascule vers les chiffres et symboles usuels. La ponctuation de base (virgule, point, apostrophe) reste accessible directement sur le clavier alphabétique.</string>
+    <string name="sa_mode_chiffres_et_symboles">Mode chiffres et symboles</string>
+    <string name="sa_jeux_de_vocabulaire">🎮 Jeux de vocabulaire</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Sept jeux, réunis dans l\'onglet Spiller, font travailler le luxembourgeois en s\'amusant :\n\n• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n• 🔤 Wuertmix : remettre les lettres d\'un mot dans l\'ordre.\n• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n• 🔢 Zuelwuert : écrire en lettres le résultat d\'une multiplication.\n• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, sans aucune définition.\n\nChaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait réviser à intervalles de plus en plus longs, jusqu\'à ce qu\'il soit acquis.</string>
+    <string name="sa_les_cartes_du_carnet">🃏 Les cartes du carnet</string>
+    <string name="sa_chaque_mot_gagne_dans_un">Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » (onglet Spiller). Touchez une carte pour l\'ouvrir en grand ; touchez à côté, ou chassez-la d\'un glissé vers le haut ou le bas, pour la refermer.\n\nLes images ci-dessous détaillent la carte « Waasser » (l\'eau), partie par partie : chaque numéro renvoie à l\'explication qui suit l\'image.</string>
+    <string name="sa_le_haut_de_la_carte_2">Le haut de la carte</string>
+    <string name="sa_le_haut_de_la_carte">🔷 Le haut de la carte</string>
+    <string name="sa_le_mot_tel_que_vous">1. Le mot, tel que vous l\'avez rencontré dans le jeu, avec sa majuscule s\'il s\'agit d\'un nom.\n\n2. La pastille ronde : le nombre de lettres du mot. « Waasser » en compte 7.\n\n3. L\'illustration : sa couleur indique le domaine du sens (vie et corps, territoire, économie, temps et mesure…), et son motif est tiré des lettres du mot, si bien qu\'un même mot donne toujours la même image. Quelques cartes, comme celle-ci, portent en plus un dessin.\n\n4. Le cadre : son métal dit la rareté du mot. Étain pour Commun, bronze pour Peu commun, argent pour Rare, or pour Très rare. La rareté vient de la fréquence du mot en luxembourgeois : les 3 000 mots les plus courants sont communs, ceux au-delà du 9 000ᵉ très rares. Pour les nombres de Zuelwuert, c\'est la difficulté de leur orthographe qui compte.</string>
+    <string name="sa_le_texte_de_la_carte_2">Le texte de la carte</string>
+    <string name="sa_le_texte_de_la_carte">📜 Le texte de la carte</string>
+    <string name="sa_la_ligne_de_nature_ce">5. La ligne de nature : ce qu\'est le mot selon le dictionnaire officiel du ZLS (« Nom neutre », « Verbe », « Adjectif »…), puis le jeu où vous l\'avez gagné.\n\n6. Le sens, en gras : la traduction française du mot.\n\n7. La phrase en italique : un exemple du mot en situation, tiré du dictionnaire officiel. Pour un nombre, c\'est sa décomposition.\n\n8. La ligne plus petite : la traduction française de cette phrase, seulement quand le ZLS l\'a publiée. Sinon, la carte affiche à la place « Même famille : » et les autres formes du mot (pluriel, conjugaisons…).</string>
+    <string name="sa_le_bas_de_la_carte_2">Le bas de la carte</string>
+    <string name="sa_le_bas_de_la_carte">🛡️ Le bas de la carte</string>
+    <string name="sa_ecu_vues_combien_de_fois">9. L\'écu VUES : combien de fois vous avez gagné ce mot, tous jeux confondus.\n\n10. Le médaillon : le jeu qui vous a donné la carte, reconnaissable à son emblème et à sa couleur, et nommé sur le pourtour.\n\n11. L\'écu NIVEAU : le casier de la Boîte de Leitner où se trouve la carte, de 1 à 6. Il monte à chaque révision réussie, et devient ✓ quand le mot est acquis.\n\n12. La ligne de série : le numéro de la carte dans votre collection et la date où vous l\'avez gagnée.\n\n13. Le rang : la place du mot parmi les plus fréquents de la langue (« 856ᵉ » pour « Waasser »), ou « hors corpus » s\'il n\'y figure pas.</string>
+    <string name="sa_la_petite_carte_dans_la">La petite carte, dans la grille du carnet</string>
+    <string name="sa_dans_la_grille_du_carnet">🗂️ Dans la grille du carnet</string>
+    <string name="sa_la_petite_carte_ne_garde">La petite carte ne garde que l\'essentiel pour choisir laquelle ouvrir :\n\nA. Le mot.\n\nB. L\'emoji du ou des jeux où vous l\'avez gagné, puis le début du sens.\n\nC. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à mesure que la carte progresse. Ici, « Waasser » en a franchi un.</string>
+    <string name="sa_progression">🏆 Progression</string>
+    <string name="sa_chaque_mot_que_vous_tapez">Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l\'onglet « Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner et 🧙 Sproochenmeeschter.</string>
+    <string name="sa_questions_frequentes">❓ Questions fréquentes</string>
+    <string name="sa_le_clavier_luxembourgeois_apparait_pas">Le clavier luxembourgeois n\'apparaît pas quand je tape ?\n→ Vérifiez qu\'il est bien sélectionné (pas seulement activé) : onglet Haut, « Clavier installé », étape 2, ou touchez l\'icône de clavier de la barre de navigation, en bas de l\'écran, pendant que vous écrivez.\n\nComment revenir à un autre clavier ponctuellement ?\n→ Appui long sur la barre d\'espace du clavier luxembourgeois, puis choisissez un autre clavier dans la liste. Le retour au luxembourgeois passe par l\'icône de clavier de la barre de navigation : sur les autres claviers, l\'appui long sur la barre d\'espace ne change que leur propre langue.\n\nMes données sont-elles envoyées quelque part ?\n→ Non : le clavier fonctionne entièrement en local.</string>
+    <string name="sa_lire_la_politique_de_confidentialite">Lire la politique de confidentialité</string>
+    <string name="sa_dans_langues_et_saisie_ouvrez">Dans \'Langues et saisie\', ouvrez \'Vérification orthographique\' et choisissez \'Correcteur Lëtzebuergesch\'</string>
+    <string name="sa_appuyez_sur_ok_est_normal">👆 Appuyez sur OK : c\'est normal pour tous les claviers tiers</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Lëtzebuergesch Clavier n\'a pas accès à Internet : rien ne quitte votre téléphone.</string>
+    <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Ensuite, appuyez sur Retour : vous revenez ici automatiquement</string>
+    <string name="sa_avant_de_continuer">Avant de continuer</string>
+    <string name="sa_ai_compris_on_va">J\'ai compris, on y va</string>
+    <string name="sa_impossible_ouvrir_les_parametres">Impossible d\'ouvrir les paramètres</string>
+    <string name="sa_impossible_ouvrir_la_politique_de">Impossible d\'ouvrir la politique de confidentialité</string>
+    <string name="sa_play_store_indisponible">Play Store indisponible</string>
+    <string name="sa_ech_schreiwen_op_letzebuergesch_op">Ech schreiwen op Lëtzebuergesch op mengem Telefon !\nUn clavier Android gratuit qui suggère des mots en luxembourgeois.\n\nTélécharge-le gratuitement :\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Din_app_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_partager_le_letzebuergesch_clavier">Partager le Lëtzebuergesch Clavier</string>
+    <string name="sa_impossible_ouvrir_le_selecteur_touchez">Impossible d\'ouvrir le sélecteur. Touchez l\'icône de clavier en bas de l\'écran, dans la barre de navigation, pendant que vous écrivez.</string>
+    <string name="sa_vous_avez_atteint_le_plus">Vous avez atteint le plus haut niveau. 👑</string>
+    <string name="sa_partager_ma_carte_de_niveau_2">📤 Partager ma carte de niveau</string>
+    <string name="sa_impossible_de_partager_pour_le">Impossible de partager pour le moment</string>
+    <string name="sa_mot_du_jour">MOT DU JOUR</string>
+    <string name="sa_en_francais_2">"en français : "</string>
+    <string name="sa_nouveau_mot_decouvrir">nouveau mot à découvrir</string>
+    <string name="sa_mots_les_plus_utilises">Mots les plus utilisés</string>
+    <string name="sa_statistiques_globales">Statistiques globales</string>
+    <string name="sa_mots_decouverts_2">Mots découverts</string>
+    <string name="sa_utilisations">Utilisations</string>
+    <string name="sa_mots_decouvrir">🌟 Mots à Découvrir</string>
+    <string name="sa_mots_decouverts">🔍 Mots Découverts (%1$s)</string>
+    <string name="sa_aucun_mot_dans_cette_categorie">Aucun mot dans cette catégorie pour le moment</string>
+    <string name="sa_dir_hutt_den_niveau_erreecht">Dir hutt den Niveau %1$s erreecht ! Partagez votre carte pour montrer où vous en êtes.</string>
+    <string name="sa_partager">Partager 📤</string>
+    <string name="sa_plus_tard">Plus tard</string>
+    <string name="sa_mots_luxembourgeois_decouverts">%1$s mots luxembourgeois découverts !</string>
+    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuergesch Clavier ! A du, wéi wäit bass du ?\nJ\'ai atteint le niveau %1$s du clavier luxembourgeois.\n\nTélécharge-le gratuitement :\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_partager_ma_carte_de_niveau">Partager ma carte de niveau</string>
+    <string name="sa_impossible_de_partager_la_carte">Impossible de partager la carte</string>
+    <string name="sa_correcteur_active_vos_mots_luxembourgeois">✓ Correcteur activé : vos mots luxembourgeois sont reconnus partout.</string>
+    <string name="sa_actualisation_des_statistiques">Actualisation des statistiques...</string>
+    <string name="sa_chargement">⏳ Chargement...</string>
+    <string name="sa_nouvelle_grille_2">🔄 Nouvelle Grille</string>
+    <string name="sa_mots_trouver">📝 Mots à trouver :</string>
+    <string name="sa_erreur_lors_de_la_generation">Erreur lors de la génération</string>
+    <string name="sa_mots_luxembourgeois">🎯 Mots luxembourgeois</string>
+    <string name="sa_felicitations_tous_les_mots_trouves">🎉 Félicitations ! Tous les mots trouvés !</string>
+    <string name="sa_mot_trouve_pts">✅ Mot trouvé : %1$s (+%2$s pts)</string>
+    <string name="sa_score_2">Score: 0</string>
+    <string name="sa_mot_2">Mot 1/10</string>
+    <string name="sa_remets_les_lettres_dans_ordre">🔤 Remets les lettres dans l\'ordre !</string>
+    <string name="sa_lettres_disponibles">Lettres disponibles :</string>
+    <string name="sa_ta_reponse">Ta réponse :</string>
+    <string name="sa_effacer">🔄 Effacer</string>
+    <string name="sa_indice">💡 Indice</string>
+    <string name="sa_passer">⏭️ Passer</string>
+    <string name="sa_erreur_de_chargement">Erreur de chargement</string>
+    <string name="sa_mot">Mot %1$s/%2$s</string>
+    <string name="sa_correct_pts">✅ Correct! +100 pts</string>
+    <string name="sa_essaie_encore">❌ Essaie encore!</string>
+    <string name="sa_le_mot_etait_2">Le mot était : %1$s (%2$s)</string>
+    <string name="sa_score">Score: %1$s</string>
+    <string name="sa_indice_pts">Indice (-20 pts)</string>
+    <string name="sa_partie_terminee">🎉 Partie terminée!</string>
+    <string name="sa_score_final_mots_reussis">Score final: %1$s\nMots réussis: %2$s/%3$s</string>
+    <string name="sa_essai_2">Essai 1/%1$s</string>
+    <string name="sa_lettres_deja_jouees">Lettres déjà jouées :</string>
+    <string name="sa_votre_mot_de_lettres">Votre mot de %1$s lettres</string>
+    <string name="sa_valider">✅ Valider</string>
+    <string name="sa_devine_le_mot_luxembourgeois_de">Devine le mot luxembourgeois de %1$s lettres en %2$s essais maximum.\n\nAprès chaque essai, la couleur des lettres t\'indique :\n🟩 Vert : bonne lettre, bonne position\n🟨 Orange : la lettre est dans le mot, mais mal placée\n⬜ Gris : la lettre n\'est pas dans le mot\n\nLe mot proposé doit exister dans le dictionnaire luxembourgeois.</string>
+    <string name="sa_essai">Essai %1$s/%2$s</string>
+    <string name="sa_domaj">😔 Domaj !</string>
+    <string name="sa_le_mot_etait">Le mot était : %1$s</string>
+    <string name="sa_chaque_phrase_est_une_phrase">Chaque phrase est une phrase luxembourgeoise réelle, à laquelle il manque un mot. Parmi les quatre propositions, une seule est celle qu\'a écrite l\'auteur : les trois autres sont des mots que le corpus atteste au même endroit, elles sonnent donc juste tant qu\'on ne lit pas toute la phrase.\n\nLa difficulté porte sur la fréquence du mot manquant : courant en « Facile », rare en « Difficile ».</string>
+    <string name="sa_phrases_extraites_des_corpus">Phrases extraites des corpus :\n</string>
+    <string name="sa_les_phrases_du_wuertluck_ont">Les phrases du Wuertlück n\'ont pas pu être chargées.</string>
+    <string name="sa_phrase_du_corpus">Phrase du corpus %1$s</string>
+    <string name="sa_richteg">✅ Richteg !%1$s</string>
+    <string name="sa_la_phrase_disait">❌ La phrase disait « %1$s »</string>
+    <string name="sa_question_2">Question 1 / %1$s</string>
+    <string name="sa_nouvelle_partie">🔄 Nouvelle partie</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Une multiplication, et quatre façons d\'écrire son résultat : une seule est du luxembourgeois correct. Les autres sont les fautes qu\'on fait vraiment : l\'allemand, les chiffres inversés, le trait d\'union, la règle d\'Eifel, la finale -ig. Quand vous vous trompez, le jeu dit laquelle.\n\nDeux règles suffisent à écrire tous les nombres jusqu\'à cent. L\'unité se dit avant la dizaine : 56, c\'est six-et-cinquante, « sechsafofzeg ». Et le n de la liaison « an » tombe devant f, s, v, m…, mais se maintient devant d, t, z, n, h et les voyelles, c\'est la règle d\'Eifel, d\'où « sechsafofzeg » (56) mais « sechsandrësseg » (36).\n\nEn « Difficile », le produit n\'est plus affiché : il faut le calculer avant de l\'écrire.</string>
+    <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Orthographes vérifiées contre le Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
+    <string name="sa_question">Question %1$s / %2$s</string>
+    <string name="sa_comment_ecrit_ce_nombre">Comment s\'écrit ce nombre ?</string>
+    <string name="sa_calculez_puis_choisissez_orthographe">Calculez, puis choisissez l\'orthographe.</string>
+    <string name="sa_voir_le_resultat">🏁 Voir le résultat</string>
+    <string name="sa_question_suivante">➡️ Question suivante</string>
+    <string name="sa_bravo">🎉 Bravo !</string>
+    <string name="sa_encore_un_effort">💪 Encore un effort</string>
+    <string name="sa_rejouer">Rejouer</string>
+    <string name="sa_ok">OK</string>
+    <string name="sa_horizontalement">➡️ Horizontalement</string>
+    <string name="sa_verticalement">⬇️ Verticalement</string>
+    <string name="sa_chaque_definition_est_le_sens">Chaque définition est le sens français d\'un mot luxembourgeois : à vous de l\'écrire dans la grille, lettre par lettre et accents compris. Le pavé reprend la disposition du clavier luxembourgeois, et Ä, Ë, É, Ö et Ü y sont en clair — sans appui long.\n\nTouchez une case pour choisir un mot, touchez-la de nouveau pour passer à l\'autre sens. Une faute ne se voit qu\'une fois le mot entièrement écrit.\n\nLa grille est en capitales, comme toutes les grilles de mots croisés. Chaque mot trouvé rappelle son orthographe véritable : en luxembourgeois, les substantifs gardent leur majuscule.\n\nLa difficulté porte sur la rareté des mots, pas sur la taille de la grille.</string>
+    <string name="sa_definitions_et_vocabulaire">Définitions et vocabulaire :\n</string>
+    <string name="sa_aucune_grille_disponible_actif_luxemburgish_2">Aucune grille disponible : l\'actif luxemburgish_crossword.json manque à l\'application.</string>
+    <string name="sa_lettres_3">%1$s. %2$s (%3$s lettres)</string>
+    <string name="sa_grille_terminee_mots_sur">🎉 Grille terminée — %1$s mots sur %1$s !</string>
+    <string name="sa_un_substantif_hors_de_la">✅ %1$s — un substantif : hors de la grille, il garde sa majuscule.</string>
+    <string name="sa_ecrit_en_minuscules">✅ %1$s — s\'écrit en minuscules.</string>
+    <string name="sa_ce_est_pas_le_mot">❌ Ce n\'est pas le mot attendu — effacez et reprenez.</string>
+    <string name="sa_solution_affichee_cette_grille_ne_2">💡 Solution affichée — cette grille ne compte pas.</string>
+    <string name="sa_lettres_2">"%1$s  ·  %2$s lettres"</string>
+    <string name="sa_ce_que_vous_avez_gagne_2">📖 Ce que vous avez gagné</string>
+    <string name="sa_nouvelle_grille">🔄 Nouvelle grille</string>
+    <string name="sa_solution">💡 Solution</string>
+    <string name="sa_regles_du_jeu">📜 Règles du jeu</string>
+    <string name="sa_tous_les_mots_vous_sont">Tous les mots vous sont donnés : il s\'agit de trouver leur place. Touchez un mot de la liste, puis une case de la grille : les emplacements où il peut aller s\'éclairent. Touchez un mot déjà posé pour le reprendre.\n\nUn mot qui contredirait une lettre déjà écrite ne se pose pas : c\'est le crayon, pas une correction.\n\nQuand tous les croisements d\'un mot sont posés, il se verrouille et vous donne son sens en français. C\'est la récompense, et c\'est pourquoi elle n\'arrive qu\'à ce moment-là. Un mot gagné passe au vert et ne se reprend plus ; son sens reste lisible sous la liste des mots.\n\nAucune connaissance du luxembourgeois n\'est nécessaire pour jouer : la déduction porte sur les longueurs et les croisements. La difficulté suit la taille de la grille et le nombre de mots qui partagent une même longueur.</string>
+    <string name="sa_traductions_et_vocabulaire">Traductions et vocabulaire :\n</string>
+    <string name="sa_aucune_grille_disponible_actif_luxemburgish">Aucune grille disponible : l\'actif luxemburgish_chassecroise.json manque à l\'application.</string>
+    <string name="sa_lettres">%1$s lettres</string>
+    <string name="sa_ce_mot_ne_peut_pas">Ce mot ne peut pas se poser ici.</string>
+    <string name="sa_est_gagne_il_reste_en">🔒 %1$s est gagné : il reste en place.</string>
+    <string name="sa_sans_une_seule_reprise">sans une seule reprise</string>
+    <string name="sa_bien_joue">bien joué</string>
+    <string name="sa_grille_bouclee">grille bouclée</string>
+    <string name="sa_grille_terminee_mots">🎉 Grille terminée — %1$s mots\n⭐</string>
+    <string name="sa_un_mot_est_la_mauvaise">❌ Un mot est à la mauvaise place. Retirez-le et reprenez.</string>
+    <string name="sa_mot_gagne">Mot gagné : %1$s, %2$s</string>
+    <string name="sa_solution_affichee_cette_grille_ne">💡 Solution affichée : cette grille ne compte pas.</string>
+    <string name="sa_mots">%1$s / %2$s mots</string>
+    <string name="sa_ce_que_vous_avez_gagne">📖 Ce que vous avez gagné · %1$s</string>
+    <string name="sa_tapez_un_mot_luxembourgeois_ou">Tapez un mot luxembourgeois ou français : la recherche fonctionne dans les deux sens.\nTouchez un mot pour ouvrir sa fiche : sens, exemples et autres formes ; appui long pour le copier.</string>
+    <string name="sa_haus_maison_kaz_chat">Haus, maison, Kaz, chat…</string>
+    <string name="sa_traductions_et_exemples_issus_du">Traductions et exemples issus du Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Exemples traduits par le corpus de traduction du même Zenter, CC0.</string>
+    <string name="sa_entrez_au_moins_deux_lettres">Entrez au moins deux lettres.</string>
+    <string name="sa_aucun_resultat_pour_les_noms">Aucun résultat pour « %1$s ».\nLes noms propres et les noms de lieux n\'ont pas de traduction dans le dictionnaire officiel.</string>
+    <string name="sa_en_francais">EN FRANÇAIS</string>
+    <string name="sa_autres_formes">AUTRES FORMES</string>
+    <string name="sa_copier_le_mot">Copier le mot</string>
+    <string name="sa_voir_sur_le_dictionnaire_officiel">Voir sur le dictionnaire officiel ↗</string>
+    <string name="sa_copie">« %1$s » copié</string>
+    <string name="sa_impossible_ouvrir_lod_lu">Impossible d\'ouvrir lod.lu</string>
+    <string name="sa_revisez_vos_cartes_intervalle_regulier">Révisez vos cartes à intervalle régulier</string>
+    <string name="sa_retrouvez_les_mots_caches_dans">Retrouvez les mots cachés dans la grille</string>
+    <string name="sa_remettez_les_lettres_dans_ordre">Remettez les lettres dans l\'ordre</string>
+    <string name="sa_devinez_le_mot_de_lettres">Devinez le mot de 5 lettres en 6 essais</string>
+    <string name="sa_completez_la_phrase_laquelle_il">Complétez la phrase à laquelle il manque un mot</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Écrivez en lettres le résultat d\'une multiplication</string>
+    <string name="sa_ecrivez_les_mots_dans_la">Écrivez les mots dans la grille, d\'après leur sens</string>
+    <string name="sa_casez_les_mots_donnes_dans">Casez les mots donnés dans la grille vide</string>
+    <string name="sa_tous_les_jeux">"‹  Tous les jeux"</string>
+    <string name="sa_huit_facons_de_travailler_son">Huit façons de travailler son luxembourgeois. La Boîte de Leitner donne accès à vos cartes étudiées. Les jeux de vocabulaire donnent la traduction française des mots, au moment où elle ne livre pas la réponse ; Zuelwuert porte sur l\'écriture des nombres, Kräizwuert est le seul où l\'on écrit soi-même les mots, et Wuertplaz le seul qui se joue sans connaître la langue. Tous versent au même carnet.</string>
+    <string name="sa_ouvrir">"Ouvrir  ›"</string>
+    <string name="sa_les_mots_que_vous_gagnez">Les mots que vous gagnez deviennent des cartes.</string>
+    <string name="sa_les_sept_jeux_versent">Les sept jeux y versent.</string>
+    <string name="sa_jeux">"   %1$s/%2$s jeux"</string>
+    <string name="sa_guide">"📖  Guide"</string>
+    <string name="sa_propos">"ℹ️  À propos"</string>
+    <string-array name="astuces_semaine">
+        <item>Appuyez longuement sur une lettre pour accéder aux autres accents (è, ê, à, ç, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.</item>
+        <item>Touchez un mot de la barre de suggestions pour le compléter d\'un coup : l\'espace est ajouté automatiquement.</item>
+        <item>Appui long d\'une seconde sur la barre d\'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.</item>
+        <item>Chaque mot que vous tapez fait progresser votre niveau dans l\'onglet « Mäi Lëtzebuergesch ».</item>
+        <item>Les petits accents affichés dans le coin d\'une touche annoncent ce que cache son appui long.</item>
+        <item>Tapez sans vous soucier des accents : « letzebuergesch » vous propose quand même « lëtzebuergesch ».</item>
+        <item>« é », « ä » et « ë » ont chacune leur propre touche : ce sont les trois diacritiques les plus fréquentes du luxembourgeois.</item>
+        <item>Wuertriet : un mot luxembourgeois de 5 lettres à deviner en 6 essais. Vert, la lettre est bien placée ; jaune, elle est dans le mot mais ailleurs.</item>
+        <item>La touche majuscule a trois états : un appui pour une seule majuscule, deux pour le verrouillage, trois pour revenir au normal.</item>
+        <item>Une lettre oubliée, en trop ou tapée à côté n\'empêche pas les suggestions d\'arriver : le clavier tolère les fautes de frappe.</item>
+        <item>Appui long sur la virgule : point-virgule, deux-points, apostrophe. Appui long sur le point : point d\'exclamation, point d\'interrogation, points de suspension.</item>
+        <item>Activez le correcteur luxembourgeois (onglet Haut, « Clavier installé ») pour que vos mots ne soient plus soulignés en rouge dans Messages ou Notes.</item>
+        <item>Le bouton « 123 » ouvre les chiffres et les symboles, euro compris. Le bouton « ABC » ramène aux lettres.</item>
+        <item>Après un espace, le clavier vous propose la suite probable de votre phrase, d\'après les deux mots que vous venez d\'écrire.</item>
+        <item>La touche emoji, en bas à droite, ouvre un panneau de près de 1900 emojis classés par catégories.</item>
+        <item>Plus vous employez un mot, plus il remonte dans vos suggestions : le clavier s\'ajuste à votre façon d\'écrire.</item>
+        <item>« Wuertmix » vous donne 10 mots à remettre dans l\'ordre contre la montre, avec un bouton « Indice » quand vous bloquez.</item>
+        <item>Appuyez longuement sur un emoji représentant une personne pour choisir sa couleur de peau.</item>
+        <item>La suggestion respecte votre casse : commencez le mot par une majuscule, elle arrive avec.</item>
+        <item>L\'onglet « Mäi Lëtzebuergesch » vous dit quelle part du dictionnaire luxembourgeois vous avez déjà employée.</item>
+        <item>Les diacritiques les plus rares sont en appui long : « è » et « ê » sous le e, « à » et « â » sous le a, « û » sous le u, « ô » sous le o.</item>
+        <item>Le clavier fonctionne entièrement hors ligne : rien de ce que vous tapez ne quitte votre téléphone.</item>
+        <item>« Wuertsich » : selon la difficulté choisie, les mots se cachent aussi en diagonale et à l\'envers.</item>
+        <item>Pour reprendre un mot déjà écrit, replacez simplement le curseur dedans : les suggestions repartent de ce mot.</item>
+        <item>Un « Mot du jour » vous attend chaque jour en haut de l\'onglet « Mäi Lëtzebuergesch ».</item>
+        <item>Les mots luxembourgeois passent en premier dans les suggestions. Le français prend le relais à partir de 3 lettres si aucun mot luxembourgeois ne correspond.</item>
+        <item>La touche Entrée s\'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.</item>
+        <item>Le classement de vos mots les plus utilisés se trouve dans l\'onglet « Mäi Lëtzebuergesch ».</item>
+        <item>Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.</item>
+        <item>Sept niveaux jalonnent votre parcours, d\'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.</item>
+        <item>Les suggestions s\'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l\'onglet Haut.</item>
+        <item>La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.</item>
+        <item>Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.</item>
+        <item>Le correcteur se choisit dans les réglages Android sous « Clavier », et non sous « Langues ». Le bouton de l\'étape 4 vous y mène directement.</item>
+        <item>Après une mise à jour de l\'application, le correcteur peut rester muet jusqu\'au redémarrage du téléphone : cela vient d\'Android, pas du clavier.</item>
+        <item>Le guide, en bas de l\'onglet Haut, reprend toutes les étapes en images, suivies des questions fréquentes.</item>
+        <item>« Wuertlück » vous montre une vraie phrase luxembourgeoise à laquelle il manque un mot : sur les quatre propositions, une seule est celle qu\'a écrite l\'auteur.</item>
+        <item>En luxembourgeois l\'unité se dit avant la dizaine : 56, c\'est « sechsafofzeg », six-et-cinquante. Le jeu « Zuelwuert » fait travailler ça.</item>
+        <item>Glissez le doigt le long de la barre d\'espace pour promener le curseur lettre par lettre : plus besoin de viser entre deux caractères pour corriger un mot.</item>
+        <item>Le panneau emoji s\'ouvre sur ceux que vous venez d\'employer : les 30 derniers vous attendent dans le premier onglet.</item>
+    </string-array>
+    <string name="jeu_leitner">Boîte de Leitner</string>
+    <string name="score_sans_faute">Sans faute : %1$d sur %2$d !</string>
+    <string name="score_aucune">Aucune bonne réponse cette fois. Une autre manche ?</string>
+    <string name="wuertplaz_terminee_a11y">Grille terminée, %1$d mots placés, %2$s.</string>
+    <string name="wuertplaz_mots_gagnes_a11y">%1$d mots gagnés : %2$s</string>
+    <plurals name="accueil_cartes_a_revoir">
+        <item quantity="one">"🔁  %d carte à revoir"</item>
+        <item quantity="other">"🔁  %d cartes à revoir"</item>
+    </plurals>
+    <plurals name="accueil_cartes_carnet">
+        <item quantity="one">%d carte dans votre carnet.</item>
+        <item quantity="other">%d cartes dans votre carnet.</item>
+    </plurals>
+    <plurals name="encore_mots_avant">
+        <item quantity="one">Encore %1$s mot avant %2$s</item>
+        <item quantity="other">Encore %1$s mots avant %2$s</item>
+    </plurals>
+    <plurals name="mots_jusqu_au_niveau">
+        <item quantity="one">%1$d mot sur %2$s jusqu\'au niveau suivant</item>
+        <item quantity="other">%1$d mots sur %2$s jusqu\'au niveau suivant</item>
+    </plurals>
+    <plurals name="etapes_terminees">
+        <item quantity="one">%d étape sur 3 terminée</item>
+        <item quantity="other">%d étapes sur 3 terminées</item>
+    </plurals>
+    <plurals name="mots_decouverts_sur">
+        <item quantity="one">%1$s mot découvert sur les %2$s du dictionnaire</item>
+        <item quantity="other">%1$s mots découverts sur les %2$s du dictionnaire</item>
+    </plurals>
+    <plurals name="utilise_fois">
+        <item quantity="one">utilisé %d fois</item>
+        <item quantity="other">utilisé %d fois</item>
+    </plurals>
+    <plurals name="trouve_en_essais">
+        <item quantity="one">Trouvé en %1$d essai : %2$s</item>
+        <item quantity="other">Trouvé en %1$d essais : %2$s</item>
+    </plurals>
+    <plurals name="score_bonnes_reponses">
+        <item quantity="one">%1$d bonne réponse sur %2$d.</item>
+        <item quantity="other">%1$d bonnes réponses sur %2$d.</item>
+    </plurals>
+    <plurals name="score_bonnes_reponses_relance">
+        <item quantity="one">%1$d bonne réponse sur %2$d. Une autre manche ?</item>
+        <item quantity="other">%1$d bonnes réponses sur %2$d. Une autre manche ?</item>
+    </plurals>
+    <plurals name="etoiles_sur_3">
+        <item quantity="one">%d étoile sur 3</item>
+        <item quantity="other">%d étoiles sur 3</item>
+    </plurals>
+    <plurals name="resultats">
+        <item quantity="one">%d résultat</item>
+        <item quantity="other">%d résultats</item>
+    </plurals>
+    <plurals name="fiche_exemples">
+        <item quantity="one">EXEMPLE</item>
+        <item quantity="other">EXEMPLES</item>
+    </plurals>
+    <plurals name="cartes_collectees">
+        <item quantity="one">%d carte collectée</item>
+        <item quantity="other">%d cartes collectées</item>
+    </plurals>
+    <plurals name="cartes_a_revoir_aujourdhui">
+        <item quantity="one">"🔁  %d carte à revoir aujourd\'hui"</item>
+        <item quantity="other">"🔁  %d cartes à revoir aujourd\'hui"</item>
+    </plurals>
+    <string name="wuertplaz_combo">🔥 %1$d mots d\'un coup !</string>
+    <string name="carte_ecu_vues">VUES</string>
+    <string name="carte_ecu_niveau">NIVEAU</string>
+    <string name="langue_traductions">fr</string>
+    <string name="accueil_glose">bonjour</string>
+    <string name="accueil_traduction">Bonjour, comment ça va ?</string>
+    <string name="carte_serie">n° %1$s · %2$s</string>
+</resources>

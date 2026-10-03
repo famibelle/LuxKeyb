@@ -89,7 +89,15 @@ jobs:
         # régénérer laisserait des grilles dont un mot a pu quitter le
         # dictionnaire ou perdre sa glose, et CrosswordAssetTest le verrait
         # échouer.
-        python generate_crossword.py --strict
+        # Une série par langue de l'interface (le français sans suffixe), les
+        # quatre en parallèle : chacune dure une minute et demie et elles ne
+        # partagent rien. Le chassé-croisé de chaque langue suit plus bas.
+        PIDS=""
+        for L in fr de en pt; do
+          python generate_crossword.py --strict --langue $L > "/tmp/kw_$L.log" 2>&1 & PIDS="$PIDS $!"
+        done
+        for P in $PIDS; do wait $P || { cat /tmp/kw_*.log; exit 1; }; done
+        tail -n 3 /tmp/kw_*.log
 
         # Les grilles de chassé-croisé se dérivent des mêmes deux actifs et
         # réutilisent le moteur de placement du script précédent — les mots
@@ -98,7 +106,12 @@ jobs:
         # est l'unicité de la solution : une grille qui en admet deux s'affiche
         # normalement et refuse pourtant une réponse juste, ce que seul le
         # générateur (puis ChasseCroiseAssetTest) sait voir.
-        python generate_chassecroise.py --strict
+        PIDS=""
+        for L in fr de en pt; do
+          python generate_chassecroise.py --strict --langue $L > "/tmp/wp_$L.log" 2>&1 & PIDS="$PIDS $!"
+        done
+        for P in $PIDS; do wait $P || { cat /tmp/wp_*.log; exit 1; }; done
+        tail -n 3 /tmp/wp_*.log
 
         echo "🔍 Fichiers produits:"
         ls -lh ../android_keyboard/app/src/main/assets/luxemburgish_*.json
@@ -107,7 +120,7 @@ jobs:
       run: |
         A=android_keyboard/app/src/main/assets
 
-        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json luxemburgish_categories.json; do
+        for f in luxemburgish_dict.json luxemburgish_ngrams.json luxemburgish_cloze.json luxemburgish_crossword.json luxemburgish_chassecroise.json luxemburgish_translations.json luxemburgish_lod_forms.json luxemburgish_familles.json luxemburgish_exemples.json luxemburgish_lod_ids.json luxemburgish_categories.json luxemburgish_translations_de.json luxemburgish_translations_en.json luxemburgish_translations_pt.json luxemburgish_crossword_de.json luxemburgish_crossword_en.json luxemburgish_crossword_pt.json luxemburgish_chassecroise_de.json luxemburgish_chassecroise_en.json luxemburgish_chassecroise_pt.json; do
           if [ ! -f "$A/$f" ]; then
             echo "::error::$f n'a pas été produit par le pipeline."
             ls -la "$A/" || echo "Dossier inexistant"
@@ -241,6 +254,19 @@ jobs:
           exit 1
         fi
 
+        # Les grilles des autres langues de l'interface : même volume exigé,
+        # une série de chaque jeu par langue. CrosswordAssetTest et
+        # ChasseCroiseAssetTest rejouent le reste sur chacune.
+        for L in de en pt; do
+          for J in crossword chassecroise; do
+            N=$(jq '.grilles | length' "$A/luxemburgish_${J}_$L.json")
+            if [ "$N" -lt 250 ]; then
+              echo "::error::luxemburgish_${J}_$L.json : $N grilles seulement (attendu ~300)."
+              exit 1
+            fi
+          done
+        done
+
         # Garde-fou des grilles de chassé-croisé. Même logique que ci-dessus :
         # jq juge le volume et l'attribution, ChasseCroiseAssetTest juge la
         # géométrie et surtout l'unicité de la solution, que rien d'autre ne
@@ -312,6 +338,18 @@ jobs:
           echo "::error::Table de traductions anormalement petite ($TRAD_COUNT formes, moins de 15000). L'appariement avec le LOD a probablement échoué."
           exit 1
         fi
+
+        # Les gloses dans les autres langues de l'interface : même garde, une
+        # par langue. Effondrée, elle ne casse rien non plus, elle rend muets
+        # les jeux et le carnet dans la seule langue où personne ne regarde.
+        for L in de en pt; do
+          N=$(jq '.translations | length' "$A/luxemburgish_translations_$L.json")
+          P=$(jq '.noms_propres | length' "$A/luxemburgish_translations_$L.json")
+          if [ "$N" -lt 15000 ] || [ "$P" -lt 1000 ]; then
+            echo "::error::luxemburgish_translations_$L.json : $N formes, $P noms propres. L'appariement avec le LOD a probablement échoué."
+            exit 1
+          fi
+        done
 
         # Wuertriet est la réserve la plus étroite du lot : cinq lettres, une
         # seule longueur. C'est elle qui se vide en premier si la couverture
@@ -474,7 +512,16 @@ jobs:
           android_keyboard/app/src/main/assets/luxemburgish_cloze.json
           android_keyboard/app/src/main/assets/luxemburgish_crossword.json
           android_keyboard/app/src/main/assets/luxemburgish_chassecroise.json
+          android_keyboard/app/src/main/assets/luxemburgish_crossword_de.json
+          android_keyboard/app/src/main/assets/luxemburgish_crossword_en.json
+          android_keyboard/app/src/main/assets/luxemburgish_crossword_pt.json
+          android_keyboard/app/src/main/assets/luxemburgish_chassecroise_de.json
+          android_keyboard/app/src/main/assets/luxemburgish_chassecroise_en.json
+          android_keyboard/app/src/main/assets/luxemburgish_chassecroise_pt.json
           android_keyboard/app/src/main/assets/luxemburgish_translations.json
+          android_keyboard/app/src/main/assets/luxemburgish_translations_de.json
+          android_keyboard/app/src/main/assets/luxemburgish_translations_en.json
+          android_keyboard/app/src/main/assets/luxemburgish_translations_pt.json
           android_keyboard/app/src/main/assets/luxemburgish_lod_forms.json
           android_keyboard/app/src/main/assets/luxemburgish_familles.json
           android_keyboard/app/src/main/assets/luxemburgish_exemples.json

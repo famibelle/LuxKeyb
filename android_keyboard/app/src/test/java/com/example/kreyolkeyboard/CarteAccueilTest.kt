@@ -30,21 +30,21 @@ class CarteAccueilTest {
 
     @Test
     fun `la carte offerte dit bonjour et non matin`() {
-        val c = CarteAccueil.corriger(contenu("Moien", setOf(JeuCarte.ACCUEIL)))
+        val c = CarteAccueil.corriger(contenu("Moien", setOf(JeuCarte.ACCUEIL)), "bonjour", "Bonjour, comment ça va ?")
         assertEquals("bonjour", c.glose)
         assertEquals(CarteAccueil.EXEMPLE, c.exemple)
-        assertEquals(CarteAccueil.TRADUCTION, c.traductionExemple)
+        assertEquals("Bonjour, comment ça va ?", c.traductionExemple)
     }
 
     @Test
     fun `un Moien gagne dans un jeu seul garde le sens du dictionnaire`() {
-        val c = CarteAccueil.corriger(contenu("Moien", setOf(JeuCarte.WUERTPLAZ)))
+        val c = CarteAccueil.corriger(contenu("Moien", setOf(JeuCarte.WUERTPLAZ)), "bonjour", "")
         assertEquals("matin", c.glose)
     }
 
     @Test
     fun `une autre carte de bienvenue n'est pas touchee`() {
-        val c = CarteAccueil.corriger(contenu("Haus", setOf(JeuCarte.ACCUEIL)))
+        val c = CarteAccueil.corriger(contenu("Haus", setOf(JeuCarte.ACCUEIL)), "bonjour", "")
         assertEquals("matin", c.glose)
     }
 

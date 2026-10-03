@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
@@ -198,7 +199,7 @@ internal class EventailCasier(
         // l'animation porterait le coût de toutes, et c'est elle qu'on voit.
         visibles(liste).forEach { image(liste[it]) }
         contentDescription = "$titre, $sousTitre. " +
-            if (liste.isEmpty()) messageVide else "Glissez pour parcourir les cartes."
+            if (liste.isEmpty()) messageVide else context.getString(R.string.eventail_parcourir)
         animDeploiement = animer(0f, 1f, 560, null) { deploiement = it }
     }
 
@@ -263,7 +264,7 @@ internal class EventailCasier(
 
         val liste = cartes
         if (liste == null) {
-            canvas.drawText("Préparation des cartes…", width / 2f, centreY, texteDoux)
+            canvas.drawText(context.getString(R.string.eventail_preparation), width / 2f, centreY, texteDoux)
             return
         }
         if (liste.isEmpty()) {
@@ -279,7 +280,7 @@ internal class EventailCasier(
             canvas.translate(width * 0.1f, centreY - mise.height / 2f)
             mise.draw(canvas)
             canvas.restore()
-            aide(canvas, "Touchez pour refermer", null, alpha)
+            aide(canvas, context.getString(R.string.eventail_refermer), null, alpha)
             return
         }
 
@@ -293,9 +294,9 @@ internal class EventailCasier(
                 "$rang / ${liste.size}", width / 2f,
                 centreY - hauteurCarte * 0.62f - px(10f), texteDoux
             )
-            aide(canvas, "Glissez pour parcourir · touchez une carte pour la lire", "Touchez ailleurs pour ranger", alpha)
+            aide(canvas, context.getString(R.string.eventail_aide_plusieurs), context.getString(R.string.eventail_ranger), alpha)
         } else {
-            aide(canvas, "Touchez la carte pour la lire", "Touchez ailleurs pour ranger", alpha)
+            aide(canvas, context.getString(R.string.eventail_aide_une), context.getString(R.string.eventail_ranger), alpha)
         }
     }
 

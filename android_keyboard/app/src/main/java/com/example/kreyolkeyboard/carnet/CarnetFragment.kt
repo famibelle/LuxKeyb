@@ -1,5 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.R
+import androidx.annotation.StringRes
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -86,8 +88,8 @@ class CarnetFragment : DialogFragment() {
      * Ce ne sont pas deux chemins vers le même écran mais deux questions,
      * « où en suis-je » et « qu'y a-t-il là-dedans ».
      */
-    private enum class Tri(val libelle: String) {
-        RECENT("Récent"), ALPHA("A → Z"), RARETE("Rareté"), ETAGERE("Étagère")
+    private enum class Tri(@StringRes val libelle: Int) {
+        RECENT(R.string.tri_recent), ALPHA(R.string.tri_alpha), RARETE(R.string.tri_rarete), ETAGERE(R.string.tri_etagere)
     }
 
     private var tri = Tri.RECENT
@@ -161,7 +163,7 @@ class CarnetFragment : DialogFragment() {
             setPadding(dp(16f), dp(12f), dp(16f), dp(6f))
             textSize = 14f
             setTextColor(Color.parseColor("#424242"))
-            text = "Ouverture du carnet…"
+            text = getString(R.string.carnet_ouverture)
         }
         colonne.addView(tvResume)
 
@@ -191,7 +193,7 @@ class CarnetFragment : DialogFragment() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { setMargins(dp(4f), 0, dp(4f), 0) }
-                text = t.libelle
+                setText(t.libelle)
                 textSize = 13f
                 setTypeface(null, Typeface.BOLD)
                 setPadding(dp(14f), dp(7f), dp(14f), dp(7f))
@@ -321,8 +323,8 @@ class CarnetFragment : DialogFragment() {
             }
         }
 
-        ligneJeux.addView(puce("Tous", null))
-        presents.forEach { ligneJeux.addView(puce("${it.emoji} ${it.nom}", it)) }
+        ligneJeux.addView(puce(getString(R.string.carnet_tous), null))
+        presents.forEach { ligneJeux.addView(puce("${it.emoji} ${it.libelle(ctx)}", it)) }
         if (filtre != null && filtre !in presents) filtre = null
         surlignerFiltres()
     }
@@ -367,16 +369,13 @@ class CarnetFragment : DialogFragment() {
         conteneurGrille.removeAllViews()
 
         if (contenus.isEmpty()) {
-            tvResume.text = "Le carnet est vide."
+            tvResume.text = getString(R.string.carnet_vide)
             conteneurGrille.addView(TextView(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { topMargin = (40 * d).toInt() }
-                text = "Chaque mot gagné dans l'un des sept jeux devient une " +
-                    "carte et vient s'ajouter ici. Trouvez un mot, devinez-en " +
-                    "un, écrivez-en un : la première carte est à une partie " +
-                    "d'ici."
+                text = getString(R.string.carnet_vide_explication)
                 textSize = 15f
                 gravity = Gravity.CENTER
                 setLineSpacing(0f, 1.25f)
@@ -391,10 +390,9 @@ class CarnetFragment : DialogFragment() {
 
         val parRarete = visibles.groupingBy { it.rarete }.eachCount()
         tvResume.text = buildString {
-            append("${visibles.size} mot")
-            if (visibles.size > 1) append("s")
-            filtre?.let { append(" dans ${it.nom}") }
-            append(" — ")
+            val mots = resources.getQuantityString(R.plurals.mots, visibles.size, visibles.size)
+            append(filtre?.let { getString(R.string.carnet_mots_dans, mots, it.libelle(ctx)) } ?: mots)
+            append(" · ")
             append(
                 Rarete.values().reversed()
                     .filter { (parRarete[it] ?: 0) > 0 }
@@ -421,8 +419,9 @@ class CarnetFragment : DialogFragment() {
             // qui compte n'est plus la rareté mais l'avancement, et le prix à
             // payer pour une carte acquise est ce qu'aucun écran ne disait.
             val acquises = visibles.count { it.carte.acquise }
-            tvResume.text = "$acquises acquis sur ${visibles.size} — six " +
-                "révisions réussies par carte, étalées sur cinq mois."
+            tvResume.text = resources.getQuantityString(
+                R.plurals.carnet_acquis_sur, visibles.size, acquises, visibles.size
+            )
             remplirEtagere(ctx, visibles, cote, colonnes)
             return
         }

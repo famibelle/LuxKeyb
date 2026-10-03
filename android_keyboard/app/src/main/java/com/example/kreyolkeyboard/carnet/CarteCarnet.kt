@@ -9,6 +9,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
+import com.example.kreyolkeyboard.R
 import com.example.kreyolkeyboard.TranslationDictionary
 import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import java.text.SimpleDateFormat
@@ -34,8 +36,8 @@ data class ContenuCarte(
     val blason: Blasonnement = Blasonnement.AUCUN,
     /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
     val traductionExemple: String? = null,
-    /** La catégorie du LOD en clair (« Nom féminin », « Verbe »), ou `null`. */
-    val categorie: String? = null
+    /** La catégorie du LOD (« Nom féminin », « Verbe »), en ressource, ou `null`. */
+    @StringRes val categorie: Int? = null
 )
 
 /**
@@ -114,9 +116,9 @@ object CarteCarnet {
                 carte = carte,
                 rarete = Rarete.pourNombre(valeur),
                 rang = null,
-                glose = "le nombre $valeur",
+                glose = context.getString(R.string.carte_glose_nombre, valeur),
                 autresFormes = emptyList(),
-                exemple = ZuelenSpeller.decomposition(valeur).ifEmpty { null },
+                exemple = ZuelenSpeller.decomposition(valeur)?.texte(context),
                 // Un numéral n'est pas au classement — il n'est dans aucune
                 // grille — mais son champ ne fait aucun doute : c'est une
                 // mesure. Les cartes de Zuelwuert forment donc une famille de
@@ -126,7 +128,7 @@ object CarteCarnet {
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return CarteAccueil.corriger(ContenuCarte(
+        return CarteAccueil.corriger(context, ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
@@ -241,15 +243,15 @@ object CarteCarnet {
         // majuscule du substantif et la finale du verbe — « gesicht » était un
         // mot sans nature, c'est un verbe —, et « Mot » ferme la liste plutôt
         // que de laisser une pastille vide.
-        val nature = abrege(
+        val nature = context.getString(abrege(
             when {
-                c.carte.nombre != null -> "Nombre"
+                c.carte.nombre != null -> R.string.cat_nombre
                 c.categorie != null -> c.categorie
-                c.blason.nature == Nature.NOM -> "Nom"
-                c.blason.nature == Nature.VERBE -> "Verbe"
-                else -> "Mot"
+                c.blason.nature == Nature.NOM -> R.string.cat_nom
+                c.blason.nature == Nature.VERBE -> R.string.cat_verbe
+                else -> R.string.cat_mot
             }
-        )
+        ))
         val vueNature = ligne(context, nature, TYPE_CORPS, ENCRE, gras = true)
         vueNature.tag = floatArrayOf(corpsDeLEtiquette(vueNature), 0f)
         carte.posee(vueNature, Ornement.NATURE_TEXTE)
@@ -258,7 +260,7 @@ object CarteCarnet {
         // lecteurs d'écran, qui ne lisent pas une légende dessinée.
         carte.posee(
             View(context).apply {
-                contentDescription = "gagné à ${jeu.nom}"
+                contentDescription = context.getString(R.string.carte_gagne_a, jeu.libelle(context))
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
             },
             Ornement.PROVENANCE
@@ -291,8 +293,10 @@ object CarteCarnet {
         // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
         // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
         // et son nom.
-        val serie = "n° %03d · %s".format(
-            Locale.FRENCH, c.carte.numero, FORMAT_DATE.format(Date(c.carte.premiereFois))
+        val serie = context.getString(
+            R.string.carte_serie,
+            "%03d".format(Locale.ROOT, c.carte.numero),
+            FORMAT_DATE.format(Date(c.carte.premiereFois))
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
@@ -301,7 +305,7 @@ object CarteCarnet {
         carte.posee(
             ligne(
                 context,
-                c.rang?.let { "${it + 1}ᵉ" } ?: "hors corpus",
+                c.rang?.let { context.getString(R.string.carte_rang, it + 1) } ?: context.getString(R.string.carte_hors_corpus),
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.SERIE_D
@@ -322,10 +326,11 @@ object CarteCarnet {
      * `TranslationDictionary.libelleCategorie` garde ses libellés entiers pour
      * qui aura la place de les écrire.
      */
-    private fun abrege(nature: String): String = when (nature) {
-        "Nom masculin ou féminin" -> "Nom m. ou f."
-        "Nom masculin ou neutre" -> "Nom m. ou n."
-        "Nom féminin ou neutre" -> "Nom f. ou n."
+    @StringRes
+    private fun abrege(@StringRes nature: Int): Int = when (nature) {
+        R.string.cat_nom_mf -> R.string.cat_nom_mf_court
+        R.string.cat_nom_mn -> R.string.cat_nom_mn_court
+        R.string.cat_nom_fn -> R.string.cat_nom_fn_court
         else -> nature
     }
 
@@ -375,7 +380,7 @@ object CarteCarnet {
             // glose se contente d'une ligne et la famille cède sa place : la
             // phrase traduite dit le sens mieux qu'une seconde ligne de glose,
             // et la famille reste lisible dans la fiche du Wierderbuch.
-            addView(bloc(context, c.glose.ifEmpty { "sens non répertorié" }, 15f, ENCRE, 0f).apply {
+            addView(bloc(context, c.glose.ifEmpty { context.getString(R.string.carte_sens_inconnu) }, 15f, ENCRE, 0f).apply {
                 setTypeface(null, Typeface.BOLD)
                 maxLines = if (traduction != null) 1 else 2
             })
@@ -385,7 +390,7 @@ object CarteCarnet {
                 // citation : elle ne prend pas les guillemets. Espaces
                 // insécables à l'intérieur, sinon le « » » fermant part seul
                 // à la ligne.
-                val texte = if (c.carte.nombre != null) phrase else "« $phrase »"
+                val texte = if (c.carte.nombre != null) phrase else context.getString(R.string.citation, phrase)
                 addView(bloc(context, texte, 12f, ENCRE_DOUCE, 2f).apply {
                     setTypeface(null, Typeface.ITALIC)
                     maxLines = 2
@@ -400,7 +405,7 @@ object CarteCarnet {
                 addView(
                     bloc(
                         context,
-                        "Même famille : " + c.autresFormes.take(6).joinToString(", "),
+                        context.getString(R.string.carte_meme_famille, c.autresFormes.take(6).joinToString(", ")),
                         10.5f, ENCRE_PALE, 3f
                     ).apply { maxLines = 1 }
                 )

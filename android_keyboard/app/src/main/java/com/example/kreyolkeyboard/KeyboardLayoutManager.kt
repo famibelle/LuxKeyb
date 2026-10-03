@@ -515,9 +515,9 @@ class KeyboardLayoutManager(private val context: Context) {
                 
                 // Description pour accessibilité
                 contentDescription = when (key) {
-                    "⌫" -> "Supprimer"
+                    "⌫" -> context.getString(R.string.touche_supprimer)
                     "⏎" -> descriptionEntree()
-                    "⇧" -> "Majuscule"
+                    "⇧" -> context.getString(R.string.touche_majuscule)
                     else -> key
                 }
                 
@@ -858,7 +858,7 @@ class KeyboardLayoutManager(private val context: Context) {
             ViewCompat.replaceAccessibilityAction(
                 button,
                 AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_LONG_CLICK,
-                "Autres caractères"
+                context.getString(R.string.touche_autres_caracteres)
             ) { vue, _ ->
                 interactionListener?.onLongPress(key, vue)
                 true
@@ -1194,12 +1194,12 @@ class KeyboardLayoutManager(private val context: Context) {
     }
 
     private fun descriptionEntree(): String = when (actionEntree) {
-        EditorInfo.IME_ACTION_SEARCH -> "Rechercher"
-        EditorInfo.IME_ACTION_SEND -> "Envoyer"
-        EditorInfo.IME_ACTION_GO -> "Aller"
-        EditorInfo.IME_ACTION_NEXT -> "Suivant"
-        EditorInfo.IME_ACTION_DONE -> "Terminé"
-        else -> "Entrée"
+        EditorInfo.IME_ACTION_SEARCH -> context.getString(R.string.entree_rechercher)
+        EditorInfo.IME_ACTION_SEND -> context.getString(R.string.entree_envoyer)
+        EditorInfo.IME_ACTION_GO -> context.getString(R.string.entree_aller)
+        EditorInfo.IME_ACTION_NEXT -> context.getString(R.string.entree_suivant)
+        EditorInfo.IME_ACTION_DONE -> context.getString(R.string.entree_termine)
+        else -> context.getString(R.string.entree)
     }
 
     /**

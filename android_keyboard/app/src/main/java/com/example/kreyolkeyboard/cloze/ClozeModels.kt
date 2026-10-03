@@ -1,5 +1,7 @@
 package com.example.kreyolkeyboard.cloze
 
+import com.example.kreyolkeyboard.R
+import androidx.annotation.StringRes
 import android.content.Context
 import android.util.Log
 import com.example.kreyolkeyboard.MotsEcartes
@@ -17,10 +19,10 @@ import java.io.InputStreamReader
  * recalculé ici : ce fichier ne fait que lire, tirer au sort et mélanger.
  */
 
-enum class ClozeDifficulty(val level: Int, val label: String) {
-    FACILE(1, "Facile"),
-    NORMALE(2, "Normal"),
-    DIFFICILE(3, "Difficile");
+enum class ClozeDifficulty(val level: Int, @StringRes val label: Int) {
+    FACILE(1, R.string.niveau_facile),
+    NORMALE(2, R.string.niveau_normal),
+    DIFFICILE(3, R.string.niveau_difficile);
 
     companion object {
         fun fromLevel(level: Int): ClozeDifficulty =

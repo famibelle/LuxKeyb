@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import androidx.annotation.StringRes
 import android.util.Log
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -50,6 +51,30 @@ object TranslationDictionary {
 
     private var attribution: String = ""
     private var estCharge = false
+
+    /**
+     * La langue des gloses chargées : celle de l'interface, telle que la
+     * ressource `langue_traductions` la résout (« fr », « de », « en », « pt » ;
+     * l'interface luxembourgeoise glose en français, faute de dictionnaire
+     * luxembourgeois-luxembourgeois). Passer par une ressource plutôt que par
+     * `Locale.getDefault()` garantit que gloses et interface parlent toujours la
+     * même langue, y compris quand le téléphone est dans une langue que l'app
+     * ne traduit pas et qu'Android retombe sur l'anglais.
+     */
+    private var langueChargee: String? = null
+
+    /**
+     * Les traductions d'exemples dans une autre langue que le français, lues
+     * dans l'actif de la langue ; `null` en français, où elles viennent de
+     * luxemburgish_exemples.json. Voir [chargerExemples].
+     */
+    private var traductionsExemplesLangue: Map<String, List<String?>>? = null
+
+    private fun langueDemandee(context: Context): String =
+        context.getString(R.string.langue_traductions)
+
+    private fun actifDe(langue: String): String =
+        if (langue == "fr") ASSET else "luxemburgish_translations_$langue.json"
 
     /**
      * Index de recherche : une entrée par forme, avec ses deux versions pliées
@@ -156,13 +181,25 @@ object TranslationDictionary {
 
     @Synchronized
     fun charger(context: Context) {
-        if (estCharge) return
+        val langue = langueDemandee(context)
+        if (estCharge && langue == langueChargee) return
         estCharge = true
+        langueChargee = langue
+        // Une autre langue que la précédente : la fiche doit relire ses
+        // traductions d'exemples.
+        synchronized(verrouExemples) { exemplesCharges = false }
 
         try {
-            val contenu = BufferedReader(
-                InputStreamReader(context.assets.open(ASSET))
-            ).use { it.readText() }
+            val contenu = try {
+                BufferedReader(
+                    InputStreamReader(context.assets.open(actifDe(langue)))
+                ).use { it.readText() }
+            } catch (e: java.io.IOException) {
+                // Un actif de langue absent retombe sur le français plutôt que
+                // de laisser les jeux sans aucune glose.
+                Log.e(TAG, "Actif ${actifDe(langue)} absent, repli sur le français", e)
+                BufferedReader(InputStreamReader(context.assets.open(ASSET))).use { it.readText() }
+            }
 
             val racine = JSONObject(contenu)
             val table = racine.getJSONObject("translations")
@@ -187,13 +224,42 @@ object TranslationDictionary {
             traductionsMinuscules = minuscules
             index = null
 
+            // Les noms propres, tels que le LOD les marque (`NP`), calculés à la
+            // génération par `generate_translations.py:est_nom_propre_lod`.
+            // Ils remplacent la règle « toutes les acceptions commencent par une
+            // majuscule », qui ne valait qu'en français : l'allemand capitalise
+            // tous ses noms et l'anglais ses jours et ses mois. Elle laissait
+            // aussi les gentilés (« Fransous ») hors du tirage. Un actif sans la
+            // liste ne retire rien : les jeux tirent alors aussi des toponymes,
+            // ce que TranslationAssetTest interdit.
+            // Les morceaux de locution (`fragments`) suivent le même chemin :
+            // « vum » n'atteint le LOD que par « vum selwen » et se glosait
+            // « de soi-même ». Voir generate_translations.py:est_fragment_lod.
+            val nomsPropres = HashSet<String>()
+            for (cle in listOf("noms_propres", "fragments")) {
+                racine.optJSONArray(cle)?.let { liste ->
+                    for (i in 0 until liste.length()) nomsPropres.add(liste.getString(i))
+                }
+            }
+
             proposables = exactes.asSequence()
                 .filter { (forme, glose) ->
                     gloseInstructive(forme, glose) &&
-                        !estNomPropre(glose) &&
+                        forme !in nomsPropres &&
                         !MotsEcartes.estEcarte(forme)
                 }
                 .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it.key) }
+
+            traductionsExemplesLangue = racine.optJSONObject("exemples_traductions")?.let { t ->
+                val lues = HashMap<String, List<String?>>(t.length())
+                val mots = t.keys()
+                while (mots.hasNext()) {
+                    val mot = mots.next()
+                    val liste = t.getJSONArray(mot)
+                    lues[mot] = (0 until liste.length()).map { liste.getString(it).ifEmpty { null } }
+                }
+                lues
+            } ?: if (langue == "fr") null else emptyMap()
 
             val sources = racine.optJSONArray("attribution")
             attribution = if (sources == null) "" else
@@ -276,6 +342,7 @@ object TranslationDictionary {
      * où la fiche doit s'afficher.
      */
     fun chargerExemples(context: Context) {
+        charger(context)
         synchronized(verrouExemples) {
             if (exemplesCharges) return
             exemplesCharges = true
@@ -310,7 +377,10 @@ object TranslationDictionary {
                 }
 
                 exemples = lues
-                traductionsExemples = traduites
+                // Dans une autre langue, les phrases restent celles-ci (elles
+                // sont choisies une fois, sur le français) et seules leurs
+                // traductions viennent de l'actif de la langue.
+                traductionsExemples = traductionsExemplesLangue ?: traduites
                 Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
             } catch (e: Exception) {
                 // Sans exemples la fiche garde son sens et ses formes : la
@@ -405,40 +475,42 @@ object TranslationDictionary {
     }
 
     /**
-     * Catégorie en clair du [mot] affiché par une fiche (« Nom féminin »,
-     * « Verbe »), ou `null` si le LOD ne la donne pas.
+     * Catégorie du [mot] affiché par une fiche (« Nom féminin », « Verbe »),
+     * en ressource à traduire, ou `null` si le LOD ne la donne pas.
      */
-    fun categorie(context: Context, mot: String): String? {
+    @StringRes
+    fun categorie(context: Context, mot: String): Int? {
         chargerCategories(context)
         return categoriesLod[mot]?.let { libelleCategorie(it) }
     }
 
     /** `"SUBST F"` → « Nom féminin ». `null` pour un code inconnu. */
-    fun libelleCategorie(code: String): String? {
+    @StringRes
+    fun libelleCategorie(code: String): Int? {
         val parties = code.split(" ")
         return when (parties[0]) {
             "SUBST" -> when (parties.getOrNull(1)) {
-                "F" -> "Nom féminin"
-                "M" -> "Nom masculin"
-                "N" -> "Nom neutre"
-                "MF" -> "Nom masculin ou féminin"
-                "MN" -> "Nom masculin ou neutre"
-                "FN" -> "Nom féminin ou neutre"
-                else -> "Nom"
+                "F" -> R.string.cat_nom_f
+                "M" -> R.string.cat_nom_m
+                "N" -> R.string.cat_nom_n
+                "MF" -> R.string.cat_nom_mf
+                "MN" -> R.string.cat_nom_mn
+                "FN" -> R.string.cat_nom_fn
+                else -> R.string.cat_nom
             }
-            "NP" -> "Nom propre"
-            "VRB" -> "Verbe"
-            "ADJ" -> "Adjectif"
-            "ADV" -> "Adverbe"
-            "NB" -> "Nombre"
-            "PRON" -> "Pronom"
-            "PRONADV" -> "Adverbe pronominal"
-            "INTERJ" -> "Interjection"
-            "PREP" -> "Préposition"
-            "CONJ" -> "Conjonction"
-            "VRBPART" -> "Particule verbale"
-            "PART" -> "Particule"
-            "ART" -> "Article"
+            "NP" -> R.string.cat_nom_propre
+            "VRB" -> R.string.cat_verbe
+            "ADJ" -> R.string.cat_adjectif
+            "ADV" -> R.string.cat_adverbe
+            "NB" -> R.string.cat_nombre
+            "PRON" -> R.string.cat_pronom
+            "PRONADV" -> R.string.cat_adverbe_pronominal
+            "INTERJ" -> R.string.cat_interjection
+            "PREP" -> R.string.cat_preposition
+            "CONJ" -> R.string.cat_conjonction
+            "VRBPART" -> R.string.cat_particule_verbale
+            "PART" -> R.string.cat_particule
+            "ART" -> R.string.cat_article
             else -> null
         }
     }
@@ -702,39 +774,12 @@ object TranslationDictionary {
     }
 
     /**
-     * Vrai si la glose désigne un nom propre : toutes ses acceptions
-     * commencent par une majuscule.
-     *
-     * Le LOD écrit ses gloses en français, et le français réserve la minuscule
-     * aux noms communs : « Beetebuerg » → Bettembourg, « Houwald » → Howald,
-     * « José » → San José. C'est le même critère que
-     * `generate_crossword.py:est_nom_propre()`, qui écarte ces mots des grilles
-     * de Kräizwuert et de Wuertplaz ; il fallait aussi l'appliquer ici.
-     *
-     * [gloseInstructive] n'y suffisait pas et c'est ce qui a laissé passer le
-     * défaut : elle ne rejette qu'un mot glosé **par lui-même**, donc elle
-     * attrape « Käerjeng » → Käerjeng mais laisse « Beetebuerg » →
-     * Bettembourg, puisque les deux graphies diffèrent. Mesuré sur la
-     * livraison du 2026-09-07 : 757 des 19 350 formes tirables, soit 3,9 %, et
-     * Wuertriet pouvait demander « Athen », « Basel » ou « Abeba » comme mot
-     * de cinq lettres à deviner.
-     *
-     * Les mêmes 17 pertes légitimes qu'à la génération des grilles, les
-     * gentilés surtout (« Fransous » → Français), et pour la même raison :
-     * une liste d'exceptions coûterait plus à tenir que ce qu'elle rendrait.
-     */
-    private fun estNomPropre(glose: String): Boolean {
-        val acceptions = glose.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        return acceptions.isNotEmpty() && acceptions.all { it.first().isUpperCase() }
-    }
-
-    /**
      * Vrai si l'application peut proposer ce mot d'elle-même.
      *
      * Trois conditions, et c'est le point de passage unique du mot du jour,
      * des mots à découvrir et des trois jeux qui tirent un mot : la glose
-     * apprend quelque chose (voir [gloseInstructive]), elle ne désigne pas un
-     * nom propre (voir [estNomPropre]), et le mot n'est pas de ceux que
+     * apprend quelque chose (voir [gloseInstructive]), le mot n'est pas un nom
+     * propre pour le LOD (la liste `noms_propres` de l'actif), et il n'est pas de ceux que
      * [MotsEcartes] tient à l'écart. Une glose absente laisse une ligne vide,
      * une glose égale au mot laisse une ligne inutile, et les deux se lisent de
      * la même façon — le mot n'est pas traduit.
