@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "30.2.2": {
+    "images": [
+      {
+        "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+        "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+        "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+      }
+    ]
+  },
   "30.2.0": {
     "images": [
       {

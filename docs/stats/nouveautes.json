@@ -1,9 +1,42 @@
 {
  "genere_le": "2026-10-03",
- "derniere_version": "30.2.1",
+ "derniere_version": "30.2.2",
  "derniere_date": "2026-10-03",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "30.2.2",
+   "date": "2026-10-03",
+   "intro": "Kräizwuert et le guide suivent la disposition de votre clavier.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le clavier de Kräizwuert reprend votre disposition",
+       "texte": "Avec « Suisse allemand », la disposition par défaut, il gardait les rangées « Luxembourg » : « é » à droite du « l », là où votre clavier met « ö » et « ä ». Il suit maintenant celle que vous avez choisie dans les réglages du clavier, même si vous en changez en cours de partie."
+      },
+      {
+       "titre": "Le guide montre le clavier tel que vous le voyez",
+       "texte": "Ses images sont refaites avec la disposition « Suisse allemand », et il ne dit plus qu'il faut un appui long pour « ë », « ä », « é », « ü » ou « ö » : ces lettres ont leur propre touche."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+     "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+     "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+    }
+   ],
+   "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+   "image_alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+   "image_legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+  },
   {
    "version": "30.2.1",
    "date": "2026-10-03",
@@ -195,25 +228,6 @@
    "image": "Screenshots/lux_clavier_arobase_slash.png",
    "image_alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
    "image_legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
-  },
-  {
-   "version": "29.4.1",
-   "date": "2026-09-29",
-   "intro": "Le clavier porte le même nom partout.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Dans la liste des claviers du téléphone, il s'appelle « Lëtzebuergesch Clavier »",
-       "texte": "Et non plus « Lëtzebuergesch Clavier Luxembourg ». C'est le nom que l'application vous demande de choisir, et celui de son icône."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }
