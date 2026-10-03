@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Les langues de l'interface, proposées par Android 13 et plus dans
-     Paramètres > Applications > Lëtzebuergesch Clavier > Langue. Sans elle, le
-     luxembourgeois resterait inaccessible : Android ne le propose pas comme
-     langue du téléphone. L'anglais est la langue par défaut (values/). -->
+     Paramètres > Applications > Lëtzebuergesch Clavier > Langue. Les Android
+     récents (vérifié sur l'API 36) proposent « Lëtzebuergesch » comme langue
+     du téléphone ; sur les plus anciens, c'est ce réglage par application qui
+     rend l'interface luxembourgeoise accessible. L'anglais est la langue par
+     défaut (values/). -->
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
     <locale android:name="en" />
     <locale android:name="fr" />
