@@ -9,9 +9,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
-## [32.1.0] - 2026-10-03
+## [33.0.0] - 2026-10-03
 
-Le clavier dicte en luxembourgeois.
+Le clavier dicte en luxembourgeois : une version majeure pour la dictée vocale.
 
 ### ✨ Nouveautés
 
@@ -25,6 +25,10 @@ Le clavier dicte en luxembourgeois.
 
 - Nouvelles autorisations, toutes réservées à la dictée : micro, Internet, état du réseau.
 - Politique de confidentialité 3.0, avec une section « La dictée vocale ». L'application s'adresse aux personnes de 16 ans et plus.
+
+## [32.1.0] - 2026-10-03
+
+Première publication de la dictée vocale, reprise telle quelle comme version majeure dans la 33.0.0.
 
 ## [32.0.0] - 2026-10-03
 
