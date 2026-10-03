@@ -5,6 +5,8 @@ import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import java.io.File
 
 /**
@@ -21,15 +23,34 @@ import java.io.File
  * La redondance est voulue : c'est la seule barrière qui reste si quelqu'un
  * régénère l'actif avec un script modifié.
  */
-class CrosswordAssetTest {
+@RunWith(Parameterized::class)
+class CrosswordAssetTest(private val langue: String) {
+
+    companion object {
+        /**
+         * Une série de grilles par langue de l'interface (2026-10-03) : chaque
+         * contrôle tourne sur les quatre, parce qu'un défaut de génération
+         * peut ne toucher qu'une langue, celle que personne ne regarde.
+         */
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun langues() = listOf("fr", "de", "en", "pt")
+    }
+
+    /** L'actif des traductions de la même langue. */
+    private fun traductions(): JSONObject = JSONObject(File(
+        "src/main/assets/" + if (langue == "fr") "luxemburgish_translations.json"
+                             else "luxemburgish_translations_$langue.json"
+    ).readText())
 
     private val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄËÉÖÜ".toSet()
 
     private fun charger(): JSONObject {
-        val fichier = File("src/main/assets/luxemburgish_crossword.json")
+        val nom = if (langue == "fr") "luxemburgish_crossword.json" else "luxemburgish_crossword_$langue.json"
+        val fichier = File("src/main/assets/$nom")
         assertTrue(
-            "luxemburgish_crossword.json manquant — lancez " +
-                "Dictionnaires/generate_crossword.py",
+            "$nom manquant — lancez " +
+                "Dictionnaires/generate_crossword.py --langue $langue",
             fichier.exists()
         )
         return JSONObject(fichier.readText())
@@ -303,6 +324,16 @@ class CrosswordAssetTest {
      */
     @Test
     fun `aucune definition n'est un nom propre`() {
+        // Hors du français, la majuscule ne dit rien (l'allemand capitalise
+        // ses noms communs) : une acception est propre quand elle traduit un
+        // nom propre du LOD, comme le décide generate_crossword.acception_propre.
+        val t = traductions()
+        val table = t.getJSONObject("translations")
+        val liste = t.getJSONArray("noms_propres")
+        val acceptionsPropres = (0 until liste.length())
+            .flatMap { table.optString(liste.getString(it), "").split(",") }
+            .map { it.trim() }.filter { it.isNotEmpty() }.toSet()
+        fun propre(a: String) = if (langue == "fr") a.first().isUpperCase() else a in acceptionsPropres
         val grilles = grilles()
         val fautifs = mutableSetOf<String>()
         for (i in 0 until grilles.length()) {
@@ -311,15 +342,13 @@ class CrosswordAssetTest {
                 val mot = mots.getJSONObject(j)
                 val acceptions = mot.getString("g").split(",")
                     .map { it.trim() }.filter { it.isNotEmpty() }
-                if (acceptions.isNotEmpty() &&
-                    acceptions.all { it.first().isUpperCase() }
-                ) {
+                if (acceptions.isNotEmpty() && acceptions.all { propre(it) }) {
                     fautifs.add("${mot.getString("f")} : ${mot.getString("g")}")
                 }
             }
         }
         assertTrue(
-            "définitions entièrement capitalisées, donc noms propres : " +
+            "$langue : définitions qui ne sont que des noms propres : " +
                 fautifs.sorted().joinToString(" · "),
             fautifs.isEmpty()
         )

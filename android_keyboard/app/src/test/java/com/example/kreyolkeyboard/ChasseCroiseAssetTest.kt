@@ -5,6 +5,8 @@ import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import java.io.File
 
 /**
@@ -21,15 +23,34 @@ import java.io.File
  * refuse une réponse juste — le joueur en conclut qu'il s'est trompé, ou que
  * le jeu est cassé. Rien d'autre ne le signalerait.
  */
-class ChasseCroiseAssetTest {
+@RunWith(Parameterized::class)
+class ChasseCroiseAssetTest(private val langue: String) {
+
+    companion object {
+        /**
+         * Une série de grilles par langue de l'interface (2026-10-03) : chaque
+         * contrôle tourne sur les quatre, parce qu'un défaut de génération
+         * peut ne toucher qu'une langue, celle que personne ne regarde.
+         */
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun langues() = listOf("fr", "de", "en", "pt")
+    }
+
+    /** L'actif des traductions de la même langue. */
+    private fun traductions(): JSONObject = JSONObject(File(
+        "src/main/assets/" + if (langue == "fr") "luxemburgish_translations.json"
+                             else "luxemburgish_translations_$langue.json"
+    ).readText())
 
     private val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄËÉÖÜ".toSet()
 
     private fun charger(): JSONObject {
-        val fichier = File("src/main/assets/luxemburgish_chassecroise.json")
+        val nom = if (langue == "fr") "luxemburgish_chassecroise.json" else "luxemburgish_chassecroise_$langue.json"
+        val fichier = File("src/main/assets/$nom")
         assertTrue(
-            "luxemburgish_chassecroise.json manquant — lancez " +
-                "Dictionnaires/generate_chassecroise.py",
+            "$nom manquant — lancez " +
+                "Dictionnaires/generate_chassecroise.py --langue $langue",
             fichier.exists()
         )
         return JSONObject(fichier.readText())
@@ -386,9 +407,7 @@ class ChasseCroiseAssetTest {
      */
     @Test
     fun `aucun mot n'est un nom propre`() {
-        val traductions = org.json.JSONObject(
-            java.io.File("src/main/assets/luxemburgish_translations.json").readText()
-        )
+        val traductions = traductions()
         val exclus = listOf("noms_propres", "fragments").flatMap { cle ->
             val liste = traductions.getJSONArray(cle)
             (0 until liste.length()).map { liste.getString(it) }

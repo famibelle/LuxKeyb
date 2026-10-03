@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.chassecroise
 
+import com.example.kreyolkeyboard.R
 import android.content.Context
 import android.util.Log
 import com.example.kreyolkeyboard.MotsEcartes
@@ -230,6 +231,7 @@ object ChasseCroiseData {
 
     private var cachedGrids: List<CrosswordGrid>? = null
     private var cachedAttribution: String? = null
+    private var cachedLangue: String? = null
 
     /**
      * Charge et met en cache les grilles livrées.
@@ -245,12 +247,24 @@ object ChasseCroiseData {
      * donc un actif manquant passerait inaperçu.
      */
     fun loadGrids(context: Context): List<CrosswordGrid> {
-        cachedGrids?.let { return it }
+        // Une série de grilles par langue de l'interface : la glose est le
+        // cœur de la grille (définition ou récompense), et les mots retenus
+        // dépendent de la langue de leur glose. La ressource langue_traductions
+        // désigne la même langue que les traductions du reste de l'app.
+        val langue = context.getString(R.string.langue_traductions)
+        if (langue == cachedLangue) cachedGrids?.let { return it }
+        cachedLangue = langue
+        val actif = if (langue == "fr") ASSET else ASSET.replace(".json", "_$langue.json")
 
         val grilles = try {
-            val contenu = BufferedReader(
-                InputStreamReader(context.assets.open(ASSET))
-            ).use { it.readText() }
+            val contenu = try {
+                BufferedReader(InputStreamReader(context.assets.open(actif))).use { it.readText() }
+            } catch (e: java.io.IOException) {
+                // Une langue sans grilles retombe sur le français plutôt que
+                // de laisser le jeu vide.
+                Log.e(TAG, "Actif $actif absent, repli sur $ASSET", e)
+                BufferedReader(InputStreamReader(context.assets.open(ASSET))).use { it.readText() }
+            }
 
             val racine = JSONObject(contenu)
             val credits = racine.optJSONArray("attribution")

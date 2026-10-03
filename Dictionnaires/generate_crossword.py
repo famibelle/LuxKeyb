@@ -59,6 +59,7 @@ retirer.
 Fait avec ❤️ pour préserver le Luxembourgeois
 """
 
+import difflib
 import json
 import os
 import random
@@ -81,6 +82,70 @@ RACINE_ASSETS = Path(__file__).resolve().parent.parent / \
 CHEMIN_DICT = RACINE_ASSETS / "luxemburgish_dict.json"
 CHEMIN_TRADUCTIONS = RACINE_ASSETS / "luxemburgish_translations.json"
 CHEMIN_GRILLES = RACINE_ASSETS / "luxemburgish_crossword.json"
+
+# La langue des définitions (`--langue de|en|pt`, le français par défaut). Le
+# français garde ses actifs et ses règles historiques à l'identique ; une
+# autre langue lit luxemburgish_translations_<langue>.json et écrit
+# luxemburgish_crossword_<langue>.json, avec deux règles qui ne dépendent pas
+# de la langue (voir [acception_propre] et [transparente]).
+LANGUE = "fr"
+
+# Les acceptions des noms propres du LOD dans la langue courante : ce qui
+# remplace « commence par une majuscule » hors du français, où l'allemand
+# capitalise tous ses noms et l'anglais ses jours et ses mois.
+_ACCEPTIONS_PROPRES = set()
+
+
+def regler_langue(langue):
+    """Bascule le module sur une langue de définitions. Sans effet en français."""
+    global LANGUE, CHEMIN_TRADUCTIONS, CHEMIN_GRILLES, _NOMS_PROPRES
+    LANGUE = langue
+    if langue != "fr":
+        CHEMIN_TRADUCTIONS = RACINE_ASSETS / f"luxemburgish_translations_{langue}.json"
+        CHEMIN_GRILLES = RACINE_ASSETS / f"luxemburgish_crossword_{langue}.json"
+    _NOMS_PROPRES = None
+    # L'allemand perd au filtre des définitions transparentes une bonne part
+    # de ses mots les plus courants (« Schoul » → Schule) : à 800 occurrences
+    # il ne reste que 155 mots faciles, sous le plancher de 200. À 600 il en
+    # reste 226, l'équivalent des 219 du français : le niveau garde son sens,
+    # les mots les plus courants que le jeu peut demander.
+    if langue == "de":
+        NIVEAUX[1]["freq_min"] = 600
+
+
+def langue_demandee():
+    """`--langue xx` sur la ligne de commande, « fr » sans elle."""
+    if "--langue" in sys.argv:
+        return sys.argv[sys.argv.index("--langue") + 1]
+    return "fr"
+
+
+def acception_propre(acception):
+    """Vrai si l'acception désigne un nom propre.
+
+    En français, une majuscule initiale suffit : le français écrit ses noms
+    communs en minuscules. Ailleurs, l'acception doit figurer parmi les
+    traductions des noms propres du LOD dans la même langue.
+    """
+    if LANGUE == "fr":
+        return acception[:1].isupper()
+    est_nom_propre_lod("")  # charge les listes de la langue
+    return acception in _ACCEPTIONS_PROPRES
+
+
+def transparente(mot, acception):
+    """Vrai si l'acception ressemble trop au mot pour servir de définition.
+
+    « Schoul » défini par « Schule », « Kaffi » par « Kaffee » : la case se
+    remplit sans rien apprendre. Le luxembourgeois est si proche de
+    l'allemand qu'une glose allemande sur deux est dans ce cas (mesuré le
+    2026-10-03 : 10 608 formes sur 20 640, contre 5 688 en français). Seuil
+    de ressemblance 0,75, sur les formes pliées. Le français n'applique pas
+    cette règle : ses grilles restent celles qu'il a toujours eues.
+    """
+    a = plier(mot)
+    b = plier(acception).replace("ß", "ss")
+    return difflib.SequenceMatcher(None, a, b).ratio() >= 0.75
 DOSSIER_BACKUPS = Path(__file__).resolve().parent / "backups"
 
 # Graine fixe, pour la même raison que dans generate_cloze.py : deux exécutions
@@ -196,6 +261,8 @@ def definition_de(mot, glose):
             continue
         if motif.search(plier(acception)):
             continue
+        if LANGUE != "fr" and transparente(mot, acception):
+            continue
         retenues.append(acception)
 
     if not retenues:
@@ -227,10 +294,15 @@ def est_nom_propre_lod(forme):
     « café, Eschweiler-Halte », n'est pas un nom propre, mais une fois
     l'acception qui répète le mot retirée il ne reste que le lieu-dit.
     """
-    global _NOMS_PROPRES
+    global _NOMS_PROPRES, _ACCEPTIONS_PROPRES
     if _NOMS_PROPRES is None:
         with open(CHEMIN_TRADUCTIONS, "r", encoding="utf-8") as f:
             actif = json.load(f)
+        _ACCEPTIONS_PROPRES = {
+            a.strip()
+            for forme in actif.get("noms_propres", [])
+            for a in actif["translations"].get(forme, "").split(",") if a.strip()
+        }
         # Les morceaux de locution (« Sophie » de « Kaalt Sophie », glosé
         # « Sainte Sophie ») suivent le même chemin : leur glose est celle de
         # la locution, pas du mot. Voir generate_translations.est_fragment_lod.
@@ -281,7 +353,7 @@ def est_nom_propre(glose):
     sens ordinaire et ne resterait qu'un lieu-dit.
     """
     acceptions = [a.strip() for a in glose.split(",") if a.strip()]
-    return bool(acceptions) and all(a[:1].isupper() for a in acceptions)
+    return bool(acceptions) and all(acception_propre(a) for a in acceptions)
 
 
 def sans_noms_propres(acceptions):
@@ -298,7 +370,7 @@ def sans_noms_propres(acceptions):
     d'un second filtre : un mot dont toutes les acceptions sont capitalisées
     est un nom propre et a déjà quitté le vivier.
     """
-    communes = [a for a in acceptions if not a[:1].isupper()]
+    communes = [a for a in acceptions if not acception_propre(a)]
     return communes if communes else acceptions
 
 
@@ -738,6 +810,8 @@ def main():
     print(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 70)
 
+    regler_langue(langue_demandee())
+    print(f"Langue des définitions : {LANGUE}")
     rng = random.Random(GRAINE)
 
     try:

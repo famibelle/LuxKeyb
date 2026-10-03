@@ -76,6 +76,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from LuxembourgishComplet import _classe_de_casse
+import generate_crossword
 from generate_crossword import (
     ALPHABET,
     ESSAIS_PAR_GRILLE,
@@ -510,7 +511,16 @@ def sauvegarder(grilles, attribution_lod):
 
 
 def main():
+    global CHEMIN_GRILLES
     strict = "--strict" in sys.argv
+    # Même langue que Kräizwuert : la récompense est la glose de cette langue,
+    # et les noms propres sont ceux du LOD dans cette langue. Les grilles
+    # dépendent donc de la langue, puisque leur vivier en dépend.
+    langue = generate_crossword.langue_demandee()
+    generate_crossword.regler_langue(langue)
+    if langue != "fr":
+        CHEMIN_GRILLES = RACINE_ASSETS / f"luxemburgish_chassecroise_{langue}.json"
+    print(f"Langue des récompenses : {langue}")
 
     print("🇱🇺 WUERTPLAZ — GÉNÉRATION DES GRILLES DE CHASSÉ-CROISÉ 🇱🇺")
     print("=" * 70)
