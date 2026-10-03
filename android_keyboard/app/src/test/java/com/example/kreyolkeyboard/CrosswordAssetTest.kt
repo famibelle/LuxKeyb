@@ -326,37 +326,73 @@ class CrosswordAssetTest {
     }
 
     /**
-     * Le pavé du jeu porte toutes les lettres qu'il faut écrire.
+     * Le pavé du jeu porte toutes les lettres qu'il faut écrire, quelle que
+     * soit la disposition choisie.
      *
-     * Le pavé suit la disposition du clavier, donc une rangée réécrite à la
-     * main peut perdre une lettre — et rien ne le signalerait : la grille
-     * s'affiche, les définitions sont bonnes, mais les mots qui emploient cette
-     * lettre deviennent inachevables. C'est le seul contrôle qui relie
-     * l'alphabet du générateur à celui de l'écran.
+     * Le pavé suit la disposition du clavier, donc une rangée modifiée dans
+     * [DispositionClavier] peut lui faire perdre une lettre — et rien ne le
+     * signalerait : la grille s'affiche, les définitions sont bonnes, mais les
+     * mots qui emploient cette lettre deviennent inachevables. C'est le seul
+     * contrôle qui relie l'alphabet du générateur à celui de l'écran.
      */
     @Test
     fun `le pave porte toutes les lettres des grilles`() {
-        val touches = com.example.kreyolkeyboard.crossword.CrosswordData
-            .RANGEES.joinToString("").toSet()
-        assertEquals(
-            "le pavé ne porte pas l'alphabet attendu",
-            alphabet, touches
-        )
-
         val grilles = grilles()
-        for (i in 0 until grilles.length()) {
-            val mots = grilles.getJSONObject(i).getJSONArray("mots")
-            for (j in 0 until mots.length()) {
-                val reponse = mots.getJSONObject(j).getString("m")
-                val absentes = reponse.toSet() - touches
-                assertTrue(
-                    "grille #$i : « $reponse » demande des lettres absentes du " +
-                        "pavé : $absentes",
-                    absentes.isEmpty()
-                )
+        for (disposition in DispositionClavier.entries) {
+            val touches = com.example.kreyolkeyboard.crossword.CrosswordData
+                .pave(disposition).touches
+            assertEquals(
+                "$disposition : le pavé ne porte pas l'alphabet attendu",
+                alphabet, touches
+            )
+
+            for (i in 0 until grilles.length()) {
+                val mots = grilles.getJSONObject(i).getJSONArray("mots")
+                for (j in 0 until mots.length()) {
+                    val reponse = mots.getJSONObject(j).getString("m")
+                    val absentes = reponse.toSet() - touches
+                    assertTrue(
+                        "$disposition, grille #$i : « $reponse » demande des " +
+                            "lettres absentes du pavé : $absentes",
+                        absentes.isEmpty()
+                    )
+                }
             }
         }
     }
+
+    /**
+     * Le pavé reprend les rangées du clavier, à leur place : c'est tout son
+     * intérêt. Il a gardé les rangées « Luxembourg » en dur pendant que
+     * « Suisse allemand » devenait le défaut, et rien ne l'a signalé.
+     */
+    @Test
+    fun `le pave suit la disposition du clavier`() {
+        val crossword = com.example.kreyolkeyboard.crossword.CrosswordData
+        val suisse = crossword.pave(DispositionClavier.SUISSE_ALLEMAND)
+        assertEquals(listOf("QWERTZUIOPÜ", "ASDFGHJKLÖÄ", "YXCVBNM"), suisse.lettres)
+        assertEquals("ÉË", suisse.accents)
+        assertEquals(11f, suisse.largeur, 0f)
+        assertEquals(2f, suisse.poidsEffacement, 0f)
+
+        val luxembourg = crossword.pave(DispositionClavier.LUXEMBOURG)
+        assertEquals(listOf("QWERTZUIOP", "ASDFGHJKLÉ", "YXCVBNM"), luxembourg.lettres)
+        assertEquals("ÄËÖÜ", luxembourg.accents)
+        assertEquals(10f, luxembourg.largeur, 0f)
+        assertEquals(1.5f, luxembourg.poidsEffacement, 0f)
+
+        // Chaque rangée pèse la largeur du clavier, ou les touches se décalent.
+        for (disposition in DispositionClavier.entries) {
+            val pave = crossword.pave(disposition)
+            pave.lettres.dropLast(1).forEach { assertEquals(pave.largeur, it.length.toFloat(), 0f) }
+            assertEquals(
+                pave.largeur,
+                pave.lettres.last().length + 2 * pave.poidsEffacement,
+                0f
+            )
+        }
+    }
+
 
     /** La requête apparaît-elle comme mot entier dans le texte, accents pliés ? */
     private fun contientLeMot(texte: String, mot: String): Boolean {

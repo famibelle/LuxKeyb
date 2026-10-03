@@ -192,7 +192,7 @@ class SettingsActivity : AppCompatActivity() {
         // volontairement entrelacés : l'index avance d'un cran par semaine,
         // donc deux astuces voisines dans la liste se suivent à l'écran.
         private val WEEKLY_TIPS = listOf(
-            "Appuyez longuement sur une lettre pour accéder aux accents et caractères spéciaux (ë, ä, é, ü, ö, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
+            "Appuyez longuement sur une lettre pour accéder aux autres accents (è, ê, à, ç, etc.). Glissez le doigt vers celui que vous voulez, puis relâchez.",
             "Touchez un mot de la barre de suggestions pour le compléter d'un coup : l'espace est ajouté automatiquement.",
             "Appui long d'une seconde sur la barre d'espace (le petit 🌐) : vous basculez vers un autre clavier sans quitter votre message.",
             "Chaque mot que vous tapez fait progresser votre niveau dans l'onglet « Mäi Lëtzebuergesch ».",
@@ -3297,9 +3297,10 @@ class SettingsActivity : AppCompatActivity() {
 
         addGuideSection(
             mainLayout, "#F0F8E8", "🔤 Accents et caractères spéciaux",
-            "Appuyez longuement sur une lettre pour faire apparaître ses variantes accentuées " +
-                    "(ë, ä, é, ü, ö...) propres au luxembourgeois. Glissez le doigt vers l'accent voulu " +
-                    "puis relâchez."
+            "Les lettres du luxembourgeois ont leur propre touche : é, ë et ä, et aussi ü et ö " +
+                    "avec la disposition « Suisse allemand » (Réglages du clavier → Disposition). " +
+                    "Pour les autres accents (è, ê, à, ç...), appuyez longuement sur la lettre, " +
+                    "glissez le doigt vers l'accent voulu puis relâchez."
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_accents, "Popup d'accents sur la lettre e")
 
@@ -8029,54 +8030,80 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /**
-         * Le pavé de saisie, dans la disposition du clavier — voir
-         * [CrosswordData.RANGEES] pour le raisonnement.
+         * Le pavé de saisie, dans la disposition choisie pour le clavier : voir
+         * [CrosswordData.pave] pour le raisonnement.
          *
-         * Chaque rangée pèse dix unités, comme les rangées du clavier, et c'est
-         * ce qui aligne les touches d'une rangée à l'autre : la troisième porte
-         * sept lettres entre l'emplacement vide de `⇧` et `⌫`, tous deux d'une
-         * unité et demie ; la quatrième porte quatre voyelles infléchies en
-         * touches doubles, centrées.
+         * Chaque rangée pèse autant d'unités que les rangées du clavier (dix
+         * sur « Luxembourg », onze sur « Suisse allemand »), et c'est ce qui
+         * aligne les touches d'une rangée à l'autre : la troisième porte sept
+         * lettres entre l'emplacement vide de `⇧` et `⌫`, à leur largeur du
+         * clavier ; la quatrième porte les diacritiques restantes en touches
+         * doubles, centrées.
          *
-         * Construit une fois pour toutes — il ne dépend pas de la grille.
+         * Il ne dépend pas de la grille ; il est refait seulement quand la
+         * disposition a changé entre-temps (voir [onResume]).
          */
         private fun construirePave(activity: SettingsActivity) {
-            CrosswordData.RANGEES.forEachIndexed { rang, rangee ->
-                val ligne = LinearLayout(activity).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { bottomMargin = 5 }
-                    orientation = LinearLayout.HORIZONTAL
-                }
+            val disposition = KeyboardPreferences.disposition(activity)
+            dispositionDuPave = disposition
+            conteneurPave.removeAllViews()
+            val pave = CrosswordData.pave(disposition)
 
-                val poidsLettre = if (rang == CrosswordData.RANGEE_ACCENTS) 2f else 1f
-                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                    // L'emplacement de la touche majuscule reste vide : la
-                    // grille est tout en capitales, mais retirer la place
-                    // décalerait la rangée par rapport aux deux du dessus.
-                    ligne.addView(espaceurDuPave(activity, 1.5f))
-                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                    ligne.addView(espaceurDuPave(activity, 1f))
-                }
-
-                rangee.forEach { lettre ->
-                    ligne.addView(toucheDuPave(activity, lettre.toString(), poidsLettre) {
+            fun nouvelleLigne() = LinearLayout(activity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = 5 }
+                orientation = LinearLayout.HORIZONTAL
+                weightSum = pave.largeur
+            }
+            fun ajouterLettres(ligne: LinearLayout, lettres: String, poids: Float) =
+                lettres.forEach { lettre ->
+                    ligne.addView(toucheDuPave(activity, lettre.toString(), poids) {
                         session?.ecrire(lettre)
                         apresSaisie()
                     })
                 }
 
-                if (rang == CrosswordData.RANGEE_EFFACEMENT) {
-                    ligne.addView(toucheDuPave(activity, "⌫", poids = 1.5f) {
+            pave.lettres.forEachIndexed { rang, lettres ->
+                val ligne = nouvelleLigne()
+                val derniere = rang == pave.lettres.lastIndex
+                if (derniere) {
+                    // L'emplacement de la touche majuscule reste vide : la
+                    // grille est tout en capitales, mais retirer la place
+                    // décalerait la rangée par rapport aux deux du dessus.
+                    ligne.addView(espaceurDuPave(activity, pave.poidsEffacement))
+                }
+                ajouterLettres(ligne, lettres, 1f)
+                if (derniere) {
+                    ligne.addView(toucheDuPave(activity, "⌫", pave.poidsEffacement) {
                         session?.effacer()
                         apresSaisie()
                     })
-                } else if (rang == CrosswordData.RANGEE_ACCENTS) {
-                    ligne.addView(espaceurDuPave(activity, 1f))
                 }
-
                 conteneurPave.addView(ligne)
+            }
+
+            val ligneAccents = nouvelleLigne()
+            val marge = (pave.largeur - 2f * pave.accents.length) / 2f
+            ligneAccents.addView(espaceurDuPave(activity, marge))
+            ajouterLettres(ligneAccents, pave.accents, 2f)
+            ligneAccents.addView(espaceurDuPave(activity, marge))
+            conteneurPave.addView(ligneAccents)
+        }
+
+        /** La disposition du pavé affiché, pour le refaire si elle a changé. */
+        private var dispositionDuPave: DispositionClavier? = null
+
+        override fun onResume() {
+            super.onResume()
+            // Les réglages du clavier s'ouvrent par-dessus cet écran : au
+            // retour, le pavé suit la disposition qu'on vient d'y choisir.
+            val activity = activity as? SettingsActivity ?: return
+            if (::conteneurPave.isInitialized &&
+                dispositionDuPave != KeyboardPreferences.disposition(activity)
+            ) {
+                construirePave(activity)
             }
         }
 
