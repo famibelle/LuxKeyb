@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "32.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_dictee_telephone.gif",
+        "alt": "Le clavier pendant une dictée : on parle, le texte luxembourgeois s'écrit dans le champ, le micro rouge à droite de la barre de suggestions.",
+        "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
+      }
+    ]
+  },
   "32.0.0": {
     "images": [
       {
