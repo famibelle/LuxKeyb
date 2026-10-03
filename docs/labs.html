@@ -53,6 +53,8 @@ a{color:var(--sea);}
 .qr img{display:block;width:170px;height:170px;background:#fff;
   border-radius:10px;padding:7px;box-sizing:border-box;border:1px solid var(--line);}
 .qr figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+/* Passé sous le bouton, le QR se centre sur sa propre ligne. */
+@media (max-width:640px){.qr{flex-basis:100%;}.qr img{margin:0 auto;}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
 .card h3{margin-top:0;}
 .card p:last-child{margin-bottom:0;}
