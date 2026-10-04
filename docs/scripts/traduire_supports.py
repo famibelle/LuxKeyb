@@ -30,6 +30,12 @@ A_VALIDER = {"lb", "de", "pt"}
 # garde le badge français, la langue du Play Store la plus courante au pays.
 BADGE = {"lb": "fr", "de": "de", "en": "en", "pt": "pt"}
 
+# Captures refaites sur l'émulateur, système et appli dans la langue du
+# support (le carnet lit la langue du système, voir le compte rendu du
+# 2026-10-04) ; lux_onboarding_<langue> reprend la capture « tout est prêt »
+# du guide de l'appli (res/drawable-<langue>-nodpi/guide_screenshot_install_done.png).
+CAPTURES_TRADUITES = ["lux_carte_stad", "lux_wierderbuch_gromperekichelchen", "lux_wuertsich_trouves", "lux_onboarding"]
+
 BANDEAU = {
     "lb": "Nach net vun engem Mammesproochler nogekuckt",
     "de": "Noch nicht von Muttersprachlern geprüft",
@@ -221,10 +227,10 @@ T = [
         "en": 'alt="The Wuertsich game: three words found in the grid, each with its translation"',
         "pt": 'alt="O jogo Wuertsich: três palavras encontradas na grelha, cada uma com a sua tradução"'}),
     ('alt="La fiche Gromperekichelchen du dictionnaire : galette de pommes de terre, une phrase d\'exemple et ses autres formes"', {
-        "lb": 'alt="D\'Fiche Gromperekichelchen am Dictionnaire: Bedeitung, e Beispillsaz an déi aner Formen"',
+        "lb": 'alt="D\'Fiche Gromperekichelchen am Dictionnaire: galette de pommes de terre, e Beispillsaz an déi aner Formen"',
         "de": 'alt="Der Wörterbucheintrag Gromperekichelchen: Kartoffelpuffer, ein Beispielsatz und die anderen Formen"',
         "en": 'alt="The dictionary entry for Gromperekichelchen: potato fritter, an example sentence and its other forms"',
-        "pt": 'alt="A entrada Gromperekichelchen do dicionário: panqueca de batata, uma frase de exemplo e as outras formas"'}),
+        "pt": 'alt="A entrada Gromperekichelchen do dicionário: panqueca de batata ralada, uma frase de exemplo e as outras formas"'}),
     ('alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »"', {
         "lb": 'alt="D\'Tastatur beim Tippen: no „Ech hunn op der Schueb“ proposéiert d\'Leescht „Schueberfouer“"',
         "de": 'alt="Die Tastatur beim Tippen: nach „Ech hunn op der Schueb“ schlägt die Leiste „Schueberfouer“ vor"',
@@ -236,10 +242,10 @@ T = [
         "en": 'alt="Long press on the e key: é, ë, è and ê appear"',
         "pt": 'alt="Toque longo na tecla e: aparecem é, ë, è e ê"'}),
     ('alt="Le parcours d\'installation dans l\'application : les étapes cochées et le champ d\'essai du clavier"', {
-        "lb": 'alt="D\'Installatioun an der App: déi ofgehaakte Schrëtt an d\'Testfeld vun der Tastatur"',
-        "de": 'alt="Die Installation in der App: die abgehakten Schritte und das Testfeld der Tastatur"',
-        "en": 'alt="Setup in the app: the ticked steps and the keyboard test field"',
-        "pt": 'alt="A instalação na aplicação: os passos assinalados e o campo de teste do teclado"'}),
+        "lb": 'alt="D\'Installatioun an der App: déi dräi Schrëtt sinn ofgehaakt"',
+        "de": 'alt="Die Einrichtung in der App: alle drei Schritte sind abgehakt"',
+        "en": 'alt="Setup in the app: all three steps are ticked"',
+        "pt": 'alt="A configuração na aplicação: os três passos estão assinalados"'}),
     ('alt="Disponible sur Google Play"', {
         "lb": 'alt="Disponible sur Google Play"', "de": 'alt="Jetzt bei Google Play"',
         "en": 'alt="Get it on Google Play"', "pt": 'alt="Disponível no Google Play"'}),
@@ -624,6 +630,10 @@ def traduire(support, langue):
                     lambda m: f'href="assets/{m.group(1)}{m.group(2) or ""}-{langue}-letzebuergesch-clavier-A4.pdf"', sortie)
     sortie = sortie.replace('<html lang="fr">', f'<html lang="{langue}">')
     sortie = sortie.replace("assets/google-play-badge-fr.svg", f"assets/google-play-badge-{BADGE[langue]}.svg")
+    # Les captures qui montrent du texte d'interface ou un sens traduit
+    # existent dans chaque langue ; celles du clavier seul restent communes.
+    for capture in CAPTURES_TRADUITES:
+        sortie = sortie.replace(f"Screenshots/{capture}.png", f"Screenshots/{capture}_{langue}.png")
 
     if langue in A_VALIDER:
         sortie = sortie.replace("</style>", CSS_BANDEAU + "</style>", 1)
