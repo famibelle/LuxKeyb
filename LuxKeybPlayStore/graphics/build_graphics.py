@@ -86,7 +86,7 @@ ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 SPECS = [
     ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png", None, "Suggestions",
      "Il vous souffle les mots",
-     "Le luxembourgeois d'abord, le français pour les emprunts, sans changer de clavier."),
+     "Le luxembourgeois d'abord, et en option le français pour les emprunts."),
     ("Captures d'écran pour téléphone 2 (Dictée)", "20-clavier-dictee-luxasr-recadre.png", None, "Dictée",
      "Parlez, il écrit en luxembourgeois",
      "Votre voix part à LuxASR, Université du Luxembourg, seulement quand vous touchez le micro."),

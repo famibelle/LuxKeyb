@@ -211,8 +211,8 @@ et ses vraies suggestions.</em></p>
 <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_suggestions.png" style="width:100%;border-radius:6px;"
-         alt="Barre de suggestions : trois mots luxembourgeois en rouge, deux mots français en bleu, pendant la frappe de « Moi »">
-    <figcaption>Suggestions bilingues</figcaption>
+         alt="Barre de suggestions pendant la frappe de « Moi » : Moien, Moie et Moies, en rouge">
+    <figcaption>Suggestions en luxembourgeois</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 220px;max-width:300px;text-align:center;">
     <img src="Screenshots/lux_accents.png" style="width:100%;border-radius:6px;"
@@ -255,12 +255,13 @@ Le clavier reconnaît **123 297 formes** et **27 746 contextes** de prédiction.
 Après un espace, le clavier propose la suite probable de votre phrase d'après
 les deux mots que vous venez d'écrire, pas seulement le dernier.
 
-Les suggestions luxembourgeoises passent en premier ; le français prend le
-relais à partir de trois lettres si aucun mot luxembourgeois ne correspond.
-Vous n'avez donc rien à changer quand un mot français s'invite dans une phrase
-luxembourgeoise : « ech hunn eng réunion muer » s'écrit sans toucher au clavier.
-Le côté français se limite volontairement aux mots les plus courants : il est là
-pour les emprunts, pas pour rédiger en français.
+Les suggestions luxembourgeoises passent en premier. Pour glisser des mots
+français dans vos phrases, allumez « Propositions en français » dans les
+réglages du clavier : une seconde rangée, en bleu, les propose à partir de trois
+lettres, et « ech hunn eng réunion muer » s'écrit sans changer de clavier.
+L'option est éteinte par défaut, et le côté français se limite volontairement
+aux mots les plus courants : il est là pour les emprunts, pas pour rédiger en
+français.
 
 ### Il pardonne les fautes de frappe
 

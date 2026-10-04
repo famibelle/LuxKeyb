@@ -64,9 +64,9 @@ Les trois diacritiques qui portent la langue — é, ä et ë — ont chacune le
 • 27 746 contextes de prédiction : après un espace, le clavier propose la suite probable d'après les deux derniers mots, pas seulement le dernier
 • Les mots que vous employez souvent remontent d'eux-mêmes
 
-🇱🇺 🇫🇷 DEUX LANGUES, AUCUN RÉGLAGE
+🇱🇺 🇫🇷 LE FRANÇAIS EN OPTION
 
-Le luxembourgeois passe en premier, le français prend le relais sur une seconde rangée. « ech hunn eng réunion muer » s'écrit sans changer de clavier.
+Le luxembourgeois passe en premier. Allumez les propositions en français et une seconde rangée prend le relais : « ech hunn eng réunion muer » s'écrit sans changer de clavier.
 
 📖 UN DICTIONNAIRE DANS L'APPLICATION
 
@@ -118,8 +118,8 @@ Pas de saisie glissée : manque connu et prioritaire. La dictée ne fonctionne p
 Régénéré à chaque version depuis un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste figée. Un mot manque ? Signalez-le : github.com/famibelle/LuxKeyb
 ```
 
-3933 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console,
-les drapeaux et quelques émojis valant 2 chacun). Il reste **67 caractères
+3952 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console,
+les drapeaux et quelques émojis valant 2 chacun). Il reste **48 caractères
 de marge** : tout ajout suppose d'en retirer autant. Pour faire place à la
 dictée, la section « Pour qui ? » et la signature « Potomitan™ » ont été
 retirées : la première redisait le reste du texte, la seconde nommait une
