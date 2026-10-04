@@ -161,6 +161,47 @@ class SuggestionEngine(private val context: Context) {
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
         // l'utilisateur avant même que son bonus d'usage puisse jouer.
         private const val CANDIDATE_POOL_SIZE = 40
+
+        /**
+         * Fusionne les deux langues : positions 1 à 3 au luxembourgeois, 4 et 5
+         * au français s'il en a, le reste au luxembourgeois.
+         *
+         * Entre deux mots luxembourgeois, le doublon se juge **casse comprise**.
+         * La casse y distingue deux mots : « Iessen » (le repas) et « iessen »
+         * (manger), « Froen » et « froen », « Gréng » et « gréng ». Le
+         * dictionnaire livre les deux formes de ces 676 homographes, et la
+         * comparaison en minuscules qui servait ici jetait la moins fréquente :
+         * taper « iess » ne proposait jamais le verbe, et toucher la suggestion
+         * écrivait le nom. Deux formes rendues identiques par
+         * [applyCasingPattern] (« Ies » met une capitale aux deux) restent un
+         * doublon, et le second disparaît.
+         *
+         * Un mot français, lui, ne passe que s'il n'existe sous aucune casse
+         * côté luxembourgeois : « Moi » ne doit pas répéter « moi ».
+         */
+        internal fun fusionnerLuxDabord(
+            luxSuggs: List<BilingualSuggestion>,
+            frenchSuggs: List<BilingualSuggestion>,
+            max: Int
+        ): List<BilingualSuggestion> {
+            val result = mutableListOf<BilingualSuggestion>()
+            val vus = mutableSetOf<String>()
+            val vusReplies = mutableSetOf<String>()
+            fun ajouter(s: BilingualSuggestion) {
+                result.add(s)
+                vus.add(s.word)
+                vusReplies.add(s.word.lowercase())
+            }
+
+            luxSuggs.take(3).forEach { if (it.word !in vus) ajouter(it) }
+            frenchSuggs.take(2).forEach {
+                if (result.size < max && it.word.lowercase() !in vusReplies) ajouter(it)
+            }
+            luxSuggs.drop(3).forEach {
+                if (result.size < max && it.word !in vus) ajouter(it)
+            }
+            return result
+        }
         
         /**
          * Concilie la casse voulue par l'utilisateur et celle que porte le mot
@@ -727,38 +768,8 @@ class SuggestionEngine(private val context: Context) {
         luxSuggs: List<BilingualSuggestion>,
         frenchSuggs: List<BilingualSuggestion>
     ): List<BilingualSuggestion> {
-        
-        val result = mutableListOf<BilingualSuggestion>()
-        val usedWords = mutableSetOf<String>()
-        
-        // 1. 🟢 POSITIONS 1-3: Toujours luxembourgeois d'abord
-        luxSuggs.take(3).forEach { suggestion ->
-            if (!usedWords.contains(suggestion.word.lowercase())) {
-                result.add(suggestion)
-                usedWords.add(suggestion.word.lowercase())
-            }
-        }
-        
-        // 2. 🔵 POSITIONS 4-5: Français si disponible et pertinent
-        frenchSuggs.take(2).forEach { suggestion ->
-            if (result.size < MAX_SUGGESTIONS && 
-                !usedWords.contains(suggestion.word.lowercase())) {
-                result.add(suggestion)
-                usedWords.add(suggestion.word.lowercase())
-            }
-        }
-        
-        // 3. 🟢 COMPLÉTER avec plus de luxembourgeois si pas assez de français
-        luxSuggs.drop(3).forEach { suggestion ->
-            if (result.size < MAX_SUGGESTIONS && 
-                !usedWords.contains(suggestion.word.lowercase())) {
-                result.add(suggestion)
-                usedWords.add(suggestion.word.lowercase())
-            }
-        }
-        
+        val result = fusionnerLuxDabord(luxSuggs, frenchSuggs, MAX_SUGGESTIONS)
         Log.d(TAG, "🎯 Fusion finale: ${result.size} suggestions (Lëtzebuergesch: ${result.count { it.language == SuggestionLanguage.LUXEMBOURGISH }}, Français: ${result.count { it.language == SuggestionLanguage.FRENCH }})")
-        
         return result
     }
 

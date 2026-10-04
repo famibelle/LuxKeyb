@@ -588,31 +588,29 @@
       return result;
     }
 
-    // Positions 1-3 réservées au luxembourgeois, 4-5 français optionnel
+    // Positions 1-3 réservées au luxembourgeois, 4-5 français optionnel.
+    // Miroir de SuggestionEngine.fusionnerLuxDabord : entre deux mots
+    // luxembourgeois le doublon se juge casse comprise (« Iessen » le repas,
+    // « iessen » manger), un mot français ne passe que s'il n'existe sous
+    // aucune casse côté luxembourgeois.
     mergeSuggestionsLuxFirst(luxSuggs, frenchSuggs) {
       const result = [];
-      const used = new Set();
+      const vus = new Set();
+      const vusReplies = new Set();
+      const ajouter = (s) => {
+        result.push(s);
+        vus.add(s.word);
+        vusReplies.add(s.word.toLowerCase());
+      };
 
       for (const s of luxSuggs.slice(0, 3)) {
-        const key = s.word.toLowerCase();
-        if (!used.has(key)) {
-          result.push(s);
-          used.add(key);
-        }
+        if (!vus.has(s.word)) ajouter(s);
       }
       for (const s of frenchSuggs.slice(0, 2)) {
-        const key = s.word.toLowerCase();
-        if (result.length < MAX_SUGGESTIONS && !used.has(key)) {
-          result.push(s);
-          used.add(key);
-        }
+        if (result.length < MAX_SUGGESTIONS && !vusReplies.has(s.word.toLowerCase())) ajouter(s);
       }
       for (const s of luxSuggs.slice(3)) {
-        const key = s.word.toLowerCase();
-        if (result.length < MAX_SUGGESTIONS && !used.has(key)) {
-          result.push(s);
-          used.add(key);
-        }
+        if (result.length < MAX_SUGGESTIONS && !vus.has(s.word)) ajouter(s);
       }
       return result;
     }
