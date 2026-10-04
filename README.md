@@ -1,8 +1,9 @@
 # 🇱🇺 Lëtzebuergesch Clavier
 
-**Écrire en luxembourgeois sans se battre avec son clavier.** Les mots sont
-proposés pendant la frappe, les accents et les majuscules se mettent à leur
-place, et le luxembourgeois cesse d'être souligné en rouge dans les messages.
+**Vous le parlez. Maintenant, vous l'écrivez.** Les mots sont proposés pendant
+la frappe, les accents et les majuscules se mettent à leur place, le
+luxembourgeois cesse d'être souligné en rouge dans les messages, et quand
+écrire est trop long, vous pouvez le dicter.
 
 - 🛠️ Si votre luxembourgeois est très rouillé...
 - 😤 Que vous galérez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
@@ -68,7 +69,7 @@ serait l'interface, pas la langue.
 - **Tolérance aux fautes de frappe** : une lettre oubliée, en trop ou tapée à côté n'empêche pas la suggestion d'arriver
 - **Tolérance aux diacritiques** : taper « letzebuergesch » propose « lëtzebuergesch »
 - **Majuscules des noms** : la Groussschreiwung est portée par le dictionnaire, `Joer` et non `joer`
-- **Deuxième rangée en français** : 71 586 formes proposées, 125 348 reconnues, pour les mots français qu'on insère en écrivant luxembourgeois
+- **Le français reconnu** : 125 348 formes françaises ne sont pas soulignées, pour les mots qu'on insère en écrivant luxembourgeois. Une deuxième rangée de suggestions en français (71 586 formes) s'active dans les réglages
 
 ### ⌨️ **Écrire en lëtzebuergesch**
 - Disposition **QWERTZ**, celle des claviers physiques au Luxembourg
@@ -81,8 +82,8 @@ serait l'interface, pas la langue.
 - **Correcteur orthographique système** : les mots luxembourgeois ne sont plus soulignés en rouge dans Messages ou Notes
 
 ### 📖 **Wierderbuch, le dictionnaire intégré**
-- **88 883 formes glossées** en français depuis le LOD, cherchables dans les deux sens à partir d'un seul champ
-- **26 149 mots illustrés** par les phrases d'exemple du LOD, et un lien vers l'article officiel sur lod.lu
+- **88 883 formes traduites** depuis le LOD, en français, allemand, anglais et portugais, cherchables dans les deux sens à partir d'un seul champ : « Haus », « maison », « house », « Katze » ou « casa »
+- **26 149 mots illustrés** par les phrases d'exemple du LOD, avec leur traduction officielle quand le ZLS l'a publiée, et un lien vers l'article sur lod.lu
 - Les résultats sont groupés par famille de formes : chercher `Haiser` mène à `Haus`
 
 ### 🗂️ **Carnet et révision espacée**
@@ -96,6 +97,11 @@ serait l'interface, pas la langue.
 - Carte de niveau partageable
 - Sept jeux de vocabulaire : **Wuertsich** (mots mêlés), **Wuertmix** (anagrammes), **Wuertriet** (six essais), **Wuertlück** (texte à trou), **Zuelwuert** (les nombres en toutes lettres), **Kräizwuert** (mots croisés) et **Wuertplaz** (mots à placer)
 
+### 🌍 **Dans votre langue**
+- L'application s'affiche en **français, allemand, anglais, portugais ou luxembourgeois**, selon la langue du téléphone (en anglais pour les autres langues)
+- Depuis Android 13, la langue de l'application se choisit sans changer celle du téléphone : Paramètres › Applications › Lëtzebuergesch Clavier › Langue
+- Les traductions des mots, le carnet, le mot du jour et les grilles de Kräizwuert et de Wuertplaz suivent la langue de l'application. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois
+
 ### 🔒 **Vie privée**
 **Ce que vous tapez ne quitte jamais l'appareil** : la frappe, les suggestions,
 le correcteur et les jeux fonctionnent entièrement hors ligne. Seuls les mots
@@ -105,6 +111,18 @@ qui sort est la **voix, pendant une [dictée](#-dictée-vocale)** : elle part,
 chiffrée, vers le service LuxASR de l'Université du Luxembourg, qui la transcrit
 sans la conserver. Sans appui sur le micro, aucune connexion n'est ouverte.
 Détails dans la [politique de confidentialité](https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html).
+
+### 🏛️ **Construit sur les ressources publiques du Luxembourg**
+Ce clavier existe parce que le Luxembourg a ouvert ses ressources de langue.
+Il les met dans la poche de ceux qui écrivent :
+
+| Ressource | Publiée par | Ce que le clavier en fait |
+|---|---|---|
+| **LOD, Linguistesch Daten** (CC0, data.public.lu) | ZLS | Les traductions, les phrases d'exemple, les familles de formes, et 84 855 formes ajoutées aux suggestions |
+| **LOD, Index vun der Sich-Funktioun** (CC0) | ZLS | Le pont entre les formes conjuguées ou déclinées et leur article : `Haiser` mène à `Haus` |
+| **Méisproochegen Iwwersetzungskorpus** (CC0) | ZLS | Les traductions officielles sous les phrases d'exemple, et le banc d'essai de la prédiction |
+| **LuxASR** | Université du Luxembourg | La dictée vocale |
+| **LuxAlign** et **LETZ** | Université du Luxembourg | Les fréquences et les contextes qui prédisent le mot suivant |
 
 ### 📚 **Corpus des suggestions**
 Le dictionnaire et les n-grammes sont produits à partir de deux corpus publics
@@ -129,7 +147,9 @@ dictionnaire, vie privée, et ce que les autres font mieux.
 Un bouton micro s'affiche à droite de la barre de suggestions : un appui
 l'allume, le texte s'écrit pendant qu'on parle (souligné tant qu'il n'est pas
 confirmé), et la dictée s'arrête d'elle-même quand on se tait, ou au second
-appui. Elle reste désactivée dans les champs de mot de passe.
+appui. Elle reste désactivée dans les champs de mot de passe. Avant la première
+dictée, un écran explique où part la voix, et rien n'est envoyé avant
+« J'accepte ».
 
 La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
 service de l'Université du Luxembourg, dont le moteur temps réel est publié sous
@@ -158,7 +178,7 @@ Une dictée entièrement embarquée a été essayée et mesurée, avec le même 
 | Sans connexion | Oui, avion et tunnel compris | Non |
 | Mots erronés | **72 %** sur 161 énoncés de conférences de presse : trop pour être utile | **25,4 %** sur 22 dictées d'une à trois phrases, 11 à 15 % sur un extrait lu proprement |
 | Délai | ≈ 6 s par passe sur un téléphone ancien | premier aperçu ≈ 1,1 s, texte engagé ≈ 0,23 s après la dernière syllabe |
-| Taille de l'APK | ≈ 38 Mo, dont 31 pour le modèle | ≈ 6 Mo |
+| Poids ajouté à l'APK | 31 Mo de modèle | rien |
 
 Au-delà d'environ 25 % de mots erronés, corriger coûte plus cher que taper. Des
 modèles plus gros (`base`, `small`) ont aussi été mesurés sur un Galaxy A21s : 9
@@ -168,6 +188,14 @@ Les deux services publics de la parole n'ont pas le même propriétaire : LuxASR
 est celui de l'Université du Luxembourg, le seul appelé ici. La
 *Sproochmaschinn* et la *Schreifmaschinn* relèvent du Zenter fir d'Lëtzebuerger
 Sprooch (ministère de la Culture) : le clavier ne les appelle pas.
+
+### Comment ça marche
+
+L'application pousse l'audio en PCM 16 bits à 16 kHz sur une connexion
+WebSocket vers `luxasr.uni.lu`. Le service redécode l'énoncé en cours toutes les
+demi-secondes à une seconde et n'engage un mot qu'après l'avoir vu à la même
+place dans trois hypothèses de suite ; la fin encore instable revient à part et
+s'affiche en aperçu. Aucun enregistrement n'est conservé sur le téléphone.
 
 ## 🔬 Labs : les versions d'essai
 
@@ -183,7 +211,7 @@ fonctionnement.
 1. Téléchargez l'APK depuis la [préversion `labs`](https://github.com/famibelle/LuxKeyb/releases/tag/labs) 
 2. Autorisez l'installation depuis cette source, puis installez l'APK
 3. Activez le clavier dans Paramètres → Système → Claviers, choisissez-le comme clavier courant
-4. Ouvrez un champ de texte, touchez le micro et autorisez l'accès au microphone au premier usage
+4. Essayez la nouveauté décrite sur la page de la préversion
 
 L'APK Labs est **signé avec la clé de production** : il remplace l'application
 installée, y compris celle reçue depuis Google Play, et se réinstalle par-dessus
@@ -195,30 +223,17 @@ amélioration et peut changer d'un jour à l'autre.
 ### Comment c'est construit
 
 Le workflow [`.github/workflows/labs.yml`](.github/workflows/labs.yml)
-régénère le dictionnaire et le modèle, lance les tests, construit un APK release
-signé et le publie comme **préversion GitHub sous le tag roulant `labs`** : une
-adresse de téléchargement qui ne change jamais. Quatre choix délibérés :
+régénère le dictionnaire, lance les tests, construit un APK release signé et le
+publie comme **préversion GitHub sous un tag roulant** : une adresse de
+téléchargement qui ne change jamais. Quatre choix délibérés :
 
 - la préversion n'est **jamais** marquée « latest », sinon le lien de téléchargement du simulateur servirait un build de laboratoire aux visiteurs ordinaires ;
-- la publication automatique est **épinglée à une seule branche** : deux expériences ne peuvent pas se disputer le même tag ;
+- la publication automatique est **épinglée à des branches nommées**, chacune avec son tag : deux expériences ne peuvent pas se disputer le même ;
 - **pas de repli sur une clé de debug** : un APK Labs signé debug ne s'installerait pas par-dessus une version stable, et on ne le découvrirait qu'à l'installation ;
-- l'APK est **inspecté**, pas supposé : bibliothèque native présente pour les deux architectures ARM, modèle présent et non compressé, signature valide.
+- l'APK est **inspecté**, pas supposé : dictionnaire présent, signature valide, et plus aucune trace de l'ancienne dictée embarquée (bibliothèque native ou modèle).
 
-**Modèle embarqué** (détail dans [`stt/README.md`](stt/README.md)) : moteur
-[whisper.cpp](https://github.com/ggml-org/whisper.cpp) en JNI. Whisper n'a pas de
-mode flux : le temps réel consiste à retranscrire l'énoncé entier toutes les
-900 ms et à remplacer le texte en cours, dans une fenêtre de 30 s au plus. Le
-modèle pèse 31 Mo et n'est **pas versionné** (l'historique git est définitif) :
-la CI le convertit depuis Hugging Face avec `stt/convert_model.py`. Il n'est
-chargé qu'au premier appui sur le micro et libéré à la sortie du champ, le
-calcul réclamant environ 165 Mo de mémoire.
-
-**Démonstration en ligne** : l'application pousse l'audio en PCM 16 bits à
-16 kHz sur une connexion WebSocket vers `luxasr.uni.lu`. Le service redécode
-l'énoncé en cours toutes les demi-secondes à une seconde et n'engage un mot
-qu'après l'avoir vu à la même place dans trois hypothèses de suite ; la fin
-encore instable revient à part et s'affiche en aperçu. Aucun enregistrement
-n'est conservé sur le téléphone.
+La dictée embarquée a quitté le code ; le banc [`stt/`](stt/README.md) reste
+capable de mesurer un modèle hors ligne si la question revient.
 
 ### Un retour à nous faire
 
@@ -263,7 +278,7 @@ L'APK ci-dessous reste disponible pour qui préfère s'en passer, et contient ex
 
 | Type | Description | Taille | Usage |
 |------|-------------|--------|-------|
-| **Release APK** | Optimisée production, sans journaux | ~7,7 Mo | ✅ Recommandé |
+| **Release APK** | Optimisée production, sans journaux | ~14 Mo | ✅ Recommandé |
 | **Debug APK** | Journaux verbeux, à ne pas installer au quotidien | plus lourde | 🔧 Dev |
 
 ### 🔄 **Mises à jour automatiques**
@@ -288,7 +303,7 @@ cd LuxKeyb/android_keyboard
 ./gradlew assembleDebug      # APK de développement
 ./gradlew installDebug       # installation sur appareil ou émulateur
 ./gradlew assembleRelease    # APK de production
-./gradlew testDebugUnitTest  # la suite de tests, plus de 340 tests
+./gradlew testDebugUnitTest  # la suite de tests, près de 400 tests
 ```
 
 Puis **activer le clavier** :
@@ -329,9 +344,13 @@ touches par rangée, plus larges : **é** à droite du l, **ä** et **ë** autou
 la barre d'espace, ü et ö en appui long.
 
 ### Suggestions
-Commencez à taper : les suggestions apparaissent au-dessus des touches, le
-luxembourgeois sur fond rouge, le français sur fond bleu. Touchez-en une pour
-l'insérer.
+Commencez à taper : les suggestions apparaissent au-dessus des touches, sur
+fond rouge. Touchez-en une pour l'insérer. Une rangée de suggestions en
+français, sur fond bleu, s'active dans Réglages du clavier → Suggestions.
+
+### Dictée
+Touchez le micro à droite de la barre de suggestions et parlez : le texte
+s'écrit à mesure. Le micro se referme quand vous vous taisez.
 
 ## 🏗️ Architecture
 
@@ -356,6 +375,6 @@ sur la [fiche technique](https://famibelle.github.io/LuxKeyb/dossier-technique.h
 - **Android InputMethodService** comme cadre du clavier
 - **JSON** pour le dictionnaire, les n-grammes et les données de jeu
 - **Gradle 9.6** et **AGP 9.3** pour le build
-- **JUnit 4**, plus de 340 tests unitaires exécutés en CI
+- **JUnit 4**, près de 400 tests unitaires exécutés en CI
 - **Python et Hugging Face** pour le pipeline de génération des données
 - **GitHub Actions** pour l'intégration continue
