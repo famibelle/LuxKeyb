@@ -36,13 +36,14 @@
   <p class="eyebrow">Note d'opportunité</p>
   <h1>Écrire le luxembourgeois sur son téléphone</h1>
   <p class="lead">
-Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
-    bat contre son propre téléphone. Ce dossier présente un clavier qui
-    travaille pour lui : gratuit, respectueux de ce qu'on écrit, et adossé au
-    dictionnaire officiel de la langue.
+Aujourd'hui, beaucoup de personnes parlent le luxembourgeois mais
+    renoncent à l'écrire sur leur téléphone. Ce dossier présente un clavier
+    qui le leur permet. Il est construit sur ce que l'État a rendu public :
+    le dictionnaire officiel et les corpus du ZLS sur data.public.lu, et la
+    reconnaissance vocale de l'Université du Luxembourg.
   </p>
   <p class="dest">
-    Document public · septembre 2026 · version 26.2.0 de l'application<br>
+    Document public · octobre 2026 · version 33.0.1 de l'application<br>
     Destiné au ministère de la Culture, au Zenter fir d'Lëtzebuerger Sprooch
     et au Commissariat à la langue luxembourgeoise
   </p>
@@ -93,8 +94,8 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     le même appareil, dans la même conversation.
   </p>
   <p>
-    <strong>L'objectif de ce dossier est simple : permettre aux gens d'écrire
-    leur langue sans se battre contre leur téléphone.</strong> Tout le reste
+    <strong>L'objectif de ce dossier est simple : permettre à ceux qui parlent le
+    luxembourgeois de l'écrire aussi, sur leur téléphone.</strong> Tout le reste
     en découle.
   </p>
 
@@ -320,7 +321,7 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
   <div class="tiles">
     <div class="tile"><span class="n">8,6 Mo</span><span class="k">de données issues du ZLS embarquées, sur 16,6 Mo au total</span></div>
     <div class="tile"><span class="n">123 297</span><span class="k">formes luxembourgeoises reconnues, dont 84 855 par le seul LOD</span></div>
-    <div class="tile"><span class="n">88 883</span><span class="k">traductions françaises affichées, tirées du LOD</span></div>
+    <div class="tile"><span class="n">88 883</span><span class="k">formes traduites en français, tirées du LOD, et autant en allemand, anglais et portugais</span></div>
     <div class="tile"><span class="n">38 348</span><span class="k">phrases d'exemple du LOD, montrées dans l'application</span></div>
   </div>
 
@@ -338,7 +339,7 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
         </tr>
         <tr>
           <td><b>Méisproochegen Iwwersetzungskorpus</b><br><span class="muted">CC0 1.0 · Tech-in-GOV 2025</span></td>
-          <td>Banc d'essai, jamais versé à l'entraînement : 10 038 segments inédits, 135 343 frappes simulées. C'est lui qui permet de mesurer la qualité du clavier sur des phrases qu'il n'a jamais vues.</td>
+          <td>Ses traductions professionnelles s'affichent sous 3 677 phrases d'exemple du LOD, en français, allemand et anglais. C'est aussi le banc d'essai, jamais versé à l'entraînement : 10 038 segments inédits, 135 343 frappes simulées, pour mesurer la qualité du clavier sur des phrases qu'il n'a jamais vues.</td>
         </tr>
         <tr>
           <td><b>LOD : Flexiounstabellen</b><br><span class="muted">CC0 1.0</span></td>
@@ -352,16 +353,39 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     Les cinq autres jeux du ZLS ne sont pas utilisés, et la raison est
     documentée dans le dépôt : l'API publique est écartée par conception
     (la frappe n'utilise jamais le réseau), les deux jeux de reconnaissance
-    vocale sont hors périmètre, et les deux jeux « hackathon » ne déclarent
+    vocale ne servent pas puisque la dictée passe par LuxASR, le service de
+    l'Université du Luxembourg, et les deux jeux « hackathon » ne déclarent
     aucune licence.
+  </p>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Ressource de l'Université du Luxembourg</th><th>Ce que le clavier en fait</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>LuxASR</b><br><span class="muted">service de reconnaissance vocale</span></td>
+          <td>La dictée en luxembourgeois, dans toutes les applications du téléphone.</td>
+        </tr>
+        <tr>
+          <td><b>LuxAlign et LETZ</b><br><span class="muted">corpus de recherche, CC BY-NC 4.0 et CC BY 4.0</span></td>
+          <td>Les fréquences et les 27 746 contextes qui prédisent le mot suivant. LETZ est lui-même tiré des phrases d'exemple du LOD.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="margin-top:14px;">
+    Le détail des licences et de leurs conséquences est dans la
+    <a href="dossier-licences.html">page licences</a>.
   </p>
 
   <div class="note">
     <p>
-      <b>C'est la politique d'ouverture du ZLS qui a rendu ce clavier
-      possible.</b> En publiant le LOD en CC0, le ZLS a permis qu'un tiers en
-      fasse quelque chose sans rien demander à personne, et c'est exactement
-      ce qui s'est passé. La proposition de ce dossier est de donner à ce
+      <b>C'est la politique d'ouverture de l'État qui a rendu ce clavier
+      possible</b> : le ZLS en publiant le LOD et son corpus de traduction en
+      CC0, l'Université du Luxembourg en ouvrant ses corpus et son service de
+      reconnaissance vocale. Un tiers a pu en faire un outil du quotidien sans
+      rien demander à personne. C'est l'« Open by default » de la stratégie
+      Gouvernement numérique, vérifié par l'usage. La proposition de ce dossier est de donner à ce
       résultat une suite plus solide qu'une initiative individuelle.
     </p>
   </div>
@@ -413,10 +437,9 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
 
   <div class="note">
     <p>
-      <b>Où en est le projet.</b> L'application est en test
-      fermé sur Google Play et distribuée en APK direct ; elle n'a pas encore de
-      base d'utilisateurs à présenter. Plusieurs captures du guide intégré
-      restent à refaire. Ce qui est solide aujourd'hui, c'est le moteur, les
+      <b>Où en est le projet.</b> L'application est publiée
+      sur Google Play depuis le 28 septembre 2026 et distribuée en APK direct ;
+      sans télémétrie, elle n'a pas de base d'utilisateurs chiffrée à présenter. Ce qui est solide aujourd'hui, c'est le moteur, les
       données et les mesures ; ce qui manque, c'est la visibilité et les
       moyens d'atteindre les gens.
     </p>
@@ -588,7 +611,7 @@ Aujourd'hui, un Luxembourgeois qui écrit un message dans sa langue se
     <table class="faits">
       <tbody>
         <tr><td>Nom</td><td><strong>Lëtzebuergesch Clavier</strong></td></tr>
-        <tr><td>Version</td><td>30.3.0 (octobre 2026)</td></tr>
+        <tr><td>Version</td><td>33.0.1 (octobre 2026)</td></tr>
         <tr><td>Plateforme</td><td>Android 5.0 et plus. Portage iOS proposé en chantier 3, les deux plateformes sont à parité au Luxembourg</td></tr>
         <tr><td>Prix</td><td>Gratuit, sans publicité, sans achat intégré</td></tr>
         <tr><td>Licence du code</td><td>MIT, <a href="https://github.com/famibelle/LuxKeyb">github.com/famibelle/LuxKeyb</a></td></tr>
