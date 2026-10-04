@@ -1,8 +1,8 @@
 # Fiche Play Store — Lëtzebuergesch Clavier
 
 Textes à coller tels quels dans la Play Console (Développer la présence →
-Fiche Play Store principale). Version de référence : **33.0.0**
-(`versionCode` 330000), la première qui embarque la dictée vocale, `applicationId` `com.potomitan.luxkeyboard`.
+Fiche Play Store principale). Version de référence : **33.0.1**
+(`versionCode` 330001), la première envoyée en production avec la dictée vocale, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -45,9 +45,9 @@ fois la nouveauté et un mot-clé recherché.
 *4000 caractères maximum.*
 
 ```
-Schreift Lëtzebuergesch op Ärem Telefon — endlech ouni Kampf.
+Vous le parlez. Maintenant, vous l'écrivez.
 
-Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, conçu pour une seule langue : le lëtzebuergesch.
+Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, fait pour une seule langue : le lëtzebuergesch.
 
 🛠️ Votre luxembourgeois est un peu rouillé ?
 😤 Votre téléphone souligne en rouge tous vos mots ?
@@ -56,91 +56,105 @@ Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, conç
 
 ⌨️ LES ACCENTS SOUS LE POUCE
 
-Les trois diacritiques qui portent la langue — é, ä et ë — ont chacune leur touche, directement sur le clavier. Plus besoin d'aller chercher un ë dans un sous-menu. Les autres accents (ü, è, à, ô, ê, ö) restent disponibles par appui long.
+é, ä, ë, ö et ü ont chacun leur touche, directement sur le clavier. Plus besoin de chercher un ë dans un menu caché. Les autres (è, à, ô, ê) restent sous un appui long.
 
 🧠 IL VOUS SOUFFLE LES MOTS
 
-• 123 297 formes luxembourgeoises reconnues à la frappe, du corpus contemporain et du dictionnaire officiel LOD
-• 27 746 contextes de prédiction : après un espace, le clavier propose la suite probable d'après les deux derniers mots, pas seulement le dernier
-• Les mots que vous employez souvent remontent d'eux-mêmes
+Tapez « Schueb », il propose « Schueberfouer ». Après un espace, il devine le mot qui vient ensuite. Les mots que vous employez souvent remontent d'eux-mêmes.
 
-🇱🇺 🇫🇷 LE FRANÇAIS EN OPTION
+🎙️ QUAND ÉCRIRE EST TROP LONG, DICTEZ
 
-Le luxembourgeois passe en premier. Allumez les propositions en français et une seconde rangée prend le relais : « ech hunn eng réunion muer » s'écrit sans changer de clavier.
-
-📖 UN DICTIONNAIRE DANS L'APPLICATION
-
-L'onglet Wierderbuch traduit 88 883 mots dans les deux sens, luxembourgeois et français, avec des phrases d'exemple du dictionnaire officiel et leur traduction française quand elle existe. Hors ligne.
-
-🎙️ DICTEZ EN LUXEMBOURGEOIS
-
-Appuyez sur le micro et parlez : le texte s'écrit, ponctué. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg. Il faut une connexion Internet.
+Appuyez sur le micro et parlez : le texte s'écrit pendant que vous parlez, ponctué, avec les majuscules. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg. Il faut une connexion Internet.
 
 ✍️ IL PARDONNE LES FAUTES DE FRAPPE
 
-Une lettre oubliée, une lettre en trop, une touche voisine : la suggestion arrive quand même. Tapez sans diacritiques : « letzebuergesch » devient « lëtzebuergesch ».
+Une lettre oubliée, une touche voisine : le bon mot arrive quand même. Écrivez « letzebuergesch » sans accents, il vous propose « lëtzebuergesch ».
 
-✅ IL CORRIGE PARTOUT, PAS SEULEMENT DANS LE CLAVIER
+✅ FINI LE ROUGE PARTOUT
 
-Un correcteur orthographique système est fourni : activé, vos mots luxembourgeois cessent d'être soulignés en rouge dans Messages, Notes ou votre messagerie.
+Activé dans les réglages d'Android, il arrête de souligner vos mots luxembourgeois en rouge, dans WhatsApp, vos SMS ou vos e-mails. Vos mots français non plus.
 
-🎮 IL VOUS FAIT PROGRESSER
+🇫🇷 UN MOT FRANÇAIS AU MILIEU ?
 
-Chaque mot employé fait monter votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙. Sept jeux vous font chercher, écrire ou replacer des mots luxembourgeois, avec leur traduction française : Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+« ech hunn eng réunion muer » s'écrit sans changer de clavier. Si vous le souhaitez, une seconde rangée vous propose aussi les mots français.
 
-🎴 UN CARNET DE CARTES À COLLECTIONNER
+📖 UN DICTIONNAIRE DANS LA POCHE
 
-Chaque mot gagné devient une carte : sens, exemple et traduction officielle, avec un relief qu'on sent du bout du doigt. La Boîte de Leitner les fait revenir à intervalle régulier, pour les retenir pour de bon.
+Le Wierderbuch traduit les mots luxembourgeois en français, allemand, anglais ou portugais, et dans l'autre sens, avec des phrases d'exemple du dictionnaire officiel. Même sans connexion.
 
-🔒 IL NE SAIT RIEN DE VOUS
+🎮 APPRENDRE EN JOUANT
+
+Chaque mot écrit fait monter votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙. Sept jeux vous font chercher, écrire ou replacer des mots : Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 UN CARNET POUR NE PLUS OUBLIER
+
+Chaque mot gagné devient une carte à retourner, avec son sens et un exemple. Le carnet vous les fait réviser au bon moment, jusqu'à ce qu'ils restent.
+
+🌍 DANS VOTRE LANGUE
+
+L'application parle français, allemand, anglais, portugais ou luxembourgeois.
+
+🔒 VOS MOTS RESTENT CHEZ VOUS
 
 • Ce que vous tapez ne quitte jamais votre téléphone
-• Seule la dictée, quand vous appuyez sur le micro, envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver
-• Aucune collecte, aucun compte, aucune publicité
-• Seuls les mots déjà présents dans le dictionnaire comptent pour la progression : mot de passe, nom propre ou numéro n'y figurent jamais
-• Le clavier se désactive de lui-même dans les champs de mot de passe
-• Code source ouvert et auditable sous licence MIT ; les dictionnaires gardent la licence de leurs corpus
+• La dictée envoie votre voix à l'Université du Luxembourg, seulement quand vous appuyez sur le micro et après votre accord ; elle est écrite, pas conservée
+• Aucun compte, aucune publicité
+• Vos mots de passe, les noms et les numéros ne sont jamais enregistrés
+• Code source ouvert, consultable par tous
 
-📱 COMPATIBILITÉ
+📱 PARTOUT SUR VOTRE TÉLÉPHONE
 
-• Android 5.0 et plus récent
-• Thème clair ou sombre, au choix ou d'après le réglage du téléphone
-• Fonctionne dans toutes les applications : WhatsApp, SMS, e-mail, réseaux sociaux
-• Installation guidée en trois étapes, avec un clavier d'essai dans l'application
-• Android affiche l'avertissement générique de tout clavier tiers : c'est normal, l'onglet Guide l'explique
+• WhatsApp, SMS, e-mail, réseaux sociaux : il marche dans toutes les applications
+• Android 5.0 et plus récent, thème clair ou sombre
+• Installation guidée en trois étapes, avec un clavier d'essai
+• Android affiche un avertissement au moment de l'activer : il le fait pour tous les claviers, c'est normal, l'onglet Guide l'explique
 
 🙋 CE QU'IL NE FAIT PAS ENCORE
 
-Pas de saisie glissée : manque connu et prioritaire. La dictée ne fonctionne pas sans connexion.
+Pas d'écriture en glissant le doigt d'une lettre à l'autre. La dictée ne marche pas sans connexion.
 
-📈 UN DICTIONNAIRE QUI BOUGE
+💬 UN MOT MANQUE ?
 
-Régénéré à chaque version depuis un corpus ouvert de luxembourgeois contemporain : les suggestions suivent l'usage réel de la langue, pas une liste figée. Un mot manque ? Signalez-le : github.com/famibelle/LuxKeyb
+Signalez-le : github.com/famibelle/LuxKeyb. Le dictionnaire s'enrichit à chaque version.
 ```
 
-3952 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console,
-les drapeaux et quelques émojis valant 2 chacun). Il reste **48 caractères
-de marge** : tout ajout suppose d'en retirer autant. Pour faire place à la
-dictée, la section « Pour qui ? » et la signature « Potomitan™ » ont été
-retirées : la première redisait le reste du texte, la seconde nommait une
-marque avec laquelle LuxKeyb n'a aucun lien.
+3293 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console, les
+drapeaux et quelques émojis valant 2 chacun), soit 707 de marge.
 
-Les chiffres cités sont ceux de la version livrée et sont vérifiables dans les
-actifs : `luxemburgish_dict.json` + `luxemburgish_lod_forms.json` pour les
-123 297 formes, `luxemburgish_ngrams.json` pour les 27 746 contextes,
-`luxemburgish_translations.json` pour les 88 883 mots du Wierderbuch,
-`french_simple_dict.json` pour le français. **Les relire à chaque envoi** : ils
-ont été faux pendant longtemps, la fiche annonçant encore 8 792 mots et 3 Mo
-quand l'application en livrait cinq fois plus. La taille de l'APK n'est plus
-citée depuis la 26.3.1 : « moins de 8 Mo » datait du tout début et n'a pas été
-revérifié depuis, alors que le carnet, ses illustrations et les grilles de
-Kräizwuert/Wuertplaz ont sensiblement alourdi l'APK. Mesurer la taille réelle
-de l'AAB/APK de release avant de la remettre dans ce texte.
+Réécrite le 2026-10-04 pour une lectrice qui n'est pas technophile : chaque
+section part d'une gêne concrète et répond par un bénéfice en mots de tous les
+jours. Le slogan des supports imprimés, « Vous le parlez. Maintenant, vous
+l'écrivez. », ouvre le texte, et la dictée vient juste après les suggestions :
+ce sont les deux réponses du clavier. Ce qui a changé par rapport à la version
+précédente, et pourquoi :
+
+- **Plus de chiffres de fiche technique** (123 297 formes, 27 746 contextes,
+  88 883 mots). Ils ne disent rien à la cible et ont été faux longtemps sans
+  que personne le voie : la fiche en ligne annonçait encore 8 792 mots et 3 Mo
+  le 2026-10-04. Un exemple qui se voit (« Schueb » → « Schueberfouer », le
+  même que sur les affiches) les remplace.
+- **Plus de jargon** : « diacritiques », « contextes de prédiction »,
+  « correcteur orthographique système », « corpus », « Boîte de Leitner »,
+  « licence MIT ». La licence reste dans le dépôt (`NOTICE.md`), la fiche dit
+  seulement que le code est ouvert.
+- **Cinq accents en touche directe**, plus trois : depuis la 29.5.0 la
+  disposition par défaut est le Suisse allemand, où `ü`, `ö` et `ä` ont leur
+  touche et `é`, `ë` encadrent la barre d'espace. La disposition Luxembourg, en
+  option, n'en a que trois ; le texte décrit celle que l'on voit en installant.
+- **Le français est présenté comme une option** : la rangée bleue est éteinte
+  par défaut depuis la 30.3.0. La reconnaissance, elle, reste toujours active,
+  d'où « vos mots français non plus ».
+- **« Aucune collecte » a disparu** de la section confidentialité : depuis la
+  dictée, la section Sécurité des données déclare l'audio comme collecté et
+  partagé (voir plus bas), et la fiche ne doit pas la contredire.
+- **Les langues de l'application** (32.0.0) et les traductions du Wierderbuch
+  en allemand, anglais et portugais sont nouvelles dans le texte.
+- **Aucun tiret cadratin.**
 
 Quatre choses sont **délibérément absentes** de ce texte, contrairement à la
 fiche du Klavyé Kréyòl dont elle reprend la structure :
 
-- **aucune citation de presse** — les mentions Canal 10 / Guadeloupe la 1ère
+- **aucune citation de presse** : les mentions Canal 10 / Guadeloupe la 1ère
   concernent l'autre application et seraient trompeuses ici ;
 - **aucune liste d'auteurs**, le corpus luxembourgeois étant un jeu de données
   agrégé et non une anthologie d'auteurs identifiés ;
@@ -148,21 +162,31 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
   encore » évite les avis 1 étoile de déception, qui pèsent lourd sur une
   fiche à faible volume. Elle dit aussi que la dictée exige une connexion,
   pour la même raison ;
-- **aucun « MIT » sans qualificatif.** Le code l'est, les dictionnaires non :
-  ils dérivent de corpus en CC BY-NC et CC BY-SA. Voir `NOTICE.md`.
+- **aucune taille d'application** : l'APK de release pèse environ 14 Mo
+  (33.0.1), mais le Store livre un AAB découpé par appareil, dont la taille de
+  téléchargement est plus petite et varie ; la Console l'affiche elle-même.
 
 ## Nouveautés de cette version
 
-*Texte en vigueur depuis la 33.0.0, la version qui apporte la dictée. C'est
-une évolution majeure de la promesse : jusque-là rien ne quittait le
-téléphone, désormais la voix part à l'Université du Luxembourg quand on dicte.
-Le texte le dit donc en deuxième ligne, pas en petits caractères :*
+*500 caractères maximum. Texte de la 33.0.1. La 33.0.0 n'étant jamais passée
+en production, il annonce aussi la dictée, et le dit en deuxième ligne, pas en
+petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
+part à l'Université du Luxembourg quand on dicte.*
 
 ```
-🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit, ponctué. La reconnaissance vocale est assurée par LuxASR, de l'Université du Luxembourg.
-🔒 Ce que vous tapez ne quitte toujours pas votre téléphone. Seule la dictée envoie votre voix, et seulement quand vous appuyez sur le micro.
-📶 Sans connexion, le micro se barre ; sur un réseau lent, le clavier vous prévient.
+🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit pendant que vous parlez, ponctué. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg.
+🔒 Ce que vous tapez ne quitte toujours pas votre téléphone. Seule la dictée envoie votre voix, quand vous appuyez sur le micro.
+🍽️ « iessen » (manger) revient dans les suggestions, à côté de « Iessen » (le repas).
+🌍 Le carnet donne le sens des mots dans la langue de l'appli.
 ```
+
+463 unités UTF-16 sur 500, marge de 37.
+
+**À envoyer en même temps que l'AAB 33.0.1, ni avant ni après**, avec la
+description et la section Sécurité des données : tant que la version en
+production n'a pas la dictée, l'ancienne fiche (« entièrement hors ligne »,
+« aucune donnée collectée ») reste vraie pour elle, et la nouvelle deviendrait
+fausse.
 
 *Texte précédent, celui de la 26.3.1, gardé pour mémoire :*
 
@@ -348,10 +372,10 @@ passage en production, pas un premier envoi.
    onglets, cuvette de suggestions, Wierderbuch, sept jeux, carnet et Boîte de
    Leitner. À refaire à nouveau au prochain changement d'interface visible.
 
-5. ~~**Relire les chiffres de la description**~~ Fait le 2026-09-22 contre les
-   actifs livrés (123 297 formes, 27 746 contextes, 88 883 mots du
-   Wierderbuch). La taille de l'APK reste à mesurer sur un AAB de release
-   signé, voir plus haut.
+5. ~~**Relire les chiffres de la description**~~ Sans objet depuis le
+   2026-10-04 : la description ne cite plus de chiffres d'actifs ni de taille.
+   Relire en revanche ce qu'elle promet (disposition par défaut, rangée
+   française, dictée) à chaque changement de comportement par défaut.
 
 Vérifier enfin que l'AAB envoyé est bien signé avec la clé de release : le
 build tombe en signature debug avec un simple `println` si un secret manque
