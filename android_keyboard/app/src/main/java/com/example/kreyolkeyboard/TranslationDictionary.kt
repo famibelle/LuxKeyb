@@ -820,3 +820,22 @@ object TranslationDictionary {
         return attribution
     }
 }
+
+/**
+ * Le contexte de l'application, mais dans la langue de l'interface.
+ *
+ * Les écrans qui chargent les gloses sur un fil de fond passent le contexte
+ * de l'application plutôt que l'activité, pour que le fil ne la retienne pas.
+ * Or ce contexte suit la langue du **téléphone** : il ignore la langue que
+ * l'utilisateur a choisie pour l'appli (Paramètres › Applis › Langue), que
+ * seules les activités reçoivent. Avec l'appli en allemand sur un téléphone en
+ * anglais, la carte « Stad » disait « city, Luxembourg City » au milieu d'un
+ * écran allemand, parce que [TranslationDictionary.langueDemandee] lisait
+ * `langue_traductions` dans la mauvaise configuration.
+ *
+ * La langue de l'appli passe avant celle du téléphone, comme partout
+ * ailleurs dans Android ; ce contexte garde la durée de vie de l'application
+ * et prend la configuration de l'écran qui le demande.
+ */
+fun Context.applicatifDansLaLangue(): Context =
+    applicationContext.createConfigurationContext(resources.configuration)

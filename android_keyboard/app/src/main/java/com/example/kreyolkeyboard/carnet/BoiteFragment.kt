@@ -19,6 +19,7 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.applicatifDansLaLangue
 
 /**
  * La boîte de Leitner comme jeu à part entière dans Spiller.
@@ -128,7 +129,7 @@ class BoiteFragment : Fragment() {
     }
 
     private fun chargerEnFond() {
-        val ctx = requireContext().applicationContext
+        val ctx = requireContext().applicatifDansLaLangue()
         val gen = ++generation
         contenusPrets = false
         Thread {
@@ -155,7 +156,7 @@ class BoiteFragment : Fragment() {
      * au même moment.
      */
     private fun chargerContenus(cartes: List<CarteMot>, gen: Int) {
-        val ctx = requireContext().applicationContext
+        val ctx = requireContext().applicatifDansLaLangue()
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
@@ -250,7 +251,7 @@ class BoiteFragment : Fragment() {
     }
 
     private fun lancerRevision() {
-        val ctx = requireContext().applicationContext
+        val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
         boite.isEnabled = false
         Thread {

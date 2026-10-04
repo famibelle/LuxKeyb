@@ -23,6 +23,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.applicatifDansLaLangue
 
 /**
  * Le carnet : toutes les cartes gagnées, consultables en dehors d'une partie.
@@ -253,7 +254,7 @@ class CarnetFragment : DialogFragment() {
      * s'affiche.
      */
     private fun chargerEnFond() {
-        val ctx = requireContext().applicationContext
+        val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
         Thread {
             TranslationDictionary.charger(ctx)

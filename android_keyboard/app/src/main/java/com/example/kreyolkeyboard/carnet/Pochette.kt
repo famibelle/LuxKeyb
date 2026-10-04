@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.applicatifDansLaLangue
 
 /**
  * Le branchement d'un jeu sur le carnet, écrit une fois pour les sept.
@@ -69,7 +70,7 @@ object Pochette {
         surVue: (View?) -> Unit = {},
         surFin: () -> Unit = {}
     ) {
-        val ctx = fragment.context?.applicationContext ?: return
+        val ctx = fragment.context?.applicatifDansLaLangue() ?: return
         // Rien de gagné : le jeu reprend la main tout de suite, sans délai —
         // attendre une pochette qui n'ouvrira pas ne ferait que retarder son
         // bilan.

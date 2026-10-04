@@ -468,7 +468,7 @@ class SettingsActivity : AppCompatActivity() {
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(window.decorView.windowToken, 0)
 
-        val ctx = applicationContext
+        val ctx = applicatifDansLaLangue()
         Thread {
             val neuve = CarteAccueil.offrir(ctx)
             TranslationDictionary.charger(ctx)
@@ -9585,7 +9585,7 @@ class SettingsActivity : AppCompatActivity() {
             // le fil survit à l'onglet. Rien à synchroniser au retour — la
             // table est lue par un accès protégé, et la fiche qui la
             // demanderait trop tôt attend simplement la fin de l'analyse.
-            val applicatif = activity.applicationContext
+            val applicatif = activity.applicatifDansLaLangue()
             Thread {
                 TranslationDictionary.chargerExemples(applicatif)
                 TranslationDictionary.chargerArticles(applicatif)
