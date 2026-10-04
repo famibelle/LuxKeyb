@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="lb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faltblat, Spuerversioun · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Spuerversioun vum Faltblat: wäiss Fongen, Faltmarken, liesbar a schwaarz-wäiss.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 60px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+.wrap{max-width:900px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 20px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-bottom:28px;
+}
+.print-modes{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px;}
+
+/* --- Aperçu à l'écran --- */
+.preview-shell{
+  overflow-x:auto;
+  padding:20px 0 40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:26px;
+}
+.face-label{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-soft); margin:0;
+}
+.page{
+  width:297mm; height:210mm; flex:0 0 auto;
+  position:relative; overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
+  background:#FFFFFF;
+  display:flex; flex-direction:row;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+.panel{
+  width:100.5mm; height:100%; position:relative;
+  display:flex; flex-direction:column;
+  padding:9mm 8mm; overflow:hidden;
+}
+/* Le volet étroit, celui qui se replie en premier, est un bandeau physique
+   unique traversant la feuille : il doit se retrouver au même endroit sur les
+   deux faces. Le retournement bord court d'une feuille paysage inverse la
+   gauche et la droite, donc les rainures situées à 96 et 196,5 mm du bord
+   gauche au recto se retrouvent à 100,5 et 201 mm du bord gauche au verso.
+   D'où :first-child d'un côté et :last-child de l'autre. Les deux faces le
+   déclaraient auparavant en tête, ce qui décalait les deux rainures de
+   4,5 mm entre le recto et le verso. */
+#face-recto .panel:first-child{ width:96mm; }
+#face-verso .panel:last-child { width:96mm; }
+/* Sans la rampe de fonds, plus rien ne dit où sont les rainures : deux repères
+   de pliage les rendent, en pointillé très clair pour ne pas se lire comme un
+   trait de découpe. */
+#face-recto .panel + .panel,
+#face-verso .panel + .panel{ border-left:1px dashed rgba(28,38,36,.22); }
+
+/* ---------- Couverture ---------- */
+/* Palette figée volontairement (pas de var(--...)) : cette page simule
+   un support imprimé, son rendu ne doit pas changer avec le thème du
+   site (clair/sombre) ni avec les préférences système du visiteur. */
+/* Version éco encre : la couverture n'a plus d'aplat. Il reste un lavis du
+   bleu profond à 5 %, assez pour que le volet de couverture ne se confonde
+   pas avec les volets intérieurs, assez peu pour ne rien coûter, et le rouge
+   du drapeau se réduit au bandeau de 6 mm en tête. */
+.cover{ padding:0; background:color-mix(in srgb, #003876 5%, white); color:#1C2624; justify-content:flex-start; border-top:6mm solid #ED2939; }
+.cover .top{ padding:4mm 8mm 3mm; text-align:center; }
+.cover .logo-row{ display:flex; align-items:center; justify-content:center; gap:2.5mm; margin-bottom:2.5mm; }
+.cover .logo-circle{
+  width:12mm; height:12mm; border-radius:50%; background:#fff; flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.cover .logo-circle img{ width:78%; height:78%; object-fit:contain; }
+.cover .brand-badge{
+  display:inline-block; background:#fff; border:1.4px solid #003876; color:#003876; font-family:"Fredoka",sans-serif;
+  font-weight:700; font-size:10.5px; letter-spacing:.03em; padding:1.6mm 4mm; border-radius:999px;
+  box-shadow:0 3px 10px rgba(0,0,0,.15); white-space:nowrap;
+}
+.cover h1.h{
+  font-family:"Fredoka",sans-serif; font-weight:700;
+  font-size:22px; line-height:1.14; margin:0 0 2mm; color:#003876;
+}
+.cover .sub{ font-size:11px; color:#1C2624; opacity:.92; margin:0; font-weight:600; max-width:80mm; margin:0 auto;}
+.cover .press-cards{
+  display:flex; flex-direction:column; gap:1.3mm;
+  margin:3mm 8mm 0; text-align:left;
+}
+.cover .press-card{
+  overflow:hidden; font-size:8.5px; line-height:1.3; color:#1C2624;
+}
+.cover .press-card .src{
+  float:left; margin:0 1.5mm 1mm 0; font-family:"Fredoka",sans-serif; font-weight:700; font-size:8px;
+  text-transform:uppercase; letter-spacing:.02em; background:#FFFFFF; border:1px solid #003876; color:#003876;
+  padding:.5mm 2mm; border-radius:999px; white-space:nowrap;
+}
+.cover .press-card .txt{ font-style:italic; opacity:.95; }
+.cover .hero-card{
+  flex:1; min-height:0; margin:3mm 8mm 0; border-radius:10px; overflow:hidden; position:relative;
+  display:flex; align-items:center; justify-content:center;
+}
+.cover .hero-card img:not(.phone-medallion){ height:96%; width:auto; max-width:100%; object-fit:contain; display:block; margin:0 auto; }
+.cover .phone-medallion{
+  position:absolute; right:4mm; bottom:4mm; z-index:3;
+  width:32mm; height:auto; border-radius:6px;
+  border:3px solid #FFFFFF; box-shadow:0 6px 16px rgba(0,0,0,.35);
+  transform:rotate(-4deg);
+}
+/* 2026-09-30 : une carte du carnet dépasse de derrière le clavier, comme sur
+   l'affiche et le tract. La plus petite image de la couverture et sous le
+   clavier : elle dit que les mots se collectionnent, le clavier reste le
+   sujet. */
+.cover .hero-card:has(.hero-carte){ overflow:visible; }
+.cover .hero-card img.hero-clavier{ position:relative; z-index:2; }
+.cover .hero-card img.hero-carte{
+  position:absolute; right:-1mm; top:-5mm; z-index:1;
+  width:20mm; height:auto; max-width:none; margin:0;
+  border-radius:6px; border:1.4px solid rgba(28,38,36,.18); box-shadow:0 6px 14px rgba(0,0,0,.14);
+  transform:rotate(8deg);
+}
+.cover .hero-caption{
+  position:absolute; top:5mm; left:6mm; right:6mm; z-index:2; text-align:center;
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:16px; color:#003876;
+}
+.cover .cta{
+  margin:3mm 8mm 8mm; background:#fff; border:1.4px solid rgba(28,38,36,.18); color:#003876; border-radius:12px;
+  padding:4mm 5mm; display:flex; align-items:center; justify-content:center; gap:4mm;
+}
+.cover .cta img{ width:26mm; height:26mm; border-radius:5px; flex:0 0 auto; }
+.cover .cta .txt{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; font-size:11.5px; line-height:1.35; font-weight:600; }
+/* L'appel à l'action est une capsule pleine, comme sur tout le reste des
+   supports : c'est la seule forme que la charte reconnaisse comme un bouton.
+   Elle vit dans la carte du QR plutôt qu'à côté, parce que le code a besoin
+   de sa zone blanche de silence et que séparer les deux ferait deux objets
+   là où le lecteur n'a qu'un geste à faire. Le libellé est court : dans une
+   capsule, à côté d'un QR de 26 mm sur un volet de 100 mm, une phrase entière
+   déborde. */
+.cover .cta .txt b{
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:12px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#003876; color:#F5F5F5; border-radius:999px;
+  padding:2.2mm 5mm; margin-bottom:1.8mm;
+}
+.cover .cta .txt .free{ display:block; color:#003876; font-weight:700; margin-top:1mm; }
+
+/* ---------- Dos : QR + tampon gratuit ---------- */
+.back-cover .promo-row{
+  display:flex; align-items:center; justify-content:center; gap:5mm; margin:4mm 0;
+}
+.back-cover .qr-box{
+  background:#fff; border-radius:10px; padding:2mm; flex:0 0 auto;
+  border:1.2px solid rgba(28,38,36,.18);
+  display:flex; flex-direction:column; align-items:center;
+}
+.back-cover .qr-box img{ display:block; width:20mm; height:20mm; }
+.back-cover .qr-label{
+  font-size:9.5px; font-weight:700; color:#003876; text-transform:uppercase;
+  text-align:center; margin-top:1.5mm; letter-spacing:.03em;
+}
+.back-cover .stamp{
+  width:24mm; height:24mm; border-radius:50%; flex:0 0 auto;
+  border:2px dashed #ED2939; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; transform:rotate(-8deg);
+}
+.back-cover .stamp span{
+  font-family:"Fredoka",sans-serif; font-weight:700; color:#003876;
+  text-transform:uppercase; line-height:1.15; text-align:center;
+}
+.back-cover .stamp .big{ font-size:11px; }
+.back-cover .stamp .small{ font-size:7px; margin-top:.6mm; }
+
+/* ---------- Dos ---------- */
+.back-cover{ background:color-mix(in srgb, #003876 5%, white); color:#1C2624; justify-content:flex-start; }
+.back-cover > div:last-child{ margin-top:auto; }
+.back-cover .wordmark{ font-family:"Fredoka",sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; color:#003876; }
+.back-cover .quote{
+  font-size:22px; font-style:italic; font-weight:700; line-height:1.35; color:#003876;
+  border-left:4px solid #ED2939; padding-left:12px; margin:8mm 0 5mm;
+}
+.back-cover .mission{ font-size:11px; line-height:1.6; color:#4B5750; margin:0 0 6mm; }
+.back-cover .contact{ font-size:12px; line-height:2; }
+.back-cover .contact div span{ color:#003876; display:inline-block; width:56px; }
+.back-cover .legal{ font-size:10px; color:#4B5750; line-height:1.5; margin-top:3mm; text-align:left; }
+/* Les quatre promesses, en pied du dépliant : le dos en est le pied. */
+.back-cover .promises{
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:10.5px;
+  letter-spacing:.02em; color:#003876; margin-top:5mm; text-align:left;
+}
+
+/* ---------- panneaux clairs ---------- */
+/* Les quatre volets intérieurs se distinguent par une rampe de fonds, pour
+   qu'un dépliant ouvert se lise comme quatre pages et non comme un aplat
+   continu. La rampe est froide (bleutée) et non crème : c'est la famille du
+   bleu du drapeau, et elle ne concurrence pas le rouge.
+   Les valeurs ne sont pas libres. L* descend de 97,8 à 86,9 et C* monte de 1,2
+   à 9,7, ce qui tient exactement ΔE 4,6 entre volets voisins, le seuil en
+   deçà duquel deux pages côte à côte paraissent de la même couleur.
+   Les encadrés posés dessus (rappel, encart d'installation) sont blancs et non
+   teintés : un bloc teinté aurait fatalement croisé la rampe et disparu sur
+   l'un des quatre volets. Le blanc reste au-dessus d'elle partout, de ΔE 2,5
+   sur le volet le plus clair (où c'est le filet bleu qui le tient) à 16,2
+   sur le plus foncé. L'encre garde 11,08:1 sur ce volet le plus foncé, l'encre
+   douce 5,39:1. */
+.light{ background:#FFFFFF; }
+.light.rang-2{ background:#FFFFFF; }
+.light.rang-3{ background:#FFFFFF; }
+.light.rang-4{ background:#FFFFFF; }
+.light h2{
+  font-size:16px; font-weight:700; color:#1C2624; margin:0 0 3mm;
+  padding-bottom:2mm; border-bottom:3px solid #ED2939;
+}
+.light p{ font-size:13px; font-weight:500; line-height:1.55; color:#1C2624; margin:0 0 3mm; }
+.kicker{ font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.08em; color:#003876; text-transform:uppercase; margin-bottom:1mm; }
+
+.bullets{ list-style:none; margin:0; padding:0; font-size:13px; font-weight:500; color:#1C2624; }
+.bullets li{ display:flex; gap:8px; margin-bottom:3mm; line-height:1.4; }
+/* Puce en soleil plutôt qu'un emoji : la charte ne reconnaît que six emoji,
+   tous des repères de navigation, et le soleil est justement la couleur du
+   décor. Les sept emoji de la frise des niveaux, eux, restent : ils viennent
+   de CreoleLevels.kt et montrent le produit tel qu'il est. */
+.bullets li::before{
+  content:""; flex:0 0 auto; align-self:flex-start;
+  width:2mm; height:2mm; margin-top:1.7mm; border-radius:50%; background:#00A1DE;
+}
+.bullets li b{ color:#1C2624; }
+
+.steps{ counter-reset:step; margin:0; padding:0; list-style:none; }
+.steps li{
+  counter-increment:step; position:relative; padding-left:26px; margin-bottom:5mm;
+  font-size:13px; font-weight:500; line-height:1.45; color:#1C2624;
+}
+.steps li::before{
+  content:counter(step); position:absolute; left:0; top:0;
+  width:19px; height:19px; border-radius:50%; background:#003876; color:#fff;
+  font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+.steps li b{ display:block; color:#1C2624; font-size:13.5px; }
+.dl-row{
+  display:flex; align-items:center; gap:3mm; background:#FFFFFF; outline:1px solid rgba(28,38,36,.13);
+  border-radius:8px; padding:2.5mm 3mm; margin-top:1mm;
+}
+.dl-row img{ width:16mm; height:16mm; flex:0 0 auto; border-radius:3px; background:#fff; padding:1px; }
+.dl-row .dl-txt{ font-size:10.5px; font-weight:500; color:#1C2624; line-height:1.3; }
+.dl-row .dl-txt b{ display:block; font-size:12px; color:#003876; }
+
+.mini-shots{ position:relative; width:82mm; height:44mm; margin:2mm auto 0; flex:0 0 auto; }
+.mini-shots img{
+  position:absolute; top:0; width:41mm; height:auto; border-radius:8px;
+  border:3px solid #FFFFFF; box-shadow:0 4px 14px rgba(0,0,0,.22);
+  /* Même filet que .shot img : la bordure blanche sur le crème du volet ne
+     fait que 1,13:1 de contraste, le cadre ne tenait donc que par son ombre
+     portée, qui s'aplatit à l'impression. */
+  outline:1px solid rgba(28,38,36,.13);
+}
+.mini-shots img.s1{ left:50%; transform:translateX(-99%) rotate(-5deg); z-index:1; }
+.mini-shots img.s2{ left:50%; transform:translateX(-1%) rotate(4deg); z-index:2; }
+.mini-shots.large{ width:84mm; height:56mm; }
+.mini-shots.large img{ width:42mm; }
+/* Deux cartes du carnet, en portrait : 36 mm de large font 52 mm de haut. */
+.mini-shots.cartes{ width:80mm; height:54mm; }
+.mini-shots.cartes img{ width:36mm; }
+
+.shot{ text-align:center; margin-top:auto; flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
+.shot img{
+  max-width:100%; max-height:100%; border-radius:9px;
+  box-shadow:0 4px 16px rgba(0,0,0,.25); border:4px solid #FFFFFF;
+  outline:1px solid rgba(28,38,36,.13);
+}
+/* 94 mm faisait déborder la capture sur l'échelle des niveaux et sur le QR :
+   le volet mesure 210 mm et le reste (texte, marches, QR) en prend déjà 140. */
+.shot.tall{ flex:0 1 auto; margin-top:2mm; }
+.shot.tall img{ max-height:62mm; }
+
+.callout{
+  margin-top:auto; background:#FFFFFF; border:1px solid rgba(28,38,36,.13);
+  border-left:3px solid #00A1DE;
+  border-radius:8px; padding:3mm 4mm; font-size:11.5px; color:#1C2624; font-weight:600; text-align:center;
+}
+.back-cover .help-title{
+  font-family:"Fredoka",sans-serif; font-weight:700; font-size:11px;
+  letter-spacing:.04em; text-transform:uppercase; color:#003876; margin:0 0 2.5mm;
+}
+.back-cover .help-list{ list-style:none; margin:0; padding:0; font-size:11.5px; line-height:2; }
+
+.panel-cta{
+  margin-top:4mm; background:#E1F1FA; border-radius:10px;
+  padding:3mm 4mm; display:flex; align-items:center; gap:4mm;
+}
+.panel-cta img{ width:20mm; height:20mm; border-radius:4px; flex:0 0 auto; background:#fff; padding:1px; }
+.panel-cta .txt{ display:flex; flex-direction:column; align-items:flex-start; font-size:10.5px; font-weight:600; color:#1C2624; line-height:1.3; }
+.panel-cta .txt b{
+  display:inline-block; font-family:"Fredoka",sans-serif; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  background:#003876; color:#F5F5F5; border-radius:999px;
+  padding:1.8mm 4mm; margin-bottom:1.4mm;
+}
+/* « 100 % gratuit » est l'argument le plus vendeur du dépliant : il est écrit
+   en bleu profond, qui tient 9,94:1 sur le bleu très clair du bloc. Le rouge
+   du drapeau n'y donnerait que 3,65:1, au-dessous du seuil de 4,5:1 pour du
+   petit texte, et c'est pourquoi il ne prend jamais un mot de cette taille. */
+.panel-cta .txt .free{ display:block; color:#003876; font-weight:700; margin-top:1mm; }
+
+.levels{ display:flex; align-items:flex-end; gap:1.5mm; margin-bottom:1.5mm; }
+.level-step{
+  flex:1; display:flex; align-items:flex-start; justify-content:center;
+  background:#E1F1FA; border-radius:4px 4px 0 0; padding-top:1.3mm;
+}
+.level-step span{ font-size:12px; text-align:center; }
+/* Huit marches, une par niveau de l'application, du bleu ciel du drapeau au
+   bleu profond des aplats. Le sommet rompt avec la rampe et passe au rouge :
+   Sproochenmeeschter n'est pas la suite des sept paliers, c'est leur terme. */
+.level-step.h1{ height:4mm; }
+.level-step.h2{ height:6.5mm; background:#C3E3F5; }
+.level-step.h3{ height:9mm;   background:#A5D6F0; }
+.level-step.h4{ height:11.5mm; background:#7FC4E8; }
+.level-step.h5{ height:14mm;  background:#4FADDD; }
+.level-step.h6{ height:16.5mm; background:#2A8CC4; }
+.level-step.h7{ height:19mm;  background:#14639C; }
+.level-step.h8{ height:22mm;  background:#ED2939; }
+.level-step.h8 span{ font-size:14px; }
+.levels-caption{
+  display:flex; justify-content:space-between; margin:0 0 4mm;
+  font-family:var(--mono); font-size:8.5px; font-weight:700; color:#1C2624;
+  text-transform:uppercase; letter-spacing:.03em;
+}
+
+@page{ size:297mm 210mm; margin:0; }
+
+@media print{
+  .noprint{display:none !important;}
+  body{padding:0;margin:0;background:#fff;}
+  .wrap{max-width:none;}
+  .preview-shell{padding:0;overflow:visible;gap:0;}
+  .face-label{display:none;}
+  .page{box-shadow:none;page-break-after:always;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+}
+body[data-print-mode="recto"] #face-verso{ display:none; }
+body[data-print-mode="verso"] #face-recto{ display:none; }
+/* Refonte 2026-09-28. */
+.gp-badge{display:block;height:auto;}
+/* Le badge vit à côté du QR, il ne doit pas hériter de son carré. */
+.cover .cta .txt img.gp-badge{width:36mm;height:auto;border-radius:0;margin:1mm 0 0;}
+.panel-cta img.gp-badge{width:34mm;height:auto;padding:0;background:none;border-radius:0;}
+/* Volet 2 : les deux captures remplissent le volet au lieu d'y flotter. */
+.mini-shots.large{width:84mm;height:56mm;margin:auto;}
+.mini-shots.large img.s1,.mini-shots.large img.s2{top:6mm;}
+.mini-shots.large img{width:44mm;}
+/* Refonte 2026-09-29 : le volet 5 ne parle plus que du clavier, le volet 6
+   devient « Apprendre en tapant » (jeux, carnet, dictionnaire). L'ordre de
+   lecture dit ce qui est premier : on écrit, et les mots qu'on tape font
+   apprendre. */
+.shot.clavier{flex:1 1 auto;margin:2mm 0;}
+.shot.clavier img{max-height:72mm;}
+.bloc{font-size:12px;line-height:1.4;color:#1C2624;background:rgba(255,255,255,.7);border-radius:8px;padding:2mm 3mm;margin-bottom:2mm;}
+.bloc b{display:block;color:#003876;font-size:13px;}
+.trio{display:flex;gap:2mm;justify-content:center;margin:1mm 0 3mm;}
+.trio figure{margin:0;width:27mm;text-align:center;}
+.trio img{width:27mm;height:30mm;object-fit:cover;object-position:top;border-radius:6px;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.trio figure:last-child img{object-position:left top;}
+.trio figcaption{font-size:9px;font-weight:700;color:#003876;margin-top:1mm;text-transform:uppercase;letter-spacing:.05em;}
+
+/* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
+   tant que la traduction n'a pas été relue par un locuteur natif. Il est
+   imprimé exprès : un PDF qui circule doit porter son statut. */
+.a-valider{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.a-valider div{transform:rotate(-28deg);width:160%;padding:3mm 0;text-align:center;background:rgba(255,212,0,.62);
+  border-top:1.2mm solid rgba(0,0,0,.55);border-bottom:1.2mm solid rgba(0,0,0,.55);color:rgba(0,0,0,.78);
+  font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
+.a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
+.a-valider span{display:block;font-size:15px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap noprint">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header style="padding:20px 0 10px;">
+  <p class="eyebrow">Lëtzebuergesch Clavier · Ambassadeursmaterial</p>
+  <h1>D'Faltblat, Spuerversioun 💧</h1>
+  <p class="lead">Dat selwecht Faltblat ouni Faarfflächen: d'Faarf bleift nëmmen bei den Titelen, de Punkten an de Linnen. Dat ass d'Versioun fir ze drécken, wann et ëm Dosende vun Exemplairen geet.</p>
+
+  <div class="actions">
+    <a class="btn primary" href="assets/triptyque-eco-lb-letzebuergesch-clavier-A4.pdf" download>📄 PDF eroflueden (A4 quer, béid Säiten)</a>
+    <a class="btn" href="triptyque-lb.html">🎨 Faarfversioun</a>
+    <a class="btn" href="ambassadeurs.html">← Zréck bei d'Ambassadeuren (op Franséisch)</a>
+  </div>
+  <div class="print-modes">
+    <button class="btn" onclick="printMode('recto')">🖨️ Virsäit drécken</button>
+    <button class="btn" onclick="printMode('verso')">🖨️ Récksäit drécken</button>
+    <button class="btn" onclick="printMode('both')">🖨️ Béid Säiten drécken</button>
+  </div>
+
+  <div class="note">
+    Drécken: A4 <b>quer</b>, „Keng Rand“, Kapp- a Fousszeilen aus. Fir béid Säite mat der Hand: fir d'éischt d'Virsäit drécken, d'Blat <b>iwwer déi kuerz Säit</b> ëmdréinen an nees aleeën, dann d'Récksäit drécken. Falen: de lénken Deel no bannen, dann de rietsen driwwer.
+  </div>
+</header>
+
+</div>
+
+<div class="preview-shell">
+  <p class="face-label noprint">Virsäit, Deeler 1 · 2 · 3 (den 3 ass d'Couverture)</p>
+  <div class="page" id="face-recto"><div class="a-valider" aria-hidden="true"><div><b>À faire valider</b><span>Nach net vun engem Mammesproochler nogekuckt</span></div></div>
+
+    <!-- P1 : dos -->
+    <div class="panel back-cover">
+      <div>
+        <div class="wordmark">LËTZEBUERGESCH CLAVIER</div>
+        <div class="quote">„Mir wëlle bleiwe wat mir sinn.“</div>
+        <p class="mission">Den Dictionnaire vun dëser Tastatur ass keng fix Lëscht: e gëtt bei all Versioun nei opgebaut, aus zwee ëffentleche Corpussen: <b>LuxAlign</b>, 180 342 Sätz aus der Press, an <b>LETZ</b>, d'Beispillsätz vum <i>Lëtzebuerger Online Dictionnaire</i>. D'Sprooch, déi en proposéiert, ass déi, déi geschriwwe gëtt, net déi vun engem Dictionnaire, deen eemol fir ëmmer fäerdeg ass.</p>
+      </div>
+      <div class="promo-row">
+        <div class="qr-box">
+          <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code op d'Säit vum Lëtzebuergesch Clavier am Google Play">
+          <div class="qr-label">Code scannen</div>
+        </div>
+        <div class="stamp">
+          <span class="big">100&nbsp;%<br>gratis</span>
+          <span class="small">keng Reklamm</span>
+        </div>
+      </div>
+      <div>
+        <div class="help-title">Wéi Dir eis hëllefe kënnt</div>
+        <ul class="help-list">
+          <li>Bewäert en am Google Play</li>
+          <li>Schwätzt mat Äre Leit driwwer</li>
+          <li>Mellt e Wuert, dat feelt</li>
+        </ul>
+      </div>
+      <div>
+        <div class="contact">
+          <div><span>Web</span> famibelle.github.io/LuxKeyb</div>
+          <div><span>Kontakt</span> Feedback-Formulaire op der Websäit</div>
+        </div>
+        <div class="promises">Gratis · Ouni Reklamm · Ouni Kont · Diktat</div>
+        <div class="legal">Lëtzebuergesch Clavier ass e Bierger-Projet, publizéiert vum Médhi Famibelle. Et gi keng perséinlech Donnéeë gesammelt: wat Dir tippt, bleift um Apparat. Nëmmen d'Diktat, wann een op de Mikro dréckt, schéckt d'Stëmm un de Service LuxASR vun der Universitéit Lëtzebuerg, deen se ëmschreift, ouni se ze späicheren.</div>
+        <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Lëtzebuerger Fändel" style="height:3.6mm;vertical-align:-0.4mm;"> · famibelle.github.io/LuxKeyb</div>
+      </div>
+    </div>
+
+    <!-- P2 : pourquoi -->
+    <div class="panel light">
+      <div class="kicker">Firwat</div>
+      <h2>Firwat eng lëtzebuergesch Tastatur?</h2>
+      <ul class="bullets" style="margin:0 0 3mm;">
+        <li><span>Ären Telefon korrigéiert Äert Lëtzebuergesch op Däitsch oder op Franséisch.</span></li>
+        <li><span>Den ë an den ä verstoppe sech an engem Menü, bei all Wuert.</span></li>
+        <li><span>Dir sidd Iech bei all Message net sécher mat der Schreifweis.</span></li>
+        <li><span>Dir kënnt et soen, mee net schreiwen.</span></li>
+        <li><span><b>Dës Tastatur ass fir Iech gemaach.</b></span></li>
+      </ul>
+      <div class="mini-shots large">
+        <img class="s1" src="Screenshots/lux_supports_clavier.png" alt="D'Tastatur beim Tippen: no „Ech hunn op der Schueb“ proposéiert d'Leescht „Schueberfouer“">
+        <img class="s2" src="Screenshots/lux_accents.png" alt="Laang op d'Tast e drécken: é, ë, è an ê ginn op">
+      </div>
+      <div class="callout">Bannen: d'Akzenter ënnert dem Fanger, d'Diktat, Wierder, déi net méi rout ënnerstrach sinn, siwe Spiller mat hirem Kaartecarnet an aacht Niveauen. Dréit d'Faltblat ëm.</div>
+    </div>
+
+    <!-- P3 : couverture -->
+    <div class="panel cover">
+      <div class="top">
+        <div class="logo-row">
+          <div class="logo-circle"><img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier"></div>
+          <span class="brand-badge">LËTZEBUERGESCH CLAVIER</span>
+        </div>
+        <h1 class="h">Dir schwätzt et.<br>Elo schreift Dir et och.</h1>
+        <div class="press-cards">
+          <div class="press-card"><span class="src">Tippt „Schueb“</span><span class="txt">en proposéiert „Schueberfouer“</span></div>
+          <div class="press-card"><span class="src">ë · ä · é</span><span class="txt">all Buschtaf huet seng Tast, Dir musst se net méi sichen</span></div>
+          <div class="press-card"><span class="src">Schwätzt</span><span class="txt">dréckt op de Mikro, sot Äre Saz, an e steet do</span></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img class="hero-carte" src="Screenshots/lux_carte_stad.png" alt="Eng Kaart aus dem Carnet: d'Wuert Stad, seng Bedeitung an e Saz aus dem offiziellen Dictionnaire">
+        <img class="hero-clavier" src="Screenshots/lux_supports_clavier.png" alt="D'Tastatur beim Tippen: no „Ech hunn op der Schueb“ proposéiert d'Leescht „Schueberfouer“">
+      </div>
+      <div class="cta">
+        <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code op d'Säit vum Lëtzebuergesch Clavier am Google Play">
+        <div class="txt"><b>Code scannen</b><img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play"><span class="free">100&nbsp;% gratis</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="face-label noprint">Récksäit, Deeler 4 · 5 · 6 (bannen, vu lénks no riets)</p>
+  <div class="page" id="face-verso"><div class="a-valider" aria-hidden="true"><div><b>À faire valider</b><span>Nach net vun engem Mammesproochler nogekuckt</span></div></div>
+
+    <!-- P4 : installation -->
+    <div class="panel light rang-2">
+      <div class="kicker">Lass geet et</div>
+      <h2>Installatioun a 4 Schrëtt</h2>
+      <ol class="steps">
+        <li>
+          <b>Maacht d'Säit am Google Play op, et ass gratis</b>
+          <div class="dl-row">
+            <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code op d'Säit vum Lëtzebuergesch Clavier am Google Play">
+            <span class="dl-txt"><b>Scannt dëse Code</b>Mat der Kamera drop zillen: d'Säit am Google Play geet op, Dir musst nëmmen nach op Installéieren drécken</span>
+          </div>
+        </li>
+        <li><b>Installéiert d'App</b>Iwwer Google Play, wéi all aner App: Installatioun an Updates automatesch.</li>
+        <li><b>Aktivéiert d'Tastatur an den Astellungen</b>E Knäppchen an der App féiert direkt op de richtegen Android-Écran. De System weist dann eng Warnung iwwer d'Agab: déi ass allgemeng, Android weist se fir <i>all</i> Tastatur vun aneren Hiersteller, an dës hei schéckt näischt vun deem, wat Dir tippt.</li>
+        <li><b>Wielt se a schreift</b>D'Auswiel vun den Tastaturen geet op: wielt Lëtzebuergesch Clavier a tippt Äert éischt Wuert.</li>
+      </ol>
+      <div class="shot"><img src="Screenshots/lux_onboarding.png" alt="D'Installatioun an der App: déi ofgehaakte Schrëtt an d'Testfeld vun der Tastatur"></div>
+    </div>
+
+    <!-- P5 : fonctionnalités -->
+    <div class="panel light rang-3">
+      <div class="kicker">Funktiounen</div>
+      <h2>Wat se fir Iech mécht</h2>
+      <ul class="bullets">
+        <li><span>D'<b>lëtzebuergescht Wuert</b> kënnt, ier Dir et fäerdeg getippt hutt</span></li>
+        <li><span><b>é, ä, ë</b> hunn hir Tast; fir déi aner Akzenter, haalt de Fanger drop</span></li>
+        <li><span>En versteet Iech och <b>ouni Akzenter</b>: „letzebuergesch“ proposéiert „lëtzebuergesch“</span></li>
+        <li><span>Är lëtzebuergesch Wierder sinn <b>net méi rout ënnerstrach</b>, an all Ären Apps</span></li>
+        <li><span>Dréckt op de <b>Mikro</b> a schwätzt: en schreift op Lëtzebuergesch (Internet néideg)</span></li>
+      </ul>
+      <div class="shot clavier"><img src="Screenshots/lux_supports_clavier.png" alt="D'Tastatur beim Tippen: no „Ech hunn op der Schueb“ proposéiert d'Leescht „Schueberfouer“"></div>
+      <div class="callout">En errode och dat nächst Wuert: no „op der“ proposéiert en schonn „Stad“, „Police“, „Rue“. Manner Buschtawen ze tippen, manner Feeler.</div>
+    </div>
+
+    <!-- P6 : progression -->
+    <div class="panel light rang-4">
+      <div class="kicker">A fir ze léieren</div>
+      <h2>Léieren, während Dir tippt</h2>
+      <div class="bloc"><b>🎮 Siwe Spiller</b> Wierder sichen, Anagrammen, e Wuert a sechs Versich, Lückesätz, Zuelen, Kräizwuerträtselen, Wierder placéieren.</div>
+      <div class="bloc"><b>🃏 E Kaartecarnet</b> all gewonnent Wuert gëtt eng Kaart, an d'Wierder, déi Dir tippt, bréngen se weider.</div>
+      <div class="bloc"><b>📖 En Dictionnaire FR ↔ LB</b> e Wuert fält Iech net an? En iwwersetzt et an déi zwou Richtungen, ouni Netz.</div>
+      <div class="trio">
+        <figure><img src="Screenshots/lux_wuertsich_trouves.png" alt="D'Spill Wuertsich: dräi Wierder am Gitter fonnt, all mat senger Iwwersetzung"><figcaption>Spiller</figcaption></figure>
+        <figure><img src="Screenshots/lux_carte_stad.png" alt="Eng Kaart aus dem Carnet: d'Wuert Stad, seng Bedeitung an e Saz aus dem offiziellen Dictionnaire"><figcaption>Carnet</figcaption></figure>
+        <figure><img src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="D'Fiche Gromperekichelchen am Dictionnaire: Bedeitung, e Beispillsaz an déi aner Formen"><figcaption>Dictionnaire</figcaption></figure>
+      </div>
+      <div class="levels">
+        <div class="level-step h1"><span>🌍</span></div>
+        <div class="level-step h2"><span>🌱</span></div>
+        <div class="level-step h3"><span>🔥</span></div>
+        <div class="level-step h4"><span>💎</span></div>
+        <div class="level-step h5"><span>🦊</span></div>
+        <div class="level-step h6"><span>🦁</span></div>
+        <div class="level-step h7"><span>👑</span></div>
+        <div class="level-step h8"><span>🧙</span></div>
+      </div>
+      <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
+      <div class="panel-cta">
+        <img class="gp-badge" src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play">
+        <div class="txt"><b>Elo installéieren</b>Sicht „Lëtzebuergesch Clavier“<span class="free">100&nbsp;% gratis</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function printMode(mode){
+    document.body.setAttribute('data-print-mode', mode);
+    window.print();
+  }
+  window.addEventListener('afterprint', function(){
+    document.body.removeAttribute('data-print-mode');
+  });
+</script>
+</body>
+</html>

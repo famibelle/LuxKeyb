@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Printable flyer · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Printable A5 flyer (2 per A4 sheet) to spread the word about the Luxembourgish keyboard. QR code to the Google Play page.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<!-- Fredoka embarquée en base64 plutôt que servie par Google Fonts : le PDF
+     de ce tract s'exporte en impression locale, parfois hors ligne, et une
+     police absente au moment du rendu recomposerait toute la page. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 60px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+.wrap{max-width:680px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 20px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{
+  display:inline-block;text-decoration:none;text-align:center;cursor:pointer;
+  font-size:14px;font-weight:700;border-radius:9px;padding:11px 16px;
+  border:1.5px solid var(--sea);color:var(--sea);background:transparent;
+  font-family:inherit;
+}
+.btn:hover{background:var(--sea-soft);}
+.btn.primary{background:var(--sea);color:var(--paper);}
+.btn.primary:hover{filter:brightness(1.08);}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-bottom:28px;
+}
+
+/* --- Aperçu à l'écran --- */
+.preview-shell{
+  overflow-x:auto;
+  padding:20px 0 40px;
+  display:flex;
+  justify-content:center;
+}
+.page{
+  width:210mm;
+  height:297mm;
+  flex:0 0 auto;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
+  background:#FFFFFF;
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+
+/* --- Un tract A5 paysage ---
+   Les couleurs sont écrites en dur, et non prises dans les variables du thème :
+   ce bloc simule une feuille imprimée, son rendu ne doit suivre ni le thème du
+   site ni les préférences système du visiteur. */
+.tract{
+  position:relative;
+  width:210mm;
+  height:148.5mm;
+  overflow:hidden;
+  /* Pas de dégradé entre les deux couleurs : le rouge et le bleu du drapeau
+     sont quasi complémentaires, et les interpoler traverse le violet, et la
+     bande sale qu'on voyait au milieu du premier essai. Le drapeau règle
+     lui-même la question : il les sépare par une bande blanche. C'est donc une
+     coupe franche, la bande blanche jouant le rôle du filet.
+     Le bleu profond porte tout le texte (11,49:1 en blanc) ; le rouge du
+     drapeau, qui n'en donne que 4,22:1, ne reçoit que les captures. */
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255,255,255,.09), transparent 46%),
+    linear-gradient(103deg,
+      #003876 0 55.5%,
+      #FFFFFF 55.5% 57.2%,
+      #ED2939 57.2% 100%);
+  display:flex;
+  flex-direction:column;
+  gap:4mm;
+  padding:6mm 9mm 4mm;
+}
+.top{
+  display:flex;
+  gap:6mm;
+  flex:0 0 auto;
+  align-items:center;
+}
+.col-left{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  color:#FFFFFF;
+}
+.badge-row{
+  display:flex;
+  align-items:center;
+  gap:4mm;
+  margin:0 0 3mm;
+}
+.badge{
+  display:inline-block;
+  background:#F5F5F5;
+  color:#003876;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:12.5px;
+  letter-spacing:.03em;
+  padding:2mm 5mm;
+  border-radius:999px;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+  white-space:nowrap;
+}
+/* Pastille blanche : l'icône de l'application est un lion rouge cerné de
+   traits fins sur fond très clair. Posée directement sur le bleu profond, elle
+   perdrait son contour ; la pastille lui rend le fond clair pour lequel elle a
+   été dessinée, et le nom repris juste à côté porte l'identification. */
+.logo-badge{
+  width:14mm;
+  height:14mm;
+  border-radius:50%;
+  background:#FFFFFF;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  flex:0 0 auto;
+}
+.logo-badge img{width:86%;height:86%;object-fit:contain;}
+/* Graisse 700 partout : c'est le plafond de la charte pour Fredoka, et c'est
+   aussi la graisse la plus lourde embarquée dans fredoka-embed.css. Demander
+   800 ne donnait donc pas un titre plus gras, mais un gras synthétique
+   fabriqué par le moteur de rendu. */
+.headline{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:27px;
+  line-height:1.05;
+  letter-spacing:-0.01em;
+  color:#FFFFFF;
+  text-shadow:0 3px 12px rgba(0,0,0,.22);
+  margin:0 0 3mm;
+  white-space:nowrap;
+}
+.probs{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:2.8mm;
+}
+.probs li{
+  display:flex;
+  gap:2.8mm;
+  align-items:flex-start;
+  font-size:15.5px;
+  line-height:1.38;
+  font-weight:600;
+}
+/* Puce en bleu ciel plutôt qu'un emoji : c'est la troisième couleur du
+   drapeau, celle que le clavier emploie déjà pour la barre d'espace, et elle
+   n'a ici qu'un rôle de repère : jamais de porter du texte, elle ne donne que
+   2,94:1 en blanc. */
+.probs li::before{
+  content:"";
+  flex:0 0 auto;
+  width:2.2mm;
+  height:2.2mm;
+  margin-top:2.1mm;
+  border-radius:50%;
+  background:#00A1DE;
+}
+.answer{
+  position:relative;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:17.5px;
+  line-height:1.25;
+  color:#FFFFFF;
+  margin:2.4mm 0 0;
+  padding-left:4.5mm;
+}
+.answer::before{
+  content:"";
+  position:absolute;
+  left:0; top:.6mm; bottom:.6mm;
+  width:1.4mm;
+  border-radius:999px;
+  background:#00A1DE;
+}
+/* Quatre faits et non trois depuis que l'application ne se résume plus au
+   clavier : les interlignes de la colonne de gauche ont été resserrés d'un
+   demi-millimètre chacun pour loger le quatrième sans que le pied du tract,
+   où le QR a besoin de sa taille, ne descende d'un millimètre. */
+.facts{
+  display:flex;
+  flex-direction:column;
+  gap:1mm;
+  margin:1.6mm 0 0;
+}
+.fact{
+  display:flex;
+  align-items:baseline;
+  gap:1.6mm;
+  font-size:9.5px;
+  line-height:1.24;
+  color:#FFFFFF;
+}
+.fact .num{
+  flex:0 0 auto;
+  min-width:19mm;
+  text-align:center;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:9.5px;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  background:rgba(255,255,255,.22);
+  padding:.6mm 2.2mm;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.fact .txt{
+  font-style:italic;
+  opacity:.95;
+}
+/* La seule action du tract, donc la seule capsule pleine, et la tache la plus
+   claire de la page. */
+.cta-block{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2.4mm;
+}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  gap:3mm;
+  background:#F5F5F5;
+  color:#003876;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:15px;
+  line-height:1.15;
+  border-radius:999px;
+  padding:3.6mm 7mm;
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+  white-space:nowrap;
+}
+.cta .cta-ico{font-size:21px;line-height:1;}
+/* Signature produit : elle ferme les supports imprimés comme elle ouvre le
+   pied de page du site. */
+.signature{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:12.5px;
+  line-height:1.2;
+  color:#FFFFFF;
+  margin:0;
+}
+.promises{
+  margin:0;
+  font-size:9.5px;
+  font-weight:600;
+  line-height:1.3;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.95);
+}
+.col-right{
+  flex:0 0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.shots{
+  position:relative;
+  width:92mm;
+  height:76mm;
+}
+.shots img{
+  position:absolute;
+  height:auto;
+  border-radius:9px;
+  border:3px solid #FFFFFF;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+/* La carte du carnet, portrait, glissée derrière : elle montre ce que
+   « 7 jeux et un carnet de cartes » veut dire, sans disputer la vedette. */
+.shots img.s1{
+  top:1mm;
+  left:0;
+  width:32mm;
+  transform:rotate(-7deg);
+  z-index:1;
+}
+/* Le clavier en grand, devant : c'est le produit. Les pastilles LB rouges et
+   FR bleues se lisent à 55 mm, c'est la seule chose qu'un passant doit
+   comprendre du premier coup d'œil. */
+.shots img.s2{
+  top:16mm;
+  right:0;
+  width:57mm;
+  transform:rotate(4deg);
+  z-index:2;
+}
+.bottom-row{
+  display:flex;
+  align-items:center;
+  gap:6mm;
+  flex:1 1 auto;
+  min-height:0;
+}
+.stamp{
+  width:30mm;
+  height:30mm;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:#F5F5F5;
+  border:2.5px dashed #00A1DE;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-9deg);
+  box-shadow:0 6px 16px rgba(0,0,0,.22);
+}
+/* Anneau en bleu ciel, texte en encre : à 2,94:1 sur le papier, ce bleu ne
+   passe aucun seuil de lisibilité : il tient le trait, jamais les mots. */
+.stamp span{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  color:#1C2624;
+  text-transform:uppercase;
+  line-height:1.15;
+  text-align:center;
+}
+.stamp .big{font-size:12px;}
+.stamp .small{font-size:7.5px;margin-top:.8mm;}
+.qr-wrap{
+  background:#FFFFFF;
+  border-radius:12px;
+  padding:2.6mm;
+  box-shadow:0 8px 20px rgba(0,0,0,.24);
+}
+.qr-wrap img{display:block;width:27mm;height:27mm;}
+.qr-label{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:10px;
+  color:#003876;
+  background:#FFFFFF;
+  border-radius:999px;
+  padding:1.6mm 4mm;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  text-align:center;
+  margin-top:2.5mm;
+}
+/* L'accroche est posée dans une bande blanche, et pas écrite à même le fond :
+   la coupe franche passe en diagonale juste à cette hauteur, si bien qu'une
+   phrase blanche se serait à moitié perdue dans le rouge (4,22:1) et à moitié
+   dans la bande blanche elle-même. Le drapeau donne encore la solution : sa
+   bande blanche sépare le rouge du bleu, autant lui faire porter la phrase. */
+.slogan-band{
+  position:relative;
+  flex:0 0 auto;
+  align-self:center;
+  background:#FFFFFF;
+  border-radius:999px;
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-style:italic;
+  font-size:17.5px;
+  color:#003876;
+  text-transform:uppercase;
+  text-align:center;
+  letter-spacing:.01em;
+  line-height:1.2;
+  margin:0;
+  padding:2.2mm 7mm 2.4mm;
+}
+/* Le filet accent de la charte, 6 px de haut, qui sépare l'accroche du reste. */
+/* Le filet accent de la charte, ramené sous la pastille : il n'a plus à
+   séparer deux blocs de texte, il signe la bande. */
+.slogan-band::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-2.4mm;
+  transform:translateX(-50%);
+  width:24mm;
+  height:1.2mm;
+  border-radius:999px;
+  background:#00A1DE;
+}
+/* La ligne de mentions reste dans la zone bleue : la coupe diagonale amène le
+   rouge jusque sous le pied du tract, et 8,5 px en blanc sur ce rouge (4,22:1)
+   ne se lisent plus. */
+.credit{
+  position:absolute;
+  left:9mm; right:auto; max-width:108mm; bottom:2.4mm;
+  text-align:left;
+  font-size:8.5px;
+  color:rgba(255,255,255,.92);
+  text-shadow:0 1px 3px rgba(0,0,0,.35);
+  font-family:ui-monospace,"SF Mono",Consolas,monospace;
+}
+.credit img{
+  height:3.6mm;
+  width:auto;
+  vertical-align:-0.4mm;
+  border-radius:1px;
+}
+
+/* ligne de découpe entre les deux tracts */
+.cutline{
+  position:absolute;
+  top:148.5mm;
+  left:0; right:0;
+  height:0;
+  border-top:1.2px dashed rgba(255,255,255,.85);
+  z-index:5;
+}
+.cutline::before{
+  content:"✂";
+  position:absolute;
+  left:4mm;
+  top:-3.2mm;
+  font-size:13px;
+  color:rgba(255,255,255,.95);
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+
+@media print{
+  .noprint{display:none !important;}
+  body{padding:0;margin:0;background:#fff;}
+  .wrap{max-width:none;}
+  .preview-shell{padding:0;overflow:visible;}
+  .page{box-shadow:none;}
+  @page{size:A4;margin:0;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+}
+/* Refonte 2026-09-28 : la carte seule (et non un écran de téléphone où
+   elle se perdait), la frappe « Schueb » → « Schueberfouer », le badge
+   Google Play officiel sous les captures. */
+.shots img.s1{top:0;left:2mm;width:36mm;transform:rotate(-6deg);}
+.shots img.s2{top:14mm;width:58mm;}
+.gp-badge{display:block;width:40mm;height:auto;margin-top:2mm;}
+.fact .num{min-width:20mm;}
+/* Refonte 2026-09-29 : le jeu et le dictionnaire rejoignent le clavier sans
+   lui prendre la vedette. Trois captures empilées : la grille Wuertsich
+   derrière, la fiche Gromperekichelchen au milieu, le clavier devant et le
+   plus grand, parce que c'est le produit. La 4e ligne de faits parle au
+   second public, celui qui apprend. */
+.shots img.s1{top:0;left:3mm;width:28mm;transform:rotate(-6deg);z-index:1;}
+.shots img.s3{left:0;top:37mm;width:38mm;transform:rotate(-3deg);z-index:2;border-radius:7px;border-width:2.5px;}
+.shots img.s2{top:6mm;z-index:4;}
+/* 2026-09-30 : la carte du carnet revient, en petit : elle dépasse de
+   derrière le clavier, dans le creux au-dessus du badge, juste assez pour
+   qu'on lise son mot. La plus petite des quatre et sous le clavier : elle
+   dit que les mots se collectionnent, le clavier reste le sujet. */
+.shots img.s4{right:1mm;top:60mm;width:19mm;transform:rotate(8deg);z-index:3;border-radius:6px;border-width:2.5px;box-shadow:0 6px 16px rgba(0,0,0,.25);}
+</style>
+</head>
+<body>
+<div class="wrap noprint">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header style="padding:20px 0 10px;">
+  <p class="eyebrow">Lëtzebuergesch Clavier · ambassador kit</p>
+  <h1>A flyer to hand out 🪧</h1>
+  <p class="lead">Two A5 flyers per A4 sheet, to cut along the dotted line. Leave them on the counter of a bakery, a café, a youth centre or an evening class: the QR code opens the Google Play page, where the keyboard installs in one tap.</p>
+
+  <div class="actions">
+    <a class="btn primary" href="assets/tract-en-letzebuergesch-clavier-A4.pdf" download>📄 Download the PDF (A4, 2 A5 flyers)</a>
+    <button class="btn" onclick="window.print()">🖨️ Print now</button>
+    <a class="btn" href="tract-eco-en.html">💧 Ink-saving version (white background)</a>
+    <a class="btn" href="ambassadeurs.html">← Back to the ambassador area (in French)</a>
+  </div>
+
+  <div class="note">
+    Tip: in the print options, choose “No margins” and turn off headers and footers. Each A4 sheet gives two identical flyers: cut along the dotted line ✂ and leave a small pile by the till.
+  </div>
+</header>
+
+</div>
+
+<div class="preview-shell">
+  <div class="page">
+
+    <div class="tract">
+      <div class="top">
+        <div class="col-left">
+          <div class="badge-row">
+            <div class="logo-badge"><img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier"></div>
+            <span class="badge">LËTZEBUERGESCH CLAVIER</span>
+          </div>
+          <p class="headline">Schreif Lëtzebuergesch.</p>
+          <ul class="probs">
+            <li><span>Does your phone “correct” your Luxembourgish into German or French?</span></li>
+            <li><span>Hunting for ë and ä in a menu, word after word?</span></li>
+            <li><span>You can say it, but not write it?</span></li>
+          </ul>
+          <p class="answer">You speak it. Now you can write it.</p>
+          <div class="facts">
+            <div class="fact"><span class="num">Type “Schueb”</span><span class="txt">it suggests “Schueberfouer”</span></div>
+            <div class="fact"><span class="num">ë · ä · é</span><span class="txt">each has its own key, no more hunting</span></div>
+            <div class="fact"><span class="num">Speak</span><span class="txt">tap the mic, say your sentence, there it is</span></div>
+            <div class="fact"><span class="num">Learning?</span><span class="txt">7 games, a card deck and a dictionary are waiting in the app</span></div>
+          </div>
+        </div>
+        <div class="col-right">
+          <div class="shots">
+            <img class="s4" src="Screenshots/lux_carte_stad.png" alt="A card from the deck: the word Stad, its meaning and a sentence from the official dictionary">
+            <img class="s1" src="Screenshots/lux_wuertsich_trouves.png" alt="The Wuertsich game: three words found in the grid, each with its translation">
+            <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="The dictionary entry for Gromperekichelchen: potato fritter, an example sentence and its other forms">
+            <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="The keyboard while typing: after “Ech hunn op der Schueb”, the bar suggests “Schueberfouer”">
+          </div>
+          <img class="gp-badge" src="assets/google-play-badge-en.svg" alt="Get it on Google Play">
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="cta-block">
+          <span class="cta"><span class="cta-ico">📲</span><span>Scan, install, write</span></span>
+          <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
+          <p class="promises">No ads · No account<br>What you type stays with you</p>
+        </div>
+        <div class="stamp">
+          <span class="big">100&nbsp;%<br>free</span>
+          <span class="small">zero ads</span>
+        </div>
+        <div class="qr-wrap">
+          <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code to the Lëtzebuergesch Clavier Google Play page">
+        </div>
+      </div>
+      <div class="credit">famibelle.github.io/LuxKeyb</div>
+    </div>
+
+    <div class="cutline"></div>
+
+    <div class="tract">
+      <div class="top">
+        <div class="col-left">
+          <div class="badge-row">
+            <div class="logo-badge"><img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier"></div>
+            <span class="badge">LËTZEBUERGESCH CLAVIER</span>
+          </div>
+          <p class="headline">Schreif Lëtzebuergesch.</p>
+          <ul class="probs">
+            <li><span>Does your phone “correct” your Luxembourgish into German or French?</span></li>
+            <li><span>Hunting for ë and ä in a menu, word after word?</span></li>
+            <li><span>You can say it, but not write it?</span></li>
+          </ul>
+          <p class="answer">You speak it. Now you can write it.</p>
+          <div class="facts">
+            <div class="fact"><span class="num">Type “Schueb”</span><span class="txt">it suggests “Schueberfouer”</span></div>
+            <div class="fact"><span class="num">ë · ä · é</span><span class="txt">each has its own key, no more hunting</span></div>
+            <div class="fact"><span class="num">Speak</span><span class="txt">tap the mic, say your sentence, there it is</span></div>
+            <div class="fact"><span class="num">Learning?</span><span class="txt">7 games, a card deck and a dictionary are waiting in the app</span></div>
+          </div>
+        </div>
+        <div class="col-right">
+          <div class="shots">
+            <img class="s4" src="Screenshots/lux_carte_stad.png" alt="A card from the deck: the word Stad, its meaning and a sentence from the official dictionary">
+            <img class="s1" src="Screenshots/lux_wuertsich_trouves.png" alt="The Wuertsich game: three words found in the grid, each with its translation">
+            <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="The dictionary entry for Gromperekichelchen: potato fritter, an example sentence and its other forms">
+            <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="The keyboard while typing: after “Ech hunn op der Schueb”, the bar suggests “Schueberfouer”">
+          </div>
+          <img class="gp-badge" src="assets/google-play-badge-en.svg" alt="Get it on Google Play">
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="cta-block">
+          <span class="cta"><span class="cta-ico">📲</span><span>Scan, install, write</span></span>
+          <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
+          <p class="promises">No ads · No account<br>What you type stays with you</p>
+        </div>
+        <div class="stamp">
+          <span class="big">100&nbsp;%<br>free</span>
+          <span class="small">zero ads</span>
+        </div>
+        <div class="qr-wrap">
+          <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code to the Lëtzebuergesch Clavier Google Play page">
+        </div>
+      </div>
+      <div class="credit">famibelle.github.io/LuxKeyb</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

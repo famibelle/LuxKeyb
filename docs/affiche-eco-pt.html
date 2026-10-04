@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartaz, versão económica · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Versão económica do cartaz A4: fundo branco, legível a preto e branco, para uma impressora de escritório comum.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{
+  margin:0; padding:0 18px 60px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+.wrap{max-width:680px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:56ch;margin:0 0 20px;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{
+  display:inline-block;text-decoration:none;text-align:center;cursor:pointer;
+  font-size:14px;font-weight:700;border-radius:9px;padding:11px 16px;
+  border:1.5px solid var(--sea);color:var(--sea);background:transparent;
+  font-family:inherit;
+}
+.btn:hover{background:var(--sea-soft);}
+.btn.primary{background:var(--sea);color:var(--paper);}
+.btn.primary:hover{filter:brightness(1.08);}
+.note{
+  background:var(--sun-soft);border:1px solid color-mix(in srgb, var(--sun) 30%, transparent);
+  border-radius:10px;padding:14px 16px;font-size:14px;margin-bottom:28px;
+}
+
+/* --- Aperçu à l'écran --- */
+.preview-shell{
+  overflow-x:auto;
+  padding:20px 0 40px;
+  display:flex;
+  justify-content:center;
+}
+.page{
+  width:210mm;
+  height:297mm;
+  flex:0 0 auto;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.25);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  /* Palette de communication (assets/theme.css), écrite en dur : cette page
+     simule une feuille imprimée, son rendu ne doit suivre ni le thème du site
+     ni les préférences système du visiteur.
+     Les trois bandes du drapeau, dans l'ordre et à la verticale : le rouge en
+     haut, le panneau blanc du contenu au milieu, le bleu en dessous. Aucune
+     interpolation entre le rouge et le bleu : ils sont quasi complémentaires et
+     le mélange vire au violet ; c'est justement le rôle de la bande blanche.
+     Le rouge #ED2939 ne donne que 4,22:1 en blanc : il ne porte que le titre et
+     le slogan, tous deux en gros corps (seuil 3:1). Le texte courant est sur le
+     bleu profond, à 11,49:1, ou en encre sur le panneau blanc. */
+  /* Version éco encre : le papier fait le fond. Du drapeau il ne reste que le
+     bandeau de titre, la seule chose qui fasse repérer l'affiche à l'autre
+     bout d'un hall, et un filet bleu en pied. */
+  background:
+    linear-gradient(180deg,#ED2939 0 25.5%,#FFFFFF 25.5% 100%);
+}
+
+/* header */
+.hd{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:9mm 12mm 0;
+}
+.hd-left{max-width:152mm;}
+/* Graisse 700 partout : c'est le plafond de la charte pour Fredoka, et c'est
+   aussi la graisse la plus lourde embarquée dans fredoka-embed.css. Demander
+   800 ne donnait donc pas un titre plus gras, mais un gras synthétique
+   fabriqué par le moteur de rendu.
+   L'ombre portée dure qui doublait le titre en rouge brique a disparu avec
+   cette couleur : reste l'ombre douce, qui décolle le blanc du dégradé. */
+.title{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:52px;
+  line-height:.94;
+  letter-spacing:-0.01em;
+  color:#FFFFFF;
+  text-shadow:0 6px 18px rgba(0,0,0,.28);
+  margin:0 0 5mm;
+  text-transform:uppercase;
+}
+.badge{
+  display:inline-block;
+  background:#FFFFFF;
+  color:#003876;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:13.5px;
+  letter-spacing:.02em;
+  padding:2.4mm 6mm;
+  border-radius:999px;
+  margin:0 0 4mm;
+}
+.slogan{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-style:italic;
+  font-size:15.5px;
+  color:#FFFFFF;
+  text-transform:uppercase;
+  text-shadow:0 2px 6px rgba(0,0,0,.25);
+  max-width:156mm;
+  line-height:1.3;
+}
+.logo-badge{
+  width:26mm;
+  height:26mm;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  flex:0 0 auto;
+}
+.logo-badge img{width:100%;height:100%;object-fit:contain;}
+/* La silhouette de l'archipel remplace le drapeau, comme sur tous les
+   supports. Variante à remplissage papier, celle des fonds sombres. */
+/* Les captures d'écran : une portrait derrière, le clavier en grand devant.
+   Le clavier est le produit ; l'écran de progression dit qu'il y a une
+   application autour, sans lui disputer la place. */
+
+/* center panel */
+.panel{
+  background:#FFFFFF;
+  margin:7mm 12mm 0;
+  border-radius:20px;
+  border:1.4px solid rgba(28,38,36,.18);
+  padding:7mm 10mm 6mm;
+  text-align:center;
+}
+.subtitle{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:24px;
+  line-height:1.15;
+  color:#003876;
+  text-transform:uppercase;
+  margin:0 0 5mm;
+  text-wrap:balance;
+}
+.shots{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:-6mm;
+  margin:0 0 5mm;
+  position:relative;
+  /* La capture du clavier est presque carrée (1080 × 1010) : à 78 mm de large
+     elle occupe déjà 73 mm de haut, d'où cette hauteur de bloc. La caler sur
+     la largeur du panneau la ferait déborder par le bas. */
+  height:70mm;
+}
+.shots img{
+  position:absolute;
+  height:auto;
+  border-radius:9px;
+  box-shadow:0 6px 14px rgba(0,0,0,.14);
+  border:1.4px solid rgba(28,38,36,.18);
+}
+.shots img.s1{
+  left:2mm;
+  top:4mm;
+  width:29mm;
+  transform:rotate(-7deg);
+  z-index:1;
+}
+.shots img.s2{
+  right:1mm;
+  top:1mm;
+  width:72mm;
+  transform:rotate(3deg);
+  z-index:2;
+}
+/* Deux capsules pleines, bleue et verte, tenaient ici la place de simples
+   mentions : pleines et colorées, elles se lisaient comme des boutons alors
+   que l'affiche n'a qu'une action, le QR code. Elles laissent la place aux
+   quatre promesses, que la charte demande en pied de support. */
+.promises{
+  margin:1mm 0 0;
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.03em;
+  line-height:1.5;
+  text-transform:uppercase;
+  color:#003876;
+}
+.promises .sep{color:#00A1DE;margin:0 1.5mm;}
+
+.stamp{
+  width:42mm;
+  height:42mm;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:#FFFFFF;
+  border:3px dashed #ED2939;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-9deg);
+}
+/* Anneau en bleu ciel, texte en encre : à 2,94:1 sur papier, ce bleu ne passe
+   aucun seuil de lisibilité : il tient le trait, jamais les mots. */
+.stamp span{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  color:#1C2624;
+  text-transform:uppercase;
+  line-height:1.15;
+  text-align:center;
+}
+.stamp .big{font-size:15.5px;}
+.stamp .small{font-size:9.5px;margin-top:1mm;}
+
+/* L'action, sous le bloc de contenu. Une capsule pleine, la seule du support,
+   et la tache la plus claire de l'affiche. */
+.cta-band{
+  display:block;
+  width:max-content;
+  max-width:186mm;
+  background:#003876;
+  margin:5mm auto 0;
+  padding:4mm 12mm;
+  border-radius:999px;
+  text-align:center;
+}
+.cta-band .subtitle{margin:0;color:#FFFFFF;}
+/* Signature produit : elle ferme les supports imprimés comme elle ouvre le
+   pied de page du site. */
+.signature{
+  font-family:"Fredoka",sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:#003876;
+  text-align:center;
+  margin:4mm 12mm 0;
+}
+.qr-center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10mm;
+  margin:5mm 0 0;
+}
+.qr-wrap{
+  display:inline-block;
+  background:#FFFFFF;
+  border:2px solid #003876;
+  border-radius:16px;
+  padding:4mm;
+}
+.qr-wrap img{display:block;width:44mm;height:44mm;}
+.credit{
+  position:absolute;
+  left:12mm; right:12mm; bottom:2.5mm;
+  text-align:center;
+  font-size:9.5px;
+  color:#4B5750;
+  font-family:ui-monospace,"SF Mono",Consolas,monospace;
+}
+.credit img{height:1em;width:auto;vertical-align:-0.15em;border-radius:1px;}
+
+@media print{
+  .noprint{display:none !important;}
+  body{padding:0;margin:0;background:#fff;}
+  .wrap{max-width:none;}
+  .preview-shell{padding:0;overflow:visible;}
+  .page{box-shadow:none;}
+  @page{size:A4;margin:0;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+}
+/* Refonte 2026-09-28 : un seul « gratuit » (le tampon), trois bénéfices
+   concrets au lieu d'une liste de caractéristiques, et le badge Google Play,
+   le repère de confiance que tout le monde reconnaît, à côté du QR. */
+.panel{position:relative;}
+.subtitle{font-size:22px;margin-bottom:3mm;}
+.shots{height:66mm;margin-bottom:3mm;}
+.shots img.s1{left:8mm;top:3mm;width:42mm;transform:rotate(-6deg);}
+.shots img.s2{right:4mm;top:1mm;width:68mm;}
+.benefits{list-style:none;margin:0 auto 3mm;padding:0;max-width:150mm;text-align:left;}
+.benefits li{position:relative;padding-left:8mm;margin:0 0 1.6mm;font-size:13px;line-height:1.35;color:#1C2624;}
+.benefits li::before{content:"✓";position:absolute;left:0;top:.2mm;width:5mm;height:5mm;border-radius:50%;
+  background:#ED2939;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.benefits b{color:#003876;}
+.promises{font-size:11.5px;}
+.stamp{width:34mm;height:34mm;}
+.stamp .big{font-size:14px;}
+.qr-center{gap:7mm;margin-top:4mm;}
+.qr-wrap img{width:46mm;height:46mm;}
+.store{display:flex;flex-direction:column;align-items:center;gap:2.5mm;
+  font-family:"Fredoka",sans-serif;font-size:12.5px;line-height:1.25;color:#003876;text-align:center;}
+.store b{font-size:14px;}
+.gp-badge{display:block;width:46mm;height:auto;}
+/* Refonte 2026-09-29 : le jeu à gauche, le clavier au centre et le plus
+   grand, la fiche du dictionnaire à droite, dans l'ordre des quatre points
+   de la liste. Captures un peu réduites pour loger le quatrième point sans
+   que le pied de page ne chevauche. */
+.shots{height:62mm;}
+.shots img.s1{left:4mm;top:2mm;width:32mm;transform:rotate(-5deg);z-index:1;}
+.shots img.s2{left:50%;right:auto;top:0;width:66mm;transform:translateX(-50%);z-index:3;}
+.shots img.s3{position:absolute;right:2mm;top:14mm;width:46mm;height:auto;transform:rotate(4deg);z-index:2;border-radius:8px;border:3px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,.25);}
+/* 2026-09-30 : une carte du carnet, qui dépasse de derrière la fiche du
+   dictionnaire, juste assez pour qu'on lise son mot. Plus petite que chacune
+   des trois captures et au dernier plan : elle dit que les mots se
+   collectionnent, le clavier reste le sujet. */
+.shots img.s4{right:3mm;top:-3mm;width:24mm;transform:rotate(9deg);z-index:1;border-radius:7px;}
+.shots img.s3{top:21mm;right:6mm;}
+
+/* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
+   tant que la traduction n'a pas été relue par un locuteur natif. Il est
+   imprimé exprès : un PDF qui circule doit porter son statut. */
+.a-valider{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.a-valider div{transform:rotate(-28deg);width:160%;padding:3mm 0;text-align:center;background:rgba(255,212,0,.62);
+  border-top:1.2mm solid rgba(0,0,0,.55);border-bottom:1.2mm solid rgba(0,0,0,.55);color:rgba(0,0,0,.78);
+  font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
+.a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
+.a-valider span{display:block;font-size:15px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap noprint">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="labs.html">🔬 Labs</a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<header style="padding:20px 0 10px;">
+  <p class="eyebrow">Lëtzebuergesch Clavier · kit de embaixador</p>
+  <h1>O cartaz, versão económica 💧</h1>
+  <p class="lead">O mesmo cartaz sem manchas de cor: a bandeira reduz-se a uma faixa e a algumas linhas. Uma impressora de escritório imprime-o sem borrões, e continua legível fotocopiado a preto e branco.</p>
+
+  <div class="actions">
+    <a class="btn primary" href="assets/affiche-eco-pt-letzebuergesch-clavier-A4.pdf" download>📄 Descarregar o PDF (A4, alta resolução)</a>
+    <button class="btn" onclick="window.print()">🖨️ Imprimir já</button>
+    <a class="btn" href="affiche-pt.html">🎨 Versão a cores (fundo bandeira)</a>
+    <a class="btn" href="ambassadeurs.html">← Voltar ao espaço dos embaixadores (em francês)</a>
+  </div>
+
+  <div class="note">
+    Esta versão basta-se com uma impressora de escritório e papel comum. A única mancha de cor mantida é a faixa do título: sem ela, o cartaz deixava de se ver ao longe.
+  </div>
+</header>
+
+</div>
+
+<div class="preview-shell">
+  <div class="page"><div class="a-valider" aria-hidden="true"><div><b>À faire valider</b><span>Ainda não revisto por um falante nativo</span></div></div>
+    <div class="hd">
+      <div class="hd-left">
+        <div class="title">Schreif<br>Lëtzebuergesch.</div>
+        <div class="badge">LËTZEBUERGESCH CLAVIER</div>
+        <p class="slogan">Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.</p>
+      </div>
+      <div class="logo-badge">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="Lëtzebuergesch Clavier">
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="subtitle">Já o fala.<br>Agora também o escreve.</p>
+      <div class="shots">
+        <img class="s4" src="Screenshots/lux_carte_stad.png" alt="Um cartão do caderno: a palavra Stad, o seu significado e uma frase do dicionário oficial">
+        <img class="s1" src="Screenshots/lux_wuertsich_trouves.png" alt="O jogo Wuertsich: três palavras encontradas na grelha, cada uma com a sua tradução">
+        <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen.png" alt="A entrada Gromperekichelchen do dicionário: panqueca de batata, uma frase de exemplo e as outras formas">
+        <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="O teclado durante a escrita: depois de «Ech hunn op der Schueb», a barra sugere «Schueberfouer»">
+      </div>
+      <ul class="benefits">
+        <li><b>Ele sopra-lhe a palavra.</b> Escreva «Schueb», ele sugere «Schueberfouer».</li>
+        <li><b>é, ë, ä, ö, ü à mão.</b> Acabou o menu de acentos a cada palavra.</li>
+        <li><b>As palavras que escreve fazem avançar o seu caderno.</b> Sete jogos para ganhar outras.</li>
+        <li><b>Prefere falar?</b> Toque no microfone: ele escreve o que diz.</li>
+      </ul>
+      <p class="promises">Sem publicidade<span class="sep">·</span>Sem conta<span class="sep">·</span>O que escreve fica consigo</p>
+    </div>
+
+    <div class="cta-band">
+      <p class="subtitle">📲 Aponte, instale, escreva</p>
+    </div>
+
+    <div class="qr-center">
+      <div class="stamp">
+        <span class="big">100&nbsp;%<br>grátis</span>
+        <span class="small">zero anúncios</span>
+      </div>
+      <div class="qr-wrap">
+        <img src="assets/qr-luxkeyb-store-bleu.png" alt="Código QR para a página do Lëtzebuergesch Clavier no Google Play" width="980" height="980">
+      </div>
+      <div class="store">
+        <img class="gp-badge" src="assets/google-play-badge-pt.svg" alt="Disponível no Google Play">
+        <span>ou procure<br><b>Lëtzebuergesch Clavier</b></span>
+      </div>
+    </div>
+
+    <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
+
+    <div class="credit">famibelle.github.io/LuxKeyb · Feito no Luxemburgo <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Bandeira do Luxemburgo"></div>
+  </div>
+</div>
+
+</body>
+</html>
