@@ -1,6 +1,7 @@
 ---
-title: "Lëtzebuergesch Clavier : le clavier luxembourgeois, en ligne et sur Android"
-description: "Clavier luxembourgeois gratuit pour écrire en lëtzebuergesch : suggestions de mots, touches ë ä é, correcteur orthographique, dictée vocale, sans publicité. À essayer dans le navigateur, à installer sur Android."
+title: "Vous le parlez. Maintenant, vous l'écrivez. 🇱🇺"
+description: "Ce n'est pas vous qui écrivez mal le luxembourgeois : c'est votre clavier. Parlez, Lëtzebuergesch Clavier écrit pour vous. Tapez, il vous propose les mots et met les accents. Gratuit sur Android, sans publicité."
+image: /assets/og/partage.png
 lang: fr
 ---
 
