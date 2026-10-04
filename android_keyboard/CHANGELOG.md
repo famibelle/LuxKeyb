@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [33.0.1] - 2026-10-04
+
+Deux corrections : un verbe qui manquait aux suggestions, et le carnet dans la langue de l'appli.
+
+### 🐛 Corrections
+
+- **« iessen » (manger) est de nouveau proposé.** Quand un mot existe avec et sans majuscule, comme « Iessen » (le repas) et « iessen » (manger), le clavier ne gardait que le plus fréquent. Les deux formes apparaissent maintenant dans la barre.
+- **Les cartes du carnet parlent la langue de l'appli.** Si vous avez choisi pour l'appli une autre langue que celle du téléphone, le sens des mots s'affichait dans la langue du téléphone. Il suit maintenant celle de l'appli, dans le carnet, les révisions et les cartes gagnées.
+
 ## [33.0.0] - 2026-10-03
 
 Le clavier dicte en luxembourgeois : une version majeure pour la dictée vocale.
