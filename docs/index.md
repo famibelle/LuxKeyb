@@ -1,6 +1,6 @@
 ---
 title: "Vous le parlez. Maintenant, vous l'écrivez. 🇱🇺"
-description: "🇱🇺 Osez écrire le Lëtzebuergesch ! Installez gratuitement le clavier sur votre téléphone Android. Sans publicité."
+description: "🇱🇺 Osez écrire le Lëtzebuergesch ! Tapez ou dictez vos messages en luxembourgeois, directement sur votre téléphone. Installez gratuitement le clavier sur Android."
 image: /assets/og/partage.png
 lang: fr
 ---
