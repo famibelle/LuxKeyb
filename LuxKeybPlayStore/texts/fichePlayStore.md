@@ -232,8 +232,12 @@ mesure.
 
 ## Éléments graphiques à fournir
 
-Les dix fichiers à envoyer sont dans
-[`../graphics/feature-graphic/`](../graphics/feature-graphic/). Chacun porte le
+L'icône et l'image de présentation sont dans
+[`../graphics/feature-graphic/`](../graphics/feature-graphic/), les huit
+captures dans le sous-dossier de la langue de la fiche
+(`feature-graphic/fr-FR/`, `lb/`, `de-DE/`, `en-US/`, `pt-PT/`, les mêmes noms
+que les dossiers de textes). Les noms de fichiers sont les mêmes dans toutes
+les langues ; seule la légende incrustée change. Chacun porte le
 nom de l'emplacement du formulaire de la Console où il va, il n'y a donc rien à
 retrouver au moment de l'envoi ; les captures portent en plus, entre
 parenthèses, ce qu'elles montrent. Tous sont fabriqués par
@@ -247,7 +251,7 @@ reprennent le gabarit ne sont plus dans le dépôt.
 |---|---|---|
 | Icône de l'application | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `Icône de l'application.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
 | Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
-| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Installation).png`, 1080 × 1920, de 227 à 301 Ko, légende incrustée |
+| Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `<langue>/Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Installation).png`, 1080 × 1920, légende incrustée dans la langue |
 | Captures tablette | facultatif | Non prévu |
 | Vidéo YouTube | facultatif | Aucune. `docs/Screenshots/lux_clavier_demo.gif` n'est pas utilisable : le Store ne prend **pas** les GIF |
 
@@ -262,9 +266,9 @@ que voit la plupart des visiteurs :
 3. une carte du carnet ouverte : plaque gravée, rareté, exemple traduit
 4. le hub Spiller : sept jeux et le carnet, sur la barre à quatre onglets
 5. la fiche Wierderbuch d'un mot : sens, exemples traduits, autres formes
-6. l'appui long sur `e`
+6. les accents : é ä ë ö ü en touche directe, l'appui long sur `e` pour les autres
 7. la progression et le mot du jour, avec sa traduction
-8. l'installation guidée, configuration terminée
+8. l'installation guidée au premier lancement, avec le champ pour essayer le clavier
 
 Chiffres et symboles ont quitté les huit emplacements à la 33.0.0 pour faire
 place à la dictée : la Console n'en accepte pas plus, et c'était l'écran qui
@@ -280,15 +284,14 @@ La légende est incrustée dans l'image parce que la Play Console n'en fournit
 pas, et qu'elle aide beaucoup sur ce type d'application, où la valeur n'est
 pas lisible d'un coup d'œil.
 
-**Définition.** Les captures sources sont natives : les trois captures de
-clavier (suggestions, accents, numérique) et celle de l'installation ont été
-reprises le 2026-09-22 sur l'émulateur `kreyol_test` (1080 × 2340) sous la
-26.3.0, les quatre autres (carte, jeux, fiche, progression) le même jour sur
-le même émulateur ; rien n'est agrandi. Les trois premières sont partagées
-avec le guide intégré (`res/drawable-nodpi/guide_screenshot_*.png`) : les
-refaire là-bas d'abord, puis les recopier ici. Refaire l'ensemble après tout
-changement d'interface visible : recapturer dans `graphics/captures-emulateur-pixel9/`,
-puis `python3 build_graphics.py shots`.
+**Définition.** Les captures sources sont natives, prises sur l'émulateur
+`pixel9` (1080 × 2424) ; rien n'est agrandi. Les trois captures de clavier
+(suggestions, dictée, accents) sont communes aux cinq langues : le clavier
+reste luxembourgeois quelle que soit la langue de l'application. Les cinq
+écrans de l'application (carnet, jeux, Wierderbuch, progression, installation)
+ont été repris dans chaque langue le 2026-10-05 sous la 33.1.0, dans
+`graphics/captures-emulateur-pixel9/<langue>/`. Refaire l'ensemble après tout
+changement d'interface visible, puis `python3 build_graphics.py shots`.
 
 Le flyer triptyque A4 (`graphics/flyer-triptyque/`) ne sert pas à la Play
 Console : il est là pour l'impression, adapté du flyer créole.

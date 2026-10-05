@@ -18,11 +18,14 @@ texts/
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
-  feature-graphic/        les 10 fichiers à envoyer, chacun nommé d'après
-                          l'emplacement de la Console où il va (les captures
-                          portent aussi ce qu'elles montrent, entre
-                          parenthèses), + la source HTML de l'image de
-                          présentation
+  feature-graphic/        l'icône et l'image de présentation (+ sa source
+                          HTML), communes à toutes les langues
+    fr-FR/ lb/ de-DE/     les 8 captures de la Console dans chaque langue,
+    en-US/ pt-PT/         nommées d'après leur emplacement et ce qu'elles
+                          montrent, légende incrustée dans la langue
+  captures-emulateur-pixel9/
+    <langue>/             les écrans de l'application dans cette langue ;
+                          les captures de clavier, communes, sont à la racine
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
 ```
 
@@ -31,7 +34,7 @@ graphics/
 ```bash
 cd graphics
 python3 build_graphics.py              # les 8 fichiers, puis leur vérification
-python3 build_graphics.py shots        # les captures seules
+python3 build_graphics.py shots        # les captures seules, dans les 5 langues
 python3 build_graphics.py check        # vérifie sans rien refabriquer
 ```
 
