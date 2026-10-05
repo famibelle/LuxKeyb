@@ -18,11 +18,14 @@ texts/
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
-  feature-graphic/        l'icône et l'image de présentation (+ sa source
-                          HTML), communes à toutes les langues
-    fr-FR/ lb/ de-DE/     les 8 captures de la Console dans chaque langue,
-    en-US/ pt-PT/         nommées d'après leur emplacement et ce qu'elles
-                          montrent, légende incrustée dans la langue
+  feature-graphic/
+    icone-et-presentation/  l'icône et l'image de présentation (+ sa source
+                            HTML), communes à toutes les langues
+    captures/<langue>/      les 8 captures de la Console, une langue par
+                            dossier (fr-FR lb de-DE en-US pt-PT), nommées
+                            d'après leur emplacement et ce qu'elles montrent
+    hors-console/           un visuel par jeu et deux du carnet, pour le site
+                            et les réseaux, jamais envoyés à la Console
   captures-emulateur-pixel9/
     <langue>/             les écrans de l'application dans cette langue ;
                           les captures de clavier, communes, sont à la racine

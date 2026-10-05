@@ -13,13 +13,17 @@ Produit, dans `feature-graphic/`, les fichiers à envoyer à la Play Console.
 Chacun porte le nom de l'emplacement du formulaire où il va, pour qu'il n'y ait
 rien à retrouver au moment de l'envoi :
 
-  Icône de l'application.png                        depuis Logos/luxembourg-logo-hd.png
-  Image de présentation.png                          depuis feature_graphic_source.html
-  <langue>/Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Installation).png
-                                                      depuis captures-emulateur-pixel9/
+  icone-et-presentation/   communs à toutes les langues
+    Icône de l'application.png                      depuis Logos/luxembourg-logo-hd.png
+    Image de présentation.png                       depuis feature_graphic_source.html
+  captures/<langue>/       les huit captures, légende dans la langue
+    Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Installation).png
+                                                    depuis captures-emulateur-pixel9/
+  hors-console/            un visuel par jeu et deux du carnet, en français,
+                           pour le site et les réseaux
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
-(`texts/fr-FR/` va avec `feature-graphic/fr-FR/`). Le numéro des captures est
+(`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
 leur ordre d'envoi ; le nom dit aussi ce que chacune montre, en un mot et en
 français dans toutes les langues (le tableau `CAPTURES` ci-dessous), la légende
 incrustée étant, elle, dans la langue de la fiche (`LEGENDES`).
@@ -86,7 +90,13 @@ REPO = HERE.parents[1]
 SHOTS = HERE / "captures-emulateur-pixel9"
 LOGO = REPO / "Logos" / "luxembourg-logo-hd.png"
 OUT = HERE / "feature-graphic"
-ICON = OUT / "Icône de l'application.png"
+# Ce qui part à la Console quelle que soit la langue de la fiche
+COMMUNS = OUT / "icone-et-presentation"
+# Les huit captures de la Console, un dossier par langue
+CAPTURES_DIR = OUT / "captures"
+# Les visuels de jeux et du carnet : site, réseaux, jamais la Console
+HORS_CONSOLE = OUT / "hors-console"
+ICON = COMMUNS / "Icône de l'application.png"
 
 # marge de rendu qui absorbe la hauteur de fenêtre non peinte par Chrome
 CHROME_GUTTER = 200
@@ -330,8 +340,8 @@ def build_icon() -> None:
 
 
 def build_feature() -> None:
-    src = OUT / "feature_graphic_source.html"
-    out = OUT / "Image de présentation.png"
+    src = COMMUNS / "feature_graphic_source.html"
+    out = COMMUNS / "Image de présentation.png"
     render(src, out, 1024, 500)
     print(f"{out.relative_to(HERE)}  ok")
 
@@ -345,7 +355,7 @@ def source_de(src: str, langue: str | None) -> pathlib.Path:
 
 def build_shots(specs=None, langue: str | None = None) -> None:
     specs = SPECS if specs is None else specs
-    out_dir = OUT / langue if langue else OUT
+    out_dir = CAPTURES_DIR / langue if langue else HORS_CONSOLE
     pied = LEGENDES[langue or "fr-FR"][1]
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -399,9 +409,9 @@ def build_carnet() -> None:
 
 def build_check() -> None:
     """Confronte les fichiers produits aux contraintes de la Play Console."""
-    shots = [OUT / langue / f"{name}.png" for langue in LANGUES for name, _ in CAPTURES]
+    shots = [CAPTURES_DIR / langue / f"{name}.png" for langue in LANGUES for name, _ in CAPTURES]
     expected = [(ICON, 512, 512, 1),
-                (OUT / "Image de présentation.png", 1024, 500, 15)]
+                (COMMUNS / "Image de présentation.png", 1024, 500, 15)]
     problems = []
 
     for path, want_w, want_h, max_mo in expected:
@@ -437,7 +447,7 @@ def build_check() -> None:
                         "pour que l'application soit promouvable")
 
     for name, *_ in JEUX + CARNET:
-        path = OUT / f"{name}.png"
+        path = HORS_CONSOLE / f"{name}.png"
         if not path.exists():
             problems.append(f"{path.name} : absent")
         elif png_header(path)[:2] != (1080, 1920):
