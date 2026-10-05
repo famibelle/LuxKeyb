@@ -259,7 +259,7 @@ T = [
         "en": 'alt="Flag of Luxembourg"', "pt": 'alt="Bandeira do Luxemburgo"'}),
 
     # ---- Tract ----
-    ("<li><span>Votre téléphone «&nbsp;corrige&nbsp;» votre lëtzebuergesch en allemand ou en français&nbsp;?</span></li>", {
+    ("<li><span>Votre téléphone «&nbsp;corrige&nbsp;» votre Lëtzebuergesch en allemand ou en français&nbsp;?</span></li>", {
         "lb": "<li><span>Korrigéiert Ären Telefon Äert Lëtzebuergesch op Däitsch oder op Franséisch?</span></li>",
         "de": "<li><span>Ihr Handy „korrigiert“ Ihr Luxemburgisch ins Deutsche oder Französische?</span></li>",
         "en": "<li><span>Does your phone “correct” your Luxembourgish into German or French?</span></li>",
@@ -404,7 +404,7 @@ T = [
     ("<h2>Pourquoi un clavier luxembourgeois&nbsp;?</h2>", {
         "lb": "<h2>Firwat eng lëtzebuergesch Tastatur?</h2>", "de": "<h2>Warum eine luxemburgische Tastatur?</h2>",
         "en": "<h2>Why a Luxembourgish keyboard?</h2>", "pt": "<h2>Porquê um teclado luxemburguês?</h2>"}),
-    ("<li><span>Votre téléphone «&nbsp;corrige&nbsp;» votre lëtzebuergesch en allemand ou en français.</span></li>", {
+    ("<li><span>Votre téléphone «&nbsp;corrige&nbsp;» votre Lëtzebuergesch en allemand ou en français.</span></li>", {
         "lb": "<li><span>Ären Telefon korrigéiert Äert Lëtzebuergesch op Däitsch oder op Franséisch.</span></li>",
         "de": "<li><span>Ihr Handy „korrigiert“ Ihr Luxemburgisch ins Deutsche oder Französische.</span></li>",
         "en": "<li><span>Your phone “corrects” your Luxembourgish into German or French.</span></li>",
@@ -506,11 +506,11 @@ T = [
         "de": "<li><span><b>é, ä, ë</b> haben eigene Tasten; für weitere Akzente den Finger gedrückt halten</span></li>",
         "en": "<li><span><b>é, ä, ë</b> have their own keys; for other accents, hold your finger down</span></li>",
         "pt": "<li><span><b>é, ä, ë</b> têm tecla própria; para os outros acentos, mantenha o dedo premido</span></li>"}),
-    ("<li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;lëtzebuergesch&nbsp;»</span></li>", {
-        "lb": "<li><span>En versteet Iech och <b>ouni Akzenter</b>: „letzebuergesch“ proposéiert „lëtzebuergesch“</span></li>",
-        "de": "<li><span>Sie versteht Sie auch <b>ohne Akzente</b>: „letzebuergesch“ ergibt „lëtzebuergesch“</span></li>",
-        "en": "<li><span>It understands you <b>without accents</b> too: “letzebuergesch” suggests “lëtzebuergesch”</span></li>",
-        "pt": "<li><span>Percebe-o mesmo <b>sem acentos</b>: «letzebuergesch» sugere «lëtzebuergesch»</span></li>"}),
+    ("<li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;Lëtzebuergesch&nbsp;»</span></li>", {
+        "lb": "<li><span>En versteet Iech och <b>ouni Akzenter</b>: „letzebuergesch“ proposéiert „Lëtzebuergesch“</span></li>",
+        "de": "<li><span>Sie versteht Sie auch <b>ohne Akzente</b>: „letzebuergesch“ ergibt „Lëtzebuergesch“</span></li>",
+        "en": "<li><span>It understands you <b>without accents</b> too: “letzebuergesch” suggests “Lëtzebuergesch”</span></li>",
+        "pt": "<li><span>Percebe-o mesmo <b>sem acentos</b>: «letzebuergesch» sugere «Lëtzebuergesch»</span></li>"}),
     ("<li><span>Vos mots luxembourgeois ne sont <b>plus soulignés en rouge</b>, dans toutes vos applications</span></li>", {
         "lb": "<li><span>Är lëtzebuergesch Wierder sinn <b>net méi rout ënnerstrach</b>, an all Ären Apps</span></li>",
         "de": "<li><span>Ihre luxemburgischen Wörter werden in keiner App mehr <b>rot unterstrichen</b></span></li>",
@@ -567,7 +567,7 @@ INVARIANTS = {
     "Mir wëlle bleiwe wat mir sinn.", "Däi Lëtzebuergesch, op dengem Telefon.", "famibelle.github.io/LuxKeyb",
     "· famibelle.github.io/LuxKeyb", "Web", "Ufänker", "Sproochenmeeschter", "LuxAlign", "LETZ",
     "Lëtzebuerger Online Dictionnaire", "Schueb", "Schueberfouer", "op der", "Stad", "Police", "Rue",
-    "letzebuergesch", "lëtzebuergesch", "Changer de thème", "Kontakt",
+    "letzebuergesch", "Lëtzebuergesch", "Changer de thème", "Kontakt",
     # Identiques en luxembourgeois, et traduits par leur entrée dans les autres langues.
     "Carnet", "Dictionnaire", "Disponible sur Google Play",
 }
