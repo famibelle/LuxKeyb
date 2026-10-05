@@ -262,3 +262,9 @@ Dictionnaires/zls_data/
 
 # Bytecode compilé Python, entré par le même `git add` large que ci-dessus
 stt/bench/__pycache__/
+
+# Sorties des bancs de mesure sur émulateur et téléphone (les scripts, eux, sont suivis)
+banc-emulateur/__pycache__/
+banc-emulateur/emu_*/
+banc-emulateur/tel_*/
+banc-emulateur/*.mp4
