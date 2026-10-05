@@ -152,8 +152,9 @@ dictée, un écran explique où part la voix, et rien n'est envoyé avant
 « J'accepte ».
 
 La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
-service de l'Université du Luxembourg, dont le moteur temps réel est publié sous
-le nom [LuxASRlive](https://github.com/PeterGilles/LuxASRlive) (Apache 2.0). Le
+service de l'Université du Luxembourg, dont le moteur temps réel est publié par
+Peter Gilles sous le nom [LuxASRlive](https://github.com/PeterGilles/LuxASRlive)
+(Apache 2.0). Le
 son part en flux chiffré (`wss://luxasr.uni.lu`) pendant la dictée, et pendant
 la dictée seulement ; l'Université en est responsable de traitement, le
 transcrit sur le moment et ne le conserve pas.
