@@ -14,7 +14,7 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
-# Osez écrire le lëtzebuergesch
+# Osez écrire le Lëtzebuergesch !
 
 <p class="chapo"><strong>Ce n'est pas vous qui écrivez mal le luxembourgeois :
 c'est votre clavier qui ne le connaît pas.</strong> Lëtzebuergesch Clavier vous
