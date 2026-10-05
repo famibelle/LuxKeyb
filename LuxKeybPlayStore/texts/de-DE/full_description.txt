@@ -1,0 +1,71 @@
+Sie sprechen es. Jetzt schreiben Sie es.
+
+Lëtzebuergesch Clavier ist eine kostenlose Android-Tastatur ohne Werbung, gemacht für eine einzige Sprache: Lëtzebuergesch.
+
+🛠️ Ihr Luxemburgisch ist etwas eingerostet?
+😤 Ihr Handy unterstreicht jedes Ihrer Wörter rot?
+🤔 Sie zögern bei jeder Nachricht über die Schreibweise?
+➡️ Diese Tastatur ist für Sie gemacht.
+
+⌨️ DIE AKZENTE UNTER DEM DAUMEN
+
+é, ä, ë, ö und ü haben jeweils eine eigene Taste, direkt auf der Tastatur. Kein Suchen mehr nach dem ë in einem versteckten Menü. Die übrigen (è, à, ô, ê) liegen unter langem Drücken.
+
+🧠 SIE SAGT IHNEN DIE WÖRTER VOR
+
+Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor. Nach einem Leerzeichen errät sie das nächste Wort. Wörter, die Sie oft benutzen, rücken von selbst nach vorne.
+
+🎙️ WENN SCHREIBEN ZU LANGE DAUERT, DIKTIEREN SIE
+
+Tippen Sie auf das Mikrofon und sprechen Sie: Der Text erscheint, während Sie sprechen, mit Satzzeichen und Großschreibung. Die Erkennung übernimmt LuxASR von der Universität Luxemburg. Dafür ist eine Internetverbindung nötig.
+
+✍️ SIE VERZEIHT TIPPFEHLER
+
+Ein vergessener Buchstabe, eine Nachbartaste: Das richtige Wort kommt trotzdem. Schreiben Sie „letzebuergesch“ ohne Akzente, sie schlägt „lëtzebuergesch“ vor.
+
+✅ SCHLUSS MIT DEM ROT ÜBERALL
+
+In den Android-Einstellungen aktiviert, unterstreicht sie Ihre luxemburgischen Wörter nicht mehr rot, in WhatsApp, SMS oder E-Mails. Ihre französischen Wörter auch nicht.
+
+🇫🇷 EIN FRANZÖSISCHES WORT MITTENDRIN?
+
+„ech hunn eng réunion muer“ schreibt sich ohne Tastaturwechsel. Wenn Sie möchten, schlägt Ihnen eine zweite Zeile auch französische Wörter vor.
+
+📖 EIN WÖRTERBUCH IN DER TASCHE
+
+Das Wierderbuch übersetzt luxemburgische Wörter ins Deutsche, Französische, Englische oder Portugiesische und umgekehrt, mit Beispielsätzen aus dem offiziellen Wörterbuch. Auch ohne Verbindung.
+
+🎮 SPIELEND LERNEN
+
+Jedes geschriebene Wort bringt Sie eine Stufe weiter, vom Ufänker 🌍 bis zum Sproochenmeeschter 🧙. Sieben Spiele lassen Sie Wörter suchen, schreiben oder an ihren Platz setzen: Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 EINE SAMMLUNG GEGEN DAS VERGESSEN
+
+Jedes gewonnene Wort wird zu einer Karte zum Umdrehen, mit Bedeutung und Beispiel. Die Sammlung lässt Sie die Wörter im richtigen Moment wiederholen, bis sie sitzen.
+
+🌍 IN IHRER SPRACHE
+
+Die App spricht Deutsch, Französisch, Englisch, Portugiesisch oder Luxemburgisch. Wählen Sie Ihre Sprache ganz unten in den Tastatureinstellungen, auch wenn Ihr Handy auf eine andere eingestellt ist.
+
+🔒 IHRE WÖRTER BLEIBEN BEI IHNEN
+
+• Was Sie tippen, verlässt nie Ihr Handy
+• Das Diktat schickt Ihre Stimme an die Universität Luxemburg, nur wenn Sie auf das Mikrofon tippen und nach Ihrer Zustimmung; sie wird verschriftet, nicht gespeichert
+• Kein Konto, keine Werbung
+• Ihre Passwörter, Namen und Nummern werden nie gespeichert
+• Offener Quellcode, für alle einsehbar
+
+📱 ÜBERALL AUF IHREM HANDY
+
+• WhatsApp, SMS, E-Mail, soziale Netzwerke: Sie funktioniert in allen Apps
+• Android 5.0 und neuer, helles oder dunkles Design
+• Geführte Einrichtung in drei Schritten, mit einer Testtastatur
+• Android zeigt beim Aktivieren eine Warnung an: Das tut es bei allen Tastaturen, das ist normal, die Anleitung in der App erklärt es
+
+🙋 WAS SIE NOCH NICHT KANN
+
+Kein Schreiben durch Wischen von Buchstabe zu Buchstabe. Das Diktat funktioniert nicht ohne Verbindung.
+
+💬 FEHLT EIN WORT?
+
+Melden Sie es: github.com/famibelle/LuxKeyb. Das Wörterbuch wächst mit jeder Version.

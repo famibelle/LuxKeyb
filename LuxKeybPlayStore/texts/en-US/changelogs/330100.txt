@@ -1,0 +1,3 @@
+🎙️ Dictate in Luxembourgish: tap the microphone, speak, and the text appears as you talk, with punctuation. Recognition is provided by LuxASR, from the University of Luxembourg.
+🔒 What you type still never leaves your phone. Only dictation sends your voice, when you tap the microphone.
+🌍 Choose the app's language at the bottom of the Keyboard settings, without going through your phone's settings.

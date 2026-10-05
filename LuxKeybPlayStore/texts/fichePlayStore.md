@@ -1,8 +1,22 @@
 # Fiche Play Store — Lëtzebuergesch Clavier
 
-Textes à coller tels quels dans la Play Console (Développer la présence →
-Fiche Play Store principale). Version de référence : **33.0.1**
-(`versionCode` 330001), la première envoyée en production avec la dictée vocale, `applicationId` `com.potomitan.luxkeyboard`.
+Les textes à coller dans la Play Console (Développer la présence → Fiche
+Play Store principale, puis une traduction par langue) sont rangés **un dossier
+par langue de l'interface**, un fichier par champ, selon la disposition de
+fastlane `supply` :
+
+```
+fr-FR/  lb/  de-DE/  en-US/  pt-PT/
+  title.txt               Nom de l'application (30)
+  short_description.txt   Brève description (80)
+  full_description.txt    Description complète (4 000)
+  changelogs/330100.txt   Nouveautés de la version, par versionCode (500)
+```
+
+Le français (`fr-FR/`) est la fiche principale et la référence : les autres
+langues en sont la traduction, section pour section. Ce fichier-ci garde les
+raisons de chaque choix. Version de référence : **33.1.0**
+(`versionCode` 330100), la première avec le choix de la langue de l'application, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -30,9 +44,7 @@ qu'un titre à rallonge est tronqué dans les listes de résultats.
 
 *80 caractères maximum. C'est la seule ligne visible avant « Plus ».*
 
-```
-Clavier luxembourgeois : suggestions de mots, touches ë ä é, dictée vocale
-```
+Texte : [`fr-FR/short_description.txt`](fr-FR/short_description.txt).
 
 74 caractères. « Clavier luxembourgeois » est en tête, c'est la partie qui
 survit à la troncature sur petits écrans. « 100 % hors ligne » a laissé sa
@@ -44,82 +56,16 @@ fois la nouveauté et un mot-clé recherché.
 
 *4000 caractères maximum.*
 
-```
-Vous le parlez. Maintenant, vous l'écrivez.
+Texte : [`fr-FR/full_description.txt`](fr-FR/full_description.txt).
 
-Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, fait pour une seule langue : le lëtzebuergesch.
+Longueurs en unités UTF-16 (c'est ainsi que compte la Play Console, les
+drapeaux et quelques émojis valant 2 chacun) : fr 3 405, lb 3 445, de 3 530,
+en 3 131, pt 3 167, toutes sous les 4 000.
 
-🛠️ Votre luxembourgeois est un peu rouillé ?
-😤 Votre téléphone souligne en rouge tous vos mots ?
-🤔 Vous hésitez sur l'orthographe à chaque message ?
-➡️ Ce clavier est fait pour vous.
-
-⌨️ LES ACCENTS SOUS LE POUCE
-
-é, ä, ë, ö et ü ont chacun leur touche, directement sur le clavier. Plus besoin de chercher un ë dans un menu caché. Les autres (è, à, ô, ê) restent sous un appui long.
-
-🧠 IL VOUS SOUFFLE LES MOTS
-
-Tapez « Schueb », il propose « Schueberfouer ». Après un espace, il devine le mot qui vient ensuite. Les mots que vous employez souvent remontent d'eux-mêmes.
-
-🎙️ QUAND ÉCRIRE EST TROP LONG, DICTEZ
-
-Appuyez sur le micro et parlez : le texte s'écrit pendant que vous parlez, ponctué, avec les majuscules. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg. Il faut une connexion Internet.
-
-✍️ IL PARDONNE LES FAUTES DE FRAPPE
-
-Une lettre oubliée, une touche voisine : le bon mot arrive quand même. Écrivez « letzebuergesch » sans accents, il vous propose « lëtzebuergesch ».
-
-✅ FINI LE ROUGE PARTOUT
-
-Activé dans les réglages d'Android, il arrête de souligner vos mots luxembourgeois en rouge, dans WhatsApp, vos SMS ou vos e-mails. Vos mots français non plus.
-
-🇫🇷 UN MOT FRANÇAIS AU MILIEU ?
-
-« ech hunn eng réunion muer » s'écrit sans changer de clavier. Si vous le souhaitez, une seconde rangée vous propose aussi les mots français.
-
-📖 UN DICTIONNAIRE DANS LA POCHE
-
-Le Wierderbuch traduit les mots luxembourgeois en français, allemand, anglais ou portugais, et dans l'autre sens, avec des phrases d'exemple du dictionnaire officiel. Même sans connexion.
-
-🎮 APPRENDRE EN JOUANT
-
-Chaque mot écrit fait monter votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙. Sept jeux vous font chercher, écrire ou replacer des mots : Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
-
-🎴 UN CARNET POUR NE PLUS OUBLIER
-
-Chaque mot gagné devient une carte à retourner, avec son sens et un exemple. Le carnet vous les fait réviser au bon moment, jusqu'à ce qu'ils restent.
-
-🌍 DANS VOTRE LANGUE
-
-L'application parle français, allemand, anglais, portugais ou luxembourgeois.
-
-🔒 VOS MOTS RESTENT CHEZ VOUS
-
-• Ce que vous tapez ne quitte jamais votre téléphone
-• La dictée envoie votre voix à l'Université du Luxembourg, seulement quand vous appuyez sur le micro et après votre accord ; elle est écrite, pas conservée
-• Aucun compte, aucune publicité
-• Vos mots de passe, les noms et les numéros ne sont jamais enregistrés
-• Code source ouvert, consultable par tous
-
-📱 PARTOUT SUR VOTRE TÉLÉPHONE
-
-• WhatsApp, SMS, e-mail, réseaux sociaux : il marche dans toutes les applications
-• Android 5.0 et plus récent, thème clair ou sombre
-• Installation guidée en trois étapes, avec un clavier d'essai
-• Android affiche un avertissement au moment de l'activer : il le fait pour tous les claviers, c'est normal, l'onglet Guide l'explique
-
-🙋 CE QU'IL NE FAIT PAS ENCORE
-
-Pas d'écriture en glissant le doigt d'une lettre à l'autre. La dictée ne marche pas sans connexion.
-
-💬 UN MOT MANQUE ?
-
-Signalez-le : github.com/famibelle/LuxKeyb. Le dictionnaire s'enrichit à chaque version.
-```
-
-3293 unités UTF-16 sur 4 000 (c'est ainsi que compte la Play Console, les
-drapeaux et quelques émojis valant 2 chacun), soit 707 de marge.
+Le 2026-10-05, pour la 33.1.0 : la section « Dans votre langue » dit où
+choisir la langue (en bas des Réglages du clavier), et l'avertissement
+d'Android renvoie au « guide de l'application », puisque le Guide n'est plus
+un onglet.
 
 Réécrite le 2026-10-04 pour une lectrice qui n'est pas technophile : chaque
 section part d'une gêne concrète et répond par un bénéfice en mots de tous les
@@ -168,21 +114,20 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
 
 ## Nouveautés de cette version
 
-*500 caractères maximum. Texte de la 33.0.1. La 33.0.0 n'étant jamais passée
-en production, il annonce aussi la dictée, et le dit en deuxième ligne, pas en
+*500 caractères maximum. La 33.0.0 n'étant jamais passée
+en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, pas en
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-```
-🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit pendant que vous parlez, ponctué. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg.
-🔒 Ce que vous tapez ne quitte toujours pas votre téléphone. Seule la dictée envoie votre voix, quand vous appuyez sur le micro.
-🍽️ « iessen » (manger) revient dans les suggestions, à côté de « Iessen » (le repas).
-🌍 Le carnet donne le sens des mots dans la langue de l'appli.
-```
+Texte de la 33.1.0 : [`fr-FR/changelogs/330100.txt`](fr-FR/changelogs/330100.txt).
+Il reprend la dictée et la confidentialité de la 33.0.1, pour le cas où
+celle-ci ne serait pas passée en production avant, et ajoute le choix de la
+langue de l'application. Si la 33.0.1 est déjà en production, ne garder que la
+ligne 🌍.
 
-463 unités UTF-16 sur 500, marge de 37.
+Longueurs : fr 431, lb 422, de 440, en 402, pt 392, sur 500.
 
-**À envoyer en même temps que l'AAB 33.0.1, ni avant ni après**, avec la
+**À envoyer en même temps que l'AAB qui apporte la dictée, ni avant ni après**, avec la
 description et la section Sécurité des données : tant que la version en
 production n'a pas la dictée, l'ancienne fiche (« entièrement hors ligne »,
 « aucune donnée collectée ») reste vraie pour elle, et la nouvelle deviendrait
@@ -261,22 +206,27 @@ seule** catégorie passe à oui ; toutes les autres restent à **non**.
 
 ### Traductions de la fiche
 
-Le Store permet une fiche par langue. Le marché visé est trilingue ; par ordre
-de rendement :
+Une fiche par langue de l'interface (`LangueInterface.Langue`) : français,
+luxembourgeois, allemand, anglais, portugais. Le portugais vise la communauté
+portugaise du Luxembourg, d'où `pt-PT` et « telemóvel » plutôt que le
+brésilien. Le nom ne change pas d'une langue à l'autre : c'est le nom de
+l'application.
 
-| Langue | Nom | Brève description |
-|---|---|---|
-| Luxembourgeois (lb) | `Lëtzebuergesch Clavier` | `Lëtzebuergesch Tastatur: Wuertvirschléi, ë ä é Tasten, Spriechdiktat` |
-| Allemand (de) | `Lëtzebuergesch Clavier` | `Luxemburgische Tastatur: Wortvorschläge, ë ä é Tasten, Sprachdiktat` |
-| Anglais (en) | `Lëtzebuergesch Clavier` | `Luxembourgish keyboard: word suggestions, ë ä é keys, voice typing` |
+Chaque traduction reprend les libellés de l'application dans sa langue
+(« Tastatureinstellungen », « Definições do teclado », « Astellunge vun der
+Tastatur », « Carnet », « Sammlung », « coleção »), pour que ce que promet le
+Store se retrouve à l'écran. Le Wierderbuch cite d'abord la langue de la
+fiche parmi ses langues de traduction.
 
-Le nom ne change pas d'une langue à l'autre : c'est le nom de l'application.
+À vérifier dans la Console : le luxembourgeois ne figure peut-être pas parmi
+les langues de fiche proposées. Dans ce cas, `lb/` reste disponible pour le
+site et les supports imprimés, et les visiteurs luxembourgeois voient la
+fiche allemande ou française selon la langue de leur téléphone.
 
-Les brèves descriptions luxembourgeoise et allemande **doivent être relues par
-un locuteur natif** avant publication — une faute dans la vitrine d'un clavier
-luxembourgeois coûte plus cher qu'ailleurs. Les descriptions complètes dans
-ces langues restent à écrire ; tant qu'elles manquent, la fiche française
-s'affiche par défaut, ce qui n'est pas bloquant.
+Les textes `lb/`, `de-DE/` et `pt-PT/` **doivent être relus par un locuteur
+natif** avant publication : une faute dans la vitrine d'un clavier
+luxembourgeois coûte plus cher qu'ailleurs. L'anglais aussi, dans une moindre
+mesure.
 
 ---
 

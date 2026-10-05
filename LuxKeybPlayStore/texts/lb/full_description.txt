@@ -1,0 +1,71 @@
+Dir schwätzt et. Elo schreiwt Dir et.
+
+Lëtzebuergesch Clavier ass eng gratis Android-Tastatur ouni Reklamm, gemaach fir eng eenzeg Sprooch: d'Lëtzebuergescht.
+
+🛠️ Äert Lëtzebuergesch ass e bësse verrascht?
+😤 Ären Handy ënnersträicht all Är Wierder rout?
+🤔 Dir zéckt bei all Message, wéi e Wuert geschriwwe gëtt?
+➡️ Dës Tastatur ass fir Iech gemaach.
+
+⌨️ D'AKZENTER ËNNER DEM DAUM
+
+é, ä, ë, ö an ü hunn all hir eegen Tast, direkt op der Tastatur. Kee Sichen méi no engem ë an engem verstoppte Menü. Déi aner (è, à, ô, ê) sinn ënner engem laangen Drock.
+
+🧠 SI SEET IECH D'WIERDER VIR
+
+Tippt „Schueb“, a si proposéiert „Schueberfouer“. No engem Espace rét si dat nächst Wuert. D'Wierder, déi Dir dacks benotzt, kommen eleng no vir.
+
+🎙️ WANN D'SCHREIWEN ZE LAANG DAUERT, DIKTÉIERT
+
+Dréckt op de Mikro a schwätzt: Den Text schreift sech, während Dir schwätzt, mat Punktuatioun a Groussbuschtawen. D'Erkennung mécht LuxASR vun der Universitéit Lëtzebuerg. Dir braucht eng Internetverbindung.
+
+✍️ SI VERZEIT TIPPFEELER
+
+E vergiessene Buschtaf, eng Tast dernieft: dat richtegt Wuert kënnt trotzdem. Schreift „letzebuergesch“ ouni Akzenter, a si proposéiert „lëtzebuergesch“.
+
+✅ SCHLUSS MAM ROUDEN ÜBERALL
+
+Wann Dir se an den Android-Astellungen aschalt, ënnersträicht si Är lëtzebuergesch Wierder net méi rout, op WhatsApp, an den SMSen oder an den E-Mailen. Är franséisch Wierder och net.
+
+🇫🇷 E FRANSÉISCHT WUERT DERTÜSCHENT?
+
+„ech hunn eng réunion muer“ schreift Dir, ouni d'Tastatur ze wiesselen. Wann Dir wëllt, proposéiert eng zweet Rei Iech och franséisch Wierder.
+
+📖 E WIERDERBUCH AN DER TÄSCH
+
+De Wierderbuch iwwersetzt lëtzebuergesch Wierder op Franséisch, Däitsch, Englesch oder Portugisesch, an ëmgedréint, mat Beispillsätz aus dem offiziellen Dictionnaire. Och ouni Verbindung.
+
+🎮 LÉIEREN AN DER SPILLEREI
+
+All geschriwwent Wuert bréngt Iech eng Stuf méi héich, vum Ufänker 🌍 bis zum Sproochenmeeschter 🧙. Siwe Spiller loossen Iech Wierder sichen, schreiwen oder op hir Plaz setzen: Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 E CARNET FIR NET ZE VERGIESSEN
+
+All gewonnent Wuert gëtt eng Kaart zum Ëmdréinen, mat senger Bedeitung an engem Beispill. De Carnet léisst Iech se am richtege Moment widderhuelen, bis se sëtzen.
+
+🌍 AN ÄRER SPROOCH
+
+D'App schwätzt Lëtzebuergesch, Franséisch, Däitsch, Englesch oder Portugisesch. Wielt Är Sprooch ganz ënnen an den Astellunge vun der Tastatur, och wann Ären Handy op enger anerer steet.
+
+🔒 ÄR WIERDER BLEIWEN BEI IECH
+
+• Wat Dir tippt, verléisst ni Ären Handy
+• D'Diktat schéckt Är Stëmm un d'Universitéit Lëtzebuerg, just wann Dir op de Mikro dréckt an nodeems Dir zougestëmmt hutt; si gëtt verschrëftlecht, net gespäichert
+• Kee Kont, keng Reklamm
+• Är Passwierder, Nimm an Nummere ginn ni gespäichert
+• Oppene Quellcode, fir jiddereen anzegesinn
+
+📱 ÜBERALL OP ÄREM HANDY
+
+• WhatsApp, SMS, E-Mail, sozial Netzwierker: si funktionéiert an alle Appen
+• Android 5.0 a méi nei, hellt oder donkelt Design
+• Begleet Installatioun an dräi Schrëtt, mat enger Test-Tastatur
+• Android weist beim Aschalten eng Warnung: dat mécht et bei all Tastatur, dat ass normal, d'Uleedung an der App erkläert et
+
+🙋 WAT SI NACH NET KANN
+
+Kee Schreiwen, andeems een de Fanger vu Buschtaf zu Buschtaf gläite léisst. D'Diktat funktionéiert net ouni Verbindung.
+
+💬 FEELT E WUERT?
+
+Sot eis et: github.com/famibelle/LuxKeyb. De Wierderbuch gëtt mat all Versioun méi grouss.

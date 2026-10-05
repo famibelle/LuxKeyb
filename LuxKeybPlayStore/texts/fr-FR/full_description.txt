@@ -1,0 +1,71 @@
+Vous le parlez. Maintenant, vous l'écrivez.
+
+Lëtzebuergesch Clavier est un clavier Android gratuit et sans publicité, fait pour une seule langue : le lëtzebuergesch.
+
+🛠️ Votre luxembourgeois est un peu rouillé ?
+😤 Votre téléphone souligne en rouge tous vos mots ?
+🤔 Vous hésitez sur l'orthographe à chaque message ?
+➡️ Ce clavier est fait pour vous.
+
+⌨️ LES ACCENTS SOUS LE POUCE
+
+é, ä, ë, ö et ü ont chacun leur touche, directement sur le clavier. Plus besoin de chercher un ë dans un menu caché. Les autres (è, à, ô, ê) restent sous un appui long.
+
+🧠 IL VOUS SOUFFLE LES MOTS
+
+Tapez « Schueb », il propose « Schueberfouer ». Après un espace, il devine le mot qui vient ensuite. Les mots que vous employez souvent remontent d'eux-mêmes.
+
+🎙️ QUAND ÉCRIRE EST TROP LONG, DICTEZ
+
+Appuyez sur le micro et parlez : le texte s'écrit pendant que vous parlez, ponctué, avec les majuscules. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg. Il faut une connexion Internet.
+
+✍️ IL PARDONNE LES FAUTES DE FRAPPE
+
+Une lettre oubliée, une touche voisine : le bon mot arrive quand même. Écrivez « letzebuergesch » sans accents, il vous propose « lëtzebuergesch ».
+
+✅ FINI LE ROUGE PARTOUT
+
+Activé dans les réglages d'Android, il arrête de souligner vos mots luxembourgeois en rouge, dans WhatsApp, vos SMS ou vos e-mails. Vos mots français non plus.
+
+🇫🇷 UN MOT FRANÇAIS AU MILIEU ?
+
+« ech hunn eng réunion muer » s'écrit sans changer de clavier. Si vous le souhaitez, une seconde rangée vous propose aussi les mots français.
+
+📖 UN DICTIONNAIRE DANS LA POCHE
+
+Le Wierderbuch traduit les mots luxembourgeois en français, allemand, anglais ou portugais, et dans l'autre sens, avec des phrases d'exemple du dictionnaire officiel. Même sans connexion.
+
+🎮 APPRENDRE EN JOUANT
+
+Chaque mot écrit fait monter votre niveau, d'Ufänker 🌍 à Sproochenmeeschter 🧙. Sept jeux vous font chercher, écrire ou replacer des mots : Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 UN CARNET POUR NE PLUS OUBLIER
+
+Chaque mot gagné devient une carte à retourner, avec son sens et un exemple. Le carnet vous les fait réviser au bon moment, jusqu'à ce qu'ils restent.
+
+🌍 DANS VOTRE LANGUE
+
+L'application parle français, allemand, anglais, portugais ou luxembourgeois. Choisissez la vôtre en bas des Réglages du clavier, même si votre téléphone est réglé sur une autre.
+
+🔒 VOS MOTS RESTENT CHEZ VOUS
+
+• Ce que vous tapez ne quitte jamais votre téléphone
+• La dictée envoie votre voix à l'Université du Luxembourg, seulement quand vous appuyez sur le micro et après votre accord ; elle est écrite, pas conservée
+• Aucun compte, aucune publicité
+• Vos mots de passe, les noms et les numéros ne sont jamais enregistrés
+• Code source ouvert, consultable par tous
+
+📱 PARTOUT SUR VOTRE TÉLÉPHONE
+
+• WhatsApp, SMS, e-mail, réseaux sociaux : il marche dans toutes les applications
+• Android 5.0 et plus récent, thème clair ou sombre
+• Installation guidée en trois étapes, avec un clavier d'essai
+• Android affiche un avertissement au moment de l'activer : il le fait pour tous les claviers, c'est normal, le guide de l'application l'explique
+
+🙋 CE QU'IL NE FAIT PAS ENCORE
+
+Pas d'écriture en glissant le doigt d'une lettre à l'autre. La dictée ne marche pas sans connexion.
+
+💬 UN MOT MANQUE ?
+
+Signalez-le : github.com/famibelle/LuxKeyb. Le dictionnaire s'enrichit à chaque version.

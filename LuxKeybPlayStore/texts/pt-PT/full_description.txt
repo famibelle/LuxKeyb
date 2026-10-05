@@ -1,0 +1,71 @@
+Fala-o. Agora, escreve-o.
+
+Lëtzebuergesch Clavier é um teclado Android gratuito e sem publicidade, feito para uma só língua: o lëtzebuergesch.
+
+🛠️ O seu luxemburguês está um pouco enferrujado?
+😤 O seu telemóvel sublinha a vermelho todas as suas palavras?
+🤔 Hesita na ortografia em cada mensagem?
+➡️ Este teclado é para si.
+
+⌨️ OS ACENTOS DEBAIXO DO POLEGAR
+
+é, ä, ë, ö e ü têm cada um a sua tecla, diretamente no teclado. Acabou a procura do ë num menu escondido. Os outros (è, à, ô, ê) ficam a um toque longo.
+
+🧠 ELE SOPRA-LHE AS PALAVRAS
+
+Escreva «Schueb» e ele propõe «Schueberfouer». Depois de um espaço, adivinha a palavra seguinte. As palavras que usa mais vezes sobem sozinhas.
+
+🎙️ QUANDO ESCREVER DEMORA, DITE
+
+Toque no microfone e fale: o texto escreve-se enquanto fala, com pontuação e maiúsculas. O reconhecimento é feito pelo LuxASR, da Universidade do Luxemburgo. É preciso ligação à Internet.
+
+✍️ PERDOA OS ERROS DE ESCRITA
+
+Uma letra esquecida, uma tecla ao lado: a palavra certa aparece na mesma. Escreva «letzebuergesch» sem acentos e ele propõe «lëtzebuergesch».
+
+✅ ACABOU O VERMELHO POR TODO O LADO
+
+Ativado nas definições do Android, deixa de sublinhar a vermelho as suas palavras luxemburguesas, no WhatsApp, nas SMS ou nos e-mails. As palavras francesas também não.
+
+🇫🇷 UMA PALAVRA FRANCESA PELO MEIO?
+
+«ech hunn eng réunion muer» escreve-se sem mudar de teclado. Se quiser, uma segunda fila também lhe propõe palavras francesas.
+
+📖 UM DICIONÁRIO NO BOLSO
+
+O Wierderbuch traduz as palavras luxemburguesas para português, francês, alemão ou inglês, e no sentido inverso, com frases de exemplo do dicionário oficial. Mesmo sem ligação.
+
+🎮 APRENDER A JOGAR
+
+Cada palavra escrita faz subir o seu nível, de Ufänker 🌍 a Sproochenmeeschter 🧙. Sete jogos põem-no a procurar, escrever ou colocar palavras: Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 UMA COLEÇÃO PARA NÃO ESQUECER
+
+Cada palavra ganha torna-se uma carta para virar, com o seu significado e um exemplo. A coleção fá-lo rever as palavras no momento certo, até ficarem.
+
+🌍 NA SUA LÍNGUA
+
+A aplicação fala português, francês, alemão, inglês ou luxemburguês. Escolha a sua no fundo das Definições do teclado, mesmo que o telemóvel esteja noutra língua.
+
+🔒 AS SUAS PALAVRAS FICAM CONSIGO
+
+• O que escreve nunca sai do seu telemóvel
+• O ditado envia a sua voz para a Universidade do Luxemburgo, só quando toca no microfone e depois de dar o seu acordo; é transcrita, não guardada
+• Sem conta, sem publicidade
+• As suas palavras-passe, nomes e números nunca são registados
+• Código aberto, que todos podem consultar
+
+📱 EM TODO O TELEMÓVEL
+
+• WhatsApp, SMS, e-mail, redes sociais: funciona em todas as aplicações
+• Android 5.0 ou mais recente, tema claro ou escuro
+• Instalação guiada em três passos, com um teclado de teste
+• O Android mostra um aviso ao ativá-lo: fá-lo com todos os teclados, é normal, o guia da aplicação explica porquê
+
+🙋 O QUE AINDA NÃO FAZ
+
+Não escreve deslizando o dedo de letra em letra. O ditado não funciona sem ligação.
+
+💬 FALTA UMA PALAVRA?
+
+Diga-nos: github.com/famibelle/LuxKeyb. O dicionário cresce a cada versão.

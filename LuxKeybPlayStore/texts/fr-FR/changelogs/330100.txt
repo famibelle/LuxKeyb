@@ -1,0 +1,3 @@
+🎙️ Dictez en luxembourgeois : appuyez sur le micro, parlez, le texte s'écrit pendant que vous parlez, ponctué. La reconnaissance est assurée par LuxASR, de l'Université du Luxembourg.
+🔒 Ce que vous tapez ne quitte toujours pas votre téléphone. Seule la dictée envoie votre voix, quand vous appuyez sur le micro.
+🌍 Choisissez la langue de l'application en bas des Réglages du clavier, sans passer par les paramètres du téléphone.

@@ -1,0 +1,3 @@
+🎙️ Dite em luxemburguês: toque no microfone, fale, e o texto escreve-se enquanto fala, com pontuação. O reconhecimento é feito pelo LuxASR, da Universidade do Luxemburgo.
+🔒 O que escreve continua a não sair do seu telemóvel. Só o ditado envia a sua voz, quando toca no microfone.
+🌍 Escolha a língua da aplicação no fundo das Definições do teclado, sem passar pelas definições do telemóvel.

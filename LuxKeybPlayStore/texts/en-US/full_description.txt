@@ -1,0 +1,71 @@
+You speak it. Now you write it.
+
+Lëtzebuergesch Clavier is a free, ad-free Android keyboard made for one language only: Lëtzebuergesch.
+
+🛠️ Is your Luxembourgish a little rusty?
+😤 Does your phone underline every word you type in red?
+🤔 Do you hesitate over the spelling in every message?
+➡️ This keyboard is made for you.
+
+⌨️ ACCENTS RIGHT UNDER YOUR THUMB
+
+é, ä, ë, ö and ü each have their own key, right on the keyboard. No more hunting for ë in a hidden menu. The others (è, à, ô, ê) are a long press away.
+
+🧠 IT SUGGESTS THE WORDS
+
+Type "Schueb" and it offers "Schueberfouer". After a space, it guesses the next word. The words you use most move up on their own.
+
+🎙️ WHEN TYPING TAKES TOO LONG, DICTATE
+
+Tap the microphone and speak: the text appears as you talk, with punctuation and capital letters. Recognition is provided by LuxASR, from the University of Luxembourg. An internet connection is needed.
+
+✍️ IT FORGIVES TYPOS
+
+A missing letter, a neighbouring key: the right word still comes up. Type "letzebuergesch" without accents and it offers "lëtzebuergesch".
+
+✅ NO MORE RED EVERYWHERE
+
+Once switched on in Android's settings, it stops underlining your Luxembourgish words in red, in WhatsApp, text messages or emails. Your French words too.
+
+🇫🇷 A FRENCH WORD IN THE MIDDLE?
+
+"ech hunn eng réunion muer" is written without switching keyboards. If you like, a second row also suggests French words.
+
+📖 A DICTIONARY IN YOUR POCKET
+
+The Wierderbuch translates Luxembourgish words into English, French, German or Portuguese, and the other way round, with example sentences from the official dictionary. Even offline.
+
+🎮 LEARN WHILE YOU PLAY
+
+Every word you write raises your level, from Ufänker 🌍 to Sproochenmeeschter 🧙. Seven games have you find, write or place words: Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert, Wuertplaz.
+
+🎴 A COLLECTION SO YOU DON'T FORGET
+
+Every word you win becomes a card to flip, with its meaning and an example. The collection brings them back for review at the right time, until they stick.
+
+🌍 IN YOUR LANGUAGE
+
+The app speaks English, French, German, Portuguese or Luxembourgish. Pick yours at the bottom of the Keyboard settings, even if your phone is set to another one.
+
+🔒 YOUR WORDS STAY WITH YOU
+
+• What you type never leaves your phone
+• Dictation sends your voice to the University of Luxembourg, only when you tap the microphone and after you agree; it is transcribed, not kept
+• No account, no ads
+• Your passwords, names and numbers are never recorded
+• Open source code, available for anyone to read
+
+📱 EVERYWHERE ON YOUR PHONE
+
+• WhatsApp, text messages, email, social media: it works in every app
+• Android 5.0 and later, light or dark theme
+• Guided setup in three steps, with a practice keyboard
+• Android shows a warning when you switch it on: it does so for every keyboard, this is normal, the app's guide explains it
+
+🙋 WHAT IT DOES NOT DO YET
+
+No typing by sliding your finger from letter to letter. Dictation does not work offline.
+
+💬 A WORD MISSING?
+
+Let us know: github.com/famibelle/LuxKeyb. The dictionary grows with every version.

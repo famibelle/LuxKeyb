@@ -11,7 +11,10 @@ repris tel quel** : tout est refait à partir des sources de ce dépôt-ci.
 
 ```
 texts/
-  fichePlayStore.md       les textes à coller dans la Play Console
+  fr-FR/ lb/ de-DE/       les textes à coller dans la Play Console, un
+  en-US/ pt-PT/           dossier par langue de l'interface, un fichier
+                          par champ (disposition fastlane supply)
+  fichePlayStore.md       le reste du formulaire, et pourquoi ces textes
   aso_pack_10.14.0.md     titre, canaux, liens UTM, avis
 graphics/
   build_graphics.py       fabrique tout ce qui suit
@@ -65,8 +68,8 @@ prêtes à envoyer. Ce qui reste à faire est listé en fin de
 `texts/aso_pack_10.14.0.md` (après) ; le point encore ouvert dans le premier
 est l'e-mail à RTL.lu sur la redistribution des phrases de Wuertlück.
 
-Une réserve connue : les brèves descriptions luxembourgeoise et allemande
-doivent être relues par un locuteur natif avant publication.
+Une réserve connue : les textes luxembourgeois, allemands et portugais
+doivent être relus par un locuteur natif avant publication.
 
 Les captures sources (`graphics/captures-emulateur-pixel9/`, noms explicites) ont
 été reprises le 2026-09-28 sur l'émulateur `pixel9` (1080 × 2424) sous la
