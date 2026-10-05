@@ -1,6 +1,6 @@
 ---
 title: "Vous le parlez. Maintenant, vous l'écrivez. 🇱🇺"
-description: "Ce n'est pas vous qui écrivez mal le luxembourgeois : c'est votre clavier. Parlez, Lëtzebuergesch Clavier écrit pour vous. Tapez, il vous propose les mots et met les accents. Gratuit sur Android, sans publicité."
+description: "🇱🇺 Osez écrire le Lëtzebuergesch ! Installez gratuitement le clavier sur votre téléphone Android. Sans publicité."
 image: /assets/og/partage.png
 lang: fr
 ---
