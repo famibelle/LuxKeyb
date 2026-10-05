@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Défilement des Réglages du clavier : un identifiant fixe, pour que la
+         position survive à la recréation de l'écran quand on change la langue
+         de l'interface, choix placé tout en bas. -->
+    <item name="reglages_defilement" type="id" />
+</resources>

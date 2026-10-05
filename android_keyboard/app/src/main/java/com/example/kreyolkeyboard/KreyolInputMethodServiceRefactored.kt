@@ -413,6 +413,16 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var dernierSelStart = 0
     private var dernierSelEnd = 0
     
+    // Avant Android 13, la langue de l'interface choisie dans l'appli ne
+    // descend pas jusqu'au service : il la reprend ici (voir LangueInterface).
+    override fun getResources(): android.content.res.Resources =
+        LangueInterface.ressources(this, super.getResources())
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        LangueInterface.oublierRessources()
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "=== LUXEMBOURGISH IME SERVICE REFACTORISÉ onCreate() ===")

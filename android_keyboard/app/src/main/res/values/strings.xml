@@ -21,6 +21,9 @@
     <string name="delai_tres_long">Very long (1.2 s)</string>
     <string name="retour">Back</string>
     <string name="ks_titre">Keyboard settings</string>
+    <string name="ks_langue">App language</string>
+    <string name="ks_langue_intro">The language of the menus, the games and the word translations.</string>
+    <string name="ks_langue_note">The keyboard itself stays Luxembourgish, whatever language you choose here.</string>
     <string name="ks_apparence">Appearance</string>
     <string name="ks_apparence_intro">The colour of the keys. The red and blue of the flag stay the same: only the white of the letters turns charcoal.</string>
     <string name="ks_apparence_note">“Same as the phone” follows the system dark mode. The other two options exist because on several Android skins that mode never reaches third-party keyboards.</string>

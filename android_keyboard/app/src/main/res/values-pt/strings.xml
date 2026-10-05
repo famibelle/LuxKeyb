@@ -17,6 +17,9 @@
     <string name="delai_tres_long">Muito longo (1,2 s)</string>
     <string name="retour">Voltar</string>
     <string name="ks_titre">Definições do teclado</string>
+    <string name="ks_langue">Idioma da aplicação</string>
+    <string name="ks_langue_intro">O idioma dos menus, dos jogos e das traduções das palavras.</string>
+    <string name="ks_langue_note">O teclado continua em luxemburguês, seja qual for o idioma escolhido aqui.</string>
     <string name="ks_apparence">Aspeto</string>
     <string name="ks_apparence_intro">A cor das teclas. O vermelho e o azul da bandeira não mudam: só o branco das letras passa a antracite.</string>
     <string name="ks_apparence_note">«Igual ao telemóvel» segue o modo escuro do sistema. As outras duas opções existem porque, em várias interfaces de fabricantes, esse modo não chega aos teclados de terceiros.</string>

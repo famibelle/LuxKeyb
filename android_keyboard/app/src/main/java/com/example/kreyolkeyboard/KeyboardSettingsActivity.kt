@@ -54,6 +54,9 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         }
         racine.addView(bandeau())
         racine.addView(ScrollView(this).apply {
+            // Sans identifiant, la position n'est pas sauvegardée : changer la
+            // langue recrée l'écran, qui repartirait en haut, loin du choix fait.
+            id = R.id.reglages_defilement
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -179,6 +182,14 @@ class KeyboardSettingsActivity : AppCompatActivity() {
                 ).show()
             })
         })
+        addView(espacement())
+
+        addView(carte().apply {
+            addView(titreSection(R.string.ks_langue))
+            addView(explication(R.string.ks_langue_intro))
+            addView(choixLangue())
+            addView(explication(R.string.ks_langue_note))
+        })
     }
 
     /**
@@ -221,6 +232,22 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         Log.d(TAG, "Thème du clavier : ${mode.cle}")
     }
 
+    /**
+     * La langue de l'interface, « comme le téléphone » en tête. La liste est
+     * typée `LangueInterface.Langue?`, `null` tenant la place du téléphone.
+     *
+     * L'écran se recrée dans la nouvelle langue dès le choix fait, comme toutes
+     * les activités ouvertes : c'est AppCompat qui s'en charge.
+     */
+    private fun choixLangue(): View = groupeRadio(
+        options = listOf<LangueInterface.Langue?>(null) + LangueInterface.Langue.entries,
+        actuel = LangueInterface.actuelle(this),
+        libelle = { it?.nom ?: getString(R.string.theme_systeme) }
+    ) { langue ->
+        Log.d(TAG, "Langue de l'interface : ${langue?.tag ?: "téléphone"}")
+        LangueInterface.choisir(this, langue)
+    }
+
     /** Les deux dispositions de la page des lettres (v29.5.0). */
     private fun choixDisposition(): View = groupeRadio(
         options = DispositionClavier.entries,
@@ -252,7 +279,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
      * interrupteurs voisins : l'état non coché du thème est un gris presque blanc,
      * invisible sur une carte blanche.
      */
-    private fun <T : Any> groupeRadio(
+    private fun <T> groupeRadio(
         options: List<T>,
         actuel: T,
         libelle: (T) -> String,
@@ -282,7 +309,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
         }
         setOnCheckedChangeListener { groupe, idCoche ->
             val rang = groupe.indexOfChild(groupe.findViewById<View>(idCoche))
-            options.getOrNull(rang)?.let(onChoix)
+            if (rang in options.indices) onChoix(options[rang])
         }
     }
 

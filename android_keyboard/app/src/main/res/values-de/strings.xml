@@ -17,6 +17,9 @@
     <string name="delai_tres_long">Sehr lang (1,2 s)</string>
     <string name="retour">Zurück</string>
     <string name="ks_titre">Tastatureinstellungen</string>
+    <string name="ks_langue">Sprache der App</string>
+    <string name="ks_langue_intro">Die Sprache der Menüs, der Spiele und der Wortübersetzungen.</string>
+    <string name="ks_langue_note">Die Tastatur selbst bleibt luxemburgisch, egal welche Sprache Sie hier wählen.</string>
     <string name="ks_apparence">Darstellung</string>
     <string name="ks_apparence_intro">Die Farbe der Tasten. Das Rot und das Blau der Flagge bleiben gleich: Nur das Weiß der Buchstaben wird anthrazit.</string>
     <string name="ks_apparence_note">„Wie das Telefon“ folgt dem dunklen Modus des Systems. Die beiden anderen Einstellungen gibt es, weil dieser Modus bei mehreren Herstelleroberflächen nicht bis zu Tastaturen von Drittanbietern durchdringt.</string>

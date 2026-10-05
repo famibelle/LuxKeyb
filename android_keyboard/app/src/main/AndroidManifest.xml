@@ -60,6 +60,17 @@
         android:localeConfig="@xml/locales_config"
         tools:targetApi="34">
 
+        <!-- Avant Android 13, c'est AppCompat qui retient la langue choisie dans
+             Réglages du clavier (LangueInterface) ; à partir de 13, le système. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
         <!-- Service du clavier IME -->
         <service
             android:name=".KreyolInputMethodServiceRefactored"

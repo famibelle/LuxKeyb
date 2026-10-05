@@ -15,6 +15,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.kreyolkeyboard.LangueInterface
 import com.example.kreyolkeyboard.R
 
 /**
@@ -38,6 +39,12 @@ import com.example.kreyolkeyboard.R
  * Android : sur un nouveau téléphone, la question est reposée.
  */
 class MicPermissionActivity : Activity() {
+
+    // Activité ordinaire et non AppCompat : avant Android 13, la langue choisie
+    // dans l'appli ne lui parvient que par là (voir LangueInterface).
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LangueInterface.contexte(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

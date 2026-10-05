@@ -17,6 +17,9 @@
     <string name="delai_tres_long">Très long (1,2 s)</string>
     <string name="retour">Retour</string>
     <string name="ks_titre">Réglages du clavier</string>
+    <string name="ks_langue">Langue de l\'application</string>
+    <string name="ks_langue_intro">La langue des menus, des jeux et des traductions des mots.</string>
+    <string name="ks_langue_note">Le clavier, lui, reste luxembourgeois, quelle que soit la langue choisie ici.</string>
     <string name="ks_apparence">Apparence</string>
     <string name="ks_apparence_intro">La couleur des touches. Le rouge et le bleu du drapeau ne changent pas : seul le blanc des lettres passe en anthracite.</string>
     <string name="ks_apparence_note">« Comme le téléphone » suit le mode sombre du système. Les deux autres positions existent parce que sur plusieurs surcouches ce mode ne descend pas jusqu\'aux claviers tiers.</string>

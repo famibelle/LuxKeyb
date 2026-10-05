@@ -39,6 +39,7 @@ object KeyboardPreferences {
     private const val KEY_LONG_PRESS_DELAY = "long_press_delay_ms"
     private const val KEY_DISPOSITION = "disposition"
     private const val KEY_FRENCH_SUGGESTIONS = "french_suggestions_enabled"
+    private const val KEY_LANGUE_INTERFACE = "langue_interface"
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
@@ -109,6 +110,20 @@ object KeyboardPreferences {
             fun depuisMs(ms: Long?): DelaiAppuiLong =
                 entries.firstOrNull { it.ms == ms } ?: DEFAUT
         }
+    }
+
+    /**
+     * La langue de l'interface choisie dans l'appli, `null` pour « comme le
+     * téléphone ». Seul le clavier la lit ici, et seulement avant Android 13 :
+     * voir [LangueInterface].
+     */
+    fun langueInterface(context: Context): String? =
+        prefs(context).getString(KEY_LANGUE_INTERFACE, null)
+
+    fun setLangueInterface(context: Context, tag: String?) {
+        prefs(context).edit().apply {
+            if (tag == null) remove(KEY_LANGUE_INTERFACE) else putString(KEY_LANGUE_INTERFACE, tag)
+        }.apply()
     }
 
     fun delaiAppuiLong(context: Context): DelaiAppuiLong =

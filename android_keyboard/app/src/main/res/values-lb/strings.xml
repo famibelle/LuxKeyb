@@ -17,6 +17,9 @@
     <string name="delai_tres_long">Ganz laang (1,2 s)</string>
     <string name="retour">Zréck</string>
     <string name="ks_titre">Astellunge vun der Tastatur</string>
+    <string name="ks_langue">Sprooch vun der App</string>
+    <string name="ks_langue_intro">D\'Sprooch vun de Menüen, de Spiller an den Iwwersetzunge vun de Wierder.</string>
+    <string name="ks_langue_note">D\'Tastatur selwer bleift lëtzebuergesch, egal wéi eng Sprooch Dir hei wielt.</string>
     <string name="ks_apparence">Ausgesinn</string>
     <string name="ks_apparence_intro">D\'Faarf vun den Tasten. D\'Rout an d\'Blo vum Fändel änneren net: Just d\'Wäiss vun de Buschtawe gëtt anthrazit.</string>
     <string name="ks_apparence_note">„Wéi den Handy“ follegt dem donkele Modus vum System. Déi zwou aner Optioune ginn et, well dee Modus op e puer Uewerflächen vun de Fabrikanten net bis bei d\'Tastature vun aneren Ubidder kënnt.</string>
