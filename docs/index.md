@@ -51,7 +51,7 @@ installez ensuite l'application Android.</p>
     <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
     l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
     Tapez « letzebuergesch » tout court : le clavier vous propose
-    « lëtzebuergesch ».</td>
+    « Lëtzebuergesch ».</td>
   </tr>
   <tr>
     <td>🤷 <strong>« De toute façon, ça ne s'écrit pas »</strong></td>
@@ -268,7 +268,7 @@ français.
 
 Une lettre oubliée, une lettre en trop, une touche voisine : les suggestions
 arrivent quand même. Et vous pouvez écrire sans diacritiques : tapez
-« letzebuergesch », le clavier vous propose « lëtzebuergesch ».
+« letzebuergesch », le clavier vous propose « Lëtzebuergesch ».
 
 La casse est respectée, et les mots que vous employez souvent remontent d'eux-mêmes.
 
