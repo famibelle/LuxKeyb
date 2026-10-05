@@ -223,6 +223,14 @@ les langues de fiche proposées. Dans ce cas, `lb/` reste disponible pour le
 site et les supports imprimés, et les visiteurs luxembourgeois voient la
 fiche allemande ou française selon la langue de leur téléphone.
 
+**Pour la Console** : Fiche Play Store › Traductions › « Importez un fichier »
+prend [`import-console-traductions.txt`](import-console-traductions.txt), qui
+rassemble nom, brève description et description complète des quatre
+traductions (le français, langue par défaut, se colle à part). La Console en
+détecte les langues. Ce fichier est fabriqué par `python3 build_import.py`
+depuis les dossiers de langue : le refaire après toute modification d'un texte,
+jamais l'éditer à la main.
+
 Les textes `lb/`, `de-DE/` et `pt-PT/` **doivent être relus par un locuteur
 natif** avant publication : une faute dans la vitrine d'un clavier
 luxembourgeois coûte plus cher qu'ailleurs. L'anglais aussi, dans une moindre
