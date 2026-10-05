@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [33.1.0] - 2026-10-05
+
+Choisir la langue de l'application, sans passer par les paramètres du téléphone.
+
+### ✨ Nouveautés
+
+- **La langue de l'application se choisit dans l'appli.** En bas des Réglages du clavier : Lëtzebuergesch, Français, Deutsch, English ou Português, ou « Comme le téléphone ». Les menus, les jeux, le carnet et le sens des mots passent aussitôt dans la langue choisie. Les touches et les suggestions, elles, restent luxembourgeoises.
+- Fonctionne aussi sur les téléphones antérieurs à Android 13, qui n'offraient aucun moyen de changer la langue d'une seule application.
+
 ## [33.0.1] - 2026-10-04
 
 Deux corrections : un verbe qui manquait aux suggestions, et le carnet dans la langue de l'appli.
