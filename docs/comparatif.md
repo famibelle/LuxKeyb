@@ -234,7 +234,7 @@ viennent. Ouvrable veut aussi dire mesurable : sur *ParaLux*, un jeu de phrases
 qu'aucun corpus d'entraînement ne contient, le mot réellement tapé figure dans
 les trois suggestions affichées **18,8 %** du temps, et **94,1 %** des mots de
 ces phrases sont connus du dictionnaire. Ni Samsung, ni Gboard, ni Apple ne publient
-d'équivalent pour le lëtzebuergesch.
+d'équivalent pour le Lëtzebuergesch.
 
 **Le bilinguisme comme situation normale**, et non comme réglage à activer.
 Au Luxembourg on écrit rarement dans une seule langue, et le clavier est
@@ -274,7 +274,7 @@ connexion, et la dictée n'est pas infaillible : on relit avant d'envoyer.
 
 Dernier point, et c'est une bonne nouvelle pour la langue : **iOS 27 ajoutera le
 luxembourgeois**, annoncé en juin 2026. Cela laisse toutefois Android sans
-clavier pensé pour le lëtzebuergesch, et ne répond ni à la question du
+clavier pensé pour le Lëtzebuergesch, et ne répond ni à la question du
 dictionnaire vérifiable, ni à celle de l'apprentissage.
 
 ## Et le clavier Samsung ?

@@ -120,7 +120,7 @@ gagne une rangée de hauteur.
 Touchez une suggestion pour la compléter d'un coup, espace inclus.
 
 Vous pouvez taper sans diacritiques : « letzebuergesch » propose bien
-« lëtzebuergesch ». Une lettre oubliée, en trop ou tapée à côté n'empêche pas
+« Lëtzebuergesch ». Une lettre oubliée, en trop ou tapée à côté n'empêche pas
 non plus les suggestions d'arriver.
 
 Après un espace, le clavier propose la suite probable de votre phrase d'après
@@ -205,7 +205,7 @@ Au-delà du clavier lui-même, l'application tient en quatre destinations :
 
 ## Progression et jeux
 
-Chaque mot que vous employez fait progresser votre maîtrise du lëtzebuergesch,
+Chaque mot que vous employez fait progresser votre maîtrise du Lëtzebuergesch,
 visible dans l'onglet **« Mäi Lëtzebuergesch »**. Huit niveaux jalonnent le
 parcours, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire
 que vous avez déjà utilisée. Vous pouvez partager votre carte de niveau.

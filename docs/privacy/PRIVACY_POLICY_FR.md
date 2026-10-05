@@ -15,7 +15,7 @@
 **Email de contact :** medhi.famibelle@gmail.com  
 **URL de la politique de confidentialité :** https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html
 
-**Lëtzebuergesch Clavier** est un projet indépendant dédié à la préservation et à la promotion de la langue luxembourgeoise. Sa mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues régionales et minoritaires, en particulier le luxembourgeois (lëtzebuergesch).
+**Lëtzebuergesch Clavier** est un projet indépendant dédié à la préservation et à la promotion de la langue luxembourgeoise. Sa mission est de développer des outils technologiques qui facilitent l'usage et l'apprentissage des langues régionales et minoritaires, en particulier le luxembourgeois (Lëtzebuergesch).
 
 ---
 
@@ -920,7 +920,7 @@ C'est pourquoi nous avons construit ce clavier de la bonne manière : **La confi
 
 ---
 
-**Merci de soutenir la préservation du lëtzebuergesch avec Lëtzebuergesch Clavier** 🇱🇺
+**Merci de soutenir la préservation du Lëtzebuergesch avec Lëtzebuergesch Clavier** 🇱🇺
 
 ---
 

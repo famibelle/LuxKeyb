@@ -3,7 +3,7 @@ simple : écrire facilement en **Lëtzebuergesch**, avec fluidité, authenticit�
 fierté.
 
 - 🛠️ Si votre luxembourgeois est très rouillé...
-- 😤 Que vous galériez à écrire en lëtzebuergesch parce que votre téléphone refuse tous les mots
+- 😤 Que vous galériez à écrire en Lëtzebuergesch parce que votre téléphone refuse tous les mots
 - 🤔 Que vous doutez de l'orthographe à chaque message...
 - ➡️ Klaviatur Lëtzebuergesch est fait pour vous !
 
@@ -31,7 +31,7 @@ marche à suivre est détaillée pas à pas.
 
 ### 📊 Suivez vos progrès en temps réel
 
-À chaque mot que vous écrivez en lëtzebuergesch, l'application :
+À chaque mot que vous écrivez en Lëtzebuergesch, l'application :
 - ✅ **Compte les mots découverts** - Votre vocabulaire s'enrichit automatiquement
 - 📈 **Calcule votre niveau** - Du débutant "Ufänker 🌍" au maître "Sproochenmeeschter 🧙"
 - 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
