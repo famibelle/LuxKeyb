@@ -1,9 +1,65 @@
 {
- "genere_le": "2026-10-03",
- "derniere_version": "33.0.0",
- "derniere_date": "2026-10-03",
+ "genere_le": "2026-10-05",
+ "derniere_version": "33.1.0",
+ "derniere_date": "2026-10-05",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "33.1.0",
+   "date": "2026-10-05",
+   "intro": "Choisir la langue de l'application, sans passer par les paramètres du téléphone.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "La langue de l'application se choisit dans l'appli",
+       "texte": "En bas des Réglages du clavier : Lëtzebuergesch, Français, Deutsch, English ou Português, ou « Comme le téléphone ». Les menus, les jeux, le carnet et le sens des mots passent aussitôt dans la langue choisie. Les touches et les suggestions, elles, restent luxembourgeoises."
+      },
+      {
+       "titre": null,
+       "texte": "Fonctionne aussi sur les téléphones antérieurs à Android 13, qui n'offraient aucun moyen de changer la langue d'une seule application."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_langue_interface.png",
+     "alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
+     "legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
+    }
+   ],
+   "image": "Screenshots/lux_langue_interface.png",
+   "image_alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
+   "image_legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
+  },
+  {
+   "version": "33.0.1",
+   "date": "2026-10-04",
+   "intro": "Deux corrections : un verbe qui manquait aux suggestions, et le carnet dans la langue de l'appli.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "« iessen » (manger) est de nouveau proposé",
+       "texte": "Quand un mot existe avec et sans majuscule, comme « Iessen » (le repas) et « iessen » (manger), le clavier ne gardait que le plus fréquent. Les deux formes apparaissent maintenant dans la barre."
+      },
+      {
+       "titre": "Les cartes du carnet parlent la langue de l'appli",
+       "texte": "Si vous avez choisi pour l'appli une autre langue que celle du téléphone, le sens des mots s'affichait dans la langue du téléphone. Il suit maintenant celle de l'appli, dans le carnet, les révisions et les cartes gagnées."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "33.0.0",
    "date": "2026-10-03",
@@ -191,78 +247,6 @@
    "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
    "image_alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
    "image_legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
-  },
-  {
-   "version": "30.2.1",
-   "date": "2026-10-03",
-   "intro": "Les fautes de frappe se corrigent plus vite.",
-   "sections": [
-    {
-     "emoji": "⚡",
-     "titre": "Performances",
-     "points": [
-      {
-       "titre": "Les corrections arrivent presque trois fois plus vite",
-       "texte": "Quand le début du mot tapé n'existe pas, par exemple « Freidg » pour « Freideg ». Sur un téléphone modeste, la petite saccade de la barre de suggestions disparaît. Les corrections proposées restent les mêmes."
-      },
-      {
-       "titre": "Taper vite ne ralentit plus le clavier",
-       "texte": "Une recherche rendue inutile par la lettre suivante s'arrête aussitôt."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "30.2.0",
-   "date": "2026-10-03",
-   "intro": "Le correcteur orthographique se trouve dès l'accueil.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le correcteur se propose sur l'accueil",
-       "texte": "Tant qu'il n'est pas choisi, une carte « Fini le trait rouge sous vos mots » ouvre directement le bon écran d'Android. Android ne permet à aucune application de se choisir elle-même comme correcteur : c'est à vous de le faire, en trois touches. « Plus tard » retire la carte."
-      },
-      {
-       "titre": "L'avertissement d'Android est annoncé",
-       "texte": "Il parle de mots de passe et de cartes bancaires, comme pour tout correcteur. Le nôtre ne conserve rien et n'envoie rien."
-      },
-      {
-       "titre": "Un message confirme que c'est fait",
-       "texte": "Quand vous revenez dans l'application."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La correction orthographique coupée dans Android est reconnue",
-       "texte": "L'application annonçait le correcteur actif alors qu'il ne soulignait rien. Elle propose maintenant de la rallumer."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_correcteur_accueil.png",
-     "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
-     "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
-    }
-   ],
-   "image": "Screenshots/lux_correcteur_accueil.png",
-   "image_alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
-   "image_legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
   }
  ]
 }

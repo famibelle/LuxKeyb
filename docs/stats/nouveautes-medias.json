@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "33.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_langue_interface.png",
+        "alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
+        "legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
+      }
+    ]
+  },
   "33.0.0": {
     "images": [
       {
