@@ -356,6 +356,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   box-shadow:0 8px 20px rgba(0,0,0,.24);
 }
 .qr-wrap img{display:block;width:27mm;height:27mm;}
+/* Le QR est ancré à 12,5 mm du bas du tract, et non centré dans la rangée du
+   bas : centré, il finissait à 5 mm du bord de la feuille (3 mm avant la
+   refonte du 2026-10-05), dans la marge que les imprimantes de bureau ne
+   tirent pas. Un tract imprimé ainsi a perdu le bas de son code, illisible.
+   Ancré par le bas, il ne dépend plus de la longueur du texte : l'allemand,
+   plus long, le repoussait encore à 7 mm. S'il déborde au-dessus de sa rangée,
+   c'est dans le creux sous le badge Google Play, que la colonne de droite,
+   calée en haut, laisse au même endroit dans toutes les langues. */
+.col-right{align-self:flex-start;}
+.qr-wrap{align-self:flex-end;margin-bottom:8.5mm;}
 .qr-label{
   font-family:"Fredoka",sans-serif;
   font-weight:700;
@@ -511,7 +521,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   </div>
 
   <div class="note">
-    Astuce : dans les options d'impression, choisissez « Aucune marge » et désactivez les en-têtes/pieds de page. Chaque feuille A4 donne deux tracts identiques : coupez le long des pointillés ✂ et laissez une petite pile près de la caisse.
+    Astuce : dans les options d'impression, choisissez « Taille réelle » (100 %) et désactivez les en-têtes/pieds de page. Une imprimante de bureau laisse un liseré blanc autour de la feuille : c'est prévu, le QR code reste à l'écart des bords. Chaque feuille A4 donne deux tracts identiques : coupez le long des pointillés ✂ et laissez une petite pile près de la caisse.
   </div>
 </header>
 
