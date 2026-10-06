@@ -263,7 +263,7 @@ reprennent le gabarit ne sont plus dans le dépôt.
 | Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
 | Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `<langue>/Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Installation).png`, 1080 × 1920, légende incrustée dans la langue |
 | Captures tablette | facultatif | Non prévu |
-| Vidéo YouTube | facultatif | Aucune. `docs/Screenshots/lux_clavier_demo.gif` n'est pas utilisable : le Store ne prend **pas** les GIF |
+| Vidéo YouTube | facultatif ; URL YouTube publique ou non répertoriée, sans pub, sans restriction d'âge, intégration autorisée | `../graphics/video/Letzebuergesch_Clavier_presentation_fr.mp4` (50 s, 1920 × 1080, français), à mettre en ligne sur YouTube puis coller son URL. Le Store ne prend **pas** les GIF |
 
 Les huit captures dépassent toutes 1080 × 1080, et il y en a plus de quatre :
 les deux conditions que la Console pose pour que l'application soit

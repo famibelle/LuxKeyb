@@ -1,0 +1,22 @@
+[
+ {"type":"titre","titre":"Vous le parlez.<br>Maintenant, vous l'écrivez.","sous":"Le clavier luxembourgeois pour Android","duree":3.6},
+ {"type":"ecran","kicker":"Suggestions","titre":"Il vous souffle les mots","sous":"Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine le mot suivant.","largeur_texte":800,
+  "dossier":"frappe","crop":[0,1180,1080,2424],"hauteur":900,
+  "beats":"auto","defaut":0.17,"speciaux":{"0":0.9,"22":1.1,"32":1.1,"38":2.0}},
+ {"type":"ecran","kicker":"Accents","titre":"Les accents sous le pouce","sous":"é ä ë ö ü ont leur touche. Les autres attendent sous un appui long.","largeur_texte":800,
+  "dossier":"accents","crop":[0,1180,1080,2424],"hauteur":900,
+  "beats":"auto","defaut":0.22,"speciaux":{"0":0.6,"3":1.2,"4":0.5,"5":0.7,"8":1.8}},
+ {"type":"ecran","kicker":"Dictée","titre":"Parlez, il écrit en luxembourgeois","sous":"Avec LuxASR, de l'Université du Luxembourg, quand vous touchez le micro.","largeur_texte":800,
+  "dossier":"dictee","crop":[0,1180,1080,2424],"hauteur":900,
+  "beats":"auto","defaut":0.24,"speciaux":{"0":0.8,"-1":2.2}},
+ {"type":"ecran","kicker":"Wierderbuch","titre":"Un dictionnaire dans la poche","sous":"Le sens des mots, avec des phrases d'exemple du dictionnaire officiel. Même sans connexion.","largeur_texte":950,
+  "dossier":"wb","crop":[0,0,1080,2424],"hauteur":940,
+  "beats":"auto","defaut":0.2,"speciaux":{"0":0.9,"1":0.5,"9":0.9,"13":0.7,"14":0.5,"15":0.4,"16":2.6}},
+ {"type":"ecran","kicker":"Jeux","titre":"Apprenez en jouant","sous":"Sept jeux pour retrouver, écrire et placer les mots. Ici, des mots croisés à écrire soi-même.","largeur_texte":950,
+  "dossier":"jeux","crop":[0,0,1080,2424],"hauteur":940,
+  "beats":[[0,1.2],[1,1.0],[2,1.1],[4,0.28],[5,0.28],[6,0.28],[7,0.28],[8,0.28],[9,0.28],[10,0.28],[11,0.28],[12,2.4]]},
+ {"type":"ecran","kicker":"Carnet","titre":"Chaque mot gagné devient une carte","sous":"Avec son sens et un exemple. Le carnet vous les fait réviser au bon moment.","largeur_texte":950,
+  "dossier":"carnet","crop":[0,0,1080,2424],"hauteur":940,
+  "beats":[[1,1.4],[3,0.6],[6,0.2],[7,0.3],[13,2.6]]},
+ {"type":"titre","titre":"Lëtzebuergesch, sur votre téléphone.","sous":"Gratuit sur Google Play","duree":4.0}
+]
