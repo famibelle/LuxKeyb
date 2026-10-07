@@ -1,9 +1,44 @@
 {
  "genere_le": "2026-10-07",
- "derniere_version": "33.2.1",
+ "derniere_version": "34.0.0",
  "derniere_date": "2026-10-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "34.0.0",
+   "date": "2026-10-07",
+   "intro": "Les actualités de l'INLL quittent l'application.",
+   "sections": [
+    {
+     "emoji": "🔄",
+     "titre": "Changements",
+     "points": [
+      {
+       "titre": "La page « Actualités de l'INLL » est retirée de l'accueil",
+       "texte": "Apparue en 33.2.0 et réservée au test fermé, elle attendait l'autorisation écrite de l'Institut national des langues Luxembourg pour reprendre ses publications. Elle reviendra si cette autorisation est donnée."
+      },
+      {
+       "titre": null,
+       "texte": "Les actualités déjà téléchargées par la 33.2 sont effacées du téléphone au premier lancement."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔒",
+     "titre": "Confidentialité",
+     "points": [
+      {
+       "titre": null,
+       "texte": "La dictée vocale redevient la seule fonction qui utilise Internet, comme l'écran d'accueil et la politique de confidentialité (version 3.2) le disent de nouveau."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "33.2.1",
    "date": "2026-10-07",
@@ -188,71 +223,6 @@
    "image": "Screenshots/lux_dictee_reconstituee.gif",
    "image_alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps.",
    "image_legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
-  },
-  {
-   "version": "32.0.0",
-   "date": "2026-10-03",
-   "intro": "L'application parle anglais, français, allemand, portugais et luxembourgeois.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "L'application suit la langue du téléphone",
-       "texte": "Écrans, réglages, guide, jeux et carnet s'affichent en anglais, en français, en allemand, en portugais ou en luxembourgeois. Sur un téléphone réglé dans une autre langue, l'application passe en anglais. Les noms des jeux, des onglets et des niveaux restent en luxembourgeois."
-      },
-      {
-       "titre": "Le luxembourgeois, même si le téléphone ne le propose pas",
-       "texte": "Depuis Android 13, Paramètres › Applications › Lëtzebuergesch Clavier › Langue permet de choisir la langue de l'application sans changer celle du téléphone."
-      },
-      {
-       "titre": "Les traductions des mots dans votre langue",
-       "texte": "Le carnet, le Wierderbuch, le mot du jour et les jeux traduisent les mots luxembourgeois en anglais, en allemand ou en portugais, d'après le dictionnaire officiel du luxembourgeois (lod.lu). Les phrases d'exemple sont aussi traduites en anglais et en allemand quand le Zenter fir d'Lëtzebuerger Sprooch les a publiées. Avec l'application en luxembourgeois, les traductions restent en français."
-      },
-      {
-       "titre": "Kräizwuert et Wuertplaz dans votre langue",
-       "texte": "Chaque langue a ses propres grilles : les définitions de Kräizwuert et les sens gagnés dans Wuertplaz sont dans la langue de l'application. En allemand, les définitions trop proches du mot cherché sont écartées, pour que la grille ne se remplisse pas toute seule."
-      },
-      {
-       "titre": "La recherche du Wierderbuch marche dans votre langue",
-       "texte": "Tapez « house », « Katze » ou « casa » pour trouver le mot luxembourgeois."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Les jeux ne proposent plus de mots mal traduits",
-       "texte": "Certains mots ne figurent dans le dictionnaire officiel que dans une expression, et recevaient la traduction de toute l'expression : « vum » se traduisait « de soi-même », « dout » (mort) « tuer ». Ils ne sont plus tirés dans les jeux."
-      },
-      {
-       "titre": "Des mots ordinaires reviennent dans Wuertplaz",
-       "texte": "Comme « Fransous », « Staat » ou « Premier », que l'application prenait à tort pour des noms propres."
-      },
-      {
-       "titre": "« À propos » ne parle plus d'« amis créolophones »",
-       "texte": "Un reste de l'application dont ce clavier est issu."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_langues.png",
-     "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
-     "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
-    }
-   ],
-   "image": "Screenshots/lux_langues.png",
-   "image_alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
-   "image_legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
   }
  ]
 }

@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.0.0] - 2026-10-07
+
+Les actualités de l'INLL quittent l'application.
+
+### 🔄 Changements
+
+- **La page « Actualités de l'INLL » est retirée de l'accueil.** Apparue en 33.2.0 et réservée au test fermé, elle attendait l'autorisation écrite de l'Institut national des langues Luxembourg pour reprendre ses publications. Elle reviendra si cette autorisation est donnée.
+- Les actualités déjà téléchargées par la 33.2 sont effacées du téléphone au premier lancement.
+
+### 🔒 Confidentialité
+
+- La dictée vocale redevient la seule fonction qui utilise Internet, comme l'écran d'accueil et la politique de confidentialité (version 3.2) le disent de nouveau.
+
 ## [33.2.1] - 2026-10-07
 
 Android 7.0 au minimum, pour la protection de Google Play.

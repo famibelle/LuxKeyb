@@ -1,0 +1,3 @@
+🎙️ Diktieren Sie auf Luxemburgisch: Mikrofon antippen und sprechen, der Text erscheint mit Satzzeichen. Erkennung durch LuxASR der Universität Luxemburg.
+🔒 Was Sie tippen, verlässt Ihr Handy weiterhin nicht. Nur das Diktat sendet Ihre Stimme.
+🌍 Wählen Sie die Sprache der App ganz unten in den Tastatureinstellungen.

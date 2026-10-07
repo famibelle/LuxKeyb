@@ -10,13 +10,13 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
   title.txt               Nom de l'application (30)
   short_description.txt   Brève description (80)
   full_description.txt    Description complète (4 000)
-  changelogs/330201.txt   Nouveautés de la version, par versionCode (500)
+  changelogs/340000.txt   Nouveautés de la version, par versionCode (500)
 ```
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **33.2.1**
-(`versionCode` 330201), la première à exiger Android 7.0, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.0.0**
+(`versionCode` 340000), celle qui retire les actualités de l'INLL, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,22 +119,23 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 33.2.1 : [`fr-FR/changelogs/330201.txt`](fr-FR/changelogs/330201.txt), identique à celui de la 33.2.0,
-refusée par la Console parce qu'elle acceptait encore Android 5.0 alors que la
-protection automatique de Google Play exige Android 7.0 (SDK 24).
-Il ouvre sur les actualités de l'INLL (📰), puis reprend, raccourcies, les
-lignes de la 33.1.0 : la dictée, la confidentialité et le choix de la langue,
-pour le cas où aucune version avec la dictée ne serait encore passée en
-production. Si la 33.1.0 est déjà en production, ne garder que la ligne 📰.
+Texte de la 34.0.0 : [`fr-FR/changelogs/340000.txt`](fr-FR/changelogs/340000.txt).
+C'est celui de la 33.2.1 sans sa ligne 📰 : les actualités de l'INLL, apparues
+en 33.2.0 et restées en test fermé, sont retirées de l'application faute
+d'autorisation écrite de l'INLL (ses conditions générales interdisent toute
+reproduction de ses contenus sans accord préalable). Le code reste en place,
+masqué par `ACTUALITES_INLL = false` dans `SettingsActivity`, et le flux mis en
+cache par les 33.2.x est effacé au lancement. La politique de confidentialité
+(version 3.2) redit que seule la dictée utilise Internet.
 
-Longueurs : fr 438, lb 450, de 450, en 430, pt 418, sur 500.
+Il reprend, raccourcies, les lignes de la 33.1.0 : la dictée, la
+confidentialité et le choix de la langue, pour le cas où aucune version avec la
+dictée ne serait encore passée en production. Si la 33.1.0 est déjà en
+production, ne garder que la ligne 🌍.
 
-**Avant d'aller au-delà du test interne**, il faut l'autorisation écrite de
-l'INLL : ses conditions générales interdisent toute reproduction de ses
-contenus sans accord préalable, et la page affiche les titres et résumés de
-son flux. La politique de confidentialité (version 3.1) mentionne déjà la
-connexion à `www.inll.lu` ; la section Sécurité des données ne change pas,
-l'application n'envoyant à l'INLL aucune donnée de l'utilisateur.
+Longueurs : fr 310, lb 324, de 317, en 300, pt 296, sur 500.
+
+Texte de la 33.2.1, gardé pour mémoire : [`fr-FR/changelogs/330201.txt`](fr-FR/changelogs/330201.txt).
 
 Texte de la 33.1.0, gardé pour mémoire : [`fr-FR/changelogs/330100.txt`](fr-FR/changelogs/330100.txt).
 
