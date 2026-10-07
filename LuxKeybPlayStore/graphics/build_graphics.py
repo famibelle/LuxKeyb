@@ -6,6 +6,7 @@
     python3 build_graphics.py feature    # image mise en avant seule
     python3 build_graphics.py shots      # captures téléphone seules, dans les cinq langues
     python3 build_graphics.py hors       # visuels hors Console (jeux, carnet, voix), dans les cinq langues
+    python3 build_graphics.py tablette   # captures tablette seules, dans les cinq langues
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les fichiers à envoyer à la Play Console.
@@ -20,6 +21,10 @@ rien à retrouver au moment de l'envoi :
                                                     depuis captures-emulateur-pixel9/
   hors-console/<langue>/   un visuel par jeu, deux du carnet et un de la voix,
                            pour le site, les réseaux et la fiche
+  captures-tablette/<langue>/  six captures en paysage 1920x1080, à envoyer
+                           deux fois : dans « Captures d'écran pour tablette
+                           7 pouces » et dans « … 10 pouces »
+                                                    depuis captures-emulateur-tablette/
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -68,6 +73,19 @@ clavier refermé ensuite. Écarter une grille ou une phrase dont la définition
 visible gêne sur une vitrine (« death », un nom de personnalité) : un nouveau
 tirage suffit.
 
+Les captures tablette viennent de `captures-emulateur-tablette/<langue>/`,
+prises le 7 octobre 2026 sur l'émulateur `tablette10` (Pixel Tablet,
+2560x1600, tenue en paysage), branche `feat/tablette` après les lots A, B
+et C : clavier à 56 dp, Wierderbuch liste et fiche côte à côte, jeux à
+grille en deux colonnes. Toutes sont propres à la langue, clavier compris
+(il est pris dans le champ du Wierderbuch, dont le texte est traduit). Une
+seule série sert aux deux emplacements de la Console : 1920x1080 respecte à
+la fois les bornes du 7 pouces (320 à 3840 px) et celles du 10 pouces (1080
+à 7680 px). Les légendes reprennent celles du téléphone et des visuels hors
+Console, sans texte nouveau à traduire. Écarter, comme pour les jeux du
+téléphone, une grille dont une définition visible gêne (« to kill »,
+« cambriolage ») : un nouveau tirage suffit.
+
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
 Deux pièges de Chrome headless :
@@ -103,6 +121,9 @@ COMMUNS = OUT / "icone-et-presentation"
 CAPTURES_DIR = OUT / "captures"
 # Les visuels de jeux et du carnet : site, réseaux, jamais la Console
 HORS_CONSOLE = OUT / "hors-console"
+# Les six captures tablette, un dossier par langue
+TABLETTE_DIR = OUT / "captures-tablette"
+SHOTS_TABLETTE = HERE / "captures-emulateur-tablette"
 ICON = COMMUNS / "Icône de l'application.png"
 
 # marge de rendu qui absorbe la hauteur de fenêtre non peinte par Chrome
@@ -376,6 +397,73 @@ def hors_console_de(langue: str):
     return [(nom, src, None, *leg)
             for (nom, src), leg in zip(HORS_CONSOLE_FICHIERS, HORS_CONSOLE_LEGENDES[langue])]
 
+# Les six captures tablette, dans l'ordre d'envoi : (nom, source, légende), la
+# légende étant (catalogue, rang) dans LEGENDES ou HORS_CONSOLE_LEGENDES.
+CAPTURES_TABLETTE = [
+    ("Captures d'écran pour tablette 1 (Suggestions)", "01-clavier-suggestions.png", ("tel", 0)),
+    ("Captures d'écran pour tablette 2 (Wierderbuch)", "02-wierderbuch-liste-et-fiche.png", ("tel", 4)),
+    ("Captures d'écran pour tablette 3 (Kräizwuert)", "03-jeu-kraizwuert.png", ("hors", 5)),
+    ("Captures d'écran pour tablette 4 (Wuertplaz)", "04-jeu-wuertplaz.png", ("hors", 6)),
+    ("Captures d'écran pour tablette 5 (Wuertsich)", "05-jeu-wuertsich.png", ("hors", 0)),
+    ("Captures d'écran pour tablette 6 (Boîte de Leitner)", "06-boite-de-leitner.png", ("hors", 7)),
+]
+
+
+def legende_tablette(langue: str, ref) -> tuple[str, str, str]:
+    catalogue, rang = ref
+    if catalogue == "tel":
+        return LEGENDES[langue][0][rang]
+    return HORS_CONSOLE_LEGENDES[langue][rang]
+
+
+# Paysage : la légende à gauche, l'écran à droite. Même papier, même drapeau,
+# même pied que les captures téléphone, pour que la fiche reste une seule série.
+TABLETTE_TEMPLATE = """<meta charset="utf-8">
+<style>
+  *{{ box-sizing:border-box; margin:0; padding:0; }}
+  html,body{{ width:1920px; height:1080px; overflow:hidden; }}
+  body{{
+    background:{papier}; color:{encre};
+    font-family:"Carlito","Liberation Sans","DejaVu Sans",Arial,sans-serif;
+    display:flex; flex-direction:column;
+  }}
+  .flag{{ height:12px; display:flex; flex:0 0 auto; }}
+  .flag i{{ flex:1; }}
+  .flag i:nth-child(1){{ background:{rouge}; }}
+  .flag i:nth-child(2){{ background:#fff; }}
+  .flag i:nth-child(3){{ background:{bleu}; }}
+  main{{ flex:1 1 auto; display:flex; align-items:center; gap:56px; padding:0 64px 0 80px; min-height:0; }}
+  .texte{{ flex:0 0 520px; display:flex; flex-direction:column; justify-content:center; height:100%; }}
+  .kicker{{
+    font-size:26px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:{bleu}; margin-bottom:22px;
+  }}
+  h1{{ font-size:58px; font-weight:700; line-height:1.12; letter-spacing:-.01em; }}
+  .sub{{ font-size:30px; line-height:1.42; color:#54606E; margin-top:28px; }}
+  footer{{
+    display:flex; align-items:center; gap:16px; margin-top:56px;
+    font-size:24px; font-weight:700; color:#7A8593;
+  }}
+  footer img{{ width:46px; height:46px; }}
+  .stage{{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; min-width:0; }}
+  .stage img{{
+    max-width:100%; max-height:930px; width:auto; height:auto;
+    border:12px solid {encre}; border-radius:30px;
+    box-shadow:0 26px 60px rgba(31,41,51,.28);
+  }}
+</style>
+<div class="flag"><i></i><i></i><i></i></div>
+<main>
+  <div class="texte">
+    <div class="kicker">{kicker}</div>
+    <h1>{title}</h1>
+    <div class="sub">{sub}</div>
+    <footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · {pied}</footer>
+  </div>
+  <div class="stage"><img src="data:image/png;base64,{shot}"></div>
+</main>
+"""
+
 SHOT_TEMPLATE = """<meta charset="utf-8">
 <style>
   *{{ box-sizing:border-box; margin:0; padding:0; }}
@@ -506,6 +594,33 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
     return width, height, head[25] in (4, 6)
 
 
+def build_tablette() -> None:
+    for langue in LANGUES:
+        pied = LEGENDES[langue][1]
+        out_dir = TABLETTE_DIR / langue
+        out_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = pathlib.Path(tmpdir)
+            small_icon = tmp / "icon.png"
+            magick(str(ICON), "-resize", "92x92", str(small_icon))
+            icon = b64(small_icon)
+            for index, (name, src, ref) in enumerate(CAPTURES_TABLETTE, 1):
+                source = SHOTS_TABLETTE / langue / src
+                if not source.exists():
+                    sys.exit(f"source manquante : {source}")
+                shot = tmp / f"{index:02d}.png"
+                magick(str(source), "-resize", "1500x", str(shot))
+                kicker, title, sub = legende_tablette(langue, ref)
+                html = tmp / f"{index:02d}.html"
+                html.write_text(TABLETTE_TEMPLATE.format(
+                    papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
+                    kicker=kicker, title=title, sub=sub, pied=pied,
+                    shot=b64(shot), icon=icon), encoding="utf-8")
+                out = out_dir / f"{name}.png"
+                render(html, out, 1920, 1080)
+                print(f"{out.relative_to(HERE)}  ok")
+
+
 def build_langues() -> None:
     for langue in LANGUES:
         build_shots(specs_de(langue), langue, CAPTURES_DIR / langue)
@@ -562,24 +677,39 @@ def build_check() -> None:
         elif png_header(path)[:2] != (1080, 1920):
             problems.append(f"{path.name} : pas en 1080x1920")
 
+    tablette = [TABLETTE_DIR / langue / f"{name}.png"
+                for langue in LANGUES for name, _, _ in CAPTURES_TABLETTE]
+    for path in tablette:
+        if not path.exists():
+            problems.append(f"{path.relative_to(OUT)} : absent")
+            continue
+        w, h, alpha = png_header(path)
+        # 7 pouces : 320 à 3840 px ; 10 pouces : 1080 à 7680 px ; 16:9
+        if (w, h) != (1920, 1080):
+            problems.append(f"{path.name} : {w}x{h}, attendu 1920x1080")
+        if alpha:
+            problems.append(f"{path.name} : transparence")
+        if path.stat().st_size > 8 * 1024 * 1024:
+            problems.append(f"{path.name} : plus de 8 Mo")
+
     for problem in problems:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(HORS_CONSOLE_FICHIERS)} visuels hors Console dans chacune, conformes")
+    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(HORS_CONSOLE_FICHIERS)} visuels hors Console dans chacune, conformes, et {len(CAPTURES_TABLETTE)} captures tablette dans chacune")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "hors", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "hors", "tablette", "check"]
     known = {"icon": build_icon, "feature": build_feature,
              "shots": build_langues, "hors": build_hors_console,
-             "check": build_check}
+             "tablette": build_tablette, "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | hors | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | hors | tablette | check)")
         known[target]()
     return 0
 

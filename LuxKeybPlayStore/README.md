@@ -26,9 +26,14 @@ graphics/
                             d'après leur emplacement et ce qu'elles montrent
     hors-console/<langue>/  un visuel par jeu, deux du carnet et un de la voix,
                             pour le site et les réseaux, jamais envoyés à la Console
+    captures-tablette/<langue>/  six captures 1920x1080 en paysage, à envoyer
+                            à la fois dans « tablette 7 pouces » et « 10 pouces »
   captures-emulateur-pixel9/
     <langue>/             les écrans de l'application dans cette langue ;
                           les captures de clavier, communes, sont à la racine
+  captures-emulateur-tablette/
+    <langue>/             les six écrans tablette (émulateur Pixel Tablet,
+                          2560x1600, paysage), clavier compris
   flyer-triptyque/        flyer A4 3 volets (HTML autonome + PDF)
 ```
 
@@ -38,6 +43,7 @@ graphics/
 cd graphics
 python3 build_graphics.py              # les 8 fichiers, puis leur vérification
 python3 build_graphics.py shots        # les captures seules, dans les 5 langues
+python3 build_graphics.py tablette     # les captures tablette, dans les 5 langues
 python3 build_graphics.py check        # vérifie sans rien refabriquer
 ```
 
