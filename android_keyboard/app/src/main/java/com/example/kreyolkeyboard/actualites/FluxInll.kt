@@ -48,6 +48,15 @@ object FluxInll {
     private fun fichierCache(context: Context, langue: String) =
         File(context.cacheDir, "actualites_inll_$langue.xml")
 
+    /**
+     * Efface les flux gardés en cache, toutes langues : ce que les 33.2.x ont
+     * téléchargé ne reste pas sur le téléphone quand la page est désactivée.
+     */
+    fun oublier(context: Context) {
+        context.cacheDir.listFiles { f -> f.name.startsWith("actualites_inll_") }
+            ?.forEach { it.delete() }
+    }
+
     /** Le dernier flux reçu, ou une liste vide si rien n'a encore été reçu. */
     fun enCache(context: Context, langue: String): List<Actualite> {
         val f = fichierCache(context, langue)

@@ -380,7 +380,7 @@
     <string name="sa_lire_la_politique_de_confidentialite">Read the privacy policy</string>
     <string name="sa_dans_langues_et_saisie_ouvrez">In “Languages &amp; input”, open “Spell checker” and choose “Lëtzebuergesch spell checker”</string>
     <string name="sa_appuyez_sur_ok_est_normal">👆 Tap OK: this is normal for every third-party keyboard</string>
-    <string name="sa_letzebuergesch_clavier_pas_acces_internet">What you type never leaves your phone. The internet is only used for voice typing, when you tap the microphone, and for the INLL news, when you open them.</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">What you type never leaves your phone. Only voice typing, when you tap the microphone, goes through the internet.</string>
     <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Then tap Back: you\'ll come back here automatically</string>
     <string name="sa_avant_de_continuer">Before you continue</string>
     <string name="sa_ai_compris_on_va">Got it, let\'s go</string>

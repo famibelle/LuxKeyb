@@ -376,7 +376,7 @@
     <string name="sa_lire_la_politique_de_confidentialite">Datenschutzerklärung lesen</string>
     <string name="sa_dans_langues_et_saisie_ouvrez">Öffnen Sie unter „Sprachen und Eingabe“ die „Rechtschreibprüfung“ und wählen Sie „Lëtzebuergesch-Rechtschreibprüfung“</string>
     <string name="sa_appuyez_sur_ok_est_normal">👆 Tippen Sie auf OK: Das ist bei allen Tastaturen von Drittanbietern normal</string>
-    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Was Sie tippen, verlässt Ihr Telefon nie. Das Internet wird nur für das Diktat genutzt, wenn Sie auf das Mikrofon tippen, und für die Neuigkeiten des INLL, wenn Sie sie öffnen.</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Was Sie tippen, verlässt Ihr Telefon nie. Nur das Diktat läuft über das Internet, wenn Sie auf das Mikrofon tippen.</string>
     <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Tippen Sie danach auf Zurück: Sie kehren automatisch hierher zurück</string>
     <string name="sa_avant_de_continuer">Bevor es weitergeht</string>
     <string name="sa_ai_compris_on_va">Verstanden, los geht\'s</string>

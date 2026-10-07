@@ -98,7 +98,7 @@
 <h1>Politique de Confidentialité - Lëtzebuergesch Clavier</h1>
 <p><strong>Date d'entrée en vigueur :</strong> 19 septembre 2025<br>
 <strong>Dernière mise à jour :</strong> 7 octobre 2026<br>
-<strong>Version :</strong> 3.1 (actualités de l'INLL)<br>
+<strong>Version :</strong> 3.2 (dictée vocale)<br>
 <strong>Application :</strong> Lëtzebuergesch Clavier<br>
 <strong>Nom du package :</strong> com.potomitan.luxkeyboard</p>
 <hr>
@@ -112,7 +112,7 @@
 <h2>📱 À propos de l'Application</h2>
 <p><strong>Lëtzebuergesch Clavier</strong> est un clavier virtuel pour appareils Android qui permet de saisir du texte en luxembourgeois avec des suggestions intelligentes et des corrections automatiques.</p>
 <blockquote>
-<p><strong>En une phrase :</strong> ce que vous tapez ne quitte jamais votre téléphone. La seule exception est la <strong>dictée vocale</strong> : quand vous appuyez sur le micro, votre voix est envoyée au service <strong>LuxASR de l'Université du Luxembourg</strong>, qui la transforme en texte sans la conserver. Si vous n'appuyez jamais sur le micro, rien ne part. La page <strong>Actualités de l'INLL</strong>, quand vous l'ouvrez, télécharge les dernières nouvelles du site de l'Institut national des langues Luxembourg, sans rien lui envoyer qui vous concerne. Tous les détails sont dans la section <a href="#dictee-vocale">🎙️ La dictée vocale</a>.</p>
+<p><strong>En une phrase :</strong> ce que vous tapez ne quitte jamais votre téléphone. La seule exception est la <strong>dictée vocale</strong> : quand vous appuyez sur le micro, votre voix est envoyée au service <strong>LuxASR de l'Université du Luxembourg</strong>, qui la transforme en texte sans la conserver. Si vous n'appuyez jamais sur le micro, rien ne part. Tous les détails sont dans la section <a href="#dictee-vocale">🎙️ La dictée vocale</a>.</p>
 </blockquote>
 <h3>Fonctionnalités principales :</h3>
 <ul>
@@ -126,7 +126,7 @@
 <li><strong>100% gratuit :</strong> Aucune fonctionnalité premium, aucun achat intégré</li>
 <li><strong>Open Source :</strong> Code source disponible sur GitHub</li>
 <li><strong>Éducatif :</strong> Promotion de la langue luxembourgeoise</li>
-<li><strong>Respect de la vie privée :</strong> Aucune collecte de données. Le clavier fonctionne hors ligne ; seules la dictée vocale et la page des actualités de l'INLL ont besoin d'Internet</li>
+<li><strong>Respect de la vie privée :</strong> Aucune collecte de données. Le clavier fonctionne hors ligne ; seule la dictée vocale a besoin d'Internet</li>
 </ul>
 <hr>
 <h2>🔒 Résumé Data Safety Google Play</h2>
@@ -247,18 +247,18 @@
 <p><strong>Note sur les rapports de plantage :</strong> Google Play Console peut collecter automatiquement des diagnostics de plantage anonymes pour améliorer la stabilité de l'application. C'est une fonctionnalité standard de Google Play hors de notre contrôle. Nous n'avons accès à aucune information personnellement identifiable de ces rapports.</p>
 <h3>🔐 Pratiques de Sécurité des Données</h3>
 <ul>
-<li><strong>Chiffrement en transit :</strong> Oui : la voix dictée part en connexion chiffrée (TLS) vers <code>luxasr.uni.lu</code>, et les actualités sont téléchargées en connexion chiffrée depuis <code>www.inll.lu</code></li>
+<li><strong>Chiffrement en transit :</strong> Oui pour la seule transmission existante : la voix dictée part en connexion chiffrée (TLS) vers <code>luxasr.uni.lu</code></li>
 <li><strong>Chiffrement au repos :</strong> Non applicable (aucun stockage de données sur nos serveurs)</li>
 <li><strong>Suppression des données :</strong> Non applicable (aucune donnée collectée à supprimer)</li>
 <li><strong>Privacy by Design :</strong> L'architecture de l'app empêche toute collecte de données par conception</li>
-<li><strong>Fonctionnement hors ligne :</strong> La frappe, les suggestions, le correcteur et les jeux fonctionnent entièrement sans Internet. Seules la dictée vocale et la page des actualités de l'INLL en ont besoin</li>
+<li><strong>Fonctionnement hors ligne :</strong> La frappe, les suggestions, le correcteur et les jeux fonctionnent entièrement sans Internet. Seule la dictée vocale en a besoin</li>
 <li><strong>Aucun suivi tiers :</strong> Pas d'analytics, pas de SDK publicitaires</li>
 <li><strong>Aucun serveur backend :</strong> Nous n'avons aucune infrastructure collectant ou stockant des données utilisateur. La dictée est traitée par le serveur de l'Université du Luxembourg, pas par un serveur à nous</li>
 <li><strong>Sandbox Android :</strong> L'app fonctionne dans le bac à sable Android avec permissions restreintes</li>
 <li><strong>Audit du code :</strong> Code open source disponible pour examen de sécurité</li>
 </ul>
 <h3>🛡️ Services et SDK Tiers</h3>
-<p><strong>Un seul service tiers reçoit une donnée vous concernant, et uniquement pour la dictée vocale : LuxASR, de l'Université du Luxembourg.</strong> Il ne reçoit que votre voix, et seulement quand vous appuyez sur le micro. La page des actualités lit en plus le site public de l'INLL (Institut national des langues Luxembourg), seulement quand vous l'ouvrez : l'application ne lui envoie que la demande de la page, et, comme pour toute visite d'un site, son serveur voit l'adresse IP de la connexion. Aucun autre service tiers n'est utilisé. Spécifiquement :</p>
+<p><strong>Nous n'utilisons qu'un seul service tiers, et uniquement pour la dictée vocale : LuxASR, de l'Université du Luxembourg.</strong> Il ne reçoit que votre voix, et seulement quand vous appuyez sur le micro. Aucun autre service tiers n'est utilisé. Spécifiquement :</p>
 <ul>
 <li>❌ Pas de services d'analytics (Google Analytics, Firebase Analytics, etc.)</li>
 <li>❌ Pas de réseaux publicitaires (AdMob, Facebook Audience Network, etc.)</li>
@@ -272,7 +272,6 @@
 <p><strong>Les seules interactions tierces sont :</strong></p>
 <ul>
 <li><strong>LuxASR (Université du Luxembourg)</strong>, pour transcrire votre voix quand vous dictez</li>
-<li><strong>Le site de l'INLL</strong> (<code>www.inll.lu</code>), dont la page des actualités télécharge les dernières nouvelles quand vous l'ouvrez</li>
 <li><strong>Google Play Services</strong>, pour la distribution et les mises à jour de l'application, et les rapports de plantage automatiques (anonymes, gérés par Google)</li>
 </ul>
 <p>Les rapports de plantage sont standard pour toutes les applications Google Play et échappent à notre contrôle.</p>
@@ -285,7 +284,7 @@
 <li><strong>Aucun compte requis :</strong> Aucune création de compte, connexion ou inscription nécessaire</li>
 <li><strong>Désinstaller = Suppression complète :</strong> La désinstallation supprime toutes les données de l'app de l'appareil</li>
 <li><strong>Pas de sync cloud :</strong> Vos données de frappe, réglages et progression ne quittent jamais votre appareil, rien n'est stocké à distance</li>
-<li><strong>Mode hors ligne :</strong> Le clavier fonctionne sans Internet ; seules la dictée vocale et la page des actualités de l'INLL en ont besoin</li>
+<li><strong>Mode hors ligne :</strong> Le clavier fonctionne sans Internet ; seule la dictée vocale en a besoin</li>
 <li><strong>Dictée sous votre contrôle :</strong> Rien n'est envoyé tant que vous n'appuyez pas sur le micro. Vous pouvez refuser l'accès au micro à Android, le clavier fonctionne alors exactement pareil, sans dictée</li>
 </ul>
 <hr>
@@ -481,12 +480,12 @@
 <strong>Contrôle utilisateur :</strong> Refusez-la à l'invite, ou retirez-la dans Infos app &gt; Autorisations ; le clavier fonctionne alors sans dictée<br>
 <strong>Emplacement des données :</strong> La voix est envoyée en direct à l'Université du Luxembourg pour transcription, jamais stockée sur le téléphone</p>
 <h3>5️⃣ INTERNET et ACCESS_NETWORK_STATE (Automatiques, sans invite)</h3>
-<p><strong>Ce qu'elles font :</strong> INTERNET permet d'ouvrir la connexion de la dictée et de télécharger les actualités de l'INLL ; ACCESS_NETWORK_STATE permet de savoir si un réseau est disponible<br>
-<strong>Pourquoi nous en avons besoin :</strong> Pour la dictée vocale, et pour la page des actualités de l'INLL quand vous l'ouvrez. Sans réseau, le micro apparaît barré au lieu de vous faire attendre pour rien<br>
-<strong>Impact sur la vie privée :</strong> Deux connexions seulement : celle de la dictée, vers <code>luxasr.uni.lu</code>, quand vous appuyez sur le micro, et celle des actualités, vers <code>www.inll.lu</code>, quand vous ouvrez leur page. Ni la frappe, ni les suggestions, ni le correcteur, ni les jeux n'utilisent le réseau<br>
+<p><strong>Ce qu'elles font :</strong> INTERNET permet d'ouvrir la connexion de la dictée ; ACCESS_NETWORK_STATE permet de savoir si un réseau est disponible<br>
+<strong>Pourquoi nous en avons besoin :</strong> Uniquement pour la dictée vocale. Sans réseau, le micro apparaît barré au lieu de vous faire attendre pour rien<br>
+<strong>Impact sur la vie privée :</strong> La seule connexion ouverte est celle de la dictée, vers <code>luxasr.uni.lu</code>, quand vous appuyez sur le micro. Ni la frappe, ni les suggestions, ni le correcteur, ni les jeux n'utilisent le réseau<br>
 <strong>Ce qu'elles NE PEUVENT PAS faire :</strong> Envoyer ce que vous tapez : le code qui gère la frappe ne contient aucun envoi réseau, ce que le code source public permet de vérifier<br>
-<strong>Contrôle utilisateur :</strong> Ne pas utiliser la dictée ni ouvrir les actualités suffit : aucune connexion n'est alors ouverte<br>
-<strong>Emplacement des données :</strong> Aucune donnée n'est envoyée en dehors de la voix dictée ; les actualités sont seulement téléchargées</p>
+<strong>Contrôle utilisateur :</strong> Ne pas utiliser la dictée suffit : aucune connexion n'est alors ouverte<br>
+<strong>Emplacement des données :</strong> Aucune donnée n'est envoyée en dehors de la voix dictée</p>
 <h3>❌ Autorisations que Nous NE Demandons PAS :</h3>
 <p>Nous ne demandons <strong>intentionnellement pas</strong> les autorisations courantes suivantes :</p>
 <ul>
@@ -501,7 +500,7 @@
 <li><strong>READ_CALL_LOG :</strong> Pas d'historique d'appels</li>
 <li><strong>BLUETOOTH / NFC :</strong> Pas de collecte de données sans fil</li>
 </ul>
-<p><strong>À propos de l'autorisation INTERNET :</strong> les versions précédentes ne la demandaient pas du tout. Elle est arrivée avec la dictée vocale, et ne sert qu'à elle et à la page des actualités de l'INLL : ce que vous tapez ne passe jamais par le réseau.</p>
+<p><strong>À propos de l'autorisation INTERNET :</strong> les versions précédentes ne la demandaient pas du tout. Elle n'est arrivée qu'avec la dictée vocale, et ne sert qu'à elle : ce que vous tapez ne passe jamais par le réseau.</p>
 <hr>
 <h2>🤝 Partage de Données et Tiers</h2>
 <h3>Partage avec des Tiers :</h3>
@@ -794,7 +793,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 </ul>
 <h3>Contrôle de Version :</h3>
 <ol>
-<li><strong>Numéro de Version :</strong> Chaque mise à jour incrémente la version (Actuelle : <strong>3.1</strong>)</li>
+<li><strong>Numéro de Version :</strong> Chaque mise à jour incrémente la version (Actuelle : <strong>3.2</strong>)</li>
 <li><strong>Date d'Entrée en Vigueur :</strong> Mise à jour en haut de ce document</li>
 <li><strong>Historique des Changements :</strong> Disponible sur notre dépôt GitHub</li>
 <li><strong>Changements Importants :</strong> Seront mis en évidence dans les annonces de mise à jour</li>
@@ -814,11 +813,13 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li>Option de réviser les changements avant d'accepter</li>
 </ul>
 <h3>Historique des Changements :</h3>
+<p><strong>Version 3.2 (7 octobre 2026) :</strong></p>
+<ul>
+<li>Les actualités de l'INLL sont retirées de l'application à partir de la version 34.0.0 : la dictée vocale redevient la seule fonction qui utilise Internet</li>
+</ul>
 <p><strong>Version 3.1 (7 octobre 2026) :</strong></p>
 <ul>
-<li>Arrivée de la page « Actualités de l'INLL », qui télécharge les nouvelles du site de l'Institut national des langues Luxembourg quand vous l'ouvrez, et seulement à ce moment-là</li>
-<li>Rien n'est envoyé à l'INLL en dehors de la demande de la page ; le dernier flux reçu reste sur le téléphone pour être lu hors connexion</li>
-<li>S'applique à l'application depuis la version 33.2.0</li>
+<li>Page des actualités de l'INLL (versions 33.2.x, en test fermé seulement) : téléchargement des nouvelles du site www.inll.lu quand on ouvrait la page</li>
 </ul>
 <p><strong>Version 3.0 (2 octobre 2026) :</strong></p>
 <ul>
@@ -1073,7 +1074,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 
 <div class="footer">
     <p><strong>Contact :</strong> medhi.famibelle@gmail.com</p>
-    <p><em>Dernière mise à jour : 7 octobre 2026</em></p>
+    <p><em>Dernière mise à jour : 2 octobre 2026</em></p>
 </div>
 </body>
 </html>

@@ -155,6 +155,14 @@ class SettingsActivity : AppCompatActivity() {
         private const val TAB_SPILLER = 1
         private const val TAB_WIERDERBUCH = 2
 
+        /**
+         * Les actualités de l'INLL (33.2.x, test fermé seulement) restent dans
+         * le code mais sans lien : les conditions de l'INLL interdisent de
+         * reprendre ses contenus sans autorisation écrite. À rallumer quand
+         * elle sera obtenue.
+         */
+        private const val ACTUALITES_INLL = false
+
         private const val ACCUEIL_PREFS = "lux_accueil_prefs"
         private const val PREF_DERNIER_JEU_NOM = "dernier_jeu_nom"
         private const val PREF_CORRECTEUR_ACCUEIL_MASQUE = "correcteur_accueil_masque"
@@ -195,7 +203,9 @@ class SettingsActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
+        if (!ACTUALITES_INLL) com.example.kreyolkeyboard.actualites.FluxInll.oublier(this)
+
         // Restaurer l'onglet actif si l'activité a été recréée, ou honorer
         // l'onglet demandé par l'intent (puce de niveau tapée depuis le clavier).
         //
@@ -1266,12 +1276,14 @@ class SettingsActivity : AppCompatActivity() {
         // de l'écran de configuration, qui est déjà l'endroit où l'on vient
         // quand on cherche à comprendre plutôt qu'à jouer.
         mainLayout.addView(createSpacing(8))
-        mainLayout.addView(createReferenceLink(
-            "📰", getString(R.string.act_lien_titre),
-            getString(R.string.act_lien_resume),
-            SheetFragment.PAGE_ACTUALITES
-        ))
-        mainLayout.addView(createSpacing(8))
+        if (ACTUALITES_INLL) {
+            mainLayout.addView(createReferenceLink(
+                "📰", getString(R.string.act_lien_titre),
+                getString(R.string.act_lien_resume),
+                SheetFragment.PAGE_ACTUALITES
+            ))
+            mainLayout.addView(createSpacing(8))
+        }
         mainLayout.addView(createReferenceLink(
             "📖", getString(R.string.sa_guide_utilisation),
             getString(R.string.sa_reglages_correcteur_astuces_de_saisie),
