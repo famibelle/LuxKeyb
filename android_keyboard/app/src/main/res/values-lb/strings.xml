@@ -659,4 +659,6 @@
     <string name="act_reessayer">Nach eng Kéier probéieren</string>
     <string name="act_voir_site">De Site vum INLL kucken</string>
     <string name="act_source">Quell: Institut national des langues Luxembourg, inll.lu. D\'Neiegkeete ginn um Site gelueden, wann Dir dës Säit opmaacht.</string>
+    <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
+    <string name="wb_choisir_un_mot">Tippt op e Wuert an der Lëscht, fir seng Fiche hei opzemaachen.</string>
 </resources>

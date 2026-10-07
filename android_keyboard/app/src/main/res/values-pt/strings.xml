@@ -659,4 +659,6 @@
     <string name="act_reessayer">Tentar novamente</string>
     <string name="act_voir_site">Abrir o site do INLL</string>
     <string name="act_source">Fonte: Institut national des langues Luxembourg, inll.lu. As notícias são carregadas a partir do site quando abre esta página.</string>
+    <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
+    <string name="wb_choisir_un_mot">Toque numa palavra da lista para abrir a ficha aqui.</string>
 </resources>

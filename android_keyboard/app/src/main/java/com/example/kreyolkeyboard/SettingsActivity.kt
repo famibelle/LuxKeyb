@@ -147,6 +147,24 @@ class SettingsActivity : AppCompatActivity() {
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     
     companion object {
+        /**
+         * Les écrans de texte, ramenés à une colonne centrée sur tablette (voir
+         * [LargeurLecture]). Les jeux à grille n'y sont pas : ils ont leurs deux
+         * colonnes ([DeuxColonnes]). Le Wierderbuch non plus : il montre sa
+         * liste et sa fiche côte à côte.
+         */
+        private val ECRANS_DE_LECTURE = setOf(
+            OnboardingFragment::class.java,
+            StatsFragment::class.java,
+            AboutFragment::class.java,
+            GuideFragment::class.java,
+            com.example.kreyolkeyboard.actualites.ActualitesFragment::class.java,
+            WordScrambleFragment::class.java,
+            WuertrietFragment::class.java,
+            ClozeFragment::class.java,
+            ZuelenFragment::class.java,
+        )
+
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html"
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
@@ -203,6 +221,24 @@ class SettingsActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Sur tablette, les écrans de texte sont ramenés à une colonne de
+        // lecture centrée. Une seule surveillance plutôt qu'un appel dans
+        // chaque écran : elle couvre aussi le guide et les actualités, ouverts
+        // dans une feuille.
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object : androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: androidx.fragment.app.FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    if (f.javaClass in ECRANS_DE_LECTURE) LargeurLecture.borner(v)
+                }
+            },
+            true
+        )
 
         if (!ACTUALITES_INLL) com.example.kreyolkeyboard.actualites.FluxInll.oublier(this)
 
@@ -4113,7 +4149,9 @@ class SettingsActivity : AppCompatActivity() {
                 
                 var currentRowWidth = 0
                 // Calculer la largeur disponible: largeur écran - padding container (24) - padding statsContainer (48) - marges (24)
-                val screenWidth = resources.displayMetrics.widthPixels - 96
+                // La largeur du contenu, et non celle de l'écran : sur tablette
+                // l'onglet est ramené à une colonne (voir LargeurLecture).
+                val screenWidth = LargeurLecture.largeur(this@SettingsActivity) - 96
                 
                 words.forEach { word ->
                     // Créer le chip du mot, suivi de sa traduction quand on la
@@ -9953,6 +9991,25 @@ class SettingsActivity : AppCompatActivity() {
 
         private var rootView: ScrollView? = null
         private lateinit var champRecherche: EditText
+
+        /**
+         * Le panneau de droite où s'ouvre la fiche, sur tablette en paysage
+         * seulement ; ailleurs elle reste une fenêtre ancrée en bas.
+         *
+         * Côte à côte, on parcourt les résultats sans ouvrir et fermer une
+         * fenêtre à chaque mot : c'est ce que le grand écran apporte à un
+         * dictionnaire.
+         */
+        private var panneauFiche: FrameLayout? = null
+
+        /** La fiche ouverte dans le panneau, pour la retrouver après une rotation. */
+        class FicheOuverte : androidx.lifecycle.ViewModel() {
+            var resultat: TranslationDictionary.Resultat? = null
+        }
+
+        private val ficheOuverte by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[FicheOuverte::class.java]
+        }
         private lateinit var conteneurResultats: LinearLayout
         private lateinit var tvEtat: TextView
 
@@ -10014,6 +10071,9 @@ class SettingsActivity : AppCompatActivity() {
             })
 
             champRecherche = EditText(activity).apply {
+                // Un identifiant fixe : Android garde ainsi la requête à la
+                // rotation, et la recherche repart d'elle-même.
+                id = R.id.recherche_wierderbuch
                 hint = getString(R.string.sa_haus_maison_kaz_chat)
                 textSize = 18f
                 // Couleurs explicites : sur fond blanc imposé, la couleur de
@@ -10078,7 +10138,57 @@ class SettingsActivity : AppCompatActivity() {
             rootView = racine
 
             afficherResultats("")
-            return racine
+            if (!DeuxColonnes.actives(activity)) {
+                panneauFiche = null
+                return racine
+            }
+
+            // Tablette en paysage : la liste à gauche, la fiche à droite.
+            val panneau = FrameLayout(activity).apply {
+                setBackgroundColor(Color.WHITE)
+                layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                )
+            }
+            panneauFiche = panneau
+            val choisie = ficheOuverte.resultat
+            if (choisie != null) montrerDansLePanneau(activity, choisie) else inviterAuChoix(activity)
+
+            return LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setBackgroundColor(Color.parseColor("#F5F5F5"))
+                addView(racine, LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                ))
+                addView(panneau)
+            }
+        }
+
+        /** Le panneau vide : il dit à quoi il sert plutôt que de rester blanc. */
+        private fun inviterAuChoix(activity: SettingsActivity) {
+            val panneau = panneauFiche ?: return
+            panneau.removeAllViews()
+            panneau.addView(TextView(activity).apply {
+                text = getString(R.string.wb_choisir_un_mot)
+                textSize = 16f
+                gravity = Gravity.CENTER
+                setTextColor(Color.parseColor("#999999"))
+                setLineSpacing(0f, 1.25f)
+                setPadding(48, 48, 48, 48)
+            }, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ))
+        }
+
+        private fun montrerDansLePanneau(
+            activity: SettingsActivity,
+            resultat: TranslationDictionary.Resultat
+        ) {
+            val panneau = panneauFiche ?: return
+            ficheOuverte.resultat = resultat
+            panneau.removeAllViews()
+            panneau.addView(contenuFiche(activity, resultat, null))
         }
 
         override fun onResume() {
@@ -10197,6 +10307,10 @@ class SettingsActivity : AppCompatActivity() {
             activity: SettingsActivity,
             resultat: TranslationDictionary.Resultat
         ) {
+            if (panneauFiche != null) {
+                montrerDansLePanneau(activity, resultat)
+                return
+            }
             // Une Dialog ordinaire ancrée en bas, et non un BottomSheetDialog :
             // Material 1.12 et 1.13 y appellent Window.setStatusBarColor et
             // setNavigationBarColor, obsolètes depuis Android 15, et la Play
@@ -10220,7 +10334,8 @@ class SettingsActivity : AppCompatActivity() {
         private fun contenuFiche(
             activity: SettingsActivity,
             resultat: TranslationDictionary.Resultat,
-            dialogue: Dialog
+            /** Null quand la fiche est dans le panneau : rien à fermer. */
+            dialogue: Dialog?
         ): View {
             val colonne = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL
@@ -10344,7 +10459,7 @@ class SettingsActivity : AppCompatActivity() {
                     Color.parseColor("#1976D2"), Color.WHITE, null
                 ) {
                     copierMot(activity, resultat.mot)
-                    dialogue.dismiss()
+                    dialogue?.dismiss()
                 }.apply {
                     (layoutParams as LinearLayout.LayoutParams).bottomMargin = 20
                 })
@@ -10354,7 +10469,7 @@ class SettingsActivity : AppCompatActivity() {
                     Color.WHITE, Color.parseColor("#2C7A8C"), Color.parseColor("#B9D6DD")
                 ) {
                     ouvrirLod(activity, resultat.mot)
-                    dialogue.dismiss()
+                    dialogue?.dismiss()
                 })
             })
 
@@ -10509,6 +10624,7 @@ class SettingsActivity : AppCompatActivity() {
             rechercheEnAttente?.let { delaiRecherche.removeCallbacks(it) }
             rechercheEnAttente = null
             rootView = null
+            panneauFiche = null
         }
     }
 

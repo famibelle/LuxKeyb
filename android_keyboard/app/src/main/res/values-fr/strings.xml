@@ -659,4 +659,6 @@
     <string name="act_reessayer">Réessayer</string>
     <string name="act_voir_site">Voir le site de l\'INLL</string>
     <string name="act_source">Source : Institut national des langues Luxembourg, inll.lu. Les actualités sont chargées depuis son site quand vous ouvrez cette page.</string>
+    <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
+    <string name="wb_choisir_un_mot">Touchez un mot de la liste pour ouvrir sa fiche ici.</string>
 </resources>

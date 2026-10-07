@@ -14,4 +14,8 @@
          les pages qu'il porte, et une rotation les recréait toutes à neuf,
          jeu en cours compris. -->
     <item name="onglets" type="id" />
+
+    <!-- Le champ de recherche du Wierderbuch : un identifiant fixe pour que
+         la requête survive à une rotation. -->
+    <item name="recherche_wierderbuch" type="id" />
 </resources>
