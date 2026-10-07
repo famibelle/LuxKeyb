@@ -24,8 +24,8 @@ graphics/
     captures/<langue>/      les 8 captures de la Console, une langue par
                             dossier (fr-FR lb de-DE en-US pt-PT), nommées
                             d'après leur emplacement et ce qu'elles montrent
-    hors-console/           un visuel par jeu et deux du carnet, pour le site
-                            et les réseaux, jamais envoyés à la Console
+    hors-console/<langue>/  un visuel par jeu, deux du carnet et un de la voix,
+                            pour le site et les réseaux, jamais envoyés à la Console
   captures-emulateur-pixel9/
     <langue>/             les écrans de l'application dans cette langue ;
                           les captures de clavier, communes, sont à la racine

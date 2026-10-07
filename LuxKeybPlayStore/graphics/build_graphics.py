@@ -5,9 +5,7 @@
     python3 build_graphics.py icon       # icône 512 seule
     python3 build_graphics.py feature    # image mise en avant seule
     python3 build_graphics.py shots      # captures téléphone seules, dans les cinq langues
-    python3 build_graphics.py jeux       # un visuel par jeu (hors des 8 de la Console)
-    python3 build_graphics.py carnet     # boîte de Leitner et éventail de cartes
-    python3 build_graphics.py dictee     # la dictée en action, écran entier
+    python3 build_graphics.py hors       # visuels hors Console (jeux, carnet, voix), dans les cinq langues
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les fichiers à envoyer à la Play Console.
@@ -20,8 +18,8 @@ rien à retrouver au moment de l'envoi :
   captures/<langue>/       les huit captures, légende dans la langue
     Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Installation).png
                                                     depuis captures-emulateur-pixel9/
-  hors-console/            un visuel par jeu, deux du carnet et un de la dictée, en français,
-                           pour le site et les réseaux
+  hors-console/<langue>/   un visuel par jeu, deux du carnet et un de la voix,
+                           pour le site, les réseaux et la fiche
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -54,13 +52,21 @@ refaire à chaque changement visible.
 
 Ces cinq écrans de l'application existent dans chaque langue, sous
 `captures-emulateur-pixel9/<langue>/` (même nom de fichier que leur ancêtre
-français de la racine, qui ne sert plus qu'aux visuels hors Console). Ils ont
+français de la racine). Ils ont
 été pris le 5 octobre 2026 sous la 33.1.0, la langue imposée par
 `adb shell cmd locale set-app-locales com.potomitan.luxkeyboard --locales <l>`,
 avec le même carnet dans les cinq langues. L'installation montre un premier
 lancement, clavier activé mais pas encore choisi : une fois le clavier choisi,
 l'application passe d'elle-même sur l'accueil « Haut » et l'ancien écran
 « 2/3 » n'existe plus.
+
+Les neuf écrans des jeux et du carnet (11 à 19) ont été pris de même dans
+lb, de-DE, en-US et pt-PT le 7 octobre 2026 sous la 33.2.1, pour les visuels
+hors Console ; le français garde ceux de la racine (28 septembre). Wuertriet
+y montre trois essais (MOIEN, KAFFI, WUERT), tapés par `input text`, le
+clavier refermé ensuite. Écarter une grille ou une phrase dont la définition
+visible gêne sur une vitrine (« death », un nom de personnalité) : un nouveau
+tirage suffit.
 
 Dépendances : google-chrome (rendu HTML) et ImageMagick (`convert`).
 
@@ -226,52 +232,149 @@ def specs_de(langue: str):
     return [(nom, src, None, *leg) for (nom, src), leg in zip(CAPTURES, legendes)]
 
 
-# Les visuels de jeux et du carnet, hors Console, restent en français.
-SPECS = specs_de("fr-FR")
-
 # Hors des huit emplacements de la Console (limite de 8) : un visuel par jeu,
-# pour le site, les réseaux et la fiche complète. Même gabarit, même format.
-JEUX = [
-    ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich-mots-caches.png", None, "Jeu",
-     "Retrouvez les mots cachés",
-     "Une grille de lettres, des mots à faire glisser du doigt, avec leur traduction française."),
-    ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix-lettres-dans-l-ordre.png", None, "Jeu",
-     "Remettez les lettres dans l'ordre",
-     "La première et la dernière lettre sont données, le sens en français sert d'indice."),
-    ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet-mot-de-5-lettres.png", None, "Jeu",
-     "Devinez le mot en six essais",
-     "Cinq lettres, trois couleurs, et un mot qui doit exister dans le dictionnaire luxembourgeois."),
-    ("Jeu 4 (Wuertlück)", "14-jeu-wuertlueck-phrase-a-trou.png", None, "Jeu",
-     "Complétez la vraie phrase",
-     "Une phrase réelle du corpus, un mot manquant, quatre propositions dont une seule est de l'auteur."),
-    ("Jeu 5 (Zuelwuert)", "15-jeu-zuelwuert-nombre-en-lettres.png", None, "Jeu",
-     "Écrivez le résultat en toutes lettres",
-     "Une multiplication, quatre orthographes : la règle d'Eifel fait toute la difficulté."),
-    ("Jeu 6 (Kräizwuert)", "16-jeu-kraizwuert-mots-croises.png", None, "Jeu",
-     "Des mots croisés à écrire soi-même",
-     "Définitions en français, accents et majuscules s'apprennent en les écrivant."),
-    ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz-mots-a-placer.png", None, "Jeu",
-     "Placez les mots dans la grille",
-     "Aucune définition : les longueurs et les croisements suffisent, le sens se révèle une fois le mot placé."),
+# deux du carnet et un de la voix, pour le site, les réseaux et la fiche
+# complète. Même gabarit, même format, un dossier par langue comme `captures/`.
+# Le nom de fichier reste en français dans toutes les langues ; les écrans des
+# jeux et du carnet viennent de `captures-emulateur-pixel9/<langue>/` (pris le
+# 7 octobre 2026 sous la 33.2.1), le français de la racine (28 septembre).
+HORS_CONSOLE_FICHIERS = [
+    ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich-mots-caches.png"),
+    ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix-lettres-dans-l-ordre.png"),
+    ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet-mot-de-5-lettres.png"),
+    ("Jeu 4 (Wuertlück)", "14-jeu-wuertlueck-phrase-a-trou.png"),
+    ("Jeu 5 (Zuelwuert)", "15-jeu-zuelwuert-nombre-en-lettres.png"),
+    ("Jeu 6 (Kräizwuert)", "16-jeu-kraizwuert-mots-croises.png"),
+    ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz-mots-a-placer.png"),
+    ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner-sept-casiers.png"),
+    ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail-de-cartes.png"),
+    # la voix, recadrée sur la bulle, le bandeau du micro et le clavier :
+    # l'écran entier de Messages est une conversation vide, un grand aplat blanc
+    ("Voix (Message parlé)", "20-clavier-dictee-luxasr-recadre.png"),
 ]
+VOIX = "Voix (Message parlé)"
 
-# La révision espacée du carnet : la boîte, puis les cartes d'un casier.
-CARNET = [
-    ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner-sept-casiers.png", None, "Boîte de Leitner",
-     "Sept casiers, d'un jour à acquis",
-     "Une bonne réponse fait avancer la carte : elle revient de plus en plus tard, jusqu'à être acquise."),
-    ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail-de-cartes.png", None, "Éventail de cartes",
-     "Les cartes d'un casier en éventail",
-     "Glissez pour parcourir, touchez une carte pour la lire : sens, phrase d'exemple et traduction."),
-]
+# (kicker, titre, sous-titre) de chaque visuel hors Console, dans l'ordre de
+# HORS_CONSOLE_FICHIERS. Les gloses suivent la langue de l'interface, sauf en
+# luxembourgeois où elles sont en français : les légendes le disent.
+HORS_CONSOLE_LEGENDES = {
+    "fr-FR": [
+        ("Jeu", "Retrouvez les mots cachés",
+         "Une grille de lettres, des mots à faire glisser du doigt, avec leur traduction française."),
+        ("Jeu", "Remettez les lettres dans l'ordre",
+         "La première et la dernière lettre sont données, le sens en français sert d'indice."),
+        ("Jeu", "Devinez le mot en six essais",
+         "Cinq lettres, trois couleurs, et un mot qui doit exister dans le dictionnaire luxembourgeois."),
+        ("Jeu", "Complétez la vraie phrase",
+         "Une phrase réelle du corpus, un mot manquant, quatre propositions dont une seule est de l'auteur."),
+        ("Jeu", "Écrivez le résultat en toutes lettres",
+         "Une multiplication, quatre orthographes : la règle d'Eifel fait toute la difficulté."),
+        ("Jeu", "Des mots croisés à écrire soi-même",
+         "Définitions en français, accents et majuscules s'apprennent en les écrivant."),
+        ("Jeu", "Placez les mots dans la grille",
+         "Aucune définition : les longueurs et les croisements suffisent, le sens se révèle une fois le mot placé."),
+        ("Boîte de Leitner", "Sept casiers, d'un jour à acquis",
+         "Une bonne réponse fait avancer la carte : elle revient de plus en plus tard, jusqu'à être acquise."),
+        ("Éventail de cartes", "Les cartes d'un casier en éventail",
+         "Glissez pour parcourir, touchez une carte pour la lire : sens, phrase d'exemple et traduction."),
+        ("À voix haute", "Vous parlez, il écrit",
+         "Touchez le micro et parlez : votre message s'écrit en luxembourgeois, accents compris."),
+    ],
+    "lb": [
+        ("Spill", "Fannt déi verstoppt Wierder",
+         "E Gitter vu Buschtawen, Wierder fir mam Fanger nozezéien, mat hirer franséischer Iwwersetzung."),
+        ("Spill", "Bréngt d'Buschtawen an déi richteg Reiefolleg",
+         "Den éischten an de leschte Buschtaf sinn ugi, d'franséisch Bedeitung déngt als Hiweis."),
+        ("Spill", "Rot d'Wuert a sechs Versich",
+         "Fënnef Buschtawen, dräi Faarwen, an e Wuert, dat am lëtzebuergeschen Dictionnaire muss stoen."),
+        ("Spill", "Ergänzt de richtege Saz",
+         "E richtege Saz aus dem Korpus, e Wuert feelt, véier Virschléi, an nëmmen een ass vum Auteur."),
+        ("Spill", "Schreift d'Resultat a Buschtawen",
+         "Eng Multiplikatioun, véier Schreifweisen: d'Eifeler Regel mécht déi ganz Schwieregkeet aus."),
+        ("Spill", "E Kräizwuert, dat Dir selwer schreift",
+         "Definitiounen op Franséisch: Akzenter a grouss Buschtawe léiert een, andeems een se schreift."),
+        ("Spill", "Setzt d'Wierder an d'Gitter",
+         "Keng Definitioun: Längten a Kräizunge ginn duer, d'Bedeitung weist sech, soubal d'Wuert op senger Plaz ass."),
+        ("Leitner-Këscht", "Siwe Fächer, vun engem Dag bis geléiert",
+         "Eng richteg Äntwert bréngt d'Kaart weider: si kënnt ëmmer méi spéit erëm, bis se geléiert ass."),
+        ("Kaartefächer", "D'Kaarte vun engem Fach als Fächer",
+         "Wëscht fir ze bliederen, tippt op eng Kaart fir se ze liesen: Bedeitung, Beispillsaz an Iwwersetzung."),
+        ("Mat der Stëmm", "Dir schwätzt, si schreift",
+         "Dréckt op de Mikro a schwätzt: Äre Message gëtt op Lëtzebuergesch geschriwwen, mat den Akzenter."),
+    ],
+    "de-DE": [
+        ("Spiel", "Finden Sie die versteckten Wörter",
+         "Ein Buchstabengitter, Wörter zum Nachziehen mit dem Finger, mit ihrer deutschen Übersetzung."),
+        ("Spiel", "Bringen Sie die Buchstaben in die richtige Reihenfolge",
+         "Erster und letzter Buchstabe sind vorgegeben, die deutsche Bedeutung dient als Hinweis."),
+        ("Spiel", "Erraten Sie das Wort in sechs Versuchen",
+         "Fünf Buchstaben, drei Farben und ein Wort, das im luxemburgischen Wörterbuch stehen muss."),
+        ("Spiel", "Ergänzen Sie den echten Satz",
+         "Ein echter Satz aus dem Korpus, ein fehlendes Wort, vier Vorschläge, nur einer stammt vom Autor."),
+        ("Spiel", "Schreiben Sie das Ergebnis in Buchstaben",
+         "Eine Multiplikation, vier Schreibweisen: Die Eifeler Regel macht die ganze Schwierigkeit aus."),
+        ("Spiel", "Ein Kreuzworträtsel zum Selberschreiben",
+         "Definitionen auf Deutsch: Akzente und Großbuchstaben lernt man, indem man sie schreibt."),
+        ("Spiel", "Setzen Sie die Wörter ins Raster",
+         "Keine Definition: Längen und Kreuzungen genügen, die Bedeutung zeigt sich, sobald das Wort sitzt."),
+        ("Lernkartei", "Sieben Fächer, von einem Tag bis gelernt",
+         "Eine richtige Antwort bringt die Karte weiter: Sie kommt immer später wieder, bis sie gelernt ist."),
+        ("Kartenfächer", "Die Karten eines Fachs als Fächer",
+         "Wischen zum Blättern, eine Karte antippen zum Lesen: Bedeutung, Beispielsatz und Übersetzung."),
+        ("Mit der Stimme", "Sie sprechen, sie schreibt",
+         "Tippen Sie auf das Mikrofon und sprechen Sie: Ihre Nachricht erscheint auf Luxemburgisch, mit allen Akzenten."),
+    ],
+    "en-US": [
+        ("Game", "Find the hidden words",
+         "A grid of letters, words to trace with your finger, with their English translation."),
+        ("Game", "Put the letters back in order",
+         "The first and last letters are given, and the English meaning is your hint."),
+        ("Game", "Guess the word in six tries",
+         "Five letters, three colours, and a word that must be in the Luxembourgish dictionary."),
+        ("Game", "Complete the real sentence",
+         "A real sentence from the corpus, one missing word, four options, and only one is the author's."),
+        ("Game", "Write the result in words",
+         "A multiplication, four spellings: the Eifel rule is where the difficulty lies."),
+        ("Game", "A crossword you write yourself",
+         "Clues in English: you learn accents and capitals by writing them."),
+        ("Game", "Place the words in the grid",
+         "No clues: lengths and crossings are enough, and the meaning appears once the word is in place."),
+        ("Leitner box", "Seven compartments, from one day to learnt",
+         "A right answer moves the card forward: it comes back later and later, until it is learnt."),
+        ("Card fan", "A compartment's cards, fanned out",
+         "Swipe to browse, tap a card to read it: meaning, example sentence and translation."),
+        ("Out loud", "You speak, it writes",
+         "Tap the microphone and speak: your message is written in Luxembourgish, accents included."),
+    ],
+    "pt-PT": [
+        ("Jogo", "Encontre as palavras escondidas",
+         "Uma grelha de letras, palavras para traçar com o dedo, com a sua tradução em português."),
+        ("Jogo", "Ponha as letras por ordem",
+         "A primeira e a última letra são dadas, o significado em português serve de pista."),
+        ("Jogo", "Adivinhe a palavra em seis tentativas",
+         "Cinco letras, três cores e uma palavra que tem de existir no dicionário luxemburguês."),
+        ("Jogo", "Complete a frase verdadeira",
+         "Uma frase real do corpus, uma palavra em falta, quatro propostas e só uma é do autor."),
+        ("Jogo", "Escreva o resultado por extenso",
+         "Uma multiplicação, quatro grafias: a regra de Eifel faz toda a dificuldade."),
+        ("Jogo", "Palavras cruzadas para escrever",
+         "Definições em português: os acentos e as maiúsculas aprendem-se escrevendo-os."),
+        ("Jogo", "Coloque as palavras na grelha",
+         "Nenhuma definição: comprimentos e cruzamentos bastam, o significado revela-se quando a palavra fica no lugar."),
+        ("Caixa de Leitner", "Sete compartimentos, de um dia a aprendida",
+         "Uma resposta certa faz a carta avançar: volta cada vez mais tarde, até ficar aprendida."),
+        ("Leque de cartas", "As cartas de um compartimento em leque",
+         "Deslize para percorrer, toque numa carta para a ler: significado, frase de exemplo e tradução."),
+        ("Em voz alta", "Fala, ele escreve",
+         "Toque no microfone e fale: a sua mensagem escreve-se em luxemburguês, com os acentos."),
+    ],
+}
 
-# La dictée en action, recadrée sur la bulle, le bandeau LuxASR et le clavier :
-# l'écran entier de Messages est une conversation vide, un grand aplat blanc.
-DICTEE = [
-    ("Voix (Message parlé)", "20-clavier-dictee-luxasr-recadre.png", None, "À voix haute",
-     "Vous parlez, il écrit",
-     "Touchez le micro et parlez : votre message s'écrit en luxembourgeois, accents compris."),
-]
+
+def hors_console_de(langue: str):
+    """Les dix (sortie, source, frame, kicker, titre, sous-titre) d'une langue."""
+    return [(nom, src, None, *leg)
+            for (nom, src), leg in zip(HORS_CONSOLE_FICHIERS, HORS_CONSOLE_LEGENDES[langue])]
 
 SHOT_TEMPLATE = """<meta charset="utf-8">
 <style>
@@ -362,10 +465,8 @@ def source_de(src: str, langue: str | None) -> pathlib.Path:
     return SHOTS / src
 
 
-def build_shots(specs=None, langue: str | None = None, sub_px: int = 34) -> None:
-    specs = SPECS if specs is None else specs
-    out_dir = CAPTURES_DIR / langue if langue else HORS_CONSOLE
-    pied = LEGENDES[langue or "fr-FR"][1]
+def build_shots(specs, langue: str, out_dir: pathlib.Path) -> None:
+    pied = LEGENDES[langue][1]
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = pathlib.Path(tmpdir)
@@ -374,6 +475,8 @@ def build_shots(specs=None, langue: str | None = None, sub_px: int = 34) -> None
         icon = b64(small_icon)
 
         for index, (name, src, frame, kicker, title, sub) in enumerate(specs, 1):
+            # la capture de la voix est basse : place pour un sous-titre plus lisible
+            sub_px = 44 if name == VOIX else 34
             source = source_de(src, langue)
             if not source.exists():
                 sys.exit(f"source manquante : {source}")
@@ -405,20 +508,12 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
 
 def build_langues() -> None:
     for langue in LANGUES:
-        build_shots(specs_de(langue), langue)
+        build_shots(specs_de(langue), langue, CAPTURES_DIR / langue)
 
 
-def build_games() -> None:
-    build_shots(JEUX)
-
-
-def build_carnet() -> None:
-    build_shots(CARNET)
-
-
-def build_dictee() -> None:
-    # la capture recadrée est basse, il reste la place d'un sous-titre plus lisible
-    build_shots(DICTEE, sub_px=44)
+def build_hors_console() -> None:
+    for langue in LANGUES:
+        build_shots(hors_console_de(langue), langue, HORS_CONSOLE / langue)
 
 
 def build_check() -> None:
@@ -460,10 +555,10 @@ def build_check() -> None:
         problems.append(f"{promouvables} captures au moins 1080x1080, il en faut 4 "
                         "pour que l'application soit promouvable")
 
-    for name, *_ in JEUX + CARNET + DICTEE:
-        path = HORS_CONSOLE / f"{name}.png"
+    hors = [HORS_CONSOLE / langue / f"{name}.png" for langue in LANGUES for name, _ in HORS_CONSOLE_FICHIERS]
+    for path in hors:
         if not path.exists():
-            problems.append(f"{path.name} : absent")
+            problems.append(f"{path.relative_to(OUT)} : absent")
         elif png_header(path)[:2] != (1080, 1920):
             problems.append(f"{path.name} : pas en 1080x1920")
 
@@ -471,20 +566,20 @@ def build_check() -> None:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(JEUX) + len(CARNET) + len(DICTEE)} visuels de jeux, de carnet et de dictée conformes")
+    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(HORS_CONSOLE_FICHIERS)} visuels hors Console dans chacune, conformes")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "carnet", "dictee", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "hors", "check"]
     known = {"icon": build_icon, "feature": build_feature,
-             "shots": build_langues, "jeux": build_games, "carnet": build_carnet, "dictee": build_dictee,
+             "shots": build_langues, "hors": build_hors_console,
              "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | carnet | dictee | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | hors | check)")
         known[target]()
     return 0
 

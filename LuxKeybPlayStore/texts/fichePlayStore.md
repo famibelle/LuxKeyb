@@ -256,8 +256,8 @@ L'icône et l'image de présentation sont dans
 les huit captures dans
 [`../graphics/feature-graphic/captures/<langue>/`](../graphics/feature-graphic/captures/),
 au nom de la langue de la fiche (`fr-FR`, `lb`, `de-DE`, `en-US`, `pt-PT`, les
-mêmes noms que les dossiers de textes). `feature-graphic/hors-console/` ne part
-pas à la Console : ce sont les visuels de jeux et du carnet, pour le site. Les noms de fichiers sont les mêmes dans toutes
+mêmes noms que les dossiers de textes). `feature-graphic/hors-console/<langue>/` ne part
+pas à la Console : ce sont les visuels de jeux, du carnet et de la voix, pour le site. Les noms de fichiers sont les mêmes dans toutes
 les langues ; seule la légende incrustée change. Chacun porte le
 nom de l'emplacement du formulaire de la Console où il va, il n'y a donc rien à
 retrouver au moment de l'envoi ; les captures portent en plus, entre

@@ -54,9 +54,9 @@ serait l'interface, pas la langue.
 <div align="center">
    <img src="LuxKeybPlayStore/graphics/feature-graphic/captures/fr-FR/Captures%20d%27%C3%A9cran%20pour%20t%C3%A9l%C3%A9phone%201%20%28Suggestions%29.png" alt="Le clavier propose « Moien », « Moie » et « Moies » en tapant « Moi »" width="19%">
    <img src="LuxKeybPlayStore/graphics/feature-graphic/captures/fr-FR/Captures%20d%27%C3%A9cran%20pour%20t%C3%A9l%C3%A9phone%205%20%28Wierderbuch%29.png" alt="La fiche du Wierderbuch pour Gromperekichelchen : sens, exemple, autres formes" width="19%">
-   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/Jeu%203%20%28Wuertriet%29.png" alt="Wuertriet, le jeu du mot de cinq lettres en six essais" width="19%">
-   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/Carnet%201%20%28Bo%C3%AEte%20de%20Leitner%29.png" alt="La boîte de Leitner et ses sept casiers" width="19%">
-   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/Carnet%202%20%28%C3%89ventail%20de%20cartes%29.png" alt="Les cartes d'un casier en éventail" width="19%">
+   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/fr-FR/Jeu%203%20%28Wuertriet%29.png" alt="Wuertriet, le jeu du mot de cinq lettres en six essais" width="19%">
+   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/fr-FR/Carnet%201%20%28Bo%C3%AEte%20de%20Leitner%29.png" alt="La boîte de Leitner et ses sept casiers" width="19%">
+   <img src="LuxKeybPlayStore/graphics/feature-graphic/hors-console/fr-FR/Carnet%202%20%28%C3%89ventail%20de%20cartes%29.png" alt="Les cartes d'un casier en éventail" width="19%">
 </div>
 
 *Suggestions en luxembourgeois et en français, Wierderbuch, jeux et boîte de Leitner (captures des versions 29 à 33, émulateur Pixel 9).*
