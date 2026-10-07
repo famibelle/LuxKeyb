@@ -293,7 +293,7 @@ Les nouvelles versions sont construites et publiées par **GitHub Actions** :
 
 ### Prérequis
 - **JDK 17** et le SDK Android 36
-- **Android 5.0** (API 21) ou supérieur pour installer le résultat
+- **Android 7.0** (API 24) ou supérieur pour installer le résultat
 - **20 Mo** d'espace libre
 
 ### Construire l'application

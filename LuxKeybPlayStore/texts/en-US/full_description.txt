@@ -58,7 +58,7 @@ The app speaks English, French, German, Portuguese or Luxembourgish. Pick yours 
 📱 EVERYWHERE ON YOUR PHONE
 
 • WhatsApp, text messages, email, social media: it works in every app
-• Android 5.0 and later, light or dark theme
+• Android 7.0 and later, light or dark theme
 • Guided setup in three steps, with a practice keyboard
 • Android shows a warning when you switch it on: it does so for every keyboard, this is normal, the app's guide explains it
 

@@ -10,13 +10,13 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
   title.txt               Nom de l'application (30)
   short_description.txt   Brève description (80)
   full_description.txt    Description complète (4 000)
-  changelogs/330200.txt   Nouveautés de la version, par versionCode (500)
+  changelogs/330201.txt   Nouveautés de la version, par versionCode (500)
 ```
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **33.2.0**
-(`versionCode` 330200), la première avec les actualités de l'INLL, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **33.2.1**
+(`versionCode` 330201), la première à exiger Android 7.0, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,7 +119,9 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 33.2.0 : [`fr-FR/changelogs/330200.txt`](fr-FR/changelogs/330200.txt).
+Texte de la 33.2.1 : [`fr-FR/changelogs/330201.txt`](fr-FR/changelogs/330201.txt), identique à celui de la 33.2.0,
+refusée par la Console parce qu'elle acceptait encore Android 5.0 alors que la
+protection automatique de Google Play exige Android 7.0 (SDK 24).
 Il ouvre sur les actualités de l'INLL (📰), puis reprend, raccourcies, les
 lignes de la 33.1.0 : la dictée, la confidentialité et le choix de la langue,
 pour le cas où aucune version avec la dictée ne serait encore passée en

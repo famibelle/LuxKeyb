@@ -67,7 +67,7 @@ Die App spricht Deutsch, Französisch, Englisch, Portugiesisch oder Luxemburgisc
 📱 ÜBERALL AUF IHREM HANDY
 
 • WhatsApp, SMS, E-Mail, soziale Netzwerke: Sie funktioniert in allen Apps
-• Android 5.0 und neuer, helles oder dunkles Design
+• Android 7.0 und neuer, helles oder dunkles Design
 • Geführte Einrichtung in drei Schritten, mit einer Testtastatur
 • Android zeigt beim Aktivieren eine Warnung an: Das tut es bei allen Tastaturen, das ist normal, die Anleitung in der App erklärt es
 
@@ -149,7 +149,7 @@ The app speaks English, French, German, Portuguese or Luxembourgish. Pick yours 
 📱 EVERYWHERE ON YOUR PHONE
 
 • WhatsApp, text messages, email, social media: it works in every app
-• Android 5.0 and later, light or dark theme
+• Android 7.0 and later, light or dark theme
 • Guided setup in three steps, with a practice keyboard
 • Android shows a warning when you switch it on: it does so for every keyboard, this is normal, the app's guide explains it
 
@@ -231,7 +231,7 @@ A aplicação fala português, francês, alemão, inglês ou luxemburguês. Esco
 📱 EM TODO O TELEMÓVEL
 
 • WhatsApp, SMS, e-mail, redes sociais: funciona em todas as aplicações
-• Android 5.0 ou mais recente, tema claro ou escuro
+• Android 7.0 ou mais recente, tema claro ou escuro
 • Instalação guiada em três passos, com um teclado de teste
 • O Android mostra um aviso ao ativá-lo: fá-lo com todos os teclados, é normal, o guia da aplicação explica porquê
 
@@ -313,7 +313,7 @@ D'App schwätzt Lëtzebuergesch, Franséisch, Däitsch, Englesch oder Portugises
 📱 ÜBERALL OP ÄREM HANDY
 
 • WhatsApp, SMS, E-Mail, sozial Netzwierker: si funktionéiert an alle Appen
-• Android 5.0 a méi nei, hellt oder donkelt Design
+• Android 7.0 a méi nei, hellt oder donkelt Design
 • Begleet Installatioun an dräi Schrëtt, mat enger Test-Tastatur
 • Android weist beim Aschalten eng Warnung: dat mécht et bei all Tastatur, dat ass normal, d'Uleedung an der App erkläert et
 

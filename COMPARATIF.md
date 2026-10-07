@@ -29,7 +29,7 @@ lëtzebuergesch comme une langue à part entière.
 | **Fonctionne hors ligne** | Oui pour la frappe, aucune requête réseau ; la dictée demande le réseau | Oui pour la frappe ; certaines fonctions demandent le réseau | Oui pour la frappe |
 | **Données de frappe** | **Seuls les mots déjà présents au dictionnaire sont comptés**, en local ; les champs sensibles sont exclus ; rien ne quitte l'appareil | Traitement embarqué + apprentissage fédéré, compte Google | Traitement embarqué, confidentialité différentielle |
 | **Code source** | Public, MIT — vérifiable ligne à ligne | Fermé | Fermé |
-| **Plateformes** | Android 5.0 et plus | Android et iOS | iOS et iPadOS uniquement |
+| **Plateformes** | Android 7.0 et plus | Android et iOS | iOS et iPadOS uniquement |
 | **Prix** | Gratuit | Gratuit | Inclus |
 
 ## Ce que Clavier Lëtzebuergesch apporte de plus

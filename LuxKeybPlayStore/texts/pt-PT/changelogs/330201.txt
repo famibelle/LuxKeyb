@@ -1,0 +1,4 @@
+📰 Novo: as notícias do Instituto Nacional de Línguas (INLL), no fundo do ecrã inicial. Cursos, Sproochentest, eventos.
+🎙️ Dite em luxemburguês: toque no microfone e fale, o texto escreve-se com pontuação. Reconhecimento pelo LuxASR, da Universidade do Luxemburgo.
+🔒 O que escreve continua a não sair do seu telemóvel. Só o ditado envia a sua voz.
+🌍 Escolha a língua da aplicação no fundo das Definições do teclado.

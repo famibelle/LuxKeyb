@@ -172,7 +172,7 @@ le dit en toutes lettres.
   <summary>Installer sans passer par Google Play</summary>
   <p>C'est possible, en installant le fichier à la main :
   <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
-  Android 5.0 ou plus récent · environ 7 Mo · la frappe ne quitte pas le téléphone.</p>
+  Android 7.0 ou plus récent · environ 7 Mo · la frappe ne quitte pas le téléphone.</p>
 </details>
 
 ## Une fois installée, il se passe quoi ?

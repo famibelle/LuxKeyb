@@ -58,7 +58,7 @@ A aplicação fala português, francês, alemão, inglês ou luxemburguês. Esco
 📱 EM TODO O TELEMÓVEL
 
 • WhatsApp, SMS, e-mail, redes sociais: funciona em todas as aplicações
-• Android 5.0 ou mais recente, tema claro ou escuro
+• Android 7.0 ou mais recente, tema claro ou escuro
 • Instalação guiada em três passos, com um teclado de teste
 • O Android mostra um aviso ao ativá-lo: fá-lo com todos os teclados, é normal, o guia da aplicação explica porquê
 

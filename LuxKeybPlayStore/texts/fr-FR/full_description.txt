@@ -58,7 +58,7 @@ L'application parle français, allemand, anglais, portugais ou luxembourgeois. C
 📱 PARTOUT SUR VOTRE TÉLÉPHONE
 
 • WhatsApp, SMS, e-mail, réseaux sociaux : il marche dans toutes les applications
-• Android 5.0 et plus récent, thème clair ou sombre
+• Android 7.0 et plus récent, thème clair ou sombre
 • Installation guidée en trois étapes, avec un clavier d'essai
 • Android affiche un avertissement au moment de l'activer : il le fait pour tous les claviers, c'est normal, le guide de l'application l'explique
 

@@ -199,7 +199,7 @@ l'Université du Luxembourg, et demande une connexion.
 | Dictée vocale dans d'autres langues (français, allemand) | Non (celle du système reste accessible) | Oui | Oui | Oui |
 | Traduction, presse-papiers, écriture manuscrite | Non | Oui | Oui | Partiellement |
 | Thèmes et personnalisation | Palette luxembourgeoise | Étendus | Très étendus | Très limités |
-| Plateformes | Android 5.0 et plus | Galaxy uniquement | Android et iOS | iOS et iPadOS |
+| Plateformes | Android 7.0 et plus | Galaxy uniquement | Android et iOS | iOS et iPadOS |
 | Prix | Gratuit, sans publicité | Préinstallé | Gratuit | Inclus |
 
 </div>

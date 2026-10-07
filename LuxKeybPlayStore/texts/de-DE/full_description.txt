@@ -58,7 +58,7 @@ Die App spricht Deutsch, Französisch, Englisch, Portugiesisch oder Luxemburgisc
 📱 ÜBERALL AUF IHREM HANDY
 
 • WhatsApp, SMS, E-Mail, soziale Netzwerke: Sie funktioniert in allen Apps
-• Android 5.0 und neuer, helles oder dunkles Design
+• Android 7.0 und neuer, helles oder dunkles Design
 • Geführte Einrichtung in drei Schritten, mit einer Testtastatur
 • Android zeigt beim Aktivieren eine Warnung an: Das tut es bei allen Tastaturen, das ist normal, die Anleitung in der App erklärt es
 
