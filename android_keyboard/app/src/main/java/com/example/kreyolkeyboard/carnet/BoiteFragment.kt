@@ -59,6 +59,21 @@ class BoiteFragment : Fragment() {
     /** Écarte un chargement dépassé par un plus récent, après une révision par exemple. */
     private var generation = 0
 
+    /**
+     * Vrai pendant une séance de révision, et survit à une rotation.
+     *
+     * Tourner la tablette recrée l'écran et la séance disparaissait avec lui.
+     * Chaque réponse étant notée au carnet sur-le-champ, la rouvrir suffit :
+     * les cartes déjà notées ont une nouvelle échéance et ne reviennent pas.
+     */
+    class Seance : androidx.lifecycle.ViewModel() {
+        var ouverte = false
+    }
+
+    private val seance by lazy {
+        androidx.lifecycle.ViewModelProvider(this)[Seance::class.java]
+    }
+
     private val retour = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             when {
@@ -121,6 +136,9 @@ class BoiteFragment : Fragment() {
         if (savedInstanceState == null && arguments?.getBoolean(ARG_REVISION_DIRECTE) == true) {
             arguments?.remove(ARG_REVISION_DIRECTE)
             if (Carnet.aRevoir(requireContext()) > 0) view.post { if (isAdded) lancerRevision() }
+        } else if (seance.ouverte) {
+            // Une séance était ouverte avant la rotation : on la rouvre.
+            view.post { if (isAdded) lancerRevision() }
         }
     }
 
@@ -251,6 +269,7 @@ class BoiteFragment : Fragment() {
     }
 
     private fun lancerRevision() {
+        seance.ouverte = true
         val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
         boite.isEnabled = false
@@ -271,7 +290,10 @@ class BoiteFragment : Fragment() {
                     paquet = aDemander,
                     monteesParLeClavier = ecrites.toList(),
                     surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
-                    surFin = { if (isAdded) chargerEnFond() }
+                    surFin = {
+                        seance.ouverte = false
+                        if (isAdded) chargerEnFond()
+                    }
                 ).ouvrir()
             }
         }.start()

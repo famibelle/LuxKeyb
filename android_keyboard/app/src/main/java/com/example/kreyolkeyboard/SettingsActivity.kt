@@ -235,6 +235,7 @@ class SettingsActivity : AppCompatActivity() {
         
         // ViewPager2 pour le contenu avec navigation swipe
         viewPager = ViewPager2(this).apply {
+            id = R.id.onglets
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
@@ -258,6 +259,12 @@ class SettingsActivity : AppCompatActivity() {
             
             // 🔄 Démarrer au milieu de la plage virtuelle pour permettre le swipe dans les deux sens
             post {
+                // Après une rotation, ViewPager2 a déjà rétabli sa page et les
+                // fragments qu'elle portait : y sauter à nouveau en créerait
+                // une neuve, et le jeu en cours serait perdu.
+                if (savedInstanceState != null &&
+                    currentItem % SettingsPagerAdapter.REAL_COUNT == requestedTab
+                ) return@post
                 val startPosition = SettingsPagerAdapter.START_POSITION - (SettingsPagerAdapter.START_POSITION % SettingsPagerAdapter.REAL_COUNT) + requestedTab
                 setCurrentItem(startPosition, false)
             }
@@ -5050,9 +5057,34 @@ class SettingsActivity : AppCompatActivity() {
     // Fragment pour les mots mêlés
     class WordSearchFragment : Fragment() {
         
-        private var currentPuzzle: WordSearchPuzzle? = null
-        private var startTime: Long = 0
-        private var wordsFound = 0
+        /**
+         * Ce qui doit survivre à une rotation : la grille, ses mots trouvés et
+         * le score. Même raison que pour Kräizwuert, voir
+         * [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var puzzle: WordSearchPuzzle? = null
+            val casesTrouvees = mutableSetOf<Int>()
+            var startTime: Long = 0
+            var wordsFound = 0
+            var score = 0
+            val gagnes = mutableListOf<String>()
+            val neuves = mutableSetOf<String>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var currentPuzzle: WordSearchPuzzle?
+            get() = memoire.puzzle
+            set(valeur) { memoire.puzzle = valeur }
+        private var startTime: Long
+            get() = memoire.startTime
+            set(valeur) { memoire.startTime = valeur }
+        private var wordsFound: Int
+            get() = memoire.wordsFound
+            set(valeur) { memoire.wordsFound = valeur }
         private lateinit var gridView: GridView
         private lateinit var wordsListContainer: LinearLayout
         private lateinit var tvTheme: TextView
@@ -5060,10 +5092,10 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var boutonCarnet: TextView
 
         /** Les formes gagnées dans la grille en cours, dans l'ordre du tracé. */
-        private val gagnes = mutableListOf<String>()
+        private val gagnes get() = memoire.gagnes
 
         /** Celles que le carnet n'avait jamais vues. */
-        private val neuves = mutableSetOf<String>()
+        private val neuves get() = memoire.neuves
 
         /** La pochette de fin de grille, posée au-dessus de tout. */
         private var pochette: View? = null
@@ -5137,19 +5169,35 @@ class SettingsActivity : AppCompatActivity() {
                     gridView = GridView(activity).apply {
                         // Calculer la taille disponible pour la grille
                         val screenWidth = resources.displayMetrics.widthPixels
-                        val availableWidth = screenWidth - 48
+                        val deuxColonnes = DeuxColonnes.actives(activity)
+                        val availableWidth = ((screenWidth - 48) *
+                            (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
                         
                         // La grille est toujours 8x8
                         val gridSize = 8
                         // Calculer la taille d'une cellule en fonction de la largeur
-                        val cellSize = availableWidth / gridSize
+                        var cellSize = availableWidth / gridSize
+                        // Sur tablette, la largeur seule donnait des cases de
+                        // trois centimètres et une grille plus haute que
+                        // l'écran : la hauteur borne aussi. Les téléphones,
+                        // plus hauts que larges, gardent leur grille.
+                        if (resources.configuration.smallestScreenWidthDp >= 600) {
+                            val budgetHauteur = (resources.displayMetrics.heightPixels *
+                                (if (deuxColonnes) DeuxColonnes.PART_HAUTEUR else 0.5f)).toInt()
+                            cellSize = minOf(cellSize, budgetHauteur / gridSize)
+                        }
                         // Hauteur de la grille = 8 cellules + espacements + padding
                         val gridHeight = (cellSize * gridSize) + (4 * (gridSize - 1)) + 24
                         
-                        layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            gridHeight
-                        )
+                        layoutParams = if (cellSize * gridSize < availableWidth) {
+                            LinearLayout.LayoutParams(gridHeight, gridHeight)
+                                .apply { gravity = Gravity.CENTER_HORIZONTAL }
+                        } else {
+                            LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                gridHeight
+                            )
+                        }
                         setPadding(12, 12, 12, 12)
                         stretchMode = GridView.STRETCH_COLUMN_WIDTH
                         setBackgroundColor(Color.parseColor("#F5F5F5")) // Fond gris très clair
@@ -5216,6 +5264,14 @@ class SettingsActivity : AppCompatActivity() {
                         setBackgroundColor(Color.parseColor("#FFFFFF"))
                     }
                     addView(wordsListContainer)
+
+                    if (DeuxColonnes.actives(activity)) {
+                        DeuxColonnes.repartir(
+                            this,
+                            enHaut = listOf(headerLayout),
+                            aGauche = listOf(gridView)
+                        )
+                    }
                 }
                 
                 addView(mainLayout)
@@ -5226,7 +5282,16 @@ class SettingsActivity : AppCompatActivity() {
                     // si l'utilisateur a déjà changé d'onglet entre-temps, le fragment
                     // n'est plus attaché et requireActivity()/requireContext() planterait.
                     if (isAdded) {
-                        generateNewPuzzle()
+                        val enCours = currentPuzzle
+                        if (enCours == null) {
+                            generateNewPuzzle()
+                        } else {
+                            // Après une rotation : la même grille, ses mots
+                            // trouvés, le même score.
+                            displayPuzzle(enCours)
+                            Pochette.rafraichir(boutonCarnet, activity)
+                            updateScore(0)
+                        }
                     }
                 }
             }
@@ -5237,6 +5302,7 @@ class SettingsActivity : AppCompatActivity() {
                 val activity = requireActivity() as SettingsActivity
 
                 // Générer une nouvelle grille 8x8 avec des mots aléatoires du dictionnaire
+                memoire.casesTrouvees.clear()
                 currentPuzzle = WordSearchGenerator.generatePuzzle(
                     context = activity,
                     theme = "lux", // Thème unique
@@ -5270,7 +5336,7 @@ class SettingsActivity : AppCompatActivity() {
             val activity = requireActivity() as SettingsActivity
             
             // Configurer l'adaptateur de la grille
-            val adapter = WordSearchGridAdapter(activity, puzzle)
+            val adapter = WordSearchGridAdapter(activity, puzzle, memoire.casesTrouvees)
             adapter.setOnWordFoundListener { word ->
                 onWordFound(word)
             }
@@ -5387,9 +5453,10 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         private fun updateScore(points: Int) {
-            val currentScore = tvScore.text.toString().replace("[^0-9]".toRegex(), "").toIntOrNull() ?: 0
-            val newScore = currentScore + points
-            tvScore.text = "⭐ $newScore"
+            // Le score se cumule d'une grille à l'autre, et survit à une
+            // rotation : il est gardé avec la partie, plus relu dans le texte.
+            memoire.score += points
+            tvScore.text = "⭐ ${memoire.score}"
         }
     }
     
@@ -5411,22 +5478,58 @@ class SettingsActivity : AppCompatActivity() {
         private var scrambledAdapter: com.example.kreyolkeyboard.wordscramble.ScrambledLettersAdapter? = null
         private var answerAdapter: com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter? = null
         
-        private var currentWord: String = ""
-        private var scrambledLetters: List<Char> = listOf()
-        private val currentAnswer = mutableListOf<Char?>()
-        private val selectedPositions = mutableListOf<Int>()
-        
-        private var gameWords: List<String> = listOf()
-        private var currentWordIndex = 0
-        private var wordsCorrect = 0
-        private var score = 0
-        private var difficulty = com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty.NORMAL
+        /**
+         * Ce qui doit survivre à une rotation : la série de mots, le mot en
+         * cours avec ses lettres déjà placées, et le score. Même raison que
+         * pour Kräizwuert, voir [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var currentWord: String = ""
+            var scrambledLetters: List<Char> = listOf()
+            val currentAnswer = mutableListOf<Char?>()
+            val selectedPositions = mutableListOf<Int>()
+            var gameWords: List<String> = listOf()
+            var currentWordIndex = 0
+            var wordsCorrect = 0
+            var score = 0
+            var difficulty = com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty.NORMAL
+            val gagnes = mutableListOf<String>()
+            val neuves = mutableSetOf<String>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var currentWord: String
+            get() = memoire.currentWord
+            set(valeur) { memoire.currentWord = valeur }
+        private var scrambledLetters: List<Char>
+            get() = memoire.scrambledLetters
+            set(valeur) { memoire.scrambledLetters = valeur }
+        private val currentAnswer get() = memoire.currentAnswer
+        private val selectedPositions get() = memoire.selectedPositions
+        private var gameWords: List<String>
+            get() = memoire.gameWords
+            set(valeur) { memoire.gameWords = valeur }
+        private var currentWordIndex: Int
+            get() = memoire.currentWordIndex
+            set(valeur) { memoire.currentWordIndex = valeur }
+        private var wordsCorrect: Int
+            get() = memoire.wordsCorrect
+            set(valeur) { memoire.wordsCorrect = valeur }
+        private var score: Int
+            get() = memoire.score
+            set(valeur) { memoire.score = valeur }
+        private var difficulty: com.example.kreyolkeyboard.wordscramble.ScrambleDifficulty
+            get() = memoire.difficulty
+            set(valeur) { memoire.difficulty = valeur }
 
         private lateinit var boutonCarnet: TextView
 
         /** Les mots remis dans l'ordre pendant la manche. Un mot passé n'y est pas. */
-        private val gagnes = mutableListOf<String>()
-        private val neuves = mutableSetOf<String>()
+        private val gagnes get() = memoire.gagnes
+        private val neuves get() = memoire.neuves
         private var pochette: View? = null
         
         override fun onCreateView(
@@ -5693,7 +5796,15 @@ class SettingsActivity : AppCompatActivity() {
                     // ce post() peut s'exécuter après que l'utilisateur a changé
                     // d'onglet, auquel cas le fragment n'est plus attaché.
                     if (isAdded) {
-                        startNewGame()
+                        if (gameWords.isEmpty()) {
+                            startNewGame()
+                        } else {
+                            // Après une rotation : le même mot, avec les
+                            // lettres déjà placées.
+                            Pochette.rafraichir(boutonCarnet, requireContext())
+                            progressBar.max = gameWords.size
+                            if (currentWordIndex < gameWords.size) afficherMot()
+                        }
                     }
                 }
             }
@@ -5757,11 +5868,18 @@ class SettingsActivity : AppCompatActivity() {
                 scrambledLetters = allScrambledLetters
             }
             
+            afficherMot()
+        }
+
+        /** Montre le mot en cours dans l'état où il est. */
+        private fun afficherMot() {
             scrambledAdapter = com.example.kreyolkeyboard.wordscramble.ScrambledLettersAdapter(requireContext(), scrambledLetters)
             answerAdapter = com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter(requireContext(), currentAnswer)
             
             gridScrambled.adapter = scrambledAdapter
             gridAnswer.adapter = answerAdapter
+            selectedPositions.forEach { scrambledAdapter?.markAsSelected(it) }
+            btnValidate.isEnabled = currentAnswer.all { it != null }
             
             gridScrambled.numColumns = minOf(scrambledLetters.size, 5)
             gridAnswer.numColumns = minOf(currentWord.length, 5)
@@ -5958,11 +6076,34 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var tvAttempts: TextView
         private lateinit var legendContainer: LinearLayout
 
-        private var targetWord: String = ""
-        private var currentAttempt = 0
-        private var gameOver = false
-        private val rows = mutableListOf<WuertrietRow>()
-        private val letterBestState = mutableMapOf<Char, LetterState>()
+        /**
+         * Ce qui doit survivre à une rotation : le mot à trouver et les essais
+         * déjà joués. Même raison que pour Kräizwuert, voir
+         * [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var targetWord: String = ""
+            var currentAttempt = 0
+            var gameOver = false
+            val rows = mutableListOf<WuertrietRow>()
+            val letterBestState = mutableMapOf<Char, LetterState>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var targetWord: String
+            get() = memoire.targetWord
+            set(valeur) { memoire.targetWord = valeur }
+        private var currentAttempt: Int
+            get() = memoire.currentAttempt
+            set(valeur) { memoire.currentAttempt = valeur }
+        private var gameOver: Boolean
+            get() = memoire.gameOver
+            set(valeur) { memoire.gameOver = valeur }
+        private val rows get() = memoire.rows
+        private val letterBestState get() = memoire.letterBestState
 
         private lateinit var boutonCarnet: TextView
         private var pochette: View? = null
@@ -6204,7 +6345,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Même précaution que les autres jeux : si l'utilisateur a déjà
                     // changé d'onglet, le fragment n'est plus attaché.
                     if (isAdded) {
-                        startNewGame()
+                        if (targetWord.isEmpty()) startNewGame() else reprendre()
                     }
                 }
             }
@@ -6240,6 +6381,20 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 gridBoard.addView(rowLayout)
             }
+        }
+
+        /** Après une rotation : la même grille d'essais, la même légende. */
+        private fun reprendre() {
+            Pochette.rafraichir(boutonCarnet, requireActivity())
+            renderBoard()
+            editGuess.isEnabled = !gameOver
+            btnSubmit.isEnabled = !gameOver
+            tvAttempts.text = getString(
+                R.string.sa_essai,
+                minOf(currentAttempt + 1, WuertrietData.MAX_ATTEMPTS),
+                WuertrietData.MAX_ATTEMPTS
+            )
+            afficherLegende()
         }
 
         private fun startNewGame() {
@@ -6321,7 +6476,11 @@ class SettingsActivity : AppCompatActivity() {
                     letterBestState[letter] = newState
                 }
             }
+            afficherLegende()
+        }
 
+        private fun afficherLegende() {
+            val activity = requireActivity()
             legendContainer.removeAllViews()
             letterBestState.entries.sortedBy { it.key }.forEach { (letter, state) ->
                 val chip = TextView(activity).apply {
@@ -6423,17 +6582,48 @@ class SettingsActivity : AppCompatActivity() {
 
         private val optionButtons = mutableListOf<Button>()
 
-        private var round: List<ClozeQuestion> = emptyList()
-        private var questionIndex = 0
-        private var score = 0
-        private var answered = false
-        private var difficulty = ClozeDifficulty.NORMALE
+        /**
+         * Ce qui doit survivre à une rotation : la manche, la question en
+         * cours, le score et la réponse déjà donnée. Même raison que pour
+         * Kräizwuert, voir [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var round: List<ClozeQuestion> = emptyList()
+            var questionIndex = 0
+            var score = 0
+            var answered = false
+            /** La proposition touchée à la question en cours, -1 avant. */
+            var choisi = -1
+            var difficulty = ClozeDifficulty.NORMALE
+            val gagnes = mutableListOf<String>()
+            val neuves = mutableSetOf<String>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var round: List<ClozeQuestion>
+            get() = memoire.round
+            set(valeur) { memoire.round = valeur }
+        private var questionIndex: Int
+            get() = memoire.questionIndex
+            set(valeur) { memoire.questionIndex = valeur }
+        private var score: Int
+            get() = memoire.score
+            set(valeur) { memoire.score = valeur }
+        private var answered: Boolean
+            get() = memoire.answered
+            set(valeur) { memoire.answered = valeur }
+        private var difficulty: ClozeDifficulty
+            get() = memoire.difficulty
+            set(valeur) { memoire.difficulty = valeur }
 
         private lateinit var boutonCarnet: TextView
 
         /** Les mots retrouvés dans la phrase pendant la manche. */
-        private val gagnes = mutableListOf<String>()
-        private val neuves = mutableSetOf<String>()
+        private val gagnes get() = memoire.gagnes
+        private val neuves get() = memoire.neuves
         private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#1976D2")
@@ -6716,7 +6906,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Même précaution que les autres jeux : ce post() peut
                     // s'exécuter après un changement d'onglet.
                     if (isAdded) {
-                        startNewRound()
+                        if (round.isEmpty()) startNewRound() else reprendre()
                     }
                 }
             }
@@ -6746,6 +6936,25 @@ class SettingsActivity : AppCompatActivity() {
             renderQuestion()
         }
 
+        /**
+         * Après une rotation : la même question, et la réponse déjà donnée
+         * reste affichée sans compter une seconde fois.
+         */
+        private fun reprendre() {
+            Pochette.rafraichir(boutonCarnet, requireActivity())
+            tvScore.text = "$score / ${round.size}"
+            progressBar.max = maxOf(1, round.size)
+            val choisi = memoire.choisi
+            progressBar.progress = if (choisi >= 0) questionIndex + 1 else questionIndex
+            highlightDifficulty()
+            renderQuestion()
+            if (choisi >= 0) {
+                answered = true
+                memoire.choisi = choisi
+                montrerVerdict(choisi)
+            }
+        }
+
         private fun highlightDifficulty() {
             for (i in 0 until difficultyRow.childCount) {
                 val bouton = difficultyRow.getChildAt(i) as Button
@@ -6772,6 +6981,7 @@ class SettingsActivity : AppCompatActivity() {
         private fun renderQuestion() {
             val question = round[questionIndex]
             answered = false
+            memoire.choisi = -1
 
             tvProgress.text = getString(R.string.sa_question, questionIndex + 1, round.size)
             tvSource.text = getString(R.string.sa_phrase_du_corpus, question.source)
@@ -6832,6 +7042,7 @@ class SettingsActivity : AppCompatActivity() {
             val question = round[questionIndex]
             val choix = question.options.getOrNull(position) ?: return
             answered = true
+            memoire.choisi = position
 
             val juste = choix == question.answer
             if (juste) {
@@ -6840,6 +7051,13 @@ class SettingsActivity : AppCompatActivity() {
                 encarter(question.answer)
             }
 
+            montrerVerdict(position)
+        }
+
+        /** Fige les propositions et donne le verdict de la proposition [position]. */
+        private fun montrerVerdict(position: Int) {
+            val question = round[questionIndex]
+            val juste = question.options.getOrNull(position) == question.answer
             // Toutes les propositions se figent : la bonne en vert, celle qu'on
             // a touchée en rouge si elle était fausse. Voir la bonne réponse
             // compte autant que marquer le point.
@@ -6967,11 +7185,42 @@ class SettingsActivity : AppCompatActivity() {
 
         private val optionButtons = mutableListOf<Button>()
 
-        private var round: List<ZuelenQuestion> = emptyList()
-        private var questionIndex = 0
-        private var score = 0
-        private var answered = false
-        private var difficulty = ZuelenDifficulty.NORMALE
+        /**
+         * Ce qui doit survivre à une rotation : la manche, la question en
+         * cours, le score et la réponse déjà donnée. Même raison que pour
+         * Kräizwuert, voir [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var round: List<ZuelenQuestion> = emptyList()
+            var questionIndex = 0
+            var score = 0
+            var answered = false
+            /** La proposition touchée à la question en cours, -1 avant. */
+            var choisi = -1
+            var difficulty = ZuelenDifficulty.NORMALE
+            val gagnes = LinkedHashMap<String, Int>()
+            val neuves = mutableSetOf<String>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var round: List<ZuelenQuestion>
+            get() = memoire.round
+            set(valeur) { memoire.round = valeur }
+        private var questionIndex: Int
+            get() = memoire.questionIndex
+            set(valeur) { memoire.questionIndex = valeur }
+        private var score: Int
+            get() = memoire.score
+            set(valeur) { memoire.score = valeur }
+        private var answered: Boolean
+            get() = memoire.answered
+            set(valeur) { memoire.answered = valeur }
+        private var difficulty: ZuelenDifficulty
+            get() = memoire.difficulty
+            set(valeur) { memoire.difficulty = valeur }
 
         private lateinit var boutonCarnet: TextView
 
@@ -6981,8 +7230,8 @@ class SettingsActivity : AppCompatActivity() {
          * La valeur suit la forme jusqu'au carnet : elle est la seule manière
          * de lire la rareté d'un composé, que le corpus ne contient pas.
          */
-        private val gagnes = LinkedHashMap<String, Int>()
-        private val neuves = mutableSetOf<String>()
+        private val gagnes get() = memoire.gagnes
+        private val neuves get() = memoire.neuves
         private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#00897B")
@@ -7261,7 +7510,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Même précaution que les autres jeux : ce post() peut
                     // s'exécuter après un changement d'onglet.
                     if (isAdded) {
-                        startNewRound()
+                        if (round.isEmpty()) startNewRound() else reprendre()
                     }
                 }
             }
@@ -7285,6 +7534,25 @@ class SettingsActivity : AppCompatActivity() {
             if (round.isNotEmpty()) renderQuestion()
         }
 
+        /**
+         * Après une rotation : la même question, et la réponse déjà donnée
+         * reste affichée sans compter une seconde fois.
+         */
+        private fun reprendre() {
+            context?.let { Pochette.rafraichir(boutonCarnet, it) }
+            tvScore.text = "$score / ${round.size}"
+            progressBar.max = maxOf(1, round.size)
+            val choisi = memoire.choisi
+            progressBar.progress = if (choisi >= 0) questionIndex + 1 else questionIndex
+            highlightDifficulty()
+            renderQuestion()
+            if (choisi >= 0) {
+                answered = true
+                memoire.choisi = choisi
+                montrerVerdict(choisi)
+            }
+        }
+
         private fun highlightDifficulty() {
             for (i in 0 until difficultyRow.childCount) {
                 val bouton = difficultyRow.getChildAt(i) as Button
@@ -7296,6 +7564,7 @@ class SettingsActivity : AppCompatActivity() {
         private fun renderQuestion() {
             val question = round[questionIndex]
             answered = false
+            memoire.choisi = -1
 
             tvProgress.text = getString(R.string.sa_question, questionIndex + 1, round.size)
             tvOperation.text = question.enonce
@@ -7324,6 +7593,7 @@ class SettingsActivity : AppCompatActivity() {
             val question = round[questionIndex]
             val choix = question.options.getOrNull(position) ?: return
             answered = true
+            memoire.choisi = position
 
             if (choix.juste) {
                 score++
@@ -7331,6 +7601,13 @@ class SettingsActivity : AppCompatActivity() {
                 encarter(choix.texte, question.produit)
             }
 
+            montrerVerdict(position)
+        }
+
+        /** Fige les propositions et donne le verdict de la proposition [position]. */
+        private fun montrerVerdict(position: Int) {
+            val question = round[questionIndex]
+            val choix = question.options.getOrNull(position) ?: return
             optionButtons.forEachIndexed { i, bouton ->
                 val proposition = question.options.getOrNull(i)
                 bouton.isEnabled = false
@@ -7466,8 +7743,31 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var conteneurVertical: LinearLayout
         private lateinit var ligneDifficulte: LinearLayout
 
-        private var session: CrosswordSession? = null
-        private var difficulte = CrosswordDifficulty.NORMALE
+        /**
+         * Ce qui doit survivre à une rotation : la partie, pas l'écran.
+         *
+         * Tourner une tablette recrée tout l'écran, et la grille en cours
+         * repartait de zéro avec ses mots déjà trouvés. Le ViewModel survit à
+         * la recréation ; il disparaît avec le jeu quand on le ferme.
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var session: CrosswordSession? = null
+            var difficulte = CrosswordDifficulty.NORMALE
+            val resolus = mutableSetOf<Int>()
+            val cartesNeuves = mutableSetOf<Int>()
+            var solutionMontree = false
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var session: CrosswordSession?
+            get() = memoire.session
+            set(valeur) { memoire.session = valeur }
+        private var difficulte: CrosswordDifficulty
+            get() = memoire.difficulte
+            set(valeur) { memoire.difficulte = valeur }
 
         /** Fond de chaque case jouable, indexé par ligne × largeur + colonne. */
         private val fondsCase = mutableMapOf<Int, GradientDrawable>()
@@ -7475,12 +7775,12 @@ class SettingsActivity : AppCompatActivity() {
         private val lignesDefinition = mutableMapOf<Int, TextView>()
 
         /** Mots déjà trouvés, pour ne féliciter qu'une fois. */
-        private val resolus = mutableSetOf<Int>()
+        private val resolus get() = memoire.resolus
 
         private lateinit var boutonCarnet: TextView
 
         /** Emplacements dont le mot est entré au carnet pour la première fois. */
-        private val cartesNeuves = mutableSetOf<Int>()
+        private val cartesNeuves get() = memoire.cartesNeuves
 
         /** La pochette de fin de grille, posée au-dessus de tout. */
         private var pochette: View? = null
@@ -7493,7 +7793,9 @@ class SettingsActivity : AppCompatActivity() {
          * montré. Les mots déjà gagnés avant la révélation, eux, restent
          * acquis — ils l'ont été.
          */
-        private var solutionMontree = false
+        private var solutionMontree: Boolean
+            get() = memoire.solutionMontree
+            set(valeur) { memoire.solutionMontree = valeur }
 
         private val couleurNeutre = Color.parseColor("#1976D2")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -7795,6 +8097,14 @@ class SettingsActivity : AppCompatActivity() {
                         })
                     }
                     addView(carteRegles)
+
+                    if (DeuxColonnes.actives(activity)) {
+                        DeuxColonnes.repartir(
+                            this,
+                            enHaut = listOf(entete, ligneDifficulte),
+                            aGauche = listOf(carteDefinition, conteneurGrille)
+                        )
+                    }
                 }
 
                 addView(colonne)
@@ -7802,7 +8112,9 @@ class SettingsActivity : AppCompatActivity() {
                 post {
                     // Même précaution que les autres jeux : ce post() peut
                     // s'exécuter après un changement d'onglet.
-                    if (isAdded) nouvelleGrille()
+                    if (isAdded) {
+                        if (session == null) nouvelleGrille() else reprendre()
+                    }
                 }
             }
 
@@ -7957,6 +8269,32 @@ class SettingsActivity : AppCompatActivity() {
             rafraichir()
         }
 
+        /**
+         * Redessine la partie en cours dans un écran neuf, après une rotation :
+         * mêmes lettres, même mot choisi, à la taille du nouvel écran.
+         */
+        private fun reprendre() {
+            val activity = requireActivity() as SettingsActivity
+            val partie = session ?: return nouvelleGrille()
+            Pochette.rafraichir(boutonCarnet, activity)
+            surlignerDifficulte()
+            construireGrille(activity, partie.grid)
+            construireDefinitions(activity, partie.grid)
+            rafraichir()
+            when {
+                solutionMontree -> {
+                    tvRetour.text = getString(R.string.sa_solution_affichee_cette_grille_ne_2)
+                    tvRetour.setTextColor(Color.parseColor("#757575"))
+                    tvRetour.visibility = View.VISIBLE
+                }
+                partie.termine() -> {
+                    tvRetour.text = getString(R.string.sa_grille_terminee_mots_sur, partie.grid.words.size)
+                    tvRetour.setTextColor(couleurJuste)
+                    tvRetour.visibility = View.VISIBLE
+                }
+            }
+        }
+
         private fun surlignerDifficulte() {
             for (i in 0 until ligneDifficulte.childCount) {
                 val bouton = ligneDifficulte.getChildAt(i) as Button
@@ -7979,14 +8317,19 @@ class SettingsActivity : AppCompatActivity() {
             lettresCase.clear()
 
             val densite = resources.displayMetrics.density
-            val disponible = resources.displayMetrics.widthPixels - (48 * 2)
+            val deuxColonnes = DeuxColonnes.actives(activity)
+            val disponible = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+                (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
             // Trois bornes, et la troisième est celle qui compte : une grille
             // haute chassait le pavé hors de l'écran, en commençant par sa
             // rangée d'accents — c'est-à-dire par les cinq touches pour
             // lesquelles ce pavé existe. La grille cède donc quelques pixels
             // plutôt que le pavé, qui est le seul des deux dont on ne peut pas
             // se passer sans faire défiler l'écran à chaque lettre.
-            val budgetHauteur = (resources.displayMetrics.heightPixels * 0.40f).toInt()
+            // En deux colonnes, le pavé n'est plus sous la grille : elle
+            // reprend la hauteur qu'il occupait.
+            val budgetHauteur = (resources.displayMetrics.heightPixels *
+                (if (deuxColonnes) DeuxColonnes.PART_HAUTEUR else 0.40f)).toInt()
             val cote = minOf(
                 disponible / grille.width,
                 budgetHauteur / grille.height,
@@ -8293,7 +8636,7 @@ class SettingsActivity : AppCompatActivity() {
             fondsCase.clear()
             lettresCase.clear()
             lignesDefinition.clear()
-            session = null
+            // La partie, elle, reste : voir [Partie].
             rootView = null
         }
     }
@@ -8344,29 +8687,52 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var conteneurGagnes: LinearLayout
         private lateinit var ligneDifficulte: LinearLayout
 
-        private var session: ChasseCroiseSession? = null
-        private var difficulte = CrosswordDifficulty.NORMALE
+        /**
+         * Ce qui doit survivre à une rotation : la partie, pas l'écran. Même
+         * raison que pour Kräizwuert, voir [CrosswordFragment.Partie].
+         */
+        class Partie : androidx.lifecycle.ViewModel() {
+            var session: ChasseCroiseSession? = null
+            var difficulte = CrosswordDifficulty.NORMALE
+            val resolus = mutableSetOf<Int>()
+            val gagnesAffiches = mutableSetOf<Int>()
+            var retraits = 0
+            val cartesNeuves = mutableSetOf<Int>()
+        }
+
+        private val memoire by lazy {
+            androidx.lifecycle.ViewModelProvider(this)[Partie::class.java]
+        }
+
+        private var session: ChasseCroiseSession?
+            get() = memoire.session
+            set(valeur) { memoire.session = valeur }
+        private var difficulte: CrosswordDifficulty
+            get() = memoire.difficulte
+            set(valeur) { memoire.difficulte = valeur }
 
         private val fondsCase = mutableMapOf<Int, GradientDrawable>()
         private val lettresCase = mutableMapOf<Int, TextView>()
         private val chipsParMot = mutableMapOf<Int, TextView>()
 
         /** Mots déjà verrouillés, pour ne récompenser qu'une fois. */
-        private val resolus = mutableSetOf<Int>()
+        private val resolus get() = memoire.resolus
 
         /**
          * Lignes de « Ce que vous avez gagné » déjà portées à l'écran : sert à
          * n'animer l'entrée que des nouvelles, la liste étant reconstruite en
          * entier à chaque rafraîchissement.
          */
-        private val gagnesAffiches = mutableSetOf<Int>()
+        private val gagnesAffiches get() = memoire.gagnesAffiches
 
         /**
          * Nombre de mots repris de la grille dans la partie en cours. Un mot
          * gagné ne se reprend plus, donc ceci ne compte que les tâtonnements —
          * c'est la note de fin de grille.
          */
-        private var retraits = 0
+        private var retraits: Int
+            get() = memoire.retraits
+            set(valeur) { memoire.retraits = valeur }
 
         /**
          * Emplacements dont le mot est entré au carnet pour la première fois
@@ -8374,7 +8740,7 @@ class SettingsActivity : AppCompatActivity() {
          * distingue « nouveau » de « revu » dans la liste des sens gagnés, et
          * c'est le seul frisson que la collection ait à offrir.
          */
-        private val cartesNeuves = mutableSetOf<Int>()
+        private val cartesNeuves get() = memoire.cartesNeuves
 
         private val couleurNeutre = Color.parseColor("#00796B")
         private val couleurJuste = Color.parseColor("#4CAF50")
@@ -8655,6 +9021,14 @@ class SettingsActivity : AppCompatActivity() {
                         })
                     }
                     addView(carteRegles)
+
+                    if (DeuxColonnes.actives(activity)) {
+                        DeuxColonnes.repartir(
+                            this,
+                            enHaut = listOf(entete, ligneDifficulte),
+                            aGauche = listOf(tvRetour, conteneurGrille)
+                        )
+                    }
                 }
 
                 addView(colonne)
@@ -8662,7 +9036,9 @@ class SettingsActivity : AppCompatActivity() {
                 post {
                     // Même précaution que les autres jeux : ce post() peut
                     // s'exécuter après un changement d'onglet.
-                    if (isAdded) nouvelleGrille()
+                    if (isAdded) {
+                        if (session == null) nouvelleGrille() else reprendre()
+                    }
                 }
             }
 
@@ -8710,6 +9086,20 @@ class SettingsActivity : AppCompatActivity() {
             rafraichir()
         }
 
+        /**
+         * Redessine la partie en cours dans un écran neuf, après une rotation :
+         * mêmes mots posés, mêmes sens gagnés, à la taille du nouvel écran.
+         */
+        private fun reprendre() {
+            val activity = requireActivity() as SettingsActivity
+            val partie = session ?: return nouvelleGrille()
+            surlignerDifficulte()
+            majBoutonCarnet()
+            construireGrille(activity, partie.grid)
+            construireListe(activity, partie)
+            rafraichir()
+        }
+
         private fun surlignerDifficulte() {
             for (i in 0 until ligneDifficulte.childCount) {
                 val bouton = ligneDifficulte.getChildAt(i) as Button
@@ -8739,8 +9129,12 @@ class SettingsActivity : AppCompatActivity() {
             conteneurGrille.clipToPadding = false
 
             val densite = resources.displayMetrics.density
-            val disponible = resources.displayMetrics.widthPixels - (48 * 2)
-            val budgetHauteur = (resources.displayMetrics.heightPixels * 0.38f).toInt()
+            val deuxColonnes = DeuxColonnes.actives(activity)
+            val disponible = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+                (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
+            // En deux colonnes, la liste des mots n'est plus sous la grille.
+            val budgetHauteur = (resources.displayMetrics.heightPixels *
+                (if (deuxColonnes) DeuxColonnes.PART_HAUTEUR else 0.38f)).toInt()
             val cote = minOf(
                 disponible / grille.width,
                 budgetHauteur / grille.height,
@@ -8814,7 +9208,9 @@ class SettingsActivity : AppCompatActivity() {
 
             val grille = partie.grid
             val densite = resources.displayMetrics.density
-            val largeurDispo = resources.displayMetrics.widthPixels - (48 * 2)
+            // En deux colonnes, la liste n'a que la colonne de droite.
+            val largeurDispo = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+                (if (DeuxColonnes.actives(activity)) 1f - DeuxColonnes.PART_GRILLE else 1f)).toInt()
             val ecart = (8 * densite).toInt()
 
             partie.liste
@@ -9457,7 +9853,7 @@ class SettingsActivity : AppCompatActivity() {
             fondsCase.clear()
             lettresCase.clear()
             chipsParMot.clear()
-            session = null
+            // La partie, elle, reste : voir [Partie].
             rootView = null
         }
 
@@ -10204,7 +10600,7 @@ class SettingsActivity : AppCompatActivity() {
             grilleChoix = construireGrilleChoix(activity).also { colonne.addView(it) }
 
             conteneurJeu = FrameLayout(activity).apply {
-                id = View.generateViewId()
+                id = R.id.conteneur_jeu
                 visibility = View.GONE
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -10218,8 +10614,12 @@ class SettingsActivity : AppCompatActivity() {
                 .addCallback(viewLifecycleOwner, retourAuChoix)
 
             rootView = colonne
-            // Après une rotation, on rouvre le jeu qui était ouvert.
-            activity.jeuOuvert.takeIf { it in jeux.indices }?.let { ouvrirLeJeu(jeux[it]) }
+            // Après une rotation, on rouvre le jeu qui était ouvert, et le
+            // même : le système l'a restauré dans son cadre, avec sa partie.
+            activity.jeuOuvert.takeIf { it in jeux.indices }?.let { i ->
+                val restaure = childFragmentManager.findFragmentById(R.id.conteneur_jeu)
+                if (restaure != null) ouvrirLeJeu(jeux[i], restaure) else ouvrirLeJeu(jeux[i])
+            }
             return colonne
         }
 
@@ -10502,12 +10902,13 @@ class SettingsActivity : AppCompatActivity() {
             (activity as? SettingsActivity)?.jeuOuvert = jeux.indexOf(jeu)
             // La Boîte de Leitner a sa propre carte sur l'accueil
             if (jeu.nom != JEU_LEITNER) (activity as? SettingsActivity)?.retenirDernierJeu(jeu.emoji, jeu.nom)
-            childFragmentManager.beginTransaction().apply {
-                // Un jeu restauré par le système après une rotation visait
-                // l'ancien conteneur : on repart d'un seul jeu, neuf.
-                childFragmentManager.fragments.forEach { remove(it) }
-                add(conteneur.id, fragment)
-            }.commit()
+            if (!fragment.isAdded) {
+                childFragmentManager.beginTransaction().apply {
+                    // Un seul jeu à la fois dans le cadre.
+                    childFragmentManager.fragments.forEach { remove(it) }
+                    add(conteneur.id, fragment)
+                }.commit()
+            }
             grilleChoix?.visibility = View.GONE
             conteneur.visibility = View.VISIBLE
             barreRetour?.visibility = View.VISIBLE

@@ -13,11 +13,15 @@ import android.view.Gravity
  */
 class WordSearchGridAdapter(
     private val context: Context,
-    private val puzzle: WordSearchPuzzle
+    private val puzzle: WordSearchPuzzle,
+    /**
+     * Cases des mots déjà trouvés. Fournies par l'écran pour survivre à une
+     * rotation : l'adaptateur, lui, est refait avec la vue.
+     */
+    private val foundCells: MutableSet<Int> = mutableSetOf()
 ) : BaseAdapter() {
     
     private val selectedCells = mutableSetOf<Int>()
-    private val foundCells = mutableSetOf<Int>()
     private var isSelecting = false
     private var selectionStart = -1
     private var onWordFoundListener: ((String) -> Unit)? = null
@@ -44,8 +48,13 @@ class WordSearchGridAdapter(
     
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val textView = convertView as? TextView ?: TextView(context).apply {
-            // Taille dynamique basée sur la largeur du parent
-            val cellSize = (parent?.width ?: 800) / puzzle.gridSize - 4 // -4 pour l'espacement
+            // Taille dynamique basée sur la largeur utile du parent : ses
+            // marges et les espacements entre colonnes déduits, sans quoi la
+            // dernière colonne et la dernière rangée débordaient de 20 px.
+            val utile = parent?.let {
+                it.width - it.paddingLeft - it.paddingRight - 4 * (puzzle.gridSize - 1)
+            } ?: 800
+            val cellSize = utile / puzzle.gridSize
             layoutParams = ViewGroup.LayoutParams(cellSize, cellSize)
             gravity = Gravity.CENTER
             textSize = 20f
