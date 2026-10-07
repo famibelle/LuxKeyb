@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "33.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_actualites_inll.png",
+        "alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
+        "legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
+      }
+    ]
+  },
   "33.1.0": {
     "images": [
       {

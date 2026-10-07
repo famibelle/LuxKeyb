@@ -10,13 +10,13 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
   title.txt               Nom de l'application (30)
   short_description.txt   Brève description (80)
   full_description.txt    Description complète (4 000)
-  changelogs/330100.txt   Nouveautés de la version, par versionCode (500)
+  changelogs/330200.txt   Nouveautés de la version, par versionCode (500)
 ```
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **33.1.0**
-(`versionCode` 330100), la première avec le choix de la langue de l'application, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **33.2.0**
+(`versionCode` 330200), la première avec les actualités de l'INLL, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,13 +119,22 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 33.1.0 : [`fr-FR/changelogs/330100.txt`](fr-FR/changelogs/330100.txt).
-Il reprend la dictée et la confidentialité de la 33.0.1, pour le cas où
-celle-ci ne serait pas passée en production avant, et ajoute le choix de la
-langue de l'application. Si la 33.0.1 est déjà en production, ne garder que la
-ligne 🌍.
+Texte de la 33.2.0 : [`fr-FR/changelogs/330200.txt`](fr-FR/changelogs/330200.txt).
+Il ouvre sur les actualités de l'INLL (📰), puis reprend, raccourcies, les
+lignes de la 33.1.0 : la dictée, la confidentialité et le choix de la langue,
+pour le cas où aucune version avec la dictée ne serait encore passée en
+production. Si la 33.1.0 est déjà en production, ne garder que la ligne 📰.
 
-Longueurs : fr 431, lb 422, de 440, en 402, pt 392, sur 500.
+Longueurs : fr 438, lb 450, de 450, en 430, pt 418, sur 500.
+
+**Avant d'aller au-delà du test interne**, il faut l'autorisation écrite de
+l'INLL : ses conditions générales interdisent toute reproduction de ses
+contenus sans accord préalable, et la page affiche les titres et résumés de
+son flux. La politique de confidentialité (version 3.1) mentionne déjà la
+connexion à `www.inll.lu` ; la section Sécurité des données ne change pas,
+l'application n'envoyant à l'INLL aucune donnée de l'utilisateur.
+
+Texte de la 33.1.0, gardé pour mémoire : [`fr-FR/changelogs/330100.txt`](fr-FR/changelogs/330100.txt).
 
 **À envoyer en même temps que l'AAB qui apporte la dictée, ni avant ni après**, avec la
 description et la section Sécurité des données : tant que la version en

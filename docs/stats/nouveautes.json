@@ -1,9 +1,58 @@
 {
- "genere_le": "2026-10-05",
- "derniere_version": "33.1.0",
- "derniere_date": "2026-10-05",
+ "genere_le": "2026-10-07",
+ "derniere_version": "33.2.0",
+ "derniere_date": "2026-10-07",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "33.2.0",
+   "date": "2026-10-07",
+   "intro": "Les actualités de l'Institut national des langues, dans l'application.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les actualités de l'INLL",
+       "texte": "En bas de l'accueil, « Actualités de l'INLL » ouvre les dernières nouvelles de l'Institut national des langues Luxembourg : cours, Sproochentest, événements comme les Walk &amp; Talk ou les visites en luxembourgeois. Touchez une actualité pour la lire en entier sur le site de l'INLL."
+      },
+      {
+       "titre": null,
+       "texte": "Les actualités suivent la langue de l'application : français, luxembourgeois, allemand ou anglais. En portugais, que l'INLL ne publie pas, elles s'affichent en français."
+      },
+      {
+       "titre": null,
+       "texte": "Sans connexion, la page montre les dernières actualités reçues."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔒",
+     "titre": "Confidentialité",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Le site de l'INLL n'est contacté que lorsque vous ouvrez cette page, jamais en arrière-plan, et l'application ne lui envoie rien d'autre que la demande de la page. La politique de confidentialité le précise (version 3.1)."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_actualites_inll.png",
+     "alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
+     "legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
+    }
+   ],
+   "image": "Screenshots/lux_actualites_inll.png",
+   "image_alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
+   "image_legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
+  },
   {
    "version": "33.1.0",
    "date": "2026-10-05",
@@ -214,39 +263,6 @@
    "image": "Screenshots/lux_suggestions.png",
    "image_alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
    "image_legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
-  },
-  {
-   "version": "30.2.2",
-   "date": "2026-10-03",
-   "intro": "Kräizwuert et le guide suivent la disposition de votre clavier.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le clavier de Kräizwuert reprend votre disposition",
-       "texte": "Avec « Suisse allemand », la disposition par défaut, il gardait les rangées « Luxembourg » : « é » à droite du « l », là où votre clavier met « ö » et « ä ». Il suit maintenant celle que vous avez choisie dans les réglages du clavier, même si vous en changez en cours de partie."
-      },
-      {
-       "titre": "Le guide montre le clavier tel que vous le voyez",
-       "texte": "Ses images sont refaites avec la disposition « Suisse allemand », et il ne dit plus qu'il faut un appui long pour « ë », « ä », « é », « ü » ou « ö » : ces lettres ont leur propre touche."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
-     "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
-     "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
-    }
-   ],
-   "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
-   "image_alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
-   "image_legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
   }
  ]
 }
