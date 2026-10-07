@@ -7,6 +7,7 @@
     python3 build_graphics.py shots      # captures téléphone seules, dans les cinq langues
     python3 build_graphics.py jeux       # un visuel par jeu (hors des 8 de la Console)
     python3 build_graphics.py carnet     # boîte de Leitner et éventail de cartes
+    python3 build_graphics.py dictee     # la dictée en action, écran entier
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les fichiers à envoyer à la Play Console.
@@ -19,7 +20,7 @@ rien à retrouver au moment de l'envoi :
   captures/<langue>/       les huit captures, légende dans la langue
     Captures d'écran pour téléphone 1 (Suggestions).png .. 8 (Installation).png
                                                     depuis captures-emulateur-pixel9/
-  hors-console/            un visuel par jeu et deux du carnet, en français,
+  hors-console/            un visuel par jeu, deux du carnet et un de la dictée, en français,
                            pour le site et les réseaux
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
@@ -264,6 +265,14 @@ CARNET = [
      "Glissez pour parcourir, touchez une carte pour la lire : sens, phrase d'exemple et traduction."),
 ]
 
+# La dictée en action, recadrée sur la bulle, le bandeau LuxASR et le clavier :
+# l'écran entier de Messages est une conversation vide, un grand aplat blanc.
+DICTEE = [
+    ("Voix (Message parlé)", "20-clavier-dictee-luxasr-recadre.png", None, "À voix haute",
+     "Vous parlez, il écrit",
+     "Touchez le micro et parlez : votre message s'écrit en luxembourgeois, accents compris."),
+]
+
 SHOT_TEMPLATE = """<meta charset="utf-8">
 <style>
   *{{ box-sizing:border-box; margin:0; padding:0; }}
@@ -285,7 +294,7 @@ SHOT_TEMPLATE = """<meta charset="utf-8">
     color:{bleu}; margin-bottom:20px;
   }}
   h1{{ font-size:70px; font-weight:700; line-height:1.1; letter-spacing:-.01em; }}
-  .sub{{ font-size:34px; line-height:1.42; color:#54606E; margin-top:24px; max-width:900px; }}
+  .sub{{ font-size:{sub_px}px; line-height:1.42; color:#54606E; margin-top:24px; max-width:900px; }}
 
   .stage{{ flex:1 1 auto; display:flex; align-items:center; justify-content:center;
            padding:0 84px 20px; min-height:0; }}
@@ -353,7 +362,7 @@ def source_de(src: str, langue: str | None) -> pathlib.Path:
     return SHOTS / src
 
 
-def build_shots(specs=None, langue: str | None = None) -> None:
+def build_shots(specs=None, langue: str | None = None, sub_px: int = 34) -> None:
     specs = SPECS if specs is None else specs
     out_dir = CAPTURES_DIR / langue if langue else HORS_CONSOLE
     pied = LEGENDES[langue or "fr-FR"][1]
@@ -377,7 +386,7 @@ def build_shots(specs=None, langue: str | None = None) -> None:
             html = tmp / f"{index:02d}.html"
             html.write_text(SHOT_TEMPLATE.format(
                 papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
-                kicker=kicker, title=title, sub=sub, pied=pied,
+                kicker=kicker, title=title, sub=sub, pied=pied, sub_px=sub_px,
                 shot=b64(shot), icon=icon), encoding="utf-8")
 
             out = out_dir / f"{name}.png"
@@ -405,6 +414,11 @@ def build_games() -> None:
 
 def build_carnet() -> None:
     build_shots(CARNET)
+
+
+def build_dictee() -> None:
+    # la capture recadrée est basse, il reste la place d'un sous-titre plus lisible
+    build_shots(DICTEE, sub_px=44)
 
 
 def build_check() -> None:
@@ -446,7 +460,7 @@ def build_check() -> None:
         problems.append(f"{promouvables} captures au moins 1080x1080, il en faut 4 "
                         "pour que l'application soit promouvable")
 
-    for name, *_ in JEUX + CARNET:
+    for name, *_ in JEUX + CARNET + DICTEE:
         path = HORS_CONSOLE / f"{name}.png"
         if not path.exists():
             problems.append(f"{path.name} : absent")
@@ -457,19 +471,20 @@ def build_check() -> None:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(JEUX) + len(CARNET)} visuels de jeux et de carnet conformes")
+    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(JEUX) + len(CARNET) + len(DICTEE)} visuels de jeux, de carnet et de dictée conformes")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "carnet", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "jeux", "carnet", "dictee", "check"]
     known = {"icon": build_icon, "feature": build_feature,
-             "shots": build_langues, "jeux": build_games, "carnet": build_carnet, "check": build_check}
+             "shots": build_langues, "jeux": build_games, "carnet": build_carnet, "dictee": build_dictee,
+             "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | carnet | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | jeux | carnet | dictee | check)")
         known[target]()
     return 0
 
