@@ -68,10 +68,12 @@ android {
         // est refusé. Le namespace (donc le package Kotlin) reste
         // com.example.kreyolkeyboard : le renommer casserait tout sans rien apporter.
         applicationId "com.potomitan.luxkeyboard"
-        minSdk = 21
+        // Android 7.0 au minimum : la protection automatique de Google Play
+        // l'exige, et les Android 5 et 6 ne pèsent plus qu'environ 1 % du parc.
+        minSdk = 24
         targetSdk = 36
-        versionCode = 330200
-        versionName "33.2.0"
+        versionCode = 330201
+        versionName "33.2.1"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true

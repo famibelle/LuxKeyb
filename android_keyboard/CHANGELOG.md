@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [33.2.1] - 2026-10-07
+
+Android 7.0 au minimum, pour la protection de Google Play.
+
+### 🔧 Technique
+
+- **L'application demande maintenant Android 7.0 ou plus récent** (elle acceptait Android 5.0). La protection automatique de Google Play, qui vérifie que l'application installée vient bien du Play Store et n'a pas été modifiée, l'exige. Les téléphones sous Android 5 et 6, sortis en 2014 et 2015, gardent la version qu'ils ont mais ne reçoivent plus de mises à jour.
+
 ## [33.2.0] - 2026-10-07
 
 Les actualités de l'Institut national des langues, dans l'application.
