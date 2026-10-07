@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [33.2.0] - 2026-10-07
+
+Les actualités de l'Institut national des langues, dans l'application.
+
+### ✨ Nouveautés
+
+- **Les actualités de l'INLL.** En bas de l'accueil, « Actualités de l'INLL » ouvre les dernières nouvelles de l'Institut national des langues Luxembourg : cours, Sproochentest, événements comme les Walk & Talk ou les visites en luxembourgeois. Touchez une actualité pour la lire en entier sur le site de l'INLL.
+- Les actualités suivent la langue de l'application : français, luxembourgeois, allemand ou anglais. En portugais, que l'INLL ne publie pas, elles s'affichent en français.
+- Sans connexion, la page montre les dernières actualités reçues.
+
+### 🔒 Confidentialité
+
+- Le site de l'INLL n'est contacté que lorsque vous ouvrez cette page, jamais en arrière-plan, et l'application ne lui envoie rien d'autre que la demande de la page. La politique de confidentialité le précise (version 3.1).
+
 ## [33.1.0] - 2026-10-05
 
 Choisir la langue de l'application, sans passer par les paramètres du téléphone.
