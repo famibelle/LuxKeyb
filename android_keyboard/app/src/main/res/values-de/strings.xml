@@ -646,4 +646,17 @@
     <string name="stt_connection_lost">Verbindung während des Diktats verloren</string>
     <string name="stt_network_too_slow">Verbindung zu langsam für das Diktat</string>
     <string name="stt_not_in_password">Diktat in Passwortfeldern deaktiviert</string>
+
+    <!-- Actualités de l'INLL (actualites/) -->
+    <string name="langue_flux_inll">de</string>
+    <string name="act_titre_page">Sprachnachrichten</string>
+    <string name="act_lien_titre">Neuigkeiten des INLL</string>
+    <string name="act_lien_resume">Kurse, Sproochentest und Veranstaltungen des Institut national des langues</string>
+    <string name="act_intro">Die neuesten Nachrichten des Institut national des langues Luxembourg (INLL): Kurse, Sproochentest, Veranstaltungen. Tippen Sie auf eine Meldung, um sie auf der Website des INLL zu lesen.</string>
+    <string name="act_chargement">Wird geladen…</string>
+    <string name="act_hors_ligne">Keine Verbindung: Hier sind die zuletzt empfangenen Neuigkeiten.</string>
+    <string name="act_indisponible">Die Neuigkeiten konnten nicht geladen werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="act_reessayer">Erneut versuchen</string>
+    <string name="act_voir_site">Website des INLL öffnen</string>
+    <string name="act_source">Quelle: Institut national des langues Luxembourg, inll.lu. Die Neuigkeiten werden von seiner Website geladen, wenn Sie diese Seite öffnen.</string>
 </resources>

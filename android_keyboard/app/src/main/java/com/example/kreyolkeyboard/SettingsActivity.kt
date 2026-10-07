@@ -1267,6 +1267,12 @@ class SettingsActivity : AppCompatActivity() {
         // quand on cherche à comprendre plutôt qu'à jouer.
         mainLayout.addView(createSpacing(8))
         mainLayout.addView(createReferenceLink(
+            "📰", getString(R.string.act_lien_titre),
+            getString(R.string.act_lien_resume),
+            SheetFragment.PAGE_ACTUALITES
+        ))
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
             "📖", getString(R.string.sa_guide_utilisation),
             getString(R.string.sa_reglages_correcteur_astuces_de_saisie),
             SheetFragment.PAGE_GUIDE
@@ -10539,6 +10545,7 @@ class SettingsActivity : AppCompatActivity() {
             private const val ARG_PAGE = "page"
             const val PAGE_GUIDE = "guide"
             const val PAGE_A_PROPOS = "a_propos"
+            const val PAGE_ACTUALITES = "actualites"
 
             fun pour(page: String) = SheetFragment().apply {
                 arguments = android.os.Bundle().apply { putString(ARG_PAGE, page) }
@@ -10569,7 +10576,11 @@ class SettingsActivity : AppCompatActivity() {
                 setBackgroundColor(Color.parseColor("#2196F3"))
                 setPadding(16, 14, 16, 14)
                 addView(TextView(activity).apply {
-                    text = if (page == PAGE_GUIDE) getString(R.string.sa_guide) else getString(R.string.sa_propos)
+                    text = when (page) {
+                        PAGE_GUIDE -> getString(R.string.sa_guide)
+                        PAGE_ACTUALITES -> getString(R.string.act_titre_page)
+                        else -> getString(R.string.sa_propos)
+                    }
                     textSize = 18f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(Color.WHITE)
@@ -10608,7 +10619,11 @@ class SettingsActivity : AppCompatActivity() {
                 childFragmentManager.beginTransaction()
                     .replace(
                         hote.id,
-                        if (page == PAGE_GUIDE) GuideFragment() else AboutFragment()
+                        when (page) {
+                            PAGE_GUIDE -> GuideFragment()
+                            PAGE_ACTUALITES -> com.example.kreyolkeyboard.actualites.ActualitesFragment()
+                            else -> AboutFragment()
+                        }
                     )
                     .commit()
             }

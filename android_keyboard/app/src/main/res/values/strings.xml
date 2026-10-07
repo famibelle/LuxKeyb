@@ -655,4 +655,17 @@
     <string name="stt_online_listening" translatable="false">🌐 LuxASR · Schwätzt…</string>
     <string name="stt_online_transcribing" translatable="false">🌐 LuxASR · Transkriptioun…</string>
     <string name="stt_online_slow" translatable="false">🐢 LuxASR · lues Verbindung…</string>
+
+    <!-- Actualités de l'INLL (actualites/) -->
+    <string name="langue_flux_inll">en</string>
+    <string name="act_titre_page">Language news</string>
+    <string name="act_lien_titre">INLL news</string>
+    <string name="act_lien_resume">Courses, Sproochentest and events of the National Institute of Languages</string>
+    <string name="act_intro">The latest news from the National Institute of Languages Luxembourg (INLL): courses, Sproochentest, events. Tap a news item to read it on the INLL website.</string>
+    <string name="act_chargement">Loading…</string>
+    <string name="act_hors_ligne">No connection: here are the last news items received.</string>
+    <string name="act_indisponible">The news could not be loaded. Check your connection and try again.</string>
+    <string name="act_reessayer">Try again</string>
+    <string name="act_voir_site">Visit the INLL website</string>
+    <string name="act_source">Source: Institut national des langues Luxembourg, inll.lu. The news is loaded from its website when you open this page.</string>
 </resources>

@@ -646,4 +646,17 @@
     <string name="stt_connection_lost">Verbindung während dem Diktat verluer</string>
     <string name="stt_network_too_slow">Verbindung ze lues fir den Diktat</string>
     <string name="stt_not_in_password">Diktat an de Passwuertfelder ausgeschalt</string>
+
+    <!-- Actualités de l'INLL (actualites/) -->
+    <string name="langue_flux_inll">lu</string>
+    <string name="act_titre_page">Neiegkeeten iwwer d\'Sprooch</string>
+    <string name="act_lien_titre">Neiegkeeten vum INLL</string>
+    <string name="act_lien_resume">Coursen, Sproochentest an Evenementer vum Institut national des langues</string>
+    <string name="act_intro">Déi lescht Neiegkeeten vum Institut national des langues Luxembourg (INLL): Coursen, Sproochentest, Evenementer. Tippt op eng Neiegkeet, fir se um Site vum INLL ze liesen.</string>
+    <string name="act_chargement">Gëtt gelueden…</string>
+    <string name="act_hors_ligne">Keng Verbindung: hei sinn déi lescht Neiegkeeten, déi ukomm sinn.</string>
+    <string name="act_indisponible">D\'Neiegkeete konnten net geluede ginn. Kuckt Är Verbindung no a probéiert nach eng Kéier.</string>
+    <string name="act_reessayer">Nach eng Kéier probéieren</string>
+    <string name="act_voir_site">De Site vum INLL kucken</string>
+    <string name="act_source">Quell: Institut national des langues Luxembourg, inll.lu. D\'Neiegkeete ginn um Site gelueden, wann Dir dës Säit opmaacht.</string>
 </resources>
