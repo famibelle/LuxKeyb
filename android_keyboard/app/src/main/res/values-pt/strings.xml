@@ -376,7 +376,7 @@
     <string name="sa_lire_la_politique_de_confidentialite">Ler a política de privacidade</string>
     <string name="sa_dans_langues_et_saisie_ouvrez">Em «Idiomas e introdução», abra «Corretor ortográfico» e escolha «Corretor Lëtzebuergesch»</string>
     <string name="sa_appuyez_sur_ok_est_normal">👆 Toque em OK: é normal para todos os teclados de terceiros</string>
-    <string name="sa_letzebuergesch_clavier_pas_acces_internet">O que escreve nunca sai do seu telemóvel. Só o ditado, quando toca no microfone, passa pela Internet.</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">O que escreve nunca sai do seu telemóvel. A Internet só é usada para o ditado, quando toca no microfone, e para as notícias do INLL, quando as abre.</string>
     <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Depois, toque em Voltar: regressa aqui automaticamente</string>
     <string name="sa_avant_de_continuer">Antes de continuar</string>
     <string name="sa_ai_compris_on_va">Percebi, vamos lá</string>

@@ -376,7 +376,7 @@
     <string name="sa_lire_la_politique_de_confidentialite">Lire la politique de confidentialité</string>
     <string name="sa_dans_langues_et_saisie_ouvrez">Dans \'Langues et saisie\', ouvrez \'Vérification orthographique\' et choisissez \'Correcteur Lëtzebuergesch\'</string>
     <string name="sa_appuyez_sur_ok_est_normal">👆 Appuyez sur OK : c\'est normal pour tous les claviers tiers</string>
-    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Ce que vous tapez ne quitte jamais votre téléphone. Seule la dictée, quand vous appuyez sur le micro, passe par Internet.</string>
+    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Ce que vous tapez ne quitte jamais votre téléphone. Internet ne sert qu\'à la dictée, quand vous appuyez sur le micro, et aux actualités de l\'INLL, quand vous les ouvrez.</string>
     <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Ensuite, appuyez sur Retour : vous revenez ici automatiquement</string>
     <string name="sa_avant_de_continuer">Avant de continuer</string>
     <string name="sa_ai_compris_on_va">J\'ai compris, on y va</string>
