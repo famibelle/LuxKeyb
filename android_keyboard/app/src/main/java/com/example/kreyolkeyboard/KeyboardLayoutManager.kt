@@ -39,6 +39,11 @@ class KeyboardLayoutManager(private val context: Context) {
         // étant la seule ressource qui manque dans cette orientation, où la largeur
         // laisse au contraire chaque touche deux fois plus large qu'en portrait.
         private const val BUTTON_HEIGHT_LANDSCAPE_DP = BUTTON_MIN_HEIGHT_DP
+        // Sur tablette, la hauteur ne manque dans aucune orientation, et un
+        // doigt y vise des touches nettement plus larges qu'au téléphone : 48 dp
+        // les laissaient deux fois et demie plus larges que hautes en paysage.
+        // Les libellés et les aperçus des coins suivent, étant proportionnels.
+        private const val BUTTON_HEIGHT_TABLET_DP = 56
         private const val KEYBOARD_ROW_COUNT = 4
         // Padding vertical du bloc de touches, resserré en paysage pour la même
         // raison. Le service s'en sert pour calculer la place laissée aux rangées,
@@ -128,8 +133,20 @@ class KeyboardLayoutManager(private val context: Context) {
         internal fun cursorStepsFor(deltaPx: Float, stepPx: Float): Int =
             if (stepPx <= 0f) 0 else (deltaPx / stepPx).toInt()
 
+        /**
+         * Vrai en paysage **sur un téléphone** : c'est la hauteur qui y manque,
+         * et tout ce qui s'en sert (touches à 32 dp, une seule rangée de
+         * suggestions, marges resserrées) répond à ce manque. Une tablette
+         * couchée garde 800 dp de haut ; lui appliquer ces économies lui donnait
+         * des touches plates et des aperçus de coin illisibles.
+         */
         fun isLandscape(context: Context): Boolean =
-            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                !isTablet(context)
+
+        /** Tablette : plus petit côté d'au moins 600 dp, la convention d'Android. */
+        fun isTablet(context: Context): Boolean =
+            context.resources.configuration.smallestScreenWidthDp >= 600
 
         fun verticalPaddingDp(context: Context): Int =
             if (isLandscape(context)) VERTICAL_PADDING_LANDSCAPE_DP else VERTICAL_PADDING_DP
@@ -231,7 +248,11 @@ class KeyboardLayoutManager(private val context: Context) {
      */
     private fun keyHeightPx(): Int {
         val nominal = dpToPx(
-            if (isLandscape(context)) BUTTON_HEIGHT_LANDSCAPE_DP else BUTTON_HEIGHT_DP
+            when {
+                isLandscape(context) -> BUTTON_HEIGHT_LANDSCAPE_DP
+                isTablet(context) -> BUTTON_HEIGHT_TABLET_DP
+                else -> BUTTON_HEIGHT_DP
+            }
         )
         if (availableRowsHeightPx <= 0) return nominal
         val verticalMargins = dpToPx(BUTTON_MARGIN_DP) * 2
