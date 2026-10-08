@@ -7,15 +7,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.kreyolkeyboard.TranslationDictionary
@@ -37,13 +34,16 @@ import com.example.kreyolkeyboard.applicatifDansLaLangue
  * la liste des jeux. Le rappel d'ici est enregistré après le sien, donc consulté
  * avant, et n'est actif que tant qu'il y a quelque chose à refermer.
  */
-class BoiteFragment : Fragment() {
+class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.JeuAuClavier {
 
     private lateinit var racine: FrameLayout
     private lateinit var boite: BoiteLeitner
     private var eventail: EventailCasier? = null
     private var casierOuvert = -1
-    private var voileCarte: View? = null
+    private var lecteur: LecteurCartes? = null
+
+    /** Le casier choisi aux flèches d'un clavier physique. -1 : aucun. */
+    private var casierClavier = -1
 
     /**
      * Le contenu de chaque carte du carnet, par forme, lu et écrit sur le fil
@@ -82,7 +82,7 @@ class BoiteFragment : Fragment() {
     private val retour = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             when {
-                voileCarte != null -> fermerCarte()
+                lecteur != null -> lecteur?.fermer()
                 eventail != null -> eventail?.fermer()
             }
         }
@@ -148,7 +148,7 @@ class BoiteFragment : Fragment() {
     }
 
     private fun majRetour() {
-        retour.isEnabled = voileCarte != null || eventail != null
+        retour.isEnabled = lecteur != null || eventail != null
     }
 
     private fun chargerEnFond() {
@@ -190,7 +190,12 @@ class BoiteFragment : Fragment() {
                 tous.forEach { contenus[it.carte.forme] = it }
                 contenusPrets = true
 
-                val cote = (COTE_RECTO * resources.displayMetrics.density).toInt()
+                // À la taille où la boîte les montre : sur tablette la face d'un
+                // casier fait le double des 64 dp, et un recto agrandi y floutait.
+                val cote = maxOf(
+                    (COTE_RECTO * resources.displayMetrics.density).toInt(),
+                    boite.faceDuCasier(0).width().toInt()
+                )
                 boite.poserRectos(
                     boite.cartesVisibles()
                         .mapNotNull { c -> contenus[c.forme]?.let { c.forme to rendreRecto(it, cote) } }
@@ -269,7 +274,7 @@ class BoiteFragment : Fragment() {
         eventail?.let { racine.removeView(it) }
         eventail = null
         casierOuvert = -1
-        boite.eclairer(-1)
+        boite.eclairer(casierClavier)
         majRetour()
     }
 
@@ -332,7 +337,9 @@ class BoiteFragment : Fragment() {
      */
     private fun rendreRecto(c: ContenuCarte, cible: Int): Bitmap {
         val d = resources.displayMetrics.density
-        val largeur = (160 * d).toInt()
+        // Jamais plus petite que la cible : réduire est net, agrandir floute,
+        // et l'éventail d'une tablette demande des cartes de 220 dp.
+        val largeur = maxOf((160 * d).toInt(), cible)
         val vue = CarteCarnet.vignette(requireContext(), c, largeur)
         vue.measure(
             View.MeasureSpec.makeMeasureSpec(largeur, View.MeasureSpec.EXACTLY),
@@ -350,72 +357,90 @@ class BoiteFragment : Fragment() {
         return image
     }
 
+    /**
+     * La carte en grand, feuilletable dans l'ordre du casier ouvert : passer à
+     * la voisine fait tourner l'éventail derrière, si bien qu'en reposant la
+     * carte on retrouve la main là où la lecture s'est arrêtée.
+     */
     private fun ouvrirCarte(contenu: ContenuCarte) {
-        val ctx = context ?: return
-        val d = resources.displayMetrics.density
-
-        val voile = VoileGlissable(ctx) { sensX, sensY -> fermerCarte(sensX, sensY) }.apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            setBackgroundColor(0xCC000000.toInt())
-            isClickable = true
-        }
-
-        val defilement = ScrollView(ctx).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER
-            ).apply { setMargins((22 * d).toInt(), 0, (22 * d).toInt(), 0) }
-            isVerticalScrollBarEnabled = false
-        }
-        val carte = CarteCarnet.complete(ctx, contenu)
-        defilement.addView(carte)
-        voile.addView(defilement)
-
-        voile.setOnClickListener { fermerCarte() }
-        carte.isClickable = true
-
-        voileCarte = voile
-        racine.addView(voile)
-        majRetour()
-        voile.alpha = 0f
-        voile.animate().alpha(1f).setDuration(160).start()
-
-        carte.cameraDistance = 9000f * d
-        carte.rotationY = -85f
-        carte.animate().rotationY(0f)
-            .setDuration(if (contenu.rarete.distinguee) 470L else 360L)
-            .setInterpolator(
-                if (contenu.rarete.distinguee) OvershootInterpolator(1.4f)
-                else DecelerateInterpolator()
-            )
-            // Comme dans le carnet : la carte suit la main une fois retournée,
-            // pas avant, pour ne pas écrire dans `rotationY` pendant le
-            // retournement. Le voile reprend le geste dès qu'il devient un
-            // glissé, et le carton reçoit alors un `CANCEL` qui le relève.
-            .withEndAction {
-                Inclinaison.suivre(carte)
-                (carte as? Carton)?.sensibleAuDoigt = true
+        if (context == null) return
+        val liste = if (casierOuvert >= 0) cartesDuCasier(casierOuvert) else listOf(contenu)
+        val rang = liste.indexOfFirst { it.carte.forme == contenu.carte.forme }
+        lecteur = LecteurCartes(
+            racine,
+            if (rang >= 0) liste else listOf(contenu),
+            rang.coerceAtLeast(0),
+            surChangement = { eventail?.centrerSur(it) },
+            surFermeture = {
+                lecteur = null
+                majRetour()
             }
-            .start()
+        ).also { it.ouvrir() }
+        majRetour()
     }
 
-    /** [sensX] ou [sensY] non nul : la carte a été chassée d'un glissé, elle sort par ce côté. */
-    private fun fermerCarte(sensX: Int = 0, sensY: Int = 0) {
-        val voile = voileCarte ?: return
-        voileCarte = null
-        majRetour()
-        if ((sensX != 0 || sensY != 0) && voile is ViewGroup && voile.childCount > 0) {
-            voile.getChildAt(0).animate()
-                .translationX(sensX * voile.width.toFloat())
-                .translationY(sensY * voile.height.toFloat())
-                .setDuration(200).setInterpolator(DecelerateInterpolator()).start()
+    /**
+     * Un clavier physique, sur une tablette à étui-clavier : ← → choisissent un
+     * casier, Entrée l'ouvre (ou lance la révision si aucun n'est choisi), puis
+     * ← → font tourner l'éventail et Entrée ouvre la carte du centre ; dans la
+     * carte ouverte, ← → passent à la voisine. Échap remonte d'un cran, comme
+     * le bouton retour. La séance de révision garde ses touches pour elle.
+     */
+    override fun surToucheClavier(event: KeyEvent): Boolean {
+        if (seance.ouverte || !isResumed) return false
+        val code = event.keyCode
+        val sens = when (code) {
+            KeyEvent.KEYCODE_DPAD_LEFT -> -1
+            KeyEvent.KEYCODE_DPAD_RIGHT -> 1
+            else -> 0
         }
-        voile.animate().alpha(0f).setDuration(160)
-            .withEndAction { racine.removeView(voile) }.start()
+        val valider = code == KeyEvent.KEYCODE_ENTER || code == KeyEvent.KEYCODE_NUMPAD_ENTER ||
+            code == KeyEvent.KEYCODE_SPACE || code == KeyEvent.KEYCODE_DPAD_CENTER
+        val echap = code == KeyEvent.KEYCODE_ESCAPE
+        if (sens == 0 && !valider && !echap) return false
+        // La levée est consommée avec la descente, sans rien faire.
+        if (event.action != KeyEvent.ACTION_DOWN) return true
+
+        val l = lecteur
+        val ev = eventail
+        when {
+            l != null -> when {
+                sens != 0 -> l.feuilleter(sens)
+                echap -> l.fermer()
+            }
+            ev != null -> when {
+                sens != 0 -> ev.tourner(sens)
+                valider -> ev.ouvrirCentre()
+                echap -> ev.fermer()
+            }
+            else -> when {
+                sens != 0 -> {
+                    casierClavier = if (casierClavier < 0) (if (sens > 0) 0 else BoiteLeitner.CASIERS - 1)
+                    else (casierClavier + sens).coerceIn(0, BoiteLeitner.CASIERS - 1)
+                    boite.eclairer(casierClavier)
+                }
+                valider && casierClavier >= 0 -> ouvrirCasier(casierClavier)
+                valider -> if (Carnet.aRevoir(requireContext()) > 0) lancerRevision()
+                echap && casierClavier >= 0 -> {
+                    casierClavier = -1
+                    boite.eclairer(-1)
+                }
+                else -> return false
+            }
+        }
+        return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? com.example.kreyolkeyboard.SettingsActivity)?.jeuAuClavier = this
+    }
+
+    override fun onPause() {
+        (activity as? com.example.kreyolkeyboard.SettingsActivity)?.let {
+            if (it.jeuAuClavier === this) it.jeuAuClavier = null
+        }
+        super.onPause()
     }
 
     companion object {

@@ -129,15 +129,42 @@ internal class EventailCasier(
 
     // ---- la géométrie ------------------------------------------------------
 
-    private val largeurCarte get() = min(width * 0.42f, px(170f))
+    /**
+     * Sur tablette, l'éventail prend la mesure de l'écran.
+     *
+     * Plafonnées à 170 dp et posées sur un arc de 2,4 cartes de rayon, les
+     * cartes d'un écran de dix pouces faisaient une petite main au milieu d'un
+     * grand vide, et celles de droite plongeaient sous l'aide puis sous le bord.
+     * Ici la carte se règle sur la hauteur, l'arc sur la largeur (une courbe
+     * douce d'un bord à l'autre), et l'écart entre deux cartes sur l'arc : une
+     * demi-carte, si bien qu'une quinzaine se lisent à la fois sans se couvrir
+     * plus que dans une main.
+     */
+    private val tablette = resources.configuration.smallestScreenWidthDp >= 600
+
+    private val largeurCarte get() =
+        if (tablette) minOf(height * 0.34f, width * 0.22f, px(280f))
+        else min(width * 0.42f, px(170f))
     private val hauteurCarte get() = largeurCarte * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
 
     /** Le rayon de l'arc : assez grand pour que l'éventail reste une courbe douce. */
-    private val rayonArc get() = largeurCarte * 2.4f
+    private val rayonArc get() =
+        if (tablette) maxOf(largeurCarte * 2.4f, width.toFloat()) else largeurCarte * 2.4f
     private val centreY get() = height * 0.47f
 
+    /** L'écart entre deux cartes, en degrés. */
+    private val pas get() =
+        if (tablette) Math.toDegrees((largeurCarte * 0.5f / rayonArc).toDouble()).toFloat() else PAS
+
+    /** Au-delà, une carte est sous le bord de l'écran ou presque : on ne la dessine pas. */
+    private val angleMax get() =
+        if (tablette) Math.toDegrees(
+            kotlin.math.asin(((width / 2f + largeurCarte * 0.7f) / rayonArc).coerceAtMost(1f).toDouble())
+        ).toFloat()
+        else ANGLE_MAX
+
     /** La longueur d'arc entre deux cartes : ce qu'un doigt doit parcourir pour en passer une. */
-    private val pasPixels get() = rayonArc * Math.toRadians(PAS.toDouble()).toFloat()
+    private val pasPixels get() = rayonArc * Math.toRadians(pas.toDouble()).toFloat()
 
     private var ex = 0f
     private var ey = 0f
@@ -155,7 +182,7 @@ internal class EventailCasier(
      */
     private fun poser(i: Int) {
         val ecart = i - decalage
-        val angle = ecart * PAS
+        val angle = ecart * pas
         val rad = Math.toRadians(angle.toDouble())
         val finX = width / 2f + rayonArc * sin(rad).toFloat()
         val finY = centreY + rayonArc * (1f - cos(rad).toFloat())
@@ -174,7 +201,7 @@ internal class EventailCasier(
     }
 
     private fun visibles(liste: List<ContenuCarte>): List<Int> =
-        liste.indices.filter { abs(it - decalage) * PAS <= ANGLE_MAX }
+        liste.indices.filter { abs(it - decalage) * pas <= angleMax }
 
     // ---- la vie ----------------------------------------------------------
 
@@ -192,8 +219,13 @@ internal class EventailCasier(
         // Toujours une carte au centre, donc un décalage entier : à 1,5 pour quatre
         // cartes, deux se partageaient le milieu et aucune n'était « la » carte
         // qu'un toucher ouvre.
-        decalage = if (liste.size <= 5) ((liste.size - 1).coerceAtLeast(0) / 2).toFloat()
-        else min(2f, liste.size - 1f)
+        // Sur tablette la main est large : la carte du centre laisse des
+        // cartes des deux côtés, sans en pousser hors de l'arc à gauche.
+        decalage = when {
+            liste.size <= 5 -> ((liste.size - 1).coerceAtLeast(0) / 2).toFloat()
+            tablette -> min(((liste.size - 1) / 2).toFloat(), (angleMax / pas).toInt() - 1f).coerceAtLeast(2f)
+            else -> min(2f, liste.size - 1f)
+        }
         rangSenti = decalage.roundToInt()
         // Rendues avant la première image : sinon la première trame de
         // l'animation porterait le coût de toutes, et c'est elle qu'on voit.
@@ -392,6 +424,27 @@ internal class EventailCasier(
 
     override fun performClick(): Boolean = super.performClick()
 
+    /** Les flèches d'un clavier : la carte voisine prend le centre. */
+    fun tourner(sens: Int) {
+        val n = cartes?.size ?: return
+        if (fermeture || n < 2) return
+        allerA((decalage.roundToInt() + sens).coerceIn(0, n - 1))
+    }
+
+    /** Entrée sur un clavier : ouvre la carte du centre, comme un toucher. */
+    fun ouvrirCentre() {
+        val liste = cartes ?: return
+        if (fermeture) return
+        if (liste.isEmpty()) fermer() else surCarte(liste[decalage.roundToInt().coerceIn(0, liste.size - 1)])
+    }
+
+    /** Amène au centre la carte [i] : la carte ouverte en grand a été feuilletée. */
+    fun centrerSur(i: Int) {
+        val n = cartes?.size ?: return
+        if (fermeture || i !in 0 until n) return
+        allerA(i)
+    }
+
     private fun allerA(i: Int) {
         val n = cartes?.size ?: 0
         animDecalage = animer(decalage, i.toFloat(), 260, DecelerateInterpolator()) {
@@ -437,10 +490,10 @@ internal class EventailCasier(
     }
 
     private companion object {
-        /** L'écart entre deux cartes de l'éventail, en degrés. */
+        /** L'écart entre deux cartes de l'éventail, en degrés, sur téléphone. */
         const val PAS = 13f
 
-        /** Au-delà, une carte est sous le bord de l'écran ou presque : on ne la dessine pas. */
+        /** Sur téléphone : au-delà, une carte est sous le bord de l'écran ou presque. */
         const val ANGLE_MAX = 80f
 
         const val RETARD_MAX = 0.3f

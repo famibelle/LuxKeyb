@@ -14,8 +14,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
@@ -104,18 +102,11 @@ class CarnetFragment : DialogFragment() {
     private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
 
-    /** La carte entière ouverte, s'il y en a une : elle passe avant le casier. */
-    private var voileCarte: View? = null
-
     /**
-     * Les cartes que l'on feuillette depuis la carte ouverte, dans l'ordre de
-     * l'écran d'où on l'a ouverte, et la place de celle qui est montrée.
+     * La carte entière ouverte, s'il y en a une : elle passe avant le casier.
+     * On la feuillette dans l'ordre de l'écran d'où on l'a ouverte.
      */
-    private var feuillet: List<ContenuCarte> = emptyList()
-    private var rangOuvert = 0
-    private var porteCarte: FrameLayout? = null
-    private var flecheCartePrecedente: View? = null
-    private var flecheCarteSuivante: View? = null
+    private var lecteur: LecteurCartes? = null
 
     /** Le défilement de la grille, et l'album qui le remplace sur tablette. */
     private lateinit var defilementGrille: ScrollView
@@ -885,11 +876,8 @@ class CarnetFragment : DialogFragment() {
 
     /** Referme la carte ouverte. Rend `false` s'il n'y en avait aucune. */
     private fun fermerCarte(): Boolean {
-        val voile = voileCarte ?: return false
-        voileCarte = null
-        porteCarte = null
-        voile.animate().alpha(0f).setDuration(160)
-            .withEndAction { racine.removeView(voile) }.start()
+        val l = lecteur?.takeIf { it.ouvert } ?: return false
+        l.fermer()
         return true
     }
 
@@ -928,154 +916,14 @@ class CarnetFragment : DialogFragment() {
         }
     }
 
-    /**
-     * La carte entière, posée au-dessus de la grille et **retournée pour
-     * arriver** : c'est le geste qui fait la carte à collectionner, et il ne
-     * coûte qu'une rotation de vue.
-     *
-     * Elle tient entière sur l'écran : sur une tablette, à la largeur de
-     * l'écran, on n'en voyait que l'illustration et il fallait la faire défiler
-     * pour lire le mot. On passe de l'une à l'autre d'un glissé de côté, des
-     * flèches sur tablette, ou des flèches d'un clavier, dans l'ordre de
-     * l'écran d'où on l'a ouverte ; un glissé vers le haut ou le bas la repose.
-     */
+    /** La carte entière, feuilletable dans l'ordre de l'écran d'où on l'ouvre : voir [LecteurCartes]. */
     private fun montrerCarte(c: ContenuCarte, ordre: List<ContenuCarte> = listOf(c)) {
-        val ctx = context ?: return
-        val d = resources.displayMetrics.density
-        feuillet = ordre.ifEmpty { listOf(c) }
-        rangOuvert = feuillet.indexOf(c).coerceAtLeast(0)
-
-        val voile = VoileGlissable(ctx) { sensX, _ ->
-            if (sensX != 0 && feuillet.size > 1) feuilleter(-sensX) else fermerCarte()
-        }.apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            setBackgroundColor(0xCC000000.toInt())
-            isClickable = true
-            setOnClickListener { fermerCarte() }
-        }
-
-        // Le porte-carte est le contenu que le voile fait suivre au doigt.
-        val marge = (if (enAlbum()) 88 else 22) * d
-        val porte = FrameLayout(ctx).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            setPadding(marge.toInt(), (24 * d).toInt(), marge.toInt(), (24 * d).toInt())
-        }
-        voile.addView(porte)
-        porteCarte = porte
-
-        // Les flèches, sur tablette seulement : un téléphone n'a pas la marge
-        // pour les poser sans couvrir la carte, et le glissé y suffit.
-        flecheCartePrecedente = null
-        flecheCarteSuivante = null
-        if (enAlbum() && feuillet.size > 1) {
-            fun fleche(signe: String, @StringRes description: Int, pas: Int, cote: Int) =
-                TextView(ctx).apply {
-                    text = signe
-                    textSize = 34f
-                    setTextColor(Color.WHITE)
-                    gravity = Gravity.CENTER
-                    contentDescription = getString(description)
-                    background = GradientDrawable().apply {
-                        shape = GradientDrawable.OVAL
-                        setColor(0x33FFFFFF)
-                    }
-                    isClickable = true
-                    isFocusable = true
-                    setOnClickListener { feuilleter(pas) }
-                    layoutParams = FrameLayout.LayoutParams(
-                        (60 * d).toInt(), (60 * d).toInt(), Gravity.CENTER_VERTICAL or cote
-                    ).apply { marginStart = (14 * d).toInt(); marginEnd = (14 * d).toInt() }
-                }
-            flecheCartePrecedente = fleche("‹", R.string.album_carte_precedente, -1, Gravity.START)
-                .also { voile.addView(it) }
-            flecheCarteSuivante = fleche("›", R.string.album_carte_suivante, 1, Gravity.END)
-                .also { voile.addView(it) }
-        }
-
-        voileCarte = voile
-        racine.addView(voile)
-        voile.alpha = 0f
-        voile.animate().alpha(1f).setDuration(160).start()
-        poserCarte(0)
-    }
-
-    /**
-     * Pose dans le porte-carte la carte de rang [rangOuvert]. [sens] vaut 0 à
-     * l'ouverture, qui retourne la carte, et ±1 quand on feuillette, où elle
-     * arrive du côté d'où l'on tourne.
-     */
-    private fun poserCarte(sens: Int) {
-        val ctx = context ?: return
-        val porte = porteCarte ?: return
-        val d = resources.displayMetrics.density
-        val c = feuillet[rangOuvert]
-
-        porte.removeAllViews()
-        porte.translationX = 0f
-        porte.translationY = 0f
-        voileCarte?.background?.alpha = 255
-
-        val carte = CarteCarnet.complete(ctx, c)
-        (carte as? Carton)?.ajusteALaHauteur = true
-        // La carte ne ferme pas : on peut la lire.
-        carte.isClickable = true
-        porte.addView(carte, FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            Gravity.CENTER
-        ))
-
-        flecheCartePrecedente?.alpha = if (rangOuvert > 0) 1f else 0.25f
-        flecheCarteSuivante?.alpha = if (rangOuvert < feuillet.lastIndex) 1f else 0.25f
-
-        carte.cameraDistance = 9000f * d
-        val armer = {
-            // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
-            // pour ne pas écrire dans `rotationY` pendant le retournement.
-            Inclinaison.suivre(carte)
-            (carte as? Carton)?.sensibleAuDoigt = true
-        }
-        if (sens == 0) {
-            // Une carte rare se retourne plus lentement et dépasse légèrement
-            // son aplomb avant de se poser : le même geste, mais qui prend son
-            // temps.
-            carte.rotationY = -85f
-            carte.animate().rotationY(0f)
-                .setDuration(if (c.rarete.distinguee) 470L else 360L)
-                .setInterpolator(
-                    if (c.rarete.distinguee) OvershootInterpolator(1.4f)
-                    else DecelerateInterpolator()
-                )
-                .withEndAction(armer)
-                .start()
-        } else {
-            carte.translationX = sens * porte.width * 0.35f
-            carte.rotationY = sens * 35f
-            carte.alpha = 0f
-            carte.animate().translationX(0f).rotationY(0f).alpha(1f)
-                .setDuration(240L)
-                .setInterpolator(DecelerateInterpolator())
-                .withEndAction(armer)
-                .start()
-        }
-    }
-
-    /** Passe à la carte voisine ; au bout de la liste, la carte revient en place. */
-    private fun feuilleter(pas: Int) {
-        val suivant = rangOuvert + pas
-        if (suivant !in feuillet.indices) {
-            porteCarte?.animate()?.translationX(0f)?.setDuration(200)?.start()
-            voileCarte?.background?.alpha = 255
-            return
-        }
-        rangOuvert = suivant
-        poserCarte(pas)
+        if (context == null) return
+        val feuillet = ordre.ifEmpty { listOf(c) }
+        lecteur = LecteurCartes(
+            racine, feuillet, feuillet.indexOf(c).coerceAtLeast(0),
+            surFermeture = { lecteur = null }
+        ).also { it.ouvrir() }
     }
 
     override fun onStart() {
@@ -1104,8 +952,8 @@ class CarnetFragment : DialogFragment() {
                 else -> 0
             }
             when {
-                pas != 0 && voileCarte != null -> {
-                    if (evenement.action == KeyEvent.ACTION_DOWN) feuilleter(pas)
+                pas != 0 && lecteur != null -> {
+                    if (evenement.action == KeyEvent.ACTION_DOWN) lecteur?.feuilleter(pas)
                     true
                 }
                 pas != 0 && pagesAlbum != null -> {
@@ -1115,7 +963,7 @@ class CarnetFragment : DialogFragment() {
                     true
                 }
                 code != KeyEvent.KEYCODE_BACK -> false
-                voileCarte == null -> false
+                lecteur == null -> false
                 else -> {
                     if (evenement.action == KeyEvent.ACTION_UP) {
                         fermerCarte()

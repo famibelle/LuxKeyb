@@ -123,8 +123,13 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
 
+    /** Un écran qui sait recevoir les touches d'un clavier physique. */
+    interface JeuAuClavier {
+        fun surToucheClavier(event: android.view.KeyEvent): Boolean
+    }
+
     /** Le jeu à l'écran qui sait recevoir les touches d'un clavier physique. */
-    var jeuAuClavier: CrosswordFragment? = null
+    var jeuAuClavier: JeuAuClavier? = null
 
     override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
         // Un champ de texte qui a le focus garde ses touches ; sinon, le jeu
@@ -7845,7 +7850,7 @@ class SettingsActivity : AppCompatActivity() {
      * - Rien n'est corrigé lettre à lettre. Une case fausse ne se signale
      *   qu'une fois son mot entièrement rempli, sinon le jeu dicte la réponse.
      */
-    class CrosswordFragment : Fragment() {
+    class CrosswordFragment : Fragment(), JeuAuClavier {
 
         private var rootView: ScrollView? = null
 
@@ -8312,7 +8317,7 @@ class SettingsActivity : AppCompatActivity() {
          * la grille comme le pavé : mêmes lettres, ⌫ pour effacer. Une lettre
          * absente du pavé, un chiffre par exemple, est ignorée.
          */
-        fun surToucheClavier(event: android.view.KeyEvent): Boolean {
+        override fun surToucheClavier(event: android.view.KeyEvent): Boolean {
             if (event.action != android.view.KeyEvent.ACTION_DOWN) return false
             if (event.keyCode == android.view.KeyEvent.KEYCODE_DEL) {
                 session?.effacer()
