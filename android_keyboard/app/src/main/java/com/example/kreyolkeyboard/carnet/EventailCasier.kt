@@ -142,23 +142,53 @@ internal class EventailCasier(
      */
     private val tablette = resources.configuration.smallestScreenWidthDp >= 600
 
-    private val largeurCarte get() =
-        if (tablette) minOf(height * 0.34f, width * 0.22f, px(280f))
-        else min(width * 0.42f, px(170f))
+    /**
+     * Un téléphone couché : sous les onglets il reste à peine 200 dp de haut.
+     * Réglée sur la seule largeur, la carte y faisait 170 dp et l'éventail
+     * débordait : le bas des cartes sous le bord, le titre et le compteur
+     * derrière elles, l'aide en travers. Ici les textes tiennent chacun sur une
+     * ligne, en haut et en bas, l'arc est presque plat pour que les cartes des
+     * bords ne descendent pas sur l'aide, et la carte prend la hauteur qui reste.
+     */
+    private val basse get() = !tablette && height < px(HAUTEUR_BASSE)
+
+    /** Ce que la main laisse aux textes en vue basse : titre au-dessus, aide en dessous. */
+    private val margeHaute get() = px(36f)
+    private val margeBasse get() = px(26f)
+
+    /** De combien les cartes du bord descendent sous celle du centre. */
+    private val descenteBord: Float get() =
+        rayonArc * (1f - cos(kotlin.math.asin(min(1f, width / 2f / rayonArc).toDouble())).toFloat())
+
+    private val largeurCarte: Float get() = when {
+        tablette -> minOf(height * 0.34f, width * 0.22f, px(280f))
+        // La carte du centre est grossie de 12 % : c'est elle qui doit tenir.
+        basse -> minOf(
+            (height - margeHaute - margeBasse - descenteBord) / 1.16f, width * 0.22f, px(170f)
+        ).coerceAtLeast(px(48f))
+        else -> min(width * 0.42f, px(170f))
+    }
     private val hauteurCarte get() = largeurCarte * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
 
+    /** La main s'étale sur la largeur : sur tablette, ou sur un téléphone couché. */
+    private val large get() = tablette || basse
+
     /** Le rayon de l'arc : assez grand pour que l'éventail reste une courbe douce. */
-    private val rayonArc get() =
-        if (tablette) maxOf(largeurCarte * 2.4f, width.toFloat()) else largeurCarte * 2.4f
-    private val centreY get() = height * 0.47f
+    private val rayonArc: Float get() = when {
+        basse -> width * 4f
+        tablette -> maxOf(largeurCarte * 2.4f, width.toFloat())
+        else -> largeurCarte * 2.4f
+    }
+    private val centreY get() =
+        if (basse) margeHaute + largeurCarte * 0.58f else height * 0.47f
 
     /** L'écart entre deux cartes, en degrés. */
     private val pas get() =
-        if (tablette) Math.toDegrees((largeurCarte * 0.5f / rayonArc).toDouble()).toFloat() else PAS
+        if (large) Math.toDegrees((largeurCarte * 0.5f / rayonArc).toDouble()).toFloat() else PAS
 
     /** Au-delà, une carte est sous le bord de l'écran ou presque : on ne la dessine pas. */
     private val angleMax get() =
-        if (tablette) Math.toDegrees(
+        if (large) Math.toDegrees(
             kotlin.math.asin(((width / 2f + largeurCarte * 0.7f) / rayonArc).coerceAtMost(1f).toDouble())
         ).toFloat()
         else ANGLE_MAX
@@ -223,7 +253,7 @@ internal class EventailCasier(
         // cartes des deux côtés, sans en pousser hors de l'arc à gauche.
         decalage = when {
             liste.size <= 5 -> ((liste.size - 1).coerceAtLeast(0) / 2).toFloat()
-            tablette -> min(((liste.size - 1) / 2).toFloat(), (angleMax / pas).toInt() - 1f).coerceAtLeast(2f)
+            large -> min(((liste.size - 1) / 2).toFloat(), (angleMax / pas).toInt() - 1f).coerceAtLeast(2f)
             else -> min(2f, liste.size - 1f)
         }
         rangSenti = decalage.roundToInt()
@@ -289,10 +319,21 @@ internal class EventailCasier(
         val alpha = (voile * 255).toInt()
         texteTitre.color = Color.WHITE
         texteTitre.alpha = alpha
-        canvas.drawText(titre, width / 2f, px(52f), texteTitre)
         texteDoux.color = PALE
         texteDoux.alpha = alpha
-        canvas.drawText(sousTitre, width / 2f, px(76f), texteDoux)
+        if (basse) {
+            // Titre et sous-titre sur une seule ligne, centrée comme un tout.
+            val suite = " · $sousTitre"
+            val lt = texteTitre.measureText(titre)
+            val gauche = (width - lt - texteDoux.measureText(suite)) / 2f
+            canvas.drawText(titre, gauche + lt / 2f, px(26f), texteTitre)
+            texteDoux.textAlign = Paint.Align.LEFT
+            canvas.drawText(suite, gauche + lt, px(26f), texteDoux)
+            texteDoux.textAlign = Paint.Align.CENTER
+        } else {
+            canvas.drawText(titre, width / 2f, px(52f), texteTitre)
+            canvas.drawText(sousTitre, width / 2f, px(76f), texteDoux)
+        }
 
         val liste = cartes
         if (liste == null) {
@@ -322,7 +363,10 @@ internal class EventailCasier(
 
         if (liste.size > 1) {
             val rang = decalage.roundToInt().coerceIn(0, liste.size - 1) + 1
-            canvas.drawText(
+            // Couché, il n'y a pas de place au-dessus de la carte : le compteur
+            // va dans le coin, sur la ligne du titre.
+            if (basse) canvas.drawText("$rang / ${liste.size}", width - px(48f), px(26f), texteDoux)
+            else canvas.drawText(
                 "$rang / ${liste.size}", width / 2f,
                 centreY - hauteurCarte * 0.62f - px(10f), texteDoux
             )
@@ -335,9 +379,15 @@ internal class EventailCasier(
     private fun aide(canvas: Canvas, ligne1: String, ligne2: String?, alpha: Int) {
         texteDoux.color = PALE
         texteDoux.alpha = (alpha * 0.8f).toInt()
-        val y = height - px(if (ligne2 == null) 32f else 50f)
-        canvas.drawText(ligne1, width / 2f, y, texteDoux)
-        if (ligne2 != null) canvas.drawText(ligne2, width / 2f, y + px(22f), texteDoux)
+        if (basse) {
+            // La largeur ne manque pas : les deux lignes se suivent sur une seule.
+            val ligne = if (ligne2 == null) ligne1 else "$ligne1 · $ligne2"
+            canvas.drawText(ligne, width / 2f, height - px(10f), texteDoux)
+        } else {
+            val y = height - px(if (ligne2 == null) 32f else 50f)
+            canvas.drawText(ligne1, width / 2f, y, texteDoux)
+            if (ligne2 != null) canvas.drawText(ligne2, width / 2f, y + px(22f), texteDoux)
+        }
         texteDoux.alpha = alpha
     }
 
@@ -497,6 +547,9 @@ internal class EventailCasier(
         const val ANGLE_MAX = 80f
 
         const val RETARD_MAX = 0.3f
+
+        /** Sous cette hauteur, en dp, la vue est « basse » : un téléphone couché. */
+        const val HAUTEUR_BASSE = 420f
 
         const val PALE = 0xFFE6DCCB.toInt()
     }
