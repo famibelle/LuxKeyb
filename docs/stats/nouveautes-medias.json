@@ -252,5 +252,24 @@
         "legende": "Dans la boîte, les cartes suivent maintenant la perspective de leur casier : sur tablette, celles des casiers du bord ne sont plus coupées en biais."
       }
     ]
+  },
+  "34.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_tablette_clavier_physique.png",
+        "alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
+        "legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
+      },
+      {
+        "image": "Screenshots/lux_tablette_spiller.png",
+        "alt": "L'onglet Spiller sur tablette en paysage : les quatre onglets Haut, Spiller, Wierderbuch et Mäi Lëtzebuergesch dans une colonne à gauche ; à droite, la carte violette Mäi Carnet, puis les huit jeux sur deux rangées de quatre : Boîte de Leitner, Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert et Wuertplaz.",
+        "legende": "Sur tablette en paysage, les onglets passent sur le côté et les huit jeux tiennent sur un écran."
+      },
+      {
+        "image": "Screenshots/lux_tablette_clavier_scinde.png",
+        "alt": "Le clavier scindé sur une tablette en paysage : les touches de q à v à gauche, de u à ü à droite, un espace vide au milieu. Au-dessus, la barre de suggestions propose Moien, Moie et Moies après « Moi ».",
+        "legende": "Le clavier scindé, à activer dans Réglages du clavier : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
+      }
+    ]
   }
 }
