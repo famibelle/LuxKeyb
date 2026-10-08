@@ -142,6 +142,10 @@
     <string name="tri_etagere">Regal</string>
     <string name="carnet_ouverture">Sammlung wird geöffnet…</string>
     <string name="carnet_tous">Alle</string>
+    <string name="album_page_precedente">Vorherige Seite</string>
+    <string name="album_page_suivante">Nächste Seite</string>
+    <string name="album_carte_precedente">Vorherige Karte</string>
+    <string name="album_carte_suivante">Nächste Karte</string>
     <string name="carnet_vide">Die Sammlung ist leer.</string>
     <string name="carnet_vide_explication">Jedes Wort, das Sie in einem der sieben Spiele gewinnen, wird zu einer Karte und landet hier. Ein Wort finden, eines erraten, eines schreiben: Die erste Karte ist nur ein Spiel entfernt.</string>
     <string name="carnet_mots_dans">%1$s in %2$s</string>

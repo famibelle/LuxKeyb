@@ -146,6 +146,10 @@
     <string name="tri_etagere">Shelf</string>
     <string name="carnet_ouverture">Opening the collection…</string>
     <string name="carnet_tous">All</string>
+    <string name="album_page_precedente">Previous page</string>
+    <string name="album_page_suivante">Next page</string>
+    <string name="album_carte_precedente">Previous card</string>
+    <string name="album_carte_suivante">Next card</string>
     <string name="carnet_vide">The collection is empty.</string>
     <string name="carnet_vide_explication">Every word you win in one of the seven games becomes a card and is added here. Find a word, guess one, write one: your first card is one game away.</string>
     <string name="carnet_mots_dans">%1$s in %2$s</string>

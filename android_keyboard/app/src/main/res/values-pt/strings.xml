@@ -142,6 +142,10 @@
     <string name="tri_etagere">Prateleira</string>
     <string name="carnet_ouverture">A abrir a coleção…</string>
     <string name="carnet_tous">Todos</string>
+    <string name="album_page_precedente">Página anterior</string>
+    <string name="album_page_suivante">Página seguinte</string>
+    <string name="album_carte_precedente">Carta anterior</string>
+    <string name="album_carte_suivante">Carta seguinte</string>
     <string name="carnet_vide">A coleção está vazia.</string>
     <string name="carnet_vide_explication">Cada palavra ganha num dos sete jogos torna-se uma carta e é acrescentada aqui. Encontre uma palavra, adivinhe uma, escreva uma: a primeira carta está a um jogo de distância.</string>
     <string name="carnet_mots_dans">%1$s em %2$s</string>

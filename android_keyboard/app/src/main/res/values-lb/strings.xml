@@ -142,6 +142,10 @@
     <string name="tri_etagere">Regal</string>
     <string name="carnet_ouverture">De Carnet geet op…</string>
     <string name="carnet_tous">All</string>
+    <string name="album_page_precedente">Säit virdrun</string>
+    <string name="album_page_suivante">Nächst Säit</string>
+    <string name="album_carte_precedente">Kaart virdrun</string>
+    <string name="album_carte_suivante">Nächst Kaart</string>
     <string name="carnet_vide">De Carnet ass eidel.</string>
     <string name="carnet_vide_explication">All Wuert, dat Dir an engem vun de siwe Spiller gewannt, gëtt eng Kaart a kënnt heihinner. E Wuert fannen, eent roden, eent schreiwen: Déi éischt Kaart ass just ee Spill ewech.</string>
     <string name="carnet_mots_dans">%1$s an %2$s</string>

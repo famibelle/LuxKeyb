@@ -22,6 +22,8 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.kreyolkeyboard.TranslationDictionary
 import com.example.kreyolkeyboard.applicatifDansLaLangue
 
@@ -72,6 +74,11 @@ class CarnetFragment : DialogFragment() {
          * de l'écran avant même de montrer le nom du mot.
          */
         private const val LARGEUR_CIBLE_VIGNETTE_DP = 165f
+
+        /** Couleur des pages de l'album : un papier crème, pas le gris de l'écran. */
+        private val PAPIER = Color.parseColor("#FFFBF2")
+        /** La couverture de l'album, sur laquelle les pages sont posées. */
+        private val COUVERTURE = Color.parseColor("#5D4037")
     }
 
     /**
@@ -99,6 +106,21 @@ class CarnetFragment : DialogFragment() {
 
     /** La carte entière ouverte, s'il y en a une : elle passe avant le casier. */
     private var voileCarte: View? = null
+
+    /**
+     * Les cartes que l'on feuillette depuis la carte ouverte, dans l'ordre de
+     * l'écran d'où on l'a ouverte, et la place de celle qui est montrée.
+     */
+    private var feuillet: List<ContenuCarte> = emptyList()
+    private var rangOuvert = 0
+    private var porteCarte: FrameLayout? = null
+    private var flecheCartePrecedente: View? = null
+    private var flecheCarteSuivante: View? = null
+
+    /** Le défilement de la grille, et l'album qui le remplace sur tablette. */
+    private lateinit var defilementGrille: ScrollView
+    private lateinit var zoneAlbum: FrameLayout
+    private var pagesAlbum: ViewPager2? = null
 
     private lateinit var racine: FrameLayout
     private lateinit var conteneurGrille: LinearLayout
@@ -137,6 +159,17 @@ class CarnetFragment : DialogFragment() {
             gravity = Gravity.CENTER_VERTICAL
             setBackgroundColor(accent)
             setPadding(dp(16f), dp(14f), dp(16f), dp(14f))
+            // Le dialogue s'étend sous la barre d'état : le bandeau la colore
+            // et son titre s'en écarte, au lieu de s'écrire sous l'heure.
+            setOnApplyWindowInsetsListener { v, insets ->
+                val haut = if (android.os.Build.VERSION.SDK_INT >= 30) {
+                    insets.getInsets(android.view.WindowInsets.Type.statusBars()).top
+                } else {
+                    @Suppress("DEPRECATION") insets.systemWindowInsetTop
+                }
+                v.setPadding(dp(16f), dp(14f) + haut, dp(16f), dp(14f))
+                insets
+            }
             addView(TextView(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
@@ -225,14 +258,23 @@ class CarnetFragment : DialogFragment() {
             clipToPadding = false
             clipChildren = false
         }
-        colonne.addView(ScrollView(ctx).apply {
+        defilementGrille = ScrollView(ctx).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
             )
             clipToPadding = false
             clipChildren = false
             addView(conteneurGrille)
-        })
+        }
+        colonne.addView(defilementGrille)
+
+        zoneAlbum = FrameLayout(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+            )
+            visibility = View.GONE
+        }
+        colonne.addView(zoneAlbum)
 
         racine = FrameLayout(ctx).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -410,7 +452,11 @@ class CarnetFragment : DialogFragment() {
         // téléphone, elles débordaient de la hauteur disponible et
         // masquaient jusqu'au nom du mot sans un défilement.
         val gouttiere = (10 * d).toInt()
-        val dispo = com.example.kreyolkeyboard.LargeurLecture.largeurEcran(requireContext()) - (24 * d).toInt() * 2
+        // Toute la largeur de l'écran : le carnet s'ouvre par-dessus les
+        // onglets, rail compris, il n'a pas à en retirer la place. On n'en
+        // retire que les marges de la grille, 12 dp de part et d'autre : en
+        // ôter 24 laissait à droite une bande deux fois plus large qu'à gauche.
+        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
         val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
         val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
         val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
@@ -423,6 +469,7 @@ class CarnetFragment : DialogFragment() {
             tvResume.text = resources.getQuantityString(
                 R.plurals.carnet_acquis_sur, visibles.size, acquises, visibles.size
             )
+            montrerAlbum(false)
             remplirEtagere(ctx, visibles, cote, colonnes)
             return
         }
@@ -435,7 +482,348 @@ class CarnetFragment : DialogFragment() {
             )
             else -> visibles.sortedByDescending { it.carte.numero }
         }
-        emettreVignettes(ctx, ordonnes, cote, colonnes)
+        if (enAlbum()) {
+            montrerAlbum(true)
+            quandMesuree(zoneAlbum) { if (isAdded) construireAlbum(ordonnes) }
+            return
+        }
+        montrerAlbum(false)
+        emettreVignettes(ctx, ordonnes, cote, colonnes, ordre = ordonnes)
+    }
+
+    // ---------------------------------------------------------------- l'album
+
+    /**
+     * Sur tablette, la collection se feuillette comme un album au lieu de
+     * défiler : des pages qui tiennent chacune sur l'écran, deux à deux quand
+     * l'écran est couché, et qu'on tourne d'un glissé.
+     *
+     * Le défilement d'une grille convient au téléphone, où l'on cherche une
+     * carte. Sur un grand écran posé devant soi, on regarde sa collection, et
+     * c'est la page qui en fait un objet : une place pour chaque carte, celles
+     * de la dernière page qui attendent encore la leur, et le nombre de pages
+     * qui dit à lui seul l'ampleur de ce qu'on a gagné.
+     *
+     * L'étagère garde son défilement : ses casiers sont des chapitres de
+     * longueurs inégales, que des pages fixes couperaient n'importe où.
+     */
+    private fun enAlbum(): Boolean = resources.configuration.smallestScreenWidthDp >= 600
+
+    /**
+     * Lance [action] une fois que [vue] a une taille : la zone de l'album sort
+     * de `GONE` au moment où on la remplit, et ses pages se calculent sur sa
+     * hauteur, qu'elle n'a pas encore.
+     */
+    private fun quandMesuree(vue: View, action: () -> Unit) {
+        if (vue.width > 0 && vue.height > 0 && !vue.isLayoutRequested) {
+            action()
+            return
+        }
+        vue.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View, l: Int, t: Int, r: Int, b: Int, ol: Int, ot: Int, or: Int, ob: Int
+            ) {
+                if (v.width <= 0 || v.height <= 0) return
+                v.removeOnLayoutChangeListener(this)
+                // Hors de la passe de mise en page en cours : l'album y ajoute
+                // des vues.
+                v.post(action)
+            }
+        })
+    }
+
+    private fun montrerAlbum(oui: Boolean) {
+        defilementGrille.visibility = if (oui) View.GONE else View.VISIBLE
+        zoneAlbum.visibility = if (oui) View.VISIBLE else View.GONE
+        if (!oui) {
+            zoneAlbum.removeAllViews()
+            pagesAlbum = null
+        }
+    }
+
+    private fun construireAlbum(liste: List<ContenuCarte>) {
+        val ctx = context ?: return
+        val d = resources.displayMetrics.density
+        fun dp(v: Float) = (v * d).toInt()
+        zoneAlbum.removeAllViews()
+
+        val largeur = zoneAlbum.width
+        val hauteur = zoneAlbum.height
+        if (largeur <= 0 || hauteur <= 0) return
+
+        // Deux pages côte à côte dès que l'écran est plus large que haut.
+        val doublePage = largeur > hauteur
+        val marge = dp(16f)
+        val reliure = dp(14f)
+        // Le carnet s'étend sous la barre de navigation : le pied s'en écarte,
+        // sinon ses flèches passent sous les boutons du système.
+        val insets = zoneAlbum.rootWindowInsets
+        val barreNavigation = when {
+            insets == null -> 0
+            android.os.Build.VERSION.SDK_INT >= 30 ->
+                insets.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom
+            else -> @Suppress("DEPRECATION") insets.systemWindowInsetBottom
+        }
+        val hauteurPied = dp(48f) + barreNavigation
+        val largeurPage = if (doublePage) (largeur - 2 * marge - 2 * reliure - reliure) / 2
+            else largeur - 2 * marge - 2 * reliure
+        val hauteurPage = hauteur - hauteurPied - 2 * reliure - dp(8f)
+
+        // Les vignettes visent la taille de la grille, puis s'ajustent pour
+        // remplir la page exactement : ni bande vide, ni rangée coupée.
+        val interieur = dp(18f)
+        val gouttiere = dp(12f)
+        val utileL = largeurPage - 2 * interieur
+        val utileH = hauteurPage - 2 * interieur - dp(20f)
+        // Parmi les grilles possibles, la plus garnie dont les vignettes ne
+        // descendent pas sous 85 % de leur taille de grille ; à nombre égal,
+        // la plus grande. Arrondir chaque côté à part laissait un tiers de la
+        // page vide, faute de place pour une rangée entière à pleine taille.
+        val plancher = LARGEUR_CIBLE_VIGNETTE_DP * d * 0.85f
+        fun coteDe(c: Int, r: Int) = minOf(
+            (utileL - (c - 1) * gouttiere) / c,
+            (utileH - (r - 1) * gouttiere) / r
+        )
+        val (colonnes, rangees) = (2..8).flatMap { c -> (2..6).map { r -> c to r } }
+            .filter { (c, r) -> coteDe(c, r) >= plancher }
+            .maxWithOrNull(compareBy<Pair<Int, Int>>({ it.first * it.second }, { coteDe(it.first, it.second) }))
+            ?: (2 to 2)
+        val cote = coteDe(colonnes, rangees)
+        val parPage = colonnes * rangees
+        val pages = liste.chunked(parPage).ifEmpty { listOf(emptyList()) }
+        val parVue = if (doublePage) 2 else 1
+        val vues = (pages.size + parVue - 1) / parVue
+
+        val pied = TextView(ctx).apply {
+            textSize = 15f
+            setTextColor(Color.parseColor("#616161"))
+            gravity = Gravity.CENTER
+            setTypeface(null, Typeface.BOLD)
+        }
+
+        val pager = ViewPager2(ctx).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                hauteur - hauteurPied
+            )
+            offscreenPageLimit = 1
+            adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                override fun getItemCount() = vues
+                override fun onCreateViewHolder(parent: ViewGroup, type: Int) =
+                    object : RecyclerView.ViewHolder(FrameLayout(ctx).apply {
+                        layoutParams = RecyclerView.LayoutParams(
+                            RecyclerView.LayoutParams.MATCH_PARENT,
+                            RecyclerView.LayoutParams.MATCH_PARENT
+                        )
+                    }) {}
+                override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                    val cadre = holder.itemView as FrameLayout
+                    cadre.removeAllViews()
+                    cadre.addView(doublePageDeLAlbum(
+                        ctx, pages, position * parVue, parVue, liste,
+                        largeurPage, hauteurPage, reliure, interieur, gouttiere,
+                        cote, colonnes, rangees
+                    ), FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        Gravity.CENTER
+                    ))
+                }
+            }
+            // On tourne la page autour de la reliure, et non en la faisant
+            // glisser comme un écran : c'est tout ce qui distingue un album
+            // d'une liste qui défile de côté.
+            setPageTransformer { page, position ->
+                page.cameraDistance = 20000f * d
+                page.pivotY = page.height / 2f
+                page.pivotX = if (position < 0) page.width.toFloat() else 0f
+                page.rotationY = (position * 55f).coerceIn(-90f, 90f)
+                page.alpha = 1f - (kotlin.math.abs(position) * 0.4f).coerceAtMost(1f)
+            }
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    val premiere = position * parVue + 1
+                    val derniere = minOf(premiere + parVue - 1, pages.size)
+                    val numeros = if (derniere > premiere) "$premiere–$derniere" else "$premiere"
+                    pied.text = "$numeros / ${pages.size}"
+                }
+            })
+        }
+        pagesAlbum = pager
+        zoneAlbum.addView(pager)
+
+        // Le pied : le numéro des pages, entre deux flèches qui les tournent
+        // aussi, pour qui ne pense pas à glisser.
+        fun fleche(signe: String, @StringRes description: Int, pas: Int) = TextView(ctx).apply {
+            text = signe
+            textSize = 26f
+            setTextColor(Carnet.COULEUR)
+            gravity = Gravity.CENTER
+            contentDescription = getString(description)
+            layoutParams = LinearLayout.LayoutParams(dp(56f), dp(48f))
+            isClickable = true
+            isFocusable = true
+            setOnClickListener {
+                val cible = (pager.currentItem + pas).coerceIn(0, vues - 1)
+                pager.setCurrentItem(cible, true)
+            }
+        }
+        zoneAlbum.addView(LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, dp(48f), Gravity.BOTTOM
+            ).apply { bottomMargin = barreNavigation }
+            addView(fleche("‹", R.string.album_page_precedente, -1))
+            addView(pied, LinearLayout.LayoutParams(dp(140f), dp(48f)))
+            addView(fleche("›", R.string.album_page_suivante, 1))
+        })
+        pied.text = "${if (doublePage && pages.size > 1) "1–2" else "1"} / ${pages.size}"
+    }
+
+    /**
+     * Une vue de l'album : une page, ou deux posées sur la couverture de part
+     * et d'autre de la reliure.
+     */
+    private fun doublePageDeLAlbum(
+        ctx: Context,
+        pages: List<List<ContenuCarte>>,
+        premiere: Int,
+        parVue: Int,
+        ordre: List<ContenuCarte>,
+        largeurPage: Int,
+        hauteurPage: Int,
+        reliure: Int,
+        interieur: Int,
+        gouttiere: Int,
+        cote: Int,
+        colonnes: Int,
+        rangees: Int
+    ): View {
+        val d = resources.displayMetrics.density
+        val couverture = LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(reliure, reliure, reliure, reliure)
+            background = GradientDrawable().apply {
+                cornerRadius = 16f * d
+                setColor(COUVERTURE)
+            }
+            elevation = 6f * d
+        }
+        for (k in 0 until parVue) {
+            val indice = premiere + k
+            val gauche = parVue == 2 && k == 0
+            val page = if (indice < pages.size) {
+                pageDeLAlbum(ctx, pages[indice], indice + 1, ordre, largeurPage, hauteurPage,
+                    interieur, gouttiere, cote, colonnes, rangees,
+                    derniere = indice == pages.lastIndex,
+                    ombre = if (parVue == 2) (if (gauche) Gravity.END else Gravity.START) else null)
+            } else {
+                // Le verso blanc d'une dernière page de droite.
+                View(ctx).apply {
+                    background = GradientDrawable().apply {
+                        cornerRadius = 8f * d
+                        setColor(PAPIER)
+                    }
+                }
+            }
+            couverture.addView(page, LinearLayout.LayoutParams(largeurPage, hauteurPage).apply {
+                if (gauche) rightMargin = reliure
+            })
+        }
+        return couverture
+    }
+
+    /**
+     * Une page : les vignettes à leur place, des pochettes vides pour celles
+     * qui restent à gagner sur la dernière, et le numéro de la page en bas.
+     */
+    private fun pageDeLAlbum(
+        ctx: Context,
+        cartes: List<ContenuCarte>,
+        numero: Int,
+        ordre: List<ContenuCarte>,
+        largeurPage: Int,
+        hauteurPage: Int,
+        interieur: Int,
+        gouttiere: Int,
+        cote: Int,
+        colonnes: Int,
+        rangees: Int,
+        derniere: Boolean,
+        ombre: Int?
+    ): View {
+        val d = resources.displayMetrics.density
+        val page = FrameLayout(ctx).apply {
+            background = GradientDrawable().apply {
+                cornerRadius = 8f * d
+                setColor(PAPIER)
+            }
+            clipChildren = false
+        }
+
+        val grille = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            clipChildren = false
+        }
+        for (r in 0 until rangees) {
+            val ligne = LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                clipChildren = false
+            }
+            for (k in 0 until colonnes) {
+                val i = r * colonnes + k
+                val parametres = LinearLayout.LayoutParams(cote, cote).apply {
+                    if (k < colonnes - 1) rightMargin = gouttiere
+                }
+                val c = cartes.getOrNull(i)
+                when {
+                    c != null -> ligne.addView(CarteCarnet.vignette(ctx, c, cote).apply {
+                        isClickable = true
+                        setOnClickListener { montrerCarte(c, ordre) }
+                    }, parametres)
+                    // Sur la dernière page seulement : les places qui restent
+                    // à prendre. Ailleurs une page est pleine par construction.
+                    derniere && cartes.isNotEmpty() -> ligne.addView(View(ctx).apply {
+                        background = GradientDrawable().apply {
+                            cornerRadius = 10f * d
+                            setStroke((2 * d).toInt(), Color.parseColor("#DCD0B8"), 9f * d, 6f * d)
+                        }
+                    }, parametres)
+                    else -> ligne.addView(View(ctx), parametres)
+                }
+            }
+            grille.addView(ligne, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { if (r < rangees - 1) bottomMargin = gouttiere })
+        }
+        page.addView(grille, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.CENTER_HORIZONTAL or Gravity.TOP
+        ).apply { topMargin = interieur })
+
+        // Le creux de la reliure : une ombre douce le long du bord intérieur.
+        if (ombre != null) {
+            page.addView(View(ctx).apply {
+                background = GradientDrawable(
+                    if (ombre == Gravity.END) GradientDrawable.Orientation.LEFT_RIGHT
+                    else GradientDrawable.Orientation.RIGHT_LEFT,
+                    intArrayOf(Color.TRANSPARENT, Color.parseColor("#26000000"))
+                )
+            }, FrameLayout.LayoutParams(
+                (22 * d).toInt(), FrameLayout.LayoutParams.MATCH_PARENT, ombre
+            ))
+        }
+
+        page.addView(TextView(ctx).apply {
+            text = "$numero"
+            textSize = 12f
+            setTextColor(Color.parseColor("#A1887F"))
+        }, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+        ).apply { bottomMargin = (8 * d).toInt() })
+        return page
     }
 
     /**
@@ -460,14 +848,18 @@ class CarnetFragment : DialogFragment() {
         val parCasier = visibles.groupBy {
             it.carte.boite.coerceIn(0, Widderhuelen.BOITE_ACQUISE)
         }
-        for (boite in 0..Widderhuelen.BOITE_ACQUISE) {
-            val dedans = parCasier[boite].orEmpty()
-                .sortedBy { it.carte.forme.lowercase() }
+        val casiers = (0..Widderhuelen.BOITE_ACQUISE).map { boite ->
+            parCasier[boite].orEmpty().sortedBy { it.carte.forme.lowercase() }
+        }
+        // On feuillette l'étagère d'un casier au suivant, sans s'arrêter aux
+        // cloisons.
+        val ordre = casiers.flatten()
+        casiers.forEachIndexed { boite, dedans ->
             val dues = dedans.count {
                 Widderhuelen.estDue(it.carte.boite, it.carte.jourEcheance, aujourdHui)
             }
             conteneurGrille.addView(etiquetteCasier(ctx, boite, dedans.size, dues))
-            emettreVignettes(ctx, dedans, cote, colonnes)
+            emettreVignettes(ctx, dedans, cote, colonnes, ordre = ordre)
         }
     }
 
@@ -488,6 +880,7 @@ class CarnetFragment : DialogFragment() {
     private fun fermerCarte(): Boolean {
         val voile = voileCarte ?: return false
         voileCarte = null
+        porteCarte = null
         voile.animate().alpha(0f).setDuration(160)
             .withEndAction { racine.removeView(voile) }.start()
         return true
@@ -499,7 +892,8 @@ class CarnetFragment : DialogFragment() {
         liste: List<ContenuCarte>,
         cote: Int,
         colonnes: Int,
-        hote: LinearLayout = conteneurGrille
+        hote: LinearLayout = conteneurGrille,
+        ordre: List<ContenuCarte> = liste
     ) {
         val d = resources.displayMetrics.density
         val gouttiere = (10 * d).toInt()
@@ -522,7 +916,7 @@ class CarnetFragment : DialogFragment() {
                     cote, LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
                 isClickable = true
-                setOnClickListener { montrerCarte(c) }
+                setOnClickListener { montrerCarte(c, ordre) }
             })
         }
     }
@@ -531,64 +925,150 @@ class CarnetFragment : DialogFragment() {
      * La carte entière, posée au-dessus de la grille et **retournée pour
      * arriver** : c'est le geste qui fait la carte à collectionner, et il ne
      * coûte qu'une rotation de vue.
+     *
+     * Elle tient entière sur l'écran : sur une tablette, à la largeur de
+     * l'écran, on n'en voyait que l'illustration et il fallait la faire défiler
+     * pour lire le mot. On passe de l'une à l'autre d'un glissé de côté, des
+     * flèches sur tablette, ou des flèches d'un clavier, dans l'ordre de
+     * l'écran d'où on l'a ouverte ; un glissé vers le haut ou le bas la repose.
      */
-    private fun montrerCarte(c: ContenuCarte) {
+    private fun montrerCarte(c: ContenuCarte, ordre: List<ContenuCarte> = listOf(c)) {
         val ctx = context ?: return
         val d = resources.displayMetrics.density
+        feuillet = ordre.ifEmpty { listOf(c) }
+        rangOuvert = feuillet.indexOf(c).coerceAtLeast(0)
 
-        val voile = FrameLayout(ctx).apply {
+        val voile = VoileGlissable(ctx) { sensX, _ ->
+            if (sensX != 0 && feuillet.size > 1) feuilleter(-sensX) else fermerCarte()
+        }.apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
             setBackgroundColor(0xCC000000.toInt())
             isClickable = true
+            setOnClickListener { fermerCarte() }
         }
 
-        val defilement = ScrollView(ctx).apply {
+        // Le porte-carte est le contenu que le voile fait suivre au doigt.
+        val marge = (if (enAlbum()) 88 else 22) * d
+        val porte = FrameLayout(ctx).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER
-            ).apply { setMargins((22 * d).toInt(), 0, (22 * d).toInt(), 0) }
-            isVerticalScrollBarEnabled = false
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            setPadding(marge.toInt(), (24 * d).toInt(), marge.toInt(), (24 * d).toInt())
         }
-        val carte = CarteCarnet.complete(ctx, c)
-        defilement.addView(carte)
-        voile.addView(defilement)
+        voile.addView(porte)
+        porteCarte = porte
 
-        voile.setOnClickListener { fermerCarte() }
-        // La carte ne ferme pas : on peut la lire et la faire défiler.
-        carte.isClickable = true
+        // Les flèches, sur tablette seulement : un téléphone n'a pas la marge
+        // pour les poser sans couvrir la carte, et le glissé y suffit.
+        flecheCartePrecedente = null
+        flecheCarteSuivante = null
+        if (enAlbum() && feuillet.size > 1) {
+            fun fleche(signe: String, @StringRes description: Int, pas: Int, cote: Int) =
+                TextView(ctx).apply {
+                    text = signe
+                    textSize = 34f
+                    setTextColor(Color.WHITE)
+                    gravity = Gravity.CENTER
+                    contentDescription = getString(description)
+                    background = GradientDrawable().apply {
+                        shape = GradientDrawable.OVAL
+                        setColor(0x33FFFFFF)
+                    }
+                    isClickable = true
+                    isFocusable = true
+                    setOnClickListener { feuilleter(pas) }
+                    layoutParams = FrameLayout.LayoutParams(
+                        (60 * d).toInt(), (60 * d).toInt(), Gravity.CENTER_VERTICAL or cote
+                    ).apply { marginStart = (14 * d).toInt(); marginEnd = (14 * d).toInt() }
+                }
+            flecheCartePrecedente = fleche("‹", R.string.album_carte_precedente, -1, Gravity.START)
+                .also { voile.addView(it) }
+            flecheCarteSuivante = fleche("›", R.string.album_carte_suivante, 1, Gravity.END)
+                .also { voile.addView(it) }
+        }
 
         voileCarte = voile
         racine.addView(voile)
         voile.alpha = 0f
         voile.animate().alpha(1f).setDuration(160).start()
+        poserCarte(0)
+    }
 
-        // Une carte rare se retourne plus lentement et dépasse légèrement son
-        // aplomb avant de se poser : le même geste, mais qui prend son temps.
-        // C'est la seule chose que la durée d'une animation sait dire, et elle
-        // le dit sans un mot.
+    /**
+     * Pose dans le porte-carte la carte de rang [rangOuvert]. [sens] vaut 0 à
+     * l'ouverture, qui retourne la carte, et ±1 quand on feuillette, où elle
+     * arrive du côté d'où l'on tourne.
+     */
+    private fun poserCarte(sens: Int) {
+        val ctx = context ?: return
+        val porte = porteCarte ?: return
+        val d = resources.displayMetrics.density
+        val c = feuillet[rangOuvert]
+
+        porte.removeAllViews()
+        porte.translationX = 0f
+        porte.translationY = 0f
+        voileCarte?.background?.alpha = 255
+
+        val carte = CarteCarnet.complete(ctx, c)
+        (carte as? Carton)?.ajusteALaHauteur = true
+        // La carte ne ferme pas : on peut la lire.
+        carte.isClickable = true
+        porte.addView(carte, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            Gravity.CENTER
+        ))
+
+        flecheCartePrecedente?.alpha = if (rangOuvert > 0) 1f else 0.25f
+        flecheCarteSuivante?.alpha = if (rangOuvert < feuillet.lastIndex) 1f else 0.25f
+
         carte.cameraDistance = 9000f * d
-        carte.rotationY = -85f
-        carte.animate().rotationY(0f)
-            .setDuration(if (c.rarete.distinguee) 470L else 360L)
-            .setInterpolator(
-                if (c.rarete.distinguee) OvershootInterpolator(1.4f)
-                else DecelerateInterpolator()
-            )
+        val armer = {
             // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
-            // pour ne pas écrire dans `rotationY` pendant le retournement. Le
-            // doigt attend le même moment, et pour la même raison. Le
-            // `ScrollView` lui reprendra le geste dès qu'il partira vers le
-            // haut ou le bas — le carton reçoit alors un `CANCEL` et se
-            // relève, le défilement d'une fiche haute n'est pas sacrifié.
-            .withEndAction {
-                Inclinaison.suivre(carte)
-                (carte as? Carton)?.sensibleAuDoigt = true
-            }
-            .start()
+            // pour ne pas écrire dans `rotationY` pendant le retournement.
+            Inclinaison.suivre(carte)
+            (carte as? Carton)?.sensibleAuDoigt = true
+        }
+        if (sens == 0) {
+            // Une carte rare se retourne plus lentement et dépasse légèrement
+            // son aplomb avant de se poser : le même geste, mais qui prend son
+            // temps.
+            carte.rotationY = -85f
+            carte.animate().rotationY(0f)
+                .setDuration(if (c.rarete.distinguee) 470L else 360L)
+                .setInterpolator(
+                    if (c.rarete.distinguee) OvershootInterpolator(1.4f)
+                    else DecelerateInterpolator()
+                )
+                .withEndAction(armer)
+                .start()
+        } else {
+            carte.translationX = sens * porte.width * 0.35f
+            carte.rotationY = sens * 35f
+            carte.alpha = 0f
+            carte.animate().translationX(0f).rotationY(0f).alpha(1f)
+                .setDuration(240L)
+                .setInterpolator(DecelerateInterpolator())
+                .withEndAction(armer)
+                .start()
+        }
+    }
+
+    /** Passe à la carte voisine ; au bout de la liste, la carte revient en place. */
+    private fun feuilleter(pas: Int) {
+        val suivant = rangOuvert + pas
+        if (suivant !in feuillet.indices) {
+            porteCarte?.animate()?.translationX(0f)?.setDuration(200)?.start()
+            voileCarte?.background?.alpha = 255
+            return
+        }
+        rangOuvert = suivant
+        poserCarte(pas)
     }
 
     override fun onStart() {
@@ -609,7 +1089,24 @@ class CarnetFragment : DialogFragment() {
         // consommer que l'une des deux laisse un retour fantôme au prochain
         // appui.
         dialog?.setOnKeyListener { _, code, evenement ->
+            // Les flèches d'un clavier physique feuillettent : la carte
+            // ouverte, sinon les pages de l'album.
+            val pas = when (code) {
+                KeyEvent.KEYCODE_DPAD_LEFT -> -1
+                KeyEvent.KEYCODE_DPAD_RIGHT -> 1
+                else -> 0
+            }
             when {
+                pas != 0 && voileCarte != null -> {
+                    if (evenement.action == KeyEvent.ACTION_DOWN) feuilleter(pas)
+                    true
+                }
+                pas != 0 && pagesAlbum != null -> {
+                    if (evenement.action == KeyEvent.ACTION_DOWN) {
+                        pagesAlbum?.let { it.setCurrentItem(it.currentItem + pas, true) }
+                    }
+                    true
+                }
                 code != KeyEvent.KEYCODE_BACK -> false
                 voileCarte == null -> false
                 else -> {

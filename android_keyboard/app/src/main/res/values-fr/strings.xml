@@ -142,6 +142,10 @@
     <string name="tri_etagere">Étagère</string>
     <string name="carnet_ouverture">Ouverture du carnet…</string>
     <string name="carnet_tous">Tous</string>
+    <string name="album_page_precedente">Page précédente</string>
+    <string name="album_page_suivante">Page suivante</string>
+    <string name="album_carte_precedente">Carte précédente</string>
+    <string name="album_carte_suivante">Carte suivante</string>
     <string name="carnet_vide">Le carnet est vide.</string>
     <string name="carnet_vide_explication">Chaque mot gagné dans l\'un des sept jeux devient une carte et vient s\'ajouter ici. Trouvez un mot, devinez-en un, écrivez-en un : la première carte est à une partie d\'ici.</string>
     <string name="carnet_mots_dans">%1$s dans %2$s</string>
