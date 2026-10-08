@@ -26,8 +26,8 @@ rien à retrouver au moment de l'envoi :
                            deux fois : dans « Captures d'écran pour tablette
                            7 pouces » et dans « … 10 pouces »
                                                     depuis captures-emulateur-tablette/
-  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, le
-                           clavier en action à la place de la voix
+  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, plus
+                           un du clavier en action
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -416,12 +416,14 @@ CAPTURES_TABLETTE = [
 
 # Les visuels hors Console en paysage, pour la tablette : même nom et même
 # légende que leur pendant téléphone. Écrans 11 à 19 pris le 8 octobre 2026 sur
-# `tablette10` (34.2.0, rail d'onglets). La voix manque : l'émulateur n'entend
-# rien, et le micro demande l'accord d'envoi à LuxASR. Le clavier en action la
-# remplace : clavier scindé dans Messages, notre correcteur sélectionné le temps
-# de la capture (celui de Gboard soulignait « Owend »). Capture commune aux cinq
-# langues, à la racine de `captures-emulateur-tablette/`, comme celles du
-# téléphone : le clavier ne change pas avec la langue de l'application.
+# `tablette10` (34.2.0, rail d'onglets). Deux captures de clavier, communes aux
+# cinq langues et rangées à la racine de `captures-emulateur-tablette/`, comme
+# celles du téléphone : le clavier ne change pas avec la langue de
+# l'application. Le clavier en action (20) est pris dans Messages avec notre
+# correcteur sélectionné le temps de la capture (celui de Gboard soulignait
+# « Owend »). La voix (21) montre une dictée en cours : la phrase est mise dans
+# le champ d'avance, l'émulateur n'entendant rien ; accord et micro accordés
+# pour la capture, retirés ensuite.
 HORS_CONSOLE_TABLETTE = [
     ("Clavier (Suggestions)", "20-clavier-suggestions-messages.png", ("tel", 0)),
     ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich.png", ("hors", 0)),
@@ -433,6 +435,7 @@ HORS_CONSOLE_TABLETTE = [
     ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz.png", ("hors", 6)),
     ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner.png", ("hors", 7)),
     ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail.png", ("hors", 8)),
+    ("Voix (Message parlé)", "21-clavier-dictee-luxasr.png", ("hors", 9)),
 ]
 
 
