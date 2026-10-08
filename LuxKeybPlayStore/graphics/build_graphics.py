@@ -26,8 +26,8 @@ rien à retrouver au moment de l'envoi :
                            deux fois : dans « Captures d'écran pour tablette
                            7 pouces » et dans « … 10 pouces »
                                                     depuis captures-emulateur-tablette/
-  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, sauf
-                           la voix (neuf sur dix)
+  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, le
+                           clavier en action à la place de la voix
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -417,8 +417,13 @@ CAPTURES_TABLETTE = [
 # Les visuels hors Console en paysage, pour la tablette : même nom et même
 # légende que leur pendant téléphone. Écrans 11 à 19 pris le 8 octobre 2026 sur
 # `tablette10` (34.2.0, rail d'onglets). La voix manque : l'émulateur n'entend
-# rien, et le micro demande l'accord d'envoi à LuxASR.
+# rien, et le micro demande l'accord d'envoi à LuxASR. Le clavier en action la
+# remplace : clavier scindé dans Messages, notre correcteur sélectionné le temps
+# de la capture (celui de Gboard soulignait « Owend »). Capture commune aux cinq
+# langues, à la racine de `captures-emulateur-tablette/`, comme celles du
+# téléphone : le clavier ne change pas avec la langue de l'application.
 HORS_CONSOLE_TABLETTE = [
+    ("Clavier (Suggestions)", "20-clavier-suggestions-messages.png", ("tel", 0)),
     ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich.png", ("hors", 0)),
     ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix.png", ("hors", 1)),
     ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet.png", ("hors", 2)),
@@ -629,6 +634,8 @@ def build_tablette(specs=CAPTURES_TABLETTE, dossier=None) -> None:
             icon = b64(small_icon)
             for index, (name, src, ref) in enumerate(specs, 1):
                 source = SHOTS_TABLETTE / langue / src
+                if not source.exists():
+                    source = SHOTS_TABLETTE / src
                 if not source.exists():
                     sys.exit(f"source manquante : {source}")
                 shot = tmp / f"{index:02d}.png"
