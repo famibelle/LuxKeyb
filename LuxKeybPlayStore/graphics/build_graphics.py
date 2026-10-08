@@ -27,7 +27,7 @@ rien à retrouver au moment de l'envoi :
                            7 pouces » et dans « … 10 pouces »
                                                     depuis captures-emulateur-tablette/
   hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, plus
-                           un du clavier en action
+                           le clavier en action, l'album et une carte ouverte
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -436,13 +436,55 @@ HORS_CONSOLE_TABLETTE = [
     ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner.png", ("hors", 7)),
     ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail.png", ("hors", 8)),
     ("Voix (Message parlé)", "21-clavier-dictee-luxasr.png", ("hors", 9)),
+    # l'album à pages n'existe que sur tablette ; la carte ouverte est « Sonn »,
+    # illustrée, dont la phrase n'a pas de traduction officielle : la légende
+    # n'en promet donc pas, à la différence de celle du téléphone (Moien)
+    ("Carnet 3 (Album de cartes)", "22-carnet-album.png", ("tab", 0)),
+    ("Carnet 4 (Carte ouverte)", "23-carnet-carte-sonn.png", ("tab", 1)),
 ]
+
+# Les légendes propres à la tablette, dans l'ordre des renvois ("tab", rang).
+# Le luxembourgeois est à faire relire par un locuteur natif.
+LEGENDES_TABLETTE = {
+    "fr-FR": [
+        ("Carnet", "Un album de cartes à collectionner",
+         "Chaque mot gagné dans un jeu y reçoit sa carte illustrée, rangée page après page."),
+        ("Carte", "Chaque carte raconte son mot",
+         "Le sens en français, une phrase d'exemple du dictionnaire officiel, la famille du mot et le jeu qui vous l'a fait gagner."),
+    ],
+    "lb": [
+        ("Carnet", "En Album mat Kaarten zum Sammelen",
+         "All Wuert, dat Dir an engem Spill gewannt, kritt do seng illustréiert Kaart, Säit fir Säit."),
+        ("Kaart", "All Kaart erzielt hiert Wuert",
+         "D'Bedeitung op Franséisch, e Beispillsaz aus dem offiziellen Dictionnaire, d'Wuertfamill an d'Spill, an deem Dir et gewonnen hutt."),
+    ],
+    "de-DE": [
+        ("Sammlung", "Ein Album mit Karten zum Sammeln",
+         "Jedes Wort, das Sie in einem Spiel gewinnen, bekommt dort seine illustrierte Karte, Seite für Seite."),
+        ("Karte", "Jede Karte erzählt ihr Wort",
+         "Die Bedeutung auf Deutsch, ein Beispielsatz aus dem offiziellen Wörterbuch, die Wortfamilie und das Spiel, in dem Sie es gewonnen haben."),
+    ],
+    "en-US": [
+        ("Collection", "An album of cards to collect",
+         "Every word you win in a game gets its own illustrated card, filed page by page."),
+        ("Card", "Every card tells its word's story",
+         "The meaning in English, an example sentence from the official dictionary, the word family and the game that won it for you."),
+    ],
+    "pt-PT": [
+        ("Coleção", "Um álbum de cartas para colecionar",
+         "Cada palavra ganha num jogo recebe a sua carta ilustrada, arrumada página a página."),
+        ("Carta", "Cada carta conta a sua palavra",
+         "O significado em português, uma frase de exemplo do dicionário oficial, a família da palavra e o jogo em que a ganhou."),
+    ],
+}
 
 
 def legende_tablette(langue: str, ref) -> tuple[str, str, str]:
     catalogue, rang = ref
     if catalogue == "tel":
         return LEGENDES[langue][0][rang]
+    if catalogue == "tab":
+        return LEGENDES_TABLETTE[langue][rang]
     return HORS_CONSOLE_LEGENDES[langue][rang]
 
 
