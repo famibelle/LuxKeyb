@@ -576,10 +576,12 @@ class CarnetFragment : DialogFragment() {
         val utileL = largeurPage - 2 * interieur
         val utileH = hauteurPage - 2 * interieur - dp(20f)
         // Parmi les grilles possibles, la plus garnie dont les vignettes ne
-        // descendent pas sous 85 % de leur taille de grille ; à nombre égal,
+        // descendent pas sous 80 % de leur taille de grille ; à nombre égal,
         // la plus grande. Arrondir chaque côté à part laissait un tiers de la
         // page vide, faute de place pour une rangée entière à pleine taille.
-        val plancher = LARGEUR_CIBLE_VIGNETTE_DP * d * 0.85f
+        // À 85 %, une tablette de 10 pouces couchée perdait sa troisième
+        // rangée pour quelques pixels et gardait une bande vide sous la deuxième.
+        val plancher = LARGEUR_CIBLE_VIGNETTE_DP * d * 0.80f
         fun coteDe(c: Int, r: Int) = minOf(
             (utileL - (c - 1) * gouttiere) / c,
             (utileH - (r - 1) * gouttiere) / r
@@ -799,8 +801,13 @@ class CarnetFragment : DialogFragment() {
         }
         page.addView(grille, FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
-            Gravity.CENTER_HORIZONTAL or Gravity.TOP
-        ).apply { topMargin = interieur })
+            Gravity.CENTER
+        ).apply {
+            // Centrée dans ce qui reste au-dessus du numéro de page : le reste
+            // se partage en haut et en bas au lieu de tomber sous la grille.
+            topMargin = interieur
+            bottomMargin = interieur + (20 * d).toInt()
+        })
 
         // Le creux de la reliure : une ombre douce le long du bord intérieur.
         if (ombre != null) {
