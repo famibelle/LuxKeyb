@@ -49,7 +49,32 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_tablette_album.png",
+     "alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
+     "legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
+    },
+    {
+     "image": "Screenshots/lux_tablette_eventail.png",
+     "alt": "La Boîte de Leitner sur tablette, avec le casier « Revient dans 1 jour » ouvert en éventail : « 16 cartes · 16 à revoir », « 7 / 16 », la carte « leed » au centre et une quinzaine d'autres cartes inclinées sur un grand arc, d'un bord à l'autre de l'écran.",
+     "legende": "Un casier s'ouvre en grand éventail, d'un bord à l'autre de l'écran : on voit une quinzaine de cartes, et le mot de celle du centre se lit."
+    },
+    {
+     "image": "Screenshots/lux_tablette_carte.png",
+     "alt": "La carte « maacht » ouverte en grand depuis l'éventail, entière à l'écran : cadre doré, illustration violette, l'onglet « Verbe » et le sens « faire, rendre, mettre ». De part et d'autre, deux flèches rondes ‹ et › ; derrière, l'éventail assombri.",
+     "legende": "La carte ouverte tient entière à l'écran. Les flèches, ou un glissé de côté, passent à la carte voisine du casier."
+    },
+    {
+     "image": "Screenshots/lux_tablette_boite.png",
+     "alt": "La Boîte de Leitner sur tablette : sept casiers en perspective, chacun avec sa pile de cartes illustrées, légendés « 16 · 1 jour », « 3 · 3 jours », « 7 · 1 sem. », « 8 · 2 sem. », « 5 · 1 mois », « 4 · 3 mois » et « 4 · ★ acquis », et la plaque dorée « Réviser 12 cartes ». Les onglets sont dans une colonne à gauche.",
+     "legende": "Dans la boîte, les cartes suivent maintenant la perspective de leur casier : sur tablette, celles des casiers du bord ne sont plus coupées en biais."
+    }
+   ],
+   "image": "Screenshots/lux_tablette_album.png",
+   "image_alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
+   "image_legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
   },
   {
    "version": "34.2.0",
