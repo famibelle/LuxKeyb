@@ -7,6 +7,7 @@
     python3 build_graphics.py shots      # captures téléphone seules, dans les cinq langues
     python3 build_graphics.py hors       # visuels hors Console (jeux, carnet, voix), dans les cinq langues
     python3 build_graphics.py tablette   # captures tablette seules, dans les cinq langues
+    python3 build_graphics.py hors-tablette  # visuels hors Console en paysage, dans les cinq langues
     python3 build_graphics.py check      # vérifie les contraintes Play Console
 
 Produit, dans `feature-graphic/`, les fichiers à envoyer à la Play Console.
@@ -25,6 +26,8 @@ rien à retrouver au moment de l'envoi :
                            deux fois : dans « Captures d'écran pour tablette
                            7 pouces » et dans « … 10 pouces »
                                                     depuis captures-emulateur-tablette/
+  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, pour
+                           ceux qui ont un écran tablette (quatre sur dix)
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -123,6 +126,8 @@ CAPTURES_DIR = OUT / "captures"
 HORS_CONSOLE = OUT / "hors-console"
 # Les six captures tablette, un dossier par langue
 TABLETTE_DIR = OUT / "captures-tablette"
+# Les visuels hors Console en paysage, un dossier par langue
+HORS_CONSOLE_TABLETTE_DIR = OUT / "hors-console-tablette"
 SHOTS_TABLETTE = HERE / "captures-emulateur-tablette"
 ICON = COMMUNS / "Icône de l'application.png"
 
@@ -409,6 +414,18 @@ CAPTURES_TABLETTE = [
 ]
 
 
+# Les visuels hors Console en paysage, pour la tablette : ceux dont un écran
+# tablette existe, même nom et même légende que leur pendant téléphone. Les six
+# autres (Wuertmix, Wuertriet, Wuertlück, Zuelwuert, éventail, voix) attendent
+# leurs captures sur l'émulateur `tablette10`.
+HORS_CONSOLE_TABLETTE = [
+    ("Jeu 1 (Wuertsich)", "05-jeu-wuertsich.png", ("hors", 0)),
+    ("Jeu 6 (Kräizwuert)", "03-jeu-kraizwuert.png", ("hors", 5)),
+    ("Jeu 7 (Wuertplaz)", "04-jeu-wuertplaz.png", ("hors", 6)),
+    ("Carnet 1 (Boîte de Leitner)", "06-boite-de-leitner.png", ("hors", 7)),
+]
+
+
 def legende_tablette(langue: str, ref) -> tuple[str, str, str]:
     catalogue, rang = ref
     if catalogue == "tel":
@@ -594,17 +611,18 @@ def png_header(path: pathlib.Path) -> tuple[int, int, bool]:
     return width, height, head[25] in (4, 6)
 
 
-def build_tablette() -> None:
+def build_tablette(specs=CAPTURES_TABLETTE, dossier=None) -> None:
+    dossier = dossier or TABLETTE_DIR
     for langue in LANGUES:
         pied = LEGENDES[langue][1]
-        out_dir = TABLETTE_DIR / langue
+        out_dir = dossier / langue
         out_dir.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp = pathlib.Path(tmpdir)
             small_icon = tmp / "icon.png"
             magick(str(ICON), "-resize", "92x92", str(small_icon))
             icon = b64(small_icon)
-            for index, (name, src, ref) in enumerate(CAPTURES_TABLETTE, 1):
+            for index, (name, src, ref) in enumerate(specs, 1):
                 source = SHOTS_TABLETTE / langue / src
                 if not source.exists():
                     sys.exit(f"source manquante : {source}")
@@ -629,6 +647,10 @@ def build_langues() -> None:
 def build_hors_console() -> None:
     for langue in LANGUES:
         build_shots(hors_console_de(langue), langue, HORS_CONSOLE / langue)
+
+
+def build_hors_tablette() -> None:
+    build_tablette(HORS_CONSOLE_TABLETTE, HORS_CONSOLE_TABLETTE_DIR)
 
 
 def build_check() -> None:
@@ -679,6 +701,8 @@ def build_check() -> None:
 
     tablette = [TABLETTE_DIR / langue / f"{name}.png"
                 for langue in LANGUES for name, _, _ in CAPTURES_TABLETTE]
+    tablette += [HORS_CONSOLE_TABLETTE_DIR / langue / f"{name}.png"
+                 for langue in LANGUES for name, _, _ in HORS_CONSOLE_TABLETTE]
     for path in tablette:
         if not path.exists():
             problems.append(f"{path.relative_to(OUT)} : absent")
@@ -696,20 +720,21 @@ def build_check() -> None:
         print(f"  ✗ {problem}")
     if problems:
         sys.exit(f"{len(problems)} problème(s)")
-    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(HORS_CONSOLE_FICHIERS)} visuels hors Console dans chacune, conformes, et {len(CAPTURES_TABLETTE)} captures tablette dans chacune")
+    print(f"check  ok : icône, image de présentation, {len(CAPTURES)} captures dans chacune des {len(LANGUES)} langues et {len(HORS_CONSOLE_FICHIERS)} visuels hors Console dans chacune, conformes, {len(CAPTURES_TABLETTE)} captures tablette et {len(HORS_CONSOLE_TABLETTE)} visuels hors Console tablette dans chacune")
 
 
 def main(argv: list[str]) -> int:
     for tool in ("google-chrome", "convert"):
         if not shutil.which(tool):
             sys.exit(f"{tool} introuvable")
-    targets = argv[1:] or ["icon", "feature", "shots", "hors", "tablette", "check"]
+    targets = argv[1:] or ["icon", "feature", "shots", "hors", "tablette", "hors-tablette", "check"]
     known = {"icon": build_icon, "feature": build_feature,
              "shots": build_langues, "hors": build_hors_console,
-             "tablette": build_tablette, "check": build_check}
+             "tablette": build_tablette, "hors-tablette": build_hors_tablette,
+             "check": build_check}
     for target in targets:
         if target not in known:
-            sys.exit(f"cible inconnue : {target} (icon | feature | shots | hors | tablette | check)")
+            sys.exit(f"cible inconnue : {target} (icon | feature | shots | hors | tablette | hors-tablette | check)")
         known[target]()
     return 0
 
