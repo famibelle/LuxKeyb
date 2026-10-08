@@ -30,6 +30,8 @@
     <string name="ks_disposition">Layout</string>
     <string name="ks_disposition_intro">Both are QWERTZ. They differ only in which accented letters get their own key.</string>
     <string name="ks_disposition_note">“Swiss German”, the default, follows the physical keyboard of the same name: ü, ö and ä on the right, é and ë next to the space bar. “Luxembourg” has slightly wider keys, ten per row instead of eleven: é on the right, ä and ë next to the space bar, ü and ö on long press.</string>
+    <string name="ks_clavier_scinde">Split keyboard in landscape</string>
+    <string name="ks_clavier_scinde_note">On a tablet held in both hands, the keys move to the two edges, within reach of your thumbs. Tablets only, when turned sideways.</string>
     <string name="ks_suggestions">Suggestions</string>
     <string name="ks_suggestions_intro">Luxembourgish words are suggested in red. Turn on the option below for a second row, in blue, that also suggests French words from the third letter on.</string>
     <string name="ks_propositions_francais">French suggestions</string>
@@ -638,6 +640,8 @@
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Voice typing</string>
+    <string name="clavier_physique_montrer">Show the keys</string>
+    <string name="clavier_physique_masquer">Hide the keys</string>
     <string name="stt_info_titre">Voice typing</string>
     <string name="stt_info_texte">To write what you say, the keyboard sends your voice to the LuxASR service of the University of Luxembourg, during voice typing only.\n\nThe University turns it into text without keeping it, and without using it to train its models. Like any website, it records the time and IP address of the connection.\n\nWhat you type never leaves your phone.\n\nLearn more: https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
     <string name="stt_info_accepter">I agree</string>

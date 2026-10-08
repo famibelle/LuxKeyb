@@ -410,7 +410,7 @@ class CarnetFragment : DialogFragment() {
         // téléphone, elles débordaient de la hauteur disponible et
         // masquaient jusqu'au nom du mot sans un défilement.
         val gouttiere = (10 * d).toInt()
-        val dispo = resources.displayMetrics.widthPixels - (24 * d).toInt() * 2
+        val dispo = com.example.kreyolkeyboard.LargeurLecture.largeurEcran(requireContext()) - (24 * d).toInt() * 2
         val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
         val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
         val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes

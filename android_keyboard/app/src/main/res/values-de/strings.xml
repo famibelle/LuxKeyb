@@ -26,6 +26,8 @@
     <string name="ks_disposition">Layout</string>
     <string name="ks_disposition_intro">Beide sind QWERTZ. Sie unterscheiden sich nur darin, welche Buchstaben mit Akzent eine eigene Taste haben.</string>
     <string name="ks_disposition_note">„Schweizerdeutsch“, die Standardeinstellung, folgt der gleichnamigen physischen Tastatur: ü, ö und ä rechts, é und ë neben der Leertaste. „Luxemburg“ hat etwas breitere Tasten, zehn pro Reihe statt elf: é rechts, ä und ë neben der Leertaste, ü und ö durch langes Drücken.</string>
+    <string name="ks_clavier_scinde">Geteilte Tastatur im Querformat</string>
+    <string name="ks_clavier_scinde_note">Auf einem mit beiden Händen gehaltenen Tablet verteilen sich die Tasten auf beide Ränder, in Reichweite der Daumen. Nur auf Tablets im Querformat.</string>
     <string name="ks_suggestions">Vorschläge</string>
     <string name="ks_suggestions_intro">Luxemburgische Wörter werden in Rot vorgeschlagen. Aktivieren Sie die Option unten, damit eine zweite Reihe in Blau ab dem dritten Buchstaben auch französische Wörter vorschlägt.</string>
     <string name="ks_propositions_francais">Französische Vorschläge</string>
@@ -634,6 +636,8 @@
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Spracheingabe</string>
+    <string name="clavier_physique_montrer">Tasten anzeigen</string>
+    <string name="clavier_physique_masquer">Tasten ausblenden</string>
     <string name="stt_info_titre">Spracheingabe</string>
     <string name="stt_info_texte">Um aufzuschreiben, was Sie sagen, sendet die Tastatur Ihre Stimme an den Dienst LuxASR der Universität Luxemburg, nur während des Diktierens.\n\nDie Universität wandelt sie in Text um, ohne sie zu speichern und ohne sie zum Trainieren ihrer Modelle zu verwenden. Wie jede Website protokolliert sie die Uhrzeit und die IP-Adresse der Verbindung.\n\nWas Sie tippen, verlässt Ihr Telefon nie.\n\nMehr erfahren: https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
     <string name="stt_info_accepter">Ich stimme zu</string>

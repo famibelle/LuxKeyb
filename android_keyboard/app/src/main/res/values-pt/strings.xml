@@ -26,6 +26,8 @@
     <string name="ks_disposition">Disposição</string>
     <string name="ks_disposition_intro">Ambas são QWERTZ. Só diferem nas letras acentuadas que têm tecla própria.</string>
     <string name="ks_disposition_note">«Suíço-alemão», a predefinição, segue o teclado físico com o mesmo nome: ü, ö e ä à direita, é e ë junto à barra de espaço. «Luxemburgo» tem teclas um pouco mais largas, dez por fila em vez de onze: é à direita, ä e ë junto à barra de espaço, ü e ö com toque longo.</string>
+    <string name="ks_clavier_scinde">Teclado dividido na horizontal</string>
+    <string name="ks_clavier_scinde_note">Num tablet segurado com as duas mãos, as teclas repartem-se pelas duas margens, ao alcance dos polegares. Só em tablets, na horizontal.</string>
     <string name="ks_suggestions">Sugestões</string>
     <string name="ks_suggestions_intro">As palavras luxemburguesas são sugeridas a vermelho. Ative a opção abaixo para que uma segunda fila, a azul, sugira também palavras francesas a partir da terceira letra.</string>
     <string name="ks_propositions_francais">Sugestões em francês</string>
@@ -634,6 +636,8 @@
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Ditado por voz</string>
+    <string name="clavier_physique_montrer">Mostrar as teclas</string>
+    <string name="clavier_physique_masquer">Ocultar as teclas</string>
     <string name="stt_info_titre">Ditado por voz</string>
     <string name="stt_info_texte">Para escrever o que diz, o teclado envia a sua voz para o serviço LuxASR da Universidade do Luxemburgo, apenas durante o ditado.\n\nA Universidade transforma-a em texto sem a guardar e sem a usar para treinar os seus modelos. Como qualquer site, regista a hora e o endereço IP da ligação.\n\nO que escreve no teclado nunca sai do seu telemóvel.\n\nSaber mais: https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
     <string name="stt_info_accepter">Aceito</string>

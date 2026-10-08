@@ -40,6 +40,7 @@ object KeyboardPreferences {
     private const val KEY_DISPOSITION = "disposition"
     private const val KEY_FRENCH_SUGGESTIONS = "french_suggestions_enabled"
     private const val KEY_LANGUE_INTERFACE = "langue_interface"
+    private const val KEY_CLAVIER_SCINDE = "clavier_scinde"
 
     /** Les deux retours sont actifs par défaut, comme sur les autres claviers. */
     private const val DEFAULT_ENABLED = true
@@ -162,5 +163,19 @@ object KeyboardPreferences {
 
     fun setPropositionsFrancais(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_FRENCH_SUGGESTIONS, enabled).apply()
+    }
+
+    /**
+     * Clavier scindé sur une tablette couchée : les touches se partagent entre
+     * les deux bords, à portée des pouces. Coupé par défaut, comme sur Gboard,
+     * l'iPad ou les Samsung : posé sur une table, on tape mieux sur un clavier
+     * entier, et c'est la forme que tout le monde connaît. Sans effet sur un
+     * téléphone ni sur une tablette tenue debout.
+     */
+    fun clavierScinde(context: Context): Boolean =
+        prefs(context).getBoolean(KEY_CLAVIER_SCINDE, false)
+
+    fun setClavierScinde(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean(KEY_CLAVIER_SCINDE, enabled).apply()
     }
 }

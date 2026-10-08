@@ -122,6 +122,16 @@ class SettingsActivity : AppCompatActivity() {
     private var currentTab = 0 // 0 = démarrage, 1 = spiller, 2 = wierderbuch, 3 = mäi lëtzebuergesch (stats)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabBar: LinearLayout
+
+    /** Le jeu à l'écran qui sait recevoir les touches d'un clavier physique. */
+    var jeuAuClavier: CrosswordFragment? = null
+
+    override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
+        // Un champ de texte qui a le focus garde ses touches ; sinon, le jeu
+        // ouvert les prend avant la navigation.
+        if (currentFocus !is EditText && jeuAuClavier?.surToucheClavier(event) == true) return true
+        return super.dispatchKeyEvent(event)
+    }
     private lateinit var bottomInstallBanner: LinearLayout
 
     /**
@@ -170,6 +180,9 @@ class SettingsActivity : AppCompatActivity() {
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
         const val TAB_STATS = 3
+
+        /** Largeur du rail d'onglets d'une tablette couchée. */
+        const val RAIL_LARGEUR_DP = 104
         private const val TAB_SPILLER = 1
         private const val TAB_WIERDERBUCH = 2
 
@@ -306,8 +319,23 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         
-        mainLayout.addView(tabBar)
-        mainLayout.addView(viewPager)
+        if (navigationLaterale()) {
+            mainLayout.addView(createAppHeader())
+            mainLayout.addView(LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+                )
+                addView(tabBar)
+                viewPager.layoutParams = LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                )
+                addView(viewPager)
+            })
+        } else {
+            mainLayout.addView(tabBar)
+            mainLayout.addView(viewPager)
+        }
 
         // FrameLayout racine : mainLayout en plein écran + bandeau d'installation
         // superposé, ancré en bas, visible dès l'onboarding (indépendant du scroll
@@ -687,17 +715,17 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun createTabBar(): LinearLayout {
-        return LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setBackgroundColor(Color.WHITE)
-            elevation = 4f // Ombre légère pour séparer du contenu
-            
-            // Bandeau bleu en haut
+    /**
+     * Sur une tablette couchée, les onglets passent dans un rail à gauche.
+     *
+     * En haut, ils prenaient 70 dp sur les 800 de hauteur, et c'est la hauteur
+     * qui manque aux jeux à grille ; la largeur, elle, est en trop. Le bandeau
+     * bleu reste en haut, sur toute la largeur.
+     */
+    private fun navigationLaterale(): Boolean = DeuxColonnes.actives(this)
+
+    /** Le bandeau bleu : titre et engrenage des réglages du clavier. */
+    private fun createAppHeader(): LinearLayout {
             val appHeader = LinearLayout(this@SettingsActivity).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -756,19 +784,47 @@ class SettingsActivity : AppCompatActivity() {
             })
             appHeader.addView(appTitle)
             appHeader.addView(settingsButton)
-            
+            return appHeader
+    }
+
+    private fun createTabBar(): LinearLayout {
+        val rail = navigationLaterale()
+        return LinearLayout(this).apply {
+            orientation = if (rail) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
+            layoutParams = if (rail) {
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            } else {
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            setBackgroundColor(Color.WHITE)
+            elevation = 4f // Ombre légère pour séparer du contenu
+
             // Container pour les onglets
             val tabContainer = LinearLayout(this@SettingsActivity).apply {
-                orientation = LinearLayout.HORIZONTAL
+                orientation = if (rail) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
                 // Hauteur suivant le contenu, et non 140 px figés : l'emoji seul en
                 // réclamait 165 (60 dp), donc le libellé de chaque onglet était rogné
                 // hors de la vue et la barre n'identifiait sept destinations que par
                 // des emojis nus.
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                gravity = Gravity.CENTER
+                layoutParams = if (rail) {
+                    LinearLayout.LayoutParams(
+                        (RAIL_LARGEUR_DP * resources.displayMetrics.density).toInt(),
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                } else {
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                }
+                gravity = if (rail) Gravity.CENTER_HORIZONTAL or Gravity.TOP else Gravity.CENTER
+                if (rail) setPadding(0, (8 * resources.displayMetrics.density).toInt(), 0, 0)
             }
             
             // Tab Démarrage
@@ -801,16 +857,17 @@ class SettingsActivity : AppCompatActivity() {
             // quotidiennes. Elles s'ouvrent depuis le pied de l'onglet
             // Démarrage, en plein écran (voir SheetFragment).
 
-            // Ligne de séparation en bas (fine)
+            // Ligne de séparation fine : en bas de la barre, à droite du rail
             val separator = View(this@SettingsActivity).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    2
-                )
+                layoutParams = if (rail) {
+                    LinearLayout.LayoutParams(2, LinearLayout.LayoutParams.MATCH_PARENT)
+                } else {
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2)
+                }
                 setBackgroundColor(Color.parseColor("#E0E0E0"))
             }
             
-            addView(appHeader)
+            if (!rail) addView(createAppHeader())
             addView(tabContainer)
             addView(separator)
         }
@@ -830,11 +887,19 @@ class SettingsActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
             setPadding(8, 10, 8, 8)
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1f
-            )
+            layoutParams = if (navigationLaterale()) {
+                // Dans le rail : empilés en haut, chacun à sa hauteur.
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = (4 * resources.displayMetrics.density).toInt() }
+            } else {
+                LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f
+                )
+            }
             // Background légèrement coloré si onglet actif
             setBackgroundColor(
                 if (tabIndex == currentTab) 
@@ -1558,6 +1623,10 @@ class SettingsActivity : AppCompatActivity() {
                     else resources.getQuantityString(R.plurals.encore_mots_avant, reste, nombre(reste), suivant) + " ›"
             }
         }.start()
+
+        // Sur une tablette couchée, les quatre cartes tiennent en deux rangées
+        // sous la salutation et la date.
+        if (DeuxColonnes.actives(this)) DeuxColonnes.parPaires(colonne, 2)
 
         return colonne
     }
@@ -5206,7 +5275,7 @@ class SettingsActivity : AppCompatActivity() {
                     // Grille de mots mêlés
                     gridView = GridView(activity).apply {
                         // Calculer la taille disponible pour la grille
-                        val screenWidth = resources.displayMetrics.widthPixels
+                        val screenWidth = LargeurLecture.largeurEcran(activity)
                         val deuxColonnes = DeuxColonnes.actives(activity)
                         val availableWidth = ((screenWidth - 48) *
                             (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
@@ -5217,9 +5286,12 @@ class SettingsActivity : AppCompatActivity() {
                         var cellSize = availableWidth / gridSize
                         // Sur tablette, la largeur seule donnait des cases de
                         // trois centimètres et une grille plus haute que
-                        // l'écran : la hauteur borne aussi. Les téléphones,
-                        // plus hauts que larges, gardent leur grille.
-                        if (resources.configuration.smallestScreenWidthDp >= 600) {
+                        // l'écran : la hauteur borne aussi. Un téléphone
+                        // couché avait le même défaut, en pire : une seule
+                        // rangée visible. Debout, il garde sa grille.
+                        val configuration = resources.configuration
+                        if (configuration.smallestScreenWidthDp >= 600 ||
+                            configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
                             val budgetHauteur = (resources.displayMetrics.heightPixels *
                                 (if (deuxColonnes) DeuxColonnes.PART_HAUTEUR else 0.5f)).toInt()
                             cellSize = minOf(cellSize, budgetHauteur / gridSize)
@@ -6283,6 +6355,7 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 16
 
                         editGuess = EditText(activity).apply {
+                            id = R.id.essai_wuertriet
                             layoutParams = LinearLayout.LayoutParams(
                                 0,
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -6305,8 +6378,13 @@ class SettingsActivity : AppCompatActivity() {
                             setSingleLine(true)
                             isAllCaps = true // après setSingleLine() : sinon la transformation majuscules est écrasée
                             imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_DONE
-                            setOnEditorActionListener { _, actionId, _ ->
-                                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                            // Entrée sur un clavier physique n'arrive pas comme
+                            // l'action « Terminé » du clavier à l'écran, mais
+                            // comme une touche, sans action : on l'accepte aussi.
+                            setOnEditorActionListener { _, actionId, event ->
+                                val entreePhysique = event?.keyCode == android.view.KeyEvent.KEYCODE_ENTER &&
+                                    event.action == android.view.KeyEvent.ACTION_DOWN
+                                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE || entreePhysique) {
                                     submitGuess()
                                     true
                                 } else false
@@ -8178,6 +8256,7 @@ class SettingsActivity : AppCompatActivity() {
             dispositionDuPave = disposition
             conteneurPave.removeAllViews()
             val pave = CrosswordData.pave(disposition)
+            lettresDuPave = (pave.lettres.joinToString("") + pave.accents).toSet()
 
             fun nouvelleLigne() = LinearLayout(activity).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -8225,8 +8304,38 @@ class SettingsActivity : AppCompatActivity() {
         /** La disposition du pavé affiché, pour le refaire si elle a changé. */
         private var dispositionDuPave: DispositionClavier? = null
 
+        /** Les lettres que le pavé propose : un clavier physique n'écrit que celles-là. */
+        private var lettresDuPave: Set<Char> = emptySet()
+
+        /**
+         * Un clavier physique branché (tablette avec étui-clavier) écrit dans
+         * la grille comme le pavé : mêmes lettres, ⌫ pour effacer. Une lettre
+         * absente du pavé, un chiffre par exemple, est ignorée.
+         */
+        fun surToucheClavier(event: android.view.KeyEvent): Boolean {
+            if (event.action != android.view.KeyEvent.ACTION_DOWN) return false
+            if (event.keyCode == android.view.KeyEvent.KEYCODE_DEL) {
+                session?.effacer()
+                apresSaisie()
+                return true
+            }
+            val code = event.unicodeChar
+            if (code == 0 || code and android.view.KeyCharacterMap.COMBINING_ACCENT != 0) return false
+            val lettre = code.toChar().uppercaseChar()
+            if (lettre !in lettresDuPave) return false
+            session?.ecrire(lettre)
+            apresSaisie()
+            return true
+        }
+
+        override fun onPause() {
+            (activity as? SettingsActivity)?.let { if (it.jeuAuClavier === this) it.jeuAuClavier = null }
+            super.onPause()
+        }
+
         override fun onResume() {
             super.onResume()
+            (activity as? SettingsActivity)?.jeuAuClavier = this
             // Les réglages du clavier s'ouvrent par-dessus cet écran : au
             // retour, le pavé suit la disposition qu'on vient d'y choisir.
             val activity = activity as? SettingsActivity ?: return
@@ -8356,7 +8465,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val densite = resources.displayMetrics.density
             val deuxColonnes = DeuxColonnes.actives(activity)
-            val disponible = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+            val disponible = ((LargeurLecture.largeurEcran(activity) - (48 * 2)) *
                 (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
             // Trois bornes, et la troisième est celle qui compte : une grille
             // haute chassait le pavé hors de l'écran, en commençant par sa
@@ -9168,7 +9277,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val densite = resources.displayMetrics.density
             val deuxColonnes = DeuxColonnes.actives(activity)
-            val disponible = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+            val disponible = ((LargeurLecture.largeurEcran(activity) - (48 * 2)) *
                 (if (deuxColonnes) DeuxColonnes.PART_GRILLE else 1f)).toInt()
             // En deux colonnes, la liste des mots n'est plus sous la grille.
             val budgetHauteur = (resources.displayMetrics.heightPixels *
@@ -9247,7 +9356,7 @@ class SettingsActivity : AppCompatActivity() {
             val grille = partie.grid
             val densite = resources.displayMetrics.density
             // En deux colonnes, la liste n'a que la colonne de droite.
-            val largeurDispo = ((resources.displayMetrics.widthPixels - (48 * 2)) *
+            val largeurDispo = ((LargeurLecture.largeurEcran(activity) - (48 * 2)) *
                 (if (DeuxColonnes.actives(activity)) 1f - DeuxColonnes.PART_GRILLE else 1f)).toInt()
             val ecart = (8 * densite).toInt()
 
@@ -10790,7 +10899,11 @@ class SettingsActivity : AppCompatActivity() {
             // poussé les derniers hors de l'écran, là où on ne les découvre
             // plus. Un nombre impair de jeux laisse le dernier occuper toute
             // la ligne — c'est voulu, il est ainsi le plus visible.
-            jeux.chunked(2).forEach { paire ->
+            // Quatre sur une tablette couchée : les huit jeux y tiennent alors
+            // sur un écran, au lieu de cartes de 50 cm de large qu'il fallait
+            // faire défiler.
+            val parLigne = if (DeuxColonnes.actives(activity)) 4 else 2
+            jeux.chunked(parLigne).forEach { paire ->
                 colonne.addView(LinearLayout(activity).apply {
                     orientation = LinearLayout.HORIZONTAL
                     layoutParams = LinearLayout.LayoutParams(
@@ -10798,7 +10911,7 @@ class SettingsActivity : AppCompatActivity() {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     ).apply { bottomMargin = 16 }
                     paire.forEachIndexed { rang, jeu ->
-                        addView(carteJeu(activity, jeu, marginDroite = rang == 0))
+                        addView(carteJeu(activity, jeu, marginDroite = rang < paire.size - 1))
                     }
                 })
             }

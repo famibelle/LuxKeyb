@@ -29,11 +29,28 @@ object LargeurLecture {
             configuration.screenWidthDp > MAX_DP
     }
 
+    /**
+     * La largeur que l'écran laisse au contenu des onglets, en pixels : celle
+     * de l'écran, moins le rail d'onglets d'une tablette couchée.
+     *
+     * Tous les écrans qui calculent eux-mêmes une taille (grilles des jeux,
+     * colonne de lecture, carnet) partent de celle-ci et non de
+     * `displayMetrics.widthPixels` : avec le rail, ils débordaient de sa
+     * largeur.
+     */
+    fun largeurEcran(context: Context): Int {
+        val metriques = context.resources.displayMetrics
+        val rail = if (DeuxColonnes.actives(context)) {
+            (SettingsActivity.RAIL_LARGEUR_DP * metriques.density).toInt() + 2
+        } else 0
+        return metriques.widthPixels - rail
+    }
+
     /** Marge à ajouter de chaque côté, en pixels ; zéro sur un téléphone. */
     fun marge(context: Context): Int {
         if (!active(context)) return 0
         val metriques = context.resources.displayMetrics
-        return ((metriques.widthPixels - MAX_DP * metriques.density) / 2).toInt()
+        return ((largeurEcran(context) - MAX_DP * metriques.density) / 2).toInt()
             .coerceAtLeast(0)
     }
 
@@ -43,7 +60,7 @@ object LargeurLecture {
      * retours à la ligne.
      */
     fun largeur(context: Context): Int =
-        context.resources.displayMetrics.widthPixels - 2 * marge(context)
+        largeurEcran(context) - 2 * marge(context)
 
     /** Ajoute la marge de part et d'autre de [vue]. */
     fun borner(vue: View) {

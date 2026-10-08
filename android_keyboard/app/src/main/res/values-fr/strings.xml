@@ -26,6 +26,8 @@
     <string name="ks_disposition">Disposition</string>
     <string name="ks_disposition_intro">Les deux sont en QWERTZ. Elles ne diffèrent que par les lettres accentuées qui ont leur propre touche.</string>
     <string name="ks_disposition_note">« Suisse allemand », le réglage par défaut, reprend le clavier physique du même nom : ü, ö et ä à droite, é et ë près de l\'espace. « Luxembourg » a des touches un peu plus larges, dix par rangée au lieu de onze : é à droite, ä et ë près de l\'espace, ü et ö en appui long.</string>
+    <string name="ks_clavier_scinde">Clavier scindé en paysage</string>
+    <string name="ks_clavier_scinde_note">Sur une tablette tenue à deux mains, les touches se partagent entre les deux bords, à portée des pouces. Tablettes seulement, tenues couchées.</string>
     <string name="ks_suggestions">Suggestions</string>
     <string name="ks_suggestions_intro">Les mots luxembourgeois sont proposés en rouge. Activez l\'option ci-dessous pour qu\'une seconde rangée, en bleu, propose aussi des mots français à partir de trois lettres.</string>
     <string name="ks_propositions_francais">Propositions en français</string>
@@ -634,6 +636,8 @@
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Dictée vocale</string>
+    <string name="clavier_physique_montrer">Afficher les touches</string>
+    <string name="clavier_physique_masquer">Masquer les touches</string>
     <string name="stt_info_titre">Dictée vocale</string>
     <string name="stt_info_texte">Pour écrire ce que vous dites, le clavier envoie votre voix au service LuxASR de l\'Université du Luxembourg, pendant la dictée seulement.\n\nL\'Université la transforme en texte sans la conserver, et sans s\'en servir pour entraîner ses modèles. Comme tout site, elle note l\'heure et l\'adresse IP de la connexion.\n\nCe que vous tapez, lui, ne quitte jamais votre téléphone.\n\nEn savoir plus : https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
     <string name="stt_info_accepter">J\'accepte</string>

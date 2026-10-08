@@ -64,12 +64,16 @@ class VueWidderhuelen(
     private val paquet: List<ContenuCarte>,
     private val monteesParLeClavier: List<String>,
     private val surNotation: (forme: String, verdict: Verdict) -> Unit,
-    private val surFin: () -> Unit
+    private val surFin: () -> Unit,
+    /**
+     * La session à poursuivre. Neuve par défaut ; après une rotation, celle
+     * que l'écran gardait, pour reprendre à la même carte et au même score.
+     */
+    private val session: SessionWidderhuelen = SessionWidderhuelen(paquet)
 ) {
 
     private val ctx: Context = hote.context
     private val d = ctx.resources.displayMetrics.density
-    private val session = SessionWidderhuelen(paquet)
 
     private val racine = FrameLayout(ctx).apply {
         layoutParams = FrameLayout.LayoutParams(

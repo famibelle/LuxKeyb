@@ -126,6 +126,17 @@ class KeyboardSettingsActivity : AppCompatActivity() {
             addView(explication(R.string.ks_disposition_intro))
             addView(choixDisposition())
             addView(explication(R.string.ks_disposition_note))
+            // Sur tablette seulement : un téléphone couché n'a pas la largeur
+            // d'un clavier coupé en deux.
+            if (KeyboardLayoutManager.isTablet(this@KeyboardSettingsActivity)) {
+                addView(interrupteur(
+                    R.string.ks_clavier_scinde,
+                    KeyboardPreferences.clavierScinde(this@KeyboardSettingsActivity)
+                ) { actif ->
+                    KeyboardPreferences.setClavierScinde(this@KeyboardSettingsActivity, actif)
+                })
+                addView(explication(R.string.ks_clavier_scinde_note))
+            }
         })
         addView(espacement())
 

@@ -26,6 +26,8 @@
     <string name="ks_disposition">Disposition</string>
     <string name="ks_disposition_intro">Allebéid sinn QWERTZ. Si ënnerscheede sech just doduerch, wéi eng Buschtawe mat Akzent eng eegen Tast hunn.</string>
     <string name="ks_disposition_note">„Schwäizerdäitsch“, d\'Standardastellung, hält sech un déi kierperlech Tastatur mam selwechten Numm: ü, ö an ä riets, é an ë nieft der Espace-Tast. „Lëtzebuerg“ huet e bësse méi breet Tasten, zéng pro Rei amplaz eelef: é riets, ä an ë nieft der Espace-Tast, ü an ö mat laangem Drécken.</string>
+    <string name="ks_clavier_scinde">Gedeelte Clavier am Breetformat</string>
+    <string name="ks_clavier_scinde_note">Op engem Tablet, dat een a béid Hänn hält, deelen d\'Tasten sech op déi zwee Ränner op, a Reechwäit vun den Daumen. Just op Tabletten, quer gehalen.</string>
     <string name="ks_suggestions">Virschléi</string>
     <string name="ks_suggestions_intro">Lëtzebuergesch Wierder ginn a rout virgeschloen. Aktivéiert d\'Optioun hei ënnendrënner, fir datt eng zweet Rei a blo vum drëtte Buschtaf un och franséisch Wierder virschléit.</string>
     <string name="ks_propositions_francais">Franséisch Virschléi</string>
@@ -634,6 +636,8 @@
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Diktat</string>
+    <string name="clavier_physique_montrer">Tasten weisen</string>
+    <string name="clavier_physique_masquer">Tasten verstoppen</string>
     <string name="stt_info_titre">Diktat</string>
     <string name="stt_info_texte">Fir dat ze schreiwen, wat Dir sot, schéckt d\'Tastatur Är Stëmm un de Service LuxASR vun der Universitéit Lëtzebuerg, just während dem Diktat.\n\nD\'Universitéit mécht Text draus, ouni se ze späicheren an ouni se ze benotzen, fir hir Modeller ze trainéieren. Wéi all Websäit notéiert se d\'Zäit an d\'IP-Adress vun der Verbindung.\n\nWat Dir tippt, verléisst Ären Handy ni.\n\nMéi gewuer ginn: https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html#dictee-vocale</string>
     <string name="stt_info_accepter">Ech sinn d\'accord</string>

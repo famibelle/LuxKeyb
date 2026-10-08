@@ -18,4 +18,8 @@
     <!-- Le champ de recherche du Wierderbuch : un identifiant fixe pour que
          la requête survive à une rotation. -->
     <item name="recherche_wierderbuch" type="id" />
+
+    <!-- Le mot en cours de frappe dans Wuertriet, pour la même raison : sans
+         identifiant, une rotation l'effaçait. -->
+    <item name="essai_wuertriet" type="id" />
 </resources>

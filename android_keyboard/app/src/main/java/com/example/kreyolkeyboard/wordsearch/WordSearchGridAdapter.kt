@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.Gravity
 
 /**
@@ -57,8 +58,11 @@ class WordSearchGridAdapter(
             val cellSize = utile / puzzle.gridSize
             layoutParams = ViewGroup.LayoutParams(cellSize, cellSize)
             gravity = Gravity.CENTER
-            textSize = 20f
-            setPadding(4, 4, 4, 4)
+            // Proportionnelle à la case : à 20 sp fixes, les lettres étaient
+            // coupées dans les petites cases d'un téléphone couché. Sur un
+            // téléphone debout, 0,42 de la case redonne ces 20 sp.
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, cellSize * 0.42f)
+            includeFontPadding = false
         }
         
         // Afficher la lettre
@@ -84,7 +88,7 @@ class WordSearchGridAdapter(
         }
         
         // Ajouter une bordure visible à toutes les cellules
-        textView.setPadding(8, 8, 8, 8)
+        textView.setPadding(0, 0, 0, 0)
         val drawable = android.graphics.drawable.GradientDrawable()
         drawable.setColor(when {
             foundCells.contains(position) -> Color.parseColor("#81C784")

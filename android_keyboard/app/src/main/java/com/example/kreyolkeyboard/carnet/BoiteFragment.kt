@@ -60,14 +60,19 @@ class BoiteFragment : Fragment() {
     private var generation = 0
 
     /**
-     * Vrai pendant une séance de révision, et survit à une rotation.
+     * La séance de révision en cours, qui survit à une rotation.
      *
-     * Tourner la tablette recrée l'écran et la séance disparaissait avec lui.
-     * Chaque réponse étant notée au carnet sur-le-champ, la rouvrir suffit :
-     * les cartes déjà notées ont une nouvelle échéance et ne reviennent pas.
+     * Tourner l'écran le recrée, et la séance disparaissait avec lui. La
+     * rouvrir en redemandant la file au carnet ne suffisait pas : les cartes
+     * déjà notées n'y étaient plus, mais l'arriéré prenait leur place, et le
+     * compteur repartait à 1 sur une séance qui ne finissait plus. On garde
+     * donc la session elle-même, son paquet et ses réponses.
      */
     class Seance : androidx.lifecycle.ViewModel() {
         var ouverte = false
+        var paquet: List<ContenuCarte> = emptyList()
+        var monteesParLeClavier: List<String> = emptyList()
+        var session: SessionWidderhuelen? = null
     }
 
     private val seance by lazy {
@@ -137,8 +142,8 @@ class BoiteFragment : Fragment() {
             arguments?.remove(ARG_REVISION_DIRECTE)
             if (Carnet.aRevoir(requireContext()) > 0) view.post { if (isAdded) lancerRevision() }
         } else if (seance.ouverte) {
-            // Une séance était ouverte avant la rotation : on la rouvre.
-            view.post { if (isAdded) lancerRevision() }
+            // Une séance était ouverte avant la rotation : on la reprend.
+            view.post { if (isAdded) reprendreRevision() }
         }
     }
 
@@ -285,18 +290,35 @@ class BoiteFragment : Fragment() {
             principal.post {
                 if (!isAdded) return@post
                 boite.isEnabled = true
-                VueWidderhuelen(
-                    hote = racine,
-                    paquet = aDemander,
-                    monteesParLeClavier = ecrites.toList(),
-                    surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
-                    surFin = {
-                        seance.ouverte = false
-                        if (isAdded) chargerEnFond()
-                    }
-                ).ouvrir()
+                seance.paquet = aDemander
+                seance.monteesParLeClavier = ecrites.toList()
+                seance.session = SessionWidderhuelen(aDemander)
+                ouvrirRevision()
             }
         }.start()
+    }
+
+    /** Après une rotation : la même session, à la carte où elle en était. */
+    private fun reprendreRevision() {
+        if (seance.session == null) lancerRevision() else ouvrirRevision()
+    }
+
+    private fun ouvrirRevision() {
+        val ctx = requireContext().applicatifDansLaLangue()
+        VueWidderhuelen(
+            hote = racine,
+            paquet = seance.paquet,
+            monteesParLeClavier = seance.monteesParLeClavier,
+            surNotation = { forme, verdict -> Carnet.noter(ctx, forme, verdict) },
+            surFin = {
+                seance.ouverte = false
+                seance.session = null
+                seance.paquet = emptyList()
+                seance.monteesParLeClavier = emptyList()
+                if (isAdded) chargerEnFond()
+            },
+            session = seance.session ?: SessionWidderhuelen(seance.paquet)
+        ).ouvrir()
     }
 
     /**

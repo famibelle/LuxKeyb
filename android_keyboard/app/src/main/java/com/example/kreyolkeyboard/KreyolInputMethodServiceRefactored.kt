@@ -300,6 +300,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var frenchRowScroll: HorizontalScrollView? = null
     private var mainKeyboardView: View? = null
 
+    // Clavier physique branché (Bluetooth, étui-clavier de tablette) : seule la
+    // barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro,
+    // fait revenir les touches à la demande ; ce choix tient jusqu'à ce que le
+    // clavier physique soit débranché.
+    private var boutonTouches: ImageView? = null
+    private var touchesDemandees = false
+    private var racineClavier: View? = null
+
     /**
      * Dictée vocale. Construite paresseusement au premier appui sur le micro :
      * un utilisateur qui ne dicte jamais n'ouvre jamais de client réseau.
@@ -420,7 +428,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         LangueInterface.oublierRessources()
+        // Débrancher le clavier physique rend les touches pour de bon : la
+        // prochaine fois qu'il revient, on repart de la barre seule.
+        if (newConfig.hardKeyboardHidden == android.content.res.Configuration.HARDKEYBOARDHIDDEN_YES) {
+            touchesDemandees = false
+        }
         super.onConfigurationChanged(newConfig)
+        appliquerClavierPhysique()
     }
 
     override fun onCreate() {
@@ -687,12 +701,52 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // IME accordera réellement (voir availableRowsHeightPx)
         keyboardLayoutManager.setAvailableRowsHeight(computeAvailableRowsHeight())
         keyboardLayoutManager.definirDisposition(KeyboardPreferences.disposition(this))
+        keyboardLayoutManager.definirScinde(KeyboardPreferences.clavierScinde(this))
         val keyboardLayout = keyboardLayoutManager.createKeyboardLayout()
         keyboardContainer.addView(keyboardLayout)
         mainLayout.addView(keyboardContainer)
         mainKeyboardView = keyboardContainer
+        racineClavier = mainLayout
+        appliquerClavierPhysique()
 
         return mainLayout
+    }
+
+    /**
+     * Vrai quand un clavier physique est branché et que le système ne demande
+     * pas d'afficher aussi celui de l'écran.
+     *
+     * C'est exactement la question que pose l'implémentation de base de
+     * [onEvaluateInputViewShown], réglage « Utiliser le clavier à l'écran »
+     * compris : on la lui pose, plutôt que de relire la configuration.
+     */
+    private fun clavierPhysiqueActif(): Boolean = !super.onEvaluateInputViewShown()
+
+    /**
+     * Avec un clavier physique, les touches à l'écran ne servaient à rien et
+     * couvraient la moitié d'une tablette couchée. On ne garde que la barre de
+     * suggestions : la frappe physique passe par l'application, et
+     * [onUpdateSelection] resynchronise le mot à chaque caractère, ce qui suffit
+     * à nourrir les suggestions comme pour une frappe à l'écran.
+     */
+    private fun appliquerClavierPhysique() {
+        val physique = clavierPhysiqueActif()
+        val barreSeule = physique && !touchesDemandees
+        mainKeyboardView?.visibility = if (barreSeule) View.GONE else View.VISIBLE
+        // La marge qui dégage le clavier de la barre de navigation est portée
+        // par le conteneur des touches : masqué, il ne la porte plus, et la
+        // barre de suggestions passait sous les boutons du système. Elle est
+        // alors reportée sur la racine.
+        racineClavier?.let { racine ->
+            racine.setPadding(0, 0, 0, 0)
+            if (barreSeule) racine.post { adjustForNavigationBarOverlap(racine, racine) }
+        }
+        boutonTouches?.apply {
+            visibility = if (physique) View.VISIBLE else View.GONE
+            contentDescription = getString(
+                if (barreSeule) R.string.clavier_physique_montrer else R.string.clavier_physique_masquer
+            )
+        }
     }
     
     /**
@@ -780,6 +834,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         )
         luxRowWithMic.addView(luxScroll)
         luxRowWithMic.addView(createDictationStatusView())
+        luxRowWithMic.addView(createKeysButton(rowHeightPx))
         luxRowWithMic.addView(createMicButton(rowHeightPx))
         luxScrollView = luxScroll
         suggestionsContainer.addView(luxRowWithMic)
@@ -841,6 +896,34 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     // l'Université du Luxembourg (voir LuxAsrSession et la politique de
     // confidentialité, section « La dictée vocale »).
     // =========================================================================
+
+    /**
+     * Bouton clavier, montré seulement quand un clavier physique est branché :
+     * il fait revenir les touches à l'écran, pour un accent ou un emoji que le
+     * clavier physique n'a pas, puis les remasque. Même gabarit et même teinte
+     * que le micro, à côté duquel il se range.
+     */
+    private fun createKeysButton(rowHeightPx: Int): View {
+        val palette = paletteDeLaVue ?: KeyboardTheme.palette()
+        val button = ImageView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(rowHeightPx, rowHeightPx)
+            setImageResource(R.drawable.ic_keyboard)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            val pad = dpToPx(MIC_ICON_PADDING_DP)
+            setPadding(pad, pad, pad, pad)
+            setColorFilter(palette.encreAttenuee)
+            alpha = 0.65f
+            isClickable = true
+            isFocusable = true
+            visibility = View.GONE
+            setOnClickListener {
+                touchesDemandees = !touchesDemandees
+                appliquerClavierPhysique()
+            }
+        }
+        boutonTouches = button
+        return button
+    }
 
     /**
      * Bouton micro, carré, calé sur la hauteur d'une rangée de suggestions pour
@@ -2025,10 +2108,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         val francaisChange = francaisDeLaVue != null && francaisDeLaVue != francais
 
         KeyboardTheme.refresh(this)
-        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee || dispositionChangee || francaisChange) {
+        // Le clavier scindé de même, posé à la construction des rangées.
+        val scindeChange = keyboardLayoutManager.definirScinde(KeyboardPreferences.clavierScinde(this))
+        if (paletteDeLaVue !== KeyboardTheme.palette() || rangeeChangee || dispositionChangee || francaisChange || scindeChange) {
             Log.d(TAG, "Thème, disposition, rangée d'adresse ou français changés : reconstruction de la vue d'entrée")
             setInputView(onCreateInputView())
         }
+        appliquerClavierPhysique()
 
         // La touche Entrée dessine ce qu'elle fera dans ce champ : loupe,
         // envoi, flèche, coche, ou retour à la ligne
@@ -2458,6 +2544,17 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onEvaluateInputViewShown(): Boolean {
         return true
+    }
+
+    /**
+     * Avec un clavier physique, Android n'affiche la fenêtre de saisie que sur
+     * une demande explicite : la barre de suggestions manquait alors dans les
+     * champs qui prennent le focus d'eux-mêmes. Elle est assez basse pour être
+     * montrée à chaque fois, comme le fait Gboard.
+     */
+    override fun onShowInputRequested(flags: Int, configChange: Boolean): Boolean {
+        if (clavierPhysiqueActif()) return true
+        return super.onShowInputRequested(flags, configChange)
     }
     
     override fun isExtractViewShown(): Boolean {

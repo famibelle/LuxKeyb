@@ -84,4 +84,45 @@ object DeuxColonnes {
             addView(droite)
         })
     }
+
+    /**
+     * Range par deux, côte à côte, les cartes de [colonne] à partir de
+     * l'indice [aPartirDe] ; une carte restée seule garde toute la largeur.
+     *
+     * Pour les écrans faits d'une pile de cartes courtes, comme l'accueil :
+     * empilées sur une tablette couchée, elles obligeaient à défiler pour voir
+     * la quatrième. Les deux cartes d'une rangée prennent la hauteur de la
+     * plus haute, pour que la rangée se lise comme une seule ligne.
+     */
+    fun parPaires(colonne: LinearLayout, aPartirDe: Int) {
+        val context = colonne.context
+        val cartes = (aPartirDe until colonne.childCount).map { colonne.getChildAt(it) }
+        cartes.forEach { colonne.removeView(it) }
+        val ecart = (6 * context.resources.displayMetrics.density).toInt()
+
+        cartes.chunked(2).forEach { paire ->
+            if (paire.size == 1) {
+                colonne.addView(paire[0])
+                return@forEach
+            }
+            val rangee = LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                isBaselineAligned = false
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            paire.forEachIndexed { i, carte ->
+                val ancien = carte.layoutParams as? LinearLayout.LayoutParams
+                rangee.addView(carte, LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.MATCH_PARENT, 1f
+                ).apply {
+                    bottomMargin = ancien?.bottomMargin ?: 0
+                    if (i == 0) rightMargin = ecart else leftMargin = ecart
+                })
+            }
+            colonne.addView(rangee)
+        }
+    }
 }
