@@ -115,6 +115,9 @@ internal class BoiteLeitner(context: Context) : View(context) {
     private val rectos = HashMap<String, Bitmap>()
     private val pinceauImage = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private val cadreCarte = RectF()
+    private val aPlat = FloatArray(8)
+    private val posee = FloatArray(8)
+    private val miseEnPlace = Matrix()
 
     /** Le casier ou la plaque sous le doigt, pour l'état pressé. [RIEN] sinon. */
     private var presse = RIEN
@@ -495,29 +498,27 @@ internal class BoiteLeitner(context: Context) : View(context) {
         val soulevees = if (dues[i] < LEVEES) dues[i] else LEVEES
         val normales = visibles - soulevees
 
-        // La pile s'empile en **espace écran**, pas en profondeur. Calée sur la
-        // profondeur, chaque carte suivait la fuite du trapèze et se décalait de
-        // quelques pixels sur le côté : la pile se lisait comme un escalier. Une
-        // pile de fiches est parallèle aux parois de sa fente ; c'est la fente
-        // qui converge, pas elle.
+        // Chaque carte est posée **dans la perspective de sa fente** : ses deux
+        // bords suivent les parois, et elle rétrécit un peu en s'éloignant. Une
+        // pile de rectangles droits ne tenait que sur un téléphone, où la boîte
+        // est plate ; sur une tablette les fentes sont hautes, leurs parois
+        // fuient franchement, et la découpe tranchait en biais les cartes des
+        // casiers du bord. Le pas est continu, donc la pile ne se lit plus en
+        // escalier comme quand on décalait des rectangles d'une carte à l'autre.
         // La pile s'assoit sur la lèvre de la fente, pas huit densités au-dessus,
         // sinon elle flotte. Et elle occupe une bonne moitié de la profondeur :
         // trop basse, la fente se lit comme un trou et la boîte comme vide.
         val marge = (u1 - u0) * 0.09f
+        val ug = u0 + marge
+        val ud = u1 - marge
         val vBase = vAvant + 0.025f
-        val g = sx(u0 + marge, vBase)
-        val dr = sx(u1 - marge, vBase)
         val bas = sy(vBase)
-        // Proportionnées à la fente elle-même, et non plus à une boîte de
-        // référence : une pile de huit cartes en occupe alors les trois quarts,
-        // et quatre cartes ne sont plus un liseré au bas d'un long trou sombre.
-        // La tranche reste la même d'un casier à l'autre, pour que la hauteur de
-        // la pile continue de dire lequel est le plus rempli.
         // La face garde les proportions du recto, carré en vignette : une carte
         // étirée à la hauteur de la fente déformerait son illustration. Même
         // proportion en carton uni, pour que rien ne saute quand les rectos
-        // arrivent.
-        val hauteur = (dr - g) * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
+        // arrivent. La tranche reste la même d'un casier à l'autre, pour que la
+        // hauteur de la pile continue de dire lequel est le plus rempli.
+        val hauteur = (sx(ud, vBase) - sx(ug, vBase)) * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
         // L'écart entre deux cartes et la levée des dues suivent la carte et non
         // la fente : réglés sur la profondeur, ils dépassaient la hauteur d'une
         // face carrée, et la pile se défaisait en cartes flottant séparément.
@@ -536,16 +537,12 @@ internal class BoiteLeitner(context: Context) : View(context) {
         // travers, comme une fiche qu'on a tirée à moitié pour ne pas l'oublier.
         // Une pile bien alignée se lit comme rangée ; c'est le désordre qui dit
         // « à faire ».
-        val cx = (g + dr) / 2f
         for (j in soulevees - 1 downTo 0) {
             val pied = bas - (normales + j) * tranche - levee
-            canvas.save()
-            canvas.rotate(PENCHES[j % PENCHES.size], cx, pied)
-            carte(canvas, g, dr, pied, hauteur, true, pile.getOrNull(j))
-            canvas.restore()
+            carte(canvas, ug, ud, pied, PENCHES[j % PENCHES.size], true, pile.getOrNull(j))
         }
         for (j in normales - 1 downTo 0) {
-            carte(canvas, g, dr, bas - j * tranche, hauteur, false, pile.getOrNull(soulevees + j))
+            carte(canvas, ug, ud, bas - j * tranche, 0f, false, pile.getOrNull(soulevees + j))
         }
         canvas.restore()
         voileSiPresse(canvas, fente, i)
@@ -570,23 +567,43 @@ internal class BoiteLeitner(context: Context) : View(context) {
      */
     private fun carte(
         canvas: Canvas,
-        g: Float,
-        dr: Float,
+        ug: Float,
+        ud: Float,
         bas: Float,
-        hauteur: Float,
+        penche: Float,
         due: Boolean,
         qui: CarteMot?
     ) {
-        val haut = bas - hauteur
-        val rayon = (dr - g) * Ornement.RAYON / Ornement.LARGEUR
-        cadreCarte.set(g, haut, dr, bas)
+        // La carte est dessinée à plat, de 0 à [large] sur 0 à [haute], puis
+        // posée sur le trapèze que ses deux bords découpent dans la fente.
+        val profondeur = yAv - yAr
+        val vBas = (yAv - bas) / profondeur
+        val large = sx(ud, vBas) - sx(ug, vBas)
+        val haute = large * Ornement.HAUTEUR_VIGNETTE / Ornement.LARGEUR
+        val vHaut = vBas + haute / profondeur
+        aPlat[0] = 0f; aPlat[1] = haute
+        aPlat[2] = large; aPlat[3] = haute
+        aPlat[4] = large; aPlat[5] = 0f
+        aPlat[6] = 0f; aPlat[7] = 0f
+        posee[0] = sx(ug, vBas); posee[1] = bas
+        posee[2] = sx(ud, vBas); posee[3] = bas
+        posee[4] = sx(ud, vHaut); posee[5] = sy(vHaut)
+        posee[6] = sx(ug, vHaut); posee[7] = sy(vHaut)
+        miseEnPlace.setPolyToPoly(aPlat, 0, posee, 0, 4)
+
+        canvas.save()
+        canvas.concat(miseEnPlace)
+        if (penche != 0f) canvas.rotate(penche, large / 2f, haute)
+
+        val rayon = large * Ornement.RAYON / Ornement.LARGEUR
+        cadreCarte.set(0f, 0f, large, haute)
         val recto = qui?.let { rectos[it.forme] }
 
         if (recto != null) {
             canvas.drawBitmap(recto, null, cadreCarte, pinceauImage)
         } else {
             pinceau.shader = LinearGradient(
-                g, haut, g, bas,
+                0f, 0f, 0f, haute,
                 if (due) CARTE_DUE_CLAIR else CARTE_CLAIR,
                 if (due) CARTE_DUE_SOMBRE else CARTE_SOMBRE,
                 Shader.TileMode.CLAMP
@@ -605,9 +622,10 @@ internal class BoiteLeitner(context: Context) : View(context) {
         } else if (recto == null) {
             pinceau.color = CARTE_TRANCHE
             pinceau.strokeWidth = px(1.4f)
-            canvas.drawLine(g + rayon, haut, dr - rayon, haut, pinceau)
+            canvas.drawLine(rayon, 0f, large - rayon, 0f, pinceau)
         }
         pinceau.style = Paint.Style.FILL
+        canvas.restore()
     }
 
     /**
