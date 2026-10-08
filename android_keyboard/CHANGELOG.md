@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.3.1] - 2026-10-08
+
+### 🐛 Corrections
+
+- Sur un téléphone tenu en paysage, l'éventail de la Boîte de Leitner tient à l'écran : les cartes débordaient par le bas et cachaient le titre et le compteur. Elles s'alignent maintenant sur toute la largeur, sous une seule ligne de titre.
+
 ## [34.3.0] - 2026-10-08
 
 Sur tablette, le carnet devient un album et la Boîte de Leitner prend toute sa place.

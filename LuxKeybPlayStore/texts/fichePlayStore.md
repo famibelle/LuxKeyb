@@ -15,8 +15,8 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **34.3.0**
-(`versionCode` 340300), la troisième adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.3.1**
+(`versionCode` 340301), correctif de la troisième adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -118,6 +118,10 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
 en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, pas en
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
+
+Texte de la 34.3.1 : [`fr-FR/changelogs/340301.txt`](fr-FR/changelogs/340301.txt),
+identique à celui de la 34.3.0 : le correctif (l'éventail de la boîte sur un
+téléphone tenu en paysage) ne mérite pas de ligne à lui seul.
 
 Texte de la 34.3.0 : [`fr-FR/changelogs/340300.txt`](fr-FR/changelogs/340300.txt).
 C'est celui de la 34.2.0 dont la ligne 📱 annonce maintenant le carnet en album
