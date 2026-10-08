@@ -1,9 +1,56 @@
 {
  "genere_le": "2026-10-08",
- "derniere_version": "34.2.0",
+ "derniere_version": "34.3.0",
  "derniere_date": "2026-10-08",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "34.3.0",
+   "date": "2026-10-08",
+   "intro": "Sur tablette, le carnet devient un album et la Boîte de Leitner prend toute sa place.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le carnet comme un vrai album",
+       "texte": "Sur tablette, les cartes se rangent sur des doubles pages qu'on tourne d'un glissé, au lieu d'une longue liste à faire défiler."
+      },
+      {
+       "titre": "Une carte qui tient à l'écran",
+       "texte": "Ouverte depuis le carnet ou depuis la boîte, la carte s'affiche en entier, sans défiler. Un glissé de côté passe à la carte voisine, et sur tablette des flèches font de même."
+      },
+      {
+       "titre": "L'éventail de la boîte à la mesure de la tablette",
+       "texte": "Les cartes d'un casier s'ouvrent en grand sur un arc qui va d'un bord à l'autre : on en voit une quinzaine, et le mot de la carte du centre se lit. En refermant une carte, l'éventail se recentre sur la dernière lue."
+      },
+      {
+       "titre": "La boîte au clavier physique",
+       "texte": "Les flèches choisissent un casier, Entrée l'ouvre, et Échap revient en arrière ; dans l'éventail, les flèches le font tourner."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Dans la Boîte de Leitner, les cartes suivent la perspective de leur casier : sur tablette, celles des casiers du bord n'étaient plus coupées en biais par les parois."
+      },
+      {
+       "titre": null,
+       "texte": "Les cartes rangées dans la boîte sont plus nettes sur les grands écrans."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "34.2.0",
    "date": "2026-10-08",
@@ -222,39 +269,6 @@
    "image": "Screenshots/lux_actualites_inll.png",
    "image_alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
    "image_legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
-  },
-  {
-   "version": "33.1.0",
-   "date": "2026-10-05",
-   "intro": "Choisir la langue de l'application, sans passer par les paramètres du téléphone.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "La langue de l'application se choisit dans l'appli",
-       "texte": "En bas des Réglages du clavier : Lëtzebuergesch, Français, Deutsch, English ou Português, ou « Comme le téléphone ». Les menus, les jeux, le carnet et le sens des mots passent aussitôt dans la langue choisie. Les touches et les suggestions, elles, restent luxembourgeoises."
-      },
-      {
-       "titre": null,
-       "texte": "Fonctionne aussi sur les téléphones antérieurs à Android 13, qui n'offraient aucun moyen de changer la langue d'une seule application."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_langue_interface.png",
-     "alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
-     "legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
-    }
-   ],
-   "image": "Screenshots/lux_langue_interface.png",
-   "image_alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
-   "image_legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
   }
  ]
 }

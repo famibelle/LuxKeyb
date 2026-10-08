@@ -1,0 +1,4 @@
+📱 Auf dem Tablet: Die Sammlung wird zum Album mit Seiten, und die Lernkartei öffnet ihre Karten als großen Fächer. Jede Karte passt auf den Bildschirm, ein Wischen zeigt die nächste.
+🎙️ Diktieren Sie auf Luxemburgisch: Mikrofon antippen und sprechen, der Text erscheint mit Satzzeichen. Erkennung durch LuxASR der Universität Luxemburg.
+🔒 Was Sie tippen, verlässt Ihr Handy weiterhin nicht. Nur das Diktat sendet Ihre Stimme.
+🌍 Wählen Sie die Sprache der App ganz unten in den Tastatureinstellungen.

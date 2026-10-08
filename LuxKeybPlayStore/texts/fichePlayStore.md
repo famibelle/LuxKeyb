@@ -15,8 +15,8 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **34.2.0**
-(`versionCode` 340200), la deuxième adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.3.0**
+(`versionCode` 340300), la troisième adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,7 +119,13 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 34.2.0 : [`fr-FR/changelogs/340200.txt`](fr-FR/changelogs/340200.txt).
+Texte de la 34.3.0 : [`fr-FR/changelogs/340300.txt`](fr-FR/changelogs/340300.txt).
+C'est celui de la 34.2.0 dont la ligne 📱 annonce maintenant le carnet en album
+et l'éventail de la boîte sur tablette. Longueurs : fr 485, lb 496, de 499,
+en 462, pt 461, sur 500. Les lignes lb, de et pt sont à faire relire par un
+locuteur.
+
+Texte de la 34.2.0, gardé pour mémoire : [`fr-FR/changelogs/340200.txt`](fr-FR/changelogs/340200.txt).
 C'est celui de la 34.0.0 précédé d'une ligne 📱 sur les tablettes : clavier
 plus grand, jeux à grille et Wierderbuch côte à côte en paysage, et la partie
 gardée quand on tourne l'écran (ce dernier point vaut aussi pour les

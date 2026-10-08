@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.3.0] - 2026-10-08
+
+Sur tablette, le carnet devient un album et la Boîte de Leitner prend toute sa place.
+
+### ✨ Nouveautés
+
+- **Le carnet comme un vrai album.** Sur tablette, les cartes se rangent sur des doubles pages qu'on tourne d'un glissé, au lieu d'une longue liste à faire défiler.
+- **Une carte qui tient à l'écran.** Ouverte depuis le carnet ou depuis la boîte, la carte s'affiche en entier, sans défiler. Un glissé de côté passe à la carte voisine, et sur tablette des flèches font de même.
+- **L'éventail de la boîte à la mesure de la tablette.** Les cartes d'un casier s'ouvrent en grand sur un arc qui va d'un bord à l'autre : on en voit une quinzaine, et le mot de la carte du centre se lit. En refermant une carte, l'éventail se recentre sur la dernière lue.
+- **La boîte au clavier physique.** Les flèches choisissent un casier, Entrée l'ouvre, et Échap revient en arrière ; dans l'éventail, les flèches le font tourner.
+
+### 🐛 Corrections
+
+- Dans la Boîte de Leitner, les cartes suivent la perspective de leur casier : sur tablette, celles des casiers du bord n'étaient plus coupées en biais par les parois.
+- Les cartes rangées dans la boîte sont plus nettes sur les grands écrans.
+
 ## [34.2.0] - 2026-10-08
 
 La version tablette va plus loin, et sait se servir d'un clavier Bluetooth.
