@@ -26,8 +26,8 @@ rien à retrouver au moment de l'envoi :
                            deux fois : dans « Captures d'écran pour tablette
                            7 pouces » et dans « … 10 pouces »
                                                     depuis captures-emulateur-tablette/
-  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, pour
-                           ceux qui ont un écran tablette (quatre sur dix)
+  hors-console-tablette/<langue>/  les visuels hors Console en 1920x1080, sauf
+                           la voix (neuf sur dix)
 
 `<langue>` est l'une des cinq langues de l'interface, nommée comme les textes
 (`texts/fr-FR/` va avec `feature-graphic/captures/fr-FR/`). Le numéro des captures est
@@ -414,15 +414,20 @@ CAPTURES_TABLETTE = [
 ]
 
 
-# Les visuels hors Console en paysage, pour la tablette : ceux dont un écran
-# tablette existe, même nom et même légende que leur pendant téléphone. Les six
-# autres (Wuertmix, Wuertriet, Wuertlück, Zuelwuert, éventail, voix) attendent
-# leurs captures sur l'émulateur `tablette10`.
+# Les visuels hors Console en paysage, pour la tablette : même nom et même
+# légende que leur pendant téléphone. Écrans 11 à 19 pris le 8 octobre 2026 sur
+# `tablette10` (34.2.0, rail d'onglets). La voix manque : l'émulateur n'entend
+# rien, et le micro demande l'accord d'envoi à LuxASR.
 HORS_CONSOLE_TABLETTE = [
-    ("Jeu 1 (Wuertsich)", "05-jeu-wuertsich.png", ("hors", 0)),
-    ("Jeu 6 (Kräizwuert)", "03-jeu-kraizwuert.png", ("hors", 5)),
-    ("Jeu 7 (Wuertplaz)", "04-jeu-wuertplaz.png", ("hors", 6)),
-    ("Carnet 1 (Boîte de Leitner)", "06-boite-de-leitner.png", ("hors", 7)),
+    ("Jeu 1 (Wuertsich)", "11-jeu-wuertsich.png", ("hors", 0)),
+    ("Jeu 2 (Wuertmix)", "12-jeu-wuertmix.png", ("hors", 1)),
+    ("Jeu 3 (Wuertriet)", "13-jeu-wuertriet.png", ("hors", 2)),
+    ("Jeu 4 (Wuertlück)", "14-jeu-wuertlueck.png", ("hors", 3)),
+    ("Jeu 5 (Zuelwuert)", "15-jeu-zuelwuert.png", ("hors", 4)),
+    ("Jeu 6 (Kräizwuert)", "16-jeu-kraizwuert.png", ("hors", 5)),
+    ("Jeu 7 (Wuertplaz)", "17-jeu-wuertplaz.png", ("hors", 6)),
+    ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner.png", ("hors", 7)),
+    ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail.png", ("hors", 8)),
 ]
 
 
