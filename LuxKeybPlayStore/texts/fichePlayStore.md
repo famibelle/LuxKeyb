@@ -10,13 +10,13 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
   title.txt               Nom de l'application (30)
   short_description.txt   Brève description (80)
   full_description.txt    Description complète (4 000)
-  changelogs/340000.txt   Nouveautés de la version, par versionCode (500)
+  changelogs/340100.txt   Nouveautés de la version, par versionCode (500)
 ```
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **34.0.0**
-(`versionCode` 340000), celle qui retire les actualités de l'INLL, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.1.0**
+(`versionCode` 340100), la première adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,7 +119,14 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 34.0.0 : [`fr-FR/changelogs/340000.txt`](fr-FR/changelogs/340000.txt).
+Texte de la 34.1.0 : [`fr-FR/changelogs/340100.txt`](fr-FR/changelogs/340100.txt).
+C'est celui de la 34.0.0 précédé d'une ligne 📱 sur les tablettes : clavier
+plus grand, jeux à grille et Wierderbuch côte à côte en paysage, et la partie
+gardée quand on tourne l'écran (ce dernier point vaut aussi pour les
+téléphones). Longueurs : fr 463, lb 472, de 476, en 442, pt 428, sur 500.
+Les lignes lb, de et pt sont à faire relire par un locuteur.
+
+Texte de la 34.0.0, gardé pour mémoire : [`fr-FR/changelogs/340000.txt`](fr-FR/changelogs/340000.txt).
 C'est celui de la 33.2.1 sans sa ligne 📰 : les actualités de l'INLL, apparues
 en 33.2.0 et restées en test fermé, sont retirées de l'application faute
 d'autorisation écrite de l'INLL (ses conditions générales interdisent toute
@@ -274,7 +281,8 @@ reprennent le gabarit ne sont plus dans le dépôt.
 | Icône de l'application | 512 × 512 PNG ou JPEG, moins de 1 Mo, sans transparence | `Icône de l'application.png` (243 Ko) — le lion de `Logos/luxembourg-logo-hd.png` aplati sur blanc |
 | Image de présentation | 1024 × 500 PNG ou JPEG, moins de 15 Mo, sans transparence | `Image de présentation.png` (114 Ko), source HTML à côté |
 | Captures d'écran pour téléphone | 2 à 8, 16:9 ou 9:16, côté entre 320 et 3840 px, moins de 8 Mo pièce | `<langue>/Captures d'écran pour téléphone 1 (Suggestions).png` … `8 (Installation).png`, 1080 × 1920, légende incrustée dans la langue |
-| Captures tablette | facultatif | Non prévu |
+| Captures d'écran pour tablette 7 pouces | facultatif, 16:9 ou 9:16, côté entre 320 et 3840 px | `captures-tablette/<langue>/Captures d'écran pour tablette 1 (Suggestions).png` … `6 (Boîte de Leitner).png`, 1920 × 1080 |
+| Captures d'écran pour tablette 10 pouces | facultatif, 16:9 ou 9:16, côté entre 1080 et 7680 px | les mêmes six fichiers : 1920 × 1080 respecte les deux bornes |
 | Vidéo YouTube | facultatif ; URL YouTube publique ou non répertoriée, sans pub, sans restriction d'âge, intégration autorisée | `../graphics/video/Letzebuergesch_Clavier_presentation_fr.mp4` (50 s, 1920 × 1080, français), à mettre en ligne sur YouTube puis coller son URL. Le Store ne prend **pas** les GIF |
 
 Les huit captures dépassent toutes 1080 × 1080, et il y en a plus de quatre :

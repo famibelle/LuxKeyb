@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.1.0] - 2026-10-08
+
+L'application s'adapte aux tablettes.
+
+### ✨ Nouveautés
+
+- **Le clavier à la taille d'une tablette.** Les touches sont plus hautes, et les petits caractères des coins (è, ê, ç…) se lisent. En paysage, le clavier n'est plus aplati : il gardait les touches réduites prévues pour un téléphone couché.
+- **Les jeux à grille sur deux colonnes.** Sur une tablette tenue en paysage, Kräizwuert, Wuertplaz et Wuertsich montrent la grille à gauche, le pavé, les mots et les boutons à droite : tout tient sur un écran, sans faire défiler.
+- **Le Wierderbuch côte à côte.** Sur tablette en paysage, la liste des résultats reste à gauche et la fiche du mot s'ouvre à droite, sans fenêtre à ouvrir et fermer à chaque mot.
+- **Des textes plus faciles à lire.** Sur tablette, l'accueil, la progression, le guide et les jeux de questions tiennent dans une colonne centrée, au lieu de s'étaler sur toute la largeur de l'écran.
+
+### 🐛 Corrections
+
+- **Tourner l'écran ne fait plus perdre la partie**, sur tablette comme sur téléphone. Les huit jeux gardent leur grille, leurs réponses et leur score, la révision de la Boîte de Leitner reprend où elle en était, et le Wierderbuch garde le mot cherché.
+- La grille de Wuertsich n'est plus coupée à droite et en bas.
+
 ## [34.0.0] - 2026-10-07
 
 Les actualités de l'INLL quittent l'application.

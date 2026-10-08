@@ -1,9 +1,66 @@
 {
- "genere_le": "2026-10-07",
- "derniere_version": "34.0.0",
- "derniere_date": "2026-10-07",
+ "genere_le": "2026-10-08",
+ "derniere_version": "34.1.0",
+ "derniere_date": "2026-10-08",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "34.1.0",
+   "date": "2026-10-08",
+   "intro": "L'application s'adapte aux tablettes.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le clavier à la taille d'une tablette",
+       "texte": "Les touches sont plus hautes, et les petits caractères des coins (è, ê, ç…) se lisent. En paysage, le clavier n'est plus aplati : il gardait les touches réduites prévues pour un téléphone couché."
+      },
+      {
+       "titre": "Les jeux à grille sur deux colonnes",
+       "texte": "Sur une tablette tenue en paysage, Kräizwuert, Wuertplaz et Wuertsich montrent la grille à gauche, le pavé, les mots et les boutons à droite : tout tient sur un écran, sans faire défiler."
+      },
+      {
+       "titre": "Le Wierderbuch côte à côte",
+       "texte": "Sur tablette en paysage, la liste des résultats reste à gauche et la fiche du mot s'ouvre à droite, sans fenêtre à ouvrir et fermer à chaque mot."
+      },
+      {
+       "titre": "Des textes plus faciles à lire",
+       "texte": "Sur tablette, l'accueil, la progression, le guide et les jeux de questions tiennent dans une colonne centrée, au lieu de s'étaler sur toute la largeur de l'écran."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Tourner l'écran ne fait plus perdre la partie",
+       "texte": "Sur tablette comme sur téléphone. Les huit jeux gardent leur grille, leurs réponses et leur score, la révision de la Boîte de Leitner reprend où elle en était, et le Wierderbuch garde le mot cherché."
+      },
+      {
+       "titre": null,
+       "texte": "La grille de Wuertsich n'est plus coupée à droite et en bas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_tablette_kraizwuert.png",
+     "alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
+     "legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
+    }
+   ],
+   "image": "Screenshots/lux_tablette_kraizwuert.png",
+   "image_alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
+   "image_legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
+  },
   {
    "version": "34.0.0",
    "date": "2026-10-07",
@@ -162,67 +219,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "33.0.0",
-   "date": "2026-10-03",
-   "intro": "Le clavier dicte en luxembourgeois : une version majeure pour la dictée vocale.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Dictée vocale en luxembourgeois",
-       "texte": "Un micro à droite de la barre de suggestions : vous parlez, le texte s'écrit pendant que vous parlez, ponctué et avec les majuscules, et le micro se referme seul quand vous vous taisez. La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg."
-      },
-      {
-       "titre": "Un écran explique, avant la première dictée, où part votre voix",
-       "texte": "Vers l'Université du Luxembourg, pendant la dictée seulement, transcrite sans être conservée. Rien n'est envoyé avant « J'accepte »."
-      },
-      {
-       "titre": "Sans réseau, le micro est barré ; sur un réseau lent, le clavier le dit",
-       "texte": "Et finit d'envoyer ce qui attend : le texte arrive en entier."
-      },
-      {
-       "titre": "Ce que vous tapez ne quitte toujours jamais votre téléphone",
-       "texte": "La dictée ne s'ouvre pas dans les champs de mot de passe."
-      },
-      {
-       "titre": null,
-       "texte": "La dictée suit la langue de l'application : son écran d'information et ses messages existent dans les cinq langues."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Nouvelles autorisations, toutes réservées à la dictée : micro, Internet, état du réseau."
-      },
-      {
-       "titre": null,
-       "texte": "Politique de confidentialité 3.0, avec une section « La dictée vocale ». L'application s'adresse aux personnes de 16 ans et plus."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_dictee_reconstituee.gif",
-     "alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps.",
-     "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
-    }
-   ],
-   "image": "Screenshots/lux_dictee_reconstituee.gif",
-   "image_alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps.",
-   "image_legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
   }
  ]
 }

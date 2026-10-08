@@ -219,5 +219,14 @@
         "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
       }
     ]
+  },
+  "34.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_tablette_kraizwuert.png",
+        "alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
+        "legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
+      }
+    ]
   }
 }

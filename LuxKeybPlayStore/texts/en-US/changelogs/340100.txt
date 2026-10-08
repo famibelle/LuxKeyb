@@ -1,0 +1,4 @@
+📱 On tablets: grid and keys side by side, dictionary and entry side by side, bigger keys. And your game stays when you rotate the screen.
+🎙️ Dictate in Luxembourgish: tap the microphone and speak, the text appears with punctuation. Recognition by LuxASR, from the University of Luxembourg.
+🔒 What you type still never leaves your phone. Only dictation sends your voice.
+🌍 Choose the app's language at the bottom of the Keyboard settings.
