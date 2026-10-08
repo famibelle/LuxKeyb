@@ -1,0 +1,4 @@
+📱 On tablets: the tabs move to the side, and a split keyboard is available. With a Bluetooth keyboard, only the suggestion bar stays on screen.
+🎙️ Dictate in Luxembourgish: tap the microphone and speak, the text appears with punctuation. Recognition by LuxASR, from the University of Luxembourg.
+🔒 What you type still never leaves your phone. Only dictation sends your voice.
+🌍 Choose the app's language at the bottom of the Keyboard settings.

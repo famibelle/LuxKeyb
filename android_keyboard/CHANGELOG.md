@@ -9,6 +9,25 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.2.0] - 2026-10-08
+
+La version tablette va plus loin, et sait se servir d'un clavier Bluetooth.
+
+### ✨ Nouveautés
+
+- **Avec un clavier Bluetooth ou un étui-clavier**, seule la barre de suggestions reste à l'écran, au lieu d'un clavier entier qui couvrait la moitié de la tablette. Les suggestions suivent ce que vous tapez sur le clavier physique. Un bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji.
+- **Jouer au clavier physique.** Kräizwuert s'écrit directement au clavier, et Entrée valide un essai de Wuertriet.
+- **Les onglets sur le côté.** Sur une tablette tenue en paysage, les quatre onglets passent dans une colonne à gauche : les jeux gagnent de la hauteur.
+- **Tout sur un écran.** Sur tablette en paysage, les huit jeux tiennent sur quatre colonnes, et les cartes de l'accueil se rangent par deux.
+- **Le clavier scindé, au choix.** Dans Réglages du clavier, rubrique Disposition, sur tablette : en paysage, les touches se partagent entre les deux bords, à portée des pouces.
+- **Plus d'emojis à la fois sur tablette**, au lieu de dix cases géantes par rangée.
+
+### 🐛 Corrections
+
+- Tourner l'écran pendant une révision de la Boîte de Leitner la reprend à la même carte, sans y ajouter de cartes en retard.
+- Wuertriet garde le mot en cours de frappe quand on tourne l'écran.
+- Sur un téléphone tenu en paysage, la grille de Wuertsich tient entièrement à l'écran, avec des lettres à la taille des cases.
+
 ## [34.1.0] - 2026-10-08
 
 L'application s'adapte aux tablettes.

@@ -15,8 +15,8 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **34.1.0**
-(`versionCode` 340100), la première adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.2.0**
+(`versionCode` 340200), la deuxième adaptée aux tablettes, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -119,7 +119,7 @@ en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, 
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
 
-Texte de la 34.1.0 : [`fr-FR/changelogs/340100.txt`](fr-FR/changelogs/340100.txt).
+Texte de la 34.2.0 : [`fr-FR/changelogs/340200.txt`](fr-FR/changelogs/340200.txt).
 C'est celui de la 34.0.0 précédé d'une ligne 📱 sur les tablettes : clavier
 plus grand, jeux à grille et Wierderbuch côte à côte en paysage, et la partie
 gardée quand on tourne l'écran (ce dernier point vaut aussi pour les

@@ -1,9 +1,68 @@
 {
  "genere_le": "2026-10-08",
- "derniere_version": "34.1.0",
+ "derniere_version": "34.2.0",
  "derniere_date": "2026-10-08",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "34.2.0",
+   "date": "2026-10-08",
+   "intro": "La version tablette va plus loin, et sait se servir d'un clavier Bluetooth.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Avec un clavier Bluetooth ou un étui-clavier",
+       "texte": "Seule la barre de suggestions reste à l'écran, au lieu d'un clavier entier qui couvrait la moitié de la tablette. Les suggestions suivent ce que vous tapez sur le clavier physique. Un bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
+      },
+      {
+       "titre": "Jouer au clavier physique",
+       "texte": "Kräizwuert s'écrit directement au clavier, et Entrée valide un essai de Wuertriet."
+      },
+      {
+       "titre": "Les onglets sur le côté",
+       "texte": "Sur une tablette tenue en paysage, les quatre onglets passent dans une colonne à gauche : les jeux gagnent de la hauteur."
+      },
+      {
+       "titre": "Tout sur un écran",
+       "texte": "Sur tablette en paysage, les huit jeux tiennent sur quatre colonnes, et les cartes de l'accueil se rangent par deux."
+      },
+      {
+       "titre": "Le clavier scindé, au choix",
+       "texte": "Dans Réglages du clavier, rubrique Disposition, sur tablette : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
+      },
+      {
+       "titre": "Plus d'emojis à la fois sur tablette",
+       "texte": "Au lieu de dix cases géantes par rangée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Tourner l'écran pendant une révision de la Boîte de Leitner la reprend à la même carte, sans y ajouter de cartes en retard."
+      },
+      {
+       "titre": null,
+       "texte": "Wuertriet garde le mot en cours de frappe quand on tourne l'écran."
+      },
+      {
+       "titre": null,
+       "texte": "Sur un téléphone tenu en paysage, la grille de Wuertsich tient entièrement à l'écran, avec des lettres à la taille des cases."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "34.1.0",
    "date": "2026-10-08",
@@ -196,29 +255,6 @@
    "image": "Screenshots/lux_langue_interface.png",
    "image_alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
    "image_legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
-  },
-  {
-   "version": "33.0.1",
-   "date": "2026-10-04",
-   "intro": "Deux corrections : un verbe qui manquait aux suggestions, et le carnet dans la langue de l'appli.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "« iessen » (manger) est de nouveau proposé",
-       "texte": "Quand un mot existe avec et sans majuscule, comme « Iessen » (le repas) et « iessen » (manger), le clavier ne gardait que le plus fréquent. Les deux formes apparaissent maintenant dans la barre."
-      },
-      {
-       "titre": "Les cartes du carnet parlent la langue de l'appli",
-       "texte": "Si vous avez choisi pour l'appli une autre langue que celle du téléphone, le sens des mots s'affichait dans la langue du téléphone. Il suit maintenant celle de l'appli, dans le carnet, les révisions et les cartes gagnées."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

@@ -1,0 +1,4 @@
+📱 No tablet: os separadores passam para o lado, e há um teclado dividido à escolha. Com um teclado Bluetooth, só a barra de sugestões fica no ecrã.
+🎙️ Dite em luxemburguês: toque no microfone e fale, o texto escreve-se com pontuação. Reconhecimento pelo LuxASR, da Universidade do Luxemburgo.
+🔒 O que escreve continua a não sair do seu telemóvel. Só o ditado envia a sua voz.
+🌍 Escolha a língua da aplicação no fundo das Definições do teclado.
