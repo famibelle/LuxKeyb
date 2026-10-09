@@ -11,6 +11,10 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <a href="faq.html">❓ Aide</a> ·
+  <strong>FR</strong> ·
+  <a href="en.html" hreflang="en" lang="en">EN</a> ·
+  <a href="de.html" hreflang="de" lang="de">DE</a> ·
+  <a href="pt.html" hreflang="pt" lang="pt">PT</a> ·
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
