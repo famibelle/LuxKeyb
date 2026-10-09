@@ -209,6 +209,40 @@ Le clavier reprend les trois couleurs du drapeau : le blanc pour les lettres, le
 rouge pour ce qui agit (Entrée, changement de mode) et le bleu ciel pour la
 barre d'espace et la ponctuation.
 
+## La dictée vocale 🎙️
+
+Appuyez sur le micro, à droite de la barre de suggestions, et parlez : le texte
+s'écrit pendant que vous parlez, ponctué et avec les majuscules. Le micro se
+referme de lui-même quand vous vous arrêtez.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:340px;text-align:center;">
+    <img src="Screenshots/lux_dictee_reconstituee.gif" style="width:100%;border-radius:8px;"
+         width="420" height="943" loading="lazy"
+         alt="Dictée dans un SMS : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps, puis le micro se referme">
+    <figcaption>
+      « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott »
+      (à la kermesse, je mange toujours des galettes de pommes de terre avec de
+      la compote) : le texte s'écrit pendant qu'on parle.
+    </figcaption>
+  </figure>
+</div>
+
+La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
+service de reconnaissance vocale de l'**Université du Luxembourg**. Il faut donc
+une connexion Internet :
+
+- votre voix ne part **que pendant la dictée**, après un appui sur le micro, et
+  jamais dans un champ de mot de passe ;
+- elle va directement à l'Université, au Luxembourg, qui la transforme en texte
+  sans la conserver ni s'en servir pour entraîner ses modèles ;
+- sans réseau, le micro apparaît barré ; sur un réseau trop lent, le clavier
+  vous prévient au lieu de vous laisser parler dans le vide.
+
+Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
+[politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et son
+fonctionnement pas à pas sur la page [Labs](labs.html).
+
 ## Vérifiez tout de suite, sans rien installer
 
 Tapez un mot dans ce clavier d'essai : c'est le vrai dictionnaire et les vraies
@@ -445,30 +479,6 @@ installation en un geste, mises à jour automatiques, sans avoir à autoriser le
 </div>
 
 L'APK de cette page reste disponible et contient exactement le même code.
-
-## La dictée vocale 🎙️
-
-Appuyez sur le micro, à droite de la barre de suggestions, et parlez : le texte
-s'écrit pendant que vous parlez, ponctué et avec les majuscules. Le micro se
-referme de lui-même quand vous vous arrêtez.
-
-<img src="Screenshots/lux_suggestions.png" style="width:100%;max-width:430px;border-radius:6px;"
-     alt="Le clavier, avec le micro de la dictée à droite de la barre de suggestions">
-
-La reconnaissance est assurée par **[LuxASR](https://luxasr.uni.lu)**, le
-service de reconnaissance vocale de l'**Université du Luxembourg**. Il faut donc
-une connexion Internet :
-
-- votre voix ne part **que pendant la dictée**, après un appui sur le micro, et
-  jamais dans un champ de mot de passe ;
-- elle va directement à l'Université, au Luxembourg, qui la transforme en texte
-  sans la conserver ni s'en servir pour entraîner ses modèles ;
-- sans réseau, le micro apparaît barré ; sur un réseau trop lent, le clavier
-  vous prévient au lieu de vous laisser parler dans le vide.
-
-Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
-[politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et son
-fonctionnement pas à pas sur la page [Labs](labs.html).
 
 ## Installer sans passer par Google Play
 
