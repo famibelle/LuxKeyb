@@ -19,8 +19,8 @@ lang: fr
 <p class="chapo"><strong>Ce n'est pas vous qui écrivez mal le luxembourgeois :
 c'est votre clavier qui ne le connaît pas.</strong> Lëtzebuergesch Clavier vous
 propose les mots pendant que vous tapez, met les accents et les majuscules à
-votre place, et vos mots luxembourgeois cessent d'être soulignés en rouge dans
-vos messages.</p>
+votre place, et écrit pour vous ce que vous lui dites. Vos mots luxembourgeois
+cessent enfin d'être soulignés en rouge dans vos messages.</p>
 
 <p class="chapo-note">Gratuit · sans publicité · rien de ce que vous tapez ne
 sort de votre téléphone</p>
@@ -29,149 +29,8 @@ sort de votre téléphone</p>
 navigateur</a>, sans rien installer. Pour vous en servir dans vos messages,
 installez ensuite l'application Android.</p>
 
-## Ce qui vous retenait, et ce qui a changé
-
-<table class="objections">
-  <tr>
-    <td>🤔 <strong>« Mon téléphone corrige mon luxembourgeois en allemand »</strong></td>
-    <td>Il ne le fait plus. Ce clavier ne remplace jamais un mot par un autre :
-    vos lettres restent les vôtres. Et son correcteur, une fois activé, arrête
-    de souligner vos mots en rouge dans Messages, dans vos notes et dans votre
-    messagerie.</td>
-  </tr>
-  <tr>
-    <td>😬 <strong>« Je ne suis jamais sûr de l'orthographe »</strong></td>
-    <td>Le clavier vous propose les formes du <em>Lëtzebuerger Online
-    Dictionnaire</em>, le dictionnaire officiel de la langue : 123 297 mots
-    reconnus. Vous n'inventez rien, vous choisissez.</td>
-  </tr>
-  <tr>
-    <td>😤 <strong>« Le ë est caché dans un menu »</strong></td>
-    <td>Plus ici. Les trois diacritiques qui portent la langue, <strong>é</strong>,
-    <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
-    l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
-    Tapez « letzebuergesch » tout court : le clavier vous propose
-    « Lëtzebuergesch ».</td>
-  </tr>
-  <tr>
-    <td>🤷 <strong>« De toute façon, ça ne s'écrit pas »</strong></td>
-    <td>Si : langue nationale depuis 1984, orthographe fixée par le Zenter fir
-    d'Lëtzebuerger Sprooch, dictionnaire d'État en ligne. Ce clavier est
-    construit sur 186 204 phrases réellement écrites en luxembourgeois, et
-    <a href="corpus.html">dit lesquelles</a>.</td>
-  </tr>
-</table>
-
-Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
-Luxembourg. Le clavier est **gratuit, open source et sans publicité**, et la
-frappe fonctionne entièrement hors ligne : il tourne dans le navigateur pour
-l'essai, et s'installe sur Android pour l'usage de tous les jours.
-
-<div id="installer" style="display:flex;justify-content:center;align-items:center;gap:36px;
-            flex-wrap:wrap;margin:28px 0 12px;">
-  <div style="text-align:center;flex:1 1 340px;max-width:430px;">
-    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller"
-       class="btn-installer">📲 Installer sur mon téléphone</a>
-    <p style="margin:16px 0 0;">
-      L'application s'installe depuis Google&nbsp;Play, comme n'importe quelle
-      autre : en un geste, avec les mises à jour automatiques.
-    </p>
-    <p class="rassurance">
-      Android affichera un avertissement au moment d'activer le clavier. Il
-      s'affiche pour <strong>tous</strong> les claviers, sans exception, et
-      celui-ci n'envoie rien de ce que vous tapez.
-    </p>
-  </div>
-  <figure style="margin:0;text-align:center;">
-    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
-      <img src="assets/qr-luxkeyb-store.png"
-           alt="QR code ouvrant la page d'installation de Lëtzebuergesch Clavier sur Google Play"
-           width="176" height="176"
-           style="display:block;width:176px;height:176px;background:#fff;
-                  border-radius:8px;padding:6px;box-sizing:border-box;">
-    </a>
-    <figcaption>
-      Ou scannez ce code avec votre téléphone
-    </figcaption>
-  </figure>
-</div>
-
-<div class="promesse" markdown="1">
-
-🔒 **Ce que vous tapez ne quitte pas votre téléphone.** Pas de compte, pas de
-serveur à nous : la frappe, les suggestions, le correcteur et les jeux
-fonctionnent sans réseau. Une seule exception, et elle se voit : la **dictée
-vocale**. Quand vous appuyez sur le micro, votre voix part à l'Université du
-Luxembourg, qui la transforme en texte sans la conserver ; sans cet appui, rien
-ne part. La sauvegarde Android elle-même ne remonte que vos réglages, vibration,
-son et thème, ni vos mots ni votre progression. Le code est public et
-vérifiable, et la [politique de confidentialité](privacy/privacy-policy.html)
-le dit en toutes lettres.
-
-</div>
-
-<div class="sortie" data-etat="sortie">
-  <!-- Fredoka ne sert qu'à ce bloc : chargée ici plutôt que dans
-       _includes/head-custom.html, qui l'imposerait à toutes les pages Markdown
-       du site pour les 140 Ko de la police embarquée. Déclarée dans le bloc et
-       non avant lui : kramdown ne reconnaît pas <link> comme un élément de
-       bloc et l'envelopperait dans un paragraphe.
-
-       Ce bloc portait le décompte jusqu'à la sortie publique. La date passée,
-       countdown.js ne faisait que cacher les chiffres, et le titre et la phrase
-       sur le test fermé restaient au futur : il est maintenant écrit
-       directement dans son état final, sans script. -->
-  <link rel="stylesheet" href="assets/fredoka-embed.css">
-  <link rel="stylesheet" href="assets/countdown.css">
-
-  <p class="sortie__eyebrow">Google Play · sortie publique</p>
-  <p class="sortie__titre">🎉 Ouvert à tout le monde depuis le 28 septembre 2026</p>
-  <p class="sortie__date">
-    Le clavier s'installe depuis Google Play comme n'importe quelle autre
-    application, sans passer par le test.
-  </p>
-
-  <ol class="sortie__etapes" aria-label="La publication sur Google Play, terminée">
-    <li class="fait">Choix des pays et des régions</li>
-    <li class="fait">Création de la version</li>
-    <li class="fait">Prévisualisation et confirmation de la version</li>
-    <li class="fait">Envoi de la version à Google pour examen</li>
-    <li class="fait">
-      <span class="sortie__etape-titre">Publication sur Google Play</span>
-      <p class="sortie__pied">
-        C'est fait :
-        <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">ouvrir la fiche Google Play</a>.
-      </p>
-    </li>
-  </ol>
-</div>
-
-<details>
-  <summary>Installer sans passer par Google Play</summary>
-  <p>C'est possible, en installant le fichier à la main :
-  <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
-  Android 7.0 ou plus récent · environ 7 Mo · la frappe ne quitte pas le téléphone.</p>
-</details>
-
-## Une fois installée, il se passe quoi ?
-
-1. **L'application s'ouvre** et vous accueille.
-2. **Elle vous guide pas à pas** pour activer le clavier, puis le choisir comme
-   clavier de votre téléphone. Chaque étape se coche quand elle est faite.
-3. **Vous l'essayez sur place**, dans un champ prévu pour ça, avant de vous en
-   servir dans vos messages.
-
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:260px;text-align:center;">
-    <img src="Screenshots/lux_onboarding.png" style="width:100%;border-radius:6px;"
-         alt="Parcours d'installation de l'application : étapes cochées et champ d'essai du clavier">
-    <figcaption>Les trois étapes guidées, dans l'application</figcaption>
-  </figure>
-</div>
-
-<p align="center"><em>Envie de l'essayer d'abord ? Le clavier tourne aussi
-<a href="simulateur.html">dans votre navigateur</a>, avec son vrai dictionnaire
-et ses vraies suggestions.</em></p>
+<p style="text-align:center;margin:20px 0 8px;"><a href="#installer"
+   class="btn-installer">📲 Installer sur mon téléphone</a></p>
 
 ## Le clavier en action
 
@@ -243,22 +102,43 @@ Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
 [politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et son
 fonctionnement pas à pas sur la page [Labs](labs.html).
 
-## Vérifiez tout de suite, sans rien installer
+## Ce qui vous retenait, et ce qui a changé
 
-Tapez un mot dans ce clavier d'essai : c'est le vrai dictionnaire et les vraies
-suggestions de l'application, chargés dans votre navigateur. Commencez par
-« lëtz », ou par « op der » suivi d'un espace pour voir arriver la suite de la
-phrase.
+<table class="objections">
+  <tr>
+    <td>🤔 <strong>« Mon téléphone corrige mon luxembourgeois en allemand »</strong></td>
+    <td>Il ne le fait plus. Ce clavier ne remplace jamais un mot par un autre :
+    vos lettres restent les vôtres. Et son correcteur, une fois activé, arrête
+    de souligner vos mots en rouge dans Messages, dans vos notes et dans votre
+    messagerie.</td>
+  </tr>
+  <tr>
+    <td>😬 <strong>« Je ne suis jamais sûr de l'orthographe »</strong></td>
+    <td>Le clavier vous propose les formes du <em>Lëtzebuerger Online
+    Dictionnaire</em>, le dictionnaire officiel de la langue : 123 297 mots
+    reconnus. Vous n'inventez rien, vous choisissez.</td>
+  </tr>
+  <tr>
+    <td>😤 <strong>« Le ë est caché dans un menu »</strong></td>
+    <td>Plus ici. Les trois diacritiques qui portent la langue, <strong>é</strong>,
+    <strong>ä</strong> et <strong>ë</strong>, ont chacune leur touche, et
+    l'apostrophe de l'élision (<em>d'Land</em>, <em>s'Kanner</em>) la sienne.
+    Tapez « letzebuergesch » tout court : le clavier vous propose
+    « Lëtzebuergesch ».</td>
+  </tr>
+  <tr>
+    <td>🤷 <strong>« De toute façon, ça ne s'écrit pas »</strong></td>
+    <td>Si : langue nationale depuis 1984, orthographe fixée par le Zenter fir
+    d'Lëtzebuerger Sprooch, dictionnaire d'État en ligne. Ce clavier est
+    construit sur 186 204 phrases réellement écrites en luxembourgeois, et
+    <a href="corpus.html">dit lesquelles</a>.</td>
+  </tr>
+</table>
 
-<div class="essai">
-  <iframe src="simulateur.html?embed=1" width="380" height="620" loading="lazy"
-          title="Clavier d'essai Lëtzebuergesch Clavier"
-          style="border:0;max-width:100%;"></iframe>
-</div>
-
-<p class="note" style="text-align:center;">Le clavier d'essai a sa
-<a href="simulateur.html">page complète</a>, avec la démonstration automatique
-et le compteur de frappes économisées.</p>
+Les lettres suivent la disposition **QWERTZ**, celle des claviers physiques au
+Luxembourg. Le clavier est **gratuit, open source et sans publicité**, et la
+frappe fonctionne entièrement hors ligne : il tourne dans le navigateur pour
+l'essai, et s'installe sur Android pour l'usage de tous les jours.
 
 ## Ce qu'il sait faire
 
@@ -372,14 +252,133 @@ sauvegarde Android n'emporte pas.
 
 ### Il ne sait rien de vous
 
-Rien de ce que vous tapez ne quitte votre téléphone. Le clavier ne se sert
-d'Internet que pour la **dictée vocale**, et seulement quand vous appuyez sur le
-micro.
+<div class="promesse" markdown="1">
+
+🔒 **Ce que vous tapez ne quitte pas votre téléphone.** Pas de compte, pas de
+serveur à nous : la frappe, les suggestions, le correcteur et les jeux
+fonctionnent sans réseau. Une seule exception, et elle se voit : la **dictée
+vocale**. Quand vous appuyez sur le micro, votre voix part à l'Université du
+Luxembourg, qui la transforme en texte sans la conserver ; sans cet appui, rien
+ne part. La sauvegarde Android elle-même ne remonte que vos réglages, vibration,
+son et thème, ni vos mots ni votre progression. Le code est public et
+vérifiable, et la [politique de confidentialité](privacy/privacy-policy.html)
+le dit en toutes lettres.
+
+</div>
 
 Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
 progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et ne
 sont donc jamais enregistrés. Le clavier se désactive de lui-même dans les
 champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-policy.html).
+
+## Vérifiez tout de suite, sans rien installer
+
+Tapez un mot dans ce clavier d'essai : c'est le vrai dictionnaire et les vraies
+suggestions de l'application, chargés dans votre navigateur. Commencez par
+« lëtz », ou par « op der » suivi d'un espace pour voir arriver la suite de la
+phrase.
+
+<div class="essai">
+  <iframe src="simulateur.html?embed=1" width="380" height="620" loading="lazy"
+          title="Clavier d'essai Lëtzebuergesch Clavier"
+          style="border:0;max-width:100%;"></iframe>
+</div>
+
+<p class="note" style="text-align:center;">Le clavier d'essai a sa
+<a href="simulateur.html">page complète</a>, avec la démonstration automatique
+et le compteur de frappes économisées.</p>
+
+<a id="devenir-testeur"></a>
+
+## Installer
+
+<div style="display:flex;justify-content:center;align-items:center;gap:36px;
+            flex-wrap:wrap;margin:28px 0 12px;">
+  <div style="text-align:center;flex:1 1 340px;max-width:430px;">
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller"
+       class="btn-installer">📲 Installer sur mon téléphone</a>
+    <p style="margin:16px 0 0;">
+      L'application s'installe depuis Google&nbsp;Play, comme n'importe quelle
+      autre : en un geste, avec les mises à jour automatiques.
+    </p>
+    <p class="rassurance">
+      Android affichera un avertissement au moment d'activer le clavier. Il
+      s'affiche pour <strong>tous</strong> les claviers, sans exception, et
+      celui-ci n'envoie rien de ce que vous tapez.
+    </p>
+  </div>
+  <figure style="margin:0;text-align:center;">
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
+      <img src="assets/qr-luxkeyb-store.png"
+           alt="QR code ouvrant la page d'installation de Lëtzebuergesch Clavier sur Google Play"
+           width="176" height="176"
+           style="display:block;width:176px;height:176px;background:#fff;
+                  border-radius:8px;padding:6px;box-sizing:border-box;">
+    </a>
+    <figcaption>
+      Ou scannez ce code avec votre téléphone
+    </figcaption>
+  </figure>
+</div>
+
+<div class="sortie" data-etat="sortie">
+  <!-- Fredoka ne sert qu'à ce bloc : chargée ici plutôt que dans
+       _includes/head-custom.html, qui l'imposerait à toutes les pages Markdown
+       du site pour les 140 Ko de la police embarquée. Déclarée dans le bloc et
+       non avant lui : kramdown ne reconnaît pas <link> comme un élément de
+       bloc et l'envelopperait dans un paragraphe.
+
+       Ce bloc portait le décompte jusqu'à la sortie publique. La date passée,
+       countdown.js ne faisait que cacher les chiffres, et le titre et la phrase
+       sur le test fermé restaient au futur : il est maintenant écrit
+       directement dans son état final, sans script. -->
+  <link rel="stylesheet" href="assets/fredoka-embed.css">
+  <link rel="stylesheet" href="assets/countdown.css">
+
+  <p class="sortie__eyebrow">Google Play · sortie publique</p>
+  <p class="sortie__titre">🎉 Ouvert à tout le monde depuis le 28 septembre 2026</p>
+  <p class="sortie__date">
+    Le clavier s'installe depuis Google Play comme n'importe quelle autre
+    application, sans passer par le test.
+  </p>
+
+  <ol class="sortie__etapes" aria-label="La publication sur Google Play, terminée">
+    <li class="fait">Choix des pays et des régions</li>
+    <li class="fait">Création de la version</li>
+    <li class="fait">Prévisualisation et confirmation de la version</li>
+    <li class="fait">Envoi de la version à Google pour examen</li>
+    <li class="fait">
+      <span class="sortie__etape-titre">Publication sur Google Play</span>
+      <p class="sortie__pied">
+        C'est fait :
+        <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">ouvrir la fiche Google Play</a>.
+      </p>
+    </li>
+  </ol>
+</div>
+
+<details>
+  <summary>Installer sans passer par Google Play</summary>
+  <p>C'est possible, en installant le fichier à la main :
+  <a href="#installer-sans-passer-par-google-play">voir la marche à suivre</a>.
+  Android 7.0 ou plus récent · environ 7 Mo · la frappe ne quitte pas le téléphone.</p>
+</details>
+
+### Une fois installée, il se passe quoi ?
+
+1. **L'application s'ouvre** et vous accueille.
+2. **Elle vous guide pas à pas** pour activer le clavier, puis le choisir comme
+   clavier de votre téléphone. Chaque étape se coche quand elle est faite.
+3. **Vous l'essayez sur place**, dans un champ prévu pour ça, avant de vous en
+   servir dans vos messages.
+
+<div style="display:flex;justify-content:center;margin:24px 0;">
+  <figure style="margin:0;max-width:260px;text-align:center;">
+    <img src="Screenshots/lux_onboarding.png" style="width:100%;border-radius:6px;"
+         alt="Parcours d'installation de l'application : étapes cochées et champ d'essai du clavier">
+    <figcaption>Les trois étapes guidées, dans l'application</figcaption>
+  </figure>
+</div>
 
 ## Face aux autres claviers
 
@@ -448,37 +447,6 @@ Le pipeline est relancé à chaque publication, ce qui fait évoluer les
 suggestions avec l'usage réel de la langue plutôt qu'avec une liste figée.
 Le détail des corpus, des mesures et des citations est sur la
 [page des corpus](corpus.html).
-
-<a id="devenir-testeur"></a>
-
-## Installer
-
-L'application est disponible sur Google Play, comme n'importe quelle autre :
-installation en un geste, mises à jour automatiques, sans avoir à autoriser les
-« sources inconnues ».
-
-<div style="display:flex;justify-content:center;align-items:center;gap:28px;
-            flex-wrap:wrap;margin:24px 0;">
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller"
-     style="display:inline-block;padding:15px 28px;background:#ED2939;color:#fff;
-            border-radius:10px;font-weight:bold;text-decoration:none;font-size:1.1em;">
-    📲 Ouvrir la fiche Google Play
-  </a>
-  <figure style="margin:0;text-align:center;">
-    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
-      <img src="assets/qr-luxkeyb-store.png"
-           alt="QR code ouvrant la fiche de Lëtzebuergesch Clavier sur Google Play"
-           width="160" height="160"
-           style="display:block;width:160px;height:160px;background:#fff;
-                  border-radius:8px;padding:6px;box-sizing:border-box;">
-    </a>
-    <figcaption>
-      Le même QR code qu'en haut de page
-    </figcaption>
-  </figure>
-</div>
-
-L'APK de cette page reste disponible et contient exactement le même code.
 
 ## Installer sans passer par Google Play
 
