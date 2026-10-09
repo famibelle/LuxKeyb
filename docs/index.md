@@ -110,60 +110,38 @@ le dit en toutes lettres.
 
 </div>
 
-<div class="sortie" data-sortie>
-  <!-- Fredoka et le décompte ne servent qu'à ce bloc : chargés ici plutôt que
-       dans _includes/head-custom.html, qui les imposerait à toutes les pages
-       Markdown du site pour les 140 Ko de la police embarquée. Déclarés dans
-       le bloc et non avant lui : kramdown ne reconnaît pas <link> comme un
-       élément de bloc et l'envelopperait dans un paragraphe. -->
+<div class="sortie" data-etat="sortie">
+  <!-- Fredoka ne sert qu'à ce bloc : chargée ici plutôt que dans
+       _includes/head-custom.html, qui l'imposerait à toutes les pages Markdown
+       du site pour les 140 Ko de la police embarquée. Déclarée dans le bloc et
+       non avant lui : kramdown ne reconnaît pas <link> comme un élément de
+       bloc et l'envelopperait dans un paragraphe.
+
+       Ce bloc portait le décompte jusqu'à la sortie publique. La date passée,
+       countdown.js ne faisait que cacher les chiffres, et le titre et la phrase
+       sur le test fermé restaient au futur : il est maintenant écrit
+       directement dans son état final, sans script. -->
   <link rel="stylesheet" href="assets/fredoka-embed.css">
   <link rel="stylesheet" href="assets/countdown.css">
-  <script defer src="assets/countdown.js"></script>
 
   <p class="sortie__eyebrow">Google Play · sortie publique</p>
-  <p class="sortie__titre">🗓️ Ouvert à tout le monde le 5 octobre 2026</p>
+  <p class="sortie__titre">🎉 Ouvert à tout le monde depuis le 28 septembre 2026</p>
   <p class="sortie__date">
-    D'ici là, la page qui s'ouvre vous demande d'abord d'appuyer sur
-    <strong>Devenir testeur</strong>, puis vous renvoie vers Google Play.
-    C'est la seule différence, et elle a maintenant une date de fin.
+    Le clavier s'installe depuis Google Play comme n'importe quelle autre
+    application, sans passer par le test.
   </p>
 
-  <!-- Les étapes de Google Play, dans l'ordre où la console les présente. Le
-       décompte est rattaché à la dernière, celle qui dure une semaine : c'est
-       elle qu'il compte, et non « la sortie » en général. -->
-  <ol class="sortie__etapes" aria-label="Où en est la publication sur Google Play">
+  <ol class="sortie__etapes" aria-label="La publication sur Google Play, terminée">
     <li class="fait">Choix des pays et des régions</li>
     <li class="fait">Création de la version</li>
     <li class="fait">Prévisualisation et confirmation de la version</li>
     <li class="fait">Envoi de la version à Google pour examen</li>
-    <li class="en-cours" aria-current="step">
+    <li class="fait">
       <span class="sortie__etape-titre">Publication sur Google Play</span>
-      <span class="sortie__etape-detail">Dernière étape : elle dure une semaine.</span>
-      <div class="sortie__corps">
-        <div class="sortie__compteur">
-          <div class="sortie__attente">
-            <div class="sortie__cells" aria-hidden="true">
-              <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
-              <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
-              <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
-              <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
-            </div>
-            <p class="sortie__pied">
-              Rien ne vous oblige à attendre : le test fermé installe exactement le
-              même clavier, avec les mêmes mises à jour automatiques.
-              <a href="#devenir-testeur">Les trois étapes sont expliquées plus bas.</a>
-            </p>
-          </div>
-
-          <div class="sortie__sortie">
-            <p class="sortie__pied" style="margin-top:0">
-              C'est fait : le clavier est ouvert à tout le monde sur
-              <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">Google Play</a>,
-              et s'installe désormais sans passer par le test.
-            </p>
-          </div>
-        </div>
-      </div>
+      <p class="sortie__pied">
+        C'est fait :
+        <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dsortie">ouvrir la fiche Google Play</a>.
+      </p>
     </li>
   </ol>
 </div>

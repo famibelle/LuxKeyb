@@ -4,14 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Espace ambassadeurs · Lëtzebuergesch Clavier</title>
-<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner, et le décompte jusqu'à la sortie publique sur Google Play, le 5 octobre 2026.">
+<meta name="description" content="Tout ce qu'il faut pour faire connaître le clavier luxembourgeois : messages déjà écrits, liens qui convainquent, codes à scanner : le clavier est sur Google Play depuis le 28 septembre 2026.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
-<!-- Fredoka porte les chiffres mis en avant du décompte, comme sur les supports
+<!-- Fredoka porte le titre du bloc de sortie, comme sur les supports
      imprimés : c'est le seul endroit de la page qui en ait besoin. -->
 <link rel="stylesheet" href="assets/fredoka-embed.css">
 <link rel="stylesheet" href="assets/countdown.css">
-<script defer src="assets/countdown.js"></script>
 <!-- Cette page est faite pour être collée dans WhatsApp ou sur Facebook :
      sans ces balises, l'aperçu n'affiche que l'URL brute. -->
 <meta property="og:type" content="website">
@@ -68,10 +67,8 @@ a{color:var(--sea);}
   margin:0 0 12px;word-break:break-all;
 }
 
-/* Le décompte jusqu'à la sortie publique a remplacé la jauge des douze
-   testeurs, atteinte le 9 septembre 2026 : il vit dans assets/countdown.css,
-   partagé avec l'accueil pour que la nouvelle ait la même tête aux deux
-   endroits. */
+/* Le bloc de sortie publique vit dans assets/countdown.css, partagé avec
+   l'accueil pour que la nouvelle ait la même tête aux deux endroits. */
 
 .links{list-style:none;padding:0;margin:0;}
 .links li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;}
@@ -128,60 +125,37 @@ a{color:var(--sea);}
     publier. Rien à installer, rien à demander : servez-vous.
   </p>
 
-  <div class="sortie" data-sortie>
+  <!-- Ce bloc portait le décompte jusqu'à la sortie publique et le QR du test
+       fermé. La date passée, il est écrit directement dans son état final,
+       sans script : countdown.js ne faisait que cacher les chiffres, et le
+       titre, la phrase et le QR restaient ceux d'avant la sortie. -->
+  <div class="sortie" data-etat="sortie">
     <p class="sortie__eyebrow">Google Play · sortie publique</p>
-    <h2 class="sortie__titre">🗓️ Le clavier sort le 5 octobre 2026</h2>
+    <h2 class="sortie__titre">🎉 Le clavier est sorti le 28 septembre 2026</h2>
     <p class="sortie__date">
-      Les douze testeurs demandés par Google sont réunis depuis le 9 septembre,
-      et les quatorze jours consécutifs sont acquis depuis le 23. La fiche
-      s'ouvre à tout le monde un peu plus tard, à la date ci-dessous.
+      Une semaine avant la date annoncée : Google a validé la fiche en avance.
+      Plus besoin de passer par le test fermé, le lien à faire circuler est
+      celui de la fiche publique.
     </p>
 
-    <!-- Les étapes de Google Play, dans l'ordre où la console les présente. Le
-         décompte est rattaché à la dernière, celle qui dure une semaine : c'est
-         elle qu'il compte, et non « la sortie » en général. -->
-    <ol class="sortie__etapes" aria-label="Où en est la publication sur Google Play">
+    <ol class="sortie__etapes" aria-label="La publication sur Google Play, terminée">
       <li class="fait">Choix des pays et des régions</li>
       <li class="fait">Création de la version</li>
       <li class="fait">Prévisualisation et confirmation de la version</li>
       <li class="fait">Envoi de la version à Google pour examen</li>
-      <li class="en-cours" aria-current="step">
+      <li class="fait">
         <span class="sortie__etape-titre">Publication sur Google Play</span>
-        <span class="sortie__etape-detail">Dernière étape : elle dure une semaine.</span>
         <div class="sortie__corps">
-          <div class="sortie__compteur">
-            <div class="sortie__attente">
-              <!-- Les chiffres sont masqués aux lecteurs d'écran : ils changent
-                   chaque seconde, et la phrase au-dessus porte déjà la date. -->
-              <div class="sortie__cells" aria-hidden="true">
-                <div class="sortie__cell"><span class="sortie__n" data-unite="jours">—</span><span class="sortie__u">jours</span></div>
-                <div class="sortie__cell"><span class="sortie__n" data-unite="heures">—</span><span class="sortie__u">heures</span></div>
-                <div class="sortie__cell"><span class="sortie__n" data-unite="minutes">—</span><span class="sortie__u">minutes</span></div>
-                <div class="sortie__cell"><span class="sortie__n" data-unite="secondes">—</span><span class="sortie__u">secondes</span></div>
-              </div>
-              <p class="sortie__pied">
-                D'ici là, le clavier s'installe déjà par le
-                <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">test fermé</a> :
-                c'est exactement le même code, et les mises à jour arrivent toutes seules.
-              </p>
-            </div>
-
-            <div class="sortie__sortie">
-              <p class="sortie__pied" style="margin-top:0">
-                C'est fait : le clavier est ouvert à tout le monde sur
-                <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard">Google Play</a>.
-                Plus besoin de passer par le test fermé, et le lien à faire
-                circuler est désormais celui de la fiche publique.
-              </p>
-            </div>
-          </div>
-
+          <p class="sortie__pied">
+            C'est fait :
+            <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dambassadeurs%26utm_campaign%3Dsortie">ouvrir la fiche Google Play</a>.
+          </p>
           <figure class="sortie__flash">
-            <a href="https://play.google.com/apps/testing/com.potomitan.luxkeyboard">
-              <img src="assets/qr-luxkeyb-test-ferme.png"
-                   alt="QR code ouvrant l'inscription au test fermé de Lëtzebuergesch Clavier sur Google Play">
+            <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dambassadeurs%26utm_campaign%3Dsortie">
+              <img src="assets/qr-luxkeyb-store.png"
+                   alt="QR code ouvrant la fiche de Lëtzebuergesch Clavier sur Google Play">
             </a>
-            <figcaption>Scannez : l'inscription au test fermé s'ouvre</figcaption>
+            <figcaption>Scannez : la fiche Google Play s'ouvre</figcaption>
           </figure>
         </div>
       </li>
@@ -507,8 +481,6 @@ Bien à vous,</div>
 </div>
 <script>
 (function(){
-  // Le décompte vit dans assets/countdown.js, partagé avec l'accueil.
-
   var pageUrl = "https://famibelle.github.io/LuxKeyb/ambassadeurs.html";
   var waText = "Voici tout le kit pour faire connaître le Lëtzebuergesch Clavier, le clavier luxembourgeois pour Android : messages prêts à envoyer, liens à montrer, QR codes. Servez-vous : " + pageUrl;
   document.getElementById('wa-share').href = "https://wa.me/?text=" + encodeURIComponent(waText);
