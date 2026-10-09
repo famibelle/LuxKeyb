@@ -1,7 +1,7 @@
 ---
 title: "You speak it. Now you write it. 🇱🇺"
 description: "🇱🇺 Dare to write Lëtzebuergesch! Type or dictate your messages in Luxembourgish, right on your phone. Install the keyboard for free on Android."
-image: /assets/og/partage.png
+image: /assets/og/partage-en.png
 lang: en
 ---
 

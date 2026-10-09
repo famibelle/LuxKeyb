@@ -1,7 +1,7 @@
 ---
 title: "Fala-o. Agora, escreve-o. 🇱🇺"
 description: "🇱🇺 Atreva-se a escrever em lëtzebuergesch! Escreva ou dite as suas mensagens em luxemburguês, diretamente no telemóvel. Instale gratuitamente o teclado no Android."
-image: /assets/og/partage.png
+image: /assets/og/partage-pt.png
 lang: pt
 ---
 

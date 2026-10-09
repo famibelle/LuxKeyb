@@ -1,7 +1,7 @@
 ---
 title: "Sie sprechen es. Jetzt schreiben Sie es. 🇱🇺"
 description: "🇱🇺 Trauen Sie sich, Lëtzebuergesch zu schreiben! Tippen oder diktieren Sie Ihre Nachrichten auf Luxemburgisch, direkt auf dem Handy. Installieren Sie die Tastatur kostenlos auf Android."
-image: /assets/og/partage.png
+image: /assets/og/partage-de.png
 lang: de
 ---
 
