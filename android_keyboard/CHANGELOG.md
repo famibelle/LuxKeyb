@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [35.0.1] - 2026-10-10
+
+### 🐛 Corrections
+
+- **Plus de cartes en double venant de Wuertriet.** Un mot trouvé dans Wuertriet arrivait au carnet écrit en minuscules (« affer » au lieu de « Affer ») : s'il venait aussi d'un autre jeu, il apparaissait deux fois, et la seconde carte passait à tort pour très rare. Les cartes déjà en double se regroupent toutes seules à l'ouverture du carnet, sans rien perdre : rencontres, jeux et révisions sont gardés.
+
 ## [35.0.0] - 2026-10-10
 
 Le carnet devient un vrai album de cartes à collectionner : des pages à compléter, des cartes qui se marquent quand on les connaît, et qu'on peut montrer ou offrir.
