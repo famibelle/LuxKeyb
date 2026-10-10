@@ -88,6 +88,8 @@ object Booster {
         contenus: List<ContenuCarte>,
         nouvelles: Set<String>,
         animations: Boolean,
+        /** Les séries que ces cartes viennent de compléter : voir [Series.aFeter]. */
+        seriesCompletees: List<Serie> = emptyList(),
         surCarnet: () -> Unit,
         surFin: () -> Unit
     ): View? {
@@ -281,10 +283,14 @@ object Booster {
                     FrameLayout.LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER
                 )
-                text = ctx.getString(
+                // Une série complétée passe avant le bilan ordinaire : c'est
+                // l'événement de la partie, il n'arrive qu'une fois par série.
+                text = (seriesCompletees.map {
+                    "🏆 " + ctx.getString(R.string.serie_complete, ctx.getString(it.titre))
+                } + ctx.getString(
                     if (neuves > 0) R.string.pochette_bilan_neuves
                     else R.string.pochette_bilan_deja
-                )
+                )).joinToString("\n\n")
                 textSize = 15f
                 gravity = Gravity.CENTER
                 setLineSpacing(0f, 1.25f)

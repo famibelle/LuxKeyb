@@ -140,6 +140,17 @@
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Seelenheet</string>
     <string name="tri_etagere">Regal</string>
+    <string name="tri_series">Serien</string>
+    <string name="serie_nombres">D\'Zuelen</string>
+    <string name="serie_enluminures">D\'Illustratiounen</string>
+    <string name="serie_jeux">Déi siwe Spiller</string>
+    <string name="series_resume">%1$d vun %2$d Plaze besat. Eng Serie ass komplett, wann all Plaz hir Kaart huet.</string>
+    <string name="serie_progression">%1$d / %2$d</string>
+    <string name="serie_complete">Serie komplett: %1$s</string>
+    <string name="serie_complete_court">Komplett ✓</string>
+    <string name="emplacement_nombre">Kaart feelt: d\'Zuel %1$s</string>
+    <string name="emplacement_jeu">Kaart feelt: e Wuert aus %1$s</string>
+    <string name="emplacement_dessin">Kaart feelt: en illustréiert Wuert</string>
     <string name="carnet_ouverture">De Carnet geet op…</string>
     <string name="carnet_tous">All</string>
     <string name="album_page_precedente">Säit virdrun</string>

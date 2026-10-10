@@ -140,6 +140,17 @@
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Raridade</string>
     <string name="tri_etagere">Prateleira</string>
+    <string name="tri_series">Séries</string>
+    <string name="serie_nombres">Os números</string>
+    <string name="serie_enluminures">As ilustrações</string>
+    <string name="serie_jeux">Os sete jogos</string>
+    <string name="series_resume">%1$d de %2$d lugares preenchidos. Uma série fica completa quando cada lugar tem a sua carta.</string>
+    <string name="serie_progression">%1$d / %2$d</string>
+    <string name="serie_complete">Série completa: %1$s</string>
+    <string name="serie_complete_court">Completa ✓</string>
+    <string name="emplacement_nombre">Carta em falta: o número %1$s</string>
+    <string name="emplacement_jeu">Carta em falta: uma palavra ganha em %1$s</string>
+    <string name="emplacement_dessin">Carta em falta: uma palavra ilustrada</string>
     <string name="carnet_ouverture">A abrir a coleção…</string>
     <string name="carnet_tous">Todos</string>
     <string name="album_page_precedente">Página anterior</string>

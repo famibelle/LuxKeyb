@@ -1,0 +1,166 @@
+{
+ "enluminures": [
+  "ambulance",
+  "antenne",
+  "arbre",
+  "avion",
+  "balance",
+  "banc",
+  "banque",
+  "bateau",
+  "batiment",
+  "boeuf",
+  "bouteille",
+  "bus",
+  "cafe",
+  "camera",
+  "camion",
+  "carte",
+  "casque",
+  "chat",
+  "chaussure",
+  "cheval",
+  "chevreuil",
+  "chien",
+  "cigarette",
+  "coeur",
+  "couteau",
+  "dent",
+  "document",
+  "dossier",
+  "drapeau",
+  "eau",
+  "ecole",
+  "europe",
+  "fenetre",
+  "film",
+  "flocon",
+  "foret",
+  "fromage",
+  "fruits",
+  "gare",
+  "gateau",
+  "globe",
+  "grue",
+  "helicoptere",
+  "hopital",
+  "horloge",
+  "ile",
+  "jean",
+  "journal",
+  "lait",
+  "lampe",
+  "lettre",
+  "lion",
+  "lit",
+  "livre",
+  "loupe",
+  "lune",
+  "lunettes",
+  "main",
+  "maison",
+  "marteau",
+  "merle",
+  "micro",
+  "miroir",
+  "moto",
+  "moulin",
+  "mur",
+  "note",
+  "ordinateur",
+  "pain",
+  "panneau_danger",
+  "parking",
+  "photo",
+  "piece",
+  "pied",
+  "pilier",
+  "pizza",
+  "pluie",
+  "poisson",
+  "pompe_essence",
+  "porte",
+  "poteau",
+  "prison",
+  "quille",
+  "regle",
+  "robe",
+  "robinet",
+  "rue",
+  "seringue",
+  "soleil",
+  "table",
+  "telephone",
+  "tente",
+  "tete",
+  "ticket",
+  "tiroir",
+  "train",
+  "tram",
+  "tunnel",
+  "valise",
+  "velo",
+  "village",
+  "ville",
+  "vin",
+  "voiture"
+ ],
+ "exclus": {
+  "ange": {
+   "Engel": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "coffre": {
+   "Safe": [
+    "de"
+   ]
+  },
+  "eglise": {
+   "Kierch": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "or": {
+   "Gold": [
+    "de"
+   ]
+  },
+  "restaurant": {
+   "Restaurant": [
+    "de",
+    "en"
+   ]
+  },
+  "tour_eiffel": {
+   "Paräis": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "virus": {
+   "Coronavirus": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  }
+ },
+ "generated": "2026-10-10",
+ "langues": [
+  "fr",
+  "de",
+  "en",
+  "pt"
+ ],
+ "version": 1
+}

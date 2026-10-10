@@ -140,6 +140,17 @@
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Seltenheit</string>
     <string name="tri_etagere">Regal</string>
+    <string name="tri_series">Serien</string>
+    <string name="serie_nombres">Die Zahlen</string>
+    <string name="serie_enluminures">Die Illustrationen</string>
+    <string name="serie_jeux">Die sieben Spiele</string>
+    <string name="series_resume">%1$d von %2$d Plätzen belegt. Eine Serie ist vollständig, wenn jeder Platz seine Karte hat.</string>
+    <string name="serie_progression">%1$d / %2$d</string>
+    <string name="serie_complete">Serie vollständig: %1$s</string>
+    <string name="serie_complete_court">Vollständig ✓</string>
+    <string name="emplacement_nombre">Fehlende Karte: die Zahl %1$s</string>
+    <string name="emplacement_jeu">Fehlende Karte: ein Wort aus %1$s</string>
+    <string name="emplacement_dessin">Fehlende Karte: ein illustriertes Wort</string>
     <string name="carnet_ouverture">Sammlung wird geöffnet…</string>
     <string name="carnet_tous">Alle</string>
     <string name="album_page_precedente">Vorherige Seite</string>

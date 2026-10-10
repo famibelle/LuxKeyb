@@ -73,6 +73,9 @@ class CarnetFragment : DialogFragment() {
          */
         private const val LARGEUR_CIBLE_VIGNETTE_DP = 165f
 
+        /** La case d'une page de série, plus serrée qu'une vignette de la grille. */
+        private const val LARGEUR_CASE_SERIE_DP = 110f
+
         /** Couleur des pages de l'album : un papier crème, pas le gris de l'écran. */
         private val PAPIER = Color.parseColor("#FFFBF2")
         /** La couverture de l'album, sur laquelle les pages sont posées. */
@@ -93,9 +96,13 @@ class CarnetFragment : DialogFragment() {
      * tenant pour qu'on les compare, la boîte en ouvre un pour qu'on le lise.
      * Ce ne sont pas deux chemins vers le même écran mais deux questions,
      * « où en suis-je » et « qu'y a-t-il là-dedans ».
+     *
+     * [SERIES] est une disposition aussi : les pages d'album à emplacements
+     * vides de [Series]. Voir [remplirSeries].
      */
     private enum class Tri(@StringRes val libelle: Int) {
-        RECENT(R.string.tri_recent), ALPHA(R.string.tri_alpha), RARETE(R.string.tri_rarete), ETAGERE(R.string.tri_etagere)
+        RECENT(R.string.tri_recent), ALPHA(R.string.tri_alpha), RARETE(R.string.tri_rarete),
+        ETAGERE(R.string.tri_etagere), SERIES(R.string.tri_series)
     }
 
     private var tri = Tri.RECENT
@@ -463,6 +470,19 @@ class CarnetFragment : DialogFragment() {
             montrerAlbum(false)
             remplirEtagere(ctx, visibles, cote, colonnes)
             return
+        }
+
+        if (tri == Tri.SERIES) {
+            // Les séries portent sur toute la collection : un filtre par jeu
+            // viderait la série des sept jeux de six emplacements sur sept.
+            montrerAlbum(false)
+            defilementJeux.visibility = View.GONE
+            remplirSeries(ctx)
+            return
+        }
+        // Le filtre revient en quittant les séries, s'il a lieu d'être.
+        if (defilementJeux.visibility == View.GONE && ligneJeux.childCount > 0) {
+            defilementJeux.visibility = View.VISIBLE
         }
 
         val ordonnes = when (tri) {
@@ -873,6 +893,86 @@ class CarnetFragment : DialogFragment() {
      * ne pas avoir inventé un autre indicateur ici.
      */
 
+
+    /**
+     * Les séries, page après page : un titre et son compte, puis la grille où
+     * les cartes gagnées occupent leur place et les autres attendent la leur.
+     *
+     * Une carte se feuillette parmi les cartes de sa série. Un emplacement
+     * rempli par plusieurs cartes (un dessin partagé) montre la première
+     * gagnée : les autres sont dans le carnet, la série n'a qu'une place.
+     */
+    private fun remplirSeries(ctx: Context) {
+        val d = resources.displayMetrics.density
+        val gouttiere = (8 * d).toInt()
+        // Une page d'album serre ses cases : à la largeur des vignettes de la
+        // grille, les cent quatre dessins feraient cinquante rangées. Trois
+        // colonnes au moins sur un téléphone, plus sur un écran large.
+        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
+        val colonnes = ((dispo + gouttiere) / ((LARGEUR_CASE_SERIE_DP * d).toInt() + gouttiere))
+            .coerceAtLeast(3)
+        val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
+        val series = Series.toutes(ctx, contenus)
+        val remplis = series.sumOf { it.remplis }
+        val total = series.sumOf { it.total }
+        tvResume.text = getString(R.string.series_resume, remplis, total)
+
+        series.forEach { a ->
+            conteneurGrille.addView(LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.BOTTOM
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { setMargins(0, (16 * d).toInt(), 0, (10 * d).toInt()) }
+                addView(TextView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                    text = getString(a.serie.titre)
+                    textSize = 15f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(accent)
+                })
+                addView(TextView(ctx).apply {
+                    text = if (a.complete) getString(R.string.serie_complete_court)
+                    else getString(R.string.serie_progression, a.remplis, a.total)
+                    textSize = 13f
+                    setTypeface(null, if (a.complete) Typeface.BOLD else Typeface.NORMAL)
+                    setTextColor(if (a.complete) accent else Color.parseColor("#616161"))
+                })
+            })
+
+            val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
+            var ligne: LinearLayout? = null
+            a.emplacements.forEachIndexed { i, e ->
+                val posColonne = i % colonnes
+                if (posColonne == 0) {
+                    ligne = LinearLayout(ctx).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        clipChildren = false
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = gouttiere }
+                    }
+                    conteneurGrille.addView(ligne)
+                }
+                val premiere = e.cartes.firstOrNull()
+                val vue = if (premiere != null) {
+                    CarteCarnet.vignette(ctx, premiere, cote).apply {
+                        isClickable = true
+                        setOnClickListener { montrerCarte(premiere, ordre) }
+                    }
+                } else {
+                    EmplacementVide(ctx, a.serie, e.cle)
+                }
+                ligne?.addView(vue.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        cote, LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
+                })
+            }
+        }
+    }
 
     /** Referme la carte ouverte. Rend `false` s'il n'y en avait aucune. */
     private fun fermerCarte(): Boolean {
