@@ -97,8 +97,8 @@
 <button type="button" class="theme-toggle fixed" aria-label="Changer de thème">🌙</button>
 <h1>Politique de Confidentialité - Lëtzebuergesch Clavier</h1>
 <p><strong>Date d'entrée en vigueur :</strong> 19 septembre 2025<br>
-<strong>Dernière mise à jour :</strong> 7 octobre 2026<br>
-<strong>Version :</strong> 3.2 (dictée vocale)<br>
+<strong>Dernière mise à jour :</strong> 10 octobre 2026<br>
+<strong>Version :</strong> 3.3 (cartes du carnet)<br>
 <strong>Application :</strong> Lëtzebuergesch Clavier<br>
 <strong>Nom du package :</strong> com.potomitan.luxkeyboard</p>
 <hr>
@@ -184,7 +184,7 @@
 <td>❌ Non</td>
 <td>❌ Non</td>
 <td>S.O.</td>
-<td>Aucun accès aux médias</td>
+<td>L'appareil photo ne sert qu'à lire le code d'une carte offerte, sur le téléphone même : aucune image n'est gardée ni envoyée</td>
 </tr>
 <tr>
 <td><strong>Audio : enregistrements vocaux</strong></td>
@@ -486,11 +486,17 @@
 <strong>Ce qu'elles NE PEUVENT PAS faire :</strong> Envoyer ce que vous tapez : le code qui gère la frappe ne contient aucun envoi réseau, ce que le code source public permet de vérifier<br>
 <strong>Contrôle utilisateur :</strong> Ne pas utiliser la dictée suffit : aucune connexion n'est alors ouverte<br>
 <strong>Emplacement des données :</strong> Aucune donnée n'est envoyée en dehors de la voix dictée</p>
+<h3>6️⃣ CAMERA (Demandée au premier scan d'une carte)</h3>
+<p><strong>Ce qu'elle fait :</strong> Permet de lire le code carré (code QR) affiché par un autre téléphone, quand on s'offre une carte du carnet<br>
+<strong>Pourquoi nous en avons besoin :</strong> Uniquement pour offrir ou recevoir une carte. Le clavier, la dictée et les jeux ne s'en servent pas<br>
+<strong>Impact sur la vie privée :</strong> L'appareil photo ne s'ouvre qu'après un appui sur « Recevoir » ou « Scanner la confirmation » dans le carnet, et se referme dès que le code est lu. Les images sont analysées sur le téléphone même, image par image, et aucune n'est enregistrée ni envoyée<br>
+<strong>Ce qu'elle NE PEUT PAS faire :</strong> Prendre des photos, filmer, ou s'ouvrir en arrière-plan<br>
+<strong>Contrôle utilisateur :</strong> Refusez-la à l'invite, ou retirez-la dans Infos app &gt; Autorisations ; tout fonctionne alors comme avant, sauf l'échange de cartes<br>
+<strong>Emplacement des données :</strong> Aucune - rien n'est stocké ni transmis</p>
 <h3>❌ Autorisations que Nous NE Demandons PAS :</h3>
 <p>Nous ne demandons <strong>intentionnellement pas</strong> les autorisations courantes suivantes :</p>
 <ul>
 <li><strong>ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION :</strong> Pas de suivi de localisation</li>
-<li><strong>CAMERA :</strong> Pas de capture photo/vidéo</li>
 <li><strong>WRITE_USER_DICTIONARY :</strong> Pas d'écriture dans le dictionnaire personnel Android</li>
 <li><strong>READ_CONTACTS / WRITE_CONTACTS :</strong> Pas d'accès aux contacts</li>
 <li><strong>READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE :</strong> Pas d'accès aux fichiers</li>
@@ -743,7 +749,8 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li>❌ <strong>Pas de classements</strong> (pas de partage de données avec d'autres utilisateurs)</li>
 <li>❌ <strong>Pas de compétition en ligne</strong> (pas de fonctionnalités multijoueur)</li>
 <li>❌ <strong>Pas de fonctionnalités sociales</strong> nécessitant un téléchargement de données</li>
-<li>❌ <strong>Pas de partage sur les réseaux sociaux</strong></li>
+<li>✅ <strong>Partager une carte, seulement si vous le décidez :</strong> le bouton « Partager » d'une carte du carnet en fait une image et ouvre le menu de partage d'Android. C'est vous qui choisissez l'application et la personne ; l'image ne contient que la carte et le lien pour installer le clavier, et elle ne passe jamais par nous</li>
+<li>✅ <strong>Offrir une carte, de la main à la main :</strong> les deux téléphones échangent deux codes carrés à l'écran, sans Internet, sans Bluetooth et sans compte. Le code ne contient que le mot de la carte (et sa valeur pour un nombre), un numéro tiré au hasard pour cet échange et son heure d'expiration, dix minutes plus tard. Ni votre nom, ni votre progression, ni ce que vous avez tapé n'y figurent : la carte arrive neuve chez l'autre personne</li>
 <li>✅ <strong>Suivi de progression 100% local</strong></li>
 <li>✅ <strong>Aucun compte requis</strong></li>
 <li>✅ <strong>La progression se réinitialise si vous effacez les données de l'app</strong> (pas de sauvegarde cloud)</li>
@@ -793,7 +800,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 </ul>
 <h3>Contrôle de Version :</h3>
 <ol>
-<li><strong>Numéro de Version :</strong> Chaque mise à jour incrémente la version (Actuelle : <strong>3.2</strong>)</li>
+<li><strong>Numéro de Version :</strong> Chaque mise à jour incrémente la version (Actuelle : <strong>3.3</strong>)</li>
 <li><strong>Date d'Entrée en Vigueur :</strong> Mise à jour en haut de ce document</li>
 <li><strong>Historique des Changements :</strong> Disponible sur notre dépôt GitHub</li>
 <li><strong>Changements Importants :</strong> Seront mis en évidence dans les annonces de mise à jour</li>
@@ -813,6 +820,12 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li>Option de réviser les changements avant d'accepter</li>
 </ul>
 <h3>Historique des Changements :</h3>
+<p><strong>Version 3.3 (10 octobre 2026) :</strong></p>
+<ul>
+<li>Nouvelle autorisation documentée : CAMERA, demandée au premier scan, seulement pour lire le code d'une carte offerte (version 35.0.0)</li>
+<li>Partage d'une carte en image et échange de cartes entre deux téléphones : ce qui part, et ce qui ne part pas</li>
+<li>La dictée vocale reste la seule fonction qui utilise Internet</li>
+</ul>
 <p><strong>Version 3.2 (7 octobre 2026) :</strong></p>
 <ul>
 <li>Les actualités de l'INLL sont retirées de l'application à partir de la version 34.0.0 : la dictée vocale redevient la seule fonction qui utilise Internet</li>
@@ -993,7 +1006,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 <li>✅ <strong>Ce que vous tapez :</strong> Reste sur votre appareil, jamais envoyé</li>
 <li>✅ <strong>Votre voix :</strong> Envoyée seulement quand vous dictez, transcrite par l'Université du Luxembourg, jamais conservée</li>
 <li>✅ <strong>Vos paramètres :</strong> Stockés localement, jamais synchronisés</li>
-<li>✅ <strong>Votre progression :</strong> Suivie localement pour la gamification, jamais partagée</li>
+<li>✅ <strong>Votre progression :</strong> Suivie localement pour la gamification, jamais partagée ; seule une carte que vous choisissez de partager ou d'offrir quitte le carnet</li>
 </ul>
 <h3>Vos Droits :</h3>
 <ul>
@@ -1074,7 +1087,7 @@ Ceci est contrôlé par la politique de confidentialité de Google, pas la nôtr
 
 <div class="footer">
     <p><strong>Contact :</strong> medhi.famibelle@gmail.com</p>
-    <p><em>Dernière mise à jour : 2 octobre 2026</em></p>
+    <p><em>Dernière mise à jour : 10 octobre 2026</em></p>
 </div>
 </body>
 </html>

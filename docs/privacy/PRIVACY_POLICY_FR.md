@@ -1,8 +1,8 @@
 # Politique de Confidentialité - Lëtzebuergesch Clavier
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 7 octobre 2026  
-**Version :** 3.2 (dictée vocale)  
+**Dernière mise à jour :** 10 octobre 2026  
+**Version :** 3.3 (cartes du carnet)  
 **Application :** Lëtzebuergesch Clavier  
 **Nom du package :** com.potomitan.luxkeyboard
 
@@ -55,7 +55,7 @@
 | **Informations financières** | ❌ Non | ❌ Non | S.O. | Aucune information de paiement |
 | **Santé et Fitness** | ❌ Non | ❌ Non | S.O. | Aucune donnée de santé |
 | **Messages** | ❌ Non | ❌ Non | S.O. | Le clavier ne stocke ni ne transmet le contenu tapé |
-| **Photos et Vidéos** | ❌ Non | ❌ Non | S.O. | Aucun accès aux médias |
+| **Photos et Vidéos** | ❌ Non | ❌ Non | S.O. | L'appareil photo ne sert qu'à lire le code d'une carte offerte, sur le téléphone même : aucune image n'est gardée ni envoyée |
 | **Audio : enregistrements vocaux** | ⚠️ Seulement quand vous dictez | ⚠️ Université du Luxembourg | Fonctionnalité de l'app (dictée) | Envoyée en direct, chiffrée, traitée sur le moment et non conservée ; jamais reçue par nous |
 | **Fichiers et Documents** | ❌ Non | ❌ Non | S.O. | Aucun accès aux fichiers |
 | **Calendrier** | ❌ Non | ❌ Non | S.O. | Aucun accès au calendrier |
@@ -333,12 +333,20 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 **Contrôle utilisateur :** Ne pas utiliser la dictée suffit : aucune connexion n'est alors ouverte  
 **Emplacement des données :** Aucune donnée n'est envoyée en dehors de la voix dictée
 
+### 6️⃣ CAMERA (Demandée au premier scan d'une carte)
+
+**Ce qu'elle fait :** Permet de lire le code carré (code QR) affiché par un autre téléphone, quand on s'offre une carte du carnet  
+**Pourquoi nous en avons besoin :** Uniquement pour offrir ou recevoir une carte. Le clavier, la dictée et les jeux ne s'en servent pas  
+**Impact sur la vie privée :** L'appareil photo ne s'ouvre qu'après un appui sur « Recevoir » ou « Scanner la confirmation » dans le carnet, et se referme dès que le code est lu. Les images sont analysées sur le téléphone même, image par image, et aucune n'est enregistrée ni envoyée  
+**Ce qu'elle NE PEUT PAS faire :** Prendre des photos, filmer, ou s'ouvrir en arrière-plan  
+**Contrôle utilisateur :** Refusez-la à l'invite, ou retirez-la dans Infos app &gt; Autorisations ; tout fonctionne alors comme avant, sauf l'échange de cartes  
+**Emplacement des données :** Aucune - rien n'est stocké ni transmis
+
 ### ❌ Autorisations que Nous NE Demandons PAS :
 
 Nous ne demandons **intentionnellement pas** les autorisations courantes suivantes :
 
 - **ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION :** Pas de suivi de localisation
-- **CAMERA :** Pas de capture photo/vidéo
 - **WRITE_USER_DICTIONARY :** Pas d'écriture dans le dictionnaire personnel Android
 - **READ_CONTACTS / WRITE_CONTACTS :** Pas d'accès aux contacts
 - **READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE :** Pas d'accès aux fichiers
@@ -594,7 +602,8 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 - ❌ **Pas de classements** (pas de partage de données avec d'autres utilisateurs)
 - ❌ **Pas de compétition en ligne** (pas de fonctionnalités multijoueur)
 - ❌ **Pas de fonctionnalités sociales** nécessitant un téléchargement de données
-- ❌ **Pas de partage sur les réseaux sociaux**
+- ✅ **Partager une carte, seulement si vous le décidez :** le bouton « Partager » d'une carte du carnet en fait une image et ouvre le menu de partage d'Android. C'est vous qui choisissez l'application et la personne ; l'image ne contient que la carte et le lien pour installer le clavier, et elle ne passe jamais par nous
+- ✅ **Offrir une carte, de la main à la main :** les deux téléphones échangent deux codes carrés à l'écran, sans Internet, sans Bluetooth et sans compte. Le code ne contient que le mot de la carte (et sa valeur pour un nombre), un numéro tiré au hasard pour cet échange et son heure d'expiration, dix minutes plus tard. Ni votre nom, ni votre progression, ni ce que vous avez tapé n'y figurent : la carte arrive neuve chez l'autre personne
 - ✅ **Suivi de progression 100% local**
 - ✅ **Aucun compte requis**
 - ✅ **La progression se réinitialise si vous effacez les données de l'app** (pas de sauvegarde cloud)
@@ -657,7 +666,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 ### Contrôle de Version :
 
-1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **3.2**)
+1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **3.3**)
 2. **Date d'Entrée en Vigueur :** Mise à jour en haut de ce document
 3. **Historique des Changements :** Disponible sur notre dépôt GitHub
 4. **Changements Importants :** Seront mis en évidence dans les annonces de mise à jour
@@ -676,6 +685,11 @@ Nous pouvons mettre à jour cette politique pour refléter :
 - Option de réviser les changements avant d'accepter
 
 ### Historique des Changements :
+
+**Version 3.3 (10 octobre 2026) :**
+- Nouvelle autorisation documentée : CAMERA, demandée au premier scan, seulement pour lire le code d'une carte offerte (version 35.0.0)
+- Partage d'une carte en image et échange de cartes entre deux téléphones : ce qui part, et ce qui ne part pas
+- La dictée vocale reste la seule fonction qui utilise Internet
 
 **Version 3.2 (7 octobre 2026) :**
 - Les actualités de l'INLL sont retirées de l'application à partir de la version 34.0.0 : la dictée vocale redevient la seule fonction qui utilise Internet
@@ -843,7 +857,7 @@ Nous nous engageons aux plus hauts standards de confidentialité :
 - ✅ **Ce que vous tapez :** Reste sur votre appareil, jamais envoyé
 - ✅ **Votre voix :** Envoyée seulement quand vous dictez, transcrite par l'Université du Luxembourg, jamais conservée
 - ✅ **Vos paramètres :** Stockés localement, jamais synchronisés
-- ✅ **Votre progression :** Suivie localement pour la gamification, jamais partagée
+- ✅ **Votre progression :** Suivie localement pour la gamification, jamais partagée ; seule une carte que vous choisissez de partager ou d'offrir quitte le carnet
 
 ### Vos Droits :
 - ✅ **Contrôle total :** Gérez les autorisations, supprimez les données à tout moment
