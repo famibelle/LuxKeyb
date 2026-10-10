@@ -33,6 +33,7 @@ object WuertrietData {
     const val MAX_ATTEMPTS = 6
 
     private var cachedWords: List<String>? = null
+    private var formesCanoniques: Map<String, String> = emptyMap()
 
     /**
      * Charge et met en cache les mots de 5 lettres (lettres accentuées créoles autorisées,
@@ -49,12 +50,20 @@ object WuertrietData {
             reader.close()
 
             val jsonArray = JSONArray(jsonContent)
+            val canoniques = HashMap<String, String>()
             for (i in 0 until jsonArray.length()) {
-                val word = jsonArray.getJSONArray(i).getString(0).lowercase()
+                val forme = jsonArray.getJSONArray(i).getString(0)
+                val word = forme.lowercase()
                 if (word.length == WORD_LENGTH && word.all { it.isLetter() }) {
                     words.add(word)
+                    // La forme en minuscules l'emporte quand elle existe : c'est
+                    // un vrai mot (« froen » à côté de « Froen »), et c'est
+                    // elle que la glose de fin de partie traduit.
+                    if (forme == word) canoniques[word] = forme
+                    else canoniques.putIfAbsent(word, forme)
                 }
             }
+            formesCanoniques = canoniques
         } catch (e: Exception) {
             e.printStackTrace()
             return listOf("kéier", "ëmmer", "wäert", "gesot", "kënne")
@@ -76,6 +85,19 @@ object WuertrietData {
     fun pickRandomWord(context: Context): String {
         val words = TranslationDictionary.filtrerMotsTraduits(context, loadWords(context))
         return words.random()
+    }
+
+    /**
+     * La forme du dictionnaire d'un mot de la grille, majuscule comprise.
+     *
+     * La partie se joue en minuscules, mais le carnet range ses cartes par
+     * forme exacte : verser « affer » quand les autres jeux versent « Affer »
+     * faisait deux cartes du même mot, la seconde sans rang de fréquence et
+     * donc classée parmi les plus rares.
+     */
+    fun formeCanonique(context: Context, word: String): String {
+        loadWords(context)
+        return formesCanoniques[word.lowercase()] ?: word
     }
 
     fun isValidWord(context: Context, word: String): Boolean {

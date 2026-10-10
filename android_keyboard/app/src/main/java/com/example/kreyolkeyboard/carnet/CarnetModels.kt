@@ -424,13 +424,96 @@ object Carnet {
         prefs(context).edit().putString(CLE_CARTES, tableau.toString()).apply()
     }
 
+    /**
+     * Lit les rangs et répare au passage la casse des anciennes cartes de
+     * Wuertriet. Lit le dictionnaire : **hors du fil principal**, avant de
+     * lister les cartes, pour que l'écran montre déjà le carnet réparé.
+     */
+    @Synchronized
+    fun preparer(context: Context) = assurerRangs(context)
+
     private fun assurerRangs(context: Context) {
         charger(context)
         if (rangsPour == cartes.size) return
+        if (cartes.isEmpty()) {
+            rangsPour = 0
+            rangs = emptyMap()
+            return
+        }
+        val formes = cartes.filter { it.nombre == null }.mapTo(HashSet()) { it.forme }
+        val lecture = lireRangs(context, formes, suspectesDeCasse(cartes))
+        if (lecture.canoniques.isNotEmpty()) {
+            val reparees = fusionnerCasse(cartes) { lecture.canoniques[it] }
+            if (reparees.size != cartes.size || reparees.zip(cartes).any { (a, b) -> a.forme != b.forme }) {
+                Log.d(TAG, "Casse réparée : ${cartes.size} → ${reparees.size} cartes")
+                cartes = ArrayList(reparees)
+                parForme = HashMap<String, Int>().apply {
+                    cartes.forEachIndexed { i, c -> put(c.forme, i) }
+                }
+                enregistrer(context)
+            }
+        }
         rangsPour = cartes.size
-        rangs = if (cartes.isEmpty()) emptyMap()
-        else lireRangs(context, cartes.filter { it.nombre == null }.mapTo(HashSet()) { it.forme })
+        rangs = lecture.rangs
     }
+
+    /**
+     * Les cartes que Wuertriet a pu verser en minuscules avant la 35.0.1.
+     *
+     * Le jeu se jouait en minuscules et versait « affer » là où les six autres
+     * versent « Affer » : deux cartes pour un mot, la seconde sans rang, donc
+     * affichée parmi les plus rares. Une carte cédée a pu emporter le défaut
+     * sur un autre téléphone, d'où le cadeau. Ce ne sont que des suspectes :
+     * « kënne » est en minuscules parce que c'est un verbe, et seul le
+     * dictionnaire peut trancher — voir [fusionnerCasse].
+     */
+    internal fun suspectesDeCasse(cartes: List<CarteMot>): Set<String> =
+        cartes.filter { c ->
+            c.nombre == null && c.forme == c.forme.lowercase() &&
+                (JeuCarte.WUERTRIET in c.jeux || JeuCarte.CADEAU in c.jeux)
+        }.mapTo(HashSet()) { it.forme }
+
+    /**
+     * Rend à leur forme du dictionnaire les cartes versées en minuscules, en
+     * fusionnant celles qui existaient déjà sous cette forme.
+     *
+     * [canonique] donne, pour une forme absente telle quelle du dictionnaire,
+     * celle qui y figure (« affer » → « Affer »), et `null` pour toute autre :
+     * un vrai mot en minuscules (« froen » à côté de « Froen ») n'est jamais
+     * touché.
+     *
+     * La carte fusionnée garde la place et le numéro de la plus ancienne, la
+     * première rencontre, la somme des rencontres, les jeux des deux dans
+     * l'ordre où ils l'ont donnée, et la révision la plus avancée : un joueur
+     * ne doit rien perdre de ce qu'il a fait sur l'une ou l'autre.
+     */
+    internal fun fusionnerCasse(
+        cartes: List<CarteMot>,
+        canonique: (String) -> String?
+    ): List<CarteMot> {
+        val renommees = cartes.map { c ->
+            if (c.nombre != null) c else canonique(c.forme)?.let { c.copy(forme = it) } ?: c
+        }
+        val parForme = LinkedHashMap<String, CarteMot>()
+        renommees.sortedBy { it.numero }.forEach { c ->
+            parForme[c.forme] = parForme[c.forme]?.let { ancienne ->
+                val avancee = if (c.boite > ancienne.boite) c else ancienne
+                ancienne.copy(
+                    premiereFois = minOf(ancienne.premiereFois, c.premiereFois),
+                    rencontres = ancienne.rencontres + c.rencontres,
+                    jeux = LinkedHashSet(ancienne.jeux).apply { addAll(c.jeux) },
+                    nombre = ancienne.nombre ?: c.nombre,
+                    boite = avancee.boite,
+                    jourEcheance = avancee.jourEcheance
+                )
+            } ?: c
+        }
+        // L'ordre de capture d'origine, celui de la liste stockée.
+        val gardees = parForme.values.associateBy { it.numero }
+        return renommees.mapNotNull { c -> gardees[c.numero]?.takeIf { it.forme == c.forme } }
+    }
+
+    private class LectureDico(val rangs: Map<String, Int>, val canoniques: Map<String, String>)
 
     /**
      * Le rang de chaque forme demandée dans `luxemburgish_dict.json`.
@@ -441,19 +524,28 @@ object Carnet {
      * balaye donc le texte une fois, sans construire le moindre objet JSON —
      * voir la note de classe. Les formes du dictionnaire ne contiennent ni
      * guillemet ni contre-oblique, la lecture est donc sûre telle quelle.
+     *
+     * Le même balayage relève la forme du dictionnaire des [suspectes] de
+     * [suspectesDeCasse] qu'il ne connaît pas telles quelles, avec son rang :
+     * la réparation ne coûte donc aucune lecture de plus.
      */
-    private fun lireRangs(context: Context, formes: Set<String>): Map<String, Int> {
-        if (formes.isEmpty()) return emptyMap()
+    private fun lireRangs(
+        context: Context,
+        formes: Set<String>,
+        suspectes: Set<String> = emptySet()
+    ): LectureDico {
+        if (formes.isEmpty()) return LectureDico(emptyMap(), emptyMap())
         return try {
             val texte = BufferedReader(
                 InputStreamReader(context.assets.open(ASSET_DICO))
             ).use { it.readText() }
 
             val trouves = HashMap<String, Int>(formes.size)
+            val enMajuscule = HashMap<String, String>()
             var i = 0
             var rang = 0
             val n = texte.length
-            while (i < n && trouves.size < formes.size) {
+            while (i < n && (suspectes.isNotEmpty() || trouves.size < formes.size)) {
                 // Début d'une paire : le premier guillemet qui suit un '['.
                 val crochet = texte.indexOf('[', i)
                 if (crochet < 0) break
@@ -463,15 +555,25 @@ object Carnet {
                 if (ferme < 0) break
                 val forme = texte.substring(ouvre + 1, ferme)
                 if (forme in formes) trouves[forme] = rang
+                if (suspectes.isNotEmpty()) {
+                    val minuscule = forme.lowercase()
+                    // La plus fréquente l'emporte : le tableau est trié.
+                    if (minuscule != forme && minuscule in suspectes && minuscule !in enMajuscule) {
+                        enMajuscule[minuscule] = forme
+                        trouves.putIfAbsent(forme, rang)
+                    }
+                }
                 rang++
                 i = ferme + 1
             }
-            trouves
+            // Une suspecte que le dictionnaire connaît telle quelle est un vrai mot.
+            val canoniques = enMajuscule.filterKeys { it !in trouves }
+            LectureDico(trouves, canoniques)
         } catch (e: Exception) {
             // Sans rangs, tout est « commun » : le carnet reste consultable,
             // il perd seulement sa hiérarchie.
             Log.e(TAG, "Rangs illisibles: ${e.message}", e)
-            emptyMap()
+            LectureDico(emptyMap(), emptyMap())
         }
     }
 }
