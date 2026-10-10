@@ -164,7 +164,18 @@ Une seconde marque, une **plume**, distingue la carte qui est montée parce
 que le mot a été écrit dans un vrai message (`PreuveDeFrappe`). Aucune application
 de cartes ne peut proposer ça. Elle est stockée dans `filesDir`, à côté de
 `carnet_vu.json`, et jamais dans les préférences. Les deux questions qu'elle
-posait :
+posait sont tranchées plus bas.
+
+Livrée le 10 octobre 2026 comme le pendant du sceau : une cire bleu encre sur
+l'angle bas gauche de l'illustration, « GESCHRIWWEN » en arc (participe de
+`schreiwen`, 364 occurrences au dictionnaire), une plume blanche au centre. La
+liste des formes vit dans `files/carnet_plumes.json` et ne fait que grandir.
+Une limite à connaître : la preuve n'est lue qu'au lancement d'une révision et
+sur les seules cartes dues ce jour-là (c'est ainsi que `PreuveDeFrappe`
+fonctionne depuis la 22.0.0). Un mot écrit au clavier ne reçoit donc sa plume
+qu'à sa prochaine échéance.
+
+Les deux questions :
 
 - **Le stockage.** La plume devrait être mémorisée, alors que `PreuveDeFrappe`
   a été conçu pour que le carnet ne reçoive *que* l'échéance. La règle de
