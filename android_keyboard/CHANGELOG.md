@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [35.0.0] - 2026-10-10
+
+Le carnet devient un vrai album de cartes à collectionner : des pages à compléter, des cartes qui se marquent quand on les connaît, et qu'on peut montrer ou offrir.
+
+### ✨ Nouveautés
+
+- **Des séries à compléter, comme un album d'images.** Dans le carnet, « Séries » ouvre trois pages : les nombres, les illustrations et les sept jeux. Chaque carte gagnée prend sa place ; une case encore vide donne un indice sans la réponse, le nombre écrit en chiffres ou la silhouette du dessin. Quand une série est complète, la fin de partie vous le dit.
+- **Un sceau « GELÉIERT » sur les mots appris.** Quand une carte a passé toutes ses révisions, un cachet de cire rouge se pose sur son illustration.
+- **Une plume pour les mots que vous avez écrits vous-même.** Si vous avez tapé le mot d'une carte dans un vrai message, une petite plume se grave dans son cadre.
+- **Partager une carte.** Le bouton « Partager », sous une carte ouverte, l'envoie en image, avec le lien pour installer le clavier.
+- **Offrir une carte à quelqu'un.** Le bouton « Céder » affiche un code ; l'autre personne touche « Recevoir » dans son carnet et le scanne avec son téléphone, puis vous scannez le code qu'elle vous montre. La carte passe d'un carnet à l'autre, comme une vraie carte qu'on tend : elle quitte le vôtre. Les deux téléphones doivent être côte à côte ; rien ne passe par Internet.
+
+### 🔒 Autorisations
+
+- L'appareil photo n'est demandé que la première fois que vous scannez le code d'une carte. Il ne sert qu'à lire ce code : aucune image n'est gardée ni envoyée.
+
 ## [34.4.1] - 2026-10-10
 
 ### 🐛 Corrections
