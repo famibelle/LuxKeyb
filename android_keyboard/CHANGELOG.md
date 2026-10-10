@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [35.0.2] - 2026-10-10
+
+### 🐛 Corrections
+
+- **Le bouton Retour referme la carte ouverte**, et non plus tout le carnet. Il referme aussi le code d'une carte qu'on offre, sans rien céder.
+- **Offrir une carte : le code de confirmation se retrouve.** Si la personne qui reçoit la carte fermait son code trop tôt, la carte restait aussi chez celle qui l'offrait. Il suffit maintenant de rescanner la carte offerte pour revoir ce code, sans recevoir la carte une seconde fois.
+- **L'appareil photo s'explique avant d'être demandé** : une phrase dit qu'il sert seulement à lire le code de l'autre téléphone, et que rien n'est photographié, gardé ni envoyé.
+
 ## [35.0.1] - 2026-10-10
 
 ### 🐛 Corrections
