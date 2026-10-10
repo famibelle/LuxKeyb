@@ -2,6 +2,8 @@ package com.example.kreyolkeyboard.carnet
 
 import com.example.kreyolkeyboard.R
 import androidx.annotation.StringRes
+import androidx.activity.ComponentDialog
+import androidx.activity.OnBackPressedCallback
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -1207,6 +1209,34 @@ class CarnetFragment : DialogFragment() {
         return TranslationDictionary.fiche(ctx, offre.forme).glose.isNotEmpty()
     }
 
+    /**
+     * Le bouton Retour dépile : l'offre de cession, puis la carte ouverte,
+     * puis le carnet.
+     *
+     * Il passait par `setOnKeyListener`, qui ne le reçoit plus depuis
+     * Android 16 : une application qui vise l'API 36 a le retour prédictif
+     * d'office, le système ne livre plus `KEYCODE_BACK` au dialogue, et Retour
+     * fermait tout le carnet depuis une carte ouverte. Le rappel du
+     * `OnBackPressedDispatcher` du `ComponentDialog` est appelé dans les deux
+     * mondes, geste ou touche, ancien Android ou nouveau.
+     */
+    override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog =
+        ComponentDialog(requireContext(), theme).also { d ->
+            d.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when {
+                        vueCession?.ouverte == true -> {
+                            // Fermer l'offre, c'est garder la carte.
+                            offreEnCours = null
+                            vueCession?.fermer()
+                        }
+                        fermerCarte() -> Unit
+                        else -> dismiss()
+                    }
+                }
+            })
+        }
+
     override fun onStart() {
         super.onStart()
         // Sans cela le dialogue s'ajuste à son contenu et laisse l'activité
@@ -1215,15 +1245,8 @@ class CarnetFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        // Le bouton Retour dépile : la carte ouverte, puis le casier ouvert,
-        // puis le carnet. Il fermait le dialogue entier depuis n'importe quelle
-        // profondeur, ce qui passait tant que le carnet n'avait aucune
-        // navigation et devient faux depuis que la boîte en a une.
-        //
-        // Les deux actions sont consommées, pas seulement `ACTION_UP` :
-        // `Dialog` annule sur la levée mais retient la descente, et ne
-        // consommer que l'une des deux laisse un retour fantôme au prochain
-        // appui.
+        // Les flèches d'un clavier physique passent par les touches ; le bouton
+        // Retour, lui, n'y passe plus : voir [onCreateDialog].
         dialog?.setOnKeyListener { _, code, evenement ->
             // Les flèches d'un clavier physique feuillettent : la carte
             // ouverte, sinon les pages de l'album.
@@ -1243,22 +1266,7 @@ class CarnetFragment : DialogFragment() {
                     }
                     true
                 }
-                code != KeyEvent.KEYCODE_BACK -> false
-                vueCession?.ouverte == true -> {
-                    // Fermer l'offre, c'est garder la carte.
-                    if (evenement.action == KeyEvent.ACTION_UP) {
-                        offreEnCours = null
-                        vueCession?.fermer()
-                    }
-                    true
-                }
-                lecteur == null -> false
-                else -> {
-                    if (evenement.action == KeyEvent.ACTION_UP) {
-                        fermerCarte()
-                    }
-                    true
-                }
+                else -> false
             }
         }
     }
