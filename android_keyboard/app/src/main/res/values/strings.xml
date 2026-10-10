@@ -668,7 +668,9 @@
     <string name="cession_faite">« %1$s » has been given.</string>
     <string name="cession_mauvais_code">This code is not the confirmation for this card.</string>
     <string name="reception_invalide">This code is not a card, or it has expired.</string>
-    <string name="reception_deja">This card has already been received.</string>
+    <string name="camera_pourquoi_titre">Reading the card\'s code</string>
+    <string name="camera_pourquoi_message">The camera is only used to read the code shown by the other phone. Nothing is photographed, saved or sent.</string>
+    <string name="camera_pourquoi_ok">Continue</string>
     <string name="reception_impossible">This card does not exist in the keyboard.</string>
     <string name="carte_partage_message">I won the card « %1$s » (%2$s) on the Luxembourgish keyboard.\n\nGet it for free:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
