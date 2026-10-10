@@ -10281,20 +10281,19 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding(0, 0, 0, 8)
             })
 
-            // Le chargement reste ici, seul le compteur s'en va : c'est lui qui
-            // évite d'analyser 2,7 Mo de JSON dans la première recherche, où
-            // l'attente se verrait entre la frappe et les résultats.
-            TranslationDictionary.charger(activity)
-
-            // Les exemples, eux, partent sur un fil de fond : la fiche est le
-            // seul écran qui en montre, et les charger à son ouverture ferait
-            // attendre 2,6 Mo d'analyse au moment précis où elle doit
-            // apparaître. Le contexte de l'application, jamais le fragment :
-            // le fil survit à l'onglet. Rien à synchroniser au retour — la
-            // table est lue par un accès protégé, et la fiche qui la
-            // demanderait trop tôt attend simplement la fin de l'analyse.
+            // Les gloses (2,7 Mo), les exemples (2,6 Mo) et les articles partent
+            // sur un fil de fond. Les gloses se chargeaient ici, sur le fil
+            // principal, pour que la première recherche n'attende pas ; mais
+            // l'onglet est construit à côté de l'accueil par le ViewPager, et
+            // sur l'émulateur, juste après une installation, l'analyse a passé
+            // les cinq secondes : Android proposait de fermer l'appli
+            // (2026-10-10). Une recherche lancée avant la fin attend sur le
+            // verrou de `charger`, c'est-à-dire seulement le temps qui reste,
+            // et la requête vide de l'ouverture n'y touche pas. Le contexte de
+            // l'application, jamais le fragment : le fil survit à l'onglet.
             val applicatif = activity.applicatifDansLaLangue()
             Thread {
+                TranslationDictionary.charger(applicatif)
                 TranslationDictionary.chargerExemples(applicatif)
                 TranslationDictionary.chargerArticles(applicatif)
             }.start()

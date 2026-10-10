@@ -9,6 +9,25 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.0.0] - 2026-10-10
+
+Les cartes du carnet s'échangent maintenant comme de vraies cartes : celle que vous offrez quitte votre carnet pour de bon, et elle n'arrive que sur le téléphone de la personne à qui vous la tendez.
+
+### ✨ Nouveautés
+
+- **Échanger des cartes de la main à la main.** La personne qui reçoit touche « 🎁 Recevoir » dans son carnet et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle, avec la mention « Reçue en cadeau ». Les deux téléphones restent côte à côte : rien ne passe par Internet.
+- **Une carte n'existe jamais en double.** Elle quitte votre carnet avant d'arriver dans l'autre, et le code de remise ne fonctionne que sur un seul téléphone, une seule fois.
+- **Rien ne se perd en route.** Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte jusqu'à ce que vous indiquiez qu'elle est bien arrivée.
+- **L'appareil photo s'explique avant d'être demandé** : il sert seulement à lire le code de l'autre téléphone, et rien n'est photographié, gardé ni envoyé.
+
+### 🐛 Corrections
+
+- L'onglet Wierderbuch pouvait faire attendre l'application plusieurs secondes à son ouverture, au point qu'Android propose de la fermer. Son dictionnaire se charge désormais en arrière-plan.
+
+### ⚠️ À savoir
+
+- Pour échanger une carte, les deux téléphones doivent avoir la version 35.1.0 ou une plus récente.
+
 ## [35.1.0] - 2026-10-10
 
 Une carte qu'on offre quitte désormais votre carnet pour de bon : elle ne peut plus exister sur deux téléphones à la fois.
