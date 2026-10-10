@@ -421,6 +421,33 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+
+    /**
+     * Le milieu de la bordure basse visible : entre le bas de la face
+     * (`haut - bord`) et le bord intérieur du filet de contour (`haut - 2,45`).
+     *
+     * La bordure s'épaissit avec le palier, de 12 à 18 unités, et la bande
+     * ci-dessus, calée une fois pour toutes, tombait au milieu de celle d'une
+     * commune seulement : sur une très rare, la ligne de série était trois
+     * unités trop bas (propriétaire, 2026-10-10). La ligne et la plume se
+     * centrent donc sur la bordure de leur propre palier.
+     */
+    fun milieuBordureBasse(rarete: Rarete, vignette: Boolean): Float {
+        val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
+        val bord = 12f + rarete.ordinal * 2f
+        return haut - (bord + 2.45f) / 2f
+    }
+
+    /** [SERIE_G], recentrée verticalement sur la bordure du palier. */
+    fun serieG(rarete: Rarete): RectF = recentree(SERIE_G, milieuBordureBasse(rarete, false))
+
+    /** [SERIE_D], recentrée verticalement sur la bordure du palier. */
+    fun serieD(rarete: Rarete): RectF = recentree(SERIE_D, milieuBordureBasse(rarete, false))
+
+    private fun recentree(r: RectF, milieu: Float): RectF {
+        val demi = r.height() / 2f
+        return RectF(r.left, milieu - demi, r.right, milieu + demi)
+    }
     /**
      * L'énoncé d'une question, sur le dos de révision.
      *
@@ -1375,7 +1402,9 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        texteSurArc(c, p, context.getString(R.string.carte_gagne_a_medaillon), cx, cy, R_EMAIL + 2.2f, true)
+        // Une carte cédée n'a pas été gagnée : elle a été reçue.
+        val dessus = if (jeu == JeuCarte.CADEAU) R.string.carte_recue_medaillon else R.string.carte_gagne_a_medaillon
+        texteSurArc(c, p, context.getString(dessus), cx, cy, R_EMAIL + 2.2f, true)
         texteSurArc(c, p, jeu.libelle(context).uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
         p.typeface = android.graphics.Typeface.DEFAULT
         p.strokeCap = Paint.Cap.BUTT
@@ -1509,6 +1538,15 @@ object Ornement {
                 c.drawRoundRect(cx - 6.5f, cy - 5.5f, cx + 6.5f, cy + 3.5f, 3f, 3f, p)
                 trait(-2.5f, 3.5f, -4.5f, 7f)
                 trait(-4.5f, 7f, 0.5f, 3.5f)
+            }
+            // Un paquet-cadeau : la boîte, son ruban, le nœud.
+            JeuCarte.CADEAU -> {
+                p.strokeWidth = 1.2f
+                c.drawRect(cx - 6f, cy - 2f, cx + 6f, cy + 6.5f, p)
+                c.drawRect(cx - 7f, cy - 4.5f, cx + 7f, cy - 2f, p)
+                trait(0f, -4.5f, 0f, 6.5f)
+                c.drawOval(cx - 5f, cy - 8f, cx - 0.3f, cy - 4.5f, p)
+                c.drawOval(cx + 0.3f, cy - 8f, cx + 5f, cy - 4.5f, p)
             }
         }
         p.style = Paint.Style.FILL
@@ -2169,7 +2207,254 @@ object Ornement {
         c.drawRoundRect(RectF(0f, 0f, LARGEUR, haut), RAYON, RAYON, p)
         p.shader = null
     }
+    /**
+     * Le sceau de cire d'une carte apprise : posé sur l'angle bas droit de
+     * l'illustration, il mord sur la fenêtre comme un cachet sur un document.
+     *
+     * Dessiné d'après la maquette du propriétaire (2026-10-10) : cire rouge,
+     * « GELÉIERT » en arc dans le haut, une coche frappée au centre.
+     * « Geléiert » est le participe de `léieren` (apprendre), attesté au LOD ;
+     * il reste en luxembourgeois dans toutes les langues, comme le nom des
+     * jeux, et sans traduction (décision du propriétaire, même jour).
+     *
+     * C'est un **second axe**, et il ne touche à rien du premier : la rareté
+     * reste lue sur la fréquence, dans le métal du cadre. Le sceau est le même
+     * à tous les paliers ; une commune apprise et une très rare apprise portent
+     * le même cachet sur deux cadres différents. Voir `GAMIFICATION-CARNET.md`.
+     *
+     * La cire n'est pas un disque : son bord coule, d'où le rayon modulé par
+     * deux sinus de fréquences premières entre elles. Un anneau en biseau (une
+     * lèvre sombre, une lèvre éclairée) dit que la cire a été pressée, et la
+     * lumière vient d'en haut à gauche comme dans tout le carnet.
+     *
+     * La vignette n'a que la cire et la coche : à 110 dp, deux lignes de
+     * légende seraient une bouillie rouge.
+     */
+    fun dessinerSceau(c: Canvas, p: Paint, vignette: Boolean) =
+        cachet(c, p, vignette, CIRE_ROUGE, "GELÉIERT") { cv, pi, ombre ->
+            pi.style = Paint.Style.STROKE
+            pi.strokeCap = Paint.Cap.ROUND
+            pi.strokeJoin = Paint.Join.ROUND
+            pi.strokeWidth = if (ombre) 0.15f else 0.12f
+            cv.drawPath(COCHE, pi)
+        }
 
+    /**
+     * La plume d'une carte que le joueur a **écrite lui-même** dans un vrai
+     * message : le clavier l'a fait monter d'une boîte sans poser de question
+     * (voir [PreuveDeFrappe]). Accordée par le propriétaire le 2026-10-10.
+     *
+     * Elle a d'abord été un second cachet de cire, bleu, en miroir du sceau ;
+     * deux cachets sur l'illustration surchargeaient la carte (propriétaire,
+     * même jour). Elle est donc **gravée dans le métal du cadre**, petite, au
+     * centre de la marge basse, sur la carte ouverte comme sur la vignette :
+     * une mention d'inventaire, comme le numéro et la date, et non une
+     * décoration de plus.
+     *
+     * La gravure est celle du reste de la carte : un sillon dans le ton sombre
+     * du métal, une lèvre claire décalée vers le bas qui le fait lire en creux.
+     */
+    fun dessinerPlume(c: Canvas, p: Paint, vignette: Boolean, rarete: Rarete) {
+        val metal = metal(rarete)
+        val cx = if (vignette) PLUME_VIGNETTE_X else PLUME_X
+        val cy = milieuBordureBasse(rarete, vignette)
+        val taille = if (vignette) PLUME_VIGNETTE_TAILLE else PLUME_TAILLE
+        c.save()
+        c.translate(cx, cy)
+        c.scale(taille, taille)
+        p.shader = null
+        for (passe in 0..1) {
+            c.save()
+            if (passe == 0) {
+                c.translate(0.05f, 0.07f)
+                p.color = 0xB3FFFFFF.toInt()
+            } else {
+                p.color = metal.trait
+            }
+            p.style = Paint.Style.FILL
+            c.drawPath(PLUME, p)
+            p.style = Paint.Style.STROKE
+            p.strokeCap = Paint.Cap.ROUND
+            p.strokeWidth = 0.07f
+            c.drawLine(-0.40f, 0.44f, -0.22f, 0.24f, p)
+            c.restore()
+        }
+        p.strokeCap = Paint.Cap.BUTT
+        p.style = Paint.Style.FILL
+        c.restore()
+    }
+
+    /**
+     * La plume, au centre de la marge basse : sur l'axe de la carte, comme la
+     * clef de voûte, la plaque, l'agrafe et le médaillon. Posée devant le
+     * numéro de série, elle touchait l'arrondi du coin et mordait sur le
+     * « n° » ; ici, la ligne de série et le rang la laissent libre des deux
+     * côtés (propriétaire, 2026-10-10).
+     */
+    private const val PLUME_X = LARGEUR / 2f
+    private const val PLUME_TAILLE = 9f
+    private const val PLUME_VIGNETTE_X = LARGEUR / 2f
+    private const val PLUME_VIGNETTE_TAILLE = 7.5f
+
+    /**
+     * Un cachet de cire : l'ombre, la cire coulée, le biseau, un motif frappé
+     * au centre et une légende en arc au-dessus.
+     *
+     * [motif] est tracé deux fois sur le cercle unité, d'abord dans l'ombre
+     * (`ombre` vrai, décalé vers le bas à droite) puis en blanc : c'est ce
+     * décalage qui le fait lire comme frappé dans la cire.
+     */
+    private fun cachet(
+        c: Canvas, p: Paint, vignette: Boolean, cire: Cire, legende: String,
+        motif: (Canvas, Paint, Boolean) -> Unit
+    ) {
+        val cx = if (vignette) SCEAU_VIGNETTE_X else SCEAU_X
+        val cy = if (vignette) SCEAU_VIGNETTE_Y else SCEAU_Y
+        val r = if (vignette) SCEAU_VIGNETTE_R else SCEAU_R
+        c.save()
+        c.translate(cx, cy)
+
+        // La cire et ses reliefs sont tracés sur le cercle unité.
+        c.save()
+        c.scale(r, r)
+        p.style = Paint.Style.FILL
+        p.shader = null
+        p.color = 0x59000000
+        c.save()
+        c.translate(0.07f, 0.11f)
+        c.drawPath(BORD_CIRE, p)
+        c.restore()
+        // Pinceau opaque avant le dégradé : l'alpha de l'ombre, resté sur le
+        // pinceau, multiplierait la cire et la rendrait translucide.
+        p.color = Color.BLACK
+        p.shader = cire.modele
+        c.drawPath(BORD_CIRE, p)
+        p.shader = null
+
+        // Le biseau : la lèvre basse dans l'ombre, la haute dans la lumière.
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.075f
+        p.color = cire.ombre
+        c.drawCircle(0.02f, 0.03f, 0.88f, p)
+        p.color = 0x55FFFFFF
+        p.strokeWidth = 0.04f
+        c.drawArc(RectF(-0.88f, -0.88f, 0.88f, 0.88f), 160f, 140f, false, p)
+
+        // Le motif descend sous la légende ; sur la vignette, sans légende, il
+        // grandit et se centre.
+        val echelle = if (vignette) 1.25f else 1.0f
+        c.save()
+        if (!vignette) c.translate(0f, 0.12f)
+        c.scale(echelle, echelle)
+        p.color = cire.ombre
+        c.save()
+        c.translate(0.025f, 0.04f)
+        motif(c, p, true)
+        c.restore()
+        p.color = Color.WHITE
+        motif(c, p, false)
+        c.restore()
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+        p.style = Paint.Style.FILL
+        c.restore()
+
+        // La légende, en unités de carte et non sur le cercle unité : un corps
+        // de 0,2 pixel mis à l'échelle ensuite se rend mal.
+        if (!vignette) legendeEnArc(c, p, legende, r * 0.50f, r, cire.ombre)
+        c.restore()
+    }
+
+    /**
+     * Une ligne de légende courbée sur le pourtour du sceau.
+     *
+     * Le chemin tourne dans le sens horaire, le pied des lettres au rayon
+     * donné. Le corps rétrécit si la légende ne tient pas dans son arc.
+     */
+    private fun legendeEnArc(c: Canvas, p: Paint, texte: String, rayon: Float, r: Float, ombre: Int) {
+        p.shader = null
+        p.style = Paint.Style.FILL
+        p.textAlign = Paint.Align.LEFT
+        p.typeface = android.graphics.Typeface.create(android.graphics.Typeface.SERIF, android.graphics.Typeface.BOLD)
+        p.letterSpacing = 0.06f
+        val arc = 170f
+        val longueur = (Math.PI * rayon * arc / 180f).toFloat()
+        p.textSize = r * 0.29f
+        val large = p.measureText(texte)
+        if (large > longueur) p.textSize *= longueur / large
+        val chemin = Path().apply {
+            val boite = RectF(-rayon, -rayon, rayon, rayon)
+            addArc(boite, 270f - arc / 2f, arc)
+        }
+        val decalage = (longueur - p.measureText(texte)) / 2f
+        p.color = ombre
+        c.save()
+        c.translate(r * 0.02f, r * 0.03f)
+        c.drawTextOnPath(texte, chemin, decalage, 0f, p)
+        c.restore()
+        p.color = LEGENDE
+        c.drawTextOnPath(texte, chemin, decalage, 0f, p)
+        p.letterSpacing = 0f
+        p.typeface = null
+    }
+
+    /**
+     * Le sceau de la carte ouverte, à cheval sur l'angle bas droit de la
+     * fenêtre.
+     */
+    private const val SCEAU_X = 239f
+    private const val SCEAU_Y = 151f
+    private const val SCEAU_R = 31f
+    /** Sur la vignette, plus gros en proportion : il doit se lire à 110 dp. */
+    private const val SCEAU_VIGNETTE_X = 240f
+    private const val SCEAU_VIGNETTE_Y = 172f
+    private const val SCEAU_VIGNETTE_R = 34f
+
+    /**
+     * Une cire : son modelé sur le cercle unité, fabriqué une fois (le cachet
+     * se dessine à chaque trame d'une carte qu'on incline), et son ton
+     * d'ombre, qui sert au biseau, au motif et à la légende.
+     */
+    private class Cire(claire: String, base: String, ombre: String) {
+        val ombre: Int = Color.parseColor(ombre)
+        val modele = RadialGradient(
+            -0.30f, -0.38f, 1.4f,
+            intArrayOf(Color.parseColor(claire), Color.parseColor(base), this.ombre),
+            floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+    }
+
+    /** Le sceau, pris sur le rouge du drapeau. */
+    private val CIRE_ROUGE by lazy { Cire("#FF6B6B", "#D7141F", "#7A0B12") }
+    private val LEGENDE = Color.parseColor("#F6E3B4")
+
+    /** Le bord coulé de la cire, sur un cercle unité. */
+    private val BORD_CIRE: Path = Path().apply {
+        val pas = 72
+        for (i in 0..pas) {
+            val t = (2 * Math.PI * i / pas)
+            val r = 1f + 0.055f * sin(7 * t).toFloat() + 0.035f * sin(11 * t + 1.3).toFloat()
+            val x = r * cos(t).toFloat()
+            val y = r * sin(t).toFloat()
+            if (i == 0) moveTo(x, y) else lineTo(x, y)
+        }
+        close()
+    }
+
+    /** La coche frappée dans le sceau. */
+    private val COCHE: Path = Path().apply {
+        moveTo(-0.30f, 0.0f)
+        lineTo(-0.08f, 0.22f)
+        lineTo(0.32f, -0.22f)
+    }
+
+    /** La plume : une barbe en fuseau, la pointe en bas à gauche, sur le cercle unité. */
+    private val PLUME: Path = Path().apply {
+        moveTo(-0.26f, 0.28f)
+        cubicTo(-0.36f, -0.04f, 0.04f, -0.40f, 0.38f, -0.48f)
+        cubicTo(0.32f, -0.14f, 0.06f, 0.20f, -0.26f, 0.28f)
+        close()
+    }
     /** Les six paliers de Leitner, en pastilles, pour la vignette. */
     fun dessinerBoite(c: Canvas, p: Paint, boite: Int) {
         val r = BOITE_VIGNETTE
@@ -3024,6 +3309,14 @@ class CarteOrnee(
         return this
     }
 
+    /** La carte a été écrite au clavier : voir [Ornement.dessinerPlume]. */
+    private var plume = false
+
+    fun avecPlume(valeur: Boolean): CarteOrnee {
+        plume = valeur
+        return this
+    }
+
     /**
      * L'ordre est celui d'une carte imprimée : la face, ce qui rayonne
      * derrière l'illustration, l'illustration, puis le métal par-dessus.
@@ -3070,6 +3363,8 @@ class CarteOrnee(
             jeu?.let { Ornement.dessinerMedaillon(context, canvas, pinceau, it, Ornement.metal(rarete)) }
             pivoterLesBosses(canvas, pinceau)
         }
+        if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
+        if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, rarete)
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le

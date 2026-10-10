@@ -144,6 +144,17 @@
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Rarity</string>
     <string name="tri_etagere">Shelf</string>
+    <string name="tri_series">Series</string>
+    <string name="serie_nombres">Numbers</string>
+    <string name="serie_enluminures">Illustrations</string>
+    <string name="serie_jeux">The seven games</string>
+    <string name="series_resume">%1$d of %2$d places filled. Each series is complete when every place holds a card.</string>
+    <string name="serie_progression">%1$d / %2$d</string>
+    <string name="serie_complete">Series complete: %1$s</string>
+    <string name="serie_complete_court">Complete ✓</string>
+    <string name="emplacement_nombre">Missing card: the number %1$s</string>
+    <string name="emplacement_jeu">Missing card: a word won at %1$s</string>
+    <string name="emplacement_dessin">Missing card: an illustrated word</string>
     <string name="carnet_ouverture">Opening the collection…</string>
     <string name="carnet_tous">All</string>
     <string name="album_page_precedente">Previous page</string>
@@ -636,6 +647,30 @@
     <string name="accueil_glose">hello</string>
     <string name="accueil_traduction">Hello, how are you?</string>
     <string name="carte_serie">No. %1$s · %2$s</string>
+    <string name="carte_partager">📤 Share</string>
+    <string name="carte_partager_titre">Share the card</string>
+    <string name="carte_partage_pied">The Luxembourgish keyboard, free on Google Play</string>
+    <string name="carnet_recevoir">🎁 Receive</string>
+    <string name="jeu_cadeau">Gift</string>
+    <string name="carte_recue_medaillon">RECEIVED AS</string>
+    <string name="carte_ceder">🤝 Give</string>
+    <string name="ceder_titre">Give « %1$s » away?</string>
+    <string name="ceder_message">The card will leave your notebook as soon as the other phone confirms. Its learning progress and its quill stay with you.</string>
+    <string name="ceder_oui">Give</string>
+    <string name="offre_titre">Show this code to the other phone</string>
+    <string name="offre_etapes">1. On the other phone: Mäi Carnet › Receive, then scan this code.\n2. Then scan the code it shows you: the card leaves your notebook.</string>
+    <string name="offre_scanner">📷 Scan the confirmation</string>
+    <string name="offre_annuler">Keep the card</string>
+    <string name="reception_titre">« %1$s » is in your notebook</string>
+    <string name="reception_etapes">Show this code to the giver: the card will leave their notebook.</string>
+    <string name="reception_voir">See the card</string>
+    <string name="scan_invite">Point at the card\'s code</string>
+    <string name="cession_faite">« %1$s » has been given.</string>
+    <string name="cession_mauvais_code">This code is not the confirmation for this card.</string>
+    <string name="reception_invalide">This code is not a card, or it has expired.</string>
+    <string name="reception_deja">This card has already been received.</string>
+    <string name="reception_impossible">This card does not exist in the keyboard.</string>
+    <string name="carte_partage_message">I won the card « %1$s » (%2$s) on the Luxembourgish keyboard.\n\nGet it for free:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Voice typing</string>

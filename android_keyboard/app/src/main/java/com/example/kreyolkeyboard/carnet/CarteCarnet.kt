@@ -37,7 +37,9 @@ data class ContenuCarte(
     /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
     val traductionExemple: String? = null,
     /** La catégorie du LOD (« Nom féminin », « Verbe »), en ressource, ou `null`. */
-    @StringRes val categorie: Int? = null
+    @StringRes val categorie: Int? = null,
+    /** Le joueur a écrit ce mot au clavier : la carte porte la plume. */
+    val plume: Boolean = false
 )
 
 /**
@@ -123,7 +125,8 @@ object CarteCarnet {
                 // grille — mais son champ ne fait aucun doute : c'est une
                 // mesure. Les cartes de Zuelwuert forment donc une famille de
                 // couleur, au lieu du semis aléatoire qu'elles étaient.
-                blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE)
+                blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE),
+                plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
             )
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
@@ -142,7 +145,8 @@ object CarteCarnet {
             // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
             blason = Armorial.pour(context, fiche.mot, carte.forme),
             traductionExemple = exemple?.traduction,
-            categorie = TranslationDictionary.categorie(context, fiche.mot)
+            categorie = TranslationDictionary.categorie(context, fiche.mot),
+            plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
         ))
     }
 
@@ -162,6 +166,7 @@ object CarteCarnet {
     fun vignette(context: Context, c: ContenuCarte, cote: Int): View {
         val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = true, blason = c.blason)
             .avecBoite(c.carte.boite)
+            .avecPlume(c.plume)
 
         carte.posee(
             ligne(context, c.carte.forme, taille = 18f, couleur = ENCRE, gras = true),
@@ -216,7 +221,8 @@ object CarteCarnet {
             // Un numéral n'a pas de rang : son palier lit l'orthographe.
             intensite = if (c.carte.nombre != null) Rarete.intensitePourPalier(c.rarete)
             else Rarete.intensitePourRang(c.rang)
-        )
+        ).avecBoite(c.carte.boite) // pour le sceau d'une carte apprise
+            .avecPlume(c.plume)
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),
@@ -300,7 +306,7 @@ object CarteCarnet {
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
-            Ornement.SERIE_G
+            Ornement.serieG(c.rarete)
         )
         carte.posee(
             ligne(
@@ -308,7 +314,7 @@ object CarteCarnet {
                 c.rang?.let { context.getString(R.string.carte_rang, it + 1) } ?: context.getString(R.string.carte_hors_corpus),
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
-            Ornement.SERIE_D
+            Ornement.serieD(c.rarete)
         )
         return carte
     }

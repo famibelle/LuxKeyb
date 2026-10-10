@@ -239,13 +239,13 @@ class CarnetRareteTest {
     @Test
     fun `les identifiants de jeu sont uniques et stables`() {
         val ids = JeuCarte.values().map { it.id }
-        assertEquals(8, ids.size)
-        assertEquals(8, ids.toSet().size)
+        assertEquals(9, ids.size)
+        assertEquals(9, ids.toSet().size)
         assertEquals(
-            listOf("ws", "wm", "wr", "wl", "zw", "kw", "wp", "ac"),
+            listOf("ws", "wm", "wr", "wl", "zw", "kw", "wp", "ac", "cd"),
             ids
         )
-        assertEquals("la bienvenue n'est pas un jeu", 7, JeuCarte.JEUX.size)
+        assertEquals("la bienvenue et le cadeau ne sont pas des jeux", 7, JeuCarte.JEUX.size)
         JeuCarte.values().forEach {
             assertEquals("l'identifiant reste court", 2, it.id.length)
             assertEquals(it, JeuCarte.parId(it.id))
@@ -260,9 +260,9 @@ class CarnetRareteTest {
      */
     @Test
     fun `chaque jeu se distingue a l'oeil`() {
-        assertEquals(8, JeuCarte.values().map { it.emoji }.toSet().size)
-        assertEquals(8, JeuCarte.values().map { it.couleur }.toSet().size)
-        assertEquals(8, JeuCarte.values().map { it.nom }.toSet().size)
+        assertEquals(9, JeuCarte.values().map { it.emoji }.toSet().size)
+        assertEquals(9, JeuCarte.values().map { it.couleur }.toSet().size)
+        assertEquals(9, JeuCarte.values().map { it.nom }.toSet().size)
     }
 
     /**

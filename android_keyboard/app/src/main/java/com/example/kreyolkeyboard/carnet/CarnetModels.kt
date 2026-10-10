@@ -37,21 +37,28 @@ enum class JeuCarte(
     WUERTPLAZ("wp", "Wuertplaz", "🔡", 0xFF00796B.toInt()),
 
     /** Pas un jeu : la provenance de la carte offerte à la fin de l'installation. */
-    ACCUEIL("ac", "Bienvenue", "👋", 0xFFED2939.toInt());
+    ACCUEIL("ac", "Bienvenue", "👋", 0xFFED2939.toInt()),
+
+    /** Pas un jeu : une carte cédée par un autre téléphone. Voir [Cession]. */
+    CADEAU("cd", "Cadeau", "🎁", 0xFFB8860B.toInt());
 
     /**
      * Le nom affiché. Les sept jeux gardent leur nom luxembourgeois dans toutes
-     * les langues ; seule la carte de bienvenue, qui n'est pas un jeu, se traduit.
+     * les langues ; la bienvenue et le cadeau, qui ne sont pas des jeux, se
+     * traduisent.
      */
-    fun libelle(context: Context): String =
-        if (this == ACCUEIL) context.getString(R.string.jeu_accueil) else nom
+    fun libelle(context: Context): String = when (this) {
+        ACCUEIL -> context.getString(R.string.jeu_accueil)
+        CADEAU -> context.getString(R.string.jeu_cadeau)
+        else -> nom
+    }
 
     companion object {
         private val PAR_ID = values().associateBy { it.id }
         fun parId(id: String): JeuCarte? = PAR_ID[id]
 
         /** Les sept vrais jeux, dans l'ordre du hub : tout compteur de jeux part d'ici. */
-        val JEUX: List<JeuCarte> = values().filter { it != ACCUEIL }
+        val JEUX: List<JeuCarte> = values().filter { it != ACCUEIL && it != CADEAU }
     }
 }
 
@@ -136,7 +143,10 @@ object Carnet {
                         forme = forme,
                         premiereFois = o.optLong("d"),
                         rencontres = o.optInt("n", 1),
-                        numero = cartes.size + 1,
+                        // Stocké depuis la cession : retirer une carte ne doit
+                        // pas renuméroter les suivantes. Absent, c'est le rang,
+                        // qui est exactement le numéro qu'elle affichait.
+                        numero = o.optInt("k", cartes.size + 1),
                         jeux = lireJeux(o.optString("g")),
                         nombre = if (o.has("v")) o.optInt("v") else null,
                         boite = o.optInt("b", 0),
@@ -225,7 +235,7 @@ object Carnet {
                 forme = forme,
                 premiereFois = System.currentTimeMillis(),
                 rencontres = 1,
-                numero = cartes.size + 1,
+                numero = (cartes.maxOfOrNull { it.numero } ?: 0) + 1,
                 jeux = setOf(jeu),
                 nombre = nombre
             )
@@ -353,6 +363,29 @@ object Carnet {
         return rangs[forme]
     }
 
+    /**
+     * Retire une carte du carnet : elle a été cédée à un autre téléphone.
+     *
+     * Le carnet ne faisait que grandir ; la cession, décidée par le
+     * propriétaire le 2026-10-10, est la seule façon d'en sortir. Les numéros
+     * des autres cartes ne bougent pas, puisqu'ils sont stockés. Voir
+     * `CESSION-CARTES.md`. Rend vrai si la carte était là.
+     */
+    @Synchronized
+    fun retirer(context: Context, forme: String): Boolean {
+        charger(context)
+        val index = parForme[forme] ?: return false
+        cartes.removeAt(index)
+        parForme = HashMap<String, Int>().apply {
+            cartes.forEachIndexed { i, c -> put(c.forme, i) }
+        }
+        // Le cache des rangs se reconnaît à la taille du carnet : un retrait
+        // suivi d'un gain la rendrait identique pour un autre jeu de formes.
+        rangsPour = -1
+        enregistrer(context)
+        return true
+    }
+
     /** Remet le carnet à zéro. N'existe que pour les tests et le débogage. */
     @Synchronized
     fun vider(context: Context) {
@@ -377,6 +410,7 @@ object Carnet {
                 .put("d", it.premiereFois)
                 .put("n", it.rencontres)
                 .put("g", it.jeux.joinToString(",") { j -> j.id })
+                .put("k", it.numero)
             it.nombre?.let { v -> o.put("v", v) }
             // La révision n'écrit que ces deux entiers, et c'est ce qui tient
             // la promesse de [PreuveDeFrappe] : une échéance repoussée parce

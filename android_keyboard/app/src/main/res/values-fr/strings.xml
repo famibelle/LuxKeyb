@@ -140,6 +140,17 @@
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Rareté</string>
     <string name="tri_etagere">Étagère</string>
+    <string name="tri_series">Séries</string>
+    <string name="serie_nombres">Les nombres</string>
+    <string name="serie_enluminures">Les illustrations</string>
+    <string name="serie_jeux">Les sept jeux</string>
+    <string name="series_resume">%1$d emplacements remplis sur %2$d. Une série est complète quand chaque emplacement porte sa carte.</string>
+    <string name="serie_progression">%1$d / %2$d</string>
+    <string name="serie_complete">Série complète : %1$s</string>
+    <string name="serie_complete_court">Complète ✓</string>
+    <string name="emplacement_nombre">Carte manquante : le nombre %1$s</string>
+    <string name="emplacement_jeu">Carte manquante : un mot gagné à %1$s</string>
+    <string name="emplacement_dessin">Carte manquante : un mot illustré</string>
     <string name="carnet_ouverture">Ouverture du carnet…</string>
     <string name="carnet_tous">Tous</string>
     <string name="album_page_precedente">Page précédente</string>
@@ -632,6 +643,30 @@
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
     <string name="carte_serie">n° %1$s · %2$s</string>
+    <string name="carte_partager">📤 Partager</string>
+    <string name="carte_partager_titre">Partager la carte</string>
+    <string name="carte_partage_pied">Le clavier luxembourgeois, gratuit sur Google Play</string>
+    <string name="carnet_recevoir">🎁 Recevoir</string>
+    <string name="jeu_cadeau">Cadeau</string>
+    <string name="carte_recue_medaillon">REÇUE EN</string>
+    <string name="carte_ceder">🤝 Céder</string>
+    <string name="ceder_titre">Céder « %1$s » ?</string>
+    <string name="ceder_message">La carte quittera votre carnet dès que l\'autre téléphone aura confirmé. Son apprentissage et sa plume restent avec vous.</string>
+    <string name="ceder_oui">Céder</string>
+    <string name="offre_titre">Montrez ce code à l\'autre téléphone</string>
+    <string name="offre_etapes">1. Sur l\'autre téléphone : Mäi Carnet › Recevoir, puis scanner ce code.\n2. Scannez ensuite le code qu\'il affichera : la carte quittera votre carnet.</string>
+    <string name="offre_scanner">📷 Scanner la confirmation</string>
+    <string name="offre_annuler">Garder la carte</string>
+    <string name="reception_titre">« %1$s » est dans votre carnet</string>
+    <string name="reception_etapes">Montrez ce code au donneur : la carte quittera son carnet.</string>
+    <string name="reception_voir">Voir la carte</string>
+    <string name="scan_invite">Visez le code de la carte</string>
+    <string name="cession_faite">« %1$s » a été cédée.</string>
+    <string name="cession_mauvais_code">Ce code n\'est pas la confirmation de cette carte.</string>
+    <string name="reception_invalide">Ce code n\'est pas une carte, ou il a expiré.</string>
+    <string name="reception_deja">Cette carte a déjà été reçue.</string>
+    <string name="reception_impossible">Cette carte n\'existe pas dans le clavier.</string>
+    <string name="carte_partage_message">J\'ai gagné la carte « %1$s » (%2$s) avec le clavier luxembourgeois.\n\nTélécharge-le gratuitement :\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Dictée vocale</string>

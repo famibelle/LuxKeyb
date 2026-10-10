@@ -146,8 +146,11 @@ d'avoir rempli la page.
 La rareté reste lue sur la fréquence, sans exception. La maîtrise devient un
 **second axe**, porté par la carte elle-même et non par la ligne de série :
 - **Boîtes 0 à 5** : rien ne change ;
-- **Acquise** (boîte 6) : un **sceau de cire** posé sur l'agrafe du cadre, à la
-  couleur du carnet (`Carnet.COULEUR`). Le sceau est le même à tous les paliers,
+- **Acquise** (boîte 6) : un **sceau de cire rouge** posé sur l'angle bas droit
+  de l'illustration, « GELÉIERT » en arc au-dessus d'une coche, sans
+  traduction ; sur la vignette, la cire et la coche seules. Dessiné d'après la
+  maquette du propriétaire du 10 octobre 2026, qui remplace le premier sceau à
+  la couleur du carnet. Le sceau est le même à tous les paliers,
   pour que les deux échelles ne se mélangent pas. Une commune acquise et une
   très rare acquise portent le même sceau sur des cadres différents.
 
@@ -161,7 +164,20 @@ Une seconde marque, une **plume**, distingue la carte qui est montée parce
 que le mot a été écrit dans un vrai message (`PreuveDeFrappe`). Aucune application
 de cartes ne peut proposer ça. Elle est stockée dans `filesDir`, à côté de
 `carnet_vu.json`, et jamais dans les préférences. Les deux questions qu'elle
-posait :
+posait sont tranchées plus bas.
+
+Livrée le 10 octobre 2026. D'abord un second cachet de cire, bleu, en miroir
+du sceau ; deux cachets sur l'illustration surchargeaient la carte, et le
+propriétaire l'a remplacé le jour même par une **petite plume gravée dans le
+métal du cadre**, au centre de la marge basse, sur l'axe de la carte. Posée
+d'abord devant le numéro de série, elle touchait l'arrondi du coin. Une mention d'inventaire, pas un
+ornement. La liste des formes vit dans `files/carnet_plumes.json` et ne fait que grandir.
+Une limite à connaître : la preuve n'est lue qu'au lancement d'une révision et
+sur les seules cartes dues ce jour-là (c'est ainsi que `PreuveDeFrappe`
+fonctionne depuis la 22.0.0). Un mot écrit au clavier ne reçoit donc sa plume
+qu'à sa prochaine échéance.
+
+Les deux questions :
 
 - **Le stockage.** La plume devrait être mémorisée, alors que `PreuveDeFrappe`
   a été conçu pour que le carnet ne reçoive *que* l'échéance. La règle de

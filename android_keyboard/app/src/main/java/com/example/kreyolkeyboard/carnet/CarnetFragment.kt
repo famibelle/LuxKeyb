@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kreyolkeyboard.TranslationDictionary
 import com.example.kreyolkeyboard.applicatifDansLaLangue
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 /**
  * Le carnet : toutes les cartes gagnées, consultables en dehors d'une partie.
@@ -73,6 +75,9 @@ class CarnetFragment : DialogFragment() {
          */
         private const val LARGEUR_CIBLE_VIGNETTE_DP = 165f
 
+        /** La case d'une page de série, plus serrée qu'une vignette de la grille. */
+        private const val LARGEUR_CASE_SERIE_DP = 110f
+
         /** Couleur des pages de l'album : un papier crème, pas le gris de l'écran. */
         private val PAPIER = Color.parseColor("#FFFBF2")
         /** La couverture de l'album, sur laquelle les pages sont posées. */
@@ -93,9 +98,13 @@ class CarnetFragment : DialogFragment() {
      * tenant pour qu'on les compare, la boîte en ouvre un pour qu'on le lise.
      * Ce ne sont pas deux chemins vers le même écran mais deux questions,
      * « où en suis-je » et « qu'y a-t-il là-dedans ».
+     *
+     * [SERIES] est une disposition aussi : les pages d'album à emplacements
+     * vides de [Series]. Voir [remplirSeries].
      */
     private enum class Tri(@StringRes val libelle: Int) {
-        RECENT(R.string.tri_recent), ALPHA(R.string.tri_alpha), RARETE(R.string.tri_rarete), ETAGERE(R.string.tri_etagere)
+        RECENT(R.string.tri_recent), ALPHA(R.string.tri_alpha), RARETE(R.string.tri_rarete),
+        ETAGERE(R.string.tri_etagere), SERIES(R.string.tri_series)
     }
 
     private var tri = Tri.RECENT
@@ -121,6 +130,22 @@ class CarnetFragment : DialogFragment() {
     private lateinit var defilementJeux: HorizontalScrollView
 
     private val accent = Carnet.COULEUR
+
+    // ------------------------------------------------------------ la cession
+
+    /** Ce que le prochain scan doit lire : une offre à recevoir, ou la réception de notre offre. */
+    private enum class Scan { RECEVOIR, CONFIRMER }
+
+    private var scanEnCours = Scan.RECEVOIR
+
+    /** L'offre affichée par ce téléphone, tant qu'elle attend sa réception. */
+    private var offreEnCours: Cession.Offre? = null
+
+    private var vueCession: VueCession? = null
+
+    private val lanceurScan = registerForActivityResult(ScanContract()) { resultat ->
+        resultat.contents?.let { surScan(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -169,6 +194,20 @@ class CarnetFragment : DialogFragment() {
                 textSize = 18f
                 setTypeface(null, Typeface.BOLD)
                 setTextColor(Color.WHITE)
+            })
+            // Recevoir une carte qu'un autre téléphone cède : voir [Cession].
+            addView(TextView(ctx).apply {
+                text = getString(R.string.carnet_recevoir)
+                textSize = 14f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.WHITE)
+                setPadding(dp(12f), dp(6f), dp(12f), dp(6f))
+                background = GradientDrawable().apply {
+                    cornerRadius = 18f * d
+                    setStroke(dp(1.5f), 0xAAFFFFFF.toInt())
+                }
+                isClickable = true
+                setOnClickListener { scanner(Scan.RECEVOIR) }
             })
             addView(TextView(ctx).apply {
                 text = "✕"
@@ -286,7 +325,8 @@ class CarnetFragment : DialogFragment() {
      * les deux sont faits ici, une fois, avant que quoi que ce soit
      * s'affiche.
      */
-    private fun chargerEnFond() {
+    /** [ouvrir] : la forme dont la carte s'ouvre une fois le carnet rechargé (une carte reçue). */
+    private fun chargerEnFond(ouvrir: String? = null) {
         val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
         Thread {
@@ -304,6 +344,7 @@ class CarnetFragment : DialogFragment() {
                 construireFiltres()
                 surlignerTri()
                 remplirGrille()
+                ouvrir?.let { f -> prets.firstOrNull { it.carte.forme == f }?.let { montrerCarte(it) } }
             }
         }.start()
     }
@@ -463,6 +504,19 @@ class CarnetFragment : DialogFragment() {
             montrerAlbum(false)
             remplirEtagere(ctx, visibles, cote, colonnes)
             return
+        }
+
+        if (tri == Tri.SERIES) {
+            // Les séries portent sur toute la collection : un filtre par jeu
+            // viderait la série des sept jeux de six emplacements sur sept.
+            montrerAlbum(false)
+            defilementJeux.visibility = View.GONE
+            remplirSeries(ctx)
+            return
+        }
+        // Le filtre revient en quittant les séries, s'il a lieu d'être.
+        if (defilementJeux.visibility == View.GONE && ligneJeux.childCount > 0) {
+            defilementJeux.visibility = View.VISIBLE
         }
 
         val ordonnes = when (tri) {
@@ -874,6 +928,86 @@ class CarnetFragment : DialogFragment() {
      */
 
 
+    /**
+     * Les séries, page après page : un titre et son compte, puis la grille où
+     * les cartes gagnées occupent leur place et les autres attendent la leur.
+     *
+     * Une carte se feuillette parmi les cartes de sa série. Un emplacement
+     * rempli par plusieurs cartes (un dessin partagé) montre la première
+     * gagnée : les autres sont dans le carnet, la série n'a qu'une place.
+     */
+    private fun remplirSeries(ctx: Context) {
+        val d = resources.displayMetrics.density
+        val gouttiere = (8 * d).toInt()
+        // Une page d'album serre ses cases : à la largeur des vignettes de la
+        // grille, les cent quatre dessins feraient cinquante rangées. Trois
+        // colonnes au moins sur un téléphone, plus sur un écran large.
+        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
+        val colonnes = ((dispo + gouttiere) / ((LARGEUR_CASE_SERIE_DP * d).toInt() + gouttiere))
+            .coerceAtLeast(3)
+        val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
+        val series = Series.toutes(ctx, contenus)
+        val remplis = series.sumOf { it.remplis }
+        val total = series.sumOf { it.total }
+        tvResume.text = getString(R.string.series_resume, remplis, total)
+
+        series.forEach { a ->
+            conteneurGrille.addView(LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.BOTTOM
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { setMargins(0, (16 * d).toInt(), 0, (10 * d).toInt()) }
+                addView(TextView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                    text = getString(a.serie.titre)
+                    textSize = 15f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(accent)
+                })
+                addView(TextView(ctx).apply {
+                    text = if (a.complete) getString(R.string.serie_complete_court)
+                    else getString(R.string.serie_progression, a.remplis, a.total)
+                    textSize = 13f
+                    setTypeface(null, if (a.complete) Typeface.BOLD else Typeface.NORMAL)
+                    setTextColor(if (a.complete) accent else Color.parseColor("#616161"))
+                })
+            })
+
+            val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
+            var ligne: LinearLayout? = null
+            a.emplacements.forEachIndexed { i, e ->
+                val posColonne = i % colonnes
+                if (posColonne == 0) {
+                    ligne = LinearLayout(ctx).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        clipChildren = false
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = gouttiere }
+                    }
+                    conteneurGrille.addView(ligne)
+                }
+                val premiere = e.cartes.firstOrNull()
+                val vue = if (premiere != null) {
+                    CarteCarnet.vignette(ctx, premiere, cote).apply {
+                        isClickable = true
+                        setOnClickListener { montrerCarte(premiere, ordre) }
+                    }
+                } else {
+                    EmplacementVide(ctx, a.serie, e.cle)
+                }
+                ligne?.addView(vue.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        cote, LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
+                })
+            }
+        }
+    }
+
     /** Referme la carte ouverte. Rend `false` s'il n'y en avait aucune. */
     private fun fermerCarte(): Boolean {
         val l = lecteur?.takeIf { it.ouvert } ?: return false
@@ -922,8 +1056,154 @@ class CarnetFragment : DialogFragment() {
         val feuillet = ordre.ifEmpty { listOf(c) }
         lecteur = LecteurCartes(
             racine, feuillet, feuillet.indexOf(c).coerceAtLeast(0),
-            surFermeture = { lecteur = null }
+            surFermeture = { lecteur = null },
+            surCeder = { proposerCession(it) }
         ).also { it.ouvrir() }
+    }
+
+    /** Demande confirmation, puis affiche l'offre de [c]. */
+    private fun proposerCession(c: ContenuCarte) {
+        val ctx = context ?: return
+        android.app.AlertDialog.Builder(ctx)
+            .setTitle(getString(R.string.ceder_titre, c.carte.forme))
+            .setMessage(R.string.ceder_message)
+            .setPositiveButton(R.string.ceder_oui) { _, _ -> montrerOffre(c) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun montrerOffre(c: ContenuCarte) {
+        val offre = Cession.Offre(
+            Cession.nouveauJeton(),
+            System.currentTimeMillis() / 1000 + Cession.VALIDITE_S,
+            c.carte.forme,
+            c.carte.nombre
+        )
+        offreEnCours = offre
+        cession().montrer(
+            titre = getString(R.string.offre_titre, c.carte.forme),
+            etapes = getString(R.string.offre_etapes),
+            code = Cession.offre(offre),
+            principal = getString(R.string.offre_scanner),
+            surPrincipal = { scanner(Scan.CONFIRMER) },
+            secondaire = getString(R.string.offre_annuler),
+            surSecondaire = {
+                offreEnCours = null
+                vueCession?.fermer()
+            }
+        )
+    }
+
+    private fun cession(): VueCession = vueCession ?: VueCession(racine).also { vueCession = it }
+
+    /**
+     * Ouvre le scanner. Un build de debug lit plutôt `files/scan_debug.txt`
+     * s'il existe : l'émulateur n'a pas de caméra qui voie un autre écran.
+     * Jamais en release.
+     */
+    private fun scanner(mode: Scan) {
+        val ctx = context ?: return
+        scanEnCours = mode
+        if (com.example.kreyolkeyboard.BuildConfig.DEBUG) {
+            val essai = java.io.File(ctx.filesDir, "scan_debug.txt")
+            if (essai.exists()) {
+                val texte = essai.readText()
+                essai.delete()
+                surScan(texte)
+                return
+            }
+        }
+        lanceurScan.launch(ScanOptions().apply {
+            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            setPrompt(getString(R.string.scan_invite))
+            setBeepEnabled(false)
+            setOrientationLocked(false)
+        })
+    }
+
+    private fun surScan(texte: String) {
+        when (scanEnCours) {
+            Scan.CONFIRMER -> confirmer(texte)
+            Scan.RECEVOIR -> recevoir(texte)
+        }
+    }
+
+    /** Le donneur a scanné une réception : si c'est celle de son offre, la carte part. */
+    private fun confirmer(texte: String) {
+        val ctx = context?.applicatifDansLaLangue() ?: return
+        val offre = offreEnCours ?: return
+        if (Cession.lireReception(texte) != offre.jeton) {
+            android.widget.Toast.makeText(ctx, R.string.cession_mauvais_code, android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
+        offreEnCours = null
+        vueCession?.fermer()
+        lecteur?.fermer()
+        Thread {
+            Carnet.retirer(ctx, offre.forme)
+            PreuveDeFrappe.retirerPlume(ctx, offre.forme)
+            Handler(Looper.getMainLooper()).post {
+                if (!isAdded) return@post
+                android.widget.Toast.makeText(
+                    ctx, getString(R.string.cession_faite, offre.forme), android.widget.Toast.LENGTH_LONG
+                ).show()
+                chargerEnFond()
+            }
+        }.start()
+    }
+
+    /** Le receveur a scanné une offre : la carte entre, et la réception s'affiche. */
+    private fun recevoir(texte: String) {
+        val ctx = context?.applicatifDansLaLangue() ?: return
+        fun refus(message: Int) =
+            android.widget.Toast.makeText(ctx, message, android.widget.Toast.LENGTH_LONG).show()
+        val offre = Cession.lireOffre(texte, System.currentTimeMillis() / 1000)
+            ?: return refus(R.string.reception_invalide)
+        if (Cession.dejaRecue(ctx, offre.jeton)) return refus(R.string.reception_deja)
+        val principal = Handler(Looper.getMainLooper())
+        Thread {
+            val possible = cartePossible(ctx, offre)
+            if (possible) {
+                Carnet.ajouter(ctx, offre.forme, JeuCarte.CADEAU, offre.nombre)
+                Cession.noterRecue(ctx, offre.jeton)
+            }
+            principal.post {
+                if (!isAdded) return@post
+                if (!possible) return@post refus(R.string.reception_impossible)
+                cession().montrer(
+                    titre = getString(R.string.reception_titre, offre.forme),
+                    etapes = getString(R.string.reception_etapes),
+                    code = Cession.reception(offre.jeton),
+                    principal = getString(R.string.reception_voir),
+                    surPrincipal = {
+                        vueCession?.fermer()
+                        chargerEnFond(ouvrir = offre.forme)
+                    },
+                    secondaire = getString(R.string.fermer),
+                    surSecondaire = {
+                        vueCession?.fermer()
+                        chargerEnFond()
+                    }
+                )
+            }
+        }.start()
+    }
+
+    /**
+     * Une offre ne peut porter qu'une carte que les jeux auraient pu donner :
+     * un mot glosé et non écarté, un numéral bien écrit, ou la carte de
+     * bienvenue. Une offre se fabrique (rien ne la signe), mais elle ne
+     * fabrique pas de mot.
+     */
+    private fun cartePossible(ctx: Context, offre: Cession.Offre): Boolean {
+        if (com.example.kreyolkeyboard.MotsEcartes.estEcarte(offre.forme)) return false
+        offre.nombre?.let { n ->
+            return n in 0..com.example.kreyolkeyboard.zuelen.ZuelenSpeller.MAXIMUM &&
+                com.example.kreyolkeyboard.zuelen.ZuelenSpeller.enLettres(n) == offre.forme
+        }
+        if (offre.forme == CarteAccueil.FORME) return true
+        TranslationDictionary.charger(ctx)
+        return TranslationDictionary.fiche(ctx, offre.forme).glose.isNotEmpty()
     }
 
     override fun onStart() {
@@ -963,6 +1243,14 @@ class CarnetFragment : DialogFragment() {
                     true
                 }
                 code != KeyEvent.KEYCODE_BACK -> false
+                vueCession?.ouverte == true -> {
+                    // Fermer l'offre, c'est garder la carte.
+                    if (evenement.action == KeyEvent.ACTION_UP) {
+                        offreEnCours = null
+                        vueCession?.fermer()
+                    }
+                    true
+                }
                 lecteur == null -> false
                 else -> {
                     if (evenement.action == KeyEvent.ACTION_UP) {
