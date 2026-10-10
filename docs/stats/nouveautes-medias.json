@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "34.4.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_activation_etapes.png",
+        "alt": "Deux écrans de « Configuration rapide » sur un téléphone. À gauche, 0/3 : l'étape 1 « Activer le clavier » est ouverte, avec l'encadré « Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour » et le bouton « Ouvrir les réglages Android ». À droite, 3/3 : les trois étapes sont cochées, « Moien alleguer » est écrit dans le champ d'essai, et le clavier luxembourgeois propose « alleguerten », « alleguer ».",
+        "legende": "Le bouton mène droit aux réglages d'Android, et l'étape 1 dit quoi faire de l'avertissement. Dès votre premier mot, la dernière étape se coche."
+      },
+      {
+        "image": "Screenshots/lux_activation_bienvenue.png",
+        "alt": "À gauche, la pochette « Bienvenue » ouverte sur la carte « Moien », marquée « Nouvelle carte », avec son sens « bonjour » et l'exemple « Moien, wéi geet et? ». À droite, l'application au retour des réglages d'Android : l'étape 1 est cochée, et la fenêtre « Sélectionnez le mode de saisie » est ouverte avec Clavier Samsung, Gboard et Lëtzebuergesch Clavier.",
+        "legende": "La carte « Moien » arrive après votre premier mot, quand vous faites une pause. Au retour des réglages, l'application ouvre d'elle-même le choix du clavier."
+      }
+    ]
+  },
   "33.2.0": {
     "images": [
       {
