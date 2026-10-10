@@ -2169,22 +2169,28 @@ object Ornement {
         c.drawRoundRect(RectF(0f, 0f, LARGEUR, haut), RAYON, RAYON, p)
         p.shader = null
     }
-
     /**
      * Le sceau de cire d'une carte apprise : posé sur l'angle bas droit de
      * l'illustration, il mord sur la fenêtre comme un cachet sur un document.
      *
+     * Dessiné d'après la maquette du propriétaire (2026-10-10) : cire rouge,
+     * « GELÉIERT » en arc dans le haut, une coche frappée au centre.
+     * « Geléiert » est le participe de `léieren` (apprendre), attesté au LOD ;
+     * il reste en luxembourgeois dans toutes les langues, comme le nom des
+     * jeux, et sans traduction (décision du propriétaire, même jour).
+     *
      * C'est un **second axe**, et il ne touche à rien du premier : la rareté
-     * reste lue sur la fréquence, dans le métal du cadre. Le sceau est donc le
-     * même à tous les paliers, à la couleur du carnet ; une commune apprise et
-     * une très rare apprise portent le même cachet sur deux cadres différents.
-     * Voir `GAMIFICATION-CARNET.md`, section 4.
+     * reste lue sur la fréquence, dans le métal du cadre. Le sceau est le même
+     * à tous les paliers ; une commune apprise et une très rare apprise portent
+     * le même cachet sur deux cadres différents. Voir `GAMIFICATION-CARNET.md`.
      *
      * La cire n'est pas un disque : son bord coule, d'où le rayon modulé par
-     * deux sinus de fréquences premières entre elles, qui ne se répètent pas
-     * sur le tour. Un anneau frappé, plus sombre, et une coche en relief (le
-     * creux d'abord, la lèvre éclairée ensuite, lumière d'en haut à gauche
-     * comme tout le carnet) disent que la cire a été pressée.
+     * deux sinus de fréquences premières entre elles. Un anneau en biseau (une
+     * lèvre sombre, une lèvre éclairée) dit que la cire a été pressée, et la
+     * lumière vient d'en haut à gauche comme dans tout le carnet.
+     *
+     * La vignette n'a que la cire et la coche : à 110 dp, deux lignes de
+     * légende seraient une bouillie rouge.
      */
     fun dessinerSceau(c: Canvas, p: Paint, vignette: Boolean) {
         val cx = if (vignette) SCEAU_VIGNETTE_X else SCEAU_X
@@ -2192,54 +2198,110 @@ object Ornement {
         val r = if (vignette) SCEAU_VIGNETTE_R else SCEAU_R
         c.save()
         c.translate(cx, cy)
-        c.scale(r, r)
 
+        // La cire et ses reliefs sont tracés sur le cercle unité.
+        c.save()
+        c.scale(r, r)
         p.style = Paint.Style.FILL
         p.shader = null
-        // L'ombre portée, décalée vers le bas à droite.
-        p.color = 0x55000000
+        p.color = 0x59000000
         c.save()
-        c.translate(0.07f, 0.10f)
+        c.translate(0.07f, 0.11f)
         c.drawPath(BORD_CIRE, p)
         c.restore()
-
+        // Pinceau opaque avant le dégradé : l'alpha de l'ombre, resté sur le
+        // pinceau, multiplierait la cire et la rendrait translucide.
+        p.color = Color.BLACK
         p.shader = CIRE
         c.drawPath(BORD_CIRE, p)
         p.shader = null
 
+        // Le biseau : la lèvre basse dans l'ombre, la haute dans la lumière.
         p.style = Paint.Style.STROKE
-        p.strokeWidth = 0.07f
-        p.color = assombrir(Carnet.COULEUR, 0.40f)
-        c.drawCircle(0f, 0f, 0.66f, p)
-        p.color = 0x40FFFFFF
-        p.strokeWidth = 0.035f
-        c.drawCircle(0.025f, 0.035f, 0.70f, p)
+        p.strokeWidth = 0.075f
+        p.color = CIRE_OMBRE
+        c.drawCircle(0.02f, 0.03f, 0.88f, p)
+        p.color = 0x55FFFFFF
+        p.strokeWidth = 0.04f
+        c.drawArc(RectF(-0.88f, -0.88f, 0.88f, 0.88f), 160f, 140f, false, p)
 
+        // Sans la ligne du bas, la coche descend et prend la place libérée.
+        val coche = if (vignette) 1.25f else 1.0f
+        c.save()
+        if (!vignette) c.translate(0f, 0.12f)
+        c.scale(coche, coche)
         p.strokeCap = Paint.Cap.ROUND
         p.strokeJoin = Paint.Join.ROUND
         p.strokeWidth = 0.15f
-        p.color = assombrir(Carnet.COULEUR, 0.55f)
-        c.drawPath(COCHE, p)
-        p.color = eclaircir(Carnet.COULEUR, 0.55f)
-        p.strokeWidth = 0.08f
+        p.color = CIRE_OMBRE
         c.save()
-        c.translate(0.03f, 0.04f)
+        c.translate(0.025f, 0.04f)
+        c.drawPath(COCHE, p)
+        c.restore()
+        p.color = Color.WHITE
+        p.strokeWidth = 0.12f
         c.drawPath(COCHE, p)
         c.restore()
         p.strokeCap = Paint.Cap.BUTT
         p.strokeJoin = Paint.Join.MITER
         p.style = Paint.Style.FILL
         c.restore()
+
+        // La légende, en unités de carte et non sur le cercle unité : un corps
+        // de 0,2 pixel mis à l'échelle ensuite se rend mal.
+        if (!vignette) {
+            legendeEnArc(c, p, "GELÉIERT", r * 0.50f, r)
+        }
+        c.restore()
+    }
+
+    /**
+     * Une ligne de légende courbée sur le pourtour du sceau.
+     *
+     * Le chemin tourne dans le sens horaire, le pied des lettres au rayon
+     * donné. Le corps rétrécit si la légende ne tient pas dans son arc.
+     */
+    private fun legendeEnArc(c: Canvas, p: Paint, texte: String, rayon: Float, r: Float) {
+        p.shader = null
+        p.style = Paint.Style.FILL
+        p.textAlign = Paint.Align.LEFT
+        p.typeface = android.graphics.Typeface.create(android.graphics.Typeface.SERIF, android.graphics.Typeface.BOLD)
+        p.letterSpacing = 0.06f
+        val arc = 170f
+        val longueur = (Math.PI * rayon * arc / 180f).toFloat()
+        p.textSize = r * 0.29f
+        val large = p.measureText(texte)
+        if (large > longueur) p.textSize *= longueur / large
+        val chemin = Path().apply {
+            val boite = RectF(-rayon, -rayon, rayon, rayon)
+            addArc(boite, 270f - arc / 2f, arc)
+        }
+        val decalage = (longueur - p.measureText(texte)) / 2f
+        p.color = CIRE_OMBRE
+        c.save()
+        c.translate(r * 0.02f, r * 0.03f)
+        c.drawTextOnPath(texte, chemin, decalage, 0f, p)
+        c.restore()
+        p.color = LEGENDE
+        c.drawTextOnPath(texte, chemin, decalage, 0f, p)
+        p.letterSpacing = 0f
+        p.typeface = null
     }
 
     /** Le sceau de la carte ouverte, à cheval sur l'angle bas droit de la fenêtre. */
-    private const val SCEAU_X = 238f
-    private const val SCEAU_Y = 160f
-    private const val SCEAU_R = 25f
+    private const val SCEAU_X = 239f
+    private const val SCEAU_Y = 151f
+    private const val SCEAU_R = 31f
     /** Sur la vignette, plus gros en proportion : il doit se lire à 110 dp. */
     private const val SCEAU_VIGNETTE_X = 240f
     private const val SCEAU_VIGNETTE_Y = 172f
     private const val SCEAU_VIGNETTE_R = 34f
+
+    /** La cire, prise sur le rouge du drapeau, et ses deux tons de relief. */
+    private val CIRE_CLAIRE = Color.parseColor("#FF6B6B")
+    private val CIRE_ROUGE = Color.parseColor("#D7141F")
+    private val CIRE_OMBRE = Color.parseColor("#7A0B12")
+    private val LEGENDE = Color.parseColor("#F6E3B4")
 
     /** Le bord coulé de la cire, sur un cercle unité. */
     private val BORD_CIRE: Path = Path().apply {
@@ -2260,19 +2322,18 @@ object Ornement {
      */
     private val CIRE by lazy {
         RadialGradient(
-            -0.30f, -0.35f, 1.35f,
-            intArrayOf(eclaircir(Carnet.COULEUR, 0.35f), Carnet.COULEUR, assombrir(Carnet.COULEUR, 0.45f)),
-            floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
+            -0.30f, -0.38f, 1.4f,
+            intArrayOf(CIRE_CLAIRE, CIRE_ROUGE, CIRE_OMBRE),
+            floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
         )
     }
 
     /** La coche frappée dans la cire. */
     private val COCHE: Path = Path().apply {
-        moveTo(-0.32f, 0.02f)
-        lineTo(-0.08f, 0.26f)
-        lineTo(0.34f, -0.24f)
+        moveTo(-0.30f, 0.0f)
+        lineTo(-0.08f, 0.22f)
+        lineTo(0.32f, -0.22f)
     }
-
     /** Les six paliers de Leitner, en pastilles, pour la vignette. */
     fun dessinerBoite(c: Canvas, p: Paint, boite: Int) {
         val r = BOITE_VIGNETTE

@@ -146,8 +146,11 @@ d'avoir rempli la page.
 La rareté reste lue sur la fréquence, sans exception. La maîtrise devient un
 **second axe**, porté par la carte elle-même et non par la ligne de série :
 - **Boîtes 0 à 5** : rien ne change ;
-- **Acquise** (boîte 6) : un **sceau de cire** posé sur l'agrafe du cadre, à la
-  couleur du carnet (`Carnet.COULEUR`). Le sceau est le même à tous les paliers,
+- **Acquise** (boîte 6) : un **sceau de cire rouge** posé sur l'angle bas droit
+  de l'illustration, « GELÉIERT » en arc au-dessus d'une coche, sans
+  traduction ; sur la vignette, la cire et la coche seules. Dessiné d'après la
+  maquette du propriétaire du 10 octobre 2026, qui remplace le premier sceau à
+  la couleur du carnet. Le sceau est le même à tous les paliers,
   pour que les deux échelles ne se mélangent pas. Une commune acquise et une
   très rare acquise portent le même sceau sur des cadres différents.
 
