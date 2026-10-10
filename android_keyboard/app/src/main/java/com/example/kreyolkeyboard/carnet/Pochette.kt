@@ -88,6 +88,7 @@ object Pochette {
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
+            Carnet.preparer(ctx)
             val connues = Carnet.cartes(ctx).associateBy { it.forme }
             val contenus = distinctes.mapNotNull { connues[it] }
                 .map { CarteCarnet.contenu(ctx, it) }

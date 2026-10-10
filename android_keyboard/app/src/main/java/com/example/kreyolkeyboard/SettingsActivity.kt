@@ -6760,15 +6760,18 @@ class SettingsActivity : AppCompatActivity() {
             btnSubmit.isEnabled = false
 
             val mot = targetWord
-            val neuve = won && Carnet.ajouter(requireContext(), mot, JeuCarte.WUERTRIET)
+            // La grille est en minuscules, la carte prend la forme du
+            // dictionnaire : « Affer », pas une seconde carte « affer ».
+            val forme = WuertrietData.formeCanonique(requireContext(), mot)
+            val neuve = won && Carnet.ajouter(requireContext(), forme, JeuCarte.WUERTRIET)
             if (won) Pochette.rafraichir(boutonCarnet, requireContext())
 
             enleverPochette()
             Pochette.ouvrir(
                 fragment = this,
                 jeu = JeuCarte.WUERTRIET,
-                formes = if (won) listOf(mot) else emptyList(),
-                neuves = if (neuve) setOf(mot) else emptySet(),
+                formes = if (won) listOf(forme) else emptyList(),
+                neuves = if (neuve) setOf(forme) else emptySet(),
                 encoreValide = { targetWord == mot },
                 surVue = { pochette = it },
                 surFin = { if (isAdded && targetWord == mot) montrerLeBilan(won) }

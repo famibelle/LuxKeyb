@@ -332,6 +332,7 @@ class CarnetFragment : DialogFragment() {
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
+            Carnet.preparer(ctx)
             // Donner une échéance aux cartes qui n'en ont pas, ici et non à la
             // capture : c'est ce qui étale un carnet déjà rempli au lieu de le
             // rendre entièrement dû le même jour. Voir [Carnet.planifier].
