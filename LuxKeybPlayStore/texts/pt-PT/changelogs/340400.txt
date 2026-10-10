@@ -1,0 +1,4 @@
+⚡ Instalação mais rápida: um ecrã a menos, e a aplicação deixa-o experimentar o teclado sem o interromper. A sua primeira palavra conclui o último passo.
+🎙️ Dite em luxemburguês: toque no microfone e fale, o texto escreve-se com pontuação. Reconhecimento pelo LuxASR, da Universidade do Luxemburgo.
+🔒 O que escreve continua a não sair do seu telemóvel. Só o ditado envia a sua voz.
+🌍 Escolha a língua da aplicação no fundo das Definições do teclado.

@@ -9,6 +9,22 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.4.0] - 2026-10-10
+
+Installer le clavier demande moins d'étapes, et l'appli ne vous interrompt plus pendant que vous l'essayez.
+
+### ✨ Nouveautés
+
+- **Une étape de moins à l'installation.** Le bouton d'activation ouvre directement les réglages d'Android, sans l'écran d'explication qui le précédait. L'étape 1 dit simplement quoi faire de l'avertissement d'Android : appuyer sur OK, deux fois si un second message suit, puis sur Retour.
+- **Le clavier introuvable dans la liste ?** L'étape 2 rappelle de faire défiler : il est souvent tout en bas.
+- **Votre premier mot compte.** L'étape 3 se coche dès que vous avez tapé un mot, et le bandeau vert passe aussitôt à « Tout est prêt ».
+- **La carte de bienvenue attend son moment.** Elle s'ouvre après votre premier mot, quand vous faites une pause, et non plus à l'instant où vous choisissez le clavier. La proposition de partager l'appli vient à l'ouverture suivante, seule.
+
+### 🐛 Corrections
+
+- Dans le champ d'essai, « Moien » et les autres mots luxembourgeois ne sont plus soulignés en rouge par le correcteur d'Android.
+- Le bandeau « Ça vous plaît ? Installez-le » disparaît une fois le clavier activé. Ce bandeau et le bouton du clavier de démonstration mènent à l'étape qui reste à faire, et non plus toujours à la première.
+
 ## [34.3.1] - 2026-10-08
 
 ### 🐛 Corrections
