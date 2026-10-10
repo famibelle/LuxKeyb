@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 
@@ -30,7 +31,13 @@ internal class LecteurCartes(
     private val cartes: List<ContenuCarte>,
     private var rang: Int,
     private val surChangement: (Int) -> Unit = {},
-    private val surFermeture: () -> Unit = {}
+    private val surFermeture: () -> Unit = {},
+    /**
+     * Céder la carte montrée à un autre téléphone (`CESSION-CARTES.md`).
+     * `null` là où la cession n'a pas de sens, comme la boîte de révision :
+     * le bouton n'apparaît pas.
+     */
+    private val surCeder: ((ContenuCarte) -> Unit)? = null
 ) {
     private val ctx = hote.context
     private val d = ctx.resources.displayMetrics.density
@@ -70,30 +77,26 @@ internal class LecteurCartes(
         porte = p
 
         // Partager la carte montrée : un geste du joueur, la seule sortie du
-        // carnet hors de l'appareil. Voir [PartageCarte].
-        v.addView(TextView(ctx).apply {
-            text = ctx.getString(R.string.carte_partager)
-            textSize = 15f
-            setTypeface(null, android.graphics.Typeface.BOLD)
-            setTextColor(Color.WHITE)
+        // carnet hors de l'appareil avec la cession. Voir [PartageCarte] et
+        // [Cession].
+        val boutons = LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
-            val h = (22 * d).toInt()
-            val vert = (11 * d).toInt()
-            setPadding(h, vert, h, vert)
-            background = GradientDrawable().apply {
-                cornerRadius = 24f * d
-                setColor(Carnet.COULEUR)
-                setStroke((1.5f * d).toInt(), 0x66FFFFFF)
-            }
-            isClickable = true
-            isFocusable = true
-            setOnClickListener { PartageCarte.partager(ctx, cartes[rang]) }
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
             ).apply { bottomMargin = (22 * d).toInt() }
+        }
+        boutons.addView(pastille(ctx.getString(R.string.carte_partager)) {
+            PartageCarte.partager(ctx, cartes[rang])
         })
+        surCeder?.let { ceder ->
+            boutons.addView(pastille(ctx.getString(R.string.carte_ceder)) { ceder(cartes[rang]) }.apply {
+                (layoutParams as LinearLayout.LayoutParams).marginStart = (12 * d).toInt()
+            })
+        }
+        v.addView(boutons)
 
         // Les flèches, sur tablette seulement : un téléphone n'a pas la marge
         // pour les poser sans couvrir la carte, et le glissé y suffit.
@@ -109,6 +112,28 @@ internal class LecteurCartes(
         v.alpha = 0f
         v.animate().alpha(1f).setDuration(160).start()
         poser(0)
+    }
+
+    private fun pastille(libelle: String, action: () -> Unit) = TextView(ctx).apply {
+        text = libelle
+        textSize = 15f
+        setTypeface(null, android.graphics.Typeface.BOLD)
+        setTextColor(Color.WHITE)
+        gravity = Gravity.CENTER
+        val h = (22 * d).toInt()
+        val vert = (11 * d).toInt()
+        setPadding(h, vert, h, vert)
+        background = GradientDrawable().apply {
+            cornerRadius = 24f * d
+            setColor(Carnet.COULEUR)
+            setStroke((1.5f * d).toInt(), 0x66FFFFFF)
+        }
+        isClickable = true
+        isFocusable = true
+        setOnClickListener { action() }
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        )
     }
 
     private fun fleche(signe: String, @StringRes description: Int, pas: Int, cote: Int) =

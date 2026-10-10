@@ -184,6 +184,24 @@ object PreuveDeFrappe {
         }
     }
 
+    /**
+     * Retire la plume d'une carte cédée : la plume dit que **ce joueur** a
+     * écrit le mot, elle ne suit pas la carte. Si le mot revient un jour, il
+     * devra la regagner. Voir `CESSION-CARTES.md`.
+     */
+    @Synchronized
+    fun retirerPlume(context: Context, forme: String) {
+        val avant = lirePlumes(context)
+        if (forme !in avant) return
+        val apres = avant - forme
+        try {
+            File(context.filesDir, FICHIER_PLUMES).writeText(JSONArray(apres.sorted()).toString())
+            plumes = apres
+        } catch (e: Exception) {
+            Log.e(TAG, "Plume non retirée: ${e.message}", e)
+        }
+    }
+
     /** Efface la référence. N'existe que pour les tests et le débogage. */
     fun oublier(context: Context) {
         File(context.filesDir, FICHIER_REFERENCE).delete()

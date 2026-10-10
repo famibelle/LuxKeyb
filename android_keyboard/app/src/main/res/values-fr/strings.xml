@@ -646,6 +646,26 @@
     <string name="carte_partager">📤 Partager</string>
     <string name="carte_partager_titre">Partager la carte</string>
     <string name="carte_partage_pied">Le clavier luxembourgeois, gratuit sur Google Play</string>
+    <string name="carnet_recevoir">🎁 Recevoir</string>
+    <string name="jeu_cadeau">Cadeau</string>
+    <string name="carte_recue_medaillon">REÇUE EN</string>
+    <string name="carte_ceder">🤝 Céder</string>
+    <string name="ceder_titre">Céder « %1$s » ?</string>
+    <string name="ceder_message">La carte quittera votre carnet dès que l\'autre téléphone aura confirmé. Son apprentissage et sa plume restent avec vous.</string>
+    <string name="ceder_oui">Céder</string>
+    <string name="offre_titre">Montrez ce code à l\'autre téléphone</string>
+    <string name="offre_etapes">1. Sur l\'autre téléphone : Mäi Carnet › Recevoir, puis scanner ce code.\n2. Scannez ensuite le code qu\'il affichera : la carte quittera votre carnet.</string>
+    <string name="offre_scanner">📷 Scanner la confirmation</string>
+    <string name="offre_annuler">Garder la carte</string>
+    <string name="reception_titre">« %1$s » est dans votre carnet</string>
+    <string name="reception_etapes">Montrez ce code au donneur : la carte quittera son carnet.</string>
+    <string name="reception_voir">Voir la carte</string>
+    <string name="scan_invite">Visez le code de la carte</string>
+    <string name="cession_faite">« %1$s » a été cédée.</string>
+    <string name="cession_mauvais_code">Ce code n\'est pas la confirmation de cette carte.</string>
+    <string name="reception_invalide">Ce code n\'est pas une carte, ou il a expiré.</string>
+    <string name="reception_deja">Cette carte a déjà été reçue.</string>
+    <string name="reception_impossible">Cette carte n\'existe pas dans le clavier.</string>
     <string name="carte_partage_message">J\'ai gagné la carte « %1$s » (%2$s) avec le clavier luxembourgeois.\n\nTélécharge-le gratuitement :\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->

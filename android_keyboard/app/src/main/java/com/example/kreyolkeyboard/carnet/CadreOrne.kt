@@ -1402,7 +1402,9 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        texteSurArc(c, p, context.getString(R.string.carte_gagne_a_medaillon), cx, cy, R_EMAIL + 2.2f, true)
+        // Une carte cédée n'a pas été gagnée : elle a été reçue.
+        val dessus = if (jeu == JeuCarte.CADEAU) R.string.carte_recue_medaillon else R.string.carte_gagne_a_medaillon
+        texteSurArc(c, p, context.getString(dessus), cx, cy, R_EMAIL + 2.2f, true)
         texteSurArc(c, p, jeu.libelle(context).uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
         p.typeface = android.graphics.Typeface.DEFAULT
         p.strokeCap = Paint.Cap.BUTT
@@ -1536,6 +1538,15 @@ object Ornement {
                 c.drawRoundRect(cx - 6.5f, cy - 5.5f, cx + 6.5f, cy + 3.5f, 3f, 3f, p)
                 trait(-2.5f, 3.5f, -4.5f, 7f)
                 trait(-4.5f, 7f, 0.5f, 3.5f)
+            }
+            // Un paquet-cadeau : la boîte, son ruban, le nœud.
+            JeuCarte.CADEAU -> {
+                p.strokeWidth = 1.2f
+                c.drawRect(cx - 6f, cy - 2f, cx + 6f, cy + 6.5f, p)
+                c.drawRect(cx - 7f, cy - 4.5f, cx + 7f, cy - 2f, p)
+                trait(0f, -4.5f, 0f, 6.5f)
+                c.drawOval(cx - 5f, cy - 8f, cx - 0.3f, cy - 4.5f, p)
+                c.drawOval(cx + 0.3f, cy - 8f, cx + 5f, cy - 4.5f, p)
             }
         }
         p.style = Paint.Style.FILL
