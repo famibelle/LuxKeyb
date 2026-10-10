@@ -63,10 +63,37 @@ internal class LecteurCartes(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
-            setPadding(marge, (24 * d).toInt(), marge, (24 * d).toInt())
+            // En bas, la place du bouton de partage : la carte ne passe pas dessous.
+            setPadding(marge, (24 * d).toInt(), marge, (84 * d).toInt())
         }
         v.addView(p)
         porte = p
+
+        // Partager la carte montrée : un geste du joueur, la seule sortie du
+        // carnet hors de l'appareil. Voir [PartageCarte].
+        v.addView(TextView(ctx).apply {
+            text = ctx.getString(R.string.carte_partager)
+            textSize = 15f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            val h = (22 * d).toInt()
+            val vert = (11 * d).toInt()
+            setPadding(h, vert, h, vert)
+            background = GradientDrawable().apply {
+                cornerRadius = 24f * d
+                setColor(Carnet.COULEUR)
+                setStroke((1.5f * d).toInt(), 0x66FFFFFF)
+            }
+            isClickable = true
+            isFocusable = true
+            setOnClickListener { PartageCarte.partager(ctx, cartes[rang]) }
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            ).apply { bottomMargin = (22 * d).toInt() }
+        })
 
         // Les flèches, sur tablette seulement : un téléphone n'a pas la marge
         // pour les poser sans couvrir la carte, et le glissé y suffit.

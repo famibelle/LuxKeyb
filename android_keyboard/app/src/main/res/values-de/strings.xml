@@ -643,6 +643,10 @@
     <string name="accueil_glose">hallo</string>
     <string name="accueil_traduction">Hallo, wie geht\'s?</string>
     <string name="carte_serie">Nr. %1$s · %2$s</string>
+    <string name="carte_partager">📤 Teilen</string>
+    <string name="carte_partager_titre">Karte teilen</string>
+    <string name="carte_partage_pied">Die luxemburgische Tastatur, kostenlos bei Google Play</string>
+    <string name="carte_partage_message">Ich habe die Karte „%1$s“ (%2$s) mit der luxemburgischen Tastatur gewonnen.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Spracheingabe</string>
