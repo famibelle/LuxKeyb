@@ -664,7 +664,9 @@
     <string name="cession_faite">«%1$s» foi cedida.</string>
     <string name="cession_mauvais_code">Este código não é a confirmação desta carta.</string>
     <string name="reception_invalide">Este código não é uma carta, ou expirou.</string>
-    <string name="reception_deja">Esta carta já foi recebida.</string>
+    <string name="camera_pourquoi_titre">Ler o código da carta</string>
+    <string name="camera_pourquoi_message">A câmara serve apenas para ler o código mostrado pelo outro telefone. Nada é fotografado, guardado ou enviado.</string>
+    <string name="camera_pourquoi_ok">Continuar</string>
     <string name="reception_impossible">Esta carta não existe no teclado.</string>
     <string name="carte_partage_message">Ganhei a carta «%1$s» (%2$s) com o teclado luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 

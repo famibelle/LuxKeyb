@@ -2,6 +2,8 @@ package com.example.kreyolkeyboard.carnet
 
 import com.example.kreyolkeyboard.R
 import androidx.annotation.StringRes
+import androidx.activity.ComponentDialog
+import androidx.activity.OnBackPressedCallback
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -1114,6 +1116,23 @@ class CarnetFragment : DialogFragment() {
                 return
             }
         }
+        // Android demande l'accès en disant « prendre des photos et
+        // enregistrer des vidéos », ce qui inquiète à juste titre. Une phrase
+        // dit avant à quoi il sert, comme l'écran qui précède la dictée ; elle
+        // ne revient plus une fois l'accès donné.
+        val accorde = androidx.core.content.ContextCompat.checkSelfPermission(
+            ctx, android.Manifest.permission.CAMERA
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        if (accorde) return lancerScan()
+        android.app.AlertDialog.Builder(ctx)
+            .setTitle(R.string.camera_pourquoi_titre)
+            .setMessage(R.string.camera_pourquoi_message)
+            .setPositiveButton(R.string.camera_pourquoi_ok) { _, _ -> lancerScan() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun lancerScan() {
         lanceurScan.launch(ScanOptions().apply {
             setDesiredBarcodeFormats(ScanOptions.QR_CODE)
             setPrompt(getString(R.string.scan_invite))
@@ -1160,7 +1179,13 @@ class CarnetFragment : DialogFragment() {
             android.widget.Toast.makeText(ctx, message, android.widget.Toast.LENGTH_LONG).show()
         val offre = Cession.lireOffre(texte, System.currentTimeMillis() / 1000)
             ?: return refus(R.string.reception_invalide)
-        if (Cession.dejaRecue(ctx, offre.jeton)) return refus(R.string.reception_deja)
+        // Déjà reçue : on remontre la confirmation, sans seconde carte. Celui
+        // qui reçoit pouvait la fermer avant que l'autre l'ait scannée (essai
+        // réel du 10 octobre 2026, A21s et émulateur), et rien ne permettait
+        // de la retrouver : le donneur gardait sa carte, qui existait alors
+        // sur les deux téléphones. La remontrer ne donne rien de plus, puisque
+        // le donneur ne lâche sa carte que sur le jeton de sa propre offre.
+        if (Cession.dejaRecue(ctx, offre.jeton)) return montrerReception(offre)
         val principal = Handler(Looper.getMainLooper())
         Thread {
             val possible = cartePossible(ctx, offre)
@@ -1171,23 +1196,28 @@ class CarnetFragment : DialogFragment() {
             principal.post {
                 if (!isAdded) return@post
                 if (!possible) return@post refus(R.string.reception_impossible)
-                cession().montrer(
-                    titre = getString(R.string.reception_titre, offre.forme),
-                    etapes = getString(R.string.reception_etapes),
-                    code = Cession.reception(offre.jeton),
-                    principal = getString(R.string.reception_voir),
-                    surPrincipal = {
-                        vueCession?.fermer()
-                        chargerEnFond(ouvrir = offre.forme)
-                    },
-                    secondaire = getString(R.string.fermer),
-                    surSecondaire = {
-                        vueCession?.fermer()
-                        chargerEnFond()
-                    }
-                )
+                montrerReception(offre)
             }
         }.start()
+    }
+
+    /** Le code de confirmation que celui qui donne doit scanner. */
+    private fun montrerReception(offre: Cession.Offre) {
+        cession().montrer(
+            titre = getString(R.string.reception_titre, offre.forme),
+            etapes = getString(R.string.reception_etapes),
+            code = Cession.reception(offre.jeton),
+            principal = getString(R.string.reception_voir),
+            surPrincipal = {
+                vueCession?.fermer()
+                chargerEnFond(ouvrir = offre.forme)
+            },
+            secondaire = getString(R.string.fermer),
+            surSecondaire = {
+                vueCession?.fermer()
+                chargerEnFond()
+            }
+        )
     }
 
     /**
@@ -1207,6 +1237,34 @@ class CarnetFragment : DialogFragment() {
         return TranslationDictionary.fiche(ctx, offre.forme).glose.isNotEmpty()
     }
 
+    /**
+     * Le bouton Retour dépile : l'offre de cession, puis la carte ouverte,
+     * puis le carnet.
+     *
+     * Il passait par `setOnKeyListener`, qui ne le reçoit plus depuis
+     * Android 16 : une application qui vise l'API 36 a le retour prédictif
+     * d'office, le système ne livre plus `KEYCODE_BACK` au dialogue, et Retour
+     * fermait tout le carnet depuis une carte ouverte. Le rappel du
+     * `OnBackPressedDispatcher` du `ComponentDialog` est appelé dans les deux
+     * mondes, geste ou touche, ancien Android ou nouveau.
+     */
+    override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog =
+        ComponentDialog(requireContext(), theme).also { d ->
+            d.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    when {
+                        vueCession?.ouverte == true -> {
+                            // Fermer l'offre, c'est garder la carte.
+                            offreEnCours = null
+                            vueCession?.fermer()
+                        }
+                        fermerCarte() -> Unit
+                        else -> dismiss()
+                    }
+                }
+            })
+        }
+
     override fun onStart() {
         super.onStart()
         // Sans cela le dialogue s'ajuste à son contenu et laisse l'activité
@@ -1215,15 +1273,8 @@ class CarnetFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        // Le bouton Retour dépile : la carte ouverte, puis le casier ouvert,
-        // puis le carnet. Il fermait le dialogue entier depuis n'importe quelle
-        // profondeur, ce qui passait tant que le carnet n'avait aucune
-        // navigation et devient faux depuis que la boîte en a une.
-        //
-        // Les deux actions sont consommées, pas seulement `ACTION_UP` :
-        // `Dialog` annule sur la levée mais retient la descente, et ne
-        // consommer que l'une des deux laisse un retour fantôme au prochain
-        // appui.
+        // Les flèches d'un clavier physique passent par les touches ; le bouton
+        // Retour, lui, n'y passe plus : voir [onCreateDialog].
         dialog?.setOnKeyListener { _, code, evenement ->
             // Les flèches d'un clavier physique feuillettent : la carte
             // ouverte, sinon les pages de l'album.
@@ -1243,22 +1294,7 @@ class CarnetFragment : DialogFragment() {
                     }
                     true
                 }
-                code != KeyEvent.KEYCODE_BACK -> false
-                vueCession?.ouverte == true -> {
-                    // Fermer l'offre, c'est garder la carte.
-                    if (evenement.action == KeyEvent.ACTION_UP) {
-                        offreEnCours = null
-                        vueCession?.fermer()
-                    }
-                    true
-                }
-                lecteur == null -> false
-                else -> {
-                    if (evenement.action == KeyEvent.ACTION_UP) {
-                        fermerCarte()
-                    }
-                    true
-                }
+                else -> false
             }
         }
     }
