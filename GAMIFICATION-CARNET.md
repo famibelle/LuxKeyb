@@ -166,10 +166,12 @@ de cartes ne peut proposer ça. Elle est stockée dans `filesDir`, à côté de
 `carnet_vu.json`, et jamais dans les préférences. Les deux questions qu'elle
 posait sont tranchées plus bas.
 
-Livrée le 10 octobre 2026 comme le pendant du sceau : une cire bleu encre sur
-l'angle bas gauche de l'illustration, « GESCHRIWWEN » en arc (participe de
-`schreiwen`, 364 occurrences au dictionnaire), une plume blanche au centre. La
-liste des formes vit dans `files/carnet_plumes.json` et ne fait que grandir.
+Livrée le 10 octobre 2026. D'abord un second cachet de cire, bleu, en miroir
+du sceau ; deux cachets sur l'illustration surchargeaient la carte, et le
+propriétaire l'a remplacé le jour même par une **petite plume gravée dans le
+métal du cadre** : devant le numéro de série sur la carte ouverte, dans la
+marge basse gauche sur la vignette. Une mention d'inventaire, pas un
+ornement. La liste des formes vit dans `files/carnet_plumes.json` et ne fait que grandir.
 Une limite à connaître : la preuve n'est lue qu'au lancement d'une révision et
 sur les seules cartes dues ce jour-là (c'est ainsi que `PreuveDeFrappe`
 fonctionne depuis la 22.0.0). Un mot écrit au clavier ne reçoit donc sa plume

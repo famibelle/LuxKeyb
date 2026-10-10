@@ -421,6 +421,8 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+    /** La ligne de série quand la plume la précède : elle lui cède dix unités. */
+    val SERIE_PLUME = RectF(35f, 428f, 176f, 437.5f)
     /**
      * L'énoncé d'une question, sur le dos de révision.
      *
@@ -2193,7 +2195,7 @@ object Ornement {
      * légende seraient une bouillie rouge.
      */
     fun dessinerSceau(c: Canvas, p: Paint, vignette: Boolean) =
-        cachet(c, p, vignette, CIRE_ROUGE, "GELÉIERT", aDroite = true) { cv, pi, ombre ->
+        cachet(c, p, vignette, CIRE_ROUGE, "GELÉIERT") { cv, pi, ombre ->
             pi.style = Paint.Style.STROKE
             pi.strokeCap = Paint.Cap.ROUND
             pi.strokeJoin = Paint.Join.ROUND
@@ -2204,29 +2206,54 @@ object Ornement {
     /**
      * La plume d'une carte que le joueur a **écrite lui-même** dans un vrai
      * message : le clavier l'a fait monter d'une boîte sans poser de question
-     * (voir [PreuveDeFrappe]). C'est la marque qu'aucune application de cartes
-     * ne peut donner, accordée par le propriétaire le 2026-10-10.
+     * (voir [PreuveDeFrappe]). Accordée par le propriétaire le 2026-10-10.
      *
-     * Le pendant du sceau, et dessinée comme lui : une cire bleu encre sur
-     * l'angle bas **gauche** de l'illustration, « GESCHRIWWEN » en arc (le
-     * participe de `schreiwen`, au dictionnaire), une plume blanche au
-     * centre. Les deux marques peuvent coexister, et c'est leur symétrie qui
-     * les fait lire comme une paire : apprise, et écrite.
+     * Elle a d'abord été un second cachet de cire, bleu, en miroir du sceau ;
+     * deux cachets sur l'illustration surchargeaient la carte (propriétaire,
+     * même jour). Elle est donc **gravée dans le métal du cadre**, petite, à
+     * gauche du numéro de série sur la carte ouverte et dans la marge basse
+     * gauche de la vignette : une mention d'inventaire, comme le numéro et la
+     * date, et non une décoration de plus.
+     *
+     * La gravure est celle du reste de la carte : un sillon dans le ton sombre
+     * du métal, une lèvre claire décalée vers le bas qui le fait lire en creux.
      */
-    fun dessinerPlume(c: Canvas, p: Paint, vignette: Boolean) =
-        cachet(c, p, vignette, CIRE_ENCRE, "GESCHRIWWEN", aDroite = false) { cv, pi, ombre ->
-            pi.style = Paint.Style.FILL
-            cv.drawPath(PLUME, pi)
-            if (!ombre) {
-                // Le tuyau, dans le ton sombre de la cire : sans lui la plume
-                // blanche n'est qu'une feuille.
-                pi.color = CIRE_ENCRE.ombre
-                pi.style = Paint.Style.STROKE
-                pi.strokeCap = Paint.Cap.ROUND
-                pi.strokeWidth = 0.05f
-                cv.drawLine(-0.40f, 0.44f, 0.30f, -0.38f, pi)
+    fun dessinerPlume(c: Canvas, p: Paint, vignette: Boolean, metal: Metal) {
+        val cx = if (vignette) PLUME_VIGNETTE_X else PLUME_X
+        val cy = if (vignette) PLUME_VIGNETTE_Y else PLUME_Y
+        val taille = if (vignette) PLUME_VIGNETTE_TAILLE else PLUME_TAILLE
+        c.save()
+        c.translate(cx, cy)
+        c.scale(taille, taille)
+        p.shader = null
+        for (passe in 0..1) {
+            c.save()
+            if (passe == 0) {
+                c.translate(0.05f, 0.07f)
+                p.color = 0xB3FFFFFF.toInt()
+            } else {
+                p.color = metal.trait
             }
+            p.style = Paint.Style.FILL
+            c.drawPath(PLUME, p)
+            p.style = Paint.Style.STROKE
+            p.strokeCap = Paint.Cap.ROUND
+            p.strokeWidth = 0.07f
+            c.drawLine(-0.40f, 0.44f, -0.22f, 0.24f, p)
+            c.restore()
         }
+        p.strokeCap = Paint.Cap.BUTT
+        p.style = Paint.Style.FILL
+        c.restore()
+    }
+
+    /** La plume de la carte ouverte, devant le numéro de série : voir [SERIE_PLUME]. */
+    private const val PLUME_X = 27.5f
+    private const val PLUME_Y = 432.5f
+    private const val PLUME_TAILLE = 10f
+    private const val PLUME_VIGNETTE_X = 15f
+    private const val PLUME_VIGNETTE_Y = 281f
+    private const val PLUME_VIGNETTE_TAILLE = 13f
 
     /**
      * Un cachet de cire : l'ombre, la cire coulée, le biseau, un motif frappé
@@ -2237,11 +2264,10 @@ object Ornement {
      * décalage qui le fait lire comme frappé dans la cire.
      */
     private fun cachet(
-        c: Canvas, p: Paint, vignette: Boolean, cire: Cire, legende: String, aDroite: Boolean,
+        c: Canvas, p: Paint, vignette: Boolean, cire: Cire, legende: String,
         motif: (Canvas, Paint, Boolean) -> Unit
     ) {
-        val x = if (vignette) SCEAU_VIGNETTE_X else SCEAU_X
-        val cx = if (aDroite) x else LARGEUR - x
+        val cx = if (vignette) SCEAU_VIGNETTE_X else SCEAU_X
         val cy = if (vignette) SCEAU_VIGNETTE_Y else SCEAU_Y
         val r = if (vignette) SCEAU_VIGNETTE_R else SCEAU_R
         c.save()
@@ -2333,7 +2359,7 @@ object Ornement {
 
     /**
      * Le sceau de la carte ouverte, à cheval sur l'angle bas droit de la
-     * fenêtre ; la plume prend l'angle bas gauche, en miroir sur l'axe.
+     * fenêtre.
      */
     private const val SCEAU_X = 239f
     private const val SCEAU_Y = 151f
@@ -2357,9 +2383,8 @@ object Ornement {
         )
     }
 
-    /** Le sceau, pris sur le rouge du drapeau ; la plume, bleu encre. */
+    /** Le sceau, pris sur le rouge du drapeau. */
     private val CIRE_ROUGE by lazy { Cire("#FF6B6B", "#D7141F", "#7A0B12") }
-    private val CIRE_ENCRE by lazy { Cire("#6F95E8", "#1F4FB8", "#0C1F55") }
     private val LEGENDE = Color.parseColor("#F6E3B4")
 
     /** Le bord coulé de la cire, sur un cercle unité. */
@@ -2382,7 +2407,7 @@ object Ornement {
         lineTo(0.32f, -0.22f)
     }
 
-    /** La plume frappée dans son cachet : une barbe en fuseau, la pointe en bas à gauche. */
+    /** La plume : une barbe en fuseau, la pointe en bas à gauche, sur le cercle unité. */
     private val PLUME: Path = Path().apply {
         moveTo(-0.26f, 0.28f)
         cubicTo(-0.36f, -0.04f, 0.04f, -0.40f, 0.38f, -0.48f)
@@ -3298,7 +3323,7 @@ class CarteOrnee(
             pivoterLesBosses(canvas, pinceau)
         }
         if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
-        if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette)
+        if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, Ornement.metal(rarete))
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
