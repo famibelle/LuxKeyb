@@ -1,9 +1,160 @@
 {
  "genere_le": "2026-10-10",
- "derniere_version": "35.0.0",
+ "derniere_version": "36.0.0",
  "derniere_date": "2026-10-10",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "36.0.0",
+   "date": "2026-10-10",
+   "intro": "Les cartes du carnet s'échangent maintenant comme de vraies cartes : celle que vous offrez quitte votre carnet pour de bon, et elle n'arrive que sur le téléphone de la personne à qui vous la tendez.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Échanger des cartes de la main à la main",
+       "texte": "La personne qui reçoit touche « 🎁 Recevoir » dans son carnet et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle, avec la mention « Reçue en cadeau ». Les deux téléphones restent côte à côte : rien ne passe par Internet."
+      },
+      {
+       "titre": "Une carte n'existe jamais en double",
+       "texte": "Elle quitte votre carnet avant d'arriver dans l'autre, et le code de remise ne fonctionne que sur un seul téléphone, une seule fois."
+      },
+      {
+       "titre": "Rien ne se perd en route",
+       "texte": "Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte jusqu'à ce que vous indiquiez qu'elle est bien arrivée."
+      },
+      {
+       "titre": "L'appareil photo s'explique avant d'être demandé",
+       "texte": "Il sert seulement à lire le code de l'autre téléphone, et rien n'est photographié, gardé ni envoyé."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "L'onglet Wierderbuch pouvait faire attendre l'application plusieurs secondes à son ouverture, au point qu'Android propose de la fermer. Son dictionnaire se charge désormais en arrière-plan."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚠️",
+     "titre": "À savoir",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Pour échanger une carte, les deux téléphones doivent avoir la version 35.1.0 ou une plus récente."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_echange.png",
+     "alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
+     "legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
+    },
+    {
+     "image": "Screenshots/lux_carnet_echange_arrivee.png",
+     "alt": "À gauche, le carnet du donneur avec un bandeau violet sous le titre : « « Haus » attend d'être scannée par l'autre téléphone. Touchez ici pour remontrer son code. » À droite, la carte « Kaz » (chat, chatte, chat sauvage) arrivée chez l'autre personne, avec le médaillon « Reçue en cadeau ».",
+     "legende": "Si l'échange est interrompu, un bandeau garde le code de la carte. Elle arrive chez l'autre avec la mention « Reçue en cadeau »."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_echange.png",
+   "image_alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
+   "image_legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
+  },
+  {
+   "version": "35.1.0",
+   "date": "2026-10-10",
+   "intro": "Une carte qu'on offre quitte désormais votre carnet pour de bon : elle ne peut plus exister sur deux téléphones à la fois.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Offrir une carte, dans le bon ordre",
+       "texte": "C'est maintenant la personne qui reçoit qui commence : elle touche « Recevoir » et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet à ce moment-là. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle."
+      },
+      {
+       "titre": "Rien ne se perd si l'échange est interrompu",
+       "texte": "Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte, jusqu'à ce que vous indiquiez qu'elle est bien arrivée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚠️",
+     "titre": "À savoir",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Pour échanger une carte, les deux téléphones doivent avoir cette version ou une plus récente."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "35.0.2",
+   "date": "2026-10-10",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le bouton Retour referme la carte ouverte",
+       "texte": "Et non plus tout le carnet. Il referme aussi le code d'une carte qu'on offre, sans rien céder."
+      },
+      {
+       "titre": "Offrir une carte : le code de confirmation se retrouve",
+       "texte": "Si la personne qui reçoit la carte fermait son code trop tôt, la carte restait aussi chez celle qui l'offrait. Il suffit maintenant de rescanner la carte offerte pour revoir ce code, sans recevoir la carte une seconde fois."
+      },
+      {
+       "titre": "L'appareil photo s'explique avant d'être demandé",
+       "texte": "Une phrase dit qu'il sert seulement à lire le code de l'autre téléphone, et que rien n'est photographié, gardé ni envoyé."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "35.0.1",
+   "date": "2026-10-10",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Plus de cartes en double venant de Wuertriet",
+       "texte": "Un mot trouvé dans Wuertriet arrivait au carnet écrit en minuscules (« affer » au lieu de « Affer ») : s'il venait aussi d'un autre jeu, il apparaissait deux fois, et la seconde carte passait à tort pour très rare. Les cartes déjà en double se regroupent toutes seules à l'ouverture du carnet, sans rien perdre : rencontres, jeux et révisions sont gardés."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "35.0.0",
    "date": "2026-10-10",
@@ -89,238 +240,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "34.4.0",
-   "date": "2026-10-10",
-   "intro": "Installer le clavier demande moins d'étapes, et l'appli ne vous interrompt plus pendant que vous l'essayez.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Une étape de moins à l'installation",
-       "texte": "Le bouton d'activation ouvre directement les réglages d'Android, sans l'écran d'explication qui le précédait. L'étape 1 dit simplement quoi faire de l'avertissement d'Android : appuyer sur OK, deux fois si un second message suit, puis sur Retour."
-      },
-      {
-       "titre": "Le clavier introuvable dans la liste ?",
-       "texte": "L'étape 2 rappelle de faire défiler : il est souvent tout en bas."
-      },
-      {
-       "titre": "Votre premier mot compte",
-       "texte": "L'étape 3 se coche dès que vous avez tapé un mot, et le bandeau vert passe aussitôt à « Tout est prêt »."
-      },
-      {
-       "titre": "La carte de bienvenue attend son moment",
-       "texte": "Elle s'ouvre après votre premier mot, quand vous faites une pause, et non plus à l'instant où vous choisissez le clavier. La proposition de partager l'appli vient à l'ouverture suivante, seule."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Dans le champ d'essai, « Moien » et les autres mots luxembourgeois ne sont plus soulignés en rouge par le correcteur d'Android."
-      },
-      {
-       "titre": null,
-       "texte": "Le bandeau « Ça vous plaît ? Installez-le » disparaît une fois le clavier activé. Ce bandeau et le bouton du clavier de démonstration mènent à l'étape qui reste à faire, et non plus toujours à la première."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_activation_etapes.png",
-     "alt": "Deux écrans de « Configuration rapide » sur un téléphone. À gauche, 0/3 : l'étape 1 « Activer le clavier » est ouverte, avec l'encadré « Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour » et le bouton « Ouvrir les réglages Android ». À droite, 3/3 : les trois étapes sont cochées, « Moien alleguer » est écrit dans le champ d'essai, et le clavier luxembourgeois propose « alleguerten », « alleguer ».",
-     "legende": "Le bouton mène droit aux réglages d'Android, et l'étape 1 dit quoi faire de l'avertissement. Dès votre premier mot, la dernière étape se coche."
-    },
-    {
-     "image": "Screenshots/lux_activation_bienvenue.png",
-     "alt": "À gauche, la pochette « Bienvenue » ouverte sur la carte « Moien », marquée « Nouvelle carte », avec son sens « bonjour » et l'exemple « Moien, wéi geet et? ». À droite, l'application au retour des réglages d'Android : l'étape 1 est cochée, et la fenêtre « Sélectionnez le mode de saisie » est ouverte avec Clavier Samsung, Gboard et Lëtzebuergesch Clavier.",
-     "legende": "La carte « Moien » arrive après votre premier mot, quand vous faites une pause. Au retour des réglages, l'application ouvre d'elle-même le choix du clavier."
-    }
-   ],
-   "image": "Screenshots/lux_activation_etapes.png",
-   "image_alt": "Deux écrans de « Configuration rapide » sur un téléphone. À gauche, 0/3 : l'étape 1 « Activer le clavier » est ouverte, avec l'encadré « Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour » et le bouton « Ouvrir les réglages Android ». À droite, 3/3 : les trois étapes sont cochées, « Moien alleguer » est écrit dans le champ d'essai, et le clavier luxembourgeois propose « alleguerten », « alleguer ».",
-   "image_legende": "Le bouton mène droit aux réglages d'Android, et l'étape 1 dit quoi faire de l'avertissement. Dès votre premier mot, la dernière étape se coche."
-  },
-  {
-   "version": "34.3.1",
-   "date": "2026-10-08",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Sur un téléphone tenu en paysage, l'éventail de la Boîte de Leitner tient à l'écran : les cartes débordaient par le bas et cachaient le titre et le compteur. Elles s'alignent maintenant sur toute la largeur, sous une seule ligne de titre."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "34.3.0",
-   "date": "2026-10-08",
-   "intro": "Sur tablette, le carnet devient un album et la Boîte de Leitner prend toute sa place.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le carnet comme un vrai album",
-       "texte": "Sur tablette, les cartes se rangent sur des doubles pages qu'on tourne d'un glissé, au lieu d'une longue liste à faire défiler."
-      },
-      {
-       "titre": "Une carte qui tient à l'écran",
-       "texte": "Ouverte depuis le carnet ou depuis la boîte, la carte s'affiche en entier, sans défiler. Un glissé de côté passe à la carte voisine, et sur tablette des flèches font de même."
-      },
-      {
-       "titre": "L'éventail de la boîte à la mesure de la tablette",
-       "texte": "Les cartes d'un casier s'ouvrent en grand sur un arc qui va d'un bord à l'autre : on en voit une quinzaine, et le mot de la carte du centre se lit. En refermant une carte, l'éventail se recentre sur la dernière lue."
-      },
-      {
-       "titre": "La boîte au clavier physique",
-       "texte": "Les flèches choisissent un casier, Entrée l'ouvre, et Échap revient en arrière ; dans l'éventail, les flèches le font tourner."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Dans la Boîte de Leitner, les cartes suivent la perspective de leur casier : sur tablette, celles des casiers du bord n'étaient plus coupées en biais par les parois."
-      },
-      {
-       "titre": null,
-       "texte": "Les cartes rangées dans la boîte sont plus nettes sur les grands écrans."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_tablette_album.png",
-     "alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
-     "legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
-    },
-    {
-     "image": "Screenshots/lux_tablette_eventail.png",
-     "alt": "La Boîte de Leitner sur tablette, avec le casier « Revient dans 1 jour » ouvert en éventail : « 16 cartes · 16 à revoir », « 7 / 16 », la carte « leed » au centre et une quinzaine d'autres cartes inclinées sur un grand arc, d'un bord à l'autre de l'écran.",
-     "legende": "Un casier s'ouvre en grand éventail, d'un bord à l'autre de l'écran : on voit une quinzaine de cartes, et le mot de celle du centre se lit."
-    },
-    {
-     "image": "Screenshots/lux_tablette_carte.png",
-     "alt": "La carte « maacht » ouverte en grand depuis l'éventail, entière à l'écran : cadre doré, illustration violette, l'onglet « Verbe » et le sens « faire, rendre, mettre ». De part et d'autre, deux flèches rondes ‹ et › ; derrière, l'éventail assombri.",
-     "legende": "La carte ouverte tient entière à l'écran. Les flèches, ou un glissé de côté, passent à la carte voisine du casier."
-    },
-    {
-     "image": "Screenshots/lux_tablette_boite.png",
-     "alt": "La Boîte de Leitner sur tablette : sept casiers en perspective, chacun avec sa pile de cartes illustrées, légendés « 16 · 1 jour », « 3 · 3 jours », « 7 · 1 sem. », « 8 · 2 sem. », « 5 · 1 mois », « 4 · 3 mois » et « 4 · ★ acquis », et la plaque dorée « Réviser 12 cartes ». Les onglets sont dans une colonne à gauche.",
-     "legende": "Dans la boîte, les cartes suivent maintenant la perspective de leur casier : sur tablette, celles des casiers du bord ne sont plus coupées en biais."
-    }
-   ],
-   "image": "Screenshots/lux_tablette_album.png",
-   "image_alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
-   "image_legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
-  },
-  {
-   "version": "34.2.0",
-   "date": "2026-10-08",
-   "intro": "La version tablette va plus loin, et sait se servir d'un clavier Bluetooth.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Avec un clavier Bluetooth ou un étui-clavier",
-       "texte": "Seule la barre de suggestions reste à l'écran, au lieu d'un clavier entier qui couvrait la moitié de la tablette. Les suggestions suivent ce que vous tapez sur le clavier physique. Un bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
-      },
-      {
-       "titre": "Jouer au clavier physique",
-       "texte": "Kräizwuert s'écrit directement au clavier, et Entrée valide un essai de Wuertriet."
-      },
-      {
-       "titre": "Les onglets sur le côté",
-       "texte": "Sur une tablette tenue en paysage, les quatre onglets passent dans une colonne à gauche : les jeux gagnent de la hauteur."
-      },
-      {
-       "titre": "Tout sur un écran",
-       "texte": "Sur tablette en paysage, les huit jeux tiennent sur quatre colonnes, et les cartes de l'accueil se rangent par deux."
-      },
-      {
-       "titre": "Le clavier scindé, au choix",
-       "texte": "Dans Réglages du clavier, rubrique Disposition, sur tablette : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
-      },
-      {
-       "titre": "Plus d'emojis à la fois sur tablette",
-       "texte": "Au lieu de dix cases géantes par rangée."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Tourner l'écran pendant une révision de la Boîte de Leitner la reprend à la même carte, sans y ajouter de cartes en retard."
-      },
-      {
-       "titre": null,
-       "texte": "Wuertriet garde le mot en cours de frappe quand on tourne l'écran."
-      },
-      {
-       "titre": null,
-       "texte": "Sur un téléphone tenu en paysage, la grille de Wuertsich tient entièrement à l'écran, avec des lettres à la taille des cases."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_tablette_clavier_physique.png",
-     "alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
-     "legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
-    },
-    {
-     "image": "Screenshots/lux_tablette_spiller.png",
-     "alt": "L'onglet Spiller sur tablette en paysage : les quatre onglets Haut, Spiller, Wierderbuch et Mäi Lëtzebuergesch dans une colonne à gauche ; à droite, la carte violette Mäi Carnet, puis les huit jeux sur deux rangées de quatre : Boîte de Leitner, Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert et Wuertplaz.",
-     "legende": "Sur tablette en paysage, les onglets passent sur le côté et les huit jeux tiennent sur un écran."
-    },
-    {
-     "image": "Screenshots/lux_tablette_clavier_scinde.png",
-     "alt": "Le clavier scindé sur une tablette en paysage : les touches de q à v à gauche, de u à ü à droite, un espace vide au milieu. Au-dessus, la barre de suggestions propose Moien, Moie et Moies après « Moi ».",
-     "legende": "Le clavier scindé, à activer dans Réglages du clavier : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
-    }
-   ],
-   "image": "Screenshots/lux_tablette_clavier_physique.png",
-   "image_alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
-   "image_legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
   }
  ]
 }

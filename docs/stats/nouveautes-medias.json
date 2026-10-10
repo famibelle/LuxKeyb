@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_echange.png",
+        "alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
+        "legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
+      },
+      {
+        "image": "Screenshots/lux_carnet_echange_arrivee.png",
+        "alt": "À gauche, le carnet du donneur avec un bandeau violet sous le titre : « « Haus » attend d'être scannée par l'autre téléphone. Touchez ici pour remontrer son code. » À droite, la carte « Kaz » (chat, chatte, chat sauvage) arrivée chez l'autre personne, avec le médaillon « Reçue en cadeau ».",
+        "legende": "Si l'échange est interrompu, un bandeau garde le code de la carte. Elle arrive chez l'autre avec la mention « Reçue en cadeau »."
+      }
+    ]
+  },
   "35.0.0": {
     "images": [
       {
