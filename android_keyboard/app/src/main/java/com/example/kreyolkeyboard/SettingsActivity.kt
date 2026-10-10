@@ -3717,15 +3717,13 @@ class SettingsActivity : AppCompatActivity() {
         try {
             val intent = Intent().apply {
                 setClassName("com.android.settings", "com.android.settings.Settings\$SpellCheckersSettingsActivity")
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                // Sans FLAG_ACTIVITY_NEW_TASK : voir openKeyboardSettings().
             }
             startActivity(intent)
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture écran correcteur, repli sur les paramètres clavier: ${e.message}")
             try {
-                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+                startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
                 // Seul cas où un Toast d'instruction reste utile : l'écran de
                 // repli n'est pas celui attendu, la carte de l'étape 4 ne
                 // décrit donc pas ce que l'utilisateur a sous les yeux
@@ -3768,8 +3766,12 @@ class SettingsActivity : AppCompatActivity() {
             // affiche une carte d'encouragement ciblée
             onboardingPrefs().edit()
                 .putLong("settings_visit_at", System.currentTimeMillis()).apply()
+            // Pas de FLAG_ACTIVITY_NEW_TASK : l'écran des réglages doit
+            // s'empiler sur l'appli, pour que Retour y ramène. Avec ce
+            // drapeau, Samsung le posait dans la tâche Réglages déjà ouverte,
+            // par-dessus ce qu'on y avait laissé, et Retour menait à un ancien
+            // écran (« Correction orthographique ») au lieu de l'étape 2.
             val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             // Tentative de surlignage de la ligne IME dans l'écran système :
             // extra non documenté, respecté par les Settings AOSP/Pixel,
             // ignoré silencieusement ailleurs (pas d'effet de bord).
