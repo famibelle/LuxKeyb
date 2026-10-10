@@ -28,46 +28,62 @@ c'est garantir qu'elle ne se retrouve pas en double.
   se confirmer l'échange l'un à l'autre. Pas de serveur, rien sur Internet.
   Retenu par le propriétaire le 10 octobre 2026.
 
-## 3. Le protocole : deux codes QR
+## 3. Le protocole : deux codes QR, la carte part avant d'arriver
 
-1. Le **donneur** choisit « Céder » sur une carte ouverte, confirme, et son
-   téléphone affiche le **code d'offre**.
-2. Le **receveur** touche « Recevoir une carte » dans son carnet et scanne
-   l'offre. La carte entre dans son carnet, et son téléphone affiche le
-   **code de réception**.
-3. Le donneur scanne la réception. La carte **quitte** son carnet.
+**Version 2, depuis la 35.1.0.** La version 1 (35.0.0 à 35.0.2) faisait entrer
+la carte chez le receveur *avant* qu'elle quitte le donneur, qui devait encore
+scanner une confirmation. L'essai réel du 10 octobre 2026 (A21s et émulateur)
+l'a montré : le receveur a fermé sa confirmation trop tôt, et la carte a existé
+sur les deux téléphones. Deux autres trous restaient : un donneur qui part
+avant d'avoir scanné garde sa carte, et une même offre scannée par trois
+téléphones en donne trois. Le propriétaire veut qu'une carte cédée le soit
+**définitivement** ; l'ordre a donc été inversé.
 
-Les deux codes sont du texte court, préfixé pour qu'aucun autre code QR ne soit
-pris pour une carte :
+1. Le **receveur** touche « Recevoir » dans son carnet. Son téléphone tire un
+   jeton, le note comme demande en attente, et affiche le **code de demande**.
+2. Le **donneur** ouvre la carte, touche « Céder », lit l'explication et
+   scanne la demande. La carte **quitte son carnet à cet instant**, et son
+   téléphone affiche le **code de remise**, lié au jeton de la demande.
+3. Le receveur scanne la remise. Elle ne s'ouvre que si son jeton est une
+   demande en attente de **ce** téléphone, et une seule fois. La carte entre.
 
 ```
-LUXKEYB:O:1:<jeton>:<échéance>:<forme>[:<nombre>]     offre
-LUXKEYB:R:1:<jeton>                                  réception
+LUXKEYB:D:2:<jeton>                       demande
+LUXKEYB:C:2:<jeton>:<nombre>:<forme>      remise
 ```
 
-- `<jeton>` : 16 caractères hexadécimaux tirés au hasard par le donneur. C'est
-  lui qui lie la réception à l'offre : le donneur ne retire la carte que sur
-  la réception de **son** offre.
-- `<échéance>` : l'heure (en secondes) après laquelle l'offre ne s'accepte
-  plus, dix minutes après sa création. Elle empêche qu'une capture d'écran de
-  l'offre serve plus tard.
-- `<forme>` : le mot, et `<nombre>` pour un numéral de Zuelwuert, sans quoi la
-  carte arriverait sans sa rareté.
+- `<jeton>` : 16 caractères hexadécimaux tirés au hasard par le **receveur**.
+  Une demande vit une semaine (`VIE_DEMANDE_S`), puis ne reçoit plus rien.
+- `<forme>` vient en dernier parce qu'elle peut contenir « : », et `<nombre>`
+  porte la valeur d'un numéral de Zuelwuert, sans quoi la carte arriverait sans
+  sa rareté.
+- Plus d'échéance de dix minutes : une remise n'est pas une offre qu'on
+  pourrait rejouer ailleurs, elle ne sert qu'au téléphone qui l'a demandée.
+- Un code de la version 1 est reconnu et refusé avec « l'autre téléphone a une
+  ancienne version », plutôt que « ce n'est pas une carte ».
 
 ### Ce que le protocole garantit, et ce qu'il ne garantit pas
 
-- **Le receveur n'importe pas deux fois la même offre** : il garde les jetons
-  déjà reçus.
-- **Le donneur ne perd sa carte que sur une réception qui la concerne.**
-- **Un échange interrompu entre les étapes 2 et 3** laisse la carte un instant
-  des deux côtés : la carte a été tendue mais pas lâchée. Le donneur peut
-  rescanner la réception tant que son écran d'offre est ouvert ; s'il le
-  ferme, il garde sa carte. Accepté : c'est un jeu d'apprentissage, et le seul
-  « gain » d'une triche est un mot de plus dans un carnet.
-- **Une offre peut être fabriquée** par qui lit cette note : rien ne la signe,
-  et une clé livrée dans l'APK se lirait. Le receveur refuse toutefois toute
-  forme qui ne serait pas une carte possible (sans glose, ou écartée par
-  `MotsEcartes`). Même raisonnement : l'enjeu ne vaut pas une infrastructure.
+- **La carte n'existe jamais des deux côtés.** Elle quitte le donneur avant
+  qu'aucune remise n'existe.
+- **Une remise ne sert qu'une fois, et qu'à un téléphone** : celui dont le
+  jeton est en attente, qui le clôt en recevant. Trois téléphones qui scannent
+  la même remise : un seul reçoit, les deux autres lisent « ce code a été
+  préparé pour un autre téléphone ».
+- **Le prix est l'inverse du doublon : une remise jamais scannée est une carte
+  perdue.** Pour que cela n'arrive pas par simple fermeture d'écran, la remise
+  est écrite sur le disque *avant* que la carte quitte le carnet, et elle reste
+  remontrable par un bandeau en haut du carnet (« attend d'être scannée par
+  l'autre téléphone ») tant que le donneur n'a pas touché « C'est fait, elle
+  est arrivée », ou pendant trente jours (`VIE_REMISE_S`).
+- **Le receveur ne refuse que ce que l'appli ne propose jamais** : un mot
+  écarté par `MotsEcartes`, ou un numéral dont l'écriture ne correspond pas à
+  sa valeur. Il n'exige plus que le mot soit traduit : un téléphone réglé en
+  anglais ne glose pas 3 351 mots qu'un téléphone en français fait gagner, et
+  refuser serait perdre la carte en route.
+- **Une remise peut toujours être fabriquée** par qui lit cette note, à
+  condition de connaître un jeton en attente du receveur : rien ne la signe.
+  L'enjeu, un mot de plus dans un carnet, ne vaut pas un serveur.
 
 ## 4. Ce qui voyage avec la carte
 

@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [35.1.0] - 2026-10-10
+
+Une carte qu'on offre quitte désormais votre carnet pour de bon : elle ne peut plus exister sur deux téléphones à la fois.
+
+### ✨ Nouveautés
+
+- **Offrir une carte, dans le bon ordre.** C'est maintenant la personne qui reçoit qui commence : elle touche « Recevoir » et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet à ce moment-là. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle.
+- **Rien ne se perd si l'échange est interrompu.** Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte, jusqu'à ce que vous indiquiez qu'elle est bien arrivée.
+
+### ⚠️ À savoir
+
+- Pour échanger une carte, les deux téléphones doivent avoir cette version ou une plus récente.
+
 ## [35.0.2] - 2026-10-10
 
 ### 🐛 Corrections

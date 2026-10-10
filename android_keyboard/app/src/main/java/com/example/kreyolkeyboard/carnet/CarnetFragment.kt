@@ -135,13 +135,19 @@ class CarnetFragment : DialogFragment() {
 
     // ------------------------------------------------------------ la cession
 
-    /** Ce que le prochain scan doit lire : une offre à recevoir, ou la réception de notre offre. */
-    private enum class Scan { RECEVOIR, CONFIRMER }
+    /**
+     * Ce que le prochain scan doit lire : la demande de l'autre téléphone
+     * (on donne), ou la remise qu'il a préparée pour nous (on reçoit).
+     */
+    private enum class Scan { DEMANDE, REMISE }
 
-    private var scanEnCours = Scan.RECEVOIR
+    private var scanEnCours = Scan.REMISE
 
-    /** L'offre affichée par ce téléphone, tant qu'elle attend sa réception. */
-    private var offreEnCours: Cession.Offre? = null
+    /** La carte qu'on s'apprête à céder, le temps de scanner la demande. */
+    private var aCeder: ContenuCarte? = null
+
+    /** « À remettre » : visible tant qu'une carte cédée n'a pas été dite arrivée. */
+    private var boutonARemettre: TextView? = null
 
     private var vueCession: VueCession? = null
 
@@ -209,7 +215,7 @@ class CarnetFragment : DialogFragment() {
                     setStroke(dp(1.5f), 0xAAFFFFFF.toInt())
                 }
                 isClickable = true
-                setOnClickListener { scanner(Scan.RECEVOIR) }
+                setOnClickListener { montrerDemande() }
             })
             addView(TextView(ctx).apply {
                 text = "✕"
@@ -231,6 +237,20 @@ class CarnetFragment : DialogFragment() {
             setTextColor(Color.parseColor("#424242"))
             text = getString(R.string.carnet_ouverture)
         }
+        // Une carte cédée qui attend d'être scannée : un bandeau sous le titre,
+        // et non un bouton de plus dans l'en-tête, où il écrasait « Mäi Carnet »
+        // sur un écran de 360 dp. Voir [Cession].
+        colonne.addView(TextView(ctx).apply {
+            textSize = 14f
+            setTextColor(Color.WHITE)
+            setTypeface(null, Typeface.BOLD)
+            setBackgroundColor(assombrir(Carnet.COULEUR, 0.25f))
+            setPadding(dp(16f), dp(10f), dp(16f), dp(10f))
+            isClickable = true
+            visibility = View.GONE
+            setOnClickListener { montrerRemiseEnAttente() }
+            boutonARemettre = this
+        })
         colonne.addView(tvResume)
 
 
@@ -347,6 +367,7 @@ class CarnetFragment : DialogFragment() {
                 construireFiltres()
                 surlignerTri()
                 remplirGrille()
+                majARemettre()
                 ouvrir?.let { f -> prets.firstOrNull { it.carte.forme == f }?.let { montrerCarte(it) } }
             }
         }.start()
@@ -1064,37 +1085,18 @@ class CarnetFragment : DialogFragment() {
         ).also { it.ouvrir() }
     }
 
-    /** Demande confirmation, puis affiche l'offre de [c]. */
+    /** Explique l'échange, puis ouvre le scanner sur la demande de l'autre téléphone. */
     private fun proposerCession(c: ContenuCarte) {
         val ctx = context ?: return
         android.app.AlertDialog.Builder(ctx)
             .setTitle(getString(R.string.ceder_titre, c.carte.forme))
             .setMessage(R.string.ceder_message)
-            .setPositiveButton(R.string.ceder_oui) { _, _ -> montrerOffre(c) }
+            .setPositiveButton(R.string.ceder_oui) { _, _ ->
+                aCeder = c
+                scanner(Scan.DEMANDE)
+            }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
-    }
-
-    private fun montrerOffre(c: ContenuCarte) {
-        val offre = Cession.Offre(
-            Cession.nouveauJeton(),
-            System.currentTimeMillis() / 1000 + Cession.VALIDITE_S,
-            c.carte.forme,
-            c.carte.nombre
-        )
-        offreEnCours = offre
-        cession().montrer(
-            titre = getString(R.string.offre_titre, c.carte.forme),
-            etapes = getString(R.string.offre_etapes),
-            code = Cession.offre(offre),
-            principal = getString(R.string.offre_scanner),
-            surPrincipal = { scanner(Scan.CONFIRMER) },
-            secondaire = getString(R.string.offre_annuler),
-            surSecondaire = {
-                offreEnCours = null
-                vueCession?.fermer()
-            }
-        )
     }
 
     private fun cession(): VueCession = vueCession ?: VueCession(racine).also { vueCession = it }
@@ -1143,98 +1145,135 @@ class CarnetFragment : DialogFragment() {
 
     private fun surScan(texte: String) {
         when (scanEnCours) {
-            Scan.CONFIRMER -> confirmer(texte)
-            Scan.RECEVOIR -> recevoir(texte)
+            Scan.DEMANDE -> ceder(texte)
+            Scan.REMISE -> recevoir(texte)
         }
     }
 
-    /** Le donneur a scanné une réception : si c'est celle de son offre, la carte part. */
-    private fun confirmer(texte: String) {
+    private fun dire(message: String) {
+        val ctx = context ?: return
+        android.widget.Toast.makeText(ctx, message, android.widget.Toast.LENGTH_LONG).show()
+    }
+
+    /**
+     * Le donneur a scanné la demande de l'autre téléphone : la carte quitte
+     * son carnet **tout de suite**, et la remise s'affiche. C'est le cœur de
+     * la version 2 de [Cession] : la carte part avant d'arriver, donc elle
+     * n'existe jamais des deux côtés.
+     */
+    private fun ceder(texte: String) {
         val ctx = context?.applicatifDansLaLangue() ?: return
-        val offre = offreEnCours ?: return
-        if (Cession.lireReception(texte) != offre.jeton) {
-            android.widget.Toast.makeText(ctx, R.string.cession_mauvais_code, android.widget.Toast.LENGTH_LONG).show()
-            return
-        }
-        offreEnCours = null
-        vueCession?.fermer()
+        val c = aCeder ?: return
+        aCeder = null
+        if (Cession.estAncienneVersion(texte)) return dire(getString(R.string.cession_version))
+        val jeton = Cession.lireDemande(texte) ?: return dire(getString(R.string.demande_invalide))
+        val remise = Cession.Remise(jeton, c.carte.forme, c.carte.nombre, System.currentTimeMillis() / 1000)
         lecteur?.fermer()
         Thread {
-            Carnet.retirer(ctx, offre.forme)
-            PreuveDeFrappe.retirerPlume(ctx, offre.forme)
+            // La remise d'abord : si l'appli s'arrêtait entre les deux, mieux
+            // vaut une carte encore au carnet et déjà remettable qu'une carte
+            // sortie sans code pour la donner.
+            Cession.ajouterRemise(ctx, remise)
+            Carnet.retirer(ctx, remise.forme)
+            PreuveDeFrappe.retirerPlume(ctx, remise.forme)
             Handler(Looper.getMainLooper()).post {
                 if (!isAdded) return@post
-                android.widget.Toast.makeText(
-                    ctx, getString(R.string.cession_faite, offre.forme), android.widget.Toast.LENGTH_LONG
-                ).show()
+                montrerRemise(remise)
                 chargerEnFond()
             }
         }.start()
     }
 
-    /** Le receveur a scanné une offre : la carte entre, et la réception s'affiche. */
-    private fun recevoir(texte: String) {
-        val ctx = context?.applicatifDansLaLangue() ?: return
-        fun refus(message: Int) =
-            android.widget.Toast.makeText(ctx, message, android.widget.Toast.LENGTH_LONG).show()
-        val offre = Cession.lireOffre(texte, System.currentTimeMillis() / 1000)
-            ?: return refus(R.string.reception_invalide)
-        // Déjà reçue : on remontre la confirmation, sans seconde carte. Celui
-        // qui reçoit pouvait la fermer avant que l'autre l'ait scannée (essai
-        // réel du 10 octobre 2026, A21s et émulateur), et rien ne permettait
-        // de la retrouver : le donneur gardait sa carte, qui existait alors
-        // sur les deux téléphones. La remontrer ne donne rien de plus, puisque
-        // le donneur ne lâche sa carte que sur le jeton de sa propre offre.
-        if (Cession.dejaRecue(ctx, offre.jeton)) return montrerReception(offre)
-        val principal = Handler(Looper.getMainLooper())
-        Thread {
-            val possible = cartePossible(ctx, offre)
-            if (possible) {
-                Carnet.ajouter(ctx, offre.forme, JeuCarte.CADEAU, offre.nombre)
-                Cession.noterRecue(ctx, offre.jeton)
-            }
-            principal.post {
-                if (!isAdded) return@post
-                if (!possible) return@post refus(R.string.reception_impossible)
-                montrerReception(offre)
-            }
-        }.start()
-    }
-
-    /** Le code de confirmation que celui qui donne doit scanner. */
-    private fun montrerReception(offre: Cession.Offre) {
+    /** La remise d'une carte cédée, à faire scanner par le téléphone qui l'a demandée. */
+    private fun montrerRemise(r: Cession.Remise) {
+        val ctx = context ?: return
         cession().montrer(
-            titre = getString(R.string.reception_titre, offre.forme),
-            etapes = getString(R.string.reception_etapes),
-            code = Cession.reception(offre.jeton),
-            principal = getString(R.string.reception_voir),
+            titre = getString(R.string.remise_titre, r.forme),
+            etapes = getString(R.string.remise_etapes),
+            code = Cession.remise(r),
+            principal = getString(R.string.remise_faite),
             surPrincipal = {
+                Cession.oublierRemise(ctx, r.jeton)
                 vueCession?.fermer()
-                chargerEnFond(ouvrir = offre.forme)
+                majARemettre()
             },
-            secondaire = getString(R.string.fermer),
+            secondaire = getString(R.string.remise_plus_tard),
             surSecondaire = {
                 vueCession?.fermer()
-                chargerEnFond()
+                majARemettre()
             }
         )
     }
 
-    /**
-     * Une offre ne peut porter qu'une carte que les jeux auraient pu donner :
-     * un mot glosé et non écarté, un numéral bien écrit, ou la carte de
-     * bienvenue. Une offre se fabrique (rien ne la signe), mais elle ne
-     * fabrique pas de mot.
-     */
-    private fun cartePossible(ctx: Context, offre: Cession.Offre): Boolean {
-        if (com.example.kreyolkeyboard.MotsEcartes.estEcarte(offre.forme)) return false
-        offre.nombre?.let { n ->
-            return n in 0..com.example.kreyolkeyboard.zuelen.ZuelenSpeller.MAXIMUM &&
-                com.example.kreyolkeyboard.zuelen.ZuelenSpeller.enLettres(n) == offre.forme
+    private fun montrerRemiseEnAttente() {
+        val ctx = context ?: return
+        Cession.remisesEnAttente(ctx).firstOrNull()?.let { montrerRemise(it) } ?: majARemettre()
+    }
+
+    private fun majARemettre() {
+        val ctx = context ?: return
+        val premiere = Cession.remisesEnAttente(ctx).firstOrNull()
+        boutonARemettre?.apply {
+            visibility = if (premiere != null) View.VISIBLE else View.GONE
+            premiere?.let { text = getString(R.string.a_remettre_bandeau, it.forme) }
         }
-        if (offre.forme == CarteAccueil.FORME) return true
-        TranslationDictionary.charger(ctx)
-        return TranslationDictionary.fiche(ctx, offre.forme).glose.isNotEmpty()
+    }
+
+    /** Celui qui reçoit montre sa demande, puis scanne la remise que le donneur affichera. */
+    private fun montrerDemande() {
+        val ctx = context ?: return
+        val jeton = Cession.nouvelleDemande(ctx)
+        cession().montrer(
+            titre = getString(R.string.demande_titre),
+            etapes = getString(R.string.demande_etapes),
+            code = Cession.demande(jeton),
+            principal = getString(R.string.demande_scanner),
+            surPrincipal = { scanner(Scan.REMISE) },
+            secondaire = getString(android.R.string.cancel),
+            surSecondaire = { vueCession?.fermer() }
+        )
+    }
+
+    /**
+     * Le receveur a scanné une remise : elle n'ouvre que si elle répond à une
+     * demande de ce téléphone, et une seule fois.
+     */
+    private fun recevoir(texte: String) {
+        val ctx = context?.applicatifDansLaLangue() ?: return
+        if (Cession.estAncienneVersion(texte)) return dire(getString(R.string.cession_version))
+        val r = Cession.lireRemise(texte) ?: return dire(getString(R.string.remise_invalide))
+        if (Cession.dejaRecue(ctx, r.jeton)) return dire(getString(R.string.remise_deja, r.forme))
+        if (!Cession.demandeEnAttente(ctx, r.jeton)) return dire(getString(R.string.remise_autre))
+        if (!cartePossible(r)) return dire(getString(R.string.reception_impossible))
+        Thread {
+            Carnet.ajouter(ctx, r.forme, JeuCarte.CADEAU, r.nombre)
+            Cession.noterRecue(ctx, r.jeton)
+            Handler(Looper.getMainLooper()).post {
+                if (!isAdded) return@post
+                vueCession?.fermer()
+                dire(getString(R.string.reception_titre, r.forme))
+                chargerEnFond(ouvrir = r.forme)
+            }
+        }.start()
+    }
+
+    /**
+     * Une remise ne peut porter qu'un mot que l'appli propose, ou un numéral
+     * bien écrit. Rien ne la signe : ce contrôle empêche de fabriquer un mot
+     * écarté, pas de fabriquer une carte.
+     *
+     * On n'exige plus que le mot soit traduit : la carte a déjà quitté le
+     * donneur, et un téléphone réglé en anglais ne glose pas 3 351 mots
+     * qu'un téléphone en français fait gagner. Refuser, ce serait perdre la
+     * carte en route.
+     */
+    private fun cartePossible(r: Cession.Remise): Boolean {
+        if (com.example.kreyolkeyboard.MotsEcartes.estEcarte(r.forme)) return false
+        r.nombre?.let { n ->
+            return n in 0..com.example.kreyolkeyboard.zuelen.ZuelenSpeller.MAXIMUM &&
+                com.example.kreyolkeyboard.zuelen.ZuelenSpeller.enLettres(n) == r.forme
+        }
+        return true
     }
 
     /**
@@ -1254,9 +1293,9 @@ class CarnetFragment : DialogFragment() {
                 override fun handleOnBackPressed() {
                     when {
                         vueCession?.ouverte == true -> {
-                            // Fermer l'offre, c'est garder la carte.
-                            offreEnCours = null
+                            // Une remise fermée reste sous « À remettre ».
                             vueCession?.fermer()
+                            majARemettre()
                         }
                         fermerCarte() -> Unit
                         else -> dismiss()

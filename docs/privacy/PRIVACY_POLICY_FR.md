@@ -335,9 +335,9 @@ Notre app demande les autorisations Android suivantes. Voici exactement pourquoi
 
 ### 6️⃣ CAMERA (Demandée au premier scan d'une carte)
 
-**Ce qu'elle fait :** Permet de lire le code carré (code QR) affiché par un autre téléphone, quand on s'offre une carte du carnet  
+**Ce qu'elle fait :** Permet de lire le code carré (code QR) affiché par un autre téléphone, quand on donne ou reçoit une carte du carnet  
 **Pourquoi nous en avons besoin :** Uniquement pour offrir ou recevoir une carte. Le clavier, la dictée et les jeux ne s'en servent pas  
-**Impact sur la vie privée :** L'appareil photo ne s'ouvre qu'après un appui sur « Recevoir » ou « Scanner la confirmation » dans le carnet, et se referme dès que le code est lu. Les images sont analysées sur le téléphone même, image par image, et aucune n'est enregistrée ni envoyée  
+**Impact sur la vie privée :** L'appareil photo ne s'ouvre qu'après un appui sur « Scanner son code » ou « Scanner la carte » dans le carnet, après une phrase qui explique à quoi il sert, et se referme dès que le code est lu. Les images sont analysées sur le téléphone même, image par image, et aucune n'est enregistrée ni envoyée  
 **Ce qu'elle NE PEUT PAS faire :** Prendre des photos, filmer, ou s'ouvrir en arrière-plan  
 **Contrôle utilisateur :** Refusez-la à l'invite, ou retirez-la dans Infos app &gt; Autorisations ; tout fonctionne alors comme avant, sauf l'échange de cartes  
 **Emplacement des données :** Aucune - rien n'est stocké ni transmis
@@ -603,7 +603,7 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 - ❌ **Pas de compétition en ligne** (pas de fonctionnalités multijoueur)
 - ❌ **Pas de fonctionnalités sociales** nécessitant un téléchargement de données
 - ✅ **Partager une carte, seulement si vous le décidez :** le bouton « Partager » d'une carte du carnet en fait une image et ouvre le menu de partage d'Android. C'est vous qui choisissez l'application et la personne ; l'image ne contient que la carte et le lien pour installer le clavier, et elle ne passe jamais par nous
-- ✅ **Offrir une carte, de la main à la main :** les deux téléphones échangent deux codes carrés à l'écran, sans Internet, sans Bluetooth et sans compte. Le code ne contient que le mot de la carte (et sa valeur pour un nombre), un numéro tiré au hasard pour cet échange et son heure d'expiration, dix minutes plus tard. Ni votre nom, ni votre progression, ni ce que vous avez tapé n'y figurent : la carte arrive neuve chez l'autre personne
+- ✅ **Offrir une carte, de la main à la main :** les deux téléphones échangent deux codes carrés à l'écran, sans Internet, sans Bluetooth et sans compte. Celui de la personne qui reçoit ne contient qu'un numéro tiré au hasard ; celui du donneur, ce même numéro et le mot de la carte (avec sa valeur pour un nombre). Ni votre nom, ni votre progression, ni ce que vous avez tapé n'y figurent : la carte arrive neuve chez l'autre personne, et elle quitte définitivement le carnet du donneur
 - ✅ **Suivi de progression 100% local**
 - ✅ **Aucun compte requis**
 - ✅ **La progression se réinitialise si vous effacez les données de l'app** (pas de sauvegarde cloud)
