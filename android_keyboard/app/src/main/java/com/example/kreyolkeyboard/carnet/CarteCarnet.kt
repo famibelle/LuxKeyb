@@ -306,7 +306,7 @@ object CarteCarnet {
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
-            Ornement.SERIE_G
+            Ornement.serieG(c.rarete)
         )
         carte.posee(
             ligne(
@@ -314,7 +314,7 @@ object CarteCarnet {
                 c.rang?.let { context.getString(R.string.carte_rang, it + 1) } ?: context.getString(R.string.carte_hors_corpus),
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
-            Ornement.SERIE_D
+            Ornement.serieD(c.rarete)
         )
         return carte
     }

@@ -421,6 +421,33 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+
+    /**
+     * Le milieu de la bordure basse visible : entre le bas de la face
+     * (`haut - bord`) et le bord intérieur du filet de contour (`haut - 2,45`).
+     *
+     * La bordure s'épaissit avec le palier, de 12 à 18 unités, et la bande
+     * ci-dessus, calée une fois pour toutes, tombait au milieu de celle d'une
+     * commune seulement : sur une très rare, la ligne de série était trois
+     * unités trop bas (propriétaire, 2026-10-10). La ligne et la plume se
+     * centrent donc sur la bordure de leur propre palier.
+     */
+    fun milieuBordureBasse(rarete: Rarete, vignette: Boolean): Float {
+        val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
+        val bord = 12f + rarete.ordinal * 2f
+        return haut - (bord + 2.45f) / 2f
+    }
+
+    /** [SERIE_G], recentrée verticalement sur la bordure du palier. */
+    fun serieG(rarete: Rarete): RectF = recentree(SERIE_G, milieuBordureBasse(rarete, false))
+
+    /** [SERIE_D], recentrée verticalement sur la bordure du palier. */
+    fun serieD(rarete: Rarete): RectF = recentree(SERIE_D, milieuBordureBasse(rarete, false))
+
+    private fun recentree(r: RectF, milieu: Float): RectF {
+        val demi = r.height() / 2f
+        return RectF(r.left, milieu - demi, r.right, milieu + demi)
+    }
     /**
      * L'énoncé d'une question, sur le dos de révision.
      *
@@ -2216,9 +2243,10 @@ object Ornement {
      * La gravure est celle du reste de la carte : un sillon dans le ton sombre
      * du métal, une lèvre claire décalée vers le bas qui le fait lire en creux.
      */
-    fun dessinerPlume(c: Canvas, p: Paint, vignette: Boolean, metal: Metal) {
+    fun dessinerPlume(c: Canvas, p: Paint, vignette: Boolean, rarete: Rarete) {
+        val metal = metal(rarete)
         val cx = if (vignette) PLUME_VIGNETTE_X else PLUME_X
-        val cy = if (vignette) PLUME_VIGNETTE_Y else PLUME_Y
+        val cy = milieuBordureBasse(rarete, vignette)
         val taille = if (vignette) PLUME_VIGNETTE_TAILLE else PLUME_TAILLE
         c.save()
         c.translate(cx, cy)
@@ -2253,10 +2281,8 @@ object Ornement {
      * côtés (propriétaire, 2026-10-10).
      */
     private const val PLUME_X = LARGEUR / 2f
-    private const val PLUME_Y = 432.5f
     private const val PLUME_TAILLE = 9f
     private const val PLUME_VIGNETTE_X = LARGEUR / 2f
-    private const val PLUME_VIGNETTE_Y = 292.5f
     private const val PLUME_VIGNETTE_TAILLE = 7.5f
 
     /**
@@ -3327,7 +3353,7 @@ class CarteOrnee(
             pivoterLesBosses(canvas, pinceau)
         }
         if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
-        if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, Ornement.metal(rarete))
+        if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, rarete)
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
