@@ -15,8 +15,8 @@ fr-FR/  lb/  de-DE/  en-US/  pt-PT/
 
 Le français (`fr-FR/`) est la fiche principale et la référence : les autres
 langues en sont la traduction, section pour section. Ce fichier-ci garde les
-raisons de chaque choix. Version de référence : **34.4.0**
-(`versionCode` 340400), activation du clavier simplifiée, `applicationId` `com.potomitan.luxkeyboard`.
+raisons de chaque choix. Version de référence : **34.4.1**
+(`versionCode` 340401), correctif de l'activation simplifiée, `applicationId` `com.potomitan.luxkeyboard`.
 
 La Play Console **n'interprète pas le markdown** : pas de `**gras**`, pas de
 `#` — les astérisques s'afficheraient tels quels. Tous les blocs ci-dessous
@@ -118,6 +118,10 @@ fiche du Klavyé Kréyòl dont elle reprend la structure :
 en production, le texte annonce aussi la dictée, et le dit en deuxième ligne, pas en
 petits caractères : jusque-là rien ne quittait le téléphone, désormais la voix
 part à l'Université du Luxembourg quand on dicte.*
+
+Texte de la 34.4.1 : [`fr-FR/changelogs/340401.txt`](fr-FR/changelogs/340401.txt),
+identique à celui de la 34.4.0 : le correctif (Retour depuis les réglages
+d'Android sur Samsung) complète l'installation plus rapide qu'elle annonce.
 
 Texte de la 34.4.0 : [`fr-FR/changelogs/340400.txt`](fr-FR/changelogs/340400.txt).
 La ligne 📱 des tablettes cède la place à ⚡, l'installation plus courte :

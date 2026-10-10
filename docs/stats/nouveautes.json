@@ -1,9 +1,28 @@
 {
  "genere_le": "2026-10-10",
- "derniere_version": "34.4.0",
+ "derniere_version": "34.4.1",
  "derniere_date": "2026-10-10",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "34.4.1",
+   "date": "2026-10-10",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": null,
+       "texte": "Après avoir activé le clavier dans les réglages d'Android, la touche Retour ramène bien dans l'application. Sur certains téléphones Samsung, elle menait à un autre écran des réglages, ouvert plus tôt, et il fallait revenir dans l'application par soi-même. Il en va de même depuis l'écran du correcteur orthographique."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "34.4.0",
    "date": "2026-10-10",
@@ -277,41 +296,6 @@
    "image": "Screenshots/lux_tablette_kraizwuert.png",
    "image_alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
    "image_legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
-  },
-  {
-   "version": "34.0.0",
-   "date": "2026-10-07",
-   "intro": "Les actualités de l'INLL quittent l'application.",
-   "sections": [
-    {
-     "emoji": "🔄",
-     "titre": "Changements",
-     "points": [
-      {
-       "titre": "La page « Actualités de l'INLL » est retirée de l'accueil",
-       "texte": "Apparue en 33.2.0 et réservée au test fermé, elle attendait l'autorisation écrite de l'Institut national des langues Luxembourg pour reprendre ses publications. Elle reviendra si cette autorisation est donnée."
-      },
-      {
-       "titre": null,
-       "texte": "Les actualités déjà téléchargées par la 33.2 sont effacées du téléphone au premier lancement."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔒",
-     "titre": "Confidentialité",
-     "points": [
-      {
-       "titre": null,
-       "texte": "La dictée vocale redevient la seule fonction qui utilise Internet, comme l'écran d'accueil et la politique de confidentialité (version 3.2) le disent de nouveau."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

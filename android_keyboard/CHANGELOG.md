@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [34.4.1] - 2026-10-10
+
+### 🐛 Corrections
+
+- Après avoir activé le clavier dans les réglages d'Android, la touche Retour ramène bien dans l'application. Sur certains téléphones Samsung, elle menait à un autre écran des réglages, ouvert plus tôt, et il fallait revenir dans l'application par soi-même. Il en va de même depuis l'écran du correcteur orthographique.
+
 ## [34.4.0] - 2026-10-10
 
 Installer le clavier demande moins d'étapes, et l'appli ne vous interrompt plus pendant que vous l'essayez.
