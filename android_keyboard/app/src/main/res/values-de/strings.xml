@@ -267,9 +267,9 @@
     <string name="sa_plus_qu_une_etape">Nur noch ein Schritt.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 Schritte, um überall auf Lëtzebuergesch zu tippen.</string>
     <string name="sa_voir_les_etapes">Die 3 Schritte ansehen</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Suchen Sie „Lëtzebuergesch Clavier“ auf dem Bildschirm, der sich öffnet, aktivieren Sie den Schalter und kehren Sie dann hierher zurück.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Suchen Sie „Lëtzebuergesch Clavier“ auf dem Bildschirm, der sich öffnet, und aktivieren Sie den Schalter. Die App bringt Sie danach hierher zurück.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Fast geschafft! Bestätigen Sie beide Android-Warnungen nacheinander: Wer bei der ersten aufhört, bricht die Aktivierung ab.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android zeigt eine Sicherheitswarnung an, dieselbe für alle Tastaturen von Drittanbietern: Tippen Sie auf OK (zweimal, falls eine zweite Meldung folgt), dann auf Zurück. Lëtzebuergesch Clavier sammelt nichts von dem, was Sie tippen.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android zeigt eine Sicherheitswarnung an, dieselbe für alle Tastaturen von Drittanbietern: Tippen Sie auf OK. Lëtzebuergesch Clavier sammelt nichts von dem, was Sie tippen.</string>
     <string name="sa_rouvrir_les_reglages_android">Android-Einstellungen erneut öffnen ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Android-Einstellungen öffnen ↗</string>
     <string name="sa_activer_le_clavier">Tastatur aktivieren</string>
@@ -646,6 +646,7 @@
     <string name="stt_mic_unavailable">Mikrofon nicht verfügbar</string>
     <string name="stt_service_unreachable">Dienst LuxASR nicht erreichbar, versuchen Sie es später erneut</string>
     <string name="stt_no_network">Diktat: keine Internetverbindung</string>
+    <string name="stt_apres_deverrouillage">Das Diktat ist verfügbar, sobald das Handy entsperrt ist</string>
     <string name="stt_connection_lost">Verbindung während des Diktats verloren</string>
     <string name="stt_network_too_slow">Verbindung zu langsam für das Diktat</string>
     <string name="stt_not_in_password">Diktat in Passwortfeldern deaktiviert</string>

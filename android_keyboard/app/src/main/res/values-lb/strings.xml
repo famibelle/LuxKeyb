@@ -267,9 +267,9 @@
     <string name="sa_plus_qu_une_etape">Just nach ee Schrëtt.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 Schrëtt, fir iwwerall op Lëtzebuergesch ze tippen.</string>
     <string name="sa_voir_les_etapes">D\'3 Schrëtt kucken</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „Lëtzebuergesch Clavier“ um Bildschierm, deen opgeet, maacht de Schalter un a kommt dann heihinner zréck.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „Lëtzebuergesch Clavier“ um Bildschierm, deen opgeet, a maacht de Schalter un. D\'App bréngt Iech duerno heihinner zréck.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Bal! Confirméiert déi 2 Android-Warnungen eng no där anerer: Wann Dir bei der éischter ophalt, gëtt d\'Aktivéierung ofgebrach.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng Sécherheetswarnung, déi selwecht fir all Tastature vun aneren Ubidder: tippt op OK (zweemol, wann en zweete Message kënnt), duerno op Zréck. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng Sécherheetswarnung, déi selwecht fir all Tastature vun aneren Ubidder: tippt op OK. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt.</string>
     <string name="sa_rouvrir_les_reglages_android">Android-Astellungen nach eng Kéier opmaachen ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Android-Astellungen opmaachen ↗</string>
     <string name="sa_activer_le_clavier">Tastatur aktivéieren</string>
@@ -646,6 +646,7 @@
     <string name="stt_mic_unavailable">Mikro net disponibel</string>
     <string name="stt_service_unreachable">De Service LuxASR ass net disponibel, probéiert méi spéit nach eng Kéier</string>
     <string name="stt_no_network">Diktat: keng Internetverbindung</string>
+    <string name="stt_apres_deverrouillage">Den Diktat geet, soubal den Handy entspaart ass</string>
     <string name="stt_connection_lost">Verbindung während dem Diktat verluer</string>
     <string name="stt_network_too_slow">Verbindung ze lues fir den Diktat</string>
     <string name="stt_not_in_password">Diktat an de Passwuertfelder ausgeschalt</string>

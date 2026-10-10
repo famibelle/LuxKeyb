@@ -70,9 +70,14 @@
                 android:value="true" />
         </service>
 
-        <!-- Service du clavier IME -->
+        <!-- Service du clavier IME. directBootAware : sans lui, Android
+             affiche à l'activation un second avertissement (« après le
+             redémarrage, vous devez déverrouiller… »). Avant le premier
+             déverrouillage, le service tourne sans rien lire ni écrire du
+             stockage de l'utilisateur (voir avantDeverrouillage()). -->
         <service
             android:name=".KreyolInputMethodServiceRefactored"
+            android:directBootAware="true"
             android:label="@string/keyboard_name"
             android:permission="android.permission.BIND_INPUT_METHOD"
             android:exported="true">

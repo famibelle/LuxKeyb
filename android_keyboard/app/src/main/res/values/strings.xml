@@ -271,9 +271,9 @@
     <string name="sa_plus_qu_une_etape">Just one step left.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 steps to type in Lëtzebuergesch everywhere.</string>
     <string name="sa_voir_les_etapes">See the 3 steps</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Find “Lëtzebuergesch Clavier” on the screen that opens, turn on the switch, then come back here.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Find “Lëtzebuergesch Clavier” on the screen that opens and turn on the switch. The app then brings you back here.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Almost! Confirm both Android warnings one after the other: stopping at the first one cancels the activation.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android shows a security warning, the same for every third-party keyboard: tap OK (twice if a second message follows), then Back. Lëtzebuergesch Clavier collects nothing you type.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android shows a security warning, the same for every third-party keyboard: tap OK. Lëtzebuergesch Clavier collects nothing you type.</string>
     <string name="sa_rouvrir_les_reglages_android">Reopen Android settings ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Open Android settings ↗</string>
     <string name="sa_activer_le_clavier">Turn on the keyboard</string>
@@ -650,6 +650,7 @@
     <string name="stt_mic_unavailable">Microphone unavailable</string>
     <string name="stt_service_unreachable">LuxASR service unavailable, try again later</string>
     <string name="stt_no_network">Voice typing: no internet connection</string>
+    <string name="stt_apres_deverrouillage">Voice typing will be available once the phone is unlocked</string>
     <string name="stt_connection_lost">Connection lost during voice typing</string>
     <string name="stt_network_too_slow">Connection too slow for voice typing</string>
     <string name="stt_not_in_password">Voice typing is off in password fields</string>

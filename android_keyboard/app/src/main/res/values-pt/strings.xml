@@ -267,9 +267,9 @@
     <string name="sa_plus_qu_une_etape">Só falta um passo.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 passos para escrever em lëtzebuergesch em todo o lado.</string>
     <string name="sa_voir_les_etapes">Ver os 3 passos</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Encontre «Lëtzebuergesch Clavier» no ecrã que se abre, ative o interruptor e depois volte aqui.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Encontre «Lëtzebuergesch Clavier» no ecrã que se abre e ative o interruptor. Depois, a aplicação volta a este ecrã.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Quase! Confirme os 2 avisos do Android, um a seguir ao outro: parar no primeiro cancela a ativação.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ O Android mostra um aviso de segurança, o mesmo para todos os teclados de terceiros: toque em OK (duas vezes se aparecer uma segunda mensagem) e depois em Voltar. O Lëtzebuergesch Clavier não recolhe nada do que escreve.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ O Android mostra um aviso de segurança, o mesmo para todos os teclados de terceiros: toque em OK. O Lëtzebuergesch Clavier não recolhe nada do que escreve.</string>
     <string name="sa_rouvrir_les_reglages_android">Reabrir as definições do Android ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Abrir as definições do Android ↗</string>
     <string name="sa_activer_le_clavier">Ativar o teclado</string>
@@ -646,6 +646,7 @@
     <string name="stt_mic_unavailable">Microfone indisponível</string>
     <string name="stt_service_unreachable">Serviço LuxASR indisponível, tente mais tarde</string>
     <string name="stt_no_network">Ditado: sem ligação à Internet</string>
+    <string name="stt_apres_deverrouillage">O ditado fica disponível depois de desbloquear o telemóvel</string>
     <string name="stt_connection_lost">Ligação perdida durante o ditado</string>
     <string name="stt_network_too_slow">Ligação demasiado lenta para o ditado</string>
     <string name="stt_not_in_password">Ditado desativado nos campos de palavra-passe</string>

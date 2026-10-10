@@ -23,6 +23,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.Gravity
@@ -192,6 +193,7 @@ class SettingsActivity : AppCompatActivity() {
 
         /** Partage de l'activation à proposer à la prochaine ouverture. */
         private const val PREF_PARTAGE_EN_ATTENTE = "partage_activation_en_attente"
+        private const val REQ_REGLAGES_CLAVIER = 7301
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
@@ -722,6 +724,8 @@ class SettingsActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
+        // Revenu dans l'appli, de lui-même ou ramené : plus rien à guetter.
+        arreterGuetActivation()
 
         if (::tabBar.isInitialized && hasPendingLevelBadge() != levelBadgeDrawn) {
             Log.d("SettingsActivity", "🔄 Pastille de niveau à rafraîchir au retour au premier plan")
@@ -743,6 +747,7 @@ class SettingsActivity : AppCompatActivity() {
         ecoutePremierMot?.let { onboardingPrefs().unregisterOnSharedPreferenceChangeListener(it) }
         ecoutePremierMot = null
         minuteriePochette.removeCallbacks(ouvrirPochetteApresPause)
+        arreterGuetActivation()
         Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
         
         super.onDestroy()
@@ -3751,6 +3756,56 @@ class SettingsActivity : AppCompatActivity() {
         if (isKeyboardEnabled()) openInputMethodPicker() else openKeyboardSettings()
     }
 
+    private val minuterieGuet = Handler(Looper.getMainLooper())
+    private var guetEnCours: Runnable? = null
+
+    /**
+     * Ramène l'utilisateur dans l'appli dès que le clavier est activé, sans
+     * qu'il ait à trouver Retour (34.5.0). Il en était à l'interrupteur, puis
+     * à l'avertissement d'Android : dès qu'il touche OK, l'appli referme
+     * l'écran des réglages qu'elle avait ouvert, et l'étape 2 ouvre d'elle-même
+     * le choix du clavier.
+     *
+     * Cela ne marche que parce que les réglages s'ouvrent dans la tâche de
+     * l'appli (34.4.1) : finishActivity ne referme que ce que l'activité a
+     * lancé pour résultat.
+     *
+     * On interroge InputMethodManager à intervalle court plutôt que d'observer
+     * le réglage : ENABLED_INPUT_METHODS n'est plus lisible depuis Android 14
+     * pour une appli qui vise au-delà de l'API 33, et la notification d'un
+     * ContentObserver arrivait à une appli en arrière-plan avec dix secondes
+     * de retard (mesuré sur Android 16), le temps que l'utilisateur cherche
+     * Retour. L'appli reste vivante pendant ce temps : elle est juste sous les
+     * réglages, dans la même tâche. Le guet s'arrête au bout de trois minutes,
+     * ou dès que l'appli revient au premier plan.
+     */
+    private fun guetterActivation() {
+        arreterGuetActivation()
+        val fin = SystemClock.uptimeMillis() + 3 * 60_000L
+        val guet = object : Runnable {
+            override fun run() {
+                if (guetEnCours !== this) return
+                if (isKeyboardEnabled()) {
+                    arreterGuetActivation()
+                    Log.d("SettingsActivity", "🔙 Clavier activé : retour automatique dans l'appli")
+                    @Suppress("DEPRECATION")
+                    finishActivity(REQ_REGLAGES_CLAVIER)
+                } else if (SystemClock.uptimeMillis() < fin) {
+                    minuterieGuet.postDelayed(this, 400)
+                } else {
+                    arreterGuetActivation()
+                }
+            }
+        }
+        guetEnCours = guet
+        minuterieGuet.postDelayed(guet, 400)
+    }
+
+    private fun arreterGuetActivation() {
+        guetEnCours?.let { minuterieGuet.removeCallbacks(it) }
+        guetEnCours = null
+    }
+
     // Ouvre les paramètres de clavier système, directement. Il y avait avant un
     // écran « Avant de continuer » montrant une capture de l'avertissement
     // d'Android : retiré en 34.4.0, parce que la capture, nette, ressemblait
@@ -3772,6 +3827,7 @@ class SettingsActivity : AppCompatActivity() {
             // par-dessus ce qu'on y avait laissé, et Retour menait à un ancien
             // écran (« Correction orthographique ») au lieu de l'étape 2.
             val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+            if (!isKeyboardEnabled()) guetterActivation()
             // Tentative de surlignage de la ligne IME dans l'écran système :
             // extra non documenté, respecté par les Settings AOSP/Pixel,
             // ignoré silencieusement ailleurs (pas d'effet de bord).
@@ -3779,7 +3835,10 @@ class SettingsActivity : AppCompatActivity() {
                 ":settings:fragment_args_key",
                 "$packageName/com.example.kreyolkeyboard.KreyolInputMethodServiceRefactored"
             )
-            startActivity(intent)
+            // « pour résultat » : c'est ce qui permet de refermer l'écran des
+            // réglages depuis l'appli (finishActivity), voir guetterActivation().
+            @Suppress("DEPRECATION")
+            startActivityForResult(intent, REQ_REGLAGES_CLAVIER)
         } catch (e: Exception) {
             Log.e("SettingsActivity", "Erreur ouverture paramètres clavier: ${e.message}")
             // Fallback vers paramètres généraux

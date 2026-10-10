@@ -6,7 +6,13 @@ package com.example.kreyolkeyboard
 
 import android.inputmethodservice.InputMethodService
 import android.content.Context
+import android.content.BroadcastReceiver
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
+import android.os.UserManager
+import androidx.core.content.ContextCompat
+import java.io.File
 import android.app.ActivityManager
 import android.util.Log
 import android.util.TypedValue
@@ -421,6 +427,77 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     private var dernierSelStart = 0
     private var dernierSelEnd = 0
     
+    // ── Avant le premier déverrouillage ─────────────────────────────────────
+    //
+    // Le service est directBootAware depuis la 34.5.0 : c'est ce qui épargne,
+    // à l'activation, le second avertissement d'Android (« après le
+    // redémarrage, vous devez déverrouiller… »). La contrepartie est qu'il
+    // peut démarrer avant que le stockage chiffré de l'utilisateur soit
+    // ouvert, par exemple pour un mot de passe sur l'écran de verrouillage.
+    // Il tourne alors sur des préférences en mémoire et un dossier jetable,
+    // n'enregistre aucun mot, et repart de zéro au déverrouillage, cette fois
+    // sur les vraies données. Tout passe par ces deux surcharges : aucun
+    // composant du clavier n'atteint le stockage par applicationContext.
+
+    /** Connu au premier appel, puis figé jusqu'au redémarrage du processus. */
+    private var verrouilleConnu: Boolean? = null
+    private val prefsAvantDeverrouillage = HashMap<String, SharedPreferences>()
+    private var recepteurDeverrouillage: BroadcastReceiver? = null
+    private var redemarrerApresSaisie = false
+
+    private fun avantDeverrouillage(): Boolean = verrouilleConnu
+        ?: (!getSystemService(UserManager::class.java).isUserUnlocked).also { verrouilleConnu = it }
+
+    override fun getSharedPreferences(name: String?, mode: Int): SharedPreferences =
+        if (avantDeverrouillage()) synchronized(prefsAvantDeverrouillage) {
+            prefsAvantDeverrouillage.getOrPut(name ?: "") { PreferencesEnMemoire() }
+        } else super.getSharedPreferences(name, mode)
+
+    override fun getFilesDir(): File =
+        if (avantDeverrouillage()) dossierAvantDeverrouillage().apply { mkdirs() }
+        else super.getFilesDir()
+
+    /**
+     * Où le compteur d'usage pose son fichier avant le déverrouillage : il
+     * l'initialise depuis les assets, à zéro partout, et rien n'y est compté
+     * ensuite (voir onWordCommitted). Effacé au déverrouillage.
+     */
+    private fun dossierAvantDeverrouillage() =
+        File(createDeviceProtectedStorageContext().cacheDir, "avant-deverrouillage")
+
+    private fun surveillerDeverrouillage() {
+        val recepteur = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) = apresDeverrouillage()
+        }
+        ContextCompat.registerReceiver(
+            this, recepteur, IntentFilter(Intent.ACTION_USER_UNLOCKED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        recepteurDeverrouillage = recepteur
+        // Déverrouillé entre la vérification et l'abonnement : la diffusion
+        // est déjà passée.
+        if (getSystemService(UserManager::class.java).isUserUnlocked) apresDeverrouillage()
+    }
+
+    private fun apresDeverrouillage() {
+        dossierAvantDeverrouillage().deleteRecursively()
+        // Le mot de passe de l'écran de verrouillage se tape peut-être avec ce
+        // clavier : on attend qu'il se referme pour ne rien couper.
+        if (isInputViewShown) redemarrerApresSaisie = true else redemarrer()
+    }
+
+    /**
+     * Le plus sûr pour tout relire depuis le stockage enfin ouvert : arrêter
+     * le processus. Android relie aussitôt le clavier sélectionné, qui repart
+     * avec les réglages, le compteur et la langue de l'utilisateur. Aucune
+     * activité de l'appli ne peut tourner à ce moment-là : elles ne sont pas
+     * directBootAware.
+     */
+    private fun redemarrer() {
+        Log.d(TAG, "🔓 Déverrouillé : redémarrage du clavier sur les vraies données")
+        android.os.Process.killProcess(android.os.Process.myPid())
+    }
+
     // Avant Android 13, la langue de l'interface choisie dans l'appli ne
     // descend pas jusqu'au service : il la reprend ici (voir LangueInterface).
     override fun getResources(): android.content.res.Resources =
@@ -443,7 +520,9 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         
         // 🔍 DIAGNOSTIC SAMSUNG A21S: Informations système détaillées
         logSystemInfo()
-        
+
+        if (avantDeverrouillage()) surveillerDeverrouillage()
+
         try {
             initializeComponents()
             Log.d(TAG, "✅ Service initialisé avec succès")
@@ -573,6 +652,10 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         inputProcessor.setWordCommitListener(object : WordCommitListener {
             override fun onWordCommitted(word: String) {
                 Log.d(TAG, "🔍 onWordCommitted appelé avec: '$word'")
+
+                // Avant le déverrouillage, rien n'est compté : il n'y a nulle
+                // part où l'écrire, et c'est souvent un mot de passe.
+                if (avantDeverrouillage()) return
 
                 if (isSensitiveField()) {
                     // Champ de mot de passe ou saisie explicitement non
@@ -1134,6 +1217,13 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // déclenche aucun traitement du tout.
         if (isSensitiveField()) {
             showDictationMessage(R.string.stt_not_in_password)
+            return
+        }
+
+        // L'écran d'information et la demande d'accès au micro sont des
+        // activités de l'appli, qui ne démarrent pas avant le déverrouillage.
+        if (avantDeverrouillage()) {
+            showDictationMessage(R.string.stt_apres_deverrouillage)
             return
         }
 
@@ -2293,6 +2383,11 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         super.onFinishInput()
         Log.d(TAG, "onFinishInput")
 
+        if (redemarrerApresSaisie) {
+            Handler(Looper.getMainLooper()).post { redemarrer() }
+            return
+        }
+
         // Plus de clavier à l'écran, plus rien à montrer : inutile de réveiller
         // le processus à chaque changement de réseau.
         reseauDictee?.arreter()
@@ -2374,6 +2469,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     
     override fun onDestroy() {
         Log.d(TAG, "=== DESTRUCTION DU SERVICE ===")
+        recepteurDeverrouillage?.let { runCatching { unregisterReceiver(it) } }
         
         try {
             // 🎮 Gamification: Sauvegarder les changements non sauvegardés

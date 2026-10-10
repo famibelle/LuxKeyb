@@ -267,9 +267,9 @@
     <string name="sa_plus_qu_une_etape">Plus qu\'une étape.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 étapes pour taper en lëtzebuergesch partout.</string>
     <string name="sa_voir_les_etapes">Voir les 3 étapes</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Trouvez « Lëtzebuergesch Clavier » dans l\'écran qui s\'ouvre, activez l\'interrupteur, puis revenez ici.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Trouvez « Lëtzebuergesch Clavier » dans l\'écran qui s\'ouvre et activez l\'interrupteur. L\'application vous ramène ensuite ici.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Presque ! Validez bien les 2 avertissements Android l\'un après l\'autre : s\'arrêter au premier annule l\'activation.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour. Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK. Lëtzebuergesch Clavier ne collecte rien de ce que vous tapez.</string>
     <string name="sa_rouvrir_les_reglages_android">Rouvrir les réglages Android ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Ouvrir les réglages Android ↗</string>
     <string name="sa_activer_le_clavier">Activer le clavier</string>
@@ -646,6 +646,7 @@
     <string name="stt_mic_unavailable">Micro indisponible</string>
     <string name="stt_service_unreachable">Service LuxASR indisponible, réessayez plus tard</string>
     <string name="stt_no_network">Dictée : pas de connexion Internet</string>
+    <string name="stt_apres_deverrouillage">La dictée sera disponible une fois le téléphone déverrouillé</string>
     <string name="stt_connection_lost">Connexion perdue pendant la dictée</string>
     <string name="stt_network_too_slow">Connexion trop lente pour la dictée</string>
     <string name="stt_not_in_password">Dictée désactivée dans les champs de mot de passe</string>
