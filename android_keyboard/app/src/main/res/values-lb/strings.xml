@@ -269,13 +269,13 @@
     <string name="sa_voir_les_etapes">D\'3 Schrëtt kucken</string>
     <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „Lëtzebuergesch Clavier“ um Bildschierm, deen opgeet, maacht de Schalter un a kommt dann heihinner zréck.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Bal! Confirméiert déi 2 Android-Warnungen eng no där anerer: Wann Dir bei der éischter ophalt, gëtt d\'Aktivéierung ofgebrach.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng normal Sécherheetswarnung, déi bei allen Tastature vun aneren Ubidder kënnt. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng Sécherheetswarnung, déi selwecht fir all Tastature vun aneren Ubidder: tippt op OK (zweemol, wann en zweete Message kënnt), duerno op Zréck. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt.</string>
     <string name="sa_rouvrir_les_reglages_android">Android-Astellungen nach eng Kéier opmaachen ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Android-Astellungen opmaachen ↗</string>
     <string name="sa_activer_le_clavier">Tastatur aktivéieren</string>
     <string name="sa_le_clavier_est_active">D\'Tastatur ass aktivéiert.</string>
     <string name="sa_dans_les_reglages_android">An den Android-Astellungen.</string>
-    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wielt „Lëtzebuergesch Clavier“ an der Lëscht vun den Tastaturen, déi erschéngt. Är aner Tastature bleiwen installéiert.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wielt „Lëtzebuergesch Clavier“ an der Lëscht vun den Tastaturen, déi erschéngt. Wann Dir en net gesitt, scrollt erof: en ass dacks ganz ënnen. Är aner Tastature bleiwen installéiert.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers">Tastaturauswiel opmaachen ↗</string>
     <string name="sa_selectionner_le_clavier_2">Tastatur auswielen</string>
     <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuergesch Clavier ass ausgewielt.</string>
@@ -381,11 +381,6 @@
     <string name="sa_le_clavier_luxembourgeois_apparait_pas">Déi lëtzebuergesch Tastatur erschéngt net, wann ech tippen?\n→ Kontrolléiert, ob se ausgewielt ass (net just aktivéiert): Tab Haut, „Tastatur installéiert“, Schrëtt 2, oder tippt beim Schreiwen op d\'Tastatur-Ikon an der Navigatiounsläischt ënnen um Bildschierm.\n\nWéi wiesselen ech fir e Moment op eng aner Tastatur?\n→ Laang op d\'Espace-Tast vun der lëtzebuergescher Tastatur drécken an dann eng aner Tastatur an der Lëscht wielen. Zréck op Lëtzebuergesch geet et iwwer d\'Tastatur-Ikon an der Navigatiounsläischt: Op aneren Tastaturen ännert laang Drécken op d\'Espace-Tast just hir eege Sprooch.\n\nGi meng Donnéeën iergendwouhi geschéckt?\n→ Nee: D\'Tastatur funktionéiert komplett um Apparat.</string>
     <string name="sa_lire_la_politique_de_confidentialite">D\'Dateschutzerklärung liesen</string>
     <string name="sa_dans_langues_et_saisie_ouvrez">Maacht an de Sproochen- an Agabastellungen d\'Rechtschreifkorrektur op a wielt „Korrektur Lëtzebuergesch“</string>
-    <string name="sa_appuyez_sur_ok_est_normal">👆 Tippt op OK: Dat ass bei allen Tastature vun aneren Ubidder normal</string>
-    <string name="sa_letzebuergesch_clavier_pas_acces_internet">Wat Dir tippt, verléisst Ären Handy ni. Just den Diktat geet iwwer den Internet, wann Dir op de Mikro tippt.</string>
-    <string name="sa_ensuite_appuyez_sur_retour_vous">◀ Tippt duerno op Zréck: Dir kommt automatesch heihinner zréck</string>
-    <string name="sa_avant_de_continuer">Ier et weidergeet</string>
-    <string name="sa_ai_compris_on_va">Verstanen, lass geet et</string>
     <string name="sa_impossible_ouvrir_les_parametres">D\'Astellunge konnten net opgemaach ginn</string>
     <string name="sa_impossible_ouvrir_la_politique_de">D\'Dateschutzerklärung konnt net opgemaach ginn</string>
     <string name="sa_play_store_indisponible">Play Store net disponibel</string>

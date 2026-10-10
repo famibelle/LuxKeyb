@@ -15,6 +15,7 @@ import android.os.Build
 import com.example.kreyolkeyboard.gamification.LuxLevels
 import com.example.kreyolkeyboard.gamification.LevelUpNotifier
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.ContentObserver
 import android.graphics.Color
 import android.graphics.Typeface
@@ -181,6 +182,16 @@ class SettingsActivity : AppCompatActivity() {
         )
 
         const val PRIVACY_POLICY_URL = "https://famibelle.github.io/LuxKeyb/privacy/privacy-policy.html"
+
+        /**
+         * Pause dans la frappe avant d'ouvrir la pochette « Moien ». À 2,5 s,
+         * le temps de chercher la lettre suivante suffisait à l'ouvrir, et les
+         * touches visées tombaient sur la carte.
+         */
+        private const val DELAI_POCHETTE_MS = 4000L
+
+        /** Partage de l'activation à proposer à la prochaine ouverture. */
+        private const val PREF_PARTAGE_EN_ATTENTE = "partage_activation_en_attente"
 
         /** Onglet à ouvrir au démarrage, quand l'activité est lancée depuis le clavier. */
         const val EXTRA_OPEN_TAB = "open_tab"
@@ -379,8 +390,13 @@ class SettingsActivity : AppCompatActivity() {
 
         Log.d("SettingsActivity", "Interface avec tabs en haut et swipe cyclique créée avec succès")
 
-        maybeAskForReview()
-        maybeAskForNotificationPermission()
+        // Le partage reporté passe seul : la demande d'avis et celle des
+        // notifications attendent l'ouverture suivante plutôt que de s'empiler.
+        val partageMontre = savedInstanceState == null && proposerPartageEnAttente()
+        if (!partageMontre) {
+            maybeAskForReview()
+            maybeAskForNotificationPermission()
+        }
     }
 
     /**
@@ -471,6 +487,7 @@ class SettingsActivity : AppCompatActivity() {
      * l'application, alors que la condition d'accès est déjà remplie.
      */
     fun revelerNavigationSiClavierActive() {
+        majBandeauInstallation()
         if (tabBar.visibility == View.VISIBLE) return
         if (!aDejaActiveLeClavier()) return
         tabBar.visibility = View.VISIBLE
@@ -491,7 +508,11 @@ class SettingsActivity : AppCompatActivity() {
      */
     private fun majBandeauInstallation() {
         if (!::bottomInstallBanner.isInitialized) return
-        val aConfigurer = !onboardingPrefs().getBoolean("onboarding_completed", false)
+        // Une fois le clavier activé, l'étape 2 s'ouvre d'elle-même (sélecteur
+        // ouvert au retour des réglages) et sa carte porte son propre bouton :
+        // le bandeau ne ferait que doubler l'appel, par-dessus le clavier d'essai.
+        val aConfigurer = !onboardingPrefs().getBoolean("onboarding_completed", false) &&
+            !isKeyboardEnabled()
         if (aConfigurer && currentTab == 0) {
             bottomInstallBanner.alpha = 1f
             bottomInstallBanner.visibility = View.VISIBLE
@@ -531,11 +552,35 @@ class SettingsActivity : AppCompatActivity() {
         demoEngine = null
         demoEngineReady = false
 
-        maybeShowActivationSuccessCard()
+        // La pochette « Moien » attend le premier mot. Ouverte à la sélection du
+        // clavier, elle tombait au moment exact où l'on touchait le champ
+        // d'essai, prenait ce toucher, et l'étape 3 se faisait derrière elle.
+        // Si le mot a déjà été écrit (ailleurs, ou avant ce rafraîchissement),
+        // elle s'ouvre tout de suite ; sinon c'est [planifierPochette] qui
+        // l'ouvre, une fois la frappe arrêtée.
+        if (aEcritUnMot()) maybeShowActivationSuccessCard()
+    }
+
+    /** Écoute du jalon `funnel_first_word`, tenue ici : l'abonnement est faible. */
+    private var ecoutePremierMot: SharedPreferences.OnSharedPreferenceChangeListener? = null
+    private val minuteriePochette = Handler(Looper.getMainLooper())
+    private val ouvrirPochetteApresPause = Runnable {
+        if (!isFinishing && !isDestroyed && aEcritUnMot()) maybeShowActivationSuccessCard()
+    }
+
+    /**
+     * Ouvre la pochette « Moien » après une pause dans la frappe, jamais au
+     * milieu : l'étape 3 propose d'écrire « Moien alleguer », et une pochette
+     * ouverte après le premier mot baisserait le clavier avant le second.
+     */
+    private fun planifierPochette() {
+        if (onboardingPrefs().getBoolean("activation_success_card_shown", false)) return
+        minuteriePochette.removeCallbacks(ouvrirPochetteApresPause)
+        minuteriePochette.postDelayed(ouvrirPochetteApresPause, DELAI_POCHETTE_MS)
     }
 
     // Récompense l'utilisateur juste après un parcours d'activation identifié
-    // comme un point de friction (interstitiel + réglages système) : un seul
+    // comme un point de friction (réglages système, sélecteur) : un seul
     // affichage, jamais reposé même si l'onboarding se rejoue. La récompense
     // est la carte « Moien », versée au carnet et ouverte comme une pochette ;
     // le partage vient ensuite, une fois la pochette refermée. Le message
@@ -565,7 +610,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (isFinishing || isDestroyed) return@runOnUiThread
                 if (contenu == null) {
                     pochetteAccueilOuverte = false
-                    showActivationShareDialog(carteOfferte = false)
+                    reporterPartage()
                     return@runOnUiThread
                 }
                 Booster.ouvrir(
@@ -577,11 +622,33 @@ class SettingsActivity : AppCompatActivity() {
                     surCarnet = { CarnetFragment().show(supportFragmentManager, "carnet") },
                     surFin = {
                         pochetteAccueilOuverte = false
-                        if (!isFinishing && !isDestroyed) showActivationShareDialog(carteOfferte = true)
+                        reporterPartage()
                     }
                 )
             }
         }.start()
+    }
+
+    /**
+     * Le partage n'est plus proposé dans la foulée de la pochette : c'était la
+     * deuxième fenêtre de suite avant même d'avoir vraiment écrit. Il l'est à
+     * l'ouverture suivante de l'application, une seule fois, et prend alors la
+     * place des demandes d'avis et de notifications, pour ne pas les empiler.
+     */
+    private fun reporterPartage() {
+        onboardingPrefs().edit().putBoolean(PREF_PARTAGE_EN_ATTENTE, true).apply()
+    }
+
+    /** Vrai si la fenêtre de partage a été montrée. */
+    private fun proposerPartageEnAttente(): Boolean {
+        val prefs = onboardingPrefs()
+        if (!prefs.getBoolean(PREF_PARTAGE_EN_ATTENTE, false)) return false
+        // « Il est activé ! » au-dessus de la carte « Revenir au clavier »
+        // se contredirait : le partage attend que le clavier soit de retour.
+        if (!isKeyboardEnabled() || !isKeyboardSelected()) return false
+        prefs.edit().remove(PREF_PARTAGE_EN_ATTENTE).apply()
+        showActivationShareDialog(carteOfferte = true)
+        return true
     }
 
     private fun showActivationShareDialog(carteOfferte: Boolean) {
@@ -673,6 +740,9 @@ class SettingsActivity : AppCompatActivity() {
     override fun onDestroy() {
         // 🔧 FIX CRITIQUE: Annuler toutes les coroutines de l'activité
         activityScope.cancel()
+        ecoutePremierMot?.let { onboardingPrefs().unregisterOnSharedPreferenceChangeListener(it) }
+        ecoutePremierMot = null
+        minuteriePochette.removeCallbacks(ouvrirPochetteApresPause)
         Log.d("SettingsActivity", "✅ Coroutines de l'activité annulées proprement")
         
         super.onDestroy()
@@ -702,7 +772,7 @@ class SettingsActivity : AppCompatActivity() {
             setBackgroundColor(Color.parseColor("#0080FF"))
             elevation = 12f
             setPadding(32, 28, 32, 28)
-            setOnClickListener { showPreSettingsWarningDialog() }
+            setOnClickListener { poursuivreInstallation() }
 
             val label = TextView(this@SettingsActivity).apply {
                 text = getString(R.string.sa_ca_vous_plait_installez_le)
@@ -1913,6 +1983,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val titre = TextView(this).apply {
+            tag = "bandeau_pret_titre"
             text = if (aDejaEcrit) getString(R.string.sa_tout_est_pret) else getString(R.string.sa_clavier_en_place)
             textSize = 17f
             setTextColor(Color.WHITE)
@@ -1920,6 +1991,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val sousTitre = TextView(this).apply {
+            tag = "bandeau_pret_sous_titre"
             text = if (aDejaEcrit) getString(R.string.sa_vous_pouvez_taper_en_letzebuergesch)
                    else getString(R.string.sa_ecrivez_un_mot_pour_terminer)
             textSize = 13f
@@ -2203,7 +2275,7 @@ class SettingsActivity : AppCompatActivity() {
             addView(createSpacing(12))
             addView(bouton(
                 if (isEnabled) getString(R.string.sa_rouvrir_les_reglages_android) else getString(R.string.sa_ouvrir_les_reglages_android)
-            ) { showPreSettingsWarningDialog() })
+            ) { openKeyboardSettings() })
         }
 
         val ligne1 = createSetupRow(
@@ -2242,6 +2314,15 @@ class SettingsActivity : AppCompatActivity() {
         val champTest = EditText(this).apply {
             tag = "onboarding_test_field"
             hint = getString(R.string.sa_schreift_op_letzebuergesch_ecrivez_en)
+            // Sans correcteur système, comme le champ du clavier d'essai : celui
+            // de Gboard, encore choisi à ce stade, soulignait en rouge « Moien »,
+            // le mot même que l'étape demande d'écrire. Notre clavier ignore ce
+            // drapeau et propose ses suggestions comme ailleurs.
+            // Multiligne comme avant : sans ce drapeau, l'indication tenait sur
+            // une ligne coupée et la touche Entrée devenait « Terminé ».
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                    android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
+                    android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
             textSize = 16f
             setPadding(enDp(14), enDp(14), enDp(14), enDp(14))
             minHeight = enDp(56)
@@ -2289,15 +2370,37 @@ class SettingsActivity : AppCompatActivity() {
         // au premier mot écrit. Le jalon lu est celui du service de saisie, donc
         // la pastille ne s'allume pas sur un texte collé ou tapé avec un autre
         // clavier — et ne se rallume pas à faux au rafraîchissement suivant.
+        //
+        // Le texte du champ change avant que le service n'ait posé son jalon :
+        // relire le jalon à chaque frappe laissait l'étape à 2/3 après le
+        // premier mot, et ne la cochait qu'au deuxième. On écoute donc le jalon
+        // lui-même ; le service tourne dans le même processus, l'écoute est
+        // prévenue dès son écriture. Les frappes, elles, repoussent la pochette.
         if (!etape3Faite) {
+            fun cocher() {
+                if (anneau.done >= 3) return
+                marquerEtapeFaite(ligne3)
+                anneau.done = 3
+                sousTitre.text = getString(R.string.sa_les_etapes_sont_faites)
+                window.decorView.findViewWithTag<TextView>("bandeau_pret_titre")
+                    ?.text = getString(R.string.sa_tout_est_pret)
+                window.decorView.findViewWithTag<TextView>("bandeau_pret_sous_titre")
+                    ?.text = getString(R.string.sa_vous_pouvez_taper_en_letzebuergesch)
+            }
+            ecoutePremierMot?.let { onboardingPrefs().unregisterOnSharedPreferenceChangeListener(it) }
+            ecoutePremierMot = SharedPreferences.OnSharedPreferenceChangeListener { _, cle ->
+                if (cle == "funnel_first_word" && aEcritUnMot()) {
+                    cocher()
+                    planifierPochette()
+                }
+            }.also { onboardingPrefs().registerOnSharedPreferenceChangeListener(it) }
             champTest.addTextChangedListener(object : android.text.TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: android.text.Editable?) {
                     if (s.isNullOrEmpty() || !aEcritUnMot()) return
-                    marquerEtapeFaite(ligne3)
-                    anneau.done = 3
-                    sousTitre.text = getString(R.string.sa_les_etapes_sont_faites)
+                    cocher()
+                    planifierPochette()
                 }
             })
         }
@@ -3043,7 +3146,7 @@ class SettingsActivity : AppCompatActivity() {
             // réglages système en pleine frappe)
             visibility = View.INVISIBLE
             alpha = 0f
-            setOnClickListener { showPreSettingsWarningDialog() }
+            setOnClickListener { poursuivreInstallation() }
         }
 
         fun revealInstallCta() {
@@ -3640,67 +3743,23 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    // Interstitiel montrant l'avertissement Android réel (capturé sur
-    // l'émulateur) avant d'y envoyer l'utilisateur : le voir à l'avance,
-    // annoté, le désamorce mieux qu'une description abstraite dans une
-    // carte qu'il a pu ne pas lire. Un seul bouton d'action ; pas de bouton
-    // d'annulation explicite, le retour matériel suffit à fermer sans
-    // naviguer ailleurs.
-    private fun showPreSettingsWarningDialog() {
-        val dialogLayout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(48, 24, 48, 8)
-        }
-
-        val warningImage = ImageView(this).apply {
-            setImageResource(R.drawable.onboarding_ime_warning_preview)
-            adjustViewBounds = true
-            scaleType = ImageView.ScaleType.FIT_CENTER
-        }
-
-        val annotationText = TextView(this).apply {
-            text = getString(R.string.sa_appuyez_sur_ok_est_normal)
-            textSize = 16f
-            setTypeface(null, Typeface.BOLD)
-            setTextColor(Color.parseColor("#333333"))
-            setPadding(0, 24, 0, 12)
-            setLineSpacing(0f, 1.2f)
-        }
-
-        val reassuranceText = TextView(this).apply {
-            text = getString(R.string.sa_letzebuergesch_clavier_pas_acces_internet)
-            textSize = 16f
-            setTextColor(Color.parseColor("#666666"))
-            setPadding(0, 0, 0, 12)
-            setLineSpacing(0f, 1.2f)
-        }
-
-        val returnHintText = TextView(this).apply {
-            text = getString(R.string.sa_ensuite_appuyez_sur_retour_vous)
-            textSize = 16f
-            setTextColor(Color.parseColor("#666666"))
-            setLineSpacing(0f, 1.2f)
-        }
-
-        dialogLayout.addView(warningImage)
-        dialogLayout.addView(annotationText)
-        dialogLayout.addView(reassuranceText)
-        dialogLayout.addView(returnHintText)
-
-        val scrollView = ScrollView(this).apply { addView(dialogLayout) }
-
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.sa_avant_de_continuer))
-            .setView(scrollView)
-            .setCancelable(true)
-            .setPositiveButton(getString(R.string.sa_ai_compris_on_va)) { _, _ -> openKeyboardSettings() }
-            .show()
+    /**
+     * Ce qui reste à faire pour installer le clavier, depuis les boutons qui ne
+     * savent pas où en est l'utilisateur (bandeau du bas, bouton du clavier
+     * d'essai) : ils renvoyaient tous à l'étape 1, y compris quand elle était
+     * faite.
+     */
+    private fun poursuivreInstallation() {
+        if (isKeyboardEnabled()) openInputMethodPicker() else openKeyboardSettings()
     }
 
-    // Ouvre les paramètres de clavier système. Pas de Toast d'instruction :
-    // la carte de l'étape 1 dit déjà quoi faire, avant le saut vers les
-    // réglages (le Toast s'affichait par-dessus l'écran système, en bas,
-    // sans garantie de position ni de durée suffisante)
+    // Ouvre les paramètres de clavier système, directement. Il y avait avant un
+    // écran « Avant de continuer » montrant une capture de l'avertissement
+    // d'Android : retiré en 34.4.0, parce que la capture, nette, ressemblait
+    // plus à une vraie fenêtre que la vraie, grisée par le thème sombre, et
+    // qu'on touchait le « OK » de l'image sans que rien ne se passe. La carte
+    // de l'étape 1 dit la même chose avant le départ. Pas de Toast non plus :
+    // il s'affichait par-dessus l'écran système, sans garantie de durée.
     private fun openKeyboardSettings() {
         try {
             // Horodater le départ vers les réglages : si l'utilisateur
