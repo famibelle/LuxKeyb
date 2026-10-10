@@ -216,7 +216,7 @@ object CarteCarnet {
             // Un numéral n'a pas de rang : son palier lit l'orthographe.
             intensite = if (c.carte.nombre != null) Rarete.intensitePourPalier(c.rarete)
             else Rarete.intensitePourRang(c.rang)
-        )
+        ).avecBoite(c.carte.boite) // pour le sceau d'une carte apprise
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),

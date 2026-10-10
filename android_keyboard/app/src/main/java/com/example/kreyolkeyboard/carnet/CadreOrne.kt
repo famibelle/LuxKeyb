@@ -2170,6 +2170,109 @@ object Ornement {
         p.shader = null
     }
 
+    /**
+     * Le sceau de cire d'une carte apprise : posé sur l'angle bas droit de
+     * l'illustration, il mord sur la fenêtre comme un cachet sur un document.
+     *
+     * C'est un **second axe**, et il ne touche à rien du premier : la rareté
+     * reste lue sur la fréquence, dans le métal du cadre. Le sceau est donc le
+     * même à tous les paliers, à la couleur du carnet ; une commune apprise et
+     * une très rare apprise portent le même cachet sur deux cadres différents.
+     * Voir `GAMIFICATION-CARNET.md`, section 4.
+     *
+     * La cire n'est pas un disque : son bord coule, d'où le rayon modulé par
+     * deux sinus de fréquences premières entre elles, qui ne se répètent pas
+     * sur le tour. Un anneau frappé, plus sombre, et une coche en relief (le
+     * creux d'abord, la lèvre éclairée ensuite, lumière d'en haut à gauche
+     * comme tout le carnet) disent que la cire a été pressée.
+     */
+    fun dessinerSceau(c: Canvas, p: Paint, vignette: Boolean) {
+        val cx = if (vignette) SCEAU_VIGNETTE_X else SCEAU_X
+        val cy = if (vignette) SCEAU_VIGNETTE_Y else SCEAU_Y
+        val r = if (vignette) SCEAU_VIGNETTE_R else SCEAU_R
+        c.save()
+        c.translate(cx, cy)
+        c.scale(r, r)
+
+        p.style = Paint.Style.FILL
+        p.shader = null
+        // L'ombre portée, décalée vers le bas à droite.
+        p.color = 0x55000000
+        c.save()
+        c.translate(0.07f, 0.10f)
+        c.drawPath(BORD_CIRE, p)
+        c.restore()
+
+        p.shader = CIRE
+        c.drawPath(BORD_CIRE, p)
+        p.shader = null
+
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.07f
+        p.color = assombrir(Carnet.COULEUR, 0.40f)
+        c.drawCircle(0f, 0f, 0.66f, p)
+        p.color = 0x40FFFFFF
+        p.strokeWidth = 0.035f
+        c.drawCircle(0.025f, 0.035f, 0.70f, p)
+
+        p.strokeCap = Paint.Cap.ROUND
+        p.strokeJoin = Paint.Join.ROUND
+        p.strokeWidth = 0.15f
+        p.color = assombrir(Carnet.COULEUR, 0.55f)
+        c.drawPath(COCHE, p)
+        p.color = eclaircir(Carnet.COULEUR, 0.55f)
+        p.strokeWidth = 0.08f
+        c.save()
+        c.translate(0.03f, 0.04f)
+        c.drawPath(COCHE, p)
+        c.restore()
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+        p.style = Paint.Style.FILL
+        c.restore()
+    }
+
+    /** Le sceau de la carte ouverte, à cheval sur l'angle bas droit de la fenêtre. */
+    private const val SCEAU_X = 238f
+    private const val SCEAU_Y = 160f
+    private const val SCEAU_R = 25f
+    /** Sur la vignette, plus gros en proportion : il doit se lire à 110 dp. */
+    private const val SCEAU_VIGNETTE_X = 240f
+    private const val SCEAU_VIGNETTE_Y = 172f
+    private const val SCEAU_VIGNETTE_R = 34f
+
+    /** Le bord coulé de la cire, sur un cercle unité. */
+    private val BORD_CIRE: Path = Path().apply {
+        val pas = 72
+        for (i in 0..pas) {
+            val t = (2 * Math.PI * i / pas)
+            val r = 1f + 0.055f * sin(7 * t).toFloat() + 0.035f * sin(11 * t + 1.3).toFloat()
+            val x = r * cos(t).toFloat()
+            val y = r * sin(t).toFloat()
+            if (i == 0) moveTo(x, y) else lineTo(x, y)
+        }
+        close()
+    }
+
+    /**
+     * Le modelé de la cire, sur le cercle unité : fabriqué une fois, le sceau
+     * se dessine à chaque trame d'une carte qu'on incline.
+     */
+    private val CIRE by lazy {
+        RadialGradient(
+            -0.30f, -0.35f, 1.35f,
+            intArrayOf(eclaircir(Carnet.COULEUR, 0.35f), Carnet.COULEUR, assombrir(Carnet.COULEUR, 0.45f)),
+            floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
+        )
+    }
+
+    /** La coche frappée dans la cire. */
+    private val COCHE: Path = Path().apply {
+        moveTo(-0.32f, 0.02f)
+        lineTo(-0.08f, 0.26f)
+        lineTo(0.34f, -0.24f)
+    }
+
     /** Les six paliers de Leitner, en pastilles, pour la vignette. */
     fun dessinerBoite(c: Canvas, p: Paint, boite: Int) {
         val r = BOITE_VIGNETTE
@@ -3070,6 +3173,7 @@ class CarteOrnee(
             jeu?.let { Ornement.dessinerMedaillon(context, canvas, pinceau, it, Ornement.metal(rarete)) }
             pivoterLesBosses(canvas, pinceau)
         }
+        if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
