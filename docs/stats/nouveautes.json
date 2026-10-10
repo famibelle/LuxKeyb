@@ -1,9 +1,76 @@
 {
  "genere_le": "2026-10-10",
- "derniere_version": "34.4.1",
+ "derniere_version": "35.0.0",
  "derniere_date": "2026-10-10",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "35.0.0",
+   "date": "2026-10-10",
+   "intro": "Le carnet devient un vrai album de cartes à collectionner : des pages à compléter, des cartes qui se marquent quand on les connaît, et qu'on peut montrer ou offrir.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Des séries à compléter, comme un album d'images",
+       "texte": "Dans le carnet, « Séries » ouvre trois pages : les nombres, les illustrations et les sept jeux. Chaque carte gagnée prend sa place ; une case encore vide donne un indice sans la réponse, le nombre écrit en chiffres ou la silhouette du dessin. Quand une série est complète, la fin de partie vous le dit."
+      },
+      {
+       "titre": "Un sceau « GELÉIERT » sur les mots appris",
+       "texte": "Quand une carte a passé toutes ses révisions, un cachet de cire rouge se pose sur son illustration."
+      },
+      {
+       "titre": "Une plume pour les mots que vous avez écrits vous-même",
+       "texte": "Si vous avez tapé le mot d'une carte dans un vrai message, une petite plume se grave dans son cadre."
+      },
+      {
+       "titre": "Partager une carte",
+       "texte": "Le bouton « Partager », sous une carte ouverte, l'envoie en image, avec le lien pour installer le clavier."
+      },
+      {
+       "titre": "Offrir une carte à quelqu'un",
+       "texte": "Le bouton « Céder » affiche un code ; l'autre personne touche « Recevoir » dans son carnet et le scanne avec son téléphone, puis vous scannez le code qu'elle vous montre. La carte passe d'un carnet à l'autre, comme une vraie carte qu'on tend : elle quitte le vôtre. Les deux téléphones doivent être côte à côte ; rien ne passe par Internet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔒",
+     "titre": "Autorisations",
+     "points": [
+      {
+       "titre": null,
+       "texte": "L'appareil photo n'est demandé que la première fois que vous scannez le code d'une carte. Il ne sert qu'à lire ce code : aucune image n'est gardée ni envoyée."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_series.png",
+     "alt": "Deux pages « Séries » du carnet. À gauche, « Les nombres », 5 sur 18 : les cartes gagnées (eenanzwanzeg, véieranzwanzeg, fënnefanzwanzeg, sechsandrësseg, sechsafofzeg) occupent leur place, et les cases vides affichent le nombre en chiffres, 27, 28, 32, 35… À droite, « Les illustrations », 10 sur 104 : les cartes « Bam » et « Bus » sont posées, les cases vides montrent la silhouette d'une ambulance, d'une antenne, d'un avion, d'une balance, d'un bateau…",
+     "legende": "Chaque carte gagnée prend sa place dans l'album. Une case vide donne un indice sans la réponse : le nombre en chiffres, ou la silhouette du dessin."
+    },
+    {
+     "image": "Screenshots/lux_carnet_sceau_partage.png",
+     "alt": "À gauche, la carte « Bam » (arbre) ouverte : un sceau de cire rouge marqué « GELÉIERT » et une coche est posé sur l'illustration, une petite plume est gravée au milieu du bas du cadre, et les boutons « Partager » et « Céder » sont sous la carte. À droite, l'image envoyée par « Partager » : la même carte sur fond violet, avec « Lëtzebuergesch Clavier, le clavier luxembourgeois, gratuit sur Google Play ».",
+     "legende": "Un mot appris reçoit le sceau « GELÉIERT », un mot que vous avez écrit vous-même une petite plume. « Partager » envoie la carte en image, avec le lien du clavier."
+    },
+    {
+     "image": "Screenshots/lux_carnet_cession.png",
+     "alt": "À gauche, l'écran « Montrez ce code à l'autre téléphone » : un code QR, les deux étapes de l'échange, et les boutons « Scanner la confirmation » et « Garder la carte ». À droite, la carte « Haus » (maison) arrivée sur l'autre téléphone, avec son médaillon « Reçue en cadeau » orné d'un paquet-cadeau.",
+     "legende": "« Céder » affiche un code que l'autre téléphone scanne avec « Recevoir ». La carte passe d'un carnet à l'autre, téléphones côte à côte, sans Internet."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_series.png",
+   "image_alt": "Deux pages « Séries » du carnet. À gauche, « Les nombres », 5 sur 18 : les cartes gagnées (eenanzwanzeg, véieranzwanzeg, fënnefanzwanzeg, sechsandrësseg, sechsafofzeg) occupent leur place, et les cases vides affichent le nombre en chiffres, 27, 28, 32, 35… À droite, « Les illustrations », 10 sur 104 : les cartes « Bam » et « Bus » sont posées, les cases vides montrent la silhouette d'une ambulance, d'une antenne, d'un avion, d'une balance, d'un bateau…",
+   "image_legende": "Chaque carte gagnée prend sa place dans l'album. Une case vide donne un indice sans la réponse : le nombre en chiffres, ou la silhouette du dessin."
+  },
   {
    "version": "34.4.1",
    "date": "2026-10-10",
@@ -254,63 +321,6 @@
    "image": "Screenshots/lux_tablette_clavier_physique.png",
    "image_alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
    "image_legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
-  },
-  {
-   "version": "34.1.0",
-   "date": "2026-10-08",
-   "intro": "L'application s'adapte aux tablettes.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le clavier à la taille d'une tablette",
-       "texte": "Les touches sont plus hautes, et les petits caractères des coins (è, ê, ç…) se lisent. En paysage, le clavier n'est plus aplati : il gardait les touches réduites prévues pour un téléphone couché."
-      },
-      {
-       "titre": "Les jeux à grille sur deux colonnes",
-       "texte": "Sur une tablette tenue en paysage, Kräizwuert, Wuertplaz et Wuertsich montrent la grille à gauche, le pavé, les mots et les boutons à droite : tout tient sur un écran, sans faire défiler."
-      },
-      {
-       "titre": "Le Wierderbuch côte à côte",
-       "texte": "Sur tablette en paysage, la liste des résultats reste à gauche et la fiche du mot s'ouvre à droite, sans fenêtre à ouvrir et fermer à chaque mot."
-      },
-      {
-       "titre": "Des textes plus faciles à lire",
-       "texte": "Sur tablette, l'accueil, la progression, le guide et les jeux de questions tiennent dans une colonne centrée, au lieu de s'étaler sur toute la largeur de l'écran."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Tourner l'écran ne fait plus perdre la partie",
-       "texte": "Sur tablette comme sur téléphone. Les huit jeux gardent leur grille, leurs réponses et leur score, la révision de la Boîte de Leitner reprend où elle en était, et le Wierderbuch garde le mot cherché."
-      },
-      {
-       "titre": null,
-       "texte": "La grille de Wuertsich n'est plus coupée à droite et en bas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_tablette_kraizwuert.png",
-     "alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
-     "legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
-    }
-   ],
-   "image": "Screenshots/lux_tablette_kraizwuert.png",
-   "image_alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
-   "image_legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
   }
  ]
 }

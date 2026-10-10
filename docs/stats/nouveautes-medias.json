@@ -1,5 +1,24 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "35.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_series.png",
+        "alt": "Deux pages « Séries » du carnet. À gauche, « Les nombres », 5 sur 18 : les cartes gagnées (eenanzwanzeg, véieranzwanzeg, fënnefanzwanzeg, sechsandrësseg, sechsafofzeg) occupent leur place, et les cases vides affichent le nombre en chiffres, 27, 28, 32, 35… À droite, « Les illustrations », 10 sur 104 : les cartes « Bam » et « Bus » sont posées, les cases vides montrent la silhouette d'une ambulance, d'une antenne, d'un avion, d'une balance, d'un bateau…",
+        "legende": "Chaque carte gagnée prend sa place dans l'album. Une case vide donne un indice sans la réponse : le nombre en chiffres, ou la silhouette du dessin."
+      },
+      {
+        "image": "Screenshots/lux_carnet_sceau_partage.png",
+        "alt": "À gauche, la carte « Bam » (arbre) ouverte : un sceau de cire rouge marqué « GELÉIERT » et une coche est posé sur l'illustration, une petite plume est gravée au milieu du bas du cadre, et les boutons « Partager » et « Céder » sont sous la carte. À droite, l'image envoyée par « Partager » : la même carte sur fond violet, avec « Lëtzebuergesch Clavier, le clavier luxembourgeois, gratuit sur Google Play ».",
+        "legende": "Un mot appris reçoit le sceau « GELÉIERT », un mot que vous avez écrit vous-même une petite plume. « Partager » envoie la carte en image, avec le lien du clavier."
+      },
+      {
+        "image": "Screenshots/lux_carnet_cession.png",
+        "alt": "À gauche, l'écran « Montrez ce code à l'autre téléphone » : un code QR, les deux étapes de l'échange, et les boutons « Scanner la confirmation » et « Garder la carte ». À droite, la carte « Haus » (maison) arrivée sur l'autre téléphone, avec son médaillon « Reçue en cadeau » orné d'un paquet-cadeau.",
+        "legende": "« Céder » affiche un code que l'autre téléphone scanne avec « Recevoir ». La carte passe d'un carnet à l'autre, téléphones côte à côte, sans Internet."
+      }
+    ]
+  },
   "34.4.0": {
     "images": [
       {
