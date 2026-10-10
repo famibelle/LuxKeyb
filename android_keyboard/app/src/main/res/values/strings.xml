@@ -151,6 +151,7 @@
     <string name="series_resume">%1$d of %2$d places filled. Each series is complete when every place holds a card.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Series complete: %1$s</string>
+    <string name="etape_atteinte">Your collection now holds %1$d cards!</string>
     <string name="serie_complete_court">Complete ✓</string>
     <string name="emplacement_nombre">Missing card: the number %1$s</string>
     <string name="emplacement_jeu">Missing card: a word won at %1$s</string>
@@ -375,7 +376,7 @@
     <string name="sa_le_bouton_en_bas_gauche">The “123” button at the bottom left of the keyboard switches to numbers and common symbols. Basic punctuation (comma, full stop, apostrophe) stays available directly on the letter keyboard.</string>
     <string name="sa_mode_chiffres_et_symboles">Numbers and symbols mode</string>
     <string name="sa_jeux_de_vocabulaire">🎮 Vocabulary games</string>
-    <string name="sa_sept_jeux_reunis_dans_onglet">Seven games, gathered in the Spiller tab, help you practise Luxembourgish while having fun:\n\n• 🎲 Wuertsich: find the words hidden in a grid.\n• 🔤 Wuertmix: put the letters of a word back in order.\n• 🟩 Wuertriet: guess a 5-letter word in 6 tries.\n• 📝 Wuertlück: complete a real sentence that is missing a word.\n• 🔢 Zuelwuert: write out the result of a multiplication in words.\n• 🧩 Kräizwuert: a crossword, with clues in English.\n• 🔡 Wuertplaz: fit the listed words into an empty grid, with no clues at all.\n\nEvery word you win goes into your collection, and the 📚 Leitner box has you review it at longer and longer intervals, until it is learnt.</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Seven games, gathered in the Spiller tab, help you practise Luxembourgish while having fun:\n\n• 🎲 Wuertsich: find the words hidden in a grid.\n• 🔤 Wuertmix: put the letters of a word back in order.\n• 🟩 Wuertriet: guess a 5-letter word in 6 tries.\n• 📝 Wuertlück: complete a real sentence that is missing a word.\n• 🔢 Zuelwuert: write out the numbers from 0 to 100 in words.\n• 🧩 Kräizwuert: a crossword, with clues in English.\n• 🔡 Wuertplaz: fit the listed words into an empty grid, with no clues at all.\n\nEvery word you win goes into your collection, and the 📚 Leitner box has you review it at longer and longer intervals, until it is learnt.</string>
     <string name="sa_les_cartes_du_carnet">🃏 The collection cards</string>
     <string name="sa_chaque_mot_gagne_dans_un">Every word won in a game becomes a card, kept in “Mäi Carnet” (Spiller tab). Tap a card to open it full size; tap beside it, or flick it up or down, to close it.\n\nThe images below go through the “Waasser” (water) card part by part: each number points to the explanation after the image.</string>
     <string name="sa_le_haut_de_la_carte_2">The top of the card</string>
@@ -464,7 +465,7 @@
     <string name="sa_la_phrase_disait">❌ The sentence said “%1$s”</string>
     <string name="sa_question_2">Question 1 / %1$s</string>
     <string name="sa_nouvelle_partie">🔄 New game</string>
-    <string name="sa_une_multiplication_et_quatre_facons">A multiplication, and four ways to write its result: only one is correct Luxembourgish. The others are the mistakes people really make: German, swapped digits, the hyphen, the Eifel rule, the -ig ending. When you get it wrong, the game tells you which.\n\nTwo rules are enough to write every number up to a hundred. The units come before the tens: 56 is six-and-fifty, “sechsafofzeg”. And the n of the linking word “an” drops before f, s, v, m…, but stays before d, t, z, n, h and vowels. That is the Eifel rule, hence “sechsafofzeg” (56) but “sechsandrësseg” (36).\n\nIn “Hard”, the product is no longer shown: you have to work it out before writing it.</string>
+    <string name="sa_une_multiplication_et_quatre_facons">A number from 0 to 100, and four ways to write it: only one is correct Luxembourgish. The others are the mistakes people really make: German, swapped digits, the hyphen, the Eifel rule, the -ig ending. When you get it wrong, the game tells you which.\n\nTwo rules are enough to write every number up to a hundred. The units come before the tens: 56 is six-and-fifty, “sechsafofzeg”. And the n of the linking word “an” drops before f, s, v, m…, but stays before d, t, z, n, h and vowels. That is the Eifel rule, hence “sechsafofzeg” (56) but “sechsandrësseg” (36).\n\nIn “Easy”, the number is given in digits, from 0 to 100. In “Normal”, it is the result of a multiplication or an addition. In “Hard”, that result is no longer shown: you have to work it out before writing it.</string>
     <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Spellings checked against the Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
     <string name="sa_question">Question %1$s / %2$s</string>
     <string name="sa_comment_ecrit_ce_nombre">How is this number spelt?</string>
@@ -522,7 +523,7 @@
     <string name="sa_remettez_les_lettres_dans_ordre">Put the letters back in order</string>
     <string name="sa_devinez_le_mot_de_lettres">Guess the 5-letter word in 6 tries</string>
     <string name="sa_completez_la_phrase_laquelle_il">Complete the sentence that is missing a word</string>
-    <string name="sa_ecrivez_en_lettres_le_resultat">Write out the result of a multiplication in words</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Write out the numbers from 0 to 100 in words</string>
     <string name="sa_ecrivez_les_mots_dans_la">Write the words in the grid, from their meaning</string>
     <string name="sa_casez_les_mots_donnes_dans">Fit the given words into the empty grid</string>
     <string name="sa_tous_les_jeux">"‹  All games"</string>

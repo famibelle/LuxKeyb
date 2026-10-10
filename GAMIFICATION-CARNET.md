@@ -33,7 +33,16 @@ Avant de promettre une série, il faut savoir si elle peut se finir. Une série
 impossible à compléter est pire que pas de série : le joueur croit qu'il lui
 manque quelque chose alors que le jeu le lui refuse.
 
-### Zuelwuert ne donne que 18 nombres, pas 101
+### Zuelwuert ne donnait que 18 nombres, pas 101
+
+> **Levé le 11 octobre 2026.** Zuelwuert tire maintenant le nombre d'abord,
+> puis pose l'opération autour : le nombre seul en Facile (les 101), une
+> multiplication des tables quand il en est une et sinon une addition en Normal
+> et en Difficile (les 72 composés). Les nombres qui manquent au carnet passent
+> devant, six par manche au plus. La série compte 101 emplacements rangés par
+> dizaines, et son identifiant est devenu `nombres_101` pour que ceux qui
+> avaient fini les dix-huit aient leur fête. Ce qui suit décrit l'état d'avant.
+
 
 L'idée de départ était une série « les nombres de 0 à 100 ». **Elle est
 infaisable** :
@@ -245,8 +254,7 @@ mémorise les formes promues par le clavier dans un fichier de `filesDir`, et
 
 ## 7. Ce qu'on ne fait pas
 
-- **Pas de série « de 0 à 100 »** tant que Zuelwuert ne tire que 18 nombres
-  (section 2).
+- ~~**Pas de série « de 0 à 100 »**~~ : faite le 11 octobre 2026 (section 2).
 - **Pas de série par champ sémantique** (les huit teintes du blason). Ces séries
   sont ouvertes, avec des centaines de mots chacune, et le classement
   automatique est approximatif de l'aveu même de `generate_blasons.py`. Un
@@ -266,8 +274,19 @@ mémorise les formes promues par le clavier dans un fichier de `filesDir`, et
 
 1. ~~**La plume**~~ : accordée le 10 octobre 2026, stockée dans `filesDir`
    (section 4).
-2. **Zuelwuert en Facile** : corriger la KDoc, ou ouvrir les produits simples, ce
-   qui agrandirait la série des nombres (section 2).
-3. **Les noms des séries** à l'écran, en luxembourgeois comme les jeux ou dans la
+2. ~~**Zuelwuert en Facile**~~ : tranché le 11 octobre 2026, Facile ouvre les
+   101 nombres (section 2).
+3. ~~**Les noms des séries**~~ à l'écran, en luxembourgeois comme les jeux ou dans la
    langue de l'interface. Ma proposition est la langue de l'interface, parce
    qu'une série se lit comme une consigne.
+   Tranché le 11 octobre 2026 : la langue de l'interface, ce que le code
+   faisait déjà (`serie_nombres` est traduite dans les cinq langues).
+
+## 9. Les étapes de la collection (11 octobre 2026)
+
+La pochette fête aussi la 10ᵉ carte, puis la 25ᵉ, 50ᵉ, 100ᵉ, 250ᵉ, 500ᵉ, 1 000ᵉ
+et 2 000ᵉ : une ligne « 🎉 Votre carnet compte maintenant 50 cartes ! » en tête
+du bilan, et le feu d'artifice d'une très rare, comme pour une série complétée.
+Chaque palier ne se fête qu'une fois ; un carnet qui en a déjà dépassé
+plusieurs à la mise à jour n'est fêté que pour le plus haut. La marque est un
+nombre dans `carnet_series`, hors sauvegarde (`Etapes` dans `Series.kt`).

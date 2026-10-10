@@ -147,6 +147,7 @@
     <string name="series_resume">%1$d de %2$d lugares preenchidos. Uma série fica completa quando cada lugar tem a sua carta.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Série completa: %1$s</string>
+    <string name="etape_atteinte">A sua coleção tem agora %1$d cartas!</string>
     <string name="serie_complete_court">Completa ✓</string>
     <string name="emplacement_nombre">Carta em falta: o número %1$s</string>
     <string name="emplacement_jeu">Carta em falta: uma palavra ganha em %1$s</string>
@@ -371,7 +372,7 @@
     <string name="sa_le_bouton_en_bas_gauche">O botão «123» no canto inferior esquerdo do teclado muda para os números e símbolos habituais. A pontuação básica (vírgula, ponto, apóstrofo) continua acessível diretamente no teclado de letras.</string>
     <string name="sa_mode_chiffres_et_symboles">Modo de números e símbolos</string>
     <string name="sa_jeux_de_vocabulaire">🎮 Jogos de vocabulário</string>
-    <string name="sa_sept_jeux_reunis_dans_onglet">Sete jogos, reunidos no separador Spiller, põem o luxemburguês a trabalhar de forma divertida:\n\n• 🎲 Wuertsich: encontrar as palavras escondidas numa grelha.\n• 🔤 Wuertmix: pôr por ordem as letras de uma palavra.\n• 🟩 Wuertriet: adivinhar uma palavra de 5 letras em 6 tentativas.\n• 📝 Wuertlück: completar uma frase verdadeira a que falta uma palavra.\n• 🔢 Zuelwuert: escrever por extenso o resultado de uma multiplicação.\n• 🧩 Kräizwuert: palavras cruzadas, com as definições em português.\n• 🔡 Wuertplaz: encaixar numa grelha vazia as palavras dadas numa lista, sem nenhuma definição.\n\nCada palavra ganha entra na sua coleção, e a 📚 Caixa de Leitner fá-lo revê-la a intervalos cada vez mais longos, até ficar aprendida.</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Sete jogos, reunidos no separador Spiller, põem o luxemburguês a trabalhar de forma divertida:\n\n• 🎲 Wuertsich: encontrar as palavras escondidas numa grelha.\n• 🔤 Wuertmix: pôr por ordem as letras de uma palavra.\n• 🟩 Wuertriet: adivinhar uma palavra de 5 letras em 6 tentativas.\n• 📝 Wuertlück: completar uma frase verdadeira a que falta uma palavra.\n• 🔢 Zuelwuert: escrever por extenso os números de 0 a 100.\n• 🧩 Kräizwuert: palavras cruzadas, com as definições em português.\n• 🔡 Wuertplaz: encaixar numa grelha vazia as palavras dadas numa lista, sem nenhuma definição.\n\nCada palavra ganha entra na sua coleção, e a 📚 Caixa de Leitner fá-lo revê-la a intervalos cada vez mais longos, até ficar aprendida.</string>
     <string name="sa_les_cartes_du_carnet">🃏 As cartas da coleção</string>
     <string name="sa_chaque_mot_gagne_dans_un">Cada palavra ganha num jogo torna-se uma carta, guardada em «Mäi Carnet» (separador Spiller). Toque numa carta para a abrir em grande; toque ao lado, ou afaste-a deslizando para cima ou para baixo, para a fechar.\n\nAs imagens abaixo explicam a carta «Waasser» (a água) parte a parte: cada número remete para a explicação a seguir à imagem.</string>
     <string name="sa_le_haut_de_la_carte_2">A parte de cima da carta</string>
@@ -460,7 +461,7 @@
     <string name="sa_la_phrase_disait">❌ A frase dizia «%1$s»</string>
     <string name="sa_question_2">Pergunta 1 / %1$s</string>
     <string name="sa_nouvelle_partie">🔄 Novo jogo</string>
-    <string name="sa_une_multiplication_et_quatre_facons">Uma multiplicação e quatro maneiras de escrever o resultado: só uma é luxemburguês correto. As outras são os erros que realmente se fazem: o alemão, os algarismos trocados, o hífen, a regra de Eifel, a terminação -ig. Quando se engana, o jogo diz-lhe qual.\n\nDuas regras bastam para escrever todos os números até cem. As unidades dizem-se antes das dezenas: 56 é seis-e-cinquenta, «sechsafofzeg». E o n da ligação «an» cai antes de f, s, v, m…, mas mantém-se antes de d, t, z, n, h e das vogais. É a regra de Eifel, daí «sechsafofzeg» (56) mas «sechsandrësseg» (36).\n\nEm «Difícil», o produto deixa de aparecer: é preciso calculá-lo antes de o escrever.</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Um número de 0 a 100 e quatro maneiras de o escrever: só uma é luxemburguês correto. As outras são os erros que realmente se fazem: o alemão, os algarismos trocados, o hífen, a regra de Eifel, a terminação -ig. Quando se engana, o jogo diz-lhe qual.\n\nDuas regras bastam para escrever todos os números até cem. As unidades dizem-se antes das dezenas: 56 é seis-e-cinquenta, «sechsafofzeg». E o n da ligação «an» cai antes de f, s, v, m…, mas mantém-se antes de d, t, z, n, h e das vogais. É a regra de Eifel, daí «sechsafofzeg» (56) mas «sechsandrësseg» (36).\n\nEm «Fácil», o número aparece em algarismos, de 0 a 100. Em «Normal», é o resultado de uma multiplicação ou de uma adição. Em «Difícil», esse resultado deixa de aparecer: é preciso calculá-lo antes de o escrever.</string>
     <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Ortografias verificadas no Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
     <string name="sa_question">Pergunta %1$s / %2$s</string>
     <string name="sa_comment_ecrit_ce_nombre">Como se escreve este número?</string>
@@ -518,7 +519,7 @@
     <string name="sa_remettez_les_lettres_dans_ordre">Ponha as letras por ordem</string>
     <string name="sa_devinez_le_mot_de_lettres">Adivinhe a palavra de 5 letras em 6 tentativas</string>
     <string name="sa_completez_la_phrase_laquelle_il">Complete a frase a que falta uma palavra</string>
-    <string name="sa_ecrivez_en_lettres_le_resultat">Escreva por extenso o resultado de uma multiplicação</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Escreva por extenso os números de 0 a 100</string>
     <string name="sa_ecrivez_les_mots_dans_la">Escreva as palavras na grelha, a partir do sentido</string>
     <string name="sa_casez_les_mots_donnes_dans">Encaixe as palavras dadas na grelha vazia</string>
     <string name="sa_tous_les_jeux">"‹  Todos os jogos"</string>

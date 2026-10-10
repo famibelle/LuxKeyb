@@ -147,6 +147,7 @@
     <string name="series_resume">%1$d vun %2$d Plaze besat. Eng Serie ass komplett, wann all Plaz hir Kaart huet.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Serie komplett: %1$s</string>
+    <string name="etape_atteinte">Äre Carnet huet elo %1$d Kaarten!</string>
     <string name="serie_complete_court">Komplett ✓</string>
     <string name="emplacement_nombre">Kaart feelt: d\'Zuel %1$s</string>
     <string name="emplacement_jeu">Kaart feelt: e Wuert aus %1$s</string>
@@ -371,7 +372,7 @@
     <string name="sa_le_bouton_en_bas_gauche">De Knäppchen „123“ ënne lénks op der Tastatur wiesselt op d\'Zifferen an déi üblech Symboler. Déi wichtegst Zeechesetzung (Komma, Punkt, Apostroph) bleift direkt op der Buschtawetastatur.</string>
     <string name="sa_mode_chiffres_et_symboles">Modus Zifferen a Symboler</string>
     <string name="sa_jeux_de_vocabulaire">🎮 Wuertschatzspiller</string>
-    <string name="sa_sept_jeux_reunis_dans_onglet">Siwe Spiller am Tab Spiller loossen Iech d\'Lëtzebuergescht op eng lëschteg Manéier trainéieren:\n\n• 🎲 Wuertsich: d\'Wierder fannen, déi an engem Gitter verstoppt sinn.\n• 🔤 Wuertmix: d\'Buschtawe vun engem Wuert an déi richteg Reiefolleg bréngen.\n• 🟩 Wuertriet: e Wuert mat 5 Buschtawen a 6 Versich roden.\n• 📝 Wuertlück: e richtege Saz ergänzen, an deem e Wuert feelt.\n• 🔢 Zuelwuert: d\'Resultat vun enger Multiplikatioun a Buschtawe schreiwen.\n• 🧩 Kräizwuert: e Kräizwuerträtsel, mat den Definitiounen op Franséisch.\n• 🔡 Wuertplaz: déi Wierder vun enger Lëscht an en eidelt Gitter setzen, ganz ouni Definitioun.\n\nAll gewonnent Wuert kënnt an Äre Carnet, an d\'📚 Leitner-Këscht léisst Iech et a méi a méi laangen Ofstänn widderhuelen, bis Dir et kënnt.</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Siwe Spiller am Tab Spiller loossen Iech d\'Lëtzebuergescht op eng lëschteg Manéier trainéieren:\n\n• 🎲 Wuertsich: d\'Wierder fannen, déi an engem Gitter verstoppt sinn.\n• 🔤 Wuertmix: d\'Buschtawe vun engem Wuert an déi richteg Reiefolleg bréngen.\n• 🟩 Wuertriet: e Wuert mat 5 Buschtawen a 6 Versich roden.\n• 📝 Wuertlück: e richtege Saz ergänzen, an deem e Wuert feelt.\n• 🔢 Zuelwuert: d\'Zuelen vun 0 bis 100 a Buschtawe schreiwen.\n• 🧩 Kräizwuert: e Kräizwuerträtsel, mat den Definitiounen op Franséisch.\n• 🔡 Wuertplaz: déi Wierder vun enger Lëscht an en eidelt Gitter setzen, ganz ouni Definitioun.\n\nAll gewonnent Wuert kënnt an Äre Carnet, an d\'📚 Leitner-Këscht léisst Iech et a méi a méi laangen Ofstänn widderhuelen, bis Dir et kënnt.</string>
     <string name="sa_les_cartes_du_carnet">🃏 D\'Kaarte vum Carnet</string>
     <string name="sa_chaque_mot_gagne_dans_un">All Wuert, dat Dir an engem Spill gewannt, gëtt eng Kaart a kënnt an „Mäi Carnet“ (Tab Spiller). Tippt op eng Kaart, fir se grouss opzemaachen; tippt niewendrun oder wëscht se no uewen oder no ënnen ewech, fir se zouzemaachen.\n\nD\'Biller hei ënnendrënner erklären d\'Kaart „Waasser“ Stéck fir Stéck: All Nummer verweist op d\'Erklärung nom Bild.</string>
     <string name="sa_le_haut_de_la_carte_2">Den ieweschten Deel vun der Kaart</string>
@@ -460,7 +461,7 @@
     <string name="sa_la_phrase_disait">❌ Am Saz stoung „%1$s“</string>
     <string name="sa_question_2">Fro 1 / %1$s</string>
     <string name="sa_nouvelle_partie">🔄 Neit Spill</string>
-    <string name="sa_une_multiplication_et_quatre_facons">Eng Multiplikatioun a véier Manéieren, hiert Resultat ze schreiwen: Just eng ass richtegt Lëtzebuergesch. Déi aner sinn d\'Feeler, déi een tatsächlech mécht: Däitsch, verdreinte Zifferen, de Bindestréch, d\'Eifeler Regel, d\'Endung -ig. Wann Dir Iech iert, seet d\'Spill Iech, wéi een et war.\n\nZwou Regele genügen, fir all Zuele bis honnert ze schreiwen. D\'Eenheet kënnt virun der Zéngerzuel: 56 ass sechs-a-fofzeg, „sechsafofzeg“. An den n vum Bindewuert „an“ fält virun f, s, v, m… ewech, bleift awer virun d, t, z, n, h an de Vokaler. Dat ass d\'Eifeler Regel, dofir „sechsafofzeg“ (56) awer „sechsandrësseg“ (36).\n\nBei „Schwéier“ gëtt de Produit net méi gewisen: Dir musst e rechnen, ier Dir e schreift.</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Eng Zuel vun 0 bis 100 a véier Manéieren, se ze schreiwen: Just eng ass richtegt Lëtzebuergesch. Déi aner sinn d\'Feeler, déi een tatsächlech mécht: Däitsch, verdreinte Zifferen, de Bindestréch, d\'Eifeler Regel, d\'Endung -ig. Wann Dir Iech iert, seet d\'Spill Iech, wéi een et war.\n\nZwou Regele genügen, fir all Zuele bis honnert ze schreiwen. D\'Eenheet kënnt virun der Zéngerzuel: 56 ass sechs-a-fofzeg, „sechsafofzeg“. An den n vum Bindewuert „an“ fält virun f, s, v, m… ewech, bleift awer virun d, t, z, n, h an de Vokaler. Dat ass d\'Eifeler Regel, dofir „sechsafofzeg“ (56) awer „sechsandrësseg“ (36).\n\nBei „Liicht“ steet d\'Zuel a Zifferen do, vun 0 bis 100. Bei „Normal“ ass se d\'Resultat vun enger Multiplikatioun oder enger Additioun. Bei „Schwéier“ gëtt dëst Resultat net méi gewisen: Dir musst et rechnen, ier Dir et schreift.</string>
     <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Schreifweisen nogekuckt am Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
     <string name="sa_question">Fro %1$s / %2$s</string>
     <string name="sa_comment_ecrit_ce_nombre">Wéi schreift een dës Zuel?</string>
@@ -518,7 +519,7 @@
     <string name="sa_remettez_les_lettres_dans_ordre">Bréngt d\'Buschtawen an déi richteg Reiefolleg</string>
     <string name="sa_devinez_le_mot_de_lettres">Rot d\'Wuert mat 5 Buschtawen a 6 Versich</string>
     <string name="sa_completez_la_phrase_laquelle_il">Ergänzt de Saz, an deem e Wuert feelt</string>
-    <string name="sa_ecrivez_en_lettres_le_resultat">Schreift d\'Resultat vun enger Multiplikatioun a Buschtawen</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Schreift d\'Zuelen vun 0 bis 100 a Buschtawen</string>
     <string name="sa_ecrivez_les_mots_dans_la">Schreift d\'Wierder no hirer Bedeitung an d\'Gitter</string>
     <string name="sa_casez_les_mots_donnes_dans">Setzt déi virginn Wierder an dat eidelt Gitter</string>
     <string name="sa_tous_les_jeux">"‹  All d\'Spiller"</string>

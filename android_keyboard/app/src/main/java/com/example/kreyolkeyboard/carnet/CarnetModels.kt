@@ -262,6 +262,13 @@ object Carnet {
         return forme in parForme
     }
 
+    /** Les valeurs des numéraux au carnet : ce que Zuelwuert n'a plus à tirer en priorité. */
+    @Synchronized
+    fun nombres(context: Context): Set<Int> {
+        charger(context)
+        return cartes.mapNotNullTo(HashSet()) { it.nombre }
+    }
+
     /** Les jeux dont au moins une carte est au carnet, dans l'ordre du hub. */
     @Synchronized
     fun jeuxRepresentes(context: Context): List<JeuCarte> {

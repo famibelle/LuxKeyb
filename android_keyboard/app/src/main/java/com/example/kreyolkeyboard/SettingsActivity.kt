@@ -77,6 +77,7 @@ import com.example.kreyolkeyboard.carnet.CarnetFragment
 import com.example.kreyolkeyboard.carnet.BoiteFragment
 import com.example.kreyolkeyboard.carnet.JeuCarte
 import com.example.kreyolkeyboard.carnet.Pochette
+import com.example.kreyolkeyboard.carnet.Series
 import com.example.kreyolkeyboard.zuelen.ZuelenData
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
@@ -7407,8 +7408,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Fragment « Zuelwuert » : une multiplication, quatre orthographes de son
-     * résultat.
+     * Fragment « Zuelwuert » : un nombre de 0 à 100, seul ou au bout d'une
+     * opération, et quatre orthographes.
      *
      * Le seul jeu qui ne tire rien du dictionnaire : ses mots se calculent
      * (voir [ZuelenSpeller]). Il n'affiche donc pas de glose française — le
@@ -7763,7 +7764,13 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun startNewRound() {
-            round = ZuelenData.newRound(difficulty)
+            // Les nombres qui manquent à la série passent devant : sans eux,
+            // finir les 101 demanderait des dizaines de manches de hasard.
+            val manquants = context?.let { ctx ->
+                val gagnes = Carnet.nombres(ctx)
+                Series.NOMBRES.filterNotTo(HashSet()) { it in gagnes }
+            }.orEmpty()
+            round = ZuelenData.newRound(difficulty, manquants = manquants)
             questionIndex = 0
             score = 0
             answered = false
@@ -7842,7 +7849,7 @@ class SettingsActivity : AppCompatActivity() {
             if (choix.juste) {
                 score++
                 tvScore.text = "$score / ${round.size}"
-                encarter(choix.texte, question.produit)
+                encarter(choix.texte, question.nombre)
             }
 
             montrerVerdict(position)
@@ -7864,9 +7871,9 @@ class SettingsActivity : AppCompatActivity() {
                 )
             }
 
-            // Le produit reste caché pendant la question au niveau difficile ;
+            // Le résultat reste caché pendant la question au niveau difficile ;
             // une fois répondu il n'y a plus de raison de le taire.
-            tvOperation.text = "${question.gauche} × ${question.droite} = ${question.produit}"
+            tvOperation.text = question.solution
 
             // C'est ici que le jeu enseigne : la raison de la faute commise,
             // pas seulement le verdict. Une bonne réponse rappelle la forme.

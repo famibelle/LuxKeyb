@@ -999,10 +999,20 @@ class CarnetFragment : DialogFragment() {
                 })
             })
 
+            // Les cent un nombres se rangent par dizaines : cinq colonnes, une
+            // dizaine sur deux rangées, ou dix quand l'écran les tient. Une
+            // rangée de trois couperait 20 de 21 et mêlerait les dizaines.
+            val colonnesSerie = when {
+                a.serie != Serie.NOMBRES -> colonnes
+                colonnes >= 10 -> 10
+                else -> 5
+            }
+            val coteSerie = if (colonnesSerie == colonnes) cote
+            else (dispo - (colonnesSerie - 1) * gouttiere) / colonnesSerie
             val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
             var ligne: LinearLayout? = null
             a.emplacements.forEachIndexed { i, e ->
-                val posColonne = i % colonnes
+                val posColonne = i % colonnesSerie
                 if (posColonne == 0) {
                     ligne = LinearLayout(ctx).apply {
                         orientation = LinearLayout.HORIZONTAL
@@ -1016,7 +1026,7 @@ class CarnetFragment : DialogFragment() {
                 }
                 val premiere = e.cartes.firstOrNull()
                 val vue = if (premiere != null) {
-                    CarteCarnet.vignette(ctx, premiere, cote).apply {
+                    CarteCarnet.vignette(ctx, premiere, coteSerie).apply {
                         isClickable = true
                         setOnClickListener { montrerCarte(premiere, ordre) }
                     }
@@ -1025,8 +1035,8 @@ class CarnetFragment : DialogFragment() {
                 }
                 ligne?.addView(vue.apply {
                     layoutParams = LinearLayout.LayoutParams(
-                        cote, LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
+                        coteSerie, LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { if (posColonne != colonnesSerie - 1) rightMargin = gouttiere }
                 })
             }
         }
