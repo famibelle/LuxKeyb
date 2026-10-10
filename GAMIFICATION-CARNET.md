@@ -169,8 +169,8 @@ posait sont tranchées plus bas.
 Livrée le 10 octobre 2026. D'abord un second cachet de cire, bleu, en miroir
 du sceau ; deux cachets sur l'illustration surchargeaient la carte, et le
 propriétaire l'a remplacé le jour même par une **petite plume gravée dans le
-métal du cadre** : devant le numéro de série sur la carte ouverte, dans la
-marge basse gauche sur la vignette. Une mention d'inventaire, pas un
+métal du cadre**, au centre de la marge basse, sur l'axe de la carte. Posée
+d'abord devant le numéro de série, elle touchait l'arrondi du coin. Une mention d'inventaire, pas un
 ornement. La liste des formes vit dans `files/carnet_plumes.json` et ne fait que grandir.
 Une limite à connaître : la preuve n'est lue qu'au lancement d'une révision et
 sur les seules cartes dues ce jour-là (c'est ainsi que `PreuveDeFrappe`

@@ -421,8 +421,6 @@ object Ornement {
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
     val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
-    /** La ligne de série quand la plume la précède : elle lui cède dix unités. */
-    val SERIE_PLUME = RectF(35f, 428f, 176f, 437.5f)
     /**
      * L'énoncé d'une question, sur le dos de révision.
      *
@@ -2210,10 +2208,10 @@ object Ornement {
      *
      * Elle a d'abord été un second cachet de cire, bleu, en miroir du sceau ;
      * deux cachets sur l'illustration surchargeaient la carte (propriétaire,
-     * même jour). Elle est donc **gravée dans le métal du cadre**, petite, à
-     * gauche du numéro de série sur la carte ouverte et dans la marge basse
-     * gauche de la vignette : une mention d'inventaire, comme le numéro et la
-     * date, et non une décoration de plus.
+     * même jour). Elle est donc **gravée dans le métal du cadre**, petite, au
+     * centre de la marge basse, sur la carte ouverte comme sur la vignette :
+     * une mention d'inventaire, comme le numéro et la date, et non une
+     * décoration de plus.
      *
      * La gravure est celle du reste de la carte : un sillon dans le ton sombre
      * du métal, une lèvre claire décalée vers le bas qui le fait lire en creux.
@@ -2247,13 +2245,19 @@ object Ornement {
         c.restore()
     }
 
-    /** La plume de la carte ouverte, devant le numéro de série : voir [SERIE_PLUME]. */
-    private const val PLUME_X = 27.5f
+    /**
+     * La plume, au centre de la marge basse : sur l'axe de la carte, comme la
+     * clef de voûte, la plaque, l'agrafe et le médaillon. Posée devant le
+     * numéro de série, elle touchait l'arrondi du coin et mordait sur le
+     * « n° » ; ici, la ligne de série et le rang la laissent libre des deux
+     * côtés (propriétaire, 2026-10-10).
+     */
+    private const val PLUME_X = LARGEUR / 2f
     private const val PLUME_Y = 432.5f
-    private const val PLUME_TAILLE = 10f
-    private const val PLUME_VIGNETTE_X = 15f
-    private const val PLUME_VIGNETTE_Y = 281f
-    private const val PLUME_VIGNETTE_TAILLE = 13f
+    private const val PLUME_TAILLE = 9f
+    private const val PLUME_VIGNETTE_X = LARGEUR / 2f
+    private const val PLUME_VIGNETTE_Y = 292.5f
+    private const val PLUME_VIGNETTE_TAILLE = 7.5f
 
     /**
      * Un cachet de cire : l'ombre, la cire coulée, le biseau, un motif frappé

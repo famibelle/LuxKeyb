@@ -306,7 +306,7 @@ object CarteCarnet {
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
-            if (c.plume) Ornement.SERIE_PLUME else Ornement.SERIE_G
+            Ornement.SERIE_G
         )
         carte.posee(
             ligne(
