@@ -144,13 +144,20 @@
     <string name="serie_nombres">Die Zahlen</string>
     <string name="serie_enluminures">Die Illustrationen</string>
     <string name="serie_jeux">Die sieben Spiele</string>
+    <string name="serie_paysages">Die Landschaften</string>
     <string name="series_resume">%1$d von %2$d Plätzen belegt. Eine Serie ist vollständig, wenn jeder Platz seine Karte hat.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Serie vollständig: %1$s</string>
+    <string name="etape_atteinte">Ihre Sammlung zählt jetzt %1$d Karten!</string>
     <string name="serie_complete_court">Vollständig ✓</string>
     <string name="emplacement_nombre">Fehlende Karte: die Zahl %1$s</string>
     <string name="emplacement_jeu">Fehlende Karte: ein Wort aus %1$s</string>
     <string name="emplacement_dessin">Fehlende Karte: ein illustriertes Wort</string>
+    <string name="emplacement_paysage">Fehlende Karte: %1$s, %2$s</string>
+    <string name="heure_0">am Morgen</string>
+    <string name="heure_1">am Nachmittag</string>
+    <string name="heure_2">am Abend</string>
+    <string name="heure_3">in der Nacht</string>
     <string name="carnet_ouverture">Sammlung wird geöffnet…</string>
     <string name="carnet_tous">Alle</string>
     <string name="album_page_precedente">Vorherige Seite</string>
@@ -371,7 +378,7 @@
     <string name="sa_le_bouton_en_bas_gauche">Die Schaltfläche „123“ unten links auf der Tastatur wechselt zu Zahlen und gängigen Symbolen. Die Grundzeichensetzung (Komma, Punkt, Apostroph) bleibt direkt auf der Buchstabentastatur erreichbar.</string>
     <string name="sa_mode_chiffres_et_symboles">Zahlen- und Symbolmodus</string>
     <string name="sa_jeux_de_vocabulaire">🎮 Wortschatzspiele</string>
-    <string name="sa_sept_jeux_reunis_dans_onglet">Sieben Spiele im Tab Spiller trainieren Ihr Luxemburgisch auf spielerische Weise:\n\n• 🎲 Wuertsich: die in einem Raster versteckten Wörter finden.\n• 🔤 Wuertmix: die Buchstaben eines Wortes in die richtige Reihenfolge bringen.\n• 🟩 Wuertriet: ein Wort mit 5 Buchstaben in 6 Versuchen erraten.\n• 📝 Wuertlück: einen echten Satz ergänzen, in dem ein Wort fehlt.\n• 🔢 Zuelwuert: das Ergebnis einer Multiplikation in Buchstaben schreiben.\n• 🧩 Kräizwuert: ein Kreuzworträtsel mit Hinweisen auf Deutsch.\n• 🔡 Wuertplaz: die aufgelisteten Wörter in ein leeres Raster einsetzen, ganz ohne Hinweise.\n\nJedes gewonnene Wort kommt in Ihre Sammlung, und die 📚 Lernkartei lässt es Sie in immer längeren Abständen wiederholen, bis es sitzt.</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Sieben Spiele im Tab Spiller trainieren Ihr Luxemburgisch auf spielerische Weise:\n\n• 🎲 Wuertsich: die in einem Raster versteckten Wörter finden.\n• 🔤 Wuertmix: die Buchstaben eines Wortes in die richtige Reihenfolge bringen.\n• 🟩 Wuertriet: ein Wort mit 5 Buchstaben in 6 Versuchen erraten.\n• 📝 Wuertlück: einen echten Satz ergänzen, in dem ein Wort fehlt.\n• 🔢 Zuelwuert: die Zahlen von 0 bis 100 in Buchstaben schreiben.\n• 🧩 Kräizwuert: ein Kreuzworträtsel mit Hinweisen auf Deutsch.\n• 🔡 Wuertplaz: die aufgelisteten Wörter in ein leeres Raster einsetzen, ganz ohne Hinweise.\n\nJedes gewonnene Wort kommt in Ihre Sammlung, und die 📚 Lernkartei lässt es Sie in immer längeren Abständen wiederholen, bis es sitzt.</string>
     <string name="sa_les_cartes_du_carnet">🃏 Die Sammelkarten</string>
     <string name="sa_chaque_mot_gagne_dans_un">Jedes in einem Spiel gewonnene Wort wird zu einer Karte und kommt in „Mäi Carnet“ (Tab Spiller). Tippen Sie auf eine Karte, um sie groß zu öffnen; tippen Sie daneben oder wischen Sie sie nach oben oder unten weg, um sie zu schließen.\n\nDie Bilder unten erklären die Karte „Waasser“ (Wasser) Teil für Teil: Jede Nummer verweist auf die Erklärung nach dem Bild.</string>
     <string name="sa_le_haut_de_la_carte_2">Der obere Teil der Karte</string>
@@ -460,7 +467,7 @@
     <string name="sa_la_phrase_disait">❌ Im Satz stand „%1$s“</string>
     <string name="sa_question_2">Frage 1 / %1$s</string>
     <string name="sa_nouvelle_partie">🔄 Neues Spiel</string>
-    <string name="sa_une_multiplication_et_quatre_facons">Eine Multiplikation und vier Schreibweisen ihres Ergebnisses: Nur eine ist korrektes Luxemburgisch. Die anderen sind Fehler, die wirklich gemacht werden: Deutsch, vertauschte Ziffern, der Bindestrich, die Eifeler Regel, die Endung -ig. Wenn Sie sich irren, sagt Ihnen das Spiel, welcher es war.\n\nZwei Regeln genügen, um alle Zahlen bis hundert zu schreiben. Die Einer kommen vor den Zehnern: 56 ist sechsundfünfzig, „sechsafofzeg“. Und das n des Bindeworts „an“ fällt vor f, s, v, m… weg, bleibt aber vor d, t, z, n, h und Vokalen. Das ist die Eifeler Regel, daher „sechsafofzeg“ (56), aber „sechsandrësseg“ (36).\n\nBei „Schwer“ wird das Produkt nicht mehr angezeigt: Sie müssen es ausrechnen, bevor Sie es schreiben.</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Eine Zahl von 0 bis 100 und vier Schreibweisen: Nur eine ist korrektes Luxemburgisch. Die anderen sind Fehler, die wirklich gemacht werden: Deutsch, vertauschte Ziffern, der Bindestrich, die Eifeler Regel, die Endung -ig. Wenn Sie sich irren, sagt Ihnen das Spiel, welcher es war.\n\nZwei Regeln genügen, um alle Zahlen bis hundert zu schreiben. Die Einer kommen vor den Zehnern: 56 ist sechsundfünfzig, „sechsafofzeg“. Und das n des Bindeworts „an“ fällt vor f, s, v, m… weg, bleibt aber vor d, t, z, n, h und Vokalen. Das ist die Eifeler Regel, daher „sechsafofzeg“ (56), aber „sechsandrësseg“ (36).\n\nBei „Leicht“ steht die Zahl in Ziffern da, von 0 bis 100. Bei „Normal“ ist sie das Ergebnis einer Multiplikation oder einer Addition. Bei „Schwer“ wird dieses Ergebnis nicht mehr angezeigt: Sie müssen es ausrechnen, bevor Sie es schreiben.</string>
     <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Schreibweisen geprüft anhand des Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
     <string name="sa_question">Frage %1$s / %2$s</string>
     <string name="sa_comment_ecrit_ce_nombre">Wie schreibt man diese Zahl?</string>
@@ -518,7 +525,7 @@
     <string name="sa_remettez_les_lettres_dans_ordre">Bringen Sie die Buchstaben in die richtige Reihenfolge</string>
     <string name="sa_devinez_le_mot_de_lettres">Erraten Sie das Wort mit 5 Buchstaben in 6 Versuchen</string>
     <string name="sa_completez_la_phrase_laquelle_il">Ergänzen Sie den Satz, in dem ein Wort fehlt</string>
-    <string name="sa_ecrivez_en_lettres_le_resultat">Schreiben Sie das Ergebnis einer Multiplikation in Buchstaben</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Schreiben Sie die Zahlen von 0 bis 100 in Buchstaben</string>
     <string name="sa_ecrivez_les_mots_dans_la">Schreiben Sie die Wörter anhand ihrer Bedeutung ins Raster</string>
     <string name="sa_casez_les_mots_donnes_dans">Setzen Sie die vorgegebenen Wörter ins leere Raster</string>
     <string name="sa_tous_les_jeux">"‹  Alle Spiele"</string>

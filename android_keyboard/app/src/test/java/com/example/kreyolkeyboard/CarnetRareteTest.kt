@@ -210,12 +210,12 @@ class CarnetRareteTest {
 
     /**
      * La courbe des numéraux doit rester jouable elle aussi : Zuelwuert tire
-     * ses produits dans les tables de 2 à 10, et aucun palier ne doit y être
-     * vide ni tout absorber.
+     * les cent un nombres de 0 à 100, et aucun palier ne doit y être vide ni
+     * tout absorber.
      */
     @Test
     fun `la courbe de rarete de Zuelwuert reste jouable`() {
-        val produits = (2..10).flatMap { a -> (2..10).map { b -> a * b } }
+        val produits = com.example.kreyolkeyboard.carnet.Series.NOMBRES
         val parts = produits.groupingBy { Rarete.pourNombre(it) }.eachCount()
         Rarete.values().forEach {
             assertTrue(

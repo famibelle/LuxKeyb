@@ -93,6 +93,7 @@ object Pochette {
             val contenus = distinctes.mapNotNull { connues[it] }
                 .map { CarteCarnet.contenu(ctx, it) }
             val completees = Series.aFeter(ctx, neuves.mapNotNull { connues[it] })
+            val etape = if (neuves.any { it in connues }) Etapes.aFeter(ctx, connues.size) else null
             val reste = delai - (System.currentTimeMillis() - depuis)
             principal.postDelayed({
                 if (!fragment.isAdded || !encoreValide()) return@postDelayed
@@ -106,6 +107,7 @@ object Pochette {
                     Booster.ouvrir(
                         hote, jeu, contenus, neuves, anime,
                         seriesCompletees = completees,
+                        etape = etape,
                         surCarnet = { montrerLeCarnet(fragment) },
                         surFin = {
                             surVue(null)

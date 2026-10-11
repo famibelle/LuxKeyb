@@ -90,6 +90,8 @@ object Booster {
         animations: Boolean,
         /** Les séries que ces cartes viennent de compléter : voir [Series.aFeter]. */
         seriesCompletees: List<Serie> = emptyList(),
+        /** Le palier de collection que cette pochette franchit : voir [Etapes]. */
+        etape: Int? = null,
         surCarnet: () -> Unit,
         surFin: () -> Unit
     ): View? {
@@ -283,11 +285,13 @@ object Booster {
                     FrameLayout.LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER
                 )
-                // Une série complétée passe avant le bilan ordinaire : c'est
-                // l'événement de la partie, il n'arrive qu'une fois par série.
-                text = (seriesCompletees.map {
-                    "🏆 " + ctx.getString(R.string.serie_complete, ctx.getString(it.titre))
-                } + ctx.getString(
+                // Une étape de collection et une série complétée passent avant
+                // le bilan ordinaire : ce sont les événements de la partie, et
+                // chacun n'arrive qu'une fois.
+                text = (listOfNotNull(etape?.let { "🎉 " + ctx.getString(R.string.etape_atteinte, it) }) +
+                    seriesCompletees.map {
+                        "🏆 " + ctx.getString(R.string.serie_complete, ctx.getString(it.titre))
+                    } + ctx.getString(
                     if (neuves > 0) R.string.pochette_bilan_neuves
                     else R.string.pochette_bilan_deja
                 )).joinToString("\n\n")
@@ -296,6 +300,11 @@ object Booster {
                 setLineSpacing(0f, 1.25f)
                 setTextColor(0xFFECEFF1.toInt())
             })
+            // Le feu d'une très rare, une fois : un événement se voit autant
+            // qu'il se lit.
+            if (animations && (etape != null || seriesCompletees.isNotEmpty())) {
+                feter(page, Rarete.TRES_RARE, "bilan$etape${seriesCompletees.size}")
+            }
         }
 
         /**

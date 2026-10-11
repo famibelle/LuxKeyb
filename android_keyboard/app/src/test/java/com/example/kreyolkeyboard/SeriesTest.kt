@@ -42,7 +42,7 @@ class SeriesTest {
         val tires = HashSet<Int>()
         val alea = Random(7)
         ZuelenDifficulty.values().forEach { niveau ->
-            repeat(1000) { ZuelenData.newRound(niveau, alea).forEach { tires.add(it.produit) } }
+            repeat(1000) { ZuelenData.newRound(niveau, alea).forEach { tires.add(it.nombre) } }
         }
         assertEquals(
             "Zuelwuert tire d'autres nombres que la série : agrandir ou réduire Series.NOMBRES",
@@ -108,5 +108,16 @@ class SeriesTest {
             .toSet()
         val inconnus = dessins.filter { it !in attribues }
         assertTrue("Dessins de série qu'aucun mot ne porte : $inconnus", inconnus.isEmpty())
+    }
+
+    /** Une étape se fête une fois, et seulement la plus haute franchie d'un coup. */
+    @Test
+    fun lesEtapesSeFranchissentUneFois() {
+        assertEquals(null, com.example.kreyolkeyboard.carnet.Etapes.franchi(9, 0))
+        assertEquals(10, com.example.kreyolkeyboard.carnet.Etapes.franchi(10, 0))
+        assertEquals(null, com.example.kreyolkeyboard.carnet.Etapes.franchi(11, 10))
+        // Un carnet de 300 cartes à la mise à jour : une seule fête, celle des 250.
+        assertEquals(250, com.example.kreyolkeyboard.carnet.Etapes.franchi(300, 0))
+        assertEquals(null, com.example.kreyolkeyboard.carnet.Etapes.franchi(300, 250))
     }
 }

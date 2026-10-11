@@ -144,13 +144,20 @@
     <string name="serie_nombres">Les nombres</string>
     <string name="serie_enluminures">Les illustrations</string>
     <string name="serie_jeux">Les sept jeux</string>
+    <string name="serie_paysages">Les paysages</string>
     <string name="series_resume">%1$d emplacements remplis sur %2$d. Une série est complète quand chaque emplacement porte sa carte.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Série complète : %1$s</string>
+    <string name="etape_atteinte">Votre carnet compte maintenant %1$d cartes !</string>
     <string name="serie_complete_court">Complète ✓</string>
     <string name="emplacement_nombre">Carte manquante : le nombre %1$s</string>
     <string name="emplacement_jeu">Carte manquante : un mot gagné à %1$s</string>
     <string name="emplacement_dessin">Carte manquante : un mot illustré</string>
+    <string name="emplacement_paysage">Carte manquante : %1$s, %2$s</string>
+    <string name="heure_0">le matin</string>
+    <string name="heure_1">l\'après-midi</string>
+    <string name="heure_2">le soir</string>
+    <string name="heure_3">la nuit</string>
     <string name="carnet_ouverture">Ouverture du carnet…</string>
     <string name="carnet_tous">Tous</string>
     <string name="album_page_precedente">Page précédente</string>
@@ -371,7 +378,7 @@
     <string name="sa_le_bouton_en_bas_gauche">Le bouton « 123 » en bas à gauche du clavier bascule vers les chiffres et symboles usuels. La ponctuation de base (virgule, point, apostrophe) reste accessible directement sur le clavier alphabétique.</string>
     <string name="sa_mode_chiffres_et_symboles">Mode chiffres et symboles</string>
     <string name="sa_jeux_de_vocabulaire">🎮 Jeux de vocabulaire</string>
-    <string name="sa_sept_jeux_reunis_dans_onglet">Sept jeux, réunis dans l\'onglet Spiller, font travailler le luxembourgeois en s\'amusant :\n\n• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n• 🔤 Wuertmix : remettre les lettres d\'un mot dans l\'ordre.\n• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n• 🔢 Zuelwuert : écrire en lettres le résultat d\'une multiplication.\n• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, sans aucune définition.\n\nChaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait réviser à intervalles de plus en plus longs, jusqu\'à ce qu\'il soit acquis.</string>
+    <string name="sa_sept_jeux_reunis_dans_onglet">Sept jeux, réunis dans l\'onglet Spiller, font travailler le luxembourgeois en s\'amusant :\n\n• 🎲 Wuertsich : retrouver les mots cachés dans une grille.\n• 🔤 Wuertmix : remettre les lettres d\'un mot dans l\'ordre.\n• 🟩 Wuertriet : deviner un mot de 5 lettres en 6 essais.\n• 📝 Wuertlück : compléter une vraie phrase à laquelle il manque un mot.\n• 🔢 Zuelwuert : écrire en lettres les nombres de 0 à 100.\n• 🧩 Kräizwuert : des mots croisés, avec les définitions en français.\n• 🔡 Wuertplaz : caser dans une grille vide les mots donnés en liste, sans aucune définition.\n\nChaque mot gagné rejoint votre carnet, et la 📚 Boîte de Leitner vous le fait réviser à intervalles de plus en plus longs, jusqu\'à ce qu\'il soit acquis.</string>
     <string name="sa_les_cartes_du_carnet">🃏 Les cartes du carnet</string>
     <string name="sa_chaque_mot_gagne_dans_un">Chaque mot gagné dans un jeu devient une carte, rangée dans « Mäi Carnet » (onglet Spiller). Touchez une carte pour l\'ouvrir en grand ; touchez à côté, ou chassez-la d\'un glissé vers le haut ou le bas, pour la refermer.\n\nLes images ci-dessous détaillent la carte « Waasser » (l\'eau), partie par partie : chaque numéro renvoie à l\'explication qui suit l\'image.</string>
     <string name="sa_le_haut_de_la_carte_2">Le haut de la carte</string>
@@ -460,7 +467,7 @@
     <string name="sa_la_phrase_disait">❌ La phrase disait « %1$s »</string>
     <string name="sa_question_2">Question 1 / %1$s</string>
     <string name="sa_nouvelle_partie">🔄 Nouvelle partie</string>
-    <string name="sa_une_multiplication_et_quatre_facons">Une multiplication, et quatre façons d\'écrire son résultat : une seule est du luxembourgeois correct. Les autres sont les fautes qu\'on fait vraiment : l\'allemand, les chiffres inversés, le trait d\'union, la règle d\'Eifel, la finale -ig. Quand vous vous trompez, le jeu dit laquelle.\n\nDeux règles suffisent à écrire tous les nombres jusqu\'à cent. L\'unité se dit avant la dizaine : 56, c\'est six-et-cinquante, « sechsafofzeg ». Et le n de la liaison « an » tombe devant f, s, v, m…, mais se maintient devant d, t, z, n, h et les voyelles, c\'est la règle d\'Eifel, d\'où « sechsafofzeg » (56) mais « sechsandrësseg » (36).\n\nEn « Difficile », le produit n\'est plus affiché : il faut le calculer avant de l\'écrire.</string>
+    <string name="sa_une_multiplication_et_quatre_facons">Un nombre de 0 à 100, et quatre façons de l\'écrire : une seule est du luxembourgeois correct. Les autres sont les fautes qu\'on fait vraiment : l\'allemand, les chiffres inversés, le trait d\'union, la règle d\'Eifel, la finale -ig. Quand vous vous trompez, le jeu dit laquelle.\n\nDeux règles suffisent à écrire tous les nombres jusqu\'à cent. L\'unité se dit avant la dizaine : 56, c\'est six-et-cinquante, « sechsafofzeg ». Et le n de la liaison « an » tombe devant f, s, v, m…, mais se maintient devant d, t, z, n, h et les voyelles, c\'est la règle d\'Eifel, d\'où « sechsafofzeg » (56) mais « sechsandrësseg » (36).\n\nEn « Facile », le nombre est donné en chiffres, de 0 à 100. En « Normal », il est le résultat d\'une multiplication ou d\'une addition. En « Difficile », ce résultat n\'est plus affiché : il faut le calculer avant de l\'écrire.</string>
     <string name="sa_orthographes_verifiees_contre_le_letzebuerger">Orthographes vérifiées contre le Lëtzebuerger Online Dictionnaire (LOD), Zenter fir d\'Lëtzebuerger Sprooch, data.public.lu, CC0.</string>
     <string name="sa_question">Question %1$s / %2$s</string>
     <string name="sa_comment_ecrit_ce_nombre">Comment s\'écrit ce nombre ?</string>
@@ -518,7 +525,7 @@
     <string name="sa_remettez_les_lettres_dans_ordre">Remettez les lettres dans l\'ordre</string>
     <string name="sa_devinez_le_mot_de_lettres">Devinez le mot de 5 lettres en 6 essais</string>
     <string name="sa_completez_la_phrase_laquelle_il">Complétez la phrase à laquelle il manque un mot</string>
-    <string name="sa_ecrivez_en_lettres_le_resultat">Écrivez en lettres le résultat d\'une multiplication</string>
+    <string name="sa_ecrivez_en_lettres_le_resultat">Écrivez en lettres les nombres de 0 à 100</string>
     <string name="sa_ecrivez_les_mots_dans_la">Écrivez les mots dans la grille, d\'après leur sens</string>
     <string name="sa_casez_les_mots_donnes_dans">Casez les mots donnés dans la grille vide</string>
     <string name="sa_tous_les_jeux">"‹  Tous les jeux"</string>

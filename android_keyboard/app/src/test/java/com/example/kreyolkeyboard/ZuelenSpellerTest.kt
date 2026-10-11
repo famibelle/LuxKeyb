@@ -1,11 +1,13 @@
 package com.example.kreyolkeyboard
 
 import com.example.kreyolkeyboard.zuelen.ZuelenData
+import com.example.kreyolkeyboard.zuelen.ZuelenOperation
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
 import kotlin.random.Random
 
@@ -120,16 +122,16 @@ class ZuelenSpellerTest {
         for (niveau in ZuelenDifficulty.values()) {
             repeat(200) {
                 for (question in ZuelenData.newRound(niveau, random)) {
-                    val acceptees = ZuelenSpeller.variantes(question.produit)
+                    val acceptees = ZuelenSpeller.variantes(question.nombre)
                     val justes = question.options.filter { o -> o.juste }
                     assertEquals("une seule bonne réponse", 1, justes.size)
                     assertEquals(
                         "la bonne réponse est la forme retenue",
-                        ZuelenSpeller.enLettres(question.produit), justes[0].texte
+                        ZuelenSpeller.enLettres(question.nombre), justes[0].texte
                     )
                     for (option in question.options.filter { o -> !o.juste }) {
                         assertFalse(
-                            "leurre « ${option.texte} » accepté pour ${question.produit}",
+                            "leurre « ${option.texte} » accepté pour ${question.nombre}",
                             option.texte in acceptees
                         )
                     }
@@ -148,33 +150,97 @@ class ZuelenSpellerTest {
                 // Deux fois le même produit poserait deux fois la même
                 // question d'orthographe dans la même manche.
                 assertEquals(
-                    manche.size, manche.map { q -> q.produit }.toSet().size
+                    manche.size, manche.map { q -> q.nombre }.toSet().size
                 )
                 for (question in manche) {
                     assertEquals(
                         ZuelenData.OPTIONS_PER_QUESTION, question.options.size
                     )
                     assertEquals(
-                        "propositions dupliquées pour ${question.produit}",
+                        "propositions dupliquées pour ${question.nombre}",
                         question.options.size,
                         question.options.map { o -> o.texte }.toSet().size
                     )
-                    assertTrue(question.produit in 1..ZuelenSpeller.MAXIMUM)
+                    assertTrue(question.nombre in 0..ZuelenSpeller.MAXIMUM)
                 }
             }
         }
     }
 
-    /** Le produit n'est caché qu'au niveau le plus dur. */
+    /** Le résultat n'est caché qu'au niveau le plus dur ; en Facile il n'y a que le nombre. */
     @Test
     fun testLeProduitEstCacheEnDifficile() {
         assertTrue(
+            ZuelenData.newRound(ZuelenDifficulty.FACILE, Random(1))
+                .all { q -> q.enonce == "${q.nombre}" && q.operation == ZuelenOperation.AUCUNE }
+        )
+        assertTrue(
             ZuelenData.newRound(ZuelenDifficulty.NORMALE, Random(1))
-                .all { q -> q.enonce.endsWith("= ${q.produit}") }
+                .all { q -> q.enonce.endsWith("= ${q.nombre}") }
         )
         assertTrue(
             ZuelenData.newRound(ZuelenDifficulty.DIFFICILE, Random(1))
-                .all { q -> q.enonce.endsWith("= ?") }
+                .all { q -> q.enonce.endsWith("= ?") && q.solution.endsWith("= ${q.nombre}") }
         )
+    }
+
+    /**
+     * L'opération tombe juste, et elle demande un calcul : une multiplication
+     * des tables quand le nombre en est une, sinon une addition sans 0 ni 1.
+     */
+    @Test
+    fun testLOperationDonneLeNombre() {
+        val random = Random(37)
+        val tables = 2..10
+        val produits = tables.flatMap { g -> tables.map { d -> g * d } }.toSet()
+        for (niveau in listOf(ZuelenDifficulty.NORMALE, ZuelenDifficulty.DIFFICILE)) {
+            repeat(300) {
+                for (q in ZuelenData.newRound(niveau, random)) {
+                    when (q.operation) {
+                        ZuelenOperation.FOIS -> {
+                            assertEquals(q.nombre, q.gauche * q.droite)
+                            assertTrue(q.gauche in tables && q.droite in tables)
+                        }
+                        ZuelenOperation.PLUS -> {
+                            assertEquals(q.nombre, q.gauche + q.droite)
+                            assertTrue("$q", q.gauche >= 2 && q.droite >= 2)
+                            assertFalse("${q.nombre} est un produit des tables", q.nombre in produits)
+                        }
+                        ZuelenOperation.AUCUNE -> fail("une opération est attendue en $niveau")
+                    }
+                }
+            }
+        }
+    }
+
+    /** Normal et Difficile ne posent que des nombres composés : il y a une orthographe à discuter. */
+    @Test
+    fun testNormalEtDifficileNeTirentQueDesComposes() {
+        val random = Random(5)
+        for (niveau in listOf(ZuelenDifficulty.NORMALE, ZuelenDifficulty.DIFFICILE)) {
+            repeat(200) {
+                ZuelenData.newRound(niveau, random).forEach { q ->
+                    assertTrue("${q.nombre}", q.nombre in 21..99 && q.nombre % 10 != 0)
+                }
+            }
+        }
+        assertEquals(101, ZuelenData.nombres(ZuelenDifficulty.FACILE).size)
+        assertEquals(72, ZuelenData.nombres(ZuelenDifficulty.NORMALE).size)
+    }
+
+    /** Les nombres qui manquent au carnet passent devant, sans prendre toute la manche. */
+    @Test
+    fun testLesNombresManquantsPassentDevant() {
+        val random = Random(11)
+        val manquants = setOf(0, 13, 22, 47, 70, 83, 100, 99)
+        repeat(100) {
+            val tires = ZuelenData.newRound(ZuelenDifficulty.FACILE, random, manquants).map { it.nombre }
+            // Au moins six : le complément tiré au hasard peut en ramener d'autres.
+            assertTrue(tires.count { it in manquants } >= ZuelenData.MANQUANTS_PAR_MANCHE)
+        }
+        // Deux manquants seulement : les deux sortent, le reste est complété.
+        val manche = ZuelenData.newRound(ZuelenDifficulty.FACILE, random, setOf(4, 64)).map { it.nombre }
+        assertTrue(4 in manche && 64 in manche)
+        assertEquals(ZuelenData.QUESTIONS_PER_ROUND, manche.size)
     }
 }
