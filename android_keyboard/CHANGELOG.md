@@ -9,6 +9,23 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.1.0] - 2026-10-11
+
+Les cartes du carnet ouvrent maintenant une fenêtre sur le Luxembourg, et deux séries se complètent plus facilement.
+
+### ✨ Nouveautés
+
+- **Un paysage du pays dans chaque carte.** Chaque famille de mots a son lieu : la Rout Bréck, Veianen, Esch-Sauer, la Musel, Neimënster, la Gëlle Fra, la Schueberfouer, le Mëllerdall, et la ville vue de la Corniche pour les autres mots.
+- **L'heure dit la rareté.** Une carte commune se lève le matin, une peu commune l'après-midi, une rare le soir aux fenêtres allumées, une très rare la nuit sous les étoiles.
+- **Le dessin du mot passe au premier plan**, en nacre, devant le paysage. Pour les mots sans dessin, le tracé de leur sonorité devient un ruban de lumière.
+- **Une nouvelle série : les paysages.** Neuf lieux à quatre heures, trente-six cartes à réunir. Une case vide montre le lieu en grisé, jamais le mot.
+- **Zuelwuert couvre tous les nombres de 0 à 100.** En Facile, il pose le nombre seul ; en Normal et en Difficile, une multiplication ou une addition. Les nombres qui manquent à votre carnet passent en premier, et la série des nombres compte maintenant 101 cartes.
+- **Le carnet fête ses étapes** : la 10ᵉ carte, la 25ᵉ, la 50ᵉ, la 100ᵉ et les suivantes.
+
+### ⚠️ À savoir
+
+- Comme la série des nombres a grandi, elle se fête de nouveau quand vous l'aurez complétée, même si vous aviez fini l'ancienne.
+
 ## [36.0.0] - 2026-10-10
 
 Les cartes du carnet s'échangent maintenant comme de vraies cartes : celle que vous offrez quitte votre carnet pour de bon, et elle n'arrive que sur le téléphone de la personne à qui vous la tendez.
