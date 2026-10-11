@@ -1,9 +1,32 @@
 {
  "genere_le": "2026-10-11",
- "derniere_version": "36.1.1",
+ "derniere_version": "36.1.2",
  "derniere_date": "2026-10-11",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "36.1.2",
+   "date": "2026-10-11",
+   "intro": "Le carnet sur tablette.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Sur une tablette couchée, l'album des paysages tient deux lieux par rangée",
+       "texte": "Il gardait la mise en page d'un téléphone, avec des cartes immenses qui étalaient la série sur neuf écrans."
+      },
+      {
+       "titre": "Chaque vue du carnet s'ouvre en haut",
+       "texte": "En passant des séries à l'étagère, ou d'un jeu à l'autre, la page restait à la hauteur où vous l'aviez laissée, et s'ouvrait au milieu."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "36.1.1",
    "date": "2026-10-11",
@@ -214,25 +237,6 @@
       {
        "titre": "L'appareil photo s'explique avant d'être demandé",
        "texte": "Une phrase dit qu'il sert seulement à lire le code de l'autre téléphone, et que rien n'est photographié, gardé ni envoyé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "35.0.1",
-   "date": "2026-10-10",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Plus de cartes en double venant de Wuertriet",
-       "texte": "Un mot trouvé dans Wuertriet arrivait au carnet écrit en minuscules (« affer » au lieu de « Affer ») : s'il venait aussi d'un autre jeu, il apparaissait deux fois, et la seconde carte passait à tort pour très rare. Les cartes déjà en double se regroupent toutes seules à l'ouverture du carnet, sans rien perdre : rencontres, jeux et révisions sont gardés."
       }
      ],
      "texte": "",
