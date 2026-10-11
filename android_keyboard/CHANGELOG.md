@@ -17,7 +17,7 @@ Chaque carte du carnet se souvient maintenant de la saison où vous l'avez gagn�
 
 - **Le paysage prend la saison du jour de la capture.** Neige et toits blancs en hiver, fleurs au printemps, lumière chaude en été, feuillage roux et brume en automne.
 - **Cinq fêtes laissent leur trace** : un feu d'artifice pour Neijoerschdag, le grand feu du Buergbrennen, des fanions aux couleurs du pays pour la Nationalfeierdag, la Schueberfouer et ses guirlandes, les lumières du Chrëschtmaart.
-- **Un poinçon gravé au pied de la carte**, juste après le numéro, porte l'emblème de la saison : flocon, fleur, soleil ou feuille. Les lecteurs d'écran annoncent la saison.
+- **Un poinçon gravé au pied de la carte.** Juste après le numéro, il porte l'emblème de la saison : flocon, fleur, soleil ou feuille. Les lecteurs d'écran annoncent la saison.
 - **La date n'est plus écrite sur la carte.** Ce qui compte, c'est la saison : le pied de carte garde seulement le numéro.
 
 ## [36.1.2] - 2026-10-11
