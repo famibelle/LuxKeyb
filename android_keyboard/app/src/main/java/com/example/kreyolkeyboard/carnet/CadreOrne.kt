@@ -2208,6 +2208,140 @@ object Ornement {
         p.shader = null
     }
     /**
+     * Le poinçon de la saison où la carte a été gagnée : l'emblème de la
+     * saison (flocon, fleur, soleil, feuille) dans un petit cartouche, **gravé
+     * dans le métal de la marge basse**, juste après le numéro de série, sur
+     * la carte ouverte comme sur la vignette.
+     *
+     * C'est la marque d'un orfèvre et non un objet posé : un premier essai en
+     * médaille sur l'illustration se lisait comme une verrue (propriétaire,
+     * 2026-10-11), et la plume avait déjà suivi le même chemin. La gravure est
+     * la sienne : une lèvre claire décalée vers le bas, puis le sillon dans le
+     * ton sombre du métal.
+     *
+     * **Jamais la date** : elle reste une donnée technique du carnet, ce qui
+     * compte est la saison. La fête du jour, elle, ne se voit que dans le
+     * paysage. Voir [Souvenir].
+     */
+    fun dessinerSaison(c: Canvas, p: Paint, s: Souvenir, rarete: Rarete, vignette: Boolean) {
+        val metal = metal(rarete)
+        val cx = POINCON_X
+        val cy = milieuBordureBasse(rarete, vignette)
+        val e = if (vignette) POINCON_VIGNETTE_ECHELLE else 1f
+        p.shader = null
+        for (passe in 0..1) {
+            c.save()
+            c.translate(cx, cy)
+            c.scale(e, e)
+            if (passe == 0) c.translate(0.3f, 0.42f)
+            val encre = if (passe == 0) 0x99FFFFFF.toInt() else metal.trait
+            p.color = encre
+            p.style = Paint.Style.STROKE
+            p.strokeWidth = POINCON_TRAIT
+            p.strokeJoin = Paint.Join.ROUND
+            c.drawRoundRect(RectF(-POINCON_L / 2f, -POINCON_H / 2f, POINCON_L / 2f, POINCON_H / 2f), 2f, 2f, p)
+            c.scale(POINCON_EMBLEME, POINCON_EMBLEME)
+            // Le cœur de la fleur et la nervure de la feuille sont des
+            // réserves : elles prennent le ton du métal autour.
+            emblemeDeSaison(c, p, s.saison, encre, if (passe == 0) encre else metal.mid)
+            c.restore()
+        }
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+        p.style = Paint.Style.FILL
+    }
+
+    /**
+     * Le poinçon, après le numéro de série : « n° 036 », « Nr. 036 » et
+     * « n.º 036 » s'arrêtent avant 54 au corps de 7,5. La plume garde le
+     * centre de la marge, le rang la droite.
+     *
+     * Il tient **dans** la bordure basse, comme la plume : celle d'une commune
+     * n'a que 9,55 unités entre la face et le filet de contour, et un premier
+     * cartouche de 10,5 la débordait des deux côtés (propriétaire,
+     * 2026-10-11). 7 de haut, plus le trait et la lèvre, laissent 0,7 de
+     * métal au-dessus et au-dessous ; l'emblème suit, à 2,7 de rayon.
+     */
+    private const val POINCON_X = 64f
+    private const val POINCON_L = 10f
+    private const val POINCON_H = 7f
+    private const val POINCON_TRAIT = 0.7f
+    private const val POINCON_EMBLEME = 0.36f
+    private const val POINCON_VIGNETTE_ECHELLE = 0.85f
+
+    /** La zone du poinçon sur la carte ouverte, pour les lecteurs d'écran. */
+    fun saison(rarete: Rarete): RectF {
+        val cy = milieuBordureBasse(rarete, false)
+        return RectF(POINCON_X - POINCON_L / 2f, cy - POINCON_H / 2f, POINCON_X + POINCON_L / 2f, cy + POINCON_H / 2f)
+    }
+
+    /** L'emblème d'une saison, dans un rayon de 7,5 unités, repris de la maquette. */
+    private fun emblemeDeSaison(c: Canvas, p: Paint, saison: Saison, encre: Int, clair: Int) {
+        p.color = encre
+        when (saison) {
+            Saison.WANTER -> {
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 1.3f
+                p.strokeCap = Paint.Cap.ROUND
+                p.strokeJoin = Paint.Join.ROUND
+                for (a in floatArrayOf(0f, 60f, 120f)) {
+                    c.save()
+                    c.rotate(a)
+                    c.drawLine(0f, -7f, 0f, 7f, p)
+                    val pointes = Path()
+                    pointes.moveTo(-2f, -5f); pointes.lineTo(0f, -3f); pointes.lineTo(2f, -5f)
+                    pointes.moveTo(-2f, 5f); pointes.lineTo(0f, 3f); pointes.lineTo(2f, 5f)
+                    c.drawPath(pointes, p)
+                    c.restore()
+                }
+            }
+            Saison.FREIJOER -> {
+                p.style = Paint.Style.FILL
+                for (k in 0 until 5) {
+                    c.save()
+                    c.rotate(k * 72f)
+                    c.drawOval(RectF(-2.3f, -3.6f - 3.2f, 2.3f, -3.6f + 3.2f), p)
+                    c.restore()
+                }
+                p.color = clair
+                c.drawCircle(0f, 0f, 1.8f, p)
+            }
+            Saison.SUMMER -> {
+                p.style = Paint.Style.FILL
+                c.drawCircle(0f, 0f, 3.4f, p)
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 1.2f
+                p.strokeCap = Paint.Cap.ROUND
+                for (k in 0 until 8) {
+                    c.save()
+                    c.rotate(k * 45f)
+                    c.drawLine(0f, -5f, 0f, -7.2f, p)
+                    c.restore()
+                }
+            }
+            Saison.HIERSCHT -> {
+                p.style = Paint.Style.FILL
+                c.drawPath(FEUILLE, p)
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 0.7f
+                p.color = clair
+                c.drawLine(0f, -5f, 0f, 7.6f, p)
+            }
+        }
+        p.style = Paint.Style.FILL
+    }
+
+    private val FEUILLE: Path = Path().apply {
+        moveTo(0f, -7.5f)
+        cubicTo(4.5f, -5f, 6f, -1f, 4.4f, 2.6f)
+        cubicTo(3.2f, 5.2f, 1f, 6f, 0f, 7f)
+        cubicTo(-1f, 6f, -3.2f, 5.2f, -4.4f, 2.6f)
+        cubicTo(-6f, -1f, -4.5f, -5f, 0f, -7.5f)
+        close()
+    }
+
+
+    /**
      * Le sceau de cire d'une carte apprise : posé sur l'angle bas droit de
      * l'illustration, il mord sur la fenêtre comme un cachet sur un document.
      *
@@ -2248,7 +2382,7 @@ object Ornement {
      * deux cachets sur l'illustration surchargeaient la carte (propriétaire,
      * même jour). Elle est donc **gravée dans le métal du cadre**, petite, au
      * centre de la marge basse, sur la carte ouverte comme sur la vignette :
-     * une mention d'inventaire, comme le numéro et la date, et non une
+     * une mention d'inventaire, comme le numéro, et non une
      * décoration de plus.
      *
      * La gravure est celle du reste de la carte : un sillon dans le ton sombre
@@ -3084,7 +3218,9 @@ class CarteOrnee(
     private val blason: Blasonnement = Blasonnement.AUCUN,
     private val jeu: JeuCarte? = null,
     /** De 0 (mot fréquent) à 1 (mot rare) : voir [Rarete.intensitePourRang]. */
-    private val intensite: Float = 0.5f
+    private val intensite: Float = 0.5f,
+    /** Le jour où la carte a été gagnée, réduit à sa saison : voir [Souvenir]. */
+    private val souvenir: Souvenir? = null
 ) : Carton(context) {
 
     override val hauteurUnites: Float =
@@ -3132,7 +3268,7 @@ class CarteOrnee(
         degradeAgrafe = Ornement.degradeGemme(
             teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE, intensite
         )
-        motif = Motif(mot, rarete, fenetre, blason)
+        motif = Motif(mot, rarete, fenetre, blason, souvenir)
         setWillNotDraw(false)
         clipChildren = false
     }
@@ -3365,6 +3501,7 @@ class CarteOrnee(
         }
         if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
         if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, rarete)
+        souvenir?.let { Ornement.dessinerSaison(canvas, pinceau, it, rarete, vignette) }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
@@ -3414,7 +3551,9 @@ class CarteOrnee(
  * - le lieu dit le champ par une forme et plus seulement par une teinte, ce
  *   qui était justement le service que la partition rendait ; la nature, elle,
  *   reste écrite en toutes lettres dans la pastille sous la plaque ;
- * - l'heure dit la rareté d'un coup d'œil : matin, après-midi, soir, nuit.
+ * - l'heure dit la rareté d'un coup d'œil : matin, après-midi, soir, nuit ;
+ * - la saison dit le jour où la carte a été gagnée ([Souvenir], [Habillage]) :
+ *   neige, fleurs, chaleur ou feuilles, et la fête du jour s'il y en avait une.
  *
  * Le lieu est un bitmap partagé ([Paysages.image]) : il ne dépend pas du mot,
  * trente vignettes d'un même tiroir n'en paient qu'un. Le sujet, lui, se trace
@@ -3425,7 +3564,8 @@ class Motif(
     mot: String,
     rarete: Rarete,
     private val zone: RectF,
-    blason: Blasonnement = Blasonnement.AUCUN
+    blason: Blasonnement = Blasonnement.AUCUN,
+    private val souvenir: Souvenir? = null
 ) {
 
     private val teinteChamp: Float? = blason.champ?.hue
@@ -3469,7 +3609,7 @@ class Motif(
         // La carte garde son paysage : le cache peut l'évincer pendant qu'une
         // grille défile, la carte ne le redessine pas pour autant.
         val image = rendu?.takeIf { it.width == l && it.height == h && !it.isRecycled }
-            ?: Paysages.image(lieu, heure, teinteChamp, l, h).also { rendu = it }
+            ?: Paysages.image(lieu, heure, teinteChamp, l, h, souvenir).also { rendu = it }
         image?.let { c.drawBitmap(it, null, visible, peinture) }
         c.save()
         c.translate(visible.left + cadrage[1], visible.top + cadrage[2])

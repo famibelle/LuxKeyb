@@ -13,8 +13,6 @@ import androidx.annotation.StringRes
 import com.example.kreyolkeyboard.R
 import com.example.kreyolkeyboard.TranslationDictionary
 import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 /**
@@ -100,8 +98,6 @@ data class ContenuCarte(
  */
 object CarteCarnet {
 
-    private val FORMAT_DATE = SimpleDateFormat("dd.MM.yy", Locale.FRENCH)
-
     private const val ENCRE = 0xFF1B1610.toInt()
     private const val ENCRE_DOUCE = 0xFF4A4234.toInt()
     private const val ENCRE_PALE = 0xFF7A7160.toInt()
@@ -164,7 +160,10 @@ object CarteCarnet {
      * l'ont donnée. La barre de Leitner est peinte sur le cadre.
      */
     fun vignette(context: Context, c: ContenuCarte, cote: Int): View {
-        val carte = CarteOrnee(context, c.carte.forme, c.rarete, vignette = true, blason = c.blason)
+        val carte = CarteOrnee(
+            context, c.carte.forme, c.rarete, vignette = true, blason = c.blason,
+            souvenir = Souvenir.de(c.carte.premiereFois)
+        )
             .avecBoite(c.carte.boite)
             .avecPlume(c.plume)
 
@@ -205,22 +204,25 @@ object CarteCarnet {
      * - le **médaillon de provenance**, entre les écus, dit la partie qui a
      *   donné la carte : l'emblème du jeu sur un émail de sa couleur, « gagné
      *   à » et son nom en légende. C'est une mention d'inventaire, comme le
-     *   numéro et la date de la ligne juste dessous. Il est tracé par la carte
+     *   numéro de la ligne juste dessous. Il est tracé par la carte
      *   elle-même (voir [Ornement.dessinerMedaillon]), pas posé comme une vue.
      *   Le corps de l'étiquette de nature s'ajuste : voir [corpsDeLEtiquette] ;
      * - les deux **écus** comptent les rencontres et la boîte de révision ;
      * - la **ligne de série** situe la carte dans la collection : son numéro
-     *   d'entrée, le jour de la capture, et le rang de fréquence qui a
-     *   décidé de sa rareté.
+     *   d'entrée et le rang de fréquence qui a décidé de sa rareté. Le jour
+     *   de la capture n'y est plus : il ne se lit que par sa saison, au
+     *   poinçon gravé juste après le numéro (voir [Ornement.dessinerSaison]).
      */
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)
+        val souvenir = Souvenir.de(c.carte.premiereFois)
         val carte = CarteOrnee(
             context, c.carte.forme, c.rarete, vignette = false, blason = c.blason, jeu = jeu,
             // Un numéral n'a pas de rang : son palier lit l'orthographe.
             intensite = if (c.carte.nombre != null) Rarete.intensitePourPalier(c.rarete)
-            else Rarete.intensitePourRang(c.rang)
+            else Rarete.intensitePourRang(c.rang),
+            souvenir = souvenir
         ).avecBoite(c.carte.boite) // pour le sceau d'une carte apprise
             .avecPlume(c.plume)
 
@@ -271,6 +273,16 @@ object CarteCarnet {
             },
             Ornement.PROVENANCE
         )
+        // Le poinçon de saison est gravé, lui aussi : une vue vide le dit.
+        souvenir?.let {
+            carte.posee(
+                View(context).apply {
+                    contentDescription = context.getString(R.string.carte_saison, it.nom)
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                },
+                Ornement.saison(c.rarete)
+            )
+        }
 
         // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
         // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
@@ -298,11 +310,11 @@ object CarteCarnet {
         // Le corps de 7,5 est imposé par la bande, qui vit maintenant dans la
         // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
         // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
-        // et son nom.
+        // et son nom. La date non plus : c'est une donnée technique, la carte
+        // n'en montre que la saison, sur son cachet (propriétaire, 2026-10-11).
         val serie = context.getString(
             R.string.carte_serie,
-            "%03d".format(Locale.ROOT, c.carte.numero),
-            FORMAT_DATE.format(Date(c.carte.premiereFois))
+            "%03d".format(Locale.ROOT, c.carte.numero)
         )
         carte.posee(
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),

@@ -649,7 +649,8 @@
     <string name="langue_traductions">fr</string>
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
-    <string name="carte_serie">Nr. %1$s · %2$s</string>
+    <string name="carte_serie">Nr. %1$s</string>
+    <string name="carte_saison">Joreszäit: %1$s</string>
     <string name="carte_partager">📤 Deelen</string>
     <string name="carte_partager_titre">D\'Kaart deelen</string>
     <string name="carte_partage_pied">D\'Lëtzebuerger Tastatur, gratis op Google Play</string>

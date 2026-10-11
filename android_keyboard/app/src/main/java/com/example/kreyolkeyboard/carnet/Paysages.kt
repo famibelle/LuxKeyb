@@ -202,36 +202,58 @@ object Paysages {
         return floatArrayOf(e, (l - LARGEUR * e) / 2f, (h - HAUTEUR * e) / 2f)
     }
 
-    /** Le lieu à l'heure dite, rendu à [largeurPx] × [hauteurPx]. */
-    fun image(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int): Bitmap? {
+    /**
+     * Le lieu à l'heure dite, rendu à [largeurPx] × [hauteurPx], habillé par
+     * la saison de [souvenir] s'il y en a un (voir [Habillage]).
+     *
+     * Le souvenir entre dans la clé : neuf lieux, quatre heures, quatre
+     * saisons et cinq fêtes, mais un tiroir n'en montre qu'une poignée à la
+     * fois, et deux cartes gagnées le même hiver partagent toujours leur rendu.
+     */
+    fun image(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+              souvenir: Souvenir? = null): Bitmap? {
         if (largeurPx <= 0 || hauteurPx <= 0) return null
-        val cle = "${lieu.ordinal}_${heure.rang}_${teinte}_${largeurPx}x$hauteurPx"
+        val cle = "${lieu.ordinal}_${heure.rang}_${teinte}_${souvenir?.saison}_${souvenir?.fete}_${largeurPx}x$hauteurPx"
         CACHE.get(cle)?.let { if (!it.isRecycled) return it }
-        val bitmap = Bitmap.createBitmap(largeurPx, hauteurPx, Bitmap.Config.ARGB_8888)
-        val c = Canvas(bitmap)
-        val k = cadrage(largeurPx.toFloat(), hauteurPx.toFloat())
-        c.translate(k[1], k[2])
-        c.scale(k[0], k[0])
-        dessiner(c, lieu, heure)
+        val bitmap = rendu(lieu, heure, largeurPx, hauteurPx, souvenir) ?: return null
         CACHE.put(cle, bitmap)
         return bitmap
     }
 
     /** Un rendu hors cache, que l'appelant garde pour lui. */
-    fun rendu(lieu: Lieu, heure: Heure, largeurPx: Int, hauteurPx: Int): Bitmap? {
+    fun rendu(lieu: Lieu, heure: Heure, largeurPx: Int, hauteurPx: Int, souvenir: Souvenir? = null): Bitmap? {
         if (largeurPx <= 0 || hauteurPx <= 0) return null
         val bitmap = Bitmap.createBitmap(largeurPx, hauteurPx, Bitmap.Config.ARGB_8888)
         val c = Canvas(bitmap)
         val k = cadrage(largeurPx.toFloat(), hauteurPx.toFloat())
+        c.save()
         c.translate(k[1], k[2])
         c.scale(k[0], k[0])
-        dessiner(c, lieu, heure)
+        if (souvenir == null) {
+            dessiner(c, lieu, heure)
+            c.restore()
+            return bitmap
+        }
+        // Avec une saison, le lieu est peint à part sur un calque transparent,
+        // puis posé sur le ciel : ce calque est aussi le masque dont
+        // [Habillage] a besoin, et le lieu n'est peint qu'une fois.
+        dessiner(c, lieu, heure, ciel = true, lieuAussi = false)
+        c.restore()
+        val calque = Bitmap.createBitmap(largeurPx, hauteurPx, Bitmap.Config.ARGB_8888)
+        val cc = Canvas(calque)
+        cc.translate(k[1], k[2])
+        cc.scale(k[0], k[0])
+        dessiner(cc, lieu, heure, ciel = false)
+        c.drawBitmap(calque, 0f, 0f, null)
+        Habillage.appliquer(bitmap, calque, lieu, heure, souvenir, k)
+        calque.recycle()
         return bitmap
     }
 
-    fun dessiner(c: Canvas, lieu: Lieu, heure: Heure) {
+    fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true) {
         val p = Peintre(c, heure)
-        p.ciel()
+        if (ciel) p.ciel()
+        if (!lieuAussi) return
         when (lieu) {
             Lieu.VEIANEN -> p.veianen()
             Lieu.ROUT_BRECK -> p.routBreck()

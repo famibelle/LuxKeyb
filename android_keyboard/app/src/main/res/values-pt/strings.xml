@@ -649,7 +649,8 @@
     <string name="langue_traductions">pt</string>
     <string name="accueil_glose">olá</string>
     <string name="accueil_traduction">Olá, como está?</string>
-    <string name="carte_serie">n.º %1$s · %2$s</string>
+    <string name="carte_serie">n.º %1$s</string>
+    <string name="carte_saison">Estação: %1$s</string>
     <string name="carte_partager">📤 Partilhar</string>
     <string name="carte_partager_titre">Partilhar a carta</string>
     <string name="carte_partage_pied">O teclado luxemburguês, grátis no Google Play</string>
