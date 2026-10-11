@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_paysages.png",
+        "alt": "À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette ».",
+        "legende": "Chaque carte ouvre sur un lieu du pays, choisi par le sens du mot, à l'heure de sa rareté : ici « Brëll », une rare, au soir dans le Mëllerdall."
+      },
+      {
+        "image": "Screenshots/lux_carnet_serie_paysages.png",
+        "alt": "À gauche, la série « Les paysages », 18 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom, Rout Bréck, Veianen, Esch-Sauer, Musel. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer au petit matin.",
+        "legende": "La série des paysages : neuf lieux à quatre heures. Une case vide montre le lieu en grisé, jamais le mot."
+      }
+    ]
+  },
   "36.0.0": {
     "images": [
       {
