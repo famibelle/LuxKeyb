@@ -289,6 +289,9 @@ class CarnetFragment : DialogFragment() {
                     tri = t
                     surlignerTri()
                     remplirGrille()
+                    // Une autre vue repart d'en haut : descendu dans les
+                    // séries, « Étagère » s'ouvrait au milieu, sans son titre.
+                    defilementGrille.scrollTo(0, 0)
                 }
             })
         }
@@ -419,6 +422,7 @@ class CarnetFragment : DialogFragment() {
                 filtre = jeu
                 surlignerFiltres()
                 remplirGrille()
+                defilementGrille.scrollTo(0, 0)
             }
         }
 
@@ -1002,9 +1006,11 @@ class CarnetFragment : DialogFragment() {
             // Les cent un nombres se rangent par dizaines : cinq colonnes, une
             // dizaine sur deux rangées, ou dix quand l'écran les tient. Une
             // rangée de trois couperait 20 de 21 et mêlerait les dizaines.
-            // Les paysages : une rangée par lieu, du matin à la nuit.
+            // Les paysages : une rangée par lieu, du matin à la nuit, ou deux
+            // lieux par rangée quand l'écran les tient (tablette couchée, où
+            // quatre cases de 600 px étalaient l'album sur neuf écrans).
             val colonnesSerie = when {
-                a.serie == Serie.PAYSAGES -> 4
+                a.serie == Serie.PAYSAGES -> if (colonnes >= 8) 8 else 4
                 a.serie != Serie.NOMBRES -> colonnes
                 colonnes >= 10 -> 10
                 else -> 5
