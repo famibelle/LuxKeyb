@@ -1,9 +1,40 @@
 {
  "genere_le": "2026-10-11",
- "derniere_version": "36.1.2",
+ "derniere_version": "36.2.0",
  "derniere_date": "2026-10-11",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "36.2.0",
+   "date": "2026-10-11",
+   "intro": "Chaque carte du carnet se souvient maintenant de la saison où vous l'avez gagnée.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le paysage prend la saison du jour de la capture",
+       "texte": "Neige et toits blancs en hiver, fleurs au printemps, lumière chaude en été, feuillage roux et brume en automne."
+      },
+      {
+       "titre": "Cinq fêtes laissent leur trace",
+       "texte": "Un feu d'artifice pour Neijoerschdag, le grand feu du Buergbrennen, des fanions aux couleurs du pays pour la Nationalfeierdag, la Schueberfouer et ses guirlandes, les lumières du Chrëschtmaart."
+      },
+      {
+       "titre": "Un poinçon gravé au pied de la carte",
+       "texte": "Juste après le numéro, porte l'emblème de la saison : flocon, fleur, soleil ou feuille. Les lecteurs d'écran annoncent la saison."
+      },
+      {
+       "titre": "La date n'est plus écrite sur la carte",
+       "texte": "Ce qui compte, c'est la saison : le pied de carte garde seulement le numéro."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "36.1.2",
    "date": "2026-10-11",
@@ -210,33 +241,6 @@
       {
        "titre": null,
        "texte": "Pour échanger une carte, les deux téléphones doivent avoir cette version ou une plus récente."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "35.0.2",
-   "date": "2026-10-10",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le bouton Retour referme la carte ouverte",
-       "texte": "Et non plus tout le carnet. Il referme aussi le code d'une carte qu'on offre, sans rien céder."
-      },
-      {
-       "titre": "Offrir une carte : le code de confirmation se retrouve",
-       "texte": "Si la personne qui reçoit la carte fermait son code trop tôt, la carte restait aussi chez celle qui l'offrait. Il suffit maintenant de rescanner la carte offerte pour revoir ce code, sans recevoir la carte une seconde fois."
-      },
-      {
-       "titre": "L'appareil photo s'explique avant d'être demandé",
-       "texte": "Une phrase dit qu'il sert seulement à lire le code de l'autre téléphone, et que rien n'est photographié, gardé ni envoyé."
       }
      ],
      "texte": "",
