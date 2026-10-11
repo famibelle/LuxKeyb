@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_saisons.png",
+        "alt": "Quatre cartes du carnet ouvertes, une par saison. « Spidol » (hôpital) en hiver : la neige couvre le sol et les rochers, et le feu du Buergbrennen brûle derrière l'hôpital. « Prisong » (prison) au printemps : des fleurs roses et blanches partout devant la Rout Bréck. « Euro » en été, le jour de la fête nationale : des fanions rouge, blanc et bleu au-dessus de la Musel. « jour » en automne : le château de Veianen derrière un feuillage roux. Au pied de chaque carte, après le numéro, un petit poinçon gravé : flocon, fleur, soleil ou feuille.",
+        "legende": "La saison du jour où vous avez gagné la carte habille son paysage. Au pied de la carte, un petit poinçon gravé la rappelle."
+      },
+      {
+        "image": "Screenshots/lux_carnet_saisons_album.png",
+        "alt": "Une page du carnet, douze vignettes. Des feux d'artifice au-dessus de « eeleren », « Jeans » et « empfänken », des guirlandes de lumières du marché de Noël devant « neiem » et « reell », des fanions au-dessus de « wéinst », la neige sur « Spidol » et « reell », des fleurs autour de « Lockdown », un feuillage roux derrière « jour » et « Engel ».",
+        "legende": "Les fêtes laissent aussi leur trace : feu d'artifice du Nouvel An, feu du Buergbrennen, fanions de la fête nationale, Schueberfouer, lumières du Chrëschtmaart."
+      }
+    ]
+  },
   "36.1.0": {
     "images": [
       {
