@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.1.2] - 2026-10-11
+
+Le carnet sur tablette.
+
+### 🐛 Corrections
+
+- **Sur une tablette couchée, l'album des paysages tient deux lieux par rangée.** Il gardait la mise en page d'un téléphone, avec des cartes immenses qui étalaient la série sur neuf écrans.
+- **Chaque vue du carnet s'ouvre en haut.** En passant des séries à l'étagère, ou d'un jeu à l'autre, la page restait à la hauteur où vous l'aviez laissée, et s'ouvrait au milieu.
+
 ## [36.1.1] - 2026-10-11
 
 Une correction dans les mots que les jeux proposent.
