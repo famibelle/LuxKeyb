@@ -37,7 +37,7 @@ class MotsEcartesTest {
         // `Vergewaltegung` était écarté et `Viol` non — ce dernier est arrivé
         // dans une grille de Wuertplaz. Un mot filtré dont le synonyme
         // emprunté ne l'est pas ne filtre rien.
-        "Viol", "Violen", "Avortement", "Suicide", "Suiciden", "Suicidë",
+        "Viol", "Violen", "Avortement", "Euthanasie", "Stierfhëllef", "Suicide", "Suiciden", "Suicidë",
         "Cannabis", "Cannabisplanzen", "Haschisch", "Ecstasy", "Mäerder",
         "Genozid", "Mëssbrauch", "mëssbraucht", "homosexuell", "Homosexueller"
     )
