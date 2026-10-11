@@ -144,6 +144,7 @@
     <string name="serie_nombres">Les nombres</string>
     <string name="serie_enluminures">Les illustrations</string>
     <string name="serie_jeux">Les sept jeux</string>
+    <string name="serie_paysages">Les paysages</string>
     <string name="series_resume">%1$d emplacements remplis sur %2$d. Une série est complète quand chaque emplacement porte sa carte.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Série complète : %1$s</string>
@@ -152,6 +153,11 @@
     <string name="emplacement_nombre">Carte manquante : le nombre %1$s</string>
     <string name="emplacement_jeu">Carte manquante : un mot gagné à %1$s</string>
     <string name="emplacement_dessin">Carte manquante : un mot illustré</string>
+    <string name="emplacement_paysage">Carte manquante : %1$s, %2$s</string>
+    <string name="heure_0">le matin</string>
+    <string name="heure_1">l\'après-midi</string>
+    <string name="heure_2">le soir</string>
+    <string name="heure_3">la nuit</string>
     <string name="carnet_ouverture">Ouverture du carnet…</string>
     <string name="carnet_tous">Tous</string>
     <string name="album_page_precedente">Page précédente</string>

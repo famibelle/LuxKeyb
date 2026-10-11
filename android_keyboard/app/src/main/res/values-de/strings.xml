@@ -144,6 +144,7 @@
     <string name="serie_nombres">Die Zahlen</string>
     <string name="serie_enluminures">Die Illustrationen</string>
     <string name="serie_jeux">Die sieben Spiele</string>
+    <string name="serie_paysages">Die Landschaften</string>
     <string name="series_resume">%1$d von %2$d Plätzen belegt. Eine Serie ist vollständig, wenn jeder Platz seine Karte hat.</string>
     <string name="serie_progression">%1$d / %2$d</string>
     <string name="serie_complete">Serie vollständig: %1$s</string>
@@ -152,6 +153,11 @@
     <string name="emplacement_nombre">Fehlende Karte: die Zahl %1$s</string>
     <string name="emplacement_jeu">Fehlende Karte: ein Wort aus %1$s</string>
     <string name="emplacement_dessin">Fehlende Karte: ein illustriertes Wort</string>
+    <string name="emplacement_paysage">Fehlende Karte: %1$s, %2$s</string>
+    <string name="heure_0">am Morgen</string>
+    <string name="heure_1">am Nachmittag</string>
+    <string name="heure_2">am Abend</string>
+    <string name="heure_3">in der Nacht</string>
     <string name="carnet_ouverture">Sammlung wird geöffnet…</string>
     <string name="carnet_tous">Alle</string>
     <string name="album_page_precedente">Vorherige Seite</string>
