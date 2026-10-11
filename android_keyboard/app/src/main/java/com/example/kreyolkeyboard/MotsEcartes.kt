@@ -128,6 +128,10 @@ object MotsEcartes {
     private val REGISTRE = listOf(
         "Ofdreiwung", "Ofdreiwungen", "ofdreiwen", "Ofdreiwungsgesetz",
         "Avortement", "Avortementer", "Avortementsgesetz",
+        // Même question disputée, mêmes deux moitiés : l'emprunt français et
+        // le composé luxembourgeois (signalé le 2026-10-11, arrivé en carte
+        // par Wuertlück sur « d'Recht eng ___ ze froen »).
+        "Euthanasie", "Euthanasiegesetz", "Stierfhëllef",
         "Vergewaltegung", "Vergewaltegungen", "vergewaltegt", "vergewaltegen",
         "Vergewalteger", "Viol", "Viole", "Violen",
         "Prostitutioun", "Prostituéiert", "Prostituéierten",
