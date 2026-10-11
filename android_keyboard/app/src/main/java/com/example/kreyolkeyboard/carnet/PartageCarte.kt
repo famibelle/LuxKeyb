@@ -23,7 +23,7 @@ import java.io.FileOutputStream
  * C'est la seule chose du carnet qui sorte de l'appareil, et elle n'en sort
  * que sur un geste du joueur. L'image ne porte que des données de
  * dictionnaire : le mot, sa glose et la phrase du LOD (CC0), la traduction du
- * ZLS (CC0), le numéro et la date de la carte. Rien de ce qui a été tapé.
+ * ZLS (CC0), le numéro et la saison de la carte. Rien de ce qui a été tapé.
  *
  * Le format est celui de la carte de niveau, 1080 × 1350 : le portrait que
  * WhatsApp et les réseaux affichent sans recadrer. Le partage lui-même reprend

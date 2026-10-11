@@ -649,7 +649,8 @@
     <string name="langue_traductions">de</string>
     <string name="accueil_glose">hallo</string>
     <string name="accueil_traduction">Hallo, wie geht\'s?</string>
-    <string name="carte_serie">Nr. %1$s · %2$s</string>
+    <string name="carte_serie">Nr. %1$s</string>
+    <string name="carte_saison">Jahreszeit: %1$s</string>
     <string name="carte_partager">📤 Teilen</string>
     <string name="carte_partager_titre">Karte teilen</string>
     <string name="carte_partage_pied">Die luxemburgische Tastatur, kostenlos bei Google Play</string>

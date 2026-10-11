@@ -649,7 +649,8 @@
     <string name="langue_traductions">fr</string>
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
-    <string name="carte_serie">n° %1$s · %2$s</string>
+    <string name="carte_serie">n° %1$s</string>
+    <string name="carte_saison">Saison : %1$s</string>
     <string name="carte_partager">📤 Partager</string>
     <string name="carte_partager_titre">Partager la carte</string>
     <string name="carte_partage_pied">Le clavier luxembourgeois, gratuit sur Google Play</string>

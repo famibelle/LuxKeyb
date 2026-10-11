@@ -653,7 +653,8 @@
     <string name="langue_traductions">en</string>
     <string name="accueil_glose">hello</string>
     <string name="accueil_traduction">Hello, how are you?</string>
-    <string name="carte_serie">No. %1$s · %2$s</string>
+    <string name="carte_serie">No. %1$s</string>
+    <string name="carte_saison">Season: %1$s</string>
     <string name="carte_partager">📤 Share</string>
     <string name="carte_partager_titre">Share the card</string>
     <string name="carte_partage_pied">The Luxembourgish keyboard, free on Google Play</string>
