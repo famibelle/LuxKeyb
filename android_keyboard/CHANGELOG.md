@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.1.1] - 2026-10-11
+
+Une correction dans les mots que les jeux proposent.
+
+### 🐛 Corrections
+
+- Les jeux ne proposent plus le mot « Euthanasie » ni ses formes. Comme pour les autres questions morales disputées, le mot reste dans le dictionnaire et dans les suggestions du clavier : seuls les jeux cessent de le proposer d'eux-mêmes.
+
 ## [36.1.0] - 2026-10-11
 
 Les cartes du carnet ouvrent maintenant une fenêtre sur le Luxembourg, et deux séries se complètent plus facilement.
