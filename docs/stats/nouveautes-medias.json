@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "37.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carte_boule_a_neige.gif",
+        "alt": "La carte « eeleren », gagnée un jour d'hiver, ouverte sur un Galaxy A21s : la neige tombe dans sa fenêtre, sur un paysage de nuit. À côté, un petit téléphone montre le geste. Téléphone penché à droite, la carte pivote et la neige file vers la droite ; penché à gauche, vers la gauche ; redressé, elle retombe droit. Puis le téléphone est secoué : les flocons remontent en tourbillonnant, puis retombent doucement. Le mot LuxKeyb est écrit en filigrane sur la carte.",
+        "legende": "Filmé sur un Galaxy A21s, une carte d'hiver : penchez le téléphone, la neige tombe vers le vrai bas ; secouez-le, elle tourbillonne. Les autres saisons et les fêtes, on vous laisse les découvrir."
+      }
+    ]
+  },
   "36.3.3": {
     "images": [
       {

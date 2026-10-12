@@ -1,9 +1,100 @@
 {
  "genere_le": "2026-10-12",
- "derniere_version": "36.3.3",
+ "derniere_version": "37.0.0",
  "derniere_date": "2026-10-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.0.0",
+   "date": "2026-10-12",
+   "intro": "Les cartes ouvertes prennent vie : chacune garde le temps qu'il faisait le jour où vous l'avez gagnée.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Une ambiance par saison dans la fenêtre de la carte",
+       "texte": "La neige tombe sur les cartes d'hiver, les feuilles sur celles d'automne, des pétales au printemps ; l'été, des aigrettes de pissenlit flottent le jour et des lucioles s'allument le soir."
+      },
+      {
+       "titre": "Les fêtes ont leur effet",
+       "texte": "Feux d'artifice au Nouvel An et à la Fête nationale, braises qui montent au Buergbrennen, confettis à la Schueberfouer, neige et lumières au Chrëschtmaart."
+      },
+      {
+       "titre": "Comme une boule à neige",
+       "texte": "Penchez le téléphone, tout tombe vers le vrai bas ; retournez-le, tout remonte ; secouez-le, tout tourbillonne avant de retomber doucement."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "💡",
+     "titre": "À savoir",
+     "points": [
+      {
+       "titre": null,
+       "texte": "L'animation ne vit que sur la carte ouverte, jamais dans la grille, et s'efface si votre téléphone demande moins d'animations."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carte_boule_a_neige.gif",
+     "alt": "La carte « eeleren », gagnée un jour d'hiver, ouverte sur un Galaxy A21s : la neige tombe dans sa fenêtre, sur un paysage de nuit. À côté, un petit téléphone montre le geste. Téléphone penché à droite, la carte pivote et la neige file vers la droite ; penché à gauche, vers la gauche ; redressé, elle retombe droit. Puis le téléphone est secoué : les flocons remontent en tourbillonnant, puis retombent doucement. Le mot LuxKeyb est écrit en filigrane sur la carte.",
+     "legende": "Filmé sur un Galaxy A21s, une carte d'hiver : penchez le téléphone, la neige tombe vers le vrai bas ; secouez-le, elle tourbillonne. Les autres saisons et les fêtes, on vous laisse les découvrir."
+    }
+   ],
+   "image": "Screenshots/lux_carte_boule_a_neige.gif",
+   "image_alt": "La carte « eeleren », gagnée un jour d'hiver, ouverte sur un Galaxy A21s : la neige tombe dans sa fenêtre, sur un paysage de nuit. À côté, un petit téléphone montre le geste. Téléphone penché à droite, la carte pivote et la neige file vers la droite ; penché à gauche, vers la gauche ; redressé, elle retombe droit. Puis le téléphone est secoué : les flocons remontent en tourbillonnant, puis retombent doucement. Le mot LuxKeyb est écrit en filigrane sur la carte.",
+   "image_legende": "Filmé sur un Galaxy A21s, une carte d'hiver : penchez le téléphone, la neige tombe vers le vrai bas ; secouez-le, elle tourbillonne. Les autres saisons et les fêtes, on vous laisse les découvrir."
+  },
+  {
+   "version": "36.3.5",
+   "date": "2026-10-12",
+   "intro": "Une correction pour les cartes ouvertes.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Une carte ouverte reste entière quand on la touche",
+       "texte": "Depuis la 36.3.4, après un appui du doigt, la carte perdait son dessin et ne gardait que son texte."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "36.3.4",
+   "date": "2026-10-12",
+   "intro": "Des cartes ouvertes plus fluides.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Une carte se retourne et se feuillette avec fluidité",
+       "texte": "Deux fois plus d'images par seconde qu'avant sur un téléphone modeste."
+      },
+      {
+       "titre": "Une carte posée ne dépense plus rien",
+       "texte": "Laissée immobile, elle ne se redessinait pas moins de vingt fois par seconde pour des mouvements invisibles ; elle ménage maintenant la batterie."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "36.3.3",
    "date": "2026-10-12",
@@ -122,139 +213,6 @@
    "image": "Screenshots/lux_carnet_ouverture.gif",
    "image_alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s, avec un chronomètre sous chacun. On touche « Ouvrir » sur le carnet. À gauche, en 36.2.0, « Ouverture du carnet… » reste affiché et la grille n'apparaît qu'au bout de 11,6 secondes. À droite, en 36.3.2, la grille apparaît au bout de 1,7 seconde, les cartes montrent d'abord le ciel puis leurs paysages arrivent un à un.",
    "image_legende": "Filmé en temps réel sur un Galaxy A21s, un téléphone d'entrée de gamme, avec un carnet de 36 cartes : 11,6 s avant, 1,7 s maintenant."
-  },
-  {
-   "version": "36.3.0",
-   "date": "2026-10-12",
-   "intro": "Des cadres en relief, et un carnet qui ne fige plus.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le cadre des cartes prend du volume",
-       "texte": "Une moulure bombée qui accroche la lumière, et un métal travaillé selon la rareté : étain brossé, bronze martelé, argent ciselé d'une tresse gravée, or poli. Les cartes peu communes et rares portent des rivets sur les côtés, les rares et très rares un rang de perles autour de l'image."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Rapidité",
-     "points": [
-      {
-       "titre": "Le carnet ne se fige plus quand la grille apparaît",
-       "texte": "Sur un téléphone d'entrée de gamme, l'écran restait bloqué plusieurs secondes, d'autant plus longtemps que le carnet était rempli. Les paysages arrivent maintenant un à un, sur le ciel de leur heure."
-      },
-      {
-       "titre": "Le carnet défile sans à-coups",
-       "texte": "Les cartes qui ne sont pas à l'écran ne coûtent plus rien."
-      },
-      {
-       "titre": "Une carte s'ouvre bien plus vite",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carnet_metaux.png",
-     "alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
-     "legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
-    }
-   ],
-   "image": "Screenshots/lux_carnet_metaux.png",
-   "image_alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
-   "image_legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
-  },
-  {
-   "version": "36.2.0",
-   "date": "2026-10-11",
-   "intro": "Chaque carte du carnet se souvient maintenant de la saison où vous l'avez gagnée.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le paysage prend la saison du jour de la capture",
-       "texte": "Neige et toits blancs en hiver, fleurs au printemps, lumière chaude en été, feuillage roux et brume en automne."
-      },
-      {
-       "titre": "Cinq fêtes laissent leur trace",
-       "texte": "Un feu d'artifice pour Neijoerschdag, le grand feu du Buergbrennen, des fanions aux couleurs du pays pour la Nationalfeierdag, la Schueberfouer et ses guirlandes, les lumières du Chrëschtmaart."
-      },
-      {
-       "titre": "Un poinçon gravé au pied de la carte",
-       "texte": "Juste après le numéro, il porte l'emblème de la saison : flocon, fleur, soleil ou feuille. Les lecteurs d'écran annoncent la saison."
-      },
-      {
-       "titre": "La date n'est plus écrite sur la carte",
-       "texte": "Ce qui compte, c'est la saison : le pied de carte garde seulement le numéro."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carnet_saisons.png",
-     "alt": "Quatre cartes du carnet ouvertes, une par saison. « Spidol » (hôpital) en hiver : la neige couvre le sol et les rochers, et le feu du Buergbrennen brûle derrière l'hôpital. « Prisong » (prison) au printemps : des fleurs roses et blanches partout devant la Rout Bréck. « Euro » en été, le jour de la fête nationale : des fanions rouge, blanc et bleu au-dessus de la Musel. « jour » en automne : le château de Veianen derrière un feuillage roux. Au pied de chaque carte, après le numéro, un petit poinçon gravé : flocon, fleur, soleil ou feuille.",
-     "legende": "La saison du jour où vous avez gagné la carte habille son paysage. Au pied de la carte, un petit poinçon gravé la rappelle."
-    },
-    {
-     "image": "Screenshots/lux_carnet_saisons_album.png",
-     "alt": "Une page du carnet, douze vignettes. Des feux d'artifice au-dessus de « eeleren », « Jeans » et « empfänken », des guirlandes de lumières du marché de Noël devant « neiem » et « reell », des fanions au-dessus de « wéinst », la neige sur « Spidol » et « reell », des fleurs autour de « Lockdown », un feuillage roux derrière « jour » et « Engel ».",
-     "legende": "Les fêtes laissent aussi leur trace : feu d'artifice du Nouvel An, feu du Buergbrennen, fanions de la fête nationale, Schueberfouer, lumières du Chrëschtmaart."
-    }
-   ],
-   "image": "Screenshots/lux_carnet_saisons.png",
-   "image_alt": "Quatre cartes du carnet ouvertes, une par saison. « Spidol » (hôpital) en hiver : la neige couvre le sol et les rochers, et le feu du Buergbrennen brûle derrière l'hôpital. « Prisong » (prison) au printemps : des fleurs roses et blanches partout devant la Rout Bréck. « Euro » en été, le jour de la fête nationale : des fanions rouge, blanc et bleu au-dessus de la Musel. « jour » en automne : le château de Veianen derrière un feuillage roux. Au pied de chaque carte, après le numéro, un petit poinçon gravé : flocon, fleur, soleil ou feuille.",
-   "image_legende": "La saison du jour où vous avez gagné la carte habille son paysage. Au pied de la carte, un petit poinçon gravé la rappelle."
-  },
-  {
-   "version": "36.1.2",
-   "date": "2026-10-11",
-   "intro": "Le carnet sur tablette.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Sur une tablette couchée, l'album des paysages tient deux lieux par rangée",
-       "texte": "Il gardait la mise en page d'un téléphone, avec des cartes immenses qui étalaient la série sur neuf écrans."
-      },
-      {
-       "titre": "Chaque vue du carnet s'ouvre en haut",
-       "texte": "En passant des séries à l'étagère, ou d'un jeu à l'autre, la page restait à la hauteur où vous l'aviez laissée, et s'ouvrait au milieu."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_album_tablette.gif",
-     "alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
-     "legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
-    },
-    {
-     "image": "Screenshots/lux_carnet_vue_en_haut.gif",
-     "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On descend dans la vue « Séries » du carnet, puis on touche « Étagère ». À gauche, en 36.1.1, l'étagère s'ouvre au milieu de la liste, sans son titre. À droite, en 36.3.2, elle s'ouvre en haut, sur « Revient dans 1 jour ».",
-     "legende": "Descendu dans les séries, on passe à l'étagère : elle s'ouvre maintenant en haut, avec son titre."
-    }
-   ],
-   "image": "Screenshots/lux_album_tablette.gif",
-   "image_alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
-   "image_legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
   }
  ]
 }
