@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.1.2] - 2026-10-12
+
+La pochette de fin de partie tient bon quand on tourne le téléphone.
+
+### 🐛 Corrections
+
+- **Tourner le téléphone ne fait plus disparaître la pochette.** L'écran reste dans son sens tant qu'elle est ouverte, et retrouve sa rotation dès qu'on la ferme. On peut donc incliner le téléphone pour faire jouer la carte sans la perdre.
+- **En paysage, les cartes gagnées apparaissent enfin** : le dos se retourne, la carte s'affiche avec ses effets de rareté et suit l'inclinaison du téléphone.
+- **Le titre de la pochette ne passe plus sous l'heure et les icônes**, ni « Passer » sous la barre de navigation.
+
 ## [37.1.1] - 2026-10-12
 
 Le carnet et la Boîte de Leitner répondent sans à-coup.
