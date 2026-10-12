@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.3.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_metaux.png",
+        "alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
+        "legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
+      }
+    ]
+  },
   "36.2.0": {
     "images": [
       {

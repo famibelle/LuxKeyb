@@ -1,9 +1,112 @@
 {
- "genere_le": "2026-10-11",
- "derniere_version": "36.2.0",
- "derniere_date": "2026-10-11",
+ "genere_le": "2026-10-12",
+ "derniere_version": "36.3.2",
+ "derniere_date": "2026-10-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "36.3.2",
+   "date": "2026-10-12",
+   "intro": "Un carnet qui ne se fige plus nulle part.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Une carte s'ouvre sans figer l'écran",
+       "texte": "Le fond s'assombrit aussitôt et la carte se retourne d'un seul geste."
+      },
+      {
+       "titre": "On feuillette les cartes sans attendre",
+       "texte": "Les cartes voisines se préparent pendant qu'on regarde celle du milieu."
+      },
+      {
+       "titre": "Les cartes du carnet apparaissent d'un coup",
+       "texte": "Sans l'à-coup qui accompagnait les cartes très rares."
+      },
+      {
+       "titre": "La vue Séries s'ouvre sans temps d'arrêt",
+       "texte": ""
+      },
+      {
+       "titre": "Le carnet s'ouvre encore un peu plus vite",
+       "texte": ""
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "36.3.1",
+   "date": "2026-10-12",
+   "intro": "Le carnet s'ouvre bien plus vite.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Le carnet s'ouvre environ trois fois plus vite",
+       "texte": "Sur un téléphone d'entrée de gamme, « Ouverture du carnet… » restait affiché une dizaine de secondes ; il en faut maintenant trois à quatre."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "36.3.0",
+   "date": "2026-10-12",
+   "intro": "Des cadres en relief, et un carnet qui ne fige plus.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le cadre des cartes prend du volume",
+       "texte": "Une moulure bombée qui accroche la lumière, et un métal travaillé selon la rareté : étain brossé, bronze martelé, argent ciselé d'une tresse gravée, or poli. Les cartes peu communes et rares portent des rivets sur les côtés, les rares et très rares un rang de perles autour de l'image."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Le carnet ne se fige plus quand la grille apparaît",
+       "texte": "Sur un téléphone d'entrée de gamme, l'écran restait bloqué plusieurs secondes, d'autant plus longtemps que le carnet était rempli. Les paysages arrivent maintenant un à un, sur le ciel de leur heure."
+      },
+      {
+       "titre": "Le carnet défile sans à-coups",
+       "texte": "Les cartes qui ne sont pas à l'écran ne coûtent plus rien."
+      },
+      {
+       "titre": "Une carte s'ouvre bien plus vite",
+       "texte": ""
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_metaux.png",
+     "alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
+     "legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_metaux.png",
+   "image_alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
+   "image_legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
+  },
   {
    "version": "36.2.0",
    "date": "2026-10-11",
@@ -85,177 +188,6 @@
       {
        "titre": null,
        "texte": "Les jeux ne proposent plus le mot « Euthanasie » ni ses formes. Comme pour les autres questions morales disputées, le mot reste dans le dictionnaire et dans les suggestions du clavier : seuls les jeux cessent de le proposer d'eux-mêmes."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "36.1.0",
-   "date": "2026-10-11",
-   "intro": "Les cartes du carnet ouvrent maintenant une fenêtre sur le Luxembourg, et deux séries se complètent plus facilement.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Un paysage du pays dans chaque carte",
-       "texte": "Chaque famille de mots a son lieu : la Rout Bréck, Veianen, Esch-Sauer, la Musel, Neimënster, la Gëlle Fra, la Schueberfouer, le Mëllerdall, et la ville vue de la Corniche pour les autres mots."
-      },
-      {
-       "titre": "L'heure dit la rareté",
-       "texte": "Une carte commune se lève le matin, une peu commune l'après-midi, une rare le soir aux fenêtres allumées, une très rare la nuit sous les étoiles."
-      },
-      {
-       "titre": "Le dessin du mot passe au premier plan",
-       "texte": "En nacre, devant le paysage. Pour les mots sans dessin, le tracé de leur sonorité devient un ruban de lumière."
-      },
-      {
-       "titre": "Une nouvelle série : les paysages",
-       "texte": "Neuf lieux à quatre heures, trente-six cartes à réunir. Une case vide montre le lieu en grisé, jamais le mot."
-      },
-      {
-       "titre": "Zuelwuert couvre tous les nombres de 0 à 100",
-       "texte": "En Facile, il pose le nombre seul ; en Normal et en Difficile, une multiplication ou une addition. Les nombres qui manquent à votre carnet passent en premier, et la série des nombres compte maintenant 101 cartes."
-      },
-      {
-       "titre": "Le carnet fête ses étapes",
-       "texte": "La 10ᵉ carte, la 25ᵉ, la 50ᵉ, la 100ᵉ et les suivantes."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚠️",
-     "titre": "À savoir",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Comme la série des nombres a grandi, elle se fête de nouveau quand vous l'aurez complétée, même si vous aviez fini l'ancienne."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carnet_paysages.png",
-     "alt": "À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette ».",
-     "legende": "Chaque carte ouvre sur un lieu du pays, choisi par le sens du mot, à l'heure de sa rareté : ici « Brëll », une rare, au soir dans le Mëllerdall."
-    },
-    {
-     "image": "Screenshots/lux_carnet_serie_paysages.png",
-     "alt": "À gauche, la série « Les paysages », 18 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom, Rout Bréck, Veianen, Esch-Sauer, Musel. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer au petit matin.",
-     "legende": "La série des paysages : neuf lieux à quatre heures. Une case vide montre le lieu en grisé, jamais le mot."
-    }
-   ],
-   "image": "Screenshots/lux_carnet_paysages.png",
-   "image_alt": "À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette ».",
-   "image_legende": "Chaque carte ouvre sur un lieu du pays, choisi par le sens du mot, à l'heure de sa rareté : ici « Brëll », une rare, au soir dans le Mëllerdall."
-  },
-  {
-   "version": "36.0.0",
-   "date": "2026-10-10",
-   "intro": "Les cartes du carnet s'échangent maintenant comme de vraies cartes : celle que vous offrez quitte votre carnet pour de bon, et elle n'arrive que sur le téléphone de la personne à qui vous la tendez.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Échanger des cartes de la main à la main",
-       "texte": "La personne qui reçoit touche « 🎁 Recevoir » dans son carnet et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle, avec la mention « Reçue en cadeau ». Les deux téléphones restent côte à côte : rien ne passe par Internet."
-      },
-      {
-       "titre": "Une carte n'existe jamais en double",
-       "texte": "Elle quitte votre carnet avant d'arriver dans l'autre, et le code de remise ne fonctionne que sur un seul téléphone, une seule fois."
-      },
-      {
-       "titre": "Rien ne se perd en route",
-       "texte": "Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte jusqu'à ce que vous indiquiez qu'elle est bien arrivée."
-      },
-      {
-       "titre": "L'appareil photo s'explique avant d'être demandé",
-       "texte": "Il sert seulement à lire le code de l'autre téléphone, et rien n'est photographié, gardé ni envoyé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "L'onglet Wierderbuch pouvait faire attendre l'application plusieurs secondes à son ouverture, au point qu'Android propose de la fermer. Son dictionnaire se charge désormais en arrière-plan."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚠️",
-     "titre": "À savoir",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Pour échanger une carte, les deux téléphones doivent avoir la version 35.1.0 ou une plus récente."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carnet_echange.png",
-     "alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
-     "legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
-    },
-    {
-     "image": "Screenshots/lux_carnet_echange_arrivee.png",
-     "alt": "À gauche, le carnet du donneur avec un bandeau violet sous le titre : « « Haus » attend d'être scannée par l'autre téléphone. Touchez ici pour remontrer son code. » À droite, la carte « Kaz » (chat, chatte, chat sauvage) arrivée chez l'autre personne, avec le médaillon « Reçue en cadeau ».",
-     "legende": "Si l'échange est interrompu, un bandeau garde le code de la carte. Elle arrive chez l'autre avec la mention « Reçue en cadeau »."
-    }
-   ],
-   "image": "Screenshots/lux_carnet_echange.png",
-   "image_alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
-   "image_legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
-  },
-  {
-   "version": "35.1.0",
-   "date": "2026-10-10",
-   "intro": "Une carte qu'on offre quitte désormais votre carnet pour de bon : elle ne peut plus exister sur deux téléphones à la fois.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Offrir une carte, dans le bon ordre",
-       "texte": "C'est maintenant la personne qui reçoit qui commence : elle touche « Recevoir » et montre un code. Vous ouvrez votre carte, touchez « Céder » et scannez ce code : la carte quitte votre carnet à ce moment-là. Votre téléphone affiche alors un code que seul le sien peut lire ; elle le scanne, et la carte arrive chez elle."
-      },
-      {
-       "titre": "Rien ne se perd si l'échange est interrompu",
-       "texte": "Si vous fermez l'écran trop tôt, un bandeau en haut de votre carnet garde le code de la carte, jusqu'à ce que vous indiquiez qu'elle est bien arrivée."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚠️",
-     "titre": "À savoir",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Pour échanger une carte, les deux téléphones doivent avoir cette version ou une plus récente."
       }
      ],
      "texte": "",
