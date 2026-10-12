@@ -359,17 +359,23 @@ class CarnetFragment : DialogFragment() {
         val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
         // Le métal des vignettes se prépare pendant que le carnet se charge :
-        // voir [Ornement.prechauffer].
+        // voir [Ornement.prechauffer]. Celui de la vue Séries ensuite, à ses propres tailles : sans eux, le
+        // premier passage sur cette vue recalculait tout sur le fil principal.
         val cote = grilleDeVignettes().second
-        Thread { Ornement.prechauffer(ctx, cote) }.start()
+        val cotesSeries = Serie.values().map { caseDeSerie(it).second }.distinct() - cote
         Thread {
-            // Quatre chargements qui ne dépendent pas l'un de l'autre, menés
+            Ornement.prechauffer(ctx, cote)
+            cotesSeries.forEach { Ornement.prechauffer(ctx, it) }
+        }.start()
+        Thread {
+            // Cinq chargements qui ne dépendent pas l'un de l'autre, menés
             // de front. L'un après l'autre, et la première carte payant ensuite
             // les familles, les catégories et les blasons, ils faisaient
             // l'essentiel des 9,5 s d'« Ouverture du carnet… » sur un Galaxy
             // A21s (2026-10-12).
             val deFront = listOf(
-                Thread { TranslationDictionary.charger(ctx); TranslationDictionary.chargerFamilles(ctx) },
+                Thread { TranslationDictionary.charger(ctx) },
+                Thread { TranslationDictionary.chargerFamilles(ctx) },
                 Thread { TranslationDictionary.chargerExemples(ctx) },
                 Thread { TranslationDictionary.chargerCategories(ctx); Armorial.precharger(ctx) },
                 Thread { Carnet.preparer(ctx) }
@@ -1035,6 +1041,29 @@ class CarnetFragment : DialogFragment() {
      * rempli par plusieurs cartes (un dessin partagé) montre la première
      * gagnée : les autres sont dans le carnet, la série n'a qu'une place.
      */
+    /**
+     * Le nombre de colonnes d'une série dans la vue Séries, et le côté de ses
+     * cases en pixels. Lu aussi par [chargerEnFond], qui prépare d'avance le
+     * métal des vignettes à ces tailles.
+     */
+    private fun caseDeSerie(serie: Serie): Pair<Int, Int> {
+        val d = resources.displayMetrics.density
+        val gouttiere = (8 * d).toInt()
+        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
+        val colonnes = ((dispo + gouttiere) / ((LARGEUR_CASE_SERIE_DP * d).toInt() + gouttiere))
+            .coerceAtLeast(3)
+        // Les paysages : une rangée par lieu, du matin à la nuit, ou deux
+        // lieux par rangée quand l'écran les tient (tablette couchée, où
+        // quatre cases de 600 px étalaient l'album sur neuf écrans).
+        val colonnesSerie = when {
+            serie == Serie.PAYSAGES -> if (colonnes >= 8) 8 else 4
+            serie != Serie.NOMBRES -> colonnes
+            colonnes >= 10 -> 10
+            else -> 5
+        }
+        return colonnesSerie to (dispo - (colonnesSerie - 1) * gouttiere) / colonnesSerie
+    }
+
     private fun remplirSeries(ctx: Context) {
         val d = resources.displayMetrics.density
         val gouttiere = (8 * d).toInt()
@@ -1077,17 +1106,7 @@ class CarnetFragment : DialogFragment() {
             // Les cent un nombres se rangent par dizaines : cinq colonnes, une
             // dizaine sur deux rangées, ou dix quand l'écran les tient. Une
             // rangée de trois couperait 20 de 21 et mêlerait les dizaines.
-            // Les paysages : une rangée par lieu, du matin à la nuit, ou deux
-            // lieux par rangée quand l'écran les tient (tablette couchée, où
-            // quatre cases de 600 px étalaient l'album sur neuf écrans).
-            val colonnesSerie = when {
-                a.serie == Serie.PAYSAGES -> if (colonnes >= 8) 8 else 4
-                a.serie != Serie.NOMBRES -> colonnes
-                colonnes >= 10 -> 10
-                else -> 5
-            }
-            val coteSerie = if (colonnesSerie == colonnes) cote
-            else (dispo - (colonnesSerie - 1) * gouttiere) / colonnesSerie
+            val (colonnesSerie, coteSerie) = caseDeSerie(a.serie)
             val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
             var ligne: LinearLayout? = null
             a.emplacements.forEachIndexed { i, e ->

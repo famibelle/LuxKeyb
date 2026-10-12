@@ -189,29 +189,61 @@ internal class LecteurCartes(
             Inclinaison.suivre(carte)
             (carte as? Carton)?.sensibleAuDoigt = true
         }
-        if (sens == 0) {
-            // Une carte rare se retourne plus lentement et dépasse légèrement
-            // son aplomb avant de se poser : le même geste, mais qui prend son
-            // temps.
-            carte.rotationY = -85f
-            carte.animate().rotationY(0f)
-                .setDuration(if (c.rarete.distinguee) 470L else 360L)
-                .setInterpolator(
-                    if (c.rarete.distinguee) OvershootInterpolator(1.4f)
-                    else DecelerateInterpolator()
-                )
-                .withEndAction(armer)
-                .start()
-        } else {
-            carte.translationX = sens * p.width * 0.35f
-            carte.rotationY = sens * 35f
-            carte.alpha = 0f
-            carte.animate().translationX(0f).rotationY(0f).alpha(1f)
-                .setDuration(240L)
-                .setInterpolator(DecelerateInterpolator())
-                .withEndAction(armer)
-                .start()
+        val lancer = {
+            if (sens == 0) {
+                // Une carte rare se retourne plus lentement et dépasse légèrement
+                // son aplomb avant de se poser : le même geste, mais qui prend son
+                // temps.
+                carte.rotationY = -85f
+                carte.animate().rotationY(0f)
+                    .setDuration(if (c.rarete.distinguee) 470L else 360L)
+                    .setInterpolator(
+                        if (c.rarete.distinguee) OvershootInterpolator(1.4f)
+                        else DecelerateInterpolator()
+                    )
+                    .withEndAction(armer)
+                    .start()
+            } else {
+                carte.translationX = sens * p.width * 0.35f
+                carte.rotationY = sens * 35f
+                carte.alpha = 0f
+                carte.animate().translationX(0f).rotationY(0f).alpha(1f)
+                    .setDuration(240L)
+                    .setInterpolator(DecelerateInterpolator())
+                    .withEndAction(armer)
+                    .start()
+            }
         }
+        // Le paysage et le métal se préparent en fond : la carte reste cachée,
+        // puis se retourne d'un seul geste. Voir [CarteOrnee.attendreSaMatiere].
+        val ornee = carte as? CarteOrnee
+        if (ornee != null) {
+            carte.visibility = View.INVISIBLE
+            ornee.attendreSaMatiere {
+                carte.visibility = View.VISIBLE
+                lancer()
+                preparerVoisines(carte.width)
+            }
+        } else lancer()
+    }
+
+    /**
+     * Prépare en fond les deux cartes voisines de celle qu'on regarde, pour
+     * qu'un glissé de côté n'attende pas leur paysage et leur métal : voir
+     * [CarteCarnet.preparer].
+     */
+    private fun preparerVoisines(largeurPx: Int) {
+        val voisines = listOf(rang + 1, rang - 1).filter { it in cartes.indices }.map { cartes[it] }
+        if (voisines.isEmpty() || largeurPx <= 0) return
+        Thread({
+            for (c in voisines) {
+                try {
+                    CarteCarnet.preparer(ctx, c, largeurPx)
+                } catch (e: Throwable) {
+                    // La voisine se préparera à son tour, au glissé.
+                }
+            }
+        }, "voisines").apply { priority = Thread.MIN_PRIORITY }.start()
     }
 
     /** Passe à la carte voisine ; au bout de la liste, la carte revient en place. */

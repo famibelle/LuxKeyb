@@ -1083,11 +1083,16 @@ object Ornement {
      * de large font un cadre de 5 Mo, que `LruCache` évince aussitôt posé. Le
      * métal se redessinait donc à chaque trame de l'inclinaison, sans que rien
      * ne le montre. Depuis que la moulure se calcule au pixel, ce n'est plus
-     * tenable : un seizième du tas, entre 4 et 24 Mo, tient la carte ouverte,
-     * ses rayons et une page de vignettes.
+     * tenable.
+     *
+     * Un huitième du tas, entre 4 et 32 Mo : le métal des quatre paliers de
+     * vignettes, la carte ouverte et ses deux voisines préparées d'avance
+     * (voir `LecteurCartes.preparerVoisines`), avec leurs rayons. Au seizième,
+     * 12 Mo sur un Galaxy A21s, les voisines auraient évincé le métal des
+     * vignettes, recalculé ensuite sur le fil principal au retour à la grille.
      */
     private val CACHE = object : LruCache<String, Bitmap>(
-        (Runtime.getRuntime().maxMemory() / 16).coerceIn(4L * 1024 * 1024, 24L * 1024 * 1024).toInt()
+        (Runtime.getRuntime().maxMemory() / 8).coerceIn(4L * 1024 * 1024, 32L * 1024 * 1024).toInt()
     ) {
         override fun sizeOf(cle: String, valeur: Bitmap): Int = valeur.byteCount
     }
@@ -3806,6 +3811,63 @@ class CarteOrnee(
     }
 
     /**
+     * Faux tant que le paysage et le métal se préparent hors du fil principal :
+     * voir [attendreSaMatiere]. La carte ne se dessine pas d'ici là.
+     */
+    private var matierePrete = true
+    private var quandPrete: (() -> Unit)? = null
+    private var largeurPreparee = 0
+
+    /**
+     * Pour le lecteur de cartes : le paysage et le métal de la carte ouverte
+     * se calculent sur deux fils de fond dès qu'elle connaît sa taille, et
+     * [pret] est appelé sur le fil principal quand elle peut se dessiner.
+     *
+     * Sur un Galaxy A21s (2026-10-12), les deux se calculaient l'un après
+     * l'autre à la première image de la carte, 240 ms et 230 ms : l'écran se
+     * figeait une demi-seconde au toucher, et le retournement démarrait en
+     * retard. Menés de front, ils laissent le voile apparaître tout de suite
+     * et la carte se retourner sans à-coup.
+     *
+     * Réservé au lecteur : le partage, la révision et la pochette dessinent la
+     * carte tout de suite et gardent le rendu direct.
+     */
+    fun attendreSaMatiere(pret: () -> Unit): CarteOrnee {
+        matierePrete = false
+        quandPrete = pret
+        return this
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, ancienneL: Int, ancienneH: Int) {
+        super.onSizeChanged(w, h, ancienneL, ancienneH)
+        if (matierePrete || w <= 0 || w == largeurPreparee) return
+        largeurPreparee = w
+        val principal = android.os.Handler(android.os.Looper.getMainLooper())
+        var restants = 2
+        val fini: () -> Unit = {
+            restants--
+            if (restants == 0 && largeurPreparee == w) {
+                matierePrete = true
+                invalidate()
+                quandPrete?.invoke()
+                quandPrete = null
+            }
+        }
+        val ctx = context
+        Thread({
+            // Un échec ne bloque pas la carte : elle retombe sur le rendu direct.
+            try {
+                Ornement.metal(ctx, rarete, w, vignette)
+                Ornement.rayons(rarete, w, vignette)
+            } catch (e: Throwable) {
+                android.util.Log.w("CarteOrnee", "Métal non préparé : ${e.message}")
+            }
+            principal.post(fini)
+        }, "metal").start()
+        motif.preparer(w / Ornement.LARGEUR, principal, fini)
+    }
+
+    /**
      * L'ordre est celui d'une carte imprimée : la face, ce qui rayonne
      * derrière l'illustration, l'illustration, puis le métal par-dessus.
      *
@@ -3815,6 +3877,7 @@ class CarteOrnee(
      * dégradé, le motif du mot, et une poignée de joyaux.
      */
     override fun onDraw(canvas: Canvas) {
+        if (!matierePrete) return
         val u = width / Ornement.LARGEUR
         if (u <= 0f) return
 
@@ -3949,6 +4012,34 @@ class Motif(
         )
     }
 
+    /**
+     * Rend le lieu à l'échelle [echelle] sur un fil de fond, puis appelle
+     * [pret] par [principal]. Voir [CarteOrnee.attendreSaMatiere].
+     */
+    fun preparer(echelle: Float, principal: android.os.Handler, pret: () -> Unit) {
+        Thread({
+            val image = rendreLieu(echelle)
+            principal.post {
+                if (image != null) rendu = image
+                pret()
+            }
+        }, "paysage").start()
+    }
+
+    /**
+     * Rend le lieu à l'échelle [echelle] sur le fil appelant, et le met dans
+     * le cache de [Paysages]. `null` si la mémoire manque.
+     */
+    fun rendreLieu(echelle: Float): Bitmap? {
+        val l = (visible.width() * echelle).toInt()
+        val h = (visible.height() * echelle).toInt()
+        return try {
+            Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
+        } catch (e: OutOfMemoryError) {
+            null
+        }
+    }
+
     /** Le lieu rendu à [l] × [h], ou `null` s'il est en route vers une vignette. */
     private fun lieuAPeindre(l: Int, h: Int): Bitmap? {
         val signal = surPaysage ?: return Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
@@ -4015,30 +4106,13 @@ class Motif(
  * C'est ce qui reste de l'ancienne matière : le grain de la peu commune et le
  * halo de la rare sont devenus l'après-midi et le soir du paysage.
  */
-private class Irisation private constructor(private val zone: RectF, teinte: Float) {
+private class Irisation private constructor(private val zone: RectF, private val teinte: Float) {
 
-    private val iris: Bitmap
     private val brillance: LinearGradient
     private val matrice = Matrix()
     private val disque = RectF()
 
     init {
-        // Un tour complet du cercle depuis la teinte du mot, saturation basse.
-        // Calculé pixel par pixel et non en SweepGradient : sa couture laissait
-        // une rangée de pixels corrompus, un trait jaune du centre vers le bord.
-        val cote = 96
-        val demi = cote / 2f
-        val pixels = IntArray(cote * cote)
-        val hsv = floatArrayOf(0f, 0.75f, 1f)
-        for (y in 0 until cote) {
-            for (x in 0 until cote) {
-                val angle = Math.atan2((y + 0.5f - demi).toDouble(), (x + 0.5f - demi).toDouble())
-                val tour = ((angle / (2.0 * Math.PI)) + 1.0) % 1.0
-                hsv[0] = ((teinte + 360f * tour.toFloat()) % 360f + 360f) % 360f
-                pixels[y * cote + x] = Color.HSVToColor(hsv)
-            }
-        }
-        iris = Bitmap.createBitmap(pixels, cote, cote, Bitmap.Config.ARGB_8888)
         brillance = LinearGradient(
             zone.left, zone.bottom, zone.right, zone.top,
             intArrayOf(Color.TRANSPARENT, Color.argb(48, 255, 255, 255), Color.TRANSPARENT),
@@ -4051,14 +4125,16 @@ private class Irisation private constructor(private val zone: RectF, teinte: Flo
     fun dessus(c: Canvas, p: Paint, roulis: Float) {
         c.save()
         c.clipRect(zone)
-        c.rotate(roulis * 55f, zone.centerX(), zone.centerY())
+        // La roue commence à la teinte du mot : c'est la roue commune, tournée
+        // d'autant dans l'autre sens.
+        c.rotate(roulis * 55f - teinte, zone.centerX(), zone.centerY())
         p.shader = null
         p.style = Paint.Style.FILL
         // Faible et saturée : sur la nuit, une irisation pâle se lit comme
         // un brouillard blanc, pas comme un reflet.
         p.alpha = 22
         p.isFilterBitmap = true
-        c.drawBitmap(iris, null, disque, p)
+        c.drawBitmap(IRIS, null, disque, p)
         p.isFilterBitmap = false
         p.alpha = 255
         c.restore()
@@ -4070,6 +4146,33 @@ private class Irisation private constructor(private val zone: RectF, teinte: Flo
     }
 
     companion object {
+        /**
+         * Un tour complet du cercle, saturation basse, la teinte 0 à droite.
+         * Calculé pixel par pixel et non en SweepGradient : sa couture
+         * laissait une rangée de pixels corrompus, un trait jaune du centre
+         * vers le bord.
+         *
+         * Une seule roue pour toutes les cartes. Chaque très rare calculait la
+         * sienne, décalée de sa teinte, et la grille du carnet en construisait
+         * neuf d'un coup : 367 ms sur le fil principal d'un Galaxy A21s
+         * (2026-10-12), l'essentiel de l'à-coup à l'apparition de la grille.
+         */
+        private val IRIS: Bitmap by lazy {
+            val cote = 96
+            val demi = cote / 2f
+            val pixels = IntArray(cote * cote)
+            val hsv = floatArrayOf(0f, 0.75f, 1f)
+            for (y in 0 until cote) {
+                for (x in 0 until cote) {
+                    val angle = Math.atan2((y + 0.5f - demi).toDouble(), (x + 0.5f - demi).toDouble())
+                    val tour = ((angle / (2.0 * Math.PI)) + 1.0) % 1.0
+                    hsv[0] = (360f * tour.toFloat()) % 360f
+                    pixels[y * cote + x] = Color.HSVToColor(hsv)
+                }
+            }
+            Bitmap.createBitmap(pixels, cote, cote, Bitmap.Config.ARGB_8888)
+        }
+
         fun pour(rarete: Rarete, zone: RectF, teinte: Float): Irisation? =
             if (rarete == Rarete.TRES_RARE) Irisation(zone, teinte) else null
     }
