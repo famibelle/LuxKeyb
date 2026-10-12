@@ -3618,6 +3618,13 @@ class CarteOrnee(
     private val degradeAgrafe: android.graphics.RadialGradient
     private val motif: Motif
 
+    /**
+     * Prévenu quand le paysage d'une vignette, rendu en arrière-plan, arrive.
+     * Pour qui dessine la vignette ailleurs qu'à l'écran : l'éventail de la
+     * boîte en garde une photo, qui sans cela resterait au ciel seul.
+     */
+    var quandLieuArrive: (() -> Unit)? = null
+
     init {
         // La face, la gemme et la fenêtre prennent la teinte du champ quand le
         // mot en a un : c'est ce qui fait qu'un tiroir du carnet se lit comme
@@ -3628,7 +3635,7 @@ class CarteOrnee(
         degradeAgrafe = Ornement.degradeGemme(
             teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE, intensite
         )
-        val redessiner: (() -> Unit)? = if (vignette) fun() { invalidate() } else null
+        val redessiner: (() -> Unit)? = if (vignette) fun() { invalidate(); quandLieuArrive?.invoke() } else null
         motif = Motif(mot, rarete, fenetre, blason, souvenir, redessiner)
         setWillNotDraw(false)
         clipChildren = false
@@ -3837,8 +3844,9 @@ class CarteOrnee(
      * retard. Menés de front, ils laissent le voile apparaître tout de suite
      * et la carte se retourner sans à-coup.
      *
-     * Réservé au lecteur : le partage, la révision et la pochette dessinent la
-     * carte tout de suite et gardent le rendu direct.
+     * Le lecteur, la révision et la pochette s'en servent (la révision et la
+     * pochette posent la face cachée pendant que le dos est montré, 37.0.1) ;
+     * le partage dessine la carte tout de suite et garde le rendu direct.
      */
     fun attendreSaMatiere(pret: () -> Unit): CarteOrnee {
         matierePrete = false
