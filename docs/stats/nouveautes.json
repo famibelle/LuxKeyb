@@ -1,9 +1,54 @@
 {
  "genere_le": "2026-10-12",
- "derniere_version": "36.3.2",
+ "derniere_version": "36.3.3",
  "derniere_date": "2026-10-12",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "36.3.3",
+   "date": "2026-10-12",
+   "intro": "Les cartes du carnet arrivent peintes.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Les cartes du carnet arrivent déjà peintes",
+       "texte": "Elles n'apparaissent plus vides pour se remplir sous vos yeux : le premier écran se prépare pendant le chargement."
+      },
+      {
+       "titre": "La vue Séries s'ouvre sans figer l'écran",
+       "texte": "Elle montre tout de suite ce qui tient à l'écran, et la suite se place pendant que vous regardez."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Chaque vue du carnet s'ouvre bien en haut",
+       "texte": "Même touchée pendant que la liste défile encore. L'étagère s'ouvrait alors au milieu, sans son titre."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_elan.gif",
+     "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. Dans la vue « Séries » du carnet, on fait défiler la liste d'un glissé rapide, puis on touche « Étagère » pendant qu'elle défile encore. À gauche, en 36.3.2, l'étagère s'ouvre puis glisse jusqu'au milieu de sa liste, sans son titre. À droite, en 36.3.3, elle s'ouvre en haut et y reste, sur « Revient dans 1 jour ».",
+     "legende": "On touche « Étagère » pendant que la liste défile encore : elle s'ouvre maintenant en haut, avec son titre."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_elan.gif",
+   "image_alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. Dans la vue « Séries » du carnet, on fait défiler la liste d'un glissé rapide, puis on touche « Étagère » pendant qu'elle défile encore. À gauche, en 36.3.2, l'étagère s'ouvre puis glisse jusqu'au milieu de sa liste, sans son titre. À droite, en 36.3.3, elle s'ouvre en haut et y reste, sur « Revient dans 1 jour ».",
+   "image_legende": "On touche « Étagère » pendant que la liste défile encore : elle s'ouvre maintenant en haut, avec son titre."
+  },
   {
    "version": "36.3.2",
    "date": "2026-10-12",
@@ -210,25 +255,6 @@
    "image": "Screenshots/lux_album_tablette.gif",
    "image_alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
    "image_legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
-  },
-  {
-   "version": "36.1.1",
-   "date": "2026-10-11",
-   "intro": "Une correction dans les mots que les jeux proposent.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": null,
-       "texte": "Les jeux ne proposent plus le mot « Euthanasie » ni ses formes. Comme pour les autres questions morales disputées, le mot reste dans le dictionnaire et dans les suggestions du clavier : seuls les jeux cessent de le proposer d'eux-mêmes."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

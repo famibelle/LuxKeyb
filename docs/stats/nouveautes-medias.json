@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.3.3": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_elan.gif",
+        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. Dans la vue « Séries » du carnet, on fait défiler la liste d'un glissé rapide, puis on touche « Étagère » pendant qu'elle défile encore. À gauche, en 36.3.2, l'étagère s'ouvre puis glisse jusqu'au milieu de sa liste, sans son titre. À droite, en 36.3.3, elle s'ouvre en haut et y reste, sur « Revient dans 1 jour ».",
+        "legende": "On touche « Étagère » pendant que la liste défile encore : elle s'ouvre maintenant en haut, avec son titre."
+      }
+    ]
+  },
   "36.3.2": {
     "images": [
       {
