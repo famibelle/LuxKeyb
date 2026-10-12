@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.1.3] - 2026-10-13
+
+Les cartes restent à l'écran quand on tourne le téléphone.
+
+### 🐛 Corrections
+
+- **Une carte ouverte dans le carnet ne se ferme plus** quand le téléphone tourne, ni un casier ouvert dans la Boîte de Leitner.
+- **En révision, la carte qu'on vient de retourner reste retournée.**
+- Tant qu'une carte est à l'écran, incliner le téléphone la fait bouger au lieu de faire tourner l'écran.
+
+### 🔄 Changements
+
+- **Sur téléphone, l'application s'affiche toujours en hauteur.** Couché, le téléphone laissait trop peu de place : en révision, la carte se réduisait à une icône. Les tablettes gardent les deux sens.
+
 ## [37.1.2] - 2026-10-12
 
 La pochette de fin de partie tient bon quand on tourne le téléphone.
