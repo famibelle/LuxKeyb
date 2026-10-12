@@ -299,11 +299,27 @@ object TranslationDictionary {
         return construit
     }
 
-    @Synchronized
+    /**
+     * Les familles de formes. Le fichier se lit sous son propre verrou, hors
+     * de celui de l'objet : il ne dépend pas des traductions, et le lire en
+     * tenant l'objet le faisait attendre la fin de [charger] (2026-10-12).
+     */
     fun chargerFamilles(context: Context) {
-        if (famillesChargees) return
-        famillesChargees = true
+        val (vers, depuis) = synchronized(verrouFamilles) {
+            famillesLues ?: lireFamilles(context).also { famillesLues = it }
+        }
+        synchronized(this) {
+            if (famillesChargees) return
+            famillesChargees = true
+            representantDe = vers
+            formesDe = depuis
+        }
+    }
 
+    private val verrouFamilles = Any()
+    private var famillesLues: Pair<Map<String, String>, Map<String, List<String>>>? = null
+
+    private fun lireFamilles(context: Context): Pair<Map<String, String>, Map<String, List<String>>> =
         try {
             val contenu = BufferedReader(
                 InputStreamReader(context.assets.open(ASSET_FAMILLES))
@@ -324,18 +340,14 @@ object TranslationDictionary {
                 vers[representant] = representant
                 autres.forEach { vers[it] = representant }
             }
-
-            representantDe = vers
-            formesDe = depuis
             Log.d(TAG, "${depuis.size} familles chargées (${vers.size} formes)")
+            vers to depuis
         } catch (e: Exception) {
             // Sans familles la recherche fonctionne, elle répète simplement les
             // flexions comme avant : une dégradation, pas une panne.
             Log.e(TAG, "Actif $ASSET_FAMILLES illisible: ${e.message}", e)
-            representantDe = emptyMap()
-            formesDe = emptyMap()
+            emptyMap<String, String>() to emptyMap()
         }
-    }
 
     /**
      * Charge les phrases d'exemple. Sans effet si elles le sont déjà.
@@ -346,55 +358,74 @@ object TranslationDictionary {
      * où la fiche doit s'afficher.
      */
     fun chargerExemples(context: Context) {
+        // L'analyse du fichier, la plus longue, ne dépend pas des traductions :
+        // elle se fait avant de les attendre. Les deux s'enchaînaient, et le
+        // carnet attendait leur somme (2026-10-12, Galaxy A21s).
+        if (!synchronized(verrouExemples) { exemplesCharges }) exemplesLus(context)
         charger(context)
         synchronized(verrouExemples) {
             if (exemplesCharges) return
             exemplesCharges = true
-
-            try {
-                val contenu = BufferedReader(
-                    InputStreamReader(context.assets.open(ASSET_EXEMPLES))
-                ).use { it.readText() }
-
-                val racine = JSONObject(contenu)
-                val table = racine.getJSONObject("exemples")
-                val lues = HashMap<String, List<String>>(table.length())
-
-                val cles = table.keys()
-                while (cles.hasNext()) {
-                    val mot = cles.next()
-                    val phrases = table.getJSONArray(mot)
-                    lues[mot] = (0 until phrases.length()).map { phrases.getString(it) }
-                }
-
-                // Facultatives : un actif antérieur n'en porte pas, et les
-                // phrases s'affichent alors seules, comme avant.
-                val traduites = HashMap<String, List<String?>>()
-                racine.optJSONObject("traductions")?.let { t ->
-                    val motsTraduits = t.keys()
-                    while (motsTraduits.hasNext()) {
-                        val mot = motsTraduits.next()
-                        val francais = t.getJSONArray(mot)
-                        traduites[mot] = (0 until francais.length())
-                            .map { francais.getString(it).ifEmpty { null } }
-                    }
-                }
-
-                exemples = lues
-                // Dans une autre langue, les phrases restent celles-ci (elles
-                // sont choisies une fois, sur le français) et seules leurs
-                // traductions viennent de l'actif de la langue.
-                traductionsExemples = traductionsExemplesLangue ?: traduites
-                Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
-            } catch (e: Exception) {
-                // Sans exemples la fiche garde son sens et ses formes : la
-                // section disparaît, rien d'autre ne change.
-                Log.e(TAG, "Actif $ASSET_EXEMPLES illisible: ${e.message}", e)
-                exemples = emptyMap()
-                traductionsExemples = emptyMap()
-            }
+            val (lues, traduites) = exemplesLus(context)
+            exemples = lues
+            // Dans une autre langue, les phrases restent celles-ci (elles
+            // sont choisies une fois, sur le français) et seules leurs
+            // traductions viennent de l'actif de la langue.
+            traductionsExemples = traductionsExemplesLangue ?: traduites
+            Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
         }
     }
+
+    /**
+     * Les phrases de l'actif et leurs traductions françaises, lues une seule
+     * fois. Le verrou est à part et ne prend aucun autre verrou : [charger]
+     * tient celui de l'objet puis celui des exemples, et lire sous l'un des
+     * deux en attendant l'autre bloquerait les deux fils.
+     */
+    private fun exemplesLus(context: Context): Pair<Map<String, List<String>>, Map<String, List<String?>>> =
+        synchronized(verrouLecture) {
+            lectureExemples ?: lireExemples(context).also { lectureExemples = it }
+        }
+
+    private val verrouLecture = Any()
+    private var lectureExemples: Pair<Map<String, List<String>>, Map<String, List<String?>>>? = null
+
+    private fun lireExemples(context: Context): Pair<Map<String, List<String>>, Map<String, List<String?>>> =
+        try {
+            val contenu = BufferedReader(
+                InputStreamReader(context.assets.open(ASSET_EXEMPLES))
+            ).use { it.readText() }
+
+            val racine = JSONObject(contenu)
+            val table = racine.getJSONObject("exemples")
+            val lues = HashMap<String, List<String>>(table.length())
+
+            val cles = table.keys()
+            while (cles.hasNext()) {
+                val mot = cles.next()
+                val phrases = table.getJSONArray(mot)
+                lues[mot] = (0 until phrases.length()).map { phrases.getString(it) }
+            }
+
+            // Facultatives : un actif antérieur n'en porte pas, et les
+            // phrases s'affichent alors seules, comme avant.
+            val traduites = HashMap<String, List<String?>>()
+            racine.optJSONObject("traductions")?.let { t ->
+                val motsTraduits = t.keys()
+                while (motsTraduits.hasNext()) {
+                    val mot = motsTraduits.next()
+                    val francais = t.getJSONArray(mot)
+                    traduites[mot] = (0 until francais.length())
+                        .map { francais.getString(it).ifEmpty { null } }
+                }
+            }
+            lues to traduites
+        } catch (e: Exception) {
+            // Sans exemples la fiche garde son sens et ses formes : la
+            // section disparaît, rien d'autre ne change.
+            Log.e(TAG, "Actif $ASSET_EXEMPLES illisible: ${e.message}", e)
+            emptyMap<String, List<String>>() to emptyMap()
+        }
 
     /**
      * Charge la table des identifiants d'article. Sans effet si elle l'est

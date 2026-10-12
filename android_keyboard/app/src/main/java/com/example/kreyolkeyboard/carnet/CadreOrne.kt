@@ -4015,30 +4015,13 @@ class Motif(
  * C'est ce qui reste de l'ancienne matière : le grain de la peu commune et le
  * halo de la rare sont devenus l'après-midi et le soir du paysage.
  */
-private class Irisation private constructor(private val zone: RectF, teinte: Float) {
+private class Irisation private constructor(private val zone: RectF, private val teinte: Float) {
 
-    private val iris: Bitmap
     private val brillance: LinearGradient
     private val matrice = Matrix()
     private val disque = RectF()
 
     init {
-        // Un tour complet du cercle depuis la teinte du mot, saturation basse.
-        // Calculé pixel par pixel et non en SweepGradient : sa couture laissait
-        // une rangée de pixels corrompus, un trait jaune du centre vers le bord.
-        val cote = 96
-        val demi = cote / 2f
-        val pixels = IntArray(cote * cote)
-        val hsv = floatArrayOf(0f, 0.75f, 1f)
-        for (y in 0 until cote) {
-            for (x in 0 until cote) {
-                val angle = Math.atan2((y + 0.5f - demi).toDouble(), (x + 0.5f - demi).toDouble())
-                val tour = ((angle / (2.0 * Math.PI)) + 1.0) % 1.0
-                hsv[0] = ((teinte + 360f * tour.toFloat()) % 360f + 360f) % 360f
-                pixels[y * cote + x] = Color.HSVToColor(hsv)
-            }
-        }
-        iris = Bitmap.createBitmap(pixels, cote, cote, Bitmap.Config.ARGB_8888)
         brillance = LinearGradient(
             zone.left, zone.bottom, zone.right, zone.top,
             intArrayOf(Color.TRANSPARENT, Color.argb(48, 255, 255, 255), Color.TRANSPARENT),
@@ -4051,14 +4034,16 @@ private class Irisation private constructor(private val zone: RectF, teinte: Flo
     fun dessus(c: Canvas, p: Paint, roulis: Float) {
         c.save()
         c.clipRect(zone)
-        c.rotate(roulis * 55f, zone.centerX(), zone.centerY())
+        // La roue commence à la teinte du mot : c'est la roue commune, tournée
+        // d'autant dans l'autre sens.
+        c.rotate(roulis * 55f - teinte, zone.centerX(), zone.centerY())
         p.shader = null
         p.style = Paint.Style.FILL
         // Faible et saturée : sur la nuit, une irisation pâle se lit comme
         // un brouillard blanc, pas comme un reflet.
         p.alpha = 22
         p.isFilterBitmap = true
-        c.drawBitmap(iris, null, disque, p)
+        c.drawBitmap(IRIS, null, disque, p)
         p.isFilterBitmap = false
         p.alpha = 255
         c.restore()
@@ -4070,6 +4055,33 @@ private class Irisation private constructor(private val zone: RectF, teinte: Flo
     }
 
     companion object {
+        /**
+         * Un tour complet du cercle, saturation basse, la teinte 0 à droite.
+         * Calculé pixel par pixel et non en SweepGradient : sa couture
+         * laissait une rangée de pixels corrompus, un trait jaune du centre
+         * vers le bord.
+         *
+         * Une seule roue pour toutes les cartes. Chaque très rare calculait la
+         * sienne, décalée de sa teinte, et la grille du carnet en construisait
+         * neuf d'un coup : 367 ms sur le fil principal d'un Galaxy A21s
+         * (2026-10-12), l'essentiel de l'à-coup à l'apparition de la grille.
+         */
+        private val IRIS: Bitmap by lazy {
+            val cote = 96
+            val demi = cote / 2f
+            val pixels = IntArray(cote * cote)
+            val hsv = floatArrayOf(0f, 0.75f, 1f)
+            for (y in 0 until cote) {
+                for (x in 0 until cote) {
+                    val angle = Math.atan2((y + 0.5f - demi).toDouble(), (x + 0.5f - demi).toDouble())
+                    val tour = ((angle / (2.0 * Math.PI)) + 1.0) % 1.0
+                    hsv[0] = (360f * tour.toFloat()) % 360f
+                    pixels[y * cote + x] = Color.HSVToColor(hsv)
+                }
+            }
+            Bitmap.createBitmap(pixels, cote, cote, Bitmap.Config.ARGB_8888)
+        }
+
         fun pour(rarete: Rarete, zone: RectF, teinte: Float): Irisation? =
             if (rarete == Rarete.TRES_RARE) Irisation(zone, teinte) else null
     }
