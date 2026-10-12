@@ -88,6 +88,7 @@ internal class VueCession(private val hote: FrameLayout) {
         v.addView(colonne)
         voile = v
         hote.addView(v)
+        FigerOrientation.tantQue(v)
         v.alpha = 0f
         v.animate().alpha(1f).setDuration(160).start()
     }

@@ -163,6 +163,7 @@ class VueWidderhuelen(
             FrameLayout.LayoutParams.MATCH_PARENT
         ))
         hote.addView(racine)
+        FigerOrientation.tantQue(racine)
         racine.alpha = 0f
         racine.animate().alpha(1f).setDuration(160).start()
         // Armé sur la scène et non sur la carte : la scène survit à toutes les

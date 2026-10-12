@@ -109,6 +109,7 @@ internal class LecteurCartes(
 
         voile = v
         hote.addView(v)
+        FigerOrientation.tantQue(v)
         v.alpha = 0f
         v.animate().alpha(1f).setDuration(160).start()
         poser(0)

@@ -270,6 +270,7 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
             )
         }
         racine.addView(ev)
+        FigerOrientation.tantQue(ev)
         eventail = ev
         casierOuvert = i
         boite.eclairer(i)

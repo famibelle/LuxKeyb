@@ -2,10 +2,7 @@ package com.example.kreyolkeyboard.carnet
 
 import com.example.kreyolkeyboard.R
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
-import android.content.pm.ActivityInfo
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
@@ -232,26 +229,8 @@ object Booster {
         voile.addView(colonne)
         hote.addView(voile)
 
-        // L'écran ne tourne plus tant que la pochette est ouverte. Une rotation
-        // recrée l'activité, et la pochette, qui n'est qu'une vue posée sur
-        // elle, disparaissait avec ses cartes (2026-10-12). Et c'est en
-        // inclinant le téléphone pour faire jouer la carte qu'on le fait
-        // tourner : la pochette se fermait au moment même où on la regardait.
-        val activite = activiteDe(ctx)
-        val orientationAvant = activite?.requestedOrientation
-        activite?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
-        // Rendue au détachement et pas à la fermeture : les jeux retirent aussi
-        // la pochette eux-mêmes (nouvelle partie, écran quitté), sans passer
-        // par [fermer], et l'écran resterait figé pour toute l'appli.
-        if (activite != null && orientationAvant != null) {
-            voile.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                override fun onViewAttachedToWindow(v: View) {}
-                override fun onViewDetachedFromWindow(v: View) {
-                    v.removeOnAttachStateChangeListener(this)
-                    activite.requestedOrientation = orientationAvant
-                }
-            })
-        }
+        // Voir [FigerOrientation] : une rotation emportait la pochette.
+        FigerOrientation.tantQue(voile)
 
         // Le paquet a une page de plus qu'il n'a de cartes : le bilan en est
         // la dernière. Le ranger dans la même suite que les cartes est ce qui
@@ -640,16 +619,6 @@ object Booster {
         voile.animate().alpha(1f).setDuration(200).start()
         poser(0, 0)
         return voile
-    }
-
-    /** L'activité qui porte [ctx], s'il y en a une sous ses enveloppes. */
-    private fun activiteDe(ctx: Context): Activity? {
-        var c: Context? = ctx
-        while (c is ContextWrapper) {
-            if (c is Activity) return c
-            c = c.baseContext
-        }
-        return null
     }
 
     /** Le prélude d'une très rare, en millisecondes : nuit, montée, éclair. */
