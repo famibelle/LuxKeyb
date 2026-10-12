@@ -312,6 +312,9 @@ class CarnetFragment : DialogFragment() {
             // disparaît exactement là où il devait se voir.
             clipToPadding = false
             clipChildren = false
+            // Après chaque mise en page, et pas avant : sans position, toutes
+            // les vignettes sembleraient à l'écran et prendraient leur couche.
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> couchesPresDeLEcran() }
         }
         defilementGrille = ScrollView(ctx).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -320,6 +323,7 @@ class CarnetFragment : DialogFragment() {
             clipToPadding = false
             clipChildren = false
             addView(conteneurGrille)
+            viewTreeObserver.addOnScrollChangedListener { couchesPresDeLEcran() }
         }
         colonne.addView(defilementGrille)
 
@@ -354,6 +358,10 @@ class CarnetFragment : DialogFragment() {
     private fun chargerEnFond(ouvrir: String? = null) {
         val ctx = requireContext().applicatifDansLaLangue()
         val principal = Handler(Looper.getMainLooper())
+        // Le métal des vignettes se prépare pendant que le carnet se charge :
+        // voir [Ornement.prechauffer].
+        val cote = grilleDeVignettes().second
+        Thread { Ornement.prechauffer(ctx, cote) }.start()
         Thread {
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
@@ -466,6 +474,62 @@ class CarnetFragment : DialogFragment() {
         }
     }
 
+    /**
+     * Seules les vignettes proches de l'écran se dessinent, chacune dans sa
+     * couche graphique.
+     *
+     * La grille du téléphone ne recycle rien, et à chaque trame de défilement
+     * Android rejoue le dessin de **toutes** ses vignettes, celles hors de
+     * l'écran comprises : face, rayons, paysage, tracé, métal. Mesuré sur le
+     * Galaxy A21s (2026-10-12), 26 à 28 ms par trame pour 16,7 ms de budget,
+     * et une image sur deux à huit ratée, sur un carnet de 36 cartes ; le
+     * coût grandit avec le carnet. Deux gestes le ramènent à 19 ms et à
+     * moins d'une image ratée sur cent :
+     *
+     * - hors d'une bande d'un demi-écran de part et d'autre de ce qu'on voit,
+     *   la vignette est `INVISIBLE` : elle garde sa place et ne coûte plus
+     *   rien ;
+     * - dans la bande, elle a sa couche, une image toute prête qu'Android
+     *   pose sans rejouer le dessin. Chaque couche coûte environ 1 Mo de
+     *   mémoire graphique : sur tout le carnet, l'appli finirait tuée, d'où
+     *   la bande. Une couche sur chaque vignette donnait aussi 14 ms ; une
+     *   couche dans la bande sans masquer le reste n'y changeait rien.
+     */
+    private fun couchesPresDeLEcran() {
+        if (!::defilementGrille.isInitialized) return
+        val hauteur = defilementGrille.height
+        if (hauteur <= 0) return
+        val haut = defilementGrille.scrollY - hauteur / 2
+        val bas = defilementGrille.scrollY + hauteur + hauteur / 2
+        fun parcourir(groupe: ViewGroup, decalage: Int, dansGroupe: Boolean) {
+            for (i in 0 until groupe.childCount) {
+                val v = groupe.getChildAt(i)
+                val y = decalage + v.top
+                val dedans = dansGroupe && y + v.height > haut && y < bas
+                if (v is CarteOrnee) regler(v, dedans)
+                else if (v is ViewGroup) parcourir(v, y, dedans)
+            }
+        }
+        parcourir(conteneurGrille, 0, true)
+    }
+
+    private fun regler(v: CarteOrnee, dedans: Boolean) {
+        val visibilite = if (dedans) View.VISIBLE else View.INVISIBLE
+        val couche = if (dedans) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_NONE
+        if (v.visibility != visibilite) v.visibility = visibilite
+        if (v.layerType != couche) v.setLayerType(couche, null)
+    }
+
+    /** Le nombre de colonnes de la grille, et le côté d'une vignette en pixels. */
+    private fun grilleDeVignettes(): Pair<Int, Int> {
+        val d = resources.displayMetrics.density
+        val gouttiere = (10 * d).toInt()
+        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
+        val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
+        val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
+        return colonnes to (dispo - (colonnes - 1) * gouttiere) / colonnes
+    }
+
     private fun remplirGrille() {
         val ctx = context ?: return
         val d = resources.displayMetrics.density
@@ -516,10 +580,7 @@ class CarnetFragment : DialogFragment() {
         // onglets, rail compris, il n'a pas à en retirer la place. On n'en
         // retire que les marges de la grille, 12 dp de part et d'autre : en
         // ôter 24 laissait à droite une bande deux fois plus large qu'à gauche.
-        val dispo = resources.displayMetrics.widthPixels - (12 * d).toInt() * 2
-        val cible = (LARGEUR_CIBLE_VIGNETTE_DP * d).toInt()
-        val colonnes = ((dispo + gouttiere) / (cible + gouttiere)).coerceAtLeast(2)
-        val cote = (dispo - (colonnes - 1) * gouttiere) / colonnes
+        val (colonnes, cote) = grilleDeVignettes()
 
         if (tri == Tri.ETAGERE) {
             // Le résumé change de sujet avec la disposition : par casiers, ce

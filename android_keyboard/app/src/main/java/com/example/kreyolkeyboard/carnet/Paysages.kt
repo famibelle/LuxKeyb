@@ -7,7 +7,10 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RadialGradient
 import android.graphics.Shader
+import android.os.Handler
+import android.os.Looper
 import android.util.LruCache
+import java.util.concurrent.Executors
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.max
@@ -213,11 +216,78 @@ object Paysages {
     fun image(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
               souvenir: Souvenir? = null): Bitmap? {
         if (largeurPx <= 0 || hauteurPx <= 0) return null
-        val cle = "${lieu.ordinal}_${heure.rang}_${teinte}_${souvenir?.saison}_${souvenir?.fete}_${largeurPx}x$hauteurPx"
+        val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
         CACHE.get(cle)?.let { if (!it.isRecycled) return it }
         val bitmap = rendu(lieu, heure, largeurPx, hauteurPx, souvenir) ?: return null
         CACHE.put(cle, bitmap)
         return bitmap
+    }
+
+    private fun cle(lieu: Lieu, heure: Heure, teinte: Float?, l: Int, h: Int, souvenir: Souvenir?) =
+        "${lieu.ordinal}_${heure.rang}_${teinte}_${souvenir?.saison}_${souvenir?.fete}_${l}x$h"
+
+    /** Le rendu s'il est déjà en cache, sans rien calculer. */
+    fun enCache(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+                souvenir: Souvenir? = null): Bitmap? =
+        CACHE.get(cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir))?.takeIf { !it.isRecycled }
+
+    /**
+     * Rend le lieu hors du fil principal, puis appelle [pret] sur le fil
+     * principal. Réservé aux vignettes.
+     *
+     * Sur le Galaxy A21s (2026-10-12), un paysage de vignette coûte environ
+     * 100 ms, surtout la passe de saison de [Habillage]. La grille du
+     * téléphone est un `ScrollView` qui ne recycle rien, et Android enregistre
+     * le dessin de **toutes** ses vignettes dès l'ouverture, même hors de
+     * l'écran : un carnet de 36 cartes figeait l'écran 4 à 5 secondes, et le
+     * gel grandit avec le carnet. La vignette montre son ciel le temps que le
+     * lieu arrive. La carte ouverte reste synchrone : un seul rendu, et une
+     * carte qu'on vient de toucher ne doit pas apparaître vide.
+     *
+     * Deux vignettes qui demandent le même rendu ne le paient qu'une fois.
+     */
+    fun demander(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+                 souvenir: Souvenir?, pret: (Bitmap) -> Unit) {
+        if (largeurPx <= 0 || hauteurPx <= 0) return
+        val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
+        val attente = EN_COURS[cle]
+        if (attente != null) {
+            attente += pret
+            return
+        }
+        EN_COURS[cle] = mutableListOf(pret)
+        FILS.execute {
+            val bitmap = try {
+                rendu(lieu, heure, largeurPx, hauteurPx, souvenir)
+            } catch (e: OutOfMemoryError) {
+                null
+            }
+            PRINCIPAL.post {
+                val qui = EN_COURS.remove(cle).orEmpty()
+                if (bitmap != null) {
+                    CACHE.put(cle, bitmap)
+                    qui.forEach { it(bitmap) }
+                }
+            }
+        }
+    }
+
+    /** Les demandes en vol, touchées seulement depuis le fil principal. */
+    private val EN_COURS = HashMap<String, MutableList<(Bitmap) -> Unit>>()
+    private val PRINCIPAL by lazy { Handler(Looper.getMainLooper()) }
+
+    /**
+     * Deux fils de fond : le rendu n'a aucun état partagé, et le A21s a huit
+     * cœurs. Plus ne servirait à rien, l'écran n'affiche qu'une dizaine de
+     * vignettes à la fois.
+     */
+    private val FILS by lazy {
+        Executors.newFixedThreadPool(2) { tache ->
+            Thread({
+                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND)
+                tache.run()
+            }, "paysages").apply { isDaemon = true }
+        }
     }
 
     /** Un rendu hors cache, que l'appelant garde pour lui. */
