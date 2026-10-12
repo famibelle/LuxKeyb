@@ -331,6 +331,21 @@ internal class Posture(private val vue: View, private val lissage: Float) {
     var tangage = 0f
         private set
 
+    /**
+     * Le vrai bas, dans le plan de l'écran et en unités de pesanteur : x vers
+     * la droite, y vers le bas de l'écran, comme le canevas. (0, 1) quand le
+     * téléphone est tenu droit, (0, 0) quand il est posé à plat, (0, -1) tête
+     * en bas.
+     *
+     * Absolu, lui, et sans repos : c'est ce que lit la neige ([Ambiance]),
+     * qui doit tomber vers le sol comme dans une boule à neige, et rester
+     * penchée tant que le téléphone l'est. Le reflet garde son repos relatif.
+     */
+    var basX = 0f
+        private set
+    var basY = 1f
+        private set
+
     fun echantillon(valeurs: FloatArray) {
         if (valeurs.size < 2) return
 
@@ -357,6 +372,10 @@ internal class Posture(private val vue: View, private val lissage: Float) {
         }
 
         val g = SensorManager.GRAVITY_EARTH
+        // Le capteur rend la réaction du support, qui pointe vers le haut :
+        // bord droit qui descend, x diminue ; téléphone droit, y vaut +g.
+        basX = (-x / g).coerceIn(-1f, 1f)
+        basY = (y / g).coerceIn(-1f, 1f)
         val ecart = demiTour(angle - reposAngle)
         val cibleRoulis = ((x - reposX) / g).coerceIn(-1f, 1f)
         val cibleTangage = (ecart / TANGAGE_PLEIN).coerceIn(-1f, 1f)

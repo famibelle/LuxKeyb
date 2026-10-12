@@ -171,6 +171,7 @@ internal class LecteurCartes(
 
         val carte = CarteCarnet.complete(ctx, c)
         (carte as? Carton)?.ajusteALaHauteur = true
+        (carte as? CarteOrnee)?.avecAmbiance()
         // La carte ne ferme pas : on peut la lire.
         carte.isClickable = true
         p.addView(carte, FrameLayout.LayoutParams(
