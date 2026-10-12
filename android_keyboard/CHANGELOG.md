@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.3.2] - 2026-10-12
+
+Un carnet qui ne se fige plus nulle part.
+
+### ⚡ Rapidité
+
+- **Une carte s'ouvre sans figer l'écran.** Le fond s'assombrit aussitôt et la carte se retourne d'un seul geste.
+- **On feuillette les cartes sans attendre.** Les cartes voisines se préparent pendant qu'on regarde celle du milieu.
+- **Les cartes du carnet apparaissent d'un coup**, sans l'à-coup qui accompagnait les cartes très rares.
+- **La vue Séries s'ouvre sans temps d'arrêt.**
+- **Le carnet s'ouvre encore un peu plus vite.**
+
 ## [36.3.1] - 2026-10-12
 
 Le carnet s'ouvre bien plus vite.
