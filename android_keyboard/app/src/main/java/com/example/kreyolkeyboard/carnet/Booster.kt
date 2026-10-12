@@ -2,7 +2,10 @@ package com.example.kreyolkeyboard.carnet
 
 import com.example.kreyolkeyboard.R
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.ActivityInfo
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
@@ -25,6 +28,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -212,8 +217,41 @@ object Booster {
         boutons.addView(versCarnet)
         colonne.addView(boutons)
 
+        // La fenêtre est bord à bord (voir [com.example.kreyolkeyboard.BordABord]) :
+        // sans cet écart, le titre passait sous la barre d'état et « Passer »
+        // sous la barre de navigation.
+        ViewCompat.getRootWindowInsets(hote)?.getInsets(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+        )?.let { b ->
+            colonne.setPadding(
+                colonne.paddingLeft + b.left, colonne.paddingTop + b.top,
+                colonne.paddingRight + b.right, colonne.paddingBottom + b.bottom
+            )
+        }
+
         voile.addView(colonne)
         hote.addView(voile)
+
+        // L'écran ne tourne plus tant que la pochette est ouverte. Une rotation
+        // recrée l'activité, et la pochette, qui n'est qu'une vue posée sur
+        // elle, disparaissait avec ses cartes (2026-10-12). Et c'est en
+        // inclinant le téléphone pour faire jouer la carte qu'on le fait
+        // tourner : la pochette se fermait au moment même où on la regardait.
+        val activite = activiteDe(ctx)
+        val orientationAvant = activite?.requestedOrientation
+        activite?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        // Rendue au détachement et pas à la fermeture : les jeux retirent aussi
+        // la pochette eux-mêmes (nouvelle partie, écran quitté), sans passer
+        // par [fermer], et l'écran resterait figé pour toute l'appli.
+        if (activite != null && orientationAvant != null) {
+            voile.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {}
+                override fun onViewDetachedFromWindow(v: View) {
+                    v.removeOnAttachStateChangeListener(this)
+                    activite.requestedOrientation = orientationAvant
+                }
+            })
+        }
 
         // Le paquet a une page de plus qu'il n'a de cartes : le bilan en est
         // la dernière. Le ranger dans la même suite que les cartes est ce qui
@@ -325,7 +363,25 @@ object Booster {
             val neuve = c.carte.forme in nouvelles
 
             val carte = CarteCarnet.complete(ctx, c)
-            val face = ScrollView(ctx).apply {
+            // Une carte ornée se règle sur la hauteur de la scène, comme dans
+            // le lecteur du carnet. Dans un défilement, elle prenait toute la
+            // largeur : à l'italienne, elle faisait trois écrans de haut et ne
+            // se dessinait jamais, ni retournement ni inclinaison (2026-10-12).
+            val face: ViewGroup = if (carte is Carton) {
+                carte.ajusteALaHauteur = true
+                FrameLayout(ctx).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        Gravity.CENTER
+                    )
+                    addView(carte, FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        Gravity.CENTER
+                    ))
+                }
+            } else ScrollView(ctx).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -355,10 +411,11 @@ object Booster {
                 return
             }
 
+            // Sa taille, il la règle lui-même sur la scène : voir [DosDeCarte.onMeasure].
             val dos = DosDeCarte(ctx, jeu, rarete).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
-                    (ctx.resources.displayMetrics.heightPixels * 0.44f).toInt(),
+                    FrameLayout.LayoutParams.MATCH_PARENT,
                     Gravity.CENTER
                 )
             }
@@ -585,6 +642,16 @@ object Booster {
         return voile
     }
 
+    /** L'activité qui porte [ctx], s'il y en a une sous ses enveloppes. */
+    private fun activiteDe(ctx: Context): Activity? {
+        var c: Context? = ctx
+        while (c is ContextWrapper) {
+            if (c is Activity) return c
+            c = c.baseContext
+        }
+        return null
+    }
+
     /** Le prélude d'une très rare, en millisecondes : nuit, montée, éclair. */
     private const val PRELUDE_TRES_RARE = 2900L
 
@@ -676,13 +743,16 @@ object Booster {
         // L'éclair : le dos tourne d'un quart, une face violette passe et
         // repart, le dos revient. 0,3 s en tout.
         val eclair = EclairCarte(ctx, rarete).apply {
-            layoutParams = FrameLayout.LayoutParams(dos.layoutParams as FrameLayout.LayoutParams)
+            // Sa vraie taille arrive avec l'éclair : le dos ne connaît la sienne
+            // qu'une fois mesuré sur la scène.
+            layoutParams = FrameLayout.LayoutParams(0, 0, Gravity.CENTER)
             visibility = View.INVISIBLE
             cameraDistance = dos.cameraDistance
         }
         page.addView(eclair)
         dos.postDelayed({
             if (dos.parent == null) return@postDelayed
+            eclair.layoutParams = FrameLayout.LayoutParams(dos.width, dos.height, Gravity.CENTER)
             dos.animate().rotationY(450f).setStartDelay(0).setDuration(100)
                 .setInterpolator(AccelerateInterpolator())
                 .withEndAction {
@@ -1059,6 +1129,17 @@ class DosDeCarte(
         textAlign = Paint.Align.CENTER
     }
     private var fond: LinearGradient? = null
+
+    /**
+     * 44 % de la hauteur de l'écran, sans dépasser la scène, et jamais plus
+     * large que haut : à l'italienne, la largeur de la scène en faisait un
+     * bandeau qui débordait en bas. En portrait, rien ne change.
+     */
+    override fun onMeasure(largeurSpec: Int, hauteurSpec: Int) {
+        super.onMeasure(largeurSpec, hauteurSpec)
+        val h = minOf(measuredHeight, (resources.displayMetrics.heightPixels * 0.44f).toInt())
+        setMeasuredDimension(minOf(measuredWidth, h), h)
+    }
 
     override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
         super.onSizeChanged(w, h, ow, oh)
