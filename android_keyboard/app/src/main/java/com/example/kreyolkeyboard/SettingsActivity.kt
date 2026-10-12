@@ -252,6 +252,7 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
+        com.example.kreyolkeyboard.carnet.FigerOrientation.portraitSurTelephone(this)
         super.onCreate(savedInstanceState)
 
         // Sur tablette, les écrans de texte sont ramenés à une colonne de
