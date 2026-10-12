@@ -1076,10 +1076,18 @@ object Ornement {
      *
      * La clef ne contient **pas le mot** : c'est tout l'intérêt. Le métal ne
      * dépend que du palier et de la taille, donc trente cartes très rares
-     * partagent un seul bitmap. Deux mégaoctets suffisent largement pour les
-     * huit combinaisons que l'application demande réellement.
+     * partagent un seul bitmap.
+     *
+     * Il faisait deux mégaoctets, et la carte ouverte n'y entrait pas : 940 px
+     * de large font un cadre de 5 Mo, que `LruCache` évince aussitôt posé. Le
+     * métal se redessinait donc à chaque trame de l'inclinaison, sans que rien
+     * ne le montre. Depuis que la moulure se calcule au pixel, ce n'est plus
+     * tenable : un seizième du tas, entre 4 et 24 Mo, tient la carte ouverte,
+     * ses rayons et une page de vignettes.
      */
-    private val CACHE = object : LruCache<String, Bitmap>(2 * 1024 * 1024) {
+    private val CACHE = object : LruCache<String, Bitmap>(
+        (Runtime.getRuntime().maxMemory() / 16).coerceIn(4L * 1024 * 1024, 24L * 1024 * 1024).toInt()
+    ) {
         override fun sizeOf(cle: String, valeur: Bitmap): Int = valeur.byteCount
     }
 
@@ -1135,6 +1143,327 @@ object Ornement {
     }
 
     /**
+     * Le plateau du cadre, en volume : une moulure de métal et non un aplat.
+     *
+     * Il était peint d'un seul dégradé en diagonale, cerné d'un filet : à la
+     * taille de la carte, une bande de couleur (propriétaire, 2026-10-11,
+     * « donner du volume »). Le modèle retenu est le bronze de la maquette
+     * des matières, que j'avais proposée et dont la bordure a plu ; chaque
+     * palier y a sa façon de travailler le métal. Quatre choses le font :
+     *
+     * - **le poli** : le dégradé alterne sombre et clair, avec une bande
+     *   d'éclat presque blanche, comme un métal qui renvoie la pièce ;
+     * - **la moulure bombée**, calculée au pixel : chaque bord du plateau
+     *   descend en pente douce, l'extérieur vers la tranche et l'intérieur
+     *   vers la face, et la pente prend la lumière d'en haut à gauche. Le
+     *   haut et la gauche s'allument dehors, la face paraît posée en creux ;
+     * - **la façon du métal**, une par palier, comme dans la maquette :
+     *   l'étain **brossé** en stries, le bronze **martelé** en taches
+     *   larges, l'argent **ciselé** d'une tresse gravée sur les flancs,
+     *   l'or **poli**, sans grain, aux reflets plus francs ;
+     * - **les rivets du cadre**, de *Peu commun* à *Rare*, sur l'axe des
+     *   flancs. La très rare y porte déjà ses feuilles d'acanthe.
+     *
+     * Le grènetis, à partir de *Rare*, borde le pied de la moulure, contre
+     * la face, sous la ligne de série et le poinçon.
+     *
+     * Tout tient dans le bitmap mis en cache par palier et par taille : le
+     * calcul au pixel est payé une fois, pas à chaque trame.
+     */
+    private fun reliefDuPlateau(
+        c: Canvas, p: Paint, plateau: Path, bord: Float, haut: Float,
+        m: Metal, palier: Int, vignette: Boolean
+    ) {
+        val poli = palier == 3
+        val eclat = melange(m.hi, Color.WHITE, if (poli) 0.7f else 0.35f)
+        val fond = melange(m.lo, m.trait, 0.35f)
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        // L'or poli renvoie la pièce en bandes plus nombreuses et plus nettes :
+        // c'est ce qui sépare un miroir d'un métal brossé.
+        p.shader = if (poli) LinearGradient(
+            0f, 0f, LARGEUR, haut,
+            intArrayOf(fond, eclat, m.mid, m.lo, m.hi, eclat, m.mid, m.lo, eclat, m.mid),
+            floatArrayOf(0f, 0.1f, 0.2f, 0.32f, 0.45f, 0.52f, 0.62f, 0.75f, 0.86f, 1f),
+            Shader.TileMode.CLAMP
+        ) else LinearGradient(
+            0f, 0f, LARGEUR, haut,
+            intArrayOf(fond, m.hi, m.mid, eclat, m.lo, melange(m.mid, m.hi, 0.5f)),
+            floatArrayOf(0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f),
+            Shader.TileMode.CLAMP
+        )
+        c.drawPath(plateau, p)
+        p.shader = null
+
+        val u = c.width / LARGEUR
+        if (u > 0f) {
+            val moulure = moulure(c.width, c.height, u, bord, haut, palier)
+            c.save()
+            c.scale(1f / u, 1f / u)
+            c.drawBitmap(moulure, 0f, 0f, null)
+            c.restore()
+            moulure.recycle()
+        }
+
+        if (vignette) {
+            p.style = Paint.Style.FILL
+            return
+        }
+
+        if (palier == 2) ciselure(c, p, bord, haut, m)
+
+        // Les rivets du cadre, sur l'axe de la bande visible des flancs.
+        if (palier in 1..2) {
+            val x = (2.45f + bord) / 2f
+            var y = 70f
+            while (y < haut - 60f) {
+                rivetDeCadre(c, p, x, y, m)
+                rivetDeCadre(c, p, LARGEUR - x, y, m)
+                y += 60f
+            }
+        }
+
+        if (palier < 2) {
+            p.style = Paint.Style.FILL
+            return
+        }
+
+        // Le grènetis : une perle toutes les 3,2 unités, posée au pied de la
+        // moulure, ombrée puis éclairée comme les rivets.
+        val r = 0.75f + (palier - 2) * 0.1f
+        val rang = Path()
+        val e = bord - 1.1f
+        rang.addRoundRect(
+            RectF(e, e, LARGEUR - e, haut - e), 11f + 1.1f, 11f + 1.1f, Path.Direction.CW
+        )
+        fun perles(rayon: Float, dx: Float, dy: Float, couleur: Int) {
+            val perle = Path().apply { addCircle(0f, 0f, rayon, Path.Direction.CW) }
+            p.pathEffect = android.graphics.PathDashPathEffect(
+                perle, 3.2f, 0f, android.graphics.PathDashPathEffect.Style.TRANSLATE
+            )
+            p.style = Paint.Style.FILL
+            p.color = couleur
+            c.save()
+            c.translate(dx, dy)
+            c.drawPath(rang, p)
+            c.restore()
+        }
+        perles(r, 0.35f, 0.45f, 0x73000000)
+        perles(r, 0f, 0f, m.mid)
+        perles(r * 0.55f, -r * 0.25f, -r * 0.3f, eclat)
+        p.pathEffect = null
+        p.style = Paint.Style.FILL
+    }
+
+    /** Un rivet bombé, de la matière du cadre, avec son ombre portée. */
+    private fun rivetDeCadre(c: Canvas, p: Paint, x: Float, y: Float, m: Metal) {
+        p.style = Paint.Style.FILL
+        p.shader = null
+        p.color = 0x59000000
+        c.drawCircle(x + 0.5f, y + 0.8f, 2.7f, p)
+        p.color = Color.BLACK
+        p.shader = RadialGradient(
+            x - 0.9f, y - 1f, 3.4f,
+            intArrayOf(melange(m.hi, Color.WHITE, 0.7f), m.mid, m.lo),
+            floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
+        )
+        c.drawCircle(x, y, 2.6f, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.5f
+        p.color = avecAlpha(m.trait, 0xB3)
+        c.drawCircle(x, y, 2.6f, p)
+        p.style = Paint.Style.FILL
+    }
+
+    /** La lumière, d'en haut à gauche, dans le repère de l'écran. */
+    private const val LUMIERE_X = -0.61f
+    private const val LUMIERE_Y = -0.79f
+
+    /** Sur combien d'unités une pente de la moulure s'éteint. */
+    private const val PENTE = 2.4f
+
+    /**
+     * La moulure du plateau, au pixel : un calque d'ombres et de lumières,
+     * blanc ou noir selon le signe, à poser sur le dégradé du métal.
+     *
+     * Chaque bord du plateau est un rectangle arrondi dont on connaît la
+     * distance signée et sa normale. La pente d'un bord s'éteint en
+     * exponentielle sur [PENTE] unités ; elle penche vers l'extérieur pour le
+     * bord de la tranche, vers la face pour le bord intérieur, et le produit
+     * scalaire de cette pente avec la lumière dit si elle s'allume ou
+     * s'assombrit. Le grain s'ajoute au même signe : des stries pour un
+     * métal brossé, des taches pour un métal martelé.
+     */
+    private fun moulure(
+        largeurPx: Int, hauteurPx: Int, u: Float, bord: Float, haut: Float, palier: Int
+    ): Bitmap {
+        val px = IntArray(largeurPx * hauteurPx)
+        val n = FloatArray(2)
+        val clair = if (palier == 3) 0.65f else 0.5f
+        val plafond = if (palier == 3) 0.6f else 0.45f
+        // Le bord extérieur s'arrête où commence le filet de contour.
+        val dehors = 2.45f
+        val ocx = LARGEUR / 2f
+        val ocy = haut / 2f
+        val ohx = LARGEUR / 2f - dehors
+        val ohy = haut / 2f - dehors
+        val orr = RAYON - dehors
+        val ihx = LARGEUR / 2f - bord
+        val ihy = haut / 2f - bord
+        for (j in 0 until hauteurPx) {
+            val y = (j + 0.5f) / u
+            for (i in 0 until largeurPx) {
+                val x = (i + 0.5f) / u
+                val dIn = distanceArrondie(x, y, ocx, ocy, ihx, ihy, 11f, n)
+                if (dIn <= 0f) continue
+                val gix = n[0]
+                val giy = n[1]
+                val dOut = distanceArrondie(x, y, ocx, ocy, ohx, ohy, orr, n)
+                if (dOut > 0.6f) continue
+                val a = -dOut
+                val pOut = if (a > 0f) exp(-a / PENTE) else 1f
+                val pIn = exp(-dIn / PENTE)
+                var s = pOut * (n[0] * LUMIERE_X + n[1] * LUMIERE_Y) -
+                    pIn * (gix * LUMIERE_X + giy * LUMIERE_Y)
+                // Le brillant : la crête d'une pente bien tournée vers la lumière.
+                if (s > 0.45f) s += (s - 0.45f) * 1.2f
+                s += grain(x, y, palier)
+                // La lumière n'éclaircit qu'à moitié : un métal blanchi se lit
+                // comme du plâtre, c'est l'ombre qui donne le volume. L'or
+                // poli a droit à un peu plus : c'est un miroir.
+                val alpha = (if (s > 0f) (s * clair).coerceAtMost(plafond)
+                else (-s).coerceAtMost(0.8f)).let { (it * 255f).toInt() }
+                if (alpha < 3) continue
+                px[j * largeurPx + i] = (alpha shl 24) or (if (s > 0f) 0xFFFFFF else 0)
+            }
+        }
+        return Bitmap.createBitmap(px, largeurPx, hauteurPx, Bitmap.Config.ARGB_8888)
+    }
+
+    /**
+     * La distance signée d'un point à un rectangle arrondi de centre
+     * ([cx], [cy]) et de demi-côtés ([hx], [hy]), négative dedans. La
+     * normale sortante est écrite dans [n].
+     */
+    private fun distanceArrondie(
+        x: Float, y: Float, cx: Float, cy: Float, hx: Float, hy: Float, r: Float, n: FloatArray
+    ): Float {
+        val dx = x - cx
+        val dy = y - cy
+        val sx = if (dx < 0f) -1f else 1f
+        val sy = if (dy < 0f) -1f else 1f
+        val qx = abs(dx) - hx + r
+        val qy = abs(dy) - hy + r
+        if (qx > 0f && qy > 0f) {
+            val l = sqrt(qx * qx + qy * qy)
+            n[0] = sx * qx / l
+            n[1] = sy * qy / l
+            return l - r
+        }
+        if (qx > qy) {
+            n[0] = sx; n[1] = 0f
+        } else {
+            n[0] = 0f; n[1] = sy
+        }
+        return max(qx, qy) - r
+    }
+
+    /**
+     * Le grain du métal, centré sur zéro, selon la façon du palier.
+     *
+     * - Étain, **brossé** : des stries fines en travers, longues dans
+     *   l'autre sens.
+     * - Bronze, **martelé** : un bruit de valeur lissé à deux octaves, en
+     *   taches d'une dizaine d'unités, les coups du marteau.
+     * - Argent, **ciselé** : un brossé plus doux, pour que la tresse gravée
+     *   de [ciselure] se lise par-dessus.
+     * - Or, **poli** : aucun grain. Un miroir n'a pas de texture, il n'a que
+     *   des reflets.
+     */
+    private fun grain(x: Float, y: Float, palier: Int): Float = when (palier) {
+        0 -> (bruit(x / 1.1f, y / 60f, 5) * 0.7f + bruit(x / 0.5f, y / 25f, 11) * 0.3f - 0.5f) * 0.26f
+        1 -> (bruit(x / 11f, y / 11f, 3) * 0.65f + bruit(x / 4.5f, y / 4.5f, 9) * 0.35f - 0.5f) * 0.42f
+        2 -> (bruit(x / 1.1f, y / 60f, 7) * 0.7f + bruit(x / 0.5f, y / 25f, 13) * 0.3f - 0.5f) * 0.12f
+        else -> 0f
+    }
+
+    /**
+     * La ciselure de l'argent : une tresse gravée sur l'axe des deux flancs,
+     * deux ondes en opposition qui se croisent toutes les huit unités.
+     *
+     * Gravée et non peinte : un sillon sombre, et le liseré clair de sa lèvre
+     * basse, qui reçoit la lumière d'en haut à gauche. Les rivets du cadre se
+     * posent par-dessus, comme dans la maquette.
+     */
+    private fun ciselure(c: Canvas, p: Paint, bord: Float, haut: Float, m: Metal) {
+        val tresse = Path()
+        val debut = 40f
+        val fin = haut - 40f
+        for (x in floatArrayOf((2.45f + bord) / 2f, LARGEUR - (2.45f + bord) / 2f)) {
+            for (sens in floatArrayOf(1f, -1f)) {
+                tresse.moveTo(x, debut)
+                var y = debut
+                var s = sens
+                while (y < fin) {
+                    tresse.quadTo(x + 4f * s, y + 8f, x, y + 16f)
+                    s = -s
+                    y += 16f
+                }
+            }
+        }
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeCap = Paint.Cap.ROUND
+        p.strokeWidth = 0.6f
+        c.save()
+        c.translate(0.3f, 0.4f)
+        p.color = 0x80FFFFFF.toInt()
+        c.drawPath(tresse, p)
+        c.restore()
+        p.color = avecAlpha(m.trait, 0x99)
+        c.drawPath(tresse, p)
+        p.strokeCap = Paint.Cap.BUTT
+        p.style = Paint.Style.FILL
+    }
+
+    private fun bruit(x: Float, y: Float, graine: Int): Float {
+        val x0 = kotlin.math.floor(x)
+        val y0 = kotlin.math.floor(y)
+        val ix = x0.toInt()
+        val iy = y0.toInt()
+        var fx = x - x0
+        var fy = y - y0
+        fx = fx * fx * (3f - 2f * fx)
+        fy = fy * fy * (3f - 2f * fy)
+        val a = hache(ix, iy, graine)
+        val b = hache(ix + 1, iy, graine)
+        val c = hache(ix, iy + 1, graine)
+        val d = hache(ix + 1, iy + 1, graine)
+        val haut = a + (b - a) * fx
+        val bas = c + (d - c) * fx
+        return haut + (bas - haut) * fy
+    }
+
+    private fun hache(x: Int, y: Int, graine: Int): Float {
+        var h = x * 374761393 + y * 668265263 + graine * 144269504
+        h = (h xor (h ushr 13)) * 1274126177
+        h = h xor (h ushr 16)
+        return (h and 0xFFFF) / 65535f
+    }
+
+    private fun melange(a: Int, b: Int, t: Float): Int {
+        fun canal(decalage: Int): Int {
+            val x = (a shr decalage) and 0xFF
+            val y = (b shr decalage) and 0xFF
+            return (x + (y - x) * t).toInt().coerceIn(0, 255)
+        }
+        return (0xFF shl 24) or (canal(16) shl 16) or (canal(8) shl 8) or canal(0)
+    }
+
+    private fun avecAlpha(couleur: Int, alpha: Int): Int = (couleur and 0x00FFFFFF) or (alpha shl 24)
+
+    /**
      * Tout ce qui ne dépend que du palier : le plateau, la sertissure de
      * l'ouverture, les volutes, la plaque, les pastilles, les écus.
      *
@@ -1156,13 +1485,7 @@ object Ornement {
         val creux = Path()
         creux.addRoundRect(RectF(bord, bord, LARGEUR - bord, haut - bord), 11f, 11f, Path.Direction.CW)
         plateau.op(creux, Path.Op.DIFFERENCE)
-        p.style = Paint.Style.FILL
-        p.shader = LinearGradient(
-            0f, 0f, LARGEUR * 0.6f, haut,
-            intArrayOf(m.hi, m.mid, m.lo, m.mid),
-            floatArrayOf(0f, 0.28f, 0.62f, 1f), Shader.TileMode.CLAMP
-        )
-        c.drawPath(plateau, p)
+        reliefDuPlateau(c, p, plateau, bord, haut, m, palier, vignette)
         p.shader = null
         p.style = Paint.Style.STROKE
         p.strokeWidth = 2.5f
