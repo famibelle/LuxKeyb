@@ -250,43 +250,69 @@ object Paysages {
                  souvenir: Souvenir?, pret: (Bitmap) -> Unit) {
         if (largeurPx <= 0 || hauteurPx <= 0) return
         val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
-        val attente = EN_COURS[cle]
-        if (attente != null) {
-            attente += pret
-            return
+        synchronized(EN_COURS) {
+            val attente = EN_COURS[cle]
+            if (attente != null) {
+                attente += pret
+                return
+            }
+            EN_COURS[cle] = mutableListOf(pret)
         }
-        EN_COURS[cle] = mutableListOf(pret)
         FILS.execute {
             val bitmap = try {
                 rendu(lieu, heure, largeurPx, hauteurPx, souvenir)
             } catch (e: OutOfMemoryError) {
                 null
             }
+            // En cache dès qu'il est rendu, sans attendre le fil principal :
+            // une vignette qui se dessine entre-temps le trouve déjà.
+            if (bitmap != null) CACHE.put(cle, bitmap)
             PRINCIPAL.post {
-                val qui = EN_COURS.remove(cle).orEmpty()
-                if (bitmap != null) {
-                    CACHE.put(cle, bitmap)
-                    qui.forEach { it(bitmap) }
-                }
+                val qui = synchronized(EN_COURS) { EN_COURS.remove(cle) }.orEmpty()
+                if (bitmap != null) qui.forEach { it(bitmap) }
             }
         }
     }
 
-    /** Les demandes en vol, touchées seulement depuis le fil principal. */
+    /**
+     * Les demandes en vol. Le carnet en dépose aussi depuis son fil de
+     * chargement (voir `CarnetFragment.chargerEnFond`) : d'où le verrou. Les
+     * rappels, eux, passent toujours sur le fil principal.
+     */
     private val EN_COURS = HashMap<String, MutableList<(Bitmap) -> Unit>>()
     private val PRINCIPAL by lazy { Handler(Looper.getMainLooper()) }
 
     /**
-     * Deux fils de fond : le rendu n'a aucun état partagé, et le A21s a huit
-     * cœurs. Plus ne servirait à rien, l'écran n'affiche qu'une dizaine de
-     * vignettes à la fois.
+     * Trois fils de fond : le rendu n'a aucun état partagé, et le A21s a huit
+     * cœurs. Le premier écran de la grille, huit vignettes, se peint ainsi en
+     * trois tours pendant que le carnet se charge.
      */
     private val FILS by lazy {
-        Executors.newFixedThreadPool(2) { tache ->
+        Executors.newFixedThreadPool(3) { tache ->
             Thread({
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND)
                 tache.run()
             }, "paysages").apply { isDaemon = true }
+        }
+    }
+
+    /**
+     * Fait tourner une fois, en petit et pour rien, le rendu de chaque
+     * saison. Fait pour un fil de fond, pendant que le carnet se charge.
+     *
+     * Le premier passage dans la passe de saison de [Habillage] n'est pas
+     * encore compilé : sur un Galaxy A21s (2026-10-12), les trois premiers
+     * paysages de vignette y passaient 720 à 760 ms chacun, les suivants 80
+     * à 100 ms. Ces trois-là étaient justement ceux du haut de la grille.
+     */
+    fun prechauffer() {
+        val heure = Heure.de(Rarete.COMMUN, null)
+        for (saison in Saison.values()) {
+            try {
+                rendu(Lieu.MELLERDALL, heure, 136, 102, Souvenir(saison, null))?.recycle()
+            } catch (e: OutOfMemoryError) {
+                return
+            }
         }
     }
 

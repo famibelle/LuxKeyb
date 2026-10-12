@@ -68,6 +68,16 @@ class CarnetFragment : DialogFragment() {
 
     companion object {
         /**
+         * Ce que le chargement attend au plus les paysages du premier écran,
+         * en millisecondes : au-delà, la grille paraît quand même, et les
+         * paysages en retard arrivent sur leur ciel comme les autres.
+         */
+        private const val ATTENTE_PAYSAGES = 600L
+
+        /** Les rangées de la vue Séries posées à chaque trame, une fois le premier écran rempli. */
+        private const val ETAPES_PAR_TRAME = 3
+
+        /**
          * Largeur visée pour une vignette, en dp — celle mesurée en portrait
          * sur un téléphone (deux colonnes sur ~393dp de large). Le nombre de
          * colonnes en dérive plutôt que de rester figé à deux : à l'italienne
@@ -110,6 +120,9 @@ class CarnetFragment : DialogFragment() {
     }
 
     private var tri = Tri.RECENT
+
+    /** Change à chaque remplissage de la grille : voir [poserParEtapes]. */
+    private var generationGrille = 0
     private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
 
@@ -291,7 +304,7 @@ class CarnetFragment : DialogFragment() {
                     remplirGrille()
                     // Une autre vue repart d'en haut : descendu dans les
                     // séries, « Étagère » s'ouvrait au milieu, sans son titre.
-                    defilementGrille.scrollTo(0, 0)
+                    remonterEnHaut()
                 }
             })
         }
@@ -361,7 +374,14 @@ class CarnetFragment : DialogFragment() {
         // Le métal des vignettes se prépare pendant que le carnet se charge :
         // voir [Ornement.prechauffer]. Celui de la vue Séries ensuite, à ses propres tailles : sans eux, le
         // premier passage sur cette vue recalculait tout sur le fil principal.
-        val cote = grilleDeVignettes().second
+        Thread({ Paysages.prechauffer() }, "prechauffe").start()
+        val (colonnes, cote) = grilleDeVignettes()
+        // Ce que le premier écran de la grille montrera, lu ici, sur le fil
+        // principal : le tri et le filtre peuvent changer pendant le chargement.
+        val triOuvert = tri
+        val filtreOuvert = filtre
+        val premierEcran = if (enAlbum() || triOuvert == Tri.ETAGERE || triOuvert == Tri.SERIES) 0
+        else (resources.displayMetrics.heightPixels / cote.coerceAtLeast(1)) * colonnes
         val cotesSeries = Serie.values().map { caseDeSerie(it).second }.distinct() - cote
         Thread {
             Ornement.prechauffer(ctx, cote)
@@ -387,6 +407,7 @@ class CarnetFragment : DialogFragment() {
             // rendre entièrement dû le même jour. Voir [Carnet.planifier].
             Carnet.planifier(ctx)
             val prets = Carnet.cartes(ctx).map { CarteCarnet.contenu(ctx, it) }
+            peindrePremierEcran(prets, filtreOuvert, triOuvert, premierEcran, cote)
             principal.post {
                 if (!isAdded) return@post
                 contenus = prets
@@ -398,6 +419,34 @@ class CarnetFragment : DialogFragment() {
                 ouvrir?.let { f -> prets.firstOrNull { it.carte.forme == f }?.let { montrerCarte(it) } }
             }
         }.start()
+    }
+
+    /**
+     * Les paysages des vignettes du premier écran, rendus avant que la grille
+     * paraisse, sur le fil de chargement, qui attend au plus [ATTENTE_PAYSAGES] ms.
+     *
+     * Les vignettes demandaient leur paysage à leur premier dessin : la grille
+     * paraissait, puis ses cartes se remplissaient sous les yeux, deux par
+     * deux, une seconde durant (Galaxy A21s, 2026-10-12, filmé). Rendus ici,
+     * sur les trois fils de [Paysages], ils arrivent avec la grille. Les
+     * vignettes plus bas suivent le chemin ordinaire.
+     */
+    private fun peindrePremierEcran(
+        prets: List<ContenuCarte>, filtre: JeuCarte?, tri: Tri, combien: Int, cote: Int
+    ) {
+        if (combien <= 0) return
+        val visibles = filtre?.let { jeu -> prets.filter { jeu in it.carte.jeux } } ?: prets
+        val premieres = ordonner(visibles, tri).take(combien)
+        if (premieres.isEmpty()) return
+        val restantes = java.util.concurrent.CountDownLatch(premieres.size)
+        premieres.forEach { c ->
+            try {
+                CarteCarnet.preparerVignette(c, cote) { restantes.countDown() }
+            } catch (e: Exception) {
+                restantes.countDown()
+            }
+        }
+        restantes.await(ATTENTE_PAYSAGES, java.util.concurrent.TimeUnit.MILLISECONDS)
     }
 
     /**
@@ -446,7 +495,7 @@ class CarnetFragment : DialogFragment() {
                 filtre = jeu
                 surlignerFiltres()
                 remplirGrille()
-                defilementGrille.scrollTo(0, 0)
+                remonterEnHaut()
             }
         }
 
@@ -536,6 +585,32 @@ class CarnetFragment : DialogFragment() {
         if (v.layerType != couche) v.setLayerType(couche, null)
     }
 
+    /**
+     * Ramène la grille en haut, élan compris.
+     *
+     * `scrollTo(0, 0)` seul ne suffisait pas : touché pendant que la liste
+     * filait encore sur l'élan d'un glissé, il la remettait à 0, puis l'élan
+     * reprenait et la ramenait au milieu de la nouvelle vue (vu sur un Galaxy
+     * A21s le 2026-10-12, de 0 à 3 351 px dans la trame suivante). Un `fling`
+     * de vitesse nulle remplace l'élan en cours et s'arrête là où il part :
+     * il se lance donc après la remontée, sinon il ramène la liste où elle
+     * était.
+     */
+    private fun remonterEnHaut() {
+        defilementGrille.scrollTo(0, 0)
+        defilementGrille.fling(0)
+    }
+
+    /** Les cartes dans l'ordre de la grille, pour les tris qui en ont un. */
+    private fun ordonner(visibles: List<ContenuCarte>, tri: Tri): List<ContenuCarte> = when (tri) {
+        Tri.ALPHA -> visibles.sortedBy { it.carte.forme.lowercase() }
+        Tri.RARETE -> visibles.sortedWith(
+            compareByDescending<ContenuCarte> { it.rarete.ordinal }
+                .thenBy { it.carte.forme.lowercase() }
+        )
+        else -> visibles.sortedByDescending { it.carte.numero }
+    }
+
     /** Le nombre de colonnes de la grille, et le côté d'une vignette en pixels. */
     private fun grilleDeVignettes(): Pair<Int, Int> {
         val d = resources.displayMetrics.density
@@ -550,6 +625,7 @@ class CarnetFragment : DialogFragment() {
         val ctx = context ?: return
         val d = resources.displayMetrics.density
         conteneurGrille.removeAllViews()
+        generationGrille++
 
         if (contenus.isEmpty()) {
             tvResume.text = getString(R.string.carnet_vide)
@@ -624,14 +700,7 @@ class CarnetFragment : DialogFragment() {
             defilementJeux.visibility = View.VISIBLE
         }
 
-        val ordonnes = when (tri) {
-            Tri.ALPHA -> visibles.sortedBy { it.carte.forme.lowercase() }
-            Tri.RARETE -> visibles.sortedWith(
-                compareByDescending<ContenuCarte> { it.rarete.ordinal }
-                    .thenBy { it.carte.forme.lowercase() }
-            )
-            else -> visibles.sortedByDescending { it.carte.numero }
-        }
+        val ordonnes = ordonner(visibles, tri)
         if (enAlbum()) {
             montrerAlbum(true)
             quandMesuree(zoneAlbum) { if (isAdded) construireAlbum(ordonnes) }
@@ -1079,8 +1148,10 @@ class CarnetFragment : DialogFragment() {
         val total = series.sumOf { it.total }
         tvResume.text = getString(R.string.series_resume, remplis, total)
 
+        // Chaque titre et chaque rangée est une étape : voir [poserParEtapes].
+        val etapes = mutableListOf<Pair<Int, () -> Unit>>()
         series.forEach { a ->
-            conteneurGrille.addView(LinearLayout(ctx).apply {
+            etapes += (40 * d).toInt() to { conteneurGrille.addView(LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.BOTTOM
                 layoutParams = LinearLayout.LayoutParams(
@@ -1101,18 +1172,16 @@ class CarnetFragment : DialogFragment() {
                     setTypeface(null, if (a.complete) Typeface.BOLD else Typeface.NORMAL)
                     setTextColor(if (a.complete) accent else Color.parseColor("#616161"))
                 })
-            })
+            }) }
 
             // Les cent un nombres se rangent par dizaines : cinq colonnes, une
             // dizaine sur deux rangées, ou dix quand l'écran les tient. Une
             // rangée de trois couperait 20 de 21 et mêlerait les dizaines.
             val (colonnesSerie, coteSerie) = caseDeSerie(a.serie)
             val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
-            var ligne: LinearLayout? = null
-            a.emplacements.forEachIndexed { i, e ->
-                val posColonne = i % colonnesSerie
-                if (posColonne == 0) {
-                    ligne = LinearLayout(ctx).apply {
+            a.emplacements.chunked(colonnesSerie).forEach { rangee ->
+                etapes += (coteSerie + gouttiere) to {
+                    val ligne = LinearLayout(ctx).apply {
                         orientation = LinearLayout.HORIZONTAL
                         clipChildren = false
                         layoutParams = LinearLayout.LayoutParams(
@@ -1121,23 +1190,60 @@ class CarnetFragment : DialogFragment() {
                         ).apply { bottomMargin = gouttiere }
                     }
                     conteneurGrille.addView(ligne)
-                }
-                val premiere = e.cartes.firstOrNull()
-                val vue = if (premiere != null) {
-                    CarteCarnet.vignette(ctx, premiere, coteSerie).apply {
-                        isClickable = true
-                        setOnClickListener { montrerCarte(premiere, ordre) }
+                    rangee.forEachIndexed { posColonne, e ->
+                        val premiere = e.cartes.firstOrNull()
+                        val vue = if (premiere != null) {
+                            CarteCarnet.vignette(ctx, premiere, coteSerie).apply {
+                                isClickable = true
+                                setOnClickListener { montrerCarte(premiere, ordre) }
+                            }
+                        } else {
+                            EmplacementVide(ctx, a.serie, e.cle)
+                        }
+                        ligne.addView(vue.apply {
+                            layoutParams = LinearLayout.LayoutParams(
+                                coteSerie, LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply { if (posColonne != colonnesSerie - 1) rightMargin = gouttiere }
+                        })
                     }
-                } else {
-                    EmplacementVide(ctx, a.serie, e.cle)
                 }
-                ligne?.addView(vue.apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        coteSerie, LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { if (posColonne != colonnesSerie - 1) rightMargin = gouttiere }
-                })
             }
         }
+        poserParEtapes(etapes)
+    }
+
+    /**
+     * Pose les [etapes] de la vue Séries : celles qui remplissent le premier
+     * écran tout de suite, les autres par paquets de [ETAPES_PAR_TRAME], une
+     * trame après l'autre. Chaque étape annonce la hauteur qu'elle ajoute.
+     *
+     * Les 248 emplacements construits d'un coup, 53 cartes et 195 cases vides,
+     * figeaient l'écran 0,7 s au passage sur la vue (Galaxy A21s, 2026-10-12) :
+     * 0,26 s à les construire, 0,22 s à les mesurer et les poser. Le premier
+     * écran n'en demande qu'une vingtaine ; le reste arrive pendant qu'on
+     * regarde, bien avant qu'on ait défilé jusque-là. Changer de vue entre-
+     * temps abandonne ce qui restait : [generationGrille] a changé.
+     */
+    private fun poserParEtapes(etapes: List<Pair<Int, () -> Unit>>) {
+        val generation = generationGrille
+        val ecran = resources.displayMetrics.heightPixels
+        var hauteur = 0
+        var i = 0
+        while (i < etapes.size && hauteur < ecran) {
+            hauteur += etapes[i].first
+            etapes[i].second()
+            i++
+        }
+        fun suite(depuis: Int) {
+            if (depuis >= etapes.size) return
+            conteneurGrille.post {
+                if (generation != generationGrille || !isAdded) return@post
+                val jusqua = minOf(depuis + ETAPES_PAR_TRAME, etapes.size)
+                for (k in depuis until jusqua) etapes[k].second()
+                suite(jusqua)
+            }
+        }
+        suite(i)
     }
 
     /** Referme la carte ouverte. Rend `false` s'il n'y en avait aucune. */
