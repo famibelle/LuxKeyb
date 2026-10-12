@@ -3799,6 +3799,8 @@ class CarteOrnee(
 
     fun avecBoite(valeur: Int): CarteOrnee {
         boite = valeur
+        oublierLesCouches()
+        invalidate()
         return this
     }
 
@@ -3807,6 +3809,8 @@ class CarteOrnee(
 
     fun avecPlume(valeur: Boolean): CarteOrnee {
         plume = valeur
+        oublierLesCouches()
+        invalidate()
         return this
     }
 
@@ -3848,6 +3852,7 @@ class CarteOrnee(
             restants--
             if (restants == 0 && largeurPreparee == w) {
                 matierePrete = true
+                oublierLesCouches()
                 invalidate()
                 quandPrete?.invoke()
                 quandPrete = null
@@ -3875,12 +3880,25 @@ class CarteOrnee(
      * partagés par toutes les cartes du même palier et de la même taille. Ce
      * qui reste à tracer réellement à chaque trame, c'est un rectangle
      * dégradé, le motif du mot, et une poignée de joyaux.
+     *
+     * Sur la carte ouverte, ce qui ne bouge pas passe par [couches].
      */
     override fun onDraw(canvas: Canvas) {
         if (!matierePrete) return
         val u = width / Ornement.LARGEUR
         if (u <= 0f) return
+        if (couches(canvas, u)) {
+            vivant(canvas, u)
+            return
+        }
 
+        dessous(canvas, u, avecIris = true)
+        dessus(canvas, u)
+        vivant(canvas, u)
+    }
+
+    /** La face, les rayons et le motif : tout ce que le métal recouvre. */
+    private fun dessous(canvas: Canvas, u: Float, avecIris: Boolean) {
         canvas.save()
         canvas.scale(u, u)
         Ornement.dessinerFace(canvas, pinceau, degradeFace, rarete, vignette)
@@ -3890,9 +3908,12 @@ class CarteOrnee(
 
         canvas.save()
         canvas.scale(u, u)
-        motif.peindre(canvas, pinceau, roulis, decoupe, u)
+        motif.peindre(canvas, pinceau, roulis, decoupe, u, avecIris)
         canvas.restore()
+    }
 
+    /** Le métal et ce qui s'y pose : joyaux, médaillon, sceau, plume, saison, semis. */
+    private fun dessus(canvas: Canvas, u: Float) {
         Ornement.metal(context, rarete, width, vignette)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
 
         canvas.save()
@@ -3918,6 +3939,13 @@ class CarteOrnee(
         if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, rarete)
         souvenir?.let { Ornement.dessinerSaison(canvas, pinceau, it, rarete, vignette) }
         Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
+        canvas.restore()
+    }
+
+    /** Ce qui suit la main ou le doigt, et se trace donc à chaque trame. */
+    private fun vivant(canvas: Canvas, u: Float) {
+        canvas.save()
+        canvas.scale(u, u)
         if (!vignette) ombreDeContact(canvas, pinceau)
         // La tranche par-dessus le métal : c'est le bord du carton, et le
         // cadre s'arrête dessus comme l'impression s'arrête sur la coupe.
@@ -3931,6 +3959,84 @@ class CarteOrnee(
         Ornement.dessinerReflet(canvas, pinceau, rarete, roulis, vignette)
         canvas.restore()
         canvas.restore()
+    }
+
+    /**
+     * Les deux couches fixes de la carte ouverte, et l'irisation entre elles.
+     *
+     * Posée immobile, la carte ouverte se redessinait environ vingt fois par
+     * seconde sur un Galaxy A21s (2026-10-12) : le capteur d'inclinaison ne se
+     * tait jamais tout à fait, et chaque écart, même invisible, faisait
+     * rejouer les quelques centaines d'ordres de tracé du cadre, du motif et
+     * des joyaux. 53 ms par image, dont 2 ms de carte graphique : le reste
+     * était le processeur qui renvoyait les mêmes tracés. La carte tenue en
+     * main tournait donc vers 18 images par seconde.
+     *
+     * Ce qui ne dépend ni de la main ni du doigt est enregistré une fois dans
+     * deux couches, que la carte graphique garde prêtes : le dessous du métal,
+     * puis le métal et ce qu'il porte. L'irisation d'une très rare passe entre
+     * les deux, à sa place d'origine ; la tranche, le reflet et l'ombre du
+     * doigt se tracent par-dessus, comme avant.
+     *
+     * Rend faux quand il faut tout tracer en direct : canevas logiciel (le
+     * partage dessine la carte dans un bitmap), vignette, Android avant 10,
+     * ou doigt posé, puisque les joyaux et les rivets tournent alors vers lui.
+     * Les couches enregistrées doigt levé restent bonnes, et resservent dès
+     * qu'il repart.
+     */
+    private fun couches(canvas: Canvas, u: Float): Boolean {
+        if (vignette || android.os.Build.VERSION.SDK_INT < 29 || !canvas.isHardwareAccelerated) return false
+        if (emprise >= 0.01f) return false
+        if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette) == null) return false
+        var bas = coucheDessous
+        var haut = coucheDessus
+        if (bas == null || haut == null || largeurDesCouches != width || hauteurDesCouches != height) {
+            bas = (bas ?: android.graphics.RenderNode("carte-dessous")).also {
+                it.setPosition(0, 0, width, height)
+                it.setUseCompositingLayer(true, null)
+                val c = it.beginRecording(width, height)
+                try { dessous(c, u, avecIris = false) } finally { it.endRecording() }
+            }
+            haut = (haut ?: android.graphics.RenderNode("carte-dessus")).also {
+                it.setPosition(0, 0, width, height)
+                it.setUseCompositingLayer(true, null)
+                val c = it.beginRecording(width, height)
+                try { dessus(c, u) } finally { it.endRecording() }
+            }
+            coucheDessous = bas
+            coucheDessus = haut
+            largeurDesCouches = width
+            hauteurDesCouches = height
+        }
+        canvas.drawRenderNode(bas)
+        if (motif.irise) {
+            canvas.save()
+            canvas.scale(u, u)
+            motif.irisSeule(canvas, pinceau, roulis, decoupe)
+            canvas.restore()
+        }
+        canvas.drawRenderNode(haut)
+        return true
+    }
+
+    private var coucheDessous: android.graphics.RenderNode? = null
+    private var coucheDessus: android.graphics.RenderNode? = null
+    private var largeurDesCouches = 0
+    private var hauteurDesCouches = 0
+
+    /** À appeler quand une partie fixe change : les couches se réenregistrent. */
+    private fun oublierLesCouches() {
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            coucheDessous?.discardDisplayList()
+            coucheDessus?.discardDisplayList()
+        }
+        coucheDessous = null
+        coucheDessus = null
+    }
+
+    override fun onDetachedFromWindow() {
+        oublierLesCouches()
+        super.onDetachedFromWindow()
     }
 
     /*
@@ -4085,7 +4191,9 @@ class Motif(
      * unité de carte : le lieu est rendu à la taille réelle de la fenêtre,
      * sinon il serait flou sur un grand écran.
      */
-    fun peindre(c: Canvas, p: Paint, roulis: Float, decoupe: Path, echelle: Float) {
+    fun peindre(
+        c: Canvas, p: Paint, roulis: Float, decoupe: Path, echelle: Float, avecIris: Boolean = true
+    ) {
         c.save()
         c.clipPath(decoupe)
         val l = (visible.width() * echelle).toInt()
@@ -4110,7 +4218,22 @@ class Motif(
         c.scale(cadrage[0], cadrage[0])
         sujet.peindre(c)
         c.restore()
-        iris?.dessus(c, p, roulis)
+        if (avecIris) iris?.dessus(c, p, roulis)
+        c.restore()
+    }
+
+    /** Vrai pour une très rare : son irisation suit l'inclinaison, le reste du motif non. */
+    val irise: Boolean get() = iris != null
+
+    /** Vrai quand le lieu est là : sans lui, le motif n'est qu'un ciel d'attente. */
+    val aSonLieu: Boolean get() = rendu != null
+
+    /** L'irisation seule, dans l'ouverture : ce que [peindre] tait quand `avecIris` est faux. */
+    fun irisSeule(c: Canvas, p: Paint, roulis: Float, decoupe: Path) {
+        val i = iris ?: return
+        c.save()
+        c.clipPath(decoupe)
+        i.dessus(c, p, roulis)
         c.restore()
     }
 }

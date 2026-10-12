@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import java.util.WeakHashMap
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.atan2
 
 /**
@@ -99,6 +100,18 @@ object Inclinaison {
      * mouvement se voie.
      */
     internal const val RAPPEL = 0.006f
+
+    /**
+     * L'écart d'inclinaison, en degrés, sous lequel on n'écrit rien.
+     *
+     * Posée sur une table, la carte ouverte d'un Galaxy A21s était recomposée
+     * une vingtaine de fois par seconde (2026-10-12) pour des écarts de
+     * quelques centièmes de degré. Avec la caméra reculée de [CAMERA], un
+     * dixième de degré déplace le bord de la carte de moins d'un centième de
+     * pixel : rien ne se perd à l'œil, et un mouvement de la main dépasse ce
+     * seuil à chaque échantillon.
+     */
+    private const val SEUIL_DEGRES = 0.1f
 
     /** La distance de caméra par défaut d'Android, en densités. */
     private const val CAMERA_DEFAUT = 1280f
@@ -260,10 +273,16 @@ object Inclinaison {
             posture.echantillon(evenement.values)
 
             // Deux écritures de propriété, pas un seul ordre de tracé : la
-            // carte n'est pas redessinée, elle est recomposée.
+            // carte n'est pas redessinée, elle est recomposée. Encore faut-il
+            // qu'il y ait quelque chose à recomposer : posé sur une table, le
+            // capteur ne se tait jamais tout à fait, et chaque écriture coûte
+            // une image entière.
+            val x = posture.tangage * AMPLITUDE
+            val y = posture.roulis * AMPLITUDE
             val e = etat(vue)
-            e[0] = posture.tangage * AMPLITUDE
-            e[1] = posture.roulis * AMPLITUDE
+            if (abs(x - e[0]) < SEUIL_DEGRES && abs(y - e[1]) < SEUIL_DEGRES) return
+            e[0] = x
+            e[1] = y
             appliquer(vue, e)
         }
     }

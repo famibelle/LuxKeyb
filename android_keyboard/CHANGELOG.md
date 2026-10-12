@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.3.4] - 2026-10-12
+
+Des cartes ouvertes plus fluides.
+
+### ⚡ Rapidité
+
+- **Une carte se retourne et se feuillette avec fluidité**, deux fois plus d'images par seconde qu'avant sur un téléphone modeste.
+- **Une carte posée ne dépense plus rien.** Laissée immobile, elle ne se redessinait pas moins de vingt fois par seconde pour des mouvements invisibles ; elle ménage maintenant la batterie.
+
 ## [36.3.3] - 2026-10-12
 
 Les cartes du carnet arrivent peintes.
