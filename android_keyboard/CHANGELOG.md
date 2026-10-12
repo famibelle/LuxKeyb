@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.3.3] - 2026-10-12
+
+Les cartes du carnet arrivent peintes.
+
+### ⚡ Rapidité
+
+- **Les cartes du carnet arrivent déjà peintes.** Elles n'apparaissent plus vides pour se remplir sous vos yeux : le premier écran se prépare pendant le chargement.
+- **La vue Séries s'ouvre sans figer l'écran.** Elle montre tout de suite ce qui tient à l'écran, et la suite se place pendant que vous regardez.
+
+### 🐛 Corrections
+
+- **Chaque vue du carnet s'ouvre bien en haut**, même touchée pendant que la liste défile encore. L'étagère s'ouvrait alors au milieu, sans son titre.
+
 ## [36.3.2] - 2026-10-12
 
 Un carnet qui ne se fige plus nulle part.
