@@ -30,6 +30,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import com.example.kreyolkeyboard.KeyFeedback
 import kotlin.math.abs
+import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.max
@@ -1104,6 +1105,25 @@ object Ornement {
     }
 
     /**
+     * Calcule d'avance le métal et les rayons des vignettes, les quatre
+     * paliers, à la largeur [largeurPx]. Fait pour un fil de fond.
+     *
+     * Le métal d'une vignette se calcule au pixel ([moulure]) : mesuré sur le
+     * Galaxy A21s (2026-10-12), 1,1 s pour les quatre paliers, dont la
+     * moitié pour le premier calculé, payés d'un bloc par la première image
+     * de la grille, qui figeait l'écran autant. Le carnet
+     * met plusieurs secondes à charger ses cartes : c'est là que ce calcul se
+     * fait désormais, sur un autre cœur. Le dessin du métal n'écrit dans
+     * aucun état partagé, et le cache est sûr d'un fil à l'autre.
+     */
+    fun prechauffer(context: Context, largeurPx: Int) {
+        for (r in Rarete.values()) {
+            metal(context, r, largeurPx, vignette = true)
+            rayons(r, largeurPx, vignette = true)
+        }
+    }
+
+    /**
      * Les rayons en éventail, à partir de *Rare*.
      *
      * Ils passent **sous** l'illustration, donc ils ne peuvent pas voyager
@@ -1311,9 +1331,17 @@ object Ornement {
         val orr = RAYON - dehors
         val ihx = LARGEUR / 2f - bord
         val ihy = haut / 2f - bord
+        // Seul l'anneau du cadre compte. Entre les arrondis, une rangée n'a
+        // que ses deux flancs à calculer : le reste tombe dans la face, quatre
+        // pixels sur cinq qu'il est inutile de mesurer.
+        val flanc = ceil(bord * u).toInt() + 1
+        val hautFlancs = bord + 11f
+        val basFlancs = haut - bord - 11f
         for (j in 0 until hauteurPx) {
             val y = (j + 0.5f) / u
+            val flancsSeuls = y > hautFlancs && y < basFlancs
             for (i in 0 until largeurPx) {
+                if (flancsSeuls && i >= flanc && i < largeurPx - flanc) continue
                 val x = (i + 0.5f) / u
                 val dIn = distanceArrondie(x, y, ocx, ocy, ihx, ihy, 11f, n)
                 if (dIn <= 0f) continue
@@ -3591,7 +3619,8 @@ class CarteOrnee(
         degradeAgrafe = Ornement.degradeGemme(
             teinte, Ornement.GEMME_CENTRE, Ornement.CREUX_AGRAFE, intensite
         )
-        motif = Motif(mot, rarete, fenetre, blason, souvenir)
+        val redessiner: (() -> Unit)? = if (vignette) fun() { invalidate() } else null
+        motif = Motif(mot, rarete, fenetre, blason, souvenir, redessiner)
         setWillNotDraw(false)
         clipChildren = false
     }
@@ -3888,7 +3917,13 @@ class Motif(
     rarete: Rarete,
     private val zone: RectF,
     blason: Blasonnement = Blasonnement.AUCUN,
-    private val souvenir: Souvenir? = null
+    private val souvenir: Souvenir? = null,
+    /**
+     * Pour une vignette : de quoi se redessiner quand son paysage, rendu en
+     * arrière-plan, arrive (voir [Paysages.demander]). Sans lui, le rendu est
+     * synchrone, comme sur la carte ouverte.
+     */
+    private val surPaysage: (() -> Unit)? = null
 ) {
 
     private val teinteChamp: Float? = blason.champ?.hue
@@ -3905,6 +3940,28 @@ class Motif(
     private val iris = Irisation.pour(rarete, zone, Ornement.teinteDe(mot, blason.champ))
     private val peinture = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private var rendu: Bitmap? = null
+    private var demande = ""
+    private val ciel: LinearGradient by lazy {
+        LinearGradient(
+            0f, visible.top, 0f, visible.bottom,
+            intArrayOf(heure.cielHaut, heure.cielMilieu ?: heure.cielBas, heure.cielBas),
+            null, Shader.TileMode.CLAMP
+        )
+    }
+
+    /** Le lieu rendu à [l] × [h], ou `null` s'il est en route vers une vignette. */
+    private fun lieuAPeindre(l: Int, h: Int): Bitmap? {
+        val signal = surPaysage ?: return Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
+        Paysages.enCache(lieu, heure, teinteChamp, l, h, souvenir)?.let { return it }
+        val taille = "${l}x$h"
+        if (demande == taille) return null
+        demande = taille
+        Paysages.demander(lieu, heure, teinteChamp, l, h, souvenir) { bitmap ->
+            if (bitmap.width == l && bitmap.height == h) rendu = bitmap
+            signal()
+        }
+        return null
+    }
 
     /**
      * Le meuble s'il y en a un, le tracé sinon — et jamais les deux.
@@ -3932,8 +3989,15 @@ class Motif(
         // La carte garde son paysage : le cache peut l'évincer pendant qu'une
         // grille défile, la carte ne le redessine pas pour autant.
         val image = rendu?.takeIf { it.width == l && it.height == h && !it.isRecycled }
-            ?: Paysages.image(lieu, heure, teinteChamp, l, h, souvenir).also { rendu = it }
-        image?.let { c.drawBitmap(it, null, visible, peinture) }
+            ?: lieuAPeindre(l, h)?.also { rendu = it }
+        if (image != null) {
+            c.drawBitmap(image, null, visible, peinture)
+        } else {
+            // Le ciel de l'heure, le temps que le lieu arrive.
+            peinture.shader = ciel
+            c.drawRect(visible, peinture)
+            peinture.shader = null
+        }
         c.save()
         c.translate(visible.left + cadrage[1], visible.top + cadrage[2])
         c.scale(cadrage[0], cadrage[0])

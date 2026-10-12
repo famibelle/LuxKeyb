@@ -8,7 +8,6 @@ import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RadialGradient
-import android.graphics.RectF
 import android.graphics.Shader
 import kotlin.math.PI
 import kotlin.math.cos
@@ -404,14 +403,12 @@ internal object Habillage {
 
     // ------------------------------------------------------------ outils
 
-    private val ovale = RectF()
-
     private fun ellipse(c: Canvas, p: Paint, x: Float, y: Float, rx: Float, ry: Float, angle: Float) {
         c.save()
         c.translate(x, y)
         c.rotate(Math.toDegrees(angle.toDouble()).toFloat())
-        ovale.set(-rx, -ry, rx, ry)
-        c.drawOval(ovale, p)
+        // Sans RectF partagé : les vignettes se rendent sur deux fils à la fois.
+        c.drawOval(-rx, -ry, rx, ry, p)
         c.restore()
     }
 
