@@ -405,27 +405,38 @@ object Booster {
 
             // Le dos arrive, puis se retourne de lui-même. Le retournement est
             // la récompense : la faire attendre un appui de plus ne la rend
-            // pas plus douce, elle rend la pochette longue. Une rare le fait
-            // attendre un peu, une très rare un peu plus : la durée est la
-            // seule chose qu'une animation sache dire, et elle le dit sans mot.
-            dos.alpha = 0f
-            dos.scaleX = 0.9f
-            dos.scaleY = 0.9f
-            dos.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(200).start()
+            // pas plus douce, elle rend la pochette longue. Chaque palier a
+            // ensuite son propre geste, et pas seulement plus d'intensité
+            // (maquettes validées par le propriétaire, 2026-10-12) : la peu
+            // commune reçoit un reflet, la rare se devine avant d'apparaître
+            // (le dos frémit) puis se signe (le poinçon se frappe), la très
+            // rare change toute la scène (la nuit tombe, la carte monte, un
+            // premier retournement éclair ne laisse voir qu'un éclat).
+            dos.cameraDistance = 12000f * d
+            face.cameraDistance = 12000f * d
+            dos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
             val attente = when (rarete) {
-                Rarete.TRES_RARE -> 900L
-                Rarete.RARE -> 620L
-                else -> 380L
+                Rarete.TRES_RARE -> {
+                    preluderTresRare(page, dos, halo, rarete)
+                    PRELUDE_TRES_RARE
+                }
+                Rarete.RARE -> {
+                    arriverDos(dos)
+                    fremir(dos)
+                    1050L
+                }
+                else -> {
+                    arriverDos(dos)
+                    380L
+                }
             }
-            halo?.animate()?.alpha(1f)?.setDuration(attente)?.start()
+            if (rarete != Rarete.TRES_RARE) halo?.animate()?.alpha(1f)?.setDuration(attente)?.start()
 
+            val lente = rarete == Rarete.TRES_RARE
             dos.postDelayed({
                 if (abandonnee()) return@postDelayed
-                dos.cameraDistance = 12000f * d
-                face.cameraDistance = 12000f * d
-                dos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-                dos.animate().rotationY(90f).setDuration(170)
+                dos.animate().rotationY(dos.rotationY + 90f).setDuration(if (lente) 350L else 170L)
                     .setInterpolator(AccelerateInterpolator())
                     .withEndAction {
                         if (abandonnee()) return@withEndAction
@@ -438,17 +449,35 @@ object Booster {
                         face.visibility = View.VISIBLE
                         val retourner = {
                             if (!abandonnee()) face.animate().rotationY(0f)
-                                .setDuration(if (rarete.distinguee) 300L else 210L)
+                                .setDuration(
+                                    when (rarete) {
+                                        Rarete.TRES_RARE -> 650L
+                                        Rarete.RARE -> 300L
+                                        else -> 210L
+                                    }
+                                )
                                 .setInterpolator(
-                                    if (rarete.distinguee) OvershootInterpolator(1.2f)
-                                    else DecelerateInterpolator()
+                                    when (rarete) {
+                                        Rarete.TRES_RARE -> OvershootInterpolator(1.5f)
+                                        Rarete.RARE -> OvershootInterpolator(1.2f)
+                                        else -> DecelerateInterpolator()
+                                    }
                                 )
                                 .withEndAction {
                                     if (abandonnee()) return@withEndAction
                                     // La carte a fini de se poser : elle suit
                                     // maintenant l'inclinaison de l'appareil.
                                     Inclinaison.suivre(face)
-                                    if (rarete == Rarete.TRES_RARE) eclater(page, rarete)
+                                    when (rarete) {
+                                        Rarete.PEU_COMMUN -> refleter(page, face, carte)
+                                        Rarete.RARE -> frapperPoincon(page, face, carte, rarete)
+                                        Rarete.TRES_RARE -> {
+                                            rayonner(page, face, rarete)
+                                            vibrer(page, 2)
+                                            eclater(page, rarete)
+                                        }
+                                        else -> {}
+                                    }
                                     feter(page, rarete, c.carte.forme)
                                     if (neuve) {
                                         bandeau.visibility = View.VISIBLE
@@ -554,6 +583,219 @@ object Booster {
         voile.animate().alpha(1f).setDuration(200).start()
         poser(0, 0)
         return voile
+    }
+
+    /** Le prélude d'une très rare, en millisecondes : nuit, montée, éclair. */
+    private const val PRELUDE_TRES_RARE = 2900L
+
+    /** Le dos d'une commune, d'une peu commune ou d'une rare arrive (0,2 s). */
+    private fun arriverDos(dos: View) {
+        dos.alpha = 0f
+        dos.scaleX = 0.9f
+        dos.scaleY = 0.9f
+        dos.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(200).start()
+    }
+
+    /**
+     * Le dos d'une rare frémit trois fois, de plus en plus fort, chaque fois
+     * avec une petite vibration : on devine qu'on tient quelque chose avant
+     * de le voir.
+     */
+    private fun fremir(dos: View) {
+        val d = dos.resources.displayMetrics.density
+        val amplitudes = floatArrayOf(3f, 5f, 8f)
+        var dernier = -1
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            startDelay = 250L
+            duration = 810L
+            addUpdateListener {
+                val u = it.animatedValue as Float * 3f
+                val k = u.toInt().coerceAtMost(2)
+                val v = u - k
+                if (k != dernier) {
+                    dernier = k
+                    vibrer(dos, 1, leger = true)
+                }
+                val actif = v < 0.6f
+                val a = if (actif) amplitudes[k] * sin(v / 0.6f * Math.PI.toFloat() * 4f) else 0f
+                dos.rotation = a
+                dos.translationX = a * 1.5f * d
+                val e = if (actif) 1f + 0.025f * sin(v / 0.6f * Math.PI.toFloat()) else 1f
+                dos.scaleX = e
+                dos.scaleY = e
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    dos.rotation = 0f
+                    dos.translationX = 0f
+                    dos.scaleX = 1f
+                    dos.scaleY = 1f
+                }
+            })
+            start()
+        }
+    }
+
+    /**
+     * Le prélude d'une très rare : le ciel s'éteint en nuit étoilée, le dos
+     * monte du bas en tournant sur lui-même, le halo bat, puis un premier
+     * retournement éclair ne montre qu'un éclat violet avant que le dos
+     * revienne. Le vrai retournement suit, plus lent.
+     */
+    private fun preluderTresRare(page: FrameLayout, dos: View, halo: View?, rarete: Rarete) {
+        val ctx = page.context
+        val nuit = NuitEtoilee(ctx).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            alpha = 0f
+        }
+        page.addView(nuit, 0)
+        nuit.animate().alpha(1f).setDuration(500).start()
+
+        dos.translationY = ctx.resources.displayMetrics.heightPixels * 0.6f
+        dos.scaleX = 0.7f
+        dos.scaleY = 0.7f
+        dos.animate().translationY(0f).scaleX(1f).scaleY(1f).rotationY(360f)
+            .setStartDelay(300).setDuration(1200)
+            .setInterpolator(DecelerateInterpolator(1.6f))
+            .start()
+
+        // Le halo bat pendant l'attente.
+        halo?.let { h ->
+            h.postDelayed({
+                h.animate().alpha(0.9f).setDuration(300).withEndAction {
+                    h.animate().alpha(0.5f).setDuration(300).withEndAction {
+                        h.animate().alpha(0.9f).setDuration(250).start()
+                    }.start()
+                }.start()
+            }, 1500)
+        }
+
+        // L'éclair : le dos tourne d'un quart, une face violette passe et
+        // repart, le dos revient. 0,3 s en tout.
+        val eclair = EclairCarte(ctx, rarete).apply {
+            layoutParams = FrameLayout.LayoutParams(dos.layoutParams as FrameLayout.LayoutParams)
+            visibility = View.INVISIBLE
+            cameraDistance = dos.cameraDistance
+        }
+        page.addView(eclair)
+        dos.postDelayed({
+            if (dos.parent == null) return@postDelayed
+            dos.animate().rotationY(450f).setStartDelay(0).setDuration(100)
+                .setInterpolator(AccelerateInterpolator())
+                .withEndAction {
+                    eclair.rotationY = -90f
+                    eclair.visibility = View.VISIBLE
+                    eclair.animate().rotationY(0f).setDuration(100).withEndAction {
+                        eclair.animate().rotationY(-90f).setDuration(100).withEndAction {
+                            page.removeView(eclair)
+                            dos.animate().rotationY(360f).setDuration(100)
+                                .setInterpolator(DecelerateInterpolator())
+                                .withEndAction {
+                                    dos.animate().scaleX(1.02f).scaleY(1.02f).setDuration(200)
+                                        .withEndAction {
+                                            dos.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+                                        }.start()
+                                }.start()
+                        }.start()
+                    }.start()
+                }.start()
+        }, 2100)
+    }
+
+    /** Où la carte se trouve dans [page], sachant qu'elle vit dans le défilement [face]. */
+    private fun cadre(face: View, carte: View) = RectF(
+        (face.left + carte.left).toFloat(),
+        (face.top + carte.top - face.scrollY).toFloat(),
+        (face.left + carte.right).toFloat(),
+        (face.top + carte.bottom - face.scrollY).toFloat()
+    )
+
+    /** Un passage de lumière sur une peu commune, 0,13 s après qu'elle s'est posée. */
+    private fun refleter(page: FrameLayout, face: View, carte: View) {
+        val reflet = RefletCarte(page.context, cadre(face, carte)).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        }
+        page.addView(reflet)
+        animerPuisRetirer(reflet, 600L, 130L) { reflet.avancement = it }
+    }
+
+    /**
+     * Le poinçon d'une rare se frappe : il s'allume dans la marge, la carte
+     * s'enfonce d'un rien, une onde part de lui, et le téléphone donne un
+     * coup. C'est la carte qui se signe.
+     */
+    private fun frapperPoincon(page: FrameLayout, face: View, carte: View, rarete: Rarete) {
+        val boite = cadre(face, carte)
+        val u = boite.width() / Ornement.LARGEUR
+        val z = Ornement.saison(rarete)
+        val poincon = RectF(
+            boite.left + z.left * u, boite.top + z.top * u,
+            boite.left + z.right * u, boite.top + z.bottom * u
+        )
+        val frappe = FrappePoincon(page.context, poincon, rarete).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        }
+        page.postDelayed({
+            if (page.parent == null) return@postDelayed
+            page.addView(frappe)
+            animerPuisRetirer(frappe, 700L, 0L) { frappe.avancement = it }
+            vibrer(page, 1)
+            face.animate().scaleX(0.985f).scaleY(0.985f).translationY(3f * u).setDuration(90)
+                .withEndAction {
+                    face.animate().scaleX(1f).scaleY(1f).translationY(0f).setDuration(120).start()
+                }.start()
+        }, 350L)
+    }
+
+    /** Les rayons d'une très rare, derrière la carte, le temps qu'elle se pose. */
+    private fun rayonner(page: FrameLayout, face: View, rarete: Rarete) {
+        val rayons = RayonsRarete(page.context, rarete).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        }
+        page.addView(rayons, page.indexOfChild(face).coerceAtLeast(0))
+        animerPuisRetirer(rayons, 2600L, 0L) { rayons.avancement = it }
+    }
+
+    private fun animerPuisRetirer(vue: View, duree: Long, delai: Long, pas: (Float) -> Unit) {
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            startDelay = delai
+            duration = duree
+            interpolator = android.view.animation.LinearInterpolator()
+            addUpdateListener { pas(it.animatedValue as Float) }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    (vue.parent as? ViewGroup)?.removeView(vue)
+                }
+            })
+            start()
+        }
+    }
+
+    /**
+     * [fois] impulsions, à 170 ms d'écart. Passe par `performHapticFeedback`,
+     * qui ne demande aucune permission et suit le réglage haptique du système,
+     * comme le verrouillage d'un mot dans Wuertplaz.
+     */
+    private fun vibrer(v: View, fois: Int, leger: Boolean = false) {
+        val effet = when {
+            leger -> android.view.HapticFeedbackConstants.CLOCK_TICK
+            android.os.Build.VERSION.SDK_INT >= 30 -> android.view.HapticFeedbackConstants.CONFIRM
+            else -> android.view.HapticFeedbackConstants.LONG_PRESS
+        }
+        v.performHapticFeedback(effet)
+        for (k in 1 until fois) v.postDelayed({ v.performHapticFeedback(effet) }, 170L * k)
     }
 
     /**
@@ -1139,5 +1381,219 @@ class FeuxArtifice(
                 pinceau.style = Paint.Style.STROKE
             }
         }
+    }
+}
+
+/**
+ * Le reflet d'une peu commune : une bande de lumière qui traverse la carte en
+ * diagonale, une fois. [cadre] est la carte dans la page ; la bande y est
+ * découpée, coins arrondis compris.
+ */
+class RefletCarte(context: Context, private val cadre: RectF) : View(context) {
+    var avancement: Float = 0f
+        set(valeur) {
+            field = valeur
+            invalidate()
+        }
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val chemin = android.graphics.Path()
+
+    override fun onDraw(canvas: Canvas) {
+        if (cadre.width() <= 0f) return
+        val u = cadre.width() / Ornement.LARGEUR
+        chemin.reset()
+        chemin.addRoundRect(cadre, Ornement.RAYON * u, Ornement.RAYON * u, android.graphics.Path.Direction.CW)
+        canvas.save()
+        canvas.clipPath(chemin)
+        // La bande avance le long de la diagonale montante.
+        val l = cadre.width() + cadre.height() * 0.55f
+        val centre = -0.15f + 1.3f * avancement
+        val x = cadre.left + centre * l
+        val demi = 0.09f * l
+        pinceau.shader = LinearGradient(
+            x - demi, cadre.top, x + demi, cadre.top + demi * 0.55f,
+            intArrayOf(0x00FFFFFF, 0xB0FFFFFF.toInt(), 0x00FFFFFF),
+            floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        canvas.drawRect(cadre, pinceau)
+        canvas.restore()
+    }
+}
+
+/**
+ * La frappe du poinçon d'une rare : le cartouche s'allume puis s'éteint, et
+ * une onde part de lui jusqu'au-delà de la carte. [poincon] est le cartouche
+ * dans la page.
+ */
+class FrappePoincon(context: Context, private val poincon: RectF, private val rarete: Rarete) : View(context) {
+    var avancement: Float = 0f
+        set(valeur) {
+            field = valeur
+            invalidate()
+        }
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun onDraw(canvas: Canvas) {
+        val d = resources.displayMetrics.density
+        val reste = 1f - avancement
+        val cx = poincon.centerX()
+        val cy = poincon.centerY()
+        // Le cartouche, éclairé, un peu plus grand que la gravure.
+        val m = 2f * d
+        val r = RectF(poincon.left - m, poincon.top - m, poincon.right + m, poincon.bottom + m)
+        val eclat = (1f - avancement / 0.7f).coerceIn(0f, 1f)
+        pinceau.style = Paint.Style.FILL
+        pinceau.color = Color.WHITE
+        pinceau.alpha = (eclat * 210).toInt()
+        canvas.drawRoundRect(r, 3f * d, 3f * d, pinceau)
+        pinceau.style = Paint.Style.STROKE
+        pinceau.strokeWidth = 2f * d
+        pinceau.color = rarete.couleur
+        pinceau.alpha = (eclat * 255).toInt()
+        canvas.drawRoundRect(r, 3f * d, 3f * d, pinceau)
+        // L'onde.
+        val rayon = 10f * d + 210f * d * (1f - reste * reste)
+        pinceau.color = eclaircir(rarete.couleur, 0.6f)
+        pinceau.strokeWidth = 5f * d * reste + 1f
+        pinceau.alpha = (reste * 220).toInt()
+        canvas.drawOval(RectF(cx - rayon, cy - rayon * 0.8f, cx + rayon, cy + rayon * 0.8f), pinceau)
+    }
+}
+
+/**
+ * La nuit d'une très rare : un ciel violet sombre, des étoiles qui scintillent
+ * et quatre étoiles filantes. Le scintillement s'arrête au bout de sept
+ * secondes, le ciel reste : une animation sans fin coûterait sur un petit
+ * téléphone tant que la carte reste à l'écran.
+ */
+class NuitEtoilee(context: Context) : View(context) {
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var ciel: LinearGradient? = null
+    private val hasard = Random(7)
+    private val etoiles = Array(110) {
+        floatArrayOf(hasard.nextFloat(), hasard.nextFloat(), 0.7f + hasard.nextFloat() * 1.4f,
+            hasard.nextFloat() * 6.28f, 1.5f + hasard.nextFloat() * 2.5f)
+    }
+    /** Départ (s), x, y (en part de l'écran) et sens de chaque étoile filante. */
+    private val filantes = arrayOf(
+        floatArrayOf(1.9f, 0.1f, 0.16f, 1f), floatArrayOf(2.9f, 0.9f, 0.11f, -1f),
+        floatArrayOf(3.7f, 0.15f, 0.7f, 1f), floatArrayOf(4.6f, 0.85f, 0.6f, -1f)
+    )
+    private var debut = 0L
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        debut = android.os.SystemClock.uptimeMillis()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
+        super.onSizeChanged(w, h, ow, oh)
+        ciel = LinearGradient(0f, 0f, 0f, h.toFloat(), 0xFF0E0828.toInt(), 0xFF3C145A.toInt(), Shader.TileMode.CLAMP)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val w = width.toFloat()
+        val h = height.toFloat()
+        val d = resources.displayMetrics.density
+        val t = (android.os.SystemClock.uptimeMillis() - debut) / 1000f
+        val vivant = t < 7f
+        pinceau.style = Paint.Style.FILL
+        pinceau.shader = ciel
+        canvas.drawRect(0f, 0f, w, h, pinceau)
+        pinceau.shader = null
+        pinceau.color = 0xFFFFFAEB.toInt()
+        val tt = if (vivant) t else 7f
+        for (e in etoiles) {
+            pinceau.alpha = (255 * (0.45f + 0.55f * (0.5f + 0.5f * sin(tt * e[4] + e[3])))).toInt()
+            canvas.drawCircle(e[0] * w, e[1] * h, e[2] * d, pinceau)
+        }
+        if (vivant) {
+            pinceau.color = Color.WHITE
+            pinceau.strokeCap = Paint.Cap.ROUND
+            for (f in filantes) {
+                val u = (t - f[0]) / 0.7f
+                if (u < 0f || u > 1f) continue
+                val x = f[1] * w + f[3] * 210f * d * u
+                val y = f[2] * h + 115f * d * u
+                val force = sin(u * Math.PI.toFloat())
+                for (k in 0 until 10) {
+                    val q = k / 10f
+                    pinceau.alpha = (230 * (1f - q) * force).toInt()
+                    pinceau.strokeWidth = (2.5f * (1f - q) + 0.5f) * d
+                    canvas.drawLine(
+                        x - f[3] * 9f * d * k, y - 5f * d * k,
+                        x - f[3] * 9f * d * (k + 1), y - 5f * d * (k + 1), pinceau
+                    )
+                }
+            }
+            postInvalidateOnAnimation()
+        }
+    }
+}
+
+/**
+ * Les rayons d'une très rare : dix-huit pinceaux de lumière qui tournent
+ * lentement derrière la carte, montent puis s'éteignent avec [avancement].
+ */
+class RayonsRarete(context: Context, private val rarete: Rarete) : View(context) {
+    var avancement: Float = 0f
+        set(valeur) {
+            field = valeur
+            invalidate()
+        }
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val chemin = android.graphics.Path()
+    private var fondu: RadialGradient? = null
+
+    override fun onSizeChanged(w: Int, h: Int, ow: Int, oh: Int) {
+        super.onSizeChanged(w, h, ow, oh)
+        val c = eclaircir(rarete.couleur, 0.7f)
+        fondu = RadialGradient(
+            w / 2f, h / 2f, maxOf(w, h) * 0.6f,
+            intArrayOf(c, c and 0x00FFFFFF), floatArrayOf(0.2f, 1f), Shader.TileMode.CLAMP
+        )
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val montee = (avancement / 0.15f).coerceIn(0f, 1f)
+        val descente = ((1f - avancement) / 0.55f).coerceIn(0f, 1f)
+        val force = minOf(montee, descente)
+        if (force <= 0f) return
+        val cx = width / 2f
+        val cy = height / 2f
+        val r = maxOf(width, height).toFloat()
+        chemin.reset()
+        val n = 18
+        val tour = avancement * 50f
+        for (k in 0 until n) {
+            val a = Math.toRadians((tour + k * 360f / n).toDouble())
+            val da = Math.toRadians(360.0 / n * 0.28)
+            chemin.moveTo(cx, cy)
+            chemin.lineTo(cx + r * cos(a - da).toFloat(), cy + r * sin(a - da).toFloat())
+            chemin.lineTo(cx + r * cos(a + da).toFloat(), cy + r * sin(a + da).toFloat())
+            chemin.close()
+        }
+        pinceau.shader = fondu
+        pinceau.alpha = (force * 200).toInt()
+        canvas.drawPath(chemin, pinceau)
+    }
+}
+
+/**
+ * L'éclair du premier retournement d'une très rare : une face violette sans
+ * mot, qu'on n'aperçoit que le temps d'un aller-retour.
+ */
+class EclairCarte(context: Context, private val rarete: Rarete) : View(context) {
+    private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+    override fun onDraw(canvas: Canvas) {
+        val w = width.toFloat()
+        val h = height.toFloat()
+        val d = resources.displayMetrics.density
+        pinceau.shader = RadialGradient(
+            w / 2f, h / 2f, maxOf(w, h) * 0.7f,
+            intArrayOf(0xFFFFFFFF.toInt(), eclaircir(rarete.couleur, 0.45f), rarete.couleur),
+            floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
+        )
+        canvas.drawRoundRect(RectF(0f, 0f, w, h), 14f * d, 14f * d, pinceau)
     }
 }
