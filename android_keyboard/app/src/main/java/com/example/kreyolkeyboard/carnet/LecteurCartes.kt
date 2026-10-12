@@ -183,6 +183,11 @@ internal class LecteurCartes(
         flecheSuivante?.alpha = if (rang < cartes.lastIndex) 1f else 0.25f
 
         carte.cameraDistance = 9000f * d
+        // La carte tourne d'un bloc, comme une image : retournement, feuilletage
+        // et inclinaison ne changent que l'angle, et sans couche chaque angle
+        // refaisait tous ses tracés. Sur un Galaxy A21s (2026-10-12), le
+        // retournement passait ainsi sous les 25 images par seconde.
+        carte.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         val armer = {
             // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
             // pour ne pas écrire dans `rotationY` pendant le retournement.
