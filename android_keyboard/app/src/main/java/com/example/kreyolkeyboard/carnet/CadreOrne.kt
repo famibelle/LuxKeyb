@@ -3152,6 +3152,10 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     /** La même posture que celle qui fait pivoter la carte, voir [Posture]. */
     private val posture = Posture(this, LISSAGE)
 
+    /** Le vrai bas dans le plan de l'écran, en unités de pesanteur : voir [Posture.basX]. */
+    protected val basX: Float get() = posture.basX
+    protected val basY: Float get() = posture.basY
+
     /** Le roulis que dicte le doigt, dans [-1, 1]. */
     private var doigt = 0f
 
@@ -3892,13 +3896,117 @@ class CarteOrnee(
             return
         }
 
-        dessous(canvas, u, avecIris = true)
+        // La neige passe derrière le dessin du mot : c'est le sujet de la
+        // carte, quelques flocons dessus en brouillaient la lecture.
+        val anime = ambiance != null && canvas.isHardwareAccelerated
+        dessous(canvas, u, avecIris = !anime, avecSujet = !anime)
+        if (anime) {
+            animer(canvas, u)
+            canvas.save()
+            canvas.scale(u, u)
+            motif.dessusDuLieu(canvas, pinceau, roulis, decoupe, avecSujet = true, avecIris = true)
+            canvas.restore()
+        }
         dessus(canvas, u)
         vivant(canvas, u)
     }
 
+    /** Ce qui bouge dans la fenêtre : voir [Ambiance]. Réservé au lecteur. */
+    private var ambiance: Ambiance? = null
+    private var instantPrecedent = 0L
+
+    /**
+     * Pour le lecteur de cartes : la fenêtre vit au temps de sa saison.
+     * Rien sur une vignette, rien si le téléphone demande des animations
+     * réduites.
+     */
+    fun avecAmbiance(): CarteOrnee {
+        if (vignette || Pochette.animationsReduites(context)) return this
+        val zone = RectF(fenetre.left, fenetre.top, fenetre.right, min(fenetre.bottom, Ornement.PLAQUE.top + 4f))
+        // L'été, l'heure de la carte choisit : aigrettes le jour, lucioles
+        // le soir et la nuit, les heures des deux paliers hauts.
+        ambiance = Ambiance.pour(souvenir, zone, mot.hashCode(), nuit = rarete.ordinal >= Rarete.RARE.ordinal)
+        oublierLesCouches()
+        if (isAttachedToWindow) armerSecousse()
+        return this
+    }
+
+    private var secousses: android.hardware.SensorManager? = null
+    private var derniereSecousse = 0L
+
+    /**
+     * Le geste de la boule à neige : un coup sec soulève les flocons.
+     *
+     * L'accélération linéaire, sans la pesanteur : celle que la neige suit
+     * déjà ne doit pas se lire comme une secousse. Un appareil qui ne l'a pas
+     * garde sa neige, sans le tourbillon.
+     */
+    private val ecouteSecousse = object : android.hardware.SensorEventListener {
+        override fun onSensorChanged(e: android.hardware.SensorEvent) {
+            val a = ambiance ?: return
+            val v = e.values
+            val m = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
+            if (m < SEUIL_SECOUSSE) return
+            val maintenant = android.os.SystemClock.uptimeMillis()
+            if (maintenant - derniereSecousse < 120L) return
+            derniereSecousse = maintenant
+            a.secouer(((m - SEUIL_SECOUSSE) / 20f).coerceIn(0.3f, 1f))
+            invalidate()
+        }
+
+        override fun onAccuracyChanged(capteur: android.hardware.Sensor?, precision: Int) = Unit
+    }
+
+    private fun armerSecousse() {
+        if (ambiance == null || secousses != null) return
+        val m = context.getSystemService(Context.SENSOR_SERVICE) as? android.hardware.SensorManager ?: return
+        val capteur = m.getDefaultSensor(android.hardware.Sensor.TYPE_LINEAR_ACCELERATION) ?: return
+        m.registerListener(ecouteSecousse, capteur, android.hardware.SensorManager.SENSOR_DELAY_GAME)
+        secousses = m
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        armerSecousse()
+    }
+
+    /**
+     * Avance l'ambiance du temps écoulé et la dessine dans la fenêtre, puis
+     * redemande une image. La boucle s'arrête d'elle-même quand la carte
+     * n'est plus dessinée : cachée, fermée ou détachée.
+     */
+    private fun animer(canvas: Canvas, u: Float) {
+        val a = ambiance ?: return
+        // Le partage dessine la carte dans un bitmap : une image figée n'a
+        // pas à garder des flocons au hasard de l'instant.
+        if (!canvas.isHardwareAccelerated) return
+        val maintenant = System.nanoTime()
+        val dt = if (instantPrecedent == 0L) 0f
+        else ((maintenant - instantPrecedent) / 1e9f).coerceAtMost(0.05f)
+        instantPrecedent = maintenant
+        a.orienter(basX, basY)
+        a.avancer(dt)
+        canvas.save()
+        canvas.scale(u, u)
+        canvas.clipPath(decoupe)
+        a.dessiner(canvas, pinceau)
+        canvas.restore()
+        // Une image sur deux : trente par seconde suffisent à des flocons
+        // lents, et la batterie tient deux fois mieux qu'à soixante.
+        if (!relancePrevue) {
+            relancePrevue = true
+            postOnAnimationDelayed(relance, 1000L / IMAGES_PAR_SECONDE - 8)
+        }
+    }
+
+    private var relancePrevue = false
+    private val relance = Runnable {
+        relancePrevue = false
+        invalidate()
+    }
+
     /** La face, les rayons et le motif : tout ce que le métal recouvre. */
-    private fun dessous(canvas: Canvas, u: Float, avecIris: Boolean) {
+    private fun dessous(canvas: Canvas, u: Float, avecIris: Boolean, avecSujet: Boolean = true) {
         canvas.save()
         canvas.scale(u, u)
         Ornement.dessinerFace(canvas, pinceau, degradeFace, rarete, vignette)
@@ -3908,7 +4016,7 @@ class CarteOrnee(
 
         canvas.save()
         canvas.scale(u, u)
-        motif.peindre(canvas, pinceau, roulis, decoupe, u, avecIris)
+        motif.peindre(canvas, pinceau, roulis, decoupe, u, avecIris, avecSujet)
         canvas.restore()
     }
 
@@ -3974,8 +4082,8 @@ class CarteOrnee(
      *
      * Ce qui ne dépend ni de la main ni du doigt est enregistré une fois dans
      * deux couches, que la carte graphique garde prêtes : le dessous du métal,
-     * puis le métal et ce qu'il porte. L'irisation d'une très rare passe entre
-     * les deux, à sa place d'origine ; la tranche, le reflet et l'ombre du
+     * puis le métal et ce qu'il porte. L'ambiance et l'irisation d'une très
+     * rare passent entre les deux, à leur place ; la tranche, le reflet et l'ombre du
      * doigt se tracent par-dessus, comme avant.
      *
      * Rend faux quand il faut tout tracer en direct : canevas logiciel (le
@@ -3988,21 +4096,35 @@ class CarteOrnee(
         if (vignette || android.os.Build.VERSION.SDK_INT < 29 || !canvas.isHardwareAccelerated) return false
         if (emprise >= 0.01f) return false
         if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette) == null) return false
+        val anime = ambiance != null
         var bas = coucheDessous
         var haut = coucheDessus
+        var sujet = coucheSujet
         // Une couche qu'Android n'a pas affichée pendant quelques images est
         // vidée de son contenu : c'est le cas après un appui du doigt, où la
         // carte se trace en direct. Sur la 36.3.4, la carte revenait alors
         // sans son corps, texte et reflets seuls sur la grille (Galaxy A21s,
         // 2026-10-12). Elle se réenregistre donc dès qu'une couche est vide.
-        if (bas == null || haut == null || !bas.hasDisplayList() || !haut.hasDisplayList() ||
+        if (bas == null || haut == null || (anime && sujet == null) ||
+            !bas.hasDisplayList() || !haut.hasDisplayList() || (anime && sujet?.hasDisplayList() != true) ||
             largeurDesCouches != width || hauteurDesCouches != height
         ) {
             bas = (bas ?: android.graphics.RenderNode("carte-dessous")).also {
                 it.setPosition(0, 0, width, height)
                 it.setUseCompositingLayer(true, null)
                 val c = it.beginRecording(width, height)
-                try { dessous(c, u, avecIris = false) } finally { it.endRecording() }
+                try { dessous(c, u, avecIris = false, avecSujet = !anime) } finally { it.endRecording() }
+            }
+            // Avec une ambiance, le dessin du mot a sa propre couche, posée
+            // par-dessus la neige.
+            if (anime) sujet = (sujet ?: android.graphics.RenderNode("carte-sujet")).also {
+                it.setPosition(0, 0, width, height)
+                it.setUseCompositingLayer(true, null)
+                val c = it.beginRecording(width, height)
+                try {
+                    c.scale(u, u)
+                    motif.dessusDuLieu(c, pinceau, roulis, decoupe, avecSujet = true, avecIris = false)
+                } finally { it.endRecording() }
             }
             haut = (haut ?: android.graphics.RenderNode("carte-dessus")).also {
                 it.setPosition(0, 0, width, height)
@@ -4012,14 +4134,19 @@ class CarteOrnee(
             }
             coucheDessous = bas
             coucheDessus = haut
+            coucheSujet = sujet
             largeurDesCouches = width
             hauteurDesCouches = height
         }
         canvas.drawRenderNode(bas)
+        if (anime) {
+            animer(canvas, u)
+            sujet?.let { canvas.drawRenderNode(it) }
+        }
         if (motif.irise) {
             canvas.save()
             canvas.scale(u, u)
-            motif.irisSeule(canvas, pinceau, roulis, decoupe)
+            motif.dessusDuLieu(canvas, pinceau, roulis, decoupe, avecSujet = false, avecIris = true)
             canvas.restore()
         }
         canvas.drawRenderNode(haut)
@@ -4028,6 +4155,7 @@ class CarteOrnee(
 
     private var coucheDessous: android.graphics.RenderNode? = null
     private var coucheDessus: android.graphics.RenderNode? = null
+    private var coucheSujet: android.graphics.RenderNode? = null
     private var largeurDesCouches = 0
     private var hauteurDesCouches = 0
 
@@ -4036,13 +4164,20 @@ class CarteOrnee(
         if (android.os.Build.VERSION.SDK_INT >= 29) {
             coucheDessous?.discardDisplayList()
             coucheDessus?.discardDisplayList()
+            coucheSujet?.discardDisplayList()
         }
         coucheDessous = null
         coucheDessus = null
+        coucheSujet = null
     }
 
     override fun onDetachedFromWindow() {
         oublierLesCouches()
+        instantPrecedent = 0L
+        removeCallbacks(relance)
+        relancePrevue = false
+        secousses?.unregisterListener(ecouteSecousse)
+        secousses = null
         super.onDetachedFromWindow()
     }
 
@@ -4051,6 +4186,16 @@ class CarteOrnee(
      * été vérifié ailleurs qu'à l'œil sur le papier.
      */
     private companion object {
+        /** La cadence de l'ambiance : voir [animer]. */
+        const val IMAGES_PAR_SECONDE = 30
+
+        /**
+         * L'accélération, sans la pesanteur, au-delà de laquelle on secoue,
+         * en m/s² : nettement au-dessus d'une marche ou d'un téléphone qu'on
+         * repose (3 à 6), atteinte par tout coup de poignet volontaire.
+         */
+        const val SEUIL_SECOUSSE = 12f
+
         /** Le rayon de l'ombre sous la pulpe, en unités de carte (~5 mm). */
         const val RAYON_OMBRE = 26f
 
@@ -4199,7 +4344,8 @@ class Motif(
      * sinon il serait flou sur un grand écran.
      */
     fun peindre(
-        c: Canvas, p: Paint, roulis: Float, decoupe: Path, echelle: Float, avecIris: Boolean = true
+        c: Canvas, p: Paint, roulis: Float, decoupe: Path, echelle: Float,
+        avecIris: Boolean = true, avecSujet: Boolean = true
     ) {
         c.save()
         c.clipPath(decoupe)
@@ -4220,12 +4366,16 @@ class Motif(
             c.drawRect(visible, peinture)
             peinture.shader = null
         }
+        if (avecSujet) peindreSujet(c)
+        if (avecIris) iris?.dessus(c, p, roulis)
+        c.restore()
+    }
+
+    private fun peindreSujet(c: Canvas) {
         c.save()
         c.translate(visible.left + cadrage[1], visible.top + cadrage[2])
         c.scale(cadrage[0], cadrage[0])
         sujet.peindre(c)
-        c.restore()
-        if (avecIris) iris?.dessus(c, p, roulis)
         c.restore()
     }
 
@@ -4235,12 +4385,16 @@ class Motif(
     /** Vrai quand le lieu est là : sans lui, le motif n'est qu'un ciel d'attente. */
     val aSonLieu: Boolean get() = rendu != null
 
-    /** L'irisation seule, dans l'ouverture : ce que [peindre] tait quand `avecIris` est faux. */
-    fun irisSeule(c: Canvas, p: Paint, roulis: Float, decoupe: Path) {
-        val i = iris ?: return
+    /**
+     * Ce que [peindre] tait quand `avecSujet` ou `avecIris` est faux : le
+     * sujet, puis l'irisation, dans l'ouverture et à leur ordre d'origine.
+     */
+    fun dessusDuLieu(c: Canvas, p: Paint, roulis: Float, decoupe: Path, avecSujet: Boolean, avecIris: Boolean) {
+        if (!avecSujet && (!avecIris || iris == null)) return
         c.save()
         c.clipPath(decoupe)
-        i.dessus(c, p, roulis)
+        if (avecSujet) peindreSujet(c)
+        if (avecIris) iris?.dessus(c, p, roulis)
         c.restore()
     }
 }
