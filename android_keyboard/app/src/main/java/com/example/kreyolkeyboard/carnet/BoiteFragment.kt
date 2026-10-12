@@ -184,28 +184,41 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
             TranslationDictionary.charger(ctx)
             TranslationDictionary.chargerExemples(ctx)
             val tous = cartes.map { CarteCarnet.contenu(ctx, it) }
-            activity?.runOnUiThread {
-                if (!isAdded || gen != generation) return@runOnUiThread
-                contenus.clear()
-                tous.forEach { contenus[it.carte.forme] = it }
-                contenusPrets = true
-
-                // À la taille où la boîte les montre : sur tablette la face d'un
-                // casier fait le double des 64 dp, et un recto agrandi y floutait.
-                val cote = maxOf(
-                    (COTE_RECTO * resources.displayMetrics.density).toInt(),
-                    boite.faceDuCasier(0).width().toInt()
-                )
-                boite.poserRectos(
-                    boite.cartesVisibles()
-                        .mapNotNull { c -> contenus[c.forme]?.let { c.forme to rendreRecto(it, cote) } }
-                        .toMap()
-                )
-                eventail?.let { ev ->
-                    if (ev.enAttente && casierOuvert >= 0) ev.poserCartes(cartesDuCasier(casierOuvert))
-                }
-            }
+            FilDeRendu.handler.post { poserContenus(tous, gen) }
         }.start()
+    }
+
+    /**
+     * Rend les rectos posés sur les piles, sur le fil de rendu (appelé par
+     * [chargerContenus]), puis remet tout au fil principal. Ils se rendaient à
+     * l'arrivée sur le fil principal, qu'ils bloquaient. À la taille où la
+     * boîte les montre : sur tablette la face d'un casier fait le double des
+     * 64 dp, et un recto agrandi y floutait.
+     */
+    private fun poserContenus(tous: List<ContenuCarte>, gen: Int) {
+        val ctx = context ?: return
+        val parForme = tous.associateBy { it.carte.forme }
+        val rectos = try {
+            val cote = maxOf(
+                (COTE_RECTO * ctx.resources.displayMetrics.density).toInt(),
+                boite.faceDuCasier(0).width().toInt()
+            )
+            boite.cartesVisibles()
+                .mapNotNull { c -> parForme[c.forme]?.let { c.forme to rendreRecto(it, cote) } }
+                .toMap()
+        } catch (e: Throwable) {
+            emptyMap()
+        }
+        activity?.runOnUiThread {
+            if (!isAdded || gen != generation) return@runOnUiThread
+            contenus.clear()
+            tous.forEach { contenus[it.carte.forme] = it }
+            contenusPrets = true
+            boite.poserRectos(rectos)
+            eventail?.let { ev ->
+                if (ev.enAttente && casierOuvert >= 0) ev.poserCartes(cartesDuCasier(casierOuvert))
+            }
+        }
     }
 
     /** Les cartes d'un casier, celles à revoir d'abord : c'est l'ordre de la pile. */
@@ -340,7 +353,9 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
         // Jamais plus petite que la cible : réduire est net, agrandir floute,
         // et l'éventail d'une tablette demande des cartes de 220 dp.
         val largeur = maxOf((160 * d).toInt(), cible)
-        val vue = CarteCarnet.vignette(requireContext(), c, largeur)
+        // Appelée en fond (éventail, piles) : `context` et non `requireContext`,
+        // l'appelant rattrape l'échec d'un fragment déjà détaché.
+        val vue = CarteCarnet.vignette(context ?: error("fragment détaché"), c, largeur)
         // Le paysage d'une vignette arrive en différé : tant qu'il manque, la
         // photo n'a que le ciel. Quand il est là, l'éventail la refait, et le
         // paysage, désormais en cache, y entre. Régression de la 36.3.0.
