@@ -3990,7 +3990,14 @@ class CarteOrnee(
         if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette) == null) return false
         var bas = coucheDessous
         var haut = coucheDessus
-        if (bas == null || haut == null || largeurDesCouches != width || hauteurDesCouches != height) {
+        // Une couche qu'Android n'a pas affichée pendant quelques images est
+        // vidée de son contenu : c'est le cas après un appui du doigt, où la
+        // carte se trace en direct. Sur la 36.3.4, la carte revenait alors
+        // sans son corps, texte et reflets seuls sur la grille (Galaxy A21s,
+        // 2026-10-12). Elle se réenregistre donc dès qu'une couche est vide.
+        if (bas == null || haut == null || !bas.hasDisplayList() || !haut.hasDisplayList() ||
+            largeurDesCouches != width || hauteurDesCouches != height
+        ) {
             bas = (bas ?: android.graphics.RenderNode("carte-dessous")).also {
                 it.setPosition(0, 0, width, height)
                 it.setUseCompositingLayer(true, null)
