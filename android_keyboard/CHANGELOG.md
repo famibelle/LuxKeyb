@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.3.0] - 2026-10-12
+
+Des cadres en relief, et un carnet qui ne fige plus.
+
+### ✨ Nouveautés
+
+- **Le cadre des cartes prend du volume.** Une moulure bombée qui accroche la lumière, et un métal travaillé selon la rareté : étain brossé, bronze martelé, argent ciselé d'une tresse gravée, or poli. Les cartes peu communes et rares portent des rivets sur les côtés, les rares et très rares un rang de perles autour de l'image.
+
+### ⚡ Rapidité
+
+- **Le carnet ne se fige plus quand la grille apparaît.** Sur un téléphone d'entrée de gamme, l'écran restait bloqué plusieurs secondes, d'autant plus longtemps que le carnet était rempli. Les paysages arrivent maintenant un à un, sur le ciel de leur heure.
+- **Le carnet défile sans à-coups.** Les cartes qui ne sont pas à l'écran ne coûtent plus rien.
+- **Une carte s'ouvre bien plus vite.**
+
 ## [36.2.0] - 2026-10-11
 
 Chaque carte du carnet se souvient maintenant de la saison où vous l'avez gagnée.
